@@ -39,7 +39,7 @@
     <property name="Annotation4" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This contains the client model.&#10;Set the firingCountLimit to 1, because&#10;each firing of this actor is a complete&#10;execution of the inside model.&#10;This model emulates a browser by&#10;first issuing an HTTP get and then&#10;a post.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[425.0, 195.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[455.0, 210.0]">
         </property>
     </property>
     <property name="Annotation5" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -53,7 +53,7 @@
     <entity name="RunCompositeActor" class="ptolemy.actor.lib.hoc.RunCompositeActor">
         <property name="firingCountLimit" class="ptolemy.data.expr.Parameter" value="1">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{115.0, 180.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[120.0, 180.0]">
         </property>
         <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
             <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model launches a web server and provides a service&#10;available at http://localhost:8079/ptolemnizer.&#10;Run the model and navigate to that location&#10;(or click on this comment).">
@@ -276,7 +276,7 @@
             </property>
         </entity>
         <entity name="Sleep" class="ptolemy.actor.lib.Sleep">
-            <property name="sleepTime" class="ptolemy.actor.parameters.PortParameter" value="30000L">
+            <property name="sleepTime" class="ptolemy.actor.parameters.PortParameter" value="5000L">
             </property>
             <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
                 <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="sleepTime">
@@ -465,7 +465,7 @@
             </property>
         </property>
         <entity name="SingleEvent" class="ptolemy.actor.lib.SingleEvent">
-            <property name="time" class="ptolemy.data.expr.Parameter" value="15.0">
+            <property name="time" class="ptolemy.data.expr.Parameter" value="7.5">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, 210.0]">
             </property>

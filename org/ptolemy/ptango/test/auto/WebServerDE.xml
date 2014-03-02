@@ -376,7 +376,7 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="[95.0, 25.0]">
             </property>
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={373, 127, 928, 641}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 110, 928, 641}, maximized=false}">
         </property>
         <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[700, 524]">
         </property>
@@ -388,6 +388,26 @@
             <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Need to give time for the web server to start up, so we&#10;synchronize to real time and trigger the HTTP get after 5 seconds.">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[40.0, 50.0]">
+            </property>
+        </property>
+        <property name="annotation" class="ptolemy.kernel.util.Attribute">
+            <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+            <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:blue">Strip any \r since these do not occur on all operating systems</text></svg></configure>
+            </property>
+            <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                <configure>
+                <svg> 
+                    <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-A-</text>
+                </svg>
+              </configure>
+            </property>
+            <property name="_controllerFactory" class="ptolemy.vergil.basic.NodeControllerFactory">
+            </property>
+            <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[270.0, 235.0]">
             </property>
         </property>
         <entity name="SingleEvent" class="ptolemy.actor.lib.SingleEvent">
@@ -403,11 +423,11 @@
             </property>
         </entity>
         <entity name="Test" class="ptolemy.actor.lib.Test">
-            <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{&quot;&lt;!-- The input form for the WebServerDE model\r\n\r\n Copyright (c) 1997-2013 The Regents of the University of California.\r\n All rights reserved.\r\n Permission is hereby granted, without written agreement and without\r\n license or royalty fees, to use, copy, modify, and distribute this\r\n software and its documentation for any purpose, provided that the above\r\n copyright notice and the following two paragraphs appear in all copies\r\n of this software.\r\n\r\n IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY\r\n FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES\r\n ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF\r\n THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF\r\n SUCH DAMAGE.\r\n\r\n THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,\r\n INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF\r\n MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE\r\n PROVIDED HEREUNDER IS ON AN \&quot;AS IS\&quot; BASIS, AND THE UNIVERSITY OF\r\n CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,\r\n ENHANCEMENTS, OR MODIFICATIONS.\r\n\r\n PT_COPYRIGHT_VERSION_2\r\n COPYRIGHTENDKEY\r\n\r\n --&gt;\r\n \r\n&lt;!DOCTYPE html&gt;\r\n&lt;head&gt; \r\n\t&lt;meta charset=\&quot;utf-8\&quot;&gt;\r\n\t\r\n\t&lt;!-- Load jQuery and jQueryMobile script stylesheets and libraries.  \r\n\t\t Note that jQuery must come before jQueryMobile \r\n\t\t Use online version to avoid problems rendering icons.  The files are \r\n\t\t included in the repository for reference.  The local version could be used\r\n\t\t so that an internet connection is not required if testing from localhost.\r\n\t\t Both the human-readable version and the .min.js version for smaller \r\n\t\t footprint are in the repository, though the web app only needs one version \r\n\t\t to run.\r\n\t\t Note that jQuery 1.7 is available, but there are currently problems with\r\n\t\t that version and jQueryMobile.  jQuery 1.6.4 is the latest version \r\n\t\t supported. --&gt; \r\n\t\t \r\n&lt;!-- Uncomment this to get handheld look and feel\t\t \r\n\t&lt;link rel=\&quot;stylesheet\&quot; href=\&quot;http://code.jquery.com/mobile/1.0/jquery.mobile-1.0.min.css\&quot; /&gt;\r\n\t&lt;script type=\&quot;text/javascript\&quot; src=\&quot;http://code.jquery.com/jquery-1.6.4.min.js\&quot;&gt;&lt;/script&gt;\r\n\t&lt;script type=\&quot;text/javascript\&quot; src=\&quot;http://code.jquery.com/mobile/1.0/jquery.mobile-1.0.min.js\&quot;&gt;&lt;/script&gt;\r\n--&gt;\r\n\t&lt;title&gt; Website Ptolemnizer &lt;/title&gt;\r\n&lt;/head&gt;\r\n&lt;body&gt;\r\n\r\n&lt;div data-role=\&quot;page\&quot; data-theme=\&quot;c\&quot;&gt;\r\n\r\n\t&lt;div data-role=\&quot;header\&quot;&gt;\r\n\t\t&lt;h1&gt; Text Ptolemnizer &lt;/h1&gt;\r\n\t&lt;/div&gt;\r\n\r\n\t&lt;div data-role=\&quot;content\&quot;&gt;\r\n\t\tPlease enter text to Ptolemnize:\r\n\t\t&lt;!-- could have an action=\&quot;suburl\&quot; in the form item to send the post to another actor. --&gt;\r\n\t\t&lt;form action=\&quot;ptolemnizer\&quot; method=\&quot;post\&quot; &gt;\r\n\t\t\r\n\t\t\t&lt;div data-role=\&quot;fieldcontain\&quot; class=\&quot;ui-hide-label\&quot;&gt;\r\n\t\t\t\t&lt;label for=\&quot;text\&quot;&gt;text:&lt;/label&gt;\r\n\t\t\t\t&lt;input type=\&quot;text\&quot; name=\&quot;text\&quot; id=\&quot;text\&quot; value=\&quot;\&quot; width=\&quot;80\&quot; placeholder=\&quot;text to tolemnize\&quot;/&gt;\r\n\t\t\t\t&lt;/br&gt;\r\n\t\t\t&lt;/div&gt;\r\n\t\t\r\n\t\t\t&lt;div&gt; Click the button and Ptolemy will Ptolemnize the text for you! &lt;br /&gt;\r\n\t\t\t\t&lt;button type=\&quot;submit\&quot; id=\&quot;ptolemnize\&quot;&gt; Ptolemynize &lt;/button&gt;\r\n\t\t\t&lt;/div&gt;\r\n\t\t&lt;/form&gt;\r\n\t&lt;/div&gt;\r\n&lt;/div&gt;\r\n\r\n&lt;/body&gt;\r\n&lt;/html&gt;\r\n\r\n&quot;}">
+            <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{&quot;&lt;!-- The input form for the WebServerDE model\n\n Copyright (c) 1997-2013 The Regents of the University of California.\n All rights reserved.\n Permission is hereby granted, without written agreement and without\n license or royalty fees, to use, copy, modify, and distribute this\n software and its documentation for any purpose, provided that the above\n copyright notice and the following two paragraphs appear in all copies\n of this software.\n\n IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY\n FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES\n ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF\n THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF\n SUCH DAMAGE.\n\n THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,\n INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF\n MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE\n PROVIDED HEREUNDER IS ON AN \&quot;AS IS\&quot; BASIS, AND THE UNIVERSITY OF\n CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,\n ENHANCEMENTS, OR MODIFICATIONS.\n\n PT_COPYRIGHT_VERSION_2\n COPYRIGHTENDKEY\n\n --&gt;\n \n&lt;!DOCTYPE html&gt;\n&lt;head&gt; \n\t&lt;meta charset=\&quot;utf-8\&quot;&gt;\n\t\n\t&lt;!-- Load jQuery and jQueryMobile script stylesheets and libraries.  \n\t\t Note that jQuery must come before jQueryMobile \n\t\t Use online version to avoid problems rendering icons.  The files are \n\t\t included in the repository for reference.  The local version could be used\n\t\t so that an internet connection is not required if testing from localhost.\n\t\t Both the human-readable version and the .min.js version for smaller \n\t\t footprint are in the repository, though the web app only needs one version \n\t\t to run.\n\t\t Note that jQuery 1.7 is available, but there are currently problems with\n\t\t that version and jQueryMobile.  jQuery 1.6.4 is the latest version \n\t\t supported. --&gt; \n\t\t \n&lt;!-- Uncomment this to get handheld look and feel\t\t \n\t&lt;link rel=\&quot;stylesheet\&quot; href=\&quot;http://code.jquery.com/mobile/1.0/jquery.mobile-1.0.min.css\&quot; /&gt;\n\t&lt;script type=\&quot;text/javascript\&quot; src=\&quot;http://code.jquery.com/jquery-1.6.4.min.js\&quot;&gt;&lt;/script&gt;\n\t&lt;script type=\&quot;text/javascript\&quot; src=\&quot;http://code.jquery.com/mobile/1.0/jquery.mobile-1.0.min.js\&quot;&gt;&lt;/script&gt;\n--&gt;\n\t&lt;title&gt; Website Ptolemnizer &lt;/title&gt;\n&lt;/head&gt;\n&lt;body&gt;\n\n&lt;div data-role=\&quot;page\&quot; data-theme=\&quot;c\&quot;&gt;\n\n\t&lt;div data-role=\&quot;header\&quot;&gt;\n\t\t&lt;h1&gt; Text Ptolemnizer &lt;/h1&gt;\n\t&lt;/div&gt;\n\n\t&lt;div data-role=\&quot;content\&quot;&gt;\n\t\tPlease enter text to Ptolemnize:\n\t\t&lt;!-- could have an action=\&quot;suburl\&quot; in the form item to send the post to another actor. --&gt;\n\t\t&lt;form action=\&quot;ptolemnizer\&quot; method=\&quot;post\&quot; &gt;\n\t\t\n\t\t\t&lt;div data-role=\&quot;fieldcontain\&quot; class=\&quot;ui-hide-label\&quot;&gt;\n\t\t\t\t&lt;label for=\&quot;text\&quot;&gt;text:&lt;/label&gt;\n\t\t\t\t&lt;input type=\&quot;text\&quot; name=\&quot;text\&quot; id=\&quot;text\&quot; value=\&quot;\&quot; width=\&quot;80\&quot; placeholder=\&quot;text to tolemnize\&quot;/&gt;\n\t\t\t\t&lt;/br&gt;\n\t\t\t&lt;/div&gt;\n\t\t\n\t\t\t&lt;div&gt; Click the button and Ptolemy will Ptolemnize the text for you! &lt;br /&gt;\n\t\t\t\t&lt;button type=\&quot;submit\&quot; id=\&quot;ptolemnize\&quot;&gt; Ptolemynize &lt;/button&gt;\n\t\t\t&lt;/div&gt;\n\t\t&lt;/form&gt;\n\t&lt;/div&gt;\n&lt;/div&gt;\n\n&lt;/body&gt;\n&lt;/html&gt;\n\n&quot;}">
             </property>
             <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="{300.0, 210.0}">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[435.0, 200.0]">
             </property>
         </entity>
         <entity name="Const" class="ptolemy.actor.lib.Const">
@@ -428,13 +448,31 @@
             </property>
             <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[630.0, 145.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[760.0, 135.0]">
             </property>
         </entity>
         <entity name="HttpGet" class="org.ptolemy.ptango.lib.HttpGet">
             <property name="url" class="ptolemy.actor.parameters.PortParameter" value="http://localhost:8078/ptolemnizer">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[175.0, 210.0]">
+            </property>
+        </entity>
+        <entity name="StringReplace" class="ptolemy.actor.lib.string.StringReplace">
+            <property name="pattern" class="ptolemy.actor.parameters.PortParameter" value="\r">
+            </property>
+            <property name="stringToEdit" class="ptolemy.actor.parameters.PortParameter" value="&lt;!-- The input form for the WebServerDE model&#13;&#10;&#13;&#10; Copyright (c) 1997-2013 The Regents of the University of California.&#13;&#10; All rights reserved.&#13;&#10; Permission is hereby granted, without written agreement and without&#13;&#10; license or royalty fees, to use, copy, modify, and distribute this&#13;&#10; software and its documentation for any purpose, provided that the above&#13;&#10; copyright notice and the following two paragraphs appear in all copies&#13;&#10; of this software.&#13;&#10;&#13;&#10; IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY&#13;&#10; FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES&#13;&#10; ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF&#13;&#10; THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF&#13;&#10; SUCH DAMAGE.&#13;&#10;&#13;&#10; THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,&#13;&#10; INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF&#13;&#10; MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE&#13;&#10; PROVIDED HEREUNDER IS ON AN &quot;AS IS&quot; BASIS, AND THE UNIVERSITY OF&#13;&#10; CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,&#13;&#10; ENHANCEMENTS, OR MODIFICATIONS.&#13;&#10;&#13;&#10; PT_COPYRIGHT_VERSION_2&#13;&#10; COPYRIGHTENDKEY&#13;&#10;&#13;&#10; --&gt;&#13;&#10; &#13;&#10;&lt;!DOCTYPE html&gt;&#13;&#10;&lt;head&gt; &#13;&#10;	&lt;meta charset=&quot;utf-8&quot;&gt;&#13;&#10;	&#13;&#10;	&lt;!-- Load jQuery and jQueryMobile script stylesheets and libraries.  &#13;&#10;		 Note that jQuery must come before jQueryMobile &#13;&#10;		 Use online version to avoid problems rendering icons.  The files are &#13;&#10;		 included in the repository for reference.  The local version could be used&#13;&#10;		 so that an internet connection is not required if testing from localhost.&#13;&#10;		 Both the human-readable version and the .min.js version for smaller &#13;&#10;		 footprint are in the repository, though the web app only needs one version &#13;&#10;		 to run.&#13;&#10;		 Note that jQuery 1.7 is available, but there are currently problems with&#13;&#10;		 that version and jQueryMobile.  jQuery 1.6.4 is the latest version &#13;&#10;		 supported. --&gt; &#13;&#10;		 &#13;&#10;&lt;!-- Uncomment this to get handheld look and feel		 &#13;&#10;	&lt;link rel=&quot;stylesheet&quot; href=&quot;http://code.jquery.com/mobile/1.0/jquery.mobile-1.0.min.css&quot; /&gt;&#13;&#10;	&lt;script type=&quot;text/javascript&quot; src=&quot;http://code.jquery.com/jquery-1.6.4.min.js&quot;&gt;&lt;/script&gt;&#13;&#10;	&lt;script type=&quot;text/javascript&quot; src=&quot;http://code.jquery.com/mobile/1.0/jquery.mobile-1.0.min.js&quot;&gt;&lt;/script&gt;&#13;&#10;--&gt;&#13;&#10;	&lt;title&gt; Website Ptolemnizer &lt;/title&gt;&#13;&#10;&lt;/head&gt;&#13;&#10;&lt;body&gt;&#13;&#10;&#13;&#10;&lt;div data-role=&quot;page&quot; data-theme=&quot;c&quot;&gt;&#13;&#10;&#13;&#10;	&lt;div data-role=&quot;header&quot;&gt;&#13;&#10;		&lt;h1&gt; Text Ptolemnizer &lt;/h1&gt;&#13;&#10;	&lt;/div&gt;&#13;&#10;&#13;&#10;	&lt;div data-role=&quot;content&quot;&gt;&#13;&#10;		Please enter text to Ptolemnize:&#13;&#10;		&lt;!-- could have an action=&quot;suburl&quot; in the form item to send the post to another actor. --&gt;&#13;&#10;		&lt;form action=&quot;ptolemnizer&quot; method=&quot;post&quot; &gt;&#13;&#10;		&#13;&#10;			&lt;div data-role=&quot;fieldcontain&quot; class=&quot;ui-hide-label&quot;&gt;&#13;&#10;				&lt;label for=&quot;text&quot;&gt;text:&lt;/label&gt;&#13;&#10;				&lt;input type=&quot;text&quot; name=&quot;text&quot; id=&quot;text&quot; value=&quot;&quot; width=&quot;80&quot; placeholder=&quot;text to tolemnize&quot;/&gt;&#13;&#10;				&lt;/br&gt;&#13;&#10;			&lt;/div&gt;&#13;&#10;		&#13;&#10;			&lt;div&gt; Click the button and Ptolemy will Ptolemnize the text for you! &lt;br /&gt;&#13;&#10;				&lt;button type=&quot;submit&quot; id=&quot;ptolemnize&quot;&gt; Ptolemynize &lt;/button&gt;&#13;&#10;			&lt;/div&gt;&#13;&#10;		&lt;/form&gt;&#13;&#10;	&lt;/div&gt;&#13;&#10;&lt;/div&gt;&#13;&#10;&#13;&#10;&lt;/body&gt;&#13;&#10;&lt;/html&gt;&#13;&#10;&#13;&#10;">
+            </property>
+            <doc>Replace the patterns that match a regular expression</doc>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[330.0, 200.0]">
+            </property>
+        </entity>
+        <entity name="StringReplace2" class="ptolemy.actor.lib.string.StringReplace">
+            <property name="pattern" class="ptolemy.actor.parameters.PortParameter" value="\r">
+            </property>
+            <property name="stringToEdit" class="ptolemy.actor.parameters.PortParameter" value="&lt;img src=&quot;/img/Icon.gif&quot;/&gt;&lt;h1&gt;Ptolemnized Text&lt;/h1&gt;ptext pto ptolemnize&lt;p&gt;&lt;img src=&quot;/files/PtolemyIISmallIcon.gif&quot;/&gt;&lt;p&gt;&lt;img src=&quot;/files/PtolemyIISmall.gif&quot;/&gt;&#10;">
+            </property>
+            <doc>Replace the patterns that match a regular expression</doc>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[655.0, 135.0]">
             </property>
         </entity>
         <relation name="relation3" class="ptolemy.actor.TypedIORelation">
@@ -447,19 +485,27 @@
         </relation>
         <relation name="relation2" class="ptolemy.actor.TypedIORelation">
         </relation>
-        <relation name="relation4" class="ptolemy.actor.TypedIORelation">
-        </relation>
         <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="relation" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="relation6" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="relation4" class="ptolemy.actor.TypedIORelation">
         </relation>
         <link port="SingleEvent.output" relation="relation5"/>
         <link port="HttpPost.input" relation="relation2"/>
-        <link port="HttpPost.output" relation="relation4"/>
-        <link port="Test.input" relation="relation3"/>
+        <link port="HttpPost.output" relation="relation6"/>
+        <link port="Test.input" relation="relation"/>
         <link port="Const.output" relation="relation2"/>
         <link port="Const.trigger" relation="relation3"/>
         <link port="Test2.input" relation="relation4"/>
         <link port="HttpGet.output" relation="relation3"/>
         <link port="HttpGet.trigger" relation="relation5"/>
+        <link port="StringReplace.stringToEdit" relation="relation3"/>
+        <link port="StringReplace.output" relation="relation"/>
+        <link port="StringReplace2.stringToEdit" relation="relation6"/>
+        <link port="StringReplace2.output" relation="relation4"/>
     </entity>
     <entity name="RunCompositeActor3" class="ptolemy.actor.lib.hoc.RunCompositeActor">
         <property name="firingCountLimit" class="ptolemy.data.expr.Parameter" value="1">
