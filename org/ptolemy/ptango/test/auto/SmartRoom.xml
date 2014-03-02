@@ -1336,7 +1336,7 @@ ExpressionToToken, ExpressionToToken2 output ports set to double
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
             <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-                <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:blue">Strip any /r since these do not occur on all operating systems</text></svg></configure>
+                <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:blue">Strip any \r since these do not occur on all operating systems</text></svg></configure>
             </property>
             <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
                 <configure>
