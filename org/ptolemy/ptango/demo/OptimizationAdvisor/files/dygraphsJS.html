@@ -27,7 +27,7 @@
 					labelsDiv: "legend-container",
 					labelsSeparateLines: true,
 					pointClickCallback: function(e, point) {
-						$("#eventsInfo-container").html('<b>Events at ' + 
+						jQuery("#eventsInfo-container").html('<b>Events at ' + 
 								parseDatetime(point.xval) + '</b>: <br>' +
 								getEvents(point.xval));
 					}
@@ -162,11 +162,14 @@
 		createChart();
 	}
 	
-	$(document).ready(function () {
-	  	$('#TDay').val(params.TDay);
-	  	$('#TNight').val(params.TNight);
-	  	$('#LTime').val(params.LTime);
-	  	$('#RTime').val(params.RTime);
+	// Use jQuery instead of dollar sign shorthand here, since some Ptolemy 
+	// actors interpret dollar sign to mean "evaluate the expression" which will 
+	// cause an error
+	jQuery(document).ready(function () {
+	  	jQuery('#TDay').val(params.TDay);
+	  	jQuery('#TNight').val(params.TNight);
+	  	jQuery('#LTime').val(params.LTime);
+	  	jQuery('#RTime').val(params.RTime);
 	  	
 		drawChart(true);
 		if(oldData.length > 0){
