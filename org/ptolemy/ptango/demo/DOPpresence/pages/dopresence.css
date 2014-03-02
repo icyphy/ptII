@@ -1,0 +1,73 @@
+/* Styling for the DOP Presence welcome screen */
+
+/* Header styling */
+*[data-role="header"] {
+	border: 1px solid #667396;
+	color: #ffffff;
+	width: 100%;
+	float: left;
+	font-size: 1.5em;
+	font-family: sans-serif;
+	text-shadow: 0 2px 0 #222;
+}
+
+*[data-role="header"] h1 {
+	position: relative;
+	top: 6%;
+	right: 5%;
+}
+
+/* Footer styling */
+.ui-bar-y {
+	background-image:url(banr2.jpg);
+    background-repeat:no-repeat;
+    height:74px;
+    background-color:#2a2f60;
+}
+
+*[data-role="footer"] {
+	border: 1px solid #667396;
+	color: #ffffff;
+	width: 100%;
+	float: left;
+	background: #2a2f60;
+	text-shadow: 0 2px 0 #222;
+	text-size: 0.5em;
+	font-family: sans-serif;
+}
+
+.ui-bar-z {
+	background-color:#2a2f60;
+	padding-left: 40px;
+	padding-bottom: 3px;
+	text-align: left;
+	text-shadow: 0 2px 0 #222;
+	height: 30px;
+}
+
+.footertext {
+	padding-top: 6px;
+}
+
+/* Content styling */
+
+.content {
+	width: 60%;
+	float: left;
+	padding-left: 130px;
+}
+
+.page {
+	background-color:#eeeeee;
+}
+
+#message{
+	padding: 1%;
+	text-align: center;
+}
+
+
+
+
+
+
