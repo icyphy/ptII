@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!-- GUID generated at http://guid.us -->
+<fmiModelDescription
+  description="Model of a staircase as a Mealy machine."
+  fmiVersion="1.5"
+  guid="{ebfb61fb-9c1c-4b1b-81de-f503fe893ae9}"
+  modelName="levelStairs"
+>
+    
+  <CoSimulation
+    modelIdentifier="levelStairs"
+    canHandleVariableCommunicationStepSize="true"
+    canHandleEvents="true"
+    canProvideMaxStepSize="true"/>
+
+    
+<ModelVariables>
+  <ScalarVariable
+     name="reference"
+     valueReference="1"
+     description="reference"
+     causality="input">
+    <Real/>
+  </ScalarVariable>
+  <ScalarVariable
+     name="level"
+     valueReference="2"
+     description="level"
+     causality="output">
+    <Real/>
+  </ScalarVariable>
+</ModelVariables>
+
+
+<ModelStructure> 
+  <Outputs>
+    <Unknown index="2" dependencies="1" /> 
+  </Outputs>
+</ModelStructure> 
+
+</fmiModelDescription>

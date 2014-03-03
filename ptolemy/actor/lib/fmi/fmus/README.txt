@@ -90,6 +90,7 @@ ptolemy/actor/lib/fmi/fmus/stairsA/src/sources/stairsA.c
 --end--
 
 6) Update FMU_NAME in fmi/fmus/stairsA/src/sources/makefile
+   and in fmi/fmus/stairsA/makefile
 
 7) cd to the top level directory of the fmu and run make update
   cd $PTII/ptolemy/actor/lib/fmi/fmus/stairsA
