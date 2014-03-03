@@ -4,7 +4,7 @@
 #
 # @Version: $Id$
 #
-# @Copyright (c) 2013 The Regents of the University of California.
+# @Copyright (c) 2013-2014 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -32,7 +32,8 @@
 ME =		ptolemy/actor/lib/fmi/fmus
 
 # Co-Simulation FMUS.
-FMUS_CS =	helloWorld onOffSupervisor stairsA stairsB stepCounter1 stepCounter stepCounterExtendedFMI stepCounterPeriodInName 
+FMUS_CS =	ballDynamics helloWorld levelStairs onOffSupervisor \
+		stairsA stairsB stepCounter1 stepCounter stepCounterExtendedFMI stepCounterPeriodInName 
 
 # Model Exchange FMUS.
 FMUS_ME = 	bouncingBallME1 dqME1 helloWorldME2 incME1 valuesME1 vanDerPolME1
