@@ -874,7 +874,7 @@ public class HTMLAbout {
     // file name.
     // @param contents  The contents of the temporary file
     // @return A URL pointing to a temporary file.
-    private static URL _temporaryHTMLFile(String prefix, String suffix,
+    /*private*/ static URL _temporaryHTMLFile(String prefix, String suffix,
             String contents) throws IOException {
         // Generate a copyright page in a temporary file
         File temporaryFile = File.createTempFile(prefix, suffix);
