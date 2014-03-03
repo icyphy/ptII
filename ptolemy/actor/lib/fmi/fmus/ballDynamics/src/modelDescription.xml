@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!-- GUID generated at http://guid.us -->
+<fmiModelDescription
+  description="Model of a ball."
+  fmiVersion="1.5"
+  guid="{45759609-8478-4038-a4cd-42ecc2cc126b}"
+  modelName="ballDynamics"
+>
+    
+  <CoSimulation
+    modelIdentifier="ballDynamics"
+    canHandleVariableCommunicationStepSize="true"
+    canHandleEvents="true"
+    canProvideMaxStepSize="false"/>
+
+    
+<ModelVariables>
+  <ScalarVariable
+     name="F"
+     valueReference="1"
+     description="F"
+     causality="input">
+    <Real/>
+  </ScalarVariable>
+  <ScalarVariable
+     name="F_i"
+     valueReference="2"
+     description="F_i"
+     causality="input">
+    <Real/>
+  </ScalarVariable>
+  <ScalarVariable
+     name="x"
+     valueReference="3"
+     description="x"
+     causality="output">
+    <Real/>
+  </ScalarVariable>
+  <ScalarVariable
+     name="v"
+     valueReference="4"
+     description="v"
+     causality="output">
+    <Real/>
+  </ScalarVariable>
+  <ScalarVariable
+      name="x_0"
+      valueReference="5"
+      description="intial value for x"
+      variability="parameter">
+    <Real start="0.0" fixed="true"/>
+  </ScalarVariable>
+  <ScalarVariable
+      name="v_0"
+      valueReference="6"
+      description="intial value for v"
+      variability="parameter">
+    <Real start="0.0" fixed="true"/>
+  </ScalarVariable>
+  <ScalarVariable
+      name="m"
+      valueReference="7"
+      description="mass of the ball"
+      variability="parameter">
+    <Real start="0.0" fixed="true"/>
+  </ScalarVariable>
+</ModelVariables>
+
+
+<ModelStructure> 
+  <Outputs>
+    <Unknown index="3" /> 
+    <Unknown index="4" /> 
+  </Outputs>
+</ModelStructure> 
+
+</fmiModelDescription>
