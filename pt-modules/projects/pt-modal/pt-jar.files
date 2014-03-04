@@ -18,6 +18,7 @@
 /ptolemy/domains/modal/kernel/FSMDirector.java
 /ptolemy/domains/modal/kernel/FSMDirectorWithPersistentIO.java
 /ptolemy/domains/modal/kernel/FSMReceiver.java
+/ptolemy/domains/modal/kernel/FSMTransitionParameter.java
 /ptolemy/domains/modal/kernel/ModalDirector.java
 /ptolemy/domains/modal/kernel/MultipleEnabledTransitionsException.java
 /ptolemy/domains/modal/kernel/MultirateFSMDirector.java
