@@ -33,7 +33,7 @@ package ptolemy.domains.modal.kernel;
 
 import java.util.Collection;
 
-import ptolemy.actor.gui.LocationAttribute;
+//import ptolemy.actor.gui.LocationAttribute;
 import ptolemy.actor.parameters.SharedParameter;
 import ptolemy.actor.util.Time;
 import ptolemy.data.BooleanToken;
@@ -52,8 +52,8 @@ import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.StringAttribute;
 import ptolemy.kernel.util.ValueListener;
 import ptolemy.kernel.util.Workspace;
-import ptolemy.vergil.icon.ValueIcon;
-import ptolemy.vergil.toolbox.VisibleParameterEditorFactory;
+//import ptolemy.vergil.icon.ValueIcon;
+//import ptolemy.vergil.toolbox.VisibleParameterEditorFactory;
 
 
 /** A parameter that contains FSM transition attributes. In large FSMs
@@ -296,18 +296,20 @@ public class FSMTransitionParameter extends AbstractSettableAttribute {
 	            + "<rect x=\"-10\" y=\"-10\" width=\"5\" height=\"5\" "
 	            + "style=\"fill:blue\"/></svg>");
 		
-		if (getAttribute("_editorFactor") == null) {
-			new VisibleParameterEditorFactory(this, "_editorFactor");
-		}
+                System.out.println("Warning: FSMTransitionParameter has commented out code.");
+		//if (getAttribute("_editorFactor") == null) {
+		//	new VisibleParameterEditorFactory(this, "_editorFactor");
+		//}
 		
 		SingletonParameter hide = new SingletonParameter(this, "_hideName");
 	    hide.setToken(BooleanToken.TRUE);
 	    hide.setVisibility(Settable.EXPERT);
 		
 	    if (getAttribute("_icon") == null) {
-	    	ValueIcon icon = new ValueIcon(this, "_icon");
-	    	icon.displayWidth.setExpression("1000");
-	    	icon.numberOfLines.setExpression("100");
+                System.out.println("Warning: FSMTransitionParameter has commented out code.");
+	    	//ValueIcon icon = new ValueIcon(this, "_icon");
+	    	//icon.displayWidth.setExpression("1000");
+	    	//icon.numberOfLines.setExpression("100");
 	    }
 	    
 	    Parameter _hide = (Parameter) getAttribute("_hide");
