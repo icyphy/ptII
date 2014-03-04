@@ -469,19 +469,16 @@ public class GenerateCopyrights {
                         }
 
                         int nameIndex = 0;
-                        if ((nameIndex = newHeader.indexOf("<a name")) != -1) {
+                        if ((nameIndex = newHeader.indexOf("<a name=\"")) != -1) {
                             int labelIndex =  0;
                             if ((labelIndex = newHeader.indexOf("\">")) != -1) {
                                 String target = newHeader.substring(nameIndex + "<a name=\"".length(), labelIndex);
-                                String label = newHeader.substring(labelIndex+2);
+                                // Skip the <h1> or <h2>
+                                String label = newHeader.substring(labelIndex + 6);
+                                
+                                //_guessCopyright(label, copyright);
 
-                                //System.out.println("{\"" + target + "\", \" \", \" \", \"Y\", \" \"},");
-
-                                masterCopyrightTable.append("<tr>\n <td>\n  "
-                                        + "<a href=\"#" + target + "\">"
-                                        + label.replace("License for", "").replace("Copyright for", "")
-                                        + "</a>\n </td>\n");
-                                masterCopyrightTable.append("</tr>\n");
+                                masterCopyrightTable.append(_generateLicenseTableRow(target, label));
                             }
                         }
                     }
@@ -550,7 +547,7 @@ public class GenerateCopyrights {
         String applicationName = _getApplicationName(configuration);
         String applicationCopyrightURL = _findURL(applicationCopyright);
 
-        String aelfredCopyright = _findURL("com/microstar/xml/README.txt");
+        String aelfredCopyright = _findURL("com/microstar/xml/aelfred-license.htm");
         String graphCopyright = _findURL("ptolemy/graph/graph-license.htm");
 
         String defaultCSS = _findURL("doc/default.css");
@@ -717,6 +714,39 @@ public class GenerateCopyrights {
         }
     }
 
+    /** Generate a row for the master table.
+     *  @param target The HTML target for the license
+     *  @param label The label for the license.
+     *  @return HTML for the row that represents the table.
+     */
+    private static String _generateLicenseTableRow(String target, String label) {
+        StringBuffer results = new StringBuffer(
+                " <tr>\n"
+                + "  <td>\n"
+                + "     <a href=\"#" + target + "\">"
+                + label.replace("License for", "").replace("Copyright for", "")
+                + "</a>\n"
+                + "  </td>\n");
+        int rowIndex = -1;
+        for (int i = 0; i < _licenses.length; i++) {
+            if (_licenses[i][0].equals(target)) {
+                rowIndex = i;
+                break;
+            }
+        }
+        if (rowIndex == -1) {
+            results.append("  <td>?</td> <td>?</td> <td>?</td> <td>Update ptolemy/actor/gui/GenerateCopyrights.java</td>");
+        } else {
+            results.append("  <td>" + _licenses[rowIndex][1] + "</td>\n"
+                    + "  <td>" + _licenses[rowIndex][2] + "</td>\n"
+                    + "  <td>" + _licenses[rowIndex][3] + "</td>\n"
+                    + "  <td>" + _licenses[rowIndex][4] + "</td>\n"
+                    + "  <td>" + _licenses[rowIndex][5] + "</td>\n");
+        }
+        results.append("</tr>\n");
+        return results.toString();
+    }
+
     /** Get the application name from the _applicationName parameter.
      *  If the _applicationName parameter is not set, then return
      *  "Ptolemy II"
@@ -738,6 +768,23 @@ public class GenerateCopyrights {
         return applicationName;
     }
 
+//     /** Guess the type of copyright, used for priming the table. */
+//     protected void _guessCopyright(String label, String copyright) {
+//         StringBuffer type = new StringBuffer();
+//         String [] types = {"Apache License", "CDDL", "Eclipse", "GNU Lesser General Public", "Oracle", "Research in Motion", "Sun" };
+//         for (int i = 0; i < types.length; i++) {
+//             if (copyright.indexOf(types[i]) != -1) {
+//                 if (type.length() > 0) {
+//                     type.append(" + ");
+//                 }
+//                 type.append(types[i]);
+//             }
+//         }
+//         System.out.println("{\"" + target + "\", \" \", \" \", \"Y\", \""
+//                 + type + "\"},");
+//     }
+
+
     /** Compare two filenames.
      */   
     static class FileNameComparator implements Comparator<String> {
@@ -754,53 +801,60 @@ public class GenerateCopyrights {
         }
     }
 
-    private static String[][] _copyrights = {
-        {"Audio", " ", " ", "Y", " "},
-        {"BrowserLauncher", " ", " ", "Y", " "},
-        {"ExtensionFileFilter", " ", " ", "Y", " "},
-        {"ExtensionFilenameFilter", " ", " ", "Y", " "},
-        {"JUnitParams", " ", " ", "Y", " "},
-        {"JavaMail", " ", " ", "Y", " "},
-        {"PDFRenderer", " ", " ", "Y", " "},
-        {"ResizableImageWidget", " ", " ", "Y", " "},
-        {"chic", " ", " ", "Y", " "},
-        {"colt", " ", " ", "Y", " "},
-        {"cup", " ", " ", "Y", " "},
-        {"fmipp", " ", " ", "Y", " "},
-        {"fmusdk", " ", " ", "Y", " "},
-        {"g4ltl", " ", " ", "Y", " "},
-        {"guava", " ", " ", "Y", " "},
-        {"itextpdf", " ", " ", "Y", " "},
-        {"jai", " ", " ", "Y", " "},
-        {"java3d", " ", " ", "Y", " "},
-        {"javascript", " ", " ", "Y", " "},
-        {"javax.servlet", " ", " ", "Y", " "},
-        {"jcerti", " ", " ", "Y", " "},
-        {"jetty", " ", " ", "Y", " "},
-        {"jgoodies", " ", " ", "Y", " "},
-        {"jimblacklerUtils", " ", " ", "Y", " "},
-        {"jmf", " ", " ", "Y", " "},
-        {"jna", " ", " ", "Y", " "},
-        {"joystick", " ", " ", "Y", " "},
-        {"json", " ", " ", "Y", " "},
-        {"jsoup", " ", " ", "Y", " "},
-        {"jxl", " ", " ", "Y", " "},
-        {"jython", " ", " ", "Y", " "},
-        {"kieler", " ", " ", "Y", " "},
-        {"mapss", " ", " ", "Y", " "},
-        {"matlab", " ", " ", "Y", " "},
-        {"mlc", " ", " ", "Y", " "},
-        {"mysql", " ", " ", "Y", " "},
-        {"netbeans", " ", " ", "Y", " "},
-        {"opencv", " ", " ", "Y", " "},
-        {"protobuf", " ", " ", "Y", " "},
-        {"ptalon", " ", " ", "Y", " "},
-        {"ptjacl", " ", " ", "Y", " "},
-        {"quicktime", " ", " ", "Y", " "},
-        {"rxtx", " ", " ", "Y", " "},
-        {"saxon", " ", " ", "Y", " "},
-        {"smack", " ", " ", "Y", " "},
-        {"soot", " ", " ", "Y", " "},
-        {"thalesSingleWindow", " ", " ", "Y", " "},
-        {"udunits", " ", " ", "Y", " "}};
+    /** A table of copyright labels, whether it is in Ptiny, the
+     * Windoes JRE, included in sources, included in Kepler and a
+     * summary of the license(s).
+     * We use a simple table here for ease of maintenance.
+     */
+    private static String[][] _licenses = {
+        {"aelfred", "Y", " ", "Y", "Y", "Include Microstar's copyrigh"},
+        {"Audio", "Y", " ", "Y", "Y ", "Include credit text"},
+        {"BrowserLauncher", "Y", " ", "Y", "Y", "Include the BrowserLauncher copyright"},
+        {"ExtensionFileFilter", "Y", " ", "Y", "Y", "Include Sun's copyright"},
+        {"ExtensionFilenameFilter", " ", " ", "Y", " ", "Sun"},
+        {"JUnitParams", " ", " ", "Y", " ", "Apache License"},
+        {"JavaMail", " ", " ", "Y", " ", "CDDL + Oracle"},
+        {"PDFRenderer", " ", " ", "Y", "Y", "GNU Lesser General Public"},
+        {"ResizableImageWidget", " ", " ", "Y", " ", "CDDL + Oracle + Sun"},
+        {"chic", " ", " ", "Y", " ", "BSD"},
+        {"colt", "Y", " ", "Y", "Y", "BSD and others"},
+        {"cup", " ", " ", "Y", " ", ""},
+        {"fmipp", " ", " ", "Y", " ", ""},
+        {"fmusdk", " ", " ", "Y", " ", ""},
+        {"g4ltl", " ", " ", "Y", " ", "Apache License"},
+        {"guava", " ", " ", "Y", " ", "Apache License"},
+        {"itextpdf", " ", " ", "Y", " ", ""},
+        {"jai", " ", "Y", " ", " ", "Sun"},
+        {"java3d", " ", "Y", "", " ", "Sun"},
+        {"javascript", " ", " ", "Y", " ", ""},
+        {"javax.servlet", " ", " ", "Y", " ", "Apache License"},
+        {"jcerti", " ", " ", "Y", " ", "GNU Lesser General Public"},
+        {"jetty", " ", " ", "Y", " ", "Apache License + Eclipse"},
+        {"jgoodies", " ", " ", "Y", "Y", "3 Clause BSD"},
+        {"jimblacklerUtils", " ", " ", "Y", " ", ""},
+        {"jmf", " ", "Y", " ", " ", "Sun"},
+        {"jna", " ", " ", "Y", " ", "Apache License + GNU Lesser General Public"},
+        {"joystick", " ", " ", "Y", " ", ""},
+        {"json", " ", " ", "Y", " ", ""},
+        {"jsoup", " ", " ", "Y", " ", ""},
+        {"jxl", " ", " ", "Y", " ", "GNU Lesser General Public"},
+        {"jython", "Y", " ", "Y", "Y", "Apache License + Python V2 + other licenses"},
+        {"kieler", " ", " ", "Y", " ", "Eclipse"},
+        {"mapss", " ", " ", "Y", "Y", "BSD"},
+        {"matlab", " ", " ", "Y", " ", "Research in Motion BSD"},
+        {"mlc", " ", " ", "Y", "Y", "GNU Lesser General Public + Sun"},
+        {"mysql", " ", " ", "Y", " ", "GPL + exceptions or Commercial"},
+        {"netbeans", " ", " ", "Y", " ", "CDDL + Oracle"},
+        {"opencv", " ", " ", "Y", " ", ""},
+        {"protobuf", " ", " ", "Y", " ", ""},
+        {"ptalon", " ", " ", "Y", " ", ""},
+        {"ptjacl", " ", " ", "Y", " ", "Apache License + BSD + Sun"},
+        {"quicktime", " ", "Y", " ", " ", "Apple"},
+        {"rxtx", " ", "Y", " ", " ", "GNU Lesser General Public 2.1 + Sun"},
+        {"saxon", " ", " ", "Y", " ", ""},
+        {"smack", " ", " ", "Y", " ", "Apache License"},
+        {"soot", " ", " ", "Y", "Y", "BSD + LGPL 2"},
+        {"thalesSingleWindow", " ", " ", "Y", " ", "BSD"},
+        {"udunits", " ", " ", "Y", " ", ""}};
+
 }
