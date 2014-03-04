@@ -51,7 +51,7 @@ PTCLASSJAR = 	$(PTPACKAGE).jar
 JSRCS = Joystick.java
 
 OTHER_FILES_TO_BE_JARED = \
-	copyright.htm \
+	joystick-copyright.htm \
 	jstick.xml
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)

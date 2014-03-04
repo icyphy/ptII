@@ -59,7 +59,7 @@ JSRCS = \
 	Expression.java
 
 OTHER_FILES_TO_BE_JARED = \
-	copyright.htm \
+	matlab-copyright.htm \
 	matlab.xml \
 	matlab.htm
 
