@@ -29,19 +29,14 @@
 
 package ptolemy.domains.modal.kernel;
 
-
-
+import java.lang.reflect.InvocationTargetException;
 import java.util.Collection;
 
-//import ptolemy.actor.gui.LocationAttribute;
-import ptolemy.actor.parameters.SharedParameter;
-import ptolemy.actor.util.Time;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.SingletonParameter;
 import ptolemy.data.expr.StringParameter;
 import ptolemy.data.expr.Variable;
-import ptolemy.data.type.BaseType;
 import ptolemy.kernel.util.AbstractSettableAttribute;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
@@ -52,8 +47,6 @@ import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.StringAttribute;
 import ptolemy.kernel.util.ValueListener;
 import ptolemy.kernel.util.Workspace;
-//import ptolemy.vergil.icon.ValueIcon;
-//import ptolemy.vergil.toolbox.VisibleParameterEditorFactory;
 
 
 /** A parameter that contains FSM transition attributes. In large FSMs
@@ -145,6 +138,10 @@ public class FSMTransitionParameter extends AbstractSettableAttribute {
     	_init();
     }
     
+    public Transition getTransition() {
+    	return _transition;
+    }
+    
     /** True if annotation was changed via the annotation parameter in the transition.
      */
     public boolean changedAnnotation = false;
@@ -215,7 +212,9 @@ public class FSMTransitionParameter extends AbstractSettableAttribute {
     	Parameter _hide = (Parameter) getAttribute("_hide");
         _hide.setExpression("" + hide);
         Location location = (Location) getAttribute("_location");
-        location.validate();
+        if (location != null) {
+        	location.validate();
+        }
         if (!hide && (location == null || (location.getLocation()[0] == 0 && location.getLocation()[1] == 0))) {
         	if (_transition.sourceState() != null) {
 	        	Location sourceStateLocation = (Location)_transition.sourceState().getAttribute("_location");
@@ -292,24 +291,48 @@ public class FSMTransitionParameter extends AbstractSettableAttribute {
 
 	private void _init() throws IllegalActionException, NameDuplicationException  {
 		
-		_attachText("_iconDescription", "<svg>\n"
-	            + "<rect x=\"-10\" y=\"-10\" width=\"5\" height=\"5\" "
-	            + "style=\"fill:blue\"/></svg>");
+		if (getAttribute("_iconDescription") == null) {
+			_attachText("_iconDescription", "<svg>\n"
+		            + "<rect x=\"-10\" y=\"-10\" width=\"5\" height=\"5\" "
+		            + "style=\"fill:blue\"/></svg>");
+		}
 		
-                System.out.println("Warning: FSMTransitionParameter has commented out code.");
-		//if (getAttribute("_editorFactor") == null) {
-		//	new VisibleParameterEditorFactory(this, "_editorFactor");
-		//}
-		
-		SingletonParameter hide = new SingletonParameter(this, "_hideName");
-	    hide.setToken(BooleanToken.TRUE);
-	    hide.setVisibility(Settable.EXPERT);
+		if (getAttribute("_hideName") == null) {
+			SingletonParameter hide = new SingletonParameter(this, "_hideName");
+		    hide.setToken(BooleanToken.TRUE);
+		    hide.setVisibility(Settable.EXPERT);
+		}
 		
 	    if (getAttribute("_icon") == null) {
-                System.out.println("Warning: FSMTransitionParameter has commented out code.");
-	    	//ValueIcon icon = new ValueIcon(this, "_icon");
-	    	//icon.displayWidth.setExpression("1000");
-	    	//icon.numberOfLines.setExpression("100");
+                try {
+                	//ValueIcon icon = new ValueIcon(this, "_icon");
+        	    	//icon.displayWidth.setExpression("1000");
+        	    	//icon.numberOfLines.setExpression("100");
+                	Attribute valueIcon = (Attribute) Class.forName("ptolemy.vergil.icon.ValueIcon").getConstructor(NamedObj.class, String.class).newInstance(this, "_icon");
+					((Parameter)valueIcon.getAttribute("displayWidth")).setExpression("1000");
+					((Parameter)valueIcon.getAttribute("numberOfLines")).setExpression("100");
+				} catch (ClassNotFoundException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (InstantiationException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (IllegalAccessException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (SecurityException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (NoSuchMethodException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (IllegalArgumentException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (InvocationTargetException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 	    }
 	    
 	    Parameter _hide = (Parameter) getAttribute("_hide");

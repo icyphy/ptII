@@ -93,9 +93,31 @@ present when the signal becomes > 0.</text></svg></configure>
                 </property>
                 <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="signal &gt; 0 &amp;&amp; on == true">
                 </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[300.0, 235.0]">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[530.0, 205.0]">
                 </property>
                 <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                </property>
+            </property>
+            <property name="b" class="ptolemy.domains.modal.kernel.FSMTransitionParameter">
+                <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                </property>
+                <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+                    <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="1000">
+                    </property>
+                    <property name="numberOfLines" class="ptolemy.data.expr.Parameter" value="100">
+                    </property>
+                </property>
+                <property name="_hide" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="annotation" class="ptolemy.data.expr.StringParameter" value="">
+                </property>
+                <property name="outputActions" class="ptolemy.kernel.util.StringAttribute">
+                </property>
+                <property name="setActions" class="ptolemy.kernel.util.StringAttribute">
+                </property>
+                <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[315.0, 160.0]">
                 </property>
             </property>
             <port name="signal" class="ptolemy.domains.modal.modal.RefinementPort">
@@ -148,7 +170,19 @@ present when the signal becomes > 0.</text></svg></configure>
                 <property name="gamma" class="ptolemy.data.expr.Parameter" value="-1.4917814197646462">
                 </property>
             </relation>
+            <relation name="relation2" class="ptolemy.domains.modal.kernel.Transition">
+                <property name="fsmTransitionParameterName" class="ptolemy.data.expr.StringParameter" value="b">
+                </property>
+                <property name="showFSMTransitionParameter" class="ptolemy.data.expr.Parameter" value="true">
+                </property>
+                <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.6283185307179586">
+                </property>
+                <property name="gamma" class="ptolemy.data.expr.Parameter" value="1.5216171865077386">
+                </property>
+            </relation>
             <link port="state.incomingPort" relation="relation"/>
+            <link port="state.outgoingPort" relation="relation2"/>
+            <link port="state2.incomingPort" relation="relation2"/>
             <link port="state2.outgoingPort" relation="relation"/>
         </entity>
         <relation name="signalRelation" class="ptolemy.actor.TypedIORelation">
