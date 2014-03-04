@@ -1032,7 +1032,9 @@ public class Transition extends ComponentRelation {
 						throw new IllegalActionException(this, e.getCause(), e.getMessage());
 					}
 		        } 
-				_fsmTransitionParameter.setTransition(this);
+		    	if (_fsmTransitionParameter.getTransition() == null) {
+		    		_fsmTransitionParameter.setTransition(this);
+		    	}
 			} catch (NameDuplicationException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
