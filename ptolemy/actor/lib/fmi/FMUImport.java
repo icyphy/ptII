@@ -2027,7 +2027,7 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
 
         if (fmiFlag != FMILibrary.FMIStatus.fmiOK) {
             throw new IllegalActionException(this,
-                    "Failed to set continuous states at time: "
+                    "Failed to get derivatives. fmiFlag = "
                             + _fmiStatusDescription(fmiFlag));
         }
         return _derivatives;
