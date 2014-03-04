@@ -53,6 +53,7 @@ JSRCS = \
 	XmlParser.java
 
 OTHER_FILES_TO_BE_JARED = \
+	aelfred-license.htm \
 	README.txt
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
