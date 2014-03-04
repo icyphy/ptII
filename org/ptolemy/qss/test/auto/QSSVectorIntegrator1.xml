@@ -83,7 +83,7 @@
         <property name="values" class="ptolemy.data.expr.Parameter" value="{1.0, 2.0, 1.0}">
         </property>
         <doc>Create periodic timed events.</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[50.0, 265.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[60.0, 260.0]">
         </property>
     </entity>
     <entity name="Test" class="ptolemy.actor.lib.Test">
