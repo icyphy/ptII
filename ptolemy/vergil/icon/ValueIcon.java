@@ -79,6 +79,10 @@ public class ValueIcon extends XMLIcon {
         displayWidth = new Parameter(this, "displayWidth");
         displayWidth.setExpression("80");
         displayWidth.setTypeEquals(BaseType.INT);
+        
+        numberOfLines = new Parameter(this, "numberOfLines");
+        numberOfLines.setExpression("1");
+        numberOfLines.setTypeEquals(BaseType.INT);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -88,6 +92,11 @@ public class ValueIcon extends XMLIcon {
      *  default value 60.
      */
     public Parameter displayWidth;
+    
+    /** The number of lines to display. This is an integer, with default
+     *  value 1.
+     */
+    public Parameter numberOfLines;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -114,12 +123,18 @@ public class ValueIcon extends XMLIcon {
             String name = container.getDisplayName();
             String value = ((Settable) container).getExpression();
             int width = 60;
+            int lines = 1;
             try {
                 width = ((IntToken) displayWidth.getToken()).intValue();
             } catch (IllegalActionException e) {
                 // This should not happen.
             }
-            String truncated = StringUtilities.truncateString(value, width, 1);
+            try {
+                lines = ((IntToken) numberOfLines.getToken()).intValue();
+            } catch (IllegalActionException e) {
+                // This should not happen.
+            }
+            String truncated = StringUtilities.truncateString(value, width, lines);
             LabelFigure label = new LabelFigure(name + ": " + truncated,
                     _labelFont, 1.0, SwingConstants.SOUTH_WEST);
             background.add(label);
