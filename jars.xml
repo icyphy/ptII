@@ -287,6 +287,9 @@
 	<include name="com/microstar/xml/*.txt"/>
       </fileset>
       <fileset dir="${basedir}">
+	<include name="com/microstar/xml/*.htm"/>
+      </fileset>
+      <fileset dir="${basedir}">
 	<include name="ptolemy/actor/*.class"/>
       </fileset>
       <fileset dir="${basedir}">
@@ -306,6 +309,9 @@
       </fileset>
       <fileset dir="${basedir}">
 	<include name="ptolemy/actor/gui/*.htm"/>
+      </fileset>
+      <fileset dir="${basedir}">
+	<include name="ptolemy/actor/gui/*.htm.in"/>
       </fileset>
       <fileset dir="${basedir}">
 	<include name="ptolemy/actor/gui/doc/*.gif"/>
