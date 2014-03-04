@@ -68,6 +68,7 @@ JSRCS = \
 	FSMDirector.java \
 	FSMDirectorWithPersistentIO.java \
 	FSMReceiver.java \
+	FSMTransitionParameter.java \
 	ModalDirector.java \
 	MultipleEnabledTransitionsException.java \
 	MultirateFSMDirector.java \
