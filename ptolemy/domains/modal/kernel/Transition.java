@@ -31,11 +31,13 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.StringTokenizer;
 
+import bsh.This;
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.Director;
 import ptolemy.actor.TypedActor;
 import ptolemy.actor.TypedCompositeActor;
 import ptolemy.data.BooleanToken;
+import ptolemy.data.StringToken;
 import ptolemy.data.Token;
 import ptolemy.data.expr.ASTPtRootNode;
 import ptolemy.data.expr.Parameter;
@@ -269,10 +271,40 @@ public class Transition extends ComponentRelation {
             super.attributeChanged(attribute);
         }
 
-        if (attribute == outputActions && _debugging) {
+        if (attribute == annotation) {
+        	if (_fsmTransitionParameter != null && _fsmTransitionParameter.annotation != null) {
+	        	_fsmTransitionParameter.changedAnnotation = true;
+	        	_fsmTransitionParameter.annotation.setExpression(annotation.getExpression());
+        	}
+        } else if (attribute == outputActions && _debugging) {
             outputActions.addDebugListener(new StreamListener());
+            if (_fsmTransitionParameter != null && _fsmTransitionParameter.outputActions != null) {
+	            _fsmTransitionParameter.changedOutputActions = true;
+	            _fsmTransitionParameter.outputActions.setExpression(outputActions.getExpression());
+            }
         } else if (attribute == setActions && _debugging) {
             setActions.addDebugListener(new StreamListener());
+            if (_fsmTransitionParameter != null && _fsmTransitionParameter.setActions != null) {
+	            _fsmTransitionParameter.changedSetActions = true;
+	            _fsmTransitionParameter.setActions.setExpression(setActions.getExpression());
+            }
+        } else if (attribute == guardExpression) {
+        	if (_fsmTransitionParameter != null && _fsmTransitionParameter.guardExpression != null) {
+	        	_fsmTransitionParameter.changedGuardExpression = true;
+	        	_fsmTransitionParameter.guardExpression.setExpression(guardExpression.getExpression());
+        	}
+        } else if (attribute == fsmTransitionParameterName) {
+        	if (((BooleanToken)showFSMTransitionParameter.getToken()).booleanValue()) {
+        		_getFSMTransitionParameter();
+        		_fsmTransitionParameter.hide(false);
+        		
+        	}
+        } else if (attribute == showFSMTransitionParameter) {
+        	if (((BooleanToken)showFSMTransitionParameter.getToken()).booleanValue()) {
+        		_getFSMTransitionParameter();
+        		_fsmTransitionParameter.hide(false);
+        		
+        	}
         }
     }
 
@@ -308,6 +340,7 @@ public class Transition extends ComponentRelation {
         newObject._choiceActionList = new LinkedList();
         newObject._commitActionList = new LinkedList();
         newObject._destinationState = null;
+        newObject._fsmTransitionParameter = null;
         newObject._guardParseTree = null;
         newObject._guardParseTreeVersion = -1;
         // newObject._historySet = false;
@@ -350,19 +383,10 @@ public class Transition extends ComponentRelation {
     public String getGuardExpression() {
         return guardExpression.getExpression();
     }
-
-    /** Return a string describing this transition. The string has up to
-     *  three lines. The first line is the guard expression, preceded
-     *  by "guard: ".  The second line is the <i>outputActions</i> preceded
-     *  by the string "output: ". The third line is the
-     *  <i>setActions</i> preceded by the string "set: ". If any of these
-     *  is missing, then the corresponding line is omitted.
-     *  @return A string describing this transition.
-     */
-    public String getLabel() {
-        StringBuffer buffer = new StringBuffer("");
-
-        boolean hasAnnotation = false;
+    
+    public String getFullLabel() {
+    	StringBuffer buffer = new StringBuffer("");
+    	boolean hasAnnotation = false;
         String text;
         try {
             text = annotation.stringValue();
@@ -396,8 +420,27 @@ public class Transition extends ComponentRelation {
             buffer.append("set: ");
             buffer.append(expression);
         }
-
         return buffer.toString();
+    }
+
+    /** Return a string describing this transition. The string has up to
+     *  three lines. The first line is the guard expression, preceded
+     *  by "guard: ".  The second line is the <i>outputActions</i> preceded
+     *  by the string "output: ". The third line is the
+     *  <i>setActions</i> preceded by the string "set: ". If any of these
+     *  is missing, then the corresponding line is omitted.
+     *  @return A string describing this transition.
+     */
+    public String getLabel() {
+        try {
+			if (((BooleanToken)showFSMTransitionParameter.getToken()).booleanValue()) {
+				return ((StringToken)fsmTransitionParameterName.getToken()).stringValue();
+			} else {
+				return getFullLabel();
+			}
+		} catch (IllegalActionException e) {
+			return "Exception evaluating annotation: " + e.getMessage();
+		}
     }
 
     /** Return the parse tree evaluator used by this transition to evaluate
@@ -740,6 +783,8 @@ public class Transition extends ComponentRelation {
                         "Transition can only be contained by instances of "
                                 + "FSMActor.");
             }
+        } else {
+        	_fsmTransitionParameter.setContainer(null);
         }
 
         super.setContainer(container);
@@ -865,6 +910,12 @@ public class Transition extends ComponentRelation {
      *  for the transition to be enabled.
      */
     public Parameter termination;
+    
+    public Parameter fsmTransitionParameterName;
+    
+    public Parameter showFSMTransitionParameter;
+    
+    
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
@@ -967,9 +1018,40 @@ public class Transition extends ComponentRelation {
         return null;
     }
 
-    // Initialize the variables of this transition.
+    private void _getFSMTransitionParameter() throws IllegalActionException {
+		if (getContainer() != null) {
+	    	FSMTransitionParameter fsmtp = (FSMTransitionParameter) getContainer().getAttribute(fsmTransitionParameterName.getValueAsString());
+	    	try {
+		    	if (_fsmTransitionParameter != null && _fsmTransitionParameter != fsmtp) {
+					_fsmTransitionParameter.setContainer(null);
+		    	}
+		    	_fsmTransitionParameter = fsmtp;
+		    	if (_fsmTransitionParameter == null) {
+		        	try {
+						_fsmTransitionParameter = new FSMTransitionParameter(getContainer(), fsmTransitionParameterName.getValueAsString(), this);
+					} catch (NameDuplicationException e) {
+						throw new IllegalActionException(this, e.getCause(), e.getMessage());
+					}
+		        } 
+				_fsmTransitionParameter.setTransition(this);
+			} catch (NameDuplicationException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+	}
+
+	// Initialize the variables of this transition.
     private void _init() throws IllegalActionException,
             NameDuplicationException {
+    	fsmTransitionParameterName = new StringParameter(this, "fsmTransitionParameterName");
+        fsmTransitionParameterName.setExpression(this.getName() + "Parameter");
+        fsmTransitionParameterName.setVisibility(Settable.FULL);
+        
+        showFSMTransitionParameter = new Parameter(this, "showFSMTransitionParameter");
+        showFSMTransitionParameter.setTypeEquals(BaseType.BOOLEAN);
+        showFSMTransitionParameter.setToken(BooleanToken.FALSE);
+        
         annotation = new StringParameter(this, "annotation");
         annotation.setExpression("");
         // Add a hint to indicate to the PtolemyQuery class to open with a text style.
@@ -1045,7 +1127,10 @@ public class Transition extends ComponentRelation {
         // Add refinement name parameter
         refinementName = new StringAttribute(this, "refinementName");
         refinementName.setVisibility(Settable.EXPERT);
+        
     }
+    
+    
 
     // Update the cached lists of actions.
     // This method is read-synchronized on the workspace.
@@ -1090,7 +1175,9 @@ public class Transition extends ComponentRelation {
     // Cached destination state of this transition.
     private State _destinationState = null;
 
-    // The parse tree for the guard expression.
+    private FSMTransitionParameter _fsmTransitionParameter;
+
+	// The parse tree for the guard expression.
     private ASTPtRootNode _guardParseTree;
 
     // Version of the cached guard parse tree

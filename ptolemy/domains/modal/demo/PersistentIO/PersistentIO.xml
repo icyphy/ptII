@@ -66,6 +66,38 @@ present when the signal becomes > 0.</text></svg></configure>
                 <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
                 </property>
             </property>
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={253, 132, 934, 635}, maximized=false}">
+            </property>
+            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[700, 524]">
+            </property>
+            <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+            </property>
+            <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{446.7713588127049, 246.10605468749992}">
+            </property>
+            <property name="a" class="ptolemy.domains.modal.kernel.FSMTransitionParameter">
+                <property name="_editorFactor" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+                </property>
+                <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+                    <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="1000">
+                    </property>
+                    <property name="numberOfLines" class="ptolemy.data.expr.Parameter" value="100">
+                    </property>
+                </property>
+                <property name="_hide" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="annotation" class="ptolemy.data.expr.StringParameter" value="">
+                </property>
+                <property name="outputActions" class="ptolemy.kernel.util.StringAttribute" value="out = true">
+                </property>
+                <property name="setActions" class="ptolemy.kernel.util.StringAttribute">
+                </property>
+                <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="signal &gt; 0 &amp;&amp; on == true">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[300.0, 235.0]">
+                </property>
+                <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                </property>
+            </property>
             <port name="signal" class="ptolemy.domains.modal.modal.RefinementPort">
                 <property name="input"/>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[155.30159137084456, 90.5]">
@@ -103,6 +135,10 @@ present when the signal becomes > 0.</text></svg></configure>
                 </property>
             </entity>
             <relation name="relation" class="ptolemy.domains.modal.kernel.Transition">
+                <property name="fsmTransitionParameterName" class="ptolemy.data.expr.StringParameter" value="a">
+                </property>
+                <property name="showFSMTransitionParameter" class="ptolemy.data.expr.Parameter" value="true">
+                </property>
                 <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="signal &gt; 0 &amp;&amp; on == true">
                 </property>
                 <property name="outputActions" class="ptolemy.domains.modal.kernel.OutputActionsAttribute" value="out = true">
