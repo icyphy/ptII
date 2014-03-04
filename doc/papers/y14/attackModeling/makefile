@@ -43,7 +43,7 @@ ROOT =		../../../..
 CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
-PTPACKAGE = 	models
+PTPACKAGE = 	attackModeling
 PTCLASSJAR = 	$(PTPACKAGE).jar
 #PTCLASSALLJAR = $(PTPACKAGE).jar
 
