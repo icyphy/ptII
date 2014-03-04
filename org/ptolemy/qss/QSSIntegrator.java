@@ -29,7 +29,7 @@ public class QSSIntegrator extends TypedAtomicActor {
 	 *  @param container The container.
 	 *  @param name The name.
 	 *  @throws IllegalActionException If setting up ports and parameters fails.
-	 *  @throws NameDuplicationException If the container already constains an object with this name.
+	 *  @throws NameDuplicationException If the container already contains an object with this name.
 	 */
 	public QSSIntegrator(CompositeEntity container, String name)
 			throws IllegalActionException, NameDuplicationException {
