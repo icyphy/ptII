@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!-- GUID generated at http://guid.us, see also the .c file. -->
+<fmiModelDescription
+   fmiVersion="2.0"
+   guid="{d23f3307-74ab-48e6-85c3-df507efe7812}"
+   modelName="pumpConstantSpeed"
+   numberOfContinuousStates="0"
+   numberOfEventIndicators="0"
+   variableNamingConvention="structured">
+
+  <ModelExchange
+     modelIdentifier="pumpConstantSpeed"/>
+
+  <UnitDefinitions>
+    <Unit
+      name="K">
+      <BaseUnit K="1"/>
+      <DisplayUnit
+        name="degC"
+        offset="-273.15"/>
+    </Unit>
+    <Unit
+      name="Pa">
+      <BaseUnit kg="1"
+        m="-1"
+        s="-2"/>
+    </Unit>
+    <Unit
+      name="kg/s">
+      <BaseUnit kg="1"
+        s="-1"/>
+    </Unit>
+  </UnitDefinitions>
+  <TypeDefinitions>
+    <SimpleType
+      name="AbsolutePressure">
+      <Real
+        quantity="Pressure"
+        unit="Pa"
+        displayUnit="Pa"
+        min="0.0"/>
+    </SimpleType>
+    <SimpleType
+      name="MassFlowRate">
+      <Real
+        quantity="MassFlowRate"
+        unit="kg/s"/>
+    </SimpleType>
+    <SimpleType
+      name="Temperature">
+      <Real
+        quantity="ThermodynamicTemperature"
+        unit="K"
+        displayUnit="degC"
+        min="0.0"/>
+    </SimpleType>
+  </TypeDefinitions>
+
+  <ModelVariables>
+    <!-- valueReference starts with zero, as this is used to access the elements in an array -->
+    <!-- Inputs -->
+    <!-- Index for next variable = 1 -->
+    <ScalarVariable
+       name="inlet.m_flow"
+       valueReference="1"
+       description="Inlet mass flow rate"
+       causality="input"
+       initial="approx">
+      <Real
+        declaredType="MassFlowRate"
+        start="0.1"/>
+    </ScalarVariable>
+    <!-- Index for next variable = 2 -->
+    <ScalarVariable
+       name="inlet.T"
+       valueReference="2"
+       description="Inlet temperature"
+       causality="input"
+       initial="approx">
+      <Real
+        declaredType="Temperature"
+        start="20"/>
+    </ScalarVariable>
+    <!-- Index for next variable = 3 -->
+    <ScalarVariable
+       name="inlet.p"
+       valueReference="3"
+       description="Inlet pressure"
+       causality="input"
+       initial="approx">
+      <Real
+        declaredType="AbsolutePressure"
+        start="101325"/>
+    </ScalarVariable>
+    <!-- Outputs -->
+    <!-- Index for next variable = 4 -->
+    <ScalarVariable
+       name="outlet.m_flow"
+       valueReference="4"
+       description="Outlet mass flow rate"
+       causality="output">
+      <Real
+        declaredType="MassFlowRate"/>
+    </ScalarVariable>
+    <!-- Index for next variable = 5 -->
+    <ScalarVariable
+       name="outlet.T"
+       valueReference="5"
+       description="Outlet temperature"
+       causality="output">
+      <Real
+        declaredType="Temperature"/>
+    </ScalarVariable>
+    <!-- Index for next variable = 6 -->
+    <ScalarVariable
+       name="outlet.p"
+       valueReference="6"
+       description="Outlet pressure"
+       causality="output">
+      <Real
+        declaredType="AbsolutePressure"/>
+    </ScalarVariable>
+    <!-- Parameters -->
+    <!-- Index for next variable = 7 -->
+    <ScalarVariable
+       name="dp0"
+       valueReference="7"
+       description="Pump head at zero flow rate"
+       causality="parameter"
+       variability="fixed"
+       initial="fixed">
+      <Real
+        declaredType="AbsolutePressure"
+        start="10000"/>
+    </ScalarVariable>
+    <!-- Index for next variable = 8 -->
+    <ScalarVariable
+       name="m0_flow"
+       valueReference="8"
+       description="Mass flow rate of pump at zero head"
+       causality="parameter"
+       variability="fixed"
+       initial="fixed">
+      <Real
+        declaredType="MassFlowRate"
+        start="0.2"/>
+    </ScalarVariable>
+  </ModelVariables>
+
+
+  <!-- Need ModelStructure or else the FMU Checker will report "No model structure information available. Cannot continue." -->
+  <ModelStructure>
+    <Outputs>
+      <Unknown index="4" dependencies="1" /> 
+      <Unknown index="5" dependencies="2" /> 
+      <Unknown index="6" dependencies="1 3" /> 
+    </Outputs>
+  </ModelStructure>
+
+</fmiModelDescription>
