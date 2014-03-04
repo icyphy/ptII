@@ -498,9 +498,9 @@ public class GenerateCopyrights {
             System.err.println("GenerateCopyrights: Could not find \"" + tableTarget
                     + "\" in the generated copyright text, "
                     + "maybe ptolemy/actor/gui/masterCopyrightStart.htm.in does not have it?");
+        } else {
+            masterCopyrightBuffer.insert(tableTargetIndex, masterCopyrightTable);
         }
-        masterCopyrightBuffer.insert(tableTargetIndex, masterCopyrightTable);
-
         try { 
             URL masterCopyrightURL = HTMLAbout._temporaryHTMLFile("mastercopyright", ".htm",
                     masterCopyrightBuffer.toString());
@@ -826,7 +826,7 @@ public class GenerateCopyrights {
         {"itextpdf", " ", " ", "Y", " ", ""},
         {"jai", " ", "Y", " ", " ", "Sun"},
         {"java3d", " ", "Y", "", " ", "Sun"},
-        {"javascript", " ", " ", "Y", " ", ""},
+        {"javascript", " ", " ", "Y", " ", "JQuery and Fancybox: MIT"},
         {"javax.servlet", " ", " ", "Y", " ", "Apache License"},
         {"jcerti", " ", " ", "Y", " ", "GNU Lesser General Public"},
         {"jetty", " ", " ", "Y", " ", "Apache License + Eclipse"},
@@ -839,15 +839,15 @@ public class GenerateCopyrights {
         {"jsoup", " ", " ", "Y", " ", ""},
         {"jxl", " ", " ", "Y", " ", "GNU Lesser General Public"},
         {"jython", "Y", " ", "Y", "Y", "Apache License + Python V2 + other licenses"},
-        {"kieler", " ", " ", "Y", " ", "Eclipse"},
+        {"kieler", "Y", " ", "Y", " ", "Eclipse"},
         {"mapss", " ", " ", "Y", "Y", "BSD"},
-        {"matlab", " ", " ", "Y", " ", "Research in Motion BSD"},
+        {"matlab", "Y", " ", "Y", " ", "Research in Motion BSD"},
         {"mlc", " ", " ", "Y", "Y", "GNU Lesser General Public + Sun"},
         {"mysql", " ", " ", "Y", " ", "GPL + exceptions or Commercial"},
         {"netbeans", " ", " ", "Y", " ", "CDDL + Oracle"},
         {"opencv", " ", " ", "Y", " ", ""},
         {"protobuf", " ", " ", "Y", " ", ""},
-        {"ptalon", " ", " ", "Y", " ", ""},
+        {"ptalon", "Y", " ", "Y", " ", "Antler: Public Domain"},
         {"ptjacl", " ", " ", "Y", " ", "Apache License + BSD + Sun"},
         {"quicktime", " ", "Y", " ", " ", "Apple"},
         {"rxtx", " ", "Y", " ", " ", "GNU Lesser General Public 2.1 + Sun"},
