@@ -1,29 +1,29 @@
 /* Generate a web page that contains links for the appropriate copyrights
 
- Copyright (c) 2003-2013 The Regents of the University of California.
- All rights reserved.
- Permission is hereby granted, without written agreement and without
- license or royalty fees, to use, copy, modify, and distribute this
- software and its documentation for any purpose, provided that the above
- copyright notice and the following two paragraphs appear in all copies
- of this software.
+   Copyright (c) 2003-2013 The Regents of the University of California.
+   All rights reserved.
+   Permission is hereby granted, without written agreement and without
+   license or royalty fees, to use, copy, modify, and distribute this
+   software and its documentation for any purpose, provided that the above
+   copyright notice and the following two paragraphs appear in all copies
+   of this software.
 
- IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
- FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
- ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
- THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
- SUCH DAMAGE.
+   IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+   FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+   ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+   THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+   SUCH DAMAGE.
 
- THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
- INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
- MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
- PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
- CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
- ENHANCEMENTS, OR MODIFICATIONS.
+   THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+   INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+   MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+   PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+   CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+   ENHANCEMENTS, OR MODIFICATIONS.
 
- PT_COPYRIGHT_VERSION_2
- COPYRIGHTENDKEY
- */
+   PT_COPYRIGHT_VERSION_2
+   COPYRIGHTENDKEY
+*/
 package ptolemy.actor.gui;
 
 import java.io.File;
@@ -50,18 +50,18 @@ import ptolemy.util.FileUtilities;
 //// GenerateCopyrights
 
 /**
- Generate an HTML file that contains links to the appropriate
- copyrights for entities in the configuration.
- This class looks for particular classes, and if the class is found
- in the classpath, then a corresponding html file is included
- in the list of copyrights.
+   Generate an HTML file that contains links to the appropriate
+   copyrights for entities in the configuration.
+   This class looks for particular classes, and if the class is found
+   in the classpath, then a corresponding html file is included
+   in the list of copyrights.
 
- @author Christopher Hylands
- @version $Id$
- @since Ptolemy II 2.0
- @Pt.ProposedRating Red (cxh)
- @Pt.AcceptedRating Red (cxh)
- */
+   @author Christopher Hylands
+   @version $Id$
+   @since Ptolemy II 2.0
+   @Pt.ProposedRating Red (cxh)
+   @Pt.AcceptedRating Red (cxh)
+*/
 public class GenerateCopyrights {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -180,13 +180,13 @@ public class GenerateCopyrights {
                 "ptolemy.actor.lib.fmi.fmipp.FMUModelExchange",
                 "ptolemy/actor/lib/fmi/fmipp/fmipp-license.htm");
         _addIfPresent(copyrightsMap, "ptolemy.actor.lib.io.comm.SerialComm",
-                "ptolemy/actor/lib/io/comm/copyright.htm");
+                "ptolemy/actor/lib/io/comm/rxtx-copyright.htm");
         _addIfPresent(copyrightsMap, "ptolemy.actor.lib.jai.JAIImageToken",
                 "ptolemy/actor/lib/jai/jai-copyright.htm");
         _addIfPresent(copyrightsMap, "ptolemy.actor.lib.jmf.JMFImageToken",
                 "ptolemy/actor/lib/jmf/jmf-copyright.htm");
         _addIfPresent(copyrightsMap, "ptolemy.actor.lib.joystick.Joystick",
-                "ptolemy/actor/lib/joystick/copyright.htm");
+                "ptolemy/actor/lib/joystick/joystick-copyright.htm");
         _addIfPresent(copyrightsMap,
                 "ptolemy.actor.lib.logic.fuzzy.FuzzyLogic",
                 "ptolemy/actor/lib/logic/fuzzy/FuzzyEngine-copyright.htm");
@@ -251,7 +251,7 @@ public class GenerateCopyrights {
                 "ptolemy/homer/widgets/ResizableImageWidget-license.htm");
 
         _addIfPresent(copyrightsMap, "ptolemy.matlab.Expression",
-                "ptolemy/matlab/copyright.htm");
+                "ptolemy/matlab/matlab-copyright.htm");
 
         _addIfPresent(copyrightsMap, "ptolemy.media.Audio",
                 "ptolemy/media/Audio-license.htm");
@@ -292,11 +292,11 @@ public class GenerateCopyrights {
         // Check for the _applicationCopyrights parameter
         try {
             Parameter applicationCopyrights = (Parameter) configuration
-                    .getAttribute("_applicationCopyrights", Parameter.class);
+                .getAttribute("_applicationCopyrights", Parameter.class);
 
             if (applicationCopyrights != null) {
                 ArrayToken copyrightTokens = (ArrayToken) applicationCopyrights
-                        .getToken();
+                    .getToken();
 
                 for (int i = 0; i < copyrightTokens.length(); i++) {
                     StringToken actorToken = (StringToken) ((RecordToken) copyrightTokens
@@ -308,8 +308,6 @@ public class GenerateCopyrights {
                 }
             }
         } catch (Exception ex) {
-            System.out.println(ex);
-
             // This application has no _applicationCopyrights
         }
 
@@ -326,8 +324,8 @@ public class GenerateCopyrights {
             // string, but we have a convenient method, so we use it.
             masterCopyrightBuffer.append(new String(FileUtilities.binaryReadURLToByteArray(FileUtilities.nameToURL(copyrightStartFileName, null, null))));
         } catch (IOException ex) {
-            // Ignore this, we want to print the copyrights
-            System.out.println("Could not read " + copyrightStartFileName + ": " + ex);
+            // Print only a message, we want to print the copyrights
+            System.err.println("Could not read " + copyrightStartFileName + ": " + ex);
         }
 
         StringBuffer htmlBuffer = new StringBuffer(
@@ -339,21 +337,31 @@ public class GenerateCopyrights {
 
         sortedCopyrightsMap.putAll(copyrightsMap);
 
+        if (copyrightsMap.size() != sortedCopyrightsMap.size()) {
+            // Print only a message, we want to print the copyrights.
+            System.err.println("GenerateCopyrights: the size of the unsorted copyright table "
+                    + "and the sorted copyright table are not the same?  Perhaps there are two "
+                    + "or more copyrights with the same file name? (foo/copyright.htm and "
+                    + "bar/copyright.htm will not work.)");
+
+
+        }
         Iterator copyrights = sortedCopyrightsMap.entrySet().iterator();
         if (copyrights.hasNext()) {
             // DSP configuration might not include other actors.
             htmlBuffer
-                    .append("<p>Below we list features and the "
-                            + "corresponding copyright "
-                            + " of the package that is used.  If a feature is not "
-                            + "listed below, then the "
-                            + _getApplicationName(configuration)
-                            + " copyright is the "
-                            + "only copyright."
-                            + "<table>\n"
-                            + "  <tr><th>Feature</th>\n"
-                            + "      <th>Copyright of package used by the feature</th>\n"
-                            + "  </tr>\n");
+                .append("<p>Below we list features and the "
+                        + "corresponding copyright "
+                        + " of the package that is used.  If a feature is not "
+                        + "listed below, then the "
+                        + _getApplicationName(configuration)
+                        + " copyright is the "
+                        + "only copyright."
+                        + "<table>\n"
+                        + "  <tr>\n"
+                        + "      <th>Copyright of package used by the feature</th>\n"
+                        + "      <th>Feature</th>\n"
+                        + "  </tr>\n");
 
             while (copyrights.hasNext()) {
                 Map.Entry entry = (Map.Entry) copyrights.next();
@@ -380,12 +388,15 @@ public class GenerateCopyrights {
                             + entityClassName + "</a>");
                 }
 
+                //System.out.println("GenerateCopyrights: url: " + copyrightURL);
                 String foundCopyright = _findURL(copyrightURL);
 
-                htmlBuffer.append("<tr><td>" + entityBuffer
-                        + "</td>\n    <td> <a href=\"" + foundCopyright
+                htmlBuffer.append("<tr>\n"
+                        + "  <td> <a href=\"" + foundCopyright
                         + "\"><code>" + _canonicalizeURLToPTII(foundCopyright)
-                        + "</code></a></td>\n</tr>\n");
+                        + "</code></a></td>\n"
+                        + "  <td>" + entityBuffer + "</td>\n"
+                        + "</tr>\n");
                 try { 
                     String copyright = new String(FileUtilities.binaryReadURLToByteArray(new URL(foundCopyright)));
 
@@ -397,6 +408,7 @@ public class GenerateCopyrights {
                         if ((startIndex = copyright.indexOf("</head>")) != -1) {
                             startIndex += "</head>".length();
                         } else {
+                            // Print only a message, we want to print the copyrights.
                             System.out.println("Could not find body or head in " + foundCopyright
                                     + " " + copyright.substring(0,200));
                             startIndex = 0;
@@ -421,6 +433,7 @@ public class GenerateCopyrights {
                     int hIndex = 0;
                     if ( (hIndex = copyright.indexOf("<h1>")) == -1) {
                         if ( (hIndex = copyright.indexOf("<h2>")) == -1) {
+                            // Print only a message, we want to print the copyrights.
                             System.out.println("Warning, no h1 or h2 in " + foundCopyright);
                         } else {
                         }
@@ -435,6 +448,7 @@ public class GenerateCopyrights {
                                     + copyright);
                         }
                         String header = copyright.substring(hIndex, hEndIndex);
+                        String newHeader = header;
                         if (header.indexOf("<a name") == -1) {
                             // Insert a name tag that is the name of the package.
 
@@ -450,20 +464,23 @@ public class GenerateCopyrights {
                             } else {
                                 packageName = copyrightFile.getParent();
                             }
-                            String newHeader = "<a name=\"" + packageName + "\">" + header;
-                            System.out.println(header + "---" + newHeader);
+                            newHeader = "<a name=\"" + packageName + "\">" + header;
                             copyright = copyright.replace(header, newHeader);
                         }
 
                         int nameIndex = 0;
-                        if ((nameIndex = header.indexOf("<a name")) != -1) {
+                        if ((nameIndex = newHeader.indexOf("<a name")) != -1) {
                             int labelIndex =  0;
-                            if ((labelIndex = header.indexOf("/>")) != -1) {
-                                String target = header.substring(nameIndex + "<a name=".length(), labelIndex);
-                                String label = header.substring(labelIndex);
+                            if ((labelIndex = newHeader.indexOf("\">")) != -1) {
+                                String target = newHeader.substring(nameIndex + "<a name=\"".length(), labelIndex);
+                                String label = newHeader.substring(labelIndex+2);
+
+                                //System.out.println("{\"" + target + "\", \" \", \" \", \"Y\", \" \"},");
 
                                 masterCopyrightTable.append("<tr>\n <td>\n  "
-                                        + "<a href=\"#" + target + "\">" + label + "</a>\n </td>\n");
+                                        + "<a href=\"#" + target + "\">"
+                                        + label.replace("License for", "").replace("Copyright for", "")
+                                        + "</a>\n </td>\n");
                                 masterCopyrightTable.append("</tr>\n");
                             }
                         }
@@ -478,14 +495,23 @@ public class GenerateCopyrights {
             htmlBuffer.append("</table>\n</p>");
         }
 
+        String tableTarget = "<!-- Table Contents Goes Here -->";
+        int tableTargetIndex = -1;
+        if ((tableTargetIndex = masterCopyrightBuffer.indexOf(tableTarget)) == -1) {
+            System.err.println("GenerateCopyrights: Could not find \"" + tableTarget
+                    + "\" in the generated copyright text, "
+                    + "maybe ptolemy/actor/gui/masterCopyrightStart.htm.in does not have it?");
+        }
+        masterCopyrightBuffer.insert(tableTargetIndex, masterCopyrightTable);
+
         try { 
             URL masterCopyrightURL = HTMLAbout._temporaryHTMLFile("mastercopyright", ".htm",
-                masterCopyrightBuffer.toString());
+                    masterCopyrightBuffer.toString());
             htmlBuffer.append("<p>For the complete copyrights in one file\n"
                     + "See the <a href=\"" + masterCopyrightURL + "\">master copyright</a>.</p>\n");
         } catch (IOException ex) {
             // Ignore this, we want to print the copyrights.
-            System.out.println("Could not write a temporary file with the complete copyrights: " + ex);
+            System.err.println("Could not write a temporary file with the complete copyrights: " + ex);
         }
 
         htmlBuffer.append("<p>Other information <a href=\"about:\">about</a>\n"
@@ -509,12 +535,12 @@ public class GenerateCopyrights {
 
         try {
             StringAttribute applicationCopyrightAttribute = (StringAttribute) configuration
-                    .getAttribute("_applicationCopyright",
-                            StringAttribute.class);
+                .getAttribute("_applicationCopyright",
+                        StringAttribute.class);
 
             if (applicationCopyrightAttribute != null) {
                 applicationCopyright = applicationCopyrightAttribute
-                        .getExpression();
+                    .getExpression();
             }
         } catch (Exception ex) {
             // Ignore and use the default applicationCopyright
@@ -553,24 +579,24 @@ public class GenerateCopyrights {
         }
 
         htmlBuffer
-                .append("<p>"
-                        + applicationName
-                        + " uses AElfred as an XML Parser.\n"
-                        + "AElfred is covered by the copyright in\n "
-                        + "<a href=\""
-                        + aelfredCopyright
-                        + "\"><code>."
-                        + _canonicalizeURLToPTII(aelfredCopyright)
-                        + "</code></a>\n</p>"
-                        + "<p>"
-                        + applicationName
-                        + " uses the ptolemy.graph package for scheduling and analysis of Ptolemy II models."
-                        + "Significant portions of the ptolemy.graph package were developed by "
-                        + "<a href=\"http://www.ece.umd.edu/~ssb/#in_browser\">Professor Shuvra S. Bhattacharyya</a> "
-                        + "and his group. and are covered by a BSD License in\n "
-                        + "<a href=\"" + graphCopyright + "\"><code>"
-                        + _canonicalizeURLToPTII(graphCopyright)
-                        + "</code></a>\n</p>");
+            .append("<p>"
+                    + applicationName
+                    + " uses AElfred as an XML Parser.\n"
+                    + "AElfred is covered by the copyright in\n "
+                    + "<a href=\""
+                    + aelfredCopyright
+                    + "\"><code>."
+                    + _canonicalizeURLToPTII(aelfredCopyright)
+                    + "</code></a>\n</p>"
+                    + "<p>"
+                    + applicationName
+                    + " uses the ptolemy.graph package for scheduling and analysis of Ptolemy II models."
+                    + "Significant portions of the ptolemy.graph package were developed by "
+                    + "<a href=\"http://www.ece.umd.edu/~ssb/#in_browser\">Professor Shuvra S. Bhattacharyya</a> "
+                    + "and his group. and are covered by a BSD License in\n "
+                    + "<a href=\"" + graphCopyright + "\"><code>"
+                    + _canonicalizeURLToPTII(graphCopyright)
+                    + "</code></a>\n</p>");
 
         return htmlBuffer.toString();
     }
@@ -665,7 +691,7 @@ public class GenerateCopyrights {
     private static String _findURL(String localURL) {
         try {
             URL url = Thread.currentThread().getContextClassLoader()
-                    .getResource(localURL);
+                .getResource(localURL);
             return url.toString();
         } catch (Exception ex) {
             // Ignore it and use the copyright from the website
@@ -687,7 +713,7 @@ public class GenerateCopyrights {
 
             String majorVersion = majorVersionBuffer.toString();
             return "http://ptolemy.eecs.berkeley.edu/ptolemyII/" + "ptII"
-                    + majorVersion + "/ptII" + majorVersion + "/" + localURL;
+                + majorVersion + "/ptII" + majorVersion + "/" + localURL;
         }
     }
 
@@ -701,7 +727,7 @@ public class GenerateCopyrights {
 
         try {
             StringAttribute applicationNameAttribute = (StringAttribute) configuration
-                    .getAttribute("_applicationName", StringAttribute.class);
+                .getAttribute("_applicationName", StringAttribute.class);
 
             if (applicationNameAttribute != null) {
                 applicationName = applicationNameAttribute.getExpression();
@@ -728,4 +754,53 @@ public class GenerateCopyrights {
         }
     }
 
+    private static String[][] _copyrights = {
+        {"Audio", " ", " ", "Y", " "},
+        {"BrowserLauncher", " ", " ", "Y", " "},
+        {"ExtensionFileFilter", " ", " ", "Y", " "},
+        {"ExtensionFilenameFilter", " ", " ", "Y", " "},
+        {"JUnitParams", " ", " ", "Y", " "},
+        {"JavaMail", " ", " ", "Y", " "},
+        {"PDFRenderer", " ", " ", "Y", " "},
+        {"ResizableImageWidget", " ", " ", "Y", " "},
+        {"chic", " ", " ", "Y", " "},
+        {"colt", " ", " ", "Y", " "},
+        {"cup", " ", " ", "Y", " "},
+        {"fmipp", " ", " ", "Y", " "},
+        {"fmusdk", " ", " ", "Y", " "},
+        {"g4ltl", " ", " ", "Y", " "},
+        {"guava", " ", " ", "Y", " "},
+        {"itextpdf", " ", " ", "Y", " "},
+        {"jai", " ", " ", "Y", " "},
+        {"java3d", " ", " ", "Y", " "},
+        {"javascript", " ", " ", "Y", " "},
+        {"javax.servlet", " ", " ", "Y", " "},
+        {"jcerti", " ", " ", "Y", " "},
+        {"jetty", " ", " ", "Y", " "},
+        {"jgoodies", " ", " ", "Y", " "},
+        {"jimblacklerUtils", " ", " ", "Y", " "},
+        {"jmf", " ", " ", "Y", " "},
+        {"jna", " ", " ", "Y", " "},
+        {"joystick", " ", " ", "Y", " "},
+        {"json", " ", " ", "Y", " "},
+        {"jsoup", " ", " ", "Y", " "},
+        {"jxl", " ", " ", "Y", " "},
+        {"jython", " ", " ", "Y", " "},
+        {"kieler", " ", " ", "Y", " "},
+        {"mapss", " ", " ", "Y", " "},
+        {"matlab", " ", " ", "Y", " "},
+        {"mlc", " ", " ", "Y", " "},
+        {"mysql", " ", " ", "Y", " "},
+        {"netbeans", " ", " ", "Y", " "},
+        {"opencv", " ", " ", "Y", " "},
+        {"protobuf", " ", " ", "Y", " "},
+        {"ptalon", " ", " ", "Y", " "},
+        {"ptjacl", " ", " ", "Y", " "},
+        {"quicktime", " ", " ", "Y", " "},
+        {"rxtx", " ", " ", "Y", " "},
+        {"saxon", " ", " ", "Y", " "},
+        {"smack", " ", " ", "Y", " "},
+        {"soot", " ", " ", "Y", " "},
+        {"thalesSingleWindow", " ", " ", "Y", " "},
+        {"udunits", " ", " ", "Y", " "}};
 }
