@@ -1,8 +1,8 @@
 ptolemy/actor/lib/fmi/fmus/README.txt
 $Id$
 
-This directory contains a the source code for Functional Mockup Units (FMUs)
-used by Ptolemy II.
+This directory contains a the source code for Functional Mockup Units
+(FMUs) used by Ptolemy II.
 
 An FMU is a zip file that contains a modelDescription.xml file and one
 or more platform-dependent library files.
@@ -117,3 +117,27 @@ the name of the test matches the name of the demo.  The test has any
 plotter actor replaced with Test actors.
 
 
+Checklist before committing
+---------------------------
+
+_ The name of the directory and the name of the .c file should match.
+
+_ Make sure that you are not committing the platform-specific
+directory in binaries.  For example, src/binaries/darwin64
+
+_ *Do not* check in the .fmu file as
+ptolemy/actor/lib/fmi/fmus/xxx/*.fmu.  Instead, the .fmu file is
+checked in to $PTII/ptolemy/actor/lib/fmi/test/auto/ and updated by
+running "make update".
+
+_ Add a test to ptolemy/actor/lib/fmi/test/auto/.  Ideally, the name
+of the test has "FMU" as a prefix and then the name of the fmu.
+
+_ Add the new FMU to ptolemy/actor/lib/fmi/fmus/makefile in the either
+FMU_CS or FMUS_ME. (Hint: check the modelDescription.xml file).
+
+_ Add the new FMU to ptolemy/actor/lib/fmi/fmus/makefile to
+PTCLASSALLJARS so that we jar up the sources for use in the
+installers.
+
+---End---
