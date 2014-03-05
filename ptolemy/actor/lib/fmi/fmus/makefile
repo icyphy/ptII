@@ -36,7 +36,7 @@ FMUS_CS =	ballDynamics helloWorld levelStairs onOffSupervisor \
 		stairsA stairsB stepCounter1 stepCounter stepCounterExtendedFMI stepCounterPeriodInName 
 
 # Model Exchange FMUS.
-FMUS_ME = 	bouncingBallME1 dqME1 helloWorldME2 incME1 valuesME1 vanDerPolME1
+FMUS_ME = 	bouncingBallME1 dqME1 helloWorldME2 incME1 pumpConstantSpeed valuesME1 vanDerPolME1
 
 # All FMUs.
 FMUS = $(FMUS_CS) $(FMUS_ME)
@@ -62,8 +62,14 @@ PTPACKAGE = 	fmus
 PTCLASSALLJARS = \
 	bouncingBallME1/bouncingBallME1.jar \
 	dqME1/dqME1.jar \
-	helloWorld/helloWorld.jar \
+	helloWorldME2/helloWorldME2.jar \
 	incME1/incME1.jar \
+	pumpConstantSpeed/pumpConstantSpeed.jar \
+	valuesME1/valuesME1.jar \
+	vanDerPolME1/vanDerPolME1.jar \
+	ballDynamics/ballDynamics.jar \
+	helloWorld/helloWorld.jar \
+	levelStairs/levelStairs.jar \
 	onOffSupervisor/onOffSupervisor.jar \
 	stairsA/stairsA.jar \
 	stairsB/stairsB.jar \
@@ -72,8 +78,6 @@ PTCLASSALLJARS = \
 	stepCounterExtendedFMI/stepCounterExtendedFMI.jar \
 	stepCounterPeriodInName/stepCounterPeriodInName.jar \
 	template/template.jar \
-	valuesME1/valuesME1.jar \
-	vanDerPolME1/vanDerPolME1.jar \
 	win32/win32.jar
 
 PTCLASSALLJAR = $(PTPACKAGE).jar
