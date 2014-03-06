@@ -2680,9 +2680,9 @@ test_setup_announce:
 	@echo "$@ `date`"
 	@echo "`uptime`"
 
-test_setup_installerTest: _test_setup_installer_test_clean test/installerTest
+test_setup_installerTest: _test_setup_installerTest_clean test/installerTest
 
-_test_setup_installerTest:
+_test_setup_installerTest_clean:
 	rm -rf test/installerTest
 
 test/installerTest:
