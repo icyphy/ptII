@@ -851,7 +851,7 @@ public class GenerateCopyrights {
         {"protobuf", " ", " ", "Y", "Y", "BSD 3-Clause"},
         {"ptalon", "Y", " ", "Y", " ", "Antler: Public Domain"},
         {"ptjacl", " ", " ", "Y", "Y", "Apache License + BSD + Sun"},
-        {"quicktime", " ", "Y", " ", " ", "Apple"},
+        {"quicktime", " ", " ", " ", " ", "Apple"}, // License prohibits distribution
         {"rxtx", " ", "Y", " ", " ", "GNU Lesser General Public 2.1 + Sun"},
         {"saxon", " ", " ", "Y", " ", ""},
         {"smack", " ", " ", "Y", "Y", "Apache License"},
