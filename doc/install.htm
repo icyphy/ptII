@@ -151,7 +151,7 @@ all Ptolemy II distributions that include the PythonScript actor
 also include Jython as <code>$PTII/lib/jython.jar</code>.
 The Ptolemy II source distribution also includes <code>$PTII/lib/jython.jar</code>.
 Jython is covered by a 
-<a href="../ptolemy/actor/lib/python/copyright.htm">Jython specific copyright</a>
+<a href="../ptolemy/actor/lib/python/jython-license.htm">Jython specific copyright</a>
 
 
 <p>If, for some reason you want to install Jython by hand:
@@ -231,46 +231,6 @@ size or licensing reasons, we do not include these packages with
 the prebuilt Ptolemy releases, so you may want to install these
 packages if you are interested in using the functionality they provide.
 
-<h3>CaffeineMark</h3>
-The CaffeineMark benchmark is used by the Copernicus C code generator.
-<p>You need not download the CaffeineMark benchmark unless you are 
-interested in benchmarking the Copernicus C code generator.
-<p>The main page for the CaffeineMark is
-<a href="http://www-sor.inria.fr/~java/tools/cmkit/#in_browser" target="_top"><code>http://www-sor.inria.fr/~java/tools/cmkit</code></a>
-To install, do
-<pre>
-cd $PTII/vendors/cm
-# Download http://www-sor.inria.fr/~java/tools/cmkit/embed.zip
-jar -xf embed.zip
-</pre>
-
-<h3>GC</h3>
-The Copernicus C code generator uses the Boehm Garbarge Collector,
-which can be found at
-<a href="http://www.hpl.hp.com/personal/Hans_Boehm/gc/#in_browser" target="_top"><code>http://www.hpl.hp.com/personal/Hans_Boehm/gc/</code></a>
-<p>You need not download the Garbage Collector unless you are
-planning on using the Copernicus C code generator.
-<p>The configure program looks for the Garbage Collector in
-<code>$PTII/vendors/gc</code>.
-<p>To install the Garbage Collector:
-<ol>
-<li> Download from 
-<a href="http://www.hpl.hp.com/personal/Hans_Boehm/gc/gc_source/#in_browser" target="_top"><code>http://www.hpl.hp.com/personal/Hans_Boehm/gc/gc_source/</code></a>
-<li> 
-<pre>
-cd $PTII/vendors/gc
-tar -zxf /tmp/gc.tar.gz
-cd gc6.1
-./configure --prefix=$PTII
-make
-make check
-make install
-</pre>
-Note that under Windows, PTII cannot have a backslash in it or
-else make will have problems.
-</ol>
-<p>As of 4/03, we were using version 6.1
-
 <h3>JAI</h3>
 The <a name="codeDoc/ptolemy/actor/lib/jai/package-summary.html">Java Advanced Imaging (JAI) actors</a> require that JAI, which can be  downloaded from
 <a href="http://www.oracle.com/technetwork/java/current-142188.html#in_browser" target="_top"><code>http://www.oracle.com/technetwork/java/current-142188.html</code></a>
@@ -327,7 +287,7 @@ requires the Joystick interface from
 <a href="http://sourceforge.net/projects/javajoystick/#in_browser" target="_top"><code>http://sourceforge.net/projects/javajoystick/</code></a>.
 The Joystick interface works under Windows and Linux.
 Joystick is covered by a 
-<a href="../ptolemy/actor/lib/joystick/copyright.htm">Joystick specific copyright</a>
+<a href="../ptolemy/actor/lib/joystick/joystick-copyright.htm">Joystick specific copyright</a>
 
 <p>You must download and install the Joystick interface to use the
 Joystick actor.
@@ -447,14 +407,13 @@ $PTII/bin/vergil ./demo/MatlabExpression/MatlabExpression
    </pre>
    </blockquote>
 
+
 <h3>Quicktime</h3>
 The <a hreg="codedoc/ptolemy/domains/gr/lib/quicktime/package-summary.html">Quicktime</a> GR domain actors use Quicktime from Apple.
 
-<p>To use these actors, install QuickTime with the "QuickTime For Java" option
-from 
-<a href="http://developer.apple.com/quicktime/qtjava/#in_browser" target="_top"><code>http://developer.apple.com/quicktime/qtjava/</code></a> (Note that the QuickTime SDK <b>does not</b> include QuickTime For Jav)
-<br>We chose the "Quicktime Standalone Installer", which does not 
-contain iTunes.
+<p>To use these actors, go to <a href="https://www.apple.com/quicktime/download/#inbrowser" target="_top"><code>https://www.apple.com/quicktime/download/</code></a> 
+<br/>(Note that the QuickTime SDK <b>does not</b> include QuickTime For Jav)
+<br/>We chose the "Quicktime Standalone Installer", which does not contain iTunes.
 
 <br>During installation, choose "custom" and then "select all".
 This drops <code>QTJava.zip</code> into the lib/ext of all your installed JREs.
@@ -468,7 +427,10 @@ cp c:/Program\ Files\ \(x86\)/Java/jre7/lib/ext/QTJava.zip c:/Program\ Files/Jav
 <h3>RXTX: Serial Port API</h3>
 The <a hreg="codedoc/ptolemy/actor/lib/io/comm/package-summary.html">actor.lib.io.comm</a> actors use 
 the RXTX serial port API from  <a href="http://mfizz.com/oss/rxtx-for-java">http://mfizz.com/oss/rxtx-for-java</a>.
-
+<blockquote>
+RXTX binary builds provided as a courtesy of Mfizz Inc. (http://mfizz.com/).
+Please see <a href="http://mfizz.com/oss/rxtx-for-java#in_browser" target="_top">http://mfizz.com/oss/rxtx-for-java</a> for more information.
+</blockquote>
 <p>Under Windows, download the zip file, then do something like:</p>
 <pre>
 cp ~/src/rxtx/mfz-rxtx-2.2-20081207-win-x64/RXTXcomm.jar c:/Program\ Files/Java/jdk1.7.0_51/jre/lib/ext/
