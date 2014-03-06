@@ -787,6 +787,7 @@ public class GenerateCopyrights {
 
     /** Compare two filenames.
      */   
+    @SuppressWarnings("serial")
     static class FileNameComparator implements Comparator<String> {
 
         /** Compare to Strings that should represent files by the name of the file. 
