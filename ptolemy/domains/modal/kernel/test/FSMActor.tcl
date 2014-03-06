@@ -276,6 +276,7 @@ test FSMActor-6.2 {test typeConstraints} {
 (TypeConstant, boolean) <= (variable ..fsm.t0.immediate: boolean)
 (TypeConstant, boolean) <= (variable ..fsm.t0.nondeterministic: boolean)
 (TypeConstant, boolean) <= (variable ..fsm.t0.preemptive: boolean)
+(TypeConstant, boolean) <= (variable ..fsm.t0.showFSMTransitionParameter: boolean)
 (TypeConstant, boolean) <= (variable ..fsm.t0.termination: boolean)
 (TypeConstant, double) <= (variable ..fsm.t0.exitAngle: double)
 (TypeConstant, double) <= (variable ..fsm.t0.gamma: double)
@@ -283,6 +284,7 @@ test FSMActor-6.2 {test typeConstraints} {
 (TypeConstant, string) <= (variable ..fsm.errorClass: string)
 (TypeConstant, string) <= (variable ..fsm.errorMessage: string)
 (TypeConstant, string) <= (variable ..fsm.t0.annotation: string)
+(TypeConstant, string) <= (variable ..fsm.t0.fsmTransitionParameterName: string)
 (ptolemy.domains.modal.kernel.AbstractActionsAttribute$TypeFunction, int, (p1_0+1)) <= (port ..fsm.p2: int)}
 
 ######################################################################

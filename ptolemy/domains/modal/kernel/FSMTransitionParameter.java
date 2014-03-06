@@ -216,7 +216,7 @@ public class FSMTransitionParameter extends AbstractSettableAttribute {
         	location.validate();
         }
         if (!hide && (location == null || (location.getLocation()[0] == 0 && location.getLocation()[1] == 0))) {
-        	if (_transition.sourceState() != null) {
+        	if (_transition != null && _transition.sourceState() != null) {
 	        	Location sourceStateLocation = (Location)_transition.sourceState().getAttribute("_location");
 	        	Location destinationStateLocation = (Location)_transition.destinationState().getAttribute("_location");
 	        	try {

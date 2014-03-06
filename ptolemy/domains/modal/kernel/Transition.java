@@ -302,7 +302,15 @@ public class Transition extends ComponentRelation {
         	if (((BooleanToken)showFSMTransitionParameter.getToken()).booleanValue()) {
         		_getFSMTransitionParameter();
         		_fsmTransitionParameter.hide(false);
-        		
+        		_fsmTransitionParameter.setPersistent(true);
+        		showFSMTransitionParameter.setPersistent(true);
+        		fsmTransitionParameterName.setPersistent(true);
+        	} else {
+        		if (_fsmTransitionParameter != null) {
+        			_fsmTransitionParameter.setPersistent(false);
+        		}
+        		showFSMTransitionParameter.setPersistent(false);
+        		fsmTransitionParameterName.setPersistent(false);
         	}
         }
     }
@@ -783,7 +791,9 @@ public class Transition extends ComponentRelation {
                                 + "FSMActor.");
             }
         } else {
-        	_fsmTransitionParameter.setContainer(null);
+        	if (_fsmTransitionParameter != null) {
+        		_fsmTransitionParameter.setContainer(null);
+        	}
         }
 
         super.setContainer(container);
