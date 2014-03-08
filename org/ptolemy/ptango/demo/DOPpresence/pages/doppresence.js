@@ -31,10 +31,15 @@ $(document).ready(function() {
 	        		$("#doorcode").val("");
 	        	}
 	        	
-	           	// After ten seconds, clear username and door code and reset the 
-	        	// welcome message. This timeout is canceled if a new request
-	        	// is submitted
-	        	timer = setTimeout("resetFields()", "10000");
+	    	    // Clear submit button highlighting; focus back on page 
+	    	    //$("#submit").removeClass($.mobile.activeBtnClass);
+	    		$("#submit").removeClass('ui-btn-active');
+	    		$.mobile.activePage.focus();
+	        	
+	           	// After twenty seconds, clear username and door code and reset 
+	        	// the welcome message. This timeout is canceled if a new 
+	        	// request is submitted
+	        	timer = setTimeout("resetFields()", "20000");
 	        	
 	        },
 	        error: function(jqXHR, textStatus, errorThrown)

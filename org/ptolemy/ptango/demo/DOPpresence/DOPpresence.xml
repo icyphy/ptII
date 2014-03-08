@@ -4,7 +4,7 @@
 <entity name="DOPpresence" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="10.0.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={28, 51, 1363, 617}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={3, 51, 1363, 617}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1135, 500]">
     </property>
@@ -85,9 +85,9 @@
         </property>
     </property>
     <property name="Annotation4" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="POST request:  Return true/false success status and info message&#10; Also, if successful, send mail to dopresence@embedded.eecs.berkeley.edu&#10;">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="POST request:  Return true/false success status and info message&#10; Also, if successful, send mail to dopresence@embedded.eecs.berkeley.edu&#10; Perform case-insensitive check, since iPad auto-capitalizes first letter&#10;">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[305.0, 245.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[330.0, 220.0]">
         </property>
     </property>
     <property name="Annotation5" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -131,7 +131,7 @@
     <entity name="HttpActor" class="org.ptolemy.ptango.lib.HttpActor">
         <property name="path" class="ptolemy.data.expr.StringParameter" value="/dop">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[79.5, 250.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[75.0, 250.0]">
         </property>
     </entity>
     <entity name="MicrostepDelay" class="ptolemy.actor.lib.MicrostepDelay">
@@ -383,6 +383,19 @@
             </property>
         </port>
     </entity>
+    <entity name="StringFunction2" class="ptolemy.actor.lib.string.StringFunction">
+        <property name="function" class="ptolemy.data.expr.Parameter" value="toLowerCase">
+        </property>
+        <doc>Trim a string, convert a string to uppercase, or convert a string to&#10;            lowercase depending on the user's selection.</doc>
+        <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="function">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="11">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[180.0, 315.0]">
+        </property>
+    </entity>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
@@ -390,7 +403,7 @@
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation8" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" value="[145.0, 355.0]">
+        <vertex name="vertex1" value="[140.0, 355.0]">
         </vertex>
     </relation>
     <relation name="relation10" class="ptolemy.actor.TypedIORelation">
@@ -431,6 +444,10 @@
         <vertex name="vertex1" value="[150.0, 380.0]">
         </vertex>
     </relation>
+    <relation name="relation7" class="ptolemy.actor.TypedIORelation">
+        <vertex name="vertex1" value="[255.0, 315.0]">
+        </vertex>
+    </relation>
     <link port="FileReader.output" relation="relation2"/>
     <link port="FileReader.trigger" relation="relation"/>
     <link port="HttpActor.response" relation="relation3"/>
@@ -440,7 +457,7 @@
     <link port="MicrostepDelay.input" relation="relation2"/>
     <link port="MicrostepDelay.output" relation="relation3"/>
     <link port="Expression.output" relation="relation6"/>
-    <link port="Expression.username" relation="relation8"/>
+    <link port="Expression.username" relation="relation7"/>
     <link port="Expression.doorcode" relation="relation5"/>
     <link port="RecordDisassembler.input" relation="relation10"/>
     <link port="RecordDisassembler.username" relation="relation8"/>
@@ -476,6 +493,8 @@
     <link port="MicrostepDelay3.input" relation="relation22"/>
     <link port="MicrostepDelay3.output" relation="relation16"/>
     <link port="Expression5.output" relation="relation4"/>
-    <link port="Expression5.username" relation="relation8"/>
+    <link port="Expression5.username" relation="relation7"/>
     <link port="Expression5.doorcode" relation="relation5"/>
+    <link port="StringFunction2.input" relation="relation8"/>
+    <link port="StringFunction2.output" relation="relation7"/>
 </entity>
