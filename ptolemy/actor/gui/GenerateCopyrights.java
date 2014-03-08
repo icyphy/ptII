@@ -812,7 +812,7 @@ public class GenerateCopyrights {
         {"Audio", "Y", " ", "Y", "Y ", "Include credit text"},
         {"BrowserLauncher", "Y", " ", "Y", "Y", "Include the BrowserLauncher copyright"},
         {"ExtensionFileFilter", "Y", " ", "Y", "Y", "Include Sun's copyright"},
-        {"ExtensionFilenameFilter", " ", " ", "Y", "Y", "Sun"},
+        {"ExtensionFilenameFilter", "Y", " ", "Y", "Y", "Sun"},
         {"JUnitParams", " ", " ", "Y", "Y", "Apache License"},
         {"JavaMail", " ", " ", "Y", " ", "CDDL + Oracle"},
         {"PDFRenderer", " ", " ", "Y", "Y", "GNU Lesser General Public"},

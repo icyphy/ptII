@@ -193,9 +193,6 @@ CORE_JNLP_JARS = \
 	ptolemy/vergil/basic/layout/layout.jar \
 	ptolemy/ptsupport.jar \
 	ptolemy/vergil/vergil.jar \
-	ptolemy/vergil/basic/export/html/html.jar \
-	ptolemy/vergil/basic/export/export.jar \
-	ptolemy/vergil/basic/export/web/web.jar \
 	ptolemy/domains/domains.jar \
 	ptolemy/actor/parameters/demo/demo.jar \
 	$(PTMATLAB_JARS)
@@ -428,6 +425,12 @@ BACKTRACK_JARS =
 
 EXEC_JARS = 	ptolemy/actor/gui/exec/exec.jar
 
+EXPORT_JARS = \
+	ptolemy/vergil/basic/export/html/html.jar \
+	ptolemy/vergil/basic/export/export.jar \
+	ptolemy/vergil/basic/export/web/web.jar \
+
+
 PDFRENDERER_JARS = ptolemy/vergil/pdfrenderer/pdfrenderer.jar \
 		lib/PDFRenderer.jar
 
@@ -487,6 +490,7 @@ FULL_ONLY_JNLP_JARS = \
 	doc/books/systems/vergil/vergil.jar \
 	doc/design/design.jar \
 	doc/img/img.jar \
+	$(EXPORT_JARS) \
 	$(PTANGO_JAR_FILES) \
 	org/ptolemy/ptango/ptango.jar \
 	org/ptolemy/qss/qss.jar \

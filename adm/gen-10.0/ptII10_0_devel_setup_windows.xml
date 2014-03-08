@@ -156,14 +156,6 @@ The Ptiny pack is required.
                   targetdir="$INSTALL_PATH/ptolemy"/>
             <file src="../../jar_dist/ptolemy/vergil/vergil.jar"
                   targetdir="$INSTALL_PATH/ptolemy/vergil"/>
-            <file src="../../jar_dist/ptolemy/vergil/basic/export/html/html.jar"
-                  targetdir="$INSTALL_PATH/ptolemy/vergil/basic/export/html"/>
-            <file src="../../jar_dist/ptolemy/vergil/basic/export/html/jsoup/jsoup.jar"
-                  targetdir="$INSTALL_PATH/ptolemy/vergil/basic/export/html/jsoup"/>
-            <file src="../../jar_dist/ptolemy/vergil/basic/export/web/web.jar"
-                  targetdir="$INSTALL_PATH/ptolemy/vergil/basic/export/web"/>
-            <file src="../../jar_dist/ptolemy/vergil/basic/export/exportFull.jar"
-                  targetdir="$INSTALL_PATH/ptolemy/vergil/basic/export"/>
             <file src="../../jar_dist/ptolemy/vergil/basic/imprt/fmu/fmu.jar"
                   targetdir="$INSTALL_PATH/ptolemy/vergil/basic/imprt/fmu"/>
             <file src="../../jar_dist/ptolemy/domains/domains.jar"
@@ -443,6 +435,14 @@ The Ptiny pack is required.
                   targetdir="$INSTALL_PATH/ptolemy/verification/demo"/>
             <file src="../../jar_dist/ptolemy/domains/ptera/ptera.jar"
                   targetdir="$INSTALL_PATH/ptolemy/domains/ptera"/>
+            <file src="../../jar_dist/ptolemy/vergil/basic/export/html/html.jar"
+                  targetdir="$INSTALL_PATH/ptolemy/vergil/basic/export/html"/>
+            <file src="../../jar_dist/ptolemy/vergil/basic/export/html/jsoup/jsoup.jar"
+                  targetdir="$INSTALL_PATH/ptolemy/vergil/basic/export/html/jsoup"/>
+            <file src="../../jar_dist/ptolemy/vergil/basic/export/web/web.jar"
+                  targetdir="$INSTALL_PATH/ptolemy/vergil/basic/export/web"/>
+            <file src="../../jar_dist/ptolemy/vergil/basic/export/exportFull.jar"
+                  targetdir="$INSTALL_PATH/ptolemy/vergil/basic/export"/>
             <file src="../../jar_dist/ptolemy/vergil/modal/fmv/fmv.jar"
                   targetdir="$INSTALL_PATH/ptolemy/vergil/modal/fmv"/>
             <file src="../../jar_dist/ptolemy/vergil/gt/gt.jar"
@@ -583,7 +583,7 @@ The Ptiny pack is required.
 
 <!--/MacOSInclude-->
         <pack name="JRE" required="no">
-            <description>Java Runtime Environment (JRE) v1.5.0_14.  This JRE includes JAI, Java 3D, JavaComm,  Joystick,  JMF, and Quicktime Java interface.  Ptolemy II requires either a Java Runtime Environment (JRE) or Java Development Kit (JDK).</description>
+            <description>Java Runtime Environment (JRE) v1.5.0_51.  This JRE includes JAI, Java 3D, Joystick,  JMF, and Rxtx.  Ptolemy II requires either a Java Runtime Environment (JRE) or Java Development Kit (JDK).  Install the JRE if you want to use the included optional packages.  Alternatively, install optionall packages by hand.  If you plan on recompiling Ptolemy II, you will need a JDK, not a JRE.</description>
             <file src="jre" targetdir="$INSTALL_PATH"/>
         </pack>
 <!--MacOSInclude-->
