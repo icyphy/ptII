@@ -1,6 +1,6 @@
-# Makefile for DOP presence demo.
+# Makefile for the DOP presence demo.
 #
-# @Version: $Id: makefile 67778 2013-10-26 15:50:13Z cxh $
+# @Version: $Id$
 # @Author: Christopher Brooks (makefile only)
 #
 # @Copyright (c) 2011-2013 The Regents of the University of California.
@@ -29,24 +29,30 @@
 # 						COPYRIGHTENDKEY
 ##########################################################################
 
-ME =		org/ptolemy/ptango/demo/DOPpresence
+ME =		org/ptolemy/ptango/demo/DOPpresence/pages
 
 DIRS =	
 
 # Root of Ptolemy II directory
-ROOT =		../../../../..
+ROOT =		../../../../../..
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE = 	DOPpresence
+PTPACKAGE = 	pages
 PTCLASSJAR =	$(PTPACKAGE).jar
 
 
 OTHER_FILES_TO_BE_JARED = \
-	DOPpresence.xml
+	banr2.jpg \
+	berkeley-text.gif \
+	doppresence.css \
+	doppresence.js \
+	pederson.gif \
+	PtolemyIISmallIcon.gif \
+	welcome.html
 
 EXTRA_SRCS = \
 	$(OTHER_FILES_TO_BE_JARED) 

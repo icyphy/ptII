@@ -9,7 +9,7 @@
 		<link rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/jquerymobile/1.4.0/jquery.mobile.min.css" />
 		 
 		<!-- Berkeley colors -->
-		<link rel="stylesheet" href="dopresence.css" />
+		<link rel="stylesheet" href="doppresence.css" />
 		
 		<!-- Javascript libraries -->
 		<!--  jQuery library
@@ -21,6 +21,9 @@
 		
 		<!-- jQueryMobile for mobile widgets -->
 		<script src="http://ajax.googleapis.com/ajax/libs/jquerymobile/1.4.0/jquery.mobile.min.js"></script>
+		
+		<!-- Custom javascript -->
+		<script src="doppresence.js"> </script>
 	</head>
 
 	<body>
@@ -37,9 +40,13 @@
 			
 			<!-- Content -->
 			
+			<!-- Data to post.  Note: Form submission is overridden to use a
+			     custom Javascript function, so that only the message is updated 
+			     instead of returning a new page every time -->
 			<div class="content">	
-				<div id="loginForm">
-					<form accept-charset="UTF-8" action="login" method="post">
+				<div id="formcontainer">
+					<form name="form" id="form" accept-charset="UTF-8" 
+						action="dop" method="post">
 						<!--  Labels are visible to assistive technologies,
 						      but hidden on main view 
 			http://demos.jquerymobile.com/1.2.1/docs/forms/docs-forms.html-->
@@ -52,14 +59,14 @@
 						<input type="password" name="doorcode" id="doorcode" 
 							value="" placeholder="Door code">
 							
-						<input type="submit" value="Submit" >
-						
+						<input type="submit" name="submit" id="submit" 
+							value="Submit" >				
 					</form>
 					
 				</div>
 				
 				<div id="message">
-					Please enter your username and door code to enter.
+					Please enter your username and door code.
 				</div>
 			</div>
 			
