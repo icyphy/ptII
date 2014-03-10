@@ -130,10 +130,10 @@ import ptolemy.math.SignalProcessing;
  actor by Jie Liu.
 
  @author Ilge Akkaya
- @version 
- @since Ptolemy II 7.0
+ @version $Id$
+ @since Ptolemy II 10.1
  @Pt.ProposedRating Red (ilgea)
- @Pt.AcceptedRating 
+ @Pt.AcceptedRating Red (ilgea)
  @see ptolemy.domains.continuous.lib.Integrator
  */
 public class ParticleFilter extends TypedCompositeActor {
