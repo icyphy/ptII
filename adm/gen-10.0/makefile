@@ -91,6 +91,7 @@ PTII_FTP = /export/home/pt0/ptweb/ptolemyII/ptII$(MAJOR_VERSION)
 # make USER=hudson PTIIHOME=/var/lib/hudson/jobs/ptII/workspace PTIIADM=/var/lib/hudson/jobs/ptII/workspace/adm JAR=/usr/bin/jar clean all src.jar test_setup
 
 USER =		ptII
+# The location of the mastr source tree.
 PTIIHOME =	/users/ptII
 PTIIADM =	$(PTIIHOME)/adm
 
@@ -98,7 +99,8 @@ PTIIADM =	$(PTIIHOME)/adm
 GENDIR =	$(PTIIADM)/gen-$(MAJOR_VERSION)
 
 # Temporary location of the distribution so that we can
-# have the tar files have the version number in them
+# have the tar files have the version number in them.
+# Files in this directory get changed to reflect things that we don't ship.
 PTIIDIST = 	$(PTIIADM)/dists/ptII$(VERSION)
 
 # Directories and files in the top level ptII directory that we should
@@ -126,6 +128,7 @@ PTII_TOPDIR=	.cshrc \
 		copyright.txt \
 		diva \
 		doc \
+		jars.xml \
 		lib \
 		lbnl \
 		makefile \
@@ -144,6 +147,7 @@ PTII_TOPDIR=	.cshrc \
 		vergilDSP.jnlp.in \
 		vergilHyVisual.jnlp.in \
 		vergilPtiny.jnlp.in \
+		vergilPtinyKepler.jnlp.in \
 		vergilPtinySandbox.jnlp.in \
 		vergilSpace.jnlp.in \
 		vergilVisualSense.jnlp.in
@@ -274,7 +278,7 @@ $(PTIIDIST):
 		$ -f - $(PTII_TOPDIR) )| \
 		(cd $@; $(TAR) -xvpf -)
 	@echo "Removing codeDoc directories and other documentation"
-	@echo "  tar -X does not seem to work under Cygwin"
+	#@echo "  tar -X does not seem to work under Cygwin"
 	ls -l $(PTIIDIST)/configure $(PTIIDIST)/config
 	rm -rf $(PTIIDIST)/doc/codeDoc* \
 		$(PTIIDIST)/config/*.jar \
@@ -282,10 +286,17 @@ $(PTIIDIST):
 	ls -l $(PTIIDIST)/configure $(PTIIDIST)/config
 	-(cd $(PTIIDIST); $(FINDCLEAN))
 	(cd $(PTIIDIST); rm -rf `cat $(GENDIR)/src.ex`)
-	#(cd $(PTIIDIST)/bin; make )
-	@echo "Regenerate the documentation with comm, gr, JAI, JMF etc."
-	#(cd $(PTIIDIST)/doc; make JAVADOC=javadoc all_packages)
-	@echo "Do make realclean to clean up any trash"
+	#
+	# Set up vendors directory for making docs and jar_dist
+	mkdir -p $(PTIIDIST)/vendors/misc/rxtx/
+	cp $(PTIIHOME)/vendors/misc/rxtx/RXTXcomm.jar $(PTIIDIST)/vendors/misc/rxtx/
+	mkdir -p $(PTIIDIST)/vendors/misc/joystick/
+	cp $(PTIIHOME)/vendors/misc/joystick/Joystick.jar $(PTIIDIST)/vendors/misc/joystick/
+	#
+	# Checking to be sure we can build
+	(cd $(PTIIDIST); PTII=`pwd` ./configure; ant)
+	##(cd $(PTIIDIST)/bin; make )
+	#@echo "Do make realclean to clean up any trash"
 	#cd $(PTIIDIST); make clean
 	#cd $(PTIIDIST); make
 	#cd $(PTIIDIST); make javadocs
@@ -297,79 +308,124 @@ $(PTIIDIST):
 	#ls -l  $(PTIIDIST)/ptolemy/codegen/c/lib/win/libjvm.dll.a
 	touch $(PTIIDIST)/configure
 	# Copy the vergil script for use in the full tar file
-	(cd $(PTIIHOME)/bin; make)
-	rm -f $(PTIIDIST)/bin/vergil
-	cp $(PTIIHOME)/bin/vergil $(PTIIDIST)/bin
+	#(cd $(PTIIHOME)/bin; make)
+	#rm -f $(PTIIDIST)/bin/vergil
+	#cp $(PTIIHOME)/bin/vergil $(PTIIDIST)/bin
 	# Bump up the mod time of $PTII/mk/ptII.mk.in so that if
 	# the user runs make, then configure will run 
 	touch $(PTIIDIST)/mk/ptII.mk.in
+	#
+	# doc
+	#
+	# Fix up doc/img/makefile
+	egrep -v "PtolemyIISplash.psd|banner.psd|ptIIbanner2.psd" \
+		$(PTIIDIST)/doc/img/makefile \
+		> $(PTIIDIST)/doc/img/makefile_tmp
+	mv $(PTIIDIST)/doc/img/makefile_tmp \
+		$(PTIIDIST)/doc/img/makefile
+	# Fix up doc/makefile
+	egrep -v "coroutine|giotto.cgc|openmodelica" \
+		< $(PTIIDIST)/doc/makefile \
+		> $(PTIIDIST)/doc/makefile_tmp
+	mv $(PTIIDIST)/doc/makefile_tmp \
+		$(PTIIDIST)/doc/makefile
+	#
+	# jars.xml
+	# 
+	# Remove metroII and openmodelica from jars.xml
+	egrep -v "^    <include name=.*(metroII|openmodelica|/src)" \
+		< $(PTIIDIST)/jars.xml \
+		> $(PTIIDIST)/jars.xml_tmp
+	mv $(PTIIDIST)/jars.xml_tmp \
+		$(PTIIDIST)/jars.xml
+	#
+	# ptolemy/configs
+	#
 	# Remove apps/hlacerti from cosimulation.xml
 	egrep -v "apps/hlacerti" \
-		< $(PTIIHOME)/ptolemy/configs/cosimulation.xml \
-		> /tmp/cosimulation_tmp.xml
-	mv /tmp/cosimulation_tmp.xml \
+		< $(PTIIDIST)/ptolemy/configs/cosimulation.xml \
+		> $(PTIIDIST)/ptolemy/configs/cosimulation.xml_tmp
+	mv $(PTIIDIST)/ptolemy/configs/cosimulation.xml_tmp \
 		$(PTIIDIST)/ptolemy/configs/cosimulation.xml
 	# Remove apps.xml, corba.xml and mail.xml from the configuration
 	egrep -v "apps.xml|corba.xml|mail.xml|metroII.xml|openmodelica|scrEffigy|scrTableau|scr.xml" \
-		< $(PTIIHOME)/ptolemy/configs/defaultFullConfiguration.xml \
-		> /tmp/defaultFullConfiguration_tmp.xml
+		< $(PTIIDIST)/ptolemy/configs/defaultFullConfiguration.xml \
+		> $(PTIIDIST)/ptolemy/configs/defaultFullConfiguration.xml_tmp
 	sed 's/, &quot;ptolemy.vergil.basic.imprt.fmu.ImportFMUAsJavaFMUAction&quot;//' \
-		 /tmp/defaultFullConfiguration_tmp.xml > \
-		$(PTIIDIST)/ptolemy/configs/defaultFullConfiguration.xml
+		$(PTIIDIST)/ptolemy/configs/defaultFullConfiguration.xml_tmp \
+		> $(PTIIDIST)/ptolemy/configs/defaultFullConfiguration.xml
+	# Fix up experimentalDirector.xml
+	egrep -v "openmodelica" \
+		< $(PTIIDIST)/ptolemy/configs/experimentalDirectors.xml \
+		> $(PTIIDIST)/ptolemy/configs/experimentalDirectors.xml_tmp
+	mv $(PTIIDIST)/ptolemy/configs/experimentalDirectors.xml_tmp \
+		$(PTIIDIST)/ptolemy/configs/experimentalDirectors.xml
 	# Remove things that should not be shipped from completeDemos.htm
-	awk -f $(GENDIR)/dontship.awk $(PTIIHOME)/ptolemy/configs/doc/completeDemos.htm \
-		> /tmp/completeDemos_tmp.htm
-	mv /tmp/completeDemos_tmp.htm \
+	awk -f $(GENDIR)/dontship.awk $(PTIIDIST)/ptolemy/configs/doc/completeDemos.htm \
+		> $(PTIIDIST)/ptolemy/configs/doc/completeDemos_tmp.htm
+	mv $(PTIIDIST)/ptolemy/configs/doc/completeDemos_tmp.htm \
 		$(PTIIDIST)/ptolemy/configs/doc/completeDemos.htm
 	# Remove metroII and openmodelica from models.txt
 	egrep -v "metroII|openmodelica" \
-		< $(PTIIHOME)/ptolemy/configs/doc/models.txt \
-		> /tmp/models_tmp.txt
-	mv /tmp/models_tmp.txt \
+		< $(PTIIDIST)/ptolemy/configs/doc/models.txt \
+		> $(PTIIDIST)/ptolemy/configs/doc/models.txt_tmp
+	mv $(PTIIDIST)/ptolemy/configs/doc/models.txt_tmp \
 		$(PTIIDIST)/ptolemy/configs/doc/models.txt
+	#
+	# ptolemy/domains
+	#
 	# Remove metroII and openmodelica from domains/makefile
 	egrep -v "metroII|openmodelica" \
-		< $(PTIIHOME)/ptolemy/domains/makefile \
-		> /tmp/makefile_domains
-	mv /tmp/makefile_domains \
+		< $(PTIIDIST)/ptolemy/domains/makefile \
+		> $(PTIIDIST)/ptolemy/domains/makefile_tmp
+	mv $(PTIIDIST)/ptolemy/domains/makefile_tmp \
 		$(PTIIDIST)/ptolemy/domains/makefile
-	# Remove metroII and openmodelica from jars.xml
-	egrep -v "^    <include name=.*(metroII|openmodelica|/src)" \
-		< $(PTIIHOME)/jars.xml \
-		> /tmp/jars_tmp.xml
-	mv /tmp/jars_tmp.xml \
-		$(PTIIDIST)/jars.xml
-	# Fix up experimentalDirector.xml
-	egrep -v "openmodelica" \
-		< $(PTIIHOME)/ptolemy/configs/experimentalDirectors.xml \
-		> /tmp/experimentalDirectors.xml 
-	mv /tmp/experimentalDirectors.xml \
-		$(PTIIDIST)/ptolemy/configs/experimentalDirectors.xml
-	# Fix up doc/makefile
-	egrep -v "giotto.cgc|openmodelica" \
-		< $(PTIIHOME)/doc/makefile \
-		> /tmp/makefile_tmp
-	mv /tmp/makefile_tmp \
-		$(PTIIDIST)/doc/makefile
+	# Fix up dde/kernel/test/makefile
+	egrep -v DDEDirector.tcl \
+		$(PTIIDIST)/ptolemy/domains/dde/kernel/test/makefile \
+		> $(PTIIDIST)/ptolemy/domains/dde/kernel/test/makefile.tmp
+	mv $(PTIIDIST)/ptolemy/domains/dde/kernel/test/makefile.tmp \
+		$(PTIIDIST)/ptolemy/domains/dde/kernel/test/makefile
+	# Fix up giotto/makefile
+	egrep -v cgc \
+		$(PTIIDIST)/ptolemy/domains/giotto/makefile \
+		> $(PTIIDIST)/ptolemy/domains/giotto/makefile.tmp
+	mv $(PTIIDIST)/ptolemy/domains/giotto/makefile.tmp \
+		$(PTIIDIST)/ptolemy/domains/giotto/makefile
+	# Fix up tm/makefile
+	egrep -v runtime \
+		$(PTIIDIST)/ptolemy/domains/tm/makefile \
+		> $(PTIIDIST)/ptolemy/domains/tm/makefile.tmp
+	mv $(PTIIDIST)/ptolemy/domains/tm/makefile.tmp \
+		$(PTIIDIST)/ptolemy/domains/tm/makefile
+	#
+	# ptolemy/vergil
+	#
 	# Remove ImportFMUAsJavaFMUAction.java from the makefile
 	egrep -v "ImportFMUAsJavaFMUAction.java" \
-		< $(PTIIHOME)/ptolemy/vergil/basic/imprt/fmu/makefile \
-		> /tmp/makefile_fmu
-	mv /tmp/makefile_fmu \
+		< $(PTIIDIST)/ptolemy/vergil/basic/imprt/fmu/makefile \
+		> $(PTIIDIST)/ptolemy/vergil/basic/imprt/fmu/makefile_tmp
+	mv $(PTIIDIST)/ptolemy/vergil/basic/imprt/fmu/makefile_tmp \
 		$(PTIIDIST)/ptolemy/vergil/basic/imprt/fmu/makefile
-        # Fix up doc/makefile
-	egrep -v "coroutine|giotto.cgc|openmodelica" \
-                < $(PTIIHOME)/doc/makefile \
-                > /tmp/doc_makefile_tmp
-	mv /tmp/doc_makefile_tmp \
-                $(PTIIDIST)/doc/makefile
 	# Remove the html generated files, the filenames are too long
 	(cd $(PTIIDIST); rm -rf `(cd $(PTIIHOME); svn status | egrep '\?' | grep /demo/ | awk '{print $$2}')` )
 	# Rebuild jar files after removing unwanted code.
-	(cd $(PTIIDIST); ant -f jars.xml jars.clean; ant -f jars.xml jars)
 	# Rebuild jar_dist so that the Windows installer gets the new jars)
-	rm -rf $(PTII)/jar_dist
-	$(MAKE) ../../jar_dist
+	rm -rf $(PTIIDIST)/jar_dist
+	$(MAKE) $(PTIIDIST)/jar_dist
+	@echo "Regenerate the documentation with comm, gr, JAI, JMF etc."
+	(cd $(PTIIDIST)/doc; make JAVADOC=javadoc all_packages)
+
+
+dist_jar_dist: $(PTIIDIST)/jar_dist
+$(PTIIDIST)/jar_dist:
+	if [ ! -d "$@" ] ; then \
+	    echo "Running $(MAKE) -k  jar_dist and other commands in $(PTIIDIST)"; \
+	    (cd $(PTIIDIST); PTII=`pwd` ./configure; PTII=`pwd`; ant; \
+		(cd $(PTIIDIST)/doc; PTII=`pwd` make JAVADOC=javadoc all_packages); \
+		ant jars; PTII=`pwd` $(MAKE) -k jar_dist); \
+	fi
+
 
 clean_src:
 	rm -f $(PTII_FULL)
@@ -461,29 +517,29 @@ $(PTII_SRC): $(PTII_FULL)
 		$(FINDCLEAN); \
 		cd ..;)
 	# Fix up doc/img/makefile
-	egrep -v "PtolemyIISplash.psd|banner.psd|ptIIbanner2.psd" \
-		src/ptII$(VERSION)/doc/img/makefile \
-		> src/ptII$(VERSION)/doc/img/makefile.tmp
-	mv src/ptII$(VERSION)/doc/img/makefile.tmp \
-		src/ptII$(VERSION)/doc/img/makefile
+	#egrep -v "PtolemyIISplash.psd|banner.psd|ptIIbanner2.psd" \
+	#	src/ptII$(VERSION)/doc/img/makefile \
+	#	> src/ptII$(VERSION)/doc/img/makefile.tmp
+	#mv src/ptII$(VERSION)/doc/img/makefile.tmp \
+	#	src/ptII$(VERSION)/doc/img/makefile
 	# Fix up dde/kernel/test/makefile
-	egrep -v DDEDirector.tcl \
-		src/ptII$(VERSION)/ptolemy/domains/dde/kernel/test/makefile \
-		> src/ptII$(VERSION)/ptolemy/domains/dde/kernel/test/makefile.tmp
-	mv src/ptII$(VERSION)/ptolemy/domains/dde/kernel/test/makefile.tmp \
-		src/ptII$(VERSION)/ptolemy/domains/dde/kernel/test/makefile
-	# Fix up giotto/makefile
-	egrep -v cgc \
-		src/ptII$(VERSION)/ptolemy/domains/giotto/makefile \
-		> src/ptII$(VERSION)/ptolemy/domains/giotto/makefile.tmp
-	mv src/ptII$(VERSION)/ptolemy/domains/giotto/makefile.tmp \
-		src/ptII$(VERSION)/ptolemy/domains/giotto/makefile
-	# Fix up tm/makefile
-	egrep -v runtime \
-		src/ptII$(VERSION)/ptolemy/domains/tm/makefile \
-		> src/ptII$(VERSION)/ptolemy/domains/tm/makefile.tmp
-	mv src/ptII$(VERSION)/ptolemy/domains/tm/makefile.tmp \
-		src/ptII$(VERSION)/ptolemy/domains/tm/makefile
+	#egrep -v DDEDirector.tcl \
+	#	src/ptII$(VERSION)/ptolemy/domains/dde/kernel/test/makefile \
+	#	> src/ptII$(VERSION)/ptolemy/domains/dde/kernel/test/makefile.tmp
+	#mv src/ptII$(VERSION)/ptolemy/domains/dde/kernel/test/makefile.tmp \
+	#	src/ptII$(VERSION)/ptolemy/domains/dde/kernel/test/makefile
+	# # Fix up giotto/makefile
+	# egrep -v cgc \
+	# 	src/ptII$(VERSION)/ptolemy/domains/giotto/makefile \
+	# 	> src/ptII$(VERSION)/ptolemy/domains/giotto/makefile.tmp
+	# mv src/ptII$(VERSION)/ptolemy/domains/giotto/makefile.tmp \
+	# 	src/ptII$(VERSION)/ptolemy/domains/giotto/makefile
+	# # Fix up tm/makefile
+	# egrep -v runtime \
+	# 	src/ptII$(VERSION)/ptolemy/domains/tm/makefile \
+	# 	> src/ptII$(VERSION)/ptolemy/domains/tm/makefile.tmp
+	# mv src/ptII$(VERSION)/ptolemy/domains/tm/makefile.tmp \
+	# 	src/ptII$(VERSION)/ptolemy/domains/tm/makefile
 	# Copy libjvm.dll.a because it was removed by src.ex
 	#cp $(PTIIHOME)/ptolemy/codegen/c/lib/win/libjvm.dll.a \
 	#       src/ptII$(VERSION)/ptolemy/codegen/c/lib/win/
@@ -1048,12 +1104,12 @@ ChangeLog:
 # Build jnlp installers
 jnlp:
 	@echo "#"
-	@echo "# Now running make jnlp in $(PTIIHOME)"
+	@echo "# Now running make jnlp in $(PTIIDIST)"
 	@echo "# on  `hostname`"
 	@echo "#"
 	@echo "$@ `date`"
 	@echo "`uptime`"
-	(cd $(PTIIHOME);	PTII=$(PTIIHOME) \
+	(cd $(PTIIDIST);	PTII=$(PTIIDIST) \
 		$(MAKE) -k jnlp_dist_nightly)
 
 # Run tests outside of Javascope
@@ -1178,12 +1234,26 @@ hudson_notest:
 	JAR=/usr/bin/jar \
 	clean all jnlp src.jar setup update_moog
 
+hudson_setup:
+	$(MAKE) -k USER=hudson \
+	PTIIHOME=/var/lib/hudson/jobs/ptII/workspace \
+	PTIIADM=/var/lib/hudson/jobs/ptII/workspace/adm \
+	JAR=/usr/bin/jar \
+	clean all jnlp src.jar setup update_moog
+
 hudson_start: 
 	$(MAKE) -k USER=hudson \
 	PTIIHOME=/var/lib/hudson/jobs/ptII/workspace \
 	PTIIADM=/var/lib/hudson/jobs/ptII/workspace/adm \
 	JAR=/usr/bin/jar \
 	clean all jnlp src.jar setup test_setup_start
+
+hudson_jar_dist:
+	$(MAKE) -k USER=hudson \
+	PTIIHOME=/var/lib/hudson/jobs/ptII/workspace \
+	PTIIADM=/var/lib/hudson/jobs/ptII/workspace/adm \
+	JAR=/usr/bin/jar \
+	dist_jar_dist
 
 hudson_ant: 
 	$(MAKE) -k USER=hudson \
@@ -2506,7 +2576,7 @@ BOOK_PDF=PtolemyII_DigitalV1_02.pdf
 PTSETUP=ptII$(WINDOWS_VERSION)_setup_windows
 # 32 bit IzPack installer
 setup_jar: $(PTSETUP).jar
-$(PTSETUP).jar: $(PTSETUP).xml ../../jar_dist ../../ptiny.exe cleanSrc src/ptII$(VERSION)/bin/vergil ../../ptolemy/matlab/ptmatlab.dll ../../doc/books/systems/$(BOOK_PDF)
+$(PTSETUP).jar: $(PTSETUP).xml $(PTIIDIST)/jar_dist $(PTIIDIST)/ptiny.exe cleanSrc src/ptII$(VERSION)/bin/vergil $(PTIIDIST)/ptolemy/matlab/ptmatlab.dll $(PTIIDIST)/doc/books/systems/$(BOOK_PDF)
 	@echo "#"
 	@echo "# Building $(PTSETUP).jar"
 	@echo "# `date`"
@@ -2523,7 +2593,7 @@ $(PTSETUP)_64.xml: $(PTSETUP).xml
 	sed 's/ShellLink.dll/ShellLink_x64.dll/' $^ > $@
 
 setup64_jar: $(PTSETUP)_64.jar
-$(PTSETUP)_64.jar: $(PTSETUP)_64.xml ../../ptiny.exe src/ptII$(VERSION)/bin/vergil cleanSrc
+$(PTSETUP)_64.jar: $(PTSETUP)_64.xml $(PTIIDIST)/ptiny.exe src/ptII$(VERSION)/bin/vergil cleanSrc
 	@echo "#"
 	@echo "# Building $(PTSETUP)_64.jar"
 	@echo "# `date`"
@@ -2582,16 +2652,16 @@ $(PTII)/vendors/launch4j:
 L4JC=$(L4J_DIR)/launch4j
 
 PTSETUP_DEPENDENCIES = \
-	../../ptiny.exe \
-	../../ptbook.exe \
-	../../jar_dist \
-	../../ptolemy/matlab/ptmatlab.dll
+	$(PTIIDIST)/ptiny.exe \
+	$(PTIIDIST)/ptbook.exe \
+	$(PTIIDIST)/jar_dist \
+	$(PTIIDIST)/ptolemy/matlab/ptmatlab.dll
 
 
 # Launch4J
 $(PTSETUP).exe: $(PTSETUP_DEPENDENCIES) \
 			jre \
-			../../lib/matlabWindows.jar \
+			$(PTIIDIST)/lib/matlabWindows.jar \
 			$(PTSETUP)_l4j.xml \
 			$(PTSETUP).jar #ExtractJarFile.class
 
@@ -2611,7 +2681,7 @@ $(PTSETUP)_64_l4j.xml: $(PTSETUP)_l4j.xml
 setup_64: $(PTSETUP)_64.exe
 $(PTSETUP)_64.exe: $(PTSETUP_DEPENDENCIES) \
 			jre \
-			../../lib/matlabWindows.jar \
+			$(PTIIDIST)/lib/matlabWindows.jar \
 			$(PTSETUP)_64_l4j.xml \
 			$(PTSETUP)_64.jar #ExtractJarFile.class
 
@@ -2625,31 +2695,25 @@ $(PTSETUP)_64.exe: $(PTSETUP_DEPENDENCIES) \
 		ls -l $@; \
 	fi
 
-../../ptiny.exe:
-	 $(MAKE) -C ../.. exes
+$(PTIIDIST)/ptiny.exe:
+	 $(MAKE) -C $(PTIIDIST) exes
 
-../../ptbook.exe:
-	 $(MAKE) -C ../.. exes
+$(PTIIDIST)/ptbook.exe:
+	 $(MAKE) -C $(PTIIDIST) exes
 
-book_pdf: ../../doc/books/systems/$(BOOK_PDF)
+book_pdf: $(PTIIDIST)/doc/books/systems/$(BOOK_PDF)
 
 BOOK_URL= http://ptolemy.eecs.berkeley.edu/books/Systems/$(BOOK_PDF)
-../../doc/books/systems/$(BOOK_PDF):
+$(PTIIDIST)/doc/books/systems/$(BOOK_PDF):
 	if [ ! -f "$@" ] ; then \
 		echo "Downloading $(BOOK_URL)"; \
 		wget $(BOOK_URL); \
-		mv $(BOOK_PDF) ../../doc/books/systems; \
+		mv $(BOOK_PDF) $(PTIIDIST)/doc/books/systems; \
 		ls -l "$@"; \
 	fi
 
-../../jar_dist:
-	if [ ! -d "$@" ] ; then \
-	    echo "Running $(MAKE) -k  jar_dist in $(PTII)"; \
-	    (cd ../..; $(MAKE) -k jar_dist); \
-	fi
-
-../../ptolemy/matlab/ptmatlab.dll: ../../lib/matlabWindows.jar
-	(cd ../../ptolemy/matlab; jar -xf ../../lib/matlabWindows.jar)
+$(PTIIDIST)/ptolemy/matlab/ptmatlab.dll: $(PTIIDIST)/lib/matlabWindows.jar
+	(cd $(PTIIDIST)/ptolemy/matlab; jar -xf $(PTIIDIST)/lib/matlabWindows.jar)
 
 
 jre:
@@ -2760,7 +2824,7 @@ $(PTINY_APP):
         fi
 
 setup_mac_jar: $(PTSETUP_MAC).jar
-$(PTSETUP_MAC).jar: $(PTSETUP_MAC).xml ../../jar_dist $(PTINY_APP) src/ptII$(VERSION)/bin/vergil cleanSrc
+$(PTSETUP_MAC).jar: $(PTSETUP_MAC).xml $(PTIIDIST)/jar_dist $(PTINY_APP) src/ptII$(VERSION)/bin/vergil cleanSrc
 	@echo "#"
 	@echo "# Building $@"
 	@echo "# `date`"
@@ -2823,7 +2887,7 @@ JNLPS_TAR = jnlps.tar
 $(JNLPS_TAR): $(TARGET_JNLP)
 	(cd $(JNLPDIST)/doc; mv deployJava.js deployJavaApplet.js; \
 	   cp deployJavaJNLP.js deployJava.js)
-	(cd $(JNLPDIST); tar -cf ../../$(JNLPS_TAR) `find . -name "*.jnlp"` `find . -name "signed_*.jar"` signed doc/deployJava.js doc/deployJavaApplet.js)
+	(cd $(JNLPDIST); tar -cf $(PTIIDIST)/$(JNLPS_TAR) `find . -name "*.jnlp"` `find . -name "signed_*.jar"` signed doc/deployJava.js doc/deployJavaApplet.js)
 
 updateJNLPs: $(JNLPS_TAR)
 	scp $(JNLPS_TAR) moog:$(PTII_FTP)
