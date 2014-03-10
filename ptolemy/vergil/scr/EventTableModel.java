@@ -55,8 +55,8 @@ public class EventTableModel extends AbstractTableModel {
 
 	/** Construct a new event table model for a given parameter and
 	 *  the FSMActor. Initialize the column count to 3.
-	 * @param port
-	 * @param model
+	 * @param parameter The parameter
+	 * @param model The model
 	 */
 	public EventTableModel(Parameter parameter, FSMActor model) {
 		_model = model;

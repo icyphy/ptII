@@ -53,9 +53,9 @@ Helper functions for SCR Tables.
 public class SCRTableHelper {
 
 	/** Search towards the left of the string.
-	 * @param expression
-	 * @param openingBracket
-	 * @return
+	 * @param expression The expression to be searched.
+	 * @param openingBracket the index of the open bracket.
+	 * @return The index of the matching open bracket.
 	 */
 	public static int indexOfMatchingOpenBracket(String expression, int openingBracket) {
 		int openBrackets = 1;
@@ -73,9 +73,9 @@ public class SCRTableHelper {
 	}
 	
 	/** Search towards the right of the string.
-	 * @param expression
-	 * @param openingBracket
-	 * @return
+	 * @param expression The expression to be searched.
+	 * @param openingBracket the index of the open bracket.
+	 * @return The index of the matching close bracket.
 	 */
 	public static int indexOfMatchingCloseBracket(String expression, int openingBracket) {
 		int openBrackets = 1;
