@@ -439,6 +439,8 @@ The Ptiny pack is required.
                   targetdir="$INSTALL_PATH/ptolemy/vergil/basic/export/html"/>
             <file src="../dists/ptII10.0.devel/jar_dist/ptolemy/vergil/basic/export/html/jsoup/jsoup.jar"
                   targetdir="$INSTALL_PATH/ptolemy/vergil/basic/export/html/jsoup"/>
+            <file src="../dists/ptII10.0.devel/jar_dist/lib/jsoup-1.7.3.jar"
+                  targetdir="$INSTALL_PATH/lib"/>
             <file src="../dists/ptII10.0.devel/jar_dist/ptolemy/vergil/basic/export/web/web.jar"
                   targetdir="$INSTALL_PATH/ptolemy/vergil/basic/export/web"/>
             <file src="../dists/ptII10.0.devel/jar_dist/ptolemy/vergil/basic/export/exportFull.jar"
@@ -493,8 +495,18 @@ The Ptiny pack is required.
                   targetdir="$INSTALL_PATH/org/mlc"/>
             <file src="../dists/ptII10.0.devel/jar_dist/org/json/json.jar"
                   targetdir="$INSTALL_PATH/org/json"/>
+
             <file src="../dists/ptII10.0.devel/jar_dist/org/ptolemy/ptango/ptango.jar"
                   targetdir="$INSTALL_PATH/org/ptolemy/ptango"/>
+            <file src="../dists/ptII10.0.devel/jar_dist/lib/javax.servlet-api-3.0.1.jar"
+                  targetdir="$INSTALL_PATH/lib"/>
+            <file src="../dists/ptII10.0.devel/jar_dist/lib/jetty-all-8.1.5-v20120716.jar"
+                  targetdir="$INSTALL_PATH/lib"/>
+            <file src="../dists/ptII10.0.devel/jar_dist/lib/smack.jar"
+                  targetdir="$INSTALL_PATH/lib"/>
+            <file src="../dists/ptII10.0.devel/jar_dist/lib/smackx.jar"
+                  targetdir="$INSTALL_PATH/lib"/>
+
             <file src="../dists/ptII10.0.devel/jar_dist/org/ptolemy/fmi/fmi.jar"
                   targetdir="$INSTALL_PATH/org/ptolemy/fmi"/>
             <file src="../dists/ptII10.0.devel/jar_dist/ptolemy/actor/gui/run/run.jar"

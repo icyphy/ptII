@@ -394,6 +394,12 @@ $(PTIIDIST):
 		> $(PTIIDIST)/ptolemy/domains/giotto/makefile.tmp
 	mv $(PTIIDIST)/ptolemy/domains/giotto/makefile.tmp \
 		$(PTIIDIST)/ptolemy/domains/giotto/makefile
+	# Exclude quicktime from domains/gr/gr.xml
+	egrep -v quicktime.xml \
+		$(PTIIDIST)/ptolemy/domains/gr/gr.xml \
+		> $(PTIIDIST)/ptolemy/domains/gr/gr.xml_tmp
+	mv $(PTIIDIST)/ptolemy/domains/gr/gr.xml_tmp \
+		$(PTIIDIST)/ptolemy/domains/gr/gr.xml
 	# Fix up tm/makefile
 	egrep -v runtime \
 		$(PTIIDIST)/ptolemy/domains/tm/makefile \
