@@ -292,9 +292,11 @@ $(PTIIDIST):
 	cp $(PTIIHOME)/vendors/misc/rxtx/RXTXcomm.jar $(PTIIDIST)/vendors/misc/rxtx/
 	mkdir -p $(PTIIDIST)/vendors/misc/joystick/
 	cp $(PTIIHOME)/vendors/misc/joystick/Joystick.jar $(PTIIDIST)/vendors/misc/joystick/
+	mkdir -p $(PTIIDIST)/vendors/misc/javamail/
+	cp $(PTIIHOME)/vendors/misc/javamail/javax.mail.jar $(PTIIDIST)/vendors/misc/javamail/
 	#
 	# Checking to be sure we can build
-	(cd $(PTIIDIST); PTII=`pwd` ./configure; ant)
+	#(cd $(PTIIDIST); PTII=`pwd` ./configure; ant)
 	##(cd $(PTIIDIST)/bin; make )
 	#@echo "Do make realclean to clean up any trash"
 	#cd $(PTIIDIST); make clean
@@ -1227,6 +1229,13 @@ hudson:
 	JAR=/usr/bin/jar \
 	clean all jnlp src.jar setup test_setup updateDOPCenterImage update_moog coverity
 
+hudson_mac:
+	$(MAKE) -k USER=hudson \
+	PTIIHOME=/var/lib/hudson/jobs/ptII/workspace \
+	PTIIADM=/var/lib/hudson/jobs/ptII/workspace/adm \
+	JAR=/usr/bin/jar \
+	setup_mac_jar
+
 hudson_notest: 
 	$(MAKE) -k USER=hudson \
 	PTIIHOME=/var/lib/hudson/jobs/ptII/workspace \
@@ -1241,12 +1250,32 @@ hudson_setup:
 	JAR=/usr/bin/jar \
 	clean all jnlp src.jar setup update_moog
 
+hudson_setup_only:
+	$(MAKE) -k USER=hudson \
+	PTIIHOME=/var/lib/hudson/jobs/ptII/workspace \
+	PTIIADM=/var/lib/hudson/jobs/ptII/workspace/adm \
+	JAR=/usr/bin/jar \
+	clean all jnlp src.jar setup
+
+hudson_setup_test:
+	$(MAKE) -k USER=hudson \
+	PTIIHOME=/var/lib/hudson/jobs/ptII/workspace \
+	PTIIADM=/var/lib/hudson/jobs/ptII/workspace/adm \
+	JAR=/usr/bin/jar \
+	clean all jnlp src.jar setup test_setup update_moog
 hudson_start: 
 	$(MAKE) -k USER=hudson \
 	PTIIHOME=/var/lib/hudson/jobs/ptII/workspace \
 	PTIIADM=/var/lib/hudson/jobs/ptII/workspace/adm \
 	JAR=/usr/bin/jar \
 	clean all jnlp src.jar setup test_setup_start
+
+hudson_test_setup:
+	$(MAKE) -k USER=hudson \
+	PTIIHOME=/var/lib/hudson/jobs/ptII/workspace \
+	PTIIADM=/var/lib/hudson/jobs/ptII/workspace/adm \
+	JAR=/usr/bin/jar \
+	test_setup
 
 hudson_jar_dist:
 	$(MAKE) -k USER=hudson \
@@ -2576,11 +2605,11 @@ BOOK_PDF=PtolemyII_DigitalV1_02.pdf
 PTSETUP=ptII$(WINDOWS_VERSION)_setup_windows
 # 32 bit IzPack installer
 setup_jar: $(PTSETUP).jar
-$(PTSETUP).jar: $(PTSETUP).xml $(PTIIDIST)/jar_dist $(PTIIDIST)/ptiny.exe cleanSrc src/ptII$(VERSION)/bin/vergil $(PTIIDIST)/ptolemy/matlab/ptmatlab.dll $(PTIIDIST)/doc/books/systems/$(BOOK_PDF)
+$(PTSETUP).jar: $(PTSETUP).xml $(PTIIDIST)/jar_dist $(PTIIDIST)/ptiny.exe cleanSrc $(PTIIDIST)/bin/vergil $(PTIIDIST)/ptolemy/matlab/ptmatlab.dll $(PTIIDIST)/doc/books/systems/$(BOOK_PDF)
 	@echo "#"
 	@echo "# Building $(PTSETUP).jar"
 	@echo "# `date`"
-	-ls -l src/ptII$(VERSION)/bin/vergil
+	-ls -l $(PTIIDIST)/bin/vergil
 	sh "$(IZPACK_COMPILE)" $<
 	if [ ! -f $@ ];  then \
 		error "$@ does not exist?"; \
@@ -2593,11 +2622,11 @@ $(PTSETUP)_64.xml: $(PTSETUP).xml
 	sed 's/ShellLink.dll/ShellLink_x64.dll/' $^ > $@
 
 setup64_jar: $(PTSETUP)_64.jar
-$(PTSETUP)_64.jar: $(PTSETUP)_64.xml $(PTIIDIST)/ptiny.exe src/ptII$(VERSION)/bin/vergil cleanSrc
+$(PTSETUP)_64.jar: $(PTSETUP)_64.xml $(PTIIDIST)/ptiny.exe $(PTIIDIST)/bin/vergil cleanSrc
 	@echo "#"
 	@echo "# Building $(PTSETUP)_64.jar"
 	@echo "# `date`"
-	ls -l src/ptII$(VERSION)/bin/vergil
+	ls -l $(PTIIDIST)/bin/vergil
 	sh "$(IZPACK_COMPILE)" $<
 	if [ ! -f $@ ];  then \
 		error "$@ does not exist?"; \
@@ -2605,7 +2634,7 @@ $(PTSETUP)_64.jar: $(PTSETUP)_64.xml $(PTIIDIST)/ptiny.exe src/ptII$(VERSION)/bi
 		ls -l $@; \
 	fi
 
-src/ptII$(VERSION)/bin/vergil:
+$(PTIIDIST)/bin/vergil:
 	@echo "#"
 	@echo "# Creating $@"
 	@echo "# `date`"
@@ -2810,21 +2839,21 @@ full_jars:
 ptsetup_mac: $(PTSETUP_MAC).xml
 $(PTSETUP_MAC).xml: $(PTSETUP).xml macOSInclude.awk #makefile
 	awk -f macOSInclude.awk $(PTSETUP).xml | \
-	    sed -e 's@<!-- Vergil.app -->@<file src="src/ptII10.0.devel/bin/Vergil.app" targetdir="$$INSTALL_PATH/bin"/> <executable targetfile="$$INSTALL_PATH/bin/Vergil.app/Contents/MacOS/JavaApplicationStub"/>@' \
-	    -e 's@<!-- Ptiny.app -->@<file src="src/ptII10.0.devel/bin/Ptiny.app" targetdir="$$INSTALL_PATH/bin"/>  <executable targetfile="$$INSTALL_PATH/bin/Ptiny.app/Contents/MacOS/JavaApplicationStub"/>@' \
+	    sed -e 's@<!-- Vergil.app -->@<file src="../dists/ptII10.0.devel/bin/Vergil.app" targetdir="$$INSTALL_PATH/bin"/> <executable targetfile="$$INSTALL_PATH/bin/Vergil.app/Contents/MacOS/JavaApplicationStub"/>@' \
+	    -e 's@<!-- Ptiny.app -->@<file src="../dists/ptII10.0.devel/bin/Ptiny.app" targetdir="$$INSTALL_PATH/bin"/>  <executable targetfile="$$INSTALL_PATH/bin/Ptiny.app/Contents/MacOS/JavaApplicationStub"/>@' \
 	    -e 's@ptmatlab.dll@libptmatlab.jnilib@' \
 	    -e 's@os="windows"@os="mac"@' \
 	    > $@
 
-PTINY_APP = src/ptII$(VERSION)/bin/Ptiny.app
+PTINY_APP = $(PTIIDIST)/bin/Ptiny.app
 Ptiny.app: $(PTINY_APP)
 $(PTINY_APP): 
 	if [ ! -f $@ ]; then \
-		(cd src/ptII$(VERSION); PTII=$(PTII)/adm/gen-$(MAJOR_VERSION)/src/ptII$(VERSION) ./configure; cd bin;  make Ptiny.app Vergil.app); \
+		(cd $(PTIIDIST); PTII=$(PTIIDIST) ./configure; cd bin;  make Ptiny.app Vergil.app); \
         fi
 
 setup_mac_jar: $(PTSETUP_MAC).jar
-$(PTSETUP_MAC).jar: $(PTSETUP_MAC).xml $(PTIIDIST)/jar_dist $(PTINY_APP) src/ptII$(VERSION)/bin/vergil cleanSrc
+$(PTSETUP_MAC).jar: $(PTSETUP_MAC).xml $(PTIIDIST)/jar_dist $(PTINY_APP) $(PTIIDIST)/bin/vergil cleanSrc
 	@echo "#"
 	@echo "# Building $@"
 	@echo "# `date`"
