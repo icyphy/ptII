@@ -101,19 +101,19 @@ public class FSMDirectorWithPersistentIO extends FSMDirector {
     }
     
     /** Add the initialization parameter for the receiver.
-     * @param port The port that contains the receiver.
-     * @throws IllegalActionException If new parameter cannot be created.
-     * @throws NameDuplicationException If new parameter cannot be created.
+     * @param portName The name of the port.
+     * @exception IllegalActionException If new parameter cannot be created.
+     * @exception NameDuplicationException If new parameter cannot be created.
      */
     public void addPortInitAttribute(String portName) throws IllegalActionException, NameDuplicationException {
     	addPortInitAttribute(portName, new DoubleToken(1.0));
     }
     
     /** Add the initialization parameter for the receiver.
-     * @param port The port that contains the receiver.
+     * @param portName The name of the port.
      * @param token The initial token.
-     * @throws IllegalActionException If new parameter cannot be created.
-     * @throws NameDuplicationException If new parameter cannot be created.
+     * @exception IllegalActionException If new parameter cannot be created.
+     * @exception NameDuplicationException If new parameter cannot be created.
      */
     public void addPortInitAttribute(String portName, Token token) throws IllegalActionException, NameDuplicationException {
     	ModalModel model = (ModalModel) getContainer();
@@ -161,7 +161,7 @@ public class FSMDirectorWithPersistentIO extends FSMDirector {
     }
 	
     /** Remove initialization parameters for port. 
-     * @param port The port
+     * @param portName The name of the port.
      */
     public void removePortInitAttribute(String portName) {
         ModalModel model = (ModalModel) getContainer();
@@ -174,8 +174,8 @@ public class FSMDirectorWithPersistentIO extends FSMDirector {
     /** Rename port init attribute when port is renamed.
      * @param oldPortName The old port name.
      * @param newPortName The new port name.
-     * @throws IllegalActionException If port init attributes cannot be edited.
-     * @throws NameDuplicationException If port init attributes cannot be edited.
+     * @exception IllegalActionException If port init attributes cannot be edited.
+     * @exception NameDuplicationException If port init attributes cannot be edited.
      */
     public void renamePortInitAttribute(String oldPortName, String newPortName) throws IllegalActionException, NameDuplicationException {
         ModalModel model = (ModalModel) getContainer();
@@ -186,8 +186,8 @@ public class FSMDirectorWithPersistentIO extends FSMDirector {
     }
 
     /** Initialize parameters.
-     * @throws IllegalActionException
-     * @throws NameDuplicationException
+     * @exception IllegalActionException If a port cannot be found.
+     * @exception NameDuplicationException If a port cannot be initialized.
      */
     private void _initialize() throws IllegalActionException, NameDuplicationException {
     	if (getContainer() != null) {
