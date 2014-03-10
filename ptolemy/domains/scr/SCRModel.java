@@ -37,7 +37,8 @@ import ptolemy.kernel.util.Workspace;
 
 /**
 An SCR model actor used for requirements specification. For more information
-about SCR see {@link http://www.nrl.navy.mil/itd/chacs/node/126}.
+about SCR see
+<a href="http://www.nrl.navy.mil/itd/chacs/node/126">http://www.nrl.navy.mil/itd/chacs/node/126</a>.
 <p>
 An SCR model is a modal model with a different way of configuring transitions, 
 set and output actions. To view an SCR model as an FSM actor, set the parameter
