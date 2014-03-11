@@ -78,7 +78,7 @@ public class MCApplication {
 
             String fileName = "NCApplication.xml";
             FileOutputStream file = null;
-
+            PrintStream out = null;
             try {
                 file = new FileOutputStream(fileName);
 
@@ -86,9 +86,9 @@ public class MCApplication {
                 out.println(buffer);
                 out.flush();
             } finally {
-                if (file != null) {
+                if (out != null) {
                     try {
-                        file.close();
+                        out.close();
                     } catch (Throwable throwable) {
                         System.out.println("Ignoring failure to close stream "
                                 + "on " + fileName);
