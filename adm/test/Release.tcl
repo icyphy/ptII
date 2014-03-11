@@ -113,7 +113,7 @@ test release-3.1 {Run svn status and look for files that should be checked in.  
 	exec rm [glob -nocomplain {*.class}]
     } 
     puts "Removing doc/books/systems because building jnlp files creates files and directories."
-    exec rm -rf doc/books/systems
+    exec rm -rf doc/books/systems papers
     exec svn update doc/books/systems
     # Other places to update the book location: $PTII/adm/gen-X.Y/{makefile,ptIIX_Y_devel_setup_windows.xml,shortcutSpec.xml}
     set bookURL http://ptolemy.eecs.berkeley.edu/books/Systems/PtolemyII_DigitalV1_02.pdf
