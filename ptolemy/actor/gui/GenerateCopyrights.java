@@ -208,6 +208,7 @@ public class GenerateCopyrights {
         _addIfPresent(copyrightsMap,
                 "ptolemy.backtrack.eclipse.ast.TypeAnalyzer",
                 "ptolemy/backtrack/eclipse/ast/eclipse-copyright.htm");
+
         _addIfPresent(copyrightsMap, "ptolemy.backtrack.util.ClassFileLoader",
                 "ptolemy/backtrack/util/gcj-copyright.html");
 
@@ -823,6 +824,7 @@ public class GenerateCopyrights {
         {"fmipp", " ", " ", "Y", " ", ""},
         {"fmusdk", " ", " ", "Y", " ", ""},
         {"g4ltl", " ", " ", "Y", "Y", "Apache License"},
+        {"gcj", " ", " ", "Y", " ", "GPL with libgcc Exception"}, // Backtracking.
         {"guava", " ", " ", "Y", "Y", "Apache License"},
         {"itextpdf", " ", " ", "Y", " ", ""},
         {"jai", " ", "Y", " ", " ", "Sun"},
