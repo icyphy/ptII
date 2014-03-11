@@ -207,8 +207,8 @@ public class ImportFMUAsJavaFMUAction extends AbstractAction {
                     }
                 }
             }
-        } catch (Exception ex) {
-            MessageHandler.error("Import FMU failed", ex);
+        } catch (Throwable throwable) {
+            MessageHandler.error("Import FMU failed.", throwable);
         }
     }
 
