@@ -32,7 +32,7 @@
 # Location of this directory, relative to the Ptolemy II directory
 ME =		ptolemy/ptango/test
 
-DIRS =	auto $(PTJUNIT_DIR)
+DIRS =		$(PTJUNIT_DIR) #auto - don't add auto here, there is never a makefile in auto/
 
 # Root of the Ptolemy II directory
 ROOT =		../../../..
