@@ -398,16 +398,31 @@ public class CanBus extends AtomicCommunicationAspect {
      * @return The size of the next token to be sent.
      */
     public int nextTokenSize() {
-        ByteArrayOutputStream bOut = new ByteArrayOutputStream();
-        ObjectOutputStream oOut;
+        ByteArrayOutputStream byteOutput = new ByteArrayOutputStream();
+        ObjectOutputStream objectOutput = null;
         try {
-            oOut = new ObjectOutputStream(bOut);
-            oOut.writeObject(nextToken());
-            oOut.close();
-        } catch (IOException e) {
-            e.printStackTrace();
+            objectOutput = new ObjectOutputStream(byteOutput);
+            // FindBugs warns: DMI_NONSERIALIZABLE_OBJECT_WRITTEN
+            // "Non serializable object written to ObjectOutput"
+            // "This code seems to be passing a non-serializable object
+            // to the ObjectOutput.writeObject method. If the object
+            // is, indeed, non-serializable, an error will result."
+
+            objectOutput.writeObject(nextToken());
+
+        } catch (IOException ex) {
+            throw new RuntimeException("Failed to write the token while measuring the size.", ex);
+
+        } finally {
+            if (objectOutput != null) {
+                try {
+                    objectOutput.close();
+                } catch (IOException ex) {
+                    throw new RuntimeException("Failed to close the objectOutput.", ex);
+                }
+            }
         }
-        _nextTokenSize = bOut.toByteArray().length;
+        _nextTokenSize = byteOutput.toByteArray().length;
         return _nextTokenSize;
     }
 
