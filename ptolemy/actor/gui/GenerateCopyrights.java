@@ -820,13 +820,13 @@ public class GenerateCopyrights {
         {"ResizableImageWidget", " ", " ", "Y", " ", "CDDL + Oracle + Sun"},
         {"chic", " ", " ", "Y", "Y", "BSD"},
         {"colt", "Y", " ", "Y", "Y", "BSD and others"},
-        {"cup", " ", " ", "Y", " ", ""},
-        {"fmipp", " ", " ", "Y", " ", ""},
+        {"cup", " ", " ", "Y", " ", "Similar to BSD"},
+        {"fmipp", " ", " ", "Y", " ", "FMUSDK: Similar to BSD"},
         {"fmusdk", " ", " ", "Y", " ", ""},
         {"g4ltl", " ", " ", "Y", "Y", "Apache License"},
         {"gcj", " ", " ", "Y", " ", "GPL with libgcc Exception"}, // Backtracking.
         {"guava", " ", " ", "Y", "Y", "Apache License"},
-        {"itextpdf", " ", " ", "Y", " ", ""},
+        {"itextpdf", " ", " ", "Y", " ", "Affero General Public License <font color=\"red\">like GPL</font>"},
         {"jai", " ", "Y", " ", " ", "Sun"},
         {"java3d", " ", "Y", "", " ", "Sun"},
         {"javascript", " ", " ", "Y", "Y", "JQuery and Fancybox: MIT"},
@@ -837,7 +837,7 @@ public class GenerateCopyrights {
         {"jimblacklerUtils", " ", " ", "Y", "Y", "Public Domain"},
         {"jmf", " ", "Y", " ", " ", "Sun"},
         {"jna", " ", " ", "Y", "Y", "Apache License + GNU Lesser General Public"},
-        {"joystick", " ", " ", "Y", " ", ""},
+        {"joystick", " ", " ", "Y", " ", "Artistic License"},
         {"json", " ", " ", "Y", "Y", "BSD-like"},
         {"jsoup", " ", " ", "Y", "Y", "MIT"},
         {"junit", " ", " ", "Y", "Y", "Common Public License - v 1.0"},
@@ -855,10 +855,10 @@ public class GenerateCopyrights {
         {"ptjacl", " ", " ", "Y", "Y", "Apache License + BSD + Sun"},
         {"quicktime", " ", " ", " ", " ", "Apple"}, // License prohibits distribution
         {"rxtx", " ", "Y", " ", " ", "GNU Lesser General Public 2.1 + Sun"},
-        {"saxon", " ", " ", "Y", " ", ""},
+        {"saxon", " ", " ", "Y", " ", "Mozilla Public License"},
         {"smack", " ", " ", "Y", "Y", "Apache License"},
         {"soot", " ", " ", "Y", "Y", "BSD + LGPL 2"},
         {"thalesSingleWindow", " ", " ", "Y", " ", "BSD"},
-        {"udunits", " ", " ", "Y", " ", ""}};
+        {"udunits", " ", " ", "Y", " ", "Similar to BSD.  No use of sponsor name in advertising"}};
 
 }
