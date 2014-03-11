@@ -162,10 +162,11 @@ public class TestMigrateModelsManager {
             try {
 
                 int count = 0;
-                // Findbugs warns about this, but it ok, we just
-                // want there to be three lines.
-                while (input.readLine() != null) {
-                    count++;
+                String line = "";
+                while ((line = input.readLine()) != null) {
+                    if (line.length() > 10) {
+                        count++;
+                    }
                 }
                 assertTrue(count == 3);
 
@@ -210,10 +211,11 @@ public class TestMigrateModelsManager {
 
             try {
                 int count = 0;
-                // Findbugs warns about this, but it ok, we just
-                // want there to be three lines.
+                String line = "";
                 while (input.readLine() != null) {
-                    count++;
+                    if (line.length() > 10) {
+                        count++;
+                    }
                 }
                 assertTrue(count == 3);
 
@@ -260,10 +262,11 @@ public class TestMigrateModelsManager {
             try {
 
                 int count = 0;
-                // Findbugs warns about this, but it ok, we just
-                // want there to be three lines.
+                String line = "";
                 while (input.readLine() != null) {
-                    count++;
+                    if (line.length() > 10) {
+                        count++;
+                    }
                 }
                 assertTrue(count == 3);
 
