@@ -615,6 +615,7 @@ PTII_SRC_TO_BE_REMOVED = \
 		doc/img/PtolemyIISplash.psd \
 		doc/design/hyvisual.jar \
 		doc/design/visualsense.jar \
+		jar_dist \
 		lib/cachedir \
 		lib/ptII.properties \
 		lib/ptvr.jar \
@@ -645,7 +646,8 @@ PTII_SRC_TO_BE_REMOVED = \
 		ptolemy/moml/jxta/JXTALibrary.class \
 	        ptolemy/plot/ptplotlocales \
 		ptolemy/util/test/FileUtilities-1.1.tmp \
-		ptolemy/vergil/toolbox/test/alljsimpletests.tcl
+		ptolemy/vergil/toolbox/test/alljsimpletests.tcl \
+		signed
 
 
 BASE_SRC_TO_BE_REMOVED = \
