@@ -664,16 +664,26 @@ public class Simulator extends SDFTransformer {
         if (new File(dir).isAbsolute()) {
             return dir;
         }
-        String chi = dir;
-        if (chi.length() == 0) {
-            chi = ".";
+        String child = dir;
+        if (child.length() == 0) {
+            child = ".";
         }
         final URI modelURI = URIAttribute.getModelURI(namedObj);
-        final String par = modelURI != null ? new File(modelURI.getPath())
-                .getParent() : null;
-        final File fil = new File(par, chi);
-        chi = fil.getPath();
-        return chi;
+        // If we are running from jar files, then modelURI could be
+        // non-null, but modelURI.getPath() could be null.
+        String parent = "";
+        if (modelURI != null && modelURI.getPath() != null) {
+            parent = new File(modelURI.getPath()).getParent();
+        } else {
+            String property = "java.io.tmpdir";
+            parent = StringUtilities.getProperty(property);
+
+            System.out.println("Could not get the path of the URIAttribute of " + namedObj.getFullName()
+                    + ".  Using the value of the " + property + " property instead. (" + parent + ").");
+        }
+        final File file = new File(parent, child);
+        child = file.getPath();
+        return child;
     }
 
     /** Start the simulation program.
