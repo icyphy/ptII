@@ -486,7 +486,7 @@ public class EventTableModel extends AbstractTableModel {
 				after = after.substring(2).trim();
 				if (after.startsWith("(")) {
 					int index = SCRTableHelper.indexOfMatchingCloseBracket(after, 0);
-					if (!inmodeExpression.equals("")) {
+					if (!inmodeExpression.toString().equals("")) {
 						inmodeExpression = inmodeExpression.append(" & ");
 					}
 					inmodeExpression = inmodeExpression.append(" " + after.substring(0, index));
