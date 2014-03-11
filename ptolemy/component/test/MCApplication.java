@@ -82,7 +82,7 @@ public class MCApplication {
             try {
                 file = new FileOutputStream(fileName);
 
-                PrintStream out = new PrintStream(file);
+                out = new PrintStream(file);
                 out.println(buffer);
                 out.flush();
             } finally {
