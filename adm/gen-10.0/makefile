@@ -294,6 +294,9 @@ $(PTIIDIST):
 	cp $(PTIIHOME)/vendors/misc/joystick/Joystick.jar $(PTIIDIST)/vendors/misc/joystick/
 	mkdir -p $(PTIIDIST)/vendors/misc/javamail/
 	cp $(PTIIHOME)/vendors/misc/javamail/javax.mail.jar $(PTIIDIST)/vendors/misc/javamail/
+	# Tools used to build installers.
+	ln -s $(PTIIHOME)/vendors/izpack $(PTIIDIST)/vendors/izpack
+	ln -s $(PTIIHOME)/vendors/launch4j $(PTIIDIST)/vendors/launch4j
 	#
 	# Checking to be sure we can build
 	#(cd $(PTIIDIST); PTII=`pwd` ./configure; ant)
@@ -1250,6 +1253,13 @@ hudson_notest:
 	PTIIADM=/var/lib/hudson/jobs/ptII/workspace/adm \
 	JAR=/usr/bin/jar \
 	clean all jnlp src.jar setup update_moog
+
+hudson_ptiny.exe:
+	$(MAKE) -k USER=hudson \
+	PTIIHOME=/var/lib/hudson/jobs/ptII/workspace \
+	PTIIADM=/var/lib/hudson/jobs/ptII/workspace/adm \
+	JAR=/usr/bin/jar \
+	ptiny.exe
 
 hudson_setup:
 	$(MAKE) -k USER=hudson \
@@ -2732,11 +2742,12 @@ $(PTSETUP)_64.exe: $(PTSETUP_DEPENDENCIES) \
 		ls -l $@; \
 	fi
 
+ptiny.exe: $(PTIIDIST)/ptiny.exe
 $(PTIIDIST)/ptiny.exe:
-	 $(MAKE) -C $(PTIIDIST) exes
+	 $(MAKE) -C $(PTIIDIST) PTII=$(PTIIDIST) exes
 
 $(PTIIDIST)/ptbook.exe:
-	 $(MAKE) -C $(PTIIDIST) exes
+	 $(MAKE) -C $(PTIIDIST) PTII=$(PTIIDIST) exes
 
 book_pdf: $(PTIIDIST)/doc/books/systems/$(BOOK_PDF)
 
