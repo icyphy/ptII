@@ -1,0 +1,93 @@
+/* Styling for standard elements */
+
+html {
+	/* Specify root element size as a percentage due to IE problem with ems. */
+	font-size: 100%; /* Typically 16px */
+}
+
+body {
+	/* Specify body font size as a percentage due to IE problem with ems. */
+	font-size: 100%; /* Typically 16px */
+}
+
+h1 {
+	/* Remaining fonts specified relative to containing element's font size */
+	font-size: 1.5em; /* 24px / 16px */
+}
+
+/* Header styling */
+*[data-role="header"] {
+	border: 1px solid #667396;
+	color: #ffffff;
+	width: 100%;
+	float: left;
+	font-size: 1.5em;
+	font-family: sans-serif;
+	text-shadow: 0 2px 0 #222;
+}
+
+*[data-role="header"] h1 {
+	position: relative;
+	top: 6%;
+	right: 5%;
+}
+
+/* Footer styling */
+.ui-bar-y {
+	background-image:url(banr2.jpg);
+    background-repeat:no-repeat;
+    height:74px;
+    background-color:#2a2f60;
+}
+
+*[data-role="footer"] {
+	border: 1px solid #667396;
+	color: #ffffff;
+	width: 100%;
+	float: left;
+	background: #2a2f60;
+	text-shadow: 0 2px 0 #222;
+	text-size: 0.5em;
+	font-family: sans-serif;
+}
+
+.ui-bar-z {
+	background-color:#2a2f60;
+	padding-left: 40px;
+	padding-bottom: 3px;
+	text-align: left;
+	text-shadow: 0 2px 0 #222;
+	height: 30px;
+}
+
+.footertext {
+	padding-top: 6px;
+}
+
+#mapcontainer {
+	float: left;
+	width: 600px;
+	padding: 3%;
+}
+
+#formcontainer {
+	width: 30%;
+	float: left;
+	padding: 3%;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
