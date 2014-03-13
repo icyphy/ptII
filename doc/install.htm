@@ -562,8 +562,10 @@ necessary:
  <ol>
  <li> Create an empty directory
 
- <li> Download <a href="http://sources.redhat.com/cygwin/setup.exe"><code>http://sources.redhat.com/cygwin/setup.exe</code></a>
-and save it in the empty directory
+ <li> Go to
+<a href="http://cygwin.com/install.html"><code>http://cygwin.com/install.html</code></a> and download and install either the 32-bit or 64-bit version
+of <code>setup.exe</code>.
+<br/>See <a href="eclipse/windows/32bitVs64bit.htm">32-bit vs. 64-bit</a> for which to select.
 
  <li> Click on <code>setup</code>, then <code>Next</code>
 
@@ -571,17 +573,19 @@ and save it in the empty directory
 click on <code>Next</code>
 
  <li> Use the default install root directory, which should
-be <code>c:/cygwin</code>
+be <code>C:\cygwin</code> or <code>C:\cygwin64</code>.
 
+<!--
  <li> Select 'Default Text File Type' of DOS.
  <br>If you select Unix instead of DOS, then you will likely have
  <a href="http://www.gigascale.org/softdevel/faq/23.html#in_browser" target="_top">Cygwin CR/NL problems</a> with CVS.
  
 
  <li> Then hit the <code>Next</code> button.
+ -->
 
- <li> Use the default Local Package Directory, which should be the
- directory you created above.
+ <li> Use the default Local Package Directory, which is probably
+ the <code>Downloads</code> directory in your home directory.
 
  <li> If you are not behind a firewall, click on direct connection,
 then click <code>Next</code>
@@ -605,19 +609,14 @@ then click <code>Next</code>
 	 <li> binutils, gcc, gettext, libintl libintl1, libtool, libtool-devel
 	  - The matlab interface requires gcc and Matlab.  You may find
 	  it easier to install all of the Devel category
-	 <li> cvs 
+	 <li> subversion
 	</ul>
-        <li> Net Category
-        <ul>
-         <li> openssh - cvs may need this
-         <li> openssl - required by openssh
-        </ul>
         <li> Text Category: less
         </ul>
       </ol>
 
- <li> Hit <code>Next</code>, which should download the packages and
-install them
+ <li> Hit <code>Next</code>, which should compute the dependencies, 
+download the packages and install them.
  
  <li> Click on <code>Add icon to Start Menu</code>, and then
       <code>Finish</code>.
