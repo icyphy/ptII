@@ -32,7 +32,9 @@ var dragLights = d3.behavior.drag()
 					d3.select(this).attr("transform", function(d,i) {
 						return "translate(" + [d.x, d.y] + ")"
 					});
-			 });
+			 })
+			 .on("dragend", postMarkers);
+			 
 
 var dragSensors = d3.behavior.drag()
 			.origin(Object)	// Preserves the offset between the mouse
@@ -45,8 +47,11 @@ var dragSensors = d3.behavior.drag()
 					sensors[i] = {x: d.x, y: d.y, name: d.name, value: d.value};
 					d3.select(this).attr("transform", function(d,i) {
 						return "translate(" + [d.x, d.y] + ")"
-					});			
-			});
+					});		
+			})
+			.on("dragend", postMarkers);
+					
+
 
 // Create the graphic elements once the DOM is loaded
 $(document).ready(function() {
@@ -210,6 +215,7 @@ function getLight() {
 			// Update the sensor reading
 			sensors[0].value = result.lightAmount;
 			d3.selectAll(".sensorReading")
+			 .data(sensors)
 			 .text(function(d) {return Math.floor(d.value) + " lumens"});
 			
 			// Issue another request
@@ -239,8 +245,9 @@ function postMarkers(){
 		success: function(result) {
 			// Set value of sensor
 			// Assuming only one sensor here 
-			sensors[0].value = result;
+			sensors[0].value = result.lightAmount;
 			d3.selectAll(".sensorReading")
+			 .data(sensors)
 			 .text(function(d) {return Math.floor(d.value) + " lumens"});
 		},
 		error: function(e) {

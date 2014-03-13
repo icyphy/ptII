@@ -8,11 +8,11 @@
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1107, 563]">
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.5929738496387739">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.5929738496387742">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{793.4789110429448, 749.9616564417179}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{842.1323157936517, 140.55291411042947}">
     </property>
-    <property name="onThreshold" class="ptolemy.data.expr.Parameter" value="70">
+    <property name="onThreshold" class="ptolemy.data.expr.Parameter" value="90">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -28,10 +28,10 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[390.0, -60.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[365.0, 5.0]">
         </property>
     </property>
-    <property name="offThreshold" class="ptolemy.data.expr.Parameter" value="120">
+    <property name="offThreshold" class="ptolemy.data.expr.Parameter" value="560">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -47,13 +47,13 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[390.0, -40.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[365.0, 25.0]">
         </property>
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Typical incandescent 60W bulb">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[525.0, -125.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[500.0, -60.0]">
         </property>
     </property>
     <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
@@ -61,22 +61,22 @@
         </property>
         <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="true">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[75.0, -140.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[50.0, -140.0]">
         </property>
     </property>
     <property name="Annotation4" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="DE director&#10;stopWhenQueueIsEmpty false&#10;synchronizeToRealTime true">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[30.0, -110.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[0.0, -105.0]">
         </property>
     </property>
     <property name="Annotation5" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Model&#10;enableBackwardTypeInference true">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[35.0, -35.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[0.0, -25.0]">
         </property>
     </property>
-    <property name="lightAmount" class="ptolemy.data.expr.Parameter" value="0">
+    <property name="lightAmount" class="ptolemy.data.expr.Parameter" value="338.028520666793">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -92,25 +92,13 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[390.0, -135.0]">
-        </property>
-    </property>
-    <property name="Annotation7" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="GET /room request&#10;Returns main page; Initial light status is off&#10;Generates GET to /room/light">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[345.0, 270.0]">
-        </property>
-    </property>
-    <property name="Annotation9" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="GET /room/light&#10;Request is cached until a light status change occurs (&quot;long polling&quot;)&#10;(See SensorAndrew demo)&#10;Return light status and new light amount ">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[900.0, 565.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[365.0, -70.0]">
         </property>
     </property>
     <property name="Annotation10" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="POST /room/markers&#10;Calculates and returns illumination at the sensor">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-5.0, 880.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-20.0, 850.0]">
         </property>
     </property>
     <property name="maximumResponseTime" class="ptolemy.data.expr.Parameter" value="30.0">
@@ -129,13 +117,13 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[390.0, -5.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[365.0, 60.0]">
         </property>
     </property>
     <property name="Annotation12" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="See also:  SmartRoom demo&#10;Scale:  One pixel = 1 centimeter&#10;(Room would be roughly 15 x 15 feet, 225 sq ft)&#10;&#10;Equation:  Luminous intensity on a spherical surface&#10;I = (3P) / (4*pi*r^2) where P is power in watts or lumens&#10;= Lumens per meter squared">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[795.0, 955.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[820.0, 1000.0]">
         </property>
     </property>
     <property name="lightProduced" class="ptolemy.data.expr.Parameter" value="800">
@@ -154,13 +142,13 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[390.0, -115.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[365.0, -50.0]">
         </property>
     </property>
     <property name="Annotation13" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Thresholds in lumens">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[525.0, -70.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[500.0, -5.0]">
         </property>
     </property>
     <property name="enableBackwardTypeInference" class="ptolemy.data.expr.Parameter" value="true">
@@ -168,10 +156,10 @@
     <property name="WebServer" class="org.ptolemy.ptango.lib.WebServer">
         <property name="resourceLocation" class="ptolemy.data.expr.FileParameter" value="$PTII/org/ptolemy/ptango/demo/Verification/pages">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[290.0, -120.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[730.0, -165.0]">
         </property>
     </property>
-    <property name="lightIsOn" class="ptolemy.data.expr.Parameter" value="false">
+    <property name="lightIsOn" class="ptolemy.data.expr.Parameter" value="true">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -187,7 +175,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[390.0, -80.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[365.0, -15.0]">
         </property>
     </property>
     <property name="defaultResponse" class="ptolemy.data.expr.Parameter" value="lightIsOn">
@@ -206,16 +194,10 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[390.0, 10.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[365.0, 75.0]">
         </property>
     </property>
-    <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="TODO: Initialize lightIsOn to false for every GET?  (e.g. page refresh?)">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[705.0, 285.0]">
-        </property>
-    </property>
-    <property name="lightCalculated" class="ptolemy.data.expr.Parameter" value="224.6895212109717">
+    <property name="lightCalculated" class="ptolemy.data.expr.Parameter" value="338.028520666793">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -231,129 +213,41 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[390.0, -155.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[365.0, -90.0]">
         </property>
     </property>
-    <property name="Annotation11" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Evalute modal model every 3 seconds">
+    <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="GET /room/light&#10;Returns light status and light amount&#10;Request is cached until a light status change occurs (&quot;long polling&quot;)&#10;(See SensorAndrew demo)">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[175.0, 650.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-15.0, 510.0]">
         </property>
     </property>
-    <entity name="HttpActor" class="org.ptolemy.ptango.lib.HttpActor">
-        <property name="path" class="ptolemy.data.expr.StringParameter" value="/room">
+    <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Evalute modal model every 1 second">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[45.0, 340.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[155.00003051757812, 650.0000305175781]">
         </property>
-        <port name="postParameters" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-            <property name="_type" class="ptolemy.actor.TypeAttribute" value="{onThreshold=string,offThreshold=string}">
-            </property>
-        </port>
-    </entity>
-    <entity name="FileReader" class="ptolemy.actor.lib.io.FileReader">
-        <property name="fileOrURL" class="ptolemy.data.expr.FileParameter" value="pages/verification.html">
+    </property>
+    <property name="Annotation6" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="GET /room request&#10;Returns main page; Initial light status is off&#10;Generates GET to /room/light and then POST to /room/markers">
         </property>
-        <doc>Read an entire file and output as a string</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[285.0, 320.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[0.0, 70.0]">
         </property>
-    </entity>
-    <entity name="MicrostepDelay" class="ptolemy.actor.lib.MicrostepDelay">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[95.0, 270.0]">
+    </property>
+    <property name="Annotation7" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="TODO: Should lightIsOn and thresholds be initialized for every GET request (e.g. page refresh?)">
         </property>
-        <port name="input" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="EAST">
-            </property>
-        </port>
-        <port name="output" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-            <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="WEST">
-            </property>
-        </port>
-    </entity>
-    <entity name="SetVariable3" class="ptolemy.actor.lib.SetVariable">
-        <property name="variableName" class="ptolemy.kernel.util.StringAttribute" value="lightIsOn">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[0.0, 135.0]">
         </property>
-        <property name="delayed" class="ptolemy.data.expr.Parameter" value="false">
+    </property>
+    <property name="Annotation8" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model provides a web service for configuring a light and a sensor in a room.&#10;The sensor will turn the light on and off according to user-defined thresholds.&#10;Thrashing (repeated on/off light behavior) may occur depending on the thresholds&#10;and the proximity of the light to the sensor.  Drag light or sensor to change proximity.">
         </property>
-        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
-            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="variableName">
-            </property>
-            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
-            </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[135.0, -200.0]">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[520.0, 720.0]">
-        </property>
-    </entity>
-    <entity name="MicrostepDelay2" class="ptolemy.actor.lib.MicrostepDelay">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[195.0, 835.0]">
-        </property>
-        <port name="input" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="EAST">
-            </property>
-        </port>
-        <port name="output" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-            <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="WEST">
-            </property>
-        </port>
-    </entity>
-    <entity name="MicrostepDelay3" class="ptolemy.actor.lib.MicrostepDelay">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[130.0, 500.0]">
-        </property>
-        <port name="input" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="EAST">
-            </property>
-        </port>
-        <port name="output" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-            <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="WEST">
-            </property>
-        </port>
-    </entity>
-    <entity name="Const" class="ptolemy.actor.lib.Const">
-        <property name="value" class="ptolemy.data.expr.Parameter" value="&quot;OK&quot;">
-        </property>
-        <doc>Create a constant sequence.</doc>
-        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
-            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
-            </property>
-            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
-            </property>
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[355.0, 500.0]">
-        </property>
-        <port name="output" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-            <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="WEST">
-            </property>
-        </port>
-        <port name="trigger" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="multiport"/>
-            <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="EAST">
-            </property>
-        </port>
-    </entity>
-    <entity name="SetVariable4" class="ptolemy.actor.lib.SetVariable">
-        <property name="variableName" class="ptolemy.kernel.util.StringAttribute" value="lightCalculated">
-        </property>
-        <property name="delayed" class="ptolemy.data.expr.Parameter" value="false">
-        </property>
-        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
-            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="variableName">
-            </property>
-            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
-            </property>
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[445.0, 965.0]">
-        </property>
-    </entity>
+    </property>
     <entity name="MicrostepDelay4" class="ptolemy.actor.lib.MicrostepDelay">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[503.5, 1100.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[510.0, 1135.0]">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -367,7 +261,7 @@
         </port>
     </entity>
     <entity name="CalculateSensorValue" class="ptolemy.actor.TypedCompositeActor">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[300.0, 965.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[80.0, 1075.0]">
         </property>
         <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
             <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Assume only one light, one sensor for now">
@@ -375,7 +269,7 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="[395.0, 175.0]">
             </property>
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={32, 15, 1292, 617}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={32, 15, 1264, 617}, maximized=false}">
         </property>
         <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1036, 500]">
         </property>
@@ -390,7 +284,7 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="{20.0, 200.0}">
             </property>
         </port>
-        <port name="lightAmount" class="ptolemy.actor.TypedIOPort">
+        <port name="lightCalculated" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
             </property>
@@ -1072,7 +966,7 @@ ExpressionToToken, ExpressionToToken2 output ports set to double
         <relation name="relation6" class="ptolemy.actor.TypedIORelation">
         </relation>
         <link port="postParameters" relation="relation5"/>
-        <link port="lightAmount" relation="relation11"/>
+        <link port="lightCalculated" relation="relation11"/>
         <link port="RecordDisassembler.input" relation="relation5"/>
         <link port="RecordDisassembler.lightsList" relation="relation"/>
         <link port="RecordDisassembler.sensorsList" relation="relation2"/>
@@ -1113,24 +1007,8 @@ ExpressionToToken, ExpressionToToken2 output ports set to double
         <link port="Const.output" relation="relation6"/>
         <link port="Const.trigger" relation="relation20"/>
     </entity>
-    <entity name="Display" class="ptolemy.actor.lib.gui.Display">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={512, 261, 342, 246}, maximized=false}">
-        </property>
-        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[326, 186]">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[930.0, 500.0]">
-        </property>
-    </entity>
-    <entity name="Display2" class="ptolemy.actor.lib.gui.Display">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={648, 352, 342, 246}, maximized=false}">
-        </property>
-        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[326, 186]">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[690.0, 720.0]">
-        </property>
-    </entity>
     <entity name="BooleanSelect" class="ptolemy.actor.lib.BooleanSelect">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[585.0, 975.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[590.0, 960.0]">
         </property>
         <port name="trueInput" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -1160,7 +1038,7 @@ ExpressionToToken, ExpressionToToken2 output ports set to double
             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[305.0, 1045.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[375.0, 1075.0]">
         </property>
     </entity>
     <entity name="Const3" class="ptolemy.actor.lib.Const">
@@ -1173,11 +1051,44 @@ ExpressionToToken, ExpressionToToken2 output ports set to double
             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[435.0, 1005.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[440.0, 990.0]">
         </property>
     </entity>
-    <entity name="RecordAssembler2" class="ptolemy.actor.lib.RecordAssembler">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[978.6788024902344, 664.9815368652344]">
+    <entity name="HttpActor2" class="org.ptolemy.ptango.lib.HttpActor">
+        <property name="path" class="ptolemy.data.expr.StringParameter" value="/room/markers">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[45.0, 960.0]">
+        </property>
+        <port name="postParameters" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_type" class="ptolemy.actor.TypeAttribute" value="{lightsList=string, sensorsList=string}">
+            </property>
+        </port>
+    </entity>
+    <entity name="MicrostepDelay" class="ptolemy.actor.lib.MicrostepDelay">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[205.00003051757812, 815.0000305175781]">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="EAST">
+            </property>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="WEST">
+            </property>
+        </port>
+    </entity>
+    <entity name="Display" class="ptolemy.actor.lib.gui.Display">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={864, 334, 342, 246}, maximized=false}">
+        </property>
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[326, 186]">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[554.6606140136719, 720.0092468261719]">
+        </property>
+    </entity>
+    <entity name="RecordAssembler" class="ptolemy.actor.lib.RecordAssembler">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[768.3393859863281, 644.9907531738281]">
         </property>
         <port name="lightIsOn" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -1201,7 +1112,7 @@ ExpressionToToken, ExpressionToToken2 output ports set to double
             <property name="displayHeight" class="ptolemy.data.expr.Parameter" value="10">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[825.0, 700.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[599.9999694824219, 664.9999694824219]">
         </property>
         <port name="lightIsOn" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -1210,7 +1121,7 @@ ExpressionToToken, ExpressionToToken2 output ports set to double
         </port>
     </entity>
     <entity name="TokenToJSON" class="ptolemy.actor.lib.conversions.json.TokenToJSON">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[830.0, 835.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[619.6605834960938, 815.0092163085938]">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -1224,7 +1135,7 @@ ExpressionToToken, ExpressionToToken2 output ports set to double
         </port>
     </entity>
     <entity name="WaitForReading" class="ptolemy.actor.TypedCompositeActor">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[615.0, 615.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[464.6606140136719, 615.0092468261719]">
         </property>
         <port name="get" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -1365,18 +1276,12 @@ ExpressionToToken, ExpressionToToken2 output ports set to double
         <link port="Sampler.output" relation="relation5"/>
         <link port="Sampler.trigger" relation="relation6"/>
     </entity>
-    <entity name="HttpActor2" class="org.ptolemy.ptango.lib.HttpActor">
-        <property name="path" class="ptolemy.data.expr.StringParameter" value="/room/markers">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[40.0, 975.0]">
-        </property>
-    </entity>
     <entity name="ModalModel" class="ptolemy.domains.modal.modal.ModalModel">
         <property name="stateDependentCausality" class="ptolemy.data.expr.Parameter" value="true">
         </property>
         <property name="_tableauFactory" class="ptolemy.vergil.modal.modal.ModalTableauFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[380.0, 720.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[375.0000305175781, 720.0000305175781]">
         </property>
         <port name="isOn" class="ptolemy.domains.modal.modal.ModalPort">
             <property name="output"/>
@@ -1406,8 +1311,6 @@ ExpressionToToken, ExpressionToToken2 output ports set to double
                 </property>
             </port>
             <entity name="off" class="ptolemy.domains.modal.kernel.State">
-                <property name="refinementName" class="ptolemy.kernel.util.StringAttribute" value="off">
-                </property>
                 <property name="isInitialState" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
                 <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
@@ -1418,8 +1321,6 @@ ExpressionToToken, ExpressionToToken2 output ports set to double
                 </property>
             </entity>
             <entity name="on" class="ptolemy.domains.modal.kernel.State">
-                <property name="refinementName" class="ptolemy.kernel.util.StringAttribute" value="on">
-                </property>
                 <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
                 </property>
                 <property name="_controllerFactory" class="ptolemy.vergil.modal.modal.HierarchicalStateControllerFactory">
@@ -1438,11 +1339,11 @@ ExpressionToToken, ExpressionToToken2 output ports set to double
                 </property>
             </entity>
             <relation name="relation" class="ptolemy.domains.modal.kernel.Transition">
-                <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="lightAmount &lt; onThreshold">
+                <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="trigger &amp;&amp; (lightAmount &lt; onThreshold)">
                 </property>
                 <property name="outputActions" class="ptolemy.domains.modal.kernel.OutputActionsAttribute" value="isOn = true">
                 </property>
-                <property name="setActions" class="ptolemy.domains.modal.kernel.CommitActionsAttribute" value="lightAmount = lightCalculated">
+                <property name="setActions" class="ptolemy.domains.modal.kernel.CommitActionsAttribute" value="lightAmount = lightCalculated; lightIsOn = true">
                 </property>
                 <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="-0.807268051463292">
                 </property>
@@ -1450,11 +1351,11 @@ ExpressionToToken, ExpressionToToken2 output ports set to double
                 </property>
             </relation>
             <relation name="relation2" class="ptolemy.domains.modal.kernel.Transition">
-                <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="lightAmount &gt; offThreshold">
+                <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="trigger &amp;&amp; (lightAmount &gt; offThreshold)">
                 </property>
                 <property name="outputActions" class="ptolemy.domains.modal.kernel.OutputActionsAttribute" value="isOn = false">
                 </property>
-                <property name="setActions" class="ptolemy.domains.modal.kernel.CommitActionsAttribute" value="lightAmount = 0">
+                <property name="setActions" class="ptolemy.domains.modal.kernel.CommitActionsAttribute" value="lightAmount = 0; lightIsOn = false">
                 </property>
                 <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="-1.0599419193486461">
                 </property>
@@ -1476,58 +1377,6 @@ ExpressionToToken, ExpressionToToken2 output ports set to double
             <link port="on.outgoingPort" relation="relation2"/>
             <link port="init.outgoingPort" relation="relation3"/>
         </entity>
-        <entity name="off" class="ptolemy.domains.modal.modal.Refinement">
-            <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
-                <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="true">
-                </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="{60, 110}">
-                </property>
-            </property>
-            <port name="isOn" class="ptolemy.domains.modal.modal.RefinementPort">
-                <property name="output"/>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[325.0, 195.0]">
-                </property>
-            </port>
-            <port name="trigger" class="ptolemy.domains.modal.modal.RefinementPort">
-                <property name="input"/>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="{20.0, 200.0}">
-                </property>
-            </port>
-            <entity name="Discrete TimeDelay" class="ptolemy.actor.lib.TimeDelay">
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[125.0, 200.0]">
-                </property>
-            </entity>
-            <relation name="relation" class="ptolemy.actor.TypedIORelation">
-            </relation>
-            <link port="trigger" relation="relation"/>
-            <link port="Discrete TimeDelay.input" relation="relation"/>
-        </entity>
-        <entity name="on" class="ptolemy.domains.modal.modal.Refinement">
-            <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
-                <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="true">
-                </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="{60, 105}">
-                </property>
-            </property>
-            <port name="isOn" class="ptolemy.domains.modal.modal.RefinementPort">
-                <property name="output"/>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[385.0, 200.0]">
-                </property>
-            </port>
-            <port name="trigger" class="ptolemy.domains.modal.modal.RefinementPort">
-                <property name="input"/>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="{20.0, 200.0}">
-                </property>
-            </port>
-            <entity name="Discrete TimeDelay" class="ptolemy.actor.lib.TimeDelay">
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[115.0, 200.0]">
-                </property>
-            </entity>
-            <relation name="relation" class="ptolemy.actor.TypedIORelation">
-            </relation>
-            <link port="trigger" relation="relation"/>
-            <link port="Discrete TimeDelay.input" relation="relation"/>
-        </entity>
         <relation name="isOnRelation" class="ptolemy.actor.TypedIORelation">
             <property name="width" class="ptolemy.data.expr.Parameter" value="Auto">
             </property>
@@ -1540,29 +1389,96 @@ ExpressionToToken, ExpressionToToken2 output ports set to double
         <link port="trigger" relation="triggerRelation"/>
         <link port="_Controller.isOn" relation="isOnRelation"/>
         <link port="_Controller.trigger" relation="triggerRelation"/>
-        <link port="off.isOn" relation="isOnRelation"/>
-        <link port="off.trigger" relation="triggerRelation"/>
-        <link port="on.isOn" relation="isOnRelation"/>
-        <link port="on.trigger" relation="triggerRelation"/>
     </entity>
-    <entity name="Display3" class="ptolemy.actor.lib.gui.Display">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={512, 261, 342, 246}, maximized=false}">
+    <entity name="DiscreteClock" class="ptolemy.actor.lib.DiscreteClock">
+        <property name="period" class="ptolemy.actor.parameters.PortParameter" value="1.0">
         </property>
-        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[326, 186]">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[730.0, 1115.0]">
+        <doc>Create periodic timed events.</doc>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[175.00003051757812, 720.0000305175781]">
         </property>
     </entity>
-    <entity name="HttpActor3" class="org.ptolemy.ptango.lib.HttpActor">
+    <entity name="Const" class="ptolemy.actor.lib.Const">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <doc>Create a constant sequence.</doc>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[275.0000305175781, 720.0000305175781]">
+        </property>
+    </entity>
+    <entity name="HttpActor" class="org.ptolemy.ptango.lib.HttpActor">
         <property name="path" class="ptolemy.data.expr.StringParameter" value="/room/light">
         </property>
         <property name="timeout" class="ptolemy.data.expr.Parameter" value="31000L">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[45.0, 645.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[40.000030517578125, 645.0000305175781]">
         </property>
     </entity>
+    <entity name="FileReader" class="ptolemy.actor.lib.io.FileReader">
+        <property name="fileOrURL" class="ptolemy.data.expr.FileParameter" value="pages/verification.html">
+        </property>
+        <doc>Read an entire file and output as a string</doc>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[280.0, 240.0]">
+        </property>
+    </entity>
+    <entity name="MicrostepDelay2" class="ptolemy.actor.lib.MicrostepDelay">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[90.0, 190.0]">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="EAST">
+            </property>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="WEST">
+            </property>
+        </port>
+    </entity>
+    <entity name="MicrostepDelay3" class="ptolemy.actor.lib.MicrostepDelay">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[125.0, 420.0]">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="EAST">
+            </property>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="WEST">
+            </property>
+        </port>
+    </entity>
+    <entity name="Const5" class="ptolemy.actor.lib.Const">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="&quot;OK&quot;">
+        </property>
+        <doc>Create a constant sequence.</doc>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[260.0, 420.0]">
+        </property>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="WEST">
+            </property>
+        </port>
+        <port name="trigger" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+            <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="EAST">
+            </property>
+        </port>
+    </entity>
     <entity name="RecordDisassembler" class="ptolemy.actor.lib.RecordDisassembler">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[375.0, 370.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[280.0, 290.0]">
         </property>
         <port name="onThreshold" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -1590,7 +1506,7 @@ ExpressionToToken, ExpressionToToken2 output ports set to double
             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[680.0, 380.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[585.0, 300.0]">
         </property>
     </entity>
     <entity name="SetVariable2" class="ptolemy.actor.lib.SetVariable">
@@ -1604,11 +1520,11 @@ ExpressionToToken, ExpressionToToken2 output ports set to double
             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[680.0, 425.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[585.0, 345.0]">
         </property>
     </entity>
     <entity name="ExpressionToToken" class="ptolemy.actor.lib.conversions.ExpressionToToken">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[525.0, 380.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[430.0, 300.0]">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -1617,7 +1533,7 @@ ExpressionToToken, ExpressionToToken2 output ports set to double
         </port>
     </entity>
     <entity name="ExpressionToToken2" class="ptolemy.actor.lib.conversions.ExpressionToToken">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[525.0, 435.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[430.0, 355.0]">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -1625,28 +1541,8 @@ ExpressionToToken, ExpressionToToken2 output ports set to double
             </property>
         </port>
     </entity>
-    <entity name="Const4" class="ptolemy.actor.lib.Const">
-        <property name="value" class="ptolemy.data.expr.Parameter" value="lightAmount">
-        </property>
-        <doc>Create a constant sequence.</doc>
-        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
-            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
-            </property>
-            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
-            </property>
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[700.0, 975.0]">
-        </property>
-    </entity>
-    <entity name="DiscreteClock" class="ptolemy.actor.lib.DiscreteClock">
-        <property name="period" class="ptolemy.actor.parameters.PortParameter" value="5.0">
-        </property>
-        <doc>Create periodic timed events.</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[210.0, 720.0]">
-        </property>
-    </entity>
-    <entity name="RecordAssembler" class="ptolemy.actor.lib.RecordAssembler">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[825.0, 385.0]">
+    <entity name="RecordAssembler2" class="ptolemy.actor.lib.RecordAssembler">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[730.0, 305.0]">
         </property>
         <port name="onThreshold" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -1659,55 +1555,101 @@ ExpressionToToken, ExpressionToToken2 output ports set to double
             </property>
         </port>
     </entity>
-    <relation name="relation" class="ptolemy.actor.TypedIORelation">
-    </relation>
-    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
-    </relation>
-    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
-    </relation>
-    <relation name="relation14" class="ptolemy.actor.TypedIORelation">
-    </relation>
-    <relation name="relation20" class="ptolemy.actor.TypedIORelation">
-    </relation>
-    <relation name="relation13" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" value="[615.0, 720.0]">
-        </vertex>
-    </relation>
+    <entity name="HttpActor3" class="org.ptolemy.ptango.lib.HttpActor">
+        <property name="path" class="ptolemy.data.expr.StringParameter" value="/room">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[45.0, 325.0]">
+        </property>
+    </entity>
+    <entity name="RecordAssembler3" class="ptolemy.actor.lib.RecordAssembler">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[705.0, 970.0]">
+        </property>
+        <port name="lightAmount" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+        </port>
+    </entity>
+    <entity name="TokenToJSON2" class="ptolemy.actor.lib.conversions.json.TokenToJSON">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[650.0, 1135.0]">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="EAST">
+            </property>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="WEST">
+            </property>
+        </port>
+    </entity>
+    <entity name="BooleanSwitch" class="ptolemy.actor.lib.BooleanSwitch">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[280.0, 955.0]">
+        </property>
+    </entity>
+    <entity name="SetVariable3" class="ptolemy.actor.lib.SetVariable">
+        <property name="variableName" class="ptolemy.kernel.util.StringAttribute" value="lightCalculated">
+        </property>
+        <property name="delayed" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="variableName">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[240.0, 1075.0]">
+        </property>
+    </entity>
+    <entity name="Const4" class="ptolemy.actor.lib.Const">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="lightCalculated">
+        </property>
+        <doc>Create a constant sequence.</doc>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[445.0, 895.0]">
+        </property>
+    </entity>
+    <entity name="SetVariable4" class="ptolemy.actor.lib.SetVariable">
+        <property name="variableName" class="ptolemy.kernel.util.StringAttribute" value="lightAmount">
+        </property>
+        <property name="delayed" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="variableName">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[745.0, 900.0]">
+        </property>
+    </entity>
     <relation name="relation18" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" value="[190.0, 995.0]">
+        <vertex name="vertex1" value="[150.0, 1015.0]">
         </vertex>
-    </relation>
-    <relation name="relation21" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation23" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation24" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" value="[645.0, 1100.0]">
+        <vertex name="vertex1" value="[775.0, 1135.0]">
         </vertex>
-    </relation>
-    <relation name="relation16" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" value="[770.0, 615.0]">
-        </vertex>
-    </relation>
-    <relation name="relation27" class="ptolemy.actor.TypedIORelation">
-    </relation>
-    <relation name="relation29" class="ptolemy.actor.TypedIORelation">
-    </relation>
-    <relation name="relation28" class="ptolemy.actor.TypedIORelation">
-    </relation>
-    <relation name="relation10" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation9" class="ptolemy.actor.TypedIORelation">
     </relation>
-    <relation name="relation22" class="ptolemy.actor.TypedIORelation">
-    </relation>
-    <relation name="relation25" class="ptolemy.actor.TypedIORelation">
-    </relation>
-    <relation name="relation17" class="ptolemy.actor.TypedIORelation">
-    </relation>
-    <relation name="relation11" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" value="[5.0, 500.0]">
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+        <vertex name="vertex1" value="[464.6606140136719, 720.0092468261719]">
         </vertex>
+    </relation>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+        <vertex name="vertex1" value="[690.25390625, 615.390625]">
+        </vertex>
+    </relation>
+    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation5" class="ptolemy.actor.TypedIORelation">
     </relation>
@@ -1717,84 +1659,131 @@ ExpressionToToken, ExpressionToToken2 output ports set to double
     </relation>
     <relation name="relation8" class="ptolemy.actor.TypedIORelation">
     </relation>
-    <relation name="relation19" class="ptolemy.actor.TypedIORelation">
-    </relation>
-    <relation name="relation15" class="ptolemy.actor.TypedIORelation">
-    </relation>
-    <relation name="relation26" class="ptolemy.actor.TypedIORelation">
-    </relation>
-    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
-    </relation>
-    <relation name="relation30" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" value="[855.0, 500.0]">
-        </vertex>
+    <relation name="relation11" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation12" class="ptolemy.actor.TypedIORelation">
     </relation>
-    <link port="HttpActor.response" relation="relation3"/>
-    <link port="HttpActor.response" relation="relation11"/>
-    <link port="HttpActor.getRequestURI" relation="relation"/>
-    <link port="HttpActor.postParameters" relation="relation4"/>
-    <link port="FileReader.output" relation="relation2"/>
-    <link port="FileReader.trigger" relation="relation"/>
-    <link port="MicrostepDelay.input" relation="relation2"/>
-    <link port="MicrostepDelay.output" relation="relation3"/>
-    <link port="SetVariable3.input" relation="relation22"/>
-    <link port="SetVariable3.output" relation="relation13"/>
-    <link port="MicrostepDelay2.input" relation="relation28"/>
-    <link port="MicrostepDelay2.output" relation="relation25"/>
-    <link port="MicrostepDelay3.input" relation="relation14"/>
-    <link port="MicrostepDelay3.output" relation="relation11"/>
-    <link port="Const.output" relation="relation14"/>
-    <link port="Const.trigger" relation="relation30"/>
-    <link port="SetVariable4.input" relation="relation20"/>
-    <link port="SetVariable4.output" relation="relation21"/>
-    <link port="MicrostepDelay4.input" relation="relation24"/>
+    <relation name="relation13" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation14" class="ptolemy.actor.TypedIORelation">
+        <vertex name="vertex1" value="[0.0, 420.0]">
+        </vertex>
+    </relation>
+    <relation name="relation15" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation16" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation17" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation22" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation25" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation26" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation27" class="ptolemy.actor.TypedIORelation">
+        <vertex name="vertex1" value="[760.0, 420.0]">
+        </vertex>
+    </relation>
+    <relation name="relation28" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation29" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation30" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation31" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation20" class="ptolemy.actor.TypedIORelation">
+        <vertex name="vertex1" value="[670.0, 960.0]">
+        </vertex>
+    </relation>
+    <relation name="relation21" class="ptolemy.actor.TypedIORelation">
+        <vertex name="vertex1" value="[540.0, 1025.0]">
+        </vertex>
+    </relation>
+    <relation name="relation10" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation33" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation32" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation34" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation19" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation35" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <link port="MicrostepDelay4.input" relation="relation31"/>
     <link port="MicrostepDelay4.output" relation="relation9"/>
     <link port="CalculateSensorValue.postParameters" relation="relation18"/>
-    <link port="CalculateSensorValue.lightAmount" relation="relation20"/>
-    <link port="Display.input" relation="relation30"/>
-    <link port="Display2.input" relation="relation13"/>
-    <link port="BooleanSelect.trueInput" relation="relation21"/>
+    <link port="CalculateSensorValue.lightCalculated" relation="relation33"/>
+    <link port="BooleanSelect.trueInput" relation="relation19"/>
     <link port="BooleanSelect.falseInput" relation="relation23"/>
-    <link port="BooleanSelect.control" relation="relation10"/>
-    <link port="BooleanSelect.output" relation="relation19"/>
-    <link port="Const2.output" relation="relation10"/>
-    <link port="Const2.trigger" relation="relation18"/>
+    <link port="BooleanSelect.control" relation="relation21"/>
+    <link port="BooleanSelect.output" relation="relation20"/>
+    <link port="Const2.output" relation="relation21"/>
+    <link port="Const2.trigger" relation="relation32"/>
     <link port="Const3.output" relation="relation23"/>
-    <link port="Const3.trigger" relation="relation18"/>
-    <link port="RecordAssembler2.output" relation="relation29"/>
-    <link port="RecordAssembler2.lightIsOn" relation="relation16"/>
-    <link port="RecordAssembler2.lightAmount" relation="relation27"/>
-    <link port="Expression.output" relation="relation27"/>
-    <link port="Expression.lightIsOn" relation="relation16"/>
-    <link port="TokenToJSON.input" relation="relation29"/>
-    <link port="TokenToJSON.output" relation="relation28"/>
-    <link port="WaitForReading.get" relation="relation17"/>
-    <link port="WaitForReading.response" relation="relation16"/>
-    <link port="WaitForReading.reading" relation="relation13"/>
+    <link port="Const3.trigger" relation="relation10"/>
     <link port="HttpActor2.response" relation="relation9"/>
     <link port="HttpActor2.postParameters" relation="relation18"/>
-    <link port="ModalModel.isOn" relation="relation22"/>
-    <link port="ModalModel.trigger" relation="relation12"/>
-    <link port="Display3.input" relation="relation24"/>
-    <link port="HttpActor3.response" relation="relation25"/>
-    <link port="HttpActor3.getRequestURI" relation="relation17"/>
-    <link port="RecordDisassembler.input" relation="relation4"/>
-    <link port="RecordDisassembler.onThreshold" relation="relation5"/>
-    <link port="RecordDisassembler.offThreshold" relation="relation7"/>
-    <link port="SetVariable.input" relation="relation6"/>
-    <link port="SetVariable.output" relation="relation15"/>
-    <link port="SetVariable2.input" relation="relation8"/>
+    <link port="MicrostepDelay.input" relation="relation11"/>
+    <link port="MicrostepDelay.output" relation="relation7"/>
+    <link port="Display.input" relation="relation"/>
+    <link port="RecordAssembler.output" relation="relation4"/>
+    <link port="RecordAssembler.lightIsOn" relation="relation2"/>
+    <link port="RecordAssembler.lightAmount" relation="relation35"/>
+    <link port="Expression.output" relation="relation35"/>
+    <link port="Expression.lightIsOn" relation="relation2"/>
+    <link port="TokenToJSON.input" relation="relation4"/>
+    <link port="TokenToJSON.output" relation="relation11"/>
+    <link port="WaitForReading.get" relation="relation8"/>
+    <link port="WaitForReading.response" relation="relation2"/>
+    <link port="WaitForReading.reading" relation="relation"/>
+    <link port="ModalModel.isOn" relation="relation"/>
+    <link port="ModalModel.trigger" relation="relation6"/>
+    <link port="DiscreteClock.output" relation="relation5"/>
+    <link port="Const.output" relation="relation6"/>
+    <link port="Const.trigger" relation="relation5"/>
+    <link port="HttpActor.response" relation="relation7"/>
+    <link port="HttpActor.getRequestURI" relation="relation8"/>
+    <link port="FileReader.output" relation="relation12"/>
+    <link port="FileReader.trigger" relation="relation29"/>
+    <link port="MicrostepDelay2.input" relation="relation12"/>
+    <link port="MicrostepDelay2.output" relation="relation28"/>
+    <link port="MicrostepDelay3.input" relation="relation13"/>
+    <link port="MicrostepDelay3.output" relation="relation14"/>
+    <link port="Const5.output" relation="relation13"/>
+    <link port="Const5.trigger" relation="relation27"/>
+    <link port="RecordDisassembler.input" relation="relation30"/>
+    <link port="RecordDisassembler.onThreshold" relation="relation15"/>
+    <link port="RecordDisassembler.offThreshold" relation="relation17"/>
+    <link port="SetVariable.input" relation="relation16"/>
+    <link port="SetVariable.output" relation="relation25"/>
+    <link port="SetVariable2.input" relation="relation22"/>
     <link port="SetVariable2.output" relation="relation26"/>
-    <link port="ExpressionToToken.input" relation="relation5"/>
-    <link port="ExpressionToToken.output" relation="relation6"/>
-    <link port="ExpressionToToken2.input" relation="relation7"/>
-    <link port="ExpressionToToken2.output" relation="relation8"/>
-    <link port="Const4.output" relation="relation24"/>
-    <link port="Const4.trigger" relation="relation19"/>
-    <link port="DiscreteClock.output" relation="relation12"/>
-    <link port="RecordAssembler.output" relation="relation30"/>
-    <link port="RecordAssembler.onThreshold" relation="relation15"/>
-    <link port="RecordAssembler.offThreshold" relation="relation26"/>
+    <link port="ExpressionToToken.input" relation="relation15"/>
+    <link port="ExpressionToToken.output" relation="relation16"/>
+    <link port="ExpressionToToken2.input" relation="relation17"/>
+    <link port="ExpressionToToken2.output" relation="relation22"/>
+    <link port="RecordAssembler2.output" relation="relation27"/>
+    <link port="RecordAssembler2.onThreshold" relation="relation25"/>
+    <link port="RecordAssembler2.offThreshold" relation="relation26"/>
+    <link port="HttpActor3.response" relation="relation28"/>
+    <link port="HttpActor3.response" relation="relation14"/>
+    <link port="HttpActor3.getRequestURI" relation="relation29"/>
+    <link port="HttpActor3.postParameters" relation="relation30"/>
+    <link port="RecordAssembler3.output" relation="relation24"/>
+    <link port="RecordAssembler3.lightAmount" relation="relation20"/>
+    <link port="TokenToJSON2.input" relation="relation24"/>
+    <link port="TokenToJSON2.output" relation="relation31"/>
+    <link port="BooleanSwitch.input" relation="relation18"/>
+    <link port="BooleanSwitch.control" relation="relation21"/>
+    <link port="BooleanSwitch.trueOutput" relation="relation34"/>
+    <link port="BooleanSwitch.falseOutput" relation="relation10"/>
+    <link port="SetVariable3.input" relation="relation33"/>
+    <link port="SetVariable3.output" relation="relation32"/>
+    <link port="Const4.output" relation="relation19"/>
+    <link port="Const4.trigger" relation="relation34"/>
+    <link port="SetVariable4.input" relation="relation20"/>
 </entity>
