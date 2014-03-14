@@ -29,7 +29,16 @@
 
 // Used by FMI 2.0.  See FMIFuctions.h
 #define FMIAPI_FUNCTION_PREFIX stairsA_
-#define FMIAPI
+ #if defined _WIN32 || defined __CYGWIN__
+        /* Note: both gcc & MSVC on Windows support this syntax. */
+      #define FMIAPI __declspec(dllexport)
+ #else
+  #if __GNUC__ >= 4
+    #define FMIAPI __attribute__ ((visibility ("default")))
+  #else
+    #define FMIAPI
+  #endif
+ #endif
 
 // include fmu header files, typedefs and macros
 #include "fmiFunctions.h"

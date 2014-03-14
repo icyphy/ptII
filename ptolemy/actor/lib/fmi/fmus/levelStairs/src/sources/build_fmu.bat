@@ -1,6 +1,6 @@
 rem @echo off 
 rem ------------------------------------------------------------
-rem $Id: build_fmu.bat 67777 2013-10-26 01:51:06Z cxh $
+rem $Id: build_fmu.bat 66782 2013-06-27 21:23:40Z cxh $
 rem This batch builds an FMU of the FMU SDK
 rem Usage: build_fmu  <fmu_dir_name> 
 
@@ -66,6 +66,21 @@ if defined LIB     set PREV_LIB=%LIB%
 if defined LIBPATH set PREV_LIBPATH=%LIBPATH%
 
 rem setup the compiler
+if defined VS250COMNTOOLS (call "%VS250COMNTOOLS%\vsvars32.bat") else ^
+if defined VS240COMNTOOLS (call "%VS240COMNTOOLS%\vsvars32.bat") else ^
+if defined VS230COMNTOOLS (call "%VS230COMNTOOLS%\vsvars32.bat") else ^
+if defined VS220COMNTOOLS (call "%VS220COMNTOOLS%\vsvars32.bat") else ^
+if defined VS210COMNTOOLS (call "%VS210COMNTOOLS%\vsvars32.bat") else ^
+if defined VS200COMNTOOLS (call "%VS200COMNTOOLS%\vsvars32.bat") else ^
+if defined VS190COMNTOOLS (call "%VS190COMNTOOLS%\vsvars32.bat") else ^
+if defined VS180COMNTOOLS (call "%VS180COMNTOOLS%\vsvars32.bat") else ^
+if defined VS170COMNTOOLS (call "%VS170COMNTOOLS%\vsvars32.bat") else ^
+if defined VS160COMNTOOLS (call "%VS160COMNTOOLS%\vsvars32.bat") else ^
+if defined VS150COMNTOOLS (call "%VS150COMNTOOLS%\vsvars32.bat") else ^
+if defined VS140COMNTOOLS (call "%VS140COMNTOOLS%\vsvars32.bat") else ^
+if defined VS130COMNTOOLS (call "%VS130COMNTOOLS%\vsvars32.bat") else ^
+if defined VS120COMNTOOLS (call "%VS120COMNTOOLS%\vsvars32.bat") else ^
+if defined VS110COMNTOOLS (call "%VS110COMNTOOLS%\vsvars32.bat") else ^
 if defined VS110COMNTOOLS (call "%VS110COMNTOOLS%\vsvars32.bat") else ^
 if defined VS100COMNTOOLS (call "%VS100COMNTOOLS%\vsvars32.bat") else ^
 if defined VS90COMNTOOLS (call "%VS90COMNTOOLS%\vsvars32.bat") else ^

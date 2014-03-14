@@ -19,7 +19,7 @@ INCLUDE = -DFMI_COSIMULATION -I.
 
 # For co-simulation FMUs, modelExchange.mk does not exist.
 # For model exchange FMUs, modelExchange.mk defines INCLUDE.
-#include modelExchange.mk
+include modelExchange.mk
 
 # The suffix for shared libraries.
 # dylib for Mac OS X, so for Linux
