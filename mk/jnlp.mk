@@ -1473,7 +1473,7 @@ ptplot.exe: ptplot_l4j.xml
 
 
 vergil_l4j.xml:
-	# Remove $(PTII)/ for files like /var/lib/hudson/jobs/ptII/workspace/vendors/oracle/javamail/mail.jar and /home/hudson/jobs/ptII/workspace/lib/jsoup-1.7.3.jar
+	# Remove $(PTII)/ for files like /var/lib/hudson/jobs/ptII/workspace/vendors/oracle/javamail/javax.mail.jar and /home/hudson/jobs/ptII/workspace/lib/jsoup-1.7.3.jar
 	$(MKL4J) vergil ptolemy.vergil.VergilApplication \
 		doc/img/vergil.ico \
 		"" `echo $(FULL_JNLP_JARS) | sed 's@$(PTII)/@@g'` > $@
