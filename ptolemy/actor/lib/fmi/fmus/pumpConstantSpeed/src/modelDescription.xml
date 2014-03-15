@@ -9,7 +9,8 @@
    variableNamingConvention="structured">
 
   <ModelExchange
-     modelIdentifier="pumpConstantSpeed"/>
+     modelIdentifier="pumpConstantSpeed"
+     completedIntegratorStepNotNeeded="true"/>
 
   <UnitDefinitions>
     <Unit

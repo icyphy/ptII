@@ -1,26 +1,28 @@
 <html>
 <head>
     <title>Documentation for pumpConstantSpeed.fmu</title>
-<style type="text/css">
-  html { font-family: Verdana, Arial, Helvetica, sans-serif; }
-  h1   { color: #000066; }
-</style>
 </head>
 <body>
 <h1>pumpConstantSpeed.fmu</h1>
 <p>
 The pump with constant speed implements the following equation: 
 <ul>
-<li> outlet.m_flow = inlet.m_flow;
-<li> outlet.T = inlet.T;
-<li> outlet.p = inlet.p + dp0 * ( 1 - inlet.m_flow/m0_flow);
+<li>
+<code>outlet.m_flow = inlet.m_flow</code>
+</li>
+<li>
+<code>outlet.T = inlet.T</code>
+</li>
+<li>
+<code>outlet.p = inlet.p + dp0 * ( 1 - inlet.m_flow/m0_flow)</code>
+</li>
 </ul>
-where <i>inlet</i> and <i>outlet</i> are the inlet and outlet ports,
-<i>m_flow</i> is the mass flow rate,
-<i>T</i> is the temperature and
-<i>p</i> is the absolute pressure.
+where <code>inlet</code> and <code>outlet</code> are the inlet and outlet ports,
+<code>m_flow</code> is the mass flow rate,
+<code>T</code> is the temperature and
+<code>p</code> is the absolute pressure.
 The parameters are
-<i>dp0</i> and <i>m0_flow</i>, which define a linear pump curve.
+<code>dp0</code> and <code>m0_flow</code>, which define a linear pump curve.
 </p>
 </body>
 </html>

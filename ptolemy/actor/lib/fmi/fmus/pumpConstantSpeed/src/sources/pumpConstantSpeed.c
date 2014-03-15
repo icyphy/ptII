@@ -256,7 +256,7 @@ FMI_Export fmiStatus fmiGetDirectionalDerivative(fmiComponent c,
     // If the capability attribute “providesDirectionalDerivative” is true, 
     // fmiGetDirectionalDerivative computes a linear combination of the partial derivatives of h 
     // with respect to the selected input variables
-    return fmiOK; // FIXME. Shouldn't this be fmiError?
+    return fmiError;
 }
 
 // Start of Model Exchange functions.
