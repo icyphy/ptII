@@ -1,0 +1,21 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="ParticleFilter" class="ptolemy.moml.EntityLibrary">
+  <configure>
+    <?moml
+      <group>
+  <doc>Communication Aspects</doc>
+
+  <entity name="ParticleFilter" class="org.ptolemy.machineLearning.particleFilter.ParticleFilter">
+  </entity>
+      
+  <entity name="ParticleFilterRange" class="org.ptolemy.machineLearning.particleFilter.ParticleFilterRange">
+  </entity>
+
+      </group>
+    ?>
+  </configure>
+</entity>
+
+
