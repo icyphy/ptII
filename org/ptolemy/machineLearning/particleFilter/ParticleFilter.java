@@ -97,26 +97,12 @@ import ptolemy.math.SignalProcessing;
  These names can be arbitrary, since you will refer them to
  by name rather than by the symbol <i>X</i>.
 
- <li> For each state variable name in <i>stateVariableNames</i>,
- create a parameter with a value equal to the initial value of that
- particular state variable.
-
  <li> Specify an update function (part of <i>f</i> above) for each
  state variable by creating a parameter named <i>name</i>_update, where
  <i>name</i> is the name of the state variable. The value of this
  parameter should be an expression giving the rate of change of
  this state variable as a function of any of the state variables,
  any input, any other actor parameter, and (possibly), the variable
- <i>t</i>, representing current time.
-
- <li> For each output in <i>y</i>, create an output port.
- The output may have any name. This actor will automatically
- create a parameter with the same name as the output port.
-
- <li> For each parameter matching an output port, set its
- value to be an expression giving the output
- value as a function of the state variables, the inputs, any other
- actor parameter, and (possibly), the variable
  <i>t</i>, representing current time.
 
  </ul>
