@@ -73,7 +73,7 @@ import ptolemy.math.DoubleMatrixMath;
 import ptolemy.math.SignalProcessing;
 
 ///////////////////////////////////////////////////////////////////
-//// DifferentialSystem
+//// 
 
 /**
  A Particle Filter Implementation
