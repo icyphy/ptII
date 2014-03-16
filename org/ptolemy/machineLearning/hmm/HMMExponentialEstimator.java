@@ -53,7 +53,7 @@ emissions. The base class ParameterEstimator performs the parameter estimation a
 the HMMGaussianEstimator class contains density-specific methods for the exponential PDF
 calculations and produces the relevant estimates at its output ports.</p>
 <p>
-The output ports for an exponential HMM model is the <i>lambda<\i>
+The output ports for an exponential HMM model is the <i>lambda</i>
 vector that contains the rate estimates of the exponential distributions in each possible
 emission category.
 </p>
