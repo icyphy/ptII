@@ -43,17 +43,17 @@ import ptolemy.kernel.util.Workspace;
 /**
 <p>This actor performs Maximum-Likelihood classification of the partially-observed
 Bayesian Network models. ClassifyObservations is designed to work with <i>
-ExpectationMaximization<\i>, which provides the Maximum-Likelihood model parameters
+ExpectationMaximization</i>, which provides the Maximum-Likelihood model parameters
 from which the observations are assumed to be drawn. The output is an integer array
 of labels, representing the maximum-likelihood hidden state sequence of the given
 model.
 
 <p>
 The user provides a set of parameter estimates as inputs to the model, and
-The <i>mean<\i>  is a double array input containing the mean estimate and
+The <i>mean</i>  is a double array input containing the mean estimate and
 <i>sigma</i> is a double array input containing standard deviation estimate of
-each mixture component. If the <i>modelType<\i> is HMM, then an additional input,
-<i>transitionMatrix<\i> is provided, which is an estimate of the transition matrix
+each mixture component. If the <i>modelType</i> is HMM, then an additional input,
+<i>transitionMatrix</i> is provided, which is an estimate of the transition matrix
 governing the Markovian process representing the hidden state evolution. The <i>prior
 </i> input is an estimate of the prior state distribution.
 
@@ -117,7 +117,7 @@ public class HMMMultinomialClassifier extends ObservationClassifier {
 
         _nCategories = ((MatrixToken) observationProbabilities.getToken())
                 .getColumnCount();
-
+        _B = new double[_nCategories][_nCategories];
         // update array values and lengths
         _nStates = ((ArrayToken) prior.getToken()).length();
 

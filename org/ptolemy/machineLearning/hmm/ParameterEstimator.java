@@ -55,25 +55,25 @@ import ptolemy.math.SignalProcessing;
 /**
 <p>This actor implements the Expectation-Maximization(EM) algorithm for
 parameter estimation in graphical stochastic models. Two types of fundamental
-types of Bayesian Network models: <i>Mixture Model(MM)<\i> and <i>Hidden Markov
-Model(HMM)<\i> are supported. The input is an array of observations of arbitrary
+types of Bayesian Network models: <i>Mixture Model(MM)</i> and <i>Hidden Markov
+Model(HMM)</i> are supported. The input is an array of observations of arbitrary
 length and the outputs are the parameter estimates for the chosen model.</p>
 <p>
 The output ports reflect the parameter estimates of Gaussian MM or HMM. The Mixture
 Model is parameterized by <i>M</i> states, each distributed according to a distribution
 specified by the <i>emissionDistribution</i> parameter. Currently, the actor supports
 Gaussian emissions.
-The <i>mean<\i>  is a double array output containing the mean estimates and
+The <i>mean</i>  is a double array output containing the mean estimates and
 <i>sigma</i> is a double array output containing standard deviation estimates of
-each mixture component. If the <i>modelType<\i> is HMM, then an additional output,
-<i>transitionMatrix<\i> is provided, which is an estimate of the transition matrix
+each mixture component. If the <i>modelType</i> is HMM, then an additional output,
+<i>transitionMatrix</i> is provided, which is an estimate of the transition matrix
 governing the Markovian process representing the hidden state evolution.
-If the <i>modelType<\i> is MM, this port outputs a double array with the prior
+If the <i>modelType</i> is MM, this port outputs a double array with the prior
 probability estimates of the mixture components.
 </p>
 <p>
 <i>iterations</i> is the maximum number of EM iterations until the log-likelihood
-P(observations | model parameters) remain within <i>likelihoodThreshold<\i> neighborhood
+P(observations | model parameters) remain within <i>likelihoodThreshold</i> neighborhood
 of the previous likelihood estimate. The default likelihood threshold is set to 1E-4 and
 for precise applications, may be set to a lower positive value.
 
@@ -200,7 +200,7 @@ public abstract class ParameterEstimator extends TypedAtomicActor {
             // check if priors is a valid probability vector.
             if (! SignalProcessing.close(sum, 1.0)) {
                 throw new IllegalActionException(this, "Priors sum to " + sum
-                        + " . The sum must equal 1.0.");
+                        + " . The sum must be equal to 1.0.");
             } else {
                 _priors = tempPriors;
             }

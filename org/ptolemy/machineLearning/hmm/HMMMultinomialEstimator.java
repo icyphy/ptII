@@ -52,16 +52,16 @@ Emissions. The base class ParameterEstimator performs the parameter estimation a
 the HMMGaussianEstimator class contains density-specific methods for Multinomial emission
 calculations and produces the relevant estimates at its output ports.</p>
 <p>
-The output ports for a Gaussian HMM model are the <i>mean<\i> and the <i>standardDeviation<\i>
+The output ports for a Gaussian HMM model are the <i>mean</i> and the <i>standardDeviation</i>
 vectors of the possible hidden states in addition to the HMM parameters independent
-from the emission density: <i>transitionMatrix<\i> .
+from the emission density: <i>transitionMatrix</i> .
 T
-he <i>mean<\i>  is a double array output containing the mean estimates and
+he <i>mean</i>  is a double array output containing the mean estimates and
 <i>sigma</i> is a double array output containing standard deviation estimates of
-each mixture component. If the <i>modelType<\i> is HMM, then an additional output,
-<i>transitionMatrix<\i> is provided, which is an estimate of the transition matrix
+each mixture component. If the <i>modelType</i> is HMM, then an additional output,
+<i>transitionMatrix</i> is provided, which is an estimate of the transition matrix
 governing the Markovian process representing the hidden state evolution.
-If the <i>modelType<\i> is MM, this port outputs a double array with the prior
+If the <i>modelType</i> is MM, this port outputs a double array with the prior
 probability estimates of the mixture components.
 </p>
 <p>
@@ -117,6 +117,7 @@ public class HMMMultinomialEstimator extends ParameterEstimator {
 
             int nCat = ((MatrixToken) observationProbabilities.getToken())
                     .getColumnCount();
+            _nStates = ((IntToken)nStates.getToken()).intValue();
             _B0 = new double[_nStates][nCat];
             for (int i = 0; i < _nStates; i++) {
                 for (int j = 0; j < nCat; j++) {
