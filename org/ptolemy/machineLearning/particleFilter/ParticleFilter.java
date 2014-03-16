@@ -120,13 +120,9 @@ import ptolemy.math.SignalProcessing;
  <i>t</i>, representing current time.
 
  </ul>
- <P>
- This actor is a higher-order component. Upon preinitialization,
- the actor will create a subsystem using integrators and expressions.
- These are not persistent (they are not exported in the MoML file),
- and will instead by created each time the actor is preinitialized.
- <p>
- This actor is based on the ptolemy.domain.ct.lib.DifferentialSystem
+
+
+ The preinitialize() method of this actor is based on the ptolemy.domain.ct.lib.DifferentialSystem
  actor by Jie Liu.
 
  @author Ilge Akkaya
@@ -176,6 +172,9 @@ public class ParticleFilter extends TypedCompositeActor {
      * sample size drops below 50% of the total number of particles
      */
     public Parameter bootstrap;
+
+    /** Low-variance resampler **/
+    public Parameter lowVarianceSampler;
 
     /** Standard deviation of the measurement noise ( assuming  Gaussian measurement noise
      * at the moment)
@@ -270,8 +269,11 @@ public class ParticleFilter extends TypedCompositeActor {
             _Sigma = proposed;
         }else if(attribute == bootstrap)
         {
-            doBootstrap = ((BooleanToken) bootstrap.getToken()).booleanValue();
+            _doBootstrap = ((BooleanToken) bootstrap.getToken()).booleanValue();
+        }else if(attribute == lowVarianceSampler){
+            _lowVarianceSampler = ((BooleanToken) lowVarianceSampler.getToken()).booleanValue();
         }
+
         else{
             super.attributeChanged(attribute);
         }
@@ -329,7 +331,7 @@ public class ParticleFilter extends TypedCompositeActor {
 
 
                 _normalizeWeights();
-                if(doBootstrap){
+                if(_doBootstrap){
                     _resample();
                 }else if(_getEffectiveSampleSize() < 0.5*Nparticles){
                     _resample();
@@ -525,6 +527,10 @@ public class ParticleFilter extends TypedCompositeActor {
         bootstrap.setTypeEquals(BaseType.BOOLEAN);
         bootstrap.setExpression("true");
 
+        lowVarianceSampler = new Parameter(this, "lowVarianceSampler");
+        lowVarianceSampler.setTypeEquals(BaseType.BOOLEAN);
+        lowVarianceSampler.setExpression("false");
+
         particleCount = new Parameter(this, "particleCount");
         particleCount.setExpression("1000");
         Nparticles = 1000;
@@ -616,6 +622,8 @@ public class ParticleFilter extends TypedCompositeActor {
         return sum;
     }
     private void _resample(){
+        double randomValue;
+        int intervalIndex;
         double[] cumulativeSums = new double[Nparticles+1];
         Particle[] previousParticles = new Particle[Nparticles];
         cumulativeSums[0]=0;
@@ -623,21 +631,43 @@ public class ParticleFilter extends TypedCompositeActor {
             cumulativeSums[i+1] = cumulativeSums[i] + particles[i].getWeight();
             previousParticles[i] = particles[i];
         }
-        // will resample particles according to their weights
-        // last entry of cumulative sums is the range of the random variable
-        // resampling to set equal weights
-        for(int i = 0; i < Nparticles; i++){
-            double randomValue = _random.nextDouble()*cumulativeSums[Nparticles];
-            int intervalIndex = binarySearch(cumulativeSums, randomValue, 0, Nparticles);
-            if(intervalIndex < 0 || intervalIndex > Nparticles-1){
-                //System.out.println("wrongindex");
-            }else{
-                particles[i] = new Particle(particles[i].getSize());
-                particles[i].setValue((LinkedList)previousParticles[intervalIndex].getValue());
-                // the weights are equal at a result of resampling
-                particles[i].setWeight(1.0/Nparticles);
+        // If low-variance sampling has been selected, sample a random particle in [0,1/Nparticles] 
+        // and choose all other particles in reference to the first sample. Yields a low-variance 
+        // particle set.
+        if(_lowVarianceSampler){
+            double baseValue = _random.nextDouble()*(1.0/Nparticles);
+            for(int i = 0; i < Nparticles; i++){
+                randomValue = baseValue + i*1.0/Nparticles;
+                intervalIndex = binarySearch(cumulativeSums, randomValue, 0, Nparticles);
+                //FIXME: check intervalIndex and remove the failure condition
+                if(intervalIndex < 0 || intervalIndex > Nparticles-1){
+                    System.out.println("Index does not exist!");
+                }else{
+                    particles[i] = new Particle(particles[i].getSize());
+                    particles[i].setValue((LinkedList)previousParticles[intervalIndex].getValue());
+                    // the weights are equal at a result of resampling
+                    particles[i].setWeight(1.0/Nparticles);
+                }
             }
-        } 
+
+        }else{
+            // will resample particles according to their weights
+            // last entry of cumulative sums is the range of the random variable
+            // resampling to set equal weights
+            
+            for(int i = 0; i < Nparticles; i++){
+                randomValue = _random.nextDouble()*cumulativeSums[Nparticles];
+                intervalIndex = binarySearch(cumulativeSums, randomValue, 0, Nparticles);
+                if(intervalIndex < 0 || intervalIndex > Nparticles-1){
+                    System.out.println("Index does not exist!");
+                }else{
+                    particles[i] = new Particle(particles[i].getSize());
+                    particles[i].setValue((LinkedList)previousParticles[intervalIndex].getValue());
+                    // the weights are equal at a result of resampling
+                    particles[i].setWeight(1.0/Nparticles);
+                }
+            }
+        }
 
     }
     private void _propagate() throws IllegalActionException, NameDuplicationException{
@@ -663,7 +693,9 @@ public class ParticleFilter extends TypedCompositeActor {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private members                   ////
-    private boolean doBootstrap = true;
+    private boolean _doBootstrap = true;
+
+    private boolean _lowVarianceSampler = false;
     /** Flag indicating whether the contained model is up to date. */
     private boolean _upToDate = false;
 
@@ -754,6 +786,7 @@ public class ParticleFilter extends TypedCompositeActor {
                     }else{
                         p = (Parameter)(ParticleFilter.this).getAttribute(_stateVariables[i]);
                     }
+                    //set the parameters to have the particle values
                     p.setExpression(_particleValue.get(i).toString());
                     p.setVisibility(Settable.EXPERT);
                     _tokenMap.put(_stateVariables[i], new DoubleToken(_particleValue.get(i).doubleValue()));
@@ -767,6 +800,7 @@ public class ParticleFilter extends TypedCompositeActor {
                     // Note that the parser is NOT retained, since in most
                     // cases the expression doesn't change, and the parser
                     // requires a large amount of memory.
+
                     PtParser parser = new PtParser();
                     _parseTree = parser.generateParseTree(measurementEquation.expression
                             .getExpression());
