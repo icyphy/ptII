@@ -229,18 +229,30 @@ public class ParticleFilter extends TypedCompositeActor {
         }else if(attribute == stateVariableNames){
             // create a hidden parameter that corresponds to the specified state variable, if not already present
             ArrayToken names = (ArrayToken)stateVariableNames.getToken();
-            try{
-                for(int i = 0; i < names.length(); i++){
-                    String stateName = ((StringToken)names.getElement(i)).stringValue();
-                    if(this.getAttribute(stateName) == null && stateName.length()!= 0){
-                        Parameter y = new Parameter(this, stateName);
-                        y.setExpression("0.0");
-                        y.setVisibility(Settable.EXPERT);
+            String stateName = ((StringToken)names.getElement(0)).stringValue();
+            if(stateName.length() >0){
+                // Set the output type according to the state variables
+                String[] labels = new String[names.length() + 1];
+                Type[] types = new Type[names.length() + 1];
+                try{
+                    for(int i = 0; i < names.length(); i++){
+                        stateName = ((StringToken)names.getElement(i)).stringValue();
+                        if(this.getAttribute(stateName) == null && stateName.length()!= 0){
+                            Parameter y = new Parameter(this, stateName);
+                            y.setExpression("0.0");
+                            y.setVisibility(Settable.EXPERT);
+                        }
+                        labels[i] = stateName;
+                        types[i]  = BaseType.DOUBLE; // preset to be double
                     }
+                    labels[names.length()] = "weight";
+                    types[names.length()] = BaseType.DOUBLE;
+                    particleOutput.setTypeEquals(new RecordType(labels,types));
+
+                }catch(NameDuplicationException e){
+                    // should not happen
+                    System.err.println("Duplicate field in " + this.getName());
                 }
-            }catch(NameDuplicationException e){
-                // should not happen
-                System.err.println("Duplicate field in " + this.getName());
             }
         }
 
@@ -640,7 +652,7 @@ public class ParticleFilter extends TypedCompositeActor {
             // will resample particles according to their weights
             // last entry of cumulative sums is the range of the random variable
             // resampling to set equal weights
-            
+
             for(int i = 0; i < Nparticles; i++){
                 randomValue = _random.nextDouble()*cumulativeSums[Nparticles];
                 intervalIndex = binarySearch(cumulativeSums, randomValue, 0, Nparticles);
