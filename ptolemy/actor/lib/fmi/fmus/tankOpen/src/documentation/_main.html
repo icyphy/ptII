@@ -1,0 +1,42 @@
+<html>
+<head>
+  <title>Documentation for tankOpen.fmu</title>
+</head>
+<body>
+<h1>Model Description</h1>
+<p>
+This FMU models a fluid tank that is open to the atmosphere
+and whose fluid is completely mixed.
+The only energy exchange with the environment is through
+the fluid inlet and outlet.
+The model implements the following equations: 
+<pre>
+  m * der(T) = inlet.m_flow * (inlet.T - T)                            (1)
+  dp = inlet.p-outlet.p                                                (2)
+  outlet.m_flow = if noEvent(dp>0) then sqrt(dp/k) else -sqrt(-dp/k)   (3)
+  outlet.T = T                                                         (4)
+  outlet.p = pAtm                                                      (5)
+</pre>
+where <code>inlet</code> and <code>outlet</code> are the inlet and outlet ports,
+<code>m_flow</code> is the mass flow rate,
+<code>T</code> is the temperature and
+<code>p</code> is the absolute pressure.
+The parameters are
+<code>pAtm</code> for the atmospheric pressure,
+<code>k</code> for the flow coefficient and
+<code>T_start</code> for the initial value of <code>T</code>.
+</p>
+<p>
+<h2>Limitations</h2>
+<p>
+Because the flow versus pressure drop equation (3)
+is not regularized near zero flow, this model should not be
+used around <code>dp=0</code> if the model is combined
+with a solver that requires the derivatives of the
+model equations to be bounded.
+This is for example the case if the model is used
+within an algebraic loop that is solved using a Newton-Raphson
+solver.
+</p>
+</body>
+</html>
