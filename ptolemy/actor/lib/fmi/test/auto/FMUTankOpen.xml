@@ -4,16 +4,16 @@
 <entity name="FMUTankOpen" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="10.0.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={475, 74, 1006, 779}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={475, 74, 1060, 858}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[772, 669]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[826, 748]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.1346060078216686">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{331.9556353139226, 277.5908203125}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{355.7524421471927, 312.4046673463581}">
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="The source code for this FMU is in&#10;$PTII/ptolemy/actor/lib/fmi/fmus/tankOpen.&#10;To build the FMU file, do this:&#10;&#10;&gt; cd $PTII/ptolemy/actor/lib/fmi/fmus/tankOpen&#10;&gt; make&#10;&#10;The resulting .fmu file for model exchange will&#10;be in $PTII/ptolemy/actor/lib/fmi/fmus/tankOpen.">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="The source code for this FMU is in&#10;$PTII/ptolemy/actor/lib/fmi/fmus/tankOpen.&#10;To build the FMU file, do this:&#10;&#10;&gt; cd $PTII/ptolemy/actor/lib/fmi/fmus/tankOpen&#10;&gt; make&#10;&#10;The resulting .fmu file for model exchange will&#10;be in $PTII/ptolemy/actor/lib/fmi/fmus/tankOpen.fmu&#10;&#10;To copy the file to this directory, type&#10;&gt; cd $PTII/ptolemy/actor/lib/fmi/fmus/tankOpen&#10;&gt; make update&#10;">
         </property>
         <property name="_location" class="ptolemy.kernel.util.RelativeLocation" value="{315.0, -15.0}">
         </property>
@@ -48,7 +48,7 @@
             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{160.0, 235.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{260.0, 290.0}">
         </property>
     </entity>
     <entity name="QSSIntegrator" class="org.ptolemy.qss.QSSIntegrator">
@@ -56,7 +56,7 @@
         </property>
         <property name="quantum" class="ptolemy.data.expr.Parameter" value="1">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{445.0, 465.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{415.0, 495.0}">
         </property>
         <property name="_flipPortsHorizontal" class="ptolemy.data.expr.Parameter" value="true">
         </property>
@@ -66,7 +66,7 @@
         </property>
         <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 300]">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{250.0, 530.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{365.0, 425.0}">
         </property>
         <configure>
 <?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
@@ -88,7 +88,7 @@
         </property>
         <property name="persistentInputs" class="ptolemy.data.expr.Parameter" value="true">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{445.0, 295.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{415.0, 350.0}">
         </property>
         <property name="m" class="ptolemy.data.expr.Parameter" value="1.0">
         </property>
@@ -206,7 +206,7 @@
     </entity>
     <entity name="CurrentTime" class="ptolemy.actor.lib.CurrentTime">
         <doc>Output the current time.</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{275.0, 395.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{385.0, 560.0}">
         </property>
     </entity>
     <entity name="TimedPlotter2" class="ptolemy.actor.lib.gui.TimedPlotter">
@@ -214,7 +214,7 @@
         </property>
         <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 300]">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[605.0, 465.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{570.0, 495.0}">
         </property>
         <configure>
 <?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
@@ -239,7 +239,7 @@
             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{160.0, 305.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{155.0, 360.0}">
         </property>
     </entity>
     <entity name="mIn_flow" class="ptolemy.actor.lib.Const">
@@ -252,61 +252,53 @@
             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{160.0, 185.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{155.0, 245.0}">
         </property>
     </entity>
     <entity name="SingleEvent" class="ptolemy.actor.lib.SingleEvent">
         <property name="value" class="ptolemy.data.expr.Parameter" value="1.0">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{30.0, 305.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{30.0, 360.0}">
         </property>
     </entity>
     <relation name="relation6" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
         </property>
-        <vertex name="vertex1" value="{210.0, 530.0}">
+        <vertex name="vertex1" value="{310.0, 560.0}">
         </vertex>
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;tankOpen.T&quot;,x=445.0,y=295.0}, tail={id=&quot;relation6.vertex1&quot;,x=210.0,y=530.0}, points={10.0,460.0} },{ head={id=&quot;QSSIntegrator.q&quot;,x=445.0,y=465.0}, tail={id=&quot;relation6.vertex1&quot;,x=210.0,y=530.0}, points={210.0,465.0} },{ head={id=&quot;relation5.vertex1&quot;,x=335.0,y=345.0}, tail={id=&quot;relation6.vertex1&quot;,x=210.0,y=530.0}, points={210.0,345.0} },{ head={id=&quot;TimedPlotter.input&quot;,x=250.0,y=530.0}, tail={id=&quot;relation6.vertex1&quot;,x=210.0,y=530.0}, points={} },{ head={id=&quot;CurrentTime.trigger&quot;,x=275.0,y=395.0}, tail={id=&quot;relation6.vertex1&quot;,x=210.0,y=530.0}, points={210.0,395.0} } }">
-        </property>
-    </relation>
-    <relation name="relation5" class="ptolemy.actor.TypedIORelation">
-        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
-        </property>
-        <vertex name="vertex1" value="{335.0, 345.0}">
-        </vertex>
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;TIn.trigger&quot;,x=160.0,y=235.0}, tail={id=&quot;relation5.vertex1&quot;,x=335.0,y=345.0}, points={} },{ head={id=&quot;tankOpen.T&quot;,x=445.0,y=295.0}, tail={id=&quot;relation5.vertex1&quot;,x=335.0,y=345.0}, points={335.0,315.0} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;QSSIntegrator.q&quot;,x=415.0,y=495.0}, tail={id=&quot;relation6.vertex1&quot;,x=310.0,y=560.0}, points={310.0,495.0} },{ head={id=&quot;TimedPlotter.input&quot;,x=365.0,y=425.0}, tail={id=&quot;relation6.vertex1&quot;,x=310.0,y=560.0}, points={310.0,425.0} },{ head={id=&quot;CurrentTime.trigger&quot;,x=385.0,y=560.0}, tail={id=&quot;relation6.vertex1&quot;,x=310.0,y=560.0}, points={} },{ head={id=&quot;relation6.vertex1&quot;,x=310.0,y=560.0}, tail={id=&quot;tankOpen.T&quot;,x=415.0,y=350.0}, points={310.0,370.0} } }">
         </property>
     </relation>
     <relation name="relation7" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
         </property>
-        <vertex name="vertex1" value="{545.0, 465.0}">
+        <vertex name="vertex1" value="{520.0, 495.0}">
         </vertex>
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;tankOpen.der_T_&quot;,x=445.0,y=295.0}, tail={id=&quot;relation7.vertex1&quot;,x=545.0,y=465.0}, points={545.0,315.0,545.0,465.0} },{ head={id=&quot;QSSIntegrator.u&quot;,x=445.0,y=465.0}, tail={id=&quot;relation7.vertex1&quot;,x=545.0,y=465.0}, points={} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;tankOpen.der_T_&quot;,x=415.0,y=350.0}, tail={id=&quot;relation7.vertex1&quot;,x=520.0,y=495.0}, points={520.0,370.0,520.0,495.0} },{ head={id=&quot;QSSIntegrator.u&quot;,x=415.0,y=495.0}, tail={id=&quot;relation7.vertex1&quot;,x=520.0,y=495.0}, points={} },{ head={id=&quot;TimedPlotter2.input&quot;,x=570.0,y=495.0}, tail={id=&quot;relation7.vertex1&quot;,x=520.0,y=495.0}, points={} } }">
         </property>
     </relation>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;TIn.output&quot;,x=160.0,y=235.0}, tail={id=&quot;tankOpen.inlet_T&quot;,x=445.0,y=295.0}, points={335.0,235.0,335.0,285.0} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;TIn.output&quot;,x=260.0,y=290.0}, tail={id=&quot;tankOpen.inlet_T&quot;,x=415.0,y=350.0}, points={310.0,290.0,310.0,340.0} } }">
         </property>
     </relation>
     <relation name="relation8" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
         </property>
-        <vertex name="vertex1" value="{350.0, 185.0}">
+        <vertex name="vertex1" value="{325.0, 245.0}">
         </vertex>
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;Display.input&quot;,x=390.0,y=185.0}, tail={id=&quot;relation8.vertex1&quot;,x=350.0,y=185.0}, points={} },{ head={id=&quot;tankOpen.inlet_m_flow&quot;,x=445.0,y=295.0}, tail={id=&quot;relation8.vertex1&quot;,x=350.0,y=185.0}, points={350.0,275.0} },{ head={id=&quot;mIn_flow.output&quot;,x=160.0,y=185.0}, tail={id=&quot;relation8.vertex1&quot;,x=350.0,y=185.0}, points={} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;tankOpen.inlet_m_flow&quot;,x=415.0,y=350.0}, tail={id=&quot;relation8.vertex1&quot;,x=325.0,y=245.0}, points={325.0,330.0} },{ head={id=&quot;mIn_flow.output&quot;,x=155.0,y=245.0}, tail={id=&quot;relation8.vertex1&quot;,x=325.0,y=245.0}, points={} } }">
         </property>
     </relation>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;tankOpen.inlet_p&quot;,x=445.0,y=295.0}, tail={id=&quot;pIn.output&quot;,x=160.0,y=305.0}, points={} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;tankOpen.inlet_p&quot;,x=415.0,y=350.0}, tail={id=&quot;pIn.output&quot;,x=155.0,y=360.0}, points={} } }">
         </property>
     </relation>
     <relation name="relation10" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
         </property>
-        <vertex name="vertex1" value="{90.0, 305.0}">
+        <vertex name="vertex1" value="{90.0, 360.0}">
         </vertex>
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;TIn.trigger&quot;,x=160.0,y=235.0}, tail={id=&quot;relation10.vertex1&quot;,x=90.0,y=305.0}, points={90.0,235.0} },{ head={id=&quot;pIn.trigger&quot;,x=160.0,y=305.0}, tail={id=&quot;relation10.vertex1&quot;,x=90.0,y=305.0}, points={} },{ head={id=&quot;mIn_flow.trigger&quot;,x=160.0,y=185.0}, tail={id=&quot;relation10.vertex1&quot;,x=90.0,y=305.0}, points={90.0,185.0} },{ head={id=&quot;SingleEvent.output&quot;,x=30.0,y=305.0}, tail={id=&quot;relation10.vertex1&quot;,x=90.0,y=305.0}, points={} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;TIn.trigger&quot;,x=260.0,y=290.0}, tail={id=&quot;relation10.vertex1&quot;,x=90.0,y=360.0}, points={90.0,290.0} },{ head={id=&quot;pIn.trigger&quot;,x=155.0,y=360.0}, tail={id=&quot;relation10.vertex1&quot;,x=90.0,y=360.0}, points={} },{ head={id=&quot;mIn_flow.trigger&quot;,x=155.0,y=245.0}, tail={id=&quot;relation10.vertex1&quot;,x=90.0,y=360.0}, points={90.0,245.0} },{ head={id=&quot;SingleEvent.output&quot;,x=30.0,y=360.0}, tail={id=&quot;relation10.vertex1&quot;,x=90.0,y=360.0}, points={} } }">
         </property>
     </relation>
     <link port="TIn.output" relation="relation"/>
@@ -317,7 +309,7 @@
     <link port="tankOpen.inlet_m_flow" relation="relation8"/>
     <link port="tankOpen.inlet_T" relation="relation"/>
     <link port="tankOpen.inlet_p" relation="relation2"/>
-    <link port="tankOpen.T" relation="relation5"/>
+    <link port="tankOpen.T" relation="relation6"/>
     <link port="tankOpen.der_T_" relation="relation7"/>
     <link port="CurrentTime.trigger" relation="relation6"/>
     <link port="TimedPlotter2.input" relation="relation7"/>
@@ -326,5 +318,4 @@
     <link port="mIn_flow.output" relation="relation8"/>
     <link port="mIn_flow.trigger" relation="relation10"/>
     <link port="SingleEvent.output" relation="relation10"/>
-    <link relation1="relation6" relation2="relation5"/>
 </entity>

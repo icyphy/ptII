@@ -9,7 +9,7 @@
         </property>
         <property name="period" class="ptolemy.data.expr.Parameter" value="0.1">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{55.0, 15.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{50.0, 15.0}">
         </property>
     </property>
     <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={521, 124, 1006, 779}, maximized=false}">
@@ -18,12 +18,12 @@
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.174382671286824">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{320.5820179505107, 267.4674722990637}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{320.58201795051065, 267.4674722990637}">
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="The source code for this FMU is in&#10;$PTII/ptolemy/actor/lib/fmi/fmus/fluidLoopPump.&#10;To build the FMU file, do this:&#10;&#10;&gt; cd $PTII/ptolemy/actor/lib/fmi/fmus/fluidLoopPump&#10;&gt; make&#10;&#10;The resulting .fmu file for model exchange will&#10;be in $PTII/ptolemy/actor/lib/fmi/fmus/fluidLoopPump.">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="The source code for this FMU is in&#10;$PTII/ptolemy/actor/lib/fmi/fmus/pumpConstantSpeed.&#10;To build the FMU file, do this:&#10;&#10;&gt; cd $PTII/ptolemy/actor/lib/fmi/fmus/pumpConstantSpeed&#10;&gt; make&#10;&#10;The resulting .fmu file for model exchange will&#10;be in $PTII/ptolemy/actor/lib/fmi/fmus/pumpConstantSpeed.fmu&#10;&#10;To copy the file to this directory, type&#10;&gt; cd $PTII/ptolemy/actor/lib/fmi/fmus/pumpConstantSpeed&#10;&gt; make update">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.RelativeLocation" value="[10.0, 275.0]">
+        <property name="_location" class="ptolemy.kernel.util.RelativeLocation" value="{-10.0, 50.0}">
         </property>
     </property>
     <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -31,7 +31,7 @@
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Author: Michael Wetter">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[15.0, 440.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[240.0, 515.0]">
         </property>
     </property>
     <entity name="Test_m_flow" class="ptolemy.actor.lib.Test">
@@ -41,14 +41,14 @@
         </property>
         <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[370.0, 35.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{370.0, 320.0}">
         </property>
     </entity>
     <entity name="m_flow" class="ptolemy.actor.lib.Ramp">
         <property name="step" class="ptolemy.actor.parameters.PortParameter" value="0.02">
         </property>
         <doc>Create a sequence of tokens with increasing value</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[60.0, 95.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{60.0, 380.0}">
         </property>
     </entity>
     <entity name="pumpConstantSpeed" class="ptolemy.actor.lib.fmi.FMUImport">
@@ -56,7 +56,7 @@
         </property>
         <property name="modelExchange" class="ptolemy.data.expr.Parameter" value="true">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[220.0, 105.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{220.0, 390.0}">
         </property>
         <property name="dp0" class="ptolemy.data.expr.Parameter" value="10000.0">
         </property>
@@ -149,7 +149,7 @@
         <property name="step" class="ptolemy.actor.parameters.PortParameter" value="10">
         </property>
         <doc>Create a sequence of tokens with increasing value</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[60.0, 170.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{60.0, 455.0}">
         </property>
     </entity>
     <entity name="pIn" class="ptolemy.actor.lib.Ramp">
@@ -158,7 +158,7 @@
         <property name="step" class="ptolemy.actor.parameters.PortParameter" value="10">
         </property>
         <doc>Create a sequence of tokens with increasing value</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[60.0, 235.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{60.0, 520.0}">
         </property>
     </entity>
     <entity name="Test_T" class="ptolemy.actor.lib.Test">
@@ -168,7 +168,7 @@
         </property>
         <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[370.0, 105.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{370.0, 390.0}">
         </property>
     </entity>
     <entity name="Test_pOut" class="ptolemy.actor.lib.Test">
@@ -178,31 +178,31 @@
         </property>
         <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[370.0, 170.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{370.0, 455.0}">
         </property>
     </entity>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;m_flow.output&quot;,x=60.0,y=95.0}, tail={id=&quot;pumpConstantSpeed.inlet_m_flow&quot;,x=220.0,y=105.0}, points={} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;m_flow.output&quot;,x=60.0,y=380.0}, tail={id=&quot;pumpConstantSpeed.inlet_m_flow&quot;,x=220.0,y=390.0}, points={} } }">
         </property>
     </relation>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;pumpConstantSpeed.inlet_T&quot;,x=220.0,y=105.0}, tail={id=&quot;T.output&quot;,x=60.0,y=170.0}, points={110.0,105.0,110.0,170.0} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;pumpConstantSpeed.inlet_T&quot;,x=220.0,y=390.0}, tail={id=&quot;T.output&quot;,x=60.0,y=455.0}, points={110.0,390.0,110.0,455.0} } }">
         </property>
     </relation>
     <relation name="relation4" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;pumpConstantSpeed.inlet_p&quot;,x=220.0,y=105.0}, tail={id=&quot;pIn.output&quot;,x=60.0,y=235.0}, points={125.0,115.0,125.0,235.0} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;pumpConstantSpeed.inlet_p&quot;,x=220.0,y=390.0}, tail={id=&quot;pIn.output&quot;,x=60.0,y=520.0}, points={125.0,400.0,125.0,520.0} } }">
         </property>
     </relation>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;Test_m_flow.input&quot;,x=370.0,y=35.0}, tail={id=&quot;pumpConstantSpeed.outlet_m_flow&quot;,x=220.0,y=105.0}, points={320.0,35.0,320.0,95.0} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;Test_m_flow.input&quot;,x=370.0,y=320.0}, tail={id=&quot;pumpConstantSpeed.outlet_m_flow&quot;,x=220.0,y=390.0}, points={320.0,320.0,320.0,380.0} } }">
         </property>
     </relation>
     <relation name="relation5" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;pumpConstantSpeed.outlet_T&quot;,x=220.0,y=105.0}, tail={id=&quot;Test_T.input&quot;,x=370.0,y=105.0}, points={} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;pumpConstantSpeed.outlet_T&quot;,x=220.0,y=390.0}, tail={id=&quot;Test_T.input&quot;,x=370.0,y=390.0}, points={} } }">
         </property>
     </relation>
     <relation name="relation6" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;pumpConstantSpeed.outlet_p&quot;,x=220.0,y=105.0}, tail={id=&quot;Test_pOut.input&quot;,x=370.0,y=170.0}, points={320.0,115.0,320.0,170.0} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;pumpConstantSpeed.outlet_p&quot;,x=220.0,y=390.0}, tail={id=&quot;Test_pOut.input&quot;,x=370.0,y=455.0}, points={320.0,400.0,320.0,455.0} } }">
         </property>
     </relation>
     <link port="Test_m_flow.input" relation="relation3"/>
