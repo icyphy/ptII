@@ -36,7 +36,9 @@ ME =		lbnl/demo
 # - CamelCase
 # - No dashes
 # - Underbars are not preferred
-DIRS = 		CRoom MatlabRoom SystemCommand
+# PTLBNL_CROOM_DIR is set to CRoom by configure if libexpat is found because
+# running make in CRoom optionally runs make in ../lib/util
+DIRS = 		$(PTLBNL_CROOM_DIR) MatlabRoom SystemCommand
 
 
 # Root of Ptolemy II directory
@@ -52,7 +54,7 @@ PTCLASSJAR =
 
 # Include the .class files from these jars in PTCLASSALLJAR
 PTCLASSALLJARS = \
-	CRoom/CRoom.jar \
+	$(PTLBNL_CROOM_JAR) \
 	MatlabRoom/MatlabRoom.jar \
 	SystemCommand/SystemCommand.jar
 

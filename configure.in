@@ -5539,10 +5539,13 @@ else
 fi
 
 if test -f "$LIBEXPAT_INCLUDE_DIR/expat.h" -a -d "$LIBEXPAT_LIB_DIR"; then
-    # Used in $PTII/lbnl/lib/util/makefile
+    # Used in $PTII/lbnl/lib/makefile
     PTLIBEXPAT_DIR=util
     # Used in $PTII/makefile
     PTLBNL_DIR=lbnl
+    # Used in lbnl/demo/makefile because make can call make on lib/util
+    PTLBNL_CROOM_DIR=CRoom
+    PTLBNL_CROOM_JAR=CRoom/CRoom.jar
     # Set to the lbnl jars that need to be signed if libexpat was found
     # and used in jnlp.mk.
     PTLBNL_JARS="lbnl/lbnl.jar lbnl/demo/demo.jar"
@@ -6180,6 +6183,12 @@ AC_SUBST(PTKVM_DIR)
 # Set to lbnl and used in $PTII/makefile if libexpat was found.
 AC_SUBST(PTLBNL_DIR)
 
+# Set to CRoom if libexpat is found and used in lbnl/demo/makefile
+AC_SUBST(PTLBNL_CROOM_DIR)
+
+# Set to CRoom/CRoom.jar if libexpat is found and used in lbnl/demo/makefile
+AC_SUBST(PTLBNL_CROOM_JAR)
+
 # Set to the lbnl jars that need to be signed if libexpat was found
 # and used in jnlp.mk and $PTII/doc/makefile.
 AC_SUBST(PTLBNL_JARS)
@@ -6197,7 +6206,7 @@ AC_SUBST(PTLEGO_DIR)
 # and Legos was found
 AC_SUBST(PTLEJOS_DIR)
 
-# Set to util and used in $PTII/lbnl/lib/util/makefile if libexpat was found
+# Set to util and used in $PTII/lbnl/lib/makefile if libexpat was found
 AC_SUBST(PTLIBEXPAT_DIR)
 
 # Set to gcc or cl and used in

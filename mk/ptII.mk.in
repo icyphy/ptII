@@ -731,6 +731,12 @@ PTOPENCV_PACKAGES = @PTOPENCV_PACKAGES@
 # $PTII/ptolemy/vergil/basic/layout/makefile if kieler was found
 PTKIELER_DIR =	@PTKIELER_DIR@
 
+# Set to CRoom if libexpat is found and used in lbnl/demo/makefile
+PTLBNL_CROOM_DIR = @PTLBNL_CROOM_DIR@
+
+# Set to CRoom/CRoom.jar if libexpat is found and used in lbnl/demo/makefile
+PTLBNL_CROOM_JAR = @PTLBNL_CROOM_JAR@
+
 # Set to lbnl and used in $PTII/makefile if libxpat was found.
 PTLBNL_DIR = 	@PTLBNL_DIR@
 
