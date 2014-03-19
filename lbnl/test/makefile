@@ -87,7 +87,12 @@ test_java: jclass
 all: all_bins
 
 all_bins:
-	(cd ../demo/CRoom; $(MAKE))
+	@if [ "$(PTLBNL_CROOM_DIR)" = "CRoom" ]; then \
+		echo "Running (cd ../demo/CRoom; $(MAKE)"; \
+		(cd ../demo/CRoom; $(MAKE)); \
+	else \
+		echo "The PTLBNL_CROOM_DIR had the value $(PTLBNL_CROOM_DIR) which is not CRoom so we are not running make in ../demo/CRoom.  This will cause tests to fail.  Maybe rerun configure and check to see if libexpat is found?"; \
+	fi
 
 install:
 	@echo "Nothing to be done for install in $(ME)"
