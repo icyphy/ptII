@@ -682,6 +682,8 @@ PTLEJOS_DIR
 PTLEGO_DIR
 PTLBNL_PACKAGES
 PTLBNL_JARS
+PTLBNL_CROOM_JAR
+PTLBNL_CROOM_DIR
 PTLBNL_DIR
 PTKVM_DIR
 PTKIELER_DIR
@@ -12578,10 +12580,13 @@ $as_echo "$as_me: WARNING: Failed to find expat.h
 fi
 
 if test -f "$LIBEXPAT_INCLUDE_DIR/expat.h" -a -d "$LIBEXPAT_LIB_DIR"; then
-    # Used in $PTII/lbnl/lib/util/makefile
+    # Used in $PTII/lbnl/lib/makefile
     PTLIBEXPAT_DIR=util
     # Used in $PTII/makefile
     PTLBNL_DIR=lbnl
+    # Used in lbnl/demo/makefile because make can call make on lib/util
+    PTLBNL_CROOM_DIR=CRoom
+    PTLBNL_CROOM_JAR=CRoom/CRoom.jar
     # Set to the lbnl jars that need to be signed if libexpat was found
     # and used in jnlp.mk.
     PTLBNL_JARS="lbnl/lbnl.jar lbnl/demo/demo.jar"
@@ -13222,6 +13227,12 @@ ANT_JAVADOC_EXCLUDEPACKAGENAMES=`echo "$ANT_ALWAYS_EXCLUDE $ANT_EXCLUDE"| sed 's
 # Set to lbnl and used in $PTII/makefile if libexpat was found.
 
 
+# Set to CRoom if libexpat is found and used in lbnl/demo/makefile
+
+
+# Set to CRoom/CRoom.jar if libexpat is found and used in lbnl/demo/makefile
+
+
 # Set to the lbnl jars that need to be signed if libexpat was found
 # and used in jnlp.mk and $PTII/doc/makefile.
 
@@ -13239,7 +13250,7 @@ ANT_JAVADOC_EXCLUDEPACKAGENAMES=`echo "$ANT_ALWAYS_EXCLUDE $ANT_EXCLUDE"| sed 's
 # and Legos was found
 
 
-# Set to util and used in $PTII/lbnl/lib/util/makefile if libexpat was found
+# Set to util and used in $PTII/lbnl/lib/makefile if libexpat was found
 
 
 # Set to gcc or cl and used in
