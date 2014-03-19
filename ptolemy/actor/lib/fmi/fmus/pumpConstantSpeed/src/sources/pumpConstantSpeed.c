@@ -31,6 +31,21 @@ typedef struct {
     fmiString instanceName;
 } ModelInstance;
 
+
+// Value references.
+// This could be optimized by using the same value reference
+// for outputs that are indentical to the inputs.
+#define mIn_flow 0
+#define TIn 1
+#define pIn 2
+#define mOut_flow 3
+#define TOut 4
+#define pOut 5
+#define dp0 6
+#define m0_flow 7
+//    enum {mIn_flow=1, TIn, pIn, mOut_flow, TOut, pOut, dp0, m0_flow};
+
+
 // Number of variables
 #define NVARS 8
 
@@ -71,7 +86,7 @@ FMI_Export fmiComponent fmiInstantiate(fmiString instanceName,
     component = (ModelInstance *)functions->allocateMemory(1, sizeof(ModelInstance));
     // cxh: One key change here was that we allocate memory for the pointer holding
     // the value.
-    component->r = functions->allocateMemory(7, sizeof(fmiReal));
+    component->r = functions->allocateMemory(NVARS, sizeof(fmiReal));
     component->functions = functions;
     component->instanceName = instanceName;
     component->mustComputeOutputs = fmiTrue;
@@ -102,9 +117,6 @@ FMI_Export fmiStatus fmiGetReal(fmiComponent c, const fmiValueReference vr[], si
     int i;
     // cxh: I had to cast the c to a ModelInstance here.
     ModelInstance* component = (ModelInstance *) c;
-
-    // Indices of instance variables can be used to set or get by the master algorithm.
-    enum {mIn_flow=1, TIn, pIn, mOut_flow, TOut, pOut, dp0, m0_flow};
 
     if (nvr > NVARS) {
         // cxh: The logger tends to throw segmentation faults, so comment it out

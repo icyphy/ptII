@@ -63,7 +63,7 @@
     <!-- Index for next variable = 1 -->
     <ScalarVariable
        name="inlet.m_flow"
-       valueReference="1"
+       valueReference="0"
        description="Inlet mass flow rate"
        causality="input"
        initial="approx">
@@ -74,7 +74,7 @@
     <!-- Index for next variable = 2 -->
     <ScalarVariable
        name="inlet.T"
-       valueReference="2"
+       valueReference="1"
        description="Inlet temperature"
        causality="input"
        initial="approx">
@@ -85,7 +85,7 @@
     <!-- Index for next variable = 3 -->
     <ScalarVariable
        name="inlet.p"
-       valueReference="3"
+       valueReference="2"
        description="Inlet pressure"
        causality="input"
        initial="approx">
@@ -97,7 +97,7 @@
     <!-- Index for next variable = 4 -->
     <ScalarVariable
        name="outlet.m_flow"
-       valueReference="4"
+       valueReference="3"
        description="Outlet mass flow rate"
        causality="output">
       <Real
@@ -106,7 +106,7 @@
     <!-- Index for next variable = 5 -->
     <ScalarVariable
        name="outlet.T"
-       valueReference="5"
+       valueReference="4"
        description="Outlet temperature"
        causality="output">
       <Real
@@ -115,7 +115,7 @@
     <!-- Index for next variable = 6 -->
     <ScalarVariable
        name="outlet.p"
-       valueReference="6"
+       valueReference="5"
        description="Outlet pressure"
        causality="output">
       <Real
@@ -125,7 +125,7 @@
     <!-- Index for next variable = 7 -->
     <ScalarVariable
        name="dp0"
-       valueReference="7"
+       valueReference="6"
        description="Pump head at zero flow rate"
        causality="parameter"
        variability="fixed"
@@ -137,7 +137,7 @@
     <!-- Index for next variable = 8 -->
     <ScalarVariable
        name="m0_flow"
-       valueReference="8"
+       valueReference="7"
        description="Mass flow rate of pump at zero head"
        causality="parameter"
        variability="fixed"
