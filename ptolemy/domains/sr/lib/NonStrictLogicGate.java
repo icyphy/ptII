@@ -99,20 +99,8 @@ public class NonStrictLogicGate extends LogicGate {
      */
     public void fire() throws IllegalActionException {
         // Don't call "super.fire();" here, the parent class is an actor.
-        BooleanToken value = null;
-        BooleanToken in = null;
-
-        for (int i = 0; i < input.getWidth(); i++) {
-            if (input.isKnown(i)) {
-                if (input.hasToken(i)) {
-                    in = (BooleanToken) input.get(i);
-
-                    if (in != null) {
-                        value = _updateFunction(in, value);
-                    }
-                }
-            }
-        }
+    	
+        BooleanToken value = _readInputs();
 
         if (value == null) {
             // If value is null, there were no inputs.  If all the inputs are
@@ -155,6 +143,38 @@ public class NonStrictLogicGate extends LogicGate {
     }
 
     ///////////////////////////////////////////////////////////////////
+    ////                       protected methods                   ////
+
+    /** Return true if all inputs are known.
+     *  @return True if all inputs are known.
+     *  @throws IllegalActionException If it fails.
+     */
+    protected boolean _allInputsKnown() throws IllegalActionException {
+    	return input.isKnown();
+    }
+    
+	/** Read the inputs, and return the logic function applied to
+	 *  all the are known and present.
+	 *  @return The logic function applied to all available inputs.
+	 *  @throws IllegalActionException If reading inputs fails.
+	 */
+	protected BooleanToken _readInputs()
+			throws IllegalActionException {
+		BooleanToken value = null;
+		for (int i = 0; i < input.getWidth(); i++) {
+            if (input.isKnown(i)) {
+                if (input.hasToken(i)) {
+                	BooleanToken in = (BooleanToken) input.get(i);
+                    if (in != null) {
+                        value = _updateFunction(in, value);
+                    }
+                }
+            }
+        }
+		return value;
+	}
+
+    ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
     /** Nullify results that cannot be asserted due to unknown inputs.
@@ -162,14 +182,14 @@ public class NonStrictLogicGate extends LogicGate {
     private BooleanToken _nullifyIncompleteResults(BooleanToken inValue)
             throws IllegalActionException {
         BooleanToken outValue = inValue;
-        ;
 
-        if (!input.isKnown()) {
+        if (!_allInputsKnown()) {
             switch (_function) {
             case _AND:
 
                 // Cannot assert that the output of AND or is true unless
-                // all inputs are known.
+                // all inputs are known, unless one of the inputs is known
+            	// to be false.
                 if (inValue.booleanValue()) {
                     outValue = null;
                 }

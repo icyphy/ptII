@@ -55,6 +55,7 @@ PTCLASSALLJAR = $(PTPACKAGE).jar
 
 JSRCS = \
 	Absent.java \
+	BinaryNonStrictLogicGate.java \
 	Combine.java \
 	Current.java \
 	Default.java \

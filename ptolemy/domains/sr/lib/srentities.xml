@@ -55,6 +55,11 @@
 <entity name="NonStrictDisplay" class="ptolemy.domains.sr.lib.gui.NonStrictDisplay">
 </entity>
 
+<entity name="BinaryNonStrictLogicGate" class="ptolemy.domains.sr.lib.BinaryNonStrictLogicGate">
+	<!-- Icon is the same as LogicGate. -->
+     <input source="ptolemy/actor/lib/logic/LogicGate_Icon.xml"/>
+</entity>
+
 <entity name="NonStrictLogicGate" class="ptolemy.domains.sr.lib.NonStrictLogicGate">
 	<!-- Icon is the same as LogicGate. -->
      <input source="ptolemy/actor/lib/logic/LogicGate_Icon.xml"/>
