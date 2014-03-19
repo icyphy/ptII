@@ -2090,8 +2090,9 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
                             "Failed to exit the initialization mode of the FMU: "
                             + _fmiStatusDescription(fmiFlag));
                 }
-		if (_fmiModelDescription.numberOfEventIndicators > 0)
+		if (_fmiModelDescription.numberOfEventIndicators > 0) {
 		    new Exception("Warning: FIXME: Need to get the eventInfo etc.").printStackTrace();
+                }
             }
         } else {
             String modelIdentifier = _fmiModelDescription.modelIdentifier;
