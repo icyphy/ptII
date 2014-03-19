@@ -1,0 +1,33 @@
+<html>
+<head>
+    <title>Documentation for heaterFlowResistance.fmu</title>
+</head>
+<body>
+<h1>heaterFlowResistance.fmu</h1>
+<p>
+The heater with flow resistance implements the following equations: 
+<pre>
+  outlet.m_flow = inlet.m_flow                               (1)
+  outlet.T = TSet                                            (2)
+  outlet.p = inlet.p - k * abs(inlet.m_flow) * inlet.m_flow  (3)
+</pre>
+where <code>inlet</code> and <code>outlet</code> are the inlet and outlet ports,
+<code>m_flow</code> is the mass flow rate,
+<code>T</code> is the temperature and
+<code>p</code> is the absolute pressure.
+The outlet setpoint temperature <code>TSet</code> is an input
+and the flow coefficient <code>k</code> is a parameter.
+</p>
+<h2>Limitations</h2>
+<p>
+Because the flow versus pressure drop equation (3)
+is not regularized near zero flow, this model should not be
+used around <code>inlet.m_flow=0</code> if the model is combined
+with a solver that requires the derivatives of the
+model equations to be bounded.
+This is for example the case if the model is used
+within an algebraic loop that is solved using a Newton-Raphson
+solver.
+</p>
+</body>
+</html>

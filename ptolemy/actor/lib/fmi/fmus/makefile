@@ -36,7 +36,8 @@ FMUS_CS =	ballDynamics helloWorld levelStairs onOffSupervisor \
 		stairsA stairsB stepCounter1 stepCounter stepCounterExtendedFMI stepCounterPeriodInName 
 
 # Model Exchange FMUS.
-FMUS_ME = 	bouncingBallME1 dqME1 helloWorldME2 incME1 pumpConstantSpeed valuesME1 vanDerPolME1
+FMUS_ME = 	bouncingBallME1 dqME1 helloWorldME2 incME1 pumpConstantSpeed valuesME1 vanDerPolME1 \
+		tankOpen pumpConstantSpeed heaterFlowResistance
 
 # All FMUs.
 FMUS = $(FMUS_CS) $(FMUS_ME)
@@ -64,7 +65,9 @@ PTCLASSALLJARS = \
 	dqME1/dqME1.jar \
 	helloWorldME2/helloWorldME2.jar \
 	incME1/incME1.jar \
+	tankOpen/tankOpen.jar \
 	pumpConstantSpeed/pumpConstantSpeed.jar \
+	heaterFlowResistance/heaterFlowResistance.jar \
 	valuesME1/valuesME1.jar \
 	vanDerPolME1/vanDerPolME1.jar \
 	ballDynamics/ballDynamics.jar \
