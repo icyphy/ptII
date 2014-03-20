@@ -65,6 +65,27 @@
      <input source="ptolemy/actor/lib/logic/LogicGate_Icon.xml"/>
 </entity>
 
+<entity name="NonStrictAndGate" class="ptolemy.domains.sr.lib.NonStrictAndGate">
+	<!-- Icon is the same as LogicGate. -->
+     <input source="ptolemy/actor/lib/logic/LogicGate_Icon.xml">
+	     <property name="logic" value="and"/>
+     </input>
+</entity>
+
+<entity name="NonStrictOrGate" class="ptolemy.domains.sr.lib.NonStrictOrGate">
+	<!-- Icon is the same as LogicGate. -->
+     <input source="ptolemy/actor/lib/logic/LogicGate_Icon.xml">
+	     <property name="logic" value="or"/>
+     </input>
+</entity>
+
+<entity name="NonStrictXorGate" class="ptolemy.domains.sr.lib.NonStrictXorGate">
+	<!-- Icon is the same as LogicGate. -->
+     <input source="ptolemy/actor/lib/logic/LogicGate_Icon.xml">
+	     <property name="logic" value="xor"/>
+     </input>
+</entity>
+
 <entity name="NonStrictThreeBitAdder" class="ptolemy.domains.sr.lib.NonStrictThreeBitAdder">
 </entity>
 

@@ -64,6 +64,9 @@ JSRCS = \
 	NonStrictDelay.java \
 	NonStrictLogicFunction.java \
 	NonStrictLogicGate.java \
+	NonStrictAndGate.java \
+	NonStrictOrGate.java \
+	NonStrictXorGate.java \
 	NonStrictThreeBitAdder.java \
 	Pre.java \
 	SingleTokenDistributor.java \
