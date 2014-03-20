@@ -82,7 +82,7 @@
         </configure>
     </entity>
     <entity name="tankOpen" class="ptolemy.actor.lib.fmi.FMUImport">
-        <property name="fmuFile" class="ptolemy.data.expr.FileParameter" value="/Users/mwetter/proj/bcvtb/code/ptII/ptolemy/actor/lib/fmi/test/auto/tankOpen.fmu">
+        <property name="fmuFile" class="ptolemy.data.expr.FileParameter" value="$CLASSPATH/ptolemy/actor/lib/fmi/test/auto/tankOpen.fmu">
         </property>
         <property name="modelExchange" class="ptolemy.data.expr.Parameter" value="true">
         </property>
