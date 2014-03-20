@@ -3036,6 +3036,10 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
         templateList.add("ptolemy/cg/kernel/" + generatorDirectory
                 + "/makefile.in");
 
+        // Look for generator specific make file
+        templateList.add("ptolemy/cg/adapter/" + generatorDirectory
+                + "/makefile.in");
+
         // 3. Look for the generic C makefile.in
         templateList
                 .add("ptolemy/cg/kernel/generic/program/procedural/c/makefile.in");

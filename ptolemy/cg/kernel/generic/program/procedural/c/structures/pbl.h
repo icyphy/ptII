@@ -80,7 +80,9 @@ extern "C" {
         #include <string.h>
 #else
 #ifndef __CYGWIN__
-    #include <sys/dir.h>
+    #ifndef __AVR__
+        #include <sys/dir.h>
+    #endif
 #endif
 #endif
 

@@ -7,7 +7,11 @@ typedef unsigned char boolean;
 typedef char* string;
 
 /* Infinity is a valid Ptolemy identifier. */
+#ifdef __AVR__
+#define Infinity INFINITY
+#else
 #define Infinity HUGE_VAL
+#endif
 
 #ifdef __linux__
 /* Linux tends to have NAN. */
