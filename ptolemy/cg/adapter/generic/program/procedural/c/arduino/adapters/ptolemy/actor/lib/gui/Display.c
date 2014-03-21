@@ -1,5 +1,6 @@
 /***preinitBlock***/
 #ifdef __AVR__
+#include <Arduino.h>
 int led = 13;
 void setup() {
     pinMode(led,output);
