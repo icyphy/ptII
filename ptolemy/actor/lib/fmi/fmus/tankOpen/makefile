@@ -32,3 +32,7 @@
 FMU_NAME = tankOpen
 
 include ../fmus.mk
+
+
+check:
+	fmuCheck -i fmuCheck/input.csv -h 1 -s 1 $(FMU_NAME).fmu

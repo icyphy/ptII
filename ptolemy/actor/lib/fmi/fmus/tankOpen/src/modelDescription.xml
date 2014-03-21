@@ -5,7 +5,6 @@
    fmiVersion="2.0"
    guid="{991fbb90-9760-4e48-9e66-11bee8a6e8d3}"
    modelName="tankOpen"
-   numberOfContinuousStates="1"
    numberOfEventIndicators="0"
    variableNamingConvention="structured">
 
@@ -49,7 +48,6 @@
       <Real
         quantity="Pressure"
         unit="Pa"
-        displayUnit="Pa"
         min="0.0"/>
     </SimpleType>
     <SimpleType
@@ -153,7 +151,7 @@
        description="Temperature of fluid inside the tank"
        causality="input"
        variability="continuous"
-       initial="exact">
+       initial="approx">
       <Real
         declaredType="Temperature"
         start="283.15"/>
@@ -165,8 +163,7 @@
        valueReference="7"
        description="Mass of the tank fluid"
        causality="parameter"
-       variability="fixed"
-       initial="fixed">
+       variability="fixed">
       <Real
         declaredType="Mass"
         start="1"/>
@@ -177,8 +174,7 @@
        valueReference="8"
        description="Flow coefficient"
        causality="parameter"
-       variability="fixed"
-       initial="fixed">
+       variability="fixed">
       <Real
         declaredType="FlowCoefficient"
         start="1.0E4"/>
@@ -189,8 +185,7 @@
        valueReference="9"
        description="Atmospheric pressure"
        causality="parameter"
-       variability="fixed"
-       initial="fixed">
+       variability="fixed">
       <Real
         declaredType="AbsolutePressure"
         start="1.0E5"/>

@@ -113,6 +113,12 @@ FMI_Export fmiStatus fmiDoStep(fmiComponent c, fmiReal currentCommunicationPoint
 }
 
 FMI_Export fmiStatus fmiEnterInitializationMode(fmiComponent c) {
+    // fixme: Setting parameter values. This should probably be done by the master algorithm.
+    // However, the fmuCheck program does not set parameter values.
+    ModelInstance* component = (ModelInstance *) c;
+    printf("tankOpen.c: Setting manually parameter values.\n");
+    component->r[m] = 1.0;
+    component->r[k] = 1.0E4;    
     return fmiOK;
 }
 
@@ -147,7 +153,7 @@ FMI_Export fmiStatus fmiGetReal(fmiComponent c,
         component->r[der_T] = component->r[mIn_flow] / component->r[m]*
 	  ( component->r[TIn] - component->r[T] );
         if ( component->r[m] < 0.001 ) // fixme
-	  printf("*** Error: tankOpen.c: Computing dT with m = %f4.2\n", component->r[m]);
+	  printf("\n*** Error: tankOpen.c: Computing dT with m = %4.2f\n", component->r[m]);
 	component->mustComputeOutputs = fmiFalse;
       }
       // Assign outputs
@@ -371,7 +377,8 @@ FMI_Export fmiStatus fmiGetEventIndicators(fmiComponent c,
 FMI_Export fmiStatus fmiNewDiscreteStates(fmiComponent  c,
         fmiEventInfo* fmiEventInfo) {
     // Model Exchange
-    return fmiError;
+    fmiEventInfo->newDiscreteStatesNeeded = fmiFalse;
+    return fmiOK;
 }
 
 FMI_Export fmiStatus fmiSetContinuousStates(fmiComponent c, const fmiReal x[],
