@@ -101,6 +101,7 @@ FMI_Export fmiComponent fmiInstantiate(fmiString instanceName,
 void fmiFreeInstance(fmiComponent c) {
     // cxh: I had to cast the c to a ModelInstance here.
     ModelInstance* component = (ModelInstance *) c;
+    component->functions->freeMemory(component->r);
     component->functions->freeMemory(component);
 }
 
@@ -116,9 +117,10 @@ FMI_Export fmiStatus fmiEnterInitializationMode(fmiComponent c) {
     // fixme: Setting parameter values. This should probably be done by the master algorithm.
     // However, the fmuCheck program does not set parameter values.
     ModelInstance* component = (ModelInstance *) c;
-    printf("tankOpen.c: Setting manually parameter values.\n");
-    component->r[m] = 1.0;
-    component->r[k] = 1.0E4;    
+    //    printf("tankOpen.c: Setting manually parameter values, which is needed for fmuCheck.\n");
+    //    component->r[m] = 1.0;
+    //    component->r[k] = 1.0E4;
+    //    component->r[pAtm] = 1.0E5;
     return fmiOK;
 }
 
@@ -143,7 +145,7 @@ FMI_Export fmiStatus fmiGetReal(fmiComponent c,
     }
     if (nvr > 0) {
       // Check if the output must be computed.
-      // This could be made more efficient using an alias as mOut_flow=mIn_flow and TOut=TIn.
+      // This could be made more efficient using an alias as pOut=pAtm.
       if (component->mustComputeOutputs){
 	component->r[pOut] = component->r[pAtm]; // this is constant
 	dp = component->r[pIn] - component->r[pOut];
@@ -152,14 +154,11 @@ FMI_Export fmiStatus fmiGetReal(fmiComponent c,
 	component->r[pOut] = component->r[pAtm];
         component->r[der_T] = component->r[mIn_flow] / component->r[m]*
 	  ( component->r[TIn] - component->r[T] );
-        if ( component->r[m] < 0.001 ) // fixme
-	  printf("\n*** Error: tankOpen.c: Computing dT with m = %4.2f\n", component->r[m]);
 	component->mustComputeOutputs = fmiFalse;
       }
       // Assign outputs
       for(i=0; i < nvr; i++){
         value[i] = component->r[vr[i]];
-        printf("tankOpen.c: getReal() called, r[%2i] = %5.2f.\n", vr[i], value[i]);
       }
     }
     return fmiOK;
@@ -222,7 +221,7 @@ FMI_Export fmiStatus fmiSetReal(fmiComponent c, const fmiValueReference vr[], si
     }
     // Set values.
     for (i = 0; i < nvr; i++) {
-      printf("tankOpen.c: setReal() called, r[%2i] = %5.2f.\n", vr[i], value[i]);
+      //      printf("tankOpen.c: setReal() called, r[%2i] = %5.2f.\n", vr[i], value[i]);
         component->r[vr[i]] = value[i];
     }
     // Set a flag that indicates that the outputs must be re-computed.
@@ -303,13 +302,17 @@ FMI_Export fmiStatus fmiGetContinuousStates(fmiComponent c, fmiReal x[],
     ModelInstance* component = (ModelInstance *) c;
     if (nx == 1){
         x[0] = component->r[T];
-        return fmiOK;
+    }
+    else if(nx == 0){
+        printf("tankOpen.c: Called fmiGetContinuousStates with nx=%d.\n", (int)nx);
     }
     else{
+        printf("tankOpen.c: Called fmiGetContinuousStates with nx=%d.\n", (int)nx);
         component->functions->logger(NULL, component->instanceName, fmiError, "error",
                           "fmiGetContinuousStates: Call failed because nx is not 1.");
         return fmiError;
     }
+    return fmiOK;
 }
 
 FMI_Export fmiStatus fmiGetNominalsOfContinuousStates(fmiComponent c, 
@@ -359,9 +362,12 @@ FMI_Export fmiStatus fmiGetDerivatives(fmiComponent c, fmiReal derivatives[],
       else
         derivatives[0] = component->r[der_T];
     }
+    else if(nx == 0){
+        printf("tankOpen.c: Called fmiGetDerivatives with nx=%d.\n", (int)nx);
+    }
     else{
         component->functions->logger(NULL, component->instanceName, fmiError, "error",
-                          "fmiGetContinuousStates: Call failed because nx is not 1.");
+                          "fmiGetDerivatives: Call failed because nx is not 0 or 1.");
         return fmiError;
     }
     return fmiOK;
@@ -390,7 +396,9 @@ FMI_Export fmiStatus fmiSetContinuousStates(fmiComponent c, const fmiReal x[],
 	// The standard says we need to re-initialize caching of variables
         // that depend on the states.
         component->r[TOut] = component->r[T];
-        return fmiOK;
+    }
+    else if(nx == 0){
+        printf("tankOpen.c: Called fmiSetContinuousStates with nx=%d.\n", (int)nx);
     }
     else{
         component->functions->logger(NULL, component->instanceName, fmiError, "error",
