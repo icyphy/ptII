@@ -33,7 +33,7 @@ $(document).ready(function() {
 	        	
 	    	    // Clear submit button highlighting; focus back on page 
 	    	    //$("#submit").removeClass($.mobile.activeBtnClass);
-	    		$("#submit").removeClass('ui-btn-active');
+	    		$("#submit").removeClass('ui-btn-active ui-focus');
 	    		$.mobile.activePage.focus();
 	        	
 	           	// After twenty seconds, clear username and door code and reset 
