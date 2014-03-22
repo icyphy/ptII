@@ -1,0 +1,251 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="FMUHeaterFlowResistance" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="10.0.devel">
+    </property>
+    <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
+        <property name="iterations" class="ptolemy.data.expr.Parameter" value="5">
+        </property>
+        <property name="period" class="ptolemy.data.expr.Parameter" value="0.1">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{50.0, 15.0}">
+        </property>
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={527, 109, 1006, 779}, maximized=false}">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[772, 669]">
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.174382671286824">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{320.58201795051053, 267.4674722990637}">
+    </property>
+    <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="The source code for this FMU is in&#10;$PTII/ptolemy/actor/lib/fmi/fmus/heaterFlowResistance.&#10;To build the FMU file, do this:&#10;&#10;&gt; cd $PTII/ptolemy/actor/lib/fmi/fmus/heaterFlowResistance&#10;&gt; make&#10;&#10;The resulting .fmu file for model exchange will&#10;be in $PTII/ptolemy/actor/lib/fmi/fmus/heaterFlowResistance.fmu&#10;&#10;To copy the file to this directory, type&#10;&gt; cd $PTII/ptolemy/actor/lib/fmi/fmus/heaterFlowResistance&#10;&gt; make update&#10; ">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.RelativeLocation" value="[115.0, -5.0]">
+        </property>
+    </property>
+    <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.4,0.4,0.4,1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Author: Michael Wetter">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[10.0, 485.0]">
+        </property>
+    </property>
+    <entity name="Test_m_flow" class="ptolemy.actor.lib.Test">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0.0, 0.02, 0.04}">
+        </property>
+        <property name="tolerance" class="ptolemy.data.expr.Parameter" value="2.0E-11">
+        </property>
+        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{390.0, 255.0}">
+        </property>
+    </entity>
+    <entity name="m_flow" class="ptolemy.actor.lib.Ramp">
+        <property name="step" class="ptolemy.actor.parameters.PortParameter" value="0.02">
+        </property>
+        <doc>Create a sequence of tokens with increasing value</doc>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{60.0, 255.0}">
+        </property>
+    </entity>
+    <entity name="T" class="ptolemy.actor.lib.Ramp">
+        <property name="init" class="ptolemy.actor.parameters.PortParameter" value="283.15">
+        </property>
+        <property name="step" class="ptolemy.actor.parameters.PortParameter" value="10">
+        </property>
+        <doc>Create a sequence of tokens with increasing value</doc>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{60.0, 320.0}">
+        </property>
+    </entity>
+    <entity name="Test_T" class="ptolemy.actor.lib.Test">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{283.15, 303.15, 293.15}">
+        </property>
+        <property name="tolerance" class="ptolemy.data.expr.Parameter" value="2.831500000000003E-7">
+        </property>
+        <property name="requireAllCorrectValues" class="ptolemy.actor.parameters.SharedParameter" value="true">
+        </property>
+        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{390.0, 320.0}">
+        </property>
+    </entity>
+    <entity name="Test_pOut" class="ptolemy.actor.lib.Test">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{300000.0, 299600.0, 298400.0}">
+        </property>
+        <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.0E-4">
+        </property>
+        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{390.0, 400.0}">
+        </property>
+    </entity>
+    <entity name="heaterFlowResistance" class="ptolemy.actor.lib.fmi.FMUImport">
+        <property name="fmuFile" class="ptolemy.data.expr.FileParameter" value="/Users/mwetter/proj/bcvtb/code/ptII/ptolemy/actor/lib/fmi/test/auto/heaterFlowResistance.fmu">
+        </property>
+        <property name="modelExchange" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{220.0, 390.0}">
+        </property>
+        <property name="k" class="ptolemy.data.expr.Parameter" value="1000000.0">
+        </property>
+        <property name="maximumStepSize" class="ptolemy.data.expr.Parameter" value="0.01">
+        </property>
+        <port name="inlet_m_flow" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <display name="inlet.m_flow"/>
+            <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
+                <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
+                </property>
+            </property>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
+                </property>
+            </property>
+        </port>
+        <port name="inlet_T" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <display name="inlet.T"/>
+            <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
+                <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
+                </property>
+            </property>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
+                </property>
+            </property>
+        </port>
+        <port name="inlet_p" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <display name="inlet.p"/>
+            <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
+                <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
+                </property>
+            </property>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
+                </property>
+            </property>
+        </port>
+        <port name="outlet_m_flow" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <display name="outlet.m_flow"/>
+            <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
+                <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
+                </property>
+            </property>
+            <property name="dependencies" class="ptolemy.kernel.util.StringAttribute">
+            </property>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
+                </property>
+            </property>
+        </port>
+        <port name="outlet_T" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <display name="outlet.T"/>
+            <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
+                <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
+                </property>
+            </property>
+            <property name="dependencies" class="ptolemy.kernel.util.StringAttribute">
+            </property>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
+                </property>
+            </property>
+        </port>
+        <port name="outlet_p" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <display name="outlet.p"/>
+            <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
+                <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
+                </property>
+            </property>
+            <property name="dependencies" class="ptolemy.kernel.util.StringAttribute">
+            </property>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
+                </property>
+            </property>
+        </port>
+        <port name="TSet" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
+                <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
+                </property>
+            </property>
+            <property name="dependencies" class="ptolemy.kernel.util.StringAttribute">
+            </property>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
+                </property>
+            </property>
+        </port>
+    </entity>
+    <entity name="Sequence" class="ptolemy.actor.lib.Sequence">
+        <property name="values" class="ptolemy.data.expr.Parameter" value="{283.15, 303.15, 293.15}">
+        </property>
+        <property name="holdLastOutput" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{60.0, 460.0}">
+        </property>
+    </entity>
+    <entity name="pIn" class="ptolemy.actor.lib.Const">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="3.0E5">
+        </property>
+        <doc>Create a constant sequence.</doc>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{70.0, 400.0}">
+        </property>
+    </entity>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;T.output&quot;,x=60.0,y=320.0}, tail={id=&quot;heaterFlowResistance.inlet_T&quot;,x=220.0,y=390.0}, points={110.0,320.0,110.0,380.0} } }">
+        </property>
+    </relation>
+    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;Test_m_flow.input&quot;,x=390.0,y=255.0}, tail={id=&quot;heaterFlowResistance.outlet_m_flow&quot;,x=220.0,y=390.0}, points={325.0,255.0,325.0,380.0} } }">
+        </property>
+    </relation>
+    <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;Test_T.input&quot;,x=390.0,y=320.0}, tail={id=&quot;heaterFlowResistance.outlet_T&quot;,x=220.0,y=390.0}, points={340.0,320.0,340.0,390.0} } }">
+        </property>
+    </relation>
+    <relation name="relation6" class="ptolemy.actor.TypedIORelation">
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;Test_pOut.input&quot;,x=390.0,y=400.0}, tail={id=&quot;heaterFlowResistance.outlet_p&quot;,x=220.0,y=390.0}, points={} } }">
+        </property>
+    </relation>
+    <relation name="relation7" class="ptolemy.actor.TypedIORelation">
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;heaterFlowResistance.TSet&quot;,x=220.0,y=390.0}, tail={id=&quot;Sequence.output&quot;,x=60.0,y=460.0}, points={110.0,410.0,110.0,460.0} } }">
+        </property>
+    </relation>
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;heaterFlowResistance.inlet_p&quot;,x=220.0,y=390.0}, tail={id=&quot;pIn.output&quot;,x=70.0,y=400.0}, points={} } }">
+        </property>
+    </relation>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;m_flow.output&quot;,x=60.0,y=255.0}, tail={id=&quot;heaterFlowResistance.inlet_m_flow&quot;,x=220.0,y=390.0}, points={125.0,255.0,125.0,370.0} } }">
+        </property>
+    </relation>
+    <link port="Test_m_flow.input" relation="relation4"/>
+    <link port="m_flow.output" relation="relation"/>
+    <link port="T.output" relation="relation2"/>
+    <link port="Test_T.input" relation="relation5"/>
+    <link port="Test_pOut.input" relation="relation6"/>
+    <link port="heaterFlowResistance.inlet_m_flow" relation="relation"/>
+    <link port="heaterFlowResistance.inlet_T" relation="relation2"/>
+    <link port="heaterFlowResistance.inlet_p" relation="relation3"/>
+    <link port="heaterFlowResistance.outlet_m_flow" relation="relation4"/>
+    <link port="heaterFlowResistance.outlet_T" relation="relation5"/>
+    <link port="heaterFlowResistance.outlet_p" relation="relation6"/>
+    <link port="heaterFlowResistance.TSet" relation="relation7"/>
+    <link port="Sequence.output" relation="relation7"/>
+    <link port="pIn.output" relation="relation3"/>
+</entity>
