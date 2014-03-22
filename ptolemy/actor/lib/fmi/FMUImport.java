@@ -571,13 +571,16 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
             // _fmiSetContinuousStates(states);
 
             if (currentTimeValue > _lastCommitTime.getDoubleValue()) {
-                double step = currentTimeValue
-                        - _lastCommitTime.getDoubleValue();
+		// Set states only if the FMU has states
+		if (states.length > 0){
+                    double step = currentTimeValue
+                            - _lastCommitTime.getDoubleValue();
 
-                for (int i = 0; i < states.length; i++) {
-                    _newStates[i] = states[i] + derivatives[i] * step;
-                }
-                _fmiSetContinuousStates(_newStates);
+                    for (int i = 0; i < states.length; i++) {
+                        _newStates[i] = states[i] + derivatives[i] * step;
+                    }
+                    _fmiSetContinuousStates(_newStates);
+		}
 
                 // Check event indicators.
                 boolean stateEventOccurred = _checkEventIndicators();
@@ -2020,15 +2023,17 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
             // I'm getting the same (nonsensical) results from both.
             _derivatives = new double[numberOfStates];
         }
+        // Call _fmiGetDerivativesFunction only if numberOfStates > 0.
+	if (numberOfStates > 0){
+            int fmiFlag = ((Integer) _fmiGetDerivativesFunction.invoke(
+                    Integer.class, new Object[] { _fmiComponent, _derivatives,
+                            new NativeSizeT(numberOfStates) })).intValue();
 
-        int fmiFlag = ((Integer) _fmiGetDerivativesFunction.invoke(
-                Integer.class, new Object[] { _fmiComponent, _derivatives,
-                        new NativeSizeT(numberOfStates) })).intValue();
-
-        if (fmiFlag != FMILibrary.FMIStatus.fmiOK) {
-            throw new IllegalActionException(this,
-                    "Failed to get derivatives. fmiFlag = "
-                            + _fmiStatusDescription(fmiFlag));
+            if (fmiFlag != FMILibrary.FMIStatus.fmiOK) {
+                throw new IllegalActionException(this,
+                        "Failed to get derivatives. fmiFlag = "
+                                + _fmiStatusDescription(fmiFlag));
+            }
         }
         return _derivatives;
     }
@@ -2080,16 +2085,19 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
                             + _fmiStatusDescription(fmiFlag));
                 }
 
-                fmiFlag = ((Integer) _fmiEnterInitializationModeFunction.invoke(
-                                Integer.class,
-                                new Object[] { _fmiComponent }))
-                    .intValue();
-
-                if (fmiFlag != FMILibrary.FMIStatus.fmiOK) {
-                    throw new IllegalActionException(this,
-                            "Failed to exit the initialization mode of the FMU: "
-                            + _fmiStatusDescription(fmiFlag));
-                }
+                // fixme: mwetter@lbl.gov: This code section is dublicate and I think can be removed.
+                //                         I did not remove it as the error message says "Failed to _exit_ ...
+                //                         which I think is a typo as _fmiExitInitializationMode is called elsewhere.
+                // fmiFlag = ((Integer) _fmiEnterInitializationModeFunction.invoke(
+                //                Integer.class,
+                //                new Object[] { _fmiComponent }))
+                //    .intValue();
+                //
+                //if (fmiFlag != FMILibrary.FMIStatus.fmiOK) {
+                //    throw new IllegalActionException(this,
+                //            "Failed to exit the initialization mode of the FMU: "
+                //            + _fmiStatusDescription(fmiFlag));
+                //}
 		if (_fmiModelDescription.numberOfEventIndicators > 0) {
 		    new Exception("Warning: FIXME: Need to get the eventInfo etc.").printStackTrace();
                 }
@@ -2347,6 +2355,11 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
                 if (stepSizeValue instanceof DoubleToken) {
                     stepSize = ((DoubleToken) stepSizeValue).doubleValue();
                 }
+		// If the parameter maximumStepSize is set to an integer, then
+		// we parse its value to a double.
+		else if (stepSizeValue instanceof IntToken) {
+                    stepSize = (double)((IntToken) stepSizeValue).intValue();
+		}
             }
             director.fireAt(this, currentTime.add(stepSize));
         } else {
