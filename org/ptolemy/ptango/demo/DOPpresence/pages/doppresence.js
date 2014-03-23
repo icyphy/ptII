@@ -10,6 +10,7 @@ $(document).ready(function() {
 	// Submit the form data and communicate authorization status
 	$("#submit").click(function(e) {
 		e.preventDefault();  // Prevent default post action
+		e.stopPropagation();
 		
 		// Clear the idle timer since a new request has arrived
 		clearInterval(timer);
@@ -32,8 +33,8 @@ $(document).ready(function() {
 	        	}
 	        	
 	    	    // Clear submit button highlighting; focus back on page 
-	    	    //$("#submit").removeClass($.mobile.activeBtnClass);
-	    		$("#submit").removeClass('ui-btn-active ui-focus');
+	    		$.mobile.activePage.find('.ui-btn-active')
+	    			.removeClass('ui-btn-active ui-focus');
 	    		$.mobile.activePage.focus();
 	        	
 	           	// After twenty seconds, clear username and door code and reset 

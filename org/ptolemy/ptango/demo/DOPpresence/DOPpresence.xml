@@ -10,7 +10,7 @@
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.6254506284910135">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{913.9000471105525, 288.5913944723618}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{913.9000471105524, 288.5913944723618}">
     </property>
     <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
         <property name="stopWhenQueueIsEmpty" class="ptolemy.data.expr.Parameter" value="false">
@@ -35,7 +35,7 @@
     <property name="WebServer" class="org.ptolemy.ptango.lib.WebServer">
         <property name="resourceLocation" class="ptolemy.data.expr.FileParameter" value="$PTII/org/ptolemy/ptango/demo/DOPpresence/pages">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[930.0, 45.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{930.0, 45.0}">
         </property>
     </property>
     <property name="enableBackwardTypeInference" class="ptolemy.data.expr.Parameter" value="false">
@@ -77,7 +77,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[615.0, 95.0]">
         </property>
     </property>
-    <property name="doorCode" class="ptolemy.data.expr.Parameter" value="&quot;1234&quot;">
+    <property name="doorCode" class="ptolemy.data.expr.Parameter" value="&quot;code&quot;">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -326,7 +326,7 @@
         </property>
         <property name="userName" class="ptolemy.data.expr.StringParameter" value="ptolemy">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[1030.0, 50.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[1030.0, 45.0]">
         </property>
     </entity>
     <entity name="Expression" class="ptolemy.actor.lib.Expression">
