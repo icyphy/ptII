@@ -88,8 +88,20 @@ all: jclass $(FMU_NAME).fmu
 install: jclass $(FMU_NAME).fmu jars
 	@echo "Optionally run 'make update' to update the test/auto directory."
 
+
 $(FMU_NAME).fmu: $(FMU_SRCS)
 	(cd src/sources; $(MAKE))
+
+# Test the FMU by running fmucheck.
+fmuCheck: $(FMU_NAME).fmu
+	if [ -f fmuCheck/input.csv ]; then \
+		fmuCheck -i fmuCheck/input.csv -o fmuCheck/result.csv -h 1 -s 10 $(FMU_NAME).fmu; \
+	else \
+		fmuCheck -h 1 -s 10 $(FMU_NAME).fmu; \
+	fi
+
+test_me:
+	$(JAVA) -classpath $(ROOT)$(CLASSPATHSEPARATOR)$(JNA_JAR) org.ptolemy.fmi.driver.FMUModelExchange $(FMU_NAME).fmu  1.0 0.1 true
 
 # We don't check in the fmu because it will be different on each platform
 # Instead, run make update to update the test directory.
@@ -106,8 +118,15 @@ update: $(FMU_NAME).fmu
         fi 
 	cp $(FMU_NAME).fmu ../../test/auto/$(FMU_NAME).fmu
 
-test:
-	$(JAVA) -classpath $(ROOT)$(CLASSPATHSEPARATOR)$(JNA_JAR) org.ptolemy.fmi.driver.FMUModelExchange $(FMU_NAME).fmu  1.0 0.1 true
+# Check for memory leaks
+VALGRIND = valgrind
+valgrind:
+	if [ -f fmuCheck/input.csv ]; then \
+		$(VALGRIND) fmuCheck -i fmuCheck/input.csv -o fmuCheck/result.csv -h 1 -s 10 $(FMU_NAME).fmu; \
+	else \
+		$(VALGRIND) fmuCheck -h 1 -s 10 $(FMU_NAME).fmu; \
+	fi
+
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk

@@ -4,7 +4,6 @@
    fmiVersion="2.0"
    guid="{41291936-a3a0-4f94-b326-9be08315fe8d}"
    modelName="heaterFlowResistance"
-   numberOfContinuousStates="0"
    numberOfEventIndicators="0"
    variableNamingConvention="structured">
 
@@ -19,6 +18,10 @@
       <DisplayUnit
         name="degC"
         offset="-273.15"/>
+    </Unit>
+    <Unit
+      name="kg">
+      <BaseUnit kg="1"/>
     </Unit>
     <Unit
       name="Pa">
@@ -43,7 +46,6 @@
       <Real
         quantity="Pressure"
         unit="Pa"
-        displayUnit="Pa"
         min="0.0"/>
     </SimpleType>
     <SimpleType
@@ -152,8 +154,7 @@
        valueReference="7"
        description="Flow coefficient"
        causality="parameter"
-       variability="fixed"
-       initial="fixed">
+       variability="fixed">
       <Real
         declaredType="FlowCoefficient"
         start="1.0E6"/>
@@ -164,7 +165,7 @@
   <ModelStructure>
     <Outputs>
       <Unknown index="1" dependencies="4" /> 
-      <Unknown index="5" dependencies="0 2 7" /> 
+      <Unknown index="5" dependencies="3 2 7" /> 
       <Unknown index="4" dependencies="6" /> 
     </Outputs>
   </ModelStructure>

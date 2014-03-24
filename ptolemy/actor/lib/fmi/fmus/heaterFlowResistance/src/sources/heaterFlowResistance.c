@@ -171,13 +171,17 @@ FMI_Export fmiStatus fmiGetString(fmiComponent c, const fmiValueReference vr[],
 }
 
 FMI_Export const char* fmiGetTypesPlatform() {
-    // FIXME: this leaks, we not allocate memory each time we call it.
-    return strdup("default");
+    // We return a string literal, which does not require malloc.
+    // Note that this is declared const char * because it is not safe to 
+    // modify a string literal in C.
+    return "default";
 }
 
 FMI_Export const char* fmiGetVersion() {
-    // FIXME: this leaks, we not allocate memory each time we call it.
-    return strdup("2.0");
+    // We return a string literal, which does not require malloc.
+    // Note that this is declared const char * because it is not safe to 
+    // modify a string literal in C.
+    return "2.0";
 }
 
 FMI_Export fmiStatus fmiSetDebugLogging(fmiComponent c,

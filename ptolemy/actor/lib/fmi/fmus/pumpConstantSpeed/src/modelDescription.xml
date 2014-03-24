@@ -4,7 +4,6 @@
    fmiVersion="2.0"
    guid="{d23f3307-74ab-48e6-85c3-df507efe7812}"
    modelName="pumpConstantSpeed"
-   numberOfContinuousStates="0"
    numberOfEventIndicators="0"
    variableNamingConvention="structured">
 
@@ -19,6 +18,10 @@
       <DisplayUnit
         name="degC"
         offset="-273.15"/>
+    </Unit>
+    <Unit
+      name="kg">
+      <BaseUnit kg="1"/>
     </Unit>
     <Unit
       name="Pa">
@@ -38,7 +41,6 @@
       <Real
         quantity="Pressure"
         unit="Pa"
-        displayUnit="Pa"
         min="0.0"/>
     </SimpleType>
     <SimpleType
@@ -128,8 +130,7 @@
        valueReference="6"
        description="Pump head at zero flow rate"
        causality="parameter"
-       variability="fixed"
-       initial="fixed">
+       variability="fixed">
       <Real
         declaredType="AbsolutePressure"
         start="10000"/>
@@ -140,8 +141,7 @@
        valueReference="7"
        description="Mass flow rate of pump at zero head"
        causality="parameter"
-       variability="fixed"
-       initial="fixed">
+       variability="fixed">
       <Real
         declaredType="MassFlowRate"
         start="0.2"/>
