@@ -117,10 +117,6 @@ FMI_Export fmiStatus fmiEnterInitializationMode(fmiComponent c) {
     // fixme: Setting parameter values. This should probably be done by the master algorithm.
     // However, the fmuCheck program does not set parameter values.
     ModelInstance* component = (ModelInstance *) c;
-    //    printf("tankOpen.c: Setting manually parameter values, which is needed for fmuCheck.\n");
-    //    component->r[m] = 1.0;
-    //    component->r[k] = 1.0E4;
-    //    component->r[pAtm] = 1.0E5;
     return fmiOK;
 }
 
