@@ -43,8 +43,6 @@ typedef struct {
 #define pOut 5
 #define dp0 6
 #define m0_flow 7
-//    enum {mIn_flow=1, TIn, pIn, mOut_flow, TOut, pOut, dp0, m0_flow};
-
 
 // Number of variables
 #define NVARS 8
@@ -90,13 +88,13 @@ FMI_Export fmiComponent fmiInstantiate(fmiString instanceName,
     component->functions = functions;
     component->instanceName = instanceName;
     component->mustComputeOutputs = fmiTrue;
-    printf("pumpConstantSpeed.c: exit fmiInstantiate.\n");
     return component;
 }
 
 void fmiFreeInstance(fmiComponent c) {
     // cxh: I had to cast the c to a ModelInstance here.
     ModelInstance* component = (ModelInstance *) c;
+    component->functions->freeMemory(component->r);
     component->functions->freeMemory(component);
 }
 
@@ -106,10 +104,12 @@ FMI_Export fmiStatus fmiDoStep(fmiComponent c, fmiReal currentCommunicationPoint
 }
 
 FMI_Export fmiStatus fmiEnterInitializationMode(fmiComponent c) {
+    printf("pumpConstantSpeed.c: enter initialization.\n");
     return fmiOK;
 }
 
 FMI_Export fmiStatus fmiExitInitializationMode(fmiComponent c) {
+    printf("pumpConstantSpeed.c: exit initialization.\n");
     return fmiOK;
 }
 
@@ -131,8 +131,11 @@ FMI_Export fmiStatus fmiGetReal(fmiComponent c, const fmiValueReference vr[], si
 	component->r[mOut_flow] = component->r[mIn_flow];
 	component->r[TOut] = component->r[TIn];
 	component->r[pOut] = component->r[pIn] + component->r[dp0] * 
-	  (1 - component->r[mIn_flow]/component->r[m0_flow]);
+	  (1.0 - component->r[mIn_flow]/component->r[m0_flow]);
 	component->mustComputeOutputs = fmiFalse;
+	printf("pumpConstantSpeed.c: pOut = %4.2f\n", component->r[pOut]);
+	printf("pumpConstantSpeed.c: dp0 = %4.2f\n", component->r[dp0]);
+	printf("pumpConstantSpeed.c: mIn = %4.2f\n", component->r[mIn_flow]);
       }
       // Assign outputs
       for(i=0; i < nvr; i++){
@@ -193,7 +196,10 @@ FMI_Export fmiStatus fmiSetDebugLogging(fmiComponent c,
     return fmiError;
 }
 
-FMI_Export fmiStatus fmiSetReal(fmiComponent c, const fmiValueReference vr[], size_t nvr, const fmiReal value[]){
+FMI_Export fmiStatus fmiSetReal(fmiComponent c, 
+                                const fmiValueReference vr[], 
+                                size_t nvr, 
+                                const fmiReal value[]){
     int i;
     ModelInstance* component = (ModelInstance *) c;
     if (nvr > NVARS){
@@ -204,6 +210,9 @@ FMI_Export fmiStatus fmiSetReal(fmiComponent c, const fmiValueReference vr[], si
     // Set values.
     for (i = 0; i < nvr; i++) {
         component->r[vr[i]] = value[i];
+	printf("pumpConstantSpeed.c: Setting r[%d] = %4.2f\n", vr[i], value[i]);
+	if (vr[i] == dp0)
+	  printf("pumpConstantSpeed.c: Setting dp0 = %4.2f\n", value[i]);
     }
     // Set a flag that indicates that the outputs must be re-computed.
     component->mustComputeOutputs = fmiTrue;
@@ -297,17 +306,20 @@ FMI_Export fmiStatus fmiCompletedIntegratorStep(fmiComponent c,
         fmiBoolean*  enterEventMode, 
         fmiBoolean*   terminateSimulation) {
     // Model Exchange
+    printf("pumpConstantSpeed.c: called fmiCompletedIntegratorStep but FMU has no states.\n");
     return fmiOK;
 }
 
 FMI_Export fmiStatus fmiEnterContinuousTimeMode(fmiComponent c) {
     // Model Exchange
-    return fmiError;
+    printf("pumpConstantSpeed.c: fmiEnterContinuousTimeMode.\n");
+    return fmiOK;
 }
 
 FMI_Export fmiStatus fmiEnterEventMode(fmiComponent c) {
     // Model Exchange
-    return fmiError;
+    printf("pumpConstantSpeed.c: fmiEnterEventMode.\n");
+    return fmiOK;
 }
 
 FMI_Export fmiStatus fmiGetDerivatives(fmiComponent c, fmiReal derivatives[],
@@ -320,20 +332,19 @@ FMI_Export fmiStatus fmiGetDerivatives(fmiComponent c, fmiReal derivatives[],
 FMI_Export fmiStatus fmiGetEventIndicators(fmiComponent c, 
         fmiReal eventIndicators[], size_t ni) {
     // Model Exchange
-    printf("pumpConstantSpeed.c: fmiGetEventIndicators() returning fmiError as it does not trigger events.\n");
     return fmiError;
 }
 
 FMI_Export fmiStatus fmiNewDiscreteStates(fmiComponent  c,
         fmiEventInfo* fmiEventInfo) {
     // Model Exchange
+    fmiEventInfo->newDiscreteStatesNeeded = fmiFalse;
     return fmiError;
 }
 
 FMI_Export fmiStatus fmiSetContinuousStates(fmiComponent c, const fmiReal x[],
         size_t nx) {
     // Model Exchange
-    printf("pumpConstantSpeed.c: fmiSetContinuousStates() is called even though the FMU has no states.\n");
     return fmiOK;
 }
 

@@ -95,6 +95,7 @@ FMI_Export fmiComponent fmiInstantiate(fmiString instanceName,
 void fmiFreeInstance(fmiComponent c) {
     // cxh: I had to cast the c to a ModelInstance here.
     ModelInstance* component = (ModelInstance *) c;
+    component->functions->freeMemory(component->r);
     component->functions->freeMemory(component);
 }
 
@@ -202,6 +203,8 @@ FMI_Export fmiStatus fmiSetReal(fmiComponent c, const fmiValueReference vr[], si
     // Set values.
     for (i = 0; i < nvr; i++) {
         component->r[vr[i]] = value[i];
+	printf("heaterFlowResistance.c: Setting r[%d] = %4.2f\n", vr[i], value[i]);
+
     }
     // Set a flag that indicates that the outputs must be re-computed.
     component->mustComputeOutputs = fmiTrue;
@@ -300,12 +303,12 @@ FMI_Export fmiStatus fmiCompletedIntegratorStep(fmiComponent c,
 
 FMI_Export fmiStatus fmiEnterContinuousTimeMode(fmiComponent c) {
     // Model Exchange
-    return fmiError;
+    return fmiOK;
 }
 
 FMI_Export fmiStatus fmiEnterEventMode(fmiComponent c) {
     // Model Exchange
-    return fmiError;
+    return fmiOK;
 }
 
 FMI_Export fmiStatus fmiGetDerivatives(fmiComponent c, fmiReal derivatives[],
@@ -325,6 +328,7 @@ FMI_Export fmiStatus fmiGetEventIndicators(fmiComponent c,
 FMI_Export fmiStatus fmiNewDiscreteStates(fmiComponent  c,
         fmiEventInfo* fmiEventInfo) {
     // Model Exchange
+    fmiEventInfo->newDiscreteStatesNeeded = fmiFalse;
     return fmiError;
 }
 
