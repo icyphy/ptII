@@ -31,16 +31,39 @@
 
 ME =		ptolemy/actor/lib/fmi/fmus
 
-# Co-Simulation FMUS.
-FMUS_CS =	ballDynamics helloWorld levelStairs onOffSupervisor \
+# Co-simulation FMUS.
+
+# Co-simulation FMUs that have a modelDescription.xml file that has fmiVersion < 2.0.  Typically, this is 1.0 and 1.5.
+# 1.5 is the Ptolemy-specific prototypes.
+FMUS_PRE_2_0_CS =	ballDynamics helloWorld levelStairs onOffSupervisor \
 		stairsA stairsB stepCounter1 stepCounter stepCounterExtendedFMI stepCounterPeriodInName 
 
-# Model Exchange FMUS.
-FMUS_ME = 	bouncingBallME1 dqME1 helloWorldME2 incME1 pumpConstantSpeed valuesME1 vanDerPolME1 \
+# Co-simulation FMUs that have have fmiVersion >= 2.0
+# New Co-simulation FMUS should be added here.
+FMUS_2_0_CS =	heaterFlowResistance pumpConstantSpeed tankOpen
+
+FMUS_CS =	$(FMUS_PRE_2_0_CS) $(FMUS_2_0_CS)
+
+## Model Exchange FMUS.
+
+# FMUs that have a modelDescription.xml file that has fmiVersion < 2.0.  Typically, this is 1.0 and 1.5.
+# 1.5 is the Ptolemy-specific prototypes.
+FMUS_PRE_2_0_ME = bouncingBallME1 dqME1 incME1 pumpConstantSpeed valuesME1 vanDerPolME1 \
 		tankOpen pumpConstantSpeed heaterFlowResistance
+
+# FMUs that have have fmiVersion >= 2.0
+# New Model Exchange FMUS should be added here.
+FMUS_2_0_ME = helloWorldME2
+
+FMUS_ME =	$(FMUS_PRE_2_0_ME) $(FMUS_2_0_ME)
+
 
 # All FMUs.
 FMUS = $(FMUS_CS) $(FMUS_ME)
+
+# FMI 2.0 FMUS
+FMUS_2_0 = $(FMUS_2_0_CS) $(FMUS_2_0_ME)
+
 
 # PTJMODELICA_DIR is set to jmodelica if $PTII/configure find jmi.h
 DIRS =		fmusim2 template win32 $(FMUS) $(PTJMODELICA_DIR)
@@ -149,6 +172,43 @@ update_files:
 				-e 's@/DFMI_COSIMULATION@@' template/sources/build_fmu.bat > $$x/src/sources/build_fmu.bat; \
 			echo "copyng template/sources/fmuTemplate.c to $$x/src/sources"; \
 			cp template/sources/fmuTemplate.c $$x/src/sources/fmuTemplate.c; \
+		done ; \
+	fi
+
+# Update the .h files from the most recent template directory
+HFILE_TEMPLATE_DIRECTORY = template/fmi20RC1pt
+#CP_OR_DIFF = diff
+CP_OR_DIFF = cp
+update_2_0_hfiles:
+	@if [ "x$(FMUS_2_0)" != "x" ]; then \
+		set $(FMUS_2_0); \
+		for x do \
+			echo "copying $(HFILE_TEMPLATE_DIRECTORY)/fmiFunctionTypes.h to $$x/src/sources"; \
+			$(CP_OR_DIFF) $(HFILE_TEMPLATE_DIRECTORY)/fmiFunctionTypes.h $$x/src/sources; \
+			echo "copying $(HFILE_TEMPLATE_DIRECTORY)/fmiFunctions.h to $$x/src/sources"; \
+			$(CP_OR_DIFF) $(HFILE_TEMPLATE_DIRECTORY)/fmiFunctions.h $$x/src/sources; \
+			echo "copying $(HFILE_TEMPLATE_DIRECTORY)/fmiTypesPlatform.h to $$x/src/sources"; \
+			$(CP_OR_DIFF) $(HFILE_TEMPLATE_DIRECTORY)/fmiTypesPlatform.h $$x/src/sources; \
+		done ; \
+	fi
+	echo "Be sure to update the fmus by removing the shared libraries for all platforms with: make clean_2_0; make update_2_0" 
+
+# Remove the FMI 2.0 fmus from the test/auto directory.
+# This rule is run when the .h files change
+clean_2_0:
+	@if [ "x$(FMUS_2_0)" != "x" ]; then \
+		set $(FMUS_2_0); \
+		for x do \
+			echo "Removing ../test/auto/$$x.fmu"; \
+			rm ../test/auto/$$x.fmu; \
+		done ; \
+	fi
+
+update_2_0:
+	@if [ "x$(FMUS_2_0)" != "x" ]; then \
+		set $(FMUS_2_0); \
+		for x do \
+			(cd $$x; make update;) \
 		done ; \
 	fi
 

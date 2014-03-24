@@ -2,9 +2,9 @@
 #
 # @Author: Christopher Brooks (makefile only)
 #
-# @Version: $Id$
+# @Version: $Id: makefile 67777 2013-10-26 01:51:06Z cxh $
 #
-# @Copyright (c) 2013 The Regents of the University of California.
+# @Copyright (c) 2014 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -29,13 +29,12 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
-ME =		ptolemy/actor/lib/fmi/fmus/template
+ME =		ptolemy/actor/lib/fmi/fmus/template/fmiv20RC1pt
 
-DIRS =		fmiv20RC1 fmiv20RC1pt sources
-
+DIRS =
 
 # Root of the Ptolemy II directory
-ROOT =		../../../../../..
+ROOT =		../../../../../../..
 
 CLASSPATH =	$(ROOT)
 
@@ -44,23 +43,24 @@ CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE = 	template
-# PTCLASSJAR =
+PTPACKAGE = 	fmiv20RC1pt
+PTCLASSJAR =	$(PTPACKAGE).jar
 
+#PTCLASSALLJAR = $(PTPACKAGE).jar
 # Include the .class files from these jars in PTCLASSALLJAR
-PTCLASSALLJARS = \
-	fmiv20RC1/fmiv20RC1.jar \
-	fmiv20RC1pt/fmiv20RC1pt.jar \
-	sources/sources.jar
-
-PTCLASSALLJAR = $(PTPACKAGE).jar
+#PTCLASSALLJARS = \
+#	sources/sources.jar
 
 # Keep this list alphabetized.
 JSRCS =
 
-OTHER_FILES_TO_BE_JARED =
+OTHER_FILES_TO_BE_JARED = \
+	README.txt \
+	fmiFunctionTypes.h \
+	fmiFunctions.h \
+	fmiTypesPlatform.h
 
-EXTRA_SRCS =	$(JSRCS)
+EXTRA_SRCS = $(OTHER_FILES_TO_BE_JARED)	$(JSRCS)
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.

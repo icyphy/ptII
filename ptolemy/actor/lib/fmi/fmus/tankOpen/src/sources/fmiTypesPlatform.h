@@ -1,5 +1,3 @@
-// Downloaded from https://svn.modelica.org/fmi/branches/public/specifications/FMI_for_ModelExchange_and_CoSimulation_v2.0_RC1.zip on 10-Feb-2014. 
-
 #ifndef fmiTypesPlatform_h
 #define fmiTypesPlatform_h
 
