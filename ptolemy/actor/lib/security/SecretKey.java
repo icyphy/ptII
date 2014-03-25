@@ -100,7 +100,7 @@ public class SecretKey extends Source {
             algorithm.addChoice(algorithmName);
         }
 
-        algorithm.setExpression("DES");
+        algorithm.setExpression("AES");
 
         output.setTypeEquals(KeyToken.KEY);
 
@@ -114,7 +114,7 @@ public class SecretKey extends Source {
             provider.addChoice(provider2.getName());
         }
 
-        keySize = new Parameter(this, "keySize", new IntToken(56));
+        keySize = new Parameter(this, "keySize", new IntToken(128));
         keySize.setTypeEquals(BaseType.INT);
     }
 
