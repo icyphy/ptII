@@ -1311,6 +1311,7 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
                 }
                 _fmiSetTimeFunction = _fmiModelDescription
                         .getFmiFunction("fmiSetTime");
+                // Common with CoSimulation and Model Exchange;
                 _fmiTerminateFunction = _fmiModelDescription
                         .getFmiFunction("fmiTerminate");
                 _checkFmiModelExchange();
@@ -1320,18 +1321,29 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
                 _fmiDoStepFunction = _fmiModelDescription
                         .getFmiFunction("fmiDoStep");
 
-                try {
-                    _fmiFreeSlaveInstanceFunction = _fmiModelDescription
-                        .getFmiFunction("fmiFreeSlaveInstance");
-                } catch (UnsatisfiedLinkError ex) {
-                    throw new IllegalActionException("Could not find the fmiFreeSlaveInstance function, "
-                            + "perhaps this FMU is a Model Exchange FMU and not a Co-simulation FMU? "
-                            + "Try reimporting it and selecting the Model Exchange checkbox.");
+                if (_fmiVersion < 2.0) {
+                    try {
+                        _fmiFreeSlaveInstanceFunction = _fmiModelDescription
+                            .getFmiFunction("fmiFreeSlaveInstance");
+                    } catch (UnsatisfiedLinkError ex) {
+                        throw new IllegalActionException("Could not find the fmiFreeSlaveInstance function, "
+                                + "perhaps this FMU is a Model Exchange FMU and not a Co-simulation FMU? "
+                                + "Or, perhaps this FMU is v2.0 or greater and does not have a fmiFreeSlaveInstance function? "
+                                + "Try reimporting it and selecting the Model Exchange checkbox.");
+                    }
+                } else {
+                    try {
+                        _fmiFreeInstanceFunction = _fmiModelDescription
+                            .getFmiFunction("fmiFreeInstance");
+                    } catch (UnsatisfiedLinkError ex) {
+                        throw new IllegalActionException("Could not find the fmiFreeInstance function, "
+                                + "Perhaps this FMU earlier than v2.0 and does not have a fmiFreeInstance function?");
+                    }
                 }
 
-                _fmiInitializeSlaveFunction = _fmiModelDescription
-                        .getFmiFunction("fmiInitializeSlave");
                 if (_fmiVersion < 2.0) {
+                     _fmiInitializeSlaveFunction = _fmiModelDescription
+                        .getFmiFunction("fmiInitializeSlave");
                     _fmiInstantiateSlaveFunction = _fmiModelDescription
                         .getFmiFunction("fmiInstantiateSlave");
                 } else {
@@ -1339,8 +1351,14 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
                     _fmiInstantiateFunction = _fmiModelDescription
                         .getFmiFunction("fmiInstantiate");
                 }
-                _fmiTerminateSlaveFunction = _fmiModelDescription
+                if (_fmiVersion < 2.0) {
+                    _fmiTerminateSlaveFunction = _fmiModelDescription
                         .getFmiFunction("fmiTerminateSlave");
+                } else {
+                    // Common with CoSimulation and Model Exchange;
+                    _fmiTerminateFunction = _fmiModelDescription
+                        .getFmiFunction("fmiTerminate");
+                }
 
                 // Optional function.
                 try {
@@ -1995,7 +2013,7 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
         }
         int fmiFlag = 0;
         if (_fmiModelDescription.modelExchange) {
-            if (_fmiVersion < 2.0) {
+            if (_fmiVersion >= 1.5 && _fmiVersion < 2.0) {
                 fmiFlag = ((Integer) _fmiFreeModelInstanceFunction
                         .invokeInt(new Object[] { _fmiComponent })).intValue();
                 if (fmiFlag != FMILibrary.FMIStatus.fmiOK) {
@@ -2005,10 +2023,13 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
                 }
             }
         } else {
-            // fmiFreeSlaveInstance is a void function.
-            // No returned status.
-            _fmiFreeSlaveInstanceFunction
+            if (_fmiVersion < 2.0) {
+                // fmiFreeSlaveInstance is a void function.
+                // No returned status.
+                _fmiFreeSlaveInstanceFunction
                     .invokeInt(new Object[] { _fmiComponent });
+            } else {
+            }
         }
     }
 
@@ -3063,6 +3084,9 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
 
     /** The fmiExitInitializationModeFunction, present only in FMI-2.0. */
     private Function _fmiExitInitializationModeFunction;
+
+    /** The _fmiFreeInstance function, present only in FMI-2.0 */
+    private Function _fmiFreeInstanceFunction;
 
     /** The _fmiFreeModelInstance function. */
     private Function _fmiFreeModelInstanceFunction;
