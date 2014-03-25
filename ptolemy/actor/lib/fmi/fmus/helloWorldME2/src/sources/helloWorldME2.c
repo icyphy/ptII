@@ -4,8 +4,12 @@
 #include <stdio.h>
 #include <string.h>
 
-// The model identifier string.
-#define MODEL_IDENTIFIER helloWorld2
+// Unfortunately this file will compile to different symbols if
+// compiled in a static link library or compiled as a dll.
+// See fmiFunctions.h
+#ifdef FMI_STATIC_OR_C_FILE  // FMI_STATIC_OR_C_FILE is a Ptolemy-specific extension.
+#define FMI_FUNCTION_PREFIX helloWorldME2_
+#endif
 
 // include fmu header files, typedefs and macros
 #include "fmiFunctions.h"

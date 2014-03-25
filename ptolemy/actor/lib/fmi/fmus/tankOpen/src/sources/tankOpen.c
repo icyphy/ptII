@@ -18,11 +18,14 @@
 #include <string.h>
 #include <math.h>
 
-// The model identifier string.
-#define MODEL_IDENTIFIER tankOpen
+// Unfortunately this file will compile to different symbols if
+// compiled in a static link library or compiled as a dll.
+// See fmiFunctions.h
+#ifdef FMI_STATIC_OR_C_FILE  // FMI_STATIC_OR_C_FILE is a Ptolemy-specific extension.
+#define FMI_FUNCTION_PREFIX tankOpen_
+#endif
 
-// include fmu header files, typedefs and macros
-#define FMIAPI_FUNCTION_PREFIX tankOpen_
+// Include fmu header files, typedefs and macros
 #include "fmiFunctions.h"
 
 // Data structure for an instance of this FMU. */

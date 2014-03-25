@@ -15,10 +15,14 @@
 #include <string.h>
 #include <math.h>
 
-// The model identifier string.
-#define MODEL_IDENTIFIER heaterFlowResistance
+// Unfortunately this file will compile to different symbols if
+// compiled in a static link library or compiled as a dll.
+// See fmiFunctions.h
+#ifdef FMI_STATIC_OR_C_FILE  // FMI_STATIC_OR_C_FILE is a Ptolemy-specific extension.
+#define FMI_FUNCTION_PREFIX heaterFlowResistance_
+#endif
 
-// include fmu header files, typedefs and macros
+// Include fmu header files, typedefs and macros
 #include "fmiFunctions.h"
 
 // Data structure for an instance of this FMU. */
