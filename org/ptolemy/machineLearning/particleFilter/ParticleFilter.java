@@ -35,12 +35,15 @@ import java.util.Random;
 import java.util.Set;
 
 import ptolemy.actor.Director;
+import ptolemy.actor.IOPort;
 import ptolemy.actor.IORelation;
 import ptolemy.actor.TypedCompositeActor;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.TypedIORelation;
 import ptolemy.actor.lib.Expression;
 import ptolemy.actor.lib.SetVariable;
+import ptolemy.actor.parameters.ParameterPort;
+import ptolemy.actor.parameters.PortParameter;
 import ptolemy.data.ArrayToken;
 import ptolemy.data.DoubleMatrixToken;
 import ptolemy.data.DoubleToken;
@@ -312,16 +315,35 @@ public class ParticleFilter extends TypedCompositeActor {
                     get(mvName)).getToken());
             _measurementValues.put(mvName, value);
         }
+        for(int i=0; i < _parameterInputs.size(); i++){
+            PortParameter s = (PortParameter) ParticleFilter.this.getAttribute(_parameterInputs.get(i));
+            s.update();
+        }
         // The Sequential Monte Carlo algorithm
         try{
             if(_firstIteration){
                 _initializeParticles();
                 _normalizeWeights();
-                _resample();
                 _firstIteration = false;
+                
+                String[] labels = new String[_stateSpaceSize+1];
+                for(int j = 0; j< _stateSpaceSize; j++){
+                    labels[j] =_stateVariables[j];
+                }
+                labels[_stateSpaceSize] = "weight";
+                Token[]  tokens = new Token[_stateSpaceSize+1];
+                for(int i=0; i < Nparticles; i++){
+                    LinkedList l = (LinkedList)particles[i].getValue();
+                    for(int j = 0; j< _stateSpaceSize; j++){
+                        tokens[j] = new DoubleToken((Double)l.get(j));
+                    }
+                    tokens[_stateSpaceSize] = new DoubleToken(particles[i].getWeight());
+                    RecordToken r = new RecordToken(labels,tokens);
+                    particleOutput.send(0, r);
+                }
             }else{
                 _propagate();
-
+                _normalizeWeights();
                 // create tokens for generated particles
                 String[] labels = new String[_stateSpaceSize+1];
                 for(int j = 0; j< _stateSpaceSize; j++){
@@ -338,9 +360,7 @@ public class ParticleFilter extends TypedCompositeActor {
                     RecordToken r = new RecordToken(labels,tokens);
                     particleOutput.send(0, r);
                 }
-
-
-                _normalizeWeights();
+                
                 if(_doBootstrap){
                     _resample();
                 }else if(_getEffectiveSampleSize() < 0.5*Nparticles){
@@ -349,8 +369,7 @@ public class ParticleFilter extends TypedCompositeActor {
 
             }
         }catch(NameDuplicationException e){
-            System.out.println("!!!!");
-            //FIXME
+            throw new IllegalActionException(this, "NameDuplicationException while initializing particles");
         }
     }
 
@@ -413,16 +432,17 @@ public class ParticleFilter extends TypedCompositeActor {
             int measurementIndex = 0;
             int inputIndex = 0;
             _controlInputs = new HashMap<String,Double>();
+            _parameterInputs = new LinkedList<String>();
 
             while (inputPorts.hasNext()) {
-                inputs[inputIndex] = ((NamedObj) inputPorts.next()).getName();
+                IOPort p1 = (IOPort)inputPorts.next();
+                inputs[inputIndex] = ((NamedObj)p1 ).getName();
                 inputRelations[inputIndex] = new TypedIORelation(this,
                         "relation_" + inputs[inputIndex]);
                 inputRelations[inputIndex].setPersistent(false);
                 getPort(inputs[inputIndex]).link(inputRelations[inputIndex]);
                 String inputName = inputs[inputIndex];
-                if(inputName.endsWith("_m")){
-                    _measurementVariable = inputName;
+                if(inputName.endsWith("_m")){ 
                     measurementIndex = inputIndex;
                     String eqnName = inputName.substring(0, inputName.length()-2);
                     Expression _measurementEquation = new Expression(this, inputName+"_equation");
@@ -448,8 +468,12 @@ public class ParticleFilter extends TypedCompositeActor {
                     zm.variableName.setExpression(inputName);
                     zm.input.link(inputRelations[measurementIndex]);
 
-                }else{
-                    _controlInputs.put(inputName,0.0);
+                }else{ 
+                    if( p1 instanceof ParameterPort){
+                        _parameterInputs.add(inputName);
+                    }else{
+                        _controlInputs.put(inputName,0.0);
+                    }
                 }
                 inputIndex++;
             }
@@ -602,7 +626,8 @@ public class ParticleFilter extends TypedCompositeActor {
         }
     }
 
-    private void _initializeParticles() throws IllegalActionException,NameDuplicationException{
+    private void _initializeParticles() throws IllegalActionException,
+    NameDuplicationException{
         // let prior distribution be N(0,1) for now.
         for(int i = 0; i < particles.length; i++){
             particles[i] = new Particle(_stateSpaceSize);
@@ -728,6 +753,8 @@ public class ParticleFilter extends TypedCompositeActor {
     private HashMap<String, Expression> _updateEquations;
 
     private HashMap<String,Double> _controlInputs;
+    
+    private List<String> _parameterInputs;
 
     private HashMap _tokenMap;
 
@@ -803,7 +830,6 @@ public class ParticleFilter extends TypedCompositeActor {
                     p.setExpression(_particleValue.get(i).toString());
                     _tokenMap.put(_stateVariables[i], new DoubleToken((double)_particleValue.get(i)));
                 }
-
                 try {
                     PtParser parser = new PtParser();
                     Iterator i = _measurementEquations.iterator();
@@ -841,8 +867,7 @@ public class ParticleFilter extends TypedCompositeActor {
                 if(t.equals(BaseType.DOUBLE)){
                     // one-dimensional measurements
                     _weight = 1; 
-                    for(int i = 0; i<_measurementEquations.size(); i++){
-                        Expression measurementEquation = (Expression) _measurementEquations.get(i); 
+                    for(int i = 0; i<_measurementEquations.size(); i++){ 
                         String variableName = ((Expression)_measurementEquations.get(i)).getName();
                         //lose the "_equation" postfix
                         variableName = variableName.substring(0, variableName.length()-9); 
@@ -854,8 +879,7 @@ public class ParticleFilter extends TypedCompositeActor {
                     
                     }else{
                         _weight = 1; 
-                        for(int i = 0; i<_measurementEquations.size(); i++){
-                            Expression measurementEquation = (Expression) _measurementEquations.get(i); 
+                        for(int i = 0; i<_measurementEquations.size(); i++){ 
                             String variableName = ((Expression)_measurementEquations.get(i)).getName();
                             //lose the "_equation" postfix
                             variableName = variableName.substring(0, variableName.length()-9);
@@ -873,6 +897,7 @@ public class ParticleFilter extends TypedCompositeActor {
                         }
                 }
             }
+            
         }
         public boolean adjustWeight(double w){
             // normalize weight
@@ -1071,8 +1096,6 @@ public class ParticleFilter extends TypedCompositeActor {
     // The values of the measurement inputs at the given iteration. 
     private HashMap<String, Token> _measurementValues;
     private Expression _measurementCovariance;
-    // the name of the measurement variable. ( only one?)
-    private String _measurementVariable;
 
 
 }
