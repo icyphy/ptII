@@ -54,7 +54,9 @@ test FMUImport-1.1 {Test out importFMU} {
     set bouncingBall [$e1 getEntity {bouncingBall}]
     set moml [$bouncingBall exportMoML]
     regsub {value=".*/org/ptolemy/fmi/fmu/cs/bouncingBall.fmu"} $moml {value="$CLASSPATH/org/ptolemy/fmi/fmu/cs/bouncingBall.fmu"} moml2
-    list $moml2
+    # Deal with backslashes in MS-DOS-based systems.  Why we need to do this in this day and age is beyond me.
+    regsub {value=".*\\org\\ptolemy\\fmi\\fmu\\cs\\bouncingBall.fmu"} $moml2 {value="$CLASSPATH/org/ptolemy/fmi/fmu/cs/bouncingBall.fmu"} moml3
+    list $moml3
 } {{<entity name="bouncingBall" class="ptolemy.actor.lib.fmi.FMUImport">
     <property name="fmuFile" class="ptolemy.data.expr.FileParameter" value="$CLASSPATH/org/ptolemy/fmi/fmu/cs/bouncingBall.fmu">
     </property>
