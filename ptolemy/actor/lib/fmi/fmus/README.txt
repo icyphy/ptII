@@ -76,18 +76,28 @@ ptolemy/actor/lib/fmi/fmus/stairsA/src/sources/stairsA.c
  - and in the .c file that defines fmu-specific methods of
    your FMU. (stairsA.c)
 
-5) Update the MODEL_IDENTIFIER and FMIAPI_FUNCTION_PREFIX values in the 
+5) For FMI 1.0, update the MODEL_IDENTIFIER and FMIAPI_FUNCTION_PREFIX values in the 
 .c file:
 --start--
 // The model identifier string.
 #define MODEL_IDENTIFIER stairsA
-// Globally unique ID used to make sure the XML file and the DLL match.
-// The following was generated at http://guid.us
-#define MODEL_GUID "{0e634258-412b-4602-a29d-e7882503fd59}"
 
-// Used by FMI 2.0.  See FMIFuctions.h
+// Used by FMI < 2.0.  See fmiFunctions.h
 #define FMIAPI_FUNCTION_PREFIX stairsA_
 --end--
+
+For FMI 2.0, update FMI_FUNCTION_PREFIX in the .c file. 
+--start--
+// Unfortunately this file will compile to different symbols if
+// compiled in a static link library or compiled as a dll.
+// See fmiFunctions.h
+#ifdef FMI_STATIC_OR_C_FILE  // FMI_STATIC_OR_C_FILE is a Ptolemy-specific extension.
+#define FMI_FUNCTION_PREFIX helloWorldME2_
+#endif
+--end--
+
+(Note: Check that the guid was updated in the .c file, see step 5 above.)
+
 
 6) Update FMU_NAME in fmi/fmus/stairsA/src/sources/makefile
    and in fmi/fmus/stairsA/makefile
