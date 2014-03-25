@@ -9924,8 +9924,10 @@ $as_echo_n "checking for the proper JNI architecture... " >&6; }
 
     case "`uname -s`" in
         CYGWIN_*)
-            # Extract the first word of "mingw32-gcc", so it can be a program name with args.
-set dummy mingw32-gcc; ac_word=$2
+            for ac_prog in mingw32-gcc i686-pc-mingw32-gcc
+do
+  # Extract the first word of "$ac_prog", so it can be a program name with args.
+set dummy $ac_prog; ac_word=$2
 { $as_echo "$as_me:${as_lineno-$LINENO}: checking for $ac_word" >&5
 $as_echo_n "checking for $ac_word... " >&6; }
 if ${ac_cv_path_PTCCJNI+:} false; then :
@@ -9964,14 +9966,17 @@ $as_echo "no" >&6; }
 fi
 
 
+  test -n "$PTCCJNI" && break
+done
+
 	    if test "${PTCCJNI:-none}" = "none"; then
-                { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Failed to find mingw32-gcc.
+                { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Failed to find mingw32-gcc or i686-pc-mingw32-gcc.
     Under Windows, Mingw or VisualStudio are required to create shared
     libraries that work with Java.
     Cygwin gcc will compile the dll, but it will not run.  To install
     Mingw, see http://www.mingw.org or
     http://ptolemy.org/ptolemyII/ptIIlatest/cygwin.htm" >&5
-$as_echo "$as_me: WARNING: Failed to find mingw32-gcc.
+$as_echo "$as_me: WARNING: Failed to find mingw32-gcc or i686-pc-mingw32-gcc.
     Under Windows, Mingw or VisualStudio are required to create shared
     libraries that work with Java.
     Cygwin gcc will compile the dll, but it will not run.  To install
