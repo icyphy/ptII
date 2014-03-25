@@ -345,7 +345,6 @@ public class FMUFile {
 
         // FIXME: handle Vendor annotations
 
-        boolean foundCoSimulation = false;
         if (fmiVersion < 1.5 ) {
             // Implementation description in FMI 1.0
             // NodeList is not a list, it only has getLength() and item(). #fail.
@@ -356,7 +355,6 @@ public class FMUFile {
                         + "CoSimulation_StandAlone");
             }
             for (int i = 0; i < implementation.getLength(); i++) {
-                foundCoSimulation = true;
                 Element element = (Element) implementation.item(i);
                 NodeList capabilities = element
                         .getElementsByTagName("Capabilities");
@@ -383,7 +381,6 @@ public class FMUFile {
                         .println("Warning: FMU modelDescription provides more than one CoSimulation element");
             } 
             if (implementation.getLength() == 1) {
-                foundCoSimulation = true;
                 Element cosimulation = (Element) implementation.item(0);
                 fmiModelDescription.cosimulationCapabilities = new FMI20CoSimulationCapabilities(
                         cosimulation);
@@ -431,7 +428,6 @@ public class FMUFile {
                         .println("Warning: FMU modelDescription provides more than one ModelExchange element");
             } 
             if (implementation.getLength() == 1) {
-                foundCoSimulation = true;
                 Element modelExchange = (Element) implementation.item(0);
                 fmiModelDescription.modelExchangeCapabilities = new FMI20ModelExchangeCapabilities(
                         modelExchange);
@@ -451,20 +447,6 @@ public class FMUFile {
             }
         }
 
-        // According to the FMI standard version 1.0 (see page 33 of
-        // the FMI for co-simulation), the implementation tag is
-        // optional.
-        if (!fmiModelDescription.fmiVersion.equals("1.0") && !foundCoSimulation) {
-            System.out
-                    .println("Warning: FMU version "
-                            + fmiModelDescription.fmiVersion
-                            + " does not support CoSimulation.  "
-                            + "In FMI 1.0, the CoSimulation_Standalone element is optional.  "
-                            + "In FMI 2.0, there must be a CoSimulation element.  "
-                            + "Note that Model Exchange is not yet supported by Ptolemy II.");
-        }
-
-        // ModelVariables.
         // This has to be done after the native libraries have been loaded.
         // FIXME: The above comment contradicts the method comment that this does not load libraries.
         // NodeList is not a list, it only has getLength() and item(). #fail.
