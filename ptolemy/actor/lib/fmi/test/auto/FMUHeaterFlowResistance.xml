@@ -83,7 +83,7 @@
         </property>
     </entity>
     <entity name="heaterFlowResistance" class="ptolemy.actor.lib.fmi.FMUImport">
-        <property name="fmuFile" class="ptolemy.data.expr.FileParameter" value="/Users/mwetter/proj/bcvtb/code/ptII/ptolemy/actor/lib/fmi/test/auto/heaterFlowResistance.fmu">
+        <property name="fmuFile" class="ptolemy.data.expr.FileParameter" value="$PTII/ptolemy/actor/lib/fmi/test/auto/heaterFlowResistance.fmu">
         </property>
         <property name="modelExchange" class="ptolemy.data.expr.Parameter" value="true">
         </property>
