@@ -3807,9 +3807,9 @@ else
 
     case "`uname -s`" in    	
         CYGWIN_*)
-            AC_PATH_PROG(PTCCJNI, mingw32-gcc)
+            AC_PATH_PROGS(PTCCJNI, mingw32-gcc i686-pc-mingw32-gcc,)
 	    if test "${PTCCJNI:-none}" = "none"; then
-                AC_MSG_WARN([Failed to find mingw32-gcc.
+                AC_MSG_WARN([Failed to find mingw32-gcc or i686-pc-mingw32-gcc.
     Under Windows, Mingw or VisualStudio are required to create shared
     libraries that work with Java.
     Cygwin gcc will compile the dll, but it will not run.  To install
