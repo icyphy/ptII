@@ -1,6 +1,6 @@
 rem @echo off 
 rem ------------------------------------------------------------
-rem $Id: build_fmu.bat 67777 2013-10-26 01:51:06Z cxh $
+rem $Id: build_fmu.bat 68625 2014-03-14 17:33:23Z cxh $
 rem This batch builds an FMU of the FMU SDK
 rem Usage: build_fmu  <fmu_dir_name> 
 
@@ -57,7 +57,7 @@ rem This license is also present in org/ptolemy/fmi/driver/fmusdk-license.htm
 rem ------------------------------------------------------------
 
 echo -----------------------------------------------------------
-echo building FMU %1 - FMI for Co-Simulation 1.0
+echo building FMU %1 - FMI for Model Exchange 1.0
 
 rem save env variable settings
 set PREV_PATH=%PATH%
@@ -66,6 +66,21 @@ if defined LIB     set PREV_LIB=%LIB%
 if defined LIBPATH set PREV_LIBPATH=%LIBPATH%
 
 rem setup the compiler
+if defined VS250COMNTOOLS (call "%VS250COMNTOOLS%\vsvars32.bat") else ^
+if defined VS240COMNTOOLS (call "%VS240COMNTOOLS%\vsvars32.bat") else ^
+if defined VS230COMNTOOLS (call "%VS230COMNTOOLS%\vsvars32.bat") else ^
+if defined VS220COMNTOOLS (call "%VS220COMNTOOLS%\vsvars32.bat") else ^
+if defined VS210COMNTOOLS (call "%VS210COMNTOOLS%\vsvars32.bat") else ^
+if defined VS200COMNTOOLS (call "%VS200COMNTOOLS%\vsvars32.bat") else ^
+if defined VS190COMNTOOLS (call "%VS190COMNTOOLS%\vsvars32.bat") else ^
+if defined VS180COMNTOOLS (call "%VS180COMNTOOLS%\vsvars32.bat") else ^
+if defined VS170COMNTOOLS (call "%VS170COMNTOOLS%\vsvars32.bat") else ^
+if defined VS160COMNTOOLS (call "%VS160COMNTOOLS%\vsvars32.bat") else ^
+if defined VS150COMNTOOLS (call "%VS150COMNTOOLS%\vsvars32.bat") else ^
+if defined VS140COMNTOOLS (call "%VS140COMNTOOLS%\vsvars32.bat") else ^
+if defined VS130COMNTOOLS (call "%VS130COMNTOOLS%\vsvars32.bat") else ^
+if defined VS120COMNTOOLS (call "%VS120COMNTOOLS%\vsvars32.bat") else ^
+if defined VS110COMNTOOLS (call "%VS110COMNTOOLS%\vsvars32.bat") else ^
 if defined VS110COMNTOOLS (call "%VS110COMNTOOLS%\vsvars32.bat") else ^
 if defined VS100COMNTOOLS (call "%VS100COMNTOOLS%\vsvars32.bat") else ^
 if defined VS90COMNTOOLS (call "%VS90COMNTOOLS%\vsvars32.bat") else ^
@@ -80,7 +95,7 @@ if exist *.dll del /Q *.dll
 rem /wd4090 disables warnings about different 'const' qualifiers
 
 rem cl /LD /wd4090 /nologo "/DFMIAPI=__declspec(dllexport)" ..\%1.c /I ..\.
-cl /LD /wd4090 /nologo /DFMI_COSIMULATION ..\%1.c /I ..\.
+cl /LD /wd4090 /nologo  ..\%1.c /I ..\.
 rem cl /LD /wd4090 /nologo ..\%1.c /I ..\.
 dumpbin /exports %1.dll
 

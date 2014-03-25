@@ -87,7 +87,10 @@ win64:
 		echo "Creating $(ARCH_DIR)"; \
 		mkdir -p $(ARCH_DIR); \
 	fi
-	cl /LD /wd04090 /nologo $< 
+	# Make users should try mingw32.  build_fmu.bat will run cl
+	#cl /LD /wd04090 /nologo $(ARCH_DIR)$< 
+	# FIXME: mingw32-gcc might not be in the path.
+	i686-pc-mingw32-gcc -shared -o $(ARCH_DIR)$@ $< -Wl,--out-implib,$@
 
 # Include the c file on the link line so that the debug .dylib.dSYM directory is created.
 %.dylib: %.c
