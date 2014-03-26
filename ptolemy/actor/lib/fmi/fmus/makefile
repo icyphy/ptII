@@ -176,7 +176,7 @@ update_files:
 	fi
 
 # Update the .h files from the most recent template directory
-HFILE_TEMPLATE_DIRECTORY = template/fmi20RC1pt
+HFILE_TEMPLATE_DIRECTORY = template/fmiv20RC1pt
 #CP_OR_DIFF = diff
 CP_OR_DIFF = cp
 update_2_0_hfiles:
