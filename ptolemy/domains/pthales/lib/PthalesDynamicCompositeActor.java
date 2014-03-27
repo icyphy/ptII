@@ -115,7 +115,7 @@ public class PthalesDynamicCompositeActor extends PthalesCompositeActor {
     }
 
     /** Compute the number of iterations of the actor
-     * based on multiple input ports. The iteraions is the
+     * based on multiple input ports. The iterations is the
      * minimum of legal iterations from the ports.
      *
      * @return The number of iterations of the actor.
