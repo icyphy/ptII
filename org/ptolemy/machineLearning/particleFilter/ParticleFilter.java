@@ -115,12 +115,26 @@ import ptolemy.math.SignalProcessing;
  correspondence to the state space. Namely, the measurement equation should be a function
  of <i>stateVariableNames</i>, <i>U</i> and <i>t</i>.
 
- <li> It is important to explain what it means the Particle Filter to have more than one
- measurement port. This implementation interprets multiple measurement inputs to be conditionally
+ <li> Fill in the measurement covariance parameter, that should be a square double matrix with
+ dimension equal to the number of measurement equations defined. In case the measurements are
+ independent, the matrix should be a scaled identity 
+ 
+ <li> Fill in the processNoise parameter, which should be a function that samples from the
+ (possibly multivariate) distribution the state transition process noise is distributed according
+ to. The return type should be an array of size equal to the state-space size
+ 
+ <li> Specify the prior distribution as a random function from which the particles will be sampled. 
+ For instance, use the the random() function to draw uniform random variables in [0,1] or use 
+ multivariateGaussian() or gaussian() for Gaussian priors.The return type should be an array of size
+ equal to the state-space size
+ 
+ <li> It is important to note how multiple measurement inputs are interpreted by the actor.
+ This implementation interprets multiple measurement inputs to be conditionally
  independent given the hidden state. This allows the likelihood (weight) of each particle at time
  step t to be computed as a product of its likelihood with respect to each measurement at that time.
 
-<li> PortParameters
+<li> For additional parameters that are time varying, add arbitrarily many PortParameters to the actor
+and refer to the port parameter by port name within measurement and/or update equations. 
  </ul>
 
 
