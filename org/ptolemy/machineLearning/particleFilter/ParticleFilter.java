@@ -479,6 +479,7 @@ public class ParticleFilter extends TypedCompositeActor {
                     Parameter measure1;
                     if (this.getAttribute(inputName) == null) {
                         measure1 = new Parameter(this, inputName);
+                        measure1.setVisibility(Settable.EXPERT);
                     } else {
                         measure1 = (Parameter) this.getAttribute(inputName);
                     }
@@ -992,6 +993,7 @@ public class ParticleFilter extends TypedCompositeActor {
                     if ((ParticleFilter.this).getAttribute(_stateVariables[i]) == null) {
                         p = new Parameter(ParticleFilter.this,
                                 _stateVariables[i]);
+                        p.setVisibility(Settable.EXPERT);
                     } else {
                         p = (Parameter) (ParticleFilter.this)
                                 .getAttribute(_stateVariables[i]);
