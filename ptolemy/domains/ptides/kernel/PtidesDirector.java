@@ -541,7 +541,7 @@ public class PtidesDirector extends DEDirector implements Decorator {
         if (_currentLogicalTime != null) {
             return _currentLogicalTime;
         }
-        return super.getModelTime();
+        return localClock.getLocalTime();
     }
 
     /** Return the current microstep or the microstep of the event, if

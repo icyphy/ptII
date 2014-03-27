@@ -832,6 +832,9 @@ public class CompositeActor extends CompositeEntity implements Actor,
 
                 while (ports.hasNext()) {
                     IOPort port = (IOPort) ports.next();
+                    
+                    // if port has default value reset the saved persistent value.
+                    port.reset();
 
                     if (port.isInput()) {
                         // Reset all receivers.

@@ -116,6 +116,7 @@ public class TypedIOPort extends IOPort implements Typeable {
      */
     public TypedIOPort() {
         super();
+        setTypeEquals(defaultValue.getType());
     }
 
     /** Construct a port in the specified workspace with an empty
@@ -125,8 +126,9 @@ public class TypedIOPort extends IOPort implements Typeable {
      *  The object is added to the workspace directory.
      *  Increment the version number of the workspace.
      *  @param workspace The workspace that will list the port.
+     * @throws IllegalActionException 
      */
-    public TypedIOPort(Workspace workspace) {
+    public TypedIOPort(Workspace workspace) throws IllegalActionException {
         super(workspace);
     }
 
@@ -822,7 +824,8 @@ public class TypedIOPort extends IOPort implements Typeable {
         super._checkLink(relation);
     }
 
-    /** Check that the specified token is compatible with the
+    /** Check that the specified token as well as the token in 
+     *  the default value, if specified, is compatible with the
      *  resolved type of this port. If the resolved type is unknown,
      *  then we have to assume unknown is acceptable (e.g. the port
      *  is not connected to anything), so we accept any token type.
@@ -843,6 +846,18 @@ public class TypedIOPort extends IOPort implements Typeable {
                             + " with type " + token.getType()
                             + " is incompatible with port type: "
                             + _resolvedType.toString());
+        }
+        
+        if (defaultValue.getToken() != null) {
+	        compare = TypeLattice.compare(defaultValue.getToken().getType(), _resolvedType);
+	
+	        if (compare == CPO.HIGHER || compare == CPO.INCOMPARABLE) {
+	            throw new IllegalActionException(this,
+	                    "Run-time type checking failed. Default value " + defaultValue.getToken()
+	                            + " with type " + defaultValue.getType()
+	                            + " is incompatible with port type: "
+	                            + _resolvedType.toString());
+	        }
         }
     }
 

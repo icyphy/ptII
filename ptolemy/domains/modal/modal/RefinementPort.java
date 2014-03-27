@@ -37,6 +37,7 @@ import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.Entity;
 import ptolemy.kernel.Port;
 import ptolemy.kernel.Relation;
+import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Nameable;
@@ -77,6 +78,7 @@ public class RefinementPort extends ModalBasePort {
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
         _checkWhetherMirrorIsInput();
+        _init();
     }
 
     /** Construct a port in the given workspace.
@@ -91,6 +93,21 @@ public class RefinementPort extends ModalBasePort {
             NameDuplicationException {
         super(workspace);
         _checkWhetherMirrorIsInput();
+        _init();
+    }
+    
+    /** React to attribute changes.
+     */
+    @Override
+    public void attributeChanged(Attribute attribute)
+    		throws IllegalActionException {
+    	if (attribute == defaultValue) {
+    		IOPort mirrorPort = _getMirrorPort();
+    		if (mirrorPort != null) {
+    			mirrorPort.defaultValue.setExpression(defaultValue.getExpression());
+    		}
+    	} 
+    	super.attributeChanged(attribute);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -755,6 +772,37 @@ public class RefinementPort extends ModalBasePort {
                             && ((IOPort) port).isOutput()) {
                         _automaticallyInput = true;
                     }
+                }
+            }
+        }
+    }
+    
+    private ModalPort _getMirrorPort() {
+    	Nameable container = getContainer();
+
+        if (container != null) {
+            Nameable modal = container.getContainer();
+
+            if (modal instanceof ModalModel) {
+                return (ModalPort) ((ModalModel) modal).getPort(getName());
+            }
+        }
+        return null;
+    }
+    
+    private void _init() throws IllegalActionException, NameDuplicationException {
+    	// Need to check whether there is a containing ModalModel,
+        // and whether its mirror port is also an input.
+        Nameable container = getContainer();
+
+        if (container != null) {
+            Nameable modal = container.getContainer();
+
+            if (modal instanceof ModalModel) {
+                Port port = ((ModalModel) modal).getPort(getName());
+
+                if (port instanceof ModalPort) {
+                	defaultValue.setExpression(((ModalPort)port).defaultValue.getExpression());
                 }
             }
         }

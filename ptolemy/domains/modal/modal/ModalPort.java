@@ -27,11 +27,10 @@
  */
 package ptolemy.domains.modal.modal;
 
-import ptolemy.actor.Director;
-import ptolemy.domains.modal.kernel.FSMDirectorWithPersistentIO;
 import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.Entity;
+import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
@@ -79,7 +78,18 @@ public class ModalPort extends ModalBasePort {
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
     }
-
+    
+    /** React to attribute changes.
+     */
+    @Override
+    public void attributeChanged(Attribute attribute)
+    		throws IllegalActionException {
+    	if (attribute == defaultValue) {
+    		_getMirrorPort().defaultValue.setExpression(defaultValue.getExpression());
+    	} 
+    	super.attributeChanged(attribute);
+    }
+    
     /** Move this object down by one in the list of attributes of
      *  its container. If this object is already last, do nothing.
      *  This method overrides the base class to mirror the change
@@ -230,14 +240,6 @@ public class ModalPort extends ModalBasePort {
      */
     public void setName(String name) throws IllegalActionException,
             NameDuplicationException {
-    	if (getContainer() != null) {
-    		if (((ModalModel)getContainer()).getDirector() != null) {
-		    	Director director = ((ModalModel)getContainer()).getDirector();
-		        if (director instanceof FSMDirectorWithPersistentIO) {
-		        	((FSMDirectorWithPersistentIO)director).renamePortInitAttribute(this.getName(), name);
-		        }
-    		}
-    	}
         _setName(name);
     }
 
@@ -256,4 +258,13 @@ public class ModalPort extends ModalBasePort {
     public void setOutput(boolean isOutput) throws IllegalActionException {
         _setOutput(isOutput);
     }
+	
+	private RefinementPort _getMirrorPort() {
+		if (getContainer() != null &&
+				((ModalModel)getContainer())._controller != null &&
+				((ModalModel)getContainer())._controller.getPort(this.getName()) != null) {
+			return (RefinementPort) ((ModalModel)getContainer())._controller.getPort(this.getName());
+		}
+		return null;
+	}
 }

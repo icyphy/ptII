@@ -92,6 +92,12 @@ import ptolemy.kernel.util.Workspace;
  relations inside the opaque composite actor, whereas the outside
  links are to relations outside. If it is not specified, then a link
  is an outside link.
+ 
+ <p> 
+ The port has a <i>defaultValue</i> parameter that, by default, is 
+ empty. If this parameter is not empty, the port always has a token.
+ The value of the port is initially specified by the defaultValue.
+ Afterwards, the previous token of the port is remembered. 
 
  <p>
  The port has a <i>width</i>, which by default is constrained to
@@ -148,6 +154,12 @@ public class IOPort extends ComponentPort {
      */
     public IOPort() {
         super();
+        try {
+			_init();
+		} catch (IllegalActionException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
     }
 
     /** Construct a port in the specified workspace with an empty
@@ -157,9 +169,11 @@ public class IOPort extends ComponentPort {
      *  The object is added to the workspace directory.
      *  Increment the version number of the workspace.
      *  @param workspace The workspace that will list the port.
+     * @throws IllegalActionException 
      */
-    public IOPort(Workspace workspace) {
+    public IOPort(Workspace workspace) throws IllegalActionException {
         super(workspace);
+        _init();
     }
 
     /** Construct an IOPort with a containing actor and a name
@@ -177,6 +191,7 @@ public class IOPort extends ComponentPort {
     public IOPort(ComponentEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
+        _init();
     }
 
     /** Construct an IOPort with a container and a name that is
@@ -547,7 +562,7 @@ public class IOPort extends ComponentPort {
     public Token convert(Token token) throws IllegalActionException {
         return token;
     }
-
+    
     /** Create new receivers for this port, replacing any that may
      *  previously exist, and validate any instances of Settable that
      *  this port may contain. This method should only be called on
@@ -911,7 +926,14 @@ public class IOPort extends ComponentPort {
         Token token = null;
 
         for (int j = 0; j < localReceivers[channelIndex].length; j++) {
-            Token localToken = localReceivers[channelIndex][j].get();
+        	Token localToken = null;
+        	try {
+            	localToken = localReceivers[channelIndex][j].get();
+        	} catch (NoTokenException ex) {
+        		if (defaultValue.getToken() == null) {
+        			throw ex;
+        		}
+        	}
 
             if (token == null) {
                 token = localToken;
@@ -923,12 +945,17 @@ public class IOPort extends ComponentPort {
         }
 
         if (token == null) {
-            throw new NoTokenException(this, "No token to return.");
+        	if (_persistentToken != null) {
+        		token = (Token) _persistentToken;
+        	} else {
+        		throw new NoTokenException(this, "No token to return.");
+        	}
         }
 
         if (_debugging) {
             _debug("get from channel " + channelIndex + ": " + token);
         }
+        _persistentToken = token;
 
         return token;
     }
@@ -994,8 +1021,23 @@ public class IOPort extends ComponentPort {
                     + channelIndex + ".");
         }
 
-        Token[] retArray = localReceivers[channelIndex][0]
+        // if there are not enough tokens
+        Token[] retArray = new Token[vectorLength];
+        if (_persistentToken != null && !hasToken(channelIndex, vectorLength)) {
+        	int i = 0;
+        	while (localReceivers[channelIndex][0].hasToken()) {
+        		retArray[i++] = localReceivers[channelIndex][0].get();
+        		_persistentToken = retArray[i++];
+        	}
+        	// If there are not enough tokens, fill up the vector with 
+        	// the persistent token.
+        	while (i < vectorLength) {
+        		retArray[i++] = _persistentToken;
+        	}
+        } else {
+        	retArray = localReceivers[channelIndex][0]
                 .getArray(vectorLength);
+        }
 
         if (retArray == null) {
             throw new NoTokenException(this, "get: No token array "
@@ -1164,7 +1206,14 @@ public class IOPort extends ComponentPort {
         Token token = null;
 
         for (int j = 0; j < localReceivers[channelIndex].length; j++) {
-            Token localToken = localReceivers[channelIndex][j].get();
+        	Token localToken = null;
+        	try {
+        		localToken = localReceivers[channelIndex][j].get();
+        	} catch (NoTokenException ex) {
+        		if (defaultValue.getToken() == null) {
+        			throw ex;
+        		}
+        	}
 
             if (token == null) {
                 token = localToken;
@@ -1176,13 +1225,19 @@ public class IOPort extends ComponentPort {
         }
 
         if (token == null) {
-            throw new NoTokenException(this, "No token to return.");
+        	if (_persistentToken != null) {
+        		token = (Token) _persistentToken;
+        	} else if (defaultValue.getToken() != null) {
+        		token = defaultValue.getToken();
+        	} else {
+        		throw new NoTokenException(this, "No token to return.");
+        	}
         }
 
         if (_debugging) {
             _debug("get from inside channel " + channelIndex + ": " + token);
         }
-
+        _persistentToken = token;
         return token;
     }
 
@@ -1998,6 +2053,10 @@ public class IOPort extends ComponentPort {
      *   of range.
      */
     public boolean hasToken(int channelIndex) throws IllegalActionException {
+    	if (defaultValue.getToken() != null) {
+    		return true;
+    	} 
+    	
         // The getReceivers() method throws an IllegalActionException if
         // there's no director.
         Receiver[][] receivers = getReceivers();
@@ -2049,6 +2108,10 @@ public class IOPort extends ComponentPort {
      */
     public boolean hasToken(int channelIndex, int tokens)
             throws IllegalActionException {
+    	if (defaultValue.getToken() != null) {
+    		return true;
+    	}
+    	
         boolean result = false;
 
         try {
@@ -2093,6 +2156,10 @@ public class IOPort extends ComponentPort {
      */
     public boolean hasTokenInside(int channelIndex)
             throws IllegalActionException {
+    	if (defaultValue.getToken() != null) {
+    		return true;
+    	}
+    	
         // The getInsideReceivers() method throws an
         // IllegalActionException if there's no director.
         Receiver[][] receivers = getInsideReceivers();
@@ -2735,6 +2802,16 @@ public class IOPort extends ComponentPort {
 
             return;
         }
+    }
+    
+    /** If port has default value reset the saved persistent value.
+     * @throws IllegalActionException If defaultValue cannot be retrieved.
+     */
+    public void reset() throws IllegalActionException {
+    	_persistentToken = null;
+    	if (defaultValue.getToken() != null) {
+    		_persistentToken = defaultValue.getToken();
+    	}
     }
 
     /** Send the specified token to all receivers connected to the
@@ -3650,6 +3727,16 @@ public class IOPort extends ComponentPort {
             _workspace.doneWriting();
         }
     }
+    
+	///////////////////////////////////////////////////////////////////
+	////                         public parameters                 ////
+    
+    /** The default value of the port. By default, this parameter is
+     * 	empty. If this value is not empty, the port is persistent.
+	 */
+	public Parameter defaultValue;
+	
+	private Token _persistentToken;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public variables                  ////
@@ -4745,6 +4832,14 @@ public class IOPort extends ComponentPort {
         } finally {
             _workspace.doneReading();
         }
+    }
+    
+    private void _init() throws IllegalActionException {
+    	try {
+			defaultValue = new Parameter(this, "defaultValue");
+		} catch (NameDuplicationException e) {
+			throw new IllegalActionException(this, e.getCause(), e.getMessage());
+		}
     }
 
     // Invalidate schedule and type resolution and width inference of the director

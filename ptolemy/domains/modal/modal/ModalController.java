@@ -34,7 +34,6 @@ import ptolemy.actor.TypedActor;
 import ptolemy.actor.TypedCompositeActor;
 import ptolemy.domains.modal.kernel.ContainmentExtender;
 import ptolemy.domains.modal.kernel.FSMActor;
-import ptolemy.domains.modal.kernel.FSMDirectorWithPersistentIO;
 import ptolemy.domains.modal.kernel.RefinementActor;
 import ptolemy.domains.modal.kernel.State;
 import ptolemy.kernel.ComponentEntity;
@@ -387,9 +386,6 @@ public class ModalController extends FSMActor implements DropTargetHandler,
                 }
             }
         }
-        if (getDirector() != null && getDirector() instanceof FSMDirectorWithPersistentIO) {
-        	((FSMDirectorWithPersistentIO)getDirector()).addPortInitAttribute(port.getName());
-        }
         
         super._addPort(port);
     }
@@ -421,16 +417,6 @@ public class ModalController extends FSMActor implements DropTargetHandler,
         map.put(State.class, ModalController.class.getName());
         map.put(ComponentEntity.class, TypedCompositeActor.class.getName());
         return map;
-    }
-
-    @Override
-    protected void _removePort(Port port) {
-    	if (getDirector() != null && getDirector() instanceof FSMDirectorWithPersistentIO) {
-        	((FSMDirectorWithPersistentIO)getDirector()).removePortInitAttribute(port.getName());
-        }
-        
-    	
-    	super._removePort(port);
     }
 
     ///////////////////////////////////////////////////////////////////

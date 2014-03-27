@@ -63,7 +63,7 @@ public class RefinementPort extends TypedIOPort {
      *   class for the container, or if the container does not implement the
      *   TypedActor interface.
      */
-    public RefinementPort(Workspace workspace) {
+    public RefinementPort(Workspace workspace) throws IllegalActionException {
         super(workspace);
         _checkWhetherMirrorIsInput();
     }

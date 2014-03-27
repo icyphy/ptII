@@ -66,7 +66,6 @@ JSRCS = \
 	FSMActor.java \
 	FSMCausalityInterface.java \
 	FSMDirector.java \
-	FSMDirectorWithPersistentIO.java \
 	FSMReceiver.java \
 	FSMTransitionParameter.java \
 	ModalDirector.java \
@@ -75,7 +74,6 @@ JSRCS = \
 	NonStrictFSMDirector.java \
 	OutputActionsAttribute.java \
 	ParseTreeEvaluatorForGuardExpression.java \
-	PersistentFSMReceiver.java \
 	RefinementActor.java \
 	RelationList.java \
 	RelationNode.java \

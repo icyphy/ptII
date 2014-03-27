@@ -66,8 +66,9 @@ public class MirrorPort extends TypedIOPort {
      *  The object is added to the workspace directory.
      *  Increment the version number of the workspace.
      *  @param workspace The workspace that will list the port.
+     * @throws IllegalActionException If port parameters cannot be initialized.
      */
-    public MirrorPort(Workspace workspace) {
+    public MirrorPort(Workspace workspace) throws IllegalActionException {
         // This constructor is needed for Shallow codgen.
         super(workspace);
     }

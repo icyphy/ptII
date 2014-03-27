@@ -76,8 +76,9 @@ public final class SDFIOPort extends TypedIOPort {
      *  The object is added to the workspace directory.
      *  Increment the version number of the workspace.
      *  @param workspace The workspace that will list the port.
+     * @throws IllegalActionException If port parameters cannot be initialized.
      */
-    public SDFIOPort(Workspace workspace) {
+    public SDFIOPort(Workspace workspace) throws IllegalActionException {
         super(workspace);
         _initialize();
     }
