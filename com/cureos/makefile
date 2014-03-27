@@ -1,9 +1,9 @@
-# Makefile sources from outside of Ptolemy
+# Makefile microstar XML parser
 #
-# @Version: $Id$
+# @Version: $Id: makefile 54696 2009-06-26 17:30:43Z cxh $
 # @Author: Christopher Hylands
 #
-# @Copyright (c) 1997-2009 The Regents of the University of California.
+# @Copyright (c) 1997-2000 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -29,13 +29,21 @@
 # 						COPYRIGHTENDKEY
 ##########################################################################
 
-DIRS = cureos jgoodies microstar
+# Order matters here.  kernel should be first, then actors, then domains
+# so that when we compile in a directory we should have already compiled
+# any classes in other directories that we depend on.
+#
+# doc directory should be last so we get files from version control before
+# updating the docs
+#DIRS = kernel actors domains pitcl doc graph data
+# filter is not yet ready
+DIRS = numerics
 
 # Root of Ptolemy II directory
-ROOT =		..
+ROOT =		../..
 
 # $(ME) is used in ptdir.mk
-ME =		com
+ME =		com/cureos
 
 # True source directory
 VPATH =		$(ROOT)/$(ME)
@@ -50,9 +58,7 @@ install: subinstall
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to report an error on them.
 MISC_FILES = \
-	cureos \
-	jgoodies \
-	microstar 
+	xml
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk

@@ -1,9 +1,9 @@
-# Makefile sources from outside of Ptolemy
+# Makefile for microstar XML parser
 #
-# @Version: $Id$
+# @Version: $Id: makefile 33535 2004-05-06 23:51:31Z cxh $
 # @Author: Christopher Hylands
 #
-# @Copyright (c) 1997-2009 The Regents of the University of California.
+# @Copyright (c) 1997-2000 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -29,30 +29,49 @@
 # 						COPYRIGHTENDKEY
 ##########################################################################
 
-DIRS = cureos jgoodies microstar
+ME = 		com/cureos/numerics
+
+DIRS =		
 
 # Root of Ptolemy II directory
-ROOT =		..
+ROOT =		../../..
 
-# $(ME) is used in ptdir.mk
-ME =		com
-
-# True source directory
-VPATH =		$(ROOT)/$(ME)
+CLASSPATH =	$(ROOT)
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
-all: suball
-install: subinstall
+# Used to build jar files
+PTPACKAGE = 	xml
+PTCLASSJAR = 	$(PTPACKAGE).jar
+
+JSRCS = \
+	Calcfc.java \
+	Cobyla.java \
+	CobylaExitStatus.java  
+
+OTHER_FILES_TO_BE_JARED =  
+
+EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
+
 
 # Sources that may or may not be present, but if they are present, we don't
-# want make checkjunk to report an error on them.
-MISC_FILES = \
-	cureos \
-	jgoodies \
-	microstar 
+# want make checkjunk to barf on them.
+# Don't include $(DIRS) here, we don't want make sources to run make demo
+MISC_FILES =	#$(DIRS)
 
-# Get the rest of the rules
+# make checkjunk will not report OPTIONAL_FILES as trash
+# make distclean removes OPTIONAL_FILES
+# driver is in OPTIONAL_FILES because we don't ship it.
+OPTIONAL_FILES = \ 
+
+JCLASS = $(JSRCS:%.java=%.class)
+
+all: jclass
+install: jclass $(PTCLASSJAR)
+docs: javadocs
+
+# Include the rest of the rules
 include $(ROOT)/mk/ptcommon.mk
+
