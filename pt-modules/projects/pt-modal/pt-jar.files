@@ -16,7 +16,6 @@
 /ptolemy/domains/modal/kernel/FSMActor.java
 /ptolemy/domains/modal/kernel/FSMCausalityInterface.java
 /ptolemy/domains/modal/kernel/FSMDirector.java
-/ptolemy/domains/modal/kernel/FSMDirectorWithPersistentIO.java
 /ptolemy/domains/modal/kernel/FSMReceiver.java
 /ptolemy/domains/modal/kernel/FSMTransitionParameter.java
 /ptolemy/domains/modal/kernel/ModalDirector.java
@@ -25,7 +24,6 @@
 /ptolemy/domains/modal/kernel/NonStrictFSMDirector.java
 /ptolemy/domains/modal/kernel/OutputActionsAttribute.java
 /ptolemy/domains/modal/kernel/ParseTreeEvaluatorForGuardExpression.java
-/ptolemy/domains/modal/kernel/PersistentFSMReceiver.java
 /ptolemy/domains/modal/kernel/RefinementActor.java
 /ptolemy/domains/modal/kernel/RelationList.java
 /ptolemy/domains/modal/kernel/RelationNode.java
