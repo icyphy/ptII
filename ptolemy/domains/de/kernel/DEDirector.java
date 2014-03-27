@@ -414,6 +414,7 @@ public class DEDirector extends Director implements SuperdenseTimeDirector {
         DEDirector newObject = (DEDirector) super.clone(workspace);
         newObject._disabledActors = null;
         newObject._eventQueue = null;
+        newObject._originalEventTime = null;
         newObject._exceedStopTime = false;
         newObject._isInitializing = false;
         newObject._microstep = 1;
@@ -752,7 +753,23 @@ public class DEDirector extends Director implements SuperdenseTimeDirector {
         return aFutureTime;
     }
 
-    /** Return the timestamp of the next event in the queue. This is
+    /** Return the model time of the event. If an execution aspect
+     *  is used, the delay introduced by this aspect might cause 
+     *  actors not to fire. Thus, pretend that the model time is
+     *  still the original firing time of the actor. 
+     */
+    @Override
+	public Time getModelTime() {
+		if (_actorFiring != null && 
+				!(_actorFiring instanceof ActorExecutionAspect) && 
+				_originalEventTime != null && 
+				_originalEventTime.get(_actorFiring) != null) {
+			return _originalEventTime.get(_actorFiring);
+		}
+		return super.getModelTime();
+	}
+
+	/** Return the timestamp of the next event in the queue. This is
      *  different from getModelNextIterationTime as it just considers
      *  the local event queue and not that of directors higher up in
      *  the model hierarchy.
@@ -834,6 +851,7 @@ public class DEDirector extends Director implements SuperdenseTimeDirector {
 
         synchronized (_eventQueue) {
             _eventQueue.clear();
+            _originalEventTime.clear();
 
             // Reset the following private variables.
             _disabledActors = null;
@@ -1252,6 +1270,7 @@ public class DEDirector extends Director implements SuperdenseTimeDirector {
         }
 
         _actorsFinished = new ArrayList();
+        _originalEventTime = new HashMap<Actor, Time>();
 
         if (_debugging && _verbose) {
             _debug("## Depths assigned to actors and ports:");
@@ -1274,6 +1293,8 @@ public class DEDirector extends Director implements SuperdenseTimeDirector {
 
         super.removeDebugListener(listener);
     }
+    
+    private HashMap<Actor, Time> _originalEventTime = null;
 
     /** Resume the execution of an actor that was previously blocked because
      *  it didn't have all the resources it needed for execution. This method
@@ -1288,6 +1309,10 @@ public class DEDirector extends Director implements SuperdenseTimeDirector {
                 .getDirector().getModelTime();
         DEEvent event = events.get(0);
         events.remove(event);
+        if (_originalEventTime == null) {
+        	_originalEventTime = new HashMap<Actor, Time>();
+        }
+        _originalEventTime.put(actor, event.timeStamp());
         _actorsInExecution.put(actor, events);
 
         if (event.ioPort() != null) {
@@ -1587,7 +1612,7 @@ public class DEDirector extends Director implements SuperdenseTimeDirector {
      */
     protected void _enqueueTriggerEvent(IOPort ioPort)
             throws IllegalActionException {
-        _enqueueTriggerEvent(ioPort, getModelTime());
+        _enqueueTriggerEvent(ioPort, localClock.getLocalTime());
     }
 
     /** Put a trigger event into the event queue with a timestamp that can be
@@ -1670,7 +1695,7 @@ public class DEDirector extends Director implements SuperdenseTimeDirector {
             _eventQueue.put(newEvent);
         }
     }
-
+    
     /** Advance the current model tag to that of the earliest event in
      *  the event queue, and fire all actors that have requested or
      *  are triggered to be fired at the current tag. If
@@ -1797,6 +1822,7 @@ public class DEDirector extends Director implements SuperdenseTimeDirector {
                 _debug(new FiringEvent(this, actorToFire,
                         FiringEvent.BEFORE_PREFIRE));
 
+                _actorFiring = actorToFire;
                 if (!actorToFire.prefire()) {
                     _debug("*** Prefire returned false.");
                     break;
@@ -1807,7 +1833,9 @@ public class DEDirector extends Director implements SuperdenseTimeDirector {
 
                 _debug(new FiringEvent(this, actorToFire,
                         FiringEvent.BEFORE_FIRE));
+                
                 actorToFire.fire();
+                _actorFiring = null;
                 _debug(new FiringEvent(this, actorToFire,
                         FiringEvent.AFTER_FIRE));
 
@@ -1822,6 +1850,7 @@ public class DEDirector extends Director implements SuperdenseTimeDirector {
                     _disableActor(actorToFire);
                     break;
                 }
+                
 
                 _debug(new FiringEvent(this, actorToFire,
                         FiringEvent.AFTER_POSTFIRE));
@@ -1835,13 +1864,13 @@ public class DEDirector extends Director implements SuperdenseTimeDirector {
                     _disableActor(actorToFire);
                     break;
                 }
-
+                _actorFiring = actorToFire;
                 if (!actorToFire.prefire()) {
                     break;
                 }
 
                 actorToFire.fire();
-
+                _actorFiring = null;
                 // NOTE: It is the fact that we postfire actors now that makes
                 // this director not comply with the actor abstract semantics.
                 // However, it's quite a redesign to make it comply, and the
@@ -1852,6 +1881,7 @@ public class DEDirector extends Director implements SuperdenseTimeDirector {
                     _disableActor(actorToFire);
                     break;
                 }
+                
             }
 
             // Check all the input ports of the actor to see whether there
@@ -2519,7 +2549,9 @@ public class DEDirector extends Director implements SuperdenseTimeDirector {
         fireContainerAt(nextEvent.timeStamp(), nextEvent.microstep());
     }
 
-    ///////////////////////////////////////////////////////////////////
+    private Actor _actorFiring = null;
+
+	///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
     /** Indicator that calls to fireAt() should be delegated
