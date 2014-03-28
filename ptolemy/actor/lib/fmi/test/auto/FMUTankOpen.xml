@@ -23,7 +23,7 @@
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Author: Michael Wetter">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[10.0, 515.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{125.0, -15.0}">
         </property>
     </property>
     <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
@@ -61,8 +61,70 @@
         <property name="_flipPortsHorizontal" class="ptolemy.data.expr.Parameter" value="true">
         </property>
     </entity>
+    <entity name="pIn" class="ptolemy.actor.lib.Const">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="1.0E5+100">
+        </property>
+        <doc>Create a constant sequence.</doc>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{170.0, 395.0}">
+        </property>
+    </entity>
+    <entity name="mIn_flow" class="ptolemy.actor.lib.Const">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="0.1">
+        </property>
+        <doc>Create a constant sequence.</doc>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{165.0, 255.0}">
+        </property>
+    </entity>
+    <entity name="SingleEvent" class="ptolemy.actor.lib.SingleEvent">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="1.0">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{25.0, 255.0}">
+        </property>
+    </entity>
+    <entity name="Test_m_flow" class="ptolemy.actor.lib.Test">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1}">
+        </property>
+        <property name="tolerance" class="ptolemy.data.expr.Parameter" value="2.0E-11">
+        </property>
+        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{520.0, 315.0}">
+        </property>
+    </entity>
+    <entity name="Test_T" class="ptolemy.actor.lib.Test">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{10.0, 10.5, 11.0, 11.5, 12.0, 12.5, 13.0, 13.5, 14.0, 14.5, 15.0, 15.5, 16.0, 16.5, 17.0, 17.5, 18.0, 18.5, 19.0, 19.5, 20.0}">
+        </property>
+        <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.0E-8">
+        </property>
+        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{520.0, 405.0}">
+        </property>
+    </entity>
+    <entity name="Test_pOut" class="ptolemy.actor.lib.Test">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{100000.0, 100000.0, 100000.0, 100000.0, 100000.0, 100000.0, 100000.0, 100000.0, 100000.0, 100000.0, 100000.0, 100000.0, 100000.0, 100000.0, 100000.0, 100000.0, 100000.0, 100000.0, 100000.0, 100000.0, 100000.0}">
+        </property>
+        <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.0E-4">
+        </property>
+        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{520.0, 475.0}">
+        </property>
+    </entity>
     <entity name="tankOpen" class="ptolemy.actor.lib.fmi.FMUImport">
-        <property name="fmuFile" class="ptolemy.data.expr.FileParameter" value="$CLASSPATH/ptolemy/actor/lib/fmi/test/auto/tankOpen.fmu">
+        <property name="fmuFile" class="ptolemy.data.expr.FileParameter" value="/Users/mwetter/proj/bcvtb/code/ptII/ptolemy/actor/lib/fmi/test/auto/tankOpen.fmu">
         </property>
         <property name="modelExchange" class="ptolemy.data.expr.Parameter" value="true">
         </property>
@@ -76,7 +138,7 @@
         </property>
         <property name="pAtm" class="ptolemy.data.expr.Parameter" value="100000.0">
         </property>
-        <property name="maximumStepSize" class="ptolemy.data.expr.Parameter" value="10000">
+        <property name="maximumStepSize" class="ptolemy.data.expr.Parameter" value="100000">
         </property>
         <port name="inlet_m_flow" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -158,6 +220,8 @@
         </port>
         <port name="T" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
+            <property name="" class="ptolemy.kernel.util.Attribute">
+            </property>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
                 </property>
@@ -167,6 +231,8 @@
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
                 </property>
+            </property>
+            <property name="_hide" class="ptolemy.data.expr.SingletonParameter" value="false">
             </property>
         </port>
         <port name="der_T_" class="ptolemy.actor.TypedIOPort">
@@ -184,76 +250,6 @@
             </property>
         </port>
     </entity>
-    <entity name="pIn" class="ptolemy.actor.lib.Const">
-        <property name="value" class="ptolemy.data.expr.Parameter" value="1.0E5+100">
-        </property>
-        <doc>Create a constant sequence.</doc>
-        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
-            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
-            </property>
-            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
-            </property>
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{170.0, 395.0}">
-        </property>
-    </entity>
-    <entity name="mIn_flow" class="ptolemy.actor.lib.Const">
-        <property name="value" class="ptolemy.data.expr.Parameter" value="0.1">
-        </property>
-        <doc>Create a constant sequence.</doc>
-        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
-            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
-            </property>
-            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
-            </property>
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{165.0, 255.0}">
-        </property>
-    </entity>
-    <entity name="SingleEvent" class="ptolemy.actor.lib.SingleEvent">
-        <property name="value" class="ptolemy.data.expr.Parameter" value="1.0">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{25.0, 255.0}">
-        </property>
-    </entity>
-    <entity name="Test_m_flow" class="ptolemy.actor.lib.Test">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1}">
-        </property>
-        <property name="tolerance" class="ptolemy.data.expr.Parameter" value="2.0E-11">
-        </property>
-        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{520.0, 315.0}">
-        </property>
-    </entity>
-    <entity name="Test_T" class="ptolemy.actor.lib.Test">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{10.0, 10.5, 11.0, 11.5, 12.0, 12.5, 13.0, 13.5, 14.0, 14.5, 15.0, 15.5, 16.0, 16.5, 17.0, 17.5, 18.0, 18.5, 19.0, 19.5, 20.0}">
-        </property>
-        <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.0E-8">
-        </property>
-        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{520.0, 405.0}">
-        </property>
-    </entity>
-    <entity name="Test_pOut" class="ptolemy.actor.lib.Test">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{100000.0, 100000.0, 100000.0, 100000.0, 100000.0, 100000.0, 100000.0, 100000.0, 100000.0, 100000.0, 100000.0, 100000.0, 100000.0, 100000.0, 100000.0, 100000.0, 100000.0, 100000.0, 100000.0, 100000.0, 100000.0}">
-        </property>
-        <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.0E-4">
-        </property>
-        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{520.0, 475.0}">
-        </property>
-    </entity>
-    <relation name="relation" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;TIn.output&quot;,x=170.0,y=325.0}, tail={id=&quot;tankOpen.inlet_T&quot;,x=340.0,y=335.0}, points={} } }">
-        </property>
-    </relation>
-    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;tankOpen.inlet_p&quot;,x=340.0,y=335.0}, tail={id=&quot;pIn.output&quot;,x=170.0,y=395.0}, points={230.0,345.0,230.0,395.0} } }">
-        </property>
-    </relation>
     <relation name="relation10" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
         </property>
@@ -262,16 +258,28 @@
         <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;TIn.trigger&quot;,x=170.0,y=325.0}, tail={id=&quot;relation10.vertex1&quot;,x=85.0,y=255.0}, points={85.0,325.0} },{ head={id=&quot;pIn.trigger&quot;,x=170.0,y=395.0}, tail={id=&quot;relation10.vertex1&quot;,x=85.0,y=255.0}, points={85.0,395.0} },{ head={id=&quot;mIn_flow.trigger&quot;,x=165.0,y=255.0}, tail={id=&quot;relation10.vertex1&quot;,x=85.0,y=255.0}, points={} },{ head={id=&quot;SingleEvent.output&quot;,x=25.0,y=255.0}, tail={id=&quot;relation10.vertex1&quot;,x=85.0,y=255.0}, points={} } }">
         </property>
     </relation>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;mIn_flow.output&quot;,x=165.0,y=255.0}, tail={id=&quot;tankOpen.inlet_m_flow&quot;,x=340.0,y=335.0}, points={230.0,255.0,230.0,315.0} } }">
+        </property>
+    </relation>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;tankOpen.inlet_T&quot;,x=340.0,y=335.0}, tail={id=&quot;TIn.output&quot;,x=170.0,y=325.0}, points={} } }">
+        </property>
+    </relation>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;tankOpen.inlet_m_flow&quot;,x=340.0,y=335.0}, tail={id=&quot;mIn_flow.output&quot;,x=165.0,y=255.0}, points={230.0,315.0,230.0,255.0} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;tankOpen.inlet_p&quot;,x=340.0,y=335.0}, tail={id=&quot;pIn.output&quot;,x=170.0,y=395.0}, points={230.0,345.0,230.0,395.0} } }">
         </property>
     </relation>
     <relation name="relation4" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;QSSIntegrator.u&quot;,x=170.0,y=475.0}, tail={id=&quot;tankOpen.der_T_&quot;,x=340.0,y=335.0}, points={440.0,475.0,440.0,355.0} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;tankOpen.T&quot;,x=340.0,y=335.0}, tail={id=&quot;QSSIntegrator.q&quot;,x=170.0,y=475.0}, points={245.0,355.0,245.0,425.0,85.0,425.0,85.0,475.0} } }">
         </property>
     </relation>
     <relation name="relation5" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;tankOpen.outlet_m_flow&quot;,x=340.0,y=335.0}, tail={id=&quot;Test_m_flow.input&quot;,x=520.0,y=315.0}, points={} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;tankOpen.der_T_&quot;,x=340.0,y=335.0}, tail={id=&quot;QSSIntegrator.u&quot;,x=170.0,y=475.0}, points={440.0,355.0,440.0,475.0} } }">
+        </property>
+    </relation>
+    <relation name="relation6" class="ptolemy.actor.TypedIORelation">
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;tankOpen.outlet_p&quot;,x=340.0,y=335.0}, tail={id=&quot;Test_pOut.input&quot;,x=520.0,y=475.0}, points={455.0,345.0,455.0,475.0} } }">
         </property>
     </relation>
     <relation name="relation7" class="ptolemy.actor.TypedIORelation">
@@ -279,31 +287,27 @@
         </property>
     </relation>
     <relation name="relation8" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;tankOpen.outlet_p&quot;,x=340.0,y=335.0}, tail={id=&quot;Test_pOut.input&quot;,x=520.0,y=475.0}, points={455.0,345.0,455.0,475.0} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;tankOpen.outlet_m_flow&quot;,x=340.0,y=335.0}, tail={id=&quot;Test_m_flow.input&quot;,x=520.0,y=315.0}, points={} } }">
         </property>
     </relation>
-    <relation name="relation6" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;tankOpen.T&quot;,x=340.0,y=335.0}, tail={id=&quot;QSSIntegrator.q&quot;,x=170.0,y=475.0}, points={245.0,355.0,245.0,425.0,85.0,425.0,85.0,475.0} } }">
-        </property>
-    </relation>
-    <link port="TIn.output" relation="relation"/>
+    <link port="TIn.output" relation="relation2"/>
     <link port="TIn.trigger" relation="relation10"/>
-    <link port="QSSIntegrator.u" relation="relation4"/>
-    <link port="QSSIntegrator.q" relation="relation6"/>
-    <link port="tankOpen.inlet_m_flow" relation="relation3"/>
-    <link port="tankOpen.inlet_T" relation="relation"/>
-    <link port="tankOpen.inlet_p" relation="relation2"/>
-    <link port="tankOpen.outlet_m_flow" relation="relation5"/>
-    <link port="tankOpen.outlet_T" relation="relation7"/>
-    <link port="tankOpen.outlet_p" relation="relation8"/>
-    <link port="tankOpen.T" relation="relation6"/>
-    <link port="tankOpen.der_T_" relation="relation4"/>
-    <link port="pIn.output" relation="relation2"/>
+    <link port="QSSIntegrator.u" relation="relation5"/>
+    <link port="QSSIntegrator.q" relation="relation4"/>
+    <link port="pIn.output" relation="relation3"/>
     <link port="pIn.trigger" relation="relation10"/>
-    <link port="mIn_flow.output" relation="relation3"/>
+    <link port="mIn_flow.output" relation="relation"/>
     <link port="mIn_flow.trigger" relation="relation10"/>
     <link port="SingleEvent.output" relation="relation10"/>
-    <link port="Test_m_flow.input" relation="relation5"/>
+    <link port="Test_m_flow.input" relation="relation8"/>
     <link port="Test_T.input" relation="relation7"/>
-    <link port="Test_pOut.input" relation="relation8"/>
+    <link port="Test_pOut.input" relation="relation6"/>
+    <link port="tankOpen.inlet_m_flow" relation="relation"/>
+    <link port="tankOpen.inlet_T" relation="relation2"/>
+    <link port="tankOpen.inlet_p" relation="relation3"/>
+    <link port="tankOpen.outlet_m_flow" relation="relation8"/>
+    <link port="tankOpen.outlet_T" relation="relation7"/>
+    <link port="tankOpen.outlet_p" relation="relation6"/>
+    <link port="tankOpen.T" relation="relation4"/>
+    <link port="tankOpen.der_T_" relation="relation5"/>
 </entity>

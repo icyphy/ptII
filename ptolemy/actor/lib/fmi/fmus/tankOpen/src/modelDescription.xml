@@ -149,7 +149,7 @@
        name="T"
        valueReference="6"
        description="Temperature of fluid inside the tank"
-       causality="input"
+       causality="local"
        variability="continuous"
        initial="approx">
       <Real
