@@ -4,13 +4,13 @@
 <entity name="DOPpresence" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="10.0.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={3, 66, 1363, 650}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={-26, 56, 1363, 650}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1135, 533]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.6254506284910135">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{913.9000471105524, 288.5913944723618}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{913.9000471105522, 288.5913944723618}">
     </property>
     <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
         <property name="stopWhenQueueIsEmpty" class="ptolemy.data.expr.Parameter" value="false">
@@ -58,7 +58,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[1650.0, 860.0]">
         </property>
     </property>
-    <property name="username" class="ptolemy.data.expr.Parameter" value="&quot;test@eecs.berkeley.edu&quot;">
+    <property name="username" class="ptolemy.data.expr.Parameter" value="&quot;test&quot;">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -381,7 +381,7 @@
         </property>
     </entity>
     <entity name="DatabaseQuery" class="ptolemy.actor.lib.database.DatabaseQuery">
-        <property name="query" class="ptolemy.actor.parameters.PortParameter" value="select realname from doorcodes where email='$username' and doorCode='$doorCode'">
+        <property name="query" class="ptolemy.actor.parameters.PortParameter" value="select realname from doorcodes where username='$username' and doorCode='$doorCode'">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[595.0, 360.0]">
         </property>
@@ -451,25 +451,6 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[1260.0, 250.0]">
         </property>
     </entity>
-    <entity name="Expression2" class="ptolemy.actor.lib.Expression">
-        <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="username + &quot;@eecs.berkeley.edu&quot;">
-        </property>
-        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
-            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
-            </property>
-            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
-            </property>
-            <property name="displayHeight" class="ptolemy.data.expr.Parameter" value="10">
-            </property>
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[290.0, 285.0]">
-        </property>
-        <port name="username" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
-            </property>
-        </port>
-    </entity>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
@@ -538,8 +519,6 @@
     </relation>
     <relation name="relation7" class="ptolemy.actor.TypedIORelation">
     </relation>
-    <relation name="relation26" class="ptolemy.actor.TypedIORelation">
-    </relation>
     <link port="FileReader.output" relation="relation2"/>
     <link port="FileReader.trigger" relation="relation"/>
     <link port="HttpActor.response" relation="relation3"/>
@@ -601,10 +580,8 @@
     <link port="BooleanSelect2.falseInput" relation="relation31"/>
     <link port="BooleanSelect2.control" relation="relation6"/>
     <link port="BooleanSelect2.output" relation="relation32"/>
-    <link port="SetVariable2.input" relation="relation26"/>
+    <link port="SetVariable2.input" relation="relation7"/>
     <link port="SetVariable2.output" relation="relation9"/>
     <link port="Const.output" relation="relation25"/>
     <link port="Const.trigger" relation="relation24"/>
-    <link port="Expression2.output" relation="relation26"/>
-    <link port="Expression2.username" relation="relation7"/>
 </entity>
