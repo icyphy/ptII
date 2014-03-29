@@ -832,10 +832,10 @@ public class ParticleFilter extends TypedCompositeActor {
         double weight = 0;
         for (int i = 0; i < Nparticles; i++) {
             Particle p = particles[i];
-            List pVal = p.getValue();
+            List<Double> pVal = p.getValue();
             weight = p.getWeight();
             for (int j = 0; j < pVal.size(); j++) {
-                stateValues[j] += weight * (double) pVal.get(j);
+                stateValues[j] += weight * (Double) pVal.get(j);
             }
         }
         for (int j = 0; j < _stateSpaceSize; j++) {
@@ -975,7 +975,7 @@ public class ParticleFilter extends TypedCompositeActor {
             this._particleValue = new LinkedList<Double>();
             List<Double> temp = p.getValue();
             for (int i = 0; i < temp.size(); i++) {
-                this._particleValue.add((Double) temp.get(i));
+                this._particleValue.add((Double)temp.get(i));
             }
         }
 
