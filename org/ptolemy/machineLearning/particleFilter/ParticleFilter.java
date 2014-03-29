@@ -973,9 +973,9 @@ public class ParticleFilter extends TypedCompositeActor {
             this._weight = p._weight;
             this._ssSize = p._ssSize;
             this._particleValue = new LinkedList<Double>();
-            List temp = p.getValue();
+            List<Double> temp = p.getValue();
             for (int i = 0; i < temp.size(); i++) {
-                this._particleValue.add((double) temp.get(i));
+                this._particleValue.add((Double) temp.get(i));
             }
         }
 
