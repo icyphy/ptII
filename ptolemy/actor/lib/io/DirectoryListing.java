@@ -60,8 +60,9 @@ import ptolemy.util.RecursiveFileFilter;
 
 /**
  <p>Given a URL or directory name, this actor produces an array of file names
- in that directory that match an (optional) pattern.  The file names that
- are returned are absolute. The pattern is
+ in that directory that match an (optional) pattern.  The file names
+ include the complete path, unless <i>relative</i> is set to true, in which case,
+ the names are relative to the directory. The pattern is
  a regular expression. For a reference on regular expression syntax see:
  <a href="http://download.oracle.com/javase/tutorial/essential/regex/#in_browser">
  http://download.oracle.com/javase/tutorial/essential/regex/</a>
@@ -138,6 +139,9 @@ public class DirectoryListing extends SequenceSource implements FilenameFilter {
         recursive.setTypeEquals(BaseType.BOOLEAN);
         recursive.setExpression("false");
 
+        relative = new Parameter(this, "relative");
+        relative.setTypeEquals(BaseType.BOOLEAN);
+        relative.setExpression("false");
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -189,6 +193,12 @@ public class DirectoryListing extends SequenceSource implements FilenameFilter {
      *  This is a boolean that defaults to false.
      */
     public Parameter recursive;
+    
+    /** If true, then produce an array with file names relative to the
+     *  specified directory. This is a boolean that defaults to false,
+     *  which causes the absolute (complete) path to be produced.
+     */
+    public Parameter relative;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -272,12 +282,19 @@ public class DirectoryListing extends SequenceSource implements FilenameFilter {
                         true /*includeDirectories*/, _listOnlyFiles,
                         _listOnlyDirectories, _pattern, false /*escape*/);
 
-                ArrayList result = new ArrayList();
+                ArrayList<StringToken> result = new ArrayList<StringToken>();
                 for (File file : listedFiles) {
 
-                    //String path = files[i].getAbsolutePath();
-
                     String path = file.getAbsolutePath();
+                    if (((BooleanToken)relative.getToken()).booleanValue()) {
+                    	// Strip off the directory name and trailing slash.
+                    	int slash = 1;
+                    	String directoryName = sourceFile.getAbsolutePath();
+                    	if (directoryName.endsWith("/")) {
+                    		slash = 0;
+                    	}
+                    	path = path.substring(directoryName.length() + slash);
+                    }
 
                     if (_debugging) {
                         _debug("Path: " + path);
