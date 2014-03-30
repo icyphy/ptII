@@ -600,30 +600,27 @@ public class EntityLibrary extends CompositeEntity implements LazyComposite,
     ///////////////////////////////////////////////////////////////////
     ////                      protected variables                  ////
 
-    /** Text specified to the configure() method. */
-    protected String _configureText;
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         private variables                 ////
-
     /** The base specified by the configure() method. */
-    private URL _base;
+    protected URL _base;
 
     /** Indicate that we are cloning. */
-    private boolean _cloning = false;
+    protected boolean _cloning = false;
 
     /** Indicate whether data given by configure() has been processed. */
-    private boolean _configureDone = false;
+    protected boolean _configureDone = false;
 
     /** URL specified to the configure() method. */
-    private String _configureSource;
+    protected String _configureSource;
+
+    /** Text specified to the configure() method. */
+    protected String _configureText;
 
     /** Flag indicating populate() has been called, and hence
      *  the configuration should be obtained from the current contents
      *  (in case they have changed) rather than from the _configureText.
      */
-    private boolean _populated = false;
+    protected boolean _populated = false;
 
     /** Indicator that we are in the midst of populating. */
-    private boolean _populating = false;
+    protected boolean _populating = false;
 }
