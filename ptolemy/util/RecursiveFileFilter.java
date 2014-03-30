@@ -129,14 +129,28 @@ public class RecursiveFileFilter implements FilenameFilter {
     /** Return whether the file or directory name in the given directory is
      *  accepted.
      *
-     *  @param dir The directory.
+     *  @param dir The directory.  If directory is null, then it is
+     *  likely that this method is being called to accept a URL and no
+     *  File object is instantiated.  If directory is not null, then a
+     *  File object is instantiated.
      *  @param name The file or directory name within the given directory.
      *  @return Whether the name is accepted.
      */
     public boolean accept(File dir, String name) {
-        File file = new File(dir, name);
-        boolean isDirectory = file.isDirectory();
-        boolean isFile = file.isFile();
+        File file = null;
+        boolean isDirectory = false;
+        boolean isFile = false;
+        if (dir != null) {
+            file = new File(dir, name);
+            isDirectory = file.isDirectory();
+            isFile = file.isFile();
+        } else {
+            if (name.endsWith("/")) {
+                isDirectory = true;
+            } else {
+                isFile = true;
+            }
+        }
         if (((!_directoriesOnly && !_filesOnly) && ((isFile && _includeFiles) || (isDirectory && _includeDirectories)))
                 || ((_filesOnly && isFile) || (_directoriesOnly && isDirectory) || (!_directoriesOnly && !_filesOnly))) {
             // ptolemy/domains/sdf/test/auto/filePortParameter.xml wants match.matches() here.
@@ -149,10 +163,14 @@ public class RecursiveFileFilter implements FilenameFilter {
                 Matcher match = _pattern.matcher(name);
                 if (match.matches() || match.find()) {
                     _files.add(file);
+                    return true;
                 }
+            } else {
+                return true;
             }
         }
-        if (_recursive && isDirectory) {
+        // file will be null if we are trying to accept a URL.
+        if (file != null && _recursive && isDirectory) {
             file.list(this);
         }
         return false;

@@ -403,6 +403,9 @@ public class DirectoryListing extends SequenceSource implements FilenameFilter {
                 }
 
                 if (line.startsWith("<BODY") || line.startsWith("<body")) {
+                    if (_debugging) {
+                        _debug("Saw Body tag");
+                    }
                     sawBody = true;
                 } else {
                     if (sawBody) {
@@ -413,6 +416,9 @@ public class DirectoryListing extends SequenceSource implements FilenameFilter {
                             String token = tokenizer.nextToken();
 
                             if (token.compareToIgnoreCase("HREF") == 0) {
+                                if (_debugging) {
+                                    _debug("Saw HREF");
+                                }
                                 sawHREF = true;
                                 target = null;
                             } else {
@@ -432,9 +438,21 @@ public class DirectoryListing extends SequenceSource implements FilenameFilter {
                                         }
 
                                         if (!token.startsWith(reference)) {
+                                            if (_debugging) {
+                                                _debug("token \"" + token
+                                                        + "\" does not start with href.");
+                                            }
                                             sawHREF = false;
                                         } else {
+                                            // Having the first argument be null causes
+                                            // accept to determine if target is a file or
+                                            // directory by checking for a trailing /.
                                             if (accept(null, target)) {
+                                                if (_debugging) {
+                                                    _debug("target \"" + token
+                                                            + "\" was accepted.");
+                                                }
+
                                                 // Make sure directoryOrURL ends with a slash.
                                                 String base = directoryOrURL
                                                         .stringValue();
@@ -448,6 +466,11 @@ public class DirectoryListing extends SequenceSource implements FilenameFilter {
                                                 resultsList
                                                         .add(new StringToken(
                                                                 base + target));
+                                            } else {
+                                                if (_debugging) {
+                                                    _debug("target \"" + token
+                                                            + "\" was not accepted.");
+                                                }
                                             }
 
                                             sawHREF = false;
