@@ -598,6 +598,12 @@ public class EntityLibrary extends CompositeEntity implements LazyComposite,
     }
 
     ///////////////////////////////////////////////////////////////////
+    ////                      protected variables                  ////
+
+    /** Text specified to the configure() method. */
+    protected String _configureText;
+
+    ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
     /** The base specified by the configure() method. */
@@ -611,9 +617,6 @@ public class EntityLibrary extends CompositeEntity implements LazyComposite,
 
     /** URL specified to the configure() method. */
     private String _configureSource;
-
-    /** Text specified to the configure() method. */
-    private String _configureText;
 
     /** Flag indicating populate() has been called, and hence
      *  the configuration should be obtained from the current contents
