@@ -129,7 +129,7 @@ public class StringSubstring extends Transformer {
             int stopValue = ((IntToken) stop.getToken()).intValue();
             String substringValue;
 
-            if (stopValue == -1) {
+            if (stopValue < startValue) {
                 substringValue = value.substring(startValue);
             } else {
                 substringValue = value.substring(startValue, stopValue);
