@@ -112,8 +112,8 @@ public class FMIScalarVariable {
             if (fmiModelDescription.fmiVersion.compareTo("2.0") < 0) {
                 choices = "input,  internal, output, or none";
             }
-            String message = "must be one of " + choices
-                        + " in " + name + ", " + description;
+            String message = "must be one of " + choices + " in " + name + ", "
+                    + description;
 
             if (attribute.equals("calculatedParameter")) {
                 // FMI-2.0rc1
@@ -152,7 +152,6 @@ public class FMIScalarVariable {
                                 + valueReferenceString + " of " + name);
             }
         }
-
         if (element.hasAttribute("variability")) {
             String attribute = element.getAttribute("variability");
 
@@ -161,8 +160,8 @@ public class FMIScalarVariable {
             if (fmiModelDescription.fmiVersion.compareTo("2.0") < 0) {
                 choices = "constant, continuous, discrete or parameter.";
             }
-            String message = "must be one of " + choices
-                        + " in " + name + ", " + description;
+            String message = "must be one of " + choices + " in " + name + ", "
+                    + description;
 
             if (attribute.equals("constant")) {
                 variability = Variability.constant;
@@ -177,9 +176,9 @@ public class FMIScalarVariable {
             } else if (attribute.equals("parameter")) {
                 variability = Variability.parameter;
             } else {
-                throw new IllegalArgumentException(
-                        "variability \"" + attribute + "\"" + message);
-            } 
+                throw new IllegalArgumentException("variability \"" + attribute
+                        + "\"" + message);
+            }
         }
 
         NodeList children = element.getChildNodes(); // NodeList. Worst. Ever.
@@ -204,27 +203,31 @@ public class FMIScalarVariable {
                 // Error looking up function 'stepCounter_fmiGetDirectDependency': dlsym(0x7fc0ea0091d0, stepCounter_fmiGetDirectDependency): symbol not found
                 //
                 String nodeName = childElement.getNodeName();
-                if (nodeName.equals("DirectDependency")) {
-                    // Iterate over the children of this element to find the
-                    // names of the dependents.
-                    // FIXME: In FMI 2.0, DirectDependency will be replaced by
-                    // "dependencies" in the ModelStructure element of the model description.
-                    directDependency = new HashSet<String>();
-                    NodeList names = childElement.getChildNodes();
-                    for (int j = 0; j < names.getLength(); j++) {
-                        Node name = element.getChildNodes().item(i);
-                        if (name instanceof Element) {
-                            String childType = ((Element) name).getNodeName();
-                            if (childType.equals("Name")) {
-                                // FIXME: Is getNodeValue() the way to get "foo"
-                                // from <Name>foo</Name>?
-                                directDependency.add(((Element) child)
-                                        .getNodeValue());
+                // Added by Thierry - 03/30/21014. DirectDependency exists only in FMI 1.0
+                if (fmiModelDescription.fmiVersion.compareTo("1.0") == 0) {
+                    if (nodeName.equals("DirectDependency")) {
+                        // Iterate over the children of this element to find the
+                        // names of the dependents.
+                        // FIXME: In FMI 2.0, DirectDependency will be replaced by
+                        // "dependencies" in the ModelStructure element of the model description.
+                        directDependency = new HashSet<String>();
+                        NodeList names = childElement.getChildNodes();
+                        for (int j = 0; j < names.getLength(); j++) {
+                            Node name = element.getChildNodes().item(i);
+                            if (name instanceof Element) {
+                                String childType = ((Element) name)
+                                        .getNodeName();
+                                if (childType.equals("Name")) {
+                                    // FIXME: Is getNodeValue() the way to get "foo"
+                                    // from <Name>foo</Name>?
+                                    directDependency.add(((Element) child)
+                                            .getNodeValue());
+                                }
                             }
                         }
                     }
-                } else if (nodeName.equals("isLinear") 
-                            || nodeName.equals("VariableCategory")) {
+                } else if (nodeName.equals("isLinear")
+                        || nodeName.equals("VariableCategory")) {
                     if (!_errorElements.contains(_typeName)) {
                         _errorElements.add(_typeName);
                         System.out.println(element + ": Child element \""
@@ -244,6 +247,20 @@ public class FMIScalarVariable {
                                 childElement);
                     } else if (_typeName.equals("Real")) {
                         type = new FMIRealType(name, description, childElement);
+                        // Added by Thierry - 03/26/2014 - Retrieve index of state variables
+                        // The derivative is an attribute of element "Real"
+                        if (childElement.hasAttribute("derivative")) {
+                            hasDerivative = true;
+                            String derivative = childElement
+                                    .getAttribute("derivative");
+                            try {
+                                indexState = Integer.parseInt(derivative);
+                            } catch (NumberFormatException ex) {
+                                throw new NumberFormatException(
+                                        "Failed to parse derivative index "
+                                                + derivative + " of " + name);
+                            }
+                        }
                     } else if (_typeName.equals("String")) {
                         type = new FMIStringType(name, description,
                                 childElement);
@@ -454,8 +471,8 @@ public class FMIScalarVariable {
          *  and at event instances.
          */
         discrete,
-        /** FMI-2.0. */            
-        fixed, 
+        /** FMI-2.0. */
+        fixed,
         /** The value does not change after initialization.
          */
         parameter
@@ -481,6 +498,12 @@ public class FMIScalarVariable {
 
     /** The value of the name xml attribute. */
     public String name;
+
+    /** The state variable index. */
+    public int indexState;
+
+    /** The boolean for state variable indication. */
+    public boolean hasDerivative = false;
 
     /** The value of the type xml attribute. */
     public FMIType type;
@@ -539,8 +562,8 @@ public class FMIScalarVariable {
     private void _fmi2AttributeCheck(FMIModelDescription fmiModelDescription,
             String attribute, String message) throws IllegalArgumentException {
         if (fmiModelDescription.fmiVersion.compareTo("2.0") < 0) {
-            throw new IllegalArgumentException("The attribute \""
-                    + attribute + "\" is only accepted in FMI-2.0 and later.  "
+            throw new IllegalArgumentException("The attribute \"" + attribute
+                    + "\" is only accepted in FMI-2.0 and later.  "
                     + "The fmiVersion was \"" + fmiModelDescription + "\"."
                     + "It " + message);
         }
@@ -558,7 +581,8 @@ public class FMIScalarVariable {
             Class typeClass) {
         if (_fmiGetFunction == null) {
             if (_typeName.equals("skip")) {
-                System.out.println("Could not process type, it was marked as skip.");
+                System.out
+                        .println("Could not process type, it was marked as skip.");
                 return;
             }
             try {
@@ -584,7 +608,8 @@ public class FMIScalarVariable {
             Class typeClass) {
         if (_fmiSetFunction == null) {
             if (_typeName.equals("skip")) {
-                System.out.println("Could not process type, it was marked as skip.");
+                System.out
+                        .println("Could not process type, it was marked as skip.");
                 return;
             }
             try {

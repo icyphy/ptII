@@ -118,6 +118,15 @@ public class FMIModelDescription {
     /** The list of ScalarVariable elements. */
     public List<FMIScalarVariable> modelVariables = new LinkedList<FMIScalarVariable>();
 
+    // Added by Thierry - 03/26/2014
+    /** The list of state variables. */
+    public List<String> stateVariables = new LinkedList<String>();
+
+    /*    // Added by Thierry for QSS - 03/26/2014
+        *//** The list of Derivatives elements. */
+    /*
+    public List<FMIModelDerivative> modelDerivatives = new LinkedList<FMIModelDerivative>();*/
+
     /** Number of continuous states. */
     public int numberOfContinuousStates;
 

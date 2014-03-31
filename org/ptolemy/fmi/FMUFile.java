@@ -34,6 +34,7 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
@@ -313,12 +314,12 @@ public class FMUFile {
             fmiModelDescription.guid = root.getAttribute("guid");
         }
         if (root.hasAttribute("numberOfContinuousStates")) {
-            fmiModelDescription.numberOfContinuousStates = Integer.parseInt(
-                    root.getAttribute("numberOfContinuousStates"));
+            fmiModelDescription.numberOfContinuousStates = Integer
+                    .parseInt(root.getAttribute("numberOfContinuousStates"));
         }
         if (root.hasAttribute("numberOfEventIndicators")) {
-            fmiModelDescription.numberOfEventIndicators = Integer.parseInt(
-                    root.getAttribute("numberOfEventIndicators"));
+            fmiModelDescription.numberOfEventIndicators = Integer.parseInt(root
+                    .getAttribute("numberOfEventIndicators"));
         }
 
         // TypeDefinitions
@@ -345,7 +346,7 @@ public class FMUFile {
 
         // FIXME: handle Vendor annotations
 
-        if (fmiVersion < 1.5 ) {
+        if (fmiVersion < 1.5) {
             // Implementation description in FMI 1.0
             // NodeList is not a list, it only has getLength() and item(). #fail.
             NodeList implementation = document
@@ -372,14 +373,13 @@ public class FMUFile {
             // JModelica FMUs can have both CoSimulation and
             // ModelExchange NodeLists, see CoupledClutches.xml
 
-
             // Handle CoSimulation.
             NodeList implementation = document
                     .getElementsByTagName("CoSimulation");
             if (implementation.getLength() > 1) {
                 System.out
                         .println("Warning: FMU modelDescription provides more than one CoSimulation element");
-            } 
+            }
             if (implementation.getLength() == 1) {
                 Element cosimulation = (Element) implementation.item(0);
                 fmiModelDescription.cosimulationCapabilities = new FMI20CoSimulationCapabilities(
@@ -404,7 +404,7 @@ public class FMUFile {
                 // file.  Adding toplevel fields fmiModelDescription
                 // means that we have fields that are present, but not
                 // useful.
-                
+
                 if (cosimulation.hasAttribute("canGetAndSetFMUstate")) {
                     fmiModelDescription.canGetAndSetFMUstate = Boolean
                             .parseBoolean(cosimulation
@@ -419,14 +419,12 @@ public class FMUFile {
                 }
             }
 
-
             // Handle ModelExchange.
-            implementation = document
-                    .getElementsByTagName("ModelExchange");
+            implementation = document.getElementsByTagName("ModelExchange");
             if (implementation.getLength() > 1) {
                 System.out
                         .println("Warning: FMU modelDescription provides more than one ModelExchange element");
-            } 
+            }
             if (implementation.getLength() == 1) {
                 Element modelExchange = (Element) implementation.item(0);
                 fmiModelDescription.modelExchangeCapabilities = new FMI20ModelExchangeCapabilities(
@@ -457,6 +455,60 @@ public class FMUFile {
             Element element = (Element) scalarVariables.item(i);
             fmiModelDescription.modelVariables.add(new FMIScalarVariable(
                     fmiModelDescription, element));
+        }
+
+        /*    // Added by Thierry - 03/26/2014
+              // This section might be used to retrieve the dependencies of the Derivatives element
+              // so we can build the incidence matrix for the QSS integrator.
+               // FIXME: Needs to add boolean which indicates that we are doing QSS
+               NodeList structure = document
+                       .getElementsByTagName("ModelStructure");
+               if (structure.getLength() == 1) {
+                   NodeList listOffDerivatives = document.getElementsByTagName("Derivatives");
+                   Node current = null;
+                   if (listOffDerivatives.getLength() == 1){
+                       NodeList unknowVariables = listOffDerivatives.item(0).getChildNodes();
+                       for (int i = 0; i < unknowVariables.getLength(); i++) {
+                           current = unknowVariables.item(i);
+                         if (current.getNodeName().equalsIgnoreCase("Unknown")) {
+                           fmiModelDescription.modelDerivatives.add(new FMIModelDerivative(
+                                   fmiModelDescription, current));
+                           }
+                       }
+                   }
+                   else
+                   {
+                       System.out
+                       .println("Warning: Derivatives element is missing in ModelStructure.");
+                   }
+               }
+               else
+               {
+                   System.out
+                   .println("Warning: ModelStructure element is missing.");
+               }*/
+
+        // Added by Thierry - 03/26/2014
+        if (fmiModelDescription.fmiVersion.compareTo("2.0") == 0) {
+            // Create the state vector. 
+            int cnt = 0;
+            for (int i = 0; i < fmiModelDescription.modelVariables.size(); i++) {
+                FMIScalarVariable scalar = fmiModelDescription.modelVariables
+                        .get(i);
+                if (scalar.hasDerivative) {
+                    _stateVariables.put(cnt, fmiModelDescription.modelVariables
+                            .get(scalar.indexState - 1).name);
+                    cnt++;
+                }
+            }
+            // Store the state vector in a list.
+            Iterator valueIterator = _stateVariables.values().iterator();
+            while (valueIterator.hasNext()) {
+                fmiModelDescription.stateVariables.add((String) valueIterator
+                        .next());
+            }
+            fmiModelDescription.numberOfContinuousStates = fmiModelDescription.stateVariables
+                    .size();
         }
 
         return fmiModelDescription;
@@ -570,4 +622,7 @@ public class FMUFile {
 
     /** Record of previously read files. */
     private static Map<String, FMIModelDescription> _modelDescriptions = new HashMap<String, FMIModelDescription>();
+
+    /** Record of state variables. */
+    private static HashMap<Integer, String> _stateVariables = new HashMap<Integer, String>();
 }
