@@ -116,7 +116,6 @@ public class TypedIOPort extends IOPort implements Typeable {
      */
     public TypedIOPort() {
         super();
-        setTypeEquals(defaultValue.getType());
     }
 
     /** Construct a port in the specified workspace with an empty
@@ -206,6 +205,10 @@ public class TypedIOPort extends IOPort implements Typeable {
                     setTypeEquals(type);
                 }
             }
+        } else if (attribute == defaultValue) {
+        	if (defaultValue.getToken() != null) {
+        		setTypeEquals(defaultValue.getType());
+        	}
         } else {
             super.attributeChanged(attribute);
         }
