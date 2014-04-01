@@ -85,7 +85,9 @@ public class ModalPort extends ModalBasePort {
     public void attributeChanged(Attribute attribute)
     		throws IllegalActionException {
     	if (attribute == defaultValue) {
-    		_getMirrorPort().defaultValue.setExpression(defaultValue.getExpression());
+    		if (_getMirrorPort() != null) {
+    			_getMirrorPort().defaultValue.setExpression(defaultValue.getExpression());
+    		}
     	} 
     	super.attributeChanged(attribute);
     }
@@ -261,9 +263,12 @@ public class ModalPort extends ModalBasePort {
 	
 	private RefinementPort _getMirrorPort() {
 		if (getContainer() != null &&
+				getContainer() instanceof ModalModel &&
 				((ModalModel)getContainer())._controller != null &&
 				((ModalModel)getContainer())._controller.getPort(this.getName()) != null) {
-			return (RefinementPort) ((ModalModel)getContainer())._controller.getPort(this.getName());
+			if (((ModalModel)getContainer())._controller.getPort(this.getName()) instanceof RefinementPort) {
+				return (RefinementPort) ((ModalModel)getContainer())._controller.getPort(this.getName());
+			}
 		}
 		return null;
 	}
