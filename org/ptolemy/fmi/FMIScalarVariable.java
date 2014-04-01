@@ -203,8 +203,8 @@ public class FMIScalarVariable {
                 // Error looking up function 'stepCounter_fmiGetDirectDependency': dlsym(0x7fc0ea0091d0, stepCounter_fmiGetDirectDependency): symbol not found
                 //
                 String nodeName = childElement.getNodeName();
-                if (fmiModelDescription.fmiVersion.compareTo("1.0") == 0) {
-                    if (nodeName.equals("DirectDependency")) {
+                if (nodeName.equals("DirectDependency")) {
+                    if (fmiModelDescription.fmiVersion.compareTo("1.0") == 0) {
                         // Iterate over the children of this element to find the
                         // names of the dependents.
                         // FIXME: In FMI 2.0, DirectDependency will be replaced by
