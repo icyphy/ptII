@@ -124,8 +124,8 @@ public class FMIModelDescription {
     public List<FMIScalarVariable> modelVariables = new LinkedList<FMIScalarVariable>();
 
 
-    /** The list of state variables. */
-    public List<String> stateVariables = new LinkedList<String>();
+    /** The list of continuous states. */
+    public List<String> continuousStates = new LinkedList<String>();
 
     /*  
         *//** The list of Derivatives elements. */

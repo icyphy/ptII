@@ -496,18 +496,18 @@ public class FMUFile {
                 FMIScalarVariable scalar = fmiModelDescription.modelVariables
                         .get(i);
                 if (scalar.hasDerivative) {
-                    _stateVariables.put(cnt, fmiModelDescription.modelVariables
+                    _continuousStates.put(cnt, fmiModelDescription.modelVariables
                             .get(scalar.indexState - 1).name);
                     cnt++;
                 }
             }
             // Store the state vector in a list.
-            Iterator valueIterator = _stateVariables.values().iterator();
+            Iterator valueIterator = _continuousStates.values().iterator();
             while (valueIterator.hasNext()) {
-                fmiModelDescription.stateVariables.add((String) valueIterator
+                fmiModelDescription.continuousStates.add((String) valueIterator
                         .next());
             }
-            fmiModelDescription.numberOfContinuousStates = fmiModelDescription.stateVariables
+            fmiModelDescription.numberOfContinuousStates = fmiModelDescription.continuousStates
                     .size();
         }
 
@@ -623,6 +623,6 @@ public class FMUFile {
     /** Record of previously read files. */
     private static Map<String, FMIModelDescription> _modelDescriptions = new HashMap<String, FMIModelDescription>();
 
-    /** Record of state variables. */
-    private static HashMap<Integer, String> _stateVariables = new HashMap<Integer, String>();
+    /** Record of continuous state variables. */
+    private static HashMap<Integer, String> _continuousStates = new HashMap<Integer, String>();
 }
