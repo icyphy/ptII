@@ -784,7 +784,9 @@ public class RefinementPort extends ModalBasePort {
             Nameable modal = container.getContainer();
 
             if (modal instanceof ModalModel) {
-                return (ModalPort) ((ModalModel) modal).getPort(getName());
+                if (((ModalModel) modal).getPort(getName()) instanceof ModalPort) {
+                    return (ModalPort) ((ModalModel) modal).getPort(getName());
+                }
             }
         }
         return null;
