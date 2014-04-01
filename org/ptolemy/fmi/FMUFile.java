@@ -457,7 +457,7 @@ public class FMUFile {
                     fmiModelDescription, element));
         }
 
-        /*    // Added by Thierry - 03/26/2014
+        /*    
               // This section might be used to retrieve the dependencies of the Derivatives element
               // so we can build the incidence matrix for the QSS integrator.
                // FIXME: Needs to add boolean which indicates that we are doing QSS
@@ -488,7 +488,7 @@ public class FMUFile {
                    .println("Warning: ModelStructure element is missing.");
                }*/
 
-        // Added by Thierry - 03/26/2014
+
         if (fmiModelDescription.fmiVersion.compareTo("2.0") == 0) {
             // Create the state vector. 
             int cnt = 0;

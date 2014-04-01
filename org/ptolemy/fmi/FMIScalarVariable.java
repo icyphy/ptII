@@ -203,7 +203,6 @@ public class FMIScalarVariable {
                 // Error looking up function 'stepCounter_fmiGetDirectDependency': dlsym(0x7fc0ea0091d0, stepCounter_fmiGetDirectDependency): symbol not found
                 //
                 String nodeName = childElement.getNodeName();
-                // Added by Thierry - 03/30/21014. DirectDependency exists only in FMI 1.0
                 if (fmiModelDescription.fmiVersion.compareTo("1.0") == 0) {
                     if (nodeName.equals("DirectDependency")) {
                         // Iterate over the children of this element to find the
@@ -247,7 +246,6 @@ public class FMIScalarVariable {
                                 childElement);
                     } else if (_typeName.equals("Real")) {
                         type = new FMIRealType(name, description, childElement);
-                        // Added by Thierry - 03/26/2014 - Retrieve index of state variables
                         // The derivative is an attribute of element "Real"
                         if (childElement.hasAttribute("derivative")) {
                             hasDerivative = true;
