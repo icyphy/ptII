@@ -976,6 +976,10 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
         StringBuffer parameterMoML = new StringBuffer();
         StringBuffer portMoML = new StringBuffer();
         for (FMIScalarVariable scalar : fmiModelDescription.modelVariables) {
+            System.out.println("FMUImport 0 : scalar: " + scalar.name
+                    + " scalar.causality: " + scalar.causality
+                    + " scalar.variability: " + scalar.variability);
+
             if (scalar.variability == FMIScalarVariable.Variability.parameter
                     || scalar.variability == FMIScalarVariable.Variability.fixed // FMI-2.0rc1
                 ) {
@@ -1016,6 +1020,10 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
                 }
                 continue;
             } else {
+            System.out.println("FMUImport 1 : scalar: " + scalar.name
+                    + " scalar.causality: " + scalar.causality
+                    + " scalar.variability: " + scalar.variability);
+
                 // Ports
 
                 // // FIXME: All output ports?
@@ -1028,6 +1036,7 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
                 String causality = "";
                 switch (scalar.causality) {
                 case input:
+                case local:
                     portCount++;
                     causality = "input";
                     break;
@@ -2791,7 +2800,14 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
             if (scalarVariable.variability != FMIScalarVariable.Variability.parameter
                     && scalarVariable.variability != FMIScalarVariable.Variability.constant
                     && scalarVariable.variability != FMIScalarVariable.Variability.fixed // FMI-2.0rc1
-                    && scalarVariable.causality == Causality.input) {
+                    && (scalarVariable.causality == Causality.input
+                            // FMUTankOpen uses a Model Exchange FMU
+                            // that has a ScalarVariable T with
+                            // causality="local" and
+                            // variability="continuous", so we should
+                            // return it as an input.
+                            || (_fmiModelDescription.modelExchange
+                                    && scalarVariable.causality == Causality.local))) {
                 TypedIOPort port = (TypedIOPort) _getPortByNameOrDisplayName(scalarVariable.name);
                 if (port == null) {
                     throw new IllegalActionException(this,
