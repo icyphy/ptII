@@ -157,33 +157,37 @@ public class WebServer extends AbstractInitializableAttribute {
     ///////////////////////////////////////////////////////////////////
     ////                         parameters                        ////
 
-    /** The URL prefix to map this application to.  This defaults to "/",
-     *  which will cause the model to receive all URLs directed to this
-     *  server. For example, if this WebServer is handling requests on
-     *  {@link #port} 8078 of localhost, then with value "/", this
-     *  WebServer will handle all requests to
+    /** The URL prefix to map this model to.  A model can be thought of as a 
+     *  single application.  
+     * 
+     *  This defaults to "/", meaning, accept requests for all URLs. 
+     *  For example, if the WebServer is handling requests on {@link #port} 8078 
+     *  of localhost, the model will handle all requests that begin with
      *  <pre>
      *  http://localhost:8078/
      *  </pre>
-     *  Individual servlets (actors or attributes in a model that implement
-     *  {@link HttpService}) will be mapped to URLs relative to this context path.
-     *  For example, if the model contains a servlet with relative path "myService",
-     *  then this WebServer will delegate to it requests of the form
+     *  
+     *  If multiple applications are running on the same server, it's typical
+     *  to assign a unique application prefix for each.  For example, two 
+     *  applications with application paths of "/calendar" and "/music" would
+     *  receive requests directed to
      *  <pre>
-     *  http://localhost:8078/myService
-     *  </pre>
-     * <p>
-     * Other choices besides "/" are possible.  For example, for web applications, it's
-     * common to host several applications on the same server.  It's typical
-     * to have each application use setContextPath("/appName") here,
-     * (e.g. setContextPath("/myCalendarApp"), setContextPath("/tetris")
-     * Each application can contain multiple servlets, which are registered
-     * to URLs relative to this path, e.g.:
-     * /myCalendarApp/view, /myCalendarApp/print, /tetris/view
-     * That way the separate applications have a separate URL namespaces and
-     * don't interfere with each other.  A web server often offers some
-     * default content at the root / then.  E.g. Tomcat provides the Tomcat
-     * manager screen to load/unload web applications.
+     *  http://localhost:8078/calendar
+     *  http://localhost:8078/music
+     *  </pre> 
+     *  respectively.  
+     *  
+     *  Applications may contain multiple servlets (provided by e.g. 
+     *  {@link HttpActor}s).
+     *  Each servlet typically defines a servlet path which is appended to 
+     *  the application path for request routing.  For example, two servlets
+     *  with servlet paths "/play" and "/upload" in the music application 
+     *  would receive requests directed to:
+     *  <pre>
+     *  http://localhost:8078/music/play
+     *  http://localhost:8078/music/upload
+     *  </pre> 
+     *  respectively.
      */
     public StringParameter applicationPath;
 
@@ -193,71 +197,62 @@ public class WebServer extends AbstractInitializableAttribute {
     public Parameter port;
 
     /** The URL prefix used to request resources (files) from this web service.
-     *  For example, an HTML page requesting an image file.
-     *
-     *  The web server creates a ResourceHandler object to accept incoming HTTP
-     *  requests for files, such as images, and return those files.
-     *  The ResourceHandler is assigned a URL prefix, specified in resourcePath,
-     *  which clients use to submit requests to the ResourceHandler.
-
-     *  The resourcePath should be distinct from all other HttpActor paths in
-     *  the model.  Otherwise, the ResourceHandler will intercept requests
-     *  intended for an HttpActor.
-     *
-     *  Examples:
-     *  A file can be retrieved using an absolute URL or a relative URL.
-     *  Absolute URLs follow the pattern:
+     *  
+     *  This defaults to "/", meaning, clients should issue requests for files
+     *  to the base URL.  For example, if the WebServer is handling requests on 
+     *  {@link #port} 8078 of localhost, the client can request file "image.png"
+     *  using:
      *  <pre>
-     *  protocol://hostname:portname/applicationPath/resourcePath/filename.ext
+     *  http://localhost:8078/image.png
      *  </pre>
-     *  For example:
+     *  
+     *  The resourcePath is added as a prefix before the file's name in the URL.
+     *  For example, given the resourcePath "/files", the client can request 
+     *  file "image.png" using:
      *  <pre>
-     *  http://localhost:8078/myAppName/files/PtolemyIcon.gif
+     *  http://localhost:8078/files/image.png
      *  </pre>
-     *  for an {@link #applicationPath} of "/myAppName" and a resourcePath of "/files"
-     *  or
+     *  
+     *  Relative URLs are permissible for files requested by pages served by
+     *  this WebServer (common for e.g. custom Javascript libraries).  
+     *  For example, given the resourcePath "/files", a file named "custom.js" 
+     *  may be retrieved at the relative URL: 
      *  <pre>
-     *  http://localhost:8078/files/PtolemyIcon.gif
-     *  </pre>
-     *  for an {@link #applicationPath} of "/" and a resourcePath of "/files".
-     *  The resource may also be referenced by the relative URL
+     *  /files/custom.js
+     *  </pre> 
+     *  
+     *  Note that the name of the directory containing resources does NOT have
+     *  to match the URL used to access these resources.  See 
+     *  {@link #resourceLocation} regarding the resource directory.
+     *  
+     *  Subdirectory search is supported (here, for subdirectories to the 
+     *  directory specified by {@link #resourceLocation}). Add the subdirectory 
+     *  path to the URL.  For example, given the resourcePath "/files", 
+     *  a file in subdirectory /user/photos named "selfie.png" may be 
+     *  retrieved at URL:
+     *  
      *  <pre>
-     *  /files/PtolemyIcon.gif
+     *  http://localhost:8078/files/user/photos/selfie.png
      *  </pre>
-     *  from within the application; e.g., a web page served by URL
-     *  <pre>
-     *  protocol://hostname:portname/applicationPath/
-     *  </pre>
-     *  <p>
-     *  The ResourceHandler will look in resourceLocation for this file,
-     *  and if it does not find it there, will also look in any additional
-     *  resource locations that have been added to this web server
-     *  (see #resourceLocation).
-     *  </p>
-     *  Note that ResourceHandler supports subdirectories, for example
-     *  http://localhost:8078/myAppName/files/img/PtolemyIcon.gif
-     *  and a resourceLocation of $PTII/org/ptolemy/ptango/demo
-     *  will tell the ResourceHandler to get the file at
-     *  $PTII/org/ptolemy/ptango/demo/img/PtolemyIcon.gif
-     *
-     *  The ResourceHandler can support multiple resourceLocations, in
-     *  which case they will be searched in the order of the parameters.
-     *  To added locations to search for files, just add parameters
-     *  that are instances of "ptolemy.data.expr.FileParameter" to
-     *  this WebServer.
      */
+    
     public StringParameter resourcePath;
 
     /** A directory or URL where the web server will look for resources
      *  (like image files and the like).
      *  This defaults to the current model's directory.
-     *  You can add additional resource bases by adding additional
+     *  
+     *  You can add additional resource locations by adding additional
      *  parameters of type ptolemy.data.expr.FileParameter to
      *  this WebServer (select Configure in the context menu).
-     *  <p>
-     *  To refer to resources in these locations, a web service
-     *  (such as an HTML page) uses the {@link #resourcePath}.
-     *  See the explanation of {@link #resourcePath}.
+     *  
+     *  If multiple resourceLocations are given, they will be searched in the
+     *  order that the parameters were instantiated.  The first file located 
+     *  will be returned.
+     *  
+     *  Note that the name of the directory containing resources does NOT have
+     *  to match the URL used to access these resources.  See 
+     *  {@link #resourcePath} regarding the URL.
      */
     public FileParameter resourceLocation;
 
