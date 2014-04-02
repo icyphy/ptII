@@ -976,10 +976,6 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
         StringBuffer parameterMoML = new StringBuffer();
         StringBuffer portMoML = new StringBuffer();
         for (FMIScalarVariable scalar : fmiModelDescription.modelVariables) {
-            System.out.println("FMUImport 0 : scalar: " + scalar.name
-                    + " scalar.causality: " + scalar.causality
-                    + " scalar.variability: " + scalar.variability);
-
             if (scalar.variability == FMIScalarVariable.Variability.parameter
                     || scalar.variability == FMIScalarVariable.Variability.fixed // FMI-2.0rc1
                 ) {
@@ -1020,10 +1016,6 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
                 }
                 continue;
             } else {
-            System.out.println("FMUImport 1 : scalar: " + scalar.name
-                    + " scalar.causality: " + scalar.causality
-                    + " scalar.variability: " + scalar.variability);
-
                 // Ports
 
                 // // FIXME: All output ports?
