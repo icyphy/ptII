@@ -355,7 +355,6 @@ FMI_Export fmiStatus fmiGetDerivatives(fmiComponent c, fmiReal derivatives[],
         size_t nx) {
     // Model Exchange
     ModelInstance* component = (ModelInstance *) c;
-    //    printf("tankOpen.c: Called fmiGetDerivatives\n"); // fixme
     if (nx == 1){
       // If outputs are not current, then just evaluate the derivative
       // as this is all that is needed in this call.
@@ -373,6 +372,7 @@ FMI_Export fmiStatus fmiGetDerivatives(fmiComponent c, fmiReal derivatives[],
                           "fmiGetDerivatives: Call failed because nx is not 0 or 1.");
         return fmiError;
     }
+    printf("tankOpen.c: Called fmiGetDerivatives returns %5.2f\n", derivatives[0]); // fixme
     return fmiOK;
 }
 
@@ -395,10 +395,12 @@ FMI_Export fmiStatus fmiSetContinuousStates(fmiComponent c, const fmiReal x[],
     // Model Exchange
     ModelInstance* component = (ModelInstance *) c;
     if (nx == 1){
+        printf("tankOpen.c: fmiSetContinuousStates, current state was %5.2f\n", component->r[T]); // fixme
         component->r[T] = x[0];
 	// The standard says we need to re-initialize caching of variables
         // that depend on the states.
         component->r[TOut] = component->r[T];
+        printf("tankOpen.c: fmiSetContinuousStates, set new state to %5.2f\n", x[0]); // fixme
     }
     else if(nx == 0){
         printf("tankOpen.c: Called fmiSetContinuousStates with nx=%d.\n", (int)nx);

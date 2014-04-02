@@ -580,6 +580,12 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
                         _newStates[i] = states[i] + derivatives[i] * step;
                     }
                     _fmiSetContinuousStates(_newStates);
+		    
+                    // fixme: Temporary print out because fmiSetContinuousStates in c
+                    // receives non-initialized values.
+		    for (int i = 0; i < states.length; i++)
+			System.out.println("FMUImport.java: Setting state with " + states[i]);
+                    _fmiSetContinuousStates(states);
 		}
 
                 // Check event indicators.
