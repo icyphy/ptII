@@ -1028,7 +1028,6 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
                 String causality = "";
                 switch (scalar.causality) {
                 case input:
-                case local:
                     portCount++;
                     causality = "input";
                     break;
