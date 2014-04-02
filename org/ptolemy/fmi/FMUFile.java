@@ -45,6 +45,8 @@ import java.util.zip.ZipInputStream;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 
+import org.ptolemy.fmi.type.FMIRealType;
+
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -291,8 +293,12 @@ public class FMUFile {
                 exception.initCause(ex);
                 throw exception;
             }
+
             // Under FMI 1.0, the fmuLocation parameter refers to the location
             // of the fmu.
+
+            // fmiVersion 1.5 is not a legitimate version of the FMI standard, it
+            // was used by the Ptolemy project for experimenting with FMI 2.0beta.
             if (fmiVersion < 1.5
                     && fmiModelDescription.fmuResourceLocation
                             .endsWith("resources")) {
@@ -489,16 +495,17 @@ public class FMUFile {
                }*/
 
 
-        if (fmiModelDescription.fmiVersion.compareTo("2.0") == 0) {
+        if (fmiVersion > 1.5) {
             // Create the state vector. 
-            int cnt = 0;
+            int count = 0;
             for (int i = 0; i < fmiModelDescription.modelVariables.size(); i++) {
                 FMIScalarVariable scalar = fmiModelDescription.modelVariables
                         .get(i);
-                if (scalar.hasDerivative) {
-                    _continuousStates.put(cnt, fmiModelDescription.modelVariables
-                            .get(scalar.indexState - 1).name);
-                    cnt++;
+                if (scalar.type instanceof FMIRealType
+                        && ((FMIRealType) scalar.type).indexState > 0) {
+                    _continuousStates.put(count, fmiModelDescription.modelVariables
+                            .get(((FMIRealType)scalar.type).indexState - 1).name);
+                    count++;
                 }
             }
             // Store the state vector in a list.

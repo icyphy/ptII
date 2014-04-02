@@ -246,19 +246,6 @@ public class FMIScalarVariable {
                                 childElement);
                     } else if (_typeName.equals("Real")) {
                         type = new FMIRealType(name, description, childElement);
-                        // The derivative is an attribute of element "Real"
-                        if (childElement.hasAttribute("derivative")) {
-                            hasDerivative = true;
-                            String derivative = childElement
-                                    .getAttribute("derivative");
-                            try {
-                                indexState = Integer.parseInt(derivative);
-                            } catch (NumberFormatException ex) {
-                                throw new NumberFormatException(
-                                        "Failed to parse derivative index "
-                                                + derivative + " of " + name);
-                            }
-                        }
                     } else if (_typeName.equals("String")) {
                         type = new FMIStringType(name, description,
                                 childElement);
@@ -496,12 +483,6 @@ public class FMIScalarVariable {
 
     /** The value of the name xml attribute. */
     public String name;
-
-    /** The state variable index. */
-    public int indexState;
-
-    /** The boolean for state variable indication. */
-    public boolean hasDerivative = false;
 
     /** The value of the type xml attribute. */
     public FMIType type;

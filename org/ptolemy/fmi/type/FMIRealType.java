@@ -67,6 +67,19 @@ public class FMIRealType extends FMIType {
             // If there is no start attribute, then set the value to NaN.
             start = Double.NaN;
         }
+        // The derivative is an attribute of element "Real"
+        if (element.hasAttribute("derivative")) {
+            String derivative = element.getAttribute("derivative");
+            try {
+                indexState = Integer.parseInt(derivative);
+            } catch (NumberFormatException ex) {
+                throw new NumberFormatException(
+                        "Failed to parse derivative index "
+                        + derivative + " of " + name);
+            }
+        } else {
+            indexState = -1;
+        }
     }
 
     /** Return the string value of the base element.
@@ -82,6 +95,9 @@ public class FMIRealType extends FMIType {
     }
 
     // FIXME: need more documentation and to describe other variables.
+
+    /** The state variable index that is set to the value of the "derivative" element. */
+    public int indexState;
 
     /** The starting value of this real. */
     public Double start;
