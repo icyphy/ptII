@@ -1025,8 +1025,37 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
                 // // FIXME: set the type
                 // port.setTypeEquals(BaseType.DOUBLE);
 
+                // If the fmu is model exchange and the name of the scalar is 
+                // in the list of continuousStates, then we *don't* hide the scalar,
+                // Otherwise, we do hide the scalar.
+                boolean hideLocal = false;
+
                 String causality = "";
                 switch (scalar.causality) {
+                case local:
+                    // If an FMU is imported as model exchange, then
+                    // Ptolemy should automatically add an input port
+                    // for all state variables. This will allow users
+                    // to connect them to the output of an integrator
+                    // actor. The missing piece is that in
+                    // modelDescription.xml, whenever the entry " Real
+                    // derivative="index" " appears, then Ptolemy
+                    // should read the "index", go to this variable,
+                    // and add it to the list of input ports,
+
+
+                    // The default is to hide local scalars
+                    hideLocal = true;
+                    if (fmiModelDescription.modelExchange) { 
+                        if (fmiModelDescription.continuousStates.contains(scalar.name)) {
+                            // This local scalar is the state variable for a scalar
+                            // that has a "<Real derivative=N" element, where N is
+                            // the index (starting with 1) of this scalar.
+                            hideLocal = false;
+                        } else {
+                            break;
+                        }
+                    }
                 case input:
                     portCount++;
                     causality = "input";
@@ -1067,7 +1096,7 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
                         // internal.
                         + (portCount > maximumNumberOfPortsToDisplay
                                 || scalar.causality == Causality.internal 
-                                || scalar.causality == Causality.local // FMI-2.0rc1
+                                || hideLocal // FMI-2.0rc1
                                 ? hide
                                 : "") + "  </port>\n");
             }
