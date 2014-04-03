@@ -227,20 +227,28 @@ test Test-1.5 {Export} {
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
+            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+            </property>
         </port>
         <port name="trigger" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="multiport"/>
+            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+            </property>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
             </property>
         </port>
         <port name="init" class="ptolemy.actor.parameters.ParameterPort">
             <property name="input"/>
+            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+            </property>
             <property name="_showName" class="ptolemy.data.expr.Parameter" value="true">
             </property>
         </port>
         <port name="step" class="ptolemy.actor.parameters.ParameterPort">
             <property name="input"/>
+            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+            </property>
             <property name="_showName" class="ptolemy.data.expr.Parameter" value="true">
             </property>
         </port>
@@ -257,9 +265,13 @@ test Test-1.5 {Export} {
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="multiport"/>
+            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+            </property>
         </port>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
+            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+            </property>
         </port>
     </entity>
     <relation name="_R" class="ptolemy.actor.TypedIORelation">
