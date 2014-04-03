@@ -85,6 +85,7 @@ test SDFIOPort-1.3 {Construct Ports using Workspace constructor} {
 	    [[$p4 workspace] getName] \
 } {.p3 1 {ptolemy.kernel.util.Workspace {myWorkspace} directory {
     {ptolemy.domains.sdf.kernel.SDFIOPort {.p3} attributes {
+        {ptolemy.data.expr.Parameter {.p3.defaultValue} value undefined}
         {ptolemy.data.expr.Parameter {.p3.tokenConsumptionRate} 0}
         {ptolemy.data.expr.Parameter {.p3.tokenInitProduction} 0}
         {ptolemy.data.expr.Parameter {.p3.tokenProductionRate} 0}
