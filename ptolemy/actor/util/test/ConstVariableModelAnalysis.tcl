@@ -317,7 +317,7 @@ test ConstVariableModelAnalysis-3.2 {test port parameters} {
 	[lsort [listToNames [$analysis getNotConstVariables $repeat]]] \
 	[lsort [listToNames [$analysis getConstVariables [$repeat getPort input]]]] \
 	     [lsort [listToNames [$analysis getNotConstVariables [$repeat getPort input]]]]
-} {inport {} {NONE firingCountLimit init step} {} {blockSize numberOfTimes} {} tokenConsumptionRate {}}
+} {inport {} {NONE firingCountLimit init step} {} {blockSize numberOfTimes} {} {defaultValue tokenConsumptionRate} {}}
 
 # Test change context
 test ConstVariableModelAnalysis-3.3 {test port parameters} {
