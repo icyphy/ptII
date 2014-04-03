@@ -110,18 +110,26 @@ test LazyTypedCompositeActor-12.1 {deepConnectedIn(out)Ports} {
     <entity name="E1" class="ptolemy.actor.TypedCompositeActor">
         <port name="P1" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
+            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+            </property>
         </port>
     </entity>
     <entity name="E2" class="ptolemy.actor.LazyTypedCompositeActor">
         <port name="P2" class="ptolemy.actor.TypedIOPort">
+            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+            </property>
         </port>
         <port name="P4" class="ptolemy.actor.TypedIOPort">
+            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+            </property>
         </port>
         <configure>
             <group>
                 <entity name="E3" class="ptolemy.actor.LazyTypedCompositeActor">
                     <port name="P3" class="ptolemy.actor.TypedIOPort">
                         <property name="output"/>
+                        <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+                        </property>
                     </port>
                     <configure>
                         <group>
@@ -141,6 +149,8 @@ test LazyTypedCompositeActor-12.1 {deepConnectedIn(out)Ports} {
     <entity name="E4" class="ptolemy.actor.TypedAtomicActor">
         <port name="P5" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
+            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+            </property>
         </port>
     </entity>
     <relation name="R1" class="ptolemy.actor.TypedIORelation">
