@@ -75,6 +75,7 @@ test TypeOpaqueCompositeActor-3.1 {newPort} {
     }}
 } ports {
     {ptolemy.actor.TypedIOPort {.E0.E3.P1} attributes {
+        {ptolemy.data.expr.Parameter {.E0.E3.P1.defaultValue} value undefined}
     } links {
     } insidelinks {
     } configuration {{width 0}} receivers {
