@@ -65,6 +65,8 @@ set entityTestModelBody {
         <port name="upper">
             <property name="input" />
             <property name="output" />
+            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+            </property>
         </port>
         <entity name="a" class="ptolemy.actor.TypedCompositeActor">
               <port name="input" class="ptolemy.actor.TypedIOPort">
@@ -121,6 +123,8 @@ test UndoDeletePort-1.1 {Test deleting a port is undoable: without entity attrib
         <port name="upper" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="output"/>
+            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+            </property>
         </port>
         <entity name="a" class="ptolemy.actor.TypedCompositeActor">
         </entity>
@@ -159,6 +163,8 @@ test UndoDeletePort-1.1b {Test deleting a port is undoable: without entity attri
         <port name="upper" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="output"/>
+            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+            </property>
         </port>
         <entity name="a" class="ptolemy.actor.TypedCompositeActor">
             <port name="input" class="ptolemy.actor.TypedIOPort">
@@ -208,6 +214,8 @@ test UndoDeletePort-1.2a {Test deleting a port is undoable: without entity attri
         <port name="upper" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="output"/>
+            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+            </property>
         </port>
         <entity name="a" class="ptolemy.actor.TypedCompositeActor">
         </entity>
@@ -246,6 +254,8 @@ test UndoDeletePort-1.2b {Test deleting a port is undoable: without entity attri
         <port name="upper" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="output"/>
+            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+            </property>
         </port>
         <entity name="a" class="ptolemy.actor.TypedCompositeActor">
             <port name="input" class="ptolemy.actor.TypedIOPort">
@@ -301,6 +311,8 @@ test UndoDeletePort-1.3a {Test deleting a port is undoable: with entity attribut
         <port name="upper" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="output"/>
+            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+            </property>
         </port>
         <entity name="a" class="ptolemy.actor.TypedCompositeActor">
         </entity>
@@ -339,6 +351,8 @@ test UndoDeletePort-1.3b {Test deleting a port is undoable: with entity attribut
         <port name="upper" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="output"/>
+            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+            </property>
         </port>
         <entity name="a" class="ptolemy.actor.TypedCompositeActor">
             <port name="input" class="ptolemy.actor.TypedIOPort">
@@ -394,6 +408,8 @@ test UndoDeletePort-1.4a {Test deleting a port is undoable: with entity attribut
         <port name="upper" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="output"/>
+            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+            </property>
         </port>
         <entity name="a" class="ptolemy.actor.TypedCompositeActor">
         </entity>
@@ -432,6 +448,8 @@ test UndoDeletePort-1.4b {Test deleting a port is undoable: with entity attribut
         <port name="upper" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="output"/>
+            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+            </property>
         </port>
         <entity name="a" class="ptolemy.actor.TypedCompositeActor">
             <port name="input" class="ptolemy.actor.TypedIOPort">
