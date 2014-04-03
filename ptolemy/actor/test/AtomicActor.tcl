@@ -138,30 +138,35 @@ test AtomicActor-7.1 {Test clone and description} {
     }}
 } ports {
     {ptolemy.actor.IOPort {.E3.P1} attributes {
+        {ptolemy.data.expr.Parameter {.E3.P1.defaultValue} value undefined}
     } links {
     } insidelinks {
     } configuration {opaque {width 0}} receivers {
     } remotereceivers {
     }}
     {ptolemy.actor.IOPort {.E3.P2} attributes {
+        {ptolemy.data.expr.Parameter {.E3.P2.defaultValue} value undefined}
     } links {
     } insidelinks {
     } configuration {input output opaque {width 0}} receivers {
     } remotereceivers {
     }}
     {ptolemy.actor.IOPort {.E3.P3} attributes {
+        {ptolemy.data.expr.Parameter {.E3.P3.defaultValue} value undefined}
     } links {
     } insidelinks {
     } configuration {output opaque {width 0}} receivers {
     } remotereceivers {
     }}
     {ptolemy.actor.IOPort {.E3.P4} attributes {
+        {ptolemy.data.expr.Parameter {.E3.P4.defaultValue} value undefined}
     } links {
     } insidelinks {
     } configuration {input opaque {width 0}} receivers {
     } remotereceivers {
     }}
     {ptolemy.actor.IOPort {.E3.P5} attributes {
+        {ptolemy.data.expr.Parameter {.E3.P5.defaultValue} value undefined}
     } links {
     } insidelinks {
     } configuration {opaque {width 0}} receivers {
