@@ -2398,6 +2398,8 @@ test MoMLParser-5.3.1 {Delete a PortParameter} {
     </property>
     <port name="MyPortParameter" class="ptolemy.actor.parameters.ParameterPort">
         <property name="input"/>
+        <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+        </property>
     </port>
 </entity>
 }
@@ -2442,6 +2444,8 @@ test MoMLParser-5.3.3 {Test property deletion of a PortParameter - get both the 
     </property>
     <port name="MyPortParameter" class="ptolemy.actor.parameters.ParameterPort">
         <property name="input"/>
+        <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+        </property>
     </port>
 </entity>
 }
@@ -2486,6 +2490,8 @@ test MoMLParser-5.3.5 {Test undo of 5.3.4} {
     </property>
     <port name="MyPortParameter" class="ptolemy.actor.parameters.ParameterPort">
         <property name="input"/>
+        <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+        </property>
     </port>
 </entity>
 }
@@ -2914,11 +2920,15 @@ set body {
    <entity name="B" class="ptolemy.actor.TypedAtomicActor">
       <port name="in" class="ptolemy.actor.TypedIOPort">
          <property name="input"/>
+         <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+        </property>
       </port>
    </entity>
    <entity name="C" class="ptolemy.actor.TypedAtomicActor">
       <port name="in" class="ptolemy.actor.TypedIOPort">
          <property name="input"/>
+         <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+        </property>
       </port>
    </entity>
 
@@ -3916,6 +3926,8 @@ test MoMLParser-22.2 {Delete port.} {
     <class name="Ramp" extends="ptolemy.actor.TypedAtomicActor">
         <port name="trigger" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
+            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+            </property>
         </port>
     </class>
     <class name="SubclassOfRamp" extends="Ramp">
@@ -3945,6 +3957,8 @@ test MoMLParser-22.3 {Undo delete port.} {
     <class name="Ramp" extends="ptolemy.actor.TypedAtomicActor">
         <port name="trigger" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
+            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+            </property>
         </port>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -4616,12 +4630,14 @@ test MoMLParser-34.4 {Test parsing a FilePortParameter with have xml chars in th
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.1.devel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="10.0.devel">
     </property>
     <property name="id1&lt;=&gt;&amp;" class="ptolemy.actor.parameters.FilePortParameter" value="">
     </property>
     <port name="id1&lt;=&gt;&amp;" class="ptolemy.actor.parameters.ParameterPort">
         <property name="input"/>
+        <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+        </property>
     </port>
     <port name="id2&lt;=&gt;&amp;" class="ptolemy.actor.parameters.ParameterPort">
         <property name="input"/>
@@ -4631,15 +4647,19 @@ test MoMLParser-34.4 {Test parsing a FilePortParameter with have xml chars in th
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.1.devel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="10.0.devel">
     </property>
     <property name="id1&lt;=&gt;&amp;" class="ptolemy.actor.parameters.FilePortParameter" value="">
     </property>
     <port name="id1&lt;=&gt;&amp;" class="ptolemy.actor.parameters.ParameterPort">
         <property name="input"/>
+        <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+        </property>
     </port>
     <port name="id2&lt;=&gt;&amp;" class="ptolemy.actor.parameters.ParameterPort">
         <property name="input"/>
+        <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+        </property>
     </port>
 </entity>
 }}
