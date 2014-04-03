@@ -925,6 +925,7 @@ test IOPort-10.7 {Construct a simple system, then call description} {
         }}
     } ports {
         {ptolemy.actor.TypedIOPort {..source.output} attributes {
+            {ptolemy.data.expr.Parameter {..source.output.defaultValue} value undefined}
         } links {
             {ptolemy.actor.TypedIORelation {..edge0} attributes {
                 {ptolemy.data.expr.Parameter {..edge0.Auto} -1}
@@ -942,6 +943,7 @@ test IOPort-10.7 {Construct a simple system, then call description} {
         }}
     } ports {
         {ptolemy.actor.TypedIOPort {..dest.input} attributes {
+            {ptolemy.data.expr.Parameter {..dest.input.defaultValue} value undefined}
         } links {
             {ptolemy.actor.TypedIORelation {..edge0} attributes {
                 {ptolemy.data.expr.Parameter {..edge0.Auto} -1}
@@ -960,12 +962,14 @@ test IOPort-10.7 {Construct a simple system, then call description} {
         {ptolemy.data.expr.Parameter {..edge0.width} -1}
     } links {
         {ptolemy.actor.TypedIOPort {..source.output} attributes {
+            {ptolemy.data.expr.Parameter {..source.output.defaultValue} value undefined}
         } configuration {output opaque {width 1}} receivers {
         } remotereceivers {
             {
             }
         } type {declared unknown resolved unknown}}
         {ptolemy.actor.TypedIOPort {..dest.input} attributes {
+            {ptolemy.data.expr.Parameter {..dest.input.defaultValue} value undefined}
         } configuration {input opaque {width 1}} receivers {
             {
             }
@@ -1415,6 +1419,7 @@ test IOPort-15.1 {test clone()} {
     set p5 [java::cast ptolemy.actor.IOPort [$p4 clone $w]]
     $p5 description
 } {ptolemy.actor.IOPort {.P4} attributes {
+    {ptolemy.data.expr.Parameter {.P4.defaultValue} value undefined}
 } links {
 } insidelinks {
 } configuration {input multiport opaque {width 0}} receivers {
