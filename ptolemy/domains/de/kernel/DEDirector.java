@@ -36,10 +36,12 @@ import java.util.Set;
 
 import ptolemy.actor.Actor;
 import ptolemy.actor.ActorExecutionAspect;
+import ptolemy.actor.CommunicationAspect;
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.Director;
 import ptolemy.actor.FiringEvent;
 import ptolemy.actor.IOPort;
+import ptolemy.actor.Manager;
 import ptolemy.actor.QuasiTransparentDirector;
 import ptolemy.actor.Receiver;
 import ptolemy.actor.SuperdenseTimeDirector;
@@ -63,6 +65,8 @@ import ptolemy.kernel.util.Nameable;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.Workspace;
+import ptolemy.util.CancelException;
+import ptolemy.util.MessageHandler;
 
 ///////////////////////////////////////////////////////////////////
 //// DEDirector
@@ -414,7 +418,6 @@ public class DEDirector extends Director implements SuperdenseTimeDirector {
         DEDirector newObject = (DEDirector) super.clone(workspace);
         newObject._disabledActors = null;
         newObject._eventQueue = null;
-        newObject._originalEventTime = null;
         newObject._exceedStopTime = false;
         newObject._isInitializing = false;
         newObject._microstep = 1;
@@ -551,6 +554,13 @@ public class DEDirector extends Director implements SuperdenseTimeDirector {
             _debug("DEDirector: Actor " + actor.getFullName()
                     + " requests refiring at " + time + " with microstep "
                     + index);
+        }
+        if (_getExecutionAspect(actor) != null && 
+                _getExecutionAspect(actor).getExecutionTime(actor) > 0.0) {
+//            throw new IllegalActionException(this, 
+//                    "This director cannot guarantee to fire the actor " + actor +
+//                    " at the correct time due to the use of execution aspects " +
+//                            "that can delay the firing.");
         }
         // Normally, we do not need to delegate the request up
         // the hierarchy. This will be done in postfire.
@@ -753,22 +763,6 @@ public class DEDirector extends Director implements SuperdenseTimeDirector {
         return aFutureTime;
     }
 
-    /** Return the model time of the event. If an execution aspect
-     *  is used, the delay introduced by this aspect might cause 
-     *  actors not to fire. Thus, pretend that the model time is
-     *  still the original firing time of the actor. 
-     */
-    @Override
-	public Time getModelTime() {
-		if (_actorFiring != null && 
-				!(_actorFiring instanceof ActorExecutionAspect) && 
-				_originalEventTime != null && 
-				_originalEventTime.get(_actorFiring) != null) {
-			return _originalEventTime.get(_actorFiring);
-		}
-		return super.getModelTime();
-	}
-
 	/** Return the timestamp of the next event in the queue. This is
      *  different from getModelNextIterationTime as it just considers
      *  the local event queue and not that of directors higher up in
@@ -851,7 +845,6 @@ public class DEDirector extends Director implements SuperdenseTimeDirector {
 
         synchronized (_eventQueue) {
             _eventQueue.clear();
-            _originalEventTime.clear();
 
             // Reset the following private variables.
             _disabledActors = null;
@@ -1270,14 +1263,14 @@ public class DEDirector extends Director implements SuperdenseTimeDirector {
         }
 
         _actorsFinished = new ArrayList();
-        _originalEventTime = new HashMap<Actor, Time>();
 
         if (_debugging && _verbose) {
             _debug("## Depths assigned to actors and ports:");
             _debug(describePriorities());
         }
+        _issueExecutionAspectWarning();
     }
-
+    
     /** Unregister a debug listener.  If the specified listener has not
      *  been previously registered, then do nothing.
      *  @param listener The listener to remove from the list of listeners
@@ -1293,8 +1286,6 @@ public class DEDirector extends Director implements SuperdenseTimeDirector {
 
         super.removeDebugListener(listener);
     }
-    
-    private HashMap<Actor, Time> _originalEventTime = null;
 
     /** Resume the execution of an actor that was previously blocked because
      *  it didn't have all the resources it needed for execution. This method
@@ -1309,10 +1300,6 @@ public class DEDirector extends Director implements SuperdenseTimeDirector {
                 .getDirector().getModelTime();
         DEEvent event = events.get(0);
         events.remove(event);
-        if (_originalEventTime == null) {
-        	_originalEventTime = new HashMap<Actor, Time>();
-        }
-        _originalEventTime.put(actor, event.timeStamp());
         _actorsInExecution.put(actor, events);
 
         if (event.ioPort() != null) {
@@ -1822,7 +1809,6 @@ public class DEDirector extends Director implements SuperdenseTimeDirector {
                 _debug(new FiringEvent(this, actorToFire,
                         FiringEvent.BEFORE_PREFIRE));
 
-                _actorFiring = actorToFire;
                 if (!actorToFire.prefire()) {
                     _debug("*** Prefire returned false.");
                     break;
@@ -1835,7 +1821,6 @@ public class DEDirector extends Director implements SuperdenseTimeDirector {
                         FiringEvent.BEFORE_FIRE));
                 
                 actorToFire.fire();
-                _actorFiring = null;
                 _debug(new FiringEvent(this, actorToFire,
                         FiringEvent.AFTER_FIRE));
 
@@ -1864,13 +1849,11 @@ public class DEDirector extends Director implements SuperdenseTimeDirector {
                     _disableActor(actorToFire);
                     break;
                 }
-                _actorFiring = actorToFire;
                 if (!actorToFire.prefire()) {
                     break;
                 }
 
                 actorToFire.fire();
-                _actorFiring = null;
                 // NOTE: It is the fact that we postfire actors now that makes
                 // this director not comply with the actor abstract semantics.
                 // However, it's quite a redesign to make it comply, and the
@@ -2387,6 +2370,39 @@ public class DEDirector extends Director implements SuperdenseTimeDirector {
         return actorToFire;
     }
 
+    /** In DE, a warning is issued when execution aspects are used because
+     *  these might change the DE semantics of the execution. In Ptides, 
+     *  this is not the case. 
+     * @throws IllegalActionException 
+     */
+    protected void _issueExecutionAspectWarning() throws IllegalActionException {
+        if (_executionAspects.size() > 0) {
+            boolean _aspectUsed = false;
+            if (getContainer() instanceof CompositeActor) {
+                for (Object entity : ((CompositeActor)getContainer()).entityList()) {
+                    Actor actor = (Actor) entity;
+                    if (_getExecutionAspect(actor) != null) {
+                        _aspectUsed = true;
+                        break;
+                    }
+                }
+            }
+            if (_aspectUsed) {
+                if (!MessageHandler.yesNoQuestion(
+                        "WARNING: The execution aspects in this model can "
+                        + "influence the timing of actors by delaying the \n"
+                        + "execution, which can potentially reverse causality. "
+                        + "There is no guarantee that actors fire at the \n"
+                        + "time they request to be fired. \n"
+                        + "Use Ptides for deterministic DE behavior that is "
+                        + "not influenced by execution aspects. \n"
+                        + "Continue?")) {
+                    stop();
+                }
+            }
+        }
+    }
+
     /** There are no actor to fire. In this base class, do nothing. Subclasses
      *  may override this method in case there is no actor to fire.
      *  @exception IllegalActionException Not thrown in this base class.
@@ -2548,8 +2564,6 @@ public class DEDirector extends Director implements SuperdenseTimeDirector {
         // Enqueue a pure event to fire the container of this director.
         fireContainerAt(nextEvent.timeStamp(), nextEvent.microstep());
     }
-
-    private Actor _actorFiring = null;
 
 	///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////

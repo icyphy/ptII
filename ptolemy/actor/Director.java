@@ -875,20 +875,6 @@ public class Director extends Attribute implements Executable {
 
         localClock.resetLocalTime(getModelStartTime());
         localClock.start();
-
-        _aspectsPresent = false;
-        
-        _executionAspects = new ArrayList<ActorExecutionAspect>();
-        _aspectForActor = new HashMap<Actor, ActorExecutionAspect>();
-        if (getContainer() instanceof CompositeActor) {
-	        for (Object entity : ((CompositeActor)getContainer()).entityList(
-	                ActorExecutionAspect.class)) {
-	            ActorExecutionAspect aspect = (ActorExecutionAspect) entity;
-	            _executionAspects.add(aspect);
-	            ((Actor) aspect).initialize();
-	        }
-	        _aspectsPresent = ((CompositeActor)getContainer()).entityList(CommunicationAspect.class).size() > 0;
-        }
         	
         if (_nextScheduleTime != null) {
             _nextScheduleTime.clear();
@@ -1263,6 +1249,20 @@ public class Director extends Attribute implements Executable {
                 // This increments the workspace version.
                 _createReceivers();
             }
+        }
+        
+        _aspectsPresent = false;
+        
+        _executionAspects = new ArrayList<ActorExecutionAspect>();
+        _aspectForActor = new HashMap<Actor, ActorExecutionAspect>();
+        if (getContainer() instanceof CompositeActor) {
+            for (Object entity : ((CompositeActor)getContainer()).entityList(
+                    ActorExecutionAspect.class)) {
+                ActorExecutionAspect aspect = (ActorExecutionAspect) entity;
+                _executionAspects.add(aspect);
+                ((Actor) aspect).initialize();
+            }
+            _aspectsPresent = ((CompositeActor)getContainer()).entityList(CommunicationAspect.class).size() > 0;
         }
 
         if (_debugging) {

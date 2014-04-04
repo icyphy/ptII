@@ -717,6 +717,15 @@ public class PtidesDirector extends DEDirector implements Decorator {
         _calculateDelayOffsets();
         _calculateRelativeDeadlines();
     }
+    
+    /** In DE, a warning is issued when execution aspects are used because
+     *  these might change the DE semantics of the execution. In Ptides, 
+     *  this is not the case. 
+     */
+    @Override
+    protected void _issueExecutionAspectWarning() {
+        // DO NOTHING
+    }
 
     public void resumeActor(Actor actor) throws IllegalActionException {
         prefire();
