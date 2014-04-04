@@ -440,6 +440,12 @@ HYVISUAL_DOCS = \
 	codeDocHyVisual/doc/codeDoc/ptolemy/actor/lib/Ramp.xml \
 	codeDocHyVisual/doc/codeDoc/ptolemy/actor/lib/RampIdx.xml
 
+PTMACHINE_LEARNING_PACKAGES = \
+	com.cureos.numerics \
+	org.ptolemy.machineImprovisation \
+	org.ptolemy.machineLearning.hmm \
+	org.ptolemy.machineLearning.hmmAOM \
+	org.ptolemy.machineLearning.particleFilter \
 
 # PTIDES packages
 PTIDES_PACKAGES = \
@@ -549,6 +555,7 @@ ALLPACKAGES = \
 	$(PTJUNIT_PACKAGES) \
 	$(PTJUNITTESTS) \
 	$(PTLBNL_PACKAGES) \
+	$(PTMACHINE_LEARNING_PACKAGES) \
 	$(PTMETROII_PACKAGES) \
 	$(PTOPENCV_PACKAGES) \
 	$(PTQUICKTIME_PACKAGES) \
@@ -562,10 +569,6 @@ ALLPACKAGES = \
 	$(PTPTALON_PACKAGES) \
 	$(USER_PACKAGES) \
 	doc.doclets \
-	org.ptolemy.machineImprovisation \
-	org.ptolemy.machineLearning.hmm \
-	org.ptolemy.machineLearning.hmmAOM \
-	org.ptolemy.machineLearning.particleFilter \
 	org.ptolemy.qss \
 	ptolemy.actor.process \
 	ptolemy.actor.lib.aspect \
