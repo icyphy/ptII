@@ -107,7 +107,7 @@ public class GenerateCopyrights {
 
         // Add the classnames and copyrights.
         // Alphabetical by className.
-        _addIfPresent(copyrightsMap, "com.cureos.numerics.Cobyla"
+        _addIfPresent(copyrightsMap, "com.cureos.numerics.Cobyla",
                 "com/cureos/jcobyla-license.htm");
 
         _addIfPresent(copyrightsMap, "com.github.ojdcheck.OpenJavaDocCheck",
