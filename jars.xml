@@ -3191,7 +3191,7 @@
 
     <!-- com/cureos/cureos.jar -->
     <jar defaultexcludes="yes"
-	 destfile="${basedir}/com/cureos/cureos.jar -->
+	 destfile="${basedir}/com/cureos/cureos.jar"
 	 >
       <fileset dir="${basedir}">
 	<include name="com/cureos/*.htm"/>
