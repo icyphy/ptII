@@ -43,21 +43,21 @@ import ptolemy.moml.MoMLParser;
 
 /**
  Check the dining philosopher model.
- Construct the interface automata model for the dining philosopher demo
+ <p>Construct the interface automata model for the dining philosopher demo
  and check for deadlock.
- The primitive components in the model are: CSPReceiver, ConditionalSend,
+ <br/>The primitive components in the model are: CSPReceiver, ConditionalSend,
  ConditionalBranchController, Philosopher, and Chopstick. It is assumed
- that the MoML files for these models are in the current directory.
+ that the MoML files for these models are in the current directory.</p>
  <p>
  The number of philosophers around the dining table can be controlled on
- the command line. The usage is:
+ the command line. The usage is:</p>
  <pre>
- java ptolemy.domains.csp.demo.DiningPhilosophers.checkDeadlock.Check <numberOfPhilosophers> <useSimple>
+ java ptolemy.domains.csp.demo.DiningPhilosophers.checkDeadlock.Check <i>numberOfPhilosophers</i> <i>useSimple</i>
  </pre>
 
- The useSimple argument is either "simple" or "full", indicating if
+ <p>The useSimple argument is either "simple" or "full", indicating if
  the simple or the full conditional send model is used. This
- argument is optional. The default is simple.
+ argument is optional. The default is simple.</p>
 
  @author Yuhong Xiong
  @version $Id$
@@ -67,6 +67,7 @@ import ptolemy.moml.MoMLParser;
 public class Check {
     /** Load the base automata.
      *  @param numberOfPhilosophers The number of philosophers.
+     *  @param simple True if SimpleSend.xml is to be used
      *  @exception Exception If the automata cannot be loaded.
      */
     public Check(int numberOfPhilosophers, boolean useSimple) throws Exception {
