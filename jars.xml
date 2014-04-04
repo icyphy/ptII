@@ -2623,6 +2623,9 @@
         <include name="ptolemy/cg/adapter/generic/program/procedural/adapters/ptolemy/domains/sdf/lib/*.class"/>
       </fileset>
       <fileset dir="${basedir}">
+        <include name="ptolemy/cg/adapter/generic/program/procedural/adapters/ptolemy/vergil/actor/lib/*.class"/>
+      </fileset>
+      <fileset dir="${basedir}">
         <include name="ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/actor/*.c"/>
       </fileset>
       <fileset dir="${basedir}">
@@ -2723,6 +2726,30 @@
       </fileset>
       <fileset dir="${basedir}">
         <include name="ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/domains/sdf/lib/*.class"/>
+      </fileset>
+      <fileset dir="${basedir}">
+        <include name="ptolemy/cg/adapter/generic/program/procedural/c/arduino/*.in"/>
+      </fileset>
+      <fileset dir="${basedir}">
+        <include name="ptolemy/cg/adapter/generic/program/procedural/c/arduino/adapters/ptolemy/actor/lib/gui/*.c"/>
+      </fileset>
+      <fileset dir="${basedir}">
+        <include name="ptolemy/cg/adapter/generic/program/procedural/c/arduino/adapters/ptolemy/actor/lib/gui/*.class"/>
+      </fileset>
+      <fileset dir="${basedir}">
+        <include name="ptolemy/cg/adapter/generic/program/procedural/c/arduino/adapters/ptolemy/vergil/actor/lib/*.c"/>
+      </fileset>
+      <fileset dir="${basedir}">
+        <include name="ptolemy/cg/adapter/generic/program/procedural/c/arduino/adapters/ptolemy/vergil/actor/lib/demo/Life/*.in"/>
+      </fileset>
+      <fileset dir="${basedir}">
+        <include name="ptolemy/cg/adapter/generic/program/procedural/c/arduino/adapters/ptolemy/vergil/actor/lib/demo/Life/*.xml"/>
+      </fileset>
+      <fileset dir="${basedir}">
+        <include name="ptolemy/cg/adapter/generic/program/procedural/c/arduino/adapters/ptolemy/vergil/actor/lib/demo/Life/ledTankTop/*.c"/>
+      </fileset>
+      <fileset dir="${basedir}">
+        <include name="ptolemy/cg/adapter/generic/program/procedural/c/arduino/adapters/ptolemy/vergil/actor/lib/demo/Life/ledTankTop/*.h"/>
       </fileset>
       <fileset dir="${basedir}">
         <include name="ptolemy/cg/adapter/generic/program/procedural/c/luminary/adapters/ptolemy/actor/lib/*.c"/>
@@ -2839,7 +2866,7 @@
         <include name="ptolemy/cg/adapter/generic/program/procedural/java/adapters/ptolemy/cg/lib/*.class"/>
       </fileset>
       <fileset dir="${basedir}">
-        <include name="ptolemy/cg/adapter/generic/program/procedural/java/adapters/ptolemy/domains/modal/kernell/*.class"/>
+        <include name="ptolemy/cg/adapter/generic/program/procedural/java/adapters/ptolemy/domains/modal/kernel/*.class"/>
       </fileset>
       <fileset dir="${basedir}">
         <include name="ptolemy/cg/adapter/generic/program/procedural/java/adapters/ptolemy/domains/modal/modal/*.class"/>
@@ -2881,6 +2908,9 @@
         <include name="ptolemy/cg/kernel/generic/program/procedural/c/*.class"/>
       </fileset>
       <fileset dir="${basedir}">
+        <include name="ptolemy/cg/kernel/generic/program/procedural/c/*.in"/>
+      </fileset>
+      <fileset dir="${basedir}">
         <include name="ptolemy/cg/kernel/generic/program/procedural/c/ptidyos/*.class"/>
       </fileset>
       <fileset dir="${basedir}">
@@ -2902,10 +2932,16 @@
         <include name="ptolemy/cg/kernel/generic/program/procedural/java/*.class"/>
       </fileset>
       <fileset dir="${basedir}">
+        <include name="ptolemy/cg/kernel/generic/program/procedural/java/*.in"/>
+      </fileset>
+      <fileset dir="${basedir}">
         <include name="ptolemy/cg/kernel/generic/program/procedural/java/*.j"/>
       </fileset>
       <fileset dir="${basedir}">
         <include name="ptolemy/cg/kernel/generic/program/procedural/java/modular/*.class"/>
+      </fileset>
+      <fileset dir="${basedir}">
+        <include name="ptolemy/cg/kernel/generic/program/procedural/java/modular/*.in"/>
       </fileset>
       <fileset dir="${basedir}">
         <include name="ptolemy/cg/kernel/generic/program/procedural/java/type/*.class"/>
@@ -2943,6 +2979,7 @@
       <fileset dir="${basedir}">
         <include name="ptolemy/cg/lib/syntactic/*.class"/>
       </fileset>
+
     </jar>
 
     <!-- ptolemy/chic/chic.jar -->
