@@ -26,26 +26,6 @@
 
  */
 package org.ptolemy.machineLearning.particleFilter;
-/**
-Black-box optimizer that uses JCobyla as the solver
-
-<p> Performs mutual information-based optimization using 
-
-<b>References</b>
- <p>[1]
-B. Charrow, V. Kumar, and N. Michael <i>Approximate Representations for Multi-Robot 
-  Control Policies that Maximize Mutual Information</i>, In Proc. Robotics: Science and Systems Conference (RSS), 2013.
-@see org.ptolemy.machineLearning.particleFilter.ParticleFilter
-@see com.cureos.numerics
-
-@author Ilge Akkaya
-@version $Id$
-@since Ptolemy II 10.1
-@Pt.ProposedRating Red (ilgea)
-@Pt.AcceptedRating Red (ilgea)
-
-*/
-
 
 import java.util.LinkedList;
 import java.util.List;
@@ -85,6 +65,25 @@ import com.cureos.numerics.Calcfc;
 import com.cureos.numerics.Cobyla;
 import com.cureos.numerics.CobylaExitStatus;
 
+/**
+Black-box optimizer that uses JCobyla as the solver
+
+<p> Performs mutual information-based optimization using </p>
+
+<b>References</b>
+ <p>[1]
+B. Charrow, V. Kumar, and N. Michael <i>Approximate Representations for Multi-Robot 
+  Control Policies that Maximize Mutual Information</i>, In Proc. Robotics: Science and Systems Conference (RSS), 2013.
+@see org.ptolemy.machineLearning.particleFilter.ParticleFilter
+@see com.cureos.numerics
+
+@author Ilge Akkaya
+@version $Id$
+@since Ptolemy II 10.1
+@Pt.ProposedRating Red (ilgea)
+@Pt.AcceptedRating Red (ilgea)
+
+*/
 public class Optimizer extends TypedAtomicActor {
 
     public Optimizer() {
