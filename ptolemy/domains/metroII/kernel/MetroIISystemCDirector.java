@@ -230,6 +230,8 @@ public class MetroIISystemCDirector extends Director implements GetFirable {
      * 
      * @param events
      *            the events to be synchronized from the pipe.
+     * @exception IllegalActionException If the pipe file cannot be
+     * found or written.
      */
     public void syncEvents(LinkedList<Event.Builder> events)
             throws IllegalActionException {

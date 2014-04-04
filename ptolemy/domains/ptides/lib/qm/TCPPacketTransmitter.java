@@ -115,7 +115,7 @@ public class TCPPacketTransmitter extends OutputDevice {
     }
 
     /** If the argument is the <i>defaultFrameSize</i> or
-     *  <i>priority</p>, then set the specified values.
+     *  <i>priority</i>, then set the specified values.
      *  @exception IllegalActionException If value is less than zero.
      */
     public void attributeChanged(Attribute attribute)
@@ -167,7 +167,7 @@ public class TCPPacketTransmitter extends OutputDevice {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Fill-in and return fields of the TCP header as a RecordToken
+    /** Fill-in and return fields of the TCP header as a RecordToken.
      *  @return a record token
      *  @exception IllegalActionException If the RecordToken cannot be
      *  created.

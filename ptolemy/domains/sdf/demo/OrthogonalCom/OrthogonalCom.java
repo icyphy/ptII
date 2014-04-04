@@ -66,6 +66,11 @@ why it is written in Java instead of using MoML.
 */
 public class OrthogonalCom extends TypedCompositeActor {
 
+    /** Construct the orthogonal communication system.
+     *  @param w The workspace in which to construct the system.
+     *  @exception IllegalActionException If the system cannot be
+     *  constructed.
+     */
     public OrthogonalCom(Workspace w) throws IllegalActionException {
         super(w);
 

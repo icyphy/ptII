@@ -91,6 +91,8 @@ public class MappingEditor extends Attribute {
 
     /**
      * Gets mapping file name.
+     * @return The name of the mapping file.
+     * @exception IllegalActionException If the director is not a MetroIIDirector.
      */
     public File getMappingFile() throws IllegalActionException {
         CompositeActor actor = (CompositeActor) this.getContainer();
@@ -120,7 +122,8 @@ public class MappingEditor extends Attribute {
     /**
      * Reads mapping constraints.
      * 
-     * @throws IllegalActionException
+     * @return The mapping constraints.
+     * @throws IllegalActionException If the mapping file cannot be read.
      */
     public String readMapping() throws IllegalActionException {
         String buffer = null;

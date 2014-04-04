@@ -111,6 +111,6 @@ public class SketchApplet extends MoMLApplet implements EditListener {
         }
     }
 
-    /** The SketchedSource actor */
+    /** The SketchedSource actor. */
     public SketchedSource _sketchedSource;
 }
