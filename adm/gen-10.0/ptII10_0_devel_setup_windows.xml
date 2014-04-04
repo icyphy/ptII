@@ -544,6 +544,8 @@ The Ptiny pack is required.
 
             <file src="../dists/ptII10.0.devel/jar_dist/org/ptolemy/machineLearning/machineLearning.jar"
                   targetdir="$INSTALL_PATH/org/ptolemy/machineLearning"/>
+            <file src="../dists/ptII10.0.devel/jar_dist/com/cureos"
+                  targetdir="$INSTALL_PATH/com/cureos"/>
 
             <!-- file src="../dists/ptII10.0.devel/jar_dist/lib/protobuf-java-2.4.1.jar"
                   targetdir="$INSTALL_PATH/lib"/ -->

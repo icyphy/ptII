@@ -117,6 +117,7 @@ PTII_TOPDIR=	.cshrc \
 		bin \
 		build.default.xml \
 		build.xml.in \
+		com/cureos \
 		com/jgoodies \
 		com/makefile \
 		com/microstar \

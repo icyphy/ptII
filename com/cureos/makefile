@@ -1,9 +1,9 @@
-# Makefile microstar XML parser
+# Java port of COBYLA2 nonlinear constrained optimization method
 #
 # @Version: $Id: makefile 54696 2009-06-26 17:30:43Z cxh $
-# @Author: Christopher Hylands
+# @Author: Christopher Brooks (makefile only)
 #
-# @Copyright (c) 1997-2000 The Regents of the University of California.
+# @Copyright (c) 2014 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -52,13 +52,26 @@ VPATH =		$(ROOT)/$(ME)
 CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
+# Used to build jar files
+PTPACKAGE = 	cureos
+PTCLASSJAR =
+PTCLASSALLJAR = $(PTPACKAGE).jar
+
+OTHER_FILES_TO_BE_JARED = \
+	jcobyla-license.htm
+
+EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
+
+# Include the .class files from these jars in PTCLASSALLJAR
+PTCLASSALLJARS = \
+	numerics/numerics.jar
+
 all: suball
-install: subinstall
+install: subinstall $(PTCLASSALLJAR)
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to report an error on them.
-MISC_FILES = \
-	xml
+MISC_FILES = $(DIRS)
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk

@@ -1,9 +1,9 @@
-# Makefile for microstar XML parser
+# Java port of COBYLA2 nonlinear constrained optimization method
 #
 # @Version: $Id: makefile 33535 2004-05-06 23:51:31Z cxh $
-# @Author: Christopher Hylands
+# @Author: Christopher Brooks (makefile only)
 #
-# @Copyright (c) 1997-2000 The Regents of the University of California.
+# @Copyright (c) 2014 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -43,7 +43,7 @@ CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE = 	xml
+PTPACKAGE = 	numerics
 PTCLASSJAR = 	$(PTPACKAGE).jar
 
 JSRCS = \
@@ -64,7 +64,9 @@ MISC_FILES =	#$(DIRS)
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
 # driver is in OPTIONAL_FILES because we don't ship it.
-OPTIONAL_FILES = \ 
+OPTIONAL_FILES = \
+	'Cobyla$$1.class' \
+	'Cobyla$$2.class'
 
 JCLASS = $(JSRCS:%.java=%.class)
 
