@@ -339,6 +339,9 @@ HYBRID_SYSTEMS_JNLP_JARS =	\
 	ptolemy/domains/gr/lib/quicktime/quicktime.jar \
 	$(PTMATLAB_JARS) 
 
+HYVISUAL_JNLP_JARS = $(HYBRID_SYSTEMS_JNLP_JARS)
+
+
 PTALON_JARS = \
 	ptolemy/actor/ptalon/antlr/antlr.jar \
 	ptolemy/actor/ptalon/demo/demo.jar \
@@ -1540,10 +1543,17 @@ echo_classpath_jars:
 # We run in the /tmp directory to avoid looking in $PTII
 vergil_run:
 	(cd /tmp; $(JAVA) $(JAVAFLAGS) -classpath `(cd ${PTII}; make echo_classpath_jars JARS=${CONFIGURATION_JARS})` ptolemy.vergil.VergilApplication $(CONFIGURATION))
-vergil_run_ptiny:
-	$(MAKE) vergil_run CONFIGURATION_JARS=PTINY_JNLP_JARS CONFIGURATION=-ptiny 
+vergil_run_bcvtb:
+	$(MAKE) vergil_run CONFIGURATION_JARS=BCVTB_JNLP_JARS CONFIGURATION=-bcvtb
 vergil_run_full:
 	$(MAKE) vergil_run CONFIGURATION_JARS=FULL_JNLP_JARS
+vergil_run_hyvisual:
+	$(MAKE) vergil_run CONFIGURATION_JARS=HYVISUAL_JNLP_JARS CONFIGURATION=-hyvisual
+vergil_run_ptiny:
+	$(MAKE) vergil_run CONFIGURATION_JARS=PTINY_JNLP_JARS CONFIGURATION=-ptiny 
+vergil_run_visualsense:
+	$(MAKE) vergil_run CONFIGURATION_JARS=VISUAL_SENSE_JNLP_JARS CONFIGURATION=-visualsense
+
 
 vergil_run_signed:
 	(cd /tmp; $(JAVA) $(JAVAFLAGS) -classpath `(cd $(PTII); make echo_classpath_jars JARS=PTINY_JNLP_JARS)` ptolemy.vergil.VergilApplication $(CONFIGURATION))
