@@ -8,6 +8,7 @@
 <project basedir="." name="ptII">
 
   <patternset id="ptII.jars">
+    <include name="com/cureos/cureos.jar" />
     <include name="com/jgoodies/jgoodies.jar" />
     <include name="contrib/contrib.jar" />
     <include name="doc/books/systems/vergil/vergil.jar" />
@@ -3187,6 +3188,16 @@
     <!-- ptolemy/actor/lib/database/ojdbc6.jar -->
 
     <!-- ptolemy/actor/lib/database/mysql-connector-java-5.1.6-bin.jar -->
+
+    <!-- com/cureos/cureos.jar -->
+    <jar defaultexcludes="yes"
+	 destfile="${basedir}/com/cureos/cureos.jar -->
+	 >
+      <fileset dir="${basedir}">
+	<include name="com/cureos/*.htm"/>
+	<include name="com/cureos/numerics/*.class"/>
+      </fileset>
+    </jar>
 
     <!-- com/jgoodies/jgoodies.jar -->
     <jar defaultexcludes="yes"
