@@ -2916,6 +2916,17 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
                     .put("@PTCGIncludes@", _concatenateElements(_includes));
             substituteMap.put("@PTCGLibraries@",
                     _concatenateElements(_libraries));
+            
+            // FIXME: we need a way to add target-specific makefile variables
+            // in each target.
+            if (generatorPackageList.stringValue().contains("arduino")) {
+                // FIXME: Temporary hack to set up platform dependent -I
+                // directive for the Arduino, see
+                // $PTII/ptolemy/cg/adapter/generic/program/procedural/c/arduino/makefile.in
+                substituteMap.put("@ARDUINO_INCLUDES@",
+                        _arduinoIncludes());
+            }
+
             // Adds the .c and .o needed files
             Director director = null;
             if (container instanceof CompositeActor) {
@@ -3093,10 +3104,48 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
         if (!success) {
             throw new IllegalActionException(this, errorMessage.toString());
         }
+        System.out.println("Using " + makefileTemplateName);
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
+
+    /** Return the platform dependent -I directive for the Arduino.
+     *  See $PTII/ptolemy/cg/adapter/generic/program/procedural/c/arduino/makefile.in
+     *  @return the -I directive for the Arduino.   
+     */
+    private String _arduinoIncludes() {
+        // FIXME: Temporary hack to set up platform dependent -I directive.
+        // The real fix would be to execute "avr-gcc -print-libgcc-file-name"
+        // and then search up the path.
+        String environmentVariableName = "ARDUINO_INCLUDES_DIRECTORY";
+        String arduinoIncludeDirectoryEnvironmentVariable = System.getenv(environmentVariableName);
+        String [] includeSearchPath = new String [] {
+            arduinoIncludeDirectoryEnvironmentVariable,
+            "/usr/local/arduino/hardware/arduino/sam/cores/arduino",
+            "/usr/local/arduino-1.5.6-r2/hardware/arduino/sam/cores/arduino",
+            "/Applications/Arduino.app/Contents/Resources/Java/hardware/arduino/avr/cores/arduino"
+        };
+        // If the env is not set, then we don't want to print a null.
+        StringBuffer directories = new StringBuffer();
+        for (int i = 0; i < includeSearchPath.length; i++) {
+            if (includeSearchPath != null
+                    && new File(includeSearchPath[i], "Arduino.h").isFile()) {
+                if (includeSearchPath[i].equals(arduinoIncludeDirectoryEnvironmentVariable)) {
+                    System.out.println("Using the value defined by " + environmentVariableName
+                            + ": "
+                            + arduinoIncludeDirectoryEnvironmentVariable);
+                }
+                return "-I" + includeSearchPath[i];
+            } 
+            directories.append(includeSearchPath[i] + ", ");
+        }
+        System.err.println("Could not find Arduino.h. Checked "
+                + directories.toString().substring(0, directories.length() - 2)
+                + ". Try setting the " + environmentVariableName + " environment variable and re-running Ptolemy.");
+        return "-I/SetThe" + environmentVariableName + "EnvironmentVariable";
+    }
+
 
     /** Given a Collection of Strings, return a string where each element of the
      *  Set is separated by a space.
@@ -3276,6 +3325,7 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
         } else if (osName.startsWith("Mac OS X")) {
             platform = "Mac OS X";
         }
+
         String jvmLoaderDirective = "-ljvm";
         String libjvmAbsoluteDirectory = "";
         if (platform.equals("win32")) {
