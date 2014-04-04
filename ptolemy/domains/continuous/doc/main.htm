@@ -7,35 +7,52 @@
 </head>
 <body>
 <h1>Continuous Domain</h1>
-<P>
-The Continuous Domain is a redesign of the Continuous Time (CT) domain with
-a rigorous semantics documented in the following papers:
+
+<p>The Continuous Time Model of Computation defines a semantics used
+for continuous-time simulations. Continuous Time models consist of
+Actors that have continuous time signals as their inputs and outputs,
+and may have a state that changes over time advancement. These actors
+are connected by relations denoting particular signals. At a sequence
+of time increments, the values of all signals are determined using a
+continuous time solving algorithm. If a given precision cannot be
+accomplished, finer time increments are used adaptively.</p>
+
+<p>The domain models systems with continuous dynamics, including for
+example analog circuits and mechanical systems, but also cleanly
+supports discrete events, modal behaviors, and signals that mix
+continuous-time behaviors with discrete events. Models for continuous
+dynamics are equivalent to linear or nonlinear integral equations. A
+sophisticated numerical solver for these equations is integrated with
+the director. The clean semantics of the Continuous domain enables its
+integration in hierarchical heterogeneous models that use the
+Synchronous/Reactive (SR) and Discrete Event (DE) domains. Arbitrary
+hierarchical mixtures of these domains are supported, although if SR
+is at the top level, then the period parameter of the director must be
+used so that time advances. Domain interactions are documented in Lee
+and Zheng, 2007.</p>
+
+
+<p>The clean semantics of the Continuous domain enables its integration
+in hierarchical heterogeneous models that use the Synchronous/Reactive (SR)
+and Discrete Event (DE) domains. Arbitrary hierarchical mixtures of these
+domains are supported, although if SR is at the top level, then the
+<i>period</i> parameter of the director must be used so that time advances.
+Domain interactions are documented in Goderis et al.</p>
+
 
 <ul>
-<li> Edward A. Lee, Haiyang Zheng, "<a href="http://ptolemy.eecs.berkeley.edu/publications/papers/07/unifying/index.htm#in_browse" target="_top">Leveraging Synchronous Language Principles for Heterogeneous Modeling and Design of Embedded Systems</a>," EMSOFT,  September 30 - October 2, 2007, Salzburg, Austria.
+<li>
+Janette Cardoso, Edward A. Lee, Jie Liu and Haiyang Zheng, "<a href="http://ptolemy.eecs.berkeley.edu/books/Systems/chapters/ContinuousTimeModels.pdf#in_browser" target="_top">Continuous-Time Models</a>." In System Design, Modeling, and Simulation using Ptolemy II. Ptolemy.org 2014.
+
+<li> A. Goderis, C. Brooks, I. Altintas, E. A. Lee, and C. Goble, "<a href="http://www.eecs.berkeley.edu/Pubs/TechRpts/2007/EECS-2007-139.html#in_browser" target="_top">Heterogeneous Composition of Models of Computation</a>," EECS Department, University of California, Berkeley, Tech. Rep. UCB/EECS-2007-139, Nov. 2007.
+
+<li> Edward A. Lee, Haiyang Zheng, "<a href="http://ptolemy.eecs.berkeley.edu/publications/papers/07/unifying/index.htm#in_browser" target="_top">Leveraging Synchronous Language Principles for Heterogeneous Modeling and Design of Embedded Systems</a>," EMSOFT,  September 30 - October 2, 2007, Salzburg, Austria.
 
 <li> Haiyang Zheng, "<a href="http://www.eecs.berkeley.edu/Pubs/TechRpts/2007/EECS-2007-68.html#in_browser" target="_top">Operational Semantics of Hybrid Systems</a>," Ph.D. Dissertation, EECS Department, University of California, Berkeley, Technical Report No. UCB/EECS-2007-68, May 18, 2007.
 
 <li> Edward A. Lee and Haiyang Zheng, "<a href="http://ptolemy.eecs.berkeley.edu/publications/papers/05/OperationalSemantics" target="_top">Operational Semantics of Hybrid Systems</a>," Invited paper in <i>Proceedings of Hybrid Systems:  Computation and Control</i> (HSCC) LNCS 3414, Zurich, Switzerland, March 9-11, 2005, pp.25-53.
 </ul>
 
-The domain models systems with continuous dynamics, including
-for example analog circuits and mechanical systems, but also
-cleanly supports discrete events, modal behaviors, and signals that
-mix continuous-time behaviors with discrete events.
-Models for continuous dynamics are equivalent to linear or nonlinear
-integral equations. A sophisticated numerical solver for these equations
-is integrated with the director.
-The clean semantics of the Continuous domain enables its integration
-in hierarchical heterogeneous models that use the Synchronous/Reactive (SR)
-and Discrete Event (DE) domains. Arbitrary hierarchical mixtures of these
-domains are supported, although if SR is at the top level, then the
-<i>period</i> parameter of the director must be used so that time advances.
-Domain interactions are documented in the following paper:
-
-<ul>
-<li> A. Goderis, C. Brooks, I. Altintas, E. A. Lee, and C. Goble, "<a href="http://www.eecs.berkeley.edu/Pubs/TechRpts/2007/EECS-2007-139.html#in_browser" target="_top">Heterogeneous Composition of Models of Computation</a>," EECS Department, University of California, Berkeley, Tech. Rep. UCB/EECS-2007-139, Nov. 2007.
-</ul>
 
 </body>
 </html>
