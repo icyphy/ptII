@@ -37,7 +37,7 @@
         </property>
     </entity>
     <entity name="Modelica_Blocks_Math_Sin" class="ptolemy.actor.lib.fmi.FMUImport">
-        <property name="fmuFile" class="ptolemy.data.expr.FileParameter" value="/home/cxh/Modelica_Blocks_Math_Sin.fmu">
+        <property name="fmuFile" class="ptolemy.data.expr.FileParameter" value="$PTII/ptolemy/actor/lib/fmi/test/Modelica_Blocks_Math_Sin.fmu">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="300.0, 239.0">
         </property>

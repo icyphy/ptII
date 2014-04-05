@@ -1,10 +1,10 @@
-# Makefile for Ptolemy II Framework Mock-up Unit Modelica Sin demo
+# Makefile for Ptolemy II Framework Mock-up Unit TwoBallCollision demo.
 #
 # @Authors: Christopher Brooks
 #
-# @Version: $Id$
+# @Version: $Id: makefile 62637 2011-12-23 19:50:57Z cxh $
 #
-# @Copyright (c) 2012-2013 The Regents of the University of California.
+# @Copyright (c) 2011 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -29,7 +29,7 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
-ME =		ptolemy/actor/lib/fmi/demo/FMUModelicaSin
+ME =		ptolemy/actor/lib/fmi/demo/FMUTwoBallCollision
 
 # Root of the Java directory
 ROOT =		../../../../../..
@@ -41,20 +41,20 @@ CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE = 	FMUModelicaSin
+PTPACKAGE = 	FMUTwoBallCollision
 PTCLASSJAR = 	$(PTPACKAGE).jar
 
 JSRCS =
 
 OTHER_FILES_TO_BE_JARED = \
-	FMUModelicaSin.xml \
-	Modelica_Blocks_Math_Sin.fmu
+	CollisionNoFMU.xml \
+	FMUTwoBallCollision.xml
 
 EXTRA_SRCS = \
 	$(JSRCS) \
 	$(OTHER_FILES_TO_BE_JARED)
 
-#	FMUModelicaSin.htm
+#	FMUTwoBallCollision.htm
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
@@ -80,16 +80,16 @@ install: all $(PTCLASSJAR)
 demo: demo_ptolemy demo_vergil
 
 #demo_applet:
-#	CLASSPATH="$(CLASSPATH)" appletviewer FMUModelicaSin.htm
+#	CLASSPATH="$(CLASSPATH)" appletviewer FMUTwoBallCollision.htm
 
 #demo_applet_vergil:
-#	CLASSPATH="$(CLASSPATH)" appletviewer FMUModelicaSinVergil.htm
+#	CLASSPATH="$(CLASSPATH)" appletviewer FMUTwoBallCollisionVergil.htm
 
 demo_ptolemy:
-	"$(PTII)/bin/ptolemy" FMUModelicaSin.xml
+	"$(PTII)/bin/ptolemy" FMUTwoBallCollision.xml
 
 demo_vergil:
-	"$(PTII)/bin/vergil" FMUModelicaSin.xml
+	"$(PTII)/bin/vergil" FMUTwoBallCollision.xml
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk

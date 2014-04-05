@@ -72,6 +72,7 @@ MISC_FILES =	$(DIRS)
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
 	doc \
+	fmuCheck \
 	src
 
 JCLASS = $(JSRCS:%.java=%.class)
