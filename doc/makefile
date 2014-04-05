@@ -42,11 +42,6 @@ ROOT =		..
 CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
-# Classpath for the PtinyOS utilities
-PTINYOS_DIR =   $(PTII)/ptolemy/domains/ptinyos
-PTINYOS_CLASSPATH = $(PTINYOS_DIR)/lib/jdom.jar$(CLASSPATHSEPARATOR)$(PTINYOS_DIR)/lib/nesc.jar
-
-
 # COMPLETE_CLASSPATH is defined in $PTII/mk/ptII.mk.in
 # We use "." instead of $PTII here because the javadoc command runs from ..
 # Also, if we use $PTII, we get "javadoc: warning - Multiple sources of package comments found for package . . ."
