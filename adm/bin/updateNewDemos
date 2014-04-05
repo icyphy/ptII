@@ -1,0 +1,108 @@
+#!/bin/sh
+# $Id$
+# Update the new demos section in ptolemy/configs/doc/whatsNew10.0.htm
+
+oldVersion=8.0.1
+newVersion=10.0.devel
+
+oldPTII=$PTII/adm/dists/ptII$oldVersion
+newPTII=$PTII/adm/dists/ptII$newVersion
+
+# Get a list of new demo names
+oldDemos=/tmp/updateNewDemos.old$$
+newDemos=/tmp/updateNewDemos.new$$
+sort $oldPTII/ptolemy/configs/doc/models.txt > $oldDemos
+sort $newPTII/ptolemy/configs/doc/models.txt > $newDemos
+
+# FIXME: It is probably worth checking to see if there are any demos that have non-unique names.
+
+demos=`comm -13 $oldDemos $newDemos | awk -F / '{print $NF}'`
+
+newURLs=/tmp/updateNewDemos.newURLs$$
+cat $newPTII/ptolemy/configs/doc/completeDemos.htm | grep "\.xml" | sort > $newURLs
+
+
+tmpURLs=/tmp/updateNewDemos.tmpURLs$$
+rm -f $tmpURLs
+for demo in $demos
+do
+	grep $demo $newURLs | sed 's/(New in Ptolemy .*)//' | sed 's/^[ \t]*//' >> $tmpURLs
+done
+sort $tmpURLs | uniq |
+	awk '
+BEGIN {
+n["ca"] = "Cellular Automata (CA)"
+n["ci"] = "Component Interaction (CI)"
+n["comm"] = "Serial Port Actors"
+n["continuous"] = "Continuous"
+n["ddf"] = "Dynamic Dataflow (DDF)"
+n["de"] = "Discrete Event (DE)"
+n["dt"] = "Discrete Time (DE)"
+n["fmi"] = "Functional Mockup Interface (FMI)"
+n["g4ltl"] = "Verification (g4ltl)"
+n["gr"] = "Graphical (GR)"
+n["gt"] = "Graph Transformation (GT)"
+n["hoc"] = "Higher Order Components (HOC)"
+n["io"] = "Input Output Actors"
+n["lib"] = ""
+n["modal"] = "Modal Models"
+n["ontologies"] = "Ontologies"
+n["optimize"] = "optimize"
+n["petrinet"] = "Petrinet"
+n["pn"] = "Kahn Process Networks (PN)"
+n["ptalon"] = "Ptalon"
+n["ptango"] = "Ptango (Internet of Things)"
+n["ptera"] = "Ptera"
+n["pthales"] = "Pthales"
+n["ptides"] = "Ptides"
+n["python"] = "Python"
+n["sdf"] = "Syncronous Dataflow"
+n["space"] = "Office Space"
+n["sr"] = "Syncronous Reactive"
+n["taskpt"] = "Task"
+n["tm"] = "Priority-Driven Multitasking (tm)"
+n["type"] = "Type System"
+n["verification"] = "Verification"
+n["wireless"] = "Wireless"
+}
+{
+    # Find the URL path
+    nf = split($0, f, "\"") 
+    np = split(f[2], p, "/");
+
+    sawDemo = 0
+    path = p[1]
+    for (i=2;i<(np-1);i++) {
+       if (p[i] == "demo") {
+          sawDemo = 1
+       }
+       if (!sawDemo) {
+          beforeDemo = p[i]
+       } 
+       path = path "/" p[i]
+    } 
+
+    # Rename some demo groups
+    if (beforeDemo == "g4ltl") {
+        beforeDemo = "verification"
+    }
+    if (beforeDemo == "optimize") {
+        beforeDemo = "sdf"
+    }
+
+    if (beforeDemo != previousBeforeDemo) {
+       previousBeforeDemo = beforeDemo
+       if (NR > 1) {
+           print "</ul>"
+           print ""
+       }
+       print "<h3> " n[beforeDemo] " </h3>"
+       print "<ul>"
+       print "    <!-- Please keep the demos alphabetical -->"
+       print "    " $0
+    } else {
+       print "    " $0
+    }
+}
+END { print "</ul>"}
+'
