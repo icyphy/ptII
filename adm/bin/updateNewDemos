@@ -28,28 +28,34 @@ for demo in $demos
 do
 	grep $demo $newURLs | sed 's/(New in Ptolemy .*)//' | sed 's/^[ \t]*//' >> $tmpURLs
 done
-sort $tmpURLs | uniq |
+awk '{if ( $0 !~ /<li>/) {print "<li>" $0 "</li>"} else {print $0}}' $tmpURLs |  sort | uniq | grep -v "Execution demos" | grep href | 
 	awk '
 BEGIN {
 n["ca"] = "Cellular Automata (CA)"
+n["cg"] = "Code Generation (CG)"
 n["ci"] = "Component Interaction (CI)"
-n["comm"] = "Serial Port Actors"
+n["comm"] = "Communication Actors"
 n["continuous"] = "Continuous"
 n["ddf"] = "Dynamic Dataflow (DDF)"
 n["de"] = "Discrete Event (DE)"
 n["dt"] = "Discrete Time (DE)"
+n["eps"] = "Electric Power System (EPS)"
+n["exec"] = "Execute Demos"
 n["fmi"] = "Functional Mockup Interface (FMI)"
+n["fuel"] = "Fuel System"
 n["g4ltl"] = "Verification (g4ltl)"
 n["gr"] = "Graphical (GR)"
 n["gt"] = "Graph Transformation (GT)"
 n["hoc"] = "Higher Order Components (HOC)"
 n["io"] = "Input Output Actors"
+n["lbl"] = "Building Controls Virtual Test Bed (BCVTB)"
 n["lib"] = ""
 n["modal"] = "Modal Models"
 n["ontologies"] = "Ontologies"
 n["optimize"] = "optimize"
 n["petrinet"] = "Petrinet"
 n["pn"] = "Kahn Process Networks (PN)"
+n["probabilisticModels"] = "Probabilistic Models"
 n["ptalon"] = "Ptalon"
 n["ptango"] = "Ptango (Internet of Things)"
 n["ptera"] = "Ptera"
@@ -70,33 +76,64 @@ n["wireless"] = "Wireless"
     nf = split($0, f, "\"") 
     np = split(f[2], p, "/");
 
-    sawDemo = 0
+    package=""
+    packageDetected = 0
+    if ( f[2] ~ /lbl/) {
+        package = "lbl"
+        packageDetected = 1
+    }
+
+    if ( f[2] ~ /\/cg\//) {
+        package = "cg"
+        packageDetected = 1
+    }
+
+    if ( f[2] ~ /ElectricPowerSystem/) {
+        package = "eps"
+        packageDetected = 1
+    }
+
+    if ( f[2] ~ /ExecDemos/) {
+        package = "exec"
+        packageDetected = 1
+    }
+
+    if ( f[2] ~ /FuelSystem/) {
+        package = "fuel"
+        packageDetected = 1
+    }
+
+    if ( f[2] ~ /ProbabilisticModels/) {
+        package = "probabilisticModels"
+        packageDetected = 1
+    }
+
     path = p[1]
     for (i=2;i<(np-1);i++) {
        if (p[i] == "demo") {
-          sawDemo = 1
+          packageDetected = 1
        }
-       if (!sawDemo) {
-          beforeDemo = p[i]
+       if (packageDetected == 0) {
+          package = p[i]
        } 
        path = path "/" p[i]
     } 
 
     # Rename some demo groups
-    if (beforeDemo == "g4ltl") {
-        beforeDemo = "verification"
+    if (package == "g4ltl") {
+        package = "verification"
     }
-    if (beforeDemo == "optimize") {
-        beforeDemo = "sdf"
+    if (package == "optimize") {
+        package = "sdf"
     }
 
-    if (beforeDemo != previousBeforeDemo) {
-       previousBeforeDemo = beforeDemo
+    if (package != previousPackage) {
+       previousPackage = package
        if (NR > 1) {
            print "</ul>"
            print ""
        }
-       print "<h3> " n[beforeDemo] " </h3>"
+       print "<h3> " n[package] "<!-- " package "--> </h3>"
        print "<ul>"
        print "    <!-- Please keep the demos alphabetical -->"
        print "    " $0
