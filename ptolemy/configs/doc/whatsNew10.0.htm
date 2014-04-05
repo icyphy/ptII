@@ -13,20 +13,18 @@ so that we can easily find and update the version number
 <link href="../../../doc/default.css" rel="stylesheet" type="text/css">
 </head>
 <body>
-<h1>
-Tour of What's New in Version 10.0.devel
-</h1>
+<h1>Tour of What's New in Version 10.0.devel</h1>
 See also <a href="whatsNew.htm">What's New in other versions</a>.
 
 <p>Contents:
 <ul>
 <li> <a href="#highlights">Highlights</a>
     <ul>
-      <li>Ontologies</li>
-      <li>Export to web</li>
-      <li>CG Code Generator</li>
-      <li>FSM/Modal Model updates</li>
-      <li>Pthales Model of Computation</li>
+      <li><a href="#Ontologies">Ontologies</a></li>
+      <li><a href="#ExportToWeb">Export to web</a></li>
+      <li><a href="#CGCodeGeneration">CG Code Generator</a></li>
+      <li><a href="#ModalModelUpdates">FSM/Modal Model updates</a></li>
+      <li><a href="#Pthales">Pthales Model of Computation</a></li>
     </ul>
 <li> <a href="#demos">New demonstrations</a>
 <li> <a href="#other">Other Key New Capabilities</a>
@@ -38,20 +36,106 @@ See also <a href="whatsNew.htm">What's New in other versions</a>.
 
 <h2><a name="highlights">Highlights</a></h2>
 
- <h3>Ontologies</h3>
-<!-- a little space -->
-<p> &nbsp;
- <h3>Export to web</h3>
-<!-- a little space -->
-<p> &nbsp;
- <h3>CG Code Generator</h3>
-<!-- a little space -->
-<p> &nbsp;
- <h3>FSM/Modal Model updates</h3>
-<!-- a little space -->
-<p> &nbsp;
- <h3>Pthales Model of Computation</h3>
+<p>Ptolemy II 10.0 is the first complete release since Ptolemy II 8.0 and thus includes many changes.</p>
 
+<p>The key driving force for the release is to be a companion to the Ptolemy Book:
+<br/>Claudius Ptolemaeus, Editor, "<a href="http://ptolemy.eecs.berkeley.edu/books/Systems/index.htm#in_browser">System Design, Modeling, and Simulation Using Ptolemy II</a>", Ptolemy.org, 2014.
+ (included in the release as <a href="../../../doc/books/systems/PtolemyII_DigitalV1_02.pdf#in_browser"><code>$PTII/doc/books/systems/PtolemyII_DigitalV1_02.pdf</code></a>)</p>
+
+<p>Below are the highlights of this release.</p>
+
+<h3><a name="Ontologies">Ontologies</a></h3>
+
+The Ptolemy II Ontologies package extends the Ptolemy II type
+inference engine to provide an efficient and scalable framework for
+general static analysis of arbitrary properties on a Ptolemy
+model. The framework supports properties that are specified as
+concepts in an ontology graph that must be structured as a
+lattice. The usefulness of this framework is demonstrated with an
+example of a physical dimensions ontology. This ontology labels
+different signals as representing acceleration, velocity, position,
+and time. In a Ptolemy model of physical dynamics, the dimensional
+properties of input and output signals can be automatically inferred
+using the ontology analysis. Ptolemy model developers can use the
+ontologies package to define their own ontologies for structural and
+semantic property analysis. This can prevent interface connection
+problems during model construction by identifying when incompatible
+signals are erroneously connected. This work draws on concepts from
+compiler optimization static analysis techniques and applies them to
+Ptolemy actor-oriented models.
+
+<p>See:
+<br/>Patricia Derler, Elizabeth A. Latronico, Edward A. Lee, Man-Kit Leung,
+Ben Lickly, Charles Shelton, "<a href="http://ptolemy.eecs.berkeley.edu/books/Systems/chapters/Ontologies.pdf#in_browser">Ontologies</a>," a chapter from
+<br/>Claudius Ptolemaeus, Editor, "<a href="http://ptolemy.eecs.berkeley.edu/books/Systems/index.htm#in_browser">System Design, Modeling, and Simulation Using Ptolemy II</a>", Ptolemy.org, 2014.
+ (included in the release as <a href="../../../doc/books/systems/PtolemyII_DigitalV1_02.pdf#in_browser"><code>$PTII/doc/books/systems/PtolemyII_DigitalV1_02.pdf</code></a>)</p>
+
+<!-- a little space -->
+<p> &nbsp;
+
+<h3><a name="ExportToWeb">Export to Web</a></h3>
+
+<p>Ptolemy II includes a flexible mechanism for creating web pages
+from models and for building web services. The more basic mechanism is
+the export to web , which simply makes a model available as a web page
+for browsing using a web browser. Such a web page provides easy access
+and documentation for models that archives both the structure of the
+models and the results of executing the models. It can be used to
+share information about models or their execution without requiring
+installation of any software, since an ordinary web browser is
+sufficient. More interestingly, the mechanism is extensible and
+customizable, allowing for creation of fairly sophisticated web
+pages. You can associate hyperlinks or actions defined in JavaScript
+with icons in a model. The customization can be done for individual
+icons in a model or for sets of icons in a model.</p>
+
+<p>See:
+<br/>Christopher Brooks, Edward A. Lee, Elizabeth A. Latronico, Baobing Wang, and
+Roxana Gheorghui,
+"<a href="http://ptolemy.eecs.berkeley.edu/books/Systems/chapters/WebInterfaces.pdf#in_browser">Web Interfaces</a>," a chapter from
+<br/>Claudius Ptolemaeus, Editor, "<a href="http://ptolemy.eecs.berkeley.edu/books/Systems/index.htm#in_browser">System Design, Modeling, and Simulation Using Ptolemy II</a>", Ptolemy.org, 2014. 
+ (included in the release as <a href="../../../doc/books/systems/PtolemyII_DigitalV1_02.pdf#in_browser"><code>$PTII/doc/books/systems/PtolemyII_DigitalV1_02.pdf</code></a>)</p>
+
+<!-- a little space -->
+<p> &nbsp;
+
+
+ <h3><a name="CGCodeGeneration">CG Code Generator</a></h3>
+<p>Ptolemy II 10.0 includes the "cg" code generator at <code>$PTII/ptolemy/cg</code>.  
+
+    <p>We took the lessons learned from <code>$PTII/ptolemy/codegen</code>
+    and applied them to cg.  In particular, cg more easily supports
+    multiple backends with less code duplication.  The cg code
+    generator is under active development, we are working on code
+    generation for large systems.   For details about cg, see
+      <a href="../../../ptolemy/cg/README.html"><code>$PTII/ptolemy/cg/README.html</code></a>.</p>
+
+<p>Developers: Christopher Brooks, Dai Bui, Bert Rodiers, Stavros Tripakis</p>
+
+<!-- a little space -->
+<p> &nbsp;
+ <h3><a name="ModalModelUpdates">FSM/Modal Model updates</a></h3>
+
+<p>See:
+<br/>Thomas Huining Feng, Edward A. Lee, Xiaojun Liu, Christian Motika,
+Reinhard von Hanxleden, and Haiyang Zheng,
+"<a href="http://ptolemy.eecs.berkeley.edu/books/Systems/chapters/FiniteStateMachines.pdf#in_browser">Finite State Machines</a>," 
+and
+<br/>Thomas Huining Feng, Edward A. Lee, Xiaojun Liu,
+Stavros Tripakis, Haiyang Zheng, and Ye Zhou,
+"<a href="http://ptolemy.eecs.berkeley.edu/books/Systems/chapters/ModalModels.pdf#in_browser">Modal Models</a>," 
+<br>chapters from 
+<br/>Claudius Ptolemaeus, Editor, "<a href="http://ptolemy.eecs.berkeley.edu/books/Systems/index.htm#in_browser">System Design, Modeling, and Simulation Using Ptolemy II</a>", Ptolemy.org, 2014.
+(included in the release as <a href="../../../doc/books/systems/PtolemyII_DigitalV1_02.pdf#in_browser"><code>$PTII/doc/books/systems/PtolemyII_DigitalV1_02.pdf</code></a>)</p>
+
+<!-- a little space -->
+<p> &nbsp;
+ <h3><a name="Pthales">Pthales Model of Computation</a></h3>
+Pthales is a multidimensional dataflow model of computation implemented in the heterogeneous modeling environment Ptolemy II. This report gives a tutorial of Pthales and a formal analysis of Pthales semantics.
+
+<p>
+Remi Barrere, Eric Lenormand, Dai Bui, Edward A. Lee, Christopher Shaver and Stavros Tripakis,
+"<a href="http://www.eecs.berkeley.edu/Pubs/TechRpts/2011/EECS-2011-32.pdf#in_browser">An Introduction to the Pthales Domain of Ptolemy II</a>," EECS Department, University of California, Berkeley, Technical Report No. UCB/EECS-2011-32, April 26, 2011.</p>
 
 
 <h4>Demonstrations</h4>
@@ -240,8 +324,10 @@ For the current list of bugs, see <a href="http://chess.eecs.berkeley.edu/ptexte
  <a href="http://bugzilla.ecoinformatics.org/buglist.cgi?product=Kepler&bug_status=UNCONFIRMED&bug_status=NEW&bug_status=ASSIGNED&bug_status=REOPENED">Kepler Bugs</a>
 
 <li> A few features and classes were removed outright.
-<ul>
-</ul>
+<dl>
+  <dt><code>$PTII/ptolemy/codegen</code></dt>
+  <dd>Use <code>$PTII/ptolemy/cg</code> instead.
+</dl>
 </body>
 </html>
 
