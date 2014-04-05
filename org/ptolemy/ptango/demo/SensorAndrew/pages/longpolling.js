@@ -25,7 +25,6 @@ $(document).ready(function() {
 	}
 	
 	svg = createSVG();
-	// initializeMap(767, 432, 0, 0, interval, minTemp, maxTemp);
 	initializeMap(imageHeight, imageWidth, 0, 0, interval, minTemp, maxTemp);
 	
 	addImage(svg);
@@ -70,10 +69,13 @@ function getData(roomNumber) {
 			type: 'GET',
 			success: function(result) {
 					// Store room temperature to 1 decimal place
-					rooms[roomNumber].temperature = 
-						Math.round(result*10)/10; 
-					//$("#room" + roomNumber).html(result);
-					//alert(result);
+					// 0 indicates a timeout.  In this case, store "Off" in
+				 	// temperature array
+					if (result <= 0) {
+					   rooms[roomNumber].temperature = "Off";
+					} else {
+					   rooms[roomNumber].temperature = Math.round(result*10)/10;
+					}	
 					getData(roomNumber);
 					
 					// This will update all of the labels
@@ -91,7 +93,8 @@ function getData(roomNumber) {
 			});
 }
 
-//Called by sensorandrew.js.  Need function defined here to access svg variable 
+// Calls updateRoomInfoGroup in tempmap.js.  updateLabels is defined here so 
+// that svg variable can be accessed 
 function updateLabels() {
 	updateRoomInfoGroup(svg);
 }
