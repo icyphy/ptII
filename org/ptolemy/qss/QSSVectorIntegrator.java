@@ -23,7 +23,7 @@ A quantized-state vector integrator.
 
 @author David Broman, Edward A. Lee, Thierry Nouidui, Michael Wetter
 @version $Id: When.java 68298 2014-02-05 17:00:30Z eal $
-@since Ptolemy II 10.1
+@since Ptolemy II 10.0
 @Pt.ProposedRating Yellow (eal)
 @Pt.AcceptedRating Red (cxh)
 */

@@ -90,7 +90,7 @@ actor by Jie Liu.
 
 @author Ilge Akkaya
 @version $Id$
-@since Ptolemy II 10.1
+@since Ptolemy II 10.0
 @Pt.ProposedRating Red (ilgea)
 @Pt.AcceptedRating Red (ilgea)
 @see org.ptolemy.machineLearning.particleFilter.ParticleFilter

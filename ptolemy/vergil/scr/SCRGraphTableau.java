@@ -50,7 +50,7 @@ import ptolemy.moml.LibraryAttribute;
 
  @author Patricia Derler
  @version $Id: FSMGraphTableau.java 65763 2013-03-07 01:54:37Z cxh $
- @since Ptolemy II 8.0
+ @since Ptolemy II 10.0
  @Pt.ProposedRating Red (neuendor)
  @Pt.AcceptedRating Red (johnr)
  */

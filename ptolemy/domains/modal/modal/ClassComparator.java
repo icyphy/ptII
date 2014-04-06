@@ -40,7 +40,7 @@ import ptolemy.kernel.Entity;
 
    @author Thomas Huining Feng
    @version $Id: ModalController.java 66458 2013-05-31 00:23:14Z cxh $
-   @since Ptolemy II 8.0
+   @since Ptolemy II 10.0
    @Pt.ProposedRating Red (tfeng)
    @Pt.AcceptedRating Red (tfeng)
 */

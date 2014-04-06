@@ -45,7 +45,7 @@ import ptolemy.kernel.util.Settable;
 
  @author Patricia Derler
  @version $Id: Stop.java 67499 2013-09-14 16:12:58Z cxh $
- @since Ptolemy II 2.1
+ @since Ptolemy II 10.0
  @Pt.ProposedRating Red (pd)
  @Pt.AcceptedRating Red (pd)
  */

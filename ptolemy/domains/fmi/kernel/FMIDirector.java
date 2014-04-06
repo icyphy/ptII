@@ -42,7 +42,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 
  @author Christopher Brooks, Based on the DoNothingDirector by Edward A. Lee
  @version $Id: DoNothingDirector.java 67792 2013-10-26 19:36:54Z cxh $
- @since Ptolemy II 8.0
+ @since Ptolemy II 10.0
  @Pt.ProposedRating Red (eal)
  @Pt.AcceptedRating Red (cxh)
  */

@@ -143,7 +143,7 @@ and refer to the port parameter by port name within measurement and/or update eq
 
  @author Ilge Akkaya
  @version $Id$
- @since Ptolemy II 10.1
+ @since Ptolemy II 10.0
  @Pt.ProposedRating Red (ilgea)
  @Pt.AcceptedRating Red (ilgea)
 

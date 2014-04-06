@@ -41,6 +41,8 @@ import java.util.List;
  visibility as parameters of the container of the attribute.
 
  @author Xiaojun Liu
+@version $Id$
+@since Ptolemy II 10.0
  @version $Id$
  @see ptolemy.data.expr.Variable
  */

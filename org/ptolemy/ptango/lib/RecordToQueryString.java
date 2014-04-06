@@ -56,7 +56,7 @@ import ptolemy.kernel.util.Workspace;
  @see URLEncoder
  @author Marten Lohstroh and Edward Lee
  @version $Id: RecordToQueryString.java 67693 2013-10-17 15:59:01Z hudson@moog.eecs.berkeley.edu $
- @since Ptolemy II 9.0
+ @since Ptolemy II 10.0
  @Pt.ProposedRating Red (marten)
  @Pt.AcceptedRating Red (marten)
  */

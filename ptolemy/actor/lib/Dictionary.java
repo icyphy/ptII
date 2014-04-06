@@ -48,7 +48,7 @@ import ptolemy.kernel.util.Workspace;
  
    @author Shuhei Emoto, Edward A. Lee, Kentaro Mizouchi
    @version $Id: TypedAtomicActor.java 65768 2013-03-07 03:33:00Z cxh $
-   @since Ptolemy II 10.1
+   @since Ptolemy II 10.0
    @Pt.ProposedRating Yellow (cxh)
    @Pt.AcceptedRating Red (cxh)
 */

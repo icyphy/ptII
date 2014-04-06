@@ -79,7 +79,7 @@ B. Charrow, V. Kumar, and N. Michael <i>Approximate Representations for Multi-Ro
 
 @author Ilge Akkaya
 @version $Id$
-@since Ptolemy II 10.1
+@since Ptolemy II 10.0
 @Pt.ProposedRating Red (ilgea)
 @Pt.AcceptedRating Red (ilgea)
 

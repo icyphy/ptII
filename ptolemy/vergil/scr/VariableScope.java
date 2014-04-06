@@ -13,6 +13,15 @@ import ptolemy.data.type.TypeConstant;
 import ptolemy.domains.modal.kernel.FSMActor;
 import ptolemy.kernel.util.IllegalActionException;
 
+/**
+ * VariableScope class.
+ *
+ * @author pd
+ * @version $Id$
+ * @since Ptolemy II 10.0
+ * @Pt.ProposedRating Red (cxh)
+ * @Pt.AcceptedRating Red (cxh)
+ */
 public class VariableScope extends ModelScope {
 	
 	private FSMActor _model;
