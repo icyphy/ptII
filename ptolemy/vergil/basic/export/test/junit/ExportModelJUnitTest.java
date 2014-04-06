@@ -257,6 +257,7 @@ public class ExportModelJUnitTest {
                 "EPlus70Actuator.xml", // Hangs in a strange way after running.o
                 "ElectricPowerSystem.xml", // Just has links to other demos.
                 "ExecDemos", // hangs
+                "FMUSimulationX", // 32-bit only
                 "GeneratorContactorLoad.xml", // The GeneratorContactorLoad file is a component used inElectricPowerSystem models.
                 "HierarchyFlattening.xml", // gt
                 "actor/lib/io", // Don't run the demos in actor/lib/io, some read from stdin and never exit.
