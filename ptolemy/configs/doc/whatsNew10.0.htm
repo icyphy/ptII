@@ -505,7 +505,9 @@ See also the <a href="completeDemos.htm">Complete Demonstrations</a> page.
 
 <h2><a name="libraries">New and Enhanced Actor Libraries</a></h2>
 
-<!--grep "Only in" /tmp/p.diffs | grep java | sed 's@Only in ptII10.0.devel/@@' |  sed 's@/@.@g' | sed 's@.java@@' | awk -F : '{print "<li><a href="\"ptdoc:"" $1 "." $2 "\">" $2 "</a>"}' | sed 's/\. /./' | sed 's/> />/' -->
+<!--
+grep "Only in" /tmp/pt.diffs | egrep "\.java$" | grep "Only in .*ptII10.0.devel" |  sort | sed 's@Only in .*ptII10.0.devel/@@' |  sed 's@/@.@g' | sed 's@.java@@' | awk -F : '{print "<li><a href=\"ptdoc:" $1 "." $2 "\">" $2 "</a>"}' | sed 's/\. /./' | sed 's/> />/'
+ -->
 
 <ul>
 <li><i>New Domain Polymorphic actors</i>:
@@ -547,25 +549,68 @@ good utilization of parallelism on the machine. </p>
  <ul>
  </ul>
 
-<li>Codegen
- <ul>
- </ul> 
-</ul>
 
 <li><i>New Parameter:</i> 
 <ul>
 </ul>
 
 <li><i>New Continuous actors</i>:
-<ul>
-</ul>
+  <ul>
+    <li><a href="ptdoc:ptolemy.domains.continuous.lib.Derivative">Derivative</a></li>
+    <li><a href="ptdoc:ptolemy.domains.continuous.lib.Waveform">Waveform</a></li>
+  </ul>
 
 <li><i>New Discrete Event (DE) actors</i>:
   <ul>
+    <li><a href="ptdoc:ptolemy.domains.de.lib.MostRecent">MostRecent</a></li>
  </ul>
 </ul>
 
+<li><i>New Syncronous Dataflow (SDF) actors</i>:
+  <ul>
+    <li><a href="ptdoc:ptolemy.domains.sdf.lib.BootstrapSampleDelay">BootstrapSampleDelay</a></li>
+ </ul>
+
+<li><i>New Synchronous (SR) actors</i>:
+  <ul>
+    <li><a href="ptdoc:ptolemy.domains.sr.lib.BinaryNonStrictLogicGate">BinaryNonStrictLogicGate</a></li>
+    <li><a href="ptdoc:ptolemy.domains.sr.lib.Combine">Combine</a></li>
+    <li><a href="ptdoc:ptolemy.domains.sr.lib.NonStrictAndGate">NonStrictAndGate</a></li>
+    <li><a href="ptdoc:ptolemy.domains.sr.lib.NonStrictLogicGate">NonStrictLogicGate</a></li>
+    <li><a href="ptdoc:ptolemy.domains.sr.lib.NonStrictOrGate">NonStrictOrGate</a></li>
+    <li><a href="ptdoc:ptolemy.domains.sr.lib.NonStrictXorGate">NonStrictXorGate</a></li>
+  </ul>
+
 <h2><a name="features">Additional Features</a></h2>
+
+<h3>Aspect-Oriented Modeling</h3>
+<ul>
+  <li><a href="ptdoc:ptolemy.actor.AbstractInitializableAttribute">AbstractInitializableAttribute</a></li>
+  <li><a href="ptdoc:ptolemy.actor.ActorExecutionAspect">ActorExecutionAspect</a></li>
+  <li><a href="ptdoc:ptolemy.actor.CommunicationAspectAttributes">CommunicationAspectAttributes</a></li>
+  <li><a href="ptdoc:ptolemy.actor.CommunicationAspect">CommunicationAspect</a></li>
+  <li><a href="ptdoc:ptolemy.actor.CommunicationAspectListener">CommunicationAspectListener</a></li>
+  <li><a href="ptdoc:ptolemy.actor.ConstantPublisherPort">ConstantPublisherPort</a></li>
+  <li><a href="ptdoc:ptolemy.actor.ExecutionAspectHelper">ExecutionAspectHelper</a></li>
+  <li><a href="ptdoc:ptolemy.actor.ExecutionAspectListener">ExecutionAspectListener</a></li>
+  <li><a href="ptdoc:ptolemy.actor.ExecutionAttributes">ExecutionAttributes</a></li>
+</ul>
+
+<h3>HandSimDroid</h3>
+In 2011, the HandSimDroid project developed a prototype that allows Ptolemy models to run under Android.
+
+Students from CMU (Anar Huseynov, Justin Killian, Ishwinder Singh) worked with Bosch researchers (Elizabeth Latronico, Charles Shelton) and Berkeley researchers to re-architect a portion of Ptolemy II so that models could run on a server and be displayed on a low-powered handset.
+
+The code for this effort is in
+<ul>
+ <li><a href="../../../doc/codeDoc/ptserver/package-summary.html"><code>$PTII/ptserver</code></a></li>
+ <li><a href="../../../doc/codeDoc/ptolemy/homer/package-summary.html"><code>$PTII/ptolemy/homer</code></a></li>
+ <li>Classes were added to <a href="../../../doc/codeDoc/ptolemy/actor/gui/package-summary.html"><code>$PTII/ptolemy/actor/gui</code></a>
+  and <a href="../../../doc/codeDoc/ptolemy/plot/package-summary.html"><code>$PTII/ptolemy/plot</code></a></li>
+  to support displaying on a remote machine.</li>
+</ul>
+
+<h3>Functional Mockup Interface</h3>
 
 <h3>PDFAttribute</h3>
 PDFAttribute to the Utilities->Decorative library in Vergil
@@ -589,35 +634,183 @@ select the PDF file.
 
 <h3>Other new classes</h3>
 <ul>
-<li>ptolemy.actor
-  <ul>
- </ul>
-<li>ptolemy.actor.gui
-  <ul>
- </ul>
+  <li>ptolemy.actor
+    <ul>
+      <li><a href="ptdoc:ptolemy.actor.InstanceOpener">InstanceOpener</a></li>
+      <li><a href="ptdoc:ptolemy.actor.IntermediateReceiver">IntermediateReceiver</a></li>
+      <li><a href="ptdoc:ptolemy.actor.Librariable">Librariable</a></li>
+      <li><a href="ptdoc:ptolemy.actor.LocalClock">LocalClock</a></li>
+      <li><a href="ptdoc:ptolemy.actor.PublisherPort">PublisherPort</a></li>
+      <li><a href="ptdoc:ptolemy.actor.PubSubPort">PubSubPort</a></li>
+      <li><a href="ptdoc:ptolemy.actor.SubscriberPort">SubscriberPort</a></li>
+      <li><a href="ptdoc:ptolemy.actor.SubscriptionAggregatorPort">SubscriptionAggregatorPort</a></li>
+      <li><a href="ptdoc:ptolemy.actor.TimeRegulator">TimeRegulator</a></li>
+    </ul>
+  </li>
 
-<li>ptolemy.data
-  <ul>
- </ul>
+  <li>ptolemy.actor.util
+    <ul>
+      <li><a href="ptdoc:ptolemy.actor.util.ActorDependencies">ActorDependencies</a></li>
+      <li><a href="ptdoc:ptolemy.actor.util.ArrayElementTypeFunction">ArrayElementTypeFunction</a></li>
+      <li><a href="ptdoc:ptolemy.actor.util.ArrayOfTypesFunction">ArrayOfTypesFunction</a></li>
+      <li><a href="ptdoc:ptolemy.actor.util.ConstructAssociativeType">ConstructAssociativeType</a></li>
+      <li><a href="ptdoc:ptolemy.actor.util.ExtractFieldType">ExtractFieldType</a></li>
+      <li><a href="ptdoc:ptolemy.actor.util.GLBFunction">GLBFunction</a></li>
+  </li>
 
-<li>ptolemy.domains.fsm  
-  <ul>
- </ul>
+  <li>ptolemy.actor.gui
+    <ul>
+      <li><a href="ptdoc:ptolemy.actor.gui.AbstractPlaceableJavaSE">AbstractPlaceableJavaSE</a></li>
+      <li><a href="ptdoc:ptolemy.actor.gui.ActorGraphicalMessageHandler">ActorGraphicalMessageHandler</a></li>
+      <li><a href="ptdoc:ptolemy.actor.gui.AWTContainer">AWTContainer</a></li>
+      <li><a href="ptdoc:ptolemy.actor.gui.CommunicationAspectMonitor">CommunicationAspectMonitor</a></li>
+      <li><a href="ptdoc:ptolemy.actor.gui.Console">Console</a></li>
+      <li><a href="ptdoc:ptolemy.actor.gui.Editable">Editable</a></li>
+      <li><a href="ptdoc:ptolemy.actor.gui.ExecutionAspectPlotterEditorFactory">ExecutionAspectPlotterEditorFactory</a></li>
+      <li><a href="ptdoc:ptolemy.actor.gui.jnlp.BCVTBApplication">BCVTBApplication</a></li>
+      <li><a href="ptdoc:ptolemy.actor.gui.jnlp.PtinyKeplerApplication">PtinyKeplerApplication</a></li>
+      <li><a href="ptdoc:ptolemy.actor.gui.LiveLink">LiveLink</a></li>
+    </ul>
+  </li>
+  <li>ptolemy.actor
+    <ul>
+      <li><a href="ptdoc:ptolemy.actor.lib.ArrayAccumulate">ArrayAccumulate</a></li>
+      <li><a href="ptdoc:ptolemy.actor.lib.ArrayToMatrix">ArrayToMatrix</a></li>
+      <li><a href="ptdoc:ptolemy.actor.lib.ArrayUpdate">ArrayUpdate</a></li>
+      <li><a href="ptdoc:ptolemy.actor.lib.Assert">Assert</a></li>
+      <li><a href="ptdoc:ptolemy.actor.lib.CurrentMicrostep">CurrentMicrostep</a></li>
+      <li><a href="ptdoc:ptolemy.actor.lib.Dictionary">Dictionary</a></li>
+      <li><a href="ptdoc:ptolemy.actor.lib.gui.ConstPlaceable">ConstPlaceable</a></li>
+      <li><a href="ptdoc:ptolemy.actor.lib.gui.DisplayInterface">DisplayInterface</a></li>
+      <li><a href="ptdoc:ptolemy.actor.lib.gui.DisplayJavaSE">DisplayJavaSE</a></li>
+      <li><a href="ptdoc:ptolemy.actor.lib.gui.MonitorValue">MonitorValue</a></li>
+      <li><a href="ptdoc:ptolemy.actor.lib.gui.PlotterBaseInterface">PlotterBaseInterface</a></li>
+      <li><a href="ptdoc:ptolemy.actor.lib.gui.PlotterBaseJavaSE">PlotterBaseJavaSE</a></li>
+      <li><a href="ptdoc:ptolemy.actor.lib.gui.TextFieldContainerInterface">TextFieldContainerInterface</a></li>
+      <li><a href="ptdoc:ptolemy.actor.lib.gui.TextFieldContainerJavaSE">TextFieldContainerJavaSE</a></li>
+      <li><a href="ptdoc:ptolemy.actor.lib.gui.UsesInvokeAndWait">UsesInvokeAndWait</a></li>
+      <li><a href="ptdoc:ptolemy.actor.lib.hoc.ExecuteCompositeActor">ExecuteCompositeActor</a></li>
+      <li><a href="ptdoc:ptolemy.actor.lib.hoc.test.IterateOverArrayCloneTest">IterateOverArrayCloneTest</a></li>
+      <li><a href="ptdoc:ptolemy.actor.lib.image.ImageDisplayInterface">ImageDisplayInterface</a></li>
+      <li><a href="ptdoc:ptolemy.actor.lib.image.ImageDisplayJavaSE">ImageDisplayJavaSE</a></li>
+      <li><a href="ptdoc:ptolemy.actor.lib.io.CSVReader">CSVReader</a></li>
+      <li><a href="ptdoc:ptolemy.actor.lib.io.CSVWriter">CSVWriter</a></li>
+      <li><a href="ptdoc:ptolemy.actor.lib.io.TokenReader">TokenReader</a></li>
+      <li><a href="ptdoc:ptolemy.actor.lib.logic.LogicGate">LogicGate</a></li>
+      <li><a href="ptdoc:ptolemy.actor.lib.MatrixToArray">MatrixToArray</a></li>
+      <li><a href="ptdoc:ptolemy.actor.lib.MicrostepDelay">MicrostepDelay</a></li>
+      <li><a href="ptdoc:ptolemy.actor.lib.Pause">Pause</a></li>
+      <li><a href="ptdoc:ptolemy.actor.lib.RandomInteger">RandomInteger</a></li>
+      <li><a href="ptdoc:ptolemy.actor.lib.RunningMaximum">RunningMaximum</a></li>
+      <li><a href="ptdoc:ptolemy.actor.lib.RunningMinimum">RunningMinimum</a></li>
+      <li><a href="ptdoc:ptolemy.actor.lib.SingleEvent">SingleEvent</a></li>
+      <li><a href="ptdoc:ptolemy.actor.lib.string.StringSplit">StringSplit</a></li>
+      <li><a href="ptdoc:ptolemy.actor.lib.SynchronizeToRealTime">SynchronizeToRealTime</a></li>
+      <li><a href="ptdoc:ptolemy.actor.lib.TestExceptionAttribute">TestExceptionAttribute</a></li>
+      <li><a href="ptdoc:ptolemy.actor.lib.UnionMerge">UnionMerge</a></li>
 
-<li>ptolemy.domains.modal  
-  <ul>
- </ul>
+    </ul>
+  </li>
+  <li>ptolemy.actor.parameters
+    <ul>
+      <li><a href="ptdoc:ptolemy.actor.parameters.MirrorPortParameter">MirrorPortParameter</a></li>
+      <li><a href="ptdoc:ptolemy.actor.parameters.ParameterMirrorPort">ParameterMirrorPort</a></li>
+    </ul>
+
+  <li>ptolemy.data
+    <ul>
+      <li><a href="ptdoc:ptolemy.data.expr.AbstractInitializableParameter">AbstractInitializableParameter</a></li>
+      <li><a href="ptdoc:ptolemy.data.expr.ConstraintMonitor">ConstraintMonitor</a></li>
+      <li><a href="ptdoc:ptolemy.data.expr.StringConstantParameter">StringConstantParameter</a></li>
+      <li><a href="ptdoc:ptolemy.data.PartiallyOrderedToken">PartiallyOrderedToken</a></li>
+      <li><a href="ptdoc:ptolemy.data.test.TokenUtilitiesTest">TokenUtilitiesTest</a></li>
+      <li><a href="ptdoc:ptolemy.data.TupleToken">TupleToken</a></li>
+      <li><a href="ptdoc:ptolemy.data.type.AssociativeType">AssociativeType</a></li>
+      <li><a href="ptdoc:ptolemy.data.type.TupleType">TupleType</a></li>
+      <li><a href="ptdoc:ptolemy.data.UpdatedArrayToken">UpdatedArrayToken</a></li>
+    </ul>
+  </li>
+
+
+  <li><i>New Modal classes</i>:
+    <ul>
+      <li><a href="ptdoc:ptolemy.domains.modal.kernel.FSMTransitionParameter">FSMTransitionParameter</a></li>
+      <li><a href="ptdoc:ptolemy.domains.modal.kernel.TransientState">TransientState</a></li>
+      <li><a href="ptdoc:ptolemy.domains.modal.modal.ClassComparator">ClassComparator</a></li>
+      <li><a href="ptdoc:ptolemy.domains.modal.modal.ModalBasePort">ModalBasePort</a></li>
+    </ul>
+
+  <li><i>New Petrinet classes</i>:
+    <p>The Petrinet model computation was rewritten by Zach Ezzell of the University of Florida.</p>
+    <ul>
+      <li><a href="ptdoc:ptolemy.domains.petrinet.kernel.PetriNetDisplayer">PetriNetDisplayer</a></li>
+      <li><a href="ptdoc:ptolemy.domains.petrinet.kernel.Transition">Transition</a></li>
+    </ul>
+  </li>
+
 
 <li>ptolemy.gui  
   <ul>
+    <li><a href="ptdoc:ptolemy.gui.ExtensionFilenameFilter">ExtensionFilenameFilter</a></li>
+    <li><a href="ptdoc:ptolemy.gui.ImageExportable">ImageExportable</a></li>
+    <li><a href="ptdoc:ptolemy.gui.MacOSXAdapter">MacOSXAdapter</a></li>
+    <li><a href="ptdoc:ptolemy.gui.MemoryCleaner">MemoryCleaner</a></li>
+    <li><a href="ptdoc:ptolemy.gui.PtFileChooser">PtFileChooser</a></li>
+    <li><a href="ptdoc:ptolemy.gui.PtFilenameFilter">PtFilenameFilter</a></li>
  </ul>
 
 <li>ptolemy.kernel
   <ul>
-</ul>
+    <li><a href="ptdoc:ptolemy.kernel.util.DecoratorAttributes">DecoratorAttributes</a></li>
+    <li><a href="ptdoc:ptolemy.kernel.util.HierarchyListener">HierarchyListener</a></li>
+    <li><a href="ptdoc:ptolemy.kernel.util.RelativeLocation">RelativeLocation</a></li>
+    <li><a href="ptdoc:ptolemy.kernel.util.ScopeExtender">ScopeExtender</a></li>
+  </ul>
+
+<li>ptolemy.moml
+  <ul>
+    <li><a href="ptdoc:ptolemy.moml.filter.AddMissingParameter">AddMissingParameter</a></li>
+    <li><a href="ptdoc:ptolemy.moml.filter.MoMLFilterSimple">MoMLFilterSimple</a></li>
+    <li><a href="ptdoc:ptolemy.moml.MoMLSimpleTimeoutApplication">MoMLSimpleTimeoutApplication</a></li>
+    <li><a href="ptdoc:ptolemy.moml.SimpleErrorHandler">SimpleErrorHandler</a></li>
+  </ul>
 
 <li>ptolemy.vergil
   <ul>
+    <li><a href="ptdoc:ptolemy.util.RecursiveFileFilter">RecursiveFileFilter</a></li>
+    <li><a href="ptdoc:ptolemy.util.SimpleMessageHandler">SimpleMessageHandler</a></li>
+  </ul>
+
+<li>ptolemy.vergil
+  <ul>
+    <li><a href="ptdoc:ptolemy.vergil.actor.ActorInteractionAddon">ActorInteractionAddon</a></li>
+    <li><a href="ptdoc:ptolemy.vergil.actor.KielerLayoutConnector">KielerLayoutConnector</a></li>
+    <li><a href="ptdoc:ptolemy.vergil.actor.lib.ShowTypes">ShowTypes</a></li>
+    <li><a href="ptdoc:ptolemy.vergil.basic.BasicGraphFrameExtension">BasicGraphFrameExtension</a></li>
+    <li><a href="ptdoc:ptolemy.vergil.basic.DependencyResultsDialog">DependencyResultsDialog</a></li>
+    <li><a href="ptdoc:ptolemy.vergil.basic.EditorDropTargetListener">EditorDropTargetListener</a></li>
+    <li><a href="ptdoc:ptolemy.vergil.basic.ExportParameters">ExportParameters</a></li>
+    <li><a href="ptdoc:ptolemy.vergil.basic.HTMLExportable">HTMLExportable</a></li>
+    <li><a href="ptdoc:ptolemy.vergil.basic.IGuiAction">IGuiAction</a></li>
+    <li><a href="ptdoc:ptolemy.vergil.basic.layout.kieler.ApplyLayoutRequest">ApplyLayoutRequest</a></li>
+    <li><a href="ptdoc:ptolemy.vergil.basic.layout.kieler.KielerLayoutAction">KielerLayoutAction</a></li>
+    <li><a href="ptdoc:ptolemy.vergil.basic.layout.kieler.LayoutHint">LayoutHint</a></li>
+    <li><a href="ptdoc:ptolemy.vergil.basic.layout.kieler.Parameters">Parameters</a></li>
+    <li><a href="ptdoc:ptolemy.vergil.basic.layout.kieler.UndoLayoutAction">UndoLayoutAction</a></li>
+    <li><a href="ptdoc:ptolemy.vergil.basic.layout.LayoutConfiguration">LayoutConfiguration</a></li>
+    <li><a href="ptdoc:ptolemy.vergil.basic.LookInsideAction">LookInsideAction</a></li>
+    <li><a href="ptdoc:ptolemy.vergil.basic.MoMLModelAttributeController">MoMLModelAttributeController</a></li>
+    <li><a href="ptdoc:ptolemy.vergil.basic.PtolemyLayoutAction">PtolemyLayoutAction</a></li>
+    <li><a href="ptdoc:ptolemy.vergil.basic.RelativeLocatable">RelativeLocatable</a></li>
+    <li><a href="ptdoc:ptolemy.vergil.basic.SearchResultsDialog">SearchResultsDialog</a></li>
+    <li><a href="ptdoc:ptolemy.vergil.icon.ConstraintMonitorIcon">ConstraintMonitorIcon</a></li>
+    <li><a href="ptdoc:ptolemy.vergil.kernel.attributes.ArcAttribute">ArcAttribute</a></li>
+    <li><a href="ptdoc:ptolemy.vergil.kernel.AttributeWithIconController">AttributeWithIconController</a></li>
+    <li><a href="ptdoc:ptolemy.vergil.kernel.RelativeLinkFigure">RelativeLinkFigure</a></li>
+    <li><a href="ptdoc:ptolemy.vergil.kernel.ShadowHighlighter">ShadowHighlighter</a></li>
+    <li><a href="ptdoc:ptolemy.vergil.kernel.ShadowRenderer">ShadowRenderer</a></li>
+    <li><a href="ptdoc:ptolemy.vergil.tree.CompositeTreeModel">CompositeTreeModel</a></li>
+    <li><a href="ptdoc:ptolemy.vergil.VergilGraphicalMessageHandler">VergilGraphicalMessageHandler</a></li>
   </ul>
 </ul>
 
