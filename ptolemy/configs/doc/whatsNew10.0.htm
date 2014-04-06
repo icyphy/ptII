@@ -492,15 +492,40 @@ See also the <a href="completeDemos.htm">Complete Demonstrations</a> page.
 <h2><a name="other">Other Key New Capabilities</a></h2>
 <ul>
 
-<h3> Feature</h3>
+<h3> Features</h3>
+<!--
+grep "Only in .*ptII10.0.devel" /tmp/pt.diffs | egrep -v '\.java$' | egrep -v '\.class' | egrep -v '\.jar' | egrep -v '/test/' | egrep -v ' test$' | egrep -v ' junit$' | egrep -v "/test: " | grep -v Icon.xml | grep -v README.txt | grep -v package.html
+-->
 <ul>
   <li>Models for books
     <ul>
       <li><a href="../../doc/books/actors">$PTII/doc/books/actors</a></li>
       <li><a href="../../doc/books/systems">$PTII/doc/books/systems</a></li>
     </ul>
-  <li>Limited Support for importing Functional Mockup Units
+  </li>
+  <li>Models for papers
+    <ul>
+    </ul>
+  </li>
+  <li>Small Code Tutorials
+    <ul>
+      <li><code>$PTII/doc/tutorial/domains</code></li>
+      <li><code>$PTII/doc/tutorial/graph</code></li>
+      <li><code>$PTII/doc/tutorial/gui</code></li>
+    </ul>    
+  <li><a href="ptdoc:ptolemy.actor.lib.fmi.FMUImport">FMUImport</a>  Limited Support for importing Functional Mockup Units</li>
   <li><a href="ptdoc:ptolemy.domains.sysml.kernel.SysMLSequentialDirectory">SysML Domain</a> (<i>prototype</i>)
+</ul>
+
+  <li>Build Infrastructure</li>
+  <ul>
+    <li>The build infrastructure now supports <code>ant</code>.  Eclipse and ant are preferred over make because
+    make is slower.  To build using ant, see <a href="../../doc/coding/ant.htm"><code>$PTII/doc/coding/ant.htm</code></li>
+    <li>The tests can be run using junit from within ant.</li>
+    <li><code>$PTII/pt-modules</code>: Support for building OSGi modules of a subset of Ptolemy II: Hallvard Tr&aelig;tteberg</li>
+    <li>The copyright file is now automatically generated from the licenses of the third
+      party classes that are in the classpath.</li>
+  </ul>
 </ul>
 
 <h2><a name="libraries">New and Enhanced Actor Libraries</a></h2>
@@ -585,6 +610,7 @@ good utilization of parallelism on the machine. </p>
 
 <h3>Aspect-Oriented Modeling</h3>
 <ul>
+  <li><a href="../../../doc/codeDoc/ptolemy/actor/lib/aspect/package-summary.html"><code>$PTII/ptolemy/actor/lib/aspect</code></a></li>
   <li><a href="ptdoc:ptolemy.actor.AbstractInitializableAttribute">AbstractInitializableAttribute</a></li>
   <li><a href="ptdoc:ptolemy.actor.ActorExecutionAspect">ActorExecutionAspect</a></li>
   <li><a href="ptdoc:ptolemy.actor.CommunicationAspectAttributes">CommunicationAspectAttributes</a></li>
@@ -603,7 +629,9 @@ Students from CMU (Anar Huseynov, Justin Killian, Ishwinder Singh) worked with B
 
 The code for this effort is in
 <ul>
+ <li><a href="../../../doc/codeDoc/ptdb/package-summary.html"><code>$PTII/ptdb</code></a></li>
  <li><a href="../../../doc/codeDoc/ptserver/package-summary.html"><code>$PTII/ptserver</code></a></li>
+ <li><a href="../../../doc/codeDoc/ptolemy/actor/injection/package-summary.html"><code>$PTII/ptolemy/actor/injection</code></a></li>
  <li><a href="../../../doc/codeDoc/ptolemy/homer/package-summary.html"><code>$PTII/ptolemy/homer</code></a></li>
  <li>Classes were added to <a href="../../../doc/codeDoc/ptolemy/actor/gui/package-summary.html"><code>$PTII/ptolemy/actor/gui</code></a>
   and <a href="../../../doc/codeDoc/ptolemy/plot/package-summary.html"><code>$PTII/ptolemy/plot</code></a></li>
@@ -816,12 +844,23 @@ select the PDF file.
 
 <h2><a name="worksinprogress">Works in Progress</a></h2>
 <ul>
+  <li><a href="../../../doc/codeDoc/ptolemy/domains/scr/kernel/package-summary.html"><code>$PTII/ptolemy/domains/scr</code></a> - The Software Cost Reduction model of computation: Patricia Derler
+  </li>
+  <li>Machine Learning: Ilge Akkaya
+    <ul>
+      <li><a href="../../../doc/codeDoc/org/ptolemy/machineLearning/hmm/package-summary.html"><code>$PTII/org/ptolemy/machineLearning/hmm<code></a> - Hidden Markov Modeling</li>
+      <li><a href="../../../doc/codeDoc/org/ptolemy/machineLearning/hmmAOM/package-summary.html"><code>$PTII/org/ptolemy/machineLearning/hmmAOM<code></a> - Hidden Markov Modeling: Aspect-Oriented Modeling</li>
+      <li><a href="../../../doc/codeDoc/org/ptolemy/machineLearning/particleFiltering/package-summary.html"><code>$PTII/org/ptolemy/machineLearning/particleFiltering<code></a> - Particle Filtering</li>
+      <li><a href="../../../doc/codeDoc/org/ptolemy/machineImprovisation/package-summary.html"><code>$PTII/org/ptolemy/machineImprovisation<code></a> - Machine Improvisation</li>
+      </ul>
+  </li>
+
 </ul>
 
 <h2><a name="bugs">Bug fixes</a></h2>
-For the current list of bugs, see <a href="http://chess.eecs.berkeley.edu/ptexternal/bugs.html#in_browser">Ptolemy II Bugs<a>
+<p>For the current list of bugs, see <a href="http://chess.eecs.berkeley.edu/ptexternal/bugs.html#in_browser">Ptolemy II Bugs<a>
  <br>and
- <a href="http://bugzilla.ecoinformatics.org/buglist.cgi?product=Kepler&bug_status=UNCONFIRMED&bug_status=NEW&bug_status=ASSIGNED&bug_status=REOPENED">Kepler Bugs</a>
+<a href="https://kepler-project.org/users/faq#section-UserFAQ-HowCanIReportBugs">Kepler Bugs</a>.</p>
 
 <li> A few features and classes were removed outright.
 <dl>
