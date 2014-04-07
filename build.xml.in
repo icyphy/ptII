@@ -939,7 +939,7 @@ For example:
     <echo>
       ==test.corbertura.single==
       To run code coverage on a different test, use the -Dtest.name, for example:
-        ant test.cobertura.single -Dtest.name=ptolemy.configs.test.junit.JUnitTclTests
+        ant test.cobertura.single -Dtest.name=ptolemy.configs.test.junit.JUnitTclTest
 
       The formatter is controlled by junit.single.formatter, which defaults to plain
       Other values are brief, failure and xml.
