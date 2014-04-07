@@ -2,14 +2,14 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="CoSimulation" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.1.devel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="10.0.devel">
     </property>
     <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
         <property name="stopTime" class="ptolemy.data.expr.Parameter" value="300">
         </property>
         <property name="enableResourceScheduling" class="ptolemy.actor.parameters.SharedParameter" value="true">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-105.0, -95.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[110.0, 55.0]">
         </property>
     </property>
     <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={291, 85, 934, 634}, maximized=false}">
@@ -23,7 +23,7 @@
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model shows how to do co-simulation&#10;of functional models and architecture&#10;mapping models. ">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-155.0, 25.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[60.0, 175.0]">
         </property>
     </property>
     <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -31,7 +31,7 @@
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Author: Patricia Derler">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-155.0, 85.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[60.0, 235.0]">
         </property>
     </property>
     <entity name="PtidesPlatform" class="ptolemy.domains.ptides.kernel.PtidesPlatform">
@@ -39,7 +39,7 @@
         </property>
         <property name="_tableauFactory" class="ptolemy.actor.gui.LevelSkippingTableauFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-110.0, -20.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[105.0, 130.0]">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.EditorIcon">
             <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={195, 129, 934, 634}, maximized=false}">
