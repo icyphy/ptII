@@ -51,7 +51,9 @@ PTPACKAGE = qss
 PTCLASSJAR = $(PTPACKAGE).jar
 
 JSRCS = \
-	QSSIntegrator.java
+	QSSIntegrator.java \
+	QSSVectorIntegrator.java
+
 
 OTHER_FILES_TO_BE_JARED =
 

@@ -836,6 +836,8 @@ GUAVA_JAR
 ECLIPSE_DIR
 ECLIPSE_CLASSPATHENTRY_PDE_REQUIREDPLUGINS
 CMKIT_DIR
+COBERTURA_JAR
+COBERTURA_DIR
 COLT_DIR
 CLASSPATHSEPARATOR
 CHIC_DIR
@@ -938,6 +940,7 @@ with_cmkit
 with_cal
 with_chic
 with_colt
+with_cobertura
 with_cunit
 with_tools_jar
 with_eclipse
@@ -1632,6 +1635,8 @@ Optional Packages:
                           defaults to \$PTII/lib
   --with-colt=DIR       use colt.jar from DIR,
                           defaults to \$PTII/vendors/misc/colt
+  --with-cobertura=DIR    use Cobertura from DIR,
+                          defaults to $PTII/vendors/cobertura-2.0.3
   --with-cunit=DIR    use CUnit from DIR,
                           defaults to /usr/local or $PTII/vendors/CUnit
   --with-tools_jar=DIR    use tools.jar from DIR,
@@ -5089,6 +5094,51 @@ if test -z "$PTCOLT_DIR"; then
    updateExcludes "ptolemy/actor/lib/colt/"
 fi
 
+
+#--------------------------------------------------------------------
+#       Cobertura is used for code coverage
+#
+#
+#--------------------------------------------------------------------
+# We only need to look for COBERTURA if this directory is present
+COBERTURA_USER_DIR="$PTII/ptolemy/actor/test/junit"
+
+COBERTURA_VERSION=-2.0.3
+COBERTURA_JAR="cobertura$COBERTURA_VERSION.jar"
+
+if test ! -d "$COBERTURA_USER_DIR"; then
+    if test "${PTVERBOSE:-none}" != "none"; then { $as_echo "$as_me:${as_lineno-$LINENO}: result: $COBERTURA_USER_DIR is not present,
+    so we need not find Cobertura for testing" >&5
+$as_echo "$COBERTURA_USER_DIR is not present,
+    so we need not find Cobertura for testing" >&6; }; fi
+else
+
+# Check whether --with-cobertura was given.
+if test "${with_cobertura+set}" = set; then :
+  withval=$with_cobertura; COBERTURA_DIR=$withval
+else
+  COBERTURA_DIR=$PTII/vendors/cobertura$COBERTURA_VERSION
+fi
+
+    COBERTURA_VERSION=`echo "$COBERTURA_DIR | basename | sed 's/cobertura\(.*]\$/\1/'`
+    if test -r "$COBERTURA_DIR/cobertura-$COBERTURA_VERSION.jar" ; then
+        if test "${PTVERBOSE:-none}" = "none"; then { $as_echo "$as_me:${as_lineno-$LINENO}: result: ok" >&5
+$as_echo "ok" >&6; }; else { $as_echo "$as_me:${as_lineno-$LINENO}: result: $COBERTURA_DIR" >&5
+$as_echo "$COBERTURA_DIR" >&6; }; fi
+        COBERTURA_JAR="cobertura$COBERTURA_VERSION.jar"
+    fi
+
+    if test ! -f "COBERTURA_JAR"; then
+        { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Failed to find Cobertura in $PTII/vendors/corbertura$COBERTURA_VERSION
+    Cobertura is only necessary to for code coverage.
+    Cobertura is GPL'd, so we don't check it in to the ptII repository.
+    Cobertura may be downloaded from http://cobertura.github.io/cobertura/" >&5
+$as_echo "$as_me: WARNING: Failed to find Cobertura in $PTII/vendors/corbertura$COBERTURA_VERSION
+    Cobertura is only necessary to for code coverage.
+    Cobertura is GPL'd, so we don't check it in to the ptII repository.
+    Cobertura may be downloaded from http://cobertura.github.io/cobertura/" >&2;}
+    fi
+fi
 
 #--------------------------------------------------------------------
 #       CUnit is used to test C Code in the code generator
@@ -12665,6 +12715,12 @@ ANT_JAVADOC_EXCLUDEPACKAGENAMES=`echo "$ANT_ALWAYS_EXCLUDE $ANT_EXCLUDE"| sed 's
 # and Technical Computing in Java" used in bin/ptinvoke.in
 
 
+# The directory that contains the Cobertura jar file.
+
+
+# The Cobertura jar file, used for code coverage.
+
+
 # Directory that contains the CaffeineMark Java Benchmark kit
 # used by C code generation in copernicus/c
 
@@ -12950,6 +13006,7 @@ ANT_JAVADOC_EXCLUDEPACKAGENAMES=`echo "$ANT_ALWAYS_EXCLUDE $ANT_EXCLUDE"| sed 's
 
 
 # Set to copernicus and used in $PTII/ptolemy/makefile if Soot was found
+
 
 
 # PTCUNIT_DIR is set to test and used in

@@ -172,6 +172,7 @@ JSRCS = \
 # Files to be included in the jar file
 OTHER_FILES_TO_BE_JARED = \
 	BrowserLauncher-license.htm \
+	 masterCopyrightStart.htm.in \
 	PtolemyIISmallIcon.gif
 
 # Note that PtolemyIISmallIcon.gif is also in doc/img.
@@ -221,6 +222,7 @@ OPTIONAL_FILES = \
 	'ExpressionShellEffigy$$ShellFactory.class' \
 	'ExpressionShellTableau$$1.class' \
 	'ExpressionShellTableau$$Factory.class' \
+	'GenerateCopyrights$$FileNameComparator.class' \
 	'HTMLEffigy$$Factory.class' \
 	'HTMLViewer$$1.class' \
 	'HTMLViewerTableau$$Factory.class' \
