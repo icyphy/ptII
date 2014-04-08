@@ -841,6 +841,8 @@ COBERTURA_DIR
 COLT_DIR
 CLASSPATHSEPARATOR
 CHIC_DIR
+CHECKSTYLE_JAR
+CHECKSTYLE_DIR
 CALTROP_DIR
 ANT_SRC
 ANT_WEBSENSOR_SRC
@@ -938,6 +940,7 @@ with_java32
 with_boost
 with_cmkit
 with_cal
+with_checkstyle
 with_chic
 with_colt
 with_cobertura
@@ -1631,6 +1634,8 @@ Optional Packages:
                           defaults to \$PTII/vendors/cm
   --with-cal=DIR       use ptCal.jar from DIR,
                           defaults to \$PTII/lib
+  --with-checkstyle=DIR    use Checkstyle from DIR,
+                          defaults to $PTII/vendors/checkstyle-5.7
   --with-chic=DIR       use chic.jar from DIR,
                           defaults to \$PTII/lib
   --with-colt=DIR       use colt.jar from DIR,
@@ -4913,6 +4918,53 @@ else
 fi
 
 #--------------------------------------------------------------------
+#       Checkstyle is used to check the style of java files by ant.
+#
+#
+#--------------------------------------------------------------------
+# We only need to look for CHECKSTYLE if this directory is present
+CHECKSTYLE_USER_DIR="$PTII/ptolemy/actor/test/junit"
+
+CHECKSTYLE_VERSION=-5.7
+CHECKSTYLE_JAR="checkstyle$CHECKSTYLE_VERSION.jar"
+
+if test ! -d "$CHECKSTYLE_USER_DIR"; then
+    if test "${PTVERBOSE:-none}" != "none"; then { $as_echo "$as_me:${as_lineno-$LINENO}: result: $CHECKSTYLE_USER_DIR is not present,
+    so we need not find Checkstyle for testing" >&5
+$as_echo "$CHECKSTYLE_USER_DIR is not present,
+    so we need not find Checkstyle for testing" >&6; }; fi
+else
+    { $as_echo "$as_me:${as_lineno-$LINENO}: checking for Checkstyle, optionally used to check the style of Java files." >&5
+$as_echo_n "checking for Checkstyle, optionally used to check the style of Java files.... " >&6; }
+
+# Check whether --with-checkstyle was given.
+if test "${with_checkstyle+set}" = set; then :
+  withval=$with_checkstyle; CHECKSTYLE_DIR=$withval
+else
+  CHECKSTYLE_DIR=$PTII/vendors/checkstyle$CHECKSTYLE_VERSION
+fi
+
+    CHECKSTYLE_VERSION=`basename "$CHECKSTYLE_DIR" | sed 's/checkstyle\(.*\)$/\1/'`
+    if test -r "$CHECKSTYLE_DIR/checkstyle$CHECKSTYLE_VERSION-all.jar" ; then
+        if test "${PTVERBOSE:-none}" = "none"; then { $as_echo "$as_me:${as_lineno-$LINENO}: result: ok" >&5
+$as_echo "ok" >&6; }; else { $as_echo "$as_me:${as_lineno-$LINENO}: result: $CHECKSTYLE_DIR" >&5
+$as_echo "$CHECKSTYLE_DIR" >&6; }; fi
+        CHECKSTYLE_JAR="checkstyle$CHECKSTYLE_VERSION-all.jar"
+    fi
+
+    if test ! -f "$CHECKSTYLE_DIR/$CHECKSTYLE_JAR"; then
+        { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Failed to find Checkstyle in $PTII/vendors/checkstyle$CHECKSTYLE_VERSION
+    Checkstyle is only necessary for code cleaning.
+    Checkstyle is LGPL'd, so while it could be in the ptII repo, we don't add it.
+    Checkstyle may be downloaded from http://checkstyle.sourceforge.net/" >&5
+$as_echo "$as_me: WARNING: Failed to find Checkstyle in $PTII/vendors/checkstyle$CHECKSTYLE_VERSION
+    Checkstyle is only necessary for code cleaning.
+    Checkstyle is LGPL'd, so while it could be in the ptII repo, we don't add it.
+    Checkstyle may be downloaded from http://checkstyle.sourceforge.net/" >&2;}
+    fi
+fi
+
+#--------------------------------------------------------------------
 #       "CHIC is a modular verifier for behavioral compatibility checking
 #	 of software and hardware components"
 #
@@ -5112,6 +5164,8 @@ if test ! -d "$COBERTURA_USER_DIR"; then
 $as_echo "$COBERTURA_USER_DIR is not present,
     so we need not find Cobertura for testing" >&6; }; fi
 else
+    { $as_echo "$as_me:${as_lineno-$LINENO}: checking for Cobertura, optionally used for Java code coverage." >&5
+$as_echo_n "checking for Cobertura, optionally used for Java code coverage.... " >&6; }
 
 # Check whether --with-cobertura was given.
 if test "${with_cobertura+set}" = set; then :
@@ -5120,7 +5174,7 @@ else
   COBERTURA_DIR=$PTII/vendors/cobertura$COBERTURA_VERSION
 fi
 
-    COBERTURA_VERSION=`echo "$COBERTURA_DIR | basename | sed 's/cobertura\(.*]\$/\1/'`
+    COBERTURA_VERSION=`basename "$COBERTURA_DIR" | sed 's/cobertura\(.*\)$/\1/'`
     if test -r "$COBERTURA_DIR/cobertura-$COBERTURA_VERSION.jar" ; then
         if test "${PTVERBOSE:-none}" = "none"; then { $as_echo "$as_me:${as_lineno-$LINENO}: result: ok" >&5
 $as_echo "ok" >&6; }; else { $as_echo "$as_me:${as_lineno-$LINENO}: result: $COBERTURA_DIR" >&5
@@ -5128,7 +5182,7 @@ $as_echo "$COBERTURA_DIR" >&6; }; fi
         COBERTURA_JAR="cobertura$COBERTURA_VERSION.jar"
     fi
 
-    if test ! -f "COBERTURA_JAR"; then
+    if test ! -f "$COBERTURA_DIR/$COBERTURA_JAR"; then
         { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Failed to find Cobertura in $PTII/vendors/corbertura$COBERTURA_VERSION
     Cobertura is only necessary to for code coverage.
     Cobertura is GPL'd, so we don't check it in to the ptII repository.
@@ -12701,6 +12755,12 @@ ANT_JAVADOC_EXCLUDEPACKAGENAMES=`echo "$ANT_ALWAYS_EXCLUDE $ANT_EXCLUDE"| sed 's
 # used by bin/ptinvoke.in
 
 
+# The directory that contains the Checkstyle jar file.  Used in build.xml.in.
+
+
+# The Checkstyle jar file, used for code coverage.  Used in build.xml.in.
+
+
 # Directory that contains chic.jar.
 # Chic is a modular verifier for behavioral compatibility checking of
 # software and hardware components.
@@ -12715,10 +12775,10 @@ ANT_JAVADOC_EXCLUDEPACKAGENAMES=`echo "$ANT_ALWAYS_EXCLUDE $ANT_EXCLUDE"| sed 's
 # and Technical Computing in Java" used in bin/ptinvoke.in
 
 
-# The directory that contains the Cobertura jar file.
+# The directory that contains the Cobertura jar file.  Used in build.xml.in.
 
 
-# The Cobertura jar file, used for code coverage.
+# The Cobertura jar file, used for code coverage.  Used in build.xml.in.
 
 
 # Directory that contains the CaffeineMark Java Benchmark kit
