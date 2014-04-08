@@ -1584,7 +1584,7 @@ else
 changequote(<<, >>)dnl
     COBERTURA_VERSION=`basename "$COBERTURA_DIR" | sed 's/cobertura\(.*\)$/\1/'`
 changequote([, ])dnl
-    if test -r "$COBERTURA_DIR/cobertura-$COBERTURA_VERSION.jar" ; then
+    if test -r "$COBERTURA_DIR/cobertura$COBERTURA_VERSION.jar" ; then
         PT_MSG_RESULT([$COBERTURA_DIR])
         COBERTURA_JAR="cobertura$COBERTURA_VERSION.jar"
     fi
