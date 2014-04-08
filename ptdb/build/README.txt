@@ -6,7 +6,7 @@ To run the tests:
 1. Download Cobertura from http://cobertura.sourceforge.net/download.html
 2. Untar in $PTII/vendors/misc
      cd $PTII/vendors/misc
-     tar -zxf /tmp/cobertura-1.9.4.1-bin.tar.gz 
+     tar -zxf /tmp/cobertura-2.0.3-bin.tar.gz 
 
 3. Install Oracle Berkeley XML DB, see
    $PTII/ptdb/doc/OracleBerkeleyXMLDBMacOSXBuildInstructions.htm
