@@ -14,6 +14,9 @@
   <!-- checkstyle.formatter defaults to xml and is used by checkstyle and test.  Try also -Dcheckstyle.formater=html. -->
   <property name="checkstyle.formatter" value="xml" />
 
+  <!-- The location of the Cobertura directory, used for code coverage -->
+  <property name="cobertura.dir" value="@COBERTURA_DIR@" />
+
   <property name="debuglevel" value="source,lines,vars" />
 
   <!-- Location of findbugs, which does static analysis on the code.  
@@ -102,6 +105,16 @@
   <pathconvert property="ptII.classpath.optional.property" refid="ptII.classpath.optional"/>
 
   <!-- Ant paths. Alphabetize, please -->
+
+  <!-- Path for Cobertura, used by code coverage. -->
+  <path id="cobertura.classpath">
+    <fileset dir="${cobertura.dir}">
+      <include name="@COBERTURA_JAR@" />
+      <include name="lib/*.jar"/>
+    </fileset>
+  </path>
+
+  <!-- The Ptolemy II Classpath -->
   <path id="ptII.classpath">
     <pathelement location="${env.HOME}/.ptolemyII" />
     <!-- Java 1.6 and later: * in the classpath matches *.jar files -->
@@ -610,7 +623,7 @@ For example:
        test.single target runs single test specified by its class name (output=stdout)
 
       test.batch = ${test.batch}
-      timeout = ${timeout} milliseconds
+      timeout = ${timeout.short} milliseconds
 
     </echo>
     <!-- fork="yes" is need so that javchdir can cd to the test/ directory -->
@@ -653,18 +666,9 @@ For example:
       To run code coverage on just one test, use 
       ant test.cobertura.single
     </echo>
+
     <property name="instrumented.dir" value="${ptII.reports}/instrumented" />
-    <property name="cobertura.dir" value="ptserver/lib" />
     <property name="coveragereport.dir" value="${ptII.reports}/coveragereport" />
-    <path id="cobertura.classpath">
-      <fileset dir="${cobertura.dir}">
-	<include name="cobertura.jar" />
-	<include name="asm-3.0.jar" />
-	<include name="asm-tree-3.0.jar" />
-	<include name="jakarta-oro-2.0.8.jar" />
-	<include name="log4j-1.2.9.jar" />
-      </fileset>
-    </path>
 
     <taskdef classpathref="cobertura.classpath" resource="tasks.properties" />
 
@@ -843,17 +847,7 @@ For example:
     <echo>Run the longest tests using code coverage
     </echo>
     <property name="instrumented.dir" value="${ptII.reports}/instrumented" />
-    <property name="cobertura.dir" value="ptserver/lib" />
     <property name="coveragereport.dir" value="${ptII.reports}/coveragereport" />
-    <path id="cobertura.classpath">
-      <fileset dir="${cobertura.dir}">
-	<include name="cobertura.jar" />
-	<include name="asm-3.0.jar" />
-	<include name="asm-tree-3.0.jar" />
-	<include name="jakarta-oro-2.0.8.jar" />
-	<include name="log4j-1.2.9.jar" />
-      </fileset>
-    </path>
 
     <taskdef classpathref="cobertura.classpath" resource="tasks.properties" />
 
@@ -945,17 +939,7 @@ For example:
       Other values are brief, failure and xml.
     </echo>
     <property name="instrumented.dir" value="${ptII.reports}/instrumented" />
-    <property name="cobertura.dir" value="ptserver/lib" />
     <property name="coveragereport.dir" value="${ptII.reports}/coveragereport" />
-    <path id="cobertura.classpath">
-      <fileset dir="${cobertura.dir}">
-	<include name="cobertura.jar" />
-	<include name="asm-3.0.jar" />
-	<include name="asm-tree-3.0.jar" />
-	<include name="jakarta-oro-2.0.8.jar" />
-	<include name="log4j-1.2.9.jar" />
-      </fileset>
-    </path>
 
     <taskdef classpathref="cobertura.classpath" resource="tasks.properties" />
 
@@ -1068,7 +1052,7 @@ For example:
        test.short - runs tests that are fairly fast (~30 min., called by the test target)
        test.single target runs single test specified by its class name (output=stdout)
 
-      timeout = ${timeout.longest} milliseconds
+      timeout = ${timeout.long} milliseconds
 
     </echo>
     <junit fork="yes" 

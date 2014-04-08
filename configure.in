@@ -1526,6 +1526,39 @@ fi
 
 
 #--------------------------------------------------------------------
+#       Cobertura is used for code coverage
+#	
+#	
+#--------------------------------------------------------------------
+# We only need to look for COBERTURA if this directory is present
+COBERTURA_USER_DIR="$PTII/ptolemy/actor/test/junit"
+
+COBERTURA_VERSION=-2.0.3
+COBERTURA_JAR="cobertura$COBERTURA_VERSION.jar"
+
+if test ! -d "$COBERTURA_USER_DIR"; then
+    PT_MSG_STATUS([$COBERTURA_USER_DIR is not present,
+    so we need not find Cobertura for testing])
+else
+    AC_ARG_WITH(cobertura, [  --with-cobertura=DIR    use Cobertura from DIR,
+                          defaults to $PTII/vendors/cobertura-2.0.3],
+	COBERTURA_DIR=$withval,
+	COBERTURA_DIR=$PTII/vendors/cobertura$COBERTURA_VERSION)
+    COBERTURA_VERSION=`echo "$COBERTURA_DIR | basename | sed 's/cobertura\(.*]\$/\1/'`
+    if test -r "$COBERTURA_DIR/cobertura-$COBERTURA_VERSION.jar" ; then
+        PT_MSG_RESULT([$COBERTURA_DIR])
+        COBERTURA_JAR="cobertura$COBERTURA_VERSION.jar"
+    fi
+
+    if test ! -f "COBERTURA_JAR"; then
+        AC_MSG_WARN([Failed to find Cobertura in $PTII/vendors/corbertura$COBERTURA_VERSION
+    Cobertura is only necessary to for code coverage.
+    Cobertura is GPL'd, so we don't check it in to the ptII repository.
+    Cobertura may be downloaded from http://cobertura.github.io/cobertura/])
+    fi
+fi
+
+#--------------------------------------------------------------------
 #       CUnit is used to test C Code in the code generator
 #	
 #	
@@ -5616,6 +5649,12 @@ AC_SUBST(CLASSPATHSEPARATOR)
 # and Technical Computing in Java" used in bin/ptinvoke.in
 AC_SUBST(COLT_DIR)
 
+# The directory that contains the Cobertura jar file.
+AC_SUBST(COBERTURA_DIR)
+
+# The Cobertura jar file, used for code coverage.
+AC_SUBST(COBERTURA_JAR)
+
 # Directory that contains the CaffeineMark Java Benchmark kit
 # used by C code generation in copernicus/c
 AC_SUBST(CMKIT_DIR)
@@ -5902,6 +5941,7 @@ AC_SUBST(PTCOMM_PACKAGES)
 
 # Set to copernicus and used in $PTII/ptolemy/makefile if Soot was found
 AC_SUBST(PTCOPERNICUS_DIR)
+
 
 # PTCUNIT_DIR is set to test and used in 
 # ptolemy/cg/kernle/generic/program/procedural/c/type
