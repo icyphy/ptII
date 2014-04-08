@@ -1384,6 +1384,42 @@ else
 fi 
 
 #--------------------------------------------------------------------
+#       Checkstyle is used to check the style of java files by ant.
+#	
+#	
+#--------------------------------------------------------------------
+# We only need to look for CHECKSTYLE if this directory is present
+CHECKSTYLE_USER_DIR="$PTII/ptolemy/actor/test/junit"
+
+CHECKSTYLE_VERSION=-5.7
+CHECKSTYLE_JAR="checkstyle$CHECKSTYLE_VERSION.jar"
+
+if test ! -d "$CHECKSTYLE_USER_DIR"; then
+    PT_MSG_STATUS([$CHECKSTYLE_USER_DIR is not present,
+    so we need not find Checkstyle for testing])
+else
+    AC_MSG_CHECKING([for Checkstyle, optionally used to check the style of Java files.])
+    AC_ARG_WITH(checkstyle, [  --with-checkstyle=DIR    use Checkstyle from DIR,
+                          defaults to $PTII/vendors/checkstyle-5.7],
+	CHECKSTYLE_DIR=$withval,
+	CHECKSTYLE_DIR=$PTII/vendors/checkstyle$CHECKSTYLE_VERSION)
+changequote(<<, >>)dnl
+    CHECKSTYLE_VERSION=`basename "$CHECKSTYLE_DIR" | sed 's/checkstyle\(.*\)$/\1/'`
+changequote([, ])dnl
+    if test -r "$CHECKSTYLE_DIR/checkstyle$CHECKSTYLE_VERSION-all.jar" ; then
+        PT_MSG_RESULT([$CHECKSTYLE_DIR])
+        CHECKSTYLE_JAR="checkstyle$CHECKSTYLE_VERSION-all.jar"
+    fi
+
+    if test ! -f "$CHECKSTYLE_DIR/$CHECKSTYLE_JAR"; then
+        AC_MSG_WARN([Failed to find Checkstyle in $PTII/vendors/checkstyle$CHECKSTYLE_VERSION
+    Checkstyle is only necessary for code cleaning.
+    Checkstyle is LGPL'd, so while it could be in the ptII repo, we don't add it.
+    Checkstyle may be downloaded from http://checkstyle.sourceforge.net/])
+    fi
+fi
+
+#--------------------------------------------------------------------
 #       "CHIC is a modular verifier for behavioral compatibility checking
 #	 of software and hardware components"
 #
@@ -1540,17 +1576,20 @@ if test ! -d "$COBERTURA_USER_DIR"; then
     PT_MSG_STATUS([$COBERTURA_USER_DIR is not present,
     so we need not find Cobertura for testing])
 else
+    AC_MSG_CHECKING([for Cobertura, optionally used for Java code coverage.])
     AC_ARG_WITH(cobertura, [  --with-cobertura=DIR    use Cobertura from DIR,
                           defaults to $PTII/vendors/cobertura-2.0.3],
 	COBERTURA_DIR=$withval,
 	COBERTURA_DIR=$PTII/vendors/cobertura$COBERTURA_VERSION)
-    COBERTURA_VERSION=`echo "$COBERTURA_DIR | basename | sed 's/cobertura\(.*]\$/\1/'`
+changequote(<<, >>)dnl
+    COBERTURA_VERSION=`basename "$COBERTURA_DIR" | sed 's/cobertura\(.*\)$/\1/'`
+changequote([, ])dnl
     if test -r "$COBERTURA_DIR/cobertura-$COBERTURA_VERSION.jar" ; then
         PT_MSG_RESULT([$COBERTURA_DIR])
         COBERTURA_JAR="cobertura$COBERTURA_VERSION.jar"
     fi
 
-    if test ! -f "COBERTURA_JAR"; then
+    if test ! -f "$COBERTURA_DIR/$COBERTURA_JAR"; then
         AC_MSG_WARN([Failed to find Cobertura in $PTII/vendors/corbertura$COBERTURA_VERSION
     Cobertura is only necessary to for code coverage.
     Cobertura is GPL'd, so we don't check it in to the ptII repository.
@@ -5635,6 +5674,12 @@ AC_SUBST(ANT_SRC)
 # used by bin/ptinvoke.in
 AC_SUBST(CALTROP_DIR)
 
+# The directory that contains the Checkstyle jar file.  Used in build.xml.in.
+AC_SUBST(CHECKSTYLE_DIR)
+
+# The Checkstyle jar file, used for code coverage.  Used in build.xml.in.
+AC_SUBST(CHECKSTYLE_JAR)
+
 # Directory that contains chic.jar.
 # Chic is a modular verifier for behavioral compatibility checking of
 # software and hardware components.
@@ -5649,10 +5694,10 @@ AC_SUBST(CLASSPATHSEPARATOR)
 # and Technical Computing in Java" used in bin/ptinvoke.in
 AC_SUBST(COLT_DIR)
 
-# The directory that contains the Cobertura jar file.
+# The directory that contains the Cobertura jar file.  Used in build.xml.in.
 AC_SUBST(COBERTURA_DIR)
 
-# The Cobertura jar file, used for code coverage.
+# The Cobertura jar file, used for code coverage.  Used in build.xml.in.
 AC_SUBST(COBERTURA_JAR)
 
 # Directory that contains the CaffeineMark Java Benchmark kit
