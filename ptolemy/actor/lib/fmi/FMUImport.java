@@ -452,6 +452,26 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
             // to set the start value, so we ignore this.
             // FIXME: If the start value is "fixed" then it should be set
             // at this time.
+            
+            //////////////////////
+            // Initialize the FMU if necessary.  Model exchange only.
+            if (_firstFire) {
+                _fmiInitialize();
+
+                // Record the state.
+                _recordFMUState();
+                    
+                _lastCommitTime = currentTime;
+
+                // To initialize the event indicators, call this.
+                _checkEventIndicators();
+            }
+            
+            // Initialize the _newStates vector.
+            double states[] = _states.array();
+            if (_newStates == null || _newStates.length != states.length) {
+                _newStates = new double[states.length];
+            }
 
         } else {
             /////////////////////////////////////////
@@ -492,7 +512,8 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
         // Set the inputs.
         // Iterate through the scalarVariables and set all the inputs
         // that are known.
-        for (Input input : _getInputs()) {
+        int _index;
+        for (Input input : _getInputs()) { 
             // NOTE: Page 27 of the FMI-1.0 CS spec says that for
             // variability==parameter and causality==input, we can
             // only call fmiSet* between fmiInstantiateSlave() and
@@ -502,6 +523,14 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
                 if (input.port.hasToken(0)) {
                     Token token = input.port.get(0);
                     _setFMUScalarVariable(input.scalarVariable, token);
+                    // If the input is a continuous state, update the newStates vector.
+                    if ((_fmiVersion==2.0) && _fmiModelDescription.modelExchange 
+                            && _fmiModelDescription.continuousStates.contains(input.port.getName())){
+                        _index = _fmiModelDescription.continuousStates.indexOf(input.port.getName());
+                        _newStates[_index] = ((DoubleToken) token).doubleValue();
+                    }
+
+                    
                     if (_debugging) {
                         _debugToStdOut("FMUImport.fire(): set input variable "
                                 + input.scalarVariable.name + " to " + token);
@@ -535,35 +564,23 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
                     _debug("Input port " + input.port.getName()
                             + " is unknown.");
                 }
-            }
+            }            
+            
         }
 
         //////////////////////
         // For model exchange.
         if (_fmiModelDescription.modelExchange) {
 
-            //////////////////////
-            // Initialize the FMU if necessary.  Model exchange only.
-
-            if (_firstFire) {
-                _fmiInitialize();
-
-                // Record the state.
-                _recordFMUState();
-                    
-                _lastCommitTime = currentTime;
-
-                // To initialize the event indicators, call this.
-                _checkEventIndicators();
-            }
             // If time has advanced since the last
             // firing, perform the forward Euler advance.
             double currentTimeValue = currentTime.getDoubleValue();
 
+            // FIXME: This might not be needed if we remove the euler integrator.
             double states[] = _states.array();
-            if (_newStates == null || _newStates.length != states.length) {
-                _newStates = new double[states.length];
-            }
+            //if (_newStates == null || _newStates.length != states.length) {
+            //    _newStates = new double[states.length];
+            //}
             // Make sure the states of the FMU match the last commit.
             // FIXME: This is only needed if backtracking might occur.
             // Even then, it's incomplete. Probably need to record and reset _all_ variables,
@@ -573,19 +590,14 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
             if (currentTimeValue > _lastCommitTime.getDoubleValue()) {
 		// Set states only if the FMU has states
 		if (states.length > 0){
-                    double step = currentTimeValue
-                            - _lastCommitTime.getDoubleValue();
-
-                    for (int i = 0; i < states.length; i++) {
-                        _newStates[i] = states[i] + derivatives[i] * step;
-                    }
-                    _fmiSetContinuousStates(_newStates);
-		    
-                    // fixme: Temporary print out because fmiSetContinuousStates in c
-                    // receives non-initialized values.
-		    for (int i = 0; i < states.length; i++)
-			System.out.println("FMUImport.java: Setting state with " + states[i]);
-                    _fmiSetContinuousStates(states);
+		    if (_fmiVersion < 2.0) {
+		        double step = currentTimeValue
+		                - _lastCommitTime.getDoubleValue();
+		        for (int i = 0; i < states.length; i++) {
+		            _newStates[i] = states[i] + derivatives[i] * step;
+		            } 
+		        }
+		    _fmiSetContinuousStates(_newStates); 
 		}
 
                 // Check event indicators.
@@ -2216,12 +2228,16 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
                     + " does not match the number of continuous states "
                     + _fmiModelDescription.numberOfContinuousStates);
         }
-        DoubleBuffer states = DoubleBuffer.allocate(values.length);
-        for (int i = 0; i < values.length; i++) {
-            states.put(values[i]);
-        }
+        /* FIXME: For Review: Using "states" (which is commented out) 
+         * was causing the _fmiSetContinuousStates to not pass 
+         * the values of the states to the FMU. Why do we have to pass a
+         * "DoubleBuffer" rather than just the values received in the function?        
+         * DoubleBuffer states = DoubleBuffer.allocate(values.length);
+                for (int i = 0; i < values.length; i++) {
+                    states.put(values[i]);
+                }*/
         int fmiFlag = ((Integer) _fmiSetContinuousStates.invoke(Integer.class,
-                new Object[] { _fmiComponent, states,
+                new Object[] { _fmiComponent, values,
                         new NativeSizeT(values.length) })).intValue();
 
         if (fmiFlag != FMILibrary.FMIStatus.fmiOK) {
