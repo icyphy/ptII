@@ -1585,8 +1585,8 @@ changequote(<<, >>)dnl
     COBERTURA_VERSION=`basename "$COBERTURA_DIR" | sed 's/cobertura\(.*\)$/\1/'`
 changequote([, ])dnl
     if test -r "$COBERTURA_DIR/cobertura$COBERTURA_VERSION.jar" ; then
-        PT_MSG_RESULT([$COBERTURA_DIR])
         COBERTURA_JAR="cobertura$COBERTURA_VERSION.jar"
+        PT_MSG_RESULT([$COBERTURA_JAR])
     fi
 
     if test ! -f "$COBERTURA_DIR/$COBERTURA_JAR"; then
@@ -1975,17 +1975,18 @@ if test -z "$PTBACKTRACK_ECLIPSE_DIR"; then
 fi 
 
 #--------------------------------------------------------------------
-#       dbxml is the Oracle Berkeley XML DB
+#       db and dbxml is the Oracle Berkeley XML DB
 #	http://www.oracle.com/technology/software/products/berkeley-db/xml/index.html
-#	dbxml is used by the ptdb directory
+#	dbxml is used by the ptdb directory.
+#       db and dbxml are basically GPL'd, see $PTII/ptdb/lib/db-dbxml-license.htm
 #--------------------------------------------------------------------
 
 # PTDB_DIR is set to ptdb and used in
 # $PTII/makefile if dbxml is found
 PTDB_DIR=
 
-PTDBXML_JAR='${PTII}/ptdb/lib/dbxml.jar'
-PTDB_JAR='${PTII}/ptdb/lib/db.jar'
+PTDBXML_JAR='${PTII}/vendors/oracle/dbxml.jar'
+PTDB_JAR='${PTII}/vendors/oracle/db.jar'
 
 # Jar files necessary for compilation
 PTDBXML_JARS="${PTDBXML_JAR}${CLASSPATHSEPARATOR}${PTDB_JAR}"
@@ -1998,18 +1999,18 @@ if test ! -d "$PTDB_USER_DIR"; then
 else
     AC_MSG_CHECKING([for dbxml.jar ])
     AC_ARG_WITH(dbxml, [  --with-dbxml=JAR       use dbxml.jar from JAR,
-                          defaults to \$PTII/ptdb/lib/dbxml.jar],
+                          defaults to \$PTII/vendors/oracle/dbxml.jar],
 	PTDBXML_JAR=$withval,
-	PTDBXML_JAR=$PTII/ptdb/lib/dbxml.jar)
+	PTDBXML_JAR=$PTII/vendors/oracle/dbxml.jar)
 
     if test  -f "$PTDBXML_JAR"; then
 	PT_MSG_RESULT([$PTDBXML_JAR])
 
         AC_MSG_CHECKING([for db.jar ])
         AC_ARG_WITH(db, [  --with-db=JAR       use db.jar from JAR,
-                          defaults to \$PTII/ptdb/lib/db.jar],
+                          defaults to \$PTII/vendors/oracle/db.jar],
 	PTDB_JAR=$withval,
-	PTDB_JAR=$PTII/ptdb/lib/db.jar)
+	PTDB_JAR=$PTII/vendors/oracle/db.jar)
 
         if test  -f "$PTDB_JAR"; then
 	    PT_MSG_RESULT([$PTDB_JAR])
@@ -2036,6 +2037,9 @@ else
 	if test ! -f "$libdbxml"; then
 	    AC_MSG_WARN([Failed to find dbxml-X.Y shared library in $PTDBXML_LIB])
         fi
+    else
+        AC_MSG_WARN([Failed to find dbxml-X.Y shared library in $PTDBXML_LIB.
+    This means that the Ptolemy/Android HandSimDroid prototype will not run.])       
     fi
 
     if test "$PTDB_DIR" = ""; then
