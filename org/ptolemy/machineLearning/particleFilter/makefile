@@ -57,6 +57,8 @@ JSRCS = \
 	Particle.java  
 
 OTHER_FILES_TO_BE_JARED = \
+	ParticleFilterRangeIcon.xml \
+	particleFilter.xml \
 	ParticleFilterIcon.xml
 
 EXTRA_SRCS = $(JSRCS) $(OTHER_FILES_TO_BE_JARED)
@@ -68,7 +70,8 @@ MISC_FILES = test
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
-OPTIONAL_FILES = demo test\
+OPTIONAL_FILES = demo test \
+	'Optimizer$$1.class' \
 	'ParticleFilter$$1.class' \
 	'ParticleFilter$$Particle.class' \
 	'ParticleFilter$$VariableScope.class'

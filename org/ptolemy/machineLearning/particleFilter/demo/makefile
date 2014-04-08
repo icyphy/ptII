@@ -29,7 +29,9 @@
 # 						COPYRIGHTENDKEY
 ##########################################################################
 
-DIRS = CommunicationAnomalyDetectionAOM CommunicationAnomalyDetectionCQM
+DIRS = BlackBoxOptimization MultiRobotIntruderTracking	\
+	OpenLoopSingleRobotTargetLocalization			\
+	OpenLoopTwoRobotTargetLocalization ParticleFilterRange
 
 # Root of Ptolemy II directory
 ROOT =		../../../../..
@@ -47,7 +49,11 @@ PTPACKAGE = 	demo
 
 # Include these jars in PTAUXALLJAR
 PTAUXALLJARS = \
-	 
+	BlackBoxOptimization/BlackBoxOptimization.jar \
+	MultiRobotIntruderTracking/MultiRobotIntruderTracking.jar \
+	OpenLoopSingleRobotTargetLocalization/OpenLoopSingleRobotTargetLocalization.jar \
+	OpenLoopTwoRobotTargetLocalization/OpenLoopTwoRobotTargetLocalization.jar \
+	ParticleFilterRange/ParticleFilterRange.jar
 
 PTAUXALLJAR = $(PTPACKAGE).jar
 
