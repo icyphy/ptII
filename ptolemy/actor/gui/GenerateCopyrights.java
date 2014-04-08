@@ -115,6 +115,10 @@ public class GenerateCopyrights {
 
         _addIfPresent(copyrightsMap, "com.sun.jna.Pointer",
                 "lib/jna-license.htm");
+
+        _addIfPresent(copyrightsMap, "com.sleepycat.db.Environment",
+                "ptdb/lib/db-dbxml-license.htm");
+
         _addIfPresent(copyrightsMap, "diva.gui.ExtensionFileFilter",
                 "diva/gui/ExtensionFileFilter-license.htm");
 
@@ -824,6 +828,7 @@ public class GenerateCopyrights {
         {"chic", " ", " ", "Y", "Y", "BSD"},
         {"colt", "Y", " ", "Y", "Y", "BSD and others"},
         {"cup", " ", " ", "Y", " ", "Similar to BSD"},
+        {"db", " ", " ", "Y", " ", "Similar to GPL"},
         {"fmipp", " ", " ", "Y", " ", "FMUSDK: Similar to BSD"},
         {"fmusdk", " ", " ", "Y", " ", ""},
         {"g4ltl", " ", " ", "Y", "Y", "Apache License"},

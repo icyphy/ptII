@@ -1,9 +1,10 @@
-# Makefile for ptdb - A model database for Ptolemy
+# Makefile for ptdb - A model database for Ptolemy, lib directory
 #
-# @Version: $Id$
-# @Author: Christopher Brooks (makefile only)
+# @Authors: Christopher Brooks (makefile only), based on a file by Thomas M. Parks
 #
-# @Copyright (c) 2010 The Regents of the University of California.
+# @Version: $Id: makefile 60082 2010-12-26 19:07:30Z cxh $
+#
+# @Copyright (c) 2014 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -27,55 +28,53 @@
 #
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
-##########################################################################
 
-ME =		ptdb
+ME = 		ptdb/lib
 
-# $PTII/configure runs and looks for PTPOWERMOCK
-# $(PTPOWERMOCK_DIR) to test
-DIRS =		common database gui kernel lib $(PTPOWERMOCK_DIR)
+DIRS =
 
-# Root of Ptolemy II directory
-ROOT =		..
+# Root of the Ptolemy II directory
+ROOT =		../..
+
+# SaveModelToDBFrame imports kernel.bl.save.SaveModelManager, so
+# we need the DBXML_JARS
+# PTDBXML_JARS is set by configure
+CLASSPATH = 	$(ROOT)$(CLASSPATHSEPARATOR)$(PTDBXML_JARS)
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE = 	ptdb
-PTCLASSJAR =
+PTPACKAGE = 	lib
+PTCLASSJAR =	$(PTPACKAGE).jar
 
 # All the .class files necessary to run a Ptolemy II domain applet
-PTCLASSALLJARS = \
-	common/common.jar \
-	gui/gui.jar \
-	kernel/kernel.jar \
-	lib/lib.jar
+#PTCLASSALLJARS = \
+#	img/img.jar
 
-PTCLASSALLJAR = $(PTPACKAGE).jar
+#PTCLASSALLJAR = $(PTPACKAGE).jar
 
-EXTRA_SRCS =
+JSRCS =
+
+OTHER_FILES_TO_BE_JARED = db-dbxml-license.htm
+
+EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
-MISC_FILES = \
-	build \
-	common \
-	config \
-	demo \
-	doc \
-	gui \
-	kernel \
-	lib \
-	makefile \
-	test
+MISC_FILES =	test img
 
+# make checkjunk will not report OPTIONAL_FILES as trash
+# make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
-	'DBActorController$$OpenActorFromDB.class'
+	doc \
+	$(PTCLASSJAR)
 
-all: jclass $(EXTRA_SRCS)
-install: subinstall jars
+JCLASS = $(JSRCS:%.java=%.class)
 
-# Include rules for directories that contain only subdirectories.
+all: jclass
+install: jclass jars
+
+# Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk
