@@ -13,6 +13,7 @@ includes=/tmp/tree2ant.$$
 findit "*.c" > $includes
 findit "*.class" >> $includes
 findit "*.h" >> $includes
+findit "*.in" >> $includes
 findit "*.html" >> $includes
 findit "*.j" >> $includes
 findit "*.xml" >> $includes
