@@ -102,13 +102,13 @@ public class FMIScalarVariable {
                         + " in " + name + ", " + description);
             }
         }
-        if (fmiModelDescription.fmiVersion.compareTo("1.0") == 0) {
-            causality = Causality.internal;
-        } else {
-            if (fmiModelDescription.fmiVersion.compareTo("2.0") == 0) {
-                causality = Causality.local;
-            }
+
+        causality = Causality.internal;
+        // We have fmiVersion=1.0, 1.5 and 2.0
+        if (fmiModelDescription.fmiVersion.compareTo("2.0") >= 0) {
+            causality = Causality.local;
         }
+
         if (element.hasAttribute("causality")) {
             String attribute = element.getAttribute("causality");
 
