@@ -207,8 +207,8 @@ public class QSSVectorIntegrator extends TypedAtomicActor {
             }
             nextOutputValue[i] = _nextOutputValue(slope[i],
                     previousOutputValue[i], dq[i]);
-            // Save the next output time
-            previousStateUpdateTime[i] = nextOutputTime[i];
+            // Save the time when the state has been updated.
+            previousStateUpdateTime[i] = currentTime;
         }
         // Determine the time of the state which will fire the next event.
         _minNextCrossingTime();
