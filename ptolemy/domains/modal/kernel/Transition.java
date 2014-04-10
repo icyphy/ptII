@@ -53,6 +53,7 @@ import ptolemy.kernel.attributes.VersionAttribute;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
+import ptolemy.kernel.util.Location;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Nameable;
 import ptolemy.kernel.util.NamedObj;
@@ -60,6 +61,7 @@ import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.StreamListener;
 import ptolemy.kernel.util.StringAttribute;
 import ptolemy.kernel.util.Workspace;
+import ptolemy.moml.MoMLChangeRequest;
 
 ///////////////////////////////////////////////////////////////////
 //// Transition
@@ -270,39 +272,26 @@ public class Transition extends ComponentRelation {
             super.attributeChanged(attribute);
         }
 
-        if (attribute == annotation) {
-        	if (_fsmTransitionParameter != null && _fsmTransitionParameter.annotation != null) {
-	        	_fsmTransitionParameter.changedAnnotation = true;
-	        	_fsmTransitionParameter.annotation.setExpression(annotation.getExpression());
-        	}
-        } else if (attribute == outputActions && _debugging) {
+        if (attribute == outputActions && _debugging) {
             outputActions.addDebugListener(new StreamListener());
-            if (_fsmTransitionParameter != null && _fsmTransitionParameter.outputActions != null) {
-	            _fsmTransitionParameter.changedOutputActions = true;
-	            _fsmTransitionParameter.outputActions.setExpression(outputActions.getExpression());
-            }
         } else if (attribute == setActions && _debugging) {
             setActions.addDebugListener(new StreamListener());
-            if (_fsmTransitionParameter != null && _fsmTransitionParameter.setActions != null) {
-	            _fsmTransitionParameter.changedSetActions = true;
-	            _fsmTransitionParameter.setActions.setExpression(setActions.getExpression());
-            }
-        } else if (attribute == guardExpression) {
-        	if (_fsmTransitionParameter != null && _fsmTransitionParameter.guardExpression != null) {
-	        	_fsmTransitionParameter.changedGuardExpression = true;
-	        	_fsmTransitionParameter.guardExpression.setExpression(guardExpression.getExpression());
-        	}
         } else if (attribute == fsmTransitionParameterName) {
         	if (((BooleanToken)showFSMTransitionParameter.getToken()).booleanValue()) {
         		_getFSMTransitionParameter();
-        		_fsmTransitionParameter.hide(false);
-        		
+        		try {
+                    _fsmTransitionParameter.setName(((StringToken)fsmTransitionParameterName.getToken()).stringValue());
+                } catch (NameDuplicationException e) {
+                    throw new IllegalActionException(this, e.getCause(), e.getLocalizedMessage());
+                }
         	}
         } else if (attribute == showFSMTransitionParameter) {
         	if (((BooleanToken)showFSMTransitionParameter.getToken()).booleanValue()) {
         		_getFSMTransitionParameter();
-        		_fsmTransitionParameter.hide(false);
-        		_fsmTransitionParameter.setPersistent(true);
+        		if (_fsmTransitionParameter != null) {
+        		    _fsmTransitionParameter.hide(false);
+        		    _fsmTransitionParameter.setPersistent(true);
+        		}
         		showFSMTransitionParameter.setPersistent(true);
         		fsmTransitionParameterName.setPersistent(true);
         	} else {
@@ -813,6 +802,13 @@ public class Transition extends ComponentRelation {
                     + "guard expression of a transition.");
         }
     }
+    
+    /** Set the FSMTransitionParameter.
+     * @param parameter The parameter.
+     */
+    public void setFsmTransitionParameter(FSMTransitionParameter parameter) {
+        _fsmTransitionParameter = parameter;
+    }
 
     /** Return the source state of this transition.
      *  @return The source state of this transition.
@@ -1029,26 +1025,47 @@ public class Transition extends ComponentRelation {
 
     private void _getFSMTransitionParameter() throws IllegalActionException {
 		if (getContainer() != null) {
-	    	FSMTransitionParameter fsmtp = (FSMTransitionParameter) getContainer().getAttribute(fsmTransitionParameterName.getValueAsString());
-	    	try {
-		    	if (_fsmTransitionParameter != null && _fsmTransitionParameter != fsmtp) {
-					_fsmTransitionParameter.setContainer(null);
-		    	}
-		    	_fsmTransitionParameter = fsmtp;
-		    	if (_fsmTransitionParameter == null) {
-		        	try {
-						_fsmTransitionParameter = new FSMTransitionParameter(getContainer(), fsmTransitionParameterName.getValueAsString(), this);
-					} catch (NameDuplicationException e) {
-						throw new IllegalActionException(this, e.getCause(), e.getMessage());
-					}
-		        } 
-		    	if (_fsmTransitionParameter.getTransition() == null) {
-		    		_fsmTransitionParameter.setTransition(this);
-		    	}
-			} catch (NameDuplicationException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+	    	if (_fsmTransitionParameter == null) {
+	    	    _fsmTransitionParameter = (FSMTransitionParameter) getContainer().getAttribute(((StringToken)fsmTransitionParameterName.getToken()).stringValue());
+	    	    if (_fsmTransitionParameter != null) {
+	    	        try {
+                        _fsmTransitionParameter.setTransition(this);
+                    } catch (NameDuplicationException e) {
+                        throw new IllegalActionException(this, e.getCause(), e.getLocalizedMessage());
+                    }
+	    	    }
+	    	}    
+	    	if (_fsmTransitionParameter == null) {
+	    	    Location sourceStateLocation = (Location)sourceState().getAttribute("_location");
+                Location destinationStateLocation = (Location)destinationState().getAttribute("_location");
+        	    String moml = 
+        	            "<property name=\"" 
+                        + ((StringToken)fsmTransitionParameterName.getToken()).stringValue() 
+                        + "\" class=\"ptolemy.domains.modal.kernel.FSMTransitionParameter\">\n"
+                        + "    <property name=\"_hideName\" class=\"ptolemy.kernel.util.SingletonAttribute\"/>\n"
+                        + "    <property name=\"_icon\" class=\"ptolemy.vergil.icon.ValueIcon\">\n"
+                        + "        <property name=\"_color\" class=\"ptolemy.actor.gui.ColorAttribute\" value=\"{0.0, 0.0, 1.0, 1.0}\"/>\n"
+                        + "        <property name=\"displayWidth\" value=\"1000\"/>\n"
+                        + "        <property name=\"numberOfLines\" value=\"100\"/>\n"
+                        + "    </property>\n"
+                        + "    <property name=\"_location\" class=\"ptolemy.kernel.util.Location\" value=\"["
+                        + (int)(destinationStateLocation.getLocation()[0] + 
+                            (sourceStateLocation.getLocation()[0] - destinationStateLocation.getLocation()[0])/2)
+                        + ", "
+                        + (int)(destinationStateLocation.getLocation()[1] + 
+                            (sourceStateLocation.getLocation()[1] - destinationStateLocation.getLocation()[1])/2)
+                        + "]\"/>\n"
+                        + "    <property name=\"_smallIconDescription\" class=\"ptolemy.kernel.util.SingletonConfigurableAttribute\">\n"
+                        + "        <configure><svg><text x=\"20\" style=\"font-size:14; font-family:SansSerif; fill:blue\" y=\"20\">-P-</text></svg></configure>\n"
+                        + "    </property>\n"
+                        + "    <property name=\"_editorFactory\" class=\"ptolemy.vergil.toolbox.VisibleParameterEditorFactory\"/>\n"
+                        + "    <property name=\"_configurer\" class=\"ptolemy.actor.gui.TransitionEditorPaneFactory\"/>\n"
+                        + "</property>";
+
+                MoMLChangeRequest request = new MoMLChangeRequest(this, getContainer(),
+                        moml);
+                getContainer().requestChange(request);
+	        }
 		}
 	}
 

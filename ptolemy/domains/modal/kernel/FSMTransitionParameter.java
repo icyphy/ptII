@@ -31,12 +31,16 @@ package ptolemy.domains.modal.kernel;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.Collection;
+import java.util.List;
 
 import ptolemy.data.BooleanToken;
+import ptolemy.data.StringToken;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.SingletonParameter;
 import ptolemy.data.expr.StringParameter;
 import ptolemy.data.expr.Variable;
+import ptolemy.domains.modal.modal.ModalController;
+import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.AbstractSettableAttribute;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
@@ -47,6 +51,8 @@ import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.StringAttribute;
 import ptolemy.kernel.util.ValueListener;
 import ptolemy.kernel.util.Workspace;
+import ptolemy.moml.MoMLChangeRequest;
+import ptolemy.vergil.basic.AbstractBasicGraphModel;
 
 
 /** A parameter that contains FSM transition attributes. In large FSMs
@@ -80,27 +86,6 @@ public class FSMTransitionParameter extends AbstractSettableAttribute {
     public FSMTransitionParameter(NamedObj container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-    }
-
-    /** Construct a parameter with the given name contained by the specified
-     *  entity. The container argument must not be null, or a
-     *  NullPointerException will be thrown.  This parameter will use the
-     *  workspace of the container for synchronization and version counts.
-     *  If the name argument is null, then the name is set to the empty string.
-     *  The object is not added to the list of objects in the workspace
-     *  unless the container is null.
-     *  Increment the version of the workspace.
-     *  @param container The container.
-     *  @param name The name of the parameter.
-     *  @exception IllegalActionException If the parameter is not of an
-     *   acceptable class for the container.
-     *  @exception NameDuplicationException If the name coincides with
-     *   a parameter already in the container.
-     */
-    public FSMTransitionParameter(NamedObj container, String name, Transition transition)
-            throws IllegalActionException, NameDuplicationException {
-        super(container, name);
-        _transition = transition;
         _init();
     }
     
@@ -128,65 +113,8 @@ public class FSMTransitionParameter extends AbstractSettableAttribute {
     	return "";
     }
     
-    /** Set the transition that corresponds to the parameters.
-     * @param transition The transition.
-     * @throws IllegalActionException Can happen during initialization.
-     * @throws NameDuplicationException Can happen during initialization.
-     */
-    public void setTransition(Transition transition) throws IllegalActionException, NameDuplicationException {
-    	_transition = transition;
-    	_init();
-    }
-    
     public Transition getTransition() {
     	return _transition;
-    }
-    
-    /** True if annotation was changed via the annotation parameter in the transition.
-     */
-    public boolean changedAnnotation = false;
-    
-    /** True if outputActions was changed via the annotation parameter in the transition.
-     */
-    public boolean changedOutputActions = false;
-    
-    /** True if setAction was changed via the annotation parameter in the transition.
-     */
-    public boolean changedSetActions = false;
-    
-    /** True if guardExpression was changed via the annotation parameter in the transition.
-     */
-    public boolean changedGuardExpression = false;
-    
-    /** React to changes in attributes by updating the corresponding attributes
-     *  in the transition.
-     */
-    @Override
-    public void attributeChanged(Attribute attribute)
-    		throws IllegalActionException { 
-    	if (attribute == annotation) {
-	    	if (!changedAnnotation) {
-	    		_transition.annotation.setExpression(annotation.getExpression());
-	    	} 
-	    	changedAnnotation = false;
-    	} else if (attribute == outputActions) {
-    		if (!changedOutputActions) {
-	    		_transition.outputActions.setExpression(outputActions.getExpression());
-    		} 
-    		changedOutputActions = false;
-    	} else if (attribute == setActions) {
-    		if (!changedSetActions) {
-	    		_transition.setActions.setExpression(setActions.getExpression());
-    		} 
-    		changedSetActions = false;
-    	} else if (attribute == guardExpression) {
-    		if (!changedGuardExpression) {
-    			_transition.guardExpression.setExpression(guardExpression.getExpression());
-    		} 
-    		changedGuardExpression = false;
-    	} else {
-    		super.attributeChanged(attribute);
-    	}
     }
     
     /** Upon setting the name of this parameter change the corresponding
@@ -210,6 +138,14 @@ public class FSMTransitionParameter extends AbstractSettableAttribute {
      */
     public void hide(boolean hide) throws IllegalActionException {
     	Parameter _hide = (Parameter) getAttribute("_hide");
+        if (_hide == null) {
+            try {
+                _hide = new Parameter(this, "_hide");
+            } catch (NameDuplicationException e) {
+                // not going to happen
+                e.printStackTrace();
+            }
+        }
         _hide.setExpression("" + hide);
         Location location = (Location) getAttribute("_location");
         if (location != null) {
@@ -252,6 +188,17 @@ public class FSMTransitionParameter extends AbstractSettableAttribute {
 	public void removeValueListener(ValueListener listener) {
 		// nothing to do.
 	}
+	
+	
+	@Override
+	public void setContainer(NamedObj container) throws IllegalActionException,
+	        NameDuplicationException {
+	    super.setContainer(container);
+	    if (container == null && _transition != null) {
+	        _transition.setFsmTransitionParameter(null);
+	        _transition.showFSMTransitionParameter.setToken(new BooleanToken(false));
+	    }
+	}
 
 	/** Set visibility. Nothing to do.
 	 */
@@ -260,123 +207,41 @@ public class FSMTransitionParameter extends AbstractSettableAttribute {
 		// nothing to do, visibility is always not-editable.
 	}
 
-	/** Validate. Nothing to do.
+	/** Set the transition that corresponds to the parameters.
+     * @param transition The transition.
+     * @throws IllegalActionException Can happen during initialization.
+     * @throws NameDuplicationException Can happen during initialization.
+     */
+    public void setTransition(Transition transition) throws IllegalActionException, NameDuplicationException {
+    	_transition = transition;
+    	_init();
+    }
+
+    /** Validate. Nothing to do.
 	 */
 	@Override
 	public Collection validate() throws IllegalActionException {
 		return null;
 	}
-	
-	/** An annotation that describes the transition. If this is non-empty,
-     *  then a visual editor will be expected to put this annotation on
-     *  or near the transition to document its function. This is a string
-     *  that defaults to the empty string. Note that it can reference
-     *  variables in scope using the notation $name.
-     */
-    public StringParameter annotation;
-
-    /** Attribute specifying the guard expression.
-     */
-    public StringAttribute guardExpression = null;
-
-    /** The action commands that produce outputs when the transition is taken.
-     */
-    public StringAttribute outputActions;
-
-    /** The action commands that set parameters when the transition is taken.
-     *  By default, this is empty.
-     */
-    public StringAttribute setActions;
-
 
 	private void _init() throws IllegalActionException, NameDuplicationException  {
-		
-		if (getAttribute("_iconDescription") == null) {
-			_attachText("_iconDescription", "<svg>\n"
-		            + "<rect x=\"-10\" y=\"-10\" width=\"5\" height=\"5\" "
-		            + "style=\"fill:blue\"/></svg>");
-		}
-		
 		if (getAttribute("_hideName") == null) {
 			SingletonParameter hide = new SingletonParameter(this, "_hideName");
 		    hide.setToken(BooleanToken.TRUE);
 		    hide.setVisibility(Settable.EXPERT);
 		}
 		
-	    if (getAttribute("_icon") == null) {
-                try {
-                	//ValueIcon icon = new ValueIcon(this, "_icon");
-        	    	//icon.displayWidth.setExpression("1000");
-        	    	//icon.numberOfLines.setExpression("100");
-                	Attribute valueIcon = (Attribute) Class.forName("ptolemy.vergil.icon.ValueIcon").getConstructor(NamedObj.class, String.class).newInstance(this, "_icon");
-					((Parameter)valueIcon.getAttribute("displayWidth")).setExpression("1000");
-					((Parameter)valueIcon.getAttribute("numberOfLines")).setExpression("100");
-				} catch (ClassNotFoundException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				} catch (InstantiationException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				} catch (IllegalAccessException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				} catch (SecurityException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				} catch (NoSuchMethodException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				} catch (IllegalArgumentException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				} catch (InvocationTargetException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-	    }
+		hide(false);
+        setPersistent(true);
 	    
-	    Parameter _hide = (Parameter) getAttribute("_hide");
-	    if (_hide == null) {
-	    	_hide = new Parameter(this, "_hide");
+	    List<Transition> transitions = ((ModalController)getContainer()).relationList();
+	    for (Transition transition : transitions) {
+	        if (((StringToken)transition.fsmTransitionParameterName.getToken()).stringValue().equals(this.getName())) {
+	            _transition = transition;
+	            _transition.setFsmTransitionParameter(this);
+	            break;
+	        }
 	    }
-	    _hide.setExpression("true");
-	    
-	    
-	    annotation = (StringParameter) getAttribute(_transition.annotation.getName());
-	    if (annotation == null) {
-	    	annotation = new StringParameter(this, _transition.annotation.getName());
-	    	Variable variable = new Variable(annotation, "_textHeightHint");
-	        variable.setExpression("4");
-	        variable.setPersistent(false);
-	    }
-		annotation.setExpression(_transition.annotation.getExpression());
-		
-		outputActions = (StringAttribute) getAttribute(_transition.outputActions.getName());
-		if (outputActions == null) {
-			outputActions = new StringAttribute(this, _transition.outputActions.getName());
-			Variable variable = new Variable(outputActions, "_textHeightHint");
-	        variable.setExpression("4");
-	        variable.setPersistent(false);
-		}
-		outputActions.setExpression(_transition.outputActions.getExpression());
-		
-		setActions = (StringAttribute) getAttribute(_transition.setActions.getName());
-		if (setActions == null) {
-			setActions = new StringAttribute(this, _transition.setActions.getName());
-			Variable variable = new Variable(setActions, "_textHeightHint");
-	        variable.setExpression("4");
-	        variable.setPersistent(false);
-		}
-		setActions.setExpression(_transition.setActions.getExpression());
-		
-		guardExpression = (StringAttribute) getAttribute(_transition.guardExpression.getName());
-		if (guardExpression == null) {
-			guardExpression = new StringAttribute(this, _transition.guardExpression.getName());
-			Variable variable = new Variable(guardExpression, "_textHeightHint");
-	        variable.setExpression("4");
-	        variable.setPersistent(false);
-		}
-		guardExpression.setExpression(_transition.guardExpression.getExpression());
 	}
 
 	private Transition _transition;
