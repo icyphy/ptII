@@ -4,13 +4,13 @@
 <entity name="FMUTankOpen" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="10.0.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={577, 24, 1060, 858}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={195, 22, 1204, 871}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[826, 748]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[970, 761]">
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.1346060078216686">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0710200097183211">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{355.7524421471927, 312.4046673463581}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{440.17089843750006, 337.7819997151693}">
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="The source code for this FMU is in&#10;$PTII/ptolemy/actor/lib/fmi/fmus/tankOpen.&#10;To build the FMU file, do this:&#10;&#10;&gt; cd $PTII/ptolemy/actor/lib/fmi/fmus/tankOpen&#10;&gt; make&#10;&#10;The resulting .fmu file for model exchange will&#10;be in $PTII/ptolemy/actor/lib/fmi/fmus/tankOpen.fmu&#10;&#10;To copy the file to this directory, type&#10;&gt; cd $PTII/ptolemy/actor/lib/fmi/fmus/tankOpen&#10;&gt; make update&#10;">
@@ -23,7 +23,7 @@
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Author: Michael Wetter">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{125.0, -15.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[10.0, 580.0]">
         </property>
     </property>
     <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
@@ -38,6 +38,31 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="{45.0, 15.0}">
         </property>
     </property>
+    <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="To compare the result of the QSS integration&#10;versus the exact solution, plot the outputs&#10;of Test_T and &quot;Exact solution for temperature&quot;.&#10;There will be a difference visible as the selected&#10;quantum is rather large. For a higher precision&#10;solution, adjust the parameter quantum.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.RelativeLocation" value="[555.0, 490.0]">
+        </property>
+    </property>
+    <property name="quantum" class="ptolemy.data.expr.Parameter" value="0.2">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+            <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+            </property>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[10.0, 55.0]">
+        </property>
+    </property>
     <entity name="TIn" class="ptolemy.actor.lib.Const">
         <property name="value" class="ptolemy.data.expr.Parameter" value="20">
         </property>
@@ -48,15 +73,15 @@
             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{170.0, 325.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{170.0, 315.0}">
         </property>
     </entity>
     <entity name="QSSIntegrator" class="org.ptolemy.qss.QSSIntegrator">
         <property name="xInit" class="ptolemy.data.expr.Parameter" value="10">
         </property>
-        <property name="quantum" class="ptolemy.data.expr.Parameter" value="0.5">
+        <property name="quantum" class="ptolemy.data.expr.Parameter" value="quantum">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{170.0, 475.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{170.0, 470.0}">
         </property>
         <property name="_flipPortsHorizontal" class="ptolemy.data.expr.Parameter" value="true">
         </property>
@@ -71,7 +96,7 @@
             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{170.0, 395.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{170.0, 380.0}">
         </property>
     </entity>
     <entity name="mIn_flow" class="ptolemy.actor.lib.Const">
@@ -84,43 +109,43 @@
             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{165.0, 255.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{165.0, 265.0}">
         </property>
     </entity>
     <entity name="SingleEvent" class="ptolemy.actor.lib.SingleEvent">
         <property name="value" class="ptolemy.data.expr.Parameter" value="1.0">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{25.0, 255.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{25.0, 380.0}">
         </property>
     </entity>
     <entity name="Test_m_flow" class="ptolemy.actor.lib.Test">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1}">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1}">
         </property>
         <property name="tolerance" class="ptolemy.data.expr.Parameter" value="2.0E-11">
         </property>
         <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{520.0, 315.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{505.0, 255.0}">
         </property>
     </entity>
     <entity name="Test_T" class="ptolemy.actor.lib.Test">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{10.0, 10.5, 11.0, 11.5, 12.0, 12.5, 13.0, 13.5, 14.0, 14.5, 15.0, 15.5, 16.0, 16.5, 17.0, 17.5, 18.0, 18.5, 19.0, 19.5, 20.0}">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{10.0, 10.2, 10.4, 10.6, 10.8, 11.0, 11.2, 11.4, 11.6, 11.8, 12.0, 12.2, 12.4, 12.6, 12.8, 13.0, 13.2, 13.4, 13.6, 13.8, 14.0, 14.2, 14.4, 14.6, 14.8, 15.0, 15.2, 15.4, 15.6, 15.8, 16.0, 16.2, 16.4, 16.6, 16.8, 17.0, 17.2, 17.4, 17.6, 17.8, 18.0, 18.2, 18.4, 18.6, 18.8, 19.0, 19.2, 19.4, 19.6, 19.8, 20.0}">
         </property>
         <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.0E-8">
         </property>
         <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{520.0, 405.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[505.0, 530.0]">
         </property>
     </entity>
     <entity name="Test_pOut" class="ptolemy.actor.lib.Test">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{100000.0, 100000.0, 100000.0, 100000.0, 100000.0, 100000.0, 100000.0, 100000.0, 100000.0, 100000.0, 100000.0, 100000.0, 100000.0, 100000.0, 100000.0, 100000.0, 100000.0, 100000.0, 100000.0, 100000.0, 100000.0}">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{100000.0, 100000.0, 100000.0, 100000.0, 100000.0, 100000.0, 100000.0, 100000.0, 100000.0, 100000.0, 100000.0, 100000.0, 100000.0, 100000.0, 100000.0, 100000.0, 100000.0, 100000.0, 100000.0, 100000.0, 100000.0, 100000.0, 100000.0, 100000.0, 100000.0, 100000.0, 100000.0, 100000.0, 100000.0, 100000.0, 100000.0, 100000.0, 100000.0, 100000.0, 100000.0, 100000.0, 100000.0, 100000.0, 100000.0, 100000.0, 100000.0, 100000.0, 100000.0, 100000.0, 100000.0, 100000.0, 100000.0, 100000.0, 100000.0, 100000.0, 100000.0}">
         </property>
         <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.0E-4">
         </property>
         <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{520.0, 475.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{505.0, 380.0}">
         </property>
     </entity>
     <entity name="tankOpen" class="ptolemy.actor.lib.fmi.FMUImport">
@@ -130,7 +155,7 @@
         </property>
         <property name="persistentInputs" class="ptolemy.data.expr.Parameter" value="true">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{340.0, 335.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{340.0, 370.0}">
         </property>
         <property name="m" class="ptolemy.data.expr.Parameter" value="1.0">
         </property>
@@ -250,45 +275,67 @@
             </property>
         </port>
     </entity>
+    <entity name="TExact" class="ptolemy.actor.lib.Expression">
+        <display name="Exact solution for temperature"/>
+        <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="10.0+(20.0-10.0)*(1.0-exp(-0.1*time))">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+            </property>
+            <property name="displayHeight" class="ptolemy.data.expr.Parameter" value="10">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[410.0, 585.0]">
+        </property>
+        <port name="in" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+            </property>
+        </port>
+    </entity>
     <relation name="relation10" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
         </property>
-        <vertex name="vertex1" value="{85.0, 255.0}">
+        <vertex name="vertex1" value="{85.0, 380.0}">
         </vertex>
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;TIn.trigger&quot;,x=170.0,y=325.0}, tail={id=&quot;relation10.vertex1&quot;,x=85.0,y=255.0}, points={85.0,325.0} },{ head={id=&quot;pIn.trigger&quot;,x=170.0,y=395.0}, tail={id=&quot;relation10.vertex1&quot;,x=85.0,y=255.0}, points={85.0,395.0} },{ head={id=&quot;mIn_flow.trigger&quot;,x=165.0,y=255.0}, tail={id=&quot;relation10.vertex1&quot;,x=85.0,y=255.0}, points={} },{ head={id=&quot;SingleEvent.output&quot;,x=25.0,y=255.0}, tail={id=&quot;relation10.vertex1&quot;,x=85.0,y=255.0}, points={} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;TIn.trigger&quot;,x=170.0,y=315.0}, tail={id=&quot;relation10.vertex1&quot;,x=85.0,y=380.0}, points={85.0,315.0} },{ head={id=&quot;pIn.trigger&quot;,x=170.0,y=380.0}, tail={id=&quot;relation10.vertex1&quot;,x=85.0,y=380.0}, points={} },{ head={id=&quot;mIn_flow.trigger&quot;,x=165.0,y=265.0}, tail={id=&quot;relation10.vertex1&quot;,x=85.0,y=380.0}, points={85.0,265.0} },{ head={id=&quot;SingleEvent.output&quot;,x=25.0,y=380.0}, tail={id=&quot;relation10.vertex1&quot;,x=85.0,y=380.0}, points={} } }">
         </property>
     </relation>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;mIn_flow.output&quot;,x=165.0,y=255.0}, tail={id=&quot;tankOpen.inlet_m_flow&quot;,x=340.0,y=335.0}, points={230.0,255.0,230.0,315.0} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;mIn_flow.output&quot;,x=165.0,y=265.0}, tail={id=&quot;tankOpen.inlet_m_flow&quot;,x=340.0,y=370.0}, points={245.0,265.0,245.0,350.0} } }">
         </property>
     </relation>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;tankOpen.inlet_T&quot;,x=340.0,y=335.0}, tail={id=&quot;TIn.output&quot;,x=170.0,y=325.0}, points={} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;TIn.output&quot;,x=170.0,y=315.0}, tail={id=&quot;tankOpen.inlet_T&quot;,x=340.0,y=370.0}, points={230.0,315.0,230.0,360.0} } }">
         </property>
     </relation>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;tankOpen.inlet_p&quot;,x=340.0,y=335.0}, tail={id=&quot;pIn.output&quot;,x=170.0,y=395.0}, points={230.0,345.0,230.0,395.0} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;pIn.output&quot;,x=170.0,y=380.0}, tail={id=&quot;tankOpen.inlet_p&quot;,x=340.0,y=370.0}, points={} } }">
         </property>
     </relation>
     <relation name="relation4" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;tankOpen.T&quot;,x=340.0,y=335.0}, tail={id=&quot;QSSIntegrator.q&quot;,x=170.0,y=475.0}, points={245.0,355.0,245.0,425.0,85.0,425.0,85.0,475.0} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;QSSIntegrator.q&quot;,x=170.0,y=470.0}, tail={id=&quot;tankOpen.T&quot;,x=340.0,y=370.0}, points={85.0,470.0,85.0,420.0,230.0,420.0,230.0,390.0} } }">
         </property>
     </relation>
     <relation name="relation5" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;tankOpen.der_T_&quot;,x=340.0,y=335.0}, tail={id=&quot;QSSIntegrator.u&quot;,x=170.0,y=475.0}, points={440.0,355.0,440.0,475.0} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;QSSIntegrator.u&quot;,x=170.0,y=470.0}, tail={id=&quot;tankOpen.der_T_&quot;,x=340.0,y=370.0}, points={440.0,470.0,440.0,390.0} } }">
         </property>
     </relation>
     <relation name="relation6" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;tankOpen.outlet_p&quot;,x=340.0,y=335.0}, tail={id=&quot;Test_pOut.input&quot;,x=520.0,y=475.0}, points={455.0,345.0,455.0,475.0} } }">
-        </property>
-    </relation>
-    <relation name="relation7" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;tankOpen.outlet_T&quot;,x=340.0,y=335.0}, tail={id=&quot;Test_T.input&quot;,x=520.0,y=405.0}, points={470.0,325.0,470.0,405.0} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;Test_pOut.input&quot;,x=505.0,y=380.0}, tail={id=&quot;tankOpen.outlet_p&quot;,x=340.0,y=370.0}, points={} } }">
         </property>
     </relation>
     <relation name="relation8" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;tankOpen.outlet_m_flow&quot;,x=340.0,y=335.0}, tail={id=&quot;Test_m_flow.input&quot;,x=520.0,y=315.0}, points={} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;Test_m_flow.input&quot;,x=505.0,y=255.0}, tail={id=&quot;tankOpen.outlet_m_flow&quot;,x=340.0,y=370.0}, points={440.0,255.0,440.0,350.0} } }">
         </property>
+    </relation>
+    <relation name="relation9" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+        </property>
+        <vertex name="vertex1" value="[455.0, 485.0]">
+        </vertex>
     </relation>
     <link port="TIn.output" relation="relation2"/>
     <link port="TIn.trigger" relation="relation10"/>
@@ -300,14 +347,15 @@
     <link port="mIn_flow.trigger" relation="relation10"/>
     <link port="SingleEvent.output" relation="relation10"/>
     <link port="Test_m_flow.input" relation="relation8"/>
-    <link port="Test_T.input" relation="relation7"/>
+    <link port="Test_T.input" relation="relation9"/>
     <link port="Test_pOut.input" relation="relation6"/>
     <link port="tankOpen.inlet_m_flow" relation="relation"/>
     <link port="tankOpen.inlet_T" relation="relation2"/>
     <link port="tankOpen.inlet_p" relation="relation3"/>
     <link port="tankOpen.outlet_m_flow" relation="relation8"/>
-    <link port="tankOpen.outlet_T" relation="relation7"/>
+    <link port="tankOpen.outlet_T" relation="relation9"/>
     <link port="tankOpen.outlet_p" relation="relation6"/>
     <link port="tankOpen.T" relation="relation4"/>
     <link port="tankOpen.der_T_" relation="relation5"/>
+    <link port="TExact.in" relation="relation9"/>
 </entity>
