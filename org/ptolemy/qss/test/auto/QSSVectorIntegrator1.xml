@@ -10,7 +10,7 @@
     </property>
     <property name="stoppedThreshold" class="ptolemy.data.expr.Parameter" value="0.01">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={575, 358, 931, 641}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={509, 252, 927, 648}, maximized=false}">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
@@ -29,7 +29,7 @@
     <entity name="TimedPlotter" class="ptolemy.actor.lib.gui.TimedPlotter">
         <property name="legend" class="ptolemy.kernel.util.StringAttribute" value="q1,q2">
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={120, 271, 508, 355}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={90, 401, 502, 356}, maximized=false}">
         </property>
         <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 300]">
         </property>
@@ -43,7 +43,7 @@
 <xLabel></xLabel>
 <yLabel></yLabel>
 <xRange min="0.1" max="0.4"/>
-<yRange min="0.1" max="1.3000000000000003"/>
+<yRange min="0.1" max="2.000000000000001"/>
 <default stems="yes"/>
 </plot>?>
         </configure>
@@ -87,7 +87,7 @@
         </property>
     </entity>
     <entity name="Test" class="ptolemy.actor.lib.Test">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.9, 1.0, 1.1}">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0}">
         </property>
         <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
         </property>
@@ -95,7 +95,7 @@
         </property>
     </entity>
     <entity name="Test2" class="ptolemy.actor.lib.Test">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{1.1, 1.2, 1.3}">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{1.1, 1.2, 1.3, 1.8, 2.0}">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[450.0, 295.0]">
         </property>
