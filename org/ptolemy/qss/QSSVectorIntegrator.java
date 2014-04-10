@@ -327,55 +327,6 @@ public class QSSVectorIntegrator extends TypedAtomicActor {
         q = this.outputPortList();
     }
 
-    /*    *//** Create a Hashtable which has indexes as keys and output ports as 
-             *  values by checking whether the output port already first 
-             *  and if not making an output port whose name is derived from a 
-             *  corresponding input port.
-             *  The name of the output port is the name of the corresponding input port + "_q".
-             *  @exception IllegalActionException if the base class throws it.
-             *  @throws NameDuplicationException if the base class throws it.
-             */
-    /*
-    private void _createOutputPorts() throws IllegalActionException {
-     q = new Hashtable<Integer, TypedIOPort>();
-     for (int i = 0; i < dx.size(); i++) {
-         TypedIOPort port;
-         try {
-             port = (TypedIOPort) _getOutputPortByNameOrDisplayName(dx
-                     .get(i).getName() + "_q");
-             if (port == null) {
-                 port = new TypedIOPort(this, dx.get(i).getName() + "_q",
-                         false, true);
-                 port.setTypeEquals(BaseType.DOUBLE);
-             }
-             q.put(i, port);
-         } catch (NameDuplicationException e) {
-         }
-     }
-    }*/
-
-    /*    *//** Get the port by display name or, if the display name
-             *  is not set, then by name.  This is used to handle
-             *  variable names that have periods (".") in them.
-             *  @param portName The name of the port to find.  The name
-             *  might have a period in it, for example "foo.bar".
-             *  @return The port or null;
-             */
-    /*
-    private Port _getOutputPortByNameOrDisplayName(String portName) {
-     // RecordAssembler and RecordDisassembler use a similar design.
-     Port returnValue = null;
-     Iterator ports = this.outputPortList().iterator();
-     while (ports.hasNext()) {
-         Port port = (Port) ports.next();
-         if (port.getDisplayName().equals(portName)
-                 || port.getName().equals(portName)) {
-             return port;
-         }
-     }
-     return returnValue;
-    }*/
-
     /** Get a double array from the Parameter.
     * @param t the parameter which must be a type that can be converted to an ArrayToken
     * @param n the size of the parameter
