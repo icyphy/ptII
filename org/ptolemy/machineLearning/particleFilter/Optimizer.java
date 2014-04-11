@@ -34,13 +34,11 @@ import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.parameters.PortParameter;
 import ptolemy.data.ArrayToken;
-import ptolemy.data.DoubleMatrixToken;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.RecordToken;
 import ptolemy.data.StringToken;
 import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
-import ptolemy.data.expr.UtilityFunctions;
 import ptolemy.data.type.ArrayType;
 import ptolemy.data.type.BaseType;
 import ptolemy.data.type.RecordType;
@@ -48,12 +46,7 @@ import ptolemy.data.type.Type;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.kernel.util.InternalErrorException;
-import ptolemy.kernel.util.KernelException;
-import ptolemy.kernel.util.Locatable;
-import ptolemy.kernel.util.Location;
 import ptolemy.kernel.util.NameDuplicationException;
-import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.Workspace;
 import ptolemy.math.DoubleArrayMath;
@@ -224,7 +217,7 @@ public class Optimizer extends TypedAtomicActor {
         //initialized to be zeros.
         Calcfc calcfc = new Calcfc() {
             @Override
-            public double Compute(int n, int m, double[] x, double[] con) {
+            public double Compute(int n, int m, double[] x, double[] con, boolean[] terminate) {
                 // constraints on u
                 for(int i = 0; i < m; i++){
                     // u_i < K
@@ -301,7 +294,8 @@ public class Optimizer extends TypedAtomicActor {
         int nVariables   = u_tp1.length; //x-y components for n robots
         int nConstraints = _nRobots;
         
-        CobylaExitStatus status = Cobyla.FindMinimum(calcfc, nVariables, nConstraints, u_tp1, _rhobeg, _rhoend, iprint, maxfun);
+        boolean[] terminate = {false};
+        CobylaExitStatus status = Cobyla.FindMinimum(calcfc, nVariables, nConstraints, u_tp1, _rhobeg, _rhoend, iprint, maxfun, terminate);
         
         // send value to output.
         RecordToken[] outputRecords = new RecordToken[_nRobots];
@@ -342,8 +336,6 @@ public class Optimizer extends TypedAtomicActor {
     private double[] _py;
     private List<RecordToken> _robotLocations;
     private double _covariance;
-    private int _timeHorizon;
-    private int _initGuess;
     private int _nRobots;
     private String[] _labels;
     private Type[] _types;
