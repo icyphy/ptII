@@ -824,7 +824,7 @@ For example:
       <batchtest todir="${junit.output.dir}">
 	<fileset defaultexcludes="yes"
 		 dir="${basedir}">
-	  <!-- Include the long running tests. -->
+	  <!-- Include the longest running tests. -->
 	  <patternset refid="test.longest.includes" />
 	  <patternset refid="ptII.excludes" />
 	  <patternset refid="test.32bit.excludes" />
@@ -835,6 +835,7 @@ For example:
       </batchtest>
       <jvmarg value="-Dptolemy.ptII.dir=${basedir}" />
       <jvmarg value="-Dptolemy.ptII.batchMode=true" />
+      <jvmarg value="-XX:MaxPermSize=256m"/>
       <sysproperty key="net.sourceforge.cobertura.datafile" file="${basedir}/cobertura.ser" />
     </junit>
 
@@ -908,7 +909,7 @@ For example:
       <batchtest todir="${junit.output.dir}">
 	<fileset defaultexcludes="yes"
 		 dir="${basedir}">
-	  <!-- Include the long running tests. -->
+	  <!-- Include the longest running tests. -->
 	  <patternset refid="test.longest.includes" />
 	  <patternset refid="ptII.excludes" />
 	  <patternset refid="test.32bit.excludes" />
@@ -1074,6 +1075,8 @@ For example:
 	  <patternset refid="ptII.excludes" />
 	  <patternset refid="test.32bit.excludes" />
 	  <patternset refid="test.excludes" />
+	  <!-- Exclude the longest running tests -->
+	  <patternset refid="test.longest.excludes" />
 	</fileset>
       </batchtest>
       <formatter type="plain" usefile="off" />
@@ -1122,6 +1125,8 @@ For example:
 	  <patternset refid="ptII.excludes" />
 	  <patternset refid="test.32bit.excludes" />
 	  <patternset refid="test.excludes" />
+	  <!-- Exclude the long running tests -->
+	  <patternset refid="test.long.excludes" />
 	</fileset>
       </batchtest>
       <formatter type="plain" usefile="off" />
