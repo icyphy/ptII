@@ -1,0 +1,38 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="CompositeOptimizer" class="org.ptolemy.optimization.CompositeOptimizer">
+        <doc>Optimize the objective function provided in the inside composite, subject to constraints and precision/iteration limits</doc>
+        <property name="_configurer" class="ptolemy.actor.gui.EditorPaneFactory"/>
+        <property name="_configurer2" class="ptolemy.actor.gui.InsideEntityEditorPaneFactory"/>
+        <property name="_tableauFactory" class="ptolemy.actor.gui.LevelSkippingTableauFactory"/>
+        <entity name="OptimizerComposite" class="org.ptolemy.optimization.CompositeOptimizer$OptimizerComposite">
+          <property name="annotation" class="ptolemy.kernel.util.Attribute">
+           <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+           </property>
+           <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+              <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:blue">
+              Place a series of actors here that operate on the x input and output a scalar value f(x).
+              Connect the resulting output to the intermediateValue port. Additionally, provide 
+              actors that operate on x to provide an array of constraint evaluations. Connect the 
+              result to the "constraints" output port. A satisfied constraint is denoted by a nonnegative 
+              scalar value, i.e., if the resulting constraint array consist of all nonnegative scalars 
+              for a given x, x is considered to satisfy the constraints.
+              </text></svg></configure>
+           </property>
+           <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+              <configure>
+                <svg> 
+                    <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-A-</text>
+                </svg>
+              </configure>
+           </property>
+           <property name="_controllerFactory" class="ptolemy.vergil.basic.NodeControllerFactory">
+            </property>
+           <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
+           </property>
+           <property name="_location" class="ptolemy.kernel.util.Location" value="-5.0, 5.0">
+           </property>
+          </property>
+        </entity>
+</entity>
