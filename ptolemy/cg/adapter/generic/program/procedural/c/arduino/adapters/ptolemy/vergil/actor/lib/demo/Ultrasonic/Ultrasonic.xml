@@ -10,15 +10,21 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="{85.0, 55.0}">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={169, 31, 1309, 634}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={296, 189, 1309, 752}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1075, 524]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1075, 642]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{527.5, 252.0}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{527.5, 311.0}">
     </property>
     <property name="enableBackwardTypeInference" class="ptolemy.data.expr.Parameter" value="true">
+    </property>
+    <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Prototype of a model that someday might generate code for an Arduino Ultrasound kit.&#10;&#10;The Ultrasound.c file contains the C code we would like to generate.&#10;&#10;The C code has a loop where it sends 1s and 0s to a pin with microsecond delays.&#10;The C code then reads the values and sends it to the Serial port if it is in range.&#10;&#10;We would like to have a model that can run in regular Ptolemy, then generate regular C code, &#10;then generate AVR C code.&#10;&#10;Issues:&#10;1) How best to model a loop like in the C file?  Right now, we are just using triggers. &#10;We should probably use DE?  &#10;2) What actor should we use to simulate the C microsecond delay in SDF?&#10;3) We don't have a C version of the LineReader actor.  &#10;What regular Ptolemy actor could we use to simulate reading data from a pin?">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[65.0, 250.0]">
+        </property>
     </property>
     <entity name="Const" class="ptolemy.actor.lib.Const">
         <property name="value" class="ptolemy.data.expr.Parameter" value="false">
@@ -47,7 +53,7 @@
         </property>
     </entity>
     <entity name="Display" class="ptolemy.actor.lib.gui.Display">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={1067, 466, 484, 208}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={479, 374, 484, 208}, maximized=false}">
         </property>
         <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[484, 164]">
         </property>
@@ -68,19 +74,43 @@
         </property>
     </entity>
     <entity name="Display2" class="ptolemy.actor.lib.gui.Display">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={598, 421, 484, 208}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={1023, 355, 484, 208}, maximized=false}">
         </property>
         <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[484, 164]">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="{975.0, 195.0}">
         </property>
     </entity>
-    <entity name="Sequence" class="ptolemy.actor.lib.Sequence">
-        <property name="values" class="ptolemy.data.expr.Parameter" value="{1,10,20,30,10,-10,170,202,204,102,103}">
+    <entity name="LineReader" class="ptolemy.actor.lib.io.LineReader">
+        <property name="fileOrURL" class="ptolemy.actor.parameters.FilePortParameter" value="$PTII/ptolemy/cg/adapter/generic/program/procedural/c/arduino/adapters/ptolemy/vergil/actor/lib/demo/Ultrasonic/Ultrasonic.in">
         </property>
-        <property name="repeat" class="ptolemy.data.expr.Parameter" value="true">
+        <doc>Read one line at a time from a text file and output as a string</doc>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[435.0, 205.0]">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[415.0, 215.0]">
+    </entity>
+    <entity name="Expression" class="ptolemy.actor.lib.Expression">
+        <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="(distance &lt; 0 || distance &gt; 250) ? -1 : distance">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+            </property>
+            <property name="displayHeight" class="ptolemy.data.expr.Parameter" value="10">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[770.0, 195.0]">
+        </property>
+        <port name="distance" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+            </property>
+            <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
+            </property>
+        </port>
+    </entity>
+    <entity name="ExpressionToToken" class="ptolemy.actor.lib.conversions.ExpressionToToken">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[540.0, 195.0]">
         </property>
     </entity>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
@@ -109,6 +139,10 @@
     </relation>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
     </relation>
+    <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation6" class="ptolemy.actor.TypedIORelation">
+    </relation>
     <link port="Const.output" relation="relation2"/>
     <link port="Const2.output" relation="relation3"/>
     <link port="Const2.trigger" relation="relation2"/>
@@ -118,6 +152,10 @@
     <link port="Const3.output" relation="relation4"/>
     <link port="Const3.trigger" relation="relation3"/>
     <link port="Display2.input" relation="relation"/>
-    <link port="Sequence.enable" relation="relation4"/>
-    <link port="Sequence.output" relation="relation"/>
+    <link port="LineReader.output" relation="relation5"/>
+    <link port="LineReader.trigger" relation="relation4"/>
+    <link port="Expression.output" relation="relation"/>
+    <link port="Expression.distance" relation="relation6"/>
+    <link port="ExpressionToToken.input" relation="relation5"/>
+    <link port="ExpressionToToken.output" relation="relation6"/>
 </entity>
