@@ -1,3 +1,31 @@
+/* An actor that optimizes a function defined by the inner composite
+ * as an sdf model. 
+
+ Copyright (c) 2004-2013 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
+
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
+
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
+
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
+
+ */
 package org.ptolemy.optimization;
 
 import java.io.Writer;
@@ -33,7 +61,48 @@ import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.Workspace;
+///////////////////////////////////////////////////////////////////
+////CompositeOptimizer
 
+/**
+This actor implements a composite optimizer that optimizes a function 
+provided as an sdf model in the inner composite.
+To use the composite optimizer, construct an SDF model on the inside
+that operates on the x input to output two values: (i) an intermediate
+result, that is a function of x and possibly other inputs and (ii) a
+double array containing the values of the constraints, calculated for
+the specific x input.
+<p>
+In the case that the objective function is only a function of x, the
+trigger input should be used to start a new optimization round. 
+<p>
+The variable named "maxEvaluations" can be used to limit the number
+of evaluations. Specifically, the inside SDF model will be fired at most
+ <i>maxEvaluations</i> times. There may be several reasons it is fired
+ less than this number. The iteration may terminate due to any of the
+ following reasons: (i) convergence criteria met (ii) user requests 
+ termination (iii) the roundoff errors become damaging, especially if
+ the function is not smooth, and no optimal value can be found under
+ given constraints (iv) maximum number of evaluations are reached.
+<p>
+This actor is properly viewed as a "higher-order component" in
+that its contained actor is a parameter that specifies how to
+operate on input arrays.  It is inspired by the higher-order
+functions of functional languages, but unlike those, the
+contained actor need not be functional. That is, it can have
+state. 
+<p>
+Current implementation uses Cobyla as the solver. Cobyla implements
+the trust-region-reflective algorithm and performs a type of gradient
+descent optimization, ideal for objective functions that are non-convex
+and/or with unknown gradient.
+
+@author Ilge Akkaya
+@version
+@since Ptolemy II 10.0
+@Pt.ProposedRating Red (ilgea)
+@Pt.AcceptedRating  
+*/
 public class CompositeOptimizer extends MirrorComposite {
 
 
@@ -50,21 +119,56 @@ public class CompositeOptimizer extends MirrorComposite {
     }
 
 
-
+    /**
+     * The optimal value of x.
+     */
     public OptimizerPort optimalValue;
+    /**
+     * Trigger that starts optimization routine.
+     */
     public OptimizerPort trigger;
 
+    /**
+     * The output port that provides the evaluated constraint values at each
+     * evaluation of the objective function
+     */
     public static OptimizerPort constraints;
+    /**
+     * The optimization variable. 
+     */
     public static OptimizerPort x;
+    /** 
+     * Value of the objective function f(x) for a given value of x
+     */
     public static OptimizerPort intermediateValue;
 
-
+    /**
+     * The expert parameter that denotes the beginning step-size
+     */
     public Parameter rhoBeg;
+    /**
+     * The expert parameter that denotes the final step-size
+     */
     public Parameter rhoEnd;
+    /**
+     * Maximum number of function evaluations per iteration
+     */
     public Parameter maxEvaluations;
+    /**
+     * Optimization mode. ( min or max)
+     */
     public Parameter mode; 
+    /**
+     * Time horizon over which f(x) is optimized. Not implemented at the moment.
+     */
     public Parameter timeHorizon;
+    /**
+     * The dimension of optimization space. Also equal to the length of the optimization variable array, x.
+     */
     public Parameter dimensionOfOptimizationSpace;
+    /**
+     * Number of constraints checked at each evaluation. The expected type of constraints is a double array with length <i>numberOfConstraints</i>.
+     */
     public Parameter numberOfConstraints;
 
 
@@ -364,10 +468,6 @@ public class CompositeOptimizer extends MirrorComposite {
             xIn.setInput(true); 
 
         }
-
-
-
-
     }
     public class OptimizerDirector extends Director {
 
