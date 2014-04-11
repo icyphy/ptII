@@ -24,6 +24,8 @@
  */
 package com.cureos.numerics;
 
+import ptolemy.kernel.util.IllegalActionException;
+
 /**
  * Interface for calculation of objective function and constraints in COBYLA2 optimization.
  * 
@@ -36,8 +38,10 @@ public interface Calcfc {
      * @param m Number of constraints.
      * @param x Variable values to be employed in function and constraints calculation.
      * @param con Calculated function values of the constraints.
+     * @param terminate A boolean array that provides the terminate state. Only the first element of the array is read
      * @return Calculated objective function value.
+     * @throws IllegalActionException 
      */
-    double Compute(int n, int m, double[] x, double[] con);
+    double Compute(int n, int m, double[] x, double[] con, boolean[] terminate) throws IllegalActionException;
     
 }

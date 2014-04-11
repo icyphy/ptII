@@ -43,5 +43,10 @@ public enum CobylaExitStatus {
     /**
      * Size of rounding error is becoming damaging, terminating prematurely.
      */
-    DivergingRoundingErrors
+    DivergingRoundingErrors,
+    
+    /** 
+     * Termination requested.
+     */
+    TerminateRequested
 }

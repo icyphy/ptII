@@ -24,6 +24,8 @@
  */
 package com.cureos.numerics;
 
+import ptolemy.kernel.util.IllegalActionException;
+
 /**
  * Constrained Optimization BY Linear Approximation in Java.
  * 
@@ -57,8 +59,9 @@ public class Cobyla
      * 3 provides full output to the console.
      * @param maxfun Maximum number of function evaluations before terminating.
      * @return Exit status of the COBYLA2 optimization.
+     * @throws IllegalActionException 
      */
-    public static CobylaExitStatus FindMinimum(final Calcfc calcfc, int n, int m, double[] x, double rhobeg, double rhoend, int iprint, int maxfun)
+    public static CobylaExitStatus FindMinimum(final Calcfc calcfc, int n, int m, double[] x, double rhobeg, double rhoend, int iprint, int maxfun, boolean[] terminate) throws IllegalActionException
     {
         //     This subroutine minimizes an objective function F(X) subject to M
         //     inequality constraints on X, where X is a vector of variables that has
@@ -130,25 +133,25 @@ public class Cobyla
              * @return the double
              */
             @Override
-            public double Compute(int n, int m, double[] x, double[] con)
+            public double Compute(int n, int m, double[] x, double[] con, boolean[] terminate) throws IllegalActionException
             {
                 double[] ix = new double[n];
                 System.arraycopy(x, 1, ix, 0, n);
                 double[] ocon = new double[m];
-                double f = calcfc.Compute(n, m, ix, ocon);
+                double f = calcfc.Compute(n, m, ix, ocon, terminate);
                 System.arraycopy(ocon, 0, con, 1, m);
                 return f;
             }
         };                
 
-        CobylaExitStatus status = cobylb(fcalcfc, n, m, mpp, iox, rhobeg, rhoend, iprint, maxfun);
+        CobylaExitStatus status = cobylb(fcalcfc, n, m, mpp, iox, rhobeg, rhoend, iprint, maxfun, terminate);
         System.arraycopy(iox, 1, x, 0, n);
 
         return status;
     }
     
     private static CobylaExitStatus cobylb(Calcfc calcfc, int n, int m, int mpp, double[] x,
-        double rhobeg, double rhoend, int iprint, int maxfun)
+        double rhobeg, double rhoend, int iprint, int maxfun, boolean[] terminate) throws IllegalActionException
     {
         // N.B. Arguments CON, SIM, SIMI, DATMAT, A, VSIG, VETA, SIGBAR, DX, W & IACT
         //      have been removed.
@@ -216,6 +219,10 @@ public class Cobyla
         L_40:
         do
         {
+            if( terminate[0]){
+                status = CobylaExitStatus.TerminateRequested;
+                break L_40;
+            }
             if (nfvals >= maxfun && nfvals > 0)
             {
                 status = CobylaExitStatus.MaxIterationsReached;
@@ -224,7 +231,7 @@ public class Cobyla
 
             ++nfvals;
 
-            f = calcfc.Compute(n, m, x, con);
+            f = calcfc.Compute(n, m, x, con, terminate);
             resmax = 0.0; for (int k = 1; k <= m; ++k) resmax = Math.max(resmax, -con[k]);
 
             if (nfvals == iprint - 1 || iprint == 3)
@@ -664,6 +671,10 @@ public class Cobyla
                 if (iprint >= 1)
                     System.out.format("%nReturn from subroutine COBYLA because rounding errors are becoming damaging.%n");
                 break;
+            case TerminateRequested:
+                if(iprint >= 1)
+                    System.out.format("%nReturn from subroutine COBYLA because termination requested by user.%n");
+            
         }
         
         for (int k = 1; k <= n; ++k) x[k] = sim[k][np];
