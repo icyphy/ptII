@@ -51,7 +51,8 @@ JSRCS =
 
 OTHER_FILES_TO_BE_JARED = \
 	$(JSRCS) \
-	BlackBoxOptimization.xml  
+	BlackBoxOptimization.xml  \
+	RobotControlWithCompositeOptimizer.xml
 
 EXTRA_SRCS = \
 	$(OTHER_FILES_TO_BE_JARED) \
