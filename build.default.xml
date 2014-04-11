@@ -85,7 +85,7 @@
        See also the timeout= values in ptolemy/util/test/junit/*.java.
        Originally, 2400000.
        10000 was too short for ptolemy.cg.kernel.generic.program.procedural.java.modular.test.junit -->
-  <property name="timeout.short" value="100000" />
+  <property name="timeout.short" value="1000000" />
 
   <!-- The timeout in seconds for long running junit tests.
        See also the timeout= values in ptolemy/util/test/junit/*.java. -->
@@ -996,7 +996,7 @@ For example:
     <junit fork="yes"
 	   forkmode="perTest"
 	   jvm="ptolemy/util/test/junit/javachdir"
-	   maxmemory="2500m"
+	   maxmemory="${java.maxmemory.large}"
 	   printsummary="withOutAndErr"
 	   showoutput="yes"
 	   timeout="${timeout.longest}">
@@ -1020,6 +1020,7 @@ For example:
       </batchtest>
       <jvmarg value="-Dptolemy.ptII.dir=${basedir}" />
       <jvmarg value="-Dptolemy.ptII.batchMode=true" />
+      <jvmarg value="-XX:MaxPermSize=256m"/>
       <sysproperty key="net.sourceforge.cobertura.datafile" file="${basedir}/cobertura.ser" />
     </junit>
 
@@ -1088,7 +1089,7 @@ For example:
     <junit fork="yes"
 	   forkmode="perTest"
 	   jvm="ptolemy/util/test/junit/javachdir"
-	   maxmemory="2500m"
+	   maxmemory="${java.maxmemory}"
 	   printsummary="withOutAndErr"
 	   showoutput="yes"
 	   timeout="${timeout.short}">
@@ -1227,6 +1228,7 @@ For example:
       <formatter type="plain" usefile="off" />
       <jvmarg value="-Dptolemy.ptII.dir=${basedir}" />
       <jvmarg value="-Dptolemy.ptII.batchMode=true" />
+      <jvmarg value="-XX:MaxPermSize=256m"/>
     </junit>
   </target>
 
