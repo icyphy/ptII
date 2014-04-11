@@ -44,10 +44,12 @@ import ptolemy.actor.lib.Expression;
 import ptolemy.actor.lib.SetVariable;
 import ptolemy.actor.parameters.ParameterPort;
 import ptolemy.actor.parameters.PortParameter;
+import ptolemy.actor.parameters.SharedParameter;
 import ptolemy.data.ArrayToken;
 import ptolemy.data.DoubleMatrixToken;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.IntToken;
+import ptolemy.data.LongToken;
 import ptolemy.data.MatrixToken;
 import ptolemy.data.RecordToken;
 import ptolemy.data.StringToken;
@@ -236,6 +238,15 @@ public class ParticleFilter extends TypedCompositeActor {
      *  value equal to the current time as reported by the director.
      */
     public Parameter t;
+    
+    /** Boolean parameter to determine whether seeds are reset on each run.
+     */
+    public SharedParameter resetOnEachRun;
+
+    /** The seed to be used for random token generation, to evaluate
+     * probabilistic transitions between states.
+     */
+    public SharedParameter seed;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -311,9 +322,14 @@ public class ParticleFilter extends TypedCompositeActor {
         } else if (attribute == lowVarianceSampler) {
             _lowVarianceSampler = ((BooleanToken) lowVarianceSampler.getToken())
                     .booleanValue();
-        }
-
-        else {
+        }else if( attribute == resetOnEachRun)
+        {
+            _resetOnEachRun = ((BooleanToken)resetOnEachRun.getToken()).booleanValue();
+        }else if (attribute == seed){
+            long seedVal = ((LongToken)seed.getToken()).longValue();
+            _seed = seedVal;
+            _createRandomGenerator();
+        } else {
             super.attributeChanged(attribute);
         }
         // If any parameter changes, then the next preinitialize()
@@ -396,6 +412,10 @@ public class ParticleFilter extends TypedCompositeActor {
         }
         // Check parameters.
         _checkParameters();
+        
+        if(_resetOnEachRun || _random == null){
+            _createRandomGenerator();
+        }
 
         ArrayToken stateNames = (ArrayToken) stateVariableNames.getToken();
         int n = stateNames.length(); // number of state variables 
@@ -597,6 +617,16 @@ public class ParticleFilter extends TypedCompositeActor {
             }
         }
     }
+    private void _createRandomGenerator() throws IllegalActionException {
+
+        _seed = ((LongToken) seed.getToken()).longValue();
+        if (_seed == 0L) {
+            _seed = System.currentTimeMillis() + hashCode();
+        } else {
+            _seed = _seed + getFullName().hashCode();
+        }
+        _random = new Random(_seed);
+    }
 
     /**
      * Generate output particles and send to the particleOutput port
@@ -683,6 +713,16 @@ public class ParticleFilter extends TypedCompositeActor {
         //particleOutput.setTypeEquals(BaseType.DOUBLE);
         //setClassName("org.ptolemy.machineLearning.ParticleFilter");
         particleOutput.setTypeEquals(RecordType.EMPTY_RECORD);
+        
+        seed = new SharedParameter(this,"seed");
+        seed.setExpression("0L");
+        seed.setTypeEquals(BaseType.LONG);
+        seed.setVisibility(Settable.EXPERT);
+        
+        resetOnEachRun = new SharedParameter(this,"resetOnEachRun");
+        resetOnEachRun.setExpression("false");
+        resetOnEachRun.setVisibility(Settable.EXPERT);
+        resetOnEachRun.setTypeEquals(BaseType.BOOLEAN);
 
         stateEstimate = new TypedIOPort(this, "stateEstimate", false, true);
         stateEstimate.setTypeEquals(RecordType.EMPTY_RECORD);
@@ -705,8 +745,9 @@ public class ParticleFilter extends TypedCompositeActor {
         _firstIteration = true;
         particles = new Particle[Nparticles];
 
+        _createRandomGenerator() ;
+        
         _tokenMap = new HashMap<String, Token>();
-        _random = new Random(0);
 
         _parseTreeEvaluator = new ParseTreeEvaluator();
         _scope = new VariableScope();
@@ -924,6 +965,9 @@ public class ParticleFilter extends TypedCompositeActor {
 
     //TODO: Add seed for random number generation.
     private Random _random;
+    
+    /** Public seed for random number generation */
+    private long _seed;
 
     /** State-space size */
     private int _stateSpaceSize;
@@ -945,6 +989,8 @@ public class ParticleFilter extends TypedCompositeActor {
     private String[] _particleLabels;
 
     private Type[] _particleTypes;
+    
+    private boolean _resetOnEachRun;
 
     private String[] _stateLabels;
 

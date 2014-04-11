@@ -27,6 +27,7 @@
  */
 package org.ptolemy.machineLearning.particleFilter;
 import ptolemy.actor.TypedIOPort;
+import ptolemy.actor.parameters.PortParameter;
 import ptolemy.data.ArrayToken;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.StringToken;
@@ -113,7 +114,7 @@ public class ParticleFilterRange extends ParticleFilter {
     public Parameter z;
     public Parameter x_update;
     public Parameter y_update;
-    public Parameter observerPosition;
+    public PortParameter observerPosition;
     
     /** Initialize the class. */
     private void _init() throws IllegalActionException,
@@ -131,7 +132,7 @@ public class ParticleFilterRange extends ParticleFilter {
         
         // The parameter that contains the measurement expression
         z = new Parameter(this,"z");
-        z.setExpression("sqrt((x-observerPosition(0))^2 + (y-observerPosition(1))^2)");
+        z.setExpression("sqrt((x-observerPosition.x)^2 + (y-observerPosition.y)^2)");
         z.setVisibility(Settable.EXPERT); 
         
         x_update = new Parameter(this,"x_update");
@@ -146,8 +147,7 @@ public class ParticleFilterRange extends ParticleFilter {
         DoubleToken[] op = new DoubleToken[2];
         op[0] = new DoubleToken(0.0);
         op[1] = new DoubleToken(0.0);
-        observerPosition = new Parameter(this, "observerPosition");
-        observerPosition.setToken(new ArrayToken(BaseType.DOUBLE,op));
+        observerPosition = new PortParameter(this, "observerPosition");
         
         bootstrap.setVisibility(Settable.EXPERT); 
         lowVarianceSampler.setVisibility(Settable.EXPERT);
