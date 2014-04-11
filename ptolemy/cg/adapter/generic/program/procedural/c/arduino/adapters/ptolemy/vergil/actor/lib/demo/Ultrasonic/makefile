@@ -1,9 +1,9 @@
-# Makefile for Ptolemy Classic style Codegen
+# Makefile for Ptolemy Classic style Ultrasonic HC-SR04
 #
-# @Version: $Id: makefile 65763 2013-03-07 01:54:37Z cxh $
+# @Version: $Id: makefile 59244 2010-09-24 18:35:29Z cxh $
 # @Author: Christopher Brooks
 #
-# @Copyright (c) 2005-2013 The Regents of the University of California
+# @Copyright (c) 2014 The Regents of the University of California
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -31,12 +31,12 @@
 # 						COPYRIGHTENDKEY
 ##########################################################################
 
-ME =		ptolemy/cg/adapter/generic/program/procedural/c/arduino/adapters/ptolemy/vergil/actor/lib/demo
+ME =		ptolemy/cg/adapter/generic/program/procedural/c/arduino/adapters/ptolemy/vergil/actor/lib/demo/Ultrasonic
 
-DIRS =	    Life Ultrasonic
+DIRS =
 
 # Root of the Java directory
-ROOT =		../../../../../../../../../../../../../..
+ROOT =		../../../../../../../../../../../../../../..
 
 CLASSPATH =	$(ROOT)
 
@@ -45,36 +45,35 @@ CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE = 	demo
-PTCLASSJAR =
-
-PTCLASSALLJAR = $(PTPACKAGE).jar
-
-# Include the .class files from these jars in PTCLASSALLJAR
-# If you change this, change DIRS above
-PTCLASSALLJARS = \
-	Life/Life.jar \
-	Ultrasonic/Ultrasonic.jar
+PTPACKAGE = 	Ultrasonic
+PTCLASSJAR =	$(PTPACKAGE).jar
 
 # Keep this list alphabetized.
-JSRCS = 
+JSRCS =
 
-OTHER_FILES_TO_BE_JARED = 
+OTHER_FILES_TO_BE_JARED = \
+	Ultrasonic.xml
 
-EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
+EXTRA_SRCS =	$(JSRCS) \
+	$(OTHER_FILES_TO_BE_JARED)
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
 # Don't include demo or DIRS here, or else 'make sources' will run 'make demo'
-MISC_FILES = $(DIRS)
+MISC_FILES = ledTankTop
+
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
-OPTIONAL_FILES = \
+OPTIONAL_FILES =
 
 JCLASS = $(JSRCS:%.java=%.class)
 
 all: jclass
+	@echo "To run the demo, run 'make demo'"
+
+demo:
+	"$(PTII)/bin/vergil" Ultrasonic.xml
 
 install: all jars $(PTPACKAGE).jar $(PTPACKAGE_NATIVE_JAR)
 

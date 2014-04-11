@@ -3,7 +3,7 @@
 #include <Arduino.h>
 int led = 13;
 void setup() {
-    pinMode(led,output);
+    pinMode(led,OUTPUT);
 }
 #endif
 /**/

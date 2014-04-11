@@ -49,13 +49,19 @@ char* pbl_c_id = "$Id$";
 
 #include <stdio.h>
 #include <string.h>
+
+/* The Arduino does not have a memory.h file. */
+#ifndef PT_DOES_NOT_HAVE_MEMORY_H
 #include <memory.h>
+#endif
 
 #ifndef __APPLE__
 #include <malloc.h>
 #endif
 
+#ifndef PT_DOES_NOT_HAVE_TIME_H
 #include <time.h>
+#endif
 
 #include "pbl.h"
 
@@ -73,7 +79,9 @@ char* pbl_c_id = "$Id$";
 typedef struct pbl_memtrace_s
 {
     char *      tag;          /* tag used by calling function                */
+#ifndef PT_DOES_NOT_HAVE_TIME_H
     time_t      time;         /* time when the chunk of memory was requested */
+#endif
     void *      data;         /* pointer to data that was allocated          */
     size_t      size;         /* number of bytes allocated                   */
 
@@ -117,6 +125,7 @@ char * pbl_errstr = pbl_errbuf;
 
 #ifdef PBL_MEMTRACE
 
+#ifndef PT_DOES_NOT_HAVE_TIME_H
 /*
  * log a line for all memory chunks that are allocated for more than
  * 3 minutes, or if call at the end of the program, log all chunks known
@@ -201,6 +210,7 @@ void pbl_memtrace_out( int checktime )
         fclose( outfile );
     }
 }
+#endif /* PT_DOES_NOT_HAVE_TIME_H */
 
 static pblHashTable_t * _pblFreeHash = 0;
 static int pblTracingMemory = 0;
@@ -234,7 +244,9 @@ size_t size
     }
 
     memtrace->tag  = tag;
+#ifndef PT_DOES_NOT_HAVE_TIME_H
     memtrace->time = time( 0 );
+#endif
     memtrace->data = data;
     memtrace->size = size;
 
