@@ -52,8 +52,6 @@ import ptolemy.kernel.util.StringAttribute;
 import ptolemy.kernel.util.ValueListener;
 import ptolemy.kernel.util.Workspace;
 import ptolemy.moml.MoMLChangeRequest;
-import ptolemy.vergil.basic.AbstractBasicGraphModel;
-
 
 /** A parameter that contains FSM transition attributes. In large FSMs
  *  with long strings in actions, the graphical representation can be
@@ -61,7 +59,7 @@ import ptolemy.vergil.basic.AbstractBasicGraphModel;
  *  transitions in a parameter that can be moved independent from the 
  *  transition in vergil.
  *  @author Patricia Derler
- *  @version $Id: $
+ *  @version $Id$
  *  @since Ptolemy II 10.0
  *
  *  @Pt.ProposedRating Red (derler)
