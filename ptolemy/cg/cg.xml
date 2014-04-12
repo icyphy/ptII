@@ -9,8 +9,10 @@
         <property name="CCodeGenerator" class="ptolemy.cg.kernel.generic.program.procedural.c.CCodeGenerator"/>
         <entity name="CompiledCompositeActor" class="ptolemy.cg.lib.CompiledCompositeActor"/>
         <entity name="EmbeddedCodeActor" class="ptolemy.cg.lib.EmbeddedCodeActor">
+	  <property name="embeddedCode" class="ptolemy.kernel.util.StringAttribute" value="/***preinitBlock***/&#10;/**/&#10;&#10;/***initBlock***/&#10;/**/&#10;&#10;/***fireBlock***/&#10;// The following is ordinary C code, except for&#10;// the macro references to the input and output&#10;// ports.&#10;//$put(output, 2 * $get(input));&#10;/**/&#10;&#10;/***wrapupBlock***/&#10;/**/&#10;&#10;">
+          </property>
             <property name="_tableauFactory" class="ptolemy.vergil.toolbox.TextEditorTableauFactory">
-                <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="embeddedCCode"/>
+                <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="embeddedCode"/>
             </property>
         </entity>
         <property name="HTMLCodeGenerator" class="ptolemy.cg.kernel.generic.html.HTMLCodeGenerator"/>
