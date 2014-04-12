@@ -132,7 +132,7 @@ public class ParticleFilterRange extends ParticleFilter {
         
         // The parameter that contains the measurement expression
         z = new Parameter(this,"z");
-        z.setExpression("sqrt((x-observerPosition.x)^2 + (y-observerPosition.y)^2)");
+        z.setExpression("sqrt((x-observerPosition(0))^2 + (y-observerPosition(1))^2)");
         z.setVisibility(Settable.EXPERT); 
         
         x_update = new Parameter(this,"x_update");
