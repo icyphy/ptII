@@ -828,7 +828,7 @@ public class GenerateCopyrights {
         {"chic", " ", " ", "Y", "Y", "BSD"},
         {"colt", "Y", " ", "Y", "Y", "BSD and others"},
         {"cup", " ", " ", "Y", " ", "Similar to BSD"},
-        {"db", " ", " ", "Y", " ", "Similar to GPL"},
+        {"db", " ", " ", "Y", " ", "Similar to <font color=\"red\">like GPL</font>"}, // GPL!!
         {"fmipp", " ", " ", "Y", " ", "FMUSDK: Similar to BSD"},
         {"fmusdk", " ", " ", "Y", " ", ""},
         {"g4ltl", " ", " ", "Y", "Y", "Apache License"},
