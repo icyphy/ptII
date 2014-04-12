@@ -470,8 +470,14 @@ public class CompiledCompositeActor extends TypedCompositeActor {
         // Create the .class file.
         commands.add("javac -classpath . " + _sanitizedActorName + ".java");
 
-        // Create the .h file.
-        commands.add("javah -classpath . " + _sanitizedActorName);
+        // We don't have to create the .h file, we create the
+        // signatures by hand.
+        // commands.add("javah -classpath . " + _sanitizedActorName);
+
+
+        // Remove the .h file that was generated so that we avoid
+        // compilation problems.
+        commands.add("rm -f " + _sanitizedActorName + ".h");
 
         if (_debugging) {
             _debugAndSystemOut("Execute command: " + commands.get(0));
