@@ -1260,7 +1260,6 @@ public class Director extends Attribute implements Executable {
                     ActorExecutionAspect.class)) {
                 ActorExecutionAspect aspect = (ActorExecutionAspect) entity;
                 _executionAspects.add(aspect);
-                ((Actor) aspect).initialize();
             }
             _aspectsPresent = ((CompositeActor)getContainer()).entityList(CommunicationAspect.class).size() > 0;
         }
