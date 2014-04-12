@@ -109,6 +109,14 @@ public class TemplateParser {
      *  @param typeName A string naming the type.
      */
     public void addNewTypesUsed(String typeName) {
+        if (typeName.equals("Token")) {
+            new Exception("Warning, TemplateParser.addNewTypesUsed() passed \"" + typeName
+                    + "\", which is typically an error. "
+                    + " Typically, this means that the type is resolving to general. "
+                    + " Try toggling the toplevel enableBackwardTypeInference parameter by "
+                    + "right clicking on the background of the model and selecting configure."
+                          ).printStackTrace();
+        }
         _codeGenerator._newTypesUsed.add(typeName);
     }
 
