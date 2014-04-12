@@ -327,6 +327,11 @@ public class CompiledCompositeActor extends TypedCompositeActor {
                         ClassLoader classLoader = new URLClassLoader(urls);
                         classInstance = classLoader.loadClass(className);
 
+                    } catch (ClassNotFoundException ex) {
+                        throw new IllegalActionException(this, ex,
+                                "The class URL \"" + url + "\" for \""
+                                        + className + "\" could not be found.  "
+                                + "Make sure that the cg directory is not being deleted.");
                     } catch (MalformedURLException ex) {
                         throw new IllegalActionException(this, ex,
                                 "The class URL \"" + url + "\" for \""
