@@ -519,7 +519,7 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
             // only call fmiSet* between fmiInstantiateSlave() and
             // fmiInitializeSlave(). Same for inputs that have
             // variability==constant.
-            if (input.port.isKnown(0)) {
+            if (input.port.getWidth() > 0 && input.port.isKnown(0)) {
                 if (input.port.hasToken(0)) {
                     Token token = input.port.get(0);
                     _setFMUScalarVariable(input.scalarVariable, token);
@@ -853,12 +853,17 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
                 if (parameter != null) {
                     try {
                         _setFMUScalarVariable(scalar, parameter.getToken());
+                    } catch (IllegalActionException ex) {
+                        throw new IllegalActionException(this, "Failed to set "
+                                + scalar.name + " to " + parameter.getToken());
                     } catch (RuntimeException runtimeException) {
                         // FIXME: we are reusing supressWarnings here
                         // because the AMS model throws an exception
                         // while trying to set hx.hc.
                         if (!((BooleanToken) suppressWarnings.getToken()).booleanValue()) {
-                            throw runtimeException;
+                            throw new IllegalActionException(this, runtimeException, "Failed to set "
+                                    + scalar.name + " to " + parameter.getToken()
+                                    + ".  To ignore this exception, set the supressWarnings parameter.");
                         }
                     }
                 }
