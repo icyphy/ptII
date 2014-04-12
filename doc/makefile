@@ -441,6 +441,7 @@ PTMACHINE_LEARNING_PACKAGES = \
 	org.ptolemy.machineLearning.hmm \
 	org.ptolemy.machineLearning.hmmAOM \
 	org.ptolemy.machineLearning.particleFilter \
+	org.ptolemy.optimization
 
 # PTIDES packages
 PTIDES_PACKAGES = \

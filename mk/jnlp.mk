@@ -478,6 +478,7 @@ METROII_JARS = \
 FULL_10_0_JARS = \
 	com/cureos/cureos.jar \
 	org/ptolemy/machineLearning/machineLearning.jar \
+	org/ptolemy/optimization/optimization.jar \
 	$(METROII_JARS) \
 	ptolemy/domains/openmodelica/openmodelica.jar \
 	ptolemy/domains/scr/scr.jar \

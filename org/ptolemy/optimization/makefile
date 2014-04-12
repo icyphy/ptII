@@ -31,7 +31,7 @@
 
 ME =		org/ptolemy/optimization
 
-DIRS = 		driver type 
+DIRS =		demo
 
 # Root of the Ptolemy II directory
 ROOT =		../../..
@@ -44,15 +44,12 @@ include $(CONFIG)
 
 # Variables and rules used to create source file distributions
 PTPACKAGE = 	optimization
-PTVERSION =	
-PTCLASSJAR =
+PTCLASSJAR =	$(PTPACKAGE).jar
 
 # Include the .class files from these jars in PTCLASSALLJAR
-PTCLASSALLJARS = \
-		driver/driver.jar \
-		type/type.jar
+#PTCLASSALLJARS =
 
-PTCLASSALLJAR = 	fmi.jar
+#PTCLASSALLJAR = $(PTPACKAGE).jar
 
 # Java Sources, keep these alphabetical,
 JSRCS = \
@@ -65,11 +62,11 @@ OTHER_FILES_TO_BE_JARED = compositeOptimizer.xml \
 EXTRA_SRCS = $(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 
 # Non-source files such as README files and subdirectories
-MISC_FILES = driver fmu type
+MISC_FILES =
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
-OPTIONAL_FILES = \ 
+OPTIONAL_FILES =
 
 KRUFT =
 

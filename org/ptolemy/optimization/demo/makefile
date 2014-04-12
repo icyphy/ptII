@@ -34,7 +34,7 @@ ME =		org/ptolemy/optimization/demo
 DIRS =		SimpleOptimization
 
 # Root of the Ptolemy II directory
-ROOT =		../../../.. 
+ROOT =		../../../..
 
 CLASSPATH =	$(ROOT)
 
@@ -47,8 +47,8 @@ PTPACKAGE = 	demo
 PTCLASSJAR =
 
 # Include the .class files from these jars in PTCLASSALLJAR
-PTCLASSALLJARS = \ 
-
+PTCLASSALLJARS = \
+	SimpleOptimization/SimpleOptimization.jar
 
 
 PTCLASSALLJAR = $(PTPACKAGE).jar

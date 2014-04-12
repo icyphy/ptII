@@ -31,6 +31,7 @@
     <include name="org/mlc/mlc.jar" />
     <include name="org/ptolemy/fmi/fmi.jar" />
     <include name="org/ptolemy/machineLearning/machineLearning.jar" />
+    <include name="org/ptolemy/optimization.jar" />
     <include name="org/ptolemy/ptango/ptango.jar" />
     <include name="org/ptolemy/ptango/demo/demo.jar" />
     <include name="org/ptolemy/qss/qss.jar" />
@@ -3345,6 +3346,17 @@
       </fileset>
       <fileset dir="${basedir}">
 	<include name="org/ptolemy/machineLearning/particleFilter/demo/*/*.xml"/>
+      </fileset>
+    </jar>
+
+    <!-- org/ptolemy/optimization/optimization.jar -->
+    <jar defaultexcludes="yes"
+	 destfile="${basedir}/org/ptolemy/optimization/optimization.jar"
+	 >
+      <fileset dir="${basedir}">
+	<include name="org/ptolemy/optimization/*.class"/>
+	<include name="org/ptolemy/optimization/*.xml"/>
+	<include name="org/ptolemy/optimization/demo/*/*.xml"/>
       </fileset>
     </jar>
 
