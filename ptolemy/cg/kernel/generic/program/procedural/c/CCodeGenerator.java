@@ -1393,6 +1393,7 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
 
         String directoryCommons = directory + "commons/";
 
+
         System.out.println("CCodeGenerator._generateCode(): Deleting " + directory);
         if (!FileUtilities.deleteDirectory(directory)) {
             throw new IllegalActionException(this, "Failed to delete \""
@@ -3467,7 +3468,11 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
         functions.addAll(_typeFuncUsed);
         functions.addAll(_tokenFuncUsed);
 
-        //System.out.println("CCodeGenerator: all referenced functions: " + functions);
+        // If the code generator is invoked with "-verbosity N" and N is greater than 0,
+        // then debugging is enabled.
+        if (_debugging) {
+            System.out.println("CCodeGenerator: all referenced functions: " + functions);
+        }
         return functions;
     }
 
@@ -3496,7 +3501,13 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
         }
 
         types.addAll(_newTypesUsed);
-        //System.out.println("CCodeGenerator: all referenced types: " + types);
+
+        // If the code generator is invoked with "-verbosity N" and N is greater than 0,
+        // then debugging is enabled.
+        if (_debugging) {
+            _debug("CCodeGenerator: all referenced types: " + types);
+        }
+
         return types;
     }
 
