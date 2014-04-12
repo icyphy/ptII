@@ -425,8 +425,8 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
                         + inputPort.getName() + "_glob;");
             }
 
-            mainEntryCode
-                    .append(_eol + _sanitizedModelName + "_fire();" + _eol);
+            mainEntryCode.append(_eol + "(*(" + _sanitizedModelName + "->fire))("
+                    + _sanitizedModelName + ");");
         }
         return mainEntryCode.toString();
     }
@@ -1394,10 +1394,15 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
         String directoryCommons = directory + "commons/";
 
 
-        System.out.println("CCodeGenerator._generateCode(): Deleting " + directory);
-        if (!FileUtilities.deleteDirectory(directory)) {
-            throw new IllegalActionException(this, "Failed to delete \""
-                    + directory + "\"");                
+        if ((!_isTopLevel() &&  ((BooleanToken) generateEmbeddedCode.getToken()).booleanValue())) {
+            System.out.println("Not deleting " + directory
+                    + ", there might be .class files that we just generated.");
+        } else {
+            System.out.println("CCodeGenerator._generateCode(): Deleting " + directory);
+            if (!FileUtilities.deleteDirectory(directory)) {
+                throw new IllegalActionException(this, "Failed to delete \""
+                        + directory + "\"");                
+            }
         }
 
         // add the includes to the makefile
@@ -1466,6 +1471,15 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
         code.append(generateMainEntryCode());
 
         code.append(generateMainExitCode());
+
+        // If the container is not in the top level, we are generating code
+        // for the Java and C co-simulation.
+        if (!_isTopLevel()) {
+            codeMainH.append(_eol + "static jobjectArray input;" + _eol
+                    + "static jobjectArray tokensToAllOutputPorts;" + _eol
+                    + "static JNIEnv* env;" + _eol
+                    + "static jobject obj;" + _eol);
+        }
 
         // Preinitialize function
         codeMainH.append(_eol + "static int iterationCount;");
@@ -1737,7 +1751,10 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
         String sanitizedActorName = CodeGeneratorAdapter.generateName(actor);
         result.append(_eol + sanitizedActorName + " = CompositeActor_New();"
                 + _eol);
-        if (actor.getContainer() != null) {
+        // Only set the container if the container of the actor is non null
+        // and we are not at the top level and we are not generating embedded code.
+        if (actor.getContainer() != null
+                && (!_isTopLevel() &&  !((BooleanToken) generateEmbeddedCode.getToken()).booleanValue())) {
             CompositeActor container = (CompositeActor) actor.getContainer();
             while (!container.isOpaque()) {
                 container = (CompositeActor) container.getContainer();
@@ -2109,7 +2126,7 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
             codeContainerH.append("#include \"_SDFReceiver.h\"" + _eol);
         }
         codeContainerH.append("#include \"" + sanitizedContainerName + ".h\""
-                + _eol);
+                    + _eol);
         codeContainerH.append(includeFiles);
 
         // Free up space as we go.
@@ -2350,7 +2367,12 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
                     .getClass().getSimpleName();
             HCode.append("#include \"_" + directorType + ".h\"" + _eol);
         }
-        if (container.getContainer() != null) {
+
+        // Only include a .h file for the container if we are not at
+        // the top level and we are not generating embedded code.
+        //System.out.println("CCodeGenerator: _isTopLevel: " + _isTopLevel() + " generateEmbeddedCode: " + ((BooleanToken) ((Parameter)generateEmbeddedCode).getToken()).booleanValue());
+        if (container.getContainer() != null
+                && !_isTopLevel() &&  !((BooleanToken) ((Parameter)generateEmbeddedCode).getToken()).booleanValue()) {
             HCode.append("#include \""
                     + CodeGeneratorAdapter.generateName(container
                             .getContainer()) + ".h\"" + _eol);
