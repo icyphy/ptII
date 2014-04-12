@@ -1,5 +1,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
 <html>
+
   <head>
     <!--
         This file has pointers to tours of what's new in version 10.0
@@ -18,6 +20,7 @@
     </style>
   </head>
   <body>
+
     <h1>Tour of What's New in Version 10.0.devel</h1>
     See also <a href="whatsNew.htm">What's New in other versions</a>.
     <p>Contents:</p>
@@ -38,11 +41,13 @@
       <li><a href="#worksinprogress">Works in Progress</a></li>
       <li><a href="#bugs">Bug fixes</a></li>
     </ul>
+
     <h2><a name="highlights" id="highlights">Highlights</a></h2>
     <p>Ptolemy II 10.0 is the first complete release since Ptolemy II 8.0 and thus includes many changes.</p>
     <p>The key driving force for the release is to be a companion to the Ptolemy Book:<br>
       Claudius Ptolemaeus, Editor, "<a href="http://ptolemy.eecs.berkeley.edu/books/Systems/index.htm#in_browser">System Design, Modeling, and Simulation Using Ptolemy II</a>", Ptolemy.org, 2014. (included in the release as <a href="../../../doc/books/systems/PtolemyII_DigitalV1_02.pdf#in_browser"><code>$PTII/doc/books/systems/PtolemyII_DigitalV1_02.pdf</code></a>)</p>
     <p>Below are the highlights of this release.</p>
+
     <h3><a name="Ontologies" id="Ontologies">Ontologies</a></h3>
     The Ptolemy II Ontologies package extends the Ptolemy II type inference engine to provide an efficient and scalable framework for general static analysis of arbitrary properties on a Ptolemy model. The framework supports properties that are specified as concepts in an ontology graph that must be structured as a lattice. The usefulness of this framework is demonstrated with an example of a physical dimensions ontology. This ontology labels different signals as representing acceleration, velocity, position, and time. In a Ptolemy model of physical dynamics, the dimensional properties of input and output signals can be automatically inferred using the ontology analysis. Ptolemy model developers can use the ontologies package to define their own ontologies for structural and semantic property analysis. This can prevent interface connection problems during model construction by identifying when incompatible signals are erroneously connected. This work draws on concepts from compiler optimization static analysis techniques and applies them to Ptolemy actor-oriented models.
     <p>See:<br>
@@ -50,6 +55,7 @@
       Claudius Ptolemaeus, Editor, "<a href="http://ptolemy.eecs.berkeley.edu/books/Systems/index.htm#in_browser">System Design, Modeling, and Simulation Using Ptolemy II</a>", Ptolemy.org, 2014. (included in the release as <a href="../../../doc/books/systems/PtolemyII_DigitalV1_02.pdf#in_browser"><code>$PTII/doc/books/systems/PtolemyII_DigitalV1_02.pdf</code></a>)</p>
     <!-- a little space -->
     <p> </p>
+
     <h3><a name="ExportToWeb" id="ExportToWeb">Export to Web</a></h3>
     <p>Ptolemy II includes a flexible mechanism for creating web pages from models and for building web services. The more basic mechanism is the export to web , which simply makes a model available as a web page for browsing using a web browser. Such a web page provides easy access and documentation for models that archives both the structure of the models and the results of executing the models. It can be used to share information about models or their execution without requiring installation of any software, since an ordinary web browser is sufficient. More interestingly, the mechanism is extensible and customizable, allowing for creation of fairly sophisticated web pages. You can associate hyperlinks or actions defined in JavaScript with icons in a model. The customization can be done for individual icons in a model or for sets of icons in a model.</p>
     <p>See:<br>
@@ -57,12 +63,14 @@
       Claudius Ptolemaeus, Editor, "<a href="http://ptolemy.eecs.berkeley.edu/books/Systems/index.htm#in_browser">System Design, Modeling, and Simulation Using Ptolemy II</a>", Ptolemy.org, 2014. (included in the release as <a href="../../../doc/books/systems/PtolemyII_DigitalV1_02.pdf#in_browser"><code>$PTII/doc/books/systems/PtolemyII_DigitalV1_02.pdf</code></a>)</p>
     <!-- a little space -->
     <p> </p>
+
     <h3><a name="CGCodeGeneration" id="CGCodeGeneration">CG Code Generator</a></h3>
     <p>Ptolemy II 10.0 includes the "cg" code generator at <code>$PTII/ptolemy/cg</code>.</p>
     <p>We took the lessons learned from <code>$PTII/ptolemy/codegen</code> and applied them to cg. In particular, cg more easily supports multiple backends with less code duplication. The cg code generator is under active development, we are working on code generation for large systems. For details about cg, see <a href="../../../ptolemy/cg/README.html"><code>$PTII/ptolemy/cg/README.html</code></a>.</p>
     <p>Developers: Christopher Brooks, Dai Bui, Bert Rodiers, Stavros Tripakis</p>
     <!-- a little space -->
     <p> </p>
+
     <h3><a name="ModalModelUpdates" id="ModalModelUpdates">FSM/Modal Model updates</a></h3>
     <p>See:<br>
       Thomas Huining Feng, Edward A. Lee, Xiaojun Liu, Christian Motika, Reinhard von Hanxleden, and Haiyang Zheng, "<a href="http://ptolemy.eecs.berkeley.edu/books/Systems/chapters/FiniteStateMachines.pdf#in_browser">Finite State Machines</a>," and<br>
@@ -71,11 +79,13 @@
       Claudius Ptolemaeus, Editor, "<a href="http://ptolemy.eecs.berkeley.edu/books/Systems/index.htm#in_browser">System Design, Modeling, and Simulation Using Ptolemy II</a>", Ptolemy.org, 2014. (included in the release as <a href="../../../doc/books/systems/PtolemyII_DigitalV1_02.pdf#in_browser"><code>$PTII/doc/books/systems/PtolemyII_DigitalV1_02.pdf</code></a>)</p>
     <!-- a little space -->
     <p> </p>
+
     <h3><a name="Pthales" id="Pthales">Pthales Model of Computation</a></h3>
     Pthales is a multidimensional dataflow model of computation implemented in the heterogeneous modeling environment Ptolemy II. This report gives a tutorial of Pthales and a formal analysis of Pthales semantics.
     <p>Remi Barrere, Eric Lenormand, Dai Bui, Edward A. Lee, Christopher Shaver and Stavros Tripakis, "<a href="http://www.eecs.berkeley.edu/Pubs/TechRpts/2011/EECS-2011-32.pdf#in_browser">An Introduction to the Pthales Domain of Ptolemy II</a>," EECS Department, University of California, Berkeley, Technical Report No. UCB/EECS-2011-32, April 26, 2011.</p>
     <!-- a little space -->
     <p> </p>
+
     <h2><a name="demos" id="demos">New demonstrations</a></h2>
     <!-- grep "Only in" /tmp/pt78.diff | grep 10.0.devel | grep demo | awk '{if ($4 !~ /\./) {print "<a href=\"" $3 "/" $4}}' | sed 's@:/@/@'| sed 's@src/ptII10.0.devel/ptolemy@../..@' | sed 's@/\([^/]*$\)@/\1/\1.xml">\1</a>@' | sort 
 
@@ -83,6 +93,7 @@
          $PTII/adm/bin/updateNewDemos
 
       -->
+
     <h4>Building Controls Virtual Test Bed (BCVTB)<!-- lbl--></h4>
     <a href="https://gaia.lbl.gov/bcvtb#in_browser">Building Controls Virtual Test Bed (BCVTB)</a> demos:
     <ul><!-- Please keep the demos alphabetical -->
@@ -90,6 +101,7 @@
       <li><a href="../../../lbnl/demo/MatlabRoom/MatlabRoom.xml">Matlab Room</a></li>
       <li><a href="../../../lbnl/demo/SystemCommand/SystemCommand.xml">System Command</a></li>
     </ul>
+
     <h4>Electric Power System (EPS)<!-- eps--></h4>
     <ul><!-- Please keep the demos alphabetical -->
       <li><a href="../../demo/ElectricPowerSystem/ContactorTester.xml">ContactorTester</a></li>
@@ -104,11 +116,13 @@
       <li><a href="../../demo/ElectricPowerSystem/GeneratorRegulator.xml">GeneratorRegulator</a></li>
       <li><a href="../../demo/ElectricPowerSystem/GeneratorTester.xml">GeneratorTester</a></li>
     </ul>
+
     <h4>Execute Demos<!-- exec--></h4>
     <ul><!-- Please keep the demos alphabetical -->
       <li><a href="../../demo/ExecDemos/ExecDemos.xml">ExecDemos</a></li>
       <li><a href="../../demo/ExecDemos/RunDemos.xml">RunDemos</a></li>
     </ul>
+
     <h4>Fuel System<!-- fuel--></h4>
     <ul><!-- Please keep the demos alphabetical -->
       <li><a href="../../demo/FuelSystem/FuelSystem2Tanks.xml">2 Tank Model</a></li>
@@ -118,11 +132,13 @@
       <li><a href="../../demo/FuelSystem/FuelSystemSingleTankImproved.xml">Improved Tank Model</a></li>
       <li><a href="../../demo/FuelSystem/FuelSystem.xml">Simple Tank Model</a></li>
     </ul>
+
     <h4>Office Space<!-- space--></h4>
     <ul><!-- Please keep the demos alphabetical -->
       <li><a href="../../domains/space/demo/DOPCenter/DOPCenter.xml">UC Berkeley DOP Center Office Database</a><em>Requires password to run</em></li>
       <li><a href="../../domains/space/demo/DOPCenter/Placard.xml">UC Berkeley DOP Center Office Database Door Placards</a><em>Requires password to run</em></li>
     </ul>
+
     <h4>Probabilistic Models<!-- probabilisticModels--></h4>
     <ul><!-- Please keep the demos alphabetical -->
       <li><a href="../../demo/ProbabilisticModels/ChannelFaultModel.xml">Channel Fault Model</a></li>
@@ -132,16 +148,20 @@
       <li><a href="../../demo/ProbabilisticModels/HiddenMarkovModel.xml">Hidden Markov Model</a></li>
       <li><a href="../../demo/ProbabilisticModels/TwoStateMarkovChain.xml">Discrete-Time Markov Chain</a></li>
     </ul>
+
     <h3>Models of Computation</h3>
+
     <h3>Cellular Automata (CA)<!-- ca--></h3>
     <ul><!-- Please keep the demos alphabetical -->
       <li><a href="../../domains/ca/demo/Conway/Conway.xml">Conway's Game of Life</a></li>
       <li><a href="../../domains/ca/demo/ConwayRandom/ConwayRandom.xml">Conway's Game of Life Random</a></li>
     </ul>
+
     <h3>Component Interaction (CI)<!-- ci--></h3>
     <ul><!-- Please keep the demos alphabetical -->
       <li><a href="../../domains/ci/demo/Router/Router.xml">Router</a></li>
     </ul>
+
     <h3>Continuous<!-- continuous--></h3>
     <ul><!-- Please keep the demos alphabetical -->
       <li><a href="../../domains/continuous/demo/BouncingBall/BouncingBall.xml">Bouncing Ball</a> (Requires Java 3D, see the <a href="../../domains/gr/doc/main.htm">GR domain</a>)</li>
@@ -157,11 +177,13 @@
       <li><a href="../../domains/continuous/demo/TwoMachineInfiniteBusControl/TwoMachineInfiniteBusControl.xml">Distributed Generation Hybrid Control</a></li>
       <li><a href="../../domains/continuous/demo/TwoMachineInfiniteBusControl/TwoMachineInfiniteBusControl.xml">Two Machine Infinite Bus Control</a></li>
     </ul>
+
     <h3>Dynamic Dataflow (DDF)<!-- ddf--></h3>
     <ul><!-- Please keep the demos alphabetical -->
       <li><a href="../../domains/ddf/demo/HanoiTower/HanoiTower.xml">HanoiTower</a></li>
       <li><a href="../../domains/ddf/demo/OrderedMerge/OrderedMerge.xml">OrderedMerge</a></li>
     </ul>
+
     <h3>Discrete Event (DE)<!-- de--></h3>
     <ul><!-- Please keep the demos alphabetical -->
       <li><a href="../../domains/de/demo/ClockDrift/ClockDrift.xml">Clock Drift</a></li>
@@ -170,23 +192,28 @@
       <li><a href="../../domains/de/demo/TimingParadox/TimingParadox.xml">Timing Paradox</a></li>
       <li><a href="../../domains/de/demo/Trilateration/Trilateration.xml">Trilateration</a></li>
     </ul>
+
     <h3>Discrete Time (DE)<!-- dt--></h3>
     <ul><!-- Please keep the demos alphabetical -->
       <li><a href="../../domains/dt/demo/Eye/Eye.xml">Eye</a></li>
     </ul>
+
     <h3>Graphical (GR)<!-- gr--></h3>
     <ul><!-- Please keep the demos alphabetical -->
       <li><a href="../../domains/gr/demo/SolarSystem/SolarSystem.xml">SolarSystem</a></li>
     </ul>
+
     <h3>Modal Models<!-- modal--></h3>
     <ul><!-- Please keep the demos alphabetical -->
       <li><a href="../../domains/modal/demo/MultipleRuns/MultipleRuns.xml">MultipleRuns</a></li>
     </ul>
+
     <h3>Petrinet<!-- petrinet--></h3>
     <ul><!-- Please keep the demos alphabetical -->
       <li><a href="../../domains/petrinet/demo/PetriNetDiningPhilosophers/PetriNetDiningPhilosophers.xml">Petri Net Dining Philosophers</a></li>
       <li><a href="../../domains/petrinet/demo/PetriNetSimple/PetriNetSimple.xml">Petri Net Dining Philosophers</a></li>
     </ul>
+
     <h3>Kahn Process Networks (PN)<!-- pn--></h3>
     <ul><!-- Please keep the demos alphabetical -->
       <li><a href="../../domains/pn/demo/CounterMachine/CounterMachinePrelim.xml">Counter Machine Prelim</a></li>
@@ -195,10 +222,12 @@
       <li><a href="../../domains/pn/demo/NondeterministicMerge/NondeterministicMerge.xml">Nondeterministic Merge</a></li>
       <li><a href="../../domains/pn/demo/OrderedMerge/OrderedMerge.xml">Ordered Merge</a></li>
     </ul>
+
     <h3>Ptera<!-- ptera--></h3>
     <ul><!-- Please keep the demos alphabetical -->
       <li><a href="../../domains/ptera/demo/TrafficLight/TrafficLight.xml">TrafficLight</a></li>
     </ul>
+
     <h3>Pthales<!-- pthales--></h3>
     <ul><!-- Please keep the demos alphabetical -->
       <li><a href="../../domains/pthales/demo/AdaptiveBeamForming/AdaptiveBeamForming.xml">Adaptive Beam Forming</a></li>
@@ -206,6 +235,7 @@
       <li><a href="../../domains/pthales/demo/HelloWorld/HelloWorld.xml">HelloWorld</a></li>
       <li><a href="../../domains/pthales/demo/Illustrative/Illustrative.xml">Illustrative</a></li>
     </ul>
+
     <h3>Ptides<!-- ptides--></h3>
     <ul><!-- Please keep the demos alphabetical -->
       <li><a href="../../domains/ptides/demo/ActuatorPattern/ActuatorPattern.xml">Actuator triggering in Ptides</a></li>
@@ -220,6 +250,7 @@
       <li><a href="../../domains/ptides/demo/PrintingPress/PrintingPress.xml">Printing Press</a></li>
       <li><a href="../../domains/ptides/demo/PtidesSynchrophasor/PtidesSynchrophasor.xml">Synchrophasor</a></li>
     </ul>
+
     <h3>Syncronous Dataflow<!-- sdf--></h3>
     <ul><!-- Please keep the demos alphabetical -->
       <li><a href="../../domains/sdf/demo/Eye/Eye.xml">Eye Diagram</a></li>
@@ -229,21 +260,25 @@
       <li><a href="../../domains/sdf/demo/SoundSpectrum/SoundSpectrum.xml">Sound Spectrum</a></li>
       <li><a href="../../domains/sdf/optimize/demo/SDFOptimize/SDFOptimize.xml">SDF Optimize</a></li>
     </ul>
+
     <h3>Syncronous Reactive<!-- sr--></h3>
     <ul><!-- Please keep the demos alphabetical -->
       <li><a href="../../domains/sr/demo/GuardedCount/GuardedCount.xml">GuardedCount</a></li>
       <li><a href="../../domains/sr/demo/TrafficLight/TrafficLight.xml">TrafficLight</a></li>
     </ul>
+
     <h3>Task<!-- taskpt--></h3>
     <ul><!-- Please keep the demos alphabetical -->
       <li><a href="../../domains/taskpt/demo/SharedMemory/SharedMemory.xml">SharedMemory</a></li>
       <li><a href="../../domains/taskpt/demo/Task/Task.xml">Task</a></li>
     </ul>
+
     <h3>Priority-Driven Multitasking (tm)<!-- tm--></h3>
     <ul><!-- Please keep the demos alphabetical -->
       <li><a href="../../domains/tm/demo/Controllers/Controllers.xml">Two control loops</a></li>
       <li><a href="../../domains/tm/demo/FFT/FFT.xml">FFT Background Process</a></li>
     </ul>
+
     <h3>Wireless<!-- wireless--></h3>
     <ul><!-- Please keep the demos alphabetical -->
       <li><a href="../../domains/wireless/demo/AntennaPattern/TransmitAntennaPattern.xml">Antenna Pattern (Transmit)</a></li>
@@ -253,15 +288,19 @@
       <li><a href="../../domains/wireless/demo/TerrainModel/TerrainModel.xml">Terrain Model</a></li>
       <li><a href="../../domains/wireless/demo/WirelessSoundDetection/WirelessSoundDetection.xml">Wireless Sound Detection</a></li>
     </ul>
+
     <h2>Actor Demonstrations</h2>
+
     <h4>Graph Transformation (GT)<!-- gt--></h4>
     <ul><!-- Please keep the demos alphabetical -->
       <li><a href="../../actor/gt/demo/SinewaveOptimization/Sinewave.xml">Sinewave</a></li>
     </ul>
+
     <h4>Communication Actors<!-- comm--></h4>
     <ul><!-- Please keep the demos alphabetical -->
       <li><a href="../../actor/lib/comm/demo/ViterbiDecoder/ViterbiDecoder.xml">ViterbiDecoder</a></li>
     </ul>
+
     <h4>Functional Mockup Interface (FMI)<!-- fmi--></h4>
     <ul><!-- Please keep the demos alphabetical -->
       <li><a href="../../actor/lib/fmi/demo/FMUBouncingBall/FMUBouncingBall.xml">Functional Mock-up Unit (FMU) Bouncing Ball</a></li>
@@ -270,12 +309,14 @@
       <li><a href="../../actor/lib/fmi/demo/FMUStairs/FMUStairs.xml">Functional Mock-up Unit (FMU) Stairs</a></li>
       <li><a href="../../actor/lib/fmi/demo/FMUTwoBallCollision/FMUTwoBallCollision.xml">Functional Mock-up Unit (FMU) Two Ball Collision</a></li>
     </ul>
+
     <h4>Higher Order Components (HOC)<!-- hoc--></h4>
     <ul><!-- Please keep the demos alphabetical -->
       <li><a href="../../actor/lib/hoc/demo/ApplyFFT/ApplyFFT.xml">ApplyFFT</a></li>
       <li><a href="../../actor/lib/hoc/demo/ApplyFFT/ApplyFFT.xml">ApplyFFT</a></li>
       <li><a href="../../actor/lib/hoc/demo/MobileFunction/MobileFunction.xml">Mobile Function</a></li>
     </ul>
+
     <h4>Input Output Actors<!-- io--></h4>
     <ul><!-- Please keep the demos alphabetical -->
       <li><a href="../../actor/lib/io/demo/AppendToFile/AppendToFile.xml">Append To File</a>,</li>
@@ -286,16 +327,20 @@
       <li><a href="../../actor/lib/io/demo/ReadStdIn/ReadStdIn.xml">Read Std In</a>,</li>
       <li><a href="../../actor/lib/io/demo/StandardInput/StandardInput.xml">Standard Input</a></li>
     </ul>
+
     <h4>Python<!-- python--></h4>
     <ul><!-- Please keep the demos alphabetical -->
       <li><a href="../../actor/lib/python/demo/PythonScale/PythonScale.xml">Python Integration</a></li>
       <li><a href="../../actor/lib/python/demo/PythonScale/PythonScale.xml">Python Record Manipulation</a></li>
     </ul>
+
     <h4>Ptalon<!-- ptalon--></h4>
     <ul><!-- Please keep the demos alphabetical -->
       <li><a href="../../actor/ptalon/demo/EightChannelFFT/EightChannelFFT.xml">EightChannelFFT</a></li>
     </ul>
+
     <h4>New Demonstrations for other facilities</h4>
+
     <h3>Code Generation (CG)<!-- cg--></h3>
     <ul><!-- Please keep the demos alphabetical -->
       <li><a href="../../cg/lib/demo/CompiledCompositeActor/CompiledCompositeActor.xml">CompiledCompositeActor</a></li>
@@ -312,6 +357,7 @@
       <li><a href="../../cg/lib/demo/Scale/ScaleC.xml">Scale C</a></li>
       <li><a href="../../cg/lib/demo/Scale/ScaleJava.xml">Scale Java</a></li>
     </ul>
+
     <h3>Ontologies<!-- ontologies--></h3>
     <ul><!-- Please keep the demos alphabetical -->
       <li><a href="../../data/ontologies/demo/CarTracking/CarTracking.xml">CarTracking</a> (Dimensional analysis)</li>
@@ -320,10 +366,12 @@
       <li><a href="../../data/ontologies/demo/ConstNonconst/Const.xml">Simple Constant Analysis</a></li>
       <li><a href="../../data/ontologies/demo/MonotonicityAnalysis/MonotonicityAnalysis.xml">Expression Monotonicity Analysis</a></li>
     </ul>
+
     <h3>Type System<!-- type--></h3>
     <ul><!-- Please keep the demos alphabetical -->
       <li><a href="../../data/type/demo/Router/Router.xml">Router</a></li>
     </ul>
+
     <h3>Ptango (Internet of Things)<!-- ptango--></h3>
     <ul><!-- Please keep the demos alphabetical -->
       <li><a href="../../../org/ptolemy/ptango/demo/Cookies/Cookies.xml">Cookies</a></li>
@@ -338,15 +386,18 @@
       <li><a href="../../../org/ptolemy/ptango/demo/UCBPower/UCBPower.xml">UCBPower</a></li>
       <li><a href="../../../org/ptolemy/ptango/demo/WebServerDE/WebServerDE.xml">WebServerDE</a></li>
     </ul>
+
     <h3>Verification<!-- verification--></h3>
     <ul><!-- Please keep the demos alphabetical -->
       <li><a href="../../verification/demo/SimpleTrafficLight/SimpleTrafficLight.xml">Simple Traffic Light</a> (Requires NuSMV, see the <a href="../../verification/README.html">Verification documentation)</a></li>
       <li>Linear Temporal Logic: <a href="../../vergil/basic/imprt/g4ltl/demo/Arbitor/Arbitor.xml">Arbitor</a>, <a href="../../vergil/basic/imprt/g4ltl/demo/Numerical/Numerical.xml">Numerical</a>, <a href="../../vergil/basic/imprt/g4ltl/demo/PriorityArbitor/PriorityArbitor.xml">Priority Arbitor</a></li>
     </ul>
     See also the <a href="completeDemos.htm">Complete Demonstrations</a> page.
+
     <h2><a name="other" id="other">Other Key New Capabilities</a></h2>
     <ul>
       <li class="c1">
+
 	<h3>Features</h3>
 	<!--
             grep "Only in .*ptII10.0.devel" /tmp/pt.diffs | egrep -v '\.java$' | egrep -v '\.class' | egrep -v '\.jar' | egrep -v '/test/' | egrep -v ' test$' | egrep -v ' junit$' | egrep -v "/test: " | grep -v Icon.xml | grep -v README.txt | grep -v package.html
@@ -380,6 +431,7 @@
 	</ul>
       </li>
     </ul>
+
     <h2><a name="libraries" id="libraries">New and Enhanced Actor Libraries</a></h2>
     <!--
         grep "Only in" /tmp/pt.diffs | egrep "\.java$" | grep "Only in .*ptII10.0.devel" |  sort | sed 's@Only in .*ptII10.0.devel/@@' |  sed 's@/@.@g' | sed 's@.java@@' | awk -F : '{print "<li><a href=\"ptdoc:" $1 "." $2 "\">" $2 "</a>"}' | sed 's/\. /./' | sed 's/> />/'
@@ -398,8 +450,6 @@
 	  </li>
 	</ul>
       </li>
-      <li><em>Database actors</em></li>
-      <li><em>New Parameter:</em></li>
       <li><em>New Continuous actors</em>:
 	<ul>
 	  <li><a href="ptdoc:ptolemy.domains.continuous.lib.Derivative">Derivative</a></li>
@@ -429,7 +479,9 @@
       <li><a href="ptdoc:ptolemy.domains.sr.lib.NonStrictOrGate">NonStrictOrGate</a></li>
       <li><a href="ptdoc:ptolemy.domains.sr.lib.NonStrictXorGate">NonStrictXorGate</a></li>
     </ul>
+
     <h2><a name="features" id="features">Additional Features</a></h2>
+
     <h3>Aspect-Oriented Modeling</h3>
     <ul>
       <li><a href="../../../doc/codeDoc/ptolemy/actor/lib/aspect/package-summary.html"><code>$PTII/ptolemy/actor/lib/aspect</code></a></li>
@@ -443,6 +495,7 @@
       <li><a href="ptdoc:ptolemy.actor.ExecutionAspectListener">ExecutionAspectListener</a></li>
       <li><a href="ptdoc:ptolemy.actor.ExecutionAttributes">ExecutionAttributes</a></li>
     </ul>
+
     <h3>HandSimDroid</h3>
     In 2011, the HandSimDroid project developed a prototype that allows Ptolemy models to run under Android. Students from CMU (Anar Huseynov, Justin Killian, Ishwinder Singh) worked with Bosch researchers (Elizabeth Latronico, Charles Shelton) and Berkeley researchers to re-architect a portion of Ptolemy II so that models could run on a server and be displayed on a low-powered handset. The code for this effort is in
     <ul>
@@ -453,13 +506,14 @@
       <li>Classes were added to <a href="../../../doc/codeDoc/ptolemy/actor/gui/package-summary.html"><code>$PTII/ptolemy/actor/gui</code></a> and <a href="../../../doc/codeDoc/ptolemy/plot/package-summary.html"><code>$PTII/ptolemy/plot</code></a></li>
       <li class="c2">to support displaying on a remote machine.</li>
     </ul>
-    <h3>Functional Mockup Interface</h3>
+
     <h3>PDFAttribute</h3>
     <p>PDFAttribute to the Utilities-&gt;Decorative library in Vergil that allows you to include PDF in a Vergil diagram.</p>
     <p>PDFAttribute can be used to include Latex-formatted equations in Vergil diagrams, and get full print resolution when printing to PDF for use in papers, books, etc.</p>
     <p>PDFAttribute uses uses pdf-renderer, obtainable from <a href="https://pdf-renderer.dev.java.net/#in_browser">https://pdf-renderer.dev.java.net/</a>. This is a LGPL'd open source product from Sun.</p>
     <p>To use PDFAttribute and create equations, we use LatexIt (see <a href="http://www.apple.com/downloads/macosx/math_science/latexit.html#in_browser">http://www.apple.com/downloads/macosx/math_science/latexit.html</a>) for the Mac version) From LatexIt, we can create a PDF file with an equation.</p>
     <p>Then drag into my Vergil diagram a PDFAttribute, or select Edit Custom Icon and drag in a PDFIcon. Double click on that to select the PDF file.</p>
+
     <h3>Other new classes</h3>
     <ul>
       <li>ptolemy.actor
@@ -636,8 +690,18 @@
 	</ul>
       </li>
     </ul>
+
     <h2><a name="worksinprogress" id="worksinprogress">Works in Progress</a></h2>
     <ul>
+      <li>A prototype that import Functional Mockup Interface Functional Mockup Unit (FMU) files is
+	present.  FMI-1.0 cosimulation and model exchange are partially supported.  FMI-2.0 is
+	not yet released, so it is less supported.  To import a FMU, use File -&gt; Import -&gt Import FMU as a Ptolemy Actor.  See
+	<a href="ptdoc:ptolemy.actor.lib.fmi.FMUImport">FMUImport</a></li>
+
+      <li>The FMI++ library is a C++ utility package that offers high-level access and simulation functionalities on top of the FMI for Model Exchange specification. This includes for example automated numerical integration, advanced event handling or simulation rollbacks. 
+	<br/>FMI++ is present in the release as a prototype of what could be done. FMI++ was created by Austrian Institute of Technology GmbH.
+	<br/>See <a href="ptdoc:ptolemy.actor.lib.fmi.fmipp.FMUModelExchange">FMUModelExchange.</a></li>
+
       <li><a href="../../../doc/codeDoc/ptolemy/domains/scr/kernel/package-summary.html"><code>$PTII/ptolemy/domains/scr</code></a> - The Software Cost Reduction model of computation: Patricia Derler</li>
       <li>Machine Learning: Ilge Akkaya
 	<ul>
@@ -648,6 +712,7 @@
 	</ul>
       </li>
     </ul>
+
     <h2><a name="bugs" id="bugs">Bug fixes</a></h2>
     <p>For the current list of bugs, see <a href="http://chess.eecs.berkeley.edu/ptexternal/bugs.html#in_browser">Ptolemy II Bugs</a><br>
       and <a href="https://kepler-project.org/users/faq#section-UserFAQ-HowCanIReportBugs">Kepler Bugs</a>.</p>
