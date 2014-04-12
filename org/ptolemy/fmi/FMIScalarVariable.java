@@ -528,8 +528,10 @@ public class FMIScalarVariable {
                 fmiComponent, valueReferenceIntBuffer, new NativeSizeT(1),
                 valueBuffer })).intValue();
         if (fmiFlag > FMILibrary.FMIStatus.fmiWarning) {
-            throw new RuntimeException("Could not get or set " + name
-                    + " as a " + typeClass.getName() + ": " + fmiFlag);
+            throw new RuntimeException("Could not get or set \"" + name
+                    + "\" as a " + typeClass.getName() + ", it was of type \""
+                    + _typeName 
+                    + "\": " + FMULogUtilities.fmiStatusToString(fmiFlag));
         }
     }
 
