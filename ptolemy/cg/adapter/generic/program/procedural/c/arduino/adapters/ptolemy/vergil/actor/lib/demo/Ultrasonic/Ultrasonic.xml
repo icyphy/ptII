@@ -33,9 +33,9 @@
     <property name="enableBackwardTypeInference" class="ptolemy.data.expr.Parameter" value="true">
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Prototype of a model that someday might generate code for an Arduino Ultrasound kit.&#10;&#10;The Ultrasound.c file contains the C code we would like to generate.&#10;&#10;The C code has a loop where it sends 1s and 0s to a pin with microsecond delays.&#10;The C code then reads the values and sends it to the Serial port if it is in range.&#10;&#10;We would like to have a model that can run in regular Ptolemy, then generate regular C code, &#10;then generate AVR C code.&#10;&#10;The SDF Director has period set to 0.05, which is 50ms. and syncronizeToRealTime set to true.&#10;&#10;The code generator has generatorPackageList set to generic.program.procedural.c.arduino&#10;&#10;To generate the code:&#10;$PTII/bin/ptcg -generatorPackageList generic.program.procedural.c.arduino $PTII/ptolemy/cg/adapter/generi\&#10;c/program/procedural/c/arduino/adapters/ptolemy/vergil/actor/lib/demo/Ultrasonic/Ultrasonic.xml&#10;&#10;Notes are at http://chess.eecs.berkeley.edu/ptexternal/wiki/Main/ArduinoYun">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Prototype of a model that someday might generate code for an Arduino Ultrasound kit.&#10;&#10;The model only works in code generation, not in simulation.&#10;&#10;The Ultrasound.c file contains the C code we would like to generate.&#10;&#10;The C code has a loop where it sends 1s and 0s to a pin with microsecond delays.&#10;The C code then reads the values and sends it to the Serial port if it is in range.&#10;&#10;We would like to have a model that can run in regular Ptolemy, then generate regular C code, &#10;then generate AVR C code.&#10;&#10;To generate the code:&#10;$PTII/bin/ptcg -generatorPackageList generic.program.procedural.c.arduino $PTII/ptolemy/cg/adapter/generi\&#10;c/program/procedural/c/arduino/adapters/ptolemy/vergil/actor/lib/demo/Ultrasonic/Ultrasonic.xml&#10;&#10;Notes are at http://chess.eecs.berkeley.edu/ptexternal/wiki/Main/ArduinoYun">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-10.0, 180.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[60.0, 330.0]">
         </property>
     </property>
     <property name="CCodeGenerator" class="ptolemy.cg.kernel.generic.program.procedural.c.CCodeGenerator">
@@ -44,6 +44,22 @@
         <property name="generatorPackageList" class="ptolemy.data.expr.StringParameter" value="generic.program.procedural.c.arduino">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="{695.0, 65.0}">
+        </property>
+    </property>
+    <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="The SDF Director has period set to 0.05, which is 50ms.&#10;and synchronizeToRealTime set to true.&#10;&#10;&#10;">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{35.0, 95.0}">
+        </property>
+    </property>
+    <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="To see the code, look inside this actor.&#10;">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.RelativeLocation" value="[40.0, 40.0]">
+            <property name="relativeTo" class="ptolemy.kernel.util.StringAttribute" value="EmbeddedCodeActor">
+            </property>
+            <property name="relativeToElementName" class="ptolemy.kernel.util.StringAttribute" value="entity">
+            </property>
         </property>
     </property>
     <entity name="EmbeddedCodeActor" class="ptolemy.cg.lib.EmbeddedCodeActor">
@@ -55,7 +71,7 @@
             <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="embeddedCode">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[350.0, 130.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[105.0, 200.0]">
         </property>
         <property name="DecoratorAttributesFor_CCodeGenerator2" class="ptolemy.kernel.util.DecoratorAttributes">
             <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="CCodeGenerator">
@@ -81,10 +97,6 @@
             <property name="period" class="ptolemy.data.expr.Parameter" value="0.0">
             </property>
             <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="false">
-            </property>
-            <property name="startTime" class="ptolemy.data.expr.Parameter">
-            </property>
-            <property name="stopTime" class="ptolemy.data.expr.Parameter">
             </property>
             <property name="Scheduler" class="ptolemy.domains.sdf.kernel.SDFScheduler">
                 <property name="constrainBufferSizes" class="ptolemy.data.expr.Parameter" value="constrainBufferSizes">
