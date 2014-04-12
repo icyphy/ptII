@@ -1,3 +1,5 @@
+#include <Arduino.h>
+
 /*
   HC-SR04 Ping distance sensor:
   VCC to arduino 5v 
@@ -37,7 +39,7 @@ void loop() {
     delayMicroseconds(10); 
  
     digitalWrite(trigPin, LOW);
-    duration = pulseIn(echoPin, HIGH);
+    duration = pulseIn(echoPin, HIGH, /*timeout*/ 10L);
  
     //Calculate the distance (in cm) based on the speed of sound.
     distance = duration/58.2;
