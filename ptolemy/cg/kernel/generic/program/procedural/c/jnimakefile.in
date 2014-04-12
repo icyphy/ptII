@@ -34,8 +34,8 @@ PTLIB = $(PTJNI_SHAREDLIBRARY_PREFIX)$(MODELNAME).$(PTJNI_SHAREDLIBRARY_SUFFIX)
 PTCFLAGS = -D__int64="long long" -Wall  -std=c99 -ggdb
 
 # We need -lm so we can get floor() for ftoi() 
-$(PTLIB): $(MODELNAME)_Main.c 
-	@PTCGCompiler@ $(PTCFLAGS) $(PTJNI_NO_CYGWIN) $(PTCGINCLUDES) $(PTJNI_SHAREDLIBRARY_LDFLAG) $(PTJNI_GCC_SHARED_FLAG) -o $(PTLIB) @modelName@_Main.c $(PTCG_CFILES) -lm $(PTCGLIBRARIES)
+$(PTLIB): $(PTCG_CFILES)
+	@PTCGCompiler@ $(PTCFLAGS) $(PTJNI_NO_CYGWIN) $(PTCGINCLUDES) $(PTJNI_SHAREDLIBRARY_LDFLAG) $(PTJNI_GCC_SHARED_FLAG) -o $(PTLIB) $(PTCG_CFILES) -lm $(PTCGLIBRARIES)
 
 # Each subdirectory must supply rules for building sources it contributes
 ./build/%.o: ./src/%.c
