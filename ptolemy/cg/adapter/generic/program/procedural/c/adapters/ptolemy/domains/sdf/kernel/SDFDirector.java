@@ -823,7 +823,9 @@ public class SDFDirector
             if (_portNumber == 0) {
                 int numberOfOutputPorts = container.outputPortList().size();
 
-                //code.append("jobjectArray tokensToAllOutputPorts;" + _eol);
+                // Needed by $PTII/bin/vergil $PTII/ptolemy/cg/lib/demo/Scale/ScaleC.xml to run
+                // EmbeddedCodeActors in simulation mode.
+                code.append("jobjectArray tokensToAllOutputPorts;" + _eol);
                 code.append("jclass "
                         + _objClass
                         + " = "
