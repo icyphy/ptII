@@ -196,6 +196,9 @@ public class ContinuousIntegrator extends TypedAtomicActor implements
             _tentativeState = ((DoubleToken) initialState.getToken())
                     .doubleValue();
             _state = _tentativeState;
+            if (_debugging) {
+            	_debug("initialState changed. Updating state to " + _state);
+            }
         } else {
             super.attributeChanged(attribute);
         }
@@ -449,9 +452,10 @@ public class ContinuousIntegrator extends TypedAtomicActor implements
     }
 
     /** Return false. This actor can produce some outputs even the
-     *  inputs are unknown. This actor is crucial at breaking feedback
+     *  derivative input is unknown. This actor is crucial at breaking feedback
      *  loops during simulation.
-     *
+     *  The impulse and initialState ports, have to be known for prefire to
+     *  return true (if they are connected).
      *  @return False.
      */
     public boolean isStrict() {
