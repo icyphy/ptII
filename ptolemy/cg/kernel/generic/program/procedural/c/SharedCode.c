@@ -3,7 +3,20 @@
 // Constants.
 #define MISSING 0
 
+// boolean for AVR.  A mess.  I'm sorry...
+#ifndef __AVR__ 
 typedef unsigned char boolean;
+#else
+
+#ifndef  __cplusplus
+typedef unsigned char boolean;
+#else
+typedef uint8_t boolean;
+#endif
+
+#endif
+
+
 typedef char* string;
 
 /* Infinity is a valid Ptolemy identifier. */
