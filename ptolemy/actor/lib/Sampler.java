@@ -1,4 +1,4 @@
-/* Generate discrete events by periodically sampling a CT signal.
+/* Generate discrete events by sampling a CT signal.
 
  Copyright (c) 1998-2013 The Regents of the University of California.
  All rights reserved.
