@@ -547,14 +547,17 @@ typedef struct PblLinkedNode_s
 /**
  * The generic list type.
  */
+
+#ifndef __cplusplus
 typedef PblCollection PblList;
+#endif
 
 /*
  * The linked list type.
  */
 typedef struct PblLinkedList_s
 {
-    PblList genericList;  /* The generic list definition of the linked list  */
+    PblCollection genericList;  /* The generic list definition of the linked list  */
 
     PblLinkedNode * head;       /* The head of list of all nodes             */
     PblLinkedNode * tail;       /* The tail of list of all nodes             */
@@ -566,7 +569,7 @@ typedef struct PblLinkedList_s
  */
 typedef struct PblArrayList_s
 {
-    PblList genericList;  /* The generic list definition of the array list   */
+    PblCollection genericList;  /* The generic list definition of the array list   */
 
     /* The array of all pointers known                                       */
     unsigned char ** pointerArray;
@@ -1908,7 +1911,7 @@ extern void free( void *);
 
 #ifdef __cplusplus
 }
-#endif
+#endif 
 
 #endif
 
