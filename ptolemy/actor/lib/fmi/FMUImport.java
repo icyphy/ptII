@@ -165,6 +165,13 @@ import com.sun.jna.ptr.PointerByReference;
  * used in as the name of the FMU scalar variable instead of the port
  * name. This is useful in case FMU scalar variable names contain a
  * period, because periods are not allowed in port names.</p>
+ * <p>
+ * Note that if you use an instance of this class with the ContinuousDirector,
+ * you should in general use model exchange, not cosimulation. This is
+ * because the ContinuousDirector may advance time by calling fmiDoStep,
+ * and then later reject a step size. The only exception is that if the
+ * FMU implements rollback (via fmiGetFMUState and fmiSetFMUState), then
+ * it can be used with the ContinuousDirector.
  *
  * @author Christopher Brooks, Michael Wetter, Edward A. Lee
  * @version $Id$
