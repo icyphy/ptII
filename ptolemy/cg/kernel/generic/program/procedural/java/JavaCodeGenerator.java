@@ -2543,8 +2543,13 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
 
                     if (((BooleanToken) generateInSubdirectory.getToken())
                             .booleanValue()) {
-                        directoryName = directoryName.substring(directoryName
-                                .indexOf('/'));
+			if (directoryName.indexOf('/') >= 0) {
+			    directoryName = directoryName.substring(directoryName
+								    .indexOf('/'));
+			} else {
+			    System.out.println("Warning: JavaCodeGenerator: directoryName \""
+					       + directoryName + "\" has no slashes?");
+			}
                     }
                     File directory = new File(codeDirectoryFile, directoryName);
                     if (!directory.isDirectory()) {
