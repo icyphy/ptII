@@ -126,11 +126,14 @@ public class ParticleFilterRange extends ParticleFilter {
         stateVariableNames.setToken(new ArrayToken(BaseType.STRING, stateNames));
         stateVariableNames.setVisibility(Settable.EXPERT);
         
-        // The input port for range measurements
+        observerPosition = new PortParameter(this, "observerPosition");
+        observerPosition.setExpression("{0.0,0.0}");
+
+        // The input port for range measurements.
         z_m = new TypedIOPort(this,"z_m", true, false );
         z_m.setTypeEquals(BaseType.DOUBLE);
         
-        // The parameter that contains the measurement expression
+        // The parameter that contains the measurement expression.
         z = new Parameter(this,"z");
         z.setExpression("sqrt((x-observerPosition(0))^2 + (y-observerPosition(1))^2)");
         z.setVisibility(Settable.EXPERT); 
@@ -143,11 +146,6 @@ public class ParticleFilterRange extends ParticleFilter {
         
         measurementCovariance.setExpression("[5.0]");
         prior.setExpression("{random()*20-10,random()*20-10}");
-        
-        DoubleToken[] op = new DoubleToken[2];
-        op[0] = new DoubleToken(0.0);
-        op[1] = new DoubleToken(0.0);
-        observerPosition = new PortParameter(this, "observerPosition");
         
         bootstrap.setVisibility(Settable.EXPERT); 
         lowVarianceSampler.setVisibility(Settable.EXPERT);
