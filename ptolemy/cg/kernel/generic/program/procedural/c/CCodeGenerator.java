@@ -2111,9 +2111,19 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
         codeContainerH.append(generateCopyright());
         codeContainerC.append(generateCopyright());
 
+
+        codeContainerC.append(_eol + "#ifdef __cplusplus" + _eol
+                + "extern \"C\" {" + _eol
+                + "#endif" + _eol + _eol);
+
         // Appending the includes
         codeContainerC.append("#include \"" + sanitizedActorName + ".h\""
                 + _eol);
+
+        codeContainerC.append(_eol + "#ifdef __cplusplus" + _eol
+                + "}" + _eol
+                + "#endif" + _eol + _eol);
+
         String sanitizedContainerName = CodeGeneratorAdapter
                 .generateName(container);
         codeContainerH.append("#include \"_ptTypes.h\"" + _eol);
@@ -2132,6 +2142,10 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
         // Free up space as we go.
         includeFiles = null;
 
+        codeContainerH.append(_eol + "#ifdef __cplusplus" + _eol
+                + "extern \"C\" {" + _eol
+                + "#endif" + _eol + _eol);
+
         // Appending the name of the actor
         codeContainerH.append(comment("Actor declaration"));
         codeContainerH.append(constructorDeclarationCode);
@@ -2139,10 +2153,17 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
         codeContainerH.append(actorDefinition.toString());
         codeContainerH.append(comment("end actor declaration"));
 
+
         // Appending the variable declaration
         codeContainerC.append(comment("Variable declaration code"));
         codeContainerC.append(variableDeclarationCode);
         codeContainerC.append(comment("end variable declaration code"));
+
+
+        codeContainerC.append(_eol + "#ifdef __cplusplus" + _eol
+                + "extern \"C\" {" + _eol
+                + "#endif" + _eol + _eol);
+
         variableDeclarationCode = null;
 
         // Appending the ports declaration
@@ -2192,9 +2213,17 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
         prefireMethodBodyCode = null;
         prefireMethodExitCode = null;
 
+        codeContainerC.append(_eol + "#ifdef __cplusplus" + _eol
+                + "}" + _eol
+                + "#endif" + _eol + _eol);
+
         // Appending the fire code
         codeContainerC.append(fireMethodBodyCode);
         fireMethodBodyCode = null;
+
+        codeContainerC.append(_eol + "#ifdef __cplusplus" + _eol
+                + "extern \"C\" {" + _eol
+                + "#endif" + _eol + _eol);
 
         // Appending the postfire code
         codeContainerC.append(postfireMethodEntryCode);
@@ -2212,8 +2241,17 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
         wrapupMethodBodyCode = null;
         wrapupMethodExitCode = null;
 
+        codeContainerC.append(_eol + "#ifdef __cplusplus" + _eol
+                + "}" + _eol
+                + "#endif" + _eol + _eol);
+
+        codeContainerH.append(_eol + "#ifdef __cplusplus" + _eol
+                + "}" + _eol
+                + "#endif" + _eol + _eol);
+
         // Closing the ifdef
-        codeContainerH.append(_eol + "#endif");
+        codeContainerH.append(_eol + "#endif /* "
+                + sanitizedActorName.toUpperCase(Locale.getDefault()) + "_H */");
 
         // Final pass on the code
         codeContainerH = _finalPassOverCode(codeContainerH);
@@ -2339,6 +2377,10 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
         //+ container.getClassName());
         //}
 
+        CCode.append("struct " + actorType + "* " + sanitizedContainerName
+                + ";" + _eol);
+
+        CCode.append(portsDefinition.toString());
         CCode.append(_eol + "struct " + actorType + "* "
                 + sanitizedContainerName + "_New() {" + _eol);
 
@@ -2388,9 +2430,14 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
                     + CodeGeneratorAdapter.generateName(containedActor)
                     + ".h\"" + _eol);
         }
-        HCode.append("struct " + actorType + "* " + sanitizedContainerName
+
+        HCode.append(_eol + "#ifdef __cplusplus" + _eol
+                + "extern \"C\" {" + _eol
+                + "#endif" + _eol + _eol);
+
+        HCode.append("extern struct " + actorType + "* " + sanitizedContainerName
                 + ";" + _eol);
-        HCode.append("struct " + actorType + "* " + sanitizedContainerName
+        HCode.append("extern struct " + actorType + "* " + sanitizedContainerName
                 + "_New();" + _eol);
         if (((CompositeActor) container).getDirector() instanceof SDFDirector) {
             HCode.append(_eol + "void " + sanitizedContainerName
@@ -2428,7 +2475,13 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
         HCode.append(portAccessorsDeclaration);
         CCode.append(portAccessors);
 
-        HCode.append("#endif" + _eol);
+        HCode.append(_eol + "#ifdef __cplusplus" + _eol
+                + "}" + _eol
+                + "#endif" + _eol + _eol);
+
+        HCode.append("#endif /* "
+                + sanitizedContainerName.toUpperCase(Locale.getDefault())
+                + " */" + _eol);
 
         // Final pass on the code
         HCode = _finalPassOverCode(HCode);
