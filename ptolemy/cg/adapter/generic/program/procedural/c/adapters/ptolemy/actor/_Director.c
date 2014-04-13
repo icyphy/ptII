@@ -196,13 +196,20 @@ bool Director_TransferInputs(struct Director* director, struct IOPort* port) {
                 if (i < port->getWidthInside(port)) {
                         if (port->hasToken(port, i)) {
                                 Token* t = port->get(port, i);
-
+                                if (t == NULL) {
+                                    fprintf(stderr, "%s: %d: Null token port %p?\n", __FILE__, __LINE__, port);
+                                    return false;
+                                }
                                 port->sendInside(port, i, t);
                                 wasTransferred = true;
                         }
                 } else {
                         if (port->hasToken(port, i)) {
-                                port->get(port, i);
+                                Token * t = port->get(port, i);
+                                if (t == NULL) {
+                                    fprintf(stderr, "%s: %d: Null token port %p?\n", __FILE__, __LINE__, port);
+                                    return false;
+                                }
                         }
                 }
         }

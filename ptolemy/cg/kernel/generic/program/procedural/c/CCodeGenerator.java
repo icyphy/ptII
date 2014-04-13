@@ -281,8 +281,18 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
             // If the container is not in the top level, we are generating code
             // for the Java and C co-simulation.
         } else {
+            String throwExceptionCode = _eol + _eol + "void throwInternalErrorException()" + _eol
+                + "{" + _eol
+                + "   jclass exceptionClass;" + _eol
+                + "   char *className = \"java/lang/Exception\";" + _eol
+                + "   exceptionClass = (*env)->FindClass(env,className);" + _eol
+                + "   fprintf(stderr, \"%s: %d: throwing %s, class %p.\\n\", __FILE__, __LINE__, className, exceptionClass);" + _eol
+
+                + "   fprintf(stderr, \"throwing returned %d\\n\", (*env)->ThrowNew(env, exceptionClass, \"Check stdout\"));"
+                + "}" + _eol;
             String escapeName = _sanitizedModelName.replaceAll("_", "_1");
-            return _eol + _eol + "JNIEXPORT void JNICALL" + _eol + "Java_"
+            return throwExceptionCode 
+                + _eol + _eol + "JNIEXPORT void JNICALL" + _eol + "Java_"
                     + escapeName + "_initialize("
                     + "JNIEnv *env_glob, jobject obj_glob) {" + _eol
                     + "env = env_glob;" + _eol + "obj = obj_glob;";

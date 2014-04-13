@@ -3,8 +3,8 @@
 struct IOPort* IOPort_New() {
         struct IOPort* newIOPort = calloc(1, sizeof(struct IOPort));
         if (newIOPort == NULL) {
-                fprintf(stderr, "Allocation error : IOPort_New\n");
-                exit(-1);
+            fprintf(stderr, "%s, line: %d: Allocation error : IOPort_New\n", __FILE__, __LINE__);
+                ptExit(-1);
         }
         IOPort_Init(newIOPort);
         newIOPort->free = IOPort_New_Free;
@@ -130,18 +130,18 @@ Token* IOPort_Get(struct IOPort* port, int channelIndex) {
 
         if (channelIndex >= pblListSize(localReceivers)) {
                 if (!(*(port->isInput))(port)) {
-                        fprintf(stderr, "Port is not an input port : IOPort_Get\n");
-                        exit(-1);
+                    fprintf(stderr, "%s, line: %d: Port is not an input port : IOPort_Get\n", __FILE__, __LINE__);
+                        ptExit(-1);
                 } else {
-                        fprintf(stderr, "Channel Index is out of range! : IOPort_Get\n");
-                        exit(-1);
+                    fprintf(stderr, "%s, line: %d: Channel Index is out of range! : IOPort_Get\n", __FILE__, __LINE__);
+                        ptExit(-1);
                 }
         }
 
         PblList* localReceiver = pblListGet(localReceivers, channelIndex);
         if (localReceiver == NULL) {
-                fprintf(stderr, "No receiver at index:%d! : IOPort_Get\n", channelIndex);
-                exit(-1);
+            fprintf(stderr, "%s, line: %d: No receiver at index:%d! : IOPort_Get\n", __FILE__, __LINE__, channelIndex);
+                ptExit(-1);
         }
 
         Token* token = NULL;
@@ -158,8 +158,8 @@ Token* IOPort_Get(struct IOPort* port, int channelIndex) {
         pblIteratorFree(receiverIterator);
 
         if (token == NULL) {
-                fprintf(stderr, "No token to return ! : IOPort_Get\n");
-                exit(-1);
+            fprintf(stderr, "%s, line: %d: IOPort_Get(): No token to return ! : IOPort_Get\n", __FILE__, __LINE__);
+            ptExit(-1);
         }
 
         return token;
@@ -170,25 +170,25 @@ Token** IOPort_Get1(struct IOPort* port, int channelIndex, int vectorLength) {
 
         if (channelIndex >= pblListSize(localReceivers)) {
                 if (!(*(port->isInput))(port)) {
-                        fprintf(stderr, "Port is not an input port : IOPort_Get1\n");
-                        exit(-1);
+                    fprintf(stderr, "%s, line: %d: Port is not an input port : IOPort_Get1\n", __FILE__, __LINE__);
+                        ptExit(-1);
                 } else {
-                        fprintf(stderr, "Channel Index is out of range! : IOPort_Get1\n");
-                        exit(-1);
+                    fprintf(stderr, "%s, line: %d: Channel Index is out of range! : IOPort_Get1\n", __FILE__, __LINE__);
+                        ptExit(-1);
                 }
         }
         PblList* localReceiver = pblListGet(localReceivers, channelIndex);
         if (localReceiver == NULL) {
-                fprintf(stderr, "No receiver at index:%d! : IOPort_Get1\n", channelIndex);
-                exit(-1);
+            fprintf(stderr, "%s, line: %d: No receiver at index:%d! : IOPort_Get1\n", __FILE__, __LINE__, channelIndex);
+                ptExit(-1);
         }
         struct Receiver* receiver = pblListPeek(localReceiver);
 
         Token** retArray = (*(receiver->getArray))(receiver, vectorLength);
 
         if (retArray == NULL) {
-                fprintf(stderr, "No token array to return : IOPort_Get1\n");
-                exit(-1);
+            fprintf(stderr, "%s, line: %d: No token array to return : IOPort_Get1\n", __FILE__, __LINE__);
+                ptExit(-1);
         }
 
         PblIterator* receiverIterator = pblIteratorNew(localReceiver);
@@ -221,9 +221,10 @@ int IOPort_GetChannelForReceiver(struct IOPort* port, struct Receiver* receiver)
                 }
         }
 
-        fprintf(stderr, "Attempt to get a channel for a receiver that is not \
-                        related to this port : IOPort_GetChannelForReceiver\n");
-        exit(-1);
+        fprintf(stderr, "%s, line: %d: Attempt to get a channel for a receiver that is not \
+                        related to this port : IOPort_GetChannelForReceiver\n", __FILE__, __LINE__);
+        ptExit(-1);
+        return -1;
 }
 Token* IOPort_GetInside(struct IOPort* port, int channelIndex) {
         PblList* localReceivers;
@@ -231,18 +232,18 @@ Token* IOPort_GetInside(struct IOPort* port, int channelIndex) {
 
         if (channelIndex >= pblListSize(localReceivers)) {
                 if (!(*(port->isOutput))(port)) {
-                        fprintf(stderr, "Port is not an output port : IOPort_GetInside\n");
-                        exit(-1);
+                    fprintf(stderr, "%s, line: %d: Port is not an output port : IOPort_GetInside\n", __FILE__, __LINE__);
+                        ptExit(-1);
                 } else {
-                        fprintf(stderr, "Channel Index is out of range! : IOPort_GetInside\n");
-                        exit(-1);
+                    fprintf(stderr, "%s, line: %d: Channel Index is out of range! : IOPort_GetInside\n", __FILE__, __LINE__);
+                        ptExit(-1);
                 }
         }
 
         PblList* localReceiver = pblListGet(localReceivers, channelIndex);
         if (localReceiver == NULL) {
-                fprintf(stderr, "No receiver found at index %d : IOPort_GetInside\n", channelIndex);
-                exit(-1);
+            fprintf(stderr, "%s, line: %d: No receiver found at index %d : IOPort_GetInside\n", __FILE__, __LINE__, channelIndex);
+                ptExit(-1);
         }
 
         Token* token = NULL;
@@ -258,8 +259,8 @@ Token* IOPort_GetInside(struct IOPort* port, int channelIndex) {
         }
 
         if (token == NULL) {
-                fprintf(stderr, "No token to return ! : IOPort_GetInside\n");
-                exit(-1);
+            fprintf(stderr, "%s, line: %d: No token to return ! : IOPort_GetInside\n", __FILE__, __LINE__);
+                ptExit(-1);
         }
 
         return token;
@@ -276,8 +277,8 @@ Time IOPort_GetModelTime(struct IOPort* port, int channelIndex) {
         localReceivers = (*(port->getReceivers))(port);
 
         if (pblListGet(localReceivers, channelIndex) == NULL) {
-                fprintf(stderr, "No receiver found at index %d : IOPort_GetModelTime\n", channelIndex);
-                exit(-1);
+            fprintf(stderr, "%s, line: %d: No receiver found at index %d : IOPort_GetModelTime\n", __FILE__, __LINE__, channelIndex);
+                ptExit(-1);
         }
 
         struct Receiver* receiver = pblListGet(pblListGet(localReceivers, channelIndex), 0);
@@ -309,8 +310,8 @@ PblList* IOPort_GetRemoteReceivers(struct IOPort* port) {
                 return port->_farReceivers;
 //        }
 
-        fprintf(stderr, "FIXME: transparent ports not accepted here : IOPort_GetRemoteReceivers\n");
-        exit(-1);
+                fprintf(stderr, "%s, line: %d: FIXME: transparent ports not accepted here : IOPort_GetRemoteReceivers\n", __FILE__, __LINE__);
+        ptExit(-1);
 }
 int IOPort_GetWidth(struct IOPort* port) {
         return port->_width;
@@ -362,11 +363,11 @@ bool IOPort_HasToken(struct IOPort* port, int channelIndex) {
 
         if (receivers != NULL && channelIndex >= pblListSize(receivers)) {
                 if (!(*(port->isInput))(port)) {
-                        fprintf(stderr, "Port is not an input port : IOPort_HasToken\n");
-                        exit(-1);
+                    fprintf(stderr, "%s, line: %d: Port is not an input port : IOPort_HasToken\n", __FILE__, __LINE__);
+                        ptExit(-1);
                 } else {
-                        fprintf(stderr, "Channel Index is out of range! : IOPort_HasToken\n");
-                        exit(-1);
+                    fprintf(stderr, "%s, line: %d: Channel Index is out of range! : IOPort_HasToken\n", __FILE__, __LINE__);
+                        ptExit(-1);
                 }
         }
 
@@ -388,11 +389,11 @@ bool IOPort_HasToken1(struct IOPort* port, int channelIndex, int tokens) {
 
         if (receivers != NULL && channelIndex >= pblListSize(receivers)) {
                 if (!(*(port->isInput))(port)) {
-                        fprintf(stderr, "Port is not an input port : IOPort_HasToken1\n");
-                        exit(-1);
+                    fprintf(stderr, "%s, line: %d: Port is not an input port : IOPort_HasToken1\n", __FILE__, __LINE__);
+                        ptExit(-1);
                 } else {
-                        fprintf(stderr, "Channel Index is out of range! : IOPort_HasToken1\n");
-                        exit(-1);
+                    fprintf(stderr, "%s, line: %d: Channel Index is out of range! : IOPort_HasToken1\n", __FILE__, __LINE__);
+                        ptExit(-1);
                 }
         }
 
@@ -414,11 +415,11 @@ bool IOPort_HasTokenInside(struct IOPort* port, int channelIndex) {
 
         if (receivers != NULL && channelIndex >= pblListSize(receivers)) {
                 if (!(*(port->isInput))(port)) {
-                        fprintf(stderr, "Port is not an input port : IOPort_HasToken\n");
-                        exit(-1);
+                    fprintf(stderr, "%s, line: %d: Port is not an input port : IOPort_HasToken\n", __FILE__, __LINE__);
+                        ptExit(-1);
                 } else {
-                        fprintf(stderr, "Channel Index is out of range! : IOPort_HasToken\n");
-                        exit(-1);
+                    fprintf(stderr, "%s, line: %d: Channel Index is out of range! : IOPort_HasToken\n", __FILE__, __LINE__);
+                        ptExit(-1);
                 }
         }
 

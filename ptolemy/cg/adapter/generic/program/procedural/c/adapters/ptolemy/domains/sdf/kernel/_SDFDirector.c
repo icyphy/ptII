@@ -3,8 +3,8 @@
 struct SDFDirector* SDFDirector_New() {
         struct SDFDirector* newDirector = calloc(1, sizeof(struct SDFDirector));
         if (newDirector == NULL) {
-                fprintf(stderr, "Allocation error : SDFDirector_New\n");
-                exit(-1);
+            fprintf(stderr, "%s, line: %d : Allocation error : SDFDirector_New\n", __FILE__, __LINE__); \
+            ptExit(-1); \
         }
         SDFDirector_Init(newDirector);
         newDirector->free = SDFDirector_New_Free;
@@ -50,8 +50,8 @@ int SDFDirector_GetIterations(struct SDFDirector* director) {
 
 Time SDFDirector_GetModelNextIterationTime(struct SDFDirector* director) {
         if (!(*(director->isTopLevel))((struct Director*)director)) {
-                fprintf(stderr, "TODO : add the GetModelNextIterationTime method !");
-                exit(-1);
+            fprintf(stderr, "%s, line: %d: TODO : add the GetModelNextIterationTime method !\n", __FILE__, __LINE__);
+                ptExit(-1);
 //                return super.getModelNextIterationTime();
         }
         double periodValue = director->period;
@@ -88,8 +88,8 @@ void SDFDirector_Initialize(struct SDFDirector* director) {
                                         Token* t = (*(port->getInside))(port, i);
                                         (*(port->send))(port, i, t);
                                 } else {
-                                        fprintf(stderr, "Port should produce 1 token, but there were only no tokens available.");
-                                        exit(-1);
+                                    fprintf(stderr, "%s, line: %d: Port should produce 1 token, but there were only no tokens available.\n", __FILE__, __LINE__);
+                                        ptExit(-1);
                                 }
                         }
                 }
@@ -146,8 +146,8 @@ bool SDFDirector_Prefire(struct SDFDirector* director) {
 }
 bool SDFDirector_TransferInputs(struct SDFDirector* director, struct IOPort* port) {
         if (!port->isInput(port) /*|| !port->isOpaque(port)*/) {
-                fprintf(stderr, "Attempted to transferInputs on a port is not an opaque input port.");
-                exit(-1);
+            fprintf(stderr, "%s, line: %d: Attempted to transferInputs on a port is not an opaque input port.\n", __FILE__, __LINE__);
+                ptExit(-1);
         }
         //int rate = DFUtilities.getTokenConsumptionRate(port);
         int rate = 1;
@@ -161,8 +161,8 @@ bool SDFDirector_TransferInputs(struct SDFDirector* director, struct IOPort* por
                                         (*(port->sendInside))(port, i, t);
                                         wasTransferred = true;
                                 } else {
-                                        fprintf(stderr, "Port should consume 1 token, but there were only 0 tokens available.");
-                                        exit(-1);
+                                    fprintf(stderr, "%s, line: %d: SDFDirector_TransferInputs(): Port should consume 1 token, but there were only 0 tokens available.\n", __FILE__, __LINE__);
+                                        ptExit(-1);
                                 }
                         }
                 } else {
@@ -176,8 +176,8 @@ bool SDFDirector_TransferInputs(struct SDFDirector* director, struct IOPort* por
 }
 bool SDFDirector_TransferOutputs1(struct SDFDirector* director, struct IOPort* port){
         if (!port->isOutput(port) /*|| !port->isOpaque(port)*/) {
-                fprintf(stderr, "Attempted to transferOutputs on a port that is not an opaque input port.");
-                exit(-1);
+            fprintf(stderr, "%s, line: %d: Attempted to transferOutputs on a port that is not an opaque input port.\n", __FILE__, __LINE__);
+                ptExit(-1);
         }
 
         //int rate = DFUtilities.getTokenProductionRate(port);
@@ -191,8 +191,8 @@ bool SDFDirector_TransferOutputs1(struct SDFDirector* director, struct IOPort* p
                                 (*(port->send))(port, i, t);
                                 wasTransferred = true;
                         } else {
-                                fprintf(stderr, "Port should produce 1 token, but there were only 0 tokens available.");
-                                exit(-1);
+                            fprintf(stderr, "%s, line: %d: Port should produce 1 token, but there were only 0 tokens available.\n", __FILE__, __LINE__);
+                                ptExit(-1);
                         }
                 }
         }

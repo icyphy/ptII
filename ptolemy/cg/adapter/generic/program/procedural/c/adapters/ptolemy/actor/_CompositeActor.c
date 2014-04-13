@@ -95,7 +95,10 @@ void CompositeActor_Fire(struct CompositeActor* actor) {
                 struct IOPort* p = (struct IOPort*) pblIteratorNext(inputPorts);
 
                 // FIXME : if (!(p instanceof ParameterPort)) {
-                        (*(actor->_director->transferInputs))(actor->_director, p);
+                if (!(*(actor->_director->transferInputs))(actor->_director, p)) {
+                    fprintf(stderr, "%s: %d: CompositeActorFire(): director did not transfer inputs?.\n", __FILE__, __LINE__);
+                    return;
+                }
                 //}
         }
         //pblIteratorFree(inputPorts);

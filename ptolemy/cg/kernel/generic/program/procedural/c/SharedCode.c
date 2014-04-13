@@ -16,6 +16,19 @@ typedef uint8_t boolean;
 
 #endif
 
+#define DO_NOT_CALL_EXIT
+#ifdef DO_NOT_CALL_EXIT
+
+#ifdef PTJNI
+extern void throwInternalErrorException();
+#define ptExit(x) throwInternalErrorException()
+#else /* PTJNI */
+#define ptExit(x) {}
+#endif /* PTJNI */
+
+#else /* DO_NOT_CALL_EXIT */
+#define ptExit(x) exit(x)
+#endif /* DO_NOT_CALL_EXIT */
 
 typedef char* string;
 
