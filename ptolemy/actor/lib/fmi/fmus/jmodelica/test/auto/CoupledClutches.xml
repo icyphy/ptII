@@ -13,17 +13,49 @@
     <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{340.0, 252.0}">
     </property>
     <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
-        <property name="iterations" class="ptolemy.data.expr.Parameter" value="AUTO">
+        <property name="iterations" class="ptolemy.data.expr.Parameter" value="12">
+        </property>
+        <property name="period" class="ptolemy.data.expr.Parameter" value="0.1">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="{110, 60}">
         </property>
     </property>
+    <entity name="SequencePlotter" class="ptolemy.actor.lib.gui.SequencePlotter">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={500, 575, 500, 344}, maximized=false}">
+        </property>
+        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 300]">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{535, 210}">
+        </property>
+        <configure>
+<?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
+"http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
+<plot>
+<title>SequencePlotter</title>
+<xRange min="1.7976931348623157E308" max="-1.7976931348623157E308"/>
+<yRange min="1.7976931348623157E308" max="-1.7976931348623157E308"/>
+</plot>?>
+        </configure>
+    </entity>
+    <entity name="Const" class="ptolemy.actor.lib.Const">
+        <doc>Create a constant sequence.</doc>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{195, 180}">
+        </property>
+    </entity>
     <entity name="CoupledClutches" class="ptolemy.actor.lib.fmi.FMUImport">
-        <property name="fmuFile" class="ptolemy.data.expr.FileParameter" value="$CLASSPATH/ptolemy/actor/lib/fmi/fmus/jmodelica/test/auto/CoupledClutches.fmu">
+        <property name="fmuFile" class="ptolemy.data.expr.FileParameter" value="$PTII/ptolemy/actor/lib/fmi/fmus/jmodelica/test/auto/CoupledClutches.fmu">
+        </property>
+        <property name="suppressWarnings" class="ptolemy.data.expr.Parameter" value="true">
         </property>
         <property name="modelExchange" class="ptolemy.data.expr.Parameter" value="true">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="350.0, 262.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[350.0, 175.0]">
         </property>
         <property name="J1_J" class="ptolemy.data.expr.Parameter" value="1.0">
         </property>
@@ -200,9 +232,8 @@
         <property name="maximumStepSize" class="ptolemy.data.expr.Parameter" value="0.01">
         </property>
         <port name="J1_a" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
             <display name="J1.a"/>
-            <property name="" class="ptolemy.kernel.util.Attribute">
-            </property>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
                 </property>
@@ -215,9 +246,8 @@
             </property>
         </port>
         <port name="J1_flange_a_phi" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
             <display name="J1.flange_a.phi"/>
-            <property name="" class="ptolemy.kernel.util.Attribute">
-            </property>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
                 </property>
@@ -230,9 +260,8 @@
             </property>
         </port>
         <port name="J1_flange_a_tau" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
             <display name="J1.flange_a.tau"/>
-            <property name="" class="ptolemy.kernel.util.Attribute">
-            </property>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
                 </property>
@@ -245,9 +274,8 @@
             </property>
         </port>
         <port name="J1_flange_b_phi" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
             <display name="J1.flange_b.phi"/>
-            <property name="" class="ptolemy.kernel.util.Attribute">
-            </property>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
                 </property>
@@ -260,9 +288,8 @@
             </property>
         </port>
         <port name="J1_flange_b_tau" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
             <display name="J1.flange_b.tau"/>
-            <property name="" class="ptolemy.kernel.util.Attribute">
-            </property>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
                 </property>
@@ -275,9 +302,8 @@
             </property>
         </port>
         <port name="J1_phi" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
             <display name="J1.phi"/>
-            <property name="" class="ptolemy.kernel.util.Attribute">
-            </property>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
                 </property>
@@ -290,9 +316,8 @@
             </property>
         </port>
         <port name="J1_der_phi_" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
             <display name="J1.der(phi)"/>
-            <property name="" class="ptolemy.kernel.util.Attribute">
-            </property>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
                 </property>
@@ -305,9 +330,8 @@
             </property>
         </port>
         <port name="J1_der_phi_2_" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
             <display name="J1.der(phi,2)"/>
-            <property name="" class="ptolemy.kernel.util.Attribute">
-            </property>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
                 </property>
@@ -320,9 +344,8 @@
             </property>
         </port>
         <port name="J1_w" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
             <display name="J1.w"/>
-            <property name="" class="ptolemy.kernel.util.Attribute">
-            </property>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
                 </property>
@@ -331,13 +354,12 @@
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
                 </property>
             </property>
-            <property name="_hide" class="ptolemy.data.expr.SingletonParameter" value="true">
+            <property name="_hide" class="ptolemy.data.expr.SingletonParameter" value="false">
             </property>
         </port>
         <port name="J1_der_w_" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
             <display name="J1.der(w)"/>
-            <property name="" class="ptolemy.kernel.util.Attribute">
-            </property>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
                 </property>
@@ -350,9 +372,8 @@
             </property>
         </port>
         <port name="J2_a" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
             <display name="J2.a"/>
-            <property name="" class="ptolemy.kernel.util.Attribute">
-            </property>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
                 </property>
@@ -365,9 +386,8 @@
             </property>
         </port>
         <port name="J2_flange_a_phi" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
             <display name="J2.flange_a.phi"/>
-            <property name="" class="ptolemy.kernel.util.Attribute">
-            </property>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
                 </property>
@@ -380,9 +400,8 @@
             </property>
         </port>
         <port name="J2_flange_a_tau" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
             <display name="J2.flange_a.tau"/>
-            <property name="" class="ptolemy.kernel.util.Attribute">
-            </property>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
                 </property>
@@ -395,9 +414,8 @@
             </property>
         </port>
         <port name="J2_flange_b_phi" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
             <display name="J2.flange_b.phi"/>
-            <property name="" class="ptolemy.kernel.util.Attribute">
-            </property>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
                 </property>
@@ -410,9 +428,8 @@
             </property>
         </port>
         <port name="J2_flange_b_tau" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
             <display name="J2.flange_b.tau"/>
-            <property name="" class="ptolemy.kernel.util.Attribute">
-            </property>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
                 </property>
@@ -425,9 +442,8 @@
             </property>
         </port>
         <port name="J2_phi" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
             <display name="J2.phi"/>
-            <property name="" class="ptolemy.kernel.util.Attribute">
-            </property>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
                 </property>
@@ -440,9 +456,8 @@
             </property>
         </port>
         <port name="J2_der_phi_2_" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
             <display name="J2.der(phi,2)"/>
-            <property name="" class="ptolemy.kernel.util.Attribute">
-            </property>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
                 </property>
@@ -455,9 +470,8 @@
             </property>
         </port>
         <port name="J2_der_phi_" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
             <display name="J2.der(phi)"/>
-            <property name="" class="ptolemy.kernel.util.Attribute">
-            </property>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
                 </property>
@@ -470,9 +484,8 @@
             </property>
         </port>
         <port name="J2_w" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
             <display name="J2.w"/>
-            <property name="" class="ptolemy.kernel.util.Attribute">
-            </property>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
                 </property>
@@ -485,9 +498,8 @@
             </property>
         </port>
         <port name="J2_der_w_" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
             <display name="J2.der(w)"/>
-            <property name="" class="ptolemy.kernel.util.Attribute">
-            </property>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
                 </property>
@@ -500,9 +512,8 @@
             </property>
         </port>
         <port name="J3_a" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
             <display name="J3.a"/>
-            <property name="" class="ptolemy.kernel.util.Attribute">
-            </property>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
                 </property>
@@ -515,9 +526,8 @@
             </property>
         </port>
         <port name="J3_flange_a_phi" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
             <display name="J3.flange_a.phi"/>
-            <property name="" class="ptolemy.kernel.util.Attribute">
-            </property>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
                 </property>
@@ -530,9 +540,8 @@
             </property>
         </port>
         <port name="J3_flange_a_tau" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
             <display name="J3.flange_a.tau"/>
-            <property name="" class="ptolemy.kernel.util.Attribute">
-            </property>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
                 </property>
@@ -545,9 +554,8 @@
             </property>
         </port>
         <port name="J3_flange_b_phi" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
             <display name="J3.flange_b.phi"/>
-            <property name="" class="ptolemy.kernel.util.Attribute">
-            </property>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
                 </property>
@@ -560,9 +568,8 @@
             </property>
         </port>
         <port name="J3_flange_b_tau" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
             <display name="J3.flange_b.tau"/>
-            <property name="" class="ptolemy.kernel.util.Attribute">
-            </property>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
                 </property>
@@ -575,9 +582,8 @@
             </property>
         </port>
         <port name="J3_phi" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
             <display name="J3.phi"/>
-            <property name="" class="ptolemy.kernel.util.Attribute">
-            </property>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
                 </property>
@@ -590,9 +596,8 @@
             </property>
         </port>
         <port name="J3_der_phi_" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
             <display name="J3.der(phi)"/>
-            <property name="" class="ptolemy.kernel.util.Attribute">
-            </property>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
                 </property>
@@ -605,9 +610,8 @@
             </property>
         </port>
         <port name="J3_der_phi_2_" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
             <display name="J3.der(phi,2)"/>
-            <property name="" class="ptolemy.kernel.util.Attribute">
-            </property>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
                 </property>
@@ -620,9 +624,8 @@
             </property>
         </port>
         <port name="J3_w" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
             <display name="J3.w"/>
-            <property name="" class="ptolemy.kernel.util.Attribute">
-            </property>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
                 </property>
@@ -635,9 +638,8 @@
             </property>
         </port>
         <port name="J3_der_w_" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
             <display name="J3.der(w)"/>
-            <property name="" class="ptolemy.kernel.util.Attribute">
-            </property>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
                 </property>
@@ -650,9 +652,8 @@
             </property>
         </port>
         <port name="J4_a" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
             <display name="J4.a"/>
-            <property name="" class="ptolemy.kernel.util.Attribute">
-            </property>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
                 </property>
@@ -665,9 +666,8 @@
             </property>
         </port>
         <port name="J4_flange_a_phi" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
             <display name="J4.flange_a.phi"/>
-            <property name="" class="ptolemy.kernel.util.Attribute">
-            </property>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
                 </property>
@@ -680,9 +680,8 @@
             </property>
         </port>
         <port name="J4_flange_a_tau" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
             <display name="J4.flange_a.tau"/>
-            <property name="" class="ptolemy.kernel.util.Attribute">
-            </property>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
                 </property>
@@ -695,9 +694,8 @@
             </property>
         </port>
         <port name="J4_flange_b_phi" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
             <display name="J4.flange_b.phi"/>
-            <property name="" class="ptolemy.kernel.util.Attribute">
-            </property>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
                 </property>
@@ -710,9 +708,8 @@
             </property>
         </port>
         <port name="J4_flange_b_tau" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
             <display name="J4.flange_b.tau"/>
-            <property name="" class="ptolemy.kernel.util.Attribute">
-            </property>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
                 </property>
@@ -725,9 +722,8 @@
             </property>
         </port>
         <port name="J4_phi" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
             <display name="J4.phi"/>
-            <property name="" class="ptolemy.kernel.util.Attribute">
-            </property>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
                 </property>
@@ -740,9 +736,8 @@
             </property>
         </port>
         <port name="J4_der_phi_" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
             <display name="J4.der(phi)"/>
-            <property name="" class="ptolemy.kernel.util.Attribute">
-            </property>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
                 </property>
@@ -755,9 +750,8 @@
             </property>
         </port>
         <port name="J4_der_phi_2_" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
             <display name="J4.der(phi,2)"/>
-            <property name="" class="ptolemy.kernel.util.Attribute">
-            </property>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
                 </property>
@@ -770,9 +764,8 @@
             </property>
         </port>
         <port name="J4_w" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
             <display name="J4.w"/>
-            <property name="" class="ptolemy.kernel.util.Attribute">
-            </property>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
                 </property>
@@ -785,9 +778,8 @@
             </property>
         </port>
         <port name="J4_der_w_" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
             <display name="J4.der(w)"/>
-            <property name="" class="ptolemy.kernel.util.Attribute">
-            </property>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
                 </property>
@@ -800,9 +792,8 @@
             </property>
         </port>
         <port name="clutch1_Backward" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
             <display name="clutch1.Backward"/>
-            <property name="" class="ptolemy.kernel.util.Attribute">
-            </property>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="int">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
                 </property>
@@ -815,9 +806,8 @@
             </property>
         </port>
         <port name="clutch1_Forward" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
             <display name="clutch1.Forward"/>
-            <property name="" class="ptolemy.kernel.util.Attribute">
-            </property>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="int">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
                 </property>
@@ -830,9 +820,8 @@
             </property>
         </port>
         <port name="clutch1_Free" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
             <display name="clutch1.Free"/>
-            <property name="" class="ptolemy.kernel.util.Attribute">
-            </property>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="int">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
                 </property>
@@ -845,9 +834,8 @@
             </property>
         </port>
         <port name="clutch1_Stuck" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
             <display name="clutch1.Stuck"/>
-            <property name="" class="ptolemy.kernel.util.Attribute">
-            </property>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="int">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
                 </property>
@@ -860,9 +848,8 @@
             </property>
         </port>
         <port name="clutch1_Unknown" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
             <display name="clutch1.Unknown"/>
-            <property name="" class="ptolemy.kernel.util.Attribute">
-            </property>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="int">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
                 </property>
@@ -875,9 +862,8 @@
             </property>
         </port>
         <port name="clutch1_a_rel" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
             <display name="clutch1.a_rel"/>
-            <property name="" class="ptolemy.kernel.util.Attribute">
-            </property>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
                 </property>
@@ -890,9 +876,8 @@
             </property>
         </port>
         <port name="clutch1_a_relfric" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
             <display name="clutch1.a_relfric"/>
-            <property name="" class="ptolemy.kernel.util.Attribute">
-            </property>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
                 </property>
@@ -905,9 +890,8 @@
             </property>
         </port>
         <port name="clutch1_f_normalized" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
             <display name="clutch1.f_normalized"/>
-            <property name="" class="ptolemy.kernel.util.Attribute">
-            </property>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
                 </property>
@@ -920,9 +904,8 @@
             </property>
         </port>
         <port name="clutch1_flange_a_phi" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
             <display name="clutch1.flange_a.phi"/>
-            <property name="" class="ptolemy.kernel.util.Attribute">
-            </property>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
                 </property>
@@ -935,9 +918,8 @@
             </property>
         </port>
         <port name="clutch1_flange_a_tau" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
             <display name="clutch1.flange_a.tau"/>
-            <property name="" class="ptolemy.kernel.util.Attribute">
-            </property>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
                 </property>
@@ -950,9 +932,8 @@
             </property>
         </port>
         <port name="clutch1_flange_b_phi" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
             <display name="clutch1.flange_b.phi"/>
-            <property name="" class="ptolemy.kernel.util.Attribute">
-            </property>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
                 </property>
@@ -965,9 +946,8 @@
             </property>
         </port>
         <port name="clutch1_flange_b_tau" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
             <display name="clutch1.flange_b.tau"/>
-            <property name="" class="ptolemy.kernel.util.Attribute">
-            </property>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
                 </property>
@@ -980,9 +960,8 @@
             </property>
         </port>
         <port name="clutch1_fn" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
             <display name="clutch1.fn"/>
-            <property name="" class="ptolemy.kernel.util.Attribute">
-            </property>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
                 </property>
@@ -995,9 +974,8 @@
             </property>
         </port>
         <port name="clutch1_free" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
             <display name="clutch1.free"/>
-            <property name="" class="ptolemy.kernel.util.Attribute">
-            </property>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="boolean">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
                 </property>
@@ -1010,9 +988,8 @@
             </property>
         </port>
         <port name="clutch1_locked" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
             <display name="clutch1.locked"/>
-            <property name="" class="ptolemy.kernel.util.Attribute">
-            </property>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="boolean">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
                 </property>
@@ -1025,9 +1002,8 @@
             </property>
         </port>
         <port name="clutch1_lossPower" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
             <display name="clutch1.lossPower"/>
-            <property name="" class="ptolemy.kernel.util.Attribute">
-            </property>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
                 </property>
@@ -1040,9 +1016,8 @@
             </property>
         </port>
         <port name="clutch1_mode" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
             <display name="clutch1.mode"/>
-            <property name="" class="ptolemy.kernel.util.Attribute">
-            </property>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="int">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
                 </property>
@@ -1055,9 +1030,8 @@
             </property>
         </port>
         <port name="clutch1_phi_rel" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
             <display name="clutch1.phi_rel"/>
-            <property name="" class="ptolemy.kernel.util.Attribute">
-            </property>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
                 </property>
@@ -1070,9 +1044,8 @@
             </property>
         </port>
         <port name="clutch1_der_phi_rel_2_" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
             <display name="clutch1.der(phi_rel,2)"/>
-            <property name="" class="ptolemy.kernel.util.Attribute">
-            </property>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
                 </property>
@@ -1085,9 +1058,8 @@
             </property>
         </port>
         <port name="clutch1_der_phi_rel_" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
             <display name="clutch1.der(phi_rel)"/>
-            <property name="" class="ptolemy.kernel.util.Attribute">
-            </property>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
                 </property>
@@ -1100,9 +1072,8 @@
             </property>
         </port>
         <port name="clutch1_sa" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
             <display name="clutch1.sa"/>
-            <property name="" class="ptolemy.kernel.util.Attribute">
-            </property>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
                 </property>
@@ -1115,9 +1086,8 @@
             </property>
         </port>
         <port name="clutch1_startBackward" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
             <display name="clutch1.startBackward"/>
-            <property name="" class="ptolemy.kernel.util.Attribute">
-            </property>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="boolean">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
                 </property>
@@ -1130,9 +1100,8 @@
             </property>
         </port>
         <port name="clutch1_startForward" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
             <display name="clutch1.startForward"/>
-            <property name="" class="ptolemy.kernel.util.Attribute">
-            </property>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="boolean">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
                 </property>
@@ -1145,9 +1114,8 @@
             </property>
         </port>
         <port name="clutch1_tau" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
             <display name="clutch1.tau"/>
-            <property name="" class="ptolemy.kernel.util.Attribute">
-            </property>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
                 </property>
@@ -1160,9 +1128,8 @@
             </property>
         </port>
         <port name="clutch1_tau0" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
             <display name="clutch1.tau0"/>
-            <property name="" class="ptolemy.kernel.util.Attribute">
-            </property>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
                 </property>
@@ -1175,9 +1142,8 @@
             </property>
         </port>
         <port name="clutch1_tau0_max" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
             <display name="clutch1.tau0_max"/>
-            <property name="" class="ptolemy.kernel.util.Attribute">
-            </property>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
                 </property>
@@ -1190,9 +1156,8 @@
             </property>
         </port>
         <port name="clutch1_unitAngularAcceleration" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
             <display name="clutch1.unitAngularAcceleration"/>
-            <property name="" class="ptolemy.kernel.util.Attribute">
-            </property>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
                 </property>
@@ -1205,9 +1170,8 @@
             </property>
         </port>
         <port name="clutch1_unitTorque" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
             <display name="clutch1.unitTorque"/>
-            <property name="" class="ptolemy.kernel.util.Attribute">
-            </property>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
                 </property>
@@ -1220,9 +1184,8 @@
             </property>
         </port>
         <port name="clutch1_w_rel" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
             <display name="clutch1.w_rel"/>
-            <property name="" class="ptolemy.kernel.util.Attribute">
-            </property>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
                 </property>
@@ -1235,9 +1198,8 @@
             </property>
         </port>
         <port name="clutch1_der_w_rel_" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
             <display name="clutch1.der(w_rel)"/>
-            <property name="" class="ptolemy.kernel.util.Attribute">
-            </property>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
                 </property>
@@ -1250,9 +1212,8 @@
             </property>
         </port>
         <port name="clutch1_w_relfric" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
             <display name="clutch1.w_relfric"/>
-            <property name="" class="ptolemy.kernel.util.Attribute">
-            </property>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
                 </property>
@@ -1265,9 +1226,8 @@
             </property>
         </port>
         <port name="clutch2_Backward" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
             <display name="clutch2.Backward"/>
-            <property name="" class="ptolemy.kernel.util.Attribute">
-            </property>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="int">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
                 </property>
@@ -1280,9 +1240,8 @@
             </property>
         </port>
         <port name="clutch2_Forward" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
             <display name="clutch2.Forward"/>
-            <property name="" class="ptolemy.kernel.util.Attribute">
-            </property>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="int">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
                 </property>
@@ -1295,9 +1254,8 @@
             </property>
         </port>
         <port name="clutch2_Free" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
             <display name="clutch2.Free"/>
-            <property name="" class="ptolemy.kernel.util.Attribute">
-            </property>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="int">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
                 </property>
@@ -1310,9 +1268,8 @@
             </property>
         </port>
         <port name="clutch2_Stuck" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
             <display name="clutch2.Stuck"/>
-            <property name="" class="ptolemy.kernel.util.Attribute">
-            </property>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="int">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
                 </property>
@@ -1325,9 +1282,8 @@
             </property>
         </port>
         <port name="clutch2_Unknown" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
             <display name="clutch2.Unknown"/>
-            <property name="" class="ptolemy.kernel.util.Attribute">
-            </property>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="int">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
                 </property>
@@ -1340,9 +1296,8 @@
             </property>
         </port>
         <port name="clutch2_a_rel" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
             <display name="clutch2.a_rel"/>
-            <property name="" class="ptolemy.kernel.util.Attribute">
-            </property>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
                 </property>
@@ -1355,9 +1310,8 @@
             </property>
         </port>
         <port name="clutch2_a_relfric" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
             <display name="clutch2.a_relfric"/>
-            <property name="" class="ptolemy.kernel.util.Attribute">
-            </property>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
                 </property>
@@ -1370,9 +1324,8 @@
             </property>
         </port>
         <port name="clutch2_f_normalized" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
             <display name="clutch2.f_normalized"/>
-            <property name="" class="ptolemy.kernel.util.Attribute">
-            </property>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
                 </property>
@@ -1385,9 +1338,8 @@
             </property>
         </port>
         <port name="clutch2_flange_a_phi" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
             <display name="clutch2.flange_a.phi"/>
-            <property name="" class="ptolemy.kernel.util.Attribute">
-            </property>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
                 </property>
@@ -1400,9 +1352,8 @@
             </property>
         </port>
         <port name="clutch2_flange_a_tau" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
             <display name="clutch2.flange_a.tau"/>
-            <property name="" class="ptolemy.kernel.util.Attribute">
-            </property>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
                 </property>
@@ -1415,9 +1366,8 @@
             </property>
         </port>
         <port name="clutch2_flange_b_phi" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
             <display name="clutch2.flange_b.phi"/>
-            <property name="" class="ptolemy.kernel.util.Attribute">
-            </property>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
                 </property>
@@ -1430,9 +1380,8 @@
             </property>
         </port>
         <port name="clutch2_flange_b_tau" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
             <display name="clutch2.flange_b.tau"/>
-            <property name="" class="ptolemy.kernel.util.Attribute">
-            </property>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
                 </property>
@@ -1445,9 +1394,8 @@
             </property>
         </port>
         <port name="clutch2_fn" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
             <display name="clutch2.fn"/>
-            <property name="" class="ptolemy.kernel.util.Attribute">
-            </property>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
                 </property>
@@ -1460,9 +1408,8 @@
             </property>
         </port>
         <port name="clutch2_free" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
             <display name="clutch2.free"/>
-            <property name="" class="ptolemy.kernel.util.Attribute">
-            </property>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="boolean">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
                 </property>
@@ -1475,9 +1422,8 @@
             </property>
         </port>
         <port name="clutch2_locked" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
             <display name="clutch2.locked"/>
-            <property name="" class="ptolemy.kernel.util.Attribute">
-            </property>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="boolean">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
                 </property>
@@ -1490,9 +1436,8 @@
             </property>
         </port>
         <port name="clutch2_lossPower" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
             <display name="clutch2.lossPower"/>
-            <property name="" class="ptolemy.kernel.util.Attribute">
-            </property>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
                 </property>
@@ -1505,9 +1450,8 @@
             </property>
         </port>
         <port name="clutch2_mode" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
             <display name="clutch2.mode"/>
-            <property name="" class="ptolemy.kernel.util.Attribute">
-            </property>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="int">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
                 </property>
@@ -1520,9 +1464,8 @@
             </property>
         </port>
         <port name="clutch2_phi_rel" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
             <display name="clutch2.phi_rel"/>
-            <property name="" class="ptolemy.kernel.util.Attribute">
-            </property>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
                 </property>
@@ -1535,9 +1478,8 @@
             </property>
         </port>
         <port name="clutch2_der_phi_rel_2_" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
             <display name="clutch2.der(phi_rel,2)"/>
-            <property name="" class="ptolemy.kernel.util.Attribute">
-            </property>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
                 </property>
@@ -1550,9 +1492,8 @@
             </property>
         </port>
         <port name="clutch2_der_phi_rel_" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
             <display name="clutch2.der(phi_rel)"/>
-            <property name="" class="ptolemy.kernel.util.Attribute">
-            </property>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
                 </property>
@@ -1565,9 +1506,8 @@
             </property>
         </port>
         <port name="clutch2_sa" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
             <display name="clutch2.sa"/>
-            <property name="" class="ptolemy.kernel.util.Attribute">
-            </property>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
                 </property>
@@ -1580,9 +1520,8 @@
             </property>
         </port>
         <port name="clutch2_startBackward" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
             <display name="clutch2.startBackward"/>
-            <property name="" class="ptolemy.kernel.util.Attribute">
-            </property>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="boolean">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
                 </property>
@@ -1595,9 +1534,8 @@
             </property>
         </port>
         <port name="clutch2_startForward" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
             <display name="clutch2.startForward"/>
-            <property name="" class="ptolemy.kernel.util.Attribute">
-            </property>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="boolean">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
                 </property>
@@ -1610,9 +1548,8 @@
             </property>
         </port>
         <port name="clutch2_tau" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
             <display name="clutch2.tau"/>
-            <property name="" class="ptolemy.kernel.util.Attribute">
-            </property>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
                 </property>
@@ -1625,9 +1562,8 @@
             </property>
         </port>
         <port name="clutch2_tau0" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
             <display name="clutch2.tau0"/>
-            <property name="" class="ptolemy.kernel.util.Attribute">
-            </property>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
                 </property>
@@ -1640,9 +1576,8 @@
             </property>
         </port>
         <port name="clutch2_tau0_max" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
             <display name="clutch2.tau0_max"/>
-            <property name="" class="ptolemy.kernel.util.Attribute">
-            </property>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
                 </property>
@@ -1655,9 +1590,8 @@
             </property>
         </port>
         <port name="clutch2_unitAngularAcceleration" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
             <display name="clutch2.unitAngularAcceleration"/>
-            <property name="" class="ptolemy.kernel.util.Attribute">
-            </property>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
                 </property>
@@ -1670,9 +1604,8 @@
             </property>
         </port>
         <port name="clutch2_unitTorque" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
             <display name="clutch2.unitTorque"/>
-            <property name="" class="ptolemy.kernel.util.Attribute">
-            </property>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
                 </property>
@@ -1685,9 +1618,8 @@
             </property>
         </port>
         <port name="clutch2_w_rel" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
             <display name="clutch2.w_rel"/>
-            <property name="" class="ptolemy.kernel.util.Attribute">
-            </property>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
                 </property>
@@ -1700,9 +1632,8 @@
             </property>
         </port>
         <port name="clutch2_der_w_rel_" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
             <display name="clutch2.der(w_rel)"/>
-            <property name="" class="ptolemy.kernel.util.Attribute">
-            </property>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
                 </property>
@@ -1715,9 +1646,8 @@
             </property>
         </port>
         <port name="clutch2_w_relfric" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
             <display name="clutch2.w_relfric"/>
-            <property name="" class="ptolemy.kernel.util.Attribute">
-            </property>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
                 </property>
@@ -1730,9 +1660,8 @@
             </property>
         </port>
         <port name="clutch3_Backward" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
             <display name="clutch3.Backward"/>
-            <property name="" class="ptolemy.kernel.util.Attribute">
-            </property>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="int">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
                 </property>
@@ -1745,9 +1674,8 @@
             </property>
         </port>
         <port name="clutch3_Forward" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
             <display name="clutch3.Forward"/>
-            <property name="" class="ptolemy.kernel.util.Attribute">
-            </property>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="int">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
                 </property>
@@ -1760,9 +1688,8 @@
             </property>
         </port>
         <port name="clutch3_Free" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
             <display name="clutch3.Free"/>
-            <property name="" class="ptolemy.kernel.util.Attribute">
-            </property>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="int">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
                 </property>
@@ -1775,9 +1702,8 @@
             </property>
         </port>
         <port name="clutch3_Stuck" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
             <display name="clutch3.Stuck"/>
-            <property name="" class="ptolemy.kernel.util.Attribute">
-            </property>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="int">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
                 </property>
@@ -1790,9 +1716,8 @@
             </property>
         </port>
         <port name="clutch3_Unknown" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
             <display name="clutch3.Unknown"/>
-            <property name="" class="ptolemy.kernel.util.Attribute">
-            </property>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="int">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
                 </property>
@@ -1805,9 +1730,8 @@
             </property>
         </port>
         <port name="clutch3_a_rel" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
             <display name="clutch3.a_rel"/>
-            <property name="" class="ptolemy.kernel.util.Attribute">
-            </property>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
                 </property>
@@ -1820,9 +1744,8 @@
             </property>
         </port>
         <port name="clutch3_a_relfric" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
             <display name="clutch3.a_relfric"/>
-            <property name="" class="ptolemy.kernel.util.Attribute">
-            </property>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
                 </property>
@@ -1835,9 +1758,8 @@
             </property>
         </port>
         <port name="clutch3_f_normalized" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
             <display name="clutch3.f_normalized"/>
-            <property name="" class="ptolemy.kernel.util.Attribute">
-            </property>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
                 </property>
@@ -1850,9 +1772,8 @@
             </property>
         </port>
         <port name="clutch3_flange_a_phi" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
             <display name="clutch3.flange_a.phi"/>
-            <property name="" class="ptolemy.kernel.util.Attribute">
-            </property>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
                 </property>
@@ -1865,9 +1786,8 @@
             </property>
         </port>
         <port name="clutch3_flange_a_tau" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
             <display name="clutch3.flange_a.tau"/>
-            <property name="" class="ptolemy.kernel.util.Attribute">
-            </property>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
                 </property>
@@ -1880,9 +1800,8 @@
             </property>
         </port>
         <port name="clutch3_flange_b_phi" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
             <display name="clutch3.flange_b.phi"/>
-            <property name="" class="ptolemy.kernel.util.Attribute">
-            </property>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
                 </property>
@@ -1895,9 +1814,8 @@
             </property>
         </port>
         <port name="clutch3_flange_b_tau" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
             <display name="clutch3.flange_b.tau"/>
-            <property name="" class="ptolemy.kernel.util.Attribute">
-            </property>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
                 </property>
@@ -1910,9 +1828,8 @@
             </property>
         </port>
         <port name="clutch3_fn" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
             <display name="clutch3.fn"/>
-            <property name="" class="ptolemy.kernel.util.Attribute">
-            </property>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
                 </property>
@@ -1925,9 +1842,8 @@
             </property>
         </port>
         <port name="clutch3_free" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
             <display name="clutch3.free"/>
-            <property name="" class="ptolemy.kernel.util.Attribute">
-            </property>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="boolean">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
                 </property>
@@ -1940,9 +1856,8 @@
             </property>
         </port>
         <port name="clutch3_locked" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
             <display name="clutch3.locked"/>
-            <property name="" class="ptolemy.kernel.util.Attribute">
-            </property>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="boolean">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
                 </property>
@@ -1955,9 +1870,8 @@
             </property>
         </port>
         <port name="clutch3_lossPower" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
             <display name="clutch3.lossPower"/>
-            <property name="" class="ptolemy.kernel.util.Attribute">
-            </property>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
                 </property>
@@ -1970,9 +1884,8 @@
             </property>
         </port>
         <port name="clutch3_mode" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
             <display name="clutch3.mode"/>
-            <property name="" class="ptolemy.kernel.util.Attribute">
-            </property>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="int">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
                 </property>
@@ -1985,9 +1898,8 @@
             </property>
         </port>
         <port name="clutch3_phi_rel" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
             <display name="clutch3.phi_rel"/>
-            <property name="" class="ptolemy.kernel.util.Attribute">
-            </property>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
                 </property>
@@ -2000,9 +1912,8 @@
             </property>
         </port>
         <port name="clutch3_der_phi_rel_2_" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
             <display name="clutch3.der(phi_rel,2)"/>
-            <property name="" class="ptolemy.kernel.util.Attribute">
-            </property>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
                 </property>
@@ -2015,9 +1926,8 @@
             </property>
         </port>
         <port name="clutch3_der_phi_rel_" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
             <display name="clutch3.der(phi_rel)"/>
-            <property name="" class="ptolemy.kernel.util.Attribute">
-            </property>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
                 </property>
@@ -2030,9 +1940,8 @@
             </property>
         </port>
         <port name="clutch3_sa" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
             <display name="clutch3.sa"/>
-            <property name="" class="ptolemy.kernel.util.Attribute">
-            </property>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
                 </property>
@@ -2045,9 +1954,8 @@
             </property>
         </port>
         <port name="clutch3_startBackward" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
             <display name="clutch3.startBackward"/>
-            <property name="" class="ptolemy.kernel.util.Attribute">
-            </property>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="boolean">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
                 </property>
@@ -2060,9 +1968,8 @@
             </property>
         </port>
         <port name="clutch3_startForward" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
             <display name="clutch3.startForward"/>
-            <property name="" class="ptolemy.kernel.util.Attribute">
-            </property>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="boolean">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
                 </property>
@@ -2075,9 +1982,8 @@
             </property>
         </port>
         <port name="clutch3_tau" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
             <display name="clutch3.tau"/>
-            <property name="" class="ptolemy.kernel.util.Attribute">
-            </property>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
                 </property>
@@ -2086,13 +1992,12 @@
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
                 </property>
             </property>
-            <property name="_hide" class="ptolemy.data.expr.SingletonParameter" value="true">
+            <property name="_hide" class="ptolemy.data.expr.SingletonParameter" value="false">
             </property>
         </port>
         <port name="clutch3_tau0" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
             <display name="clutch3.tau0"/>
-            <property name="" class="ptolemy.kernel.util.Attribute">
-            </property>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
                 </property>
@@ -2105,9 +2010,8 @@
             </property>
         </port>
         <port name="clutch3_tau0_max" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
             <display name="clutch3.tau0_max"/>
-            <property name="" class="ptolemy.kernel.util.Attribute">
-            </property>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
                 </property>
@@ -2120,9 +2024,8 @@
             </property>
         </port>
         <port name="clutch3_unitAngularAcceleration" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
             <display name="clutch3.unitAngularAcceleration"/>
-            <property name="" class="ptolemy.kernel.util.Attribute">
-            </property>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
                 </property>
@@ -2135,9 +2038,8 @@
             </property>
         </port>
         <port name="clutch3_unitTorque" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
             <display name="clutch3.unitTorque"/>
-            <property name="" class="ptolemy.kernel.util.Attribute">
-            </property>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
                 </property>
@@ -2150,9 +2052,8 @@
             </property>
         </port>
         <port name="clutch3_w_rel" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
             <display name="clutch3.w_rel"/>
-            <property name="" class="ptolemy.kernel.util.Attribute">
-            </property>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
                 </property>
@@ -2165,9 +2066,8 @@
             </property>
         </port>
         <port name="clutch3_der_w_rel_" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
             <display name="clutch3.der(w_rel)"/>
-            <property name="" class="ptolemy.kernel.util.Attribute">
-            </property>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
                 </property>
@@ -2180,9 +2080,8 @@
             </property>
         </port>
         <port name="clutch3_w_relfric" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
             <display name="clutch3.w_relfric"/>
-            <property name="" class="ptolemy.kernel.util.Attribute">
-            </property>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
                 </property>
@@ -2195,9 +2094,8 @@
             </property>
         </port>
         <port name="fixed_flange_tau" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
             <display name="fixed.flange.tau"/>
-            <property name="" class="ptolemy.kernel.util.Attribute">
-            </property>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
                 </property>
@@ -2210,9 +2108,8 @@
             </property>
         </port>
         <port name="sin1_pi" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
             <display name="sin1.pi"/>
-            <property name="" class="ptolemy.kernel.util.Attribute">
-            </property>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
                 </property>
@@ -2225,9 +2122,8 @@
             </property>
         </port>
         <port name="sin1_y" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
             <display name="sin1.y"/>
-            <property name="" class="ptolemy.kernel.util.Attribute">
-            </property>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
                 </property>
@@ -2240,9 +2136,8 @@
             </property>
         </port>
         <port name="sin2_pi" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
             <display name="sin2.pi"/>
-            <property name="" class="ptolemy.kernel.util.Attribute">
-            </property>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
                 </property>
@@ -2255,9 +2150,8 @@
             </property>
         </port>
         <port name="sin2_y" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
             <display name="sin2.y"/>
-            <property name="" class="ptolemy.kernel.util.Attribute">
-            </property>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
                 </property>
@@ -2270,9 +2164,8 @@
             </property>
         </port>
         <port name="step1_y" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
             <display name="step1.y"/>
-            <property name="" class="ptolemy.kernel.util.Attribute">
-            </property>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
                 </property>
@@ -2285,9 +2178,8 @@
             </property>
         </port>
         <port name="step2_y" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
             <display name="step2.y"/>
-            <property name="" class="ptolemy.kernel.util.Attribute">
-            </property>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
                 </property>
@@ -2300,9 +2192,8 @@
             </property>
         </port>
         <port name="torque_flange_phi" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
             <display name="torque.flange.phi"/>
-            <property name="" class="ptolemy.kernel.util.Attribute">
-            </property>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
                 </property>
@@ -2315,9 +2206,8 @@
             </property>
         </port>
         <port name="torque_flange_tau" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
             <display name="torque.flange.tau"/>
-            <property name="" class="ptolemy.kernel.util.Attribute">
-            </property>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
                 </property>
@@ -2330,9 +2220,8 @@
             </property>
         </port>
         <port name="torque_support_tau" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
             <display name="torque.support.tau"/>
-            <property name="" class="ptolemy.kernel.util.Attribute">
-            </property>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
                 </property>
@@ -2345,9 +2234,8 @@
             </property>
         </port>
         <port name="torque_tau" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
             <display name="torque.tau"/>
-            <property name="" class="ptolemy.kernel.util.Attribute">
-            </property>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
                 </property>
@@ -2360,4 +2248,12 @@
             </property>
         </port>
     </entity>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <link port="SequencePlotter.input" relation="relation2"/>
+    <link port="Const.output" relation="relation"/>
+    <link port="CoupledClutches.J1_w" relation="relation"/>
+    <link port="CoupledClutches.clutch3_tau" relation="relation2"/>
 </entity>
