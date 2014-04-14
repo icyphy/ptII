@@ -165,7 +165,8 @@ public class JavaScript extends TypedAtomicActor {
      *  @exception IllegalActionException If calling send() or super.fire()
      *  throws it.
      */
-    public void fire() throws IllegalActionException {
+    @Override
+	public void fire() throws IllegalActionException {
         super.fire();
         
         // Read all the inputs and create a table of their values.
@@ -213,7 +214,8 @@ public class JavaScript extends TypedAtomicActor {
      *  @exception IllegalActionException If calling send() or super.fire()
      *  throws it.
      */
-    public void initialize() throws IllegalActionException {
+    @Override
+	public void initialize() throws IllegalActionException {
         super.initialize();
 
         if (_inputValues == null) {
@@ -253,7 +255,8 @@ public class JavaScript extends TypedAtomicActor {
      *  parameter on each iteration (in the postfire() method).
      *  @exception IllegalActionException If the parent class throws it.
      */
-    public void preinitialize() throws IllegalActionException {
+    @Override
+	public void preinitialize() throws IllegalActionException {
         super.preinitialize();
         _context = Context.enter();
         _scope = new ImporterTopLevel(Context.getCurrentContext());
@@ -288,7 +291,8 @@ public class JavaScript extends TypedAtomicActor {
     /** Exit the context.
      *  @exception IllegalActionException If the parent class throws it.
      */
-    public void wrapup() throws IllegalActionException {
+    @Override
+	public void wrapup() throws IllegalActionException {
     	// FIXME: Why is this static??
     	Context.exit();
     	super.wrapup();
@@ -330,7 +334,8 @@ public class JavaScript extends TypedAtomicActor {
 
     /** Container class for built-in methods.
      */
-    public class PtolemyJavaScript extends ScriptableObject {
+    @SuppressWarnings("serial")
+	public class PtolemyJavaScript extends ScriptableObject {
 
     	/** Alert the user with a message. */
     	public void alert(String message) {
@@ -377,7 +382,8 @@ public class JavaScript extends TypedAtomicActor {
     
     /** Specialized FunctionObject that provides the parent scope when evaluating the function.
      */
-    private static class PtolemyFunctionObject extends FunctionObject {
+    @SuppressWarnings("serial")
+	private static class PtolemyFunctionObject extends FunctionObject {
 
         private PtolemyFunctionObject(String name, Member methodOrConstructor, Scriptable parentScope) {
           super(name, methodOrConstructor, parentScope);
@@ -391,7 +397,8 @@ public class JavaScript extends TypedAtomicActor {
     
     /** Wrap factory for Ptolemy objects that returns their value rather than a wrapped Java object. */
     public class PtolemyWrapFactory extends WrapFactory {
-    	public Object wrap(Context context, Scriptable scope, Object object, Class staticType) {
+    	@Override
+		public Object wrap(Context context, Scriptable scope, Object object, Class staticType) {
     		if (object instanceof Variable) {
     			try {
 					Token value = ((Variable)object).getToken();
