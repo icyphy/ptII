@@ -717,6 +717,9 @@ PTJMF_PACKAGES
 PTJMF_DIR
 PTJETTY_JAR
 PTJCERTI_JAR
+PTJAVASCRIPT_PACKAGES
+PTJAVASCRIPT_DIR
+PTJAVASCRIPT_JAR
 PTJAVAMAIL_PACKAGES
 PTJAVAMAIL_JARS
 PTJAVAMAIL_DIR
@@ -961,9 +964,9 @@ with_servlet
 with_smack
 with_smackx
 with_javamail
+with_jsoup
 with_joystick_jar
 with_ptjacl_jar
-with_jsoup
 with_junit
 with_junitparams
 with_jxl
@@ -1676,6 +1679,8 @@ Optional Packages:
                           defaults to \$PTII/lib/smackx.jar
   --with-javamail=DIRECTORY       use JavaMail interface from DIRECTORY,
                           defaults to \$PTII/vendors/misc/javamail
+  --with-javascript=JAR       use js.jar from JAR,
+                          defaults to \$PTII/lib/js.jar
   --with-joystick-jar=JARFILE       use JOYSTICK from JARFILE,
                           defaults to \$PTII/vendors/misc/joystick/Joystick.jar
   --with-ptjacl_jar=PTJACL.JAR  ptjacl.jar file,
@@ -8367,6 +8372,58 @@ if test -z "$PTJAVAMAIL_DIR"; then
 fi
 
 #--------------------------------------------------------------------
+#       js: Rhino JavaScript  implementation
+#	https://developer.mozilla.org/en-US/docs/Rhino
+#       Js is used by actors
+#--------------------------------------------------------------------
+
+# Rhino JavaScript jar files used by export html facility
+PTJAVASCRIPT_JAR=
+
+# Set to js if js.jar is found and used in $PTII/ptolemy/actor/lib/makefile
+PTJAVASCRIPT_DIR=
+
+# We only need to look for Jsoup if $PTJAVASCRIPT_USER_DIR is present
+PTJAVASCRIPT_USER_DIR="$PTII/ptolemy/actor/lib/js"
+
+if test ! -d "$PTJAVASCRIPT_USER_DIR"; then
+    if test "${PTVERBOSE:-none}" != "none"; then { $as_echo "$as_me:${as_lineno-$LINENO}: result: $PTJAVASCRIPT_USER_DIR is not present,
+    so we need not find Rhino JavaScript Implementation." >&5
+$as_echo "$PTJAVASCRIPT_USER_DIR is not present,
+    so we need not find Rhino JavaScript Implementation." >&6; }; fi
+else
+    { $as_echo "$as_me:${as_lineno-$LINENO}: checking for JavaScript, used by js actors. " >&5
+$as_echo_n "checking for JavaScript, used by js actors. ... " >&6; }
+
+# Check whether --with-jsoup was given.
+if test "${with_jsoup+set}" = set; then :
+  withval=$with_jsoup; PTJAVASCRIPT_JAR=$withval
+else
+  PTJAVASCRIPT_JAR=$PTII/lib/js.jar
+fi
+
+
+    if test  -f "$PTJAVASCRIPT_JAR"; then
+	if test "${PTVERBOSE:-none}" = "none"; then { $as_echo "$as_me:${as_lineno-$LINENO}: result: ok" >&5
+$as_echo "ok" >&6; }; else { $as_echo "$as_me:${as_lineno-$LINENO}: result: $PTJAVASCRIPT_JAR" >&5
+$as_echo "$PTJAVASCRIPT_JAR" >&6; }; fi
+        updateClasspath "$PTJAVASCRIPT_JAR"
+        PTJAVASCRIPT_DIR=js
+        # PTJAVASCRIPT_PACKAGES is used in ptII/doc/makefile
+	PTJAVASCRIPT_PACKAGES=ptolemy.actor.lib.js
+    else
+        updateExcludes "ptolemy/actor/lib/js"
+        { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Failed to find the Rhino Javascript js.jar file necessary to
+    to compile actor/lib/js.
+    Typically, js.jar is found at $PTII/lib/js.jar." >&5
+$as_echo "$as_me: WARNING: Failed to find the Rhino Javascript js.jar file necessary to
+    to compile actor/lib/js.
+    Typically, js.jar is found at $PTII/lib/js.jar." >&2;}
+    fi
+fi
+
+
+#--------------------------------------------------------------------
 #       Ptolemy includes one or more FMUs that use JModelica
 #
 #--------------------------------------------------------------------
@@ -8732,7 +8789,6 @@ if test -z "$PTJACL_DIR"; then
 else
    updateClasspath "$PTJACL_JAR"
 fi
-
 
 #--------------------------------------------------------------------
 #       "jsoup: Java HTML Parser"
@@ -13250,6 +13306,15 @@ ANT_JAVADOC_EXCLUDEPACKAGENAMES=`echo "$ANT_ALWAYS_EXCLUDE $ANT_EXCLUDE"| sed 's
 # PTJMF_PACKAGES is used in ptII/doc/makefile.
 
 
+# Rhino JavaScript jar files used by ptolemy.actor.lib.js
+
+
+# Set to jsoup if jsoup is found and used in $PTII/ptolemy/actor/lib/js/makefile
+
+
+# Set to ptolemy.actor.lib.js and used int $PTII/doc/makefile if Rhino JavaScript is found.
+
+
 # lib/jcerti.jar, used by ptolemy/apps/hlacerti
 
 
@@ -13325,7 +13390,7 @@ ANT_JAVADOC_EXCLUDEPACKAGENAMES=`echo "$ANT_ALWAYS_EXCLUDE $ANT_EXCLUDE"| sed 's
 # Set to jsoup if jsoup is found and used in $PTII/ptolemy/vergil/basic/export/makefile
 
 
-# Set to ptolemy.actor.lib.joystick and used int $PTII/doc/makefile if jsoup is found.
+# Set to ptolemy.vergil.basic.export.html.jsoup and used int $PTII/doc/makefile if jsoup is found.
 
 
 # Set to junit and used in $PTII/util/testsuite/makefile if junit was found.
