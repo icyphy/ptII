@@ -522,7 +522,7 @@ FULL_ONLY_JNLP_JARS = \
 	$(PTJAVAMAIL_JARS) \
 	ptolemy/actor/lib/js/js.jar \
 	ptolemy/actor/lib/js/demo/demo.jar \
-	$(PTJAVASCRIPT_JARS) \
+	$(PTJAVASCRIPT_JAR) \
 	ptolemy/actor/ptalon/gt/gt.jar \
 	ptolemy/actor/ptalon/gt/demo/demo.jar \
 	lib/ptCal.jar \
@@ -1427,13 +1427,19 @@ bcvtb_l4j.xml: $(MKL4J)
 bcvtb.exe: bcvtb_l4j.xml
 	"$(L4JC)" `$(PTCYGPATH) bcvtb_l4j.xml`
 
-ptbook_l4j.xml:
+PTBOOK_PDF=PtolemyII_DigitalV1_02.pdf
+ptbook_l4j.xml: doc/books/systems/$(PTBOOK_PDF)
 	$(MKL4J) ptbook ptolemy.actor.gui.BrowserLauncher \
 		 doc/img/pdf.ico \
-		 doc/books/systems/PtolemyII_DigitalV1_02.pdf $(DOC_JNLP_JARS) > $@
-	chmod a+x doc/books/systems/PtolemyII_DigitalV1_02.pdf
+		 doc/books/systems/$(PTBOOK_PDF) $(DOC_JNLP_JARS) > $@
+	chmod a+x doc/books/systems/$(PTBOOK_PDF)
 ptbook.exe: ptbook_l4j.xml
 	"$(L4JC)" `$(PTCYGPATH) ptbook_l4j.xml`
+
+doc/books/systems/$(PTBOOK_PDF):
+	wget http://ptolemy.eecs.berkeley.edu/books/Systems/$(PTBOOK_PDF)
+	mv $(PTBOOK_PDF) $@
+	chmod a+x doc/books/systems/$(PTBOOK_PDF)
 
 DOPCenterModel=ptolemy/domains/space/demo/DOPCenter/DOPCenter.xml
 dopseating_l4j.xml:
