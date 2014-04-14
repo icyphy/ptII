@@ -348,7 +348,7 @@ The Ptiny pack is required.
             <file src="../dists/ptII10.0.devel/jar_dist/vendors/misc/joystick/Joystick.jar"
                   targetdir="$INSTALL_PATH/vendors/misc/joystick"/>
 
-            <file src="../dists/ptII10.0.devel/jar_dist/lib/js.jar"/>
+            <file src="../dists/ptII10.0.devel/jar_dist/lib/js.jar"
                   targetdir="$INSTALL_PATH/ptolemy/lib"/>
             <file src="../dists/ptII10.0.devel/jar_dist/ptolemy/actor/lib/js/demo/demo.jar"
                   targetdir="$INSTALL_PATH/ptolemy/actor/lib/js/demo"/>
