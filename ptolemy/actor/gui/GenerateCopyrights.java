@@ -156,6 +156,9 @@ public class GenerateCopyrights {
         _addIfPresent(copyrightsMap, "org.jsoup.parser.Parser",
                 "lib/jsoup-license.htm");
 
+        _addIfPresent(copyrightsMap, "org.mozilla.javascript.Context",
+                "lib/js-license.htm");
+
         _addIfPresent(copyrightsMap, "org.junit.runner.JUnitCore",
                 "lib/junit-license.htm");
 
