@@ -38,22 +38,24 @@
         </property>
         <entity name="OptimizerComposite" class="org.ptolemy.optimization.CompositeOptimizer$OptimizerComposite">
             <property name="SDFDirector" class="ptolemy.domains.sdf.kernel.SDFDirector">
+                <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
+                </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="{0.0, 0.0}">
                 </property>
             </property>
-            <port name="intermediateValue" class="org.ptolemy.optimization.CompositeOptimizer$OptimizerPort">
+            <port name="intermediateValue" class="ptolemy.actor.lib.hoc.MirrorPort">
                 <property name="output"/>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="{170.0, 130.0}">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{170.0, 190.0}">
                 </property>
             </port>
-            <port name="constraints" class="org.ptolemy.optimization.CompositeOptimizer$OptimizerPort">
+            <port name="constraints" class="ptolemy.actor.lib.hoc.MirrorPort">
                 <property name="output"/>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="{170.0, 65.0}">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{170.0, 125.0}">
                 </property>
             </port>
-            <port name="x" class="org.ptolemy.optimization.CompositeOptimizer$OptimizerPort">
+            <port name="x" class="ptolemy.actor.lib.hoc.MirrorPort">
                 <property name="input"/>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[-40.0, 70.0]">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{-40.0, 190.0}">
                 </property>
             </port>
             <entity name="f_x" class="ptolemy.actor.lib.Expression">
@@ -67,12 +69,10 @@
                     <property name="displayHeight" class="ptolemy.data.expr.Parameter" value="10">
                     </property>
                 </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="{75.0, 135.0}">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{75.0, 195.0}">
                 </property>
                 <port name="x" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
-                    <property name="defaultValue" class="ptolemy.data.expr.Parameter">
-                    </property>
                 </port>
             </entity>
             <entity name="Constraint" class="ptolemy.actor.lib.Expression">
@@ -86,36 +86,36 @@
                     <property name="displayHeight" class="ptolemy.data.expr.Parameter" value="10">
                     </property>
                 </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="{75.0, 75.0}">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{75.0, 130.0}">
                 </property>
                 <port name="x" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
                 </port>
             </entity>
             <entity name="Display" class="ptolemy.actor.lib.gui.Display">
-                <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={1170, 287, 171, 208}, maximized=false}">
+                <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={952, 324, 484, 208}, maximized=false}">
                 </property>
                 <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute">
                 </property>
                 <property name="title" class="ptolemy.data.expr.StringParameter" value="Intermediate Values">
                 </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="{115, 270}">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{40.0, 75.0}">
                 </property>
             </entity>
             <relation name="relation2" class="ptolemy.actor.TypedIORelation">
-                <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;intermediateValue._location&quot;,x=170.0,y=130.0}, tail={id=&quot;f_x.output&quot;,x=75.0,y=135.0}, points={} } }">
+                <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;intermediateValue._location&quot;,x=170.0,y=190.0}, tail={id=&quot;f_x.output&quot;,x=75.0,y=195.0}, points={} } }">
                 </property>
             </relation>
             <relation name="relation3" class="ptolemy.actor.TypedIORelation">
                 <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
                 </property>
-                <vertex name="vertex1" value="{0.0, 75.0}">
+                <vertex name="vertex1" value="{0.0, 195.0}">
                 </vertex>
-                <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;Constraint.x&quot;,x=75.0,y=75.0}, tail={id=&quot;relation3.vertex1&quot;,x=0.0,y=75.0}, points={} },{ head={id=&quot;f_x.x&quot;,x=75.0,y=135.0}, tail={id=&quot;relation3.vertex1&quot;,x=0.0,y=75.0}, points={0.0,135.0} } }">
+                <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;Constraint.x&quot;,x=75.0,y=130.0}, tail={id=&quot;relation3.vertex1&quot;,x=0.0,y=195.0}, points={0.0,130.0} },{ head={id=&quot;f_x.x&quot;,x=75.0,y=195.0}, tail={id=&quot;relation3.vertex1&quot;,x=0.0,y=195.0}, points={} },{ head={id=&quot;x._location&quot;,x=-40.0,y=190.0}, tail={id=&quot;relation3.vertex1&quot;,x=0.0,y=195.0}, points={} },{ head={id=&quot;Display.input&quot;,x=40.0,y=75.0}, tail={id=&quot;relation3.vertex1&quot;,x=0.0,y=195.0}, points={0.0,75.0} } }">
                 </property>
             </relation>
             <relation name="relation" class="ptolemy.actor.TypedIORelation">
-                <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;constraints._location&quot;,x=170.0,y=65.0}, tail={id=&quot;Constraint.output&quot;,x=75.0,y=75.0}, points={} } }">
+                <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;constraints._location&quot;,x=170.0,y=125.0}, tail={id=&quot;Constraint.output&quot;,x=75.0,y=130.0}, points={} } }">
                 </property>
             </relation>
             <link port="intermediateValue" relation="relation2"/>
@@ -140,7 +140,7 @@
         </property>
     </entity>
     <entity name="Optimal Value" class="ptolemy.actor.lib.gui.Display">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={986, 105, 484, 208}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={956, 105, 484, 208}, maximized=false}">
         </property>
         <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute">
         </property>
