@@ -51,8 +51,8 @@ JSRCS = \
 	JavaScript.java
 
 OTHER_FILES_TO_BE_JARED = \
-	JavaScriptIcon.xml
-
+	JavaScriptIcon.xml \
+	js.xml
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 

@@ -188,9 +188,11 @@
             <input source="ptolemy/vergil/actor/lib/interactive.xml"/>
 	    <!-- Joystick actors depend on the Joystick interface being present  -->
             <input source="ptolemy/actor/lib/joystick/jstick.xml"/>
+	    <!-- JavaScript uses $PTII/lib/js.jar -->
+            <input source="ptolemy/actor/lib/js/js.xml"/>
             <input source="ptolemy/actor/lib/conversions/json/json.xml"/>
-		<!-- Machine Learning library still under development  -->
-			<input source="org/ptolemy/machineLearning/machineLearning.xml"/>
+	    <!-- Machine Learning library still under development  -->
+	    <input source="org/ptolemy/machineLearning/machineLearning.xml"/>
             <input source="ptolemy/actor/lib/mail/mail.xml"/>
             <input source="ptolemy/domains/metroII/metroII.xml"/>
 
