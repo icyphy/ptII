@@ -711,6 +711,7 @@ See $PTII/doc/coding/maven.htm
            <exclude>ptolemy/actor/lib/jai/**</exclude>
            <exclude>ptolemy/actor/lib/jmf/**</exclude>
            <exclude>ptolemy/actor/lib/joystick/**</exclude>
+	   <exclude>ptolemy/actor/lib/js/**</exclude>
 	   <exclude>ptolemy/actor/lib/mail/**</exclude>
            <exclude>ptolemy/actor/lib/opencv/**</exclude>
            <exclude>ptolemy/domains/gr/lib/quicktime/**</exclude>
