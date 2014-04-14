@@ -49,7 +49,12 @@ if [ ! $# -eq 0 ]; then
            echo "$0: warning: $1 does not exist" 1>&2
            exit 2
        fi
-	# Remove $PTII/ for files like /var/lib/hudson/jobs/ptII/workspace/vendors/oracle/javamail/mail.jar
+       # Get rid of .. in the path, for example
+       # PTII=/home/hudson/jobs/ptII/workspace/adm/test/../../adm/dists/ptII10.0.devel
+       # /var/lib/hudson/jobs/ptII/workspace/adm/dists/ptII10.0devel/vendors/oracle/javamail/javax.mail.jar
+       # and
+       # /home/hudson/jobs/ptII/workspace/adm/dists/ptII10.0.devel/lib/jsoup-1.7.3.jar
+       realPTII=`cd $PTII; pwd` 
        jarfile=`echo $1 | sed "s@$PTII/@@"`; \
        classPath="$classPath
     <cp>$jarfile</cp>"
