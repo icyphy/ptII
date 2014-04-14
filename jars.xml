@@ -66,6 +66,8 @@
     <include name="ptolemy/actor/lib/jmf/demo/demo.jar" />
     <include name="ptolemy/actor/lib/jmf/jmf.jar" />
     <include name="ptolemy/actor/lib/joystick/joystick.jar" />
+    <include name="ptolemy/actor/lib/js/demo/demo.jar" />
+    <include name="ptolemy/actor/lib/js/js.jar" />
     <include name="ptolemy/actor/lib/mail/demo/demo.jar" />
     <include name="ptolemy/actor/lib/mail/mail.jar" />
     <include name="ptolemy/actor/lib/python/demo/demo.jar" />
@@ -1394,6 +1396,33 @@
     </jar>
 
     <!-- vendors/misc/joystick/Joystick.jar -->
+
+    <!-- ptolemy/actor/lib/js/js.jar -->
+    <jar defaultexcludes="yes"
+	 destfile="${basedir}/ptolemy/actor/lib/js/js.jar"
+	 >
+      <fileset dir="${basedir}">
+	<include name="ptolemy/actor/lib/js/*.class"/>
+      </fileset>
+      <fileset dir="${basedir}">
+	<include name="ptolemy/actor/lib/js/*.htm"/>
+      </fileset>
+      <fileset dir="${basedir}">
+	<include name="ptolemy/actor/lib/js/*.xml"/>
+      </fileset>
+    </jar>
+
+    <!-- ptolemy/actor/lib/js/demo/demo.jar -->
+    <jar defaultexcludes="yes"
+	 destfile="${basedir}/ptolemy/actor/lib/js/demo/demo.jar"
+	 >
+      <fileset dir="${basedir}">
+	<include name="ptolemy/actor/lib/js/demo/*/*.txt"/>
+      </fileset>
+      <fileset dir="${basedir}">
+	<include name="ptolemy/actor/lib/js/demo/*/*.xml"/>
+      </fileset>
+    </jar>
 
     <!-- ptolemy/actor/lib/mail/mail.jar -->
     <jar defaultexcludes="yes"

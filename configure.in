@@ -2702,6 +2702,46 @@ if test -z "$PTJAVAMAIL_DIR"; then
 fi 
 
 #--------------------------------------------------------------------
+#       js: Rhino JavaScript  implementation
+#	https://developer.mozilla.org/en-US/docs/Rhino
+#       Js is used by actors
+#--------------------------------------------------------------------
+
+# Rhino JavaScript jar files used by export html facility
+PTJAVASCRIPT_JAR=
+
+# Set to js if js.jar is found and used in $PTII/ptolemy/actor/lib/makefile
+PTJAVASCRIPT_DIR=
+
+# We only need to look for Jsoup if $PTJAVASCRIPT_USER_DIR is present
+PTJAVASCRIPT_USER_DIR="$PTII/ptolemy/actor/lib/js"
+
+if test ! -d "$PTJAVASCRIPT_USER_DIR"; then
+    PT_MSG_STATUS([$PTJAVASCRIPT_USER_DIR is not present,
+    so we need not find Rhino JavaScript Implementation.])
+else
+    AC_MSG_CHECKING([for JavaScript, used by js actors. ])
+    AC_ARG_WITH(jsoup, [  --with-javascript=JAR       use js.jar from JAR,
+                          defaults to \$PTII/lib/js.jar],
+        PTJAVASCRIPT_JAR=$withval,
+	PTJAVASCRIPT_JAR=$PTII/lib/js.jar)
+
+    if test  -f "$PTJAVASCRIPT_JAR"; then
+	PT_MSG_RESULT([$PTJAVASCRIPT_JAR])
+        updateClasspath "$PTJAVASCRIPT_JAR"
+        PTJAVASCRIPT_DIR=js
+        # PTJAVASCRIPT_PACKAGES is used in ptII/doc/makefile
+	PTJAVASCRIPT_PACKAGES=ptolemy.actor.lib.js
+    else
+        updateExcludes "ptolemy/actor/lib/js"
+        AC_MSG_WARN([Failed to find the Rhino Javascript js.jar file necessary to
+    to compile actor/lib/js.
+    Typically, js.jar is found at $PTII/lib/js.jar.])
+    fi
+fi
+
+
+#--------------------------------------------------------------------
 #       Ptolemy includes one or more FMUs that use JModelica
 #       
 #--------------------------------------------------------------------
@@ -2979,7 +3019,6 @@ if test -z "$PTJACL_DIR"; then
 else
    updateClasspath "$PTJACL_JAR"
 fi 
-
 
 #--------------------------------------------------------------------
 #       "jsoup: Java HTML Parser"
@@ -6167,6 +6206,15 @@ AC_SUBST(PTJAVAMAIL_JARS)
 # PTJMF_PACKAGES is used in ptII/doc/makefile.
 AC_SUBST(PTJAVAMAIL_PACKAGES)
 
+# Rhino JavaScript jar files used by ptolemy.actor.lib.js
+AC_SUBST(PTJAVASCRIPT_JAR)
+
+# Set to jsoup if jsoup is found and used in $PTII/ptolemy/actor/lib/js/makefile
+AC_SUBST(PTJAVASCRIPT_DIR)
+
+# Set to ptolemy.actor.lib.js and used int $PTII/doc/makefile if Rhino JavaScript is found.
+AC_SUBST(PTJAVASCRIPT_PACKAGES)
+
 # lib/jcerti.jar, used by ptolemy/apps/hlacerti
 AC_SUBST(PTJCERTI_JAR)
 
@@ -6242,7 +6290,7 @@ AC_SUBST(PTJSOUP_JAR)
 # Set to jsoup if jsoup is found and used in $PTII/ptolemy/vergil/basic/export/makefile
 AC_SUBST(PTJSOUP_DIR)
 
-# Set to ptolemy.actor.lib.joystick and used int $PTII/doc/makefile if jsoup is found.
+# Set to ptolemy.vergil.basic.export.html.jsoup and used int $PTII/doc/makefile if jsoup is found.
 AC_SUBST(PTJSOUP_PACKAGES)
 
 # Set to junit and used in $PTII/util/testsuite/makefile if junit was found.

@@ -1,6 +1,6 @@
-/* An actor that outputs a sequence with a given step in values.
+/* Execute a script in JavaScript.
 
- Copyright (c) 1998-2013 The Regents of the University of California.
+ Copyright (c) 2014 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -50,14 +50,14 @@ import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.StringAttribute;
 import ptolemy.util.MessageHandler;
-import sun.org.mozilla.javascript.internal.Context;
-import sun.org.mozilla.javascript.internal.FunctionObject;
-import sun.org.mozilla.javascript.internal.ImporterTopLevel;
-import sun.org.mozilla.javascript.internal.NativeJavaObject;
-import sun.org.mozilla.javascript.internal.Script;
-import sun.org.mozilla.javascript.internal.Scriptable;
-import sun.org.mozilla.javascript.internal.ScriptableObject;
-import sun.org.mozilla.javascript.internal.WrapFactory;
+import org.mozilla.javascript.Context;
+import org.mozilla.javascript.FunctionObject;
+import org.mozilla.javascript.ImporterTopLevel;
+import org.mozilla.javascript.NativeJavaObject;
+import org.mozilla.javascript.Script;
+import org.mozilla.javascript.Scriptable;
+import org.mozilla.javascript.ScriptableObject;
+import org.mozilla.javascript.WrapFactory;
 
 ///////////////////////////////////////////////////////////////////
 //// JavaScript

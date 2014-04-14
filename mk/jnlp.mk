@@ -520,6 +520,9 @@ FULL_ONLY_JNLP_JARS = \
 	ptolemy/actor/lib/mail/mail.jar \
 	ptolemy/actor/lib/mail/demo/demo.jar \
 	$(PTJAVAMAIL_JARS) \
+	ptolemy/actor/lib/js/js.jar \
+	ptolemy/actor/lib/js/demo/demo.jar \
+	$(PTJAVASCRIPT_JARS) \
 	ptolemy/actor/ptalon/gt/gt.jar \
 	ptolemy/actor/ptalon/gt/demo/demo.jar \
 	lib/ptCal.jar \
