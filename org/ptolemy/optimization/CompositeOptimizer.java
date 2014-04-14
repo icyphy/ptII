@@ -121,36 +121,36 @@ public class CompositeOptimizer extends MirrorComposite {
     /**
      * The optimal value of x.
      */
-    public OptimizerPort optimalValue;
+    public MirrorPort optimalValue;
     /**
      * Trigger that starts optimization routine.
      */
-    public OptimizerPort trigger;
+    public MirrorPort trigger;
 
     /**
      * The output port that provides the evaluated constraint values at each
-     * evaluation of the objective function
+     * evaluation of the objective function.
      */
-    public static OptimizerPort constraints;
+    public static MirrorPort constraints;
     /**
      * The optimization variable. 
      */
-    public static OptimizerPort x;
+    public static MirrorPort x;
     /** 
-     * Value of the objective function f(x) for a given value of x
+     * Value of the objective function f(x) for a given value of x.
      */
-    public static OptimizerPort intermediateValue;
+    public static MirrorPort intermediateValue;
 
     /**
-     * The expert parameter that denotes the beginning step-size
+     * The expert parameter that denotes the beginning step-size.
      */
     public Parameter rhoBeg;
     /**
-     * The expert parameter that denotes the final step-size
+     * The expert parameter that denotes the final step-size.
      */
     public Parameter rhoEnd;
     /**
-     * Maximum number of function evaluations per iteration
+     * Maximum number of function evaluations per iteration.
      */
     public Parameter maxEvaluations;
     /**
@@ -307,13 +307,13 @@ public class CompositeOptimizer extends MirrorComposite {
         director.setContainer(this);
         director.setName(uniqueName("OptimizerDirector"));
 
-        optimalValue = new OptimizerPort(this, OPTIMAL_VALUE_PORT_NAME);
+        optimalValue = new MirrorPort(this, OPTIMAL_VALUE_PORT_NAME);
         optimalValue.setOutput(true);
         optimalValue.setDisplayName(OPTIMAL_VALUE_PORT_NAME);
         optimalValue.setTypeEquals(new ArrayType(BaseType.DOUBLE));
 
 
-        trigger = new OptimizerPort(this, "trigger");
+        trigger = new MirrorPort(this, "trigger");
         trigger.setMultiport(true);
         trigger.setInput(true);
         SingletonParameter showName = (SingletonParameter)trigger.getAttribute("_showName");
@@ -327,7 +327,7 @@ public class CompositeOptimizer extends MirrorComposite {
 
 
         // the following ports will be hidden at the top level hierarchy.
-        intermediateValue = new OptimizerPort(this, INTERMEDIATE_VALUE_PORT_NAME);
+        intermediateValue = new MirrorPort(this, INTERMEDIATE_VALUE_PORT_NAME);
         intermediateValue.setTypeEquals(BaseType.DOUBLE);
         intermediateValue.setOutput(true);
         SingletonParameter hidden = (SingletonParameter)intermediateValue.getAttribute("_hide");
@@ -340,7 +340,7 @@ public class CompositeOptimizer extends MirrorComposite {
 
 
 
-        constraints = new OptimizerPort(this, CONSTRAINTS_PORT_NAME);
+        constraints = new MirrorPort(this, CONSTRAINTS_PORT_NAME);
         constraints.setTypeEquals(new ArrayType(BaseType.DOUBLE));
         constraints.setOutput(true);
         hidden = (SingletonParameter)constraints.getAttribute("_hide");
@@ -351,7 +351,7 @@ public class CompositeOptimizer extends MirrorComposite {
             hidden.setToken("true");
         }
 
-        x = new OptimizerPort(this, OPTIMIZATION_VARIABLE_NAME);
+        x = new MirrorPort(this, OPTIMIZATION_VARIABLE_NAME);
         x.setTypeEquals(new ArrayType(BaseType.DOUBLE));
         x.setInput(true);
         hidden = (SingletonParameter)x.getAttribute("_hide");
@@ -444,7 +444,7 @@ public class CompositeOptimizer extends MirrorComposite {
          */
         public Port newPort(String name) throws NameDuplicationException {
             try {
-                return new OptimizerPort(this, name);
+                return new MirrorPort(this, name);
             } catch (IllegalActionException ex) {
                 // This exception should not occur, so we throw a runtime
                 // exception.
@@ -454,30 +454,37 @@ public class CompositeOptimizer extends MirrorComposite {
 
         private void _init() throws IllegalActionException, NameDuplicationException{
 
-            OptimizerPort intermediate = new OptimizerPort(this, INTERMEDIATE_VALUE_PORT_NAME);
+            MirrorPort intermediate = new MirrorPort(this, INTERMEDIATE_VALUE_PORT_NAME);
             intermediate.setTypeEquals(BaseType.DOUBLE);
             intermediate.setOutput(true);  
 
-            OptimizerPort insideConstraints = new OptimizerPort(this, CONSTRAINTS_PORT_NAME);
+            MirrorPort insideConstraints = new MirrorPort(this, CONSTRAINTS_PORT_NAME);
             insideConstraints.setTypeEquals(new ArrayType(BaseType.DOUBLE));
             insideConstraints.setOutput(true); 
 
-            OptimizerPort xIn = new OptimizerPort(this, OPTIMIZATION_VARIABLE_NAME);
+            MirrorPort xIn = new MirrorPort(this, OPTIMIZATION_VARIABLE_NAME);
             xIn.setTypeEquals(new ArrayType(BaseType.DOUBLE));
             xIn.setInput(true); 
 
         }
     }
+    /** This is a specialized director that fires the input SDF model
+     *  repeatedly for different values of the optimization variable.
+     *  The director stores the tokens from input ports and re-sends them
+     *  to the inside receivers for each execution of the inside composite.
+     *  The fire() method makes a call to Cobyla.FindMinimum, which is a 
+     *  derivative-free optimizer that uses a sequential trust-region algorithm
+     *  with linear approximations.
+     *  
+     *  @see com.cureos.numerics.Cobyla
+     */
     public class OptimizerDirector extends Director {
 
 
         public OptimizerDirector(Workspace workspace)
                 throws IllegalActionException, NameDuplicationException {
             super(workspace);   
-        }
-
-
-
+        } 
 
         @Override
         public void fire() throws IllegalActionException{
@@ -493,8 +500,7 @@ public class CompositeOptimizer extends MirrorComposite {
                     }  
                     // convert x into an array token
                     ArrayToken xAsToken = new ArrayToken(xTokens);
-                    // send new x value to the x port of the inside port for the new iteration
-                    // maybe we need not override transferinputs at all? 
+                    // send x value to the inside port for the new execution
                     CompositeOptimizer.this.x.sendInside(0, xAsToken);
 
                     // before firing the inside composite, make sure transferInputs are called
@@ -663,48 +669,6 @@ public class CompositeOptimizer extends MirrorComposite {
 
 
 
-    }
-
-    public static class OptimizerPort extends MirrorPort {
-        /** Construct a port in the specified workspace with an empty
-         *  string as a name. You can then change the name with setName().
-         *  If the workspace argument
-         *  is null, then use the default workspace.
-         *  The object is added to the workspace directory.
-         *  Increment the version number of the workspace.
-         *  @param workspace The workspace that will list the port.
-         * @throws IllegalActionException If port parameters cannot be initialized.
-         */
-        public OptimizerPort(Workspace workspace) throws IllegalActionException {
-            // This constructor is needed for Shallow codgen.
-            super(workspace);
-        }
-
-        // NOTE: This class has to be static because otherwise the
-        // constructor has an extra argument (the first argument,
-        // actually) that is an instance of the enclosing class.
-        // The MoML parser cannot know what the instance of the
-        // enclosing class is, so it would not be able to instantiate
-        // these ports.
-
-        /** Create a new instance of a port for IterateOverArray.
-         *  @param container The container for the port.
-         *  @param name The name of the port.
-         *  @exception IllegalActionException Not thrown in this base class.
-         *  @exception NameDuplicationException Not thrown in this base class.
-         */
-        public OptimizerPort(TypedCompositeActor container, String name)
-                throws IllegalActionException, NameDuplicationException {
-            super(container, name);
-
-            // NOTE: Ideally, Port are created when an entity is added.
-            // However, there appears to be no clean way to do this.
-            // Instead, ports are added when an entity is added via a
-            // change request registered with this IterateOverArray actor.
-            // Consequently, these ports have to be persistent, and this
-            // constructor and class have to be public.
-            // setPersistent(false);
-        } 
     }
 
     /** Beginning rho. Optimization step size.*/
