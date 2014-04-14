@@ -68,7 +68,6 @@ Black-box optimizer that uses JCobyla as the solver
 B. Charrow, V. Kumar, and N. Michael <i>Approximate Representations for Multi-Robot 
   Control Policies that Maximize Mutual Information</i>, In Proc. Robotics: Science and Systems Conference (RSS), 2013.
 @see org.ptolemy.machineLearning.particleFilter.ParticleFilter
-@see com.cureos.numerics
 
 @author Ilge Akkaya
 @version $Id$

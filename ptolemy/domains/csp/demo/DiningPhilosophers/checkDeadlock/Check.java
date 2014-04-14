@@ -67,7 +67,7 @@ import ptolemy.moml.MoMLParser;
 public class Check {
     /** Load the base automata.
      *  @param numberOfPhilosophers The number of philosophers.
-     *  @param simple True if SimpleSend.xml is to be used
+     *  @param useSimple True if SimpleSend.xml is to be used
      *  @exception Exception If the automata cannot be loaded.
      */
     public Check(int numberOfPhilosophers, boolean useSimple) throws Exception {
