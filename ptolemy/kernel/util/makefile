@@ -43,7 +43,7 @@ CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Flags to pass to javadoc. (Override value in ptII.mk)
-JDOCFLAGS = 	-author -version -public $(JDOCBREAKITERATOR) $(JDOCMEMORY) $(JDOCTAG)
+JDOCFLAGS = 	-author -version -public $(JDOCBREAKITERATOR) $(JDOCMEMORY) $(JDOCTAG) $(JDOCSTYLESHEET)
 
 # Used to build jar files
 PTPACKAGE = 	util

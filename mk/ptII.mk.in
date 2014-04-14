@@ -243,8 +243,11 @@ JDOCSOURCEFLAGS = @JDOCSOURCEFLAGS@
 # http://java.sun.com/developer/earlyAccess/doccheck/
 JDOCCHECKFLAGS = $(JDOCBREAKITERATOR) $(JDOCMEMORY) $(JDOCSOURCEFLAGS)
 
+# Use a simple style sheet so that the docs render properly in vergil.
+JDOCSTYLESHEET = -stylesheetfile $(PTII)/doc/doclets/stylesheet.css
+
 # Flags to pass to javadoc.
-JDOCFLAGS = 	-author -version -private $(JDOCCHECKFLAGS) $(JDOCTAG) $(JDOCTAGLET)
+JDOCFLAGS = 	-author -version -private $(JDOCCHECKFLAGS) $(JDOCTAG) $(JDOCTAGLET) $(JDOCSTYLESHEET)
 
 # The jar command, used to produce jar files, which are similar to tar files
 JAR =		@JAR@
