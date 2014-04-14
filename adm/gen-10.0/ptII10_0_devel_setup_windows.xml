@@ -323,10 +323,12 @@ The Ptiny pack is required.
                   targetdir="$INSTALL_PATH/ptolemy/actor/gt"/>
             <file src="../dists/ptII10.0.devel/jar_dist/ptolemy/actor/gt/demo/demo.jar"
                   targetdir="$INSTALL_PATH/ptolemy/actor/gt/demo"/>
+
             <file src="../dists/ptII10.0.devel/jar_dist/ptolemy/actor/lib/fmi/fmi.jar"
-                  targetdir="$INSTALL_PATH/ptolemy/actor/lib/io/fmi"/>
+                  targetdir="$INSTALL_PATH/ptolemy/actor/lib/fmi"/>
             <file src="../dists/ptII10.0.devel/jar_dist/ptolemy/actor/lib/fmi/demo/demo.jar"
-                  targetdir="$INSTALL_PATH/ptolemy/actor/lib/io/fmi/demo"/>
+                  targetdir="$INSTALL_PATH/ptolemy/actor/lib/fmi/demo"/>
+
             <file src="../dists/ptII10.0.devel/jar_dist/ptolemy/actor/lib/io/comm/comm.jar"
                   targetdir="$INSTALL_PATH/ptolemy/actor/lib/io/comm"/>
             <file src="../dists/ptII10.0.devel/jar_dist/ptolemy/actor/lib/io/comm/demo/demo.jar"
@@ -345,6 +347,14 @@ The Ptiny pack is required.
                   targetdir="$INSTALL_PATH/ptolemy/actor/lib/joystick"/>
             <file src="../dists/ptII10.0.devel/jar_dist/vendors/misc/joystick/Joystick.jar"
                   targetdir="$INSTALL_PATH/vendors/misc/joystick"/>
+
+            <file src="../dists/ptII10.0.devel/jar_dist/lib/js.jar"/>
+                  targetdir="$INSTALL_PATH/ptolemy/lib"/>
+            <file src="../dists/ptII10.0.devel/jar_dist/ptolemy/actor/lib/js/demo/demo.jar"
+                  targetdir="$INSTALL_PATH/ptolemy/actor/lib/js/demo"/>
+            <file src="../dists/ptII10.0.devel/jar_dist/ptolemy/actor/lib/js/js.jar"
+                  targetdir="$INSTALL_PATH/ptolemy/actor/lib/js"/>
+
             <file src="../dists/ptII10.0.devel/jar_dist/ptolemy/actor/lib/mail/mail.jar"
                   targetdir="$INSTALL_PATH/ptolemy/actor/lib/mail"/>
             <file src="../dists/ptII10.0.devel/jar_dist/ptolemy/actor/lib/mail/demo/demo.jar"
