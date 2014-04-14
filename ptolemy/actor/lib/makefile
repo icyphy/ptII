@@ -51,6 +51,9 @@ ME =		ptolemy/actor/lib
 # $PTII/configure looks for JavaMail sets PTJAVAMAIL_DIR in
 # $PTII/mk/ptII.mk if it was found.  Otherwise, PTJAVAMAIL_DIR is empty.
 
+# $PTII/configure looks for JavaScript js.jar and  sets PTJAVASCRIPT_DIR in
+# $PTII/mk/ptII.mk if it was found.  Otherwise, PTJAVASCRIPT_DIR is empty.
+
 # $PTII/configure looks for Java Media Framework and sets PTJMF_DIR in
 # $PTII/mk/ptII.mk if it was found.  Otherwise, PTJMF_DIR is empty.
 #
@@ -69,6 +72,7 @@ DIRS = 		aspect conversions gui logic hoc image test \
 		test comm security string tutorial vhdl video \
 		$(PTCOLT_DIR) $(PTDATABASE_DIR) $(PTFMI_DIR) \
 		$(PTEXCEL_DIR) $(PTJAI_DIR) $(PTJAVAMAIL_DIR) \
+		$(PTJAVASCRIPT) \
 		$(PTJMF_DIR) $(PTJOYSTICK_DIR) \
 		$(PTJYTHON_DIR) $(PTOPENCV_DIR)
 

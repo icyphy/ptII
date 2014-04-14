@@ -1,4 +1,4 @@
-# Makefile for the Java classes used to test the jai actors
+# Makefile for the Java classes used to test the Mail actors
 #
 # @Authors: Christopher Hylands (makefile only)
 #
@@ -30,7 +30,7 @@
 # 						COPYRIGHTENDKEY
 
 # Location of this directory, relative to the Ptolemy II directory
-ME =		ptolemy/actor/lib/jai/test
+ME =		ptolemy/actor/lib/mail/test
 
 # Root of the Ptolemy II directory
 ROOT =		../../../../..
