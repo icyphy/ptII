@@ -284,7 +284,7 @@ PTINYOS_MOMLROOT=${WORKSPACE}/vendors/ptinyos/moml</localVarText>
 
 &lt;p&gt;Check console output at &lt;a href=&quot;$BUILD_URL&quot;&gt;$BUILD_URL&lt;/a&gt; to view the results.&lt;/p&gt;
 
-&lt;p&gt;Or &lt;a href=&quot;${HUDSON_URL}hudson/job/${PROJECT_NAME}/${BUILD_NUMBER}&quot;&gt;${HUDSON_URL}hudson/job/${PROJECT_NAME}/${BUILD_NUMBER}&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;Or &lt;a href=&quot;http://sisyphus.eecs.berkeley.edu:8079/hudson/job/ptII/${BUILD_NUMBER}&quot;&gt;http://sisyphus.eecs.berkeley.edu:8079/hudson/job/ptII/${BUILD_NUMBER}&lt;/a&gt;.&lt;/p&gt;
 
 &lt;p&gt;&lt;a href=&quot;http://sisyphus.eecs.berkeley.edu:8079/hudson/job/ptII/lastCompletedBuild/testReport/&quot;&gt;Test Report&lt;/a&gt;.&lt;/p&gt;
 
