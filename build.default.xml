@@ -109,6 +109,7 @@
     <pathelement location="lib/jna.jar" />
     <pathelement location="lib/junit-4.8.2.jar" />
     <pathelement location="lib/JUnitParams-0.3.0.jar"/>
+    <pathelement location="lib/js.jar" />
     <pathelement location="lib/jython.jar" />
     <pathelement location="lib/kieler.jar" />
     <pathelement location="lib/ptcolt.jar" />
