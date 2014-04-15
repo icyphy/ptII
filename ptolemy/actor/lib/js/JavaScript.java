@@ -1,4 +1,4 @@
-/* Execute a script in JavaScript.
+/* AnExecute a script in JavaScript.
 
  Copyright (c) 2014 The Regents of the University of California.
  All rights reserved.
@@ -34,6 +34,16 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.mozilla.javascript.Context;
+import org.mozilla.javascript.FunctionObject;
+import org.mozilla.javascript.ImporterTopLevel;
+import org.mozilla.javascript.NativeJavaObject;
+import org.mozilla.javascript.Script;
+import org.mozilla.javascript.Scriptable;
+import org.mozilla.javascript.ScriptableObject;
+import org.mozilla.javascript.WrapFactory;
+import org.mozilla.javascript.WrappedException;
+
 import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.data.DoubleToken;
@@ -50,14 +60,6 @@ import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.StringAttribute;
 import ptolemy.util.MessageHandler;
-import org.mozilla.javascript.Context;
-import org.mozilla.javascript.FunctionObject;
-import org.mozilla.javascript.ImporterTopLevel;
-import org.mozilla.javascript.NativeJavaObject;
-import org.mozilla.javascript.Script;
-import org.mozilla.javascript.Scriptable;
-import org.mozilla.javascript.ScriptableObject;
-import org.mozilla.javascript.WrapFactory;
 
 ///////////////////////////////////////////////////////////////////
 //// JavaScript
@@ -91,10 +93,21 @@ import org.mozilla.javascript.WrapFactory;
  Top-level methods defined include:
  <ul>
  <li> alert(string)
+ <li> error(string)
  <li> send(port,value)
  </ul>
  The alert() method pops up a dialog with the specified message.
+ The error() method throws an IllegalActionException with the specified message.
  The send() method sends data to an output port.
+ <p>
+ In addition, the symbol "actor" is defined to be the instance of
+ this actor. In JavaScript, you can invoke methods on it.
+ For example, the JavaScript
+ <pre>
+    actor.toplevel().getName();
+ </pre>
+ will return the name of the top-level composite actor containing
+ this actor.
  
  @author Edward A. Lee
  @version $Id: Ramp.java 67679 2013-10-13 03:48:10Z cxh $
@@ -166,7 +179,7 @@ public class JavaScript extends TypedAtomicActor {
      *  throws it.
      */
     @Override
-	public void fire() throws IllegalActionException {
+    public void fire() throws IllegalActionException {
         super.fire();
         
         // Read all the inputs and create a table of their values.
@@ -181,7 +194,7 @@ public class JavaScript extends TypedAtomicActor {
         					+ " Please rename it.");
         		}
     			// FIXME: Supporting only single ports for now.
-        		if (port.hasToken(0)) {
+        		if (port.getWidth() > 0 && port.hasToken(0)) {
         			_inputValues.put(port, port.get(0));
         		}
         	}
@@ -189,8 +202,11 @@ public class JavaScript extends TypedAtomicActor {
         // NOTE: This has to be done in fire() because ports and parameters get
         // wrapped now as JavaScript objects. An input port and a parameter will
         // be turned into the actual value.
-        // FIXME: Need to disallow keywords. Apparently, "in" is a keyword.
         for (TypedIOPort port : portList()) {
+        	// Do not convert the scriptIn port to a JavaScript variable.
+        	if (port == scriptIn) {
+        		continue;
+        	}
         	Object jsObject = Context.javaToJS(port, _scope);
         	_scope.put(port.getName(), _scope, jsObject);
         }
@@ -200,13 +216,22 @@ public class JavaScript extends TypedAtomicActor {
         }
         
         // If there is an input at scriptIn, evaluate that script instead.
-        if (scriptIn.getWidth() > 0 && scriptIn.hasToken(0)) {
-        	// A script is provided as input.
-        	String scriptValue = ((StringToken)scriptIn.get(0)).stringValue();
-        	_context.evaluateString(_scope, scriptValue, getName(), 1, null);
-        } else {
-        	// Execute the default script.
-        	_compiledScript.exec(Context.getCurrentContext(), _scope);
+        try {
+        	if (scriptIn.getWidth() > 0 && scriptIn.hasToken(0)) {
+        		// A script is provided as input.
+        		String scriptValue = ((StringToken)scriptIn.get(0)).stringValue();
+        		_context.evaluateString(_scope, scriptValue, getName(), 1, null);
+        	} else {
+        		// Execute the default script.
+        		_compiledScript.exec(Context.getCurrentContext(), _scope);
+        	}
+        } catch (WrappedException ex) {
+        	Throwable original = ex.getWrappedException();
+        	throw new IllegalActionException(this, ex,
+        			"Exception during executing script at line "
+        			+ ex.lineNumber()
+        			+ ".\n"
+        			+ original.getMessage());
         }
     }
 
@@ -215,7 +240,7 @@ public class JavaScript extends TypedAtomicActor {
      *  throws it.
      */
     @Override
-	public void initialize() throws IllegalActionException {
+    public void initialize() throws IllegalActionException {
         super.initialize();
 
         if (_inputValues == null) {
@@ -256,7 +281,7 @@ public class JavaScript extends TypedAtomicActor {
      *  @exception IllegalActionException If the parent class throws it.
      */
     @Override
-	public void preinitialize() throws IllegalActionException {
+    public void preinitialize() throws IllegalActionException {
         super.preinitialize();
         _context = Context.enter();
         _scope = new ImporterTopLevel(Context.getCurrentContext());
@@ -267,12 +292,21 @@ public class JavaScript extends TypedAtomicActor {
         // Get a reference to the instance method to be made available in JavaScript as a global function.
         Method scriptableInstanceMethod;
 		try {
+			// Create the alert() method.
 			String methodName = "alert";
 			scriptableInstanceMethod = PtolemyJavaScript.class.getMethod(methodName, new Class[]{String.class});
 	        FunctionObject scriptableFunction = new PtolemyFunctionObject(methodName, scriptableInstanceMethod, scriptable);
 	        // Make it accessible within the scriptExecutionScope.
 	        _scope.put(methodName, _scope, scriptableFunction);
 
+			// Create the error() method.
+	        methodName = "error";
+			scriptableInstanceMethod = PtolemyJavaScript.class.getMethod(methodName, new Class[]{String.class});
+	        scriptableFunction = new PtolemyFunctionObject(methodName, scriptableInstanceMethod, scriptable);
+	        // Make it accessible within the scriptExecutionScope.
+	        _scope.put(methodName, _scope, scriptableFunction);
+
+	        // Create the send() method.
 	        methodName = "send";
 			scriptableInstanceMethod = PtolemyJavaScript.class.getMethod(methodName,
 					new Class[]{NativeJavaObject.class, Object.class});
@@ -280,6 +314,9 @@ public class JavaScript extends TypedAtomicActor {
 	        // Make it accessible within the scriptExecutionScope.
 	        _scope.put(methodName, _scope, scriptableFunction);
 	        
+	        // This actor is exposed as an object named "actor".
+        	Object jsObject = Context.javaToJS(this, _scope);
+        	_scope.put("actor", _scope, jsObject);
 		} catch (Exception e) {
 			throw new IllegalActionException(this, e, "Failed to create built-in JavaScript methods.");
 		}
@@ -292,7 +329,7 @@ public class JavaScript extends TypedAtomicActor {
      *  @exception IllegalActionException If the parent class throws it.
      */
     @Override
-	public void wrapup() throws IllegalActionException {
+    public void wrapup() throws IllegalActionException {
     	// FIXME: Why is this static??
     	Context.exit();
     	super.wrapup();
@@ -335,11 +372,16 @@ public class JavaScript extends TypedAtomicActor {
     /** Container class for built-in methods.
      */
     @SuppressWarnings("serial")
-	public class PtolemyJavaScript extends ScriptableObject {
+    public class PtolemyJavaScript extends ScriptableObject {
 
     	/** Alert the user with a message. */
     	public void alert(String message) {
     		MessageHandler.message(message);
+    	}
+
+    	/** Throw an IllegalActionException with the specified message. */
+    	public void error(String message) throws IllegalActionException {
+    		throw new IllegalActionException(JavaScript.this, message);
     	}
 
     	/** Send outputs via an output port. */
@@ -350,6 +392,9 @@ public class JavaScript extends TypedAtomicActor {
         		if (!port.isOutput()) {
         			throw new InternalErrorException(JavaScript.this, null,
         					"Cannot send via " + port.getName() + ", which is not an output port.");
+        		}
+        		if (data instanceof NativeJavaObject) {
+        			data = ((NativeJavaObject) data).unwrap();
         		}
         		try {
     				port.send(0, _createToken(data));
@@ -370,9 +415,17 @@ public class JavaScript extends TypedAtomicActor {
 		
 		/** Create a Ptolemy Token from and object sent by JavaScript. */
 		private Token _createToken(Object data) {
+	    	//**********************************************************************
+			// This the key place to support additional output data types.
 			if (data instanceof Integer) {
 				return new IntToken(((Integer)data).intValue());
 			} else if (data instanceof Double) {
+				// Since JavaScript represents all numbers as double, we first
+				// check to see whether this is actually an integer.
+				if (((Double)data).doubleValue() % 1 == 0) {
+					// The value is actually an integer.
+					return new IntToken(((Double)data).intValue());
+				}
 				return new DoubleToken(((Double)data).doubleValue());
 			}
 			// FIXME: More data types!
@@ -383,7 +436,7 @@ public class JavaScript extends TypedAtomicActor {
     /** Specialized FunctionObject that provides the parent scope when evaluating the function.
      */
     @SuppressWarnings("serial")
-	private static class PtolemyFunctionObject extends FunctionObject {
+    private static class PtolemyFunctionObject extends FunctionObject {
 
         private PtolemyFunctionObject(String name, Member methodOrConstructor, Scriptable parentScope) {
           super(name, methodOrConstructor, parentScope);
@@ -398,7 +451,7 @@ public class JavaScript extends TypedAtomicActor {
     /** Wrap factory for Ptolemy objects that returns their value rather than a wrapped Java object. */
     public class PtolemyWrapFactory extends WrapFactory {
     	@Override
-		public Object wrap(Context context, Scriptable scope, Object object, Class staticType) {
+    	public Object wrap(Context context, Scriptable scope, Object object, Class staticType) {
     		if (object instanceof Variable) {
     			try {
 					Token value = ((Variable)object).getToken();
@@ -419,15 +472,23 @@ public class JavaScript extends TypedAtomicActor {
     		}
     		return super.wrap(context, scope, object, staticType);
     	}
+    	//**********************************************************************
+		// This the key place to support additional input and parameter data types.
+    	// Given a Ptolemy II token, if there is a corresponding native
+    	// JavaScript type, then return something that will naturally be
+    	// converted to that type.
     	private Object _wrapToken(Token token) {
     		if (token instanceof IntToken) {
     			return new Integer(((IntToken)token).intValue());
     		} else if (token instanceof DoubleToken) {
     			return new Double(((DoubleToken)token).doubleValue());
+    		} else if (token instanceof StringToken) {
+    			return ((StringToken)token).stringValue();
     		} else if (token == null) {
     			return null;
     		}
     		// FIXME: wrap all the data types.
+    		// FIXME:  Just return the token!!!  Try ActorToken
     		return token.toString();
     	}
     }

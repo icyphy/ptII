@@ -1,7 +1,7 @@
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<entity name="JavaScript1" class="ptolemy.actor.TypedCompositeActor">
+<entity name="JavaScript4" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="10.0.devel">
     </property>
     <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={157, 318, 934, 634}, maximized=false}">
@@ -12,16 +12,14 @@
     </property>
     <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{340.0, 252.0}">
     </property>
-    <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
-        <property name="iterations" class="ptolemy.data.expr.Parameter" value="3">
+    <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Test persistence of data across firings.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[50.0, 45.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[130.0, 25.0]">
         </property>
     </property>
-    <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Note that although all JavaScript numbers are doubles,&#10;our interface converts results to IntToken if the result is actually an int.&#10;Hence, the output data type here can be int.">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[5.0, 190.0]">
+    <property name="DDF Director" class="ptolemy.domains.ddf.kernel.DDFDirector">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[60.0, 55.0]">
         </property>
     </property>
     <entity name="JavaScript" class="ptolemy.actor.lib.js.JavaScript">
@@ -41,34 +39,30 @@
             <property name="output"/>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
             </property>
-            <property name="_type" class="ptolemy.actor.TypeAttribute" value="int">
+            <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
             </property>
         </port>
-        <port name="input" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
-            </property>
-        </port>
-    </entity>
-    <entity name="Ramp" class="ptolemy.actor.lib.Ramp">
-        <doc>Create a sequence of tokens with increasing value</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{45, 145}">
-        </property>
     </entity>
     <entity name="NonStrictTest" class="ptolemy.actor.lib.NonStrictTest">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0, 2, 4}">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{1.0}">
         </property>
         <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[340.0, 145.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[335.0, 145.0]">
         </property>
     </entity>
-    <relation name="relation" class="ptolemy.actor.TypedIORelation">
-    </relation>
+    <entity name="Sequence" class="ptolemy.actor.lib.Sequence">
+        <property name="values" class="ptolemy.data.expr.Parameter" value="{&quot;var x = 1&quot;, &quot;send(output, x)&quot;}">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[100.0, 230.0]">
+        </property>
+    </entity>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
     </relation>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <link port="JavaScript.scriptIn" relation="relation"/>
     <link port="JavaScript.output" relation="relation2"/>
-    <link port="JavaScript.input" relation="relation"/>
-    <link port="Ramp.output" relation="relation"/>
     <link port="NonStrictTest.input" relation="relation2"/>
+    <link port="Sequence.output" relation="relation"/>
 </entity>

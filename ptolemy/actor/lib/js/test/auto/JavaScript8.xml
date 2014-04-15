@@ -1,7 +1,7 @@
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<entity name="JavaScript1" class="ptolemy.actor.TypedCompositeActor">
+<entity name="JavaScript8" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="10.0.devel">
     </property>
     <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={157, 318, 934, 634}, maximized=false}">
@@ -15,17 +15,29 @@
     <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
         <property name="iterations" class="ptolemy.data.expr.Parameter" value="3">
         </property>
+        <property name="allowDisconnectedGraphs" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[50.0, 45.0]">
         </property>
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Note that although all JavaScript numbers are doubles,&#10;our interface converts results to IntToken if the result is actually an int.&#10;Hence, the output data type here can be int.">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Test the error() method invoked in JavaScript.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[5.0, 190.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[120.0, 25.0]">
+        </property>
+    </property>
+    <property name="TestExceptionAttribute" class="ptolemy.actor.lib.TestExceptionAttribute">
+        <property name="correctExceptionMessage" class="ptolemy.data.expr.StringParameter" value="Exception during executing script at line 1.&#10;foo&#10;  in .JavaScript8.JavaScript&#10;  in .JavaScript8.JavaScript&#10;Because:&#10;Wrapped ptolemy.kernel.util.IllegalActionException: foo&#10;  in .JavaScript8.JavaScript (JavaScript#1)">
+        </property>
+        <property name="matchPrefixOfLength" class="ptolemy.data.expr.Parameter" value="20">
+        </property>
+        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[395.0, 150.0]">
         </property>
     </property>
     <entity name="JavaScript" class="ptolemy.actor.lib.js.JavaScript">
-        <property name="script" class="ptolemy.kernel.util.StringAttribute" value="// Multiply the input by 2.&#10;send(output, input*2);">
+        <property name="script" class="ptolemy.kernel.util.StringAttribute" value="error(&quot;foo&quot;)">
             <property name="style" class="ptolemy.actor.gui.style.TextStyle">
                 <property name="height" class="ptolemy.data.expr.Parameter" value="10">
                 </property>
@@ -33,7 +45,7 @@
                 </property>
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[190.0, 145.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[55.0, 140.0]">
         </property>
         <property name="foo" class="ptolemy.data.expr.Parameter" value="{12.0}">
         </property>
@@ -41,34 +53,26 @@
             <property name="output"/>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
             </property>
-            <property name="_type" class="ptolemy.actor.TypeAttribute" value="int">
+            <property name="_type" class="ptolemy.actor.TypeAttribute" value="string">
             </property>
         </port>
-        <port name="input" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
-            </property>
-        </port>
-    </entity>
-    <entity name="Ramp" class="ptolemy.actor.lib.Ramp">
-        <doc>Create a sequence of tokens with increasing value</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{45, 145}">
-        </property>
     </entity>
     <entity name="NonStrictTest" class="ptolemy.actor.lib.NonStrictTest">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0, 2, 4}">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{&quot;JavaScript&quot;, &quot;JavaScript&quot;, &quot;JavaScript&quot;}">
+        </property>
+        <property name="requireAllCorrectValues" class="ptolemy.actor.parameters.SharedParameter" value="true">
         </property>
         <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[340.0, 145.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[205.0, 140.0]">
         </property>
     </entity>
-    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+        </property>
+        <vertex name="vertex1" value="{130.0, 140.0}">
+        </vertex>
     </relation>
-    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
-    </relation>
-    <link port="JavaScript.output" relation="relation2"/>
-    <link port="JavaScript.input" relation="relation"/>
-    <link port="Ramp.output" relation="relation"/>
-    <link port="NonStrictTest.input" relation="relation2"/>
+    <link port="JavaScript.output" relation="relation3"/>
+    <link port="NonStrictTest.input" relation="relation3"/>
 </entity>
