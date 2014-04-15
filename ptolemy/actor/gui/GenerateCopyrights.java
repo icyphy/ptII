@@ -745,7 +745,7 @@ public class GenerateCopyrights {
             }
         }
         if (rowIndex == -1) {
-            results.append("  <td>?</td> <td>?</td> <td>?</td> <td>Update ptolemy/actor/gui/GenerateCopyrights.java</td>");
+            results.append("  <td>?</td> <td>?</td> <td>?</td> <td>Update ptolemy/actor/gui/GenerateCopyrights.java for \"" + target + "\".</td>");
         } else {
             results.append("  <td>" + _licenses[rowIndex][1] + "</td>\n"
                     + "  <td>" + _licenses[rowIndex][2] + "</td>\n"
@@ -812,7 +812,7 @@ public class GenerateCopyrights {
     }
 
     /** A table of copyright labels, whether it is in Ptiny, the
-     * Windoes JRE, included in sources, included in Kepler and a
+     * Windows JRE, included in sources, included in Kepler and a
      * summary of the license(s).
      * We use a simple table here for ease of maintenance.
      */
@@ -841,12 +841,15 @@ public class GenerateCopyrights {
         {"javascript", " ", " ", "Y", "Y", "JQuery and Fancybox: MIT"},
         {"javax.servlet", " ", " ", "Y", "Y", "Apache License"},
         {"jcerti", " ", " ", "Y", "Y", "GNU Lesser General Public"},
+        {"jcobyla", " ", " ", "Y", "", "MIT"},
+        {"jdom", " ", " ", "Y", "", "Similar to BSD.  No use of sponsor name in advertising"},
         {"jetty", " ", " ", "Y", "Y", "Apache License + Eclipse"},
         {"jgoodies", " ", " ", "Y", "Y", "3 Clause BSD"},
         {"jimblacklerUtils", " ", " ", "Y", "Y", "Public Domain"},
         {"jmf", " ", "Y", " ", " ", "Sun"},
         {"jna", " ", " ", "Y", "Y", "Apache License + GNU Lesser General Public"},
         {"joystick", " ", " ", "Y", " ", "Artistic License"},
+        {"js", " ", " ", "Y", " ", "Mozilla + Sun"},
         {"json", " ", " ", "Y", "Y", "BSD-like"},
         {"jsoup", " ", " ", "Y", "Y", "MIT"},
         {"junit", " ", " ", "Y", "Y", "Common Public License - v 1.0"},
