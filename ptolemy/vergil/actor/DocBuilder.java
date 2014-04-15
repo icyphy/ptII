@@ -271,9 +271,23 @@ public class DocBuilder extends Attribute {
                             .updateStatusBar("When creating docs, warnings are ok.");
 
                     commands.add(_compilePtDoclet(ptII));
+
+                    String styleSheetFile = "";
+                    //Unfortunately, -stylesheetfile is not supported with -doclet?
+//                     String styleSheetFileName = ptII + "/doc/doclets/stylesheet.css";
+//                     if (new File(styleSheetFileName).exists()) {
+//                         styleSheetFile = "-stylesheetfile " + styleSheetFileName + " ";
+//                     } else {
+//                         System.out.println("DocBuilder: Warning: could not find "
+//                                 + styleSheetFileName + ". The JavaDoc output might "
+//                                 + "be hard to read from within Vergil.");
+//                     }
+
+//                    commands.add("which javadoc");
                     commands.add("javadoc -classpath \""
                             + StringUtilities.getProperty("java.class.path")
                             + "\" -J-Xmx512m -d doc/codeDoc "
+                            + styleSheetFile
                             + "-doclet doc.doclets.PtDoclet "
                             + "-subpackages com:diva:jni:org:ptolemy:thales "
                             + "-exclude ptolemy.apps:ptolemy.copernicus:diva.util.java2d.svg");
