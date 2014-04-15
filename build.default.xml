@@ -611,8 +611,7 @@ For example:
 	     packagenames="${javadoc.packagenames}"
 	     excludepackagenames="${javadoc.excludepackagenames}"
 	     maxmemory="${java.maxmemory}"
-	     sourcepath="${basedir}"
-	     stylesheetfile="${basedir}/doc/doclets/stylesheet.css" >
+	     sourcepath="${basedir}" >
       <classpath>
 	<path refid="ptII.classpath" />
 	<pathelement location="${env.JAVA_HOME}/lib/tools.jar" />
@@ -662,8 +661,7 @@ For example:
 	     packagenames="${javadoc.packagenames}"
 	     excludepackagenames="${javadoc.excludepackagenames}"
 	     maxmemory="${java.maxmemory}"
-	     sourcepath="${basedir}"
-	     stylesheetfile="${basedir}/doc/doclets/stylesheet.css" >
+	     sourcepath="${basedir}" >
       <classpath>
 	<path refid="ptII.classpath" />
 	<pathelement location="${env.JAVA_HOME}/lib/tools.jar" />

@@ -262,14 +262,14 @@ javadocs: doc/codeDoc/tree.html
 jhtml: doc/codeDoc/tree.html
 # $(DERIVED_JSRCS) is used in ptolemy/data/expr
 doc/codeDoc/tree.html:	$(JSRCS) $(OPTIONAL_JSRCS) $(DERIVED_JSRCS)
-	@if [ "$(JSRCS)" = "" ]; then \
+	if [ "$(JSRCS)" = "" ]; then \
 		echo "No java sources, so we don't run javadoc";\
 	else \
 	if [ ! -d doc/codeDoc ]; then mkdir -p doc/codeDoc; fi; \
 	rm -f doc/codeDoc/*.html; \
 	CLASSPATH="$(CLASSPATH)$(CLASSPATHSEPARATOR)$(PTJAVA_DIR)/lib/classes.zip$(AUXCLASSPATH)" \
 	   "$(JAVADOC)" $(JDOCFLAGS) -d doc/codeDoc \
-		$(JSRCS) $(OPTIONAL_JSRCS) $(DERIVED_JSRCS); \
+		$(JSRCS) $(OPTIONAL_JSRCS) $(DERIVED_JSRCS) -stylesheetfile ; \
 	fi
 
 # Generate index.xml from all the Java classes in a lib directory
