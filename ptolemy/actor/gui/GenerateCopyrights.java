@@ -35,7 +35,6 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
-import java.util.SortedSet;
 import java.util.TreeMap;
 
 import ptolemy.data.ArrayToken;
@@ -798,7 +797,6 @@ public class GenerateCopyrights {
 
     /** Compare two filenames.
      */   
-    @SuppressWarnings("serial")
     static class FileNameComparator implements Comparator<String> {
 
         /** Compare to Strings that should represent files by the name of the file. 

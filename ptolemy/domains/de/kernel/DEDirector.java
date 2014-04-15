@@ -36,12 +36,10 @@ import java.util.Set;
 
 import ptolemy.actor.Actor;
 import ptolemy.actor.ActorExecutionAspect;
-import ptolemy.actor.CommunicationAspect;
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.Director;
 import ptolemy.actor.FiringEvent;
 import ptolemy.actor.IOPort;
-import ptolemy.actor.Manager;
 import ptolemy.actor.QuasiTransparentDirector;
 import ptolemy.actor.Receiver;
 import ptolemy.actor.SuperdenseTimeDirector;
@@ -65,7 +63,6 @@ import ptolemy.kernel.util.Nameable;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.Workspace;
-import ptolemy.util.CancelException;
 import ptolemy.util.MessageHandler;
 
 ///////////////////////////////////////////////////////////////////

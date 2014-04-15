@@ -27,7 +27,6 @@
  */
 package ptolemy.domains.sr.lib;
 
-import ptolemy.actor.TypedIOPort;
 import ptolemy.data.BooleanToken;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;

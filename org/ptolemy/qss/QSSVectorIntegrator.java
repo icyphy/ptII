@@ -2,11 +2,12 @@ package org.ptolemy.qss;
 
 import java.util.ArrayList;
 import java.util.List;
+
 import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.util.Time;
-import ptolemy.data.DoubleToken;
 import ptolemy.data.ArrayToken;
+import ptolemy.data.DoubleToken;
 import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.ArrayType;

@@ -52,8 +52,6 @@ import ptolemy.kernel.util.Workspace;
 import ptolemy.math.DoubleArrayMath;
 import ptolemy.math.DoubleMatrixMath;
 
-import org.ptolemy.machineLearning.particleFilter.Particle;
-
 import com.cureos.numerics.Calcfc;
 import com.cureos.numerics.Cobyla;
 import com.cureos.numerics.CobylaExitStatus;

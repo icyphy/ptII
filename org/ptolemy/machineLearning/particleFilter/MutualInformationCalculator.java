@@ -71,8 +71,6 @@ import ptolemy.kernel.util.Settable;
 import ptolemy.math.DoubleArrayMath;
 import ptolemy.math.DoubleMatrixMath;
 
-import org.ptolemy.machineLearning.particleFilter.Particle;
-
 public class MutualInformationCalculator extends TypedAtomicActor {
 
     public MutualInformationCalculator(CompositeEntity container, String name)

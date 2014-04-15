@@ -29,7 +29,6 @@ package org.ptolemy.machineLearning.particleFilter;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.parameters.PortParameter;
 import ptolemy.data.ArrayToken;
-import ptolemy.data.DoubleToken;
 import ptolemy.data.StringToken;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;

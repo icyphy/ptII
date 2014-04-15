@@ -29,7 +29,6 @@
 
 package ptolemy.domains.modal.kernel;
 
-import java.lang.reflect.InvocationTargetException;
 import java.util.Collection;
 import java.util.List;
 
@@ -37,21 +36,15 @@ import ptolemy.data.BooleanToken;
 import ptolemy.data.StringToken;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.SingletonParameter;
-import ptolemy.data.expr.StringParameter;
-import ptolemy.data.expr.Variable;
 import ptolemy.domains.modal.modal.ModalController;
-import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.AbstractSettableAttribute;
-import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.Location;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Settable;
-import ptolemy.kernel.util.StringAttribute;
 import ptolemy.kernel.util.ValueListener;
 import ptolemy.kernel.util.Workspace;
-import ptolemy.moml.MoMLChangeRequest;
 
 /** A parameter that contains FSM transition attributes. In large FSMs
  *  with long strings in actions, the graphical representation can be

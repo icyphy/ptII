@@ -39,8 +39,8 @@ import java.util.Stack;
 
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NamedObj;
-import ptolemy.moml.filter.MoMLFilterSimple;
 import ptolemy.moml.MoMLParser;
+import ptolemy.moml.filter.MoMLFilterSimple;
 
 ///////////////////////////////////////////////////////////////////
 //// BacktrackTransformer
