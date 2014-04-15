@@ -1,13 +1,13 @@
 TABLE {
    background: #ffffff;
    font-family: Arial, Helvetica, sans-serif;
-   font-size: 12pt;
+   font-size: 14pt;
    font-weight: strong;
 }
 BODY {
    background: #ffffff;
    font-family: Arial, Helvetica, sans-serif;
-   font-size: 12pt;
+   font-size: 14pt;
    font-weight: strong;
 }
 
@@ -16,11 +16,11 @@ H1 { font-family: Arial, Helvetica, sans-serif;
 	font-size: 18pt;
 	font-weight: bold }
 H2 { font-family: Arial, Helvetica, sans-serif;
-	font-size: 14pt;
+	font-size: 16pt;
 	font-weight: bold }
 H3 { font-family: Arial, Helvetica, sans-serif;
-	font-size: 12pt;
+	font-size: 14pt;
 	font-weight: bold }
 H4 { font-family: Arial, Helvetica, sans-serif;
-	font-size: 11pt;
+	font-size: 12pt;
 	font-weight: bold }
