@@ -1,0 +1,23 @@
+#! /bin/sh
+# ptaddapackage
+# Try to do the things necessary to add a package
+
+# Usage: ptaddpackage dot.separated.package
+
+if [ $# -ne 1 ]; then
+   echo "$0: Usage: $0 dot.separated.package
+fi
+
+package=$1
+directory=`echo $package | sed 's@\.@/@g'`
+
+absoluteDirectory="$PTII/$directory"
+
+if [ ! -d "$absoluteDirectory ]; then
+   echo "$0: $absoluteDirectory does not exist?"
+   echo "exiting"
+fi
+
+makefile=$absoluteDirectory/makefile
+
+if [ $
