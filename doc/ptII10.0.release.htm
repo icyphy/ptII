@@ -32,19 +32,18 @@ processing functions, and
 
  <br><code>graph</code>, providing graph-theoretic manipulations.
 
-
- <p>The three volumes of the Ptolemy II Design Document
-describes the Ptolemy II design and
-the implementation of the Java classes.
+ <p>The Ptolemy Book describes the Ptolemy II design and
+the implementation of the Java classes.</p>
 <ul>
- <li><a href="design/ptIIdesign1-intro.pdf">Volume 1: Introduction to Ptolemy II</a> (Local PDF)
- <li><a href="design/ptIIdesign2-software.pdf">Volume 2: Ptolemy II Software Architecture</a> (Local PDF)
- <li><a href="design/ptIIdesign3-domains.pdf">Volume 3: Ptolemy II Domains</a> (Local PDF)
+	    <!-- #in_browser causes HTMLViewer to spawn a separate browser -->
+	    <li> Ptolemy Book: Claudius Ptolemaeus, Editor, System Design, Modeling, and Simulation Using Ptolemy II, Ptolemy.org, 2014. (<a href="http://ptolemy.org/systems#in_browser">Website</a>, 
+	    <!--/ptinyKeplerDocs-->
+	      <a href="../../../doc/books/systems/PtolemyII_DigitalV1_02.pdf#in_browser">PDF</a><i>(available via the installer, not via svn)</i>
 </ul>
 
- <p>The
-"<a href="design/usingVergil/index.htm">Using Vergil</a>"
-describes how to use Vergil.
+
+<p><a href="../../../doc/design/usingVergil/index.htm" target="_blank">Building Graphical Models</a> describes how to use Vergil.</p>
+
 
 
 <h2>Complete List of Domains in Ptolemy II</h2>
@@ -56,10 +55,8 @@ to the newsgroups etc.  See also main.htm
 	 component interaction (experimental),
 <li> <a href="../ptolemy/domains/csp/doc/body.htm" target="body">CSP</a>:
 	 communicating sequential processes,
-<li> <a href="../ptolemy/domains/ct/doc/body.htm" target="body">CT</a>:
-	continuous-time modeling,
-<li> <a href="../ptolemy/domains/continuous/doc/body.htm" target="body">Continuos</a>:
-	continuous-time modeling (experimental),
+<li> <a href="../ptolemy/domains/continuous/doc/body.htm" target="body">Continuous</a>:
+	continuous-time modeling (redesign of the CT domain)
 <li> <a href="../ptolemy/domains/de/doc/body.htm" target="body">DE</a>:
 	discrete-event modeling,
 <li> <a href="../ptolemy/domains/dde/doc/body.htm" target="body">DDE</a>:
@@ -77,6 +74,8 @@ to the newsgroups etc.  See also main.htm
  <!-- petrinet ??-->
 <li> <a href="../ptolemy/domains/hdf/doc/body.htm" target="body">HDF</a>:
 	heterochronous dataflow
+<li> <a href="../ptolemy/domains/modal/doc/body.htm" target="body">Modal</a>:
+	 finite state machines and modal model (redesign of the FSM domain)
 <li> <a href="../ptolemy/domains/pn/doc/body.htm" target="body">PN</a>:
 	process networks,
 <li> <a href="../ptolemy/domains/psdf/doc/body.htm" target="body">PSDF</a>:
@@ -96,20 +95,20 @@ to the newsgroups etc.  See also main.htm
 
 <h2>Platforms</h2>
 
-The core of Ptolemy II 10.0.devel is 100% Java, so it should work on any
-platform that has JDK 1.6 or later.
+<p>The core of Ptolemy II 10.0.devel is 100% Java, so it should work on any
+platform that has JDK 1.6 or later.</p>
 
- <p>We developed Ptolemy II 10.0.devel under Mac OS X and Windows
-and with JDK1.6.0_22
+ <p>We developed Ptolemy II 10.0.devel under Mac OS X, Windows and Linux with JDK1.7.0_51.
+Under MacOS 10.7.5, we were also able to use Java 1.6.0_76.</p>
 
 <p>Ptolemy II 5.0 will not compile under Java 1.3 because we use the
 java.lang.URI class, which is present only in Java 1.4 and later.
 JDK 1.5 or later is required so that these packages can use generics:
 backtrack, ptalon and others.  JDK 1.6 is required because
-ptdb uses javax.swing.GroupLayout.
+ptdb uses javax.swing.GroupLayout and because of other changes.</p>
 
-<p>Ptolemy II has been compiled and run
-under IBM JDK 1.6.0.  There are the following limitations
+<p>In the past, Ptolemy II has been compiled and run
+under IBM JDK 1.6.0.  However, the IBM JDK has not be tried recently. There are the following limitations
 under IBM JDK 1.6.0
 <menu>
 <li> The Copernicus code generator does not work.
