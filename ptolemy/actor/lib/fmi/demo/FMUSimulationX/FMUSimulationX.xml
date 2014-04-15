@@ -2,7 +2,7 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="FMUSimulationX" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.1.devel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="10.0.devel">
     </property>
     <property name="Continuous Director" class="ptolemy.domains.continuous.kernel.ContinuousDirector">
         <property name="startTime" class="ptolemy.data.expr.Parameter" value="0.0">
@@ -12,20 +12,20 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, 75.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={63, 204, 1109, 664}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={63, 204, 1207, 664}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[875, 554]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[973, 554]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0708810685597945">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{420.87304687500006, 297.99645953757226}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{466.62976201228315, 297.99645953757226}">
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,0.0,0.0,1.0}">
         </property>
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="NOTE: The SimulationX FMU used here will only work on a 32-bit architecture.&#10;To invoke vergil in a 32-JVM, try:&#10;&#10;java -d32 -classpath $PTII/lib/jna.jar:${PTII} ptolemy.vergil.VergilApplication SimulationXFMU.xml">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="NOTE: The SimulationX FMU used here will only work on a 32-bit architecture.&#10;To invoke vergil in a 32-JVM, try:&#10;&#10;java -d32 -classpath $PTII/lib/jna-4.0.0-variadic.jar:${PTII} ptolemy.vergil.VergilApplication FMUSimulation.xml">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[150.0, 40.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[130.0, 60.0]">
         </property>
     </property>
     <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
