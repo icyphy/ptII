@@ -31,6 +31,7 @@ package ptolemy.domains.petrinet.lib.gui;
 
 import javax.swing.JTextArea;
 
+import ptolemy.gui.Top;
 import ptolemy.actor.lib.gui.Display;
 import ptolemy.domains.petrinet.kernel.PetriNetDisplayer;
 import ptolemy.kernel.CompositeEntity;
@@ -90,9 +91,22 @@ public class PetriNetDisplay extends Display implements PetriNetDisplayer {
         if (!_initialized) {
             _initialized = true;
             _openWindow();
+            if (_debugging) {
+                _debug("Called openWindow()");
+
+            }
         }
-        JTextArea textArea = (JTextArea) _getImplementation().getTextArea();
-        textArea.setText(text);
+        // Set the text area in the Swing Event Thread or risk getting a NPE.
+        Runnable doIt = new Runnable() {
+            public void run() {
+                JTextArea textArea = (JTextArea) _getImplementation().getTextArea();
+                textArea.setText(text);
+                if (_debugging) {
+                    _debug("Called setText(" + text + ")");
+                }
+            }
+            };
+        Top.deferIfNecessary(doIt);
     }
 
     /** Set the text for the display.  This method is called by the
@@ -102,6 +116,9 @@ public class PetriNetDisplay extends Display implements PetriNetDisplayer {
      *          The text to be shown in the display.
      */
     public void setText(String text) {
+        if (_debugging) {
+            _debug("text: " + text);
+        }
         this.text = text;
     }
 
