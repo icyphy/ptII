@@ -16,8 +16,6 @@
       </entity>
 -->
       <entity name="Case" class="ptolemy.actor.lib.hoc.Case"/> 
-      
-      <input source="org/ptolemy/optimization/compositeOptimizer.xml"/>
 
       <entity name="IterateOverArray" class="ptolemy.actor.lib.hoc.IterateOverArray">
         <doc>Iterate a contained actor over input arrays</doc>

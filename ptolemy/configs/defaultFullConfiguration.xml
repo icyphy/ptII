@@ -195,12 +195,15 @@
 	    <input source="org/ptolemy/machineLearning/machineLearning.xml"/>
             <input source="ptolemy/actor/lib/mail/mail.xml"/>
             <input source="ptolemy/domains/metroII/metroII.xml"/>
-
 	    <!-- jxta is not shipping in 4.0 -->
             <!-- input source="ptolemy/actor/lib/jxta/jxta.xml"-->
 
 	    <input source="ptolemy/domains/openmodelica/lib/openmodelicaentities.xml"/>
-            <input source="ptolemy/domains/petrinet/kernel/petrinetentities.xml"/>
+	    
+	    <!-- Optimization actors -->
+        <input source="org/ptolemy/optimization/optimization.xml"/>
+        
+        <input source="ptolemy/domains/petrinet/kernel/petrinetentities.xml"/>
 
 	    <!--ptalon not shipped with 6.0 -->
             <!--input source="ptolemy/actor/ptalon/ptalon.xml"/-->
