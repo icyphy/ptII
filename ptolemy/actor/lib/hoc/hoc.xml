@@ -15,7 +15,9 @@
         <doc>The function is applied to its input data.</doc>
       </entity>
 -->
-      <entity name="Case" class="ptolemy.actor.lib.hoc.Case"/>
+      <entity name="Case" class="ptolemy.actor.lib.hoc.Case"/> 
+      
+      <input source="org/ptolemy/optimization/compositeOptimizer.xml"/>
 
       <entity name="IterateOverArray" class="ptolemy.actor.lib.hoc.IterateOverArray">
         <doc>Iterate a contained actor over input arrays</doc>
