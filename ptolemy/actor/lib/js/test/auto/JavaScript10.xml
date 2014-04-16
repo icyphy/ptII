@@ -1,7 +1,7 @@
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<entity name="JavaScript1" class="ptolemy.actor.TypedCompositeActor">
+<entity name="JavaScript10" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="10.0.devel">
     </property>
     <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={157, 318, 934, 634}, maximized=false}">
@@ -24,8 +24,16 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[5.0, 190.0]">
         </property>
     </property>
+    <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.8,0.0,0.2,1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This tests for the feature that you can leave&#10;off the channel number for get() and send(). &#10;In Rhino JavaScript, the corresponding Java method gets&#10;invoked with NaN for the last argument.&#10;For other realizations of JavaScript, you may have to&#10;define these methods differently.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[110.0, -5.0]">
+        </property>
+    </property>
     <entity name="JavaScript" class="ptolemy.actor.lib.js.JavaScript">
-        <property name="script" class="ptolemy.kernel.util.StringAttribute" value="// Multiply the input by 2.&#10;send(get(input,0)*2, output, 0);">
+        <property name="script" class="ptolemy.kernel.util.StringAttribute" value="// Multiply the input by 2.&#10;send(get(input)*2, output);">
             <property name="style" class="ptolemy.actor.gui.style.TextStyle">
                 <property name="height" class="ptolemy.data.expr.Parameter" value="10">
                 </property>

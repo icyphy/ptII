@@ -31,7 +31,7 @@
         </property>
     </property>
     <entity name="JavaScript" class="ptolemy.actor.lib.js.JavaScript">
-        <property name="script" class="ptolemy.kernel.util.StringAttribute" value="// Multiply the input by the gain.&#10;send(output, input*gain);">
+        <property name="script" class="ptolemy.kernel.util.StringAttribute" value="// Multiply the input by the gain.&#10;send( get(input, 0)*valueOf(gain), output, 0);">
             <property name="style" class="ptolemy.actor.gui.style.TextStyle">
                 <property name="height" class="ptolemy.data.expr.Parameter" value="10">
                 </property>

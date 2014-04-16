@@ -47,8 +47,6 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[55.0, 140.0]">
         </property>
-        <property name="foo" class="ptolemy.data.expr.Parameter" value="{12.0}">
-        </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">

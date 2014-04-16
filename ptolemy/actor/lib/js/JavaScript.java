@@ -46,14 +46,17 @@ import org.mozilla.javascript.WrappedException;
 
 import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.TypedIOPort;
+import ptolemy.data.ActorToken;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.IntToken;
+import ptolemy.data.ObjectToken;
 import ptolemy.data.StringToken;
 import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.Variable;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.Entity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.KernelException;
@@ -80,9 +83,9 @@ import ptolemy.util.MessageHandler;
  Usually, you will need to explicitly specify the types of the output
  ports. By default, they will be greater than or equal to the inferred
  types of all input ports, but often this will not be the right type.
- Note that in JavaScript, all numbers are of type double, so if you
- attempt to produce a number on an output port of type int you will get
- a runtime type error even if the number is actually an integer.
+ Note that in JavaScript, all numbers are represented internally
+ using type double, but if your script always happens to produce
+ integer results, then the output data type can be int.
  <p>
  A script may be specified as a parameter or as an input.
  If it is an input, then it can be different on each firing.
@@ -92,13 +95,30 @@ import ptolemy.util.MessageHandler;
  <p>
  Top-level methods defined include:
  <ul>
- <li> alert(string)
- <li> error(string)
- <li> send(port,value)
+ <li> alert(string): pop up a dialog with the specified message.
+ <li> error(string): throw an IllegalActionException with the specified message.
+ <li> get(port, n): get an input from a port on channel n (return null if there is no input).
+ <li> send(value, port, n): send a value to an output port on channel n
+ <li> valueOf(parameter): retrieve the value of a parameter.
  </ul>
- The alert() method pops up a dialog with the specified message.
- The error() method throws an IllegalActionException with the specified message.
- The send() method sends data to an output port.
+ The last argument of get() and send() is optional.
+ If you leave it off, the channel number will be assumed to be zero
+ (designating the first channel connected to the port).
+ <p>
+ The following example script calculates the factorial of the input.
+ <pre>
+var value = get(input, 0);
+if (value < 0) {
+   error("Input must be greater than or equal to 0.");
+} else {
+   var total = 1;
+     while(value > 1) {
+       total *= value;
+       value--;
+     }
+     send(total, output, 0);
+}
+</pre>
  <p>
  In addition, the symbol "actor" is defined to be the instance of
  this actor. In JavaScript, you can invoke methods on it.
@@ -108,6 +128,30 @@ import ptolemy.util.MessageHandler;
  </pre>
  will return the name of the top-level composite actor containing
  this actor.
+ <p>
+ Scripts can instantiate Java classes and invoke methods on them.
+ For example, the following script will build a simple Ptolemy II model:
+ <pre>
+ importPackage(Packages.ptolemy.actor);
+importClass(Packages.ptolemy.actor.lib.Ramp);
+importClass(Packages.ptolemy.actor.lib.FileWriter);
+importClass(Packages.ptolemy.domains.sdf.kernel.SDFDirector);
+
+var toplevel = new TypedCompositeActor();
+var ramp = new Ramp(toplevel, "ramp");
+var writer = new FileWriter(toplevel, "writer");
+
+toplevel.connect(ramp.output, writer.input);
+
+var director = new SDFDirector(toplevel, "SDFDirector");
+director.iterations.setExpression("10");
+</pre>
+You can even send this out on an output port.
+For example,
+<pre>
+send(toplevel, output, 0);
+</pre>
+where "output" is the name of the output port.
  
  @author Edward A. Lee
  @version $Id: Ramp.java 67679 2013-10-13 03:48:10Z cxh $
@@ -181,40 +225,7 @@ public class JavaScript extends TypedAtomicActor {
     @Override
     public void fire() throws IllegalActionException {
         super.fire();
-        
-        // Read all the inputs and create a table of their values.
-        for (TypedIOPort port : portList()) {
-        	if (port != scriptIn && port.isInput()) {
-        		// Check that the port name is not a keyword and is a valid identifier.
-        		if (!isValidIdentifierName(port.getName())) {
-        			throw new IllegalActionException(this,
-        					"Input port name \""
-        					+ port.getName()
-        					+ "\" is not a valid identifier in JavaScript."
-        					+ " Please rename it.");
-        		}
-    			// FIXME: Supporting only single ports for now.
-        		if (port.getWidth() > 0 && port.hasToken(0)) {
-        			_inputValues.put(port, port.get(0));
-        		}
-        	}
-        }
-        // NOTE: This has to be done in fire() because ports and parameters get
-        // wrapped now as JavaScript objects. An input port and a parameter will
-        // be turned into the actual value.
-        for (TypedIOPort port : portList()) {
-        	// Do not convert the scriptIn port to a JavaScript variable.
-        	if (port == scriptIn) {
-        		continue;
-        	}
-        	Object jsObject = Context.javaToJS(port, _scope);
-        	_scope.put(port.getName(), _scope, jsObject);
-        }
-        for (Parameter parameter : attributeList(Parameter.class)) {
-        	Object jsObject = Context.javaToJS(parameter, _scope);
-        	_scope.put(parameter.getName(), _scope, jsObject);
-        }
-        
+                
         // If there is an input at scriptIn, evaluate that script instead.
         try {
         	if (scriptIn.getWidth() > 0 && scriptIn.hasToken(0)) {
@@ -243,10 +254,18 @@ public class JavaScript extends TypedAtomicActor {
     public void initialize() throws IllegalActionException {
         super.initialize();
 
-        if (_inputValues == null) {
-        	_inputValues = new HashMap<TypedIOPort,Token>();
-        } else {
-        	_inputValues.clear();
+        // Expose the ports and parameters by name as JavaScript variables.
+        for (TypedIOPort port : portList()) {
+        	// Do not convert the scriptIn port to a JavaScript variable.
+        	if (port == scriptIn) {
+        		continue;
+        	}
+        	Object jsObject = Context.javaToJS(port, _scope);
+        	_scope.put(port.getName(), _scope, jsObject);
+        }
+        for (Parameter parameter : attributeList(Parameter.class)) {
+        	Object jsObject = Context.javaToJS(parameter, _scope);
+        	_scope.put(parameter.getName(), _scope, jsObject);
         }
         
         // Compile the script.
@@ -306,14 +325,30 @@ public class JavaScript extends TypedAtomicActor {
 	        // Make it accessible within the scriptExecutionScope.
 	        _scope.put(methodName, _scope, scriptableFunction);
 
+	        // Create the get() method.
+	        methodName = "get";
+			scriptableInstanceMethod = PtolemyJavaScript.class.getMethod(methodName,
+					new Class[]{NativeJavaObject.class, Double.class});
+	        scriptableFunction = new PtolemyFunctionObject(methodName, scriptableInstanceMethod, scriptable);
+	        // Make it accessible within the scriptExecutionScope.
+	        _scope.put(methodName, _scope, scriptableFunction);
+
 	        // Create the send() method.
 	        methodName = "send";
 			scriptableInstanceMethod = PtolemyJavaScript.class.getMethod(methodName,
-					new Class[]{NativeJavaObject.class, Object.class});
+					new Class[]{Object.class, NativeJavaObject.class, Double.class});
 	        scriptableFunction = new PtolemyFunctionObject(methodName, scriptableInstanceMethod, scriptable);
 	        // Make it accessible within the scriptExecutionScope.
 	        _scope.put(methodName, _scope, scriptableFunction);
 	        
+	        // Create the valueOf() method.
+	        methodName = "valueOf";
+			scriptableInstanceMethod = PtolemyJavaScript.class.getMethod(methodName,
+					new Class[]{NativeJavaObject.class});
+	        scriptableFunction = new PtolemyFunctionObject(methodName, scriptableInstanceMethod, scriptable);
+	        // Make it accessible within the scriptExecutionScope.
+	        _scope.put(methodName, _scope, scriptableFunction);
+
 	        // This actor is exposed as an object named "actor".
         	Object jsObject = Context.javaToJS(this, _scope);
         	_scope.put("actor", _scope, jsObject);
@@ -343,10 +378,7 @@ public class JavaScript extends TypedAtomicActor {
     
     /** Rhino context. */
     protected Context _context;
-    
-    /** Table of input values. */
-    protected HashMap<TypedIOPort,Token> _inputValues;
-    
+        
     /** Keywords. */
     protected static final String[] _JAVASCRIPT_KEYWORDS = new String[] {
 			"abstract", "as", "boolean", "break", "byte", "case", "catch",
@@ -383,12 +415,94 @@ public class JavaScript extends TypedAtomicActor {
     	public void error(String message) throws IllegalActionException {
     		throw new IllegalActionException(JavaScript.this, message);
     	}
+    	
+    	/** Get inputs via an input port.
+    	 *  @param portWrapper A JavaScript wrapper for a Port.
+    	 *  @param channel A channel number, or NaN to use the default (0).
+    	 */
+    	public Object get(NativeJavaObject portWrapper, Double channel) {    		
+    		// In JavaScript, all numbers are doubles. So we have convert
+    		// to an integer.
+    		int channelNumber = 0;
+    		// Tolerate null or NaN as an argument.
+    		// Interestingly, Rhino's implementation of JavaScript, if get(port) is
+    		// called with only one argument, does in fact call this method, passing
+    		// NaN as the second argument.
+    		// This seems unlikely to be robust, so I'm not documenting the "feature"
+    		// that you can leave off the channel number.
+			if (channel != null && !channel.isNaN()) {
+				if (channel.doubleValue() % 1 == 0) {
+					// The value is actually an integer.
+					channelNumber = channel.intValue();
+				} else {
+        			throw new InternalErrorException(JavaScript.this, null,
+        					"Second argument to send(port, channel) is required to be an integer. Got "
+        					+ channel);
+				}
+			}
 
-    	/** Send outputs via an output port. */
-    	public void send(NativeJavaObject arg, Object data) {
-    		Object javaArg = arg.unwrap();
-    		if (javaArg instanceof TypedIOPort) {
-    			TypedIOPort port = (TypedIOPort)javaArg;
+    		Object unwrappedPort = portWrapper.unwrap();
+    		if (unwrappedPort instanceof TypedIOPort) {
+    			TypedIOPort port = (TypedIOPort)unwrappedPort;
+        		if (!port.isInput()) {
+        			throw new InternalErrorException(JavaScript.this, null,
+        					"Cannot get from " + port.getName() + ", which is not an input port.");
+        		}
+        		try {
+            		if (port.getWidth() < 1) {
+            			// Port is not connected.
+            			return null;
+            		}
+            		if (!port.hasToken(channelNumber)) {
+            			// Port has no data.
+            			return null;
+            		}
+    				return _wrapToken(port.get(channelNumber));
+    			} catch (KernelException e) {
+        			throw new InternalErrorException(JavaScript.this, e,
+        					"Failed to send output via port " + port.getName() + ".");
+    			}
+    		} else {
+    			throw new InternalErrorException(JavaScript.this, null,
+    					"First argument of send() must be an output port. It is " + unwrappedPort.toString() + ".");
+    		}
+    	}
+
+		@Override
+		public String getClassName() {
+			return getClass().getName();
+		}
+
+    	/** Send outputs via an output port.
+    	 *  @param data The data to send via the port.
+    	 *  @param portWrapper A JavaScript wrapper for a Port.
+    	 *  @param channel A channel number, or NaN to use the default (0).
+    	 */
+    	public void send(Object data, NativeJavaObject portWrapper, Double channel) {
+    		
+    		// In JavaScript, all numbers are doubles. So we have convert
+    		// to an integer.
+    		int channelNumber = 0;
+    		// Tolerate null or NaN as an argument.
+    		// Interestingly, Rhino's implementation of JavaScript, if get(port) is
+    		// called with only one argument, does in fact call this method, passing
+    		// NaN as the second argument.
+    		// This seems unlikely to be robust, so I'm not documenting the "feature"
+    		// that you can leave off the channel number.
+			if (channel != null && !channel.isNaN()) {
+				if (channel.doubleValue() % 1 == 0) {
+					// The value is actually an integer.
+					channelNumber = channel.intValue();
+				} else {
+        			throw new InternalErrorException(JavaScript.this, null,
+        					"Second argument to send(port, channel) is required to be an integer. Got "
+        					+ channel);
+				}
+			}
+
+    		Object unwrappedPort = portWrapper.unwrap();
+    		if (unwrappedPort instanceof TypedIOPort) {
+    			TypedIOPort port = (TypedIOPort)unwrappedPort;
         		if (!port.isOutput()) {
         			throw new InternalErrorException(JavaScript.this, null,
         					"Cannot send via " + port.getName() + ", which is not an output port.");
@@ -397,24 +511,40 @@ public class JavaScript extends TypedAtomicActor {
         			data = ((NativeJavaObject) data).unwrap();
         		}
         		try {
-    				port.send(0, _createToken(data));
+    				port.send(channelNumber, _createToken(data));
     			} catch (KernelException e) {
         			throw new InternalErrorException(JavaScript.this, e,
         					"Failed to send output via port " + port.getName() + ".");
     			}
     		} else {
     			throw new InternalErrorException(JavaScript.this, null,
-    					"First argument of send() must be an output port. It is " + javaArg.toString() + ".");
+    					"First argument of send() must be an output port. It is " + unwrappedPort.toString() + ".");
+    		}
+    	}
+		
+    	/** Get parameter values.
+    	 *  @param paramWrapper A JavaScript wrapper for a Variable.
+    	 */
+    	public Object valueOf(NativeJavaObject paramWrapper) {
+    		Object unwrappedParam = paramWrapper.unwrap();
+    		if (unwrappedParam instanceof Variable) {
+    			Variable parameter = (Variable)unwrappedParam;
+        		try {
+    				return _wrapToken(parameter.getToken());
+    			} catch (KernelException e) {
+        			throw new InternalErrorException(JavaScript.this, e,
+        					"Failed to get parameter value for " + parameter.getName() + ".");
+    			}
+    		} else {
+    			throw new InternalErrorException(JavaScript.this, null,
+    					"First argument of send() must be an output port. It is " + unwrappedParam.toString() + ".");
     		}
     	}
 
-		@Override
-		public String getClassName() {
-			return getClass().getName();
-		}
-		
-		/** Create a Ptolemy Token from and object sent by JavaScript. */
-		private Token _createToken(Object data) {
+		/** Create a Ptolemy Token from and object sent by JavaScript. 
+		 *  @throws IllegalActionException If constructing a Ptolemy Token fails.
+		 */
+		private Token _createToken(Object data) throws IllegalActionException {
 	    	//**********************************************************************
 			// This the key place to support additional output data types.
 			if (data instanceof Integer) {
@@ -427,10 +557,38 @@ public class JavaScript extends TypedAtomicActor {
 					return new IntToken(((Double)data).intValue());
 				}
 				return new DoubleToken(((Double)data).doubleValue());
+			} else if (data instanceof String) {
+				return new StringToken(data.toString());
+			} else if (data instanceof Entity) {
+				return new ActorToken((Entity)data);
+			} else {
+				// FIXME: What else might be here?
+				return new ObjectToken(data);
 			}
-			// FIXME: More data types!
-			return new StringToken(data.toString());
 		}
+		
+    	//**********************************************************************
+		// This the key place to support additional input and parameter data types.
+    	// Given a Ptolemy II token, if there is a corresponding native
+    	// JavaScript type, then return something that will naturally be
+    	// converted to that type.
+    	private Object _wrapToken(Token token) {
+    		if (token instanceof IntToken) {
+    			return new Integer(((IntToken)token).intValue());
+    		} else if (token instanceof DoubleToken) {
+    			return new Double(((DoubleToken)token).doubleValue());
+    		} else if (token instanceof StringToken) {
+    			return ((StringToken)token).stringValue();
+    		} else if (token instanceof ActorToken) {
+    			Entity entity =  ((ActorToken)token).getEntity();
+    			return new NativeJavaObject(_scope, entity, entity.getClass());
+    		} else if (token == null) {
+    			return null;
+    		}
+    		// FIXME: wrap all the data types.
+    		// FIXME:  Just return the token!!!  Try ActorToken
+    		return token.toString();
+    	}
     }
     
     /** Specialized FunctionObject that provides the parent scope when evaluating the function.
@@ -448,28 +606,13 @@ public class JavaScript extends TypedAtomicActor {
         }
     }
     
-    /** Wrap factory for Ptolemy objects that returns their value rather than a wrapped Java object. */
+    /** Wrap factory for Ptolemy objects that returns their value rather than a wrapped Java object.
+     *  One very odd thing about this is that instances of Variable and input TypedIOPort cannot
+     *  be accessed as objects within JavaScript.
+     */
     public class PtolemyWrapFactory extends WrapFactory {
     	@Override
     	public Object wrap(Context context, Scriptable scope, Object object, Class staticType) {
-    		if (object instanceof Variable) {
-    			try {
-					Token value = ((Variable)object).getToken();
-					Object wrappedValue = _wrapToken(value);
-					return wrappedValue;
-				} catch (IllegalActionException e) {
-					throw new InternalErrorException((Variable)object, e, "Failed to evaluated variable.");
-				}
-    		} else if (object instanceof TypedIOPort) {
-    			TypedIOPort port = (TypedIOPort)object;
-    			// Ignore ports that are not inputs.
-    			if (port.isInput()) {
-    				Token inputValue = _inputValues.get(port);
-    				// The following may return null if there is no input value.
-    				// FIXME: Is that the right thing to do?
-    				return _wrapToken(inputValue);
-    			}
-    		}
     		return super.wrap(context, scope, object, staticType);
     	}
     	//**********************************************************************
@@ -484,6 +627,9 @@ public class JavaScript extends TypedAtomicActor {
     			return new Double(((DoubleToken)token).doubleValue());
     		} else if (token instanceof StringToken) {
     			return ((StringToken)token).stringValue();
+    		} else if (token instanceof ActorToken) {
+    			Entity entity =  ((ActorToken)token).getEntity();
+    			return new NativeJavaObject(_scope, entity, entity.getClass());
     		} else if (token == null) {
     			return null;
     		}

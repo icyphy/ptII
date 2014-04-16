@@ -25,7 +25,7 @@
         </property>
     </property>
     <entity name="JavaScript" class="ptolemy.actor.lib.js.JavaScript">
-        <property name="script" class="ptolemy.kernel.util.StringAttribute" value="if (input &lt; 0) {&#10;   error(&quot;Input must be greater than or equal to 0.&quot;);&#10;} else {&#10;   var total = 1;&#10;     while(input &gt; 1) {&#10;       total *= input;&#10;       input--;&#10;     }&#10;     send(output, total);&#10;}">
+        <property name="script" class="ptolemy.kernel.util.StringAttribute" value="var value = get(input, 0);&#10;if (value &lt; 0) {&#10;   error(&quot;Input must be greater than or equal to 0.&quot;);&#10;} else {&#10;   var total = 1;&#10;     while(value &gt; 1) {&#10;       total *= value;&#10;       value--;&#10;     }&#10;     send(total, output, 0);&#10;}">
             <property name="style" class="ptolemy.actor.gui.style.TextStyle">
                 <property name="height" class="ptolemy.data.expr.Parameter" value="10">
                 </property>

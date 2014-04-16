@@ -23,7 +23,7 @@
         </property>
     </property>
     <entity name="JavaScript" class="ptolemy.actor.lib.js.JavaScript">
-        <property name="script" class="ptolemy.kernel.util.StringAttribute" value="// Multiply the input by 2.&#10;send(output, input*2);">
+        <property name="script" class="ptolemy.kernel.util.StringAttribute" value="// Multiply the input by 2.&#10;send(get(input)*2, output);">
             <property name="style" class="ptolemy.actor.gui.style.TextStyle">
                 <property name="height" class="ptolemy.data.expr.Parameter" value="10">
                 </property>
@@ -31,9 +31,7 @@
                 </property>
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[190.0, 145.0]">
-        </property>
-        <property name="foo" class="ptolemy.data.expr.Parameter" value="{12.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{190.0, 145.0}">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -52,7 +50,7 @@
         </property>
     </entity>
     <entity name="Sequence" class="ptolemy.actor.lib.Sequence">
-        <property name="values" class="ptolemy.data.expr.Parameter" value="{&quot;var x = 1&quot;, &quot;send(output, x)&quot;}">
+        <property name="values" class="ptolemy.data.expr.Parameter" value="{&quot;var x = 1&quot;, &quot;send(x, output, 0)&quot;}">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[100.0, 230.0]">
         </property>
