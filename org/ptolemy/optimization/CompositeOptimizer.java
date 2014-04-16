@@ -94,7 +94,7 @@ the trust-region-reflective algorithm and performs a type of gradient
 descent optimization, ideal for objective functions that are non-convex
 and/or with unknown gradient.
 
-@author Ilge Akkaya
+@author Ilge Akkaya, Edward A. Lee
 @version $Id$
 @since Ptolemy II 10.0
 @Pt.ProposedRating Red (ilgea)
