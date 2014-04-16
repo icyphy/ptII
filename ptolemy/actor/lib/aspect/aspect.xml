@@ -37,7 +37,7 @@
     </entity>
 
     <entity name="CommunicationResponsePort" class="ptolemy.actor.lib.aspect.CommunicationResponsePort">
-	  <property name="_location" class="ptolemy.kernel.util.Location" value="[200.0, 200.0]"></property>
+	  <property name="_location" class="ptolemy.kernel.util.Location" value="[250.0, 200.0]"></property>
     </entity>
   </entity>
   
