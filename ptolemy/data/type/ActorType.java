@@ -217,7 +217,7 @@ public class ActorType implements Type, Cloneable {
      *  @return A String.
      */
     public String toString() {
-        return "Actor";
+        return "actor";
     }
 
     /** Return the type of the additive identity for elements of

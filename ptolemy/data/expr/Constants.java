@@ -32,6 +32,7 @@ import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.TreeMap;
 
+import ptolemy.data.ActorToken;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.ComplexToken;
 import ptolemy.data.DoubleToken;
@@ -239,6 +240,7 @@ public class Constants {
         _types.put("long", new LongToken(0));
         _types.put("matrix", new ConcreteMatrixToken());
         _types.put("object", ObjectToken.NULL);
+        _types.put("actor", ActorToken.EMPTY);
         // http://bugzilla.ecoinformatics.org/show_bug.cgi?id=5545
         // "Also, why is "xmltoken" an option in the list? For double you enter "double", not DoubleToken, etc."
         XMLToken xmltoken = new XMLToken();

@@ -32,6 +32,7 @@ import java.io.Writer;
 import ptolemy.data.type.ActorType;
 import ptolemy.data.type.Type;
 import ptolemy.kernel.Entity;
+import ptolemy.kernel.Port;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.Workspace;
 import ptolemy.util.StringUtilities;
@@ -67,6 +68,11 @@ public class ActorToken extends Token implements Cloneable {
             throw new IllegalActionException(null, ex,
                     "Failed to create actor token");
         }
+    }
+    
+    /** Construct an empty ActorToken to be used as a reference for the Actor type designator. */
+    private ActorToken() {
+    	super();
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -160,6 +166,9 @@ public class ActorToken extends Token implements Cloneable {
                 + StringUtilities.escapeString(_entity.exportMoMLPlain())
                 + "\")";
     }
+    
+    /** Empty Entity instance of this token. */
+    public static final ActorToken EMPTY = new ActorToken();
 
     /** Singleton reference to this type. */
     public static final Type TYPE = new ActorType();
