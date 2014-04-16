@@ -75,7 +75,7 @@ public interface PetriNetDisplayer {
 
     /** Ensure that the text is placed in the textArea.
      *
-     * @exception IllegalActionException occuurs of _openWindow() in
+     * @exception IllegalActionException If _openWindow() in
      * the base class throws it.
      */
     public void openDisplay() throws IllegalActionException;
