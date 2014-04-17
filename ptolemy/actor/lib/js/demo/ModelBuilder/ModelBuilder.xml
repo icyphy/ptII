@@ -30,6 +30,12 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[120.0, 0.0]">
         </property>
     </property>
+    <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="The constructed model sends&#10;the entire count to standard out.&#10;The second script actor displays&#10;the final count.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[355.0, 75.0]">
+        </property>
+    </property>
     <entity name="JavaScript" class="ptolemy.actor.lib.js.JavaScript">
         <property name="script" class="ptolemy.kernel.util.StringAttribute" value="importPackage(Packages.ptolemy.actor);&#10;importClass(Packages.ptolemy.actor.lib.Ramp);&#10;importClass(Packages.ptolemy.actor.lib.FileWriter);&#10;importClass(Packages.ptolemy.actor.lib.SetVariable);&#10;importClass(Packages.ptolemy.domains.sdf.kernel.SDFDirector);&#10;importClass(Packages.ptolemy.data.expr.Parameter);&#10;&#10;var toplevel = new TypedCompositeActor();&#10;var ramp = new Ramp(toplevel, &quot;ramp&quot;);&#10;var writer = new FileWriter(toplevel, &quot;writer&quot;);&#10;var setVariable = new SetVariable(toplevel, &quot;setVariable&quot;);&#10;setVariable.variableName.setExpression(&quot;count&quot;);&#10;new Parameter(toplevel, &quot;count&quot;);&#10;&#10;var relation = toplevel.connect(ramp.output, writer.input);&#10;setVariable.input.link(relation);&#10;&#10;var director = new SDFDirector(toplevel, &quot;SDFDirector&quot;);&#10;director.iterations.setExpression(valueOf(iterations).toString());&#10;&#10;send(toplevel, actor);">
             <property name="style" class="ptolemy.actor.gui.style.TextStyle">
