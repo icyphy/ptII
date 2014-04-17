@@ -1,7 +1,7 @@
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<entity name="ModelBuilder" class="ptolemy.actor.TypedCompositeActor">
+<entity name="JavaScript12" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="10.0.devel">
     </property>
     <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={373, 208, 934, 634}, maximized=false}">
@@ -41,7 +41,7 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[40.0, 200.0]">
         </property>
-        <property name="iterations" class="ptolemy.data.expr.Parameter" value="100">
+        <property name="iterations" class="ptolemy.data.expr.Parameter" value="10">
         </property>
         <port name="actor" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -71,16 +71,13 @@
             </property>
         </port>
     </entity>
-    <entity name="JavaScript2" class="ptolemy.actor.lib.js.JavaScript">
-        <property name="script" class="ptolemy.kernel.util.StringAttribute" value="alert(&quot;Counted to &quot; + get(count))">
+    <entity name="Test" class="ptolemy.actor.lib.Test">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{9}">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[285.0, 125.0]">
+        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
         </property>
-        <port name="count" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
-            </property>
-        </port>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{295, 125}">
+        </property>
     </entity>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
     </relation>
@@ -89,5 +86,5 @@
     <link port="JavaScript.actor" relation="relation2"/>
     <link port="ExecuteActor.actor" relation="relation2"/>
     <link port="ExecuteActor.count" relation="relation"/>
-    <link port="JavaScript2.count" relation="relation"/>
+    <link port="Test.input" relation="relation"/>
 </entity>
