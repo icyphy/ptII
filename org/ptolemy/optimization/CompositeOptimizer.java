@@ -129,15 +129,15 @@ public class CompositeOptimizer extends MirrorComposite {
      * The output port that provides the evaluated constraint values at each
      * evaluation of the objective function.
      */
-    public static MirrorPort constraints;
+    public MirrorPort constraints;
     /**
      * The optimization variable. 
      */
-    public static MirrorPort x;
+    public MirrorPort x;
     /** 
      * Value of the objective function f(x) for a given value of x.
      */
-    public static MirrorPort intermediateValue;
+    public MirrorPort intermediateValue;
 
     /**
      * The expert parameter that denotes the beginning step-size.
@@ -204,8 +204,7 @@ public class CompositeOptimizer extends MirrorComposite {
     }
 
     /** Clone the object into the specified workspace. This overrides
-     *  the base class to instantiate a new IterateDirector and to set
-     *  the association with iterationCount.
+     *  the base class to instantiate a new OptimizerDirector 
      *  @param workspace The workspace for the new object.
      *  @return A new NamedObj.
      *  @exception CloneNotSupportedException If any of the attributes
@@ -236,7 +235,8 @@ public class CompositeOptimizer extends MirrorComposite {
             throw new CloneNotSupportedException("Could not clone: "
                     + throwable);
         }
-        result._tokenMap = new HashMap<IOPort, Token>();
+        result._tokenMap = new HashMap<IOPort, Token>(); 
+        result._firstIteration = true;
         return result;
     }
 
@@ -499,7 +499,7 @@ public class CompositeOptimizer extends MirrorComposite {
                     // convert x into an array token
                     ArrayToken xAsToken = new ArrayToken(xTokens);
                     // send x value to the inside port for the new execution
-                    CompositeOptimizer.this.x.sendInside(0, xAsToken);
+                    (CompositeOptimizer.this).x.sendInside(0, xAsToken);
 
                     // before firing the inside composite, make sure transferInputs are called
                     CompositeActor container = (CompositeActor) getContainer();
