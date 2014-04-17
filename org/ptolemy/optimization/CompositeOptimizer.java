@@ -691,8 +691,8 @@ public class CompositeOptimizer extends MirrorComposite {
     private final int MINIMIZE = 0;
 
     private final String OPTIMAL_VALUE_PORT_NAME = "optimalValue";
-    private final static String INTERMEDIATE_VALUE_PORT_NAME = "intermediateValue";
-    private final static String CONSTRAINTS_PORT_NAME = "constraints";
+    private final static String INTERMEDIATE_VALUE_PORT_NAME = "f(x)";
+    private final static String CONSTRAINTS_PORT_NAME = "g(x)";
     private final static String OPTIMIZATION_VARIABLE_NAME = "x";
 
     /** Flag indicating that we are executing _addPort(). */

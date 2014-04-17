@@ -1,7 +1,7 @@
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<entity name="LeastSquareNodeLocalization" class="ptolemy.actor.TypedCompositeActor">
+<entity name="leastSquaresNodeLocalization" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="10.0.devel">
     </property>
     <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={41, 22, 1399, 878}, maximized=true}">
@@ -549,14 +549,14 @@
             </property>
             <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{280.0, 223.89453125}">
             </property>
-            <port name="intermediateValue" class="ptolemy.actor.lib.hoc.MirrorPort">
+            <port name="f(x)" class="ptolemy.actor.lib.hoc.MirrorPort">
                 <property name="output"/>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="{555.0, 160.0}">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{580.0, 200.0}">
                 </property>
             </port>
-            <port name="constraints" class="ptolemy.actor.lib.hoc.MirrorPort">
+            <port name="g(x)" class="ptolemy.actor.lib.hoc.MirrorPort">
                 <property name="output"/>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="{200.0, 280.0}">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{580.0, 240.0}">
                 </property>
             </port>
             <port name="x" class="ptolemy.actor.lib.hoc.MirrorPort">
@@ -671,8 +671,6 @@
                 <vertex name="vertex1" value="[0.0, 290.0]">
                 </vertex>
             </relation>
-            <relation name="relation" class="ptolemy.actor.TypedIORelation">
-            </relation>
             <relation name="relation5" class="ptolemy.actor.TypedIORelation">
             </relation>
             <relation name="relation6" class="ptolemy.actor.TypedIORelation">
@@ -683,17 +681,15 @@
             </relation>
             <relation name="relation9" class="ptolemy.actor.TypedIORelation">
             </relation>
-            <relation name="relation10" class="ptolemy.actor.TypedIORelation">
-                <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
-                </property>
-                <vertex name="vertex1" value="{455.0, 160.0}">
-                </vertex>
+            <relation name="relation3" class="ptolemy.actor.TypedIORelation">
             </relation>
-            <link port="intermediateValue" relation="relation10"/>
-            <link port="constraints" relation="relation"/>
+            <relation name="relation" class="ptolemy.actor.TypedIORelation">
+            </relation>
+            <link port="f(x)" relation="relation3"/>
+            <link port="g(x)" relation="relation"/>
             <link port="x" relation="relation4"/>
             <link port="measurements" relation="relation2"/>
-            <link port="ErrorSumOfSquares.output" relation="relation10"/>
+            <link port="ErrorSumOfSquares.output" relation="relation3"/>
             <link port="ErrorSumOfSquares.z" relation="relation2"/>
             <link port="ErrorSumOfSquares.By" relation="relation5"/>
             <link port="ErrorSumOfSquares.Cx" relation="relation6"/>

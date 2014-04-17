@@ -12,12 +12,9 @@
            </property>
            <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
               <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:blue">
-              Place a series of actors here that operate on the x input and output a scalar value f(x).
-              Connect the resulting output to the intermediateValue port. Additionally, provide 
-              actors that operate on x to provide an array of constraint evaluations. Connect the 
-              result to the "constraints" output port. A satisfied constraint is denoted by a nonnegative 
-              scalar value, i.e., if the resulting constraint array consist of all nonnegative scalars 
-              for a given x, x is considered to satisfy the constraints.
+              Provide a model that computes f(x) from x where f(x) is the term to be minimized.
+			  Also provide a model to compute g(x) from x, where the constraints on the minimization 
+              are g(x) >= 0. 
               </text></svg></configure>
            </property>
            <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">

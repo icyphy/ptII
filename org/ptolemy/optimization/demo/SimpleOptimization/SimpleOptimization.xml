@@ -43,14 +43,22 @@
                 <property name="_location" class="ptolemy.kernel.util.Location" value="{0.0, 0.0}">
                 </property>
             </property>
-            <port name="intermediateValue" class="ptolemy.actor.lib.hoc.MirrorPort">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={253, 133, 934, 634}, maximized=false}">
+            </property>
+            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[700, 524]">
+            </property>
+            <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+            </property>
+            <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{280.0, 223.89453125}">
+            </property>
+            <port name="f(x)" class="ptolemy.actor.lib.hoc.MirrorPort">
                 <property name="output"/>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="{170.0, 190.0}">
                 </property>
             </port>
-            <port name="constraints" class="ptolemy.actor.lib.hoc.MirrorPort">
+            <port name="g(x)" class="ptolemy.actor.lib.hoc.MirrorPort">
                 <property name="output"/>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="{170.0, 125.0}">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{170.0, 130.0}">
                 </property>
             </port>
             <port name="x" class="ptolemy.actor.lib.hoc.MirrorPort">
@@ -69,7 +77,7 @@
                     <property name="displayHeight" class="ptolemy.data.expr.Parameter" value="10">
                     </property>
                 </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="{75.0, 195.0}">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{75.0, 200.0}">
                 </property>
                 <port name="x" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
@@ -86,7 +94,7 @@
                     <property name="displayHeight" class="ptolemy.data.expr.Parameter" value="10">
                     </property>
                 </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="{75.0, 130.0}">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{75.0, 135.0}">
                 </property>
                 <port name="x" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
@@ -102,24 +110,24 @@
                 <property name="_location" class="ptolemy.kernel.util.Location" value="{40.0, 75.0}">
                 </property>
             </entity>
-            <relation name="relation2" class="ptolemy.actor.TypedIORelation">
-                <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;intermediateValue._location&quot;,x=170.0,y=190.0}, tail={id=&quot;f_x.output&quot;,x=75.0,y=195.0}, points={} } }">
-                </property>
-            </relation>
             <relation name="relation3" class="ptolemy.actor.TypedIORelation">
                 <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
                 </property>
-                <vertex name="vertex1" value="{0.0, 195.0}">
+                <vertex name="vertex1" value="{0.0, 200.0}">
                 </vertex>
-                <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;Constraint.x&quot;,x=75.0,y=130.0}, tail={id=&quot;relation3.vertex1&quot;,x=0.0,y=195.0}, points={0.0,130.0} },{ head={id=&quot;f_x.x&quot;,x=75.0,y=195.0}, tail={id=&quot;relation3.vertex1&quot;,x=0.0,y=195.0}, points={} },{ head={id=&quot;x._location&quot;,x=-40.0,y=190.0}, tail={id=&quot;relation3.vertex1&quot;,x=0.0,y=195.0}, points={} },{ head={id=&quot;Display.input&quot;,x=40.0,y=75.0}, tail={id=&quot;relation3.vertex1&quot;,x=0.0,y=195.0}, points={0.0,75.0} } }">
+                <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;Constraint.x&quot;,x=75.0,y=135.0}, tail={id=&quot;relation3.vertex1&quot;,x=0.0,y=200.0}, points={0.0,135.0} },{ head={id=&quot;f_x.x&quot;,x=75.0,y=200.0}, tail={id=&quot;relation3.vertex1&quot;,x=0.0,y=200.0}, points={} },{ head={id=&quot;x._location&quot;,x=-40.0,y=190.0}, tail={id=&quot;relation3.vertex1&quot;,x=0.0,y=200.0}, points={} },{ head={id=&quot;Display.input&quot;,x=40.0,y=75.0}, tail={id=&quot;relation3.vertex1&quot;,x=0.0,y=200.0}, points={0.0,75.0} } }">
                 </property>
             </relation>
             <relation name="relation" class="ptolemy.actor.TypedIORelation">
-                <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;constraints._location&quot;,x=170.0,y=125.0}, tail={id=&quot;Constraint.output&quot;,x=75.0,y=130.0}, points={} } }">
+                <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;g(x)._location&quot;,x=170.0,y=130.0}, tail={id=&quot;Constraint.output&quot;,x=75.0,y=135.0}, points={} } }">
                 </property>
             </relation>
-            <link port="intermediateValue" relation="relation2"/>
-            <link port="constraints" relation="relation"/>
+            <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+                <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;f(x)._location&quot;,x=170.0,y=190.0}, tail={id=&quot;f_x.output&quot;,x=75.0,y=200.0}, points={} } }">
+                </property>
+            </relation>
+            <link port="f(x)" relation="relation2"/>
+            <link port="g(x)" relation="relation"/>
             <link port="x" relation="relation3"/>
             <link port="f_x.output" relation="relation2"/>
             <link port="f_x.x" relation="relation3"/>
