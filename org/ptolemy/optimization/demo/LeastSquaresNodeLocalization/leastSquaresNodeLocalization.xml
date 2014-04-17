@@ -1,0 +1,1264 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="LeastSquareNodeLocalization" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="10.0.devel">
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={41, 22, 1399, 878}, maximized=true}">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1165, 768]">
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.7377475594922497">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{556.7880859375, -142.2741392721863}">
+    </property>
+    <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
+        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="0">
+        </property>
+        <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{-170.0, -245.0}">
+        </property>
+    </property>
+    <property name="measurementNoise" class="ptolemy.data.expr.Parameter" value="2.0">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+            <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+            </property>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{85.0, -265.0}">
+        </property>
+    </property>
+    <property name="Aposition" class="ptolemy.data.expr.Parameter" value="{x=0,y=0}">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+            <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+            </property>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{-80.0, -265.0}">
+        </property>
+    </property>
+    <property name="Bposition" class="ptolemy.data.expr.Parameter" value="{x=0.0,y=40.0}">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+            <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+            </property>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{455.0, -265.0}">
+        </property>
+    </property>
+    <property name="Cposition" class="ptolemy.data.expr.Parameter" value="{x=30,y=40.0}">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+            <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+            </property>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{265.0, -265.0}">
+        </property>
+    </property>
+    <property name="enableBackwardTypeInference" class="ptolemy.data.expr.Parameter" value="false">
+    </property>
+    <property name="Dposition" class="ptolemy.data.expr.Parameter" value="{x=30.0,y=0.0}">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+            <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+            </property>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{650.0, -265.0}">
+        </property>
+    </property>
+    <property name="Rectangle" class="ptolemy.vergil.kernel.attributes.RectangleAttribute">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-50.0, -485.0]">
+        </property>
+        <property name="lineWidth" class="ptolemy.data.expr.Parameter" value="3.0">
+        </property>
+        <property name="width" class="ptolemy.data.expr.Parameter" value="300.0">
+        </property>
+        <property name="height" class="ptolemy.data.expr.Parameter" value="300.0">
+        </property>
+        <property name="centered" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+    </property>
+    <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textSize" class="ptolemy.data.expr.Parameter" value="20">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="A">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-220.0, -320.0]">
+        </property>
+    </property>
+    <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textSize" class="ptolemy.data.expr.Parameter" value="20">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="D">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[100.0, -325.0]">
+        </property>
+    </property>
+    <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textSize" class="ptolemy.data.expr.Parameter" value="20">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="B">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-215.0, -660.0]">
+        </property>
+    </property>
+    <property name="Annotation4" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textSize" class="ptolemy.data.expr.Parameter" value="20">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="C">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[100.0, -650.0]">
+        </property>
+    </property>
+    <property name="Line" class="ptolemy.vergil.kernel.attributes.LineAttribute">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-200.0, -635.0]">
+        </property>
+        <property name="lineWidth" class="ptolemy.data.expr.Parameter" value="3.0">
+        </property>
+        <property name="x" class="ptolemy.data.expr.Parameter" value="300.0">
+        </property>
+        <property name="y" class="ptolemy.data.expr.Parameter" value="300.0">
+        </property>
+    </property>
+    <property name="Line2" class="ptolemy.vergil.kernel.attributes.LineAttribute">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-200.0, -335.0]">
+        </property>
+        <property name="lineWidth" class="ptolemy.data.expr.Parameter" value="3.0">
+        </property>
+        <property name="x" class="ptolemy.data.expr.Parameter" value="300.0">
+        </property>
+        <property name="y" class="ptolemy.data.expr.Parameter" value="-300.0">
+        </property>
+    </property>
+    <property name="Annotation5" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textSize" class="ptolemy.data.expr.Parameter" value="14">
+        </property>
+        <property name="fontFamily" class="ptolemy.data.expr.StringParameter" value="SansSerif">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Given (n choose 2) measurements from a node set of n nodes, find the least-squares solution for&#10;vertex coordinates in 2-D.&#10;&#10;The measurement model defines each measurement to be a Gaussian random variable with mean &#10;equal to the true distance between nodes and a standard deviation of sigma.&#10;                                                                            n choose 2&#10;The optimization problem we consider is min \sum  {e_i}      ,  where e_i = TrueDistance_i - Measurement_i&#10;                                                                                 i=1&#10;&#10;The current problem considers four nodes named {A,B,C,D} and the pairwise measurements with &#10;sigma = 2.0. The plot shows the Minimum least-square coordinates for A,B,C and D nodes. Note that node&#10;A is anchored at (0,0) and node B is set to be on the y-axis. There are, therefore, 5 free variables to be &#10;optimized: {By, Cx, Cy, Dx, Dy}.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[205.0, -610.0]">
+        </property>
+    </property>
+    <property name="Annotation6" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.2,0.6,1.0,1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="40">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-230.0, -515.0]">
+        </property>
+    </property>
+    <property name="Annotation7" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.2,0.6,1.0,1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="30">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-50.0, -325.0]">
+        </property>
+    </property>
+    <property name="Annotation8" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.4,0.4,0.4,1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Author: Ilge Akkaya">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-210.0, 355.0]">
+        </property>
+    </property>
+    <class name="Sensor" extends="ptolemy.actor.TypedCompositeActor">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{930.0, -240.0}">
+        </property>
+        <property name="sigma" class="ptolemy.data.expr.Parameter" value="measurementNoise">
+            <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+                <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+                </property>
+            </property>
+            <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+            </property>
+            <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{810.0, 90.0}">
+            </property>
+        </property>
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={410, 83, 934, 634}, maximized=false}">
+        </property>
+        <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[700, 524]">
+        </property>
+        <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.32768000000000014">
+        </property>
+        <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{1007.0000000000006, 510.7480468750001}">
+        </property>
+        <property name="currentPosition" class="ptolemy.data.expr.Parameter" value="{x = -10.0, y = -10.0}">
+            <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+                <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+                </property>
+            </property>
+            <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+            </property>
+            <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{1250.0, 90.0}">
+            </property>
+        </property>
+        <property name="targetPosition" class="ptolemy.data.expr.Parameter" value="{x = -10.0, y = -10.0}">
+            <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+                <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+                </property>
+            </property>
+            <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+            </property>
+            <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[1250.0, 55.0]">
+            </property>
+        </property>
+        <property name="initialPosition" class="ptolemy.data.expr.Parameter" value="{x=-10.0, y=-10.0}">
+            <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+                <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+                </property>
+            </property>
+            <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+            </property>
+            <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{1005.0, 90.0}">
+            </property>
+        </property>
+        <port name="controlInput" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{680.0, 320.0}">
+            </property>
+        </port>
+        <port name="measurement" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{1660.0, 240.0}">
+            </property>
+        </port>
+        <port name="position" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{1140.0, 170.0}">
+            </property>
+        </port>
+        <entity name="Measurement_t" class="ptolemy.actor.lib.Expression">
+            <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="sqrt( (targetPosition.x-pos.x)^2&#10;+(targetPosition.y-pos.y)^2) &#10;+ noise">
+                <property name="style" class="ptolemy.actor.gui.style.TextStyle">
+                    <property name="height" class="ptolemy.data.expr.Parameter" value="10">
+                    </property>
+                    <property name="width" class="ptolemy.data.expr.Parameter" value="30">
+                    </property>
+                </property>
+            </property>
+            <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+                <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
+                </property>
+                <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+                </property>
+                <property name="displayHeight" class="ptolemy.data.expr.Parameter" value="10">
+                </property>
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{1495.0, 310.0}">
+            </property>
+            <port name="output" class="ptolemy.actor.TypedIOPort">
+                <property name="output"/>
+                <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                </property>
+            </port>
+            <port name="noise" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+                <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                </property>
+            </port>
+            <port name="pos" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+            </port>
+        </entity>
+        <entity name="Gaussian" class="ptolemy.actor.lib.Gaussian">
+            <property name="seed" class="ptolemy.actor.parameters.SharedParameter" value="0L">
+            </property>
+            <property name="standardDeviation" class="ptolemy.actor.parameters.PortParameter" value="sigma">
+            </property>
+            <doc>Create a sequence of gaussian random variables</doc>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{1225.0, 240.0}">
+            </property>
+        </entity>
+        <entity name="SetVariable" class="ptolemy.actor.lib.SetVariable">
+            <property name="variableName" class="ptolemy.kernel.util.StringAttribute" value="currentPosition">
+            </property>
+            <property name="delayed" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
+            <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+                <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="variableName">
+                </property>
+                <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
+                </property>
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[1055.0, 175.0]">
+            </property>
+        </entity>
+        <entity name="Measurement_t2" class="ptolemy.actor.lib.Expression">
+            <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="control + currentPosition">
+                <property name="style" class="ptolemy.actor.gui.style.TextStyle">
+                    <property name="height" class="ptolemy.data.expr.Parameter" value="10">
+                    </property>
+                    <property name="width" class="ptolemy.data.expr.Parameter" value="30">
+                    </property>
+                </property>
+            </property>
+            <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+                <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
+                </property>
+                <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+                </property>
+                <property name="displayHeight" class="ptolemy.data.expr.Parameter" value="10">
+                </property>
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{855.0, 320.0}">
+            </property>
+            <port name="output" class="ptolemy.actor.TypedIOPort">
+                <property name="output"/>
+                <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                </property>
+            </port>
+            <port name="control" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+                <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                </property>
+            </port>
+        </entity>
+        <entity name="SingleEvent" class="ptolemy.actor.lib.SingleEvent">
+            <property name="value" class="ptolemy.data.expr.Parameter" value="initialPosition">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{825, 390}">
+            </property>
+        </entity>
+        <entity name="SetVariable2" class="ptolemy.actor.lib.SetVariable">
+            <property name="variableName" class="ptolemy.kernel.util.StringAttribute" value="currentPosition">
+            </property>
+            <property name="delayed" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
+            <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+                <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="variableName">
+                </property>
+                <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
+                </property>
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{967.659683866279, 389.45498728197674}">
+            </property>
+        </entity>
+        <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+            <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;controlInput._location&quot;,x=680.0,y=320.0}, tail={id=&quot;Measurement_t2.control&quot;,x=855.0,y=320.0}, points={} } }">
+            </property>
+        </relation>
+        <relation name="relation8" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="relation9" class="ptolemy.actor.TypedIORelation">
+            <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+            </property>
+            <vertex name="vertex1" value="{990.0, 320.0}">
+            </vertex>
+            <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;.Merge.output&quot;,x=1015.0,y=415.0}, tail={id=&quot;relation9.vertex1&quot;,x=1060.0,y=415.0}, points={} },{ head={id=&quot;relation9.vertex1&quot;,x=990.0,y=320.0}, tail={id=&quot;Measurement_t2.output&quot;,x=855.0,y=320.0}, points={} },{ head={id=&quot;relation9.vertex1&quot;,x=990.0,y=245.0}, tail={id=&quot;.Display.input&quot;,x=1030.0,y=180.0}, points={990.0,180.0} },{ head={id=&quot;SetVariable.input&quot;,x=1055.0,y=170.0}, tail={id=&quot;relation9.vertex1&quot;,x=990.0,y=320.0}, points={990.0,170.0} },{ head={id=&quot;relation9.vertex1&quot;,x=990.0,y=320.0}, tail={id=&quot;Measurement_t.pos&quot;,x=1495.0,y=310.0}, points={} } }">
+            </property>
+        </relation>
+        <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+            <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+            </property>
+            <vertex name="vertex1" value="{1640.0, 310.0}">
+            </vertex>
+            <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;relation2.vertex1&quot;,x=1640.0,y=310.0}, tail={id=&quot;Display.input&quot;,x=1680.0,y=310.0}, points={} },{ head={id=&quot;measurement._location&quot;,x=1660.0,y=240.0}, tail={id=&quot;relation2.vertex1&quot;,x=1640.0,y=310.0}, points={1640.0,240.0} },{ head={id=&quot;Measurement_t.output&quot;,x=1495.0,y=310.0}, tail={id=&quot;relation2.vertex1&quot;,x=1640.0,y=310.0}, points={} } }">
+            </property>
+        </relation>
+        <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="relation" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <link port="controlInput" relation="relation4"/>
+        <link port="measurement" relation="relation2"/>
+        <link port="position" relation="relation8"/>
+        <link port="Measurement_t.output" relation="relation2"/>
+        <link port="Measurement_t.noise" relation="relation"/>
+        <link port="Measurement_t.pos" relation="relation9"/>
+        <link port="Gaussian.output" relation="relation"/>
+        <link port="Gaussian.trigger" relation="relation9"/>
+        <link port="SetVariable.input" relation="relation9"/>
+        <link port="SetVariable.output" relation="relation8"/>
+        <link port="Measurement_t2.output" relation="relation9"/>
+        <link port="Measurement_t2.control" relation="relation4"/>
+        <link port="SingleEvent.output" relation="relation3"/>
+        <link port="SetVariable2.input" relation="relation3"/>
+    </class>
+    <entity name="ControlInputIsZero" class="ptolemy.actor.lib.DiscreteClock">
+        <property name="values" class="ptolemy.data.expr.Parameter" value="{{x=0,y=0}}">
+        </property>
+        <doc>Create periodic timed events.</doc>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{-170.0, -155.0}">
+        </property>
+    </entity>
+    <entity name="CompositeOptimizer" class="org.ptolemy.optimization.CompositeOptimizer">
+        <property name="maxEvaluations" class="ptolemy.data.expr.Parameter" value="100000">
+        </property>
+        <property name="dimensionOfOptimizationSpace" class="ptolemy.data.expr.Parameter" value="6">
+        </property>
+        <property name="numberOfConstraints" class="ptolemy.data.expr.Parameter" value="5">
+        </property>
+        <property name="rhoEnd" class="ptolemy.data.expr.Parameter" value="1E-6">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{340.0, 15.0}">
+        </property>
+        <doc>Optimize the objective function provided in the inside composite, subject to constraints and precision/iteration limits</doc>
+        <property name="_configurer" class="ptolemy.actor.gui.EditorPaneFactory">
+        </property>
+        <property name="_configurer2" class="ptolemy.actor.gui.InsideEntityEditorPaneFactory">
+        </property>
+        <property name="_tableauFactory" class="ptolemy.actor.gui.LevelSkippingTableauFactory">
+        </property>
+        <port name="measurements" class="ptolemy.actor.lib.hoc.MirrorPort">
+            <property name="input"/>
+        </port>
+        <entity name="OptimizerComposite" class="org.ptolemy.optimization.CompositeOptimizer$OptimizerComposite">
+            <property name="SDFDirector" class="ptolemy.domains.sdf.kernel.SDFDirector">
+                <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{0.0, 0.0}">
+                </property>
+            </property>
+            <property name="annotation" class="ptolemy.kernel.util.Attribute">
+                <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+                </property>
+                <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                    <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:blue">x = [By, Cx, Cy, Dx, Dy]</text></svg></configure>
+                </property>
+                <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                    <configure>
+                <svg> 
+                    <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-A-</text>
+                </svg>
+              </configure>
+                </property>
+                <property name="_controllerFactory" class="ptolemy.vergil.basic.NodeControllerFactory">
+                </property>
+                <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{70.0, -35.0}">
+                </property>
+            </property>
+            <property name="annotation2" class="ptolemy.kernel.util.Attribute">
+                <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+                </property>
+                <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                    <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:blue">measurements = [zAB, zAC, zBC, zBD, zAD, zCD]</text></svg></configure>
+                </property>
+                <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                    <configure>
+                <svg> 
+                    <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-A-</text>
+                </svg>
+              </configure>
+                </property>
+                <property name="_controllerFactory" class="ptolemy.vergil.basic.NodeControllerFactory">
+                </property>
+                <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[75.0, -10.0]">
+                </property>
+            </property>
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={231, 163, 934, 634}, maximized=false}">
+            </property>
+            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[700, 524]">
+            </property>
+            <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+            </property>
+            <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{280.0, 223.89453125}">
+            </property>
+            <port name="intermediateValue" class="ptolemy.actor.lib.hoc.MirrorPort">
+                <property name="output"/>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{555.0, 160.0}">
+                </property>
+            </port>
+            <port name="constraints" class="ptolemy.actor.lib.hoc.MirrorPort">
+                <property name="output"/>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{200.0, 280.0}">
+                </property>
+            </port>
+            <port name="x" class="ptolemy.actor.lib.hoc.MirrorPort">
+                <property name="input"/>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{-40.0, 290.0}">
+                </property>
+            </port>
+            <port name="measurements" class="ptolemy.actor.lib.hoc.MirrorPort">
+                <property name="input"/>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[-55.0, 125.0]">
+                </property>
+            </port>
+            <entity name="ErrorSumOfSquares" class="ptolemy.actor.lib.Expression">
+                <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="sum((By-z(0))^2 + &#10;(sqrt(Cx^2 + Cy^2) - z(1))^2 +&#10;(sqrt(Cx^2 + (By-Cy)^2) - z(2))^2 +&#10;(sqrt(Dx^2 + (By-Dy)^2) - z(3))^2 +&#10;(sqrt(Dx^2 + Dy^2) - z(4) )^2 +&#10;(sqrt( (Cx-Dx)^2 + (Cy-Dy)^2) - z(5) )^2&#10;)">
+                    <property name="style" class="ptolemy.actor.gui.style.TextStyle">
+                        <property name="height" class="ptolemy.data.expr.Parameter" value="10">
+                        </property>
+                        <property name="width" class="ptolemy.data.expr.Parameter" value="30">
+                        </property>
+                    </property>
+                </property>
+                <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+                    <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
+                    </property>
+                    <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+                    </property>
+                    <property name="displayHeight" class="ptolemy.data.expr.Parameter" value="10">
+                    </property>
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[355.0, 155.0]">
+                </property>
+                <port name="output" class="ptolemy.actor.TypedIOPort">
+                    <property name="output"/>
+                    <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                    </property>
+                </port>
+                <port name="z" class="ptolemy.actor.TypedIOPort">
+                    <property name="input"/>
+                    <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                    </property>
+                </port>
+                <port name="By" class="ptolemy.actor.TypedIOPort">
+                    <property name="input"/>
+                    <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                    </property>
+                </port>
+                <port name="Cx" class="ptolemy.actor.TypedIOPort">
+                    <property name="input"/>
+                    <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                    </property>
+                </port>
+                <port name="Cy" class="ptolemy.actor.TypedIOPort">
+                    <property name="input"/>
+                    <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                    </property>
+                </port>
+                <port name="Dx" class="ptolemy.actor.TypedIOPort">
+                    <property name="input"/>
+                    <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                    </property>
+                </port>
+                <port name="Dy" class="ptolemy.actor.TypedIOPort">
+                    <property name="input"/>
+                    <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                    </property>
+                </port>
+            </entity>
+            <entity name="Expression2" class="ptolemy.actor.lib.Expression">
+                <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="{100-abs(x(0)),&#10;100-abs(x(1)),&#10;100-abs(x(2)),&#10;100-abs(x(3)),&#10;100-abs(x(4))}">
+                    <property name="style" class="ptolemy.actor.gui.style.TextStyle">
+                        <property name="height" class="ptolemy.data.expr.Parameter" value="10">
+                        </property>
+                        <property name="width" class="ptolemy.data.expr.Parameter" value="30">
+                        </property>
+                    </property>
+                </property>
+                <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+                    <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
+                    </property>
+                    <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+                    </property>
+                    <property name="displayHeight" class="ptolemy.data.expr.Parameter" value="10">
+                    </property>
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[75.0, 280.0]">
+                </property>
+                <port name="output" class="ptolemy.actor.TypedIOPort">
+                    <property name="output"/>
+                    <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                    </property>
+                </port>
+                <port name="z" class="ptolemy.actor.TypedIOPort">
+                    <property name="input"/>
+                    <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                    </property>
+                </port>
+                <port name="x" class="ptolemy.actor.TypedIOPort">
+                    <property name="input"/>
+                    <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                    </property>
+                </port>
+            </entity>
+            <entity name="ArrayToElements" class="ptolemy.actor.lib.ArrayToElements">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{55.0, 145.0}">
+                </property>
+            </entity>
+            <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+            </relation>
+            <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+                <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+                </property>
+                <vertex name="vertex1" value="[0.0, 290.0]">
+                </vertex>
+            </relation>
+            <relation name="relation" class="ptolemy.actor.TypedIORelation">
+            </relation>
+            <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+            </relation>
+            <relation name="relation6" class="ptolemy.actor.TypedIORelation">
+            </relation>
+            <relation name="relation7" class="ptolemy.actor.TypedIORelation">
+            </relation>
+            <relation name="relation8" class="ptolemy.actor.TypedIORelation">
+            </relation>
+            <relation name="relation9" class="ptolemy.actor.TypedIORelation">
+            </relation>
+            <relation name="relation10" class="ptolemy.actor.TypedIORelation">
+                <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+                </property>
+                <vertex name="vertex1" value="{455.0, 160.0}">
+                </vertex>
+            </relation>
+            <link port="intermediateValue" relation="relation10"/>
+            <link port="constraints" relation="relation"/>
+            <link port="x" relation="relation4"/>
+            <link port="measurements" relation="relation2"/>
+            <link port="ErrorSumOfSquares.output" relation="relation10"/>
+            <link port="ErrorSumOfSquares.z" relation="relation2"/>
+            <link port="ErrorSumOfSquares.By" relation="relation5"/>
+            <link port="ErrorSumOfSquares.Cx" relation="relation6"/>
+            <link port="ErrorSumOfSquares.Cy" relation="relation7"/>
+            <link port="ErrorSumOfSquares.Dx" relation="relation8"/>
+            <link port="ErrorSumOfSquares.Dy" relation="relation9"/>
+            <link port="Expression2.output" relation="relation"/>
+            <link port="Expression2.x" relation="relation4"/>
+            <link port="ArrayToElements.input" relation="relation4"/>
+            <link port="ArrayToElements.output" relation="relation5"/>
+            <link port="ArrayToElements.output" relation="relation6"/>
+            <link port="ArrayToElements.output" relation="relation7"/>
+            <link port="ArrayToElements.output" relation="relation8"/>
+            <link port="ArrayToElements.output" relation="relation9"/>
+        </entity>
+    </entity>
+    <entity name="ElementsToArray" class="ptolemy.actor.lib.ElementsToArray">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{175.0, 25.0}">
+        </property>
+    </entity>
+    <entity name="ArrayToElements" class="ptolemy.actor.lib.ArrayToElements">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{560.0, 15.0}">
+        </property>
+    </entity>
+    <entity name="XYPlotter" class="ptolemy.actor.lib.gui.XYPlotter">
+        <property name="fillOnWrapup" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="automaticRescale" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="legend" class="ptolemy.kernel.util.StringAttribute" value="A,B,C,D, true polygon">
+        </property>
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={574, 308, 489, 454}, maximized=false}">
+        </property>
+        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[489, 410]">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{1305.0, 115.0}">
+        </property>
+        <configure>
+<?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
+"http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
+<plot>
+<title>Nonlinear LS Coordinate Fitting</title>
+<xLabel>x</xLabel>
+<yLabel>y</yLabel>
+<xRange min="0.0" max="30.658646022321417"/>
+<yRange min="0.0" max="40.634689168550715"/>
+<default connected="no" marks="dots"/>
+</plot>?>
+        </configure>
+    </entity>
+    <entity name="AnchorCoordinates" class="ptolemy.actor.lib.Const">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="0.0">
+        </property>
+        <doc>Create a constant sequence.</doc>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{995.0, -55.0}">
+        </property>
+    </entity>
+    <entity name="A-AB" class="Sensor">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{30.0, -155.0}">
+        </property>
+        <property name="currentPosition" class="ptolemy.data.expr.Parameter" value="Aposition">
+            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+                <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+                </property>
+            </property>
+            <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{1250.0, 90.0}">
+            </property>
+        </property>
+        <property name="targetPosition" class="ptolemy.data.expr.Parameter" value="Bposition">
+            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+                <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+                </property>
+            </property>
+            <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[1250.0, 55.0]">
+            </property>
+        </property>
+        <property name="initialPosition" class="ptolemy.data.expr.Parameter" value="Aposition">
+            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+                <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+                </property>
+            </property>
+            <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{1005.0, 90.0}">
+            </property>
+        </property>
+    </entity>
+    <entity name="B-BC" class="Sensor">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{30.0, 20.0}">
+        </property>
+        <property name="currentPosition" class="ptolemy.data.expr.Parameter" value="Bposition">
+            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+                <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+                </property>
+            </property>
+            <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{1250.0, 90.0}">
+            </property>
+        </property>
+        <property name="targetPosition" class="ptolemy.data.expr.Parameter" value="Cposition">
+            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+                <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+                </property>
+            </property>
+            <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[1250.0, 55.0]">
+            </property>
+        </property>
+        <property name="initialPosition" class="ptolemy.data.expr.Parameter" value="Bposition">
+            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+                <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+                </property>
+            </property>
+            <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{1005.0, 90.0}">
+            </property>
+        </property>
+    </entity>
+    <entity name="C-AC" class="Sensor">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{30.0, -65.0}">
+        </property>
+        <property name="currentPosition" class="ptolemy.data.expr.Parameter" value="Cposition">
+            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+                <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+                </property>
+            </property>
+            <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{1250.0, 90.0}">
+            </property>
+        </property>
+        <property name="targetPosition" class="ptolemy.data.expr.Parameter" value="Aposition">
+            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+                <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+                </property>
+            </property>
+            <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[1250.0, 55.0]">
+            </property>
+        </property>
+        <property name="initialPosition" class="ptolemy.data.expr.Parameter" value="Cposition">
+            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+                <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+                </property>
+            </property>
+            <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{1005.0, 90.0}">
+            </property>
+        </property>
+    </entity>
+    <entity name="D-AD" class="Sensor">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{30.0, 150.0}">
+        </property>
+        <property name="currentPosition" class="ptolemy.data.expr.Parameter" value="Dposition">
+            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+                <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+                </property>
+            </property>
+            <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{1250.0, 90.0}">
+            </property>
+        </property>
+        <property name="targetPosition" class="ptolemy.data.expr.Parameter" value="Aposition">
+            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+                <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+                </property>
+            </property>
+            <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[1250.0, 55.0]">
+            </property>
+        </property>
+        <property name="initialPosition" class="ptolemy.data.expr.Parameter" value="Dposition">
+            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+                <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+                </property>
+            </property>
+            <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{1005.0, 90.0}">
+            </property>
+        </property>
+    </entity>
+    <entity name="D-BD" class="Sensor">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{30.0, 85.0}">
+        </property>
+        <property name="currentPosition" class="ptolemy.data.expr.Parameter" value="Dposition">
+            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+                <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+                </property>
+            </property>
+            <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{1250.0, 90.0}">
+            </property>
+        </property>
+        <property name="targetPosition" class="ptolemy.data.expr.Parameter" value="Bposition">
+            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+                <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+                </property>
+            </property>
+            <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[1250.0, 55.0]">
+            </property>
+        </property>
+        <property name="initialPosition" class="ptolemy.data.expr.Parameter" value="Dposition">
+            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+                <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+                </property>
+            </property>
+            <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{1005.0, 90.0}">
+            </property>
+        </property>
+    </entity>
+    <entity name="D-DC" class="Sensor">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{30.0, 220.0}">
+        </property>
+        <property name="currentPosition" class="ptolemy.data.expr.Parameter" value="Dposition">
+            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+                <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+                </property>
+            </property>
+            <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{1250.0, 90.0}">
+            </property>
+        </property>
+        <property name="targetPosition" class="ptolemy.data.expr.Parameter" value="Cposition">
+            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+                <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+                </property>
+            </property>
+            <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[1250.0, 55.0]">
+            </property>
+        </property>
+        <property name="initialPosition" class="ptolemy.data.expr.Parameter" value="Dposition">
+            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+                <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+                </property>
+            </property>
+            <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{1005.0, 90.0}">
+            </property>
+        </property>
+    </entity>
+    <entity name="TrueX" class="ptolemy.actor.lib.Const">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="{Aposition.x, Bposition.x, &#10;Cposition.x, Dposition.x,Aposition.x}">
+            <property name="style" class="ptolemy.actor.gui.style.TextStyle">
+                <property name="height" class="ptolemy.data.expr.Parameter" value="10">
+                </property>
+                <property name="width" class="ptolemy.data.expr.Parameter" value="30">
+                </property>
+            </property>
+        </property>
+        <doc>Create a constant sequence.</doc>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{835.0, 180.0}">
+        </property>
+    </entity>
+    <entity name="TrueY" class="ptolemy.actor.lib.Const">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="{Aposition.y, Bposition.y, &#10;Cposition.y, Dposition.y,Aposition.y}">
+            <property name="style" class="ptolemy.actor.gui.style.TextStyle">
+                <property name="height" class="ptolemy.data.expr.Parameter" value="10">
+                </property>
+                <property name="width" class="ptolemy.data.expr.Parameter" value="30">
+                </property>
+            </property>
+        </property>
+        <doc>Create a constant sequence.</doc>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{575.0, 290.0}">
+        </property>
+    </entity>
+    <entity name="ArrayToSequence" class="ptolemy.domains.sdf.lib.ArrayToSequence">
+        <property name="arrayLength" class="ptolemy.data.expr.Parameter" value="5">
+        </property>
+        <property name="enforceArrayLength" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{1135.0, 180.0}">
+        </property>
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+        </property>
+    </entity>
+    <entity name="ArrayToSequence2" class="ptolemy.domains.sdf.lib.ArrayToSequence">
+        <property name="arrayLength" class="ptolemy.data.expr.Parameter" value="5">
+        </property>
+        <property name="enforceArrayLength" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{1015.0, 290.0}">
+        </property>
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+        </property>
+    </entity>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+        </property>
+        <vertex name="vertex1" value="{-65.0, -155.0}">
+        </vertex>
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;C-AC.controlInput&quot;,x=30.0,y=-65.0}, tail={id=&quot;relation2.vertex1&quot;,x=-65.0,y=-155.0}, points={-65.0,-65.0} },{ head={id=&quot;ControlInputIsZero.output&quot;,x=-170.0,y=-155.0}, tail={id=&quot;relation2.vertex1&quot;,x=-65.0,y=-155.0}, points={} },{ head={id=&quot;B-BC.controlInput&quot;,x=30.0,y=20.0}, tail={id=&quot;relation2.vertex1&quot;,x=-65.0,y=-155.0}, points={-65.0,20.0} },{ head={id=&quot;D-AD.controlInput&quot;,x=30.0,y=150.0}, tail={id=&quot;relation2.vertex1&quot;,x=-65.0,y=-155.0}, points={-65.0,150.0} },{ head={id=&quot;D-DC.controlInput&quot;,x=30.0,y=220.0}, tail={id=&quot;relation2.vertex1&quot;,x=-65.0,y=-155.0}, points={-65.0,220.0} },{ head={id=&quot;D-BD.controlInput&quot;,x=30.0,y=85.0}, tail={id=&quot;relation2.vertex1&quot;,x=-65.0,y=-155.0}, points={-65.0,85.0} },{ head={id=&quot;A-AB.controlInput&quot;,x=30.0,y=-155.0}, tail={id=&quot;relation2.vertex1&quot;,x=-65.0,y=-155.0}, points={} } }">
+        </property>
+    </relation>
+    <relation name="relation10" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+        <vertex name="vertex1" value="{935.0, 65.0}">
+        </vertex>
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;AnchorCoordinates.trigger&quot;,x=995.0,y=-55.0}, tail={id=&quot;relation10.vertex1&quot;,x=935.0,y=65.0}, points={935.0,-55.0} },{ head={id=&quot;ArrayToElements.output&quot;,x=560.0,y=15.0,index=5}, tail={id=&quot;relation10.vertex1&quot;,x=935.0,y=65.0}, points={715.0,15.0,715.0,65.0} },{ head={id=&quot;XYPlotter.inputY&quot;,x=1305.0,y=115.0,index=5}, tail={id=&quot;relation10.vertex1&quot;,x=935.0,y=65.0}, points={1200.0,110.0,1200.0,215.0,935.0,215.0} } }">
+        </property>
+    </relation>
+    <relation name="relation11" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+        </property>
+        <vertex name="vertex1" value="{260.0, 25.0}">
+        </vertex>
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;CompositeOptimizer.measurements&quot;,x=340.0,y=15.0}, tail={id=&quot;relation11.vertex1&quot;,x=260.0,y=25.0}, points={} },{ head={id=&quot;ElementsToArray.output&quot;,x=175.0,y=25.0}, tail={id=&quot;relation11.vertex1&quot;,x=260.0,y=25.0}, points={} } }">
+        </property>
+    </relation>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;ElementsToArray.input&quot;,x=175.0,y=25.0,index=6}, tail={id=&quot;A-AB.measurement&quot;,x=30.0,y=-155.0}, points={95.0,0.0,95.0,-165.0} } }">
+        </property>
+    </relation>
+    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;ElementsToArray.input&quot;,x=175.0,y=25.0,index=6}, tail={id=&quot;C-AC.measurement&quot;,x=30.0,y=-65.0}, points={80.0,5.0,80.0,-75.0} } }">
+        </property>
+    </relation>
+    <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;ElementsToArray.input&quot;,x=175.0,y=25.0,index=6}, tail={id=&quot;B-BC.measurement&quot;,x=30.0,y=20.0}, points={} } }">
+        </property>
+    </relation>
+    <relation name="relation8" class="ptolemy.actor.TypedIORelation">
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;ElementsToArray.input&quot;,x=175.0,y=25.0,index=6}, tail={id=&quot;D-BD.measurement&quot;,x=30.0,y=85.0}, points={80.0,15.0,80.0,75.0} } }">
+        </property>
+    </relation>
+    <relation name="relation9" class="ptolemy.actor.TypedIORelation">
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;ElementsToArray.input&quot;,x=175.0,y=25.0,index=6}, tail={id=&quot;D-AD.measurement&quot;,x=30.0,y=150.0}, points={95.0,20.0,95.0,140.0} } }">
+        </property>
+    </relation>
+    <relation name="relation13" class="ptolemy.actor.TypedIORelation">
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;ElementsToArray.input&quot;,x=175.0,y=25.0,index=6}, tail={id=&quot;D-DC.measurement&quot;,x=30.0,y=220.0}, points={110.0,25.0,110.0,210.0} } }">
+        </property>
+    </relation>
+    <relation name="relation6" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+        </property>
+        <vertex name="vertex1" value="{1200.0, -55.0}">
+        </vertex>
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;XYPlotter.inputX&quot;,x=1305.0,y=115.0,index=5}, tail={id=&quot;relation6.vertex1&quot;,x=1200.0,y=-55.0}, points={1200.0,85.0} },{ head={id=&quot;AnchorCoordinates.output&quot;,x=995.0,y=-55.0}, tail={id=&quot;relation6.vertex1&quot;,x=1200.0,y=-55.0}, points={} },{ head={id=&quot;XYPlotter.inputY&quot;,x=1305.0,y=115.0,index=5}, tail={id=&quot;relation6.vertex1&quot;,x=1200.0,y=-55.0}, points={1200.0,105.0} } }">
+        </property>
+    </relation>
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;ArrayToElements.output&quot;,x=560.0,y=15.0,index=5}, tail={id=&quot;XYPlotter.inputX&quot;,x=1305.0,y=115.0,index=5}, points={1185.0,20.0,1185.0,95.0} } }">
+        </property>
+    </relation>
+    <relation name="relation7" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;ArrayToElements.output&quot;,x=560.0,y=15.0,index=5}, tail={id=&quot;XYPlotter.inputY&quot;,x=1305.0,y=115.0,index=5}, points={700.0,25.0,700.0,230.0,1215.0,230.0,1215.0,115.0} } }">
+        </property>
+    </relation>
+    <relation name="relation14" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;ArrayToElements.output&quot;,x=560.0,y=15.0,index=5}, tail={id=&quot;XYPlotter.inputX&quot;,x=1305.0,y=115.0,index=5}, points={685.0,30.0,685.0,100.0} } }">
+        </property>
+    </relation>
+    <relation name="relation15" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;ArrayToElements.output&quot;,x=560.0,y=15.0,index=5}, tail={id=&quot;XYPlotter.inputY&quot;,x=1305.0,y=115.0,index=5}, points={670.0,35.0,670.0,245.0,1230.0,245.0,1230.0,120.0} } }">
+        </property>
+    </relation>
+    <relation name="relation16" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+        </property>
+        <vertex name="vertex1" value="{450.0, 15.0}">
+        </vertex>
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;TrueY.trigger&quot;,x=575.0,y=290.0}, tail={id=&quot;relation16.vertex1&quot;,x=450.0,y=15.0}, points={450.0,290.0} },{ head={id=&quot;ArrayToElements.input&quot;,x=560.0,y=15.0}, tail={id=&quot;relation16.vertex1&quot;,x=450.0,y=15.0}, points={} },{ head={id=&quot;CompositeOptimizer.optimalValue&quot;,x=340.0,y=15.0}, tail={id=&quot;relation16.vertex1&quot;,x=450.0,y=15.0}, points={} },{ head={id=&quot;TrueX.trigger&quot;,x=835.0,y=180.0}, tail={id=&quot;relation16.vertex1&quot;,x=450.0,y=15.0}, points={450.0,180.0} } }">
+        </property>
+    </relation>
+    <relation name="relation12" class="ptolemy.actor.TypedIORelation">
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;TrueX.output&quot;,x=835.0,y=180.0}, tail={id=&quot;ArrayToSequence.input&quot;,x=1135.0,y=180.0}, points={} } }">
+        </property>
+    </relation>
+    <relation name="relation19" class="ptolemy.actor.TypedIORelation">
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;XYPlotter.inputX&quot;,x=1305.0,y=115.0,index=5}, tail={id=&quot;ArrayToSequence.output&quot;,x=1135.0,y=180.0}, points={1185.0,105.0,1185.0,180.0} } }">
+        </property>
+    </relation>
+    <relation name="relation18" class="ptolemy.actor.TypedIORelation">
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;XYPlotter.inputY&quot;,x=1305.0,y=115.0,index=5}, tail={id=&quot;ArrayToSequence2.output&quot;,x=1015.0,y=290.0}, points={1245.0,125.0,1245.0,290.0} } }">
+        </property>
+    </relation>
+    <relation name="relation17" class="ptolemy.actor.TypedIORelation">
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;TrueY.output&quot;,x=575.0,y=290.0}, tail={id=&quot;ArrayToSequence2.input&quot;,x=1015.0,y=290.0}, points={} } }">
+        </property>
+    </relation>
+    <link port="ControlInputIsZero.output" relation="relation2"/>
+    <link port="CompositeOptimizer.optimalValue" relation="relation16"/>
+    <link port="CompositeOptimizer.measurements" relation="relation11"/>
+    <link port="ElementsToArray.input" relation="relation"/>
+    <link port="ElementsToArray.input" relation="relation4"/>
+    <link port="ElementsToArray.input" relation="relation5"/>
+    <link port="ElementsToArray.input" relation="relation8"/>
+    <link port="ElementsToArray.input" relation="relation9"/>
+    <link port="ElementsToArray.input" relation="relation13"/>
+    <link port="ElementsToArray.output" relation="relation11"/>
+    <link port="ArrayToElements.input" relation="relation16"/>
+    <link port="ArrayToElements.output" relation="relation10"/>
+    <link port="ArrayToElements.output" relation="relation3"/>
+    <link port="ArrayToElements.output" relation="relation7"/>
+    <link port="ArrayToElements.output" relation="relation14"/>
+    <link port="ArrayToElements.output" relation="relation15"/>
+    <link port="XYPlotter.inputX" relation="relation6"/>
+    <link port="XYPlotter.inputX" relation="relation6"/>
+    <link port="XYPlotter.inputX" relation="relation3"/>
+    <link port="XYPlotter.inputX" relation="relation14"/>
+    <link port="XYPlotter.inputX" relation="relation19"/>
+    <link port="XYPlotter.inputY" relation="relation6"/>
+    <link port="XYPlotter.inputY" relation="relation10"/>
+    <link port="XYPlotter.inputY" relation="relation7"/>
+    <link port="XYPlotter.inputY" relation="relation15"/>
+    <link port="XYPlotter.inputY" relation="relation18"/>
+    <link port="AnchorCoordinates.output" relation="relation6"/>
+    <link port="AnchorCoordinates.trigger" relation="relation10"/>
+    <link port="A-AB.controlInput" relation="relation2"/>
+    <link port="A-AB.measurement" relation="relation"/>
+    <link port="B-BC.controlInput" relation="relation2"/>
+    <link port="B-BC.measurement" relation="relation5"/>
+    <link port="C-AC.controlInput" relation="relation2"/>
+    <link port="C-AC.measurement" relation="relation4"/>
+    <link port="D-AD.controlInput" relation="relation2"/>
+    <link port="D-AD.measurement" relation="relation9"/>
+    <link port="D-BD.controlInput" relation="relation2"/>
+    <link port="D-BD.measurement" relation="relation8"/>
+    <link port="D-DC.controlInput" relation="relation2"/>
+    <link port="D-DC.measurement" relation="relation13"/>
+    <link port="TrueX.output" relation="relation12"/>
+    <link port="TrueX.trigger" relation="relation16"/>
+    <link port="TrueY.output" relation="relation17"/>
+    <link port="TrueY.trigger" relation="relation16"/>
+    <link port="ArrayToSequence.input" relation="relation12"/>
+    <link port="ArrayToSequence.output" relation="relation19"/>
+    <link port="ArrayToSequence2.input" relation="relation17"/>
+    <link port="ArrayToSequence2.output" relation="relation18"/>
+</entity>
