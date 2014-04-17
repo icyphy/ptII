@@ -55,6 +55,7 @@ JSRCS = \
 	ApplyFunctionOverSequence.java \
 	Case.java \
 	CaseDirector.java \
+	ExecuteActor.java \
 	ExecuteCompositeActor.java \
 	IterateOverArray.java \
 	LifeCycleManager.java \
@@ -76,6 +77,7 @@ JSRCS = \
 OTHER_FILES_TO_BE_JARED = \
 	ApplyFunctionIcon.xml \
 	CaseIcon.xml \
+	ExecuteActorIcon.xml \
 	MobileFunctionIcon.xml \
 	MobileModelIcon.xml \
 	ModelReferenceIcon.xml \

@@ -336,7 +336,7 @@ public class RunCompositeActor extends LifeCycleManager {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         private methods                   ////
+    ////                         protected methods                 ////
 
     /** Set the class name and create the parameters.
      *  @exception NameDuplicationException If there is already a parameter with
@@ -344,7 +344,7 @@ public class RunCompositeActor extends LifeCycleManager {
      *  @exception IllegalActionException If the firingCountLimit cannot be
      *   initialized.
      */
-    private void _init() throws IllegalActionException,
+    protected void _init() throws IllegalActionException,
             NameDuplicationException {
         // By default, when exporting MoML, the class name is whatever
         // the Java class is, which in this case is RunCompositeActor.

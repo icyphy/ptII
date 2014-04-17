@@ -17,6 +17,8 @@
 -->
       <entity name="Case" class="ptolemy.actor.lib.hoc.Case"/> 
 
+      <entity name="ExecuteActor" class="ptolemy.actor.lib.hoc.ExecuteActor"/>
+
       <entity name="IterateOverArray" class="ptolemy.actor.lib.hoc.IterateOverArray">
         <doc>Iterate a contained actor over input arrays</doc>
         <property name="_icon" class="ptolemy.vergil.icon.CopyCatIcon"/>
