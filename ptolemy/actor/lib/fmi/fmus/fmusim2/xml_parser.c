@@ -40,6 +40,7 @@ const char *elmNames[SIZEOF_ELM] = {
      "DefaultExperiment","VendorAnnotations","Tool","Annotation", "ModelVariables","ScalarVariable",
      "DirectDependency","Name","Real","Integer","Boolean","String","Enumeration",
      "Implementation","CoSimulation_StandAlone","CoSimulation_Tool","Model","File","Capabilities"
+
 };
 #endif
 
@@ -53,7 +54,8 @@ const char *attNames[SIZEOF_ATT] = {
     "canHandleVariableCommunicationStepSize","canHandleEvents","canRejectSteps","canInterpolateInputs",
     "maxOutputDerivativeOrder","canRunAsynchronuously","canSignalEvents","canBeInstantiatedOnlyOncePerProcess",
     "canNotUseMemoryManagementFunctions","file","entryPoint","manualStart","type",
-    "canGetAndSetFMUstate"
+    "canGetAndSetFMUstate",
+    "canProvideMaxStepSize"
 };
 
 const char *enuNames[SIZEOF_ENU] = {

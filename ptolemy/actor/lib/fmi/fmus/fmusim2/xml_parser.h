@@ -34,7 +34,11 @@ typedef size_t fmiValueReference;
 #endif
 extern const char *elmNames[SIZEOF_ELM];
 
+#if FMI_VERSION >= 2
+#define SIZEOF_ATT 49
+#else
 #define SIZEOF_ATT 48
+#endif
 extern const char *attNames[SIZEOF_ATT];
 
 #define SIZEOF_ENU 13
