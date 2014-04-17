@@ -78,6 +78,10 @@ typedef struct {
 /*  Give the inital states of the Mealy machine
  *  @param c The FMU.
  */
+/* We add a prefix of the MODEL_IDENTIFIER so that when we run two models that
+ * both have .so files that have a init_state() function, we get the right function.
+ */   
+#define init_state fmiFullName(init_state)
 void init_state(fmiComponent c) {
     ModelInstance* component = (ModelInstance *) c;
 
@@ -90,6 +94,7 @@ void init_state(fmiComponent c) {
 /*  Transition function that updates the state of the Mealy machine
  *  @param c The FMU.
  */
+#define transition_function fmiFullName(transition_function)
 void transition_function(fmiComponent c) {
     ModelInstance* component = (ModelInstance *) c;
 
@@ -107,6 +112,7 @@ void transition_function(fmiComponent c) {
 /*  Output function of the Mealy machine
  *  @param c The FMU.
  */
+#define output_function fmiFullName(output_function)
 void output_function(fmiComponent c) {
     ModelInstance* component = (ModelInstance *) c;
     component->level = component->level_state + component->reference;
@@ -127,6 +133,7 @@ void output_function(fmiComponent c) {
  *  @return The instance of this FMU, or null if there are required functions missing,
  *   if there is no instance name, or if the GUID does not match this FMU.
  */
+#define checkFMU fmiFullName(checkFMU)
 int checkFMU(
              fmiString instanceName,
              fmiString GUID,
