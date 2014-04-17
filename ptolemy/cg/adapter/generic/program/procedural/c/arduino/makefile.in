@@ -1,4 +1,4 @@
-# Template makefile from $PTII/ptolemy/cg/kernel/generic/program/procedural/c/makefile.in
+# Template makefile from ptolemy/cg/adapter/generic/program/procedural/c/arduino/makefile.in
 # $Id: makefile.in 68363 2014-02-08 18:26:03Z cxh $
 # The CodeGenerator class subsitutes strings like "@modelName@" with
 # the value of parameters and writes the results in the directory
