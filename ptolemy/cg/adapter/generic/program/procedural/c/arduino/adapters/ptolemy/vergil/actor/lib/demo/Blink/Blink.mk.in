@@ -109,7 +109,9 @@ $(MODELNAME).hex: $(MODELNAME).elf
 	$(AVR_SIZE) $(MODELNAME).hex
 
 $(MODELNAME).elf: $(MODELNAME).o core.a
-	$(AVR_GCC) -Os -Wl,--gc-sections -mmcu=atmega32u4 -o $(MODELNAME).elf $(MODELNAME).o core.a
+	#	$(AVR_GCC) -Os -Wl,--gc-sections -mmcu=atmega32u4 -o $(MODELNAME).elf $(MODELNAME).o core.a
+	@echo "FIXME: We need to link against the file that has setup() in it, which is foo.o"
+	$(AVR_GCC) -Os -Wl,--gc-sections -mmcu=atmega32u4 -o $(MODELNAME).elf foo.o core.a
 
 foo.cpp: _Blink/_EmbeddedCodeActor/Blink_EmbeddedCodeActor_EmbeddedActor.c
 	echo "FIXME: HACK! HACK! HACK!"
@@ -131,9 +133,17 @@ $(MODELNAME).o: $(MODELNAME).cpp
 $(MODELNAME).cpp: $(MODELNAME)_Main.c
 	cp $(MODELNAME)_Main.c $@
 
+SERIAL_PORT=/dev/tty.usbmodem1421
+run:
+	stty -f $(SERIAL_PORT)
+	sleep 1
+	# Then run the avrdude command
+	avrdude...
+
 # Other Targets
 clean:
 	rm -rf $(PTCG_OFILES) @modelName@
+	rm *.eep *.hex *.elf core.a
 	-@echo ' '
 
 .PHONY: all clean dependents
