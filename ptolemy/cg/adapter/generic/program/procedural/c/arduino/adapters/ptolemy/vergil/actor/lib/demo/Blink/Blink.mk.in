@@ -108,21 +108,23 @@ $(MODELNAME).hex: $(MODELNAME).elf
 	$(AVR_OBJCOPY) -O ihex -R .eeprom $(MODELNAME).elf $(MODELNAME).hex 
 	$(AVR_SIZE) $(MODELNAME).hex
 
-$(MODELNAME).elf: $(MODELNAME).o core.a
+$(MODELNAME).elf: foo.o $(MODELNAME).o core.a
 	#	$(AVR_GCC) -Os -Wl,--gc-sections -mmcu=atmega32u4 -o $(MODELNAME).elf $(MODELNAME).o core.a
 	@echo "FIXME: We need to link against the file that has setup() in it, which is foo.o"
 	$(AVR_GCC) -Os -Wl,--gc-sections -mmcu=atmega32u4 -o $(MODELNAME).elf foo.o core.a
+
+foo.o: foo.cpp
+	$(AVR_GPP) -c $(ARDUINO_DEFINES) $(ARDUINO_INCLUDES) -D__int64="long long" $(WARNING_CC_FLAGS) $(CC_FLAGS) $(USER_CC_FLAGS) $(DEBUG) $(PTCGINCLUDES) foo.cpp
 
 foo.cpp: _Blink/_EmbeddedCodeActor/Blink_EmbeddedCodeActor_EmbeddedActor.c
 	echo "FIXME: HACK! HACK! HACK!"
 	echo "The file that has the Arduino code needs to be compiled as a .cpp file"
 	mv _Blink/_EmbeddedCodeActor/Blink_EmbeddedCodeActor_EmbeddedActor.c foo.cpp
 
-core.a: $(AVR_CORES_C_FILES) $(AVR_CORES_CPP_FILES) $(MODELNAME).o foo.cpp
+core.a: $(AVR_CORES_C_FILES) $(AVR_CORES_CPP_FILES) $(MODELNAME).o
 	$(AVR_GPP) -c $(ARDUINO_DEFINES) $(ARDUINO_INCLUDES) -D__int64="long long" $(WARNING_CC_FLAGS) $(CC_FLAGS) $(USER_CC_FLAGS) $(DEBUG) $(PTCGINCLUDES) $(AVR_CORES_CPP_FILES)
 	$(AVR_GCC) -c $(ARDUINO_DEFINES) $(ARDUINO_INCLUDES) -D__int64="long long" $(WARNING_CC_FLAGS) $(CC_FLAGS) $(USER_CC_FLAGS) $(DEBUG) $(PTCGINCLUDES) $(AVR_CORES_C_FILES)
 	$(AVR_GCC) -c $(ARDUINO_DEFINES) $(ARDUINO_INCLUDES) -D__int64="long long" $(WARNING_CC_FLAGS) $(CC_FLAGS) $(USER_CC_FLAGS) $(DEBUG) $(PTCGINCLUDES) $(PTCG_CFILES)
-	$(AVR_GPP) -c $(ARDUINO_DEFINES) $(ARDUINO_INCLUDES) -D__int64="long long" $(WARNING_CC_FLAGS) $(CC_FLAGS) $(USER_CC_FLAGS) $(DEBUG) $(PTCGINCLUDES) foo.cpp
 	$(AVR_AR) rcs core.a *.o
 
 # We need -D__int64="long long" when invoking jni interface under cygwin
@@ -143,7 +145,7 @@ run:
 # Other Targets
 clean:
 	rm -rf $(PTCG_OFILES) @modelName@
-	rm *.eep *.hex *.elf core.a
+	rm -f *.eep *.hex *.elf core.a *.o
 	-@echo ' '
 
 .PHONY: all clean dependents
