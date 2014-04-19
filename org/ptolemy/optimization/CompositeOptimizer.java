@@ -231,12 +231,24 @@ public class CompositeOptimizer extends MirrorComposite {
                     workspace);
             director.setContainer(result);
             director.setName(directorName);
+            
+            String portName = null;
+            Iterator ports = result.attributeList(MirrorPort.class).iterator();
+            while(ports.hasNext()){
+                MirrorPort oldPort = (MirrorPort) ports.next();
+                if(portName == null){
+                    portName = oldPort.getName();
+                }
+                oldPort.setContainer(null);
+                //create new ports in the right workspace
+                new MirrorPort(result,portName);
+            }
         } catch (Throwable throwable) {
             throw new CloneNotSupportedException("Could not clone: "
                     + throwable);
         }
         result._tokenMap = new HashMap<IOPort, Token>(); 
-        result._firstIteration = true;
+        result._firstIteration = true; 
         return result;
     }
 
@@ -693,10 +705,7 @@ public class CompositeOptimizer extends MirrorComposite {
     private final String OPTIMAL_VALUE_PORT_NAME = "optimalValue";
     private final static String INTERMEDIATE_VALUE_PORT_NAME = "f(x)";
     private final static String CONSTRAINTS_PORT_NAME = "g(x)";
-    private final static String OPTIMIZATION_VARIABLE_NAME = "x";
-
-    /** Flag indicating that we are executing _addPort(). */
-    private boolean _inAddPort = false;
+    private final static String OPTIMIZATION_VARIABLE_NAME = "x"; 
 
     /** Hold the last received value at outside port to transfer to the inside composite multiple times */
     private HashMap<IOPort, Token> _tokenMap ;
