@@ -160,21 +160,17 @@ public class ExecuteActor extends RunCompositeActor {
         _stopRequested = false;
         
         Effigy parentEffigy = EventUtils.findToplevelEffigy(this);
-        if (parentEffigy == null) {
-            // Running cd $PTII/ptolemy/actor/lib/js/test; make was failing
-            // because js/test/auto/JavaScript12.xml was throwing a NPE.
-            throw new IllegalActionException(this, "Could not find the "
-                    + "top level effigy of " + getFullName());
-        }
-        try {
-            parentEffigy.workspace().getWriteAccess();
-            _wrapperEffigy = new PtolemyEffigy(parentEffigy,
-                    parentEffigy.uniqueName("_wrapperEffigy"));
-        } catch (NameDuplicationException e) {
-            throw new IllegalActionException(this, e, "Unable to create an "
-                    + "effigy for the model.");
-        } finally {
-            parentEffigy.workspace().doneWriting();
+        if (parentEffigy != null) {
+        	try {
+        		parentEffigy.workspace().getWriteAccess();
+        		_wrapperEffigy = new PtolemyEffigy(parentEffigy,
+        				parentEffigy.uniqueName("_wrapperEffigy"));
+        	} catch (NameDuplicationException e) {
+        		throw new IllegalActionException(this, e, "Unable to create an "
+        				+ "effigy for the model.");
+        	} finally {
+        		parentEffigy.workspace().doneWriting();
+        	}
         }
 
         if (_debugging) {
