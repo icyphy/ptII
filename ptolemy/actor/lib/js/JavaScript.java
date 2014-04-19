@@ -29,6 +29,7 @@ package ptolemy.actor.lib.js;
 
 import java.lang.reflect.Member;
 import java.lang.reflect.Method;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
@@ -36,19 +37,23 @@ import java.util.Set;
 import org.mozilla.javascript.Context;
 import org.mozilla.javascript.FunctionObject;
 import org.mozilla.javascript.ImporterTopLevel;
+import org.mozilla.javascript.NativeArray;
 import org.mozilla.javascript.NativeJavaObject;
+import org.mozilla.javascript.NativeObject;
 import org.mozilla.javascript.Script;
 import org.mozilla.javascript.Scriptable;
 import org.mozilla.javascript.ScriptableObject;
-import org.mozilla.javascript.WrapFactory;
 import org.mozilla.javascript.WrappedException;
 
 import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.data.ActorToken;
+import ptolemy.data.ArrayToken;
+import ptolemy.data.BooleanToken;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.IntToken;
 import ptolemy.data.ObjectToken;
+import ptolemy.data.RecordToken;
 import ptolemy.data.StringToken;
 import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
@@ -71,20 +76,14 @@ import ptolemy.util.MessageHandler;
  perform calculations, and write outputs. The script is executed each
  time this actor is fired.
  <p>
- To use this actor, add input and output ports, parameters, and specify
- a script to execute. The script can reference the inputs and
- parameters by name. That is, the name of an input port or parameter is
- a JavaScript variable whose value is the current value of the input
- or parameter. To produce outputs, use the built-in JavaScript function
- send(port, value), providing a reference to an output port in the
- first argument and a value in the second.
+ To use this actor, add input and output ports and parameters, and specify
+ a script to execute.
  <p>
- Usually, you will need to explicitly specify the types of the output
- ports. By default, they will be greater than or equal to the inferred
- types of all input ports, but often this will not be the right type.
- Note that in JavaScript, all numbers are represented internally
- using type double, but if your script always happens to produce
- integer results, then the output data type can be int.
+ Usually, you will need to explicitly specify the types
+ of the output ports. By default, the type of an output
+ port will be greater than or equal to the  inferred  types of
+ all input ports, but often this will not be the type your
+ script produces.
  <p>
  A script may be specified as a parameter or as an input.
  If it is an input, then it can be different on each firing.
@@ -97,6 +96,7 @@ import ptolemy.util.MessageHandler;
  <li> alert(string): pop up a dialog with the specified message.
  <li> error(string): throw an IllegalActionException with the specified message.
  <li> get(port, n): get an input from a port on channel n (return null if there is no input).
+ <li> print(string): print the specified string to the console (standard out).
  <li> send(value, port, n): send a value to an output port on channel n
  <li> valueOf(parameter): retrieve the value of a parameter.
  </ul>
@@ -127,6 +127,31 @@ if (value < 0) {
  </pre>
  will return the name of the top-level composite actor containing
  this actor.
+ <p>
+ Not all Ptolemy II data types translate naturally to
+ JavaScript types. This actor converts Ptolemy types int,
+ double, string, and boolean to and from equivalent JavaScript
+ types. In addition, arrays are converted to native
+ JavaScript arrays. Ptolemy II records are converted into
+ JavaScript objects, and JavaScript objects with enumerable
+ properties into records.
+ <p>
+ For other Ptolemy II types, the script will see the
+ corresponding Token object.  For example, if you send
+ a number of type long to an input of a JavaScript actor,
+ the script
+ <pre>
+    var value = get(input);
+    print(value.getClass().toString());
+ </pre>
+ will print on standard out the string
+ <pre>
+    "class ptolemy.data.LongToken"
+ </pre>
+ JavaScript does not have a long data type, so instead the
+ get() call returns a JavaScript Object wrapping the Ptolemy II
+ LongToken object. You can then invoke methods on that token,
+ such as getClass(), as done above.
  <p>
  Scripts can instantiate Java classes and invoke methods on them.
  For example, the following script will build a simple Ptolemy II model:
@@ -332,6 +357,13 @@ public class JavaScript extends TypedAtomicActor {
 	        // Make it accessible within the scriptExecutionScope.
 	        _scope.put(methodName, _scope, scriptableFunction);
 
+			// Create the print() method.
+	        methodName = "print";
+			scriptableInstanceMethod = PtolemyJavaScript.class.getMethod(methodName, new Class[]{String.class});
+	        scriptableFunction = new PtolemyFunctionObject(methodName, scriptableInstanceMethod, scriptable);
+	        // Make it accessible within the scriptExecutionScope.
+	        _scope.put(methodName, _scope, scriptableFunction);
+
 	        // Create the send() method.
 	        methodName = "send";
 			scriptableInstanceMethod = PtolemyJavaScript.class.getMethod(methodName,
@@ -354,9 +386,6 @@ public class JavaScript extends TypedAtomicActor {
 		} catch (Exception e) {
 			throw new IllegalActionException(this, e, "Failed to create built-in JavaScript methods.");
 		}
-        
-        // Wrap key Ptolemy classes to allow for more natural access in JavaScript.
-        _context.setWrapFactory(new PtolemyWrapFactory());
     }
     
     /** Exit the context.
@@ -472,6 +501,11 @@ public class JavaScript extends TypedAtomicActor {
 			return getClass().getName();
 		}
 
+    	/** Print a message to standard out. */
+    	public void print(String message) {
+    		System.out.println(message);
+    	}
+
     	/** Send outputs via an output port.
     	 *  @param data The data to send via the port.
     	 *  @param portWrapper A JavaScript wrapper for a Port.
@@ -548,6 +582,8 @@ public class JavaScript extends TypedAtomicActor {
 			// This the key place to support additional output data types.
 			if (data instanceof Integer) {
 				return new IntToken(((Integer)data).intValue());
+			} else if (data instanceof Boolean) {
+				return new BooleanToken(((Boolean) data).booleanValue());
 			} else if (data instanceof Double) {
 				// Since JavaScript represents all numbers as double, we first
 				// check to see whether this is actually an integer.
@@ -558,10 +594,44 @@ public class JavaScript extends TypedAtomicActor {
 				return new DoubleToken(((Double)data).doubleValue());
 			} else if (data instanceof String) {
 				return new StringToken(data.toString());
+			} else if (data instanceof NativeArray) {
+				NativeArray array = (NativeArray)data;
+				int length = array.size();
+				Token[] result = new Token[length];
+				for (int i = 0; i < length; i++) {
+					result[i] = _createToken(array.get(i));
+				}
+				return new ArrayToken(result);
+			} else if (data instanceof NativeObject) {
+				// If the object has a non-empty key set, then construct
+				// a record. Otherwise, just return an ObjectToken.
+				NativeObject object = (NativeObject)data;
+				Set<Object> properties = object.keySet();
+				if (properties == null || properties.isEmpty()) {
+					return new ObjectToken(data);
+				}
+				boolean foundOne = false;
+				ArrayList<String> keys = new ArrayList<String>();
+				ArrayList<Token> values = new ArrayList<Token>();
+				for (Object key : properties) {
+					if (key instanceof String) {
+						Object value = object.get(key);
+						if (value != null) {
+							foundOne = true;
+							keys.add((String)key);
+							values.add(_createToken(value));
+						}
+					}
+				}
+				if (foundOne) {
+					return new RecordToken(
+							keys.toArray(new String[keys.size()]),
+							values.toArray(new Token[values.size()]));
+				}
+				return new ObjectToken(data);
 			} else if (data instanceof Entity) {
 				return new ActorToken((Entity)data);
 			} else {
-				// FIXME: What else might be here?
 				return new ObjectToken(data);
 			}
 		}
@@ -572,10 +642,12 @@ public class JavaScript extends TypedAtomicActor {
     	// JavaScript type, then return something that will naturally be
     	// converted to that type.
     	private Object _wrapToken(Token token) {
-    		if (token instanceof IntToken) {
-    			return new Integer(((IntToken)token).intValue());
+    		if (token instanceof BooleanToken) {
+    			return new Boolean(((BooleanToken)token).booleanValue());
     		} else if (token instanceof DoubleToken) {
     			return new Double(((DoubleToken)token).doubleValue());
+    		} else if (token instanceof IntToken) {
+    			return new Integer(((IntToken)token).intValue());
     		} else if (token instanceof StringToken) {
     			return ((StringToken)token).stringValue();
     		} else if (token instanceof ActorToken) {
@@ -583,10 +655,28 @@ public class JavaScript extends TypedAtomicActor {
     			return new NativeJavaObject(_scope, entity, entity.getClass());
     		} else if (token == null) {
     			return null;
+    		} else if (token instanceof ArrayToken) {
+    			int length = ((ArrayToken)token).length();
+    			Object[] result = new Object[length];
+    			for (int i = 0; i < length; i++) {
+    				Token element = ((ArrayToken)token).getElement(i);
+    				result[i] = _wrapToken(element);
+    			}
+    			// Don't directly construct a NativeArray because
+    			// that creates an array with no context or scope.
+    			return _context.newArray(_scope, result);
+    		} else if (token instanceof RecordToken) {
+    			RecordToken record = (RecordToken)token;
+    			Scriptable result = _context.newObject(_scope);
+    			for (String name : record.labelSet()) {
+    				Token element = record.get(name);
+    				result.put(name, result, _wrapToken(element));
+    			}
+    			// Don't directly construct a NativeArray because
+    			// that creates an array with no context or scope.
+    			return result;
     		}
-    		// FIXME: wrap all the data types.
-    		// FIXME:  Just return the token!!!  Try ActorToken
-    		return token.toString();
+    		return Context.toObject(token, _scope);
     	}
     }
     
@@ -603,38 +693,5 @@ public class JavaScript extends TypedAtomicActor {
         public Object call(Context context, Scriptable scope, Scriptable thisObj, Object[] args) {
           return super.call(context, scope, getParentScope(), args);
         }
-    }
-    
-    /** Wrap factory for Ptolemy objects that returns their value rather than a wrapped Java object.
-     *  One very odd thing about this is that instances of Variable and input TypedIOPort cannot
-     *  be accessed as objects within JavaScript.
-     */
-    public class PtolemyWrapFactory extends WrapFactory {
-    	@Override
-    	public Object wrap(Context context, Scriptable scope, Object object, Class staticType) {
-    		return super.wrap(context, scope, object, staticType);
-    	}
-    	//**********************************************************************
-		// This the key place to support additional input and parameter data types.
-    	// Given a Ptolemy II token, if there is a corresponding native
-    	// JavaScript type, then return something that will naturally be
-    	// converted to that type.
-    	private Object _wrapToken(Token token) {
-    		if (token instanceof IntToken) {
-    			return new Integer(((IntToken)token).intValue());
-    		} else if (token instanceof DoubleToken) {
-    			return new Double(((DoubleToken)token).doubleValue());
-    		} else if (token instanceof StringToken) {
-    			return ((StringToken)token).stringValue();
-    		} else if (token instanceof ActorToken) {
-    			Entity entity =  ((ActorToken)token).getEntity();
-    			return new NativeJavaObject(_scope, entity, entity.getClass());
-    		} else if (token == null) {
-    			return null;
-    		}
-    		// FIXME: wrap all the data types.
-    		// FIXME:  Just return the token!!!  Try ActorToken
-    		return token.toString();
-    	}
     }
 }
