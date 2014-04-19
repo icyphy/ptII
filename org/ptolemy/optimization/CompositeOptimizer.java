@@ -232,17 +232,6 @@ public class CompositeOptimizer extends MirrorComposite {
             director.setContainer(result);
             director.setName(directorName);
             
-            String portName = null;
-            Iterator ports = result.attributeList(MirrorPort.class).iterator();
-            while(ports.hasNext()){
-                MirrorPort oldPort = (MirrorPort) ports.next();
-                if(portName == null){
-                    portName = oldPort.getName();
-                }
-                oldPort.setContainer(null);
-                //create new ports in the right workspace
-                new MirrorPort(result,portName);
-            }
         } catch (Throwable throwable) {
             throw new CloneNotSupportedException("Could not clone: "
                     + throwable);
