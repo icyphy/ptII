@@ -1,7 +1,8 @@
-# Makefile for Machine Learning Hidden Markov Model Demos.
+# Makefile for Ptolemy II aspect oriented CanBus demo
 #
-# @Version: $Id: makefile 67777 2013-10-26 01:51:06Z cxh $
-# @Author: Christopher Brooks
+# @Authors: Christopher Hylands, based on a file by Thomas M. Parks
+#
+# @Version: $Id: makefile 67615 2013-10-02 15:18:00Z hudson@moog.eecs.berkeley.edu $
 #
 # @Copyright (c) 2013 The Regents of the University of California.
 # All rights reserved.
@@ -27,55 +28,53 @@
 #
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
-##########################################################################
 
-DIRS = BlackBoxOptimization MultiRobotIntruderTracking	\
-	OpenLoopSingleRobotTargetLocalization			\
-	OpenLoopTwoRobotTargetLocalization ParticleFilterRange
+ME =		org/ptolemy/machineLearning/particleFilter/demo/OnlineTrajectoryOptimizaton
 
-# Root of Ptolemy II directory
-ROOT =		../../../../..
+DIRS =
 
-# $(ME) is used in ptdir.mk
-ME =		org/ptolemy/machineLearning/particleFilter/demo
+# Root of the Ptolemy II directory
+ROOT =		../../../../../..
+
+CLASSPATH =	$(ROOT)
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
-# Variables and rules used to create source file distributions
-PTPACKAGE = 	demo
-#PTCLASSJAR =	$(PTPACKAGE).jar
+# Used to build jar files
+PTPACKAGE =	OnlineTrajectoryOptimizaton
+PTCLASSJAR = 	$(PTPACKAGE).jar
 
-# Include these jars in PTAUXALLJAR
-PTAUXALLJARS = \
-	BlackBoxOptimization/BlackBoxOptimization.jar \
-	MultiRobotIntruderTracking/MultiRobotIntruderTracking.jar \
-	OnlineTrajectoryOptimization/OnlineTrajectoryOptimization.jar \
-	OpenLoopSingleRobotTargetLocalization/OpenLoopSingleRobotTargetLocalization.jar \
-	OpenLoopTwoRobotTargetLocalization/OpenLoopTwoRobotTargetLocalization.jar \
-	ParticleFilterRange/ParticleFilterRange.jar
-	
+# Keep this list alphabetized.
+JSRCS = 
 
-PTAUXALLJAR = $(PTPACKAGE).jar
-
-OTHER_FILES_TO_BE_JARED =
+OTHER_FILES_TO_BE_JARED = \
+	$(JSRCS) \
+	CentralizedOnlineTrajectoryOptimizaton.xml\
+	DistributedOnlineTrajectoryOptimizaton.xml
 
 EXTRA_SRCS = \
-	$(OTHER_FILES_TO_BE_JARED)
+	$(OTHER_FILES_TO_BE_JARED) \
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
-MISC_FILES = $(DIRS)
+MISC_FILES =	$(DIRS)
 
+# make checkjunk will not report OPTIONAL_FILES as trash
+# make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
+	doc
 
-# Files to remove with 'make clean'
-KRUFT = \
-	*.jar
+JCLASS = $(JSRCS:%.java=%.class)
 
-all: suball $(EXTRA_SRCS)
-install: subinstall jars
+all: jclass
+	@echo "To run the demos, run 'make demo'"
 
-# Include rules for directories that contain only subdirectories.
+install: jclass jars
+
+demo:
+	vergil CentralizedOnlineTrajectoryOptimization.xml
+
+# Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk
