@@ -193,7 +193,10 @@ public class ExecuteActor extends RunCompositeActor {
         	}
         	_model = (TypedCompositeActor)entity;
         	
-            _wrapperEffigy.setModel(_model);
+        	// In case we are running headless.
+        	if (_wrapperEffigy != null) {
+        		_wrapperEffigy.setModel(_model);
+        	}
 
             Manager manager = new Manager("_manager");
             _model.setManager(manager);
