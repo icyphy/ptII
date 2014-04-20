@@ -1,7 +1,7 @@
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<entity name="MultiRobotIntruderTrackingCentralizedControl" class="ptolemy.actor.TypedCompositeActor">
+<entity name="CentralizedOnlineTrajectoryOptimization" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="10.0.devel">
     </property>
     <property name="WirelessDirector" class="ptolemy.domains.wireless.kernel.WirelessDirector">
@@ -315,7 +315,7 @@
         </property>
     </entity>
     <entity name="intruder1" class="Intruder">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[72.0038441110664, 45.695039844553]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[14.9113310798236, 1.4095374067224]">
         </property>
         <property name="Y_init" class="ptolemy.data.expr.Parameter" value="0">
         </property>
@@ -340,7 +340,7 @@
             </property>
         </property>
         <entity name="DifferentialSystem" class="ptolemy.domains.continuous.lib.DifferentialSystem">
-            <property name="t" class="ptolemy.data.expr.Parameter" value="1.8">
+            <property name="t" class="ptolemy.data.expr.Parameter" value="0.3">
             </property>
             <relation name="_R" class="ptolemy.actor.TypedIORelation">
                 <property name="width" class="ptolemy.data.expr.Parameter" value="Auto">
@@ -387,7 +387,7 @@
         </property>
         <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.7239436619718322">
         </property>
-        <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{464.8037063953488, 41.46498001453472}">
+        <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{1391.1130087209299, 446.7252997819767}">
         </property>
         <property name="RobotCount" class="ptolemy.data.expr.Parameter" value="RobotCount">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -447,15 +447,9 @@
         </port>
         <port name="controls" class="ptolemy.domains.wireless.kernel.WirelessIOPort">
             <property name="output"/>
-            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
-            </property>
             <property name="outsideChannel" class="ptolemy.data.expr.StringParameter" value="ControlValRelayer">
             </property>
-            <property name="outsideTransmitProperties" class="ptolemy.data.expr.Parameter">
-            </property>
             <property name="insideChannel" class="ptolemy.data.expr.StringParameter" value="">
-            </property>
-            <property name="insideTransmitProperties" class="ptolemy.data.expr.Parameter">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="{2035.0, -90.0}">
             </property>
@@ -475,8 +469,6 @@
             </port>
             <port name="measurement" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
-                <property name="defaultValue" class="ptolemy.data.expr.Parameter">
-                </property>
             </port>
         </entity>
         <entity name="Switch" class="ptolemy.actor.lib.Switch">
@@ -565,32 +557,6 @@
                 <property name="output"/>
             </port>
         </entity>
-        <entity name="XYPlotter" class="ptolemy.actor.lib.gui.XYPlotter">
-            <property name="fillOnWrapup" class="ptolemy.data.expr.Parameter" value="false">
-            </property>
-            <property name="automaticRescale" class="ptolemy.data.expr.Parameter" value="false">
-            </property>
-            <property name="legend" class="ptolemy.kernel.util.StringAttribute" value="intruder, robot1, robot2, robot3, robot4, estimated intruder position">
-            </property>
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={47, 25, 692, 586}, maximized=false}">
-            </property>
-            <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[692, 542]">
-            </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="{1430.0, 500.0}">
-            </property>
-            <configure>
-<?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
-"http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
-<plot>
-<title>Trajectories of Robots, Particle Estimates and the Intruder</title>
-<xLabel>x</xLabel>
-<yLabel>y</yLabel>
-<xRange min="0.0" max="100.5481968473751"/>
-<yRange min="-30.964028823104314" max="34.02612638398663"/>
-<default marks="dots"/>
-</plot>?>
-            </configure>
-        </entity>
         <entity name="TimedPlotter" class="ptolemy.actor.lib.gui.TimedPlotter">
             <property name="fillOnWrapup" class="ptolemy.data.expr.Parameter" value="false">
             </property>
@@ -648,15 +614,15 @@
             </property>
             <property name="prior" class="ptolemy.data.expr.Parameter" value="{random()*200-100,random()*200-100}">
             </property>
-            <property name="t" class="ptolemy.data.expr.Parameter" value="1.8">
+            <property name="t" class="ptolemy.data.expr.Parameter" value="0.3">
             </property>
             <property name="measurementCovariance" class="ptolemy.data.expr.Parameter" value="[5.0]">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="{920.0, -100.0}">
             </property>
-            <property name="x" class="ptolemy.data.expr.Parameter" value="14.345475401348821">
+            <property name="x" class="ptolemy.data.expr.Parameter" value="-3.103850508504711">
             </property>
-            <property name="y" class="ptolemy.data.expr.Parameter" value="0.5080687914937032">
+            <property name="y" class="ptolemy.data.expr.Parameter" value="1.2487431879594955">
             </property>
             <property name="x_update" class="ptolemy.data.expr.Parameter" value="x">
             </property>
@@ -666,25 +632,25 @@
             </property>
             <property name="z2" class="ptolemy.data.expr.Parameter" value="sqrt((r2(0)-x)^2+(r2(1)-y)^2)">
             </property>
-            <property name="r1" class="ptolemy.actor.parameters.PortParameter" value="{86.8324681667927, 37.9092992147206}">
+            <property name="r1" class="ptolemy.actor.parameters.PortParameter" value="{98.5841904690074, 10.7341026568886}">
             </property>
-            <property name="r2" class="ptolemy.actor.parameters.PortParameter" value="{85.3662130966419, 42.1767409654496}">
+            <property name="r2" class="ptolemy.actor.parameters.PortParameter" value="{98.2909663227588, 15.6520470236511}">
             </property>
-            <property name="z1_m" class="ptolemy.data.expr.Parameter" value="77.792241915399">
+            <property name="z1_m" class="ptolemy.data.expr.Parameter" value="96.016987957848">
             </property>
-            <property name="z2_m" class="ptolemy.data.expr.Parameter" value="75.6912494036945">
+            <property name="z2_m" class="ptolemy.data.expr.Parameter" value="94.8282492368988">
             </property>
-            <property name="r3" class="ptolemy.actor.parameters.PortParameter" value="{83.8035557773221, -35.8731154999137}">
+            <property name="r3" class="ptolemy.actor.parameters.PortParameter" value="{97.8626444818334, -10.508391715974}">
             </property>
-            <property name="r4" class="ptolemy.actor.parameters.PortParameter" value="{80.5878227168063, -39.8489446104286}">
+            <property name="r4" class="ptolemy.actor.parameters.PortParameter" value="{97.5837580822733, -15.3859814341829}">
             </property>
             <property name="z3" class="ptolemy.data.expr.Parameter" value="sqrt((r3(0)-x)^2+(r3(1)-y)^2)">
             </property>
             <property name="z4" class="ptolemy.data.expr.Parameter" value="sqrt((r4(0)-x)^2+(r4(1)-y)^2)">
             </property>
-            <property name="z3_m" class="ptolemy.data.expr.Parameter" value="79.1682567365191">
+            <property name="z3_m" class="ptolemy.data.expr.Parameter" value="93.4853137170691">
             </property>
-            <property name="z4_m" class="ptolemy.data.expr.Parameter" value="81.3170058875672">
+            <property name="z4_m" class="ptolemy.data.expr.Parameter" value="95.6069530465981">
             </property>
             <port name="particleOutput" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
@@ -757,7 +723,7 @@
                     <property name="_hide" class="ptolemy.data.expr.Parameter" value="true">
                     </property>
                 </property>
-                <property name="x" class="ptolemy.data.expr.Parameter" value="19.780208603405843">
+                <property name="x" class="ptolemy.data.expr.Parameter" value="3.579697332881776">
                 </property>
                 <port name="output" class="ptolemy.actor.TypedIOPort">
                     <property name="output"/>
@@ -770,7 +736,7 @@
                     <property name="_hide" class="ptolemy.data.expr.Parameter" value="true">
                     </property>
                 </property>
-                <property name="y" class="ptolemy.data.expr.Parameter" value="5.518826834313598">
+                <property name="y" class="ptolemy.data.expr.Parameter" value="2.200933622010592">
                 </property>
                 <port name="output" class="ptolemy.actor.TypedIOPort">
                     <property name="output"/>
@@ -1125,13 +1091,9 @@
             </property>
             <port name="port" class="ptolemy.actor.lib.hoc.IterateOverArray$IteratePort">
                 <property name="input"/>
-                <property name="defaultValue" class="ptolemy.data.expr.Parameter">
-                </property>
             </port>
             <port name="port2" class="ptolemy.actor.lib.hoc.IterateOverArray$IteratePort">
                 <property name="output"/>
-                <property name="defaultValue" class="ptolemy.data.expr.Parameter">
-                </property>
             </port>
             <entity name="IterateComposite" class="ptolemy.actor.lib.hoc.IterateOverArray$IterateComposite">
                 <property name="annotation" class="ptolemy.kernel.util.Attribute">
@@ -1162,15 +1124,11 @@
                 </property>
                 <port name="port" class="ptolemy.actor.lib.hoc.IterateOverArray$IteratePort">
                     <property name="input"/>
-                    <property name="defaultValue" class="ptolemy.data.expr.Parameter">
-                    </property>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="{25.0, 155.0}">
                     </property>
                 </port>
                 <port name="port2" class="ptolemy.actor.lib.hoc.IterateOverArray$IteratePort">
                     <property name="output"/>
-                    <property name="defaultValue" class="ptolemy.data.expr.Parameter">
-                    </property>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="{315.0, 145.0}">
                     </property>
                 </port>
@@ -1179,13 +1137,9 @@
                     </property>
                     <port name="y" class="ptolemy.actor.TypedIOPort">
                         <property name="input"/>
-                        <property name="defaultValue" class="ptolemy.data.expr.Parameter">
-                        </property>
                     </port>
                     <port name="x" class="ptolemy.actor.TypedIOPort">
                         <property name="input"/>
-                        <property name="defaultValue" class="ptolemy.data.expr.Parameter">
-                        </property>
                     </port>
                 </entity>
                 <entity name="ArrayToElements" class="ptolemy.actor.lib.ArrayToElements">
@@ -1249,9 +1203,9 @@
             </property>
             <property name="legend" class="ptolemy.kernel.util.StringAttribute" value="intruder, particles, robot1, robot2, robot3, robot4">
             </property>
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={433, 22, 988, 752}, maximized=false}">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={751, 22, 670, 561}, maximized=false}">
             </property>
-            <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[988, 708]">
+            <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[670, 517]">
             </property>
             <property name="persistence" class="ptolemy.data.expr.Parameter" value="Nparticles">
             </property>
@@ -1546,12 +1500,6 @@
         <link port="StateEstimate.input" relation="relation"/>
         <link port="StateEstimate.x" relation="relation19"/>
         <link port="StateEstimate.y" relation="relation15"/>
-        <link port="XYPlotter.inputX" relation="relation7"/>
-        <link port="XYPlotter.inputX" relation="relation18"/>
-        <link port="XYPlotter.inputX" relation="relation19"/>
-        <link port="XYPlotter.inputY" relation="relation20"/>
-        <link port="XYPlotter.inputY" relation="relation14"/>
-        <link port="XYPlotter.inputY" relation="relation15"/>
         <link port="TimedPlotter.input" relation="relation17"/>
         <link port="Expression7.output" relation="relation17"/>
         <link port="Expression7.Real" relation="relation12"/>
@@ -1643,7 +1591,7 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="{-475.0, -135.0}">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[434.1623408339635, 189.546496073603]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[492.9209523450369, 53.6705132844429]">
         </property>
         <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={44, 22, 1396, 878}, maximized=false}">
         </property>
@@ -1788,7 +1736,7 @@
         <entity name="RobotDynamics" class="ptolemy.actor.TypedCompositeActor">
             <property name="_location" class="ptolemy.kernel.util.Location" value="{-130.0, 120.0}">
             </property>
-            <property name="u_v" class="ptolemy.data.expr.Parameter" value="-11.2974592406775">
+            <property name="u_v" class="ptolemy.data.expr.Parameter" value="-6.2171458721353">
                 <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
                 </property>
                 <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -1834,7 +1782,7 @@
             </property>
             <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{188.55559045226136, 222.80276381909556}">
             </property>
-            <property name="u_v2" class="ptolemy.data.expr.Parameter" value="16.5035576378316">
+            <property name="u_v2" class="ptolemy.data.expr.Parameter" value="19.0091319424269">
                 <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
                 </property>
                 <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -2475,7 +2423,7 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="{-475.0, -135.0}">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[426.8310654832095, 210.8837048272482]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[491.4548316137942, 78.2602351182556]">
         </property>
         <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={44, 22, 1396, 878}, maximized=false}">
         </property>
@@ -2620,7 +2568,7 @@
         <entity name="RobotDynamics" class="ptolemy.actor.TypedCompositeActor">
             <property name="_location" class="ptolemy.kernel.util.Location" value="{-130.0, 120.0}">
             </property>
-            <property name="u_v" class="ptolemy.data.expr.Parameter" value="-12.2023349811412">
+            <property name="u_v" class="ptolemy.data.expr.Parameter" value="-7.1509744275682">
                 <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
                 </property>
                 <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -2666,7 +2614,7 @@
             </property>
             <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{188.55559045226136, 222.80276381909556}">
             </property>
-            <property name="u_v2" class="ptolemy.data.expr.Parameter" value="15.8462304983872">
+            <property name="u_v2" class="ptolemy.data.expr.Parameter" value="18.677889729203">
                 <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
                 </property>
                 <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -3307,7 +3255,7 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="{-475.0, -135.0}">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[419.0177788866105, -179.3655774995684]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[489.313222409167, -52.5419585798701]">
         </property>
         <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={44, 22, 1396, 878}, maximized=false}">
         </property>
@@ -3452,7 +3400,7 @@
         <entity name="RobotDynamics" class="ptolemy.actor.TypedCompositeActor">
             <property name="_location" class="ptolemy.kernel.util.Location" value="{-130.0, 120.0}">
             </property>
-            <property name="u_v" class="ptolemy.data.expr.Parameter" value="-13.7892642344173">
+            <property name="u_v" class="ptolemy.data.expr.Parameter" value="-5.5876362616405">
                 <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
                 </property>
                 <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -3498,7 +3446,7 @@
             </property>
             <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{188.55559045226136, 222.80276381909556}">
             </property>
-            <property name="u_v2" class="ptolemy.data.expr.Parameter" value="-14.4864140446634">
+            <property name="u_v2" class="ptolemy.data.expr.Parameter" value="-19.2036017717407">
                 <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
                 </property>
                 <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -4139,7 +4087,7 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="{-475.0, -135.0}">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[402.9391135840315, -199.2447230521433]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[487.9187904113664, -76.9299071709143]">
         </property>
         <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={44, 22, 1396, 878}, maximized=false}">
         </property>
@@ -4284,7 +4232,7 @@
         <entity name="RobotDynamics" class="ptolemy.actor.TypedCompositeActor">
             <property name="_location" class="ptolemy.kernel.util.Location" value="{-130.0, 120.0}">
             </property>
-            <property name="u_v" class="ptolemy.data.expr.Parameter" value="-14.6765356337537">
+            <property name="u_v" class="ptolemy.data.expr.Parameter" value="-6.5431824157906">
                 <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
                 </property>
                 <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -4330,7 +4278,7 @@
             </property>
             <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{188.55559045226136, 222.80276381909556}">
             </property>
-            <property name="u_v2" class="ptolemy.data.expr.Parameter" value="-13.5867325649385">
+            <property name="u_v2" class="ptolemy.data.expr.Parameter" value="-18.8993852776669">
                 <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
                 </property>
                 <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
