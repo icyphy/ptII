@@ -30,6 +30,7 @@
 ##########################################################################
 
 DIRS = BlackBoxOptimization MultiRobotIntruderTracking	\
+	OnlineTrajectoryOptimization \
 	OpenLoopSingleRobotTargetLocalization			\
 	OpenLoopTwoRobotTargetLocalization ParticleFilterRange
 
@@ -55,7 +56,6 @@ PTAUXALLJARS = \
 	OpenLoopSingleRobotTargetLocalization/OpenLoopSingleRobotTargetLocalization.jar \
 	OpenLoopTwoRobotTargetLocalization/OpenLoopTwoRobotTargetLocalization.jar \
 	ParticleFilterRange/ParticleFilterRange.jar
-	
 
 PTAUXALLJAR = $(PTPACKAGE).jar
 

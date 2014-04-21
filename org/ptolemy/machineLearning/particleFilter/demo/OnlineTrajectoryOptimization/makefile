@@ -43,7 +43,7 @@ CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE =	OnlineTrajectoryOptimizaton
+PTPACKAGE =	OnlineTrajectoryOptimization
 PTCLASSJAR = 	$(PTPACKAGE).jar
 
 # Keep this list alphabetized.
@@ -51,8 +51,8 @@ JSRCS =
 
 OTHER_FILES_TO_BE_JARED = \
 	$(JSRCS) \
-	CentralizedOnlineTrajectoryOptimizaton.xml\
-	DistributedOnlineTrajectoryOptimizaton.xml
+	CentralizedOnlineTrajectoryOptimization.xml \
+	DistributedOnlineTrajectoryOptimization.xml
 
 EXTRA_SRCS = \
 	$(OTHER_FILES_TO_BE_JARED) \
