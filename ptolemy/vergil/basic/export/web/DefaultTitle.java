@@ -159,10 +159,12 @@ public class DefaultTitle extends WebContent implements WebExportable {
 
         // Create a WebAttribute for title and add to exporter.
         // Content should only be added once (onceOnly -> true).
+        /* title attribute is now used for displaying parameter table.
         webAttribute = WebAttribute.createWebAttribute(getContainer(),
                 "titleWebAttribute", "title");
         webAttribute.setExpression(titleValue);
         exporter.defineAttribute(webAttribute, true);
+        */
 
         boolean entities = false, attributes = false;
         String includeValue = include.stringValue().toLowerCase(
@@ -191,6 +193,7 @@ public class DefaultTitle extends WebContent implements WebExportable {
                             + instances);
                 }
             }
+            /* title attribute is now used for displaying parameter table.
             for (NamedObj object : objects) {
                 // Create a WebAttribute for each object's title and add to
                 // exporter.   Content should only be added once
@@ -200,6 +203,7 @@ public class DefaultTitle extends WebContent implements WebExportable {
                 webAttribute.setExpression(object.getDisplayName());
                 exporter.defineAttribute(webAttribute, true);
             }
+            */
         }
         if (attributes) {
             if (instances.trim().equals("")) {

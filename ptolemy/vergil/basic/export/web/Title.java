@@ -374,10 +374,12 @@ public class Title extends StringParameter implements WebExportable {
 
         // Create a WebAttribute for title and add to exporter.
         // Content should only be added once (onceOnly -> true).
+        /* title attribute is now used for displaying parameter table.
         WebAttribute webAttribute = WebAttribute.createWebAttribute(
                 getContainer(), "titleWebAttribute", "title");
         webAttribute.setExpression(stringValue());
         exporter.defineAttribute(webAttribute, true);
+        */
     }
 
     /** Provide the <title> </title> element to the specified web exporter.
