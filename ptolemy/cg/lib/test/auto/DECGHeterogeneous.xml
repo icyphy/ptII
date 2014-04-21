@@ -28,7 +28,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[230.0, 40.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={102, 122, 1106, 634}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={107, 35, 1092, 631}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[872, 524]">
     </property>
@@ -122,7 +122,7 @@
     <entity name="Test" class="ptolemy.actor.lib.Test">
         <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0.0, 0.1564344650402, 0.3090169943749, 0.4539904997395, 0.5877852522925, 0.7071067811865, 0.8090169943749, 0.8910065241884, 0.9510565162952, 0.9876883405951, 1.0, 0.9876883405951, 0.9510565162952, 0.8910065241884, 0.8090169943749, 0.7071067811865, 0.5877852522925, 0.4539904997395, 0.3090169943749, 0.1564344650402, 1.224646799147353E-16}">
         </property>
-        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="true">
+        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[570.0, 180.0]">
         </property>
