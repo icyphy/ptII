@@ -160,9 +160,8 @@ public class IconLink extends WebContent implements WebExportable {
 
                     // Create class attribute and add to exporter.
                     // Content should only be added once (onceOnly -> true).
-                    webAttribute = WebAttribute.createWebAttribute(
-                            getContainer(), "classWebAttribute", "class");
-                    webAttribute.setExpression("iframe");
+                    webAttribute = WebAttribute.appendToWebAttribute(
+                            getContainer(), "classWebAttribute", "class", "iframe");
                     exporter.defineAttribute(webAttribute, true);
                 } else {
 

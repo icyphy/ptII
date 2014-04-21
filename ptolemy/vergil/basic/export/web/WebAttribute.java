@@ -74,6 +74,47 @@ public class WebAttribute extends StringAttribute {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
+    /** Factory method for creating WebAttributes that appends to the
+     *  attribute if it already exists and does not have the specified
+     *  content.  Return the modified or new WebAttribute.
+     *  Set persistent to false.  This is static so that any
+     *  WebExportable may call it.
+     *
+     * @param container  The container object for the WebAttribute
+     * @param id The Ptolemy name for the WebAttribute (needed to ensure a
+     * unique Ptolemy name)
+     * @param webName The web name of this WebAttribute.
+     * @param content The value of this WebAttribute.
+     * @return The WebAttribute that was created (or that previously existed)
+     * with persistent set to false
+     * @exception IllegalActionException if the WebAttribute cannot be created
+     * (perhaps another Attribute exists with the requested name)
+     */
+    public static WebAttribute appendToWebAttribute(NamedObj container,
+            String id, String webName, String content) throws IllegalActionException {
+        WebAttribute webAttribute = createWebAttribute(container, id, webName);
+        
+        String previousValue = webAttribute.getExpression();
+        if (previousValue == null || previousValue.trim().length() == 0) {
+        	// No previous value.
+        	webAttribute.setExpression(content);
+        	return webAttribute;
+        }
+        
+        // Assume values are space-separated, as they are with the class attribute.
+        String[] previousValues = previousValue.split(" ");
+        for (String value : previousValues) {
+        	if (value.equals(content)) {
+        		// Already present.
+        		return webAttribute;
+        	}
+        }
+        // Append to the previous value.
+        webAttribute.setExpression(previousValue + " " + content);
+
+        return webAttribute;
+    }
+
     /** Return the web name of this element; for example, "myElement" in
      * <div name="myElement"> </div> in HTML.
      *

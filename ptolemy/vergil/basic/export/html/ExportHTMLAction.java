@@ -787,6 +787,8 @@ public class ExportHTMLAction extends AbstractAction implements HTMLExportable,
             // In HTML5, can omit "type" attributes for scripts and stylesheets
             printWriter.println("<link rel=\"stylesheet\"  href=\"" + jsLibrary
                     + "javascript/" + FILENAMES[2] + "\" media=\"screen\"/>");
+            printWriter.println("<link rel=\"stylesheet\"  href=\"" + jsLibrary
+                    + "javascript/" + FILENAMES[4] + "\" media=\"screen\"/>");
             if (usePtWebsite) {
                 // FIXME: this absolute path is not very safe.  The
                 // problem is that we don't know where $PTII is located on
@@ -811,6 +813,8 @@ public class ExportHTMLAction extends AbstractAction implements HTMLExportable,
 
             printWriter.println("<script src=\"" + jsLibrary + "javascript/"
                     + FILENAMES[3] + "\"></script>");
+            printWriter.println("<script src=\"" + jsLibrary + "javascript/"
+                    + FILENAMES[5] + "\"></script>");
             // Could alternatively use a CDS (Content Delivery Service) for the JavaScript library for jquery.
             // index.println("<script type=\"text/javascript\" src=\"http://ajax.googleapis.com/ajax/libs/jquery/1.4/jquery.min.js\"></script>");
 
@@ -1022,9 +1026,12 @@ public class ExportHTMLAction extends AbstractAction implements HTMLExportable,
      */
     // FIXME: I don't like the hardwired version numbers here.
     // Findbugs wants this package protected and final.
-    final static String[] FILENAMES = { "jquery-1.4.3.min.js",
+    final static String[] FILENAMES = { "jquery-1.7.2.min.js",
             "jquery.fancybox-1.3.4.pack.js", "jquery.fancybox-1.3.4.css",
-            "pt-1.0.0.js", "blank.gif", "fancybox.png", "fancybox-y.png",
+            "pt-1.0.0.js", "tooltipster.css", "jquery.tooltipster.min.js",
+            // The ones above this line must be in exactly the order given
+            // They are referenced below by index.
+            "blank.gif", "fancybox.png", "fancybox-y.png",
             "fancybox-x.png", "fancy_title_right.png", "fancy_title_over.png",
             "fancy_title_main.png", "fancy_title_left.png",
             "fancy_shadow_w.png", "fancy_shadow_sw.png", "fancy_shadow_se.png",

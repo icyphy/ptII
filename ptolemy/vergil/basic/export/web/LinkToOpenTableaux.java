@@ -399,9 +399,9 @@ public class LinkToOpenTableaux extends DefaultIconLink {
                 webAttribute.setExpression(name + ".gif");
                 exporter.defineAttribute(webAttribute, true);
 
-                webAttribute = WebAttribute.createWebAttribute(sourceObject,
-                        "classWebAttribute", "class");
-                webAttribute.setExpression("iframe");
+                webAttribute = WebAttribute.appendToWebAttribute(
+                        sourceObject, "classWebAttribute", "class", "iframe");
+
                 exporter.defineAttribute(webAttribute, true);
             }
         }

@@ -44,8 +44,7 @@ import ptolemy.util.StringUtilities;
  * to be associated with each icon (as specified by the <i>include</i>
  * and <i>instancesOf</i> parameters) that, on moving the mouse over
  * the icon, displays in a table the parameters of the corresponding
- * Ptolemy II object. The table is displayed after the image of the
- * model.
+ * Ptolemy II object. The table is displayed in a tooltip.
  * <p>
  * This parameter is designed to be included in a Configuration file
  * to specify global default behavior for export to Web. Just put
@@ -163,25 +162,18 @@ public class ParameterDisplayIconScript extends DefaultIconScript {
 
         WebAttribute webAttribute;
 
-        String command = "writeText('<h2>" + object.getName() + "</h2>"
-                + getParameterTable(object) + "')";
+        String command = "<h2>" + object.getName() + "</h2>"
+                + getParameterTable(object);
 
-        String clear = "writeText('Mouse over the icons to see their "
-                + "parameters.  Click on composites and plotters to "
-                + "reveal their contents (if provided).')";
-
-        // Create WebAttribute for onmouseover event and add to exporter.
-        // Content should only be added once (onceOnly -> true).
-        webAttribute = WebAttribute.createWebAttribute(object,
-                "onmouseoverWebAttribute", "onmouseover");
-        webAttribute.setExpression(command);
+        // Create WebAttribute for the class "tooltip".
+        webAttribute = WebAttribute.appendToWebAttribute(
+                object, "classWebAttribute", "class", "tooltip");
         exporter.defineAttribute(webAttribute, true);
 
-        // Create WebAttribute for onmouseout event and add to exporter.
-        // Content should only be added once (onceOnly -> true).
+        // Content of the tooltip.
         webAttribute = WebAttribute.createWebAttribute(object,
-                "onmouseoutWebAttribute", "onmouseout");
-        webAttribute.setExpression(clear);
+                "titleWebAttribute", "title");
+        webAttribute.setExpression(command);
         exporter.defineAttribute(webAttribute, true);
     }
 
@@ -211,6 +203,7 @@ public class ParameterDisplayIconScript extends DefaultIconScript {
 
         // Define the JavaScript command writeText.  Script with this name
         // should only be included once (onceOnly -> true)
+        /* Replaced by tooltipster
         webElement = WebElement.createWebElement(getContainer(),
                 "writeTextScriptWebElement", "writeTextScript");
         webElement.setParent(WebElement.HEAD);
@@ -220,6 +213,23 @@ public class ParameterDisplayIconScript extends DefaultIconScript {
                         + "   document.getElementById(\"afterImage\").innerHTML = text;\n"
                         + "};\n" + "</script>");
         exporter.defineElement(webElement, true);
+        */
+        
+        // Define the JavaScript command to initialize tooltipster,
+        // the JQuery library being used to display parameters.  Script with this name
+        // should only be included once (onceOnly -> true)
+        webElement = WebElement.createWebElement(getContainer(),
+                "tooltipsterScriptWebElement", "tooltipster");
+        webElement.setParent(WebElement.HEAD);
+        webElement.setExpression("<script type=\"text/javascript\">\n"
+        	+ "$(document).ready(function() {\n"
+            + "  $('.tooltip').tooltipster({\n"
+            + "    contentAsHTML: true\n"
+            + "  });\n"
+        	+ "});\n"
+            + "</script>");
+        exporter.defineElement(webElement, true);
+
 
         // Put a destination paragraph in the end section of the HTML.
         webElement = WebElement.createWebElement(getContainer(),

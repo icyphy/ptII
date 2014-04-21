@@ -505,9 +505,8 @@ public abstract class JSPlotterAttribute extends WebContent implements
 
                     // Create class attribute and add to exporter.
                     // Content should only be added once (onceOnly -> true).
-                    webAttribute = WebAttribute.createWebAttribute(container,
-                            "classWebAttribute", "class");
-                    webAttribute.setExpression("iframe");
+                    webAttribute = WebAttribute.appendToWebAttribute(
+                            container, "classWebAttribute", "class", "iframe");
                     exporter.defineAttribute(webAttribute, true);
                 } else {
 
