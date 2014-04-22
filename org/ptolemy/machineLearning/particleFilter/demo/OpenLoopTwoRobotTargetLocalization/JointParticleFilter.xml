@@ -1,7 +1,7 @@
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<entity name="OpenLoopTwoRobotTargetLocalizationExp2" class="ptolemy.actor.TypedCompositeActor">
+<entity name="JointParticleFilter" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="10.0.devel">
     </property>
     <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
@@ -16,13 +16,13 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="{-315.0, -445.0}">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={40, 22, 1400, 878}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={44, 22, 1396, 878}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1166, 768]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1162, 768]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.8414971802720944">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{-14.984811046511822, -162.2957394622092}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{-17.361527269557655, -162.2957394622092}">
     </property>
     <property name="target_pos" class="ptolemy.data.expr.Parameter" value="{x = 0.0, y = 5.0}">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -103,7 +103,7 @@
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model demonstrates the difference between multi-observer particle filtering and individual &#10;outputs of local particle filters.&#10;&#10;The controllers keep robots 1 and 2 stationary, at [10,0] and [-10,0], respectively. The target is&#10;stationary at [0,5]. &#10;&#10;In the case of individual particle filtering, where each particle filter uses a measurement from a&#10;single robot, a particle set, corresponding to annulus around the robot, whose mean radius is&#10;equal to the instantaneous measurement made by the robot, is produced.&#10;&#10;In the case of joint particle filtering, the particle filter has access to the measurement streams &#10;of both robots. A particle is weighted in this case, according to its likelihood under the joint&#10;distribution determined by the two robots' measurements. Under the commonly valid assumption&#10;that robot measurements are conditionally independent given the target state, the particle likelihood&#10;simply becomes the product of the individual likelihoods of the measurement, under the particle&#10;assumption. ">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-395.0, -20.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-385.0, -20.0]">
         </property>
     </property>
     <property name="robot_position1" class="ptolemy.data.expr.Parameter" value="{x = 10.0, y = 0.0}">
@@ -695,9 +695,9 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="{-30.0, -100.0}">
         </property>
-        <property name="x" class="ptolemy.data.expr.Parameter" value="-0.7968670746830513">
+        <property name="x" class="ptolemy.data.expr.Parameter" value="0.6851225544159627">
         </property>
-        <property name="y" class="ptolemy.data.expr.Parameter" value="5.5895589915344654">
+        <property name="y" class="ptolemy.data.expr.Parameter" value="5.826794338456726">
         </property>
         <property name="z2" class="ptolemy.data.expr.Parameter" value="sqrt( (robot_position2.x-x)^2+(robot_position2.y- y)^2)">
         </property>
@@ -707,9 +707,9 @@
         </property>
         <property name="y_update" class="ptolemy.data.expr.Parameter" value="y">
         </property>
-        <property name="z1_m" class="ptolemy.data.expr.Parameter" value="11.148538216209">
+        <property name="z1_m" class="ptolemy.data.expr.Parameter" value="11.2824265664459">
         </property>
-        <property name="z2_m" class="ptolemy.data.expr.Parameter" value="11.1043651018126">
+        <property name="z2_m" class="ptolemy.data.expr.Parameter" value="11.2507888173887">
         </property>
         <port name="particleOutput" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -731,10 +731,12 @@
                 <property name="_hide" class="ptolemy.data.expr.Parameter" value="true">
                 </property>
             </property>
-            <property name="x" class="ptolemy.data.expr.Parameter" value="-0.49643342881374114">
+            <property name="x" class="ptolemy.data.expr.Parameter" value="1.0232813138893482">
             </property>
             <port name="output" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
+                <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+                </property>
             </port>
         </entity>
         <entity name="y_update" class="ptolemy.actor.lib.Expression">
@@ -742,10 +744,12 @@
                 <property name="_hide" class="ptolemy.data.expr.Parameter" value="true">
                 </property>
             </property>
-            <property name="y" class="ptolemy.data.expr.Parameter" value="5.08350133324452">
+            <property name="y" class="ptolemy.data.expr.Parameter" value="5.541743659053964">
             </property>
             <port name="output" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
+                <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+                </property>
             </port>
         </entity>
         <entity name="z1_m_equation" class="ptolemy.actor.lib.Expression">
@@ -755,6 +759,8 @@
             </property>
             <port name="output" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
+                <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+                </property>
             </port>
         </entity>
         <entity name="z1_m_covariance" class="ptolemy.actor.lib.Expression">
@@ -764,6 +770,8 @@
             </property>
             <port name="output" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
+                <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+                </property>
             </port>
         </entity>
         <entity name="setz1_m" class="ptolemy.actor.lib.SetVariable">
@@ -773,9 +781,13 @@
             </property>
             <port name="input" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
+                <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+                </property>
             </port>
             <port name="output" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
+                <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+                </property>
             </port>
         </entity>
         <entity name="z2_m_equation" class="ptolemy.actor.lib.Expression">
@@ -785,6 +797,8 @@
             </property>
             <port name="output" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
+                <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+                </property>
             </port>
         </entity>
         <entity name="z2_m_covariance" class="ptolemy.actor.lib.Expression">
@@ -794,6 +808,8 @@
             </property>
             <port name="output" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
+                <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+                </property>
             </port>
         </entity>
         <entity name="setz2_m" class="ptolemy.actor.lib.SetVariable">
@@ -803,9 +819,13 @@
             </property>
             <port name="input" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
+                <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+                </property>
             </port>
             <port name="output" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
+                <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+                </property>
             </port>
         </entity>
     </entity>
@@ -824,9 +844,9 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="{-30.0, -240.0}">
         </property>
-        <property name="x" class="ptolemy.data.expr.Parameter" value="19.930957924990427">
+        <property name="x" class="ptolemy.data.expr.Parameter" value="15.913795833336467">
         </property>
-        <property name="y" class="ptolemy.data.expr.Parameter" value="6.274105740997437">
+        <property name="y" class="ptolemy.data.expr.Parameter" value="9.978800726614494">
         </property>
         <property name="z1" class="ptolemy.data.expr.Parameter" value="sqrt( (robot_position1.x-x)^2+(robot_position1.y- y)^2)">
         </property>
@@ -834,7 +854,7 @@
         </property>
         <property name="y_update" class="ptolemy.data.expr.Parameter" value="y">
         </property>
-        <property name="z1_m" class="ptolemy.data.expr.Parameter" value="11.148538216209">
+        <property name="z1_m" class="ptolemy.data.expr.Parameter" value="11.2824265664459">
         </property>
         <port name="particleOutput" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -851,10 +871,12 @@
                 <property name="_hide" class="ptolemy.data.expr.Parameter" value="true">
                 </property>
             </property>
-            <property name="x" class="ptolemy.data.expr.Parameter" value="19.26387316282405">
+            <property name="x" class="ptolemy.data.expr.Parameter" value="16.978391622149122">
             </property>
             <port name="output" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
+                <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+                </property>
             </port>
         </entity>
         <entity name="y_update" class="ptolemy.actor.lib.Expression">
@@ -862,10 +884,12 @@
                 <property name="_hide" class="ptolemy.data.expr.Parameter" value="true">
                 </property>
             </property>
-            <property name="y" class="ptolemy.data.expr.Parameter" value="5.241496176874113">
+            <property name="y" class="ptolemy.data.expr.Parameter" value="9.064899007607409">
             </property>
             <port name="output" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
+                <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+                </property>
             </port>
         </entity>
         <entity name="z1_m_equation" class="ptolemy.actor.lib.Expression">
@@ -875,6 +899,8 @@
             </property>
             <port name="output" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
+                <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+                </property>
             </port>
         </entity>
         <entity name="z1_m_covariance" class="ptolemy.actor.lib.Expression">
@@ -884,6 +910,8 @@
             </property>
             <port name="output" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
+                <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+                </property>
             </port>
         </entity>
         <entity name="setz1_m" class="ptolemy.actor.lib.SetVariable">
@@ -893,9 +921,13 @@
             </property>
             <port name="input" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
+                <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+                </property>
             </port>
             <port name="output" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
+                <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+                </property>
             </port>
         </entity>
     </entity>
@@ -914,9 +946,9 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="{-30.0, -160.0}">
         </property>
-        <property name="x" class="ptolemy.data.expr.Parameter" value="0.3320831630128368">
+        <property name="x" class="ptolemy.data.expr.Parameter" value="0.3584691749894978">
         </property>
-        <property name="y" class="ptolemy.data.expr.Parameter" value="-5.558197766050767">
+        <property name="y" class="ptolemy.data.expr.Parameter" value="0.13867143744108446">
         </property>
         <property name="z1" class="ptolemy.data.expr.Parameter" value="sqrt( (robot_position2.x-x)^2+(robot_position2.y- y)^2)">
         </property>
@@ -924,7 +956,7 @@
         </property>
         <property name="y_update" class="ptolemy.data.expr.Parameter" value="y">
         </property>
-        <property name="z1_m" class="ptolemy.data.expr.Parameter" value="11.1043651018126">
+        <property name="z1_m" class="ptolemy.data.expr.Parameter" value="11.2507888173887">
         </property>
         <port name="particleOutput" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -941,10 +973,12 @@
                 <property name="_hide" class="ptolemy.data.expr.Parameter" value="true">
                 </property>
             </property>
-            <property name="x" class="ptolemy.data.expr.Parameter" value="-0.13132575895604182">
+            <property name="x" class="ptolemy.data.expr.Parameter" value="0.5890132564733199">
             </property>
             <port name="output" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
+                <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+                </property>
             </port>
         </entity>
         <entity name="y_update" class="ptolemy.actor.lib.Expression">
@@ -952,10 +986,12 @@
                 <property name="_hide" class="ptolemy.data.expr.Parameter" value="true">
                 </property>
             </property>
-            <property name="y" class="ptolemy.data.expr.Parameter" value="-5.134982926836576">
+            <property name="y" class="ptolemy.data.expr.Parameter" value="-0.8854982882650364">
             </property>
             <port name="output" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
+                <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+                </property>
             </port>
         </entity>
         <entity name="z1_m_equation" class="ptolemy.actor.lib.Expression">
@@ -965,6 +1001,8 @@
             </property>
             <port name="output" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
+                <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+                </property>
             </port>
         </entity>
         <entity name="z1_m_covariance" class="ptolemy.actor.lib.Expression">
@@ -974,6 +1012,8 @@
             </property>
             <port name="output" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
+                <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+                </property>
             </port>
         </entity>
         <entity name="setz1_m" class="ptolemy.actor.lib.SetVariable">
@@ -983,9 +1023,13 @@
             </property>
             <port name="input" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
+                <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+                </property>
             </port>
             <port name="output" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
+                <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+                </property>
             </port>
         </entity>
     </entity>
@@ -1553,8 +1597,8 @@
 <title>Particle Weights for the Collaborative Localization</title>
 <xLabel>y</xLabel>
 <yLabel>weights</yLabel>
-<xRange min="-6.6228728372175105" max="9.715999600609026"/>
-<yRange min="1.729527592721804E-66" max="0.636616933310646"/>
+<xRange min="-6.569808441357718" max="6.405040825680659"/>
+<yRange min="2.3465989443534883E-5" max="0.020111769516851816"/>
 <default connected="no" marks="dots"/>
 </plot>?>
             </configure>
@@ -1581,8 +1625,8 @@
 <title>Particle Weights for the Collaborative Localization</title>
 <xLabel>x</xLabel>
 <yLabel>weights</yLabel>
-<xRange min="-3.3879864530670183" max="7.706813012898657"/>
-<yRange min="5.803336372184959E-34" max="0.6345764850589689"/>
+<xRange min="-1.3781252909321167" max="1.281228884783548"/>
+<yRange min="2.3465989443534883E-5" max="0.020111769516851816"/>
 <default connected="no" marks="dots"/>
 </plot>?>
             </configure>

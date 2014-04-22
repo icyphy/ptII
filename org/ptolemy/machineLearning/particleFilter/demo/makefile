@@ -29,7 +29,7 @@
 # 						COPYRIGHTENDKEY
 ##########################################################################
 
-DIRS = BlackBoxOptimization MultiRobotIntruderTracking	\
+DIRS = MultiRobotIntruderTracking	\
 	OnlineTrajectoryOptimization \
 	OpenLoopSingleRobotTargetLocalization			\
 	OpenLoopTwoRobotTargetLocalization ParticleFilterRange
@@ -49,13 +49,13 @@ PTPACKAGE = 	demo
 #PTCLASSJAR =	$(PTPACKAGE).jar
 
 # Include these jars in PTAUXALLJAR
-PTAUXALLJARS = \
-	BlackBoxOptimization/BlackBoxOptimization.jar \
+PTAUXALLJARS = \ 
 	MultiRobotIntruderTracking/MultiRobotIntruderTracking.jar \
 	OnlineTrajectoryOptimization/OnlineTrajectoryOptimization.jar \
 	OpenLoopSingleRobotTargetLocalization/OpenLoopSingleRobotTargetLocalization.jar \
 	OpenLoopTwoRobotTargetLocalization/OpenLoopTwoRobotTargetLocalization.jar \
 	ParticleFilterRange/ParticleFilterRange.jar
+	
 
 PTAUXALLJAR = $(PTPACKAGE).jar
 
