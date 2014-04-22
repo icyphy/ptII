@@ -51,7 +51,7 @@ JSRCS =
 
 OTHER_FILES_TO_BE_JARED = \
 	$(JSRCS) \
-	CentralizedOnlineTrajectoryOptimization.xml \
+	OnlineTrajectoryOptimization.xml \
 	DistributedOnlineTrajectoryOptimization.xml
 
 EXTRA_SRCS = \
@@ -74,7 +74,7 @@ all: jclass
 install: jclass jars
 
 demo:
-	vergil CentralizedOnlineTrajectoryOptimization.xml
+	vergil OnlineTrajectoryOptimization.xml
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk
