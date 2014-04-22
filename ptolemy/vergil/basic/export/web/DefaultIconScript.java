@@ -31,6 +31,7 @@ package ptolemy.vergil.basic.export.web;
 import java.util.List;
 import java.util.Locale;
 
+import ptolemy.actor.CompositeActor;
 import ptolemy.data.expr.StringParameter;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
@@ -159,6 +160,24 @@ public class DefaultIconScript extends IconScript {
                         _provideDefaultAttributes(object, exporter);
                     }
                 }
+            }
+            // If the container is a CompositeActor, then also include
+            // the director, unless specific instances are requested.
+        	if ((container instanceof CompositeActor) && instances.trim().equals("")) {
+        		NamedObj director = ((CompositeActor)container).getDirector();
+        		if (director != null) {
+                    String eventTypeValue = eventType.stringValue();
+                    // Create WebAttribute for event and add to exporter.
+                    // Content should only be added once (onceOnly -> true).
+                    webAttribute = WebAttribute
+                            .createWebAttribute(getContainer(),
+                                    eventTypeValue + "WebAttribute",
+                                    eventTypeValue);
+                    webAttribute.setExpression(stringValue());
+                    exporter.defineAttribute(webAttribute, true);
+
+                    _provideDefaultAttributes(director, exporter);
+        		}
             }
         }
         if (attributes) {
