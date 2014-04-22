@@ -949,3 +949,7 @@ jnlps_index: $(ROOT)/mk/ptcommon.mk
 			echo "An alternative is to create a toc.htm.in file in the chapter directory."; \
 		fi; \
 	fi;
+
+echo_models:
+	echo $(OTHER_FILES_TO_BE_JARED)
+

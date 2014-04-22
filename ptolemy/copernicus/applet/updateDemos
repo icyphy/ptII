@@ -17,9 +17,18 @@ do
 
      targetPath=`echo $modelPath | sed "s@$PTII/@@"`
 
-     echo "make MODEL=$model MODELPATH=$modelPath/$model.xml TARGETPATH=$targetPath jnlpUpdateDemo"
+     echo "make MODEL=$model MODELPATH=$modelPath/$model.xml TARGETPATH=$targetPath html_model_jnlp"
+
+
      #echo $modelPath/$model.htm
+
+     # We just echo the make file commands
+
      continue
+
+
+
+
       
      #rm $modelPath/$model.htm
      #svn update $modelPath/$model.htm

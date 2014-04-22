@@ -316,13 +316,13 @@ and run make.  See the top of the file for the appropriate make command.
 First, untar the previous source release in ptII/adm/dists.  
 <pre>
 cd $PTII/adm/dists
-wget http://ptolemy.eecs.berkeley.edu/ptolemyII/ptIIlatest/ptII8.0.1.src.tar.gz
-tar -zxf ptII8.0.1.src.tar.gz
+wget http://ptolemy.eecs.berkeley.edu/ptolemyII/ptIIlatest/ptII10.0.1.src.tar.gz
+tar -zxf ptII10.0.1.src.tar.gz
 </pre>
 Then check for files that don't have this year's copyright
 <pre>
 cd $PTII/adm/dists
-diff -r ptII8.0.1 ptII10.0.devel > /tmp/pt.diffs
+diff -r ptII10.0.1 ptII10.0.devel > /tmp/pt.diffs
 cd $PTII
 grep Copyright `egrep "^Only in ptII10.0.devel" /tmp/pt.diffs | \
    grep .java | sed 's@ptII10.0.devel/@@' | awk '{print substr($3,1,length($3)-1) "/" $4}'` | grep -v `date +%Y` > /tmp/c2
@@ -440,13 +440,13 @@ svn commit -m "Made regular .java files and other files not executable" `cat /tm
 
 <li> Tag the tree as the release tree and create a branch
 
- <p>To make a branch for 8.0.beta, use the following command:
+ <p>To make a branch for 10.0.beta, use the following command:
 <pre>
-svn copy svn+ssh://source.eecs.berkeley.edu/chess/ptII/trunk svn+ssh://source.eecs.berkeley.edu/chess/ptII/branches/rel-8-0-beta-2 -m "Creating Ptolemy II 8.0.beta branch"
+svn copy svn+ssh://source.eecs.berkeley.edu/chess/ptII/trunk svn+ssh://source.eecs.berkeley.edu/chess/ptII/branches/rel-8-0-beta-2 -m "Creating Ptolemy II 10.0.beta branch"
 </pre>
 Then check out the release branch  with
 <pre>
-svn co svn+ssh://source.eecs.berkeley.edu/chess/ptII/branches/rel-8-0-beta-2 ptII8.0.beta
+svn co svn+ssh://source.eecs.berkeley.edu/chess/ptII/branches/rel-8-0-beta-2 ptII10.0.beta
 
 </pre>
 <I>Note that you should avoid dots in the tag name</I>
@@ -455,7 +455,7 @@ svn co svn+ssh://source.eecs.berkeley.edu/chess/ptII/branches/rel-8-0-beta-2 ptI
 
 <li> Remove files that are not to be shipped from the release:
 <pre>
-cd ptII8.0.beta
+cd ptII10.0.beta
 export PTII `pwd`
 ./configure
 make cvs_delete_clean_shipping
@@ -468,29 +468,29 @@ set up a new tree for the release tree.
 <li> We build a separate src.tar.gz file under Unix so that the line
 endings are correct. 
 <pre>
-svn co svn+ssh://source.eecs.berkeley.edu/chess/ptII/branches/rel-8-0-beta-2 ptII8.0.beta
-cd ptII8.0.beta
+svn co svn+ssh://source.eecs.berkeley.edu/chess/ptII/branches/rel-8-0-beta-2 ptII10.0.beta
+cd ptII10.0.beta
 setenv PTII `pwd`
 ./configure
 make fast install
-cd $PTII/adm/gen-8.0
-make USER=cxh PTIIHOME=/home/cxh/src/ptII8.0.beta PTIIADM=/home/cxh/src/ptII8.0.beta/adm TAR=/bin/tar JAR=/usr/java/default/bin/jar clean all src.jar release_sisyphus
+cd $PTII/adm/gen-10.0
+make USER=cxh PTIIHOME=/home/cxh/src/ptII10.0.beta PTIIADM=/home/cxh/src/ptII10.0.beta/adm TAR=/bin/tar JAR=/usr/java/default/bin/jar clean all src.jar release_sisyphus
 
 </pre>
 The resulting file with the .class files gets copied to the website
 and untar'd.  Note that this does not require Java 3D on the build machine.
 Java 3D is needed for the applets, we copy the jars over later.
 <pre>
-make USER=cxh PTIIHOME=/tmp/cxh/ptII8.0.beta PTIIADM=/tmp/cxh/ptII8.0.beta/adm TAR=/bin/tar JAR=/tmp/cxh/jdk1.5.0_09/bin/jar update_ftp
+make USER=cxh PTIIHOME=/tmp/cxh/ptII10.0.beta PTIIADM=/tmp/cxh/ptII10.0.beta/adm TAR=/bin/tar JAR=/tmp/cxh/jdk1.5.0_09/bin/jar update_ftp
 </pre>
 or
 <pre>
-make USER=cxh PTIIHOME=/tmp/cxh/ptII8.0.beta PTIIADM=/tmp/ptII8.0.beta/adm TAR=/usr/sfw/bin/gtar JAR=/bin/jar update_ftp
+make USER=cxh PTIIHOME=/tmp/cxh/ptII10.0.beta PTIIADM=/tmp/ptII10.0.beta/adm TAR=/usr/sfw/bin/gtar JAR=/bin/jar update_ftp
 </pre>
 <ol>
 <li> Fix the links to ptplot downloads:
 <pre>
-cd /export/home/pt0/ptweb/ptolemyII/ptII8.0/ptII8.0.beta/ptolemy/plot
+cd /export/home/pt0/ptweb/ptolemyII/ptII10.0/ptII10.0.beta/ptolemy/plot
 ln -s ../../../../../java/ptplot5.7/ptolemy/plot/ptplot5.7* .
 cd doc
 rm -rf download
@@ -507,9 +507,9 @@ ln -s ../../../../../../java/ptplot5.7.beta/ptolemy/plot/doc/download .
 <pre>
 cvs -d :ext:source:/home/cvs co -r rel-7-0-beta-2 ptII
 cvs update -P -d
-mv ptII ptII8.0.beta
-cd ptII8.0.beta
-export PTII=c:/tmp/cxh/ptII8.0.beta
+mv ptII ptII10.0.beta
+cd ptII10.0.beta
+export PTII=c:/tmp/cxh/ptII10.0.beta
 
 <I>Set up missing packages such as joystick, JAI, JMF, javacomm, quicktime</I>
 <I>Use an older javac so that the .class files are compatible.  For
@@ -534,9 +534,9 @@ make jnlp_dist STOREPASSWORD="-storepass xxx" KEYPASSWORD="-keypass xxx"
       <pre>
 	mkdir src
 	cd src
-	wget http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII8.0/ptII8.0.1.src.tar.gz
-	tar -zxf ptII8.0.1.src.tar.gz
-	cd ptII8.0.1
+	wget http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII10.0.1.src.tar.gz
+	tar -zxf ptII10.0.1.src.tar.gz
+	cd ptII10.0.1
 	export PTII=`pwd`
 	make fast install
       </pre>
@@ -563,40 +563,53 @@ make jnlp_dist STOREPASSWORD="-storepass xxx" KEYPASSWORD="-keypass xxx"
     <pre>
      head -1 doit > doit.1
     </pre>
+    The steps below assume that the first model is actor/gt/demo/BouncingBallX2.
+
   <li> Edit <code>$PTII/ptolemy/copernicus/applet/makefile</code>, find the
     <code>jnlpUpdateDemo</code> section and add
     <pre>
--ptIILocalURL	 "http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII8.0/ptII8.0.1/" \
+-ptIILocalURL	 "http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII10.0.1/" \
     </pre>
+  <li> If you are running on a remote machine, start up Xvfb:
+    <pre>
+    Xvfb :2 -screen 0 1024x768x24 &
+    export DISPLAY=localhost:2.0
+    </pre>
+  </li>
   <li> Run the <code>doit.1</code> command and look for errors:
     <pre>
       sh ./doit.1
     </pre>
+  </li>
   <li>On the web server, create a link in the release directory 
-    to the <code>signed/</code> directory in the <code>jnlp-8.0.1</code>
+    to the <code>signed/</code> directory in the <code>jnlp-10.0.1</code>
     directory created when <code>make ... jnlp_dist</code> was run:
     <pre>
-      cd ~ptII/ptweb/ptolemyII/ptII8.0/ptII8.0.1
-      ln -s ../jnlp-8.0.1/signed .
+      cd ~ptII/ptweb/ptolemyII/ptII10.0/ptII10.0.1
+      ln -s ../jnlp-10.0.1/signed .
     </pre>
-  <li>Copy the jnlp files:
+  <li>Assuming that the first model is BouncingBallX1, copy the jnlp files:
     <pre>
-scp /home/cxh/src/ptII8.0.1/ptolemy/actor/gt/demo/BouncingBallX2/{*.jar,*.jnlp,BouncingBallX2JNLP.htm} moog:~ptII/ptweb/ptolemyII/ptII8.0/ptII8.0.1/ptolemy/actor/gt/demo/BouncingBallX2
+(cd $PTII/ptolemy/actor/gt/demo/BouncingBallX2; tar -cf - `make --no-print-directory --silent echo_models` BouncingBallX2 | ssh cxh@moog "cd /export/home/pt0/ptweb/ptolemyII/ptII10.0/jnlp-10.0.devel/ptolemy/actor/gt/demo/BouncingBallX2; tar -xpf -")
     </pre>
-  <li>Try the Web Start application:
-    <a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII8.0/ptII8.0.1/ptolemy/actor/gt/demo/BouncingBallX2/BouncingBallX2.jnlp"><code>http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII8.0/ptII8.0.1/ptolemy/actor/gt/demo/BouncingBallX2/BouncingBallX2.jnlp</code>
+  </li>
+  <li>Try the Web Start application and export:
+    <a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/jnlp-10.0.devel/ptolemy/actor/gt/demo/BouncingBallX2/BouncingBallX2"><code>http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII10.0.1/ptolemy/actor/gt/demo/BouncingBallX2/BouncingBallX2</code>
+  </li>
   <li>After the first Web Start application runs, generate jnlp files for all
  the files:
   <pre>
-    sh doit >& doit.out
+    nohup sh doit >& doit.out &
   </pre>
+  </li>
   <li>Update the website:
   <pre>
     ./scpDemos
   </pre>
+  </li>
   <li> On the website configure the ptII release to enable JNLP:
   <pre>
-    cd ~ptII/ptweb/ptolemyII/ptII8.0/ptII8.0.1/doc
+    cd ~ptII/ptweb/ptolemyII/ptII10.0/ptII10.0.1/doc
     mv deployJava.js deployJavaNoJNLP.js
     cp deployJavaJNLP.js deployJava.js
   </pre>
@@ -612,12 +625,12 @@ Look for missing jar files in the output.
 
 <li> Create the src.jar file: 
 <pre>
-cd $PTII/adm/gen-8.0
-make USER=cxh PTIIHOME=/cygdrive/c/cxh/ptII8.0.beta COMPRESS=gzip TAR=tar clean all src.jar 
+cd $PTII/adm/gen-10.0
+make USER=cxh PTIIHOME=/cygdrive/c/cxh/ptII10.0.beta COMPRESS=gzip TAR=tar clean all src.jar 
 </pre>
 Below is the command to compare the old tree and the new tree:
 <pre>
-diff -r -I '$Id:' -x alljtests.tcl -x allsimplejtests.tcl -x '*.jar' -x codeDoc -x '*.out' -x .svn -x '*.class' ~/ptII ~/src/ptII8.0.beta >& /tmp/pt.diffs
+diff -r -I '$Id:' -x alljtests.tcl -x allsimplejtests.tcl -x '*.jar' -x codeDoc -x '*.out' -x .svn -x '*.class' ~/ptII ~/src/ptII10.0.beta >& /tmp/pt.diffs
 </pre>
 
 <li> Under Windows, build the installer.

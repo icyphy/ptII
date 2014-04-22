@@ -8,6 +8,7 @@ demos=`cd $PTII/ptolemy/configs/doc; make --no-print-directory listDemos |  egre
 #demos=`cd $PTII/ptolemy/configs/doc; make check_applets |  grep -v /SystemLevelType/ | sed 's/.htm$/.xml/'`
 
 #demos=../../../ptolemy/domains/ddf/demo/IfThenElse/IfThenElseFSM.xml
+demos=../../../ptolemy/actor/gt/demo/BouncingBallX2/BouncingBallX2.xml 
 for demo in $demos
 do
      model=`basename $demo .xml` 
@@ -17,6 +18,6 @@ do
 
      targetPath=`echo $modelPath | sed "s@$PTII/@@"`
 
-     scp $modelPath/*.jar $modelPath/*.jnlp $modelPath/*JNLP.htm bennett:~ptII/ptweb/ptolemyII/ptII8.0/ptII8.0.1/$targetPath
+     (cd $modelPath; tar -cf - *.jar *.jnlp *JNLP.htm $model) | ssh moog "cd ~www/ptweb/ptolemyII/ptII10.0/ptII10.0.devel/$targetPath; tar -xpf -"
 
 done
