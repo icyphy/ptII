@@ -56,7 +56,7 @@ JSRCS =
 
 OTHER_FILES_TO_BE_JARED = \
 	$(JSRCS) \
-	leastSquaresNodeLocalization.xml
+	LeastSquaresNodeLocalization.xml
 
 EXTRA_SRCS = \
 	$(OTHER_FILES_TO_BE_JARED) \
@@ -77,7 +77,7 @@ all: jclass
 install: jclass jars
 
 demo:
-	vergil leastSquaresNodeLocalization.xml
+	vergil LeastSquaresNodeLocalization.xml
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk
