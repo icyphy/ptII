@@ -1,10 +1,10 @@
-# Makefile for Java Ptolemy aspect oriented demos
+# Makefile for optimization demo
 #
 # @Authors: Christopher Hylands, based on a file by Thomas M. Parks
 #
-# @Version: $Id: makefile 67956 2013-12-08 18:31:21Z pd $
+# @Version: $Id: makefile 67778 2013-10-26 15:50:13Z cxh $
 #
-# @Copyright (c) 2013 The Regents of the University of California.
+# @Copyright (c) 1998-2013 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -29,12 +29,12 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
-ME =		org/ptolemy/optimization/demo
+ME =		org/ptolemy/optimization/demo/LinearRegression
 
-DIRS =		SimpleOptimization
+DIRS =	
 
 # Root of the Ptolemy II directory
-ROOT =		../../../..
+ROOT =		../../../../..
 
 CLASSPATH =	$(ROOT)
 
@@ -43,22 +43,23 @@ CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE = 	demo
-PTCLASSJAR =
-
-# Include the .class files from these jars in PTCLASSALLJAR
-PTCLASSALLJARS = \
-	SimpleOptimization/SimpleOptimization.jar \
-	LeastSquaresNodeLocalization/LeastSquaresNodeLocalization.jar \
-	LinearRegression/LinearRegression.jar
-
+PTPACKAGE =	SimpleOptimization
+#PTCLASSJAR = 	$(PTPACKAGE).jar
 
 PTCLASSALLJAR = $(PTPACKAGE).jar
 
-# Keep this list alphabetized.
-JSRCS =
+# Include the .class files from these jars in PTCLASSALLJAR
+PTCLASSALLJARS =  
 
-EXTRA_SRCS =	$(JSRCS)
+# Keep this list alphabetized.
+JSRCS = 
+
+OTHER_FILES_TO_BE_JARED = \
+	$(JSRCS) \
+	LinearRegression.xml
+
+EXTRA_SRCS = \
+	$(OTHER_FILES_TO_BE_JARED) \
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
@@ -67,7 +68,6 @@ MISC_FILES =	$(DIRS)
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
-	doc
 
 JCLASS = $(JSRCS:%.java=%.class)
 
@@ -76,7 +76,8 @@ all: jclass
 
 install: jclass jars
 
-demo: subdemo
+demo:
+	vergil LinearRegression.xml
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk
