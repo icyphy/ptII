@@ -31,6 +31,10 @@
     </property>
     <property name="enableBackwardTypeInference" class="ptolemy.data.expr.Parameter" value="false">
     </property>
+    <property name="DoNothingDirector" class="ptolemy.actor.DoNothingDirector">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[1105.0, 550.0]">
+        </property>
+    </property>
     <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model contains links to other Discrete Event Code Generation models.&#10;&#10;To open the models, click on the link below.">
         </property>
