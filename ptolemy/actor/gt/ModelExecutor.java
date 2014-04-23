@@ -166,7 +166,11 @@ public class ModelExecutor extends TypedAtomicActor {
         super.wrapup();
 
         try {
-            _wrapperEffigy.setContainer(null);
+	    // When creating a JNLP file, wrapup() is called and
+	    // _wrapperEffigy might be null.
+	    if (_wrapperEffigy != null) {
+		_wrapperEffigy.setContainer(null);
+	    }
         } catch (NameDuplicationException e) {
             throw new IllegalActionException(this, e, "Unexpected error.");
         }
