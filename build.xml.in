@@ -836,6 +836,8 @@ For example:
       </batchtest>
       <jvmarg value="-Dptolemy.ptII.dir=${basedir}" />
       <jvmarg value="-Dptolemy.ptII.batchMode=true" />
+      <jvmarg value="-Dptolemy.ptII.exportHTML.linkToJNLP=true"/>
+      <jvmarg value="-Dptolemy.ptII.exportHTML.usePtWebsite=true"/>
       <jvmarg value="-XX:MaxPermSize=256m"/>
       <sysproperty key="net.sourceforge.cobertura.datafile" file="${basedir}/cobertura.ser" />
     </junit>
@@ -921,6 +923,8 @@ For example:
       </batchtest>
       <jvmarg value="-Dptolemy.ptII.dir=${basedir}" />
       <jvmarg value="-Dptolemy.ptII.batchMode=true" />
+      <jvmarg value="-Dptolemy.ptII.exportHTML.linkToJNLP=true"/>
+      <jvmarg value="-Dptolemy.ptII.exportHTML.usePtWebsite=true"/>
       <jvmarg value="-XX:MaxPermSize=256m"/>
       <sysproperty key="net.sourceforge.cobertura.datafile" file="${basedir}/cobertura.ser" />
     </junit>
@@ -1133,6 +1137,8 @@ For example:
       <formatter type="plain" usefile="off" />
       <jvmarg value="-Dptolemy.ptII.dir=${basedir}" />
       <jvmarg value="-Dptolemy.ptII.batchMode=true" />
+      <jvmarg value="-Dptolemy.ptII.exportHTML.linkToJNLP=true"/>
+      <jvmarg value="-Dptolemy.ptII.exportHTML.usePtWebsite=true"/>
       <jvmarg value="-XX:MaxPermSize=256m"/>
     </junit>
   </target>
