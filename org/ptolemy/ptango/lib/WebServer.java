@@ -506,7 +506,7 @@ public class WebServer extends AbstractInitializableAttribute {
         // If we are exporting to JNLP, then initialized might not
         // have been called.
         if (_serverManager != null 
-                && _appInfo !== null
+                && _appInfo != null
                 && _serverManager.isRegistered(_appInfo.getModelName(), _portNumber)) {
             try {
                 _serverManager.unregister(_appInfo, _portNumber);
