@@ -500,8 +500,14 @@ public class WebServer extends AbstractInitializableAttribute {
         if (_debugging) {
             _debug("Unregistering web application.");
         }
-        // Only attempt to unregister application if registration was successful
-        if (_serverManager.isRegistered(_appInfo.getModelName(), _portNumber)) {
+        // Only attempt to unregister application if registration was
+        // successful.
+
+        // If we are exporting to JNLP, then initialized might not
+        // have been called.
+        if (_serverManager != null 
+                && _appInfo !== null
+                && _serverManager.isRegistered(_appInfo.getModelName(), _portNumber)) {
             try {
                 _serverManager.unregister(_appInfo, _portNumber);
             } catch (Exception e) {
