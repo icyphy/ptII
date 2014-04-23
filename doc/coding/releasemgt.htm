@@ -1,647 +1,703 @@
 <!--$Id$ -->
 <html>
-<head>
-<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
-<link href="../default.css" rel="stylesheet" type="text/css">
-<title>Release Management</title>
-</head>
-<body>
-<h1>Release Management</h1>
-This page describes how we release software.
- <p>The following pages might be of use:
-<menu>
-<li> <a href="develsetup.htm" target="main">Development Tree</A>
-<li> <a href="testing.htm" target="main">Testing</A>
-</menu>
+  <head>
+    <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+    <link href="../default.css" rel="stylesheet" type="text/css">
+    <title>Release Management</title>
+  </head>
+  <body>
+    <h1>Release Management</h1>
+    <p>This page describes how we release software.</p>
+    <p>The following pages might be of use:</p>
+    <menu>
+      <li> <a href="develsetup.htm" target="main">Development Tree</A>
+      <li> <a href="testing.htm" target="main">Testing</A>
+    </menu>
 
-<h2><a name="Building a release">Building a release</a></h2>
+    <h2><a name="Building a release">Building a release</a></h2>
 
 
-<h2>Splitting the tree</h2>
-<ol>
-<li>Look for auto directories that don't have corresponding junit/ directories.
-<pre>
-cd $PTII
-ls -d `find . -name auto | awk -F / '{for(i=1;i<(NF);i++) { printf("%s/", $i);}printf("junit\n")}'`
+    <h2>Splitting the tree</h2>
+    <ol>
+      <li>Look for auto directories that don't have corresponding junit/ directories.
+	<pre>
+	  cd $PTII
+	  ls -d `find . -name auto | awk -F / '{for(i=1;i<(NF);i++) { printf("%s/", $i);}printf("junit\n")}'`
+								    </pre>
+      </li>
+      <li>Check that each demo has a test:
+	<pre>
+	  cd $PTII/ptolemy/configs/doc
+	  make check_tests
+	</pre>
+      </li>
+
+      <li>Add any new models to <code>$PTII/ptolemy/configs/doc/completeDemos.htm</code>
+      </li>
+      <li>If necessary create applets for new demos
+	<br/>Run
+	<pre>
+	  cd $PTII/ptolemy/configs/doc
+	  make check_applets
+	</pre>
+	<p>Note that not all the applets listed are missing.  Some of them
+	  use the serial port, JAI, JMF etc.</p>
+	<p>To add an applet:</p>
+	<pre>
+	  cd $PTII
+	  make install
+	  cd $PTII/ptolemy/domains/wireless/demo/SmartParking
+	  $PTII/bin/copernicus -codeGenerator applet -targetPath ptolemy/domains/wireless/demo/SmartParking SmartParking.xml
+	</pre>
+	Then add the <code>.htm</code> files to the makefile.
+      </li>
+      <li> Ptolemy handled 
+	<a href="about:copyright"><code>about:copyright</code></a>
+	URLS specially.  One facility on the copyright page is the ability
+	to expand all the model, .html files and .pdf files on 
+	the various demonstration pages.  This allows us to
+	verify that all the resources are present in the tree.
+	<br>Following the links on 
+	<a href="about:copyright"><code>about:copyright</code></a>
+	is an essential part of testing each release.
+
+	<br>For details, see
+	<a href="../codeDoc/ptolemy/actor/gui/GenerateCopyrights.html">actor.gui.GenerateCopyrights</a>
+	and
+	<a href="../codeDoc/ptolemy/actor/gui/HTMLViewer.html">actor.gui.HTMLViewer</a>
+      </li>
+
+      <li> Ptolemy II is organized in to jar files, where each
+	directory contains a jar file of the .class files and another
+	resources that are necessary for that package.  These resources
+	include files like images and pdfs.  Parent directories contain
+	the jar files in children directories.  
+	<br>When building a release, it is usually best to build
+	the Web Start release first because it is easier to change
+	one jar file and retry something in
+	<a href="../webStartHelp.htm">Web Start</a> than it is to 
+	rebuild an entire Windows installer.
+	<br>Use
+	<a href="about:copyright"><code>about:copyright</code></a>
+	to test the Web Start release.
+      </li>
+
+      <li> Check out a clean tree and build:
+	<pre>
+	  # Check out a clean tree
+	  svn co svn+ssh://source.eecs.berkeley.edu/chess/ptII/trunk ptII
+	  cd ptII
+	  export PTII=`pwd`
+	  ./configure
+	  ant
+	</pre>
+      </li>
+
+      <li> Clean the tree by running <CODE>make checkjunk</CODE>
+	and adding files as appropriate to the makefiles:
+	<pre>
+	  cd $PTII
+	  make clean_shipping
+	  make checkjunk
+	</pre>
+	Look for <code>***</code> lines and add files to makefiles
+	or add them to the clean_shipping rule in <code>$PTII/makefile</code>
+	and the most recent <code>src.ex</code> file in
+	<code>$PTII/adm/gen-<i>x.y</i></code>/src.ex.
+
+      </li>
+      <li> Run <a href="../../util/testsuite/chkjava"><CODE>$PTII/util/testsuite/chkjava</CODE></a> on the java files and fix problems
+	<br>Shortcut: Run it only the most recent files added
+
+	<br>Create a list of java files by
+	either running 
+	<pre>
+
+	  cd $PTII
+	  make cleanDerivedJavaFiles
+	  make clean_shipping
+	</pre>
+	Or removing the files by hand:
+	<pre>
+	  cd $PTII/ptolemy/actor/ptalon
+	  rm `make echo_OPTIONAL_JSRCS`
+	  cd $PTII/ptolemy/data/expr
+	  rm `make echo_OPTIONAL_JSRCS`
+	  cd $PTII/ptolemy/data/unit
+	  rm `make echo_OPTIONAL_JSRCS`
+	  cd $PTII/ptolemy/copernicus/kernel/fragment
+	  rm `make echo_OPTIONAL_JSRCS`
+
+	  # Create a file that contains the names of the java files to include
+	  cd $PTII
+	  rm -rf vendors ptolemy/apps
+	  rm -rf ptolemy/domains/ct/demo/Corba/util/*.java
+
+	</pre>
+      </li>
+      <li> Generate a list of files
+	<pre>
+	  adm/bin/ptIItxtfiles > /tmp/f
+	    egrep '*.java$' /tmp/f | grep -v /vendors/ >& /tmp/j
+	</pre>
+      </li>
+
+      <li> Check for missing makefiles:
+	<pre>
+	  cd $PTII/adm/test
+	  make missingMakefiles
+	</pre>
+	Below are the missing makefiles that are ok to be missing:
+	<pre>
+	  ./config/makefile
+	  ./doc/coding/templates/makefile
+	  ./ptolemy/actor/lib/fmi/fmipp/swig/makefile
+	  ./ptolemy/backtrack/automatic/ptolemy/actor/lib/makefile
+	  ./ptolemy/backtrack/automatic/ptolemy/domains/sdf/lib/makefile
+	  ./ptolemy/backtrack/automatic/ptolemy/math/makefile
+	  ./ptolemy/backtrack/eclipse/plugin/makefile
+	  ./ptolemy/backtrack/eclipse/plugin/actions/makefile
+	  ./ptolemy/backtrack/eclipse/plugin/actions/codestyle/makefile
+	  ./ptolemy/backtrack/eclipse/plugin/compatibility/makefile
+	  ./ptolemy/backtrack/eclipse/plugin/console/makefile
+	  ./ptolemy/backtrack/eclipse/plugin/dialogs/makefile
+	  ./ptolemy/backtrack/eclipse/plugin/editor/makefile
+	  ./ptolemy/backtrack/eclipse/plugin/preferences/makefile
+	  ./ptolemy/backtrack/eclipse/plugin/util/makefile
+	  ./ptolemy/backtrack/eclipse/plugin/widgets/makefile
+	  ./ptolemy/backtrack/ui/makefile
+	  ./ptolemy/backtrack/util/java/util/makefile
+	  ./ptolemy/plot/servlet/makefile
+	</pre>
+      </li>
+      <li> Check for directories that have java files but are not listed in <code>doc/makefile</code>:
+	<pre>
+	  cd $PTII/adm/test
+	  make missingDocPackages
+	</pre>
+	Below are the packages that need not be in <code>doc/makefile</code>.
+	<pre>
+	  config
+	  contrib.actor.lib.example
+	  diva.util.java2d.svg
+	  doc.coding.templates
+	  doc.tutorial
+	  doc.tutorial.domains
+	  doc.tutorial.graph
+	  doc.tutorial.graph.junit
+	  doc.tutorial.gui
+	  ptolemy.actor.corba
+	  ptolemy.actor.corba.CoordinatorUtil
+	  ptolemy.actor.corba.CorbaIOUtil
+	  ptolemy.actor.corba.util
+	  ptolemy.actor.lib.javasound.test.pitchshift
+	  ptolemy.actor.lib.mail
+	  ptolemy.actor.lib.reactable
+	  ptolemy.actor.lib.tutorial
+	  ptolemy.backtrack.automatic.ptolemy.math
+	  ptolemy.backtrack.eclipse.plugin.actions.codestyle
+	  ptolemy.backtrack.eclipse.plugin.compatibility
+	  ptolemy.backtrack.eclipse.plugin.console
+	  ptolemy.backtrack.eclipse.plugin.dialogs
+	  ptolemy.backtrack.eclipse.plugin.widgets
+	  ptolemy.backtrack.test.array1
+	  ptolemy.backtrack.test.random1
+	  ptolemy.backtrack.test.test1
+	  ptolemy.backtrack.test.test2
+	  ptolemy.backtrack.util.java.util
+	  ptolemy.caltrop.ddi.util
+	  ptolemy.chic
+	  ptolemy.component
+	  ptolemy.component.domains.ptinyos
+	  ptolemy.copernicus.interpreted
+	  ptolemy.domains.gr.lib.quicktime
+	  ptolemy.plot.servlet
+	</pre>
+      </li>
+      <li> Add trailing newlines to files with
+	<code>$PTII/adm/bin/addtrailingnl</code>
+	<pre>
+	  cd $PTII
+	  # Run addtrailingnl without actually doing anything:
+	  cat /tmp/j | xargs $PTII/adm/bin/addtrailingnl -n
+	  # Run addtrailingnl with adding the new lines:
+	  cat /tmp/j | xargs $PTII/adm/bin/addtrailingnl
+	  # Run with -n and then without:
+	  cat /tmp/f | egrep '*\.[cjh]$' | xargs $PTII/adm/bin/addtrailingnl -n
+	  cat /tmp/f | egrep makefile | xargs $PTII/adm/bin/addtrailingnl -n
+	  cat /tmp/f | egrep README | xargs $PTII/adm/bin/addtrailingnl -n
+	  cat /tmp/f | egrep '*\.htm' | xargs $PTII/adm/bin/addtrailingnl -n
+	  cat /tmp/f | egrep '*\.tcl' | xargs $PTII/adm/bin/addtrailingnl -n
+	  cat /tmp/f | egrep '*\.xml' | xargs $PTII/adm/bin/addtrailingnl -n
+	</pre>
+      </li>
+      <li> Convert tabs with
+	<code>$PTII/adm/bin/rmtabs</code>
+	<pre>
+	  cd $PTII
+	  # Run rmtabs without actually doing anything:
+	  cat /tmp/j | xargs $PTII/util/testsuite/rmtabs -n 
+	  # Run rmtabs with adding the new lines:
+	  cat /tmp/j | xargs $PTII/util/testsuite/rmtabs 
+	  # Run with -n and then without:
+	  cat /tmp/f | egrep '*\.[cjh]$' | xargs $PTII/util/testsuite/rmtabs -n
+	</pre>
+      </li>
+
+      <li> Remove trailing spaces with:
+	<code>$PTII/util/testsuite/rmtrailingspace</code>
+	<pre>
+	  cd $PTII
+	  # Run rmtrailingspace without actually doing anything:
+	  cat /tmp/j | xargs $PTII/util/testsuite/rmtrailingspace -n 
+	  # Run rmtrailingspace with adding the new lines:
+	  cat /tmp/j | xargs $PTII/util/testsuite/rmtrailingspace 
+	  # Run with -n and then without:
+	  cat /tmp/f | egrep '*\.[cjh]$' | xargs $PTII/util/testsuite/rmtrailingspace -n
+	</pre>
+      </li>
+
+      <li> Fix common problems in java files:
+	<pre>
+	  cat /tmp/j | xargs $PTII/adm/bin/fix-files -n
+	</pre>
+      </li>
+
+      <li> On a Unix box, check for files with control-Ms:
+	<pre>
+	  cat /tmp/f | xargs $PTII/util/testsuite/controlm > /tmp/cms
+	</pre>
+	<p>To fix the files, run:</p>
+	<pre>
+	  grep "has controlms" /tmp/cms | awk '{print $1}' > /tmp/cmfs
+	  svn propset svn:keywords "Author Date Id Revision" `cat /tmp/cmfs`
+	  svn propset svn:eol-style native `cat /tmp/cmfs`
+	  svn commit -m "Added keywords and eol-style properties" `cat /tmp/cmfs`
+	</pre>
+	You may need to use dos2unix to fix the files.
+	<p>Check keywords in all files:
+	  <pre>
+	    cd $PTII
+	    cat /tmp/f | xargs $PTII/adm/bin/svnpropcheck > /tmp/props
+	    grep keywords: /tmp/props | grep / | awk '{print $1}' | egrep -v '.xml$' > /tmp/keys
+	    grep eolstyle: /tmp/props | grep / | awk '{print $1}' | egrep -v '.xml$'> /tmp/eols
+	    cat /tmp/keys | xargs svn propset svn:keywords "Author Date Id Revision"
+	    cat /tmp/eols | xargs svn propset svn:eol-style native 
+	    svn commit -m "Added keywords and eol-style properties" `cat /tmp/eols /tmp/keys`
+	  </pre>
+      </li>
+
+      <li> Run <CODE>$PTII/adm/copyright/fixcopyrights</CODE> (not shipped with
+	the release) and update the copyrights on the <CODE>.java</CODE>, <CODE>.tcl</CODE> and makefiles
+      </li>
+
+      <li>Run
+	<CODE>$PTII/adm/copyright/chkcopyright</CODE> on all the nightly buildfiles.
+	<br>First, edit <code>$PTII/adm/copyright/chkcopyright</code> and update the year.
+	<br>Then, do:
+	<pre>
+	  cat /tmp/f | grep -v .class | grep -v codeDoc | grep -v xml | grep -v \
+	  alljtests.tcl | grep -v .htm | grep -v qcf | grep -v .dtd | grep -v \
+	  gif | grep -v .svn | grep -v jimblackler | xargs sh $PTII/adm/copyright/chkcopyright &gt;&amp  /tmp/copycheck 
+	  grep "does not contain a Copyright" /tmp/copycheck | awk '$1 ~ /.java$/ {print $1}' | grep -v /actor/corba >/tmp/jc
+	</pre>
+
+	Then, edit <code>$PTII/adm/copyright/copyright.txt</code>
+	and <code>$PTII/adm/copyright/insertcopyright</code> and run
+	<pre>
+	  adm/copyright/insertcopyright -p `cat /tmp/jc`
+	</pre>
+	and then
+	<pre>
+	  adm/copyright/insertcopyright `cat /tmp/jc`
+	</pre>
+      </li>
+
+
+      <li> Check out all the files again so we can build a release:
+	<pre>
+	  cd $PTII
+	  svn update
+	  ant
+	  ant jars
+	</pre>
+      </li>
+
+      <li> Run the nightly build, build a release:
+	<br>For each release, we copy the most recent
+	<code>$PTII/adm/gen-<i>X.Y</i></code>, update the version number
+	and run make.  See the top of the file for the appropriate make command.
+
+      <li>Check the copyright on new files
+	First, untar the previous source release in ptII/adm/dists.  
+	<pre>
+	  cd $PTII/adm/dists
+	  wget http://ptolemy.eecs.berkeley.edu/ptolemyII/ptIIlatest/ptII10.0.1.src.tar.gz
+	  tar -zxf ptII10.0.1.src.tar.gz
+	</pre>
+	Then check for files that don't have this year's copyright
+	<pre>
+	  cd $PTII/adm/dists
+	  diff -r ptII10.0.1 ptII10.0.devel > /tmp/pt.diffs
+	  cd $PTII
+	  grep Copyright `egrep "^Only in ptII10.0.devel" /tmp/pt.diffs | \
+	  grep .java | sed 's@ptII10.0.devel/@@' | awk '{print substr($3,1,length($3)-1) "/" $4}'` | grep -v `date +%Y` > /tmp/c2
+	</pre>
+	Look over the output for files that should have their copyright updated
+
+	See $PTII/adm/copyright/fixcopyright, but basically:
+	<pre>
+	  cat /tmp/c2 | grep Regents | awk -F : '{print $1}'
+	</pre>
+
+      <li> Run <CODE>$PTII/adm/bin/fixsince</CODE> (not shipped with
+	the release) and update the @since tags.  To use
+	<code>fixsince</code>, first edit <code>$PTII/adm/bin/fixsince</code>
+	and update the variables at the top.  Then
+	<pre>
+	  cd $PTII
+	  $PTII/adm/bin/fixsince
+	</pre>
+	Then check the output.
+	Then edit the file and uncomment the cp line at the bottom:
+	<pre>
+	  #cp $tmpfile $file
+	</pre>
+
+      <li> Run <CODE>cd $PTII/doc; make chkpackagehtml</CODE> (not shipped with
+	the release) and create any missing <code>package.html</code>
+	or <code>README.txt</code> files.
+	<pre>
+	  cd $PTII/doc
+	  make chkpackagehtml > /tmp/s
+	  cd $PTII
+	  $PTII/adm/bin/mkpackagehtml `cat /tmp/s`
+	  svn add `egrep '(README.txt|package.html)' /tmp/s | awk '{print $2}'`
+	  svn commit -m "Added package.html and README.txt" `egrep '(README.txt|package.html)' /tmp/s | awk '{print $2}'`
+	</pre>
+
+      <li> Concatenate all the javadoc files in to one file and run
+	<code>$PTII/util/testsuite/ptspell</code>. 
+	<pre>
+	  cd $PTII/doc
+	  make docs
+	  cd codeDoc; find . -name "*.html" > /tmp/h
+	  cat /tmp/h | xargs cat > /tmp/docs
+	  cat /tmp/docs | aspell list -H --run-together-limit=10 | sort -u | 	sed -e 's/^\([A-Z]*\)\([A-Z]\)/\1 \2/g' | 	sed -e 's/\([a-z]\)\([A-Z]\)/\1 \2/g' | aspell list -H | sort -u
+	</pre>
+
+      <li> Run findbugs and look at the results:
+	<pre>
+	  cd $PTII/doc
+	  make findbugs.htm
+	</pre>
+
+      <li> Consider using <a href="http://pmd.sourceforge.net/" target="_top">PMD</a>
+	or
+
+      <li> Use Eclipse to fix the imports of the entire tree.
+
+      <li> Use Eclipse to add @Override to appropriate methods.
+
+      <li> Consider fixing other Eclipse warnings.
+
+      <li> Use Eclipse Cleanup to clean the code
+	<ol>
+	  <li>Set up cleanup by going to the preferences window in Eclipse:
+	    <br> (<i>Windows</i>: <code>Window</code> | <code>Preferences</code>)
+	    <br> (<i>Mac OS X</i>: <code>Eclipse</code> | <code>Preferences</code>)
+	  </li>
+	  <li><code>Java</code> | <code>Code Style</code> | <code>Clean Up</code>
+	  </li>
+	  <li><code>New</code>, then type in a Profile name of "Ptolemy II" then hit OK
+	  </li>
+	  <li>In the "Profile 'Ptolemy II'" window:
+	    <ul>
+	      <li>Code Organizing: select "Format source code",
+		<br> select "Remove trailing whitespace",
+		<br> select "Correct indentation",
+		<br> select "Organize Imports".
+	      <li>Code Style: select "Use blocks in if/while/for/do statements" 
+	      <li>Missing code: <b>unselect</b> "Add missing Annotations"
+	      <li>Unnecessary Code: select "Remove unused private members"
+		<br>select "Remove unused local variables"
+	    </ul>
+	  </li>
+	  <li>Save the cleanup settings by closing the Cleanup preferences window
+	  </li>
+	</ol>
+
+      <li> Consider using 
+	<a href="http://gcc.gnu.org/java/">GCJ: The GNU Compiler for Java</a>
+	to report unused variables and other problems.  Note
+	that GCJ3.4 will fail to compile awt and swing classes, but
+	it is still worth getting the other error messages.
+	<BLOCKQUOTE>
+	  cd $PTII
+	  make clean
+	  make -k JAVAC=gcj JFLAGS="-O2 -Wunused -Wextraneous-semicolon -Wno-deprecated -C" all &gt;&amp; gcj.out &amp;
+	  grep error: gcj.out | awk -F: '{for(i=3;i<=NF;i++) {printf("%s ",$i)} printf("\n");}' | sort  | uniq | grep -v "not found in the decl"
+							     </BLOCKQUOTE>
+      </li>
+      <li> Consider building with the 
+	<a href="http://www-128.ibm.com/developerworks/java/jdk/linux/">IBM JDK</a>
+      </li>
+
+      <li> See <a href="installers.htm">Installers</a> for how
+	to build Windows installers.  Building the Windows installer is fairly complex,
+	below are some things to be aware of
+	<menu>
+	  <li> The Windows installer includes source files.  These sources
+	    come from $PTII/adm/gen-<i>N.M</i>/ptII<i>N.M</i>.src.jar.  Obviously,
+	    this jar file should be created on a Windows machine so the end
+	    of line characters are Windows end of line characters.
+	</li>
+	</menu>
+      </li>
+
+      <li> Look for files with bad permissions
+	<pre>
+	  cat /tmp/f | egrep "(.java$|.htm$|.html$|makefile$|.tcl$|.xml$)" | xargs ls -l | awk '{ if ($1 ~ /x/) print $NF}' | grep -v chkjava > /tmp/execs
+	    cat /tmp/execs | xargs svn proplist
+	    cat /tmp/execs | xargs svn propdel svn:executable
+	    svn commit -m "Made regular .java files and other files not executable" `cat /tmp/execs`
 </pre>
-
-<li>Check that each demo has a test:
-<pre>
-cd $PTII/ptolemy/configs/doc
-make check_tests
-</pre>
-
-<li>Add any new models to <code>$PTII/ptolemy/configs/doc/completeDemos.htm</code>
-
-<li>If necessary create applets for new demos
- <br>Run
-<pre>
-cd $PTII/ptolemy/configs/doc
-make check_applets
-</pre>
-Note that not all the applets listed are missing.  Some of them
-use the serial port, JAI, JMF etc.
- <p>To add an applet:
-<pre>
-cd $PTII
-make install
-cd $PTII/ptolemy/domains/wireless/demo/SmartParking
-$PTII/bin/copernicus -codeGenerator applet -targetPath ptolemy/domains/wireless/demo/SmartParking SmartParking.xml
-</pre>
-Then add the <code>.htm</code> files to the makefile.
-
-<li> Ptolemy handled 
-<a href="about:copyright"><code>about:copyright</code></a>
-URLS specially.  One facility on the copyright page is the ability
-to expand all the model, .html files and .pdf files on 
-the various demonstration pages.  This allows us to
-verify that all the resources are present in the tree.
-<br>Following the links on 
-<a href="about:copyright"><code>about:copyright</code></a>
-is an essential part of testing each release.
-
-<br>For details, see
-<a href="../codeDoc/ptolemy/actor/gui/GenerateCopyrights.html">actor.gui.GenerateCopyrights</a>
-and
-<a href="../codeDoc/ptolemy/actor/gui/HTMLViewer.html">actor.gui.HTMLViewer</a>
-
-
-<li> Ptolemy II is organized in to jar files, where each
-directory contains a jar file of the .class files and another
-resources that are necessary for that package.  These resources
-include files like images and pdfs.  Parent directories contain
-the jar files in children directories.  
-<br>When building a release, it is usually best to build
-the Web Start release first because it is easier to change
-one jar file and retry something in
-<a href="../webStartHelp.htm">Web Start</a> than it is to 
-rebuild an entire Windows installer.
-<br>Use
-<a href="about:copyright"><code>about:copyright</code></a>
-to test the Web Start release.
-
-<li> Check out a clean tree and build:
-<pre>
-# Check out a clean tree
-svn co svn+ssh://source.eecs.berkeley.edu/chess/ptII/trunk ptII
-cd ptII
-export PTII=`pwd`
-./configure
-ant
-</pre>
-<li> Clean the tree by running <CODE>make checkjunk</CODE>
-and adding files as appropriate to the makefiles:
-<pre>
-cd $PTII
-make clean_shipping
-make checkjunk
-</pre>
-Look for <code>***</code> lines and add files to makefiles
-or add them to the clean_shipping rule in <code>$PTII/makefile</code>
-and the most recent <code>src.ex</code> file in
-<code>$PTII/adm/gen-<i>x.y</i></code>/src.ex.
-
-<li> Run <a href="../../util/testsuite/chkjava"><CODE>$PTII/util/testsuite/chkjava</CODE></a> on the java files and fix problems
-<br>Shortcut: Run it only the most recent files added
-
-<br>Create a list of java files by
-either running 
-<pre>
-
-cd $PTII
-make cleanDerivedJavaFiles
-make clean_shipping
-</pre>
-Or removing the files by hand:
-<pre>
-cd $PTII/ptolemy/actor/ptalon
-rm `make echo_OPTIONAL_JSRCS`
- cd $PTII/ptolemy/data/expr
-rm `make echo_OPTIONAL_JSRCS`
-cd $PTII/ptolemy/data/unit
-rm `make echo_OPTIONAL_JSRCS`
-cd $PTII/ptolemy/copernicus/kernel/fragment
-rm `make echo_OPTIONAL_JSRCS`
-
-# Create a file that contains the names of the java files to include
-cd $PTII
-rm -rf vendors ptolemy/apps
-rm -rf ptolemy/domains/ct/demo/Corba/util/*.java
-
-</pre>
-<li> Generate a list of files
-<pre>
-adm/bin/ptIItxtfiles > /tmp/f
-egrep '*.java$' /tmp/f | grep -v /vendors/ >& /tmp/j
-</pre>
-
-<li> Check for missing makefiles:
-<pre>
-cd $PTII/adm/test
-make missingMakefiles
-</pre>
-Below are the missing makefiles that are ok to be missing:
-<pre>
-./config/makefile
-./doc/coding/templates/makefile
-./ptolemy/actor/lib/fmi/fmipp/swig/makefile
-./ptolemy/backtrack/automatic/ptolemy/actor/lib/makefile
-./ptolemy/backtrack/automatic/ptolemy/domains/sdf/lib/makefile
-./ptolemy/backtrack/automatic/ptolemy/math/makefile
-./ptolemy/backtrack/eclipse/plugin/makefile
-./ptolemy/backtrack/eclipse/plugin/actions/makefile
-./ptolemy/backtrack/eclipse/plugin/actions/codestyle/makefile
-./ptolemy/backtrack/eclipse/plugin/compatibility/makefile
-./ptolemy/backtrack/eclipse/plugin/console/makefile
-./ptolemy/backtrack/eclipse/plugin/dialogs/makefile
-./ptolemy/backtrack/eclipse/plugin/editor/makefile
-./ptolemy/backtrack/eclipse/plugin/preferences/makefile
-./ptolemy/backtrack/eclipse/plugin/util/makefile
-./ptolemy/backtrack/eclipse/plugin/widgets/makefile
-./ptolemy/backtrack/ui/makefile
-./ptolemy/backtrack/util/java/util/makefile
-./ptolemy/plot/servlet/makefile
-</pre>
-<li> Check for directories that have java files but are not listed in <code>doc/makefile</code>:
-<pre>
-cd $PTII/adm/test
-make missingDocPackages
-</pre>
-Below are the packages that need not be in <code>doc/makefile</code>.
-<pre>
-config
-contrib.actor.lib.example
-diva.util.java2d.svg
-doc.coding.templates
-doc.tutorial
-doc.tutorial.domains
-doc.tutorial.graph
-doc.tutorial.graph.junit
-doc.tutorial.gui
-ptolemy.actor.corba
-ptolemy.actor.corba.CoordinatorUtil
-ptolemy.actor.corba.CorbaIOUtil
-ptolemy.actor.corba.util
-ptolemy.actor.lib.javasound.test.pitchshift
-ptolemy.actor.lib.mail
-ptolemy.actor.lib.reactable
-ptolemy.actor.lib.tutorial
-ptolemy.backtrack.automatic.ptolemy.math
-ptolemy.backtrack.eclipse.plugin.actions.codestyle
-ptolemy.backtrack.eclipse.plugin.compatibility
-ptolemy.backtrack.eclipse.plugin.console
-ptolemy.backtrack.eclipse.plugin.dialogs
-ptolemy.backtrack.eclipse.plugin.widgets
-ptolemy.backtrack.test.array1
-ptolemy.backtrack.test.random1
-ptolemy.backtrack.test.test1
-ptolemy.backtrack.test.test2
-ptolemy.backtrack.util.java.util
-ptolemy.caltrop.ddi.util
-ptolemy.chic
-ptolemy.component
-ptolemy.component.domains.ptinyos
-ptolemy.copernicus.interpreted
-ptolemy.domains.gr.lib.quicktime
-ptolemy.plot.servlet
-</pre>
-
-<li> Add trailing newlines to files with
-<code>$PTII/adm/bin/addtrailingnl</code>
-<pre>
-cd $PTII
-# Run addtrailingnl without actually doing anything:
-cat /tmp/j | xargs $PTII/adm/bin/addtrailingnl -n
-# Run addtrailingnl with adding the new lines:
-cat /tmp/j | xargs $PTII/adm/bin/addtrailingnl
-# Run with -n and then without:
-cat /tmp/f | egrep '*\.[cjh]$' | xargs $PTII/adm/bin/addtrailingnl -n
-cat /tmp/f | egrep makefile | xargs $PTII/adm/bin/addtrailingnl -n
-cat /tmp/f | egrep README | xargs $PTII/adm/bin/addtrailingnl -n
-cat /tmp/f | egrep '*\.htm' | xargs $PTII/adm/bin/addtrailingnl -n
-cat /tmp/f | egrep '*\.tcl' | xargs $PTII/adm/bin/addtrailingnl -n
-cat /tmp/f | egrep '*\.xml' | xargs $PTII/adm/bin/addtrailingnl -n
-</pre>
-
-<li> Convert tabs with
-<code>$PTII/adm/bin/rmtabs</code>
-<pre>
-cd $PTII
-# Run rmtabs without actually doing anything:
-cat /tmp/j | xargs $PTII/util/testsuite/rmtabs -n 
-# Run rmtabs with adding the new lines:
-cat /tmp/j | xargs $PTII/util/testsuite/rmtabs 
-# Run with -n and then without:
-cat /tmp/f | egrep '*\.[cjh]$' | xargs $PTII/util/testsuite/rmtabs -n
-</pre>
-
-<li> Remove trailing spaces with:
-<code>$PTII/util/testsuite/rmtrailingspace</code>
-<pre>
-cd $PTII
-# Run rmtrailingspace without actually doing anything:
-cat /tmp/j | xargs $PTII/util/testsuite/rmtrailingspace -n 
-# Run rmtrailingspace with adding the new lines:
-cat /tmp/j | xargs $PTII/util/testsuite/rmtrailingspace 
-# Run with -n and then without:
-cat /tmp/f | egrep '*\.[cjh]$' | xargs $PTII/util/testsuite/rmtrailingspace -n
-</pre>
-
-<li> Fix common problems in java files:
-<pre>
-cat /tmp/j | xargs $PTII/adm/bin/fix-files -n
-</pre>
-
-<li> On a Unix box, check for files with control-Ms:
-<pre>
-cat /tmp/f | xargs $PTII/util/testsuite/controlm > /tmp/cms
-</pre>
-<p>To fix the files, run:
-<pre>
-grep "has controlms" /tmp/cms | awk '{print $1}' > /tmp/cmfs
-svn propset svn:keywords "Author Date Id Revision" `cat /tmp/cmfs`
-svn propset svn:eol-style native `cat /tmp/cmfs`
-svn commit -m "Added keywords and eol-style properties" `cat /tmp/cmfs`
-</pre>
-You may need to use dos2unix to fix the files.
-
-<p>Check keywords in all files:
-<pre>
-cd $PTII
-cat /tmp/f | xargs $PTII/adm/bin/svnpropcheck > /tmp/props
-grep keywords: /tmp/props | grep / | awk '{print $1}' | egrep -v '.xml$' > /tmp/keys
-grep eolstyle: /tmp/props | grep / | awk '{print $1}' | egrep -v '.xml$'> /tmp/eols
-cat /tmp/keys | xargs svn propset svn:keywords "Author Date Id Revision"
-cat /tmp/eols | xargs svn propset svn:eol-style native 
-svn commit -m "Added keywords and eol-style properties" `cat /tmp/eols /tmp/keys`
-</pre>
-
-<li> Run <CODE>$PTII/adm/copyright/fixcopyrights</CODE> (not shipped with
-the release) and update the copyrights on the <CODE>.java</CODE>, <CODE>.tcl</CODE> and makefiles
-
-<li>Run
-<CODE>$PTII/adm/copyright/chkcopyright</CODE> on all the nightly buildfiles.
-<br>First, edit <code>$PTII/adm/copyright/chkcopyright</code> and update the year.
-<br>Then, do:
-<pre>
-cat /tmp/f | grep -v .class | grep -v codeDoc | grep -v xml | grep -v \
-alljtests.tcl | grep -v .htm | grep -v qcf | grep -v .dtd | grep -v \
-gif | grep -v .svn | grep -v jimblackler | xargs sh $PTII/adm/copyright/chkcopyright &gt;&amp  /tmp/copycheck 
-grep "does not contain a Copyright" /tmp/copycheck | awk '$1 ~ /.java$/ {print $1}' | grep -v /actor/corba >/tmp/jc
-</pre>
-
-Then, edit <code>$PTII/adm/copyright/copyright.txt</code>
-and <code>$PTII/adm/copyright/insertcopyright</code> and run
-<pre>
-adm/copyright/insertcopyright -p `cat /tmp/jc`
-</pre>
-and then
-<pre>
-adm/copyright/insertcopyright `cat /tmp/jc`
-</pre>
-
-<li> Check out all the files again so we can build a release:
-<pre>
-cd $PTII
-svn update
-ant
-ant jars
-</pre>
-<li> Run the nightly build, build a release:
-<br>For each release, we copy the most recent
-<code>$PTII/adm/gen-<i>X.Y</i></code>, update the version number
-and run make.  See the top of the file for the appropriate make command.
-
-<li>Check the copyright on new files
-First, untar the previous source release in ptII/adm/dists.  
-<pre>
-cd $PTII/adm/dists
-wget http://ptolemy.eecs.berkeley.edu/ptolemyII/ptIIlatest/ptII10.0.1.src.tar.gz
-tar -zxf ptII10.0.1.src.tar.gz
-</pre>
-Then check for files that don't have this year's copyright
-<pre>
-cd $PTII/adm/dists
-diff -r ptII10.0.1 ptII10.0.devel > /tmp/pt.diffs
-cd $PTII
-grep Copyright `egrep "^Only in ptII10.0.devel" /tmp/pt.diffs | \
-   grep .java | sed 's@ptII10.0.devel/@@' | awk '{print substr($3,1,length($3)-1) "/" $4}'` | grep -v `date +%Y` > /tmp/c2
-</pre>
-Look over the output for files that should have their copyright updated
-
-See $PTII/adm/copyright/fixcopyright, but basically:
-<pre>
-cat /tmp/c2 | grep Regents | awk -F : '{print $1}'
-</pre>
-
-<li> Run <CODE>$PTII/adm/bin/fixsince</CODE> (not shipped with
-the release) and update the @since tags.  To use
-<code>fixsince</code>, first edit <code>$PTII/adm/bin/fixsince</code>
-and update the variables at the top.  Then
-<pre>
-cd $PTII
-$PTII/adm/bin/fixsince
-</pre>
-Then check the output.
-Then edit the file and uncomment the cp line at the bottom:
-<pre>
-  #cp $tmpfile $file
-</pre>
-
-<li> Run <CODE>cd $PTII/doc; make chkpackagehtml</CODE> (not shipped with
-the release) and create any missing <code>package.html</code>
-or <code>README.txt</code> files.
-<pre>
-cd $PTII/doc
-make chkpackagehtml > /tmp/s
-cd $PTII
-$PTII/adm/bin/mkpackagehtml `cat /tmp/s`
-svn add `egrep '(README.txt|package.html)' /tmp/s | awk '{print $2}'`
-svn commit -m "Added package.html and README.txt" `egrep '(README.txt|package.html)' /tmp/s | awk '{print $2}'`
-</pre>
-
-<li> Concatenate all the javadoc files in to one file and run
-<code>$PTII/util/testsuite/ptspell</code>. 
-<pre>
-cd $PTII/doc
-make docs
-cd codeDoc; find . -name "*.html" > /tmp/h
-cat /tmp/h | xargs cat > /tmp/docs
-cat /tmp/docs | aspell list -H --run-together-limit=10 | sort -u | 	sed -e 's/^\([A-Z]*\)\([A-Z]\)/\1 \2/g' | 	sed -e 's/\([a-z]\)\([A-Z]\)/\1 \2/g' | aspell list -H | sort -u
-</pre>
-
-<li> Run findbugs and look at the results:
-<pre>
-cd $PTII/doc
-make findbugs.htm
-</pre>
-
-<li> Consider using <a href="http://pmd.sourceforge.net/" target="_top">PMD</a>
-or
-
-<li> Use Eclipse to fix the imports of the entire tree.
-
-<li> Use Eclipse to add @Override to appropriate methods.
-
-<li> Consider fixing other Eclipse warnings.
-
-<li> Use Eclipse Cleanup to clean the code
-  <ol>
-  <li>Set up cleanup by going to the preferences window in Eclipse:
-    <br> (<i>Windows</i>: <code>Window</code> | <code>Preferences</code>)
-    <br> (<i>Mac OS X</i>: <code>Eclipse</code> | <code>Preferences</code>)
-  <li><code>Java</code> | <code>Code Style</code> | <code>Clean Up</code>
-  <li><code>New</code>, then type in a Profile name of "Ptolemy II" then hit OK
-  <li>In the "Profile 'Ptolemy II'" window:
-     <ul>
-       <li>Code Organizing: select "Format source code",
-       <br> select "Remove trailing whitespace",
-       <br> select "Correct indentation",
-       <br> select "Organize Imports".
-      <li>Code Style: select "Use blocks in if/while/for/do statements" 
-      <li>Missing code: <b>unselect</b> "Add missing Annotations"
-      <li>Unnecessary Code: select "Remove unused private members"
-       <br>select "Remove unused local variables"
-    </ul>
-   <li>Save the cleanup settings by closing the Cleanup preferences window
-</ol>
-
-<li> Consider using 
-<a href="http://gcc.gnu.org/java/">GCJ: The GNU Compiler for Java</a>
-to report unused variables and other problems.  Note
-that GCJ3.4 will fail to compile awt and swing classes, but
-it is still worth getting the other error messages.
-<BLOCKQUOTE>
-cd $PTII
-make clean
-make -k JAVAC=gcj JFLAGS="-O2 -Wunused -Wextraneous-semicolon -Wno-deprecated -C" all &gt;&amp; gcj.out &amp;
-grep error: gcj.out | awk -F: '{for(i=3;i<=NF;i++) {printf("%s ",$i)} printf("\n");}' | sort  | uniq | grep -v "not found in the decl"
-</BLOCKQUOTE>
-<li> Consider building with the 
-<a href="http://www-128.ibm.com/developerworks/java/jdk/linux/">IBM JDK</a>
-
-<li> See <a href="installers.htm">Installers</a> for how
-to build Windows installers.  Building the Windows installer is fairly complex,
-below are some things to be aware of
-  <menu>
-    <li> The Windows installer includes source files.  These sources
-    come from $PTII/adm/gen-<i>N.M</i>/ptII<i>N.M</i>.src.jar.  Obviously,
-    this jar file should be created on a Windows machine so the end
-    of line characters are Windows end of line characters.
-  </menu>
-
-<li> Look for files with bad permissions
-<pre>
-cat /tmp/f | egrep "(.java$|.htm$|.html$|makefile$|.tcl$|.xml$)" | xargs ls -l | awk '{ if ($1 ~ /x/) print $NF}' | grep -v chkjava > /tmp/execs
-cat /tmp/execs | xargs svn proplist
-cat /tmp/execs | xargs svn propdel svn:executable
-svn commit -m "Made regular .java files and other files not executable" `cat /tmp/execs`
-</pre>
+</li>
 
 <li> Tag the tree as the release tree and create a branch
 
- <p>To make a branch for 10.0.beta, use the following command:
-<pre>
-svn copy svn+ssh://source.eecs.berkeley.edu/chess/ptII/trunk svn+ssh://source.eecs.berkeley.edu/chess/ptII/branches/rel-8-0-beta-2 -m "Creating Ptolemy II 10.0.beta branch"
-</pre>
-Then check out the release branch  with
-<pre>
-svn co svn+ssh://source.eecs.berkeley.edu/chess/ptII/branches/rel-8-0-beta-2 ptII10.0.beta
+  <p>To make a branch for 10.0.beta, use the following command:
+    <pre>
+      svn copy svn+ssh://source.eecs.berkeley.edu/chess/ptII/trunk svn+ssh://source.eecs.berkeley.edu/chess/ptII/branches/rel-8-0-beta-2 -m "Creating Ptolemy II 10.0.beta branch"
+    </pre>
+    Then check out the release branch  with
+    <pre>
+      svn co svn+ssh://source.eecs.berkeley.edu/chess/ptII/branches/rel-8-0-beta-2 ptII10.0.beta
 
-</pre>
-<I>Note that you should avoid dots in the tag name</I>
-<li> Update the version numbers, see
-<code>$PTII/makefile</code> and <code>$PTII/ptolemy/plot/makefile</code>.
+    </pre>
+    <I>Note that you should avoid dots in the tag name</I>
+    <li> Update the version numbers, see
+      <code>$PTII/makefile</code> and <code>$PTII/ptolemy/plot/makefile</code>.
 
-<li> Remove files that are not to be shipped from the release:
-<pre>
-cd ptII10.0.beta
-export PTII `pwd`
-./configure
-make cvs_delete_clean_shipping
-</pre>
-<li> The nightly build uses a makefile in ~ptII/adm (not shipped)
-to build the release.  Copy the most recent makefile and
-set up a new tree for the release tree.
-
-
-<li> We build a separate src.tar.gz file under Unix so that the line
-endings are correct. 
-<pre>
-svn co svn+ssh://source.eecs.berkeley.edu/chess/ptII/branches/rel-8-0-beta-2 ptII10.0.beta
-cd ptII10.0.beta
-setenv PTII `pwd`
-./configure
-make fast install
-cd $PTII/adm/gen-10.0
-make USER=cxh PTIIHOME=/home/cxh/src/ptII10.0.beta PTIIADM=/home/cxh/src/ptII10.0.beta/adm TAR=/bin/tar JAR=/usr/java/default/bin/jar clean all src.jar release_sisyphus
-
-</pre>
-The resulting file with the .class files gets copied to the website
-and untar'd.  Note that this does not require Java 3D on the build machine.
-Java 3D is needed for the applets, we copy the jars over later.
-<pre>
-make USER=cxh PTIIHOME=/tmp/cxh/ptII10.0.beta PTIIADM=/tmp/cxh/ptII10.0.beta/adm TAR=/bin/tar JAR=/tmp/cxh/jdk1.5.0_09/bin/jar update_ftp
-</pre>
-or
-<pre>
-make USER=cxh PTIIHOME=/tmp/cxh/ptII10.0.beta PTIIADM=/tmp/ptII10.0.beta/adm TAR=/usr/sfw/bin/gtar JAR=/bin/jar update_ftp
-</pre>
-<ol>
-<li> Fix the links to ptplot downloads:
-<pre>
-cd /export/home/pt0/ptweb/ptolemyII/ptII10.0/ptII10.0.beta/ptolemy/plot
-ln -s ../../../../../java/ptplot5.7/ptolemy/plot/ptplot5.7* .
-cd doc
-rm -rf download
-ln -s ../../../../../../java/ptplot5.7.beta/ptolemy/plot/doc/download .
-</pre>
-
-<li> Copy gr.jar from a Windows box to <CODE>ptolemy/domains/gr</CODE>
-
-<li> Copy codeDoc.jar from a Windows box and unjar it
-</ol>
-
-
-<li> We build the webstart jar files under Windows
-<pre>
-cvs -d :ext:source:/home/cvs co -r rel-7-0-beta-2 ptII
-cvs update -P -d
-mv ptII ptII10.0.beta
-cd ptII10.0.beta
-export PTII=c:/tmp/cxh/ptII10.0.beta
-
-<I>Set up missing packages such as joystick, JAI, JMF, javacomm, quicktime</I>
-<I>Use an older javac so that the .class files are compatible.  For
-example,  use java 1.4.x so that java 1.4.x and 1.5.x can use the
-.class files.</i> 
-<pre>
-export PATH=/cygdrive/c/j2sdk1.4.2_12/bin:${PATH}
-java -version
-./configure
-make clean fast install &gt;&amp; make.out
-
-<I>Copy <CODE>~ptII/adm/certs/ptkeystore</CODE> to $PTII.  Note you will
-need access to the ptII account on moog </I>
-
-make jnlp_dist STOREPASSWORD="-storepass xxx" KEYPASSWORD="-keypass xxx"
-</pre>
-<I>xxx</I> is the ptkeystore password.
-
-<li>Build the webstart files.  <i>This is complex . . .</i>
-  <ul>
-    <li>On a fast unix box, get a copy of the release and build it
+    <li> Remove files that are not to be shipped from the release:
       <pre>
-	mkdir src
-	cd src
-	wget http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII10.0.1.src.tar.gz
-	tar -zxf ptII10.0.1.src.tar.gz
-	cd ptII10.0.1
-	export PTII=`pwd`
+	cd ptII10.0.beta
+	export PTII `pwd`
+	./configure
+	make cvs_delete_clean_shipping
+      </pre>
+    <li> The nightly build uses a makefile in ~ptII/adm (not shipped)
+      to build the release.  Copy the most recent makefile and
+      set up a new tree for the release tree.
+
+
+    <li> We build a separate src.tar.gz file under Unix so that the line
+      endings are correct. 
+      <pre>
+	svn co svn+ssh://source.eecs.berkeley.edu/chess/ptII/branches/rel-8-0-beta-2 ptII10.0.beta
+	cd ptII10.0.beta
+	setenv PTII `pwd`
+	./configure
 	make fast install
+	cd $PTII/adm/gen-10.0
+	make USER=cxh PTIIHOME=/home/cxh/src/ptII10.0.beta PTIIADM=/home/cxh/src/ptII10.0.beta/adm TAR=/bin/tar JAR=/usr/java/default/bin/jar clean all src.jar release_sisyphus
+
       </pre>
-  <li> Create the jnlp files and update the website:
+      The resulting file with the .class files gets copied to the website
+      and untar'd.  Note that this does not require Java 3D on the build machine.
+      Java 3D is needed for the applets, we copy the jars over later.
       <pre>
-      make KEYSTORE=/users/ptII/adm/certs/ptkeystore KEYALIAS=ptolemy STOREPASSWORD="-storepass xxx" KEYPASSWORD="-keypass xxx" jnlp_dist
+	make USER=cxh PTIIHOME=/tmp/cxh/ptII10.0.beta PTIIADM=/tmp/cxh/ptII10.0.beta/adm TAR=/bin/tar JAR=/tmp/cxh/jdk1.5.0_09/bin/jar update_ftp
       </pre>
-      <I>xxx</I> is the ptkeystore password. 
+      or
+      <pre>
+	make USER=cxh PTIIHOME=/tmp/cxh/ptII10.0.beta PTIIADM=/tmp/ptII10.0.beta/adm TAR=/usr/sfw/bin/gtar JAR=/bin/jar update_ftp
+      </pre>
+      <ol>
+	<li> Fix the links to ptplot downloads:
+	  <pre>
+	    cd /export/home/pt0/ptweb/ptolemyII/ptII10.0/ptII10.0.beta/ptolemy/plot
+	    ln -s ../../../../../java/ptplot5.7/ptolemy/plot/ptplot5.7* .
+	    cd doc
+	    rm -rf download
+	    ln -s ../../../../../../java/ptplot5.7.beta/ptolemy/plot/doc/download .
+	  </pre>
 
-  <li> Edit <code>$PTII/ptKeystore.properties</code> and change the
-    location of the keystore and the password.  This file is read by
-    copernicus in the next step.  If you do not edit this file, you
-    will get messages about mismatched keystores.
-  <li> Go to <code>$PTII/ptolemy/copernicus/applet</code> and generate
-    a list of commands that will create the jnlp files for the applets.
-    <pre>
-      cd $PTII/ptolemy/copernicus/applet
-      ./updateDemos >& doit
-    </pre>
-  <li>The <code>doit</code> file now contains a list of make commands that
-    will generate jnlp files for each demo.  We will use the first command
-    as a test case and then run the rest of the commands after the first test
-    case works.  Put the first line in a separate file:
-    <pre>
-     head -1 doit > doit.1
-    </pre>
-    The steps below assume that the first model is actor/gt/demo/BouncingBallX2.
+	<li> Copy gr.jar from a Windows box to <CODE>ptolemy/domains/gr</CODE>
 
-  <li> Edit <code>$PTII/ptolemy/copernicus/applet/makefile</code>, find the
-    <code>jnlpUpdateDemo</code> section and add
-    <pre>
--ptIILocalURL	 "http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII10.0.1/" \
-    </pre>
-  <li> If you are running on a remote machine, start up Xvfb:
-    <pre>
-    Xvfb :2 -screen 0 1024x768x24 &
-    export DISPLAY=localhost:2.0
-    </pre>
-  </li>
-  <li> Run the <code>doit.1</code> command and look for errors:
-    <pre>
-      sh ./doit.1
-    </pre>
-  </li>
-  <li>On the web server, create a link in the release directory 
-    to the <code>signed/</code> directory in the <code>jnlp-10.0.1</code>
-    directory created when <code>make ... jnlp_dist</code> was run:
-    <pre>
-      cd ~ptII/ptweb/ptolemyII/ptII10.0/ptII10.0.1
-      ln -s ../jnlp-10.0.1/signed .
-    </pre>
-  <li>Assuming that the first model is BouncingBallX1, copy the jnlp files:
-    <pre>
-(cd $PTII/ptolemy/actor/gt/demo/BouncingBallX2; tar -cf - `make --no-print-directory --silent echo_models` BouncingBallX2 | ssh cxh@moog "cd /export/home/pt0/ptweb/ptolemyII/ptII10.0/jnlp-10.0.devel/ptolemy/actor/gt/demo/BouncingBallX2; tar -xpf -")
-    </pre>
-  </li>
-  <li>Try the Web Start application and export:
-    <a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/jnlp-10.0.devel/ptolemy/actor/gt/demo/BouncingBallX2/BouncingBallX2"><code>http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII10.0.1/ptolemy/actor/gt/demo/BouncingBallX2/BouncingBallX2</code>
-  </li>
-  <li>After the first Web Start application runs, generate jnlp files for all
- the files:
-  <pre>
-    nohup sh doit >& doit.out &
-  </pre>
-  </li>
-  <li>Update the website:
-  <pre>
-    ./scpDemos
-  </pre>
-  </li>
-  <li> On the website configure the ptII release to enable JNLP:
-  <pre>
-    cd ~ptII/ptweb/ptolemyII/ptII10.0/ptII10.0.1/doc
-    mv deployJava.js deployJavaNoJNLP.js
-    cp deployJavaJNLP.js deployJava.js
-  </pre>
-  <li>Try all the Web Start demos.
-  </ul>
+	<li> Copy codeDoc.jar from a Windows box and unjar it
+      </ol>
 
-<li>Create the webstart and installer files.
-<pre>
-cd $PTII
-make jar_dist
-</pre>
-Look for missing jar files in the output.
 
-<li> Create the src.jar file: 
-<pre>
-cd $PTII/adm/gen-10.0
-make USER=cxh PTIIHOME=/cygdrive/c/cxh/ptII10.0.beta COMPRESS=gzip TAR=tar clean all src.jar 
-</pre>
-Below is the command to compare the old tree and the new tree:
-<pre>
-diff -r -I '$Id:' -x alljtests.tcl -x allsimplejtests.tcl -x '*.jar' -x codeDoc -x '*.out' -x .svn -x '*.class' ~/ptII ~/src/ptII10.0.beta >& /tmp/pt.diffs
-</pre>
+    <li> We build the webstart jar files under Windows
+      <pre>
+	cvs -d :ext:source:/home/cvs co -r rel-10-0-beta-2 ptII
+	cvs update -P -d
+	mv ptII ptII10.0.beta
+	cd ptII10.0.beta
+	export PTII=c:/tmp/cxh/ptII10.0.beta
 
-<li> Under Windows, build the installer.
-<pre>
-cd $PTII
-make exes
-cd $PTII/adm/gen-<i>x.y</i>
-make setup
-</pre>
+	<I>Set up missing packages such as joystick, JAI, JMF, javacomm, quicktime</I>
+	<I>Use an older javac so that the .class files are compatible.  For example,  use java 1.4.x so that java 1.4.x and 1.5.x can use the .class files.</i> 
+	<pre>
+	  export PATH=/cygdrive/c/j2sdk1.4.2_12/bin:${PATH}
+	  java -version
+	  ./configure
+	  make clean fast install &gt;&amp; make.out
 
-<li> <a href="testing.htm#installer">Test the installer</a>
+	  <I>Copy <CODE>~ptII/adm/certs/ptkeystore</CODE> to $PTII.  Note you will
+	    need access to the ptII account on moog </I>
+
+	  make jnlp_dist STOREPASSWORD="-storepass xxx" KEYPASSWORD="-keypass xxx"
+	</pre>
+	<I>xxx</I> is the ptkeystore password.
+
+	<li>Build the webstart files.  <i>This is complex . . .</i>
+	  <br/>The high level view is that we export the models as HTML by
+	  running a test using ant,then we export the models as WebStart JNLP files
+	  and then copy the appropriate files over to the web server.
+
+	  <ul>
+	    <li>On a fast unix box, get a copy of the release and build it
+	      <pre>
+		mkdir src
+		cd src
+		wget http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII10.0.1.src.tar.gz
+		tar -zxf ptII10.0.1.src.tar.gz
+		cd ptII10.0.1
+		export PTII=`pwd`
+		ant; ant jars
+	      </pre>
+	    </li>
+
+	    <li> Export all the models listed in $PTII/ptolemy/configs/doc/models.txt:
+	      <pre>
+		cd $PTII
+		ant test.longest >& test.out
+	      </pre>
+	      The above will take about an hour
+	    </li>
+
+	    <li> Create the jnlp files and update the website:
+	      <pre>
+		make KEYSTORE=/users/ptII/adm/certs/ptkeystore KEYALIAS=ptolemy STOREPASSWORD="-storepass xxx" KEYPASSWORD="-keypass xxx" jnlp_dist
+	      </pre>
+	      <I>xxx</I> is the ptkeystore password. 
+	    </li>
+
+	    <li> Edit <code>$PTII/ptKeystore.properties</code> and change the
+	      location of the keystore and the password.  This file is read by
+	      copernicus in the next step.  If you do not edit this file, you
+	      will get messages about mismatched keystores.
+	    </li>
+	    <li> Go to <code>$PTII/ptolemy/copernicus/applet</code> and generate
+	      a list of commands that will create the jnlp files for the applets.
+	      <pre>
+		cd $PTII/ptolemy/copernicus/applet
+		./updateDemos >& doit
+	      </pre>
+	    </li>
+	    <li>The <code>doit</code> file now contains a list of make
+	      commands that will generate jnlp files for each demo.
+	      We will use the first command as a test case and then
+	      run the rest of the commands after the first test case
+	      works.  Put the first line in a separate file:
+	      <pre>
+		head -1 doit > doit.1
+	      </pre>
+	      The steps below assume that the first model is
+	      actor/gt/demo/BouncingBallX2.
+
+	    </li>
+	    <li> Edit <code>$PTII/ptolemy/copernicus/applet/makefile</code>,
+	      find the
+	      <code>jnlpUpdateDemo</code> section and add
+	      <pre>
+		-ptIILocalURL	 "http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII10.0.1/" \
+	      </pre>
+	    </li>
+
+	    <li> If you are running on a remote machine, start up Xvfb:
+	      <pre>
+		Xvfb :2 -screen 0 1024x768x24 &
+		export DISPLAY=localhost:2.0
+	      </pre>
+	    </li>
+
+	    <li> Run the <code>doit.1</code> command and look for errors:
+	      <pre>
+		sh ./doit.1
+	      </pre>
+	    </li>
+
+	    <li>On the web server, create a link in the release directory 
+	      to the <code>signed/</code> directory in the <code>jnlp-10.0.1</code>
+	      directory created when <code>make ... jnlp_dist</code> was run:
+	      <pre>
+		cd ~ptII/ptweb/ptolemyII/ptII10.0/ptII10.0.1
+		ln -s ../jnlp-10.0.1/signed .
+	      </pre>
+	    </li>
+
+	    <li>Assuming that the first model is BouncingBallX1, copy the jnlp files:
+	      <pre>
+		(cd $PTII/ptolemy/actor/gt/demo/BouncingBallX2; tar -cf - `make --no-print-directory --silent echo_models` BouncingBallX2 | ssh cxh@moog "cd /export/home/pt0/ptweb/ptolemyII/ptII10.0/jnlp-10.0.devel/ptolemy/actor/gt/demo/BouncingBallX2; tar -xpf -")
+	      </pre>
+	    </li>
+	    <li>Try the Web Start application and export:
+	      <a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/jnlp-10.0.devel/ptolemy/actor/gt/demo/BouncingBallX2/BouncingBallX2"><code>http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII10.0.1/ptolemy/actor/gt/demo/BouncingBallX2/BouncingBallX2</code></a>
+	    </li>
+	    <li>After the first Web Start application runs, generate jnlp files for all
+	      the files:
+	      <pre>
+		nohup sh doit >& doit.out &
+	      </pre>
+	    </li>
+	    <li>Update the website:
+	      <pre>
+		./scpDemos
+	      </pre>
+	    </li>
+	    <li> On the website configure the ptII release to enable JNLP:
+	      <pre>
+		cd ~ptII/ptweb/ptolemyII/ptII10.0/ptII10.0.1/doc
+		mv deployJava.js deployJavaNoJNLP.js
+		cp deployJavaJNLP.js deployJava.js
+	      </pre>
+	    <li>Try all the Web Start demos.
+	  </ul>
+	</li>
+
+	<li>Create the webstart and installer files.
+	  <pre>
+	    cd $PTII
+	    make jar_dist
+	  </pre>
+	  Look for missing jar files in the output.
+	</li>
+
+	<li> Create the src.jar file: 
+	  <pre>
+	    cd $PTII/adm/gen-10.0
+	    make USER=cxh PTIIHOME=/cygdrive/c/cxh/ptII10.0.beta COMPRESS=gzip TAR=tar clean all src.jar 
+	  </pre>
+	  Below is the command to compare the old tree and the new tree:
+	  <pre>
+	    diff -r -I '$Id:' -x alljtests.tcl -x allsimplejtests.tcl -x '*.jar' -x codeDoc -x '*.out' -x .svn -x '*.class' ~/ptII ~/src/ptII10.0.beta >& /tmp/pt.diffs
+	  </pre>
+	</li>
+
+	<li> Under Windows, build the installer.
+	  <pre>
+	    cd $PTII
+	    make exes
+	    cd $PTII/adm/gen-<i>x.y</i>
+	    make setup
+	  </pre>
+	</li>
+
+	<li> <a href="testing.htm#installer">Test the installer</a>
+	</li>
 </ol>
 
 
