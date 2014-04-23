@@ -796,11 +796,16 @@ public class Simulator extends SDFTransformer {
             _simulatorWorkingDirs.remove(worDir);
         }
         try {
-            // Send signal to the client, indicating that we are done with the time stepping.
-            // This allows the client to terminate gracefully.
-            server.write(1, tokTim, dblWri);
-            // Close the server.
-            server.close();
+            // Send signal to the client, indicating that we are done
+            // with the time stepping.  This allows the client to
+            // terminate gracefully.
+
+            // Server can be null if we are exporting to JNLP.
+            if (server != null) {
+                server.write(1, tokTim, dblWri);
+                // Close the server.
+                server.close();
+            }
         } catch (IOException e) {
             if (!clientTerminated) {
                 throw new IllegalActionException(this, e, e.getMessage());
