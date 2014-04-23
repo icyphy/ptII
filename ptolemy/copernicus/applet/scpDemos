@@ -9,6 +9,7 @@ demos=`cd $PTII/ptolemy/configs/doc; make --no-print-directory listDemos |  egre
 
 #demos=../../../ptolemy/domains/ddf/demo/IfThenElse/IfThenElseFSM.xml
 demos=../../../ptolemy/actor/gt/demo/BouncingBallX2/BouncingBallX2.xml 
+#demos=../../../lbnl/demo/SystemCommand/SystemCommand.xml
 for demo in $demos
 do
      model=`basename $demo .xml` 

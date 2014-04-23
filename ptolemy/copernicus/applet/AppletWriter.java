@@ -1733,13 +1733,14 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
                     "lib/jython.jar");
         }
 
-        // actor.lib.database and domains.space require ojdbc6.jar
+        // actor.lib.database and domains.space require
+        // mysql-connector-java-5.1.6-bin.jar
         if (jarFilesThatHaveBeenRequired.contains(databaseJar)) {
-            auxiliaryClassMap.put("database jar needs ojdbc6 jar",
-                    "ptolemy/actor/lib/database/ojdbc6.jar");
+            auxiliaryClassMap.put("database jar needs mysql-connector-java-5.1.6-bin.jar",
+                    "ptolemy/actor/lib/database/mysql-connector-java-5.1.6-bin.jar");
         } else if (jarFilesThatHaveBeenRequired.contains(spaceJar)) {
-            auxiliaryClassMap.put("space jar needs ojdbc6 jar",
-                    "ptolemy/actor/lib/database/ojdbc6.jar");
+            auxiliaryClassMap.put("database jar needs mysql-connector-java-5.1.6-bin.jar",
+                    "ptolemy/actor/lib/database/mysql-connector-java-5.1.6-bin.jar");
         }
 
         if (jarFilesThatHaveBeenRequired

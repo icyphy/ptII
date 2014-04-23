@@ -213,7 +213,11 @@ $(HTML_MODEL_JNLP):
 	#
 	# mk/jnlp.mk: HTML_MODEL rule. Exporting $(JNLP_MODEL).xml to html.
 	#
-	(cd $(PTII)/$(TARGETPATH); $(PTII)/bin/ptinvoke -Dptolemy.ptII.exportHTML.linkToJNLP=true -Dptolemy.ptII.exportHTML.usePtWebsite=true ptolemy.vergil.basic.export.ExportModel $(EXPORT_HTML_RUN) -force -whiteBackground -openComposites htm $(MODEL).xml; find $(MODEL) -name "*.htm*" -exec chmod a+x {} \;)
+	# Note that it is better to run (cd $PTII; ant test.longest)
+	# and avoid attempting to run demos that do not work, see
+	# ptolemy/vergil/basic/export/test/junit/ExportModelJUnitTest.java
+	#
+	#(cd $(PTII)/$(TARGETPATH); $(PTII)/bin/ptinvoke -Dptolemy.ptII.exportHTML.linkToJNLP=true -Dptolemy.ptII.exportHTML.usePtWebsite=true ptolemy.vergil.basic.export.ExportModel $(EXPORT_HTML_RUN) -force -whiteBackground -openComposites htm $(MODEL).xml; find $(MODEL) -name "*.htm*" -exec chmod a+x {} \;)
 
 
 
