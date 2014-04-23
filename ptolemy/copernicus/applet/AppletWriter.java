@@ -29,6 +29,7 @@ package ptolemy.copernicus.applet;
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.BufferedWriter;
+import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -46,6 +47,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
+import java.util.jar.Attributes;
 import java.util.jar.JarEntry;
 import java.util.jar.JarInputStream;
 import java.util.jar.JarOutputStream;
@@ -1914,7 +1916,7 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
     private void _createJarFile(File jarFile, File optionalJarFile,
             String[] jarFileNames, File[] filesToBeJared) throws Exception {
 
-        System.out.println("AppletWriter: _createJarFile" + jarFile + " "
+        System.out.println("AppletWriter: _createJarFile " + jarFile + " "
                 + jarFile.exists() + " " + optionalJarFile + " "
                 + optionalJarFile.exists());
         byte buffer[] = new byte[1024];
@@ -1928,12 +1930,22 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
         JarOutputStream jarOutputStream = null;
         String outputJarFileName = jarFile.getCanonicalPath();
 
-        try {
+	// In 2014, signed jar files need a manifest that has a
+	// Permissions attribute.  See
+	// http://docs.oracle.com/javase/tutorial/deployment/jar/secman.html
+	// http://docs.oracle.com/javase/7/docs/technotes/guides/jweb/security/manifest.html#permissions
+	// http://docs.oracle.com/javase/tutorial/deployment/jar/modman.html
+	Manifest manifest = new Manifest();
+	Attributes jarAttributes = manifest.getMainAttributes();
+        jarAttributes.put(Attributes.Name.MANIFEST_VERSION, "1.0.0");
+        jarAttributes.put(new Attributes.Name("Application-Name"), "Ptolemy II");
+        jarAttributes.put(new Attributes.Name("Permissions"), "all-permissions");
 
+        try {
             if (!jarFile.exists() && !optionalJarFile.exists()) {
                 outputStream = new FileOutputStream(jarFile);
                 jarOutputStream = new JarOutputStream(outputStream,
-                        new Manifest());
+						      manifest);
             } else {
                 // One of the input jar files exist, so we read in the entries and write them
                 // to a temporary file.
@@ -1946,7 +1958,7 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
                 outputJarFileName = temporaryJarFileName.getCanonicalPath();
                 outputStream = new FileOutputStream(temporaryJarFileName);
                 jarOutputStream = new JarOutputStream(outputStream,
-                        new Manifest());
+						      manifest);
             }
 
             // Add the files first so that JNLP-INF/APPLICATION.JNLP is early in the file.
