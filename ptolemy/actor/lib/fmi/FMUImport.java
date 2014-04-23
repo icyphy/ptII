@@ -1693,7 +1693,7 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
     public void wrapup() throws IllegalActionException {
         _checkFmiCommon();
 
-        _fmiTerminate();
+	_fmiTerminate();
         _fmiFreeInstance();
         _freeFMUState();
 
@@ -2225,6 +2225,7 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
         if (_debugging) {
             _debugToStdOut("Initialized FMU.");
         }
+	_modelInitialized = true;
     }
 
     /** For model exchange, set the continuous states of the FMU to the specified array.
@@ -2309,9 +2310,19 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
      *  @exception IllegalActionException If the FMU does not return fmiOK.
      */
     protected void _fmiTerminate() throws IllegalActionException {
+	// Generating WebStart calls wrapup() after preinitialize(),
+	// so the model might not have been initialized.
+	if (!_modelInitialized) {
+	    if (_debugging) {
+		_debugToStdOut("The model was *not* initialized, so fmiTerminate does nothing.");
+	    }
+	    return;
+	}
+
         if (_debugging) {
             _debugToStdOut("Terminating the FMU.");
         }
+
         int fmiFlag = 0;
         if (_fmiModelDescription.modelExchange) {
             fmiFlag = ((Integer) _fmiTerminateFunction
@@ -2469,7 +2480,7 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
                     Time fireAtTime = currentTime.add(stepSize);
                     director.fireAt(this, fireAtTime);
                     if (_debugging) {
-                        _debug("FMU requests a maximum step size of "
+                        _debug(getFullName() + ": FMU requests a maximum step size of "
                                 + stepSize + " at time " + currentTime
                                 + ", which becomes a fireAt request at time "
                                 + fireAtTime);
@@ -3247,6 +3258,9 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
 
     /** The microstep at which the last fire occurred. */
     private int _lastFireMicrostep;
+
+    /** True if _fmiInitialize() completed. */
+    private boolean _modelInitialized = false;
 
     /** The library of native binaries for the FMU C functions. */
     private NativeLibrary _nativeLibrary;
