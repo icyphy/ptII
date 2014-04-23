@@ -91,6 +91,7 @@ public class TestExceptionAttribute extends AbstractInitializableAttribute
         trainingMode = new SharedParameter(this, "trainingMode", getClass(),
                 "false");
         trainingMode.setTypeEquals(BaseType.BOOLEAN);
+        _ranInitialize = false;
         _invoked = false;
 
         // In order for this to show up in the vergil library, it has to have
@@ -133,6 +134,7 @@ public class TestExceptionAttribute extends AbstractInitializableAttribute
     /** Initialize. */
     public void initialize() throws IllegalActionException {
         super.initialize();
+        _ranInitialize = true;
         _invoked = false;
     }
 
@@ -206,9 +208,18 @@ public class TestExceptionAttribute extends AbstractInitializableAttribute
             }
         }
         if (!_invoked) {
-            throw new IllegalActionException(this, " should "
-                    + "have handled an exception but did not see any.");
+            if (_ranInitialize) {
+                throw new IllegalActionException(this, " was initialized and "
+                        + "should "
+                        + "have handled an exception but did not see any.");
+            } else {
+                System.out.println(getFullName() + ": initialize() was not "
+                        + "invoked, but wrapup() was.  This is unusual, but "
+                        + "not always a problem.  For example, exporting "
+                        + "JNLP will do this.");
+            }
         } else {
+            _ranInitialize = false;
             _invoked = false;
         }
     }
@@ -231,4 +242,10 @@ public class TestExceptionAttribute extends AbstractInitializableAttribute
     ////                         private variables                 ////
 
     private boolean _invoked = false;
+
+    /** True if initialize() was invoked.
+     *  Exporting to JNLP can result in preinitialize() being invoked
+     *  and then wrapup().
+     */
+    private boolean _ranInitialize = false;
 }
