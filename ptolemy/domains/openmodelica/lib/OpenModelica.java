@@ -411,9 +411,13 @@ public class OpenModelica extends TypedAtomicActor {
     public void wrapup() throws IllegalActionException {
         super.wrapup();
         try {
-            _omcCommand.stopServer();
-            String loggerInfo = "OpenModelica Server stopped!";
-            _omcLogger.getInfo(loggerInfo);
+	    // Generating WebStart calls wrapup() after preinitialize(),
+	    // so the model might not have been initialized.
+	    if (_omcCommand != null) {
+		_omcCommand.stopServer();
+		String loggerInfo = "OpenModelica Server stopped!";
+		_omcLogger.getInfo(loggerInfo);
+	    }
         } catch (ConnectException e) {
             // FIXME org.omg.CORBA.COMM_FAILURE:
             // vmcid: SUN  minor code: 211  completed: No : Unable to send quit()
