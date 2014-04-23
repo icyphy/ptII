@@ -294,8 +294,13 @@ public class HttpActor extends TypedAtomicActor implements HttpService {
         if (attribute == path) {
             String pathValue = ((StringToken) path.getToken()).stringValue();
             try {
+                // Path should start with a "/", or be "*"
                 if (!pathValue.trim().equals("")) {
-                    _URIpath = URI.create(pathValue);
+                    if (!pathValue.trim().startsWith("/")) {
+                        _URIpath = URI.create("/" + pathValue);
+                    } else {
+                        _URIpath = URI.create(pathValue);
+                    }
                 } else {
                     _URIpath = URI.create("/*");
                 }
@@ -347,7 +352,7 @@ public class HttpActor extends TypedAtomicActor implements HttpService {
         if (_debugging) {
             _debug("*** Creating new servlet.");
         }
-        // The relative path for the servlet is calculated in preinitialize
+        // The relative path for the servlet is calculated in attributeChanged()
         // since the path might not be a valid URI and could throw an exception
         // The getServlet() method does not throw an exception
         return new ActorServlet();

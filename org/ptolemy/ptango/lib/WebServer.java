@@ -351,7 +351,13 @@ public class WebServer extends AbstractInitializableAttribute {
 
         String applicationPathString = "/";
         if (applicationPath != null) {
-            applicationPathString = applicationPath.getExpression();
+            
+            // Application path must begin with an "/"; add one if missing
+            if (applicationPath.getExpression().startsWith("/")) {
+                applicationPathString = applicationPath.getExpression();
+            } else {
+                applicationPathString = "/" + applicationPath.getExpression();
+            }
         }
 
         // Assemble info about this model into a WebApplicationInfo object
@@ -389,6 +395,7 @@ public class WebServer extends AbstractInitializableAttribute {
 
                 // Add this path to the list of servlet paths
                 URI path = service.getRelativePath();
+                
                 try {
                     _appInfo.addServletInfo(path, service.getServlet());
                 } catch (Exception e) {
