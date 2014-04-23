@@ -49,13 +49,12 @@ PTPACKAGE = 	demo
 #PTCLASSJAR =	$(PTPACKAGE).jar
 
 # Include these jars in PTAUXALLJAR
-PTAUXALLJARS = \ 
+PTAUXALLJARS = \
 	MultiRobotIntruderTracking/MultiRobotIntruderTracking.jar \
 	OnlineTrajectoryOptimization/OnlineTrajectoryOptimization.jar \
 	OpenLoopSingleRobotTargetLocalization/OpenLoopSingleRobotTargetLocalization.jar \
 	OpenLoopTwoRobotTargetLocalization/OpenLoopTwoRobotTargetLocalization.jar \
 	ParticleFilterRange/ParticleFilterRange.jar
-	
 
 PTAUXALLJAR = $(PTPACKAGE).jar
 
