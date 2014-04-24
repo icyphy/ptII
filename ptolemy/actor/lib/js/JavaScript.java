@@ -208,7 +208,9 @@ public class JavaScript extends TypedAtomicActor {
             throws NameDuplicationException, IllegalActionException {
         super(container, name);
         
+        initialize = new StringAttribute(this, "initialize");
         script = new StringAttribute(this, "script");
+        wrapup = new StringAttribute(this, "wrapup");
 
         // Set the visibility to expert, as casual users should
         // not see the script.  This is particularly true if one
@@ -236,16 +238,22 @@ public class JavaScript extends TypedAtomicActor {
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
     
-    /** The script. */
+    /** The script to execute when this actor initializes. */
+    public StringAttribute initialize;
+
+    /** The script to execute when this actor fires. */
     public StringAttribute script;
     
-    /** Alternative way to provide a script.
+    /** Alternative way to provide a script to execute when this actor fires.
      *  This input port has type string.
      *  If this is connected and provided an input, then the
      *  script provided as input is executed instead of the one given
      *  by the script parameter.
      */
     public TypedIOPort scriptIn;
+
+    /** The script to execute when this actor wraps up execution. */
+    public StringAttribute wrapup;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -305,7 +313,13 @@ public class JavaScript extends TypedAtomicActor {
         	_scope.put(parameter.getName(), _scope, jsObject);
         }
         
-        // Compile the script.
+        // Execute the initialize script.
+        String initializeScript = initialize.getValueAsString();
+        if (initializeScript.trim().length() != 0) {
+        	_context.evaluateString(_scope, initializeScript, "initialize", 1, null);
+        }
+        
+        // Compile the script to execute at run time.
         String scriptValue = script.getValueAsString();
         _compiledScript = _context.compileString(scriptValue, getName(), 1, null);
     }
@@ -413,6 +427,12 @@ public class JavaScript extends TypedAtomicActor {
      */
     @Override
     public void wrapup() throws IllegalActionException {
+        // Execute the wrapup script.
+        String wrapupScript = wrapup.getValueAsString();
+        if (wrapupScript.trim().length() != 0) {
+        	_context.evaluateString(_scope, wrapupScript, "initialize", 1, null);
+        }
+
     	// FIXME: Why is this static??
     	Context.exit();
     	super.wrapup();
