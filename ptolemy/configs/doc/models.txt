@@ -83,6 +83,13 @@ $CLASSPATH/ptolemy/cg/lib/demo/ModularCGPubSub/ModularCGPubSub.xml
 $CLASSPATH/ptolemy/domains/wireless/demo/WirelessSoundDetection/WirelessSoundDetection.xml
 $CLASSPATH/ptolemy/domains/gr/demo/StickyMasses/StickyMasses.xml
 $CLASSPATH/ptolemy/domains/csp/demo/Barrier/Barrier.xml
+$CLASSPATH/org/ptolemy/machineLearning/particleFilter/demo/OnlineTrajectoryOptimization/DistributedOnlineTrajectoryOptimization.xml
+$CLASSPATH/org/ptolemy/machineLearning/particleFilter/demo/OnlineTrajectoryOptimization/OnlineTrajectoryOptimization.xml
+$CLASSPATH/org/ptolemy/machineLearning/particleFilter/demo/OpenLoopSingleRobotTargetLocalization/OpenLoopSingleRobotTargetLocalization.xml
+$CLASSPATH/org/ptolemy/machineLearning/particleFilter/demo/OpenLoopTwoRobotTargetLocalization/JointParticleFilter.xml
+$CLASSPATH/org/ptolemy/machineLearning/particleFilter/demo/OpenLoopTwoRobotTargetLocalization/OpenLoopTwoRobotTargetLocalization.xml
+$CLASSPATH/org/ptolemy/optimization/demo/LinearRegression/LinearRegression.xml
+$CLASSPATH/org/ptolemy/optimization/demo/SimpleOptimization/SimpleOptimization.xml
 $CLASSPATH/org/ptolemy/ptango/demo/Cookies/Cookies.xml
 $CLASSPATH/ptolemy/domains/sdf/optimize/demo/SDFOptimize/SDFOptimize.xml
 $CLASSPATH/ptolemy/domains/continuous/demo/HybridPlant/HybridPlant.xml
