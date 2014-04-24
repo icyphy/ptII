@@ -231,8 +231,9 @@ public class JavaScript extends TypedAtomicActor {
         // initialize the script to provide an empty template:
         script.setExpression("// Put your JavaScript program here.\n"
         		+ "// Add ports and parameters.\n"
-        		+ "// Refer to input ports and parameters by name.\n"
-        		+ "// Send to output ports using send(port,value).\n");
+        		+ "// Use valueOf(parameterName) to refer to parameters.\n"
+        		+ "// Use get(parameterName, channel) to read inputs.\n"
+        		+ "// Send to output ports using send(value, portName, channel).\n");
     }
 
     ///////////////////////////////////////////////////////////////////
