@@ -3419,6 +3419,11 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
             platform = "Mac OS X";
         }
 
+        if (platform.equals("Mac OS X")) {
+            addInclude("-I\"" + javaHome + "/include/darwin\"");
+        }
+
+
         String jvmLoaderDirective = "-ljvm";
         String libjvmAbsoluteDirectory = "";
         if (platform.equals("win32")) {

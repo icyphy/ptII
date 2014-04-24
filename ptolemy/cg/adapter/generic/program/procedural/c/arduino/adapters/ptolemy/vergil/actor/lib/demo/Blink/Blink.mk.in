@@ -136,11 +136,13 @@ $(MODELNAME).cpp: $(MODELNAME)_Main.c
 	cp $(MODELNAME)_Main.c $@
 
 SERIAL_PORT=/dev/tty.usbmodem1421
+AVRDUDE = $(AVR_BIN)/avrdude
+AVRCONF = $(AVR_BASE)/tools/avr/etc/avrdude.conf
 run:
 	stty -f $(SERIAL_PORT)
 	sleep 1
 	# Then run the avrdude command
-	avrdude...
+	$(AVRDUDE) -C $(AVRCONF) -v -v -v -v -p m32u4 -c avr109 -P $(SERIAL_PORT) -b 57600 -D -U flash:w:$(MODELNAME).hex:i
 
 # Other Targets
 clean:
