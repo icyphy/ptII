@@ -1246,12 +1246,19 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
 
         if (_isTopLevel()) {
             if (((BooleanToken) run.getToken()).booleanValue()) {
-                String command = codeDirectory.stringValue()
+		String runCommandValue = runCommand.stringValue();
+		// If the runCommand parameter is empty, then execute the command,
+		// otherwise execute value of the runCommand parameter.
+		if (runCommandValue.equals("")) {
+		    String command = codeDirectory.stringValue()
                         + (!codeDirectory.stringValue().endsWith("/")
-                                && !codeDirectory.stringValue().endsWith("\\") ? "/"
-                                : "") + _sanitizedModelName;
-
-                commands.add("\"" + command.replace('\\', '/') + "\"");
+			   && !codeDirectory.stringValue().endsWith("\\") ? "/"
+			   : "") + _sanitizedModelName;
+		    
+		    commands.add("\"" + command.replace('\\', '/') + "\"");
+		} else {
+		    commands.add(runCommandValue);
+		}
             }
         }
 
