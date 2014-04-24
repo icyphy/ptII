@@ -63,6 +63,7 @@ UI_FILES_TO_BE_JARED = \
 	authors.htm \
 	copernicus.htm \
 	default.css \
+	demoLink.js \
 	deployJava.js \
 	deployJavaJNLP.js \
 	expressions.htm \
