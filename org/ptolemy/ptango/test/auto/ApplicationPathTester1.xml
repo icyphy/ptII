@@ -4,7 +4,7 @@
 <entity name="ApplicationPathTester1" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="10.0.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={16, 8, 1311, 698}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 0, 1280, 676}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1083, 581]">
     </property>
@@ -548,6 +548,14 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="[75.0, 185.0]">
             </property>
         </property>
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={180, 56, 920, 607}, maximized=false}">
+        </property>
+        <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[700, 500]">
+        </property>
+        <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+        </property>
+        <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{342.0, 429.0}">
+        </property>
         <port name="start" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
@@ -787,11 +795,11 @@
             </entity>
         </entity>
         <entity name="Test" class="ptolemy.actor.lib.Test">
-            <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{&quot;&lt;!DOCTYPE html&gt;\r\n&lt;html&gt;\r\n &lt;head&gt; \r\n  &lt;meta charset=\&quot;utf-8\&quot; &gt; \r\n  &lt;title&gt;Application Path Test&lt;/title&gt; \r\n &lt;/head&gt; \r\n &lt;body&gt; \r\n  &lt;div id=\&quot;message\&quot;&gt;\r\n   Servlet 1 \r\n  &lt;/div&gt;   \r\n &lt;/body&gt;\r\n&lt;/html&gt;\r\n&quot;}">
+            <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{&quot;&lt;!DOCTYPE html&gt;\n&lt;html&gt;\n &lt;head&gt; \n  &lt;meta charset=\&quot;utf-8\&quot; &gt; \n  &lt;title&gt;Application Path Test&lt;/title&gt; \n &lt;/head&gt; \n &lt;body&gt; \n  &lt;div id=\&quot;message\&quot;&gt;\n   Servlet 1 \n  &lt;/div&gt;   \n &lt;/body&gt;\n&lt;/html&gt;\n&quot;}">
             </property>
-            <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
+            <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="true">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[295.0, 285.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[380.0, 265.0]">
             </property>
         </entity>
         <entity name="Test2" class="ptolemy.actor.lib.Test">
@@ -843,6 +851,15 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="[545.0, 610.0]">
             </property>
         </entity>
+        <entity name="StringReplace" class="ptolemy.actor.lib.string.StringReplace">
+            <property name="pattern" class="ptolemy.actor.parameters.PortParameter" value="\r">
+            </property>
+            <property name="stringToEdit" class="ptolemy.actor.parameters.PortParameter" value="&lt;!DOCTYPE html&gt;&#13;&#10;&lt;html&gt;&#13;&#10; &lt;head&gt; &#13;&#10;  &lt;meta charset=&quot;utf-8&quot; &gt; &#13;&#10;  &lt;title&gt;Application Path Test&lt;/title&gt; &#13;&#10; &lt;/head&gt; &#13;&#10; &lt;body&gt; &#13;&#10;  &lt;div id=&quot;message&quot;&gt;&#13;&#10;   Servlet 1 &#13;&#10;  &lt;/div&gt;   &#13;&#10; &lt;/body&gt;&#13;&#10;&lt;/html&gt;&#13;&#10;">
+            </property>
+            <doc>Replace the patterns that match a regular expression</doc>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[290.0, 265.0]">
+            </property>
+        </entity>
         <relation name="relation" class="ptolemy.actor.TypedIORelation">
             <vertex name="vertex1" value="[225.0, 325.0]">
             </vertex>
@@ -875,6 +892,8 @@
         </relation>
         <relation name="relation9" class="ptolemy.actor.TypedIORelation">
         </relation>
+        <relation name="relation10" class="ptolemy.actor.TypedIORelation">
+        </relation>
         <link port="start" relation="relation2"/>
         <link port="done" relation="relation9"/>
         <link port="ThreadedComposite.output" relation="relation"/>
@@ -891,7 +910,7 @@
         <link port="ThreadedComposite6.trigger" relation="relation6"/>
         <link port="ThreadedComposite7.output" relation="relation8"/>
         <link port="ThreadedComposite7.trigger" relation="relation7"/>
-        <link port="Test.input" relation="relation"/>
+        <link port="Test.input" relation="relation10"/>
         <link port="Test2.input" relation="relation3"/>
         <link port="Test3.input" relation="relation4"/>
         <link port="Test4.input" relation="relation5"/>
@@ -900,6 +919,8 @@
         <link port="Test7.input" relation="relation8"/>
         <link port="Const.output" relation="relation9"/>
         <link port="Const.trigger" relation="relation8"/>
+        <link port="StringReplace.stringToEdit" relation="relation"/>
+        <link port="StringReplace.output" relation="relation10"/>
     </entity>
     <entity name="RecordAssembler" class="ptolemy.actor.lib.RecordAssembler">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[450.0, 255.0]">
