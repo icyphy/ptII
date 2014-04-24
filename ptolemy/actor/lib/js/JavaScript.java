@@ -27,8 +27,13 @@
  */
 package ptolemy.actor.lib.js;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.lang.reflect.Member;
 import java.lang.reflect.Method;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
@@ -47,6 +52,7 @@ import org.mozilla.javascript.WrappedException;
 
 import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.TypedIOPort;
+import ptolemy.actor.parameters.PortParameter;
 import ptolemy.data.ActorToken;
 import ptolemy.data.ArrayToken;
 import ptolemy.data.BooleanToken;
@@ -67,6 +73,7 @@ import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.StringAttribute;
 import ptolemy.util.MessageHandler;
+import ptolemy.util.StringUtilities;
 
 ///////////////////////////////////////////////////////////////////
 //// JavaScript
@@ -97,6 +104,7 @@ import ptolemy.util.MessageHandler;
  <li> error(string): throw an IllegalActionException with the specified message.
  <li> get(port, n): get an input from a port on channel n (return null if there is no input).
  <li> print(string): print the specified string to the console (standard out).
+ <li> readURL(string): read the specified URL and return its contents as a string.
  <li> send(value, port, n): send a value to an output port on channel n
  <li> valueOf(parameter): retrieve the value of a parameter.
  </ul>
@@ -249,6 +257,11 @@ public class JavaScript extends TypedAtomicActor {
     @Override
     public void fire() throws IllegalActionException {
         super.fire();
+        
+        // Update any port parameters that have been added.
+        for (PortParameter portParameter : attributeList(PortParameter.class)) {
+        	portParameter.update();
+        }
                 
         // If there is an input at scriptIn, evaluate that script instead.
         try {
@@ -359,6 +372,13 @@ public class JavaScript extends TypedAtomicActor {
 
 			// Create the print() method.
 	        methodName = "print";
+			scriptableInstanceMethod = PtolemyJavaScript.class.getMethod(methodName, new Class[]{String.class});
+	        scriptableFunction = new PtolemyFunctionObject(methodName, scriptableInstanceMethod, scriptable);
+	        // Make it accessible within the scriptExecutionScope.
+	        _scope.put(methodName, _scope, scriptableFunction);
+
+			// Create the readURL() method.
+	        methodName = "readURL";
 			scriptableInstanceMethod = PtolemyJavaScript.class.getMethod(methodName, new Class[]{String.class});
 	        scriptableFunction = new PtolemyFunctionObject(methodName, scriptableInstanceMethod, scriptable);
 	        // Make it accessible within the scriptExecutionScope.
@@ -504,6 +524,26 @@ public class JavaScript extends TypedAtomicActor {
     	/** Print a message to standard out. */
     	public void print(String message) {
     		System.out.println(message);
+    	}
+    	
+    	/** Read the specified URL and return its contents
+    	 *  @param url The URL to read.
+    	 * @throws IOException 
+    	 */
+    	public String readURL(String url) throws IOException {
+    		URL theURL = new URL(url);
+    		InputStream stream = theURL.openStream();
+    		// FIXME: Should provide a characterset optional second argument.
+    		// This is supported by InputStreamReader.
+    		BufferedReader reader = new BufferedReader(new InputStreamReader(stream));
+    		StringBuffer result = new StringBuffer();
+    		String line = reader.readLine();
+    		while (line != null) {
+    			result.append(line);
+        		result.append(StringUtilities.LINE_SEPARATOR);
+    			line = reader.readLine();
+    		}
+    		return result.toString();
     	}
 
     	/** Send outputs via an output port.
