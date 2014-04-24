@@ -1,0 +1,74 @@
+#!/bin/sh
+# $Id$
+# Script to create calls to demoLink JavaScript function that will link
+# to JNLP and Export-to-Web output on the website.
+
+toc=$1
+
+if [ ! -f $1 ]; then
+   echo "$0: Usage: $0 toc.htm, where toc.htm is relative to $PTII"
+   exit
+fi
+
+tocdir=`dirname $toc`
+
+
+awk -v tocdir=$tocdir ' $0 ~ /demo/ {
+    indent = ""
+    if ($0 ~ /<br>&nbsp;</ || $0 ~ /<br\/>&nbsp;</ ) {
+       indent="&nbsp;"
+    }
+    if ($0 ~ /<br>&nbsp;&nbsp;</ || $0 ~ /<br\/>&nbsp;&nbsp;</ ) {
+       indent="&nbsp;&nbsp;"
+    }
+
+    # Find the target URL
+    startString = "<a href=\""
+    start = index($0, startString)
+    end = index($0, "\" target=\"main\">")
+    startTarget = start + length(startString)
+    target=substr($0, startTarget, end - startTarget)
+
+    # Determine absolute path to URL
+
+    # Remove any relative paths
+    relatives = 0
+    newURL = ""
+    newToc = ""
+    nt = split(target, t, "/")
+    for (i = 2; i <= nt; i++) {
+        if (t[i] == "..") {
+	   relatives++
+        } else {
+           newURL = newURL "/" t[i]
+        }
+    }
+
+    # Remove directories that are relative to tocdir
+    ntoc = split(tocdir, tocs, "/");
+    newToc = tocs[1]
+    for (i = 2; i < ntoc - relatives; i++) {
+        newToc = newToc "/" tocs[i]
+    }
+    # print relatives "newToc: " newToc, "newURL: " newURL
+    
+    url= newToc newURL
+
+    if (url ~ /\.htm$/) {
+        url = substr(url, 1, length(url) - 4)
+    }
+
+    if (url !~ /\$/) {
+        url = url "/"
+    }
+
+    # Get the description
+    targetString = "target=\"main\">"
+    end = index($0, targetString)
+    endTarget = end + length(targetString)
+    closeTag = index($0, "</a>")
+
+    description = substr($0, endTarget, closeTag - endTarget)
+
+    print "demoLink(\"" indent "\", \"" url "\", \"" description "\");"
+}' $toc
