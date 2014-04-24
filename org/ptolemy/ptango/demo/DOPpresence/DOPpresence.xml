@@ -4,13 +4,13 @@
 <entity name="DOPpresence" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="10.0.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={-26, 56, 1363, 650}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={44, 22, 1236, 778}, maximized=true}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1135, 533]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1002, 668]">
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.6254506284910135">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.9432674848841621">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{913.9000471105522, 288.5913944723618}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{539.831758168693, 342.31884765625}">
     </property>
     <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
         <property name="stopWhenQueueIsEmpty" class="ptolemy.data.expr.Parameter" value="false">
@@ -35,7 +35,7 @@
     <property name="WebServer" class="org.ptolemy.ptango.lib.WebServer">
         <property name="resourceLocation" class="ptolemy.data.expr.FileParameter" value="$PTII/org/ptolemy/ptango/demo/DOPpresence/pages">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{930.0, 45.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[670.0, 40.0]">
         </property>
     </property>
     <property name="enableBackwardTypeInference" class="ptolemy.data.expr.Parameter" value="false">
@@ -43,22 +43,22 @@
     <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="GET request:  Return welcome page">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{320.0, 155.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[285.0, 135.0]">
         </property>
     </property>
     <property name="Annotation4" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="POST request:  Return true/false success status and info message&#10; Also, if successful, send mail to dopresence@embedded.eecs.berkeley.edu&#10; Perform case-insensitive check, since iPad auto-capitalizes first letter&#10;">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[320.0, 190.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[280.0, 175.0]">
         </property>
     </property>
     <property name="Annotation7" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="File containing password is at:&#10;$HOME/.DOPMailPassword.txt&#10;&#10;IMPORTANT!  Right click on SendMail actor -&gt; check &quot;reallySendMail&quot;&#10;Check your SPAM folder for mail&#10;&#10;enableSSL is checked, as both Berkeley mail and Gmail require this.&#10;Berkeley SMTP info:&#10;https://calmail.berkeley.edu/docs/client.html&#10;&#10;Gmail SMTP info:&#10;http://email.about.com/od/accessinggmail/f/Gmail_SMTP_Settings.htm&#10;&#10;&#10;">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Email: Create file containing password at:&#10;$HOME/.DOPMailPassword.txt&#10;(password: !@#%qwer for terraswarmlab@gmail.com )&#10;&#10;IMPORTANT!  Right click on SendMail actor -&gt; check &quot;reallySendMail&quot;&#10;Check your SPAM folder for mail&#10;&#10;enableSSL is checked, as both Berkeley mail and Gmail require this.&#10;Berkeley SMTP info:&#10;https://calmail.berkeley.edu/docs/client.html&#10;&#10;Gmail SMTP info:&#10;http://email.about.com/od/accessinggmail/f/Gmail_SMTP_Settings.htm&#10;&#10;&#10;">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[1650.0, 860.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[10.0, 470.0]">
         </property>
     </property>
-    <property name="username" class="ptolemy.data.expr.Parameter" value="&quot;test&quot;">
+    <property name="username" class="ptolemy.data.expr.Parameter" value="&quot;cxh&quot;">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -74,10 +74,10 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[615.0, 95.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[45.0, 150.0]">
         </property>
     </property>
-    <property name="doorCode" class="ptolemy.data.expr.Parameter" value="&quot;code&quot;">
+    <property name="doorCode" class="ptolemy.data.expr.Parameter" value="&quot;1016&quot;">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -93,13 +93,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[615.0, 115.0]">
-        </property>
-    </property>
-    <property name="Annotation6" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="RecordAssembler2: &#10;Make sure both username &#10;and doorcode are set &#10;before querying db">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[385.0, 400.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[45.0, 170.0]">
         </property>
     </property>
     <property name="Annotation5" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -108,64 +102,14 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[270.0, 65.0]">
         </property>
     </property>
-    <property name="Annotation8" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="TODO:  Would like to use realname here.  But, run-time type checking problem.">
+    <property name="Annotation6" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Database: Create file containing password at:&#10;$HOME/cat .databasePassword.txt &#10;(user: ptolemy  password: Ber3$5ke^7*ley)&#10;&#10;See also:&#10;http://embedded.eecs.berkeley.edu/dopresence/wiki/Main/Database">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[1165.0, 195.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[535.0, 585.0]">
         </property>
     </property>
-    <entity name="FileReader" class="ptolemy.actor.lib.io.FileReader">
-        <property name="fileOrURL" class="ptolemy.data.expr.FileParameter" value="pages/welcome.html">
-        </property>
-        <doc>Read an entire file and output as a string</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[239.5, 230.0]">
-        </property>
-    </entity>
-    <entity name="HttpActor" class="org.ptolemy.ptango.lib.HttpActor">
-        <property name="path" class="ptolemy.data.expr.StringParameter" value="/dop">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[75.0, 250.0]">
-        </property>
-        <port name="postParameters" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-            <property name="_type" class="ptolemy.actor.TypeAttribute" value="{username=string,doorcode=string}">
-            </property>
-        </port>
-    </entity>
-    <entity name="MicrostepDelay" class="ptolemy.actor.lib.MicrostepDelay">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[79.5, 175.0]">
-        </property>
-        <port name="input" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="EAST">
-            </property>
-        </port>
-        <port name="output" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-            <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="WEST">
-            </property>
-        </port>
-    </entity>
-    <entity name="RecordDisassembler" class="ptolemy.actor.lib.RecordDisassembler">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[77.75701904296875, 385.7586669921875]">
-        </property>
-        <port name="username" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
-            </property>
-            <property name="_type" class="ptolemy.actor.TypeAttribute" value="string">
-            </property>
-        </port>
-        <port name="doorcode" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
-            </property>
-            <property name="_type" class="ptolemy.actor.TypeAttribute" value="string">
-            </property>
-        </port>
-    </entity>
     <entity name="MicrostepDelay2" class="ptolemy.actor.lib.MicrostepDelay">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[172.72079467773438, 586.6887817382812]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[375.0, 275.0]">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -177,411 +121,756 @@
             <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="WEST">
             </property>
         </port>
-    </entity>
-    <entity name="BooleanSwitch" class="ptolemy.actor.lib.BooleanSwitch">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[877.4713745117188, 442.33595275878906]">
-        </property>
-    </entity>
-    <entity name="RecordAssembler" class="ptolemy.actor.lib.RecordAssembler">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[1610.0, 355.0]">
-        </property>
-        <port name="message" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
-            </property>
-        </port>
-        <port name="authorized" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
-            </property>
-        </port>
-    </entity>
-    <entity name="TokenToJSON" class="ptolemy.actor.lib.conversions.json.TokenToJSON">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[1790.0, 375.0]">
-        </property>
-    </entity>
-    <entity name="Discard" class="ptolemy.actor.lib.Discard">
-        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[920.0, 495.0]">
-        </property>
-        <port name="input" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="multiport"/>
-            <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="NORTH">
-            </property>
-        </port>
-    </entity>
-    <entity name="SendMail" class="ptolemy.actor.lib.mail.SendMail">
-        <property name="to" class="ptolemy.actor.parameters.PortParameter" value="dopresence@embedded.eecs.berkeley.edu">
-        </property>
-        <property name="cc" class="ptolemy.actor.parameters.PortParameter" value="">
-        </property>
-        <property name="from" class="ptolemy.actor.parameters.PortParameter" value="terraswarmlab@gmail.com">
-        </property>
-        <property name="subject" class="ptolemy.actor.parameters.PortParameter" value="[DOP main door] cxh entered">
-        </property>
-        <property name="message" class="ptolemy.actor.parameters.PortParameter" value="cxh entered the DOP Center using a door code.">
-        </property>
-        <property name="SMTPHostName" class="ptolemy.actor.parameters.PortParameter" value="smtp.gmail.com">
-        </property>
-        <property name="SMTPUserName" class="ptolemy.actor.parameters.PortParameter" value="terraswarmlab@gmail.com">
-        </property>
-        <property name="password" class="ptolemy.actor.parameters.PortParameter" value="!@#%qwer">
-        </property>
-        <property name="SMTPPort" class="ptolemy.actor.parameters.PortParameter" value="465">
-        </property>
-        <property name="enableSSL" class="ptolemy.data.expr.Parameter" value="true">
-        </property>
-        <property name="reallySendMail" class="ptolemy.data.expr.Parameter" value="false">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[1685.0, 485.0]">
-        </property>
-    </entity>
-    <entity name="Display" class="ptolemy.actor.lib.gui.Display">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={492, 404, 563, 246}, maximized=false}">
-        </property>
-        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[547, 186]">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[1785.0, 485.0]">
-        </property>
-    </entity>
-    <entity name="FileReader2" class="ptolemy.actor.lib.io.FileReader">
-        <property name="fileOrURL" class="ptolemy.data.expr.FileParameter" value="$HOME/.DOPMailPassword.txt">
-        </property>
-        <doc>Read an entire file and output as a string</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[1220.0, 540.0]">
-        </property>
-    </entity>
-    <entity name="StringFunction" class="ptolemy.actor.lib.string.StringFunction">
-        <doc>Trim a string, convert a string to uppercase, or convert a string to&#10;            lowercase depending on the user's selection.</doc>
-        <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
-            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="function">
-            </property>
-            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="11">
-            </property>
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[1330.0, 540.0]">
-        </property>
-    </entity>
-    <entity name="Expression3" class="ptolemy.actor.lib.Expression">
-        <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="username + &quot; entered the DOP Center using a door code.&quot;">
-        </property>
-        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
-            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
-            </property>
-            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
-            </property>
-            <property name="displayHeight" class="ptolemy.data.expr.Parameter" value="10">
-            </property>
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[1355.9375, 481.875]">
-        </property>
-        <port name="username" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
-            </property>
-        </port>
-    </entity>
-    <entity name="Expression4" class="ptolemy.actor.lib.Expression">
-        <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="&quot;[DOP main door] &quot; + username + &quot; entered&quot;">
-        </property>
-        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
-            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
-            </property>
-            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
-            </property>
-            <property name="displayHeight" class="ptolemy.data.expr.Parameter" value="10">
-            </property>
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[1315.0, 430.0]">
-        </property>
-        <port name="username" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
-            </property>
-        </port>
-    </entity>
-    <entity name="MicrostepDelay3" class="ptolemy.actor.lib.MicrostepDelay">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[970.0, 440.0]">
-        </property>
-    </entity>
-    <entity name="StringFunction2" class="ptolemy.actor.lib.string.StringFunction">
-        <property name="function" class="ptolemy.data.expr.Parameter" value="toLowerCase">
-        </property>
-        <doc>Trim a string, convert a string to uppercase, or convert a string to&#10;            lowercase depending on the user's selection.</doc>
-        <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
-            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="function">
-            </property>
-            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="11">
-            </property>
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[175.0, 345.0]">
-        </property>
     </entity>
     <entity name="DatabaseManager" class="ptolemy.actor.lib.database.DatabaseManager">
-        <property name="database" class="ptolemy.data.expr.StringParameter" value="jdbc:mysql://localhost:3306/dop">
+        <property name="database" class="ptolemy.data.expr.StringParameter" value="jdbc:mysql://ptango:3306/dop">
         </property>
         <property name="passwordFile" class="ptolemy.data.expr.FileParameter" value="$HOME/.databasePassword.txt">
         </property>
         <property name="userName" class="ptolemy.data.expr.StringParameter" value="ptolemy">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[1030.0, 45.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[750.0, 40.0]">
         </property>
     </entity>
-    <entity name="Expression" class="ptolemy.actor.lib.Expression">
-        <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="length &gt; 0 ? true : false">
+    <entity name="Kiosk" class="ptolemy.actor.TypedCompositeActor">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[135.0, 355.0]">
         </property>
-        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
-            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={986, 704, 934, 634}, maximized=false}">
+        </property>
+        <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[700, 524]">
+        </property>
+        <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+        </property>
+        <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{340.0, 252.0}">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.EditorIcon">
+            <property name="PDF" class="ptolemy.vergil.pdfrenderer.PDFAttribute">
+                <property name="source" class="ptolemy.data.expr.FileParameter" value="icons/kiosk.pdf">
+                </property>
+                <property name="scale" class="ptolemy.data.expr.Parameter" value="60">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{-20, -5}">
+                </property>
             </property>
-            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={813, 403, 934, 634}, maximized=false}">
             </property>
-            <property name="displayHeight" class="ptolemy.data.expr.Parameter" value="10">
+            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[700, 524]">
+            </property>
+            <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="4.0">
+            </property>
+            <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{12.5, 9.25}">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[880.0, 330.0]">
-        </property>
-        <port name="length" class="ptolemy.actor.TypedIOPort">
+        <port name="response" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
+            <property name="multiport"/>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[25.0, 115.0]">
+            </property>
+            <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+            </property>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
             </property>
         </port>
-    </entity>
-    <entity name="SetVariable3" class="ptolemy.actor.lib.SetVariable">
-        <property name="variableName" class="ptolemy.kernel.util.StringAttribute" value="doorCode">
-        </property>
-        <property name="delayed" class="ptolemy.data.expr.Parameter" value="false">
-        </property>
-        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
-            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="variableName">
+        <port name="username" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[610.0, 190.0]">
             </property>
-            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+        </port>
+        <port name="doorcode" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[615.0, 305.0]">
+            </property>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+        </port>
+        <entity name="FileReader" class="ptolemy.actor.lib.io.FileReader">
+            <property name="fileOrURL" class="ptolemy.data.expr.FileParameter" value="pages/welcome.html">
+            </property>
+            <doc>Read an entire file and output as a string</doc>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[314.5, 105.0]">
+            </property>
+        </entity>
+        <entity name="HttpActor" class="org.ptolemy.ptango.lib.HttpActor">
+            <property name="path" class="ptolemy.data.expr.StringParameter" value="/dop">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[150.0, 125.0]">
+            </property>
+            <port name="postParameters" class="ptolemy.actor.TypedIOPort">
+                <property name="output"/>
+                <property name="_type" class="ptolemy.actor.TypeAttribute" value="{username=string,doorcode=string}">
+                </property>
+            </port>
+        </entity>
+        <entity name="RecordDisassembler" class="ptolemy.actor.lib.RecordDisassembler">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[152.75701904296875, 260.7586669921875]">
+            </property>
+            <port name="username" class="ptolemy.actor.TypedIOPort">
+                <property name="output"/>
+                <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                </property>
+                <property name="_type" class="ptolemy.actor.TypeAttribute" value="string">
+                </property>
+            </port>
+            <port name="doorcode" class="ptolemy.actor.TypedIOPort">
+                <property name="output"/>
+                <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                </property>
+                <property name="_type" class="ptolemy.actor.TypeAttribute" value="string">
+                </property>
+            </port>
+        </entity>
+        <entity name="StringFunction" class="ptolemy.actor.lib.string.StringFunction">
+            <property name="function" class="ptolemy.data.expr.Parameter" value="toLowerCase">
+            </property>
+            <doc>Trim a string, convert a string to uppercase, or convert a string to&#10;            lowercase depending on the user's selection.</doc>
+            <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
+                <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="function">
+                </property>
+                <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="11">
+                </property>
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[250.0, 220.0]">
+            </property>
+        </entity>
+        <entity name="SetVariable" class="ptolemy.actor.lib.SetVariable">
+            <property name="variableName" class="ptolemy.kernel.util.StringAttribute" value="doorCode">
+            </property>
+            <property name="delayed" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
+            <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+                <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="variableName">
+                </property>
+                <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
+                </property>
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[365.0, 305.0]">
+            </property>
+        </entity>
+        <entity name="SetVariable2" class="ptolemy.actor.lib.SetVariable">
+            <property name="variableName" class="ptolemy.kernel.util.StringAttribute" value="username">
+            </property>
+            <property name="delayed" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
+            <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+                <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="variableName">
+                </property>
+                <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
+                </property>
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[420.0, 215.0]">
+            </property>
+        </entity>
+        <entity name="MicrostepDelay" class="ptolemy.actor.lib.MicrostepDelay">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{170, 40}">
+            </property>
+            <property name="_flipPortsHorizontal" class="ptolemy.data.expr.Parameter" value="true">
+            </property>
+        </entity>
+        <relation name="relation" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+            <vertex name="vertex1" value="[340.0, 270.0]">
+            </vertex>
+        </relation>
+        <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+            <vertex name="vertex1" value="[220.0, 305.0]">
+            </vertex>
+        </relation>
+        <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="relation6" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="relation7" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="relation8" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="relation9" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="relation10" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <link port="response" relation="relation8"/>
+        <link port="username" relation="relation10"/>
+        <link port="doorcode" relation="relation9"/>
+        <link port="FileReader.output" relation="relation6"/>
+        <link port="FileReader.trigger" relation="relation"/>
+        <link port="HttpActor.response" relation="relation7"/>
+        <link port="HttpActor.response" relation="relation8"/>
+        <link port="HttpActor.getRequestURI" relation="relation"/>
+        <link port="HttpActor.postParameters" relation="relation3"/>
+        <link port="RecordDisassembler.input" relation="relation3"/>
+        <link port="RecordDisassembler.username" relation="relation2"/>
+        <link port="RecordDisassembler.doorcode" relation="relation4"/>
+        <link port="StringFunction.input" relation="relation2"/>
+        <link port="StringFunction.output" relation="relation5"/>
+        <link port="SetVariable.input" relation="relation4"/>
+        <link port="SetVariable.output" relation="relation9"/>
+        <link port="SetVariable2.input" relation="relation5"/>
+        <link port="SetVariable2.output" relation="relation10"/>
+        <link port="MicrostepDelay.input" relation="relation6"/>
+        <link port="MicrostepDelay.output" relation="relation7"/>
+    </entity>
+    <entity name="Authentication" class="ptolemy.actor.TypedCompositeActor">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[350.0, 355.0]">
+        </property>
+        <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+            <property name="text" class="ptolemy.kernel.util.StringAttribute" value="RecordAssembler2: &#10;Make sure both username &#10;and doorcode are set &#10;before querying db">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{-92.0, 180.5}">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[290.0, 430.0]">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={57, 22, 2503, 1418}, maximized=true}">
         </property>
-    </entity>
-    <entity name="RecordAssembler2" class="ptolemy.actor.lib.RecordAssembler">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[440.0, 330.0]">
+        <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[2269, 1308]">
+        </property>
+        <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.2546727549467276">
+        </property>
+        <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{652.2347389363352, 499.8679153726707}">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.EditorIcon">
+            <property name="PDF" class="ptolemy.vergil.pdfrenderer.PDFAttribute">
+                <property name="source" class="ptolemy.data.expr.FileParameter" value="icons/police.pdf">
+                </property>
+                <property name="scale" class="ptolemy.data.expr.Parameter" value="70.0">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{-10, 0}">
+                </property>
+            </property>
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={813, 403, 934, 634}, maximized=false}">
+            </property>
+            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[700, 524]">
+            </property>
+            <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="4.0">
+            </property>
+            <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{12.5, 9.25}">
+            </property>
         </property>
         <port name="username" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{-235.0, 100.0}">
+            </property>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
             </property>
         </port>
         <port name="doorcode" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[-235.0, 165.0]">
+            </property>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+        </port>
+        <port name="realname" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[715.0, 5.0]">
+            </property>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+        </port>
+        <port name="authenticated?" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[715.0, 170.0]">
+            </property>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+        </port>
+        <entity name="Expression" class="ptolemy.actor.lib.Expression">
+            <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="length &gt; 0 ? true : false">
+            </property>
+            <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+                <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
+                </property>
+                <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+                </property>
+                <property name="displayHeight" class="ptolemy.data.expr.Parameter" value="10">
+                </property>
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[430.0, 110.0]">
+            </property>
+            <port name="length" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+                <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                </property>
+            </port>
+        </entity>
+        <entity name="RecordAssembler" class="ptolemy.actor.lib.RecordAssembler">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{-37.0, 110.5}">
+            </property>
+            <port name="username" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+                <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                </property>
+            </port>
+            <port name="doorcode" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+                <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                </property>
+            </port>
+        </entity>
+        <entity name="ArrayLength" class="ptolemy.actor.lib.ArrayLength">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{268.0, 110.5}">
+            </property>
+        </entity>
+        <entity name="DatabaseQuery" class="ptolemy.actor.lib.database.DatabaseQuery">
+            <property name="query" class="ptolemy.actor.parameters.PortParameter" value="select realname from doorcodes where username='$username' and doorCode='$doorCode'">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{118.0, 140.5}">
+            </property>
+        </entity>
+        <entity name="ArrayElement" class="ptolemy.actor.lib.ArrayElement">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[310.0, 15.0]">
+            </property>
+        </entity>
+        <entity name="Expression2" class="ptolemy.actor.lib.Expression">
+            <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="in.get(&quot;realname&quot;).toString()">
+            </property>
+            <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+                <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
+                </property>
+                <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+                </property>
+                <property name="displayHeight" class="ptolemy.data.expr.Parameter" value="10">
+                </property>
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[455.0, 15.0]">
+            </property>
+            <port name="in" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+            </port>
+        </entity>
+        <entity name="StringReplace" class="ptolemy.actor.lib.string.StringReplace">
+            <property name="pattern" class="ptolemy.actor.parameters.PortParameter" value="&quot;">
+            </property>
+            <property name="stringToEdit" class="ptolemy.actor.parameters.PortParameter" value="&quot;Christopher Brooks&quot;">
+            </property>
+            <property name="regularExpression" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
+            <doc>Replace the patterns that match a regular expression</doc>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[630.0, 5.0]">
+            </property>
+        </entity>
+        <relation name="relation" class="ptolemy.actor.TypedIORelation">
+            <vertex name="vertex1" value="[200.0, 5.0]">
+            </vertex>
+        </relation>
+        <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="relation6" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="relation7" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="relation8" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="relation9" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <link port="username" relation="relation4"/>
+        <link port="doorcode" relation="relation5"/>
+        <link port="realname" relation="relation9"/>
+        <link port="authenticated?" relation="relation6"/>
+        <link port="Expression.output" relation="relation6"/>
+        <link port="Expression.length" relation="relation3"/>
+        <link port="RecordAssembler.output" relation="relation2"/>
+        <link port="RecordAssembler.username" relation="relation4"/>
+        <link port="RecordAssembler.doorcode" relation="relation5"/>
+        <link port="ArrayLength.input" relation="relation"/>
+        <link port="ArrayLength.output" relation="relation3"/>
+        <link port="DatabaseQuery.output" relation="relation"/>
+        <link port="DatabaseQuery.trigger" relation="relation2"/>
+        <link port="ArrayElement.input" relation="relation"/>
+        <link port="ArrayElement.output" relation="relation7"/>
+        <link port="Expression2.output" relation="relation8"/>
+        <link port="Expression2.in" relation="relation7"/>
+        <link port="StringReplace.stringToEdit" relation="relation8"/>
+        <link port="StringReplace.output" relation="relation9"/>
+    </entity>
+    <entity name="Notification" class="ptolemy.actor.TypedCompositeActor">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[655.0, 355.0]">
+        </property>
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={57, 22, 2503, 1418}, maximized=false}">
+        </property>
+        <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[2269, 1308]">
+        </property>
+        <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.7096150399556564">
+        </property>
+        <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{545.5400390625002, 87.69409947017493}">
+        </property>
+        <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+            <property name="text" class="ptolemy.kernel.util.StringAttribute" value="TODO:  Would like to use realname here.  But, run-time type checking problem.">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[195.0, -220.0]">
+            </property>
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.EditorIcon">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={346, 166, 934, 634}, maximized=false}">
+            </property>
+            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[700, 524]">
+            </property>
+            <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="4.0">
+            </property>
+            <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{12.5, 9.25}">
+            </property>
+            <property name="PDF" class="ptolemy.vergil.pdfrenderer.PDFAttribute">
+                <property name="source" class="ptolemy.data.expr.FileParameter" value="icons/notify.pdf">
+                </property>
+                <property name="scale" class="ptolemy.data.expr.Parameter" value="65">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{15, -5}">
+                </property>
+            </property>
+        </property>
+        <port name="name" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[35.0, 150.0]">
+            </property>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+        </port>
+        <port name="event" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[30.0, 230.0]">
+            </property>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+        </port>
+        <port name="response" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[1040.0, -40.0]">
+            </property>
+        </port>
+        <entity name="BooleanSwitch" class="ptolemy.actor.lib.BooleanSwitch">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[215.0, 150.0]">
+            </property>
+        </entity>
+        <entity name="Discard" class="ptolemy.actor.lib.Discard">
+            <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[290.0, 195.0]">
+            </property>
+            <port name="input" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+                <property name="multiport"/>
+                <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="NORTH">
+                </property>
+            </port>
+        </entity>
+        <entity name="SendMail" class="ptolemy.actor.lib.mail.SendMail">
+            <property name="to" class="ptolemy.actor.parameters.PortParameter" value="dopresence@embedded.eecs.berkeley.edu">
+            </property>
+            <property name="cc" class="ptolemy.actor.parameters.PortParameter" value="">
+            </property>
+            <property name="from" class="ptolemy.actor.parameters.PortParameter" value="terraswarmlab@gmail.com">
+            </property>
+            <property name="subject" class="ptolemy.actor.parameters.PortParameter" value="[DOP main door] Christopher Brooks entered">
+            </property>
+            <property name="message" class="ptolemy.actor.parameters.PortParameter" value="Christopher Brooks entered the DOP Center using a door code.">
+            </property>
+            <property name="SMTPHostName" class="ptolemy.actor.parameters.PortParameter" value="smtp.gmail.com">
+            </property>
+            <property name="SMTPUserName" class="ptolemy.actor.parameters.PortParameter" value="terraswarmlab@gmail.com">
+            </property>
+            <property name="password" class="ptolemy.actor.parameters.PortParameter" value="!@#%qwer">
+            </property>
+            <property name="SMTPPort" class="ptolemy.actor.parameters.PortParameter" value="465">
+            </property>
+            <property name="enableSSL" class="ptolemy.data.expr.Parameter" value="true">
+            </property>
+            <property name="reallySendMail" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[950.0, 185.0]">
+            </property>
+        </entity>
+        <entity name="Display" class="ptolemy.actor.lib.gui.Display">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={490, 455, 547, 230}, maximized=false}">
+            </property>
+            <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[547, 186]">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[1050.0, 185.0]">
+            </property>
+        </entity>
+        <entity name="FileReader" class="ptolemy.actor.lib.io.FileReader">
+            <property name="fileOrURL" class="ptolemy.data.expr.FileParameter" value="$HOME/.DOPMailPassword.txt">
+            </property>
+            <doc>Read an entire file and output as a string</doc>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[485.0, 240.0]">
+            </property>
+        </entity>
+        <entity name="StringFunction" class="ptolemy.actor.lib.string.StringFunction">
+            <doc>Trim a string, convert a string to uppercase, or convert a string to&#10;            lowercase depending on the user's selection.</doc>
+            <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
+                <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="function">
+                </property>
+                <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="11">
+                </property>
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[595.0, 240.0]">
+            </property>
+        </entity>
+        <entity name="Expression" class="ptolemy.actor.lib.Expression">
+            <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="username + &quot; entered the DOP Center using a door code.&quot;">
+            </property>
+            <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+                <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
+                </property>
+                <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+                </property>
+                <property name="displayHeight" class="ptolemy.data.expr.Parameter" value="10">
+                </property>
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[635.0, 185.0]">
+            </property>
+            <port name="username" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+                <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                </property>
+            </port>
+        </entity>
+        <entity name="Expression2" class="ptolemy.actor.lib.Expression">
+            <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="&quot;[DOP main door] &quot; + username + &quot; entered&quot;">
+            </property>
+            <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+                <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
+                </property>
+                <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+                </property>
+                <property name="displayHeight" class="ptolemy.data.expr.Parameter" value="10">
+                </property>
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[595.0, 130.0]">
+            </property>
+            <port name="username" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+                <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                </property>
+            </port>
+        </entity>
+        <entity name="MicrostepDelay" class="ptolemy.actor.lib.MicrostepDelay">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[320.0, 140.0]">
+            </property>
+        </entity>
+        <entity name="RecordAssembler" class="ptolemy.actor.lib.RecordAssembler">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[655.0, -60.0]">
+            </property>
+            <port name="message" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+                <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                </property>
+            </port>
+            <port name="authorized" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+                <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                </property>
+            </port>
+        </entity>
+        <entity name="TokenToJSON" class="ptolemy.actor.lib.conversions.json.TokenToJSON">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[820.0, -40.0]">
+            </property>
+        </entity>
+        <entity name="BooleanSwitch2" class="ptolemy.actor.lib.BooleanSwitch">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[130.0, -105.0]">
+            </property>
+        </entity>
+        <entity name="Const" class="ptolemy.actor.lib.Const">
+            <property name="value" class="ptolemy.data.expr.Parameter" value="&quot;Sorry, invalid combination&quot;">
+            </property>
+            <doc>Create a constant sequence.</doc>
+            <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+                <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+                </property>
+                <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+                </property>
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[355.0, -95.0]">
+            </property>
+        </entity>
+        <entity name="BooleanSelect" class="ptolemy.actor.lib.BooleanSelect">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[575.0, -105.0]">
+            </property>
+            <port name="trueInput" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+                <property name="multiport"/>
+                <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="0">
+                </property>
+            </port>
+            <port name="falseInput" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+                <property name="multiport"/>
+                <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="0">
+                </property>
+            </port>
+            <port name="control" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+                <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="1">
+                </property>
+            </port>
+        </entity>
+        <entity name="Const2" class="ptolemy.actor.lib.Const">
+            <property name="value" class="ptolemy.data.expr.Parameter" value="&quot;Welcome, &quot; + username + &quot;.&quot;">
+            </property>
+            <doc>Create a constant sequence.</doc>
+            <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+                <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+                </property>
+                <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+                </property>
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[360.0, -140.0]">
+            </property>
+        </entity>
+        <relation name="relation" class="ptolemy.actor.TypedIORelation">
+            <vertex name="vertex1" value="[360.0, 140.0]">
+            </vertex>
+        </relation>
+        <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="relation6" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="relation7" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="relation8" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="relation11" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="relation12" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="relation13" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="relation14" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="relation15" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="relation16" class="ptolemy.actor.TypedIORelation">
+            <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+            </property>
+            <vertex name="vertex1" value="{80.0, 150.0}">
+            </vertex>
+        </relation>
+        <relation name="relation9" class="ptolemy.actor.TypedIORelation">
+            <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+            </property>
+            <vertex name="vertex1" value="[130.0, 230.0]">
+            </vertex>
+        </relation>
+        <relation name="relation10" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="relation17" class="ptolemy.actor.TypedIORelation">
+            <vertex name="vertex1" value="[130.0, -30.0]">
+            </vertex>
+        </relation>
+        <relation name="relation18" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="relation19" class="ptolemy.actor.TypedIORelation">
+            <vertex name="vertex1" value="[575.0, -30.0]">
+            </vertex>
+        </relation>
+        <link port="name" relation="relation16"/>
+        <link port="event" relation="relation9"/>
+        <link port="response" relation="relation18"/>
+        <link port="BooleanSwitch.input" relation="relation16"/>
+        <link port="BooleanSwitch.control" relation="relation9"/>
+        <link port="BooleanSwitch.trueOutput" relation="relation6"/>
+        <link port="BooleanSwitch.falseOutput" relation="relation5"/>
+        <link port="Discard.input" relation="relation5"/>
+        <link port="SendMail.subject" relation="relation7"/>
+        <link port="SendMail.message" relation="relation8"/>
+        <link port="SendMail.password" relation="relation4"/>
+        <link port="SendMail.output" relation="relation2"/>
+        <link port="Display.input" relation="relation2"/>
+        <link port="FileReader.output" relation="relation3"/>
+        <link port="FileReader.trigger" relation="relation"/>
+        <link port="StringFunction.input" relation="relation3"/>
+        <link port="StringFunction.output" relation="relation4"/>
+        <link port="Expression.output" relation="relation8"/>
+        <link port="Expression.username" relation="relation"/>
+        <link port="Expression2.output" relation="relation7"/>
+        <link port="Expression2.username" relation="relation"/>
+        <link port="MicrostepDelay.input" relation="relation6"/>
+        <link port="MicrostepDelay.output" relation="relation"/>
+        <link port="RecordAssembler.output" relation="relation10"/>
+        <link port="RecordAssembler.message" relation="relation13"/>
+        <link port="RecordAssembler.authorized" relation="relation19"/>
+        <link port="TokenToJSON.input" relation="relation10"/>
+        <link port="TokenToJSON.output" relation="relation18"/>
+        <link port="BooleanSwitch2.input" relation="relation16"/>
+        <link port="BooleanSwitch2.control" relation="relation17"/>
+        <link port="BooleanSwitch2.trueOutput" relation="relation14"/>
+        <link port="BooleanSwitch2.falseOutput" relation="relation11"/>
+        <link port="Const.output" relation="relation12"/>
+        <link port="Const.trigger" relation="relation11"/>
+        <link port="BooleanSelect.trueInput" relation="relation15"/>
+        <link port="BooleanSelect.falseInput" relation="relation12"/>
+        <link port="BooleanSelect.control" relation="relation19"/>
+        <link port="BooleanSelect.output" relation="relation13"/>
+        <link port="Const2.output" relation="relation15"/>
+        <link port="Const2.trigger" relation="relation14"/>
+        <link relation1="relation9" relation2="relation17"/>
+        <link relation1="relation17" relation2="relation19"/>
+    </entity>
+    <entity name="DoorActuator" class="ptolemy.actor.TypedCompositeActor">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[665.0, 470.0]">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.EditorIcon">
+            <property name="PDF" class="ptolemy.vergil.pdfrenderer.PDFAttribute">
+                <property name="source" class="ptolemy.data.expr.FileParameter" value="icons/door.pdf">
+                </property>
+                <property name="scale" class="ptolemy.data.expr.Parameter" value="60">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[-57.0, -46.0]">
+                </property>
+            </property>
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={1489, 439, 934, 634}, maximized=false}">
+            </property>
+            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[700, 524]">
+            </property>
+            <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="4.0">
+            </property>
+            <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{12.5, 9.25}">
+            </property>
+        </property>
+        <port name="open" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
             </property>
         </port>
     </entity>
-    <entity name="ArrayLength" class="ptolemy.actor.lib.ArrayLength">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[745.0, 330.0]">
-        </property>
-    </entity>
-    <entity name="DatabaseQuery" class="ptolemy.actor.lib.database.DatabaseQuery">
-        <property name="query" class="ptolemy.actor.parameters.PortParameter" value="select realname from doorcodes where username='$username' and doorCode='$doorCode'">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[595.0, 360.0]">
-        </property>
-    </entity>
-    <entity name="BooleanSwitch3" class="ptolemy.actor.lib.BooleanSwitch">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[1100.0, 310.0]">
-        </property>
-    </entity>
-    <entity name="Const2" class="ptolemy.actor.lib.Const">
-        <property name="value" class="ptolemy.data.expr.Parameter" value="&quot;Sorry, invalid combination&quot;">
-        </property>
-        <doc>Create a constant sequence.</doc>
-        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
-            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
-            </property>
-            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
-            </property>
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[1255.0, 325.0]">
-        </property>
-    </entity>
-    <entity name="BooleanSelect2" class="ptolemy.actor.lib.BooleanSelect">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[1575.0, 275.0]">
-        </property>
-        <port name="trueInput" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="multiport"/>
-            <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="0">
-            </property>
-        </port>
-        <port name="falseInput" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="multiport"/>
-            <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="0">
-            </property>
-        </port>
-        <port name="control" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="1">
-            </property>
-        </port>
-    </entity>
-    <entity name="SetVariable2" class="ptolemy.actor.lib.SetVariable">
-        <property name="variableName" class="ptolemy.kernel.util.StringAttribute" value="username">
-        </property>
-        <property name="delayed" class="ptolemy.data.expr.Parameter" value="false">
-        </property>
-        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
-            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="variableName">
-            </property>
-            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
-            </property>
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[345.0, 340.0]">
-        </property>
-    </entity>
-    <entity name="Const" class="ptolemy.actor.lib.Const">
-        <property name="value" class="ptolemy.data.expr.Parameter" value="&quot;Welcome, &quot; + username + &quot;.&quot;">
-        </property>
-        <doc>Create a constant sequence.</doc>
-        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
-            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
-            </property>
-            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
-            </property>
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[1260.0, 250.0]">
-        </property>
-    </entity>
-    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+    <relation name="relation6" class="ptolemy.actor.TypedIORelation">
+        <vertex name="vertex1" value="[495.0, 365.0]">
+        </vertex>
     </relation>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
     </relation>
-    <relation name="relation8" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" value="[270.0, 395.0]">
-        </vertex>
-    </relation>
-    <relation name="relation10" class="ptolemy.actor.TypedIORelation">
-    </relation>
-    <relation name="relation12" class="ptolemy.actor.TypedIORelation">
-    </relation>
-    <relation name="relation6" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" value="[835.0, 380.0]">
-        </vertex>
-    </relation>
-    <relation name="relation13" class="ptolemy.actor.TypedIORelation">
-    </relation>
-    <relation name="relation16" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" value="[1020.0, 440.0]">
-        </vertex>
-    </relation>
-    <relation name="relation17" class="ptolemy.actor.TypedIORelation">
-    </relation>
-    <relation name="relation19" class="ptolemy.actor.TypedIORelation">
-    </relation>
-    <relation name="relation20" class="ptolemy.actor.TypedIORelation">
-    </relation>
-    <relation name="relation15" class="ptolemy.actor.TypedIORelation">
-    </relation>
-    <relation name="relation22" class="ptolemy.actor.TypedIORelation">
-    </relation>
-    <relation name="relation5" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" value="[145.0, 430.0]">
-        </vertex>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation4" class="ptolemy.actor.TypedIORelation">
     </relation>
-    <relation name="relation27" class="ptolemy.actor.TypedIORelation">
+    <relation name="relation5" class="ptolemy.actor.TypedIORelation">
     </relation>
-    <relation name="relation11" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" value="[692.75, 274.5]">
-        </vertex>
-    </relation>
-    <relation name="relation23" class="ptolemy.actor.TypedIORelation">
-    </relation>
-    <relation name="relation30" class="ptolemy.actor.TypedIORelation">
-    </relation>
-    <relation name="relation31" class="ptolemy.actor.TypedIORelation">
-    </relation>
-    <relation name="relation32" class="ptolemy.actor.TypedIORelation">
-    </relation>
-    <relation name="relation9" class="ptolemy.actor.TypedIORelation">
-    </relation>
-    <relation name="relation14" class="ptolemy.actor.TypedIORelation">
-    </relation>
-    <relation name="relation18" class="ptolemy.actor.TypedIORelation">
-    </relation>
-    <relation name="relation21" class="ptolemy.actor.TypedIORelation">
-    </relation>
-    <relation name="relation24" class="ptolemy.actor.TypedIORelation">
-    </relation>
-    <relation name="relation25" class="ptolemy.actor.TypedIORelation">
-    </relation>
-    <relation name="relation7" class="ptolemy.actor.TypedIORelation">
-    </relation>
-    <link port="FileReader.output" relation="relation2"/>
-    <link port="FileReader.trigger" relation="relation"/>
-    <link port="HttpActor.response" relation="relation3"/>
-    <link port="HttpActor.response" relation="relation12"/>
-    <link port="HttpActor.getRequestURI" relation="relation"/>
-    <link port="HttpActor.postParameters" relation="relation10"/>
-    <link port="MicrostepDelay.input" relation="relation2"/>
-    <link port="MicrostepDelay.output" relation="relation3"/>
-    <link port="RecordDisassembler.input" relation="relation10"/>
-    <link port="RecordDisassembler.username" relation="relation8"/>
-    <link port="RecordDisassembler.doorcode" relation="relation5"/>
-    <link port="MicrostepDelay2.input" relation="relation13"/>
-    <link port="MicrostepDelay2.output" relation="relation12"/>
-    <link port="BooleanSwitch.input" relation="relation8"/>
-    <link port="BooleanSwitch.control" relation="relation6"/>
-    <link port="BooleanSwitch.trueOutput" relation="relation22"/>
-    <link port="BooleanSwitch.falseOutput" relation="relation15"/>
-    <link port="RecordAssembler.output" relation="relation27"/>
-    <link port="RecordAssembler.message" relation="relation32"/>
-    <link port="RecordAssembler.authorized" relation="relation6"/>
-    <link port="TokenToJSON.input" relation="relation27"/>
-    <link port="TokenToJSON.output" relation="relation13"/>
-    <link port="Discard.input" relation="relation15"/>
-    <link port="SendMail.subject" relation="relation14"/>
-    <link port="SendMail.message" relation="relation18"/>
-    <link port="SendMail.password" relation="relation20"/>
-    <link port="SendMail.output" relation="relation17"/>
-    <link port="Display.input" relation="relation17"/>
-    <link port="FileReader2.output" relation="relation19"/>
-    <link port="FileReader2.trigger" relation="relation16"/>
-    <link port="StringFunction.input" relation="relation19"/>
-    <link port="StringFunction.output" relation="relation20"/>
-    <link port="Expression3.output" relation="relation18"/>
-    <link port="Expression3.username" relation="relation16"/>
-    <link port="Expression4.output" relation="relation14"/>
-    <link port="Expression4.username" relation="relation16"/>
-    <link port="MicrostepDelay3.input" relation="relation22"/>
-    <link port="MicrostepDelay3.output" relation="relation16"/>
-    <link port="StringFunction2.input" relation="relation8"/>
-    <link port="StringFunction2.output" relation="relation7"/>
-    <link port="Expression.output" relation="relation6"/>
-    <link port="Expression.length" relation="relation21"/>
-    <link port="SetVariable3.input" relation="relation5"/>
-    <link port="SetVariable3.output" relation="relation4"/>
-    <link port="RecordAssembler2.output" relation="relation23"/>
-    <link port="RecordAssembler2.username" relation="relation9"/>
-    <link port="RecordAssembler2.doorcode" relation="relation4"/>
-    <link port="ArrayLength.input" relation="relation11"/>
-    <link port="ArrayLength.output" relation="relation21"/>
-    <link port="DatabaseQuery.output" relation="relation11"/>
-    <link port="DatabaseQuery.trigger" relation="relation23"/>
-    <link port="BooleanSwitch3.input" relation="relation11"/>
-    <link port="BooleanSwitch3.control" relation="relation6"/>
-    <link port="BooleanSwitch3.trueOutput" relation="relation24"/>
-    <link port="BooleanSwitch3.falseOutput" relation="relation30"/>
-    <link port="Const2.output" relation="relation31"/>
-    <link port="Const2.trigger" relation="relation30"/>
-    <link port="BooleanSelect2.trueInput" relation="relation25"/>
-    <link port="BooleanSelect2.falseInput" relation="relation31"/>
-    <link port="BooleanSelect2.control" relation="relation6"/>
-    <link port="BooleanSelect2.output" relation="relation32"/>
-    <link port="SetVariable2.input" relation="relation7"/>
-    <link port="SetVariable2.output" relation="relation9"/>
-    <link port="Const.output" relation="relation25"/>
-    <link port="Const.trigger" relation="relation24"/>
+    <link port="MicrostepDelay2.input" relation="relation"/>
+    <link port="MicrostepDelay2.output" relation="relation2"/>
+    <link port="Kiosk.response" relation="relation2"/>
+    <link port="Kiosk.username" relation="relation5"/>
+    <link port="Kiosk.doorcode" relation="relation3"/>
+    <link port="Authentication.username" relation="relation5"/>
+    <link port="Authentication.doorcode" relation="relation3"/>
+    <link port="Authentication.realname" relation="relation4"/>
+    <link port="Authentication.authenticated?" relation="relation6"/>
+    <link port="Notification.name" relation="relation4"/>
+    <link port="Notification.event" relation="relation6"/>
+    <link port="Notification.response" relation="relation"/>
+    <link port="DoorActuator.open" relation="relation6"/>
 </entity>
