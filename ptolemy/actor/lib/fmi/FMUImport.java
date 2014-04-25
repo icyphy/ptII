@@ -2293,12 +2293,12 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
     protected void _fmiTerminate() throws IllegalActionException {
 	// Generating WebStart calls wrapup() after preinitialize(),
 	// so the model might not have been initialized.
-	if (!_modelInitialized) {
-	    if (_debugging) {
-		_debugToStdOut("The model was *not* initialized, so fmiTerminate does nothing.");
-	    }
-	    return;
-	}
+	// if (!_modelInitialized) {
+	//     if (_debugging) {
+	// 	_debugToStdOut("The model was *not* initialized, so fmiTerminate does nothing.");
+	//     }
+	//     return;
+	// }
 
         if (_debugging) {
             _debugToStdOut("Terminating the FMU.");
