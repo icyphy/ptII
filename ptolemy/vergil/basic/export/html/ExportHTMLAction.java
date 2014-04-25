@@ -64,6 +64,7 @@ import ptolemy.actor.gui.Tableau;
 import ptolemy.domains.modal.kernel.State;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.Entity;
+import ptolemy.kernel.attributes.URIAttribute;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
@@ -871,7 +872,7 @@ public class ExportHTMLAction extends AbstractAction implements HTMLExportable,
                         + ssiRoot
                         + "/ptolemyII/ptIIlatest/ptII/doc/webStartHelp_index.htm\"><img src=\""
                         + ssiRoot
-                        + "/image/question.png\" alt=\"What is Web Start\" style=\"float:left\"></a> (<i>Java Plug-in Required</i>)";
+                        + "/image/question.png\" alt=\"What is Web Start\"></a> (<i>Java Plug-in Required</i>)";
 
                 printWriter
 		    .println("<div id=\"inlineImg\">" // Defined in UCB.css
@@ -903,7 +904,7 @@ public class ExportHTMLAction extends AbstractAction implements HTMLExportable,
                                 + _sanitizedModelName
                                 + ".xml\">click here</a>.</li>");
                 if (usePtWebsite) {
-		    if (model.getFullName().contains("domains")) {
+		    if (_isInDomains(model)) {
 			printWriter.println("<li>For a domain overview, "
 					    + "<a href=\"../../../doc/\">click here</a>.</li>");
 		    } else {
@@ -943,7 +944,7 @@ public class ExportHTMLAction extends AbstractAction implements HTMLExportable,
                 _addContent("toc.htm", false, "");
                 _addContent("toc.htm", false, "<ul>");
 
-		if (model.getFullName().contains("domains")) {
+		if (_isInDomains(model)) {
 		    _addContent("toc.htm", false,
 				" <li><a href=\"../../../doc/\">Up</a></li>");
 		} else {
@@ -1447,6 +1448,24 @@ public class ExportHTMLAction extends AbstractAction implements HTMLExportable,
             return null;
         }
         return _findCopiedLibrary(container, "../" + path, copier);
+    }
+
+    /** Return true if the model is in the domains demo directory.
+     *  @param model The model to be checked
+     *  @return true if it is in the domains directory
+     */	
+    private static boolean _isInDomains(NamedObj model) {
+	try {
+	    URIAttribute modelURI = (URIAttribute) model.getAttribute("_uri", URIAttribute.class);
+	    if (modelURI != null) {
+		if (modelURI.getURI().toString().contains("/domains")) {
+		    return true;
+		}
+	    }
+	} catch (IllegalActionException ex) {
+	    return false;
+	}
+	return false;
     }
 
     /** Open a composite entity, if it is not already open,

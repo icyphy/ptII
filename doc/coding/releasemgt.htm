@@ -570,6 +570,20 @@
 	      </pre>
 	    </li>
 
+	    <li> If you are running on a remote machine, start up Xvfb:
+	      <pre>
+		Xvfb :2 -screen 0 1024x768x24 &
+		export DISPLAY=localhost:2.0
+	      </pre>
+	    </li>
+
+	    <li>Try one model:
+	      <pre>
+		export JAVAFLAGS="-Dptolemy.ptII.exportHTML.linkToJNLP=true -Dptolemy.ptII.exportHTML.usePtWebsite=true"
+		(cd ptolemy/domains/continuous/demo/Lorenz; $PTII/bin/ptweb -run -openComposites -whiteBackground -force Lorenz.xml)
+		(cd ptolemy/domains/continuous/demo/Lorenz; tar -cf - *.jar *.jnlp *JNLP.htm Lorenz) | ssh moog "cd ~www/ptweb/ptolemyII/ptII10.0/ptII10.0.devel/ptolemy/domains/continuous/demo/Lorenz; tar -xpf -"
+
+	      </pre>
 	    <li> Export all the models listed in $PTII/ptolemy/configs/doc/models.txt:
 	      <pre>
 		cd $PTII
@@ -664,7 +678,8 @@
 		mv deployJava.js deployJavaNoJNLP.js
 		cp deployJavaJNLP.js deployJava.js
 	      </pre>
-	    <li>Try all the Web Start demos.
+	    </li>
+	    <li>Try all the Web Start demos.</li>
 	  </ul>
 	</li>
 
