@@ -2068,7 +2068,11 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
                         .invokeInt(new Object[] { _fmiComponent });
             }
         } else {
-            _fmiFreeInstanceFunction.invokeInt(new Object[] { _fmiComponent });
+	    if (_fmiFreeInstanceFunction == null) {
+		System.err.println(getFullName() + ": fmiFreeInstance() was not found in the fmu?");
+	    } else {
+		_fmiFreeInstanceFunction.invokeInt(new Object[] { _fmiComponent });
+	    }
         }
     }
 
@@ -2166,7 +2170,7 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
             Time stopTime = director.getModelStopTime();
 
             int fmiFlag;
-            if (_fmiVersion < 1.5) {
+            if (_fmiVersion <= 1.5) {
                 fmiFlag = ((Integer) _fmiInitializeSlaveFunction.invoke(
                         Integer.class,
                         new Object[] { _fmiComponent,
