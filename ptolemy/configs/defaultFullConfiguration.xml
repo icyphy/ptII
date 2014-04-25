@@ -112,9 +112,10 @@
       <configure>
         <?moml
           <group>
-        <input source="ptolemy/vergil/basic/export/web/utilityWebExport.xml"/>
-	    <input source="ptolemy/vergil/pdfrenderer/pdfattribute.xml"/>
-        <input source="ptolemy/configs/utilityPteraModalModel.xml"/>
+	  <input source="ptolemy/actor/lib/js/js.xml"/>
+          <input source="ptolemy/vergil/basic/export/web/utilityWebExport.xml"/>
+	  <input source="ptolemy/vergil/pdfrenderer/pdfattribute.xml"/>
+          <input source="ptolemy/configs/utilityPteraModalModel.xml"/>
           </group>
         ?>
       </configure>

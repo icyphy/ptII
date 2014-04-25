@@ -10,36 +10,12 @@
         <input source="ptolemy/configs/utilityCompositeActor.xml"/>
         <class name="CompositeClassDefinition" extends="ptolemy.actor.TypedCompositeActor"/>
 	    <input source="ptolemy/configs/utilityModalModel.xml"/>
-	    <!---------------------------------  JavaScript actor -->
-	    <entity name="JavaScript" class="ptolemy.actor.lib.js.JavaScript">
-	      <property name="initialize">
-	        <property name="style" class="ptolemy.actor.gui.style.TextStyle">
-                <property name="height" class="ptolemy.data.expr.Parameter" value="8">
-                </property>
-                <property name="width" class="ptolemy.data.expr.Parameter" value="80">
-                </property>
-            </property>
-          </property>
-	      <property name="script">
-	        <property name="style" class="ptolemy.actor.gui.style.TextStyle">
-                <property name="height" class="ptolemy.data.expr.Parameter" value="16">
-                </property>
-                <property name="width" class="ptolemy.data.expr.Parameter" value="80">
-                </property>
-            </property>
-          </property>
-	      <property name="wrapup">
-	        <property name="style" class="ptolemy.actor.gui.style.TextStyle">
-                <property name="height" class="ptolemy.data.expr.Parameter" value="8">
-                </property>
-                <property name="width" class="ptolemy.data.expr.Parameter" value="80">
-                </property>
-            </property>
-          </property>
-        </entity>
-	    <!---------------------------------  end JavaScript actor -->
+
+
         <!-- Do not include ptera or anything else that does not ship
 	     with Ptiny here.  See defaultFullConfiguration.xml -->
+
+
         <!--input source="ptolemy/configs/utilityPteraModalModel.xml"/ -->
 
         <input source="ptolemy/configs/basicUtilities.xml"/>

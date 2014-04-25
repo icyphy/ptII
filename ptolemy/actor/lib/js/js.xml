@@ -5,8 +5,32 @@
   <configure>
     <?moml
       <group>
-        <doc>JavaScript actors</doc>
-	<entity name="JavaScript" class="ptolemy.actor.lib.js.JavaScript"/>
+	    <entity name="JavaScript" class="ptolemy.actor.lib.js.JavaScript">
+	      <property name="initialize">
+	        <property name="style" class="ptolemy.actor.gui.style.TextStyle">
+                <property name="height" class="ptolemy.data.expr.Parameter" value="8">
+                </property>
+                <property name="width" class="ptolemy.data.expr.Parameter" value="80">
+                </property>
+            </property>
+          </property>
+	      <property name="script">
+	        <property name="style" class="ptolemy.actor.gui.style.TextStyle">
+                <property name="height" class="ptolemy.data.expr.Parameter" value="16">
+                </property>
+                <property name="width" class="ptolemy.data.expr.Parameter" value="80">
+                </property>
+            </property>
+          </property>
+	      <property name="wrapup">
+	        <property name="style" class="ptolemy.actor.gui.style.TextStyle">
+                <property name="height" class="ptolemy.data.expr.Parameter" value="8">
+                </property>
+                <property name="width" class="ptolemy.data.expr.Parameter" value="80">
+                </property>
+            </property>
+          </property>
+        </entity>
       </group>
     ?>
   </configure>
