@@ -874,7 +874,8 @@ public class ExportHTMLAction extends AbstractAction implements HTMLExportable,
                         + "/image/question.png\" alt=\"What is Web Start\" style=\"float:left\"></a> (<i>Java Plug-in Required</i>)";
 
                 printWriter
-                        .println("<p>Below is a browsable image of the model.</p> "
+		    .println("<div id=\"inlineImg\">" // Defined in UCB.css
+				+ "<p>Below is a browsable image of the model.</p> "
                                 + "<ul>\n"
                                 + "<li>For an executable version,"
                                 + "<!-- We use the deployJava.js script so that Java "
@@ -887,10 +888,9 @@ public class ExportHTMLAction extends AbstractAction implements HTMLExportable,
                                 + _sanitizedModelName
                                 + ".jnlp\";\n"
                                 + "  deployJava.createWebStartLaunchButton(url);\n"
-                                // FIXME: Don't use <table> here, use css.
-                                + "  document.write(\"<table><tr><td>the WebStart version.</td><td>"
+                                + "  document.write(\" the WebStart version. "
                                 + linkToHelp.replace("\"", "\\\"")
-                                + "</td></tr></table>\");\n"
+                                + "\");\n"
                                 + "</script>\n"
                                 + "<noscript>\n"
                                 + "<a href=\"../"
@@ -903,10 +903,17 @@ public class ExportHTMLAction extends AbstractAction implements HTMLExportable,
                                 + _sanitizedModelName
                                 + ".xml\">click here</a>.</li>");
                 if (usePtWebsite) {
-                    printWriter.println("<li>For a chapter overview, "
-                            + "<a href=\"../index.html\">click here</a>.</li>");
+		    if (model.getFullName().contains("domains")) {
+			printWriter.println("<li>For a domain overview, "
+					    + "<a href=\"../../../doc/\">click here</a>.</li>");
+		    } else {
+			printWriter.println("<li>For a chapter overview, "
+
+					    + "<a href=\"../index.html\">click here</a>.</li>");
+		    }
                 }
-                printWriter.println("</ul>");
+                printWriter.println("</ul>\n"
+				    + "</div> <!-- inlineImg -->\n");
 
             }
             // Put the image in.
@@ -935,8 +942,14 @@ public class ExportHTMLAction extends AbstractAction implements HTMLExportable,
                 _addContent("toc.htm", false, "</ul>");
                 _addContent("toc.htm", false, "");
                 _addContent("toc.htm", false, "<ul>");
-                _addContent("toc.htm", false,
-                        " <li><a href=\"../index.html\">Up</a></li>");
+
+		if (model.getFullName().contains("domains")) {
+		    _addContent("toc.htm", false,
+				" <li><a href=\"../../../doc/\">Up</a></li>");
+		} else {
+		    _addContent("toc.htm", false,
+				" <li><a href=\"../index.html\">Up</a></li>");
+		}
                 _addContent("toc.htm", false, "</ul>");
                 _addContent("toc.htm", false, "<ul>");
 

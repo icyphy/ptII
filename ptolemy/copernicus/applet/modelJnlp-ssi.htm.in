@@ -14,20 +14,21 @@
 <h1>@sanitizedModelName@</h1>
 @documentation@
 <!-- PT DEPLOYJAVA CONVERTER -->
-<p>
-@sanitizedModelName@ is available in two formats:
-<ul>
-<!-- See http://blogs.sun.com/thejavatutorials/entry/deployment_toolkit_101 -->
-<script src="@codeBase@/doc/deployJava.js"></script>
-<script >
-   var dir = location.href.substring(0,location.href.lastIndexOf('/')+1);
-   var url = dir + "@sanitizedModelName@.jnlp";
-   deployJava.createWebStartLaunchButton(url);
-</script>
-<!-- <li> As a a href="@sanitizedModelName@Vergil.htm">applet</a>.</li> -->
-<li> An <a href="@sanitizedModelName@/index.html">HTML Version</a> - browsable only, not executable.</li>
-</ul>  
-See <a href="@codeBase@/doc/webStartHelp.htm">Web Start Help</a> for details.
+<p>@sanitizedModelName@ is available in two formats:</p>
+<div id="inlineImg">
+  <ul>
+    <!-- See http://blogs.sun.com/thejavatutorials/entry/deployment_toolkit_101 -->
+    <script src="@codeBase@/doc/deployJava.js"></script>
+    <script >
+      var dir = location.href.substring(0,location.href.lastIndexOf('/')+1);
+      var url = dir + "@sanitizedModelName@.jnlp";
+      deployJava.createWebStartLaunchButton(url);
+    </script>
+    <!-- <li> As a a href="@sanitizedModelName@Vergil.htm">applet</a>.</li> -->
+    <li> An <a href="@sanitizedModelName@/index.html">HTML Version</a> - browsable only, not executable.</li>
+  </ul>  
+  <p>See <a href="@codeBase@/doc/webStartHelp.htm">Web Start Help</a> for details.</p>
+</div> <!-- inlineImg -->
 <!-- /PT DEPLOYJAVA CONVERTER -->
 
 </p>
