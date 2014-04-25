@@ -1257,7 +1257,8 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
 		    
 		    commands.add("\"" + command.replace('\\', '/') + "\"");
 		} else {
-		    commands.add(runCommandValue);
+		    // FIXME: we could do substitution for all the @...@ strings.
+		    commands.add(runCommandValue.replace("@modelName@", _sanitizedModelName));
 		}
             }
         }
