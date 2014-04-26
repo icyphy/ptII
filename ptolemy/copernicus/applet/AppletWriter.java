@@ -1538,6 +1538,11 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
         auxiliaryJarMap.put("ptolemy.data.properties.PropertyRemover",
                 propertiesJar);
 
+        // PDFAttribute needs PDFRenderer.jar.
+        String pdfRendererLibJar = "lib/PDFRenderer.jar";
+        auxiliaryJarMap.put("ptolemy.vergil.pdfrenderer.PDFAttribute",
+			    pdfRendererLibJar);
+
         // If classMap has any keys that match keys in auxiliaryJarMap,
         // then add the corresponding key and value;
         Map jarsToAdd = null;
@@ -1646,11 +1651,8 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
             auxiliaryClassMap.put("fullViewer needs vergil gt gt jar",
                     "ptolemy/vergil/gt/gt.jar");
 
-            auxiliaryClassMap.put("fullViewer needs PDFAttribute",
-                    "ptolemy/vergil/pdfrenderer/pdfrenderer.jar");
-
             auxiliaryClassMap.put("PDFAttribute needs PDFRenderer.jar",
-                    "lib/PDFRenderer.jar");
+				  pdfRendererLibJar);
 
             auxiliaryClassMap.put("ptera jar needs vergil ptera jar",
                     "ptolemy/vergil/ptera/ptera.jar");
@@ -1755,6 +1757,10 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
                     "ptolemy/domains/sdf/lib/vq/data/data.jar");
         }
 
+        if (jarFilesThatHaveBeenRequired.contains(pdfRendererLibJar)) {
+            auxiliaryClassMap.put("fullViewer and PDFAttribute need PDFAttribute",
+                    "ptolemy/vergil/pdfrenderer/pdfrenderer.jar");
+	}
         if (jarFilesThatHaveBeenRequired.contains("ptolemy/domains/tm/tm.jar")) {
             auxiliaryClassMap.put("TMDirectory needs de jar",
                     "ptolemy/domains/de/de.jar");
