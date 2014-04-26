@@ -62,9 +62,11 @@ import ptolemy.actor.gui.PtolemyEffigy;
 import ptolemy.actor.gui.PtolemyFrame;
 import ptolemy.actor.gui.Tableau;
 import ptolemy.domains.modal.kernel.State;
+import ptolemy.data.expr.StringParameter;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.Entity;
 import ptolemy.kernel.attributes.URIAttribute;
+import ptolemy.kernel.attributes.VersionAttribute;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
@@ -909,7 +911,6 @@ public class ExportHTMLAction extends AbstractAction implements HTMLExportable,
 					    + "<a href=\"../../../doc/\">click here</a>.</li>");
 		    } else {
 			printWriter.println("<li>For a chapter overview, "
-
 					    + "<a href=\"../index.html\">click here</a>.</li>");
 		    }
                 }
@@ -940,6 +941,11 @@ public class ExportHTMLAction extends AbstractAction implements HTMLExportable,
                 _addContent("toc.htm", false, "<ul>");
                 _addContent("toc.htm", false,
                         "<li><a href=\"/index.htm\">Ptolemy Home</a></li>");
+                _addContent("toc.htm", false,
+                        "<li><a href=\"/ptolemyII/ptII"
+			    + VersionAttribute.majorCurrentVersion()
+			    +"/doc/index.htm\">Ptolemy " + VersionAttribute.majorCurrentVersion()
+			    + "</li>");
                 _addContent("toc.htm", false, "</ul>");
                 _addContent("toc.htm", false, "");
                 _addContent("toc.htm", false, "<ul>");
@@ -948,8 +954,14 @@ public class ExportHTMLAction extends AbstractAction implements HTMLExportable,
 		    _addContent("toc.htm", false,
 				" <li><a href=\"../../../doc/\">Up</a></li>");
 		} else {
-		    _addContent("toc.htm", false,
-				" <li><a href=\"../index.html\">Up</a></li>");
+		    // If there is a _upHTML parameter, use its value.
+		    StringParameter upHTMLParameter = (StringParameter) model.getAttribute("_upHTML", StringParameter.class);
+		    if (upHTMLParameter != null) {
+			_addContent("toc.htm", false, upHTMLParameter.stringValue());
+		    } else {
+			_addContent("toc.htm", false,
+				    " <li><a href=\"../index.html\">Up</a></li>");
+		    }
 		}
                 _addContent("toc.htm", false, "</ul>");
                 _addContent("toc.htm", false, "<ul>");

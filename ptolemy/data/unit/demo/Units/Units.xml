@@ -4,6 +4,8 @@
 <entity name="Units" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.0.beta">
     </property>
+    <property name="_upHTML" class="ptolemy.data.expr.StringParameter" value="">
+    </property>
     <property name="Continuous Director" class="ptolemy.domains.continuous.kernel.ContinuousDirector">
         <property name="timeResolution" class="ptolemy.actor.parameters.SharedParameter" value="1.0E-10">
         </property>
