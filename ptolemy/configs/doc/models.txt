@@ -181,6 +181,7 @@ $CLASSPATH/ptolemy/domains/continuous/demo/ContinuousInsideDE/ContinuousInsideDE
 $CLASSPATH/ptolemy/domains/continuous/demo/Derivative/Derivative.xml
 $CLASSPATH/ptolemy/domains/continuous/demo/Friction/Friction.xml
 $CLASSPATH/ptolemy/domains/continuous/demo/FurutaPendulum/FurutaPendulum.xml
+$CLASSPATH/ptolemy/domains/continuous/demo/HierarchicalExecution/HierarchicalExecution.xml
 $CLASSPATH/ptolemy/domains/continuous/demo/HybridPlant/HybridPlant.xml
 $CLASSPATH/ptolemy/domains/continuous/demo/HybridPlant/RandomHybridPlant.xml
 $CLASSPATH/ptolemy/domains/continuous/demo/Hysteresis/Hysteresis.xml
