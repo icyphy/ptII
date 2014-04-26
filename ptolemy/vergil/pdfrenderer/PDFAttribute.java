@@ -61,7 +61,7 @@ import com.sun.pdfview.PDFPage;
  </p>
  <p>
  This class uses pdf-renderer, obtainable from
- <a href="https://pdf-renderer.dev.java.net/#in_browser">https://pdf-renderer.dev.java.net/</a>.
+ <a href="https://java.net/projects/pdf-renderer/#in_browser">https://java.net/projects/pdf-renderer/</a>.
  This is an "an open source, all Java library which renders PDF documents
  to the screen using Java2D." This attribute can be put into a
  Vergil diagram and its visual appearance will be be defined
