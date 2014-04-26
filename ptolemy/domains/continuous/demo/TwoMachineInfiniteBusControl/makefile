@@ -47,10 +47,7 @@ JSRCS =
 
 OTHER_FILES_TO_BE_JARED = \
 	$(JSRCS) \
-	TwoMachineInfiniteBusControl.xml
-
-EXTRA_SRCS = \
-	$(OTHER_FILES_TO_BE_JARED) \
+	TwoMachineInfiniteBusControl.xml \
 	data_normal.txt \
 	data_recovery.txt \
 	data_fault1.txt \
