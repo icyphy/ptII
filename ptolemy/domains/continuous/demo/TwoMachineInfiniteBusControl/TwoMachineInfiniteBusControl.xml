@@ -787,7 +787,7 @@ dynamics of the remaining generator become unstable. </text></svg></configure>
                 </property>
             </property>
             <property name="ParameterSet" class="ptolemy.actor.parameters.ParameterSet">
-                <property name="fileOrURL" class="ptolemy.data.expr.FileParameter" value="DMIB_data1.txt">
+                <property name="fileOrURL" class="ptolemy.data.expr.FileParameter" value="$CLASSPATH/ptolemy/domains/continuous/demo/TwoMachineInfiniteBusControl/DMIB_data1.txt">
                 </property>
                 <property name="checkForFileUpdates" class="ptolemy.data.expr.Parameter" value="true">
                 </property>
