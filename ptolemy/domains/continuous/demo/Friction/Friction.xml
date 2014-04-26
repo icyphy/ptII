@@ -273,6 +273,8 @@
         </property>
     </property>
     <property name="HTMLText" class="ptolemy.vergil.basic.export.web.HTMLText" value="Click on the TimedPlotter to see a plot of the velocities as a function of time.&#10;With these parameter values:&#10;&lt;ul&gt;&#10;&lt;li&gt; Near time 0.2, mass 2 breaks away and begins sliding.&#10;&lt;li&gt; Near time 0.7, the velocities match, but the input force is too high for capture.&#10;&lt;li&gt; Near time 0.8, mass 1 reverses direction, starting to move right instead of left.&#10;At that time, the velocity of mass 2 stops decreasing and starts increasing.&#10;&lt;li&gt; Near time 1.0, mass 1 is jolted left with an impulsive force, reversing direction,&#10;causing the velocity of mass 2 to stop increasing and start decreasing.&#10;Although the velocity of mass 1 crosses that of mass 2, no capture occurs.&#10;&lt;li&gt; Near time 1.8, the volocities match and the input force is small enough&#10;so that mass 2 is captured.&#10;&lt;li&gt; At time 2.0, an impulsive force on mass 1 causes mass 2 to start sliding.&#10;&lt;li&gt; Etc.&#10;&lt;/ul&gt;">
+	<property name="textPosition" class="ptolemy.vergil.basic.export.web.HTMLTextPosition" value="end">
+        </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[495.0, 620.0]">
         </property>
     </property>
