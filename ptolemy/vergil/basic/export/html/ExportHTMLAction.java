@@ -944,39 +944,43 @@ public class ExportHTMLAction extends AbstractAction implements HTMLExportable,
                 _addContent("toc.htm", false,
                         "<li><a href=\"/ptolemyII/ptII"
 			    + VersionAttribute.majorCurrentVersion()
-			    +"/doc/index.htm\">Ptolemy " + VersionAttribute.majorCurrentVersion()
-			    + "</li>");
+			    +"/ptII/doc/index.htm\">Ptolemy " + VersionAttribute.majorCurrentVersion()
+			    + "</a></li>");
                 _addContent("toc.htm", false, "</ul>");
                 _addContent("toc.htm", false, "");
-                _addContent("toc.htm", false, "<ul>");
 
+		String upHTML = null;
 		if (_isInDomains(model)) {
-		    _addContent("toc.htm", false,
-				" <li><a href=\"../../../doc/\">Up</a></li>");
+		    upHTML = "<li><a href=\"../../../doc/\">Up</a></li>";
 		} else {
 		    // If there is a _upHTML parameter, use its value.
 		    StringParameter upHTMLParameter = (StringParameter) model.getAttribute("_upHTML", StringParameter.class);
 		    if (upHTMLParameter != null) {
-			_addContent("toc.htm", false, upHTMLParameter.stringValue());
+			upHTML = upHTMLParameter.stringValue();
 		    } else {
-			_addContent("toc.htm", false,
-				    " <li><a href=\"../index.html\">Up</a></li>");
+			upHTML = " <li><a href=\"../index.html\">Up</a></li>";
 		    }
 		}
-                _addContent("toc.htm", false, "</ul>");
-                _addContent("toc.htm", false, "<ul>");
+		
+		// Only add <ul> if we have upHTML
+		if (upHTML != null) {
+		    _addContent("toc.htm", false, "<ul>");
+		    _addContent("toc.htm", false, upHTML);
+		    _addContent("toc.htm", false, "</ul>");
+		}
 
                 // Get the toc contents and stuff it into toc.htm.
                 List<StringBuffer> contents = _contents.get("tocContents");
-                if (contents != null) {
-                    for (StringBuffer line : contents) {
-                        _addContent("toc.htm", false, line.toString());
-                    }
-                }
-
-                _addContent("toc.htm", false, "</ul>");
-                _addContent("toc.htm", false, "</div><!-- /#menu -->");
+		if (contents != null) {
+		    _addContent("toc.htm", false, "<ul>");
+		    for (StringBuffer line : contents) {
+			_addContent("toc.htm", false, line.toString());
+		    }
+		    _addContent("toc.htm", false, "</ul>");
+		}
             }
+
+	    _addContent("toc.htm", false, "</div><!-- /#menu -->");
 
             // If _contents contains any entry other than head, start, or end,
             // then interpret that entry as a file name to write to.
