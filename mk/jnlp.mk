@@ -2007,20 +2007,28 @@ ant.footer:
 # See http://www.java.net/forum/topic/javadesktop/java-desktop-technologies/java-3d/unsigned-entry-j3dcorejar#comment-818570
 #
 # A solution is documented at the above link.
-# make KEYSTORE=/users/ptII/adm/certs/ptkeystore KEYALIAS=ptolemy STOREPASSWORD="-storepass xxx" KEYPASSWORD="-keypass xxx" sign_3d
+# make KEYSTORE=/users/ptII/adm/certs/ptkeystore KEYALIAS=ptolemy STOREPASSWORD="-storepass xxx" KEYPASSWORD="-keypass xxx" sign_j3d
 #
 # Unfortunately, under Mac OS X 10.7, the Java 3D 1.5.2 jar files fail with:
 #   Caused by: java.lang.ClassNotFoundException: apple.awt.CGraphicsDevice
 # So, we fall back to 1.5.0
 
+
+JNLP_J3D_MANIFEST = jnlp_j3d_manifest.txt
+$(JNLP_J3D_MANIFEST):
+	echo "Application-Name: Java3D, via the Ptolemy website" > $@
+	echo "Permissions: all-permissions" >> $@
+
 # Use $(ROOT) here instead of $(PTII) or $(HOME)
 # and avoid target pattern contains no `%'.
 WEBSTART=$(ROOT)/webstart
 JAVA3D=$(WEBSTART)/java3d
-sign_j3d: $(JAVA3D)
+sign_j3d: $(JAVA3D) $(JNLP_J3D_MANIFEST)
 	@set `find $(JAVA3D) -name "*.jar"`; \
 	for x do \
 		echo $$x; \
+		echo "# Updating the manifest of $$x with the Permissions: attribute."; \
+		$(JAR) -umf $(PTII)/$(JNLP_J3D_MANIFEST) $$x; \
 		"$(JARSIGNER)" \
 		-keystore "$(KEYSTORE)" \
 		$(STOREPASSWORD) \
@@ -2040,11 +2048,17 @@ $(JAVA3D):
 	mv vecmath.jar $(JAVA3D)/vecmath/$(JAVA3D_VERSION)
 
 
+JNLP_JAI_MANIFEST = jnlp_jai_manifest.txt
+$(JNLP_JAI_MANIFEST):
+	echo "Application-Name: Java Advance Imaging (JAI), via the Ptolemy website" > $@
+	echo "Permissions: all-permissions" >> $@
 JAI = $(WEBSTART)/jai
-sign_jai: $(JAI)
+sign_jai: $(JAI) $(JNLP_JAI_MANIFEST)
 	@set `find $(JAI) -name "*.jar"`; \
 	for x do \
 		echo $$x; \
+		echo "# Updating the manifest of $$x with the Permissions: attribute."; \
+		$(JAR) -umf $(PTII)/$(JNLP_JAI_MANIFEST) $$x; \
 		"$(JARSIGNER)" \
 		-keystore "$(KEYSTORE)" \
 		$(STOREPASSWORD) \
@@ -2061,11 +2075,19 @@ jai_update:
 	(cd $(JAI)/..; tar -cf - jai) | ssh $(WEBSERVER_USER)@$(WEBSERVER) "cd ~www/ptweb/ptolemyII; tar -xf -"
 
 # make KEYSTORE=/users/ptII/adm/certs/ptkeystore KEYALIAS=ptolemy STOREPASSWORD="-storepass xxx" KEYPASSWORD="-keypass xxx" sign_jogl
+
+JNLP_JOGL_MANIFEST = jnlp_jogl_manifest.txt
+$(JNLP_JOGL_MANIFEST):
+	echo "Application-Name: Java OpenGL, via the Ptolemy website" > $@
+	echo "Permissions: all-permissions" >> $@
+
 JOGL = $(WEBSTART)/jogl
-sign_jogl: $(JOGL)
+sign_jogl: $(JOGL) $(JNLP_JOGL_MANIFEST)
 	set `find $(JOGL) -name "*.jar"`; \
 	for x do \
 		echo $$x; \
+		echo "# Updating the manifest of $$x with the Permissions: attribute."; \
+		$(JAR) -umf $(PTII)/$(JNLP_JOGL_MANIFEST) $$x; \
 		"$(JARSIGNER)" \
 		-keystore "$(KEYSTORE)" \
 		$(STOREPASSWORD) \
@@ -2096,11 +2118,17 @@ jogl_update:
 
 
 # make KEYSTORE=/users/ptII/adm/certs/ptkeystore KEYALIAS=ptolemy STOREPASSWORD="-storepass xxx" KEYPASSWORD="-keypass xxx" sign_gluegen-rt
+JNLP_GLUEGEN-RT_MANIFEST = jnlp_gluegen-rt_manifest.txt
+$(JNLP_GLUEGEN-RT_MANIFEST):
+	echo "Application-Name: Gluegen-RT, via the Ptolemy website" > $@
+	echo "Permissions: all-permissions" >> $@
 GLUEGEN_RT = $(WEBSTART)/gluegen-rt
-sign_gluegen-rt: $(GLUEGEN_RT)
+sign_gluegen-rt: $(GLUEGEN_RT) $(JNLP_GLUEGEN-RT_MANIFEST)
 	set `find $(GLUEGEN_RT) -name "*.jar"`; \
 	for x do \
 		echo $$x; \
+		echo "# Updating the manifest of $$x with the Permissions: attribute."; \
+		$(JAR) -umf $(PTII)/$(JNLP_GLUEGEN-RT_MANIFEST) $$x; \
 		"$(JARSIGNER)" \
 		-keystore "$(KEYSTORE)" \
 		$(STOREPASSWORD) \
