@@ -52,7 +52,7 @@
 </property>
 
 <!------------------------------------------->
-<entity name="HTMLPageAssembler" class="ptolemy.vergil.basic.export.html.HTMLPageAssembler">
+<entity name="HTMLPageAssembler" class="ptolemy.vergil.basic.export.html.jsoup.HTMLPageAssembler">
 </entity>
 
 
