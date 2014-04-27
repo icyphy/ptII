@@ -1019,7 +1019,7 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
             result.append("<jar href=\"http://cvs588.gsfc.nasa.gov/WebStartiliads/dev/lib/jmf/JMF-2.1.1e/lib/customizer.jar\"/>\n    <jar href=\"http://cvs588.gsfc.nasa.gov/WebStartiliads/dev/lib/jmf/JMF-2.1.1e/lib/jmf.jar\"/>\n    <jar href=\"http://cvs588.gsfc.nasa.gov/WebStartiliads/dev/lib/jmf/JMF-2.1.1e/lib/mediaplayer.jar\"/>\n   <jar href=\"http://cvs588.gsfc.nasa.gov/WebStartiliads/dev/lib/jmf/JMF-2.1.1e/lib/multiplayer.jar\"/>\n");
         }
         if (jarFileName.contains("ptolemy/domains/gr/gr.jar")) {
-            result.append("   <extension href=\"http://ptolemy.org/ptolemyII/java3d/java3d-1.5.2.jnlp\"/>\n");
+            result.append("   <extension href=\"http://ptolemy.org/ptolemyII/java3d/java3d-1.5.0.jnlp\"/>\n");
         }
         return result.toString();
     }
