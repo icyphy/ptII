@@ -98,6 +98,7 @@
     <include name="ptolemy/domains/ci/doc/doc.jar" />
     <include name="ptolemy/domains/continuous/continuous.jar" />
     <include name="ptolemy/domains/continuous/demo/demo.jar" />
+    <include name="ptolemy/domains/continuous/demo/TwoMachineInfiniteBusControl/TwoMachineInfiniteBusControl.jar" />
     <include name="ptolemy/domains/continuous/doc/doc.jar" />
     <include name="ptolemy/domains/csp/demo/demo.jar" />
     <include name="ptolemy/domains/csp/doc/doc.jar" />
@@ -3910,6 +3911,18 @@
 	<include name="ptolemy/domains/continuous/demo/V2V/*.xml"/>
       </fileset>
     </jar>
+
+    <!-- ptolemy/domains/continuous/demo/TwoMachineInfiniteBusControl/TwoMachineInfiniteBusControl.jar, needed when creating JNLP files. -->
+    <jar defaultexcludes="yes"
+	 destfile="${basedir}/ptolemy/domains/continuous/demo/TwoMachineInfiniteBusControl/TwoMachineInfiniteBusControl.jar"
+	 >
+      <fileset dir="${basedir}">
+	<include name="ptolemy/domains/continuous/demo/TwoMachineInfiniteBusControl/*.txt"/>
+	<include name="ptolemy/domains/continuous/demo/TwoMachineInfiniteBusControl/*.xml"/>
+      </fileset>
+    </jar>
+
+
 
     <!-- ptolemy/domains/continuous/doc/doc.jar -->
     <jar defaultexcludes="yes"
