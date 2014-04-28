@@ -12,6 +12,10 @@ fi
 
 tocdir=`dirname $toc`
 
+echo "==== $toc"
+
+echo "<script src=\"../../../../doc/demoLink.js\"></script>"
+echo "<script>"
 
 awk -v tocdir=$tocdir ' $0 ~ /demo/ {
     indent = ""
@@ -72,3 +76,5 @@ awk -v tocdir=$tocdir ' $0 ~ /demo/ {
 
     print "demoLink(\"" indent "\", \"" url "\", \"" description "\");"
 }' $toc
+
+echo "</script>"

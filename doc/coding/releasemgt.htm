@@ -589,7 +589,13 @@
 		cd $PTII
 		ant test.longest >& test.out
 	      </pre>
-	      The above will take about an hour
+	      The above will take about an hour.
+
+	      <br/> If you want to run a command by hand, try
+	      <pre>
+export JAVAFLAGS="-Dptolemy.ptII.exportHTML.linkToJNLP=true -Dptolemy.ptII.exportHTML.usePtWebsite=true"
+$PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm -run -openComposites -timeOut 30000 -whiteBackground ptolemy/domains/continuous/demo/Thermostat/Thermostat.xml $PTII/ptolemy/domains/continuous/demo/Thermostat/Thermostat
+</pre>
 	    </li>
 
 	    <li> Create the jnlp files and update the website:

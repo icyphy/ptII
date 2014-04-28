@@ -8,10 +8,15 @@ demos=`cd $PTII/ptolemy/configs/doc; make --no-print-directory listDemos |  egre
 #demos=`cd $PTII/ptolemy/configs/doc; make check_applets |  grep -v /SystemLevelType/ | sed 's/.htm$/.xml/'`
 
 #demos=../../../ptolemy/domains/ddf/demo/IfThenElse/IfThenElseFSM.xml
-demos=../../../ptolemy/actor/gt/demo/BouncingBallX2/BouncingBallX2.xml 
+#demos=../../../ptolemy/domains/continuous/demo/TwoMachineInfiniteBusControl/TwoMachineInfiniteBusControl.xml
+#demos=../../../ptolemy/domains/continuous/demo/SinuBouncingBall/SinuBouncingBall.xml
+demos=../../../ptolemy/domains/continuous/demo/NewtonsCradle/NewtonsCradleComplicated
+#demos=../../../ptolemy/actor/gt/demo/BouncingBallX2/BouncingBallX2.xml 
 #demos=../../../lbnl/demo/SystemCommand/SystemCommand.xml
+
 for demo in $demos
 do
+    echo $demo
      model=`basename $demo .xml` 
 
      modelDirectory=`dirname $demo`

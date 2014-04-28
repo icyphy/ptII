@@ -1,21 +1,49 @@
 <!-- $Id$ -->
 <html>
-<head>
-<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
-<title>Ptolemy II Discrete Event Domain</title>
-<link href="../../../../doc/default.css" rel="stylesheet" type="text/css">
-</head>
-<body>
-<h1>Discrete Event</h1>
-<P>
-The Ptolemy II Discrete Event (DE) domain provides a general environment for
-time-oriented simulations of systems such as queueing systems, communication
-networks, and hardware systems. In this domain, actors communicate by sending
-tokens across connections. The token sent and the time at which the action
-took place constitute an event in the DE domain. Upon receiving an event, the
-destination actor is activated and a reaction take place. The reaction may
-change the internal state of the actor and possibly generate new events,
-resulting in further reactions. A DE domain scheduler ensures that events
-are processed chronologically.
+  <head>
+    <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+    <title>Ptolemy II Discrete Event Domain</title>
+    <link href="../../../../doc/default.css" rel="stylesheet" type="text/css">
+  </head>
+  <body>
+    <h1>Discrete Event</h1>
+
+    <p>The Discrete Event (DE) Model of Computation defines a semantics for a network of Actors that produce discrete events, and whose executions are triggered by discrete events. A discrete event is a value with a time associated with it that is global on the level of the model. Each event also has, as a destination, an associated input port on an Actor. This destination is determined by a relation connecting to this input port the output port, or model input, from which the event is produced, or enters the model, respectively.</p>
+
+    <p>When an event exist in the model, at a particular time, with an input port on an Actor as its destination, this Actor must respond to the event at the associated time. This response may be to produce no output. However, if output events are produced, the time associated with these events must be equal to or later than that of its inputs. This constraint ensures weak causality.</p>
+
+    <p>Furthermore, for the currently implemented form of the Discrete Event MoC in Ptolemy II, in a model every dependency cycle along the reaction to and production of events must have at least one Actor that produces events strictly later in associated time than those of its inputs. In more recent conceptions of these semantics this restriction is lifted to a strictly broader monotonicity condition.</p>
+
+    <p>This MoC is a Synchronous one, since at the time associated with every event in the model, associated with the relation connected to its destination, each relation can be determined uniquely to either have a single event associated with that same time, or have no event at that time, in which case the output of the Actor or model input connected to such a relation is said to produce absent. In other words, like the Synchronous Reactive model, at each Reaction event a unique value, including absent, can be determined at each relation.</p>
+
+    <p>DE models are extensively used in simulation of networks, queueing systems, and digital circuits. </p>
+
+    <h2>References</h2>
+    <h3>Semantics and Theory</h3>
+
+    <ul>
+      <li> Baccelli, F., G. Cohen, G. J. Olster and J. P. Quadrat (1992). Synchronization and Linearity, An Algebra for Discrete Event Systems. New York, Wiley.</li>
+      <li>Cassandras, C. G. (1993). Discrete Event Systems, Modeling and Performance Analysis, Irwin.</li>
+      <li>Cataldo, A., E. A. Lee, X. Liu, E. Matsikoudis and H. Zheng (2006). "<a href="http://ptolemy.eecs.berkeley.edu/publications/papers/06/constructive/" target="_top">A Constructive Fixed-Point Theorem and the Feedback Semantics of Timed Systems.</a>" Workshop on Discrete Event Systems (WODES), Ann Arbor, Michigan, July 10-12.</li>
+      <li>Lee, E. A. (1999). "<a href="http://ptolemy.eecs.berkeley.edu/publications/papers/99/realtime/"> target="_top">Modeling Concurrent Real-time Processes Using Discrete Events.</a>" Annals of Software Engineering 7: 25-45.</li>
+      <li>Liu, X., E. Matsikoudis and E. A. Lee (2006). "<a href="http://ptolemy.eecs.berkeley.edu/publications/papers/06/timedconcurrentsystems/"> target="_top">Modeling Timed Concurrent Systems.</a>" CONCUR 2006 - Concurrency Theory, Bonn, Germany, August 27-30,Springer.</li>
+      <li>Ramadge, P. J. G. and W. M. Wonham (1989). "The control of discrete event systems." Proceedings of the IEEE 77(1): 81-98.</li>
+      <li>Zeigler, B. P., H. Praehofer and T. G. Kim (2000). Theory of Modeling and Simulation, Academic Press. </li>
+    </ul>
+
+    <h3>Simulators and Tools</h3>
+    <ul>
+      <li> Edward A. Lee, Jie Liu, Lukito Muliadi and Haiyang Zheng, "<a href="http://ptolemy.eecs.berkeley.edu/books/Systems/chapters/DiscreteEventModels.pdf" target="_top">Discrete-Event Models</a>," a chapter from<br/>
+      Claudius Ptolemaeus, Editor, "<a href="http://ptolemy.eecs.berkeley.edu/books/Systems/index.htm#in_browser">System Design, Modeling, and Simulation Using Ptolemy II</a>", Ptolemy.org, 2014. (included in the release as <a href="../../../../doc/books/systems/PtolemyII_DigitalV1_02.pdf#in_browser"><code>$PTII/doc/books/systems/PtolemyII_DigitalV1_02.pdf</code></a>)</li>
+
+      </li>
+      <li>Varga, A. (2001). The OMNeT++ Discrete Event Simulation System. Proceedings of the European Simulation Multiconference (ESM'2001), Prague, Czech Republic, June 6-9. </li>
+    </ul>
+    <h3>Distributed DE</h3>
+    <ul>
+      <li>Chen, G. and B. K. Szymanski (2002). Searching for Parallelism in Discrete Event Simulation. Summer Computer Simulation Conference, San Diego, CA, Relevant to Ptides.</li>
+      <li>Jefferson, D. (1985). "Virtual Time." ACM Trans. Programming Languages and Systems 7(3): 404-425.</li>
+      <li>Misra, J. (1986). "Distributed Discrete Event Simulation." ACM Computing Surveys 18(1): 39-65. </li>
+</li>
 </body>
 </html>
