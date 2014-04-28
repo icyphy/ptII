@@ -1370,14 +1370,21 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
                 } catch (UnsatisfiedLinkError ex) {
                     // The FMU has not provided the function.
                     _fmiGetEventIndicatorsFunction = null;
-                }
-                if (_fmiVersion < 2.0) {
+                }        
+                if (_fmiVersion < 1.5) {
                     _fmiInitializeFunction = _fmiModelDescription
                         .getFmiFunction("fmiInitialize");
                     _fmiInstantiateModelFunction = _fmiModelDescription
                         .getFmiFunction("fmiInstantiateModel");
 
-                } else {
+                }               
+                else if (_fmiVersion >= 1.5 && _fmiVersion < 2.0) {
+                    // We don't have any FMI-1.5 Model Exchange
+                    // models, so there is no need to implement this.
+                    throw new IllegalActionException(this,
+                            "Model exchange not yet implemented for FMI " + _fmiVersion);                
+                }
+                else {
                     _fmiEnterInitializationModeFunction  = _fmiModelDescription
                         .getFmiFunction("fmiEnterInitializationMode");
                     _fmiExitInitializationModeFunction  = _fmiModelDescription
