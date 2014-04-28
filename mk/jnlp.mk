@@ -1213,8 +1213,11 @@ $(JAR_DIST_DIR): $(NATIVE_SIGNED_LIB_JARS)
 
 # Jarfiles used by applet code generation
 APPLET_DOMAIN_JARS = \
+	ptolemy/domains/ca/ca.jar \
 	ptolemy/domains/ci/ci.jar \
 	ptolemy/domains/continuous/continuous.jar \
+	ptolemy/domains/csp/csp.jar \
+	ptolemy/domains/dde/dde.jar \
 	ptolemy/domains/ddf/ddf.jar \
 	ptolemy/domains/de/de.jar \
 	ptolemy/domains/gr/gr.jar \
@@ -1223,6 +1226,7 @@ APPLET_DOMAIN_JARS = \
 	ptolemy/domains/pn/pn.jar \
 	ptolemy/domains/ptides/ptides.jar \
 	ptolemy/domains/rendezvous/rendezvous.jar \
+	ptolemy/domains/scr/scr.jar \
 	ptolemy/domains/sdf/sdf.jar \
 	ptolemy/domains/sr/sr.jar \
 	ptolemy/domains/wireless/wireless.jar \
