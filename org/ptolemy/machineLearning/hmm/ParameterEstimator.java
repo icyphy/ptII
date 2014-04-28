@@ -688,8 +688,8 @@ public abstract class ParameterEstimator extends TypedAtomicActor {
     /* Initial guess array for the state transition matrix for the Alpha-Beta Recursion*/
     protected double[][] _transitionMatrix;
 
-    HashMap newEstimates;
+    protected HashMap newEstimates;
 
-    double likelihood;
+    protected double likelihood;
 
 }
