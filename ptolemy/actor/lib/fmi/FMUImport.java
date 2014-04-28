@@ -531,7 +531,7 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
                     Token token = input.port.get(0);
                     _setFMUScalarVariable(input.scalarVariable, token);
                     // If the input is a continuous state, update the newStates vector.
-                    if ((_fmiVersion==2.0) && _fmiModelDescription.modelExchange 
+                    if ((_fmiVersion>=2.0) && _fmiModelDescription.modelExchange 
                             && _fmiModelDescription.continuousStates.contains(input.port.getName())){
                         _index = _fmiModelDescription.continuousStates.indexOf(input.port.getName());
                         _newStates[_index] = ((DoubleToken) token).doubleValue();
@@ -1334,10 +1334,28 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
                                     + "the MODEL_IDENTIFIER #define set to a value that does not "
                                     + "match the value in modelDescription.xml");
                 }
-
-                if (_fmiVersion < 2.0) {
-                    _fmiFreeModelInstanceFunction = _fmiModelDescription
-                        .getFmiFunction("fmiFreeModelInstance");
+       
+                if (_fmiVersion < 2.0) {   
+                    try {
+                        _fmiFreeModelInstanceFunction = _fmiModelDescription
+                            .getFmiFunction("fmiFreeModelInstance");
+                    } catch (UnsatisfiedLinkError ex) {
+                        throw new IllegalActionException("Could not find the fmiFreeModelInstance function, "
+                                + "perhaps this FMU is a Model Exchange FMU and not a Co-simulation FMU? "
+                                + "Or, perhaps this FMU is v2.0 or greater and does not have a fmiFreeModelInstance function? "
+                                + "Try reimporting it and selecting the Model Exchange checkbox.");
+                    }
+                }
+                // Common with CoSimulation and Model Exchange;
+                else {
+                    try {
+                        _fmiFreeInstanceFunction = _fmiModelDescription
+                                .getFmiFunction("fmiFreeInstance");
+                    } catch (UnsatisfiedLinkError ex) {
+                        throw new IllegalActionException(
+                                "Could not find the fmiFreeInstance function, "
+                                        + "Perhaps this FMU earlier than v2.0 and does not have a fmiFreeInstance function?");
+                    }
                 }
                 _fmiGetContinuousStatesFunction = _fmiModelDescription
                         .getFmiFunction("fmiGetContinuousStates");
@@ -2070,25 +2088,18 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
         if (_debugging) {
             _debugToStdOut("Freeing the FMU instance.");
         }
-        int fmiFlag = 0;
-        if (_fmiModelDescription.modelExchange) {
-            if (_fmiVersion >= 1.5 && _fmiVersion < 2.0) {
-                fmiFlag = ((Integer) _fmiFreeModelInstanceFunction
-                        .invokeInt(new Object[] { _fmiComponent })).intValue();
-                if (fmiFlag != FMILibrary.FMIStatus.fmiOK) {
-                    throw new IllegalActionException(this,
-                            "Could not free the FMU instance: "
-                            + _fmiStatusDescription(fmiFlag));
-                }
-            }
-        } else {
-            if (_fmiVersion < 2.0) {
+        if (_fmiVersion < 2.0) {
+            if (_fmiModelDescription.modelExchange) {
+                _fmiFreeModelInstanceFunction
+                        .invokeInt(new Object[] { _fmiComponent });
+            } else {
                 // fmiFreeSlaveInstance is a void function.
                 // No returned status.
                 _fmiFreeSlaveInstanceFunction
-                    .invokeInt(new Object[] { _fmiComponent });
-            } else {
+                        .invokeInt(new Object[] { _fmiComponent });
             }
+        } else {
+            _fmiFreeInstanceFunction.invokeInt(new Object[] { _fmiComponent });
         }
     }
 
