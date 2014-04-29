@@ -1211,7 +1211,7 @@ $(JAR_DIST_DIR): $(NATIVE_SIGNED_LIB_JARS)
 		fi; \
 	done;
 
-# Jarfiles used by applet code generation
+# Jarfiles used by JNLP WebStart code generation in copernicus/applet.
 APPLET_DOMAIN_JARS = \
 	ptolemy/domains/ca/ca.jar \
 	ptolemy/domains/ci/ci.jar \
@@ -1220,10 +1220,13 @@ APPLET_DOMAIN_JARS = \
 	ptolemy/domains/dde/dde.jar \
 	ptolemy/domains/ddf/ddf.jar \
 	ptolemy/domains/de/de.jar \
+	ptolemy/domains/dt/dt.jar \
+	ptolemy/domains/giotto/giotto.jar \
 	ptolemy/domains/gr/gr.jar \
 	ptolemy/domains/hdf/hdf.jar \
 	ptolemy/domains/modal/modal.jar \
 	ptolemy/domains/pn/pn.jar \
+	ptolemy/domains/petrinet/petrinet.jar \
 	ptolemy/domains/ptides/ptides.jar \
 	ptolemy/domains/rendezvous/rendezvous.jar \
 	ptolemy/domains/scr/scr.jar \
