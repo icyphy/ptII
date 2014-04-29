@@ -2,17 +2,17 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="Array" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.0.devel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="10.0.devel">
     </property>
     <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
         <property name="iterations" class="ptolemy.data.expr.Parameter" value="1">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="70.0, 35.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[115.0, 45.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={6, 22, 1261, 817}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={6, 22, 1015, 650}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1048, 707]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[781, 540]">
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
@@ -37,7 +37,7 @@
                 </property>
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{10.0, 290.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[55.0, 300.0]">
         </property>
     </property>
     <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -63,7 +63,7 @@
                 </property>
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{10.0, 125.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[55.0, 135.0]">
         </property>
     </property>
     <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -89,11 +89,11 @@
                 </property>
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{10.0, 395.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[55.0, 405.0]">
         </property>
     </property>
     <property name="rectangle" class="ptolemy.vergil.kernel.attributes.RectangleAttribute">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="10.0, 455.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[55.0, 465.0]">
         </property>
         <property name="lineWidth" class="ptolemy.data.expr.Parameter" value="2.0">
         </property>
@@ -131,23 +131,23 @@
                 </property>
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{15.0, 465.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[60.0, 475.0]">
         </property>
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.4009890391073">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{338.478515625, 258.9233081613788}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{390.5, 270.0}">
     </property>
     <entity name="ArrayMaximum" class="ptolemy.actor.lib.ArrayMaximum">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="260.0, 80.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[305.0, 90.0]">
         </property>
     </entity>
     <entity name="ArrayMinimum" class="ptolemy.actor.lib.ArrayMinimum">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="260.0, 145.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[305.0, 155.0]">
         </property>
     </entity>
     <entity name="ArraySort" class="ptolemy.actor.lib.ArraySort">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="260.0, 215.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[305.0, 225.0]">
         </property>
     </entity>
     <entity name="ArrayPlotter" class="ptolemy.actor.lib.gui.ArrayPlotter">
@@ -165,7 +165,7 @@
         </property>
         <property name="xUnit" class="ptolemy.data.expr.Parameter" value="1.0">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="355.0, 265.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[400.0, 275.0]">
         </property>
         <configure>
 <?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
@@ -181,8 +181,6 @@
         </configure>
     </entity>
     <entity name="Maximum Value" class="ptolemy.actor.lib.gui.MonitorValue">
-        <property name="value" class="ptolemy.data.expr.Parameter" value="0.9998059819798">
-        </property>
         <doc>Monitor and display values</doc>
         <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="20">
         </property>
@@ -192,12 +190,10 @@
             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="displayWidth">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="485.0, 35.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[530.0, 45.0]">
         </property>
     </entity>
     <entity name="Minimum Value" class="ptolemy.actor.lib.gui.MonitorValue">
-        <property name="value" class="ptolemy.data.expr.Parameter" value="0.0014234211981">
-        </property>
         <doc>Monitor and display values</doc>
         <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="20">
         </property>
@@ -207,18 +203,16 @@
             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="displayWidth">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="485.0, 100.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[530.0, 110.0]">
         </property>
     </entity>
     <entity name="ArraySort2" class="ptolemy.actor.lib.ArraySort">
         <property name="ascending" class="ptolemy.data.expr.Parameter" value="false">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="260.0, 305.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[305.0, 315.0]">
         </property>
     </entity>
     <entity name="Minimum Index" class="ptolemy.actor.lib.gui.MonitorValue">
-        <property name="value" class="ptolemy.data.expr.Parameter" value="44">
-        </property>
         <doc>Monitor and display values</doc>
         <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="20">
         </property>
@@ -228,13 +222,13 @@
             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="displayWidth">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="485.0, 155.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[530.0, 165.0]">
         </property>
     </entity>
     <entity name="SequenceToArray" class="ptolemy.domains.sdf.lib.SequenceToArray">
         <property name="arrayLength" class="ptolemy.actor.parameters.PortParameter" value="100">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="130.0, 90.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[175.0, 100.0]">
         </property>
     </entity>
     <entity name="Uniform" class="ptolemy.actor.lib.Uniform">
@@ -245,16 +239,14 @@
         <property name="upperBound" class="ptolemy.actor.parameters.PortParameter" value="1.0">
         </property>
         <doc>Create a sequence of uniformly distributed random numbers</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="50.0, 90.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[95.0, 100.0]">
         </property>
     </entity>
     <entity name="ArrayAverage" class="ptolemy.actor.lib.ArrayAverage">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="260.0, 370.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[305.0, 380.0]">
         </property>
     </entity>
     <entity name="Average Value" class="ptolemy.actor.lib.gui.MonitorValue">
-        <property name="value" class="ptolemy.data.expr.Parameter" value="0.4990646290028">
-        </property>
         <doc>Monitor and display values</doc>
         <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="20">
         </property>
@@ -264,16 +256,14 @@
             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="displayWidth">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[435.0, 410.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[480.0, 420.0]">
         </property>
     </entity>
     <entity name="ArrayElement" class="ptolemy.actor.lib.ArrayElement">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="465.0, 225.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[510.0, 235.0]">
         </property>
     </entity>
     <entity name="Minimum Value2" class="ptolemy.actor.lib.gui.MonitorValue">
-        <property name="value" class="ptolemy.data.expr.Parameter" value="0.0014234211981">
-        </property>
         <doc>Monitor and display values</doc>
         <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="20">
         </property>
@@ -283,7 +273,7 @@
             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="displayWidth">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="615.0, 225.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[660.0, 235.0]">
         </property>
     </entity>
     <entity name="ArrayExtract" class="ptolemy.actor.lib.ArrayExtract">
@@ -291,7 +281,7 @@
         </property>
         <property name="outputArrayLength" class="ptolemy.actor.parameters.PortParameter" value="10">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="535.0, 290.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[580.0, 300.0]">
         </property>
     </entity>
     <entity name="ArrayPlotter2" class="ptolemy.actor.lib.gui.ArrayPlotter">
@@ -309,7 +299,7 @@
         </property>
         <property name="xUnit" class="ptolemy.data.expr.Parameter" value="1.0">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="630.0, 290.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[675.0, 300.0]">
         </property>
         <configure>
 <?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
@@ -334,11 +324,11 @@
             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[410.0, 345.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[455.0, 355.0]">
         </property>
     </entity>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" value="195.0, 125.0">
+        <vertex name="vertex1" value="[240.0, 135.0]">
         </vertex>
     </relation>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
@@ -352,7 +342,7 @@
     <relation name="relation8" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation9" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" value="310.0, 215.0">
+        <vertex name="vertex1" value="[355.0, 225.0]">
         </vertex>
     </relation>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
