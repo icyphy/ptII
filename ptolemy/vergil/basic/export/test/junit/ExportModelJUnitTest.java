@@ -248,6 +248,7 @@ public class ExportModelJUnitTest {
                 "lbnl/demo/", // FIXME: hangs, probably because the log window is not closed.
                 "g4ltl/demo/", // These demos require wiring.
                 "gt/demo/BouncingBallX2/BouncingBallX2/index.html",
+                "BrockAckerman.xml", // FIXME: Seems to hang when runnning under code coverage.
                 "distributed/demo/Sleep/Sleep.xml", // Requires jini.
                 "DECG.xml", // This has links to the DE demos and is not runnable in itself.
                 "de/demo/Clock/Clock.xml", // "Audio Device Unavailable"
