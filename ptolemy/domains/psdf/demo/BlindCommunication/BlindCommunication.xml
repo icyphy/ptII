@@ -2,11 +2,11 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="BlindCommunication" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.0.beta">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="10.0.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={4, 22, 1014, 617}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={4, 22, 1035, 634}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[801, 507]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[801, 524]">
     </property>
     <property name="order" class="ptolemy.data.expr.Parameter" value="11">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -54,7 +54,7 @@
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{400.5, 253.5}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{400.5, 262.0}">
     </property>
     <property name="annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="The AudioReader reads an input PSK signal and executes a sequence of &#10;signal analyses to determine the carrier, baud rate, and number of phase states.&#10;The resampler computes an unknown number of output samples, preventing &#10;static scheduling of the toplevel model.  Since the amount of processed &#10;data changes, the PhaseStatesEstimator model cannot be a synchronous &#10;dataflow model. In this model the PhaseStatesEstimator is quasi-statically &#10;scheduled using the Parameterized Synchronous Dataflow domain.">
@@ -104,9 +104,7 @@
         <property name="_icon" class="ptolemy.vergil.icon.XMLIcon">
         </property>
     </entity>
-    <entity name="Baud Rate Estimate" class="ptolemy.actor.lib.MonitorValue">
-        <property name="value" class="ptolemy.data.expr.Parameter" value="0.0">
-        </property>
+    <entity name="Baud Rate Estimate" class="ptolemy.actor.lib.gui.MonitorValue">
         <doc>Monitor and display values</doc>
         <property name="_icon" class="ptolemy.vergil.icon.UpdatedValueIcon">
             <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
@@ -221,7 +219,7 @@
         <entity name="PlotSpectrumWithCarrier" class="ptolemy.actor.lib.gui.SequencePlotter">
             <property name="fillOnWrapup" class="ptolemy.data.expr.Parameter" value="true">
             </property>
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={507, 555, 508, 210}, maximized=false}">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={507, 555, 500, 199}, maximized=false}">
             </property>
             <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 155]">
             </property>
@@ -383,7 +381,7 @@
         <entity name="PlotSpectrumWithoutCarrier" class="ptolemy.actor.lib.gui.SequencePlotter">
             <property name="fillOnWrapup" class="ptolemy.data.expr.Parameter" value="true">
             </property>
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={506, 319, 509, 236}, maximized=false}">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={506, 319, 501, 225}, maximized=false}">
             </property>
             <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[501, 181]">
             </property>
@@ -864,9 +862,7 @@
         <link port="Differential.input" relation="relation13"/>
         <link port="Differential.output" relation="relation6"/>
     </entity>
-    <entity name="Carrier Estimate" class="ptolemy.actor.lib.MonitorValue">
-        <property name="value" class="ptolemy.data.expr.Parameter" value="0.0">
-        </property>
+    <entity name="Carrier Estimate" class="ptolemy.actor.lib.gui.MonitorValue">
         <doc>Monitor and display values</doc>
         <property name="_icon" class="ptolemy.vergil.icon.UpdatedValueIcon">
             <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
@@ -928,9 +924,9 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="200.0, 60.0">
             </property>
             <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
-                <property name="_location" class="ptolemy.kernel.util.Location" value="110.0, 95.0">
-                </property>
                 <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="110.0, 95.0">
                 </property>
             </property>
             <property name="annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -1147,7 +1143,7 @@
             </port>
         </entity>
         <entity name="Repeat" class="ptolemy.domains.sdf.lib.Repeat">
-            <property name="numberOfTimes" class="ptolemy.data.expr.Parameter" value="2^order">
+            <property name="numberOfTimes" class="ptolemy.actor.parameters.PortParameter" value="2^order">
             </property>
             <property name="blockSize" class="ptolemy.data.expr.Parameter" value="1">
             </property>
@@ -1469,7 +1465,7 @@
         </property>
         <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{290.0, 267.0}">
         </property>
-        <property name="inputCount" class="ptolemy.actor.parameters.PortParameter" value="127">
+        <property name="inputCount" class="ptolemy.actor.parameters.PortParameter" value="255">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
             <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
@@ -1494,9 +1490,9 @@
             </property>
         </property>
         <property name="Parameterized_SDF_Director" class="ptolemy.domains.psdf.kernel.PSDFDirector">
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[85.0, 55.0]">
-            </property>
             <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[85.0, 55.0]">
             </property>
         </property>
         <property name="annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -1507,6 +1503,8 @@
         </property>
         <port name="inputCount" class="ptolemy.actor.parameters.ParameterPort">
             <property name="input"/>
+            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+            </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="{215.0, 50.0}">
             </property>
             <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="WEST">
@@ -2140,9 +2138,7 @@
         <link port="Wrap.output" relation="relation11"/>
         <link port="Wrap.input" relation="relation"/>
     </entity>
-    <entity name="Sample Count" class="ptolemy.actor.lib.MonitorValue">
-        <property name="value" class="ptolemy.data.expr.Parameter" value="0">
-        </property>
+    <entity name="Sample Count" class="ptolemy.actor.lib.gui.MonitorValue">
         <doc>Monitor and display values</doc>
         <property name="_icon" class="ptolemy.vergil.icon.UpdatedValueIcon">
             <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
@@ -2153,9 +2149,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="460.0, 215.0">
         </property>
     </entity>
-    <entity name="Phase states" class="ptolemy.actor.lib.MonitorValue">
-        <property name="value" class="ptolemy.data.expr.Parameter" value="0">
-        </property>
+    <entity name="Phase states" class="ptolemy.actor.lib.gui.MonitorValue">
         <doc>Monitor and display values</doc>
         <property name="_icon" class="ptolemy.vergil.icon.UpdatedValueIcon">
             <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
@@ -2170,9 +2164,9 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[440.0, 280.0]">
         </property>
         <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[78.75, 40.0]">
-            </property>
             <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[78.75, 40.0]">
             </property>
         </property>
         <property name="annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -2205,7 +2199,7 @@
         <entity name="XYPlotter" class="ptolemy.actor.lib.gui.XYPlotter">
             <property name="fillOnWrapup" class="ptolemy.data.expr.Parameter" value="true">
             </property>
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={-4, 386, 508, 380}, maximized=false}">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 386, 500, 369}, maximized=false}">
             </property>
             <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 325]">
             </property>
@@ -2220,7 +2214,7 @@
 <title>Received constellation</title>
 <xLabel></xLabel>
 <yLabel></yLabel>
-<xRange min="-0.9591563352856228" max="0.9627391367687687"/>
+<xRange min="-0.9591563352856228" max="0.9627391367687688"/>
 <yRange min="-0.02825396969202759" max="0.13673941620586008"/>
 <default connected="no" marks="dots"/>
 </plot>?>
