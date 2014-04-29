@@ -95,6 +95,8 @@
     <include name="ptolemy/domains/ca/demo.jar" />
     <include name="ptolemy/domains/ci/ci.jar" />
     <include name="ptolemy/domains/ci/demo/demo.jar" />
+    <include name="ptolemy/domains/ci/demo/Conway/Conway.jar" />
+    <include name="ptolemy/domains/ci/demo/ConwayRandom/ConwayRandom.jar" />
     <include name="ptolemy/domains/ci/doc/doc.jar" />
     <include name="ptolemy/domains/continuous/continuous.jar" />
     <include name="ptolemy/domains/continuous/demo/demo.jar" />
@@ -1906,6 +1908,27 @@
       <fileset dir="${basedir}">
 	<include name="ptolemy/domains/ca/demo/Conway/*.jpg"/>
 	<include name="ptolemy/domains/ca/demo/Conway/*.xml"/>
+	<include name="ptolemy/domains/ca/demo/ConwayRandom/*.xml"/>
+      </fileset>
+    </jar>
+
+
+    <!-- ptolemy/domains/ca/demo/Conway/Conway.jar Needed for JNLP-->
+    <jar defaultexcludes="yes"
+	 destfile="${basedir}/ptolemy/domains/ca/demo/Conway/Conway.jar"
+	 >
+      <fileset dir="${basedir}">
+	<include name="ptolemy/domains/ca/demo/Conway/*.jpg"/>
+	<include name="ptolemy/domains/ca/demo/Conway/*.xml"/>
+      </fileset>
+    </jar>
+
+    <!-- ptolemy/domains/ca/demo/ConwayRandom/ConwayRandom.jar Needed for JNLP. -->
+    <jar defaultexcludes="yes"
+	 destfile="${basedir}/ptolemy/domains/ca/demo/ConwayRandom/ConwayRandom.jar"
+	 >
+      <fileset dir="${basedir}">
+	<include name="ptolemy/domains/ca/demo/ConwayRandom/*.jpg"/>
 	<include name="ptolemy/domains/ca/demo/ConwayRandom/*.xml"/>
       </fileset>
     </jar>
