@@ -29,7 +29,7 @@
 # 						COPYRIGHTENDKEY
 ##########################################################################
 
-DIRS = hmm hmmAOM particleFilter
+DIRS = hmm hmmAOM hsmm particleFilter
 
 # Root of Ptolemy II directory
 ROOT =		../../..
@@ -53,6 +53,7 @@ PTCLASSALLJAR = $(PTPACKAGE).jar
 PTCLASSALLJARS = \
 	hmm/hmm.jar \
 	hmmAOM/hmmAOM.jar \
+	hsmm/hsmm.jar \
 	particleFilter/particleFilter.jar
 
 OTHER_FILES_TO_BE_JARED = \

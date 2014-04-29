@@ -3389,6 +3389,12 @@
 	<include name="org/ptolemy/machineLearning/hmmAOM/*.xml"/>
       </fileset>
       <fileset dir="${basedir}">
+	<include name="org/ptolemy/machineLearning/hsmm/*.class"/>
+      </fileset>
+      <fileset dir="${basedir}">
+	<include name="org/ptolemy/machineLearning/hsmm/*.xml"/>
+      </fileset>
+      <fileset dir="${basedir}">
 	<include name="org/ptolemy/machineLearning/particleFilter/*.class"/>
       </fileset>
       <fileset dir="${basedir}">
