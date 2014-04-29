@@ -1525,7 +1525,18 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
         auxiliaryJarMap.put("ptolemy.domains.space.Region", spaceJar);
         auxiliaryJarMap.put("ptolemy.domains.space.Room", spaceJar);
 
+        auxiliaryJarMap.put("ptolemy.vergil.actor.lib.LEDMatrix",
+                "ptolemy/vergil/vergilApplet.jar");
+        auxiliaryJarMap.put("ptolemy.vergil.actor.lib.ModelDisplay",
+                "ptolemy/vergil/vergilApplet.jar");
+        auxiliaryJarMap.put("ptolemy.vergil.actor.lib.MonitorReceiverAttribute",
+                "ptolemy/vergil/vergilApplet.jar");
+	// PN Stack needs MonitorReceiverContents.
+        auxiliaryJarMap.put("ptolemy.vergil.actor.lib.MonitorReceiverContents",
+                "ptolemy/vergil/vergilApplet.jar");
         auxiliaryJarMap.put("ptolemy.vergil.actor.lib.ShowTypes",
+                "ptolemy/vergil/vergilApplet.jar");
+        auxiliaryJarMap.put("ptolemy.vergil.actor.lib.VisualModelReference",
                 "ptolemy/vergil/vergilApplet.jar");
         auxiliaryJarMap.put("ptolemy.vergil.modal.modal.ModalTableauFactory",
                 "ptolemy/vergil/vergilApplet.jar");
