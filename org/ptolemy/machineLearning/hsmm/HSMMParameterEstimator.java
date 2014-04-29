@@ -153,7 +153,7 @@ public abstract class HSMMParameterEstimator extends ParameterEstimator {
     /* DurationEstimates */
     public TypedIOPort durationEstimates;
     
-    /* Cluster Assignments */
+    /* Hidden-State Assignments */
     public TypedIOPort clusterAssignments;
     
     /* Maximum Duration */
@@ -170,7 +170,7 @@ public abstract class HSMMParameterEstimator extends ParameterEstimator {
     }
 
     public void preinitialize() throws IllegalActionException{
-
+        super.preinitialize();
 
         for (int i = 0; i < _maxDuration; i++) {
             ArrayToken dT = (ArrayToken) priorDurationDistribution.getToken();
@@ -504,11 +504,11 @@ public abstract class HSMMParameterEstimator extends ParameterEstimator {
 
     /* new duration distribution */
     protected double[][] D_new = null;
-
+    /* initial duration distribution */
     protected double[][] _D0 = null;
-
+    /* current duration distribution */
     protected double[][] _D = null;
-
+    /* maximum duration ( in time steps)c  */
     protected int _maxDuration; 
 
 }
