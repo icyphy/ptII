@@ -156,30 +156,26 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[10.0, 270.0]">
         </property>
     </property>
-    <property name="AnnotationUpdated3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+    <property name="annotation" class="ptolemy.kernel.util.Attribute">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
-        <property name="_hideAllParameters" class="ptolemy.data.expr.Parameter" value="true">
+        <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure><svg><text x="20" y="20" style="font-size:12; font-family:SansSerif; fill:red">This example requires Java3D. If you do not have
+it installed, you can get it from:
+https://java3d.java.net/</text></svg></configure>
         </property>
-        <property name="textSize" class="ptolemy.data.expr.Parameter" value="12">
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-A-</text>
+      </svg>
+    </configure>
         </property>
-        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.0, 0.0, 1.0}">
+        <property name="_controllerFactory" class="ptolemy.vergil.basic.NodeControllerFactory">
         </property>
-        <property name="fontFamily" class="ptolemy.data.expr.StringParameter" value="SansSerif">
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
         </property>
-        <property name="bold" class="ptolemy.data.expr.Parameter" value="false">
-        </property>
-        <property name="italic" class="ptolemy.data.expr.Parameter" value="false">
-        </property>
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This example requires Java3D. If you do not have&#10;it installed, you can get it from:&#10;http://java.sun.com/products/java-media/3D/">
-            <property name="_style" class="ptolemy.actor.gui.style.TextStyle">
-                <property name="height" class="ptolemy.data.expr.Parameter" value="20">
-                </property>
-                <property name="width" class="ptolemy.data.expr.Parameter" value="80">
-                </property>
-            </property>
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[5.0, 195.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-5.0, 190.0]">
         </property>
     </property>
     <entity name="Masses" class="ptolemy.domains.modal.modal.ModalModel">
