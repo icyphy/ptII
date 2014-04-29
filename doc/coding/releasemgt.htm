@@ -543,12 +543,13 @@
 	  export PATH=/cygdrive/c/j2sdk1.4.2_12/bin:${PATH}
 	  java -version
 	  ./configure
-	  make clean fast install &gt;&amp; make.out
+	  ant 
+	  ant jars
 
 	  <I>Copy <CODE>~ptII/adm/certs/ptkeystore</CODE> to $PTII.  Note you will
 	    need access to the ptII account on moog </I>
 
-	  make jnlp_dist STOREPASSWORD="-storepass xxx" KEYPASSWORD="-keypass xxx"
+	  make jnlp_dist STOREPASSWORD="-storepass `cat ~/.certpw`" KEYPASSWORD="-keypass `cat ~/.certpw`"
 	</pre>
 	<I>xxx</I> is the ptkeystore password.
 

@@ -7,27 +7,19 @@
 </head>
 <body>
 <h1>Model Model Domain</h1>
-<p>Ptolemy II 8.0 includes a substantial rework of modal models and
-the underlying finite state machine infrastructure to make them work
-predictably and consistently across domains.</p>
+<p>A Modal Model is a finite set of Actors (other models), all having the same set of inputs and outputs, associated each with states in a finite state machine. For any given state, the associated Actor is known as a Refinement of this state. During each firing of this Modal Model the refinements associated with the current state in the state machine fires. Subsequently, the evaluation of guards in the state machine determines which state, if any, to transition to, thereby determining the next refinement to fire. </p>
 
-<p>Ptolemy II 8.0 includes a new implementation of continuous-time models
-based on the semantics given in "<a href="#LeeZheng:07:Leveraging">Synchronous Language Principles for Heterogeneous Modeling
-and Design of Embedded Systems</a>." In particular, the Continuous domain cleanly supports
-continuous-time models (using an ODE solver), discrete-event models,
-and arbitrary mixtures of the two, including signals that combine
-continuous-time segments with discrete events. It also interoperates
-cleanly with most other domains (pretty much all except PN and
-Rendezvous, for which there does not appear to be reasonable semantic
-model of such an interaction). Modal models are also cleanly supported
-with the Continuous domain, enabling hybrid system modeling with a
-rigorous semantics. The Continuous domain is expected to eventually
-replace CT.</p> 
+<p>The <code>modal</code> domain replaces the <code>fsm</code> domain.
 
 <ul>
-<li> Edward A. Lee. "<a href="http://www.eecs.berkeley.edu/Pubs/TechRpts/2009/EECS-2009-151.html#in_browser" target="_top">Finite State Machines and Modal Models in Ptolemy II</a>," Technical report,  EECS Department,
-University of California, Berkeley, UCB/EECS-2009-151,
-December, 2009.
+<li>Thomas Huining Feng, Edward A. Lee, Xiaojun Liu, Stavros Tripakis, Haiyang Zheng and Ye Zhou, "<a href="http://ptolemy.eecs.berkeley.edu/books/Systems/chapters/ModalModels.pdf" target="_top">Modal Models</a>," 
+a chapter from<br/>
+	  Claudius Ptolemaeus, Editor, "<a href="http://ptolemy.eecs.berkeley.edu/books/Systems/index.htm#in_browser" target="_top">System Design, Modeling, and Simulation Using Ptolemy II</a>", Ptolemy.org, 2014. (included in the release as <a href="../../../../doc/books/systems/PtolemyII_DigitalV1_02.pdf#in_browser" target="_top"><code>$PTII/doc/books/systems/PtolemyII_DigitalV1_02.pdf</code></a>)
+  <br/>The models provided in this chapter are also <a href="http://ptolemy.eecs.berkeley.edu/books/Systems/models/doc/books/systems/modal/index.html#in_browser" target="_top">available online<a>.</li> 
+
+  <li> Edward A. Lee. "<a href="http://www.eecs.berkeley.edu/Pubs/TechRpts/2009/EECS-2009-151.html#in_browser" target="_top">Finite State Machines and Modal Models in Ptolemy II</a>," Technical report,  EECS Department, University of California, Berkeley, UCB/EECS-2009-151, December, 2009.</li>
+
+  <li>  Edward A. Lee, Stavros Tripakis. "<a href="http://chess.eecs.berkeley.edu/pubs/656.html">Modal Models in Ptolemy</a>," Proceedings of 3rd International Workshop on Equation-Based Object-Oriented Modeling Languages and Tools (EOOLT 2010), p. 11-22, 3, October, 2010.</li>
 </ul>
 </body>
 </html>
