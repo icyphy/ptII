@@ -200,7 +200,7 @@ public class GeneratorAttribute extends SingletonAttribute implements
         BufferedReader inputReader = null;
         try {
             inputReader = new BufferedReader(new InputStreamReader(
-                    initialParameters.openStream()));
+                            initialParameters.openStream(), "UTF-8"));
 
             String inputLine;
             StringBuffer buffer = new StringBuffer();
