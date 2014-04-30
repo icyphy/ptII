@@ -92,6 +92,7 @@
     <include name="ptolemy/demo/demo.jar" />
     <include name="ptolemy/distributed/demo/demo.jar" />
     <include name="ptolemy/distributed/distributed.jar" />
+    <include name="ptolemy/domains/ca/ca.jar" />
     <include name="ptolemy/domains/ca/demo.jar" />
     <include name="ptolemy/domains/ci/ci.jar" />
     <include name="ptolemy/domains/ci/demo/demo.jar" />
@@ -102,9 +103,11 @@
     <include name="ptolemy/domains/continuous/demo/demo.jar" />
     <include name="ptolemy/domains/continuous/demo/TwoMachineInfiniteBusControl/TwoMachineInfiniteBusControl.jar" />
     <include name="ptolemy/domains/continuous/doc/doc.jar" />
+    <include name="ptolemy/domains/csp/csp.jar" />
     <include name="ptolemy/domains/csp/demo/demo.jar" />
     <include name="ptolemy/domains/csp/doc/doc.jar" />
     <include name="ptolemy/domains/curriculum/curriculum.jar" />
+    <include name="ptolemy/domains/dde/dde.jar" />
     <include name="ptolemy/domains/dde/demo/demo.jar" />
     <include name="ptolemy/domains/dde/doc/doc.jar" />
     <include name="ptolemy/domains/ddf/ddf.jar" />
@@ -114,9 +117,11 @@
     <include name="ptolemy/domains/de/demo/demo.jar" />
     <include name="ptolemy/domains/de/doc/doc.jar" />
     <include name="ptolemy/domains/domains.jar" />
+    <include name="ptolemy/domains/dt/dt.jar" />
     <include name="ptolemy/domains/dt/demo/demo.jar" />
     <include name="ptolemy/domains/dt/doc/doc.jar" />
     <include name="ptolemy/domains/experimentalDomains.jar" />
+    <include name="ptolemy/domains/giotto/giotto.jar" />
     <include name="ptolemy/domains/giotto/demo/demo.jar" />
     <include name="ptolemy/domains/giotto/doc/doc.jar" />
     <include name="ptolemy/domains/gr/demo/demo.jar" />
@@ -133,6 +138,7 @@
     <include name="ptolemy/domains/modal/modal.jar" />
     <include name="ptolemy/domains/modal/modal/modal.jar" />
     <include name="ptolemy/domains/openmodelica/openmodelica.jar" />
+    <include name="ptolemy/domains/petrinet/petrinet.jar" />
     <include name="ptolemy/domains/pn/demo/demo.jar" />
     <include name="ptolemy/domains/pn/doc/doc.jar" />
     <include name="ptolemy/domains/pn/pn.jar" />
@@ -1901,6 +1907,19 @@
       </fileset>
     </jar>
 
+    <!-- ptolemy/domains/ca/ca.jar -->
+    <jar defaultexcludes="yes"
+	 destfile="${basedir}/ptolemy/domains/ca/ca.jar"
+	 >
+      <fileset dir="${basedir}">
+	<include name="ptolemy/domains/ca/kernel/*.class"/>
+	<include name="ptolemy/domains/ca/lib/*.class"/>
+	<include name="ptolemy/domains/ca/lib/*.xml"/>
+	<include name="ptolemy/domains/ca/lib/gui/*.class"/>
+	<include name="ptolemy/domains/ca/lib/gui/*.xml"/>
+      </fileset>
+    </jar>
+
     <!-- ptolemy/domains/ca/demo/demo.jar -->
     <jar defaultexcludes="yes"
 	 destfile="${basedir}/ptolemy/domains/ca/demo/demo.jar"
@@ -1909,6 +1928,7 @@
 	<include name="ptolemy/domains/ca/demo/Conway/*.jpg"/>
 	<include name="ptolemy/domains/ca/demo/Conway/*.xml"/>
 	<include name="ptolemy/domains/ca/demo/ConwayRandom/*.xml"/>
+	<include name="ptolemy/domains/ca/demo/ConwayRandom/*.jpg"/>
       </fileset>
     </jar>
 
@@ -1950,6 +1970,17 @@
 	 >
       <fileset dir="${basedir}">
 	<include name="ptolemy/domains/ci/doc/*.htm"/>
+      </fileset>
+    </jar>
+
+    <!-- ptolemy/domains/csp/csp.jar -->
+    <jar defaultexcludes="yes"
+	 destfile="${basedir}/ptolemy/domains/csp/csp.jar"
+	 >
+      <fileset dir="${basedir}">
+	<include name="ptolemy/domains/csp/kernel/*.class"/>
+	<include name="ptolemy/domains/csp/lib/*.class"/>
+	<include name="ptolemy/domains/csp/lib/*.xml"/>
       </fileset>
     </jar>
 
@@ -1998,6 +2029,24 @@
       </fileset>
     </jar>
 
+    <!-- ptolemy/domains/dde/dde.jar -->
+    <jar defaultexcludes="yes"
+	 destfile="${basedir}/ptolemy/domains/dde/dde.jar"
+	 >
+      <fileset dir="${basedir}">
+	<include name="ptolemy/domains/dde/*.xml"/>
+      </fileset>
+      <fileset dir="${basedir}">
+	<include name="ptolemy/domains/dde/kernel/*.class"/>
+      </fileset>
+      <fileset dir="${basedir}">
+	<include name="ptolemy/domains/dde/lib/*.class"/>
+      </fileset>
+      <fileset dir="${basedir}">
+	<include name="ptolemy/domains/dde/lib/*.xml"/>
+      </fileset>
+    </jar>
+
     <!-- ptolemy/domains/dde/demo/demo.jar -->
     <jar defaultexcludes="yes"
 	 destfile="${basedir}/ptolemy/domains/dde/demo/demo.jar"
@@ -2037,6 +2086,30 @@
 	 >
       <fileset dir="${basedir}">
 	<include name="ptolemy/domains/dt/doc/*.htm"/>
+      </fileset>
+    </jar>
+
+    <!-- ptolemy/domains/dt/dt.jar -->
+    <jar defaultexcludes="yes"
+	 destfile="${basedir}/ptolemy/domains/dt/dt.jar"
+	 >
+      <fileset dir="${basedir}">
+	<include name="ptolemy/domains/dt/kernel/*.class"/>
+      </fileset>
+    </jar>
+
+    <!-- ptolemy/domains/giotto/giotto.jar -->
+    <jar defaultexcludes="yes"
+	 destfile="${basedir}/ptolemy/domains/giotto/giotto.jar"
+	 >
+      <fileset dir="${basedir}">
+	<include name="ptolemy/domains/giotto/*.xml"/>
+	<include name="ptolemy/domains/giotto/cgc/*.class"/>
+	<include name="ptolemy/domains/giotto/kernel/*.class"/>
+	<include name="ptolemy/domains/giotto/kernel/*.java"/>
+	<include name="ptolemy/domains/giotto/kernel/*.mk"/>
+	<include name="ptolemy/domains/giotto/kernel/*.mkGiottoCGJava"/>
+	<include name="ptolemy/domains/giotto/lib/*.class"/>
       </fileset>
     </jar>
 
@@ -4049,6 +4122,18 @@
 	<include name="ptolemy/domains/openmodelica/*.xml"/>
 	<include name="ptolemy/domains/openmodelica/lib/*.xml"/>
 	<include name="ptolemy/domains/openmodelica/demo/*/*.xml"/>
+      </fileset>
+    </jar>
+
+    <!-- ptolemy/domains/petrinet/petrinet.jar -->
+    <jar defaultexcludes="yes"
+	 destfile="${basedir}/ptolemy/domains/petrinet/petrinet.jar"
+	 >
+      <fileset dir="${basedir}">
+	<include name="ptolemy/domains/petrinet/kernel/*.class"/>
+	<include name="ptolemy/domains/petrinet/kernel/*.xml"/>
+	<include name="ptolemy/domains/petrinet/lib/*.class"/>
+	<include name="ptolemy/domains/petrinet/lib/gui/*.class"/>
       </fileset>
     </jar>
 
