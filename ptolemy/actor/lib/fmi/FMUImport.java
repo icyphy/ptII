@@ -2263,11 +2263,6 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
                             "Failed to setup the experiment of the FMU: "
                             + _fmiStatusDescription(fmiFlag));
                 }
-                if (fmiFlag != FMILibrary.FMIStatus.fmiOK) {
-                    throw new IllegalActionException(this,
-                            "Failed to enter the initialization mode of the FMU: "
-                                    + _fmiStatusDescription(fmiFlag));
-                }
                 fmiFlag = ((Integer) _fmiExitInitializationModeFunction.invoke(
                         Integer.class, new Object[] { _fmiComponent }))
                         .intValue();
