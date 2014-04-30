@@ -676,6 +676,12 @@ public class ExportHTMLAction extends AbstractAction implements HTMLExportable,
             // First, create the image file showing whatever the current
             // view in this frame shows.
             NamedObj model = _basicGraphFrame.getModel();
+
+	    // $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm -run -openComposites -timeOut 30000 -whiteBackground ptolemy/domains/ptera/demo/CarWash/CarWash.xml 
+	    // needs this.
+	    if (model.getName().equals("_Controller")) {
+		model = model.getContainer();
+	    } 
             // Use a sanitized model name and avoid problems with special characters in file names.
             _sanitizedModelName = StringUtilities.sanitizeName(model.getName());
             File imageFile = new File(parameters.directoryToExportTo,
