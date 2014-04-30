@@ -465,7 +465,12 @@ public final class Workspace implements Nameable {
      *  Write access is granted if there are no other threads that currently
      *  have read or write access.  In particular, it <i>is</i> granted
      *  if this thread already has write access, or if it is the only
-     *  thread with read access.
+     *  thread with read access. Note that if this method blocks, a side
+     *  effect is that other threads will block when trying to acquire read
+     *  access so as to ensure that write access will eventually be granted.
+     *  This makes it very risky to hold any locks while trying to acquire
+     *  read or write access.
+     *  <p>
      *  This method suspends the calling thread until such access
      *  has been obtained.
      *  If the calling thread is interrupted while waiting to get write
