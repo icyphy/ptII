@@ -891,6 +891,12 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
                             + " " + "ptolemy/actor/lib/jmf/jmf.jar");
                 }
                 results.put(className, "ptolemy/actor/lib/jmf/jmf.jar");
+            } else if (className.contains("ptolemy.domains.scr")) {
+                if (_debug) {
+                    System.out.println("_allAtomicEntityJars SCR: " + className
+                            + " " + "ptolemy/domains/scr/scr.jar");
+                }
+                results.put(className, "ptolemy/domains/src/src.jar");
             } else if (className.contains("ptolemy.vergil.basic.export.html")) {
                 if (_debug) {
                     System.out.println("_allAtomicEntityJars export.html: "
@@ -998,12 +1004,19 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
                             + ((CompositeActor) componentEntity).getDirector()
                                     .getClass());
                 }
-                results.put(((CompositeActor) componentEntity).getDirector()
-                        .getClass().getName(),
-                        _getDomainJar(((CompositeActor) componentEntity)
-                                .getDirector().getClass().getPackage()
-                                .getName()));
+		if (componentEntity.getClass().getName()
+                    .contains("ptolemy.domains.scr")) {
+		    // This hack includes codegen.jar so that we can generate JNLP the domains.scr 
+		    results.put(((CompositeActor) componentEntity).getClass()
+                        .getName(), "ptolemy/domains/scr/scr.jar");
+		} else {
+		    results.put(((CompositeActor) componentEntity).getDirector()
+				.getClass().getName(),
+				_getDomainJar(((CompositeActor) componentEntity)
+					      .getDirector().getClass().getPackage()
+					      .getName()));
 
+		}
             }
         }
         return results;
@@ -1518,12 +1531,18 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
         auxiliaryJarMap.put("ptolemy.actor.lib.database.DatabaseManager",
                 databaseJar);
 
+        auxiliaryJarMap.put("ptolemy.domains.scr.SCRModel",
+			    "ptolemy/domains/scr/scr.jar");
+
         // classes from domains/space
         // domains/space requires multiple jars
         String spaceJar = "ptolemy/domains/space/space.jar";
         auxiliaryJarMap.put("ptolemy.domains.space.Occupants", spaceJar);
         auxiliaryJarMap.put("ptolemy.domains.space.Region", spaceJar);
         auxiliaryJarMap.put("ptolemy.domains.space.Room", spaceJar);
+
+        String sdfJar = "ptolemy/domains/sdf/sdf.jar";
+        auxiliaryJarMap.put("ptolemy.domains.pthales.kernel.PthalesDirector", sdfJar);
 
         auxiliaryJarMap.put("ptolemy.vergil.actor.lib.LEDMatrix",
                 "ptolemy/vergil/vergilApplet.jar");
@@ -1833,6 +1852,9 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
     private static String _getDomainJar(String domainPackage) {
         if (domainPackage.equals("ptolemy.domains.sdf.lib.vq")) {
             return "ptolemy/domains/sdf/lib/vq/vq.jar";
+        }
+        if (domainPackage.equals("ptolemy.domains.scr")) {
+            return "ptolemy/domains/scr/scr.jar";
         }
         String domainPackageDomain = domainPackage.substring(0,
                 domainPackage.lastIndexOf("."));
