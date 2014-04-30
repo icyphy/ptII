@@ -35,8 +35,10 @@ import ptolemy.actor.CompositeActor;
 import ptolemy.actor.Director;
 import ptolemy.actor.IOPort;
 import ptolemy.actor.NoTokenException;
-import ptolemy.actor.lib.hoc.MirrorComposite;
+import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.lib.hoc.MirrorPort;
+import ptolemy.actor.lib.hoc.ReflectComposite;
+import ptolemy.actor.parameters.ParameterMirrorPort;
 import ptolemy.actor.parameters.ParameterPort;
 import ptolemy.data.ArrayToken;
 import ptolemy.data.DoubleToken;
@@ -49,6 +51,7 @@ import ptolemy.data.type.ArrayType;
 import ptolemy.data.type.BaseType;
 import ptolemy.domains.sdf.kernel.SDFDirector;
 import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.Entity;
 import ptolemy.kernel.Port;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
@@ -63,7 +66,7 @@ import com.cureos.numerics.CobylaExitStatus;
 
 /**
 This actor implements a composite optimizer that optimizes a function 
-provided as an sdf model in the inner composite.
+provided as an SDF model in the inner composite.
 To use the composite optimizer, construct an SDF model on the inside
 that operates on the x input to output two values: (i) an intermediate
 result, that is a function of x and possibly other inputs and (ii) a
@@ -100,7 +103,7 @@ and/or with unknown gradient.
 @Pt.ProposedRating Red (ilgea)
 @Pt.AcceptedRating  
 */
-public class CompositeOptimizer extends MirrorComposite {
+public class CompositeOptimizer extends ReflectComposite {
 
 
     public CompositeOptimizer(Workspace workspace) 
@@ -114,30 +117,9 @@ public class CompositeOptimizer extends MirrorComposite {
         super(container, name);
         _init(); 
     }
+    
+    
 
-
-    /**
-     * The optimal value of x.
-     */
-    public MirrorPort optimalValue;
-    /**
-     * Trigger that starts optimization routine.
-     */
-    public MirrorPort trigger;
-
-    /**
-     * The output port that provides the evaluated constraint values at each
-     * evaluation of the objective function.
-     */
-    public MirrorPort constraints;
-    /**
-     * The optimization variable. 
-     */
-    public MirrorPort x;
-    /** 
-     * Value of the objective function f(x) for a given value of x.
-     */
-    public MirrorPort intermediateValue;
 
     /**
      * The expert parameter that denotes the beginning step-size.
@@ -167,6 +149,16 @@ public class CompositeOptimizer extends MirrorComposite {
      * Number of constraints checked at each evaluation. The expected type of constraints is a double array with length <i>numberOfConstraints</i>.
      */
     public Parameter numberOfConstraints;
+    
+    /** 
+     *  Optimal Value
+     */
+    public TypedIOPort optimalValue;
+    
+    /** 
+     *  Trigger.
+     */
+    public TypedIOPort trigger;
 
 
     public void attributeChanged(Attribute attribute)
@@ -203,118 +195,31 @@ public class CompositeOptimizer extends MirrorComposite {
         }
     }
 
-    /** Clone the object into the specified workspace. This overrides
-     *  the base class to instantiate a new OptimizerDirector 
-     *  @param workspace The workspace for the new object.
-     *  @return A new NamedObj.
-     *  @exception CloneNotSupportedException If any of the attributes
-     *   cannot be cloned.
-     *  @see #exportMoML(Writer, int, String)
-     */
-    public Object clone(Workspace workspace) throws CloneNotSupportedException {
+
+    public Object clone(Workspace workspace)throws CloneNotSupportedException {
+        
         CompositeOptimizer result = (CompositeOptimizer) super.clone(workspace);
-        try {
-            // Remove the old inner OptimzizerDirector(s) that is(are) in the wrong workspace.
-            String directorName = null;
-            Iterator directors = result.attributeList(
-                    OptimizerDirector.class).iterator();
-            while (directors.hasNext()) {
-                OptimizerDirector oldDirector = (OptimizerDirector) directors.next();
-                if (directorName == null) {
-                    directorName = oldDirector.getName();
-                }
-                oldDirector.setContainer(null);
-            }
-
-            // Create a new OptimizerDirector in the right workspace.
-            OptimizerDirector director = result.new OptimizerDirector(
-                    workspace);
-            director.setContainer(result);
-            director.setName(directorName);
-            
-        } catch (Throwable throwable) {
-            throw new CloneNotSupportedException("Could not clone: "
-                    + throwable);
-        }
-        result._tokenMap = new HashMap<IOPort, Token>(); 
-        result._firstIteration = true; 
-        return result;
+        result._optInput = null;
+        result._firstIteration = true;
+         
+        
+        
+        return result; 
     }
-
-    //    /** Add a port to this actor. This overrides the base class to
-    //     *  mirror the new port in the contained actor, if there is one,
-    //     *  and to establish a connection to a port on the contained actor.
-    //     *  @param port The TypedIOPort to add to this actor.
-    //     *  @exception IllegalActionException If the port is not an instance
-    //     *   of IteratePort, or the port has no name.
-    //     *  @exception NameDuplicationException If the port name collides with a
-    //     *   name already in the actor.
-    //     */
-    //    @Override
-    //    protected void _addPort(Port port) throws IllegalActionException,
-    //    NameDuplicationException {
-    //        super._addPort(port); 
-    //
-    //
-    //        // remove the optimal value port to the inside composite
-    //        if( port.getName().equals(OPTIMAL_VALUE_PORT_NAME) ||
-    //                port.getName().equals("trigger")){
-    //            // NOTE: Do not use MoML here because we do not want to generate
-    //            // undo actions to recreate the inside relation and port.
-    //            // This is because _addPort() will take care of that.
-    //            // The cast is safe because all my ports are instances of IOPort.
-    //            Iterator relations = ((IOPort) port).insideRelationList().iterator();
-    //
-    //            while (relations.hasNext()) {
-    //                ComponentRelation relation = (ComponentRelation) relations.next();
-    //
-    //                try {
-    //                    relation.setContainer(null);
-    //                } catch (KernelException ex) {
-    //                    throw new InternalErrorException(ex);
-    //                }
-    //            }
-    //
-    //            // Remove the ports from the inside entity only if this
-    //            // is not being called as a side effect of calling _removeEntity().
-    //            //if (super._inRemoveEntity) {
-    //            //    return;
-    //            //}
-    //
-    //            Iterator entities = entityList().iterator();
-    //
-    //            while (entities.hasNext()) {
-    //                Entity insideEntity = (Entity) entities.next();
-    //                Port insidePort = insideEntity.getPort(port.getName());
-    //
-    //                if (insidePort != null) {
-    //                    try {
-    //                        insidePort.setContainer(null);
-    //                    } catch (KernelException ex) {
-    //                        throw new InternalErrorException(ex);
-    //                    }
-    //                }
-    //            }
-    //        }
-    //
-    //    }
-
+    
     private void _init() throws IllegalActionException,
     NameDuplicationException {
-        setClassName("org.ptolemy.Optimization.CompositeOptimizer");
+        setClassName("org.ptolemy.optimization.CompositeOptimizer");
         OptimizerDirector director = new OptimizerDirector(workspace());
         director.setContainer(this);
         director.setName(uniqueName("OptimizerDirector"));
 
-        optimalValue = new MirrorPort(this, OPTIMAL_VALUE_PORT_NAME);
-        optimalValue.setOutput(true);
-        optimalValue.setDisplayName(OPTIMAL_VALUE_PORT_NAME);
+        optimalValue = new TypedIOPort(this, OPTIMAL_VALUE_PORT_NAME, false, true); 
         optimalValue.setTypeEquals(new ArrayType(BaseType.DOUBLE));
 
 
-        trigger = new MirrorPort(this, "trigger");
-        trigger.setMultiport(true);
-        trigger.setInput(true);
+        trigger = new TypedIOPort(this, "trigger", true, false); 
+        trigger.setMultiport(true); 
         SingletonParameter showName = (SingletonParameter)trigger.getAttribute("_showName");
         if(showName == null){
             showName = new SingletonParameter(trigger,"_showName");
@@ -322,47 +227,6 @@ public class CompositeOptimizer extends MirrorComposite {
         }else{
             showName.setToken("true");
         }
-        //optimalValue.setTypeEquals(new ArrayType(BaseType.DOUBLE));
-
-
-        // the following ports will be hidden at the top level hierarchy.
-        intermediateValue = new MirrorPort(this, INTERMEDIATE_VALUE_PORT_NAME);
-        intermediateValue.setTypeEquals(BaseType.DOUBLE);
-        intermediateValue.setOutput(true);
-        SingletonParameter hidden = (SingletonParameter)intermediateValue.getAttribute("_hide");
-        if(hidden == null){
-            hidden = new SingletonParameter(intermediateValue,"_hide");
-            hidden.setToken("true");
-        }else{
-            hidden.setToken("true");
-        }
-
-
-
-        constraints = new MirrorPort(this, CONSTRAINTS_PORT_NAME);
-        constraints.setTypeEquals(new ArrayType(BaseType.DOUBLE));
-        constraints.setOutput(true);
-        hidden = (SingletonParameter)constraints.getAttribute("_hide");
-        if(hidden == null){
-            hidden = new SingletonParameter(constraints,"_hide");
-            hidden.setToken("true");
-        }else{
-            hidden.setToken("true");
-        }
-
-        x = new MirrorPort(this, OPTIMIZATION_VARIABLE_NAME);
-        x.setTypeEquals(new ArrayType(BaseType.DOUBLE));
-        x.setInput(true);
-        hidden = (SingletonParameter)x.getAttribute("_hide");
-        if(hidden == null){
-            hidden = new SingletonParameter(x,"_hide");
-            hidden.setToken("true");
-        }else{
-            hidden.setToken("true");
-        }
-
-
-
 
         mode = new StringParameter(this, "mode");
         mode.setExpression("MIN");
@@ -413,7 +277,7 @@ public class CompositeOptimizer extends MirrorComposite {
      *  connections being made.
      */
     public static class OptimizerComposite extends
-    MirrorComposite.MirrorCompositeContents {
+    ReflectComposite.ReflectCompositeContents {
         // NOTE: This has to be a static class so that MoML can
         // instantiate it.
 
@@ -434,37 +298,59 @@ public class CompositeOptimizer extends MirrorComposite {
             _init();
 
         }
-
-        /** Override the base class to return a specialized port.
-         *  @param name The name of the port to create.
-         *  @return A new instance of IteratePort, an inner class.
-         *  @exception NameDuplicationException If the container already has
-         *  a port with this name.
-         */
-        public Port newPort(String name) throws NameDuplicationException {
-            try {
-                return new MirrorPort(this, name);
-            } catch (IllegalActionException ex) {
-                // This exception should not occur, so we throw a runtime
-                // exception.
-                throw new InternalErrorException(this, ex, null);
-            }
-        }
-
+         
         private void _init() throws IllegalActionException, NameDuplicationException{
 
-            MirrorPort intermediate = new MirrorPort(this, INTERMEDIATE_VALUE_PORT_NAME);
+            MirrorPort intermediate = new MirrorPort(workspace());
+            intermediate.setContainer(this);
+            intermediate.setName(INTERMEDIATE_VALUE_PORT_NAME);
             intermediate.setTypeEquals(BaseType.DOUBLE);
-            intermediate.setOutput(true);  
-
-            MirrorPort insideConstraints = new MirrorPort(this, CONSTRAINTS_PORT_NAME);
+            intermediate.setOutput(true);   
+            
+            MirrorPort insideConstraints = new MirrorPort(workspace());
+            insideConstraints.setContainer(this);
+            insideConstraints.setName(CONSTRAINTS_PORT_NAME);
             insideConstraints.setTypeEquals(new ArrayType(BaseType.DOUBLE));
             insideConstraints.setOutput(true); 
 
-            MirrorPort xIn = new MirrorPort(this, OPTIMIZATION_VARIABLE_NAME);
+            MirrorPort xIn = new MirrorPort(workspace());
+            xIn.setContainer(this);
+            xIn.setName(OPTIMIZATION_VARIABLE_NAME);
             xIn.setTypeEquals(new ArrayType(BaseType.DOUBLE));
             xIn.setInput(true); 
-
+            
+            // hide the mirror ports in top level composite
+            
+            IOPort p = (IOPort) (((CompositeActor)getContainer()).getPort(INTERMEDIATE_VALUE_PORT_NAME));
+            if(p!=null){
+                SingletonParameter hidden = (SingletonParameter)p.getAttribute("_hide");
+                if(hidden == null){
+                    hidden = new SingletonParameter(p,"_hide");
+                    hidden.setToken("true");
+                }else{
+                    hidden.setToken("true");
+                }
+            } 
+            p = (IOPort)(((CompositeEntity)getContainer()).getPort(CONSTRAINTS_PORT_NAME));
+            if(p!=null){
+                SingletonParameter hidden = (SingletonParameter)p.getAttribute("_hide");
+                if(hidden == null){
+                    hidden = new SingletonParameter(p,"_hide");
+                    hidden.setToken("true");
+                }else{
+                    hidden.setToken("true");
+                }
+            }
+            p = (IOPort)(((CompositeEntity)getContainer()).getPort(OPTIMIZATION_VARIABLE_NAME));
+            if(p!=null){
+                SingletonParameter hidden = (SingletonParameter)p.getAttribute("_hide");
+                if(hidden == null){
+                    hidden = new SingletonParameter(p,"_hide");
+                    hidden.setToken("true");
+                }else{
+                    hidden.setToken("true");
+                }
+            } 
         }
     }
     /** This is a specialized director that fires the input SDF model
@@ -487,8 +373,7 @@ public class CompositeOptimizer extends MirrorComposite {
 
         @Override
         public void fire() throws IllegalActionException{
-
-
+ 
             Calcfc calcfc = new Calcfc() {
                 @Override
                 public double Compute(int n, int m, double[] x, double[] con, boolean[] terminate) throws IllegalActionException {
@@ -499,8 +384,14 @@ public class CompositeOptimizer extends MirrorComposite {
                     }  
                     // convert x into an array token
                     ArrayToken xAsToken = new ArrayToken(xTokens);
+                    
+                    // get the optimization variable port
+                    MirrorPort xPort = (MirrorPort) (((CompositeActor)getContainer()).getPort(OPTIMIZATION_VARIABLE_NAME));
+                    if(xPort == null){
+                        throw new IllegalActionException(getContainer(), OPTIMIZATION_VARIABLE_NAME + " port could not be found.");
+                    }
                     // send x value to the inside port for the new execution
-                    (CompositeOptimizer.this).x.sendInside(0, xAsToken);
+                    xPort.sendInside(0, xAsToken);
 
                     // before firing the inside composite, make sure transferInputs are called
                     CompositeActor container = (CompositeActor) getContainer();
@@ -537,7 +428,7 @@ public class CompositeOptimizer extends MirrorComposite {
                                     Token t = p.getInside(0); 
                                     evalX = ((DoubleToken)t).doubleValue();
                                 }else{
-                                    throw new IllegalActionException(CompositeOptimizer.this, "Cannot read token from " + INTERMEDIATE_VALUE_PORT_NAME + 
+                                    throw new IllegalActionException(getContainer(), "Cannot read token from " + INTERMEDIATE_VALUE_PORT_NAME + 
                                             ". Make sure a token is produced at each output of the inside model in CompositeOptimizer.");
                                 }
                             }else if(p.getName().equals(CONSTRAINTS_PORT_NAME)){
@@ -548,15 +439,13 @@ public class CompositeOptimizer extends MirrorComposite {
                                         con[i] = ((DoubleToken)constraintArray[i]).doubleValue();
                                     }
                                 }else{
-                                    throw new IllegalActionException(CompositeOptimizer.this, "Cannot read token from " + CONSTRAINTS_PORT_NAME + 
+                                    throw new IllegalActionException(getContainer(), "Cannot read token from " + CONSTRAINTS_PORT_NAME + 
                                             ". Make sure a token is produced at each output of the inside model in CompositeOptimizer.");
                                 }
                             } 
                         }  
                         if(_mode == MAXIMIZE){
                             evalX = -1.0*evalX; // minimize -f(x) = maximize f(x)
-                        }else{
-                            //do nothing
                         } 
                         
                         // if stop() has been called, this method will not be called again.
@@ -586,7 +475,7 @@ public class CompositeOptimizer extends MirrorComposite {
                 outTokens[i] = new DoubleToken(_optInput[i]);
             }
             ArrayToken outputArrayToken = new ArrayToken(outTokens);
-            optimalValue.send(0, outputArrayToken);
+            ((TypedIOPort)((CompositeOptimizer)getContainer()).getPort(OPTIMAL_VALUE_PORT_NAME)).send(0, outputArrayToken);
             
             // this is a post-result warning.
             switch (status)
