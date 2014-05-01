@@ -25,23 +25,13 @@
         </property>
     </property>
     <entity name="JavaScript" class="ptolemy.actor.lib.js.JavaScript">
-        <property name="initialize" class="ptolemy.kernel.util.StringAttribute" value="var multiply = function(value) {&#10;    return value * 2;&#10;}">
+        <property name="script" class="ptolemy.kernel.util.StringAttribute" value="var multiply = function(value) {&#10;    return value * 2;&#10;}&#10;function fire() {&#10;// Multiply the input by 2.&#10;send(multiply(get(input,0)), output, 0);&#10;}">
             <property name="style" class="ptolemy.actor.gui.style.TextStyle">
                 <property name="height" class="ptolemy.data.expr.Parameter" value="10">
                 </property>
                 <property name="width" class="ptolemy.data.expr.Parameter" value="30">
                 </property>
             </property>
-        </property>
-        <property name="script" class="ptolemy.kernel.util.StringAttribute" value="// Multiply the input by 2.&#10;send(multiply(get(input,0)), output, 0);">
-            <property name="style" class="ptolemy.actor.gui.style.TextStyle">
-                <property name="height" class="ptolemy.data.expr.Parameter" value="10">
-                </property>
-                <property name="width" class="ptolemy.data.expr.Parameter" value="30">
-                </property>
-            </property>
-        </property>
-        <property name="wrapup" class="ptolemy.kernel.util.StringAttribute">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[190.0, 145.0]">
         </property>

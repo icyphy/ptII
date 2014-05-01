@@ -37,7 +37,7 @@
         </property>
     </property>
     <entity name="JavaScript" class="ptolemy.actor.lib.js.JavaScript">
-        <property name="script" class="ptolemy.kernel.util.StringAttribute" value="error(&quot;foo&quot;)">
+        <property name="script" class="ptolemy.kernel.util.StringAttribute" value="function fire() {&#10;  error(&quot;foo&quot;);&#10;}">
             <property name="style" class="ptolemy.actor.gui.style.TextStyle">
                 <property name="height" class="ptolemy.data.expr.Parameter" value="10">
                 </property>

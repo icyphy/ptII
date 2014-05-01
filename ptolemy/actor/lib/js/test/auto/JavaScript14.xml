@@ -25,7 +25,7 @@
         </property>
     </property>
     <entity name="JavaScript" class="ptolemy.actor.lib.js.JavaScript">
-        <property name="script" class="ptolemy.kernel.util.StringAttribute" value="if (get(input,0)) {&#10;   send(false, output, 0);&#10;} else {&#10;   send(true, output, 0);&#10;}">
+        <property name="script" class="ptolemy.kernel.util.StringAttribute" value="function fire() {&#10;if (get(input,0)) {&#10;   send(false, output, 0);&#10;} else {&#10;   send(true, output, 0);&#10;}&#10;}">
             <property name="style" class="ptolemy.actor.gui.style.TextStyle">
                 <property name="height" class="ptolemy.data.expr.Parameter" value="10">
                 </property>

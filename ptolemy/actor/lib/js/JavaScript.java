@@ -40,6 +40,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import org.mozilla.javascript.Context;
+import org.mozilla.javascript.Function;
 import org.mozilla.javascript.FunctionObject;
 import org.mozilla.javascript.ImporterTopLevel;
 import org.mozilla.javascript.NativeArray;
@@ -80,11 +81,34 @@ import ptolemy.util.StringUtilities;
 
 /**
  Execute a script in JavaScript that can read inputs and parameters,
- perform calculations, and write outputs. The script is executed each
- time this actor is fired.
- <p>
+ perform calculations, and write outputs. The script may be provided
+ as the textual value of the <i>script</i> parameter, or as an input
+ on the <i>scriptIn</i> port.
+ If it is an input, then it can be different on each firing.
+ If it is a parameter, then the script is compiled in the initialize()
+ method, and any changes made to it are ignored until the next initiatlization
+ of the model.
+  <p>
  To use this actor, add input and output ports and parameters, and specify
- a script to execute.
+ a script.
+ Your script should define one or more of the following functions:
+ <ul>
+ <li> <b>initialize</b>. This function is invoked each time this actor
+      is initialized, or if an initialize function is provided on the
+      <i>scriptIn</i> input port, then it will be invoked when this
+      actor fires and consumes that input. This function can read
+      parameter values using valueOf() (see below), normally there
+      will be no inputs, so it should not read inputs.
+ </li>
+ <li> <b>fire</b>. This function is invoked each time this actor fires.
+      it can read parameters, read inputs using get(), and write outputs
+      using send().
+ </li>
+ <li> <b>wrapup</b>. This function is invoked at the end of execution of
+      of the model. It can read parameters, but normally should not
+      read inputs nor write outputs.
+ </li>
+ </ul>
  <p>
  Usually, you will need to explicitly specify the types
  of the output ports. By default, the type of an output
@@ -92,13 +116,7 @@ import ptolemy.util.StringUtilities;
  all input ports, but often this will not be the type your
  script produces.
  <p>
- A script may be specified as a parameter or as an input.
- If it is an input, then it can be different on each firing.
- If it is a parameter, then the script is compiled in the initialize()
- method, and any changes made to it are ignored until the next run
- of the model.
- <p>
- Top-level methods defined include:
+ The context in which your functions run provide the following methods:
  <ul>
  <li> alert(string): pop up a dialog with the specified message.
  <li> error(string): throw an IllegalActionException with the specified message.
@@ -114,18 +132,43 @@ import ptolemy.util.StringUtilities;
  <p>
  The following example script calculates the factorial of the input.
  <pre>
-var value = get(input, 0);
-if (value < 0) {
-   error("Input must be greater than or equal to 0.");
-} else {
-   var total = 1;
+function fire() {
+  var value = get(input);
+  if (value < 0) {
+     error("Input must be greater than or equal to 0.");
+  } else {
+     var total = 1;
      while(value > 1) {
        total *= value;
        value--;
      }
-     send(total, output, 0);
+     send(total, output);
+  }
 }
 </pre>
+ <p>
+ Your script may also store values from one firing to the next, or from
+ initialization to firing.  For example,
+ <pre>
+var init;
+function initialize() {
+  init = 0;
+}
+function fire() {
+  init = init + 1;
+  send(init, output);
+}
+</pre>
+ will send a count of firings to the output named "output".
+ <p>
+ Notice that you may name ports or parameters of this actor in such
+ a way as to shadow objects in the global scope. For example,
+ JavaScript provides a JSON object that you can use to operate
+ on JSON strings, for example with the function JSON.parse().
+ However, if you name a port or parameter "JSON", then any reference
+ to JSON in your fire() method, for example, will refer to the port
+ or parameter, and not to the global object.  To explicitly refer
+ to the global object, use the syntax "this.JSON".
  <p>
  In addition, the symbol "actor" is defined to be the instance of
  this actor. In JavaScript, you can invoke methods on it.
@@ -147,7 +190,7 @@ if (value < 0) {
  For other Ptolemy II types, the script will see the
  corresponding Token object.  For example, if you send
  a number of type long to an input of a JavaScript actor,
- the script
+ the script (inside a fire() function):
  <pre>
     var value = get(input);
     print(value.getClass().toString());
@@ -164,7 +207,7 @@ if (value < 0) {
  Scripts can instantiate Java classes and invoke methods on them.
  For example, the following script will build a simple Ptolemy II model:
  <pre>
- importPackage(Packages.ptolemy.actor);
+importPackage(Packages.ptolemy.actor);
 importClass(Packages.ptolemy.actor.lib.Ramp);
 importClass(Packages.ptolemy.actor.lib.FileWriter);
 importClass(Packages.ptolemy.domains.sdf.kernel.SDFDirector);
@@ -208,9 +251,7 @@ public class JavaScript extends TypedAtomicActor {
             throws NameDuplicationException, IllegalActionException {
         super(container, name);
         
-        initialize = new StringAttribute(this, "initialize");
         script = new StringAttribute(this, "script");
-        wrapup = new StringAttribute(this, "wrapup");
 
         // Set the visibility to expert, as casual users should
         // not see the script.  This is particularly true if one
@@ -231,17 +272,15 @@ public class JavaScript extends TypedAtomicActor {
         // initialize the script to provide an empty template:
         script.setExpression("// Put your JavaScript program here.\n"
         		+ "// Add ports and parameters.\n"
+        		+ "// Define JavaScript functions initialize(), fire(), and/or wrapup().\n"
         		+ "// Use valueOf(parameterName) to refer to parameters.\n"
-        		+ "// Use get(parameterName, channel) to read inputs.\n"
+        		+ "// In the fire() function, use get(parameterName, channel) to read inputs.\n"
         		+ "// Send to output ports using send(value, portName, channel).\n");
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
     
-    /** The script to execute when this actor initializes. */
-    public StringAttribute initialize;
-
     /** The script to execute when this actor fires. */
     public StringAttribute script;
     
@@ -252,9 +291,6 @@ public class JavaScript extends TypedAtomicActor {
      *  by the script parameter.
      */
     public TypedIOPort scriptIn;
-
-    /** The script to execute when this actor wraps up execution. */
-    public StringAttribute wrapup;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -277,10 +313,25 @@ public class JavaScript extends TypedAtomicActor {
         	if (scriptIn.getWidth() > 0 && scriptIn.hasToken(0)) {
         		// A script is provided as input.
         		String scriptValue = ((StringToken)scriptIn.get(0)).stringValue();
-        		_context.evaluateString(_scope, scriptValue, getName(), 1, null);
-        	} else {
-        		// Execute the default script.
+        		
+        		// Compile the script.
+                _compiledScript = _context.compileString(scriptValue, getName(), 1, null);
+                
+        		// Execute the script (Note that the script defines functions and variables;
+                // the functions are not invoked here. Just defined.)
         		_compiledScript.exec(Context.getCurrentContext(), _scope);
+        		
+        		// Execute the initialize() function, if it exists.
+        		Object initializeFunction = _scope.get("initialize", _scope);
+        		if (initializeFunction instanceof Function) {
+        			((Function)initializeFunction).call(Context.getCurrentContext(), _scope, _global, null);
+        		}
+        	}
+        	// If there is a fire() function, invoke it.
+        	Object fireFunction = _scope.get("fire", _scope);
+        	if (fireFunction instanceof Function) {
+        		// FIXME: Provide a last argument for security.
+        		((Function)fireFunction).call(Context.getCurrentContext(), _scope, _global, null);
         	}
         } catch (WrappedException ex) {
         	Throwable original = ex.getWrappedException();
@@ -313,16 +364,20 @@ public class JavaScript extends TypedAtomicActor {
         	Object jsObject = Context.javaToJS(parameter, _scope);
         	_scope.put(parameter.getName(), _scope, jsObject);
         }
-        
-        // Execute the initialize script.
-        String initializeScript = initialize.getValueAsString();
-        if (initializeScript.trim().length() != 0) {
-        	_context.evaluateString(_scope, initializeScript, "initialize", 1, null);
-        }
-        
+                
         // Compile the script to execute at run time.
         String scriptValue = script.getValueAsString();
         _compiledScript = _context.compileString(scriptValue, getName(), 1, null);
+        
+		// Execute the script (Note that the script defines functions and variables;
+        // the functions are not invoked here. Just defined.)
+		_compiledScript.exec(Context.getCurrentContext(), _scope);
+		
+		// Execute the initialize() function, if it exists.
+		Object initializeFunction = _scope.get("initialize", _scope);
+		if (initializeFunction instanceof Function) {
+			((Function)initializeFunction).call(Context.getCurrentContext(), _scope, _global, null);
+		}
     }
 
     /** Return true if the specified string is not a JavaScript keyword and is a valid JavaScript identifier.
@@ -354,8 +409,16 @@ public class JavaScript extends TypedAtomicActor {
     @Override
     public void preinitialize() throws IllegalActionException {
         super.preinitialize();
+        // Create a context for the currrent thread.
         _context = Context.enter();
+        // If you want to include standard Rhino methods, like print, do this:
+        // _context.initStandardObjects();
+        
+        // Create a scope for this actor.
         _scope = new ImporterTopLevel(Context.getCurrentContext());
+        // Create also also a global scope so that if the actor shadows any
+        // global objects, they can still be referenced using this.objectName.
+        _global = new ImporterTopLevel(Context.getCurrentContext());
         
         // Define built-in methods in the context.
         PtolemyJavaScript scriptable = new PtolemyJavaScript();
@@ -423,18 +486,20 @@ public class JavaScript extends TypedAtomicActor {
 		}
     }
     
-    /** Exit the context.
+    /** Execute the wrapup function, if it is defined, and exit the context for this thread.
      *  @exception IllegalActionException If the parent class throws it.
      */
     @Override
     public void wrapup() throws IllegalActionException {
-        // Execute the wrapup script.
-        String wrapupScript = wrapup.getValueAsString();
-        if (wrapupScript.trim().length() != 0) {
-        	_context.evaluateString(_scope, wrapupScript, "initialize", 1, null);
-        }
+    	// If there is a wrapup() function, invoke it.
+    	Object wrapupFunction = _scope.get("wrapup", _scope);
+    	if (wrapupFunction instanceof Function) {
+    		// FIXME: Provide a last argument for security.
+    		((Function)wrapupFunction).call(Context.getCurrentContext(), _scope, _global, null);
+    	}
 
-    	// FIXME: Why is this static??
+    	// This is static because the context depends on the current thread.
+        // So this exits the context associated with the current thread.
     	Context.exit();
     	super.wrapup();
     }
@@ -448,6 +513,9 @@ public class JavaScript extends TypedAtomicActor {
     /** Rhino context. */
     protected Context _context;
         
+    /** Global scope, unpolluted by anything in this actor. */
+    protected Scriptable _global;
+
     /** Keywords. */
     protected static final String[] _JAVASCRIPT_KEYWORDS = new String[] {
 			"abstract", "as", "boolean", "break", "byte", "case", "catch",

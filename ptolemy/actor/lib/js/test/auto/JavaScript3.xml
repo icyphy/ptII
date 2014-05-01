@@ -31,7 +31,7 @@
         </property>
     </property>
     <entity name="JavaScript" class="ptolemy.actor.lib.js.JavaScript">
-        <property name="script" class="ptolemy.kernel.util.StringAttribute" value="// Multiply the input by 2.&#10;send(get(input)*2, output);">
+        <property name="script" class="ptolemy.kernel.util.StringAttribute" value="// Multiply the input by 2.&#10;function fire() {&#10;  send(get(input)*2, output);&#10;}">
             <property name="style" class="ptolemy.actor.gui.style.TextStyle">
                 <property name="height" class="ptolemy.data.expr.Parameter" value="10">
                 </property>
@@ -68,7 +68,7 @@
         </property>
     </entity>
     <entity name="StringConst" class="ptolemy.actor.lib.StringConst">
-        <property name="value" class="ptolemy.data.expr.Parameter" value="send(-get(input), output, 0);">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="function fire() { send(-get(input), output, 0);}">
         </property>
         <doc>Create a constant sequence with a string value.</doc>
         <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
@@ -79,7 +79,7 @@
             <property name="displayHeight" class="ptolemy.data.expr.Parameter" value="10">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{100, 245}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[170.0, 290.0]">
         </property>
     </entity>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">

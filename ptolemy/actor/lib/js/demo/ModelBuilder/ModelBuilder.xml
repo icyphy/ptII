@@ -4,7 +4,7 @@
 <entity name="ModelBuilder" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="10.0.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={373, 208, 934, 634}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={115, 387, 934, 634}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[700, 524]">
     </property>
@@ -37,7 +37,7 @@
         </property>
     </property>
     <entity name="JavaScript" class="ptolemy.actor.lib.js.JavaScript">
-        <property name="script" class="ptolemy.kernel.util.StringAttribute" value="importPackage(Packages.ptolemy.actor);&#10;importClass(Packages.ptolemy.actor.lib.Ramp);&#10;importClass(Packages.ptolemy.actor.lib.FileWriter);&#10;importClass(Packages.ptolemy.actor.lib.SetVariable);&#10;importClass(Packages.ptolemy.domains.sdf.kernel.SDFDirector);&#10;importClass(Packages.ptolemy.data.expr.Parameter);&#10;&#10;var toplevel = new TypedCompositeActor();&#10;var ramp = new Ramp(toplevel, &quot;ramp&quot;);&#10;var writer = new FileWriter(toplevel, &quot;writer&quot;);&#10;var setVariable = new SetVariable(toplevel, &quot;setVariable&quot;);&#10;setVariable.variableName.setExpression(&quot;count&quot;);&#10;new Parameter(toplevel, &quot;count&quot;);&#10;&#10;var relation = toplevel.connect(ramp.output, writer.input);&#10;setVariable.input.link(relation);&#10;&#10;var director = new SDFDirector(toplevel, &quot;SDFDirector&quot;);&#10;director.iterations.setExpression(valueOf(iterations).toString());&#10;&#10;send(toplevel, actor);">
+        <property name="script" class="ptolemy.kernel.util.StringAttribute" value="importPackage(Packages.ptolemy.actor);&#10;importClass(Packages.ptolemy.actor.lib.Ramp);&#10;importClass(Packages.ptolemy.actor.lib.FileWriter);&#10;importClass(Packages.ptolemy.actor.lib.SetVariable);&#10;importClass(Packages.ptolemy.domains.sdf.kernel.SDFDirector);&#10;importClass(Packages.ptolemy.data.expr.Parameter);&#10;&#10;function fire() {&#10;  var toplevel = new TypedCompositeActor();&#10;  var ramp = new Ramp(toplevel, &quot;ramp&quot;);&#10;  var writer = new FileWriter(toplevel, &quot;writer&quot;);&#10;  var setVariable = new SetVariable(toplevel, &quot;setVariable&quot;);&#10;  setVariable.variableName.setExpression(&quot;count&quot;);&#10;  new Parameter(toplevel, &quot;count&quot;).setExpression(&quot;-1&quot;);&#10;&#10;  var relation = toplevel.connect(ramp.output, writer.input);&#10;  setVariable.input.link(relation);&#10;&#10;  var director = new SDFDirector(toplevel, &quot;SDFDirector&quot;);&#10;  director.iterations.setExpression(valueOf(iterations).toString());&#10;&#10;  send(toplevel, actor);&#10;}">
             <property name="style" class="ptolemy.actor.gui.style.TextStyle">
                 <property name="height" class="ptolemy.data.expr.Parameter" value="10">
                 </property>
@@ -78,7 +78,13 @@
         </port>
     </entity>
     <entity name="JavaScript2" class="ptolemy.actor.lib.js.JavaScript">
-        <property name="script" class="ptolemy.kernel.util.StringAttribute" value="alert(&quot;Counted to &quot; + get(count))">
+        <property name="script" class="ptolemy.kernel.util.StringAttribute" value="function fire() {&#10;  alert(&quot;Counted to &quot; + get(count));&#10;}">
+            <property name="style" class="ptolemy.actor.gui.style.TextStyle">
+                <property name="height" class="ptolemy.data.expr.Parameter" value="10">
+                </property>
+                <property name="width" class="ptolemy.data.expr.Parameter" value="30">
+                </property>
+            </property>
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[285.0, 125.0]">
         </property>

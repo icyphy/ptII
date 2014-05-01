@@ -10,7 +10,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="{75, 45}">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={373, 208, 934, 634}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={235, 68, 934, 634}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[700, 524]">
     </property>
@@ -25,7 +25,7 @@
         </property>
     </property>
     <entity name="JavaScript" class="ptolemy.actor.lib.js.JavaScript">
-        <property name="script" class="ptolemy.kernel.util.StringAttribute" value="var value = get(input);&#10;if (value &lt; 0) {&#10;   error(&quot;Input must be greater than or equal to 0.&quot;);&#10;} else {&#10;   var total = 1;&#10;     while(value &gt; 1) {&#10;       total *= value;&#10;       value--;&#10;     }&#10;     send(total, output);&#10;}">
+        <property name="script" class="ptolemy.kernel.util.StringAttribute" value="function fire() {&#10;  var value = get(input);&#10;  if (value &lt; 0) {&#10;     error(&quot;Input must be greater than or equal to 0.&quot;);&#10;  } else {&#10;     var total = 1;&#10;     while(value &gt; 1) {&#10;       total *= value;&#10;       value--;&#10;     }&#10;     send(total, output);&#10;  }&#10;}">
             <property name="style" class="ptolemy.actor.gui.style.TextStyle">
                 <property name="height" class="ptolemy.data.expr.Parameter" value="10">
                 </property>
@@ -33,7 +33,7 @@
                 </property>
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[175.0, 120.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{175.0, 120.0}">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>

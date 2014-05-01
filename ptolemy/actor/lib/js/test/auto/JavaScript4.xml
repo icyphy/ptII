@@ -23,7 +23,7 @@
         </property>
     </property>
     <entity name="JavaScript" class="ptolemy.actor.lib.js.JavaScript">
-        <property name="script" class="ptolemy.kernel.util.StringAttribute" value="// Multiply the input by 2.&#10;send(get(input)*2, output);">
+        <property name="script" class="ptolemy.kernel.util.StringAttribute" value="// Send a message.&#10;function fire() {&#10;  send(&quot;No fire method provided&quot;, output);&#10;}">
             <property name="style" class="ptolemy.actor.gui.style.TextStyle">
                 <property name="height" class="ptolemy.data.expr.Parameter" value="10">
                 </property>
@@ -37,12 +37,12 @@
             <property name="output"/>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
             </property>
-            <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
+            <property name="_type" class="ptolemy.actor.TypeAttribute" value="general">
             </property>
         </port>
     </entity>
     <entity name="NonStrictTest" class="ptolemy.actor.lib.NonStrictTest">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{1.0}">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{&quot;No fire method provided&quot;, &quot;1&quot;}">
         </property>
         <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
         </property>
@@ -50,7 +50,7 @@
         </property>
     </entity>
     <entity name="Sequence" class="ptolemy.actor.lib.Sequence">
-        <property name="values" class="ptolemy.data.expr.Parameter" value="{&quot;var x = 1&quot;, &quot;send(x, output, 0)&quot;}">
+        <property name="values" class="ptolemy.data.expr.Parameter" value="{&quot;var x = 1;&quot;, &quot;function fire() {send(x, output, 0);}&quot;}">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[100.0, 230.0]">
         </property>
