@@ -27,7 +27,6 @@
  */
 package org.ptolemy.optimization;
 
-import java.io.Writer;
 import java.util.HashMap;
 import java.util.Iterator;
 
@@ -37,8 +36,7 @@ import ptolemy.actor.IOPort;
 import ptolemy.actor.NoTokenException;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.lib.hoc.MirrorPort;
-import ptolemy.actor.lib.hoc.ReflectComposite;
-import ptolemy.actor.parameters.ParameterMirrorPort;
+import ptolemy.actor.lib.hoc.ReflectComposite; 
 import ptolemy.actor.parameters.ParameterPort;
 import ptolemy.data.ArrayToken;
 import ptolemy.data.DoubleToken;
@@ -51,8 +49,6 @@ import ptolemy.data.type.ArrayType;
 import ptolemy.data.type.BaseType;
 import ptolemy.domains.sdf.kernel.SDFDirector;
 import ptolemy.kernel.CompositeEntity;
-import ptolemy.kernel.Entity;
-import ptolemy.kernel.Port;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
@@ -201,9 +197,29 @@ public class CompositeOptimizer extends ReflectComposite {
         CompositeOptimizer result = (CompositeOptimizer) super.clone(workspace);
         result._optInput = null;
         result._firstIteration = true;
-         
-        
-        
+        try {
+            // Remove the old inner director(s) that is(are) in the wrong workspace.
+            String directorName = null;
+            Iterator dirs = result.attributeList(
+                    OptimizerDirector.class).iterator();
+            while (dirs.hasNext()) {
+                OptimizerDirector oldDirector = (OptimizerDirector) dirs
+                        .next();
+                if (directorName == null) {
+                    directorName = oldDirector.getName();
+                }
+                oldDirector.setContainer(null);
+            }
+
+            // Create a new IterateDirector that is in the right workspace.
+            OptimizerDirector directorNew = result.new OptimizerDirector(
+                    workspace);
+            directorNew.setContainer(result);
+            directorNew.setName(directorName);
+        } catch (Throwable throwable) {
+            throw new CloneNotSupportedException("Could not clone: "
+                    + throwable);
+        } 
         return result; 
     }
     
@@ -213,6 +229,7 @@ public class CompositeOptimizer extends ReflectComposite {
         OptimizerDirector director = new OptimizerDirector(workspace());
         director.setContainer(this);
         director.setName(uniqueName("OptimizerDirector"));
+        director.setPersistent(false);
 
         optimalValue = new TypedIOPort(this, OPTIMAL_VALUE_PORT_NAME, false, true); 
         optimalValue.setTypeEquals(new ArrayType(BaseType.DOUBLE));
@@ -305,19 +322,19 @@ public class CompositeOptimizer extends ReflectComposite {
             intermediate.setContainer(this);
             intermediate.setName(INTERMEDIATE_VALUE_PORT_NAME);
             intermediate.setTypeEquals(BaseType.DOUBLE);
-            intermediate.setOutput(true);   
+            intermediate.setOutput(true);    
             
             MirrorPort insideConstraints = new MirrorPort(workspace());
             insideConstraints.setContainer(this);
             insideConstraints.setName(CONSTRAINTS_PORT_NAME);
             insideConstraints.setTypeEquals(new ArrayType(BaseType.DOUBLE));
-            insideConstraints.setOutput(true); 
+            insideConstraints.setOutput(true);  
 
             MirrorPort xIn = new MirrorPort(workspace());
             xIn.setContainer(this);
             xIn.setName(OPTIMIZATION_VARIABLE_NAME);
             xIn.setTypeEquals(new ArrayType(BaseType.DOUBLE));
-            xIn.setInput(true); 
+            xIn.setInput(true);  
             
             // hide the mirror ports in top level composite
             
