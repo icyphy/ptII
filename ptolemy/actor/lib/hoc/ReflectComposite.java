@@ -438,8 +438,22 @@ HandlesInternalLinks {
                                 // Create a link only if it doesn't already exist.
                                 List connectedPorts = insidePort
                                         .connectedPortList();
-
-                                if (!connectedPorts.contains(castPort)) {
+                                
+                                // Check if inside port is already connected to a port with that name.
+                                // Skipping this step causes duplicate link attempts between castPort and insidePort
+                                // in the case that _addPort() is called during clone(), in which CompositeEntity.clone()
+                                // will already have created a link between the two ports.
+                                
+                                Iterator connectedPortsIterator = connectedPorts.iterator();
+                                boolean alreadyConnected = false;
+                                while(connectedPortsIterator.hasNext()){
+                                    Port cp = (Port) connectedPortsIterator.next();
+                                    if( cp.getName().equals(portName)){
+                                        // do not connect
+                                        alreadyConnected = true;
+                                    }
+                                }
+                                if (!alreadyConnected) {
                                     // There is no connection. Create one.
                                     ComponentRelation newRelation = newRelation(uniqueName("relation"));
                                     insidePort.link(newRelation);
