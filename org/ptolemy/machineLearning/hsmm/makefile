@@ -54,7 +54,7 @@ JSRCS = \
 	HSMMGaussianEstimator.java \
 	HSMMParameterEstimator.java
 
-OTHER_FILES_TO_BE_JARED = \ 
+OTHER_FILES_TO_BE_JARED =
 
 EXTRA_SRCS = $(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 
