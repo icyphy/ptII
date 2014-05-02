@@ -143,7 +143,11 @@ public class ParameterNameChanges extends MoMLFilterSimple {
             if (_classesWithParameterNameChanges.containsKey(attributeValue)) {
                 // We found a class with a parameter name change.
                 _currentlyProcessingActorWithParameterNameChanges = true;
-                _currentActorFullName = container.getFullName() + "."
+
+                // Coverity says that container could be null.
+                String containerName = (container == null ? "" : container.getFullName());
+
+                _currentActorFullName = containerName + "."
                         + _lastNameSeen;
                 _propertyMap = (HashMap) _classesWithParameterNameChanges
                         .get(attributeValue);

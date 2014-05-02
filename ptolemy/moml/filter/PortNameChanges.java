@@ -95,7 +95,9 @@ public class PortNameChanges extends MoMLFilterSimple {
                 // yet found the next class.
                 // Here, we add the port name and the new port name
                 // to a map for later use.
-                String containerName = container.getFullName();
+
+                // Coverity says that container could be null.
+                String containerName = (container == null ? "" : container.getFullName());
 
                 String newPort = (String) _portMap.get(attributeValue);
 
@@ -115,7 +117,10 @@ public class PortNameChanges extends MoMLFilterSimple {
                 // We found a class with a port name change.
                 _currentlyProcessingActorWithPortNameChanges = true;
                 _doneProcessingActorWithPortNameChanges = false;
-                _currentActorFullName = container.getFullName() + "."
+                // Coverity says that container could be null.
+                String containerName = (container == null ? "" : container.getFullName());
+
+                _currentActorFullName = containerName + "."
                         + _lastNameSeen;
                 _portMap = (HashMap) _actorsWithPortNameChanges
                         .get(attributeValue);
@@ -137,8 +142,12 @@ public class PortNameChanges extends MoMLFilterSimple {
                         + attributeValue)) {
             // We are processing actors that have port names.
             // Now map the old port to the new port.
-            String newPort = (String) _containerPortMap.get(container
-                    .getFullName() + "." + attributeValue);
+
+            // Coverity says that container could be null.
+            String containerName = (container == null ? "" : container.getFullName());
+
+            String newPort = (String) _containerPortMap.get(containerName
+                    + "." + attributeValue);
 
             // Extreme chaos here because sometimes
             // container.getFullName() will be ".transform_2.transform" and
@@ -146,7 +155,7 @@ public class PortNameChanges extends MoMLFilterSimple {
             // and sometimes container.getFullName() will be
             // ".transform_2.transform.ComplexToCartesian"
             // and attributeValue will be "real"
-            newPort = newPort.substring(container.getFullName().length() + 1);
+            newPort = newPort.substring(containerName.length() + 1);
 
             MoMLParser.setModified(true);
             return newPort;
