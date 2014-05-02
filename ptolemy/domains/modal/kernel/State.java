@@ -310,7 +310,7 @@ public class State extends ComponentEntity implements ConfigurableEntity,
      *  @param base The base relative to which references within the input
      *   are found, or null if this is not known, or there is none.
      *  @param source The input source, which specifies a URL, or null
-     *   if none.
+     *   if none. 
      *  @param text Configuration information given as text, or null if
      *   none.
      *  @exception Exception If something goes wrong.
@@ -319,13 +319,17 @@ public class State extends ComponentEntity implements ConfigurableEntity,
             throws Exception {
         refinementName.setExpression("");
         _configureSource = source;
-        text = text.trim();
-        if (!text.equals("")) {
-            MoMLParser parser = new MoMLParser(workspace());
-            _configurer.removeAllEntities();
-            parser.setContext(_configurer);
-            parser.parse(base, source, new StringReader(text));
-            _populateRefinements();
+        // Coverity: Avoid a call to configure() in MoMLParser
+        // throwing a NPE if text is null.
+        if (text != null) {
+            text = text.trim();
+            if (!text.equals("")) {
+                MoMLParser parser = new MoMLParser(workspace());
+                _configurer.removeAllEntities();
+                parser.setContext(_configurer);
+                parser.parse(base, source, new StringReader(text));
+                _populateRefinements();
+            }
         }
     }
 
