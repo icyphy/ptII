@@ -1770,9 +1770,17 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
         result.append(_eol + sanitizedActorName + " = CompositeActor_New();"
                 + _eol);
         // Only set the container if the container of the actor is non null
-        // and we are not at the top level and we are not generating embedded code.
+        // and we are not generating embedded code.
+
+        System.out.println("CCodeGenerator set the container? : actor.getContainer(): " + actor.getContainer() + " _isTopLevel: " + _isTopLevel() + " generateEmbeddedCode: " + ((BooleanToken) ((Parameter)generateEmbeddedCode).getToken()).booleanValue());
+
+	// Checking for being at the top level caused problems with:
+	// $PTII/bin/ptcg -language c -generateInSubdirectory false -inline false -maximumLinesPerBlock 2500 -variablesAsArrays false ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/domains/ptides/lib/test/auto/Microstep.xml
+
         if (actor.getContainer() != null
-                && (!_isTopLevel() &&  !((BooleanToken) generateEmbeddedCode.getToken()).booleanValue())) {
+	    // && (!_isTopLevel() &&  !((BooleanToken) generateEmbeddedCode.getToken()).booleanValue())
+	    &&  !((BooleanToken) generateEmbeddedCode.getToken()).booleanValue()
+	    ) {
             CompositeActor container = (CompositeActor) actor.getContainer();
             while (!container.isOpaque()) {
                 container = (CompositeActor) container.getContainer();
@@ -2430,9 +2438,16 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
 
         // Only include a .h file for the container if we are not at
         // the top level and we are not generating embedded code.
-        //System.out.println("CCodeGenerator: _isTopLevel: " + _isTopLevel() + " generateEmbeddedCode: " + ((BooleanToken) ((Parameter)generateEmbeddedCode).getToken()).booleanValue());
+
+        System.out.println("CCodeGenerator include the container .h? : container.getContainer(): " + container.getContainer() + " _isTopLevel: " + _isTopLevel() + " generateEmbeddedCode: " + ((BooleanToken) ((Parameter)generateEmbeddedCode).getToken()).booleanValue());
+
+	// Checking for being at the top level caused problems with:
+	// $PTII/bin/ptcg -language c -generateInSubdirectory false -inline false -maximumLinesPerBlock 2500 -variablesAsArrays false ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/domains/ptides/lib/test/auto/Microstep.xml
+
         if (container.getContainer() != null
-                && !_isTopLevel() &&  !((BooleanToken) ((Parameter)generateEmbeddedCode).getToken()).booleanValue()) {
+	    //&& !_isTopLevel() &&  !((BooleanToken) ((Parameter)generateEmbeddedCode).getToken()).booleanValue()
+	    &&  !((BooleanToken) ((Parameter)generateEmbeddedCode).getToken()).booleanValue()
+	    ) {
             HCode.append("#include \""
                     + CodeGeneratorAdapter.generateName(container
                             .getContainer()) + ".h\"" + _eol);
