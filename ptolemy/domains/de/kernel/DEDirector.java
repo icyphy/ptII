@@ -552,13 +552,6 @@ public class DEDirector extends Director implements SuperdenseTimeDirector {
                     + " requests refiring at " + time + " with microstep "
                     + index);
         }
-        if (_getExecutionAspect(actor) != null && 
-                _getExecutionAspect(actor).getExecutionTime(actor) > 0.0) {
-//            throw new IllegalActionException(this, 
-//                    "This director cannot guarantee to fire the actor " + actor +
-//                    " at the correct time due to the use of execution aspects " +
-//                            "that can delay the firing.");
-        }
         // Normally, we do not need to delegate the request up
         // the hierarchy. This will be done in postfire.
         // We want to keep event queues at all levels in hierarchy
