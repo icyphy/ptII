@@ -138,8 +138,9 @@ public class PortNameChanges extends MoMLFilterSimple {
             }
         } else if (_doneProcessingActorWithPortNameChanges
                 && attributeName.equals("port")
-                && _containerPortMap.containsKey(container.getFullName() + "."
-                        + attributeValue)) {
+                && _containerPortMap.containsKey(
+                        (container == null ? "" : container.getFullName())
+                        + "." + attributeValue)) {
             // We are processing actors that have port names.
             // Now map the old port to the new port.
 
