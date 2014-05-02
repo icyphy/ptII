@@ -206,7 +206,7 @@ public class TDLCausalityInterface extends CausalityInterfaceForComposites {
                         for (IOPort inputPort : deepInputPorts) {
                             Dependency delay = _getMinimumDelay(inputPort,
                                     visitedPorts);
-                            if (delay.compareTo(minimumDelay) == Dependency.LESS_THAN) {
+                            if (delay.compareTo(minimumDelay) <= Dependency.LESS_THAN) {
                                 minimumDelay = delay;
                             }
                         }
@@ -223,7 +223,7 @@ public class TDLCausalityInterface extends CausalityInterfaceForComposites {
                                 visitedPorts);
                         delay = delay.oTimes(causalityInterface.getDependency(
                                 inputPort, port));
-                        if (delay.compareTo(minimumDelay) == Dependency.LESS_THAN) {
+                        if (delay.compareTo(minimumDelay) <= Dependency.LESS_THAN) {
                             minimumDelay = delay;
                         }
                     }
