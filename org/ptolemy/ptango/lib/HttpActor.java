@@ -28,6 +28,7 @@
 
 package org.ptolemy.ptango.lib;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.URI;
@@ -639,6 +640,13 @@ public class HttpActor extends TypedAtomicActor implements HttpService {
                 _request.requestType = type;
 
                 response.setContentType("text/html");
+                
+                // Set up a buffer for the output so we can set the length of
+                // the response, thereby enabling persistent connections
+                // http://docstore.mik.ua/orelly/java-ent/servlet/ch05_03.htm
+                ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+                PrintWriter writer = new PrintWriter(bytes, true);// true forces 
+                                                                  // flushing
 
                 if (_debugging) {
                     _debug("**** Handling a " + ((type == 0) ? "get" : "post")
@@ -677,7 +685,7 @@ public class HttpActor extends TypedAtomicActor implements HttpService {
                 } catch (IllegalActionException e) {
                     _request = null;
                     _writeError(response, HttpServletResponse.SC_BAD_REQUEST,
-                            e.getMessage());
+                            e.getMessage(), bytes, writer);
                     return;
                 }
                 //////////////////////////////////////////////////////
@@ -704,21 +712,51 @@ public class HttpActor extends TypedAtomicActor implements HttpService {
                             if (_debugging) {
                                 _debug("**** Request timed out.");
                             }
-                            response.getWriter().println("Request timed out");
+                            
+                            // Set the content length (enables persistent 
+                            // connections) and send the buffer
+                            writer.println("Request timed out");
+                            response.setContentLength(bytes.size());
+                            bytes.writeTo(response.getOutputStream());
+                            
                             // Indicate that there is no longer a pending request or response.
                             _request = null;
                             _response = null;
+                            
+                            // Close the PrintWriter  
+                            // Close the ByteArrayOutputStream to avoid a 
+                            // warning, though this is not necessary since
+                            // ByteArrayOutputStream's close() method has no 
+                            // effect
+                            // http://docs.oracle.com/javase/6/docs/api/java/io/ByteArrayOutputStream.html#close%28%29
+                            writer.close(); 
+                            bytes.close();
+                                                
                             return;
                         }
                     } catch (InterruptedException e) {
                         if (_debugging) {
                             _debug("*** Request thread interrupted.");
                         }
-                        response.getWriter().println(
-                                "Get request thread interrupted");
+                        
+                        // Set the content length (enables persistent 
+                        // connections) and send the buffer
+                        writer.println("Get request thread interrupted");
+                        response.setContentLength(bytes.size());
+                        bytes.writeTo(response.getOutputStream());
+                        
                         // Indicate that there is no longer a pending request or response.
                         _request = null;
                         _response = null;
+                        
+                        // Close the PrintWriter  
+                        // Close the ByteArrayOutputStream to avoid a 
+                        // warning, though this is not necessary since
+                        // ByteArrayOutputStream's close() method has no 
+                        // effect
+                        // http://docs.oracle.com/javase/6/docs/api/java/io/ByteArrayOutputStream.html#close%28%29
+                        writer.close(); 
+                        bytes.close();
                         return;
                     }
                 }
@@ -734,7 +772,22 @@ public class HttpActor extends TypedAtomicActor implements HttpService {
                     _debug("**** Servet received response: "
                             + _response.response);
                 }
-                response.getWriter().println(_response.response);
+                
+                // Set the content length (enables persistent 
+                // connections) and send the buffer
+                writer.println(_response.response);
+                response.setContentLength(bytes.size());
+                bytes.writeTo(response.getOutputStream());
+                
+                // Close the PrintWriter  
+                // Close the ByteArrayOutputStream to avoid a 
+                // warning, though this is not necessary since
+                // ByteArrayOutputStream's close() method has no 
+                // effect
+                // http://docs.oracle.com/javase/6/docs/api/java/io/ByteArrayOutputStream.html#close%28%29
+                writer.close(); 
+                bytes.close();
+                
                 // Indicate response has been handled.
                 _response = null;
             }
@@ -872,11 +925,11 @@ public class HttpActor extends TypedAtomicActor implements HttpService {
          *  @exception IOException If the write fails.
          */
         private void _writeError(HttpServletResponse response,
-                int responseCode, String message) throws IOException {
+                int responseCode, String message, ByteArrayOutputStream bytes, 
+                PrintWriter writer) throws IOException {
+            
             response.setContentType("text/html");
             response.setStatus(responseCode);
-
-            PrintWriter writer = response.getWriter();
 
             writer.println("<!DOCTYPE html>");
             writer.println("<html>");
@@ -885,7 +938,18 @@ public class HttpActor extends TypedAtomicActor implements HttpService {
             writer.println(message);
             writer.println("</body>");
             writer.println("</html>");
-            writer.flush();
+            
+            response.setContentLength(bytes.size());
+            bytes.writeTo(response.getOutputStream());
+            
+            // Close the PrintWriter  
+            // Close the ByteArrayOutputStream to avoid a 
+            // warning, though this is not necessary since
+            // ByteArrayOutputStream's close() method has no 
+            // effect
+            // http://docs.oracle.com/javase/6/docs/api/java/io/ByteArrayOutputStream.html#close%28%29
+            writer.close(); 
+            bytes.close();
         }
     }
 
