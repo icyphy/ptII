@@ -59,7 +59,7 @@ PTPACKAGE = 	fmus
 # Include the .class files from these jars in PTCLASSALLJAR
 PTCLASSALLJARS = \
 	AMS_AMSSim/AMS_AMSSim.jar \
-	CoupleClutches/CoupleClutches.jar
+	CoupledClutches/CoupledClutches.jar
 
 PTCLASSALLJAR = $(PTPACKAGE).jar
 
