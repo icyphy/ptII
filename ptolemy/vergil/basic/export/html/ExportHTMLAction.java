@@ -947,10 +947,18 @@ public class ExportHTMLAction extends AbstractAction implements HTMLExportable,
                 _addContent("toc.htm", false, "<ul>");
                 _addContent("toc.htm", false,
                         "<li><a href=\"/index.htm\">Ptolemy Home</a></li>");
+
+		// The URL of the current release.
+		String ptURL = (usePtWebsite ? "http://ptolemy.org" : "") 
+		    + "/ptolemyII/ptII"
+		    + VersionAttribute.majorCurrentVersion()
+		    + "/ptII" 
+		    + VersionAttribute.CURRENT_VERSION.getExpression()
+		    +"/";
+
                 _addContent("toc.htm", false,
-                        "<li><a href=\"/ptolemyII/ptII"
-			    + VersionAttribute.majorCurrentVersion()
-			    +"/ptII/doc/index.htm\">Ptolemy " + VersionAttribute.majorCurrentVersion()
+                        "<li><a href=\"" + ptURL
+			    +"doc/index.htm\">Ptolemy " + VersionAttribute.majorCurrentVersion()
 			    + "</a></li>");
                 _addContent("toc.htm", false, "</ul>");
                 _addContent("toc.htm", false, "");
@@ -964,7 +972,23 @@ public class ExportHTMLAction extends AbstractAction implements HTMLExportable,
 		    if (upHTMLParameter != null) {
 			upHTML = upHTMLParameter.stringValue();
 		    } else {
-			upHTML = " <li><a href=\"../index.html\">Up</a></li>";
+			if (!usePtWebsite) {
+			    upHTML = " <li><a href=\"../index.html\">Up</a></li>";
+			} else {
+			    // Generate links to the domain docs.
+			    String domains[] = { "Continuous", "DDF", "DE",
+						 "Modal", "PN", "Rendezvous",
+						 "SDF", "SR", "Wireless"};
+			    StringBuffer buffer = new StringBuffer();
+			    for (int i = 0; i < domains.length; i++) {
+				buffer.append("<li><a href=\"" + ptURL
+					      +"ptolemy/domains/"
+					      + domains[i].toLowerCase()
+					      + "/doc/index.htm\">"
+					      + domains[i] + "</a></li>");
+			    }
+			    upHTML = buffer.toString();
+			}
 		    }
 		}
 		
