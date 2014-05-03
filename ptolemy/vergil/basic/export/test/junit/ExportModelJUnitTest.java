@@ -272,6 +272,7 @@ public class ExportModelJUnitTest {
                 "PublisherTest", // gt
                 "RealTimeComposite.xml", // "Audio Device Unavailable"
                 "RijndaelEncryption.xml", // FIXME: Hangs during wrapup.
+                "ScaleC.xml", // FIXME: the JVM crashes while running.
                 "SerialPort.xml", // Requires serial port.
                 "Signature.xml", // Throws an exception in the normal course of operations.
                 "SimpleTrafficLightSMVModule.xml", // "PedestrianLightSMV can not run in simulation mode."
