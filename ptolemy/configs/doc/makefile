@@ -69,6 +69,7 @@ DERIVED_FILES = \
 OTHER_FILES_TO_BE_JARED = \
 	$(DERIVED_FILES) \
 	basicHelp.htm \
+	book.htm \
 	ClassesIllustrated.png \
 	ClassesIllustrated.xml \
 	completeDemos.htm \
