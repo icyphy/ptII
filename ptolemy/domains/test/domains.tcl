@@ -61,8 +61,9 @@ test domains.1.1 {} {
 ####
 #
 test domains-2.1 {} {
+    # PNSRTimedtest.xml does not terminate the second time it is run.
     jdkCaptureErr {
-	catch {createAndExecute "auto/knownFailedTests/PNSRTimedtest.xml"} errMsg
+	catch {createAndExecute "auto/nonTerminatingTests/PNSRTimedtest.xml"} errMsg
     } out
     list $errMsg
 } {{ptolemy.kernel.util.IllegalActionException: Queue size 131072 exceeds the maximum capacity in port .PNSRTimedtest.Topologia SR.port. Perhaps you have an unbounded queue?
