@@ -4,13 +4,13 @@
 <entity name="ApplicationPathTester1" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="10.0.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 22, 1317, 691}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 22, 1311, 698}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1083, 581]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.8000000000000002">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{461.96176193467306, 258.67807788944725}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{461.96176193467284, 258.67807788944725}">
     </property>
     <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
         <property name="stopWhenQueueIsEmpty" class="ptolemy.data.expr.Parameter" value="false">
@@ -21,19 +21,19 @@
         </property>
     </property>
     <property name="WebServer" class="org.ptolemy.ptango.lib.WebServer">
-        <property name="port" class="ptolemy.data.expr.Parameter" value="8058">
+        <property name="port" class="ptolemy.data.expr.Parameter" value="8057">
         </property>
         <property name="applicationPath" class="ptolemy.data.expr.StringParameter" value="app">
         </property>
         <property name="resourceLocation" class="ptolemy.data.expr.FileParameter" value="$PTII/org/ptolemy/ptango/test/auto/pages">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[1035.0, 25.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{1035.0, 25.0}">
         </property>
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="italic" class="ptolemy.data.expr.Parameter" value="false">
         </property>
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Test for WebServer application path without slash&#10;app&#10;&#10;and various servlet paths with and without slashes&#10;servlet1, /servlet2, servlet3/, servlet4/*, /servlet5/, /servlet6/*, and the default /*&#10;&#10;Note that if the servlet path has a trailing slash but no star following, the URL must include the trailing slash, e.g.&#10;http://localhost:8058/app/servlet3/&#10;">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Test for WebServer application path without slash&#10;app&#10;&#10;and various servlet paths with and without slashes&#10;servlet1, /servlet2, servlet3/, servlet4/*, /servlet5/, /servlet6/*, and the default /*&#10;&#10;Note that if the servlet path has a trailing slash but no star following, the URL must include the trailing slash, e.g.&#10;http://localhost:8057/app/servlet3/&#10;">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[260.0, -15.0]">
         </property>
@@ -49,7 +49,7 @@
     <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="textSize" class="ptolemy.data.expr.Parameter" value="18">
         </property>
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Port 8058">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Port 8057">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[995.0, 90.0]">
         </property>
@@ -548,7 +548,7 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="[75.0, 185.0]">
             </property>
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={180, 56, 934, 634}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={180, 56, 928, 641}, maximized=false}">
         </property>
         <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[700, 524]">
         </property>
@@ -596,7 +596,7 @@
                 <property name="multiport"/>
             </port>
             <entity name="HttpGet" class="org.ptolemy.ptango.lib.HttpGet">
-                <property name="url" class="ptolemy.actor.parameters.PortParameter" value="http://localhost:8058/app/servlet1">
+                <property name="url" class="ptolemy.actor.parameters.PortParameter" value="http://localhost:8057/app/servlet1">
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="{130, 280}">
                 </property>
@@ -628,7 +628,7 @@
                 <property name="multiport"/>
             </port>
             <entity name="HttpGet" class="org.ptolemy.ptango.lib.HttpGet">
-                <property name="url" class="ptolemy.actor.parameters.PortParameter" value="http://localhost:8058/app/servlet2">
+                <property name="url" class="ptolemy.actor.parameters.PortParameter" value="http://localhost:8057/app/servlet2">
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="{145, 400}">
                 </property>
@@ -660,7 +660,7 @@
                 <property name="multiport"/>
             </port>
             <entity name="HttpGet" class="org.ptolemy.ptango.lib.HttpGet">
-                <property name="url" class="ptolemy.actor.parameters.PortParameter" value="http://localhost:8058/app/servlet3/">
+                <property name="url" class="ptolemy.actor.parameters.PortParameter" value="http://localhost:8057/app/servlet3/">
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="{145, 485}">
                 </property>
@@ -692,7 +692,7 @@
                 <property name="multiport"/>
             </port>
             <entity name="HttpGet" class="org.ptolemy.ptango.lib.HttpGet">
-                <property name="url" class="ptolemy.actor.parameters.PortParameter" value="http://localhost:8058/app/servlet4">
+                <property name="url" class="ptolemy.actor.parameters.PortParameter" value="http://localhost:8057/app/servlet4">
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="{135, 595}">
                 </property>
@@ -724,7 +724,7 @@
                 <property name="multiport"/>
             </port>
             <entity name="HttpGet" class="org.ptolemy.ptango.lib.HttpGet">
-                <property name="url" class="ptolemy.actor.parameters.PortParameter" value="http://localhost:8058/app/servlet5/">
+                <property name="url" class="ptolemy.actor.parameters.PortParameter" value="http://localhost:8057/app/servlet5/">
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="{420, 370}">
                 </property>
@@ -756,7 +756,7 @@
                 <property name="multiport"/>
             </port>
             <entity name="HttpGet" class="org.ptolemy.ptango.lib.HttpGet">
-                <property name="url" class="ptolemy.actor.parameters.PortParameter" value="http://localhost:8058/app/servlet6">
+                <property name="url" class="ptolemy.actor.parameters.PortParameter" value="http://localhost:8057/app/servlet6">
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="{425, 465}">
                 </property>
@@ -788,7 +788,7 @@
                 <property name="multiport"/>
             </port>
             <entity name="HttpGet" class="org.ptolemy.ptango.lib.HttpGet">
-                <property name="url" class="ptolemy.actor.parameters.PortParameter" value="http://localhost:8058/app/default">
+                <property name="url" class="ptolemy.actor.parameters.PortParameter" value="http://localhost:8057/app/default">
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="{425, 555}">
                 </property>
