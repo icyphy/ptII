@@ -103,6 +103,7 @@ EXTRA_SRCS = \
 	limitations.htm \
 	main.htm \
 	mainheader.htm \
+	mkDomains \
 	oldFeatures.htm \
 	ptII$(PTVERSION).release.htm \
 	ptII$(PTVERSION).releaseHyVisual.htm \

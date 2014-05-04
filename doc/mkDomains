@@ -1,0 +1,68 @@
+#!/bin/sh
+# $Id$
+# mkDomains - make $PTII/doc/domains.htm
+
+top=/tmp/mkdomains.top.$$
+body=/tmp/mkdomains.body.$$
+
+rm -rf $top $body
+
+# The top of the file
+cat > $top <<EOF
+<!-- $Id: domains.htm 54773 2009-06-28 01:15:24Z cxh $ -->
+<!-- 
+
+  If this file is $PTII/doc/domains.htm, do not edit it.
+
+  Run:
+  cd $PTII/doc
+  ./mkDomains
+
+-->
+<html>
+<head>
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+<title>Ptolemy II Domains</title>
+<link href="default.css" rel="stylesheet" type="text/css">
+</head>
+<body>
+<h1>Ptolemy II Domains</h1>
+<ul>
+EOF
+
+domains=`ls $PTII/ptolemy/domains/*/doc/main.htm | awk -F / '{print $(NF-2)}'`
+
+for domain in $domains
+do
+    # Get the upper case name of the domain
+    upcase=`echo $domain | gawk '
+length($0) <= 4 {print toupper($0)} 
+length($0) > 4 {print toupper(substr($0,1,1} substr($0,2)}'`
+
+    description=`grep '<h1>' $PTII/ptolemy/domains/$domain/doc/main.htm | sed -e 's@<h1>@@' -e's@</h1>@@'`
+
+    # Create the table of contents
+    echo "<li> <a href=\"#$domain\">$upcase ($description)</a>" >> $top
+
+
+    echo "<h2><a name=\"$domain\">$upcase ($description)</h2>" >> $body
+    awk '{if ($0 ~ /<h1>/) {
+             printit=1
+          } else if ($0 ~ /<\/body/) {
+             printit=0
+          } else if (printit == 1) {
+             print $0
+          }
+         }' $PTII/ptolemy/domains/$domain/doc/main.htm >> $body
+done
+
+echo "</ul>" >> $top
+
+
+cat >> $body <<EOF2
+</body>
+</html>
+EOF2
+
+cat $top $body > $PTII/doc/domains.htm
+
