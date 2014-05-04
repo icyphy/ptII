@@ -15,5 +15,5 @@ function demoLink(indent, relativeModelPath, description) {
      // The path to the JNLP and Export-to-Web files.  This will change betwee releases.
      ptII = "http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII10.0.devel/";
 
-     document.write("<br/>" + indent + "<a href=\"" + ptII + relativeModelPath + "\\" target =\"_top\">" + description + "</a>\n");
+     document.write("<br/>" + indent + "<a href=\"" + ptII + relativeModelPath + "\" target =\"_top\">" + description + "</a>\n");
 }
