@@ -74,7 +74,7 @@ import ptolemy.util.StringUtilities;
  @Pt.ProposedRating Yellow (eal)
  @Pt.AcceptedRating Red (reviewmoderator)
  */
-public class UndeferredGraphicalMessageHandler extends MessageHandler {
+public class UndeferredGraphicalMessageHandler extends ptolemy.util.MessageHandler {
 
     /** Get the component set by a call to setContext(), or null if none.
      *  @see #setContext(Component)
