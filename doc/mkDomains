@@ -27,6 +27,18 @@ cat > $top <<EOF
 </head>
 <body>
 <h1>Ptolemy II Domains</h1>
+Chapter 1, "<a href="http://ptolemy.eecs.berkeley.edu/books/Systems/chapters/HeterogeneousModeling.pdf#in_browser" target="_top">Heterogeneous Modeling</a>," of the book,
+"<a href="http://ptolemy.eecs.berkeley.edu/books/Systems/index.htm#in_browser" target="_top">System Design, Modeling, and Simulation Using Ptolemy II</a>," describes domains as:
+
+<blockquote>
+<p>"A semantic domain in Ptolemy II, often just called a domain , defines the "laws of physics" for the interaction between components in a design. It provides the rules that govern concurrent execution of the components and the communication between components [...]. A collection of such rules is called a
+modelof computation (MoC). We will use the terms "model of computation" and "domain" (nearly) interchangeably, though technically we think of a domain as being an implementation of a MoC. The MoC is an abstract model, whereas the domain is its concrete implementation in software."</p>
+
+<p>"The rules that constitute a model of computation fall into three categories. The first set of rules specifies what constitutes a component. In this book, a component is generally an actor [...]. The second set of rules specifies the execution and concurrency mechanisms. Are actors invoked in order? Simultaneously? Nondeterministically? The third specifies the communication mechanisms. How do actors exchange data?"</p>
+
+</blockquote>
+
+<p>Below is the list of Ptolemy II domains in alphabetical order.</p>
 <ul>
 EOF
 
@@ -35,20 +47,22 @@ domains=`ls $PTII/ptolemy/domains/*/doc/main.htm | awk -F / '{print $(NF-2)}'`
 for domain in $domains
 do
     # Get the upper case name of the domain
-    upcase=`echo $domain | gawk '
+    upcase=`echo $domain | awk '
 length($0) <= 4 {print toupper($0)} 
-length($0) > 4 {print toupper(substr($0,1,1)) substr($0,2) }'`
+length($0) > 4 {print toupper(substr($0,1,1)) substr($0,2) }' | sed 's/Petrinet/Petri Net/'`
 
     description=`grep '<h1>' $PTII/ptolemy/domains/$domain/doc/main.htm | \
        sed -e 's@<h1>@@' \
            -e 's@</h1>@@' \
            -e 's@ Domain@@' \
            -e "s@ ($upcase)@@" \
-           -e "s@ (PTERA)@@" \
+	   -e 's@Petrinet@Petri Net@' \
+           -e 's@ (PTERA)@@' \
            -e 's@^ *@@' \
-           -e 's@ *$@@' `
+           -e 's@ *$@@' \
+           -e 's@^The @@'`
 
-    # Create the table of contents
+    # Create the table of contents entry for the domain.
     if [ "$upcase" != "$description" ]; then
 	echo "<li> <a href=\"#$domain\">$upcase ($description)</a>" >> $top
     else
@@ -57,15 +71,26 @@ length($0) > 4 {print toupper(substr($0,1,1)) substr($0,2) }'`
     echo " " >> $body
     echo " " >> $body
 
-    echo "<h2><a name=\"$domain\">$upcase ($description)</h2>" >> $body
+    # Create the body of the entry for the domain
+    echo "<hr/>" >> $body
+    if [ "$upcase" != "$description" ]; then
+	echo "<h2><a name=\"$domain\">$upcase ($description)</h2>" >> $body
+    else
+	echo "<h2><a name=\"$domain\">$upcase</h2>" >> $body
+    fi
     awk '{if ($0 ~ /<h1>/) {
              printit=1
-          } else if ($0 ~ /<\/body/) {
+          } else if ($0 ~ /<\/body/ || $0 ~ /Below are the detailed/ ) {
              printit=0
           } else if (printit == 1) {
              print $0
           }
-         }' $PTII/ptolemy/domains/$domain/doc/main.htm >> $body
+         }' $PTII/ptolemy/domains/$domain/doc/main.htm | \
+    sed -e 's@../../../../doc@@' \
+	-e 's@../../sdf@../ptolemy/domains/sdf@' \
+	     >> $body
+    echo "<p><a href=\"../ptolemy/domains/$domain/doc/index.htm\" target=\"_top\">$description Demonstrations</a></p>" >> $body
+
 done
 
 echo "</ul>" >> $top

@@ -7,14 +7,14 @@
 </head>
 <body>
 <h1>Synchronous Reactive</h1>
-In the synchronous/reactive (SR) model of computation , the arcs
+<p>In the synchronous/reactive (SR) model of computation , the arcs
 represent data values that are aligned with global clock ticks. Thus,
 they are discrete signals, but unlike discrete time, a signal need not
 have a value at every clock tick. The entities represent relations
 between input and output values at each tick, and are usually partial
 functions with certain technical restrictions to ensure determinacy.
 Examples of languages that use the SR model of computation include
-Esterel, Signal, Lustre, and Argos.
+Esterel, Signal, Lustre, and Argos.</p>
 <p>
 SR models are excellent for applications with concurrent and complex
 control logic. Because of the tight synchronization, safety-critical
@@ -22,6 +22,15 @@ real-time applications are a good match. However, also because of the
 tight synchronization, some applications are overspecified in the SR
 model, limiting the implementation alternatives. Moreover, in most
 realizations, modularity is compromised by the need to seek a global
-fixed point at each clock tick. 
+fixed point at each clock tick. </p>
+    <h2>References</h2>
+
+    <ol>
+      <li>Stephen A. Edwards, Edward A. Lee, Stavros Tripakis, Paul Whitaker, "<a href="http://ptolemy.eecs.berkeley.edu/books/Systems/chapters/SynchronousReactiveModels.pdf" target="_top">Synchronous-Reactive Models</a>," 
+	a chapter from<br/>
+	Claudius Ptolemaeus, Editor, "<a href="http://ptolemy.eecs.berkeley.edu/books/Systems/index.htm#in_browser" target="_top">System Design, Modeling, and Simulation Using Ptolemy II</a>", Ptolemy.org, 2014. (included in the release as <a href="../../../../doc/books/systems/PtolemyII_DigitalV1_02.pdf#in_browser" target="_top"><code>$PTII/doc/books/systems/PtolemyII_DigitalV1_02.pdf</code></a>)
+	<br/>The models provided in this chapter are also <a href="http://ptolemy.eecs.berkeley.edu/books/Systems/models/doc/books/systems/synchronous/index.html#in_browser" target="_top">available online</a>.</li> 
+</ol>
+
 </body>
 </html>

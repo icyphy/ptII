@@ -7,7 +7,7 @@
   </head>
   <body>
     <h1>Process Networks</h1>
-    <P>
+    <p>
       To model hardware and embedded applications, a highly concurrent model of
       computation is required. The PN domain in Ptolemy II presents a mechanism to
       model concurrency using the Kahn process networks model of computation [1].
@@ -15,40 +15,40 @@
       This makes it well suited to modeling embedded dataflow applications and
       hardware architectures. <p>
 
-      In Ptolemy II, an implementation of the Kahn-MacQueen [2] semantics is
+    <p>In Ptolemy II, an implementation of the Kahn-MacQueen [2] semantics is
       provided. This is the bounded memory execution as proposed by T. Parks [3].<p>
 
       The following are the most important features of the operational semantics of
       PN as proposed by Kahn and MacQueen:
-      <UL>
-	<li>This is a network of sequential processes.
-	<LI>The processes do not share memory. Instead they communicate with each other
-	  only through unidirectional FIFO channels.
-	<LI>Communication between processes is asynchronous.
+      <ul>
+	<li>This is a network of sequential processes.</li>
+	<li>The processes do not share memory. Instead they communicate with each other
+	  only through unidirectional FIFO channels.</li>
+	<li>Communication between processes is asynchronous.</li>
 	<li>Processes block on a read from a FIFO channel if the channel is empty but
-	  can write to a channel whenever they want to.
-      </UL>
+	  can write to a channel whenever they want to.</li>
+      </ul>
 
-      The above features make the execution of the network deterministic. The
+    <p>The above features make the execution of the network deterministic. The
       implementation in Ptolemy II is based on Java threads and synchronizing
       monitors. <p>
 
-      In addition to the above features, the PN domain has been extended to support
+    <p>In addition to the above features, the PN domain has been extended to support
       a notion of global time. Time advances for a PN process either when the process
       is blocked on a read from some channel or when  is explicitly waiting for time
       to advance. This is based primarily on Pamela [4].<p>
 
-      PN has been further extended to support dynamic changes to a graph. In case of
+    <p>PN has been further extended to support dynamic changes to a graph. In case of
       timed-PN these changes are completely deterministic, while in case of
       untimed-PN, the changes could be non-deterministic and can depend on the
       schedule of the underlying java threads. <p>
 
-      <H2>References</H2>
-      <ul>
+      <h2>References</h2>
+      <ol>
 	<li>Neil Smyth, John S. Davis II, Thomas Huining Feng, Mudit Goel, Edward A. Lee, Thomas M. Parks and Yang Zhao, "<a href="http://ptolemy.eecs.berkeley.edu/books/Systems/chapters/ProcessNetworksandRendezvous.pdf">Process Networks and Rendezvous</a>," 
 	  a chapter from<br/>
 	  Claudius Ptolemaeus, Editor, "<a href="http://ptolemy.eecs.berkeley.edu/books/Systems/index.htm#in_browser" target="_top">System Design, Modeling, and Simulation Using Ptolemy II</a>", Ptolemy.org, 2014. (included in the release as <a href="../../../../doc/books/systems/PtolemyII_DigitalV1_02.pdf#in_browser" target="_top"><code>$PTII/doc/books/systems/PtolemyII_DigitalV1_02.pdf</code></a>)
-  <br/>The models provided in this chapter are also <a href="http://ptolemy.eecs.berkeley.edu/books/Systems/models/doc/books/systems/pn/index.html#in_browser" target="_top">available online<a>.</li> 
+	  <br/>The models provided in this chapter are also <a href="http://ptolemy.eecs.berkeley.edu/books/Systems/models/doc/books/systems/pn/index.html#in_browser" target="_top">available online</a>.</li> 
 	<li>G. Kahn, "The semantics of a simple language for parallel programming,"
 	  <i>Info. Proc. 74, </i>vol.4, pp. 471-5, 1974.</li>
 	<li>G. Kahn and D.B. MacQueen, "Coroutines and networks of parallel processes,"
@@ -57,9 +57,9 @@
 	  Univ. of California at Berkeley, 1995.</li>
 	<li>A. van Gemund, "Performance prediction of parallel processing systems: The
 	  Pamela methodology," in Proc. 7th ACM Int. Conf. on Supercomputing (Tokyo),
-	    pp.318-327, July 1993.</li>
+	  pp.318-327, July 1993.</li>
 	<li><a href="https://en.wikipedia.org/wiki/Kahn_process_networks#in_browser" target="_top">Wikipedia</a></li>
-      </ul>
+      </ol>
 
-</body>
+  </body>
 </html>

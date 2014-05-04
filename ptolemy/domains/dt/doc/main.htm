@@ -1,44 +1,45 @@
 <!-- $Id$ -->
 <html>
-<head>
-<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
-<title>Ptolemy II Discrete Time</title>
-<link href="../../../../doc/default.css" rel="stylesheet" type="text/css">
-</head>
-<body>
-<h1>Discrete Time</h1>
+  <head>
+    <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+    <title>Ptolemy II Discrete Time</title>
+    <link href="../../../../doc/default.css" rel="stylesheet" type="text/css">
+  </head>
+  <body>
+    <h1>Discrete Time</h1>
 
-The Discrete Time (DT) domain is a timed extension of the Synchronous Dataflow
-(SDF) domain.  Like SDF, it has static scheduling of the dataflow graph
-model. Likewise, DT requires that the rates on the ports of all actors be
-known beforehand and fixed. DT handles feedback systems in the same way that
-SDF does, but with additional constraints on initial tokens.
-<p>
-Because of the inherent concurrency occurring within SDF dataflow graph models,
-there are two notions of time in DT -- global time and local time.  Global time
-increases steadily as execution progresses.  Moreover, global time increments by
-fixed discrete chunks of time based on the value of the <i>period</i> parameter.
-On the other hand, local time applies to each of the actors in the model. All the
-actors have distinct local times as an iteration proceeds. The local time of
-an actor during an iteration depends on the global time, period, firing count,
-port rates, and the schedule. These local times obey the following constraint:
+    <p>The Discrete Time (DT) domain is a timed extension of the Synchronous Dataflow
+      (SDF) domain.  Like SDF, it has static scheduling of the dataflow graph
+      model. Likewise, DT requires that the rates on the ports of all actors be
+      known beforehand and fixed. DT handles feedback systems in the same way that
+      SDF does, but with additional constraints on initial tokens.</p>
+    <p>
+      Because of the inherent concurrency occurring within SDF dataflow graph models,
+      there are two notions of time in DT -- global time and local time.  Global time
+      increases steadily as execution progresses.  Moreover, global time increments by
+      fixed discrete chunks of time based on the value of the <i>period</i> parameter.
+      On the other hand, local time applies to each of the actors in the model. All the
+      actors have distinct local times as an iteration proceeds. The local time of
+      an actor during an iteration depends on the global time, period, firing count,
+      port rates, and the schedule. These local times obey the following constraint:</p>
 
-<center>Global Time  <=  Local Time <= (Global Time + period)</center>
+    <p><center>Global Time  &lt;=  Local Time &lt;= (Global Time + period)</center></p>
 
-The exact way that local time increments during an iteration is described in
-detail in the DTReceiver documentation.
+    <p>The exact way that local time increments during an iteration is described in
+      detail in the DTReceiver documentation.</p>
 
-<p>The DT domain is an experimental domain, the code has not
-been reviewed, and the interfaces are likely to change.
+    <p>The DT domain is an experimental domain, the code has not
+      been reviewed, and the interfaces are likely to change.</p>
 
-<ul>
-<li>Edward A. Lee, Stephen Neuendorffer and Gang Zhou Dataflow, "<a href="http://ptolemy.eecs.berkeley.edu/books/Systems/chapters/Dataflow.pdf" target="_top">Dataflow</a>," 
-a chapter from<br/>
-	  Claudius Ptolemaeus, Editor, "<a href="http://ptolemy.eecs.berkeley.edu/books/Systems/index.htm#in_browser" target="_top">System Design, Modeling, and Simulation Using Ptolemy II</a>", Ptolemy.org, 2014. (included in the release as <a href="../../../../doc/books/systems/PtolemyII_DigitalV1_02.pdf#in_browser" target="_top"><code>$PTII/doc/books/systems/PtolemyII_DigitalV1_02.pdf</code></a>)
-  <br/>The models provided in this chapter are also <a href="http://ptolemy.eecs.berkeley.edu/books/Systems/models/doc/books/systems/dataflow/index.html#in_browser" target="_top">available online<a>.</li> 
+    <h2>References</h2>
+    <ol>
+      <li>Edward A. Lee, Stephen Neuendorffer and Gang Zhou Dataflow, "<a href="http://ptolemy.eecs.berkeley.edu/books/Systems/chapters/Dataflow.pdf" target="_top">Dataflow</a>," 
+	a chapter from<br/>
+	Claudius Ptolemaeus, Editor, "<a href="http://ptolemy.eecs.berkeley.edu/books/Systems/index.htm#in_browser" target="_top">System Design, Modeling, and Simulation Using Ptolemy II</a>", Ptolemy.org, 2014. (included in the release as <a href="../../../../doc/books/systems/PtolemyII_DigitalV1_02.pdf#in_browser" target="_top"><code>$PTII/doc/books/systems/PtolemyII_DigitalV1_02.pdf</code></a>)
+	<br/>The models provided in this chapter are also <a href="http://ptolemy.eecs.berkeley.edu/books/Systems/models/doc/books/systems/dataflow/index.html#in_browser" target="_top">available online</a>.</li> 
 
-<li>Chamberlain Fong, "<a href="http://ptolemy.eecs.berkeley.edu/publications/papers/00/dt/#in_browser" target="_top">Discrete-Time Dataflow Models for Visual Simulation in Ptolemy II</a>," Master's Report, Memorandum UCB/ERL M01/9, Electronics Research Laboratory, University of California, Berkeley, January 2001. </li>
+      <li>Chamberlain Fong, "<a href="http://ptolemy.eecs.berkeley.edu/publications/papers/00/dt/#in_browser" target="_top">Discrete-Time Dataflow Models for Visual Simulation in Ptolemy II</a>," Master's Report, Memorandum UCB/ERL M01/9, Electronics Research Laboratory, University of California, Berkeley, January 2001. </li>
 
-</ul>
-</body>
+    </ol>
+  </body>
 </html>
