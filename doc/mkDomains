@@ -37,13 +37,25 @@ do
     # Get the upper case name of the domain
     upcase=`echo $domain | gawk '
 length($0) <= 4 {print toupper($0)} 
-length($0) > 4 {print toupper(substr($0,1,1} substr($0,2)}'`
+length($0) > 4 {print toupper(substr($0,1,1)) substr($0,2) }'`
 
-    description=`grep '<h1>' $PTII/ptolemy/domains/$domain/doc/main.htm | sed -e 's@<h1>@@' -e's@</h1>@@'`
+    description=`grep '<h1>' $PTII/ptolemy/domains/$domain/doc/main.htm | \
+       sed -e 's@<h1>@@' \
+           -e 's@</h1>@@' \
+           -e 's@ Domain@@' \
+           -e "s@ ($upcase)@@" \
+           -e "s@ (PTERA)@@" \
+           -e 's@^ *@@' \
+           -e 's@ *$@@' `
 
     # Create the table of contents
-    echo "<li> <a href=\"#$domain\">$upcase ($description)</a>" >> $top
-
+    if [ "$upcase" != "$description" ]; then
+	echo "<li> <a href=\"#$domain\">$upcase ($description)</a>" >> $top
+    else
+	echo "<li> <a href=\"#$domain\">$upcase</a>" >> $top
+    fi	
+    echo " " >> $body
+    echo " " >> $body
 
     echo "<h2><a name=\"$domain\">$upcase ($description)</h2>" >> $body
     awk '{if ($0 ~ /<h1>/) {
