@@ -137,6 +137,10 @@ public class ExportModelJUnitTest {
 
         ExportModel exportModel = new ExportModel();
         try {
+            // Set ptolemy.ptII.batchMode so that MessageHandler does
+            // not hang on dialogs.
+            System.setProperty("ptolemy.ptII.batchMode", "true");
+
             long startTime = new Date().getTime();
             exportModel.exportModel(false /* copyJavaScriptFiles */,
                     true /* force */, "htm", fullModelPath, run,
