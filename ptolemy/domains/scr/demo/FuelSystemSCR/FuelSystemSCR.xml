@@ -4,6 +4,7 @@
 <entity name="FuelSystemSCR" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="10.0.devel">
     </property>
+    <property name="_jnlpClassesToJars" class="ptolemy.data.expr.Parameter" value="{{&quot;ptolemy.demo.FuelSystem.ModalTank&quot;,&quot;ptolemy/demo/demo.jar&quot;}}">
     <property name="Continuous Director" class="ptolemy.domains.continuous.kernel.ContinuousDirector">
         <property name="stopTime" class="ptolemy.data.expr.Parameter" value="10.0">
         </property>
