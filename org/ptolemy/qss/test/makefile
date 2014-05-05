@@ -68,7 +68,6 @@ EXTRA_SRCS =	$(TCL_SRCS) $(JSRCS) \
 MISC_FILES =	alljtests.tcl \
 	auto \
 	junit \
-	TestRunner.xml 
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES

@@ -56,7 +56,6 @@ OTHER_FILES_TO_BE_JARED = \
 
 EXTRA_SRCS = \
 	$(OTHER_FILES_TO_BE_JARED) \
-	Placard.pdf \
 	DOPCenter.htm \
 
 # Sources that may or may not be present, but if they are present, we don't
@@ -67,6 +66,7 @@ MISC_FILES = $(DIRS)
 # make realclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
 	doc \
+	Placard.pdf \
 	DOPCenter.png
 
 JCLASS = $(JSRCS:%.java=%.class)
