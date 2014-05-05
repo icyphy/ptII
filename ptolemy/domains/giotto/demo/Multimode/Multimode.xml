@@ -2,9 +2,9 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="Multimode" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.0.beta">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="10.0.devel">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[512, 389]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[512, 524]">
     </property>
     <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[104, 127]">
     </property>
@@ -119,11 +119,11 @@ Iterations 20</text></svg></configure>
         <property name="_location" class="ptolemy.kernel.util.Location" value="150.0, 30.0">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={71, 76, 725, 499}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={71, 76, 746, 634}, maximized=false}">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{256.0, 194.5}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{256.0, 262.0}">
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model shows how to combine a modal model&#10;with a giotto model to achieve mode changes.&#10;&#10;The modal model monitors the output value of&#10;the Ramp actor and adjusts its own output value.&#10;&#10;The frequency parameters of actors indicate how&#10;many times will these actors be invoked during&#10;one iteration of this model.&#10;">
@@ -152,24 +152,36 @@ Iterations 20</text></svg></configure>
         </property>
     </property>
     <entity name="Ramp" class="ptolemy.actor.lib.Ramp">
-        <property name="firingCountLimit" class="ptolemy.data.expr.Parameter" value="0">
-        </property>
-        <property name="init" class="ptolemy.data.expr.Parameter" value="0">
+        <property name="init" class="ptolemy.actor.parameters.PortParameter" value="0">
         </property>
         <property name="step" class="ptolemy.actor.parameters.PortParameter" value="1">
+        </property>
+        <property name="firingCountLimit" class="ptolemy.data.expr.Parameter" value="0">
         </property>
         <doc>Create a sequence of tokens with increasing value</doc>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[90.0, 155.0]">
         </property>
         <property name="frequency" class="ptolemy.data.expr.Parameter" value="2">
         </property>
+        <property name="DecoratorAttributesFor_Giotto Director" class="ptolemy.domains.giotto.kernel.GiottoAttributes">
+            <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="Giotto Director">
+            </property>
+            <property name="frequency" class="ptolemy.data.expr.Parameter" value="1">
+            </property>
+        </property>
     </entity>
     <entity name="modal model" class="ptolemy.domains.modal.modal.ModalModel">
-        <property name="_tableauFactory" class="ptolemy.vergil.fsm.modal.ModalTableauFactory">
+        <property name="_tableauFactory" class="ptolemy.vergil.modal.modal.ModalTableauFactory">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[245.0, 155.0]">
         </property>
         <property name="frequency" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+        <property name="DecoratorAttributesFor_Giotto Director" class="ptolemy.domains.giotto.kernel.GiottoAttributes">
+            <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="Giotto Director">
+            </property>
+            <property name="frequency" class="ptolemy.data.expr.Parameter" value="1">
+            </property>
         </property>
         <port name="in" class="ptolemy.domains.modal.modal.ModalPort">
             <property name="input"/>
@@ -187,7 +199,7 @@ Iterations 20</text></svg></configure>
             </property>
             <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[533, 288]">
             </property>
-            <property name="p" class="ptolemy.data.expr.Parameter" value="4">
+            <property name="p" class="ptolemy.data.expr.Parameter" value="3">
             </property>
             <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={84, 132, 856, 504}, maximized=false}">
             </property>
@@ -219,7 +231,7 @@ Iterations 20</text></svg></configure>
                 </property>
                 <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
                 </property>
-                <property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory">
+                <property name="_controllerFactory" class="ptolemy.vergil.modal.modal.HierarchicalStateControllerFactory">
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[217.1067588888087, 284.2092040994492]">
                 </property>
@@ -229,7 +241,7 @@ Iterations 20</text></svg></configure>
                 </property>
                 <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
                 </property>
-                <property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory">
+                <property name="_controllerFactory" class="ptolemy.vergil.modal.modal.HierarchicalStateControllerFactory">
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[392.10675888880877, 289.2092040994492]">
                 </property>
@@ -239,7 +251,7 @@ Iterations 20</text></svg></configure>
                 </property>
                 <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
                 </property>
-                <property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory">
+                <property name="_controllerFactory" class="ptolemy.vergil.modal.modal.HierarchicalStateControllerFactory">
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[285.0, 165.0]">
                 </property>
@@ -253,9 +265,9 @@ Iterations 20</text></svg></configure>
                 </property>
                 <property name="gamma" class="ptolemy.data.expr.Parameter" value="0.08180554361026826">
                 </property>
-                <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
-                </property>
                 <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="history" class="ptolemy.data.expr.Parameter" value="true">
                 </property>
             </relation>
             <relation name="relation3" class="ptolemy.domains.modal.kernel.Transition">
@@ -267,9 +279,9 @@ Iterations 20</text></svg></configure>
                 </property>
                 <property name="gamma" class="ptolemy.data.expr.Parameter" value="-3.054902475071594">
                 </property>
-                <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
-                </property>
                 <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="history" class="ptolemy.data.expr.Parameter" value="true">
                 </property>
             </relation>
             <relation name="relation8" class="ptolemy.domains.modal.kernel.Transition">
@@ -281,9 +293,9 @@ Iterations 20</text></svg></configure>
                 </property>
                 <property name="gamma" class="ptolemy.data.expr.Parameter" value="-1.6390206107076253">
                 </property>
-                <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
-                </property>
                 <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="history" class="ptolemy.data.expr.Parameter" value="true">
                 </property>
             </relation>
             <relation name="relation2" class="ptolemy.domains.modal.kernel.Transition">
@@ -295,9 +307,9 @@ Iterations 20</text></svg></configure>
                 </property>
                 <property name="gamma" class="ptolemy.data.expr.Parameter" value="1.692492216401759">
                 </property>
-                <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
-                </property>
                 <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="history" class="ptolemy.data.expr.Parameter" value="true">
                 </property>
             </relation>
             <relation name="relation4" class="ptolemy.domains.modal.kernel.Transition">
@@ -309,9 +321,9 @@ Iterations 20</text></svg></configure>
                 </property>
                 <property name="gamma" class="ptolemy.data.expr.Parameter" value="1.4542860252886782">
                 </property>
-                <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
-                </property>
                 <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
             </relation>
             <link port="increasing.incomingPort" relation="relation3"/>
@@ -383,11 +395,11 @@ Iterations 20</text></svg></configure>
                 </property>
             </entity>
             <entity name="Ramp" class="ptolemy.actor.lib.Ramp">
-                <property name="firingCountLimit" class="ptolemy.data.expr.Parameter" value="0">
-                </property>
-                <property name="init" class="ptolemy.data.expr.Parameter" value="0">
+                <property name="init" class="ptolemy.actor.parameters.PortParameter" value="0">
                 </property>
                 <property name="step" class="ptolemy.actor.parameters.PortParameter" value="1">
+                </property>
+                <property name="firingCountLimit" class="ptolemy.data.expr.Parameter" value="0">
                 </property>
                 <doc>Create a sequence of tokens with increasing value</doc>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="120.0, 280.0">
@@ -515,11 +527,11 @@ Iterations 20</text></svg></configure>
                 </configure>
             </entity>
             <entity name="Ramp" class="ptolemy.actor.lib.Ramp">
-                <property name="firingCountLimit" class="ptolemy.data.expr.Parameter" value="0">
-                </property>
-                <property name="init" class="ptolemy.data.expr.Parameter" value="0">
+                <property name="init" class="ptolemy.actor.parameters.PortParameter" value="0">
                 </property>
                 <property name="step" class="ptolemy.actor.parameters.PortParameter" value="2">
+                </property>
+                <property name="firingCountLimit" class="ptolemy.data.expr.Parameter" value="0">
                 </property>
                 <doc>Create a sequence of tokens with increasing value</doc>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="100.0, 285.0">
@@ -564,6 +576,12 @@ Iterations 20</text></svg></configure>
         <property name="startingDataset" class="ptolemy.data.expr.Parameter" value="0">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[410.0, 155.0]">
+        </property>
+        <property name="DecoratorAttributesFor_Giotto Director" class="ptolemy.domains.giotto.kernel.GiottoAttributes">
+            <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="Giotto Director">
+            </property>
+            <property name="frequency" class="ptolemy.data.expr.Parameter" value="1">
+            </property>
         </property>
         <configure>
 <?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
