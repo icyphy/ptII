@@ -188,7 +188,7 @@ jnlpSimpleDemo:
 # Used to update demos with jnlp files, see ./updateDemos
 jnlpUpdateDemo:
 	@echo "generate a jnlp for '$(MODELPATH)'"
-	$(PTII)/bin/copernicus \
+	JAVAFLAGS=-Dptolemy.ptII.isRunningNightlyBuild=yes $(PTII)/bin/copernicus \
 		-verbose \
 		-codeGenerator   "applet" \
 		-ptIIUserDirectory  "`echo "$(PTII)" | sed 's@\\\@/@g'`" \

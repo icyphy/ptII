@@ -794,7 +794,6 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
                     System.out.println("allAttributeJars2: " + object);
                 }
                 results.putAll(_allAttributeJars((CompositeEntity) object));
-
             }
             //             attributes = composite.attributeList().iterator();
             //             while (attributes.hasNext()) {
@@ -896,7 +895,7 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
                     System.out.println("_allAtomicEntityJars SCR: " + className
                             + " " + "ptolemy/domains/scr/scr.jar");
                 }
-                results.put(className, "ptolemy/domains/src/src.jar");
+                results.put(className, "ptolemy/domains/scr/scr.jar");
             } else if (className.contains("ptolemy.vergil.basic.export.html")) {
                 if (_debug) {
                     System.out.println("_allAtomicEntityJars export.html: "
@@ -1016,6 +1015,10 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
 					      .getDirector().getClass().getPackage()
 					      .getName()));
 
+		}
+		if (componentEntity.getClass().getName().contains("ptolemy.domains.pthales.lib.PthalesCompositeActor")) {
+		    results.put("ptolemy.domains.pthales.lib.PthalesCompositeActor",
+				"ptolemy/domains/pthales/pthales.jar");
 		}
             }
         }
@@ -1779,6 +1782,12 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
                 .contains("ptolemy/verification/verification.jar")) {
             auxiliaryClassMap.put("verification/kernel/REDUtility requires DE",
                     "ptolemy/domains/de/de.jar");
+        }
+
+        if (jarFilesThatHaveBeenRequired
+                .contains("ptolemy/domains/scr/scr.jar")) {
+            auxiliaryClassMap.put("scr depends on vergil",
+				  "ptolemy/vergil/scr/scr.jar");
         }
 
         if (jarFilesThatHaveBeenRequired

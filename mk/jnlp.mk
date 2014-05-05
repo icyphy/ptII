@@ -552,8 +552,10 @@ FULL_ONLY_JNLP_JARS = \
 	ptolemy/domains/gr/demo/demo.jar \
 	ptolemy/domains/gr/doc/doc.jar \
 	ptolemy/domains/gr/lib/quicktime/quicktime.jar \
+	ptolemy/domains/petrinet/demo/PetriNetDiningPhilosophers/PetriNetDiningPhilosophers.jar \
 	ptolemy/domains/psdf/psdf.jar \
 	ptolemy/domains/psdf/demo/demo.jar \
+	ptolemy/domains/psdf/demo/BlindCommunication/BlindCommunication.jar \
 	ptolemy/domains/psdf/doc/doc.jar \
 	lib/mapss.jar \
 	ptolemy/domains/ptides/ptides.jar \

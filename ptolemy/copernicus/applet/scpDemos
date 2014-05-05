@@ -10,10 +10,13 @@ demos=`cd $PTII/ptolemy/configs/doc; make --no-print-directory listDemos |  egre
 #demos=../../../ptolemy/domains/ddf/demo/IfThenElse/IfThenElseFSM.xml
 #demos=../../../ptolemy/domains/continuous/demo/TwoMachineInfiniteBusControl/TwoMachineInfiniteBusControl.xml
 #demos=../../../ptolemy/domains/continuous/demo/SinuBouncingBall/SinuBouncingBall.xml
-demos=../../../ptolemy/domains/continuous/demo/NewtonsCradle/NewtonsCradleComplicated
+#demos=../../../ptolemy/domains/continuous/demo/NewtonsCradle/NewtonsCradleComplicated
 #demos=../../../ptolemy/actor/gt/demo/BouncingBallX2/BouncingBallX2.xml 
 #demos=../../../lbnl/demo/SystemCommand/SystemCommand.xml
-
+#demos=../../../ptolemy/domains/scr/demo/TrafficLight/TrafficLight.xml
+#demos=../../../ptolemy/domains/pthales/demo/Illustrative/Illustrative.xml
+#demos=../../../ptolemy/domains/petrinet/demo/PetriNetDiningPhilosophers/PetriNetDiningPhilosophers.xml
+#demos=../../../ptolemy/domains/psdf/demo/BlindCommunication/BlindCommunication.xml
 for demo in $demos
 do
     echo $demo

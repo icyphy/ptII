@@ -139,10 +139,12 @@
     <include name="ptolemy/domains/modal/modal/modal.jar" />
     <include name="ptolemy/domains/openmodelica/openmodelica.jar" />
     <include name="ptolemy/domains/petrinet/petrinet.jar" />
+    <include name="ptolemy/domains/petrinet/demo/PetriNetDiningPhilosophers/PetriNetDiningPhilosophers.jar" />
     <include name="ptolemy/domains/pn/demo/demo.jar" />
     <include name="ptolemy/domains/pn/doc/doc.jar" />
     <include name="ptolemy/domains/pn/pn.jar" />
     <include name="ptolemy/domains/psdf/demo/demo.jar" />
+    <include name="ptolemy/domains/psdf/demo/BlindCommunication/BlindCommunication.jar" />
     <include name="ptolemy/domains/psdf/doc/doc.jar" />
     <include name="ptolemy/domains/psdf/psdf.jar" />
     <include name="ptolemy/domains/ptera/demo/demo.jar" />
@@ -2227,6 +2229,18 @@
       </fileset>
     </jar>
 
+    <!-- ptolemy/domains/psdf/demo/BlindCommunication/BlindCommunication.jar -->
+    <jar defaultexcludes="yes"
+	 destfile="${basedir}/ptolemy/domains/psdf/demo/BlindCommunication/BlindCommunication.jar"
+	 >
+      <fileset dir="${basedir}">
+	<include name="ptolemy/domains/psdf/demo/BlindCommunication/*.wav"/>
+      </fileset>
+      <fileset dir="${basedir}">
+	<include name="ptolemy/domains/psdf/demo/BlindCommunication/*.xml"/>
+      </fileset>
+    </jar>
+
     <!-- ptolemy/domains/psdf/doc/doc.jar -->
     <jar defaultexcludes="yes"
 	 destfile="${basedir}/ptolemy/domains/psdf/doc/doc.jar"
@@ -4136,6 +4150,17 @@
 	<include name="ptolemy/domains/petrinet/lib/gui/*.class"/>
       </fileset>
     </jar>
+    
+    <!-- ptolemy/domains/petrinet/demo/PetriNetDiningPhilosophers/PetriNetDiningPhilosophers.jar -->
+    <jar defaultexcludes="yes"
+	 destfile="${basedir}/ptolemy/domains/petrinet/demo/PetriNetDiningPhilosophers/PetriNetDiningPhilosophers.jar"
+	 >
+      <fileset dir="${basedir}">
+	<include name="ptolemy/domains/petrinet/demo/PetriNetDiningPhilosophers/*.jpg"/>
+	<include name="ptolemy/domains/petrinet/demo/PetriNetDiningPhilosophers/*.xml"/>
+      </fileset>
+    </jar>
+
 
     <!-- ptolemy/domains/scr/scr.jar -->
     <jar defaultexcludes="yes"
