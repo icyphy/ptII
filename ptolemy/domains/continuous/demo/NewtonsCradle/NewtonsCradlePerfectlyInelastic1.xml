@@ -1690,10 +1690,6 @@ with the angle at which they hang given by inputs.</text></svg></configure>
     </relation>
     <relation name="relation9" class="ptolemy.actor.TypedIORelation">
     </relation>
-    <relation name="relation10" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" value="{385.0, 375.0}">
-        </vertex>
-    </relation>
     <link port="ModalModel.x_1" relation="relation7"/>
     <link port="ModalModel.x_2" relation="relation8"/>
     <link port="ModalModel.theta_1_dot" relation="relation3"/>
