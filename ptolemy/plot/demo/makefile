@@ -74,7 +74,6 @@ EXTRA_SRCS = $(JSRCS) $(OTHER_FILES_TO_BE_JARED) \
 	Live.htm \
 	LogAxes.htm \
 	Marks.htm \
-	MarksSimple.htm \
 	TwoPlotExample.java \
 	Sinusoids.htm \
 	index.htm \

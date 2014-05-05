@@ -8,8 +8,23 @@
 <body>
 <h1><a name="ptplot changes">Ptplot Changes</a></h1>
 
-<H2>The changes between ptplot5.7 and ptplot5.8</H2>
-<menu>
+<h2>The changes between ptplot5.9 and ptplot5.10</h2>
+
+<ul>
+<li>Anar Huseynov, Justin Killian, Ishwinder Singh: The PlotBoxInterface and PlotInterface interfaces were added so that we can reparent plots as part of 
+<a href="https://chess.eecs.berkeley.edu/handsimdroid/#in_browser" target="_top">HandSimDroid</a></li>
+<li>Christopher Brooks: Various FindBugs fixes.</li>
+<li>Christopher Brooks: MarksSimple.htm was removed because the html for all the applets is now simple.</li>
+<li>Christopher Brooks: The troubleshooting guide was updated to with regard to recent restrictions with Applets.</li>
+</ul>
+
+<h2>The changes between ptplot5.8 and ptplot5.9</h2>
+<ul>
+<li>There was no ptplot5.9</li>
+</ul>
+
+<h2>The changes between ptplot5.7 and ptplot5.8</h2>
+<ul>
 <li> Tom Peachey, Christopher Brooks: Added support for line styles, captions and big dots.
 <li> Peter Reutemann: Additions to Query class including some new classes in ptolemy.gui.
 <li> Bert Rodiers: performance improvements for plotting plot with many points.
@@ -18,23 +33,23 @@
 <li> Christopher Brooks: support for -printPDF, which will print a plot to a PDF file.
 <li> Bert Rodiers: If no marking style has been selected unconnected points are now always marked with a dot, unless the point is already marked. The first and last point of a line segment is also marked with a dot if the point is not already marked.
 <li> Bert Rodiers: Fixed bugs related to avoiding plotting or erasing the same point multiple times.
-</menu>
+</ul>
 
-<H2>The changes between ptplot5.6 and ptplot5.7</H2>
-<menu>
+<h2>The changes between ptplot5.6 and ptplot5.7</h2>
+<ul>
 <li> Christopher Brooks: Clean up warnings reported
 by FindBugs.
 <li> Christopher Brooks, Haiyang Zheng: Fix problem
 surrounding plotting only one stem.
-</menu>
+</ul>
 
-<H2>The changes between ptplot5.5 and ptplot5.6</H2>
-<menu>
+<h2>The changes between ptplot5.5 and ptplot5.6</h2>
+<ul>
 <li>Christopher Brooks: pxgraph now takes a "-" argument, which
 indicates that data should be read from standard input.
-</menu>
-<H2>The changes between ptplot5.4 and ptplot5.5</H2>
-<menu>
+</ul>
+<h2>The changes between ptplot5.4 and ptplot5.5</h2>
+<ul>
 <li>Christopher Brooks: Run most of main() methods
 inside the Swing Event thread.
 <li>Christopher Brooks: PlotApplet.init(): Run most of
@@ -47,18 +62,18 @@ it causes EPS syntax errors.
 point in a dataset.
 <li>Andreas Traupe: Added new method PlotBox.renameLegend().
 Plot._clear should clear() the Vector not create a new one.
-</menu>
+</ul>
 
-<H2>The changes between ptplot5.3 and ptplot5.4</H2>
-<menu>
+<h2>The changes between ptplot5.3 and ptplot5.4</h2>
+<ul>
 <li>Christopher Hylands Brooks: PlotFrame: 
 handle errors when opening and closing streams
 <li> Steven Nuendorffer: Plot: Avoid drawing points and lines that are not
 visible.
-</menu>
+</ul>
 
-<H2>The changes between ptplot5.2 and ptplot5.3</H2>
-<menu>
+<h2>The changes between ptplot5.2 and ptplot5.3</h2>
+<ul>
 <li> Roger Robins: PlotApplet: Work around problem in Java 1.3.1_08
 where if we create 6 instances of a Plot applet then navigate forward
 then back - IE and Navigator hang.
@@ -87,10 +102,10 @@ consisting only of data, then Reset Axes works properly.
 <li> Peter Carr: EditablePlot.java: getData() and _setData()
 incorrectly were using _dataset instead of dataset.
 
-</menu>
+</ul>
 
-<H2>The changes between ptplot5.1p3 and ptplot5.2</H2>
-<menu>
+<h2>The changes between ptplot5.1p3 and ptplot5.2</h2>
+<ul>
 <li> Edward A. Lee, Alberto Gobbi:  Renamed _deferIfNecessary()
 to deferIfNecessary() and made it public.  Added note about 
 using deferIfNecessary() to the Plot class comment that
@@ -106,16 +121,16 @@ about how to use Log axes.
 <li> Alberto Gobbi, Christopher Hylands:
 Fix for &lt;dataset name= ... connected=...&gt; to PlotMLParser.java
 
-</menu>
+</ul>
 
-<H2>The changes between ptplot5.1p2 and ptplot5.1p3</H2>
-<menu>
+<h2>The changes between ptplot5.1p2 and ptplot5.1p3</h2>
+<ul>
 <li> Ross Beyer: Problems with Solaris installation.
 <li> Laurent Etur: Scale the printout to fit the page
-</menu>
+</ul>
 
-<H2>The changes between ptplot5.1p1 and ptplot5.1p2</H2>
-<menu>
+<h2>The changes between ptplot5.1p1 and ptplot5.1p2</h2>
+<ul>
 
 <li> Rob Kroeger: 4 new  PlotBox.exportImage() methods
 that create a BufferedImage to display the plot in.  This
@@ -133,26 +148,26 @@ should be -Double.MAX_VALUE
 <li> Paul H. Buckle:
 In ptolemy.plot.PlotBox.clear(boolean) should clear flags for
 _originalYRangeGiven and _originalYRangeGiven
-</menu>
+</ul>
 
-<H2>The changes between ptplot5.1 and ptplot5.1p1</H2>
-<menu>
+<h2>The changes between ptplot5.1 and ptplot5.1p1</h2>
+<ul>
 <li> PlotBox.write(): Changed plotml.dtd to PlotML_1.dtd
 <li> bin/ptinvoke.in was not shipped in 5.1
 <li> Updated plot.pdf with minor changes
-</menu>
+</ul>
 
-<H2>The changes between ptplot4.1 and ptplot5.1</H2>
+<h2>The changes between ptplot4.1 and ptplot5.1</h2>
 Note that Ptplot 4.1 was not released separately from Ptolemy II.
 Ptplot 4.1 can be found in Ptolemy II 0.4beta
-<menu>
+<ul>
 <li> Various classes were modified to make them thread safe.
 The fill button was causing deadlock.
 <li> X persistence is now supported.
-</menu>
+</ul>
 
-<H2>The changes between ptplot3.1 and ptplot4.1</H2>
-<menu>
+<h2>The changes between ptplot3.1 and ptplot4.1</h2>
+<ul>
 <li> Makefile modified so that the standalone build works better
 
 <li> Changes from Ge Yun &lt;geyu@engr.orst.edu&gt; to make serialization
@@ -164,10 +179,10 @@ plugin.
 
 <li> Removed Ptplot.htm, Javascript calling Java does not work under
 Netscape4.6 because of plugin issues.
-</menu>
+</ul>
 
-<H2>The changes between ptplot2.2 and ptplot3.1</H2>
-<menu>
+<h2>The changes between ptplot2.2 and ptplot3.1</h2>
+<ul>
 
 <li> Editable plots (invoke ptplot, and try Edit:Edit Dataset... use the
   right mouse button to edit the dataset).
@@ -180,10 +195,10 @@ Netscape4.6 because of plugin issues.
 
 <li> Added Histogram classes in <CODE>plotml</CODE> package
 and <CODE>histogram</CODE> and <CODE>histogram.bat</CODE> scripts
-</menu>
+</ul>
 
-<H2>The changes between ptplot2.1 and ptplot2.2</H2>
-<menu>
+<h2>The changes between ptplot2.1 and ptplot2.2</h2>
+<ul>
 <li> Added <a href="../EPSGraphics.java"><CODE>EPSGraphics.java</CODE></a>
 which will generate Encapsulated PostScript (EPS) on stdout.
 See the class comment for a description of where stdout goes
@@ -220,10 +235,10 @@ on the various browsers.
         in <CODE>reusedatasets: on</CODE>
   </ul>
 
-</menu>
+</ul>
 
-<H2>The changes between ptplot2.0 and ptplot2.1</H2>
-<menu>
+<h2>The changes between ptplot2.0 and ptplot2.1</h2>
+<ul>
 <li> Added <a href="../Histogram.java"><CODE>Histogram.java</CODE></a>,
 <a href="../HistogramApplet.java"><CODE>HistogramApplet.java</CODE></a>,
 and
@@ -246,30 +261,30 @@ web page
 <li> Ptplot2.1 was released as part of
 <a href="http://ptolemy.eecs.berkeley.edu/ptolemyII">Ptolemy II 0.2</a>
 
-</menu>
+</ul>
 
-<H2>The changes between ptplot2.0a2 and ptplot2.0</H2>
-<menu>
+<h2>The changes between ptplot2.0a2 and ptplot2.0</h2>
+<ul>
 <li> Added <a href="thirdparty.htm">Third Party uses of Ptplot</a>
 web page
-</menu>
+</ul>
 
-<H2>The changes between ptplot2.0a2 and ptplot2.0</H2>
-<menu>
+<h2>The changes between ptplot2.0a2 and ptplot2.0</h2>
+<ul>
 <li> configure now chooses between <CODE>-depend</CODE> and <CODE>-Xdepend</CODE>.
-</menu>
+</ul>
 
 
-<H2>The changes between ptplot2.0a1 and ptplot2.0a2</H2>
-<menu>
+<h2>The changes between ptplot2.0a1 and ptplot2.0a2</h2>
+<ul>
 <li> Changed image on index.htm
 <li> Modified help and about content
 <li> Modified Message constructors
 <li> No longer ship LogicAnalyzer, it is not ready
-</menu>
+</ul>
 
-<H2>The changes between ptplot1.3p1 and ptplot2.0a1</H2>
-<menu>
+<h2>The changes between ptplot1.3p1 and ptplot2.0a1</h2>
+<ul>
 <li> The major change is that the classes were moved from
 the <CODE>ptplot</CODE> package to the <CODE>ptolemy.plot</CODE> package.
 
@@ -291,7 +306,7 @@ If <CODE>pxgraph</CODE> is a link to <CODE>ptplot</CODE>, then when
 
 
 <h3>PlotBox</h3>
-<menu>
+<ul>
 
 <li> Changed zoom out so it is not limited to the fill region.
 You can now zoom out arbitrarily far.
@@ -348,13 +363,13 @@ legend entry.
 
 <li> Used javadoc formatting throughout.
 
-</menu>
+</ul>
 
 <h3>Plot</h3>
 
 Same changes as above, plus...
 
-<menu>
+<ul>
 
 <li> Fixed bug where auto-ranging depended on all data seen historically.
      Now it is recalculated if boundary points are erased.
@@ -366,10 +381,10 @@ Same changes as above, plus...
 <li> Deprecated:
    <br>setNumSets() (no longer needed -- sets are added as they are mentioned).
    <br>getMaxDataSets() (irrelevant now)
-</menu>
+</ul>
 
 <h3>PlotApplet</h3>
-<menu>
+<ul>
 <li> No longer implements runnable (the run method just called repaint(),
 which seems pointless).  No longer creates a thread.
 
@@ -383,7 +398,7 @@ which is deprecated.
 This is the only change that is not backwards compatible.
 It means that applets derived from PlotApplet need to replace the
 call to init().
-</menu>
+</ul>
 
 <h3>PlotLive</h3>
  <p>I was unable to keep this class completely backwards compatible.
@@ -418,11 +433,11 @@ package.
 <dd> a simple example application with two side by side plots.
 
 </dl>
-</menu>
+</ul>
 
 
-<H2>The changes between ptplot1.3 and ptplot1.3p1</H2>
-<menu>
+<h2>The changes between ptplot1.3 and ptplot1.3p1</h2>
+<ul>
 
 <li> The plotting region is now always white.  Formerly, the <CODE>-bg</CODE>
 option would change the color of the plotting region and the region
@@ -446,10 +461,10 @@ programs can call it.  Reported by Stephan Puchegger &lt;a9127383@unet.univie.ac
 <li> If <CODE>JAVAHOME</CODE> is not set, and <CODE>pxgraph</CODE> cannot
 find a JDK, then it looks in <CODE>/usr/eesww/lang/jdk1.1latest</CODE>.
 This is for use in the EECS Department here at UC Berkeley.
-</menu>
+</ul>
 
-<H2>The changes between ptplot1.2p1 and ptplot1.3</H2>
-<menu>
+<h2>The changes between ptplot1.2p1 and ptplot1.3</h2>
+<ul>
 <li> <CODE>pxgraph =500x500-0-0</CODE> was throwing
 a numeric exception.
 <li> Added <CODE>ReuseDataSets: on</CODE> file directive, which
@@ -526,11 +541,11 @@ applet only usage.
 <CODE>transient</CODE> so that PlotBox can be serialized.
  <br> This bug was reported by
 Patrick Barrett &lt;barrettp@clipper.mdcorp.ksc.nasa.gov&gt;.
-</menu>
+</ul>
 
-<H2>The changes between ptplot1.2 and ptplot1.2p1</H2>
+<h2>The changes between ptplot1.2 and ptplot1.2p1</h2>
 Ptplot1.2p1 is a bug fix release.
-<menu>
+<ul>
 <li> Ptplot1.1 was able able to parse scientific notation numbers such
 as <code>1.0E-12</code>, but Ptplot1.2 could not.
 The change that caused the bug was that in Ptplot1.2, we used
@@ -541,10 +556,10 @@ scientific notation.  For more information, see
 The fix was to adapt the Ptplot1.1 number parsing code to handle error bars.
  <br>
 This bug was reported by Marion Schroeder &lt;schroeder@hmi.de&gt;.
-</menu>
+</ul>
 
-<H2>The changes between ptplot1.1 and ptplot1.2</H2>
-<menu>
+<h2>The changes between ptplot1.1 and ptplot1.2</h2>
+<ul>
 <li> Added support for JAR files.
 
 <li> Added <A href="troubleshooting.htm">Troubleshooting Ptplot</A>
@@ -593,10 +608,10 @@ See the <A href="../demo/LogAxes.htm">Log Axes</A> demo for more information.
 <li> Fixed problem with recycling colors and marks.
 The bug was reported by Lutz Harnisch, &lt;Lutz.Harnisch@hmrag.com&gt;
 
-</menu>
+</ul>
 
-<H2>The changes between ptplot1.0 and ptplot1.1</H2>
-<menu>
+<h2>The changes between ptplot1.0 and ptplot1.1</h2>
+<ul>
 <li> In 1.1, PlotBox extends Panel.  In 1.0 PlotBox extended Applet.
 This makes it much easier to use Plot as an component in either an
 application or an applet that contains other components.
@@ -618,7 +633,7 @@ instead of just running the demos.
 </I>
 <li> Edward Lee fixed a bar graph label bug reported by Marc Ellis.
 <li> A few other minor bugs were fixed.
-</menu>
+</ul>
 
 <p><font size="2" color="#cc0000">Last Updated: $Date$</font>
 </body>

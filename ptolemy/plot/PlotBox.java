@@ -2134,7 +2134,7 @@ out.println("\\begin{document}");
     // If you change PTPLOT_RELEASE, modify the version numbers in:
     // doc/main.htm, doc/changes.htm, doc/install.htm, doc/download/index.htm
     /** The version of PtPlot. */
-    public static final String PTPLOT_RELEASE = "5.8.beta";
+    public static final String PTPLOT_RELEASE = "5.10.beta";
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////

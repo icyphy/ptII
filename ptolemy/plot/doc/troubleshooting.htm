@@ -9,11 +9,43 @@
 <h1><a name="ptplot troubleshooting ">Troubleshooting Ptplot</a></h1>
 <p>
 Other sources of information:
-<MENU>
-<LI> <A HREF="ptplotfaq.htm">Ptplot Frequently Asked Questions (FAQ)</A>
-</MENU>
+<ul>
+<li> <A HREF="ptplotfaq.htm">Ptplot Frequently Asked Questions (FAQ)</a></li>
+</ul>
+
+<p>The summary is that PtPlot was written a very long time ago and
+includes Java applet demonstrations.  Today, PtPlot is used
+extensively in the Ptolemy II standalone Java application.  However,
+in general, support for Java applets has fallen by the wayside over
+the years.  In particular, unsigned applets do not run in the default
+and unsigned applets may soon not be supported at all.  The problems
+below are specific to applets.  PtPlot works well in Java stand-alone
+applications.</p>
+
 
 Below is a list of common Ptplot problems.
+
+<h2>"Application Blocked By Security Settings"</h2>
+<p>Under Firefox on the Mac, visiting an applet may bring up a dialog that says:
+<br/>Applicatiion Blocked by Security Settings
+<br/>Your security settings have blocked an untrusted application from running</p>
+
+<p>The solution is to go to the System Preferences -&gt; Other -&gt;
+Java and then under the Security tab in the Java Control Panel set the
+Security Level to Medium.</p>
+
+<p>It is probably necessary to restart the browser.</p>
+
+<h2>Applets run from the local machine might not work</h2>
+<p>If you are browsing the release and the files are installed on the
+local machine, then there is a good chance that the applets won't run
+inside a browser.</p>
+
+<p>One workaround is to run <code>appletviewer</code> on the .htm file
+that contains the applet.</p>
+
+<p>Another workaround is to view the demos on the Ptolemy II website at 
+<a href="http://ptolemy.eecs.berkeley.edu/java/ptplot/#in_browser" target="_top"><code>http://ptolemy.eecs.berkeley.edu/java/ptplot/</code></a>.</p>
 
 <h2><a name="spaces">AccessControlException caused by spaces in path name</a></h2>
 Under Java 1.4.0_01, applets that have spaces in the path name may
