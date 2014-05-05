@@ -62,6 +62,11 @@ public class MessageHandler {
 
     /** Defer to the set message handler to show the specified
      *  error message.
+     *
+     *  <p>Note that within Ptolemy, most user code should not call
+     *  this method directly.  Instead, throw an exception, which will
+     *  be caught by the system elsewhere and include information
+     *  about what object caused the error.
      *  @param info The message.
      */
     public static void error(String info) {
@@ -71,8 +76,14 @@ public class MessageHandler {
     /** Defer to the set message handler to
      *  show the specified message and throwable information.
      *  If the throwable is an instance of CancelException, then it
-     *  is not shown.
+     *  is not shown.  By default, only the message of the throwable
+     *  is thrown.  The stack trace information is only shown if the
+     *  user clicks on the "Display Stack Trace" button.
      *
+     *  <p>Note that within Ptolemy, most user code should not call
+     *  this method directly.  Instead, throw an exception, which will
+     *  be caught by the system elsewhere and include information
+     *  about what object caused the error.
      *  @param info The message.
      *  @param throwable The throwable.
      *  @see CancelException
@@ -175,10 +186,17 @@ public class MessageHandler {
         return throwableType;
     }
 
-    /** Display the warning message.  In this base class, the
-     *  the default handler merely prints the warning to stderr.
-     *  Derived classes such as ptolemy.gui.GraphicalMessageHandler
-     *  might display the message graphically.
+    /** Defer to the set message handler to
+     *  show the specified message in a modal dialog.  If the user
+     *  clicks on the "Cancel" button, then throw an exception.
+     *  This gives the user the option of not continuing the
+     *  execution, something that is particularly useful if continuing
+     *  execution will result in repeated warnings.
+     *
+     *  <p>Note that within Ptolemy, most user code should not call
+     *  this method directly.  Instead, throw an exception, which will
+     *  be caught by the system elsewhere and include information
+     *  about what object caused the warning.
      *
      *  @param info The message.
      *  @exception CancelException If the user clicks on the "Cancel" button.
@@ -187,11 +205,20 @@ public class MessageHandler {
         _handler._warning(info);
     }
 
-    /** Display the warning message and throwable information.  In
-     *  this base class, the the default handler merely prints the
-     *  warning to stderr.  Derived classes such as
-     *  ptolemy.gui.GraphicalMessageHandler might display the message
-     *  graphically.
+    /** Show the specified message and throwable information
+     *  in a modal dialog.  If the user
+     *  clicks on the "Cancel" button, then throw an exception.
+     *  This gives the user the option of not continuing the
+     *  execution, something that is particularly useful if continuing
+     *  execution will result in repeated warnings.
+     *  By default, only the message of the throwable
+     *  is thrown.  The stack trace information is only shown if the
+     *  user clicks on the "Display Stack Trace" button.
+     *
+     *  <p>Note that within Ptolemy, most user code should not call
+     *  this method directly.  Instead, throw an exception, which will
+     *  be caught by the system elsewhere and include information
+     *  about what object caused the warning.
      *
      *  @param info The message.
      *  @param throwable The throwable associated with this warning.
@@ -262,7 +289,9 @@ public class MessageHandler {
 
     /** Show the specified message and throwable information.
      *  If the throwable is an instance of CancelException, then nothing
-     *  is shown.
+     *  is not shown.  By default, only the message of the exception
+     *  is thrown.  The stack trace information is only shown if the
+     *  user clicks on the "Display Stack Trace" button.
      *
      *  @param info The message.
      *  @param throwable The throwable.
@@ -302,7 +331,13 @@ public class MessageHandler {
 
     /** Display the warning message and throwable information.  In
      *  this base class, the the default handler merely prints the
-     *  warning to stderr.
+     *  warning to stderr.  If the user clicks on the "Cancel" button,
+     *  then throw an exception.  This gives the user the option of
+     *  not continuing the execution, something that is particularly
+     *  useful if continuing execution will result in repeated
+     *  warnings.  By default, only the message of the throwable is
+     *  thrown.  The stack trace information is only shown if the user
+     *  clicks on the "Display Stack Trace" button.
      *  @param info The message.
      *  @param throwable The Throwable.
      *  @exception CancelException If the user clicks on the "Cancel" button.
