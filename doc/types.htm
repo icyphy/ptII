@@ -25,11 +25,28 @@ declare that its output type is at least the type of one of its
 parameters. The type resolution mechanism finds the least types (the
 most specific types) in the CPO that satisfy all the constraints.
 
-<ul>
-  <li><a href="../ptolemy/domains/sdf/demo/Type/Type.htm">Applet demonstrating type resolution</a></li>
-  <li> <a href="../ptolemy/data/type/demo/Router/Router.htm">Record Types applet</a><br>
-  <li> <a href="../ptolemy/data/unit/demo/StaticUnits/NonAppletStaticUnits.htm" target="main">StaticUnits</a><br>
-  <li> <a href="../ptolemy/data/unit/demo/Units/Units.htm" target="main">Units</a><br>
-</ul>
+<p>Backward type inference addresses the problem of inferring type specifications for dynamic data in Ptolemy II by leveraging its existing type inference mechanism. Ptolemy II is statically typed and therefore requires all ports to resolve to a type prior execution. When an actor mediates access to untyped data, or data is subject to unexpected changes, there is no way to reliably infer the type of its output from the actor itself. Manual annotations are tedious and make models more brittle than necessary. The basic idea is to let type constraints imposed by downstream actors determine the type of the otherwise underdetermined output ports of actors that mediate access to untyped resources. This is achieved using additional type constraints between and within actors. Backward inferred types serve the goal of achieving maximally permissive composition, as they are specific enough not to limit composability and general enough not to impose unnecessary constraints on the data. This solution has been implemented in Ptolemy II and the goal of this poster is to familiarize users with its function.</p>
+
+<p>To enable backward type inference, set the enableBackwardTypeInference parameter to true at the top level of the model.</p>
+
+<script src="demoLink.js"></script>
+<script>
+document.write("<h2>Demonstrations</h2>\n<ul>\n");
+demoLink("<li>", "ptolemy/domains/sdf/demo/Type/Type/", "Type Resolution");
+demoLink("<li>", "/ptolemy/data/type/demo/Router/Router/", "Record Types");
+demoLink("<li>", "ptolemy/data/unit/demo/StaticUnits/StaticUnits/", "StaticUnits");
+demoLink("<li>", "ptolemy/data/unit/demo/Units/Units/", "Units");
+document.write("</ul>");
+</script>
+
+<h2>References</h2>
+<ol>
+<li>Edward A. Lee, Marten Lohstroh, and Yuhong Xiong, "<a href="http://ptolemy.eecs.berkeley.edu/books/Systems/chapters/TheTypeSystem.pdf#in_browser" target="_top">Continuous-Time Models</a>,"
+  a chapter from<br/>
+	  Claudius Ptolemaeus, Editor, "<a href="http://ptolemy.eecs.berkeley.edu/books/Systems/index.htm#in_browser" target="_top">System Design, Modeling, and Simulation Using Ptolemy II</a>", Ptolemy.org, 2014. (included in the release as <a href="../../../../doc/books/systems/PtolemyII_DigitalV1_02.pdf#in_browser" target="_top"><code>$PTII/doc/books/systems/PtolemyII_DigitalV1_02.pdf</code></a>)
+  <br/>The models provided in this chapter are also <a href="http://ptolemy.eecs.berkeley.edu/books/Systems/models/doc/books/systems/continuous/index.html#in_browser" target="_top">available online<a>.</li> 
+<li>Marten Lohstroh, "<a href="http://www.eecs.berkeley.edu/Pubs/TechRpts/2013/EECS-2013-19.pdf#in_browser" target="_top">Maximally Permissive Composition of Actors in Ptolemy II</a>," Masters Thesis, EECS Department, University of California, Berkeley, Technical Report No. UCB/EECS-2013-19, March 20, 2013.</li>
+</ol>
+
 </body>
 </html>

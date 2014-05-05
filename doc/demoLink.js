@@ -12,8 +12,21 @@
  *  For example "Bouncing&nbsp;Ball".
  */
 function demoLink(indent, relativeModelPath, description) {
-     // The path to the JNLP and Export-to-Web files.  This will change betwee releases.
+     // The path to the JNLP and Export-to-Web files.  This will change between releases.
      ptII = "http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII10.0.devel/";
 
      document.write("<br/>" + indent + "<a href=\"" + ptII + relativeModelPath + "\" target =\"_top\">" + description + "</a>\n");
+}
+
+/** Create links to the MoML and HTML versions.
+ * @param relativeModelPath  The path to the model with no trailing slash.
+ * @param description The description, typically the model name.
+ * demoAndMoMLLink is used in doc/tutorial/domains/domainOverview.htm
+ */
+
+function demoAndMoMLLink(relativeModelPath, description) {
+     // The path to the JNLP and Export-to-Web files.  This will change between releases.
+     ptII = "http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII10.0.devel/";
+
+     document.write(description + " (<a href=\"" + ptII + relativeModelPath + ".xml\" target =\"_top\">MoML</a>,\n" + "<a href=\"" + ptII + relativeModelPath + "/\" target =\"_top\">HTML</a>)\n");
 }

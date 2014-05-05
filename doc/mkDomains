@@ -86,7 +86,7 @@ length($0) > 4 {print toupper(substr($0,1,1)) substr($0,2) }' | sed 's/Petrinet/
              print $0
           }
          }' $PTII/ptolemy/domains/$domain/doc/main.htm | \
-    sed -e 's@../../../../doc@@' \
+    sed -e 's@../../../../doc/@@' \
 	-e 's@../../sdf@../ptolemy/domains/sdf@' \
 	     >> $body
     echo "<p><a href=\"../ptolemy/domains/$domain/doc/index.htm\" target=\"_top\">$description Demonstrations</a></p>" >> $body
