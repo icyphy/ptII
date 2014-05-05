@@ -2818,7 +2818,7 @@ test_setup_make_fast_install:
 	@echo "#"
 	@echo "$@ `date`"
 	@echo "`uptime`"
-	(cd test/installerTest; chmod a+x ./configure; export DISPLAY=localhost:8.0; echo "DISPLAY=$$DISPLAY"; PTII=`pwd` ./configure --enable-verbose; cat mk/ptII.mk; PTII=`pwd` make -k PTII=`pwd` fast install)
+	(cd test/installerTest; chmod a+x ./configure; export DISPLAY=localhost:8.0; echo "DISPLAY=$$DISPLAY"; PTII=`pwd` ./configure --enable-verbose; cat mk/ptII.mk; PTII=`pwd` make -k PTII=`pwd` sources fast install)
 
 test_setup_make_tests:
 	@echo "#"
