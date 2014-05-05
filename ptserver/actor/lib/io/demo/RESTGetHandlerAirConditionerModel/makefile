@@ -71,12 +71,10 @@ all: jclass
 
 install: all $(PTCLASSJAR)
 
-demo: demo_ptolemy demo_vergil #demo_applet #demo_vergil_applet 
-#demo_applet:
-#	CLASSPATH="$(CLASSPATH)" appletviewer RESTGetHandlerAirConditionerModel.htm
+demo: demo_ptolemy demo_vergil # # 
 
-#demo_vergil_applet:
-#	CLASSPATH="$(CLASSPATH)" appletviewer RESTGetHandlerAirConditionerModelVergil.htm
+
+
 
 demo_ptolemy:
 	"$(PTII)/bin/ptolemy" RESTGetHandlerAirConditionerModel.xml

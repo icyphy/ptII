@@ -53,7 +53,6 @@ OTHER_FILES_TO_BE_JARED = \
 EXTRA_SRCS = \
 	$(OTHER_FILES_TO_BE_JARED) \
 	ModalBSC.htm \
-	ModalBSCVergil.htm
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
@@ -73,18 +72,15 @@ all: jclass
 
 install: all $(PTCLASSJAR)
 
-demo:  demo_ptolemy demo_vergil demo_applet demo_vergil_applet
+demo:  demo_ptolemy demo_vergil  
 demo_ptolemy:
 	"$(PTII)/bin/ptolemy" ModalBSC.xml
 
 demo_vergil:
 	"$(PTII)/bin/vergil" ModalBSC.xml
 
-demo_applet:
-	CLASSPATH="$(CLASSPATH)" appletviewer ModalBSC.htm
 
-demo_vergil_applet:
-	CLASSPATH="$(CLASSPATH)" appletviewer ModalBSCVergil.htm
+:
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk

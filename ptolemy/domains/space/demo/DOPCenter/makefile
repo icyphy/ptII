@@ -58,7 +58,6 @@ EXTRA_SRCS = \
 	$(OTHER_FILES_TO_BE_JARED) \
 	Placard.pdf \
 	DOPCenter.htm \
-	DOPCenterVergil.htm
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
@@ -79,9 +78,8 @@ all: jclass
 
 install: all $(PTCLASSJAR)
 
-demo: demo_applet demo_ptolemy demo_vergil
+demo:  demo_ptolemy demo_vergil
 
-# Generate applet code (overwrites DOPCenter.htm and DOPCenterVergil.htm)
 copernicus:
 	"$(PTII)/bin/copernicus" -codeGenerator applet -targetPath ptolemy/domains/space/demo/DOPCenter DOPCenter.xml
 
@@ -148,8 +146,6 @@ remoteSignedApplet: $(PTII_USER_DIRECTORY) $(OTHER_SIGNED_JARS)
 		-targetPath '"DOPCenter"' \
 		DOPCenter.xml
 
-demo_applet:
-	CLASSPATH="$(CLASSPATH)" appletviewer DOPCenter.htm
 
 demo_ptolemy:
 	"$(PTII)/bin/ptolemy" DOPCenter.xml

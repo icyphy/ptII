@@ -79,11 +79,9 @@ install: all $(PTCLASSJAR)
 
 demo: demo_ptolemy demo_vergil
 
-#demo_applet:
-#	CLASSPATH="$(CLASSPATH)" appletviewer FMUTwoBallCollision.htm
 
-#demo_applet_vergil:
-#	CLASSPATH="$(CLASSPATH)" appletviewer FMUTwoBallCollisionVergil.htm
+
+#_vergil:
 
 demo_ptolemy:
 	"$(PTII)/bin/ptolemy" FMUTwoBallCollision.xml

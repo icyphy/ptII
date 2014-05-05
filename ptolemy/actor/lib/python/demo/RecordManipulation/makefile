@@ -73,13 +73,9 @@ all: jclass
 
 install: all $(PTCLASSJAR)
 
-demo: demo_ptolemy demo_vergil #demo_applet demo_applet_vergil 
+demo: demo_ptolemy demo_vergil # demo_applet_vergil 
 
-demo_applet:
-	CLASSPATH="$(CLASSPATH)" appletviewer RecordManipulation.htm
 
-demo_applet_vergil:
-	CLASSPATH="$(CLASSPATH)" appletviewer RecordManipulationVergil.htm
 
 demo_ptolemy:
 	"$(PTII)/bin/ptolemy" RecordManipulation.xml

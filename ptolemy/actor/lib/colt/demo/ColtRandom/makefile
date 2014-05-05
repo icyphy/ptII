@@ -77,11 +77,9 @@ install: all $(PTCLASSJAR)
 
 demo: demo_ptolemy demo_vergil
 
-#demo_applet:
-#	CLASSPATH="$(CLASSPATH)" appletviewer ColtRandom.htm
 
-#demo_applet_vergil:
-#	CLASSPATH="$(CLASSPATH)" appletviewer ColtRandomVergil.htm
+
+#_vergil:
 
 demo_ptolemy:
 	"$(PTII)/bin/ptolemy" ColtRandom.xml

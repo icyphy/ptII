@@ -114,11 +114,9 @@ $(KEYSTORE):
 
 demo: demo_ptolemy demo_vergil
 
-#demo_applet:
-#	CLASSPATH="$(CLASSPATH)" appletviewer Signature.htm
 
-#demo_applet_vergil:
-#	CLASSPATH="$(CLASSPATH)" appletviewer SignatureVergil.htm
+
+#_vergil:
 
 demo_ptolemy:
 	"$(PTII)/bin/ptolemy" Signature.xml

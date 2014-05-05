@@ -73,11 +73,9 @@ install: all $(PTCLASSJAR)
 
 demo: demo_ptolemy demo_vergil
 
-#demo_applet:
-#	CLASSPATH="$(CLASSPATH)" appletviewer CameraSmoothView.htm
 
-#demo_applet_vergil:
-#	CLASSPATH="$(CLASSPATH)" appletviewer CameraSmoothViewVergil.htm
+
+#_vergil:
 
 demo_ptolemy:
 	"$(PTII)/bin/ptolemy" CameraSmoothView.xml

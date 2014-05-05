@@ -50,7 +50,6 @@ OTHER_FILES_TO_BE_JARED = \
 	$(JSRCS) \
 	FourierSeries.xml \
 	FourierSeries.htm \
-	FourierSeriesVergil.htm \
 	FourierSeriesNoAnnotations.xml
 
 EXTRA_SRCS = \
@@ -74,9 +73,7 @@ all: jclass
 
 install: all $(PTCLASSJAR)
 
-demo: demo_applet demo_ptolemy demo_vergil
-demo_applet:
-	CLASSPATH="$(CLASSPATH)" appletviewer FourierSeries.htm
+demo:  demo_ptolemy demo_vergil
 
 demo_ptolemy:
 	"$(PTII)/bin/ptolemy" FourierSeries.xml

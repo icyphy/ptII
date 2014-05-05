@@ -73,11 +73,9 @@ install: all $(PTCLASSJAR)
 
 demo: demo_ptolemy demo_vergil
 
-#demo_applet:
-#	CLASSPATH="$(CLASSPATH)" appletviewer ImageCopySmoothView.htm
 
-#demo_applet_vergil:
-#	CLASSPATH="$(CLASSPATH)" appletviewer ImageCopySmoothViewVergil.htm
+
+#_vergil:
 
 demo_ptolemy:
 	"$(PTII)/bin/ptolemy" ImageCopySmoothView.xml

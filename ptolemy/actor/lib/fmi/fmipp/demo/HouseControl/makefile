@@ -86,11 +86,9 @@ Heating_ControlledHouse.fmu: Heating.mo Heating.mos
 
 demo: demo_vergil #demo_ptolemy
 
-#demo_applet:
-#	CLASSPATH="$(CLASSPATH)" appletviewer HouseControl.htm
 
-#demo_applet_vergil:
-#	CLASSPATH="$(CLASSPATH)" appletviewer HouseControlVergil.htm
+
+#_vergil:
 
 demo_ptolemy:
 	"$(PTII)/bin/ptolemy" HouseControl.xml

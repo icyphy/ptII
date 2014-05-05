@@ -53,7 +53,6 @@ OTHER_FILES_TO_BE_JARED = \
 	ComplexRouter.xml \
 	Router.xml \
 	Router.htm \
-	RouterVergil.htm
 
 EXTRA_SRCS = \
 	$(JSRCS) \
@@ -82,12 +81,9 @@ all: jclass
 
 install: all $(PTCLASSJAR)
 
-demo: demo_applet demo_vergil_applet demo_ptolemy demo_vergil
-demo_applet:
-	CLASSPATH="$(CLASSPATH)" appletviewer Router.htm
+demo:   demo_ptolemy demo_vergil
 
-demo_vergil_applet:
-	CLASSPATH="$(CLASSPATH)" appletviewer RouterVergil.htm
+:
 
 demo_ptolemy:
 	"$(PTII)/bin/ptolemy" Router.xml

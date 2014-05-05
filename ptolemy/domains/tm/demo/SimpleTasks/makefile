@@ -50,7 +50,6 @@ OTHER_FILES_TO_BE_JARED = \
 	$(JSRCS) \
 	SimpleTasks.htm \
 	SimpleTasks.xml \
-	SimpleTasksVergil.htm
 
 EXTRA_SRCS = \
 	$(OTHER_FILES_TO_BE_JARED)
@@ -73,8 +72,7 @@ all: jclass $(PTCLASSJAR)
 
 install: all
 
-demo: demo_applet demo_ptolemy demo_vergil
-demo_applet:
+demo:  demo_ptolemy demo_vergil
 
 demo_ptolemy:
 	"$(PTII)/bin/ptolemy" SimpleTasks.xml

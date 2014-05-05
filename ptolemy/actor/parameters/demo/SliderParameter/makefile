@@ -50,7 +50,6 @@ OTHER_FILES_TO_BE_JARED = \
 	$(JSRCS) \
 	SliderParameter.xml \
 	SliderParameter.htm \
-	SliderParameterVergil.htm
 
 EXTRA_SRCS = \
 	$(OTHER_FILES_TO_BE_JARED)
@@ -73,10 +72,7 @@ all: jclass
 
 install: all $(PTCLASSJAR)
 
-demo: demo_applet demo_ptolemy demo_vergil
-demo_applet:
-	CLASSPATH="$(CLASSPATH)" appletviewer SliderParameter.htm
-	CLASSPATH="$(CLASSPATH)" appletviewer SliderParameterVergil.htm
+demo:  demo_ptolemy demo_vergil
 
 demo_ptolemy:
 	"$(PTII)/bin/ptolemy" SliderParameter.xml

@@ -59,7 +59,6 @@ EXTRA_SRCS = \
 	HTVQ4.xml \
 	HTVQReceiver.xml \
 	HTVQSender.xml \
-	HTVQVergil.htm
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
@@ -79,9 +78,7 @@ all: jclass
 
 install: all $(PTCLASSJAR)
 
-demo: demo_applet demo_ptolemy demo_vergil
-demo_applet:
-	CLASSPATH="$(CLASSPATH)" appletviewer HTVQ.htm
+demo:  demo_ptolemy demo_vergil
 
 demo_ptolemy:
 	"$(PTII)/bin/ptolemy" HTVQ.xml

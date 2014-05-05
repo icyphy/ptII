@@ -90,11 +90,9 @@ update:
 
 demo: demo_vergil #demo_ptolemy
 
-#demo_applet:
-#	CLASSPATH="$(CLASSPATH)" appletviewer FMUModelExchange.htm
 
-#demo_applet_vergil:
-#	CLASSPATH="$(CLASSPATH)" appletviewer FMUModelExchangeVergil.htm
+
+#_vergil:
 
 demo_ptolemy:
 	"$(PTII)/bin/ptolemy" FMUModelExchange.xml

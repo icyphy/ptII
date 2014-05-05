@@ -54,7 +54,6 @@ EXTRA_SRCS = \
 	$(OTHER_FILES_TO_BE_JARED)
 
 #	LongRuns.htm \
-#	LongRunsVergil.htm
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
@@ -73,10 +72,9 @@ all: jclass
 
 install: all jars
 
-demo: demo_ptolemy demo_vergil #demo_applet
+demo: demo_ptolemy demo_vergil #
 
-#demo_applet: $(PTCLASSJAR)
-#	CLASSPATH=$(CLASSPATH) appletviewer LongRuns.htm
+#: $(PTCLASSJAR)
 
 demo_ptolemy:
 	"$(PTII)/bin/ptolemy" LongRuns.xml

@@ -54,11 +54,8 @@ OTHER_FILES_TO_BE_JARED = \
 EXTRA_SRCS = \
 	$(OTHER_FILES_TO_BE_JARED) \
 	Hysteresis.htm \
-	HysteresisVergil.htm \
 	HysteresisWithRandomDelay.htm \
-	HysteresisWithRandomDelayVergil.htm \
 	HysteresisWithRandomLosses.htm \
-	HysteresisWithRandomLossesVergil.htm
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
@@ -82,11 +79,7 @@ all: jclass
 
 install: all $(PTCLASSJAR)
 
-demo: demo_applet demo_ptolemy demo_vergil
-demo_applet:
-	CLASSPATH="$(CLASSPATH)" appletviewer Hysteresis.htm
-	CLASSPATH="$(CLASSPATH)" appletviewer HysteresisWithRandomDelay.htm
-	CLASSPATH="$(CLASSPATH)" appletviewer HysteresisWithRandomLosses.htm
+demo:  demo_ptolemy demo_vergil
 
 demo_ptolemy:
 	"$(PTII)/bin/ptolemy" Hysteresis.xml

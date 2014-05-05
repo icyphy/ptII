@@ -53,7 +53,6 @@ EXTRA_SRCS = \
 	$(OTHER_FILES_TO_BE_JARED)
 
 #	InteractiveQuery.htm
-#	InteractiveQueryVergil.htm
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
@@ -69,15 +68,14 @@ JCLASS = $(JSRCS:%.java=%.class)
 # to run 'make demos' to run the tests.
 all: jclass $(PTCLASSJAR)
 	@echo "To run all the demos, run 'make demo'"
-	@echo "To run the applet only, run 'make demo_applet'"
+	@echo "To run the applet only, run 'make '"
 
 install: all
 
 # Run the demo in all its different formats
-demo: demo_ptolemy demo_vergil demo_applet
+demo: demo_ptolemy demo_vergil 
 
-#demo_applet: $(PTCLASSJAR)
-#	CLASSPATH="$(CLASSPATH)" appletviewer InteractiveQuery.htm
+#: $(PTCLASSJAR)
 
 demo_ptolemy:
 	"$(PTII)/bin/ptolemy" InteractiveQuery.xml

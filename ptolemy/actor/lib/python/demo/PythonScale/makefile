@@ -54,7 +54,6 @@ OTHER_FILES_TO_BE_JARED = \
 EXTRA_SRCS = \
 	$(OTHER_FILES_TO_BE_JARED) \
 	PythonScale.htm \
-	PythonScaleVergil.htm
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
@@ -74,13 +73,9 @@ all: jclass
 
 install: all $(PTCLASSJAR)
 
-demo: demo_applet demo_applet_vergil demo_ptolemy demo_vergil
+demo:  demo_applet_vergil demo_ptolemy demo_vergil
 
-demo_applet:
-	CLASSPATH="$(CLASSPATH)" appletviewer PythonScale.htm
 
-demo_applet_vergil:
-	CLASSPATH="$(CLASSPATH)" appletviewer PythonScaleVergil.htm
 
 demo_ptolemy:
 	"$(PTII)/bin/ptolemy" PythonScale.xml

@@ -54,7 +54,6 @@ EXTRA_SRCS = \
 	$(JSRCS) \
 	$(OTHER_FILES_TO_BE_JARED) \
 	Butterfly.htm \
-	ButterflyVergil.htm
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
@@ -70,17 +69,15 @@ JCLASS = $(JSRCS:%.java=%.class)
 # to run 'make demos' to run the tests.
 all: jclass $(PTCLASSJAR)
 	@echo "To run all the demos, run 'make demo'"
-	@echo "To run the applet only, run 'make demo_applet'"
+	@echo "To run the applet only, run 'make '"
 	@echo "To run the application only, run 'make demo_application'"
 
 install: all
 
 # Run the demo in all its different formats
 # Run demo_application first so that we generate Butterfly.xml
-demo: demo_applet demo_application demo_ptolemy demo_vergil
+demo:  demo_application demo_ptolemy demo_vergil
 
-demo_applet: $(PTCLASSJAR)
-	CLASSPATH="$(CLASSPATH)" appletviewer Butterfly.htm
 
 demo_application: $(PTCLASSJAR)
 	CLASSPATH="$(CLASSPATH)" \

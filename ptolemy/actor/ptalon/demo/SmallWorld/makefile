@@ -61,10 +61,6 @@ EXTRA_SRCS = \
 	$(OTHER_FILES_TO_BE_JARED) \
 	ParameterSweepSmallWorldFSM.htm \
 	ParameterSweepSmallWorldSDF.htm \
-	ParameterSweepSmallWorldFSMVergil.htm \
-	ParameterSweepSmallWorldSDFVergil.htm \
-	SmallWorldMultiInstanceCompositeVergil.htm \
-	SmallWorldPtalonActorVergil.htm \
 	SmallWorldMultiInstanceComposite.htm \
 	SmallWorldPtalonActor.htm
 
@@ -92,10 +88,8 @@ all: jclass
 
 install: all $(PTCLASSJAR)
 
-demo: demo_applet demo_ptolemy demo_vergil
+demo:  demo_ptolemy demo_vergil
 
-demo_applet:
-	CLASSPATH="$(CLASSPATH)" appletviewer SmallWorld.htm
 
 demo_ptolemy:
 	"$(PTII)/bin/ptolemy" SmallWorld.xml

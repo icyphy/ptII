@@ -93,11 +93,9 @@ update:
 
 demo: demo_vergil #demo_ptolemy
 
-#demo_applet:
-#	CLASSPATH="$(CLASSPATH)" appletviewer GeneratorContactorLoad.htm
 
-#demo_applet_vergil:
-#	CLASSPATH="$(CLASSPATH)" appletviewer GeneratorContactorLoadVergil.htm
+
+#_vergil:
 
 demo_ptolemy:
 	"$(PTII)/bin/ptolemy" GeneratorContactorLoad.xml

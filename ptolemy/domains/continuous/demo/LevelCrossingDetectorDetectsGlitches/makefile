@@ -72,12 +72,9 @@ all: jclass
 
 install: all $(PTCLASSJAR)
 
-demo: demo_ptolemy demo_vergil demo_applet #demo_vergil_applet 
-demo_applet:
-	CLASSPATH="$(CLASSPATH)" appletviewer LevelCrossingDetector.htm
+demo: demo_ptolemy demo_vergil  # 
 
-#demo_vergil_applet:
-#	CLASSPATH="$(CLASSPATH)" appletviewer LevelCrossingDetectorVergil.htm
+
 
 demo_ptolemy:
 	"$(PTII)/bin/ptolemy" LevelCrossingDetectorDetectsGlitches.xml

@@ -58,9 +58,7 @@ OTHER_FILES_TO_BE_JARED = \
 EXTRA_SRCS = \
 	$(OTHER_FILES_TO_BE_JARED) \
 	TrafficLight.htm \
-	TrafficLightVergil.htm \
 	WirelessDeployment.htm \
-	WirelessDeploymentVergil.htm
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
@@ -83,7 +81,7 @@ all: jclass
 
 install: all  $(PTCLASSJAR)
 
-demo: demo_ptolemy demo_vergil demo_applet
+demo: demo_ptolemy demo_vergil 
 
 demo_ptolemy:
 	"$(PTII)/bin/ptolemy" TrafficLight.xml
@@ -91,8 +89,6 @@ demo_ptolemy:
 demo_vergil:
 	"$(PTII)/bin/vergil" TrafficLight.xml
 
-demo_applet:
-	appletviewer TrafficLight.htm
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk

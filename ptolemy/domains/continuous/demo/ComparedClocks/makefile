@@ -53,7 +53,6 @@ OTHER_FILES_TO_BE_JARED = \
 EXTRA_SRCS = \
 	$(OTHER_FILES_TO_BE_JARED) \
 	ComparedClocks.htm \
-	ComparedClocksVergil.htm
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
@@ -77,12 +76,9 @@ all: jclass
 
 install: all $(PTCLASSJAR)
 
-demo: demo_applet demo_vergil_applet demo_ptolemy demo_vergil
-demo_applet:
-	CLASSPATH="$(CLASSPATH)" appletviewer ComparedClocks.htm
+demo:   demo_ptolemy demo_vergil
 
-demo_vergil_applet:
-	CLASSPATH="$(CLASSPATH)" appletviewer ComparedClocksVergil.htm
+:
 
 demo_ptolemy:
 	"$(PTII)/bin/ptolemy" ComparedClocks.xml

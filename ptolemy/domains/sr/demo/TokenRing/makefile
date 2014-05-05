@@ -50,7 +50,6 @@ OTHER_FILES_TO_BE_JARED = \
 	$(JSRCS) \
 	TokenRing.htm \
 	TokenRing.xml \
-	TokenRingVergil.htm
 
 EXTRA_SRCS = \
 	$(OTHER_FILES_TO_BE_JARED)
@@ -72,7 +71,7 @@ all: jclass
 
 install: all  $(PTCLASSJAR)
 
-demo: demo_ptolemy demo_vergil demo_applet
+demo: demo_ptolemy demo_vergil 
 
 demo_ptolemy:
 	"$(PTII)/bin/ptolemy" TokenRing.xml
@@ -80,8 +79,6 @@ demo_ptolemy:
 demo_vergil:
 	"$(PTII)/bin/vergil" TokenRing.xml
 
-demo_applet:
-	appletviewer TokenRing.htm
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk

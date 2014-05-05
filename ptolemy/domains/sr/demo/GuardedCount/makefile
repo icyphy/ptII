@@ -55,8 +55,6 @@ EXTRA_SRCS = \
 	$(OTHER_FILES_TO_BE_JARED) \
 	GuardedCount.htm \
 	GuardedCountTimed.htm \
-	GuardedCountVergil.htm \
-	GuardedCountTimedVergil.htm
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
@@ -79,7 +77,7 @@ all: jclass
 
 install: all  $(PTCLASSJAR)
 
-demo: demo_ptolemy demo_vergil demo_applet
+demo: demo_ptolemy demo_vergil 
 
 demo_ptolemy:
 	"$(PTII)/bin/ptolemy" GuardedCount.xml
@@ -87,8 +85,6 @@ demo_ptolemy:
 demo_vergil:
 	"$(PTII)/bin/vergil" GuardedCount.xml
 
-demo_applet:
-	appletviewer GuardedCount.htm
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk

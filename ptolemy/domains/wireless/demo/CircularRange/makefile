@@ -53,7 +53,6 @@ EXTRA_SRCS = \
 	$(JSRCS) \
 	$(OTHER_FILES_TO_BE_JARED) \
 	CircularRange.htm 
-#	CircularRangeVergil.htm
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
@@ -74,10 +73,8 @@ install: all
 
 # Run the demo in all its different formats
 # Run demo_application first so that we generate CircularRange.xml
-demo: demo_applet demo_ptolemy demo_vergil
+demo:  demo_ptolemy demo_vergil
 
-demo_applet: $(PTCLASSJAR)
-	CLASSPATH="$(CLASSPATH)" appletviewer CircularRange.htm
 
 #demo_application: $(PTCLASSJAR)
 #	CLASSPATH="$(CLASSPATH)" \

@@ -72,13 +72,9 @@ all: jclass
 
 install: all $(PTCLASSJAR)
 
-demo: demo_applet demo_applet_vergil demo_ptolemy demo_vergil
+demo:  demo_applet_vergil demo_ptolemy demo_vergil
 
-demo_applet:
-	CLASSPATH="$(CLASSPATH)" appletviewer Ptolemnizer.htm
 
-demo_applet_vergil:
-	CLASSPATH="$(CLASSPATH)" appletviewer PtolemnizerVergil.htm
 
 demo_ptolemy:
 	"$(PTII)/bin/ptolemy" Ptolemnizer.xml
