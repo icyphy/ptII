@@ -126,7 +126,9 @@ test release-3.1 {Run svn status and look for files that should be checked in.  
     # Remove hs_err_pid* files created by ScaleC crashing
     if {[glob -nocomplain {ptolemy/cg/lib/test/hs_err_pid*}] != {}} {
 	puts "Removing hs_err_pid* files created by ScaleC crashing"
-	file delete [glob -nocomplain {ptolemy/cg/lib/test/hs_err_pid*}]
+	foreach file [glob -nocomplain {ptolemy/cg/lib/test/hs_err_pid*}] { 
+	    file delete $file
+	}
     } 
 
     set result {}
