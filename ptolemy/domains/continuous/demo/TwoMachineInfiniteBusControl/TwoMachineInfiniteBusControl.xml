@@ -11,16 +11,16 @@
         </property>
         <property name="errorTolerance" class="ptolemy.data.expr.Parameter" value="1e-3">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[135.0, 35.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[75.0, 30.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 22, 1247, 722}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 22, 1010, 722}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1013, 612]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[776, 612]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{506.5, 306.0}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{388.0, 306.0}">
     </property>
     <property name="om1" class="ptolemy.data.expr.Parameter" value="0.0">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -38,7 +38,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[680.0, 170.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[405.0, 95.0]">
         </property>
     </property>
     <property name="om2" class="ptolemy.data.expr.Parameter" value="0.0">
@@ -57,7 +57,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[680.0, 190.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[405.0, 115.0]">
         </property>
     </property>
     <property name="d1" class="ptolemy.data.expr.Parameter" value="0.3">
@@ -76,7 +76,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[680.0, 230.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[405.0, 155.0]">
         </property>
     </property>
     <property name="d2" class="ptolemy.data.expr.Parameter" value="0">
@@ -95,7 +95,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[680.0, 210.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[405.0, 140.0]">
         </property>
     </property>
     <property name="t_response" class="ptolemy.data.expr.Parameter" value="0.1">
@@ -114,25 +114,25 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[680.0, 250.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[405.0, 175.0]">
         </property>
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Simulation of a Two-Machine-Infinite-Bus Power System.&#10;The dynamics are due to the classical swing equation that&#10;describes the behaviour of the rotor dynamics of three-phase&#10;machines.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[560.0, 65.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[205.0, 10.0]">
         </property>
     </property>
     <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Control response time">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.RelativeLocation" value="[790.0, 240.0]">
+        <property name="_location" class="ptolemy.kernel.util.RelativeLocation" value="[515.0, 165.0]">
         </property>
     </property>
     <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Plots system trajectory in angular &#10;velocity vs acceleration plane">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.RelativeLocation" value="[40.0, 40.0]">
+        <property name="_location" class="ptolemy.kernel.util.RelativeLocation" value="[-125.0, 50.0]">
             <property name="relativeTo" class="ptolemy.kernel.util.StringAttribute" value="XYPlotter">
             </property>
             <property name="relativeToElementName" class="ptolemy.kernel.util.StringAttribute" value="entity">
@@ -152,10 +152,10 @@
     <property name="Annotation5" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Swing Equations&#10;------------------&#10;delta_i_dot = omega_i&#10;omega_i_dot = ws/(2*Hi*a)( Pmi - D*omega_i - Pei )&#10;i = 1,2&#10;Pmi = mechanical power&#10;Pei = electrical power&#10;D = damping coefficient&#10;Hi = inertia constant of the generator&#10;&#10;">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.RelativeLocation" value="[-115.0, -215.0]">
-            <property name="relativeTo" class="ptolemy.kernel.util.StringAttribute" value="TMIB">
+        <property name="_location" class="ptolemy.kernel.util.RelativeLocation" value="[15.0, 60.0]">
+            <property name="relativeTo" class="ptolemy.kernel.util.StringAttribute">
             </property>
-            <property name="relativeToElementName" class="ptolemy.kernel.util.StringAttribute" value="entity">
+            <property name="relativeToElementName" class="ptolemy.kernel.util.StringAttribute">
             </property>
         </property>
     </property>
