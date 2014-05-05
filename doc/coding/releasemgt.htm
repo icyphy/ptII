@@ -601,7 +601,7 @@ $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm -run -open
 
 	    <li> Create the jnlp files and update the website:
 	      <pre>
-		make KEYSTORE=/users/ptII/adm/certs/ptkeystore KEYALIAS=ptolemy STOREPASSWORD="-storepass xxx" KEYPASSWORD="-keypass xxx" jnlp_dist
+		make KEYSTORE=/users/ptII/adm/certs/ptkeystore KEYALIAS=ptolemy STOREPASSWORD="-storepass `cat ~/.certpw`" KEYPASSWORD="-keypass `cat ~/.certpw`" jnlp_dist
 	      </pre>
 	      <I>xxx</I> is the ptkeystore password. 
 	    </li>
@@ -666,7 +666,7 @@ $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm -run -open
 	      </pre>
 	    </li>
 	    <li>Try the Web Start application and export:
-	      <a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/jnlp-10.0.devel/ptolemy/actor/gt/demo/BouncingBallX2/BouncingBallX2"><code>http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII10.0.1/ptolemy/actor/gt/demo/BouncingBallX2/BouncingBallX2</code></a>
+	      <a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/jnlp-10.0.devel/ptolemy/actor/gt/demo/BouncingBallX2/BouncingBallX2"><code>http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII10.0.devel/ptolemy/actor/gt/demo/BouncingBallX2/BouncingBallX2</code></a>
 	    </li>
 	    <li>After the first Web Start application runs, generate jnlp files for all
 	      the files:
