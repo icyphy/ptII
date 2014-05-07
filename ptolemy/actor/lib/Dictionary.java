@@ -211,8 +211,14 @@ public class Dictionary extends TypedAtomicActor {
             if (theValue == null || theValue.isNil()) {
                 // Remove the entry.
                 _store.remove(theKey);
+                if (_debugging) {
+                	_debug("Removed key: " + theKey);
+                }
             } else {
                 _store.put(theKey, theValue);
+                if (_debugging) {
+                	_debug("Storing key, value: " + theKey + ", " + theValue);
+                }
             }
         } else if (value.getWidth() > 0 && value.hasToken(0)) {
             // Read and discard the input token so that DE doesn't refire me.
@@ -224,8 +230,14 @@ public class Dictionary extends TypedAtomicActor {
             // NOTE: We choose to output a nil token if the result is not in the store.
             if (theResult != null) {
                 result.send(0, theResult);
+                if (_debugging) {
+                	_debug("Retrieved key, value: " + theKey + ", " + theResult);
+                }
             } else {
                 result.send(0, Token.NIL);
+                if (_debugging) {
+                	_debug("Requested key with no value: " + theKey);
+                }
             }
         }
         if (readKeyArray.getWidth() > 0 && readKeyArray.hasToken(0)) {
