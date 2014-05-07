@@ -844,22 +844,14 @@ public class TypedIOPort extends IOPort implements Typeable {
         int compare = TypeLattice.compare(token.getType(), _resolvedType);
 
         if (compare == CPO.HIGHER || compare == CPO.INCOMPARABLE) {
-            throw new IllegalActionException(this,
-                    "Run-time type checking failed. Token " + token
-                            + " with type " + token.getType()
-                            + " is incompatible with port type: "
-                            + _resolvedType.toString());
+            throw new RunTimeTypeCheckException(this, token);
         }
         
         if (defaultValue.getToken() != null) {
 	        compare = TypeLattice.compare(defaultValue.getToken().getType(), _resolvedType);
 	
 	        if (compare == CPO.HIGHER || compare == CPO.INCOMPARABLE) {
-	            throw new IllegalActionException(this,
-	                    "Run-time type checking failed. Default value " + defaultValue.getToken()
-	                            + " with type " + defaultValue.getType()
-	                            + " is incompatible with port type: "
-	                            + _resolvedType.toString());
+	            throw new RunTimeTypeCheckException(this, defaultValue.getToken());
 	        }
         }
     }
@@ -969,6 +961,28 @@ public class TypedIOPort extends IOPort implements Typeable {
 
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
+    
+    /** Exception class for run-time type errors.
+     */
+    public static class RunTimeTypeCheckException extends IllegalActionException {
+    	public RunTimeTypeCheckException(TypedIOPort port, Token token) {
+    		super(port, "Run-time type checking failed. Token " + token
+    				+ " with type " + token.getType()
+    				+ " is incompatible with port type: "
+    				+ port.getType().toString());
+    		_port = port;
+    		_token = token;
+    	}
+    	public TypedIOPort getPort() {
+    		return _port;
+    	}
+    	public Token getToken() {
+    		return _token;
+    	}
+    	private TypedIOPort _port;
+    	private Token _token;
+    }
+    
     private class TypeTerm implements InequalityTerm {
         ///////////////////////////////////////////////////////////////
         ////                       public inner methods            ////
