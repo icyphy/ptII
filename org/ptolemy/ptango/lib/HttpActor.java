@@ -59,6 +59,8 @@ import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.StringParameter;
 import ptolemy.data.type.ArrayType;
 import ptolemy.data.type.BaseType;
+import ptolemy.data.type.RecordType;
+import ptolemy.data.type.Type;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
@@ -458,13 +460,26 @@ public class HttpActor extends TypedAtomicActor implements HttpService {
                             + _request.parameters);
                 }
                 getRequestURI.send(0, new StringToken(_request.requestURI));
-                getParameters.send(0, _request.parameters);
+                // Send parameters, but handle type errors locally.
+                try {
+                	getParameters.send(0, _request.parameters);
+                } catch (TypedIOPort.RunTimeTypeCheckException ex) {
+                	// Parameters provided do not match the required type.
+                	// Construct an appropriate response.
+                	_respondWithBadRequestMessage(_request.parameters, getParameters.getType(), "parameters");
+                }
                 if (_request.cookies != null && _request.cookies.length() > 0) {
                     if (_debugging) {
                         _debug("Sending cookies to getCookies port: "
                                 + _request.cookies);
                     }
-                    getCookies.send(0, _request.cookies);
+                    try {
+                    	getCookies.send(0, _request.cookies);
+                    } catch (TypedIOPort.RunTimeTypeCheckException ex) {
+                    	// Parameters provided do not match the required type.
+                    	// Construct an appropriate response.
+                    	_respondWithBadRequestMessage(_request.parameters, getParameters.getType(), "cookies");
+                    }
                 }
             } else {
                 if (_debugging) {
@@ -473,9 +488,21 @@ public class HttpActor extends TypedAtomicActor implements HttpService {
                             + _request.parameters);
                 }
                 postRequestURI.send(0, new StringToken(_request.requestURI));
-                postParameters.send(0, _request.parameters);
+                try {
+                	postParameters.send(0, _request.parameters);
+                } catch (TypedIOPort.RunTimeTypeCheckException ex) {
+                	// Parameters provided do not match the required type.
+                	// Construct an appropriate response.
+                	_respondWithBadRequestMessage(_request.parameters, getParameters.getType(), "parameters");
+                }
                 if (_request.cookies != null && _request.cookies.length() > 0) {
-                    postCookies.send(0, _request.cookies);
+                	try {
+                		postCookies.send(0, _request.cookies);
+                	} catch (TypedIOPort.RunTimeTypeCheckException ex) {
+                		// Parameters provided do not match the required type.
+                		// Construct an appropriate response.
+                		_respondWithBadRequestMessage(_request.parameters, getParameters.getType(), "cookies");
+                	}
                     if (_debugging) {
                         _debug("Sending cookies to postCookies port: "
                                 + _request.cookies);
@@ -524,6 +551,61 @@ public class HttpActor extends TypedAtomicActor implements HttpService {
      */
     public void setWebServer(WebServer server) {
         // Ignore. This actor doesn't need to know.
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private methods                   ////
+
+	/** Given a record token type, construct the URL string that would result
+	 *  in that record, and record that string in the specified message buffer.
+	 *  @param expected The record type.
+	 *  @param message The message buffer.
+	 */
+	private void _recordToURLString(RecordType expected, StringBuffer message) {
+		boolean first = true;
+		for (String label : expected.labelSet()) {
+			if (first) {
+				message.append("?");
+			} else {
+				message.append("&");
+			}
+			first = false;
+			message.append(label);
+			message.append("=");
+			message.append(expected.get(label).toString());
+		}
+	}
+
+    /** Issue a response to the current request indicating malformed syntax.
+     *  According to: www.w3.org/Protocols/rfc2616/rfc2616-sec10.html,
+     *  the correct response is
+     *  10.4.1 400 Bad Request, "The request could not be understood 
+     *  by the server due to malformed syntax. 
+     *  The client SHOULD NOT repeat the request without modifications."
+     *  @param record The record that was received.
+     *  @param expectedType The type of record expected.
+     *  @param what What triggered the error ("parameters" or "cookies").
+     */
+    private void _respondWithBadRequestMessage(RecordToken record, Type expectedType, String what) {
+    	_response = new HttpResponse();
+    	_response.statusCode = HttpServletResponse.SC_BAD_REQUEST;
+    	StringBuffer message = new StringBuffer();
+    	message.append("<html><body><h1> Bad Request (code " + HttpServletResponse.SC_BAD_REQUEST + ")</h1>\n");
+    	message.append("<p>Expected ");
+    	message.append(what);
+    	message.append(" of the form: ");
+    	if (expectedType instanceof RecordType) {
+    		_recordToURLString((RecordType)expectedType, message);
+    	} else {
+    		message.append(expectedType.toString());
+    	}
+    	message.append("</p><p>Got: ");
+    	_recordToURLString((RecordType)record.getType(), message);
+    	message.append("</p></body></html>");
+    	
+    	_response.response = message.toString();
+    	
+    	notifyAll();
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -760,8 +842,8 @@ public class HttpActor extends TypedAtomicActor implements HttpService {
                         return;
                     }
                 }
-
-                response.setStatus(HttpServletResponse.SC_OK);
+                
+                response.setStatus(_response.statusCode);
 
                 // Write all cookies to the response, if there are some new
                 // cookies to write
@@ -998,5 +1080,8 @@ public class HttpActor extends TypedAtomicActor implements HttpService {
 
         /** The text of the response. */
         public String response;
+        
+        /** Status code of the response. */
+        public int statusCode = HttpServletResponse.SC_OK;
     }
 }
