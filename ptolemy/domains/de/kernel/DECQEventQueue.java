@@ -27,6 +27,7 @@
  */
 package ptolemy.domains.de.kernel;
 
+import ptolemy.actor.Actor;
 import ptolemy.actor.util.CQComparator;
 import ptolemy.actor.util.CalendarQueue;
 import ptolemy.actor.util.Time;
@@ -121,6 +122,21 @@ public class DECQEventQueue implements DEEventQueue {
             _cQueue.put(event);
             notifyAll();
         }
+    }
+
+    /** Remove an event from the event queue and return true if
+     *  it was removed, and false if it was not in the queue.
+     *  This should only be used for pure events (consequences of
+     *  fireAt()), not for events carrying payloads, because this
+     *  does not remove the payload from the DEReceiver.
+     *  The event passed is an argument need not be exactly the
+     *  same event in the queue. It just has to match the
+     *  actor, timeStamp, microstep, and depth of the event
+     *  to be removed.
+     *  @param event The event to enqueue.
+     */
+    public synchronized final boolean remove(DEEvent event) {
+    	return _cQueue.remove(event);
     }
 
     /** Unregister a debug listener.  If the specified listener has not

@@ -85,6 +85,20 @@ public interface DEEventQueue extends Debuggable {
      *  @exception IllegalActionException If the event cannot be enqueued.
      */
     public void put(DEEvent event) throws IllegalActionException;
+    
+    /** Remove an event from the event queue and return true if
+     *  it was removed, and false if it was not in the queue.
+     *  This should only be used for pure events (consequences of
+     *  fireAt()), not for events carrying payloads, because this
+     *  does not remove the payload from the DEReceiver.
+     *  The event passed is an argument need not be exactly the
+     *  same event in the queue. It just has to match the
+     *  actor, timeStamp, microstep, and depth of the event
+     *  to be removed. Implementation of this method is optional.
+     *  @param event The event to enqueue.
+     *  @exception IllegalActionException If the method is not supported.
+     */
+    public boolean remove(DEEvent event) throws IllegalActionException;
 
     /** Return the size of the event queue.
      *  @return The size of the event queue.

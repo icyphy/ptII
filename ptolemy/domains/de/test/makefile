@@ -53,6 +53,7 @@ include $(CONFIG)
 TCL_SRCS =
 
 JSRCS = \
+	CancelFireAtTest.java \
 	SuperdenseTimeTest.java
 
 # Tcl sources that are part of the testing infrastructure

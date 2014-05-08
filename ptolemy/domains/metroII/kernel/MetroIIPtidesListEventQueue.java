@@ -132,6 +132,14 @@ public class MetroIIPtidesListEventQueue implements DEEventQueue {
         Collections.sort(_listQueue);
     }
 
+    /** Throw an exception to indicate that this method is not supported.
+     *  @param event The event to enqueue.
+     *  @exception IllegalActionException Always thrown.
+     */
+    public boolean remove(DEEvent event) throws IllegalActionException {
+    	throw new IllegalActionException("remove() is not implemented by PtidesListEventQueue.");
+    }
+
     /**
      * Returns the size of this event queue.
      */

@@ -348,7 +348,11 @@ public class CalendarQueue implements Debuggable {
             return false;
         }
 
-        boolean result = _bucket[_getBinIndex(entry)].remove(entry);
+        CQLinkedList bucket = _bucket[_getBinIndex(entry)];
+        if (bucket == null) {
+        	return false;
+        }
+        boolean result = bucket.remove(entry);
 
         if (result) {
             _queueSize--;
@@ -954,9 +958,13 @@ public class CalendarQueue implements Debuggable {
             // Non-special case that requires looping:
             CQCell previousCell = head;
             CQCell currentCell = previousCell.next;
+            if (currentCell == null) {
+            	return false;
+            }
 
             do {
-                if (currentCell.contents.equals(object)) {
+                if (currentCell.contents != null
+                		&& currentCell.contents.equals(object)) {
                     // Found a match.
                     if (tail == currentCell) {
                         // Removing the tail. Need to update.

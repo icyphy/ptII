@@ -403,6 +403,42 @@ public class DEDirector extends Director implements SuperdenseTimeDirector {
         }
     }
 
+    /** Cancel a requested firing of the given actor at the given model
+     *  time microstep 1.
+     *  @param actor The actor scheduled to be fired.
+     *  @param time The requested time.
+     *  @param index The microstep.
+     *  @exception IllegalActionException If cancelling a firing is not
+     *   supported by the current event queue.
+     */
+    public void cancelFireAt(Actor actor, Time time)
+            throws IllegalActionException {
+    	cancelFireAt(actor, time, 1);
+    }
+
+    /** Cancel a requested firing of the given actor at the given model
+     *  time with the given microstep.
+     *  @param actor The actor scheduled to be fired.
+     *  @param time The requested time.
+     *  @param index The microstep.
+     *  @exception IllegalActionException If cancelling a firing is not
+     *   supported by the current event queue.
+     */
+    public void cancelFireAt(Actor actor, Time time, int index)
+            throws IllegalActionException {
+        if (_eventQueue == null) {
+            throw new IllegalActionException(this,
+                    "Calling cancelFireAt() before preinitialize().");
+        }
+        if (_debugging) {
+            _debug("DEDirector: Cancelling firing of actor " + actor.getFullName()
+                    + " at " + time + " with microstep "
+                    + index);
+        }
+        int depth = _getDepthOfActor(actor);
+        _eventQueue.remove(new DEEvent(actor, time, index, depth));
+    }
+    
     /** Clone the object into the specified workspace. The new object is
      *  <i>not</i> added to the directory of that workspace (you must do this
      *  yourself if you want it there).
