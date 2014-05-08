@@ -2,12 +2,11 @@ package org.ptolemy.qss;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.util.Time;
-import ptolemy.data.ArrayToken;
 import ptolemy.data.DoubleToken;
+import ptolemy.data.ArrayToken;
 import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.ArrayType;
@@ -24,7 +23,7 @@ A quantized-state vector integrator.
 
 @author David Broman, Edward A. Lee, Thierry Nouidui, Michael Wetter
 @version $Id: When.java 68298 2014-02-05 17:00:30Z eal $
-@since Ptolemy II 10.0
+@since Ptolemy II 10.1
 @Pt.ProposedRating Yellow (eal)
 @Pt.AcceptedRating Red (cxh)
 */
@@ -106,8 +105,6 @@ public class QSSVectorIntegrator extends TypedAtomicActor {
                     + " should match the length of the quantum " + xIniSize;
             throw new IllegalActionException(this, em);
         }
-        // Create the output ports.
-        //_createOutputPorts();
 
         // Get the vector of quantum.
         dq = _getDoubleArray(quantum, dqSize);
@@ -117,24 +114,27 @@ public class QSSVectorIntegrator extends TypedAtomicActor {
 
         // Initialize containers used for calculation.
         t_min = null;
+        previousStateUpdateTime = null;
         u = new Token[dx.size()];
         x = new double[dx.size()];
         slope = new double[dx.size()];
+        previousSlope = new double[dx.size()];
         nextOutputValue = new double[dx.size()];
         previousOutputValue = new double[dx.size()];
         previousInput = new Token[dx.size()];
         inputReceived = new boolean[dx.size()];
-        nextOutputTime = new Time[dx.size()];
-        previousStateUpdateTime = new Time[dx.size()];
+        _firstFiring = new boolean[dx.size()];
+        nextOutputTime = new Time[dx.size()];        
         index_min = new ArrayList<Integer>();
 
         for (int i = 0; i < dx.size(); i++) {
-            nextOutputTime[i] = previousStateUpdateTime[i] = null;
+            nextOutputTime[i] = null;
             x[i] = xIni[i];
             nextOutputValue[i] = _quantize(x[i], dq[i]);
             previousOutputValue = nextOutputValue;
             previousInput[i] = null;
             inputReceived[i] = false;
+            _firstFiring[i] = true;
         }
         // To make sure this actor fires at the start time, request a firing.
         getDirector().fireAtCurrentTime(this);
@@ -163,10 +163,17 @@ public class QSSVectorIntegrator extends TypedAtomicActor {
             if (dx.get(i).hasToken(0)) {
                 u[i] = dx.get(i).get(0);
                 if (!u[i].equals(previousInput[i])) {
-                    // We have a new input, different from the previous input.
-                    previousInput[i] = u[i];
-                    // Update the slope.
+                    // Initialize previousInput
+                    if (_firstFiring[i]){
+                        previousInput[i] = u[i];
+                        _firstFiring[i] = false;
+                    }                
+                    // Save the previous slope
+                    previousSlope [i] = ((DoubleToken) previousInput[i]).doubleValue();
+                    // Compute the new slope.
                     slope[i] = ((DoubleToken) u[i]).doubleValue();
+                    // Save the previous input.
+                    previousInput[i] = u[i];
                     // Set the inputReceived flag to true
                     inputReceived[i] = true;
                 }
@@ -186,43 +193,38 @@ public class QSSVectorIntegrator extends TypedAtomicActor {
                 // of the way it handles feedback loops. It may invoke fire and
                 // postfire more than once in each iteration.
                 nextOutputTime[i] = _nextCrossingTime(slope[i], 0.0, 0.0,
-                        dq[i], currentTime);
-
+                        dq[i], currentTime);              
+                // Calculate the next output value
+                nextOutputValue[i] = _nextOutputValue(slope[i],previousOutputValue[i], dq[i]);
             } else {
                 // The fire method did not send an output.
                 // If we did not receive a new input, there is nothing to do.
                 // But if we did, then we have a new slope, so we need to recompute
                 // the time it will take to get to the next quantum.
                 if (inputReceived[i]) {
-                    x[i] += slope[i]
-                            * (currentTime.subtract(previousStateUpdateTime[i]))
+                    x[i] += previousSlope[i]
+                            * (currentTime.subtract(previousStateUpdateTime))
                                     .getDoubleValue();
                     System.out.println("This is the index in received " + String.valueOf(i) + ": " + String.valueOf((x[i])));
                     // Update the time of the next output, which is the time it will take to
                     // get from the current state to previous output value plus or minus the quantum
                     // at the updated slope.
-                    nextOutputTime[i] = _nextCrossingTime(slope[i], x[i],
+                    nextOutputTime[i] = _nextCrossingTime(previousSlope[i], x[i],
                             nextOutputValue[i], dq[i], currentTime);
                     inputReceived[i] = false;
                 }
+                // Calculate the next output value
+                nextOutputValue[i] = _nextOutputValue(previousSlope[i],
+                        previousOutputValue[i], dq[i]);
             }
-            nextOutputValue[i] = _nextOutputValue(slope[i],
-                    previousOutputValue[i], dq[i]);
-            // Save the time when the state has been updated.
-            previousStateUpdateTime[i] = currentTime;
+
         }
+        // Record time at which state is updated.
+        previousStateUpdateTime = currentTime;
         // Determine the time of the state which will fire the next event.
         _minNextCrossingTime();
         if (t_min != Time.POSITIVE_INFINITY) {
             getDirector().fireAt(this, t_min);
-            for (int j = 0; j < dx.size(); j++) {
-                for (int i = 0; i < index_min.size(); i++) {
-                    if (j == index_min.get(i)) {
-                        // Save the time of the states updated.
-                        previousStateUpdateTime[j] = t_min;
-                    }
-                }
-            }
         }
         return super.postfire();
     }
@@ -305,10 +307,14 @@ public class QSSVectorIntegrator extends TypedAtomicActor {
     protected void _minNextCrossingTime() {
         index_min.clear();
         t_min = nextOutputTime[0];
-        for (int i = 0; i < nextOutputTime.length; i++) {
+        index_min.add(0); 
+        t_min = nextOutputTime[0];
+        for (int i = 1; i < nextOutputTime.length; i++) {
             if (t_min.compareTo(nextOutputTime[i]) > 0) {
                 t_min = nextOutputTime[i];
-            } else if (t_min.compareTo(nextOutputTime[i]) == 0) {
+                index_min.clear();
+                index_min.add(i);
+            } else if (t_min.compareTo(nextOutputTime[i])== 0) {
                 index_min.add(i);
             }
         }
@@ -377,7 +383,7 @@ public class QSSVectorIntegrator extends TypedAtomicActor {
     private Time nextOutputTime[];
 
     /** The time at which the state was last updated. */
-    private Time previousStateUpdateTime[];
+    private Time previousStateUpdateTime;
 
     /** The next output produced. */
     private double nextOutputValue[];
@@ -387,6 +393,9 @@ public class QSSVectorIntegrator extends TypedAtomicActor {
 
     /** The slope at the time of the most recent input. */
     private double slope[];
+    
+    /** The slope at the time of the last recent input. */
+    private double previousSlope[];
 
     /** The current state. */
     private double x[];
@@ -406,6 +415,10 @@ public class QSSVectorIntegrator extends TypedAtomicActor {
     /** The time for next output. */
     private Time t_min;
 
+    /** The flag to indicate input received. */
     boolean inputReceived[];
+    
+    /** The flag to indicate first firing. */
+    boolean _firstFiring[];
 
 }
