@@ -459,4 +459,23 @@ public class IOPort extends NamedProgramCodeGeneratorAdapter implements
         }
         return receiverAdapters;
     }
+
+    /**
+     * Generate code for replacing the sendLocalInside() macro.
+     *
+     * @param channel
+     *            The channel for which to generate the send code.
+     * @param offset
+     *            The offset in the array representation of the port.
+     * @param dataToken
+     *            The token to be sent.
+     * @return The code that sends data to the specified channel.
+     * @exception IllegalActionException
+     *                If the receiver adapter is not found or it encounters an
+     *                error while generating the send code.
+     */
+    public String generatePutLocalInsideCode(String channel, String offset,
+            String dataToken) throws IllegalActionException {
+        return this.generatePutCode(channel, offset, dataToken);
+    }
 }

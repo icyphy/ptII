@@ -456,7 +456,6 @@ public class IOPort
         String result = "(*(" + port.getName() + "->sendLocalInside))((struct IOPort*) "
                 + port.getName() + ", " + channelIndex + ", " + tokenCode + ")";
 
-        System.out.println("Generated Put code: " + result);
         return result;
     }
 }
