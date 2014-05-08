@@ -96,6 +96,7 @@ public class QSSIntegrator extends TypedAtomicActor {
 		nextOutputValue = _quantize(((DoubleToken)xInit.getToken()).doubleValue());
 		previousOutputValue = nextOutputValue;
 		previousInput = null;
+		_firstFiring = true;
 		// To make sure this actor fires at the start time, request a firing.
 		getDirector().fireAtCurrentTime(this);
 	}
@@ -107,7 +108,6 @@ public class QSSIntegrator extends TypedAtomicActor {
 	public boolean isStrict() {
 		return false;
 	}
-	
 	/** Update the calculation of the next output time and request
 	 *  a refiring at that time.
 	 *  If there is a new input, read it and update the slope.
@@ -125,11 +125,19 @@ public class QSSIntegrator extends TypedAtomicActor {
 		if (u.hasToken(0)) {
 			Token newInput = u.get(0);
 			if (!newInput.equals(previousInput)) {
-				// We have a new input value, different from the previous input.
-				previousInput = newInput;
-				inputReceived = true;
-				// Update the slope.
-				slope = _derivative(((DoubleToken)previousInput).doubleValue());
+			    // Initialize the previousInput
+			    if (_firstFiring){
+			        previousInput = newInput;
+			        _firstFiring = false;
+			    }
+			    // Save the previous slope.
+			    previousSlope = _derivative(((DoubleToken) previousInput).doubleValue());                       
+			    // Compute the new slope.
+			    slope = _derivative(((DoubleToken) newInput).doubleValue());                           
+			    // Save the previous input
+			    previousInput = newInput;
+			    // Set the received flag to true
+			    inputReceived = true;
 			}
 		}
 		if (currentTime.equals(nextOutputTime) || nextOutputTime == null) {
@@ -148,6 +156,8 @@ public class QSSIntegrator extends TypedAtomicActor {
 			// of the way it handles feedback loops. It may invoke fire and
 			// postfire more than once in each iteration.
 			nextOutputTime = _nextCrossingTime(slope, 0.0, 0.0, quantumValue, currentTime);
+			// Calculate the next output value
+			nextOutputValue = _nextOutputValue(slope, previousOutputValue, quantumValue);		
 		} else {
 			// The fire method did not send an output.
 			// If we did not receive a new input, there is nothing to do.
@@ -155,18 +165,16 @@ public class QSSIntegrator extends TypedAtomicActor {
 			// the time it will take to get to the next quantum.
 			if (inputReceived) {
 				// Update the current state.
-				x += slope * (currentTime.subtract(previousStateUpdateTime)).getDoubleValue();
+				x += previousSlope * (currentTime.subtract(previousStateUpdateTime)).getDoubleValue();
 				// Update the time of the next output, which is the time it will take to
 				// get from the current state to previous output value plus or minus the quantum
 				// at the updated slope.
-				nextOutputTime = _nextCrossingTime(slope, x, previousOutputValue, quantumValue, currentTime);
-				// Reset the inputReceived flag
-				inputReceived = false;
+				nextOutputTime = _nextCrossingTime(previousSlope, x, previousOutputValue, quantumValue, currentTime);
 			}
+			// Calculate the next output value
+			nextOutputValue = _nextOutputValue(previousSlope, previousOutputValue, quantumValue);
 		}
-		// Calculate the next output value
-		nextOutputValue = _nextOutputValue(slope, previousOutputValue, quantumValue);
-
+		
 		// Record time at which state is updated.
 		previousStateUpdateTime = currentTime;
 
@@ -285,7 +293,13 @@ public class QSSIntegrator extends TypedAtomicActor {
 	
 	/** The slope calculated at the time of the most recent input. */
 	private double slope;
+	
+	/** The slope calculated at the time of the last recent input. */
+	private double previousSlope;
 
 	/** The current state. */
 	private double x;
+	
+	/** The flag to indicate first firing. */
+	private boolean _firstFiring;
 }
