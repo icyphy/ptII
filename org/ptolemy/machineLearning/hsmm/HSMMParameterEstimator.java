@@ -37,7 +37,6 @@ import ptolemy.data.ArrayToken;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.IntToken;
 import ptolemy.data.MatrixToken;
-import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.ArrayType;
 import ptolemy.data.type.BaseType;
@@ -106,6 +105,9 @@ public abstract class HSMMParameterEstimator extends ParameterEstimator {
 
         durationEstimates = new TypedIOPort(this, "durationEstimates", false, true);
         durationEstimates.setTypeEquals(BaseType.DOUBLE_MATRIX);
+        
+        durationPriorEstimates = new TypedIOPort(this, "durationPriorEstimates", false, true);
+        durationPriorEstimates.setTypeEquals(new ArrayType(BaseType.DOUBLE));
  
 
         _initializeArrays();
@@ -153,6 +155,9 @@ public abstract class HSMMParameterEstimator extends ParameterEstimator {
     /* DurationEstimates */
     public TypedIOPort durationEstimates;
     
+    /* Duration Prior estimates 
+     */
+    public TypedIOPort durationPriorEstimates;
     /* Hidden-State Assignments */
     public TypedIOPort clusterAssignments;
     
@@ -485,7 +490,19 @@ public abstract class HSMMParameterEstimator extends ParameterEstimator {
             }
             clusterAssignments[t] = maxState;
         } 
-        
+        // the duration priors will be computed by \pi * D_hat
+        double[] durationPriorEstimates = new double[_maxDuration];
+        double normalizer = 0;
+        for(int i = 0; i < _maxDuration; i++){
+            for(int j = 0 ; j < _nStates; j++){
+                durationPriorEstimates[i] += pi_hat[j]*D_hat[j][i];
+            }
+            normalizer += durationPriorEstimates[i];
+        }
+        // make sure the priors sum to one. avoid numerical errors
+        for(int i = 0; i < _maxDuration; i++){
+            durationPriorEstimates[i] /= normalizer;
+        }
         HashMap estimates = new HashMap();
 
         estimates.put("mu_hat", mu_hat);
@@ -495,6 +512,7 @@ public abstract class HSMMParameterEstimator extends ParameterEstimator {
         estimates.put("pi_hat", pi_hat);
         estimates.put("likelihood", logLikelihood);
         estimates.put("D_hat",D_hat);
+        estimates.put("pi_d_hat", durationPriorEstimates);
         estimates.put("clusterAssignments", clusterAssignments);
         return estimates;
     } 

@@ -173,12 +173,17 @@ public class HSMMGaussianEstimator extends HSMMParameterEstimator {
         Token[] sTokens = new Token[_nStates];
         Token[] pTokens = new Token[_nStates];
         Token[] cTokens = new Token[_nObservations];
+        Token[] dTokens = new Token[_maxDuration];
 
         for (int i = 0; i < _nStates; i++) {
             mTokens[i] = new DoubleToken(m_new[i]);
             sTokens[i] = new DoubleToken(s_new[i]);
             pTokens[i] = new DoubleToken(prior_new[i]);
         }
+        for( int i = 0 ; i < _maxDuration; i++){
+            dTokens[i] = new DoubleToken(dPrior_new[i]);
+        }
+    
         for(int i = 0; i < _nObservations; i++){
             cTokens[i] = new IntToken(clusters[i]);
         }
@@ -188,6 +193,7 @@ public class HSMMGaussianEstimator extends HSMMParameterEstimator {
         priorEstimates.send(0, new ArrayToken(pTokens));
         durationEstimates.send(0, new DoubleMatrixToken(D_new));
         clusterAssignments.send(0, new ArrayToken(cTokens));
+        durationPriorEstimates.send(0, new ArrayToken(dTokens));
         // broadcast best-effort parameter estimates
 
     }
@@ -259,7 +265,7 @@ public class HSMMGaussianEstimator extends HSMMParameterEstimator {
         s_new = new double[_nStates];
         prior_new = new double[_nStates];
         D_new = new double[_nStates][_maxDuration];
-        _D = _D0;
+        _D = _D0; 
     }
 
     protected void _iterateEM() {
@@ -270,6 +276,7 @@ public class HSMMGaussianEstimator extends HSMMParameterEstimator {
         s_new = (double[]) newEstimates.get("s_hat");
         A_new = (double[][]) newEstimates.get("A_hat");
         prior_new = (double[]) newEstimates.get("pi_hat");
+        dPrior_new = (double[]) newEstimates.get("pi_d_hat");
         likelihood = (Double) (newEstimates.get("likelihood"));
         D_new = (double[][]) newEstimates.get("D_hat");
         clusters = (int[]) newEstimates.get("clusterAssignments");
@@ -282,16 +289,18 @@ public class HSMMGaussianEstimator extends HSMMParameterEstimator {
         _mu = m_new;
         _priorIn = _priors; // set to the original priors
         _D = D_new;
+        _durationPriors = dPrior_new;
     }
 
     private double[] _mu = null;
     private double[] _mu0 = null;
     private double[] _sigma = null;
-    private double[] _sigma0 = null;
+    private double[] _sigma0 = null; 
 
     // EM Specific Parameters
     private double[][] A_new = null;
     private double[] m_new = null;
+    private double[] dPrior_new = null;
     private double[] s_new = null;
     private double[] prior_new = null;
     private int[] clusters = null;
