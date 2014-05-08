@@ -6,6 +6,16 @@
     <?moml
       <group>
 			<entity name="GetCausalityInterface" class="ptolemy.actor.lib.GetCausalityInterface"/>
+			<property name="CatchExceptionAttribute" class="ptolemy.actor.lib.CatchExceptionAttribute">
+				<property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            		<property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="statusMessage">
+            		</property>
+            		<property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+            		</property>
+            		<property name="displayHeight" class="ptolemy.data.expr.Parameter" value="10">
+            		</property>
+        		</property>
+			</property>
 			<entity name="CurrentMicrostep" class="ptolemy.actor.lib.CurrentMicrostep"/>
 			<entity name="NonStrictTest" class="ptolemy.actor.lib.NonStrictTest"/>
 			<entity name="Test" class="ptolemy.actor.lib.Test"/>
