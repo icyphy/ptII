@@ -58,13 +58,18 @@ PTCLASSALLJARS = \
 	hsmm/hsmm.jar \
 	particleFilter/particleFilter.jar
 
+JSRCS = \
+	Algorithms.java
+
 OTHER_FILES_TO_BE_JARED = \
 	machineLearning.xml
 
 EXTRA_SRCS = $(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 
-all: suball
-install: subinstall
+JCLASS = $(JSRCS:%.java=%.class)
+
+all: jclass
+install: jclass jars
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to report an error on them.
