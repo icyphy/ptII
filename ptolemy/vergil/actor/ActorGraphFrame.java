@@ -33,7 +33,13 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.geom.Rectangle2D;
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.StringWriter;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.Iterator;
 import java.util.List;
 
@@ -43,6 +49,13 @@ import javax.swing.JFileChooser;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import javax.swing.KeyStroke;
+import javax.xml.transform.Source;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerConfigurationException;
+import javax.xml.transform.TransformerException;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.stream.StreamResult;
+import javax.xml.transform.stream.StreamSource;
 
 import ptolemy.actor.Actor;
 import ptolemy.actor.CompositeActor;
@@ -111,7 +124,7 @@ public class ActorGraphFrame extends ExtendedGraphFrame
     public ActorGraphFrame(CompositeEntity entity, Tableau tableau) {
         this(entity, tableau, null);
     }
-
+    
     /**
      * Construct a frame associated with the specified Ptolemy II model. After
      * constructing this, it is necessary to call setVisible(true) to make the
@@ -413,6 +426,10 @@ public class ActorGraphFrame extends ExtendedGraphFrame
                     JMenuItem importLibraryItem = new JMenuItem(
                             _importLibraryAction);
                     item.add(importLibraryItem);
+                    _importAccessorAction = new ImportAccessorAction(ActorGraphFrame.this, "");
+                    JMenuItem importAccessorItem = new JMenuItem(
+                            _importAccessorAction);
+                    item.add(importAccessorItem);
                 } else if (item.getActionCommand().equals("Export")) {
                     _exportDesignPatternAction = new ExportDesignPatternAction();
                     JMenuItem exportItem = new JMenuItem(
@@ -482,6 +499,9 @@ public class ActorGraphFrame extends ExtendedGraphFrame
 
     /** The action for importing a library of components. */
     protected Action _importLibraryAction;
+    
+    /** The action for importing accessors. */
+    protected Action _importAccessorAction;
 
     /** The action for instantiating an attribute. */
     protected Action _instantiateAttributeAction;
@@ -890,6 +910,109 @@ public class ActorGraphFrame extends ExtendedGraphFrame
             setLastDirectory(ActorGraphFrame.importLibrary(getLastDirectory(),
                     ActorGraphFrame.this, getConfiguration()));
         }
+    }
+    
+    /** Action to import an accessor. 
+     *  @author Patricia Derler
+     */
+    private class ImportAccessorAction extends AbstractAction {
+
+        /** Create a new action to import an accessor. 
+         * @param graphFrame
+         * @param initialLastEntityClassName
+         */
+        public ImportAccessorAction(ExtendedGraphFrame graphFrame,
+                String initialLastEntityClassName) {
+            super("Import Accessor");
+            _graphFrame = graphFrame;
+            putValue("tooltip", "Instantiate an entity by class name");
+            putValue(GUIUtilities.MNEMONIC_KEY, Integer.valueOf(KeyEvent.VK_E));
+        }
+        
+        /** The graph frame that contains this action. */
+        private ExtendedGraphFrame _graphFrame;
+        
+        /** The URL of the accessor. */
+        private String _url;
+        
+        /** Import an accessor. Accessors can be of js or moml format.
+         */
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            Query query = new Query();
+            query.setTextWidth(60);
+            query.addLine("URL", "URL", _url);
+
+            ComponentDialog dialog = new ComponentDialog(_graphFrame,
+                    "Instantiate Entity", query);
+
+            if (dialog.buttonPressed().equals("OK")) {
+                // Get the associated Ptolemy model.
+                GraphController controller = _graphFrame.getJGraph()
+                        .getGraphPane().getGraphController();
+                AbstractBasicGraphModel model = (AbstractBasicGraphModel) controller
+                        .getGraphModel();
+                NamedObj context = model.getPtolemyModel();
+                
+                // Use the center of the screen as a location.
+                Rectangle2D bounds = _graphFrame.getVisibleCanvasRectangle();
+                double x = bounds.getWidth() / 2.0;
+                double y = bounds.getHeight() / 2.0;
+                
+                URL url;
+                String input = "";
+                _url = query.getStringValue("URL");
+                StringBuffer buffer = new StringBuffer();
+                buffer.append("<group name=\"auto\">\n");
+                try {
+                    url = new URL(_url);
+                    
+                    BufferedReader in = new BufferedReader(
+                            new InputStreamReader(url.openStream()));
+                    StringBuffer file = new StringBuffer();
+                    while ((input = in.readLine()) != null) {
+                        file.append(input);
+                    }
+                    
+                    // if file is a java script accessor
+                    if (file.toString().contains("extends=\"org.terraswarm.kernel.JavaScript\"")) {
+                        TransformerFactory factory = TransformerFactory.newInstance();
+                        Source xslt = new StreamSource(new File("org/terraswarm/kernel/XMLJStoMOML.xslt"));
+                        Transformer transformer = factory.newTransformer(xslt); 
+                        StreamSource source = new StreamSource(new InputStreamReader(url.openStream()));
+                        StringWriter outWriter = new StringWriter();
+                        StreamResult result = new StreamResult( outWriter );
+                         transformer.transform(source, result);
+                        file = outWriter.getBuffer(); 
+                    } else {
+                        // assume moml 
+                    }
+                    
+                    buffer.append(file);
+                    in.close();
+                } catch (MalformedURLException e1) {
+                    // TODO Auto-generated catch block
+                    e1.printStackTrace();
+                } catch (IOException e1) {
+                    // TODO Auto-generated catch block
+                    e1.printStackTrace();
+                } catch (TransformerConfigurationException e1) {
+                    // TODO Auto-generated catch block
+                    e1.printStackTrace();
+                } catch (TransformerException e1) {
+                    // TODO Auto-generated catch block
+                    e1.printStackTrace();
+                }
+                buffer.append("</group>\n");
+                
+                // TODO set location
+                
+                MoMLChangeRequest request = new MoMLChangeRequest(this,
+                        context, buffer.toString());
+                context.requestChange(request);
+            }
+        }
+        
     }
 
     ///////////////////////////////////////////////////////////////////
