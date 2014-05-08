@@ -1,15 +1,13 @@
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<entity name="BareModal" class="ptolemy.actor.TypedCompositeActor">
+<entity name="Simple02NoInputsGuard" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="10.0.devel">
     </property>
-    <property name="SDF" class="ptolemy.domains.sdf.kernel.SDFDirector">
-        <property name="iterations" class="ptolemy.data.expr.Parameter" value="5">
+    <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
+        <property name="iterations" class="ptolemy.data.expr.Parameter" value="20">
         </property>
-        <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{140.0, 89.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{80, 55}">
         </property>
         <property name="DecoratorAttributesFor_CCodeGenerator" class="ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.actor.sched.StaticSchedulingDirectorAttributes">
             <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="CCodeGenerator">
@@ -20,30 +18,42 @@
             </property>
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={253, 133, 934, 634}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={168, 37, 1225, 634}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[700, 524]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[991, 524]">
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0000000000000004">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0000000000000033">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{339.9999999999999, 252.00000000000014}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{233.39999999999992, 63.7312500000001}">
     </property>
     <property name="CCodeGenerator" class="ptolemy.cg.kernel.generic.program.procedural.c.CCodeGenerator">
-        <property name="codeDirectory" class="ptolemy.data.expr.FileParameter" value="$HOME/cg_Test5">
+        <property name="codeDirectory" class="ptolemy.data.expr.FileParameter" value="$HOME/cg_Test10">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{370, 95}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{490.0, 30.0}">
         </property>
     </property>
-    <entity name="ModalModel" class="ptolemy.domains.modal.modal.ModalModel">
-        <property name="_tableauFactory" class="ptolemy.vergil.modal.modal.ModalTableauFactory">
+    <entity name="Test" class="ptolemy.actor.lib.Test">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{84, 84, 84, 84, 84, 84, 84, 84, 84, 84, 84, 84, 84, 84, 84, 84, 84, 84, 84, 84}">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[255.0, 195.0]">
+        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{440.0, 155.0}">
         </property>
         <property name="DecoratorAttributesFor_CCodeGenerator" class="ptolemy.kernel.util.DecoratorAttributes">
             <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="CCodeGenerator">
             </property>
         </property>
-        <port name="output" class="ptolemy.domains.modal.modal.ModalPort">
+    </entity>
+    <entity name="ModalModel" class="ptolemy.domains.modal.modal.ModalModel">
+        <property name="_tableauFactory" class="ptolemy.vergil.modal.modal.ModalTableauFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{290.0, 155.0}">
+        </property>
+        <property name="DecoratorAttributesFor_CCodeGenerator" class="ptolemy.kernel.util.DecoratorAttributes">
+            <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="CCodeGenerator">
+            </property>
+        </property>
+        <port name="output48" class="ptolemy.domains.modal.modal.ModalPort">
             <property name="output"/>
         </port>
         <entity name="_Controller" class="ptolemy.domains.modal.modal.ModalController">
@@ -72,10 +82,26 @@ Then delete this annotation.</text>
       <entity name="state library" class="ptolemy.kernel.CompositeEntity"><input source="ptolemy/configs/basicUtilities.xml"></input><entity name="state" class="ptolemy.domains.modal.kernel.State"><property name="_centerName" class="ptolemy.kernel.util.Attribute"></property><property name="_controllerFactory" class="ptolemy.vergil.modal.modal.HierarchicalStateControllerFactory"></property></entity></entity>
     </configure>
             </property>
-            <port name="output" class="ptolemy.domains.modal.modal.RefinementPort">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={253, 132, 934, 635}, maximized=false}">
+            </property>
+            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[700, 524]">
+            </property>
+            <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.2500000000000064">
+            </property>
+            <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{397.92243639628293, 207.97598139445034}">
+            </property>
+            <property name="DecoratorAttributesFor_CCodeGenerator" class="ptolemy.kernel.util.DecoratorAttributes">
+                <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="CCodeGenerator">
+                </property>
+            </property>
+            <port name="output48" class="ptolemy.domains.modal.modal.RefinementPort">
                 <property name="input"/>
                 <property name="output"/>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[470.0, 350.0]">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[610.0, 290.0]">
+                </property>
+                <property name="DecoratorAttributesFor_CCodeGenerator" class="ptolemy.kernel.util.DecoratorAttributes">
+                    <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="CCodeGenerator">
+                    </property>
                 </property>
             </port>
             <entity name="state" class="ptolemy.domains.modal.kernel.State">
@@ -85,45 +111,31 @@ Then delete this annotation.</text>
                 </property>
                 <property name="_controllerFactory" class="ptolemy.vergil.modal.modal.HierarchicalStateControllerFactory">
                 </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="{385, 275}">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[385.0, 280.0]">
                 </property>
             </entity>
             <relation name="relation" class="ptolemy.domains.modal.kernel.Transition">
                 <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="true">
                 </property>
-                <property name="outputActions" class="ptolemy.domains.modal.kernel.OutputActionsAttribute" value="output = 1">
+                <property name="outputActions" class="ptolemy.domains.modal.kernel.OutputActionsAttribute" value="output48 = 84">
                 </property>
                 <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="2.356194490192345">
                 </property>
-                <property name="gamma" class="ptolemy.data.expr.Parameter" value="-2.2475599323743363">
+                <property name="gamma" class="ptolemy.data.expr.Parameter" value="0.1986776867337316">
                 </property>
             </relation>
             <link port="state.incomingPort" relation="relation"/>
             <link port="state.outgoingPort" relation="relation"/>
         </entity>
-        <relation name="outputRelation" class="ptolemy.actor.TypedIORelation">
+        <relation name="output48Relation" class="ptolemy.actor.TypedIORelation">
             <property name="width" class="ptolemy.data.expr.Parameter" value="Auto">
             </property>
         </relation>
-        <link port="output" relation="outputRelation"/>
-        <link port="_Controller.output" relation="outputRelation"/>
-    </entity>
-    <entity name="8:Test" class="ptolemy.actor.lib.Test">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{1, 1, 1, 1, 1}">
-        </property>
-        <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.0E-9">
-        </property>
-        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[400.0, 195.0]">
-        </property>
-        <property name="DecoratorAttributesFor_CCodeGenerator" class="ptolemy.kernel.util.DecoratorAttributes">
-            <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="CCodeGenerator">
-            </property>
-        </property>
+        <link port="output48" relation="output48Relation"/>
+        <link port="_Controller.output48" relation="output48Relation"/>
     </entity>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
     </relation>
-    <link port="ModalModel.output" relation="relation"/>
-    <link port="8:Test.input" relation="relation"/>
+    <link port="Test.input" relation="relation"/>
+    <link port="ModalModel.output48" relation="relation"/>
 </entity>

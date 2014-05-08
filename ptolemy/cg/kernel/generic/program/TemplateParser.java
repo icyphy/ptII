@@ -1319,7 +1319,9 @@ public class TemplateParser {
         if (macro.equals("get")) {
             return _replaceGetMacro(parameter);
         } else if (macro.equals("put")) {
-            return _replacePutMacro(parameter);
+            return _replacePutMacro(parameter, false);
+        } else if (macro.equals("putLocalInside")) {
+            return _replacePutMacro(parameter, true);
         } else if (macro.equals("hasToken")) {
             return _replaceHasTokenMacro(parameter);
         } else if (macro.equals("ref")) {
@@ -1804,8 +1806,8 @@ public class TemplateParser {
         }
         return directorAdapter.getParameter(adapter, attribute, offset);
     }
-
-    private String _replacePutMacro(String parameter)
+    
+    private String _replacePutMacro(String parameter, boolean inside)
             throws IllegalActionException {
         // e.g. $put(input#channel, token); or
         // $put(input, token); or
@@ -1851,8 +1853,13 @@ public class TemplateParser {
         PortCodeGenerator portAdapter = (PortCodeGenerator) _codeGenerator
                 .getAdapter(port);
 
-        return processCode(portAdapter.generatePutCode(channel, offset,
-                dataToken));
+        if (inside) {
+            return processCode(portAdapter.generatePutLocalInsideCode(channel, offset,
+                    dataToken));
+        } else {
+            return processCode(portAdapter.generatePutCode(channel, offset,
+                    dataToken));
+        }
     }
 
     ///////////////////////////////////////////////////////////////////

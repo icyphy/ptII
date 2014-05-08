@@ -264,12 +264,13 @@ public class ModalController extends NamedProgramCodeGeneratorAdapter {
     *  @exception IllegalActionException If the helper associated with
     *   an actor throws it while generating fire code for the actor.
     */
-    protected void _generateRefinementCode(StringBuffer code)
+    protected boolean _generateRefinementCode(StringBuffer code)
             throws IllegalActionException {
 
         ProgramCodeGeneratorAdapter controllerHelper = (ProgramCodeGeneratorAdapter) getCodeGenerator()
                 .getAdapter(_myController);
 
+        boolean refined = false;
         int depth = 1;
         code.append(_getIndentPrefix(depth));
         code.append("switch ("
@@ -291,6 +292,7 @@ public class ModalController extends NamedProgramCodeGeneratorAdapter {
             Actor[] actors = state.getRefinement();
 
             if (actors != null) {
+                refined = true;
                 for (Actor actor : actors) {
                     NamedProgramCodeGeneratorAdapter actorHelper = (NamedProgramCodeGeneratorAdapter) getCodeGenerator()
                             .getAdapter(actor);
@@ -333,6 +335,7 @@ public class ModalController extends NamedProgramCodeGeneratorAdapter {
         code.append(_getIndentPrefix(depth));
         code.append("}" + _eol); //end of switch statement
 
+        return refined;
     }
 
     /** Update the read offsets of the buffer associated with the given port.

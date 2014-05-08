@@ -64,8 +64,10 @@ ReceiverSetRemoteFarReceiver($actorName.ports[$i].farReceivers + $channel,
 // The initialize() method of the local director must be called
 // after the ports are cleared, because the FixedPointDirector
 // relies on this to reset the status of its receivers.
-(*($director->initializeFunction))();
-$currentActor_TransferOutputs();
+//(*($director->initializeFunction))();
+(*($director->initialize))($director);
+//$currentActor_TransferOutputs();
+// $director->transferOutputs($director);
 /**/
 
 /***prefireBlock($director)***/

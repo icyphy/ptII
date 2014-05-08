@@ -64,6 +64,7 @@ struct IOPort {
         void (*send)(struct IOPort*, int, Token*);
         void (*send1)(struct IOPort*, int, Token**, int);
         void (*sendInside)(struct IOPort*, int, Token*);
+        void (*sendLocalInside)(struct IOPort*, int, Token*);
 
 #ifdef PTIDESDIRECTOR
         double delayOffset;
@@ -101,5 +102,6 @@ int IOPort_NumberOfSources(struct IOPort* port);
 void IOPort_Send(struct IOPort* port, int channelIndex, Token* token);
 void IOPort_Send1(struct IOPort* port, int channelIndex, Token** tokenArray, int vectorLength);
 void IOPort_SendInside(struct IOPort* port, int channelIndex, Token* token);
+void IOPort_SendLocalInside(struct IOPort* port, int channelIndex, Token* token);
 
 #endif

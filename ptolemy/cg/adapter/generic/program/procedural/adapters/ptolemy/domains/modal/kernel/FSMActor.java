@@ -311,6 +311,7 @@ public class FSMActor extends NamedProgramCodeGeneratorAdapter {
                         NamedObj destination = action
                                 .getDestination(destinationName);
 
+                        codeBuffer.append(destinationName + " = " + modalName + "get_" + destinationName + "();" + _eol);
                         // String destinationNameWithoutController = destinationName;
                         //                         int controllerIndex = -1;
                         //                         String controllerString = "_Controller_";
@@ -383,7 +384,7 @@ public class FSMActor extends NamedProgramCodeGeneratorAdapter {
                                 //codeBuffer.append("System.out.println(\"ref" + i + "\");" + _eol);
                                 //codeBuffer.append("$ref(" + destinationName
                                 //        + "#" + i + ") = ");
-                                codeBuffer.append("$put(" + destinationName
+                                codeBuffer.append("$putLocalInside(" + destinationName
                                         + "#" + i + ", ");
 
                                 //sendCode.append("$send(" + destinationName
@@ -394,7 +395,8 @@ public class FSMActor extends NamedProgramCodeGeneratorAdapter {
                                 // when it is also an input port,
                                 // i.e., when this FSMActor is used as
                                 // a modal controller.
-
+                                
+                                /*
                                 if (((IOPort) destination).isInput()) {
                                     //ComponentCodeGenerator containerHelper = _getHelper(((IOPort) destination)
                                     //      .getContainer().getContainer());
@@ -427,6 +429,7 @@ public class FSMActor extends NamedProgramCodeGeneratorAdapter {
                                     //        + generateSimpleName(destination)
                                     //        + ", " + i + ")" + _eol);
                                 }
+                                */
                             }
                         }
                         ParseTreeCodeGenerator parseTreeCodeGenerator = getTemplateParser()

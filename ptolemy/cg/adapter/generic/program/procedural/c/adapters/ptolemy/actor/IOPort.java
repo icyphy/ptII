@@ -418,4 +418,45 @@ public class IOPort
 
         return result;
     }
+    
+    /**
+     * Generate code for replacing the sendLocalInside() macro.
+     *
+     * @param channel
+     *            The channel for which to generate the send code.
+     * @param offset
+     *            The offset in the array representation of the port.
+     * @param dataToken
+     *            The token to be sent.
+     * @return The code that sends data to the specified channel.
+     * @exception IllegalActionException
+     *                If the receiver adapter is not found or it encounters an
+     *                error while generating the send code.
+     */
+    public String generatePutLocalInsideCode(String channel, String offset,
+            String dataToken) throws IllegalActionException {
+
+        if (!((ptolemy.actor.IOPort) getComponent()).isOutsideConnected()) {
+            return "";
+        }
+        int channelIndex = Integer.parseInt(channel);
+        TypedIOPort port = (TypedIOPort) getComponent();
+        Type type = port.getType();
+        String typeString = getCodeGenerator().codeGenType(type);
+        String tokenCode;
+        if (type instanceof BaseType) {
+            tokenCode = "$new(" + typeString + "(" + dataToken + "))";
+        } else if (type instanceof RecordType) {
+            tokenCode = "$new(Record(" + dataToken + "->timestamp, "
+                    + dataToken + "->microstep, " + dataToken
+                    + "->payload))";
+        } else {
+            tokenCode = dataToken;
+        }
+        String result = "(*(" + port.getName() + "->sendLocalInside))((struct IOPort*) "
+                + port.getName() + ", " + channelIndex + ", " + tokenCode + ")";
+
+        System.out.println("Generated Put code: " + result);
+        return result;
+    }
 }

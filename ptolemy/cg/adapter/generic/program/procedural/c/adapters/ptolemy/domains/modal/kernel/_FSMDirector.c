@@ -23,6 +23,8 @@ void FSMDirector_Init(struct FSMDirector* director) {
         director->prefire = FSMDirector_Prefire;
         director->transferInputs = FSMDirector_TransferInputs;
         director->transferOutputs1 = FSMDirector_TransferOutputs1;
+        director->directorTransferModalOutputs = FSMDirector_DirectorTransferModalOutputs;
+        director->directorTransferModalOutputs1 = FSMDirector_DirectorTransferModalOutputs1;
 }
 void FSMDirector_New_Free(struct FSMDirector* director) {
         Director_New_Free((struct Director*) director);
@@ -111,6 +113,39 @@ bool FSMDirector_TransferOutputs1(struct FSMDirector* director, struct IOPort* p
                         Token* t = port->getInside(port, i);
                         pblMapAdd(tokensOut, &port, sizeof(struct IOPort*), t, sizeof(Token));
                         port->send(port, i, t);
+                        result = true;
+                }
+        }
+        if (result) {
+                director->transferModalOutputs(tokensOut);
+        }
+        pblMapFree(tokensOut);
+        return result;
+}
+
+bool FSMDirector_DirectorTransferModalOutputs(struct FSMDirector* director) {
+        struct CompositeActor* container = director->container;
+        PblIterator* outports = pblIteratorNew(container->outputPortList(container));
+        while (pblIteratorHasNext(outports)) {
+                struct IOPort* port = pblIteratorNext(outports);
+                director->directorTransferModalOutputs1(director, port);
+        }
+        pblIteratorFree(outports);
+        return true;
+}
+
+bool FSMDirector_DirectorTransferModalOutputs1(struct FSMDirector* director, struct IOPort* port){
+        bool result = false;
+        if (!port->isOutput(port) /*|| !port->isOpaque(port)*/) {
+                fprintf(stderr, "Attempted to transferOutputs on a port that is not an opaque input port.");
+                exit(-1);
+        }
+
+        PblMap* tokensOut = pblMapNewHashMap();
+        for (int i = 0; i < port->getWidthInside(port); i++) {
+                if (port->hasTokenInside(port, i)) {
+                        Token* t = port->getInside(port, i);
+                        pblMapAdd(tokensOut, &port, sizeof(struct IOPort*), t, sizeof(Token));
                         result = true;
                 }
         }

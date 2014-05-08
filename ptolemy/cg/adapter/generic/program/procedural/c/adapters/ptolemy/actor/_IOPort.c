@@ -56,6 +56,7 @@ void IOPort_Init(struct IOPort* port) {
         port->send = IOPort_Send;
         port->send1 = IOPort_Send1;
         port->sendInside = IOPort_SendInside;
+        port->sendLocalInside = IOPort_SendLocalInside;
 }
 void IOPort_New_Free(struct IOPort* port) {
         if (port) {
@@ -479,6 +480,19 @@ void IOPort_Send1(struct IOPort* port, int channelIndex, Token** tokenArray, int
 }
 void IOPort_SendInside(struct IOPort* port, int channelIndex, Token* token) {
         PblList* farReceivers = (*(port->deepGetReceivers))(port);
+
+        if (farReceivers == NULL || pblListSize(farReceivers) <= channelIndex
+                        || pblListGet(farReceivers, channelIndex) == NULL) {
+                return;
+        }
+        if (pblListSize(pblListGet(farReceivers, channelIndex)) > 0) {
+                struct Receiver* receiver = pblListGet(pblListGet(farReceivers, channelIndex), 0);
+                (*(receiver->putToAll))(receiver, token, pblListGet(farReceivers, channelIndex));
+        }
+}
+
+void IOPort_SendLocalInside(struct IOPort* port, int channelIndex, Token* token) {
+        PblList* farReceivers = (*(port->getInsideReceivers))(port);
 
         if (farReceivers == NULL || pblListSize(farReceivers) <= channelIndex
                         || pblListGet(farReceivers, channelIndex) == NULL) {

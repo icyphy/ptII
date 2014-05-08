@@ -94,7 +94,7 @@ public class ModalController
         String name = _myController.getFullName().substring(1);
         String modalName = name.replace("_Controller", "");
         modalName = modalName.replace('.', '_');
-
+        
         // Generate code for preemptive transition.
         code.append(_eol
                 + getCodeGenerator().comment("1. Preemptive Transition"));
@@ -108,17 +108,22 @@ public class ModalController
         code.append("if (" + modalName + "__transitionFlag == 0) {" + _eol);
 
         // Generate code for refinements.
-        _generateRefinementCode(code);
-
-        // Transfer the outputs beetween the two types of transitions
-        code.append(_eol + "director->transferOutputs(director);" + _eol);
+        if(_generateRefinementCode(code)) {
+            // Transfer the outputs from the refinement to modal model
+            code.append(_eol + "director->directorTransferModalOutputs(director);" + _eol);
+        }
 
         // Generate code for non-preemptive transition
         code.append(getCodeGenerator().comment("2. Nonpreemptive Transition"));
+        
         // generateTransitionCode(code);
         controllerHelper.generateTransitionCode(code,
                 new NonPreemptiveTransitions());
         code.append("}" + _eol);
+
+        // Transfer the outputs from inside to outside of the modal model
+        code.append(_eol + "director->transferOutputs(director);" + _eol);
+        
         return code.toString();
 
     }
@@ -252,9 +257,10 @@ public class ModalController
     *  @exception IllegalActionException If the helper associated with
     *   an actor throws it while generating fire code for the actor.
     */
-    protected void _generateRefinementCode(StringBuffer code)
+    protected boolean _generateRefinementCode(StringBuffer code)
             throws IllegalActionException {
-
+        
+        boolean refined = false;
         String name = _myController.getFullName().substring(1);
         name = name.replace('.', '_');
 
@@ -277,6 +283,7 @@ public class ModalController
             Actor[] actors = state.getRefinement();
 
             if (actors != null) {
+                refined = true;
                 for (Actor actor : actors) {
                     //                    NamedProgramCodeGeneratorAdapter actorHelper = (NamedProgramCodeGeneratorAdapter) getCodeGenerator()
                     //                            .getAdapter(actor);
@@ -295,6 +302,8 @@ public class ModalController
         depth--;
         code.append(_getIndentPrefix(depth));
         code.append("}" + _eol); //end of switch statement
+        
+        return refined;
 
     }
 

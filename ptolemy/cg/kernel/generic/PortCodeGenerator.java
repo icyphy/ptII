@@ -62,6 +62,16 @@ public interface PortCodeGenerator {
      */
     public String generatePutCode(String channel, String offset,
             String dataToken) throws IllegalActionException;
+    
+    /** Generate the code to put a token to a port's local inside receivers.
+     *  @param channel The channel for which the send code is generated.
+     *  @param offset The offset in the array representation of the port.
+     *  @param dataToken The token to be sent
+     *  @return The code that sends the dataToken on the channel.
+     *  @exception IllegalActionException If the director adapter class cannot be found.
+     */
+    public String generatePutLocalInsideCode(String channel, String offset,
+            String dataToken) throws IllegalActionException;
 
     /** Generates code to check the receiver has a token.
      *  @param channel The channel for which the get code is generated.

@@ -128,7 +128,8 @@ public class TypedCompositeActor
         String sanitizedContainerName = CodeGeneratorAdapter
                 .generateName(TopActor);
 
-        args.add(sanitizedContainerName + ".director");
+        // args.add(sanitizedContainerName + ".director");
+        args.add("(" + sanitizedContainerName + "->getDirector(" + sanitizedContainerName + "))");
         args.add(sanitizedContainerName);
         codeStream.appendCodeBlock("initializeBlock", args);
 
