@@ -34,6 +34,8 @@ DIRS = hmm hmmAOM hsmm particleFilter
 # Root of Ptolemy II directory
 ROOT =		../../..
 
+JSRCS = Algorithms.java
+
 # $(ME) is used in ptdir.mk
 ME =		org.ptolemy.machineLearning
 
