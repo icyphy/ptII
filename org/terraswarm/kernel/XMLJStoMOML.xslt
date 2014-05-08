@@ -7,7 +7,7 @@
         <property name="script"  class="ptolemy.kernel.util.StringAttribute">
 				<xsl:attribute name="value">
 					<xsl:variable name="function" select="."/>
-					<xsl:value-of select="substring-before(substring-after($function, '&#10;  &#10;      &#10;&#9;&#10;&#9;&#9;&#10;    function fire() {'), '}&#10;&#10;  &#10;')"/>
+					<xsl:value-of select="substring-before(substring-after($function, 'function fire() {'), '}&#10;&#10;  &#10;')"/>
             </xsl:attribute>
 		<property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
             </property>
