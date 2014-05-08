@@ -13,7 +13,7 @@ public class Algorithms {
      * @param 
      */
     public static int _binaryIntervalSearch(double[] A, double key) {
-        return _binaryIntervalSearch(A, key, 9, A.length-1);
+        return _binaryIntervalSearch(A, key, 0, A.length-1);
     }
     public static int _binaryIntervalSearch(double[] A, double key, int imin, int imax) {
         if (imax < imin) {
