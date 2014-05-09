@@ -386,6 +386,11 @@ if ($actorSymbol(numberOfTokensSeen) < $size(correctValues)
 
 /*** wrapupBlock ***/
 if (($actorSymbol(numberOfTokensSeen) + 1) < $size(correctValues)) {
-    printf("\nTest produced only %d tokens, yet the correctValues parameter was expecting %d tokens.\n", $actorSymbol(numberOfTokensSeen), $size(correctValues));
+    if ($actorSymbol(numberOfTokensSeen) < 1) {
+        printf("\nTest received only %d tokens, yet the correctValues parameter was expecting %d tokens, exiting.\n", $actorSymbol(numberOfTokensSeen), $size(correctValues));
+        exit(-2);
+    } else {
+        printf("\nTest received only %d tokens, yet the correctValues parameter was expecting %d tokens.\n", $actorSymbol(numberOfTokensSeen), $size(correctValues));
+    }
 }
 /**/
