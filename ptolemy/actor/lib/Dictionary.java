@@ -28,19 +28,39 @@
 
 package ptolemy.actor.lib;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.IOException;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.logging.Level;
 
 import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.data.ArrayToken;
+import ptolemy.data.BooleanToken;
+import ptolemy.data.RecordToken;
+import ptolemy.data.StringToken;
 import ptolemy.data.Token;
+import ptolemy.data.expr.ASTPtRootNode;
+import ptolemy.data.expr.FileParameter;
+import ptolemy.data.expr.ModelScope;
+import ptolemy.data.expr.Parameter;
+import ptolemy.data.expr.ParseTreeEvaluator;
+import ptolemy.data.expr.ParserScope;
+import ptolemy.data.expr.PtParser;
 import ptolemy.data.expr.SingletonParameter;
 import ptolemy.data.type.ArrayType;
+import ptolemy.data.type.BaseType;
+import ptolemy.data.type.Type;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.LoggerListener;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.StringAttribute;
 import ptolemy.kernel.util.Workspace;
+import ptolemy.util.MessageHandler;
 
 /**
    A store for key-value pairs.
@@ -73,11 +93,11 @@ public class Dictionary extends TypedAtomicActor {
         new SingletonParameter(keys, "_showName").setExpression("true");
 
         readKey = new TypedIOPort(this, "readKey", true, false);
+        readKey.setTypeEquals(BaseType.STRING);
         new SingletonParameter(readKey, "_showName").setExpression("true");
 		
         readKeyArray = new TypedIOPort(this, "readKeyArray", true, false);
         new SingletonParameter(readKeyArray, "_showName").setExpression("true");
-        readKeyArray.setTypeAtLeast(ArrayType.ARRAY_BOTTOM);
 
         result = new TypedIOPort(this, "result", false, true);
         new SingletonParameter(result, "_showName").setExpression("true");
@@ -95,29 +115,85 @@ public class Dictionary extends TypedAtomicActor {
         new SingletonParameter(value, "_showName").setExpression("true");
 		
         writeKey = new TypedIOPort(this, "writeKey", true, false);
+        writeKey.setTypeEquals(BaseType.STRING);
         new SingletonParameter(writeKey, "_showName").setExpression("true");
 		
         // Set the type constraints.
         keys.setTypeAtLeast(ArrayType.arrayOf(writeKey));
+        readKeyArray.setTypeAtLeast(ArrayType.arrayOf(readKey));
         result.setTypeSameAs(value);
         resultArray.setTypeAtLeast(ArrayType.arrayOf(value));
 
-        _store = new HashMap<Token, Token>();
+        _store = new HashMap<String, Token>();
+        
+        file = new FileParameter(this, "file");
+        updateFile = new Parameter(this, "updateFile");
+        updateFile.setTypeEquals(BaseType.BOOLEAN);
+        updateFile.setExpression("false");
+        
+        loggingDirectory = new FileParameter(this, "loggingDirectory");
     }
 	
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
+        
+    /** If a file is given here, it will be read upon initialization
+     *  (if it exists and can be parsed as an array of arrays of tokens)
+     *  to initialize the dictionary.
+     */
+    public FileParameter file;
     
     /** Upon receiving any token at the triggerKeys port, this actor
      *  will produce on this output an array containing all the keys
      *  of entries in the dictionary. The order is arbitrary.
+     *  The type is array of string.
      */
     public TypedIOPort keys;
     
+    /** If given, a log file will be written to the specified
+     *  directory. 
+     *  A file name can also contain the following strings that start
+     *  with "$", which get substituted
+     *  with the appropriate values.</p>
+     *  <table>
+     *  <tr>
+     *  <th>String</th>
+     *  <th>Description</th>
+     *  <th>Property</th>
+     *  </tr>
+     *  <tr>
+     *  <td><code>$CWD</code></td>
+     *  <td>The current working directory</td>
+     *  <td><code>user.dir</code></td>
+     *  </tr>
+     *  <tr>
+     *  <td><code>$HOME</code></td>
+     *  <td>The user's home directory</td>
+     *  <td><code>user.home</code></td>
+     *  </tr>
+     *  <tr>
+     *  <td><code>$PTII</code></td>
+     *  <td>The home directory of the Ptolemy II installation</td>
+     *  <td><code>ptolemy.ptII.dir</code></td>
+     *  </tr>
+     *  <tr>
+     *  <td><code>$TMPDIR</code></td>
+     *  <td>The temporary directory</td>
+     *  <td><code>java.io.tmpdir</code></td>
+     *  </tr>
+     *  <tr>
+     *  <td><code>$USERNAME</code></td>
+     *  <td>The user's account name</td>
+     *  <td><code>user.name</code></td>
+     *  </tr>
+     *  </table>
+     */
+    public FileParameter loggingDirectory;
+
     /** An input that provides a key for a value to be read from the
      *  dictionary.  If the dictionary does not contain any value
      *  corresponding to this key, then the output will be a nil
-     *  token.
+     *  token. This has type string.
      */
     public TypedIOPort readKey;
 	
@@ -128,6 +204,7 @@ public class Dictionary extends TypedAtomicActor {
      *  corresponding key in the input array. For any key that has no
      *  entry in the dictionary, a nil token will be inserted in the
      *  output array.
+     *  The type is array of string.
      */
     public TypedIOPort readKeyArray;
 	
@@ -146,6 +223,12 @@ public class Dictionary extends TypedAtomicActor {
      *  in the dictionary. The order is arbitrary.
      */
     public TypedIOPort triggerKeys;
+    
+    /** If set to true, and if a <i>file</i> parameter is given, then
+     *  upon each update to the dictionary, the contents of the dictionary
+     *  will be stored in the file.  This defaults to false.
+     */
+    public Parameter updateFile;
 	
     /** Input port for providing a value to store in the dictionary.
      *  The value will be stored only if a writeKey input arrives at
@@ -158,7 +241,7 @@ public class Dictionary extends TypedAtomicActor {
      *  no value on the value port or the value is nil, then the
      *  dictionary entry with the specified key will be
      *  removed. Otherwise, the value provided on the value port will
-     *  be stored indexed by this key.
+     *  be stored indexed by this key. This has type string.
      */
     public TypedIOPort writeKey;
 
@@ -186,7 +269,7 @@ public class Dictionary extends TypedAtomicActor {
             throw exception;
         }
         // Initialize objects.
-        newObject._store = new HashMap<Token, Token>();
+        newObject._store = new HashMap<String, Token>();
 
         return newObject;
     }
@@ -208,7 +291,7 @@ public class Dictionary extends TypedAtomicActor {
     public void fire() throws IllegalActionException {
         super.fire();
         if (writeKey.getWidth() > 0 && writeKey.hasToken(0)) {
-            Token theKey = writeKey.get(0);
+            StringToken theKey = (StringToken)writeKey.get(0);
 
             // Get a value if there is one.
             Token theValue = null;
@@ -217,12 +300,16 @@ public class Dictionary extends TypedAtomicActor {
             }
             if (theValue == null || theValue.isNil()) {
                 // Remove the entry.
-                _store.remove(theKey);
+                Token removed = _store.remove(theKey.stringValue());
                 if (_debugging) {
-                	_debug("Removed key: " + theKey);
+                	if (removed == null) {
+                		_debug("Attempted to remove non-existent key: " + theKey);
+                	} else {
+                		_debug("Removed key: " + theKey);
+                	}
                 }
             } else {
-                _store.put(theKey, theValue);
+                _store.put(theKey.stringValue(), theValue);
                 if (_debugging) {
                 	_debug("Storing key, value: " + theKey + ", " + theValue);
                 }
@@ -232,8 +319,8 @@ public class Dictionary extends TypedAtomicActor {
             value.get(0);
         }
         if (readKey.getWidth() > 0 && readKey.hasToken(0)) {
-            Token theKey = readKey.get(0);
-            Token theResult = _store.get(theKey);
+            StringToken theKey = (StringToken)readKey.get(0);
+            Token theResult = _store.get(theKey.stringValue());
             // NOTE: We choose to output a nil token if the result is not in the store.
             if (theResult != null) {
                 result.send(0, theResult);
@@ -252,7 +339,7 @@ public class Dictionary extends TypedAtomicActor {
             Token[] theResult = new Token[theKeys.length()];
             int i = 0;
             for (Token theKey : theKeys.arrayValue()) {
-                theResult[i] = _store.get(theKey);
+                theResult[i] = _store.get(((StringToken)theKey).stringValue());
                 if (theResult[i] == null) {
                     theResult[i] = Token.NIL;
                 }
@@ -263,25 +350,206 @@ public class Dictionary extends TypedAtomicActor {
         if (triggerKeys.getWidth() > 0 && triggerKeys.hasToken(0)) {
             // Must consume the trigger, or DE will fire me again.
             triggerKeys.get(0);
-            Token[] result = new Token[_store.size()];
+            StringToken[] result = new StringToken[_store.size()];
             int i = 0;
-            for (Token token : _store.keySet()) {
-                result[i] = token;
+            for (String label : _store.keySet()) {
+                result[i] = new StringToken(label);
                 i++;
             }
             keys.send(0,  new ArrayToken(result));
         }
     }
 	
-    /** Clear the dictionary.
+    /** Clear the dictionary. If a <i>file</i> is specified,
+     *  attempt to read it to initialize the dictionary.
+     *  If <i>enableLogging</i> is true, then start logging.
+     *  @exception IllegalActionException If the superclass throws it.
      */
     public void initialize() throws IllegalActionException {
         super.initialize();
+        
+        File directory = loggingDirectory.asFile();
+        if (directory != null) {
+        	// Start logging.
+        	// Leave off the leading period on the file so it doen't get hidden.
+        	_logger = new LoggerListener(getFullName().substring(1), directory);
+        	addDebugListener(_logger);
+        	try {
+				MessageHandler.message("Log file being written to " + directory.getCanonicalPath());
+			} catch (IOException e) {
+				// Ignore.
+			}
+        } else {
+        	if (_logger != null) {
+        		removeDebugListener(_logger);
+        		_logger = null;
+        	}
+        }
+
         _store.clear();
+        
+        File theFile = file.asFile();
+        if (theFile != null && theFile.canRead()) {
+        	BufferedReader reader = file.openForReading();
+        	StringBuffer dictionary = new StringBuffer();
+        	String line;
+			try {
+				line = reader.readLine();
+				while (line != null) {
+					dictionary.append(line);
+					line = reader.readLine();
+				}
+				// FIXME: May want to support JSON formatted input.
+				if (_parser == null) {
+					_parser = new PtParser();
+				}
+				ASTPtRootNode parseTree = _parser.generateParseTree(dictionary.toString());
+
+				if (_parseTreeEvaluator == null) {
+					_parseTreeEvaluator = new ParseTreeEvaluator();
+				}
+
+				if (_scope == null) {
+					_scope = new EmptyScope();
+				}
+
+				Token parsed = _parseTreeEvaluator.evaluateParseTree(parseTree, _scope);
+				
+				if (!(parsed instanceof RecordToken)) {
+					_errorMessage("Initialization file does not evaluate to a Ptolemy II record: " + file.getExpression());
+				}
+				
+				for(String key : ((RecordToken)parsed).labelSet()) {
+					Token value = ((RecordToken)parsed).get(key);
+					_store.put(key, value);
+				}
+				if(_debugging) {
+					_debug("Initialized store from file: " + theFile.getPath());
+				}
+			} catch (Exception e) {
+				// Warning only. Continue without the file.
+				_errorMessage("Failed to initialize store from file: " + theFile.getPath() + " Exception: " + e.toString());
+			} finally {
+				try {
+					reader.close();
+				} catch (IOException e) {
+					_errorMessage("Failed to close initialization file: " + theFile.getPath() + " Exception: " + e.toString());
+				}
+			}
+        } else {
+			if(_debugging) {
+				_debug("Initialization file does not exist or cannot be read.");
+			}
+        }
+    }
+    
+    /** If a <i>file</i> has been specified and <i>updateFile</i> is true, then
+     *  save the current state of the dictionary in the file.
+     *  If the file cannot be written, then dictionary contents will be sent
+     *  to standard out and an exception will be thrown.
+     *  @exception IllegalActionException If the file cannot be written.
+     */
+    public void wrapup() throws IllegalActionException {
+        super.wrapup();
+        
+        File theFile = file.asFile();
+        if (theFile != null && ((BooleanToken)updateFile.getToken()).booleanValue()) {
+        	
+        	// Assemble a record from the current state of the store.
+        	RecordToken record = new RecordToken(_store);
+			try {
+	        	java.io.Writer writer = file.openForWriting();
+	        	writer.write(record.toString());
+				if(_debugging) {
+					_debug("Key-value store written to file: " + theFile.getPath());
+				}
+			} catch (Exception e) {
+				_errorMessage("Failed to update file: " + theFile.getPath() + " Exception: " + e.toString());
+				// Write contents to standard out so it can hopefully be retrieved.
+				System.out.println(record.toString());
+			} finally {
+				file.close();
+			}
+        } else {
+			if(_debugging) {
+				_debug("Dictionary data discarded.");
+			}
+        }
+        if (_logger != null) {
+        	_logger.close();
+        }
+    }
+    
+    ///////////////////////////////////////////////////////////////////
+    ////                         private methods                   ////
+
+    /** Log an error, or send messages to the default MessageHandler
+     *  and debug listeners, if any.
+     *  @param message The message.
+     */
+    private void _errorMessage(String message) {
+		if (_logger != null) {
+			_logger.log(Level.SEVERE, message);
+		} else {
+			MessageHandler.error(message);
+			if(_debugging) {
+				_debug(message);
+			}
+		}
     }
 	
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-    private HashMap<Token, Token> _store;
+    /** The logger to use, if logging is enabled. */
+    private LoggerListener _logger;
+    
+    /** The parser to use. */
+    private PtParser _parser = null;
+
+    /** The parse tree evaluator to use. */
+    private ParseTreeEvaluator _parseTreeEvaluator = null;
+
+    /** The scope for the parser. */
+    private ParserScope _scope = null;
+    
+    /** The store. */
+    private HashMap<String, Token> _store;
+    
+    ///////////////////////////////////////////////////////////////////
+    ////                         inner classes                     ////
+    
+    /** An empty scope to be used when parsing files. */
+    private class EmptyScope extends ModelScope {
+        /** Return null indicating that the attribute does not exist.
+         *  @return Null.
+         */
+        public Token get(String name) throws IllegalActionException {
+            return null;
+        }
+
+        /** Return null indicating that the attribute does not exist.
+         *  @return Null.
+         */
+        public Type getType(String name) throws IllegalActionException {
+            return null;
+        }
+
+        /** Return null indicating that the attribute does not exist.
+         *  @return Null.
+         */
+        public ptolemy.graph.InequalityTerm getTypeTerm(String name)
+                throws IllegalActionException {
+            return null;
+        }
+
+        /** Return the list of identifiers within the scope.
+         *  @return The list of identifiers within the scope.
+         */
+        public Set identifierSet() {
+            return _emptySet;
+        }
+        
+        private Set _emptySet = new HashSet();
+    }
 }
