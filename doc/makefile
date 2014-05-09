@@ -440,6 +440,7 @@ HYVISUAL_DOCS = \
 PTMACHINE_LEARNING_PACKAGES = \
 	com.cureos.numerics \
 	org.ptolemy.machineImprovisation \
+	org.ptolemy.machineLearning \
 	org.ptolemy.machineLearning.hmm \
 	org.ptolemy.machineLearning.hmmAOM \
 	org.ptolemy.machineLearning.hsmm \
