@@ -39,6 +39,7 @@ import ptolemy.data.type.ArrayType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.StringAttribute;
 import ptolemy.kernel.util.Workspace;
 
 /**
@@ -88,6 +89,7 @@ public class Dictionary extends TypedAtomicActor {
 		
         triggerKeys = new TypedIOPort(this, "triggerKeys", true, false);
         new SingletonParameter(triggerKeys, "_showName").setExpression("true");
+        new StringAttribute(triggerKeys, "_cardinal").setExpression("SOUTH");
 
         value = new TypedIOPort(this, "value", true, false);
         new SingletonParameter(value, "_showName").setExpression("true");
@@ -105,11 +107,6 @@ public class Dictionary extends TypedAtomicActor {
 	
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
-
-    /** An output port that produces the entire dictionary as a record
-     *  when an input is received on the <i>readDictionary</i> input.
-     */
-    public TypedIOPort dictionary;
     
     /** Upon receiving any token at the triggerKeys port, this actor
      *  will produce on this output an array containing all the keys
@@ -117,11 +114,6 @@ public class Dictionary extends TypedAtomicActor {
      */
     public TypedIOPort keys;
     
-    /** An input port that triggers outputting the entire dictionary
-     *  as a record on the <i>dictionary</i> output port.
-     */
-    public TypedIOPort readDictionary;
-
     /** An input that provides a key for a value to be read from the
      *  dictionary.  If the dictionary does not contain any value
      *  corresponding to this key, then the output will be a nil
