@@ -78,6 +78,7 @@ JSRCS = \
 	LazyComposite.java \
 	Locatable.java \
 	Location.java \
+	LoggerListener.java \
 	ModelErrorHandler.java \
 	MoMLExportable.java \
 	Moveable.java \
