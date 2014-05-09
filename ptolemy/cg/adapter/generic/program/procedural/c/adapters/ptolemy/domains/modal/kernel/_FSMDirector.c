@@ -145,6 +145,7 @@ bool FSMDirector_DirectorTransferModalOutputs1(struct FSMDirector* director, str
         for (int i = 0; i < port->getWidthInside(port); i++) {
                 if (port->hasTokenInside(port, i)) {
                         Token* t = port->getInside(port, i);
+                        port->sendLocalInside(port, i, t);
                         pblMapAdd(tokensOut, &port, sizeof(struct IOPort*), t, sizeof(Token));
                         result = true;
                 }
