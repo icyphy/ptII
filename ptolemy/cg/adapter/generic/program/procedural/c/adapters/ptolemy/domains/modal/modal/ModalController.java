@@ -111,6 +111,8 @@ public class ModalController
         if(_generateRefinementCode(code)) {
             // Transfer the outputs from the refinement to modal model
             code.append(_eol + "director->directorTransferModalOutputs(director);" + _eol);
+        } else {
+            code.append(_eol + "director->transferModalOutputs(pblMapNewHashMap());" + _eol);
         }
 
         // Generate code for non-preemptive transition

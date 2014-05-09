@@ -311,7 +311,6 @@ public class FSMActor extends NamedProgramCodeGeneratorAdapter {
                         NamedObj destination = action
                                 .getDestination(destinationName);
 
-                        codeBuffer.append(destinationName + " = " + modalName + "get_" + destinationName + "();" + _eol);
                         // String destinationNameWithoutController = destinationName;
                         //                         int controllerIndex = -1;
                         //                         String controllerString = "_Controller_";
@@ -384,52 +383,57 @@ public class FSMActor extends NamedProgramCodeGeneratorAdapter {
                                 //codeBuffer.append("System.out.println(\"ref" + i + "\");" + _eol);
                                 //codeBuffer.append("$ref(" + destinationName
                                 //        + "#" + i + ") = ");
-                                codeBuffer.append("$putLocalInside(" + destinationName
-                                        + "#" + i + ", ");
-
-                                //sendCode.append("$send(" + destinationName
-                                //        + ", " + i + ")" + _eol);
-
-                                // During choice action, an output
-                                // port receives token sent by itself
-                                // when it is also an input port,
-                                // i.e., when this FSMActor is used as
-                                // a modal controller.
-                                
-                                /*
-                                if (((IOPort) destination).isInput()) {
-                                    //ComponentCodeGenerator containerHelper = _getHelper(((IOPort) destination)
-                                    //      .getContainer().getContainer());
-
-                                    NamedProgramCodeGeneratorAdapter containerHelper = (NamedProgramCodeGeneratorAdapter) getCodeGenerator()
-                                            .getAdapter(
-                                                    ((IOPort) destination)
-                                                            .getContainer()
-                                                            .getContainer());
-
-                                    StringBuffer containerReference = new StringBuffer();
-
-                                    //containerReference.append("$ref("
-                                    //        + generateSimpleName(destination));
-                                    containerReference.append("$get("
-                                            + generateSimpleName(destination));
-
-                                    if (((IOPort) destination).isMultiport()) {
-                                        containerReference.append("#" + i);
-                                    }
-
-                                    containerReference.append(")");
-
-                                    codeBuffer.append(containerHelper
-                                            .processCode(containerReference
-                                                    .toString())
-                                            + " = ");
-
-                                    //sendCode.append("$send("
-                                    //        + generateSimpleName(destination)
+                                if (fsmActor instanceof ptolemy.domains.modal.modal.ModalController) {
+                                    codeBuffer.append("$putLocalInside(" + destinationName
+                                            + "#" + i + ", ");
+                                } else {
+                                    codeBuffer.append("$put(" + destinationName
+                                            + "#" + i + ", ");
+            
+                                    //sendCode.append("$send(" + destinationName
                                     //        + ", " + i + ")" + _eol);
+            
+                                    // During choice action, an output
+                                    // port receives token sent by itself
+                                    // when it is also an input port,
+                                    // i.e., when this FSMActor is used as
+                                    // a modal controller.
+                                    
+                                    
+                                    if (((IOPort) destination).isInput()) {
+                                        //ComponentCodeGenerator containerHelper = _getHelper(((IOPort) destination)
+                                        //      .getContainer().getContainer());
+            
+                                        NamedProgramCodeGeneratorAdapter containerHelper = (NamedProgramCodeGeneratorAdapter) getCodeGenerator()
+                                                .getAdapter(
+                                                        ((IOPort) destination)
+                                                                .getContainer()
+                                                                .getContainer());
+            
+                                        StringBuffer containerReference = new StringBuffer();
+            
+                                        //containerReference.append("$ref("
+                                        //        + generateSimpleName(destination));
+                                        containerReference.append("$get("
+                                                + generateSimpleName(destination));
+            
+                                        if (((IOPort) destination).isMultiport()) {
+                                            containerReference.append("#" + i);
+                                        }
+            
+                                        containerReference.append(")");
+            
+                                        codeBuffer.append(containerHelper
+                                                .processCode(containerReference
+                                                        .toString())
+                                                + " = ");
+            
+                                        //sendCode.append("$send("
+                                        //        + generateSimpleName(destination)
+                                        //        + ", " + i + ")" + _eol);
+                                    }
                                 }
-                                */
+                                
                             }
                         }
                         ParseTreeCodeGenerator parseTreeCodeGenerator = getTemplateParser()
