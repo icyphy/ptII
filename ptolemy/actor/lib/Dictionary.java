@@ -106,11 +106,21 @@ public class Dictionary extends TypedAtomicActor {
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
 
+    /** An output port that produces the entire dictionary as a record
+     *  when an input is received on the <i>readDictionary</i> input.
+     */
+    public TypedIOPort dictionary;
+    
     /** Upon receiving any token at the triggerKeys port, this actor
      *  will produce on this output an array containing all the keys
      *  of entries in the dictionary. The order is arbitrary.
      */
     public TypedIOPort keys;
+    
+    /** An input port that triggers outputting the entire dictionary
+     *  as a record on the <i>dictionary</i> output port.
+     */
+    public TypedIOPort readDictionary;
 
     /** An input that provides a key for a value to be read from the
      *  dictionary.  If the dictionary does not contain any value
@@ -206,8 +216,13 @@ public class Dictionary extends TypedAtomicActor {
     public void fire() throws IllegalActionException {
         super.fire();
         if (writeKey.getWidth() > 0 && writeKey.hasToken(0)) {
-            Token theValue = value.get(0);
             Token theKey = writeKey.get(0);
+
+            // Get a value if there is one.
+            Token theValue = null;
+            if (value.getWidth() > 0 && value.hasToken(0)) {
+            	theValue = value.get(0);
+            }
             if (theValue == null || theValue.isNil()) {
                 // Remove the entry.
                 _store.remove(theKey);
