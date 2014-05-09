@@ -88,10 +88,10 @@ $PTII/bin/ptcg -language c $PTII/ptolemy/domains/modal/test/auto/Case2.xml
 # Done. This works and has been added to the tests
 #$PTII/bin/ptcg -language c $PTII/ptolemy/domains/modal/test/auto/DeepModal2.xml
 
-# Fails to compile, could be easy.
+# May, 2014: used to fail to compile, now: Test received only -1 tokens, yet the correctValues parameter was expecting 20 tokens, exiting.
 $PTII/bin/ptcg -language c $PTII/ptolemy/domains/modal/test/auto/DeepModal3.xml
 
-# Fails to compile.
+# May, 2014: used to fail to compile, now: Test received only -1 tokens, yet the correctValues parameter was expecting 20 tokens, exiting.
 $PTII/bin/ptcg -language c $PTII/ptolemy/domains/modal/test/auto/DeepModal4.xml
 
 # Wait on this one, it is a test that expects an Exception.
@@ -129,7 +129,7 @@ $PTII/bin/ptcg -language c $PTII/ptolemy/domains/modal/test/auto/HysteresisWithD
 $PTII/bin/ptcg -language c $PTII/ptolemy/domains/modal/test/auto/HysteresisWithDefault2.xml
 
 
-# Possibly ok, it prints "No token to return ! : IOPort_Get"?
+# Used to be: Possibly ok, it prints "No token to return ! : IOPort_Get"?, May 2014: parsing fails
 $PTII/bin/ptcg -language c $PTII/ptolemy/domains/modal/test/auto/InitialOutputs.xml
 
 # Needs cg version of BooleanToAnything. Was: Needs cg version of actor.lib.Bernoulli
@@ -169,7 +169,7 @@ $PTII/bin/ptcg -language c $PTII/ptolemy/domains/modal/test/auto/modalModel2.xml
 # Needs cg version of actor.lib.FileWriter. Probably will fail to compile because files are not generated.
 $PTII/bin/ptcg -language c $PTII/ptolemy/domains/modal/test/auto/modalModel3.xml
 
-# Fails to compile
+# Fails to compile: May, 2014: model1_fsm_actor_port_isPresent’ undeclared (first use in this function)
 $PTII/bin/ptcg -language c $PTII/ptolemy/domains/modal/test/auto/model1.xml
 
 # Fails to generate code: Receiver not found in port.
@@ -189,7 +189,7 @@ $PTII/bin/ptcg -language c $PTII/ptolemy/domains/modal/test/auto/test-direct-in-
 # Fails to compile: Was: Cannot find randomBlock(). Was: Needs cg version of actor.lib.Gaussian
 $PTII/bin/ptcg -language c $PTII/doc/books/systems/fsm/test/auto/HierarchicalFSM.xml
 
-# Segfaults while getting a token from a port. Was: Has a problem with X_COMA_X.  Probably the TemplateParser.unescapeName() is not being run?  Was: Cannot find randomBlock(). Was: Needs cg version of actor.lib.Gaussian
+# May, 2014: Now has incorrect result.  Was: Segfaults while getting a token from a port. Was: Has a problem with X_COMA_X.  Probably the TemplateParser.unescapeName() is not being run?  Was: Cannot find randomBlock(). Was: Needs cg version of actor.lib.Gaussian
 $PTII/bin/ptcg -language c $PTII/doc/books/systems/fsm/test/auto/HierarchicalFSM_Flattened.xml
 
 # Needs fixes for privateSeed.  Was: Needs cg version of actor.lib.Gaussian
