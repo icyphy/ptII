@@ -332,46 +332,51 @@ public class FSMActor extends NamedProgramCodeGeneratorAdapter {
                         if (channel >= 0) {
                             //codeBuffer.append("$ref(" + destinationName + "#"
                             //        + channel + ") = ");
-                            codeBuffer.append("$put(" + destinationName + "#"
-                                    + channel + ", ");
-
-                            // During choice action, an output port
-                            // receives token sent by itself when it
-                            // is also an input port, i.e., when this
-                            // FSMActor is used as a modal controller.
-
-                            if (((IOPort) destination).isInput()) {
-                                //ComponentCodeGenerator containerHelper = _getHelper(((IOPort) destination)
-                                //      .getContainer().getContainer());
-
-                                NamedProgramCodeGeneratorAdapter containerHelper = (NamedProgramCodeGeneratorAdapter) getCodeGenerator()
-                                        .getAdapter(
-                                                ((IOPort) destination)
-                                                        .getContainer()
-                                                        .getContainer());
-
-                                StringBuffer containerReference = new StringBuffer();
-
-                                //codeBuffer.append("System.out.println(\"B\");");
-                                //containerReference.append("$ref("
-                                //        + generateSimpleName(destination));
-
-                                containerReference.append("$get("
-                                        + generateSimpleName(destination));
-
-                                if (((IOPort) destination).isMultiport()) {
-                                    containerReference.append("#" + channel);
+                            if (fsmActor instanceof ptolemy.domains.modal.modal.ModalController) {
+                                codeBuffer.append("$putLocalInside(" + destinationName + "#"
+                                        + channel + ", ");
+                            } else {
+                                codeBuffer.append("$put(" + destinationName + "#"
+                                        + channel + ", ");
+    
+                                // During choice action, an output port
+                                // receives token sent by itself when it
+                                // is also an input port, i.e., when this
+                                // FSMActor is used as a modal controller.
+    
+                                if (((IOPort) destination).isInput()) {
+                                    //ComponentCodeGenerator containerHelper = _getHelper(((IOPort) destination)
+                                    //      .getContainer().getContainer());
+    
+                                    NamedProgramCodeGeneratorAdapter containerHelper = (NamedProgramCodeGeneratorAdapter) getCodeGenerator()
+                                            .getAdapter(
+                                                    ((IOPort) destination)
+                                                            .getContainer()
+                                                            .getContainer());
+    
+                                    StringBuffer containerReference = new StringBuffer();
+    
+                                    //codeBuffer.append("System.out.println(\"B\");");
+                                    //containerReference.append("$ref("
+                                    //        + generateSimpleName(destination));
+    
+                                    containerReference.append("$get("
+                                            + generateSimpleName(destination));
+    
+                                    if (((IOPort) destination).isMultiport()) {
+                                        containerReference.append("#" + channel);
+                                    }
+    
+                                    containerReference.append(")");
+    
+                                    codeBuffer.append(containerHelper
+                                            .processCode(containerReference
+                                                    .toString())
+                                            + " = ");
+    
+                                    sendCode.append("$send(" + destinationName
+                                            + ", " + channel + ")" + _eol);
                                 }
-
-                                containerReference.append(")");
-
-                                codeBuffer.append(containerHelper
-                                        .processCode(containerReference
-                                                .toString())
-                                        + " = ");
-
-                                sendCode.append("$send(" + destinationName
-                                        + ", " + channel + ")" + _eol);
                             }
                         } else { // broadcast
 
