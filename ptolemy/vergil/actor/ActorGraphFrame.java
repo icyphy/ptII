@@ -35,10 +35,8 @@ import java.awt.event.KeyEvent;
 import java.awt.geom.Rectangle2D;
 import java.io.BufferedReader;
 import java.io.File;
-import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.StringWriter;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Iterator;
 import java.util.List;
@@ -51,8 +49,6 @@ import javax.swing.JMenuItem;
 import javax.swing.KeyStroke;
 import javax.xml.transform.Source;
 import javax.xml.transform.Transformer;
-import javax.xml.transform.TransformerConfigurationException;
-import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
@@ -82,6 +78,7 @@ import ptolemy.kernel.util.NamedObj;
 import ptolemy.moml.LibraryAttribute;
 import ptolemy.moml.MoMLChangeRequest;
 import ptolemy.util.CancelException;
+import ptolemy.util.FileUtilities;
 import ptolemy.util.MessageHandler;
 import ptolemy.vergil.basic.AbstractBasicGraphModel;
 import ptolemy.vergil.basic.BasicGraphPane;
@@ -925,8 +922,8 @@ public class ActorGraphFrame extends ExtendedGraphFrame
                 String initialLastEntityClassName) {
             super("Import Accessor");
             _graphFrame = graphFrame;
-            putValue("tooltip", "Instantiate an entity by class name");
-            putValue(GUIUtilities.MNEMONIC_KEY, Integer.valueOf(KeyEvent.VK_E));
+            putValue("tooltip", "Instantiate an accessor");
+            // putValue(GUIUtilities.MNEMONIC_KEY, Integer.valueOf(KeyEvent.VK_E));
         }
         
         /** The graph frame that contains this action. */
@@ -935,7 +932,7 @@ public class ActorGraphFrame extends ExtendedGraphFrame
         /** The URL of the accessor. */
         private String _url;
         
-        /** Import an accessor. Accessors can be of js or moml format.
+        /** Import an accessor.
          */
         @Override
         public void actionPerformed(ActionEvent e) {
@@ -944,7 +941,7 @@ public class ActorGraphFrame extends ExtendedGraphFrame
             query.addLine("URL", "URL", _url);
 
             ComponentDialog dialog = new ComponentDialog(_graphFrame,
-                    "Instantiate Entity", query);
+                    "Instantiate Accessor", query);
 
             if (dialog.buttonPressed().equals("OK")) {
                 // Get the associated Ptolemy model.
@@ -969,39 +966,26 @@ public class ActorGraphFrame extends ExtendedGraphFrame
                     
                     BufferedReader in = new BufferedReader(
                             new InputStreamReader(url.openStream()));
-                    StringBuffer file = new StringBuffer();
+                    StringBuffer contents = new StringBuffer();
                     while ((input = in.readLine()) != null) {
-                        file.append(input);
+                        contents.append(input);
                     }
                     
-                    // if file is a java script accessor
-                    if (file.toString().contains("extends=\"org.terraswarm.kernel.JavaScript\"")) {
-                        TransformerFactory factory = TransformerFactory.newInstance();
-                        Source xslt = new StreamSource(new File("org/terraswarm/kernel/XMLJStoMOML.xslt"));
-                        Transformer transformer = factory.newTransformer(xslt); 
-                        StreamSource source = new StreamSource(new InputStreamReader(url.openStream()));
-                        StringWriter outWriter = new StringWriter();
-                        StreamResult result = new StreamResult( outWriter );
-                         transformer.transform(source, result);
-                        file = outWriter.getBuffer(); 
-                    } else {
-                        // assume moml 
-                    }
+                    TransformerFactory factory = TransformerFactory.newInstance();
+                    String xsltLocation = "$CLASSPATH/org/terraswarm/kernel/XMLJStoMOML.xslt";
+                    Source xslt = new StreamSource(FileUtilities.nameToFile(xsltLocation, null));
+                    Transformer transformer = factory.newTransformer(xslt); 
+                    StreamSource source = new StreamSource(new InputStreamReader(url.openStream()));
+                    StringWriter outWriter = new StringWriter();
+                    StreamResult result = new StreamResult( outWriter );
+                    transformer.transform(source, result);
+                    contents = outWriter.getBuffer(); 
                     
-                    buffer.append(file);
+                    buffer.append(contents);
                     in.close();
-                } catch (MalformedURLException e1) {
-                    // TODO Auto-generated catch block
-                    e1.printStackTrace();
-                } catch (IOException e1) {
-                    // TODO Auto-generated catch block
-                    e1.printStackTrace();
-                } catch (TransformerConfigurationException e1) {
-                    // TODO Auto-generated catch block
-                    e1.printStackTrace();
-                } catch (TransformerException e1) {
-                    // TODO Auto-generated catch block
-                    e1.printStackTrace();
+                } catch (Exception e1) {
+                	MessageHandler.error("Failed to import accessor.", e1);
+                    return;
                 }
                 buffer.append("</group>\n");
                 
@@ -1012,7 +996,6 @@ public class ActorGraphFrame extends ExtendedGraphFrame
                 context.requestChange(request);
             }
         }
-        
     }
 
     ///////////////////////////////////////////////////////////////////
