@@ -53,6 +53,7 @@ import org.mozilla.javascript.WrappedException;
 
 import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.TypedIOPort;
+import ptolemy.actor.parameters.ParameterPort;
 import ptolemy.actor.parameters.PortParameter;
 import ptolemy.data.ActorToken;
 import ptolemy.data.ArrayToken;
@@ -597,11 +598,19 @@ public class JavaScript extends TypedAtomicActor {
     				return _wrapToken(port.get(channelNumber));
     			} catch (KernelException e) {
         			throw new InternalErrorException(JavaScript.this, e,
-        					"Failed to send output via port " + port.getName() + ".");
+        					"Failed to get input via port " + port.getName() + ".");
+    			}
+    		} else if (unwrappedPort instanceof PortParameter) {
+        		try {
+        			PortParameter parameter = (PortParameter)unwrappedPort;
+    				return _wrapToken(parameter.getToken());
+    			} catch (KernelException e) {
+        			throw new InternalErrorException(JavaScript.this, e,
+        					"Failed to get value of " + ((PortParameter)unwrappedPort).getName() + ".");
     			}
     		} else {
     			throw new InternalErrorException(JavaScript.this, null,
-    					"First argument of send() must be an output port. It is " + unwrappedPort.toString() + ".");
+    					"First argument of get() must be an input port. It is " + unwrappedPort.toString() + ".");
     		}
     	}
 
