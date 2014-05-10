@@ -293,7 +293,7 @@ public class HSMMGaussianEstimator extends HSMMParameterEstimator {
     protected void _iterateEM() {
 
         newEstimates = HSMMAlphaBetaRecursion(_observations, _transitionMatrix,
-                _priorIn, 0, _durationPriors);
+                _priorIn, 0);
         m_new = (double[]) newEstimates.get("mu_hat");
         s_new = (double[]) newEstimates.get("s_hat");
         A_new = (double[][]) newEstimates.get("A_hat");
