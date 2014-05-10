@@ -30,6 +30,7 @@ package org.ptolemy.machineLearning.hsmm;
 
 import java.util.Arrays;
 
+import ptolemy.actor.NoRoomException;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.data.ArrayToken;
 import ptolemy.data.DoubleMatrixToken;
@@ -174,6 +175,7 @@ public class HSMMGaussianEstimator extends HSMMParameterEstimator {
         Token[] pTokens = new Token[_nStates];
         Token[] cTokens = new Token[_nObservations];
         Token[] dTokens = new Token[_maxDuration];
+        Token[] lTokens = new Token[_likelihoodHistory.size()];
 
         for (int i = 0; i < _nStates; i++) {
             mTokens[i] = new DoubleToken(m_new[i]);
@@ -187,13 +189,20 @@ public class HSMMGaussianEstimator extends HSMMParameterEstimator {
         for(int i = 0; i < _nObservations; i++){
             cTokens[i] = new IntToken(clusters[i]);
         }
+        
+        for(int i=0; i < lTokens.length; i++){
+            lTokens[i] = new DoubleToken(_likelihoodHistory.get(i));
+        }
+        _likelihoodHistory.clear();
+        
         mean.send(0, new ArrayToken(mTokens));
         standardDeviation.send(0, new ArrayToken(sTokens));
         transitionMatrix.send(0, new DoubleMatrixToken(A_new));
         priorEstimates.send(0, new ArrayToken(pTokens));
         durationEstimates.send(0, new DoubleMatrixToken(D_new));
         clusterAssignments.send(0, new ArrayToken(cTokens));
-        durationPriorEstimates.send(0, new ArrayToken(dTokens));
+        durationPriorEstimates.send(0, new ArrayToken(dTokens)); 
+        modelLikelihood.send(0, new ArrayToken(lTokens));
         // broadcast best-effort parameter estimates
 
     }
@@ -209,8 +218,15 @@ public class HSMMGaussianEstimator extends HSMMParameterEstimator {
 
     protected boolean _checkForConvergence(int iterations) {
 
-        if ((m_new[0] != m_new[0]) || (s_new[0] != s_new[0])
-                || (A_new[0] != A_new[0]) || (prior_new[0] != prior_new[0])) {
+        boolean nanDetected = false;
+        for( int i = 0; i < m_new.length; i++){
+            if ((m_new[i] != m_new[i]) || (s_new[i] != s_new[i])
+                    || (A_new[i][i] != A_new[i][i]) || (prior_new[i] != prior_new[i]) ||(D_new[i]!=D_new[i])) {
+                nanDetected = true;
+                break;
+            }
+        }
+        if (nanDetected) {
             // if no convergence in 10 iterations, issue warning message.
             if ((iterations >= _nIterations - 1)) {
                 // return the guess parameters
@@ -218,6 +234,8 @@ public class HSMMGaussianEstimator extends HSMMParameterEstimator {
                 s_new = _sigma0;
                 A_new = _A0;
                 prior_new = _priors;
+                _D = _D0;
+                _durationPriors = _dPriors0;
                 System.out
                         .println("Expectation Maximization failed to converge");
                 return false;
@@ -248,6 +266,10 @@ public class HSMMGaussianEstimator extends HSMMParameterEstimator {
                 // sort arrays
                 Arrays.sort(m_new);
                 prior_new = _priors;
+            }else{
+                System.out
+                .println("At least one parameter value is unstable!");
+                return false;
             }
         }
         return true;
@@ -279,7 +301,7 @@ public class HSMMGaussianEstimator extends HSMMParameterEstimator {
         dPrior_new = (double[]) newEstimates.get("pi_d_hat");
         likelihood = (Double) (newEstimates.get("likelihood"));
         D_new = (double[][]) newEstimates.get("D_hat");
-        clusters = (int[]) newEstimates.get("clusterAssignments");
+        clusters = (int[]) newEstimates.get("clusterAssignments"); 
         //System.out.println("Likelihood= " + likelihood);
     }
 
@@ -287,7 +309,7 @@ public class HSMMGaussianEstimator extends HSMMParameterEstimator {
         _transitionMatrix = A_new;
         _sigma = s_new;
         _mu = m_new;
-        _priorIn = _priors; // set to the original priors
+        _priorIn = prior_new; // set to the original priors
         _D = D_new;
         _durationPriors = dPrior_new;
     }
@@ -296,6 +318,7 @@ public class HSMMGaussianEstimator extends HSMMParameterEstimator {
     private double[] _mu0 = null;
     private double[] _sigma = null;
     private double[] _sigma0 = null; 
+    
 
     // EM Specific Parameters
     private double[][] A_new = null;
