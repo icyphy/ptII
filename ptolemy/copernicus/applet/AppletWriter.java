@@ -1029,14 +1029,15 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
     private static String _checkForJNLPExtensions(String jarFileName) {
         StringBuffer result = new StringBuffer();
         if (jarFileName.contains("ptolemy/actor/lib/jai/jai.jar")) {
-            result.append("    <extension href=\"http://download.java.net/media/jai-imageio/webstart/release/jai-imageio-1.1-latest.jnlp\"/>\n");
+            //result.append("    <extension href=\"http://download.java.net/media/jai-imageio/webstart/release/jai-imageio-1.1-latest.jnlp\"/>\n");
+            result.append("    <extension href=\"http://ptolemy.eecs.berkeley.edu/ptolemyII/jai/jai-1.1.3-latest.jnlp\"/>\n");
         }
         if (jarFileName.contains("ptolemy/actor/lib/jmf/jmf.jar")) {
             result.append("<jar href=\"http://cvs588.gsfc.nasa.gov/WebStartiliads/dev/lib/jmf/JMF-2.1.1e/lib/customizer.jar\"/>\n    <jar href=\"http://cvs588.gsfc.nasa.gov/WebStartiliads/dev/lib/jmf/JMF-2.1.1e/lib/jmf.jar\"/>\n    <jar href=\"http://cvs588.gsfc.nasa.gov/WebStartiliads/dev/lib/jmf/JMF-2.1.1e/lib/mediaplayer.jar\"/>\n   <jar href=\"http://cvs588.gsfc.nasa.gov/WebStartiliads/dev/lib/jmf/JMF-2.1.1e/lib/multiplayer.jar\"/>\n");
         }
-        if (jarFileName.contains("ptolemy/domains/gr/gr.jar")) {
-            result.append("   <extension href=\"http://ptolemy.org/ptolemyII/java3d/java3d-1.5.0.jnlp\"/>\n");
-        }
+        //if (jarFileName.contains("ptolemy/domains/gr/gr.jar")) {
+        //    result.append("   <extension href=\"http://ptolemy.org/ptolemyII/java3d/java3d-1.5.2.jnlp\"/>\n");
+        //}
         return result.toString();
     }
 
@@ -1545,7 +1546,6 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
         auxiliaryJarMap.put("ptolemy.domains.space.Room", spaceJar);
 
         String sdfJar = "ptolemy/domains/sdf/sdf.jar";
-        auxiliaryJarMap.put("ptolemy.domains.pthales.kernel.PthalesDirector", sdfJar);
 
         auxiliaryJarMap.put("ptolemy.vergil.actor.lib.LEDMatrix",
                 "ptolemy/vergil/vergilApplet.jar");
@@ -1714,6 +1714,11 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
         if (jarFilesThatHaveBeenRequired
                 .contains("ptolemy/domains/psdf/psdf.jar")) {
             auxiliaryClassMap.put("psdf requires mapss", "lib/mapss.jar");
+        }
+
+        if (jarFilesThatHaveBeenRequired
+                .contains("ptolemy/domains/pthales/pthales.jar")) {
+            auxiliaryClassMap.put("pthales requires sdf", "ptolemy/domains/sdf/sdf.jar");
         }
 
         if (jarFilesThatHaveBeenRequired
