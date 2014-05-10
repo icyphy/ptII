@@ -382,8 +382,8 @@ $(PTIIDIST):
 	#
 	# ptolemy/domains
 	#
-	# Remove metroII and openmodelica from domains/makefile
-	egrep -v "metroII|openmodelica" \
+	# Remove coroutine, metroII and openmodelica from domains/makefile
+	egrep -v "coroutine|metroII|openmodelica" \
 		< $(PTIIDIST)/ptolemy/domains/makefile \
 		> $(PTIIDIST)/ptolemy/domains/makefile_tmp
 	mv $(PTIIDIST)/ptolemy/domains/makefile_tmp \
@@ -633,7 +633,6 @@ PTII_SRC_TO_BE_REMOVED = \
 		ptolemy/actor/lib/test/Const.txt \
 		ptolemy/actor/lib/test/ReadFile1Output.txt \
 		ptolemy/component \
-		ptolemy/configs/ptserver \
 		ptolemy/domains/coroutine \
 		ptolemy/domains/fmi \
 		ptolemy/vergil/basic/imprt/fmu/ImportFMUAsJavaFMUAction.java \

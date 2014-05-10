@@ -238,7 +238,6 @@ ptolemy/domains/wireless/lib/tinyOS
 ptolemy/domains/wireless/demo/MACProtocolModel
 ptolemy/domains/wireless/demo/Network
 ptolemy/domains/wireless/demo/network
-ptolemy/homer
 ptolemy/kernel/test/TestSerializable.data
 ptolemy/kernel/util/LibraryMarkerAttribute.java
 ptolemy/kernel/util/UserSettable.java
