@@ -144,6 +144,7 @@ public class Manager extends NamedObj implements Runnable {
      */
     public Manager() {
         super();
+        _registerShutdownHook();
     }
 
     /** Construct a manager in the default workspace with the given name.
@@ -155,6 +156,7 @@ public class Manager extends NamedObj implements Runnable {
      */
     public Manager(String name) throws IllegalActionException {
         super(name);
+        _registerShutdownHook();
     }
 
     /** Construct a manager in the given workspace with the given name.
@@ -170,6 +172,7 @@ public class Manager extends NamedObj implements Runnable {
     public Manager(Workspace workspace, String name)
             throws IllegalActionException {
         super(workspace, name);
+        _registerShutdownHook();
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -1473,6 +1476,12 @@ public class Manager extends NamedObj implements Runnable {
      *  @see ptolemy.kernel.CompositeEntity#statistics(String)
      */
     public static int minimumStatisticsTime = 10000;
+    
+    /** The amount of time to allow for the model to terminate
+     *  gracefully before shutting it down when the JVM is shut down
+     *  due to control-C, user logging out, etc.
+     */
+    public static long SHUTDOWN_TIME = 30000L;
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
@@ -1551,6 +1560,31 @@ public class Manager extends NamedObj implements Runnable {
                 }
             }
         }
+    }
+    
+    /** Register a shutdown hook to gracefully stop the execution of a model
+     *  if the JVM is shut down (by control-C, the user logging out, etc.)
+     */
+    protected void _registerShutdownHook() {
+        Runtime.getRuntime().addShutdownHook(new Thread() {
+            @Override
+            public void run() {
+                if (_state != IDLE) {
+                	System.out.println("********** Waiting for model to stop.");
+                }
+                finish();
+                if (_thread != null && _thread.isAlive()) {
+                	try {
+                		// This seems dangerous. Could prevent the process
+                		// from dying. We use a timeout here of 30 seconds.
+						_thread.join(SHUTDOWN_TIME);
+					} catch (InterruptedException e) {
+						// Failed to stop the thread.
+						e.printStackTrace();
+					}
+                }
+            }
+        });
     }
 
     /** Set the state of execution and notify listeners if the state
