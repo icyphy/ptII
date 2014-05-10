@@ -259,7 +259,7 @@ public class Dictionary extends TypedAtomicActor {
 
         try {
             // Set the type constraints.
-            newObject.readKeyArray.setTypeAtLeast(ArrayType.ARRAY_BOTTOM);
+	    newObject.readKeyArray.setTypeAtLeast(ArrayType.arrayOf(newObject.readKey));
             newObject.keys.setTypeAtLeast(ArrayType.arrayOf(newObject.writeKey));
             newObject.result.setTypeSameAs(newObject.value);
             newObject.resultArray.setTypeAtLeast(ArrayType.arrayOf(newObject.value));
