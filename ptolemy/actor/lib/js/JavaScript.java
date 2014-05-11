@@ -53,7 +53,6 @@ import org.mozilla.javascript.WrappedException;
 
 import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.TypedIOPort;
-import ptolemy.actor.parameters.ParameterPort;
 import ptolemy.actor.parameters.PortParameter;
 import ptolemy.data.ActorToken;
 import ptolemy.data.ArrayToken;
