@@ -67,6 +67,12 @@ public class FMIRealType extends FMIType {
             // If there is no start attribute, then set the value to NaN.
             start = Double.NaN;
         }
+        if (element.hasAttribute("nominal")) {
+            nominal = Double.valueOf(element.getAttribute("nominal"));
+        } else {
+            // If there is no nominal attribute, then set the value to NaN.
+            nominal = Double.NaN;
+        }
         // The derivative is an attribute of element "Real"
         if (element.hasAttribute("derivative")) {
             String derivative = element.getAttribute("derivative");
@@ -101,4 +107,7 @@ public class FMIRealType extends FMIType {
 
     /** The starting value of this real. */
     public Double start;
+    
+    /** The nominal value of this real. */
+    public Double nominal;
 }
