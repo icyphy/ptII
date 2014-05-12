@@ -161,7 +161,7 @@ public class FMIScalarVariable {
             String attribute = element.getAttribute("variability");
 
             // FIXME: Check this for 2.0:
-            String choices = "constant, continuous, fixed, discrete or parameter.";
+            String choices = "constant, continuous, fixed, discrete or tunable.";
             if (fmiModelDescription.fmiVersion.compareTo("2.0") < 0) {
                 choices = "constant, continuous, discrete or parameter.";
             }
@@ -174,12 +174,16 @@ public class FMIScalarVariable {
                 variability = Variability.continuous;
             } else if (attribute.equals("discrete")) {
                 variability = Variability.discrete;
-            } else if (attribute.equals("fixed")) {
+            } 
+            else if (attribute.equals("parameter")) {
+                variability = Variability.parameter;
+            }    
+            else if (attribute.equals("fixed")) {
                 // FMI-2.0
                 _fmi2AttributeCheck(fmiModelDescription, attribute, message);
                 variability = Variability.fixed;
-            } else if (attribute.equals("parameter")) {
-                variability = Variability.parameter;
+            } else if (attribute.equals("tunable")) {
+                variability = Variability.tunable;
             } else {
                 throw new IllegalArgumentException("variability \"" + attribute
                         + "\"" + message);
@@ -461,11 +465,14 @@ public class FMIScalarVariable {
          *  and at event instances.
          */
         discrete,
-        /** FMI-2.0. */
-        fixed,
         /** The value does not change after initialization.
          */
-        parameter
+        parameter,
+        /** FMI-2.0. */
+        fixed,
+        /** The value is constant between external events.
+         */
+        tunable
     }
 
     ///////////////////////////////////////////////////////////////////
