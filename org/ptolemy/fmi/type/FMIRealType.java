@@ -70,8 +70,9 @@ public class FMIRealType extends FMIType {
         if (element.hasAttribute("nominal")) {
             nominal = Double.valueOf(element.getAttribute("nominal"));
         } else {
-            // If there is no nominal attribute, then set the value to NaN.
-            nominal = Double.NaN;
+            // If there is no nominal attribute, then set the default value of 1.0.
+            // See page 90 of the FMI RC1 specification.
+            nominal = 1.0;
         }
         // The derivative is an attribute of element "Real"
         if (element.hasAttribute("derivative")) {
