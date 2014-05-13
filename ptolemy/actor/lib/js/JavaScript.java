@@ -827,8 +827,6 @@ public class JavaScript extends TypedAtomicActor {
                         response = oAuthClient.accessToken(request); 
                         
                 } catch (OAuthSystemException ex) {
-                    // "Multi-catch statement is not supported with -source 1.6"
-                    // We build with java 1.6 compatibility so that we can support Java on the Mac.
                     throw new IllegalActionException(null, ex, "Could not build OAuth request message.");
                 } catch (OAuthProblemException ex2) {
                     throw new IllegalActionException(null, ex2, "Could not build OAuth request message.");
@@ -853,8 +851,6 @@ public class JavaScript extends TypedAtomicActor {
                     OAuthClient client = new OAuthClient(new URLConnectionClient());
                     resourceResponse = client.resource(bearerClientRequest, OAuth.HttpMethod.GET, OAuthResourceResponse.class);
             } catch (OAuthSystemException ex) {
-                // "Multi-catch statement is not supported with -source 1.6"
-                // We build with java 1.6 compatibility so that we can support Java on the Mac.
                 throw new IllegalActionException(null, ex, "Could not connect to resource server: " + ex.getMessage());
             } catch (OAuthProblemException ex2) {
                 throw new IllegalActionException(null, ex2, "Could not connect to resource server: " + ex2.getMessage());
@@ -862,11 +858,14 @@ public class JavaScript extends TypedAtomicActor {
             if(resourceResponse!=null)  {  
                     if(resourceResponse.getResponseCode()==200)  {                   
                             return resourceResponse.getBody();
+                    }  else  { 
+                            return "Could not access resource: " + 
+                                    resourceResponse.getResponseCode() + " " + 
+                                    resourceResponse.getBody();
                     }
+            }  else  {
+                    throw new IllegalActionException("Could not execute resource access request.");
             }
-            return "Could not access resource: " + 
-                    resourceResponse.getResponseCode() + " " + 
-                    resourceResponse.getBody();
         }
     	
         /**
