@@ -27,6 +27,7 @@
  */
 package ptolemy.actor.lib.js;
 
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -39,6 +40,17 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.apache.oltu.oauth2.client.OAuthClient;
+import org.apache.oltu.oauth2.client.URLConnectionClient;
+import org.apache.oltu.oauth2.client.request.OAuthBearerClientRequest;
+import org.apache.oltu.oauth2.client.request.OAuthClientRequest;
+import org.apache.oltu.oauth2.client.response.OAuthJSONAccessTokenResponse;
+import org.apache.oltu.oauth2.client.response.OAuthResourceResponse;
+import org.apache.oltu.oauth2.common.OAuth;
+import org.apache.oltu.oauth2.common.OAuthProviderType;
+import org.apache.oltu.oauth2.common.exception.OAuthProblemException;
+import org.apache.oltu.oauth2.common.exception.OAuthSystemException;
+import org.apache.oltu.oauth2.common.message.types.GrantType;
 import org.mozilla.javascript.Context;
 import org.mozilla.javascript.Function;
 import org.mozilla.javascript.FunctionObject;
@@ -477,6 +489,34 @@ public class JavaScript extends TypedAtomicActor {
 	        scriptableFunction = new PtolemyFunctionObject(methodName, scriptableInstanceMethod, scriptable);
 	        // Make it accessible within the scriptExecutionScope.
 	        _scope.put(methodName, _scope, scriptableFunction);
+	        
+                // Create the requestAuth() method.
+                methodName = "requestAuth";
+                        scriptableInstanceMethod = PtolemyJavaScript.class.getMethod(methodName, new Class[]{String.class, String.class, String.class, Boolean.class});
+                scriptableFunction = new PtolemyFunctionObject(methodName, scriptableInstanceMethod, scriptable);
+                // Make it accessible within the scriptExecutionScope.
+                _scope.put(methodName, _scope, scriptableFunction);
+                
+                // Create the requestAuth() method.
+                methodName = "requestAccess";
+                        scriptableInstanceMethod = PtolemyJavaScript.class.getMethod(methodName, new Class[]{String.class, String.class, String.class, String.class, String.class});
+                scriptableFunction = new PtolemyFunctionObject(methodName, scriptableInstanceMethod, scriptable);
+                // Make it accessible within the scriptExecutionScope.
+                _scope.put(methodName, _scope, scriptableFunction);
+                
+                // Create the readProtectedURL() method.
+                methodName = "readProtectedURL";
+                        scriptableInstanceMethod = PtolemyJavaScript.class.getMethod(methodName, new Class[]{String.class, String.class});
+                scriptableFunction = new PtolemyFunctionObject(methodName, scriptableInstanceMethod, scriptable);
+                // Make it accessible within the scriptExecutionScope.
+                _scope.put(methodName, _scope, scriptableFunction);
+                
+                // Create the openBrowser() method.
+                methodName = "openBrowser";
+                        scriptableInstanceMethod = PtolemyJavaScript.class.getMethod(methodName, new Class[]{String.class});
+                scriptableFunction = new PtolemyFunctionObject(methodName, scriptableInstanceMethod, scriptable);
+                // Make it accessible within the scriptExecutionScope.
+                _scope.put(methodName, _scope, scriptableFunction);
 
 	        // This actor is exposed as an object named "actor".
         	Object jsObject = Context.javaToJS(this, _scope);
@@ -649,7 +689,7 @@ public class JavaScript extends TypedAtomicActor {
     	 *  @param channel A channel number, or NaN to use the default (0).
     	 */
     	public void send(Object data, NativeJavaObject portWrapper, Double channel) {
-    		
+
     		// In JavaScript, all numbers are doubles. So we have convert
     		// to an integer.
     		int channelNumber = 0;
@@ -710,6 +750,153 @@ public class JavaScript extends TypedAtomicActor {
     					"First argument of send() must be an output port. It is " + unwrappedParam.toString() + ".");
     		}
     	}
+    	
+    	/**
+    	 * Request an OAuth 2.0 authorization token. This method requires interaction with an Authorization server 
+    	 * which is usually implemented as a web service.
+    	 * @param providerName References an internally stored end point URL for popular OAuth providers like Google, 
+    	 *         Twitter, Facebook, etc. 
+    	 * @param clientId This identifies the application that accesses a resource. Usually, client ids are issued 
+    	 *         after registering an application via a developer console at a resource provider.
+    	 * @param redirectUrl After completion of the authorization request this URL is used to redirect the browser.
+    	 * @param openBrowser Indicates, if the method should invoke the system's default browser to enable the user 
+    	 *         to login to the server in order to grant access, or if the script handles this on its own.
+    	 * @return returns The authorization code, if the authentication at the Authorization Server was successful. 
+    	 * @throws IllegalActionException 
+    	 */
+    	public String requestAuth(String providerName, String clientId, String redirectUrl, Boolean openBrowser) throws IllegalActionException {
+    	        OAuthProviderType oauthProvider;
+    	        if("google".equals(providerName.toLowerCase()))  {
+    	                oauthProvider = OAuthProviderType.GOOGLE;
+    	        }
+    	        else  {
+    	                throw new IllegalActionException("Provider '"+providerName+"' not known. Please consult documentation for built-in provider names.");
+    	        }
+    	    
+                OAuthClientRequest request;
+                try {
+                        request = OAuthClientRequest
+                                .authorizationProvider(oauthProvider)
+                                .setClientId(clientId)                  
+                                .setRedirectURI(redirectUrl)
+                                .setResponseType("code")
+                                .setScope("email profile")
+                                .buildQueryMessage();
+                } catch (OAuthSystemException e) {
+                        throw new IllegalActionException("Could not build OAuth request message.");
+                }
+                
+                if(openBrowser)  {
+                        openBrowser(request.getLocationUri());
+                }
+
+                return request.getLocationUri();
+    	}
+    	
+    	/**
+    	 * Uses an Authorization code to retrieve an Access code.
+    	 * @param providerName
+    	 * @param clientId
+    	 * @param clientSecret
+    	 * @param redirectUrl
+    	 * @param authCode The authorization code issued by the Authorization server.
+    	 * @return The Access code token. This can be used to access the Resource server.
+    	 * @throws IllegalActionException
+    	 */
+    	public String requestAccess(String providerName, String clientId, String clientSecret, String redirectUrl, String authCode) throws IllegalActionException {
+                OAuthProviderType oauthProvider;
+                if("google".equals(providerName.toLowerCase()))  {
+                        oauthProvider = OAuthProviderType.GOOGLE;
+                }
+                else  {
+                        throw new IllegalActionException("Provider '"+providerName+"' not known. Please consult documentation for built-in provider names.");
+                }
+                OAuthClientRequest request;
+                OAuthJSONAccessTokenResponse response;
+                try {
+                        request = OAuthClientRequest
+                                .tokenProvider(oauthProvider)
+                                .setGrantType(GrantType.AUTHORIZATION_CODE)
+                                .setClientId(clientId)
+                                .setClientSecret(clientSecret)
+                                .setRedirectURI(redirectUrl)
+                                .setCode(authCode)
+                                .buildBodyMessage();
+                        
+                        OAuthClient oAuthClient = new OAuthClient(new URLConnectionClient());
+                        response = oAuthClient.accessToken(request); 
+                        
+                } catch (OAuthSystemException | OAuthProblemException e) {
+                        throw new IllegalActionException("Could not build OAuth request message.");
+                }
+                return response.getAccessToken();
+        }
+    	
+    	/**
+    	 * Open a URL of web service that is protected by OAuth 2.0.
+    	 * @param url The protected URL on a Resource server. Usually this is some kind of RESTful API.
+    	 * @param accessToken The code used to prove access authorization to the Resource server.
+    	 * @return
+    	 * @throws IllegalActionException 
+    	 */
+        public String readProtectedURL(String url, String accessToken) throws IllegalActionException  { 
+            OAuthResourceResponse resourceResponse = null;
+            try {
+                    OAuthClientRequest bearerClientRequest = new OAuthBearerClientRequest(url)
+                            .setAccessToken(accessToken)
+                            .buildQueryMessage();
+
+                    OAuthClient client = new OAuthClient(new URLConnectionClient());
+                    resourceResponse = client.resource(bearerClientRequest, OAuth.HttpMethod.GET, OAuthResourceResponse.class);
+            } catch (OAuthSystemException | OAuthProblemException e) {
+                    throw new IllegalActionException("Could not connect to resource server: "+e.getMessage());
+            }
+            
+            if(resourceResponse!=null)  {  
+                    if(resourceResponse.getResponseCode()==200)  {                   
+                            return resourceResponse.getBody();
+                    }
+            }
+            return "Could not access resource: " + 
+                    resourceResponse.getResponseCode() + " " + 
+                    resourceResponse.getBody();
+        }
+    	
+        /**
+         * Opens a new tab in the default system browser. 
+         * See also {@link http://www.mkyong.com/java/open-browser-in-java-windows-or-linux/}
+         * @param url The URL that the browser shall retrieve.
+         * @throws IllegalActionException 
+         */
+        public String openBrowser(String url) throws IllegalActionException  {
+            String os = System.getProperty("os.name").toLowerCase();
+            Runtime rt = Runtime.getRuntime();
+            
+            try {
+                    if (os.indexOf( "win" ) >= 0) {                        
+                            // this doesn't support showing urls in the form of "page.html#nameLink" 
+                            rt.exec( "rundll32 url.dll,FileProtocolHandler " + url);         
+                    } else if (os.indexOf( "mac" ) >= 0) {         
+                            rt.exec( "open " + url);         
+                    } else if (os.indexOf( "nix") >=0 || os.indexOf( "nux") >=0) {         
+                            // Do a best guess on unix until we get a platform independent way
+                            // Build a list of browsers to try, in this order.
+                            String[] browsers = {"epiphany", "firefox", "mozilla", "konqueror", "netscape","opera","links","lynx"};         
+                            // Build a command string which looks like "browser1 "url" || browser2 "url" ||..."
+                            StringBuffer cmd = new StringBuffer();
+                            for (int i=0; i<browsers.length; i++)  {
+                                    cmd.append( (i==0  ? "" : " || " ) + browsers[i] +" \"" + url + "\" ");
+                            }
+                            rt.exec(new String[] { "sh", "-c", cmd.toString() });         
+                   } else {
+                           throw new IllegalActionException("No browser found.");
+                   }
+            } catch (IOException e) {
+                   throw new IllegalActionException("Could not open browser.");
+            }
+            return ""; //FIXME Return empty string to suppress 'null' output. Is this the right thing to do?
+        }
+    	
 
 		/** Create a Ptolemy Token from and object sent by JavaScript. 
 		 *  @throws IllegalActionException If constructing a Ptolemy Token fails.
