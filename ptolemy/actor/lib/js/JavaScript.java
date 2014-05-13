@@ -782,8 +782,8 @@ public class JavaScript extends TypedAtomicActor {
                                 .setResponseType("code")
                                 .setScope("email profile")
                                 .buildQueryMessage();
-                } catch (OAuthSystemException e) {
-                        throw new IllegalActionException("Could not build OAuth request message.");
+                } catch (OAuthSystemException ex) {
+                    throw new IllegalActionException(null, ex, "Could not build OAuth request message.");
                 }
                 
                 if(openBrowser)  {
@@ -826,8 +826,12 @@ public class JavaScript extends TypedAtomicActor {
                         OAuthClient oAuthClient = new OAuthClient(new URLConnectionClient());
                         response = oAuthClient.accessToken(request); 
                         
-                } catch (OAuthSystemException | OAuthProblemException e) {
-                        throw new IllegalActionException("Could not build OAuth request message.");
+                } catch (OAuthSystemException ex) {
+                    // "Multi-catch statement is not supported with -source 1.6"
+                    // We build with java 1.6 compatibility so that we can support Java on the Mac.
+                    throw new IllegalActionException(null, ex, "Could not build OAuth request message.");
+                } catch (OAuthProblemException ex2) {
+                    throw new IllegalActionException(null, ex2, "Could not build OAuth request message.");
                 }
                 return response.getAccessToken();
         }
@@ -848,10 +852,13 @@ public class JavaScript extends TypedAtomicActor {
 
                     OAuthClient client = new OAuthClient(new URLConnectionClient());
                     resourceResponse = client.resource(bearerClientRequest, OAuth.HttpMethod.GET, OAuthResourceResponse.class);
-            } catch (OAuthSystemException | OAuthProblemException e) {
-                    throw new IllegalActionException("Could not connect to resource server: "+e.getMessage());
+            } catch (OAuthSystemException ex) {
+                // "Multi-catch statement is not supported with -source 1.6"
+                // We build with java 1.6 compatibility so that we can support Java on the Mac.
+                throw new IllegalActionException(this, ex, "Could not connect to resource server: " + ex.getMessage());
+            } catch (OAuthProblemException ex2) {
+                throw new IllegalActionException(this, ex, "Could not connect to resource server: " + ex.getMessage());
             }
-            
             if(resourceResponse!=null)  {  
                     if(resourceResponse.getResponseCode()==200)  {                   
                             return resourceResponse.getBody();
