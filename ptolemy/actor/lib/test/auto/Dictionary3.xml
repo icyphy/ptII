@@ -29,11 +29,11 @@
     <entity name="SingleEvent" class="ptolemy.actor.lib.SingleEvent">
         <property name="value" class="ptolemy.data.expr.Parameter" value="&quot;foo&quot;">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[140.0, 155.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[115.0, 155.0]">
         </property>
     </entity>
     <entity name="SingleEvent2" class="ptolemy.actor.lib.SingleEvent">
-        <property name="value" class="ptolemy.data.expr.Parameter" value="{1, 2, 3}">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="&quot;{1,2.3}&quot;">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[75.0, 225.0]">
         </property>
@@ -41,9 +41,9 @@
     <entity name="SingleEvent3" class="ptolemy.actor.lib.SingleEvent">
         <property name="time" class="ptolemy.data.expr.Parameter" value="1.0">
         </property>
-        <property name="value" class="ptolemy.data.expr.Parameter" value="{1, 2, 3}">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="&quot;{1,2.3}&quot;">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[140.0, 305.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{140.0, 305.0}">
         </property>
     </entity>
     <entity name="Test" class="ptolemy.actor.lib.Test">
@@ -62,10 +62,10 @@
     </relation>
     <relation name="relation4" class="ptolemy.actor.TypedIORelation">
     </relation>
-    <link port="Dictionary2.value" relation="relation"/>
-    <link port="Dictionary2.writeKey" relation="relation2"/>
     <link port="Dictionary2.readKey" relation="relation3"/>
     <link port="Dictionary2.result" relation="relation4"/>
+    <link port="Dictionary2.value" relation="relation"/>
+    <link port="Dictionary2.writeKey" relation="relation2"/>
     <link port="SingleEvent.output" relation="relation"/>
     <link port="SingleEvent2.output" relation="relation2"/>
     <link port="SingleEvent3.output" relation="relation3"/>
