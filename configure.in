@@ -2707,11 +2707,18 @@ fi
 #       Js is used by actors
 #--------------------------------------------------------------------
 
+# Jar files used by JavaScript.
 # Rhino JavaScript jar files used by export html facility
 PTJAVASCRIPT_JAR=
 
 # Set to js if js.jar is found and used in $PTII/ptolemy/actor/lib/makefile
 PTJAVASCRIPT_DIR=
+
+# OAuth Client jar file used by the JavaScript actor $PTII/lib/org.apache.oltu.oauth2.*.jar
+PTOAUTHCLIENT_JAR=
+
+# OAuth Common jar file used by the JavaScript actor $PTII/lib/org.apache.oltu.oauth2.*.jar
+PTOAUTHCOMMON_JAR=
 
 # We only need to look for Jsoup if $PTJAVASCRIPT_USER_DIR is present
 PTJAVASCRIPT_USER_DIR="$PTII/ptolemy/actor/lib/js"
@@ -2721,17 +2728,49 @@ if test ! -d "$PTJAVASCRIPT_USER_DIR"; then
     so we need not find Rhino JavaScript Implementation.])
 else
     AC_MSG_CHECKING([for JavaScript, used by js actors. ])
-    AC_ARG_WITH(jsoup, [  --with-javascript=JAR       use js.jar from JAR,
+    AC_ARG_WITH(rhino, [  --with-javascript=JAR       use js.jar from JAR,
                           defaults to \$PTII/lib/js.jar],
         PTJAVASCRIPT_JAR=$withval,
 	PTJAVASCRIPT_JAR=$PTII/lib/js.jar)
 
     if test  -f "$PTJAVASCRIPT_JAR"; then
 	PT_MSG_RESULT([$PTJAVASCRIPT_JAR])
-        updateClasspath "$PTJAVASCRIPT_JAR"
-        PTJAVASCRIPT_DIR=js
-        # PTJAVASCRIPT_PACKAGES is used in ptII/doc/makefile
-	PTJAVASCRIPT_PACKAGES=ptolemy.actor.lib.js
+	updateClasspath "$PTJAVASCRIPT_JAR"
+
+	AC_MSG_CHECKING([for OAuth client, used by js actors. ])
+	AC_ARG_WITH(oauthclient, [  --with-oauthclient=JAR       use oauth from JAR,
+                          defaults to \$PTII/lib/org.apache.oltu.oauth2.client-1.0.1-SNAPSHOT.jar],
+        PTOAUTHCLIENT_JAR=$withval,
+	PTOAUTHCLIENT_JAR=$PTII/lib/org.apache.oltu.oauth2.client-1.0.1-SNAPSHOT.jar)
+
+	if test  -f "$PTOAUTHCLIENT_JAR"; then
+	   PT_MSG_RESULT([$PTOAUTHCLIENT_JAR])
+	   updateClasspath "$PTOAUTHCLIENT_JAR"
+
+	   AC_MSG_CHECKING([for OAuth common, used by js actors. ])
+	   AC_ARG_WITH(oauthcommon, [  --with-oauthcommon=JAR       use oauth from JAR,
+                          defaults to \$PTII/lib/org.apache.oltu.oauth2.common-1.0.1-SNAPSHOT.jar],
+           PTOAUTHCOMMON_JAR=$withval,
+	   PTOAUTHCOMMON_JAR=$PTII/lib/org.apache.oltu.oauth2.common-1.0.1-SNAPSHOT.jar)
+
+	   if test  -f "$PTOAUTHCOMMON_JAR"; then
+	      PT_MSG_RESULT([$PTOAUTHCOMMON_JAR])
+	      updateClasspath "$PTOAUTHCOMMON_JAR"
+	      PTJAVASCRIPT_DIR=js
+	      # PTJAVASCRIPT_PACKAGES is used in ptII/doc/makefile
+	      PTJAVASCRIPT_PACKAGES=ptolemy.actor.lib.js
+	   else
+	      updateExcludes "ptolemy/actor/lib/js"
+	      AC_MSG_WARN([Failed to find the OAuth common jar file necessary to
+   to compile actor/lib/js.
+   Typically, the OAuth client jar is found at $PTII/lib/org.apache.oltu.oauth2.common-1.0.1-SNAPSHOT.jar.])
+           fi
+       else 
+        updateExcludes "ptolemy/actor/lib/js"
+	      AC_MSG_WARN([Failed to find the OAuth common jar file necessary to
+   to compile actor/lib/js.
+   Typically, the OAuth client jar is found at $PTII/lib/org.apache.oltu.oauth2.client-1.0.1-SNAPSHOT.jar.])
+       fi
     else
         updateExcludes "ptolemy/actor/lib/js"
         AC_MSG_WARN([Failed to find the Rhino Javascript js.jar file necessary to
@@ -6386,6 +6425,14 @@ AC_SUBST(PTMETROII_DIR)
 
 # PTMETROII_PACKAGES is used in doc/makefile
 AC_SUBST(PTMETROII_PACKAGES)
+
+# OAuth Client jar file used by JavaScript Actor.
+# Typically lib/org.apache.oltu.oauth2.client-1.0.1-SNAPSHOT.jar
+AC_SUBST(PTOAUTHCLIENT_JAR)
+
+# OAuth Client jar file used by JavaScript Actor.
+# Typically lib/org.apache.oltu.oauth2.common-1.0.1-SNAPSHOT.jar
+AC_SUBST(PTOAUTHCOMMON_JAR)
 
 # Set to opencv and used in 
 # $PTII/ptolemy/actor/lib/makefile if OpenCV Open Computer Vision was found

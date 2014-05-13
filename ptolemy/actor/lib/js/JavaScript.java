@@ -855,9 +855,9 @@ public class JavaScript extends TypedAtomicActor {
             } catch (OAuthSystemException ex) {
                 // "Multi-catch statement is not supported with -source 1.6"
                 // We build with java 1.6 compatibility so that we can support Java on the Mac.
-                throw new IllegalActionException(this, ex, "Could not connect to resource server: " + ex.getMessage());
+                throw new IllegalActionException(null, ex, "Could not connect to resource server: " + ex.getMessage());
             } catch (OAuthProblemException ex2) {
-                throw new IllegalActionException(this, ex, "Could not connect to resource server: " + ex.getMessage());
+                throw new IllegalActionException(null, ex2, "Could not connect to resource server: " + ex2.getMessage());
             }
             if(resourceResponse!=null)  {  
                     if(resourceResponse.getResponseCode()==200)  {                   
