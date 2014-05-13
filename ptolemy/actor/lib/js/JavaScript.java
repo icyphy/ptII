@@ -27,7 +27,6 @@
  */
 package ptolemy.actor.lib.js;
 
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -37,6 +36,7 @@ import java.lang.reflect.Method;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -63,6 +63,7 @@ import org.mozilla.javascript.Scriptable;
 import org.mozilla.javascript.ScriptableObject;
 import org.mozilla.javascript.WrappedException;
 
+import ptolemy.actor.IOPort;
 import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.parameters.PortParameter;
@@ -113,8 +114,11 @@ import ptolemy.util.StringUtilities;
       will be no inputs, so it should not read inputs.
  </li>
  <li> <b>fire</b>. This function is invoked each time this actor fires.
-      it can read parameters, read inputs using get(), and write outputs
-      using send().
+      It can read parameters, read inputs using get(), and write outputs
+      using send(). Note that all inputs from all ports are consumed during 
+      a firing, even if the script does not contain a call to get() for 
+      a port. Multiple calls to get() during a
+      firing will return the same value. 
  </li>
  <li> <b>wrapup</b>. This function is invoked at the end of execution of
       of the model. It can read parameters, but normally should not
@@ -343,7 +347,30 @@ public class JavaScript extends TypedAtomicActor {
         	Object fireFunction = _scope.get("fire", _scope);
         	if (fireFunction instanceof Function) {
         		// FIXME: Provide a last argument for security.
+        	    
+        	    // send out buffered outputs
+        	    for (IOPort port : _outputTokens.keySet()) {
+                    HashMap<Integer, Token> tokens = _outputTokens.get(port);
+                    for (Integer i : tokens.keySet()) {
+                        Token token = tokens.get(i);
+                        port.send(i, token);
+                    }
+                }
+        	    _outputTokens.clear();
+        	    
+        	    // buffer inputs
+        	    _inputTokens.clear();
+        	    for (IOPort input : this.inputPortList()) {
+        	        HashMap<Integer, Token> tokens = new HashMap<Integer, Token>();
+        	        for (int i = 0; i < input.getWidth(); i++) {
+        	            tokens.put(i, input.get(i));
+        	        }
+        	        _inputTokens.put(input, tokens);
+        	    }
+        	    
+        	    _inFire = true;
         		((Function)fireFunction).call(Context.getCurrentContext(), _scope, _global, null);
+        		_inFire = false;
         	}
         } catch (WrappedException ex) {
         	Throwable original = ex.getWrappedException();
@@ -489,34 +516,34 @@ public class JavaScript extends TypedAtomicActor {
 	        scriptableFunction = new PtolemyFunctionObject(methodName, scriptableInstanceMethod, scriptable);
 	        // Make it accessible within the scriptExecutionScope.
 	        _scope.put(methodName, _scope, scriptableFunction);
-	        
-                // Create the requestAuth() method.
-                methodName = "requestAuth";
-                        scriptableInstanceMethod = PtolemyJavaScript.class.getMethod(methodName, new Class[]{String.class, String.class, String.class, Boolean.class});
-                scriptableFunction = new PtolemyFunctionObject(methodName, scriptableInstanceMethod, scriptable);
-                // Make it accessible within the scriptExecutionScope.
-                _scope.put(methodName, _scope, scriptableFunction);
-                
-                // Create the requestAuth() method.
-                methodName = "requestAccess";
-                        scriptableInstanceMethod = PtolemyJavaScript.class.getMethod(methodName, new Class[]{String.class, String.class, String.class, String.class, String.class});
-                scriptableFunction = new PtolemyFunctionObject(methodName, scriptableInstanceMethod, scriptable);
-                // Make it accessible within the scriptExecutionScope.
-                _scope.put(methodName, _scope, scriptableFunction);
-                
-                // Create the readProtectedURL() method.
-                methodName = "readProtectedURL";
-                        scriptableInstanceMethod = PtolemyJavaScript.class.getMethod(methodName, new Class[]{String.class, String.class});
-                scriptableFunction = new PtolemyFunctionObject(methodName, scriptableInstanceMethod, scriptable);
-                // Make it accessible within the scriptExecutionScope.
-                _scope.put(methodName, _scope, scriptableFunction);
-                
-                // Create the openBrowser() method.
-                methodName = "openBrowser";
-                        scriptableInstanceMethod = PtolemyJavaScript.class.getMethod(methodName, new Class[]{String.class});
-                scriptableFunction = new PtolemyFunctionObject(methodName, scriptableInstanceMethod, scriptable);
-                // Make it accessible within the scriptExecutionScope.
-                _scope.put(methodName, _scope, scriptableFunction);
+        
+            // Create the requestAuth() method.
+            methodName = "requestAuth";
+                    scriptableInstanceMethod = PtolemyJavaScript.class.getMethod(methodName, new Class[]{String.class, String.class, String.class, Boolean.class});
+            scriptableFunction = new PtolemyFunctionObject(methodName, scriptableInstanceMethod, scriptable);
+            // Make it accessible within the scriptExecutionScope.
+            _scope.put(methodName, _scope, scriptableFunction);
+            
+            // Create the requestAuth() method.
+            methodName = "requestAccess";
+                    scriptableInstanceMethod = PtolemyJavaScript.class.getMethod(methodName, new Class[]{String.class, String.class, String.class, String.class, String.class});
+            scriptableFunction = new PtolemyFunctionObject(methodName, scriptableInstanceMethod, scriptable);
+            // Make it accessible within the scriptExecutionScope.
+            _scope.put(methodName, _scope, scriptableFunction);
+            
+            // Create the readProtectedURL() method.
+            methodName = "readProtectedURL";
+                    scriptableInstanceMethod = PtolemyJavaScript.class.getMethod(methodName, new Class[]{String.class, String.class});
+            scriptableFunction = new PtolemyFunctionObject(methodName, scriptableInstanceMethod, scriptable);
+            // Make it accessible within the scriptExecutionScope.
+            _scope.put(methodName, _scope, scriptableFunction);
+            
+            // Create the openBrowser() method.
+            methodName = "openBrowser";
+                    scriptableInstanceMethod = PtolemyJavaScript.class.getMethod(methodName, new Class[]{String.class});
+            scriptableFunction = new PtolemyFunctionObject(methodName, scriptableInstanceMethod, scriptable);
+            // Make it accessible within the scriptExecutionScope.
+            _scope.put(methodName, _scope, scriptableFunction);
 
 	        // This actor is exposed as an object named "actor".
         	Object jsObject = Context.javaToJS(this, _scope);
@@ -575,6 +602,22 @@ public class JavaScript extends TypedAtomicActor {
     /** Scope in which to evaluate scripts. */
     protected Scriptable _scope;
     
+    /** True while the actor is firing, false otherwise. */
+    private boolean _inFire;
+    
+    /** Buffer for all input tokens before calling the fire function 
+     *  in the script. Calls to get in the script will then retrieve 
+     *  the value from this buffer instead of actually calling get on 
+     *  the port.
+     */
+    private HashMap<IOPort, HashMap<Integer, Token>> _inputTokens = new HashMap();
+    
+    /** Buffer for output tokens that are produced in a call to send
+     *  while the actor is not firing. This makes sure that actors can
+     *  spontaneously produce outputs.
+     */
+    private HashMap<IOPort, HashMap<Integer, Token>> _outputTokens = new HashMap();
+    
     ///////////////////////////////////////////////////////////////////
     ////                        Inner Classes                      ////
 
@@ -593,12 +636,12 @@ public class JavaScript extends TypedAtomicActor {
     		throw new IllegalActionException(JavaScript.this, message);
     	}
     	
-    	/** Get inputs via an input port.
+    	/** Get buffered inputs for a given input port.
     	 *  @param portWrapper A JavaScript wrapper for a Port.
     	 *  @param channel A channel number, or NaN to use the default (0).
     	 */
     	public Object get(NativeJavaObject portWrapper, Double channel) {    		
-    		// In JavaScript, all numbers are doubles. So we have convert
+    		// In JavaScript, all numbers are doubles. So we have to convert
     		// to an integer.
     		int channelNumber = 0;
     		// Tolerate null or NaN as an argument.
@@ -630,11 +673,7 @@ public class JavaScript extends TypedAtomicActor {
             			// Port is not connected.
             			return null;
             		}
-            		if (!port.hasToken(channelNumber)) {
-            			// Port has no data.
-            			return null;
-            		}
-    				return _wrapToken(port.get(channelNumber));
+    				return _wrapToken(_inputTokens.get(port).get(channelNumber));
     			} catch (KernelException e) {
         			throw new InternalErrorException(JavaScript.this, e,
         					"Failed to get input via port " + port.getName() + ".");
@@ -652,6 +691,8 @@ public class JavaScript extends TypedAtomicActor {
     					"First argument of get() must be an input port. It is " + unwrappedPort.toString() + ".");
     		}
     	}
+    	
+    	
 
 		@Override
 		public String getClassName() {
@@ -689,7 +730,7 @@ public class JavaScript extends TypedAtomicActor {
     	 *  @param channel A channel number, or NaN to use the default (0).
     	 */
     	public void send(Object data, NativeJavaObject portWrapper, Double channel) {
-
+    		
     		// In JavaScript, all numbers are doubles. So we have convert
     		// to an integer.
     		int channelNumber = 0;
@@ -721,7 +762,17 @@ public class JavaScript extends TypedAtomicActor {
         			data = ((NativeJavaObject) data).unwrap();
         		}
         		try {
-    				port.send(channelNumber, _createToken(data));
+        		    Token token = _createToken(data);
+        		    if (_inFire) {
+        		        port.send(channelNumber, token);
+        		    } else {
+        		        HashMap<Integer, Token> tokens = _outputTokens.get(port);
+        		        if (tokens == null) {
+        		            tokens = new HashMap<Integer, Token>();
+        		        }
+        		        tokens.put(channelNumber, token);
+        		        _outputTokens.put(port, tokens);
+        		    }
     			} catch (KernelException e) {
         			throw new InternalErrorException(JavaScript.this, e,
         					"Failed to send output via port " + port.getName() + ".");
