@@ -667,6 +667,8 @@ PTPDFRENDERER_DIR
 PTOPENCV_PACKAGES
 PTOPENCV_INCLUDE_DIR
 PTOPENCV_DIR
+PTOAUTHCOMMON_JAR
+PTOAUTHCLIENT_JAR
 PTMETROII_PACKAGES
 PTMETROII_DIR
 PTMESCAL_DIR
@@ -964,9 +966,12 @@ with_servlet
 with_smack
 with_smackx
 with_javamail
-with_jsoup
+with_rhino
+with_oauthclient
+with_oauthcommon
 with_joystick_jar
 with_ptjacl_jar
+with_jsoup
 with_junit
 with_junitparams
 with_jxl
@@ -1681,6 +1686,10 @@ Optional Packages:
                           defaults to \$PTII/vendors/misc/javamail
   --with-javascript=JAR       use js.jar from JAR,
                           defaults to \$PTII/lib/js.jar
+  --with-oauthclient=JAR       use oauth from JAR,
+                          defaults to \$PTII/lib/org.apache.oltu.oauth2.client-1.0.1-SNAPSHOT.jar
+  --with-oauthcommon=JAR       use oauth from JAR,
+                          defaults to \$PTII/lib/org.apache.oltu.oauth2.common-1.0.1-SNAPSHOT.jar
   --with-joystick-jar=JARFILE       use JOYSTICK from JARFILE,
                           defaults to \$PTII/vendors/misc/joystick/Joystick.jar
   --with-ptjacl_jar=PTJACL.JAR  ptjacl.jar file,
@@ -8377,11 +8386,18 @@ fi
 #       Js is used by actors
 #--------------------------------------------------------------------
 
+# Jar files used by JavaScript.
 # Rhino JavaScript jar files used by export html facility
 PTJAVASCRIPT_JAR=
 
 # Set to js if js.jar is found and used in $PTII/ptolemy/actor/lib/makefile
 PTJAVASCRIPT_DIR=
+
+# OAuth Client jar file used by the JavaScript actor $PTII/lib/org.apache.oltu.oauth2.*.jar
+PTOAUTHCLIENT_JAR=
+
+# OAuth Common jar file used by the JavaScript actor $PTII/lib/org.apache.oltu.oauth2.*.jar
+PTOAUTHCOMMON_JAR=
 
 # We only need to look for Jsoup if $PTJAVASCRIPT_USER_DIR is present
 PTJAVASCRIPT_USER_DIR="$PTII/ptolemy/actor/lib/js"
@@ -8395,9 +8411,9 @@ else
     { $as_echo "$as_me:${as_lineno-$LINENO}: checking for JavaScript, used by js actors. " >&5
 $as_echo_n "checking for JavaScript, used by js actors. ... " >&6; }
 
-# Check whether --with-jsoup was given.
-if test "${with_jsoup+set}" = set; then :
-  withval=$with_jsoup; PTJAVASCRIPT_JAR=$withval
+# Check whether --with-rhino was given.
+if test "${with_rhino+set}" = set; then :
+  withval=$with_rhino; PTJAVASCRIPT_JAR=$withval
 else
   PTJAVASCRIPT_JAR=$PTII/lib/js.jar
 fi
@@ -8407,10 +8423,62 @@ fi
 	if test "${PTVERBOSE:-none}" = "none"; then { $as_echo "$as_me:${as_lineno-$LINENO}: result: ok" >&5
 $as_echo "ok" >&6; }; else { $as_echo "$as_me:${as_lineno-$LINENO}: result: $PTJAVASCRIPT_JAR" >&5
 $as_echo "$PTJAVASCRIPT_JAR" >&6; }; fi
-        updateClasspath "$PTJAVASCRIPT_JAR"
-        PTJAVASCRIPT_DIR=js
-        # PTJAVASCRIPT_PACKAGES is used in ptII/doc/makefile
-	PTJAVASCRIPT_PACKAGES=ptolemy.actor.lib.js
+	updateClasspath "$PTJAVASCRIPT_JAR"
+
+	{ $as_echo "$as_me:${as_lineno-$LINENO}: checking for OAuth client, used by js actors. " >&5
+$as_echo_n "checking for OAuth client, used by js actors. ... " >&6; }
+
+# Check whether --with-oauthclient was given.
+if test "${with_oauthclient+set}" = set; then :
+  withval=$with_oauthclient; PTOAUTHCLIENT_JAR=$withval
+else
+  PTOAUTHCLIENT_JAR=$PTII/lib/org.apache.oltu.oauth2.client-1.0.1-SNAPSHOT.jar
+fi
+
+
+	if test  -f "$PTOAUTHCLIENT_JAR"; then
+	   if test "${PTVERBOSE:-none}" = "none"; then { $as_echo "$as_me:${as_lineno-$LINENO}: result: ok" >&5
+$as_echo "ok" >&6; }; else { $as_echo "$as_me:${as_lineno-$LINENO}: result: $PTOAUTHCLIENT_JAR" >&5
+$as_echo "$PTOAUTHCLIENT_JAR" >&6; }; fi
+	   updateClasspath "$PTOAUTHCLIENT_JAR"
+
+	   { $as_echo "$as_me:${as_lineno-$LINENO}: checking for OAuth common, used by js actors. " >&5
+$as_echo_n "checking for OAuth common, used by js actors. ... " >&6; }
+
+# Check whether --with-oauthcommon was given.
+if test "${with_oauthcommon+set}" = set; then :
+  withval=$with_oauthcommon; PTOAUTHCOMMON_JAR=$withval
+else
+  PTOAUTHCOMMON_JAR=$PTII/lib/org.apache.oltu.oauth2.common-1.0.1-SNAPSHOT.jar
+fi
+
+
+	   if test  -f "$PTOAUTHCOMMON_JAR"; then
+	      if test "${PTVERBOSE:-none}" = "none"; then { $as_echo "$as_me:${as_lineno-$LINENO}: result: ok" >&5
+$as_echo "ok" >&6; }; else { $as_echo "$as_me:${as_lineno-$LINENO}: result: $PTOAUTHCOMMON_JAR" >&5
+$as_echo "$PTOAUTHCOMMON_JAR" >&6; }; fi
+	      updateClasspath "$PTOAUTHCOMMON_JAR"
+	      PTJAVASCRIPT_DIR=js
+	      # PTJAVASCRIPT_PACKAGES is used in ptII/doc/makefile
+	      PTJAVASCRIPT_PACKAGES=ptolemy.actor.lib.js
+	   else
+	      updateExcludes "ptolemy/actor/lib/js"
+	      { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Failed to find the OAuth common jar file necessary to
+   to compile actor/lib/js.
+   Typically, the OAuth client jar is found at $PTII/lib/org.apache.oltu.oauth2.common-1.0.1-SNAPSHOT.jar." >&5
+$as_echo "$as_me: WARNING: Failed to find the OAuth common jar file necessary to
+   to compile actor/lib/js.
+   Typically, the OAuth client jar is found at $PTII/lib/org.apache.oltu.oauth2.common-1.0.1-SNAPSHOT.jar." >&2;}
+           fi
+       else
+        updateExcludes "ptolemy/actor/lib/js"
+	      { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Failed to find the OAuth common jar file necessary to
+   to compile actor/lib/js.
+   Typically, the OAuth client jar is found at $PTII/lib/org.apache.oltu.oauth2.client-1.0.1-SNAPSHOT.jar." >&5
+$as_echo "$as_me: WARNING: Failed to find the OAuth common jar file necessary to
+   to compile actor/lib/js.
+   Typically, the OAuth client jar is found at $PTII/lib/org.apache.oltu.oauth2.client-1.0.1-SNAPSHOT.jar." >&2;}
+       fi
     else
         updateExcludes "ptolemy/actor/lib/js"
         { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Failed to find the Rhino Javascript js.jar file necessary to
@@ -13485,6 +13553,14 @@ ANT_JAVADOC_EXCLUDEPACKAGENAMES=`echo "$ANT_ALWAYS_EXCLUDE $ANT_EXCLUDE"| sed 's
 
 
 # PTMETROII_PACKAGES is used in doc/makefile
+
+
+# OAuth Client jar file used by JavaScript Actor.
+# Typically lib/org.apache.oltu.oauth2.client-1.0.1-SNAPSHOT.jar
+
+
+# OAuth Client jar file used by JavaScript Actor.
+# Typically lib/org.apache.oltu.oauth2.common-1.0.1-SNAPSHOT.jar
 
 
 # Set to opencv and used in
