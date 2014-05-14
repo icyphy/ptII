@@ -1,22 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <class name="StockTick" extends="org.terraswarm.kernel.JavaScript">
-  <property
+  <input
     name="symbol"
     value="YHOO"
     type="string"/>
   <output
     name="price"
     type="number"/>    
-	<script>
-		<![CDATA[
+  <script type="text/javascript">
+    // <![CDATA[
     function fire() {
-      var url = "http://query.yahooapis.com/v1/public/yql?q=select%20*%20from%20yahoo.finance.quotes%20where%20symbol%20in%20(%22"
-         + valueOf(symbol)
-         + "%22)%0A%09%09&env=http%3A%2F%2Fdatatables.org%2Falltables.env&format=json";
+      var url = "http://query.yahooapis.com/..."
+         + get(symbol)
+         + "...&format=json";
       var record = JSON.parse(readURL(url));
       var tick = record.query.results.quote.BidRealtime;
       send(tick, price);
     }
-]]>
+    // ]]>
   </script>
 </class>
