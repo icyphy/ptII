@@ -64,7 +64,8 @@ public class HttpRequest  {
      *  properties, body, and time out.
      * 
      *  @param url The URL to send the request to.
-     *  @param method The request method (e.g., GET/POST/PUT)
+     *  @param method The request method (e.g., GET/POST/PUT ...). According to the Java documentation,
+     *   "GET POST HEAD OPTIONS PUT DELETE TRACE are legal, subject to protocol restrictions."
      *  @param properties
      *  @param body
      *  @param timeout
@@ -133,7 +134,9 @@ public class HttpRequest  {
             }
         }
 
-        writer.close();
+        if (writer != null) {
+        	writer.close();
+        }
         reader.close();
 
         // Return response.
