@@ -38,6 +38,7 @@ import ptolemy.kernel.util.DebugListener;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InvalidStateException;
 import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Workspace;
 
 ///////////////////////////////////////////////////////////////////
@@ -299,7 +300,7 @@ public class StaticSchedulingDirector extends Director {
      *  @exception IllegalActionException Not thrown here but in derived classes.
      */
     @Override
-    public void resumeActor(Actor actor) throws IllegalActionException {
+    public void resumeActor(NamedObj actor) throws IllegalActionException {
         _actorFinished = true;
     }
 
@@ -359,7 +360,7 @@ public class StaticSchedulingDirector extends Director {
                     	_prefire = false;
                         return false;
                     }
-                    boolean finished =  _schedule(actor, getModelTime());
+                    boolean finished =  _schedule((NamedObj) actor, getModelTime());
                     if (!finished) {
                         _prefire = false;
                         return false;

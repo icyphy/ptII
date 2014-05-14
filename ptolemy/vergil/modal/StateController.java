@@ -30,18 +30,26 @@ package ptolemy.vergil.modal;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import javax.swing.KeyStroke;
 
+import ptolemy.actor.ExecutionAttributes;
 import ptolemy.actor.TypedActor;
+import ptolemy.actor.gui.ColorAttribute;
 import ptolemy.domains.modal.kernel.State;
+import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.ChangeRequest;
+import ptolemy.kernel.util.Decorator;
+import ptolemy.kernel.util.DecoratorAttributes;
+import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.Locatable;
+import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.util.MessageHandler;
 import ptolemy.util.StringUtilities;
@@ -263,6 +271,53 @@ public class StateController extends AttributeWithIconController {
 
             // New way to specify a highlight color.
             AttributeController.renderHighlight(object, figure);
+            
+            try {
+                // clear highlighting
+                Attribute highlightColor = object
+                        .getAttribute("_decoratorHighlightColor");
+                if (highlightColor != null) {
+                    object.removeAttribute(highlightColor);
+                 }
+
+                List<Decorator> decorators = new ArrayList();
+                decorators.addAll(object.decorators());
+
+                for (Decorator decorator : decorators) {
+                    DecoratorAttributes decoratorAttributes = object
+                            .getDecoratorAttributes(decorator);
+                    if (decoratorAttributes instanceof ExecutionAttributes) {
+                        if (decoratorAttributes.getDecorator() != null
+                                && ((ExecutionAttributes) decoratorAttributes)
+                                        .enabled()) {
+                            try {
+                                if (object
+                                        .getAttribute("_decoratorHighlightColor") == null) {
+                                    highlightColor = new ColorAttribute(object,
+                                            "_decoratorHighlightColor");
+                                    Attribute attribute = ((NamedObj) decorator)
+                                            .getAttribute("decoratorHighlightColor");
+                                    String colorExpression = "{0.5, 0.5, 0.5, 0.5}";
+                                    if (attribute != null) {
+                                        colorExpression = (((ColorAttribute) attribute)
+                                                .getToken()).toString();
+                                    }
+                                    ((ColorAttribute) highlightColor)
+                                            .setExpression(colorExpression);
+                                }
+                            } catch (NameDuplicationException e) {
+                                // Not gonna happen.
+                            }
+                        }
+                    }
+                }
+
+            } catch (IllegalActionException e1) {
+                // TODO Auto-generated catch block
+                e1.printStackTrace();
+            }
+            
+            AttributeController.renderDecoratorHighlight(object, figure);
 
             return figure;
         }

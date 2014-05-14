@@ -1511,7 +1511,7 @@ public class MetroIIPtidesDirector extends MetroIIDEDirectorForPtides {
                 if (prefire
                         && (!_aspectsPresent || queue != _pureEvents
                                 && ptidesEvent.actor() instanceof TimeDelay || _schedule(
-                                    ptidesEvent.actor(),
+                                    (NamedObj) ptidesEvent.actor(),
                                     ptidesEvent.timeStamp()))) {
                     if (!(ptidesEvent.actor() instanceof CompositeActor)
                             || ((CompositeActor) ptidesEvent.actor())

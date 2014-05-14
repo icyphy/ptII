@@ -1320,24 +1320,25 @@ public class DEDirector extends Director implements SuperdenseTimeDirector {
      *  @param actor The actor that resumes execution.
      *  @exception IllegalActionException Not thrown here but in derived classes.
      */
-    public void resumeActor(Actor actor) throws IllegalActionException {
+    @Override
+    public void resumeActor(NamedObj actor) throws IllegalActionException {
         List<DEEvent> events = _actorsInExecution.get(actor);
-        Time time = ((CompositeActor) _getExecutionAspect(actor).getContainer())
+        Time time = ((CompositeActor) getExecutionAspect((NamedObj) actor).getContainer())
                 .getDirector().getModelTime();
         DEEvent event = events.get(0);
         events.remove(event);
-        _actorsInExecution.put(actor, events);
+        _actorsInExecution.put((Actor) actor, events);
 
         if (event.ioPort() != null) {
             _enqueueTriggerEvent(event.ioPort(), time);
         } else {
-            _enqueueEvent(actor, time, 1);
+            _enqueueEvent((Actor) actor, time, 1);
         }
         fireContainerAt(time);
         if (_actorsFinished == null) {
             _actorsFinished = new ArrayList();
         }
-        _actorsFinished.add(actor);
+        _actorsFinished.add((Actor) actor);
     }
 
     /** Set the superdense time index. This should only be
@@ -1918,7 +1919,7 @@ public class DEDirector extends Director implements SuperdenseTimeDirector {
                         }
                         // refire only if can be scheduled.
                         if (!_aspectsPresent
-                                || _schedule(actorToFire, getModelTime())) {
+                                || _schedule((NamedObj) actorToFire, getModelTime())) {
                             refire = true;
 
                             // Found a channel that has input data,
@@ -2375,7 +2376,7 @@ public class DEDirector extends Director implements SuperdenseTimeDirector {
             if (actorToFire != null && _aspectsPresent) {
                 if (_actorsFinished.contains(actorToFire)) {
                     _actorsFinished.remove(actorToFire);
-                } else if (!_schedule(actorToFire, getModelTime())) {
+                } else if (!_schedule((NamedObj) actorToFire, getModelTime())) {
                     _nextScheduleTime.get(_aspectForActor.get(actorToFire))
                             .add(getModelTime());
                     if (_actorsInExecution == null) {
@@ -2407,14 +2408,15 @@ public class DEDirector extends Director implements SuperdenseTimeDirector {
             if (getContainer() instanceof CompositeActor) {
                 for (Object entity : ((CompositeActor)getContainer()).entityList()) {
                     Actor actor = (Actor) entity;
-                    if (_getExecutionAspect(actor) != null) {
+                    if (getExecutionAspect((NamedObj) actor) != null) {
                         _aspectUsed = true;
                         break;
                     }
                 }
             }
             if (_aspectUsed) {
-                if (!MessageHandler.yesNoQuestion(
+                //if (!MessageHandler.yesNoQuestion(
+                System.out.println(
                         "WARNING: The execution aspects in this model can "
                         + "influence the timing of actors by delaying the \n"
                         + "execution, which can potentially reverse causality. "
@@ -2422,9 +2424,10 @@ public class DEDirector extends Director implements SuperdenseTimeDirector {
                         + "time they request to be fired. \n"
                         + "Use Ptides for deterministic DE behavior that is "
                         + "not influenced by execution aspects. \n"
-                        + "Continue?")) {
-                    stop();
-                }
+                        );
+                        //+ "Continue?")) {
+                    //stop();
+                //}
             }
         }
     }
@@ -2439,11 +2442,11 @@ public class DEDirector extends Director implements SuperdenseTimeDirector {
     }
 
     @Override
-    protected boolean _schedule(Actor actor, Time timestamp)
+    protected boolean _schedule(NamedObj actor, Time timestamp)
             throws IllegalActionException {
         boolean schedule = super._schedule(actor, timestamp);
         if (!schedule) {
-            ActorExecutionAspect scheduler = _getExecutionAspect(actor);
+            ActorExecutionAspect scheduler = getExecutionAspect((NamedObj) actor);
             if (scheduler != null) {
                 ((CompositeActor) scheduler.getContainer()).getDirector().fireAt(
                         (Actor) scheduler,

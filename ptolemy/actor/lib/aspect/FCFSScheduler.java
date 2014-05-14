@@ -103,7 +103,7 @@ public class FCFSScheduler extends AtomicExecutionAspect {
      *    as execution time or priority cannot be read.
      */
     @Override
-    public Time schedule(Actor actor, Time currentPlatformTime, Time deadline,
+    public Time schedule(NamedObj actor, Time currentPlatformTime, Time deadline,
             Time executionTime) throws IllegalActionException {
         super.schedule(actor, currentPlatformTime, deadline, executionTime);
         _lastActorFinished = false;
@@ -117,23 +117,23 @@ public class FCFSScheduler extends AtomicExecutionAspect {
         Time remainingTime = null;
         if (_remainingTimes.get(currentlyExecuting) == null) { // hasn't been scheduled
             remainingTime = executionTime;
-            _remainingTimes.put(currentlyExecuting, executionTime);
+            _remainingTimes.put((NamedObj) currentlyExecuting, executionTime);
         } else { //has been scheduled
             Time lasttime = _lastTimeScheduled.get(currentlyExecuting);
             Time timePassed = currentPlatformTime.subtract(lasttime);
             remainingTime = _remainingTimes.get(currentlyExecuting).subtract(
                     timePassed);
-            _remainingTimes.put(currentlyExecuting, remainingTime);
+            _remainingTimes.put((NamedObj) currentlyExecuting, remainingTime);
         }
 
-        _lastTimeScheduled.put(currentlyExecuting, currentPlatformTime);
+        _lastTimeScheduled.put((NamedObj) currentlyExecuting, currentPlatformTime);
 
         if (remainingTime.getDoubleValue() == 0.0) {
             notifyExecutionListeners((NamedObj) currentlyExecuting,
                     currentPlatformTime.getDoubleValue(),
                     ExecutionEventType.STOP);
 
-            _remainingTimes.put(currentlyExecuting, null);
+            _remainingTimes.put((NamedObj) currentlyExecuting, null);
             currentlyExecuting = null;
             _lastActorFinished = true;
         }
@@ -144,6 +144,6 @@ public class FCFSScheduler extends AtomicExecutionAspect {
     //                      private variables                        //
 
     /** Currently executing actor. */
-    private Actor currentlyExecuting;
+    private NamedObj currentlyExecuting;
 
 }

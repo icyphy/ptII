@@ -107,7 +107,7 @@ public class CompositeExecutionAspect extends TypedCompositeActor implements
         justMonitor.setExpression("false");
         _justMonitor = false;
 
-        _lastTimeScheduled = new HashMap<Actor, Time>();
+        _lastTimeScheduled = new HashMap<NamedObj, Time>();
         _executionAspectListeners = new ArrayList<ExecutionAspectListener>();
     }
 
@@ -168,8 +168,8 @@ public class CompositeExecutionAspect extends TypedCompositeActor implements
         CompositeExecutionAspect newObject = (CompositeExecutionAspect) super
                 .clone(workspace);
         newObject._previousY = new HashMap<NamedObj, Double>();
-        newObject._requestPorts = new HashMap<Actor, String>();
-        newObject._lastTimeScheduled = new HashMap<Actor, Time>();
+        newObject._requestPorts = new HashMap<NamedObj, String>();
+        newObject._lastTimeScheduled = new HashMap<NamedObj, Time>();
         newObject._actors = new ArrayList<NamedObj>();
         return newObject;
     }
@@ -182,7 +182,7 @@ public class CompositeExecutionAspect extends TypedCompositeActor implements
      */
     @Override
     public DecoratorAttributes createDecoratorAttributes(NamedObj target) {
-        if (target instanceof Actor && !_isPartOfExecutionAspect(target)) {
+        if (target instanceof NamedObj && !_isPartOfExecutionAspect(target)) {
             try {
                 return new CompositeExecutionAspectAttributes(target, this);
             } catch (KernelException ex) {
@@ -211,7 +211,7 @@ public class CompositeExecutionAspect extends TypedCompositeActor implements
      * @exception IllegalActionException Thrown in attribute or token cannot be read.
      */
     @Override
-    public double getExecutionTime(Actor actor) throws IllegalActionException {
+    public double getExecutionTime(NamedObj actor) throws IllegalActionException {
         double executionTime = 0.0;
         for (ExecutionTimeAttributes resourceAttributes : ((NamedObj) actor)
                 .attributeList(ExecutionTimeAttributes.class)) {
@@ -235,7 +235,7 @@ public class CompositeExecutionAspect extends TypedCompositeActor implements
     public void initialize() throws IllegalActionException {
         super.initialize();
         _actors = new ArrayList<NamedObj>();
-        _currentlyExecuting = new ArrayList<Actor>();
+        _currentlyExecuting = new ArrayList<NamedObj>();
         _lastActorFinished = false;
         _previousY.clear();
         _lastTimeScheduled.clear();
@@ -331,7 +331,7 @@ public class CompositeExecutionAspect extends TypedCompositeActor implements
                                 ExecutionEventType.STOP);
                         outputPort.takeToken();
                         _currentlyExecuting.remove(actor);
-                        actor.getExecutiveDirector().resumeActor(actor);
+                        actor.getExecutiveDirector().resumeActor((NamedObj) actor);
                         _lastActorFinished = true;
                     }
                 }
@@ -371,7 +371,7 @@ public class CompositeExecutionAspect extends TypedCompositeActor implements
      *  @exception IllegalActionException Thrown if actor parameters such
      *    as execution time or priority cannot be read.
      */
-    public Time schedule(Actor actor, Time currentPlatformTime, Time deadline,
+    public Time schedule(NamedObj actor, Time currentPlatformTime, Time deadline,
             Time executionTime) throws IllegalActionException {
         _lastActorFinished = false;
         // make sure that director has the correct time.
@@ -382,7 +382,7 @@ public class CompositeExecutionAspect extends TypedCompositeActor implements
         Time time = _lastTimeScheduled.get(actor);
         if ((_justMonitor && (time == null || !time.equals(currentPlatformTime)))
                 || !_currentlyExecuting.contains(actor)) {
-            _lastTimeScheduled.put(actor, currentPlatformTime);
+            _lastTimeScheduled.put((NamedObj) actor, currentPlatformTime);
             notifyExecutionListeners((NamedObj) actor,
                     getExecutiveDirector().localClock.getLocalTime()
                             .getDoubleValue(), ExecutionEventType.START);
@@ -395,7 +395,7 @@ public class CompositeExecutionAspect extends TypedCompositeActor implements
                     throw new IllegalActionException(this, "Actor " + actor
                             + " does not have a" + " registered requestPort");
                 }
-                setRequestPort(actor, portName);
+                setRequestPort((NamedObj) actor, portName);
             }
             ExecutionRequestPort requestPort = (ExecutionRequestPort) getEntity(_requestPorts
                     .get(actor));
@@ -448,7 +448,7 @@ public class CompositeExecutionAspect extends TypedCompositeActor implements
                 CompositeExecutionAspectAttributes decoratorAttributes = (CompositeExecutionAspectAttributes) decoratedObject
                         .getDecoratorAttributes(this);
                 if (decoratedObject instanceof Actor) {
-                    setRequestPort((Actor) decoratedObject,
+                    setRequestPort(decoratedObject,
                             decoratorAttributes._requestPortName);
                 }
             }
@@ -460,10 +460,10 @@ public class CompositeExecutionAspect extends TypedCompositeActor implements
      *  @param actor The actor.
      *  @param portName The request port.
      */
-    public void setRequestPort(Actor actor, String portName) {
+    public void setRequestPort(NamedObj actor, String portName) {
         if (portName != null) {
             if (_requestPorts == null) {
-                _requestPorts = new HashMap<Actor, String>();
+                _requestPorts = new HashMap<NamedObj, String>();
             }
             _requestPorts.put(actor, portName);
         }
@@ -493,7 +493,7 @@ public class CompositeExecutionAspect extends TypedCompositeActor implements
     protected List<ExecutionAspectListener> _executionAspectListeners;
 
     /** List of currently executing actors. */
-    protected List<Actor> _currentlyExecuting;
+    protected List<NamedObj> _currentlyExecuting;
 
     ///////////////////////////////////////////////////////////////////
     //                          private methods                      //
@@ -540,11 +540,11 @@ public class CompositeExecutionAspect extends TypedCompositeActor implements
     /** Previous positions of the actor data set. */
     private HashMap<NamedObj, Double> _previousY;
 
-    private HashMap<Actor, Time> _lastTimeScheduled;
+    private HashMap<NamedObj, Time> _lastTimeScheduled;
 
     private boolean _justMonitor;
 
-    private HashMap<Actor, String> _requestPorts;
+    private HashMap<NamedObj, String> _requestPorts;
 
     /** Attributes for actors decorated by this CompositeExecutionAspects.
      *  The attributes in this base class only contain
@@ -597,7 +597,7 @@ public class CompositeExecutionAspect extends TypedCompositeActor implements
         public void attributeChanged(Attribute attribute)
                 throws IllegalActionException {
             if (attribute == requestPort) {
-                Actor actor = (Actor) getContainer();
+                NamedObj actor = (NamedObj) getContainer();
                 CompositeExecutionAspect aspect = (CompositeExecutionAspect) getDecorator();
                 String portName = ((StringToken) ((Parameter) attribute)
                         .getToken()).stringValue();

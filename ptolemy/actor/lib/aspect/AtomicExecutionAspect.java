@@ -145,9 +145,9 @@ public class AtomicExecutionAspect extends TypedAtomicActor implements
         AtomicExecutionAspect newObject = (AtomicExecutionAspect) super
                 .clone(workspace);
         newObject._executionAspectListeners = new ArrayList<ExecutionAspectListener>();
-        newObject._lastTimeScheduled = new HashMap<Actor, Time>();
+        newObject._lastTimeScheduled = new HashMap<NamedObj, Time>();
         newObject._actors = new ArrayList<NamedObj>();
-        newObject._remainingTimes = new HashMap<Actor, Time>();
+        newObject._remainingTimes = new HashMap<NamedObj, Time>();
         return newObject;
     }
 
@@ -199,7 +199,7 @@ public class AtomicExecutionAspect extends TypedAtomicActor implements
     * @exception IllegalActionException Thrown in attribute or token cannot be read.
     */
     @Override
-    public double getExecutionTime(Actor actor) throws IllegalActionException {
+    public double getExecutionTime(NamedObj actor) throws IllegalActionException {
         double executionTime = 0.0;
         for (ExecutionTimeAttributes resourceAttributes : ((NamedObj) actor)
                 .attributeList(ExecutionTimeAttributes.class)) {
@@ -219,7 +219,7 @@ public class AtomicExecutionAspect extends TypedAtomicActor implements
     *  @param actor The actor.
     *  @return The time the actor still needs.
     */
-    public Time getRemainingTime(Actor actor) {
+    public Time getRemainingTime(NamedObj actor) {
         return _remainingTimes.get(actor);
     }
 
@@ -238,8 +238,8 @@ public class AtomicExecutionAspect extends TypedAtomicActor implements
      */
     public void initialize() throws IllegalActionException {
         super.initialize();
-        _remainingTimes = new HashMap<Actor, Time>();
-        _lastTimeScheduled = new HashMap<Actor, Time>();
+        _remainingTimes = new HashMap<NamedObj, Time>();
+        _lastTimeScheduled = new HashMap<NamedObj, Time>();
         _actors = new ArrayList<NamedObj>();
 
         initializeDecoratedActors();
@@ -363,7 +363,7 @@ public class AtomicExecutionAspect extends TypedAtomicActor implements
          *    as execution time or priority cannot be read.
          */
     @Override
-    public Time schedule(Actor actor, Time environmentTime, Time deadline,
+    public Time schedule(NamedObj actor, Time environmentTime, Time deadline,
             Time executionTime) throws IllegalActionException {
         return null;
     }
@@ -427,17 +427,17 @@ public class AtomicExecutionAspect extends TypedAtomicActor implements
 
     /** Last actor that finished execution.
      */
-    protected Actor _lastActorThatFinished;
+    protected NamedObj _lastActorThatFinished;
 
     /** The last time an actor's remaining time was updated due to a scheduling
      *  request.
      */
-    protected HashMap<Actor, Time> _lastTimeScheduled;
+    protected HashMap<NamedObj, Time> _lastTimeScheduled;
 
     /** The remaining execution time for every actor that has been scheduled
      *  or null if the actor execution finished.
      */
-    protected HashMap<Actor, Time> _remainingTimes;
+    protected HashMap<NamedObj, Time> _remainingTimes;
 
     /** Listeners that want to be informed about rescheduling events.
      */
@@ -461,9 +461,9 @@ public class AtomicExecutionAspect extends TypedAtomicActor implements
                     _actors.add(entity);
                     // Indicate that the actor is not running.
                     if (_remainingTimes == null) {
-                        _remainingTimes = new HashMap<Actor, Time>();
+                        _remainingTimes = new HashMap<NamedObj, Time>();
                     }
-                    _remainingTimes.put((Actor) entity, null);
+                    _remainingTimes.put(entity, null);
                     notifyExecutionListeners(entity, 0.0, null);
 
                 } else if (entity instanceof CompositeActor) {

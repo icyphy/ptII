@@ -596,7 +596,7 @@ public class Director extends Attribute implements Executable {
      * @return The deadline.
      * @exception IllegalActionException Thrown in subclasses.
      */
-    public Time getDeadline(Actor actor, Time timestamp)
+    public Time getDeadline(NamedObj actor, Time timestamp)
             throws IllegalActionException {
         return Time.POSITIVE_INFINITY;
     }
@@ -927,7 +927,7 @@ public class Director extends Attribute implements Executable {
         }
 
         actor.initialize();
-        if (_getExecutionAspect(actor) != null) {
+        if (getExecutionAspect((NamedObj) actor) != null) {
             _aspectsPresent = true;
         }
     }
@@ -941,7 +941,7 @@ public class Director extends Attribute implements Executable {
      *  @param actor The actor that resumes execution.
      *  @exception IllegalActionException Not thrown here but in derived classes.
      */
-    public void resumeActor(Actor actor) throws IllegalActionException {
+    public void resumeActor(NamedObj actor) throws IllegalActionException {
     }
 
     /** Indicate that resolved types in the model may no longer be valid.
@@ -1254,7 +1254,7 @@ public class Director extends Attribute implements Executable {
         _aspectsPresent = false;
         
         _executionAspects = new ArrayList<ActorExecutionAspect>();
-        _aspectForActor = new HashMap<Actor, ActorExecutionAspect>();
+        _aspectForActor = new HashMap<NamedObj, ActorExecutionAspect>();
         if (getContainer() instanceof CompositeActor) {
             for (Object entity : ((CompositeActor)getContainer()).entityList(
                     ActorExecutionAspect.class)) {
@@ -1696,7 +1696,7 @@ public class Director extends Attribute implements Executable {
      *  @param actor The actor.
      *  @return True if the actor finished execution.
      */
-    protected boolean _actorFinished(Actor actor) {
+    protected boolean _actorFinished(NamedObj actor) {
         return _aspectForActor.get(actor) != null
                 && _aspectForActor.get(actor).lastScheduledActorFinished();
     }
@@ -1808,19 +1808,19 @@ public class Director extends Attribute implements Executable {
     }
 
     /** Find the ExecutionAspect for the actor. Only one ExecutionAspect
-     *
+     *  is returned at this point.
      *  @param actor The actor to be scheduled.
      *  @return The aspect.
      * @exception IllegalActionException
      */
-    protected ActorExecutionAspect _getExecutionAspect(Actor actor)
+    public ActorExecutionAspect getExecutionAspect(NamedObj actor)
             throws IllegalActionException {
         if (_aspectForActor == null) {
-            _aspectForActor = new HashMap<Actor, ActorExecutionAspect>();
+            _aspectForActor = new HashMap<NamedObj, ActorExecutionAspect>();
         }
         ActorExecutionAspect result = _aspectForActor.get(actor);
         if (result == null) {
-            for (ExecutionAttributes executionAttributes : ((NamedObj) actor)
+            for (ExecutionAttributes executionAttributes : actor
                     .attributeList(ExecutionAttributes.class)) {
                 if (((BooleanToken) executionAttributes.enable.getToken())
                         .booleanValue()) {
@@ -1947,9 +1947,9 @@ public class Director extends Attribute implements Executable {
      *  @exception IllegalActionException Thrown if parameters cannot be read, actor cannot be
      *   scheduled or container cannot be fired at future time.
      */
-    protected boolean _schedule(Actor actor, Time timestamp)
+    protected boolean _schedule(NamedObj actor, Time timestamp)
             throws IllegalActionException {
-        ActorExecutionAspect aspect = _getExecutionAspect(actor);
+        ActorExecutionAspect aspect = getExecutionAspect((NamedObj) actor);
         Time time = null;
         Boolean finished = true;
         if (timestamp == null) {
@@ -1959,7 +1959,7 @@ public class Director extends Attribute implements Executable {
             Time environmentTime = ((CompositeActor) aspect.getContainer())
                     .getDirector().getEnvironmentTime();
             time = ExecutionAspectHelper.schedule(aspect, actor,
-                    environmentTime, getDeadline(actor, timestamp));
+                    environmentTime, getDeadline((NamedObj) actor, timestamp));
             if (_nextScheduleTime == null) {
                 _nextScheduleTime = new HashMap<ActorExecutionAspect, Time>();
             }
@@ -1984,7 +1984,7 @@ public class Director extends Attribute implements Executable {
     protected Set _actorsFinishedExecution;
 
     /** Contains a map of actors and the ExecutionAspect that is specified for the actor. */
-	protected HashMap<Actor, ActorExecutionAspect> _aspectForActor;
+	protected HashMap<NamedObj, ActorExecutionAspect> _aspectForActor;
 
 	/** True if any of the directed actors specifies a ExecutionAspect
 	 *  in the parameters and this ExecutionAspect exists on this or

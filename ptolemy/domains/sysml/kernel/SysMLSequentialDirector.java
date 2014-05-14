@@ -54,6 +54,7 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Workspace;
 
 ///////////////////////////////////////////////////////////////////
@@ -201,7 +202,7 @@ public class SysMLSequentialDirector extends Director implements
 
                     if (_fireAtRequests.size() > 0) {
                         request = _fireAtRequests.peek();
-                        if (!_schedule(request.actor, getModelTime())) {
+                        if (!_schedule((NamedObj) request.actor, getModelTime())) {
                             break;
                         }
                         if (!currentTime.equals(request.time)
@@ -249,7 +250,7 @@ public class SysMLSequentialDirector extends Director implements
                         + " on channel " + channel);
             }
             if (actor != getContainer()) {
-                if (!_schedule(actor, getModelTime())) {
+                if (!_schedule((NamedObj) actor, getModelTime())) {
                     break;
                 }
                 _iterateActorOnce(actor);
@@ -431,7 +432,7 @@ public class SysMLSequentialDirector extends Director implements
         if (request == null) {
             return true;
         }
-        return _schedule(request.actor, getModelTime());
+        return _schedule((NamedObj) request.actor, getModelTime());
     }
 
     /** Return false if a stop has been requested or if

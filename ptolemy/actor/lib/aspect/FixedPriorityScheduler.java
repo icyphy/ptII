@@ -140,7 +140,7 @@ public class FixedPriorityScheduler extends AtomicExecutionAspect {
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         FixedPriorityScheduler newObject = (FixedPriorityScheduler) super
                 .clone(workspace);
-        newObject._currentlyExecuting = new Stack<Actor>();
+        newObject._currentlyExecuting = new Stack<NamedObj>();
         newObject._preemptive = true;
 
         return newObject;
@@ -185,10 +185,12 @@ public class FixedPriorityScheduler extends AtomicExecutionAspect {
     public Time schedule(Time environmentTime) throws IllegalActionException {
         Time time = Time.POSITIVE_INFINITY;
         if (_currentlyExecuting.size() > 0) {
-            Actor actor = _currentlyExecuting.peek();
+            NamedObj actor = _currentlyExecuting.peek();
             time = schedule(actor, environmentTime, null, null);
             if (_lastActorThatFinished == actor && lastActorFinished()) {
-                actor.getDirector().resumeActor(actor);
+                if (actor instanceof Actor) {
+                    ((Actor)actor).getDirector().resumeActor(actor);
+                }
             }
         }
         return time;
@@ -206,7 +208,7 @@ public class FixedPriorityScheduler extends AtomicExecutionAspect {
      *    as execution time or priority cannot be read.
      */
     @Override
-    public Time schedule(Actor actor, Time currentPlatformTime, Time deadline,
+    public Time schedule(NamedObj actor, Time currentPlatformTime, Time deadline,
             Time executionTime) throws IllegalActionException {
         super.schedule(actor, currentPlatformTime, deadline, executionTime);
         _lastActorFinished = false;
@@ -215,7 +217,7 @@ public class FixedPriorityScheduler extends AtomicExecutionAspect {
             scheduleNewActor(actor, currentPlatformTime, executionTime);
             remainingTime = executionTime;
         } else {
-            Actor executing = _currentlyExecuting.peek();
+            NamedObj executing = _currentlyExecuting.peek();
             Time lasttime = _lastTimeScheduled.get(executing);
             Time timePassed = currentPlatformTime.subtract(lasttime);
             remainingTime = _remainingTimes.get(executing).subtract(timePassed);
@@ -246,13 +248,13 @@ public class FixedPriorityScheduler extends AtomicExecutionAspect {
                     Object[] actors = _currentlyExecuting.toArray();
                     _currentlyExecuting.clear();
                     for (int j = 0; j < actors.length; j++) {
-                        _currentlyExecuting.push((Actor) actors[j]);
+                        _currentlyExecuting.push((NamedObj) actors[j]);
                     }
                     _currentlyExecuting.push(actor);
                     _remainingTimes.put(actor, executionTime);
                 }
             }
-            for (Actor preemptedActor : _currentlyExecuting) {
+            for (NamedObj preemptedActor : _currentlyExecuting) {
                 _lastTimeScheduled.put(preemptedActor, currentPlatformTime);
             }
         }
@@ -262,7 +264,7 @@ public class FixedPriorityScheduler extends AtomicExecutionAspect {
             notifyExecutionListeners((NamedObj) _currentlyExecuting.peek(),
                     currentPlatformTime.getDoubleValue(),
                     ExecutionEventType.STOP);
-            _remainingTimes.put(_currentlyExecuting.peek(), null);
+            _remainingTimes.put((NamedObj) _currentlyExecuting.peek(), null);
             _currentlyExecuting.pop();
             if (_currentlyExecuting.size() > 0) {
                 remainingTime = _remainingTimes.get(_currentlyExecuting.peek());
@@ -289,8 +291,8 @@ public class FixedPriorityScheduler extends AtomicExecutionAspect {
      *    assigned, the lowest priority.
      *  @exception IllegalActionException Thrown if parameter cannot be read.
      */
-    protected double _getPriority(Actor actor) throws IllegalActionException {
-        return ((IntToken) ((Parameter) ((NamedObj) actor)
+    protected double _getPriority(NamedObj actor) throws IllegalActionException {
+        return ((IntToken) ((Parameter) actor
                 .getDecoratorAttribute(this, "priority")).getToken())
                 .intValue();
     }
@@ -299,19 +301,19 @@ public class FixedPriorityScheduler extends AtomicExecutionAspect {
     //                    protected variables                        //
 
     /** Stack of currently executing actors. */
-    protected Stack<Actor> _currentlyExecuting;
+    protected Stack<NamedObj> _currentlyExecuting;
 
     ///////////////////////////////////////////////////////////////////
     //                        private methods                        //
 
-    private void _add(Actor actor, Time executionTime)
+    private void _add(NamedObj actor, Time executionTime)
             throws IllegalActionException {
         double priority = _getPriority(actor);
         boolean added = false;
         Object[] actors = _currentlyExecuting.toArray();
         _currentlyExecuting.clear();
         for (int i = 0; i < actors.length; i++) {
-            Actor actorInArray = (Actor) actors[i];
+            NamedObj actorInArray = (NamedObj) actors[i];
             double actorInArrayPriority = _getPriority(actorInArray);
             if (!added && priority >= actorInArrayPriority) { // has lower priority
                 _currentlyExecuting.push(actor);
@@ -328,7 +330,7 @@ public class FixedPriorityScheduler extends AtomicExecutionAspect {
      *  @param currentPlatformTime The current platform time when the preemption occurs.
      *  @param executionTime The execution time of the actor.
      */
-    private void scheduleNewActor(Actor actor, Time currentPlatformTime,
+    private void scheduleNewActor(NamedObj actor, Time currentPlatformTime,
             Time executionTime) {
         _currentlyExecuting.push(actor);
         notifyExecutionListeners((NamedObj) actor,

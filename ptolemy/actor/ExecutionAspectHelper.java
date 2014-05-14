@@ -86,7 +86,7 @@ public class ExecutionAspectHelper {
      *  @exception IllegalActionException Thrown if actor parameters such
      *    as execution time or priority cannot be read.
      */
-    public static Time schedule(ActorExecutionAspect aspect, Actor actor,
+    public static Time schedule(ActorExecutionAspect aspect, NamedObj actor,
             Time environmentTime, Time deadline) throws IllegalActionException {
         Director director = ((CompositeActor) ((ComponentEntity) aspect)
                 .getContainer()).getDirector();

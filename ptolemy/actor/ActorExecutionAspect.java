@@ -71,11 +71,11 @@ public interface ActorExecutionAspect extends Decorator {
 
     /** Get the execution time of an actor. If the actor does not have an attribute
      *  specifying the execution time, return the minimum execution time.
-     * @param actor The actor.
+     * @param actor The named object.
      * @return The execution time.
      * @exception IllegalActionException Thrown in attribute or token cannot be read.
      */
-    public double getExecutionTime(Actor actor) throws IllegalActionException;
+    public double getExecutionTime(NamedObj actor) throws IllegalActionException;
 
     /** Return whether an actor is currently waiting for a resource.
      * @param actor The actor that might be waiting for a resource.
@@ -120,7 +120,7 @@ public interface ActorExecutionAspect extends Decorator {
      *  @exception IllegalActionException Thrown if actor parameters such
      *    as execution time or priority cannot be read.
      */
-    public Time schedule(Actor actor, Time environmentTime, Time deadline,
+    public Time schedule(NamedObj actor, Time environmentTime, Time deadline,
             Time executionTime) throws IllegalActionException;
 
     /** Remove schedule listener.

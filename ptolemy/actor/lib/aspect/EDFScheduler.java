@@ -110,7 +110,7 @@ public class EDFScheduler extends FixedPriorityScheduler {
      *    as execution time or priority cannot be read.
      */
     @Override
-    public Time schedule(Actor actor, Time currentPlatformTime, Time deadline,
+    public Time schedule(NamedObj actor, Time currentPlatformTime, Time deadline,
             Time executionTime) throws IllegalActionException {
         if (!_currentlyExecuting.contains(actor)) {
             _deadlines.put(actor, deadline);
@@ -133,7 +133,7 @@ public class EDFScheduler extends FixedPriorityScheduler {
      */
     @Override
     public Time schedule(Time environmentTime) throws IllegalActionException {
-        Actor actor = _currentlyExecuting.peek();
+        NamedObj actor = _currentlyExecuting.peek();
         Time time = super.schedule(actor, environmentTime, null, null);
         if (lastScheduledActorFinished()) {
             _deadlines.put(actor, null);
@@ -154,7 +154,8 @@ public class EDFScheduler extends FixedPriorityScheduler {
      *    assigned, the lowest priority.
      *  @exception IllegalActionException Thrown if parameter cannot be read.
      */
-    protected double _getPriority(Actor actor) throws IllegalActionException {
+    @Override
+    protected double _getPriority(NamedObj actor) throws IllegalActionException {
         return _deadlines.get(actor).getDoubleValue();
     }
 
@@ -165,6 +166,6 @@ public class EDFScheduler extends FixedPriorityScheduler {
     //                      private variables                        //
 
     // For every firing request store the deadline
-    private HashMap<Actor, Time> _deadlines;
+    private HashMap<NamedObj, Time> _deadlines;
 
 }

@@ -39,9 +39,11 @@ import java.util.Random;
 import java.util.Set;
 
 import ptolemy.actor.Actor;
+import ptolemy.actor.ActorExecutionAspect;
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.Director;
 import ptolemy.actor.Executable;
+import ptolemy.actor.ExecutionAspectHelper;
 import ptolemy.actor.IOPort;
 import ptolemy.actor.IORelation;
 import ptolemy.actor.Initializable;
@@ -657,6 +659,9 @@ public class FSMActor extends CompositeEntity implements TypedActor,
         if (_debugging) {
             _debug("************ Firing FSM. Current state: "
                     + _currentState.getName());
+        }
+        if (_firstFire) { 
+            _schedule(_currentState, getDirector().getModelTime());
         }
 
         Time environmentTime = _getEnvironmentTime();
@@ -1309,6 +1314,7 @@ public class FSMActor extends CompositeEntity implements TypedActor,
                 // Guards cannot yet be evaluated. Ignore.
             }
         }
+        _firstFire = true;
     }
 
     /** Return a list of the input ports.
@@ -3280,6 +3286,51 @@ public class FSMActor extends CompositeEntity implements TypedActor,
         }
         return chosenTransition;
     }
+    
+    
+    protected boolean _schedule(NamedObj actor, Time timestamp)
+            throws IllegalActionException {
+        ActorExecutionAspect aspect = getDirector().getExecutionAspect(actor);
+        Time time = null;
+        Boolean finished = true;
+        if (timestamp == null) {
+            timestamp = getDirector().getModelTime();
+        }
+        if (aspect != null) {
+            Time environmentTime = ((CompositeActor) aspect.getContainer())
+                    .getDirector().getEnvironmentTime();
+            time = ExecutionAspectHelper.schedule(aspect, actor,
+                    environmentTime, getDirector().getDeadline(actor, timestamp));
+//            if (_nextScheduleTime == null) {
+//                _nextScheduleTime = new HashMap<ActorExecutionAspect, Time>();
+//            }
+//            _nextScheduleTime.put(aspect, time);
+//            finished = _actorFinished(actor);
+            if (time != null && time.getDoubleValue() > 0.0) {
+                CompositeActor container = (CompositeActor) aspect
+                        .getContainer();
+                Time fireAtTime = environmentTime;
+                if (!time.equals(Time.POSITIVE_INFINITY)) {
+                    fireAtTime = fireAtTime.add(time);
+                    container.getDirector().fireContainerAt(fireAtTime);
+                }
+            }
+        }
+        boolean schedule = time == null || finished;
+//        if (!schedule) {
+//            ActorExecutionAspect scheduler = getExecutionAspect(actor);
+//            if (scheduler != null) {
+//                ((CompositeActor) scheduler.getContainer()).getDirector().fireAt(
+//                        (Actor) scheduler,
+//                        getModelTime().add(_nextScheduleTime.get(scheduler)));
+//            } else {
+//                throw new InternalErrorException(this, null,
+//                        "_getExecutionAspect(" + actor.getFullName()
+//                        + ") returned null?");
+//            }
+//        }
+        return schedule;
+    }
 
     /** Execute all set actions contained by the transition chosen
      *  from the current state. Change current state
@@ -3370,6 +3421,7 @@ public class FSMActor extends CompositeEntity implements TypedActor,
         // Before committing the new state, record whether it changed.
         boolean stateChanged = _currentState != currentTransition
                 .destinationState();
+        _schedule(nextState, getDirector().getModelTime());
         _currentState = nextState;
         if (stateChanged) {
             // reset threshold for probabilistic transitions
@@ -4046,6 +4098,11 @@ public class FSMActor extends CompositeEntity implements TypedActor,
      *  current state.
      */
     private Map _currentConnectionMap = null;
+    
+    /** True before the first fire, then false. Used to communicate
+     *  with resource schedulers.
+     */
+    private boolean _firstFire = false;
 
     /** A flag indicating that unknown inputs were referenced in guards
      *  and/or output value expressions (when guards evaluate to true)

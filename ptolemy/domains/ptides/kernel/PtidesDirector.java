@@ -499,14 +499,15 @@ public class PtidesDirector extends DEDirector implements Decorator {
      *  @return The deadline for the actor.
      *  @exception IllegalActionException If time objects cannot be created.
      */
-    public Time getDeadline(Actor actor, Time timestamp)
+    @Override
+    public Time getDeadline(NamedObj actor, Time timestamp)
             throws IllegalActionException {
         Time relativeDeadline = Time.POSITIVE_INFINITY;
 
-        for (int i = 0; i < actor.outputPortList().size(); i++) {
-            for (int j = 0; j < ((IOPort) actor.outputPortList().get(i))
+        for (int i = 0; i < ((Actor)actor).outputPortList().size(); i++) {
+            for (int j = 0; j < ((IOPort) ((Actor)actor).outputPortList().get(i))
                     .sinkPortList().size(); j++) {
-                double newRelativeDeadline = _getRelativeDeadline((TypedIOPort) ((IOPort) actor
+                double newRelativeDeadline = _getRelativeDeadline((TypedIOPort) ((IOPort) ((Actor)actor)
                         .outputPortList().get(i)).sinkPortList().get(j));
                 if (newRelativeDeadline < Double.MAX_VALUE
                         && newRelativeDeadline < relativeDeadline
@@ -727,9 +728,10 @@ public class PtidesDirector extends DEDirector implements Decorator {
         // DO NOTHING
     }
 
-    public void resumeActor(Actor actor) throws IllegalActionException {
+    @Override
+    public void resumeActor(NamedObj actor) throws IllegalActionException {
         prefire();
-        _actorsFinished.add(actor);
+        _actorsFinished.add((Actor) actor);
         fireContainerAt(localClock.getLocalTime());
     }
 
@@ -1502,7 +1504,7 @@ public class PtidesDirector extends DEDirector implements Decorator {
                                 _actorsFinished.contains(actor) ||
                         // The actor is scheduled and is instantaneously granted all
                         // resources.
-                                _schedule(actor, timestamp))
+                                _schedule((NamedObj) actor, timestamp))
                                 && (
                                 // If actor is a composite actor we check whether the
                                 // contained actors can be scheduled.
