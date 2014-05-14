@@ -4,6 +4,14 @@
 <class name="BMCLibrary" extends="ptolemy.moml.EntityLibrary">
     <configure>
         <group>
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={324, 22, 1033, 783}, maximized=false}">
+            </property>
+            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[799, 673]">
+            </property>
+            <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+            </property>
+            <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{335.47691349637694, 142.15625}">
+            </property>
             <entity name="TC" class="ptolemy.actor.TypedCompositeActor">
                 <property name="_location" class="ptolemy.kernel.util.Location" value="{186.0, 317.0}">
                 </property>
@@ -7359,6 +7367,561 @@
                 <link port="CurrentTime.output" relation="relation2"/>
                 <link port="CurrentTime.trigger" relation="relation"/>
                 <link port="SetVariable.input" relation="relation2"/>
+            </entity>
+            <entity name="1588Clock" class="ptolemy.demo.BMC.CLASSES.1588Clock">
+                <display name="Boundary             Clock"/>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[615.0, -115.0]">
+                </property>
+                <entity name="displayExceptions2" class="ptolemy.actor.TypedCompositeActor">
+                    <entity name="Display" class="ptolemy.actor.lib.gui.Display">
+                        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={54, 11, 992, 172}, maximized=false}">
+                        </property>
+                        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[974, 101]">
+                        </property>
+                    </entity>
+                </entity>
+                <entity name="Update Data Set MONITOR" class="ptolemy.actor.TypedCompositeActor">
+                    <entity name="Display" class="ptolemy.actor.lib.gui.Display">
+                        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 157, 1046, 686}, maximized=false}">
+                        </property>
+                        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[1028, 219]">
+                        </property>
+                    </entity>
+                </entity>
+                <entity name="e(r)Best MONITOR" class="ptolemy.actor.TypedCompositeActor">
+                    <entity name="Display" class="ptolemy.actor.lib.gui.Display">
+                        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={3, 103, 1046, 251}, maximized=false}">
+                        </property>
+                        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[1028, 180]">
+                        </property>
+                    </entity>
+                </entity>
+                <entity name="9-2-6-11-ART dataSetUpdate" class="ptolemy.actor.TypedCompositeActor">
+                    <entity name="ART DataSet Update Monitor" class="ptolemy.actor.lib.gui.Display">
+                        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={344, 256, 680, 130}, maximized=false}">
+                        </property>
+                        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[662, 59]">
+                        </property>
+                    </entity>
+                </entity>
+                <entity name="9523computation" class="ptolemy.actor.TypedCompositeActor">
+                    <entity name="9523eventMonitor" class="ptolemy.actor.TypedCompositeActor">
+                        <entity name="DE Token Monitor" class="ptolemy.actor.lib.gui.Display">
+                            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={578, 722, 698, 257}, maximized=false}">
+                            </property>
+                            <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[680, 186]">
+                            </property>
+                        </entity>
+                    </entity>
+                    <entity name="9523eventMonitor2" class="ptolemy.actor.TypedCompositeActor">
+                        <entity name="DE Token Monitor" class="ptolemy.actor.lib.gui.Display">
+                            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={148, 726, 698, 257}, maximized=false}">
+                            </property>
+                            <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[680, 186]">
+                            </property>
+                        </entity>
+                    </entity>
+                    <entity name="9523eventMonitor3" class="ptolemy.actor.TypedCompositeActor">
+                        <entity name="DE Token Monitor" class="ptolemy.actor.lib.gui.Display">
+                            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={468, 383, 698, 257}, maximized=false}">
+                            </property>
+                            <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[680, 186]">
+                            </property>
+                        </entity>
+                    </entity>
+                    <entity name="9523eventMonitor4" class="ptolemy.actor.TypedCompositeActor">
+                        <entity name="DE Token Monitor" class="ptolemy.actor.lib.gui.Display">
+                            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={9, 95, 698, 161}, maximized=false}">
+                            </property>
+                            <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[680, 90]">
+                            </property>
+                        </entity>
+                    </entity>
+                    <entity name="9523correctionMonitor" class="ptolemy.actor.TypedCompositeActor">
+                        <entity name="DE Token Monitor" class="ptolemy.actor.lib.gui.Display">
+                            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 767, 994, 257}, maximized=false}">
+                            </property>
+                            <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[976, 186]">
+                            </property>
+                        </entity>
+                    </entity>
+                </entity>
+                <entity name="1588PORT3" class="ptolemy.demo.BMC.CLASSES.1588PORT">
+                    <entity name="ComputeERBEST" class="ptolemy.actor.TypedCompositeActor">
+                        <display name="Compute ERBEST"/>
+                        <entity name="DE Token Monitor" class="ptolemy.actor.TypedCompositeActor">
+                            <entity name="DE Token Monitor" class="ptolemy.actor.lib.gui.Display">
+                                <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={51, 755, 698, 257}, maximized=false}">
+                                </property>
+                                <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[680, 186]">
+                                </property>
+                            </entity>
+                        </entity>
+                        <entity name="DE Token Monitor2" class="ptolemy.actor.TypedCompositeActor">
+                            <entity name="DE Token Monitor" class="ptolemy.actor.lib.gui.Display">
+                                <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={356, 685, 831, 257}, maximized=false}">
+                                </property>
+                                <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[813, 186]">
+                                </property>
+                            </entity>
+                        </entity>
+                    </entity>
+                    <entity name="updatePortDataSetsFig24" class="ptolemy.actor.TypedCompositeActor">
+                        <entity name="DE Token Monitor" class="ptolemy.actor.TypedCompositeActor">
+                            <entity name="DE Token Monitor" class="ptolemy.actor.lib.gui.Display">
+                                <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={208, 665, 1009, 142}, maximized=false}">
+                                </property>
+                                <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[991, 71]">
+                                </property>
+                            </entity>
+                        </entity>
+                        <entity name="DE Token Monitor2" class="ptolemy.actor.TypedCompositeActor">
+                            <entity name="DE Token Monitor" class="ptolemy.actor.lib.gui.Display">
+                                <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={519, 665, 698, 142}, maximized=false}">
+                                </property>
+                                <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[680, 186]">
+                                </property>
+                            </entity>
+                        </entity>
+                        <entity name="DE Token Monitor3" class="ptolemy.actor.TypedCompositeActor">
+                            <entity name="DE Token Monitor" class="ptolemy.actor.lib.gui.Display">
+                                <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={326, 511, 698, 257}, maximized=false}">
+                                </property>
+                                <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[680, 186]">
+                                </property>
+                            </entity>
+                        </entity>
+                        <entity name="DE Token Monitor5" class="ptolemy.actor.TypedCompositeActor">
+                            <entity name="DE Token Monitor" class="ptolemy.actor.lib.gui.Display">
+                                <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={468, 383, 698, 257}, maximized=false}">
+                                </property>
+                                <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[680, 186]">
+                                </property>
+                            </entity>
+                        </entity>
+                    </entity>
+                    <entity name="EVENT TRANSITION MONITOR" class="ptolemy.actor.TypedCompositeActor">
+                        <entity name="Display" class="ptolemy.actor.lib.gui.Display">
+                            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 474, 1073, 384}, maximized=false}">
+                            </property>
+                            <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[1055, 313]">
+                            </property>
+                        </entity>
+                    </entity>
+                    <entity name="FM Database MONITOR2" class="ptolemy.actor.TypedCompositeActor">
+                        <entity name="Display" class="ptolemy.actor.lib.gui.Display">
+                            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={-1, 582, 1275, 330}, maximized=false}">
+                            </property>
+                            <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[1257, 259]">
+                            </property>
+                        </entity>
+                    </entity>
+                    <entity name="Port DataSet Monitor" class="ptolemy.actor.TypedCompositeActor">
+                        <entity name="Display" class="ptolemy.actor.lib.gui.Display">
+                            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 585, 1046, 183}, maximized=false}">
+                            </property>
+                            <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[1028, 112]">
+                            </property>
+                        </entity>
+                    </entity>
+                    <entity name="DE Token Monitor" class="ptolemy.actor.TypedCompositeActor">
+                        <entity name="DE Token Monitor" class="ptolemy.actor.lib.gui.Display">
+                            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={468, 383, 698, 257}, maximized=false}">
+                            </property>
+                            <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[680, 186]">
+                            </property>
+                        </entity>
+                    </entity>
+                    <entity name="DE Token Monitor2" class="ptolemy.actor.TypedCompositeActor">
+                        <entity name="DE Token Monitor" class="ptolemy.actor.lib.gui.Display">
+                            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={67, 103, 1022, 128}, maximized=false}">
+                            </property>
+                            <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[1004, 57]">
+                            </property>
+                        </entity>
+                    </entity>
+                    <entity name="DE Token Monitor3" class="ptolemy.actor.TypedCompositeActor">
+                        <entity name="DE Token Monitor" class="ptolemy.actor.lib.gui.Display">
+                            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={67, 103, 1022, 128}, maximized=false}">
+                            </property>
+                            <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[1004, 57]">
+                            </property>
+                        </entity>
+                    </entity>
+                    <entity name="DE Token Monitor4" class="ptolemy.actor.TypedCompositeActor">
+                        <entity name="DE Token Monitor" class="ptolemy.actor.lib.gui.Display">
+                            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={67, 103, 1022, 128}, maximized=false}">
+                            </property>
+                            <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[1004, 57]">
+                            </property>
+                        </entity>
+                    </entity>
+                    <entity name="DE Token Monitor5" class="ptolemy.actor.TypedCompositeActor">
+                        <entity name="DE Token Monitor" class="ptolemy.actor.lib.gui.Display">
+                            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={67, 103, 1022, 128}, maximized=false}">
+                            </property>
+                            <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[1004, 57]">
+                            </property>
+                        </entity>
+                    </entity>
+                </entity>
+                <entity name="1588PORT6" class="ptolemy.demo.BMC.CLASSES.1588PORT">
+                    <entity name="ComputeERBEST" class="ptolemy.actor.TypedCompositeActor">
+                        <display name="Compute ERBEST"/>
+                        <entity name="DE Token Monitor" class="ptolemy.actor.TypedCompositeActor">
+                            <entity name="DE Token Monitor" class="ptolemy.actor.lib.gui.Display">
+                                <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={51, 755, 698, 257}, maximized=false}">
+                                </property>
+                                <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[680, 186]">
+                                </property>
+                            </entity>
+                        </entity>
+                        <entity name="DE Token Monitor2" class="ptolemy.actor.TypedCompositeActor">
+                            <entity name="DE Token Monitor" class="ptolemy.actor.lib.gui.Display">
+                                <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={356, 685, 831, 257}, maximized=false}">
+                                </property>
+                                <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[813, 186]">
+                                </property>
+                            </entity>
+                        </entity>
+                    </entity>
+                    <entity name="updatePortDataSetsFig24" class="ptolemy.actor.TypedCompositeActor">
+                        <entity name="DE Token Monitor" class="ptolemy.actor.TypedCompositeActor">
+                            <entity name="DE Token Monitor" class="ptolemy.actor.lib.gui.Display">
+                                <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={208, 665, 1009, 142}, maximized=false}">
+                                </property>
+                                <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[991, 71]">
+                                </property>
+                            </entity>
+                        </entity>
+                        <entity name="DE Token Monitor2" class="ptolemy.actor.TypedCompositeActor">
+                            <entity name="DE Token Monitor" class="ptolemy.actor.lib.gui.Display">
+                                <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={519, 665, 698, 142}, maximized=false}">
+                                </property>
+                                <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[680, 186]">
+                                </property>
+                            </entity>
+                        </entity>
+                        <entity name="DE Token Monitor3" class="ptolemy.actor.TypedCompositeActor">
+                            <entity name="DE Token Monitor" class="ptolemy.actor.lib.gui.Display">
+                                <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={326, 511, 698, 257}, maximized=false}">
+                                </property>
+                                <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[680, 186]">
+                                </property>
+                            </entity>
+                        </entity>
+                        <entity name="DE Token Monitor5" class="ptolemy.actor.TypedCompositeActor">
+                            <entity name="DE Token Monitor" class="ptolemy.actor.lib.gui.Display">
+                                <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={468, 383, 698, 257}, maximized=false}">
+                                </property>
+                                <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[680, 186]">
+                                </property>
+                            </entity>
+                        </entity>
+                    </entity>
+                    <entity name="EVENT TRANSITION MONITOR" class="ptolemy.actor.TypedCompositeActor">
+                        <entity name="Display" class="ptolemy.actor.lib.gui.Display">
+                            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 474, 1073, 384}, maximized=false}">
+                            </property>
+                            <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[1055, 313]">
+                            </property>
+                        </entity>
+                    </entity>
+                    <entity name="FM Database MONITOR2" class="ptolemy.actor.TypedCompositeActor">
+                        <entity name="Display" class="ptolemy.actor.lib.gui.Display">
+                            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={-1, 582, 1275, 330}, maximized=false}">
+                            </property>
+                            <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[1257, 259]">
+                            </property>
+                        </entity>
+                    </entity>
+                    <entity name="Port DataSet Monitor" class="ptolemy.actor.TypedCompositeActor">
+                        <entity name="Display" class="ptolemy.actor.lib.gui.Display">
+                            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 585, 1046, 183}, maximized=false}">
+                            </property>
+                            <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[1028, 112]">
+                            </property>
+                        </entity>
+                    </entity>
+                    <entity name="DE Token Monitor" class="ptolemy.actor.TypedCompositeActor">
+                        <entity name="DE Token Monitor" class="ptolemy.actor.lib.gui.Display">
+                            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={468, 383, 698, 257}, maximized=false}">
+                            </property>
+                            <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[680, 186]">
+                            </property>
+                        </entity>
+                    </entity>
+                    <entity name="DE Token Monitor2" class="ptolemy.actor.TypedCompositeActor">
+                        <entity name="DE Token Monitor" class="ptolemy.actor.lib.gui.Display">
+                            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={67, 103, 1022, 128}, maximized=false}">
+                            </property>
+                            <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[1004, 57]">
+                            </property>
+                        </entity>
+                    </entity>
+                    <entity name="DE Token Monitor3" class="ptolemy.actor.TypedCompositeActor">
+                        <entity name="DE Token Monitor" class="ptolemy.actor.lib.gui.Display">
+                            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={67, 103, 1022, 128}, maximized=false}">
+                            </property>
+                            <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[1004, 57]">
+                            </property>
+                        </entity>
+                    </entity>
+                    <entity name="DE Token Monitor4" class="ptolemy.actor.TypedCompositeActor">
+                        <entity name="DE Token Monitor" class="ptolemy.actor.lib.gui.Display">
+                            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={67, 103, 1022, 128}, maximized=false}">
+                            </property>
+                            <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[1004, 57]">
+                            </property>
+                        </entity>
+                    </entity>
+                    <entity name="DE Token Monitor5" class="ptolemy.actor.TypedCompositeActor">
+                        <entity name="DE Token Monitor" class="ptolemy.actor.lib.gui.Display">
+                            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={67, 103, 1022, 128}, maximized=false}">
+                            </property>
+                            <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[1004, 57]">
+                            </property>
+                        </entity>
+                    </entity>
+                </entity>
+                <entity name="1588PORT7" class="ptolemy.demo.BMC.CLASSES.1588PORT">
+                    <entity name="ComputeERBEST" class="ptolemy.actor.TypedCompositeActor">
+                        <display name="Compute ERBEST"/>
+                        <entity name="DE Token Monitor" class="ptolemy.actor.TypedCompositeActor">
+                            <entity name="DE Token Monitor" class="ptolemy.actor.lib.gui.Display">
+                                <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={51, 755, 698, 257}, maximized=false}">
+                                </property>
+                                <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[680, 186]">
+                                </property>
+                            </entity>
+                        </entity>
+                        <entity name="DE Token Monitor2" class="ptolemy.actor.TypedCompositeActor">
+                            <entity name="DE Token Monitor" class="ptolemy.actor.lib.gui.Display">
+                                <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={356, 685, 831, 257}, maximized=false}">
+                                </property>
+                                <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[813, 186]">
+                                </property>
+                            </entity>
+                        </entity>
+                    </entity>
+                    <entity name="updatePortDataSetsFig24" class="ptolemy.actor.TypedCompositeActor">
+                        <entity name="DE Token Monitor" class="ptolemy.actor.TypedCompositeActor">
+                            <entity name="DE Token Monitor" class="ptolemy.actor.lib.gui.Display">
+                                <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={208, 665, 1009, 142}, maximized=false}">
+                                </property>
+                                <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[991, 71]">
+                                </property>
+                            </entity>
+                        </entity>
+                        <entity name="DE Token Monitor2" class="ptolemy.actor.TypedCompositeActor">
+                            <entity name="DE Token Monitor" class="ptolemy.actor.lib.gui.Display">
+                                <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={519, 665, 698, 142}, maximized=false}">
+                                </property>
+                                <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[680, 186]">
+                                </property>
+                            </entity>
+                        </entity>
+                        <entity name="DE Token Monitor3" class="ptolemy.actor.TypedCompositeActor">
+                            <entity name="DE Token Monitor" class="ptolemy.actor.lib.gui.Display">
+                                <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={326, 511, 698, 257}, maximized=false}">
+                                </property>
+                                <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[680, 186]">
+                                </property>
+                            </entity>
+                        </entity>
+                        <entity name="DE Token Monitor5" class="ptolemy.actor.TypedCompositeActor">
+                            <entity name="DE Token Monitor" class="ptolemy.actor.lib.gui.Display">
+                                <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={468, 383, 698, 257}, maximized=false}">
+                                </property>
+                                <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[680, 186]">
+                                </property>
+                            </entity>
+                        </entity>
+                    </entity>
+                    <entity name="EVENT TRANSITION MONITOR" class="ptolemy.actor.TypedCompositeActor">
+                        <entity name="Display" class="ptolemy.actor.lib.gui.Display">
+                            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 474, 1073, 384}, maximized=false}">
+                            </property>
+                            <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[1055, 313]">
+                            </property>
+                        </entity>
+                    </entity>
+                    <entity name="FM Database MONITOR2" class="ptolemy.actor.TypedCompositeActor">
+                        <entity name="Display" class="ptolemy.actor.lib.gui.Display">
+                            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={-1, 582, 1275, 330}, maximized=false}">
+                            </property>
+                            <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[1257, 259]">
+                            </property>
+                        </entity>
+                    </entity>
+                    <entity name="Port DataSet Monitor" class="ptolemy.actor.TypedCompositeActor">
+                        <entity name="Display" class="ptolemy.actor.lib.gui.Display">
+                            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 585, 1046, 183}, maximized=false}">
+                            </property>
+                            <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[1028, 112]">
+                            </property>
+                        </entity>
+                    </entity>
+                    <entity name="DE Token Monitor" class="ptolemy.actor.TypedCompositeActor">
+                        <entity name="DE Token Monitor" class="ptolemy.actor.lib.gui.Display">
+                            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={468, 383, 698, 257}, maximized=false}">
+                            </property>
+                            <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[680, 186]">
+                            </property>
+                        </entity>
+                    </entity>
+                    <entity name="DE Token Monitor2" class="ptolemy.actor.TypedCompositeActor">
+                        <entity name="DE Token Monitor" class="ptolemy.actor.lib.gui.Display">
+                            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={67, 103, 1022, 128}, maximized=false}">
+                            </property>
+                            <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[1004, 57]">
+                            </property>
+                        </entity>
+                    </entity>
+                    <entity name="DE Token Monitor3" class="ptolemy.actor.TypedCompositeActor">
+                        <entity name="DE Token Monitor" class="ptolemy.actor.lib.gui.Display">
+                            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={67, 103, 1022, 128}, maximized=false}">
+                            </property>
+                            <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[1004, 57]">
+                            </property>
+                        </entity>
+                    </entity>
+                    <entity name="DE Token Monitor4" class="ptolemy.actor.TypedCompositeActor">
+                        <entity name="DE Token Monitor" class="ptolemy.actor.lib.gui.Display">
+                            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={67, 103, 1022, 128}, maximized=false}">
+                            </property>
+                            <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[1004, 57]">
+                            </property>
+                        </entity>
+                    </entity>
+                    <entity name="DE Token Monitor5" class="ptolemy.actor.TypedCompositeActor">
+                        <entity name="DE Token Monitor" class="ptolemy.actor.lib.gui.Display">
+                            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={67, 103, 1022, 128}, maximized=false}">
+                            </property>
+                            <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[1004, 57]">
+                            </property>
+                        </entity>
+                    </entity>
+                </entity>
+                <entity name="1588PORT8" class="ptolemy.demo.BMC.CLASSES.1588PORT">
+                    <entity name="ComputeERBEST" class="ptolemy.actor.TypedCompositeActor">
+                        <display name="Compute ERBEST"/>
+                        <entity name="DE Token Monitor" class="ptolemy.actor.TypedCompositeActor">
+                            <entity name="DE Token Monitor" class="ptolemy.actor.lib.gui.Display">
+                                <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={51, 755, 698, 257}, maximized=false}">
+                                </property>
+                                <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[680, 186]">
+                                </property>
+                            </entity>
+                        </entity>
+                        <entity name="DE Token Monitor2" class="ptolemy.actor.TypedCompositeActor">
+                            <entity name="DE Token Monitor" class="ptolemy.actor.lib.gui.Display">
+                                <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={356, 685, 831, 257}, maximized=false}">
+                                </property>
+                                <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[813, 186]">
+                                </property>
+                            </entity>
+                        </entity>
+                    </entity>
+                    <entity name="updatePortDataSetsFig24" class="ptolemy.actor.TypedCompositeActor">
+                        <entity name="DE Token Monitor" class="ptolemy.actor.TypedCompositeActor">
+                            <entity name="DE Token Monitor" class="ptolemy.actor.lib.gui.Display">
+                                <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={208, 665, 1009, 142}, maximized=false}">
+                                </property>
+                                <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[991, 71]">
+                                </property>
+                            </entity>
+                        </entity>
+                        <entity name="DE Token Monitor2" class="ptolemy.actor.TypedCompositeActor">
+                            <entity name="DE Token Monitor" class="ptolemy.actor.lib.gui.Display">
+                                <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={519, 665, 698, 142}, maximized=false}">
+                                </property>
+                                <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[680, 186]">
+                                </property>
+                            </entity>
+                        </entity>
+                        <entity name="DE Token Monitor3" class="ptolemy.actor.TypedCompositeActor">
+                            <entity name="DE Token Monitor" class="ptolemy.actor.lib.gui.Display">
+                                <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={326, 511, 698, 257}, maximized=false}">
+                                </property>
+                                <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[680, 186]">
+                                </property>
+                            </entity>
+                        </entity>
+                        <entity name="DE Token Monitor5" class="ptolemy.actor.TypedCompositeActor">
+                            <entity name="DE Token Monitor" class="ptolemy.actor.lib.gui.Display">
+                                <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={468, 383, 698, 257}, maximized=false}">
+                                </property>
+                                <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[680, 186]">
+                                </property>
+                            </entity>
+                        </entity>
+                    </entity>
+                    <entity name="EVENT TRANSITION MONITOR" class="ptolemy.actor.TypedCompositeActor">
+                        <entity name="Display" class="ptolemy.actor.lib.gui.Display">
+                            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 474, 1073, 384}, maximized=false}">
+                            </property>
+                            <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[1055, 313]">
+                            </property>
+                        </entity>
+                    </entity>
+                    <entity name="FM Database MONITOR2" class="ptolemy.actor.TypedCompositeActor">
+                        <entity name="Display" class="ptolemy.actor.lib.gui.Display">
+                            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={-1, 582, 1275, 330}, maximized=false}">
+                            </property>
+                            <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[1257, 259]">
+                            </property>
+                        </entity>
+                    </entity>
+                    <entity name="Port DataSet Monitor" class="ptolemy.actor.TypedCompositeActor">
+                        <entity name="Display" class="ptolemy.actor.lib.gui.Display">
+                            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 585, 1046, 183}, maximized=false}">
+                            </property>
+                            <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[1028, 112]">
+                            </property>
+                        </entity>
+                    </entity>
+                    <entity name="DE Token Monitor" class="ptolemy.actor.TypedCompositeActor">
+                        <entity name="DE Token Monitor" class="ptolemy.actor.lib.gui.Display">
+                            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={468, 383, 698, 257}, maximized=false}">
+                            </property>
+                            <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[680, 186]">
+                            </property>
+                        </entity>
+                    </entity>
+                    <entity name="DE Token Monitor2" class="ptolemy.actor.TypedCompositeActor">
+                        <entity name="DE Token Monitor" class="ptolemy.actor.lib.gui.Display">
+                            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={67, 103, 1022, 128}, maximized=false}">
+                            </property>
+                            <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[1004, 57]">
+                            </property>
+                        </entity>
+                    </entity>
+                    <entity name="DE Token Monitor3" class="ptolemy.actor.TypedCompositeActor">
+                        <entity name="DE Token Monitor" class="ptolemy.actor.lib.gui.Display">
+                            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={67, 103, 1022, 128}, maximized=false}">
+                            </property>
+                            <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[1004, 57]">
+                            </property>
+                        </entity>
+                    </entity>
+                    <entity name="DE Token Monitor4" class="ptolemy.actor.TypedCompositeActor">
+                        <entity name="DE Token Monitor" class="ptolemy.actor.lib.gui.Display">
+                            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={67, 103, 1022, 128}, maximized=false}">
+                            </property>
+                            <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[1004, 57]">
+                            </property>
+                        </entity>
+                    </entity>
+                    <entity name="DE Token Monitor5" class="ptolemy.actor.TypedCompositeActor">
+                        <entity name="DE Token Monitor" class="ptolemy.actor.lib.gui.Display">
+                            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={67, 103, 1022, 128}, maximized=false}">
+                            </property>
+                            <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[1004, 57]">
+                            </property>
+                        </entity>
+                    </entity>
+                </entity>
             </entity>
         </group>
     </configure>
