@@ -1323,8 +1323,24 @@ public class DEDirector extends Director implements SuperdenseTimeDirector {
     @Override
     public void resumeActor(NamedObj actor) throws IllegalActionException {
         List<DEEvent> events = _actorsInExecution.get(actor);
-        Time time = ((CompositeActor) getExecutionAspect((NamedObj) actor).getContainer())
-                .getDirector().getModelTime();
+        ActorExecutionAspect aspect = getExecutionAspect(actor);
+        if (aspect == null) {
+            throw new IllegalActionException(this, "Cannot resume actor " 
+                    + actor.getName() + " because aspect cannot be found.");
+        }
+        NamedObj container = aspect.getContainer();
+        if (container == null) {
+            throw new IllegalActionException(this, "Cannot get container of actor " 
+                    + actor.getName());
+        }
+        Director director = ((CompositeActor) container)
+                .getDirector();
+        if (director == null) {
+            throw new IllegalActionException(this, "Cannot get director of container " 
+                    + container.getName() + " of actor " + actor.getName());
+        }
+        
+        Time time = director.getModelTime();
         DEEvent event = events.get(0);
         events.remove(event);
         _actorsInExecution.put((Actor) actor, events);

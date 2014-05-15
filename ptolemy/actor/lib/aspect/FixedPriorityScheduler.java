@@ -37,6 +37,7 @@ import ptolemy.actor.ExecutionAspectListener.ExecutionEventType;
 import ptolemy.actor.util.Time;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.IntToken;
+import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
@@ -292,9 +293,18 @@ public class FixedPriorityScheduler extends AtomicExecutionAspect {
      *  @exception IllegalActionException Thrown if parameter cannot be read.
      */
     protected double _getPriority(NamedObj actor) throws IllegalActionException {
-        return ((IntToken) ((Parameter) actor
-                .getDecoratorAttribute(this, "priority")).getToken())
-                .intValue();
+        Attribute attributes = actor.getDecoratorAttribute(this, "priority");
+        if (attributes == null || !(attributes instanceof Parameter)) {
+            throw new IllegalActionException(this, "Cannot get priority attribute of actor " 
+                    + actor.getName());
+        }
+        Token token = ((Parameter) attributes).getToken();
+        if (token == null) {
+            throw new IllegalActionException(this, "Priority token is null.");
+        } else if (!(token instanceof IntToken)) {
+            throw new IllegalActionException(this, "Priority token has to be an IntToken.");
+        }
+        return ((IntToken) token).intValue();
     }
 
     ///////////////////////////////////////////////////////////////////

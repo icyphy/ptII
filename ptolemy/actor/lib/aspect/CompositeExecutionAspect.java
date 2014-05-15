@@ -37,6 +37,7 @@ import java.util.List;
 import ptolemy.actor.Actor;
 import ptolemy.actor.ActorExecutionAspect;
 import ptolemy.actor.CompositeActor;
+import ptolemy.actor.Director;
 import ptolemy.actor.ExecutionAspectHelper;
 import ptolemy.actor.ExecutionAspectListener;
 import ptolemy.actor.ExecutionAspectListener.ExecutionEventType;
@@ -61,6 +62,7 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.Nameable;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Workspace;
 
@@ -182,7 +184,7 @@ public class CompositeExecutionAspect extends TypedCompositeActor implements
      */
     @Override
     public DecoratorAttributes createDecoratorAttributes(NamedObj target) {
-        if (target instanceof NamedObj && !_isPartOfExecutionAspect(target)) {
+        if (!_isPartOfExecutionAspect(target)) {
             try {
                 return new CompositeExecutionAspectAttributes(target, this);
             } catch (KernelException ex) {
@@ -323,15 +325,28 @@ public class CompositeExecutionAspect extends TypedCompositeActor implements
                     if (recordToken.get("actor") != null
                             && ((ObjectToken) recordToken.get("actor"))
                                     .getValue() != null) {
-                        Actor actor = (Actor) ((ObjectToken) recordToken
+                        NamedObj actor = (NamedObj) ((ObjectToken) recordToken
                                 .get("actor")).getValue();
-                        notifyExecutionListeners((NamedObj) actor,
+                        notifyExecutionListeners(actor,
                                 getExecutiveDirector().getModelTime()
                                         .getDoubleValue(),
                                 ExecutionEventType.STOP);
                         outputPort.takeToken();
                         _currentlyExecuting.remove(actor);
-                        actor.getExecutiveDirector().resumeActor((NamedObj) actor);
+                        
+                        Director director = null;
+                        if (actor instanceof Actor) {
+                            director = ((Actor) actor).getExecutiveDirector();
+                        } else {
+                            Nameable container = actor.getContainer();
+
+                            while (!(container instanceof Actor)) {
+                                container = container.getContainer();
+                            }
+                            director =  ((Actor) container).getDirector();
+                        }
+                        
+                        director.resumeActor(actor);
                         _lastActorFinished = true;
                     }
                 }

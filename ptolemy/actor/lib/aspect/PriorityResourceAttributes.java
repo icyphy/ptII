@@ -1,4 +1,4 @@
-/* This is a resource scheduler.
+/* Container for decorator attributes.
 
 @Copyright (c) 2008-2013 The Regents of the University of California.
 All rights reserved.

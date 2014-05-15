@@ -662,6 +662,7 @@ public class FSMActor extends CompositeEntity implements TypedActor,
         }
         if (_firstFire) { 
             _schedule(_currentState, getDirector().getModelTime());
+            _firstFire = false;
         }
 
         Time environmentTime = _getEnvironmentTime();
@@ -3421,7 +3422,8 @@ public class FSMActor extends CompositeEntity implements TypedActor,
         // Before committing the new state, record whether it changed.
         boolean stateChanged = _currentState != currentTransition
                 .destinationState();
-        _schedule(nextState, getDirector().getModelTime());
+        _schedule(nextState, getExecutiveDirector().getModelTime());
+        System.out.println(getExecutiveDirector().getModelTime() + " " + nextState.getName());
         _currentState = nextState;
         if (stateChanged) {
             // reset threshold for probabilistic transitions
