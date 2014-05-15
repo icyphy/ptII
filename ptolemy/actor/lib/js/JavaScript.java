@@ -40,6 +40,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
 import org.apache.oltu.oauth2.client.OAuthClient;
@@ -354,9 +355,8 @@ public class JavaScript extends TypedAtomicActor {
         	    // send out buffered outputs
         	    for (IOPort port : _outputTokens.keySet()) {
                     HashMap<Integer, Token> tokens = _outputTokens.get(port);
-                    for (Integer i : tokens.keySet()) {
-                        Token token = tokens.get(i);
-                        port.send(i, token);
+                    for (Map.Entry<Integer, Token> entry : tokens.entrySet()) {
+                        port.send(entry.getKey(), entry.getValue());
                     }
                 }
         	    _outputTokens.clear();
