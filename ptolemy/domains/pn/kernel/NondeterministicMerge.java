@@ -51,7 +51,7 @@ import ptolemy.kernel.util.StringAttribute;
 import ptolemy.kernel.util.Workspace;
 
 ///////////////////////////////////////////////////////////////////
-//// Merge
+//// NondeterministicMerge
 
 /**
  This actor takes any number of input streams and merges them
@@ -169,12 +169,15 @@ public class NondeterministicMerge extends TypedCompositeActor {
              *          that width inference might happen multiple times (and definitely
              *          will for certain type of models).
              */
-
+        	// If the model is running, create new internal actors if needed.
             Manager manager = getManager();
-            if (manager != null && manager.getState() != Manager.IDLE
-                    && manager.getState() != Manager.INFERING_WIDTHS
-                    && manager.getState() != Manager.PREINITIALIZING) {
-                _reinitializeInnerActors();
+            if (manager != null) {
+            	Manager.State managerState = manager.getState();
+            	if (managerState == Manager.ITERATING
+            			|| managerState == Manager.PAUSED
+            			|| managerState == Manager.PAUSED_ON_BREAKPOINT) {
+                    _reinitializeInnerActors();            		
+            	}
             }
         }
     }
