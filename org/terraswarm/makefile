@@ -1,4 +1,4 @@
-# Makefile org.ptolemy sources
+# Makefile org.terraswarm sources
 #
 # @Version: $Id: makefile 68393 2014-02-11 01:54:59Z cxh $
 # @Author: Christopher Brooks

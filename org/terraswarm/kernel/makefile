@@ -1,4 +1,4 @@
-# Makefile for Quantized State Systems Actors.
+# Makefile for TerraSwarm actors.
 #
 # @Version: $Id: makefile 67778 2013-10-26 15:50:13Z cxh $
 # @Author: Christopher Brooks (makefile only)
@@ -50,10 +50,11 @@ include $(CONFIG)
 PTPACKAGE = qss
 PTCLASSJAR = $(PTPACKAGE).jar
 
-JSRCS = 
-
+JSRCS = \
+	AccessorOne.java
 
 OTHER_FILES_TO_BE_JARED = \
+	AccessorOneIcon.xml \
     XMLJStoMOML.xslt
 
 EXTRA_SRCS = $(JSRCS) $(OTHER_FILES_TO_BE_JARED)

@@ -72,11 +72,17 @@ import ptolemy.gui.PtFileChooser;
 import ptolemy.gui.Query;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.Entity;
+import ptolemy.kernel.util.Attribute;
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.KernelRuntimeException;
+import ptolemy.kernel.util.Location;
 import ptolemy.kernel.util.NamedObj;
+import ptolemy.kernel.util.StringAttribute;
 import ptolemy.moml.LibraryAttribute;
 import ptolemy.moml.MoMLChangeRequest;
+import ptolemy.moml.MoMLParser;
 import ptolemy.util.CancelException;
 import ptolemy.util.FileUtilities;
 import ptolemy.util.MessageHandler;
@@ -928,17 +934,14 @@ public class ActorGraphFrame extends ExtendedGraphFrame
         
         /** The graph frame that contains this action. */
         private ExtendedGraphFrame _graphFrame;
-        
-        /** The URL of the accessor. */
-        private String _url;
-        
+                
         /** Import an accessor.
          */
         @Override
         public void actionPerformed(ActionEvent e) {
             Query query = new Query();
             query.setTextWidth(60);
-            query.addLine("URL", "URL", _url);
+            query.addLine("URL", "URL", "");
 
             ComponentDialog dialog = new ComponentDialog(_graphFrame,
                     "Instantiate Accessor", query);
@@ -953,16 +956,16 @@ public class ActorGraphFrame extends ExtendedGraphFrame
                 
                 // Use the center of the screen as a location.
                 Rectangle2D bounds = _graphFrame.getVisibleCanvasRectangle();
-                double x = bounds.getWidth() / 2.0;
-                double y = bounds.getHeight() / 2.0;
+                final double x = bounds.getWidth() / 2.0;
+                final double y = bounds.getHeight() / 2.0;
                 
                 URL url;
                 String input = "";
-                _url = query.getStringValue("URL");
+                final String urlSpec = query.getStringValue("URL");
                 StringBuffer buffer = new StringBuffer();
                 buffer.append("<group name=\"auto\">\n");
                 try {
-                    url = new URL(_url);
+                    url = new URL(urlSpec);
                     
                     BufferedReader in = new BufferedReader(
                             new InputStreamReader(url.openStream()));
@@ -992,7 +995,50 @@ public class ActorGraphFrame extends ExtendedGraphFrame
                 // TODO set location
                 
                 MoMLChangeRequest request = new MoMLChangeRequest(this,
-                        context, buffer.toString());
+                        context, buffer.toString()) {
+                    protected void _postParse(MoMLParser parser) {
+                        List<NamedObj> topObjects = parser.topObjectsCreated();
+                        if (topObjects == null) {
+                            return;
+                        }
+                        for (NamedObj object : topObjects) {
+                            Location location = (Location) object
+                                    .getAttribute("_location");
+                            // Set the location.
+                            if (location == null) {
+                                try {
+                                    location = new Location(object, "_location");
+                                } catch (KernelException e) {
+                                    // Ignore.
+                                }
+                            }
+                            if (location != null) {
+                                try {
+                                    location.setLocation(new double[] { x, y });
+                                } catch (IllegalActionException e) {
+                                    // Ignore.
+                                }
+                            }
+                            // Set the source.
+                            Attribute source = object.getAttribute("accessorSource");
+                            if (source instanceof StringAttribute) {
+                            	try {
+									((StringAttribute)source).setExpression(urlSpec);
+								} catch (IllegalActionException e) {
+									// Should not happen.
+									throw new InternalErrorException(object, e, "Failed to set accessorSource");
+								}
+                            }
+                        }
+                        parser.clearTopObjectsList();
+                        super._postParse(parser);
+                    }
+
+                    protected void _preParse(MoMLParser parser) {
+                        super._preParse(parser);
+                        parser.clearTopObjectsList();
+                    }
+                };
                 context.requestChange(request);
             }
         }
