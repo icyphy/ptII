@@ -31,8 +31,10 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
 import java.lang.reflect.Member;
 import java.lang.reflect.Method;
+import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -137,6 +139,7 @@ import ptolemy.util.StringUtilities;
  <li> alert(string): pop up a dialog with the specified message.
  <li> error(string): throw an IllegalActionException with the specified message.
  <li> get(port, n): get an input from a port on channel n (return null if there is no input).
+ <li> httpRequest(url, method, properties, body, timeout): HTTP request (GET, POST, PUT, etc.)
  <li> print(string): print the specified string to the console (standard out).
  <li> readURL(string): read the specified URL and return its contents as a string.
  <li> send(value, port, n): send a value to an output port on channel n
@@ -486,6 +489,14 @@ public class JavaScript extends TypedAtomicActor {
 	        scriptableFunction = new PtolemyFunctionObject(methodName, scriptableInstanceMethod, scriptable);
 	        // Make it accessible within the scriptExecutionScope.
 	        _scope.put(methodName, _scope, scriptableFunction);
+	        
+	        // Create the httpRequest() method.
+	        methodName = "httpRequest";
+			scriptableInstanceMethod = PtolemyJavaScript.class.getMethod(methodName,
+					new Class[]{String.class, String.class, NativeObject.class, String.class, Integer.class});
+	        scriptableFunction = new PtolemyFunctionObject(methodName, scriptableInstanceMethod, scriptable);
+	        // Make it accessible within the scriptExecutionScope.
+	        _scope.put(methodName, _scope, scriptableFunction);
 
 			// Create the print() method.
 	        methodName = "print";
@@ -516,34 +527,34 @@ public class JavaScript extends TypedAtomicActor {
 	        scriptableFunction = new PtolemyFunctionObject(methodName, scriptableInstanceMethod, scriptable);
 	        // Make it accessible within the scriptExecutionScope.
 	        _scope.put(methodName, _scope, scriptableFunction);
-        
-            // Create the requestAuth() method.
-            methodName = "requestAuth";
-                    scriptableInstanceMethod = PtolemyJavaScript.class.getMethod(methodName, new Class[]{String.class, String.class, String.class, Boolean.class});
-            scriptableFunction = new PtolemyFunctionObject(methodName, scriptableInstanceMethod, scriptable);
-            // Make it accessible within the scriptExecutionScope.
-            _scope.put(methodName, _scope, scriptableFunction);
-            
-            // Create the requestAuth() method.
-            methodName = "requestAccess";
-                    scriptableInstanceMethod = PtolemyJavaScript.class.getMethod(methodName, new Class[]{String.class, String.class, String.class, String.class, String.class});
-            scriptableFunction = new PtolemyFunctionObject(methodName, scriptableInstanceMethod, scriptable);
-            // Make it accessible within the scriptExecutionScope.
-            _scope.put(methodName, _scope, scriptableFunction);
-            
-            // Create the readProtectedURL() method.
-            methodName = "readProtectedURL";
-                    scriptableInstanceMethod = PtolemyJavaScript.class.getMethod(methodName, new Class[]{String.class, String.class});
-            scriptableFunction = new PtolemyFunctionObject(methodName, scriptableInstanceMethod, scriptable);
-            // Make it accessible within the scriptExecutionScope.
-            _scope.put(methodName, _scope, scriptableFunction);
-            
-            // Create the openBrowser() method.
-            methodName = "openBrowser";
-                    scriptableInstanceMethod = PtolemyJavaScript.class.getMethod(methodName, new Class[]{String.class});
-            scriptableFunction = new PtolemyFunctionObject(methodName, scriptableInstanceMethod, scriptable);
-            // Make it accessible within the scriptExecutionScope.
-            _scope.put(methodName, _scope, scriptableFunction);
+	        
+	        // Create the requestAuth() method.
+	        methodName = "requestAuth";
+	        scriptableInstanceMethod = PtolemyJavaScript.class.getMethod(methodName, new Class[]{String.class, String.class, String.class, Boolean.class});
+	        scriptableFunction = new PtolemyFunctionObject(methodName, scriptableInstanceMethod, scriptable);
+	        // Make it accessible within the scriptExecutionScope.
+	        _scope.put(methodName, _scope, scriptableFunction);
+
+	        // Create the requestAuth() method.
+	        methodName = "requestAccess";
+	        scriptableInstanceMethod = PtolemyJavaScript.class.getMethod(methodName, new Class[]{String.class, String.class, String.class, String.class, String.class});
+	        scriptableFunction = new PtolemyFunctionObject(methodName, scriptableInstanceMethod, scriptable);
+	        // Make it accessible within the scriptExecutionScope.
+	        _scope.put(methodName, _scope, scriptableFunction);
+
+	        // Create the readProtectedURL() method.
+	        methodName = "readProtectedURL";
+	        scriptableInstanceMethod = PtolemyJavaScript.class.getMethod(methodName, new Class[]{String.class, String.class});
+	        scriptableFunction = new PtolemyFunctionObject(methodName, scriptableInstanceMethod, scriptable);
+	        // Make it accessible within the scriptExecutionScope.
+	        _scope.put(methodName, _scope, scriptableFunction);
+
+	        // Create the openBrowser() method.
+	        methodName = "openBrowser";
+	        scriptableInstanceMethod = PtolemyJavaScript.class.getMethod(methodName, new Class[]{String.class});
+	        scriptableFunction = new PtolemyFunctionObject(methodName, scriptableInstanceMethod, scriptable);
+	        // Make it accessible within the scriptExecutionScope.
+	        _scope.put(methodName, _scope, scriptableFunction);
 
 	        // This actor is exposed as an object named "actor".
         	Object jsObject = Context.javaToJS(this, _scope);
@@ -698,17 +709,100 @@ public class JavaScript extends TypedAtomicActor {
 		public String getClassName() {
 			return getClass().getName();
 		}
+		
+		/** Make the specified HTTP request. For example, to perform the equivalent of
+		 *  readURL, you can do:
+		 *  <pre>
+		 *    httpRequest("http://ptolemy.org", "GET", null, "", 1000);
+		 *  <pre>
+		 *  which specifies a URL to read, the method for the read, no properties, no
+		 *  text to send, and a timeout of one second.
+		 *  @param url The URL to which to make the request.
+		 *  @param method One of OPTIONS, GET, HEAD, POST, PUT, DELETE, TRACE, or CONNECT.
+		 *  @param properties The HTTP propertie to set for the connection, or null to not
+		 *   give any. For example: ['Content-Type':'application/x-www-form-urlencoded']
+		 *  @param body The body of the request, or null if none.
+		 *  @param timeout The timeout for a connection or a read, in milliseconds, or 0 to have no timeout.
+		 *  @throws IOException If the request fails.
+		 */
+		public String httpRequest(String url, String method, NativeObject properties, String body, Integer timeout)
+				throws IOException {
+			// FIXME: Should have a version that takes a callback function for the response,
+			// and where the response gives access to the return stream.  See Node.js http object.
+	        StringBuffer response = new StringBuffer();
+	        OutputStreamWriter writer = null;
+	        BufferedReader reader = null;
+	        String line = "";
+
+	        URL theURL = new URL(url);
+	        HttpURLConnection connection = (HttpURLConnection) theURL.openConnection();
+
+	        // Set all fields in the request header.
+	        if (properties != null) {
+				Set<Object> keys = properties.keySet();
+				if (keys != null && !keys.isEmpty()) {
+					for (Object key : keys) {
+						if (key instanceof String) {
+							Object value = properties.get(key);
+							if (value != null) {
+				        		connection.setRequestProperty((String)key, value.toString());
+							}
+						}
+					}
+				}
+	        }
+
+	        // Specify request method (GET, POST, PUT...)
+	        connection.setRequestMethod(method);
+
+	        // If a timeout has been specified, set it.
+	        if (timeout >= 0) {
+	            connection.setConnectTimeout(timeout);
+	            connection.setReadTimeout(timeout);
+	        }
+
+	        // Send body if applicable.
+	        if (body != null && !body.equals("")) {
+	            connection.setDoOutput(true);
+	            writer = new OutputStreamWriter(connection.getOutputStream());
+	            writer.write(body);
+	            writer.flush();
+	        }
+
+	        // Wait for response.
+	        reader = new BufferedReader(new InputStreamReader(
+	                connection.getInputStream()));
+
+	        // Read response.
+	        String lineBreak = System.getProperty("line.separator");
+	        while ((line = reader.readLine()) != null) {
+	            response.append(line);
+	            if (!line.endsWith(lineBreak)) {
+	                response.append(lineBreak);
+	            }
+	        }
+
+	        if (writer != null) {
+	        	writer.close();
+	        }
+	        reader.close();
+
+	        // Return response.
+	        return response.toString();
+		}
 
     	/** Print a message to standard out. */
     	public void print(String message) {
     		System.out.println(message);
     	}
     	
-    	/** Read the specified URL and return its contents
+    	/** Read the specified URL and return its contents.
     	 *  @param url The URL to read.
-    	 * @throws IOException 
+    	 *  @throws IOException 
     	 */
     	public String readURL(String url) throws IOException {
+    		// FIXME: We should have a version that takes a callback function
+    		// to return the reply, and a version that supports a streaming reply.
     		URL theURL = new URL(url);
     		InputStream stream = theURL.openStream();
     		// FIXME: Should provide a characterset optional second argument.
