@@ -43,6 +43,9 @@ import ptolemy.kernel.util.StringAttribute;
  An implementation of a level-one accessor.
  This is a specialized JavaScript actor that hides the script
  from casual users by putting it in "expert" mode.
+ It also sets the actor to "restricted" mode, which restricts
+ the functionality of the methods methods and variables
+ provided in the JavaScript context.
  
  FIXME: This should support versioning of accessors.
  It should check the accessorSource for updates and replace
@@ -57,7 +60,7 @@ import ptolemy.kernel.util.StringAttribute;
  @Pt.AcceptedRating Red (bilung)
  */
 public class AccessorOne extends JavaScript {
-
+	
     /** Construct a library with the given container and name.
      *  @param container The container.
      *  @param name The name of this library.
@@ -75,6 +78,12 @@ public class AccessorOne extends JavaScript {
         
         SingletonParameter hide = new SingletonParameter(scriptIn, "_hide");
         hide.setExpression("true");
+        
+    	// The base class, by default, exposes the instance of this actor in the
+    	// JavaScript variable "actor", which gives an accessor full access
+    	// to the model, and hence a way to invoke Java code. Prevent this
+        // by putting the actor in "restricted" mode.
+        _restricted = true;
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -85,7 +94,7 @@ public class AccessorOne extends JavaScript {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-
+    
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 

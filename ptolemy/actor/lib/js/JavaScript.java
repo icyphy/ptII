@@ -54,6 +54,7 @@ import org.apache.oltu.oauth2.common.OAuthProviderType;
 import org.apache.oltu.oauth2.common.exception.OAuthProblemException;
 import org.apache.oltu.oauth2.common.exception.OAuthSystemException;
 import org.apache.oltu.oauth2.common.message.types.GrantType;
+import org.mozilla.javascript.BaseFunction;
 import org.mozilla.javascript.Context;
 import org.mozilla.javascript.Function;
 import org.mozilla.javascript.FunctionObject;
@@ -80,7 +81,6 @@ import ptolemy.data.RecordToken;
 import ptolemy.data.StringToken;
 import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
-import ptolemy.data.expr.Variable;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.Entity;
@@ -247,7 +247,16 @@ For example,
 send(toplevel, output, 0);
 </pre>
 where "output" is the name of the output port.
- 
+<p>
+Subclasses of this actor may put it in "restricted" mode, which
+limits the functionality as follows:
+<ul>
+<li> The "actor" variable (referring to this instance of the actor) does not get created.
+<li> The readURL method only supports the HTTP protocol (in particular,
+     it does not support the "file" protocol, and hence cannot access local files).
+</ul>
+</p>
+
  @author Edward A. Lee
  @version $Id: Ramp.java 67679 2013-10-13 03:48:10Z cxh $
  @since Ptolemy II 10.0
@@ -350,9 +359,8 @@ public class JavaScript extends TypedAtomicActor {
         	// If there is a fire() function, invoke it.
         	Object fireFunction = _scope.get("fire", _scope);
         	if (fireFunction instanceof Function) {
-        		// FIXME: Provide a last argument for security.
         	    
-        	    // send out buffered outputs
+        	    // Send out buffered outputs, if there are any.
         	    for (IOPort port : _outputTokens.keySet()) {
                     HashMap<Integer, Token> tokens = _outputTokens.get(port);
                     for (Map.Entry<Integer, Token> entry : tokens.entrySet()) {
@@ -361,19 +369,31 @@ public class JavaScript extends TypedAtomicActor {
                 }
         	    _outputTokens.clear();
         	    
-        	    // buffer inputs
+        	    // Read all the available inputs.
         	    _inputTokens.clear();
         	    for (IOPort input : this.inputPortList()) {
+        	    	// Skip the scriptIn input.
+        	    	if (input == scriptIn) {
+        	    		continue;
+        	    	}
         	        HashMap<Integer, Token> tokens = new HashMap<Integer, Token>();
         	        for (int i = 0; i < input.getWidth(); i++) {
-        	            tokens.put(i, input.get(i));
+        	        	if (input.hasToken(i)) {
+        	        		tokens.put(i, input.get(i));
+        	        	}
         	        }
         	        _inputTokens.put(input, tokens);
         	    }
         	    
+        	    // Mark that we are in the fire() method, enabling outputs to be
+        	    // sent immediately.
         	    _inFire = true;
-        		((Function)fireFunction).call(Context.getCurrentContext(), _scope, _global, null);
-        		_inFire = false;
+        	    try {
+        	    	// FIXME: Provide a last argument for security.
+        	    	((Function)fireFunction).call(Context.getCurrentContext(), _scope, _global, null);
+        	    } finally {
+        	    	_inFire = false;
+        	    }
         	}
         } catch (WrappedException ex) {
         	Throwable original = ex.getWrappedException();
@@ -399,11 +419,21 @@ public class JavaScript extends TypedAtomicActor {
         	if (port == scriptIn) {
         		continue;
         	}
-        	Object jsObject = Context.javaToJS(port, _scope);
+        	Object jsObject;
+        	if (_restricted) {
+        		jsObject = Context.javaToJS(new PortProxy(port), _scope);
+        	} else {
+        		jsObject = Context.javaToJS(port, _scope);
+        	}
         	_scope.put(port.getName(), _scope, jsObject);
         }
         for (Parameter parameter : attributeList(Parameter.class)) {
-        	Object jsObject = Context.javaToJS(parameter, _scope);
+        	Object jsObject;
+        	if (_restricted) {
+        		jsObject = Context.javaToJS(new ParameterProxy(parameter), _scope);
+        	} else {
+        		jsObject = Context.javaToJS(parameter, _scope);
+        	}
         	_scope.put(parameter.getName(), _scope, jsObject);
         }
                 
@@ -466,99 +496,56 @@ public class JavaScript extends TypedAtomicActor {
         PtolemyJavaScript scriptable = new PtolemyJavaScript();
         scriptable.setParentScope(_scope);
         // Get a reference to the instance method to be made available in JavaScript as a global function.
-        Method scriptableInstanceMethod;
 		try {
-			// Create the alert() method.
-			String methodName = "alert";
-			scriptableInstanceMethod = PtolemyJavaScript.class.getMethod(methodName, new Class[]{String.class});
-	        FunctionObject scriptableFunction = new PtolemyFunctionObject(methodName, scriptableInstanceMethod, scriptable);
-	        // Make it accessible within the scriptExecutionScope.
-	        _scope.put(methodName, _scope, scriptableFunction);
-
-			// Create the error() method.
-	        methodName = "error";
-			scriptableInstanceMethod = PtolemyJavaScript.class.getMethod(methodName, new Class[]{String.class});
-	        scriptableFunction = new PtolemyFunctionObject(methodName, scriptableInstanceMethod, scriptable);
-	        // Make it accessible within the scriptExecutionScope.
-	        _scope.put(methodName, _scope, scriptableFunction);
-
-	        // Create the get() method.
-	        methodName = "get";
-			scriptableInstanceMethod = PtolemyJavaScript.class.getMethod(methodName,
-					new Class[]{NativeJavaObject.class, Double.class});
-	        scriptableFunction = new PtolemyFunctionObject(methodName, scriptableInstanceMethod, scriptable);
-	        // Make it accessible within the scriptExecutionScope.
-	        _scope.put(methodName, _scope, scriptableFunction);
+			// Create an array of method names and a matching array of arrays of argument types
+			// for functions that will be provided in the JavaScript environment.
+			// Keep these alphabetical.
+			String[] methodNames = {
+					"alert", 
+					"error",
+					"get",
+					"httpRequest",
+					"openBrowser",
+					"print",
+					"readProtectedURL",
+					"readURL",
+					"requestAccess",
+					"requestAuth",
+					"send",
+					"timeout",
+					"valueOf"
+			};
+			Class[][] args = {
+					{String.class}, 						// alert
+					{String.class},							// error
+					{NativeJavaObject.class, Double.class},	// get
+					{String.class, String.class, NativeObject.class, String.class, Integer.class}, // httpRequest
+					{String.class},							// openBrowser
+					{String.class},							// print
+					{String.class, String.class},			// readProtectedURL
+					{String.class},							// readURL
+					{String.class, String.class, String.class, String.class, String.class}, // requestAccess
+					{String.class, String.class, String.class, Boolean.class}, // requestAuth
+					{Object.class, NativeJavaObject.class, Double.class}, // send
+					{Integer.class, BaseFunction.class},	// timeout
+					{NativeJavaObject.class},				// valueOf
+					
+			};
+			int count = 0;
+			for (String methodName : methodNames) {
+				Method scriptableInstanceMethod = PtolemyJavaScript.class.getMethod(methodName, args[count]);
+		        FunctionObject scriptableFunction = new PtolemyFunctionObject(
+		        		methodName, scriptableInstanceMethod, scriptable);
+		        // Make it accessible within the scriptExecutionScope.
+		        _scope.put(methodName, _scope, scriptableFunction);
+		        count++;
+			}
 	        
-	        // Create the httpRequest() method.
-	        methodName = "httpRequest";
-			scriptableInstanceMethod = PtolemyJavaScript.class.getMethod(methodName,
-					new Class[]{String.class, String.class, NativeObject.class, String.class, Integer.class});
-	        scriptableFunction = new PtolemyFunctionObject(methodName, scriptableInstanceMethod, scriptable);
-	        // Make it accessible within the scriptExecutionScope.
-	        _scope.put(methodName, _scope, scriptableFunction);
-
-			// Create the print() method.
-	        methodName = "print";
-			scriptableInstanceMethod = PtolemyJavaScript.class.getMethod(methodName, new Class[]{String.class});
-	        scriptableFunction = new PtolemyFunctionObject(methodName, scriptableInstanceMethod, scriptable);
-	        // Make it accessible within the scriptExecutionScope.
-	        _scope.put(methodName, _scope, scriptableFunction);
-
-			// Create the readURL() method.
-	        methodName = "readURL";
-			scriptableInstanceMethod = PtolemyJavaScript.class.getMethod(methodName, new Class[]{String.class});
-	        scriptableFunction = new PtolemyFunctionObject(methodName, scriptableInstanceMethod, scriptable);
-	        // Make it accessible within the scriptExecutionScope.
-	        _scope.put(methodName, _scope, scriptableFunction);
-
-	        // Create the send() method.
-	        methodName = "send";
-			scriptableInstanceMethod = PtolemyJavaScript.class.getMethod(methodName,
-					new Class[]{Object.class, NativeJavaObject.class, Double.class});
-	        scriptableFunction = new PtolemyFunctionObject(methodName, scriptableInstanceMethod, scriptable);
-	        // Make it accessible within the scriptExecutionScope.
-	        _scope.put(methodName, _scope, scriptableFunction);
-	        
-	        // Create the valueOf() method.
-	        methodName = "valueOf";
-			scriptableInstanceMethod = PtolemyJavaScript.class.getMethod(methodName,
-					new Class[]{NativeJavaObject.class});
-	        scriptableFunction = new PtolemyFunctionObject(methodName, scriptableInstanceMethod, scriptable);
-	        // Make it accessible within the scriptExecutionScope.
-	        _scope.put(methodName, _scope, scriptableFunction);
-	        
-	        // Create the requestAuth() method.
-	        methodName = "requestAuth";
-	        scriptableInstanceMethod = PtolemyJavaScript.class.getMethod(methodName, new Class[]{String.class, String.class, String.class, Boolean.class});
-	        scriptableFunction = new PtolemyFunctionObject(methodName, scriptableInstanceMethod, scriptable);
-	        // Make it accessible within the scriptExecutionScope.
-	        _scope.put(methodName, _scope, scriptableFunction);
-
-	        // Create the requestAuth() method.
-	        methodName = "requestAccess";
-	        scriptableInstanceMethod = PtolemyJavaScript.class.getMethod(methodName, new Class[]{String.class, String.class, String.class, String.class, String.class});
-	        scriptableFunction = new PtolemyFunctionObject(methodName, scriptableInstanceMethod, scriptable);
-	        // Make it accessible within the scriptExecutionScope.
-	        _scope.put(methodName, _scope, scriptableFunction);
-
-	        // Create the readProtectedURL() method.
-	        methodName = "readProtectedURL";
-	        scriptableInstanceMethod = PtolemyJavaScript.class.getMethod(methodName, new Class[]{String.class, String.class});
-	        scriptableFunction = new PtolemyFunctionObject(methodName, scriptableInstanceMethod, scriptable);
-	        // Make it accessible within the scriptExecutionScope.
-	        _scope.put(methodName, _scope, scriptableFunction);
-
-	        // Create the openBrowser() method.
-	        methodName = "openBrowser";
-	        scriptableInstanceMethod = PtolemyJavaScript.class.getMethod(methodName, new Class[]{String.class});
-	        scriptableFunction = new PtolemyFunctionObject(methodName, scriptableInstanceMethod, scriptable);
-	        // Make it accessible within the scriptExecutionScope.
-	        _scope.put(methodName, _scope, scriptableFunction);
-
-	        // This actor is exposed as an object named "actor".
-        	Object jsObject = Context.javaToJS(this, _scope);
-        	_scope.put("actor", _scope, jsObject);
+	        // This actor is exposed as an object named "actor", unless the actor is restricted.
+			if (!_restricted) {
+				Object jsObject = Context.javaToJS(this, _scope);
+				_scope.put("actor", _scope, jsObject);
+			}
 		} catch (Exception e) {
 			throw new IllegalActionException(this, e, "Failed to create built-in JavaScript methods.");
 		}
@@ -610,6 +597,11 @@ public class JavaScript extends TypedAtomicActor {
     /** Keywords as a Set. */
     protected static final Set<String> _KEYWORDS = new HashSet<String>(Arrays.asList(_JAVASCRIPT_KEYWORDS));
     
+    /** If set to true in the constructor of a base class, then put this actor in "restricted"
+     *  mode.  This limits the functionality as described in the class comment.
+     */
+    protected boolean _restricted = false;
+    
     /** Scope in which to evaluate scripts. */
     protected Scriptable _scope;
     
@@ -621,16 +613,52 @@ public class JavaScript extends TypedAtomicActor {
      *  the value from this buffer instead of actually calling get on 
      *  the port.
      */
-    private HashMap<IOPort, HashMap<Integer, Token>> _inputTokens = new HashMap();
+    private HashMap<IOPort, HashMap<Integer, Token>> _inputTokens
+    		= new HashMap<IOPort, HashMap<Integer, Token>>();
     
     /** Buffer for output tokens that are produced in a call to send
      *  while the actor is not firing. This makes sure that actors can
      *  spontaneously produce outputs.
      */
-    private HashMap<IOPort, HashMap<Integer, Token>> _outputTokens = new HashMap();
+    private HashMap<IOPort, HashMap<Integer, Token>> _outputTokens
+    		= new HashMap<IOPort, HashMap<Integer, Token>>();
     
     ///////////////////////////////////////////////////////////////////
     ////                        Inner Classes                      ////
+    
+    /** Proxy for a parameter. This is used to wrap parameters for security
+     *  reasons.  If we expose the port to the JavaScript environment,
+     *  then the script can access all aspects of the model containing
+     *  this actor. E.g., it can call getContainer() on the object.
+     *  This wrapper provides access to the port only via a protected
+     *  method, which JavaScript cannot access.
+     */
+    public class ParameterProxy {
+    	protected ParameterProxy(Parameter parameter) {
+    		_parameter = parameter;
+    	}
+    	public String toString() {
+    		return _parameter.getName();
+    	}
+    	protected Parameter _parameter;
+    }
+
+    /** Proxy for a port. This is used to wrap ports for security
+     *  reasons.  If we expose the port to the JavaScript environment,
+     *  then the script can access all aspects of the model containing
+     *  this actor. E.g., it can call getContainer() on the object.
+     *  This wrapper provides access to the port only via a protected
+     *  method, which JavaScript cannot access.
+     */
+    public class PortProxy {
+    	protected PortProxy(TypedIOPort port) {
+    		_port = port;
+    	}
+    	public String toString() {
+    		return _port.getName();
+    	}
+    	protected TypedIOPort _port;
+    }
 
     /** Container class for built-in methods.
      */
@@ -673,6 +701,10 @@ public class JavaScript extends TypedAtomicActor {
 			}
 
     		Object unwrappedPort = portWrapper.unwrap();
+    		// The port reference will be a PortProxy in restricted mode, and a port otherwise.
+    		if (unwrappedPort instanceof PortProxy) {
+    			unwrappedPort = ((PortProxy)unwrappedPort)._port;
+    		}
     		if (unwrappedPort instanceof TypedIOPort) {
     			TypedIOPort port = (TypedIOPort)unwrappedPort;
         		if (!port.isInput()) {
@@ -684,11 +716,15 @@ public class JavaScript extends TypedAtomicActor {
             			// Port is not connected.
             			return null;
             		}
-    				return _wrapToken(_inputTokens.get(port).get(channelNumber));
     			} catch (KernelException e) {
         			throw new InternalErrorException(JavaScript.this, e,
-        					"Failed to get input via port " + port.getName() + ".");
+        					"Failed to get the width of the port " + port.getName() + ".");
     			}
+        		HashMap<Integer,Token> portEntry = _inputTokens.get(port);
+        		if (portEntry == null) {
+        			return null;
+        		}
+        		return _wrapToken(portEntry.get(channelNumber));
     		} else if (unwrappedPort instanceof PortParameter) {
         		try {
         			PortParameter parameter = (PortParameter)unwrappedPort;
@@ -702,8 +738,6 @@ public class JavaScript extends TypedAtomicActor {
     					"First argument of get() must be an input port. It is " + unwrappedPort.toString() + ".");
     		}
     	}
-    	
-    	
 
 		@Override
 		public String getClassName() {
@@ -735,6 +769,12 @@ public class JavaScript extends TypedAtomicActor {
 	        String line = "";
 
 	        URL theURL = new URL(url);
+	        // If the actor is restricted, support only HTTP protocols.
+	        // FIXME: Should this also apply the usual browser same-source restriction?
+	        // Same as what?
+	        if (!theURL.getProtocol().equalsIgnoreCase("http")) {
+	        	throw new SecurityException("Only HTTP requests are honored by httpRequest().");
+	        }
 	        HttpURLConnection connection = (HttpURLConnection) theURL.openConnection();
 
 	        // Set all fields in the request header.
@@ -804,6 +844,12 @@ public class JavaScript extends TypedAtomicActor {
     		// FIXME: We should have a version that takes a callback function
     		// to return the reply, and a version that supports a streaming reply.
     		URL theURL = new URL(url);
+	        // If the actor is restricted, support only HTTP protocols.
+	        // FIXME: Should this also apply the usual browser same-source restriction?
+	        // Same as what?
+	        if (_restricted && !theURL.getProtocol().equalsIgnoreCase("http")) {
+	        	throw new SecurityException("Actor is restricted. Only HTTP requests will be honored by readURL().");
+	        }
     		InputStream stream = theURL.openStream();
     		// FIXME: Should provide a characterset optional second argument.
     		// This is supported by InputStreamReader.
@@ -846,6 +892,10 @@ public class JavaScript extends TypedAtomicActor {
 			}
 
     		Object unwrappedPort = portWrapper.unwrap();
+    		// The port reference will be a PortProxy in restricted mode, and a port otherwise.
+    		if (unwrappedPort instanceof PortProxy) {
+    			unwrappedPort = ((PortProxy)unwrappedPort)._port;
+    		}
     		if (unwrappedPort instanceof TypedIOPort) {
     			TypedIOPort port = (TypedIOPort)unwrappedPort;
         		if (!port.isOutput()) {
@@ -866,6 +916,9 @@ public class JavaScript extends TypedAtomicActor {
         		        }
         		        tokens.put(channelNumber, token);
         		        _outputTokens.put(port, tokens);
+        		        
+        		        // Request a firing.
+        		        getDirector().fireAtCurrentTime(JavaScript.this);
         		    }
     			} catch (KernelException e) {
         			throw new InternalErrorException(JavaScript.this, e,
@@ -876,14 +929,28 @@ public class JavaScript extends TypedAtomicActor {
     					"First argument of send() must be an output port. It is " + unwrappedPort.toString() + ".");
     		}
     	}
+    	
+    	/** FIXME
+    	 * 
+    	 * @param time
+    	 * @param function
+    	 * @return
+    	 */
+    	public Integer timeout(Integer time, BaseFunction function) {
+    		alert("Hello");
+    		return 0;
+    	}
 		
     	/** Get parameter values.
     	 *  @param paramWrapper A JavaScript wrapper for a Variable.
     	 */
     	public Object valueOf(NativeJavaObject paramWrapper) {
     		Object unwrappedParam = paramWrapper.unwrap();
-    		if (unwrappedParam instanceof Variable) {
-    			Variable parameter = (Variable)unwrappedParam;
+    		if (unwrappedParam instanceof ParameterProxy) {
+    			unwrappedParam = ((ParameterProxy)unwrappedParam)._parameter;
+    		}
+    		if (unwrappedParam instanceof Parameter) {
+    			Parameter parameter = (Parameter)unwrappedParam;
         		try {
     				return _wrapToken(parameter.getToken());
     			} catch (KernelException e) {
@@ -1014,7 +1081,7 @@ public class JavaScript extends TypedAtomicActor {
         }
     	
         /**
-         * Opens a new tab in the default system browser. 
+         * Open a new tab in the default system browser. 
          * See also {@link http://www.mkyong.com/java/open-browser-in-java-windows-or-linux/}
          * @param url The URL that the browser shall retrieve.
          * @throws IllegalActionException 
@@ -1111,12 +1178,20 @@ public class JavaScript extends TypedAtomicActor {
 			}
 		}
 		
-    	//**********************************************************************
-		// This the key place to support additional input and parameter data types.
-    	// Given a Ptolemy II token, if there is a corresponding native
-    	// JavaScript type, then return something that will naturally be
-    	// converted to that type.
+		/** Convert a Ptolemy II into a JavaScript object, or into a Java
+		 *  object that will be automatically converted into a corresponding
+		 *  JavaScript object.
+		 *  @param token The token to convert.
+		 *  @return A JavaScript object (Scriptable) or a native Java object
+		 *   (such as Integer or Double) that can be automatically converted
+		 *   to a JavaScript object, or null if the argument is null.
+		 */
     	private Object _wrapToken(Token token) {
+        	//**********************************************************************
+    		// This the key place to support additional input and parameter data types.
+        	// Given a Ptolemy II token, if there is a corresponding native
+        	// JavaScript type, then return something that will naturally be
+        	// converted to that type.
     		if (token instanceof BooleanToken) {
     			return new Boolean(((BooleanToken)token).booleanValue());
     		} else if (token instanceof DoubleToken) {
