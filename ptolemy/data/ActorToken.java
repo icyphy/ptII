@@ -63,7 +63,8 @@ public class ActorToken extends Token implements Cloneable {
         super();
 
         try {
-            _entity = (Entity) entity.clone();
+        	// Be sure to clone into a workspace.
+            _entity = (Entity) entity.clone(entity.workspace());
         } catch (CloneNotSupportedException ex) {
             throw new IllegalActionException(null, ex,
                     "Failed to create actor token");
