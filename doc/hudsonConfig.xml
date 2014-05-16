@@ -321,7 +321,7 @@ mvn -Dmaven.repo.local=/var/lib/hudson/jobs/ptII/workspace/.maven/repo install:i
 mvn -Dmaven.repo.local=/var/lib/hudson/jobs/ptII/workspace/.maven/repo install:install-file -DgroupId=iText -DartifactId=iText -Dversion=ptII -Dpackaging=jar -Dfile=$PTII/vendors/misc/itext/iText.jar
 mvn -Dmaven.repo.local=/var/lib/hudson/jobs/ptII/workspace/.maven/repo install:install-file -DgroupId=jacl -DartifactId=jacl -Dversion=ptII -Dpackaging=jar -Dfile=$PTII/lib/ptjacl.jar
 mvn -Dmaven.repo.local=/var/lib/hudson/jobs/ptII/workspace/.maven/repo install:install-file -DgroupId=javajoystick -DartifactId=joystick -Dversion=0.7 -Dpackaging=jar -Dfile=$PTII/vendors/misc/joystick/Joystick.jar
-mvn -Dmaven.repo.local=/var/lib/hudson/jobs/ptII/workspace/.maven/repo install:install-file -DgroupId=jna -DartifactId=jna -Dversion=3.4.0 -Dpackaging=jar -Dfile=$PTII/lib/jna.jar
+mvn -Dmaven.repo.local=/var/lib/hudson/jobs/ptII/workspace/.maven/repo install:install-file -DgroupId=jna -DartifactId=jna -Dversion=4.0.0-variadic -Dpackaging=jar -Dfile=$PTII/lib/jna.jar
 mvn -Dmaven.repo.local=/var/lib/hudson/jobs/ptII/workspace/.maven/repo install:install-file -DgroupId=junitparams -DartifactId=junitparams -Dversion=0.3.0 -Dpackaging=jar -Dfile=$PTII/lib/JUnitParams-0.3.0.jar
 mvn -Dmaven.repo.local=/var/lib/hudson/jobs/ptII/workspace/.maven/repo install:install-file -DgroupId=g4ltl -DartifactId=g4ltl -Dversion=ptII -Dpackaging=jar -Dfile=$PTII/lib/g4ltl.jar
 mvn -Dmaven.repo.local=/var/lib/hudson/jobs/ptII/workspace/.maven/repo install:install-file -DgroupId=jxta -DartifactId=jxta -Dversion=1.0 -Dpackaging=jar -Dfile=$PTII/vendors/sun/jxta/jxta.jar
@@ -493,14 +493,14 @@ $WORKSPACE/adm/bin/killXServer</command>
       <permission>hudson.model.Item.Configure:cxh</permission>
       <permission>hudson.model.Item.Configure:cxbrooks</permission>
       <permission>hudson.model.Item.Configure:marten</permission>
-      <permission>hudson.model.Item.Workspace:eal</permission>
-      <permission>hudson.model.Item.Workspace:cxh</permission>
-      <permission>hudson.model.Item.Workspace:cxbrooks</permission>
-      <permission>hudson.model.Item.Workspace:marten</permission>
       <permission>hudson.model.Run.Delete:eal</permission>
       <permission>hudson.model.Run.Delete:cxh</permission>
       <permission>hudson.model.Run.Delete:cxbrooks</permission>
       <permission>hudson.model.Run.Delete:marten</permission>
+      <permission>hudson.model.Item.Workspace:eal</permission>
+      <permission>hudson.model.Item.Workspace:cxh</permission>
+      <permission>hudson.model.Item.Workspace:cxbrooks</permission>
+      <permission>hudson.model.Item.Workspace:marten</permission>
       <permission>hudson.model.Item.Read:anonymous</permission>
       <permission>hudson.model.Item.Read:eal</permission>
       <permission>hudson.model.Item.Read:cxh</permission>
