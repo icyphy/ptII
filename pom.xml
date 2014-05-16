@@ -533,6 +533,26 @@ See $PTII/doc/coding/maven.htm
       <version>2.0b4</version>
     </dependency>
 
+    <dependency>
+      <groupId>org.mozilla</groupId>
+      <artifactId>rhino</artifactId>
+      <version>1.7R4</version>
+    </dependency>
+
+    <dependency>
+      <groupId>org.apache.oltu.oauth2</groupId>
+      <artifactId>org.apache.oltu.oauth2.client</artifactId>
+      <version>1.0.0</version>
+    </dependency>
+
+    <dependency>
+      <groupId>org.apache.oltu.oauth2</groupId>
+      <artifactId>org.apache.oltu.oauth2.common</artifactId>
+      <version>1.0.0</version>
+    </dependency>
+    
+    
+
     <!-- Dependencies that need to be added manually -->
     <!-- See ptII/doc/coding/maven.htm for the commands 
 	 to run to install these dependencies -->
@@ -546,7 +566,7 @@ See $PTII/doc/coding/maven.htm
     <dependency>  <!-- $PTII/lib/jna.jar -->
       <groupId>jna</groupId>
       <artifactId>jna</artifactId>
-      <version>3.4.0</version>
+      <version>4.0.0-variadic</version>
     </dependency>
 
 
@@ -710,8 +730,7 @@ See $PTII/doc/coding/maven.htm
            <exclude>ptolemy/actor/lib/io/comm/**</exclude>
            <exclude>ptolemy/actor/lib/jai/**</exclude>
            <exclude>ptolemy/actor/lib/jmf/**</exclude>
-           <exclude>ptolemy/actor/lib/joystick/**</exclude>
-	   <exclude>ptolemy/actor/lib/js/**</exclude>
+	   <exclude>ptolemy/actor/lib/joystick/**</exclude>
 	   <exclude>ptolemy/actor/lib/mail/**</exclude>
            <exclude>ptolemy/actor/lib/opencv/**</exclude>
            <exclude>ptolemy/domains/gr/lib/quicktime/**</exclude>
