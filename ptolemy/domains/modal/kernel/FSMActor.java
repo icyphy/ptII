@@ -2998,7 +2998,9 @@ public class FSMActor extends CompositeEntity implements TypedActor,
                     _debug("** Exception occurred executing refinement. Checking error transitions.");
                 }
                 // Set variables exposing the exception.
-                errorMessage.setExpression(ex.getMessage());
+                // Escape any $ in the error message.
+                String message = (ex.getMessage().replaceAll("\\$", "\\$\\$"));
+                errorMessage.setExpression(message);
                 errorClass.setExpression(ex.getClass().getName());
                 if (ex instanceof KernelException) {
                     Nameable cause = ((KernelException) ex).getNameable1();
