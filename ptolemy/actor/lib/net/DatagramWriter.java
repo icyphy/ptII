@@ -261,17 +261,6 @@ public class DatagramWriter extends TypedAtomicActor {
                     }
                 }
             }
-        } else if (attribute == defaultRemoteAddress) {
-            String address = ((StringToken) defaultRemoteAddress.getToken())
-                    .stringValue();
-
-            try {
-                _address = InetAddress.getByName(address);
-            } catch (UnknownHostException ex) {
-                throw new IllegalActionException(this, ex,
-                        "The default remote "
-                                + "address specifies an unknown host");
-            }
         } else if (attribute == defaultRemoteSocketNumber) {
             _remoteSocketNumber = ((IntToken) defaultRemoteSocketNumber
                     .getToken()).intValue();
@@ -437,7 +426,7 @@ public class DatagramWriter extends TypedAtomicActor {
     private InetAddress _address;
 
     private int _remoteSocketNumber;
-
+    
     // The socket (& socket number) from which to transmit datagram packets.
     private DatagramSocket _socket;
 
