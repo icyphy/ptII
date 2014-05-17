@@ -1525,7 +1525,7 @@ public class Graph implements Cloneable {
                 throw new GraphElementException("Illegal graph element "
                         + "(neither a Node nor an Edge) specified.\n"
                         + "The element's type is: "
-                        + element.getClass().getName() + ".\n");
+                        + (element == null ? "null" : element.getClass().getName()) + ".\n");
             }
 
             return result;

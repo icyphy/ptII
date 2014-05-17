@@ -409,7 +409,9 @@ public class FmvAutomatonGraphFrame extends FSMGraphFrame {
                             + ex);
                 } finally {
                     try {
-                        reader.close();
+                        if (reader != null) {
+                            reader.close();
+                        }
                     } catch (IOException ex) {
                         MessageHandler
                                 .error("Failed to create debug listener: " + ex);

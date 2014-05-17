@@ -39,6 +39,7 @@ import ptolemy.data.expr.SingletonParameter;
 import ptolemy.domains.modal.modal.ModalController;
 import ptolemy.kernel.util.AbstractSettableAttribute;
 import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.Location;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
@@ -137,25 +138,29 @@ public class FSMTransitionParameter extends AbstractSettableAttribute {
                 e.printStackTrace();
             }
         }
+        if (_hide == null) {
+            throw new InternalErrorException(this, null, "Could not create _hide parameter?");
+        }
         _hide.setExpression("" + hide);
         Location location = (Location) getAttribute("_location");
         if (location != null) {
         	location.validate();
-        }
-        if (!hide && (location == null || (location.getLocation()[0] == 0 && location.getLocation()[1] == 0))) {
+        } else {
+            if (!hide && (location == null || (location.getLocation()[0] == 0 && location.getLocation()[1] == 0))) {
         	if (_transition != null && _transition.sourceState() != null) {
-	        	Location sourceStateLocation = (Location)_transition.sourceState().getAttribute("_location");
-	        	Location destinationStateLocation = (Location)_transition.destinationState().getAttribute("_location");
-	        	try {
-					new Location(this, "_location").setLocation(new double[]{
-							destinationStateLocation.getLocation()[0] + 
-							(sourceStateLocation.getLocation()[0] - destinationStateLocation.getLocation()[0])/2,
-							destinationStateLocation.getLocation()[1] + 
-							(sourceStateLocation.getLocation()[1] - destinationStateLocation.getLocation()[1])/2});
-				} catch (NameDuplicationException e) {
-					throw new IllegalActionException(_transition, e.getCause(), e.getMessage());
-				}
+                    Location sourceStateLocation = (Location)_transition.sourceState().getAttribute("_location");
+                    Location destinationStateLocation = (Location)_transition.destinationState().getAttribute("_location");
+                    try {
+                        new Location(this, "_location").setLocation(new double[]{
+                                    destinationStateLocation.getLocation()[0] + 
+                                    (sourceStateLocation.getLocation()[0] - destinationStateLocation.getLocation()[0])/2,
+                                    destinationStateLocation.getLocation()[1] + 
+                                    (sourceStateLocation.getLocation()[1] - destinationStateLocation.getLocation()[1])/2});
+                    } catch (NameDuplicationException ex) {
+                        throw new IllegalActionException(_transition, ex, "Could not add _location?");
+                    }
         	}
+            }
         }
     }
     

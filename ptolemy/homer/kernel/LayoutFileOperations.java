@@ -350,7 +350,9 @@ public final class LayoutFileOperations {
         } finally {
             // Release models
             mainFrame.getTopLevelActor().workspace().doneReading();
-            model.workspace().doneWriting();
+            if (model != null) {
+                model.workspace().doneWriting();
+            }
 
             if (out != null) {
                 try {

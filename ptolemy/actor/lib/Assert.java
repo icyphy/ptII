@@ -119,7 +119,11 @@ public class Assert extends Expression {
             }
         } finally {
             _cloning = false;
-            newObject._cloning = false;
+            if (newObject == null) {
+                throw new CloneNotSupportedException("super.clone(Workspace) returned null?");
+            } else {
+                newObject._cloning = false;
+            }
         }
         return newObject;
     }

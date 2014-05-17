@@ -169,14 +169,19 @@ public class MacOSXAdapter implements InvocationHandler {
                 }
             }
 
-            if (_macOSXApplication == null) {
-                try {
-                    _macOSXApplication = applicationClass.getConstructor(
-                            (Class[]) null).newInstance((Object[]) null);
-                } catch (java.lang.reflect.InvocationTargetException ex) {
-                    if (ex.getCause() instanceof SecurityException) {
-                        if (!_printedSecurityExceptionMessage) {
-                            System.out
+            if (applicationClass == null) {
+                throw new NullPointerException("Internal Error!  class "
+                        + applicationClassName + " was not found "
+                        + "and the exception was missed?");
+            } else {
+                if (_macOSXApplication == null) {
+                    try {
+                        _macOSXApplication = applicationClass.getConstructor(
+                                (Class[]) null).newInstance((Object[]) null);
+                    } catch (java.lang.reflect.InvocationTargetException ex) {
+                        if (ex.getCause() instanceof SecurityException) {
+                            if (!_printedSecurityExceptionMessage) {
+                                System.out
                                     .println("Warning: Failed to get the"
                                             + "constructor of \""
                                             + applicationClassName
@@ -185,24 +190,25 @@ public class MacOSXAdapter implements InvocationHandler {
                                             + "): "
                                             + ex
                                             + "(applets and -sandbox always causes this)");
+                            }
                         }
+                        return;
                     }
-                    return;
                 }
-            }
-            Class applicationListenerClass = Class
+                Class applicationListenerClass = Class
                     .forName("com.apple.eawt.ApplicationListener");
-            Method addListenerMethod = applicationClass.getDeclaredMethod(
-                    "addApplicationListener",
-                    new Class[] { applicationListenerClass });
+                Method addListenerMethod = applicationClass.getDeclaredMethod(
+                        "addApplicationListener",
+                        new Class[] { applicationListenerClass });
 
-            // Create a proxy object around this handler that can be
-            // reflectively added as an Apple ApplicationListener
-            Object osxAdapterProxy = Proxy.newProxyInstance(
-                    MacOSXAdapter.class.getClassLoader(),
-                    new Class[] { applicationListenerClass }, adapter);
-            addListenerMethod.invoke(_macOSXApplication,
-                    new Object[] { osxAdapterProxy });
+                // Create a proxy object around this handler that can be
+                // reflectively added as an Apple ApplicationListener
+                Object osxAdapterProxy = Proxy.newProxyInstance(
+                        MacOSXAdapter.class.getClassLoader(),
+                        new Class[] { applicationListenerClass }, adapter);
+                addListenerMethod.invoke(_macOSXApplication,
+                        new Object[] { osxAdapterProxy });
+            }
         } catch (ClassNotFoundException ex) {
             top.report("The a com.apple.eawt class was not found?", ex);
         } catch (Exception ex2) {

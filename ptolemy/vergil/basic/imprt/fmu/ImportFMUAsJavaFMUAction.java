@@ -202,8 +202,10 @@ public class ImportFMUAsJavaFMUAction extends AbstractAction {
                         FMU.importFMU(this, fmuFileParameter, context, x,
                                 y, _lastModelExchange);
                     } finally {
-                        // Avoid leaving a parameter in the model.
-                        fmuFileParameter.setContainer(null);
+                        if (fmuFileParameter != null) {
+                            // Avoid leaving a parameter in the model.
+                            fmuFileParameter.setContainer(null);
+                        }
                     }
                 }
             }

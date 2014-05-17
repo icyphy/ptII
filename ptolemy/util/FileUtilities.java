@@ -607,7 +607,11 @@ public class FileUtilities {
                 }
                 // If possibleJarURL is null, this throws an exception,
                 // which we ignore and report the first exception (ex)
-                return new BufferedReader(inputStreamReader);
+                if (inputStreamReader == null) {
+                    throw new NullPointerException("Could not open " + url);
+                } else {
+                    return new BufferedReader(inputStreamReader);
+                }
             } catch (Exception ex2) {
                 try {
                     if (inputStreamReader != null) {
