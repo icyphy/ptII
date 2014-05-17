@@ -967,9 +967,9 @@ public class JavaScript extends TypedAtomicActor {
     	
     	/** FIXME
     	 * 
-    	 * @param time
-    	 * @param function
-    	 * @return
+    	 * @param time The time of the timeout.
+    	 * @param function The function.
+    	 * @return Always return 0.
     	 */
     	public Integer timeout(Integer time, BaseFunction function) {
     		alert("Hello");
