@@ -28,28 +28,25 @@
 package ptolemy.actor.lib;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
 
 import ptolemy.actor.AbstractInitializableAttribute;
 import ptolemy.actor.Actor;
-import ptolemy.actor.CompositeActor;
-import ptolemy.actor.Director;
 import ptolemy.actor.Manager;
-import ptolemy.actor.parameters.SharedParameter;
-import ptolemy.data.BooleanToken;
-import ptolemy.data.IntToken;
-import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.StringParameter;
+import ptolemy.data.ontologies.OntologyAnnotationAttribute;
 import ptolemy.data.ontologies.lattice.LatticeOntologySolver;
-import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.Port;
 import ptolemy.kernel.util.ExceptionHandler;
 import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.Nameable;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Settable;
-import ptolemy.util.MessageHandler;
 
 ///////////////////////////////////////////////////////////////////
 //// CatchExceptionAttribute
@@ -108,7 +105,9 @@ public class CatchExceptionAttribute extends AbstractInitializableAttribute
         statusMessage.setExpression("No exceptions encountered");
         statusMessage.setVisibility(Settable.NOT_EDITABLE);
 
+        _annotations = new ArrayList<OntologyAnnotationAttribute>();
         _resetMessages = true;
+        _initialized = false;
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -134,25 +133,33 @@ public class CatchExceptionAttribute extends AbstractInitializableAttribute
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
+    // TODO:  Analyze input ports also? 
+    // TODO:  Figure out what makes sense for continue (if anything)
+    
     /** Handle an exception according to the specified policy:
-     *  analyze:
-     *  continue:  Consume the exception and return control to the director.
+     *  analyze:  Determine the source actor(s) and annotate output ports
+     *   with error constraints.
+     *  
+     *  continue: Not implemented yet  
+     *   Consume the exception and return control to the director.
      *   Could be valuable for domains like DE or modal models when new
      *   events will arrive.  Probably not appropriate for domains like SDF
      *   where the director follows a predefined schedule based on data flow
      *   (since the actor throwing the exception no longer provides output to 
      *   the next actor).
      *   
-     *   Allow option to clear schedule??
+     *  throw:  Do not catch the exception.  
+     *  
+     *  restart:  Stop and restart the model.  Does not apply to exceptions
+     *   generated during initialize().
      *   
-     *  If in training
-     *  mode, simply record the exception message. If not in training mode,
-     *  first compare the stored good message against the exception message.
-     *  If they are the same, do nothing. Otherwise, throw the exception again.
+     *  stop:  Stop the model.
+     *   
      *  @param context The object in which the error occurred.
      *  @param exception The exception to be handled.
-     *  @return True since the exception has been handled
-     *  @exception IllegalActionException If the policy is "throw"
+     *  @return true if the exception is handled; false if this attribute 
+     *   did not handle it
+     *  @exception IllegalActionException If thrown by the parent
      */
     
     // FIXME:  Appears wrapup() is called just prior to this automatically; 
@@ -160,14 +167,22 @@ public class CatchExceptionAttribute extends AbstractInitializableAttribute
     public boolean handleException(NamedObj context, Throwable exception)
             throws IllegalActionException {
         
-        // Save the exception message.  Only informational at the moment.
+         // Save the exception message.  Only informational at the moment.
          exceptionMessage.setExpression(exception.getMessage());
         
          Date date = new Date(System.currentTimeMillis());
          SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
-                 // new SimpleDateFormat("MMM dd,yyyy HH:mm:ss");
-
-         // Handle the exception according 
+         
+         // Clear any existing OntologyAnnotationAttributes
+         // Check that each exists in case user deleted them manually
+         for (OntologyAnnotationAttribute annotation : _annotations) {
+             if (toplevel().getAttribute(annotation.getName()) != null) {
+                 annotation.getContainer().removeAttribute(annotation);
+             }
+         }
+         _annotations.clear();
+         
+         // Handle the exception according to the specified policy 
          // TODO:  Apply different policies depending on the type of exception.
          // How would the policy be specified then?
          
@@ -195,17 +210,63 @@ public class CatchExceptionAttribute extends AbstractInitializableAttribute
              }
              
              if (solver == null) {
-                 throw new IllegalActionException(this, "No " +
-                   "LatticeOntologySolver found.  A LatticeOntologySolver " +
-                   "using an Error ontology is required for the analyze " +
-                   "option.");
+                 
+                 // Return false if the ontology solver cannot be found, since 
+                 // this attribute did not resolve the exception.
+                 statusMessage.setExpression("Cannot analyze: No ontology " +
+                 		"solver found");
+                 return false;
              }
              
-             // Figure out which actor threw the exception
-             // exception.  How to do this?
+             // "context" is not always the object that caused the exception
+             // (for example, in a divide by zero error, the context is 
+             // the top level object i.e. the model container)
+             // Instead, check for an instance of KernelException and get the 
+             // objects implicated there.  
+             // If any, check if object(s) are actors, find any output ports, 
+             // and annotate these with an "error" concept
              
-             // Add an error constraint to the model for every output port
-             // of that actor
+             if (!(exception instanceof KernelException)) {
+                 statusMessage.setExpression("Cannot analyze: Not a " +
+                 		"KernelException or subclass");
+                 return false;
+             }
+             
+             Nameable nameable1 = null, nameable2 = null;
+             
+             nameable1 = ((KernelException) exception).getNameable1();
+             nameable2 = ((KernelException) exception).getNameable2();
+           
+                 
+             // TODO:  Handle other objects that can be assigned ontology 
+             // concepts, such as Parameter?
+             if (!((nameable1 != null && nameable1 instanceof Actor) ||
+                     (nameable2 != null && nameable2 instanceof Actor))) {
+                 statusMessage.setExpression("Cannot analyze: " +
+                         "No source actor identified");
+                 return false;
+             }
+             
+             if (nameable1 != null) {
+                 // Return false from this method if _annoateActor encounters
+                 // a problem
+                 if (!_annotateActor(nameable1)){
+                     return false;
+                 }
+             }
+             
+             if (nameable2 != null) {
+                 // Return false from this method if _annoateActor encounters
+                 // a problem
+                 if (!_annotateActor(nameable2)){
+                     return false;
+                 }
+             }
+                 
+             // Invoke the solver
+             solver.invokeSolver();
+                
+             statusMessage.setExpression("Model successfully analyzed");
        
          } else if (policyValue.equals("continue")) {
              statusMessage.setExpression("Execution continued at " 
@@ -214,11 +275,26 @@ public class CatchExceptionAttribute extends AbstractInitializableAttribute
              // FIXME:  Is continue possible?  Looks like wrapup() is called
              // automatically before handleException()
          } else if (policyValue.equals("throw")) {
-             statusMessage.setExpression("Exception re-thrown at " +
+             statusMessage.setExpression("Exception thrown at " +
                      dateFormat.format(date));
-             throw new IllegalActionException(this, exception.getMessage());
+             
+             // Return false if an exception is thrown, since this attribute 
+             // did not resolve the exception.
+             return false;
+             
          } else if (policyValue.equals("restart")){
              // Restarts the model in a new thread
+             
+             // Check if the model made it through initialize().  If not, return
+             // false (thereby leaving exception unhandled)
+             if (!_initialized) {
+                 
+                 // Return false if an exception is thrown, since this attribute 
+                 // did not resolve the exception.
+                 statusMessage.setExpression("Cannot restart: Error " +
+                 		"before or during intialize()");
+                 return false;
+             }
              
              // Find an actor in the model at the same hierarchy level.  
              // Use the actor to get the manager.
@@ -280,6 +356,10 @@ public class CatchExceptionAttribute extends AbstractInitializableAttribute
          
          _resetMessages = false;
          
+         // Set _initialized to false here, instead of in wrapup(), since 
+         // wrapup() is called prior to handleException()
+         _initialized = false;
+         
         return true;
     }
     
@@ -299,28 +379,126 @@ public class CatchExceptionAttribute extends AbstractInitializableAttribute
         }
         
         _resetMessages = true;
+        _initialized = true;
     }
-    
-    /** Do nothing if the policy is continue; else, wrapup.  wrapup() needs
-     *  to be overridden since it is automatically called prior to 
-     *  handleException()
-     *  @exception IllegalActionException If the parent class throws it
-     */
-    // FIXME:  Can override wrapup() here but it will still be called on all 
-    // the other actors.... what to do?  Throw an exception upon trying wrapup
-    // if policy is to continue?  Some actors might successfully process
-    // their wrapups though.
-    
-    /*
-    public void wrapup() throws IllegalActionException {
-        if (policy == null || !policy.stringValue().equals("continue")) {
-            super.wrapup();
-        }
-    }
-    */
     
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
+    
+    /** Annotate an actor with error constraints.
+     * 
+     * @return True if actor was successfully annotated; false otherwise
+     */
+    private boolean _annotateActor(Nameable nameable) {
+        // Find the output ports on this actor, if any, and generate
+        // error constraints for them.  Constraints are added to the
+        // top level model.
+
+        NamedObj toplevel = toplevel();
+        Actor actor = null;
+        
+        if (nameable instanceof Actor) { 
+            actor = (Actor) nameable;
+        } else {
+            statusMessage.setExpression("Cannot analyze: Source of exception "
+                    + nameable.getName() + " is not an actor");
+            return false;
+        }
+        
+        for (Object portObject : actor.outputPortList()) {
+            if (portObject instanceof Port) {
+                
+                Port port = (Port) portObject;
+                
+                // The constraint text must refer to the
+                // actorname.portname
+                // Derive this from the actor's full name, which
+                // is of the form .nameOfModel.actorName
+                // Remove all characters through the second period
+                String constraintText = nameable.getFullName();
+                int period = constraintText.indexOf('.');
+                if ((period != -1) && 
+                    (period != constraintText.length() - 1)) {
+                 period = constraintText.indexOf('.', period + 1);
+                }
+                
+                if ((period != -1) &&
+                     (period != constraintText.length() - 1)) {
+                    constraintText = 
+                            constraintText.substring(period + 1);
+                }
+                
+                // The constraint itself is named after the actor
+                // to avoid name duplications and to help with 
+                // traceability.  Underscores replace periods.
+                String actorName = constraintText.replace('.','_');
+                
+                try {    
+                    OntologyAnnotationAttribute attribute = 
+                        new OntologyAnnotationAttribute(toplevel, 
+                           "ErrorOntologySolver::" + actorName + "_" +  
+                           port.getName());
+                    
+                    attribute.setExpression(constraintText + "." + 
+                           port.getName() + ">= Error");
+                    _annotations.add(attribute); 
+                } catch(NameDuplicationException e) {
+                    // If one exists already, assume the previous one
+                    // can be overwritten.  This can occur if the model
+                    // is saved after an exception is caught.
+                    OntologyAnnotationAttribute attribute = 
+                            (OntologyAnnotationAttribute) toplevel()
+                            .getAttribute("ErrorOntologySolver::" + 
+                            actorName + "_" + port.getName());
+                    
+                    if (attribute != null) {
+                        try {
+                        attribute.setExpression(constraintText + "." + 
+                                port.getName() + ">= Error");
+                         _annotations.add(attribute);
+                        } catch (IllegalActionException e2) {
+                            statusMessage.setExpression("Cannot analyze: "+
+                                    "Cannot annotate port " + 
+                                    port.getContainer().getFullName() + "." + 
+                                    port.getName());
+                            return false;
+                        }
+                    } else {
+                        statusMessage.setExpression("Cannot analyze: "+
+                            "Cannot annotate port " + 
+                            port.getContainer().getFullName() + "." + 
+                            port.getName());
+                        
+                        return false;
+                    }
+                } catch(IllegalActionException e3) {
+                    statusMessage.setExpression("Cannot analyze: "+
+                            "Cannot annotate port " + 
+                            port.getContainer().getFullName() + "." + 
+                            port.getName());
+                    return false;
+                }
+               
+            }
+        }
+        
+        return true;
+    }
+    
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
+    
+    /** A list of the OntologyAnnotationAttributes created by this 
+     *  attribute.  Stored as a list so they can easily be deleted
+     *  when a new analysis is calculated.
+     */
+    private ArrayList<OntologyAnnotationAttribute> _annotations;
+    
+    /** True if the model has been initialized but not yet wrapped up; 
+     *  false otherwise.  Some policies (e.g. restart) are desirable only 
+     *  for run-time exceptions.
+     */
+    private boolean _initialized;
     
     /** True if the model has been started externally (e.g. by a user);
      * false if the model has been restarted by this attribute.
