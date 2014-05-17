@@ -2727,7 +2727,7 @@ if test ! -d "$PTJAVASCRIPT_USER_DIR"; then
     PT_MSG_STATUS([$PTJAVASCRIPT_USER_DIR is not present,
     so we need not find Rhino JavaScript Implementation.])
 else
-    AC_MSG_CHECKING([for JavaScript, used by js actors. ])
+    AC_MSG_CHECKING([for JavaScript, used by js and org.terraswarm.kernel actors. ])
     AC_ARG_WITH(rhino, [  --with-javascript=JAR       use js.jar from JAR,
                           defaults to \$PTII/lib/js.jar],
         PTJAVASCRIPT_JAR=$withval,
@@ -2737,7 +2737,7 @@ else
 	PT_MSG_RESULT([$PTJAVASCRIPT_JAR])
 	updateClasspath "$PTJAVASCRIPT_JAR"
 
-	AC_MSG_CHECKING([for OAuth client, used by js actors. ])
+	AC_MSG_CHECKING([for OAuth client, used by js and org.terraswarm.kernel actors. ])
 	AC_ARG_WITH(oauthclient, [  --with-oauthclient=JAR       use oauth from JAR,
                           defaults to \$PTII/lib/org.apache.oltu.oauth2.client-1.0.1-SNAPSHOT.jar],
         PTOAUTHCLIENT_JAR=$withval,
@@ -2747,7 +2747,7 @@ else
 	   PT_MSG_RESULT([$PTOAUTHCLIENT_JAR])
 	   updateClasspath "$PTOAUTHCLIENT_JAR"
 
-	   AC_MSG_CHECKING([for OAuth common, used by js actors. ])
+	   AC_MSG_CHECKING([for OAuth common, used by js and org.terraswarm.kernel actors. ])
 	   AC_ARG_WITH(oauthcommon, [  --with-oauthcommon=JAR       use oauth from JAR,
                           defaults to \$PTII/lib/org.apache.oltu.oauth2.common-1.0.1-SNAPSHOT.jar],
            PTOAUTHCOMMON_JAR=$withval,
@@ -2758,25 +2758,18 @@ else
 	      updateClasspath "$PTOAUTHCOMMON_JAR"
 	      PTJAVASCRIPT_DIR=js
 	      # PTJAVASCRIPT_PACKAGES is used in ptII/doc/makefile
-	      PTJAVASCRIPT_PACKAGES=ptolemy.actor.lib.js
-	   else
-	      updateExcludes "ptolemy/actor/lib/js"
-	      AC_MSG_WARN([Failed to find the OAuth common jar file necessary to
-   to compile actor/lib/js.
-   Typically, the OAuth client jar is found at $PTII/lib/org.apache.oltu.oauth2.common-1.0.1-SNAPSHOT.jar.])
-           fi
-       else 
-        updateExcludes "ptolemy/actor/lib/js"
-	      AC_MSG_WARN([Failed to find the OAuth common jar file necessary to
-   to compile actor/lib/js.
-   Typically, the OAuth client jar is found at $PTII/lib/org.apache.oltu.oauth2.client-1.0.1-SNAPSHOT.jar.])
+	      PTJAVASCRIPT_PACKAGES="ptolemy.actor.lib.js org.terraswarm.kernel"
+	   fi
        fi
-    else
-        updateExcludes "ptolemy/actor/lib/js"
-        AC_MSG_WARN([Failed to find the Rhino Javascript js.jar file necessary to
-    to compile actor/lib/js.
-    Typically, js.jar is found at $PTII/lib/js.jar.])
     fi
+fi
+
+if test -z "$PTJAVASCRIPT_DIR"; then
+    updateExcludes "ptolemy/actor/lib/js"
+    updateExcludes "org/terraswarm/kernel"
+    AC_MSG_WARN([Failed to find the OAuth common jar file necessary to
+    to compile ptolemy/actor/lib/js and org/terraswarm/kernel
+    Typically, the OAuth client jar is found at $PTII/lib/org.apache.oltu.oauth2.common-1.0.1-SNAPSHOT.jar.])
 fi
 
 
