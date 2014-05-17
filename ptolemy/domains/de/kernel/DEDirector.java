@@ -1,4 +1,4 @@
-* The DE domain director.
+/* The DE domain director.
 
  Copyright (c) 1998-2013 The Regents of the University of California.
  All rights reserved.
