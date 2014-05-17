@@ -449,7 +449,7 @@ public class ServerUtility {
             HashSet<Class<? extends Attribute>> classesToMerge,
             HashSet<String> namedObjectsToMerge) throws IllegalActionException,
             CloneNotSupportedException {
-        System.out.println("_mergeElement(" + source.getFullName() + ", " + targetModel.getFullName() + ", " + classesToMerge + ", " + namedObjectsToMerge);
+        //System.out.println("_mergeElement(" + source.getFullName() + ", " + targetModel.getFullName() + ", " + classesToMerge + ", " + namedObjectsToMerge);
         // Check if source and model is available.
         if (source == null || targetModel == null) {
             return;

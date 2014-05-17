@@ -989,7 +989,7 @@ public class HttpActor extends TypedAtomicActor implements HttpService {
                 } else {
                     // FIXME:  Special character handling?  Copied from previous
                     // code. Should cookies be encoded using URLEncoder.encode()?
-                    if (value != null && value.indexOf("\"") != -1) {
+                    if (value.indexOf("\"") != -1) {
                         value = value.replace("\"", "");
                     }
                     Cookie cookie = new Cookie(label, value);

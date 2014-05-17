@@ -959,8 +959,8 @@ public class FSMDirector extends Director implements ExplicitChangeContext,
                 if (port.isKnown(i)) {
                     if (port.hasToken(i)) {
                         Token t = port.get(i);
-                        if (insideReceivers != null
-                        		&& i < insideReceivers.length
+                        // FindBugs: insideReceivers can't be null;
+                        if (i < insideReceivers.length
                                 && insideReceivers[i] != null) {
                             for (int j = 0; j < insideReceivers[i].length; j++) {
                                 insideReceivers[i][j].put(t);
@@ -979,8 +979,8 @@ public class FSMDirector extends Director implements ExplicitChangeContext,
                         }
                     } else {
                         /** Port does not have a token. */
-                        if (insideReceivers != null
-                                && insideReceivers[i] != null) {
+                        // FindBugs: insideReceivers can't be null;
+                        if (insideReceivers[i] != null) {
                             for (int j = 0; j < insideReceivers[i].length; j++) {
                                 if (_debugging) {
                                     _debug(getName(),
@@ -999,7 +999,8 @@ public class FSMDirector extends Director implements ExplicitChangeContext,
                         _debug("Input port status is not known. Resetting inside receivers of "
                                 + port.getName());
                     }
-                    if (insideReceivers != null && insideReceivers[i] != null) {
+                    // FindBugs: insideReceivers can't be null;
+                    if (insideReceivers[i] != null) {
                         for (int j = 0; j < insideReceivers[i].length; j++) {
                             insideReceivers[i][j].reset();
                         }
