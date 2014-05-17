@@ -113,16 +113,32 @@ class Simulate {
         System.out.println("x1   = " + args[1]);
         System.out.println("x2   = " + args[2]);
 
-        // Write arguments to files
+        // Write arguments to files.
+
+        // Findbugs wants us to split these in to two
         FileOutputStream fos = null;
         try {
             fos = new FileOutputStream("outputX1.txt");
             new PrintStream(fos).println(args[1]);
-            fos.close();
+        } catch (IOException e) {
+            System.err.println("Unable to write to outputX1.txt");
+            StringUtilities.exit(1);
+        } finally {
+            if (fos != null) {
+                try {
+                    fos.close();
+                } catch (IOException ex) {
+                    System.out.println("Failed to close output stream: " + ex);
+                }
+            }
+        }
+
+        fos = null;
+        try {
             fos = new FileOutputStream("outputX2.txt");
             new PrintStream(fos).println(args[2]);
         } catch (IOException e) {
-            System.err.println("Unable to write to file");
+            System.err.println("Unable to write to outputX1.txt");
             StringUtilities.exit(1);
         } finally {
             if (fos != null) {
