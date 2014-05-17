@@ -126,10 +126,16 @@ public class GTIngredientList extends LinkedList<GTIngredient> {
                     rule = ruleClass.getConstructor(GTIngredientList.class,
                             String.class).newInstance(list, values);
                 } catch (ClassNotFoundException e) {
+                    // Findbugs: Method might ignore exception.
+                    rule = null;
                 } catch (IllegalAccessException e) {
+                    rule = null;
                 } catch (InstantiationException e) {
+                    rule = null;
                 } catch (InvocationTargetException e) {
+                    rule = null;
                 } catch (NoSuchMethodException e) {
+                    rule = null;
                 }
             }
 
