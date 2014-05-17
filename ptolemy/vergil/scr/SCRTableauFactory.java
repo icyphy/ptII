@@ -35,6 +35,7 @@ import ptolemy.domains.modal.kernel.FSMActor;
 import ptolemy.domains.modal.kernel.FSMDirector;
 import ptolemy.domains.scr.SCRModel;
 import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 
@@ -89,11 +90,21 @@ public class SCRTableauFactory extends TableauFactory {
         		throw new IllegalActionException("SCRTableau cannot be created for models other than SCRModels");
         	}
         }
-        FSMActor controller = ((FSMDirector) model.getDirector())
+        if (model == null) {
+            if (effigy == null) {
+                throw new NullPointerException("The value of the effigy parameter was null?");
+            } else {
+                throw new InternalErrorException(effigy, null,  "The effigy " + effigy
+                        + " was a " + effigy.getClass()
+                        + " not a PtolemyEffigy.");
+            }
+        } else {
+            FSMActor controller = ((FSMDirector) model.getDirector())
                 .getController();
        
-        Tableau tableau = configuration.openModel(controller);
-        tableau.setContainer(effigy);
-        return tableau;
+            Tableau tableau = configuration.openModel(controller);
+            tableau.setContainer(effigy);
+            return tableau;
+        }
     }
 }

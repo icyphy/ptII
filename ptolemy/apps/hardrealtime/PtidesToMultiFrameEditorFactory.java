@@ -119,19 +119,21 @@ public class PtidesToMultiFrameEditorFactory extends EditorFactory {
                     break;
                 }
             }
-            TaskFrame currentFrame = initialFrame;
-            do {
-                currentFrame.initialize();
-                if (currentFrame.getNextFrame() == initialFrame) {
-                    new Vertex((Relation) currentFrame.output
-                            .linkedRelationList().get(0), "_vertex");
-                }
-                (new Location(currentFrame, "_location"))
+            if (initialFrame != null) {
+                TaskFrame currentFrame = initialFrame;
+                do {
+                    currentFrame.initialize();
+                    if (currentFrame.getNextFrame() == initialFrame) {
+                        new Vertex((Relation) currentFrame.output
+                                .linkedRelationList().get(0), "_vertex");
+                    }
+                    (new Location(currentFrame, "_location"))
                         .setLocation(new double[] { taskFrameXPos,
                                 taskFrameYPos });
-                currentFrame = currentFrame.getNextFrame();
-                taskFrameXPos += taskFrameSpacing;
-            } while (currentFrame != initialFrame && currentFrame != null);
+                    currentFrame = currentFrame.getNextFrame();
+                    taskFrameXPos += taskFrameSpacing;
+                } while (currentFrame != initialFrame && currentFrame != null);
+            }
             multiFrameTaskXPos += multiFrameTaskSpacing;
         }
     }

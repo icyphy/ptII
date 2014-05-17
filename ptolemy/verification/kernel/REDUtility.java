@@ -2281,10 +2281,10 @@ public class REDUtility {
 
                 TypedActor sInnerActor = null;
                 TypedActor dInnerActor = null;
-                if (sActors[0] != null) {
+                if (sActors != null && sActors[0] != null) {
                     sInnerActor = sActors[0];
                 }
-                if (dActors[0] != null) {
+                if (dActors != null && dActors[0] != null) {
                     dInnerActor = dActors[0];
                 }
 

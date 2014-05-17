@@ -204,6 +204,7 @@ public class OMCCommand implements IOMCCommand {
                 // Cause this process to stop until process proc is terminated, 0 indicates normal termination.
                 _omcProcess.waitFor();
             } catch (InterruptedException e) {
+                // FIXME: The exception should be caught, not the stack printed
                 new InterruptedException(
                         "OMC process interrupted: "
                                 + e.getMessage()
@@ -233,16 +234,18 @@ public class OMCCommand implements IOMCCommand {
             getInheritanceCountResult = sendCommand("getInheritanceCount("
                     + modelName + ")");
         } catch (ConnectException e) {
+            // FIXME: The exception should be caught, not the stack printed
             new ConnectException(e.getMessage()).printStackTrace();
         }
-        if (getInheritanceCountResult.getError().isEmpty())
+        if (getInheritanceCountResult != null && getInheritanceCountResult.getError().isEmpty()) {
             inheritanceCount = getInheritanceCountResult.getFirstResult()
             .toString();
-
-        if (!(inheritanceCount.compareTo("0\n") == 0))
+        }
+        if (inheritanceCount != null && !(inheritanceCount.compareTo("0\n") == 0)) {
             return true;
-        else
+        } else {
             return false;
+        }
     }
 
     /** Create an instance of OMCCommand object in order to provide a global point of access to the instance.
@@ -278,7 +281,7 @@ public class OMCCommand implements IOMCCommand {
             new ConnectException(e.getMessage()).printStackTrace();
         }
 
-        if (getComponentsResult.getError().isEmpty()) {
+        if (getComponentsResult != null && getComponentsResult.getError().isEmpty()) {
             componentNames = getComponentsResult.getFirstResult();
 
             // Delete the first "{".
@@ -1132,25 +1135,35 @@ public class OMCCommand implements IOMCCommand {
                     + _temp;
             _omcLogger.getInfo(loggerInfo);
         } catch (FileNotFoundException e) {
+            // FIXME: The exception should be caught, not the stack printed
             new FileNotFoundException(
                     "Unable to find OpenModelica object reference located at "
                             + _temp + " !").printStackTrace();
         }
 
-        bufferReader = new BufferedReader(fileReader);
+        if (fileReader == null) {
+            // Not likely to happen
+            new FileNotFoundException(
+                    "Unable to find OpenModelica object reference located at "
+                            + _temp + " !").printStackTrace();            
+        } else {
+            bufferReader = new BufferedReader(fileReader);
 
-        try {
-            stringifiedObjectReference = bufferReader.readLine();
-            bufferReader.close();
-            String loggerInfo = "OpenModelica Object reference at " + _temp
+            try {
+                stringifiedObjectReference = bufferReader.readLine();
+                bufferReader.close();
+                String loggerInfo = "OpenModelica Object reference at " + _temp
                     + " is read successfuly!";
-            _omcLogger.getInfo(loggerInfo);
-        } catch (IOException e) {
-            new IOException(
-                    "Unable to read OpenModelica object reference from "
-                            + _temp + " !").printStackTrace();
+                _omcLogger.getInfo(loggerInfo);
+            } catch (IOException e) {
+                // FIXME: The exception should be caught, not the stack printed
+                new IOException(
+                        "Unable to read OpenModelica object reference from "
+                        + _temp + " !").printStackTrace();
+            }
+            return stringifiedObjectReference;
         }
-        return stringifiedObjectReference;
+        return null;
     }
 
     /** Initialize an ORB, convert the stringified OpenModelica
