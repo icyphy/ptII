@@ -134,6 +134,7 @@ public class DECQEventQueue implements DEEventQueue {
      *  actor, timeStamp, microstep, and depth of the event
      *  to be removed.
      *  @param event The event to enqueue.
+     *  @return True If a match is found and the entry is removed.
      */
     public synchronized final boolean remove(DEEvent event) {
     	return _cQueue.remove(event);

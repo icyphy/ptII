@@ -1,4 +1,4 @@
-/* The DE domain director.
+* The DE domain director.
 
  Copyright (c) 1998-2013 The Regents of the University of California.
  All rights reserved.
@@ -407,7 +407,6 @@ public class DEDirector extends Director implements SuperdenseTimeDirector {
      *  time microstep 1.
      *  @param actor The actor scheduled to be fired.
      *  @param time The requested time.
-     *  @param index The microstep.
      *  @exception IllegalActionException If cancelling a firing is not
      *   supported by the current event queue.
      */

@@ -96,6 +96,7 @@ public interface DEEventQueue extends Debuggable {
      *  actor, timeStamp, microstep, and depth of the event
      *  to be removed. Implementation of this method is optional.
      *  @param event The event to enqueue.
+     *  @return True If a match is found and the entry is removed.
      *  @exception IllegalActionException If the method is not supported.
      */
     public boolean remove(DEEvent event) throws IllegalActionException;

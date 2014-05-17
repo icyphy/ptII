@@ -634,12 +634,21 @@ public class JavaScript extends TypedAtomicActor {
      *  method, which JavaScript cannot access.
      */
     public class ParameterProxy {
+        /** Create a proxy for a parameter.
+         *  @param parameter  The parameter to be wrapped.
+         */
     	protected ParameterProxy(Parameter parameter) {
     		_parameter = parameter;
     	}
+
+        /** Return the string value of the wrapped parameter.
+         *  @return The string value of the wrapped parameter.
+         */
     	public String toString() {
     		return _parameter.getName();
     	}
+
+        /** The parameter to be wrapped. */
     	protected Parameter _parameter;
     }
 
@@ -651,12 +660,21 @@ public class JavaScript extends TypedAtomicActor {
      *  method, which JavaScript cannot access.
      */
     public class PortProxy {
+        /** Create a proxy for a port.
+         *  @param parameter  The port to be wrapped.
+         */
     	protected PortProxy(TypedIOPort port) {
     		_port = port;
     	}
+
+        /** Return the string value of the wrapped port.
+         *  @return The string value of the wrapped port.
+         */
     	public String toString() {
     		return _port.getName();
     	}
+
+        /** The port to be wrapped. */
     	protected TypedIOPort _port;
     }
 
@@ -665,12 +683,17 @@ public class JavaScript extends TypedAtomicActor {
     @SuppressWarnings("serial")
     public class PtolemyJavaScript extends ScriptableObject {
 
-    	/** Alert the user with a message. */
+    	/** Alert the user with a message.
+         *  @param message The message.   
+         */
     	public void alert(String message) {
     		MessageHandler.message(message);
     	}
 
-    	/** Throw an IllegalActionException with the specified message. */
+    	/** Throw an IllegalActionException with the specified message.
+         *  @param message The specified message.
+         *  @exception IllegalActionException Always thrown.
+         */
     	public void error(String message) throws IllegalActionException {
     		throw new IllegalActionException(JavaScript.this, message);
     	}
@@ -678,6 +701,7 @@ public class JavaScript extends TypedAtomicActor {
     	/** Get buffered inputs for a given input port.
     	 *  @param portWrapper A JavaScript wrapper for a Port.
     	 *  @param channel A channel number, or NaN to use the default (0).
+         *  @return The buffered inputs.
     	 */
     	public Object get(NativeJavaObject portWrapper, Double channel) {    		
     		// In JavaScript, all numbers are doubles. So we have to convert
@@ -757,6 +781,7 @@ public class JavaScript extends TypedAtomicActor {
 		 *   give any. For example: ['Content-Type':'application/x-www-form-urlencoded']
 		 *  @param body The body of the request, or null if none.
 		 *  @param timeout The timeout for a connection or a read, in milliseconds, or 0 to have no timeout.
+                 *  @return The response to the request.
 		 *  @throws IOException If the request fails.
 		 */
 		public String httpRequest(String url, String method, NativeObject properties, String body, Integer timeout)
@@ -831,14 +856,17 @@ public class JavaScript extends TypedAtomicActor {
 	        return response.toString();
 		}
 
-    	/** Print a message to standard out. */
+    	/** Print a message to standard out.
+         *  @param message The message to be printed   
+         */
     	public void print(String message) {
     		System.out.println(message);
     	}
     	
     	/** Read the specified URL and return its contents.
     	 *  @param url The URL to read.
-    	 *  @throws IOException 
+         *  @return The content of the URL.
+    	 *  @throws IOException If the specified URL can't be read.
     	 */
     	public String readURL(String url) throws IOException {
     		// FIXME: We should have a version that takes a callback function
@@ -853,14 +881,21 @@ public class JavaScript extends TypedAtomicActor {
     		InputStream stream = theURL.openStream();
     		// FIXME: Should provide a characterset optional second argument.
     		// This is supported by InputStreamReader.
-    		BufferedReader reader = new BufferedReader(new InputStreamReader(stream));
-    		StringBuffer result = new StringBuffer();
-    		String line = reader.readLine();
-    		while (line != null) {
+    		BufferedReader reader = null;
+                    StringBuffer result = new StringBuffer();
+                try {
+                    reader = new BufferedReader(new InputStreamReader(stream));
+                    String line = reader.readLine();
+                    while (line != null) {
     			result.append(line);
         		result.append(StringUtilities.LINE_SEPARATOR);
     			line = reader.readLine();
-    		}
+                    } 
+    		} finally {
+                    if (reader != null) {
+                        reader.close();
+                    }
+                }
     		return result.toString();
     	}
 
@@ -943,6 +978,7 @@ public class JavaScript extends TypedAtomicActor {
 		
     	/** Get parameter values.
     	 *  @param paramWrapper A JavaScript wrapper for a Variable.
+         *  @return The value of the parameter.
     	 */
     	public Object valueOf(NativeJavaObject paramWrapper) {
     		Object unwrappedParam = paramWrapper.unwrap();
@@ -1050,7 +1086,7 @@ public class JavaScript extends TypedAtomicActor {
     	 * Open a URL of web service that is protected by OAuth 2.0.
     	 * @param url The protected URL on a Resource server. Usually this is some kind of RESTful API.
     	 * @param accessToken The code used to prove access authorization to the Resource server.
-    	 * @return
+    	 * @return The OAuth Client resource response.
     	 * @throws IllegalActionException 
     	 */
         public String readProtectedURL(String url, String accessToken) throws IllegalActionException  { 

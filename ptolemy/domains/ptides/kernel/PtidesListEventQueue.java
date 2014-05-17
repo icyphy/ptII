@@ -112,6 +112,7 @@ public class PtidesListEventQueue implements DEEventQueue {
 
     /** Throw an exception to indicate that this method is not supported.
      *  @param event The event to enqueue.
+     *  @return True If a match is found and the entry is removed.
      *  @exception IllegalActionException Always thrown.
      */
     public boolean remove(DEEvent event) throws IllegalActionException {

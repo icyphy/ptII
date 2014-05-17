@@ -261,6 +261,7 @@ public class ModalController extends NamedProgramCodeGeneratorAdapter {
     /** Generate code for the firing of refinements.
     *
     *  @param code The string buffer that the generated code is appended to.
+    *  @return The refinemebt code.
     *  @exception IllegalActionException If the helper associated with
     *   an actor throws it while generating fire code for the actor.
     */

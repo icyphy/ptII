@@ -114,7 +114,7 @@ public class CatchExceptionAttribute extends AbstractInitializableAttribute
     ///////////////////////////////////////////////////////////////////
     ////                          parameters                       ////
 
-    /** The exception message from the caught exception */
+    /** The exception message from the caught exception. */
     public StringParameter exceptionMessage;
     
     /** The error handling policy to apply if an exception occurs

@@ -152,7 +152,7 @@ public class Dictionary extends TypedAtomicActor {
     
     /** If given, a log file will be written to the specified
      *  directory. 
-     *  A file name can also contain the following strings that start
+     *  <p>A file name can also contain the following strings that start
      *  with "$", which get substituted
      *  with the appropriate values.</p>
      *  <table>
@@ -520,7 +520,10 @@ public class Dictionary extends TypedAtomicActor {
     ////                         inner classes                     ////
     
     /** An empty scope to be used when parsing files. */
-    private class EmptyScope extends ModelScope {
+    private static class EmptyScope extends ModelScope {
+
+        // FindBugs suggests making this static.
+
         /** Return null indicating that the attribute does not exist.
          *  @return Null.
          */

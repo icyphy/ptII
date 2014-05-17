@@ -1563,7 +1563,7 @@ public class Manager extends NamedObj implements Runnable {
     }
     
     /** Register a shutdown hook to gracefully stop the execution of a model
-     *  if the JVM is shut down (by control-C, the user logging out, etc.)
+     *  if the JVM is shut down (by control-C, the user logging out, etc.).
      */
     protected void _registerShutdownHook() {
         Runtime.getRuntime().addShutdownHook(new Thread() {

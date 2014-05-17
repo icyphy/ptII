@@ -965,6 +965,10 @@ public class TypedIOPort extends IOPort implements Typeable {
     /** Exception class for run-time type errors.
      */
     public static class RunTimeTypeCheckException extends IllegalActionException {
+        /** Create an run-time type error exception.
+         *  @param port The port where the error occurred.
+         *  @param token The token that caused the error.
+         */
     	public RunTimeTypeCheckException(TypedIOPort port, Token token) {
     		super(port, "Run-time type checking failed. Token " + token
     				+ " with type " + token.getType()
@@ -973,12 +977,22 @@ public class TypedIOPort extends IOPort implements Typeable {
     		_port = port;
     		_token = token;
     	}
+
+        /** Return the port where the exception occurred.
+         *  @return The port.
+         */
     	public TypedIOPort getPort() {
     		return _port;
     	}
+
+        /** Return the token that caused the exception.
+         *  @return the exception.
+         */
     	public Token getToken() {
     		return _token;
     	}
+
+
     	private TypedIOPort _port;
     	private Token _token;
     }

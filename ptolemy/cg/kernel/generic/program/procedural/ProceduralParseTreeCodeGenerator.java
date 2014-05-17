@@ -1928,7 +1928,8 @@ public class ProceduralParseTreeCodeGenerator extends AbstractParseTreeVisitor
     /** The depth, used for debugging and indenting. */
     protected int _depth = 0;
 
-    protected static Map _functionMap = new HashMap();
+    /** The map of functions. */
+    protected static Map<String,String> _functionMap = new HashMap();
     static {
         //_functionMap.put("matrixToArray", "$matrixToArray");
     }
