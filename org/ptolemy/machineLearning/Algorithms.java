@@ -10,7 +10,7 @@ public class Algorithms {
      * key is found is returned.
      * @param A The search array
      * @param key Key to be searched
-     * @param 
+     * @return the found key.
      */
     public static int _binaryIntervalSearch(double[] A, double key) {
         return _binaryIntervalSearch(A, key, 0, A.length-1);
