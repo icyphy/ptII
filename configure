@@ -8408,8 +8408,8 @@ if test ! -d "$PTJAVASCRIPT_USER_DIR"; then
 $as_echo "$PTJAVASCRIPT_USER_DIR is not present,
     so we need not find Rhino JavaScript Implementation." >&6; }; fi
 else
-    { $as_echo "$as_me:${as_lineno-$LINENO}: checking for JavaScript, used by js actors. " >&5
-$as_echo_n "checking for JavaScript, used by js actors. ... " >&6; }
+    { $as_echo "$as_me:${as_lineno-$LINENO}: checking for JavaScript, used by js and org.terraswarm.kernel actors. " >&5
+$as_echo_n "checking for JavaScript, used by js and org.terraswarm.kernel actors. ... " >&6; }
 
 # Check whether --with-rhino was given.
 if test "${with_rhino+set}" = set; then :
@@ -8425,8 +8425,8 @@ $as_echo "ok" >&6; }; else { $as_echo "$as_me:${as_lineno-$LINENO}: result: $PTJ
 $as_echo "$PTJAVASCRIPT_JAR" >&6; }; fi
 	updateClasspath "$PTJAVASCRIPT_JAR"
 
-	{ $as_echo "$as_me:${as_lineno-$LINENO}: checking for OAuth client, used by js actors. " >&5
-$as_echo_n "checking for OAuth client, used by js actors. ... " >&6; }
+	{ $as_echo "$as_me:${as_lineno-$LINENO}: checking for OAuth client, used by js and org.terraswarm.kernel actors. " >&5
+$as_echo_n "checking for OAuth client, used by js and org.terraswarm.kernel actors. ... " >&6; }
 
 # Check whether --with-oauthclient was given.
 if test "${with_oauthclient+set}" = set; then :
@@ -8442,8 +8442,8 @@ $as_echo "ok" >&6; }; else { $as_echo "$as_me:${as_lineno-$LINENO}: result: $PTO
 $as_echo "$PTOAUTHCLIENT_JAR" >&6; }; fi
 	   updateClasspath "$PTOAUTHCLIENT_JAR"
 
-	   { $as_echo "$as_me:${as_lineno-$LINENO}: checking for OAuth common, used by js actors. " >&5
-$as_echo_n "checking for OAuth common, used by js actors. ... " >&6; }
+	   { $as_echo "$as_me:${as_lineno-$LINENO}: checking for OAuth common, used by js and org.terraswarm.kernel actors. " >&5
+$as_echo_n "checking for OAuth common, used by js and org.terraswarm.kernel actors. ... " >&6; }
 
 # Check whether --with-oauthcommon was given.
 if test "${with_oauthcommon+set}" = set; then :
@@ -8460,34 +8460,21 @@ $as_echo "$PTOAUTHCOMMON_JAR" >&6; }; fi
 	      updateClasspath "$PTOAUTHCOMMON_JAR"
 	      PTJAVASCRIPT_DIR=js
 	      # PTJAVASCRIPT_PACKAGES is used in ptII/doc/makefile
-	      PTJAVASCRIPT_PACKAGES=ptolemy.actor.lib.js
-	   else
-	      updateExcludes "ptolemy/actor/lib/js"
-	      { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Failed to find the OAuth common jar file necessary to
-   to compile actor/lib/js.
-   Typically, the OAuth client jar is found at $PTII/lib/org.apache.oltu.oauth2.common-1.0.1-SNAPSHOT.jar." >&5
-$as_echo "$as_me: WARNING: Failed to find the OAuth common jar file necessary to
-   to compile actor/lib/js.
-   Typically, the OAuth client jar is found at $PTII/lib/org.apache.oltu.oauth2.common-1.0.1-SNAPSHOT.jar." >&2;}
-           fi
-       else
-        updateExcludes "ptolemy/actor/lib/js"
-	      { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Failed to find the OAuth common jar file necessary to
-   to compile actor/lib/js.
-   Typically, the OAuth client jar is found at $PTII/lib/org.apache.oltu.oauth2.client-1.0.1-SNAPSHOT.jar." >&5
-$as_echo "$as_me: WARNING: Failed to find the OAuth common jar file necessary to
-   to compile actor/lib/js.
-   Typically, the OAuth client jar is found at $PTII/lib/org.apache.oltu.oauth2.client-1.0.1-SNAPSHOT.jar." >&2;}
+	      PTJAVASCRIPT_PACKAGES="ptolemy.actor.lib.js org.terraswarm.kernel"
+	   fi
        fi
-    else
-        updateExcludes "ptolemy/actor/lib/js"
-        { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Failed to find the Rhino Javascript js.jar file necessary to
-    to compile actor/lib/js.
-    Typically, js.jar is found at $PTII/lib/js.jar." >&5
-$as_echo "$as_me: WARNING: Failed to find the Rhino Javascript js.jar file necessary to
-    to compile actor/lib/js.
-    Typically, js.jar is found at $PTII/lib/js.jar." >&2;}
     fi
+fi
+
+if test -z "$PTJAVASCRIPT_DIR"; then
+    updateExcludes "ptolemy/actor/lib/js"
+    updateExcludes "org/terraswarm/kernel"
+    { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Failed to find the OAuth common jar file necessary to
+    to compile ptolemy/actor/lib/js and org/terraswarm/kernel
+    Typically, the OAuth client jar is found at $PTII/lib/org.apache.oltu.oauth2.common-1.0.1-SNAPSHOT.jar." >&5
+$as_echo "$as_me: WARNING: Failed to find the OAuth common jar file necessary to
+    to compile ptolemy/actor/lib/js and org/terraswarm/kernel
+    Typically, the OAuth client jar is found at $PTII/lib/org.apache.oltu.oauth2.common-1.0.1-SNAPSHOT.jar." >&2;}
 fi
 
 
