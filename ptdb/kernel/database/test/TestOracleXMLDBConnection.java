@@ -980,6 +980,7 @@ public class TestOracleXMLDBConnection {
         CreateModelTask task = null;
 
         try {
+            // FindBugs complains about this, which we can ignore.
             oracleXMLDBConnection.executeCreateModelTask(task);
 
             fail("Model was created when it should not be.");
@@ -1281,6 +1282,7 @@ public class TestOracleXMLDBConnection {
         SaveModelTask task = null;
 
         try {
+            // FindBugs complains about this, which we can ignore.
             oracleXMLDBConnection.executeSaveModelTask(task);
 
             fail("Model was saved when it should not be.");
