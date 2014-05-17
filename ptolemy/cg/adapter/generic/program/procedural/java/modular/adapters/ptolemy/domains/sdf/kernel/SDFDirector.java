@@ -878,25 +878,25 @@ public class SDFDirector
         return channelOffset;
     }
 
-    private static String _generatePortReference(IOPort port,
-            String[] channelAndOffset, boolean isWrite) {
+//     private static String _generatePortReference(IOPort port,
+//             String[] channelAndOffset, boolean isWrite) {
 
-        StringBuffer result = new StringBuffer();
-        String channelOffset;
-        if (channelAndOffset[1].equals("")) {
-            channelOffset = _generateChannelOffset(port, isWrite,
-                    channelAndOffset[0]);
-        } else {
-            channelOffset = channelAndOffset[1];
-        }
+//         StringBuffer result = new StringBuffer();
+//         String channelOffset;
+//         if (channelAndOffset[1].equals("")) {
+//             channelOffset = _generateChannelOffset(port, isWrite,
+//                     channelAndOffset[0]);
+//         } else {
+//             channelOffset = channelAndOffset[1];
+//         }
 
-        result.append(generateName(port));
+//         result.append(generateName(port));
 
-        if (port.isMultiport()) {
-            result.append("[" + channelAndOffset[0] + "]");
-        }
-        result.append("[" + channelOffset + "]");
+//         if (port.isMultiport()) {
+//             result.append("[" + channelAndOffset[0] + "]");
+//         }
+//         result.append("[" + channelOffset + "]");
 
-        return result.toString();
-    }
+//         return result.toString();
+//     }
 }
