@@ -597,10 +597,10 @@ public class CompositeOptimizer extends ReflectComposite {
     private int _maxEvaluations = 10000;
     private int iprint = 0;
 
-    private final int MAXIMIZE = 1;
-    private final int MINIMIZE = 0;
+    private final static int MAXIMIZE = 1;
+    private final static int MINIMIZE = 0;
 
-    private final String OPTIMAL_VALUE_PORT_NAME = "optimalValue";
+    private final static String OPTIMAL_VALUE_PORT_NAME = "optimalValue";
     private final static String INTERMEDIATE_VALUE_PORT_NAME = "f(x)";
     private final static String CONSTRAINTS_PORT_NAME = "g(x)";
     private final static String OPTIMIZATION_VARIABLE_NAME = "x"; 
