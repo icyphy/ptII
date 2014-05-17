@@ -583,8 +583,16 @@ public class Event extends State implements Initializable {
                             // intended result by reversing the order
                             // of the operands rather than by negating
                             // the results."
-
-                            return lifo ? -eventCompare : eventCompare;
+                            //return lifo ? -eventCompare : eventCompare;
+                            if (lifo) {
+                                if (eventCompare == Integer.MIN_VALUE) {
+                                    return Integer.MAX_VALUE;
+                                } else {
+                                    return -eventCompare;
+                                }
+                            } else {
+                                return eventCompare;
+                            }
                         } else {
                             name1 = relation1.getName();
                             name2 = relation2.getName();
@@ -603,7 +611,16 @@ public class Event extends State implements Initializable {
                             // intended result by reversing the order
                             // of the operands rather than by negating
                             // the results."
-                            return lifo ? -relationCompare : relationCompare;
+                            //return lifo ? -relationCompare : relationCompare;
+                            if (lifo) {
+                                if (relationCompare == Integer.MIN_VALUE) {
+                                    return Integer.MAX_VALUE;
+                                } else {
+                                    return -relationCompare;
+                                }
+                            } else {
+                                return relationCompare;
+                            }
                         }
                     }
                 }
