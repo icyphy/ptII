@@ -918,7 +918,8 @@ public class ActorGraphFrame extends ExtendedGraphFrame
     /** Action to import an accessor. 
      *  @author Patricia Derler
      */
-    private class ImportAccessorAction extends AbstractAction {
+    private static class ImportAccessorAction extends AbstractAction {
+        // FindBugs suggests making this static.
 
         /** Create a new action to import an accessor. 
          * @param graphFrame
