@@ -152,6 +152,7 @@ JSRCS = \
 	BooleanSwitch.java \
 	BusAssembler.java \
 	BusDisassembler.java \
+	CatchExceptionAttribute.java \
 	ClassWrapper.java \
 	Clock.java \
 	Commutator.java \

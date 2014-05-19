@@ -47,6 +47,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Nameable;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Settable;
+import ptolemy.kernel.util.Workspace;
 
 ///////////////////////////////////////////////////////////////////
 //// CatchExceptionAttribute
@@ -136,6 +137,18 @@ public class CatchExceptionAttribute extends AbstractInitializableAttribute
     // TODO:  Analyze input ports also? 
     // TODO:  Figure out what makes sense for continue (if anything)
     
+    /** Clone the actor into the specified workspace.
+     *  @param workspace The workspace for the new object.
+     *  @return A new actor.
+     *  @exception CloneNotSupportedException If a derived class contains
+     *   an attribute that cannot be cloned.
+     */
+    public Object clone(Workspace workspace) throws CloneNotSupportedException {
+        CatchExceptionAttribute newObject = (CatchExceptionAttribute) super.clone(workspace);
+        newObject._annotations = new ArrayList<OntologyAnnotationAttribute>();
+        return newObject;
+    }
+
     /** Handle an exception according to the specified policy:
      *  analyze:  Determine the source actor(s) and annotate output ports
      *   with error constraints.
