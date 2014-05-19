@@ -89,6 +89,7 @@ import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.StringAttribute;
+import ptolemy.kernel.util.Workspace;
 import ptolemy.util.MessageHandler;
 import ptolemy.util.StringUtilities;
 
@@ -323,6 +324,19 @@ public class JavaScript extends TypedAtomicActor {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
+
+    /** Clone the actor into the specified workspace.
+     *  @param workspace The workspace for the new object.
+     *  @return A new actor.
+     *  @exception CloneNotSupportedException If a derived class contains
+     *   an attribute that cannot be cloned.
+     */
+    public Object clone(Workspace workspace) throws CloneNotSupportedException {
+        JavaScript newObject = (JavaScript) super.clone(workspace);
+        newObject._inputTokens = new HashMap<IOPort, HashMap<Integer, Token>>();
+        newObject._outputTokens = new HashMap<IOPort, HashMap<Integer, Token>>();
+        return newObject;
+    }
 
     /** Send the current value of the state of this actor to the output.
      *  @exception IllegalActionException If calling send() or super.fire()
