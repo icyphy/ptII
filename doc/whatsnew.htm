@@ -77,12 +77,12 @@
 
     <h3><a name="CGCodeGeneration" id="CGCodeGeneration">CG Code Generator</a></h3>
     <p>Ptolemy II 10.0 includes the "cg" code generator at <code>$PTII/ptolemy/cg</code>.</p>
-    <p>We took the lessons learned from <code>$PTII/ptolemy/codegen</code> and applied them to cg. In particular, cg more easily supports multiple backends with less code duplication. The cg code generator is under active development, we are working on code generation for large systems. For details about cg, see <a href="../../../ptolemy/cg/README.html"><code>$PTII/ptolemy/cg/README.html</code></a>.</p>
+    <p>We took the lessons learned from <code>$PTII/ptolemy/codegen</code> and applied them to cg. In particular, cg more easily supports multiple backends with less code duplication. The cg code generator is under active development, we are working on code generation for large systems. For details about cg, see <a href="../ptolemy/cg/README.html"><code>$PTII/ptolemy/cg/README.html</code></a>.</p>
     <p>Developers: Christopher Brooks, Dai Bui, Bert Rodiers, Stavros Tripakis</p>
 
     <h4>Resources</h4>
     <ul>
-      <li><a href="../../../ptolemy/cg/README.html"><code>$PTII/ptolemy/cg/README.html</code></a></li>
+      <li><a href="../ptolemy/cg/README.html"><code>$PTII/ptolemy/cg/README.html</code></a></li>
     </ul>
 
     <h4><a name="cgDemonstrations">Code Generation (CG) Demonstrations</a><!-- cg--></h4>
@@ -196,13 +196,13 @@
 
     <h3>Continuous<!-- continuous--></h3>
     <ul><!-- Please keep the demos alphabetical -->
-      <li><a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII10.0.devel/ptolemy/domains/continuous/demo/BouncingBall/BouncingBall/" target="_top">Bouncing Ball</a> (Requires Java 3D, see the <a href="../../domains/gr/doc/main.htm">GR domain</a>)</li>
+      <li><a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII10.0.devel/ptolemy/domains/continuous/demo/BouncingBall/BouncingBall/" target="_top">Bouncing Ball</a> (Requires Java 3D, see the <a href="../ptolemy/domains/gr/doc/main.htm">GR domain</a>)</li>
       <li><a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII10.0.devel/ptolemy/domains/continuous/demo/CarTracking/CarTracking/" target="_top">Car Tracking</a></li>
       <li><a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII10.0.devel/ptolemy/domains/continuous/demo/Derivative/Derivative/" target="_top">Derivative</a></li>
       <li><a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII10.0.devel/ptolemy/domains/continuous/demo/Friction/Friction/" target="_top">Friction</a></li>
       <li><a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII10.0.devel/ptolemy/domains/continuous/demo/Lorenz/Lorenz/" target="_top">Lorenz Attractor</a></li>
-      <li><a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII10.0.devel/ptolemy/domains/continuous/demo/NewtonsCradle/NewtonsCradleAnimated/" target="_top">NewtonsCradleAnimated</a> (Requires Java 3D, see the <a href="../../domains/gr/doc/main.htm">GR domain</a>)</li>
-      <li><a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII10.0.devel/ptolemy/domains/continuous/demo/NewtonsCradle/ParameterizedNewtonsCradleAnimated/" target="_top">Newton's Cradle with Configurable Parameters</a> (Requires Java 3D, see the <a href="../../domains/gr/doc/main.htm">GR domain</a>)</li>
+      <li><a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII10.0.devel/ptolemy/domains/continuous/demo/NewtonsCradle/NewtonsCradleAnimated/" target="_top">NewtonsCradleAnimated</a> (Requires Java 3D, see the <a href="../ptolemy/domains/gr/doc/main.htm">GR domain</a>)</li>
+      <li><a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII10.0.devel/ptolemy/domains/continuous/demo/NewtonsCradle/ParameterizedNewtonsCradleAnimated/" target="_top">Newton's Cradle with Configurable Parameters</a> (Requires Java 3D, see the <a href="../ptolemy/domains/gr/doc/main.htm">GR domain</a>)</li>
       <li><a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII10.0.devel/ptolemy/domains/continuous/demo/Poisson/IncreasingRatePoisson/" target="_top">IncreasingRatePoisson</a></li>
       <li><a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII10.0.devel/ptolemy/domains/continuous/demo/SigmaDelta/SigmaDelta/" target="_top">MEMS accelerometer</a></li>
       <li><a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII10.0.devel/ptolemy/domains/continuous/demo/SinuBouncingBall/SinuBouncingBall/" target="_top">Ball Bouncing on a Sinusoidal Surface</a></li>
@@ -426,8 +426,8 @@
 	<ul>
 	  <li>Models for books
 	    <ul>
-	      <li><a href="../../doc/books/actors">$PTII/doc/books/actors</a></li>
-	      <li><a href="../../doc/books/systems">$PTII/doc/books/systems</a></li>
+	      <li><a href="../doc/books/actors">$PTII/doc/books/actors</a></li>
+	      <li><a href="../doc/books/systems">$PTII/doc/books/systems</a></li>
 	    </ul>
 	  </li>
 	  <li>Models for papers</li>
@@ -445,7 +445,7 @@
       <li>Build Infrastructure</li>
       <li class="c1">
 	<ul>
-	  <li>The build infrastructure now supports <code>ant</code>. Eclipse and ant are preferred over make because make is slower. To build using ant, see <a href="../../doc/coding/ant.htm"><code>$PTII/doc/coding/ant.htm</code></a></li>
+	  <li>The build infrastructure now supports <code>ant</code>. Eclipse and ant are preferred over make because make is slower. To build using ant, see <a href="../doc/coding/ant.htm"><code>$PTII/doc/coding/ant.htm</code></a></li>
 	  <li>The tests can be run using junit from within ant.</li>
 	  <li><code>$PTII/pt-modules</code>: Support for building OSGi modules of a subset of Ptolemy II: Hallvard Trætteberg</li>
 	  <li>The copyright file is now automatically generated from the licenses of the third party classes that are in the classpath.</li>
