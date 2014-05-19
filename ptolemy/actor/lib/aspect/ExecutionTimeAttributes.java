@@ -34,6 +34,7 @@ import ptolemy.actor.ExecutionAttributes;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
+import ptolemy.domains.modal.kernel.State;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.Decorator;
 import ptolemy.kernel.util.IllegalActionException;
@@ -41,6 +42,7 @@ import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
+import ptolemy.kernel.util.Settable;
 
 /**
 Container for decorator attributes that are provided to actors by
@@ -66,7 +68,7 @@ public class ExecutionTimeAttributes extends ExecutionAttributes {
     public ExecutionTimeAttributes(NamedObj target, Decorator decorator)
             throws IllegalActionException, NameDuplicationException {
         super(target, decorator);
-        _init();
+        _init(target);
     }
 
     /** Constructor to use when parsing a MoML file.
@@ -78,7 +80,7 @@ public class ExecutionTimeAttributes extends ExecutionAttributes {
     public ExecutionTimeAttributes(NamedObj target, String name)
             throws IllegalActionException, NameDuplicationException {
         super(target, name);
-        _init();
+        _init(target);
     }
 
     /** The executionTime parameter specifies the execution time of the
@@ -109,17 +111,31 @@ public class ExecutionTimeAttributes extends ExecutionAttributes {
         }
         super.attributeChanged(attribute);
     }
+    
+    /** Return whether the target can have an execution time that can be
+     *  simulated. For instance, it does not make sense to simulate execution
+     *  time of states in modal models, but it does make sense to monitor 
+     *  the execution of states such as entry times. 
+     * @param target The object decorated with the attributes.
+     * @return True if execution target can have execution time.
+     */
+    public boolean canSimulateExecutionFor(NamedObj target) {
+        return !(target instanceof State);
+    }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
     /** Create the parameters.
      */
-    private void _init() {
+    private void _init(NamedObj target) {
         try {
             executionTime = new Parameter(this, "executionTime");
             executionTime.setExpression("0.0");
             executionTime.setTypeEquals(BaseType.DOUBLE);
+            if (!canSimulateExecutionFor(target)) {
+                executionTime.setVisibility(Settable.NOT_EDITABLE);
+            }
         } catch (KernelException ex) {
             // This should not occur.
             throw new InternalErrorException(ex);

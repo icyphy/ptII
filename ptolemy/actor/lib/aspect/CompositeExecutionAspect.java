@@ -402,7 +402,7 @@ public class CompositeExecutionAspect extends TypedCompositeActor implements
                     getExecutiveDirector().localClock.getLocalTime()
                             .getDoubleValue(), ExecutionEventType.START);
             if (_requestPorts == null || _requestPorts.get(actor) == null) {
-                CompositeExecutionAspectAttributes decoratorAttributes = (CompositeExecutionAspectAttributes) ((NamedObj) actor)
+                CompositeExecutionAspectAttributes decoratorAttributes = (CompositeExecutionAspectAttributes)actor
                         .getDecoratorAttributes(this);
                 String portName = ((StringParameter) decoratorAttributes
                         .getAttribute("requestPort")).getValueAsString();
@@ -423,7 +423,12 @@ public class CompositeExecutionAspect extends TypedCompositeActor implements
                 getDirector().fireAtCurrentTime(requestPort);
                 getExecutiveDirector().fireAt(this,
                         getDirector().getModelTime());
-                _currentlyExecuting.add(actor);
+                // check whether actor can have execution time.
+                ExecutionTimeAttributes decoratorAttributes = (ExecutionTimeAttributes) actor
+                        .getDecoratorAttributes(this);
+                if (decoratorAttributes.canSimulateExecutionFor(actor)) {
+                    _currentlyExecuting.add(actor);
+                }
             } else {
                 throw new IllegalActionException(this,
                         "No request port with name " + _requestPorts.get(actor));
