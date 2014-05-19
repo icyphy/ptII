@@ -1025,6 +1025,10 @@ public class ActorGraphFrame extends ExtendedGraphFrame
                             if (source instanceof StringAttribute) {
                             	try {
 									((StringAttribute)source).setExpression(urlSpec);
+									// Have to mark persistent or the urlSpec will be assumed to be part
+									// of the class definition and hence will not be exported to MoML.
+									/// FIXME: NOTHING WORKS HERE!!!! Tried setPersistent(true) and setDerviedLevel(1).
+									((StringAttribute)source).setDerivedLevel(Integer.MAX_VALUE);
 								} catch (IllegalActionException e) {
 									// Should not happen.
 									throw new InternalErrorException(object, e, "Failed to set accessorSource");
