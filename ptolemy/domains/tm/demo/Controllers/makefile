@@ -48,7 +48,7 @@ JSRCS =
 
 OTHER_FILES_TO_BE_JARED = \
 	$(JSRCS) \
-	Controllers.htm \
+	 \
 	Controllers.xml \
 
 EXTRA_SRCS = \
@@ -72,7 +72,7 @@ all: jclass $(PTCLASSJAR)
 
 install: all
 
-demo:  demo_applet_vergil demo_ptolemy demo_vergil
+demo:   demo_ptolemy demo_vergil
 
 
 

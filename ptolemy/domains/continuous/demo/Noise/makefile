@@ -49,13 +49,13 @@ OTHER_FILES_TO_BE_JARED = \
 	$(JSRCS) \
 	Noise.xml \
 	NoiseSpectrum.xml \
-	SinusoidInNoise.xml
+	Noise.xml
 
 EXTRA_SRCS = \
 	$(OTHER_FILES_TO_BE_JARED) \
-	Noise.htm \
-	NoiseSpectrum.htm \
-	SinusoidInNoise.htm \
+	 \
+	 \
+	 \
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
@@ -84,12 +84,12 @@ demo:  demo_ptolemy demo_vergil
 demo_ptolemy:
 	"$(PTII)/bin/ptolemy" NoiseSpectrum.xml
 	"$(PTII)/bin/ptolemy" Noise.xml
-	"$(PTII)/bin/ptolemy" SinusoidInNoise.xml
+	"$(PTII)/bin/ptolemy" Noise.xml
 
 demo_vergil:
 	"$(PTII)/bin/vergil" NoiseSpectrum.xml
 	"$(PTII)/bin/vergil" Noise.xml
-	"$(PTII)/bin/vergil" SinusoidInNoise.xml
+	"$(PTII)/bin/vergil" Noise.xml
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk

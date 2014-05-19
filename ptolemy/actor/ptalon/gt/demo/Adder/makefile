@@ -48,7 +48,7 @@ JSRCS =
 
 OTHER_FILES_TO_BE_JARED = \
 	$(JSRCS) \
-	Adder.htm \
+	 \
 	Adder.xml \
 	AdderPtalon.ptln \
 	BaseModel.xml
@@ -74,10 +74,8 @@ all: jclass
 
 install: all $(PTCLASSJAR)
 
-demo: demo_applet demo_ptolemy demo_vergil
+demo:  demo_ptolemy demo_vergil
 
-demo_applet:
-	CLASSPATH="$(CLASSPATH)" appletviewer Adder.htm
 
 demo_ptolemy:
 	"$(PTII)/bin/ptolemy" Adder.xml

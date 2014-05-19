@@ -56,7 +56,7 @@ EXTRA_SRCS =	$(OTHER_FILES_TO_BE_JARED)
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
 MISC_FILES = \
-	ResourcePool.htm
+	
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
@@ -73,8 +73,6 @@ all: jclass $(PTCLASSJAR)
 install: all
 
 demo: demo_ptolemy demo_vergil
-demo_applet:
-	CLASSPATH="$(CLASSPATH)" appletviewer ResourcePool.htm
 
 demo_ptolemy:
 	"$(PTII)/bin/ptolemy" ResourcePool.xml

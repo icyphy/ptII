@@ -194,10 +194,12 @@ jnlpUpdateDemo:
 		-ptIIUserDirectory  "`echo "$(PTII)" | sed 's@\\\@/@g'`" \
 		-run 		 "false" \
 		-targetPath	 "$(TARGETPATH)" \
-		-ptIILocalURL	 "http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII10.0.devel/" \
+		-ptIILocalURL	 "file:///Users/cxh/ptII/" \
 		$(MODELPATH)
+	#-ptIILocalURL	 "http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII10.0.devel/" \
 	#javaws -wait $(PTII)/$(TARGETPATH)/$(MODEL).jnlp
 	#$(ROOT)/bin/vergil $(PTII)/$(TARGETPATH)/$(MODEL).htm#in_browser
+
 
 
 # The default is to run the model before exporting so that we capture the plot. 

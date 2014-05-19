@@ -52,7 +52,7 @@ OTHER_FILES_TO_BE_JARED = \
 EXTRA_SRCS = \
 	$(JSRCS) \
 	$(OTHER_FILES_TO_BE_JARED) \
-	TerrainModel.htm \
+	 \
 	TerrainModel2.xml
 
 # Sources that may or may not be present, but if they are present, we don't
@@ -75,8 +75,6 @@ install: all
 # Run the demo in all its different formats
 demo: demo_ptolemy demo_vergil
 
-#demo_applet: $(PTCLASSJAR)
-#	CLASSPATH="$(CLASSPATH)" appletviewer TerrainModel.htm
 
 
 demo_ptolemy:

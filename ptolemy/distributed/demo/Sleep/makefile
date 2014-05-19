@@ -50,7 +50,7 @@ OTHER_FILES_TO_BE_JARED = \
 	$(JSRCS) \
 	startplatform \
 	startplatform.bat \
-	Sleep.htm \
+	 \
 	Sleep.xml
 
 EXTRA_SRCS = \
@@ -75,8 +75,6 @@ all: jclass
 install: all $(PTCLASSJAR)
 
 demo: demo_ptolemy demo_vergil
-#demo_applet:
-#	CLASSPATH="$(CLASSPATH)" appletviewer Sleep.htm
 
 demo_ptolemy:
 	"$(PTII)/bin/ptolemy" Sleep.xml

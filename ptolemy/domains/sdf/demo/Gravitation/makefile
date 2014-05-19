@@ -49,12 +49,12 @@ JSRCS =
 OTHER_FILES_TO_BE_JARED = \
 	$(JSRCS) \
 	Gravitation.xml \
-	Gravitation.htm \
+	 \
 	GravitationWithCollisionDetection.xml
 
 EXTRA_SRCS = \
 	$(OTHER_FILES_TO_BE_JARED) \
-	GravitationWithCollisionDetection.htm \
+	 \
 
 
 # Sources that may or may not be present, but if they are present, we don't

@@ -52,7 +52,7 @@ OTHER_FILES_TO_BE_JARED = \
 	ResourcePool.xml
 
 EXTRA_SRCS =	$(OTHER_FILES_TO_BE_JARED) \
-	ResourcePool.htm
+	
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
@@ -73,8 +73,6 @@ all: jclass $(PTCLASSJAR)
 install: all
 
 demo: demo_ptolemy demo_vergil
-demo_applet:
-	CLASSPATH="$(CLASSPATH)" appletviewer ResourcePool.htm
 
 demo_ptolemy:
 	"$(PTII)/bin/ptolemy" ResourcePool.xml

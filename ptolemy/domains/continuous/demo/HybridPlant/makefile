@@ -49,13 +49,13 @@ OTHER_FILES_TO_BE_JARED = \
 	$(JSRCS) \
 	DEBugRefireIgnored.xml \
 	HybridPlant.xml \
-	RandomHybridPlant.xml
+	HybridPlant.xml
 
 
 EXTRA_SRCS = \
 	$(OTHER_FILES_TO_BE_JARED) \
-	HybridPlant.htm \
-	RandomHybridPlant.htm \
+	 \
+	 \
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
@@ -83,9 +83,9 @@ demo:  demo_ptolemy demo_vergil
 
 
 demo_ptolemy:
-	"$(PTII)/bin/ptolemy" DeterministicHybridPlant.xml RandomHybridPlant.xml
+	"$(PTII)/bin/ptolemy" DeterministicHybridPlant.xml HybridPlant.xml
 
 demo_vergil:
-	"$(PTII)/bin/ptolemy" DeterministicHybridPlant.xml RandomHybridPlant.xml
+	"$(PTII)/bin/ptolemy" DeterministicHybridPlant.xml HybridPlant.xml
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk

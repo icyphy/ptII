@@ -58,15 +58,7 @@ OTHER_FILES_TO_BE_JARED = \
 	ParameterizedNewtonsCradleAnimatedNondeterministic.xml \
 	pendulum.gif
 
-EXTRA_SRCS = \
-	$(OTHER_FILES_TO_BE_JARED) \
-	NewtonsCradle.htm \
-	NewtonsCradleAnimated.htm \
-	NewtonsCradleComplicated.htm \
-	NewtonsCradleNondeterministic.htm \
-	NewtonsCradlePerfectlyInelastic1.htm \
-	ParameterizedNewtonsCradleAnimated.htm \
-	ParameterizedNewtonsCradleAnimatedNondeterministic.htm \
+EXTRA_SRCS = $(OTHER_FILES_TO_BE_JARED)
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.

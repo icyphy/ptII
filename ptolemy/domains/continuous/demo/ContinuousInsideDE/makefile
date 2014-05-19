@@ -49,7 +49,7 @@ JSRCS =
 OTHER_FILES_TO_BE_JARED = \
 	$(JSRCS) \
 	ContinuousInsideDE.xml \
-	ContinuousInsideDE.htm
+	
 
 EXTRA_SRCS = \
 	$(OTHER_FILES_TO_BE_JARED) 
@@ -71,9 +71,8 @@ all: jclass
 
 install: all jars
 
-demo: demo_ptolemy demo_vergil demo_applet
+demo: demo_ptolemy demo_vergil 
 
-demo_applet: $(PTCLASSJAR)
 
 demo_ptolemy:
 	"$(PTII)/bin/ptolemy" ContinuousInsideDE.xml

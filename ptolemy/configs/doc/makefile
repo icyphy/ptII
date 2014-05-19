@@ -89,7 +89,7 @@ OTHER_FILES_TO_BE_JARED = \
 	whatsNew10.0.htm
 
 EXTRA_SRCS = \
-	ClassesIllustrated.htm \
+	 \
 	ClassesIllustratedVergil.htm \
 	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 

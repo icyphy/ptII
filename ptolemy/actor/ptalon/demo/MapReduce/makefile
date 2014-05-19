@@ -57,7 +57,7 @@ OTHER_FILES_TO_BE_JARED = \
 	Reduce.ptln \
 	Split.ptln \
 	WaitingStop.ptln \
-	MapReduce.htm
+	
 
 EXTRA_SRCS = \
 	LinkGraph.map \
@@ -82,10 +82,8 @@ all: jclass
 
 install: all $(PTCLASSJAR)
 
-demo: demo_applet demo_ptolemy demo_vergil
+demo:  demo_ptolemy demo_vergil
 
-demo_applet:
-	CLASSPATH="$(CLASSPATH)" appletviewer MapReduce.htm
 
 demo_ptolemy:
 	"$(PTII)/bin/ptolemy" MapReduce.xml

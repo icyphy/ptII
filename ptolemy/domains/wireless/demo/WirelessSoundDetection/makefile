@@ -54,7 +54,7 @@ OTHER_FILES_TO_BE_JARED = \
 EXTRA_SRCS = \
 	$(JSRCS) \
 	$(OTHER_FILES_TO_BE_JARED) \
-	WirelessSoundDetection.htm
+	
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
@@ -74,10 +74,8 @@ all: jclass $(PTCLASSJAR)
 install: all
 
 # Run the demo in all its different formats
-demo: demo_applet demo_ptolemy demo_vergil
+demo:  demo_ptolemy demo_vergil
 
-demo_applet: $(PTCLASSJAR)
-	CLASSPATH="$(CLASSPATH)" appletviewer WirelessSoundDetection.htm
 
 demo_ptolemy:
 	"$(PTII)/bin/ptolemy" WirelessSoundDetection.xml

@@ -52,7 +52,7 @@ JSRCS = QueueControl.java
 OTHER_FILES_TO_BE_JARED = \
 	ComplexRouter.xml \
 	Router.xml \
-	Router.htm \
+	 \
 
 EXTRA_SRCS = \
 	$(JSRCS) \

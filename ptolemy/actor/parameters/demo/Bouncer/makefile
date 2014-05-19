@@ -46,12 +46,12 @@ PTCLASSJAR = 	$(PTPACKAGE).jar
 
 JSRCS =
 
-# Bouncer.htm uses vergil because a non-vergil version of this demo
+#  uses vergil because a non-vergil version of this demo
 # is not very interesting.
 OTHER_FILES_TO_BE_JARED = \
 	$(JSRCS) \
 	Bouncer.xml \
-	Bouncer.htm
+	
 
 EXTRA_SRCS = \
 	$(OTHER_FILES_TO_BE_JARED)
@@ -74,10 +74,8 @@ all: jclass
 
 install: all $(PTCLASSJAR)
 
-demo: demo_applet demo_ptolemy demo_vergil
+demo:  demo_ptolemy demo_vergil
 
-demo_applet:
-	CLASSPATH="$(CLASSPATH)" appletviewer Bouncer.htm
 
 demo_ptolemy:
 	"$(PTII)/bin/ptolemy" Bouncer.xml

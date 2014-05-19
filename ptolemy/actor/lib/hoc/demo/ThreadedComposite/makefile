@@ -57,13 +57,7 @@ OTHER_FILES_TO_BE_JARED = \
 	$(JSRCS) \
 	$(DEMOS)
 
-EXTRA_SRCS = \
-	BackgroundExecution.htm \
-	ConcurrentChat.htm \
-	MulticoreExecution.htm \
-	ParallelExecution.htm \
-	SpontaneousSources.htm \
-	$(OTHER_FILES_TO_BE_JARED)
+EXTRA_SRCS = $(OTHER_FILES_TO_BE_JARED)
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.

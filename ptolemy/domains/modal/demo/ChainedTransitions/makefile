@@ -49,7 +49,7 @@ JSRCS =
 OTHER_FILES_TO_BE_JARED = \
 	$(JSRCS) \
 	ChainedTransitions.xml \
-	ChainedTransitions.htm \
+	 \
 
 EXTRA_SRCS = \
 	$(OTHER_FILES_TO_BE_JARED)

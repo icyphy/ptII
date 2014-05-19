@@ -52,7 +52,7 @@ OTHER_FILES_TO_BE_JARED = \
 
 EXTRA_SRCS = \
 	$(OTHER_FILES_TO_BE_JARED) \
-	IterateOverArray.htm
+	
 
 
 
@@ -74,9 +74,7 @@ all: jclass
 
 install: all jars
 
-demo: demo_applet demo_ptolemy demo_vergil
-demo_applet:
-	CLASSPATH="$(CLASSPATH)" appletviewer IterateOverArray.htm
+demo:  demo_ptolemy demo_vergil
 
 demo_ptolemy:
 	"$(PTII)/bin/ptolemy" IterateOverArray.xml

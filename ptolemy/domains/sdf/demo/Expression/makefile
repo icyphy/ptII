@@ -52,7 +52,7 @@ OTHER_FILES_TO_BE_JARED = \
 
 EXTRA_SRCS = \
 	$(OTHER_FILES_TO_BE_JARED) \
-	Expression.htm
+	
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
@@ -73,9 +73,7 @@ all: $(JCLASS)
 
 install: all $(PTCLASSJAR)
 
-demo: demo_applet demo_ptolemy demo_vergil
-demo_applet:
-	CLASSPATH="$(CLASSPATH)" appletviewer Expression.htm
+demo:  demo_ptolemy demo_vergil
 
 demo_ptolemy:
 	"$(PTII)/bin/ptolemy" Expression.xml

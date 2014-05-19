@@ -48,7 +48,7 @@ JSRCS =
 
 OTHER_FILES_TO_BE_JARED = \
 	$(JSRCS) \
-	FFT.htm \
+	 \
 	FFT.xml \
 
 EXTRA_SRCS = \

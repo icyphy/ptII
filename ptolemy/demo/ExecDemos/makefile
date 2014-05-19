@@ -60,7 +60,7 @@ OTHER_FILES_TO_BE_JARED = \
 
 EXTRA_SRCS = \
 	$(OTHER_FILES_TO_BE_JARED) \
-	ExecDemos.htm \
+	 \
 	ExecHyVisualDemos.xml \
 	rundemos.bat \
 	shutdown.bat \

@@ -1,0 +1,9 @@
+#!/bin/sh
+awk '{if ($0 ~ /\*\*\* No rule to make target/) {
+          file = substr($8, 2, length($8)-3)
+          print "sed \"s/" file "//\" " lastfile " | grep -v \"^demo_applet\" | grep -v \"^#demo_applet\" | grep -v appletviewer | sed \"s/demo_applet_vergil//\" | sed \"s/demo_applet//\" > /tmp/fixmakefiles.tmp"
+	  print "cp /tmp/fixmakefiles.tmp " lastfile
+       } else if ($0 ~ /^making sources in/) {
+          lastfile=$4 "/makefile"
+       }
+      }' /tmp/s3.out

@@ -49,7 +49,7 @@ JSRCS =
 OTHER_FILES_TO_BE_JARED = \
 	$(JSRCS) \
 	FourierSeries.xml \
-	FourierSeries.htm \
+	 \
 	FourierSeriesNoAnnotations.xml
 
 EXTRA_SRCS = \

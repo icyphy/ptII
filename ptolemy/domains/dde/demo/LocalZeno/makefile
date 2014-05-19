@@ -64,7 +64,7 @@ OTHER_FILES_TO_BE_JARED = \
 EXTRA_SRCS = \
 	$(JSRCS) \
 	$(OTHER_FILES_TO_BE_JARED) \
-	LocalZeno.htm \
+	 \
 	LocalZeno.xml \
 	LocalZenoTest.xml
 
@@ -100,7 +100,6 @@ all: jclass $(PTCLASSJAR)
 install: all
 
 demo:
-	CLASSPATH="$(CLASSPATH)" appletviewer -J-Dsun.java2d.d3d=false LocalZeno.htm
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk

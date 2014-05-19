@@ -58,7 +58,7 @@ OTHER_FILES_TO_BE_JARED = \
 	HierarchicalTrafficLight.xml
 
 EXTRA_SRCS =	\
-	SimpleTrafficLight.htm \
+	 \
 	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 
 # Sources that may or may not be present, but if they are present, we don't
