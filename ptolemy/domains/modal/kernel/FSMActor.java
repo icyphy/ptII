@@ -3425,7 +3425,6 @@ public class FSMActor extends CompositeEntity implements TypedActor,
         boolean stateChanged = _currentState != currentTransition
                 .destinationState();
         _schedule(nextState, getExecutiveDirector().getModelTime());
-        System.out.println(getExecutiveDirector().getModelTime() + " " + nextState.getName());
         _currentState = nextState;
         if (stateChanged) {
             // reset threshold for probabilistic transitions
