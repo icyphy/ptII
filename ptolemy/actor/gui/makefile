@@ -164,6 +164,7 @@ JSRCS = \
 	TokenEffigy.java \
 	TokenTableau.java \
 	TokenEffigy.java \
+	TransitionEditorPaneFactory.java \
 	UserActorLibrary.java \
 	WelcomeWindow.java \
 	WelcomeWindowTableau.java \

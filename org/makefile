@@ -31,7 +31,7 @@
 
 # configure sets PTBSH_MLC_DIR to mlc if BSH, the Java Bean Shell.
 # configure sets PTJSON_DIR to json if JSON, the JavaScript Object Notation was found.
-DIRS = $(PTBSH_MLC_DIR) $(PTJSON_DIR) ptolemy
+DIRS = $(PTBSH_MLC_DIR) $(PTJSON_DIR) ptolemy terraswarm
 
 # Root of Ptolemy II directory
 ROOT =		..
@@ -51,7 +51,7 @@ install: subinstall
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to report an error on them.
-MISC_FILES = mlc json ptolemy
+MISC_FILES = mlc json ptolemy terraswarm
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk

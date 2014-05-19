@@ -49,8 +49,8 @@ OTHER_FILES_TO_BE_JARED = \
 	$(JSRCS) \
 	DEBugRefireIgnored.xml \
 	HybridPlant.xml \
-	HybridPlant.xml
-
+	HybridPlant.xml \
+	RandomHybridPlant.xml
 
 EXTRA_SRCS = \
 	$(OTHER_FILES_TO_BE_JARED) \

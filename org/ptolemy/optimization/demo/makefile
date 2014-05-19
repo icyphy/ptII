@@ -31,7 +31,8 @@
 
 ME =		org/ptolemy/optimization/demo
 
-DIRS =		SimpleOptimization
+DIRS =		LeastSquaresNodeLocalization LinearRegression SimpleOptimization
+
 
 # Root of the Ptolemy II directory
 ROOT =		../../../..
@@ -51,7 +52,6 @@ PTCLASSALLJARS = \
 	SimpleOptimization/SimpleOptimization.jar \
 	LeastSquaresNodeLocalization/LeastSquaresNodeLocalization.jar \
 	LinearRegression/LinearRegression.jar
-
 
 PTCLASSALLJAR = $(PTPACKAGE).jar
 

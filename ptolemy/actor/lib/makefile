@@ -391,6 +391,7 @@ OPTIONAL_FILES = \
 	jmf \
 	jni \
 	joystick \
+	js \
 	mail \
 	opencv \
 	reactable \
@@ -401,6 +402,8 @@ OPTIONAL_FILES = \
 	'Assert$$1.class' \
 	'Assert$$AssertPort.class' \
 	'Commutator$$WidthDependentParameter.class' \
+	'Dictionary$$1.class' \
+	'Dictionary$$EmptyScope.class' \
 	'Distributor$$WidthDependentParameter.class' \
 	'Exec$$_StreamReaderThread.class' \
 	'Expression$$1.class' \

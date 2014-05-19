@@ -33,7 +33,7 @@
 
 ME =		ptolemy/cg/adapter/generic/program/procedural/c/arduino/adapters/ptolemy/vergil/actor/lib/demo
 
-DIRS =	    Life Ultrasonic
+DIRS =	    Blink Life Ultrasonic
 
 # Root of the Java directory
 ROOT =		../../../../../../../../../../../../../..
@@ -53,6 +53,7 @@ PTCLASSALLJAR = $(PTPACKAGE).jar
 # Include the .class files from these jars in PTCLASSALLJAR
 # If you change this, change DIRS above
 PTCLASSALLJARS = \
+	Blink/Blink.jar \
 	Life/Life.jar \
 	Ultrasonic/Ultrasonic.jar
 

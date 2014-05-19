@@ -52,6 +52,8 @@ PTCLASSJAR =	$(PTPACKAGE).jar
 JSRCS =
 
 OTHER_FILES_TO_BE_JARED = \
+	Ultrasonic.c \
+	Ultrasonic.in \
 	Ultrasonic.xml
 
 EXTRA_SRCS =	$(JSRCS) \

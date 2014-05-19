@@ -48,7 +48,7 @@ JSRCS =
 
 OTHER_FILES_TO_BE_JARED = \
 	$(JSRCS) \
-	 \
+	NonAppletStaticUnits.htm \
 	StaticUnits.xml \
 	StaticUnits2.xml \
 	StaticUnits1.gif \

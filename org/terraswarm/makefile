@@ -45,6 +45,15 @@ VPATH =		$(ROOT)/$(ME)
 CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
+# Variables and rules used to create source file distributions
+PTPACKAGE = 	terraswarm
+#PTCLASSJAR =
+PTCLASSALLJAR = $(PTPACKAGE).jar
+
+# Include the .class files from these jars in PTCLASSALLJAR
+PTCLASSALLJARS = \
+	kernel/kernel.jar
+
 all: suball
 install: subinstall
 

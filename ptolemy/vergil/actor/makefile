@@ -130,6 +130,8 @@ OPTIONAL_FILES = \
 	'ActorInstanceController$$1.class' \
 	'ActorInstanceController$$2.class' \
 	'ActorInstanceController$$ConvertToClassAction.class' \
+	'ActorGraphFrame$$ImportAccessorAction$$1.class' \
+	'ActorGraphFrame$$ImportAccessorAction.class' \
 	'ActorViewerGraphController$$EntityLayout.class' \
 	'ClassDefinitionController$$1.class' \
 	'ClassDefinitionController$$2.class' \

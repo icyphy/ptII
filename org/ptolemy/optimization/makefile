@@ -47,16 +47,16 @@ PTPACKAGE = 	optimization
 PTCLASSJAR =	$(PTPACKAGE).jar
 
 # Include the .class files from these jars in PTCLASSALLJAR
-#PTCLASSALLJARS =
-
 #PTCLASSALLJAR = $(PTPACKAGE).jar
 
 # Java Sources, keep these alphabetical,
 JSRCS = \
 	CompositeOptimizer.java  
 
-OTHER_FILES_TO_BE_JARED = compositeOptimizer.xml \
-	compositeOptimizerIcon.xml
+OTHER_FILES_TO_BE_JARED = \
+	CompositeOptimizerIcon.xml \
+	compositeOptimizer.xml \
+	optimization.xml
 
 # Files that are not compiled, such as .tcl and .itcl files.
 EXTRA_SRCS = $(JSRCS) $(OTHER_FILES_TO_BE_JARED)
@@ -66,7 +66,12 @@ MISC_FILES =
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
-OPTIONAL_FILES =
+OPTIONAL_FILES = \
+	demo \
+	'CompositeOptimizer$$1.class' \
+	'CompositeOptimizer$$OptimizerComposite.class' \
+	'CompositeOptimizer$$OptimizerDirector$$1.class' \
+	'CompositeOptimizer$$OptimizerDirector.class'
 
 KRUFT =
 

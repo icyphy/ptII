@@ -1,4 +1,4 @@
-# Makefile for Quantized State Systems Actors.
+# Makefile for TerraSwarm demos
 #
 # @Version: $Id: makefile 67778 2013-10-26 15:50:13Z cxh $
 # @Author: Christopher Brooks (makefile only)
@@ -47,7 +47,7 @@ CONFIG = $(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE = qss
+PTPACKAGE = demo
 PTCLASSJAR = $(PTPACKAGE).jar
 
 JSRCS = 

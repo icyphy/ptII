@@ -166,6 +166,7 @@ OPTIONAL_FILES = \
 	'QuantityManagerListener$$EventType.class' \
 	'ResourceScheduler$$ExecutionEventType.class' \
 	'TypedIOPort$$1.class' \
+	'TypedIOPort$$RunTimeTypeCheckException.class' \
 	'TypedIOPort$$TypeTerm.class'
 
 JCLASS = $(JSRCS:%.java=%.class)

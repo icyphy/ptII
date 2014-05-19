@@ -79,11 +79,14 @@ OTHER_FILES_TO_BE_JARED = \
 	fancybox.png \
 	javascript-license.htm \
 	jquery-1.4.3.min.js \
+	jquery-1.7.2.min.js \
 	jquery.easing-1.3.pack.js \
 	jquery.fancybox-1.3.4.css \
 	jquery.fancybox-1.3.4.js \
 	jquery.fancybox-1.3.4.pack.js \
 	jquery.mousewheel-3.0.4.pack.js \
+	jquery.tooltipster.min.js \
+	tooltipster.css \
 	pt-1.0.0.js
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)

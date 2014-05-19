@@ -56,7 +56,8 @@ JSRCS =
 
 OTHER_FILES_TO_BE_JARED = \
 	$(JSRCS) \
-	SimpleOptimization.xml
+	SimpleOptimization.xml \
+	typeIssue.xml
 
 EXTRA_SRCS = \
 	$(OTHER_FILES_TO_BE_JARED) \

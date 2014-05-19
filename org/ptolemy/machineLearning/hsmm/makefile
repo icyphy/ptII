@@ -52,6 +52,7 @@ PTCLASSJAR = $(PTPACKAGE).jar
 
 JSRCS = \
 	HSMMGaussianEstimator.java \
+	HSMMGenerator.java \
 	HSMMParameterEstimator.java
 
 OTHER_FILES_TO_BE_JARED =

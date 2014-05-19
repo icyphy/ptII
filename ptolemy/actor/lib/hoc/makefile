@@ -69,6 +69,7 @@ JSRCS = \
 	MultiCompositePort.java \
 	MultiInstanceComposite.java \
 	RealTimeComposite.java \
+	ReflectComposite.java \
 	Refinement.java \
 	RefinementPort.java \
 	RunCompositeActor.java \
@@ -121,6 +122,10 @@ OPTIONAL_FILES = \
 	'RealTimeComposite$$QueuedToken.class' \
 	'RealTimeComposite$$RealTimeDirector.class' \
 	'RealTimeComposite$$RealTimeDirector$$RealTimeThread.class' \
+	'ReflectComposite$$1.class' \
+	'ReflectComposite$$2.class' \
+	'ReflectComposite$$ReflectCompositeContents$$1.class' \
+	'ReflectComposite$$ReflectCompositeContents.class' \
 	'ThreadedComposite$$1.class' \
 	'ThreadedComposite$$QueuedToken.class' \
 	'ThreadedComposite$$ThreadedDirector$$CompositeThread.class' \
