@@ -497,6 +497,8 @@ FULL_ONLY_JNLP_JARS = \
 	doc/img/img.jar \
 	$(EXPORT_JARS) \
 	$(PTANGO_JAR_FILES) \
+	org/terraswarm/terraswarm.jar \
+	org/terraswarm/kernel/demo/demo.jar \
 	org/ptolemy/ptango/ptango.jar \
 	org/ptolemy/qss/qss.jar \
 	$(PTFMI_JARS) \
