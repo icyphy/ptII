@@ -1,0 +1,9 @@
+#!/bin/sh
+cat /tmp/h2 | xargs grep '<a href' | grep -v '<a href="#' | grep -v '<a href="http' | grep -v package.html | grep -v mailto | sed 's@#in_browser@@' | grep -v 'href="ptdoc' | \
+  sed 's@^\([^:]*\):.*<a href="\([^"]*\)".*$@\1:\2@' | \
+    awk -F : '{nf=split($1, f, "/"); 
+               for(i=1;i<nf;i++) {
+	          printf("%s/", f[i])
+               } 
+	       print $2
+	      }'
