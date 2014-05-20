@@ -57,7 +57,7 @@ public class ExecutionAspectHelper {
      */
     public static List<NamedObj> getEntitiesToDecorate(CompositeEntity container) {
         List<NamedObj> toDecorate = new ArrayList<NamedObj>();
-        for (Object entity : container.entityList()) {
+        for (Object entity : container.entityList(ComponentEntity.class)) { 
             if (!(entity instanceof ActorExecutionAspect || 
                     entity instanceof Director)) {
                 toDecorate.add((NamedObj) entity);

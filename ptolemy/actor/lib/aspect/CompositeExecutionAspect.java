@@ -54,6 +54,7 @@ import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.StringParameter;
 import ptolemy.data.type.BaseType;
+import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.Decorator;
@@ -184,7 +185,7 @@ public class CompositeExecutionAspect extends TypedCompositeActor implements
      */
     @Override
     public DecoratorAttributes createDecoratorAttributes(NamedObj target) {
-        if (!_isPartOfExecutionAspect(target)) {
+        if ((target instanceof ComponentEntity) && !_isPartOfExecutionAspect(target)) {
             try {
                 return new CompositeExecutionAspectAttributes(target, this);
             } catch (KernelException ex) {
