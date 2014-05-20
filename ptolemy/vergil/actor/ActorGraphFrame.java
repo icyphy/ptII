@@ -60,6 +60,8 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
 
+import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import ptolemy.actor.Actor;
@@ -977,24 +979,30 @@ public class ActorGraphFrame extends ExtendedGraphFrame
                             } else if (!_lastLocation.endsWith("/")) {
                                 _lastLocation = _lastLocation + "/";
                             } 
-                            url = new URL(_lastLocation + "accessors.txt");
+                            url = new URL(_lastLocation + "index.json");
                             
                             in = new BufferedReader(
                                     new InputStreamReader(url.openStream()));
 
+                            StringBuffer buffer = new StringBuffer();
                             String inputLine;
-                            
                             while ((inputLine = in.readLine()) != null) {
-                                if (!inputLine.trim().equals("")) {
-                                    box.addItem(inputLine);
-                                }
+                                buffer.append(inputLine);
                             }
                             in.close();
+                            
+                            JSONArray array = new JSONArray(buffer.toString());
+                            for (int i = 0; i < array.length(); i++) {
+                                box.addItem(array.get(i));
+                            }
                         } catch (MalformedURLException | NoSuchElementException
                                 | IllegalArgumentException e) {
                             // TODO Auto-generated catch block
                             e.printStackTrace();
                         } catch (IOException e) {
+                            // TODO Auto-generated catch block
+                            e.printStackTrace();
+                        } catch (JSONException e) {
                             // TODO Auto-generated catch block
                             e.printStackTrace();
                         } 
