@@ -35,14 +35,21 @@ import java.awt.event.KeyEvent;
 import java.awt.geom.Rectangle2D;
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.StringWriter;
+import java.net.MalformedURLException;
 import java.net.URL;
+import java.nio.charset.Charset;
 import java.util.Iterator;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 import javax.swing.AbstractAction;
 import javax.swing.Action;
+import javax.swing.JComboBox;
 import javax.swing.JFileChooser;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
@@ -52,6 +59,8 @@ import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
+
+import org.json.JSONObject;
 
 import ptolemy.actor.Actor;
 import ptolemy.actor.CompositeActor;
@@ -70,6 +79,7 @@ import ptolemy.gui.ComponentDialog;
 import ptolemy.gui.JFileChooserBugFix;
 import ptolemy.gui.PtFileChooser;
 import ptolemy.gui.Query;
+import ptolemy.gui.QueryListener;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.Entity;
 import ptolemy.kernel.util.Attribute;
@@ -429,7 +439,7 @@ public class ActorGraphFrame extends ExtendedGraphFrame
                     JMenuItem importLibraryItem = new JMenuItem(
                             _importLibraryAction);
                     item.add(importLibraryItem);
-                    _importAccessorAction = new ImportAccessorAction(ActorGraphFrame.this, "");
+                    _importAccessorAction = new ImportAccessorAction(ActorGraphFrame.this, "http://www.terraswarm.org/accessors");
                     JMenuItem importAccessorItem = new JMenuItem(
                             _importAccessorAction);
                     item.add(importAccessorItem);
@@ -923,18 +933,25 @@ public class ActorGraphFrame extends ExtendedGraphFrame
 
         /** Create a new action to import an accessor. 
          * @param graphFrame
-         * @param initialLastEntityClassName
+         * @param initialLastLocation
          */
         public ImportAccessorAction(ExtendedGraphFrame graphFrame,
-                String initialLastEntityClassName) {
+                String initialLastLocation) {
             super("Import Accessor");
             _graphFrame = graphFrame;
+            _lastLocation = initialLastLocation;
             putValue("tooltip", "Instantiate an accessor");
             // putValue(GUIUtilities.MNEMONIC_KEY, Integer.valueOf(KeyEvent.VK_E));
         }
         
         /** The graph frame that contains this action. */
         private ExtendedGraphFrame _graphFrame;
+        
+        /** The most recent accessor. */
+        private String _lastAccessorName;
+        
+        /** The most recent location. */
+        private String _lastLocation;
                 
         /** Import an accessor.
          */
@@ -942,8 +959,48 @@ public class ActorGraphFrame extends ExtendedGraphFrame
         public void actionPerformed(ActionEvent e) {
             Query query = new Query();
             query.setTextWidth(60);
-            query.addLine("URL", "URL", "");
+            query.addLine("location", "location", _lastLocation);
+            JComboBox box = query.addChoice("accessor", "accessor", new String[]{}, _lastAccessorName);
+            
+            query.addQueryListener(new QueryListener() {
+                
+                @Override
+                public void changed(String name) {
+                    if (name.equals("location")) {
+                        box.removeAllItems();
+                        URL url;
+                        BufferedReader in;
+                        try {
+                            _lastLocation = query.getStringValue("location");
+                            if (_lastLocation.endsWith(".xml")) {
+                                return;
+                            } else if (!_lastLocation.endsWith("/")) {
+                                _lastLocation = _lastLocation + "/";
+                            } 
+                            url = new URL(_lastLocation + "accessors.txt");
+                            
+                            in = new BufferedReader(
+                                    new InputStreamReader(url.openStream()));
 
+                            String inputLine;
+                            
+                            while ((inputLine = in.readLine()) != null) {
+                                if (!inputLine.trim().equals("")) {
+                                    box.addItem(inputLine);
+                                }
+                            }
+                            in.close();
+                        } catch (MalformedURLException | NoSuchElementException
+                                | IllegalArgumentException e) {
+                            // TODO Auto-generated catch block
+                            e.printStackTrace();
+                        } catch (IOException e) {
+                            // TODO Auto-generated catch block
+                            e.printStackTrace();
+                        } 
+                    }
+                }
+            });
             ComponentDialog dialog = new ComponentDialog(_graphFrame,
                     "Instantiate Accessor", query);
 
@@ -962,7 +1019,8 @@ public class ActorGraphFrame extends ExtendedGraphFrame
                 
                 URL url;
                 String input = "";
-                final String urlSpec = query.getStringValue("URL");
+                _lastAccessorName = query.getStringValue("accessor");
+                final String urlSpec = _lastLocation + _lastAccessorName;
                 StringBuffer buffer = new StringBuffer();
                 buffer.append("<group name=\"auto\">\n");
                 try {

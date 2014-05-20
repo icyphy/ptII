@@ -213,10 +213,11 @@ public class Query extends JPanel {
      *  @param label The label to attach to the entry.
      *  @param values The list of possible choices.
      *  @param defaultChoice Default choice.
+     *  @return The combo box for the choice.
      */
-    public void addChoice(String name, String label, Object[] values,
+    public JComboBox addChoice(String name, String label, Object[] values,
             Object defaultChoice) {
-        addChoice(name, label, values, defaultChoice, false);
+        return addChoice(name, label, values, defaultChoice, false);
     }
 
     /** Create a choice menu.
@@ -226,10 +227,11 @@ public class Query extends JPanel {
      *  @param defaultChoice Default choice.
      *  @param editable True if an arbitrary choice can be entered, in addition
      *  to the choices in values.
+     *  @return The combo box for the choice.
      */
-    public void addChoice(String name, String label, Object[] values,
+    public JComboBox addChoice(String name, String label, Object[] values,
             Object defaultChoice, boolean editable) {
-        addChoice(name, label, values, defaultChoice, editable, Color.white,
+        return addChoice(name, label, values, defaultChoice, editable, Color.white,
                 Color.black);
     }
 
