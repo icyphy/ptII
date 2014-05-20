@@ -35,17 +35,12 @@ import java.awt.event.KeyEvent;
 import java.awt.geom.Rectangle2D;
 import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileReader;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.StringWriter;
-import java.net.MalformedURLException;
 import java.net.URL;
-import java.nio.charset.Charset;
 import java.util.Iterator;
 import java.util.List;
-import java.util.NoSuchElementException;
 
 import javax.swing.AbstractAction;
 import javax.swing.Action;
@@ -62,7 +57,6 @@ import javax.xml.transform.stream.StreamSource;
 
 import org.json.JSONArray;
 import org.json.JSONException;
-import org.json.JSONObject;
 
 import ptolemy.actor.Actor;
 import ptolemy.actor.CompositeActor;
@@ -995,10 +989,6 @@ public class ActorGraphFrame extends ExtendedGraphFrame
                             for (int i = 0; i < array.length(); i++) {
                                 box.addItem(array.get(i));
                             }
-                        } catch (MalformedURLException | NoSuchElementException
-                                | IllegalArgumentException e) {
-                            // TODO Auto-generated catch block
-                            e.printStackTrace();
                         } catch (IOException e) {
                             // TODO Auto-generated catch block
                             e.printStackTrace();
