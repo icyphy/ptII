@@ -620,8 +620,13 @@ public class CompositeExecutionAspect extends TypedCompositeActor implements
             if (attribute == requestPort) {
                 NamedObj actor = (NamedObj) getContainer();
                 CompositeExecutionAspect aspect = (CompositeExecutionAspect) getDecorator();
-                String portName = ((StringToken) ((Parameter) attribute)
-                        .getToken()).stringValue();
+                Token token = ((Parameter) attribute).getToken();
+                if (!(token instanceof StringToken)) {
+                    throw new IllegalActionException(this, "Decorator attribute for "
+                            + "mapped port in execution aspect for actor " 
+                            + actor.getName() + " could not be retrieved.");
+                }
+                String portName = ((StringToken) token).stringValue();
                 if (aspect != null && !portName.equals("") && enabled()) {
                     _requestPortName = portName;
                     aspect.setRequestPort(actor, _requestPortName);
