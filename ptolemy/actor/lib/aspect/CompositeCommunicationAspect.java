@@ -500,8 +500,13 @@ public class CompositeCommunicationAspect extends TypedCompositeActor implements
                 throws IllegalActionException {
             IOPort port = (IOPort) getContainer();
             if (attribute == inputPort) {
-                _inputPort = ((StringToken) ((Parameter) attribute).getToken())
-                        .stringValue();
+                Token token = ((Parameter) attribute).getToken();
+                if (!(token instanceof StringToken)) {
+                    throw new IllegalActionException(this, "Decorator attribute for "
+                            + "mapped port in communication aspect for actor port " 
+                            + port.getName() + " could not be retrieved.");
+                }
+                _inputPort = ((StringToken) token).stringValue();
                 CompositeCommunicationAspect compositeQM = (CompositeCommunicationAspect) getDecorator();
                 if (compositeQM != null) {
                     compositeQM.setInputPortName(port, _inputPort);
