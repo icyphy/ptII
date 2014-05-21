@@ -948,7 +948,7 @@ public class ActorGraphFrame extends ExtendedGraphFrame
         
         /** The most recent location. */
         private String _lastLocation;
-                
+        
         /** Import an accessor.
          */
         @Override
@@ -957,45 +957,13 @@ public class ActorGraphFrame extends ExtendedGraphFrame
             query.setTextWidth(60);
             query.addLine("location", "location", _lastLocation);
             JComboBox box = query.addChoice("accessor", "accessor", new String[]{}, _lastAccessorName);
-            
+            updateComboBox(box, query);
             query.addQueryListener(new QueryListener() {
                 
                 @Override
                 public void changed(String name) {
                     if (name.equals("location")) {
-                        box.removeAllItems();
-                        URL url;
-                        BufferedReader in;
-                        try {
-                            _lastLocation = query.getStringValue("location");
-                            if (_lastLocation.endsWith(".xml")) {
-                                return;
-                            } else if (!_lastLocation.endsWith("/")) {
-                                _lastLocation = _lastLocation + "/";
-                            } 
-                            url = new URL(_lastLocation + "index.json");
-                            
-                            in = new BufferedReader(
-                                    new InputStreamReader(url.openStream()));
-
-                            StringBuffer buffer = new StringBuffer();
-                            String inputLine;
-                            while ((inputLine = in.readLine()) != null) {
-                                buffer.append(inputLine);
-                            }
-                            in.close();
-                            
-                            JSONArray array = new JSONArray(buffer.toString());
-                            for (int i = 0; i < array.length(); i++) {
-                                box.addItem(array.get(i));
-                            }
-                        } catch (IOException e) {
-                            // TODO Auto-generated catch block
-                            e.printStackTrace();
-                        } catch (JSONException e) {
-                            // TODO Auto-generated catch block
-                            e.printStackTrace();
-                        } 
+                        updateComboBox(box, query);
                     }
                 }
             });
@@ -1102,6 +1070,42 @@ public class ActorGraphFrame extends ExtendedGraphFrame
                 };
                 context.requestChange(request);
             }
+        }
+
+        private void updateComboBox(JComboBox box, Query query) {
+            box.removeAllItems();
+            URL url;
+            BufferedReader in;
+            try {
+                _lastLocation = query.getStringValue("location");
+                if (_lastLocation.endsWith(".xml")) {
+                    return;
+                } else if (!_lastLocation.endsWith("/")) {
+                    _lastLocation = _lastLocation + "/";
+                } 
+                url = new URL(_lastLocation + "index.json");
+                
+                in = new BufferedReader(
+                        new InputStreamReader(url.openStream()));
+        
+                StringBuffer buffer = new StringBuffer();
+                String inputLine;
+                while ((inputLine = in.readLine()) != null) {
+                    buffer.append(inputLine);
+                }
+                in.close();
+                
+                JSONArray array = new JSONArray(buffer.toString());
+                for (int i = 0; i < array.length(); i++) {
+                    box.addItem(array.get(i));
+                }
+            } catch (IOException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            } catch (JSONException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            } 
         }
     }
 
