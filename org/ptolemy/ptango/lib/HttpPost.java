@@ -175,6 +175,7 @@ public class HttpPost extends TypedAtomicActor {
                 URL url = new URL(urlValue);
                 URLConnection connection = url.openConnection();
                 connection.setDoOutput(true);
+                connection.setReadTimeout(10000);
                 writer = new OutputStreamWriter(
                         connection.getOutputStream());
                 writer.write(data.toString());
@@ -186,21 +187,29 @@ public class HttpPost extends TypedAtomicActor {
                     _debug("Waiting for response.");
                 }
 
-                reader = new BufferedReader(
-                        new InputStreamReader(connection.getInputStream()));
                 StringBuffer response = new StringBuffer();
-                String line;
-                // FIXME: Need a timeout here!
-                while ((line = reader.readLine()) != null) {
-                    response.append(line);
-                    if (!line.endsWith("\n")) {
-                        response.append("\n");
+                try {
+                    reader = new BufferedReader(
+                            new InputStreamReader(connection.getInputStream()));
+                    String line;
+
+                    while ((line = reader.readLine()) != null) {
+                        response.append(line);
+                        if (!line.endsWith("\n")) {
+                            response.append("\n");
+                        }
+                    }
+                    if (_debugging) {
+                        _debug("Received response: " + response.toString());
                     }
                 }
-                if (_debugging) {
-                    _debug("Received response: " + response.toString());
+                catch (IOException ex){
+                    if (_debugging) {
+                        _debug("TimeOut.");
+                    }
+                } finally {
+                    output.send(0, new StringToken(response.toString()));
                 }
-                output.send(0, new StringToken(response.toString()));
             } catch (IOException ex) {
                 throw new IllegalActionException(this, ex, "postfire() failed");
             } finally {
