@@ -35,7 +35,7 @@
             <property name="displayHeight" class="ptolemy.data.expr.Parameter" value="10">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[515.0, 125.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[460.0, 235.0]">
         </property>
     </property>
     <property name="TestExceptionAttribute" class="ptolemy.actor.lib.TestExceptionAttribute">
@@ -43,7 +43,13 @@
         </property>
         <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[385.0, 210.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[370.0, 335.0]">
+        </property>
+    </property>
+    <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="FIXME:  This model does not work properly yet.  &#10;CatchExceptionAttribute listens for the Manager to update state to ITERATING, &#10;but unfortunately, some actors are initialized after this.&#10;&#10;As is, the model will restart infinitely.&#10;">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{160.0, 95.0}">
         </property>
     </property>
     <entity name="Const" class="ptolemy.actor.lib.Const">
@@ -54,7 +60,7 @@
             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[115.0, 125.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[100.0, 250.0]">
         </property>
     </entity>
     <entity name="Const2" class="ptolemy.actor.lib.Const">
@@ -67,17 +73,17 @@
             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[115.0, 185.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[100.0, 310.0]">
         </property>
     </entity>
     <entity name="MultiplyDivide" class="ptolemy.actor.lib.MultiplyDivide">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[225.0, 160.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[210.0, 285.0]">
         </property>
     </entity>
     <entity name="Discard" class="ptolemy.actor.lib.Discard">
         <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[310.0, 185.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[295.0, 310.0]">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
