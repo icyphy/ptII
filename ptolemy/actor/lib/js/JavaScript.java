@@ -35,7 +35,9 @@ import java.io.OutputStreamWriter;
 import java.lang.reflect.Member;
 import java.lang.reflect.Method;
 import java.net.HttpURLConnection;
+import java.net.InetAddress;
 import java.net.URL;
+import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -560,6 +562,7 @@ public class JavaScript extends TypedAtomicActor {
 					"error",
 					"get",
 					"httpRequest",
+					"localHostAddress",
 					"openBrowser",
 					"print",
 					"readProtectedURL",
@@ -576,6 +579,7 @@ public class JavaScript extends TypedAtomicActor {
 					{String.class},							// error
 					{NativeJavaObject.class, Double.class},	// get
 					{String.class, String.class, NativeObject.class, String.class, Integer.class}, // httpRequest
+					{},										// localHostAddress
 					{String.class},							// openBrowser
 					{String.class},							// print
 					{String.class, String.class},			// readProtectedURL
@@ -929,6 +933,18 @@ public class JavaScript extends TypedAtomicActor {
 
 	        // Return response.
 	        return response.toString();
+		}
+		
+		/** Return the local host IP address as a string.
+		 *  @return A string representation of the local host address.
+		 *  @throws UnknownHostException If the local host is not known.
+		 *  @throws SecurityException If this actor is in restricted mode.
+		 */
+		public String localHostAddress() throws UnknownHostException, SecurityException {
+			if (_restricted) {
+	        	throw new SecurityException("Actor is restricted. Cannot invoke localHostAddress().");
+			}
+			return InetAddress.getLocalHost().getHostAddress();
 		}
 
     	/** Print a message to standard out.
