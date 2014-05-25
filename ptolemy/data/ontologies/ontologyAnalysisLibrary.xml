@@ -46,4 +46,17 @@
       <entity name="UnitsConverter" class="ptolemy.domains.ontologies.lib.UnitsConverter">
       </entity>
     </group>
+    <!-- Exception Handling -->
+    <group>
+        <property name="AnalyzeExceptionAttribute" class="ptolemy.data.ontologies.AnalyzeExceptionAttribute">
+			<property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            	<property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="statusMessage">
+            	</property>
+            	<property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+            	</property>
+            	<property name="displayHeight" class="ptolemy.data.expr.Parameter" value="10">
+            	</property>
+        	</property>
+		</property>
+    </group>
 </entity>

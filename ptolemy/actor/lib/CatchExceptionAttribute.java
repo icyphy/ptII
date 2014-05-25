@@ -29,7 +29,6 @@ package ptolemy.actor.lib;
 
 import java.io.IOException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
 
@@ -39,20 +38,14 @@ import ptolemy.actor.ExecutionListener;
 import ptolemy.actor.Manager;
 import ptolemy.data.expr.FileParameter;
 import ptolemy.data.expr.StringParameter;
-import ptolemy.data.ontologies.OntologyAnnotationAttribute;
-import ptolemy.data.ontologies.lattice.LatticeOntologySolver;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
-import ptolemy.kernel.Port;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.ExceptionHandler;
 import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.NameDuplicationException;
-import ptolemy.kernel.util.Nameable;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Settable;
-import ptolemy.kernel.util.Workspace;
 
 ///////////////////////////////////////////////////////////////////
 //// CatchExceptionAttribute
@@ -65,8 +58,8 @@ import ptolemy.kernel.util.Workspace;
  @author Edward A. Lee, Elizabeth Latronico
  @version $Id$
  @since Ptolemy II 10.0
- @Pt.ProposedRating Yellow (hyzheng)
- @Pt.AcceptedRating Yellow (hyzheng)
+ @Pt.ProposedRating Red (beth)
+ @Pt.AcceptedRating Red (beth)
  */
 public class CatchExceptionAttribute extends AbstractInitializableAttribute
         implements ExceptionHandler, ExecutionListener {
@@ -90,7 +83,6 @@ public class CatchExceptionAttribute extends AbstractInitializableAttribute
         policy = new StringParameter(this, "policy");
         policy.setExpression("throw");
         
-        policy.addChoice("analyze");
         policy.addChoice("continue");
         policy.addChoice("throw");
         policy.addChoice("restart");
@@ -109,7 +101,6 @@ public class CatchExceptionAttribute extends AbstractInitializableAttribute
         statusMessage.setExpression("No exceptions encountered");
         statusMessage.setVisibility(Settable.NOT_EDITABLE);
 
-        _annotations = new ArrayList<OntologyAnnotationAttribute>();
         _resetMessages = true;
         _initialized = false;
     }
@@ -201,29 +192,13 @@ public class CatchExceptionAttribute extends AbstractInitializableAttribute
      *  the ExecutionListener interface.
      */
     public void executionFinished(Manager manager) {
-        // TODO Auto-generated method stub
         
     }
 
-    // TODO:  Analyze input ports also? 
     // TODO:  Figure out what makes sense for continue (if anything)
-    
-    /** Clone the actor into the specified workspace.
-     *  @param workspace The workspace for the new object.
-     *  @return A new actor.
-     *  @exception CloneNotSupportedException If a derived class contains
-     *   an attribute that cannot be cloned.
-     */
-    public Object clone(Workspace workspace) throws CloneNotSupportedException {
-        CatchExceptionAttribute newObject = (CatchExceptionAttribute) super.clone(workspace);
-        newObject._annotations = new ArrayList<OntologyAnnotationAttribute>();
-        return newObject;
-    }
 
     /** Handle an exception according to the specified policy:
-     *  analyze:  Determine the source actor(s) and annotate output ports
-     *   with error constraints.
-     *  
+     * 
      *  continue: Not implemented yet  
      *   Consume the exception and return control to the director.
      *   Could be valuable for domains like DE or modal models when new
@@ -246,8 +221,6 @@ public class CatchExceptionAttribute extends AbstractInitializableAttribute
      *  @exception IllegalActionException If thrown by the parent
      */
     
-    // FIXME:  Wrapup() is called just prior to this automatically; 
-    // still possible to set parameter values?
     public boolean handleException(NamedObj context, Throwable exception)
             throws IllegalActionException {
         
@@ -264,15 +237,6 @@ public class CatchExceptionAttribute extends AbstractInitializableAttribute
          Date date = new Date(System.currentTimeMillis());
          SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
          
-         // Clear any existing OntologyAnnotationAttributes
-         // Check that each exists in case user deleted them manually
-         for (OntologyAnnotationAttribute annotation : _annotations) {
-             if (toplevel().getAttribute(annotation.getName()) != null) {
-                 annotation.getContainer().removeAttribute(annotation);
-             }
-         }
-         _annotations.clear();
-         
          // Handle the exception according to the specified policy 
          // TODO:  Apply different policies depending on the type of exception.
          // How would the policy be specified then?
@@ -287,85 +251,7 @@ public class CatchExceptionAttribute extends AbstractInitializableAttribute
              _initialized = false;
          }
          
-         if (policyValue.equals("analyze")) {
-             // Look for a constraint solver in the model called
-             // ErrorOntologySolver
-             // FIXME:  Better way to do this than by name?
-             // TODO:  This introduces a dependency on the ontologies package.  
-             // Is that OK?
-             
-             Iterator iterator = toplevel().containedObjectsIterator();
-             Object object;
-             LatticeOntologySolver solver = null;
-             
-             while (iterator.hasNext()) {
-                 object = iterator.next();
-                 if (object instanceof LatticeOntologySolver &&
-                         ((NamedObj) object).getName()
-                             .equals("ErrorOntologySolver")) {
-                     
-                     solver = (LatticeOntologySolver) object;
-                 }
-             }
-             
-             if (solver == null) {
-                 
-                 // Return false if the ontology solver cannot be found, since 
-                 // this attribute did not resolve the exception.
-                 _writeMessage("Cannot analyze: No ontology solver found");
-                 return false;
-             }
-             
-             // "context" is not always the object that caused the exception
-             // (for example, in a divide by zero error, the context is 
-             // the top level object i.e. the model container)
-             // Instead, check for an instance of KernelException and get the 
-             // objects implicated there.  
-             // If any, check if object(s) are actors, find any output ports, 
-             // and annotate these with an "error" concept
-             
-             if (!(exception instanceof KernelException)) {
-                 _writeMessage("Cannot analyze: Not a KernelException or " +
-                 		"subclass");
-                 return false;
-             }
-             
-             Nameable nameable1 = null, nameable2 = null;
-             
-             nameable1 = ((KernelException) exception).getNameable1();
-             nameable2 = ((KernelException) exception).getNameable2();
-           
-                 
-             // TODO:  Handle other objects that can be assigned ontology 
-             // concepts, such as Parameter?
-             if (!((nameable1 != null && nameable1 instanceof Actor) ||
-                     (nameable2 != null && nameable2 instanceof Actor))) {
-                 _writeMessage("Cannot analyze: No source actor identified");
-                 return false;
-             }
-             
-             if (nameable1 != null) {
-                 // Return false from this method if _annoateActor encounters
-                 // a problem
-                 if (!_annotateActor(nameable1)){
-                     return false;
-                 }
-             }
-             
-             if (nameable2 != null) {
-                 // Return false from this method if _annoateActor encounters
-                 // a problem
-                 if (!_annotateActor(nameable2)){
-                     return false;
-                 }
-             }
-                 
-             // Invoke the solver
-             solver.invokeSolver();
-                
-             _writeMessage("Model successfully analyzed");
-       
-         } else if (policyValue.equals("continue")) {
+         if (policyValue.equals("continue")) {
              _writeMessage("Execution continued at " + dateFormat.format(date));
              
              // FIXME:  Is continue possible?  Looks like wrapup() is called
@@ -492,7 +378,7 @@ public class CatchExceptionAttribute extends AbstractInitializableAttribute
                     try {
                         _writeMessage("Error initializing status message.");
                     } catch(IOException ioe){
-                        statusMessage.setExpression("");
+                        statusMessage.setExpression("Error writing to file");
                     }
                 }
             }
@@ -534,121 +420,16 @@ public class CatchExceptionAttribute extends AbstractInitializableAttribute
         }
     }
     
-    ///////////////////////////////////////////////////////////////////
-    ////                         private methods                   ////
     
-    /** Annotate an actor with error constraints.
-     * 
-     * @return True if actor was successfully annotated; false otherwise
-     */
-    private boolean _annotateActor(Nameable nameable) {
-        // Find the output ports on this actor, if any, and generate
-        // error constraints for them.  Constraints are added to the
-        // top level model.
-
-        // try / catch block for IOException 
-        try {
-            NamedObj toplevel = toplevel();
-            Actor actor = null;
-            
-            if (nameable instanceof Actor) { 
-                actor = (Actor) nameable;
-            } else {
-                _writeMessage("Cannot analyze: Source of exception "
-                        + nameable.getName() + " is not an actor");
-                return false;
-            }
-            
-            for (Object portObject : actor.outputPortList()) {
-                if (portObject instanceof Port) {
-                    
-                    Port port = (Port) portObject;
-                    
-                    // The constraint text must refer to the
-                    // actorname.portname
-                    // Derive this from the actor's full name, which
-                    // is of the form .nameOfModel.actorName
-                    // Remove all characters through the second period
-                    String constraintText = nameable.getFullName();
-                    int period = constraintText.indexOf('.');
-                    if ((period != -1) && 
-                        (period != constraintText.length() - 1)) {
-                     period = constraintText.indexOf('.', period + 1);
-                    }
-                    
-                    if ((period != -1) &&
-                         (period != constraintText.length() - 1)) {
-                        constraintText = 
-                                constraintText.substring(period + 1);
-                    }
-                    
-                    // The constraint itself is named after the actor
-                    // to avoid name duplications and to help with 
-                    // traceability.  Underscores replace periods.
-                    String actorName = constraintText.replace('.','_');
-                    
-                    try {    
-                        OntologyAnnotationAttribute attribute = 
-                            new OntologyAnnotationAttribute(toplevel, 
-                               "ErrorOntologySolver::" + actorName + "_" +  
-                               port.getName());
-                        
-                        attribute.setExpression(constraintText + "." + 
-                               port.getName() + ">= Error");
-                        _annotations.add(attribute); 
-                    } catch(NameDuplicationException e) {
-                        // If one exists already, assume the previous one
-                        // can be overwritten.  This can occur if the model
-                        // is saved after an exception is caught.
-                        OntologyAnnotationAttribute attribute = 
-                                (OntologyAnnotationAttribute) toplevel()
-                                .getAttribute("ErrorOntologySolver::" + 
-                                actorName + "_" + port.getName());
-                        
-                        if (attribute != null) {
-                            try {
-                            attribute.setExpression(constraintText + "." + 
-                                    port.getName() + ">= Error");
-                             _annotations.add(attribute);
-                            } catch (IllegalActionException e2) {
-                                _writeMessage("Cannot analyze: " +
-                                        "Cannot annotate port " + 
-                                        port.getContainer().getFullName() + 
-                                        "." + port.getName());
-                                return false;
-                            }
-                        } else {
-                            _writeMessage("Cannot analyze: " +
-                                "Cannot annotate port " + 
-                                port.getContainer().getFullName() + "." + 
-                                port.getName());
-                            
-                            return false;
-                        }
-                    } catch(IllegalActionException e3) {
-                        _writeMessage("Cannot analyze: " +
-                                "Cannot annotate port " + 
-                                port.getContainer().getFullName() + "." + 
-                                port.getName());
-                        return false;
-                    }  
-                }
-            }
-        } catch(IOException ioe) {
-            statusMessage.setExpression("Error:  Cannot write to file.");
-            return false;
-        }
-        
-        return true;
-    }
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected methods                 ////
     
     /** Write the given message to the statusMessage parameter and to the log
      * file, if open.
      * @param message The message to write
      * @throws IOException If there is a problem writing to the file
      */
-    
-    private void _writeMessage(String message) throws IOException{
+    protected void _writeMessage(String message) throws IOException{
         statusMessage.setExpression(message);
         if (_writer != null) {
             _writer.write(message + " \n");
@@ -692,12 +473,6 @@ public class CatchExceptionAttribute extends AbstractInitializableAttribute
     
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-    
-    /** A list of the OntologyAnnotationAttributes created by this 
-     *  attribute.  Stored as a list so they can easily be deleted
-     *  when a new analysis is calculated.
-     */
-    private ArrayList<OntologyAnnotationAttribute> _annotations;
     
     /** True if the model has been initialized but not yet wrapped up; 
      *  false otherwise.  Some policies (e.g. restart) are desirable only 
