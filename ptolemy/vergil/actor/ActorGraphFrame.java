@@ -953,10 +953,10 @@ public class ActorGraphFrame extends ExtendedGraphFrame
          */
         @Override
         public void actionPerformed(ActionEvent e) {
-            Query query = new Query();
+            final Query query = new Query();
             query.setTextWidth(60);
             query.addLine("location", "location", _lastLocation);
-            JComboBox box = query.addChoice("accessor", "accessor", new String[]{}, _lastAccessorName);
+            final JComboBox box = query.addChoice("accessor", "accessor", new String[]{}, _lastAccessorName);
             updateComboBox(box, query);
             query.addQueryListener(new QueryListener() {
                 
