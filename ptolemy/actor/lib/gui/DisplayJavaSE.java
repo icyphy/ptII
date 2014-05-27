@@ -205,6 +205,14 @@ public class DisplayJavaSE extends AbstractPlaceableJavaSE implements
                         _tableau = new DisplayWindowTableau(_display,
                                 textEffigy, "tableau");
                         _frame = _tableau.frame.get();
+                        
+                        // Require a vertical scrollbar always so that we don't get a horizontal
+                        // scrollbar when it appears.
+                        JScrollPane pane = ((TextEditor) _frame).getScrollPane();
+                        if (pane != null) {
+                            pane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+                        }
+                        
                         textArea = ((TextEditor) _frame).text;
 
                         int numRows = ((IntToken) _display.rowsDisplayed
@@ -285,7 +293,7 @@ public class DisplayJavaSE extends AbstractPlaceableJavaSE implements
                 _scrollPane.setBorder(new EmptyBorder(10, 10, 10, 10));
                 _scrollPane.setViewportBorder(new LineBorder(Color.black));
                 
-                // Always have a vertical scrollbar.
+                // Always have a vertical scrollbar so that we don't get a horizontal scrollbar when it appers.
                 _scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
 
                 container.add(_scrollPane);

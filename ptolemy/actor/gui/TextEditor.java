@@ -174,6 +174,13 @@ public class TextEditor extends TableauFrame implements DocumentListener,
             return null;
         }
     }
+    
+    /** Return the scroll pane, if there is one, and null if not.
+     *  @return The scroll pane.
+     */
+    public JScrollPane getScrollPane() {
+    	return _scrollPane;
+    }
 
     // CONTRIBUTED CODE.  The exportImage() methods are from PlotBox,
     // which says:
