@@ -36,6 +36,7 @@ import java.lang.ref.WeakReference;
 import javax.swing.BorderFactory;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
+import javax.swing.ScrollPaneConstants;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
 import javax.swing.text.BadLocationException;
@@ -283,6 +284,9 @@ public class DisplayJavaSE extends AbstractPlaceableJavaSE implements
                 _scrollPane.setBackground(null);
                 _scrollPane.setBorder(new EmptyBorder(10, 10, 10, 10));
                 _scrollPane.setViewportBorder(new LineBorder(Color.black));
+                
+                // Always have a vertical scrollbar.
+                _scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
 
                 container.add(_scrollPane);
                 textArea.setBackground(Color.white);
