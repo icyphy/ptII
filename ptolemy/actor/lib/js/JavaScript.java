@@ -73,6 +73,7 @@ import org.mozilla.javascript.WrappedException;
 import ptolemy.actor.IOPort;
 import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.TypedIOPort;
+import ptolemy.actor.parameters.ParameterPort;
 import ptolemy.actor.parameters.PortParameter;
 import ptolemy.actor.util.Time;
 import ptolemy.data.ActorToken;
@@ -358,6 +359,7 @@ public class JavaScript extends TypedAtomicActor {
         }
         
         // Invoke pending callbacks.
+        // FIXME: Should this be happening before reading inputs below?
         if(_pendingCallbacks != null) {
         	while (!_pendingCallbacks.isEmpty()) {
         		// Remove the callback functions from the pending list as we go in
@@ -394,6 +396,10 @@ public class JavaScript extends TypedAtomicActor {
 	    for (IOPort input : this.inputPortList()) {
 	    	// Skip the scriptIn input.
 	    	if (input == scriptIn) {
+	    		continue;
+	    	}
+	    	// Skip ParameterPorts, as those are handled by the update() call above.
+	    	if (input instanceof ParameterPort) {
 	    		continue;
 	    	}
 	        HashMap<Integer, Token> tokens = new HashMap<Integer, Token>();
