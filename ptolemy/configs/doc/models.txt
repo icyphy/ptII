@@ -19,6 +19,7 @@ $CLASSPATH/org/ptolemy/ptango/demo/UCBPower/UCBPower.xml
 $CLASSPATH/org/ptolemy/ptango/demo/UCBPower/UCBPowerAnalyzerServer.xml
 $CLASSPATH/org/ptolemy/ptango/demo/UCBPowerPtera/UCBPowerPtera.xml
 $CLASSPATH/org/ptolemy/ptango/demo/WebServerDE/WebServerDE.xml
+$CLASSPATH/org/ptolemy/qss/demo/RLC/RLC.xml
 $CLASSPATH/ptolemy/actor/gt/demo/BouncingBallX2/BouncingBallX2.xml
 $CLASSPATH/ptolemy/actor/gt/demo/ConstOptimization/ConstOptimization.xml
 $CLASSPATH/ptolemy/actor/gt/demo/ConstOptimization/ConstOptimizationDDF.xml
@@ -332,7 +333,6 @@ $CLASSPATH/ptolemy/domains/ptides/demo/PowerManagementUnitSamplingWithoutCurrent
 $CLASSPATH/ptolemy/domains/ptides/demo/PowerPlant/PowerPlant.xml
 $CLASSPATH/ptolemy/domains/ptides/demo/PrintingPress/PrintingPress.xml
 $CLASSPATH/ptolemy/domains/ptides/demo/PtidesSynchrophasor/PtidesSynchrophasor.xml
-$CLASSPATH/ptolemy/domains/qss/demo/RLC/RLC.xml
 $CLASSPATH/ptolemy/domains/rendezvous/demo/Barrier/Barrier.xml
 $CLASSPATH/ptolemy/domains/rendezvous/demo/ResourcePool/ResourcePool.xml
 $CLASSPATH/ptolemy/domains/rendezvous/demo/Sequencing/Sequencing.xml
