@@ -1,7 +1,7 @@
-# Makefile for Quantized State Systems Actors.
+# Makefile Quantized State Machine (QSS) demos
 #
-# @Version: $Id: makefile 67778 2013-10-26 15:50:13Z cxh $
-# @Author: Christopher Brooks (makefile only)
+# @Version: $Id: makefile 67781 2013-10-26 16:04:48Z cxh $
+# @Author: Christopher Brooks
 #
 # @Copyright (c) 2014 The Regents of the University of California.
 # All rights reserved.
@@ -29,51 +29,45 @@
 # 						COPYRIGHTENDKEY
 ##########################################################################
 
-# Root of Ptolemy II directory
-ROOT = ../../..
+DIRS = RLC
 
-DIRS = test demo
+# Root of Ptolemy II directory
+ROOT =		../../../..
 
 # $(ME) is used in ptdir.mk
-ME = org/ptolemy/qss
-
-CLASSPATH =	$(ROOT)
-
-# True source directory
-VPATH =	$(ROOT)/$(ME)
+ME =		org/ptolemy/qss/demo
 
 # Get configuration info
-CONFIG = $(ROOT)/mk/ptII.mk
+CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
-# Used to build jar files
-PTPACKAGE = qss
-PTCLASSJAR = $(PTPACKAGE).jar
+# Variables and rules used to create source file distributions
+PTPACKAGE = 	demo
 
-JSRCS = \
-	QSSIntegrator.java \
-	QSSVectorIntegrator.java
+# Include these jars in PTAUXALLJAR
+# (Copied syntax from \ptolemy\demo )
+PTAUXALLJARS = \
+	RLC/RLC.jar
 
+PTAUXALLJAR = $(PTPACKAGE).jar
 
 OTHER_FILES_TO_BE_JARED =
 
-EXTRA_SRCS = $(JSRCS) $(OTHER_FILES_TO_BE_JARED)
+EXTRA_SRCS = \
+	$(OTHER_FILES_TO_BE_JARED)
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
-# Don't include demo or DIRS here, or else 'make sources' will run 'make demo'
-MISC_FILES =
+MISC_FILES = $(DIRS)
 
-# make checkjunk will not report OPTIONAL_FILES as trash
-# make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
-	$(DIRS) \
-	demo
 
-JCLASS = $(JSRCS:%.java=%.class)
+# Files to remove with 'make clean'
+KRUFT = \
+	*.jar
 
-all: jclass
-install: jclass jars
+all: suball $(EXTRA_SRCS)
+install: subinstall jars
 
-# Get the rest of the rules
+# Include rules for directories that contain only subdirectories.
 include $(ROOT)/mk/ptcommon.mk

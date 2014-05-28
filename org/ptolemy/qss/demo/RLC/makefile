@@ -1,4 +1,4 @@
-# Makefile for Quantized State Systems Actors.
+# Makefile for Ptolemy model for Quantized State Machine
 #
 # @Version: $Id: makefile 67778 2013-10-26 15:50:13Z cxh $
 # @Author: Christopher Brooks (makefile only)
@@ -29,51 +29,41 @@
 # 						COPYRIGHTENDKEY
 ##########################################################################
 
+ME =		org/ptolemy/ptango/demo/RLC
+
+DIRS =
+
 # Root of Ptolemy II directory
-ROOT = ../../..
-
-DIRS = test demo
-
-# $(ME) is used in ptdir.mk
-ME = org/ptolemy/qss
-
-CLASSPATH =	$(ROOT)
-
-# True source directory
-VPATH =	$(ROOT)/$(ME)
+ROOT =		../../../../..
 
 # Get configuration info
-CONFIG = $(ROOT)/mk/ptII.mk
+CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE = qss
-PTCLASSJAR = $(PTPACKAGE).jar
-
-JSRCS = \
-	QSSIntegrator.java \
-	QSSVectorIntegrator.java
+PTPACKAGE = 	RLC
+PTCLASSJAR =	$(PTPACKAGE).jar
 
 
-OTHER_FILES_TO_BE_JARED =
+OTHER_FILES_TO_BE_JARED = \
+	RLC.mo \
+	RLC.xml
 
-EXTRA_SRCS = $(JSRCS) $(OTHER_FILES_TO_BE_JARED)
+EXTRA_SRCS = \
+	$(OTHER_FILES_TO_BE_JARED) 
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
-# Don't include demo or DIRS here, or else 'make sources' will run 'make demo'
 MISC_FILES =
 
-# make checkjunk will not report OPTIONAL_FILES as trash
-# make distclean removes OPTIONAL_FILES
-OPTIONAL_FILES = \
-	$(DIRS) \
-	demo
+OPTIONAL_FILES =
 
-JCLASS = $(JSRCS:%.java=%.class)
+# Files to remove with 'make clean'
+KRUFT = \
+	*.jar
 
-all: jclass
-install: jclass jars
+all: suball $(EXTRA_SRCS)
+install: subinstall jars
 
-# Get the rest of the rules
+# Include rules for directories that contain only subdirectories.
 include $(ROOT)/mk/ptcommon.mk
