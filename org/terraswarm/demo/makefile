@@ -1,4 +1,4 @@
-# Makefile for TerraSwarm Stock Tick demo.
+# Makefile for TerraSwarm demos
 #
 # @Version: $Id: makefile 67778 2013-10-26 15:50:13Z cxh $
 # @Author: Christopher Brooks (makefile only)
@@ -30,12 +30,12 @@
 ##########################################################################
 
 # Root of Ptolemy II directory
-ROOT = ../../../../..
+ROOT = ../../..
 
-DIRS = 
+DIRS = StockTick
 
 # $(ME) is used in ptdir.mk
-ME = org/terraswarm/kernel/demo/StockTick
+ME = org/terraswarm/kernel/demo
 
 CLASSPATH =	$(ROOT)
 
@@ -47,15 +47,12 @@ CONFIG = $(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE = StockTick
+PTPACKAGE = demo
 PTCLASSJAR = $(PTPACKAGE).jar
 
 JSRCS = 
 
-OTHER_FILES_TO_BE_JARED = \
-	StockTick.xml \
-	StockTickAccessor.xml \
-	StockTickMOML.xml
+OTHER_FILES_TO_BE_JARED = 
 
 EXTRA_SRCS = $(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 

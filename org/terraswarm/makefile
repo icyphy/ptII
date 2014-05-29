@@ -30,7 +30,7 @@
 ##########################################################################
 
 # PTANGO_DIR is set by configure in $PTII/mk if jetty and javax.servlet are found.
-DIRS = kernel
+DIRS = kernel demo
 
 # Root of Ptolemy II directory
 ROOT =		../..

@@ -32,7 +32,7 @@
 # Root of Ptolemy II directory
 ROOT = ../../..
 
-DIRS = demo
+DIRS =
 
 # $(ME) is used in ptdir.mk
 ME = org/terraswarm/kernel
