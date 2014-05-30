@@ -28,7 +28,7 @@ typedef size_t fmiValueReference;
 #endif
 
 #if FMI_VERSION >= 2
-#define SIZEOF_ELM 32
+#define SIZEOF_ELM 34
 #else
 #define SIZEOF_ELM 31
 #endif
@@ -52,7 +52,7 @@ typedef enum {
     elm_DirectDependency,elm_Name,elm_Real,elm_Integer,elm_Boolean,elm_String,elm_Enumeration,
     elm_Implementation,elm_CoSimulation_StandAlone,elm_CoSimulation_Tool,elm_Model,elm_File,elm_Capabilities
 #if FMI_VERSION >= 2
-    ,elm_CoSimulation
+    ,elm_CoSimulation,elm_LogCategories,elm_Category
 #endif
 } Elm;
 
@@ -109,6 +109,15 @@ typedef struct {
     Element* typeSpec; // one of Real, Integer, etc
     Element** directDependencies; // null or null-terminated list of Name
 } ScalarVariable;
+
+#if FMI_VERSION >= 2
+// AST node for element Category
+typedef struct {
+    Elm type; // elm_Category
+    const char** attributes; // null or n attribute value strings
+    int n;                   // size of attributes, even number
+} Category;
+#endif
 
 // AST node for element CoSimulation_StandAlone and CoSimulation_Tool
 typedef struct {

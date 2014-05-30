@@ -31,7 +31,7 @@ const char *elmNames[SIZEOF_ELM] = {
      "DefaultExperiment","VendorAnnotations","Tool","Annotation", "ModelVariables","ScalarVariable",
      "DirectDependency","Name","Real","Integer","Boolean","String","Enumeration",
     "Implementation","CoSimulation_StandAlone","CoSimulation_Tool","Model","File","Capabilities",
-    "CoSimulation"
+    "CoSimulation","LogCategories","Category"
 };
 #else
 const char *elmNames[SIZEOF_ELM] = {
@@ -401,6 +401,9 @@ AstNodeType getAstNodeType(Elm e){
     case elm_CoSimulation_Tool:
 #endif
         return astCoSimulation;
+#if FMI_VERSION >= 2
+    case elm_LogCategories:
+#endif
     case elm_BaseUnit:
     case elm_EnumerationType:
     case elm_Tool:
@@ -518,6 +521,14 @@ static void XMLCALL endElement(void *context, const char *elm) {
                      child = checkPop(ANY_TYPE);
                      if (!child) return;
                  }
+#if FMI_VERSION >= 2
+                 if (child->type == elm_LogCategories){
+                     mv = (ScalarVariable**)child->list;
+                     free(child);
+                     child = checkPop(ANY_TYPE);
+                     if (!child) return;
+                 }
+#endif
                  if (child->type == elm_ModelVariables){
                      mv = (ScalarVariable**)child->list;
                      free(child);
@@ -582,6 +593,19 @@ static void XMLCALL endElement(void *context, const char *elm) {
                  break;
             }
 #if FMI_VERSION >= 2
+    case elm_LogCategories:
+            {
+                // FIXME: what to do here?
+/*                  Element* ca = checkPop(elm_Capabilities); */
+/*                  CoSimulation* cs = checkPop(elm_CoSimulation_StandAlone); */
+/*                  if (!ca || !cs) return; */
+/*                  cs->attributes = ca; */
+/*                  stackPush(stack, cs); */
+                 break;
+            }
+#endif 
+
+#if FMI_VERSION >= 2
     case elm_CoSimulation:
             {
                 // FIXME: what to do here?
@@ -590,6 +614,10 @@ static void XMLCALL endElement(void *context, const char *elm) {
 /*                  if (!ca || !cs) return; */
 /*                  cs->attributes = ca; */
 /*                  stackPush(stack, cs); */
+
+                // Maybe match elm_ModelVariables??
+                //popList(elm_Category);
+
                  break;
             }
 #else
