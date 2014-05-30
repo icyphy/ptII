@@ -41,7 +41,8 @@ import ptolemy.util.StringUtilities;
 //// Location
 
 /**
- An attribute that represents a location of a node in a schematic.
+ An attribute that represents the center location of a node in a
+ schematic.
 
  <p>By default, an instance of this class is not visible in a user
  interface.  This is indicated to the user interface by returning NONE
@@ -246,7 +247,7 @@ public class Location extends SingletonAttribute implements Locatable {
         return result.toString();
     }
 
-    /** Get the location in some cartesian coordinate system.
+    /** Get the center location in some cartesian coordinate system.
      *  @return The location.
      *  @see #setLocation(double[])
      */
@@ -299,11 +300,12 @@ public class Location extends SingletonAttribute implements Locatable {
         _expressionSet = true;
     }
 
-    /** Set the location in some cartesian coordinate system, and notify
-     *  the container and any value listeners of the new location. Setting
-     *  the location involves maintaining a local copy of the passed
-     *  parameter. No notification is done if the location is the same
-     *  as before. This method propagates the value to any derived objects.
+    /** Set the center location in some cartesian coordinate system,
+     *  and notify the container and any value listeners of the new
+     *  location. Setting the location involves maintaining a local
+     *  copy of the passed parameter. No notification is done if the
+     *  location is the same as before. This method propagates the
+     *  value to any derived objects.
      *  @param location The location.
      *  @exception IllegalActionException If throw when attributeChanged()
      *  is called.
