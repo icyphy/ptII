@@ -40,7 +40,7 @@ import ptolemy.kernel.util.NamedObj;
 //// LocationParameter
 
 /**
- A parameter that specifies the location of its container.
+ A parameter that specifies the location of the center of its container.
  This location is used when rendering the container in a Vergil diagram.
  The parameter value is a double matrix with one row and two columns.
  The default value is [0.0, 0.0].
@@ -85,7 +85,8 @@ public class LocationParameter extends Parameter implements Locatable {
         return getName();
     }
 
-    /** Get the location in some Cartesian coordinate system.
+    /** Get the location of the center of the container in some
+     *  Cartesian coordinate system.
      *  @return The location.
      *  @see #setLocation(double [])
      */
@@ -100,9 +101,9 @@ public class LocationParameter extends Parameter implements Locatable {
         }
     }
 
-    /** Set the location in some Cartesian coordinate system, and notify
-     *  the container and any value listeners of the new location. This
-     *  also propagates the value to derived objects.
+    /** Set the center location in some Cartesian coordinate system,
+     *  and notify the container and any value listeners of the new
+     *  location. This also propagates the value to derived objects.
      *  @param location The location.
      *  @exception IllegalActionException If the location is rejected.
      *  @see #getLocation()
