@@ -645,6 +645,7 @@ PTTINI_DIR
 PTSPACEDOMAIN_PACKAGES
 PTSPACEDOMAIN_JAR
 PTSPACE_DIR
+PTSOCKETIO_JAR
 PTSERVLET_JAR
 PTSERVER_JARS
 PTSERVER_PACKAGES
@@ -969,6 +970,7 @@ with_javamail
 with_rhino
 with_oauthclient
 with_oauthcommon
+with_socketio
 with_joystick_jar
 with_ptjacl_jar
 with_jsoup
@@ -1690,6 +1692,8 @@ Optional Packages:
                           defaults to \$PTII/lib/org.apache.oltu.oauth2.client-1.0.1-SNAPSHOT.jar
   --with-oauthcommon=JAR       use oauth from JAR,
                           defaults to \$PTII/lib/org.apache.oltu.oauth2.common-1.0.1-SNAPSHOT.jar
+  --with-socketio=JAR       use socketIO from JAR,
+                          defaults to \$PTII/lib/socketio.jar
   --with-joystick-jar=JARFILE       use JOYSTICK from JARFILE,
                           defaults to \$PTII/vendors/misc/joystick/Joystick.jar
   --with-ptjacl_jar=PTJACL.JAR  ptjacl.jar file,
@@ -8399,6 +8403,11 @@ PTOAUTHCLIENT_JAR=
 # OAuth Common jar file used by the JavaScript actor $PTII/lib/org.apache.oltu.oauth2.*.jar
 PTOAUTHCOMMON_JAR=
 
+# socketio Jar used by the JavaScript actor $PTII/lib/socketio.jar The
+# socketio.jar file is built by running "ant jar" after downloading
+# source from here: https://github.com/Gottox/socket.io-java-client
+PTSOCKETIO_JAR=
+
 # We only need to look for Jsoup if $PTJAVASCRIPT_USER_DIR is present
 PTJAVASCRIPT_USER_DIR="$PTII/ptolemy/actor/lib/js"
 
@@ -8458,9 +8467,27 @@ fi
 $as_echo "ok" >&6; }; else { $as_echo "$as_me:${as_lineno-$LINENO}: result: $PTOAUTHCOMMON_JAR" >&5
 $as_echo "$PTOAUTHCOMMON_JAR" >&6; }; fi
 	      updateClasspath "$PTOAUTHCOMMON_JAR"
-	      PTJAVASCRIPT_DIR=js
-	      # PTJAVASCRIPT_PACKAGES is used in ptII/doc/makefile
-	      PTJAVASCRIPT_PACKAGES="ptolemy.actor.lib.js org.terraswarm.kernel"
+
+	      { $as_echo "$as_me:${as_lineno-$LINENO}: checking for socketio, used by js and org.terraswarm.kernel actors. " >&5
+$as_echo_n "checking for socketio, used by js and org.terraswarm.kernel actors. ... " >&6; }
+
+# Check whether --with-socketio was given.
+if test "${with_socketio+set}" = set; then :
+  withval=$with_socketio; PTSOCKETIO_JAR=$withval
+else
+  PTSOCKETIO_JAR=$PTII/lib/socketio.jar
+fi
+
+
+  	      if test  -f "$PTSOCKETIO_JAR"; then
+	          if test "${PTVERBOSE:-none}" = "none"; then { $as_echo "$as_me:${as_lineno-$LINENO}: result: ok" >&5
+$as_echo "ok" >&6; }; else { $as_echo "$as_me:${as_lineno-$LINENO}: result: $PTSOCKETIO_JAR" >&5
+$as_echo "$PTSOCKETIO_JAR" >&6; }; fi
+	          updateClasspath "$PTSOCKETIO_JAR"
+	          PTJAVASCRIPT_DIR=js
+	          # PTJAVASCRIPT_PACKAGES is used in ptII/doc/makefile
+	          PTJAVASCRIPT_PACKAGES="ptolemy.actor.lib.js org.terraswarm.kernel"
+              fi
 	   fi
        fi
     fi
@@ -8469,12 +8496,16 @@ fi
 if test -z "$PTJAVASCRIPT_DIR"; then
     updateExcludes "ptolemy/actor/lib/js"
     updateExcludes "org/terraswarm/kernel"
-    { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Failed to find the OAuth common jar file necessary to
+    { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Failed to find the OAuth common jar files or socketio necessary to
     to compile ptolemy/actor/lib/js and org/terraswarm/kernel
-    Typically, the OAuth client jar is found at $PTII/lib/org.apache.oltu.oauth2.common-1.0.1-SNAPSHOT.jar." >&5
-$as_echo "$as_me: WARNING: Failed to find the OAuth common jar file necessary to
+    Typically, the OAuth client jar is found at $PTII/lib/org.apache.oltu.oauth2.common-1.0.1-SNAPSHOT.jar.
+    The lib/socketio.jar, is built by running \"ant jar\" after downloading source from here:
+    https://github.com/Gottox/socket.io-java-client" >&5
+$as_echo "$as_me: WARNING: Failed to find the OAuth common jar files or socketio necessary to
     to compile ptolemy/actor/lib/js and org/terraswarm/kernel
-    Typically, the OAuth client jar is found at $PTII/lib/org.apache.oltu.oauth2.common-1.0.1-SNAPSHOT.jar." >&2;}
+    Typically, the OAuth client jar is found at $PTII/lib/org.apache.oltu.oauth2.common-1.0.1-SNAPSHOT.jar.
+    The lib/socketio.jar, is built by running \"ant jar\" after downloading source from here:
+    https://github.com/Gottox/socket.io-java-client" >&2;}
 fi
 
 
@@ -13626,6 +13657,11 @@ ANT_JAVADOC_EXCLUDEPACKAGENAMES=`echo "$ANT_ALWAYS_EXCLUDE $ANT_EXCLUDE"| sed 's
 
 
 # javax.servlet-api*.jar used by Ptango and ptserver.
+
+
+# socketio Jar used by the JavaScript actor $PTII/lib/socketio.jar The
+# socketio.jar file is built by running "ant jar" after downloading
+# source from here: https://github.com/Gottox/socket.io-java-client
 
 
 # PTSPACE_DIR is set to space and used in
