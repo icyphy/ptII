@@ -116,9 +116,7 @@ public class CatchExceptionAttribute extends AbstractInitializableAttribute
     
     /** The error handling policy to apply if an exception occurs
      * 
-     * One of:  Analyze, Continue, Throw, Restart, Quit
-     * TODO:  Is analyze really a policy?  Should be able to combine with 
-     * other things
+     * One of:  Continue, Throw, Restart, Quit
      */
     public StringParameter policy;
     
@@ -170,12 +168,6 @@ public class CatchExceptionAttribute extends AbstractInitializableAttribute
         } else {
             super.attributeChanged(attribute);
         }
-        
-        // FIXME:  How to know when to close the file writer?  
-        // Ideally, close it right before the model is closed (any way to get
-        // notification of this?)
-        // Another option is to close / reopen for each execution of the model
-        // This could be a a lot of closing and reopening though.
     }
     
     /** Do nothing upon execution error.  Exceptions are passed to this 
@@ -185,8 +177,6 @@ public class CatchExceptionAttribute extends AbstractInitializableAttribute
     public void executionError(Manager manager, Throwable throwable) {
         
     }
-
-    // FIXME:  Anything we want to do here?  Update the status message?
   
     /** Do nothing upon a completed execution.  This method is required by
      *  the ExecutionListener interface.
@@ -352,18 +342,19 @@ public class CatchExceptionAttribute extends AbstractInitializableAttribute
      * 
      * @param manager The model manager
      */
+    
     public void managerStateChanged(Manager manager) {
-        
-        if (manager.getState() == Manager.EXITING) {
+
+        if (manager.getState().equals(Manager.EXITING)) {
             // Close file writer, if any
             if (_writer != null){
                 try { 
                     _writer.close();
                 } catch(IOException e){
-                    // Well... can't really do anything about an exception here?
+                    // Can't really do anything about an exception here?
                 }
             }
-        } else if(manager.getState() == Manager.ITERATING) {
+        } else if(manager.getState().equals(Manager.INITIALIZING)) {
             // Enable restart once all objects have been initialized
             //_initialized is set back to false at the end of _handleException()
             if (_resetMessages) {
