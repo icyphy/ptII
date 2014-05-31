@@ -27,6 +27,11 @@
  */
 package ptolemy.actor.lib.js;
 
+import io.socket.IOAcknowledge;
+import io.socket.IOCallback;
+import io.socket.SocketIO;
+import io.socket.SocketIOException;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -36,6 +41,7 @@ import java.lang.reflect.Member;
 import java.lang.reflect.Method;
 import java.net.HttpURLConnection;
 import java.net.InetAddress;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
@@ -58,6 +64,8 @@ import org.apache.oltu.oauth2.common.OAuthProviderType;
 import org.apache.oltu.oauth2.common.exception.OAuthProblemException;
 import org.apache.oltu.oauth2.common.exception.OAuthSystemException;
 import org.apache.oltu.oauth2.common.message.types.GrantType;
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.mozilla.javascript.Context;
 import org.mozilla.javascript.Function;
 import org.mozilla.javascript.FunctionObject;
@@ -577,6 +585,7 @@ public class JavaScript extends TypedAtomicActor {
 					"requestAuth",
 					"send",
 					"setTimeout",
+					"socketX",
 					"valueOf"
 			};
 			Class[][] args = {
@@ -594,6 +603,7 @@ public class JavaScript extends TypedAtomicActor {
 					{String.class, String.class, String.class, Boolean.class}, // requestAuth
 					{Object.class, NativeJavaObject.class, Double.class}, // send
 					{Function.class, Integer.class},		// setTimeout
+					{String.class, NativeObject.class, NativeJavaObject.class},	// socketX
 					{NativeJavaObject.class},				// valueOf
 					
 			};
@@ -623,6 +633,13 @@ public class JavaScript extends TypedAtomicActor {
     @Override
     public void wrapup() throws IllegalActionException {
     	try {
+    		// If there are open sockets, disconnect.
+    		if (_openSockets != null && _openSockets.size() > 0) {
+    			for (SocketIO socket : _openSockets) {
+    				socket.disconnect();
+    			}
+    			_openSockets.clear();
+    		}
     		// If there is a wrapup() function, invoke it.
     		Object wrapupFunction = _scope.get("wrapup", _scope);
     		// Synchronize so that this invocation is atomic w.r.t. any callbacks.
@@ -698,6 +715,9 @@ public class JavaScript extends TypedAtomicActor {
     private HashMap<IOPort, HashMap<Integer, Token>> _inputTokens
     		= new HashMap<IOPort, HashMap<Integer, Token>>();
         
+	/** List of open sockets. */
+	List<SocketIO> _openSockets;
+
     /** Buffer for output tokens that are produced in a call to send
      *  while the actor is not firing. This makes sure that actors can
      *  spontaneously produce outputs.
@@ -951,6 +971,107 @@ public class JavaScript extends TypedAtomicActor {
 	        	throw new SecurityException("Actor is restricted. Cannot invoke localHostAddress().");
 			}
 			return InetAddress.getLocalHost().getHostAddress();
+		}
+		
+		public void socketX(String url, final NativeObject query, NativeJavaObject portWrapper)
+				throws MalformedURLException {
+			final SocketIO socket = new SocketIO(url);
+			if (_openSockets == null) {
+				_openSockets = new LinkedList<SocketIO>();
+			}
+			_openSockets.add(socket);
+			socket.connect(new IOCallback() {
+	            @Override
+	            public void onMessage(JSONObject json, IOAcknowledge ack) {
+	                try {
+	                    System.out.println("Server said:" + json.toString(2));
+	                } catch (JSONException e) {
+	                    e.printStackTrace();
+	                }
+	            }
+
+	            @Override
+	            public void onMessage(String data, IOAcknowledge ack) {
+	                System.out.println("Server said: " + data);
+	            }
+
+	            @Override
+	            public void onError(SocketIOException socketIOException) {
+	                System.out.println("an Error occured");
+	                socketIOException.printStackTrace();
+	            }
+
+	            @Override
+	            public void onDisconnect() {
+	                System.out.println("Connection terminated.");
+	            }
+
+	            @Override
+	            public void onConnect() {
+	            	// FIXME: GATD-specific.
+	            	socket.emit("query", query);
+	                System.out.println("Connection established");
+	            }
+
+	            @Override
+	            public void on(String event, IOAcknowledge ack, Object... args) {
+	                System.out.println("Server triggered event '" + event + "'");
+	                IOPort port = (IOPort) getPort(event);
+	                if (port == null) {
+	                	return;
+	                }
+	                try {
+	                	for (Object arg : args) {
+	                		Token token = _createToken(arg);
+	                		if (_inFire) {
+	                			if (_debugging) {
+	                				_debug("Sending " + token + " to " + port.getName());
+	                			}
+	                			port.send(0, token);
+	                		} else {
+	                			if (!_executing) {
+	                				// This is probably being called in a callback, but the model
+	                				// execution has ended.
+	                				throw new InternalErrorException(
+	                						"Attempt to send " + token + " to " + port.getName()
+	                						+ ", but the model is not executing.");
+	                			}
+
+	                			// Not currently firing. Queue the tokens and request a firing.
+	                			// This should be being called in a callback that holds a
+	                			// synchronization lock, so synchronizing this isn't really
+	                			// necessary, but just in case...
+	                			synchronized(this) {
+	                				if (_outputTokens == null) {
+	                					_outputTokens = new HashMap<IOPort, HashMap<Integer, List<Token>>>();
+	                				}
+	                				HashMap<Integer, List<Token>> tokens = _outputTokens.get(port);
+	                				if (tokens == null) {
+	                					tokens = new HashMap<Integer, List<Token>>();
+	                					_outputTokens.put(port, tokens);
+	                				}
+	                				List<Token> queue = tokens.get(0);
+	                				if (queue == null) {
+	                					queue = new LinkedList<Token>();
+	                					tokens.put(0, queue);
+	                				}
+	                				queue.add(token);
+	                				if (_debugging) {
+	                					_debug("Queueing " + token + " to be sent on " + port.getName() + " and requesting a firing.");
+	                				}
+	                			}
+	                			// Request a firing at the current time.
+	                			getDirector().fireAtCurrentTime(JavaScript.this);
+	                		}
+	                	}
+	                }
+	                catch (IllegalActionException e) {
+	                	// TODO Auto-generated catch block
+	                	e.printStackTrace();
+	                }
+    			}
+
+	        });
 		}
 
     	/** Print a message to standard out.
