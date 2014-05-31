@@ -653,6 +653,12 @@ See $PTII/doc/coding/maven.htm
       <version>ptII</version>
     </dependency>
 
+    <dependency> 
+      <groupId>socketio</groupId>
+      <artifactId>socketio</artifactId>
+      <version>ptII</version>
+    </dependency>
+
   </dependencies>
   <repositories>
     <repository>
