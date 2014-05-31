@@ -16,6 +16,7 @@
 #define  b(vr) comp->b[vr]
 #define  s(vr) comp->s[vr]
 #define pos(z) comp->isPositive[z]
+fmiStatus setString(fmiComponent comp, fmiValueReference vr, fmiString value);
 #define copy(vr, value) setString(comp, vr, value)
 
 // categories of logging supported by model.
