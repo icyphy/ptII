@@ -406,6 +406,12 @@ $(PTIIDIST):
 		> $(PTIIDIST)/ptolemy/domains/giotto/makefile.tmp
 	mv $(PTIIDIST)/ptolemy/domains/giotto/makefile.tmp \
 		$(PTIIDIST)/ptolemy/domains/giotto/makefile
+	# Fix up ptolemy/domains/giotto/demo
+	egrep -v Legiotto \
+		$(PTIIDIST)/ptolemy/domains/giotto/demo/makefile \
+		> $(PTIIDIST)/ptolemy/domains/giotto/demo/makefile.tmp
+	mv $(PTIIDIST)/ptolemy/domains/giotto/demo/makefile.tmp \
+		$(PTIIDIST)/ptolemy/domains/giotto/demo/makefile
 	# Exclude quicktime from domains/gr/gr.xml
 	egrep -v quicktime.xml \
 		$(PTIIDIST)/ptolemy/domains/gr/gr.xml \
@@ -418,6 +424,12 @@ $(PTIIDIST):
 		> $(PTIIDIST)/ptolemy/domains/tm/makefile.tmp
 	mv $(PTIIDIST)/ptolemy/domains/tm/makefile.tmp \
 		$(PTIIDIST)/ptolemy/domains/tm/makefile
+	# Fix up ptolemy/domains/wireless/demo
+	egrep -v Network \
+		$(PTIIDIST)/ptolemy/domains/wireless/demo/makefile \
+		> $(PTIIDIST)/ptolemy/domains/wireless/demo/makefile.tmp
+	mv $(PTIIDIST)/ptolemy/domains/wireless/demo/makefile.tmp \
+		$(PTIIDIST)/ptolemy/domains/wireless/demo/makefile
 	#
 	# ptolemy/vergil
 	#
