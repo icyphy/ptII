@@ -43,11 +43,11 @@ import ptolemy.kernel.util.NameDuplicationException;
  using the default character set, returned by the system property
  "file.encoding".
 
- @author Winthrop Williams, Steve Neuendorffer
+ @author Winthrop Williams, Steve Neuendorffer, Long Le
  @version $Id$
- @since Ptolemy II 2.0
- @Pt.ProposedRating Red (winthrop)
- @Pt.AcceptedRating Red (winthrop)
+ @since Ptolemy II 10.0
+ @Pt.ProposedRating Red (longle1)
+ @Pt.AcceptedRating Red (longle1)
  */
 public class StringToBoolean extends Converter {
     /** Construct an actor with the given container and name.
