@@ -44,7 +44,7 @@ import ptolemy.kernel.util.NameDuplicationException;
  "file.encoding".
 
  @author Winthrop Williams, Steve Neuendorffer
- @version $Id: StringToUnsignedByteArray.java 65763 2013-03-07 01:54:37Z cxh $
+ @version $Id$
  @since Ptolemy II 2.0
  @Pt.ProposedRating Red (winthrop)
  @Pt.AcceptedRating Red (winthrop)
