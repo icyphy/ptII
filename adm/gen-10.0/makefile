@@ -388,6 +388,12 @@ $(PTIIDIST):
 		> $(PTIIDIST)/ptolemy/domains/makefile_tmp
 	mv $(PTIIDIST)/ptolemy/domains/makefile_tmp \
 		$(PTIIDIST)/ptolemy/domains/makefile
+	# Fix up ptolemy/domains/csp/demo/DiningPhilosophers/makefile
+	egrep -v checkDeadlock \
+		$(PTIIDIST)/ptolemy/domains/dde/kernel/test/makefile \
+		> $(PTIIDIST)/ptolemy/domains/dde/kernel/test/makefile.tmp
+	mv $(PTIIDIST)/ptolemy/domains/dde/kernel/test/makefile.tmp \
+		$(PTIIDIST)/ptolemy/domains/dde/kernel/test/makefile
 	# Fix up dde/kernel/test/makefile
 	egrep -v DDEDirector.tcl \
 		$(PTIIDIST)/ptolemy/domains/dde/kernel/test/makefile \
