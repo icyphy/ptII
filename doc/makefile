@@ -467,6 +467,12 @@ PTINYPACKAGES = \
 #SUPERBPACKAGES = \
 #			ptolemy.apps.superb.actor.lib
 
+# Packages used by TerraSwarm.  Note that configure sets
+# PTJAVASCRIPT_PACKAGES to include org.terraswarm.kernel, so that
+# should not be included here.
+TERRASWARMPACKAGES = \
+	org.terraswarm.lib
+
 # Packages used in code from Thales.
 THALESPACKAGES = \
 	thales.actor.gui \
@@ -564,6 +570,7 @@ ALLPACKAGES = \
 	$(PTSERVER_PACKAGES) \
 	$(PTSPACEDOMAIN_PACKAGES) \
 	$(SUPERBPACKAGES) \
+	$(TERRASWARMPACKAGES) \
 	$(THALESPACKAGES) \
 	$(VIPTOSPACKAGES) \
 	$(VISUALSENSEPACKAGES) \
