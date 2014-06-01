@@ -43,13 +43,13 @@ CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE =	SimpleOptimization
-#PTCLASSJAR = 	$(PTPACKAGE).jar
+PTPACKAGE =	LeastSquaresNodeLocalization
+PTCLASSJAR = 	$(PTPACKAGE).jar
 
-PTCLASSALLJAR = $(PTPACKAGE).jar
+#PTCLASSALLJAR = $(PTPACKAGE).jar
 
 # Include the .class files from these jars in PTCLASSALLJAR
-PTCLASSALLJARS =  
+#PTCLASSALLJARS =  
 
 # Keep this list alphabetized.
 JSRCS = 
