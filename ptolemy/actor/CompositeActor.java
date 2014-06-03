@@ -1000,19 +1000,37 @@ public class CompositeActor extends CompositeEntity implements Actor,
 
         return false;
     }
-
-    /** If this actor is opaque, invoke the isStrict() method of the local
-     *  director and return its result. Otherwise, return true.
+    /** Return false if all input ports have non-empty default values,
+     *  or if this actor is opaque and the contained director indicates
+     *  that it is non-strict.
      *  Normally this method will not be invoked on a non-opaque
      *  composite actor.
-     *
-     *  @return True if the local director's isStrict() method returns true or
-     *   if this actor is not opaque.
+     *  Note that ParameterPort is not treated as having a default value
+     *  because such ports might be used in a context where it is important
+     *  to supply them with an input value.
+     *  @return False if this actor does not need to be provided with
+     *   inputs to fire.
      *  @exception IllegalActionException Thrown if causality interface
-     *  cannot be computed.
+     *   cannot be computed, or if the defaultValue expression cannot be
+     *   evaluated on an input port.
      */
     public boolean isStrict() throws IllegalActionException {
-        if (isOpaque()) {
+    	List<IOPort> ports = inputPortList();
+    	boolean foundAnInputPort = false;
+    	for (IOPort port : ports) {
+    		foundAnInputPort = true;
+    		if (port.defaultValue.getToken() == null) {
+    			// Found an input port with no default value.
+    	        if (isOpaque()) {
+    	            return getDirector().isStrict();
+    	        } else {
+    	            return true;
+    	        }
+    		}
+    	}
+    	// Get to here if either all input ports have a default value
+    	// or there are no input ports.
+        if (isOpaque() && foundAnInputPort) {
             return getDirector().isStrict();
         } else {
             return true;

@@ -166,7 +166,8 @@ public class AtomicActor<T extends IOPort> extends ComponentEntity<T> implements
      *  @return A new ComponentEntity.
      */
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
-        AtomicActor<T> newObject = (AtomicActor<T>) super.clone(workspace);
+        @SuppressWarnings("unchecked")
+		AtomicActor<T> newObject = (AtomicActor<T>) super.clone(workspace);
 
         // Reset to force reinitialization of cache.
         newObject._initializables = null;
@@ -411,15 +412,28 @@ public class AtomicActor<T extends IOPort> extends ComponentEntity<T> implements
         return true;
     }
 
-    /** Return true in this base class. By default, actors do not
+    /** Return true unless all input ports have non-empty default values.
+     *  By default, most actors do not
      *  check their inputs to see whether they are known.  They assume
-     *  they are known.  A derived class that can tolerate unknown
-     *  inputs should override this method to return false.
-     *
-     *  @return True always in this base class.
+     *  they are known.
+     *  Note that ParameterPort is not treated as having a default value
+     *  because such ports might be used in a context where it is important
+     *  to supply them with an input value.
+     *  @return False if this actor does not need to be provided with
+     *   inputs to fire.
+     *  @exception IllegalActionException If the defaultValue expression
+     *   cannot be evaluated for an input port.
      */
-    public boolean isStrict() {
-        return true;
+    public boolean isStrict() throws IllegalActionException {
+    	for (IOPort port : inputPortList()) {
+    		if (port.defaultValue.getToken() == null) {
+    			// Found an input port with no default value.
+    			return true;
+    		}
+    	}
+    	// NOTE: If the actor has no input ports at all, this
+    	// returns false, indicating the actor is non-strict.
+        return false;
     }
 
     /** Invoke a specified number of iterations of the actor. An
