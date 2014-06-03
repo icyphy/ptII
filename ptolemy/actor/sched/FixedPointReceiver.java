@@ -291,14 +291,14 @@ public class FixedPointReceiver extends AbstractReceiver {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         private methods                   ////
+    ////                         protected fields                  ////
 
     /** The director of this receiver. */
-    private FixedPointDirector _director;
+    protected FixedPointDirector _director;
 
     /** A flag indicating whether this receiver has status known. */
-    private boolean _known = false;
+    protected boolean _known = false;
 
     /** The token held. */
-    private Token _token = null;
+    protected Token _token = null;
 }
