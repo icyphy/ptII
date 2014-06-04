@@ -140,16 +140,16 @@ public class AlgebraicLoopDirector extends FixedPointDirector {
         super(container, name);
         // Put the stopTime at the end parameters, since it rarely makes sense to use.
         stopTime.moveToLast();
-        
+
         method = new StringParameter(this, "method");
         method.addChoice("NewtonRaphson");
         method.addChoice("FixedPointIteration");
         method.setExpression("NewtonRaphson");
-        
+
         maxIterations = new Parameter(this, "maxIterations");
         maxIterations.setTypeEquals(BaseType.INT);
         maxIterations.setExpression("1000");
-        
+
         errorTolerance = new Parameter(this, "errorTolerance");
         errorTolerance.setTypeEquals(BaseType.DOUBLE);
         errorTolerance.setExpression("1E-4");
@@ -157,7 +157,7 @@ public class AlgebraicLoopDirector extends FixedPointDirector {
 
     ///////////////////////////////////////////////////////////////////
     ////                         parameters                        ////
-    
+
     /** The default tolerance for determining when convergence has occurred.
      *  When the current value of an input port differs from the previous
      *  value by less than the <i>errorTolerance</i>, then we declare it to
@@ -193,7 +193,7 @@ public class AlgebraicLoopDirector extends FixedPointDirector {
         // FIXME: populate.
         return newObject;
     }
-    
+
     /** Prefire and fire actors in the order given by the scheduler
      *  until the iteration converges.
      *  An iteration converges when a pass through the schedule does
@@ -212,11 +212,36 @@ public class AlgebraicLoopDirector extends FixedPointDirector {
         // This first do loop iterates until all variables are changing
         // by less than the errorTolerance.
         do {
-        	// FIXME: For Newton-Raphson,
-        	// Make a record of the current value of all input ports
-        	// that have defaultValue parameters that are non null.
-        	// Call these current values x_n.
-        	
+                // FIXME: For Newton-Raphson,
+                // Make a record of the current value of all input ports
+                // that have defaultValue parameters that are non null.
+                // Call these current values x_n.
+
+            if (_isNewtonRaphson) {
+                List<AlgebraicLoopReceiver> receivers = _receivers;
+                int i = 0;
+                for (AlgebraicLoopReceiver receiver : receivers) {
+/*              FIXME: There is something wrong: In test/auto/Newton1.xml, the print below produces
+i = 0,  null
+i = 1,  0.5
+i = 0,  0.0625
+i = 1,  0.0625
+					         There should only be one element in _x_n[1] for Newton1.xml
+					  */
+
+                    if ( (receiver.getContainer().defaultValue != null) ){
+                        _x_n[i] = receiver._getCurrentToken();
+                        if (_x_n[i] != null )
+                            System.out.println("i = " + new Integer(i).toString() + ",  " + _x_n[i].toString());
+                        else
+                            System.out.println("i = " + new Integer(i).toString() + ",  null");
+                        i++;
+                    }
+                }
+            }
+
+
+
         	// Calculate the superclass fixed point, which is the current
         	// evaluation of the feedback function.
         	// That is, x_n is replaced with g(x_n), where g()
@@ -255,7 +280,7 @@ public class AlgebraicLoopDirector extends FixedPointDirector {
         			}
         		}
         	} while (!_hasIterationConverged() && !_stopRequested);
-        	        	
+
     		// FIXME: For Newton-Raphson:
         	// At this point, the input ports with defaultValue parameters have
         	// g(x_n) in them, replacing x_n. Record g(x_n), which is the current
@@ -265,6 +290,17 @@ public class AlgebraicLoopDirector extends FixedPointDirector {
     		// of the ports with a defaultValue parameter. This can then be used
     		// according to the formula in the class comment to update each such
     		// port to hold x_n+1.
+            if (_isNewtonRaphson){
+                List<AlgebraicLoopReceiver> receivers = _receivers;
+                int i = 0;
+                for (AlgebraicLoopReceiver receiver : receivers) {
+                    if ( (receiver.getContainer().defaultValue != null) ){
+                        // Record g(x_n)
+                        _g_n[i] = receiver._getCurrentToken();
+                        i++;
+                    }
+                }
+            }
 
             iterationCount++;
         } while (!_hasIterationConverged(iterationCount) && !_stopRequested);
@@ -281,9 +317,25 @@ public class AlgebraicLoopDirector extends FixedPointDirector {
      */
     public void initialize() throws IllegalActionException {
         super.initialize();
+
+        _isNewtonRaphson = method.stringValue().equals(new String("NewtonRaphson"));
+
+        // Allocate memory for current value which is used in NewtonRaphson
+        if (_isNewtonRaphson){
+            // Count the number of receivers that have a default value.
+            int nRec = 0;
+            List<AlgebraicLoopReceiver> receivers = _receivers;
+            for (AlgebraicLoopReceiver receiver : receivers) {
+                if (receiver.getContainer().defaultValue != null)
+                    nRec++;
+            }
+            _x_n = new Token[nRec];
+            _g_n = new Token[nRec];
+        }
+
         // FIXME: populate.
     }
-    
+
     /** Return a new FixedPointReceiver. If a subclass overrides this
      *  method, the receiver it creates must be a subclass of FixedPointReceiver,
      *  and it must add the receiver to the _receivers list (a protected
@@ -445,6 +497,16 @@ public class AlgebraicLoopDirector extends FixedPointDirector {
 		// Return the default value.
 		return ((DoubleToken)errorTolerance.getToken()).doubleValue();
 	}
+
+    // /////////////////////////////////////////////////////////////////
+    // // protected variables ////
+    /** Current value of the iteration variables x_n */
+    protected Token[] _x_n;
+    /** Current value of the loop function g(x_n) */
+    protected Token[] _g_n;
+
+    /** Flag to indicate that it is the NewtonRaphson method */
+    protected boolean _isNewtonRaphson;
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
