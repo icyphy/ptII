@@ -587,6 +587,7 @@ ALLPACKAGES = \
 	ptolemy.caltrop.actors \
 	ptolemy.caltrop.ddi \
 	ptolemy.caltrop.util \
+	ptolemy.domains.algebraic.kernel \
 	ptolemy.domains.ca.kernel \
 	ptolemy.domains.ca.lib \
 	ptolemy.domains.ca.lib.gui \

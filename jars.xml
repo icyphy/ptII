@@ -1913,6 +1913,25 @@
       </fileset>
     </jar>
 
+    <!-- ptolemy/domains/algebraic/algebraic.jar -->
+    <jar defaultexcludes="yes"
+	 destfile="${basedir}/ptolemy/domains/algebraic/algebraic.jar"
+	 >
+      <fileset dir="${basedir}">
+	<include name="ptolemy/domains/algebraic/kernel/*.class"/>
+      </fileset>
+    </jar>
+
+    <!-- ptolemy/domains/algebraic/demo/demo.jar -->
+    <jar defaultexcludes="yes"
+	 destfile="${basedir}/ptolemy/domains/algebraic/demo/demo.jar"
+	 >
+      <fileset dir="${basedir}">
+	<include name="ptolemy/domains/algebraic/demo/HeaterOpenTank/*.xml"/>
+	<include name="ptolemy/domains/algebraic/demo/RLC/*.xml"/>
+      </fileset>
+    </jar>
+
     <!-- ptolemy/domains/ca/ca.jar -->
     <jar defaultexcludes="yes"
 	 destfile="${basedir}/ptolemy/domains/ca/ca.jar"
