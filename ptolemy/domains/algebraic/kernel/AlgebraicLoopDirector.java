@@ -45,7 +45,6 @@ import ptolemy.data.expr.StringParameter;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Nameable;
 import ptolemy.kernel.util.Workspace;
@@ -72,11 +71,47 @@ import ptolemy.kernel.util.Workspace;
  of this director will be used. Note that if the errorTolerance of a port
  is changed during a run, the new value is ignored until the next run.
  <p>
+ In all cases, the problem being solved has the form:
+ <pre>
+     -----------
+     |  -----  |
+     -->| g |---
+     x  -----
+ </pre>
+ where <i>x</i> is initially the vector of values corresponding to input
+ ports that have a non-null defaultValue parameter, and <i>g</i> is the
+ network of actors connecting these ports.
+ <p>
+ For the FixedPointIteration, we simply evaluate <i>g</i> repeatedly
+ until either all signals do not change by more than the errorTolerance,
+ or until there have been <i>maxIterations</i>. Note that it is possible
+ to reach a fixed point where some or all signals are infinite.
+ <p>
+ For NewtonRaphson, we solve for g(x)=x by solving f(x)=0,
+ where f(x) = g(x)-x. This is done by iterating as follows:
+ <pre>
+   x_n+1 = x_n - f(x_n)/f'(x_n) = x_n - (g(x_n) - x_n)/(g'(x_n) - 1) .
+ </pre>
+ To estimate g'(x_n), we do
+ <pre>
+   g'(x_n) = (g(x_n + d) - g(x_n))/d
+ </pre>
+ where <i>d</i> is the <i>delta</i> parameter.
+ <p>
  FIXME: Questions:
  <ul>
  <li> This implementation checks for convergence of <i>all</i> input
-      ports, not just those with defaultValue parameters. Is this what
-      we want?
+      ports, not just those with defaultValue parameters (i.e., not just
+      <i>x</i>). Is this what we want?
+ <li> This implementation uses the defaultValue on every firing.
+      Should the default value instead be replaced by the previous
+      solution on all but the first iteration?
+ <li> Should delta be able to be different for each variable?
+      I.e., should each input port that has a defaultValue parameter
+      also be able to have a delta parameter?
+ <li> Instead of estimating g'(x_n), we want to be able to optionally
+      identify g'(x_n). But this is really tricky when x_n is a vector
+      (i.e. where there are multiple input ports with defaultValue).
  <li> This code is not at all optimized and may be quite inefficient.
  </ul>
 
@@ -174,39 +209,63 @@ public class AlgebraicLoopDirector extends FixedPointDirector {
         }
         Schedule schedule = getScheduler().getSchedule();
         int iterationCount = 0;
+        // This first do loop iterates until all variables are changing
+        // by less than the errorTolerance.
         do {
-            Iterator firingIterator = schedule.firingIterator();
-            while (firingIterator.hasNext() && !_stopRequested) {
-                Actor actor = ((Firing) firingIterator.next()).getActor();
-                // If the actor has previously returned false in postfire(),
-                // do not fire it.
-                if (!_actorsFinishedExecution.contains(actor)) {
-                    // Check whether the actor is ready to fire.
-                    if (_isReadyToFire(actor)) {
-                        _fireActor(actor);
-                        _actorsFired.add(actor);
-                    } else {
-                        if (_debugging) {
-                            if (!_actorsFinishedFiring.contains(actor)
-                                    && actor.isStrict()) {
-                                _debug("Strict actor has uknown inputs: "
-                                        + actor.getFullName());
-                            }
-                        }
-                    }
-                } else {
-                    // The postfire() method of this actor returned false in
-                    // some previous iteration, so here, for the benefit of
-                    // connected actors, we need to explicitly call the
-                    // send(index, null) method of all of its output ports,
-                    // which indicates that a signal is known to be absent.
-                    if (_debugging) {
-                        _debug("FixedPointDirector: no longer enabled (return false in postfire): "
-                                + actor.getFullName());
-                    }
-                    _sendAbsentToAllUnknownOutputsOf(actor);
-                }
-            }
+        	// FIXME: For Newton-Raphson,
+        	// Make a record of the current value of all input ports
+        	// that have defaultValue parameters that are non null.
+        	// Call these current values x_n.
+        	
+        	// Calculate the superclass fixed point, which is the current
+        	// evaluation of the feedback function.
+        	// That is, x_n is replaced with g(x_n), where g()
+        	// is the feedback function.
+        	do {
+        		Iterator firingIterator = schedule.firingIterator();
+        		while (firingIterator.hasNext() && !_stopRequested) {
+        			Actor actor = ((Firing) firingIterator.next()).getActor();
+        			// If the actor has previously returned false in postfire(),
+        			// do not fire it.
+        			if (!_actorsFinishedExecution.contains(actor)) {
+        				// Check whether the actor is ready to fire.
+        				if (_isReadyToFire(actor)) {
+        					_fireActor(actor);
+        					_actorsFired.add(actor);
+        				} else {
+        					if (_debugging) {
+        						if (!_actorsFinishedFiring.contains(actor)
+        								&& actor.isStrict()) {
+        							_debug("Strict actor has uknown inputs: "
+        									+ actor.getFullName());
+        						}
+        					}
+        				}
+        			} else {
+        				// The postfire() method of this actor returned false in
+        				// some previous iteration, so here, for the benefit of
+        				// connected actors, we need to explicitly call the
+        				// send(index, null) method of all of its output ports,
+        				// which indicates that a signal is known to be absent.
+        				if (_debugging) {
+        					_debug("FixedPointDirector: no longer enabled (return false in postfire): "
+        							+ actor.getFullName());
+        				}
+        				_sendAbsentToAllUnknownOutputsOf(actor);
+        			}
+        		}
+        	} while (!_hasIterationConverged() && !_stopRequested);
+        	        	
+    		// FIXME: For Newton-Raphson:
+        	// At this point, the input ports with defaultValue parameters have
+        	// g(x_n) in them, replacing x_n. Record g(x_n), which is the current
+    		// value of all input ports that have a defaultValue parameter.
+    		// Then replace the value in those ports with x_n + delta, and redo
+    		// the above while loop.  The result will be g(x_n + delta) in each
+    		// of the ports with a defaultValue parameter. This can then be used
+    		// according to the formula in the class comment to update each such
+    		// port to hold x_n+1.
+
             iterationCount++;
         } while (!_hasIterationConverged(iterationCount) && !_stopRequested);
 
