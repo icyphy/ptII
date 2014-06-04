@@ -117,6 +117,7 @@
     <pathelement location="lib/ptcolt.jar" />
     <pathelement location="lib/ptjacl.jar" />
     <pathelement location="lib/mapss.jar" />
+    <pathelement location="lib/socketio.jar" />
     <pathelement location="lib/sootclasses.jar" />
     <pathelement location="lib/jasminclasses.jar" />
     <pathelement location="ptolemy/distributed/jini/jar/jini-core.jar" />
