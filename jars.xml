@@ -94,6 +94,8 @@
     <include name="ptolemy/demo/demo.jar" />
     <include name="ptolemy/distributed/demo/demo.jar" />
     <include name="ptolemy/distributed/distributed.jar" />
+    <include name="ptolemy/domains/algebraic/algebraic.jar" />
+    <include name="ptolemy/domains/algebraic/demo.jar" />
     <include name="ptolemy/domains/ca/ca.jar" />
     <include name="ptolemy/domains/ca/demo.jar" />
     <include name="ptolemy/domains/ci/ci.jar" />

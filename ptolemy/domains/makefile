@@ -45,7 +45,7 @@ EXPERIMENTAL_DOMAINS =
 #   ojdbc6.jar was found.
 # coroutine is on a separate line because it is not shipped and 
 #   building the installer removes coroutine.
-DOMAINS =	ca ci continuous \
+DOMAINS =	algebraic ca ci continuous \
 		coroutine \
 		csp curriculum \
 	        dde ddf de hdf modal pn sdf dt giotto \
@@ -79,6 +79,7 @@ PTCLASSJAR =
 # domain if ojdbc6.jar was found.  PTSPACEDOMAIN_JAR is set by configure.
 
 PTAUXALLJARS = \
+		algebraic/algebraic.jar \
 		ca/ca.jar \
 		ci/ci.jar \
 		csp/csp.jar \
@@ -152,6 +153,7 @@ OPTIONAL_FILES = \
 OTHER_JARS = demo.jar
 
 DEMOJARS = \
+	algebraic/demo/demo.jar \
 	ca/demo/demo.jar \
 	de/demo/demo.jar \
 	de/doc/doc.jar \
