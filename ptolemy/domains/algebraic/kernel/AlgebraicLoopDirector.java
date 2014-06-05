@@ -203,7 +203,7 @@ public class AlgebraicLoopDirector extends FixedPointDirector {
      *   of the actor throws it.
      */
     public void fire() throws IllegalActionException {
-    	// Do not call super.fire(). It doesn't do the right thing.
+        // Do not call super.fire(). It doesn't do the right thing.
         if (_debugging) {
             _debug("AlgebraicLoopDirector: invoking fire().");
         }
@@ -226,8 +226,8 @@ i = 0,  null
 i = 1,  0.5
 i = 0,  0.0625
 i = 1,  0.0625
-					         There should only be one element in _x_n[1] for Newton1.xml
-					  */
+                             There should only be one element in _x_n[1] for Newton1.xml
+                      */
 
                     if ( (receiver.getContainer().defaultValue != null) ){
                         _x_n[i] = receiver._getCurrentToken();
@@ -242,54 +242,54 @@ i = 1,  0.0625
 
 
 
-        	// Calculate the superclass fixed point, which is the current
-        	// evaluation of the feedback function.
-        	// That is, x_n is replaced with g(x_n), where g()
-        	// is the feedback function.
-        	do {
-        		Iterator firingIterator = schedule.firingIterator();
-        		while (firingIterator.hasNext() && !_stopRequested) {
-        			Actor actor = ((Firing) firingIterator.next()).getActor();
-        			// If the actor has previously returned false in postfire(),
-        			// do not fire it.
-        			if (!_actorsFinishedExecution.contains(actor)) {
-        				// Check whether the actor is ready to fire.
-        				if (_isReadyToFire(actor)) {
-        					_fireActor(actor);
-        					_actorsFired.add(actor);
-        				} else {
-        					if (_debugging) {
-        						if (!_actorsFinishedFiring.contains(actor)
-        								&& actor.isStrict()) {
-        							_debug("Strict actor has uknown inputs: "
-        									+ actor.getFullName());
-        						}
-        					}
-        				}
-        			} else {
-        				// The postfire() method of this actor returned false in
-        				// some previous iteration, so here, for the benefit of
-        				// connected actors, we need to explicitly call the
-        				// send(index, null) method of all of its output ports,
-        				// which indicates that a signal is known to be absent.
-        				if (_debugging) {
-        					_debug("FixedPointDirector: no longer enabled (return false in postfire): "
-        							+ actor.getFullName());
-        				}
-        				_sendAbsentToAllUnknownOutputsOf(actor);
-        			}
-        		}
-        	} while (!_hasIterationConverged() && !_stopRequested);
+            // Calculate the superclass fixed point, which is the current
+            // evaluation of the feedback function.
+            // That is, x_n is replaced with g(x_n), where g()
+            // is the feedback function.
+            do {
+                Iterator firingIterator = schedule.firingIterator();
+                while (firingIterator.hasNext() && !_stopRequested) {
+                    Actor actor = ((Firing) firingIterator.next()).getActor();
+                    // If the actor has previously returned false in postfire(),
+                    // do not fire it.
+                    if (!_actorsFinishedExecution.contains(actor)) {
+                        // Check whether the actor is ready to fire.
+                        if (_isReadyToFire(actor)) {
+                            _fireActor(actor);
+                            _actorsFired.add(actor);
+                        } else {
+                            if (_debugging) {
+                                if (!_actorsFinishedFiring.contains(actor)
+                                        && actor.isStrict()) {
+                                    _debug("Strict actor has uknown inputs: "
+                                            + actor.getFullName());
+                                }
+                            }
+                        }
+                    } else {
+                        // The postfire() method of this actor returned false in
+                        // some previous iteration, so here, for the benefit of
+                        // connected actors, we need to explicitly call the
+                        // send(index, null) method of all of its output ports,
+                        // which indicates that a signal is known to be absent.
+                        if (_debugging) {
+                            _debug("FixedPointDirector: no longer enabled (return false in postfire): "
+                                    + actor.getFullName());
+                        }
+                        _sendAbsentToAllUnknownOutputsOf(actor);
+                    }
+                }
+            } while (!_hasIterationConverged() && !_stopRequested);
 
-    		// FIXME: For Newton-Raphson:
-        	// At this point, the input ports with defaultValue parameters have
-        	// g(x_n) in them, replacing x_n. Record g(x_n), which is the current
-    		// value of all input ports that have a defaultValue parameter.
-    		// Then replace the value in those ports with x_n + delta, and redo
-    		// the above while loop.  The result will be g(x_n + delta) in each
-    		// of the ports with a defaultValue parameter. This can then be used
-    		// according to the formula in the class comment to update each such
-    		// port to hold x_n+1.
+            // FIXME: For Newton-Raphson:
+            // At this point, the input ports with defaultValue parameters have
+            // g(x_n) in them, replacing x_n. Record g(x_n), which is the current
+            // value of all input ports that have a defaultValue parameter.
+            // Then replace the value in those ports with x_n + delta, and redo
+            // the above while loop.  The result will be g(x_n + delta) in each
+            // of the ports with a defaultValue parameter. This can then be used
+            // according to the formula in the class comment to update each such
+            // port to hold x_n+1.
             if (_isNewtonRaphson){
                 List<AlgebraicLoopReceiver> receivers = _receivers;
                 int i = 0;
@@ -361,33 +361,33 @@ i = 1,  0.0625
      *   of maxIterations.
      */
     protected boolean _hasIterationConverged(int iterationCount)
-    		throws IllegalActionException {
-    	int maxIterationsValue = ((IntToken)maxIterations.getToken()).intValue();
-    	if (iterationCount > maxIterationsValue) {
-    		throw new IllegalActionException(this, "Failed to converge after " + maxIterationsValue + " iterations.");
-    	}
-    	if (!super._hasIterationConverged()) {
-    		return false;
-    	}
+            throws IllegalActionException {
+        int maxIterationsValue = ((IntToken)maxIterations.getToken()).intValue();
+        if (iterationCount > maxIterationsValue) {
+            throw new IllegalActionException(this, "Failed to converge after " + maxIterationsValue + " iterations.");
+        }
+        if (!super._hasIterationConverged()) {
+            return false;
+        }
         if (_debugging) {
             _debug("Checking whether new values are close to previous values");
         }
         @SuppressWarnings("unchecked")
-		List<AlgebraicLoopReceiver> receivers = _receivers;
+        List<AlgebraicLoopReceiver> receivers = _receivers;
         for (AlgebraicLoopReceiver receiver : receivers) {
-        	Token currentToken = receiver._getCurrentToken();
-        	Token previousToken = receiver._getPreviousToken();
-        	if (currentToken != previousToken) {
-        		// Either might be null.
-        		if (currentToken == null || previousToken == null) {
-        			return false;
-        		}
-        		IOPort container = receiver.getContainer();
-        		double epsilon = _getErrorTolerance(container);
-        		if (!(currentToken.isCloseTo(previousToken, epsilon)).booleanValue()) {
-        			return false;
-        		}
-        	}
+            Token currentToken = receiver._getCurrentToken();
+            Token previousToken = receiver._getPreviousToken();
+            if (currentToken != previousToken) {
+                // Either might be null.
+                if (currentToken == null || previousToken == null) {
+                    return false;
+                }
+                IOPort container = receiver.getContainer();
+                double epsilon = _getErrorTolerance(container);
+                if (!(currentToken.isCloseTo(previousToken, epsilon)).booleanValue()) {
+                    return false;
+                }
+            }
         }
         return true;
     }
@@ -457,46 +457,46 @@ i = 1,  0.0625
      *  @return A list of receivers.
      */
     protected List<AlgebraicLoopReceiver> _receivers() {
-    	return _receivers;
+        return _receivers;
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-	/** Return the error tolerance of the specified port.
-	 *  @param port The port.
-	 *  @return The port's error tolerance.
-	 *  @throws IllegalActionException If the errorTolerance parameter of the port
-	 *   cannot be evaluated.
-	 */
-	private double _getErrorTolerance(IOPort port)
-			throws IllegalActionException {
-		// If it's in the cache, use that value.
-		if (_errorTolerances != null) {
-			Double result = _errorTolerances.get(port);
-			if (result != null) {
-				return result;
-			}
-		}
-		if (port != null) {
-			Parameter tolerance = (Parameter)port.getAttribute("errorTolerance", Parameter.class);
-			if (tolerance != null) {
-				Token value = tolerance.getToken();
-				if (value instanceof DoubleToken) {
-					// Port has a custom tolerance.
-					double epsilon = ((DoubleToken)value).doubleValue();
-					// Cache the value.
-					if (_errorTolerances == null) {
-						_errorTolerances = new HashMap<IOPort,Double>();
-						_errorTolerances.put(port, epsilon);
-					}
-					return epsilon;
-				}
-			}
-		}
-		// Return the default value.
-		return ((DoubleToken)errorTolerance.getToken()).doubleValue();
-	}
+    /** Return the error tolerance of the specified port.
+     *  @param port The port.
+     *  @return The port's error tolerance.
+     *  @throws IllegalActionException If the errorTolerance parameter of the port
+     *   cannot be evaluated.
+     */
+    private double _getErrorTolerance(IOPort port)
+            throws IllegalActionException {
+        // If it's in the cache, use that value.
+        if (_errorTolerances != null) {
+            Double result = _errorTolerances.get(port);
+            if (result != null) {
+                return result;
+            }
+        }
+        if (port != null) {
+            Parameter tolerance = (Parameter)port.getAttribute("errorTolerance", Parameter.class);
+            if (tolerance != null) {
+                Token value = tolerance.getToken();
+                if (value instanceof DoubleToken) {
+                    // Port has a custom tolerance.
+                    double epsilon = ((DoubleToken)value).doubleValue();
+                    // Cache the value.
+                    if (_errorTolerances == null) {
+                        _errorTolerances = new HashMap<IOPort,Double>();
+                        _errorTolerances.put(port, epsilon);
+                    }
+                    return epsilon;
+                }
+            }
+        }
+        // Return the default value.
+        return ((DoubleToken)errorTolerance.getToken()).doubleValue();
+    }
 
     // /////////////////////////////////////////////////////////////////
     // // protected variables ////
@@ -511,6 +511,6 @@ i = 1,  0.0625
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-	/** A table of error tolerances for ports that specify them. */
-	private Map<IOPort,Double> _errorTolerances;
+    /** A table of error tolerances for ports that specify them. */
+    private Map<IOPort,Double> _errorTolerances;
 }

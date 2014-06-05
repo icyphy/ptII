@@ -93,11 +93,11 @@ public class AlgebraicLoopReceiver extends FixedPointReceiver {
     /** Set the status of this receiver to be known and absent.
      */
     public void clear() throws IllegalActionException {
-    	_token = null;
-    	_known = true;
-    	if (_director != null) {
-    		((AlgebraicLoopDirector)_director)._receiverChanged();
-    	}
+        _token = null;
+        _known = true;
+        if (_director != null) {
+            ((AlgebraicLoopDirector)_director)._receiverChanged();
+        }
     }
 
     /** Return true.
@@ -131,8 +131,8 @@ public class AlgebraicLoopReceiver extends FixedPointReceiver {
         }
         _token = token;
         if (_director != null && !_known) {
-        	// Notify the base class that this receiver is now known.
-        	((AlgebraicLoopDirector)_director)._receiverChanged();
+            // Notify the base class that this receiver is now known.
+            ((AlgebraicLoopDirector)_director)._receiverChanged();
         }
         _known = true;
     }
@@ -141,25 +141,25 @@ public class AlgebraicLoopReceiver extends FixedPointReceiver {
      *  containing port's defaultValue parameter, if there is one.
      */
     public void reset() {
-    	_previousToken = null;
-    	IOPort container = getContainer();
-    	if (container == null) {
-    		super.reset();
-    		return;
-    	}
-    	Parameter defaultValue = container.defaultValue;
-    	if (defaultValue == null) {
-    		super.reset();
-    		return;
-    	}
+        _previousToken = null;
+        IOPort container = getContainer();
+        if (container == null) {
+            super.reset();
+            return;
+        }
+        Parameter defaultValue = container.defaultValue;
+        if (defaultValue == null) {
+            super.reset();
+            return;
+        }
         try {
-			_token = defaultValue.getToken();
-		} catch (IllegalActionException e) {
-			// Unfortunately, to make this a compile-time exception, we have
-			// to unravel all the way to Director. Don't do this now.
-			// Too big a change. So we throw a runtime exception.
-			throw new InternalErrorException(getContainer(), e, "Failed to reset receiver.");
-		}
+            _token = defaultValue.getToken();
+        } catch (IllegalActionException e) {
+            // Unfortunately, to make this a compile-time exception, we have
+            // to unravel all the way to Director. Don't do this now.
+            // Too big a change. So we throw a runtime exception.
+            throw new InternalErrorException(getContainer(), e, "Failed to reset receiver.");
+        }
         _known = (_token != null);
     }
 
@@ -170,7 +170,7 @@ public class AlgebraicLoopReceiver extends FixedPointReceiver {
      *  @return The current token.
      */
     protected Token _getCurrentToken() {
-    	return _token;
+        return _token;
     }
 
     /** Return the previous token.
@@ -178,7 +178,7 @@ public class AlgebraicLoopReceiver extends FixedPointReceiver {
      *   if there is none since the last reset().
      */
     protected Token _getPreviousToken() {
-    	return _previousToken;
+        return _previousToken;
     }
 
     ///////////////////////////////////////////////////////////////////
