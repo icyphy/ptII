@@ -48,7 +48,6 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Nameable;
 import ptolemy.kernel.util.Workspace;
-
 ///////////////////////////////////////////////////////////////////
 //// AlgebraicLoopDirector
 
@@ -106,9 +105,12 @@ import ptolemy.kernel.util.Workspace;
  <li> This implementation uses the defaultValue on every firing.
       Should the default value instead be replaced by the previous
       solution on all but the first iteration?
+      FIXME: Yes, this will need to be done as it increases robustness and efficiency.
  <li> Should delta be able to be different for each variable?
       I.e., should each input port that has a defaultValue parameter
       also be able to have a delta parameter?
+      FIXME: Yes, the magnitudes of variables can be a few orders of magnitude different,
+      e.g., if one port as a control signal, and another an air pressure in Pascal.
  <li> Instead of estimating g'(x_n), we want to be able to optionally
       identify g'(x_n). But this is really tricky when x_n is a vector
       (i.e. where there are multiple input ports with defaultValue).
@@ -201,52 +203,85 @@ public class AlgebraicLoopDirector extends FixedPointDirector {
      *  @exception IllegalActionException If an actor violates the
      *   monotonicity constraints, or the prefire() or fire() method
      *   of the actor throws it.
+     *
      */
     public void fire() throws IllegalActionException {
         // Do not call super.fire(). It doesn't do the right thing.
         if (_debugging) {
             _debug("AlgebraicLoopDirector: invoking fire().");
         }
-        Schedule schedule = getScheduler().getSchedule();
         int iterationCount = 0;
-        // This first do loop iterates until all variables are changing
-        // by less than the errorTolerance.
-        do {
-                // FIXME: For Newton-Raphson,
-                // Make a record of the current value of all input ports
-                // that have defaultValue parameters that are non null.
-                // Call these current values x_n.
 
-            if (_isNewtonRaphson) {
-                List<AlgebraicLoopReceiver> receivers = _receivers;
-                int i = 0;
-                for (AlgebraicLoopReceiver receiver : receivers) {
-/*              FIXME: There is something wrong: In test/auto/Newton1.xml, the print below produces
-i = 0,  null
-i = 1,  0.5
-i = 0,  0.0625
-i = 1,  0.0625
-                             There should only be one element in _x_n[1] for Newton1.xml
-                      */
-
-                    if ( (receiver.getContainer().defaultValue != null) ){
-                        _x_n[i] = receiver._getCurrentToken();
-                        if (_x_n[i] != null )
-                            System.out.println("i = " + new Integer(i).toString() + ",  " + _x_n[i].toString());
-                        else
-                            System.out.println("i = " + new Integer(i).toString() + ",  null");
-                        i++;
-                    }
+        List<AlgebraicLoopReceiver> receivers = _receivers;
+        int i = 0;
+        for (AlgebraicLoopReceiver receiver : receivers) {
+            if ( (receiver.getContainer().defaultValue != null) ){
+                Token t = receiver._getCurrentToken();
+                if (t != null && t.getType() == BaseType.DOUBLE){
+                    _x_n[i] = ((DoubleToken)t).doubleValue();
+                    _tol[i] =_getErrorTolerance( receiver.getContainer() );
+                    i++;
+                }
+                else{
+                    // FIXME:
+                    // The Token is null. I think this is a bug in Ptolemy, as test/auto/Newton1.xml
+                    // should have the same values for all receivers.
+                    // Hence, for now, I just set it to some value in order to
+                    // fill the vector of doubles
+                    _x_n[i] = 99999;
+                    _tol[i] = ((DoubleToken)errorTolerance.getToken()).doubleValue();
+                    i++;
                 }
             }
+        }
+        // Now, _x_n contains all values for the receivers
+        int maxIterationsValue = ((IntToken)(maxIterations.getToken())).intValue();
 
+        // Instantiate the numerical solver
+        AlgebraicLoopSolver solver = new AlgebraicLoopSolver(_tol, maxIterationsValue);
+        // Call the solver.
+        try{
+        	solver.solve(_x_n);
+        }
+        catch(Exception e){
+        	if (!solver.converged())
+        		throw new IllegalActionException(this, "Failed to converge after " + maxIterationsValue + " iterations.");
+        }
+        if (_debugging) {
+            _debug(this.getFullName() + ": Fixed point found after "
+            + solver.getIterationCount() + " iterations.");
+        }
+    }
 
+    /** Return g(x).
+     *
+     *  This function is called by the solver to evaluate the loop function.
+     *
+     * @param x Input to the loop function.
+     * @return Result of the loop function.
+     * @exception IllegalActionException If the prefire() method
+     *   returns false having previously returned true in the same
+     *   iteration, or if the prefire() or fire() method of the actor
+     *   throws it.
+     */
+    protected double[] _evaluateLoopFunction(double[] x)
+    		throws IllegalActionException{
+    	// Set the argument to the receivers
+    	int iRec=0;
+        List<AlgebraicLoopReceiver> receivers = _receivers;
+        for (AlgebraicLoopReceiver receiver : receivers) {
+        	// FIXME: We should do this only if the receiver is a DoubleToken
+        	DoubleToken t = new DoubleToken(x[iRec]);
+        	receiver.put(t);
+        	iRec++;
+        }
 
-            // Calculate the superclass fixed point, which is the current
-            // evaluation of the feedback function.
-            // That is, x_n is replaced with g(x_n), where g()
-            // is the feedback function.
-            do {
+        // Calculate the superclass fixed point, which is the current
+        // evaluation of the feedback function.
+        // That is, x_n is replaced with g(x_n), where g()
+        // is the feedback function.
+        Schedule schedule = getScheduler().getSchedule();
+        do {
                 Iterator firingIterator = schedule.firingIterator();
                 while (firingIterator.hasNext() && !_stopRequested) {
                     Actor actor = ((Firing) firingIterator.next()).getActor();
@@ -261,7 +296,7 @@ i = 1,  0.0625
                             if (_debugging) {
                                 if (!_actorsFinishedFiring.contains(actor)
                                         && actor.isStrict()) {
-                                    _debug("Strict actor has uknown inputs: "
+                                    _debug("Strict actor has unknown inputs: "
                                             + actor.getFullName());
                                 }
                             }
@@ -279,37 +314,25 @@ i = 1,  0.0625
                         _sendAbsentToAllUnknownOutputsOf(actor);
                     }
                 }
-            } while (!_hasIterationConverged() && !_stopRequested);
+        } while (!_hasIterationConverged() && !_stopRequested);
 
-            // FIXME: For Newton-Raphson:
-            // At this point, the input ports with defaultValue parameters have
-            // g(x_n) in them, replacing x_n. Record g(x_n), which is the current
-            // value of all input ports that have a defaultValue parameter.
-            // Then replace the value in those ports with x_n + delta, and redo
-            // the above while loop.  The result will be g(x_n + delta) in each
-            // of the ports with a defaultValue parameter. This can then be used
-            // according to the formula in the class comment to update each such
-            // port to hold x_n+1.
-            if (_isNewtonRaphson){
-                List<AlgebraicLoopReceiver> receivers = _receivers;
-                int i = 0;
-                for (AlgebraicLoopReceiver receiver : receivers) {
-                    if ( (receiver.getContainer().defaultValue != null) ){
-                        // Record g(x_n)
-                        _g_n[i] = receiver._getCurrentToken();
-                        i++;
-                    }
-                }
+        // Get the values from the receivers, and return them
+        double[] g = new double[x.length];
+
+        int i = 0;
+        for (AlgebraicLoopReceiver receiver : receivers) {
+            if (receiver.getContainer().defaultValue != null){
+                // Record g(x_n)
+            	Token t = receiver._getCurrentToken();
+            	if (t.getType() == BaseType.DOUBLE){
+            		g[i] = ((DoubleToken)(t)).doubleValue();
+            		i++;
+            	}
             }
-
-            iterationCount++;
-        } while (!_hasIterationConverged(iterationCount) && !_stopRequested);
-
-        if (_debugging) {
-            _debug(this.getFullName() + ": Fixed point found after "
-                    + iterationCount + " iterations.");
         }
+        return g;
     }
+
 
     /** Initialize the director and all deeply contained actors by calling
      *  the super.initialize() method.
@@ -320,19 +343,16 @@ i = 1,  0.0625
 
         _isNewtonRaphson = method.stringValue().equals(new String("NewtonRaphson"));
 
-        // Allocate memory for current value which is used in NewtonRaphson
-        if (_isNewtonRaphson){
-            // Count the number of receivers that have a default value.
-            int nRec = 0;
-            List<AlgebraicLoopReceiver> receivers = _receivers;
-            for (AlgebraicLoopReceiver receiver : receivers) {
-                if (receiver.getContainer().defaultValue != null)
-                    nRec++;
-            }
-            _x_n = new Token[nRec];
-            _g_n = new Token[nRec];
+        // Count the number of receivers that have a default value.
+        int nRec = 0;
+        List<AlgebraicLoopReceiver> receivers = _receivers;
+        for (AlgebraicLoopReceiver receiver : receivers) {
+        	if (receiver.getContainer().defaultValue != null)
+        		nRec++;
         }
-
+        _x_n = new double[nRec];
+        _g_n = new double[nRec];
+        _tol = new double[nRec];
         // FIXME: populate.
     }
 
@@ -501,9 +521,11 @@ i = 1,  0.0625
     // /////////////////////////////////////////////////////////////////
     // // protected variables ////
     /** Current value of the iteration variables x_n */
-    protected Token[] _x_n;
+    protected double[] _x_n;
     /** Current value of the loop function g(x_n) */
-    protected Token[] _g_n;
+    protected double[] _g_n;
+    /** Tolerance for each iteration variable */
+    protected double[] _tol;
 
     /** Flag to indicate that it is the NewtonRaphson method */
     protected boolean _isNewtonRaphson;
@@ -513,4 +535,136 @@ i = 1,  0.0625
 
     /** A table of error tolerances for ports that specify them. */
     private Map<IOPort,Double> _errorTolerances;
+
+    ///////////////////////////////////////////////////////////////////
+    ////   Inner class for numerical solver                        ////
+
+    /**
+     A class for solving algebraic loops.
+
+     This class solves an algebraic loop of the form x=g(x)
+     <pre>
+         -----------
+         |  -----  |
+         -->| g |---
+         x  -----
+     </pre>
+     where <i>x</i> is initially the vector of values corresponding to input
+     ports that have a non-null defaultValue parameter, and <i>g</i> is the
+     network of actors connecting these ports.
+     <p>
+     For the FixedPointIteration, we simply evaluate <i>g</i> repeatedly
+     until either all signals do not change by more than the errorTolerance,
+     or until there have been <i>maxIterations</i>. Note that it is possible
+     to reach a fixed point where some or all signals are infinite.
+     <p>
+     For NewtonRaphson, we solve for g(x)=x by solving f(x)=0,
+     where f(x) = g(x)-x. This is done by iterating as follows:
+     <pre>
+       x_n+1 = x_n - f(x_n)/f'(x_n) = x_n - (g(x_n) - x_n)/(g'(x_n) - 1) .
+     </pre>
+     To estimate g'(x_n), we do
+     <pre>
+       g'(x_n) = (g(x_n + d) - g(x_n))/d
+     </pre>
+     where <i>d</i> is the <i>delta</i> parameter.
+     <p>
+
+     @author Michael Wetter
+     */
+    class AlgebraicLoopSolver {
+
+        /** Constructs an algebraic loop solver.
+
+         *  @param tolerance Tolerance for each variable.
+         *  @param maxIterations Maximum number of iterations.
+         */
+        public AlgebraicLoopSolver(
+                double[] tolerance,
+        		int maxIterations){
+        	_tol = new double[tolerance.length];
+        	_x = new double[tolerance.length];
+
+        	System.arraycopy(tolerance, 0, _tol, 0, tolerance.length);
+        	_maxIterations = maxIterations;
+
+        	_converged = false;
+            _iterationCount = 0;
+        }
+
+        ///////////////////////////////////////////////////////////////////
+        ////                         public methods                    ////
+        /** Solve the algebraic loop.
+         *
+         *  This method iterates until a solution is found. If it does not
+         *  converge within the maximum number of iterations, it throws
+         *  an IllegalActionException. A method that calls solve(double[] xInitial)
+         *  can then call converged() to check whether the exception is thrown because
+         *  of lack of convergence.
+         *
+         * @param xInitial Initial iterate.
+         * @exception IllegalActionException If an actor violates the
+         *            monotonicity constraints, or the prefire() or fire() method
+         *            of the actor throws it.
+         */
+        public void solve(double[] xInitial)
+        	throws IllegalActionException{
+        	_x = xInitial;
+            _iterationCount = 0;
+            do {
+            	// Evaluate the loop function to compute x_{n+1} = g(x_n).
+            	// This calls the loop function of the outer class.
+                double[] g = _evaluateLoopFunction(_x);
+                _iterationCount++;
+
+                // Check for convergence
+                _converged = true;
+                for(int i = 0; i < _x.length; i++){
+                	double diff = _x[i] - g[i];
+                	// FIXME: this needs to be replaced with a test for relative and absolute convergence.
+                	if (diff > _tol[i] || -diff > _tol[i]){
+                		_converged = false;
+                		break;
+                	}
+                }
+                // FIXME.
+                // The next statement is for successive substitution.
+                // Here, different updates need to be added, such as for the Newton method.
+               	_x = g;
+
+               	// Check for maximum number of iterations in case we did not yet converge.
+                if (!_converged && _iterationCount > _maxIterations)
+                	throw new RuntimeException("Failed to converge after " + _maxIterations + " iterations.");
+            } while (!_converged && !_stopRequested);
+        }
+
+        /** Return true if the solver converged, false otherwise.
+         *
+         * @return true if the solver converged, false otherwise.
+         */
+        public boolean converged() {
+            return _converged;
+        }
+
+        /** Return the number of iterations done in the last call to the method solve(double[]).
+         *
+         * @return The number of iterations
+         */
+         public int getIterationCount() {
+             return _iterationCount;
+         }
+
+        ///////////////////////////////////////////////////////////////////
+        //// protected variables                                       ////
+        /** Current value of the iteration variables x */
+        protected double[] _x;
+        /** Tolerance for each iteration variable */
+        protected double[] _tol;
+        /** Number of iterations in the last call to the function solve(double[]) */
+        protected int _iterationCount;
+        /** Maximum number of iterations */
+        protected int _maxIterations;
+        /** Flag that indicates whether the solver converged */
+        protected boolean _converged;
+    }
 }
