@@ -166,6 +166,7 @@ NATIVE_SIGNED_LIB_JARS = \
 
 SIGNED_LIB_JARS =	$(NATIVE_SIGNED_LIB_JARS) \
 			lib/diva.jar \
+			lib/guava.jar \
 			lib/kieler.jar \
 			lib/jasminclasses.jar \
 			lib/jython.jar \
@@ -189,6 +190,7 @@ NUMBER_OF_JARS_TO_LOAD_EAGERLY = 999
 CORE_JNLP_JARS = \
 	doc/docConfig.jar \
 	lib/diva.jar \
+	lib/guava.jar \
 	lib/kieler.jar \
 	ptolemy/vergil/basic/layout/layout.jar \
 	ptolemy/ptsupport.jar \
@@ -539,6 +541,7 @@ FULL_ONLY_JNLP_JARS = \
 	ptolemy/distributed/demo/demo.jar \
 	ptolemy/demo/demo.jar \
 	ptolemy/domains/experimentalDomains.jar \
+	ptolemy/domains/algebraic/demo/demo.jar \
 	ptolemy/domains/ca/demo/demo.jar \
 	ptolemy/domains/ci/demo/demo.jar \
 	ptolemy/domains/ci/doc/doc.jar \
@@ -1217,6 +1220,7 @@ $(JAR_DIST_DIR): $(NATIVE_SIGNED_LIB_JARS)
 
 # Jarfiles used by JNLP WebStart code generation in copernicus/applet.
 APPLET_DOMAIN_JARS = \
+	ptolemy/domains/algebraic/algebraic.jar \
 	ptolemy/domains/ca/ca.jar \
 	ptolemy/domains/ci/ci.jar \
 	ptolemy/domains/continuous/continuous.jar \
@@ -1553,8 +1557,10 @@ echo_jars:
 	@echo $($(JARS)) | grep -v "(doc/codeDoc|doc/design/hyvisual.jar|doc/design/design.jar|doc/design/visualsense.jar)" |  awk '{for(i=1;i<=NF;i++){ print "            <file src=\"../../jar_dist/" $$i "\""; ns = split($$i, f, "/"); dir = ""; for(s=1;s<ns;s++) {dir = dir "/" f[s]}  print "                  targetdir=\"$$INSTALL_PATH" dir "\"/>"  } }'
 
 
+# The echo_plist_jars rule is used by $PTII/bin/makeapp to create Contents/Info.plist.
+# sed is used to make the paths relative for things like lib/js.jar
 echo_plist_jars:
-	@echo $($(JARS)) | grep -v "(doc/codeDoc|doc/design/hyvisual.jar|doc/design/design.jar|doc/design/visualsense.jar)"
+	@echo $($(JARS)) | grep -v "(doc/codeDoc|doc/design/hyvisual.jar|doc/design/design.jar|doc/design/visualsense.jar)" | sed 's@$(PTII)/@@g'
 
 # make echo_classpath_jars JARS=PTINY_JNLP_JARS
 echo_classpath_jars:
