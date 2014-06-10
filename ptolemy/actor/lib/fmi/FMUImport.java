@@ -680,6 +680,10 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
 
             TypedIOPort port = output.port;
 
+            if (_debugging) {
+                _debugToStdOut("FMUImport.fire(): port " + port.getName());
+            }
+
             // If the output port has already been set, then
             // skip it.
             // FIXME: This will not work with SDF because the port
@@ -702,6 +706,10 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
                 // The output port has some declared dependencies.
                 // Check only those ports.
                 for (TypedIOPort inputPort : output.dependencies) {
+                    if (_debugging) {
+                        _debugToStdOut("FMUImport.fire(): port " + port.getName() + " depends on " + inputPort.getName());
+                    }
+
                     if (!inputPort.isKnown(0)) {
                         // Skip this output port. It depends on
                         // unknown inputs.
@@ -723,6 +731,9 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
                 // inputs, so all inputs must be known.
                 List<TypedIOPort> inputPorts = inputPortList();
                 for (TypedIOPort inputPort : inputPorts) {
+                    if (_debugging) {
+                        _debugToStdOut("FMUImport.fire(): port " + port.getName() + " looking for unknown input" + inputPort.getName());
+                    }
                     if (inputPort.getWidth() < 0 || !inputPort.isKnown(0)) {
                         // Input port value is not known.
                         foundUnknownInputOnWhichOutputDepends = true;
@@ -737,6 +748,9 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
                         break;
                     }
                 }
+            }
+            if (_debugging) {
+                _debugToStdOut("FMUImport.fire(): port " + port.getName() + " foundUnknownInputOnWhichOutputDepends: " + foundUnknownInputOnWhichOutputDepends);
             }
             if (!foundUnknownInputOnWhichOutputDepends) {
                 // Ok to get the output. All the inputs on which
@@ -3043,7 +3057,8 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
             // an internal variable but not call it an output.
             // FIXME: Perhaps we want to have a parameter to hide the internal variables?
             if (scalarVariable.causality == FMIScalarVariable.Causality.output
-                    || scalarVariable.causality == FMIScalarVariable.Causality.internal) {
+                    || scalarVariable.causality == FMIScalarVariable.Causality.internal
+                    || scalarVariable.causality == FMIScalarVariable.Causality.local) {
                 TypedIOPort port = (TypedIOPort) _getPortByNameOrDisplayName(scalarVariable.name);
                 if (port == null || port.getWidth() <= 0) {
                     // Either it is not a port or not connected.
@@ -3066,7 +3081,19 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
                     */
                     continue;
                 }
+
+                // Note that the FMUSDK2 FMI2.0RC1 bouncingBall FMU
+                // at ptolemy/actor/lib/fmi/fmus/bouncingBall20RC1 has
+                // ScalarVariables with no causality, which defaults to
+                // local. So, the port might not be an outputport
+
+                if (scalarVariable.causality == FMIScalarVariable.Causality.local
+                        && !port.isOutput()) {
+                    continue;
+                }
+
                 Output output = new Output();
+
                 output.scalarVariable = scalarVariable;
                 output.port = port;
 
