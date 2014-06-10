@@ -154,13 +154,15 @@ public class KielerLayoutAction extends Object implements IGuiAction, Filter {
                     layout.layout(graphModel.getRoot());
                 }
             }
-        } catch (Exception ex) {
-            // If we do not catch exceptions here, then they
+        } catch (Throwable throwable) {
+            // Catch a throwable in case the guava classes are not found.
+
+            // If we do not catch throwables here, then they
             // disappear to stdout, which is bad if we launched
             // where there is no stdout visible.
             MessageHandler.error("Failed to layout \""
                     + (model == null ? "name not found" : model.getFullName())
-                    + "\"", ex);
+                    + "\"", throwable);
         }
     }
 
