@@ -48,6 +48,7 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Nameable;
 import ptolemy.kernel.util.Workspace;
+import ptolemy.math.DoubleMatrixMath;
 ///////////////////////////////////////////////////////////////////
 //// AlgebraicLoopDirector
 
@@ -203,6 +204,7 @@ public class AlgebraicLoopDirector extends FixedPointDirector {
      *  @exception IllegalActionException If an actor violates the
      *   monotonicity constraints, or the prefire() or fire() method
      *   of the actor throws it.
+     *   
      *
      */
     public void fire() throws IllegalActionException {
@@ -241,11 +243,14 @@ public class AlgebraicLoopDirector extends FixedPointDirector {
         AlgebraicLoopSolver solver = new AlgebraicLoopSolver(_tol, maxIterationsValue);
         // Call the solver.
         try{
-        	solver.solve(_x_n);
+            solver.solve(_x_n);
+        }
+        catch(IllegalArgumentException e){
+            throw new IllegalActionException(this, e.getMessage());
         }
         catch(Exception e){
-        	if (!solver.converged())
-        		throw new IllegalActionException(this, "Failed to converge after " + maxIterationsValue + " iterations.");
+            if (!solver.converged())
+                throw new IllegalActionException(this, "Failed to converge after " + maxIterationsValue + " iterations.");
         }
         if (_debugging) {
             _debug(this.getFullName() + ": Fixed point found after "
@@ -265,15 +270,15 @@ public class AlgebraicLoopDirector extends FixedPointDirector {
      *   throws it.
      */
     protected double[] _evaluateLoopFunction(double[] x)
-    		throws IllegalActionException{
-    	// Set the argument to the receivers
-    	int iRec=0;
+            throws IllegalActionException{
+        // Set the argument to the receivers
+        int iRec=0;
         List<AlgebraicLoopReceiver> receivers = _receivers;
         for (AlgebraicLoopReceiver receiver : receivers) {
-        	// FIXME: We should do this only if the receiver is a DoubleToken
-        	DoubleToken t = new DoubleToken(x[iRec]);
-        	receiver.put(t);
-        	iRec++;
+            // FIXME: We should do this only if the receiver is a DoubleToken
+            DoubleToken t = new DoubleToken(x[iRec]);
+            receiver.put(t);
+            iRec++;
         }
 
         // Calculate the superclass fixed point, which is the current
@@ -323,11 +328,11 @@ public class AlgebraicLoopDirector extends FixedPointDirector {
         for (AlgebraicLoopReceiver receiver : receivers) {
             if (receiver.getContainer().defaultValue != null){
                 // Record g(x_n)
-            	Token t = receiver._getCurrentToken();
-            	if (t.getType() == BaseType.DOUBLE){
-            		g[i] = ((DoubleToken)(t)).doubleValue();
-            		i++;
-            	}
+                Token t = receiver._getCurrentToken();
+                if (t.getType() == BaseType.DOUBLE){
+                    g[i] = ((DoubleToken)(t)).doubleValue();
+                    i++;
+                }
             }
         }
         return g;
@@ -347,8 +352,8 @@ public class AlgebraicLoopDirector extends FixedPointDirector {
         int nRec = 0;
         List<AlgebraicLoopReceiver> receivers = _receivers;
         for (AlgebraicLoopReceiver receiver : receivers) {
-        	if (receiver.getContainer().defaultValue != null)
-        		nRec++;
+            if (receiver.getContainer().defaultValue != null)
+                nRec++;
         }
         _x_n = new double[nRec];
         _g_n = new double[nRec];
@@ -581,15 +586,26 @@ public class AlgebraicLoopDirector extends FixedPointDirector {
          */
         public AlgebraicLoopSolver(
                 double[] tolerance,
-        		int maxIterations){
-        	_tol = new double[tolerance.length];
-        	_x = new double[tolerance.length];
+                int maxIterations){
+            _tol = new double[tolerance.length];
+            _x = new double[tolerance.length];
 
-        	System.arraycopy(tolerance, 0, _tol, 0, tolerance.length);
-        	_maxIterations = maxIterations;
+            System.arraycopy(tolerance, 0, _tol, 0, tolerance.length);
+            _maxIterations = maxIterations;
 
-        	_converged = false;
+            _converged = false;
             _iterationCount = 0;
+            // Set the step size for the Newton method.
+            // FIXME: This should take the scaling of the variable into account.
+            if (_isNewtonRaphson){
+                _deltaX = new double[tolerance.length];
+                for (int i = 0; i < tolerance.length; i++){
+                    _tol[i] = 1E-5;
+                    // FIXME: _deltaX should take into account the scaling of the variable.
+                    //        It should also be adaptive.
+                    _deltaX[i] = 1E-5;
+                }
+            }
         }
 
         ///////////////////////////////////////////////////////////////////
@@ -606,38 +622,185 @@ public class AlgebraicLoopDirector extends FixedPointDirector {
          * @exception IllegalActionException If an actor violates the
          *            monotonicity constraints, or the prefire() or fire() method
          *            of the actor throws it.
+         * @exception IllegalArgumentException If the solver fails to find a solution.
          */
         public void solve(double[] xInitial)
-        	throws IllegalActionException{
-        	_x = xInitial;
+            throws IllegalActionException{
+            _x = xInitial;
             _iterationCount = 0;
             do {
-            	// Evaluate the loop function to compute x_{n+1} = g(x_n).
-            	// This calls the loop function of the outer class.
-                double[] g = _evaluateLoopFunction(_x);
+                // Evaluate the loop function to compute x_{n+1} = g(x_n).
+                // This calls the loop function of the outer class.
+                double[] g = new double[xInitial.length];
+                if (_isNewtonRaphson){
+                    _xNew = _newtonStep(_x);
+                }
+                else{
+                    // Successive substitution
+                    _xNew = _evaluateLoopFunction(_x);
+                }
                 _iterationCount++;
 
                 // Check for convergence
                 _converged = true;
                 for(int i = 0; i < _x.length; i++){
-                	double diff = _x[i] - g[i];
-                	// FIXME: this needs to be replaced with a test for relative and absolute convergence.
-                	if (diff > _tol[i] || -diff > _tol[i]){
-                		_converged = false;
-                		break;
-                	}
+                    double diff = _x[i] - _xNew[i];
+                    // FIXME: this needs to be replaced with a test for relative and absolute convergence.
+                    if (diff > _tol[i] || -diff > _tol[i]){
+                        _converged = false;
+                        break;
+                    }
                 }
-                // FIXME.
-                // The next statement is for successive substitution.
-                // Here, different updates need to be added, such as for the Newton method.
-               	_x = g;
-
-               	// Check for maximum number of iterations in case we did not yet converge.
+                // Update iterate
+                System.arraycopy(_xNew, 0, _x, 0, _x.length);
+                
+                // Check for maximum number of iterations in case we did not yet converge.
                 if (!_converged && _iterationCount > _maxIterations)
-                	throw new RuntimeException("Failed to converge after " + _maxIterations + " iterations.");
+                    throw new RuntimeException("Failed to converge after " + _maxIterations + " iterations.");
             } while (!_converged && !_stopRequested);
         }
 
+        /** Return the new iterate of a Newton step. 
+         * 
+         * @param x The best known iterate.
+         * @return The new guess for the solution.
+         * @exception IllegalActionException If an actor violates the
+         *            monotonicity constraints, or the prefire() or fire() method
+         *            of the actor throws it.
+         * @exception IllegalArgumentException If the solver fails to find a solution.
+         *
+         */
+        protected double[] _newtonStep(
+                    double[] x)
+        throws IllegalActionException {
+            final int n = x.length;
+
+            double[] xNew = new double[n];
+            System.arraycopy(x, 0, xNew, 0, n);
+            // Jacobian
+            double[][] J = new double[n][n];
+            // Loop over each independent variable, and fill the Jacobian
+            final double[] g = _evaluateLoopFunction(x);
+            for (int i = 0; i < n; i++){
+                final double xOri = xNew[i];
+                xNew[i] += _deltaX[i];
+                final double [] gNew = _evaluateLoopFunction(xNew);
+                for(int k = 0; k < n; k++)
+                    J[i][k] = (gNew[k]-g[k])/_deltaX[i];
+                // Reset the coordinate to its old value
+                xNew[i] = xOri;
+            }
+            // Check whether Jacobian is invertible
+            final double det = DoubleMatrixMath.determinant(J);
+            if (Math.abs(det) < 1E-5){
+                String em = "Singular Jacobian in Newton step. Reformulate equation or try different start value"
+                             + System.lineSeparator()
+                             + "Jacobian = " + DoubleMatrixMath.toString(J)
+                             + System.lineSeparator()
+                             + "Determinant = " + det;
+                throw new IllegalArgumentException(em);
+            }
+            
+            // Solve J * d = -g(x_n) for d = x_{n+1}-x{n} 
+            // to get the Newton step.
+            if (n == 1){
+                final double d = -g[1]/J[1][1];
+                xNew[1] = x[1] + d;
+            }
+            else{
+                final double[] d = gaussElimination(J, g);
+                for (int i = 0; i < n; i++)
+                    xNew[i] = x[i] - d[i];
+            }
+            return xNew;
+        }
+
+        
+    /** Return vector x that solves A*x=f by a Gauss elimination
+     *  with normalization and interchange of rows.
+     * 
+     *  A is an NxN matrix
+     * Method solves the equation A*x=f for x.
+     *
+     * @param A Matrix
+     * @param f Array with solution of A*x=f
+     * @return x Array x = A**(-1) * f
+      */
+    public double[] gaussElimination(double[][] A, double[] f)
+    {
+        int i, j, k, piv, iMax, jMax;
+        int dim = f.length;
+        int dimP1 = dim + 1;
+        double[]   r = new double[dim];
+        double[][] B = new double[dim][dimP1];
+        double[]   tempRow = new double[dimP1];
+        double a, pivotElement;
+        double aMax = -1;
+
+        for (i = 0; i < dim; i++)
+        {
+            for (j = 0; j < dim; j++)
+                B[i][j] = A[i][j];
+            B[i][dim] = f[i];
+        }
+
+        for (piv = 0; piv < dim; piv++)
+        {
+        //interchange rows if necessary
+            iMax = 0;
+            jMax = 0;
+            for (i = 0; i < dim; i++)
+            {
+                for(j = dim-1; j >= 0; j--)
+                {
+                    if(Math.abs(B[i][j]) > aMax)
+                    {
+                        aMax = Math.abs(B[i][j]);
+                        iMax = i;
+                        jMax = j;
+                    }
+                }
+            }
+
+            if ( iMax != jMax)
+            {
+                for (i = 0; i < dimP1; i++)
+                {
+                    tempRow[i] = B[iMax][i];
+                    B[iMax][i] = B[jMax][i];
+                    B[jMax][i] = tempRow[i];
+                }
+            }
+
+
+            pivotElement = B[piv][piv];
+
+        // normalization of pivot row
+            for (j = 0; j < dimP1; j++)
+                B[piv][j] = B[piv][j]/pivotElement;
+
+        // elimination
+            for(k = 0; k < dim; k++)
+            {
+                if(piv!=k)
+                {
+                    a = B[k][piv];
+                    for(j = 0 ; j < dimP1; j++) // set new row
+                    {
+                        B[k][j] =  B[k][j] - a * B[piv][j];
+                    }
+                }
+            }
+        }
+
+
+    for (i = 0; i < dim; i++)
+            r[i] = B[i][dim];
+
+    return r;
+    }
+       
+        
         /** Return true if the solver converged, false otherwise.
          *
          * @return true if the solver converged, false otherwise.
@@ -656,10 +819,14 @@ public class AlgebraicLoopDirector extends FixedPointDirector {
 
         ///////////////////////////////////////////////////////////////////
         //// protected variables                                       ////
-        /** Current value of the iteration variables x */
-        protected double[] _x;
+         /** Current value of the iteration variables x */
+         protected double[] _x;
+         /** Updated value of the iteration variables x */
+         protected double[] _xNew;
         /** Tolerance for each iteration variable */
         protected double[] _tol;
+        /** Step size for finite difference approximation */
+        protected double[] _deltaX;
         /** Number of iterations in the last call to the function solve(double[]) */
         protected int _iterationCount;
         /** Maximum number of iterations */
