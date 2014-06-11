@@ -29,9 +29,11 @@ package ptolemy.actor.lib.hoc;
 
 import ptolemy.actor.TypedCompositeActor;
 import ptolemy.actor.parameters.ParameterMirrorPort;
+import ptolemy.domains.ptides.lib.PtidesPort;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.Port;
 import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
 
@@ -149,7 +151,7 @@ public class MirrorComposite extends ReflectComposite{
      *  in the container.  That addition will result in appropriate
      *  connections being made.
      */
-    public static class MirrorCompositeContents extends TypedCompositeActor {
+    public static class MirrorCompositeContents extends ReflectCompositeContents {
         // NOTE: This has to be a static class so that MoML can
         // instantiate it.
 
@@ -175,6 +177,7 @@ public class MirrorComposite extends ReflectComposite{
          *  @exception NameDuplicationException If the port name
          *  collides with a name already in the actor.
          */
+        @Override
         protected void _addPort(final Port port) throws IllegalActionException,
                 NameDuplicationException {
 
