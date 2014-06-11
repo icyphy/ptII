@@ -693,10 +693,11 @@ public class AlgebraicLoopDirector extends FixedPointDirector {
             // Check whether Jacobian is invertible
             final double det = DoubleMatrixMath.determinant(J);
             if (Math.abs(det) < 1E-5){
+            	final String LS = System.getProperty("line.separator");
                 String em = "Singular Jacobian in Newton step. Reformulate equation or try different start value"
-                             + System.lineSeparator()
+                             + LS
                              + "Jacobian = " + DoubleMatrixMath.toString(J)
-                             + System.lineSeparator()
+                             + LS
                              + "Determinant = " + det;
                 throw new IllegalArgumentException(em);
             }
