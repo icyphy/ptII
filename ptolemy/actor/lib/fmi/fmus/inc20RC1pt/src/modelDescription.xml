@@ -6,7 +6,7 @@
   numberOfEventIndicators="0">
 
 <CoSimulation
-  modelIdentifier="inc20RC1"
+  modelIdentifier="inc20RC1pt"
   canHandleVariableCommunicationStepSize="true"/>
 
 <LogCategories>
