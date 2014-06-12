@@ -16,7 +16,7 @@
 #define NUMBER_OF_EVENT_INDICATORS 0
 
 // Used by FMI 2.0.  See FMIFuctions.h
-#define FMI_FUNCTION_PREFIX inc20RC1_
+#define FMI_FUNCTION_PREFIX inc20RC1pt_
 
 // We require that functions have prefixes for Linux.
 #if defined _WIN32 || defined __CYGWIN__
@@ -43,18 +43,27 @@
 // called by fmiInstantiate
 // Set values for all variables that define a start value
 // Settings used unless changed by fmiSetX before fmiEnterInitializationMode
+
+// Ptolemy specific define:
+#define setStartValues fmiFullName(setStartValues)
 void setStartValues(ModelInstance *comp) {
     i(counter_) = 1;
 }
 
 // called by fmiExitInitializationMode() after setting eventInfo to defaults
 // Used to set the first time event, if any.
+
+// Ptolemy specific define:
+#define initialize fmiFullName(initialize)
 void initialize(ModelInstance* comp, fmiEventInfo* eventInfo) {
     eventInfo->nextEventTimeDefined   = fmiTrue;
     eventInfo->nextEventTime          = 1 + comp->time;
 }
 
 // used to set the next time event, if any.
+
+// Ptolemy specific define:
+#define eventUpdate fmiFullName(eventUpdate)
 void eventUpdate(ModelInstance* comp, fmiEventInfo* eventInfo) {
     i(counter_) += 1;
     if (i(counter_) == 13) 
