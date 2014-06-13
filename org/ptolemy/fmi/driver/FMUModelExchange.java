@@ -318,12 +318,12 @@ public class FMUModelExchange extends FMUDriver {
 
 	double time = startTime;
 	
-	if (eventInfo20.terminateSimulation != 0 || eventInfo20.terminateSimulation != 0) {
+	if (eventInfo20 != null && (eventInfo20.terminateSimulation != 0 || eventInfo20.terminateSimulation != 0)) {
 	    System.out.println("Model requested terminate at t=" + time);
 	    endTime = time;
 	}
 
-	if (eventInfo20.terminateSimulation != 1 || _fmiVersion < 1.5) {
+	if ((eventInfo20 != null && eventInfo20.terminateSimulation != 1) || _fmiVersion < 1.5) {
 	    if (_fmiVersion > 1.5) {
 		invoke(fmiModelDescription, "fmiEnterContinuousTimeMode",
 		       new Object[] { fmiComponent },
@@ -561,17 +561,18 @@ public class FMUModelExchange extends FMUDriver {
 		}
 
 		if (_fmiVersion < 1.5) {
-		    invoke("fmiTerminate", new Object[] { fmiComponent },
-		       "Could not terminate: ");
+		    invoke(fmiModelDescription, "fmiTerminate",
+			   new Object[] { fmiComponent },
+			   "Could not terminate: ");
 		    // Don't throw an exception while freeing a slave.  Some
 		    // fmiTerminateSlave calls free the slave for us.
-		    Function freeSlave = fmiModelDescription
-			.getFmiFunction("fmiFreeSlaveInstance");
-		    int fmiFlag = ((Integer) freeSlave.invoke(Integer.class,
+		    Function freeModelInstance = fmiModelDescription
+			.getFmiFunction("fmiFreeModelInstance");
+		    int fmiFlag = ((Integer) freeModelInstance.invoke(Integer.class,
 							      new Object[] { fmiComponent })).intValue();
 		    if (fmiFlag >= FMILibrary.FMIStatus.fmiWarning) {
-			new Exception("Warning: Could not free slave instance: "
-				      + fmiFlag).printStackTrace();
+			System.err.println("Warning: Could not free slave instance: "
+					   + FMIModelDescription.fmiStatusDescription(fmiFlag));
 		    }
 		} else {
 		    if (!(eventInfo20.terminateSimulation == 1)) {
