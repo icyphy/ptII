@@ -28,9 +28,6 @@ extern "C" {
 } // closing brace for extern "C"
 #endif // STANDALONE_XML_PARSER
 
-/* Helper functions to check validity of xml. */
-static int checkAttribute(const char* att);
-
 const char *XmlParser::elmNames[SIZEOF_ELM] = { 
     "fmiModelDescription", "ModelExchange", "CoSimulation", "SourceFiles", "File",
     "UnitDefinitions", "Unit", "BaseUnit", "DisplayUnit", "TypeDefinitions",
@@ -72,6 +69,7 @@ const char *XmlParser::enuNames[SIZEOF_ENU] = {
 
 XmlParser::XmlParser(char *xmlPath) {
     this->xmlPath = strdup(xmlPath);
+    xmlReader = xmlReaderForFile(xmlPath, NULL, 0);
 }
 
 XmlParser::~XmlParser() {
@@ -79,7 +77,6 @@ XmlParser::~XmlParser() {
 }
 
 ModelDescription *XmlParser::parse() {
-    xmlReader = xmlReaderForFile(xmlPath, NULL, 0);
     ModelDescription *md = NULL;
     if (xmlReader != NULL) {
         try {

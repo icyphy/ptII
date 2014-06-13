@@ -77,7 +77,7 @@ public:
     };
 
     // Possible results when retrieving an attribute value from an element
-    typedef enum ValueStatus {
+    enum ValueStatus {
         valueMissing,
         valueDefined,
         valueIllegal
