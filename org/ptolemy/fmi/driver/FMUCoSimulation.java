@@ -45,6 +45,8 @@ import com.sun.jna.Pointer;
 
 /** Read a Functional Mock-up Unit .fmu file and invoke it as a co-simulation.
  *
+ * <p>Currently, FMI 1.0 and 2.0RC1 are supported.</p>
+ *
  * <p>This file is based on fmusdk/src/model_exchange/fmusim_me/main.c
  * by Jakob Mauss, which has the following license:</p>
  *
@@ -177,21 +179,55 @@ public class FMUCoSimulation extends FMUDriver {
         // Run the simulator without user interaction.
         byte interactive = 0;
 
+        byte loggingOn = enableLogging ? (byte) 1 : (byte) 0;
+
+	_fmiVersion = Double.valueOf(fmiModelDescription.fmiVersion);
+
+	Pointer fmiComponent = null;
         // Callbacks
-        FMICallbackFunctions.ByValue callbacks = new FMICallbackFunctions.ByValue(
+        if (_fmiVersion < 1.5) {
+	    FMICallbackFunctions.ByValue callbacks = new FMICallbackFunctions.ByValue(
                 new FMULibrary.FMULogger(fmiModelDescription),
                 fmiModelDescription.getFMUAllocateMemory(),
                 new FMULibrary.FMUFreeMemory(),
                 new FMULibrary.FMUStepFinished());
-        byte loggingOn = enableLogging ? (byte) 1 : (byte) 0;
-
-        Function instantiateSlave = fmiModelDescription
+	    Function instantiateSlave = fmiModelDescription
                 .getFmiFunction("fmiInstantiateSlave");
-        System.out.println("_fmiInstantiateSlave = " + instantiateSlave);
-        Pointer fmiComponent = (Pointer) instantiateSlave.invoke(Pointer.class,
+	    System.out.println("_fmiInstantiateSlave = " + instantiateSlave);
+	    fmiComponent = (Pointer) instantiateSlave.invoke(Pointer.class,
                 new Object[] { _modelIdentifier, fmiModelDescription.guid,
                         fmuLocation, mimeType, timeout, visible, interactive,
                         callbacks, loggingOn });
+
+	} else {
+	    // FMI 1.5 and greater
+	    FMICallbackFunctions callbacks = new FMICallbackFunctions(
+                    new FMULibrary.FMULogger(fmiModelDescription),
+		    new FMULibrary.FMUAllocateMemory(),
+                    new FMULibrary.FMUFreeMemory(),
+                    new FMULibrary.FMUStepFinished());
+	    Function fmiInstantiateFunction = fmiModelDescription
+                        .getFmiFunction("fmiInstantiate");
+	    // There is no simulator UI.
+	    byte toBeVisible = 0;
+            // FIXME: Not sure about the fmiType enumeration, see
+            // ptolemy/actor/lib/fmi/fmus/jmodelica/CoupledClutches/src/sources/fmiFunctionTypes.h,
+            // which was copied from
+            // /usr/local/jmodelica/ThirdParty/FMI/2.0/.
+
+            int fmiType = 1;  // CoSimulation
+            if (fmiModelDescription.modelExchange) {
+                // Presumably Hybrid-Cosimulation would be 3?  Ptolemy could be 4?
+                fmiType = 0;
+            }
+	    fmiComponent = (Pointer) fmiInstantiateFunction.invoke(
+								   Pointer.class, new Object[] { _modelIdentifier,
+                                                      fmiType,
+                                                      fmiModelDescription.guid,
+                                                      fmiModelDescription.fmuResourceLocation,
+                                                  callbacks, toBeVisible, loggingOn });
+	}
+
         System.out.println("instantiatedSlave");
         if (fmiComponent.equals(Pointer.NULL)) {
             throw new RuntimeException("Could not instantiate model.");
@@ -199,9 +235,24 @@ public class FMUCoSimulation extends FMUDriver {
 
         double startTime = 0;
 
-        System.out.println("about to initializeSlave");
-        invoke("_fmiInitializeSlave", new Object[] { fmiComponent, startTime,
-                (byte) 1, endTime }, "Could not initialize slave: ");
+        if (enableLogging) {
+	    System.out.println("about to initializeSlave");
+	}
+
+	if (_fmiVersion < 1.5) {
+	    invoke(fmiModelDescription, "fmiInitializeSlave", new Object[] { fmiComponent, startTime,
+							 (byte) 1, endTime }, "Could not initialize slave: ");
+	} else {
+                // _fmiVersion => 2.0
+	    double relativeTolerance = 1e-4;
+	    byte _toleranceControlled = (byte) 0; // fmiBoolean
+	    invoke(fmiModelDescription, "fmiSetupExperiment",  new Object[] { fmiComponent, _toleranceControlled,
+							  relativeTolerance, startTime,
+							  (byte) 1, endTime }, "Failed to setup the experiment of the FMU: ");
+	    invoke(fmiModelDescription, "fmiEnterInitializationMode",  new Object[] { fmiComponent }, "Failed to enter the initialization mode of the FMU: ");
+	    invoke(fmiModelDescription, "fmiExitInitializationMode",  new Object[] { fmiComponent }, "Failed to exit the initialization mode of the FMU:");
+
+	}
 
         File outputFile = new File(outputFileName);
         PrintStream file = null;
@@ -230,26 +281,33 @@ public class FMUCoSimulation extends FMUDriver {
                             + ", /* stepSize */" + stepSize + ", 1)");
                 }
                 invoke(doStep, new Object[] { fmiComponent, time, stepSize,
-                        (byte) 1 }, "Could not simulate, time was " + time
+                        (byte) 1 }, "doStep(): Could not simulate, time was " + time
                         + ": ");
                 time += stepSize;
                 // Generate a line for this step
                 OutputRow.outputRow(_nativeLibrary, fmiModelDescription,
                         fmiComponent, time, file, csvSeparator, Boolean.FALSE);
             }
-            invoke("_fmiTerminateSlave", new Object[] { fmiComponent },
-                    "Could not terminate slave: ");
-
-            // Don't throw an exception while freeing a slave.  Some
-            // fmiTerminateSlave calls free the slave for us.
-            Function freeSlave = fmiModelDescription
+	    if (_fmiVersion < 2.0) {
+		invoke(fmiModelDescription, "fmiTerminateSlave", new Object[] { fmiComponent },
+		       "Could not terminate slave: ");
+		// Don't throw an exception while freeing a slave.  Some
+		// fmiTerminateSlave calls free the slave for us.
+		Function freeSlave = fmiModelDescription
                     .getFmiFunction("fmiFreeSlaveInstance");
-            int fmiFlag = ((Integer) freeSlave.invoke(Integer.class,
+		int fmiFlag = ((Integer) freeSlave.invoke(Integer.class,
                     new Object[] { fmiComponent })).intValue();
-            if (fmiFlag >= FMILibrary.FMIStatus.fmiWarning) {
-                new Exception("Warning: Could not free slave instance: "
-                        + fmiFlag).printStackTrace();
-            }
+		if (fmiFlag >= FMILibrary.FMIStatus.fmiWarning) {
+		    new Exception("Warning: Could not free slave instance: "
+				  + fmiFlag).printStackTrace();
+		}
+	    } else {
+		invoke(fmiModelDescription, "fmiTerminate", new Object[] { fmiComponent },
+		       "Could not terminate slave:");
+		invoke(fmiModelDescription, "fmiFreeInstance", new Object[] { fmiComponent },
+		       "Could not free the Co-Simulation instance:");
+	    }
+
         } finally {
             if (file != null) {
                 file.close();

@@ -28,7 +28,10 @@
  */
 package org.ptolemy.fmi.driver;
 
+import java.io.IOException;
+
 import org.ptolemy.fmi.FMILibrary;
+import org.ptolemy.fmi.FMIModelDescription;
 
 import com.sun.jna.Function;
 import com.sun.jna.NativeLibrary;
@@ -44,9 +47,8 @@ import com.sun.jna.NativeLibrary;
  *  _processArgs(args) and them simulate(...).</p>
  *
  *  @author Christopher Brooks
-@version $Id$
-@since Ptolemy II 10.0
  *  @version $Id$
+ *  @since Ptolemy II 10.0
  *  @Pt.ProposedRating Red (cxh)
  *  @Pt.AcceptedRating Red (cxh)
  */
@@ -62,10 +64,28 @@ public abstract class FMUDriver {
     public Function getFunction(String name) {
         // This is syntactic sugar.
         if (_enableLogging) {
-            System.out.println("FMUModelExchange: about to get the " + name
+            System.out.println("About to get the " + name
                     + " function.");
         }
         return _nativeLibrary.getFunction(_modelIdentifier + name);
+    }
+
+    /** Invoke a function that returns an integer representing the
+     *  FMIStatus return value.
+     *  @param fmiModelDescription The FMIModelDescription used to
+     *  look up the function by name.
+     *  @param name The name of the function.
+     *  @param arguments The arguments to be passed to the function.
+     *  @param message The error message to be used if there is a problem.
+     *  The message should end with ": " because the return value
+     *  of the function will be printed after the error message.
+     *  @exception UnsatisfiedLinkError If the function is not found using either format.
+     *  @exception IOException If the native library cannot be found.
+     */
+    public void invoke(FMIModelDescription fmiModelDescription, String name, Object[] arguments, String message)
+            throws UnsatisfiedLinkError, IOException {
+        Function function = fmiModelDescription.getFmiFunction(name);
+        invoke(function, arguments, message);
     }
 
     /** Invoke a function that returns an integer representing the
@@ -96,7 +116,8 @@ public abstract class FMUDriver {
         int fmiFlag = ((Integer) function.invoke(Integer.class, arguments))
                 .intValue();
         if (fmiFlag > FMILibrary.FMIStatus.fmiWarning) {
-            throw new RuntimeException(message + fmiFlag);
+            throw new RuntimeException(message
+				       + FMIModelDescription.fmiStatusDescription(fmiFlag));
         }
     }
 
@@ -210,6 +231,10 @@ public abstract class FMUDriver {
      *  The initial default is 1.0.
      */
     static double _endTime = 1.0;
+
+    /** The version number of the FMI standard. */
+    static double _fmiVersion = 0.0;
+
 
     /** The name of the .fmu file.
      *  The initial default is the empty string.
