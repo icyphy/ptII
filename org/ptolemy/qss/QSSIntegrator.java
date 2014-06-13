@@ -77,13 +77,22 @@ public class QSSIntegrator extends TypedAtomicActor {
      */
 	public void fire() throws IllegalActionException {
 		super.fire();
+		if (_debugging) {
+			_debug("Current time is: " + getDirector().getModelTime());
+		}
 		Time currentTime = getDirector().getModelTime();
 		if (currentTime.equals(nextOutputTime) || nextOutputTime == null) {
 			// It is time to send an output.
 			q.send(0, new DoubleToken(nextOutputValue));
+			if (_debugging) {
+				_debug("Send to output: " + nextOutputValue);
+			}
 		} else {
 			// For the continuous director, assert that the output is absent.
 			q.sendClear(0);
+			if (_debugging) {
+				_debug("Output is absent.");
+			}
 		}
 	}
 	
@@ -108,6 +117,7 @@ public class QSSIntegrator extends TypedAtomicActor {
 	public boolean isStrict() {
 		return false;
 	}
+	
 	/** Update the calculation of the next output time and request
 	 *  a refiring at that time.
 	 *  If there is a new input, read it and update the slope.
@@ -124,6 +134,9 @@ public class QSSIntegrator extends TypedAtomicActor {
 		// then modify the values set when the previous input arrived.
 		if (u.hasToken(0)) {
 			Token newInput = u.get(0);
+			if (_debugging) {
+				_debug("Received input: " + newInput);
+			}
 			if (!newInput.equals(previousInput)) {
 			    // Initialize the previousInput
 			    if (_firstFiring){
@@ -145,7 +158,7 @@ public class QSSIntegrator extends TypedAtomicActor {
 			// Update the state to match that output value.
 		    if (nextOutputTime != null) {
 		        x = nextOutputValue;
-		        }
+		    }
 			previousOutputValue = nextOutputValue;
 
 			// Calculate the time of the next output, which is the time
@@ -180,7 +193,10 @@ public class QSSIntegrator extends TypedAtomicActor {
 
 		// Request a refiring, unless the slope is small.
 		if (nextOutputTime!=Time.POSITIVE_INFINITY){
-		    getDirector().fireAt(this, nextOutputTime);  
+		    getDirector().fireAt(this, nextOutputTime);
+			if (_debugging) {
+				_debug("Requesting a refiring at: " + nextOutputTime);
+			}
 		}
 		return super.postfire();
 	}
