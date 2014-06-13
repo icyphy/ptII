@@ -1,0 +1,145 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="FMUIncScale20RC1pt" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="10.0.devel">
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={16, 389, 834, 634}, maximized=false}">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 524]">
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 262.0}">
+    </property>
+    <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="An Inc FMU connected to a Scale FMU&#10;&#10;These are FMI2.0RC1 fmus.&#10;&#10;Note that the SDF Director as the period set to 0.1">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[60.0, 110.0]">
+        </property>
+    </property>
+    <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
+        <property name="iterations" class="ptolemy.data.expr.Parameter" value="40">
+        </property>
+        <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+        <property name="period" class="ptolemy.data.expr.Parameter" value="0.1">
+        </property>
+        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="4.0">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[120.0, 75.0]">
+        </property>
+    </property>
+    <entity name="Test" class="ptolemy.actor.lib.Test">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{44.0, 48.603373518093, 53.6883617577105, 59.3053522746478, 65.5100042778817, 72.3638001611308, 79.9346547368199, 88.2975882093968, 97.5354695565472, 107.739837684533, 2.0, 2.2092442508224, 2.4403800798959, 2.6956978306658, 2.9777274671764, 3.2892636436878, 3.6333933971282, 4.0135267367908, 4.4334304343885, 4.897265349297, 4.0, 4.4184885016448, 4.8807601597919, 5.3913956613316, 5.9554549343529, 6.5785272873755, 7.2667867942564, 8.0270534735815, 8.866860868777, 9.7945306985939, 6.0, 6.6277327524672, 7.3211402396878, 8.0870934919974, 8.9331824015293, 9.8677909310633, 10.9001801913845, 12.0405802103723, 13.3002913031655, 14.6917960478909}">
+        </property>
+        <property name="tolerance" class="ptolemy.data.expr.Parameter" value="4.400000000000004E-8">
+        </property>
+        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="true">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[370.0, 245.0]">
+        </property>
+    </entity>
+    <entity name="inc" class="ptolemy.actor.lib.fmi.FMUImport">
+        <property name="fmuFile" class="ptolemy.data.expr.FileParameter" value="$CLASSPATH/ptolemy/actor/lib/fmi/test/auto/inc20RC1pt.fmu">
+        </property>
+        <property name="suppressWarnings" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[100.0, 310.0]">
+        </property>
+        <port name="counter" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_type" class="ptolemy.actor.TypeAttribute" value="int">
+            </property>
+        </port>
+    </entity>
+    <entity name="TimedPlotter" class="ptolemy.actor.lib.gui.TimedPlotter">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={878, 113, 551, 670}, maximized=false}">
+        </property>
+        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[551, 626]">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[365.0, 320.0]">
+        </property>
+        <configure>
+<?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
+"http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
+<plot>
+<title>TimedPlotter</title>
+<xLabel></xLabel>
+<yLabel></yLabel>
+<xRange min="0.0" max="3.9000000000000004"/>
+<yRange min="2.0" max="107.73983768453303"/>
+<default marks="dots" stems="yes"/>
+</plot>?>
+        </configure>
+    </entity>
+    <entity name="scale20RC" class="ptolemy.actor.lib.fmi.FMUImport">
+        <property name="fmuFile" class="ptolemy.data.expr.FileParameter" value="$CLASSPATH/ptolemy/actor/lib/fmi/test/auto/scale20RC1.fmu">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[205.0, 310.0]">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
+                <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
+                </property>
+            </property>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
+                </property>
+            </property>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
+                <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
+                </property>
+            </property>
+            <property name="dependencies" class="ptolemy.kernel.util.StringAttribute">
+            </property>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
+                </property>
+            </property>
+        </port>
+        <port name="der_output_" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <display name="der(output)"/>
+            <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
+                <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
+                </property>
+            </property>
+            <property name="dependencies" class="ptolemy.kernel.util.StringAttribute">
+            </property>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
+                </property>
+            </property>
+            <property name="_hide" class="ptolemy.data.expr.SingletonParameter" value="false">
+            </property>
+        </port>
+    </entity>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+        </property>
+        <vertex name="vertex1" value="[320.0, 245.0]">
+        </vertex>
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;Test.input&quot;,x=370.0,y=245.0}, tail={id=&quot;relation2.vertex1&quot;,x=320.0,y=245.0}, points={} },{ head={id=&quot;relation2.vertex1&quot;,x=320.0,y=245.0}, tail={id=&quot;scale20RC.output&quot;,x=205.0,y=310.0}, points={300.0,245.0,300.0,300.0} },{ head={id=&quot;TimedPlotter.input&quot;,x=365.0,y=320.0,index=2}, tail={id=&quot;relation2.vertex1&quot;,x=320.0,y=245.0}, points={320.0,315.0} } }">
+        </property>
+    </relation>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;inc.counter&quot;,x=100.0,y=310.0}, tail={id=&quot;scale20RC.input&quot;,x=205.0,y=310.0}, points={} } }">
+        </property>
+    </relation>
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;TimedPlotter.input&quot;,x=365.0,y=320.0,index=2}, tail={id=&quot;scale20RC.der_output_&quot;,x=205.0,y=310.0}, points={} } }">
+        </property>
+    </relation>
+    <link port="Test.input" relation="relation2"/>
+    <link port="inc.counter" relation="relation"/>
+    <link port="TimedPlotter.input" relation="relation2"/>
+    <link port="TimedPlotter.input" relation="relation3"/>
+    <link port="scale20RC.input" relation="relation"/>
+    <link port="scale20RC.output" relation="relation2"/>
+    <link port="scale20RC.der_output_" relation="relation3"/>
+</entity>
