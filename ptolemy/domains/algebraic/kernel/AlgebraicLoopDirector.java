@@ -31,6 +31,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import ptolemy.actor.AbstractReceiver;
 import ptolemy.actor.Actor;
 import ptolemy.actor.IOPort;
 import ptolemy.actor.Receiver;
@@ -217,21 +218,13 @@ public class AlgebraicLoopDirector extends FixedPointDirector {
         List<AlgebraicLoopReceiver> receivers = _receivers;
         int i = 0;
         for (AlgebraicLoopReceiver receiver : receivers) {
-            if ( (receiver.getContainer().defaultValue != null) ){
+            final IOPort port = receiver.getContainer(); 
+//            if ( (port.defaultValue != null && port.isInput()) ){
+            if ( port.isInput() ){
                 Token t = receiver._getCurrentToken();
                 if (t != null && t.getType() == BaseType.DOUBLE){
                     _x_n[i] = ((DoubleToken)t).doubleValue();
-                    _tol[i] =_getErrorTolerance( receiver.getContainer() );
-                    i++;
-                }
-                else{
-                    // FIXME:
-                    // The Token is null. I think this is a bug in Ptolemy, as test/auto/Newton1.xml
-                    // should have the same values for all receivers.
-                    // Hence, for now, I just set it to some value in order to
-                    // fill the vector of doubles
-                    _x_n[i] = 99999;
-                    _tol[i] = ((DoubleToken)errorTolerance.getToken()).doubleValue();
+                    _tol[i] =_getErrorTolerance( port );
                     i++;
                 }
             }
@@ -250,7 +243,7 @@ public class AlgebraicLoopDirector extends FixedPointDirector {
         }
         catch(Exception e){
             if (!solver.converged())
-                throw new IllegalActionException(this, "Failed to converge after " + maxIterationsValue + " iterations.");
+                throw new IllegalActionException(this, "Failed to converge after " + solver.getIterationCount() + " iterations.");
         }
         if (_debugging) {
             _debug(this.getFullName() + ": Fixed point found after "
@@ -276,9 +269,13 @@ public class AlgebraicLoopDirector extends FixedPointDirector {
         List<AlgebraicLoopReceiver> receivers = _receivers;
         for (AlgebraicLoopReceiver receiver : receivers) {
             // FIXME: We should do this only if the receiver is a DoubleToken
-            DoubleToken t = new DoubleToken(x[iRec]);
-            receiver.put(t);
-            iRec++;
+        	if ( receiver.getContainer().isInput() ){
+        		DoubleToken t = new DoubleToken(x[iRec]);
+        		receiver.put(t);
+                if (_isNewtonRaphson)
+                	System.out.println("Setting input to loop function for " + receiver.getContainer().getName() + " to " + x[iRec]);
+        		iRec++;
+        	}
         }
 
         // Calculate the superclass fixed point, which is the current
@@ -322,15 +319,20 @@ public class AlgebraicLoopDirector extends FixedPointDirector {
         } while (!_hasIterationConverged() && !_stopRequested);
 
         // Get the values from the receivers, and return them
-        double[] g = new double[x.length];
+        double[] g = new double[_nVars];
 
         int i = 0;
         for (AlgebraicLoopReceiver receiver : receivers) {
-            if (receiver.getContainer().defaultValue != null){
+        	final IOPort port = receiver.getContainer();
+            if (port.defaultValue != null && port.isInput()){
                 // Record g(x_n)
                 Token t = receiver._getCurrentToken();
                 if (t.getType() == BaseType.DOUBLE){
                     g[i] = ((DoubleToken)(t)).doubleValue();
+                    if (_isNewtonRaphson){
+                    	// FIXME: Check value. For Newton1.xml, this produces the wrong value in the first call.
+                    	System.out.println("Output of loop function at " + receiver.getContainer().getName() + " = " + g[i]);
+                    }
                     i++;
                 }
             }
@@ -348,16 +350,19 @@ public class AlgebraicLoopDirector extends FixedPointDirector {
 
         _isNewtonRaphson = method.stringValue().equals(new String("NewtonRaphson"));
 
-        // Count the number of receivers that have a default value.
-        int nRec = 0;
+        // Count the number of break variables.
+        // These are all receivers that have a default value and that are an input.
+        _nVars = 0;
         List<AlgebraicLoopReceiver> receivers = _receivers;
         for (AlgebraicLoopReceiver receiver : receivers) {
-            if (receiver.getContainer().defaultValue != null)
-                nRec++;
+        	IOPort port = receiver.getContainer();
+            if (port.defaultValue != null && port.isInput()){
+                _nVars++;
+            }
         }
-        _x_n = new double[nRec];
-        _g_n = new double[nRec];
-        _tol = new double[nRec];
+        _x_n = new double[_nVars];
+        _g_n = new double[_nVars];
+        _tol = new double[_nVars];
         // FIXME: populate.
     }
 
@@ -531,7 +536,8 @@ public class AlgebraicLoopDirector extends FixedPointDirector {
     protected double[] _g_n;
     /** Tolerance for each iteration variable */
     protected double[] _tol;
-
+    /** Number of break variables */
+    protected int _nVars;
     /** Flag to indicate that it is the NewtonRaphson method */
     protected boolean _isNewtonRaphson;
 
@@ -691,6 +697,9 @@ public class AlgebraicLoopDirector extends FixedPointDirector {
                 xNew[i] = xOri;
             }
             // Check whether Jacobian is invertible
+            // FIXME: For now, we reject the problem. An improvement will be to try to recover from this,
+            //        for example by switching the solver, trying a different start value, increasing the 
+            //        precision of the Jacobian approximation, adding relaxation, and/or some other means.
             final double det = DoubleMatrixMath.determinant(J);
             if (Math.abs(det) < 1E-5){
             	final String LS = System.getProperty("line.separator");
@@ -705,8 +714,8 @@ public class AlgebraicLoopDirector extends FixedPointDirector {
             // Solve J * d = -g(x_n) for d = x_{n+1}-x{n} 
             // to get the Newton step.
             if (n == 1){
-                final double d = -g[1]/J[1][1];
-                xNew[1] = x[1] + d;
+                final double d = -g[0]/J[0][0];
+                xNew[0] = x[0] + d;
             }
             else{
                 final double[] d = gaussElimination(J, g);
