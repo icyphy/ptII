@@ -28,12 +28,9 @@
 package ptolemy.actor.util;
 
 import java.util.Collection;
-import java.util.LinkedList;
-import java.util.List;
 
 import ptolemy.actor.Actor;
 import ptolemy.actor.IOPort;
-import ptolemy.actor.parameters.ParameterPort;
 
 ///////////////////////////////////////////////////////////////////
 //// BreakCausalityInterface
@@ -92,38 +89,6 @@ public class BreakCausalityInterface extends DefaultCausalityInterface {
      */
     public Collection<IOPort> dependentPorts(IOPort port) {
         return _EMPTY_COLLECTION;
-    }
-
-    /** Return a collection of the ports in this actor that are
-     *  in the same equivalence class. This method
-     *  returns a collection containing only the specified port,
-     *  unless there is a PortParameter, in which case it returns
-     *  all the input ports.
-     *  <p>
-     *  If derived classes override this, they may also
-     *  need to override {@link #getDependency(IOPort,IOPort)}
-     *  and {@link #dependentPorts(IOPort)} to be consistent.
-     *  The returned result should always include the specified input port.
-     *  @param input The port to find the equivalence class of.
-     *  @return a collection of ports that are in the same equivalence
-     *  class.  This method returns a collection containing only
-     *  the specified port.
-     */
-    public Collection<IOPort> equivalentPorts(IOPort input) {
-        // FIXME: Should the result be cached?
-        // Presumably, this can only change
-        // if ports are added or removed from the actor.
-        List<IOPort> inputs = _actor.inputPortList();
-        // If there is an instance of PortParameter, then return the
-        // whole collection of input ports.
-        for (IOPort actorInput : inputs) {
-            if (actorInput instanceof ParameterPort) {
-                return _actor.inputPortList();
-            }
-        }
-        LinkedList<IOPort> result = new LinkedList<IOPort>();
-        result.add(input);
-        return result;
     }
 
     /** Return the dependency between the specified input port
