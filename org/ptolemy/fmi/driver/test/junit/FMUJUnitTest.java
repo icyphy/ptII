@@ -58,21 +58,25 @@ public class FMUJUnitTest {
      *
      *  @param fmuFileName The absolute pathname of the .fmu file.  Absolute
      *  pathnames are used because this test could be run from anywhere.
+     *  @param endTime The end time.
+     *  @param stepSize The step size
      *  @param knownGoodFileName The absolute pathname of the known good results.
      *  Note that when the test is run, the output includes the command that could
      *  be run to create the known good file.
      *  @exception Exception If there is a problem reading or executing the test
      *  or if the results is not the same as the known good results.
      */
-    public void cosimulate(String fmuFileName, String knownGoodFileName)
+    public void cosimulate(String fmuFileName, double endTime, double stepSize,
+			   String knownGoodFileName)
             throws Exception {
         String resultsFileName = File.createTempFile("FMUJUnitTest", "csv")
                 .getCanonicalPath();
         System.out.println("To update " + knownGoodFileName + ", run:\n"
                 + "java -classpath \"" + topDirectory + "/lib/jna.jar:"
                 + topDirectory + "\" org.ptolemy.fmi.driver.FMUCoSimulation "
-                + fmuFileName + " 1.0 0.1 false c " + knownGoodFileName);
-        new FMUCoSimulation().simulate(fmuFileName, 1.0, 0.1,
+                + fmuFileName + " " + endTime + " " + stepSize
+    	        + " false c " + knownGoodFileName);
+        new FMUCoSimulation().simulate(fmuFileName, endTime, stepSize,
                 true /*logging*/, ',', resultsFileName);
 
         String results = FMUJUnitTest.readFile(resultsFileName);
@@ -87,12 +91,16 @@ public class FMUJUnitTest {
 
     /** Co-simulate a test.
      *  @param testName The name of the test with no file extension.
+     *  @param endTime The end time.
+     *  @param stepSize The step size
      *  @exception Exception If there is a problem reading or executing the test
      *  or if the results is not the same as the known good results.
      */
-    public void cosimulate(String testName) throws Exception {
+    public void cosimulate(String testName, double endTime, double stepSize)
+	throws Exception {
         cosimulate(topDirectory + "/org/ptolemy/fmi/fmu/cs/" + testName
-                + ".fmu", topDirectory + "/org/ptolemy/fmi/driver/test/junit/"
+		   + ".fmu", endTime, stepSize,
+		   topDirectory + "/org/ptolemy/fmi/driver/test/junit/"
                 + testName + ".csv");
     }
 
@@ -101,7 +109,8 @@ public class FMUJUnitTest {
      */
     @org.junit.Test
     public void cosimulateBouncingBall() throws Exception {
-        cosimulate("bouncingBall");
+	// The end time and step size come from run_all.bat in FMUSDK2.0.1.
+        cosimulate("bouncingBall", 4, 0.01);
     }
 
     /** Run the dq co-simulation functional mock-up unit test.
@@ -109,7 +118,8 @@ public class FMUJUnitTest {
      */
     @org.junit.Test
     public void cosimulateDq() throws Exception {
-        cosimulate("dq");
+	// The end time and step size come from run_all.bat in FMUSDK2.0.1.
+        cosimulate("dq", 1, 0.1);
     }
 
     /** Run the inc co-simulation functional mock-up unit test.
@@ -117,7 +127,10 @@ public class FMUJUnitTest {
      */
     @org.junit.Test
     public void cosimulateInc() throws Exception {
-        cosimulate("inc");
+	// The end time and step size come from run_all.bat in FMUSDK2.0.1.
+	// run_all.bat has a end time of 15, which will cause the
+	// fmu to terminate and doStep() to return fmiError, so we go with 11.
+        cosimulate("inc", 11, 0.4);
     }
 
     /** Run the values co-simulation functional mock-up unit test.
@@ -125,7 +138,8 @@ public class FMUJUnitTest {
      */
     @org.junit.Test
     public void cosimulateValues() throws Exception {
-        cosimulate("values");
+	// The end time and step size come from run_all.bat in FMUSDK2.0.1.
+        cosimulate("values", 12, 0.3);
     }
 
     /** Run the vanDerPol co-simulation functional mock-up unit test.
@@ -133,7 +147,8 @@ public class FMUJUnitTest {
      */
     @org.junit.Test
     public void cosimulateVanDerPol() throws Exception {
-        cosimulate("vanDerPol");
+	// The end time and step size come from run_all.bat in FMUSDK2.0.1.
+        cosimulate("vanDerPol", 5, 0.1);
     }
 
     /** Parse a Functional Mock-up Unit .fmu file, run it using model exchange
