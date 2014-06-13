@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<fmiModelDescription
+  fmiVersion="2.0"
+  modelName="stairsA20RC1F"
+  guid="{b1ca019f-8d2c-4ccb-84a4-457849d1560a}"
+  numberOfEventIndicators="0">
+
+<CoSimulation
+  modelIdentifier="stairsA20RC1F"
+  canHandleVariableCommunicationStepSize="true"/>
+
+<LogCategories>
+  <Category name="logAll"/>
+  <Category name="logError"/>
+  <Category name="logFmiCall"/>
+  <Category name="logEvent"/>
+</LogCategories>
+
+<ModelVariables>
+  <ScalarVariable name="counter" valueReference="0" description="counts the seconds" causality="output" initial="exact">
+     <Integer start="1"/>
+  </ScalarVariable>
+</ModelVariables>
+
+<ModelStructure>
+  <Outputs>
+    <Unknown index="1" />
+  </Outputs>
+</ModelStructure>
+
+</fmiModelDescription>
