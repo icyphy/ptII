@@ -113,6 +113,15 @@ public class FMUJUnitTest {
         cosimulate("bouncingBall", 4, 0.01);
     }
 
+    /** Run the bouncing ball co-simulation functional mock-up unit test.
+     *  @exception Exception If there is a problem reading or running the test.
+     */
+    @org.junit.Test
+    public void cosimulateBouncingBall20RC1() throws Exception {
+	// The end time and step size come from run_all.bat in FMUSDK2.0.1.
+        cosimulate("bouncingBall20RC1", 4, 0.01);
+    }
+
     /** Run the dq co-simulation functional mock-up unit test.
      *  @exception Exception If there is a problem reading or running the test.
      */
@@ -131,6 +140,17 @@ public class FMUJUnitTest {
 	// run_all.bat has a end time of 15, which will cause the
 	// fmu to terminate and doStep() to return fmiError, so we go with 11.
         cosimulate("inc", 11, 0.4);
+    }
+
+    /** Run the inc co-simulation functional mock-up unit test.
+     *  @exception Exception If there is a problem reading or running the test.
+     */
+    @org.junit.Test
+    public void cosimulateInc20RC1() throws Exception {
+	// The end time and step size come from run_all.bat in FMUSDK2.0.1.
+	// run_all.bat has a end time of 15, which will cause the
+	// fmu to terminate and doStep() to return fmiError, so we go with 11.
+        cosimulate("inc20RC1", 11, 0.4);
     }
 
     /** Run the values co-simulation functional mock-up unit test.
