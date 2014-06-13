@@ -110,9 +110,9 @@ public abstract class FMUDriver {
      *  of the function will be printed after the error message.
      */
     public void invoke(Function function, Object[] arguments, String message) {
-        if (_enableLogging) {
-            System.out.println("About to call " + function.getName());
-        }
+        // if (_enableLogging) {
+        //    System.out.println("About to call " + function.getName());
+        //}
         int fmiFlag = ((Integer) function.invoke(Integer.class, arguments))
                 .intValue();
         if (fmiFlag > FMILibrary.FMIStatus.fmiWarning) {

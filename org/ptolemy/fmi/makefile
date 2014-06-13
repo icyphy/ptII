@@ -63,6 +63,7 @@ JSRCS = \
 	FMICapabilities.java \
 	FMICoSimulationCapabilities.java \
 	FMIEventInfo.java \
+	FMI20EventInfo.java \
 	FMILibrary.java \
 	FMIModelDescription.java \
 	FMIScalarVariable.java \

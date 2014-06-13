@@ -174,6 +174,29 @@ public class FMIModelDescription {
         }
     }
 
+    /** Return a string describing the specified fmiStatus.
+     *  @param fmiStatus The status returned by an FMI procedure.
+     *  @return a String describing the status.
+     */
+    public static String fmiStatusDescription(int fmiStatus) {
+        // FIXME: FMI 2.0 has apparently lost fmiWarning and fmiFatal.
+        // What is the new encoding? Need the header file.
+        switch (fmiStatus) {
+        case 0:
+            return "fmiOK";
+        case 1:
+            return "fmiWarning";
+        case 2:
+            return "fmiDiscard";
+        case 3:
+            return "fmiError";
+        case 4:
+            return "fmiFatal";
+        default:
+            return "fmiPending";
+        }
+    }
+
     /** Return a class that provides a callback function
      *  that allocates memory, but retains a reference
      *  so that the memory does not get gc'd.

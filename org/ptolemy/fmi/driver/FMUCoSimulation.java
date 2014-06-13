@@ -94,7 +94,7 @@ public class FMUCoSimulation extends FMUDriver {
      *  <p>For example, under Mac OS X or Linux:
      *  <pre>
      *  java -classpath $PTII/lib/jna-4.0.0-variadic.jar:${PTII} org.ptolemy.fmi.driver.FMUCoSimulation \
-     *
+     *      ../fmu/cs/inc.fmu
      *  </pre>
      *
      *  <p>The command line arguments have the following meaning:</p>
@@ -228,10 +228,13 @@ public class FMUCoSimulation extends FMUDriver {
                                                   callbacks, toBeVisible, loggingOn });
 	}
 
-        System.out.println("instantiatedSlave");
         if (fmiComponent.equals(Pointer.NULL)) {
             throw new RuntimeException("Could not instantiate model.");
         }
+
+        if (enableLogging) {
+	    System.out.println("instantiatedSlave");
+	}
 
         double startTime = 0;
 
@@ -302,9 +305,11 @@ public class FMUCoSimulation extends FMUDriver {
 				  + fmiFlag).printStackTrace();
 		}
 	    } else {
-		invoke(fmiModelDescription, "fmiTerminate", new Object[] { fmiComponent },
+		invoke(fmiModelDescription, "fmiTerminate",
+		       new Object[] { fmiComponent },
 		       "Could not terminate slave:");
-		invoke(fmiModelDescription, "fmiFreeInstance", new Object[] { fmiComponent },
+		invoke(fmiModelDescription, "fmiFreeInstance",
+		       new Object[] { fmiComponent },
 		       "Could not free the Co-Simulation instance:");
 	    }
 

@@ -1,4 +1,4 @@
-/* Functional Mock-up Interface (FMI) event information.
+/* Functional Mock-up Interface (FMI) 2.0 event information.
 
    Copyright (c) 2012-2013 The Regents of the University of California.
    All rights reserved.
@@ -34,7 +34,7 @@ import java.util.List;
 import com.sun.jna.Structure;
 
 /**
- * Functional Mock-up Interface (FMI) event information for FMI-1.0.
+ * Functional Mock-up Interface (FMI) 2.0 event information.
  *
  * <p>The C language interface to Functional Mock-up Unit (FMU)
  * files includes an structure that represents event information.
@@ -53,37 +53,48 @@ import com.sun.jna.Structure;
  * @Pt.ProposedRating Red (cxh)
  * @Pt.AcceptedRating Red (cxh)
  */
-public class FMIEventInfo extends Structure {
+public class FMI20EventInfo extends Structure {
 
     /** Instantiate a Java structure that that represents the C
      * structure that contains information about events.
      */
-    public FMIEventInfo() {
+    public FMI20EventInfo() {
         super();
         // Don't call initFieldOrder with JNA later than jna-3.5.0
         //initFieldOrder();
     }
 
+    /** Construct a FMI20EventInfo from data.
+     *  @param pointer a pointer to the data.
+     *  @param offsite the offsite, in bytes.
+     */
+    public FMI20EventInfo(com.sun.jna.Pointer pointer, int offset) {
+	super();
+	useMemory(pointer, offset);
+	read();
+    }
+
     /** Instantiate a Java structure that that represents the C
      * structure that contains information about events.
      * <p>This is for FMI-1.0</p>
-     * @param iterationConverged C type: fmiBoolean
-     * @param stateValueReferencesChanged C type: fmiBoolean
-     * @param stateValuesChanged C type: fmiBoolean
+     * @param newDiscreteStatesNeeded C type: fmiBoolean
      * @param terminateSimulation C type: fmiBoolean
-     * @param upcomingTimeEvent C type: fmiBoolean
+     * @param nominalsOfContinuousStatesChanged C type: fmiBoolean
+     * @param nextEventTimeDefined C type: fmiBoolean
      * @param nextEventTime C type: fmiReal
      */
-    public FMIEventInfo(byte iterationConverged,
-            byte stateValueReferencesChanged, byte stateValuesChanged,
-            byte terminateSimulation, byte upcomingTimeEvent,
-            double nextEventTime) {
+    public FMI20EventInfo(byte newDiscreteStatesNeeded,
+			byte terminateSimulation,
+			byte nominalsOfContinuousStatesChanged,
+			byte valuesOfContinuousStatesChanged,
+			byte nextEventTimeDefined,
+			double nextEventTime) {
         super();
-        this.iterationConverged = iterationConverged;
-        this.stateValueReferencesChanged = stateValueReferencesChanged;
-        this.stateValuesChanged = stateValuesChanged;
-        this.terminateSimulation = terminateSimulation;
-        this.upcomingTimeEvent = upcomingTimeEvent;
+	this.newDiscreteStatesNeeded = newDiscreteStatesNeeded;
+	this.terminateSimulation = terminateSimulation;
+	this.nominalsOfContinuousStatesChanged = nominalsOfContinuousStatesChanged;
+	this.valuesOfContinuousStatesChanged = valuesOfContinuousStatesChanged;
+	this.nextEventTimeDefined = nextEventTimeDefined;
         this.nextEventTime = nextEventTime;
 
         // Don't call initFieldOrder with JNA later than jna-3.5.0
@@ -92,13 +103,28 @@ public class FMIEventInfo extends Structure {
 
     /** Access the structure by reference.
      */
-    public static class ByReference extends FMIEventInfo implements
+    public static class ByReference extends FMI20EventInfo implements
             Structure.ByReference {
+	/**  Allocate a new FMI20EventInfo.ByReference struct on the heap.
+	*/
+
+	public ByReference() {}
+
+	/** Create an instance that shares its memory with another
+	 *  FMU20EventInfo instance public ByReference(FMI20EventInfo.
+	 *  @param struct The FMI20EventInfo to be shared.
+	 */
+	public ByReference(FMI20EventInfo struct) {
+	    super(struct.getPointer(), 0);
+	}
+
+
+
     };
 
     /** Access the structure by value.
      */
-    public static class ByValue extends FMIEventInfo implements
+    public static class ByValue extends FMI20EventInfo implements
             Structure.ByValue {
     };
 
@@ -106,19 +132,19 @@ public class FMIEventInfo extends Structure {
     // C structure.
 
     /** C type: fmiBoolean. */
-    public byte iterationConverged;
-
-    /** C type: fmiBoolean. */
-    public byte stateValueReferencesChanged;
-
-    /** C type: fmiBoolean. */
-    public byte stateValuesChanged;
+    public byte newDiscreteStatesNeeded;
 
     /** C type: fmiBoolean. */
     public byte terminateSimulation;
 
     /** C type: fmiBoolean. */
-    public byte upcomingTimeEvent;
+    public byte nominalsOfContinuousStatesChanged;
+
+    /** C type: fmiBoolean. */
+    public byte valuesOfContinuousStatesChanged;
+
+    /** C type: fmiBoolean. */
+    public byte nextEventTimeDefined;
 
     /** C type: fmiReal. */
     public double nextEventTime;
@@ -128,21 +154,12 @@ public class FMIEventInfo extends Structure {
      *  @return a list of strings that name the fields in order.
      */
     protected List getFieldOrder() {
-        return Arrays.asList(new String[] { "iterationConverged",
-                "stateValueReferencesChanged", "stateValuesChanged",
-                "terminateSimulation", "upcomingTimeEvent", "nextEventTime" });
-    }
-
-    /** Set the initialization order of the fields so that the order
-     * matches the order of the C structure.
-     * @deprecated As of jna-3.5.0, use getFieldOrder() instead.
-     */
-    protected void initFieldOrder() {
-        // Note that the name of this method does not have a leading
-        // underscore because the name of the protected method in the
-        // parent class does not have an underscore.
-        setFieldOrder(new String[] { "iterationConverged",
-                "stateValueReferencesChanged", "stateValuesChanged",
-                "terminateSimulation", "upcomingTimeEvent", "nextEventTime" });
+        return Arrays.asList(new String[] { 
+		"newDiscreteStatesNeeded",
+		"terminateSimulation",
+		"nominalsOfContinuousStatesChanged",
+		"valuesOfContinuousStatesChanged",
+		"nextEventTimeDefined",
+		"nextEventTime"});
     }
 }
