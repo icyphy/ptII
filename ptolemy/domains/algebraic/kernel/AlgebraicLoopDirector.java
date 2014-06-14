@@ -29,6 +29,7 @@ package ptolemy.domains.algebraic.kernel;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.LinkedList;
 import java.util.Map;
 
 import ptolemy.actor.AbstractReceiver;
@@ -215,19 +216,17 @@ public class AlgebraicLoopDirector extends FixedPointDirector {
         }
         int iterationCount = 0;
 
-        List<AlgebraicLoopReceiver> receivers = _receivers;
         int i = 0;
-        for (AlgebraicLoopReceiver receiver : receivers) {
+        for (AlgebraicLoopReceiver receiver : _breakVariables) {
             final IOPort port = receiver.getContainer(); 
-//            if ( (port.defaultValue != null && port.isInput()) ){
-            if ( port.isInput() ){
-                Token t = receiver._getCurrentToken();
-                if (t != null && t.getType() == BaseType.DOUBLE){
-                    _x_n[i] = ((DoubleToken)t).doubleValue();
-                    _tol[i] =_getErrorTolerance( port );
-                    i++;
-                }
+            Token t = receiver._getCurrentToken();
+            if (t != null && t.getType() == BaseType.DOUBLE){
+            	_x_n[i] = ((DoubleToken)t).doubleValue();
+            	_tol[i] =_getErrorTolerance( port );
+            	i++;
             }
+            else
+            	throw new IllegalActionException("Obtained an invalid receiver.");
         }
         // Now, _x_n contains all values for the receivers
         int maxIterationsValue = ((IntToken)(maxIterations.getToken())).intValue();
@@ -266,16 +265,12 @@ public class AlgebraicLoopDirector extends FixedPointDirector {
             throws IllegalActionException{
         // Set the argument to the receivers
         int iRec=0;
-        List<AlgebraicLoopReceiver> receivers = _receivers;
-        for (AlgebraicLoopReceiver receiver : receivers) {
-            // FIXME: We should do this only if the receiver is a DoubleToken
-        	if ( receiver.getContainer().isInput() ){
-        		DoubleToken t = new DoubleToken(x[iRec]);
-        		receiver.put(t);
-                if (_isNewtonRaphson)
-                	System.out.println("Setting input to loop function for " + receiver.getContainer().getName() + " to " + x[iRec]);
-        		iRec++;
-        	}
+        for (AlgebraicLoopReceiver receiver : _breakVariables) {
+        	DoubleToken t = new DoubleToken(x[iRec]);
+        	receiver.put(t);
+        	if (true || _isNewtonRaphson)
+        		System.out.println("Setting input to loop function for " + receiver.getContainer().getName() + " to " + x[iRec]);
+        	iRec++;
         }
 
         // Calculate the superclass fixed point, which is the current
@@ -283,7 +278,9 @@ public class AlgebraicLoopDirector extends FixedPointDirector {
         // That is, x_n is replaced with g(x_n), where g()
         // is the feedback function.
         Schedule schedule = getScheduler().getSchedule();
+        int loopcount = 0; // FIXME: this variable is for debugging only.
         do {
+        		loopcount++;
                 Iterator firingIterator = schedule.firingIterator();
                 while (firingIterator.hasNext() && !_stopRequested) {
                     Actor actor = ((Firing) firingIterator.next()).getActor();
@@ -317,24 +314,22 @@ public class AlgebraicLoopDirector extends FixedPointDirector {
                     }
                 }
         } while (!_hasIterationConverged() && !_stopRequested);
-
+        System.out.println("loopcount = " + loopcount);
         // Get the values from the receivers, and return them
         double[] g = new double[_nVars];
 
         int i = 0;
-        for (AlgebraicLoopReceiver receiver : receivers) {
+        for (AlgebraicLoopReceiver receiver : _breakVariables) {
         	final IOPort port = receiver.getContainer();
-            if (port.defaultValue != null && port.isInput()){
-                // Record g(x_n)
-                Token t = receiver._getCurrentToken();
-                if (t.getType() == BaseType.DOUBLE){
-                    g[i] = ((DoubleToken)(t)).doubleValue();
-                    if (_isNewtonRaphson){
-                    	// FIXME: Check value. For Newton1.xml, this produces the wrong value in the first call.
-                    	System.out.println("Output of loop function at " + receiver.getContainer().getName() + " = " + g[i]);
-                    }
-                    i++;
+        	// Store g(x_n)
+        	Token t = receiver._getCurrentToken();
+        	if (t.getType() == BaseType.DOUBLE){
+        		g[i] = ((DoubleToken)(t)).doubleValue();
+        		if (true || _isNewtonRaphson){
+        			// FIXME: Check value. For Newton1.xml, this produces the wrong value in the first call.
+        			System.out.println("Output of loop function at " + receiver.getContainer().getName() + " = " + g[i]);
                 }
+        		i++;
             }
         }
         return g;
@@ -350,16 +345,24 @@ public class AlgebraicLoopDirector extends FixedPointDirector {
 
         _isNewtonRaphson = method.stringValue().equals(new String("NewtonRaphson"));
 
-        // Count the number of break variables.
+        // Set up a list of all receivers that contain the values where the
+        // iterate x needs to be stored. 
+        // These are the input ports associated with the break variables.
         // These are all receivers that have a default value and that are an input.
-        _nVars = 0;
         List<AlgebraicLoopReceiver> receivers = _receivers;
+        _breakVariables = new LinkedList<AlgebraicLoopReceiver>();
         for (AlgebraicLoopReceiver receiver : receivers) {
         	IOPort port = receiver.getContainer();
             if (port.defaultValue != null && port.isInput()){
-                _nVars++;
+            	_breakVariables.add(receiver);
             }
         }
+        
+        	for(AlgebraicLoopReceiver receiver : _breakVariables){
+        		System.out.println("Break variable: " + receiver.toString());
+        	}
+
+        _nVars = _breakVariables.size();
         _x_n = new double[_nVars];
         _g_n = new double[_nVars];
         _tol = new double[_nVars];
@@ -538,6 +541,9 @@ public class AlgebraicLoopDirector extends FixedPointDirector {
     protected double[] _tol;
     /** Number of break variables */
     protected int _nVars;
+    /** The list of receivers for all break variables */
+    protected List<AlgebraicLoopReceiver> _breakVariables;
+    
     /** Flag to indicate that it is the NewtonRaphson method */
     protected boolean _isNewtonRaphson;
 
