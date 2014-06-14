@@ -28,17 +28,17 @@ package ptolemy.domains.algebraic.kernel;
 
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.List;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 
-import ptolemy.actor.AbstractReceiver;
 import ptolemy.actor.Actor;
 import ptolemy.actor.IOPort;
 import ptolemy.actor.Receiver;
 import ptolemy.actor.sched.Firing;
-import ptolemy.actor.sched.FixedPointDirector;
 import ptolemy.actor.sched.Schedule;
+import ptolemy.actor.sched.StaticSchedulingDirector;
+import ptolemy.actor.util.CausalityInterface;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.IntToken;
 import ptolemy.data.Token;
@@ -51,6 +51,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Nameable;
 import ptolemy.kernel.util.Workspace;
 import ptolemy.math.DoubleMatrixMath;
+
 ///////////////////////////////////////////////////////////////////
 //// AlgebraicLoopDirector
 
@@ -120,13 +121,13 @@ import ptolemy.math.DoubleMatrixMath;
  <li> This code is not at all optimized and may be quite inefficient.
  </ul>
 
- @author Edward A. Lee
+ @author Edward A. Lee and Michael Wetter
  @version $Id: AlgebraicLoopDirector.java 65763 2013-03-07 01:54:37Z cxh $
  @since Ptolemy II 2.0
  @Pt.ProposedRating Yellow (eal)
  @Pt.AcceptedRating Red (pwhitake)
  */
-public class AlgebraicLoopDirector extends FixedPointDirector {
+public class AlgebraicLoopDirector extends StaticSchedulingDirector {
 
     /** Construct a director in the given container with the given name.
      *  The container argument must not be null, or a
@@ -158,6 +159,10 @@ public class AlgebraicLoopDirector extends FixedPointDirector {
         errorTolerance = new Parameter(this, "errorTolerance");
         errorTolerance.setTypeEquals(BaseType.DOUBLE);
         errorTolerance.setExpression("1E-4");
+        
+        AlgebraicLoopScheduler scheduler = new AlgebraicLoopScheduler(this,
+                uniqueName("Scheduler"));
+        setScheduler(scheduler);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -196,6 +201,7 @@ public class AlgebraicLoopDirector extends FixedPointDirector {
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         AlgebraicLoopDirector newObject = (AlgebraicLoopDirector) super.clone(workspace);
         // FIXME: populate.
+        
         return newObject;
     }
 
@@ -214,123 +220,118 @@ public class AlgebraicLoopDirector extends FixedPointDirector {
         if (_debugging) {
             _debug("AlgebraicLoopDirector: invoking fire().");
         }
-        int iterationCount = 0;
 
         int i = 0;
-        for (AlgebraicLoopReceiver receiver : _breakVariables) {
-            final IOPort port = receiver.getContainer(); 
-            Token t = receiver._getCurrentToken();
-            if (t != null && t.getType() == BaseType.DOUBLE){
-            	_x_n[i] = ((DoubleToken)t).doubleValue();
-            	_tol[i] =_getErrorTolerance( port );
-            	i++;
-            }
-            else
-            	throw new IllegalActionException("Obtained an invalid receiver.");
+        for (IOPort port : _breakVariables) {
+        	Receiver[][] receivers = port.getReceivers();
+        	for (Receiver[] receivers2 : receivers) {
+            	for (Receiver receiver : receivers2) {
+                    Token t = receiver.get();
+                    if (t instanceof DoubleToken){
+                    	_x_n[i] = ((DoubleToken)t).doubleValue();
+                    	// FIXME: This should probably be done only once in initialize():
+                    	_tolerance[i] =_getErrorTolerance( port );
+                    	i++;
+                    } else {
+            			throw new IllegalActionException("Break variable is required to be a double. Got "
+            					+ t + " on port " + port.getName(getContainer()));
+                    }
+            	}
+        	}
         }
         // Now, _x_n contains all values for the receivers
         int maxIterationsValue = ((IntToken)(maxIterations.getToken())).intValue();
 
         // Instantiate the numerical solver
-        AlgebraicLoopSolver solver = new AlgebraicLoopSolver(_tol, maxIterationsValue);
+        // FIXME: Do we really need a new solver each time we fire?
+        AlgebraicLoopSolver solver = new AlgebraicLoopSolver(_tolerance, maxIterationsValue);
         // Call the solver.
         try{
             solver.solve(_x_n);
-        }
-        catch(IllegalArgumentException e){
+        } catch(IllegalArgumentException e){
             throw new IllegalActionException(this, e.getMessage());
-        }
-        catch(Exception e){
-            if (!solver.converged())
-                throw new IllegalActionException(this, "Failed to converge after " + solver.getIterationCount() + " iterations.");
         }
         if (_debugging) {
             _debug(this.getFullName() + ": Fixed point found after "
-            + solver.getIterationCount() + " iterations.");
+            		+ solver.getIterationCount() + " iterations.");
         }
     }
 
     /** Return g(x).
-     *
      *  This function is called by the solver to evaluate the loop function.
-     *
-     * @param x Input to the loop function.
-     * @return Result of the loop function.
-     * @exception IllegalActionException If the prefire() method
+     *  @param x Input to the loop function.
+     *  @return Result of the loop function.
+     *  @exception IllegalActionException If the prefire() method
      *   returns false having previously returned true in the same
      *   iteration, or if the prefire() or fire() method of the actor
-     *   throws it.
+     *   throws it, or if evaluating the function yields a value that
+     *   is not a double.
      */
     protected double[] _evaluateLoopFunction(double[] x)
             throws IllegalActionException{
         // Set the argument to the receivers
         int iRec=0;
-        for (AlgebraicLoopReceiver receiver : _breakVariables) {
-        	DoubleToken t = new DoubleToken(x[iRec]);
-        	receiver.put(t);
-        	if (true || _isNewtonRaphson)
-        		System.out.println("Setting input to loop function for " + receiver.getContainer().getName() + " to " + x[iRec]);
-        	iRec++;
+        for (IOPort port : _breakVariables) {
+        	Receiver[][] receivers = port.getReceivers();
+        	for (Receiver[] receivers2 : receivers) {
+            	for (Receiver receiver : receivers2) {
+            		DoubleToken t = new DoubleToken(x[iRec]);
+            		receiver.put(t);
+            		if (_debugging) {
+            			_debug("Setting input to loop function for " + receiver.getContainer().getName() + " to " + x[iRec]);
+            		}
+            		iRec++;
+            	}
+        	}
         }
 
-        // Calculate the superclass fixed point, which is the current
+        // Execute the schedule, which is the current
         // evaluation of the feedback function.
         // That is, x_n is replaced with g(x_n), where g()
         // is the feedback function.
         Schedule schedule = getScheduler().getSchedule();
-        int loopcount = 0; // FIXME: this variable is for debugging only.
-        do {
-        		loopcount++;
-                Iterator firingIterator = schedule.firingIterator();
-                while (firingIterator.hasNext() && !_stopRequested) {
-                    Actor actor = ((Firing) firingIterator.next()).getActor();
-                    // If the actor has previously returned false in postfire(),
-                    // do not fire it.
-                    if (!_actorsFinishedExecution.contains(actor)) {
-                        // Check whether the actor is ready to fire.
-                        if (_isReadyToFire(actor)) {
-                            _fireActor(actor);
-                            _actorsFired.add(actor);
-                        } else {
-                            if (_debugging) {
-                                if (!_actorsFinishedFiring.contains(actor)
-                                        && actor.isStrict()) {
-                                    _debug("Strict actor has unknown inputs: "
-                                            + actor.getFullName());
-                                }
-                            }
-                        }
-                    } else {
-                        // The postfire() method of this actor returned false in
-                        // some previous iteration, so here, for the benefit of
-                        // connected actors, we need to explicitly call the
-                        // send(index, null) method of all of its output ports,
-                        // which indicates that a signal is known to be absent.
-                        if (_debugging) {
-                            _debug("FixedPointDirector: no longer enabled (return false in postfire): "
-                                    + actor.getFullName());
-                        }
-                        _sendAbsentToAllUnknownOutputsOf(actor);
-                    }
-                }
-        } while (!_hasIterationConverged() && !_stopRequested);
-        System.out.println("loopcount = " + loopcount);
+        Iterator firingIterator = schedule.firingIterator();
+        while (firingIterator.hasNext() && !_stopRequested) {
+        	Actor actor = ((Firing) firingIterator.next()).getActor();
+        	// If the actor has previously returned false in postfire(),
+        	// do not fire it.
+        	if (!_actorsFinishedExecution.contains(actor)) {
+        		_fireActor(actor);
+        	} else {
+        		// The postfire() method of this actor returned false in
+        		// some previous iteration, so here, for the benefit of
+        		// connected actors, we need to explicitly call the
+        		// send(index, null) method of all of its output ports,
+        		// which indicates that a signal is known to be absent.
+        		if (_debugging) {
+        			_debug("FixedPointDirector: no longer enabled (return false in postfire): "
+        					+ actor.getFullName());
+        		}
+        		_clearAllDestinationReceivers(actor);
+        	}
+        }
         // Get the values from the receivers, and return them
         double[] g = new double[_nVars];
 
         int i = 0;
-        for (AlgebraicLoopReceiver receiver : _breakVariables) {
-        	final IOPort port = receiver.getContainer();
-        	// Store g(x_n)
-        	Token t = receiver._getCurrentToken();
-        	if (t.getType() == BaseType.DOUBLE){
-        		g[i] = ((DoubleToken)(t)).doubleValue();
-        		if (true || _isNewtonRaphson){
-        			// FIXME: Check value. For Newton1.xml, this produces the wrong value in the first call.
-        			System.out.println("Output of loop function at " + receiver.getContainer().getName() + " = " + g[i]);
-                }
-        		i++;
-            }
+        for (IOPort port : _breakVariables) {
+        	Receiver[][] receivers = port.getReceivers();
+        	for (Receiver[] receivers2 : receivers) {
+            	for (Receiver receiver : receivers2) {
+            		// Store g(x_n)
+            		Token t = receiver.get();
+            		if (t instanceof DoubleToken){
+            			g[i] = ((DoubleToken)(t)).doubleValue();
+            			if (_debugging){
+            				_debug("Output of loop function at " + receiver.getContainer().getName(getContainer()) + " = " + g[i]);
+            			}
+            			i++;
+            		} else {
+            			throw new IllegalActionException("Break variable is required to be a double. Got "
+            					+ t + " on port " + port.getName(getContainer()));
+            		}
+            	}
+        	}
         }
         return g;
     }
@@ -343,30 +344,47 @@ public class AlgebraicLoopDirector extends FixedPointDirector {
     public void initialize() throws IllegalActionException {
         super.initialize();
 
-        _isNewtonRaphson = method.stringValue().equals(new String("NewtonRaphson"));
+        _isNewtonRaphson = method.stringValue().equals("NewtonRaphson");
 
         // Set up a list of all receivers that contain the values where the
         // iterate x needs to be stored. 
         // These are the input ports associated with the break variables.
         // These are all receivers that have a default value and that are an input.
-        List<AlgebraicLoopReceiver> receivers = _receivers;
-        _breakVariables = new LinkedList<AlgebraicLoopReceiver>();
-        for (AlgebraicLoopReceiver receiver : receivers) {
-        	IOPort port = receiver.getContainer();
-            if (port.defaultValue != null && port.isInput()){
-            	_breakVariables.add(receiver);
-            }
-        }
-        
-        	for(AlgebraicLoopReceiver receiver : _breakVariables){
-        		System.out.println("Break variable: " + receiver.toString());
+        _breakVariables = new LinkedList<IOPort>();
+        CompositeEntity container = (CompositeEntity)getContainer();
+        @SuppressWarnings("unchecked")
+		List<Actor> actors = container.deepEntityList();
+        _nVars = 0;
+        for (Actor actor : actors) {
+        	@SuppressWarnings("unchecked")
+			List<IOPort> inputPorts = actor.inputPortList();
+        	for (IOPort port : inputPorts) {
+        		// If the port has a default value, then all its receivers are break variables.
+                if (port.defaultValue.getToken() != null){
+                	// Break any causality relation between this input and all outputs.
+                	CausalityInterface causality = actor.getCausalityInterface();
+                	List<IOPort> outputPorts = actor.outputPortList();
+                	for (IOPort output : outputPorts) {
+                		causality.removeDependency(port, output);
+                	}
+                	_breakVariables.add(port);
+                	// Count the number of receivers it has.
+                	int numberOfReceivers = 0;
+                	Receiver[][] receivers = port.getReceivers();
+                	for (Receiver[] receivers2 : receivers) {
+                		numberOfReceivers += receivers2.length;
+                	}
+                	if (_debugging) {
+                		_debug("Break variable: " + port.getName(getContainer())
+                				+ ", which has " + numberOfReceivers + " values.");
+                	}
+                	_nVars += numberOfReceivers;
+                }
         	}
-
-        _nVars = _breakVariables.size();
+        }        
         _x_n = new double[_nVars];
         _g_n = new double[_nVars];
-        _tol = new double[_nVars];
-        // FIXME: populate.
+        _tolerance = new double[_nVars];
     }
 
     /** Return a new FixedPointReceiver. If a subclass overrides this
@@ -376,53 +394,34 @@ public class AlgebraicLoopDirector extends FixedPointDirector {
      *  @return A new FixedPointReceiver.
      */
     public Receiver newReceiver() {
-        Receiver receiver = new AlgebraicLoopReceiver(this);
-        _receivers.add(receiver);
+    	AlgebraicLoopReceiver receiver = new AlgebraicLoopReceiver(this);
         return receiver;
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                       protected methods                   ////
 
-    /** Return true if this iteration has converged.  If the superclass has not
-     *  converged, then we have not yet established whether all receivers are known,
-     *  so this returns false. Otherwise, it returns true if the values of all receivers
-     *  are close to what they were in the previous iteration.
-     *  @param iterationCount The count of the iteration.
-     *  @return true if this iteration has converged.
-     *  @throws IllegalActionException If the number of iterations exceeds the value
-     *   of maxIterations.
+    /** Call the send(index, null) method of each output port of the specified actor.
+     *  @param actor The actor.
+     *  @exception IllegalActionException If thrown while getting
+     *   the width of a port, determining if a port is known
+     *   or while sending data.
      */
-    protected boolean _hasIterationConverged(int iterationCount)
+    protected void _clearAllDestinationReceivers(Actor actor)
             throws IllegalActionException {
-        int maxIterationsValue = ((IntToken)maxIterations.getToken()).intValue();
-        if (iterationCount > maxIterationsValue) {
-            throw new IllegalActionException(this, "Failed to converge after " + maxIterationsValue + " iterations.");
-        }
-        if (!super._hasIterationConverged()) {
-            return false;
-        }
-        if (_debugging) {
-            _debug("Checking whether new values are close to previous values");
-        }
-        @SuppressWarnings("unchecked")
-        List<AlgebraicLoopReceiver> receivers = _receivers;
-        for (AlgebraicLoopReceiver receiver : receivers) {
-            Token currentToken = receiver._getCurrentToken();
-            Token previousToken = receiver._getPreviousToken();
-            if (currentToken != previousToken) {
-                // Either might be null.
-                if (currentToken == null || previousToken == null) {
-                    return false;
-                }
-                IOPort container = receiver.getContainer();
-                double epsilon = _getErrorTolerance(container);
-                if (!(currentToken.isCloseTo(previousToken, epsilon)).booleanValue()) {
-                    return false;
+        Iterator outputPorts = actor.outputPortList().iterator();
+        while (outputPorts.hasNext()) {
+            IOPort outputPort = (IOPort) outputPorts.next();
+            for (int j = 0; j < outputPort.getWidth(); j++) {
+                if (!outputPort.isKnown(j)) {
+                    if (_debugging) {
+                        _debug("Set output "
+                                + outputPort.getFullName() + " to absent.");
+                    }
+                    outputPort.send(j, null);
                 }
             }
         }
-        return true;
     }
 
     /** Fire an actor. Call its prefire() method, and
@@ -441,56 +440,15 @@ public class AlgebraicLoopDirector extends FixedPointDirector {
                     + ((Nameable) actor).getFullName() + ", which returns "
                     + prefireReturns);
         }
+        // FIXME: Should we call _clearAllDestinationReceivers(actor) before firing?
+        // If the actor fails to produce an output, should that change the state of
+        // the destinations to absent?
         if (prefireReturns) {
-            _actorsAllowedToFire.add(actor);
-
-            // Whether all inputs are known must be checked before
-            // firing to handle cases with self-loops, because the
-            // current firing may change the status of some input
-            // receivers from unknown to known.
-            boolean allInputsKnownBeforeFiring = _areAllInputsKnown(actor);
-
             if (_debugging) {
-                if (allInputsKnownBeforeFiring) {
-                    _debug("Firing: " + ((Nameable) actor).getName()
-                            + ", which has all inputs known.");
-                } else {
-                    _debug("Firing: " + ((Nameable) actor).getName()
-                            + ", which has some inputs unknown.");
-                }
+            	_debug("Firing: " + ((Nameable) actor).getName());
             }
-
             actor.fire();
-            // If all of the inputs of this actor were known before firing, then the
-            // outputs can be asserted to be absent.
-            if (allInputsKnownBeforeFiring) {
-                _sendAbsentToAllUnknownOutputsOf(actor);
-            }
-        } else {
-            // prefire() returned false. The actor declines
-            // to fire. This could be because some inputs are
-            // not known.  If all inputs are known, then we
-            // interpret this to mean that all outputs should be absent.
-            // Note that prefire() is executed only after all the inputs are
-            // known if the actor is strict.
-            if (actor.isStrict() || _areAllInputsKnown(actor)) {
-                _sendAbsentToAllUnknownOutputsOf(actor);
-            }
         }
-    }
-
-    /** React to the change in receiver status by incrementing the count of
-     *  known receivers.
-     */
-    protected void _receiverChanged() {
-        super._receiverChanged();
-    }
-
-    /** Return the list of receivers that this director is in charge of.
-     *  @return A list of receivers.
-     */
-    protected List<AlgebraicLoopReceiver> _receivers() {
-        return _receivers;
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -531,21 +489,26 @@ public class AlgebraicLoopDirector extends FixedPointDirector {
         return ((DoubleToken)errorTolerance.getToken()).doubleValue();
     }
 
-    // /////////////////////////////////////////////////////////////////
-    // // protected variables ////
-    /** Current value of the iteration variables x_n */
-    protected double[] _x_n;
+    ///////////////////////////////////////////////////////////////////
+    ////                   protected variables                     ////
+        
+    /** The list of ports for all break variables */
+    protected List<IOPort> _breakVariables;
+
     /** Current value of the loop function g(x_n) */
     protected double[] _g_n;
-    /** Tolerance for each iteration variable */
-    protected double[] _tol;
-    /** Number of break variables */
-    protected int _nVars;
-    /** The list of receivers for all break variables */
-    protected List<AlgebraicLoopReceiver> _breakVariables;
-    
+        
     /** Flag to indicate that it is the NewtonRaphson method */
     protected boolean _isNewtonRaphson;
+    
+    /** Number of break variables */
+    protected int _nVars;
+        
+    /** Tolerance for each iteration variable */
+    protected double[] _tolerance;
+
+    /** Current value of the iteration variables x_n */
+    protected double[] _x_n;
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
@@ -591,20 +554,15 @@ public class AlgebraicLoopDirector extends FixedPointDirector {
      */
     class AlgebraicLoopSolver {
 
-        /** Constructs an algebraic loop solver.
-
+        /** Construct an algebraic loop solver.
          *  @param tolerance Tolerance for each variable.
          *  @param maxIterations Maximum number of iterations.
          */
         public AlgebraicLoopSolver(
                 double[] tolerance,
                 int maxIterations){
-            _tol = new double[tolerance.length];
-            _x = new double[tolerance.length];
-
-            System.arraycopy(tolerance, 0, _tol, 0, tolerance.length);
+            _tolerance = tolerance;
             _maxIterations = maxIterations;
-
             _converged = false;
             _iterationCount = 0;
             // Set the step size for the Newton method.
@@ -612,7 +570,7 @@ public class AlgebraicLoopDirector extends FixedPointDirector {
             if (_isNewtonRaphson){
                 _deltaX = new double[tolerance.length];
                 for (int i = 0; i < tolerance.length; i++){
-                    _tol[i] = 1E-5;
+                    _tolerance[i] = 1E-5;
                     // FIXME: _deltaX should take into account the scaling of the variable.
                     //        It should also be adaptive.
                     _deltaX[i] = 1E-5;
@@ -622,53 +580,56 @@ public class AlgebraicLoopDirector extends FixedPointDirector {
 
         ///////////////////////////////////////////////////////////////////
         ////                         public methods                    ////
-        /** Solve the algebraic loop.
-         *
+        
+        /** Solve the algebraic loop using the specified array as the initial
+         *  guess for the variables being solved for and replace the contents
+         *  of the specified array with the solution that is found. 
+         *  <p>
          *  This method iterates until a solution is found. If it does not
          *  converge within the maximum number of iterations, it throws
          *  an IllegalActionException. A method that calls solve(double[] xInitial)
          *  can then call converged() to check whether the exception is thrown because
          *  of lack of convergence.
          *
-         * @param xInitial Initial iterate.
-         * @exception IllegalActionException If an actor violates the
-         *            monotonicity constraints, or the prefire() or fire() method
-         *            of the actor throws it.
-         * @exception IllegalArgumentException If the solver fails to find a solution.
+         *  @param x Array with the initial values of the variables, to be replaced
+         *   with the solution by this method.
+         *  @exception IllegalActionException If the prefire() or fire() method
+         *   of an actor throws it.
+         *  @exception IllegalArgumentException If the solver fails to find a solution.
          */
-        public void solve(double[] xInitial)
-            throws IllegalActionException{
-            _x = xInitial;
+        public void solve(double[] x)
+        		throws IllegalActionException{
             _iterationCount = 0;
             do {
+            	double[] xNew;
                 // Evaluate the loop function to compute x_{n+1} = g(x_n).
                 // This calls the loop function of the outer class.
-                double[] g = new double[xInitial.length];
-                if (_isNewtonRaphson){
-                    _xNew = _newtonStep(_x);
-                }
-                else{
+                if (_isNewtonRaphson) {
+                    xNew = _newtonStep(x);
+                } else {
                     // Successive substitution
-                    _xNew = _evaluateLoopFunction(_x);
+                    xNew = _evaluateLoopFunction(x);
                 }
                 _iterationCount++;
 
                 // Check for convergence
                 _converged = true;
-                for(int i = 0; i < _x.length; i++){
-                    double diff = _x[i] - _xNew[i];
+                for(int i = 0; i < x.length; i++){
+                    double diff = x[i] - xNew[i];
                     // FIXME: this needs to be replaced with a test for relative and absolute convergence.
-                    if (diff > _tol[i] || -diff > _tol[i]){
+                    if (diff > _tolerance[i] || -diff > _tolerance[i]){
                         _converged = false;
                         break;
                     }
                 }
                 // Update iterate
-                System.arraycopy(_xNew, 0, _x, 0, _x.length);
+                System.arraycopy(xNew, 0, x, 0, x.length);
                 
                 // Check for maximum number of iterations in case we did not yet converge.
-                if (!_converged && _iterationCount > _maxIterations)
+                if (!_converged && _iterationCount > _maxIterations) {
+                	// FIXME: This is the wrong exception. Docs say IllegalActionException.
                     throw new RuntimeException("Failed to converge after " + _maxIterations + " iterations.");
+                }
             } while (!_converged && !_stopRequested);
         }
 
@@ -680,11 +641,9 @@ public class AlgebraicLoopDirector extends FixedPointDirector {
          *            monotonicity constraints, or the prefire() or fire() method
          *            of the actor throws it.
          * @exception IllegalArgumentException If the solver fails to find a solution.
-         *
          */
-        protected double[] _newtonStep(
-                    double[] x)
-        throws IllegalActionException {
+        protected double[] _newtonStep(double[] x)
+        		throws IllegalActionException {
             final int n = x.length;
 
             double[] xNew = new double[n];
@@ -714,6 +673,7 @@ public class AlgebraicLoopDirector extends FixedPointDirector {
                              + "Jacobian = " + DoubleMatrixMath.toString(J)
                              + LS
                              + "Determinant = " + det;
+                // FIXME: This is the wrong exception to throw. There is no illegal argument.
                 throw new IllegalArgumentException(em);
             }
             
@@ -732,122 +692,117 @@ public class AlgebraicLoopDirector extends FixedPointDirector {
         }
 
         
-    /** Return vector x that solves A*x=f by a Gauss elimination
-     *  with normalization and interchange of rows.
-     * 
-     *  A is an NxN matrix
-     * Method solves the equation A*x=f for x.
-     *
-     * @param A Matrix
-     * @param f Array with solution of A*x=f
-     * @return x Array x = A**(-1) * f
-      */
-    public double[] gaussElimination(double[][] A, double[] f)
-    {
-        int i, j, k, piv, iMax, jMax;
-        int dim = f.length;
-        int dimP1 = dim + 1;
-        double[]   r = new double[dim];
-        double[][] B = new double[dim][dimP1];
-        double[]   tempRow = new double[dimP1];
-        double a, pivotElement;
-        double aMax = -1;
+        /** Return vector x that solves A*x=f by a Gauss elimination
+         *  with normalization and interchange of rows.
+         * 
+         *  A is an NxN matrix
+         * Method solves the equation A*x=f for x.
+         *
+         * @param A Matrix
+         * @param f Array with solution of A*x=f
+         * @return x Array x = A**(-1) * f
+         */
+        public double[] gaussElimination(double[][] A, double[] f) {
+        	int i, j, k, piv, iMax, jMax;
+        	int dim = f.length;
+        	int dimP1 = dim + 1;
+        	double[]   r = new double[dim];
+        	double[][] B = new double[dim][dimP1];
+        	double[]   tempRow = new double[dimP1];
+        	double a, pivotElement;
+        	double aMax = -1;
 
-        for (i = 0; i < dim; i++)
-        {
-            for (j = 0; j < dim; j++)
-                B[i][j] = A[i][j];
-            B[i][dim] = f[i];
+        	for (i = 0; i < dim; i++) {
+        		for (j = 0; j < dim; j++)
+        			B[i][j] = A[i][j];
+        		B[i][dim] = f[i];
+        	}
+
+        	for (piv = 0; piv < dim; piv++) {
+        		//interchange rows if necessary
+        		iMax = 0;
+        		jMax = 0;
+        		for (i = 0; i < dim; i++)
+        		{
+        			for(j = dim-1; j >= 0; j--)
+        			{
+        				if(Math.abs(B[i][j]) > aMax)
+        				{
+        					aMax = Math.abs(B[i][j]);
+        					iMax = i;
+        					jMax = j;
+        				}
+        			}
+        		}
+
+        		if ( iMax != jMax)
+        		{
+        			for (i = 0; i < dimP1; i++)
+        			{
+        				tempRow[i] = B[iMax][i];
+        				B[iMax][i] = B[jMax][i];
+        				B[jMax][i] = tempRow[i];
+        			}
+        		}
+
+
+        		pivotElement = B[piv][piv];
+
+        		// normalization of pivot row
+        		for (j = 0; j < dimP1; j++)
+        			B[piv][j] = B[piv][j]/pivotElement;
+
+        		// elimination
+        		for(k = 0; k < dim; k++)
+        		{
+        			if(piv!=k)
+        			{
+        				a = B[k][piv];
+        				for(j = 0 ; j < dimP1; j++) // set new row
+        				{
+        					B[k][j] =  B[k][j] - a * B[piv][j];
+        				}
+        			}
+        		}
+        	}
+
+
+        	for (i = 0; i < dim; i++)
+        		r[i] = B[i][dim];
+
+        	return r;
         }
-
-        for (piv = 0; piv < dim; piv++)
-        {
-        //interchange rows if necessary
-            iMax = 0;
-            jMax = 0;
-            for (i = 0; i < dim; i++)
-            {
-                for(j = dim-1; j >= 0; j--)
-                {
-                    if(Math.abs(B[i][j]) > aMax)
-                    {
-                        aMax = Math.abs(B[i][j]);
-                        iMax = i;
-                        jMax = j;
-                    }
-                }
-            }
-
-            if ( iMax != jMax)
-            {
-                for (i = 0; i < dimP1; i++)
-                {
-                    tempRow[i] = B[iMax][i];
-                    B[iMax][i] = B[jMax][i];
-                    B[jMax][i] = tempRow[i];
-                }
-            }
-
-
-            pivotElement = B[piv][piv];
-
-        // normalization of pivot row
-            for (j = 0; j < dimP1; j++)
-                B[piv][j] = B[piv][j]/pivotElement;
-
-        // elimination
-            for(k = 0; k < dim; k++)
-            {
-                if(piv!=k)
-                {
-                    a = B[k][piv];
-                    for(j = 0 ; j < dimP1; j++) // set new row
-                    {
-                        B[k][j] =  B[k][j] - a * B[piv][j];
-                    }
-                }
-            }
-        }
-
-
-    for (i = 0; i < dim; i++)
-            r[i] = B[i][dim];
-
-    return r;
-    }
-       
         
         /** Return true if the solver converged, false otherwise.
-         *
-         * @return true if the solver converged, false otherwise.
+         *  @return true if the solver converged, false otherwise.
          */
         public boolean converged() {
             return _converged;
         }
 
         /** Return the number of iterations done in the last call to the method solve(double[]).
-         *
-         * @return The number of iterations
+         *  @return The number of iterations
          */
          public int getIterationCount() {
              return _iterationCount;
          }
 
         ///////////////////////////////////////////////////////////////////
-        //// protected variables                                       ////
-         /** Current value of the iteration variables x */
-         protected double[] _x;
-         /** Updated value of the iteration variables x */
-         protected double[] _xNew;
-        /** Tolerance for each iteration variable */
-        protected double[] _tol;
+        ////             protected variables                           ////
+
+         /** Flag that indicates whether the solver converged */
+         protected boolean _converged;
+
         /** Step size for finite difference approximation */
         protected double[] _deltaX;
+        
         /** Number of iterations in the last call to the function solve(double[]) */
         protected int _iterationCount;
+        
         /** Maximum number of iterations */
         protected int _maxIterations;
-        /** Flag that indicates whether the solver converged */
-        protected boolean _converged;
+        
+        /** Local view of the tolerance vector. */
+        protected double[] _tolerance;
     }
 }

@@ -27,8 +27,9 @@
  */
 package ptolemy.domains.algebraic.kernel;
 
+import ptolemy.actor.AbstractReceiver;
 import ptolemy.actor.IOPort;
-import ptolemy.actor.sched.FixedPointReceiver;
+import ptolemy.actor.NoTokenException;
 import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
 import ptolemy.kernel.util.IllegalActionException;
@@ -39,28 +40,19 @@ import ptolemy.kernel.util.InternalErrorException;
 
 /**
  The receiver for use with AlgebraicLoopDirector or any of its subclasses.
- This receiver has capacity 1 and honors the defaultValue parameter.
- The status of this receiver can be either <i>known</i> or <i>unknown</i>.
- If it is known, then it can be either <i>present</i> or <i>absent</i>.
+ This receiver can be either <i>present</i> or <i>absent</i>.
  If it is present, then it has a token, which provides a value.
+ This receiver has capacity 1, honors the defaultValue parameter, and its
+ value can be overwritten or cleared at any time (made absent).
  <p>
- At first, an instance of this class has status unknown, unless it has
+ At first, an instance of this class has status absent, unless it has
  a defaultValue parameter.
- The clear() method makes the status known and absent.
- The put() method makes the status known and present, and provides a value.
- The reset() method reverts the status to unknown, or to the default value
+ The clear() method makes the status absent.
+ The put() method makes the status present, and provides a value.
+ The reset() method reverts the status to absent or to the default value
  if there is one.
- Unlike the base class, the value in this port can change during an
- iteration.
  <p>
- FIXME: What about changing from present to absent
- or vice versa? Currently, this receiver simply allows these changes.
- <p>
- The isKnown() method returns true if the receiver has status known.
- The hasRoom() method always returns true.
- If the receiver has a known status, the hasToken() method returns true
- if the receiver contains a token. If the receiver has an unknown status,
- the hasToken() method will throw an InvalidStateException.
+ The isKnown() method and hasRoom() methods always return true.
  <p>
 
  @author Edward A. Lee
@@ -69,7 +61,7 @@ import ptolemy.kernel.util.InternalErrorException;
  @Pt.ProposedRating Yellow (eal)
  @Pt.AcceptedRating Red (eal)
  */
-public class AlgebraicLoopReceiver extends FixedPointReceiver {
+public class AlgebraicLoopReceiver extends AbstractReceiver {
 
     /** Construct an AlgebraicLoopReceiver with unknown status.
      *  This constructor does not need a director.
@@ -83,26 +75,35 @@ public class AlgebraicLoopReceiver extends FixedPointReceiver {
      */
     public AlgebraicLoopReceiver(AlgebraicLoopDirector director) {
         super();
-        reset();
         _director = director;
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Set the status of this receiver to be known and absent.
+    /** Set the status of this receiver to be absent.
      */
+	@Override
     public void clear() throws IllegalActionException {
         _token = null;
-        _known = true;
-        if (_director != null) {
-            ((AlgebraicLoopDirector)_director)._receiverChanged();
+    }
+	
+    /** Return the contained Token. If there is none, throw an exception.
+     *  @return The token contained by this receiver.
+     *  @exception NoTokenException If this receiver is absent.
+     */
+    public Token get() throws NoTokenException {
+        if (_token == null) {
+            throw new NoTokenException(_director,
+                    "AlgebraicLoopReceiver: Attempt to get data from an empty receiver.");
         }
+        return _token;
     }
 
     /** Return true.
      *  @return true.
      */
+	@Override
     public boolean hasRoom() {
         return true;
     }
@@ -110,8 +111,39 @@ public class AlgebraicLoopReceiver extends FixedPointReceiver {
     /** Return true.
      *  @return true.
      */
+	@Override
     public boolean hasRoom(int numberOfTokens) {
         return true;
+    }
+
+	/** Return true if the status is present.
+	 *  @return True if the recevier has a token.
+	 */
+	@Override
+	public boolean hasToken() {
+        return _token != null;
+	}
+
+    /** Return true if the argument is 1 and this mailbox is not empty,
+     *  and otherwise return false.
+     *  @param numberOfTokens The number of tokens to get from the receiver.
+     *  @return True if the argument is 1 and this mailbox is not empty.
+     *  @exception IllegalArgumentException If the argument is not positive.
+     *   This is a runtime exception, so it does not need to be declared
+     *   explicitly.
+     */
+	@Override
+    public boolean hasToken(int numberOfTokens) throws IllegalArgumentException {
+        if (numberOfTokens < 1) {
+            throw new IllegalArgumentException(
+                    "hasToken() requires a positive argument.");
+        }
+
+        if (numberOfTokens == 1) {
+            return _token != null;
+        }
+
+        return false;
     }
 
     /** If the specified token is non-null, then
@@ -123,56 +155,41 @@ public class AlgebraicLoopReceiver extends FixedPointReceiver {
      *  @exception IllegalActionException If a token
      *   is present and cannot be compared to the specified token.
      */
+	@Override
     public void put(Token token) throws IllegalActionException {
         _previousToken = _token;
-        if (token == null) {
-            clear();
-            return;
-        }
         _token = token;
-        if (_director != null && !_known) {
-            // Notify the base class that this receiver is now known.
-            ((AlgebraicLoopDirector)_director)._receiverChanged();
-        }
-        _known = true;
     }
 
     /** Override the base class to set the token to value of
      *  containing port's defaultValue parameter, if there is one.
      */
+	@Override
     public void reset() {
         _previousToken = null;
         IOPort container = getContainer();
         if (container == null) {
-            super.reset();
-            return;
+            _token = null;
+        } else {
+        	Parameter defaultValue = container.defaultValue;
+        	if (defaultValue == null) {
+                _token = null;
+        	} else {
+        		try {
+        			_token = defaultValue.getToken();
+        		} catch (IllegalActionException e) {
+        			// Unfortunately, to make this a compile-time exception, we have
+        			// to unravel all the way to Director. Don't do this now.
+        			// Too big a change. So we throw a runtime exception.
+        			throw new InternalErrorException(getContainer(), e, "Failed to evaluate defaultValue parameter.");
+        		}
+        	}
         }
-        Parameter defaultValue = container.defaultValue;
-        if (defaultValue == null) {
-            super.reset();
-            return;
-        }
-        try {
-            _token = defaultValue.getToken();
-        } catch (IllegalActionException e) {
-            // Unfortunately, to make this a compile-time exception, we have
-            // to unravel all the way to Director. Don't do this now.
-            // Too big a change. So we throw a runtime exception.
-            throw new InternalErrorException(getContainer(), e, "Failed to reset receiver.");
-        }
-        _known = (_token != null);
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
     
-    /** Return the current token without doing an error checks.
-     *  @return The current token.
-     */
-    protected Token _getCurrentToken() {
-        return _token;
-    }
-
     /** Return the previous token.
      *  @return The token before the most recent call to put(), or null
      *   if there is none since the last reset().
@@ -184,6 +201,12 @@ public class AlgebraicLoopReceiver extends FixedPointReceiver {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
+    /** The director governing this receiver. */
+    private AlgebraicLoopDirector _director;
+    
     /** Previously recorded token. */
     private Token _previousToken;
+    
+    /** The token held. */
+    private Token _token = null;
 }

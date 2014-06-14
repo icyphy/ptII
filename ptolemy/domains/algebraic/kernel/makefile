@@ -48,7 +48,8 @@ PTCLASSALLJAR = $(PTPACKAGE).jar
 
 JSRCS = \
 	AlgebraicLoopDirector.java \
-	AlgebraicLoopReceiver.java
+	AlgebraicLoopReceiver.java \
+	AlgebraicLoopScheduler.java
 
 OTHER_FILES_TO_BE_JARED =
 
