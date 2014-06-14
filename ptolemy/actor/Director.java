@@ -211,9 +211,6 @@ public class Director extends Attribute implements Executable {
      */
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
-        if (_debugging) {
-            _debug("attribute " + attribute + " changed");
-        }
         if (attribute == startTime) {
             DoubleToken startTimeValue = (DoubleToken) startTime.getToken();
             if (startTimeValue == null) {
