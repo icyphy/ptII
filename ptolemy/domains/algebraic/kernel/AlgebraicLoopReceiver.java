@@ -28,12 +28,9 @@
 package ptolemy.domains.algebraic.kernel;
 
 import ptolemy.actor.AbstractReceiver;
-import ptolemy.actor.IOPort;
 import ptolemy.actor.NoTokenException;
 import ptolemy.data.Token;
-import ptolemy.data.expr.Parameter;
 import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.kernel.util.InternalErrorException;
 
 ///////////////////////////////////////////////////////////////////
 //// AlgebraicLoopReceiver
@@ -147,9 +144,9 @@ public class AlgebraicLoopReceiver extends AbstractReceiver {
     }
 
     /** If the specified token is non-null, then
-     *  set the status of this receiver to known and present, and to contain the
+     *  set the status of this receiver to present, and to contain the
      *  specified token. If the specified token is null, then set the status to
-     *  be known and absent (by calling {@link #clear()}).
+     *  absent.
      *  @param token The token to be put into this receiver.
      *  @exception IllegalArgumentException If the argument is null.
      *  @exception IllegalActionException If a token
@@ -157,45 +154,45 @@ public class AlgebraicLoopReceiver extends AbstractReceiver {
      */
 	@Override
     public void put(Token token) throws IllegalActionException {
-        _previousToken = _token;
-        _token = token;
+    	if (_isBreakVariable) {
+    		_updatedValue = token;
+    	} else {
+    		_token = token;
+    	}
     }
 
-    /** Override the base class to set the token to value of
-     *  containing port's defaultValue parameter, if there is one.
+    /** Clear stored tokens.
      */
 	@Override
     public void reset() {
-        _previousToken = null;
-        IOPort container = getContainer();
-        if (container == null) {
-            _token = null;
-        } else {
-        	Parameter defaultValue = container.defaultValue;
-        	if (defaultValue == null) {
-                _token = null;
-        	} else {
-        		try {
-        			_token = defaultValue.getToken();
-        		} catch (IllegalActionException e) {
-        			// Unfortunately, to make this a compile-time exception, we have
-        			// to unravel all the way to Director. Don't do this now.
-        			// Too big a change. So we throw a runtime exception.
-        			throw new InternalErrorException(getContainer(), e, "Failed to evaluate defaultValue parameter.");
-        		}
-        	}
-        }
+        _updatedValue = null;
+        _token = null;
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
     
-    /** Return the previous token.
-     *  @return The token before the most recent call to put(), or null
-     *   if there is none since the last reset().
+    /** If this receiver is a break variable, then return the stored
+     *  updated value. Otherwise, return the current value.
+     *  @return The token stored by 
      */
-    protected Token _getPreviousToken() {
-        return _previousToken;
+    protected Token _getUpdatedValue() {
+    	if (_isBreakVariable) {
+    		return _updatedValue;
+    	}
+    	return _token;
+    }
+
+    /** Indicate to this receiver that it is a break variable and
+     *  set its initial value.
+     *  If this receiver is a break variable, then put() does not
+     *  update the value of the receiver. Instead, the value provided
+     *  to put() is stored to be retrieved by _getUpdatedValue().
+     *  @param initialValue The initial value.
+     */
+    protected void _setInitialValue(Token initialValue) {
+        _isBreakVariable = true;
+        _token = initialValue;
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -204,8 +201,11 @@ public class AlgebraicLoopReceiver extends AbstractReceiver {
     /** The director governing this receiver. */
     private AlgebraicLoopDirector _director;
     
-    /** Previously recorded token. */
-    private Token _previousToken;
+    /** Indicator that this receiver stores a break variable. */
+    private boolean _isBreakVariable = false;
+    
+    /** Updated token. */
+    private Token _updatedValue;
     
     /** The token held. */
     private Token _token = null;

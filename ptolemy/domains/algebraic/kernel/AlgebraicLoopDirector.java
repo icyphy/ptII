@@ -222,19 +222,16 @@ public class AlgebraicLoopDirector extends StaticSchedulingDirector {
         }
 
         int i = 0;
-        for (IOPort port : _breakVariables) {
-        	Receiver[][] receivers = port.getReceivers();
-        	for (Receiver[] receivers2 : receivers) {
-            	for (Receiver receiver : receivers2) {
-                    Token t = receiver.get();
-                    if (t instanceof DoubleToken){
-                    	_x_n[i] = ((DoubleToken)t).doubleValue();
-                    	i++;
-                    } else {
-            			throw new IllegalActionException("Break variable is required to be a double. Got "
-            					+ t + " on port " + port.getName(getContainer()));
-                    }
-            	}
+        for (AlgebraicLoopReceiver receiver : _breakVariables) {
+        	// Get the updated value from the previous iteration.
+        	Token t = receiver._getUpdatedValue();
+        	if (t instanceof DoubleToken){
+        		_x_n[i] = ((DoubleToken)t).doubleValue();
+        		i++;
+        	} else {
+        		IOPort port = receiver.getContainer();
+        		throw new IllegalActionException("Break variable is required to be a double. Got "
+        				+ t + " on port " + port.getName(getContainer()));
         	}
         }
         // Now, _x_n contains all values for the receivers
@@ -261,18 +258,15 @@ public class AlgebraicLoopDirector extends StaticSchedulingDirector {
             throws IllegalActionException{
         // Set the argument to the receivers
         int iRec=0;
-        for (IOPort port : _breakVariables) {
-        	Receiver[][] receivers = port.getReceivers();
-        	for (Receiver[] receivers2 : receivers) {
-            	for (Receiver receiver : receivers2) {
-            		DoubleToken t = new DoubleToken(x[iRec]);
-            		receiver.put(t);
-            		if (_debugging) {
-            			_debug("Setting input to loop function for '" + receiver.getContainer().getName() + "' to " + x[iRec]);
-            		}
-            		iRec++;
-            	}
+        for (AlgebraicLoopReceiver receiver : _breakVariables) {
+        	DoubleToken t = new DoubleToken(x[iRec]);
+        	// Set the initial value of the receiver.
+        	receiver._setInitialValue(t);
+        	if (_debugging) {
+        		IOPort port = receiver.getContainer();
+        		_debug("Setting input to loop function for '" + port.getName(getContainer()) + "' to " + x[iRec]);
         	}
+        	iRec++;
         }
 
         // Execute the schedule, which is the current
@@ -301,31 +295,28 @@ public class AlgebraicLoopDirector extends StaticSchedulingDirector {
         	}
         }
         // Get the values from the receivers, and return them
+        // FIXME: This should not be allocated each time.
         double[] g = new double[_nVars];
 
         int i = 0;
-        for (IOPort port : _breakVariables) {
-        	Receiver[][] receivers = port.getReceivers();
-        	for (Receiver[] receivers2 : receivers) {
-            	for (Receiver receiver : receivers2) {
-            		// Store g(x_n)
-            		Token t = receiver.get();
-            		if (t instanceof DoubleToken){
-            			g[i] = ((DoubleToken)(t)).doubleValue();
-            			if (_debugging){
-            				_debug("Output of loop function at '" + port.getName(getContainer()) + "' = " + g[i]);
-            			}
-            			i++;
-            		} else {
-            			throw new IllegalActionException("Break variable is required to be a double. Got "
-            					+ t + " on port " + port.getName(getContainer()));
-            		}
-            	}
+        for (AlgebraicLoopReceiver receiver : _breakVariables) {
+        	// Store g(x_n)
+        	Token t = receiver._getUpdatedValue();
+        	if (t instanceof DoubleToken){
+        		g[i] = ((DoubleToken)(t)).doubleValue();
+        		if (_debugging){
+        			IOPort port = receiver.getContainer();
+        			_debug("Output of loop function at '" + port.getName(getContainer()) + "' = " + g[i]);
+        		}
+        		i++;
+        	} else {
+    			IOPort port = receiver.getContainer();
+        		throw new IllegalActionException("Break variable is required to be a double. Got "
+        				+ t + " on port " + port.getName(getContainer()));
         	}
         }
         return g;
     }
-
 
     /** Initialize the director and all deeply contained actors by calling
      *  the super.initialize() method.
@@ -340,7 +331,7 @@ public class AlgebraicLoopDirector extends StaticSchedulingDirector {
         // iterate x needs to be stored. 
         // These are the input ports associated with the break variables.
         // These are all receivers that have a default value and that are an input.
-        _breakVariables = new LinkedList<IOPort>();
+        _breakVariables = new LinkedList<AlgebraicLoopReceiver>();
         CompositeEntity container = (CompositeEntity)getContainer();
         @SuppressWarnings("unchecked")
 		List<Actor> actors = container.deepEntityList();
@@ -350,28 +341,31 @@ public class AlgebraicLoopDirector extends StaticSchedulingDirector {
 			List<IOPort> inputPorts = actor.inputPortList();
         	for (IOPort port : inputPorts) {
         		// If the port has a default value, then all its receivers are break variables.
-                if (port.defaultValue.getToken() != null){
+        		Token initialValue = port.defaultValue.getToken();
+                if (initialValue != null){
                 	// Break any causality relation between this input and all outputs.
                 	CausalityInterface causality = actor.getCausalityInterface();
-                	List<IOPort> outputPorts = actor.outputPortList();
+                	@SuppressWarnings("unchecked")
+					List<IOPort> outputPorts = actor.outputPortList();
                 	for (IOPort output : outputPorts) {
                 		causality.removeDependency(port, output);
                 	}
-                	_breakVariables.add(port);
-                	// Count the number of receivers it has.
-                	int numberOfReceivers = 0;
                 	Receiver[][] receivers = port.getReceivers();
                 	for (Receiver[] receivers2 : receivers) {
-                		numberOfReceivers += receivers2.length;
+                    	for (Receiver receiver : receivers2) {
+                        	_breakVariables.add((AlgebraicLoopReceiver) receiver);  
+                        	// Set both the initial value and the updated value of the receiver.
+                        	((AlgebraicLoopReceiver) receiver)._setInitialValue(initialValue);
+                        	((AlgebraicLoopReceiver) receiver).put(initialValue);
+                    	}
                 	}
                 	if (_debugging) {
-                		_debug("Break variable: " + port.getName(getContainer())
-                				+ ", which has " + numberOfReceivers + " values.");
+                		_debug("Break variable: " + port.getName(getContainer()));
                 	}
-                	_nVars += numberOfReceivers;
                 }
         	}
-        }        
+        }
+        _nVars = _breakVariables.size();
         _x_n = new double[_nVars];
         _g_n = new double[_nVars];
         _tolerance = new double[_nVars];
@@ -381,28 +375,17 @@ public class AlgebraicLoopDirector extends StaticSchedulingDirector {
         final int maxIterationsValue = ((IntToken)(maxIterations.getToken())).intValue();
 
         // Get the variable names and the tolerance.
+        // FIXME: If the port a multiport, then the names will not be unique. Is this a problem?
         final String[] variableNames = new String[_nVars];
         int i = 0;
-        for (IOPort port : _breakVariables) {
-        	Receiver[][] receivers = port.getReceivers();
-        	for (Receiver[] receivers2 : receivers) {
-            	for (Receiver receiver : receivers2) {
-                    Token t = receiver.get();
-                    final String name = port.getName(getContainer());
-                    if (t instanceof DoubleToken){
-                    	variableNames[i] = name;                    	
-                    	_tolerance[i] =_getErrorTolerance( port );
-                    	i++;
-                    } else {
-            			throw new IllegalActionException("Break variable is required to be a double. Got "
-            					+ t + " on port " + name);
-                    }
-            	}
-        	}
+        for (AlgebraicLoopReceiver receiver : _breakVariables) {
+        	IOPort port = receiver.getContainer();
+        	variableNames[i] = port.getName(getContainer());
+        	_tolerance[i] =_getErrorTolerance(port);
+        	i++;
         }
         // Instantiate the solver.
         _solver = new AlgebraicLoopSolver(variableNames, _tolerance, maxIterationsValue);
-        
     }
 
     /** Return a new FixedPointReceiver. If a subclass overrides this
@@ -510,8 +493,8 @@ public class AlgebraicLoopDirector extends StaticSchedulingDirector {
     ///////////////////////////////////////////////////////////////////
     ////                   protected variables                     ////
         
-    /** The list of ports for all break variables */
-    protected List<IOPort> _breakVariables;
+    /** The list of receivers for all break variables */
+    protected List<AlgebraicLoopReceiver> _breakVariables;
 
     /** Current value of the loop function g(x_n) */
     protected double[] _g_n;
@@ -624,6 +607,7 @@ public class AlgebraicLoopDirector extends StaticSchedulingDirector {
         public void solve(double[] x)
         		throws IllegalActionException{
             _iterationCount = 0;
+            // FIXME: This shouldn't be re-allocated each time.
             double[] g = new double[_nVars];
             do {
             	double[] xNew;
@@ -664,6 +648,7 @@ public class AlgebraicLoopDirector extends StaticSchedulingDirector {
                     throw new IllegalActionException("Failed to converge after " + _maxIterations + " iterations.");
                 }
             } while (!_converged && !_stopRequested);
+            
             if (_debugging && _converged){
             	_debug("Iteration converged after " + _iterationCount + " iterations.");
             }
