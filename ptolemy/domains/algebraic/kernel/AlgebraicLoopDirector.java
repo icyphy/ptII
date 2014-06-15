@@ -624,12 +624,16 @@ public class AlgebraicLoopDirector extends StaticSchedulingDirector {
         public void solve(double[] x)
         		throws IllegalActionException{
             _iterationCount = 0;
+            double[] g = new double[_nVars];
             do {
             	double[] xNew;
                 // Evaluate the loop function to compute x_{n+1} = g(x_n).
                 // This calls the loop function of the outer class.
                 if (_isNewtonRaphson) {
-                    xNew = _newtonStep(x);
+                	if (_iterationCount == 0){
+                        g = _evaluateLoopFunction(x);
+                	}
+                    xNew = _newtonStep(x, g);
                 } else {
                     // Successive substitution
                     xNew = _evaluateLoopFunction(x);
@@ -638,18 +642,14 @@ public class AlgebraicLoopDirector extends StaticSchedulingDirector {
 
                 // Check for convergence
                 _converged = true;
-/*              
+
+                // For the NewtonRaphson, we do not compare x and xNew, but rather xNew and g(xNew).
+                // Otherwise, the test may indicate convergence if the Newton step is small.
+            	if (_isNewtonRaphson){
+            		g = _evaluateLoopFunction(xNew);
+            	}
                 for(int i = 0; i < x.length; i++){
-                    final double diff = x[i] - xNew[i];
-                    // FIXME: this needs to be replaced with a test for relative and absolute convergence.
-                    if (diff > _tolerance[i] || -diff > _tolerance[i]){
-                        _converged = false;
-                        break;
-                    }
-                }
-  */
-                for(int i = 0; i < x.length; i++){
-                    final double diff = Math.abs(x[i] - xNew[i]);
+                    final double diff = _isNewtonRaphson ? Math.abs(xNew[i]-g[i]) : Math.abs(x[i] - xNew[i]);
                     if (diff > Math.max(_tolerance[i], diff*_tolerance[i])){
                         _converged = false;
                         break;
@@ -672,10 +672,11 @@ public class AlgebraicLoopDirector extends StaticSchedulingDirector {
         /** Return the new iterate of a Newton step. 
          * 
          * @param x The best known iterate.
+         * @param g The function value g(x).
          * @return The new guess for the solution.
          * @exception IllegalActionException If the solver fails to find a solution.
          */
-        protected double[] _newtonStep(double[] x)
+        protected double[] _newtonStep(final double[] x, final double[] g)
         		throws IllegalActionException {
             final int n = x.length;
 
@@ -684,7 +685,6 @@ public class AlgebraicLoopDirector extends StaticSchedulingDirector {
             // Jacobian
             double[][] J = new double[n][n];
             // Loop over each independent variable, and fill the Jacobian
-            final double[] g = _evaluateLoopFunction(x);
             for (int i = 0; i < n; i++){
                 final double xOri = xNew[i];
                 xNew[i] += _deltaX[i];
