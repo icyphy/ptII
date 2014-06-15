@@ -171,7 +171,7 @@ public class AlgebraicLoopDirector extends StaticSchedulingDirector {
     /** The default tolerance for determining when convergence has occurred.
      *  When the current value of an input port differs from the previous
      *  value by less than the <i>errorTolerance</i>, then we declare it to
-     *  have converged. This parameter gives a default value that will be used
+     *  hfave converged. This parameter gives a default value that will be used
      *  if the port has no parameter named "errorTolerance". This is a
      *  double with default value 1E-4.
      */
@@ -229,8 +229,6 @@ public class AlgebraicLoopDirector extends StaticSchedulingDirector {
                     Token t = receiver.get();
                     if (t instanceof DoubleToken){
                     	_x_n[i] = ((DoubleToken)t).doubleValue();
-                    	// FIXME: This should probably be done only once in initialize():
-                    	_tolerance[i] =_getErrorTolerance( port );
                     	i++;
                     } else {
             			throw new IllegalActionException("Break variable is required to be a double. Got "
@@ -240,20 +238,12 @@ public class AlgebraicLoopDirector extends StaticSchedulingDirector {
         	}
         }
         // Now, _x_n contains all values for the receivers
-        int maxIterationsValue = ((IntToken)(maxIterations.getToken())).intValue();
 
-        // Instantiate the numerical solver
-        // FIXME: Do we really need a new solver each time we fire?
-        AlgebraicLoopSolver solver = new AlgebraicLoopSolver(_tolerance, maxIterationsValue);
         // Call the solver.
-        try{
-            solver.solve(_x_n);
-        } catch(IllegalArgumentException e){
-            throw new IllegalActionException(this, e.getMessage());
-        }
+        _solver.solve(_x_n);
         if (_debugging) {
             _debug(this.getFullName() + ": Fixed point found after "
-            		+ solver.getIterationCount() + " iterations.");
+            		+ _solver.getIterationCount() + " iterations.");
         }
     }
 
@@ -278,7 +268,7 @@ public class AlgebraicLoopDirector extends StaticSchedulingDirector {
             		DoubleToken t = new DoubleToken(x[iRec]);
             		receiver.put(t);
             		if (_debugging) {
-            			_debug("Setting input to loop function for " + receiver.getContainer().getName() + " to " + x[iRec]);
+            			_debug("Setting input to loop function for '" + receiver.getContainer().getName() + "' to " + x[iRec]);
             		}
             		iRec++;
             	}
@@ -323,7 +313,7 @@ public class AlgebraicLoopDirector extends StaticSchedulingDirector {
             		if (t instanceof DoubleToken){
             			g[i] = ((DoubleToken)(t)).doubleValue();
             			if (_debugging){
-            				_debug("Output of loop function at " + receiver.getContainer().getName(getContainer()) + " = " + g[i]);
+            				_debug("Output of loop function at '" + port.getName(getContainer()) + "' = " + g[i]);
             			}
             			i++;
             		} else {
@@ -385,6 +375,34 @@ public class AlgebraicLoopDirector extends StaticSchedulingDirector {
         _x_n = new double[_nVars];
         _g_n = new double[_nVars];
         _tolerance = new double[_nVars];
+        
+        // Instantiate the numerical solver
+        // Get the maximum number of iterations
+        final int maxIterationsValue = ((IntToken)(maxIterations.getToken())).intValue();
+
+        // Get the variable names and the tolerance.
+        final String[] variableNames = new String[_nVars];
+        int i = 0;
+        for (IOPort port : _breakVariables) {
+        	Receiver[][] receivers = port.getReceivers();
+        	for (Receiver[] receivers2 : receivers) {
+            	for (Receiver receiver : receivers2) {
+                    Token t = receiver.get();
+                    final String name = port.getName(getContainer());
+                    if (t instanceof DoubleToken){
+                    	variableNames[i] = name;                    	
+                    	_tolerance[i] =_getErrorTolerance( port );
+                    	i++;
+                    } else {
+            			throw new IllegalActionException("Break variable is required to be a double. Got "
+            					+ t + " on port " + name);
+                    }
+            	}
+        	}
+        }
+        // Instantiate the solver.
+        _solver = new AlgebraicLoopSolver(variableNames, _tolerance, maxIterationsValue);
+        
     }
 
     /** Return a new FixedPointReceiver. If a subclass overrides this
@@ -503,7 +521,10 @@ public class AlgebraicLoopDirector extends StaticSchedulingDirector {
     
     /** Number of break variables */
     protected int _nVars;
-        
+
+    /** Algebraic loop solver */
+    AlgebraicLoopSolver _solver;
+    
     /** Tolerance for each iteration variable */
     protected double[] _tolerance;
 
@@ -555,12 +576,15 @@ public class AlgebraicLoopDirector extends StaticSchedulingDirector {
     class AlgebraicLoopSolver {
 
         /** Construct an algebraic loop solver.
+         *  @param variableNames Names of each break variable.
          *  @param tolerance Tolerance for each variable.
          *  @param maxIterations Maximum number of iterations.
          */
         public AlgebraicLoopSolver(
+        		String[] variableNames,
                 double[] tolerance,
                 int maxIterations){
+        	_variableNames = variableNames;
             _tolerance = tolerance;
             _maxIterations = maxIterations;
             _converged = false;
@@ -595,7 +619,7 @@ public class AlgebraicLoopDirector extends StaticSchedulingDirector {
          *   with the solution by this method.
          *  @exception IllegalActionException If the prefire() or fire() method
          *   of an actor throws it.
-         *  @exception IllegalArgumentException If the solver fails to find a solution.
+         *  @exception IllegalActionException If the solver fails to find a solution.
          */
         public void solve(double[] x)
         		throws IllegalActionException{
@@ -614,33 +638,42 @@ public class AlgebraicLoopDirector extends StaticSchedulingDirector {
 
                 // Check for convergence
                 _converged = true;
+/*              
                 for(int i = 0; i < x.length; i++){
-                    double diff = x[i] - xNew[i];
+                    final double diff = x[i] - xNew[i];
                     // FIXME: this needs to be replaced with a test for relative and absolute convergence.
                     if (diff > _tolerance[i] || -diff > _tolerance[i]){
                         _converged = false;
                         break;
                     }
                 }
+  */
+                for(int i = 0; i < x.length; i++){
+                    final double diff = Math.abs(x[i] - xNew[i]);
+                    if (diff > Math.max(_tolerance[i], diff*_tolerance[i])){
+                        _converged = false;
+                        break;
+                    }
+                }
+
                 // Update iterate
                 System.arraycopy(xNew, 0, x, 0, x.length);
                 
                 // Check for maximum number of iterations in case we did not yet converge.
                 if (!_converged && _iterationCount > _maxIterations) {
-                	// FIXME: This is the wrong exception. Docs say IllegalActionException.
-                    throw new RuntimeException("Failed to converge after " + _maxIterations + " iterations.");
+                    throw new IllegalActionException("Failed to converge after " + _maxIterations + " iterations.");
                 }
             } while (!_converged && !_stopRequested);
+            if (_debugging && _converged){
+            	_debug("Iteration converged after " + _iterationCount + " iterations.");
+            }
         }
 
         /** Return the new iterate of a Newton step. 
          * 
          * @param x The best known iterate.
          * @return The new guess for the solution.
-         * @exception IllegalActionException If an actor violates the
-         *            monotonicity constraints, or the prefire() or fire() method
-         *            of the actor throws it.
-         * @exception IllegalArgumentException If the solver fails to find a solution.
+         * @exception IllegalActionException If the solver fails to find a solution.
          */
         protected double[] _newtonStep(double[] x)
         		throws IllegalActionException {
@@ -656,8 +689,9 @@ public class AlgebraicLoopDirector extends StaticSchedulingDirector {
                 final double xOri = xNew[i];
                 xNew[i] += _deltaX[i];
                 final double [] gNew = _evaluateLoopFunction(xNew);
-                for(int k = 0; k < n; k++)
+                for(int k = 0; k < n; k++){
                     J[i][k] = (gNew[k]-g[k])/_deltaX[i];
+                }
                 // Reset the coordinate to its old value
                 xNew[i] = xOri;
             }
@@ -668,13 +702,16 @@ public class AlgebraicLoopDirector extends StaticSchedulingDirector {
             final double det = DoubleMatrixMath.determinant(J);
             if (Math.abs(det) < 1E-5){
             	final String LS = System.getProperty("line.separator");
-                String em = "Singular Jacobian in Newton step. Reformulate equation or try different start value"
+                String em = "Singular Jacobian in Newton step. Reformulate equation or try different start values."
                              + LS
-                             + "Jacobian = " + DoubleMatrixMath.toString(J)
-                             + LS
-                             + "Determinant = " + det;
-                // FIXME: This is the wrong exception to throw. There is no illegal argument.
-                throw new IllegalArgumentException(em);
+                             + "Break variables: " + LS;
+                for(String name : _variableNames){
+                	em += "    " + name + LS;
+                }
+                em += "Jacobian = " + DoubleMatrixMath.toString(J)
+                      + LS
+                      + "Determinant = " + det;
+                throw new IllegalActionException(em);
             }
             
             // Solve J * d = -g(x_n) for d = x_{n+1}-x{n} 
@@ -804,5 +841,9 @@ public class AlgebraicLoopDirector extends StaticSchedulingDirector {
         
         /** Local view of the tolerance vector. */
         protected double[] _tolerance;
+
+        /** Variable names, used for error reporting */
+        protected String[] _variableNames;
+        
     }
 }
