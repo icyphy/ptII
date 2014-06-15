@@ -830,7 +830,33 @@ public class ActorViewerGraphController extends RunnableGraphController {
                         }
                     }
                 } catch (IllegalActionException e) {
-                    toShow += e.getMessage();
+                	if (toShow == null) {
+                		toShow = e.getMessage();
+                	} else {
+                		toShow += e.getMessage();
+                	}
+                }
+                
+                // Finally, if the port is an IOPort and it has a defaultValue,
+                // show that value. If there is already text to show, the insert
+                // a colon before the value.
+                if (port instanceof IOPort) {
+                	try {
+						Token defaultValue = ((IOPort)port).defaultValue.getToken();
+						if (defaultValue != null) {
+							if (toShow == null) {
+								toShow = defaultValue.toString();
+							} else {
+								toShow += ": " + defaultValue.toString();
+							}
+						}
+                    } catch (IllegalActionException e) {
+                    	if (toShow == null) {
+                    		toShow = e.getMessage();
+                    	} else {
+                    		toShow += e.getMessage();
+                    	}
+                    }
                 }
 
                 if (toShow != null) {
