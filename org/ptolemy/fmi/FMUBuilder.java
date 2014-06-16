@@ -277,7 +277,7 @@ public class FMUBuilder {
      *  We use a end of line character so that the files we generate
      *  have the proper end of line character for use by other native tools.
      */
-    private static String _eol;
+    private static final String _eol;
     static {
         _eol = System.getProperty("line.separator");
     }
