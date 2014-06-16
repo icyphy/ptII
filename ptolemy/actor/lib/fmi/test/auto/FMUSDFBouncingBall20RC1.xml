@@ -20,7 +20,7 @@
     </property>
     <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 262.0}">
     </property>
-    <entity name="BouncingBal" class="ptolemy.actor.lib.fmi.FMUImport">
+    <entity name="BouncingBall20RC1" class="ptolemy.actor.lib.fmi.FMUImport">
         <property name="fmuFile" class="ptolemy.data.expr.FileParameter" value="$CLASSPATH/ptolemy/actor/lib/fmi/test/auto/bouncingBall20RC1.fmu">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="{205.0, 305.0}">
@@ -130,7 +130,7 @@
         </property>
         <vertex name="vertex1" value="{340.0, 35.0}">
         </vertex>
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;SequencePlotter.input&quot;,x=415.0,y=170.0,index=7}, tail={id=&quot;relation5.vertex1&quot;,x=340.0,y=35.0}, points={340.0,140.0} },{ head={id=&quot;Test.input&quot;,x=390.0,y=35.0}, tail={id=&quot;relation5.vertex1&quot;,x=340.0,y=35.0}, points={} },{ head={id=&quot;BouncingBal.h&quot;,x=205.0,y=305.0}, tail={id=&quot;relation5.vertex1&quot;,x=340.0,y=35.0}, points={275.0,275.0,275.0,35.0} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;SequencePlotter.input&quot;,x=415.0,y=170.0,index=7}, tail={id=&quot;relation5.vertex1&quot;,x=340.0,y=35.0}, points={340.0,140.0} },{ head={id=&quot;Test.input&quot;,x=390.0,y=35.0}, tail={id=&quot;relation5.vertex1&quot;,x=340.0,y=35.0}, points={} },{ head={id=&quot;BouncingBall20RC1.h&quot;,x=205.0,y=305.0}, tail={id=&quot;relation5.vertex1&quot;,x=340.0,y=35.0}, points={275.0,275.0,275.0,35.0} } }">
         </property>
     </relation>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
@@ -138,7 +138,7 @@
         </property>
         <vertex name="vertex1" value="{325.0, 150.0}">
         </vertex>
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;relation.vertex1&quot;,x=325.0,y=150.0}, tail={id=&quot;SequencePlotter.input&quot;,x=415.0,y=170.0,index=7}, points={} },{ head={id=&quot;Test2.input&quot;,x=390.0,y=100.0}, tail={id=&quot;relation.vertex1&quot;,x=325.0,y=150.0}, points={325.0,100.0} },{ head={id=&quot;BouncingBal.der(h)&quot;,x=205.0,y=305.0}, tail={id=&quot;relation.vertex1&quot;,x=325.0,y=150.0}, points={290.0,285.0,290.0,150.0} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;relation.vertex1&quot;,x=325.0,y=150.0}, tail={id=&quot;SequencePlotter.input&quot;,x=415.0,y=170.0,index=7}, points={} },{ head={id=&quot;Test2.input&quot;,x=390.0,y=100.0}, tail={id=&quot;relation.vertex1&quot;,x=325.0,y=150.0}, points={325.0,100.0} },{ head={id=&quot;BouncingBall20RC1.der(h)&quot;,x=205.0,y=305.0}, tail={id=&quot;relation.vertex1&quot;,x=325.0,y=150.0}, points={290.0,285.0,290.0,150.0} } }">
         </property>
     </relation>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
@@ -146,7 +146,7 @@
         </property>
         <vertex name="vertex1" value="{325.0, 235.0}">
         </vertex>
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;relation2.vertex1&quot;,x=325.0,y=235.0}, tail={id=&quot;SequencePlotter.input&quot;,x=415.0,y=170.0,index=7}, points={325.0,160.0} },{ head={id=&quot;BouncingBal.v&quot;,x=205.0,y=305.0}, tail={id=&quot;relation2.vertex1&quot;,x=325.0,y=235.0}, points={305.0,295.0,305.0,235.0} },{ head={id=&quot;Test3.input&quot;,x=390.0,y=235.0}, tail={id=&quot;relation2.vertex1&quot;,x=325.0,y=235.0}, points={} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;relation2.vertex1&quot;,x=325.0,y=235.0}, tail={id=&quot;SequencePlotter.input&quot;,x=415.0,y=170.0,index=7}, points={325.0,160.0} },{ head={id=&quot;BouncingBall20RC1.v&quot;,x=205.0,y=305.0}, tail={id=&quot;relation2.vertex1&quot;,x=325.0,y=235.0}, points={305.0,295.0,305.0,235.0} },{ head={id=&quot;Test3.input&quot;,x=390.0,y=235.0}, tail={id=&quot;relation2.vertex1&quot;,x=325.0,y=235.0}, points={} } }">
         </property>
     </relation>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
@@ -154,13 +154,13 @@
         </property>
         <vertex name="vertex1" value="{340.0, 315.0}">
         </vertex>
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;relation3.vertex1&quot;,x=340.0,y=315.0}, tail={id=&quot;SequencePlotter.input&quot;,x=415.0,y=170.0,index=7}, points={340.0,170.0} },{ head={id=&quot;BouncingBal.der(v)&quot;,x=205.0,y=305.0}, tail={id=&quot;relation3.vertex1&quot;,x=340.0,y=315.0}, points={} },{ head={id=&quot;Test4.input&quot;,x=390.0,y=315.0}, tail={id=&quot;relation3.vertex1&quot;,x=340.0,y=315.0}, points={} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;relation3.vertex1&quot;,x=340.0,y=315.0}, tail={id=&quot;SequencePlotter.input&quot;,x=415.0,y=170.0,index=7}, points={340.0,170.0} },{ head={id=&quot;BouncingBall20RC1.der(v)&quot;,x=205.0,y=305.0}, tail={id=&quot;relation3.vertex1&quot;,x=340.0,y=315.0}, points={} },{ head={id=&quot;Test4.input&quot;,x=390.0,y=315.0}, tail={id=&quot;relation3.vertex1&quot;,x=340.0,y=315.0}, points={} } }">
         </property>
     </relation>
-    <link port="BouncingBal.h" relation="relation5"/>
-    <link port="BouncingBal.der(h)" relation="relation"/>
-    <link port="BouncingBal.v" relation="relation2"/>
-    <link port="BouncingBal.der(v)" relation="relation3"/>
+    <link port="BouncingBall20RC1.h" relation="relation5"/>
+    <link port="BouncingBall20RC1.der(h)" relation="relation"/>
+    <link port="BouncingBall20RC1.v" relation="relation2"/>
+    <link port="BouncingBall20RC1.der(v)" relation="relation3"/>
     <link port="Test.input" relation="relation5"/>
     <link port="Test2.input" relation="relation"/>
     <link port="Test3.input" relation="relation2"/>

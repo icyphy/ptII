@@ -28,6 +28,18 @@
 #define NUMBER_OF_STATES 2
 #define NUMBER_OF_EVENT_INDICATORS 1
 
+// We require that functions have prefixes for Linux.
+#if defined _WIN32 || defined __CYGWIN__
+/* Note: both gcc & MSVC on Windows support this syntax. */
+#define FMI_Export __declspec(dllexport)
+#else
+  #if __GNUC__ >= 4
+#define FMI_Export __attribute__ ((visibility ("default")))
+  #else
+    #define FMI_Export
+  #endif
+#endif // _WIN32 || defined __CYGWIN__
+
 // include fmu header files, typedefs and macros
 #include "fmuTemplate.h"
 

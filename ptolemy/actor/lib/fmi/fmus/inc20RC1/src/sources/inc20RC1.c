@@ -30,6 +30,7 @@
 // Settings used unless changed by fmiSetX before fmiEnterInitializationMode
 void setStartValues(ModelInstance *comp) {
     i(counter_) = 1;
+    fprintf(stderr, "inc20RC1: setStartValues: %ld, %d\n", (long) comp, i(counter_));
 }
 
 // called by fmiExitInitializationMode() after setting eventInfo to defaults

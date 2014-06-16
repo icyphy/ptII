@@ -59,12 +59,17 @@
 #include "fmiPlatformTypes.h"
 #include <stdlib.h>
 
-/* Export fmi functions on Windows */
-#ifdef _MSC_VER
-#define DllExport __declspec( dllexport )
+// We require that functions have prefixes for Linux.
+#if defined _WIN32 || defined __CYGWIN__
+/* Note: both gcc & MSVC on Windows support this syntax. */
+#define DllExport __declspec(dllexport)
 #else
-#define DllExport
-#endif
+  #if __GNUC__ >= 4
+#define DllExport __attribute__ ((visibility ("default")))
+  #else
+    #define DllExport*
+  #endif
+#endif // _WIN32 || defined __CYGWIN__
 
 /* Macros to construct the real function name
    (prepend function name by MODEL_IDENTIFIER + "_") */

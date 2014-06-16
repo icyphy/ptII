@@ -126,18 +126,24 @@ extern "C" {
         defined before including this file.        For instance,
         it may be set to __declspec(dllimport).
 */
-#if !defined(FMIAPI) && !defined(FMIAPI_FUNCTION_PREFIX)
- #if defined _WIN32 || defined __CYGWIN__
-        /* Note: both gcc & MSVC on Windows support this syntax. */
-      #define FMIAPI __declspec(dllexport)
- #else
-  #if __GNUC__ >= 4
-    #define FMIAPI __attribute__ ((visibility ("default")))
+/*  See https://trac.fmi-standard.org/ticket/173 */
+#if !defined(FMIAPI) 
+#if !defined(FMI_FUNCTION_PREFIX)
+  #if defined _WIN32 || defined __CYGWIN__
+  /* Note: both gcc & MSVC on Windows support this syntax. */
+#define FMIAPI __declspec(dllexport)
   #else
-    #define FMIAPI
+   #if __GNUC__ >= 4
+#define FMIAPI __attribute__ ((visibility ("default")))
+   #else
+     #define FMIAPI
+   #endif
   #endif
+ #else
+   #define FMIAPI
  #endif
 #endif
+
 
 /* Macros to construct the real function name
    (prepend function name by FMIAPI_FUNCTION_PREFIX) */

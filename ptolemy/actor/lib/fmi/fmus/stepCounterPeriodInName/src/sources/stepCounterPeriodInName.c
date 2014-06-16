@@ -41,7 +41,7 @@
 
 // Used by FMI 2.0.  See fmiFunctions.h
 //#define FMIAPI_FUNCTION_PREFIX stepCounterPeriodInName_
-#define FMIAPI
+//#define FMIAPI
 
 // include fmu header files, typedefs and macros
 #include "fmiFunctions.h"
@@ -80,7 +80,7 @@ typedef struct {
  *  @return The instance of this FMU, or null if there are required functions missing,
  *   if there is no instance name, or if the GUID does not match this FMU.
  */
-int checkFMU(
+int FMIAPI checkFMU(
              fmiString instanceName,
              fmiString GUID,
              fmiString modelGUID,
@@ -126,7 +126,7 @@ int checkFMU(
  *   effects, such as printing outputs.
  *  @return fmiDiscard if the FMU rejects the step size, otherwise fmiOK.
  */
-fmiStatus fmiDoStep(fmiComponent c, fmiReal currentCommunicationPoint,
+fmiStatus FMIAPI fmiDoStep(fmiComponent c, fmiReal currentCommunicationPoint,
             fmiReal communicationStepSize, fmiBoolean noSetFMUStatePriorToCurrentPoint) {
     ModelInstance* component = (ModelInstance *) c;
     // FIXME: Remove printfs. Replace with logger calls. But printf causes segfaults. JNA problem?
@@ -206,7 +206,7 @@ fmiStatus fmiDoStep(fmiComponent c, fmiReal currentCommunicationPoint,
  *  @param FMUstate A pointer to a pointer to the data structure into which the state is stored.
  *  @return fmiOK.
  */
-fmiStatus fmiFreeFMUstate (fmiComponent c, fmiFMUstate* FMUstate) {
+fmiStatus FMIAPI fmiFreeFMUstate (fmiComponent c, fmiFMUstate* FMUstate) {
     ModelInstance* component = (ModelInstance *) c;
     ModelInstance* snapshot = *FMUstate;
     if (snapshot != NULL) {
@@ -220,7 +220,7 @@ fmiStatus fmiFreeFMUstate (fmiComponent c, fmiFMUstate* FMUstate) {
  *  Free memory allocated by this FMU instance.
  *  @param c The FMU.
  */
-void fmiFreeSlaveInstance(fmiComponent c) {
+void FMIAPI fmiFreeSlaveInstance(fmiComponent c) {
     ModelInstance* component = (ModelInstance *) c;
     component->functions->freeMemory(component);
 }
@@ -236,7 +236,7 @@ void fmiFreeSlaveInstance(fmiComponent c) {
  *  @param FMUstate A pointer to a pointer to the data structure into which to store the state.
  *  @return fmiOK.
  */
-fmiStatus fmiGetFMUstate (fmiComponent c, fmiFMUstate* FMUstate) {
+fmiStatus FMIAPI fmiGetFMUstate (fmiComponent c, fmiFMUstate* FMUstate) {
     ModelInstance* component = (ModelInstance *) c;
     ModelInstance* snapshot = *FMUstate;
     if (snapshot == NULL) {
@@ -263,7 +263,7 @@ fmiStatus fmiGetFMUstate (fmiComponent c, fmiFMUstate* FMUstate) {
  *  @param value The array into which to put the results.
  *  @return fmiError if a value reference is out of range, otherwise fmiOK.
  */
-fmiStatus fmiGetReal(fmiComponent c, const fmiValueReference vr[], size_t nvr, fmiReal value[]) {
+fmiStatus FMIAPI fmiGetReal(fmiComponent c, const fmiValueReference vr[], size_t nvr, fmiReal value[]) {
     int i, valueReference;
     ModelInstance* component = (ModelInstance *) c;
 
@@ -299,7 +299,7 @@ fmiStatus fmiGetReal(fmiComponent c, const fmiValueReference vr[], size_t nvr, f
  *  @param value A pointer to the location in which to deposit the status.
  *  @return fmiDiscard if the kind is not fmiLastSuccessfulTime, otherwise fmiOK.
  */
-fmiStatus fmiGetRealStatus(fmiComponent c, const fmiStatusKind s, fmiReal* value) {
+fmiStatus FMIAPI fmiGetRealStatus(fmiComponent c, const fmiStatusKind s, fmiReal* value) {
     ModelInstance* component = (ModelInstance *) c;
     if (s == fmiLastSuccessfulTime) {
         *value = component->lastSuccessfulTime;
@@ -325,7 +325,7 @@ fmiStatus fmiGetRealStatus(fmiComponent c, const fmiStatusKind s, fmiReal* value
  *  @return The instance of this FMU, or null if there are required functions missing,
  *   if there is no instance name, or if the GUID does not match this FMU.
  */
-fmiComponent fmiInstantiateSlave(
+fmiComponent FMIAPI fmiInstantiateSlave(
                                  fmiString instanceName,
                                  fmiString GUID,
                                  fmiString fmuResourceLocation,
@@ -369,7 +369,7 @@ fmiComponent fmiInstantiateSlave(
  *  @param tStop The stop time (ignored if stopTimeDefined is fmiFalse) (ignored by this FMU).
  *  @return fmiOK
  */
-fmiStatus fmiInitializeSlave(fmiComponent c,
+fmiStatus FMIAPI fmiInitializeSlave(fmiComponent c,
                              fmiReal relativeTolerance,
                              fmiReal tStart,
                              fmiBoolean stopTimeDefined,
@@ -398,7 +398,7 @@ fmiStatus fmiInitializeSlave(fmiComponent c,
  *  @param value The values to assign to these variables.
  *  @return fmiError if a value reference is out of range, otherwise fmiOK.
  */
-fmiStatus fmiSetReal(fmiComponent c, const fmiValueReference vr[], size_t nvr, const fmiReal value[]){
+fmiStatus FMIAPI fmiSetReal(fmiComponent c, const fmiValueReference vr[], size_t nvr, const fmiReal value[]){
     int i, valueReference;
 
     ModelInstance* component = (ModelInstance *) c;
@@ -433,7 +433,7 @@ fmiStatus fmiSetReal(fmiComponent c, const fmiValueReference vr[], size_t nvr, c
  *  @param FMUstate A pointer to the data structure from which to restore.
  *  @return fmiOK.
  */
-fmiStatus fmiSetFMUstate (fmiComponent c, fmiFMUstate FMUstate) {
+fmiStatus FMIAPI fmiSetFMUstate (fmiComponent c, fmiFMUstate FMUstate) {
 
     ModelInstance* component = (ModelInstance *) c;
     ModelInstance* snapshot = (ModelInstance *) FMUstate;
@@ -457,7 +457,7 @@ fmiStatus fmiSetFMUstate (fmiComponent c, fmiFMUstate FMUstate) {
  *  @param c The FMU.
  *  @return fmiOK.
  */
-fmiStatus fmiTerminateSlave(fmiComponent c) {
+fmiStatus FMIAPI fmiTerminateSlave(fmiComponent c) {
     ModelInstance* component = (ModelInstance *) c;
 
     printf("%s: fmiTerminateSlave\n", component->instanceName);

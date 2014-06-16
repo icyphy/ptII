@@ -40,7 +40,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[370.0, 245.0]">
         </property>
     </entity>
-    <entity name="inc" class="ptolemy.actor.lib.fmi.FMUImport">
+    <entity name="inc20RC1pt" class="ptolemy.actor.lib.fmi.FMUImport">
         <property name="fmuFile" class="ptolemy.data.expr.FileParameter" value="$CLASSPATH/ptolemy/actor/lib/fmi/test/auto/inc20RC1pt.fmu">
         </property>
         <property name="suppressWarnings" class="ptolemy.data.expr.Parameter" value="true">
@@ -73,7 +73,7 @@
 </plot>?>
         </configure>
     </entity>
-    <entity name="scale20RC" class="ptolemy.actor.lib.fmi.FMUImport">
+    <entity name="scale20RC1" class="ptolemy.actor.lib.fmi.FMUImport">
         <property name="fmuFile" class="ptolemy.data.expr.FileParameter" value="$CLASSPATH/ptolemy/actor/lib/fmi/test/auto/scale20RC1.fmu">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[205.0, 310.0]">
@@ -124,22 +124,22 @@
         </property>
         <vertex name="vertex1" value="[320.0, 245.0]">
         </vertex>
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;Test.input&quot;,x=370.0,y=245.0}, tail={id=&quot;relation2.vertex1&quot;,x=320.0,y=245.0}, points={} },{ head={id=&quot;relation2.vertex1&quot;,x=320.0,y=245.0}, tail={id=&quot;scale20RC.output&quot;,x=205.0,y=310.0}, points={300.0,245.0,300.0,300.0} },{ head={id=&quot;TimedPlotter.input&quot;,x=365.0,y=320.0,index=2}, tail={id=&quot;relation2.vertex1&quot;,x=320.0,y=245.0}, points={320.0,315.0} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;Test.input&quot;,x=370.0,y=245.0}, tail={id=&quot;relation2.vertex1&quot;,x=320.0,y=245.0}, points={} },{ head={id=&quot;relation2.vertex1&quot;,x=320.0,y=245.0}, tail={id=&quot;scale20RC1.output&quot;,x=205.0,y=310.0}, points={300.0,245.0,300.0,300.0} },{ head={id=&quot;TimedPlotter.input&quot;,x=365.0,y=320.0,index=2}, tail={id=&quot;relation2.vertex1&quot;,x=320.0,y=245.0}, points={320.0,315.0} } }">
         </property>
     </relation>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;inc.counter&quot;,x=100.0,y=310.0}, tail={id=&quot;scale20RC.input&quot;,x=205.0,y=310.0}, points={} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;inc20RC1pt.counter&quot;,x=100.0,y=310.0}, tail={id=&quot;scale20RC1.input&quot;,x=205.0,y=310.0}, points={} } }">
         </property>
     </relation>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;TimedPlotter.input&quot;,x=365.0,y=320.0,index=2}, tail={id=&quot;scale20RC.der_output_&quot;,x=205.0,y=310.0}, points={} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;TimedPlotter.input&quot;,x=365.0,y=320.0,index=2}, tail={id=&quot;scale20RC1.der_output_&quot;,x=205.0,y=310.0}, points={} } }">
         </property>
     </relation>
     <link port="Test.input" relation="relation2"/>
-    <link port="inc.counter" relation="relation"/>
+    <link port="inc20RC1pt.counter" relation="relation"/>
     <link port="TimedPlotter.input" relation="relation2"/>
     <link port="TimedPlotter.input" relation="relation3"/>
-    <link port="scale20RC.input" relation="relation"/>
-    <link port="scale20RC.output" relation="relation2"/>
-    <link port="scale20RC.der_output_" relation="relation3"/>
+    <link port="scale20RC1.input" relation="relation"/>
+    <link port="scale20RC1.output" relation="relation2"/>
+    <link port="scale20RC1.der_output_" relation="relation3"/>
 </entity>

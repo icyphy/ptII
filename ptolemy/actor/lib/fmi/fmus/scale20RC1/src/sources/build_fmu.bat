@@ -57,7 +57,7 @@ rem This license is also present in org/ptolemy/fmi/driver/fmusdk-license.htm
 rem ------------------------------------------------------------
 
 echo -----------------------------------------------------------
-echo building FMU %1 - FMI for Model Exchange 1.0
+echo building FMU %1 - FMI for Co-Simulation 1.0
 
 rem save env variable settings
 set PREV_PATH=%PATH%
@@ -95,7 +95,7 @@ if exist *.dll del /Q *.dll
 rem /wd4090 disables warnings about different 'const' qualifiers
 
 rem cl /LD /wd4090 /nologo "/DFMIAPI=__declspec(dllexport)" ..\%1.c /I ..\.
-cl /LD /wd4090 /nologo  ..\%1.c /I ..\.
+cl /LD /wd4090 /nologo /DFMI_COSIMULATION ..\%1.c /I ..\.
 rem cl /LD /wd4090 /nologo ..\%1.c /I ..\.
 dumpbin /exports %1.dll
 

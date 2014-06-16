@@ -20,7 +20,7 @@
     </property>
     <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 239.0}">
     </property>
-    <entity name="BouncingBal" class="ptolemy.actor.lib.fmi.FMUImport">
+    <entity name="BouncingBall" class="ptolemy.actor.lib.fmi.FMUImport">
         <property name="fmuFile" class="ptolemy.data.expr.FileParameter" value="$CLASSPATH/ptolemy/actor/lib/fmi/demo/FMUBouncingBall/BouncingBall.fmu">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[80.0, 245.0]">
@@ -94,10 +94,10 @@
     </relation>
     <relation name="relation4" class="ptolemy.actor.TypedIORelation">
     </relation>
-    <link port="BouncingBal.h" relation="relation"/>
-    <link port="BouncingBal.der(h)" relation="relation2"/>
-    <link port="BouncingBal.v" relation="relation3"/>
-    <link port="BouncingBal.der(v)" relation="relation4"/>
+    <link port="BouncingBall.h" relation="relation"/>
+    <link port="BouncingBall.der(h)" relation="relation2"/>
+    <link port="BouncingBall.v" relation="relation3"/>
+    <link port="BouncingBall.der(v)" relation="relation4"/>
     <link port="Test.input" relation="relation"/>
     <link port="Test2.input" relation="relation2"/>
     <link port="Test3.input" relation="relation3"/>

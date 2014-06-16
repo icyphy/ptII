@@ -16,9 +16,9 @@
 // The following was generated at http://guid.us
 #define MODEL_GUID "{45759609-8478-4038-a4cd-42ecc2cc126b}"
 
-// Used by FMI 2.0.  See FMIFuctions.h
-#define FMIAPI_FUNCTION_PREFIX ballDynamics_
-#define FMIAPI
+// Used by FMI 2.0.  See fmiFunctions.h
+//#define FMIAPI_FUNCTION_PREFIX ballDynamics_
+//#define FMIAPI
 
 // include fmu header files, typedefs and macros
 #include "fmiFunctions.h"
@@ -73,7 +73,7 @@ typedef struct {
  *  @return The instance of this FMU, or null if there are required functions missing,
  *   if there is no instance name, or if the GUID does not match this FMU.
  */
-int checkFMU(
+int FMIAPI checkFMU(
              fmiString instanceName,
              fmiString GUID,
              fmiString modelGUID,
@@ -122,7 +122,7 @@ int checkFMU(
  *   effects, such as printing outputs. This FMU ignores this argument.
  *  @return fmiDiscard if the FMU rejects the step size, otherwise fmiOK.
  */
-fmiStatus fmiDoStep(fmiComponent c, fmiReal currentCommunicationPoint,
+fmiStatus FMIAPI fmiDoStep(fmiComponent c, fmiReal currentCommunicationPoint,
             fmiReal communicationStepSize, fmiBoolean noSetFMUStatePriorToCurrentPoint) {
     ModelInstance* component = (ModelInstance *) c;
 
@@ -153,7 +153,7 @@ fmiStatus fmiDoStep(fmiComponent c, fmiReal currentCommunicationPoint,
  *  Free memory allocated by this FMU instance.
  *  @param c The FMU.
  */
-void fmiFreeSlaveInstance(fmiComponent c) {
+void FMIAPI fmiFreeSlaveInstance(fmiComponent c) {
     ModelInstance* component = (ModelInstance *) c;
     component->functions->freeMemory(component);
 }
@@ -166,7 +166,7 @@ void fmiFreeSlaveInstance(fmiComponent c) {
  *  @param maxStepSize A pointer to a real into which to write the result.
  *  @return fmiOK.
  */
-fmiStatus  fmiGetMaxStepSize(fmiComponent c, fmiReal *maxStepSize) {
+fmiStatus FMIAPI fmiGetMaxStepSize(fmiComponent c, fmiReal *maxStepSize) {
     ModelInstance* component = (ModelInstance *) c;
     return fmiOK;
 }
@@ -179,7 +179,7 @@ fmiStatus  fmiGetMaxStepSize(fmiComponent c, fmiReal *maxStepSize) {
  *  @param value The array into which to put the results.
  *  @return fmiError if a value reference is out of range, otherwise fmiOK.
  */
-fmiStatus fmiGetReal(fmiComponent c, const fmiValueReference vr[], size_t nvr, fmiReal value[]) {
+fmiStatus FMIAPI fmiGetReal(fmiComponent c, const fmiValueReference vr[], size_t nvr, fmiReal value[]) {
     int i, valueReference;
     ModelInstance* component = (ModelInstance *) c;
 
@@ -216,7 +216,7 @@ fmiStatus fmiGetReal(fmiComponent c, const fmiValueReference vr[], size_t nvr, f
  *  @param value A pointer to the location in which to deposit the status.
  *  @return fmiDiscard if the kind is not fmiLastSuccessfulTime, otherwise fmiOK.
  */
-fmiStatus fmiGetRealStatus(fmiComponent c, const fmiStatusKind s, fmiReal* value) {
+fmiStatus FMIAPI fmiGetRealStatus(fmiComponent c, const fmiStatusKind s, fmiReal* value) {
     ModelInstance* component = (ModelInstance *) c;
     return fmiOK;
 }
@@ -233,7 +233,7 @@ fmiStatus fmiGetRealStatus(fmiComponent c, const fmiStatusKind s, fmiReal* value
  *  @return The instance of this FMU, or null if there are required functions missing,
  *   if there is no instance name, or if the GUID does not match this FMU.
  */
-fmiComponent fmiInstantiateSlave(
+fmiComponent FMIAPI fmiInstantiateSlave(
                                  fmiString instanceName,
                                  fmiString GUID,
                                  fmiString fmuResourceLocation,
@@ -275,7 +275,7 @@ fmiComponent fmiInstantiateSlave(
  *  @param tStop The stop time (ignored if stopTimeDefined is fmiFalse) (ignored by this FMU).
  *  @return fmiOK
  */
-fmiStatus fmiInitializeSlave(fmiComponent c,
+fmiStatus FMIAPI fmiInitializeSlave(fmiComponent c,
                              fmiReal relativeTolerance,
                              fmiReal tStart,
                              fmiBoolean stopTimeDefined,
@@ -293,7 +293,7 @@ fmiStatus fmiInitializeSlave(fmiComponent c,
  *  @param value The values to assign to these variables.
  *  @return fmiError if a value reference is out of range, otherwise fmiOK.
  */
-fmiStatus fmiSetReal(fmiComponent c, const fmiValueReference vr[], size_t nvr, const fmiReal value[]){
+fmiStatus FMIAPI fmiSetReal(fmiComponent c, const fmiValueReference vr[], size_t nvr, const fmiReal value[]){
     int i, valueReference;
 
     ModelInstance* component = (ModelInstance *) c;
@@ -327,7 +327,7 @@ fmiStatus fmiSetReal(fmiComponent c, const fmiValueReference vr[], size_t nvr, c
  *  @param c The FMU.
  *  @return fmiOK if the FMU was non-null, otherwise return fmiError
  */
-fmiStatus fmiTerminateSlave(fmiComponent c) {
+fmiStatus FMIAPI fmiTerminateSlave(fmiComponent c) {
     ModelInstance* component = (ModelInstance *) c;
 
     if (component == NULL) {

@@ -38,7 +38,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="{280.0, 85.0}">
         </property>
     </entity>
-    <entity name="inc" class="ptolemy.actor.lib.fmi.FMUImport">
+    <entity name="inc20RC1pt" class="ptolemy.actor.lib.fmi.FMUImport">
         <property name="fmuFile" class="ptolemy.data.expr.FileParameter" value="$CLASSPATH/ptolemy/actor/lib/fmi/test/auto/inc20RC1pt.fmu">
         </property>
         <property name="suppressWarnings" class="ptolemy.data.expr.Parameter" value="true">
@@ -80,6 +80,6 @@
         </property>
     </relation>
     <link port="Test.input" relation="relation2"/>
-    <link port="inc.counter" relation="relation2"/>
+    <link port="inc20RC1pt.counter" relation="relation2"/>
     <link port="TimedPlotter.input" relation="relation2"/>
 </entity>

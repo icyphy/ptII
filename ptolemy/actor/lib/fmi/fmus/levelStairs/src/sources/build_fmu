@@ -43,11 +43,15 @@ esac
 #bits=32
 # See also ../Makefile
 
-if [ $arch = linux -a $bits = 32 ]; then
-    CBITSFLAGS=-m32
+if [ $arch = linux ]; then
+    if [ $bits = 32 ]; then
+	CBITSFLAGS="-m32 -fvisibility=hidden"
+    else 
+	CBITSFLAGS="-fvisibility=hidden"
+    fi
 fi
 
 set -x
 echo `pwd`; \
 make dirclean; \
-make ARCH=${arch}${bits} CBITSFLAGS=${CBITSFLAGS} INCLUDE="${include}" PIC=${pic} SHARED_LIBRARY_SUFFIX=${sharedLibrarySuffix} $fmuBaseName.fmu
+make ARCH=${arch}${bits} CBITSFLAGS="${CBITSFLAGS}" INCLUDE="${include}" PIC=${pic} SHARED_LIBRARY_SUFFIX=${sharedLibrarySuffix} $fmuBaseName.fmu

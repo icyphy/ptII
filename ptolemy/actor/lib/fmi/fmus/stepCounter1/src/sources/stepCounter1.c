@@ -48,7 +48,7 @@ typedef struct {
 // The following was generated at http://guid.us
 #define MODEL_GUID "{c157b371-f7d4-4133-8c29-8e78a9468674}"
 
-fmiComponent fmiInstantiateSlave(fmiString  instanceName, fmiString  GUID,
+fmiComponent DllExport fmiInstantiateSlave(fmiString  instanceName, fmiString  GUID,
             fmiString  fmuLocation, fmiString  mimeType, fmiReal timeout, fmiBoolean visible,
             fmiBoolean interactive, fmiCallbackFunctions functions, fmiBoolean loggingOn) {
     ModelInstance* component;
@@ -91,7 +91,7 @@ fmiComponent fmiInstantiateSlave(fmiString  instanceName, fmiString  GUID,
     return component;
 }
 
-fmiStatus fmiInitializeSlave(fmiComponent c, fmiReal tStart, fmiBoolean stopTimeDefined, fmiReal tStop) {
+fmiStatus DllExport fmiInitializeSlave(fmiComponent c, fmiReal tStart, fmiBoolean stopTimeDefined, fmiReal tStop) {
     ModelInstance* component = (ModelInstance *) c;
     (component->functions).logger(c, component->instanceName, fmiOK, "message",
             "Invoked fmiIntializeSlave: start: %g, StopTimeDefined: %d, tStop: %g.",
@@ -101,16 +101,16 @@ fmiStatus fmiInitializeSlave(fmiComponent c, fmiReal tStart, fmiBoolean stopTime
     return fmiOK;
 }
 
-fmiStatus fmiTerminateSlave(fmiComponent c) {
+fmiStatus DllExport fmiTerminateSlave(fmiComponent c) {
     return fmiOK;
 }
 
-void fmiFreeSlaveInstance(fmiComponent c) {
+void DllExport fmiFreeSlaveInstance(fmiComponent c) {
     ModelInstance* component = (ModelInstance *) c;
     component->functions.freeMemory(component);
 }
 
-fmiStatus fmiDoStep(fmiComponent c, fmiReal currentCommunicationPoint,
+fmiStatus DllExport fmiDoStep(fmiComponent c, fmiReal currentCommunicationPoint,
             fmiReal communicationStepSize, fmiBoolean newStep) {
     ModelInstance* component = (ModelInstance *) c;
     printf("%s: Invoked fmiDoStep: %g, %g, newStep: %s\n", component->instanceName,
@@ -176,7 +176,7 @@ fmiStatus fmiDoStep(fmiComponent c, fmiReal currentCommunicationPoint,
     return fmiOK;
 }
 
-fmiStatus fmiGetReal(fmiComponent c, const fmiValueReference vr[], size_t nvr, fmiReal value[]) {
+fmiStatus DllExport fmiGetReal(fmiComponent c, const fmiValueReference vr[], size_t nvr, fmiReal value[]) {
     int i, valueReference;
     ModelInstance* component = (ModelInstance *) c;
     printf("%s: Invoked fmiGetReal: %d\n", component->instanceName, (int)nvr);
@@ -197,7 +197,7 @@ fmiStatus fmiGetReal(fmiComponent c, const fmiValueReference vr[], size_t nvr, f
     return fmiOK;
 }
 
-fmiStatus fmiGetRealStatus(fmiComponent c, const fmiStatusKind s, fmiReal* value) {
+fmiStatus DllExport fmiGetRealStatus(fmiComponent c, const fmiStatusKind s, fmiReal* value) {
     ModelInstance* component = (ModelInstance *) c;
     if (s == fmiLastSuccessfulTime) {
         *value = component->r[2];
@@ -207,7 +207,7 @@ fmiStatus fmiGetRealStatus(fmiComponent c, const fmiStatusKind s, fmiReal* value
     return fmiDiscard;
 }
 
-fmiStatus fmiSetReal(fmiComponent c, const fmiValueReference vr[], size_t nvr, const fmiReal value[]){
+fmiStatus DllExport fmiSetReal(fmiComponent c, const fmiValueReference vr[], size_t nvr, const fmiReal value[]){
     int i, valueReference;
     ModelInstance* component = (ModelInstance *) c;
     printf("%s: Invoked fmiSetReal: %d ", component->instanceName, (int)nvr);

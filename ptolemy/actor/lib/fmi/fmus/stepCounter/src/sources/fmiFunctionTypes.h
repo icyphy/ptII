@@ -58,7 +58,6 @@ extern "C" {
 #pragma pack(push,8)
 #endif
 
-
 /* Type definitions */
 typedef enum {
     fmiOK,

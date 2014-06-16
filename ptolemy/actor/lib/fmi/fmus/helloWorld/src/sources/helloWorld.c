@@ -32,9 +32,7 @@ typedef struct {
 // The following was generated at http://guid.us
 #define MODEL_GUID "{7b2d6d2e-ac4d-4aa8-93eb-d53357dc58ec}"
 
-
-
-fmiComponent fmiInstantiateSlave(fmiString  instanceName, fmiString  GUID,
+fmiComponent DllExport fmiInstantiateSlave(fmiString  instanceName, fmiString  GUID,
             fmiString  fmuLocation, fmiString  mimeType, fmiReal timeout, fmiBoolean visible,
             fmiBoolean interactive, fmiCallbackFunctions functions, fmiBoolean loggingOn) {
     ModelInstance* component;
@@ -68,26 +66,26 @@ fmiComponent fmiInstantiateSlave(fmiString  instanceName, fmiString  GUID,
     return component;
 }
 
-fmiStatus fmiInitializeSlave(fmiComponent c, fmiReal tStart, fmiBoolean StopTimeDefined, fmiReal tStop) {
+fmiStatus DllExport fmiInitializeSlave(fmiComponent c, fmiReal tStart, fmiBoolean StopTimeDefined, fmiReal tStop) {
         return fmiOK;
 }
 
-fmiStatus fmiTerminateSlave(fmiComponent c) {
+fmiStatus DllExport fmiTerminateSlave(fmiComponent c) {
         return fmiOK;
 }
 
-void fmiFreeSlaveInstance(fmiComponent c) {
+void DllExport fmiFreeSlaveInstance(fmiComponent c) {
     // cxh: I had to cast the c to a ModelInstance here.
     ModelInstance* component = (ModelInstance *) c;
     component->functions.freeMemory(component);
 }
 
-fmiStatus fmiDoStep(fmiComponent c, fmiReal currentCommunicationPoint,
+fmiStatus DllExport fmiDoStep(fmiComponent c, fmiReal currentCommunicationPoint,
             fmiReal communicationStepSize, fmiBoolean newStep) {
     return fmiOK;
 }
 
-fmiStatus fmiGetReal(fmiComponent c, const fmiValueReference vr[], size_t nvr, fmiReal value[]) {
+fmiStatus DllExport fmiGetReal(fmiComponent c, const fmiValueReference vr[], size_t nvr, fmiReal value[]) {
     // cxh: I had to cast the c to a ModelInstance here.
     ModelInstance* component = (ModelInstance *) c;
     // FIXME:
@@ -108,6 +106,6 @@ fmiStatus fmiGetReal(fmiComponent c, const fmiValueReference vr[], size_t nvr, f
     return fmiOK;
 }
 
-fmiStatus fmiSetReal(fmiComponent c, const fmiValueReference vr[], size_t nvr, const fmiReal value[]){
+fmiStatus DllExport fmiSetReal(fmiComponent c, const fmiValueReference vr[], size_t nvr, const fmiReal value[]){
         return fmiOK;
 }
