@@ -971,6 +971,7 @@ with_rhino
 with_oauthclient
 with_oauthcommon
 with_socketio
+with_jna_jar
 with_joystick_jar
 with_ptjacl_jar
 with_jsoup
@@ -1694,6 +1695,8 @@ Optional Packages:
                           defaults to \$PTII/lib/org.apache.oltu.oauth2.common-1.0.1-SNAPSHOT.jar
   --with-socketio=JAR       use socketIO from JAR,
                           defaults to \$PTII/lib/socketio.jar
+  --with-jna-jar=JARFILE       use JNA from JARFILE,
+                          defaults to \$PTII/jna-4.0.0-variadic.jar
   --with-joystick-jar=JARFILE       use JOYSTICK from JARFILE,
                           defaults to \$PTII/vendors/misc/joystick/Joystick.jar
   --with-ptjacl_jar=PTJACL.JAR  ptjacl.jar file,
@@ -8679,7 +8682,7 @@ PTFMI_PACKAGES=
 # The location of the jna.jar file, typically $PTII/lib/jna.jar
 JNA_JAR=
 
-# We only beed look for jmf if $PTII/ptolemy/actor/lib/fmi exists
+# We only need look for jmf if $PTII/ptolemy/actor/lib/fmi exists
 JNA_USER_DIR="$PTII/ptolemy/actor/lib/fmi"
 if test ! -d "$JNA_USER_DIR"; then
     if test "${PTVERBOSE:-none}" != "none"; then { $as_echo "$as_me:${as_lineno-$LINENO}: result: $JNA_USER_DIR is not present,
@@ -8689,11 +8692,18 @@ $as_echo "$JNA_USER_DIR is not present,
 else
     { $as_echo "$as_me:${as_lineno-$LINENO}: checking for Java Native Access (JNA) jar" >&5
 $as_echo_n "checking for Java Native Access (JNA) jar... " >&6; }
-    if test -f "$PTII/lib/jna-4.0.0-variadic.jar"; then
+
+# Check whether --with-jna-jar was given.
+if test "${with_jna_jar+set}" = set; then :
+  withval=$with_jna_jar; JNA_JAR=$withval
+else
+  JNA_JAR=$PTII/lib/jna-4.0.0-variadic.jar
+fi
+
+    if test -f "$JNA_JAR"; then
         if test "${PTVERBOSE:-none}" = "none"; then { $as_echo "$as_me:${as_lineno-$LINENO}: result: ok" >&5
-$as_echo "ok" >&6; }; else { $as_echo "$as_me:${as_lineno-$LINENO}: result: $PTII/lib/jna-4.0.0-variadic.jar" >&5
-$as_echo "$PTII/lib/jna-4.0.0-variadic.jar" >&6; }; fi
-	JNA_JAR="$PTII/lib/jna-4.0.0-variadic.jar"
+$as_echo "ok" >&6; }; else { $as_echo "$as_me:${as_lineno-$LINENO}: result: $JNA_JAR" >&5
+$as_echo "$JNA_JAR" >&6; }; fi
 	PTFMI_DIR=fmi
 	PTFMI_PACKAGES="ptolemy.actor.lib.fmi org.ptolemy.fmi org.ptolemy.fmi.driver org.ptolemy.fmi.type ptolemy.vergil.basic.imprt.fmu"
 	if test -d "$PTII/ptolemy/domains/fmi"; then
