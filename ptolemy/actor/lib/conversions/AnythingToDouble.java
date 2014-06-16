@@ -44,13 +44,14 @@ import ptolemy.kernel.util.Workspace;
  from a generic actor to always output doubles.
 
  <p>If you want to convert a string to a double, see the
- {@link ptolemy.actor.lib.conversions.ExpressionToToken} actor.</p>
+ {@link ptolemy.actor.lib.conversions.ExpressionToToken} actor.
+ or the  {@link ptolemy.actor.lib.conversions.StringToDouble} actor.</p>
 
  @author Adam Cataldo
+ @version $Id$
  @Pt.ProposedRating Green (eal)
  @Pt.AcceptedRating Red (cxh)
-
- * @see ptolemy.data.BooleanToken
+ @deprecated Use ptolemy.actor.lib.conversions.ExpressionToToken or StringToDouble.
  */
 public class AnythingToDouble extends Converter {
     /** Construct an actor with the given container and name.
@@ -70,19 +71,6 @@ public class AnythingToDouble extends Converter {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-
-    /** Clone the actor into the specified workspace. This calls the
-     *  base class and then sets the value public variable in the new
-     *  object to equal the cloned parameter in that new object.
-     *  @param workspace The workspace for the new object.
-     *  @return A new actor.
-     *  @exception CloneNotSupportedException If a derived class contains
-     *   an attribute that cannot be cloned.
-     */
-    public Object clone(Workspace workspace) throws CloneNotSupportedException {
-        AnythingToDouble newObject = (AnythingToDouble) super.clone(workspace);
-        return newObject;
-    }
 
     /** Read exactly one token from the input and output the token
      *  if it is double or a NaN token.
