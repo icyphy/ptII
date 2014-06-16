@@ -111,6 +111,7 @@ OPTIONAL_FILES = \
 	'ActorGraphFrame$$CreateHierarchyAction.class' \
 	'ActorGraphFrame$$DebugMenuListener.class' \
 	'ActorGraphFrame$$ExportDesignPatternAction.class' \
+	'ActorGraphFrame$$ImportAccessorAction$$2.class' \
 	'ActorGraphFrame$$ImportDesignPatternAction.class' \
 	'ActorGraphFrame$$ImportLibraryAction.class' \
 	'ActorGraphFrame$$InstantiateAttributeAction.class' \

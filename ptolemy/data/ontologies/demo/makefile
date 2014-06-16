@@ -32,7 +32,8 @@
 ME =		ptolemy/data/ontologies/demo
 
 DIRS = 	CarTracking ConstAbstractInterpretation ConstAbstractInterpretationObservable \
-	ConstNonconst ConstPropagation DimensionSystemExample MonotonicityAnalysis \
+	ConstNonconst ConstPropagation DimensionSystemExample \
+	ExceptionAnalysis MonotonicityAnalysis \
 	Observable ProductLattices UnitSystemExample
 
 # Root of the Ptolemy II directory
@@ -54,6 +55,7 @@ PTCLASSALLJARS = \
 	ConstNonconst/ConstNonconst.jar \
 	ConstPropagation/ConstPropagation.jar \
 	DimensionSystemExample/DimensionSystemExample.jar \
+	ExceptionAnalysis/ExceptionAnalysis.jar \
 	MonotonicityAnalysis/MonotonicityAnalysis.jar \
 	Observable/Observable.jar \
 	ProductLattices/ProductLattices.jar \

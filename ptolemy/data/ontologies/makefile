@@ -53,8 +53,9 @@ PTCLASSALLJARS = \
 PTCLASSALLJAR = $(PTPACKAGE).jar
 
 JSRCS = \
-    ActorModelScope.java \
-    ClassConceptFunctionDefinitionAttribute.java \
+	ActorModelScope.java \
+	AnalyzeExceptionAttribute.java \
+	ClassConceptFunctionDefinitionAttribute.java \
 	Concept.java \
 	ConceptAttribute.java \
 	ConceptFromRecordField.java \

@@ -91,6 +91,8 @@ OPTIONAL_FILES = \
 	$(PTCLASSALLJAR) \
 	$(PTAUXJAR) \
 	'FMICallbackFunctions$$ByValue.class' \
+	'FMI20EventInfo$$ByReference.class' \
+	'FMI20EventInfo$$ByValue.class' \
 	'FMIEventInfo$$ByReference.class' \
 	'FMIEventInfo$$ByValue.class' \
 	'FMILibrary$$FMICallbackAllocateMemory.class' \

@@ -40,7 +40,8 @@ FMUS_PRE_2_0_CS =	ballDynamics helloWorld levelStairs onOffSupervisor \
 
 # Co-simulation FMUs that have have fmiVersion >= 2.0
 # New Co-simulation FMUS should be added here.
-FMUS_2_0_CS =	bouncingBall20RC1 heaterFlowResistance inc20RC1 inc20RC1pt pumpConstantSpeed tankOpen
+FMUS_2_0_CS =	bouncingBall20RC1 heaterFlowResistance inc20RC1 inc20RC1pt \
+		scale20RC1 stairsA20RC1F pumpConstantSpeed tankOpen
 
 FMUS_CS =	$(FMUS_PRE_2_0_CS) $(FMUS_2_0_CS)
 
@@ -97,8 +98,10 @@ PTCLASSALLJARS = \
 	helloWorld/helloWorld.jar \
 	levelStairs/levelStairs.jar \
 	onOffSupervisor/onOffSupervisor.jar \
+	scale20RC1/scale20RC1.jar \
 	stairsA/stairsA.jar \
 	stairsB/stairsB.jar \
+	stairsA20RC1F/stairsA20RC1F.jar \
 	stepCounter/stepCounter.jar \
 	stepCounter1/stepCounter1.jar \
 	stepCounterExtendedFMI/stepCounterExtendedFMI.jar \
