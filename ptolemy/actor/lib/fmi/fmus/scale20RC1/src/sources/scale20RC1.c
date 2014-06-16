@@ -17,6 +17,7 @@
 
 // include fmu header files, typedefs and macros
 #include "fmuTemplate.h"
+#include "fmiFunctionTypes.h"
 
 // define all model variables and their value references
 // conventions used here:
@@ -41,25 +42,24 @@ void setStartValues(ModelInstance *comp) {
 // called by fmiExitInitializationMode() after setting eventInfo to defaults
 // Used to set the first time event, if any.
 void initialize(ModelInstance* comp, fmiEventInfo* eventInfo) {
-    eventInfo->nextEventTimeDefined   = fmiTrue;
-    eventInfo->nextEventTime          = 1 + comp->time;
+	// Calcualation is not event based, so no event time will be defined
+    eventInfo->nextEventTimeDefined   = fmiFalse;
 }
 
 // used to set the next time event, if any.
 void eventUpdate(ModelInstance* comp, fmiEventInfo* eventInfo) {
-    eventInfo->nextEventTimeDefined = fmiTrue;
-    eventInfo->nextEventTime        = 1 + comp->time;
-    r(output_) = 2*r(input_);
-
 }
 
 // called by fmiGetReal, fmiGetContinuousStates and fmiGetDerivatives
 fmiReal getReal(ModelInstance* comp, fmiValueReference vr){
     switch (vr)
     {
-    case input_ 		: return r(input_);
-    	case output_     : return   r(output_);
-        case output_derivative_ : return r(output_);
+    	case output_:
+    		// Calculate output when output is requested
+    		r(output_) = 2*r(input_);
+    		// Log call to facilitate debugging
+    	    // comp->functions->logger(comp->componentEnvironment, comp->instanceName, fmiOK, "logFmiCall", "input: %F, output: %F", r(input_), r(output_));
+    		return r(output_);
         default: return 0;
     }
 }
