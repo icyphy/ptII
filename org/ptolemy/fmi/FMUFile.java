@@ -494,28 +494,8 @@ public class FMUFile {
                    .println("Warning: ModelStructure element is missing.");
                }*/
 
-
         if (fmiVersion > 1.5) {
-            // Create the state vector. 
-            int count = 0;
-            for (int i = 0; i < fmiModelDescription.modelVariables.size(); i++) {
-                FMIScalarVariable scalar = fmiModelDescription.modelVariables
-                        .get(i);
-                if (scalar.type instanceof FMIRealType
-                        && ((FMIRealType) scalar.type).indexState > 0) {
-                    _continuousStates.put(count, fmiModelDescription.modelVariables
-                            .get(((FMIRealType)scalar.type).indexState - 1).name);
-                    count++;
-                }
-            }
-            // Store the state vector in a list.
-            Iterator valueIterator = _continuousStates.values().iterator();
-            while (valueIterator.hasNext()) {
-                fmiModelDescription.continuousStates.add((String) valueIterator
-                        .next());
-            }
-            fmiModelDescription.numberOfContinuousStates = fmiModelDescription.continuousStates
-                    .size();
+            fmiModelDescription.createStateVector();
         }
 
         return fmiModelDescription;
@@ -629,7 +609,4 @@ public class FMUFile {
 
     /** Record of previously read files. */
     private static Map<String, FMIModelDescription> _modelDescriptions = new HashMap<String, FMIModelDescription>();
-
-    /** Record of continuous state variables. */
-    private static HashMap<Integer, String> _continuousStates = new HashMap<Integer, String>();
 }

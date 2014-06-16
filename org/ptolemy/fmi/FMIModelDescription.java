@@ -27,9 +27,12 @@
  */
 package org.ptolemy.fmi;
 
+import org.ptolemy.fmi.type.FMIRealType;
+
 import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -158,6 +161,31 @@ public class FMIModelDescription {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
+
+    /** Create the state vector.
+     *  This should only be called on fmis with a fmiVersion greater than 1.5.   
+     */
+    public void createStateVector() {
+        // Create the state vector. 
+        int count = 0;
+        for (int i = 0; i < modelVariables.size(); i++) {
+            FMIScalarVariable scalar = modelVariables
+                .get(i);
+            if (scalar.type instanceof FMIRealType
+                    && ((FMIRealType) scalar.type).indexState > 0) {
+                _continuousStates.put(count, modelVariables
+                        .get(((FMIRealType)scalar.type).indexState - 1).name);
+                count++;
+            }
+        }
+        // Store the state vector in a list.
+        Iterator valueIterator = _continuousStates.values().iterator();
+        while (valueIterator.hasNext()) {
+            continuousStates.add((String) valueIterator
+                    .next());
+        }
+        numberOfContinuousStates = continuousStates.size();
+    }
 
     /** Unload the native library and free up any Java references
      *  to memory allocated by the allocate memory callback.
@@ -306,14 +334,17 @@ public class FMIModelDescription {
         String name2 = functionName;
         try {
             function = _nativeLibrary.getFunction(name1);
+            System.out.println("FMIModelDescription: " + name1 + "got " + function);
         } catch (UnsatisfiedLinkError error) {
             try {
                 function = _nativeLibrary.getFunction(name2);
+                System.out.println("FMIModelDescription: " + name2 + "got " + function);
             } catch (UnsatisfiedLinkError error2) {
                 UnsatisfiedLinkError linkError = new UnsatisfiedLinkError(
                         "Could not find the function, \"" + name1 + "\" or \""
                                 + name2 + "\" in " + _nativeLibrary);
                 //linkError.initCause(error);
+                System.out.println("FMIModelDescription: could not find " + functionName);
                 throw linkError;
             }
         }
@@ -360,13 +391,16 @@ public class FMIModelDescription {
     ///////////////////////////////////////////////////////////////////
     ////                         private fields                    ////
 
-    /** The NativeLibrary associated with the platform-dependent
-     * shared library in the .fmu file.
-     */
-    private NativeLibrary _nativeLibrary;
+    /** Record of continuous state variables. */
+    private HashMap<Integer, String> _continuousStates = new HashMap<Integer, String>();
 
     /** A class that allocates memory, but retains a reference
      *  so that the memory does not get gc'd.
      */
     private FMULibrary.FMUAllocateMemory _fmuAllocateMemory = new FMULibrary.FMUAllocateMemory();
+
+    /** The NativeLibrary associated with the platform-dependent
+     * shared library in the .fmu file.
+     */
+    private NativeLibrary _nativeLibrary;
 }
