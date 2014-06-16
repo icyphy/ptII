@@ -1,6 +1,6 @@
-/* An actor that converts a string to an array of bytes.
+/* An actor that converts a string to a double.
 
- Copyright (c) 1998-2013 The Regents of the University of California.
+ Copyright (c) 2014 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -25,9 +25,8 @@
  COPYRIGHTENDKEY
 
  */
-package org.terraswarm.lib;
+package ptolemy.actor.lib.conversions;
 
-import ptolemy.actor.lib.conversions.Converter;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.StringToken;
 import ptolemy.data.type.BaseType;
@@ -36,20 +35,18 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
 ///////////////////////////////////////////////////////////////////
-/// StringToUnsignedByteArray
+/// StringToDouble
 
 /**
- Convert a string to an array of unsigned byte.  The conversion is performed
- using the default character set, returned by the system property
- "file.encoding".
+ Convert a string to a double.
 
- @author Winthrop Williams, Steve Neuendorffer, Long Le
+ @author Christopher Brooks, Long Le
  @version $Id$
  @since Ptolemy II 10.0
  @Pt.ProposedRating Red (longle1)
  @Pt.AcceptedRating Red (longle1)
  */
-public class DoubleToString extends Converter {
+public class StringToDouble extends Converter {
     /** Construct an actor with the given container and name.
      *  @param container The container.
      *  @param name The name of this actor.
@@ -58,36 +55,31 @@ public class DoubleToString extends Converter {
      *  @exception NameDuplicationException If the container already has an
      *   actor with this name.
      */
-    public DoubleToString(CompositeEntity container, String name)
+    public StringToDouble(CompositeEntity container, String name)
             throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
-        input.setTypeEquals(BaseType.DOUBLE);
+        input.setTypeEquals(BaseType.STRING);
 
-        output.setTypeEquals(BaseType.STRING);
+        output.setTypeEquals(BaseType.DOUBLE);
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Consume one string token on the input port and output a new array
-     *  token of integer tokens on the output port.  The low byte of each
-     *  integer is the byte form of one of the characters.  The other
-     *  three bytes of each integer may be 0x000000 or 0xFFFFFF.  The
-     *  first character of the string is copied to the first element of
-     *  the array, and so on.  NOTE: Assumes an 8-bit character set is
-     *  the default setting for this implementation of Java.
+    /** Consume one StringToken on the input port and output a new
+     * DoubleToken.
      *
-     *  @exception IllegalActionException If there is no director.
-     *  FIXME: Does this method actually check if there is a director?
+     *  @exception IllegalActionException If thrown while getting
+     *  or sending a token.
      */
     public void fire() throws IllegalActionException {
         super.fire();
-        double inputValue = ((DoubleToken) input.get(0)).doubleValue();
+        String inputValue = ((StringToken) input.get(0)).stringValue();
 
-        String value = String.valueOf(inputValue);
+        double value = Double.parseDouble(inputValue);
         
-        output.send(0, new StringToken(value));
+        output.send(0, new DoubleToken(value));
     }
 
     /** Return false if the input port has no token, otherwise return

@@ -59,20 +59,25 @@ JSRCS = \
 	ComplexToPolar.java \
 	Converter.java \
 	DoubleToFix.java \
+	DoubleToString.java \
 	ExpressionToToken.java \
 	FixToDouble.java \
 	FixToFix.java \
 	IntArrayToString.java \
-	UnsignedByteArrayToString.java \
 	InUnitsOf.java \
 	LongToDouble.java \
 	PolarToCartesian.java \
 	PolarToComplex.java \
 	Round.java \
+	StringToBoolean.java \
+	StringToDouble.java \
+	StringToInt.java \
 	StringToIntArray.java \
 	StringToUnsignedByteArray.java \
 	StringToXML.java \
-	TokenToExpression.java 
+	TokenToExpression.java \
+	UnsignedByteArrayToString.java
+
 
 OTHER_FILES_TO_BE_JARED = \
 	conversions.xml
