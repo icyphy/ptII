@@ -135,11 +135,8 @@ test TMReceiver-4.4 {put port that has a container} {
 
 } {{.top.TMDirector Preinitializing ...
 Updating TMDirector parameter _iconDescription
-attribute ptolemy.kernel.util.SingletonConfigurableAttribute {.top.TMDirector._iconDescription} changed
 Updating TMDirector parameter startTime
-attribute ptolemy.data.expr.Parameter {.top.TMDirector.startTime} value undefined changed
 Updating TMDirector parameter stopTime
-attribute ptolemy.data.expr.Parameter {.top.TMDirector.stopTime} value undefined changed
 Updating TMDirector parameter preemptive
 Updating TMDirector parameter defaultTaskExecutionTime
 Updating TMDirector parameter synchronizeToRealTime
