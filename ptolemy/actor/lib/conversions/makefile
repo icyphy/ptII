@@ -59,7 +59,6 @@ JSRCS = \
 	ComplexToPolar.java \
 	Converter.java \
 	DoubleToFix.java \
-	DoubleToString.java \
 	ExpressionToToken.java \
 	FixToDouble.java \
 	FixToFix.java \
