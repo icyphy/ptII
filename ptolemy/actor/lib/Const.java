@@ -91,7 +91,7 @@ public class Const extends LimitedFiringSource {
      *  for this parameter.  In Vergil, documentation is available
      *  via the Help button in the Edit Parameters window.  Documentation
      *  is available on-line at
-     *  <a href="http://http://ptolemy.berkeley.edu/ptolemyII/designdoc.htm#in_browser">http://ptolemy.berkeley.edu/ptolemyII/designdoc.htm</a>.
+     *  <a href="http://ptolemy.eecs.berkeley.edu/books/Systems/chapters/Expressions.pdf#in_browser">http://ptolemy.eecs.berkeley.edu/books/Systems/chapters/Expressions.pdf</a>.
      *  </p>
      */
     public Parameter value;
