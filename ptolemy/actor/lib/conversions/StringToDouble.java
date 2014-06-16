@@ -40,6 +40,11 @@ import ptolemy.kernel.util.NameDuplicationException;
 /**
  Convert a string to a double.
 
+ <p>This actor is a simpler version of 
+ {@link ptolemy.actor.lib.conversions.ExpressionToToken}, which can perform
+ the same conversion, but since ExpressionToToken just evaluates an
+ expression, it is much more powerful.</p>
+
  @author Christopher Brooks, Long Le
  @version $Id$
  @since Ptolemy II 10.0
