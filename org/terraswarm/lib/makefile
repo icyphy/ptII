@@ -50,11 +50,7 @@ include $(CONFIG)
 PTPACKAGE = lib
 PTCLASSJAR = $(PTPACKAGE).jar
 
-JSRCS = \
-	DoubleToString.java \
-	StringToBoolean.java \
-	StringToDouble.java \
-	StringToInt.java
+JSRCS =
 
 OTHER_FILES_TO_BE_JARED =
 
