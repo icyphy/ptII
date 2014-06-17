@@ -15,21 +15,6 @@
 #define NUMBER_OF_STATES 0
 #define NUMBER_OF_EVENT_INDICATORS 0
 
-// Used by FMI 2.0.  See FMIFuctions.h
-#define FMI_FUNCTION_PREFIX inc20RC1pt_
-
-// We require that functions have prefixes for Linux.
-#if defined _WIN32 || defined __CYGWIN__
-/* Note: both gcc & MSVC on Windows support this syntax. */
-#define FMI_Export __declspec(dllexport)
-#else
-  #if __GNUC__ >= 4
-#define FMI_Export __attribute__ ((visibility ("default")))
-  #else
-    #define FMI_Export
-  #endif
-#endif // _WIN32 || defined __CYGWIN__
-
 // include fmu header files, typedefs and macros
 #include "fmuTemplate.h"
 

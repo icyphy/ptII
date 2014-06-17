@@ -28,18 +28,6 @@
 #define NUMBER_OF_STATES 2
 #define NUMBER_OF_EVENT_INDICATORS 1
 
-// We require that functions have prefixes for Linux.
-#if defined _WIN32 || defined __CYGWIN__
-/* Note: both gcc & MSVC on Windows support this syntax. */
-#define FMI_Export __declspec(dllexport)
-#else
-  #if __GNUC__ >= 4
-#define FMI_Export __attribute__ ((visibility ("default")))
-  #else
-    #define FMI_Export
-  #endif
-#endif // _WIN32 || defined __CYGWIN__
-
 // include fmu header files, typedefs and macros
 #include "fmuTemplate.h"
 
@@ -61,7 +49,7 @@
 // called by fmiInstantiate
 // Set values for all variables that define a start value
 // Settings used unless changed by fmiSetX before fmiEnterInitializationMode
-void setStartValues(ModelInstance *comp) {
+FMI_Export void setStartValues(ModelInstance *comp) {
     r(h_)     =  1;
     r(v_)     =  0;
     r(der_v_) = -9.81;
@@ -71,7 +59,7 @@ void setStartValues(ModelInstance *comp) {
 }
 
 // called by fmiGetReal, fmiGetContinuousStates and fmiGetDerivatives
-fmiReal getReal(ModelInstance* comp, fmiValueReference vr){
+fmiReal FMI_Export getReal(ModelInstance* comp, fmiValueReference vr){
     switch (vr) {
         case h_     : return r(h_);
         case der_h_ : return r(v_);
@@ -85,22 +73,22 @@ fmiReal getReal(ModelInstance* comp, fmiValueReference vr){
 
 // called by fmiExitInitializationMode() after setting eventInfo to defaults
 // Used to set the first time event, if any.
-void initialize(ModelInstance* comp, fmiEventInfo* eventInfo) {
+FMI_Export void initialize(ModelInstance* comp, fmiEventInfo* eventInfo) {
     r(der_v_) = -r(g_);
 }
 
 // offset for event indicator, adds hysteresis and prevents z=0 at restart 
 #define EPS_INDICATORS 1e-14
 
-fmiReal getEventIndicator(ModelInstance* comp, int z) {
+FMI_Export fmiReal getEventIndicator(ModelInstance* comp, int z) {
     switch (z) {
         case 0 : return r(h_) + (pos(0) ? EPS_INDICATORS : -EPS_INDICATORS);
         default: return 0;
     }
 }
 
-// used to set the next time event, if any.
-void eventUpdate(ModelInstance* comp, fmiEventInfo* eventInfo) {
+// Used to set the next time event, if any.
+FMI_Export void eventUpdate(ModelInstance* comp, fmiEventInfo* eventInfo) {
     if (pos(0)) {
         r(v_) = - r(e_) * r(v_);
     }
