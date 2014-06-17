@@ -21,7 +21,7 @@
     <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{340.0, 252.0}">
     </property>
     <entity name="dq20RC" class="ptolemy.actor.lib.fmi.FMUImport">
-        <property name="fmuFile" class="ptolemy.data.expr.FileParameter" value="/Users/cxh/ptII/ptolemy/actor/lib/fmi/test/auto/dq20RC1.fmu">
+        <property name="fmuFile" class="ptolemy.data.expr.FileParameter" value="$CLASSPATH/ptolemy/actor/lib/fmi/test/auto/dq20RC1.fmu">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="{135.0, 265.0}">
         </property>
