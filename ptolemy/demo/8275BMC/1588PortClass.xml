@@ -1,7 +1,7 @@
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE class PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<class name="1588Port" extends="ptolemy.actor.TypedCompositeActor">
+<class name="1588PortClass" extends="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="10.0.devel">
     </property>
     <property name="Rectangle5" class="ptolemy.vergil.kernel.attributes.RectangleAttribute">
@@ -18395,7 +18395,7 @@
             <link port="Const2.trigger" relation="relation4"/>
             <link port="Discard.input" relation="relation8"/>
         </entity>
-        <entity name="NEWfigure27-4" class="ptolemy.demo.BestMasterClock.NEWfigure27-8">
+        <entity name="NEWfigure27-4" class="ptolemy.demo.8275BMC.Figure27-8Class">
             <property name="_location" class="ptolemy.kernel.util.Location" value="[705.0, -45.0]">
             </property>
             <property name="A" class="ptolemy.data.expr.Parameter" value="{255, 255, 255, 255, 255, 255, 255, 255, 12, 4, 255, 255}">
@@ -18411,7 +18411,7 @@
             <property name="NAME" class="ptolemy.data.expr.StringParameter" value="F27 ci 0">
             </property>
         </entity>
-        <entity name="NEWfigure27-5" class="ptolemy.demo.BestMasterClock.NEWfigure27-8">
+        <entity name="NEWfigure27-5" class="ptolemy.demo.8275BMC.Figure27-8Class">
             <property name="_location" class="ptolemy.kernel.util.Location" value="[895.0, 180.0]">
             </property>
             <property name="A" class="ptolemy.data.expr.Parameter" value="{255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255}">
@@ -18427,7 +18427,7 @@
             <property name="NAME" class="ptolemy.data.expr.StringParameter" value="F27 ci 1">
             </property>
         </entity>
-        <entity name="NEWfigure27-6" class="ptolemy.demo.BestMasterClock.NEWfigure27-8">
+        <entity name="NEWfigure27-6" class="ptolemy.demo.8275BMC.Figure27-8Class">
             <property name="_location" class="ptolemy.kernel.util.Location" value="[735.0, 220.0]">
             </property>
             <property name="A" class="ptolemy.data.expr.Parameter" value="{255, 255, 255, 255, 255, 255, 255, 255, 12, 4, 255, 255}">
@@ -21362,13 +21362,13 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="[265.0, 650.0]">
             </property>
         </entity>
-        <entity name="NEWfigure27-4" class="ptolemy.demo.BestMasterClock.NEWfigure27-8">
+        <entity name="NEWfigure27-4" class="ptolemy.demo.8275BMC.Figure27-8Class">
             <property name="_location" class="ptolemy.kernel.util.Location" value="[930.0, 345.0]">
             </property>
             <property name="NAME" class="ptolemy.data.expr.StringParameter" value="F27 ci block 3">
             </property>
         </entity>
-        <entity name="NEWfigure27-5" class="ptolemy.demo.BestMasterClock.NEWfigure27-8">
+        <entity name="NEWfigure27-5" class="ptolemy.demo.8275BMC.Figure27-8Class">
             <property name="_location" class="ptolemy.kernel.util.Location" value="[910.0, 560.0]">
             </property>
             <property name="A" class="ptolemy.data.expr.Parameter" value="{255, 12, 0, 196, 140, 25, 12, 0, 12, 0, 0, 0}">
@@ -21384,7 +21384,7 @@
             <property name="NAME" class="ptolemy.data.expr.StringParameter" value="F27 ci block 4">
             </property>
         </entity>
-        <entity name="NEWfigure27-6" class="ptolemy.demo.BestMasterClock.NEWfigure27-8">
+        <entity name="NEWfigure27-6" class="ptolemy.demo.8275BMC.Figure27-8Class">
             <property name="_location" class="ptolemy.kernel.util.Location" value="[1575.0, 805.0]">
             </property>
             <property name="A" class="ptolemy.data.expr.Parameter" value="{19, 26, 2, 125, 132, 128, 56, 9, 12, 2, 255, 0}">

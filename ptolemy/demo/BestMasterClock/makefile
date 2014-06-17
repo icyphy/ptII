@@ -47,13 +47,13 @@ PTCLASSJAR =	$(PTPACKAGE).jar
 
 
 EXAMPLE_MODELS = \
-	1588Clock.xml \
-	1588Port.xml \
+	1588ClockClass.xml \
+	1588PortClass.xml \
 	9ClockMesh.xml \
+	Figure27-8Class.xml \
 	ISPCS3clockRing.xml \
 	ISPCSmultiClockRing.xml \
-	ITSFchangePriority-v1.xml \
-	NEWfigure27-8.xml
+	ITSFchangePriority-v1.xml
 
 OTHER_FILES_TO_BE_JARED = \
 	$(EXAMPLE_MODELS) \
