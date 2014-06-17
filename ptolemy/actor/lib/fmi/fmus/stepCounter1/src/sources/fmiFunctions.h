@@ -73,7 +73,7 @@
    #endif
   #endif
  #else
-   #define FMIAPI
+   #define DllExport
  #endif
 #endif
 
