@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<fmiModelDescription
+  fmiVersion="2.0"
+  modelName="dq"
+  guid="{8c4e810f-3df3-4a00-8276-176fa3c9f000}"
+  numberOfEventIndicators="0">
+
+<CoSimulation
+  modelIdentifier="dq"
+  canHandleVariableCommunicationStepSize="true"/>
+
+<LogCategories>
+  <Category name="logAll"/>
+  <Category name="logError"/>
+  <Category name="logFmiCall"/>
+  <Category name="logEvent"/>
+</LogCategories>
+
+<ModelVariables>
+  <ScalarVariable name="x" valueReference="0" description="the only state" initial="exact">
+    <Real start="1"/>
+  </ScalarVariable>
+  <ScalarVariable name="der(x)" valueReference="1">
+    <Real derivative="1"/>
+  </ScalarVariable> 
+  <ScalarVariable name="k" valueReference="2" causality="parameter" variability="fixed" initial="exact">
+    <Real start="1"/>
+  </ScalarVariable>
+</ModelVariables>
+
+<ModelStructure>
+  <Outputs/>
+  <Derivatives>
+    <Unknown index="2" />
+  </Derivatives>
+  <DiscreteStates />
+  <InitialUnknowns />
+</ModelStructure>
+
+</fmiModelDescription>
