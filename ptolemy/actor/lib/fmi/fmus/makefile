@@ -42,7 +42,7 @@ FMUS_PRE_2_0_CS =	ballDynamics helloWorld levelStairs onOffSupervisor \
 # New Co-simulation FMUS should be added here.
 FMUS_2_0_CS =	bouncingBall20RC1 dq20RC1 heaterFlowResistance inc20RC1 \
 		scale20RC1 stairsA20RC1F pumpConstantSpeed tankOpen \
-		values20RC1
+		values20RC1 vanDerPol20RC1
 
 FMUS_CS =	$(FMUS_PRE_2_0_CS) $(FMUS_2_0_CS)
 

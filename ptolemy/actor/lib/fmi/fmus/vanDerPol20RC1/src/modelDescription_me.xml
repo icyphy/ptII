@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<fmiModelDescription
+  fmiVersion="2.0"
+  modelName="van der Pol oscillator"
+  guid="{8c4e810f-3da3-4a00-8276-176fa3c9f000}"
+  numberOfEventIndicators="0">
+
+<ModelExchange
+  modelIdentifier="vanDerPol"/>
+
+<LogCategories>
+  <Category name="logAll"/>
+  <Category name="logError"/>
+  <Category name="logFmiCall"/>
+  <Category name="logEvent"/>
+</LogCategories>
+
+<ModelVariables>
+  <ScalarVariable name="x0" valueReference="0" description="the first state" initial="exact">
+    <Real start="2"/>
+  </ScalarVariable>
+  <ScalarVariable name="der(x0)" valueReference="1">
+    <Real/>
+  </ScalarVariable> 
+  <ScalarVariable name="x1" valueReference="2" description="the second state" initial="exact">
+    <Real start="0"/>
+  </ScalarVariable>
+  <ScalarVariable name="der(x1)" valueReference="3">
+    <Real/>
+  </ScalarVariable> 
+  <ScalarVariable name="mu" valueReference="4" causality="parameter" variability="fixed">
+    <Real start="1"/>
+  </ScalarVariable>
+</ModelVariables>
+
+<ModelStructure>
+  <Outputs/>
+  <Derivatives>
+    <Unknown index="2" />
+    <Unknown index="4" />
+  </Derivatives>
+  <DiscreteStates />
+  <InitialUnknowns />
+</ModelStructure>
+
+</fmiModelDescription>

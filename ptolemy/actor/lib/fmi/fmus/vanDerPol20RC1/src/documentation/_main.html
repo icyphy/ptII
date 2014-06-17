@@ -1,0 +1,23 @@
+<html>
+<head>
+<title>Documentation for vanDerPol.fmu</title>
+<style type="text/css">
+  html { font-family: Verdana, Arial, Helvetica, sans-serif; }
+  h1   { color: #000066; }
+</style>
+</head>
+<body>
+<h1>vanDerPol.fmu</h1>
+This FMU implements the famous
+<a href="http://en.wikipedia.org/wiki/Van_der_Pol_oscillator" target="_blank">Van der Pol oscillator</a>.
+<ul>
+<li> der(x0) = x1 </li>
+<li> der(x1) = mu * ((1 - x0 * x0) * x1) - x0</li>
+</ul>
+<img src="plot_states.png">
+<br/>
+The figure shows the solution computed with Silver 
+for start values x0 = 2, x1 = 0, mu = 1.
+</body>
+</html>
+
