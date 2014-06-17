@@ -26,6 +26,7 @@
  */
 package diva.canvas.connector;
 
+import java.awt.Shape;
 import java.awt.geom.GeneralPath;
 import java.awt.geom.Point2D;
 
@@ -227,9 +228,13 @@ public class ManhattanConnector extends AbstractConnector {
      */
     public void translate(double x, double y) {
         repaint();
-
-        Polyline2D line = (Polyline2D) getShape();
-        line.translate(x, y);
-        repaint();
+        Shape shape = getShape();
+        // Ignore if the shape doesn't have a translate method.
+        // This is better than a class cast exception.
+        if (shape instanceof Polyline2D) {
+        	Polyline2D line = (Polyline2D) getShape();
+        	line.translate(x, y);
+        	repaint();
+        }
     }
 }
