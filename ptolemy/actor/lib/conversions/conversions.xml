@@ -45,9 +45,8 @@
      </property>
   </entity>
 
-  <entity name="DoubleToString"
-          class="ptolemy.actor.lib.conversions.DoubleToString">
-  </entity>
+  <!-- No need for a DoubleToString, use TokenToExpression instead. -->
+  
 
   <entity name="ExpressionToToken"
           class="ptolemy.actor.lib.conversions.ExpressionToToken">
