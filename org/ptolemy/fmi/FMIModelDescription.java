@@ -334,17 +334,14 @@ public class FMIModelDescription {
         String name2 = functionName;
         try {
             function = _nativeLibrary.getFunction(name1);
-            System.out.println("FMIModelDescription: " + name1 + "got " + function);
         } catch (UnsatisfiedLinkError error) {
             try {
                 function = _nativeLibrary.getFunction(name2);
-                System.out.println("FMIModelDescription: " + name2 + "got " + function);
             } catch (UnsatisfiedLinkError error2) {
                 UnsatisfiedLinkError linkError = new UnsatisfiedLinkError(
                         "Could not find the function, \"" + name1 + "\" or \""
                                 + name2 + "\" in " + _nativeLibrary);
                 //linkError.initCause(error);
-                System.out.println("FMIModelDescription: could not find " + functionName);
                 throw linkError;
             }
         }
