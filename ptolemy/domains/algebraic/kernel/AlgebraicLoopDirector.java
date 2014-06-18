@@ -686,17 +686,20 @@ public class AlgebraicLoopDirector extends StaticSchedulingDirector {
             //        precision of the Jacobian approximation, adding relaxation, and/or some other means.
             final double det = DoubleMatrixMath.determinant(J);
             if (Math.abs(det) < 1E-5){
-            	final String LS = System.getProperty("line.separator");
-                String em = "Singular Jacobian in Newton step. Reformulate equation or try different start values."
-                             + LS
-                             + "Break variables: " + LS;
+            	StringBuffer message = new StringBuffer();
+                message.append("Singular Jacobian in Newton step. Reformulate equation or try different start values.\n");
+                message.append("Break variables:\n");
                 for(String name : _variableNames){
-                	em += "    " + name + LS;
+                	message.append("    ");
+                	message.append(name);
+                	message.append("\n");
                 }
-                em += "Jacobian = " + DoubleMatrixMath.toString(J)
-                      + LS
-                      + "Determinant = " + det;
-                throw new IllegalActionException(em);
+                message.append("Jacobian = ");
+                message.append(DoubleMatrixMath.toString(J));
+                message.append("\n");
+                message.append("Determinant = ");
+                message.append(det);
+                throw new IllegalActionException(message.toString());
             }
             
             // Solve J * d = -g(x_n) for d = x_{n+1}-x{n} 
