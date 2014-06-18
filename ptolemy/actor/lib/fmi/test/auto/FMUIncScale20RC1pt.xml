@@ -35,7 +35,7 @@
         </property>
         <property name="tolerance" class="ptolemy.data.expr.Parameter" value="4.400000000000004E-8">
         </property>
-        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="true">
+        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[370.0, 245.0]">
         </property>

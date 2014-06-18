@@ -171,7 +171,7 @@
     <entity name="Test3" class="ptolemy.actor.lib.Test">
         <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{&quot;jan&quot;, &quot;jan&quot;, &quot;jan&quot;, &quot;jan&quot;, &quot;feb&quot;, &quot;feb&quot;, &quot;feb&quot;, &quot;march&quot;, &quot;march&quot;, &quot;march&quot;, &quot;march&quot;, &quot;april&quot;, &quot;april&quot;, &quot;april&quot;, &quot;may&quot;, &quot;may&quot;, &quot;may&quot;, &quot;june&quot;, &quot;june&quot;, &quot;june&quot;, &quot;june&quot;, &quot;july&quot;, &quot;july&quot;, &quot;july&quot;, &quot;august&quot;, &quot;august&quot;, &quot;august&quot;, &quot;august&quot;, &quot;sept&quot;, &quot;sept&quot;}">
         </property>
-        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="true">
+        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="{540.0, 330.0}">
         </property>
