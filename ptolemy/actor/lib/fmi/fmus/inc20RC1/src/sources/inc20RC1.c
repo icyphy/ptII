@@ -28,19 +28,25 @@
 // called by fmiInstantiate
 // Set values for all variables that define a start value
 // Settings used unless changed by fmiSetX before fmiEnterInitializationMode
-FMI_Export void setStartValues(ModelInstance *comp) {
+void setStartValues(ModelInstance *comp) {
+  fprintf(stderr, "inc20RC1.c: setStartValues()\n");
+  fflush(stderr);
     i(counter_) = 1;
 }
 
 // called by fmiExitInitializationMode() after setting eventInfo to defaults
 // Used to set the first time event, if any.
-FMI_Export void initialize(ModelInstance* comp, fmiEventInfo* eventInfo) {
+void initialize(ModelInstance* comp, fmiEventInfo* eventInfo) {
+  fprintf(stderr, "inc20RC1.c: initialize()\n");
+  fflush(stderr);
     eventInfo->nextEventTimeDefined   = fmiTrue;
     eventInfo->nextEventTime          = 1 + comp->time;
 }
 
 // used to set the next time event, if any.
-FMI_Export void eventUpdate(ModelInstance* comp, fmiEventInfo* eventInfo) {
+void eventUpdate(ModelInstance* comp, fmiEventInfo* eventInfo) {
+  fprintf(stderr, "inc20RC1.c: eventUpdate()\n");
+  fflush(stderr);
     i(counter_) += 1;
     if (i(counter_) == 13) 
         eventInfo->terminateSimulation = fmiTrue;

@@ -34,24 +34,24 @@
 // called by fmiInstantiate
 // Set values for all variables that define a start value
 // Settings used unless changed by fmiSetX before fmiEnterInitializationMode
-FMI_Export void setStartValues(ModelInstance *comp) {
+void setStartValues(ModelInstance *comp) {
     r(output_) = 44;
     r(input_) = 11;
 }
 
 // called by fmiExitInitializationMode() after setting eventInfo to defaults
 // Used to set the first time event, if any.
-FMI_Export void initialize(ModelInstance* comp, fmiEventInfo* eventInfo) {
+void initialize(ModelInstance* comp, fmiEventInfo* eventInfo) {
 	// Calcualation is not event based, so no event time will be defined
     eventInfo->nextEventTimeDefined   = fmiFalse;
 }
 
 // used to set the next time event, if any.
-FMI_Export void eventUpdate(ModelInstance* comp, fmiEventInfo* eventInfo) {
+void eventUpdate(ModelInstance* comp, fmiEventInfo* eventInfo) {
 }
 
 // called by fmiGetReal, fmiGetContinuousStates and fmiGetDerivatives
-FMI_Export fmiReal getReal(ModelInstance* comp, fmiValueReference vr){
+fmiReal getReal(ModelInstance* comp, fmiValueReference vr){
     switch (vr)
     {
     	case output_:

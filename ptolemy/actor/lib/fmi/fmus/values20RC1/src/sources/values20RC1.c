@@ -44,7 +44,7 @@ const char* month[] = {
 // called by fmiInstantiate
 // Set values for all variables that define a start value
 // Settings used unless changed by fmiSetX before fmiEnterInitializationMode
-FMI_Export void setStartValues(ModelInstance *comp) {
+void setStartValues(ModelInstance *comp) {
     r(x_) = 1;
     i(int_in_) = 2;
     i(int_out_) = 0;
@@ -56,13 +56,13 @@ FMI_Export void setStartValues(ModelInstance *comp) {
 
 // called by fmiExitInitializationMode() after setting eventInfo to defaults
 // Used to set the first time event, if any.
-FMI_Export void initialize(ModelInstance* comp, fmiEventInfo* eventInfo) {
+void initialize(ModelInstance* comp, fmiEventInfo* eventInfo) {
     eventInfo->nextEventTimeDefined = fmiTrue;
     eventInfo->nextEventTime        = 1 + comp->time;
 }
 
 // called by fmiGetReal, fmiGetContinuousStates and fmiGetDerivatives
-FMI_Export fmiReal getReal(ModelInstance* comp, fmiValueReference vr){
+fmiReal getReal(ModelInstance* comp, fmiValueReference vr){
     switch (vr) {
         case x_     : return   r(x_);
         case der_x_ : return - r(x_);
@@ -71,7 +71,7 @@ FMI_Export fmiReal getReal(ModelInstance* comp, fmiValueReference vr){
 }
 
 // used to set the next time event, if any.
-FMI_Export void eventUpdate(ModelInstance* comp, fmiEventInfo* eventInfo) {
+void eventUpdate(ModelInstance* comp, fmiEventInfo* eventInfo) {
     eventInfo->nextEventTimeDefined = fmiTrue;
     eventInfo->nextEventTime        = 1 + comp->time;
     i(int_out_) += 1;

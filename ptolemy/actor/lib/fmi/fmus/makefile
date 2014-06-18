@@ -50,14 +50,14 @@ FMUS_CS =	$(FMUS_PRE_2_0_CS) $(FMUS_2_0_CS)
 
 # FMUs that have a modelDescription.xml file that has fmiVersion < 2.0.  Typically, this is 1.0 and 1.5.
 # 1.5 is the Ptolemy-specific prototypes.
-FMUS_PRE_2_0_ME = bouncingBallME1 dqME1 incME1 pumpConstantSpeed valuesME1 vanDerPolME1 \
-		tankOpen pumpConstantSpeed heaterFlowResistance
+FMUS_1_0_ME = bouncingBallME1 dqME1 incME1 valuesME1 vanDerPolME1 
+FMUS_PRE_2_0_ME = heaterFlowResistance pumpConstantSpeed tankOpen 
 
 # FMUs that have have fmiVersion >= 2.0
 # New Model Exchange FMUS should be added here.
 FMUS_2_0_ME = helloWorldME2
 
-FMUS_ME =	$(FMUS_PRE_2_0_ME) $(FMUS_2_0_ME)
+FMUS_ME =	$(FMUS_1_0_ME) $(FMUS_PRE_2_0_ME) $(FMUS_2_0_ME)
 
 
 # All FMUs.
@@ -148,6 +148,20 @@ update:
 		    fi ; \
 		done ; \
 	fi
+# Update the .fmu files in the ../test/auto/directory.
+update_1_0_ME:
+	@if [ "x$(FMUS_1_0_ME)" != "x" ]; then \
+		set $(FMUS_1_0_ME); \
+		for x do \
+		    if [ -w $$x ] ; then \
+			( cd $$x ; \
+			echo making update in $(ME)/$$x ; \
+			$(MAKE) $(MFLAGS) $(MAKEVARS) clean update ;\
+			) \
+		    fi ; \
+		done ; \
+	fi
+
 
 # Update fmu.mk, build_fmu and build_fmu.bat from the files in the template/ directory.
 update_files:
