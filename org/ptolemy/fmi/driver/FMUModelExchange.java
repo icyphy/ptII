@@ -318,7 +318,7 @@ public class FMUModelExchange extends FMUDriver {
 
 	double time = startTime;
 	
-	if (eventInfo20 != null && (eventInfo20.terminateSimulation != 0 || eventInfo20.terminateSimulation != 0)) {
+	if (eventInfo20 != null && eventInfo20.terminateSimulation != 0) {
 	    System.out.println("Model requested terminate at t=" + time);
 	    endTime = time;
 	}
