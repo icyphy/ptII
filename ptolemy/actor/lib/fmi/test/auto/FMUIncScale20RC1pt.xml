@@ -31,11 +31,11 @@
         </property>
     </property>
     <entity name="Test" class="ptolemy.actor.lib.Test">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{44.0, 48.603373518093, 53.6883617577105, 59.3053522746478, 65.5100042778817, 72.3638001611308, 79.9346547368199, 88.2975882093968, 97.5354695565472, 107.739837684533, 2.0, 2.2092442508224, 2.4403800798959, 2.6956978306658, 2.9777274671764, 3.2892636436878, 3.6333933971282, 4.0135267367908, 4.4334304343885, 4.897265349297, 4.0, 4.4184885016448, 4.8807601597919, 5.3913956613316, 5.9554549343529, 6.5785272873755, 7.2667867942564, 8.0270534735815, 8.866860868777, 9.7945306985939, 6.0, 6.6277327524672, 7.3211402396878, 8.0870934919974, 8.9331824015293, 9.8677909310633, 10.9001801913845, 12.0405802103723, 13.3002913031655, 14.6917960478909}">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 4.0, 4.0, 4.0, 4.0, 4.0, 4.0, 4.0, 4.0, 4.0, 4.0, 6.0, 6.0, 6.0, 6.0, 6.0, 6.0, 6.0, 6.0, 6.0, 6.0, 8.0, 8.0, 8.0, 8.0, 8.0, 8.0, 8.0, 8.0, 8.0, 8.0}">
         </property>
         <property name="tolerance" class="ptolemy.data.expr.Parameter" value="4.400000000000004E-8">
         </property>
-        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
+        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="true">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[370.0, 245.0]">
         </property>
@@ -68,7 +68,7 @@
 <xLabel></xLabel>
 <yLabel></yLabel>
 <xRange min="0.0" max="3.9000000000000004"/>
-<yRange min="2.0" max="107.73983768453303"/>
+<yRange min="0.0" max="8.0"/>
 <default marks="dots" stems="yes"/>
 </plot>?>
         </configure>
