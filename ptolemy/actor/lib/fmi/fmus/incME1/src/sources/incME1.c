@@ -30,14 +30,14 @@
 // Set values for all variables that define a start value
 // Settings used unless changed by fmiSetX before fmiInitialize
 #define setStartValues                  fmiFullName(_setStartValues)
-DllExport void setStartValues(ModelInstance *comp) {
+void setStartValues(ModelInstance *comp) {
     i(counter_) = 1;
 }
 
 // called by fmiInitialize() after setting eventInfo to defaults
 // Used to set the first time event, if any.
 #define initialize                  fmiFullName(_initialize)
-DllExport void initialize(ModelInstance* comp, fmiEventInfo* eventInfo) {
+void initialize(ModelInstance* comp, fmiEventInfo* eventInfo) {
     eventInfo->upcomingTimeEvent   = fmiTrue;
     eventInfo->nextEventTime       = 1 + comp->time;
 }
@@ -45,7 +45,7 @@ DllExport void initialize(ModelInstance* comp, fmiEventInfo* eventInfo) {
 // called by fmiEventUpdate() after setting eventInfo to defaults
 // Used to set the next time event, if any.
 #define eventUpdate                  fmiFullName(_eventUpdate)
-DllExport void eventUpdate(ModelInstance* comp, fmiEventInfo* eventInfo) {
+void eventUpdate(ModelInstance* comp, fmiEventInfo* eventInfo) {
     i(counter_) += 1;
     if (i(counter_) == 13)
         eventInfo->terminateSimulation = fmiTrue;

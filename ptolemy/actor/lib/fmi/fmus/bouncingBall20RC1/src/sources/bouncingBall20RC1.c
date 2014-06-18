@@ -49,7 +49,7 @@
 // called by fmiInstantiate
 // Set values for all variables that define a start value
 // Settings used unless changed by fmiSetX before fmiEnterInitializationMode
-FMI_Export void setStartValues(ModelInstance *comp) {
+void setStartValues(ModelInstance *comp) {
     r(h_)     =  1;
     r(v_)     =  0;
     r(der_v_) = -9.81;
@@ -59,7 +59,7 @@ FMI_Export void setStartValues(ModelInstance *comp) {
 }
 
 // called by fmiGetReal, fmiGetContinuousStates and fmiGetDerivatives
-fmiReal FMI_Export getReal(ModelInstance* comp, fmiValueReference vr){
+fmiReal getReal(ModelInstance* comp, fmiValueReference vr){
     switch (vr) {
         case h_     : return r(h_);
         case der_h_ : return r(v_);
@@ -73,14 +73,14 @@ fmiReal FMI_Export getReal(ModelInstance* comp, fmiValueReference vr){
 
 // called by fmiExitInitializationMode() after setting eventInfo to defaults
 // Used to set the first time event, if any.
-FMI_Export void initialize(ModelInstance* comp, fmiEventInfo* eventInfo) {
+void initialize(ModelInstance* comp, fmiEventInfo* eventInfo) {
     r(der_v_) = -r(g_);
 }
 
 // offset for event indicator, adds hysteresis and prevents z=0 at restart 
 #define EPS_INDICATORS 1e-14
 
-FMI_Export fmiReal getEventIndicator(ModelInstance* comp, int z) {
+fmiReal getEventIndicator(ModelInstance* comp, int z) {
     switch (z) {
         case 0 : return r(h_) + (pos(0) ? EPS_INDICATORS : -EPS_INDICATORS);
         default: return 0;
@@ -88,7 +88,7 @@ FMI_Export fmiReal getEventIndicator(ModelInstance* comp, int z) {
 }
 
 // Used to set the next time event, if any.
-FMI_Export void eventUpdate(ModelInstance* comp, fmiEventInfo* eventInfo) {
+void eventUpdate(ModelInstance* comp, fmiEventInfo* eventInfo) {
     if (pos(0)) {
         r(v_) = - r(e_) * r(v_);
     }

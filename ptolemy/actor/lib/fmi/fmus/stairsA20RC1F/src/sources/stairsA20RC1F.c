@@ -63,7 +63,7 @@ fmiBoolean atBreakpoint;
  * both have .so files that have a init_state() function, we get the right function.
  */
 #define init_state fmiFullName(init_state)
-FMI_Export void init_state(fmiComponent c) {
+void init_state(fmiComponent c) {
     level_state = STAIRCASE_HEIGHT;
     current_state = STAIR_STATE;
 }
@@ -74,7 +74,7 @@ FMI_Export void init_state(fmiComponent c) {
  *  @param c The FMU.
  */
 #define transition_function fmiFullName(transition_function)
-FMI_Export void transition_function(fmiComponent c) {
+void transition_function(fmiComponent c) {
 
     if(current_state == STAIR_STATE){
        level_state -= STAIR_HEIGHT;
@@ -91,7 +91,7 @@ FMI_Export void transition_function(fmiComponent c) {
  *  @param c The FMU.
  */
 #define output_function fmiFullName(output_function)
-FMI_Export void output_function(fmiComponent c) {
+void output_function(fmiComponent c) {
     ModelInstance* comp = (ModelInstance *) c;
     r(level_) = level_state;
 }
@@ -101,13 +101,13 @@ FMI_Export void output_function(fmiComponent c) {
 // called by fmiInstantiate
 // Set values for all variables that define a start value
 // Settings used unless changed by fmiSetX before fmiEnterInitializationMode
-FMI_Export void setStartValues(ModelInstance *comp) {
+void setStartValues(ModelInstance *comp) {
 
 }
 
 // called by fmiExitInitializationMode() after setting eventInfo to defaults
 // Used to set the first time event, if any.
-FMI_Export void initialize(ModelInstance* c, fmiEventInfo* eventInfo) {
+void initialize(ModelInstance* c, fmiEventInfo* eventInfo) {
     ModelInstance* comp = (ModelInstance *) c;
 
     eventInfo->nextEventTimeDefined   = fmiTrue;
@@ -128,7 +128,7 @@ FMI_Export void initialize(ModelInstance* c, fmiEventInfo* eventInfo) {
 }
 
 // used to set the next time event, if any.
-FMI_Export void eventUpdate(ModelInstance* comp, fmiEventInfo* eventInfo) {
+void eventUpdate(ModelInstance* comp, fmiEventInfo* eventInfo) {
 
     // If current time is greater than period * (value + 1), then it is
     // time for another increment.
@@ -177,7 +177,7 @@ FMI_Export fmiStatus  fmiGetMaxStepSize(fmiComponent c, fmiReal *maxStepSize) {
  *  @param value The array into which to put the results.
  *  @return fmiError if a value reference is out of range, otherwise fmiOK.
  */
-FMI_Export fmiReal getReal(fmiComponent c, const fmiValueReference vr) {
+fmiReal getReal(fmiComponent c, const fmiValueReference vr) {
     ModelInstance* comp = (ModelInstance *) c;
 
     output_function(c);
