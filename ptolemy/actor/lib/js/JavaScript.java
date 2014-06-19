@@ -622,8 +622,8 @@ public class JavaScript extends TypedAtomicActor {
 				Object jsObject = Context.javaToJS(this, _scope);
 				_scope.put("actor", _scope, jsObject);
 			}
-		} catch (Exception e) {
-			throw new IllegalActionException(this, e, "Failed to create built-in JavaScript methods.");
+		} catch (Throwable throwabe) {
+			throw new IllegalActionException(this, throwable, "Failed to create built-in JavaScript methods.");
 		}
     }
     

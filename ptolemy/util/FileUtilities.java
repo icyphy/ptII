@@ -612,7 +612,7 @@ public class FileUtilities {
                 } else {
                     return new BufferedReader(inputStreamReader);
                 }
-            } catch (Exception ex2) {
+            } catch (Throwable throwable2) {
                 try {
                     if (inputStreamReader != null) {
                         inputStreamReader.close();
