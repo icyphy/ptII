@@ -223,7 +223,7 @@ public class TclTests {
         }
         // Keep track of the number of Tcl files evaluated
         // If 1 or more files were evaluated, then we call doneTests.
-        _tclFileCount++;
+        TclTests._incrementTclFileCount();
 
         System.out.println(tclFile);
         System.out.flush();
@@ -277,13 +277,33 @@ public class TclTests {
         // We only report if the number of test failures has increased.
         // this prevents us from reporting cascading errors if the
         // first .tcl file has a failure.
-        _failedTestCount = _newInstanceTclIntegerMethod.invoke(null,
-                new Object[] { Integer.valueOf(newFailed) });
+        TclTests._setFailedTestCount(_newInstanceTclIntegerMethod.invoke(null,
+                        new Object[] { Integer.valueOf(newFailed) }));
 
         // If the Tcl FAILED global variable is not equal to the
         // previous number of failures, then add a failure.
         assertEquals("Number of failed tests is has increased.", lastFailed,
                 newFailed);
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected methods                 ////
+
+    /** Increment the count of the number of tcl files visited.
+     * Keep track of the number of Tcl files evaluated
+     * If 1 or more files were evaluated, then we call doneTests.
+     */   
+    protected static void _incrementTclFileCount() {
+        // To avoid FindBugs: Write to static field from instance method
+        _tclFileCount++;
+    }
+
+    /** Set the cached vaue of the count of the number of failed tests.
+     *  @param count The object representing the number of failed tests.
+     */   
+    protected static void _setFailedTestCount(Object count) {
+        // To avoid FindBugs: Write to static field from instance method
+        _failedTestCount = count;
     }
 
     ///////////////////////////////////////////////////////////////////

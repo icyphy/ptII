@@ -172,7 +172,7 @@ public abstract class FMUDriver {
      *  @exception Exception If there is a problem parsing the .fmu file or invoking
      *  the methods in the shared library.
      */
-    protected static void _processArgs(String[] args) throws Exception {
+    protected void _processArgs(String[] args) throws Exception {
         _fmuFileName = args[0];
         if (args.length >= 2) {
             _endTime = Double.valueOf(args[1]);
@@ -216,7 +216,7 @@ public abstract class FMUDriver {
 
     /** The comma separated value separator.  The initial value is
      *  ','.  If the separator is ',', columns are separated by ','
-     *  and '.' is used for floating-point numbers.  Otherwise, the
+     *     *  and '.' is used for floating-point numbers.  Otherwise, the
      *  given separator (e.g. ';' or '\t') is to separate columns, and
      *  ',' is used as decimal dot in floating-point numbers.
      */
@@ -230,16 +230,15 @@ public abstract class FMUDriver {
     /** The end time, in seconds.
      *  The initial default is 1.0.
      */
-    static double _endTime = 1.0;
+    double _endTime = 1.0;
 
     /** The version number of the FMI standard. */
-    static double _fmiVersion = 0.0;
-
+    double _fmiVersion = 0.0;
 
     /** The name of the .fmu file.
      *  The initial default is the empty string.
      */
-    static String _fmuFileName = "";
+    String _fmuFileName = "";
 
     /** The modelIdentifier from modelDescription.xml. */
     String _modelIdentifier;
@@ -250,10 +249,10 @@ public abstract class FMUDriver {
     /** The output file name.
      *  The initial value is "results.csv".
      */
-    static String _outputFileName = "results.csv";
+    String _outputFileName = "results.csv";
 
     /** The step size, in seconds.
      *  The initial default is 0.1 seconds.
      */
-    static double _stepSize = 0.1;
+    double _stepSize = 0.1;
 }

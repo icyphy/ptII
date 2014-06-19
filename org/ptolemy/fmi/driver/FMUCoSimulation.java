@@ -129,9 +129,10 @@ public class FMUCoSimulation extends FMUDriver {
      *  the methods in the shared library.
      */
     public static void main(String[] args) throws Exception {
-        FMUDriver._processArgs(args);
-        new FMUCoSimulation().simulate(_fmuFileName, _endTime, _stepSize,
-                _enableLogging, _csvSeparator, _outputFileName);
+        FMUCoSimulation fmuCoSimulation = new FMUCoSimulation();
+        fmuCoSimulation._processArgs(args);
+        fmuCoSimulation.simulate(fmuCoSimulation._fmuFileName, fmuCoSimulation._endTime, fmuCoSimulation._stepSize,
+                fmuCoSimulation._enableLogging, fmuCoSimulation._csvSeparator, fmuCoSimulation._outputFileName);
     }
 
     /** Perform co-simulation using the named Functional Mock-up Unit (FMU) file.

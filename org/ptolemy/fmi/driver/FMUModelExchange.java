@@ -131,9 +131,10 @@ public class FMUModelExchange extends FMUDriver {
      *  the methods in the shared library.
      */
     public static void main(String[] args) throws Exception {
-        FMUDriver._processArgs(args);
-        new FMUModelExchange().simulate(_fmuFileName, _endTime, _stepSize,
-                _enableLogging, _csvSeparator, _outputFileName);
+        FMUModelExchange fmuModelExchange = new FMUModelExchange();
+        fmuModelExchange._processArgs(args);
+        fmuModelExchange.simulate(fmuModelExchange._fmuFileName, fmuModelExchange._endTime, fmuModelExchange._stepSize,
+                fmuModelExchange._enableLogging, fmuModelExchange._csvSeparator, fmuModelExchange._outputFileName);
     }
 
     /** Perform model exchange using the named Functional Mock-up Unit (FMU) file.

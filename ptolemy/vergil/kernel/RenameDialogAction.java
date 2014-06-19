@@ -64,6 +64,8 @@ public class RenameDialogAction extends FigureAction {
      *            The parent TableauFrame
      */
     public RenameDialogAction(TableauFrame parent) {
+        // FIXME: This constructor is probably not used, AttributeController
+        // calls the other constructor.
         super("");
         if (parent == null) {
             IllegalArgumentException iae = new IllegalArgumentException(
@@ -82,11 +84,6 @@ public class RenameDialogAction extends FigureAction {
         //putValue(GUIUtilities.ACCELERATOR_KEY, ACCELERATOR_KEY);
         putValue(GUIUtilities.ACCELERATOR_KEY,
                 KeyStroke.getKeyStroke(KeyEvent.VK_F2, 0));
-
-
-        DISPLAY_NAME = "Configure";
-        TOOLTIP = "Change Settings for Actor";
-
     }
 
     /** Construct a rename dialog action with the specified name,
@@ -128,8 +125,8 @@ public class RenameDialogAction extends FigureAction {
     }
 
     //private TableauFrame parent;
-    private static String DISPLAY_NAME = null;
-    private static String TOOLTIP = null;
+    private static String DISPLAY_NAME = "Configure";
+    private static String TOOLTIP = "Change Settings for Actor";
     //private static ImageIcon LARGE_ICON = null;
     //private static KeyStroke ACCELERATOR_KEY = null;
 }

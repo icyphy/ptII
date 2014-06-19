@@ -1144,7 +1144,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
             int returnVal = ptFileChooser.showDialog(this, "Import");
 
             if (returnVal == JFileChooser.APPROVE_OPTION) {
-                _directory = ptFileChooser.getCurrentDirectory();
+                Top.setDirectory(ptFileChooser.getCurrentDirectory());
                 NamedObj model = null;
                 File file = null;
                 try {

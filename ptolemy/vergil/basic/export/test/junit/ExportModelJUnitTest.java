@@ -109,9 +109,9 @@ public class ExportModelJUnitTest {
         boolean run = _runDemo(modelPath);
         long timeOut = _timeOut(modelPath);
 
-        _count++;
+        ExportModelJUnitTest._incrementCount();
         Date date = new Date();
-        System.out.println("####### " + _count + " " + date
+        System.out.println("####### " + ExportModelJUnitTest._getCount() + " " + date
                 + " $PTII/bin/ptinvoke "
                 + "ptolemy.vergil.basic.export.ExportModel -force htm "
                 + (run ? "-run " : " ")
@@ -208,6 +208,21 @@ public class ExportModelJUnitTest {
             data[i++][0] = demo;
         }
         return data;
+    }
+
+    /** Get the number of times RunExportModel has been invoked.
+     *  @return the number of times RunExportModel has been invoked.
+     */   
+    protected static int _getCount() {
+        // To avoid FindBugs: Write to static field from instance method.
+        return _count++;
+    }
+
+    /** Increment the count of the number of times RunExportModel has been invoked.
+     */
+    protected static void _incrementCount() {
+        // To avoid FindBugs: Write to static field from instance method.
+        _count++;
     }
 
     /** Return true if we should open the composites.

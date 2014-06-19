@@ -216,7 +216,6 @@ public class StreamExec implements ExecuteCommands {
      *  @see #getPatternLog()
      */
     public void setPattern(String pattern) {
-        _eol = StringUtilities.getProperty("line.separator");
         _pattern = Pattern.compile(pattern);
         _patternOutLog = new StringBuffer();
         _patternErrorLog = new StringBuffer();
@@ -506,7 +505,11 @@ public class StreamExec implements ExecuteCommands {
     private final boolean _debug = false;
 
     /** End of line character. */
-    private static String _eol = null;
+    private static final String _eol;
+
+    static {
+        _eol = StringUtilities.getProperty("line.separator");
+    }
 
     /** The environment, which is an array of Strings of the form
      *  <code>name=value</code>.  If this variable is null, then
