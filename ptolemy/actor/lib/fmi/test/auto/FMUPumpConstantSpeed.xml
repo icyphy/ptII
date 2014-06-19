@@ -21,7 +21,7 @@
     <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{320.58201795051065, 267.4674722990637}">
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="The source code for this FMU is in&#10;$PTII/ptolemy/actor/lib/fmi/fmus/pumpConstantSpeed.&#10;To build the FMU file, do this:&#10;&#10;&gt; cd $PTII/ptolemy/actor/lib/fmi/fmus/pumpConstantSpeed&#10;&gt; make&#10;&#10;The resulting .fmu file for model exchange will&#10;be in $PTII/ptolemy/actor/lib/fmi/fmus/pumpConstantSpeed.fmu&#10;&#10;To copy the file to this directory, type&#10;&gt; cd $PTII/ptolemy/actor/lib/fmi/fmus/pumpConstantSpeed&#10;&gt; make update">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="The source code for this FMU is in&#10;$CLASSPATH/ptolemy/actor/lib/fmi/fmus/pumpConstantSpeed.&#10;To build the FMU file, do this:&#10;&#10;&gt; cd $CLASSPATH/ptolemy/actor/lib/fmi/fmus/pumpConstantSpeed&#10;&gt; make&#10;&#10;The resulting .fmu file for model exchange will&#10;be in $CLASSPATH/ptolemy/actor/lib/fmi/fmus/pumpConstantSpeed.fmu&#10;&#10;To copy the file to this directory, type&#10;&gt; cd $CLASSPATH/ptolemy/actor/lib/fmi/fmus/pumpConstantSpeed&#10;&gt; make update">
         </property>
         <property name="_location" class="ptolemy.kernel.util.RelativeLocation" value="{-10.0, 50.0}">
         </property>
@@ -52,7 +52,7 @@
         </property>
     </entity>
     <entity name="pumpConstantSpeed" class="ptolemy.actor.lib.fmi.FMUImport">
-        <property name="fmuFile" class="ptolemy.data.expr.FileParameter" value="$PTII/ptolemy/actor/lib/fmi/test/auto/pumpConstantSpeed.fmu">
+        <property name="fmuFile" class="ptolemy.data.expr.FileParameter" value="$CLASSPATH/ptolemy/actor/lib/fmi/test/auto/pumpConstantSpeed.fmu">
         </property>
         <property name="modelExchange" class="ptolemy.data.expr.Parameter" value="true">
         </property>

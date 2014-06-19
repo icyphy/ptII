@@ -13,7 +13,7 @@
     <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{440.17089843750006, 337.7819997151693}">
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="The source code for this FMU is in&#10;$PTII/ptolemy/actor/lib/fmi/fmus/tankOpen.&#10;To build the FMU file, do this:&#10;&#10;&gt; cd $PTII/ptolemy/actor/lib/fmi/fmus/tankOpen&#10;&gt; make&#10;&#10;The resulting .fmu file for model exchange will&#10;be in $PTII/ptolemy/actor/lib/fmi/fmus/tankOpen.fmu&#10;&#10;To copy the file to this directory, type&#10;&gt; cd $PTII/ptolemy/actor/lib/fmi/fmus/tankOpen&#10;&gt; make update&#10;">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="The source code for this FMU is in&#10;$CLASSPATH/ptolemy/actor/lib/fmi/fmus/tankOpen.&#10;To build the FMU file, do this:&#10;&#10;&gt; cd $CLASSPATH/ptolemy/actor/lib/fmi/fmus/tankOpen&#10;&gt; make&#10;&#10;The resulting .fmu file for model exchange will&#10;be in $CLASSPATH/ptolemy/actor/lib/fmi/fmus/tankOpen.fmu&#10;&#10;To copy the file to this directory, type&#10;&gt; cd $CLASSPATH/ptolemy/actor/lib/fmi/fmus/tankOpen&#10;&gt; make update&#10;">
         </property>
         <property name="_location" class="ptolemy.kernel.util.RelativeLocation" value="{310.0, -15.0}">
         </property>

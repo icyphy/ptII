@@ -25,7 +25,7 @@
         </property>
     </property>
     <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="The source code for this FMU is in&#10;$PTII/vendors/fmusdk/src/models/stepCounter&#10;To build the FMU file, do this:&#10;&#10;&gt; cd $PTII/vendors/fmusdk/src/models&#10;&gt; make stepCounter&#10;&#10;The resulting .fmu file will&#10;be in $PTII/vendors/fmusdk/fmu/cs&#10;which then needs to be copied to the test directory&#10;where this model is stored.">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="The source code for this FMU is in&#10;$CLASSPATH/vendors/fmusdk/src/models/stepCounter&#10;To build the FMU file, do this:&#10;&#10;&gt; cd $CLASSPATH/vendors/fmusdk/src/models&#10;&gt; make stepCounter&#10;&#10;The resulting .fmu file will&#10;be in $CLASSPATH/vendors/fmusdk/fmu/cs&#10;which then needs to be copied to the test directory&#10;where this model is stored.">
         </property>
         <property name="_location" class="ptolemy.kernel.util.RelativeLocation" value="[-10.0, 155.0]">
         </property>

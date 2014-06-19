@@ -21,7 +21,7 @@
     <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{320.58201795051053, 267.4674722990637}">
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="The source code for this FMU is in&#10;$PTII/ptolemy/actor/lib/fmi/fmus/heaterFlowResistance.&#10;To build the FMU file, do this:&#10;&#10;&gt; cd $PTII/ptolemy/actor/lib/fmi/fmus/heaterFlowResistance&#10;&gt; make&#10;&#10;The resulting .fmu file for model exchange will&#10;be in $PTII/ptolemy/actor/lib/fmi/fmus/heaterFlowResistance.fmu&#10;&#10;To copy the file to this directory, type&#10;&gt; cd $PTII/ptolemy/actor/lib/fmi/fmus/heaterFlowResistance&#10;&gt; make update&#10; ">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="The source code for this FMU is in&#10;$CLASSPATH/ptolemy/actor/lib/fmi/fmus/heaterFlowResistance.&#10;To build the FMU file, do this:&#10;&#10;&gt; cd $CLASSPATH/ptolemy/actor/lib/fmi/fmus/heaterFlowResistance&#10;&gt; make&#10;&#10;The resulting .fmu file for model exchange will&#10;be in $CLASSPATH/ptolemy/actor/lib/fmi/fmus/heaterFlowResistance.fmu&#10;&#10;To copy the file to this directory, type&#10;&gt; cd $CLASSPATH/ptolemy/actor/lib/fmi/fmus/heaterFlowResistance&#10;&gt; make update&#10; ">
         </property>
         <property name="_location" class="ptolemy.kernel.util.RelativeLocation" value="[115.0, -5.0]">
         </property>
@@ -83,7 +83,7 @@
         </property>
     </entity>
     <entity name="heaterFlowResistance" class="ptolemy.actor.lib.fmi.FMUImport">
-        <property name="fmuFile" class="ptolemy.data.expr.FileParameter" value="$PTII/ptolemy/actor/lib/fmi/test/auto/heaterFlowResistance.fmu">
+        <property name="fmuFile" class="ptolemy.data.expr.FileParameter" value="$CLASSPATH/ptolemy/actor/lib/fmi/test/auto/heaterFlowResistance.fmu">
         </property>
         <property name="modelExchange" class="ptolemy.data.expr.Parameter" value="true">
         </property>

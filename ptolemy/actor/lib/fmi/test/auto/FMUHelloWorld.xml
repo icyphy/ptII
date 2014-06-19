@@ -21,7 +21,7 @@
     <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{340.0, 252.0}">
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="The source code for this FMU is in&#10;$PTII/vendors/fmusdk/src/models/helloWorld.&#10;To build the FMU file, do this:&#10;&#10;&gt; cd $PTII/vendors/fmusdk/src/models&#10;&gt; make&#10;&#10;The resulting .fmu file for cosimulation will&#10;be in $PTII/vendors/fmusdk/fmu/cs.&#10;That file is copied into this directory to make&#10;this demo independent of the $PTII/vendors&#10;directory. This FMU actor refers to the local&#10;copy of the .fmu file.">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="The source code for this FMU is in&#10;$CLASSPATH/vendors/fmusdk/src/models/helloWorld.&#10;To build the FMU file, do this:&#10;&#10;&gt; cd $CLASSPATH/vendors/fmusdk/src/models&#10;&gt; make&#10;&#10;The resulting .fmu file for cosimulation will&#10;be in $CLASSPATH/vendors/fmusdk/fmu/cs.&#10;That file is copied into this directory to make&#10;this demo independent of the $CLASSPATH/vendors&#10;directory. This FMU actor refers to the local&#10;copy of the .fmu file.">
         </property>
         <property name="_location" class="ptolemy.kernel.util.RelativeLocation" value="[-165.0, 70.0]">
             <property name="relativeTo" class="ptolemy.kernel.util.StringAttribute" value="helloWorld">

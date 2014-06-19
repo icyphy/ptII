@@ -43,7 +43,7 @@
         </property>
     </property>
     <entity name="levelStairs" class="ptolemy.actor.lib.fmi.FMUImport">
-        <property name="fmuFile" class="ptolemy.data.expr.FileParameter" value="$PTII/ptolemy/actor/lib/fmi/test/auto/levelStairs.fmu">
+        <property name="fmuFile" class="ptolemy.data.expr.FileParameter" value="$CLASSPATH/ptolemy/actor/lib/fmi/test/auto/levelStairs.fmu">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[195.0, 235.0]">
         </property>

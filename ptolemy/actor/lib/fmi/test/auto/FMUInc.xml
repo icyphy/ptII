@@ -21,7 +21,7 @@
     <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 239.0}">
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This FMU comes from the version 1.0 SDK&#10;(see $PTII/vendors/fmusdk/src/models/inc).&#10;It is a counter that is supposed to increment&#10;its output by one every one time unit.">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This FMU comes from the version 1.0 SDK&#10;(see $CLASSPATH/vendors/fmusdk/src/models/inc).&#10;It is a counter that is supposed to increment&#10;its output by one every one time unit.">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[45.0, 75.0]">
         </property>

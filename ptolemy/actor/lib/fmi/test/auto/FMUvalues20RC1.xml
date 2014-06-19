@@ -52,7 +52,7 @@
         </property>
     </entity>
     <entity name="values20RC" class="ptolemy.actor.lib.fmi.FMUImport">
-        <property name="fmuFile" class="ptolemy.data.expr.FileParameter" value="$PTII/ptolemy/actor/lib/fmi/test/auto/values20RC1.fmu">
+        <property name="fmuFile" class="ptolemy.data.expr.FileParameter" value="$CLASSPATH/ptolemy/actor/lib/fmi/test/auto/values20RC1.fmu">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="{365.0, 195.0}">
         </property>
