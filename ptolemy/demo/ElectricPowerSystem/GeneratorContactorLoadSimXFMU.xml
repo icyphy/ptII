@@ -97,7 +97,7 @@
         </property>
     </port>
     <entity name="Gen_Ctrl_Load" class="ptolemy.actor.lib.fmi.FMUImport">
-        <property name="fmuFile" class="ptolemy.data.expr.FileParameter" value="$PTII/ptolemy/demo/ElectricPowerSystem/Gen_Ctrl_Load.fmu">
+        <property name="fmuFile" class="ptolemy.data.expr.FileParameter" value="$CLASSPATH/ptolemy/demo/ElectricPowerSystem/Gen_Ctrl_Load.fmu">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[325.0, 215.0]">
         </property>

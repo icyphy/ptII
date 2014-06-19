@@ -123,7 +123,7 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[440.0, 365.0]">
         </property>
-        <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="$PTII/ptolemy/demo/ElectricPowerSystem/GeneratorRegulatorProtectorSimXRhapsodyFMU.xml">
+        <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="$CLASSPATH/ptolemy/demo/ElectricPowerSystem/GeneratorRegulatorProtectorSimXRhapsodyFMU.xml">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
             <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -823,7 +823,7 @@
         </property>
     </entity>
     <entity name="onOffSupervisor" class="ptolemy.actor.lib.fmi.FMUImport">
-        <property name="fmuFile" class="ptolemy.data.expr.FileParameter" value="$PTII\ptolemy\demo\ElectricPowerSystem\onOffSupervisorSimX.fmu">
+        <property name="fmuFile" class="ptolemy.data.expr.FileParameter" value="$CLASSPATH\ptolemy\demo\ElectricPowerSystem\onOffSupervisorSimX.fmu">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="{235.0, 230.0}">
         </property>
