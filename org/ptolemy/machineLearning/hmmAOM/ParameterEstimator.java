@@ -136,7 +136,7 @@ public abstract class ParameterEstimator extends AtomicCommunicationAspect {
         cardinality.setExpression("SOUTH");
 
         serviceTimeMultiplicationFactor = new Parameter(this, "serviceTimeMultiplicationFactor");
-        serviceTimeMultiplicationFactor.setTypeEquals(BaseType.Double);
+        serviceTimeMultiplicationFactor.setTypeEquals(BaseType.DOUBLE);
         serviceTimeMultiplicationFactor.setExpression("false");
 
         randomizeGuessVectors = new Parameter(this, "randomizeGuessVectors");
