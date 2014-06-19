@@ -27,6 +27,7 @@
     <include name="lbnl/demo/demo.jar" />
     <include name="lbnl/lbnl.jar" />
     <include name="lib/diva.jar" />
+    <include name="lib/ptliblicenses.jar" />
     <include name="org/json/json.jar" />
     <include name="org/mlc/mlc.jar" />
     <include name="org/ptolemy/fmi/fmi.jar" />
@@ -259,6 +260,15 @@
 	<include name="diva/resource/*.dtd"/>
 	<include name="diva/resource/*.gif"/>
 	<include name="diva/resource/*.xml"/>
+      </fileset>
+    </jar>
+
+    <!-- lib/ptliblicenses.jar -->
+    <jar defaultexcludes="yes"
+	 destfile="${basedir}/lib/ptliblicenses.jar"
+	 >
+      <fileset dir="${basedir}">
+	<include name="lib/*.htm*"/>
       </fileset>
     </jar>
 
@@ -1210,7 +1220,7 @@
 
     <!-- doc/papers/papers.jar -->
     <jar defaultexcludes="yes"
-	 destfile="${basedir}/papers/papers.jar"
+	 destfile="${basedir}/doc/papers/papers.jar"
 	 >
       <fileset dir="${basedir}">
 	<include name="doc/papers/y11/modularSemantics/*.xml"/>
@@ -1712,6 +1722,9 @@
 	 >
       <fileset dir="${basedir}">
 	<include name="ptolemy/domains/*.xml"/>
+      </fileset>
+      <fileset dir="${basedir}">
+	<include name="ptolemy/domains/algebraic/kernel/*.class"/>
       </fileset>
       <fileset dir="${basedir}">
 	<include name="ptolemy/domains/ca/kernel/*.class"/>
@@ -3975,6 +3988,9 @@
       </fileset>
       <fileset dir="${basedir}">
 	<include name="ptolemy/domains/continuous/demo/Derivative/*.xml"/>
+      </fileset>
+      <fileset dir="${basedir}">
+	<include name="ptolemy/domains/continuous/demo/Friction/*.xml"/>
       </fileset>
       <fileset dir="${basedir}">
 	<include name="ptolemy/domains/continuous/demo/FurutaPendulum/*.xml"/>
