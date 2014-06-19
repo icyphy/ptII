@@ -350,10 +350,37 @@ public class JavaScript extends TypedAtomicActor {
         JavaScript newObject = (JavaScript) super.clone(workspace);
         newObject._inputTokens = new HashMap<IOPort, HashMap<Integer, Token>>();
         newObject._outputTokens = null;
+        
+        newObject._pendingTimeoutFunctions = null;
+        newObject._pendingTimeoutIDs = null;
+
         return newObject;
     }
 
-    /** Send the current value of the state of this actor to the output.
+    /** Execute the script, handling inputs and producing outputs as described.
+     *  <ol>
+     *  <li>
+     *  First, send any outputs that have been queued to be sent by calling send()
+     *  from outside any firing of this JavaScript actor.
+     *  <li> 
+     *  Next, read all inputs, making a record of which ones have new tokens.
+     *  <li>
+     *  If there is a new token on the scriptIn input port, then replace the current
+     *  script with the one specified on that port. Any previously defined methods
+     *  such as fire() will be replaced or deleted (if the new script does not have one).
+     *  If the new script has an initialize() method, then invoke that method.
+     *  <li>
+     *  Next, if the current script has a fire() method, invoke that method.
+     *  <li>
+     *  Next, if any input has a new token and there is a method bound to that port
+     *  via the setInputHandler() method, then invoke that method.
+     *  Such methods will be invoked in the order in which handleInput() was invoked.
+     *  <li>
+     *  Next, if setTimeout() has been called, and the current time of the director
+     *  matches the time specified in setTimeout(), then invoke the function specified
+     *  in setTimeout().
+     *  </ul>
+     *  <p>
      *  @exception IllegalActionException If calling send() or super.fire()
      *  throws it.
      */
@@ -361,22 +388,36 @@ public class JavaScript extends TypedAtomicActor {
     public void fire() throws IllegalActionException {
         super.fire();
         
-        // Update any port parameters that have been added.
-        for (PortParameter portParameter : attributeList(PortParameter.class)) {
-        	portParameter.update();
-        }
-        
-        // Invoke pending callbacks.
-        // FIXME: Should this be happening before reading inputs below?
-        if(_pendingCallbacks != null) {
-        	while (!_pendingCallbacks.isEmpty()) {
-        		// Remove the callback functions from the pending list as we go in
-        		// case it throws an exception (so we don't get stuck repeatedly
-        		// invoking it).
-        		Function function = _pendingCallbacks.remove(0);
-				// FIXME: How to pass in parameters?
-				function.call(_context, _scope, function, _EMPTY_ARGS);
+        // If there is an input at scriptIn, evaluate that script.
+        try {
+        	if (scriptIn.getWidth() > 0 && scriptIn.hasToken(0)) {
+        		// A script is provided as input.
+        		String scriptValue = ((StringToken)scriptIn.get(0)).stringValue();
+        		
+        		// FIXME: Need to delete any side effects from previously read scripts,
+        		// such as function definitions and bindings. Timeouts?
+        		// See the initialize() method.
+        		
+        		// Compile the script.
+                _compiledScript = _context.compileString(scriptValue, getName(), 1, null);
+                
+        		// Execute the script (Note that the script defines functions and variables;
+                // the functions are not invoked here. Just defined.)
+        		_compiledScript.exec(Context.getCurrentContext(), _scope);
+        		
+        		// Execute the initialize() function, if it exists.
+        		Object initializeFunction = _scope.get("initialize", _scope);
+        		if (initializeFunction instanceof Function) {
+        			((Function)initializeFunction).call(Context.getCurrentContext(), _scope, _global, null);
+        		}
         	}
+        } catch (WrappedException ex) {
+        	Throwable original = ex.getWrappedException();
+        	throw new IllegalActionException(this, ex,
+        			"Exception during executing script at line "
+        			+ ex.lineNumber()
+        			+ ".\n"
+        			+ original.getMessage());
         }
         
 	    // Send out buffered outputs, if there are any.
@@ -398,7 +439,13 @@ public class JavaScript extends TypedAtomicActor {
         		_outputTokens.clear();
         	}
         }
-	    
+
+        // Update any port parameters that have been added.
+        for (PortParameter portParameter : attributeList(PortParameter.class)) {
+        	// FIXME: Record which ones have new tokens.
+        	portParameter.update();
+        }
+        
 	    // Read all the available inputs.
 	    _inputTokens.clear();
 	    for (IOPort input : this.inputPortList()) {
@@ -413,45 +460,47 @@ public class JavaScript extends TypedAtomicActor {
 	        HashMap<Integer, Token> tokens = new HashMap<Integer, Token>();
 	        for (int i = 0; i < input.getWidth(); i++) {
 	        	if (input.hasToken(i)) {
+	        		// FIXME: Record that there is a token.
 	        		tokens.put(i, input.get(i));
 	        	}
 	        }
 	        _inputTokens.put(input, tokens);
 	    }
                 
-        // If there is an input at scriptIn, evaluate that script instead.
         try {
-        	if (scriptIn.getWidth() > 0 && scriptIn.hasToken(0)) {
-        		// A script is provided as input.
-        		String scriptValue = ((StringToken)scriptIn.get(0)).stringValue();
-        		
-        		// Compile the script.
-                _compiledScript = _context.compileString(scriptValue, getName(), 1, null);
-                
-        		// Execute the script (Note that the script defines functions and variables;
-                // the functions are not invoked here. Just defined.)
-        		_compiledScript.exec(Context.getCurrentContext(), _scope);
-        		
-        		// Execute the initialize() function, if it exists.
-        		Object initializeFunction = _scope.get("initialize", _scope);
-        		if (initializeFunction instanceof Function) {
-        			((Function)initializeFunction).call(Context.getCurrentContext(), _scope, _global, null);
-        		}
-        	}
-        	// If there is a fire() function, invoke it.
-        	Object fireFunction = _scope.get("fire", _scope);
-        	if (fireFunction instanceof Function) {        	    
-        	    // Mark that we are in the fire() method, enabling outputs to be
-        	    // sent immediately.
-        	    // Synchronize to ensure that this function invocation is atomic
-        	    // w.r.t. to any callbacks.
-				synchronized(JavaScript.this) {
-					_inFire = true;
-					try {
+    	    // Mark that we are in the fire() method, enabling outputs to be
+    	    // sent immediately.
+    	    // Synchronize to ensure that this function invocation is atomic
+    	    // w.r.t. to any callbacks.
+			synchronized(JavaScript.this) {
+				_inFire = true;
+				try {
+					// If there is a fire() function, invoke it.
+					Object fireFunction = _scope.get("fire", _scope);
+					if (fireFunction instanceof Function) {        	    
 						((Function)fireFunction).call(Context.getCurrentContext(), _scope, _global, _EMPTY_ARGS);
-					} finally {
-						_inFire = false;
 					}
+					
+					// FIXME: If setInputHandler() has been called, invoke the appropriate methods.
+					
+					// Handle timeout requests that match the current time.
+					if (_pendingTimeoutIDs != null) {
+						// If current time matches pending timeout requests, invoke them.
+						Time currentTime = getDirector().getModelTime();
+						List<Integer> ids = _pendingTimeoutIDs.get(currentTime);
+						if (ids != null) {
+							for (Integer id : ids) {
+								Function function = _pendingTimeoutFunctions.get(id);
+								if (function != null) {
+									((Function)function).call(Context.getCurrentContext(), _scope, _global, _EMPTY_ARGS);
+									_pendingTimeoutFunctions.remove(id);
+								}
+							}
+							_pendingTimeoutIDs.remove(currentTime);
+						}
+					}
+				} finally {
+					_inFire = false;
 				}
         	}
         } catch (WrappedException ex) {
@@ -472,6 +521,9 @@ public class JavaScript extends TypedAtomicActor {
     public void initialize() throws IllegalActionException {
         super.initialize();
         _executing = true;
+        
+        _pendingTimeoutFunctions = null;
+        _pendingTimeoutIDs = null;
 
         // Expose the ports and parameters by name as JavaScript variables.
         for (TypedIOPort port : portList()) {
@@ -723,14 +775,12 @@ public class JavaScript extends TypedAtomicActor {
      *  spontaneously produce outputs.
      */
     private HashMap<IOPort, HashMap<Integer, List<Token>>> _outputTokens;
-    
-    /** List of pending callback functions to be invoked when the
-     *  invocation of fire() occurs.
-     */
-    private List<Function> _pendingCallbacks;
-    
-    /** Set of pending timeouts. */
-    private Map<Integer,Thread> _pendingTimeouts;
+        
+    /** Map from timeout ID to pending timeout functions. */
+    private Map<Integer,Function> _pendingTimeoutFunctions;
+
+    /** Map from timeout time to pending timeout IDs. */
+    private Map<Time,List<Integer>> _pendingTimeoutIDs;
 
     /** Count to give a unique handle to pending timeouts. */
     private int _timeoutCount = 0;
@@ -787,10 +837,10 @@ public class JavaScript extends TypedAtomicActor {
     	 *  @see #setTimeout(Function, Integer)
     	 */
     	public void clearTimeout(Integer handle) {
-    		synchronized(JavaScript.this) {
-    			Thread timeoutThread = _pendingTimeouts.get(handle);
-    			timeoutThread.interrupt();
-    		}
+    		// NOTE: The handle for this timeout remains in the
+    		// _pendingTimeoutIDs map, but it is more efficient to remove
+    		// it from that map when the firing occurs.
+    		_pendingTimeoutFunctions.remove(handle);
     	}
 
     	/** Throw an IllegalActionException with the specified message.
@@ -882,7 +932,7 @@ public class JavaScript extends TypedAtomicActor {
 		 *  text to send, and a timeout of one second.
 		 *  @param url The URL to which to make the request.
 		 *  @param method One of OPTIONS, GET, HEAD, POST, PUT, DELETE, TRACE, or CONNECT.
-		 *  @param properties The HTTP propertie to set for the connection, or null to not
+		 *  @param properties The HTTP property to set for the connection, or null to not
 		 *   give any. For example: ['Content-Type':'application/x-www-form-urlencoded']
 		 *  @param body The body of the request, or null if none.
 		 *  @param timeout The timeout for a connection or a read, in milliseconds, or 0 to have no timeout.
@@ -973,6 +1023,16 @@ public class JavaScript extends TypedAtomicActor {
 			return InetAddress.getLocalHost().getHostAddress();
 		}
 		
+		/** Open a WebSocket connection.
+		 * 
+		 *  This method uses Enno Boland's Java implementation of a Socket.IO client,
+		 *  found at <a href="https://github.com/Gottox/socket.io-java-client">https://github.com/Gottox/socket.io-java-client</a>.
+		 * 
+		 * @param url
+		 * @param query
+		 * @param portWrapper
+		 * @throws MalformedURLException
+		 */
 		public void socketX(String url, final NativeObject query, NativeJavaObject portWrapper)
 				throws MalformedURLException {
 			final SocketIO socket = new SocketIO(url);
@@ -1070,7 +1130,6 @@ public class JavaScript extends TypedAtomicActor {
 	                	e.printStackTrace();
 	                }
     			}
-
 	        });
 		}
 
@@ -1208,21 +1267,22 @@ public class JavaScript extends TypedAtomicActor {
     	}
     	
     	/** After the specified amount of time (in milliseconds), invoke the specified function.
-    	 *  The function is invoked atomically, in mutual exclusion with the invocation of
-    	 *  any other JavaScript function (such as the fire() method).
+    	 *  The function is invoked during a firing of this JavaScript actor, so the function
+    	 *  can read inputs, produce outputs, and do anything else that might be done in the
+    	 *  JavaScript fire() method.  The specified function will be invoked after the fire()
+    	 *  JavaScript method, if one is defined in the script, and also after any input
+    	 *  handlers created by setInputHandler().
+    	 *  <p>
     	 *  If the model stops executing before the timeout period elapses, then the
     	 *  specified function will not be invoked.
-    	 *  If the function that executes sends data to an output port, then the
-    	 *  send() method will request a firing of this JavaScript actor at a model
-    	 *  time corresponding to the model time at which this setTimeout() method
-    	 *  is called plus the value of the time argument. 
     	 *  @param function The function to invoke.
     	 *  @param time The time in milliseconds.
     	 *  @param args Arguments to pass to the function. FIXME: Not implemented.
+    	 *  @throws IllegalActionException If the director cannot respect the time request.
     	 *  @return A handle to the delayed function, to be used by clearTimeout()
     	 *   to cancel the function invocation if it hasn't occurred yet.
     	 */
-    	public Integer setTimeout(final Function function, final Integer time) {
+    	public Integer setTimeout(final Function function, final Integer time) throws IllegalActionException {
     		// FIXME: setTimeout() needs an optional third argument, arguments to the function
     		// to be passed when it is invoked. Presumably those arguments should be evaluated
     		// in the context of the invocation of the function, not in the context of
@@ -1232,50 +1292,37 @@ public class JavaScript extends TypedAtomicActor {
     		final Integer id = new Integer(_timeoutCount++);
     		Time currentTime = getDirector().getModelTime();
     		final Time callbackTime = currentTime.add(time * 0.001);
-    		Thread timeoutThread = new Thread() {
-    			public void run() {
-    				// FIXME: This still isn't right. Should rely on the director
-    				// to handle the timing in order to get determinism.
-    				// Cancellation should result in removal of the callback
-    				// from _pendingCallbacks rather than _pendingTimeouts, which
-    				// probably becomes obsolete.
-    				try {
-						sleep(time);
-					} catch (InterruptedException e) {
-						// Execution has been canceled.
-    					_pendingTimeouts.remove(id);
-						return;
-					}
-    				if (!_executing) {
-    					// Model has stopped.
-    					return;
-    				}
-    				synchronized(JavaScript.this) {
-    					_pendingTimeouts.remove(id);
-    					// Invoke the function with no arguments. 
-    					// Perform the callback in an invocation of the fire() method,
-    					// not here, so that the current model time during the callback
-    					// is correctly set to the model time at which the callback
-    					// was requested plus the timeout.
-    					if (_pendingCallbacks == null) {
-    						_pendingCallbacks = new LinkedList<Function>();
-    					}
-    					_pendingCallbacks.add(function);
-    					try {
-        		    		getDirector().fireAt(JavaScript.this, callbackTime);
-    					} catch (Exception ex) {
-    						MessageHandler.error("Failed to schedule invocation of timeout function.", ex);
-    					}
-    				}
-    			}
-    		};
-			synchronized(JavaScript.this) {
-				if (_pendingTimeouts == null) {
-					_pendingTimeouts = new HashMap<Integer,Thread>();
-				}
-				_pendingTimeouts.put(id, timeoutThread);
-			}
-    		timeoutThread.start();
+    		
+    		// FIXME: Check that synchronizeToRealTime is present and set to true
+    		// in the director.
+
+    		Time responseTime = getDirector().fireAt(JavaScript.this, callbackTime);
+    		if (!responseTime.equals(callbackTime)) {
+    			throw new IllegalActionException(JavaScript.this, 
+    					"Director is unable to fire this actor at the requested time "
+    					+ callbackTime
+    					+ ". It replies that it will fire the actor at "
+    					+ responseTime
+    					+ ".");
+    		}
+    		
+    		// Record the callback function indexed by ID.
+    		if (_pendingTimeoutFunctions == null) {
+    			_pendingTimeoutFunctions = new HashMap<Integer,Function>();
+    		}
+    		_pendingTimeoutFunctions.put(id, function);
+    		
+    		// Record the ID of the timeout indexed by time.
+    		if (_pendingTimeoutIDs == null) {
+    			_pendingTimeoutIDs = new HashMap<Time,List<Integer>>();
+    		}
+    		List<Integer> ids = _pendingTimeoutIDs.get(callbackTime);
+    		if (ids == null) {
+    			ids = new LinkedList<Integer>();
+    			_pendingTimeoutIDs.put(callbackTime, ids);
+    		}
+    		ids.add(id);
+    		
     		return id;
     	}
 		
