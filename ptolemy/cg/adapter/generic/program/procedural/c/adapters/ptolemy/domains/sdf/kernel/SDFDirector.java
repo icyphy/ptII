@@ -703,8 +703,8 @@ public class SDFDirector
                                 exceptionMessage);
 
                     }
-                    if (inputPort.isMultiport()) {
-                    }
+                    //if (inputPort.isMultiport()) {
+                    //}
                     for (int k = 0; k < rate; k++) {
                         //code.append(_eol + "$put(" + portNameWithChannelNumber + ", ");
                         String putString = _eol + "ReceiverPut(("
