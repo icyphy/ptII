@@ -135,6 +135,10 @@ public abstract class ParameterEstimator extends AtomicCommunicationAspect {
                 "_cardinal");
         cardinality.setExpression("SOUTH");
 
+        serviceTimeMultiplicationFactor = new Parameter(this, "serviceTimeMultiplicationFactor");
+        serviceTimeMultiplicationFactor.setTypeEquals(BaseType.Double);
+        serviceTimeMultiplicationFactor.setExpression("false");
+
         randomizeGuessVectors = new Parameter(this, "randomizeGuessVectors");
         randomizeGuessVectors.setTypeEquals(BaseType.BOOLEAN);
         randomizeGuessVectors.setExpression("false");
@@ -172,39 +176,52 @@ public abstract class ParameterEstimator extends AtomicCommunicationAspect {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** The service time for the default messageLength of 1. This is a double with default 0.1.
-     *  It is required to be positive.
+    /** The service time for the default messageLength of 1. This is a
+     *  double with default 0.1.  It is required to be positive.
      */
     public Parameter serviceTimeMultiplicationFactor;
 
-    /* The user-provided initial guess of the transition probability matrix*/
+    /** The user-provided initial guess of the transition probability matrix. */
     public Parameter A0;
 
-    /* The user-provided threshold on the minimum desired improvement on likelihood per iteration*/
+    /** The user-provided threshold on the minimum desired improvement
+     * on likelihood per iteration.
+     */
     public Parameter likelihoodThreshold;
 
-    /* The user-provided maximum number of allowed iterations of the Alpha-Beta Recursion*/
+    /** The user-provided maximum number of allowed iterations of the
+     * Alpha-Beta Recursion.
+     */
     public Parameter maxIterations;
     
-    /* The user-provided batch-size to be considered in the estimation*/
+    /** The user-provided batch-size to be considered in the estimation. */
     public Parameter batchSize;
 
-    /* Number of states of the HMM*/
+    /** Number of states of the HMM. */
     public Parameter nStates;
 
-    /* Boolean that determines whether or not to randomize input guess vectors */
+    /** Boolean that determines whether or not to randomize input
+     * guess vectors.
+     */
     public Parameter randomizeGuessVectors;
 
-    /* The user-provided initial guess on the prior probability distribution*/
+    /** The user-provided initial guess on the prior probability
+     * distribution.
+     */
     public Parameter priorDistribution;
 
-    /* The input port that provides the sample observations*/
+    /** The input port that provides the sample observations.
+     */
     public TypedIOPort input;
 
-    /* The vector estimate for the prior distribution on the set of states*/
+    /** The vector estimate for the prior distribution on the set of
+     * states.
+     */
     public TypedIOPort priorEstimates;
 
-    /* The transition matrix estimate obtained by iterating over the observation set*/
+    /** The transition matrix estimate obtained by iterating over the
+     * observation set.
+     */
     public TypedIOPort transitionMatrix;
     
     
