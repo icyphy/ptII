@@ -29,6 +29,7 @@ package ptolemy.actor.lib.fmi;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.URL;
 import java.nio.ByteBuffer;
 import java.nio.DoubleBuffer;
 import java.util.HashSet;
@@ -83,7 +84,9 @@ import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.StringAttribute;
 import ptolemy.moml.MoMLChangeRequest;
+import ptolemy.util.ClassUtilities;
 import ptolemy.util.CancelException;
+import ptolemy.util.FileUtilities;
 import ptolemy.util.MessageHandler;
 import ptolemy.util.StringUtilities;
 
@@ -962,8 +965,9 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
             double y, boolean modelExchange) throws IllegalActionException,
             IOException {
 
-        String fmuFileName = fmuFileParameter.asFile().getCanonicalPath();
-        System.out.println("FMUImport.importFMU(): " + fmuFileName);
+        File fmuFile = fmuFileParameter.asFile();
+
+        String fmuFileName = fmuFile.getCanonicalPath();
 
         // This method is called by the gui to import a fmu file and
         // create the actor.
@@ -3239,7 +3243,21 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
             // This is important because we want to be able to view
             // a model that references an FMU even if the FMU does not
             // support the current platform.
-            _fmiModelDescription = FMUFile.parseFMUFile(fmuFileName);
+            try {
+                _fmiModelDescription = FMUFile.parseFMUFile(fmuFileName);
+            } catch (IOException ex) {
+                File fmu = fmuFile.asFile();
+
+                if (fmu.getPath().contains("jar!/")) {
+                    URL fmuURL = ClassUtilities.jarURLEntryResource(fmu.getPath());
+                    fmu = File.createTempFile("FMUImportTemp", ".fmu");
+                    //fmuFile.deleteOnExit();
+                    FileUtilities.binaryCopyURLToFile(fmuURL, fmu);
+                 }
+
+                fmuFileName = fmu.getCanonicalPath();
+                _fmiModelDescription = FMUFile.parseFMUFile(fmuFileName);
+            }
 
             // Specify whether the FMU is for model exchange or co-simulation.
             // This gets determined when the FMU is initially imported.
