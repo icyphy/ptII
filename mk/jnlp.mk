@@ -190,6 +190,7 @@ NUMBER_OF_JARS_TO_LOAD_EAGERLY = 999
 CORE_JNLP_JARS = \
 	doc/docConfig.jar \
 	lib/diva.jar \
+	lib/ptliblicenses.jar \
 	lib/guava.jar \
 	lib/kieler.jar \
 	ptolemy/vergil/basic/layout/layout.jar \
@@ -269,6 +270,8 @@ BCVTB_JNLP_JARS =	\
 	ptolemy/vergil/basic/layout/layout.jar \
 	ptolemy/ptsupport.jar \
 	ptolemy/vergil/vergil.jar \
+	ptolemy/domains/algebraic/algebraic.jar \
+	ptolemy/domains/algebraic/demo/demo.jar \
 	ptolemy/domains/continuous/continuous.jar \
 	ptolemy/domains/continuous/demo/demo.jar \
 	ptolemy/domains/sdf/sdf.jar \
@@ -467,6 +470,7 @@ WIRELESS_JARS = \
 FULL_8_1_JARS = \
 	ptolemy/cg/cg.jar \
 	ptolemy/data/ontologies/ontologies.jar \
+	ptolemy/data/ontologies/demo/demo.jar \
 	ptolemy/vergil/ontologies/ontologies.jar \
 	ptolemy/domains/sequence/sequence.jar \
 	ptolemy/domains/pthales/pthales.jar \
@@ -497,6 +501,7 @@ FULL_ONLY_JNLP_JARS = \
 	doc/books/systems/vergil/vergil.jar \
 	doc/design/design.jar \
 	doc/img/img.jar \
+	doc/papers/papers.jar \
 	$(EXPORT_JARS) \
 	$(PTANGO_JAR_FILES) \
 	org/terraswarm/terraswarm.jar \
