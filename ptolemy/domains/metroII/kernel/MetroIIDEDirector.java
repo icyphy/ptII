@@ -295,6 +295,7 @@ public class MetroIIDEDirector extends DEDirector implements GetFirable {
             // Simply return.
             // Since we are now actually stopping the firing, we can set this false.
             _stopFireRequested = false;
+            // FIXME: FindBugs: Load of known null value.
             return new Pair(actorToFire, -1);
         }
 
