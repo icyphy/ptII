@@ -34,6 +34,7 @@ import java.util.Map;
 import ptolemy.data.ActorToken;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.ComplexToken;
+import ptolemy.data.DateToken;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.EventToken;
 import ptolemy.data.FixToken;
@@ -596,6 +597,8 @@ public abstract class BaseType implements Type {
         //             return true;
         //         }
     }
+    
+    
 
     /** The scalar data type: The least upper bound of all the scalar types. */
     public static final ScalarType SCALAR = new ScalarType();
@@ -693,6 +696,33 @@ public abstract class BaseType implements Type {
 
     /** The nil data type. */
     public static final NilType NIL = new NilType();
+    
+
+    /** The date data type. */
+    public static class DateType extends BaseType {
+        private DateType() {
+            super(DateToken.class, "date");
+        }
+
+        public Token convert(Token t) throws IllegalActionException {
+            if (t instanceof DateToken) {
+                return t;
+            } else if (t instanceof LongToken) {
+                return new DateToken(((LongToken) t).longValue());
+            } else if (t instanceof StringToken) {
+                return new DateToken(((StringToken) t).stringValue());
+            }
+            throw new IllegalActionException(
+                    Token.notSupportedIncomparableConversionMessage(t, "date"));
+        }
+
+        public int getTypeHash() {
+            return 15;
+        }
+    }
+    
+    /** The DateToken data type. */
+    public static final DateType DATE = new DateType();
 
     ///////////////////////////////////////////////////////////////////
     ////                    package private method                 ////

@@ -64,6 +64,7 @@ JSRCS = \
 	FixToFix.java \
 	IntArrayToString.java \
 	InUnitsOf.java \
+	LongToDate.java \
 	LongToDouble.java \
 	PolarToCartesian.java \
 	PolarToComplex.java \

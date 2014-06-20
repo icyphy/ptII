@@ -65,6 +65,7 @@ JSRCS = \
 	BooleanToken.java \
 	ComplexMatrixToken.java \
 	ComplexToken.java \
+	DateToken.java \
 	DoubleMatrixToken.java \
 	DoubleToken.java \
 	EventToken.java \

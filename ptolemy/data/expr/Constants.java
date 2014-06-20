@@ -35,6 +35,7 @@ import java.util.TreeMap;
 import ptolemy.data.ActorToken;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.ComplexToken;
+import ptolemy.data.DateToken;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.FloatToken;
 import ptolemy.data.IntToken;
@@ -233,6 +234,7 @@ public class Constants {
         _types.put("complex", new ComplexToken(new Complex(0.0, 0.0)));
         _types.put("float", new FloatToken(0.0f));
         _types.put("double", new DoubleToken(0.0));
+        _types.put("date", new DateToken());
         _types.put("fixedpoint", new UnsizedFixToken());
         _types.put("general", new GeneralToken());
         _types.put("short", new ShortToken(0));

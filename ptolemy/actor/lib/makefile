@@ -161,6 +161,7 @@ JSRCS = \
 	ConfigurationSwitch.java \
 	Const.java \
 	Counter.java \
+	CurrentDate.java \
 	CurrentMicrostep.java \
 	CurrentTime.java \
 	DelayStart.java \

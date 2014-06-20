@@ -781,6 +781,7 @@ public class TypeLattice {
             // NOTE: Removed NUMERICAL from the type lattice, EAL 7/22/06.
             // _basicLattice.addNodeWeight(BaseType.NUMERICAL);
             _basicLattice.addNodeWeight(BaseType.OBJECT);
+            _basicLattice.addNodeWeight(BaseType.DATE);
 
             // Strange bug here, see moml/test/aJVMBug.xml
             // and ptdevel email from 7/21.
@@ -805,6 +806,8 @@ public class TypeLattice {
             _basicLattice.addEdge(BaseType.UNKNOWN, BaseType.XMLTOKEN);
             _basicLattice.addEdge(BaseType.OBJECT, BaseType.GENERAL);
             _basicLattice.addEdge(BaseType.UNKNOWN, BaseType.OBJECT);
+            _basicLattice.addEdge(BaseType.UNKNOWN, BaseType.DATE);
+            _basicLattice.addEdge(BaseType.DATE, BaseType.STRING);
 
             // More of the strange jvm bug, see above.
             //_basicLattice.addEdge(BaseType.ACTOR, BaseType.GENERAL);
