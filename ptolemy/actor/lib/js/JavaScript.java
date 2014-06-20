@@ -89,6 +89,7 @@ import ptolemy.data.ArrayToken;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.IntToken;
+import ptolemy.data.LongToken;
 import ptolemy.data.ObjectToken;
 import ptolemy.data.RecordToken;
 import ptolemy.data.StringToken;
@@ -1214,6 +1215,9 @@ public class JavaScript extends TypedAtomicActor {
         			data = ((NativeJavaObject) data).unwrap();
         		}
         		try {
+        		    if (data instanceof Double) {
+        		        Long l = ((Double) data).longValue();
+        		    }
         		    Token token = _createToken(data);
         		    if (_inFire) {
         		    	if (_debugging) {
@@ -1513,11 +1517,15 @@ public class JavaScript extends TypedAtomicActor {
 				return new BooleanToken(((Boolean) data).booleanValue());
 			} else if (data instanceof Double) {
 				// Since JavaScript represents all numbers as double, we first
-				// check to see whether this is actually an integer.
-				if (((Double)data).doubleValue() % 1 == 0) {
-					// The value is actually an integer.
-					return new IntToken(((Double)data).intValue());
-				}
+				// check to see whether this is actually a long or an integer.
+			    if (((Double)data).doubleValue() % 1 == 0) {
+					// The value is a long or an integer.
+                    if (((Double)data).intValue() == Integer.MAX_VALUE) {
+                        return new LongToken(((Double)data).longValue());
+                    } else {
+                        return new IntToken(((Double)data).intValue());
+                    }
+				}  
 				return new DoubleToken(((Double)data).doubleValue());
 			} else if (data instanceof String) {
 				return new StringToken(data.toString());
