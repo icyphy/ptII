@@ -60,6 +60,7 @@
 /ptolemy/data/BooleanToken.java
 /ptolemy/data/ComplexMatrixToken.java
 /ptolemy/data/ComplexToken.java
+/ptolemy/data/DateToken.java
 /ptolemy/data/DoubleMatrixToken.java
 /ptolemy/data/DoubleToken.java
 /ptolemy/data/EventToken.java
