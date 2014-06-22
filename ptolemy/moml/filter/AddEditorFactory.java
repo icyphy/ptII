@@ -207,5 +207,5 @@ public class AddEditorFactory extends MoMLFilterSimple {
     private boolean _currentlyProcessingActorThatMayNeedAnEditorFactory = false;
 
     // Last "name" value seen, for use if we see a "class".
-    private static String _lastNameSeen;
+    private String _lastNameSeen;
 }

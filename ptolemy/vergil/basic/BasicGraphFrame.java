@@ -1063,24 +1063,32 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
         return _jgraph;
     }
 
-    /** Get the directory that was last accessed by this window.
-     *  @return The directory last accessed.
-     *  @see #setLastDirectory(File)
-     */
-    public File getLastDirectory() {
-        // NOTE: This method is necessary because we wish to have
-        // this accessed by inner classes, and there is a bug in
-        // jdk1.2.2 where inner classes cannot access protected
-        // static members.
-        return _directory;
-    }
-
     /** Return the JCanvasPanner instance.
      *  @return the JCanvasPanner
      */
     public JCanvasPanner getGraphPanner() {
         return _graphPanner;
     }
+
+    /** Get the directory that was last accessed.
+     *  @return The last directory
+     */
+    public File getLastDirectory() {
+        return _directory;
+    }
+
+    /** Set the directory that was last accessed by this window.
+     *  @see #getLastDirectory()
+     *  @param directory The directory last accessed.
+     */
+    public void setLastDirectory(File directory) {
+        // NOTE: This method is necessary because we wish to have
+        // this accessed by inner classes, and there is a bug in
+        // jdk1.2.2 where inner classes cannot access protected
+        // static members.
+        setDirectory(directory);
+    }
+
 
     /** Return a set of instances of NamedObj representing the objects
      *  that are currently selected.  This set has no particular order
@@ -1516,18 +1524,6 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
      */
     public void setJGraph(JGraph jgraph) {
         _jgraph = jgraph;
-    }
-
-    /** Set the directory that was last accessed by this window.
-     *  @see #getLastDirectory()
-     *  @param directory The directory last accessed.
-     */
-    public void setLastDirectory(File directory) {
-        // NOTE: This method is necessary because we wish to have
-        // this accessed by inner classes, and there is a bug in
-        // jdk1.2.2 where inner classes cannot access protected
-        // static members.
-        _directory = directory;
     }
 
     /** Undo the last undoable change on the model.
@@ -2427,7 +2423,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
      *  @deprecated Use {@link #getLastDirectory()} instead
      */
     protected File _getDirectory() {
-        return getLastDirectory();
+        return _getCurrentDirectory();
     }
 
     /** Return the graph controller associated with this frame.
@@ -3070,10 +3066,10 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
     /** Set the directory that was last accessed by this window.
      *  @see #getLastDirectory
      *  @param directory The directory last accessed.
-     *  @deprecated Use {@link #setLastDirectory(File)} instead
+     *  @deprecated Use {@link #setDirectory(File)} instead
      */
     protected void _setDirectory(File directory) {
-        setLastDirectory(directory);
+        setDirectory(directory);
     }
 
     /** Enable or disable drop into.

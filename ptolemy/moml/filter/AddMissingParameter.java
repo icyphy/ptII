@@ -271,7 +271,7 @@ public class AddMissingParameter extends MoMLFilterSimple {
     private boolean _currentlyProcessingActorThatMayNeedUpdating = false;
 
     // Last "name" value seen, for use if we see a "class".
-    private static String _lastNameSeen;
+    private  String _lastNameSeen;
 
     static {
         _namedObjsWithMissingProperties = new HashMap<String, AddProperty>();
