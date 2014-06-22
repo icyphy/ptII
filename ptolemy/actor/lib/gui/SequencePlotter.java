@@ -84,9 +84,12 @@ public class SequencePlotter extends Plotter implements SequenceActor {
         xUnit = new Parameter(this, "xUnit", new DoubleToken(1.0));
         xUnit.setTypeEquals(BaseType.DOUBLE);
 
-        // initialize the parameters
-        attributeChanged(xInit);
-        attributeChanged(xUnit);
+        // Initialize the parameters.
+        // We used to call attributeChanged() here, but FindBugs
+        // reports "Uninitialized read of field method called from constructor of superclass"
+        // in derived classes.
+        _xInit = ((DoubleToken) xInit.getToken()).doubleValue();
+        _xUnit = ((DoubleToken) xUnit.getToken()).doubleValue();
     }
 
     ///////////////////////////////////////////////////////////////////
