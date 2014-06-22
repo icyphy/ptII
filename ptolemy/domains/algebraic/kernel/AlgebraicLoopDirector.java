@@ -493,25 +493,25 @@ public class AlgebraicLoopDirector extends StaticSchedulingDirector {
     ///////////////////////////////////////////////////////////////////
     ////                   protected variables                     ////
         
-    /** The list of receivers for all break variables */
+    /** The list of receivers for all break variables. */
     protected List<AlgebraicLoopReceiver> _breakVariables;
 
-    /** Current value of the loop function g(x_n) */
+    /** Current value of the loop function g(x_n). */
     protected double[] _g_n;
         
-    /** Flag to indicate that it is the NewtonRaphson method */
+    /** Flag to indicate that it is the NewtonRaphson method. */
     protected boolean _isNewtonRaphson;
     
-    /** Number of break variables */
+    /** Number of break variables. */
     protected int _nVars;
 
-    /** Algebraic loop solver */
+    /** Algebraic loop solver. */
     AlgebraicLoopSolver _solver;
     
-    /** Tolerance for each iteration variable */
+    /** Tolerance for each iteration variable. */
     protected double[] _tolerance;
 
-    /** Current value of the iteration variables x_n */
+    /** Current value of the iteration variables x_n. */
     protected double[] _x_n;
 
     ///////////////////////////////////////////////////////////////////

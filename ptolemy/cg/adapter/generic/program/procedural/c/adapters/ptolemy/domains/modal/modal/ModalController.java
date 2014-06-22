@@ -256,6 +256,7 @@ public class ModalController
     /** Generate code for the firing of refinements.
     *
     *  @param code The string buffer that the generated code is appended to.
+    *  @return true if any of the states had refinements.
     *  @exception IllegalActionException If the helper associated with
     *   an actor throws it while generating fire code for the actor.
     */

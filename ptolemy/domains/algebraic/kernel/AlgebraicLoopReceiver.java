@@ -106,6 +106,7 @@ public class AlgebraicLoopReceiver extends AbstractReceiver {
     }
 
     /** Return true.
+     *  @param numberOfTokens Ignored in this base class.   
      *  @return true.
      */
 	@Override

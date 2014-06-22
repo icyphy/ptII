@@ -683,6 +683,10 @@ public class FixedPointDirector extends StaticSchedulingDirector implements
     ////                         protected methods                 ////
 
     /** Return true if all the inputs of the specified actor are known.
+     *  @param actor The specified actor.
+     *  @return True if the all the inputs of the specified actor are known.
+     *  @exception IllegalActionException If thrown while checking if an input
+     *  port is known.
      */
     protected boolean _areAllInputsKnown(Actor actor)
             throws IllegalActionException {

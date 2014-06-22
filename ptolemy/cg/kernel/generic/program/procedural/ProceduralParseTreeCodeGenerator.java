@@ -1829,6 +1829,10 @@ public class ProceduralParseTreeCodeGenerator extends AbstractParseTreeVisitor
      *  The function "$arraySum" is handled specially here.   
      *  @param function The function
      *  @param returnType The return type of the function
+     *  @param returnCode If the function is "$arraySum", and the return
+     *  type is primitive, then the value of the returnCode parameter
+     *  is returned with the payload and codeGen type returned.  
+     *  Otherwise, just the returnCode is returned.
      *  @return the specialized return value.
      */   
     protected String _specializeReturnValue(String function, Type returnType,

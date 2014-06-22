@@ -99,7 +99,7 @@ public class MetroIISystemCDirector extends Director implements GetFirable {
     }
 
     /**
-     * The environmental variable METROII
+     * The environmental variable METROII.
      */
     public Parameter metroII;
 

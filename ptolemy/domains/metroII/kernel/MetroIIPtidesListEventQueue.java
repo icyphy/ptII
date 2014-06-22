@@ -134,6 +134,7 @@ public class MetroIIPtidesListEventQueue implements DEEventQueue {
 
     /** Throw an exception to indicate that this method is not supported.
      *  @param event The event to enqueue.
+     *  @return In this class, this method never returns.
      *  @exception IllegalActionException Always thrown.
      */
     public boolean remove(DEEvent event) throws IllegalActionException {

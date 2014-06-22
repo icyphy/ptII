@@ -114,7 +114,7 @@ public class CatchExceptionAttribute extends AbstractInitializableAttribute
     /** The file, if any, to log messages to. */
     public FileParameter logFileName;
     
-    /** The error handling policy to apply if an exception occurs
+    /** The error handling policy to apply if an exception occurs.
      * 
      * One of:  Continue, Throw, Restart, Quit
      */
