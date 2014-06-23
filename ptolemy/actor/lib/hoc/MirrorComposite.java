@@ -27,13 +27,10 @@
  */
 package ptolemy.actor.lib.hoc;
 
-import ptolemy.actor.TypedCompositeActor;
 import ptolemy.actor.parameters.ParameterMirrorPort;
-import ptolemy.domains.ptides.lib.PtidesPort;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.Port;
 import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
 
