@@ -705,7 +705,7 @@ public abstract class BaseType implements Type {
         }
 
         public Token convert(Token t) throws IllegalActionException {
-            return StringToken.convert(t);
+            return DateToken.convert(t);
         }
 
         public int getTypeHash() {
