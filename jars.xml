@@ -90,6 +90,7 @@
     <include name="ptolemy/chic/chic.jar" />
     <include name="ptolemy/copernicus/copernicus.jar" />
     <include name="ptolemy/data/ontologies/ontologies.jar" />
+    <include name="ptolemy/data/ontologies/demo/demo.jar" />
     <include name="ptolemy/data/type/demo/demo.jar" />
     <include name="ptolemy/data/unit/demo/demo.jar" />
     <include name="ptolemy/demo/demo.jar" />
@@ -3285,6 +3286,15 @@
       </fileset>
       <fileset dir="${basedir}">
 	<include name="ptolemy/data/ontologies/lattice/unit/*.xml"/>
+      </fileset>
+    </jar>
+
+    <!-- ptolemy/data/ontologies/demo/demo.jar -->
+    <jar defaultexcludes="yes"
+	 destfile="${basedir}/ptolemy/data/ontologies/demo/demo.jar"
+	 >
+      <fileset dir="${basedir}">
+	<include name="ptolemy/data/ontologies/demo/*/*.xml"/>
       </fileset>
     </jar>
 
