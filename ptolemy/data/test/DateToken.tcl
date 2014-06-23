@@ -90,11 +90,22 @@ test DateToken-3.0 {Test convert } {
 ######################################################################
 ####
 # 
-test DateToken-3.1 {convert from a string to a DateToken should work} {
+test DateToken-3.1 {convert from a string to a DateToken does not work, which is correct} {
+    # Marten wrote:
+    # <cxh@eecs.berkeley.edu> wrote:
+    # > I added a convert() method to DateToken which seems to work well. I did hack
+    # > in a check for StringToken which will try to instantiate a DateToken.  I'm
+    # > not sure if that is right.
+    # This seems wrong to me. It is not generally possible to convert a
+    # String into a Date. Also, the type lattice doesn't permit that
+    # conversion. Type inference is supposed to yield a typing of which the
+    # automatic type conversions that it imposes during run time work
+    # without exception. We should not misuse the conversion method to build
+    # a customized parser.
     set string1 [java::new {ptolemy.data.StringToken String} "Wed Dec 31 16:00:00.001 PST 1969"]
-    set dateString1 [java::call ptolemy.data.DateToken convert $string1]
-    list [$dateString1 toString]
-} {{"Wed Dec 31 16:00:00.001 PST 1969"}}
+    catch {java::call ptolemy.data.DateToken convert $string1} errMsg
+    list $errMsg
+} {{ptolemy.kernel.util.IllegalActionException: Conversion is not supported from ptolemy.data.StringToken '"Wed Dec 31 16:00:00.001 PST 1969"' to the type date because the type of the token is higher or incomparable with the given type.}}
 
 ######################################################################
 ####
@@ -129,17 +140,14 @@ test DateToken-9.0 {Test isGreatThan} {
 # 
 test DateToken-9.1 {Test isGreaterThan with other types} {
     set long1 [java::new {ptolemy.data.LongToken long} 1]
-    set int1 [java::new {ptolemy.data.IntToken int} 1]
-    set short1 [java::new {ptolemy.data.ShortToken short} 1]
+    set int2 [java::new {ptolemy.data.IntToken int} 2]
+    set short3 [java::new {ptolemy.data.ShortToken short} 3]
 
     set t2 [java::new {ptolemy.data.DateToken long} 2]
-    list [[$t2 isGreaterThan $long1] toString]
-
-    #list [[$t2 isGreaterThan $int1] toString]
-    #[[$t2 isGreaterThan $short1] toString]
-
-} {false false false true false false}
-
+    list [[$t2 isGreaterThan $long1] toString] \
+	[[$t2 isGreaterThan $int2] toString] \
+	[[$t2 isGreaterThan $short3] toString]
+} {true false false}
 
 ######################################################################
 ####
@@ -156,6 +164,19 @@ test DateToken-10.0 {Test isLessThan} {
 	[[$t3 isLessThan $t3] toString]
 } {false true true false true false}
 
+######################################################################
+####
+# 
+test DateToken-10.1 {Test isLessThan with other types} {
+    set long1 [java::new {ptolemy.data.LongToken long} 1]
+    set int2 [java::new {ptolemy.data.IntToken int} 2]
+    set short3 [java::new {ptolemy.data.ShortToken short} 3]
+
+    set t2 [java::new {ptolemy.data.DateToken long} 2]
+    list [[$t2 isLessThan $long1] toString] \
+	[[$t2 isLessThan $int2] toString] \
+	[[$t2 isLessThan $short3] toString]
+} {false false true}
 
 
 ######################################################################
