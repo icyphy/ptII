@@ -808,6 +808,9 @@ public class TypeLattice {
             _basicLattice.addEdge(BaseType.UNKNOWN, BaseType.OBJECT);
             _basicLattice.addEdge(BaseType.UNKNOWN, BaseType.DATE);
             _basicLattice.addEdge(BaseType.DATE, BaseType.STRING);
+            // Allowing a conversion from STRING to a DATE would make the lattice cyclic
+            //_basicLattice.addEdge(BaseType.STRING, BaseType.DATE);
+            _basicLattice.addEdge(BaseType.LONG, BaseType.DATE);
 
             // More of the strange jvm bug, see above.
             //_basicLattice.addEdge(BaseType.ACTOR, BaseType.GENERAL);

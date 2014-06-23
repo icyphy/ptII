@@ -705,15 +705,7 @@ public abstract class BaseType implements Type {
         }
 
         public Token convert(Token t) throws IllegalActionException {
-            if (t instanceof DateToken) {
-                return t;
-            } else if (t instanceof LongToken) {
-                return new DateToken(((LongToken) t).longValue());
-            } else if (t instanceof StringToken) {
-                return new DateToken(((StringToken) t).stringValue());
-            }
-            throw new IllegalActionException(
-                    Token.notSupportedIncomparableConversionMessage(t, "date"));
+            return StringToken.convert(t);
         }
 
         public int getTypeHash() {
