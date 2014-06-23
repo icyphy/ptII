@@ -806,7 +806,6 @@ public class TypeLattice {
             _basicLattice.addEdge(BaseType.UNKNOWN, BaseType.XMLTOKEN);
             _basicLattice.addEdge(BaseType.OBJECT, BaseType.GENERAL);
             _basicLattice.addEdge(BaseType.UNKNOWN, BaseType.OBJECT);
-            _basicLattice.addEdge(BaseType.UNKNOWN, BaseType.DATE);
             _basicLattice.addEdge(BaseType.DATE, BaseType.STRING);
             // Allowing a conversion from STRING to a DATE would make the lattice cyclic
             //_basicLattice.addEdge(BaseType.STRING, BaseType.DATE);
