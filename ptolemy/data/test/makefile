@@ -56,6 +56,7 @@ JSIMPLE_TESTS = \
 	BooleanMatrixToken.tcl \
 	ComplexMatrixToken.tcl \
 	ComplexToken.tcl \
+	DateToken.tcl \
 	DoubleMatrixToken.tcl \
 	DoubleToken.tcl \
 	EventToken.tcl \
