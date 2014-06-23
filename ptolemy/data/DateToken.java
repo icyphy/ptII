@@ -43,7 +43,7 @@ import ptolemy.graph.CPO;
 import ptolemy.kernel.util.IllegalActionException;
 
 /** A token that contains a date.
- * @author Patricia Derler based on DateToken in Kepler
+ * @author Patricia Derler, Christopher  based on DateToken in Kepler by Daniel Crawl and Christopher Brooks
  * @version $Id: DateToken.java 24000 2010-04-28 00:12:36Z berkley $
  * @since Ptolemy II 10.
  * @Pt.ProposedRating Red (cxh)
@@ -229,7 +229,7 @@ public class DateToken extends AbstractConvertibleToken {
             return BooleanToken.FALSE;
         }
 
-        if (leftDate.equals(rightDate)) {
+        if (leftDate.compareTo(rightDate) == 0) {
             return BooleanToken.TRUE;
         }
 
