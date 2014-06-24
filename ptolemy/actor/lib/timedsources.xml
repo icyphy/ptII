@@ -7,6 +7,10 @@
       <group>
 <doc>Sources that depend on time.</doc>
 
+<entity name="CurrentDate" class="ptolemy.actor.lib.CurrentDate">
+<doc>Output the current date.</doc>
+</entity>
+
 <entity name="CurrentTime" class="ptolemy.actor.lib.CurrentTime">
 <doc>Output the current time.</doc>
 </entity>
