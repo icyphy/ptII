@@ -456,6 +456,19 @@ public class NamedProgramCodeGeneratorAdapter extends
         return processCode(code.toString());
     }
 
+    /** Generate a main loop for an execution under the control of
+     *  a director.  In this base class, this simply delegates
+     *  to generateFireCode() and generatePostfireCOde().
+     *  @return Whatever generateFireCode() returns.
+     *  @exception IllegalActionException Not thrown in this base class.
+     */
+    public String generateMainLoop() throws IllegalActionException {
+        // This class is in NamedProgramCodeGeneratorAdapter because
+        // not all cg Directors extend ptolemy/cg/adapter/generic/adapters/ptolemy/actor/Director.java
+        return generatePrefireCode() + generateFireCode()
+                + generatePostfireCode();
+    }
+
     /**
      * Generate the type conversion fire code. This method is called by the
      * Director to append necessary fire code to handle type conversion.
