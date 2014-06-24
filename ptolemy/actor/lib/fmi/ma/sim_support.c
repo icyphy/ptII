@@ -552,7 +552,7 @@ void parseArguments(int argc, char *argv[], char **fmuFileName1, char **fmuFileN
         *fmuFileName1 = argv[1];
         *fmuFileName2 = argv[2];
     } else {
-        printf("error: no fmu file\n");
+        printf("error: no fmu file, this method requires two\n");
         printHelp(argv[0]);
         exit(EXIT_FAILURE);
     }
@@ -596,8 +596,9 @@ void parseArguments(int argc, char *argv[], char **fmuFileName1, char **fmuFileN
 }
 
 void printHelp(const char *fmusim) {
-    printf("command syntax: %s <model.fmu> <tEnd> <h> <loggingOn> <csv separator>\n", fmusim);
-    printf("   <model.fmu> .... path to FMU, relative to current dir or absolute, required\n");
+    printf("command syntax: %s <model1.fmu> <model2.fmu> <tEnd> <h> <loggingOn> <csv separator>\n", fmusim);
+    printf("   <model1.fmu> .... path to FMU, relative to current dir or absolute, required\n");
+    printf("   <model2.fmu> .... path to FMU, relative to current dir or absolute, required\n");
     printf("   <tEnd> ......... end  time of simulation,   optional, defaults to 1.0 sec\n");
     printf("   <h> ............ step size of simulation,   optional, defaults to 0.1 sec\n");
     printf("   <loggingOn> .... 1 to activate logging,     optional, defaults to 0\n");
