@@ -882,6 +882,7 @@ public abstract class GenericCodeGenerator extends Attribute implements
         //      First the different packages
         //      Secondly the hierarchy of the object
         //      Lastly for each package the hierarchy of the package
+        StringBuffer errorMessage = new StringBuffer("Searched for " + object.getClass() + "\n");
         while (adapterObject == null) {
             String className = componentClass.getName();
 
@@ -896,7 +897,8 @@ public abstract class GenericCodeGenerator extends Attribute implements
                                     + object.getClass()
                                     + ".  Searched the contents of the generatorPackageList parameter, "
                                     + "which was: "
-                                    + generatorPackageList.stringValue());
+                                    + generatorPackageList.stringValue() 
+                                    + "Search list was: \n" + errorMessage);
                 }
                 _adapterStore.put(object, adapterObject);
                 return adapterObject;
@@ -931,28 +933,33 @@ public abstract class GenericCodeGenerator extends Attribute implements
                         + ".adapters." + className;
 
                 try {
+                    String message = "About to instantiate adapter: object: " + object
+                        + " packageName: " + packageName
+                        + " adapterClassName: " + adapterClassName;
+                    errorMessage.append(i + ". " + message + "\n");
                     if (_debugging) {
-                        _debug("About to instantiate adapter: object: " + object
-                                + " packageName: " + packageName
-                                + " adapterClassName: " + adapterClassName);
+                        _debug(message);
                     }
                     adapterObject = _instantiateAdapter(object, componentClass,
                             adapterClassName);
+                    message = "Instantiated adapter: object: " + object
+                        + " packageName: " + packageName
+                        + " adapterClassName: " + adapterClassName;
+                    errorMessage.append(i + ". " + message + "\n");
                     if (_debugging) {
-                        _debug("Instantiated adapter: object: " + object
-                                + " packageName: " + packageName
-                                + " adapterClassName: " + adapterClassName);
+                        _debug(message);
                     }
                 } catch (IllegalActionException ex) {
-                    if (_debugging) {
-                        _debug("Warning: Failed to instantiate adapter: object: "
+                    String message = "Warning: Failed to instantiate adapter: object: "
                                 + object
                                 + " packageName: "
                                 + packageName
                                 + " adapterClassName: "
                                 + adapterClassName
-                                + " " + KernelException.stackTraceToString(ex));
-
+                                + " " + KernelException.stackTraceToString(ex);
+                    errorMessage.append(i + ". " + message + "\n");
+                    if (_debugging) {
+                        _debug(message);
                     }
 
                     // If adapter class cannot be found, get to next package
