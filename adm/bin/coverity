@@ -5,7 +5,7 @@ cd $PTII
 
 ant clean
 
-/home/hudson/src/cov-analysis-linux64-6.6.1/bin/cov-build --dir reports/cov-int ant
+/home/hudson/src/cov-analysis-linux64/bin/cov-build --dir reports/cov-int ant
 
 (cd $PTII/reports; tar czvf myproject.tgz cov-int)
 
