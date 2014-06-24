@@ -846,6 +846,7 @@ public abstract class GenericCodeGenerator extends Attribute implements
      */
     final protected CodeGeneratorAdapter _getAdapter(Object object)
             throws IllegalActionException {
+        //_debugging = true;
         if (_debugging) {
             _debug("GenerateCodeGenerator._getAdapter(" + object + ")");
         }
@@ -928,7 +929,13 @@ public abstract class GenericCodeGenerator extends Attribute implements
 
                 String adapterClassName = "ptolemy.cg.adapter." + packageName
                         + ".adapters." + className;
+
                 try {
+                    if (_debugging) {
+                        _debug("About to instantiate adapter: object: " + object
+                                + " packageName: " + packageName
+                                + " adapterClassName: " + adapterClassName);
+                    }
                     adapterObject = _instantiateAdapter(object, componentClass,
                             adapterClassName);
                     if (_debugging) {

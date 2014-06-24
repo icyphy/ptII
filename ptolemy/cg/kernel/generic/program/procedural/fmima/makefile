@@ -1,9 +1,9 @@
-# Makefile for Ptolemy Classic style Codegen
+# Makefile for Ptolemy Classic style Codegen for HTML files
 #
-# @Version: $Id$
+# @Version: $Id: makefile 55939 2009-10-22 16:12:24Z cxh $
 # @Author: Christopher Brooks
 #
-# @Copyright (c) 2005-2013 The Regents of the University of California
+# @Copyright (c) 2005-2009 The Regents of the University of California
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -31,12 +31,12 @@
 # 						COPYRIGHTENDKEY
 ##########################################################################
 
-ME =		ptolemy/cg/adapter/generic/program/procedural/adapters/ptolemy/actor/lib
+ME =		ptolemy/cg/kernel/generic/program/procedural/fmima
 
-DIRS =		conversions fmi gui hoc logic string
+DIRS =		test
 
 # Root of the Java directory
-ROOT =		../../../../../../../../../..
+ROOT =		../../../../../../..
 
 CLASSPATH =	$(ROOT)
 
@@ -45,56 +45,13 @@ CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE = 	lib
-PTCLASSJAR =
-
-PTCLASSALLJAR = $(PTPACKAGE).jar
-
-# Include the .class files from these jars in PTCLASSALLJAR
-# If you change this, change DIRS above
-PTCLASSALLJARS = \
-	conversions/conversions.jar \
-	fmi/fmi.jar \
-	gui/gui.jar \
-	hoc/hoc.jar \
-	logic/logic.jar \
-	string/string.jar
+PTPACKAGE = 	html
+PTCLASSJAR = $(PTPACKAGE).jar
 
 # Keep this list alphabetized.
 JSRCS = \
-	AbsoluteValue.java \
-	Accumulator.java \
-	AddSubtract.java \
-	Bernoulli.java \
-	BooleanMultiplexor.java \
-	BooleanSwitch.java \
-	Commutator.java \
-	Const.java \
-	CurrentTime.java \
-	DB.java \
-	Differential.java \
-	Discard.java \
-	Distributor.java \
-	Gaussian.java \
-	LimitedFiringSource.java \
-	Limiter.java \
-	Minimum.java \
-	MovingAverage.java \
-	MultiplyDivide.java \
-	Publisher.java \
-	Pulse.java \
-	Ramp.java \
-	RandomSource.java \
-	Recorder.java \
-	Scale.java \
-	Sequence.java \
-	StringConst.java \
-	Subscriber.java \
-	SubscriptionAggregator.java \
-	Test.java \
-	TrigFunction.java \
-	VectorAssembler.java \
-	VectorDisassembler.java
+	FMIMACodeGenerator.java \
+	FMIMACodeGeneratorAdapter.java
 
 OTHER_FILES_TO_BE_JARED = 
 
@@ -103,7 +60,7 @@ EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
 # Don't include demo or DIRS here, or else 'make sources' will run 'make demo'
-MISC_FILES =	gui conversions hoc logic string
+MISC_FILES =	test
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
