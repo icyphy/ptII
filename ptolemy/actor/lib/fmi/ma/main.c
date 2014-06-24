@@ -33,9 +33,9 @@
 #include "sim_support.h"
 
 #define NUMBER_OF_FMUS 2
-FMU fmus[NUMBER_OF_FMUS];
-FMU fmu1; // the fmu to simulate
-FMU fmu2;
+//FMU fmus[NUMBER_OF_FMUS];
+//FMU fmu1; // the fmu to simulate
+//FMU fmu2;
 
 
 static fmiComponent initializeFMU(FMU *fmu, fmiCallbackFunctions callbacks, fmiBoolean visible, fmiBoolean loggingOn)
@@ -58,7 +58,7 @@ static fmiComponent initializeFMU(FMU *fmu, fmiCallbackFunctions callbacks, fmiB
 
 
 // simulate the given FMU from tStart = 0 to tEnd.
-static int simulate(FMU (*fmuArray)[NUMBER_OF_FMUS], double tEnd, double h, fmiBoolean loggingOn, char separator,
+static int simulate(FMU **fmuArray, double tEnd, double h, fmiBoolean loggingOn, char separator,
         int nCategories, char ** categories) {
 
 	FMU *fmu = fmuArray[0];
@@ -85,7 +85,7 @@ static int simulate(FMU (*fmuArray)[NUMBER_OF_FMUS], double tEnd, double h, fmiB
     callbacks.componentEnvironment = fmu; // pointer to current fmu from the environment.
 
     fmiComponent c;
-    c = initializeFMU(&fmu1, callbacks, visible, loggingOn);
+    c = initializeFMU(fmu, callbacks, visible, loggingOn);
 
     if (!c)
     {
@@ -191,15 +191,21 @@ int main(int argc, char *argv[]) {
     char **categories = NULL;
     int nCategories = 0;
 
+    FMU **fmus;
+    fmus = calloc(sizeof(FMU*), NUMBER_OF_FMUS);
+    FMU *fmu1 = calloc(sizeof(FMU), 1);
+    FMU *fmu2 = calloc(sizeof(FMU), 1);
+    *fmus = fmu1;
+    *(fmus + 1) = fmu2;
     printf("Parsing arguments!\n");
     parseArguments(argc, argv, &fmuFileName1, &fmuFileName2, &tEnd, &h, &loggingOn, &csv_separator, &nCategories, &categories);
     printf("Loading FMU1\n");
-    loadFMU(&fmu1, fmuFileName1);
+    loadFMU(fmu1, fmuFileName1);
     printf("Loading FMU2\n");
-    loadFMU(&fmu2, fmuFileName2);
+    loadFMU(fmu2, fmuFileName2);
 
-    fmus[0] = fmu1;
-    fmus[1] = fmu2;
+    //fmus[0] = fmu1;
+    //fmus[1] = fmu2;
 
   // run the simulation
     printf("FMU Simulator: run '%s' from t=0..%g with step size h=%g, loggingOn=%d, csv separator='%c' ",
@@ -208,16 +214,16 @@ int main(int argc, char *argv[]) {
     for (i = 0; i < nCategories; i++) printf("%s ", categories[i]);
     printf("}\n");
 
-    simulate(&fmus, tEnd, h, loggingOn, csv_separator, nCategories, categories);
+    simulate(fmus, tEnd, h, loggingOn, csv_separator, nCategories, categories);
     printf("CSV file '%s' written\n", RESULT_FILE);
 
     // release FMU
 #ifdef _MSC_VER
-    FreeLibrary(fmu1.dllHandle);
+    FreeLibrary(fmu1->dllHandle);
 #else
-    dlclose(fmu1.dllHandle);
+    dlclose(fmu1->dllHandle);
 #endif
-    freeModelDescription(fmu1.modelDescription);
+    freeModelDescription(fmu1->modelDescription);
     if (categories) free(categories);
 
     return EXIT_SUCCESS;

@@ -519,7 +519,7 @@ static void replaceRefsInMessage(const char* msg, char* buffer, int nBuffer, FMU
 }
 
 #define MAX_MSG_SIZE 1000
-void fmuLogger(void *componentEnvironment, FMU *fmu, fmiString instanceName, fmiStatus status,
+void fmuLogger(void *componentEnvironment, /*FMU *fmu,*/ fmiString instanceName, fmiStatus status,
                fmiString category, fmiString message, ...) {
     char msg[MAX_MSG_SIZE];
     char* copy;
@@ -531,7 +531,7 @@ void fmuLogger(void *componentEnvironment, FMU *fmu, fmiString instanceName, fmi
 
     // replace e.g. ## and #r12#
     copy = strdup(msg);
-    replaceRefsInMessage(copy, msg, MAX_MSG_SIZE, fmu);
+    replaceRefsInMessage(copy, msg, MAX_MSG_SIZE, (FMU*)componentEnvironment);
     free(copy);
 
     // print the final message

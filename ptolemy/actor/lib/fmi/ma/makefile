@@ -90,6 +90,9 @@ CXX=c++
 main: main.o sim_support.o	
 	$(CXX) -o $@ $^ $(CPP_SRCS) $(CFLAGS) $(LIBFLAGS)
 
+run: main
+	./main ../fmus/inc20RC1/inc20RC1.fmu ../fmus/scale20RC1/scale20RC1.fmu 1.0 0.1 1
+
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
 # Don't set MISC_FILES to $(DIRS) or else 'make sources' will try to invoke the demos.

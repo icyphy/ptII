@@ -63,7 +63,8 @@
 #define SEVEN_ZIP_OUT_OF_MEMORY 8
 #define SEVEN_ZIP_STOPPED_BY_USER 255
 
-void fmuLogger(fmiComponent c, FMU *fmu, fmiString instanceName, fmiStatus status, fmiString category, fmiString message, ...);
+//void fmuLogger(fmiComponent c, FMU *fmu, fmiString instanceName, fmiStatus status, fmiString category, fmiString message, ...);
+void fmuLogger(fmiComponent c, fmiString instanceName, fmiStatus status, fmiString category, fmiString message, ...);
 int unzip(const char *zipPath, const char *outPath);
 void parseArguments(int argc, char *argv[], char **fmuFileName1, char **fmuFileName2, double *tEnd, double *h,
                     int *loggingOn, char *csv_separator, int *nCategories, char **logCategories[]);
