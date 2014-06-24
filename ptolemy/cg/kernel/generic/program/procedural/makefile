@@ -33,7 +33,7 @@
 
 ME =		ptolemy/cg/kernel/generic/program/procedural
 
-DIRS =		c java
+DIRS =		c fmima java
 
 # Root of the Java directory
 ROOT =		../../../../../..
@@ -54,6 +54,7 @@ PTCLASSALLJAR = $(PTPACKAGE).jar
 # If you change this, change DIRS above
 PTCLASSALLJARS = \
 	c/c.jar \
+	fmima/fmima.jar \
 	java/java.jar
 
 # Keep this list alphabetized.
