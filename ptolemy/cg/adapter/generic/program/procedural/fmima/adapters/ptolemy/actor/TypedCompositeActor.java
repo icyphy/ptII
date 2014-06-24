@@ -27,6 +27,7 @@
  */
 package ptolemy.cg.adapter.generic.program.procedural.fmima.adapters.ptolemy.actor;
 
+import ptolemy.cg.kernel.generic.program.NamedProgramCodeGeneratorAdapter;
 import ptolemy.cg.kernel.generic.program.procedural.fmima.FMIMACodeGeneratorAdapter;
 import ptolemy.kernel.util.IllegalActionException;
 
@@ -59,7 +60,12 @@ public class TypedCompositeActor extends FMIMACodeGeneratorAdapter {
      */
     public String generateFMIMA() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
-        code.append(getComponent().getName() + " contains: ");
+        if (getContainer() == null) {
+            return "fmima: TypedCompositeActor: top level";
+        }
+        NamedProgramCodeGeneratorAdapter adapter = (NamedProgramCodeGeneratorAdapter) getAdapter(getContainer());
+
+        code.append(adapter.getComponent().getName() + " contains: ");
         code.append("<ul>" + _eol);
 
         Object director = getCodeGenerator().getAdapter(
@@ -68,7 +74,7 @@ public class TypedCompositeActor extends FMIMACodeGeneratorAdapter {
         try {
             directorAdapter = (Director) director;
         } catch (ClassCastException ex) {
-            throw new IllegalActionException(getComponent(), ex,
+            throw new IllegalActionException(adapter.getComponent(), ex,
                     "Failed to cast " + director + " of class "
                             + director.getClass().getName() + " to "
                             + Director.class.getName() + ".");

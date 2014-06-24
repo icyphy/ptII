@@ -1,6 +1,6 @@
-/* Base class for a html generator adapter.
+/* * Base class for a Functional Mockup Interface Master Algorithm code generator adapter.
 
- Copyright (c) 2009-2013 The Regents of the University of California.
+ Copyright (c) 2009-2014 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -27,25 +27,27 @@
  */
 package ptolemy.cg.kernel.generic.program.procedural.fmima;
 
-import ptolemy.cg.kernel.generic.CodeGeneratorAdapter;
+import ptolemy.cg.kernel.generic.program.NamedProgramCodeGeneratorAdapter;
+import ptolemy.cg.kernel.generic.program.ProgramCodeGeneratorAdapter;
 import ptolemy.cg.kernel.generic.GenericCodeGenerator;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.util.StringUtilities;
 
 ///////////////////////////////////////////////////////////////////
-////FMIMACodeGeneratorAdapter
+//// FMIMACodeGeneratorAdapter
 
 /**
-* Base class for a html code generator adapter.
+* Base class for a Functional Mockup Interface Master Algorithm code
+* generator adapter.
 *
-* <p>Subclasses should override generateFMIMA().
+* <p>Subclasses should override generateFMIMA().</p>
 *
 * <p>Subclasses should be sure to properly indent the code by
 * either using the code block functionality in methods like
 * _generateBlockCode(String) or by calling
 * {@link ptolemy.cg.kernel.generic.program.CodeStream#indent(String)},
-* for example:
+* for example:</p>
 * <pre>
 *     StringBuffer code = new StringBuffer();
 *     code.append(super.generateWrapupCode());
@@ -53,20 +55,21 @@ import ptolemy.util.StringUtilities;
 *     return processCode(CodeStream.indent(code.toString()));
 * </pre>
 *
-* @author Bert Rodiers
+* @author Christopher Brooks, based on HTMLCodeGeneratorAdapter by Bert Rodiers
 * @version $Id: FMIMACodeGeneratorAdapter.java 67784 2013-10-26 16:53:27Z cxh $
 * @since Ptolemy II 10.0
-* @Pt.ProposedRating Yellow (rodiers)
-* @Pt.AcceptedRating Yellow (rodiers)
+* @Pt.ProposedRating Red (cxh)
+* @Pt.AcceptedRating Red (cxh)
 */
-public abstract class FMIMACodeGeneratorAdapter extends CodeGeneratorAdapter {
+public abstract class FMIMACodeGeneratorAdapter extends NamedProgramCodeGeneratorAdapter {
 
     /** Construct the code generator adapter associated
      *  with the given component.
      *  @param component The associated component.
      */
     public FMIMACodeGeneratorAdapter(NamedObj component) {
-        _component = component;
+        super(component);
+        //_component = component;
     }
 
     /** Generate FMIMA code.
@@ -76,29 +79,29 @@ public abstract class FMIMACodeGeneratorAdapter extends CodeGeneratorAdapter {
      */
     abstract public String generateFMIMA() throws IllegalActionException;
 
-    /** Get the code generator associated with this adapter class.
-     *  @return The code generator associated with this adapter class.
-     *  @see #setCodeGenerator(GenericCodeGenerator)
-     */
-    public GenericCodeGenerator getCodeGenerator() {
-        return _codeGenerator;
-    }
+//     /** Get the code generator associated with this adapter class.
+//      *  @return The code generator associated with this adapter class.
+//      *  @see #setCodeGenerator(GenericCodeGenerator)
+//      */
+//     public GenericCodeGenerator getCodeGenerator() {
+//         return _codeGenerator;
+//     }
 
-    /** Get the component associated with this adapter.
-     *  @return The associated component.
-     */
-    public NamedObj getComponent() {
-        return _component;
-    }
+//     /** Get the component associated with this adapter.
+//      *  @return The associated component.
+//      */
+//     public NamedObj getComponent() {
+//         return _component;
+//     }
 
-    /** Set the code generator associated with this adapter class.
-     *  @param codeGenerator The code generator associated with this
-     *   adapter class.
-     *  @see #getCodeGenerator()
-     */
-    public void setCodeGenerator(GenericCodeGenerator codeGenerator) {
-        _codeGenerator = codeGenerator;
-    }
+//     /** Set the code generator associated with this adapter class.
+//      *  @param codeGenerator The code generator associated with this
+//      *   adapter class.
+//      *  @see #getCodeGenerator()
+//      */
+//     public void setCodeGenerator(GenericCodeGenerator codeGenerator) {
+//         _codeGenerator = codeGenerator;
+//     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
@@ -120,5 +123,5 @@ public abstract class FMIMACodeGeneratorAdapter extends CodeGeneratorAdapter {
     protected GenericCodeGenerator _codeGenerator;
 
     /** The associated component. */
-    private NamedObj _component;
+    //private NamedObj _component;
 }

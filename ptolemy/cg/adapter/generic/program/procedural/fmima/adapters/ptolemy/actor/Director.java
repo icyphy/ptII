@@ -32,6 +32,7 @@ import java.util.Iterator;
 import ptolemy.actor.Actor;
 import ptolemy.actor.CompositeActor;
 import ptolemy.cg.kernel.generic.GenericCodeGenerator;
+import ptolemy.cg.kernel.generic.program.NamedProgramCodeGeneratorAdapter;
 import ptolemy.cg.kernel.generic.program.procedural.fmima.FMIMACodeGeneratorAdapter;
 import ptolemy.kernel.util.IllegalActionException;
 
@@ -74,28 +75,29 @@ public class Director extends FMIMACodeGeneratorAdapter {
      */
     public String generateFMIMA() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
+        NamedProgramCodeGeneratorAdapter adapter = (NamedProgramCodeGeneratorAdapter) getAdapter(getContainer());
 
-        Iterator<?> actors = ((CompositeActor) getComponent().getContainer())
+        Iterator<?> actors = ((CompositeActor) adapter.getComponent().getContainer())
                 .deepEntityList().iterator();
 
-        code.append("<li>" + getComponent().getName() + "</li>" + _eol);
+        code.append("<li>" + adapter.getComponent().getName() + "</li>" + _eol);
 
         while (actors.hasNext()) {
             code.append("<li>");
             Actor actor = (Actor) actors.next();
-            FMIMACodeGeneratorAdapter adapter = null;
+            FMIMACodeGeneratorAdapter codeGeneratorAdapter = null;
             Object object = getCodeGenerator().getAdapter(actor);
             try {
-                adapter = (FMIMACodeGeneratorAdapter) object;
+                codeGeneratorAdapter = (FMIMACodeGeneratorAdapter) object;
             } catch (ClassCastException ex) {
-                throw new IllegalActionException(getComponent(), ex,
+                throw new IllegalActionException(adapter.getComponent(), ex,
                         "Failed to cast " + object + " of class "
                                 + object.getClass().getName() + " to "
                                 + FMIMACodeGeneratorAdapter.class.getName()
                                 + ".");
 
             }
-            code.append(adapter.generateFMIMA());
+            code.append(codeGeneratorAdapter.generateFMIMA());
             code.append("</li>");
         }
         return code.toString();

@@ -29,6 +29,7 @@ COPYRIGHTENDKEY
 package ptolemy.cg.kernel.generic.program.procedural.fmima;
 
 import ptolemy.cg.kernel.generic.GenericCodeGenerator;
+import ptolemy.cg.kernel.generic.program.procedural.ProceduralCodeGenerator;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.NameDuplicationException;
@@ -48,7 +49,7 @@ import ptolemy.kernel.util.NamedObj;
  *  @Pt.ProposedRating red (rodiers)
  *  @Pt.AcceptedRating red (rodiers)
 */
-public class FMIMACodeGenerator extends GenericCodeGenerator {
+public class FMIMACodeGenerator extends ProceduralCodeGenerator {
 
     /** Create a new instance of the FMIMACodeGenerator.
      *  The value of the <i>generatorPackageList</i> parameter of the
@@ -62,7 +63,7 @@ public class FMIMACodeGenerator extends GenericCodeGenerator {
      */
     public FMIMACodeGenerator(NamedObj container, String name)
             throws IllegalActionException, NameDuplicationException {
-        super(container, name, "fmima");
+        super(container, name, "c", "c");
         generatorPackageList.setExpression("generic.program.procedural.fmima");
     }
 
@@ -112,8 +113,8 @@ public class FMIMACodeGenerator extends GenericCodeGenerator {
         code.append("</head>" + _eol);
 
         code.append("<body>" + _eol);
-        //code.append(((FMIMACodeGeneratorAdapter) getAdapter(toplevel()))
-        //        .generateFMIMA());
+        code.append(((FMIMACodeGeneratorAdapter) getAdapter(toplevel()))
+                .generateFMIMA());
         code.append("</body>" + _eol);
 
         code.append("</html>" + _eol);
@@ -125,7 +126,7 @@ public class FMIMACodeGenerator extends GenericCodeGenerator {
      *  adapters have to extend this class.
      *  @return The base class for the adapters.
      */
-    //protected Class<?> _getAdapterClassFilter() {
-    //    return FMIMACodeGeneratorAdapter.class;
-    //}
+    protected Class<?> _getAdapterClassFilter() {
+        return FMIMACodeGeneratorAdapter.class;
+    }
 }
