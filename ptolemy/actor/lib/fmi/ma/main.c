@@ -34,9 +34,15 @@
 
 #define NUMBER_OF_FMUS 2
 
+double tEnd = 1.0;
+double tStart = 0;                       // start time
 
-static fmiComponent initializeFMU(FMU *fmu, fmiCallbackFunctions callbacks, fmiBoolean visible, fmiBoolean loggingOn)
+
+
+static fmiComponent initializeFMU(FMU *fmu, fmiCallbackFunctions callbacks, fmiBoolean visible, fmiBoolean loggingOn, int nCategories, char ** categories)
 {
+
+    fmiStatus fmiFlag;                       // return code of the fmu functions
 
     // instantiate the fmu
     callbacks.logger = fmuLogger;
@@ -44,6 +50,10 @@ static fmiComponent initializeFMU(FMU *fmu, fmiCallbackFunctions callbacks, fmiB
     callbacks.freeMemory = free;
     callbacks.stepFinished = NULL; // fmiDoStep has to be carried out synchronously
     callbacks.componentEnvironment = fmu; // pointer to current fmu from the environment.
+
+    fmiReal tolerance = 0;                   // used in setting up the experiment
+    fmiBoolean toleranceDefined = fmiFalse;  // true if model description define tolerance
+    ValueStatus vs = valueIllegal;
 
 	// handle to the parsed XML file
     ModelDescription* md = fmu->modelDescription;
@@ -58,6 +68,47 @@ static fmiComponent initializeFMU(FMU *fmu, fmiCallbackFunctions callbacks, fmiB
             &callbacks, visible, loggingOn);
     printf("instance name: %s,\n guid: %s,\n ressourceLocation: %s\n", instanceName, guid, fmuResourceLocation);
     free(fmuResourceLocation);
+
+    if (!comp)
+    {
+    	return NULL;
+    }
+
+    Element *defaultExp = getDefaultExperiment(fmu->modelDescription);
+    if (defaultExp) tolerance = getAttributeDouble(defaultExp, att_tolerance, &vs);
+    if (vs == valueDefined) {
+        toleranceDefined = fmiTrue;
+    }
+
+
+    if (nCategories > 0) {
+        fmiFlag = fmu->setDebugLogging(comp, fmiTrue, nCategories, (const fmiString*) categories);
+        if (fmiFlag > fmiWarning) {
+            error("could not initialize model; failed FMI set debug logging");
+            return NULL;
+        }
+    }
+
+    fmiFlag = fmu->setupExperiment(comp, toleranceDefined, tolerance, tStart, fmiTrue, tEnd);
+    if (fmiFlag > fmiWarning) {
+        error("could not initialize model; failed FMI setup experiment");
+        return NULL;
+    }
+    fmiFlag = fmu->enterInitializationMode(comp);
+    if (fmiFlag > fmiWarning) {
+        error("could not initialize model; failed FMI enter initialization mode");
+        return NULL;
+    }
+    printf("initialization mode entered\n");
+    fmiFlag = fmu->exitInitializationMode(comp);
+    printf("successfully initialized.\n");
+
+    if (fmiFlag > fmiWarning) {
+        error("could not initialize model; failed FMI exit initialization mode");
+        return NULL;
+    }
+
+
     return comp;
 }
 
@@ -67,57 +118,28 @@ static int simulate(FMU **fmuArray, double tEnd, double h, fmiBoolean loggingOn,
         int nCategories, char ** categories) {
 
     double time;
-    double tStart = 0;                       // start time
     fmiStatus fmiFlag;                       // return code of the fmu functions
     fmiBoolean visible = fmiFalse;           // no simulator user interface
 
     fmiCallbackFunctions callbacksOne;          // called by the model during simulation
     fmiCallbackFunctions callbacksTwo;          // called by the model during simulation
-    fmiBoolean toleranceDefined = fmiFalse;  // true if model description define tolerance
-    fmiReal tolerance = 0;                   // used in setting up the experiment
-    ValueStatus vs = valueIllegal;
     int nSteps = 0;
-    Element *defaultExp;
     FILE* file;
 
     FMU *fmuOne = *fmuArray;
     FMU *fmuTwo = *(fmuArray + 1);
 
-    fmiComponent compOne = initializeFMU(fmuOne, callbacksOne, visible, loggingOn);
-    fmiComponent compTwo = initializeFMU(fmuTwo, callbacksTwo, visible, loggingOn);
+    fmiComponent compOne = initializeFMU(fmuOne, callbacksOne, visible, loggingOn, nCategories, categories);
+    fmiComponent compTwo = initializeFMU(fmuTwo, callbacksTwo, visible, loggingOn, nCategories, categories);
 
     if (!compOne)
     {
-    	return error("could not instantiate model");
+    	return error("could not instantiate model 1");
     }
 
-    if (nCategories > 0) {
-        fmiFlag = fmuOne->setDebugLogging(compOne, fmiTrue, nCategories, (const fmiString*) categories);
-        if (fmiFlag > fmiWarning) {
-            return error("could not initialize model; failed FMI set debug logging");
-        }
-    }
-
-    defaultExp = getDefaultExperiment(fmuOne->modelDescription);
-    if (defaultExp) tolerance = getAttributeDouble(defaultExp, att_tolerance, &vs);
-    if (vs == valueDefined) {
-        toleranceDefined = fmiTrue;
-    }
-
-    fmiFlag = fmuOne->setupExperiment(compOne, toleranceDefined, tolerance, tStart, fmiTrue, tEnd);
-    if (fmiFlag > fmiWarning) {
-        return error("could not initialize model; failed FMI setup experiment");
-    }
-    fmiFlag = fmuOne->enterInitializationMode(compOne);
-    if (fmiFlag > fmiWarning) {
-        return error("could not initialize model; failed FMI enter initialization mode");
-    }
-    printf("initialization mode entered\n");
-    fmiFlag = fmuOne->exitInitializationMode(compOne);
-    printf("successfully initialized.\n");
-
-    if (fmiFlag > fmiWarning) {
-        return error("could not initialize model; failed FMI exit initialization mode");
+    if (!compTwo)
+    {
+    	return error("could not instantiate model 1");
     }
 
     // open result file
@@ -194,7 +216,6 @@ int main(int argc, char *argv[]) {
     
     // parse command line arguments and load the FMU
     // default arguments value
-    double tEnd = 1.0;
     double h=0.1;
     int loggingOn = 0;
     char csv_separator = ',';

@@ -91,7 +91,13 @@ main: main.o sim_support.o
 	$(CXX) -o $@ $^ $(CPP_SRCS) $(CFLAGS) $(LIBFLAGS)
 
 run: main
-	./main ../fmus/inc20RC1/inc20RC1.fmu ../fmus/scale20RC1/scale20RC1.fmu 1.0 0.1 1
+	./main ../fmus/inc20RC1/inc20RC1.fmu ../fmus/scale20RC1/scale20RC1.fmu 15 1 1
+	
+clean: tmpclean
+
+tmpclean:
+	-rm -rf fmuTmp*
+	-rm -f result.csv
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
@@ -101,7 +107,7 @@ MISC_FILES = includes
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
-	parser
+	
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk	
