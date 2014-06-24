@@ -33,13 +33,18 @@
 #include "sim_support.h"
 
 #define NUMBER_OF_FMUS 2
-//FMU fmus[NUMBER_OF_FMUS];
-//FMU fmu1; // the fmu to simulate
-//FMU fmu2;
 
 
 static fmiComponent initializeFMU(FMU *fmu, fmiCallbackFunctions callbacks, fmiBoolean visible, fmiBoolean loggingOn)
 {
+
+    // instantiate the fmu
+    callbacks.logger = fmuLogger;
+    callbacks.allocateMemory = calloc;
+    callbacks.freeMemory = free;
+    callbacks.stepFinished = NULL; // fmiDoStep has to be carried out synchronously
+    callbacks.componentEnvironment = fmu; // pointer to current fmu from the environment.
+
 	// handle to the parsed XML file
     ModelDescription* md = fmu->modelDescription;
     // global unique id of the fmu
@@ -47,7 +52,7 @@ static fmiComponent initializeFMU(FMU *fmu, fmiCallbackFunctions callbacks, fmiB
     // instance name
     const char *instanceName = getAttributeValue((Element *)getCoSimulation(md), att_modelIdentifier);
     // path to the fmu resources as URL, "file://C:\QTronic\sales"
-    char *fmuResourceLocation = getTempResourcesLocation();
+    char *fmuResourceLocation = getTempResourcesLocation();   // TODO: returns crap. got to save the location for every FMU somehow.
     // instance of the fmu
     fmiComponent comp = fmu->instantiate(instanceName, fmiCoSimulation, guid, fmuResourceLocation,
             &callbacks, visible, loggingOn);
@@ -61,15 +66,13 @@ static fmiComponent initializeFMU(FMU *fmu, fmiCallbackFunctions callbacks, fmiB
 static int simulate(FMU **fmuArray, double tEnd, double h, fmiBoolean loggingOn, char separator,
         int nCategories, char ** categories) {
 
-	FMU *fmu = fmuArray[0];
-	FMU *secondFMU = fmuArray[1];
-
     double time;
     double tStart = 0;                       // start time
     fmiStatus fmiFlag;                       // return code of the fmu functions
     fmiBoolean visible = fmiFalse;           // no simulator user interface
 
-    fmiCallbackFunctions callbacks;          // called by the model during simulation
+    fmiCallbackFunctions callbacksOne;          // called by the model during simulation
+    fmiCallbackFunctions callbacksTwo;          // called by the model during simulation
     fmiBoolean toleranceDefined = fmiFalse;  // true if model description define tolerance
     fmiReal tolerance = 0;                   // used in setting up the experiment
     ValueStatus vs = valueIllegal;
@@ -77,44 +80,40 @@ static int simulate(FMU **fmuArray, double tEnd, double h, fmiBoolean loggingOn,
     Element *defaultExp;
     FILE* file;
 
-    // instantiate the fmu
-    callbacks.logger = fmuLogger;
-    callbacks.allocateMemory = calloc;
-    callbacks.freeMemory = free;
-    callbacks.stepFinished = NULL; // fmiDoStep has to be carried out synchronously
-    callbacks.componentEnvironment = fmu; // pointer to current fmu from the environment.
+    FMU *fmuOne = *fmuArray;
+    FMU *fmuTwo = *(fmuArray + 1);
 
-    fmiComponent c;
-    c = initializeFMU(fmu, callbacks, visible, loggingOn);
+    fmiComponent compOne = initializeFMU(fmuOne, callbacksOne, visible, loggingOn);
+    fmiComponent compTwo = initializeFMU(fmuTwo, callbacksTwo, visible, loggingOn);
 
-    if (!c)
+    if (!compOne)
     {
     	return error("could not instantiate model");
     }
 
     if (nCategories > 0) {
-        fmiFlag = fmu->setDebugLogging(c, fmiTrue, nCategories, (const fmiString*) categories);
+        fmiFlag = fmuOne->setDebugLogging(compOne, fmiTrue, nCategories, (const fmiString*) categories);
         if (fmiFlag > fmiWarning) {
             return error("could not initialize model; failed FMI set debug logging");
         }
     }
 
-    defaultExp = getDefaultExperiment(fmuArray[0]->modelDescription);
+    defaultExp = getDefaultExperiment(fmuOne->modelDescription);
     if (defaultExp) tolerance = getAttributeDouble(defaultExp, att_tolerance, &vs);
     if (vs == valueDefined) {
         toleranceDefined = fmiTrue;
     }
 
-    fmiFlag = fmu->setupExperiment(c, toleranceDefined, tolerance, tStart, fmiTrue, tEnd);
+    fmiFlag = fmuOne->setupExperiment(compOne, toleranceDefined, tolerance, tStart, fmiTrue, tEnd);
     if (fmiFlag > fmiWarning) {
         return error("could not initialize model; failed FMI setup experiment");
     }
-    fmiFlag = fmu->enterInitializationMode(c);
+    fmiFlag = fmuOne->enterInitializationMode(compOne);
     if (fmiFlag > fmiWarning) {
         return error("could not initialize model; failed FMI enter initialization mode");
     }
     printf("initialization mode entered\n");
-    fmiFlag = fmu->exitInitializationMode(c);
+    fmiFlag = fmuOne->exitInitializationMode(compOne);
     printf("successfully initialized.\n");
 
     if (fmiFlag > fmiWarning) {
@@ -129,8 +128,8 @@ static int simulate(FMU **fmuArray, double tEnd, double h, fmiBoolean loggingOn,
     }
 
     // output solution for time t0
-    outputRow(fmu, c, tStart, file, separator, TRUE);  // output column names
-    outputRow(fmu, c, tStart, file, separator, FALSE); // output values
+    outputRow(fmuOne, compOne, tStart, file, separator, TRUE);  // output column names
+    outputRow(fmuOne, compOne, tStart, file, separator, FALSE); // output values
 
     // enter the simulation loop
     time = tStart;
@@ -138,7 +137,7 @@ static int simulate(FMU **fmuArray, double tEnd, double h, fmiBoolean loggingOn,
     	int i;
     	for (i = 0 ; i < NUMBER_OF_FMUS; i++)
     	{
-            fmiFlag = fmuArray[i]->doStep(c, time, h, fmiTrue);
+            fmiFlag = fmuArray[i]->doStep(compOne, time, h, fmiTrue);
             if (fmiFlag > fmiWarning)
             {
             	return error("could not complete simulation of the model");
@@ -148,19 +147,18 @@ static int simulate(FMU **fmuArray, double tEnd, double h, fmiBoolean loggingOn,
     	for (i = 0 ; i < NUMBER_OF_FMUS-1; i++)
     	{
 
-            if (fmiFlag > fmiWarning)
-            {
-            	return error("could not complete simulation of the model");
-            }
     	}
+
         time += h;
-        outputRow(secondFMU, c, time, file, separator, FALSE); // output values for this step
+        outputRow(fmuOne, compOne, time, file, separator, FALSE); // output values for this step
         nSteps++;
     }
 
     // end simulation
-    fmu->terminate(c);
-    fmu->freeInstance(c);
+    fmuOne->terminate(compOne);
+    fmuOne->freeInstance(compOne);
+    fmuTwo->terminate(compTwo);
+    fmuTwo->freeInstance(compTwo);
 
     // print simulation summary
     printf("Simulation from %g to %g terminated successful\n", tStart, tEnd);
@@ -181,7 +179,7 @@ int main(int argc, char *argv[]) {
     char* fmuFileName2;
 #endif
     int i;
-
+    
     // parse command line arguments and load the FMU
     // default arguments value
     double tEnd = 1.0;
@@ -190,22 +188,21 @@ int main(int argc, char *argv[]) {
     char csv_separator = ',';
     char **categories = NULL;
     int nCategories = 0;
-
+    
+    // Create FMU array and allocate memory
     FMU **fmus;
     fmus = calloc(sizeof(FMU*), NUMBER_OF_FMUS);
-    FMU *fmu1 = calloc(sizeof(FMU), 1);
-    FMU *fmu2 = calloc(sizeof(FMU), 1);
-    *fmus = fmu1;
-    *(fmus + 1) = fmu2;
+    FMU *fmuOne = calloc(sizeof(FMU), 1);
+    FMU *fmuTwo = calloc(sizeof(FMU), 1);
+    *fmus = fmuOne;
+    *(fmus + 1) = fmuTwo;
+    
     printf("Parsing arguments!\n");
     parseArguments(argc, argv, &fmuFileName1, &fmuFileName2, &tEnd, &h, &loggingOn, &csv_separator, &nCategories, &categories);
     printf("Loading FMU1\n");
-    loadFMU(fmu1, fmuFileName1);
+    loadFMU(fmuOne, fmuFileName1);
     printf("Loading FMU2\n");
-    loadFMU(fmu2, fmuFileName2);
-
-    //fmus[0] = fmu1;
-    //fmus[1] = fmu2;
+    loadFMU(fmuTwo, fmuFileName2);
 
   // run the simulation
     printf("FMU Simulator: run '%s' from t=0..%g with step size h=%g, loggingOn=%d, csv separator='%c' ",
@@ -219,11 +216,14 @@ int main(int argc, char *argv[]) {
 
     // release FMU
 #ifdef _MSC_VER
-    FreeLibrary(fmu1->dllHandle);
+    FreeLibrary(fmuOne->dllHandle);
+    FreeLibrary(fmuTwo->dllHandle);
 #else
-    dlclose(fmu1->dllHandle);
+    dlclose(fmuOne->dllHandle);
+    dlclose(fmuTwo->dllHandle);
 #endif
-    freeModelDescription(fmu1->modelDescription);
+    freeModelDescription(fmuOne->modelDescription);
+    freeModelDescription(fmuTwo->modelDescription);
     if (categories) free(categories);
 
     return EXIT_SUCCESS;
