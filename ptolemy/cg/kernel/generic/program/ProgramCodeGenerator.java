@@ -1246,7 +1246,6 @@ public class ProgramCodeGenerator extends GenericCodeGenerator {
         if (director == null) {
             throw new IllegalActionException(model, "Does not have a director.");
         }
-        Director directorAdapter = (Director) getAdapter(director);
 
         if (_isTopLevel()) {
             /*
@@ -1260,8 +1259,11 @@ public class ProgramCodeGenerator extends GenericCodeGenerator {
                                 + "to be called.");
             }
              */
+            //Director directorAdapter = (Director) getAdapter(director);
+            NamedProgramCodeGeneratorAdapter directorAdapter = (NamedProgramCodeGeneratorAdapter) getAdapter(director);
             code += directorAdapter.generateMainLoop(
-            /*CodeGenerator.containsCode(_postfireCode)*/);
+                    /* CodeGenerator.containsCode(_postfireCode)*/
+              );
 
         } else {
             // Generate embedded code.
