@@ -87,11 +87,17 @@ CXX=c++
 %.o: %.c
 	$(CC) -o $@ -c $< $(CFLAGS)
 
-main: main.o sim_support.o	
+# Build the master algorithm executable.
+main: main.o sim_support.o
 	$(CXX) -o $@ $^ $(CPP_SRCS) $(CFLAGS) $(LIBFLAGS)
 
+# Run the master algorithm executable on two fmus.
 run: main
 	./main ../fmus/inc20RC1/inc20RC1.fmu ../fmus/scale20RC1/scale20RC1.fmu 15 1 1
+
+# Run the master algorithm and plot the output.
+plot: run
+	$(PTII)/bin/ptplot result.csv
 	
 clean: tmpclean
 

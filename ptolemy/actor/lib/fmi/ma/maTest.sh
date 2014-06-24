@@ -4,4 +4,4 @@
 
 echo "Master Algorithm Test"
 make run
-ptplot result.csv
+$PTII/bin/ptplot result.csv
