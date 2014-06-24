@@ -61,7 +61,7 @@ public class FMUImport extends FMIMACodeGeneratorAdapter {
      */
     public String generateFMIMA() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
-        NamedProgramCodeGeneratorAdapter adapter = (NamedProgramCodeGeneratorAdapter) getAdapter(getContainer());
+        //NamedProgramCodeGeneratorAdapter adapter = (NamedProgramCodeGeneratorAdapter) getAdapter(getContainer());
         ptolemy.actor.lib.fmi.FMUImport actor = (ptolemy.actor.lib.fmi.FMUImport) getComponent();
         code.append(actor.getName() + " is a FMUImport s: ");
         code.append("<ul>" + _eol);

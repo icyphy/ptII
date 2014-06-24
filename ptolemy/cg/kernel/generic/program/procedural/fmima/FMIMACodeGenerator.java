@@ -49,7 +49,7 @@ import ptolemy.kernel.util.NamedObj;
  *  @Pt.ProposedRating red (rodiers)
  *  @Pt.AcceptedRating red (rodiers)
 */
-public class FMIMACodeGenerator extends ProceduralCodeGenerator {
+public class FMIMACodeGenerator extends /*ProceduralCodeGenerator*/ GenericCodeGenerator {
 
     /** Create a new instance of the FMIMACodeGenerator.
      *  The value of the <i>generatorPackageList</i> parameter of the
@@ -63,7 +63,8 @@ public class FMIMACodeGenerator extends ProceduralCodeGenerator {
      */
     public FMIMACodeGenerator(NamedObj container, String name)
             throws IllegalActionException, NameDuplicationException {
-        super(container, name, "c", "c");
+        super(container, name, "c");
+        //super(container, name, "c", "c");
         generatorPackageList.setExpression("generic.program.procedural.fmima");
     }
 

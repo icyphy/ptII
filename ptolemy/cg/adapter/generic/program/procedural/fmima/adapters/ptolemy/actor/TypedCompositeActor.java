@@ -60,12 +60,16 @@ public class TypedCompositeActor extends FMIMACodeGeneratorAdapter {
      */
     public String generateFMIMA() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
-        if (getContainer() == null) {
-            return "fmima: TypedCompositeActor: top level";
-        }
-        NamedProgramCodeGeneratorAdapter adapter = (NamedProgramCodeGeneratorAdapter) getAdapter(getContainer());
+        
+        //if (getContainer() == null) {
+        //    return "fmima: TypedCompositeActor: top level";
+        //}
+        //NamedProgramCodeGeneratorAdapter adapter = (NamedProgramCodeGeneratorAdapter) getAdapter(getContainer());
+        //
+        //code.append(adapter.getComponent().getName() + " contains: ");
 
-        code.append(adapter.getComponent().getName() + " contains: ");
+        code.append(getComponent().getName() + " contains: ");
+
         code.append("<ul>" + _eol);
 
         Object director = getCodeGenerator().getAdapter(
@@ -74,7 +78,7 @@ public class TypedCompositeActor extends FMIMACodeGeneratorAdapter {
         try {
             directorAdapter = (Director) director;
         } catch (ClassCastException ex) {
-            throw new IllegalActionException(adapter.getComponent(), ex,
+            throw new IllegalActionException(/*adapter.*/getComponent(), ex,
                     "Failed to cast " + director + " of class "
                             + director.getClass().getName() + " to "
                             + Director.class.getName() + ".");

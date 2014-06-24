@@ -75,12 +75,13 @@ public class Director extends FMIMACodeGeneratorAdapter {
      */
     public String generateFMIMA() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
-        NamedProgramCodeGeneratorAdapter adapter = (NamedProgramCodeGeneratorAdapter) getAdapter(getContainer());
+        //NamedProgramCodeGeneratorAdapter adapter = (NamedProgramCodeGeneratorAdapter) getAdapter(getContainer());
 
-        Iterator<?> actors = ((CompositeActor) adapter.getComponent().getContainer())
+        //Iterator<?> actors = ((CompositeActor) adapter.getComponent().getContainer())
+        Iterator<?> actors = ((CompositeActor) getComponent().getContainer())
                 .deepEntityList().iterator();
 
-        code.append("<li>" + adapter.getComponent().getName() + "</li>" + _eol);
+        code.append("<li>" + /*adapter.*/getComponent().getName() + "</li>" + _eol);
 
         while (actors.hasNext()) {
             code.append("<li>");
@@ -90,7 +91,7 @@ public class Director extends FMIMACodeGeneratorAdapter {
             try {
                 codeGeneratorAdapter = (FMIMACodeGeneratorAdapter) object;
             } catch (ClassCastException ex) {
-                throw new IllegalActionException(adapter.getComponent(), ex,
+                throw new IllegalActionException(/*adapter.*/getComponent(), ex,
                         "Failed to cast " + object + " of class "
                                 + object.getClass().getName() + " to "
                                 + FMIMACodeGeneratorAdapter.class.getName()

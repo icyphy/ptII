@@ -27,6 +27,7 @@
  */
 package ptolemy.cg.kernel.generic.program.procedural.fmima;
 
+import ptolemy.cg.kernel.generic.CodeGeneratorAdapter;
 import ptolemy.cg.kernel.generic.program.NamedProgramCodeGeneratorAdapter;
 import ptolemy.cg.kernel.generic.program.ProgramCodeGeneratorAdapter;
 import ptolemy.cg.kernel.generic.GenericCodeGenerator;
@@ -61,15 +62,15 @@ import ptolemy.util.StringUtilities;
 * @Pt.ProposedRating Red (cxh)
 * @Pt.AcceptedRating Red (cxh)
 */
-public abstract class FMIMACodeGeneratorAdapter extends NamedProgramCodeGeneratorAdapter {
+public abstract class FMIMACodeGeneratorAdapter extends /*NamedProgramCodeGeneratorAdapter*/ CodeGeneratorAdapter {
 
     /** Construct the code generator adapter associated
      *  with the given component.
      *  @param component The associated component.
      */
     public FMIMACodeGeneratorAdapter(NamedObj component) {
-        super(component);
-        //_component = component;
+        //super(component);
+        _component = component;
     }
 
     /** Generate FMIMA code.
@@ -79,29 +80,29 @@ public abstract class FMIMACodeGeneratorAdapter extends NamedProgramCodeGenerato
      */
     abstract public String generateFMIMA() throws IllegalActionException;
 
-//     /** Get the code generator associated with this adapter class.
-//      *  @return The code generator associated with this adapter class.
-//      *  @see #setCodeGenerator(GenericCodeGenerator)
-//      */
-//     public GenericCodeGenerator getCodeGenerator() {
-//         return _codeGenerator;
-//     }
+    /** Get the code generator associated with this adapter class.
+     *  @return The code generator associated with this adapter class.
+     *  @see #setCodeGenerator(GenericCodeGenerator)
+     */
+    public GenericCodeGenerator getCodeGenerator() {
+        return _codeGenerator;
+    }
 
-//     /** Get the component associated with this adapter.
-//      *  @return The associated component.
-//      */
-//     public NamedObj getComponent() {
-//         return _component;
-//     }
+    /** Get the component associated with this adapter.
+     *  @return The associated component.
+     */
+    public NamedObj getComponent() {
+        return _component;
+    }
 
-//     /** Set the code generator associated with this adapter class.
-//      *  @param codeGenerator The code generator associated with this
-//      *   adapter class.
-//      *  @see #getCodeGenerator()
-//      */
-//     public void setCodeGenerator(GenericCodeGenerator codeGenerator) {
-//         _codeGenerator = codeGenerator;
-//     }
+    /** Set the code generator associated with this adapter class.
+     *  @param codeGenerator The code generator associated with this
+     *   adapter class.
+     *  @see #getCodeGenerator()
+     */
+    public void setCodeGenerator(GenericCodeGenerator codeGenerator) {
+        _codeGenerator = codeGenerator;
+    }
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
@@ -123,5 +124,5 @@ public abstract class FMIMACodeGeneratorAdapter extends NamedProgramCodeGenerato
     protected GenericCodeGenerator _codeGenerator;
 
     /** The associated component. */
-    //private NamedObj _component;
+    private NamedObj _component;
 }
