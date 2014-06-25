@@ -41,6 +41,8 @@ void initialize(ModelInstance* comp, fmiEventInfo* eventInfo) {
   fflush(stderr);
     eventInfo->nextEventTimeDefined   = fmiTrue;
     eventInfo->nextEventTime          = 1 + comp->time;
+  fprintf(stderr, "inc20RC1.c: initialized\n");
+  fflush(stderr);
 }
 
 // used to set the next time event, if any.
