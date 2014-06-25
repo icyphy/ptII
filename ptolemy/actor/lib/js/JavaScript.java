@@ -1028,7 +1028,9 @@ public class JavaScript extends TypedAtomicActor {
 		 * 
 		 *  This method uses Enno Boland's Java implementation of a Socket.IO client,
 		 *  found at <a href="https://github.com/Gottox/socket.io-java-client">https://github.com/Gottox/socket.io-java-client</a>.
-		 * 
+		 *  <p>
+		 *  NOTE: This is a temporary placeholder method! This will go away. Please do not use it.
+		 * @deprecated Pending a better design.
 		 * @param url
 		 * @param query
 		 * @param portWrapper
