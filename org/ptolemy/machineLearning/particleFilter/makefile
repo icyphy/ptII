@@ -51,6 +51,7 @@ PTPACKAGE = particleFilter
 PTCLASSJAR = $(PTPACKAGE).jar
 
 JSRCS = \
+	ConstraintsCalculator.java \
 	MutualInformationCalculator.java \
 	Optimizer.java \
 	ParticleFilter.java \
