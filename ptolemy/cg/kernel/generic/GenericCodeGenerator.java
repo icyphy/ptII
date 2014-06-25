@@ -27,7 +27,9 @@
  */
 package ptolemy.cg.kernel.generic;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.IOException;
 import java.io.Writer;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
@@ -802,6 +804,76 @@ public abstract class GenericCodeGenerator extends Attribute implements
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
+
+    /** Copy a C (or h) file into the directory /src of the project.
+     *  This is useful to copy the files pre-written in C.
+     *  @param codeFileName the name of the file to copy.
+     */
+    protected void _copyCFileTosrc(String path, String directoryToCopy,
+            String codeFileName) throws IllegalActionException {
+        StringBuffer code = new StringBuffer();
+
+        BufferedReader cFileReader = null;
+        String cFileName = path + codeFileName;
+        codeFileName = directoryToCopy + codeFileName;
+        String referenceClassName = "ptolemy.util.FileUtilities";
+        Class referenceClass;
+        try {
+            referenceClass = Class.forName(referenceClassName);
+        } catch (ClassNotFoundException e) {
+            throw new IllegalActionException(this, e,
+                    "Did not find the base class !\"");
+        }
+        ClassLoader classLoader = referenceClass.getClassLoader();
+        URL url = classLoader.getResource(cFileName);
+        if (url == null) {
+            throw new NullPointerException("Could not find \"" + cFileName + "\" in the classpath.");
+        }
+        //        if (codeFileName.endsWith(".h"))
+        //            codeFileName = "includes/" + codeFileName;
+        //        else if (codeFileName.endsWith(".c"))
+        //            codeFileName = "src/" + codeFileName;
+        //        else
+        //            throw new IllegalActionException(this, "Only .c and .h files are allowed in _copyCFileTosrc");
+        String inputLine = "";
+
+        try {
+            try {
+                cFileReader = CodeGeneratorUtilities.openAsFileOrURL(url
+                        .toString());
+            } catch (IOException ex) {
+                throw new IllegalActionException(this, ex, "Failed to read \""
+                        + cFileName + "\"");
+            }
+            if (cFileReader != null) {
+                //                _executeCommands.stdout("Reading \"" + cFileName
+                //                        + "\"," + _eol + "    writing \""
+                //                        + codeFileName + "\"");
+                while ((inputLine = cFileReader.readLine()) != null) {
+                    code.append(inputLine + _eol);
+                }
+            }
+        } catch (Throwable throwable) {
+            throw new IllegalActionException(this, throwable,
+                    "Failed to read \"" + cFileName + "\" or write \""
+                            + codeFileName + "\"");
+        } finally {
+            if (cFileReader != null) {
+                try {
+                    cFileReader.close();
+                } catch (IOException ex) {
+                    throw new IllegalActionException(this, ex,
+                            "Failed to close \"" + cFileName + "\"");
+                }
+            }
+        }
+
+        String result = code.toString();
+        code = new StringBuffer();
+        code.append(result);
+
+        _writeCodeFileName(code, codeFileName, true, false);
+    }
 
     /** Execute the compile and run commands in the
      *  <i>codeDirectory</i> directory. In this base class, 0 is

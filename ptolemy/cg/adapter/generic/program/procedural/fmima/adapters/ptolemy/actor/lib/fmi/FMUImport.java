@@ -63,18 +63,16 @@ public class FMUImport extends FMIMACodeGeneratorAdapter {
         StringBuffer code = new StringBuffer();
         //NamedProgramCodeGeneratorAdapter adapter = (NamedProgramCodeGeneratorAdapter) getAdapter(getContainer());
         ptolemy.actor.lib.fmi.FMUImport actor = (ptolemy.actor.lib.fmi.FMUImport) getComponent();
-        code.append(actor.getName() + " is a FMUImport s: ");
-        code.append("<ul>" + _eol);
-
+        code.append(getCodeGenerator().comment("ptolemy/cg/adapter/generic/program/procedural/fmima/adapters/ptolemy/actor/lib/fmi/FMUImport.java " + _eol
+                        + "   " + actor.getName() + " is a FMUImport: "));
         for (TypedIOPort input : actor.inputPortList()) {
-            code.append("<li> input " + input.getName() + "</li>" + _eol);
+            code.append(getCodeGenerator().comment(" input " + input.getName()));
         }
 
         for (TypedIOPort output : actor.outputPortList()) {
-            code.append("<li> output " + output.getName() + "</li>" + _eol);
+            code.append(getCodeGenerator().comment(" output " + output.getName()));
         }
 
-        code.append("</ul>" + _eol);
         return /*processCode(code.toString())*/code.toString();
     }
 

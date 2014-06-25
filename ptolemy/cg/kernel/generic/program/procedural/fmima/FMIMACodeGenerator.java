@@ -28,6 +28,8 @@ COPYRIGHTENDKEY
 
 package ptolemy.cg.kernel.generic.program.procedural.fmima;
 
+import java.io.File;
+
 import ptolemy.cg.kernel.generic.GenericCodeGenerator;
 import ptolemy.cg.kernel.generic.program.procedural.ProceduralCodeGenerator;
 import ptolemy.kernel.util.IllegalActionException;
@@ -49,7 +51,7 @@ import ptolemy.kernel.util.NamedObj;
  *  @Pt.ProposedRating red (rodiers)
  *  @Pt.AcceptedRating red (rodiers)
 */
-public class FMIMACodeGenerator extends /*ProceduralCodeGenerator*/ GenericCodeGenerator {
+public class FMIMACodeGenerator extends ProceduralCodeGenerator /*GenericCodeGenerator*/ {
 
     /** Create a new instance of the FMIMACodeGenerator.
      *  The value of the <i>generatorPackageList</i> parameter of the
@@ -63,24 +65,44 @@ public class FMIMACodeGenerator extends /*ProceduralCodeGenerator*/ GenericCodeG
      */
     public FMIMACodeGenerator(NamedObj container, String name)
             throws IllegalActionException, NameDuplicationException {
-        super(container, name, "c");
-        //super(container, name, "c", "c");
+        //super(container, name, "c");
+        super(container, name, "c", "c");
         generatorPackageList.setExpression("generic.program.procedural.fmima");
     }
 
     /** Return a formatted comment containing the specified string. In
-     *  this base class, the comments is a FMIMA-style comment, which
-     *  begins with "<!--" and ends with "-->" followed by the platform
-     *  dependent end of line character(s): under Unix: "\n", under
-     *  Windows: "\n\r". Subclasses may override this produce comments
+     *  this base class, the comments is a C-style comment, which
+     *  begins with "/ *" and ends with "* /" followed by the platform
+     *  dependent end of line character(s): under Unix: backslash n, under
+     *  Windows: backslash n backslash r. Subclasses may override this produce comments
      *  that match the code generation language.
      *  @param comment The string to put in the comment.
      *  @return A formatted comment.
      */
     public String comment(String comment) {
-        return "<!-- " + comment + " -->" + _eol;
+        return "/" + "* " + comment + " *" + "/" + _eol;
     }
 
+    /** Generate the main entry point.
+     *  @return Return the definition of the main entry point for a program.
+     *   In C, this would be defining main().
+     *  @exception IllegalActionException Not thrown in this base class.
+     */
+    public String generateMainEntryCode() throws IllegalActionException {
+        StringBuffer code = new StringBuffer();
+        code.append(comment("ptolemy/cg/kernel/generic/program/procedural/fmima/FMIMACodeGenerator.java"));
+        code.append(comment("Probably the thing to do is to create .c files and copy them over to the cg/ directory."));
+        code.append(comment("Then we can create a few functions that do the real work."));
+        if (_isTopLevel()) {
+            code.append(_eol + _eol
+                    + "int main(int argc, char *argv[]) {" + _eol);
+            code.append(((FMIMACodeGeneratorAdapter) getAdapter(toplevel()))
+                    .generateFMIMA());
+
+            code.append(_eol + "}");
+        }
+        return code.toString();
+    }
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
@@ -102,23 +124,49 @@ public class FMIMACodeGenerator extends /*ProceduralCodeGenerator*/ GenericCodeG
      *   or write-to-file throw any exception.
      */
     protected int _generateCode(StringBuffer code) throws KernelException {
-        // FIXME: We should put in some default html version info.
-        // e.g. <!DOCTYPE html PUBLIC "-//W3C//DTD XFMIMA 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-        // <html xmlns="http://www.w3.org/1999/xhtml"xml:lang="en" lang="en" dir="ltr">
-        code.append("<html>" + _eol);
 
-        code.append("<head>" + _eol);
-        code.append("<meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\" />"
-                + _eol);
-        code.append("<title>" + toplevel().getName() + "</title>" + _eol);
-        code.append("</head>" + _eol);
+        // Hint:  Look at ptolemy/cg/kernel/generic/program/procedural/c/CCodeGenerator.java
+        
+        code.append(comment("Generated from ptolemy/cg/kernel/generic/program/procedural/fmima/FMIMACodeGenerator.java _generateCode"));
 
-        code.append("<body>" + _eol);
-        code.append(((FMIMACodeGeneratorAdapter) getAdapter(toplevel()))
-                .generateFMIMA());
-        code.append("</body>" + _eol);
+        // Copy the .c and .h files from $PTII/ptolemy/actor/lib/fmi/ma.
 
-        code.append("</html>" + _eol);
+        String directory = codeDirectory.stringValue();
+        if (!directory.endsWith("/")) {
+            directory += "/";
+        }
+
+        String directoryFmi = directory + "fmi/";
+
+        if (new File(directoryFmi).mkdirs()) {
+            if (!_includes.contains("-I " + directoryFmi)) {
+                _includes.add("-I " + directoryFmi);
+            }
+        }
+
+        _copyCFileTosrc("ptolemy/actor/lib/fmi/ma/",
+                directoryFmi, "sim_support.c");
+        _copyCFileTosrc("ptolemy/actor/lib/fmi/ma/",
+                directoryFmi, "sim_support.h");
+
+        String directoryFmiIncludes = directoryFmi + "includes/";
+        if (new File(directoryFmiIncludes).mkdirs()) {
+            if (!_includes.contains("-I " + directoryFmiIncludes)) {
+                _includes.add("-I " + directoryFmiIncludes);
+            }
+        }
+
+        _copyCFileTosrc("ptolemy/actor/lib/fmi/ma/includes/",
+                directoryFmiIncludes, "fmi.h");
+        _copyCFileTosrc("ptolemy/actor/lib/fmi/ma/includes/",
+                directoryFmiIncludes, "fmiFunctionTypes.h");
+        _copyCFileTosrc("ptolemy/actor/lib/fmi/ma/includes/",
+                directoryFmiIncludes, "fmiFunctions.h");
+        _copyCFileTosrc("ptolemy/actor/lib/fmi/ma/includes/",
+                directoryFmiIncludes, "fmiTypesPlatform.h");
+
+        // Hopefully, we can skip the XML parsing because we have
+        // already parsed the modelDescription.xml file.
 
         return super._generateCode(code);
     }
