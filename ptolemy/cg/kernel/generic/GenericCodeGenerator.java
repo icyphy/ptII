@@ -807,7 +807,14 @@ public abstract class GenericCodeGenerator extends Attribute implements
 
     /** Copy a C (or h) file into the directory /src of the project.
      *  This is useful to copy the files pre-written in C.
+     *  @param path The path to the source to be copied.  A relative
+     *  path has $PTII prepended to it.
+     *  @param directoryToCopy The destination directory, typically
+     *  an absolute path determined by the value of the codeDirectory
+     *  parameter.
      *  @param codeFileName the name of the file to copy.
+     *  @exception IllegalActionException If thrown while copying
+     *  a file.
      */
     protected void _copyCFileTosrc(String path, String directoryToCopy,
             String codeFileName) throws IllegalActionException {
@@ -873,6 +880,25 @@ public abstract class GenericCodeGenerator extends Attribute implements
         code.append(result);
 
         _writeCodeFileName(code, codeFileName, true, false);
+    }
+
+    /** Copy files into the directory of the project.
+     *  This is useful to copy the files pre-written in C.
+     *  @param path The path to the source to be copied.  A relative
+     *  path has $PTII prepended to it.
+     *  @param directoryToCopy The destination directory, typically
+     *  an absolute path determined by the value of the codeDirectory
+     *  parameter.
+     *  @param codeFileNames the name of the file to copy.
+     *  @exception IllegalActionException If thrown while copying
+     *  a file.
+     */
+    protected void _copyCFilesTosrc(String path, String directoryToCopy,
+            String [] codeFileNames) throws IllegalActionException {
+	for(int i = 0; i < codeFileNames.length; i++) {
+	    _copyCFileTosrc(path, directoryToCopy,
+			    codeFileNames[i]);
+	}
     }
 
     /** Execute the compile and run commands in the

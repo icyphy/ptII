@@ -33,6 +33,7 @@ import java.io.File;
 import ptolemy.actor.CompositeActor;
 import ptolemy.cg.kernel.generic.GenericCodeGenerator;
 import ptolemy.cg.kernel.generic.program.procedural.ProceduralCodeGenerator;
+import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.NameDuplicationException;
@@ -159,16 +160,31 @@ public class FMIMACodeGenerator extends ProceduralCodeGenerator /*GenericCodeGen
                 _includes.add("-I " + directoryFmiIncludes);
             }
         }
+	_copyCFilesTosrc("ptolemy/actor/lib/fmi/ma/includes/",
+			 directoryFmiIncludes,
+			 new String [] {"fmi.h", "fmiFunctionTypes.h", "fmiFunctions.h", "fmiTypesPlatform.h"});
 
-        _copyCFileTosrc("ptolemy/actor/lib/fmi/ma/includes/",
-                directoryFmiIncludes, "fmi.h");
-        _copyCFileTosrc("ptolemy/actor/lib/fmi/ma/includes/",
-                directoryFmiIncludes, "fmiFunctionTypes.h");
-        _copyCFileTosrc("ptolemy/actor/lib/fmi/ma/includes/",
-                directoryFmiIncludes, "fmiFunctions.h");
-        _copyCFileTosrc("ptolemy/actor/lib/fmi/ma/includes/",
-                directoryFmiIncludes, "fmiTypesPlatform.h");
+        String directoryFmiParser = directoryFmi + "parser/";
+        if (new File(directoryFmiParser).mkdirs()) {
+            if (!_includes.contains("-I " + directoryFmiParser)) {
+                _includes.add("-I " + directoryFmiParser);
+            }
+        }
+	_copyCFilesTosrc("ptolemy/actor/lib/fmi/ma/parser/",
+			 directoryFmiParser,
+			 new String [] {"XmlElement.cpp", "XmlElement.h", "XmlParserCApi.cpp",
+					"XmlParserCApi.h", "XmlParser.cpp", "XmlParserException.h",
+					"XmlParser.h"});
 
+        String directoryFmiParserLibxml = directoryFmi + "parser/libxml/";
+        if (new File(directoryFmiParserLibxml).mkdirs()) {
+            if (!_includes.contains("-I " + directoryFmiParserLibxml)) {
+                _includes.add("-I " + directoryFmiParserLibxml);
+            }
+        }
+	_copyCFilesTosrc("ptolemy/actor/lib/fmi/ma/parser/libxml/",
+			 directoryFmiParserLibxml,
+			 new String [] {"dict.h", "encoding.h", "entities.h", "globals.h", "hash.h", "list.h", "parser.h", "relaxng.h", "SAX2.h", "SAX.h", "threads.h", "tree.h", "valid.h", "xlink.h", "xmlautomata.h", "xmlerror.h", "xmlexports.h", "xmlIO.h", "xmlmemory.h", "xmlreader.h", "xmlregexp.h", "xmlschemas.h", "xmlstring.h", "xmlversion.h"});
          if (_executeCommands == null) {
             _executeCommands = new StreamExec();
         }
@@ -189,5 +205,34 @@ public class FMIMACodeGenerator extends ProceduralCodeGenerator /*GenericCodeGen
      */
     protected Class<?> _getAdapterClassFilter() {
         return FMIMACodeGeneratorAdapter.class;
+    }
+
+    /** Read in a template makefile, substitute variables and write
+     *  the resulting makefile.
+     *
+     *  <p>See {@link  ptolemy.cg.kernel.generic.program.procedural.ProceduralCodeGenerator#_writeMakefile(CompositeEntity, String)
+     *  for a complete list of variables that are substituted.</p>
+     *  <p>In this class, the following variables are substituted
+     *  <dl>
+     *  <dt><code>@PTCGPPCompiler@</code>
+     *  <dd>The g++ compiler</dd>
+     *  <dt><code>@PTCGCompler@</code>
+     *  <dd>The gcc compiler</dd>
+     *  </dl>
+     *  @param container The composite actor for which we generate the makefile
+     *  @param currentDirectory The director in which the makefile is to be written.
+     *  @exception IllegalActionException  If there is a problem reading
+     *  a parameter, if there is a problem creating the codeDirectory directory
+     *  or if there is a problem writing the code to a file.
+     */
+    protected void _writeMakefile(CompositeEntity container,
+            String currentDirectory) throws IllegalActionException {
+	_substituteMap.put("@PTCGPPCompiler@", "g++");
+	_substituteMap.put("@PTCGCompiler@", "gcc");
+
+	_substituteMap.put("@PTCGLibraries@",
+			   _concatenateElements(_libraries));
+
+	super._writeMakefile(container, currentDirectory);
     }
 }

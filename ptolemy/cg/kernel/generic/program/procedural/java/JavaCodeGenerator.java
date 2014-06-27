@@ -1887,68 +1887,6 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
         return buffer.toString();
     }
 
-    /** Execute the compile and run commands in the
-     *  <i>codeDirectory</i> directory.
-     *  @return The return value of the last subprocess that was executed
-     *  or -1 if no commands were executed.
-     *  @exception IllegalActionException If there are problems reading
-     *  parameters or executing the commands.
-     */
-    protected int _executeCommands() throws IllegalActionException {
-        List<String> commands = new LinkedList<String>();
-
-        // The compile command.
-        if (((BooleanToken) compile.getToken()).booleanValue()) {
-            if (((BooleanToken) useMake.getToken()).booleanValue()) {
-                commands.add("make -f " + _sanitizedModelName + ".mk ");
-            } else {
-                String command = CodeGeneratorUtilities
-                        .substitute(((StringToken) compileCommand.getToken())
-                                .stringValue(), _substituteMap);
-                System.out.println("JavaCodeGenerator: compile command: "
-                        + command);
-                commands.add(command);
-            }
-        }
-
-        // The run command.
-        if (_isTopLevel()) {
-            if (((BooleanToken) run.getToken()).booleanValue()) {
-                if (((BooleanToken) useMake.getToken()).booleanValue()) {
-                    commands.add("make -f " + _sanitizedModelName + ".mk run");
-                } else {
-                    String command = CodeGeneratorUtilities
-                            .substitute(((StringToken) runCommand.getToken())
-                                    .stringValue(), _substituteMap);
-                    System.out.println("JavaCodeGenerator: run command: "
-                            + command);
-                    commands.add(command);
-                }
-            }
-        }
-
-        if (commands.size() == 0) {
-            return -1;
-        }
-
-        _executeCommands.setCommands(commands);
-        _executeCommands.setWorkingDirectory(codeDirectory.asFile());
-
-        try {
-            // FIXME: need to put this output in to the UI, if any.
-            _executeCommands.start();
-        } catch (Throwable throwable) {
-            StringBuffer errorMessage = new StringBuffer();
-            Iterator<?> allCommands = commands.iterator();
-            while (allCommands.hasNext()) {
-                errorMessage.append((String) allCommands.next() + _eol);
-            }
-            throw new IllegalActionException("Problem executing the "
-                    + "commands:" + _eol + errorMessage + _eol + throwable);
-        }
-        return _executeCommands.getLastSubprocessReturnCode();
-    }
-
     /** Make a final pass over the generated code. Subclass may extend
      * this method to do extra processing to format the output code. If
      * sourceLineBinding is set to true, it will check and insert the
