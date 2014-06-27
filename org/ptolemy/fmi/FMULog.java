@@ -164,9 +164,13 @@ public class FMULog {
 
                     case 's': // String
                         // C strings: Read until you hit NUL (utf-8 is NUL safe).
-                        out.append(String.format("%" + flags.toString() + "s",
-                                Native.ffi_closure_va_pointer(ffi_cif)
-                                        .getString(0)));
+			if (System.getProperty("os.name").equals("linux")) {
+			    out.append("FMULog: bug: Linux String Problem.");
+			} else {
+			    out.append(String.format("%" + flags.toString() + "s",
+						     Native.ffi_closure_va_pointer(ffi_cif)
+						     .getString(0)));
+			}
                         break;
 
                     case 'p': // Pointer
