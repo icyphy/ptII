@@ -1,6 +1,6 @@
-/* Code generator for FMIMA.
+/* Generate a Functional Mockup Interface Master Algorithm (FMIMA) description of a model.
 
-Copyright (c) 2009-2013 The Regents of the University of California.
+Copyright (c) 2014 The Regents of the University of California.
 All rights reserved.
 Permission is hereby granted, without written agreement and without
 license or royalty fees, to use, copy, modify, and distribute this
@@ -30,26 +30,30 @@ package ptolemy.cg.kernel.generic.program.procedural.fmima;
 
 import java.io.File;
 
+import ptolemy.actor.CompositeActor;
 import ptolemy.cg.kernel.generic.GenericCodeGenerator;
 import ptolemy.cg.kernel.generic.program.procedural.ProceduralCodeGenerator;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
+import ptolemy.util.StreamExec;
 
 ///////////////////////////////////////////////////////////////////
 ////FMIMACodeGenerator
 
-/** Generate a FMIMA description of a model.
+/** Generate a Functional Mockup Interface Master Algorithm (FMIMA) description of a model.
  *  <p>To generate an FMIMA version of a model, use:
  *  <pre>
- java -classpath $PTII ptolemy.cg.kernel.generic.program.procedural.fmima.FMIMACodeGenerator -generatorPackage ptolemy.cg.kernel.generic.program.procedural.fmima -generatorPackageList generic.program.procedural.fmima adapter/generic/program/procedural/fmima/demo/HierarchicalModel/HierarchicalModel.xml
+$PTII/bin/ptcg -generatorPackage ptolemy.cg.kernel.generic.program.procedural.fmima \
+    -generatorPackagelist generic.program.procedural.fmima \
+    $PTII/ptolemy/cg/kernel/generic/program/procedural/fmima/test/auto/FMUIncScale20RC1pt.xml
  * </pre>
- *  @author Man-Kit Leung, Bert Rodiers
+ *  @author Christopher Brooks
  *  @version $Id: FMIMACodeGenerator.java 67784 2013-10-26 16:53:27Z cxh $
  *  @since Ptolemy II 10.0
- *  @Pt.ProposedRating red (rodiers)
- *  @Pt.AcceptedRating red (rodiers)
+ *  @Pt.ProposedRating red (cxh)
+ *  @Pt.AcceptedRating red (cxh)
 */
 public class FMIMACodeGenerator extends ProceduralCodeGenerator /*GenericCodeGenerator*/ {
 
@@ -164,6 +168,14 @@ public class FMIMACodeGenerator extends ProceduralCodeGenerator /*GenericCodeGen
                 directoryFmiIncludes, "fmiFunctions.h");
         _copyCFileTosrc("ptolemy/actor/lib/fmi/ma/includes/",
                 directoryFmiIncludes, "fmiTypesPlatform.h");
+
+         if (_executeCommands == null) {
+            _executeCommands = new StreamExec();
+        }
+
+        // Writing the Makefile
+        CompositeActor container = (CompositeActor) getContainer();
+        _writeMakefile(container, directory);
 
         // Hopefully, we can skip the XML parsing because we have
         // already parsed the modelDescription.xml file.

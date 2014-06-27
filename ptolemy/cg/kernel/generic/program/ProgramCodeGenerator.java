@@ -28,10 +28,12 @@ COPYRIGHTENDKEY
 
 package ptolemy.cg.kernel.generic.program;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.Date;
+import java.util.Map;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -41,9 +43,11 @@ import java.util.Set;
 import java.util.StringTokenizer;
 
 import ptolemy.actor.Actor;
+import ptolemy.actor.CompositeActor;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.cg.adapter.generic.adapters.ptolemy.actor.Director;
 import ptolemy.cg.kernel.generic.CodeGeneratorAdapter;
+import ptolemy.cg.kernel.generic.CodeGeneratorUtilities;
 import ptolemy.cg.kernel.generic.GenericCodeGenerator;
 import ptolemy.cg.lib.PointerToken;
 import ptolemy.data.BooleanToken;
@@ -56,6 +60,7 @@ import ptolemy.data.type.MatrixType;
 import ptolemy.data.type.RecordType;
 import ptolemy.data.type.Type;
 import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.attributes.URIAttribute;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
@@ -63,6 +68,7 @@ import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.StreamListener;
+import ptolemy.util.JVMBitWidth;
 import ptolemy.util.StreamExec;
 import ptolemy.util.StringUtilities;
 
@@ -128,6 +134,8 @@ public class ProgramCodeGenerator extends GenericCodeGenerator {
         useMake = new Parameter(this, "useMake");
         useMake.setTypeEquals(BaseType.BOOLEAN);
         useMake.setExpression("true");
+
+	_substituteMap = CodeGeneratorUtilities.newMap(this);
 
         variablesAsArrays = new Parameter(this, "variablesAsArrays");
         variablesAsArrays.setTypeEquals(BaseType.BOOLEAN);
@@ -1344,7 +1352,7 @@ public class ProgramCodeGenerator extends GenericCodeGenerator {
 
         // Each time a .dll file is generated, we must use a different name
         // for it so that it can be loaded without restarting vergil.
-        NamedObj container = getContainer();
+        CompositeActor container = (CompositeActor) getContainer();
         if (container instanceof ptolemy.cg.lib.CompiledCompositeActor) {
             _sanitizedModelName = ((ptolemy.cg.lib.CompiledCompositeActor) container)
                     .getSanitizedName();
@@ -1612,7 +1620,14 @@ public class ProgramCodeGenerator extends GenericCodeGenerator {
         /*startTime =*/_printTimeAndMemory(startTime,
                 "CodeGenerator: writing code consumed: ");
 
-        _writeMakefile();
+        // Create the needed directories
+        String directory = codeDirectory.stringValue();
+        if (!directory.endsWith("/")) {
+            directory += "/";
+        }
+
+        // Writing the Makefile
+        _writeMakefile(container, directory);
 
         _printTimeAndMemory(overallStartTime,
                 "CodeGenerator: All phases above consumed: ");
@@ -1768,6 +1783,9 @@ public class ProgramCodeGenerator extends GenericCodeGenerator {
         _newTypesUsed.clear();
         _tokenFuncUsed.clear();
         _typeFuncUsed.clear();
+        if (_substituteMap != null) {
+            _substituteMap.clear();
+        }
     }
 
     /** Perform any setup or initialization of the adapter.
@@ -1827,11 +1845,216 @@ public class ProgramCodeGenerator extends GenericCodeGenerator {
 
     }
 
-    /** Create a make file to compile the generated code file(s).
-     *  In this base class, it does nothing.
-     *  @exception IllegalActionException Not thrown in this base class.
+    /** Read in a template makefile, substitute variables and write
+     *  the resulting makefile.
+     *
+     *  <p>If a <code>.mk.in</code> file with the name of the sanitized model
+     *  name, then that file is used as a template.  For example, if the
+     *  model name is <code>Foo</code> and the file <code>Foo.mk.in</code>
+     *  exists, then the file <code>Foo.mk.in</code> is used as a makefile
+     *  template.
+     *
+     *  <p>If no <code>.mk.in</code> file is found, then the makefile
+     *  template can be found by looking up a resource name
+     *  makefile.in in the package named by the
+     *  <i>generatorPackage</i> parameter.  Thus, if the
+     *  <i>generatorPackage</i> has the value "ptolemy.codegen.c",
+     *  then we look for the resource "ptolemy.codegen.c.makefile.in", which
+     *  is usually found as <code>$PTII/ptolemy/codegen/c/makefile.in</code>.
+     *
+     *  <p>The makefile is written to a directory named by the
+     *  <i>codeDirectory</i> parameter, with a file name that is a
+     *  sanitized version of the model name, and a ".mk" extension.
+     *  Thus, for a model named "Foo", we might generate a makefile in
+     *  "$HOME/codegen/Foo.mk".
+
+     *  <p>Under Java under Windows, your <code>$HOME</code> variable
+     *  is set to the value of the <code>user.home</code>System property,
+     *  which is usually something like
+     *  <code>C:\Documents and Settings\<i>yourlogin</i></code>, thus
+     *  for user <code>mrptolemy</code> the makefile would be
+     *  <code>C:\Documents and Settings\mrptolemy\codegen\Foo.mk</code>.
+     *
+     *  <p>The following variables are substituted
+     *  <dl>
+     *  <dt><code>@modelName@</code>
+     *  <dd>The sanitized model name, created by invoking
+     *  {@link ptolemy.util.StringUtilities#sanitizeName(String)}
+     *  on the model name.
+     *  <dt><code>@PTCGIncludes@</code>
+     *  <dd>The elements of the set of include command arguments that
+     *  were added by calling {@link #addInclude(String)}, where each
+     *  element is separated by a space.
+     *  </dl>
+     *  @param container The composite actor for which we generate the makefile
+     *  @param currentDirectory The director in which the makefile is to be written.
+     *  @exception IllegalActionException  If there is a problem reading
+     *  a parameter, if there is a problem creating the codeDirectory directory
+     *  or if there is a problem writing the code to a file.
      */
-    protected void _writeMakefile() throws IllegalActionException {
+    protected void _writeMakefile(CompositeEntity container,
+            String currentDirectory) throws IllegalActionException {
+        File codeDirectoryFile = new File(currentDirectory);
+        if (codeDirectoryFile.isFile()) {
+            throw new IllegalActionException(this, "Error: "
+                    + codeDirectory.stringValue() + " is a file, "
+                    + " it should be a directory.");
+        }
+
+        if (!codeDirectoryFile.isDirectory() && !codeDirectoryFile.mkdirs()) {
+            throw new IllegalActionException(this, "Failed to make the \""
+                    + codeDirectory.stringValue() + "\" directory.");
+        }
+
+            // Add substitutions for all the parameter.
+            // For example, @generatorPackage@ will be replaced with
+            // the value of the generatorPackage.
+            _substituteMap.put("@modelName@", _sanitizedModelName);
+
+            _substituteMap.put("@CLASSPATHSEPARATOR@",
+                    StringUtilities.getProperty("path.separator"));
+
+            // Define substitutions to be used in the makefile
+            _substituteMap.put("@PTJNI_NO_CYGWIN@", "");
+            _substituteMap.put("@PTJNI_SHAREDLIBRARY_CFLAG@", "");
+            _substituteMap.put("@PTJNI_SHAREDLIBRARY_LDFLAG@", "");
+            _substituteMap.put("@PTJNI_SHAREDLIBRARY_PREFIX@", "");
+            _substituteMap.put("@PTJNI_SHAREDLIBRARY_SUFFIX@", "");
+            _substituteMap.put("@PTJavaCompiler@", "javac");
+
+            String osName = StringUtilities.getProperty("os.name");
+            if (osName != null) {
+                // Keep these alphabetical
+                if (osName.startsWith("Linux")) {
+                    _substituteMap.put("@PTJNI_GCC_SHARED_FLAG@", "-shared");
+                    // Need -fPIC for jni actors, see
+                    // codegen/c/actor/lib/jni/test/auto/Scale.xml
+                    _substituteMap.put("@PTJNI_SHAREDLIBRARY_CFLAG@", "-fPIC");
+                    _substituteMap.put("@PTJNI_SHAREDLIBRARY_LDFLAG@", "-fPIC");
+                    _substituteMap.put("@PTJNI_SHAREDLIBRARY_PREFIX@", "lib");
+                    _substituteMap.put("@PTJNI_SHAREDLIBRARY_SUFFIX@", "so");
+                } else if (osName.startsWith("Mac OS X")) {
+                    String widthFlag = "";
+                    if (!JVMBitWidth.is32Bit()) {
+                        widthFlag = "-m64 ";
+                    }
+                    _substituteMap.put("@PTJNI_GCC_SHARED_FLAG@", widthFlag
+                            + "-dynamiclib");
+                    _substituteMap.put("@PTJNI_SHAREDLIBRARY_PREFIX@", "lib");
+                    _substituteMap.put("@PTJNI_SHAREDLIBRARY_SUFFIX@", "dylib");
+                } else if (osName.startsWith("SunOS")) {
+                    _substituteMap.put("@PTJNI_GCC_SHARED_FLAG@", "-shared");
+                    _substituteMap.put("@PTJNI_SHAREDLIBRARY_CFLAG@", "-fPIC");
+                    _substituteMap.put("@PTJNI_SHAREDLIBRARY_LDFLAG@", "-fPIC");
+                    _substituteMap.put("@PTJNI_SHAREDLIBRARY_PREFIX@", "lib");
+                    _substituteMap.put("@PTJNI_SHAREDLIBRARY_SUFFIX@", "so");
+                } else if (osName.startsWith("Windows")) {
+                    _substituteMap.put("@PTJNI_GCC_SHARED_FLAG@", "-shared");
+                    _substituteMap.put("@PTJNI_NO_CYGWIN@", "-mno-cygwin");
+                    _substituteMap.put("@PTJNI_SHAREDLIBRARY_LDFLAG@",
+                            "-Wl,--add-stdcall-alias");
+                    _substituteMap.put("@PTJNI_SHAREDLIBRARY_SUFFIX@", "dll");
+                } else {
+                    _substituteMap.put("@PTJNI_SHAREDLIBRARY_LDFLAG@",
+                            "# Unknown java property os.name \"" + osName
+                                    + "\" please edit ptolemy/codegen/c/"
+                                    + "kernel/CCodeGenerator.java and "
+                                    + "ptolemy/actor/lib/jni/"
+                                    + "CompiledCompositeActor.java");
+                }
+
+            }
+
+
+        List<String> templateList = new LinkedList<String>();
+
+        // 1. Look for a .mk.in file with the same name as the model.
+        URIAttribute uriAttribute = (URIAttribute) _model.getAttribute("_uri",
+                URIAttribute.class);
+        if (uriAttribute != null) {
+            String uriString = uriAttribute.getURI().toString();
+            templateList.add(uriString.substring(0,
+                    uriString.lastIndexOf("/") + 1)
+                    + _sanitizedModelName
+                    + ".mk.in");
+        }
+
+        String generatorDirectory = generatorPackageList.stringValue().replace(
+                '.', '/');
+
+        if (container.getContainer() != null) {
+            // We have a embedded code generator
+            templateList.add("ptolemy/cg/kernel/" + generatorDirectory
+                    + (_isTopLevel() ? "/makefile.in" : "/jnimakefile.in"));
+
+        }
+
+        // 2. If the target parameter is set, look for a makefile.
+
+        // Look for generator specific make file
+        templateList.add("ptolemy/cg/kernel/" + generatorDirectory
+                + "/makefile.in");
+
+        // Look for generator specific make file
+        templateList.add("ptolemy/cg/adapter/" + generatorDirectory
+                + "/makefile.in");
+
+        // 3. Look for the generic makefile.in
+        // Note this code is repeated in the catch below.
+
+        templateList.add("ptolemy/cg/kernel/" + generatorDirectory
+                + "/makefile.in");
+
+        // If necessary, add a trailing / after codeDirectory.
+        String makefileOutputName = codeDirectory.stringValue()
+                + (!codeDirectory.stringValue().endsWith("/")
+                        && !codeDirectory.stringValue().endsWith("\\") ? "/"
+                        : "") + _sanitizedModelName + ".mk";
+
+        BufferedReader makefileTemplateReader = null;
+
+        StringBuffer errorMessage = new StringBuffer();
+        String makefileTemplateName = null;
+        boolean success = false;
+        try {
+            Iterator<?> templates = templateList.iterator();
+            while (templates.hasNext()) {
+                makefileTemplateName = (String) templates.next();
+                try {
+                    makefileTemplateReader = CodeGeneratorUtilities
+                            .openAsFileOrURL(makefileTemplateName);
+                } catch (IOException ex) {
+                    errorMessage.append("Failed to open \""
+                            + makefileTemplateName + "\". ");
+                }
+                if (makefileTemplateReader != null) {
+                    _executeCommands.stdout("Reading \"" + makefileTemplateName
+                            + "\"," + _eol + "    writing \""
+                            + makefileOutputName + "\"");
+                    CodeGeneratorUtilities.substitute(makefileTemplateReader,
+						      _substituteMap, makefileOutputName);
+                    success = true;
+                    break;
+                }
+            }
+        } catch (Throwable throwable) {
+            throw new IllegalActionException(this, throwable,
+                    "Failed to read \"" + makefileTemplateName
+                            + "\" or write \"" + makefileOutputName + "\"");
+        } finally {
+            if (makefileTemplateReader != null) {
+                try {
+                    makefileTemplateReader.close();
+                } catch (IOException ex) {
+                    throw new IllegalActionException(this, ex,
+                            "Failed to close \"" + makefileTemplateName + "\"");
+                }
+            }
+        }
+        if (!success) {
+            throw new IllegalActionException(this, errorMessage.toString());
+        }
+        System.out.println("Using " + makefileTemplateName);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -1994,6 +2217,12 @@ public class ProgramCodeGenerator extends GenericCodeGenerator {
      *  parameter with a new value.
      */
     protected final static String _runCommandDefault = "make -f @modelName@.mk run";
+
+    /** Map of '@' delimited keys to values.  Used to create
+     *  the makefile from makefile.in.
+     *  Use "@help:all@" to list all key/value pairs.
+     */
+    protected Map<String, String> _substituteMap;
 
     /** A set that contains all token functions referenced in the model.
      *  When the codegen kernel processes a $tokenFunc() macro, it must add

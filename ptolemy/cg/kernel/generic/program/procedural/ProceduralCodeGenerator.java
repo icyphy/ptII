@@ -28,7 +28,9 @@ COPYRIGHTENDKEY
 
 package ptolemy.cg.kernel.generic.program.procedural;
 
+import java.util.Collection;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
@@ -37,6 +39,7 @@ import ptolemy.cg.kernel.generic.program.ProgramCodeGenerator;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.StringParameter;
 import ptolemy.data.type.BaseType;
+import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
@@ -197,6 +200,24 @@ public class ProceduralCodeGenerator extends ProgramCodeGenerator {
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
+    /** Given a Collection of Strings, return a string where each element of the
+     *  Set is separated by a space.
+     *  @param collection The Collection of Strings.
+     *  @return A String that contains each element of the Set separated by
+     *  a space.
+     */
+    protected String _concatenateElements(Collection<String> collection) {
+        StringBuffer buffer = new StringBuffer();
+        Iterator<String> iterator = collection.iterator();
+        while (iterator.hasNext()) {
+            if (buffer.length() > 0) {
+                buffer.append(" ");
+            }
+            buffer.append(iterator.next());
+        }
+        return buffer.toString();
+    }
+
     /** Reset the code generator.
      *  @exception IllegalActionException Not thrown in this base
      *  class, thrown by the parent if the container of the model
@@ -207,6 +228,64 @@ public class ProceduralCodeGenerator extends ProgramCodeGenerator {
 
         _includes.clear();
         _libraries.clear();
+    }
+
+    /** Read in a template makefile, substitute variables and write
+     *  the resulting makefile.
+     *
+     *  <p>If a <code>.mk.in</code> file with the name of the sanitized model
+     *  name, then that file is used as a template.  For example, if the
+     *  model name is <code>Foo</code> and the file <code>Foo.mk.in</code>
+     *  exists, then the file <code>Foo.mk.in</code> is used as a makefile
+     *  template.
+     *
+     *  <p>If no <code>.mk.in</code> file is found, then the makefile
+     *  template can be found by looking up a resource name
+     *  makefile.in in the package named by the
+     *  <i>generatorPackage</i> parameter.  Thus, if the
+     *  <i>generatorPackage</i> has the value "ptolemy.codegen.c",
+     *  then we look for the resource "ptolemy.codegen.c.makefile.in", which
+     *  is usually found as <code>$PTII/ptolemy/codegen/c/makefile.in</code>.
+     *
+     *  <p>The makefile is written to a directory named by the
+     *  <i>codeDirectory</i> parameter, with a file name that is a
+     *  sanitized version of the model name, and a ".mk" extension.
+     *  Thus, for a model named "Foo", we might generate a makefile in
+     *  "$HOME/codegen/Foo.mk".
+
+     *  <p>Under Java under Windows, your <code>$HOME</code> variable
+     *  is set to the value of the <code>user.home</code>System property,
+     *  which is usually something like
+     *  <code>C:\Documents and Settings\<i>yourlogin</i></code>, thus
+     *  for user <code>mrptolemy</code> the makefile would be
+     *  <code>C:\Documents and Settings\mrptolemy\codegen\Foo.mk</code>.
+     *
+     *  <p>The following variables are substituted
+     *  <dl>
+     *  <dt><code>@modelName@</code>
+     *  <dd>The sanitized model name, created by invoking
+     *  {@link ptolemy.util.StringUtilities#sanitizeName(String)}
+     *  on the model name.
+     *  <dt><code>@PTCGIncludes@</code>
+     *  <dd>The elements of the set of include command arguments that
+     *  were added by calling {@link #addInclude(String)}, where each
+     *  element is separated by a space.
+     *  <dt><code>@PTCGLibraries@</code>
+     *  <dd>The elements of the set of library command arguments that
+     *  were added by calling {@link #addLibrary(String)}, where each
+     *  element is separated by a space.
+     *  </dl>
+     *  @param container The composite actor for which we generate the makefile
+     *  @param currentDirectory The director in which the makefile is to be written.
+     *  @exception IllegalActionException  If there is a problem reading
+     *  a parameter, if there is a problem creating the codeDirectory directory
+     *  or if there is a problem writing the code to a file.
+     */
+    protected void _writeMakefile(CompositeEntity container,
+            String currentDirectory) throws IllegalActionException {
+	_substituteMap
+	    .put("@PTCGIncludes@", _concatenateElements(_includes));
+	super._writeMakefile(container, currentDirectory);
     }
 
     ///////////////////////////////////////////////////////////////////

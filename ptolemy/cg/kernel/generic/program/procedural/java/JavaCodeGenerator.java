@@ -65,6 +65,7 @@ import ptolemy.data.type.ArrayType;
 import ptolemy.data.type.BaseType;
 import ptolemy.data.type.MatrixType;
 import ptolemy.data.type.Type;
+import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.attributes.URIAttribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
@@ -1863,6 +1864,29 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
 
     }
 
+   /** Given a Collection of Strings, return a string where each element of the
+     *  Set is separated by $.
+     *  @param collection The Collection of Strings.
+     *  @return A String that contains each element of the Set separated by
+     *  a space.
+     */
+    protected String _concatenateClasspath(Collection<String> collection) {
+        StringBuffer buffer = new StringBuffer();
+        Iterator<String> iterator = collection.iterator();
+        while (iterator.hasNext()) {
+            if (buffer.length() > 0) {
+                //buffer.append("$(CLASSPATHSEPARATOR)");
+                buffer.append(File.pathSeparator);
+            }
+            buffer.append(iterator.next());
+        }
+        if (buffer.length() > 0) {
+            //buffer.append("$(CLASSPATHSEPARATOR)");
+            buffer.append(File.pathSeparator);
+        }
+        return buffer.toString();
+    }
+
     /** Execute the compile and run commands in the
      *  <i>codeDirectory</i> directory.
      *  @return The return value of the last subprocess that was executed
@@ -2153,9 +2177,9 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
         if (_variableTypeMaxIndex != null) {
             _variableTypeMaxIndex.clear();
         }
-        if (_substituteMap != null) {
-            _substituteMap.clear();
-        }
+//         if (_substituteMap != null) {
+//             _substituteMap.clear();
+//         }
     }
 
     /** Return the class of the templateParser class. In cse
@@ -2211,51 +2235,14 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
      *  were added by calling {@link #addLibrary(String)}, where each
      *  element is separated by a space.
      *  </dl>
-
+     *  @param container The composite actor for which we generate the makefile
+     *  @param currentDirectory The director in which the makefile is to be written.
      *  @exception IllegalActionException  If there is a problem reading
      *  a parameter, if there is a problem creating the codeDirectory directory
      *  or if there is a problem writing the code to a file.
      */
-    protected void _writeMakefile() throws IllegalActionException {
-
-        // Write the code to a file with the same name as the model into
-        // the directory named by the codeDirectory parameter.
-        //try {
-        // Check if needs to overwrite.
-        if (!((BooleanToken) overwriteFiles.getToken()).booleanValue()
-                && codeDirectory.asFile().exists()) {
-            // FIXME: It is totally bogus to ask a yes/no question
-            // like this, since it makes it impossible to call
-            // this method from a script.  If the question is
-            // asked, the build will hang.
-            if (!MessageHandler.yesNoQuestion(codeDirectory.asFile()
-                    + " exists. OK to overwrite?")) {
-                return;
-                /*
-                throw new IllegalActionException(this,
-                        "Please select another file name.");
-                        */
-            }
-        }
-
-        //File codeDirectoryFile = null;
-        //try {
-        //    /*codeDirectoryFile = */ _codeDirectoryAsFile();
-        //} catch (IOException ex) {
-        //    throw new IllegalActionException(this, getComponent(),
-        //            "Failed to get the codeDirectory as a parameter");
-        //}
-
-        try {
-            // Add substitutions for all the parameter.
-            // For example, @generatorPackage@ will be replaced with
-            // the value of the generatorPackage.
-            _substituteMap = CodeGeneratorUtilities.newMap(this);
-            _substituteMap.put("@modelName@", _sanitizedModelName);
-            _substituteMap.put("@CLASSPATHSEPARATOR@",
-                    StringUtilities.getProperty("path.separator"));
-            _substituteMap.put("@PTCGIncludes@",
-                    _concatenateElements(_includes));
+    protected void _writeMakefile(CompositeEntity container,
+            String currentDirectory) throws IllegalActionException {
 
             if (!_libraries.isEmpty()) {
                 // Loop through the path elements in java.class.path and add
@@ -2273,6 +2260,8 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
                 addLibraryIfNecessary("..");
             }
 
+            _substituteMap.put("@ROOT@", root);
+
             if (_libraries.size() == 0) {
                 addLibraryIfNecessary(".");
             }
@@ -2285,133 +2274,9 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
             }
             _substituteMap.put("@PTCGLibraries@", ptcgLibraries);
 
-            // Define substitutions to be used in the makefile
-            _substituteMap.put("@PTJNI_NO_CYGWIN@", "");
-            _substituteMap.put("@PTJNI_SHAREDLIBRARY_CFLAG@", "");
-            _substituteMap.put("@PTJNI_SHAREDLIBRARY_LDFLAG@", "");
-            _substituteMap.put("@PTJNI_SHAREDLIBRARY_PREFIX@", "");
-            _substituteMap.put("@PTJNI_SHAREDLIBRARY_SUFFIX@", "");
-            _substituteMap.put("@PTJavaCompiler@", "javac");
-
             _substituteMap.put("@MODELCLASS@", modelClass);
-            _substituteMap.put("@ROOT@", root);
 
-            String osName = StringUtilities.getProperty("os.name");
-            if (osName != null) {
-                // Keep these alphabetical
-                if (osName.startsWith("Linux")) {
-                    _substituteMap.put("@PTJNI_GCC_SHARED_FLAG@", "-shared");
-                    _substituteMap.put("@PTJNI_SHAREDLIBRARY_PREFIX@", "lib");
-                    _substituteMap.put("@PTJNI_SHAREDLIBRARY_SUFFIX@", "so");
-                } else if (osName.startsWith("Mac OS X")) {
-                    _substituteMap
-                            .put("@PTJNI_GCC_SHARED_FLAG@", "-dynamiclib");
-                    _substituteMap.put("@PTJNI_SHAREDLIBRARY_PREFIX@", "lib");
-                    _substituteMap.put("@PTJNI_SHAREDLIBRARY_SUFFIX@", "dylib");
-                } else if (osName.startsWith("SunOS")) {
-                    _substituteMap.put("@PTJNI_GCC_SHARED_FLAG@", "-shared");
-                    _substituteMap.put("@PTJNI_SHAREDLIBRARY_CFLAG@", "-fPIC");
-                    _substituteMap.put("@PTJNI_SHAREDLIBRARY_LDFLAG@", "-fPIC");
-                    _substituteMap.put("@PTJNI_SHAREDLIBRARY_PREFIX@", "lib");
-                    _substituteMap.put("@PTJNI_SHAREDLIBRARY_SUFFIX@", "so");
-                } else if (osName.startsWith("Windows")) {
-                    _substituteMap.put("@PTJNI_GCC_SHARED_FLAG@", "-shared");
-                    _substituteMap.put("@PTJNI_NO_CYGWIN@", "-mno-cygwin");
-                    _substituteMap.put("@PTJNI_SHAREDLIBRARY_LDFLAG@",
-                            "-Wl,--add-stdcall-alias");
-                    _substituteMap.put("@PTJNI_SHAREDLIBRARY_SUFFIX@", "dll");
-                } else {
-                    _substituteMap.put("@PTJNI_SHAREDLIBRARY_LDFLAG@",
-                            "# Unknown java property os.name \"" + osName
-                                    + "\" please edit ptolemy/cg/"
-                                    + "kernel/generic/program/procedural/java/"
-                                    + "JavaCodeGenerator.java and "
-                                    + "ptolemy/cg/adapter/generic/program/"
-                                    + "procedural/java/adapters/ptolemy/cg/"
-                                    + "lib/CompiledCompositeActor.java");
-
-                }
-
-            }
-        } catch (IllegalActionException ex) {
-            throw new InternalErrorException(this, ex,
-                    "Problem generating substitution map from " + _model);
-        }
-
-        List<String> templateList = new LinkedList<String>();
-
-        // 1. Look for a .mk.in file with the same name as the model.
-        URIAttribute uriAttribute = (URIAttribute) _model.getAttribute("_uri",
-                URIAttribute.class);
-        if (uriAttribute != null) {
-            String uriString = uriAttribute.getURI().toString();
-            templateList.add(uriString.substring(0,
-                    uriString.lastIndexOf("/") + 1)
-                    + _sanitizedModelName
-                    + ".mk.in");
-        }
-        // 2. If the target parameter is set, look for a makefile.
-
-        String generatorDirectory = generatorPackageList.stringValue().replace(
-                '.', '/');
-        templateList.add("ptolemy/cg/kernel/" + generatorDirectory
-                + "/makefile.in");
-
-        // 3. Look for the generic makefile.in
-        // Note this code is repeated in the catch below.
-
-        templateList.add("ptolemy/cg/kernel/" + generatorDirectory
-                + "/makefile.in");
-
-        // If necessary, add a trailing / after codeDirectory.
-        String makefileOutputName = codeDirectory.stringValue()
-                + (!codeDirectory.stringValue().endsWith("/")
-                        && !codeDirectory.stringValue().endsWith("\\") ? "/"
-                        : "") + _sanitizedModelName + ".mk";
-
-        BufferedReader makefileTemplateReader = null;
-
-        StringBuffer errorMessage = new StringBuffer();
-        String makefileTemplateName = null;
-        boolean success = false;
-        try {
-            Iterator<?> templates = templateList.iterator();
-            while (templates.hasNext()) {
-                makefileTemplateName = (String) templates.next();
-                try {
-                    makefileTemplateReader = CodeGeneratorUtilities
-                            .openAsFileOrURL(makefileTemplateName);
-                } catch (IOException ex) {
-                    errorMessage.append("Failed to open \""
-                            + makefileTemplateName + "\". ");
-                }
-                if (makefileTemplateReader != null) {
-                    _executeCommands.stdout("Reading \"" + makefileTemplateName
-                            + "\"," + _eol + "    writing \""
-                            + makefileOutputName + "\"");
-                    CodeGeneratorUtilities.substitute(makefileTemplateReader,
-                            _substituteMap, makefileOutputName);
-                    success = true;
-                    break;
-                }
-            }
-        } catch (Throwable throwable) {
-            throw new IllegalActionException(this, throwable,
-                    "Failed to read \"" + makefileTemplateName
-                            + "\" or write \"" + makefileOutputName + "\"");
-        } finally {
-            if (makefileTemplateReader != null) {
-                try {
-                    makefileTemplateReader.close();
-                } catch (IOException ex) {
-                    throw new IllegalActionException(this, ex,
-                            "Failed to close \"" + makefileTemplateName + "\"");
-                }
-            }
-        }
-        if (!success) {
-            throw new IllegalActionException(this, errorMessage.toString());
-        }
+        super._writeMakefile(container, currentDirectory);
     }
 
     /** Write the variable declaration code.
@@ -2670,49 +2535,6 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
-    /** Given a Collection of Strings, return a string where each element of the
-     *  Set is separated by $.
-     *  @param collection The Collection of Strings.
-     *  @return A String that contains each element of the Set separated by
-     *  a space.
-     */
-    private static String _concatenateClasspath(Collection<String> collection) {
-        StringBuffer buffer = new StringBuffer();
-        Iterator<String> iterator = collection.iterator();
-        while (iterator.hasNext()) {
-            if (buffer.length() > 0) {
-                //buffer.append("$(CLASSPATHSEPARATOR)");
-                buffer.append(File.pathSeparator);
-            }
-            buffer.append(iterator.next());
-        }
-        if (buffer.length() > 0) {
-            //buffer.append("$(CLASSPATHSEPARATOR)");
-            buffer.append(File.pathSeparator);
-        }
-        return buffer.toString();
-    }
-
-    /** Given a Collection of Strings, return a string where each element of the
-     *  Set is separated by a space.
-     *  @param collection The Collection of Strings.
-     *  @return A String that contains each element of the Set separated by
-     *  a space.
-     */
-    private static String _concatenateElements(Collection<String> collection) {
-        // FIXME: this is code duplication of
-        // ptolemy/cg/kernel/generic/program/procedural/c/CCodeGenerator.java
-        StringBuffer buffer = new StringBuffer();
-        Iterator<String> iterator = collection.iterator();
-        while (iterator.hasNext()) {
-            if (buffer.length() > 0) {
-                buffer.append(" ");
-            }
-            buffer.append(iterator.next());
-        }
-        return buffer.toString();
-    }
-
     /** Return the set of referenced functions.
      * @return The set of referenced functions.
      */
@@ -2826,12 +2648,6 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
      *  We use one method so as to reduce code size.
      */
     private static Set<String> _scalarDeleteTypes;
-
-    /** Map of '@' delimited keys to values.  Used to create
-     *  the makefile from makefile.in.
-     *  Use "@help:all@" to list all key/value pairs.
-     */
-    private Map<String, String> _substituteMap;
 
     static {
         _unsupportedTypeFunctions = new HashSet<String>();
