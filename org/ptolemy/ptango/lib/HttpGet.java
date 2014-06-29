@@ -27,15 +27,13 @@
  */
 package org.ptolemy.ptango.lib;
 
-import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.SocketTimeoutException;
 import java.net.URL;
-import java.net.URLConnection;
 
+import org.ptolemy.ptango.lib.HttpRequest.Method;
+
+import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.lib.LimitedFiringSource;
 import ptolemy.actor.parameters.PortParameter;
 import ptolemy.data.BooleanToken;
@@ -96,7 +94,12 @@ public class HttpGet extends LimitedFiringSource {
         newline = new Parameter(this, "newline");
         newline.setExpression("property(\"line.separator\")");
 
-        output.setTypeEquals(BaseType.STRING);
+        output.setTypeEquals(BaseType.STRING);  
+        new SingletonParameter(output, "_showName").setToken(BooleanToken.TRUE);
+        
+        status = new TypedIOPort(this, "status", false, true);
+        status.setTypeEquals(HttpResponse.getStatusType());
+        new SingletonParameter(status, "_showName").setToken(BooleanToken.TRUE); 
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -106,6 +109,13 @@ public class HttpGet extends LimitedFiringSource {
      *  of the line.separator property
      */
     public Parameter newline;
+    
+    /** An output port for transmitting a token containing the status of the 
+     * request.  This is a RecordToken comprised of the response code, 
+     * response message, a boolean indicating if the request was successful,
+     * and a boolean indicating if further action is expected.
+     */
+    public TypedIOPort status;
 
     /** The timeout in milliseconds for establishing a connection or reading a value.
      *  Set to NONE to specify no timeout.
@@ -114,8 +124,8 @@ public class HttpGet extends LimitedFiringSource {
     public Parameter timeout;
 
     /** The response to send upon timeout.
-     *  If this is empty, then this actor will throw an exception rather than send a response.
-     *  This is a string that defaults to empty.
+     *  If this is empty, then this actor will throw an exception rather than 
+     *  send a response.  This is a string that defaults to empty.
      */
     public StringParameter timeoutResponse;
 
@@ -127,7 +137,7 @@ public class HttpGet extends LimitedFiringSource {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-
+    
     /** If there is an input, then post to the specified URL the
      *  data on the input record, wait for a response, and output
      *  the response on the output port.
@@ -136,100 +146,57 @@ public class HttpGet extends LimitedFiringSource {
     public void fire() throws IllegalActionException {
         super.fire();
         url.update();
-        String spec = ((StringToken) url.getToken()).stringValue();
-        if (spec == null || spec.isEmpty()) {
+        
+        if (_request == null) {
+            _request = new HttpRequest();
+        }
+        
+        String urlValue = ((StringToken) url.getToken()).stringValue();
+        if (urlValue == null || urlValue.isEmpty()) {
             throw new IllegalActionException("No URL provided.");
         }
-        BufferedReader reader = null;
-        InputStreamReader inputStreamReader = null;
+        
         try {
-            URL theURL = new URL(spec);
-            if (_debugging) {
-                _debug("Opening URL connection.");
-            }
-            _connection = theURL.openConnection();
+            _request.setUrl(new URL(urlValue));
 
+            _request.setMethod(Method.GET);
+            
             // If a timeout has been specified, set it.
             int timeoutValue = ((IntToken) timeout.getToken()).intValue();
             if (timeoutValue >= 0) {
-                _connection.setConnectTimeout(timeoutValue);
-                _connection.setReadTimeout(timeoutValue);
+                _request.setTimeout(timeoutValue);
             }
 
-            while (inputStreamReader == null) {
-                try {
-                    inputStreamReader = new InputStreamReader(
-                            _connection.getInputStream());
-                } catch (SocketTimeoutException ex) {
-                    if (_debugging) {
-                        _debug("*** Timeout occurred.");
-                    }
-                    String response = timeoutResponse.stringValue();
-                    if (response.trim().equals("")) {
-                        throw new IllegalActionException(this,
-                                "HTTP Get timed out.");
-                    }
-                    output.send(0, new StringToken(response));
-                    return;
-                }
-            }
-            if (_debugging) {
-                _debug("Input stream is open. Reading it.");
-            }
-            reader = new BufferedReader(inputStreamReader);
-
-            StringBuffer lineBuffer = new StringBuffer();
-            String newlineValue = ((StringToken) newline.getToken())
-                    .stringValue();
-            while (true) {
-                String line = reader.readLine();
-
-                if (line == null) {
-                    if (_debugging) {
-                        _debug("End of file.");
-                    }
-                    break;
-                }
+            HttpResponse response = _request.execute();
+            
+            // If a timeout occurs, check if an exception should be thrown
+            if (response.timedOut()) { 
                 if (_debugging) {
-                    _debug("Read input line: " + line);
+                    _debug("*** Timeout occurred.");
                 }
-
-                lineBuffer = lineBuffer.append(line);
-                lineBuffer = lineBuffer.append(newlineValue);
-            }
-            if (_debugging) {
-                _debug("Sending response to output: " + lineBuffer.toString());
-            }
-            output.send(0, new StringToken(lineBuffer.toString()));
-        } catch (IOException ex) {
-            throw new IllegalActionException(this, ex,
-                    "HTTP Get failed with an exception.");
-        } finally {
-            if (reader != null) {
-                try {
-                    if (_debugging) {
-                        _debug("Closing reader.");
-                    }
-                    reader.close();
-                } catch (IOException e) {
-                    // Ignore, but print a warning.
-                    e.printStackTrace();
+                String timeout = timeoutResponse.stringValue();
+                if (timeout.trim().equals("")) {
+                    throw new IllegalActionException(this,
+                            "HTTP " + _request.getMethod() 
+                            + " " + response.getResponseMessage());
                 }
             }
-            _connection = null;
+            
+            // FIXME: default response upon failure or empty string? 
+            output.send(0, new StringToken(response.getBody()));         
+            status.send(0, response.getStatus());
+        } catch (IOException e) {
+            throw new IllegalActionException(this, e, "HTTP request failed");
         }
     }
 
     public void wrapup() {
-        if (_connection instanceof HttpURLConnection) {
-            // FIXME: Does nothing!!!!!!!!!!!!!!
-            ((HttpURLConnection) _connection).disconnect();
-        }
+        _request.disconnect();
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
-    /** The URL connection, if it exists. */
-    private URLConnection _connection;
+    
+    /** The Http request **/
+    HttpRequest _request;
 }

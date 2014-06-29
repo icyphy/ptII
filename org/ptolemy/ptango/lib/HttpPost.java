@@ -27,23 +27,24 @@
  */
 package org.ptolemy.ptango.lib;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
 import java.io.UnsupportedEncodingException;
 import java.net.URL;
-import java.net.URLConnection;
 import java.net.URLEncoder;
+
+import org.ptolemy.ptango.lib.HttpRequest.Method;
 
 import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.parameters.PortParameter;
 import ptolemy.data.BooleanToken;
+import ptolemy.data.IntToken;
 import ptolemy.data.RecordToken;
 import ptolemy.data.StringToken;
 import ptolemy.data.Token;
+import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.SingletonParameter;
+import ptolemy.data.expr.StringParameter;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
@@ -87,6 +88,13 @@ public class HttpPost extends TypedAtomicActor {
         StringAttribute cardinal = new StringAttribute(url.getPort(),
                 "_cardinal");
         cardinal.setExpression("SOUTH");
+        
+        timeout = new Parameter(this, "timeout");
+        timeout.setTypeEquals(BaseType.INT);
+        timeout.setExpression("30000");
+        timeout.addChoice("NONE");
+
+        timeoutResponse = new StringParameter(this, "timeoutResponse");
 
         input = new TypedIOPort(this, "input", true, false);
         // The type record is the top of the record sublattice, hence the most general record type.
@@ -96,6 +104,11 @@ public class HttpPost extends TypedAtomicActor {
 
         output = new TypedIOPort(this, "output", false, true);
         output.setTypeEquals(BaseType.STRING);
+        new SingletonParameter(output, "_showName").setToken(BooleanToken.TRUE);
+        
+        status = new TypedIOPort(this, "status", false, true);
+        status.setTypeEquals(HttpResponse.getStatusType());
+        new SingletonParameter(status, "_showName").setToken(BooleanToken.TRUE); 
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -108,6 +121,25 @@ public class HttpPost extends TypedAtomicActor {
     /** The output port, which delivers a string, the response to the post.
      */
     public TypedIOPort output;
+    
+    /** An output port for transmitting a token containing the status of the 
+     * request.  This is a RecordToken comprised of the response code, 
+     * response message, a boolean indicating if the request was successful,
+     * and a boolean indicating if further action is expected.
+     */
+    public TypedIOPort status;
+    
+    /** The timeout in milliseconds for establishing a connection or reading a value.
+     *  Set to NONE to specify no timeout.
+     *  This is an integer that defaults to 30000, giving a timeout of 30 seconds.
+     */
+    public Parameter timeout;
+
+    /** The response to send upon timeout.
+     *  If this is empty, then this actor will throw an exception rather than 
+     *  send a response.  This is a string that defaults to empty.
+     */
+    public StringParameter timeoutResponse;
 
     /** The URL to post to.
      *  This is a string that defaults to "http://localhost", which
@@ -138,6 +170,7 @@ public class HttpPost extends TypedAtomicActor {
     public void fire() throws IllegalActionException {
         super.fire();
         url.update();
+        
         // If there is no input, do nothing.
         if (input.hasToken(0)) {
             RecordToken record = (RecordToken) input.get(0);
@@ -154,7 +187,8 @@ public class HttpPost extends TypedAtomicActor {
                 try {
                     data.append(URLEncoder.encode(field, "UTF-8"));
                     data.append("=");
-                    // If the value of the record is a StringToken, may strip surrounding quotation marks.
+                    // If the value of the record is a StringToken, may strip 
+                    // surrounding quotation marks.
                     Token value = record.get(field);
                     String string = value.toString();
                     if (value instanceof StringToken) {
@@ -165,81 +199,62 @@ public class HttpPost extends TypedAtomicActor {
                     throw new InternalErrorException(e);
                 }
             }
+        
+            if (_request == null) {
+                _request = new HttpRequest();
+            }
+            
             String urlValue = ((StringToken) url.getToken()).stringValue();
             if (urlValue == null || urlValue.isEmpty()) {
                 throw new IllegalActionException("No URL provided.");
             }
-            OutputStreamWriter writer = null;
-            BufferedReader reader = null;
+            
             try {
-                URL url = new URL(urlValue);
-                URLConnection connection = url.openConnection();
-                connection.setDoOutput(true);
-                connection.setReadTimeout(10000);
-                writer = new OutputStreamWriter(
-                        connection.getOutputStream());
-                writer.write(data.toString());
-                writer.flush();
-
+                _request.setUrl(new URL(urlValue));
+                _request.setMethod(Method.POST);
+                _request.setBody(data.toString());
+                
                 if (_debugging) {
                     _debug("Posted: " + data.toString());
                     _debug("To URL: " + url.toString());
                     _debug("Waiting for response.");
                 }
-
-                StringBuffer response = new StringBuffer();
-                try {
-                    reader = new BufferedReader(
-                            new InputStreamReader(connection.getInputStream()));
-                    String line;
-
-                    while ((line = reader.readLine()) != null) {
-                        response.append(line);
-                        if (!line.endsWith("\n")) {
-                            response.append("\n");
-                        }
-                    }
+                
+                // If a timeout has been specified, set it.
+                int timeoutValue = ((IntToken) timeout.getToken()).intValue();
+                if (timeoutValue >= 0) {
+                    _request.setTimeout(timeoutValue);
+                }
+    
+                HttpResponse response = _request.execute();
+                
+                // If a timeout occurs, check if an exception should be thrown
+                if (response.timedOut()) { 
                     if (_debugging) {
-                        _debug("Received response: " + response.toString());
+                        _debug("*** Timeout occurred.");
+                    }
+                    String timeout = timeoutResponse.stringValue();
+                    if (timeout.trim().equals("")) {
+                        throw new IllegalActionException(this,
+                                "HTTP " + _request.getMethod() 
+                                + " " + response.getResponseMessage());
                     }
                 }
-                catch (IOException ex){
-                    if (_debugging) {
-                        _debug("TimeOut.");
-                    }
-                } finally {
-                    output.send(0, new StringToken(response.toString()));
-                }
-            } catch (IOException ex) {
-                throw new IllegalActionException(this, ex, "postfire() failed");
-            } finally {
-                // Findbugs can't detect having the reader.close
-                // inside a second finally block, so we save the
-                // exception if the writer can't be closed.
-                Exception throwWriterException = null;
-                if (writer != null) {
-                    try {
-                        writer.close();
-                    } catch (IOException ex) {
-                        throwWriterException = ex;
-                    } 
-                }
-                if (reader != null) {
-                    try {
-                        reader.close();
-                    } catch (IOException ex) {
-                        throw new IllegalActionException(this, ex,
-                                "Failed to close the reader of \"" + urlValue + "\".");
-                    }
-                }
-                if (throwWriterException != null) {
-                    throw new IllegalActionException(this, throwWriterException,
-                            "Failed to close the writer of \"" + urlValue + "\".");
-                }
+                
+                // FIXME: default response upon failure or empty string? 
+                output.send(0, new StringToken(response.getBody()));         
+                status.send(0, response.getStatus());
+            } catch (IOException e) {
+                throw new IllegalActionException(this, e,"HTTP request failed");
             }
-            
         } else if (_debugging) {
             _debug("No input token.");
         }
     }
+    
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
+    
+    /** The Http request **/
+    HttpRequest _request;
 }

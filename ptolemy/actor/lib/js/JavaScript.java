@@ -34,7 +34,6 @@ import io.socket.SocketIOException;
 
 import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.lang.reflect.Member;
@@ -77,6 +76,8 @@ import org.mozilla.javascript.Script;
 import org.mozilla.javascript.Scriptable;
 import org.mozilla.javascript.ScriptableObject;
 import org.mozilla.javascript.WrappedException;
+import org.ptolemy.ptango.lib.HttpRequest;
+import org.ptolemy.ptango.lib.HttpResponse;
 
 import ptolemy.actor.IOPort;
 import ptolemy.actor.TypedAtomicActor;
@@ -105,7 +106,6 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.StringAttribute;
 import ptolemy.kernel.util.Workspace;
 import ptolemy.util.MessageHandler;
-import ptolemy.util.StringUtilities;
 
 ///////////////////////////////////////////////////////////////////
 //// JavaScript
@@ -421,7 +421,7 @@ public class JavaScript extends TypedAtomicActor {
         			+ original.getMessage());
         }
         
-	    // Send out buffered outputs, if there are any.
+	// Send out buffered outputs, if there are any.
         // This has to be synchronized in case a callback calls send() at the
         // same time.
         synchronized(this) {
@@ -604,7 +604,7 @@ public class JavaScript extends TypedAtomicActor {
     @Override
     public void preinitialize() throws IllegalActionException {
         super.preinitialize();
-        // Create a context for the currrent thread.
+        // Create a context for the current thread.
         _context = Context.enter();
         // If you want to include standard Rhino methods, like print, do this:
         // _context.initStandardObjects();
@@ -1158,18 +1158,14 @@ public class JavaScript extends TypedAtomicActor {
 	        if (_restricted && !theURL.getProtocol().equalsIgnoreCase("http")) {
 	        	throw new SecurityException("Actor is restricted. Only HTTP requests will be honored by readURL().");
 	        }
-    		InputStream stream = theURL.openStream();
-    		// FIXME: Should provide a characterset optional second argument.
-    		// This is supported by InputStreamReader.
-    		BufferedReader reader = new BufferedReader(new InputStreamReader(stream));
-    		StringBuffer result = new StringBuffer();
-    		String line = reader.readLine();
-    		while (line != null) {
-    			result.append(line);
-        		result.append(StringUtilities.LINE_SEPARATOR);
-    			line = reader.readLine();
-    		}
-    		return result.toString();
+	            		
+    		// Create a new HttpRequest.  Default method is GET.
+    		HttpRequest request = new HttpRequest();
+    		request.setUrl(new URL(url));
+
+    		// TODO: Any action in case of error?
+    		HttpResponse response = request.execute();
+    		return response.getBody();
     	}
 
     	/** Send outputs via an output port. If this is called outside the

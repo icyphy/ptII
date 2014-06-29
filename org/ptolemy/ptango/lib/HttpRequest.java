@@ -32,6 +32,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
+import java.net.SocketTimeoutException;
 import java.net.URL;
 
 import ptolemy.data.RecordToken;
@@ -57,25 +58,32 @@ public class HttpRequest  {
     /** Construct a new, empty HTTP request. 
      */
     public HttpRequest() {
-        
+        _body = new String("");
+        _method = Method.GET;
+        _properties = new RecordToken();
+        _timeout = 3000; // Milliseconds
+        _url = null;
     }
     
     /** Construct a new HTTP request, parameterized with a URL, method,
      *  properties, body, and time out.
      * 
      *  @param url The URL to send the request to.
-     *  @param method The request method (e.g., GET/POST/PUT ...). According to the Java documentation,
-     *   "GET POST HEAD OPTIONS PUT DELETE TRACE are legal, subject to protocol restrictions."
+     *  @param method The request method (e.g., GET/POST/PUT ...). 
+     *   According to the Java documentation, 
+     *   "GET POST HEAD OPTIONS PUT DELETE TRACE are legal, subject to protocol 
+     *   restrictions."
      *  @param properties
      *  @param body
      *  @param timeout
      */
-    public HttpRequest(URL url, Method method, RecordToken properties, String body, int timeout) {
-        _url = url;
+    public HttpRequest(URL url, Method method, RecordToken properties, 
+            String body, int timeout) {
+        _body = body;
         _method = method;
         _properties = properties;
-        _body = body;
         _timeout = timeout; 
+        _url = url;
     }
     
     ///////////////////////////////////////////////////////////////////
@@ -83,21 +91,23 @@ public class HttpRequest  {
 
     /** Issue a HTTP request using the specified URL. Open a connection,
      *  send a header, a body if applicable, and wait for a response. 
-     *  Return the response, or throw an error if no response it returned
+     *  Return the response, or throw an error if no response is returned
      *  within the specified timeout.
      *  
-     *  @throws IOException 
-     *  @exception IllegalActionException If an IO error occurs.
+     *  @throws IOException If an IO error occurs.
      */
-    public String execute() throws IOException { 
+    public HttpResponse execute() { 
         // FIXME: decode the response and return a HttpResponse object instead
 
-        StringBuffer response = new StringBuffer();
         OutputStreamWriter writer = null;
-        BufferedReader reader = null;
-        String line = "";
 
-        _connection = (HttpURLConnection) _url.openConnection();
+        try {
+            _connection = (HttpURLConnection) _url.openConnection();
+        } catch(IOException e){
+            HttpResponse response = new HttpResponse("Error connecting to URL "
+                    + _url.toString());
+            return response;
+        }
 
         // Set all fields in the request header.
         for (String label : _properties.labelSet()) {
@@ -106,7 +116,18 @@ public class HttpRequest  {
         }
 
         // Specify request method (GET, POST, PUT...)
-        _connection.setRequestMethod(_method.toString());
+        try {
+            _connection.setRequestMethod(_method.toString());
+        } catch(IOException e){
+            HttpResponse response = new HttpResponse("Error setting request " +
+            		"method for URL " + _url.toString());
+            return response;
+        }
+        
+        if (_method.toString().equals(Method.GET)) {
+            _connection.setDoInput(true);
+        } 
+        // _connection.setDoOutput() set later if there is a message body
 
         // If a timeout has been specified, set it.
         if (_timeout >= 0) {
@@ -115,33 +136,45 @@ public class HttpRequest  {
         }
 
         // Send body if applicable.
-        if (_body != null && !_body.equals("")) {
-            _connection.setDoOutput(true);
-            writer = new OutputStreamWriter(_connection.getOutputStream());
-            writer.write(_body);
-            writer.flush();
-        }
-
-        // Wait for response.
-        reader = new BufferedReader(new InputStreamReader(
-                _connection.getInputStream()));
-
-        // Read response.
-        while ((line = reader.readLine()) != null) {
-            response.append(line);
-            if (!line.endsWith(_lineBreak)) {
-                response.append(_lineBreak);
+        try {
+            if (_body != null && !_body.equals("")) {
+                _connection.setDoOutput(true);
+                writer = new OutputStreamWriter(_connection.getOutputStream());
+                writer.write(_body);
+                writer.flush();
             }
+            
+        } catch (SocketTimeoutException e1) {
+            HttpResponse response = new HttpResponse();
+            response.setTimedOut();
+            return response;
+        } catch (IOException e2) {
+            HttpResponse response = new HttpResponse("Error writing to URL "
+                    + _url.toString());
+            return response;
         }
 
-        if (writer != null) {
-        	writer.close();
+        try {
+            if (writer != null) {
+                writer.close();
+            }
+        } catch (IOException e){
+            HttpResponse response = new HttpResponse("Error closing writer for" +
+            		" URL " + _url.toString());
+            return response;
         }
-        reader.close();
-
-        // Return response.
-        return response.toString();
-
+        
+        // Return response
+        return new HttpResponse(_connection);
+    }
+    
+    /** Disconnect the current HttpURLConnection
+     */
+    public void disconnect() {
+        if (_connection != null) {
+            // FIXME: Does nothing!!!!!!!!!!!!!!
+            ((HttpURLConnection) _connection).disconnect();
+        }
     }
 
     /** Get the body of the message. 
@@ -158,11 +191,11 @@ public class HttpRequest  {
         return _connection;
     }
 
-    /** Get the currently set URL.
-     *  @return The URL.
+    /** Set the lineBreak character sequence.
+     *  @return A String containing the line break sequence.
      */
-    public URL getUrl() {
-        return _url;
+    public String getLineBreak() {
+        return _lineBreak;
     }
 
     /** Get the request method.
@@ -185,12 +218,12 @@ public class HttpRequest  {
     public int getTimeout() {
         return _timeout;
     }
-
-    /** Set the lineBreak character sequence.
-     *  @return A String containing the line break sequence.
+    
+    /** Get the currently set URL.
+     *  @return The URL.
      */
-    public String getLineBreak() {
-        return _lineBreak;
+    public URL getUrl() {
+        return _url;
     }
 
     /** Set the body of the message.
@@ -260,18 +293,20 @@ public class HttpRequest  {
     /** The body of the HTTP request, if it exists. */
     private String _body;
 
-    /** The URL to issue the request to. */
-    private URL _url;
+    /** The locally used line break character sequence. */
+    private String _lineBreak = System.getProperty("line.separator");
     
     /** A string specifying the request method (GET, PUT, POST, ...). */
     private Method _method;
     
-    /* A record token containing properties to be sent as part of the header */
+    /** A record token containing properties to be sent as part of the header */
     private RecordToken _properties;
     
-    /* The amount of time to wait for a response before throwing an exception. */
+    /** The amount of time to wait for a response before throwing an exception. 
+     * In milliseconds. */
     private int _timeout;
     
-    /* The locally used line break character sequence. */
-    private String _lineBreak = System.getProperty("line.separator");
+    /** The URL to issue the request to. */
+    private URL _url;
+  
 }

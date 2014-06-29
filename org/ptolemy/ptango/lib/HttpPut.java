@@ -27,6 +27,7 @@
  */
 package org.ptolemy.ptango.lib;
 
+import java.io.IOException;
 import java.net.URL;
 
 import org.ptolemy.ptango.lib.HttpRequest.Method;
@@ -35,10 +36,13 @@ import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.parameters.PortParameter;
 import ptolemy.data.BooleanToken;
+import ptolemy.data.IntToken;
 import ptolemy.data.RecordToken;
 import ptolemy.data.StringToken;
 import ptolemy.data.Token;
+import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.SingletonParameter;
+import ptolemy.data.expr.StringParameter;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
@@ -81,6 +85,13 @@ public class HttpPut extends TypedAtomicActor {
         url = new PortParameter(this, "url");
         url.setStringMode(true);
         url.setExpression("http://localhost");
+        
+        timeout = new Parameter(this, "timeout");
+        timeout.setTypeEquals(BaseType.INT);
+        timeout.setExpression("30000");
+        timeout.addChoice("NONE");
+
+        timeoutResponse = new StringParameter(this, "timeoutResponse");
 
         new SingletonParameter(url.getPort(), "_showName")
                 .setToken(BooleanToken.TRUE);
@@ -94,6 +105,11 @@ public class HttpPut extends TypedAtomicActor {
 
         output = new TypedIOPort(this, "output", false, true);
         output.setTypeEquals(BaseType.STRING);
+        new SingletonParameter(output, "_showName").setToken(BooleanToken.TRUE);
+        
+        status = new TypedIOPort(this, "status", false, true);
+        status.setTypeEquals(HttpResponse.getStatusType());
+        new SingletonParameter(status, "_showName").setToken(BooleanToken.TRUE);  
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -108,6 +124,25 @@ public class HttpPut extends TypedAtomicActor {
      *  encoded in accordance with the given content-type.
      */
     public TypedIOPort input;
+    
+    /** An output port for transmitting a token containing the status of the 
+     * request.  This is a RecordToken comprised of the response code, 
+     * response message, a boolean indicating if the request was successful,
+     * and a boolean indicating if further action is expected.
+     */
+    public TypedIOPort status;
+    
+    /** The timeout in milliseconds for establishing a connection or reading a value.
+     *  Set to NONE to specify no timeout.
+     *  This is an integer that defaults to 30000, giving a timeout of 30 seconds.
+     */
+    public Parameter timeout;
+
+    /** The response to send upon timeout.
+     *  If this is empty, then this actor will throw an exception rather than 
+     *  send a response.  This is a string that defaults to empty.
+     */
+    public StringParameter timeoutResponse;
 
     /** The output port, which delivers a string, the response to the post.
      */
@@ -152,7 +187,7 @@ public class HttpPut extends TypedAtomicActor {
         if (urlValue == null || urlValue.isEmpty()) {
             throw new IllegalActionException("No URL provided.");
         }
-
+        
         try {
             _request.setUrl(new URL(urlValue));
 
@@ -161,21 +196,40 @@ public class HttpPut extends TypedAtomicActor {
                     new String[] { "Content-Type" }, new Token[] { contentType
                             .getToken() }));
             _request.setBody(((StringToken) input.get(0)).stringValue());
-            _request.setTimeout(3000);
+            
+            // If a timeout has been specified, set it.
+            int timeoutValue = ((IntToken) timeout.getToken()).intValue();
+            if (timeoutValue >= 0) {
+                _request.setTimeout(timeoutValue);
+            }
 
-            String response = _request.execute();
+            HttpResponse response = _request.execute();
+            
+            // If a timeout occurs, check if an exception should be thrown
+            if (response.timedOut()) { 
+                if (_debugging) {
+                    _debug("*** Timeout occurred.");
+                }
+                String timeout = timeoutResponse.stringValue();
+                if (timeout.trim().equals("")) {
+                    throw new IllegalActionException(this,
+                            "HTTP " + _request.getMethod() 
+                            + " " + response.getResponseMessage());
+                }
+            }
 
             // FIXME: default response upon failure or empty string? 
+            output.send(0, new StringToken(response.getBody()));           
+            status.send(0, response.getStatus());
 
-            output.send(0, new StringToken(response.toString()));
-
-        } catch (Exception e) {
-            throw new IllegalActionException(this, e, "postfire() failed");
-        }
+       } catch (IOException e) {
+            throw new IllegalActionException(this, e, "HTTP request failed");
+       }
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
+    
+    /** The Http request **/
     HttpRequest _request;
 }
