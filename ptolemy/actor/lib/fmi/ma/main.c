@@ -126,11 +126,11 @@ static int simulate(FMU **fmuArray, double tEnd, double h, fmiBoolean loggingOn,
     int nSteps = 0;
     FILE* file;
 
-    FMU *fmuOne = *fmuArray;
-    FMU *fmuTwo = *(fmuArray + 1);
+    FMU *fmuOne = fmuArray[0];
+    FMU *fmuTwo = fmuArray[1];
 
-    fmiComponent compOne = initializeFMU(fmuOne, callbacksOne, visible, loggingOn, nCategories, categories);
-    fmiComponent compTwo = initializeFMU(fmuTwo, callbacksTwo, visible, loggingOn, nCategories, categories);
+    fmiComponent compOne = initializeFMU(fmuArray[0], callbacksOne, visible, loggingOn, nCategories, categories);
+    fmiComponent compTwo = initializeFMU(fmuArray[1], callbacksTwo, visible, loggingOn, nCategories, categories);
 
     if (!compOne)
     {
@@ -149,18 +149,20 @@ static int simulate(FMU **fmuArray, double tEnd, double h, fmiBoolean loggingOn,
         return 0; // failure
     }
 
+
     // output solution for time t0
     outputRow(fmuTwo, compTwo, tStart, file, separator, TRUE);  // output column names
     outputRow(fmuTwo, compTwo, tStart, file, separator, FALSE); // output values
+    printf("zwischenstand\n");
 
     // enter the simulation loop
     time = tStart;
     fmiInteger tempInt;
     fmiReal tempReal;
-    fmiValueReference inputTwo = getValueReference(getScalarVariable(fmuTwo->modelDescription, 0));
-	printf("valRefInput = %d\n", inputTwo);
-    fmiValueReference outputOne = getValueReference(getScalarVariable(fmuOne->modelDescription, 0));
-    printf("valRefOutput = %d\n", outputOne);
+    fmiValueReference inputTwo = getValueReference(getScalarVariable(fmuArray[1]->modelDescription, 0));
+    fmiValueReference outputOne = getValueReference(getScalarVariable(fmuArray[0]->modelDescription, 0));
+
+
     while (time < tEnd) {
     	int i;
     	for (i = 0 ; i < NUMBER_OF_FMUS; i++)
@@ -175,15 +177,13 @@ static int simulate(FMU **fmuArray, double tEnd, double h, fmiBoolean loggingOn,
     	for (i = 0 ; i < NUMBER_OF_FMUS-1; i++)
     	{
     		fmiFlag = fmuArray[i]->getInteger(compOne, &outputOne, 1, &tempInt);
+    		fmiFlag = fmuArray[i]->setInteger(compOne, &outputOne, 1, &tempInt);
     		tempReal = (fmiReal)tempInt;
-    		printf("TempInt = %d\n", tempInt);
-    		printf("TempReal = %F\n", tempReal);
     		fmiFlag = fmuArray[i+1]->setReal(compTwo, &inputTwo, 1, &tempReal);
     	}
 
         time += h;
-//        outputRow(fmuOne, compOne, time, file, separator, FALSE); // output values for this step
-        outputRow(fmuTwo, compTwo, time, file, separator, FALSE); // output values for this step
+        outputRow(fmuArray[1], compTwo, time, file, separator, FALSE); // output values for this step
 
         nSteps++;
     }
