@@ -131,7 +131,7 @@ public class QSSVectorIntegrator extends TypedAtomicActor {
             nextOutputTime[i] = null;
             x[i] = xIni[i];
             nextOutputValue[i] = _quantize(x[i], dq[i]);
-            previousOutputValue = nextOutputValue;
+            previousOutputValue[i] = nextOutputValue[i];
             previousInput[i] = null;
             inputReceived[i] = false;
             _firstFiring[i] = true;
