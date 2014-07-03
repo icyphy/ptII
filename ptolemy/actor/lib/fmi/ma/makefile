@@ -31,7 +31,10 @@
 
 ME =		ptolemy/actor/lib/fmi/ma
 
-DIRS =
+DIRS = 
+
+# Object directory
+ODIR = obj
 
 # Root of the Java directory
 ROOT =		../../../../..
@@ -53,7 +56,9 @@ KRUFT = $(EXEC) *.dSYM *.o
 all: $(EXEC)
 
 # Helper sources
-SHARED_SRCS = sim_support.c
+SHARED_SRCS = \
+	shared/sim_support.c \
+	shared/list.c
 
 CPP_SRCS = \
 	parser/XmlElement.cpp \
@@ -65,6 +70,8 @@ TARGET = main.c
 
 # Dependencies
 DEPS = \
+	shared/list.h \
+	shared/sim_support.h \
 	includes/fmi.h \
 	includes/fmiFunctions.h \
 	includes/fmiFunctionTypes.h \
@@ -73,13 +80,15 @@ DEPS = \
 	parser/XmlParser.h \
 	parser/XmlParserCApi.h \
 	parser/XmlParserException.h
+	
 
-EXTRA_SRCS = $(CPP_SRCS) $(TARGET) $(DEPS) sim_support.h sim_support.c
+EXTRA_SRCS = $(CPP_SRCS) $(TARGET) $(DEPS) $(SHARED_SRCS)
 
 # Set CFLAGS to -m32 to build for linux32
 CFLAGS= -g -Wall -DFMI_COSIMULATION -DSTANDALONE_XML_PARSER -DLIBXML_STATIC $(INCFLAGS)
-INCFLAGS= -Iincludes -Iparser/libxml -Iparser
+INCFLAGS= -Iincludes -Iparser/libxml -Iparser -Ishared
 LIBFLAGS= -lexpat -ldl -lxml2
+OBJECTS = $(TARGET:.c=.o) $(SHARED_SRCS:.c=.o)
 
 CXX=c++
 
@@ -88,7 +97,7 @@ CXX=c++
 	$(CC) -o $@ -c $< $(CFLAGS)
 
 # Build the master algorithm executable.
-main: main.o sim_support.o
+main: $(OBJECTS)
 	$(CXX) -o $@ $^ $(CPP_SRCS) $(CFLAGS) $(LIBFLAGS)
 
 # Run the master algorithm executable on two fmus.
@@ -104,6 +113,7 @@ clean: tmpclean
 tmpclean:
 	-rm -rf fmuTmp*
 	-rm -f result.csv
+	-rm -f shared/*.o
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
