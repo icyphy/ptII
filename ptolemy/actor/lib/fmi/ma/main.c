@@ -189,11 +189,9 @@ static int simulate(FMU **fmus, fmiComponent *components, double h, fmiBoolean l
 
 int main(int argc, char *argv[]) {
 #if WINDOWS
-    const char* fmuFileName1;
-    const char* fmuFileName2;
+    const char* fmuFileNames[NUMBER_OF_FMUS];
 #else
-    char* fmuFileName1;
-    char* fmuFileName2;
+    char* fmuFileNames[NUMBER_OF_FMUS];
 #endif
     int i;
     
@@ -217,47 +215,50 @@ int main(int argc, char *argv[]) {
     callbacks = calloc(NUMBER_OF_FMUS, sizeof(fmiCallbackFunctions));
 
     // Create array of FMU instances (components)
-    fmiComponent **components;
+    fmiComponent *components;
     components = calloc(NUMBER_OF_FMUS, sizeof(fmiComponent*));
     components[0] = calloc(1, sizeof(fmiComponent));
     components[1] = calloc(1, sizeof(fmiComponent));
 
 
     printf("Parsing arguments!\n");
-    parseArguments(argc, argv, &fmuFileName1, &fmuFileName2, &tEnd, &h, &loggingOn, &csv_separator, &nCategories, &categories);
-    printf("Loading FMU1\n");
-    loadFMU(fmus[0], fmuFileName1);
-    printf("Loading FMU2\n");
-    loadFMU(fmus[1], fmuFileName2);
+    parseArguments(argc, argv, fmuFileNames, &tEnd, &h, &loggingOn, &csv_separator, &nCategories, &categories);
 
-
-    components[0] = initializeFMU(fmus[0], callbacks[0], visible, loggingOn, nCategories, categories);
-    components[1] = initializeFMU(fmus[1], callbacks[1], visible, loggingOn, nCategories, categories);
+    for (i = 0; i < NUMBER_OF_FMUS; i++) {
+        printf("Loading FMU1\n");
+        loadFMU(fmus[i], fmuFileNames[i]);
+        components[i] = initializeFMU(fmus[0], callbacks[0], visible, loggingOn, nCategories, categories);
+    }
 
   // run the simulation
     printf("FMU Simulator: run '%s' from t=0..%g with step size h=%g, loggingOn=%d, csv separator='%c' ",
-            fmuFileName1, tEnd, h, loggingOn, csv_separator);
+            fmuFileNames[0], tEnd, h, loggingOn, csv_separator); // TODO: Should mention all FMUs
     printf("log categories={ ");
     for (i = 0; i < nCategories; i++) {
     	printf("%s ", categories[i]);
     }
     printf("}\n");
 
-    simulate(fmus, components, h, loggingOn, csv_separator, nCategories, categories);
+    simulate(fmus, components, h, loggingOn, csv_separator, nCategories, categories); // TODO: Create experiment settings struct
 
     printf("CSV file '%s' written\n", RESULT_FILE);
 
-    // release FMU
+    // release FMUs
 #ifdef _MSC_VER
-    FreeLibrary(fmus[0]->dllHandle);
-    FreeLibrary(fmus[1]->dllHandle);
+    for (i = 0; i < NUMBER_OF_FMUS; i++) {
+    	FreeLibrary(fmus[i]->dllHandle);
+    }
 #else
-    dlclose(fmus[0]->dllHandle);
-    dlclose(fmus[1]->dllHandle);
+    for (i = 0; i < NUMBER_OF_FMUS; i++) {
+        dlclose(fmus[i]->dllHandle);
+    }
 #endif
-    freeModelDescription(fmus[0]->modelDescription);
-    freeModelDescription(fmus[1]->modelDescription);
-    if (categories) free(categories);
+    for (i = 0; i < NUMBER_OF_FMUS; i++) {
+        freeModelDescription(fmus[i]->modelDescription);
+    }
+    if (categories) {
+    	free(categories);
+    }
 
     return EXIT_SUCCESS;
 }

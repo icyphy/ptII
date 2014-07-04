@@ -16,13 +16,13 @@
 #include <string.h>
 #include <assert.h>
 #include <stdarg.h>
+#include <unistd.h>  // mkdtemp(), getopt()
 
 #include "fmi.h"
 #include "sim_support.h"
 
 #ifndef _MSC_VER
 #define MAX_PATH 1024
-#include <unistd.h>  // mkdtemp()
 #include <dlfcn.h> //dlsym()
 #endif
 
@@ -546,12 +546,14 @@ int error(const char* message){
     return 0;
 }
 
-void parseArguments(int argc, char *argv[], char **fmuFileName1, char **fmuFileName2, double *tEnd, double *h,
+// TODO: Use getopt() to parse arguments
+
+void parseArguments(int argc, char *argv[], char **fmuFileNames, double *tEnd, double *h,
                     int *loggingOn, char *csv_separator, int *nCategories, char **logCategories[]) {
     // parse command line arguments
     if (argc > 2) {
-        *fmuFileName1 = argv[1];
-        *fmuFileName2 = argv[2];
+        fmuFileNames[0] = argv[1];
+        fmuFileNames[1] = argv[2];
     } else {
         printf("error: no fmu file, this method requires two\n");
         printHelp(argv[0]);
