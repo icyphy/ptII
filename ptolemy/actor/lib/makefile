@@ -164,6 +164,8 @@ JSRCS = \
 	CurrentDate.java \
 	CurrentMicrostep.java \
 	CurrentTime.java \
+	DateConstructor.java \
+	DateElements.java \
 	DelayStart.java \
 	Differential.java \
 	DoubleReader.java \
@@ -196,6 +198,7 @@ JSRCS = \
 	Maximum.java \
 	MicrostepDelay.java \
 	Minimum.java \
+	ModifyDate.java \
 	MovingAverage.java \
 	MovingMaximum.java \
 	Multiplexor.java \
@@ -306,6 +309,8 @@ OTHER_FILES_TO_BE_JARED = \
 	ConfigurationSelectIcon.xml \
 	ConfigurationSwitchIcon.xml \
 	CounterIcon.xml \
+	DateConstructorIcon.xml \
+	DateElementsIcon.xml \
 	DBIcon.xml \
 	Dice.gif \
 	DifferentialIcon.xml \
@@ -320,6 +325,7 @@ OTHER_FILES_TO_BE_JARED = \
 	MaximumIcon.xml \
 	MicrostepDelayIcon.xml \
 	MinimumIcon.xml \
+	ModifyDateIcon.xml \
 	MultiplexorIcon.xml \
 	MovingAverageIcon.xml \
 	TriangularIcon.xml \
