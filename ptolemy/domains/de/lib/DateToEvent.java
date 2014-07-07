@@ -29,6 +29,7 @@
 package ptolemy.domains.de.lib;
 
 import java.util.Collections;
+import java.util.Date;
 import java.util.HashSet;
 
 import ptolemy.actor.Director;
@@ -61,7 +62,7 @@ public class DateToEvent extends Transformer {
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
         input.setTypeEquals(BaseType.DATE);
-        output.setTypeEquals(BaseType.DOUBLE);
+        output.setTypeEquals(BaseType.DATE);
     }
     
     /** Check weather enclosing director is a DEDirector with 
@@ -86,20 +87,25 @@ public class DateToEvent extends Transformer {
     @Override
     public void fire() throws IllegalActionException {
         super.fire();
+        long systemTime = System.currentTimeMillis();
         Time time = _director.getModelTime();
+        System.out.println("modeltime " + time);
         if (_outputTimes != null && _outputTimes.size() > 0) {
             Time t = ((Time)Collections.min(_outputTimes));
             if (t.compareTo(time) == 0) {
-                output.send(0, new DoubleToken(t.getDoubleValue()));
+                output.send(0, new DateToken(systemTime));
                 _outputTimes.remove(t);
             }
         }
         if (input.hasToken(0)) {
             DateToken token = (DateToken) input.get(0);
-            if (token.getCalendarInstance().getTimeInMillis() < _director.getRealStartTimeMillis()) {
+            if (token.getCalendarInstance().getTimeInMillis() < systemTime) {
                 throw new IllegalActionException(this, "The date on the input port lies in the past.");
             } else {
-                Time fireTime = new Time(_director, (token.getCalendarInstance().getTimeInMillis() - _director.getRealStartTimeMillis()) * _director.localClock.getTimeResolution());
+                Time fireTime = new Time(_director, 
+                        (token.getCalendarInstance().getTimeInMillis() - 
+                                _director.getRealStartTimeMillis()) * 
+                                _director.localClock.getTimeResolution());
                 _director.fireAt(this, fireTime);
                 if (_outputTimes == null) {
                     _outputTimes = new HashSet<Time>();

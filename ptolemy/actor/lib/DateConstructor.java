@@ -35,11 +35,13 @@ import java.util.TimeZone;
 
 import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.TypedIOPort;
+import ptolemy.data.BooleanToken;
 import ptolemy.data.DateToken;
 import ptolemy.data.IntToken;
 import ptolemy.data.LongToken;
 import ptolemy.data.StringToken;
 import ptolemy.data.expr.Parameter;
+import ptolemy.data.expr.SingletonParameter;
 import ptolemy.data.expr.StringParameter;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
@@ -75,36 +77,47 @@ public class DateConstructor extends TypedAtomicActor {
         
         year = new TypedIOPort(this, "year", true, false);
         year.setTypeEquals(BaseType.INT);
+        new SingletonParameter(year, "_showName").setToken(BooleanToken.TRUE);
         
         month = new TypedIOPort(this, "month", true, false);
         month.setTypeEquals(BaseType.INT);
+        new SingletonParameter(year, "_showName").setToken(BooleanToken.TRUE);
         
         day = new TypedIOPort(this, "day", true, false);
         day.setTypeEquals(BaseType.INT);
+        new SingletonParameter(day, "_showName").setToken(BooleanToken.TRUE);
         
         hour = new TypedIOPort(this, "hour", true, false);
         hour.setTypeEquals(BaseType.INT);
+        new SingletonParameter(hour, "_showName").setToken(BooleanToken.TRUE);
         
         minute = new TypedIOPort(this, "minute", true, false);
         minute.setTypeEquals(BaseType.INT);
+        new SingletonParameter(minute, "_showName").setToken(BooleanToken.TRUE);
         
         second = new TypedIOPort(this, "second", true, false);
         second.setTypeEquals(BaseType.INT);
+        new SingletonParameter(minute, "_showName").setToken(BooleanToken.TRUE);
         
         millisecond = new TypedIOPort(this, "millisecond", true, false);
         millisecond.setTypeEquals(BaseType.INT);
+        new SingletonParameter(millisecond, "_showName").setToken(BooleanToken.TRUE);
         
         microsecond = new TypedIOPort(this, "microsecond", true, false);
         microsecond.setTypeEquals(BaseType.INT);
+        new SingletonParameter(microsecond, "_showName").setToken(BooleanToken.TRUE);
         
         nanosecond = new TypedIOPort(this, "nanosecond", true, false);
         nanosecond.setTypeEquals(BaseType.INT);
+        new SingletonParameter(microsecond, "_showName").setToken(BooleanToken.TRUE);
         
         timeZone = new TypedIOPort(this, "timeZone", true, false);
         timeZone.setTypeEquals(BaseType.STRING);
+        new SingletonParameter(timeZone, "_showName").setToken(BooleanToken.TRUE);
         
         timeAsLong = new TypedIOPort(this, "timeAsLong", true, false);
         timeAsLong.setTypeEquals(BaseType.LONG);
+        new SingletonParameter(timeAsLong, "_showName").setToken(BooleanToken.TRUE);
         
         precision = new StringParameter(this, "precision");
         precision.addChoice("second");
