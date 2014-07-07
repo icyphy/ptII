@@ -27,6 +27,12 @@ typedef struct {
 	int nCategories;
 } simulationSettings;
 
+typedef struct {
+	FMU **fmuInstances;
+	fmiFMUstate **FMUstates;
+	fmiValueReference **valueReference;
+} fmiModel;
+
 
 #endif /* MASUPPORT_H_ */
 

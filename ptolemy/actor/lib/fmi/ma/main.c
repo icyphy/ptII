@@ -39,17 +39,17 @@ double tStart = 0;                       // start time
 
 
 
-static fmiComponent initializeFMU(FMU *fmu, fmiCallbackFunctions callbacks, fmiBoolean visible, fmiBoolean loggingOn, int nCategories, char ** categories)
+static fmiComponent initializeFMU(FMU *fmu, fmiBoolean visible, fmiBoolean loggingOn, int nCategories, char ** categories)
 {
 
     fmiStatus fmiFlag;                       // return code of the fmu functions
 
     // instantiate the fmu
-    callbacks.logger = fmuLogger;
-    callbacks.allocateMemory = calloc;
-    callbacks.freeMemory = free;
-    callbacks.stepFinished = NULL; // fmiDoStep has to be carried out synchronously
-    callbacks.componentEnvironment = fmu; // pointer to current fmu from the environment.
+    fmu->callbacks.logger = fmuLogger;
+    fmu->callbacks.allocateMemory = calloc;
+    fmu->callbacks.freeMemory = free;
+    fmu->callbacks.stepFinished = NULL; // fmiDoStep has to be carried out synchronously
+    fmu->callbacks.componentEnvironment = fmu; // pointer to current fmu from the environment.
 
     fmiReal tolerance = 0;                   // used in setting up the experiment
     fmiBoolean toleranceDefined = fmiFalse;  // true if model description define tolerance
@@ -65,7 +65,7 @@ static fmiComponent initializeFMU(FMU *fmu, fmiCallbackFunctions callbacks, fmiB
     char *fmuResourceLocation = getTempResourcesLocation();   // TODO: returns crap. got to save the location for every FMU somehow.
     // instance of the fmu
     fmiComponent comp = fmu->instantiate(instanceName, fmiCoSimulation, guid, fmuResourceLocation,
-            &callbacks, visible, loggingOn);
+            &fmu->callbacks, visible, loggingOn);
     printf("instance name: %s, \nguid: %s, \nressourceLocation: %s\n", instanceName, guid, fmuResourceLocation);
     free(fmuResourceLocation);
 
@@ -115,14 +115,18 @@ static fmiComponent initializeFMU(FMU *fmu, fmiCallbackFunctions callbacks, fmiB
     return comp;
 }
 
+/*static void freeFMU(FMU *fmu) {
 
-// simulate the given FMU from tStart = 0 to tEnd.
-static int simulate(FMU **fmus, fmiComponent *components, double h, fmiBoolean loggingOn, char separator,
-        int nCategories, char ** categories) {
+}*/
+
+
+// simulate the given FMUs from tStart = 0 to tEnd.
+static int simulate(FMU **fmus, double h, fmiBoolean loggingOn, char separator) {
 
     double time;
-    fmiStatus fmiFlag;                       // return code of the fmu functions
+    fmiStatus fmiFlag;   // return code of the fmu functions
 
+    int i;
     int nSteps = 0;
     FILE* file;
 
@@ -135,8 +139,8 @@ static int simulate(FMU **fmus, fmiComponent *components, double h, fmiBoolean l
 
 
     // output solution for time t0
-    outputRow(fmus[1], components[1], tStart, file, separator, TRUE);  // output column names
-    outputRow(fmus[1], components[1], tStart, file, separator, FALSE); // output values
+    outputRow(fmus[1], fmus[1]->component, tStart, file, separator, TRUE);  // output column names
+    outputRow(fmus[1], fmus[1]->component, tStart, file, separator, FALSE); // output values
 
     // enter the simulation loop
     time = tStart;
@@ -150,7 +154,7 @@ static int simulate(FMU **fmus, fmiComponent *components, double h, fmiBoolean l
     	int i;
     	for (i = 0 ; i < NUMBER_OF_FMUS; i++)
     	{
-            fmiFlag = fmus[i]->doStep(components[i], time, h, fmiTrue);
+            fmiFlag = fmus[i]->doStep(fmus[i]->component, time, h, fmiTrue);
             if (fmiFlag > fmiWarning)
             {
             	return error("could not complete simulation of the model");
@@ -159,23 +163,24 @@ static int simulate(FMU **fmus, fmiComponent *components, double h, fmiBoolean l
 
     	for (i = 0 ; i < NUMBER_OF_FMUS-1; i++)
     	{
-    		fmiFlag = fmus[i]->getInteger(components[i], &outputOne, 1, &tempInt);
-    		fmiFlag = fmus[i]->setInteger(components[i], &outputOne, 1, &tempInt);
+    		fmiFlag = fmus[i]->getInteger(fmus[i]->component, &outputOne, 1, &tempInt);
+    		fmiFlag = fmus[i]->setInteger(fmus[i]->component, &outputOne, 1, &tempInt);
     		tempReal = (fmiReal)tempInt;
-    		fmiFlag = fmus[i+1]->setReal(components[i+1], &inputTwo, 1, &tempReal);
+    		fmiFlag = fmus[i+1]->setReal(fmus[i+1]->component, &inputTwo, 1, &tempReal);
     	}
 
         time += h;
-        outputRow(fmus[1], components[1], time, file, separator, FALSE); // output values for this step
+        outputRow(fmus[1], fmus[1]->component, time, file, separator, FALSE); // output values for this step
 
         nSteps++;
     }
 
     // end simulation
-    fmus[0]->terminate(components[0]);
-    fmus[0]->freeInstance(components[0]);
-    fmus[1]->terminate(components[1]);
-    fmus[1]->freeInstance(components[1]);
+	for (i = 0 ; i < NUMBER_OF_FMUS; i++)
+	{
+	    fmus[i]->terminate(fmus[i]->component);
+	    fmus[i]->freeInstance(fmus[i]->component);
+	}
 
     // print simulation summary
     printf("Simulation from %g to %g terminated successful\n", tStart, tEnd);
@@ -207,27 +212,15 @@ int main(int argc, char *argv[]) {
     // Create FMU array and allocate memory
     FMU **fmus;
     fmus = calloc(NUMBER_OF_FMUS, sizeof(FMU*));
-    fmus[0] = calloc(1, sizeof(FMU));
-    fmus[1] = calloc(1, sizeof(FMU));
-    
-    // Create array of callback functions
-    fmiCallbackFunctions *callbacks;
-    callbacks = calloc(NUMBER_OF_FMUS, sizeof(fmiCallbackFunctions));
-
-    // Create array of FMU instances (components)
-    fmiComponent *components;
-    components = calloc(NUMBER_OF_FMUS, sizeof(fmiComponent*));
-    components[0] = calloc(1, sizeof(fmiComponent));
-    components[1] = calloc(1, sizeof(fmiComponent));
-
 
     printf("Parsing arguments!\n");
     parseArguments(argc, argv, fmuFileNames, &tEnd, &h, &loggingOn, &csv_separator, &nCategories, &categories);
 
     for (i = 0; i < NUMBER_OF_FMUS; i++) {
         printf("Loading FMU1\n");
+        fmus[i] = calloc(1, sizeof(FMU));
         loadFMU(fmus[i], fmuFileNames[i]);
-        components[i] = initializeFMU(fmus[0], callbacks[0], visible, loggingOn, nCategories, categories);
+        fmus[i]->component = initializeFMU(fmus[i], visible, loggingOn, nCategories, categories);
     }
 
   // run the simulation
@@ -239,7 +232,7 @@ int main(int argc, char *argv[]) {
     }
     printf("}\n");
 
-    simulate(fmus, components, h, loggingOn, csv_separator, nCategories, categories); // TODO: Create experiment settings struct
+    simulate(fmus, h, loggingOn, csv_separator); // TODO: Create experiment settings struct
 
     printf("CSV file '%s' written\n", RESULT_FILE);
 

@@ -27,6 +27,8 @@
 
 typedef struct {
     ModelDescription* modelDescription;
+    fmiCallbackFunctions callbacks;
+    fmiComponent component;
 
     HMODULE dllHandle; // fmu.dll handle
     /***************************************************
