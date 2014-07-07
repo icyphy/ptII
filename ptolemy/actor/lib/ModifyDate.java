@@ -129,35 +129,25 @@ public class ModifyDate extends TypedAtomicActor {
                         + " not supported.");
             }
             
-            switch (unitString) {
-            case "Year":
+            if (unitString.equals("Year")) {
                 token.getCalendarInstance().add(Calendar.YEAR, val);
-                break;
-            case "Month":
+            } else if (unitString.equals("Month")) {
                 token.getCalendarInstance().add(Calendar.MONTH, val);
-                break;
-            case "Day":
+            } else if (unitString.equals("Day")) {
                 token.getCalendarInstance().add(Calendar.DAY_OF_MONTH, val);
-                break;
-            case "Hour":
+            } else if (unitString.equals("Hour")) {
                 token.getCalendarInstance().add(Calendar.HOUR_OF_DAY, val);
-                break;
-            case "Minute":
+            } else if (unitString.equals("Minute")) {
                 token.getCalendarInstance().add(Calendar.MINUTE, val);
-                break;
-            case "Second":
+            } else if (unitString.equals("Second")) {
                 token.getCalendarInstance().add(Calendar.SECOND, val);
-                break;
-            case "Millisecond":
+            } else if (unitString.equals("Millisecond")) {
                 token.getCalendarInstance().add(Calendar.MILLISECOND, val);
-                break;
-            case "Microsecond":
+            } else if (unitString.equals("Microsecond")) {
                 token.addMicroseconds(val);
-                break;
-            case "Nanosecond":
+            } else if (unitString.equals("Nanosecond")) {
                 token.addNanoseconds(val);
-                break;
-            default:
+            } else {
                 throw new IllegalActionException(this, "The unit " + unitString 
                         + " is not supported");
             }
