@@ -146,22 +146,16 @@ public class DateConstructor extends TypedAtomicActor {
             timeAsLongValue = ((LongToken)timeAsLong.get(0)).longValue();
             String precisionValue = "second";
             precisionValue = ((StringToken)precision.getToken()).stringValue();
-            switch (precisionValue) {
-                case "second":
-                    datePrecision = DateToken.PRECISION_SECOND; 
-                    break;
-                case "millisecond":
-                    datePrecision = DateToken.PRECISION_MILLISECOND;
-                    break;
-                case "microsecond":
-                    datePrecision = DateToken.PRECISION_MICROSECOND;
-                    break;
-                case "nanosecond":
-                    datePrecision = DateToken.PRECISION_NANOSECOND;
-                    break;
-                default:
-                    datePrecision = DateToken.PRECISION_MILLISECOND;     
-                    break;
+            if (precisionValue.equals("second")) {
+                datePrecision = DateToken.PRECISION_SECOND; 
+            } if (precisionValue.equals("millisecond")) {
+                datePrecision = DateToken.PRECISION_MILLISECOND;
+            } if (precisionValue.equals("microsecond")) {
+                datePrecision = DateToken.PRECISION_MICROSECOND;
+            } if (precisionValue.equals("nanosecond")) {
+                datePrecision = DateToken.PRECISION_NANOSECOND;
+            } else {
+                datePrecision = DateToken.PRECISION_MILLISECOND;     
             }
             String timeZoneValue = TimeZone.getDefault().getID();
             if ((timeZone.connectedPortList().size() > 0) && timeZone.hasToken(0)) {
