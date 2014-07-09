@@ -39,13 +39,13 @@ DEPS = \
 	parser/XmlParserCApi.h \
 	parser/XmlParserException.h
 
-EXTRA_SRCS = $(CPP_SRCS) $(TARGET) $(DEPS) sim_support.h sim_support.c
+EXTRA_SRCS = $(CPP_SRCS) $(TARGET) $(DEPS) fmi/shared/sim_support.h fmi/shared/sim_support.c
 
 
 PTCGLIBRARIES = @PTCGLibraries@
 PTCGINCLUDES = @PTCGIncludes@
 #PTCG_CFILES = @PTCG_CFILES@
-PTCG_CFILES = @modelName@.c fmi/sim_support.c
+PTCG_CFILES = @modelName@.c fmi/shared/sim_support.c
 PTCG_OFILES = @PTCG_OFILES@
 
 # Under Windows, to create a binary that does not pop up a console window,
@@ -85,7 +85,7 @@ LIBFLAGS= -lexpat -ldl -lxml2
 CPP_SRCS = fmi/parser/XmlElement.cpp fmi/parser/XmlParser.cpp fmi/parser/XmlParserCApi.cpp
 
 PTCGPPCompiler=@PTCGPPCompiler@
-@modelName@: @modelName@.o fmi/sim_support.o $(CPP_SRCS)
+@modelName@: @modelName@.o fmi/shared/sim_support.o $(CPP_SRCS)
 	@PTCGPPCompiler@ -D__int64="long long" $(WARNING_CC_FLAGS) $(CFLAGS) $(CC_FLAGS) $(USER_CC_FLAGS) $(DEBUG) $(PTCGINCLUDES) $^ -o @modelName@ -lm $(PTCGLIBRARIES) $(LIBFLAGS)
 
 # Each subdirectory must supply rules for building sources it contributes
@@ -98,7 +98,7 @@ PTCGCompiler=@PTCGCompiler@
 %.o: %.c
 	@PTCGCompiler@ -o $@ -c $< $(CFLAGS) $(WARNING_CC_FLAGS) $(CC_FLAGS) $(USER_CC_FLAGS) $(DEBUG)
 
-main: main.o sim_support.o	
+main: main.o fmi/shared/sim_support.o	
 	$(CXX) -o $@ $^ $(CPP_SRCS) $(WARNING_CC_FLAGS) $(CC_FLAGS) $(USER_CC_FLAGS) $(DEBUG) $(PTCGINCLUDES) $^ -o @modelName@ -lm $(PTCGLIBRARIES)
 
 

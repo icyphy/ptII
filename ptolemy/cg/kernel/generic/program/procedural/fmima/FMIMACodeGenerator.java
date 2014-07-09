@@ -104,7 +104,7 @@ public class FMIMACodeGenerator extends ProceduralCodeGenerator /*GenericCodeGen
             code.append(((FMIMACodeGeneratorAdapter) getAdapter(toplevel()))
                     .generateFMIMA());
 
-            code.append(_eol + "}");
+            code.append(_eol + "return 0;" + _eol + "}");
         }
         return code.toString();
     }
@@ -149,10 +149,17 @@ public class FMIMACodeGenerator extends ProceduralCodeGenerator /*GenericCodeGen
             }
         }
 
-        _copyCFileTosrc("ptolemy/actor/lib/fmi/ma/",
-                directoryFmi, "sim_support.c");
-        _copyCFileTosrc("ptolemy/actor/lib/fmi/ma/",
-                directoryFmi, "sim_support.h");
+        String directoryFmiShared = directoryFmi + "shared/";
+
+        if (new File(directoryFmiShared).mkdirs()) {
+            if (!_includes.contains("-I " + directoryFmiShared)) {
+                _includes.add("-I " + directoryFmiShared);
+            }
+        }
+        _copyCFileTosrc("ptolemy/actor/lib/fmi/ma/shared/",
+                directoryFmiShared, "sim_support.c");
+        _copyCFileTosrc("ptolemy/actor/lib/fmi/ma/shared/",
+                directoryFmiShared, "sim_support.h");
 
         String directoryFmiIncludes = directoryFmi + "includes/";
         if (new File(directoryFmiIncludes).mkdirs()) {
