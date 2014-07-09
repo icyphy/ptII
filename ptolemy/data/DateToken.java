@@ -117,7 +117,7 @@ public class DateToken extends AbstractConvertibleToken
      *  java.text.DateFormat parser, if that fails, the any leading
      *  and trailing double quotes are removed and a
      *  java.text.SimpleDateFormat with a parser with the value of
-     *  {@link ptolemy.data.DateToken._SIMPLE_DATE_FORMAT} is used.
+     *  {@link #_SIMPLE_DATE_FORMAT} is used.
      *
      *  @param value The date specified in a format acceptable
      *  to java.text.DateFormat.
@@ -370,7 +370,7 @@ public class DateToken extends AbstractConvertibleToken
     }
 
     /** Return the type of this token.
-     *  @return {@link #DATE}, the least upper bound of all the date types.
+     *  @return {@link #BaseType.DATE}, the least upper bound of all the date types.
      */
     public Type getType() {
         return BaseType.DATE;
