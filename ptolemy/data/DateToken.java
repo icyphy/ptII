@@ -747,10 +747,10 @@ public class DateToken extends AbstractConvertibleToken
      */
     private TimeZone _timeZone;
     
-    public static int PRECISION_SECOND = 1;
-    public static int PRECISION_MILLISECOND = 2;
-    public static int PRECISION_MICROSECOND = 3;
-    public static int PRECISION_NANOSECOND = 4;
+    public static final int PRECISION_SECOND = 1;
+    public static final int PRECISION_MILLISECOND = 2;
+    public static final int PRECISION_MICROSECOND = 3;
+    public static final int PRECISION_NANOSECOND = 4;
 
     static {
         try {
