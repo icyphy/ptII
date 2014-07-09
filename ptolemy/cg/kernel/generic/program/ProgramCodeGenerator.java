@@ -68,6 +68,7 @@ import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.StreamListener;
+import ptolemy.kernel.util.Workspace;
 import ptolemy.util.JVMBitWidth;
 import ptolemy.util.StreamExec;
 import ptolemy.util.StringUtilities;
@@ -261,6 +262,23 @@ public class ProgramCodeGenerator extends GenericCodeGenerator {
             }
         }
         super.attributeChanged(attribute);
+    }
+
+    /** Clone the attribute into the specified workspace.
+     *  @param workspace The workspace for the new object.
+     *  @return A new attribute.
+     *  @exception CloneNotSupportedException If a derived class contains
+     *   an attribute that cannot be cloned.
+     */
+    public Object clone(Workspace workspace) throws CloneNotSupportedException {
+        ProgramCodeGenerator newObject = (ProgramCodeGenerator) super.clone(workspace);
+
+	try {
+	    newObject._substituteMap = CodeGeneratorUtilities.newMap(this);
+	} catch (IllegalActionException ex) { 
+	    throw new CloneNotSupportedException(ex.getMessage());
+	}
+        return newObject;
     }
 
     /**
