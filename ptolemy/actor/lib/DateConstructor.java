@@ -124,20 +124,61 @@ public class DateConstructor extends TypedAtomicActor {
         precision.addChoice("millisecond");
         precision.addChoice("microsecond");
         precision.addChoice("nanosecond");
+        precision.setExpression("millisecond");
     }
     
+    /** The output for the constructed date.
+     */
     public TypedIOPort output;
+    
+    /** The year.
+     */
     public TypedIOPort year;
+    
+    /** The month.
+     */
     public TypedIOPort month;
+    
+    /** The day of the month.
+     */
     public TypedIOPort day;
+    
+    /** The hour of the day.
+     */
     public TypedIOPort hour;
+    
+    /** The minutes.
+     */
     public TypedIOPort minute;
+    
+    /** The seconds.
+     */
     public TypedIOPort second;
+    
+    /** The milliseconds.
+     */
     public TypedIOPort millisecond;
+    
+    /** The microseconds.
+     */
     public TypedIOPort microsecond;
+    
+    /** The nanoseconds.
+     */
     public TypedIOPort nanosecond;
+    
+    /** The time zone.
+     */
     public TypedIOPort timeZone;
+    
+    /** The time as a long value representing the milliseconds since 
+     *  January 1, 1970.
+     */
     public TypedIOPort timeAsLong;
+    
+    /** The precision of the date. The precision defaults to 
+     *  milliseconds.
+     */
     public Parameter precision;
 
     ///////////////////////////////////////////////////////////////////
