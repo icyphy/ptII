@@ -50,7 +50,7 @@ test DateToken-2.1 {Create a Date for the current time} {
     set now [java::new ptolemy.data.DateToken]
     # Converting to a Long has problems in Tcl, so we compare
     # the day of week, month and year.
-    set nowms [[$now -noconvert getValue] -noconvert getTime]
+    #set nowms [[$now -noconvert getTimeInMilliseconds] -noconvert getTime]
     set clockSeconds [clock seconds]
     set clockDMY [clock format $clockSeconds -format "%a %b %d"]
     regexp "^\"$clockDMY.*" [$now toString] 
@@ -70,22 +70,15 @@ test DateToken-2.2 {Get the current time and make sure it is not null} {
 ####
 # 
 test DateToken-3.0 {Test convert } {
-    set long1 [java::new {ptolemy.data.LongToken long} 1]
-    set int1 [java::new {ptolemy.data.IntToken int} 1]
-    set short1 [java::new {ptolemy.data.ShortToken short} 1]
 
-    # Call convert with various tokens
-    set dateLong1 [java::call ptolemy.data.DateToken convert $long1]
-    set dateInt1 [java::call ptolemy.data.DateToken convert $int1]
-    set dateShort1 [java::call ptolemy.data.DateToken convert $short1]
+    # Create date with long token
+    set dateLong1 [java::new {ptolemy.data.DateToken long} 1]
 
-    # Call convert with a DateToken
-    set dateDateShort1 [java::call ptolemy.data.DateToken convert $dateShort1]
+    # Create with a DateToken
+    set dateDateLong1 [java::call ptolemy.data.DateToken convert $dateLong1]
 
-    list [[$dateLong1 isEqualTo $dateInt1] toString] \
-	[[$dateLong1 isEqualTo $dateShort1] toString] \
-	[[$dateLong1 isEqualTo $dateDateShort1] toString]
-} {true true true}
+    list [[$dateLong1 isEqualTo $dateDateLong1] toString]
+} {true}
 
 ######################################################################
 ####
@@ -137,17 +130,18 @@ test DateToken-9.0 {Test isGreatThan} {
 
 ######################################################################
 ####
+# not supported anymore
 # 
-test DateToken-9.1 {Test isGreaterThan with other types} {
-    set long1 [java::new {ptolemy.data.LongToken long} 1]
-    set int2 [java::new {ptolemy.data.IntToken int} 2]
-    set short3 [java::new {ptolemy.data.ShortToken short} 3]
-
-    set t2 [java::new {ptolemy.data.DateToken long} 2]
-    list [[$t2 isGreaterThan $long1] toString] \
-	[[$t2 isGreaterThan $int2] toString] \
-	[[$t2 isGreaterThan $short3] toString]
-} {true false false}
+#test DateToken-9.1 {Test isGreaterThan with other types} {
+#    set long1 [java::new {ptolemy.data.LongToken long} 1]
+#    set int2 [java::new {ptolemy.data.IntToken int} 2]
+#    set short3 [java::new {ptolemy.data.ShortToken short} 3]
+#
+#    set t2 [java::new {ptolemy.data.DateToken long} 2]
+#    list [[$t2 isGreaterThan $long1] toString] \
+#	[[$t2 isGreaterThan $int2] toString] \
+#	[[$t2 isGreaterThan $short3] toString]
+#} {true false false}
 
 ######################################################################
 ####
@@ -167,16 +161,18 @@ test DateToken-10.0 {Test isLessThan} {
 ######################################################################
 ####
 # 
-test DateToken-10.1 {Test isLessThan with other types} {
-    set long1 [java::new {ptolemy.data.LongToken long} 1]
-    set int2 [java::new {ptolemy.data.IntToken int} 2]
-    set short3 [java::new {ptolemy.data.ShortToken short} 3]
-
-    set t2 [java::new {ptolemy.data.DateToken long} 2]
-    list [[$t2 isLessThan $long1] toString] \
-	[[$t2 isLessThan $int2] toString] \
-	[[$t2 isLessThan $short3] toString]
-} {false false true}
+# not supported anymore
+#
+#test DateToken-10.1 {Test isLessThan with other types} {
+#    set long1 [java::new {ptolemy.data.LongToken long} 1]
+#    set int2 [java::new {ptolemy.data.IntToken int} 2]
+#    set short3 [java::new {ptolemy.data.ShortToken short} 3]
+#
+#    set t2 [java::new {ptolemy.data.DateToken long} 2]
+#    list [[$t2 isLessThan $long1] toString] \
+#	[[$t2 isLessThan $int2] toString] \
+#	[[$t2 isLessThan $short3] toString]
+#} {false false true}
 
 
 ######################################################################
@@ -187,7 +183,7 @@ test DateToken-14.0 {Add two Dates} {
     set t2 [java::new {ptolemy.data.DateToken long} 2]
     catch {$t1 add $t2} err
     list $err
-} {{ptolemy.kernel.util.IllegalActionException: add operation not supported between ptolemy.data.DateToken '"Wed Dec 31 16:00:00.001 PST 1969"' and ptolemy.data.DateToken '"Wed Dec 31 16:00:00.002 PST 1969"'}}
+} {{ptolemy.kernel.util.IllegalActionException: add operation not supported between ptolemy.data.DateToken '"Wed Dec 31 16:00:00.001.0.0 PST 1969"' and ptolemy.data.DateToken '"Wed Dec 31 16:00:00.002.0.0 PST 1969"'}}
 
 ######################################################################
 ####
@@ -197,7 +193,7 @@ test DateToken-14.1 {Divide two Dates} {
     set t2 [java::new {ptolemy.data.DateToken long} 2]
     catch {$t1 divide $t2} err
     list $err
-} {{ptolemy.kernel.util.IllegalActionException: divide operation not supported between ptolemy.data.DateToken '"Wed Dec 31 16:00:00.001 PST 1969"' and ptolemy.data.DateToken '"Wed Dec 31 16:00:00.002 PST 1969"'}}
+} {{ptolemy.kernel.util.IllegalActionException: divide operation not supported between ptolemy.data.DateToken '"Wed Dec 31 16:00:00.001.0.0 PST 1969"' and ptolemy.data.DateToken '"Wed Dec 31 16:00:00.002.0.0 PST 1969"'}}
 
 ######################################################################
 ####
@@ -207,7 +203,7 @@ test DateToken-14.2 {Modulo two Dates} {
     set t2 [java::new {ptolemy.data.DateToken long} 2]
     catch {$t1 modulo $t2} err
     list $err
-} {{ptolemy.kernel.util.IllegalActionException: modulo operation not supported between ptolemy.data.DateToken '"Wed Dec 31 16:00:00.001 PST 1969"' and ptolemy.data.DateToken '"Wed Dec 31 16:00:00.002 PST 1969"'}}
+} {{ptolemy.kernel.util.IllegalActionException: modulo operation not supported between ptolemy.data.DateToken '"Wed Dec 31 16:00:00.001.0.0 PST 1969"' and ptolemy.data.DateToken '"Wed Dec 31 16:00:00.002.0.0 PST 1969"'}}
 
 ######################################################################
 ####
@@ -217,7 +213,7 @@ test DateToken-14.3 {Multiply two Dates} {
     set t2 [java::new {ptolemy.data.DateToken long} 2]
     catch {$t1 multiply $t2} err
     list $err
-} {{ptolemy.kernel.util.IllegalActionException: multiply operation not supported between ptolemy.data.DateToken '"Wed Dec 31 16:00:00.001 PST 1969"' and ptolemy.data.DateToken '"Wed Dec 31 16:00:00.002 PST 1969"'}}
+} {{ptolemy.kernel.util.IllegalActionException: multiply operation not supported between ptolemy.data.DateToken '"Wed Dec 31 16:00:00.001.0.0 PST 1969"' and ptolemy.data.DateToken '"Wed Dec 31 16:00:00.002.0.0 PST 1969"'}}
 ######################################################################
 ####
 # 
@@ -226,7 +222,7 @@ test DateToken-14.4 {Subtract two Dates} {
     set t2 [java::new {ptolemy.data.DateToken long} 2]
     catch {$t1 subtract $t2} err
     list $err
-} {{ptolemy.kernel.util.IllegalActionException: subtract operation not supported between ptolemy.data.DateToken '"Wed Dec 31 16:00:00.001 PST 1969"' and ptolemy.data.DateToken '"Wed Dec 31 16:00:00.002 PST 1969"'}}
+} {{ptolemy.kernel.util.IllegalActionException: subtract operation not supported between ptolemy.data.DateToken '"Wed Dec 31 16:00:00.001.0.0 PST 1969"' and ptolemy.data.DateToken '"Wed Dec 31 16:00:00.002.0.0 PST 1969"'}}
 
 ######################################################################
 ####
@@ -236,24 +232,25 @@ test DateToken-14.5 {compare two Dates} {
     set t2 [java::new {ptolemy.data.DateToken long} 2]
     catch {$t1 isCloseTo $t2 2} err
     list $err
-} {{ptolemy.kernel.util.IllegalActionException: isCloseTo operation not supported between ptolemy.data.DateToken '"Wed Dec 31 16:00:00.001 PST 1969"' and ptolemy.data.DateToken '"Wed Dec 31 16:00:00.002 PST 1969"'}}
+} {{ptolemy.kernel.util.IllegalActionException: isCloseTo operation not supported between ptolemy.data.DateToken '"Wed Dec 31 16:00:00.001.0.0 PST 1969"' and ptolemy.data.DateToken '"Wed Dec 31 16:00:00.002.0.0 PST 1969"'}}
 
 
 ######################################################################
 ####
+# not supported anymore
 # 
-test DateToken-15.0 {Create a date, get the toString, then try to recreate the date} {
-    set t1 [java::new {ptolemy.data.DateToken long} 1]
-    set stringt1 [$t1 -noconvert toString]
-    set t1again [java::new {ptolemy.data.DateToken String} $stringt1]
-
+# test DateToken-15.0 {Create a date, get the toString, then try to recreate the date} {
+#     set t1 [java::new {ptolemy.data.DateToken long} 1]
+#     set stringt1 [$t1 -noconvert toString]
+#     set t1again [java::new {ptolemy.data.DateToken String} $stringt1]
+# 
     # FIXME: oddly, Date.getTime(), which returns the number of ms. since the Epoch returns different numbers
-    set t1ms [[$t1 getValue] getTime]
-    set t1againms [[$t1again getValue] getTime]
-
-    list [$stringt1 equals [$t1again toString]] \
-	$t1ms $t1againms
-} {1 1 1}
+#     set t1ms [[$t1 getValue] getTime]
+#     set t1againms [[$t1again getValue] getTime]
+# 
+#     list [$stringt1 equals [$t1again toString]] \
+# 	$t1ms $t1againms
+# } {1 1 1}
 
 
 ######################################################################
