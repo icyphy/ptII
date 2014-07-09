@@ -96,10 +96,27 @@ public class ModifyDate extends TypedAtomicActor {
         output.setTypeEquals(BaseType.DATE);
     }
     
+    /** Input for date tokens.
+     */
     public TypedIOPort input;
+    
+    /** Parameter for operation. The operation is a choice of the string
+     *  values "+" and "-" and defaults to "+".
+     */
     public Parameter operation;
+    
+    /** Input for value in a given unit to be added or subtracted from date
+     *  token received by input. 
+     */
     public TypedIOPort value;
+    
+    /** Unit of value to be added or subtracted. This can be either part of
+     *  the date, i.e. year, month, day, ... and it defaults to second.
+     */
     public Parameter unit;
+    
+    /** Output for the new date token.
+     */
     public TypedIOPort output;
 
     ///////////////////////////////////////////////////////////////////
