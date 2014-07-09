@@ -150,13 +150,13 @@ public class FMULogUtilities {
                         try {
                             int variableReference = Integer.parseInt(integerString);
                             boolean foundIt = false;
-                            for (FMIScalarVariable scalarVariable : modelDescription.modelVariables) {
-                                if (scalarVariable.valueReference == variableReference
-                                        && scalarVariable.type.getClass()
-                                                .isAssignableFrom(fmiTypeClass)) {
-                                    foundIt = true;
-                                    results.append(scalarVariable.name);
-                                    break;
+			    for (FMIScalarVariable scalarVariable : modelDescription.modelVariables) {
+				if (scalarVariable.valueReference == variableReference
+				        && scalarVariable.type.getClass()
+				                .isAssignableFrom(fmiTypeClass)) {
+				    foundIt = true;
+				    results.append(scalarVariable.name);
+				    break;
                                 }
                             }
                             if (!foundIt) {
@@ -236,7 +236,7 @@ public class FMULogUtilities {
             FMI_BOOLEAN_TYPE_CLASS = Class
                     .forName("org.ptolemy.fmi.type.FMIBooleanType");
             FMI_STRING_TYPE_CLASS = Class
-                    .forName("org.ptolemy.fmi.type.FMIBooleanType");
+                    .forName("org.ptolemy.fmi.type.FMIStringType");
         } catch (ClassNotFoundException ex) {
             throw new ExceptionInInitializerError(ex);
         }
