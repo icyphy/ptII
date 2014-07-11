@@ -47,8 +47,6 @@ void initialize(ModelInstance* comp, fmiEventInfo* eventInfo) {
 
 // used to set the next time event, if any.
 void eventUpdate(ModelInstance* comp, fmiEventInfo* eventInfo) {
-  fprintf(stderr, "inc20RC1.c: eventUpdate()\n");
-  fflush(stderr);
     i(counter_) += 1;
     if (i(counter_) == 13) 
         eventInfo->terminateSimulation = fmiTrue;

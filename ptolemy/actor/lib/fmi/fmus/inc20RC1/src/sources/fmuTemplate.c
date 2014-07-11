@@ -471,13 +471,108 @@ fmiStatus fmiSetString (fmiComponent c, const fmiValueReference vr[], size_t nvr
     return fmiOK;
 }
 
+// TODO: Finish implementation
 fmiStatus fmiGetFMUstate (fmiComponent c, fmiFMUstate* FMUstate) {
-    return unsupportedFunction(c, "fmiGetFMUstate",
-        modelInstantiated|modelInitializationMode|modelInitialized|modelStepping|modelTerminated|modelError);
+    ModelInstance *source = (ModelInstance*)c;
+    // allocating memory for pointers in ModelInstance struct
+
+    fmiFreeInstance((fmiComponent)FMUstate);
+
+    ModelInstance *dest = (ModelInstance *)source->functions->allocateMemory(1, sizeof(ModelInstance*));
+	int i;
+
+	if (NUMBER_OF_REALS > 0) {
+		dest->r = (fmiReal *)source->functions->allocateMemory(NUMBER_OF_REALS, sizeof(fmiReal));
+		for (i = 0; i < NUMBER_OF_REALS; i++) {
+			dest->r[i] = source->r[i];
+		}
+	}
+	if (NUMBER_OF_INTEGERS > 0) {
+		dest->i = (fmiInteger *)source->functions->allocateMemory(NUMBER_OF_INTEGERS, sizeof(fmiInteger));
+		for (i = 0; i < NUMBER_OF_INTEGERS; i++) {
+			FILTERED_LOG(source, fmiOK, LOG_FMI_CALL, "dest is %d and source is %d\n",dest->i[i], source->i[i])
+			dest->i[i] = source->i[i];
+			FILTERED_LOG(source, fmiOK, LOG_FMI_CALL, "dest is %d and source is %d\n",dest->i[i], source->i[i])
+		}
+	}
+	if (NUMBER_OF_BOOLEANS > 0) {
+		dest->b = (fmiBoolean *)source->functions->allocateMemory(NUMBER_OF_BOOLEANS, sizeof(fmiBoolean));
+		for (i = 0; i < NUMBER_OF_BOOLEANS; i++) {
+			dest->b[i] = source->b[i];
+		}
+	}
+	if (NUMBER_OF_STRINGS > 0) {
+		dest->s = (fmiString *)source->functions->allocateMemory(NUMBER_OF_STRINGS, sizeof(fmiString));
+		for (i = 0; i < NUMBER_OF_STRINGS; i++) {
+			strcpy((char*)dest->s[i], (char*)source->s[i]);
+		}
+	}
+	if (NUMBER_OF_EVENT_INDICATORS > 0) {
+		dest->isPositive = (fmiBoolean *)source->functions->allocateMemory(NUMBER_OF_EVENT_INDICATORS,
+				sizeof(fmiBoolean));
+		for (i = 0; i < NUMBER_OF_EVENT_INDICATORS; i++) {
+			dest->r[i] = source->r[i];
+		}
+	}
+
+	FMUstate = (fmiFMUstate)dest;
+
+//	 dest->instanceName = functions->allocateMemory(1 + strlen(source->instanceName), sizeof(char));
+//	 dest->GUID = functions->allocateMemory(1 + strlen(source->GUID), sizeof(char));
+
+	// set all categories to on or off. fmiSetDebugLogging should be called to choose specific categories.
+//	for (i = 0; i < NUMBER_OF_CATEGORIES; i++) {
+//		dest->logCategories[i] = source->logCategories[i];
+//	}
+
+	return fmiOK;
+//	return unsupportedFunction(c, "fmiGetFMUstate",
+//        modelInstantiated|modelInitializationMode|modelInitialized|modelStepping|modelTerminated|modelError);
 }
 fmiStatus fmiSetFMUstate (fmiComponent c, fmiFMUstate FMUstate) {
-    return unsupportedFunction(c, "fmiSetFMUstate",
-        modelInstantiated|modelInitializationMode|modelInitialized|modelStepping|modelTerminated|modelError);
+
+    ModelInstance *dest = (ModelInstance*)c;
+    // allocating memory for pointers in ModelInstance struct
+
+    ModelInstance *source = (ModelInstance*) &FMUstate;
+	int i;
+	if (NUMBER_OF_REALS > 0) {
+		for (i = 0; i < NUMBER_OF_REALS; i++) {
+			dest->r[i] = source->r[i];
+		}
+	}
+	if (NUMBER_OF_INTEGERS > 0) {
+		for (i = 0; i < NUMBER_OF_INTEGERS; i++) {
+			FILTERED_LOG(dest, fmiOK, LOG_FMI_CALL, "dest is %d and source is %d\n",dest->i[i], source->i[i])
+			dest->i[i] = source->i[i];
+			FILTERED_LOG(dest, fmiOK, LOG_FMI_CALL, "we are here too\n")
+		}
+	}
+	if (NUMBER_OF_BOOLEANS > 0) {
+		for (i = 0; i < NUMBER_OF_BOOLEANS; i++) {
+			dest->b[i] = source->b[i];
+		}
+	}
+	if (NUMBER_OF_STRINGS > 0) {
+		for (i = 0; i < NUMBER_OF_STRINGS; i++) {
+			strcpy((char*)dest->s[i], (char*)source->s[i]);
+		}
+	}
+	if (NUMBER_OF_EVENT_INDICATORS > 0) {
+		for (i = 0; i < NUMBER_OF_EVENT_INDICATORS; i++) {
+			dest->r[i] = source->r[i];
+		}
+	}
+
+	FMUstate = (fmiFMUstate*)dest;
+
+	return fmiOK;
+
+
+
+
+//    return unsupportedFunction(c, "fmiSetFMUstate",
+//        modelInstantiated|modelInitializationMode|modelInitialized|modelStepping|modelTerminated|modelError);
 }
 fmiStatus fmiFreeFMUstate(fmiComponent c, fmiFMUstate* FMUstate) {
     return unsupportedFunction(c, "fmiFreeFMUstate",
