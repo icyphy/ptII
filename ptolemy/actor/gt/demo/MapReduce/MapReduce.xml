@@ -2,7 +2,7 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="MapReduce" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.1.devel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="10.0.devel">
     </property>
     <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
         <property name="stopTime" class="ptolemy.data.expr.Parameter" value="Infinity">
@@ -10,7 +10,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[75.0, 45.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={219, 115, 1051, 701}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={15, 297, 1051, 701}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[817, 591]">
     </property>
@@ -30,6 +30,8 @@
         <configure>
             <entity name="ModelUpdater" class="ptolemy.actor.gt.controller.ModelUpdater">
                 <entity name="_Controller" class="ptolemy.domains.ptera.kernel.PteraController">
+                    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={423, 207, 834, 635}, maximized=false}">
+                    </property>
                     <entity name="LinkMapReduce" class="ptolemy.actor.gt.controller.Transform">
                         <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
                         </property>
@@ -56,41 +58,75 @@
                                         <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
                                             <configure><svg><rect x="0" y="0" width="60" height="40"  style="fill:#C0C0C0"/><rect x="5" y="17" width="16" height="10"  style="fill:#FFFFFF; stroke:#B00000"/><rect x="39" y="25" width="16" height="10"  style="fill:#FFFFFF; stroke:#B00000"/><line x1="25" y1="22" x2="30" y2="22"  style="stroke:#404040"/><line x1="30" y1="22" x2="30" y2="30"  style="stroke:#404040"/><line x1="30" y1="30" x2="35" y2="30"  style="stroke:#404040"/><text x="17" y="13"  style="font-size:12; fill:#E00000; font-family:SansSerif">  match</text></svg></configure>
                                         </property>
+                                        <port name="inputKeys" class="ptolemy.actor.gt.PortMatcher">
+                                            <property name="input"/>
+                                            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+                                            </property>
+                                        </port>
+                                        <port name="inputValues" class="ptolemy.actor.gt.PortMatcher">
+                                            <property name="input"/>
+                                            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+                                            </property>
+                                        </port>
                                         <port name="doneReading" class="ptolemy.actor.gt.PortMatcher">
                                             <property name="input"/>
+                                            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+                                            </property>
                                             <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="SOUTH">
                                             </property>
                                         </port>
                                         <port name="outputKeys" class="ptolemy.actor.gt.PortMatcher">
                                             <property name="output"/>
                                             <property name="multiport"/>
+                                            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+                                            </property>
                                             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
                                             </property>
                                         </port>
                                         <port name="outputValues" class="ptolemy.actor.gt.PortMatcher">
                                             <property name="output"/>
                                             <property name="multiport"/>
+                                            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+                                            </property>
                                             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
                                             </property>
                                         </port>
                                         <port name="doneEmitting" class="ptolemy.actor.gt.PortMatcher">
                                             <property name="output"/>
+                                            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+                                            </property>
                                             <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="SOUTH">
                                             </property>
                                         </port>
+                                        <port name="inputKeys">
+                                            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+                                            </property>
+                                        </port>
+                                        <port name="inputValues">
+                                            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+                                            </property>
+                                        </port>
                                         <port name="doneReading">
+                                            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+                                            </property>
                                             <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="SOUTH">
                                             </property>
                                         </port>
                                         <port name="outputKeys">
+                                            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+                                            </property>
                                             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
                                             </property>
                                         </port>
                                         <port name="outputValues">
+                                            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+                                            </property>
                                             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
                                             </property>
                                         </port>
                                         <port name="doneEmitting">
+                                            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+                                            </property>
                                             <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="SOUTH">
                                             </property>
                                         </port>
@@ -106,30 +142,51 @@
                                         <port name="inputKeys" class="ptolemy.actor.gt.PortMatcher">
                                             <property name="input"/>
                                             <property name="multiport"/>
+                                            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+                                            </property>
                                             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
                                             </property>
                                         </port>
                                         <port name="inputValues" class="ptolemy.actor.gt.PortMatcher">
                                             <property name="input"/>
                                             <property name="multiport"/>
+                                            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+                                            </property>
                                             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
                                             </property>
                                         </port>
                                         <port name="doneReceiving" class="ptolemy.actor.gt.PortMatcher">
                                             <property name="input"/>
+                                            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+                                            </property>
                                             <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="SOUTH">
                                             </property>
                                         </port>
+                                        <port name="output" class="ptolemy.actor.gt.PortMatcher">
+                                            <property name="output"/>
+                                            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+                                            </property>
+                                        </port>
                                         <port name="inputKeys">
+                                            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+                                            </property>
                                             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
                                             </property>
                                         </port>
                                         <port name="inputValues">
+                                            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+                                            </property>
                                             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
                                             </property>
                                         </port>
                                         <port name="doneReceiving">
+                                            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+                                            </property>
                                             <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="SOUTH">
+                                            </property>
+                                        </port>
+                                        <port name="output">
+                                            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
                                             </property>
                                         </port>
                                     </entity>
@@ -159,41 +216,75 @@
                                         <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
                                             <configure><svg><rect x="0" y="0" width="60" height="40"  style="fill:#C0C0C0"/><rect x="5" y="17" width="16" height="10"  style="fill:#FFFFFF; stroke:#B00000"/><rect x="39" y="25" width="16" height="10"  style="fill:#FFFFFF; stroke:#B00000"/><line x1="25" y1="22" x2="30" y2="22"  style="stroke:#404040"/><line x1="30" y1="22" x2="30" y2="30"  style="stroke:#404040"/><line x1="30" y1="30" x2="35" y2="30"  style="stroke:#404040"/><text x="17" y="13"  style="font-size:12; fill:#E00000; font-family:SansSerif">  match</text></svg></configure>
                                         </property>
+                                        <port name="inputKeys" class="ptolemy.actor.gt.PortMatcher">
+                                            <property name="input"/>
+                                            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+                                            </property>
+                                        </port>
+                                        <port name="inputValues" class="ptolemy.actor.gt.PortMatcher">
+                                            <property name="input"/>
+                                            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+                                            </property>
+                                        </port>
                                         <port name="doneReading" class="ptolemy.actor.gt.PortMatcher">
                                             <property name="input"/>
+                                            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+                                            </property>
                                             <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="SOUTH">
                                             </property>
                                         </port>
                                         <port name="outputKeys" class="ptolemy.actor.gt.PortMatcher">
                                             <property name="output"/>
                                             <property name="multiport"/>
+                                            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+                                            </property>
                                             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
                                             </property>
                                         </port>
                                         <port name="outputValues" class="ptolemy.actor.gt.PortMatcher">
                                             <property name="output"/>
                                             <property name="multiport"/>
+                                            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+                                            </property>
                                             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
                                             </property>
                                         </port>
                                         <port name="doneEmitting" class="ptolemy.actor.gt.PortMatcher">
                                             <property name="output"/>
+                                            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+                                            </property>
                                             <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="SOUTH">
                                             </property>
                                         </port>
+                                        <port name="inputKeys">
+                                            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+                                            </property>
+                                        </port>
+                                        <port name="inputValues">
+                                            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+                                            </property>
+                                        </port>
                                         <port name="doneReading">
+                                            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+                                            </property>
                                             <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="SOUTH">
                                             </property>
                                         </port>
                                         <port name="outputKeys">
+                                            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+                                            </property>
                                             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
                                             </property>
                                         </port>
                                         <port name="outputValues">
+                                            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+                                            </property>
                                             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
                                             </property>
                                         </port>
                                         <port name="doneEmitting">
+                                            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+                                            </property>
                                             <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="SOUTH">
                                             </property>
                                         </port>
@@ -209,30 +300,51 @@
                                         <port name="inputKeys" class="ptolemy.actor.gt.PortMatcher">
                                             <property name="input"/>
                                             <property name="multiport"/>
+                                            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+                                            </property>
                                             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
                                             </property>
                                         </port>
                                         <port name="inputValues" class="ptolemy.actor.gt.PortMatcher">
                                             <property name="input"/>
                                             <property name="multiport"/>
+                                            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+                                            </property>
                                             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
                                             </property>
                                         </port>
                                         <port name="doneReceiving" class="ptolemy.actor.gt.PortMatcher">
                                             <property name="input"/>
+                                            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+                                            </property>
                                             <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="SOUTH">
                                             </property>
                                         </port>
+                                        <port name="output" class="ptolemy.actor.gt.PortMatcher">
+                                            <property name="output"/>
+                                            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+                                            </property>
+                                        </port>
                                         <port name="inputKeys">
+                                            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+                                            </property>
                                             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
                                             </property>
                                         </port>
                                         <port name="inputValues">
+                                            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+                                            </property>
                                             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
                                             </property>
                                         </port>
                                         <port name="doneReceiving">
+                                            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+                                            </property>
                                             <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="SOUTH">
+                                            </property>
+                                        </port>
+                                        <port name="output">
+                                            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
                                             </property>
                                         </port>
                                     </entity>
@@ -484,6 +596,16 @@
                                         <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
                                             <configure><svg><rect x="0" y="0" width="60" height="40"  style="fill:#C0C0C0"/><rect x="5" y="17" width="16" height="10"  style="fill:#FFFFFF; stroke:#B00000"/><rect x="39" y="25" width="16" height="10"  style="fill:#FFFFFF; stroke:#B00000"/><line x1="25" y1="22" x2="30" y2="22"  style="stroke:#404040"/><line x1="30" y1="22" x2="30" y2="30"  style="stroke:#404040"/><line x1="30" y1="30" x2="35" y2="30"  style="stroke:#404040"/><text x="17" y="13"  style="font-size:12; fill:#E00000; font-family:SansSerif">  match</text></svg></configure>
                                         </property>
+                                        <port name="input" class="ptolemy.actor.gt.PortMatcher">
+                                            <property name="input"/>
+                                            <property name="multiport"/>
+                                            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+                                            </property>
+                                        </port>
+                                        <port name="input">
+                                            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+                                            </property>
+                                        </port>
                                     </entity>
                                     <entity name="Split" class="ptolemy.actor.gt.AtomicActorMatcher">
                                         <property name="criteria" class="ptolemy.actor.gt.GTIngredientsAttribute" value="(ptolemy.actor.gt.ingredients.criteria.NameCriterion/false/&quot;Split&quot;)(ptolemy.actor.gt.ingredients.criteria.PortCriterion/true/&quot;lineInput&quot;/false//true/true/true/false/true/false/true/&quot;lineInput&quot;)(ptolemy.actor.gt.ingredients.criteria.PortCriterion/true/&quot;keys&quot;/false//true/false/true/true/true/true/true/&quot;keys&quot;)(ptolemy.actor.gt.ingredients.criteria.PortCriterion/true/&quot;values&quot;/false//true/false/true/true/true/true/true/&quot;values&quot;)">
@@ -493,6 +615,35 @@
                                         <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
                                             <configure><svg><rect x="0" y="0" width="60" height="40"  style="fill:#C0C0C0"/><rect x="5" y="17" width="16" height="10"  style="fill:#FFFFFF; stroke:#B00000"/><rect x="39" y="25" width="16" height="10"  style="fill:#FFFFFF; stroke:#B00000"/><line x1="25" y1="22" x2="30" y2="22"  style="stroke:#404040"/><line x1="30" y1="22" x2="30" y2="30"  style="stroke:#404040"/><line x1="30" y1="30" x2="35" y2="30"  style="stroke:#404040"/><text x="17" y="13"  style="font-size:12; fill:#E00000; font-family:SansSerif">  match</text></svg></configure>
                                         </property>
+                                        <port name="lineInput" class="ptolemy.actor.gt.PortMatcher">
+                                            <property name="input"/>
+                                            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+                                            </property>
+                                        </port>
+                                        <port name="keys" class="ptolemy.actor.gt.PortMatcher">
+                                            <property name="output"/>
+                                            <property name="multiport"/>
+                                            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+                                            </property>
+                                        </port>
+                                        <port name="values" class="ptolemy.actor.gt.PortMatcher">
+                                            <property name="output"/>
+                                            <property name="multiport"/>
+                                            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+                                            </property>
+                                        </port>
+                                        <port name="lineInput">
+                                            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+                                            </property>
+                                        </port>
+                                        <port name="keys">
+                                            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+                                            </property>
+                                        </port>
+                                        <port name="values">
+                                            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+                                            </property>
+                                        </port>
                                     </entity>
                                     <entity name="Map" class="ptolemy.actor.gt.AtomicActorMatcher">
                                         <property name="criteria" class="ptolemy.actor.gt.GTIngredientsAttribute" value="(ptolemy.actor.gt.ingredients.criteria.NameCriterion/false/&quot;Map&quot;)(ptolemy.actor.gt.ingredients.criteria.PortCriterion/true/&quot;inputKeys&quot;/false//true/true/true/false/true/false/true/&quot;inputKeys&quot;)(ptolemy.actor.gt.ingredients.criteria.PortCriterion/true/&quot;inputValues&quot;/false//true/true/true/false/true/false/true/&quot;inputValues&quot;)(ptolemy.actor.gt.ingredients.criteria.PortCriterion/true/&quot;doneReading&quot;/false//true/true/true/false/true/false/true/&quot;doneReading&quot;)(ptolemy.actor.gt.ingredients.criteria.PortCriterion/true/&quot;outputKeys&quot;/false//true/false/true/true/true/true/true/&quot;outputKeys&quot;)(ptolemy.actor.gt.ingredients.criteria.PortCriterion/true/&quot;outputValues&quot;/false//true/false/true/true/true/true/true/&quot;outputValues&quot;)(ptolemy.actor.gt.ingredients.criteria.PortCriterion/true/&quot;doneEmitting&quot;/false//true/false/true/true/true/false/true/&quot;doneEmitting&quot;)">
@@ -502,21 +653,67 @@
                                         <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
                                             <configure><svg><rect x="0" y="0" width="60" height="40"  style="fill:#C0C0C0"/><rect x="5" y="17" width="16" height="10"  style="fill:#FFFFFF; stroke:#B00000"/><rect x="39" y="25" width="16" height="10"  style="fill:#FFFFFF; stroke:#B00000"/><line x1="25" y1="22" x2="30" y2="22"  style="stroke:#404040"/><line x1="30" y1="22" x2="30" y2="30"  style="stroke:#404040"/><line x1="30" y1="30" x2="35" y2="30"  style="stroke:#404040"/><text x="17" y="13"  style="font-size:12; fill:#E00000; font-family:SansSerif">  match</text></svg></configure>
                                         </property>
+                                        <port name="inputKeys" class="ptolemy.actor.gt.PortMatcher">
+                                            <property name="input"/>
+                                            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+                                            </property>
+                                        </port>
+                                        <port name="inputValues" class="ptolemy.actor.gt.PortMatcher">
+                                            <property name="input"/>
+                                            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+                                            </property>
+                                        </port>
                                         <port name="doneReading" class="ptolemy.actor.gt.PortMatcher">
                                             <property name="input"/>
+                                            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+                                            </property>
                                             <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="SOUTH">
+                                            </property>
+                                        </port>
+                                        <port name="outputKeys" class="ptolemy.actor.gt.PortMatcher">
+                                            <property name="output"/>
+                                            <property name="multiport"/>
+                                            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+                                            </property>
+                                        </port>
+                                        <port name="outputValues" class="ptolemy.actor.gt.PortMatcher">
+                                            <property name="output"/>
+                                            <property name="multiport"/>
+                                            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
                                             </property>
                                         </port>
                                         <port name="doneEmitting" class="ptolemy.actor.gt.PortMatcher">
                                             <property name="output"/>
+                                            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+                                            </property>
                                             <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="SOUTH">
+                                            </property>
+                                        </port>
+                                        <port name="inputKeys">
+                                            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+                                            </property>
+                                        </port>
+                                        <port name="inputValues">
+                                            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
                                             </property>
                                         </port>
                                         <port name="doneReading">
+                                            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+                                            </property>
                                             <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="SOUTH">
                                             </property>
                                         </port>
+                                        <port name="outputKeys">
+                                            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+                                            </property>
+                                        </port>
+                                        <port name="outputValues">
+                                            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+                                            </property>
+                                        </port>
                                         <port name="doneEmitting">
+                                            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+                                            </property>
                                             <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="SOUTH">
                                             </property>
                                         </port>
@@ -587,6 +784,16 @@
                                         <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
                                             <configure><svg><rect x="0" y="0" width="60" height="40"  style="fill:#C0C0C0"/><rect x="5" y="17" width="16" height="10"  style="fill:#FFFFFF; stroke:#B00000"/><rect x="39" y="25" width="16" height="10"  style="fill:#FFFFFF; stroke:#B00000"/><line x1="25" y1="22" x2="30" y2="22"  style="stroke:#404040"/><line x1="30" y1="22" x2="30" y2="30"  style="stroke:#404040"/><line x1="30" y1="30" x2="35" y2="30"  style="stroke:#404040"/><text x="17" y="13"  style="font-size:12; fill:#E00000; font-family:SansSerif">  match</text></svg></configure>
                                         </property>
+                                        <port name="input" class="ptolemy.actor.gt.PortMatcher">
+                                            <property name="input"/>
+                                            <property name="multiport"/>
+                                            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+                                            </property>
+                                        </port>
+                                        <port name="input">
+                                            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+                                            </property>
+                                        </port>
                                     </entity>
                                     <entity name="Split" class="ptolemy.actor.gt.AtomicActorMatcher">
                                         <property name="patternObject" class="ptolemy.actor.gt.PatternObjectAttribute" value="Split">
@@ -596,6 +803,35 @@
                                         <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
                                             <configure><svg><rect x="0" y="0" width="60" height="40"  style="fill:#C0C0C0"/><rect x="5" y="17" width="16" height="10"  style="fill:#FFFFFF; stroke:#B00000"/><rect x="39" y="25" width="16" height="10"  style="fill:#FFFFFF; stroke:#B00000"/><line x1="25" y1="22" x2="30" y2="22"  style="stroke:#404040"/><line x1="30" y1="22" x2="30" y2="30"  style="stroke:#404040"/><line x1="30" y1="30" x2="35" y2="30"  style="stroke:#404040"/><text x="17" y="13"  style="font-size:12; fill:#E00000; font-family:SansSerif">  match</text></svg></configure>
                                         </property>
+                                        <port name="lineInput" class="ptolemy.actor.gt.PortMatcher">
+                                            <property name="input"/>
+                                            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+                                            </property>
+                                        </port>
+                                        <port name="keys" class="ptolemy.actor.gt.PortMatcher">
+                                            <property name="output"/>
+                                            <property name="multiport"/>
+                                            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+                                            </property>
+                                        </port>
+                                        <port name="values" class="ptolemy.actor.gt.PortMatcher">
+                                            <property name="output"/>
+                                            <property name="multiport"/>
+                                            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+                                            </property>
+                                        </port>
+                                        <port name="lineInput">
+                                            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+                                            </property>
+                                        </port>
+                                        <port name="keys">
+                                            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+                                            </property>
+                                        </port>
+                                        <port name="values">
+                                            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+                                            </property>
+                                        </port>
                                     </entity>
                                     <entity name="Map" class="ptolemy.actor.gt.AtomicActorMatcher">
                                         <property name="patternObject" class="ptolemy.actor.gt.PatternObjectAttribute" value="Map">
@@ -605,21 +841,67 @@
                                         <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
                                             <configure><svg><rect x="0" y="0" width="60" height="40"  style="fill:#C0C0C0"/><rect x="5" y="17" width="16" height="10"  style="fill:#FFFFFF; stroke:#B00000"/><rect x="39" y="25" width="16" height="10"  style="fill:#FFFFFF; stroke:#B00000"/><line x1="25" y1="22" x2="30" y2="22"  style="stroke:#404040"/><line x1="30" y1="22" x2="30" y2="30"  style="stroke:#404040"/><line x1="30" y1="30" x2="35" y2="30"  style="stroke:#404040"/><text x="17" y="13"  style="font-size:12; fill:#E00000; font-family:SansSerif">  match</text></svg></configure>
                                         </property>
+                                        <port name="inputKeys" class="ptolemy.actor.gt.PortMatcher">
+                                            <property name="input"/>
+                                            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+                                            </property>
+                                        </port>
+                                        <port name="inputValues" class="ptolemy.actor.gt.PortMatcher">
+                                            <property name="input"/>
+                                            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+                                            </property>
+                                        </port>
                                         <port name="doneReading" class="ptolemy.actor.gt.PortMatcher">
                                             <property name="input"/>
+                                            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+                                            </property>
                                             <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="SOUTH">
+                                            </property>
+                                        </port>
+                                        <port name="outputKeys" class="ptolemy.actor.gt.PortMatcher">
+                                            <property name="output"/>
+                                            <property name="multiport"/>
+                                            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+                                            </property>
+                                        </port>
+                                        <port name="outputValues" class="ptolemy.actor.gt.PortMatcher">
+                                            <property name="output"/>
+                                            <property name="multiport"/>
+                                            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
                                             </property>
                                         </port>
                                         <port name="doneEmitting" class="ptolemy.actor.gt.PortMatcher">
                                             <property name="output"/>
+                                            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+                                            </property>
                                             <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="SOUTH">
+                                            </property>
+                                        </port>
+                                        <port name="inputKeys">
+                                            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+                                            </property>
+                                        </port>
+                                        <port name="inputValues">
+                                            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
                                             </property>
                                         </port>
                                         <port name="doneReading">
+                                            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+                                            </property>
                                             <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="SOUTH">
                                             </property>
                                         </port>
+                                        <port name="outputKeys">
+                                            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+                                            </property>
+                                        </port>
+                                        <port name="outputValues">
+                                            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+                                            </property>
+                                        </port>
                                         <port name="doneEmitting">
+                                            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+                                            </property>
                                             <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="SOUTH">
                                             </property>
                                         </port>
@@ -957,13 +1239,46 @@
                                         <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
                                             <configure><svg><rect x="0" y="0" width="60" height="40"  style="fill:#C0C0C0"/><rect x="5" y="17" width="16" height="10"  style="fill:#FFFFFF; stroke:#B00000"/><rect x="39" y="25" width="16" height="10"  style="fill:#FFFFFF; stroke:#B00000"/><line x1="25" y1="22" x2="30" y2="22"  style="stroke:#404040"/><line x1="30" y1="22" x2="30" y2="30"  style="stroke:#404040"/><line x1="30" y1="30" x2="35" y2="30"  style="stroke:#404040"/><text x="17" y="13"  style="font-size:12; fill:#E00000; font-family:SansSerif">  match</text></svg></configure>
                                         </property>
+                                        <port name="inputKeys" class="ptolemy.actor.gt.PortMatcher">
+                                            <property name="input"/>
+                                            <property name="multiport"/>
+                                            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+                                            </property>
+                                        </port>
+                                        <port name="inputValues" class="ptolemy.actor.gt.PortMatcher">
+                                            <property name="input"/>
+                                            <property name="multiport"/>
+                                            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+                                            </property>
+                                        </port>
                                         <port name="doneReceiving" class="ptolemy.actor.gt.PortMatcher">
                                             <property name="input"/>
+                                            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+                                            </property>
                                             <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="SOUTH">
                                             </property>
                                         </port>
+                                        <port name="output" class="ptolemy.actor.gt.PortMatcher">
+                                            <property name="output"/>
+                                            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+                                            </property>
+                                        </port>
+                                        <port name="inputKeys">
+                                            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+                                            </property>
+                                        </port>
+                                        <port name="inputValues">
+                                            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+                                            </property>
+                                        </port>
                                         <port name="doneReceiving">
+                                            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+                                            </property>
                                             <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="SOUTH">
+                                            </property>
+                                        </port>
+                                        <port name="output">
+                                            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
                                             </property>
                                         </port>
                                     </entity>
@@ -1017,13 +1332,46 @@
                                         <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
                                             <configure><svg><rect x="0" y="0" width="60" height="40"  style="fill:#C0C0C0"/><rect x="5" y="17" width="16" height="10"  style="fill:#FFFFFF; stroke:#B00000"/><rect x="39" y="25" width="16" height="10"  style="fill:#FFFFFF; stroke:#B00000"/><line x1="25" y1="22" x2="30" y2="22"  style="stroke:#404040"/><line x1="30" y1="22" x2="30" y2="30"  style="stroke:#404040"/><line x1="30" y1="30" x2="35" y2="30"  style="stroke:#404040"/><text x="17" y="13"  style="font-size:12; fill:#E00000; font-family:SansSerif">  match</text></svg></configure>
                                         </property>
+                                        <port name="inputKeys" class="ptolemy.actor.gt.PortMatcher">
+                                            <property name="input"/>
+                                            <property name="multiport"/>
+                                            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+                                            </property>
+                                        </port>
+                                        <port name="inputValues" class="ptolemy.actor.gt.PortMatcher">
+                                            <property name="input"/>
+                                            <property name="multiport"/>
+                                            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+                                            </property>
+                                        </port>
                                         <port name="doneReceiving" class="ptolemy.actor.gt.PortMatcher">
                                             <property name="input"/>
+                                            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+                                            </property>
                                             <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="SOUTH">
                                             </property>
                                         </port>
+                                        <port name="output" class="ptolemy.actor.gt.PortMatcher">
+                                            <property name="output"/>
+                                            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+                                            </property>
+                                        </port>
+                                        <port name="inputKeys">
+                                            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+                                            </property>
+                                        </port>
+                                        <port name="inputValues">
+                                            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+                                            </property>
+                                        </port>
                                         <port name="doneReceiving">
+                                            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+                                            </property>
                                             <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="SOUTH">
+                                            </property>
+                                        </port>
+                                        <port name="output">
+                                            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
                                             </property>
                                         </port>
                                     </entity>
@@ -2010,6 +2358,10 @@
         <configure>
             <entity name="ModelUpdater" class="ptolemy.actor.gt.controller.ModelUpdater">
                 <entity name="_Controller" class="ptolemy.domains.ptera.kernel.PteraController">
+                    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={423, 207, 834, 635}, maximized=false}">
+                    </property>
+                    <property name="text" class="ptolemy.data.expr.Parameter" value="&quot;Sample Text for ConsistencyChecker message.&quot;">
+                    </property>
                     <entity name="FindUnconnectedPort" class="ptolemy.actor.gt.controller.Match">
                         <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
                         </property>
@@ -2051,6 +2403,15 @@
                                         <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
                                             <configure><svg><rect x="0" y="0" width="60" height="40"  style="fill:#C0C0C0"/><rect x="5" y="17" width="16" height="10"  style="fill:#FFFFFF; stroke:#B00000"/><rect x="39" y="25" width="16" height="10"  style="fill:#FFFFFF; stroke:#B00000"/><line x1="25" y1="22" x2="30" y2="22"  style="stroke:#404040"/><line x1="30" y1="22" x2="30" y2="30"  style="stroke:#404040"/><line x1="30" y1="30" x2="35" y2="30"  style="stroke:#404040"/><text x="17" y="13"  style="font-size:12; fill:#E00000; font-family:SansSerif">  match</text></svg></configure>
                                         </property>
+                                        <port name="criterion1" class="ptolemy.actor.gt.PortMatcher">
+                                            <property name="multiport"/>
+                                            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+                                            </property>
+                                        </port>
+                                        <port name="criterion1">
+                                            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+                                            </property>
+                                        </port>
                                     </entity>
                                     <relation name="relation" class="ptolemy.actor.TypedIORelation">
                                         <property name="width" class="ptolemy.data.expr.Parameter" value="1">
@@ -2313,10 +2674,14 @@
                                         <port name="outputKeys" class="ptolemy.actor.gt.PortMatcher">
                                             <property name="output"/>
                                             <property name="multiport"/>
+                                            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+                                            </property>
                                             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
                                             </property>
                                         </port>
                                         <port name="outputKeys">
+                                            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+                                            </property>
                                             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
                                             </property>
                                         </port>
@@ -2334,10 +2699,14 @@
                                         <port name="inputKeys" class="ptolemy.actor.gt.PortMatcher">
                                             <property name="input"/>
                                             <property name="multiport"/>
+                                            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+                                            </property>
                                             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
                                             </property>
                                         </port>
                                         <port name="inputKeys">
+                                            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+                                            </property>
                                             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
                                             </property>
                                         </port>
@@ -2385,10 +2754,14 @@
                                         <port name="outputValues" class="ptolemy.actor.gt.PortMatcher">
                                             <property name="output"/>
                                             <property name="multiport"/>
+                                            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+                                            </property>
                                             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
                                             </property>
                                         </port>
                                         <port name="outputValues">
+                                            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+                                            </property>
                                             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
                                             </property>
                                         </port>
@@ -2406,10 +2779,14 @@
                                         <port name="inputValues" class="ptolemy.actor.gt.PortMatcher">
                                             <property name="input"/>
                                             <property name="multiport"/>
+                                            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+                                            </property>
                                             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
                                             </property>
                                         </port>
                                         <port name="inputValues">
+                                            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+                                            </property>
                                             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
                                             </property>
                                         </port>
