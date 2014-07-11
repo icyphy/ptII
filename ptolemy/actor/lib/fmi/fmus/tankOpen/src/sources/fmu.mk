@@ -80,7 +80,7 @@ win64:
 		echo "Creating $(ARCH_DIR)"; \
 		mkdir -p $(ARCH_DIR); \
 	fi
-	$(CC) $(CBITSFLAGS) -g -Wall -shared -Wl,-soname,$@ $(INCLUDE) -o $(ARCH_DIR)$@ $<
+	$(CC) $(CBITSFLAGS) -g -Wall -shared -Wl,-soname,$@ $(INCLUDE) -o $(ARCH_DIR)$@ $< $(USERLIBS)
 
 %.dll: %.c
 	@if [ ! -d $(ARCH_DIR) ]; then \
@@ -98,7 +98,7 @@ win64:
 		echo "Creating $(ARCH_DIR)"; \
 		mkdir -p $(ARCH_DIR); \
 	fi
-	$(CC) -dynamiclib -g $(INCLUDE) -o $(ARCH_DIR)$@ $<
+	$(CC) -dynamiclib -g $(INCLUDE) -o $(ARCH_DIR)$@ $< $(USERLIBS)
 
 FMUDIR=..
 

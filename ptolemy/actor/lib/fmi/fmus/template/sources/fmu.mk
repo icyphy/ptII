@@ -80,7 +80,7 @@ win64:
 		echo "Creating $(ARCH_DIR)"; \
 		mkdir -p $(ARCH_DIR); \
 	fi
-	$(CC) $(CBITSFLAGS) -g -Wall -shared -Wl,-soname,$@ $(INCLUDE) -o $(ARCH_DIR)$@ $<
+	$(CC) $(CBITSFLAGS) -g -Wall -shared -Wl,-soname,$@ $(INCLUDE) -o $(ARCH_DIR)$@ $< $(USERLIBS)
 
 %.dll: %.c
 	@if [ ! -d $(ARCH_DIR) ]; then \
@@ -90,7 +90,7 @@ win64:
 	# Make users should try mingw32.  build_fmu.bat will run cl
 	#cl /LD /wd04090 /nologo $(ARCH_DIR)$< 
 	# FIXME: mingw32-gcc might not be in the path.
-	i686-pc-mingw32-gcc -shared -Wl,--out-implib,$@  $(INCLUDE) -o $(ARCH_DIR)$@ $< 
+	i686-pc-mingw32-gcc -shared -Wl,--out-implib,$@  $(INCLUDE) -o $(ARCH_DIR)$@ $< $(USERLIBS)
 
 # Include the c file on the link line so that the debug .dylib.dSYM directory is created.
 %.dylib: %.c
@@ -98,7 +98,7 @@ win64:
 		echo "Creating $(ARCH_DIR)"; \
 		mkdir -p $(ARCH_DIR); \
 	fi
-	$(CC) -dynamiclib -g $(INCLUDE) -o $(ARCH_DIR)$@ $<
+	$(CC) -dynamiclib -g $(INCLUDE) -o $(ARCH_DIR)$@ $< $(USERLIBS)
 
 FMUDIR=..
 
