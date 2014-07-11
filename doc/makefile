@@ -233,6 +233,7 @@ CGPACKAGES = \
 	ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.actor \
 	ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.actor.lib \
 	ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.actor.lib.conversions \
+	ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.actor.lib.fmi \
 	ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.actor.lib.gui \
 	ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.actor.lib.hoc \
 	ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.actor.lib.logic \
@@ -274,6 +275,8 @@ CGPACKAGES = \
 	ptolemy.cg.adapter.generic.program.procedural.c.xmos.adapters.ptolemy.domains.de.lib \
 	ptolemy.cg.adapter.generic.program.procedural.c.xmos.adapters.ptolemy.domains.ptides.kernel \
 	ptolemy.cg.adapter.generic.program.procedural.c.xmos.adapters.ptolemy.domains.ptides.lib \
+	ptolemy.cg.adapter.generic.program.procedural.fmima.adapters.ptolemy.actor \
+	ptolemy.cg.adapter.generic.program.procedural.fmima.adapters.ptolemy.actor.lib.fmi \
 	ptolemy.cg.adapter.generic.program.procedural.java.adapters.ptolemy.actor.lib \
 	ptolemy.cg.adapter.generic.program.procedural.java.adapters.ptolemy.actor.lib.colt \
 	ptolemy.cg.adapter.generic.program.procedural.java.adapters.ptolemy.actor.lib.conversions \
@@ -295,6 +298,7 @@ CGPACKAGES = \
 	ptolemy.cg.kernel.generic.program.procedural \
 	ptolemy.cg.kernel.generic.program.procedural.c \
 	ptolemy.cg.kernel.generic.program.procedural.c.ptidyos \
+	ptolemy.cg.kernel.generic.program.procedural.fmima \
 	ptolemy.cg.kernel.generic.program.procedural.java \
 	ptolemy.cg.kernel.generic.program.procedural.java.modular \
 	ptolemy.cg.kernel.generic.program.procedural.java.type \
