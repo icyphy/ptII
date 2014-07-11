@@ -57,8 +57,7 @@ all: $(EXEC)
 
 # Helper sources
 SHARED_SRCS = \
-	shared/sim_support.c \
-	shared/list.c
+	shared/sim_support.c
 
 CPP_SRCS = \
 	parser/XmlElement.cpp \
@@ -70,7 +69,7 @@ TARGET = main.c
 
 # Dependencies
 DEPS = \
-	shared/list.h \
+	maSupport.h \
 	shared/sim_support.h \
 	includes/fmi.h \
 	includes/fmiFunctions.h \
@@ -80,7 +79,6 @@ DEPS = \
 	parser/XmlParser.h \
 	parser/XmlParserCApi.h \
 	parser/XmlParserException.h
-	
 
 EXTRA_SRCS = $(CPP_SRCS) $(TARGET) $(DEPS) $(SHARED_SRCS)
 
@@ -107,7 +105,7 @@ run: main
 # Run the master algorithm and plot the output.
 plot: run
 	$(PTII)/bin/ptplot result.csv
-	
+
 clean: tmpclean
 
 tmpclean:
@@ -123,7 +121,8 @@ MISC_FILES = includes
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
-	
+	parser \
+	shared
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk	
