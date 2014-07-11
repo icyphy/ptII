@@ -56,7 +56,7 @@ static fmiComponent initializeFMU(FMU *fmu, fmiBoolean visible, fmiBoolean loggi
     fmiBoolean toleranceDefined = fmiFalse;  // true if model description define tolerance
     ValueStatus vs = valueIllegal;
 
-	// handle to the parsed XML file
+    // handle to the parsed XML file
     ModelDescription* md = fmu->modelDescription;
     // global unique id of the fmu
     const char *guid = getAttributeValue((Element *)md, att_guid);
@@ -71,10 +71,10 @@ static fmiComponent initializeFMU(FMU *fmu, fmiBoolean visible, fmiBoolean loggi
     free(fmuResourceLocation);
 
     if (!comp)
-    {
-    	printf("Could not initialize model with guid: %s\n", guid);
-    	return NULL;
-    }
+        {
+            printf("Could not initialize model with guid: %s\n", guid);
+            return NULL;
+        }
 
     Element *defaultExp = getDefaultExperiment(fmu->modelDescription);
     if (defaultExp) {
@@ -118,7 +118,7 @@ static fmiComponent initializeFMU(FMU *fmu, fmiBoolean visible, fmiBoolean loggi
 
 /*static void freeFMU(FMU *fmu) {
 
-}*/
+  }*/
 
 
 // simulate the given FMUs from tStart = 0 to tEnd.
@@ -154,29 +154,48 @@ static int simulate(FMU *fmus, double h, fmiBoolean loggingOn, char separator) {
     while (time < tEnd) {
     	int i;
     	for (i = 0 ; i < NUMBER_OF_FMUS; i++)
-    	{
-    		fmiFlag = fmus[i].getFMUstate(fmus[i].component, fmus[i].lastFMUstate);
-    		ModelInstance* inst = (ModelInstance*)(fmus[i].lastFMUstate);
-    		printf("The value of the last state is: %d\n", inst->i[i]);
-            fmiFlag = fmus[i].doStep(fmus[i].component, time, h, fmiFalse);
-            if (fmiFlag > fmiWarning)
             {
-            	return error("could not complete simulation of the model");
+
+
+                //fmus[i].lastFMUstate =  calloc(1, sizeof(fmiFMUstate*));
+    		//fmiFlag = fmus[i].getFMUstate(fmus[i].component, fmus[i].lastFMUstate);
+    		//ModelInstance* inst = (ModelInstance*)(fmus[i].lastFMUstate);
+
+                fmiFMUstate lastFMUstate = NULL;
+    		fmiFlag = fmus[i].getFMUstate(fmus[i].component, &lastFMUstate);
+    		ModelInstance* inst = (ModelInstance*) (lastFMUstate);
+                fmus[i].lastFMUstate = lastFMUstate;
+
+                //fmiFMUstate **lastFMUstate = calloc(1, sizeof(fmiFMUstate**));
+                //*lastFMUstate = calloc(1, sizeof(fmiFMUstate*));
+    		//fmiFlag = fmus[i].getFMUstate(fmus[i].component, *lastFMUstate);
+    		//ModelInstance* inst = (ModelInstance*) (lastFMUstate);
+                //fmus[i].lastFMUstate = *lastFMUstate;
+
+                printf("fmus[%d].lastFMUstate = %p\n", i, fmus[i].lastFMUstate);
+                if (fmiFlag <= fmiWarning) {
+                    printf("The value of the last state is: %d\n", inst->i[i]);
+                    fmiFlag = fmus[i].doStep(fmus[i].component, time, h, fmiFalse);
+                    if (fmiFlag > fmiWarning)
+                        {
+                            return error("could not complete simulation of the model");
+                        }
+                }
             }
-    	}
 
     	for (i = 0 ; i < NUMBER_OF_FMUS-1; i++)
-    	{
+            {
     		fmiFlag = fmus[i].getInteger(fmus[i].component, &outputOne, 1, &tempInt);
     		fmiFlag = fmus[i].setInteger(fmus[i].component, &outputOne, 1, &tempInt);
     		tempReal = (fmiReal)tempInt;
     		fmiFlag = fmus[i+1].setReal(fmus[i+1].component, &inputTwo, 1, &tempReal);
-    	}
+            }
 
     	if (time == 5) {
-    		printf("trying to set FMUstate\n");
-    		fmiFlag = fmus[0].setFMUstate(fmus[0].component, fmus[0].lastFMUstate);
-    		printf("FMUstate set\n");
+            printf("trying to set FMUstate\n");
+            printf("fmus[%d].lastFMUstate = %p\n", 0, fmus[0].lastFMUstate);
+            fmiFlag = fmus[0].setFMUstate(fmus[0].component, fmus[0].lastFMUstate);
+            printf("FMUstate set\n");
     	}
 
         time += h;
@@ -186,7 +205,7 @@ static int simulate(FMU *fmus, double h, fmiBoolean loggingOn, char separator) {
     }
 
     // end simulation
-	for (i = 0 ; i < NUMBER_OF_FMUS; i++)
+    for (i = 0 ; i < NUMBER_OF_FMUS; i++)
 	{
 	    fmus[i].terminate(fmus[i].component);
 	    fmus[i].freeInstance(fmus[i].component);
@@ -233,7 +252,7 @@ int main(int argc, char *argv[]) {
         fmus[i].component = initializeFMU(&fmus[i], visible, loggingOn, nCategories, categories);
     }
 
-  // run the simulation
+    // run the simulation
     printf("FMU Simulator: run '%s' from t=0..%g with step size h=%g, loggingOn=%d, csv separator='%c' ",
             fmuFileNames[0], tEnd, h, loggingOn, csv_separator); // TODO: Should mention all FMUs
     printf("log categories={ ");
