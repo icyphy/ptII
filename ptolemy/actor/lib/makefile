@@ -280,27 +280,27 @@ JSRCS = \
 
 OTHER_FILES_TO_BE_JARED = \
 	AbsoluteValueIcon.xml \
-    AccumulatorIcon.png \
-    AccumulatorIcon.xml \
-    ArrayAccumulateIcon.xml \
-    ArrayAppendIcon.xml \
-    ArrayAverageIcon.xml \
-    ArrayContainsIcon.xml \
-    ArrayElementAsMatrixIcon.xml \
-    ArrayElementIcon.xml \
-    ArrayExtractIcon.xml \
-    ArrayLengthIcon.xml \
-    ArrayLevelCrossingIcon.xml \
-    ArrayMaximumIcon.xml \
-    ArrayMinimumIcon.xml \
-    ArraySumIcon.xml \
-    ArrayPeakSearchIcon.xml \
-    ArrayRemoveElementIcon.xml \
-    ArraySortIcon.xml \
-    ArrayUpdateIcon.xml \
-    AverageIcon.xml \
-    BernoulliIcon.xml \
-    BooleanMultiplexorIcon.xml \
+	AccumulatorIcon.png \
+	AccumulatorIcon.xml \
+	ArrayAccumulateIcon.xml \
+	ArrayAppendIcon.xml \
+	ArrayAverageIcon.xml \
+	ArrayContainsIcon.xml \
+	ArrayElementAsMatrixIcon.xml \
+	ArrayElementIcon.xml \
+	ArrayExtractIcon.xml \
+	ArrayLengthIcon.xml \
+	ArrayLevelCrossingIcon.xml \
+	ArrayMaximumIcon.xml \
+	ArrayMinimumIcon.xml \
+	ArraySumIcon.xml \
+	ArrayPeakSearchIcon.xml \
+	ArrayRemoveElementIcon.xml \
+	ArraySortIcon.xml \
+	ArrayUpdateIcon.xml \
+	AverageIcon.xml \
+	BernoulliIcon.xml \
+	BooleanMultiplexorIcon.xml \
 	BooleanSelectIcon.xml \
 	BooleanSwitchIcon.xml \
 	ChopMultirate.xml \
@@ -309,6 +309,7 @@ OTHER_FILES_TO_BE_JARED = \
 	ConfigurationSelectIcon.xml \
 	ConfigurationSwitchIcon.xml \
 	CounterIcon.xml \
+	CurrentDateIcon.xml \
 	DateConstructorIcon.xml \
 	DateElementsIcon.xml \
 	DBIcon.xml \

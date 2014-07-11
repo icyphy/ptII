@@ -58,6 +58,7 @@ JSRCS = \
 	HttpPost.java \
 	HttpPut.java \
 	HttpRequest.java \
+	HttpResponse.java \
 	HttpService.java \
 	RecordToQueryString.java \
 	WebServer.java \
