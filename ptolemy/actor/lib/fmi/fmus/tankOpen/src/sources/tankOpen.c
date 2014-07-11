@@ -33,6 +33,12 @@ typedef struct {
     // cxh: Use a pointer to a fmiReal so that we can allocate space for it.
     // cxh: call this 'r' instead of 'value' so it works with model exchange.
     fmiReal    *r;
+    // cxh: Needed if we call fmiSetString from another FMU
+    // See http://chess.eecs.berkeley.edu/ptexternal/wiki/Main/FMU#ComplicationsWithLinuxSymbols
+    // fmiString  *s;
+    // FIXME: This is non-standard.  Under Linux, if this FMU is loaded and then another FMU is loaded and calls
+    // a method indirectly that dereferences ModelInstance, then there could be a crash
+    // See http://chess.eecs.berkeley.edu/ptexternal/wiki/Main/FMU#ComplicationsWithLinuxSymbols
     fmiBoolean mustComputeOutputs;
     const fmiCallbackFunctions* functions;
     fmiString instanceName;
@@ -47,6 +53,7 @@ typedef struct {
 #define mOut_flow 3
 #define TOut 4
 #define pOut 5
+// FIXME: The T should be 9 and modelDescription.xml updated.
 #define T 6
 #define m 7
 #define k 8
@@ -97,6 +104,9 @@ FMI_Export fmiComponent fmiInstantiate(fmiString instanceName,
     component->r = functions->allocateMemory(NVARS, sizeof(fmiReal));
     component->functions = functions;
     component->instanceName = instanceName;
+    // FIXME: This is non-standard.  Under Linux, if this FMU is loaded and then another FMU is loaded and calls
+    // a method indirectly that dereferences ModelInstance, then there could be a crash
+    // See http://chess.eecs.berkeley.edu/ptexternal/wiki/Main/FMU#ComplicationsWithLinuxSymbols
     component->mustComputeOutputs = fmiTrue;
     return component;
 }
@@ -119,7 +129,7 @@ FMI_Export fmiStatus fmiDoStep(fmiComponent c, fmiReal currentCommunicationPoint
 FMI_Export fmiStatus fmiEnterInitializationMode(fmiComponent c) {
     // fixme: Setting parameter values. This should probably be done by the master algorithm.
     // However, the fmuCheck program does not set parameter values.
-    ModelInstance* component = (ModelInstance *) c;
+    //ModelInstance* component = (ModelInstance *) c;
     return fmiOK;
 }
 
@@ -145,6 +155,10 @@ FMI_Export fmiStatus fmiGetReal(fmiComponent c,
     if (nvr > 0) {
       // Check if the output must be computed.
       // This could be made more efficient using an alias as pOut=pAtm.
+
+      // FIXME: This is non-standard.  Under Linux, if this FMU is loaded and then another FMU is loaded and calls
+      // a method indirectly that dereferences ModelInstance, then there could be a crash
+      // See http://chess.eecs.berkeley.edu/ptexternal/wiki/Main/FMU#ComplicationsWithLinuxSymbols
       if (component->mustComputeOutputs){
 	component->r[pOut] = component->r[pAtm]; // this is constant
 	dp = component->r[pIn] - component->r[pOut];
@@ -227,6 +241,10 @@ FMI_Export fmiStatus fmiSetReal(fmiComponent c, const fmiValueReference vr[], si
         component->r[vr[i]] = value[i];
     }
     // Set a flag that indicates that the outputs must be re-computed.
+
+    // FIXME: This is non-standard.  Under Linux, if this FMU is loaded and then another FMU is loaded and calls
+    // fmiSetReal indirectly, then there will be a crash.
+    // See http://chess.eecs.berkeley.edu/ptexternal/wiki/Main/FMU#ComplicationsWithLinuxSymbols
     component->mustComputeOutputs = fmiTrue;
     return fmiOK;
 }
@@ -245,6 +263,56 @@ FMI_Export fmiStatus fmiSetString(fmiComponent c, const fmiValueReference vr[],
         size_t nvr, const fmiString value[]) {
     return fmiError;
 }
+
+/* // We include a definition for fmiSetString() because values20RC1 calls setString() which invokes this method. */
+/* // See http://chess.eecs.berkeley.edu/ptexternal/wiki/Main/FMU#ComplicationsWithLinuxSymbols */
+/* fmiStatus fmiSetString (fmiComponent c, const fmiValueReference vr[], size_t nvr, const fmiString value[]) { */
+/*     int i; */
+/*     ModelInstance *comp = (ModelInstance *)c; */
+/*     fprintf(stderr, "values20RC1 fmuTemplate.c fmiSetString()\n"); */
+/*     fflush(stderr); */
+/*     //if (invalidState(comp, "fmiSetString", modelInstantiated|modelInitializationMode|modelInitialized|modelStepping)) */
+/*     //    return fmiError; */
+/*     if (nvr > 0 && !vr) { */
+/*         comp->functions->logger(NULL, comp->instanceName, fmiError, "error", */
+/*                 "fmiSetString: vr[] is null."); */
+/*         return fmiError; */
+/*     } */
+/*     if (nvr > 0 && !value) { */
+/*         comp->functions->logger(NULL, comp->instanceName, fmiError, "error", */
+/*                 "fmiSetString: value is null."); */
+/*         return fmiError; */
+/*     } */
+/*     comp->functions->logger(NULL, comp->instanceName, fmiOK, "ok", */
+/*             "fmiSetString: nvr = %d", nvr); */
+
+/*     for (i = 0; i < nvr; i++) { */
+/*         char *string = (char *)comp->s[vr[i]]; */
+/*         //if (vrOutOfRange(comp, "fmiSetString", vr[i], NUMBER_OF_STRINGS)) */
+/*         //    return fmiError; */
+/*         comp->functions->logger(NULL, comp->instanceName, fmiOK, "ok", */
+/*                 "fmiSetString: #s%d# = '%s'", vr[i], value[i]); */
+
+/*         if (!value[i]) { */
+/*             comp->functions->logger(NULL, comp->instanceName, fmiError, "error", */
+/*                     "fmiSetString: value[i] is null."); */
+/*             return fmiError; */
+/*         } */
+/*         if (string == NULL || strlen(string) < strlen(value[i])) { */
+/*             if (string) comp->functions->freeMemory(string); */
+/*             comp->s[vr[i]] = comp->functions->allocateMemory(1 + strlen(value[i]), sizeof(char)); */
+/*             if (!comp->s[vr[i]]) { */
+/*                 //comp->state = modelError; */
+/*                 //FILTERED_LOG(comp, fmiError, LOG_ERROR, "fmiSetString: Out of memory.") */
+/*                 comp->functions->logger(NULL, comp->instanceName, fmiError, "error", */
+/*                         "fmiSetString: Out of memory."); */
+/*                 return fmiError; */
+/*             } */
+/*         } */
+/*         strcpy((char *)comp->s[vr[i]], (char *)value[i]); */
+/*     } */
+/*     return fmiOK; */
+/* } */
 
 FMI_Export fmiStatus fmiSetupExperiment(fmiComponent c, 
         fmiBoolean   toleranceDefined, 
