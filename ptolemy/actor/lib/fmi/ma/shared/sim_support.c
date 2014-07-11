@@ -365,9 +365,11 @@ void outputRow(FMU *fmu, fmiComponent c, double time, FILE* file, char separator
     // print first column
     if (header) {
         fprintf(file, "time");
-    } else {
-        if (separator==',')
+    }
+    else {
+        if (separator==',') {
             fprintf(file, "%.16g", time);
+        }
         else {
             // separator is e.g. ';' or '\t'
             doubleToCommaString(buffer, time);
@@ -390,10 +392,12 @@ void outputRow(FMU *fmu, fmiComponent c, double time, FILE* file, char separator
                     }
                     s++;
                 }
-            } else {
+            }
+            else {
                 fprintf(file, "%c%s", separator, getAttributeValue((Element *)sv, att_name));
             }
-        } else {
+        }
+        else {
             // output values
             vr = getValueReference(sv);
             switch (getElementType(getTypeSpec(sv))) {
@@ -401,7 +405,8 @@ void outputRow(FMU *fmu, fmiComponent c, double time, FILE* file, char separator
                     fmu->getReal(c, &vr, 1, &r);
                     if (separator == ',') {
                         fprintf(file, ",%.16g", r);
-                    } else {
+                    }
+                    else {
                         // separator is e.g. ';' or '\t'
                         doubleToCommaString(buffer, r);
                         fprintf(file, "%c%s", separator, buffer);
@@ -430,8 +435,8 @@ void outputRow(FMU *fmu, fmiComponent c, double time, FILE* file, char separator
     fprintf(file, "\n");
 }
 
-static const char* fmiStatusToString(fmiStatus status){
-    switch (status){
+static const char* fmiStatusToString(fmiStatus status) {
+    switch (status) {
         case fmiOK:      return "ok";
         case fmiWarning: return "warning";
         case fmiDiscard: return "discard";

@@ -31,6 +31,7 @@
 #include <string.h>
 #include "fmi.h"
 #include "sim_support.h"
+#include "fmuTemplate.h"
 
 #define NUMBER_OF_FMUS 2
 
@@ -121,7 +122,7 @@ static fmiComponent initializeFMU(FMU *fmu, fmiBoolean visible, fmiBoolean loggi
 
 
 // simulate the given FMUs from tStart = 0 to tEnd.
-static int simulate(FMU **fmus, double h, fmiBoolean loggingOn, char separator) {
+static int simulate(FMU *fmus, double h, fmiBoolean loggingOn, char separator) {
 
     double time;
     fmiStatus fmiFlag;   // return code of the fmu functions
@@ -139,22 +140,25 @@ static int simulate(FMU **fmus, double h, fmiBoolean loggingOn, char separator) 
 
 
     // output solution for time t0
-    outputRow(fmus[1], fmus[1]->component, tStart, file, separator, TRUE);  // output column names
-    outputRow(fmus[1], fmus[1]->component, tStart, file, separator, FALSE); // output values
+    outputRow(&fmus[NUMBER_OF_FMUS-1], fmus[NUMBER_OF_FMUS-1].component, tStart, file, separator, TRUE);  // output column names
+    outputRow(&fmus[NUMBER_OF_FMUS-1], fmus[NUMBER_OF_FMUS-1].component, tStart, file, separator, FALSE); // output values
 
     // enter the simulation loop
     time = tStart;
     fmiInteger tempInt;
     fmiReal tempReal;
-    fmiValueReference inputTwo = getValueReference(getScalarVariable(fmus[1]->modelDescription, 0));
-    fmiValueReference outputOne = getValueReference(getScalarVariable(fmus[0]->modelDescription, 0));
+    fmiValueReference inputTwo = getValueReference(getScalarVariable(fmus[1].modelDescription, 0));
+    fmiValueReference outputOne = getValueReference(getScalarVariable(fmus[0].modelDescription, 0));
 
 
     while (time < tEnd) {
     	int i;
     	for (i = 0 ; i < NUMBER_OF_FMUS; i++)
     	{
-            fmiFlag = fmus[i]->doStep(fmus[i]->component, time, h, fmiTrue);
+    		fmiFlag = fmus[i].getFMUstate(fmus[i].component, fmus[i].lastFMUstate);
+    		ModelInstance* inst = (ModelInstance*)(fmus[i].lastFMUstate);
+    		printf("The value of the last state is: %d\n", inst->i[i]);
+            fmiFlag = fmus[i].doStep(fmus[i].component, time, h, fmiFalse);
             if (fmiFlag > fmiWarning)
             {
             	return error("could not complete simulation of the model");
@@ -163,14 +167,20 @@ static int simulate(FMU **fmus, double h, fmiBoolean loggingOn, char separator) 
 
     	for (i = 0 ; i < NUMBER_OF_FMUS-1; i++)
     	{
-    		fmiFlag = fmus[i]->getInteger(fmus[i]->component, &outputOne, 1, &tempInt);
-    		fmiFlag = fmus[i]->setInteger(fmus[i]->component, &outputOne, 1, &tempInt);
+    		fmiFlag = fmus[i].getInteger(fmus[i].component, &outputOne, 1, &tempInt);
+    		fmiFlag = fmus[i].setInteger(fmus[i].component, &outputOne, 1, &tempInt);
     		tempReal = (fmiReal)tempInt;
-    		fmiFlag = fmus[i+1]->setReal(fmus[i+1]->component, &inputTwo, 1, &tempReal);
+    		fmiFlag = fmus[i+1].setReal(fmus[i+1].component, &inputTwo, 1, &tempReal);
+    	}
+
+    	if (time == 5) {
+    		printf("trying to set FMUstate\n");
+    		fmiFlag = fmus[0].setFMUstate(fmus[0].component, fmus[0].lastFMUstate);
+    		printf("FMUstate set\n");
     	}
 
         time += h;
-        outputRow(fmus[1], fmus[1]->component, time, file, separator, FALSE); // output values for this step
+        outputRow(&fmus[NUMBER_OF_FMUS-1], fmus[NUMBER_OF_FMUS-1].component, time, file, separator, FALSE); // output values for this step
 
         nSteps++;
     }
@@ -178,8 +188,8 @@ static int simulate(FMU **fmus, double h, fmiBoolean loggingOn, char separator) 
     // end simulation
 	for (i = 0 ; i < NUMBER_OF_FMUS; i++)
 	{
-	    fmus[i]->terminate(fmus[i]->component);
-	    fmus[i]->freeInstance(fmus[i]->component);
+	    fmus[i].terminate(fmus[i].component);
+	    fmus[i].freeInstance(fmus[i].component);
 	}
 
     // print simulation summary
@@ -210,17 +220,17 @@ int main(int argc, char *argv[]) {
     fmiBoolean visible = fmiFalse;           // no simulator user interface
     
     // Create FMU array and allocate memory
-    FMU **fmus;
-    fmus = calloc(NUMBER_OF_FMUS, sizeof(FMU*));
+    FMU *fmus;
+    fmus = calloc(NUMBER_OF_FMUS, sizeof(FMU));
 
     printf("Parsing arguments!\n");
     parseArguments(argc, argv, fmuFileNames, &tEnd, &h, &loggingOn, &csv_separator, &nCategories, &categories);
 
+    // Load and initialize FMUs
     for (i = 0; i < NUMBER_OF_FMUS; i++) {
         printf("Loading FMU1\n");
-        fmus[i] = calloc(1, sizeof(FMU));
-        loadFMU(fmus[i], fmuFileNames[i]);
-        fmus[i]->component = initializeFMU(fmus[i], visible, loggingOn, nCategories, categories);
+        loadFMU(&fmus[i], fmuFileNames[i]);
+        fmus[i].component = initializeFMU(&fmus[i], visible, loggingOn, nCategories, categories);
     }
 
   // run the simulation
@@ -243,11 +253,11 @@ int main(int argc, char *argv[]) {
     }
 #else
     for (i = 0; i < NUMBER_OF_FMUS; i++) {
-        dlclose(fmus[i]->dllHandle);
+        dlclose(fmus[i].dllHandle);
     }
 #endif
     for (i = 0; i < NUMBER_OF_FMUS; i++) {
-        freeModelDescription(fmus[i]->modelDescription);
+        freeModelDescription(fmus[i].modelDescription);
     }
     if (categories) {
     	free(categories);
