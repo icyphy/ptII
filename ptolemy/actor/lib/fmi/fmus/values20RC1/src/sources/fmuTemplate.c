@@ -169,9 +169,11 @@ fmiComponent fmiInstantiate(fmiString instanceName, fmiType fmuType, fmiString f
     comp->componentEnvironment = functions->componentEnvironment;
     comp->loggingOn = loggingOn;
     comp->state = modelInstantiated;
+    fprintf(stderr, "values20RC1 fmiInstantiate() about to call setStartValues\n");
     setStartValues(comp); // to be implemented by the includer of this file
+    fprintf(stderr, "values20RC1 fmiInstantiate() done calling setStartValues\n");
 
-    FILTERED_LOG(comp, fmiOK, LOG_FMI_CALL, "fmiInstantiate: GUID=%s", fmuGUID)
+    FILTERED_LOG(comp, fmiOK, LOG_FMI_CALL, "values20RC1 fmiInstantiate: GUID=%s", fmuGUID)
 
     return comp;
 }
@@ -373,6 +375,7 @@ fmiStatus fmiGetString (fmiComponent c, const fmiValueReference vr[], size_t nvr
         if (vrOutOfRange(comp, "fmiGetString", vr[i], NUMBER_OF_STRINGS))
             return fmiError;
         value[i] = comp->s[vr[i]];
+	fprintf(stdout, "values20RC1 fmuTemplate.c getString %d <%s>\n", vr[i], value[i]);
         FILTERED_LOG(comp, fmiOK, LOG_FMI_CALL, "fmiGetString: #s%u# = '%s'", vr[i], value[i])
     }
     return fmiOK;
@@ -441,6 +444,8 @@ fmiStatus fmiSetBoolean(fmiComponent c, const fmiValueReference vr[], size_t nvr
 fmiStatus fmiSetString (fmiComponent c, const fmiValueReference vr[], size_t nvr, const fmiString value[]) {
     int i;
     ModelInstance *comp = (ModelInstance *)c;
+    fprintf(stderr, "values20RC1 fmuTemplate.c fmiSetString()\n");
+    fflush(stderr);
     if (invalidState(comp, "fmiSetString", modelInstantiated|modelInitializationMode|modelInitialized|modelStepping))
         return fmiError;
     if (nvr>0 && nullPointer(comp, "fmiSetString", "vr[]", vr))
@@ -453,6 +458,7 @@ fmiStatus fmiSetString (fmiComponent c, const fmiValueReference vr[], size_t nvr
         char *string = (char *)comp->s[vr[i]];
         if (vrOutOfRange(comp, "fmiSetString", vr[i], NUMBER_OF_STRINGS))
             return fmiError;
+	fprintf(stdout, "values20RC1 fmuTemplate.c setString %d <%s>\n", vr[i], value[i]);
         FILTERED_LOG(comp, fmiOK, LOG_FMI_CALL, "fmiSetString: #s%d# = '%s'", vr[i], value[i])
 
         if (nullPointer(comp, "fmiSetString", "value[i]", value[i]))

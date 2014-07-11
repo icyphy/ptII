@@ -41,10 +41,20 @@ const char* month[] = {
     "august","sept","october","november","december"
 };
 
+// Under Linux, the setString() function might invoke the fmiSetString() function from another FMU, so we use a copy.
+// See http://chess.eecs.berkeley.edu/ptexternal/wiki/Main/FMU#ComplicationsWithLinuxSymbols
+fmiStatus values20RC1_fmiSetString (fmiComponent c, const fmiValueReference vr[], size_t nvr, const fmiString value[]);
+
+fmiStatus values20RC1_setString(fmiComponent comp, fmiValueReference vr, fmiString value){
+    return values20RC1_fmiSetString(comp, &vr, 1, &value);
+}
+#define copy(vr, value) values20RC1_setString(comp, vr, value)
+
 // called by fmiInstantiate
 // Set values for all variables that define a start value
 // Settings used unless changed by fmiSetX before fmiEnterInitializationMode
 void setStartValues(ModelInstance *comp) {
+    //fprintf(stderr, "values20RC1.c: setStartValues() start\n");
     r(x_) = 1;
     i(int_in_) = 2;
     i(int_out_) = 0;
@@ -52,6 +62,7 @@ void setStartValues(ModelInstance *comp) {
     b(bool_out_) = fmiFalse;
     copy(string_in_, "a string");
     copy(string_out_, month[0]);
+    //fprintf(stderr, "values20RC1.c: setStartValues() end\n");
 }
 
 // called by fmiExitInitializationMode() after setting eventInfo to defaults
@@ -76,10 +87,50 @@ void eventUpdate(ModelInstance* comp, fmiEventInfo* eventInfo) {
     eventInfo->nextEventTime        = 1 + comp->time;
     i(int_out_) += 1;
     b(bool_out_) = !b(bool_out_);
-    if (i(int_out_)<12) copy(string_out_, month[i(int_out_)]);
-    else eventInfo->terminateSimulation = fmiTrue;
+    //fprintf(stderr, "values20RC1.c eventUpdate: i(int_out_): %d, month[i(int_out_)]: <%s>\n", i(int_out_), month[i(int_out_)]);
+    if (i(int_out_)<12) {
+      copy(string_out_, month[i(int_out_)]);
+    } else {
+      eventInfo->terminateSimulation = fmiTrue;
+    }
 }
+
 
 // include code that implements the FMI based on the above definitions
 #include "fmuTemplate.c"
 
+fmiStatus values20RC1_fmiSetString (fmiComponent c, const fmiValueReference vr[], size_t nvr, const fmiString value[]) {
+    int i;
+    ModelInstance *comp = (ModelInstance *)c;
+    //fprintf(stderr, "values20RC1 fmuTemplate.c fmiSetString()\n");
+    //fflush(stderr);
+    if (invalidState(comp, "fmiSetString", modelInstantiated|modelInitializationMode|modelInitialized|modelStepping))
+        return fmiError;
+    if (nvr>0 && nullPointer(comp, "fmiSetString", "vr[]", vr))
+        return fmiError;
+    if (nvr>0 && nullPointer(comp, "fmiSetString", "value[]", value))
+        return fmiError;
+    FILTERED_LOG(comp, fmiOK, LOG_FMI_CALL, "fmiSetString: nvr = %d", nvr)
+
+    for (i = 0; i < nvr; i++) {
+        char *string = (char *)comp->s[vr[i]];
+        if (vrOutOfRange(comp, "fmiSetString", vr[i], NUMBER_OF_STRINGS))
+            return fmiError;
+	//fprintf(stdout, "values20RC1 fmuTemplate.c setString %d <%s>\n", vr[i], value[i]);
+        FILTERED_LOG(comp, fmiOK, LOG_FMI_CALL, "fmiSetString: #s%d# = '%s'", vr[i], value[i])
+
+        if (nullPointer(comp, "fmiSetString", "value[i]", value[i]))
+            return fmiError;
+        if (string == NULL || strlen(string) < strlen(value[i])) {
+            if (string) comp->functions->freeMemory(string);
+            comp->s[vr[i]] = comp->functions->allocateMemory(1 + strlen(value[i]), sizeof(char));
+            if (!comp->s[vr[i]]) {
+                comp->state = modelError;
+                FILTERED_LOG(comp, fmiError, LOG_ERROR, "fmiSetString: Out of memory.")
+                return fmiError;
+            }
+        }
+        strcpy((char *)comp->s[vr[i]], (char *)value[i]);
+    }
+    return fmiOK;
+}
