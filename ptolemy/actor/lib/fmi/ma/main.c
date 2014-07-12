@@ -219,11 +219,10 @@ static int simulate(FMU *fmus, double h, fmiBoolean loggingOn, char separator) {
     for (i = 0 ; i < NUMBER_OF_FMUS; i++)
 	{
 	    fmus[i].terminate(fmus[i].component);
-            // FIXME: I think we get in to trouble here because we are reusing 
-            //if (fmus[i].lastFMUstate != NULL) {
-                // FIXME: we are ignoring the return value of this call.
-            //    fmus[i].freeFMUstate(fmus[i].component, fmus[i].lastFMUstate);
-            //}
+            if (fmus[i].lastFMUstate != NULL) {
+                //FIXME: we are ignoring the return value of this call.
+                fmus[i].freeFMUstate(fmus[i].component, fmus[i].lastFMUstate);
+            }
 
 	    fmus[i].freeInstance(fmus[i].component);
 	}
