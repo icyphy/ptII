@@ -100,11 +100,11 @@ main: $(OBJECTS)
 
 # Run the master algorithm executable on two fmus.
 run: main
-	./main ../fmus/inc20RC1/inc20RC1.fmu ../fmus/scale20RC1/scale20RC1.fmu 15 1 1
+	./main ../fmus/inc20RC1pt/inc20RC1pt.fmu ../fmus/scale20RC1/scale20RC1.fmu 15 1 1
 	
 # Debug the master algorithm with two fmus using gdb
 debug: main
-	gdb --args ./main ../fmus/inc20RC1/inc20RC1.fmu ../fmus/scale20RC1/scale20RC1.fmu 15 1 1
+	gdb --args ./main ../fmus/inc20RC1pt/inc20RC1pt.fmu ../fmus/scale20RC1/scale20RC1.fmu 15 1 1
 
 # Run the master algorithm and plot the output.
 plot: run
