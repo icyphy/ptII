@@ -31,7 +31,7 @@
 
 ME =		org/ptolemy/optimization
 
-DIRS =		demo
+DIRS =		demo test
 
 # Root of the Ptolemy II directory
 ROOT =		../../..
@@ -68,6 +68,7 @@ MISC_FILES =
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
 	demo \
+	test \
 	'CompositeOptimizer$$1.class' \
 	'CompositeOptimizer$$OptimizerComposite.class' \
 	'CompositeOptimizer$$OptimizerDirector$$1.class' \
