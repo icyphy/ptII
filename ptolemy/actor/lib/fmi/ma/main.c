@@ -193,7 +193,10 @@ static int simulate(FMU *fmus, double h, fmiBoolean loggingOn, char separator) {
 
     	if (time == 5) {
             printf("trying to set FMUstate\n");
-            printf("fmus[%d].lastFMUstate = %p\n", 0, fmus[0].lastFMUstate);
+            printf("fmus[0].lastFMUstate = %p\n", fmus[0].lastFMUstate);
+            printf("*fmus[0].lastFMUstate = %p\n", *fmus[0].lastFMUstate);
+            printf("*(fmus[0].lastFMUstate) = %p\n", *(fmus[0].lastFMUstate));
+            printf("((ModelInstance*)(fmus[0].lastFMUstate))->i[0] = %d\n", ((ModelInstance*)fmus[0].lastFMUstate)->i[0]);
             fmiFlag = fmus[0].setFMUstate(fmus[0].component, fmus[0].lastFMUstate);
             printf("FMUstate set\n");
     	}

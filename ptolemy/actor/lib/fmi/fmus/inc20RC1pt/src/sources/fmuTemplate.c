@@ -531,11 +531,10 @@ fmiStatus fmiGetFMUstate (fmiComponent c, fmiFMUstate* FMUstate) {
     //        modelInstantiated|modelInitializationMode|modelInitialized|modelStepping|modelTerminated|modelError);
 }
 fmiStatus fmiSetFMUstate (fmiComponent c, fmiFMUstate FMUstate) {
-
     ModelInstance *dest = (ModelInstance*)c;
     // allocating memory for pointers in ModelInstance struct
 
-    ModelInstance *source = (ModelInstance*) &FMUstate;
+    ModelInstance* source = (ModelInstance*) FMUstate;
     int i;
     if (NUMBER_OF_REALS > 0) {
         for (i = 0; i < NUMBER_OF_REALS; i++) {
@@ -556,6 +555,8 @@ fmiStatus fmiSetFMUstate (fmiComponent c, fmiFMUstate FMUstate) {
     }
     if (NUMBER_OF_STRINGS > 0) {
         for (i = 0; i < NUMBER_OF_STRINGS; i++) {
+            // FIXME: Where does this get freed?
+            dest->s[i] = dest->functions->allocateMemory(1 + strlen(source->s[i]), sizeof(char));
             strcpy((char*)dest->s[i], (char*)source->s[i]);
         }
     }
@@ -565,6 +566,7 @@ fmiStatus fmiSetFMUstate (fmiComponent c, fmiFMUstate FMUstate) {
         }
     }
 
+    //FIXME: would this be a no-op because FMUState would not be updated in the caller?
     FMUstate = (fmiFMUstate*)dest;
 
     return fmiOK;
