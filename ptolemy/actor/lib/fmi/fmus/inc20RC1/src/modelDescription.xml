@@ -17,8 +17,8 @@
 </LogCategories>
 
 <ModelVariables>
-  <ScalarVariable name="counter" valueReference="0" description="counts the seconds" causality="output">
-     <Integer />
+  <ScalarVariable name="counter" valueReference="0" description="counts the seconds" causality="output" initial="exact">
+     <Integer start="1"/>
   </ScalarVariable>
 </ModelVariables>
 
