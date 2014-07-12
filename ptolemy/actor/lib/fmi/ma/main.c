@@ -130,6 +130,7 @@ static int simulate(FMU *fmus, double h, fmiBoolean loggingOn, char separator) {
     int i;
     int nSteps = 0;
     FILE* file;
+    int returnValue = 1; // success!
 
     // open result file
     if (!(file = fopen(RESULT_FILE, "w"))) {
@@ -161,7 +162,10 @@ static int simulate(FMU *fmus, double h, fmiBoolean loggingOn, char separator) {
     		//fmiFlag = fmus[i].getFMUstate(fmus[i].component, fmus[i].lastFMUstate);
     		//ModelInstance* inst = (ModelInstance*)(fmus[i].lastFMUstate);
 
+                // FIXME: we should be able to get the lastFMUstate as below, but if we do, we get a segfault.
+                //fmiFMUstate lastFMUstate = fmus[i].lastFMUstate;
                 fmiFMUstate lastFMUstate = NULL;
+
     		fmiFlag = fmus[i].getFMUstate(fmus[i].component, &lastFMUstate);
     		ModelInstance* inst = (ModelInstance*) (lastFMUstate);
                 fmus[i].lastFMUstate = lastFMUstate;
@@ -178,7 +182,10 @@ static int simulate(FMU *fmus, double h, fmiBoolean loggingOn, char separator) {
                     fmiFlag = fmus[i].doStep(fmus[i].component, time, h, fmiFalse);
                     if (fmiFlag > fmiWarning)
                         {
-                            return error("could not complete simulation of the model");
+                            printf("could not complete simulation of the model because doStep returned something greater than a warning!\n");
+                            returnValue = 0;
+                            // Need to free up memory etc.
+                            goto endSimulation;
                         }
                 }
             }
@@ -207,21 +214,32 @@ static int simulate(FMU *fmus, double h, fmiBoolean loggingOn, char separator) {
         nSteps++;
     }
 
+ endSimulation:
     // end simulation
     for (i = 0 ; i < NUMBER_OF_FMUS; i++)
 	{
 	    fmus[i].terminate(fmus[i].component);
+            // FIXME: I think we get in to trouble here because we are reusing 
+            //if (fmus[i].lastFMUstate != NULL) {
+                // FIXME: we are ignoring the return value of this call.
+            //    fmus[i].freeFMUstate(fmus[i].component, fmus[i].lastFMUstate);
+            //}
+
 	    fmus[i].freeInstance(fmus[i].component);
 	}
 
     // print simulation summary
-    printf("Simulation from %g to %g terminated successful\n", tStart, tEnd);
+    if (returnValue == 1) {
+        printf("Simulation from %g to %g terminated successful\n", tStart, tEnd);
+    } else {
+        printf("Simulation from %g to %g terminated early!\n", tStart, tEnd);
+    }
     printf("  steps ............ %d\n", nSteps);
     printf("  fixed step size .. %g\n", h);
 
     fclose(file);
 
-    return 1; // success
+    return returnValue; // 1=success, 0=not success
 }
 
 int main(int argc, char *argv[]) {
@@ -278,12 +296,22 @@ int main(int argc, char *argv[]) {
         dlclose(fmus[i].dllHandle);
     }
 #endif
+    //    for (i = 0; i < NUMBER_OF_FMUS; i++) {
+    //    if (fmus[i].lastFMUstate != NULL) {
+    //        // FIXME: we are ignoring the return value of this call.
+    //        fmus[i].freeFMUstate(fmus[i].component, fmus[i].lastFMUstate);
+    //    }
+    //}
+
     for (i = 0; i < NUMBER_OF_FMUS; i++) {
         freeModelDescription(fmus[i].modelDescription);
     }
+
     if (categories) {
     	free(categories);
     }
+
+    free(fmus);
 
     return EXIT_SUCCESS;
 }

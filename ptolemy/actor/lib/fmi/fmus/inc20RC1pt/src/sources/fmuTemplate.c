@@ -239,7 +239,7 @@ void fmiFreeInstance(fmiComponent c) {
         return;
     FILTERED_LOG(comp, fmiOK, LOG_FMI_CALL, "fmiFreeInstance")
 
-        if (comp->r) comp->functions->freeMemory(comp->r);
+    if (comp->r) comp->functions->freeMemory(comp->r);
     if (comp->i) comp->functions->freeMemory(comp->i);
     if (comp->b) comp->functions->freeMemory(comp->b);
     if (comp->s) {
@@ -472,21 +472,39 @@ fmiStatus fmiSetString (fmiComponent c, const fmiValueReference vr[], size_t nvr
 }
 
 // TODO: Finish implementation
+
+/** From the spec: "fmi2GetFMUstate makes a copy of the internal FMU state and returns a pointer to this copy
+ * (FMUstate). If on entry *FMUstate == NULL, a new allocation is required. If *FMUstate !=
+ * NULL, then *FMUstate points to a previously returned FMUstate that has not been modified
+ * since. In particular, fmi2FreeFMUstate had not been called with this FMUstate as an argument.
+ * [Function fmi2GetFMUstate typically reuses the memory of this FMUstate in this case and
+ * returns the same pointer to it, but with the actual FMUstate.]"
+ */
 fmiStatus fmiGetFMUstate (fmiComponent c, fmiFMUstate* FMUstate) {
     ModelInstance *source = (ModelInstance*)c;
-    // allocating memory for pointers in ModelInstance struct
-
-    //fmiFreeInstance((fmiComponent)FMUstate);
-
-    ModelInstance *dest;
-    dest = (ModelInstance *)source->functions->allocateMemory(1, sizeof(ModelInstance));
     int i;
+
+    // allocating memory for pointers in ModelInstance struct
+    ModelInstance *dest;
+
+    // FIXME: It would be nice to free the FMUstate here, but if the FMUstate contains a reference to the same
+    // component as the source, then the source will get freed and we are sunk.
+    //fmiFreeFMUstate(source, FMUstate);
+
+    if (*FMUstate == NULL) {
+        dest = (ModelInstance *)source->functions->allocateMemory(1, sizeof(ModelInstance));
+    } else {
+        dest = (ModelInstance *)FMUstate;
+    }
+
 
     if (NUMBER_OF_REALS > 0) {
         dest->r = (fmiReal *)source->functions->allocateMemory(NUMBER_OF_REALS, sizeof(fmiReal));
         for (i = 0; i < NUMBER_OF_REALS; i++) {
             dest->r[i] = source->r[i];
         }
+    } else {
+        dest->r = NULL;
     }
     if (NUMBER_OF_INTEGERS > 0) {
         dest->i = (fmiInteger *)source->functions->allocateMemory(NUMBER_OF_INTEGERS, sizeof(fmiInteger));
@@ -495,18 +513,25 @@ fmiStatus fmiGetFMUstate (fmiComponent c, fmiFMUstate* FMUstate) {
                 dest->i[i] = source->i[i];
             FILTERED_LOG(source, fmiOK, LOG_FMI_CALL, "dest is %d and source is %d\n",dest->i[i], source->i[i])
 		}
+    } else {
+        dest->i = NULL;
     }
+
     if (NUMBER_OF_BOOLEANS > 0) {
         dest->b = (fmiBoolean *)source->functions->allocateMemory(NUMBER_OF_BOOLEANS, sizeof(fmiBoolean));
         for (i = 0; i < NUMBER_OF_BOOLEANS; i++) {
             dest->b[i] = source->b[i];
         }
+    } else {
+        dest->b = NULL;
     }
     if (NUMBER_OF_STRINGS > 0) {
         dest->s = (fmiString *)source->functions->allocateMemory(NUMBER_OF_STRINGS, sizeof(fmiString));
         for (i = 0; i < NUMBER_OF_STRINGS; i++) {
             strcpy((char*)dest->s[i], (char*)source->s[i]);
         }
+    } else {
+        dest->s = NULL;
     }
     if (NUMBER_OF_EVENT_INDICATORS > 0) {
         dest->isPositive = (fmiBoolean *)source->functions->allocateMemory(NUMBER_OF_EVENT_INDICATORS,
@@ -514,6 +539,8 @@ fmiStatus fmiGetFMUstate (fmiComponent c, fmiFMUstate* FMUstate) {
         for (i = 0; i < NUMBER_OF_EVENT_INDICATORS; i++) {
             dest->r[i] = source->r[i];
         }
+    } else {
+        dest->r = NULL;
     }
 
     *FMUstate = (fmiFMUstate)dest;
@@ -570,17 +597,30 @@ fmiStatus fmiSetFMUstate (fmiComponent c, fmiFMUstate FMUstate) {
     FMUstate = (fmiFMUstate*)dest;
 
     return fmiOK;
-
-
-
-
-    //    return unsupportedFunction(c, "fmiSetFMUstate",
-    //        modelInstantiated|modelInitializationMode|modelInitialized|modelStepping|modelTerminated|modelError);
 }
+
 fmiStatus fmiFreeFMUstate(fmiComponent c, fmiFMUstate* FMUstate) {
-    return unsupportedFunction(c, "fmiFreeFMUstate",
-            modelInstantiated|modelInitializationMode|modelInitialized|modelStepping|modelTerminated|modelError);
+    ModelInstance *comp = (ModelInstance *)c;
+    ModelInstance *state = (ModelInstance *)FMUstate;
+    if (!state) return fmiOK;
+    FILTERED_LOG(comp, fmiOK, LOG_FMI_CALL, "fmiFreeFMUstate")
+    if (state->r) comp->functions->freeMemory(state->r);
+    if (state->i) comp->functions->freeMemory(state->i);
+    if (state->b) comp->functions->freeMemory(state->b);
+    if (state->s) {
+        int i;
+        for (i = 0; i < NUMBER_OF_STRINGS; i++){
+            if (state->s[i]) comp->functions->freeMemory((void *)state->s[i]);
+        }
+        comp->functions->freeMemory(state->s);
+    }
+    if (state->isPositive) comp->functions->freeMemory(state->isPositive);
+    if (state->instanceName) comp->functions->freeMemory((void *)state->instanceName);
+    if (state->GUID) comp->functions->freeMemory((void *)state->GUID);
+    comp->functions->freeMemory(state);
+    return fmiOK;
 }
+
 fmiStatus fmiSerializedFMUstateSize(fmiComponent c, fmiFMUstate FMUstate, size_t *size) {
     return unsupportedFunction(c, "fmiSerializedFMUstateSize",
             modelInstantiated|modelInitializationMode|modelInitialized|modelStepping|modelTerminated|modelError);
