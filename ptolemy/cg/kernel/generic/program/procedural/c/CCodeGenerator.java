@@ -2918,18 +2918,12 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
      *  for user <code>mrptolemy</code> the makefile would be
      *  <code>C:\Documents and Settings\mrptolemy\codegen\Foo.mk</code>.
      *
-     *  <p>The following variables are substituted
-     *  <dl>
-     *  <dt><code>@modelName@</code>
-     *  <dd>The sanitized model name, created by invoking
-     *  {@link ptolemy.util.StringUtilities#sanitizeName(String)}
-     *  on the model name.
-     *  <dt><code>@PTCGIncludes@</code>
-     *  <dd>The elements of the set of include command arguments that
-     *  were added by calling {@link #addInclude(String)}, where each
-     *  element is separated by a space.
-     *  </dl>
-
+     *  <p>See the parent class {@link ptolemy.cg.kernel.generic.program.procedural.ProceduralCodeGenerator#_writeMakefile(CompositeEntity, String} for variable that are substutited by the parent class.</p>
+     * 
+     *  <p>The following variables are substituted:
+     *  <code>PTCG_CFILES</code>, <code>PTCG_OFILES</code>,
+     *  <code>PTCGCompiler</code>.</p>
+     *
      *  @param container The composite actor for which we generate the makefile
      *  @param currentDirectory The director in which the makefile is to be written.
      *  @exception IllegalActionException  If there is a problem reading

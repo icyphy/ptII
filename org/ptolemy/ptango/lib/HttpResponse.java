@@ -173,7 +173,7 @@ public class HttpResponse  {
     /** Return the source of the error, ErrorSource.CLIENT or 
      *  ErrorSource.SERVER, or ErrorSource.NONE if no error  
      * 
-     * @return 
+     * @return ErrorSource.CLIENT, ErrorSource.SERVER or Error.NONE.
      */
     public ErrorSource getErrorSource() {
         if (isSuccessful()) {

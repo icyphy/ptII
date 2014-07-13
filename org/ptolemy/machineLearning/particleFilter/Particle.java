@@ -49,41 +49,45 @@ public class Particle {
         _particleValue = new LinkedList<Double>();
         _ssSize = size;
     }
+
     /** Construct a Particle.
      *  @param p The particle
      */   
-    public Particle(Particle p){
+    public Particle(Particle p) {
         _weight = p._weight;
         _ssSize = p._ssSize;
         _particleValue = new LinkedList<Double>();
         List<Double> temp = p.getValue();
-        for(int i = 0; i < temp.size(); i++ ){
+        for (int i = 0; i < temp.size(); i++ ){
             _particleValue.add((Double)temp.get(i));
         }
     }
     
     /** Adjust the weight.
+     *  If w is greater than 0.0, then
+     *  the weight is set to weight/w.
      *  @param w The weight.
      */
     public boolean adjustWeight(double w){
         // normalize weight
         if (w > 0.0){
             _weight = _weight/w;
-        } else{
+        } else {
             return false;
         }
         return true;
     }
 
     /** Return the size of the partile.
-     *  @retur The size.   
+     *  @return The size.   
      */
     public int getSize(){
         return _ssSize;
     }
 
     /** Return the value.
-     *  @param The value
+     *  @return The value.
+     *  @see #setValue(LinkedList<Double>)
      */
     public List<Double> getValue(){
         List<Double> values = new LinkedList<Double>();
@@ -95,13 +99,15 @@ public class Particle {
 
     /** Return the weight.
      *  @return the weight.
+     *  @see #setWeight(double)
      */
-    public double getWeight(){
+    public double getWeight() {
         return _weight;
     }       
 
     /** Set the value.
      *  @param l The value
+     *  @see #getValue()
      */   
     public void setValue(LinkedList<Double> l){
         _particleValue = new LinkedList<Double>();
@@ -110,8 +116,10 @@ public class Particle {
             _particleValue.add((double)l.get(i));
         }
     }
+
     /** Set the weight.
-     *  @para the weight.
+     *  @param the weight.
+     *  @see #getWeight()
      */
     public void setWeight(double weight){
         _weight = weight;

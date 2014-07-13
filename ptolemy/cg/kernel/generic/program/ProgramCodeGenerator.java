@@ -1899,10 +1899,16 @@ public class ProgramCodeGenerator extends GenericCodeGenerator {
      *  <dd>The sanitized model name, created by invoking
      *  {@link ptolemy.util.StringUtilities#sanitizeName(String)}
      *  on the model name.
-     *  <dt><code>@PTCGIncludes@</code>
-     *  <dd>The elements of the set of include command arguments that
-     *  were added by calling {@link #addInclude(String)}, where each
-     *  element is separated by a space.
+     *  <dt><code>@CLASSPATHSEPARATOR@</code>
+     *  <dd>The value of the path.separator property</dd>
+     *  <dt><code>@PTJNI_NO_CYGWIN@</code>,
+     *  <code>@PTJNI_SHAREDLIBRARY_CFLAG@</code>,
+     *  <code>@PTJNI_SHAREDLIBRARY_LDFLAG@</code>,
+     *  <code>@PTJNI_SHAREDLIBRARY_PREFIX@</code>
+     *  <code>@PTJNI_SHAREDLIBRARY_SUFFIX@</code></dt>
+     *  <dd>Platform dependent compiler variables</dd>
+     *  <dt><code>@PTJavaCompiler@</code></dt>
+     *  <dd><code>javac</code></dd>
      *  </dl>
      *  @param container The composite actor for which we generate the makefile
      *  @param currentDirectory The director in which the makefile is to be written.

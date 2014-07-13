@@ -66,7 +66,7 @@ public class FMI20EventInfo extends Structure {
 
     /** Construct a FMI20EventInfo from data.
      *  @param pointer a pointer to the data.
-     *  @param offsite the offsite, in bytes.
+     *  @param offset the offset, in bytes.
      */
     public FMI20EventInfo(com.sun.jna.Pointer pointer, int offset) {
 	super();
