@@ -325,7 +325,10 @@ public class ProceduralCodeGenerator extends ProgramCodeGenerator {
      *  for user <code>mrptolemy</code> the makefile would be
      *  <code>C:\Documents and Settings\mrptolemy\codegen\Foo.mk</code>.
      *
-     *  <p>See the parent class {@link ptolemy.cg.kernel.generic.program.ProgramCodeGenerator#_writeMakefile(CompositeEntity, String} for variable that are substutited by the parent class.</p>
+     *  <p>See the parent class
+     *  {@link ptolemy.cg.kernel.generic.program.ProgramCodeGenerator#_writeMakefile(CompositeEntity, String)}
+     *  for variable that are substutited by the parent class.</p>
+     *
      *  <p>This class substitutes the following variables:
      *  <dl>
      *  <dt><code>@PTCGIncludes@</code>

@@ -87,7 +87,7 @@ public class Particle {
 
     /** Return the value.
      *  @return The value.
-     *  @see #setValue(LinkedList<Double>)
+     *  @see #setValue(LinkedList)
      */
     public List<Double> getValue(){
         List<Double> values = new LinkedList<Double>();
@@ -118,7 +118,7 @@ public class Particle {
     }
 
     /** Set the weight.
-     *  @param the weight.
+     *  @param weight the weight.
      *  @see #getWeight()
      */
     public void setWeight(double weight){
