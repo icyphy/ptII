@@ -1,4 +1,4 @@
-# Makefile for Ptolemy Classic style Codegen for HTML files
+# Makefile for Ptolemy Classic style Codegen for Functional Mockup Interface (FMI) Master Algorithm (MA) files
 #
 # @Version: $Id: makefile 55939 2009-10-22 16:12:24Z cxh $
 # @Author: Christopher Brooks
@@ -45,7 +45,7 @@ CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE = 	html
+PTPACKAGE = 	fmima
 PTCLASSJAR = $(PTPACKAGE).jar
 
 # Keep this list alphabetized.
