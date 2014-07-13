@@ -178,7 +178,7 @@ public class BrowserLauncher {
      * <code>$PTII/lib/ptII.properties.in</code> is read and
      * <code>$PTII/lib/ptII.properties</code> is overwritten, so you
      * may want to add your changes to
-     * <code>$PTII/lib/ptII.properties.in</code>.
+co     * <code>$PTII/lib/ptII.properties.in</code>.
      *
      * @param url The URL to open.
      *  It is best if the first argument is an absolute URL

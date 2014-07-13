@@ -76,7 +76,8 @@ import ptolemy.vergil.basic.HTMLExportable;
  * it in the top level of the Configuration, and this hyperlink
  * will be provided by default.
  * <p>
- * Note that this class works closely with {@link ExportHTMLAction}.
+ * Note that this class works closely with
+ * {@link ptolemy.vergil.basic.export.html.ExportHTMLAction}.
  * It will not work if the {@link WebExporter} provided to its
  * methods is not an instance of ExportHTMLAction.
  *

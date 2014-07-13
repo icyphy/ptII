@@ -217,7 +217,7 @@ public class FMIMACodeGenerator extends ProceduralCodeGenerator /*GenericCodeGen
     /** Read in a template makefile, substitute variables and write
      *  the resulting makefile.
      *
-     *  <p>See {@link  ptolemy.cg.kernel.generic.program.procedural.ProceduralCodeGenerator#_writeMakefile(CompositeEntity, String)
+     *  <p>See {@link  ptolemy.cg.kernel.generic.program.procedural.ProceduralCodeGenerator#_writeMakefile(CompositeEntity, String)}
      *  for a complete list of variables that are substituted.</p>
      *  <p>In this class, the following variables are substituted
      *  <dl>

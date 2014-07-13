@@ -50,6 +50,7 @@ JSRCS = \
 	AutoCGCInlineTests.java \
 	AutoCGCNoInlineTests.java \
 	AutoCGCNoInlineArduinoTests.java \
+	AutoCGCNoInlineFMIMATests.java \
 	AutoCGCTests.java \
 	AutoCGJavaKnownFailedTests.java \
 	AutoCGJavaTests.java \
@@ -60,6 +61,7 @@ JSRCS = \
 	AutoTests.java \
 	JUnitAuto32Base.java \
 	JUnitCGCArduinoTestBase.java \
+	JUnitCGCFMIMATestBase.java \
 	JUnitCGCTestBase.java \
 	JUnitCGCNoInlineTestBase.java \
 	JUnitCGJavaTestBase.java \
