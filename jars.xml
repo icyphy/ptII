@@ -37,6 +37,7 @@
     <include name="org/ptolemy/ptango/demo/demo.jar" />
     <include name="org/ptolemy/qss/qss.jar" />
     <include name="org/terraswarm/terraswarm.jar" />
+    <include name="org/terraswarm/demo/demo.jar" />
     <include name="ptolemy/actor/gt/demo/demo.jar" />
     <include name="ptolemy/actor/gt/gt.jar" />
     <include name="ptolemy/actor/gui/jnlp/BCVTBApplication.jar" />
@@ -3670,6 +3671,15 @@
         <include name="org/terraswarm/kernel/*.xslt"/>
         <include name="org/terraswarm/kernel/*.class"/>
         <include name="org/terraswarm/kernel/*.xml"/>
+      </fileset>
+  </jar>
+
+    <!-- org/terraswarm/demo/demo.jar -->
+    <jar defaultexcludes="yes"
+	 destfile="${basedir}/org/terraswarm/demo/demo.jar"
+	 >
+      <fileset dir="${basedir}">
+        <include name="org/terraswarm/demo/*/*.xml"/>
       </fileset>
   </jar>
 
