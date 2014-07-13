@@ -41,6 +41,8 @@ const char* month[] = {
     "august","sept","october","november","december"
 };
 
+#define PTOLEMY_SPECIFIC_CHANGES
+#ifdef PTOLEMY_SPECIFIC_CHANGES
 // Under Linux, the setString() function might invoke the fmiSetString() function from another FMU, so we use a copy.
 // See http://chess.eecs.berkeley.edu/ptexternal/wiki/Main/FMU#ComplicationsWithLinuxSymbols
 fmiStatus values20RC1_fmiSetString (fmiComponent c, const fmiValueReference vr[], size_t nvr, const fmiString value[]);
@@ -49,6 +51,7 @@ fmiStatus values20RC1_setString(fmiComponent comp, fmiValueReference vr, fmiStri
     return values20RC1_fmiSetString(comp, &vr, 1, &value);
 }
 #define copy(vr, value) values20RC1_setString(comp, vr, value)
+#endif //PTOLEMY_SPECIFIC_CHANGES
 
 // called by fmiInstantiate
 // Set values for all variables that define a start value
@@ -99,6 +102,7 @@ void eventUpdate(ModelInstance* comp, fmiEventInfo* eventInfo) {
 // include code that implements the FMI based on the above definitions
 #include "fmuTemplate.c"
 
+#ifdef PTOLEMY_SPECIFIC_CHANGES
 fmiStatus values20RC1_fmiSetString (fmiComponent c, const fmiValueReference vr[], size_t nvr, const fmiString value[]) {
     int i;
     ModelInstance *comp = (ModelInstance *)c;
@@ -134,3 +138,4 @@ fmiStatus values20RC1_fmiSetString (fmiComponent c, const fmiValueReference vr[]
     }
     return fmiOK;
 }
+#endif //PTOLEMY_SPECIFIC_CHANGES
