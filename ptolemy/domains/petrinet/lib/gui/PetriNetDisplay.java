@@ -31,9 +31,9 @@ package ptolemy.domains.petrinet.lib.gui;
 
 import javax.swing.JTextArea;
 
-import ptolemy.gui.Top;
 import ptolemy.actor.lib.gui.Display;
 import ptolemy.domains.petrinet.kernel.PetriNetDisplayer;
+import ptolemy.gui.Top;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;

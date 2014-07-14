@@ -63,7 +63,6 @@ import ptolemy.kernel.util.Nameable;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.Workspace;
-import ptolemy.util.MessageHandler;
 
 ///////////////////////////////////////////////////////////////////
 //// DEDirector

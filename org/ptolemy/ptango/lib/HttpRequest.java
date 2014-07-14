@@ -27,16 +27,13 @@
  */
 package org.ptolemy.ptango.lib;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.SocketTimeoutException;
 import java.net.URL;
 
 import ptolemy.data.RecordToken;
-import ptolemy.kernel.util.IllegalActionException;
 
 /** An object representation of an HTTP request. This class combines all
  *  components of a message (method type, header properties, body) and 

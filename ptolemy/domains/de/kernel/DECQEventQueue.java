@@ -27,7 +27,6 @@
  */
 package ptolemy.domains.de.kernel;
 
-import ptolemy.actor.Actor;
 import ptolemy.actor.util.CQComparator;
 import ptolemy.actor.util.CalendarQueue;
 import ptolemy.actor.util.Time;

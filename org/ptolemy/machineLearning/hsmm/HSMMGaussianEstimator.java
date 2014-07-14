@@ -30,13 +30,11 @@ package org.ptolemy.machineLearning.hsmm;
 
 import java.util.Arrays;
 
-import ptolemy.actor.NoRoomException;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.data.ArrayToken;
 import ptolemy.data.DoubleMatrixToken;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.IntToken;
-import ptolemy.data.MatrixToken;
 import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.ArrayType;

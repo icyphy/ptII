@@ -28,8 +28,6 @@
 package ptolemy.cg.adapter.generic.program.procedural.fmima.adapters.ptolemy.actor.lib.fmi;
 
 import ptolemy.actor.TypedIOPort;
-import ptolemy.cg.adapter.generic.program.procedural.fmima.adapters.ptolemy.actor.Director;
-import ptolemy.cg.kernel.generic.program.NamedProgramCodeGeneratorAdapter;
 import ptolemy.cg.kernel.generic.program.procedural.fmima.FMIMACodeGeneratorAdapter;
 import ptolemy.kernel.util.IllegalActionException;
 

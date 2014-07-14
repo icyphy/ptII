@@ -50,7 +50,6 @@ import ptolemy.actor.CompositeActor;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.actor.sched.StaticSchedulingDirector;
 import ptolemy.cg.kernel.generic.CodeGeneratorAdapter;
-import ptolemy.cg.kernel.generic.CodeGeneratorUtilities;
 import ptolemy.cg.kernel.generic.GenericCodeGenerator;
 import ptolemy.cg.kernel.generic.program.CodeStream;
 import ptolemy.cg.kernel.generic.program.NamedProgramCodeGeneratorAdapter;
@@ -59,19 +58,16 @@ import ptolemy.cg.kernel.generic.program.TemplateParser;
 import ptolemy.cg.kernel.generic.program.procedural.ProceduralCodeGenerator;
 import ptolemy.cg.lib.PointerToken;
 import ptolemy.data.BooleanToken;
-import ptolemy.data.StringToken;
 import ptolemy.data.expr.Variable;
 import ptolemy.data.type.ArrayType;
 import ptolemy.data.type.BaseType;
 import ptolemy.data.type.MatrixType;
 import ptolemy.data.type.Type;
 import ptolemy.kernel.CompositeEntity;
-import ptolemy.kernel.attributes.URIAttribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
-import ptolemy.util.MessageHandler;
 import ptolemy.util.StringUtilities;
 
 ///////////////////////////////////////////////////////////////////

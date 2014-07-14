@@ -31,7 +31,6 @@ package ptolemy.cg.kernel.generic.program.procedural.fmima;
 import java.io.File;
 
 import ptolemy.actor.CompositeActor;
-import ptolemy.cg.kernel.generic.GenericCodeGenerator;
 import ptolemy.cg.kernel.generic.program.procedural.ProceduralCodeGenerator;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;

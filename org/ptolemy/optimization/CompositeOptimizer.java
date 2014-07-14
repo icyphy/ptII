@@ -36,7 +36,7 @@ import ptolemy.actor.IOPort;
 import ptolemy.actor.NoTokenException;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.lib.hoc.MirrorPort;
-import ptolemy.actor.lib.hoc.ReflectComposite; 
+import ptolemy.actor.lib.hoc.ReflectComposite;
 import ptolemy.actor.parameters.ParameterPort;
 import ptolemy.data.ArrayToken;
 import ptolemy.data.DoubleToken;

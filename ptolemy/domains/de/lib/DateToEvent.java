@@ -29,7 +29,6 @@
 package ptolemy.domains.de.lib;
 
 import java.util.Collections;
-import java.util.Date;
 import java.util.HashSet;
 
 import ptolemy.actor.Director;
@@ -37,7 +36,6 @@ import ptolemy.actor.lib.Transformer;
 import ptolemy.actor.util.Time;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.DateToken;
-import ptolemy.data.DoubleToken;
 import ptolemy.data.type.BaseType;
 import ptolemy.domains.de.kernel.DEDirector;
 import ptolemy.kernel.CompositeEntity;

@@ -32,7 +32,6 @@ import java.io.Writer;
 import ptolemy.data.type.ActorType;
 import ptolemy.data.type.Type;
 import ptolemy.kernel.Entity;
-import ptolemy.kernel.Port;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.Workspace;
 import ptolemy.util.StringUtilities;

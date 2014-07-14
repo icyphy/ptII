@@ -28,9 +28,7 @@
 package ptolemy.actor.lib.conversions;
 
 import ptolemy.data.DateToken;
-import ptolemy.data.DoubleToken;
 import ptolemy.data.LongToken;
-import ptolemy.data.StringToken;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;

@@ -30,9 +30,9 @@ package org.ptolemy.fmi.driver;
 import java.io.File;
 import java.io.PrintStream;
 
+import org.ptolemy.fmi.FMI20EventInfo;
 import org.ptolemy.fmi.FMICallbackFunctions;
 import org.ptolemy.fmi.FMIEventInfo;
-import org.ptolemy.fmi.FMI20EventInfo;
 import org.ptolemy.fmi.FMILibrary;
 import org.ptolemy.fmi.FMIModelDescription;
 import org.ptolemy.fmi.FMUFile;
