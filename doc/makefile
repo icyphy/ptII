@@ -474,8 +474,7 @@ PTINYPACKAGES = \
 # Packages used by TerraSwarm.  Note that configure sets
 # PTJAVASCRIPT_PACKAGES to include org.terraswarm.kernel, so that
 # should not be included here.
-TERRASWARMPACKAGES = \
-	org.terraswarm.lib
+TERRASWARMPACKAGES =
 
 # Packages used in code from Thales.
 THALESPACKAGES = \
