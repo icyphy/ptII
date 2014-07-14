@@ -102,7 +102,7 @@ void output_function(fmiComponent c) {
 // Set values for all variables that define a start value
 // Settings used unless changed by fmiSetX before fmiEnterInitializationMode
 void setStartValues(ModelInstance *comp) {
-
+	init_state(comp);
 }
 
 // called by fmiExitInitializationMode() after setting eventInfo to defaults

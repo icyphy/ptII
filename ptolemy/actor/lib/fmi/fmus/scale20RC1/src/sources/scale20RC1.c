@@ -56,8 +56,6 @@ void eventUpdate(ModelInstance* comp, fmiEventInfo* eventInfo) {
 
 // called by fmiGetReal, fmiGetContinuousStates and fmiGetDerivatives
 fmiReal getReal(ModelInstance* comp, fmiValueReference vr){
-	  fprintf(stderr, "scale20RC1.c: getReal()\n");
-	  fflush(stderr);
     switch (vr)
     {
 		case input_:
