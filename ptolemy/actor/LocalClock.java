@@ -38,6 +38,7 @@ import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
+import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.ValueListener;
 import ptolemy.kernel.util.Workspace;
 import ptolemy.math.ExtendedMath;
@@ -114,6 +115,7 @@ public class LocalClock extends AbstractSettableAttribute {
         // Make sure getCurrentTime() never returns null.
         _localTime = Time.NEGATIVE_INFINITY;
         _drift = 1.0;
+        _visibility = Settable.NOT_EDITABLE;
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -353,7 +355,7 @@ public class LocalClock extends AbstractSettableAttribute {
      *  @see #setVisibility(Visibility)
      */
     public Visibility getVisibility() {
-        return NOT_EDITABLE;
+        return _visibility;
     }
 
     /** Initialize parameters that cannot be initialized in the
@@ -447,7 +449,7 @@ public class LocalClock extends AbstractSettableAttribute {
      *  @see #getVisibility()
      */
     public void setVisibility(Visibility visibility) {
-        // nothing to do, visibility is always false.
+        _visibility = visibility;
     }
 
     /** Start the clock with the current drift as specified by the
@@ -531,6 +533,8 @@ public class LocalClock extends AbstractSettableAttribute {
      *  By default, the offset is zero.
      */
     private Time _offset;
+    
+    private Visibility _visibility;
 
     /** Time resolution cache, with a reasonable default value. */
     private double _timeResolution = 1E-10;
