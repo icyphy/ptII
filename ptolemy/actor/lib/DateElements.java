@@ -110,16 +110,48 @@ public class DateElements extends TypedAtomicActor {
         new SingletonParameter(timezone, "_showName").setToken(BooleanToken.TRUE);
     }
     
+    /** Input for date token.
+     */
     public TypedIOPort input;
+    
+    /** Year of date received on input.
+     */
     public TypedIOPort year;
+    
+    /** Month of date received on input.
+     */
     public TypedIOPort month;
+    
+    /** Day of the month of date received on input.
+     */
     public TypedIOPort day;
+    
+    /** Hour of date received on input.
+     */
     public TypedIOPort hour;
+    
+    /** Minute of date received on input.
+     */
     public TypedIOPort minute;
+    
+    /** Second of date received on input.
+     */
     public TypedIOPort second;
+    
+    /** Millisecond of date received on input.
+     */
     public TypedIOPort millisecond;
+    
+    /** Microsecond of date received on input.
+     */
     public TypedIOPort microsecond;
+    
+    /** Nanosecond of date received on input.
+     */
     public TypedIOPort nanosecond;
+    
+    /** Time zone of date received on input.
+     */
     public TypedIOPort timezone;
 
     ///////////////////////////////////////////////////////////////////
