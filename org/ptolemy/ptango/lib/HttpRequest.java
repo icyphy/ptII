@@ -55,7 +55,7 @@ public class HttpRequest  {
     /** Construct a new, empty HTTP request. 
      */
     public HttpRequest() {
-        _body = new String("");
+        _body = "";
         _method = Method.GET;
         _properties = new RecordToken();
         _timeout = 3000; // Milliseconds
@@ -121,7 +121,7 @@ public class HttpRequest  {
             return response;
         }
         
-        if (_method.toString().equals(Method.GET)) {
+        if (_method.toString().equals(Method.GET.toString())) {
             _connection.setDoInput(true);
         } 
         // _connection.setDoOutput() set later if there is a message body
