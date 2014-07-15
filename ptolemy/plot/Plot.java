@@ -1507,29 +1507,36 @@ public class Plot extends PlotBox implements PlotInterface {
      */
     protected String _exportLatexPlotData() {
         StringBuilder result = new StringBuilder();
-        Formatter formatter = new Formatter(result, Locale.US);
+        Formatter formatter = null;
+        try {
+            formatter = new Formatter(result, Locale.US);
 
-        for (int i = 0; i < _points.size(); i++) {
-            result.append("\\pscurve[showpoints=true]{-}");
-            ArrayList<PlotPoint> pts = _points.get(i);
-            for (int pointnum = 0; pointnum < pts.size(); pointnum++) {
-                PlotPoint pt = pts.get(pointnum);
-                if (!pt.connected) {
-                    // FIXME: Break connection.
+            for (int i = 0; i < _points.size(); i++) {
+                result.append("\\pscurve[showpoints=true]{-}");
+                ArrayList<PlotPoint> pts = _points.get(i);
+                for (int pointnum = 0; pointnum < pts.size(); pointnum++) {
+                    PlotPoint pt = pts.get(pointnum);
+                    if (!pt.connected) {
+                        // FIXME: Break connection.
+                    }
+                    if (pt.errorBar) {
+                        // FIXME: Support error bars.
+                    } else {
+                        // NOTE: Latex doesn't understand scientific notation,
+                        // so we can't just use pt.x and pt.y.
+                        result.append("(");
+                        formatter.format("%f", pt.x);
+                        result.append(",");
+                        formatter.format("%f", pt.y);
+                        result.append(")");
+                    }
                 }
-                if (pt.errorBar) {
-                    // FIXME: Support error bars.
-                } else {
-                    // NOTE: Latex doesn't understand scientific notation,
-                    // so we can't just use pt.x and pt.y.
-                    result.append("(");
-                    formatter.format("%f", pt.x);
-                    result.append(",");
-                    formatter.format("%f", pt.y);
-                    result.append(")");
-                }
+                result.append("\n");
             }
-            result.append("\n");
+        } finally {
+            if (formatter != null) {
+                formatter.close();
+            }
         }
         return result.toString();
     }

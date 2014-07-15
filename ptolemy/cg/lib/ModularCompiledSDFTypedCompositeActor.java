@@ -27,6 +27,7 @@
  */
 package ptolemy.cg.lib;
 
+import java.io.IOException;
 import java.lang.reflect.Method;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -60,6 +61,7 @@ import ptolemy.domains.sdf.kernel.SDFDirector;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Nameable;
@@ -400,8 +402,9 @@ public class ModularCompiledSDFTypedCompositeActor extends
             URL url = _codeGenerator.codeDirectory.asFile().toURI().toURL();
             URL[] urls = new URL[] { url };
 
-            ClassLoader classLoader = new URLClassLoader(urls);
+            URLClassLoader classLoader = null;
             try {
+                classLoader = new URLClassLoader(urls);
                 classInstance = classLoader.loadClass(className);
             } catch (ClassNotFoundException ex) {
                 // We couldn't load the class, maybe the code is not
@@ -409,6 +412,16 @@ public class ModularCompiledSDFTypedCompositeActor extends
                 // this model to somebody else. Regenerate it again.
                 _generateCode();
                 classInstance = classLoader.loadClass(className);
+            } finally {
+                if (classLoader != null) {
+                    try {
+                        classLoader.close();
+                    } catch (IOException ex) {
+                        throw new IllegalActionException(this, ex,
+                                "Failed to close \"" + (url == null ? "null": url)
+                                + "\".");
+                    }
+                }
             }
 
             _objectWrapper = classInstance.newInstance();
@@ -885,38 +898,33 @@ public class ModularCompiledSDFTypedCompositeActor extends
  
             NamedObj toplevel = toplevel();
             FileParameter path;
+            URL url = null;
+            URLClassLoader classLoader = null;
             try {
                 path = new FileParameter(toplevel,
                         toplevel.uniqueName("dummyParam"));
                 path.setExpression("$HOME/cg/");
-                URL url = path.asFile().toURI().toURL();
+                url = path.asFile().toURI().toURL();
                 path.setContainer(null); //Remove the parameter again.
                 URL[] urls = new URL[] { url };
 
-                ClassLoader classLoader = new URLClassLoader(urls);
+                classLoader = new URLClassLoader(urls);
                 classInstance = classLoader.loadClass(className);
                 _profile = (Profile) classInstance.newInstance();
 
-            } catch (IllegalActionException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-            } catch (NameDuplicationException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-            } catch (MalformedURLException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-            } catch (ClassNotFoundException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-            } catch (InstantiationException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-            } catch (IllegalAccessException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
+            } catch (Throwable throwable) {
+                throw new InternalErrorException(this, throwable, "Failed to get the profile.");
+            } finally {
+                if (classLoader != null) {
+                    try {
+                        classLoader.close();
+                    } catch (IOException ex) {
+                        throw new InternalErrorException(this, ex,
+                                "Failed to close \"" + (url == null ? "null": url)
+                                + "\".");
+                    }
+                }
             }
-
         }
 
         return _profile;

@@ -173,8 +173,10 @@ public class ComponentDef implements Comparable<Object> {
 
     private static InputStream getCompFile() {
         // pull the components.xml file out of the root of the jar file
+        String jarFileName = "formLayoutMakerx.jar";
+        JarFile jf = null;
         try {
-            JarFile jf = new JarFile("formLayoutMakerx.jar");
+            jf = new JarFile(jarFileName);
             JarEntry je = null;
             Enumeration entries = jf.entries();
             while (entries.hasMoreElements()) {
@@ -185,6 +187,14 @@ public class ComponentDef implements Comparable<Object> {
             }
         } catch (IOException e) {
             return null;
+        } finally {
+            if (jf != null) {
+                try {
+                    jf.close();
+                } catch (IOException ex) {
+                    System.out.println("Failed to close \"" + jarFileName + "\": " + ex);
+                }
+            }
         }
         return null;
     }

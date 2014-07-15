@@ -66,19 +66,26 @@ public class TypeParser {
         if (type == null) {
             return null;
         }
-        Scanner scanner = new Scanner(type);
-        scanner.useDelimiter("[^a-zA-Z0-9]+");
-        String token = scanner.next();
-        Type baseType = BaseType.forName(type);
-        if (baseType != null) {
-            return baseType;
-        } else if (token.equals("arrayType")) {
-            String innerTypeName = scanner.next();
-            Type innerType = parse(innerTypeName);
-            if (scanner.hasNextInt()) {
-                return new ArrayType(innerType, scanner.nextInt());
-            } else {
-                return new ArrayType(innerType);
+        Scanner scanner = null;
+        try {
+            scanner = new Scanner(type);
+            scanner.useDelimiter("[^a-zA-Z0-9]+");
+            String token = scanner.next();
+            Type baseType = BaseType.forName(type);
+            if (baseType != null) {
+                return baseType;
+            } else if (token.equals("arrayType")) {
+                String innerTypeName = scanner.next();
+                Type innerType = parse(innerTypeName);
+                if (scanner.hasNextInt()) {
+                    return new ArrayType(innerType, scanner.nextInt());
+                } else {
+                    return new ArrayType(innerType);
+                }
+            }
+        } finally {
+            if (scanner != null) {
+                scanner.close();
             }
         }
         // TODO add support for other types

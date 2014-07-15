@@ -318,13 +318,14 @@ public class CompiledCompositeActor extends TypedCompositeActor {
                     //                            + _workspace.getVersion());
                     //                     System.err.flush();
                     String className = _sanitizedActorName;
-                    Class<?> classInstance = null;
                     URL url = null;
+                    URLClassLoader classLoader = null;
+                    Class<?> classInstance = null;
                     try {
                         url = codeDirectory.asFile().toURI().toURL();
                         URL[] urls = new URL[] { url };
 
-                        ClassLoader classLoader = new URLClassLoader(urls);
+                        classLoader = new URLClassLoader(urls);
                         classInstance = classLoader.loadClass(className);
 
                     } catch (ClassNotFoundException ex) {
@@ -365,6 +366,16 @@ public class CompiledCompositeActor extends TypedCompositeActor {
                         throw new IllegalActionException(this, ex,
                                 "Cannot load the class \"" + className
                                         + "\" from \"" + url + "\"");
+                    } finally {
+                        if (classLoader != null) {
+                            try {
+                                classLoader.close();
+                            } catch (IOException ex) {
+                                throw new IllegalActionException(this, ex,
+                                        "Failed to close \"" + (url == null ? "null": url)
+                                        + "\".");
+                            }
+                        }
                     }
 
                     try {

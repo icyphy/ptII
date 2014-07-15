@@ -28,6 +28,7 @@
 package ptolemy.cg.lib;
 
 import java.lang.reflect.Method;
+import java.io.IOException;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.util.HashMap;
@@ -293,10 +294,10 @@ public class ModularCodeGenTypedCompositeActor extends ModularCodeGenLazyTypedCo
                 url = new URL(url.toString() + "/");
             }
             URL[] urls = new URL[] { url };
-            URLClassLoader classLoader = new URLClassLoader(urls);
-
+            URLClassLoader classLoader = null;
             Class<?> classInstance = null;
             try {
+                classLoader = new URLClassLoader(urls);
                 classInstance = classLoader.loadClass(className);
             } catch (ClassNotFoundException ex) {
                 // We couldn't load the class, maybe the code is not
@@ -314,6 +315,16 @@ public class ModularCodeGenTypedCompositeActor extends ModularCodeGenLazyTypedCo
                             + ", urls were: "
                             + java.util.Arrays.deepToString(classLoader
                                     .getURLs()) + "\n" + ex2);
+                }
+            } finally {
+                if (classLoader != null) {
+                    try {
+                        classLoader.close();
+                    } catch (IOException ex) {
+                        throw new IllegalActionException(this, ex,
+                                "Failed to close \"" + (url == null ? "null": url)
+                                + "\".");
+                    }
                 }
             }
 
@@ -638,10 +649,23 @@ public class ModularCodeGenTypedCompositeActor extends ModularCodeGenLazyTypedCo
                 path.setContainer(null); //Remove the parameter again.
                 URL[] urls = new URL[] { url };
 
-                ClassLoader classLoader = new URLClassLoader(urls);
-                classInstance = classLoader.loadClass(className);
-                _profile = (Profile) classInstance.newInstance();
-                portList();
+                URLClassLoader classLoader = null;
+                try {
+                    classLoader = new URLClassLoader(urls);
+                    classInstance = classLoader.loadClass(className);
+                    _profile = (Profile) classInstance.newInstance();
+                    portList();
+                } finally {
+                    if (classLoader != null) {
+                        try {
+                            classLoader.close();
+                        } catch (IOException ex) {
+                            throw new IllegalActionException(this, ex,
+                                    "Failed to close \"" + (url == null ? "null": url)
+                                    + "\".");
+                        }
+                    }
+                }
             }
         } catch (Throwable throwable) {
             try {
