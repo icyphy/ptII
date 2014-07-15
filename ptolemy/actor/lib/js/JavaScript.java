@@ -797,7 +797,7 @@ public class JavaScript extends TypedAtomicActor {
      *  This wrapper provides access to the port only via a protected
      *  method, which JavaScript cannot access.
      */
-    public class ParameterProxy {
+    public static class ParameterProxy {
     	protected ParameterProxy(Parameter parameter) {
             _parameter = parameter;
     	}
@@ -814,7 +814,7 @@ public class JavaScript extends TypedAtomicActor {
      *  This wrapper provides access to the port only via a protected
      *  method, which JavaScript cannot access.
      */
-    public class PortProxy {
+    public static class PortProxy {
     	protected PortProxy(TypedIOPort port) {
             _port = port;
     	}
@@ -1214,9 +1214,6 @@ public class JavaScript extends TypedAtomicActor {
                     data = ((NativeJavaObject) data).unwrap();
                 }
                 try {
-                    if (data instanceof Double) {
-                        Long l = ((Double) data).longValue();
-                    }
                     Token token = _createToken(data);
                     if (_inFire) {
                         if (_debugging) {
@@ -1591,11 +1588,11 @@ public class JavaScript extends TypedAtomicActor {
             // JavaScript type, then return something that will naturally be
             // converted to that type.
             if (token instanceof BooleanToken) {
-                return new Boolean(((BooleanToken)token).booleanValue());
+                return Boolean.valueOf(((BooleanToken)token).booleanValue());
             } else if (token instanceof DoubleToken) {
-                return new Double(((DoubleToken)token).doubleValue());
+                return Double.valueOf(((DoubleToken)token).doubleValue());
             } else if (token instanceof IntToken) {
-                return new Integer(((IntToken)token).intValue());
+                return Integer.valueOf(((IntToken)token).intValue());
             } else if (token instanceof StringToken) {
                 return ((StringToken)token).stringValue();
             } else if (token instanceof ActorToken) {

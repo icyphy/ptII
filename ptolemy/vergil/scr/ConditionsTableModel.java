@@ -168,7 +168,7 @@ public class ConditionsTableModel extends AbstractTableModel {
                 CompositeEntity entity = (CompositeEntity) state
                     .getRefinement()[0];
                 if (entity.attributeList(Director.class).size() == 0) {
-                    ContinuousDirector director = new ContinuousDirector(
+                    /* ContinuousDirector director =*/ new ContinuousDirector(
                             entity, "Continuous Director");
                 }
                 Object expressionActorObject = entity.getEntity(_port

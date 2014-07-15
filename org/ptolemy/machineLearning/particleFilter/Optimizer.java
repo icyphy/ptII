@@ -292,7 +292,7 @@ public class Optimizer extends TypedAtomicActor {
         int nConstraints = _nRobots;
         
         boolean[] terminate = {false};
-        CobylaExitStatus status = Cobyla.FindMinimum(calcfc, nVariables, nConstraints, u_tp1, _rhobeg, _rhoend, iprint, maxfun, terminate);
+        /* CobylaExitStatus status =*/ Cobyla.FindMinimum(calcfc, nVariables, nConstraints, u_tp1, _rhobeg, _rhoend, iprint, maxfun, terminate);
         
         // send value to output.
         RecordToken[] outputRecords = new RecordToken[_nRobots];

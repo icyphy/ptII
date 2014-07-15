@@ -308,25 +308,28 @@ public class MutualInformationCalculator extends TypedAtomicActor {
         for(int k = 0 ; k < N; k++){
 //            logSum = 0;
             for( int j = k; j < N; j++){
-                double log_kj = mvnpdf(gaussianMeans[k],gaussianMeans[j],Sigma,invSigma,detSigma);
+                double log_kj = _mvnpdf(gaussianMeans[k],gaussianMeans[j],Sigma,invSigma,detSigma);
                 logSums[k] += _weights[j]*log_kj;
                 if(j!=k) logSums[j] += _weights[k]*log_kj;
-//                logSum += _weights[j]*mvnpdf(gaussianMeans[k],gaussianMeans[j],Sigma,invSigma,detSigma);
+//                logSum += _weights[j] * _mvnpdf(gaussianMeans[k],gaussianMeans[j],Sigma,invSigma,detSigma);
             }
             Hz += _weights[k]*Math.log(logSums[k]);
         }
         
         return -Hz;
     }
+
     // compute the multivariate PDF value at x.
-    private double mvnpdf(double[] x, double[] mu, double[][] Sigma){
-        return mvnpdf(x, mu, Sigma,  DoubleMatrixMath.inverse(Sigma), DoubleMatrixMath.determinant(Sigma));
-    }
-    // compute the multivariate PDF value at x, using Inverse and Determinant of Sigma in arguments.
-    // If you already have invSigma and detSigma, you can choose this function.
-    private double mvnpdf(double[] x, double[] mu, double[][] Sigma, double[][] invSigma, double detSigma){
-        int k = x.length;
-//        double multiplier = Math.sqrt(1.0/(Math.pow(Math.PI*2, k)*detSigma));
+    //private double mvnpdf(double[] x, double[] mu, double[][] Sigma){
+    //    return mvnpdf(x, mu, Sigma,  DoubleMatrixMath.inverse(Sigma), DoubleMatrixMath.determinant(Sigma));
+    //}
+
+    // compute the multivariate PDF value at x, using Inverse and
+    // Determinant of Sigma in arguments.  If you already have
+    // invSigma and detSigma, you can choose this function.
+    private double _mvnpdf(double[] x, double[] mu, double[][] Sigma, double[][] invSigma, double detSigma){
+        // int k = x.length;
+        // double multiplier = Math.sqrt(1.0/(Math.pow(Math.PI*2, k)*detSigma));
         double multiplier = detSigma;
         double[] x_mu = new double[x.length];
         for(int i = 0; i < x.length; i++){
@@ -337,8 +340,11 @@ public class MutualInformationCalculator extends TypedAtomicActor {
                         invSigma),x_mu);
         
         return multiplier*Math.exp(-0.5*exponent);
+
     }
-//    private Particle[] _particles;
+
+    //    private Particle[] _particles;
+
     private double[] _weights;
     private double[] _px;
     private double[] _py;

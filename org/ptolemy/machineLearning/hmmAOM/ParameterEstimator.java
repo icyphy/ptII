@@ -648,7 +648,7 @@ public abstract class ParameterEstimator extends AtomicCommunicationAspect {
     protected void _scheduleRefire() throws IllegalActionException {
         Time currentTime = getDirector().getModelTime();
         _nextReceiver = (Receiver) ((Object[]) _tokens.get(0))[0];
-        IOPort port = _nextReceiver.getContainer();
+        //IOPort port = _nextReceiver.getContainer();
         _fireAt(currentTime);
     }
 
