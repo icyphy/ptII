@@ -182,7 +182,7 @@ public class DateToken extends AbstractConvertibleToken
         if (_precision >= PRECISION_NANOSECOND) {
             _value += nanoseconds;
             if (nanoseconds >= 1000000) {
-                _calendar.setTimeInMillis(_getTimeInMilliseconds());
+                _calendar.setTimeInMillis(getTimeInMilliseconds());
             }
         } 
     }
@@ -198,7 +198,7 @@ public class DateToken extends AbstractConvertibleToken
             _value += microseconds * 1000;
         }
         if (_precision >= PRECISION_MICROSECOND && microseconds >= 1000) {
-            _calendar.setTimeInMillis(_getTimeInMilliseconds());
+            _calendar.setTimeInMillis(getTimeInMilliseconds());
         }
     }
 
@@ -260,7 +260,7 @@ public class DateToken extends AbstractConvertibleToken
     public Calendar getCalendarInstance() {
         if (_calendar == null) {
             _calendar = new GregorianCalendar(_timeZone);
-            _calendar.setTimeInMillis(_getTimeInMilliseconds());
+            _calendar.setTimeInMillis(getTimeInMilliseconds());
             _calendar.setTimeZone(_timeZone);
         }
         return _calendar;
@@ -369,9 +369,24 @@ public class DateToken extends AbstractConvertibleToken
         return _value;
     }
 
+    /** Get time in milliseconds since January 1, 1970.
+     *  @return The time as a long value.
+     */
+    public long getTimeInMilliseconds() {
+        if (_precision == PRECISION_NANOSECOND) {
+            return _value / 1000000;
+        } else if (_precision == PRECISION_MICROSECOND) {
+            return _value / 1000;
+        } else if (_precision == PRECISION_MILLISECOND) {
+            return _value;
+        } else if (_precision == PRECISION_SECOND) {
+            return _value * 1000;
+        }
+        return 0l;
+    }
+
     /** Return the type of this token.
-     *  @return {@link ptolemy.data.type.BaseType#DATE}, the least
-     *  upper bound of all the date types.
+     *  @return {@link #BaseType.DATE}, the least upper bound of all the date types.
      */
     public Type getType() {
         return BaseType.DATE;
@@ -712,19 +727,6 @@ public class DateToken extends AbstractConvertibleToken
         } else if (_precision == PRECISION_MICROSECOND) {
             return (_value % 1000) * 1000;
         } 
-        return 0l;
-    }
-
-    private long _getTimeInMilliseconds() {
-        if (_precision == PRECISION_NANOSECOND) {
-            return _value / 1000000;
-        } else if (_precision == PRECISION_MICROSECOND) {
-            return _value / 1000;
-        } else if (_precision == PRECISION_MILLISECOND) {
-            return _value;
-        } else if (_precision == PRECISION_SECOND) {
-            return _value * 1000;
-        }
         return 0l;
     }
 
