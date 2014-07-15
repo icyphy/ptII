@@ -188,7 +188,7 @@ public class Expression extends TypedAtomicActor {
         new CheckBoxStyle(getIntegerMatrices, "style");
 
         // _time is not needed, fire() sets a matlab variable directly
-        _iteration = new Variable(this, "iteration", new IntToken(1));
+        _iteration = new Variable(this, "_iteration", new IntToken(1));
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -230,14 +230,6 @@ public class Expression extends TypedAtomicActor {
 
         newObject._addPathCommand = null;
         newObject._iterationCount = 1;
-        try {
-            newObject._iteration.setContainer(null);
-            newObject._iteration = new Variable(this, "iteration",
-                    new IntToken(1));
-        } catch (Throwable throwable) {
-            throw new CloneNotSupportedException("Failed to set _iteration "
-                    + "to 1: " + throwable);
-        }
         newObject._previousPath = null;
         return newObject;
     }
