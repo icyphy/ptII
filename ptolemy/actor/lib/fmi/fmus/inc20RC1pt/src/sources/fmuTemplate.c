@@ -491,8 +491,9 @@ fmiStatus fmiGetFMUstate (fmiComponent c, fmiFMUstate* FMUstate) {
     // component as the source, then the source will get freed and we are sunk.
     //fmiFreeFMUstate(source, FMUstate);
 
-    if (*FMUstate == NULL) {
-        dest = (ModelInstance *)source->functions->allocateMemory(1, sizeof(ModelInstance));
+    if (!*FMUstate) {
+    	FMUstate = (fmiFMUstate *)source->functions->allocateMemory(1, sizeof(ModelInstance));
+    	dest = (ModelInstance*) FMUstate;
     } else {
         dest = (ModelInstance *)FMUstate;
     }
@@ -711,7 +712,7 @@ fmiStatus fmiDoStep(fmiComponent c, fmiReal currentCommunicationPoint,
 
         if (communicationStepSize <= 0) {
             FILTERED_LOG(comp, fmiError, LOG_ERROR,
-                    "fmiDoStep: communication step size must be > 0. Fount %g.", communicationStepSize)
+                    "fmiDoStep: communication step size must be > 0. Found %g.", communicationStepSize)
                 return fmiError;
         }
 
