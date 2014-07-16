@@ -52,6 +52,8 @@ static fmiComponent initializeFMU(FMU *fmu, fmiBoolean visible, fmiBoolean loggi
     fmu->callbacks.stepFinished = NULL; // fmiDoStep has to be carried out synchronously
     fmu->callbacks.componentEnvironment = fmu; // pointer to current fmu from the environment.
 
+    // fmu->lastFMUstate = (fmiFMUstate*) calloc(1, sizeof(ModelInstance));
+
     fmiReal tolerance = 0;                   // used in setting up the experiment
     fmiBoolean toleranceDefined = fmiFalse;  // true if model description define tolerance
     ValueStatus vs = valueIllegal;
@@ -116,9 +118,21 @@ static fmiComponent initializeFMU(FMU *fmu, fmiBoolean visible, fmiBoolean loggi
     return comp;
 }
 
-/*static void freeFMU(FMU *fmu) {
+static fmiStatus rollbackFMUs(FMU *fmus, int completedFMUs) {
+	int i;
+	fmiStatus fmiFlag;
 
-  }*/
+	printf("Rolling back FMUs!\n");
+
+	for (i = 0; i < completedFMUs; i++) {
+		fmiFlag = fmus[i].setFMUstate(fmus[i].component, fmus[i].lastFMUstate);
+		if (fmiFlag > fmiWarning) {
+			printf("Rolling back FMU %d failed!\n", i+1);
+			return fmiFlag;
+		}
+	}
+	return fmiOK;
+}
 
 
 // simulate the given FMUs from tStart = 0 to tEnd.
@@ -126,6 +140,7 @@ static int simulate(FMU *fmus, double h, fmiBoolean loggingOn, char separator) {
 
     double time;
     fmiStatus fmiFlag;   // return code of the fmu functions
+	fmiStatus simulationState = fmiOK; // state of the whole simulation
 
     int i;
     int nSteps = 0;
@@ -151,60 +166,60 @@ static int simulate(FMU *fmus, double h, fmiBoolean loggingOn, char separator) {
     fmiValueReference inputTwo = getValueReference(getScalarVariable(fmus[1].modelDescription, 0));
     fmiValueReference outputOne = getValueReference(getScalarVariable(fmus[0].modelDescription, 0));
 
-
+// FIXME: remove evil gotos!!
     while (time < tEnd) {
     	int i;
     	for (i = 0 ; i < NUMBER_OF_FMUS; i++)
             {
+				// FIXME: we should be able to get the lastFMUstate as below, but if we do, we get a segfault.
+//				fmiFMUstate lastFMUstate = fmus[i].lastFMUstate;
 
+    			printf("fmus[%d].lastFMUstate = %p\n", i, fmus[i].lastFMUstate);
+				fmiFMUstate lastFMUstate = NULL;
+				printf("We came this far!\n");
 
-                //fmus[i].lastFMUstate =  calloc(1, sizeof(fmiFMUstate*));
-    		//fmiFlag = fmus[i].getFMUstate(fmus[i].component, fmus[i].lastFMUstate);
-    		//ModelInstance* inst = (ModelInstance*)(fmus[i].lastFMUstate);
-
-                // FIXME: we should be able to get the lastFMUstate as below, but if we do, we get a segfault.
-                //fmiFMUstate lastFMUstate = fmus[i].lastFMUstate;
-                fmiFMUstate lastFMUstate = NULL;
-
-    		fmiFlag = fmus[i].getFMUstate(fmus[i].component, &lastFMUstate);
-    		ModelInstance* inst = (ModelInstance*) (lastFMUstate);
-                fmus[i].lastFMUstate = lastFMUstate;
-
-                //fmiFMUstate **lastFMUstate = calloc(1, sizeof(fmiFMUstate**));
-                //*lastFMUstate = calloc(1, sizeof(fmiFMUstate*));
-    		//fmiFlag = fmus[i].getFMUstate(fmus[i].component, *lastFMUstate);
-    		//ModelInstance* inst = (ModelInstance*) (lastFMUstate);
-                //fmus[i].lastFMUstate = *lastFMUstate;
+				fmiFlag = fmus[i].getFMUstate(fmus[i].component, &lastFMUstate);
+				ModelInstance* inst = (ModelInstance*) lastFMUstate;
+				fmus[i].lastFMUstate = lastFMUstate;
 
                 printf("fmus[%d].lastFMUstate = %p\n", i, fmus[i].lastFMUstate);
                 if (fmiFlag <= fmiWarning) {
                     printf("The value of the last state is: %d\n", inst->i[i]);
                     fmiFlag = fmus[i].doStep(fmus[i].component, time, h, fmiFalse);
-                    if (fmiFlag > fmiWarning)
-                        {
-                            printf("could not complete simulation of the model because doStep returned something greater than a warning!\n");
+                    if (fmiFlag > fmiDiscard) {
+                            printf("could not complete simulation of the model because doStep returned something greater than a discard!\n");
                             returnValue = 0;
                             // Need to free up memory etc.
                             goto endSimulation;
-                        }
+                    }
+
+                    if (fmiFlag == fmiDiscard) {
+                    	fmiReal lastSuccessfulTime;
+                    	fmus[i].getRealStatus(fmus[i].component, fmiLastSuccessfulTime, &lastSuccessfulTime);
+                    	h = lastSuccessfulTime - time;  // setting step size to successful step size of current fmu
+                    	fmiFlag = rollbackFMUs(fmus, i+1);
+                    }
                 }
             }
 
     	for (i = 0 ; i < NUMBER_OF_FMUS-1; i++)
             {
     		fmiFlag = fmus[i].getInteger(fmus[i].component, &outputOne, 1, &tempInt);
-    		fmiFlag = fmus[i].setInteger(fmus[i].component, &outputOne, 1, &tempInt);
     		tempReal = (fmiReal)tempInt;
     		fmiFlag = fmus[i+1].setReal(fmus[i+1].component, &inputTwo, 1, &tempReal);
             }
 
     	if (time == 5) {
             printf("trying to set FMUstate\n");
-            printf("fmus[0].lastFMUstate = %p\n", fmus[0].lastFMUstate);
-            printf("*fmus[0].lastFMUstate = %p\n", *fmus[0].lastFMUstate);
-            printf("*(fmus[0].lastFMUstate) = %p\n", *(fmus[0].lastFMUstate));
-            printf("((ModelInstance*)(fmus[0].lastFMUstate))->i[0] = %d\n", ((ModelInstance*)fmus[0].lastFMUstate)->i[0]);
-            fmiFlag = fmus[0].setFMUstate(fmus[0].component, fmus[0].lastFMUstate);
+            printf("fmus[0].lastFMUstate = %p\n", &fmus[0].lastFMUstate);
+            printf("*fmus[0].lastFMUstate = %p\n", fmus[0].lastFMUstate);
+            printf("*(fmus[0].lastFMUstate) = %p\n", (fmus[0].lastFMUstate));
+            printf("((ModelInstance*)(fmus[0].lastFMUstate))->i[0] = %d\n", ((ModelInstance*)&fmus[0].lastFMUstate)->i[0]);
+            fmiFlag = rollbackFMUs(fmus, 1);
+            if (fmiFlag > fmiWarning) {
+            	printf("Rolling back of FMUs failed. Terminating simulation.");
+            	goto endSimulation;
+            }
             printf("FMUstate set\n");
     	}
 
@@ -267,7 +282,7 @@ int main(int argc, char *argv[]) {
 
     // Load and initialize FMUs
     for (i = 0; i < NUMBER_OF_FMUS; i++) {
-        printf("Loading FMU1\n");
+        printf("Loading FMU %d\n", i+1);
         loadFMU(&fmus[i], fmuFileNames[i]);
         fmus[i].component = initializeFMU(&fmus[i], visible, loggingOn, nCategories, categories);
     }
