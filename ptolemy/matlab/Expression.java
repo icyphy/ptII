@@ -31,7 +31,9 @@
  */
 package ptolemy.matlab;
 
+import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Map;
 import java.util.Set;
 import java.util.StringTokenizer;
 
@@ -231,6 +233,7 @@ public class Expression extends TypedAtomicActor {
         newObject._addPathCommand = null;
         newObject._iterationCount = 1;
         newObject._previousPath = null;
+        newObject._inputTokens = new HashMap<String,Token>();
         return newObject;
     }
 
@@ -371,62 +374,72 @@ public class Expression extends TypedAtomicActor {
         if (director == null) {
             throw new IllegalActionException(this, "No director!");
         }
+        
 
-        synchronized (Engine.semaphore) {
-            // The following clears variables, but preserves any
-            // persistent storage created by a function (this usually
-            // for speed-up purposes to avoid recalculation on every
-            // function call)
-            matlabEngine.evalString(engine, "clear variables;clear globals");
-
-            if (_addPathCommand != null) {
-                matlabEngine.evalString(engine, _addPathCommand);
+        try {
+            
+            // Read the input ports before acquiring the engine lock since
+            // get() may block depending on the director, e.g., PN.
+            for(TypedIOPort port : inputPortList()) {
+                _inputTokens.put(port.getName(), port.get(0));
             }
 
-            try {
-                matlabEngine.put(engine, "time", new DoubleToken(director
-                        .getModelTime().getDoubleValue()));
-            } catch (IllegalActionException ex) {
-                throw new IllegalActionException(this, ex,
-                        "Failed to set the \"time\" variable in the Matlab "
-                                + "engine to "
-                                + new DoubleToken(director.getModelTime()
-                                        .getDoubleValue()));
-            }
-            try {
-                matlabEngine.put(engine, "iteration", _iteration.getToken());
-            } catch (IllegalActionException ex) {
-                throw new IllegalActionException(this, ex,
-                        "Failed to set the \"iteration\" variable in the Matlab "
-                                + "engine to " + _iteration.getToken());
-            }
-
-            Iterator inputPorts = inputPortList().iterator();
-
-            while (inputPorts.hasNext()) {
-                IOPort port = (IOPort) inputPorts.next();
-                matlabEngine.put(engine, port.getName(), port.get(0));
-            }
-
-            matlabEngine.evalString(engine, expression.stringValue());
-
-            Iterator outputPorts = outputPortList().iterator();
-
-            while (outputPorts.hasNext()) {
-                IOPort port = (IOPort) outputPorts.next();
-
-                // FIXME: Handle multiports
-                if (port.isOutsideConnected()) {
-                    port.send(0, matlabEngine.get(engine, port.getName(),
-                            _dataParameters));
+            synchronized (Engine.semaphore) {
+                // The following clears variables, but preserves any
+                // persistent storage created by a function (this usually
+                // for speed-up purposes to avoid recalculation on every
+                // function call)
+                matlabEngine.evalString(engine, "clear variables;clear globals");
+    
+                if (_addPathCommand != null) {
+                    matlabEngine.evalString(engine, _addPathCommand);
+                }
+    
+                try {
+                    matlabEngine.put(engine, "time", new DoubleToken(director
+                            .getModelTime().getDoubleValue()));
+                } catch (IllegalActionException ex) {
+                    throw new IllegalActionException(this, ex,
+                            "Failed to set the \"time\" variable in the Matlab "
+                                    + "engine to "
+                                    + new DoubleToken(director.getModelTime()
+                                            .getDoubleValue()));
+                }
+                try {
+                    matlabEngine.put(engine, "iteration", _iteration.getToken());
+                } catch (IllegalActionException ex) {
+                    throw new IllegalActionException(this, ex,
+                            "Failed to set the \"iteration\" variable in the Matlab "
+                                    + "engine to " + _iteration.getToken());
+                }
+                
+                for(Map.Entry<String,Token> entry : _inputTokens.entrySet()) {
+                    matlabEngine.put(engine, entry.getKey(), entry.getValue());
+                }
+    
+                matlabEngine.evalString(engine, expression.stringValue());
+    
+                Iterator outputPorts = outputPortList().iterator();
+    
+                while (outputPorts.hasNext()) {
+                    IOPort port = (IOPort) outputPorts.next();
+    
+                    // FIXME: Handle multiports
+                    if (port.isOutsideConnected()) {
+                        port.send(0, matlabEngine.get(engine, port.getName(),
+                                _dataParameters));
+                    }
+                }
+    
+                // Restore previous path if path was modified above
+                if (_previousPath != null) {
+                    matlabEngine.put(engine, "previousPath_", _previousPath);
+                    matlabEngine.evalString(engine, "path(previousPath_);");
                 }
             }
-
-            // Restore previous path if path was modified above
-            if (_previousPath != null) {
-                matlabEngine.put(engine, "previousPath_", _previousPath);
-                matlabEngine.evalString(engine, "path(previousPath_);");
-            }
+        } finally {
+            // Remove references to any tokens that were read from input ports.
+            _inputTokens.clear();
         }
     }
 
@@ -480,4 +493,7 @@ public class Expression extends TypedAtomicActor {
     private Token _previousPath = null;
 
     private transient ConversionParameters _dataParameters;
+    
+    /** A map of input port names to tokens. */
+    private Map<String,Token> _inputTokens = new HashMap<String,Token>();
 }
