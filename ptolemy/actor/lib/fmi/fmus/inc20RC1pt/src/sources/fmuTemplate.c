@@ -491,14 +491,8 @@ fmiStatus fmiGetFMUstate (fmiComponent c, fmiFMUstate* FMUstate) {
     // component as the source, then the source will get freed and we are sunk.
     //fmiFreeFMUstate(source, FMUstate);
 
-<<<<<<< .mine
     if (!*FMUstate) {
         dest = (ModelInstance *)source->functions->allocateMemory(1, sizeof(ModelInstance));
-=======
-    if (!*FMUstate) {
-    	FMUstate = (fmiFMUstate *)source->functions->allocateMemory(1, sizeof(ModelInstance));
-    	dest = (ModelInstance*) FMUstate;
->>>>>>> .r69543
         dest->r = (fmiReal *)source->functions->allocateMemory(NUMBER_OF_REALS, sizeof(fmiReal));
         dest->i = (fmiInteger *)source->functions->allocateMemory(NUMBER_OF_INTEGERS, sizeof(fmiInteger));
         dest->b = (fmiBoolean *)source->functions->allocateMemory(NUMBER_OF_BOOLEANS, sizeof(fmiBoolean));
