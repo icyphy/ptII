@@ -174,6 +174,10 @@ static int simulate(FMU *fmus, double h, fmiBoolean loggingOn, char separator) {
 				// FIXME: we should be able to get the lastFMUstate as below, but if we do, we get a segfault.
 //				fmiFMUstate lastFMUstate = fmus[i].lastFMUstate;
 
+<<<<<<< .mine
+                fmiFlag = fmus[i].getFMUstate(fmus[i].component, &fmus[i].lastFMUstate);
+                ModelInstance* inst = (ModelInstance*) fmus[i].lastFMUstate;
+=======
     			printf("fmus[%d].lastFMUstate = %p\n", i, fmus[i].lastFMUstate);
 				fmiFMUstate lastFMUstate = NULL;
 				printf("We came this far!\n");
@@ -181,8 +185,10 @@ static int simulate(FMU *fmus, double h, fmiBoolean loggingOn, char separator) {
 				fmiFlag = fmus[i].getFMUstate(fmus[i].component, &lastFMUstate);
 				ModelInstance* inst = (ModelInstance*) lastFMUstate;
 				fmus[i].lastFMUstate = lastFMUstate;
+>>>>>>> .r69543
 
                 printf("fmus[%d].lastFMUstate = %p\n", i, fmus[i].lastFMUstate);
+
                 if (fmiFlag <= fmiWarning) {
                     printf("The value of the last state is: %d\n", inst->i[i]);
                     fmiFlag = fmus[i].doStep(fmus[i].component, time, h, fmiFalse);
@@ -210,6 +216,17 @@ static int simulate(FMU *fmus, double h, fmiBoolean loggingOn, char separator) {
             }
 
     	if (time == 5) {
+<<<<<<< .mine
+            printf("Setting FMUstate\n");
+            printf("fmus[0].lastFMUstate = %p\n", &fmus[0].lastFMUstate);
+            printf("*fmus[0].lastFMUstate = %p\n", fmus[0].lastFMUstate);
+            printf("((ModelInstance*)(fmus[0].lastFMUstate))->i[0] = %d\n", ((ModelInstance*)fmus[0].lastFMUstate)->i[0]);
+			fmiFlag = rollbackFMUs(fmus, 1);
+            if (fmiFlag > fmiWarning) {
+            	printf("Rolling back of FMUs failed. Terminating simulation.");
+            	goto endSimulation;
+            }
+=======
             printf("trying to set FMUstate\n");
             printf("fmus[0].lastFMUstate = %p\n", &fmus[0].lastFMUstate);
             printf("*fmus[0].lastFMUstate = %p\n", fmus[0].lastFMUstate);
@@ -221,6 +238,7 @@ static int simulate(FMU *fmus, double h, fmiBoolean loggingOn, char separator) {
             	goto endSimulation;
             }
             printf("FMUstate set\n");
+>>>>>>> .r69543
     	}
 
         time += h;
@@ -236,7 +254,7 @@ static int simulate(FMU *fmus, double h, fmiBoolean loggingOn, char separator) {
 	    fmus[i].terminate(fmus[i].component);
             if (fmus[i].lastFMUstate != NULL) {
                 //FIXME: we are ignoring the return value of this call.
-                fmus[i].freeFMUstate(fmus[i].component, fmus[i].lastFMUstate);
+                fmus[i].freeFMUstate(fmus[i].component, &fmus[i].lastFMUstate);
             }
 
 	    fmus[i].freeInstance(fmus[i].component);

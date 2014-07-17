@@ -491,16 +491,26 @@ fmiStatus fmiGetFMUstate (fmiComponent c, fmiFMUstate* FMUstate) {
     // component as the source, then the source will get freed and we are sunk.
     //fmiFreeFMUstate(source, FMUstate);
 
+<<<<<<< .mine
+    if (!*FMUstate) {
+        dest = (ModelInstance *)source->functions->allocateMemory(1, sizeof(ModelInstance));
+=======
     if (!*FMUstate) {
     	FMUstate = (fmiFMUstate *)source->functions->allocateMemory(1, sizeof(ModelInstance));
     	dest = (ModelInstance*) FMUstate;
+>>>>>>> .r69543
+        dest->r = (fmiReal *)source->functions->allocateMemory(NUMBER_OF_REALS, sizeof(fmiReal));
+        dest->i = (fmiInteger *)source->functions->allocateMemory(NUMBER_OF_INTEGERS, sizeof(fmiInteger));
+        dest->b = (fmiBoolean *)source->functions->allocateMemory(NUMBER_OF_BOOLEANS, sizeof(fmiBoolean));
+        dest->s = (fmiString *)source->functions->allocateMemory(NUMBER_OF_STRINGS, sizeof(fmiString));
+        dest->isPositive = (fmiBoolean *)source->functions->allocateMemory(NUMBER_OF_EVENT_INDICATORS,
+                sizeof(fmiBoolean));
     } else {
-        dest = (ModelInstance *)FMUstate;
+        dest = (ModelInstance *)*FMUstate;
     }
 
 
     if (NUMBER_OF_REALS > 0) {
-        dest->r = (fmiReal *)source->functions->allocateMemory(NUMBER_OF_REALS, sizeof(fmiReal));
         for (i = 0; i < NUMBER_OF_REALS; i++) {
             dest->r[i] = source->r[i];
         }
@@ -508,7 +518,6 @@ fmiStatus fmiGetFMUstate (fmiComponent c, fmiFMUstate* FMUstate) {
         dest->r = NULL;
     }
     if (NUMBER_OF_INTEGERS > 0) {
-        dest->i = (fmiInteger *)source->functions->allocateMemory(NUMBER_OF_INTEGERS, sizeof(fmiInteger));
         for (i = 0; i < NUMBER_OF_INTEGERS; i++) {
             FILTERED_LOG(source, fmiOK, LOG_FMI_CALL, "dest is %d and source is %d\n",dest->i[i], source->i[i])
                 dest->i[i] = source->i[i];
@@ -519,7 +528,6 @@ fmiStatus fmiGetFMUstate (fmiComponent c, fmiFMUstate* FMUstate) {
     }
 
     if (NUMBER_OF_BOOLEANS > 0) {
-        dest->b = (fmiBoolean *)source->functions->allocateMemory(NUMBER_OF_BOOLEANS, sizeof(fmiBoolean));
         for (i = 0; i < NUMBER_OF_BOOLEANS; i++) {
             dest->b[i] = source->b[i];
         }
@@ -527,7 +535,6 @@ fmiStatus fmiGetFMUstate (fmiComponent c, fmiFMUstate* FMUstate) {
         dest->b = NULL;
     }
     if (NUMBER_OF_STRINGS > 0) {
-        dest->s = (fmiString *)source->functions->allocateMemory(NUMBER_OF_STRINGS, sizeof(fmiString));
         for (i = 0; i < NUMBER_OF_STRINGS; i++) {
             strcpy((char*)dest->s[i], (char*)source->s[i]);
         }
@@ -535,8 +542,6 @@ fmiStatus fmiGetFMUstate (fmiComponent c, fmiFMUstate* FMUstate) {
         dest->s = NULL;
     }
     if (NUMBER_OF_EVENT_INDICATORS > 0) {
-        dest->isPositive = (fmiBoolean *)source->functions->allocateMemory(NUMBER_OF_EVENT_INDICATORS,
-                sizeof(fmiBoolean));
         for (i = 0; i < NUMBER_OF_EVENT_INDICATORS; i++) {
             dest->r[i] = source->r[i];
         }
@@ -546,18 +551,9 @@ fmiStatus fmiGetFMUstate (fmiComponent c, fmiFMUstate* FMUstate) {
 
     *FMUstate = (fmiFMUstate)dest;
 
-    //	 dest->instanceName = functions->allocateMemory(1 + strlen(source->instanceName), sizeof(char));
-    //	 dest->GUID = functions->allocateMemory(1 + strlen(source->GUID), sizeof(char));
-
-    // set all categories to on or off. fmiSetDebugLogging should be called to choose specific categories.
-    //	for (i = 0; i < NUMBER_OF_CATEGORIES; i++) {
-    //		dest->logCategories[i] = source->logCategories[i];
-    //	}
-
     return fmiOK;
-    //	return unsupportedFunction(c, "fmiGetFMUstate",
-    //        modelInstantiated|modelInitializationMode|modelInitialized|modelStepping|modelTerminated|modelError);
 }
+
 fmiStatus fmiSetFMUstate (fmiComponent c, fmiFMUstate FMUstate) {
     ModelInstance *dest = (ModelInstance*)c;
     // allocating memory for pointers in ModelInstance struct
@@ -573,7 +569,6 @@ fmiStatus fmiSetFMUstate (fmiComponent c, fmiFMUstate FMUstate) {
         for (i = 0; i < NUMBER_OF_INTEGERS; i++) {
             FILTERED_LOG(dest, fmiOK, LOG_FMI_CALL, "dest is %d and source is %d\n",dest->i[i], source->i[i])
                 dest->i[i] = source->i[i];
-            FILTERED_LOG(dest, fmiOK, LOG_FMI_CALL, "we are here too\n")
 		}
     }
     if (NUMBER_OF_BOOLEANS > 0) {
@@ -602,7 +597,7 @@ fmiStatus fmiSetFMUstate (fmiComponent c, fmiFMUstate FMUstate) {
 
 fmiStatus fmiFreeFMUstate(fmiComponent c, fmiFMUstate* FMUstate) {
     ModelInstance *comp = (ModelInstance *)c;
-    ModelInstance *state = (ModelInstance *)FMUstate;
+    ModelInstance *state = (ModelInstance *)*FMUstate;
     if (!state) return fmiOK;
     FILTERED_LOG(comp, fmiOK, LOG_FMI_CALL, "fmiFreeFMUstate")
     if (state->r) comp->functions->freeMemory(state->r);

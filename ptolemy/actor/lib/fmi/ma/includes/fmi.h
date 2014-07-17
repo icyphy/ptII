@@ -29,7 +29,7 @@ typedef struct {
     ModelDescription* modelDescription;
     fmiCallbackFunctions callbacks;
     fmiComponent component;
-    fmiFMUstate* lastFMUstate;
+    fmiFMUstate lastFMUstate;
 
     HMODULE dllHandle; // fmu.dll handle
     /***************************************************
