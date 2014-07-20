@@ -10,7 +10,7 @@
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.8292311845108098">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{569.5414447206442, 270.63281249999994}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{569.5414447206443, 270.63281249999994}">
     </property>
     <property name="WebServer" class="org.ptolemy.ptango.lib.WebServer">
         <property name="port" class="ptolemy.data.expr.Parameter" value="8061">
@@ -137,13 +137,6 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="[920.0, 325.0]">
             </property>
         </property>
-        <port name="done" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
-            </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="{580.0, 200.0}">
-            </property>
-        </port>
         <entity name="ModalModel" class="ptolemy.domains.modal.modal.ModalModel">
             <property name="_tableauFactory" class="ptolemy.vergil.modal.modal.ModalTableauFactory">
             </property>
@@ -226,7 +219,7 @@
                     </property>
                     <property name="_controllerFactory" class="ptolemy.vergil.modal.modal.HierarchicalStateControllerFactory">
                     </property>
-                    <property name="_location" class="ptolemy.kernel.util.Location" value="[315.0, 235.0]">
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="{315.0, 235.0}">
                     </property>
                 </entity>
                 <relation name="relation" class="ptolemy.domains.modal.kernel.Transition">
@@ -261,7 +254,7 @@
                     <property name="_location" class="ptolemy.kernel.util.Location" value="{60.0, 50.0}">
                     </property>
                 </property>
-                <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={-253, 114, 1457, 615}, maximized=false}">
+                <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={-224, 156, 1370, 615}, maximized=false}">
                 </property>
                 <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1229, 497]">
                 </property>
@@ -465,7 +458,7 @@
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[60.0, 170.0]">
                     </property>
                 </property>
-                <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={-249, 117, 1595, 631}, maximized=false}">
+                <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={-155, 142, 1370, 631}, maximized=false}">
                 </property>
                 <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1367, 514]">
                 </property>
@@ -726,20 +719,6 @@
         <link port="HttpActor.postParameters" relation="relation2"/>
         <link port="MicrostepDelay.input" relation="relation3"/>
         <link port="MicrostepDelay.output" relation="relation4"/>
-    </entity>
-    <entity name="RecordAssembler" class="ptolemy.actor.lib.RecordAssembler">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[545.0, 205.0]">
-        </property>
-        <port name="clientDone" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
-            </property>
-        </port>
-        <port name="serviceDone" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
-            </property>
-        </port>
     </entity>
     <entity name="Const" class="ptolemy.actor.lib.Const">
         <property name="value" class="ptolemy.data.expr.Parameter" value="0">
@@ -1212,7 +1191,7 @@
             </property>
             <property name="replacement" class="ptolemy.actor.parameters.PortParameter" value="">
             </property>
-            <property name="stringToEdit" class="ptolemy.actor.parameters.PortParameter" value="&lt;h1&gt;Enter anything except &quot;error&quot;&lt;/h1&gt;&#10;&lt;form name=&quot;input&quot; action=&quot;http://localhost:8061/ErrorHandler&quot; method=&quot;post&quot;&gt;&#10;Enter: &lt;input type=&quot;text&quot; name=&quot;entry&quot; /&gt;&#10;&lt;input type=&quot;submit&quot; value=&quot;Submit&quot; /&gt;&#10;&lt;/form&gt;&#10;&#10;">
+            <property name="stringToEdit" class="ptolemy.actor.parameters.PortParameter" value="&lt;h1&gt;Enter anything except &quot;error&quot;&lt;/h1&gt;&#13;&#10;&lt;form name=&quot;input&quot; action=&quot;http://localhost:8061/ErrorHandler&quot; method=&quot;post&quot;&gt;&#13;&#10;Enter: &lt;input type=&quot;text&quot; name=&quot;entry&quot; /&gt;&#13;&#10;&lt;input type=&quot;submit&quot; value=&quot;Submit&quot; /&gt;&#13;&#10;&lt;/form&gt;&#13;&#10;&#13;&#10;">
             </property>
             <property name="regularExpression" class="ptolemy.data.expr.Parameter" value="true">
             </property>
@@ -1225,7 +1204,7 @@
             </property>
             <property name="replacement" class="ptolemy.actor.parameters.PortParameter" value="">
             </property>
-            <property name="stringToEdit" class="ptolemy.actor.parameters.PortParameter" value="&lt;h1&gt;Bad Job! To reset, enter &quot;reset&quot;&lt;/h1&gt;&#10;&lt;form name=&quot;input&quot; action=&quot;http://localhost:8061/ErrorHandler&quot; method=&quot;post&quot;&gt;&#10;Enter: &lt;input type=&quot;text&quot; name=&quot;entry&quot; /&gt;&#10;&lt;input type=&quot;submit&quot; value=&quot;Submit&quot; /&gt;&#10;&lt;/form&gt;&#10;">
+            <property name="stringToEdit" class="ptolemy.actor.parameters.PortParameter" value="&lt;h1&gt;Bad Job! To reset, enter &quot;reset&quot;&lt;/h1&gt;&#13;&#10;&lt;form name=&quot;input&quot; action=&quot;http://localhost:8061/ErrorHandler&quot; method=&quot;post&quot;&gt;&#13;&#10;Enter: &lt;input type=&quot;text&quot; name=&quot;entry&quot; /&gt;&#13;&#10;&lt;input type=&quot;submit&quot; value=&quot;Submit&quot; /&gt;&#13;&#10;&lt;/form&gt;&#13;&#10;">
             </property>
             <property name="regularExpression" class="ptolemy.data.expr.Parameter" value="true">
             </property>
@@ -1251,7 +1230,7 @@
             </property>
             <property name="replacement" class="ptolemy.actor.parameters.PortParameter" value="">
             </property>
-            <property name="stringToEdit" class="ptolemy.actor.parameters.PortParameter" value="&lt;h1&gt;To reset, enter &quot;reset&quot;&lt;/h1&gt;&#10;&lt;form name=&quot;input&quot; action=&quot;http://localhost:8061/ErrorHandler&quot; method=&quot;post&quot;&gt;&#10;Enter: &lt;input type=&quot;text&quot; name=&quot;entry&quot; /&gt;&#10;&lt;input type=&quot;submit&quot; value=&quot;Submit&quot; /&gt;&#10;&lt;/form&gt;&#10;&#10;">
+            <property name="stringToEdit" class="ptolemy.actor.parameters.PortParameter" value="&lt;h1&gt;To reset, enter &quot;reset&quot;&lt;/h1&gt;&#13;&#10;&lt;form name=&quot;input&quot; action=&quot;http://localhost:8061/ErrorHandler&quot; method=&quot;post&quot;&gt;&#13;&#10;Enter: &lt;input type=&quot;text&quot; name=&quot;entry&quot; /&gt;&#13;&#10;&lt;input type=&quot;submit&quot; value=&quot;Submit&quot; /&gt;&#13;&#10;&lt;/form&gt;&#13;&#10;&#13;&#10;">
             </property>
             <property name="regularExpression" class="ptolemy.data.expr.Parameter" value="true">
             </property>
@@ -1264,7 +1243,7 @@
             </property>
             <property name="replacement" class="ptolemy.actor.parameters.PortParameter" value="">
             </property>
-            <property name="stringToEdit" class="ptolemy.actor.parameters.PortParameter" value="&lt;h1&gt;Enter anything except &quot;error&quot;&lt;/h1&gt;&#10;&lt;form name=&quot;input&quot; action=&quot;http://localhost:8061/ErrorHandler&quot; method=&quot;post&quot;&gt;&#10;Enter: &lt;input type=&quot;text&quot; name=&quot;entry&quot; /&gt;&#10;&lt;input type=&quot;submit&quot; value=&quot;Submit&quot; /&gt;&#10;&lt;/form&gt;&#10;&#10;">
+            <property name="stringToEdit" class="ptolemy.actor.parameters.PortParameter" value="&lt;h1&gt;Enter anything except &quot;error&quot;&lt;/h1&gt;&#13;&#10;&lt;form name=&quot;input&quot; action=&quot;http://localhost:8061/ErrorHandler&quot; method=&quot;post&quot;&gt;&#13;&#10;Enter: &lt;input type=&quot;text&quot; name=&quot;entry&quot; /&gt;&#13;&#10;&lt;input type=&quot;submit&quot; value=&quot;Submit&quot; /&gt;&#13;&#10;&lt;/form&gt;&#13;&#10;&#13;&#10;">
             </property>
             <property name="regularExpression" class="ptolemy.data.expr.Parameter" value="true">
             </property>
@@ -1400,8 +1379,6 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[795.0, 225.0]">
         </property>
     </entity>
-    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
-    </relation>
     <relation name="relation5" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation6" class="ptolemy.actor.TypedIORelation">
@@ -1410,24 +1387,18 @@
     </relation>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
     </relation>
-    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
-    </relation>
-    <relation name="relation7" class="ptolemy.actor.TypedIORelation">
-    </relation>
     <relation name="relation8" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
     </relation>
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+    </relation>
     <link port="SingleEvent.output" relation="relation6"/>
     <link port="Stop.input" relation="relation2"/>
-    <link port="MicrostepDelay10.input" relation="relation7"/>
+    <link port="MicrostepDelay10.input" relation="relation3"/>
     <link port="MicrostepDelay10.output" relation="relation8"/>
     <link port="Discrete TimeDelay.input" relation="relation6"/>
     <link port="Discrete TimeDelay.output" relation="relation"/>
-    <link port="ErrorHandlerService.done" relation="relation4"/>
-    <link port="RecordAssembler.output" relation="relation7"/>
-    <link port="RecordAssembler.clientDone" relation="relation3"/>
-    <link port="RecordAssembler.serviceDone" relation="relation4"/>
     <link port="Const.output" relation="relation5"/>
     <link port="Const.trigger" relation="relation6"/>
     <link port="SetVariable.input" relation="relation5"/>

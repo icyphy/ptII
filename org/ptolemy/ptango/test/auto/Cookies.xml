@@ -483,7 +483,7 @@
             </property>
             <property name="replacement" class="ptolemy.actor.parameters.PortParameter" value="">
             </property>
-            <property name="stringToEdit" class="ptolemy.actor.parameters.PortParameter" value="&lt;!DOCTYPE html&gt;&#10;&lt;html&gt;&#10; &lt;head&gt; &#10;  &lt;script type=&quot;text/javascript&quot; src=&quot;http://code.jquery.com/jquery-1.6.4.min.js&quot;&gt;&lt;/script&gt; &#10;  &lt;script type=&quot;text/javascript&quot;&gt;&#10;			function deleteCookie() {&#10;				jQuery.ajax({&#10;					  url: &quot;/cookies/delete&quot;,&#10;					  type: &quot;post&quot;,&#10;					  success: function(data) {&#10;						  jQuery('#welcomeMessage').html(data);&#10;						  },&#10;					  error: function(data) {&#10;						  jQuery('#welcomeMessage').html(&quot;Error deleting cookie.&quot;);&#10;					  }&#10;					});&#10;			}&#10;		&lt;/script&gt; &#10;  &lt;title&gt;Cookies Demo&lt;/title&gt; &#10; &lt;/head&gt; &#10; &lt;body&gt; &#10;  &lt;div&gt; &#10;   &lt;div id=&quot;welcomeMessage&quot;&gt;&#10;    Name Claudius Ptolemaeus successfully saved as a cookie &#10;   &lt;/div&gt; &#10;   &lt;div&gt; &#10;    &lt;p&gt; You can: &lt;/p&gt; &#10;   &lt;/div&gt; &#10;   &lt;form accept-charset=&quot;UTF-8&quot; action=&quot;cookies&quot; method=&quot;post&quot;&gt; &#10;    &lt;p&gt; Save a cookie with your name &lt;/p&gt; &#10;    &lt;p&gt; Please enter a name: &lt;input type=&quot;text&quot; name=&quot;name&quot; id=&quot;name&quot; /&gt; &lt;br /&gt; &lt;input type=&quot;submit&quot; value=&quot;Save cookie&quot; /&gt; &lt;/p&gt; &#10;   &lt;/form&gt; &#10;   &lt;div&gt; &#10;    &lt;p&gt; Delete the cookie with your name &lt;/p&gt; &#10;    &lt;input type=&quot;button&quot; value=&quot;Delete cookie&quot; onclick=&quot;deleteCookie()&quot; /&gt; &#10;   &lt;/div&gt; &#10;   &lt;div&gt; &#10;    &lt;p&gt; Refresh the page for a personalized greeting &lt;/p&gt; &#10;   &lt;/div&gt; &#10;   &lt;form name=&quot;input&quot; action=&quot;/cookies&quot; method=&quot;get&quot;&gt; &#10;    &lt;input type=&quot;submit&quot; value=&quot;Refresh page&quot; /&gt; &#10;   &lt;/form&gt; &#10;  &lt;/div&gt;   &#10; &lt;/body&gt;&#10;&lt;/html&gt;&#10;">
+            <property name="stringToEdit" class="ptolemy.actor.parameters.PortParameter" value="&lt;!DOCTYPE html&gt;&#13;&#10;&lt;html&gt;&#13;&#10; &lt;head&gt; &#13;&#10;  &lt;script type=&quot;text/javascript&quot; src=&quot;http://code.jquery.com/jquery-1.6.4.min.js&quot;&gt;&lt;/script&gt; &#13;&#10;  &lt;script type=&quot;text/javascript&quot;&gt;&#13;&#10;			function deleteCookie() {&#13;&#10;				jQuery.ajax({&#13;&#10;					  url: &quot;/cookies/delete&quot;,&#13;&#10;					  type: &quot;post&quot;,&#13;&#10;					  success: function(data) {&#13;&#10;						  jQuery('#welcomeMessage').html(data);&#13;&#10;						  },&#13;&#10;					  error: function(data) {&#13;&#10;						  jQuery('#welcomeMessage').html(&quot;Error deleting cookie.&quot;);&#13;&#10;					  }&#13;&#10;					});&#13;&#10;			}&#13;&#10;		&lt;/script&gt; &#13;&#10;  &lt;title&gt;Cookies Demo&lt;/title&gt; &#13;&#10; &lt;/head&gt; &#13;&#10; &lt;body&gt; &#13;&#10;  &lt;div&gt; &#13;&#10;   &lt;div id=&quot;welcomeMessage&quot;&gt;&#13;&#10;    Name Claudius Ptolemaeus successfully saved as a cookie &#13;&#10;   &lt;/div&gt; &#13;&#10;   &lt;div&gt; &#13;&#10;    &lt;p&gt; You can: &lt;/p&gt; &#13;&#10;   &lt;/div&gt; &#13;&#10;   &lt;form accept-charset=&quot;UTF-8&quot; action=&quot;cookies&quot; method=&quot;post&quot;&gt; &#13;&#10;    &lt;p&gt; Save a cookie with your name &lt;/p&gt; &#13;&#10;    &lt;p&gt; Please enter a name: &lt;input type=&quot;text&quot; name=&quot;name&quot; id=&quot;name&quot; /&gt; &lt;br /&gt; &lt;input type=&quot;submit&quot; value=&quot;Save cookie&quot; /&gt; &lt;/p&gt; &#13;&#10;   &lt;/form&gt; &#13;&#10;   &lt;div&gt; &#13;&#10;    &lt;p&gt; Delete the cookie with your name &lt;/p&gt; &#13;&#10;    &lt;input type=&quot;button&quot; value=&quot;Delete cookie&quot; onclick=&quot;deleteCookie()&quot; /&gt; &#13;&#10;   &lt;/div&gt; &#13;&#10;   &lt;div&gt; &#13;&#10;    &lt;p&gt; Refresh the page for a personalized greeting &lt;/p&gt; &#13;&#10;   &lt;/div&gt; &#13;&#10;   &lt;form name=&quot;input&quot; action=&quot;/cookies&quot; method=&quot;get&quot;&gt; &#13;&#10;    &lt;input type=&quot;submit&quot; value=&quot;Refresh page&quot; /&gt; &#13;&#10;   &lt;/form&gt; &#13;&#10;  &lt;/div&gt;   &#13;&#10; &lt;/body&gt;&#13;&#10;&lt;/html&gt;&#13;&#10;">
             </property>
             <property name="regularExpression" class="ptolemy.data.expr.Parameter" value="true">
             </property>
@@ -509,7 +509,7 @@
             </property>
             <property name="replacement" class="ptolemy.actor.parameters.PortParameter" value="">
             </property>
-            <property name="stringToEdit" class="ptolemy.actor.parameters.PortParameter" value="Cookie named &quot;name&quot; successfully deleted&#10;">
+            <property name="stringToEdit" class="ptolemy.actor.parameters.PortParameter" value="Cookie named &quot;name&quot; successfully deleted&#13;&#10;">
             </property>
             <property name="regularExpression" class="ptolemy.data.expr.Parameter" value="true">
             </property>
@@ -797,7 +797,7 @@
             <property name="output"/>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[965.0, 175.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[1045.0, 125.0]">
             </property>
         </port>
         <entity name="HttpActor" class="org.ptolemy.ptango.lib.HttpActor">
@@ -1081,6 +1081,22 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="[260.0, 190.0]">
             </property>
         </entity>
+        <entity name="BooleanSwitch" class="ptolemy.actor.lib.BooleanSwitch">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[950.0, 135.0]">
+            </property>
+        </entity>
+        <entity name="Discard" class="ptolemy.actor.lib.Discard">
+            <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{1020, 205}">
+            </property>
+            <port name="input" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+                <property name="multiport"/>
+                <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="NORTH">
+                </property>
+            </port>
+        </entity>
         <relation name="relation" class="ptolemy.actor.TypedIORelation">
             <vertex name="vertex1" value="[620.0, 810.0]">
             </vertex>
@@ -1136,8 +1152,14 @@
             </vertex>
         </relation>
         <relation name="relation19" class="ptolemy.actor.TypedIORelation">
+            <vertex name="vertex1" value="[925.0, 175.0]">
+            </vertex>
         </relation>
-        <link port="done" relation="relation19"/>
+        <relation name="relation20" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="relation21" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <link port="done" relation="relation20"/>
         <link port="HttpActor.response" relation="relation4"/>
         <link port="HttpActor.response" relation="relation5"/>
         <link port="HttpActor.getCookies" relation="relation7"/>
@@ -1179,6 +1201,11 @@
         <link port="Const3.trigger" relation="relation18"/>
         <link port="MicrostepDelay6.input" relation="relation4"/>
         <link port="MicrostepDelay6.output" relation="relation18"/>
+        <link port="BooleanSwitch.input" relation="relation19"/>
+        <link port="BooleanSwitch.control" relation="relation19"/>
+        <link port="BooleanSwitch.trueOutput" relation="relation20"/>
+        <link port="BooleanSwitch.falseOutput" relation="relation21"/>
+        <link port="Discard.input" relation="relation21"/>
     </entity>
     <entity name="Const2" class="ptolemy.actor.lib.Const">
         <property name="value" class="ptolemy.data.expr.Parameter" value="true">
@@ -1203,13 +1230,13 @@
     </relation>
     <relation name="relation6" class="ptolemy.actor.TypedIORelation">
     </relation>
-    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
-    </relation>
     <relation name="relation7" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation8" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
     </relation>
     <link port="SingleEvent.output" relation="relation5"/>
     <link port="Stop.input" relation="relation8"/>

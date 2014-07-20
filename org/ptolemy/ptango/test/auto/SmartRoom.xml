@@ -8,7 +8,7 @@
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1001, 538]">
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.4982348469140925">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.7784919483032695">
     </property>
     <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{608.4869939630681, 291.38281250000017}">
     </property>
@@ -209,7 +209,7 @@
             <property name="output"/>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[865.0, 430.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[965.0, 385.0]">
             </property>
         </port>
         <entity name="HttpActor" class="org.ptolemy.ptango.lib.HttpActor">
@@ -973,6 +973,22 @@ ExpressionToToken, ExpressionToToken2 output ports set to double
             <property name="_location" class="ptolemy.kernel.util.Location" value="[99.0, 360.0]">
             </property>
         </entity>
+        <entity name="BooleanSwitch" class="ptolemy.actor.lib.BooleanSwitch">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[875.0, 395.0]">
+            </property>
+        </entity>
+        <entity name="Discard" class="ptolemy.actor.lib.Discard">
+            <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[970.0, 450.0]">
+            </property>
+            <port name="input" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+                <property name="multiport"/>
+                <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="NORTH">
+                </property>
+            </port>
+        </entity>
         <relation name="relation" class="ptolemy.actor.TypedIORelation">
             <vertex name="vertex1" value="[290.0, 680.0]">
             </vertex>
@@ -1091,9 +1107,15 @@ ExpressionToToken, ExpressionToToken2 output ports set to double
             <vertex name="vertex1" value="[314.0, 360.0]">
             </vertex>
         </relation>
+        <relation name="relation28" class="ptolemy.actor.TypedIORelation">
+            <vertex name="vertex1" value="[840.0, 430.0]">
+            </vertex>
+        </relation>
+        <relation name="relation29" class="ptolemy.actor.TypedIORelation">
+        </relation>
         <relation name="relation34" class="ptolemy.actor.TypedIORelation">
         </relation>
-        <link port="done" relation="relation34"/>
+        <link port="done" relation="relation29"/>
         <link port="HttpActor.response" relation="relation8"/>
         <link port="HttpActor.getRequestURI" relation="relation26"/>
         <link port="HttpActor2.response" relation="relation10"/>
@@ -1157,11 +1179,16 @@ ExpressionToToken, ExpressionToToken2 output ports set to double
         <link port="SetVariable5.output" relation="relation31"/>
         <link port="Comparator.left" relation="relation31"/>
         <link port="Comparator.right" relation="relation7"/>
-        <link port="Comparator.output" relation="relation34"/>
+        <link port="Comparator.output" relation="relation28"/>
         <link port="Const7.output" relation="relation7"/>
         <link port="Const7.trigger" relation="relation33"/>
         <link port="MicrostepDelay5.input" relation="relation8"/>
         <link port="MicrostepDelay5.output" relation="relation33"/>
+        <link port="BooleanSwitch.input" relation="relation28"/>
+        <link port="BooleanSwitch.control" relation="relation28"/>
+        <link port="BooleanSwitch.trueOutput" relation="relation29"/>
+        <link port="BooleanSwitch.falseOutput" relation="relation34"/>
+        <link port="Discard.input" relation="relation34"/>
     </entity>
     <entity name="RecordAssembler" class="ptolemy.actor.lib.RecordAssembler">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[635.0, 185.0]">
@@ -1577,7 +1604,7 @@ ExpressionToToken, ExpressionToToken2 output ports set to double
             </property>
             <property name="replacement" class="ptolemy.actor.parameters.PortParameter" value="">
             </property>
-            <property name="stringToEdit" class="ptolemy.actor.parameters.PortParameter" value="[&quot;OK&quot;]&#10;">
+            <property name="stringToEdit" class="ptolemy.actor.parameters.PortParameter" value="[&quot;OK&quot;]&#13;&#10;">
             </property>
             <property name="regularExpression" class="ptolemy.data.expr.Parameter" value="true">
             </property>
@@ -1656,8 +1683,6 @@ ExpressionToToken, ExpressionToToken2 output ports set to double
     </relation>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
     </relation>
-    <relation name="relation5" class="ptolemy.actor.TypedIORelation">
-    </relation>
     <relation name="relation6" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
@@ -1671,6 +1696,8 @@ ExpressionToToken, ExpressionToToken2 output ports set to double
         </vertex>
     </relation>
     <relation name="relation7" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation5" class="ptolemy.actor.TypedIORelation">
     </relation>
     <link port="SingleEvent.output" relation="relation10"/>
     <link port="Stop.input" relation="relation3"/>
