@@ -46,6 +46,8 @@ import ptolemy.actor.Director;
 import ptolemy.actor.SuperdenseTimeDirector;
 import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.TypedIOPort;
+import ptolemy.actor.lib.CatchExceptionAttribute;
+import ptolemy.actor.lib.ExceptionSubscriber;
 import ptolemy.actor.lib.MicrostepDelay;
 import ptolemy.actor.lib.TimeDelay;
 import ptolemy.actor.lib.io.FileReader;
@@ -120,7 +122,8 @@ import ptolemy.kernel.util.Workspace;
  *  @Pt.AcceptedRating Red (ltrnc)
  *  @see org.ptolemy.ptango.lib.WebServer
  */
-public class HttpActor extends TypedAtomicActor implements HttpService {
+public class HttpActor extends TypedAtomicActor implements HttpService,
+ ExceptionSubscriber {
 
     /** Create an instance of the actor.
      *  @param container The container
@@ -335,6 +338,30 @@ public class HttpActor extends TypedAtomicActor implements HttpService {
 
         return newObject;
     }
+    
+    /** Generate an HTTP response for the client if an exception occurs.  No
+     *  response will be received on the input port in the event of an 
+     *  exception.
+     *  
+     *  @param policy The exception handling policy of the exception handler;
+     *   see CatchExceptionAttribute
+     */
+    
+    public synchronized void exceptionOccurred(String policy) {
+        
+        // If there is a pending request,
+        // For "restart" policy, generate an error page with retry 
+        // For other policies, generate a Server Error error page
+        // These method calls notifyAll() so that the response will be sent
+        // by the servlet thread
+        if (_request != null) {
+            if (policy.equals(CatchExceptionAttribute.RESTART)) {
+                _respondWithRetryMessage(10);
+            } else {
+                _respondWithServerErrorMessage();
+            }
+        }
+    }
 
     /** Return the relative path that this HttpService is mapped to,
      *  which is the value of the <i>path</i> parameter.
@@ -385,7 +412,7 @@ public class HttpActor extends TypedAtomicActor implements HttpService {
         super.fire();
 
         boolean responseFound = false;
-        HttpResponse responseData = new HttpResponse();
+        HttpResponseItems responseData = new HttpResponseItems();
         // Check for new cookies on the setCookies port.
         if (setCookies.getWidth() > 0 && setCookies.hasToken(0)) {
             RecordToken cookieToken = (RecordToken) setCookies.get(0);
@@ -587,7 +614,7 @@ public class HttpActor extends TypedAtomicActor implements HttpService {
      *  @param what What triggered the error ("parameters" or "cookies").
      */
     private void _respondWithBadRequestMessage(RecordToken record, Type expectedType, String what) {
-    	_response = new HttpResponse();
+    	_response = new HttpResponseItems();
     	_response.statusCode = HttpServletResponse.SC_BAD_REQUEST;
     	StringBuffer message = new StringBuffer();
     	message.append("<html><body><h1> Bad Request (code " + HttpServletResponse.SC_BAD_REQUEST + ")</h1>\n");
@@ -607,6 +634,119 @@ public class HttpActor extends TypedAtomicActor implements HttpService {
     	
     	notifyAll();
     }
+    
+    /** Issue a response indicating a server error and the intent to retry.  
+     *  The Javascript on the response page will invoke the 
+     *  
+     *  @param timeout The time to wait, in seconds
+     */
+    private void _respondWithRetryMessage(int timeout) {
+        
+        int timeoutValue = timeout;
+        
+        if (timeoutValue < 1) {
+            timeoutValue = 1;
+        }
+        
+        // Construct a response page.  The page will issue a second request to 
+        // the URL after a specified period of time.  The retry page content and
+        // time are currently fixed.
+        // TODO:  Allow dynamic content and timers for retry
+
+        
+        // FIXME:  Only supports GET at the moment.  For POST, have to re-submit
+        // the parameters
+        // FIXME:  Add a test for POST request
+        // FIXME:  Make string constants for methods (available from other class?)
+        
+        _response = new HttpResponseItems();
+        _response.statusCode = HttpServletResponse.SC_INTERNAL_SERVER_ERROR;
+        
+        String ajax = "";
+        if (_request.requestType == 0) {
+            ajax = "jQuery.get(\"" + _request.requestURI + "\")\n" +
+            	".done(function(data) { \n " +   
+                 // Wrap result page with <div> </div> since an HTML page is not 
+            	 // valid xml due to unclosed <!DOCTYPE HTML> tag
+                 // jQuery has problems parsing otherwise
+            	 // http://www.sitepoint.com/secrets-selecting-elements-returned-jquery-ajax-response-strings/
+                "result = \"<div>\" + data + \"</div>\";" +
+                "jQuery(\"#contents\").html(jQuery(result).find(\"#contents\").html());" + 
+                 "\n });";  
+        } else if (_request.requestType == 1) {
+            StringBuffer parameters = new StringBuffer("{");
+            if (_request.parameters != null) {
+                for (String label : _request.parameters.labelSet()) {
+                    // TODO:  Test if this works for strings
+                    // I believe these require quotation marks around them
+                    parameters.append(label + ": " 
+                            + _request.parameters.get(label).toString() + ",");
+                }
+                
+                // Erase the last , and add }
+                if (parameters.length() > 0) {
+                    parameters.deleteCharAt(parameters.length() - 1);
+                    parameters.append('}');
+                    ajax = "jQuery.post(\"" + _request.requestURI + "\", " +
+                    		parameters.toString() + ")\n" +
+                      ".done(function(data) { \n " +
+                      "result = \"<div>\" + data + \"</div>\";" +
+                      "jQuery(\"#contents\").html(jQuery(result).find(\"#contents\").html());" + 
+                       "\n });";  
+                } else {
+                    ajax = "jQuery.post(\"" + _request.requestURI + "\")\n" +
+                      ".done(function(data) { \n " +
+                      "result = \"<div>\" + data + \"</div>\";" +
+                      "jQuery(\"#contents\").html(jQuery(result).find(\"#contents\").html());" + 
+                       "\n });";  
+                }
+            }
+        }
+                
+        StringBuffer message = new StringBuffer();
+        
+        message.append("<!DOCTYPE html>\n<html>\n<head> " +
+        		"<meta charset=\"UTF-8\">\n");
+        message.append("<script src=\"http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js\"></script>\n");
+        message.append("<script>\n var count=" + timeoutValue + ";\n");
+        message.append("var interval=setInterval(timer,1000);\nvar result;\n");
+        message.append("function timer() {\n " +
+                         "count=count-1;\n" +
+                         "jQuery(\"#countdown\").html(count+1);\n" + 
+                         "if (count <= 0) {\n" +
+                         "clearInterval(interval);\n" + 
+                         ajax.toString() + "\n}\n}\n");
+        message.append("jQuery(document).ready(function() {\n" +
+        		"timer();\n});");
+        message.append("</script></head>\n");
+        message.append("<body><div id=\"contents\"> \n" +
+        		"<h1> Internal Server Error (code " 
+                + HttpServletResponse.SC_INTERNAL_SERVER_ERROR + ")</h1>\n");
+        message.append("<div> Retrying in <div id=\"countdown\">" + 
+                    timeoutValue + "</div></div></div>\n");
+        message.append("</body></html>");
+        
+        _response.response = message.toString();
+        
+        notifyAll();
+        
+    }
+
+    /** Issue a response indicating a server error (i.e., a problem running the
+     *  Ptolemy model.  
+     */
+    private void _respondWithServerErrorMessage() {
+        _response = new HttpResponseItems();
+        _response.statusCode = HttpServletResponse.SC_INTERNAL_SERVER_ERROR;
+        StringBuffer message = new StringBuffer();
+        message.append("<html><body><h1> Internal Server Error (code " 
+                + HttpServletResponse.SC_INTERNAL_SERVER_ERROR + ")</h1>\n");
+        message.append("</p></body></html>");
+        
+        _response.response = message.toString();
+        
+        notifyAll();
+    }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
@@ -624,10 +764,10 @@ public class HttpActor extends TypedAtomicActor implements HttpService {
     private int _lastMicrostep;
 
     /** The pending request. */
-    private HttpRequest _request;
+    private HttpRequestItems _request;
 
     /** The pending response. */
-    private HttpResponse _response;
+    private HttpResponseItems _response;
 
     /** The URI for the relative path from the "path" parameter.
      *  A URI is used here to make sure the "path" parameter conforms to
@@ -716,7 +856,7 @@ public class HttpActor extends TypedAtomicActor implements HttpService {
             // actor. This lock _is_ released while waiting for the response,
             // allowing the fire method to execute its own synchronized blocks.
             synchronized (HttpActor.this) {
-                _request = new HttpRequest();
+                _request = new HttpRequestItems();
 
                 _request.requestURI = request.getRequestURI();
                 _request.requestType = type;
@@ -813,6 +953,8 @@ public class HttpActor extends TypedAtomicActor implements HttpService {
                             // http://docs.oracle.com/javase/6/docs/api/java/io/ByteArrayOutputStream.html#close%28%29
                             writer.close(); 
                             bytes.close();
+                            response.setStatus(HttpServletResponse
+                                    .SC_REQUEST_TIMEOUT);
                                                 
                             return;
                         }
@@ -839,6 +981,8 @@ public class HttpActor extends TypedAtomicActor implements HttpService {
                         // http://docs.oracle.com/javase/6/docs/api/java/io/ByteArrayOutputStream.html#close%28%29
                         writer.close(); 
                         bytes.close();
+                        response.setStatus(HttpServletResponse
+                                .SC_INTERNAL_SERVER_ERROR);
                         return;
                     }
                 }
@@ -1036,12 +1180,12 @@ public class HttpActor extends TypedAtomicActor implements HttpService {
     }
 
     ///////////////////////////////////////////////////////////////////
-    //// HttpRequest
+    //// HttpRequestItems
 
     /** A data structure with all the relevant information about an
      *  HTTP request.
      */
-    protected static class HttpRequest {
+    protected static class HttpRequestItems {
         /** Cookies associated with the request. */
         public RecordToken cookies;
 
@@ -1056,12 +1200,12 @@ public class HttpActor extends TypedAtomicActor implements HttpService {
     }
 
     ///////////////////////////////////////////////////////////////////
-    //// HttpResponse
+    //// HttpResponseItems
 
     /** A data structure with all the relevant information about an
      *  HTTP response.
      */
-    protected static class HttpResponse {
+    protected static class HttpResponseItems {
         /** All cookies from the setCookies port plus the Cookies from the
          *  HttpRequest.  Values provided on the setCookies port override values
          *  from the HttpRequest for cookies with the same name.  (I.e., the model

@@ -29,11 +29,13 @@ package ptolemy.actor.lib;
 
 import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
 
 import ptolemy.actor.AbstractInitializableAttribute;
 import ptolemy.actor.Actor;
+import ptolemy.actor.CompositeActor;
 import ptolemy.actor.ExecutionListener;
 import ptolemy.actor.Manager;
 import ptolemy.data.expr.FileParameter;
@@ -81,12 +83,12 @@ public class CatchExceptionAttribute extends AbstractInitializableAttribute
         super(container, name);
         
         policy = new StringParameter(this, "policy");
-        policy.setExpression("throw");
+        policy.setExpression(THROW);
         
-        policy.addChoice("continue");
-        policy.addChoice("throw");
-        policy.addChoice("restart");
-        policy.addChoice("stop");
+        policy.addChoice(CONTINUE);
+        policy.addChoice(THROW);
+        policy.addChoice(RESTART);
+        policy.addChoice(STOP);
 
         logFileName = new FileParameter(this, "logFile");
         logFileName.setExpression("");
@@ -101,8 +103,11 @@ public class CatchExceptionAttribute extends AbstractInitializableAttribute
         statusMessage.setExpression("No exceptions encountered");
         statusMessage.setVisibility(Settable.NOT_EDITABLE);
 
-        _resetMessages = true;
         _initialized = false;
+        _resetMessages = true;
+        _restartDesired = false;
+        _subscribers = new ArrayList();
+        
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -178,11 +183,32 @@ public class CatchExceptionAttribute extends AbstractInitializableAttribute
         
     }
   
-    /** Do nothing upon a completed execution.  This method is required by
-     *  the ExecutionListener interface.
+    /** Restart here if restart is desired.  This method is called upon 
+     * successful completion.
      */
     public void executionFinished(Manager manager) {
-        
+        if (_restartDesired) {          
+            Date date = new Date(System.currentTimeMillis());
+            SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
+            
+            try {
+            // Start a new execution in a new thread
+                try {
+                    manager.startRun();
+                } catch(IllegalActionException e){
+                  _writeMessage("Cannot restart model.  " +
+                  		"Manager.startRun() failed.");  
+                }
+                
+                _writeMessage("Model restarted at " + dateFormat.format(date));
+            } catch(IOException e) {
+                statusMessage.setExpression("Error:  Cannot write to file.");
+            }
+            // Do NOT reset messages in the event of a restart
+            // This way, user can see that model was restarted
+            _resetMessages = false;
+            _restartDesired = false;
+        }
     }
 
     // TODO:  Figure out what makes sense for continue (if anything)
@@ -235,25 +261,25 @@ public class CatchExceptionAttribute extends AbstractInitializableAttribute
          
          // Set initialized to false here, unless policy is to restart, in 
          // which case set it after the current value is checked
-         if (!policyValue.equals("restart")) {
+         if (!policyValue.equals(RESTART)) {
              // Set _initialized here instead of in wrapup(), since 
              // wrapup() is called prior to handleException()
              _initialized = false;
          }
          
-         if (policyValue.equals("continue")) {
+         if (policyValue.equals(CONTINUE)) {
              _writeMessage("Execution continued at " + dateFormat.format(date));
              
              // FIXME:  Is continue possible?  Looks like wrapup() is called
              // automatically before handleException()
-         } else if (policyValue.equals("throw")) {
+         } else if (policyValue.equals(THROW)) {
              _writeMessage("Exception thrown at " + dateFormat.format(date));
              
              // Return false if an exception is thrown, since this attribute 
              // did not resolve the exception.
              return false;
              
-         } else if (policyValue.equals("restart")){
+         } else if (policyValue.equals(RESTART)){
              // Restarts the model in a new thread
              
              // Check if the model made it through initialize().  If not, return
@@ -289,16 +315,10 @@ public class CatchExceptionAttribute extends AbstractInitializableAttribute
                  // End execution
                  manager.finish();
                  
-                 // Start a new execution in a new thread
-                 manager.startRun();
-                 
-                 // Can it be that easy???
-                 
-                 _writeMessage("Model restarted at " + dateFormat.format(date));
-                 
-                 // Do NOT reset messages in the event of a restart
-                 // This way, user can see that model was restarted
-                 _resetMessages = false;
+                 // Wait until the manager notifies listeners of successful
+                 // completion before restarting.  Manager will call 
+                 // _executionFinished().  Set a flag here indicating to restart
+                 _restartDesired = true;
                 
              } else {
                  _writeMessage("Cannot restart model since there is no model " +
@@ -306,7 +326,7 @@ public class CatchExceptionAttribute extends AbstractInitializableAttribute
                  return false;               
              }
  
-         } else if (policyValue.equals("stop")) {
+         } else if (policyValue.equals(STOP)) {
              _writeMessage("Model stopped at " + dateFormat.format(date));
              
              // Call validate() to notify listeners of these changes
@@ -331,10 +351,39 @@ public class CatchExceptionAttribute extends AbstractInitializableAttribute
          
          _resetMessages = false;
          
+         // Notify all ExceptionSubscribers
+         for (ExceptionSubscriber subscriber : _subscribers) {
+             subscriber.exceptionOccurred(policyValue);
+         }
+         
         return true;
         } catch(IOException ioe) {
             statusMessage.setExpression("Error:  Cannot write to file.");
             return false;
+        }
+    }
+    
+    /** Find all of the ExceptionSubscribers in the model
+     * 
+     *  @exception IllegalActionException If thrown by parent
+     */
+    public void initialize() throws IllegalActionException {
+        
+        // Use allAtomicEntityList here to include entities inside composite
+        // actors. Could switch to containedObjectsIterator in the future if we 
+        // want to allow attributes to be ExceptionSubscribers.  (Will need to 
+        // implement a deep search.  containedObjectsIterator does not look 
+        // inside composite entities). 
+        Iterator iterator = ((CompositeActor) toplevel())
+                .allAtomicEntityList().iterator();
+        _subscribers.clear();
+        NamedObj obj;
+        
+        while (iterator.hasNext()) {
+            obj = (NamedObj) iterator.next();
+            if (obj instanceof ExceptionSubscriber) {
+                _subscribers.add((ExceptionSubscriber) obj);
+            }
         }
     }
     
@@ -463,6 +512,21 @@ public class CatchExceptionAttribute extends AbstractInitializableAttribute
     }
     
     ///////////////////////////////////////////////////////////////////
+    ////                         public variables                  ////
+    
+    /** String value for the "continue" policy */
+    public static final String CONTINUE = "continue";
+    
+    /** String value for the "restart" policy */
+    public static final String RESTART = "restart";
+    
+    /** String value for the "throw" policy */
+    public static final String THROW = "throw";
+    
+    /** String value for the "stop" policy */
+    public static final String STOP = "stop";
+    
+    ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
     
     /** True if the model has been initialized but not yet wrapped up; 
@@ -479,6 +543,16 @@ public class CatchExceptionAttribute extends AbstractInitializableAttribute
      * false if the model has been restarted by this attribute.
      */
     private boolean _resetMessages;
+    
+    /** True if this attribute should invoke Manager.startRun() upon successful
+     *  completion (i.e. when executionFinished() is invoked).
+     */
+    private boolean _restartDesired;
+    
+    /** A list of all ExceptionSusbcribers, to be notified when an exception is
+     *  caught by this class.
+     */
+     private ArrayList<ExceptionSubscriber> _subscribers;
     
     /** Standard out as a writer. */
     private static java.io.Writer _stdOut = null;

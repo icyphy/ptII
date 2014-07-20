@@ -93,9 +93,7 @@ public class HttpRequest  {
      *  
      *  @throws IOException If an IO error occurs.
      */
-    public HttpResponse execute() { 
-        // FIXME: decode the response and return a HttpResponse object instead
-
+    public HttpResponse execute() {
         OutputStreamWriter writer = null;
 
         try {
@@ -284,11 +282,12 @@ public class HttpRequest  {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-    /** The URL connection, if it exists. */
-    private HttpURLConnection _connection;
     
     /** The body of the HTTP request, if it exists. */
     private String _body;
+    
+    /** The URL connection, if it exists. */
+    private HttpURLConnection _connection;
 
     /** The locally used line break character sequence. */
     private String _lineBreak = System.getProperty("line.separator");

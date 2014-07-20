@@ -190,10 +190,6 @@ public class HttpGet extends LimitedFiringSource {
         }
     }
 
-    public void wrapup() {
-        _request.disconnect();
-    }
-
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
     
