@@ -44,6 +44,9 @@ import ptolemy.graph.CPO;
 import ptolemy.kernel.util.IllegalActionException;
 
 /** A token that contains a date.
+ * 
+ *  Note: Java 8 provides a much improved implementation of dates and times.
+ *  This implementation should be upgraded when  
  * @author Patricia Derler, Christopher  based on DateToken in Kepler by Daniel Crawl and Christopher Brooks
  * @version $Id: DateToken.java 24000 2010-04-28 00:12:36Z berkley $
  * @since Ptolemy II 10.
@@ -113,8 +116,11 @@ public class DateToken extends AbstractConvertibleToken
     }
 	
     /** Construct a DateToken that represents the time specified as a
-     *  string.  The string is first parsed by the default
-     *  java.text.DateFormat parser, if that fails, the any leading
+     *  string. The string is first parsed by the default
+     *  java.text.DateFormat parser. Because we have up to nanosecond 
+     *  precision, we might have to
+     *  pre-process the string and take out the digits representing
+     *  nanoseconds and microseconds. Then any leading
      *  and trailing double quotes are removed and a
      *  java.text.SimpleDateFormat with a parser with the value of
      *  {@link #_SIMPLE_DATE_FORMAT} is used.
@@ -152,14 +158,37 @@ public class DateToken extends AbstractConvertibleToken
                 
                 // Remove leading and trailing double quotes.
                 if (value.startsWith("\"") && value.endsWith("\"")) {
-                    value = value.substring(1,value.length()-1);
+                    value = value.substring(1, value.length()-1);
                 }
                 Calendar calendar = Calendar.getInstance();
-                calendar.setTime(_simpleDateFormat.parse(value));
-                _value = calendar.getTimeInMillis();
-                _timeZone = calendar.getTimeZone();
-                _precision = PRECISION_MILLISECOND;
-                _calendar = calendar;
+                if (value.length() == _SIMPLE_DATE_FORMAT.length()) {
+                    calendar.setTime(_simpleDateFormat.parse(value));
+                    _value = calendar.getTimeInMillis();
+                    _timeZone = calendar.getTimeZone();
+                    _precision = PRECISION_MILLISECOND;
+                    _calendar = calendar;
+                } else if (value.length() == _SIMPLE_DATE_FORMAT.length() + 3) {
+                    String micros = value.substring(value.indexOf(".") + 4, value.indexOf(".") + 7);
+                    value = value.substring(0, value.indexOf(".") + 4) + 
+                            value.substring(value.indexOf(".") + 7);
+                    calendar.setTime(_simpleDateFormat.parse(value));
+                    _value = calendar.getTimeInMillis();
+                    _value = _value * 1000 + Integer.parseInt(micros);
+                    _timeZone = calendar.getTimeZone();
+                    _precision = PRECISION_MICROSECOND;
+                    _calendar = calendar;
+                } else if (value.length() == _SIMPLE_DATE_FORMAT.length() + 6) {
+                    String micros = value.substring(value.indexOf(".") + 4, value.indexOf(".") + 7);
+                    String nanos = value.substring(value.indexOf(".") + 7, value.indexOf(".") + 10);
+                    value = value.substring(0, value.indexOf(".") + 4) + 
+                            value.substring(value.indexOf(".") + 10);
+                    calendar.setTime(_simpleDateFormat.parse(value));
+                    _value = calendar.getTimeInMillis();
+                    _value = (_value * 1000 + Integer.parseInt(micros)) * 1000 + Integer.parseInt(nanos);
+                    _timeZone = calendar.getTimeZone();
+                    _precision = PRECISION_NANOSECOND;
+                    _calendar = calendar;
+                }
             } catch (ParseException ex2) {
                 throw new IllegalActionException(null, ex, "The date value \"" + value + "\" could not be parsed to a Date."
                         + "Also tried parsing with the \""
@@ -536,8 +565,8 @@ public class DateToken extends AbstractConvertibleToken
         String timeString = _simpleDateFormat.format(c.getTime()); 
                 
         return "\"" + timeString.substring(0, timeString.length() - 9) + 
-                "." + getMicrosecond() + 
-                "." + getNanosecond() + 
+                 String.format("%03d", getMicrosecond()) + 
+                 String.format("%03d", getNanosecond()) + 
                 timeString.substring(timeString.length() - 9) + "\"";
     }
 

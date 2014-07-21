@@ -8,13 +8,13 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, 80.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={70, 59, 1286, 817}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={154, 22, 1286, 878}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1052, 707]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1052, 768]">
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.8">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{516.0, 343.5}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{516.0, 374.0}">
     </property>
     <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
         <property name="localClock" class="ptolemy.actor.LocalClock">
@@ -745,6 +745,36 @@
             </property>
         </port>
     </entity>
+    <entity name="StringToDate" class="ptolemy.actor.lib.conversions.StringToDate">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[505.0, 715.0]">
+        </property>
+    </entity>
+    <entity name="Const6" class="ptolemy.actor.lib.Const">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="&quot;Mon Jul 21 08:00:00.123456789 PDT 2014&quot;">
+        </property>
+        <doc>Create a constant sequence.</doc>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[295.0, 715.0]">
+        </property>
+    </entity>
+    <entity name="constructed date3" class="ptolemy.actor.lib.gui.MonitorValue">
+        <doc>Monitor and display values</doc>
+        <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.UpdatedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="displayWidth">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[740.0, 715.0]">
+        </property>
+    </entity>
     <entity name="constructed date2" class="ptolemy.actor.lib.gui.MonitorValue">
         <doc>Monitor and display values</doc>
         <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
@@ -756,6 +786,36 @@
             </property>
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[900.0, 495.0]">
+        </property>
+    </entity>
+    <entity name="StringToDate2" class="ptolemy.actor.lib.conversions.StringToDate">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[505.0, 765.0]">
+        </property>
+    </entity>
+    <entity name="Const7" class="ptolemy.actor.lib.Const">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="&quot;Mon Jul 21 08:00:00.123 PDT 2014&quot;">
+        </property>
+        <doc>Create a constant sequence.</doc>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[295.0, 765.0]">
+        </property>
+    </entity>
+    <entity name="constructed date4" class="ptolemy.actor.lib.gui.MonitorValue">
+        <doc>Monitor and display values</doc>
+        <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.UpdatedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="displayWidth">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[740.0, 765.0]">
         </property>
     </entity>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
@@ -878,9 +938,17 @@
     </relation>
     <relation name="relation18" class="ptolemy.actor.TypedIORelation">
     </relation>
+    <relation name="relation28" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation29" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation30" class="ptolemy.actor.TypedIORelation">
+    </relation>
     <relation name="relation21" class="ptolemy.actor.TypedIORelation">
     </relation>
-    <relation name="relation28" class="ptolemy.actor.TypedIORelation">
+    <relation name="relation31" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation32" class="ptolemy.actor.TypedIORelation">
     </relation>
     <link port="CurrentDate.output" relation="relation3"/>
     <link port="CurrentDate.trigger" relation="relation23"/>
@@ -961,6 +1029,16 @@
     <link port="DateConstructor3.timeAsLong" relation="relation27"/>
     <link port="Const5.output" relation="relation18"/>
     <link port="Const5.trigger" relation="relation23"/>
+    <link port="StringToDate.input" relation="relation29"/>
+    <link port="StringToDate.output" relation="relation30"/>
+    <link port="Const6.output" relation="relation29"/>
+    <link port="Const6.trigger" relation="relation23"/>
+    <link port="constructed date3.input" relation="relation30"/>
     <link port="constructed date2.input" relation="relation21"/>
+    <link port="StringToDate2.input" relation="relation31"/>
+    <link port="StringToDate2.output" relation="relation32"/>
+    <link port="Const7.output" relation="relation31"/>
+    <link port="Const7.trigger" relation="relation23"/>
+    <link port="constructed date4.input" relation="relation32"/>
     <link relation1="relation8" relation2="relation26"/>
 </entity>

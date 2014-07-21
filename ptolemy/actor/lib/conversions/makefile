@@ -70,6 +70,7 @@ JSRCS = \
 	PolarToComplex.java \
 	Round.java \
 	StringToBoolean.java \
+	StringToDate.java \
 	StringToDouble.java \
 	StringToInt.java \
 	StringToIntArray.java \
