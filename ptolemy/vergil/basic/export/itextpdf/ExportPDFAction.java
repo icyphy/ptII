@@ -215,6 +215,7 @@ public class ExportPDFAction extends AbstractAction {
                 if (basicGraphFrame == null) {
                     MessageHandler.message("PDF file exported to "
                             + pdfFile.getName());
+                /* Remove the following. The extra click is annoying...
                 } else {
                     if (MessageHandler.yesNoQuestion("Open \""
                             + pdfFile.getCanonicalPath() + "\" in a browser?")) {
@@ -233,6 +234,7 @@ public class ExportPDFAction extends AbstractAction {
                                             + "\".", throwable);
                         }
                     }
+                    */
                 }
             }
         } catch (Exception e) {
