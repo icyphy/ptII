@@ -471,7 +471,7 @@ fmiStatus fmiSetString (fmiComponent c, const fmiValueReference vr[], size_t nvr
     return fmiOK;
 }
 
-// TODO: Finish implementation
+// TODO: Write detailed documentation
 
 /** From the spec: "fmi2GetFMUstate makes a copy of the internal FMU state and returns a pointer to this copy
  * (FMUstate). If on entry *FMUstate == NULL, a new allocation is required. If *FMUstate !=
@@ -487,10 +487,6 @@ fmiStatus fmiGetFMUstate (fmiComponent c, fmiFMUstate* FMUstate) {
     // allocating memory for pointers in ModelInstance struct
     ModelInstance *dest;
 
-    // FIXME: It would be nice to free the FMUstate here, but if the FMUstate contains a reference to the same
-    // component as the source, then the source will get freed and we are sunk.
-    //fmiFreeFMUstate(source, FMUstate);
-
     if (!*FMUstate) {
         dest = (ModelInstance *)source->functions->allocateMemory(1, sizeof(ModelInstance));
         dest->r = (fmiReal *)source->functions->allocateMemory(NUMBER_OF_REALS, sizeof(fmiReal));
@@ -499,7 +495,8 @@ fmiStatus fmiGetFMUstate (fmiComponent c, fmiFMUstate* FMUstate) {
         dest->s = (fmiString *)source->functions->allocateMemory(NUMBER_OF_STRINGS, sizeof(fmiString));
         dest->isPositive = (fmiBoolean *)source->functions->allocateMemory(NUMBER_OF_EVENT_INDICATORS,
                 sizeof(fmiBoolean));
-    } else {
+    }
+    else {
         dest = (ModelInstance *)*FMUstate;
     }
 
@@ -508,39 +505,33 @@ fmiStatus fmiGetFMUstate (fmiComponent c, fmiFMUstate* FMUstate) {
         for (i = 0; i < NUMBER_OF_REALS; i++) {
             dest->r[i] = source->r[i];
         }
-    } else {
-        dest->r = NULL;
     }
+
     if (NUMBER_OF_INTEGERS > 0) {
         for (i = 0; i < NUMBER_OF_INTEGERS; i++) {
-            FILTERED_LOG(source, fmiOK, LOG_FMI_CALL, "dest is %d and source is %d\n",dest->i[i], source->i[i])
                 dest->i[i] = source->i[i];
-            FILTERED_LOG(source, fmiOK, LOG_FMI_CALL, "dest is %d and source is %d\n",dest->i[i], source->i[i])
 		}
-    } else {
-        dest->i = NULL;
     }
 
     if (NUMBER_OF_BOOLEANS > 0) {
         for (i = 0; i < NUMBER_OF_BOOLEANS; i++) {
             dest->b[i] = source->b[i];
         }
-    } else {
-        dest->b = NULL;
     }
+
     if (NUMBER_OF_STRINGS > 0) {
         for (i = 0; i < NUMBER_OF_STRINGS; i++) {
+            if (dest->s[i])
+                dest->functions->freeMemory((void *)dest->s[i]);
+            dest->s[i] = dest->functions->allocateMemory(1 + strlen(source->s[i]), sizeof(char));
             strcpy((char*)dest->s[i], (char*)source->s[i]);
         }
-    } else {
-        dest->s = NULL;
     }
+
     if (NUMBER_OF_EVENT_INDICATORS > 0) {
         for (i = 0; i < NUMBER_OF_EVENT_INDICATORS; i++) {
             dest->r[i] = source->r[i];
         }
-    } else {
-        dest->r = NULL;
     }
 
     *FMUstate = (fmiFMUstate)dest;
@@ -561,7 +552,6 @@ fmiStatus fmiSetFMUstate (fmiComponent c, fmiFMUstate FMUstate) {
     }
     if (NUMBER_OF_INTEGERS > 0) {
         for (i = 0; i < NUMBER_OF_INTEGERS; i++) {
-            FILTERED_LOG(dest, fmiOK, LOG_FMI_CALL, "dest is %d and source is %d\n",dest->i[i], source->i[i])
                 dest->i[i] = source->i[i];
 		}
     }
@@ -582,9 +572,6 @@ fmiStatus fmiSetFMUstate (fmiComponent c, fmiFMUstate FMUstate) {
             dest->r[i] = source->r[i];
         }
     }
-
-    //FIXME: would this be a no-op because FMUState would not be updated in the caller?
-    FMUstate = (fmiFMUstate*)dest;
 
     return fmiOK;
 }
