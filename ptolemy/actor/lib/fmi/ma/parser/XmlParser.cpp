@@ -74,6 +74,7 @@ XmlParser::XmlParser(char *xmlPath) {
 
 XmlParser::~XmlParser() {
     free(xmlPath);
+    xmlCleanupParser(); // FIXME: Should solve "still reachable"s in valgrind, but it doesn't
 }
 
 ModelDescription *XmlParser::parse() {

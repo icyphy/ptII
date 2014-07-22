@@ -31,9 +31,9 @@
 #include <string.h>
 #include "fmi.h"
 #include "sim_support.h"
-#include "fmuTemplate.h"
 
 #define NUMBER_OF_FMUS 2
+#define NUMBER_OF_EDGES 1
 
 double tEnd = 1.0;
 double tStart = 0;                       // start time
@@ -118,13 +118,13 @@ static fmiComponent initializeFMU(FMU *fmu, fmiBoolean visible, fmiBoolean loggi
     return comp;
 }
 
-static fmiStatus rollbackFMUs(FMU *fmus, int completedFMUs) {
+static fmiStatus rollbackFMUs(FMU *fmus, int numberOfFMUs) {
 	int i;
 	fmiStatus fmiFlag;
 
 	printf("Rolling back FMUs!\n");
 
-	for (i = 0; i < completedFMUs; i++) {
+	for (i = 0; i < numberOfFMUs; i++) {
 		fmiFlag = fmus[i].setFMUstate(fmus[i].component, fmus[i].lastFMUstate);
 		if (fmiFlag > fmiWarning) {
 			printf("Rolling back FMU %d failed!\n", i+1);
@@ -134,13 +134,26 @@ static fmiStatus rollbackFMUs(FMU *fmus, int completedFMUs) {
 	return fmiOK;
 }
 
+static fmiStatus setValue(portConnection* connection)
+{
+    fmiStatus fmiFlag;
+    fmiInteger tempInt;
+    fmiReal tempReal;
+    fmiFlag = connection->sourceFMU->getInteger(connection->sourceFMU->component, &connection->sourcePort, 1, &tempInt);
+    tempReal = (fmiReal)tempInt;
+    fmiFlag = connection->sinkFMU->setReal(connection->sinkFMU->component, &connection->sinkPort, 1, &tempReal);
+    return fmiFlag;
+}
+
 
 // simulate the given FMUs from tStart = 0 to tEnd.
-static int simulate(FMU *fmus, double h, fmiBoolean loggingOn, char separator) {
+static int simulate(FMU *fmus, portConnection* connections, double h, fmiBoolean loggingOn, char separator) {
 
     double time;
+    double stepSize = h;
+    double newStepSize = h;
     fmiStatus fmiFlag;   // return code of the fmu functions
-	fmiStatus simulationState = fmiOK; // state of the whole simulation
+	fmiStatus simulationFlag = fmiOK; // state of the whole simulation
 
     int i;
     int nSteps = 0;
@@ -161,60 +174,71 @@ static int simulate(FMU *fmus, double h, fmiBoolean loggingOn, char separator) {
 
     // enter the simulation loop
     time = tStart;
-    fmiInteger tempInt;
-    fmiReal tempReal;
-    fmiValueReference inputTwo = getValueReference(getScalarVariable(fmus[1].modelDescription, 0));
-    fmiValueReference outputOne = getValueReference(getScalarVariable(fmus[0].modelDescription, 0));
+//    fmiInteger tempInt;
+//    fmiReal tempReal;
+//    fmiValueReference inputTwo = getValueReference(getScalarVariable(fmus[1].modelDescription, 0));
+//    fmiValueReference outputOne = getValueReference(getScalarVariable(fmus[0].modelDescription, 0));
 
 // FIXME: remove evil gotos!!
     while (time < tEnd) {
+        // Run trough the topologically sorted list of FMUs (Master-Step)
     	int i;
-    	for (i = 0 ; i < NUMBER_OF_FMUS; i++)
-            {
-                fmiFlag = fmus[i].getFMUstate(fmus[i].component, &fmus[i].lastFMUstate);
-                ModelInstance* inst = (ModelInstance*) fmus[i].lastFMUstate;
 
-                printf("fmus[%d].lastFMUstate = %p\n", i, fmus[i].lastFMUstate);
+        // Set input values
+        for (i = 0 ; i < NUMBER_OF_EDGES; i++) {
+            setValue(&connections[i]);
+        }
 
-                if (fmiFlag <= fmiWarning) {
-                    printf("The value of the last state is: %d\n", inst->i[i]);
-                    fmiFlag = fmus[i].doStep(fmus[i].component, time, h, fmiFalse);
-                    if (fmiFlag > fmiDiscard) {
-                            printf("could not complete simulation of the model because doStep returned something greater than a discard!\n");
-                            returnValue = 0;
-                            // Need to free up memory etc.
-                            goto endSimulation;
-                    }
+        // Save the current state of all FMUs
+        // TODO: The implementation is a HACK! There has to be a way to skip FMUs that do not support states!
+        for (i = 0 ; i < NUMBER_OF_FMUS - 1 ; i++) {
+            fmiFlag = fmus[i].getFMUstate(fmus[i].component, &fmus[i].lastFMUstate);
 
-                    if (fmiFlag == fmiDiscard) {
-                    	fmiReal lastSuccessfulTime;
-                    	fmus[i].getRealStatus(fmus[i].component, fmiLastSuccessfulTime, &lastSuccessfulTime);
-                    	h = lastSuccessfulTime - time;  // setting step size to successful step size of current fmu
-                    	fmiFlag = rollbackFMUs(fmus, i+1);
-                    }
-                }
-            }
-
-    	for (i = 0 ; i < NUMBER_OF_FMUS-1; i++)
-            {
-    		fmiFlag = fmus[i].getInteger(fmus[i].component, &outputOne, 1, &tempInt);
-    		tempReal = (fmiReal)tempInt;
-    		fmiFlag = fmus[i+1].setReal(fmus[i+1].component, &inputTwo, 1, &tempReal);
-            }
-
-    	if (time == 5) {
-            printf("Setting FMUstate\n");
-            printf("fmus[0].lastFMUstate = %p\n", &fmus[0].lastFMUstate);
-            printf("*fmus[0].lastFMUstate = %p\n", fmus[0].lastFMUstate);
-            printf("((ModelInstance*)(fmus[0].lastFMUstate))->i[0] = %d\n", ((ModelInstance*)fmus[0].lastFMUstate)->i[0]);
-			fmiFlag = rollbackFMUs(fmus, 1);
             if (fmiFlag > fmiWarning) {
-            	printf("Rolling back of FMUs failed. Terminating simulation.");
-            	goto endSimulation;
+                printf("Saving state of FMU at index %d failed. Terminating simulation.", i);
+                goto endSimulation;
             }
+        }
+
+        // Try doStep() for all FMUs and find acceptable stepSize
+    	for (i = 0 ; i < NUMBER_OF_FMUS; i++) {
+            // Try doStep() and check if FMU accepts the step size
+            fmiFlag = fmus[i].doStep(fmus[i].component, time, stepSize, fmiFalse);
+
+            // Error checking
+            if (fmiFlag > fmiDiscard) {
+                    printf("Could not complete simulation of the model. doStep returned fmuStatus > Discard!\n");
+                    returnValue = 0;
+                    // Need to free up memory etc.
+                    goto endSimulation;
+            }
+
+            // If stepSize of the current attempt is rejected set it to the minimum of all processed FMUs
+            if (fmiFlag == fmiDiscard) {
+                fmiReal lastSuccessfulTime;
+                fmus[i].getRealStatus(fmus[i].component, fmiLastSuccessfulTime, &lastSuccessfulTime);
+                newStepSize = min(stepSize, (lastSuccessfulTime - time));  // setting step size to successful step size of current fmu if smaller
+                simulationFlag = fmiDiscard;
+            }
+        }
+
+        // Set new step size
+        stepSize = newStepSize;
+
+    	if (simulationFlag == fmiDiscard) {
+    	    // TODO: There is currently no way to determine, which FMU supports rollback and which does not!
+    	    // There has to be a flag in the FMU struct so that we can go over all FMUs. The implementation below is a hack!
+    	    fmiFlag = rollbackFMUs(fmus, NUMBER_OF_FMUS -1 );
+            if (fmiFlag > fmiWarning) {
+                printf("Rolling back of FMUs failed. Terminating simulation.");
+                goto endSimulation;
+            }
+
     	}
 
-        time += h;
+    	if (simulationFlag != fmiDiscard) {
+    	    time += stepSize;
+    	}
         outputRow(&fmus[NUMBER_OF_FMUS-1], fmus[NUMBER_OF_FMUS-1].component, time, file, separator, FALSE); // output values for this step
 
         nSteps++;
@@ -247,6 +271,13 @@ static int simulate(FMU *fmus, double h, fmiBoolean loggingOn, char separator) {
     return returnValue; // 1=success, 0=not success
 }
 
+void setupConnections(FMU* fmus, portConnection* connections) {
+    connections[0].sourceFMU = &fmus[0];
+    connections[0].sinkFMU = &fmus[1];
+    connections[0].sourcePort = getValueReference(getScalarVariable(fmus[0].modelDescription, 0));
+    connections[0].sinkPort = getValueReference(getScalarVariable(fmus[1].modelDescription, 0));
+}
+
 int main(int argc, char *argv[]) {
 #if WINDOWS
     const char* fmuFileNames[NUMBER_OF_FMUS];
@@ -257,16 +288,16 @@ int main(int argc, char *argv[]) {
     
     // parse command line arguments and load the FMU
     // default arguments value
-    double h=0.1;
+    double h = 0.1;
     int loggingOn = 0;
     char csv_separator = ',';
     char **categories = NULL;
     int nCategories = 0;
     fmiBoolean visible = fmiFalse;           // no simulator user interface
     
-    // Create FMU array and allocate memory
-    FMU *fmus;
-    fmus = calloc(NUMBER_OF_FMUS, sizeof(FMU));
+    // Create and allocate arrays for FMUs and port mapping
+    FMU *fmus = calloc(NUMBER_OF_FMUS, sizeof(FMU));
+    portConnection* connections = calloc(NUMBER_OF_EDGES, sizeof(portConnection));
 
     printf("Parsing arguments!\n");
     parseArguments(argc, argv, fmuFileNames, &tEnd, &h, &loggingOn, &csv_separator, &nCategories, &categories);
@@ -278,6 +309,9 @@ int main(int argc, char *argv[]) {
         fmus[i].component = initializeFMU(&fmus[i], visible, loggingOn, nCategories, categories);
     }
 
+    // Set up port connections
+    setupConnections(fmus, connections);
+
     // run the simulation
     printf("FMU Simulator: run '%s' from t=0..%g with step size h=%g, loggingOn=%d, csv separator='%c' ",
             fmuFileNames[0], tEnd, h, loggingOn, csv_separator); // TODO: Should mention all FMUs
@@ -287,7 +321,7 @@ int main(int argc, char *argv[]) {
     }
     printf("}\n");
 
-    simulate(fmus, h, loggingOn, csv_separator); // TODO: Create experiment settings struct
+    simulate(fmus, connections, h, loggingOn, csv_separator); // TODO: Create experiment settings struct
 
     printf("CSV file '%s' written\n", RESULT_FILE);
 

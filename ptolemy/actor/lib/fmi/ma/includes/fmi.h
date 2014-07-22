@@ -87,5 +87,12 @@ typedef struct {
     fmiGetNominalsOfContinuousStatesTYPE *getNominalsOfContinuousStates;
 } FMU;
 
+typedef struct {
+    FMU* sourceFMU;
+    FMU* sinkFMU;
+    fmiValueReference sourcePort;
+    fmiValueReference sinkPort;
+} portConnection;
+
 #endif // FMI_H
 
