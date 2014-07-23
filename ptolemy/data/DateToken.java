@@ -579,6 +579,19 @@ public class DateToken extends AbstractConvertibleToken
      */
     public static final DateToken NIL;
 
+    /** The flag indicating that the the precision is seconds. */
+    public static final int PRECISION_SECOND = 1;
+
+    /** The flag indicating that the the precision is millisecondss. */
+    public static final int PRECISION_MILLISECOND = 2;
+
+    /** The flag indicating that the the precision is microseconds. */
+    public static final int PRECISION_MICROSECOND = 3;
+
+    /** The flag indicating that the the precision is nanoseconds. */
+    public static final int PRECISION_NANOSECOND = 4;
+
+
     ///////////////////////////////////////////////////////////////////
     ////               protected methods                           ////
 
@@ -607,6 +620,7 @@ public class DateToken extends AbstractConvertibleToken
     /** The isCloseTo() method is not supported for Dates because
      *  epsilon is not losslessly convertable to Long.   
      *  @param token The token to compare to this token
+     *  @param epsilon the epsilon
      *  @return A new token containing the result.
      *  @exception IllegalActionException Always thrown because 
      *  isCloseTo() on a Date does not make sense.
@@ -630,6 +644,7 @@ public class DateToken extends AbstractConvertibleToken
      *  It is assumed that the type of the argument is the
      *  same as the type of this class.
      *  @param rightArgument The token with which to test equality.
+     *  @return true if the right argument is equal to this token.
      *  @exception IllegalActionException Not thrown in this baseclass
      */
     protected BooleanToken _isEqualTo(Token rightArgument)
@@ -779,11 +794,6 @@ public class DateToken extends AbstractConvertibleToken
      */
     private TimeZone _timeZone;
     
-    public static final int PRECISION_SECOND = 1;
-    public static final int PRECISION_MILLISECOND = 2;
-    public static final int PRECISION_MICROSECOND = 3;
-    public static final int PRECISION_NANOSECOND = 4;
-
     static {
         try {
             NIL = new DateToken(_NIL);

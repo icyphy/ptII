@@ -2455,7 +2455,16 @@ public class DEDirector extends Director implements SuperdenseTimeDirector {
     protected void _noActorToFire() throws IllegalActionException {
     }
 
-    @Override
+    /** Schedule an actor for execution on a ExecutionAspect. If the actor can
+     *  execute this method returns true. If resources are not available this
+     *  method returns false.
+     *
+     *  @param actor The actor.
+     *  @param timestamp The time the actor requests to be scheduled.
+     *  @return True if actor was scheduled and can be fired.
+     *  @exception IllegalActionException Thrown if parameters cannot be read, actor cannot be
+     *   scheduled or container cannot be fired at future time.
+     */
     protected boolean _schedule(NamedObj actor, Time timestamp)
             throws IllegalActionException {
         boolean schedule = super._schedule(actor, timestamp);

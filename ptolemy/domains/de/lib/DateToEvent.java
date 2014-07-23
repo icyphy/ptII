@@ -42,6 +42,12 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
+/** A timed actor that outputs a const value at a given date.
+ * @author Patricia Derler
+ * @version $Id: DateToken.java 24000 2010-04-28 00:12:36Z berkley $
+ * @Pt.ProposedRating Red (cxh)
+ * @Pt.AcceptedRating Red (cxh)
+ */
 public class DateToEvent extends Transformer {
 
     /** Create a new actor in the specified container with the specified
