@@ -59,6 +59,12 @@ import ptolemy.kernel.util.Workspace;
  If several inputs arrive while the server is busy, then they are
  served on a first-come, first-served basis.
  On every firing, produce an output indicating the final queue size.
+ <p>
+ The service time used for a job is the most recently arrived service
+ time prior to or simultaneous with the <i>arrival</i> of the job
+ (not with the time at which service begins). Thus, if you want
+ each job to have independent service times, you should provide a
+ new serviceTime input synchronized with each new job arrival.
 
  @see ptolemy.actor.lib.TimeDelay
 
@@ -203,9 +209,10 @@ public class Server extends DETransformer {
         super.fire();
         Time currentTime = getDirector().getModelTime();
 
+        serviceTime.update();
+
         // Consume the input.
         if (input.hasToken(0)) {
-            serviceTime.update();
             double serviceTimeValue = ((DoubleToken) serviceTime.getToken())
                     .doubleValue();
             Token token = input.get(0);
