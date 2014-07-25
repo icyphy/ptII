@@ -80,7 +80,8 @@ public class XMPPSink extends Sink implements XMPPPublisher {
     ////                         public variables                  ////
 
     /** The id of the node to publish to, if left undefined
-     * nothing will be published. */
+     *  nothing will be published.
+     */
     public Parameter nodeId;
 
     ///////////////////////////////////////////////////////////////////
@@ -88,6 +89,8 @@ public class XMPPSink extends Sink implements XMPPPublisher {
 
     /**
      * Update the node id if its corresponding parameter has changed.
+     * @param attribute The attribute
+     * @exception IllegalActionException If thrown while getting the token.
      */
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
@@ -97,10 +100,10 @@ public class XMPPSink extends Sink implements XMPPPublisher {
         }
     }
 
-    /**
-     * FIXME: Should we use postfire() instead? @see Display
+    /** Publish the tokens on the input ports.
      */
     public void fire() throws IllegalActionException {
+        // FIXME: Should we use postfire() instead? @see Display
         super.fire();
 
         int width = input.getWidth();
@@ -114,7 +117,8 @@ public class XMPPSink extends Sink implements XMPPPublisher {
     }
 
     /**
-     * Set the
+     * Set the gateway.
+     * @param gateway The gateway.
      */
     @Override
     public void setGateway(XMPPGateway gateway) {
@@ -148,10 +152,10 @@ public class XMPPSink extends Sink implements XMPPPublisher {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-    /** */
+    /** The gateway. */
     private XMPPGateway _gateway;
 
-    /** */
+    /** The nodeId. */
     private String _nodeId;
 
 }

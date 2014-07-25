@@ -164,6 +164,9 @@ public class XMPPGateway extends AbstractInitializableAttribute implements
     /** Update the local variable associated with the changed attribute
      *  and disconnect from the server.
      *  @param attribute The changed attribute.
+     *  @exception IllegalActionException If thrown while getting the
+     *  value of the port, server or userName token, or if thrown
+     *  by the method in the super class.
      */
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {

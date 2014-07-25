@@ -45,6 +45,8 @@ import org.jivesoftware.smackx.pubsub.listener.ItemEventListener;
  */
 public interface XMPPSubscriber extends ItemEventListener<Item> {
 
+    // FIXME: getSubId should be getSubscriberID.  Ditto with setSubId.
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -53,12 +55,10 @@ public interface XMPPSubscriber extends ItemEventListener<Item> {
      */
     public String getNodeId();
 
-    /** Set the subscription id returned by
-     *  SmackPubSubAccess.subscribeToNode(). // FIXME out-dated
-     *  @param subId A string identifying this subscriber.
+    /** Get the subscriber ID.
+     *  @return The subscriber ID.    
+     *  @see #setSubId(String)
      */
-    public void setSubId(String subId);
-
     public String getSubId();
 
     /** Register the gateway to the subscriber, so that if
@@ -67,4 +67,10 @@ public interface XMPPSubscriber extends ItemEventListener<Item> {
      */
     public void setGateway(XMPPGateway gateway);
 
+    /** Set the subscription id returned by
+     *  SmackPubSubAccess.subscribeToNode(). // FIXME out-dated
+     *  @param subId A string identifying this subscriber.
+     *  @see #getSubId()
+     */
+    public void setSubId(String subId);
 }

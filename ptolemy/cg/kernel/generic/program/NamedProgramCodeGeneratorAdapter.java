@@ -987,7 +987,8 @@ public class NamedProgramCodeGeneratorAdapter extends
      *  @param channelNumber The given channel number.
      *  @return The list of channel objects that are the sink channels
      *   of the given output channel.
-     * @exception IllegalActionException
+     *  @exception IllegalActionException If thrown while getting the
+     *  remote or deep receivers.
      */
     public static List<ProgramCodeGeneratorAdapter.Channel> getSinkChannels(
             IOPort port, int channelNumber) throws IllegalActionException {
@@ -1308,6 +1309,8 @@ public class NamedProgramCodeGeneratorAdapter extends
      * the given component.
      * @param component The given component.
      * @return The generated code.
+     * @exception IllegalActionException If thrown while generating the fire
+     * function method invocation.
      */
     private String _generateFireInvocation(NamedObj component)
             throws IllegalActionException {

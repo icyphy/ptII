@@ -3291,6 +3291,15 @@ public class FSMActor extends CompositeEntity implements TypedActor,
     }
     
     
+    /** Schedule an actor for execution on a ExecutionAspect. If the actor can
+     *  execute this method returns true. If resources are not available this
+     *  method returns false.
+     *  @param actor The actor.
+     *  @param timestamp The time the actor requests to be scheduled.
+     *  @return True if actor was scheduled and can be fired.
+     *  @exception IllegalActionException Thrown if parameters cannot be read, actor cannot be
+     *   scheduled or container cannot be fired at future time.
+     */
     protected boolean _schedule(NamedObj actor, Time timestamp)
             throws IllegalActionException {
         ActorExecutionAspect aspect = getDirector().getExecutionAspect(actor);

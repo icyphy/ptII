@@ -80,6 +80,7 @@ public class FMI20EventInfo extends Structure {
      * @param newDiscreteStatesNeeded C type: fmiBoolean
      * @param terminateSimulation C type: fmiBoolean
      * @param nominalsOfContinuousStatesChanged C type: fmiBoolean
+     * @param valuesOfContinuousStatesChanged C type: fmiBoolean
      * @param nextEventTimeDefined C type: fmiBoolean
      * @param nextEventTime C type: fmiReal
      */

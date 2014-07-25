@@ -381,7 +381,7 @@ public class JavaScript extends TypedAtomicActor {
      *  Next, if setTimeout() has been called, and the current time of the director
      *  matches the time specified in setTimeout(), then invoke the function specified
      *  in setTimeout().
-     *  </ul>
+     *  </ol>
      *  <p>
      *  @exception IllegalActionException If calling send() or super.fire()
      *  throws it.
@@ -798,12 +798,21 @@ public class JavaScript extends TypedAtomicActor {
      *  method, which JavaScript cannot access.
      */
     public static class ParameterProxy {
+        /** Construct a parameter proxy.
+         *  @param parameter The parameter to be proxied.
+         */
     	protected ParameterProxy(Parameter parameter) {
             _parameter = parameter;
     	}
+
+        /** Return the name of the proxied parameter.
+         *  @return The name of the proxied parameter.
+         */
     	public String toString() {
             return _parameter.getName();
     	}
+
+        /** The parameter that is proxied. */
     	protected Parameter _parameter;
     }
 
@@ -815,12 +824,21 @@ public class JavaScript extends TypedAtomicActor {
      *  method, which JavaScript cannot access.
      */
     public static class PortProxy {
+        /** Construct a port proxy.
+         *  @param parameter The port to be proxied.
+         */
     	protected PortProxy(TypedIOPort port) {
             _port = port;
     	}
+        
+        /** Return the name of the proxied port.
+         *  @return The name of the proxied port.
+         */
     	public String toString() {
             return _port.getName();
     	}
+
+        /** The port that is proxied. */
     	protected TypedIOPort _port;
     }
 
@@ -829,7 +847,9 @@ public class JavaScript extends TypedAtomicActor {
     @SuppressWarnings("serial")
     public class PtolemyJavaScript extends ScriptableObject {
 
-    	/** Alert the user with a message. */
+    	/** Alert the user with a message.
+         *  @param message The message   
+         */
     	public void alert(String message) {
             MessageHandler.message(message);
     	}
@@ -929,7 +949,7 @@ public class JavaScript extends TypedAtomicActor {
          *  readURL, you can do:
          *  <pre>
          *    httpRequest("http://ptolemy.org", "GET", null, "", 1000);
-         *  <pre>
+         *  </pre>
          *  which specifies a URL to read, the method for the read, no properties, no
          *  text to send, and a timeout of one second.
          *  @param url The URL to which to make the request.
@@ -1032,10 +1052,10 @@ public class JavaScript extends TypedAtomicActor {
          *  <p>
          *  NOTE: This is a temporary placeholder method! This will go away. Please do not use it.
          * @deprecated Pending a better design.
-         * @param url
-         * @param query
-         * @param portWrapper
-         * @throws MalformedURLException
+         * @param url The URL of the WebSocket connection
+         * @param query The query
+         * @param portWrapper The port wrapper
+         * @throws MalformedURLException If the URL is malformed.
          */
         public void socketX(String url, final NativeObject query, NativeJavaObject portWrapper)
                 throws MalformedURLException {
@@ -1327,6 +1347,7 @@ public class JavaScript extends TypedAtomicActor {
 		
     	/** Get parameter values.
     	 *  @param paramWrapper A JavaScript wrapper for a Variable.
+         *  @return A wrapped token that contains the parameter.
     	 */
     	public Object valueOf(NativeJavaObject paramWrapper) {
             Object unwrappedParam = paramWrapper.unwrap();
@@ -1469,6 +1490,7 @@ public class JavaScript extends TypedAtomicActor {
          * See also <a href="http://www.mkyong.com/java/open-browser-in-java-windows-or-linux/">http://www.mkyong.com/java/open-browser-in-java-windows-or-linux/></a>.
          *
          * @param url The URL that the browser shall retrieve.
+         * @return The empty string.
          * @throws IllegalActionException If the browser is not found
          */
         public String openBrowser(String url) throws IllegalActionException  {

@@ -1,29 +1,29 @@
 /* A transition in an FSMActor.
 
- Copyright (c) 1999-2013 The Regents of the University of California.
- All rights reserved.
- Permission is hereby granted, without written agreement and without
- license or royalty fees, to use, copy, modify, and distribute this
- software and its documentation for any purpose, provided that the above
- copyright notice and the following two paragraphs appear in all copies
- of this software.
+   Copyright (c) 1999-2013 The Regents of the University of California.
+   All rights reserved.
+   Permission is hereby granted, without written agreement and without
+   license or royalty fees, to use, copy, modify, and distribute this
+   software and its documentation for any purpose, provided that the above
+   copyright notice and the following two paragraphs appear in all copies
+   of this software.
 
- IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
- FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
- ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
- THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
- SUCH DAMAGE.
+   IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+   FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+   ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+   THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+   SUCH DAMAGE.
 
- THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
- INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
- MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
- PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
- CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
- ENHANCEMENTS, OR MODIFICATIONS.
+   THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+   INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+   MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+   PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+   CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+   ENHANCEMENTS, OR MODIFICATIONS.
 
- PT_COPYRIGHT_VERSION_2
- COPYRIGHTENDKEY
- */
+   PT_COPYRIGHT_VERSION_2
+   COPYRIGHTENDKEY
+*/
 package ptolemy.domains.modal.kernel;
 
 import java.util.Iterator;
@@ -67,131 +67,131 @@ import ptolemy.moml.MoMLChangeRequest;
 //// Transition
 
 /**
- A Transition has a source state and a destination state. A
- transition has a guard expression, which is evaluated to a boolean value.
- Whenever a transition out of the current state
- is enabled, it must be taken in the current firing.
- That is, unlike some state machines formalisms, our guard is not just
- an enabler for the transition but rather a trigger for the transition.
+   A Transition has a source state and a destination state. A
+   transition has a guard expression, which is evaluated to a boolean value.
+   Whenever a transition out of the current state
+   is enabled, it must be taken in the current firing.
+   That is, unlike some state machines formalisms, our guard is not just
+   an enabler for the transition but rather a trigger for the transition.
 
- <p> A transition can contain actions. The way to specify actions is
- to give value to the <i>outputActions</i> parameter and the
- <i>setActions</i> parameter.
+   <p> A transition can contain actions. The way to specify actions is
+   to give value to the <i>outputActions</i> parameter and the
+   <i>setActions</i> parameter.
 
- The value of these parameters is a string of the form:
- <pre>
- <i>command</i>; <i>command</i>; ...
- </pre>
- where each <i>command</i> has the form:
- <pre>
- <i>destination</i> = <i>expression</i>
- </pre>
- For the <i>outputActions</i> parameter, <i>destination</i> is either
- <pre>
- <i>portName</i>
- </pre>
- or
- <pre>
- <i>portName</i>(<i>channelNumber</i>)
- </pre>
- Here, <i>portName</i> is the name of a port of the FSM actor,
- If no <i>channelNumber</i> is given, then the value
- is broadcast to all channels of the port.
- <p>
- For the <i>setActions</i> parameter, <i>destination</i> is
- <pre>
- <i>variableName</i>
- </pre>
- <i>variableName</i> identifies either a variable or parameter of
- the FSM actor, or a variable or parameter of the refinement of the
- destination state of the transition. To give a variable of the
- refinement, use a dotted name, as follows:
- <pre>
- <i>refinementName</i>.<i>variableName</i>
- </pre>
- The <i>expression</i> is a string giving an expression in the usual
- Ptolemy II expression language. The expression may include references
- to variables and parameters contained by the FSM actor.
- <p>
- The <i>outputActions</i> and <i>setActions</i> parameters are not the only
- ways to specify actions. In fact, you can add action attributes that are
- instances of anything that inherits from Action.
- (Use the Add button in the Edit Parameters dialog).
- <p>
- An action is either a ChoiceAction or a CommitAction. The <i>setActions</i>
- parameter is a CommitAction, whereas the <i>outputActions</i> parameter is a
- ChoiceAction. A commit action is executed when the transition is taken to
- change the state of the FSM, in the postfire() method of FSMActor.
- A choice action, by contrast, is executed in the fire() method
- of the FSMActor when the transition is chosen, but not yet taken.
- The difference is subtle, and for most domains, irrelevant.
- A few domains, however, such as CT, which have fixed point semantics,
- where the fire() method may be invoked several times before the
- transition is taken (committed). For such domains, it is useful
- to have actions that fulfill the ChoiceAction interface.
- Such actions participate in the search for a fixed point, but
- do not change the state of the FSM.
- <p>
- A transition can be preemptive or non-preemptive. When a preemptive transition
- is chosen, the refinement of its source state is not fired. A non-preemptive
- transition is only chosen after the refinement of its source state is fired.
- <p>
- The <i>history</i> parameter specifies whether the refinement of the destination
- state refinement is initialized when the transition is taken. By default, this
- is false, which means that the destination refinement is initialized.
- If you change this to true, then the destination refinement will not be
- initialized, so when the state is re-entered, the refinement will
- continue executing where it left off.
- <p>
- The <i>nondeterministic</i> parameter specifies whether this transition is
- nondeterministic. Here nondeterministic means that this transition may not
- be the only enabled transition at a time. The default value is a boolean
- token with value as false, meaning that if this transition is enabled, it
- must be the only enabled transition.
- <p>
- The <i>immediateTransition</i> parameter, if given a value true, specifies
- that this transition is may be taken as soon as its source state is entered,
- in the same iteration. This may lead to transient states, where a state is
- passed through without ever becoming the current state.
- <p>
- The <i>defaultTransition</i> parameter, if given a value true, specifies
- that this transition is enabled if no other non-default
- transition is enabled and if its guard evaluates to true.
- <p>
- The <i>error</i> parameter, if given a value true, specifies
- that this transition is enabled if the refinement of the source state of
- the transition throws a model error or an exception
- while executing. The default value is a boolean
- token with value false. When such an exception or model error
- occurs, two variables are set that may be used in the guard
- or the output or set actions of this transition:
- <ul>
- <li> <i>errorMessage</i>: The error message (a string).
- <li> <i>errorClass</i>: The class of the exception thrown.
- </ul>
- In addition, if the exception is an instance of KernelException
- or a subclass (such as IllegalActionException), then a third
- variable is set:
- <ul>
- <li> <i>errorCause</i>: The Ptolemy object that caused the exception.
- </ul>
- The <i>errorCause</i> is made available as an ObjectToken on which
- you can invoke methods such as getName() in the guard or output
- or set actions of this transition.
+   The value of these parameters is a string of the form:
+   <pre>
+   <i>command</i>; <i>command</i>; ...
+   </pre>
+   where each <i>command</i> has the form:
+   <pre>
+   <i>destination</i> = <i>expression</i>
+   </pre>
+   For the <i>outputActions</i> parameter, <i>destination</i> is either
+   <pre>
+   <i>portName</i>
+   </pre>
+   or
+   <pre>
+   <i>portName</i>(<i>channelNumber</i>)
+   </pre>
+   Here, <i>portName</i> is the name of a port of the FSM actor,
+   If no <i>channelNumber</i> is given, then the value
+   is broadcast to all channels of the port.
+   <p>
+   For the <i>setActions</i> parameter, <i>destination</i> is
+   <pre>
+   <i>variableName</i>
+   </pre>
+   <i>variableName</i> identifies either a variable or parameter of
+   the FSM actor, or a variable or parameter of the refinement of the
+   destination state of the transition. To give a variable of the
+   refinement, use a dotted name, as follows:
+   <pre>
+   <i>refinementName</i>.<i>variableName</i>
+   </pre>
+   The <i>expression</i> is a string giving an expression in the usual
+   Ptolemy II expression language. The expression may include references
+   to variables and parameters contained by the FSM actor.
+   <p>
+   The <i>outputActions</i> and <i>setActions</i> parameters are not the only
+   ways to specify actions. In fact, you can add action attributes that are
+   instances of anything that inherits from Action.
+   (Use the Add button in the Edit Parameters dialog).
+   <p>
+   An action is either a ChoiceAction or a CommitAction. The <i>setActions</i>
+   parameter is a CommitAction, whereas the <i>outputActions</i> parameter is a
+   ChoiceAction. A commit action is executed when the transition is taken to
+   change the state of the FSM, in the postfire() method of FSMActor.
+   A choice action, by contrast, is executed in the fire() method
+   of the FSMActor when the transition is chosen, but not yet taken.
+   The difference is subtle, and for most domains, irrelevant.
+   A few domains, however, such as CT, which have fixed point semantics,
+   where the fire() method may be invoked several times before the
+   transition is taken (committed). For such domains, it is useful
+   to have actions that fulfill the ChoiceAction interface.
+   Such actions participate in the search for a fixed point, but
+   do not change the state of the FSM.
+   <p>
+   A transition can be preemptive or non-preemptive. When a preemptive transition
+   is chosen, the refinement of its source state is not fired. A non-preemptive
+   transition is only chosen after the refinement of its source state is fired.
+   <p>
+   The <i>history</i> parameter specifies whether the refinement of the destination
+   state refinement is initialized when the transition is taken. By default, this
+   is false, which means that the destination refinement is initialized.
+   If you change this to true, then the destination refinement will not be
+   initialized, so when the state is re-entered, the refinement will
+   continue executing where it left off.
+   <p>
+   The <i>nondeterministic</i> parameter specifies whether this transition is
+   nondeterministic. Here nondeterministic means that this transition may not
+   be the only enabled transition at a time. The default value is a boolean
+   token with value as false, meaning that if this transition is enabled, it
+   must be the only enabled transition.
+   <p>
+   The <i>immediateTransition</i> parameter, if given a value true, specifies
+   that this transition is may be taken as soon as its source state is entered,
+   in the same iteration. This may lead to transient states, where a state is
+   passed through without ever becoming the current state.
+   <p>
+   The <i>defaultTransition</i> parameter, if given a value true, specifies
+   that this transition is enabled if no other non-default
+   transition is enabled and if its guard evaluates to true.
+   <p>
+   The <i>error</i> parameter, if given a value true, specifies
+   that this transition is enabled if the refinement of the source state of
+   the transition throws a model error or an exception
+   while executing. The default value is a boolean
+   token with value false. When such an exception or model error
+   occurs, two variables are set that may be used in the guard
+   or the output or set actions of this transition:
+   <ul>
+   <li> <i>errorMessage</i>: The error message (a string).
+   <li> <i>errorClass</i>: The class of the exception thrown.
+   </ul>
+   In addition, if the exception is an instance of KernelException
+   or a subclass (such as IllegalActionException), then a third
+   variable is set:
+   <ul>
+   <li> <i>errorCause</i>: The Ptolemy object that caused the exception.
+   </ul>
+   The <i>errorCause</i> is made available as an ObjectToken on which
+   you can invoke methods such as getName() in the guard or output
+   or set actions of this transition.
 
- @author Xiaojun Liu, Edward A. Lee, Haiyang Zheng, Christian Motika
- @version $Id$
- @since Ptolemy II 8.0
- @Pt.ProposedRating Yellow (hyzheng)
- @Pt.AcceptedRating Red (hyzheng)
- @see State
- @see Action
- @see ChoiceAction
- @see CommitAction
- @see CommitActionsAttribute
- @see FSMActor
- @see OutputActionsAttribute
- */
+   @author Xiaojun Liu, Edward A. Lee, Haiyang Zheng, Christian Motika
+   @version $Id$
+   @since Ptolemy II 8.0
+   @Pt.ProposedRating Yellow (hyzheng)
+   @Pt.AcceptedRating Red (hyzheng)
+   @see State
+   @see Action
+   @see ChoiceAction
+   @see CommitAction
+   @see CommitActionsAttribute
+   @see FSMActor
+   @see OutputActionsAttribute
+*/
 public class Transition extends ComponentRelation {
     /** Construct a transition with the given name contained by the specified
      *  entity. The container argument must not be null, or a
@@ -254,7 +254,7 @@ public class Transition extends ComponentRelation {
             _immediate = ((BooleanToken) immediate.getToken()).booleanValue();
         } else if (attribute == nondeterministic) {
             _nondeterministic = ((BooleanToken) nondeterministic.getToken())
-                    .booleanValue();
+                .booleanValue();
         } else if (attribute == guardExpression) {
             // The guard expression can only be evaluated at run
             // time, because the input variables it can reference are created
@@ -277,30 +277,30 @@ public class Transition extends ComponentRelation {
         } else if (attribute == setActions && _debugging) {
             setActions.addDebugListener(new StreamListener());
         } else if (attribute == fsmTransitionParameterName) {
-        	if (((BooleanToken)showFSMTransitionParameter.getToken()).booleanValue()) {
-        		_getFSMTransitionParameter();
-        		try {
+            if (((BooleanToken)showFSMTransitionParameter.getToken()).booleanValue()) {
+                _getFSMTransitionParameter();
+                try {
                     _fsmTransitionParameter.setName(((StringToken)fsmTransitionParameterName.getToken()).stringValue());
                 } catch (NameDuplicationException e) {
                     throw new IllegalActionException(this, e.getCause(), e.getLocalizedMessage());
                 }
-        	}
+            }
         } else if (attribute == showFSMTransitionParameter) {
-        	if (((BooleanToken)showFSMTransitionParameter.getToken()).booleanValue()) {
-        		_getFSMTransitionParameter();
-        		if (_fsmTransitionParameter != null) {
-        		    _fsmTransitionParameter.hide(false);
-        		    _fsmTransitionParameter.setPersistent(true);
-        		}
-        		showFSMTransitionParameter.setPersistent(true);
-        		fsmTransitionParameterName.setPersistent(true);
-        	} else {
-        		if (_fsmTransitionParameter != null) {
-        			_fsmTransitionParameter.setPersistent(false);
-        		}
-        		showFSMTransitionParameter.setPersistent(false);
-        		fsmTransitionParameterName.setPersistent(false);
-        	}
+            if (((BooleanToken)showFSMTransitionParameter.getToken()).booleanValue()) {
+                _getFSMTransitionParameter();
+                if (_fsmTransitionParameter != null) {
+                    _fsmTransitionParameter.hide(false);
+                    _fsmTransitionParameter.setPersistent(true);
+                }
+                showFSMTransitionParameter.setPersistent(true);
+                fsmTransitionParameterName.setPersistent(true);
+            } else {
+                if (_fsmTransitionParameter != null) {
+                    _fsmTransitionParameter.setPersistent(false);
+                }
+                showFSMTransitionParameter.setPersistent(false);
+                fsmTransitionParameterName.setPersistent(false);
+            }
         }
     }
 
@@ -326,11 +326,11 @@ public class Transition extends ComponentRelation {
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         Transition newObject = (Transition) super.clone(workspace);
         /*
-        newObject.guardExpression = (StringAttribute) newObject
-                .getAttribute("guardExpression");
-        newObject.preemptive = (Parameter) newObject.getAttribute("preemptive");
-        newObject.immediate = (Parameter) newObject.getAttribute("immediate");
-        newObject.refinementName = (StringAttribute) newObject.getAttribute("refinementName");
+          newObject.guardExpression = (StringAttribute) newObject
+          .getAttribute("guardExpression");
+          newObject.preemptive = (Parameter) newObject.getAttribute("preemptive");
+          newObject.immediate = (Parameter) newObject.getAttribute("immediate");
+          newObject.refinementName = (StringAttribute) newObject.getAttribute("refinementName");
         */
         newObject._actionListsVersion = -1;
         newObject._choiceActionList = new LinkedList();
@@ -371,15 +371,10 @@ public class Transition extends ComponentRelation {
         return _destinationState;
     }
 
-    /** Return the guard expression. The guard expression should evaluate
-     *  to a boolean value.
-     *  @return The guard expression.
-     *  @see #setGuardExpression
-     */
-    public String getGuardExpression() {
-        return guardExpression.getExpression();
-    }
-    
+    /** Return the full label, which may include the guard expression,
+     *  the output expression and the set actions.
+     *  @return The full label   
+     */   
     public String getFullLabel() {
     	StringBuffer buffer = new StringBuffer("");
     	boolean hasAnnotation = false;
@@ -419,6 +414,15 @@ public class Transition extends ComponentRelation {
         return buffer.toString();
     }
 
+    /** Return the guard expression. The guard expression should evaluate
+     *  to a boolean value.
+     *  @return The guard expression.
+     *  @see #setGuardExpression
+     */
+    public String getGuardExpression() {
+        return guardExpression.getExpression();
+    }
+    
     /** Return a string describing this transition. The string has up to
      *  three lines. The first line is the guard expression, preceded
      *  by "guard: ".  The second line is the <i>outputActions</i> preceded
@@ -429,14 +433,14 @@ public class Transition extends ComponentRelation {
      */
     public String getLabel() {
         try {
-			if (((BooleanToken)showFSMTransitionParameter.getToken()).booleanValue()) {
-				return ((StringToken)fsmTransitionParameterName.getToken()).stringValue();
-			} else {
-				return getFullLabel();
-			}
-		} catch (IllegalActionException e) {
-			return "Exception evaluating annotation: " + e.getMessage();
-		}
+            if (((BooleanToken)showFSMTransitionParameter.getToken()).booleanValue()) {
+                return ((StringToken)fsmTransitionParameterName.getToken()).stringValue();
+            } else {
+                return getFullLabel();
+            }
+        } catch (IllegalActionException e) {
+            return "Exception evaluating annotation: " + e.getMessage();
+        }
     }
 
     /** Return the parse tree evaluator used by this transition to evaluate
@@ -502,7 +506,7 @@ public class Transition extends ComponentRelation {
 
             Nameable container = getContainer();
             TypedCompositeActor containerContainer = (TypedCompositeActor) container
-                    .getContainer();
+                .getContainer();
             int index = 0;
 
             while (tokenizer.hasMoreTokens()) {
@@ -514,7 +518,7 @@ public class Transition extends ComponentRelation {
                 }
 
                 TypedActor element = (TypedActor) containerContainer
-                        .getEntity(name);
+                    .getEntity(name);
 
                 if (element == null) {
                     throw new IllegalActionException(this, "Cannot find "
@@ -586,9 +590,9 @@ public class Transition extends ComponentRelation {
         if (!(token instanceof BooleanToken)) {
             throw new IllegalActionException(this,
                     "Guard expression does not evaluate to a boolean!"
-                            + " The gaurd expression is: \""
-                            + guardExpression.getExpression()
-                            + "\", which evaluates to " + token);
+                    + " The gaurd expression is: \""
+                    + guardExpression.getExpression()
+                    + "\", which evaluates to " + token);
         }
         boolean result = ((BooleanToken) token).booleanValue();
         return result;
@@ -627,7 +631,7 @@ public class Transition extends ComponentRelation {
         // or old default depending on the version of Ptolemy that created the model.
         try {
             VersionAttribute version = (VersionAttribute) toplevel()
-                    .getAttribute("_createdBy", VersionAttribute.class);
+                .getAttribute("_createdBy", VersionAttribute.class);
             if (version == null) {
                 // No version attribute. Return whatever the value
                 // of the history parameter is.
@@ -657,7 +661,7 @@ public class Transition extends ComponentRelation {
                     // Otherwise, leave the history parameter at its default.
                     if (resetValue instanceof BooleanToken) {
                         boolean resetValueBoolean = ((BooleanToken) resetValue)
-                                .booleanValue();
+                            .booleanValue();
                         if (!resetValueBoolean) {
                             // reset parameter exists and has value false, but if the destination
                             // state has no refinement, we nonetheless change this to make
@@ -665,7 +669,7 @@ public class Transition extends ComponentRelation {
                             State destinationState = destinationState();
                             if (destinationState != null) {
                                 TypedActor[] refinements = destinationState
-                                        .getRefinement();
+                                    .getRefinement();
                                 if (refinements == null
                                         || refinements.length == 0) {
                                     // No need to make history true. Stick with the default.
@@ -700,7 +704,7 @@ public class Transition extends ComponentRelation {
                     State destinationState = destinationState();
                     if (destinationState != null) {
                         TypedActor[] refinements = destinationState
-                                .getRefinement();
+                            .getRefinement();
                         if (refinements == null || refinements.length == 0) {
                             // No need to make history true. Stick with the default.
                             return false;
@@ -777,12 +781,12 @@ public class Transition extends ComponentRelation {
             if (!(container instanceof FSMActor)) {
                 throw new IllegalActionException(container, this,
                         "Transition can only be contained by instances of "
-                                + "FSMActor.");
+                        + "FSMActor.");
             }
         } else {
-        	if (_fsmTransitionParameter != null) {
-        		_fsmTransitionParameter.setContainer(null);
-        	}
+            if (_fsmTransitionParameter != null) {
+                _fsmTransitionParameter.setContainer(null);
+            }
         }
 
         super.setContainer(container);
@@ -856,6 +860,11 @@ public class Transition extends ComponentRelation {
      */
     public Parameter exitAngle;
 
+    /** The name of the transition, which defaults to the name of
+     *  the transition followed by the string "Parameter".   
+     */
+    public Parameter fsmTransitionParameterName;
+
     /** Attribute giving the orientation of a self-loop. This is equal to
      * the tangent at the midpoint (more or less).
      *  This parameter contains a DoubleToken, initially with value 0.0.
@@ -910,15 +919,19 @@ public class Transition extends ComponentRelation {
      */
     public CommitActionsAttribute setActions;
 
+    /** True of the the value of the {@link #fsmTransitionParameterName} parameter
+     *  should be returned by {@link #getLabel()}.
+     */
+    public Parameter showFSMTransitionParameter;
+
     /** Parameter specifying whether the refinements of the origin
      *  state must have terminated (postfire has returned false)
      *  for the transition to be enabled.
      */
     public Parameter termination;
     
-    public Parameter fsmTransitionParameterName;
     
-    public Parameter showFSMTransitionParameter;
+
     
     
 
@@ -946,7 +959,7 @@ public class Transition extends ComponentRelation {
         if (port != st.incomingPort && port != st.outgoingPort) {
             throw new IllegalActionException(this, port.getContainer(),
                     "Transition can only be linked to incoming or outgoing "
-                            + "port of State.");
+                    + "port of State.");
         }
 
         if (numLinks() == 0) {
@@ -1011,7 +1024,7 @@ public class Transition extends ComponentRelation {
         if (container != null) {
             // Get the containing modal model.
             CompositeActor modalModel = (CompositeActor) container
-                    .getContainer();
+                .getContainer();
             if (modalModel != null) {
                 // Get the director for the modal model.
                 Director director = modalModel.getDirector();
@@ -1024,52 +1037,52 @@ public class Transition extends ComponentRelation {
     }
 
     private void _getFSMTransitionParameter() throws IllegalActionException {
-		if (getContainer() != null) {
-	    	if (_fsmTransitionParameter == null) {
-	    	    _fsmTransitionParameter = (FSMTransitionParameter) getContainer().getAttribute(((StringToken)fsmTransitionParameterName.getToken()).stringValue());
-	    	    if (_fsmTransitionParameter != null) {
-	    	        try {
+        if (getContainer() != null) {
+            if (_fsmTransitionParameter == null) {
+                _fsmTransitionParameter = (FSMTransitionParameter) getContainer().getAttribute(((StringToken)fsmTransitionParameterName.getToken()).stringValue());
+                if (_fsmTransitionParameter != null) {
+                    try {
                         _fsmTransitionParameter.setTransition(this);
                     } catch (NameDuplicationException e) {
                         throw new IllegalActionException(this, e.getCause(), e.getLocalizedMessage());
                     }
-	    	    }
-	    	}    
-	    	if (_fsmTransitionParameter == null) {
-	    	    Location sourceStateLocation = (Location)sourceState().getAttribute("_location");
+                }
+            }    
+            if (_fsmTransitionParameter == null) {
+                Location sourceStateLocation = (Location)sourceState().getAttribute("_location");
                 Location destinationStateLocation = (Location)destinationState().getAttribute("_location");
-        	    String moml = 
-        	            "<property name=\"" 
-                        + ((StringToken)fsmTransitionParameterName.getToken()).stringValue() 
-                        + "\" class=\"ptolemy.domains.modal.kernel.FSMTransitionParameter\">\n"
-                        + "    <property name=\"_hideName\" class=\"ptolemy.kernel.util.SingletonAttribute\"/>\n"
-                        + "    <property name=\"_icon\" class=\"ptolemy.vergil.icon.ValueIcon\">\n"
-                        + "        <property name=\"_color\" class=\"ptolemy.actor.gui.ColorAttribute\" value=\"{0.0, 0.0, 1.0, 1.0}\"/>\n"
-                        + "        <property name=\"displayWidth\" value=\"1000\"/>\n"
-                        + "        <property name=\"numberOfLines\" value=\"100\"/>\n"
-                        + "    </property>\n"
-                        + "    <property name=\"_location\" class=\"ptolemy.kernel.util.Location\" value=\"["
-                        + (int)(destinationStateLocation.getLocation()[0] + 
+                String moml = 
+                    "<property name=\"" 
+                    + ((StringToken)fsmTransitionParameterName.getToken()).stringValue() 
+                    + "\" class=\"ptolemy.domains.modal.kernel.FSMTransitionParameter\">\n"
+                    + "    <property name=\"_hideName\" class=\"ptolemy.kernel.util.SingletonAttribute\"/>\n"
+                    + "    <property name=\"_icon\" class=\"ptolemy.vergil.icon.ValueIcon\">\n"
+                    + "        <property name=\"_color\" class=\"ptolemy.actor.gui.ColorAttribute\" value=\"{0.0, 0.0, 1.0, 1.0}\"/>\n"
+                    + "        <property name=\"displayWidth\" value=\"1000\"/>\n"
+                    + "        <property name=\"numberOfLines\" value=\"100\"/>\n"
+                    + "    </property>\n"
+                    + "    <property name=\"_location\" class=\"ptolemy.kernel.util.Location\" value=\"["
+                    + (int)(destinationStateLocation.getLocation()[0] + 
                             (sourceStateLocation.getLocation()[0] - destinationStateLocation.getLocation()[0])/2)
-                        + ", "
-                        + (int)(destinationStateLocation.getLocation()[1] + 
+                    + ", "
+                    + (int)(destinationStateLocation.getLocation()[1] + 
                             (sourceStateLocation.getLocation()[1] - destinationStateLocation.getLocation()[1])/2)
-                        + "]\"/>\n"
-                        + "    <property name=\"_smallIconDescription\" class=\"ptolemy.kernel.util.SingletonConfigurableAttribute\">\n"
-                        + "        <configure><svg><text x=\"20\" style=\"font-size:14; font-family:SansSerif; fill:blue\" y=\"20\">-P-</text></svg></configure>\n"
-                        + "    </property>\n"
-                        + "    <property name=\"_editorFactory\" class=\"ptolemy.vergil.toolbox.VisibleParameterEditorFactory\"/>\n"
-                        + "    <property name=\"_configurer\" class=\"ptolemy.actor.gui.TransitionEditorPaneFactory\"/>\n"
-                        + "</property>";
+                    + "]\"/>\n"
+                    + "    <property name=\"_smallIconDescription\" class=\"ptolemy.kernel.util.SingletonConfigurableAttribute\">\n"
+                    + "        <configure><svg><text x=\"20\" style=\"font-size:14; font-family:SansSerif; fill:blue\" y=\"20\">-P-</text></svg></configure>\n"
+                    + "    </property>\n"
+                    + "    <property name=\"_editorFactory\" class=\"ptolemy.vergil.toolbox.VisibleParameterEditorFactory\"/>\n"
+                    + "    <property name=\"_configurer\" class=\"ptolemy.actor.gui.TransitionEditorPaneFactory\"/>\n"
+                    + "</property>";
 
                 MoMLChangeRequest request = new MoMLChangeRequest(this, getContainer(),
                         moml);
                 getContainer().requestChange(request);
-	        }
-		}
-	}
+            }
+        }
+    }
 
-	// Initialize the variables of this transition.
+    // Initialize the variables of this transition.
     private void _init() throws IllegalActionException,
             NameDuplicationException {
     	fsmTransitionParameterName = new StringParameter(this, "fsmTransitionParameterName");
@@ -1205,7 +1218,7 @@ public class Transition extends ComponentRelation {
 
     private FSMTransitionParameter _fsmTransitionParameter;
 
-	// The parse tree for the guard expression.
+    // The parse tree for the guard expression.
     private ASTPtRootNode _guardParseTree;
 
     // Version of the cached guard parse tree

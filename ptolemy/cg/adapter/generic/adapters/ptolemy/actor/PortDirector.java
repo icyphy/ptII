@@ -372,10 +372,8 @@ public abstract class PortDirector extends Director {
      *  @param forComposite True if we are checking for a composite
      *  @param port The port to be checked.
      *  @return A boolean true when the port is local.
-     *  @exception IllegalActionException
      */
-    static protected boolean _checkLocal(boolean forComposite, IOPort port)
-            throws IllegalActionException {
+    static protected boolean _checkLocal(boolean forComposite, IOPort port) {
         return port.isInput() && !forComposite && port.isOutsideConnected()
                 || port.isOutput() && forComposite;
     }
@@ -385,8 +383,6 @@ public abstract class PortDirector extends Director {
     *  @param port The port to check.
     *  @return True if the port is an output and not a composite
     *  or the port is an input and this is for a composite.
-    *  @exception IllegalActionException If thrown while checking that
-    *  the port is an output or input.
     */
     static protected boolean _checkRemote(boolean forComposite, IOPort port) {
         return port.isOutput() && !forComposite || port.isInput()

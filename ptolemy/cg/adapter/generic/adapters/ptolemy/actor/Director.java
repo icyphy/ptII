@@ -786,7 +786,8 @@ public class Director extends NamedProgramCodeGeneratorAdapter {
      *  @param attribute The attribute
      *  @param channelAndOffset The given channel and offset.
      *  @return code for the parameter
-     *  @exception IllegalActionException
+     *  @exception IllegalActionException If the adapter throws it while
+     *  generating the label.
      */
     public String getParameter(NamedProgramCodeGeneratorAdapter target,
             Attribute attribute, String[] channelAndOffset)

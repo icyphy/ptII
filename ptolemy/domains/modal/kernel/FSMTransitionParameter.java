@@ -60,9 +60,8 @@ import ptolemy.kernel.util.Workspace;
  *  @Pt.AcceptedRating Red (derler)
  */
 public class FSMTransitionParameter extends AbstractSettableAttribute {
-
 	
-	/** Construct an attribute with the given name contained by the specified
+    /** Construct an attribute with the given name contained by the specified
      *  entity. The container argument must not be null, or a
      *  NullPointerException will be thrown.  This attribute will use the
      *  workspace of the container for synchronization and version counts.
@@ -81,6 +80,13 @@ public class FSMTransitionParameter extends AbstractSettableAttribute {
         _init();
     }
     
+    /** Add value listener. Nothing to do.
+     */
+    @Override
+    public void addValueListener(ValueListener listener) {
+        // nothing to do.
+    }
+
     /** Clone the transition into the specified workspace. This calls the
      *  base class and then sets the attribute public members to refer to
      *  the attributes of the new transition.
@@ -100,32 +106,30 @@ public class FSMTransitionParameter extends AbstractSettableAttribute {
      */
     public String getExpression() {
     	if (_transition != null) {
-    		return _transition.getFullLabel();
+            return _transition.getFullLabel();
     	} 
     	return "";
     }
     
+    /** Set the transition that corresponds to the parameters.
+     *  @return The transition.
+     *  @see #setTransition(Transition)
+     */
     public Transition getTransition() {
     	return _transition;
     }
     
-    /** Upon setting the name of this parameter change the corresponding
-     *  attribute in the transition.
+    /** Get visibility. Nothing to do.
      */
     @Override
-    public void setName(String name) throws IllegalActionException,
-    		NameDuplicationException {
-    	super.setName(name);
-    	if (_transition != null) {
-    		_transition.fsmTransitionParameterName.setExpression(name);
-    		_transition.fsmTransitionParameterName.setPersistent(true);
-    	}
+    public Visibility getVisibility() {
+        return NOT_EDITABLE;
     }
-    
+
     /** If hide is true, hide the parameter and display transition parameters next 
      * to the transition.
      * FIXME this should probably be done in setVisibility.
-     * @param hide 
+     * @param hide True if the parameter should be hidden.
      * @throws IllegalActionException
      */
     public void hide(boolean hide) throws IllegalActionException {
@@ -144,9 +148,10 @@ public class FSMTransitionParameter extends AbstractSettableAttribute {
         _hide.setExpression("" + hide);
         Location location = (Location) getAttribute("_location");
         if (location != null) {
-        	location.validate();
+            location.validate();
         } else {
-            // FindBugs: "Redundant nullcheck of value known to be null" location is known to be null here.
+            // FindBugs: "Redundant nullcheck of value known to be
+            // null" location is known to be null here.
             if (!hide /*&& (location == null || (location.getLocation()[0] == 0 && location.getLocation()[1] == 0))*/) {
         	if (_transition != null && _transition.sourceState() != null) {
                     Location sourceStateLocation = (Location)_transition.sourceState().getAttribute("_location");
@@ -164,83 +169,91 @@ public class FSMTransitionParameter extends AbstractSettableAttribute {
             }
         }
     }
-    
-    /** Add value listener. Nothing to do.
+
+    /** Upon setting the name of this parameter change the corresponding
+     *  attribute in the transition.
      */
     @Override
-	public void addValueListener(ValueListener listener) {
-		// nothing to do.
-	}
-
-    /** Get visibility. Nothing to do.
+    public void setName(String name) throws IllegalActionException,
+            NameDuplicationException {
+    	super.setName(name);
+    	if (_transition != null) {
+            _transition.fsmTransitionParameterName.setExpression(name);
+            _transition.fsmTransitionParameterName.setPersistent(true);
+    	}
+    }
+    
+    /** Remove value listener. Nothing to do.
+     *  @param listener Ignored.   
      */
-	@Override
-	public Visibility getVisibility() {
-		return NOT_EDITABLE;
-	}
-
-	/** Remove value listener. Nothing to do.
-	 */
-	@Override
-	public void removeValueListener(ValueListener listener) {
-		// nothing to do.
-	}
+    @Override
+    public void removeValueListener(ValueListener listener) {
+        // Nothing to do.
+    }
 	
 	
-	@Override
-	public void setContainer(NamedObj container) throws IllegalActionException,
-	        NameDuplicationException {
-	    super.setContainer(container);
-	    if (container == null && _transition != null) {
-	        _transition.setFsmTransitionParameter(null);
-	        _transition.showFSMTransitionParameter.setToken(new BooleanToken(false));
-	    }
-	}
+    @Override
+    public void setContainer(NamedObj container) throws IllegalActionException,
+            NameDuplicationException {
+        super.setContainer(container);
+        if (container == null && _transition != null) {
+            _transition.setFsmTransitionParameter(null);
+            _transition.showFSMTransitionParameter.setToken(new BooleanToken(false));
+        }
+    }
 
-	/** Set visibility. Nothing to do.
-	 */
-	@Override
-	public void setVisibility(Visibility visibility) {
-		// nothing to do, visibility is always not-editable.
-	}
-
-	/** Set the transition that corresponds to the parameters.
+    /** Set the transition that corresponds to the parameters.
      * @param transition The transition.
      * @throws IllegalActionException Can happen during initialization.
      * @throws NameDuplicationException Can happen during initialization.
+     * @see #getTransition()
      */
     public void setTransition(Transition transition) throws IllegalActionException, NameDuplicationException {
     	_transition = transition;
     	_init();
     }
 
-    /** Validate. Nothing to do.
-	 */
-	@Override
-	public Collection validate() throws IllegalActionException {
-		return null;
-	}
+    /** Set visibility. Nothing to do.
+     *  @param visibility Ignored.
+     */
+    @Override
+    public void setVisibility(Visibility visibility) {
+        // Nothing to do, visibility is always not-editable.
+    }
 
-	private void _init() throws IllegalActionException, NameDuplicationException  {
-		if (getAttribute("_hideName") == null) {
-			SingletonParameter hide = new SingletonParameter(this, "_hideName");
-		    hide.setToken(BooleanToken.TRUE);
-		    hide.setVisibility(Settable.EXPERT);
-		}
+
+    /** Validate. Nothing to do.
+     * @return null   
+     * @exception IllegalActionException Not thrown.
+     */
+    @Override
+    public Collection validate() throws IllegalActionException {
+        return null;
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private methods                   ////
+
+    private void _init() throws IllegalActionException, NameDuplicationException  {
+        if (getAttribute("_hideName") == null) {
+            SingletonParameter hide = new SingletonParameter(this, "_hideName");
+            hide.setToken(BooleanToken.TRUE);
+            hide.setVisibility(Settable.EXPERT);
+        }
 		
-		hide(false);
+        hide(false);
         setPersistent(true);
 	    
-	    List<Transition> transitions = ((ModalController)getContainer()).relationList();
-	    for (Transition transition : transitions) {
-	        if (((StringToken)transition.fsmTransitionParameterName.getToken()).stringValue().equals(this.getName())) {
-	            _transition = transition;
-	            _transition.setFsmTransitionParameter(this);
-	            break;
-	        }
-	    }
-	}
+        List<Transition> transitions = ((ModalController)getContainer()).relationList();
+        for (Transition transition : transitions) {
+            if (((StringToken)transition.fsmTransitionParameterName.getToken()).stringValue().equals(this.getName())) {
+                _transition = transition;
+                _transition.setFsmTransitionParameter(this);
+                break;
+            }
+        }
+    }
 
-	private Transition _transition;
+    private Transition _transition;
 	
 }

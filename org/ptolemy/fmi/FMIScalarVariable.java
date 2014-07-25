@@ -424,7 +424,7 @@ public class FMIScalarVariable {
      *  Causality defines the visibility of the variable from outside of the model.
      */
     public enum Causality {
-        /** FMI-2.0rc1*/
+        /** New in FMI-2.0rc1. */
         calculatedParameter,
         /** The value is defined from the outside.  The value is
          * initially the value of the start attribute.
@@ -435,12 +435,12 @@ public class FMIScalarVariable {
          *  The default Causality is "internal".
          */
         internal,
-        /** FMI-2.0rc1 */
+        /** New in FMI-2.0rc1. */
         local,
         /** The value can be read from the outside with a connection.
          */
         output,
-        /** FMI-2.0rc1 */
+        /** New in FMI-2.0rc1. */
         parameter,
         /** The value does not affect computation.  Typically, "none"
          *  values are tool specific and used to enable logging.

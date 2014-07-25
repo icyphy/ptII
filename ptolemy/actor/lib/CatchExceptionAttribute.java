@@ -514,22 +514,22 @@ public class CatchExceptionAttribute extends AbstractInitializableAttribute
     ///////////////////////////////////////////////////////////////////
     ////                         public variables                  ////
     
-    /** String value for the "continue" policy */
+    /** String value for the "continue" policy. */
     public static final String CONTINUE = "continue";
     
-    /** String value for the "restart" policy */
+    /** String value for the "restart" policy. */
     public static final String RESTART = "restart";
     
-    /** String value for the "throw" policy */
+    /** String value for the "throw" policy. */
     public static final String THROW = "throw";
     
-    /** String value for the "stop" policy */
+    /** String value for the "stop" policy. */
     public static final String STOP = "stop";
     
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
     
-    /** True if the model has been initialized but not yet wrapped up; 
+    /** True if the model has been initialized but not yet wrapped up,
      *  false otherwise.  Some policies (e.g. restart) are desirable only 
      *  for run-time exceptions.
      */
