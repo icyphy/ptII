@@ -413,7 +413,6 @@ BCVTBPACKAGES = \
 	ptolemy.domains.sdf.lib \
 	ptolemy.domains.sdf.lib.vq \
 	$(PTMATLAB_PACKAGES) \
-	ptolemy.matlab \
 	ptolemy.media.javasound \
 	ptolemy.util \
 	ptolemy.vergil.modal.modal
@@ -429,7 +428,6 @@ BCVTB_DOCS = \
 HYVISUALPACKAGES = \
 	$(BCVTBPACKAGES) \
 	$(PTCOLT_PACKAGES) \
-	$(PTJYTHON_PACKAGES) \
 	ptolemy.domains.de.kernel \
 	ptolemy.domains.de.lib \
 	ptolemy.domains.sdf.optimize \
@@ -564,7 +562,6 @@ ALLPACKAGES = \
 	$(PTJSON_PACKAGES) \
 	$(PTJUNIT_PACKAGES) \
 	$(PTJUNITTESTS) \
-	$(PTLBNL_PACKAGES) \
 	$(PTMACHINE_LEARNING_PACKAGES) \
 	$(PTMETROII_PACKAGES) \
 	$(PTOPENCV_PACKAGES) \
