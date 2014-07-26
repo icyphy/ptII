@@ -198,7 +198,7 @@ public class Graph implements Cloneable {
 
     /** Given two node weights <i>w1</i> and <i>w2</i>, add weighted
      *  edges of the form (<i>x1</i>, <i>x2</i>), where
-     *  <code>(x1.getWeight() == w1) && (x2.getWeight() == w2)</code>.
+     *  <code>(x1.getWeight() == w1) &amp;&amp; (x2.getWeight() == w2)</code>.
      *
      *  @param weight1 The first node weight.
      *  @param weight2 The second node weight.
@@ -215,7 +215,7 @@ public class Graph implements Cloneable {
 
     /** Given two node weights <i>w1</i> and <i>w2</i>, add all unweighted
      *  edges of the form (<i>x1</i>, <i>x2</i>), where
-     *  <code>(x1.getWeight() == w1) && (x2.getWeight() == w2)</code>.
+     *  <code>(x1.getWeight() == w1) &amp;&amp; (x2.getWeight() == w2)</code>.
      *
      *  @param weight1 The first node weight.
      *  @param weight2 The second node weight.
@@ -236,7 +236,7 @@ public class Graph implements Cloneable {
      *  of the edge is not already in the graph.
      *  @exception GraphConstructionException If the edge is already in
      *  the graph, or if the edge is hidden in the graph.
-     *  @see #hideEdge(Edge).
+     *  @see #hideEdge(Edge)
      */
     public Edge addEdge(Edge edge) {
         if (!containsNode(edge.source())) {
@@ -1089,7 +1089,7 @@ public class Graph implements Cloneable {
      *  @return True if the edge is in the graph and was hidden.
      *  @exception GraphElementException If the source node and
      *  sink node of the given edge are not both in the graph.
-     *  @see #hideEdge(Edge).
+     *  @see #hideEdge(Edge)
      */
     public boolean restoreEdge(Edge edge) {
         if (_hiddenEdgeSet.remove(edge)) {
@@ -1767,18 +1767,23 @@ public class Graph implements Cloneable {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
-    // Given two node weights w1 and w2, add all edges of the form
-    // (x1, x2), where
-    //     (x1.getWeight() == w1) && (x2.getWeight() == w2).
-    // The third parameter specifies whether the edges are to be
-    // weighted, and the fourth parameter is the weight that is
-    // to be applied if the edges are weighted.
-    // The method returns one of the edges that is added.
-    // The method returns an iterator over the edges that were added;
-    // each element of this iterator is an instance of Edge.
-    // The method throws an GraphConstructionException if no edge is
-    // added (i.e., if no nodes x1, x2 satisfy the above condition.
-    // The method throws a NullPointerException if w1 or w2 is null.
+    /** Given two node weights w1 and w2, add all edges of the form
+     * (x1, x2), where
+     *     (x1.getWeight() == w1) &amp;&amp; (x2.getWeight() == w2).
+     * The third parameter specifies whether the edges are to be
+     * weighted, and the fourth parameter is the weight that is
+     * to be applied if the edges are weighted.
+     * The method returns one of the edges that is added.
+     * The method returns an iterator over the edges that were added;
+     * each element of this iterator is an instance of Edge.
+     * The method throws an GraphConstructionException if no edge is
+     * added (i.e., if no nodes x1, x2 satisfy the above condition.
+     * The method throws a NullPointerException if w1 or w2 is null.
+     * @param weight1 The source node weight.
+     * @param weight2 The sink node weight.
+     * @param weighted True if weighted.
+     * @param weight The weight
+     */
     private Collection _addEdges(Object weight1, Object weight2,
             boolean weighted, Object weight) {
         if (weight1 == null) {

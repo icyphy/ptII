@@ -263,8 +263,6 @@ public class InequalitySolver {
     /** Return an <code>Iterator</code> of all the variables in the
      *  inequality constraints.
      *  @return An Iterator of InequalityTerms
-     *  @exception IllegalActionException If testing any one of the
-     *  variables throws an exception.
      */
     public Iterator variables() {
         LinkedList result = new LinkedList();

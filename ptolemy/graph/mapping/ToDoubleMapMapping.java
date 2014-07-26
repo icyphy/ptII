@@ -72,7 +72,7 @@ public class ToDoubleMapMapping extends MapMapping implements ToDoubleMapping {
      *  this mapping. For efficiency, no error checking is performed
      *  on the argument, and consequently, a runtime exception may result as
      *  noted below. To perform argument validity checking before mapping an
-     *  object, use {@link ptolemy.graph.mapping#inDomain(Object)}.
+     *  object, use {@link #inDomain(Object)}.
      *  @param object The given object.
      *  @return The double value that is associated with given object under
      *  this mapping.

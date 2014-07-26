@@ -43,7 +43,6 @@ import ptolemy.graph.analysis.analyzer.Analyzer;
  <p>
  @see ptolemy.graph.Graph
  @see ptolemy.graph.analysis.Analysis
- @see ptolemy.graph.analysis.strategy.Strategy
  @see ptolemy.graph.analysis.strategy.CachedStrategy
  @see ptolemy.graph.sched.ScheduleAnalysis
  @see ptolemy.graph.sched.ScheduleAnalyzer

@@ -128,7 +128,7 @@ public class MessageHandler {
      *  or if the "ptolemy.ptII.batchMode" property exists and is not empty
      *  and the property "ptolemyII.ptII.testingMessageHandler" is not set.
      *
-     *  <p>To run the test suite in the Nightly Build mode, use></p>
+     *  <p>To run the test suite in the Nightly Build mode, use</p>
      *  <pre>
      *  make nightly
      *  </pre>
