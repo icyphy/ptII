@@ -38,8 +38,8 @@ package ptolemy.actor.util;
  Two superdense time objects can be compared to see which one happens first.
  The order is defined by the relationship between their time stamps and
  indexes. In particular, given s_1 = (t_1, n_1) and s_2 = (t_2, n_2), s_1
- happens earlier than s_2 (denoted as s_1 <= s_2), if t_1 < t_2 or (t_1 == t_2
- and n_1 <= n_2). The equality relation holds only if both t_1 == t_2 and
+ happens earlier than s_2 (denoted as s_1 &le; s_2), if t_1 &lt; t_2 or (t_1 == t_2
+ and n_1 &le; n_2). The equality relation holds only if both t_1 == t_2 and
  n_1 == n_2 hold.
 
  @author Haiyang Zheng, Edward A. Lee

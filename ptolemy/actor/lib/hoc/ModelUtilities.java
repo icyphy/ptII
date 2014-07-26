@@ -146,7 +146,7 @@ public class ModelUtilities {
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
-    /** Iterate over the labelSet of the <i>args<i> argument and
+    /** Iterate over the labelSet of the <i>args</i> argument and
      *  check whether the specified model has Attribute with the
      *  same name of a label. If so, set the value of the attribute
      *  to be the value of that record field.

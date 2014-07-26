@@ -113,7 +113,7 @@ import ptolemy.util.MessageHandler;
  </p>
  <p>
  A suite of parameters is provided to control what happens when this
- actor executes:
+ actor executes:</p>
  <ul>
  <li> <i>executionOnFiring</i>:
  The value of this string attribute determines what execution
@@ -163,9 +163,10 @@ import ptolemy.util.MessageHandler;
  amount of time, and then stop it.
  </li>
  </ul>
- </p>
+
  <p>
  There are currently some limitations:
+ </p>
  <ul>
  <li>
  The referenced model cannot create any displays. Use the subclass
@@ -178,7 +179,7 @@ import ptolemy.util.MessageHandler;
  FIXME: Need options for error handling.
  </li>
  </ul>
- </p>
+
 
  @author Edward A. Lee, Elaine Cheong
  @version $Id$

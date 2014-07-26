@@ -360,11 +360,13 @@ public class RealTimeComposite extends MirrorComposite {
     /** Bundle of a token and the input port at which it arrived.
      *  Use null for <i>theTokens</i> specifies this frame as a "stop frame" to
      *  flag that no more inputs will be delivered.
-     *  @param theTime The model time of the input events.
-     *  @param theTokens The tokens in the input events.
      */
     private class InputFrame implements Delayed {
 
+        /** Construct an input frame.
+         *  @param theTime The model time of the input events.
+         *  @param theTokens The tokens in the input events.
+         */
         public InputFrame(Time theTime, List<QueuedToken> theTokens) {
             tokens = theTokens;
             time = theTime;
@@ -488,14 +490,16 @@ public class RealTimeComposite extends MirrorComposite {
     //// OutputFrame
 
     /** Bundle of a token and the output port at which it arrived.
-     *  @param theTime The model time of the output events.
-     *  @param theTokens The tokens in the output events.
      */
     private static class OutputFrame {
 
         // FindBugs suggests making this class static so as to decrease
         // the size of instances and avoid dangling references.
 
+        /** Construct an output frame.
+         *  @param theTime The model time of the output events.
+         *  @param theTokens The tokens in the output events.
+         */
         public OutputFrame(Time theTime, List<QueuedToken> theTokens) {
             tokens = theTokens;
             time = theTime;

@@ -72,6 +72,12 @@ public class DiscreteClock extends NamedProgramCodeGeneratorAdapter {
     //        return processCode(codeStream.toString());
     //    }
 
+    /** Generate the initialize code. Declare the variable state.
+     *  @return The initialize code.
+     *  @exception IllegalActionException If thrown while generating
+     *  the initialization code, while appending the code block or
+     *  while converting the codeStream to a string.
+     */
     public String generateInitializeCode() throws IllegalActionException {
         CodeStream codeStream = _templateParser.getCodeStream();
         codeStream.clear();
@@ -212,7 +218,8 @@ public class DiscreteClock extends NamedProgramCodeGeneratorAdapter {
     /**
      * Generate the fire code of a single event.
      * @return The generated code.
-     * @exception IllegalActionException
+     * @exception IllegalActionException If thrown while appending the code block or
+     * while converting the codeStream to a string.
      */
     @Override
     protected String _generateFireCode() throws IllegalActionException {

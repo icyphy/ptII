@@ -435,13 +435,13 @@ public class ModalController extends NamedProgramCodeGeneratorAdapter {
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
-    /**
-     * @exception IllegalActionException
-     *
+    /** Generate code that creates the controller variables.
+     * @param code The StringBuffer to which to add code.
+     * @exception IllegalActionException If thrown while getting the
+     * width of an input port.
      */
     private void _createControllerVariables(StringBuffer code)
             throws IllegalActionException {
-
         List<TypedIOPort> inputPorts = _myController.inputPortList();
         List<TypedIOPort> outputPorts = _myController.outputPortList();
         String name = _myController.getFullName().substring(1);

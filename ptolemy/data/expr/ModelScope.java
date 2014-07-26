@@ -68,6 +68,8 @@ public abstract class ModelScope implements ParserScope {
     /** Return a list of object names in scope for variables in the
      * given container.
      * @param container The container of this scope.
+     * @return a list of object names in scope for variables in the
+     * given container.
      */
     public static Set<String> getAllScopedObjectNames(NamedObj container) {
         Set<String> identifiers = new HashSet<String>();
@@ -102,6 +104,8 @@ public abstract class ModelScope implements ParserScope {
      * considered in scope.
      * @param exclude  The variable to exclude from the scope.
      * @param container The container of this scope.
+     * @return A list of variable names in scope for variables in the
+     * given container.
      */
     public static Set<String> getAllScopedVariableNames(Variable exclude,
             NamedObj container) {

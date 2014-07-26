@@ -151,7 +151,6 @@ public class DFUtilities {
      *  @param port The port.
      *  @param name The name of the variable.
      *  @return The variable with the specified name in the given port.
-     *  @exception IllegalActionException Not thrown in this method.
      *  @see #setRateVariable(Port, String, int)
      */
     public static Variable getRateVariable(Port port, String name) {

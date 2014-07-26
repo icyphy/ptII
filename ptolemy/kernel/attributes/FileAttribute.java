@@ -71,33 +71,34 @@ import ptolemy.util.StringUtilities;
  <p>
  A file name can also contain the following strings that start
  with "$", which get substituted
- with the appropriate values
+ with the appropriate values</p>
  <table>
- <tr>
- <th>String</th>
- <th>Description</th>
- <th>Property</th>
- </tr>
- <tr>
- <tr><code>$CWD</code></tr>
- <tr>The current working directory</tr>
- <tr><code>user.dir</code></tr>
- </tr>
- <tr>
- <tr><code>$HOME</code></tr>
- <tr>The user's home directory</tr>
- <tr><code>user.home</code></tr>
- </tr>
- <tr>
- <tr><code>$PTII</code></tr>
- <tr>The home directory of the Ptolemy II installation</tr>
- <tr><code>ptolemy.ptII.dir</code></tr>
- </tr>
- <tr>
- <tr><code>$TMPDIR</code></tr>
- <tr>The temporary directory</tr>
- <tr><code>java.io.tmpdir</code></tr>
- </tr>
+  <caption>Variables that are substituted.</caption>
+  <tr>
+   <th>String</th>
+   <th>Description</th>
+   <th>Property</th>
+  </tr>
+  <tr>
+   <td><code>$CWD</code></td>
+   <td>The current working directory</td>
+   <td><code>user.dir</code></td>
+  </tr>
+  <tr>
+   <td><code>$HOME</code></td>
+   <td>The user's home directory</td>
+   <td><code>user.home</code></td>
+  </tr>
+  <tr>
+   <td><code>$PTII</code></td>
+   <td>The home directory of the Ptolemy II installation</td>
+   <td><code>ptolemy.ptII.dir</code></td>
+  </tr>
+  <tr>
+   <td><code>$TMPDIR</code></td>
+   <td>The temporary directory</td>
+   <td><code>java.io.tmpdir</code></td>
+  </tr>
  </table>
  The above properties are normally set when a Ptolemy II application starts.
  <p>

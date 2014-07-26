@@ -177,7 +177,7 @@ public class Schedule extends ScheduleElement {
      *   inserted.
      *  @param element The schedule element to add.
      *  @exception IndexOutOfBoundsException If the specified index is out of
-     *   range (index < 0 || index > size()).
+     *   range (index &lt; 0 || index &gt; size()).
      */
     public void add(int index, ScheduleElement element) {
         // Give element a reference to this schedule so that it can

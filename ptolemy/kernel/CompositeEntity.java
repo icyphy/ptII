@@ -2896,7 +2896,7 @@ public class CompositeEntity extends ComponentEntity {
         private Iterator _relationListIterator = null;
     }
 
-    /** A comparator for a <String><Integer> Map. */
+    /** A comparator for a &lt;String&gt;&lt;Integer&gt; Map. */
     private static class CountComparator implements Comparator {
         public int compare(Object object1, Object object2) {
             int result = 0;

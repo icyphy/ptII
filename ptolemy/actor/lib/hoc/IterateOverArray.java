@@ -124,7 +124,7 @@ import ptolemy.kernel.util.Workspace;
  has its intellectual roots in the higher-order functions
  of functional languages, which have been in use since
  the 1970s. Similar actors were implemented in Ptolemy
- Classic, and are described in Lee & Parks, "Dataflow
+ Classic, and are described in Lee &amp; Parks, "Dataflow
  Process Networks," <i>Proceedings of the IEEE</i>, 1995.
  Those were inspired by [2].
  Alternative approaches are found dataflow visual programming

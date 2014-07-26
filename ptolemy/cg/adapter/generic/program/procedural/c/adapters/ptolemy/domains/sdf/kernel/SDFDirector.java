@@ -1332,6 +1332,8 @@ public class SDFDirector
     //    }
 
     /** Generate referenced parameter declarations.
+     *  @param target The target for which referenced parameter
+     *  declarations should be generated.
      *  @return a String that declares referenced parameters.
      *  @exception IllegalActionException If thrown while
      *  getting modified variable information.

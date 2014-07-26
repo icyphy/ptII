@@ -66,8 +66,9 @@ public class FuzzyDoubleComparator implements Comparator {
     ///////////////////////////////////////////////////////////////////
     ////                         public variables                  ////
 
-    /** Return -1 if first < second - threshold/2; <BR>
-     *  return 1 if first > second + threshold/2; <BR>
+    /** Compare two objects according to a threshold.
+     *  Return -1 if first &lt; second - threshold/2; <br/>
+     *  return 1 if first &gt; second + threshold/2; <br/>
      *  return 0 otherwise.
      *
      *  <p>If any of the argument is not a Double object, a ClassCastException

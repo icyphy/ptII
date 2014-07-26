@@ -2334,8 +2334,6 @@ public class CompositeActor extends CompositeEntity implements Actor,
      *  the same channel by name.  If set to false, then only values
      *  published by publishers that are fired by the same director
      *  are seen by this subscriber.
-     *  @exception NameDuplicationException If there are name conflicts
-     *          as a result of the added relations or ports.
      *  @exception IllegalActionException If the published port cannot be found.
      */
     public void unlinkToPublishedPort(String name, IOPort subscriberPort,
@@ -2403,8 +2401,6 @@ public class CompositeActor extends CompositeEntity implements Actor,
      *  @param pattern The pattern is being used in the matching process
      *          to match publisher and subscriber.
      *  @param subscriberPort The subscribed port.
-     *  @exception NameDuplicationException If there are name conflicts
-     *          as a result of the added relations or ports.
      *  @exception IllegalActionException If the published port cannot be found.
      */
     public void unlinkToPublishedPort(Pattern pattern,
@@ -2446,8 +2442,6 @@ public class CompositeActor extends CompositeEntity implements Actor,
      *  the same channel by name.  If set to false, then only values
      *  published by publishers that are fired by the same director
      *  are seen by this subscriber.
-     *  @exception NameDuplicationException If there are name conflicts
-     *          as a result of the added relations or ports.
      *  @exception IllegalActionException If the published port cannot be found.
      */
     public void unlinkToPublishedPort(Pattern pattern,
@@ -2761,11 +2755,6 @@ public class CompositeActor extends CompositeEntity implements Actor,
      *  caller should be.
      *
      *  @param entity Actor to contain.
-     *  @exception IllegalActionException If the actor has no name, or the
-     *   action would result in a recursive containment structure, or the
-     *   argument does not implement the Actor interface.
-     *  @exception NameDuplicationException If the name collides with a name
-     *   already on the actor contents list.
      */
     protected void _finishedAddEntity(ComponentEntity entity) {
         Director director = getDirector();

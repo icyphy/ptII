@@ -415,7 +415,8 @@ public class DateToken extends AbstractConvertibleToken
     }
 
     /** Return the type of this token.
-     *  @return {@link #BaseType.DATE}, the least upper bound of all the date types.
+     *  @return {@link ptolemy.data.type.BaseType.DATE},
+     *  the least upper bound of all the date types.
      */
     public Type getType() {
         return BaseType.DATE;
@@ -476,7 +477,7 @@ public class DateToken extends AbstractConvertibleToken
     /** Check whether the value of this token is strictly less than that of the
      *  argument token.
      *
-     *  Only a partial order is assumed, so !(a < b) need not imply (a >= b).
+     *  Only a partial order is assumed, so !(a &lt; b) need not imply (a &ge; b).
      *
      *  @param rightArgument The token on greater than side of the inequality.
      *  @return BooleanToken.TRUE, if this token is less than the

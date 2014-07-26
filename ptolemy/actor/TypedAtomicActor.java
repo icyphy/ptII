@@ -54,13 +54,13 @@ import ptolemy.kernel.util.Workspace;
  <p>
  The final method typeConstraints() returns the type constraints among the
  contained ports and parameters. It gathers these constraints by invoking
- three different protected methods (listed in order of execution):
+ three different protected methods (listed in order of execution):</p>
  <ul>
-   <li> _customTypeConstraints() </li>
-   <li> _defaultTypeConstraints() </li>
+   <li> _customTypeConstraints()</li>
+   <li> _defaultTypeConstraints()</li>
    <li> _containedTypeConstraints()</li>
  </ul>
- </p>
+
  <p>
  Derived classes may constrain the container by overriding
  _checkContainer(). The Ports of TypedAtomicActors are constrained to be

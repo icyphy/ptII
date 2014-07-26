@@ -88,9 +88,10 @@ public class PtidesPreemptiveEDFDirector
      *  Here we return an empty string, but the target specific adapter
      *  should overwrite it.
      *  @return The generated assembly file code.
-     *  @exception IllegalActionException
+     *  @exception IllegalActionException If thrown while getting the
+     *  configuration or if the configuration cannot be found or if
+     *  thrown while the getting the codeBlock.
      */
-
     public Map<String, String> generateAdditionalCodeFiles()
             throws IllegalActionException {
         Map<String, String> list = new HashMap();

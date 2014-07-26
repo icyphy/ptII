@@ -342,9 +342,7 @@ public class ThreadedComposite extends MirrorComposite {
      *  the input. This method assumes that the director deals with BooleanDependencies
      *  and returns an instance of BreakCausalityInterface.
      *  @return A representation of the dependencies between input ports
-     *   and output ports.
-     * @exception IllegalActionException Thrown if the director is not a timed director or
-     * the type of dependency that is required cannot be resolved.
+     *  and output ports.
      */
     public CausalityInterface getCausalityInterface() {
         // FIXME: This will not work property with Ptides because it will effectively

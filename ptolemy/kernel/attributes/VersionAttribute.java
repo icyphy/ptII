@@ -313,7 +313,7 @@ public class VersionAttribute extends StringAttribute implements Comparable {
      *  <p>
      *  <pre>
      *  if (VersionAttribute.CURRENT_VERSION.compareTo(
-     *         new VersionAttribute("2.0")) >= 0 ) {
+     *         new VersionAttribute("2.0")) &ge; 0 ) {
      *      // Perform some operation if the current version is
      *      // Ptolemy II 2.0 or later.
      *  }

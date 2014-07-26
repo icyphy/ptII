@@ -34,7 +34,7 @@ import ptolemy.kernel.util.IllegalActionException;
  <p>The default implementation of visitRelationalNode
  {@link ptolemy.data.expr.ParseTreeEvaluator#visitRelationalNode(ASTPtRelationalNode)}
  uses this interface, so any tokens that implement this interface can be used
- with the inequality operators (<, <=, >, and >=) in the Ptolemy expression
+ with the inequality operators (&lt;, &le;, &gt;, and &ge;) in the Ptolemy expression
  language.
 
  @author Ben Lickly
@@ -50,7 +50,7 @@ public interface PartiallyOrderedToken {
     /** Check whether the value of this token is strictly less than that of the
      *  argument token.
      *
-     *  Only a partial order is assumed, so !(a < b) need not imply (a >= b).
+     *  Only a partial order is assumed, so !(a &lt; b) need not imply (a &ge; b).
      *
      *  @param rightArgument The token on greater than side of the inequality.
      *  @return BooleanToken.TRUE, if this token is less than the

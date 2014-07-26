@@ -3348,9 +3348,11 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
      *  This method finds all decorators in scope (above this object in the hierarchy),
      *  and for each decorator that can decorate this object, creates an entry in
      *  _decoratorAttributes.
-     * @exception IllegalActionException
      *  @see ptolemy.kernel.util.Decorator#createDecoratorAttributes(NamedObj)
      *  @see #getDecoratorAttributes(Decorator)
+     *  @exception IllegalActionException If thrown while checking to
+     *  see if the decorator is global, while getting the decorator or
+     *  while creating a decorator.
      */
     private void _updateDecoratorAttributes() throws IllegalActionException {
         synchronized (_decoratorAttributes) {

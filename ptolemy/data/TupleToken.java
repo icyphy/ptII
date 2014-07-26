@@ -116,7 +116,7 @@ public class TupleToken extends Token {
      *  @exception ArrayIndexOutOfBoundException If the specified index is
      *   outside the range of the token array.
      */
-    public Token getElement(int index) {
+    public Token getElement(int index) throws ArrayIndexOutOfBoundsException {
         return _value[index];
     }
 
@@ -127,7 +127,7 @@ public class TupleToken extends Token {
      *  @exception ArrayIndexOutOfBoundException If the specified index is
      *   outside the range of the token array.
      */
-    public Type getElementType(int index) {
+    public Type getElementType(int index) throws ArrayIndexOutOfBoundsException {
         return _value[index].getType();
     }
 

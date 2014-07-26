@@ -111,7 +111,9 @@ public class Test extends NamedProgramCodeGeneratorAdapter {
 
     /** Generate the initialize code. Declare the variable state.
      *  @return The initialize code.
-     *  @exception IllegalActionException
+     *  @exception IllegalActionException If thrown while generating
+     *  the initialization code, while appending the code block or
+     *  while converting the codeStream to a string.
      */
     public String generateInitializeCode() throws IllegalActionException {
         super.generateInitializeCode();

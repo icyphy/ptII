@@ -93,12 +93,12 @@ If it is given MoML text, that text will normally be wrapped in a
 processing instruction, as follows:
 <pre>
 &lt;?moml
-<group>
+&lt;group&gt;
 ... <i>MoML elements giving library contents</i> ...
-</group>
+&lt;/group&gt;
 ?&gt;
 </pre>
-The processing instruction, which is enclosed in "&lt;?" and "?&gt"
+The processing instruction, which is enclosed in "&lt;?" and "?&gt;"
 prevents premature evaluation of the MoML.  The processing instruction
 has a <i>target</i>, "moml", which specifies that it contains MoML code.
 The keyword "moml" in the processing instruction must
@@ -248,7 +248,6 @@ public abstract class ModularCodeGenLazyTypedCompositeActor extends
      *  evaluation has occurred.
      *  @param name The name of the new relation.
      *  @return The new relation.
-     *  @exception IllegalActionException If name argument is null.
      *  @exception NameDuplicationException If name collides with a name
      *   already in the container.
      */

@@ -82,10 +82,10 @@ public class PtidesPreemptiveEDFDirector extends Director {
      *  Here we return an empty string, but the target specific adapter
      *  should overwrite it.
      *  @return The generated assembly file code.
-     *  @exception IllegalActionException
+     *  @exception IllegalActionException Not thrown in this base class.
      */
     public Map<String, String> generateAdditionalCodeFiles()
-            throws IllegalActionException {
+        throws IllegalActionException {
         Map<String, String> list = new HashMap();
         return list;
     }
@@ -379,8 +379,9 @@ public class PtidesPreemptiveEDFDirector extends Director {
     }
 
     /** Generate actor function prototypes.
-     *  @return actor function prototype methos for each entity.
-     * @exception IllegalActionException
+     *  @return actor function prototype methods for each entity.
+     *  @exception IllegalActionException If thrown while getting the
+     *  adapter for the actor.
      */
     protected String _generateActorFuncProtoCode()
             throws IllegalActionException {
@@ -407,8 +408,6 @@ public class PtidesPreemptiveEDFDirector extends Director {
     /** Generate code for director header.
      *
      *  @return Code that declares the header for director
-     *  @exception IllegalActionException If getting the rate or
-     *   reading parameters throws it.
      */
     protected String _generateDirectorHeader() {
         return CodeGeneratorAdapter.generateName(_director) + "_controlBlock";
@@ -563,9 +562,11 @@ public class PtidesPreemptiveEDFDirector extends Director {
     }
 
     /** This code reset the Event_Head pointer for each channel to null.
-     * @param actor The actor which the input channels reside, whose pointers are pointed to null
+     * @param actor The actor which the input channels reside, whose
+     * pointers are pointed to null
      * @return The code that clears the event head.
-     * @exception IllegalActionException
+     * @exception IllegalActionException If thrown while getting the
+     * width of a port.
      */
     protected String _generateClearEventHeadCode(Actor actor)
             throws IllegalActionException {

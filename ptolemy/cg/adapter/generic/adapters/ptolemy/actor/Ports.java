@@ -89,7 +89,8 @@ public class Ports {
      *  @param channelNumber The number of the channel that is being set.
      *  @param port The given port.
      *  @return return The size of the buffer.
-     * @exception IllegalActionException
+     *  @exception IllegalActionException If thrown while getting the port
+     *  information or getting the buffer size.
      *  @see #setBufferSize(IOPort, int, int)
      */
     public int getBufferSize(IOPort port, int channelNumber)
@@ -222,8 +223,10 @@ public class Ports {
 
     /** Return the information necessary to generate
      *  communication code at the given port.
-     * @param port The given port for which we want to
-     *      retrieve information to generate code.
+     *  @param port The given port for which we want to retrieve
+     *  information to generate code.
+     *  @return The information necessary to generate communication code.
+     *  @exception IllegalActionException If thrown while getting the adapter.
      */
     private PortInfo _getPortInfo(IOPort port)
             throws IllegalActionException {

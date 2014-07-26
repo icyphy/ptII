@@ -1554,7 +1554,6 @@ public class Director extends Attribute implements Executable {
 
     /** Suspend the actor at the specified time. This will stop the local
      *  clock.
-     *  @exception IllegalActionException If the suspend cannot be completed.
      */
     public void suspend() {
         localClock.stop();

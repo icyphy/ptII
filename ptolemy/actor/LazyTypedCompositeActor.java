@@ -88,9 +88,9 @@ import ptolemy.util.StringUtilities;
  processing instruction, as follows:
  <pre>
  &lt;?moml
- <group>
+ &lt;group&gt;
  ... <i>MoML elements giving library contents</i> ...
- </group>
+ &lt;/group&gt;
  ?&gt;
  </pre>
  The processing instruction, which is enclosed in "&lt;?" and "?&gt"
@@ -596,7 +596,6 @@ public class LazyTypedCompositeActor extends TypedCompositeActor implements
      *  evaluation has occurred.
      *  @param name The name of the new relation.
      *  @return The new relation.
-     *  @exception IllegalActionException If name argument is null.
      *  @exception NameDuplicationException If name collides with a name
      *   already in the container.
      */

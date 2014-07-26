@@ -710,7 +710,7 @@ public final class Workspace implements Nameable {
      *           obj.wait();
      *        }
      *    } finally {
-     *       if (depth > 0) {
+     *       if (depth &gt; 0) {
      *          reacquireReadPermission(depth);
      *       }
      *    }

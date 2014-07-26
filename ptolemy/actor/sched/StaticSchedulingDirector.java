@@ -436,10 +436,6 @@ public class StaticSchedulingDirector extends Director {
      *  so that this composite does not need to search its attributes each
      *  time the scheduler is accessed.
      *  @param scheduler The Scheduler responsible for execution.
-     *  @exception IllegalActionException Not thrown in this base class,
-     *   but derived classes may throw it if the scheduler is not compatible.
-     *  @exception NameDuplicationException Not thrown in this base class,
-     *   but derived classes may throw it if the scheduler is not compatible.
      */
     protected void _setScheduler(Scheduler scheduler) {
         // If the scheduler is not changed, do nothing.

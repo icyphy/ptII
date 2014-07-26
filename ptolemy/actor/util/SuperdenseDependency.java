@@ -76,8 +76,8 @@ public class SuperdenseDependency extends BooleanDependency {
      *  <p>
      *  In the case where both dependencies have _time value equal to
      *  Double.POSITIVE_INFINITY, these two dependencies are equal, even
-     *  though its indices may differ. This conforms with valueOf() method
-     *  @see #valueOf(double, int).
+     *  though its indices may differ. This conforms with valueOf() method.
+     *  @see #valueOf(double, int)
      *  @param dependency The dependency to compare against.
      *  @return The result of comparison.
      *  @exception ClassCastException If the argument is not an instance
@@ -107,8 +107,8 @@ public class SuperdenseDependency extends BooleanDependency {
      *  <p>
      *  In the case where both dependencies have _time value equal to
      *  Double.POSITIVE_INFINITY, these two dependencies are equal, even
-     *  though its indices may differ. This conforms with valueOf() method
-     *  @see #valueOf(double, int).
+     *  though its indices may differ. This conforms with valueOf() method.
+     *  @see #valueOf(double, int)
      *  @param object The object to compare against.
      *  @return true if this object is the same as the object argument.
      */

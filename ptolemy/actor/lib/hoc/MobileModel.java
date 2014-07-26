@@ -380,9 +380,9 @@ public class MobileModel extends TypedCompositeActor {
     ////                         private methods                   ////
 
     /** create the inside director of this composite actor according
-     * to the <i>director<i> parameter.
+     * to the <i>director</i> parameter.
      * @exception IllegalActionException If cannot find the director
-     * class with the specified name by the <i>director<i> parameter,
+     * class with the specified name by the <i>director</i> parameter,
      *  or if there is name duplication for the director.
      */
     private void _createDirector() throws IllegalActionException {
