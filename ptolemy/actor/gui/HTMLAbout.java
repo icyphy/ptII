@@ -680,10 +680,15 @@ public class HTMLAbout {
                 while (demos.hasNext()) {
                     String demo = (String) demos.next();
                     if (!completeDemosList.contains(demo)) {
-                        URL missingDemoURL = ConfigurationApplication
+                        try {
+                            URL missingDemoURL = ConfigurationApplication
                                 .specToURL(demo);
-                        results.append(" <li><a href=\"" + missingDemoURL
-                                + "\">" + missingDemoURL + "</a>\n");
+                            results.append(" <li><a href=\"" + missingDemoURL
+                                    + "\">" + missingDemoURL + "</a></li>\n");
+                        } catch (IOException ex) {
+                            results.append(" <li><a href=\"file:/" + demo
+                                    + "\">" + demo + "</a></li>\n");
+                        }
                     }
                 }
                 results.append("</ul>\n");
