@@ -107,17 +107,12 @@
 	  </ol>
 	</li>
 
-	<li> Eclipse has very good compiler error/warning.  One of the
-	  warnings complains if a Serializable class does not have
-	  serialVersionUID declared.  Since this warning is only useful
-	  if you are tightly managing serialization, we turn it off:
+	<li> Eclipse has very good compiler error/warning.
+	  We turn off a some warnings about Generic Types:
 	  <ol>
 	    <li> While still in the preferences window
 	      <br/> (<code>Eclipse</code> | <code>Preferences</code>)
 	      <br/>  Expand <code>Java</code> | <code>Compiler</code> | <code>Errors/Warning</code>
-	    </li>
-	    <li> Under "Potential programming problems", change
-	      "Serializable class without serialVersionUID" to "Ignore"
 	    </li>
 	    <li> Under "Generic Types", change
 	      "Unchecked generic type operation" to "Ignore".
