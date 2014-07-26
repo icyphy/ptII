@@ -113,7 +113,7 @@ public class Particle {
         _particleValue = new LinkedList<Double>();
 
         for(int i = 0; i < l.size(); i++){
-            _particleValue.add((double)l.get(i));
+            _particleValue.add(l.get(i));
         }
     }
 
