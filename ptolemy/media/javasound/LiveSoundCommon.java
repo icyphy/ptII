@@ -300,9 +300,6 @@ public class LiveSoundCommon {
      *   LiveSoundEvent.SAMPLE_RATE, LiveSoundEvent.CHANNELS,
      *   LiveSoundEvent.BUFFER_SIZE, or
      *   LiveSoundEvent.BITS_PER_SAMPLE.
-     *
-     *  @exception Exception If a listener has a problem responding
-     *   to the change.
      */
     protected void _notifyLiveSoundListeners(int parameter) {
         if (_liveSoundListeners.size() > 0) {

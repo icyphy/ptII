@@ -341,9 +341,6 @@ public class PortParameter extends AbstractInitializableParameter implements
      *  Increment the version of the workspace.
      *  This method is write-synchronized on the workspace.
      *  @param name The new display name.
-     *  @exception IllegalActionException If the name contains a period.
-     *  @exception NameDuplicationException If the container already
-     *   contains an attribute with the proposed name.
      */
     public void setDisplayName(String name) {
         if (_settingName) {

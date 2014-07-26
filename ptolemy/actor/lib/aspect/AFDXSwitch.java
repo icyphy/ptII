@@ -445,7 +445,7 @@ public class AFDXSwitch extends AtomicCommunicationAspect {
 
     /** If there are still tokens in the queue and a token has been
      *  produced in the fire, schedule a refiring.
-     *  @exception IllegalActionExeception If the refiring cannot be scheduled or
+     *  @exception IllegalActionException If the refiring cannot be scheduled or
      *  by super class.
      */
     public boolean postfire() throws IllegalActionException {

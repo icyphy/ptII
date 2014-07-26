@@ -738,11 +738,9 @@ public class MetroIIPtidesPlatform extends MetroIIMirrorComposite {
          * connected to on the inside. This method extracts tokens from a record
          * token if the associated port is a network port.
          *
-         * @exception IllegalActionException
-         *                Not thrown in this base class.
-         * @param port
-         *            The port to transfer tokens from.
+         * @param port The port to transfer tokens from.
          * @return True if at least one data token is transferred.
+         * @exception IllegalActionException Not thrown in this base class.
          */
         public boolean transferInputs(IOPort port)
                 throws IllegalActionException {
@@ -861,11 +859,9 @@ public class MetroIIPtidesPlatform extends MetroIIMirrorComposite {
          * container to the ports it is connected to on the outside. Create a
          * RecordToken if the associated port is a NetworkTransmitterPort.
          *
-         * @exception IllegalActionException
-         *                Not thrown in this base class.
-         * @param port
-         *            The port to transfer tokens from.
+         * @param port The port to transfer tokens from.
          * @return True if at least one data token is transferred.
+         * @exception IllegalActionException Not thrown in this base class.
          * @see IOPort#transferOutputs
          */
         public boolean transferOutputs(IOPort port)

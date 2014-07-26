@@ -635,9 +635,7 @@ public class PHY extends NetworkActorBase {
         }
     }
 
-    /** Return the type constraints of this actor. The type constraint is
-     *  that the output type is the union of the types of input ports.
-     *  @return a list of Inequality.
+    /** Set the union types.
      */
     private void _setUnionType() {
         String[] labels = { "RxStart", "RxData", "RxEnd", "RxRts", "CsRts" };

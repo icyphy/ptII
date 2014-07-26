@@ -345,7 +345,6 @@ public class OMCCommand implements IOMCCommand {
     /** Initialize the communication with the OpenModelica compiler(OMC) server.
      *  @exception ConnectException If we're unable to start communicating with
      *  the server.
-     *  @exception InterruptedException
      */
     public synchronized void initializeServer() throws ConnectException {
 
@@ -385,7 +384,7 @@ public class OMCCommand implements IOMCCommand {
      *  @param modelName Name of the (base-)model that should be built.
      *  @exception ConnectException If commands couldn't
      *   be sent to the (OpenModelic Compiler)OMC.
-     *  @exception FileNotFoundException If no file found at the selective path for loading.
+     *  @exception ConnectException If no file found at the selective path for loading.
      */
     public void loadModelicaFile(String fileName, String modelName)
             throws ConnectException {

@@ -82,8 +82,6 @@ public class TextDocument extends AbstractDocument {
      * such as querying the user to save a modified document and so on
      * are the responsibility of the application, not the Document
      * implementation.
-     *
-     * @exception Exception If the close operation fails.
      */
     public void close() {
         // DO NOTHING.

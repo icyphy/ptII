@@ -153,7 +153,6 @@ public abstract class AbstractBasicGraphModel extends ModularGraphModel
      *  @param eventSource The source of the event that will be dispatched,
      *   e.g. the view that made this call.
      *  @param edge The edge that is to be disconnected.
-     *  @exception GraphException If the operation fails.
      */
     public abstract void disconnectEdge(Object eventSource, Object edge);
 
@@ -294,7 +293,6 @@ public abstract class AbstractBasicGraphModel extends ModularGraphModel
      *  @param eventSource The source of the event that will be dispatched,
      *   e.g. the view that made this call.
      *  @param node The node to be removed.
-     *  @exception GraphException if the operation fails.
      */
     public abstract void removeNode(Object eventSource, Object node);
 

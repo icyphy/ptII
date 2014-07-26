@@ -446,9 +446,6 @@ public class MetroIISystemCDirector extends Director implements GetFirable {
      * Stop firing as soon as possible.
      * 
      * IMPORTANT: stop() can only be called after getfire() returns.
-     * 
-     * @throws IllegalActionException
-     * 
      */
     @Override
     public void stop() {
@@ -461,6 +458,7 @@ public class MetroIISystemCDirector extends Director implements GetFirable {
         try {
             pushEvents(_events);
         } catch (IllegalActionException e) {
+            // FIXME: Printing the stack trace will not be useful if Ptolemy is invoked from a menu choice.
             e.printStackTrace();
         }
 

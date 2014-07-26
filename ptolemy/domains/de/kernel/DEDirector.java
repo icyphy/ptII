@@ -1430,10 +1430,10 @@ public class DEDirector extends Director implements SuperdenseTimeDirector {
      *  the enclosing director implements SuperdenseTimeDirector.
      *  Otherwise, it sets the microstep to match or exceed 1
      *  to ensure that inputs are interpreted as discrete values.
-     *  @exception IllegalActionException If the port is not an opaque
-     *   input port.
      *  @param port The port to transfer tokens from.
      *  @return True if at least one data token is transferred.
+     *  @exception IllegalActionException If the port is not an opaque
+     *  input port.
      */
     public boolean transferInputs(IOPort port) throws IllegalActionException {
         int defaultMicrostep = _defaultMicrostep;

@@ -3045,7 +3045,6 @@ public class XmlParser {
      * @see #readDataChunk
      * @see #readBuffer
      * @see #line
-     * @return The next character from the current input source.
      */
     char readCh() throws java.lang.Exception {
         char c;

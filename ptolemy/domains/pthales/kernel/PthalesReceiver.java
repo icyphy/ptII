@@ -78,8 +78,6 @@ public class PthalesReceiver extends SDFReceiver {
     }
 
     /** Do nothing.
-     *  @exception IllegalActionException If clear() is not supported by
-     *   the domain.
      */
     public void clear() {
         // Ignore
@@ -90,7 +88,6 @@ public class PthalesReceiver extends SDFReceiver {
      *  that was put first) should be listed first in any implementation
      *  of this method.
      *  @return A list of instances of Token.
-     *  @exception IllegalActionException If the operation is not supported.
      */
     public List<Token> elementList() {
         // FIXME: implement this.
@@ -254,8 +251,6 @@ public class PthalesReceiver extends SDFReceiver {
      *  inserts a null into the array.
      *  @param token The token to put into the receiver.
      *  @exception NoRoomException If there is no room in the receiver.
-     *  @exception IllegalActionException If the token is not acceptable
-     *   to one of the ports (e.g., wrong type).
      */
     public void put(Token token) {
         if (_buffer != null) {

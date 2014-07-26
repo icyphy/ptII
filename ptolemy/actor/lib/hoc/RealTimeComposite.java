@@ -218,7 +218,7 @@ public class RealTimeComposite extends MirrorComposite {
      *  @return A new NamedObj.
      *  @exception CloneNotSupportedException If any of the attributes
      *   cannot be cloned.
-     *  @see #exportMoML(Writer, int, String)
+     *  @see #exportMoML(java.io.Writer, int, String)
      */
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         RealTimeComposite result = (RealTimeComposite) super.clone(workspace);
@@ -898,9 +898,9 @@ public class RealTimeComposite extends MirrorComposite {
         /** Record data from the specified input port
          *  for transfer to the queue used to communicate these data to the
          *  associated thread.
-         *  @exception IllegalActionException If reading the inputs fails.
          *  @param port The port to transfer tokens from.
          *  @return True if at least one data token is transferred.
+         *  @exception IllegalActionException If reading the inputs fails.
          */
         public boolean transferInputs(IOPort port)
                 throws IllegalActionException {
@@ -938,9 +938,9 @@ public class RealTimeComposite extends MirrorComposite {
          *  be produced by the fire method when model time matches the
          *  current real time, and call fireAt() to request a firing
          *  at that time.
-         *  @exception IllegalActionException If reading the inputs fails.
          *  @param port The port to transfer tokens from.
          *  @return True if at least one data token is produced now.
+         *  @exception IllegalActionException If reading the inputs fails.
          */
         public boolean transferOutputs(IOPort port)
                 throws IllegalActionException {

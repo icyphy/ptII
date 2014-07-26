@@ -104,8 +104,8 @@ public interface MoMLExportable extends Nameable {
      *  <pre>
      *      exportMoML(new OutputStreamWriter(System.out))
      *  </pre>
-     *  @exception IOException If an I/O error occurs.
      *  @param output The writer to write to.
+     *  @exception IOException If an I/O error occurs.
      *  @see #isPersistent()
      */
     public void exportMoML(Writer output) throws IOException;

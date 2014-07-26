@@ -50,9 +50,9 @@ public final class Node extends Element {
     }
 
     /** Construct a node with a given node weight.
+     *  @param weight The given weight.
      *  @exception IllegalArgumentException If the specified weight is
      *  <code>null</code>.
-     *  @param weight The given weight.
      */
     public Node(Object weight) {
         super(weight);

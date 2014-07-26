@@ -72,7 +72,7 @@ public class ParameterMirrorPort extends ParameterPort {
      *  @return A new NamedObj.
      *  @exception CloneNotSupportedException If any of the attributes
      *   cannot be cloned.
-     *  @see #exportMoML(Writer, int, String)
+     *  @see #exportMoML(java.io.Writer, int, String)
      */
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         ParameterMirrorPort result = (ParameterMirrorPort) super

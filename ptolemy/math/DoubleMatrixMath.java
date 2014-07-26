@@ -801,12 +801,12 @@ public class DoubleMatrixMath {
      *  vectors), which is m x n, into the matrix product of Q, which
      *  is m x n with orthonormal column vectors, and R, which is an
      *  invertible n x n upper triangular matrix.
-     *  @exception IllegalArgumentException if the columns vectors of the input
-     *  matrix are not linearly independent.
      *
      *  @param matrix The input matrix of doubles.
      *  @return The pair of newly allocated matrices of doubles,
      *  out[0] = Q, out[1] = R.
+     *  @exception IllegalArgumentException if the columns vectors of the input
+     *  matrix are not linearly independent.
      */
     public static final double[][][] qr(final double[][] matrix) {
         int columns = _columns(matrix);

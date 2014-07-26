@@ -51,9 +51,9 @@ public abstract class Element {
     }
 
     /** Construct an element with a given weight.
+     *  @param weight The given weight.
      *  @exception IllegalArgumentException If the specified weight is
      *  <code>null</code>.
-     *  @param weight The given weight.
      */
     public Element(Object weight) {
         setWeight(weight);

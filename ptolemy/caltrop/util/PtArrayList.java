@@ -57,10 +57,10 @@ public class PtArrayList extends AbstractList<Token> {
      *  @param index The index of the desired element.
      *  @return The token contained in this array token at the
      *  specified index.
-     *  @exception ArrayIndexOutOfBoundException If the specified index is
+     *  @exception ArrayIndexOutOfBoundsException If the specified index is
      *   outside the range of the token array.
      */
-    public Token get(int index) {
+    public Token get(int index) throws ArrayIndexOutOfBoundsException {
         return _arrayToken.getElement(index);
     }
 

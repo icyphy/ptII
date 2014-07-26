@@ -179,7 +179,7 @@ public abstract class MultipageDocument extends AbstractDocument {
 
     /** Throw an exception, as save to URLs is not supported.
      *
-     * @exception Exception Always
+     * @exception UnsupportedOperationException Always thrown.
      */
     public void saveAs(URL url) {
         throw new UnsupportedOperationException("SketchDocument " + getTitle()

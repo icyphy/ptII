@@ -52,9 +52,9 @@ public class LayoutTableau extends Tableau {
      *  automatically.  You must call show() to make it visible.
      *  @param container The containing effigy.
      *  @param name The name of this tableau within the specified effigy.
+     *  @param pane The pane whose layout is being edited.
      *  @exception IllegalActionException If the tableau is not acceptable
      *   to the specified container.
-     *  @param pane The pane whose layout is being edited.
      *  @exception NameDuplicationException If the container already contains
      *   an entity with the specified name.
      */

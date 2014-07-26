@@ -113,10 +113,10 @@ public class TupleToken extends Token {
      *  @param index The index of the desired element.
      *  @return The token contained in this array token at the
      *   specified index.
-     *  @exception ArrayIndexOutOfBoundException If the specified index is
+     *  @exception ArrayIndexOutOfBoundsException If the specified index is
      *   outside the range of the token array.
      */
-    public Token getElement(int index) throws ArrayIndexOutOfBoundsException {
+    public Token getElement(int index) {
         return _value[index];
     }
 
@@ -124,10 +124,10 @@ public class TupleToken extends Token {
      *  @param index The index of the desired element.
      *  @return The type of the token contained in this array token at the
      *   specified index.
-     *  @exception ArrayIndexOutOfBoundException If the specified index is
+     *  @exception ArrayIndexOutOfBoundsException If the specified index is
      *   outside the range of the token array.
      */
-    public Type getElementType(int index) throws ArrayIndexOutOfBoundsException {
+    public Type getElementType(int index) {
         return _value[index].getType();
     }
 

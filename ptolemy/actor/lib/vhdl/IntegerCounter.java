@@ -106,9 +106,7 @@ public class IntegerCounter extends SynchronousFixTransformer {
     /** Override the base class to determine which function is being
      *  specified.
      *  @param attribute The attribute that changed.
-     * @exception IllegalActionException
      *  @exception IllegalActionException If the function is not recognized.
-     * @exception NameDuplicationException
      */
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {

@@ -90,8 +90,6 @@ public class HttpRequest  {
      *  send a header, a body if applicable, and wait for a response. 
      *  Return the response, or throw an error if no response is returned
      *  within the specified timeout.
-     *  
-     *  @throws IOException If an IO error occurs.
      */
     public HttpResponse execute() {
         OutputStreamWriter writer = null;

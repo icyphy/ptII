@@ -91,8 +91,6 @@ public class NamedConstantsScope implements ParserScope {
      *  @param name The name of the variable to be looked up.
      *  @return The InequalityTerm associated with the given name in
      *  the scope.
-     *  @exception IllegalActionException If a value in the scope
-     *  exists with the given name, but cannot be evaluated.
      */
     public ptolemy.graph.InequalityTerm getTypeTerm(String name) {
         ptolemy.data.Token value = (ptolemy.data.Token) _map.get(name);

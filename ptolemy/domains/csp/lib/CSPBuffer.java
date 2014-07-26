@@ -119,9 +119,9 @@ public class CSPBuffer extends CSPActor {
      *  <p>
      *  @param container The TypedCompositeActor that contains this actor.
      *  @param name The actor's name.
+     *  @param theDepth The depth of this buffer.
      *  @exception IllegalActionException If the entity cannot be contained
      *   by the proposed container.
-     *  @param theDepth The depth of this buffer.
      *  @exception NameDuplicationException If the name argument coincides
      *   with an entity already in the container.
      */

@@ -517,7 +517,7 @@ public class CompositeCommunicationAspect extends TypedCompositeActor implements
 
         /** Add names of available CommunicationRequestPort in CompositeQM as
          *  choices to inputPort.
-         *  @exception InteralErrorException Thrown if CompositeQM
+         *  @exception InternalErrorException Thrown if CompositeQM
          *    cannot be accessed.
          */
         @Override

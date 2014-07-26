@@ -351,7 +351,7 @@ public class FSMGraphFrame extends ExtendedGraphFrame implements ActionListener 
 
     /** Prepare to export a design pattern.
      *
-     *  @exception IllegalActionException Thrown if attributes of the ports to
+     *  @exception InternalErrorException Thrown if attributes of the ports to
      *   be exported cannot be set.
      */
     protected void _prepareExportDesignPattern() {

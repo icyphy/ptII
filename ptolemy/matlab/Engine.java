@@ -149,7 +149,7 @@ import ptolemy.math.Complex;
  #setDebugging} with a byte parameter > 0. 1 enables basic tracing,
  2 includes traces from the dll as well.
 
- <p>{@link #evalString(long[] eng, String)} send a string to the matlab
+ <p>{@link #evalString(long[], String)} send a string to the matlab
  engine for evaluation.
 
  {@link #open} and {@link #close} are used to open / close the

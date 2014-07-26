@@ -395,7 +395,6 @@ public class ComponentActor extends TypedCompositeActor implements Component {
         ////                   public inner methods                ////
 
         /** Override the base class to attach an empty properties token.
-         *  @param token The token to put.
          *  @see ptolemy.domains.de.kernel.DEReceiver#put(ptolemy.data.Token)
          */
         public synchronized TupleToken call() {

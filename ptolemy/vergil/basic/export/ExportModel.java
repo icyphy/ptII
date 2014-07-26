@@ -750,7 +750,7 @@ public class ExportModel {
      *  [-timeOut ms]
      *  [-web] [-whiteBackground] [GIF|gif|HTM*|htm*|PNG|png] model.xml
      *
-     *  @exception args If there is 1 argument, then it names a
+     *  @exception IllegalArgumentException If there is 1 argument, then it names a
      *  Ptolemy MoML file and the model is exported as a .gif file.
      *  If there are two arguments, then the first argument names a
      *  format, current formats are GIF, gif, HTM, htm, PNG and png

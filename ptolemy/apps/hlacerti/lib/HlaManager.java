@@ -1398,7 +1398,7 @@ implements TimeRegulator {
 		}	
 	}
 
-	/** The method {@link _populatedHlaValueTables()} populates the tables 
+	/** The method {@link #_populatedHlaValueTables()} populates the tables 
 	 *  containing information of HLA attributes required to publish and to 
 	 *  subscribe value attributes in a HLA Federation.
 	 *  @throws IllegalActionException If a HLA attribute is declared twice.
@@ -1612,7 +1612,7 @@ implements TimeRegulator {
 		///////////////////////////////////////////////////////////////////
 		////                         public methods                    ////
 
-		/** Initialize the {@link PtolemyFederateAmbassador} which handles
+		/** Initialize the {@link PtolemyFederateAmbassadorInner} which handles
 		 *  the communication from RTI -> to RTIA -> to FEDERATE. The 
 		 *  <i>rtia</i> manages the interaction with the external communicant
 		 *  process RTIA. This method called the Declaration Management

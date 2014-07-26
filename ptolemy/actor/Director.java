@@ -1410,9 +1410,9 @@ public class Director extends Attribute implements Executable {
      *  Derived classes will likely override this method to ensure that
      *  the time is valid.
      *
-     *  @exception IllegalActionException If the new time is less than
-     *   the current time returned by getCurrentTime().
      *  @param newTime The new current simulation time.
+     *  @exception IllegalActionException If the new time is less than
+     *  the current time returned by getCurrentTime().
      *  @deprecated As of Ptolemy 4.1, replaced by
      *  {@link #setModelTime}
      *  @see #getCurrentTime()
@@ -1436,9 +1436,9 @@ public class Director extends Attribute implements Executable {
     }
 
     /** Set a new value to the current time of the model.
-     *  @exception IllegalActionException If the new time is less than
-     *   the current time returned by getCurrentTime().
      *  @param newTime The new current simulation time.
+     *  @exception IllegalActionException If the new time is less than
+     *  the current time returned by getCurrentTime().
      *  @see #getModelTime()
      */
     public void setModelTime(Time newTime) throws IllegalActionException {
@@ -1598,10 +1598,10 @@ public class Director extends Attribute implements Executable {
      *  base class transfers at most one token.  Derived classes may override
      *  this method to transfer a domain-specific number of tokens.
      *
-     *  @exception IllegalActionException If the port is not an opaque
-     *   input port.
      *  @param port The port to transfer tokens from.
      *  @return True if at least one data token is transferred.
+     *  @exception IllegalActionException If the port is not an opaque
+     *  input port.
      */
     public boolean transferInputs(IOPort port) throws IllegalActionException {
         // Use a strategy pattern here so that the code that transfers
@@ -1632,10 +1632,10 @@ public class Director extends Attribute implements Executable {
      *  in this base class transfers at most
      *  one token, but derived classes may transfer more than one
      *  token.
-     *  @exception IllegalActionException If the port is not an opaque
-     *   output port.
      *  @param port The port to transfer tokens from.
      *  @return True if at least one data token is transferred.
+     *  @exception IllegalActionException If the port is not an opaque
+     *  output port.
      */
     public boolean transferOutputs(IOPort port) throws IllegalActionException {
         // Use a strategy pattern here so that the code that transfers
@@ -1836,10 +1836,10 @@ public class Director extends Attribute implements Executable {
      *  subclass of IOPort, TypedIOPort, can override this method to
      *  perform run-time type conversion.
      *
-     *  @exception IllegalActionException If the port is not an opaque
-     *   input port.
      *  @param port The port to transfer tokens from.
      *  @return True if at least one data token is transferred.
+     *  @exception IllegalActionException If the port is not an opaque
+     *  input port.
      *  @see IOPort#transferInputs
      */
     protected boolean _transferInputs(IOPort port)
@@ -1892,12 +1892,12 @@ public class Director extends Attribute implements Executable {
     }
 
     /** Transfer at most one data token from the given output port of
-     *  the container to the ports it is connected to on the outside.
-     *  @exception IllegalActionException If the port is not an opaque
-     *   output port.
+     *  the container to the ports it is connected to on the outside..
      *  @param port The port to transfer tokens from.
      *  @return True if the port has an inside token that was successfully
      *  transferred.  Otherwise return false (or throw an exception).
+     *  @exception IllegalActionException If the port is not an opaque
+     *  output port
      *
      */
     protected boolean _transferOutputs(IOPort port)

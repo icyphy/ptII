@@ -681,8 +681,6 @@ public class TemplateParser {
              *  @param node The root of the parse tree.
              *  @param scope The scope for evaluation.
              *  @return The result of evaluation.
-             *  @exception IllegalActionException If an error occurs during
-             *   evaluation.
              */
             public ptolemy.data.Token evaluateParseTree(ASTPtRootNode node,
                     ParserScope scope) {

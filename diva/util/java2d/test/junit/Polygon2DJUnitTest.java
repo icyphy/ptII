@@ -302,7 +302,6 @@ public class Polygon2DJUnitTest {
      *  used by Ptolemy II.
      *
      *  @param args Ignored.
-     *  @exception args Not used.
      */
     public static void main(String args[]) {
         org.junit.runner.JUnitCore

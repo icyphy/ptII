@@ -205,12 +205,11 @@ public class TclTests {
      * ptolemy/cg/kernel/generic/program/procedural/java/test/AutoAdapter.tcl
      * test requires more than 240 seconds.</p>
      *
-     * @exception Throwable
-     *                If thrown while executing the tclFile.
      * @param tclFile
      *            The full path to the .tcl file to be executed. If tclFile
      *            ends with the value of the {@link #THERE_ARE_NO_TCL_TESTS},
      *            then the method returns immediately.
+     * @exception Throwable If thrown while executing the tclFile.
      */
     @Test
     @Parameters

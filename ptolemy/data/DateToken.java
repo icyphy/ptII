@@ -415,7 +415,7 @@ public class DateToken extends AbstractConvertibleToken
     }
 
     /** Return the type of this token.
-     *  @return {@link ptolemy.data.type.BaseType.DATE},
+     *  @return {@link ptolemy.data.type.BaseType#DATE},
      *  the least upper bound of all the date types.
      */
     public Type getType() {

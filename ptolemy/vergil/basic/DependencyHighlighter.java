@@ -237,16 +237,18 @@ public class DependencyHighlighter extends NodeControllerFactory {
     }
 
     /** The action for the commands added to the context menu.
-     *  @param commandName The name that appears in the menu.
-     *  @param forward True if dependents are to be highlighted or listed.
-     *  If false, then the the prerequisites are highlighted or listed.
-     *  @param clear True if the highlight or prerequisite is to be cleared.
-     *  If false, then the dependency or prerequisite is highlighted.
-     *  @param list True if a list dialog is to be displayed.  If false,
-     *  then the dependents or prerequisites are highlighted.
      */
     @SuppressWarnings("serial")
-	private class HighlightDependents extends FigureAction {
+    private class HighlightDependents extends FigureAction {
+        /** Construct a HighlightsDependents action.
+         *  @param commandName The name that appears in the menu.
+         *  @param forward True if dependents are to be highlighted or listed.
+         *  If false, then the the prerequisites are highlighted or listed.
+         *  @param clear True if the highlight or prerequisite is to be cleared.
+         *  If false, then the dependency or prerequisite is highlighted.
+         *  @param list True if a list dialog is to be displayed.  If false,
+         *  then the dependents or prerequisites are highlighted.
+         */
         public HighlightDependents(String commandName, boolean forward,
                 boolean clear, boolean list) {
             super(commandName);

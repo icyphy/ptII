@@ -345,7 +345,7 @@ public class PtidesPreemptiveEDFDirector
     private Map<Integer, String> _interruptHandlerNames;
 
     /** Get sensors and actuators.
-     *  @exception Thrown if parameters of sensors or actuators cannot be read.
+     *  @exception IllegalActionException Thrown if parameters of sensors or actuators cannot be read.
      */
     protected void _modelStaticAnalysis() throws IllegalActionException {
         _interruptHandlerNames = new HashMap();

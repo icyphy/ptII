@@ -155,7 +155,7 @@ public class VQDecode extends Transformer {
      * vector on the output port.
      * @exception IllegalActionException If the input or output are not
      * connected
-     * @exception ArrayOutOfBoundsException If the input codewords are
+     * @exception ArrayIndexOutOfBoundsException If the input codewords are
      * not between 0 and 255.
      */
     public void fire() throws IllegalActionException {

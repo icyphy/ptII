@@ -863,9 +863,9 @@ public class ThreadedComposite extends MirrorComposite {
          *  the enclosing composite actor after the prefire() method
          *  of this director has been called and before its fire() method
          *  is called.
-         *  @exception IllegalActionException If reading the inputs fails.
          *  @param port The port to transfer tokens from.
          *  @return True if at least one data token is transferred.
+         *  @exception IllegalActionException If reading the inputs fails.
          */
         public boolean transferInputs(IOPort port)
                 throws IllegalActionException {
@@ -897,9 +897,9 @@ public class ThreadedComposite extends MirrorComposite {
          *  don't want to read from the inside of the output ports because the
          *  inside thread may be concurrently writing to them for the next
          *  iteration.
-         *  @exception IllegalActionException If writing the outputs fails.
          *  @param port The port to transfer tokens from.
          *  @return False, indicating that no data token is produced now.
+         *  @exception IllegalActionException If writing the outputs fails.
          */
         public boolean transferOutputs(IOPort port)
                 throws IllegalActionException {

@@ -600,10 +600,10 @@ public class FixedPointDirector extends StaticSchedulingDirector implements
      *  This method delegates the data transfer
      *  operation to the transferInputs method of the super class.
      *
-     *  @exception IllegalActionException If the port is not an opaque
-     *   input port.
      *  @param port The port to transfer tokens from.
      *  @return True if at least one token is transferred.
+     *  @exception IllegalActionException If the port is not an opaque
+     *  input port.
      */
     public boolean transferInputs(IOPort port) throws IllegalActionException {
         boolean result = false;
@@ -636,10 +636,10 @@ public class FixedPointDirector extends StaticSchedulingDirector implements
      *  This method delegates the data transfer
      *  operation to the transferOutputs method of the super class.
      *
-     *  @exception IllegalActionException If the port is not an opaque
-     *   output port.
      *  @param port The port to transfer tokens from.
      *  @return True if at least one token is transferred.
+     *  @exception IllegalActionException If the port is not an opaque
+     *  input port, or if there are not enough input tokens available.
      */
     public boolean transferOutputs(IOPort port) throws IllegalActionException {
         boolean result = false;

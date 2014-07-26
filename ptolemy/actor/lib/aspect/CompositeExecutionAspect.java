@@ -310,7 +310,7 @@ public class CompositeExecutionAspect extends TypedCompositeActor implements
     /** Iterate through resource mapping output ports and if they contain
      *  tokens, inform the director of the actors in the tokens that these
      *  actors can resume execution.
-     *  @exception illegalActionException Not explicitly thrown here.
+     *  @exception IllegalActionException Not explicitly thrown here.
      */
     @Override
     public boolean postfire() throws IllegalActionException {
@@ -638,7 +638,7 @@ public class CompositeExecutionAspect extends TypedCompositeActor implements
 
         /** Add names of available CommunicationRequestPort in CompositeCommunicationAspect as
          *  choices to inputPort.
-         *  @exception InteralErrorException Thrown if CompositeCommunicationAspect
+         *  @exception InternalErrorException Thrown if CompositeCommunicationAspect
          *    cannot be accessed.
          */
         @Override

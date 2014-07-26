@@ -303,7 +303,6 @@ public class PthalesAtomicActor extends TypedAtomicActor {
      *  @param actor The name of the actor
      *  @param name The name of the parameter
      *  @return The dimension data, or an empty array if the parameter does not exist.
-     *  @exception IllegalActionException If the parameter cannot be evaluated.
      */
     protected static Integer[] _parseRepetitions(ComponentEntity actor,
             String name) {

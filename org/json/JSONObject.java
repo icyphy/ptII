@@ -150,8 +150,6 @@ public class JSONObject {
      * Missing keys are ignored.
      * @param jo A JSONObject.
      * @param names An array of strings.
-     * @exception JSONException
-     * @exception JSONException If a value is a non-finite number or if a name is duplicated.
      */
     public JSONObject(JSONObject jo, String[] names) {
         this();
@@ -159,6 +157,7 @@ public class JSONObject {
             try {
                 putOnce(name, jo.opt(name));
             } catch (Exception ignore) {
+                // FIXME: It is wrong to ignore exceptions, this should be logged.
             }
         }
     }
@@ -228,7 +227,6 @@ public class JSONObject {
      *
      * @param map A map object that can be used to initialize the contents of
      *  the JSONObject.
-     * @exception JSONException
      */
     public JSONObject(Map map) {
         this.map = new HashMap();
@@ -236,7 +234,7 @@ public class JSONObject {
             Iterator i = map.entrySet().iterator();
             while (i.hasNext()) {
                 Map.Entry e = (Map.Entry) i.next();
-                this.map.put(e.getKey(), wrap(e.getValue()));
+                map.put(e.getKey(), wrap(e.getValue()));
             }
         }
     }

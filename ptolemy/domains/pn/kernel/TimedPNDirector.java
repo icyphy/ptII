@@ -223,9 +223,9 @@ public class TimedPNDirector extends PNDirector {
 
     /** Set a new value to the current time of the model, where
      *  the new time must be no earlier than the current time.
+     *  @param newTime The new time of the model.
      *  @exception IllegalActionException If an attempt is made to change the
      *  time to less than the current time.
-     *  @param newTime The new time of the model.
      */
     public void setModelTime(Time newTime) throws IllegalActionException {
         if (newTime.compareTo(getModelTime()) < 0) {

@@ -524,8 +524,8 @@ public class CompositeOptimizer extends ReflectComposite {
          *  This method reads tokens from the outside port if any, and writes to
          *  the input port. if no tokens available outside, the last received value
          *  is transferred.
-         *  @exception IllegalActionException Not thrown in this base class.
          *  @param port The port to transfer tokens from.
+         *  @exception IllegalActionException Not thrown in this base class.
          *  @return True if at least one data token is transferred.
          */
         public boolean transferInputs(IOPort port)
@@ -559,8 +559,8 @@ public class CompositeOptimizer extends ReflectComposite {
 
         /** Transfer data previously read from the outside ports to the inside ports
          *  do not re-read values from outside ports until the firing is complete.
-         *  @exception IllegalActionException Not thrown in this base class.
          *  @param port The port to transfer tokens from.
+         *  @exception IllegalActionException Not thrown in this base class.
          *  @return True if at least one data token is transferred.
          */
         private boolean _retransferInputs(IOPort port)

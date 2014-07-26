@@ -806,10 +806,10 @@ public class GiottoDirector extends StaticSchedulingDirector implements
      *  one token on each input channel that has at least one token
      *  available. Update all receivers to which a token is transferred.
      *
-     *  @exception IllegalActionException If the port is not an opaque
-     *   input port.
      *  @param port The port to transfer tokens from.
      *  @return True if at least one data token is transferred.
+     *  @exception IllegalActionException If the port is not an opaque
+     *  input port.
      */
     public boolean transferInputs(IOPort port) throws IllegalActionException {
         if (!port.isInput() || !port.isOpaque()) {
@@ -856,10 +856,10 @@ public class GiottoDirector extends StaticSchedulingDirector implements
      *  channel of this port has no data, then that channel is
      *  ignored. This method will transfer exactly one token on
      *  each output channel that has at least one token available.
-     *  @exception IllegalActionException If the port is not an opaque
-     *   output port.
      *  @param port The port to transfer tokens from.
      *  @return True if at least one data token is transferred.
+     *  @exception IllegalActionException If the port is not an opaque
+     *   output port.
      */
     public boolean transferOutputs(IOPort port) throws IllegalActionException {
         if (!port.isOutput() || !port.isOpaque()) {

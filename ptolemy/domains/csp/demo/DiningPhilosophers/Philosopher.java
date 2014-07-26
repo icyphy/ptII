@@ -166,8 +166,6 @@ public class Philosopher extends CSPActor {
      *  times, and then finishes normally.
      *  @exception IllegalActionException If an error occurs during
      *   executing the process.
-     *  @exception ProcessTerminationException If the director requests
-     *   termination.
      */
     public void fire() throws IllegalActionException {
         super.fire();

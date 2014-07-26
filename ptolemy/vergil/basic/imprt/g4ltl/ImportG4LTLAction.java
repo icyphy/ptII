@@ -101,7 +101,7 @@ public class ImportG4LTLAction extends AbstractAction {
     /**
      * Import a library by first opening a file chooser dialog and then
      * importing the specified library.
-     * See {@link ptolemy.actor.gui.UserActorLibrary#openLibrary(Configuration, File)}
+     * See {@link ptolemy.actor.gui.UserActorLibrary#openLibrary(ptolemy.actor.gui.Configuration, File)}
      * for information on the file format.
      */
     public void actionPerformed(ActionEvent e) {

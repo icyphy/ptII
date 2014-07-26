@@ -562,9 +562,9 @@ public class SysMLSequentialDirector extends Director implements
     }
 
     /** Set a new value to the current time of the model.
-     *  @exception IllegalActionException If the new time is less than
-     *   the current time returned by getCurrentTime().
      *  @param newTime The new current simulation time.
+     *  @exception IllegalActionException If the new time is less than
+     *  the current time returned by getCurrentTime().
      *  @see #getModelTime()
      */
     public void setModelTime(Time newTime) throws IllegalActionException {

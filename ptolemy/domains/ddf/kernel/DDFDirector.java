@@ -705,10 +705,10 @@ public class DDFDirector extends Director {
      *  token consumption rate is not defined for the port, transfer all tokens
      *  (if there are any) contained by the port. Finally it updates enabling
      *  status for all inside opaque actors that receive data from this port.
-     *  @exception IllegalActionException If the port is not an opaque
-     *   input port, or if there are not enough input tokens available.
      *  @param port The port to transfer tokens from.
      *  @return True if data are transferred.
+     *  @exception IllegalActionException If the port is not an opaque
+     *  input port, or if there are not enough input tokens available.
      */
     public boolean transferInputs(IOPort port) throws IllegalActionException {
         if (_debugging) {
@@ -814,10 +814,10 @@ public class DDFDirector extends Director {
      *  exception. If the token production rate is not defined for the port,
      *  transfer all tokens (if there are any) contained on the inside by
      *  the port.
-     *  @exception IllegalActionException If the port is not an opaque
-     *   output port, or if there are not enough output tokens available.
      *  @param port The port to transfer tokens from.
      *  @return True if data are transferred.
+     *  @exception IllegalActionException If the port is not an opaque
+     *  output port, or if there are not enough output tokens available.
      */
     public boolean transferOutputs(IOPort port) throws IllegalActionException {
         if (_debugging) {

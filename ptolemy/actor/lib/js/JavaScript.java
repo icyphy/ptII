@@ -825,7 +825,7 @@ public class JavaScript extends TypedAtomicActor {
      */
     public static class PortProxy {
         /** Construct a port proxy.
-         *  @param parameter The port to be proxied.
+         *  @param port The port to be proxied.
          */
     	protected PortProxy(TypedIOPort port) {
             _port = port;

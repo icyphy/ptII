@@ -96,7 +96,7 @@ public class MirrorPort extends TypedIOPort {
      *  @return A new NamedObj.
      *  @exception CloneNotSupportedException If any of the attributes
      *   cannot be cloned.
-     *  @see #exportMoML(Writer, int, String)
+     *  @see #exportMoML(java.io.Writer, int, String)
      */
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         MirrorPort result = (MirrorPort) super.clone(workspace);

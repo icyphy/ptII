@@ -228,7 +228,7 @@ public class Optimizer extends TypedAtomicActor {
             }
             /** 
              * 
-             * @param x: double array containing robot positions
+             * @param x double array containing robot positions
              * @return
              */
             private double Hz(double[] x){

@@ -286,8 +286,6 @@ public class ProgramCodeGenerator extends GenericCodeGenerator {
      * @see #ptolemyType(String)
      * @param ptType The given Ptolemy type.
      * @return The code generation type.
-     * @exception IllegalActionException Thrown if the given ptolemy cannot
-     *  be resolved.
      */
     public String codeGenType(Type ptType) {
         // Do not make this static as Java Codegen requires that it be

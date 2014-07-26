@@ -384,7 +384,6 @@ public class ContinuousTimeDelay extends Transformer {
 
     /** Override the base class to declare that the actor is nonstrict
      *  if it has an initial value token.
-     *  @exception IllegalActionException If the superclass throws it.
      */
     public boolean isStrict() {
         //        //FIXME: Does strictness depend on presence of an initial value?

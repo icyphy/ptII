@@ -636,10 +636,10 @@ public class DTDirector extends SDFDirector {
      *  input port. If any channel of the input port has no data, then
      *  that channel is ignored.
      *
-     *  @exception IllegalActionException If the port is not an opaque
-     *   input port.
      *  @param port The port to transfer tokens from.
      *  @return True if data are transferred.
+     *  @exception IllegalActionException If the port is not an opaque
+     *  input port.
      */
     public boolean transferInputs(IOPort port) throws IllegalActionException {
         //  -transferInputs-
@@ -662,10 +662,10 @@ public class DTDirector extends SDFDirector {
      *  output port.  If any channel of the output port has no data,
      *  then that channel is ignored.
      *
-     *  @exception IllegalActionException If the port is not an opaque
-     *   output port.
      *  @param port The port to transfer tokens from.
      *  @return True if data are transferred.
+     *  @exception IllegalActionException If the port is not an opaque
+     *  output port.
      */
     public boolean transferOutputs(IOPort port) throws IllegalActionException {
         TypedCompositeActor container = (TypedCompositeActor) getContainer();

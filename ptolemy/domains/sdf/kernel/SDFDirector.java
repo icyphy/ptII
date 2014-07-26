@@ -827,10 +827,10 @@ public class SDFDirector extends StaticSchedulingDirector implements
      *  but not on the inside can be used as a trigger for an SDF
      *  composite actor.
      *
-     *  @exception IllegalActionException If the port is not an opaque
-     *   input port, or if there are not enough input tokens available.
      *  @param port The port to transfer tokens from.
      *  @return True if data are transferred.
+     *  @exception IllegalActionException If the port is not an opaque
+     *  input port, or if there are not enough input tokens available.
      */
     public boolean transferInputs(IOPort port) throws IllegalActionException {
         if (!port.isInput() || !port.isOpaque()) {
@@ -897,10 +897,10 @@ public class SDFDirector extends StaticSchedulingDirector implements
      *  output port. If any channel of the output port has no data, then
      *  that channel is ignored.
      *
-     *  @exception IllegalActionException If the port is not an opaque
-     *   output port.
      *  @param port The port to transfer tokens from.
      *  @return True if data are transferred.
+     *  @exception IllegalActionException If the port is not an opaque
+     *  output port.
      */
     public boolean transferOutputs(IOPort port) throws IllegalActionException {
         if (_debugging) {

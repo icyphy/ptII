@@ -621,8 +621,6 @@ public class CParseTreeCodeGenerator extends ProceduralParseTreeCodeGenerator {
      * type.
      * @param ptType The given Ptolemy type.
      * @return The code generation type.
-     * @exception IllegalActionException Thrown if the given ptolemy cannot
-     *  be resolved.
      */
     protected String _codeGenType(Type ptType) {
         // This method exists because JavaParseTreeCodeGenerator specializes it.

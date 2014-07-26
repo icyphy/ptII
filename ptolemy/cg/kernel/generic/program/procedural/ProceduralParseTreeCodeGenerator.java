@@ -1643,8 +1643,6 @@ public class ProceduralParseTreeCodeGenerator extends AbstractParseTreeVisitor
      * type.
      * @param ptType The given Ptolemy type.
      * @return The code generation type.
-     * @exception IllegalActionException Thrown if the given ptolemy cannot
-     *  be resolved.
      */
     protected String _codeGenType(Type ptType) {
         // FIXME: this is duplicated code from CodeGeneratorHelper.codeGenType

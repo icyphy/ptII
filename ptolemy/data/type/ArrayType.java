@@ -410,7 +410,7 @@ public class ArrayType extends StructuredType implements Cloneable {
 
     /** Return the length of this array type.
      *  @return The length of this type.
-     *  @exception IllegalActionException If the length is not known.
+     *  @exception RuntimeException If the length is not known.
      */
     public int length() {
         if (!hasKnownLength()) {

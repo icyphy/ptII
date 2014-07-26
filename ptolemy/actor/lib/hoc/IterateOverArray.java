@@ -801,9 +801,9 @@ public class IterateOverArray extends MirrorComposite {
          *  This method extracts tokens from the input array and
          *  provides them sequentially to the corresponding ports
          *  of the contained actor.
-         *  @exception IllegalActionException Not thrown in this base class.
          *  @param port The port to transfer tokens from.
          *  @return True if at least one data token is transferred.
+         *  @exception IllegalActionException Not thrown in this base class.
          */
         public boolean transferInputs(IOPort port)
                 throws IllegalActionException {
@@ -845,9 +845,9 @@ public class IterateOverArray extends MirrorComposite {
         /** Transfer data from the inside receivers of an output port of the
          *  container to the ports it is connected to on the outside.
          *  This method packages the available tokens into a single array.
-         *  @exception IllegalActionException Not thrown in this base class.
          *  @param port The port to transfer tokens from.
          *  @return True if at least one data token is transferred.
+         *  @exception IllegalActionException Not thrown in this base class.
          *  @see IOPort#transferOutputs
          */
         public boolean transferOutputs(IOPort port)

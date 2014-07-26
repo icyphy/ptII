@@ -107,7 +107,7 @@ public class WebApplicationInfo {
      * duplicate
      *
      * @param servletPath  The new servlet path to add
-     * @exception If the path has already been requested by another servlet
+     * @exception Exception If the path has already been requested by another servlet
      */
     public void addServletInfo(URI servletPath, Servlet servlet)
             throws Exception {
@@ -149,7 +149,7 @@ public class WebApplicationInfo {
      *
      * @param resourcePath  The new resource path to add.  May not be null.
      * @param resourceLocations The non-empty set of resource locations to add
-     * @exception If this path is a duplicate of a path already requested by
+     * @exception Exception If this path is a duplicate of a path already requested by
      * a servlet, or if the resource does not exist
      */
     public void addResourceInfo(URI resourcePath,

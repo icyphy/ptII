@@ -1769,8 +1769,6 @@ public class UtilityFunctions {
      *  @param indexType The type of the index argument.
      *  @param countType The type of the count argument.
      *  @return The extracted subarray.
-     *  @exception IllegalActionException If the index argument is less
-     *   than zero.
      *  @since Ptolemy II 4.1
      */
     public static Type subarrayReturnType(Type arrayType, Type indexType,
