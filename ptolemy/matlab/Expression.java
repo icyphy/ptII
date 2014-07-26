@@ -55,6 +55,7 @@ import ptolemy.data.expr.Variable;
 import ptolemy.graph.Inequality;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
 import ptolemy.matlab.Engine.ConversionParameters;
@@ -231,6 +232,11 @@ public class Expression extends TypedAtomicActor {
         Expression newObject = (Expression) super.clone(workspace);
 
         newObject._addPathCommand = null;
+        try {
+            newObject._iteration = new Variable(newObject, "_iteration", new IntToken(1));
+        } catch (KernelException ex) {
+            throw new CloneNotSupportedException(ex.getMessage());
+        }
         newObject._iterationCount = 1;
         newObject._previousPath = null;
         newObject._inputTokens = new HashMap<String,Token>();
