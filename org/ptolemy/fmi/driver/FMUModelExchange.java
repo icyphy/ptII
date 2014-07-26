@@ -152,7 +152,7 @@ public class FMUModelExchange extends FMUDriver {
             boolean enableLogging, char csvSeparator, String outputFileName)
             throws Exception {
         // Avoid a warning from FindBugs.
-        FMUDriver._setEnableLogging(enableLogging);
+        _setEnableLogging(enableLogging);
 
         // Parse the .fmu file.
         FMIModelDescription fmiModelDescription = FMUFile

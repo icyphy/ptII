@@ -271,7 +271,7 @@ public class PortInfo {
         }
 
         for (int j = 0; j < length; j++) {
-            List<ProgramCodeGeneratorAdapter.Channel> sinkChannels = _director.getSinkChannels(
+            List<ProgramCodeGeneratorAdapter.Channel> sinkChannels = PortDirector.getSinkChannels(
                     _port, j);
 
             for (int k = 0; k < sinkChannels.size(); k++) {

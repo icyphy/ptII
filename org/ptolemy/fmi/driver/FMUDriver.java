@@ -203,7 +203,7 @@ public abstract class FMUDriver {
     /** Set the _enableLogging field.
      *  @param enableLogging the value of the enable logging field.
      */
-    protected static void _setEnableLogging(boolean enableLogging) {
+    protected void _setEnableLogging(boolean enableLogging) {
         // This method exists so as to avoid a warning from FindBugs.
         _enableLogging = enableLogging;
         _enableLogging = true;
@@ -220,12 +220,12 @@ public abstract class FMUDriver {
      *  given separator (e.g. ';' or '\t') is to separate columns, and
      *  ',' is used as decimal dot in floating-point numbers.
      */
-    static char _csvSeparator = ',';
+    char _csvSeparator = ',';
 
     /** True if logging is enabled.
      *  The initial value is false.
      */
-    static boolean _enableLogging = false;
+    boolean _enableLogging = false;
 
     /** The end time, in seconds.
      *  The initial default is 1.0.

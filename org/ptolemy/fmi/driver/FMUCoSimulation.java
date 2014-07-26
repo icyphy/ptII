@@ -131,8 +131,10 @@ public class FMUCoSimulation extends FMUDriver {
     public static void main(String[] args) throws Exception {
         FMUCoSimulation fmuCoSimulation = new FMUCoSimulation();
         fmuCoSimulation._processArgs(args);
-        fmuCoSimulation.simulate(fmuCoSimulation._fmuFileName, fmuCoSimulation._endTime, fmuCoSimulation._stepSize,
-                fmuCoSimulation._enableLogging, fmuCoSimulation._csvSeparator, fmuCoSimulation._outputFileName);
+        fmuCoSimulation.simulate(fmuCoSimulation._fmuFileName, fmuCoSimulation._endTime,
+                fmuCoSimulation._stepSize,
+                fmuCoSimulation._enableLogging, fmuCoSimulation._csvSeparator,
+                fmuCoSimulation._outputFileName);
     }
 
     /** Perform co-simulation using the named Functional Mock-up Unit (FMU) file.
@@ -151,7 +153,7 @@ public class FMUCoSimulation extends FMUDriver {
             throws Exception {
 
         // Avoid a warning from FindBugs.
-        FMUDriver._setEnableLogging(enableLogging);
+        _setEnableLogging(enableLogging);
 
         // Parse the .fmu file.
         FMIModelDescription fmiModelDescription = FMUFile
