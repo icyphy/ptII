@@ -30,7 +30,7 @@
 
 ME =		ptolemy/domains/hdf
 
-DIRS =		kernel demo doc
+DIRS =		kernel demo doc test
 
 # Root of Ptolemy II directory
 ROOT =		../../..
@@ -59,7 +59,8 @@ MISC_FILES =	kernel
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
 	demo \
-	doc
+	doc \
+	test
 
 all: jclass
 install: jclass jars
