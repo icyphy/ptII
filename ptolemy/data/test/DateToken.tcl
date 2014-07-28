@@ -183,7 +183,7 @@ test DateToken-14.0 {Add two Dates} {
     set t2 [java::new {ptolemy.data.DateToken long} 2]
     catch {$t1 add $t2} err
     list $err
-} {{ptolemy.kernel.util.IllegalActionException: add operation not supported between ptolemy.data.DateToken '"Wed Dec 31 16:00:00.001.0.0 PST 1969"' and ptolemy.data.DateToken '"Wed Dec 31 16:00:00.002.0.0 PST 1969"'}}
+} {{ptolemy.kernel.util.IllegalActionException: add operation not supported between ptolemy.data.DateToken '"Wed Dec 31 16:00:00.001000000 PST 1969"' and ptolemy.data.DateToken '"Wed Dec 31 16:00:00.002000000 PST 1969"'}}
 
 ######################################################################
 ####
@@ -193,7 +193,7 @@ test DateToken-14.1 {Divide two Dates} {
     set t2 [java::new {ptolemy.data.DateToken long} 2]
     catch {$t1 divide $t2} err
     list $err
-} {{ptolemy.kernel.util.IllegalActionException: divide operation not supported between ptolemy.data.DateToken '"Wed Dec 31 16:00:00.001.0.0 PST 1969"' and ptolemy.data.DateToken '"Wed Dec 31 16:00:00.002.0.0 PST 1969"'}}
+} {{ptolemy.kernel.util.IllegalActionException: divide operation not supported between ptolemy.data.DateToken '"Wed Dec 31 16:00:00.001000000 PST 1969"' and ptolemy.data.DateToken '"Wed Dec 31 16:00:00.002000000 PST 1969"'}}
 
 ######################################################################
 ####
@@ -203,7 +203,7 @@ test DateToken-14.2 {Modulo two Dates} {
     set t2 [java::new {ptolemy.data.DateToken long} 2]
     catch {$t1 modulo $t2} err
     list $err
-} {{ptolemy.kernel.util.IllegalActionException: modulo operation not supported between ptolemy.data.DateToken '"Wed Dec 31 16:00:00.001.0.0 PST 1969"' and ptolemy.data.DateToken '"Wed Dec 31 16:00:00.002.0.0 PST 1969"'}}
+} {{ptolemy.kernel.util.IllegalActionException: modulo operation not supported between ptolemy.data.DateToken '"Wed Dec 31 16:00:00.001000000 PST 1969"' and ptolemy.data.DateToken '"Wed Dec 31 16:00:00.002000000 PST 1969"'}}
 
 ######################################################################
 ####
@@ -213,7 +213,8 @@ test DateToken-14.3 {Multiply two Dates} {
     set t2 [java::new {ptolemy.data.DateToken long} 2]
     catch {$t1 multiply $t2} err
     list $err
-} {{ptolemy.kernel.util.IllegalActionException: multiply operation not supported between ptolemy.data.DateToken '"Wed Dec 31 16:00:00.001.0.0 PST 1969"' and ptolemy.data.DateToken '"Wed Dec 31 16:00:00.002.0.0 PST 1969"'}}
+} {{ptolemy.kernel.util.IllegalActionException: multiply operation not supported between ptolemy.data.DateToken '"Wed Dec 31 16:00:00.001000000 PST 1969"' and ptolemy.data.DateToken '"Wed Dec 31 16:00:00.002000000 PST 1969"'}}
+
 ######################################################################
 ####
 # 
@@ -222,7 +223,7 @@ test DateToken-14.4 {Subtract two Dates} {
     set t2 [java::new {ptolemy.data.DateToken long} 2]
     catch {$t1 subtract $t2} err
     list $err
-} {{ptolemy.kernel.util.IllegalActionException: subtract operation not supported between ptolemy.data.DateToken '"Wed Dec 31 16:00:00.001.0.0 PST 1969"' and ptolemy.data.DateToken '"Wed Dec 31 16:00:00.002.0.0 PST 1969"'}}
+} {{ptolemy.kernel.util.IllegalActionException: subtract operation not supported between ptolemy.data.DateToken '"Wed Dec 31 16:00:00.001000000 PST 1969"' and ptolemy.data.DateToken '"Wed Dec 31 16:00:00.002000000 PST 1969"'}}
 
 ######################################################################
 ####
@@ -232,7 +233,7 @@ test DateToken-14.5 {compare two Dates} {
     set t2 [java::new {ptolemy.data.DateToken long} 2]
     catch {$t1 isCloseTo $t2 2} err
     list $err
-} {{ptolemy.kernel.util.IllegalActionException: isCloseTo operation not supported between ptolemy.data.DateToken '"Wed Dec 31 16:00:00.001.0.0 PST 1969"' and ptolemy.data.DateToken '"Wed Dec 31 16:00:00.002.0.0 PST 1969"'}}
+} {{ptolemy.kernel.util.IllegalActionException: isCloseTo operation not supported between ptolemy.data.DateToken '"Wed Dec 31 16:00:00.001000000 PST 1969"' and ptolemy.data.DateToken '"Wed Dec 31 16:00:00.002000000 PST 1969"'}}
 
 
 ######################################################################
