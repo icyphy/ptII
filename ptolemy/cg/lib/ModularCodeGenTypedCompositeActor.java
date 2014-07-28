@@ -297,25 +297,60 @@ public class ModularCodeGenTypedCompositeActor extends ModularCodeGenLazyTypedCo
             URLClassLoader classLoader = null;
             Class<?> classInstance = null;
             try {
-                classLoader = new URLClassLoader(urls);
-                classInstance = classLoader.loadClass(className);
-            } catch (ClassNotFoundException ex) {
-                // We couldn't load the class, maybe the code is not
-                // generated (for example the user might have given
-                // this model to somebody else. Regenerate it again.
-                _generateCode();
                 try {
+                    classLoader = new URLClassLoader(urls);
                     classInstance = classLoader.loadClass(className);
-                } catch (ClassNotFoundException ex2) {
-                    ex2.printStackTrace();
-                    throw new ClassNotFoundException("Failed to load "
-                            + className
-                            + " using URLClassLoader based on "
-                            + url
-                            + ", urls were: "
-                            + java.util.Arrays.deepToString(classLoader
-                                    .getURLs()) + "\n" + ex2);
+                } catch (ClassNotFoundException ex) {
+                    // We couldn't load the class, maybe the code is not
+                    // generated (for example the user might have given
+                    // this model to somebody else. Regenerate it again.
+                    _generateCode();
+                    try {
+                        classInstance = classLoader.loadClass(className);
+                    } catch (ClassNotFoundException ex2) {
+                        ex2.printStackTrace();
+                        throw new ClassNotFoundException("Failed to load "
+                                + className
+                                + " using URLClassLoader based on "
+                                + url
+                                + ", urls were: "
+                                + java.util.Arrays.deepToString(classLoader
+                                        .getURLs()) + "\n" + ex2);
+                    }
                 }
+
+                _objectWrapper = classInstance.newInstance();
+
+                Method[] methods = classInstance.getMethods();
+                Method initializeMethod = null;
+
+                for (Method method : methods) {
+                    String name = method.getName();
+                    if (name.equals("fire")) {
+                        _fireMethod = method;
+                    }
+
+                    if (name.equals("initialize")) {
+                        initializeMethod = method;
+                    }
+                }
+                if (_fireMethod == null) {
+                    throw new IllegalActionException(this, "Cannot find fire "
+                            + "method in the wrapper class.");
+                }
+
+                if (initializeMethod == null) {
+                    throw new IllegalActionException(this,
+                            "Cannot find initialize "
+                            + "method in the wrapper class.");
+                }
+
+                //initialize the generated object
+                initializeMethod.invoke(_objectWrapper, (Object[]) null);
+                if (_debugging) {
+                    _debug("ModularCodeGenerator: Done calling initilize method for generated code.");
+                }
+
             } finally {
                 if (classLoader != null) {
                     try {
@@ -327,39 +362,6 @@ public class ModularCodeGenTypedCompositeActor extends ModularCodeGenLazyTypedCo
                     }
                 }
             }
-
-            _objectWrapper = classInstance.newInstance();
-
-            Method[] methods = classInstance.getMethods();
-            Method initializeMethod = null;
-
-            for (Method method : methods) {
-                String name = method.getName();
-                if (name.equals("fire")) {
-                    _fireMethod = method;
-                }
-
-                if (name.equals("initialize")) {
-                    initializeMethod = method;
-                }
-            }
-            if (_fireMethod == null) {
-                throw new IllegalActionException(this, "Cannot find fire "
-                        + "method in the wrapper class.");
-            }
-
-            if (initializeMethod == null) {
-                throw new IllegalActionException(this,
-                        "Cannot find initialize "
-                                + "method in the wrapper class.");
-            }
-
-            //initialize the generated object
-            initializeMethod.invoke(_objectWrapper, (Object[]) null);
-            if (_debugging) {
-                _debug("ModularCodeGenerator: Done calling initilize method for generated code.");
-            }
-
             recompileThisLevel.setToken(new BooleanToken(false));
             recompileHierarchy.setToken(new BooleanToken(false));
 
