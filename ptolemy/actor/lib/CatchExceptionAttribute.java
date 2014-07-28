@@ -48,6 +48,7 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Settable;
+import ptolemy.kernel.util.Workspace;
 
 ///////////////////////////////////////////////////////////////////
 //// CatchExceptionAttribute
@@ -175,16 +176,32 @@ public class CatchExceptionAttribute extends AbstractInitializableAttribute
         }
     }
     
+    /** Clone the attribute into the specified workspace.
+     *  @param workspace The workspace for the new object.
+     *  @return A new actor.
+     *  @exception CloneNotSupportedException If a derived class contains
+     *   an attribute that cannot be cloned.
+     */
+    public Object clone(Workspace workspace) throws CloneNotSupportedException {
+        CatchExceptionAttribute newObject = (CatchExceptionAttribute) super.clone(workspace);
+
+        newObject._subscribers = new ArrayList();
+        return newObject;
+    }
+
     /** Do nothing upon execution error.  Exceptions are passed to this 
      *  attribute through handleException().  This method is required by 
      *  the ExecutionListener interface.
+     *  @param manager Ignored.
+     *  @param throwable Ignored.
      */
     public void executionError(Manager manager, Throwable throwable) {
         
     }
   
     /** Restart here if restart is desired.  This method is called upon 
-     * successful completion.
+     *  successful completion.
+     *  @param manager The manager that starts the run.
      */
     public void executionFinished(Manager manager) {
         if (_restartDesired) {          
@@ -192,7 +209,7 @@ public class CatchExceptionAttribute extends AbstractInitializableAttribute
             SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
             
             try {
-            // Start a new execution in a new thread
+                // Start a new execution in a new thread
                 try {
                     manager.startRun();
                 } catch(IllegalActionException e){
@@ -236,7 +253,6 @@ public class CatchExceptionAttribute extends AbstractInitializableAttribute
      *   did not handle it
      *  @exception IllegalActionException If thrown by the parent
      */
-    
     public boolean handleException(NamedObj context, Throwable exception)
             throws IllegalActionException {
         
@@ -391,9 +407,7 @@ public class CatchExceptionAttribute extends AbstractInitializableAttribute
      * 
      * @param manager The model manager
      */
-    
     public void managerStateChanged(Manager manager) {
-
         if (manager.getState().equals(Manager.EXITING)) {
             // Close file writer, if any
             if (_writer != null){
@@ -485,11 +499,9 @@ public class CatchExceptionAttribute extends AbstractInitializableAttribute
      *  @param writer The writer to write to.
      *  @exception IllegalActionException If an IO error occurs.
      */
-    
-    // Copied (with some edits) from FileWriter
-    
     private void _setWriter(java.io.Writer writer)
             throws IllegalActionException {
+        // Copied (with some edits) from FileWriter.
         try {
             if (_writer != null && _writer != _stdOut) {
                 _writer.close();
