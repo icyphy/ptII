@@ -1,7 +1,7 @@
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<entity name="Newton2" class="ptolemy.actor.TypedCompositeActor">
+<entity name="FixedPoint4" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="10.0.devel">
     </property>
     <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={47, 41, 1143, 634}, maximized=false}">
@@ -13,7 +13,7 @@
     <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{155.37906976744188, 92.47001271802327}">
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Test case for Newton-Raphson iteration in the AlgebraicLoopDirector.&#10;This fails to solve x = x^2, because no defaultValue is given.">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Test case for SuccessiveSubstitution in the AlgebraicLoopDirector.&#10;This solves x = x^2.">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="{-275.0, -45.0}">
         </property>
@@ -32,7 +32,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="{-215, -125}">
         </property>
     </property>
-    <property name="init" class="ptolemy.data.expr.Parameter" value="0.5">
+    <property name="init" class="ptolemy.data.expr.Parameter" value="1.1">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -70,19 +70,27 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[-75.0, -125.0]">
         </property>
     </property>
+    <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This version does not converge, and hits infinity before maxIterations.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-270.0, 120.0]">
+        </property>
+    </property>
     <property name="TestExceptionAttribute" class="ptolemy.actor.lib.TestExceptionAttribute">
-        <property name="correctExceptionMessage" class="ptolemy.data.expr.StringParameter" value="Found a zero delay loop containing .Newton2.AlgebraicLoop.UnaryMathFunction&#10;  in .Newton2.AlgebraicLoop and .Newton2.AlgebraicLoop.UnaryMathFunction">
+        <property name="correctExceptionMessage" class="ptolemy.data.expr.StringParameter" value="Test fails in iteration 0.&#10;Value was: Infinity. Should have been: 0.0&#10;  in .FixedPoint4.Test">
+        </property>
+        <property name="matchPrefixOfLength" class="ptolemy.data.expr.Parameter" value="25">
         </property>
         <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{240, 30}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[230.0, -55.0]">
         </property>
     </property>
     <entity name="AlgebraicLoop" class="ptolemy.actor.TypedCompositeActor">
         <property name="_location" class="ptolemy.kernel.util.Location" value="{-220.0, 65.0}">
         </property>
         <property name="AlgebraicLoopDirector" class="ptolemy.domains.algebraic.kernel.AlgebraicLoopDirector">
-            <property name="method" class="ptolemy.data.expr.StringParameter" value="NewtonRaphson">
+            <property name="method" class="ptolemy.data.expr.StringParameter" value="SuccessiveSubstitution">
             </property>
             <property name="maxIterations" class="ptolemy.data.expr.Parameter" value="1000">
             </property>
@@ -91,7 +99,7 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="{-225.0, -80.0}">
             </property>
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={367, 266, 1073, 634}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={394, 412, 1073, 634}, maximized=false}">
         </property>
         <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[839, 524]">
         </property>
@@ -101,8 +109,6 @@
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
-            <property name="defaultValue" class="ptolemy.data.expr.Parameter" value="1.0">
-            </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[-245.0, 110.0]">
             </property>
         </port>
@@ -117,7 +123,7 @@
             </property>
             <port name="input" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
-                <property name="defaultValue" class="ptolemy.data.expr.Parameter" value="">
+                <property name="defaultValue" class="ptolemy.data.expr.Parameter" value="init">
                 </property>
             </port>
         </entity>

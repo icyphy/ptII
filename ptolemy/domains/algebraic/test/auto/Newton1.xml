@@ -13,7 +13,7 @@
     <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{155.37906976744188, 92.47001271802327}">
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Test case for FixedPointIteration in the AlgebraicLoopDirector.&#10;This solves x = x^2.">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Test case for Newton-Raphson iteration in the AlgebraicLoopDirector.&#10;This solves x = x^2.">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="{-275.0, -45.0}">
         </property>

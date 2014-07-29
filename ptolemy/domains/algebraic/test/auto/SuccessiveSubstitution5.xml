@@ -1,7 +1,7 @@
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<entity name="FixedPoint6" class="ptolemy.actor.TypedCompositeActor">
+<entity name="FixedPoint5" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="10.0.devel">
     </property>
     <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={47, 41, 1143, 634}, maximized=false}">
@@ -13,7 +13,7 @@
     <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{155.37906976744188, 92.47001271802327}">
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Test case for FixedPointIteration in the AlgebraicLoopDirector.&#10;This solves x = x^2.">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Test case for SuccessiveSubstitution in the AlgebraicLoopDirector.&#10;This solves x = x^2.">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="{-275.0, -45.0}">
         </property>
@@ -32,7 +32,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="{-215, -125}">
         </property>
     </property>
-    <property name="init" class="ptolemy.data.expr.Parameter" value="-1.0">
+    <property name="init" class="ptolemy.data.expr.Parameter" value="1.01">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -71,12 +71,22 @@
         </property>
     </property>
     <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This version converges to 1.0.">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This version does not converge, and hits maxIterations.">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[-270.0, 120.0]">
         </property>
     </property>
-    <property name="maxIterations" class="ptolemy.data.expr.Parameter" value="100">
+    <property name="TestExceptionAttribute" class="ptolemy.actor.lib.TestExceptionAttribute">
+        <property name="correctExceptionMessage" class="ptolemy.data.expr.StringParameter" value="Failed to converge after 10 iterations.&#10;  in .FixedPoint5.AlgebraicLoop.AlgebraicLoopDirector">
+        </property>
+        <property name="matchPrefixOfLength" class="ptolemy.data.expr.Parameter" value="25">
+        </property>
+        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[230.0, -55.0]">
+        </property>
+    </property>
+    <property name="maxIterations" class="ptolemy.data.expr.Parameter" value="10">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -99,7 +109,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="{-220.0, 65.0}">
         </property>
         <property name="AlgebraicLoopDirector" class="ptolemy.domains.algebraic.kernel.AlgebraicLoopDirector">
-            <property name="method" class="ptolemy.data.expr.StringParameter" value="FixedPointIteration">
+            <property name="method" class="ptolemy.data.expr.StringParameter" value="SuccessiveSubstitution">
             </property>
             <property name="maxIterations" class="ptolemy.data.expr.Parameter" value="maxIterations">
             </property>
@@ -149,7 +159,7 @@
         <link port="UnaryMathFunction.output" relation="relation2"/>
     </entity>
     <entity name="Test" class="ptolemy.actor.lib.Test">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{1.0}">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0.0}">
         </property>
         <property name="tolerance" class="ptolemy.data.expr.Parameter" value="errorTolerance">
         </property>

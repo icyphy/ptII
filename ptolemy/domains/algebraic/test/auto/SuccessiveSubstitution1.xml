@@ -13,7 +13,7 @@
     <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{155.37906976744188, 92.47001271802327}">
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Test case for FixedPointIteration in the AlgebraicLoopDirector.&#10;This solves x = x^2.">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Test case for SuccessiveSubstitution in the AlgebraicLoopDirector.&#10;This solves x = x^2.">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="{-275.0, -45.0}">
         </property>
@@ -74,7 +74,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="{-220.0, 65.0}">
         </property>
         <property name="AlgebraicLoopDirector" class="ptolemy.domains.algebraic.kernel.AlgebraicLoopDirector">
-            <property name="method" class="ptolemy.data.expr.StringParameter" value="FixedPointIteration">
+            <property name="method" class="ptolemy.data.expr.StringParameter" value="SuccessiveSubstitution">
             </property>
             <property name="maxIterations" class="ptolemy.data.expr.Parameter" value="1000">
             </property>
@@ -83,7 +83,7 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="{-225.0, -80.0}">
             </property>
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={394, 412, 1073, 634}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={367, 266, 1073, 634}, maximized=false}">
         </property>
         <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[839, 524]">
         </property>
