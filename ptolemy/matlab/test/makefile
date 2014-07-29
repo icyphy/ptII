@@ -38,8 +38,6 @@
 
 ME =		ptolemy/matlab/test
 
-DIRS =
-
 # Root of the Java directory
 ROOT =		../../..
 
@@ -50,12 +48,30 @@ CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Keep this list alphabetized.
+TCL_SRCS = \
+	testDefs.tcl
+
 JSRCS = \
 	TestEngine.java
 
+# Non-graphical Java tests written in Tcl
+JSIMPLE_TESTS = \
+    Expression.tcl \
+
+# Graphical Java tests that use Tcl.
+# Since there are no tests, we use a dummy file so that the script that builds
+# alljtests.tcl works.  If you add a test, be sure to add
+#  to EXTRA_SRCS
+JGRAPHICAL_TESTS = \
+	dummy.tcl
+
+EXTRA_SRCS =    $(TCL_SRCS) $(JSRCS) \
+	$(JSIMPLE_TESTS) #$(JGRAPHICAL_TESTS)
+
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
-MISC_FILES =	$(DIRS) \
+MISC_FILES = \
+	alljtests.tcl \
 	Counter1.xml \
 	Counter2.xml \
 	ExpressionTest.xml \
@@ -65,8 +81,25 @@ MISC_FILES =	$(DIRS) \
 
 JCLASS = $(JSRCS:%.java=%.class)
 
-all: jclass
-install: jclass jars
+# Don't include all or install rules here, we want the user
+# to run 'make tests' to run the tests.
+
+tests:: $(EXTRA_SRCS) jclass test_java test_jsimple
+
+test_java: jclass
+
+# Tycho-wide test definitions.
+KERNEL_TESTDEFS = $(ROOT)/util/testsuite/testDefs.tcl
+
+# These tests do not require a graphics terminal, but do use TclBlend and Java
+test_jsimple: $(EXTRA_SRCS) jclass  alljtests.tcl
+	$(JTCLSH) alljtests.tcl
+
+
+docs: javadocs
+
+depend:
+	@echo "no dependencies in this directory"
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk
