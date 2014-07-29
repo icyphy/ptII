@@ -1022,11 +1022,16 @@ public class AlgebraicLoopDirector extends StaticSchedulingDirector {
 
             // Main iteration loop
             while(!_stopRequested){ 
-
+                
+                double[] w = new double[_nVars];
+                
                 while(!_stopRequested && !switchToNewton){
-
                     if (Math.abs(_h) < hmin){
-                        throw new IllegalActionException("Failure at minimum step size after " + mapct + " function evaluations.");
+                        StringBuffer message = new StringBuffer();
+                        message.append("Failure at minimum step size after " + mapct + " function evaluations.\n");
+                        message.append("Last solution vector was " + DoubleArrayMath.toString(w) + "\n");
+                        message.append("with homotopy factor lambda at " + x1[_nVars]);
+                        throw new IllegalActionException(message.toString());
                     }
                     if (mapct > _maxIterations){
                         throw new IllegalActionException("Maximum number of function evaluations exceeded.");
@@ -1040,11 +1045,11 @@ public class AlgebraicLoopDirector extends StaticSchedulingDirector {
                         u[k] = x1[k] + _h * or * _t[k];
                     }
                     // Evaluate the function for the value of the predictor step.
-                    double[] w = _map(u);
+                    w = _map(u);
                     mapct++;
                     // Update predictor.
                     // This sets _test=true if a call to Newton should be done. 
-                    _updateQB(x1, u, w, angmax);
+                    _updateQB(w, angmax);
 
                     if (_test){
                         // Newton corrector and update.
@@ -1375,8 +1380,6 @@ public class AlgebraicLoopDirector extends StaticSchedulingDirector {
          *  
          */
         protected void _updateQB(
-                final double[] x,
-                final double[] u,
                 final double[] w,
                 double angmax){
             final int n = _nVars;
