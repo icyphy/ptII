@@ -267,17 +267,19 @@ public class AlgebraicLoopDirector extends StaticSchedulingDirector {
         }
     }
 
-    /** Return g(x).
+    /** Evaluate the loop function for x and save the result in g.
+     * 
      *  This function is called by the solver to evaluate the loop function.
      *  @param x Input to the loop function.
-     *  @return Result of the loop function.
+     *  @param g Double vector of the same size as x. The result will be stored in this function.
+     *
      *  @exception IllegalActionException If the prefire() method
      *   returns false having previously returned true in the same
      *   iteration, or if the prefire() or fire() method of the actor
      *   throws it, or if evaluating the function yields a value that
      *   is not a double.
      */
-    protected double[] _evaluateLoopFunction(double[] x)
+    protected void _evaluateLoopFunction(double[] x, double[] g)
             throws IllegalActionException{
         // Set the argument to the receivers
         int iRec=0;
@@ -317,10 +319,7 @@ public class AlgebraicLoopDirector extends StaticSchedulingDirector {
                 _clearAllDestinationReceivers(actor);
             }
         }
-        // Get the values from the receivers, and return them
-        // FIXME: This should not be allocated each time.
-        double[] g = new double[_nVars];
-
+        // Get the values from the receivers, and return them in g
         int i = 0;
         for (AlgebraicLoopReceiver receiver : _breakVariables) {
             // Store g(x_n)
@@ -338,7 +337,6 @@ public class AlgebraicLoopDirector extends StaticSchedulingDirector {
                         + t + " on port " + port.getName(getContainer()));
             }
         }
-        return g;
     }
 
     /** Initialize the director and all deeply contained actors by calling
@@ -718,7 +716,7 @@ public class AlgebraicLoopDirector extends StaticSchedulingDirector {
                 // Evaluate the loop function to compute x_{n+1} = g(x_n).
                 // This calls the loop function of the outer class.
                 if (_iterationCount == 0){
-                    _g = _evaluateLoopFunction(xIni);
+                    _evaluateLoopFunction(xIni, _g);
                 }
                 final double[] xNew = _newtonStep(xIni, _g);
                 _iterationCount++;
@@ -728,7 +726,7 @@ public class AlgebraicLoopDirector extends StaticSchedulingDirector {
 
                 // For the NewtonRaphson, we do not compare x and xNew, but rather xNew and g(xNew).
                 // Otherwise, the test may indicate convergence if the Newton step is small.
-                _g = _evaluateLoopFunction(xNew);
+                _evaluateLoopFunction(xNew, _g);
                 for(int i = 0; i < xIni.length; i++){
                     final double diff = Math.abs(xNew[i]-_g[i]);
                     if (diff > Math.max(_tolerance[i], diff*_tolerance[i])){
@@ -764,6 +762,7 @@ public class AlgebraicLoopDirector extends StaticSchedulingDirector {
             final int n = x.length;
 
             double[] xNew = new double[n];
+            double[] gNew = new double[n];
             System.arraycopy(x, 0, xNew, 0, n);
             // Jacobian
             double[][] J = new double[n][n];
@@ -771,7 +770,7 @@ public class AlgebraicLoopDirector extends StaticSchedulingDirector {
             for (int i = 0; i < n; i++){
                 final double xOri = xNew[i];
                 xNew[i] += _deltaX[i];
-                final double [] gNew = _evaluateLoopFunction(xNew);
+                _evaluateLoopFunction(xNew, gNew);
                 for(int k = 0; k < n; k++){
                     J[i][k] = (gNew[k]-g[k])/_deltaX[i];
                 }
@@ -1152,8 +1151,9 @@ public class AlgebraicLoopDirector extends StaticSchedulingDirector {
         double[] _map(double[] x)
                 throws IllegalActionException{
             double[] y = new double[_nVars];
+            double[] g = new double[_nVars];
             System.arraycopy(x, 0, y, 0, _nVars);
-            double[] g = _evaluateLoopFunction(y);
+            _evaluateLoopFunction(y, g);
             for(int i = 0; i < _nVars; i++){
                 // In this test case, F(_x) = Math.exp(....), and we seek
                 // _x that satisfies _x-F(_x) = 0.
@@ -1202,7 +1202,6 @@ public class AlgebraicLoopDirector extends StaticSchedulingDirector {
                 _q[l1][k] =  s1 * sv1 + s2 * sv2;
                 _q[l2][k] = -s2 * sv1 + s1 * sv2;
             }
-            /* FIXME: Here we differ when mapct == 5 and _newton calls _givens the 2nd time is called. */
             for(int k = l3; k < _nVars; k++){
                 final double sv1 = _b[l1][k];
                 final double sv2 = _b[l2][k];
@@ -1526,10 +1525,11 @@ public class AlgebraicLoopDirector extends StaticSchedulingDirector {
         public void solve(double[] xIni)
                 throws IllegalActionException{
             _iterationCount = 0;
+            final double[] xNew = new double[_nVars];
             do {
                 // Evaluate the loop function to compute x_{n+1} = g(x_n).
                 // This calls the loop function of the outer class.
-                final double[] xNew = _evaluateLoopFunction(xIni);
+                _evaluateLoopFunction(xIni, xNew);
                 _iterationCount++;
 
                 // Check for convergence
