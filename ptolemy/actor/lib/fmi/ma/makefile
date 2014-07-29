@@ -100,15 +100,15 @@ main: $(OBJECTS)
 
 # Run the master algorithm executable on two fmus.
 run: main
-	./main ../fmus/inc20RC1pt/inc20RC1pt.fmu ../fmus/scale20RC1/scale20RC1.fmu 15 1 1
+	./main ../fmus/inc20RC1pt/inc20RC1pt.fmu ../fmus/scale20RC1pt/scale20RC1pt.fmu ../fmus/output20RC1pt/output20RC1pt.fmu -t15 -h1 -l
 
 # Debug the master algorithm with two fmus using gdb.
 debug: main
-	gdb --args ./main ../fmus/inc20RC1pt/inc20RC1pt.fmu ../fmus/scale20RC1/scale20RC1.fmu 15 1 1
+	gdb --args ./main ../fmus/inc20RC1pt/inc20RC1pt.fmu ../fmus/scale20RC1pt/scale20RC1pt.fmu ../fmus/output20RC1pt/output20RC1pt.fmu -t15 -h1 -l
 
 # Use valgrind to look for memory leaks.
 valgrind: main
-	valgrind --leak-check=full --show-leak-kinds=all ./main ../fmus/inc20RC1pt/inc20RC1pt.fmu ../fmus/scale20RC1/scale20RC1.fmu 15 1 1
+	valgrind --leak-check=full --show-leak-kinds=all ./main ../fmus/inc20RC1pt/inc20RC1pt.fmu ../fmus/scale20RC1pt/scale20RC1pt.fmu ../fmus/output20RC1pt/output20RC1pt.fmu -t15 -h1 -l
 
 # Run the master algorithm and plot the output.
 plot: run

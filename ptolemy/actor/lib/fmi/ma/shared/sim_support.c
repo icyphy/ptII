@@ -551,56 +551,97 @@ int error(const char* message){
     return 0;
 }
 
-// TODO: Use getopt() to parse arguments
+// TODO: Implement log categories
 
 void parseArguments(int argc, char *argv[], char **fmuFileNames, double *tEnd, double *h,
                     int *loggingOn, char *csv_separator, int *nCategories, char **logCategories[]) {
-    // parse command line arguments
-    if (argc > 2) {
-        fmuFileNames[0] = argv[1];
-        fmuFileNames[1] = argv[2];
+
+    int option = 0;
+    int i;
+
+    while ((option = getopt(argc, argv, "t:h:ls:f:")) != -1) {
+        switch(option) {
+            case 't' :
+                if (sscanf(optarg,"%lf", tEnd) != 1) {
+                    printf("error: The given stepsize (%s) is not a number\n", optarg);
+                    exit(EXIT_FAILURE);
+                }
+                break;
+            case 'h' :
+                if (sscanf(optarg,"%lf", h) != 1) {
+                    printf("error: The given stepsize (%s) is not a number\n", optarg);
+                    exit(EXIT_FAILURE);
+                }
+                break;
+            case 'l' : *loggingOn = 1;
+                break;
+            case 's' :
+                if (strlen(optarg) != 1) {
+                printf("error: The given CSV separator char (%s) is not valid\n", optarg);
+                exit(EXIT_FAILURE);
+                }
+                break;
+        }
+    }
+
+    int posArgs = argc - optind;
+    if (posArgs > 1) {
+        for (i = 0; i < posArgs; i++) {
+            fmuFileNames[i] = argv[optind + i];
+        }
     } else {
-        printf("error: no fmu file, this method requires two\n");
+        printf("Error: Not enough FMU files specified. This function requires two.\n");
         printHelp(argv[0]);
         exit(EXIT_FAILURE);
     }
-    if (argc > 3) {
-        if (sscanf(argv[3],"%lf", tEnd) != 1) {
-            printf("error: The given end time (%s) is not a number\n", argv[3]);
-            exit(EXIT_FAILURE);
-        }
-    }
-    if (argc > 4) {
-        if (sscanf(argv[4],"%lf", h) != 1) {
-            printf("error: The given stepsize (%s) is not a number\n", argv[4]);
-            exit(EXIT_FAILURE);
-        }
-    }
-    if (argc > 5) {
-        if (sscanf(argv[5],"%d", loggingOn) != 1 || *loggingOn < 0 || *loggingOn > 1) {
-            printf("error: The given logging flag (%s) is not boolean\n", argv[5]);
-            exit(EXIT_FAILURE);
-        }
-    }
-    if (argc > 6) {
-        if (strlen(argv[6]) != 1) {
-            printf("error: The given CSV separator char (%s) is not valid\n", argv[6]);
-            exit(EXIT_FAILURE);
-        }
-        switch (argv[6][0]) {
-            case 'c': *csv_separator = ','; break; // comma
-            case 's': *csv_separator = ';'; break; // semicolon
-            default:  *csv_separator = argv[6][0]; break; // any other char
-        }
-    }
-    if (argc > 7) {
-        int i;
-        *nCategories = argc - 7;
-        *logCategories = (char **)calloc(sizeof(char *), *nCategories);
-        for (i = 0; i < *nCategories; i++) {
-            (*logCategories)[i] = argv[i + 7];
-        }
-    }
+
+
+    // parse command line arguments
+//    if (argc > 2) {
+//        fmuFileNames[0] = argv[1];
+//        fmuFileNames[1] = argv[2];
+//    } else {
+//        printf("error: no fmu file, this method requires two\n");
+//        printHelp(argv[0]);
+//        exit(EXIT_FAILURE);
+//    }
+//    if (argc > 3) {
+//        if (sscanf(argv[3],"%lf", tEnd) != 1) {
+//            printf("error: The given end time (%s) is not a number\n", argv[3]);
+//            exit(EXIT_FAILURE);
+//        }
+//    }
+//    if (argc > 4) {
+//        if (sscanf(argv[4],"%lf", h) != 1) {
+//            printf("error: The given stepsize (%s) is not a number\n", argv[4]);
+//            exit(EXIT_FAILURE);
+//        }
+//    }
+//    if (argc > 5) {
+//        if (sscanf(argv[5],"%d", loggingOn) != 1 || *loggingOn < 0 || *loggingOn > 1) {
+//            printf("error: The given logging flag (%s) is not boolean\n", argv[5]);
+//            exit(EXIT_FAILURE);
+//        }
+//    }
+//    if (argc > 6) {
+//        if (strlen(argv[6]) != 1) {
+//            printf("error: The given CSV separator char (%s) is not valid\n", argv[6]);
+//            exit(EXIT_FAILURE);
+//        }
+//        switch (argv[6][0]) {
+//            case 'c': *csv_separator = ','; break; // comma
+//            case 's': *csv_separator = ';'; break; // semicolon
+//            default:  *csv_separator = argv[6][0]; break; // any other char
+//        }
+//    }
+//    if (argc > 7) {
+//        int i;
+//        *nCategories = argc - 7;
+//        *logCategories = (char **)calloc(sizeof(char *), *nCategories);
+//        for (i = 0; i < *nCategories; i++) {
+//            (*logCategories)[i] = argv[i + 7];
+//        }
+//    }
 }
 
 void printHelp(const char *fmusim) {

@@ -32,8 +32,8 @@
 #include "fmi.h"
 #include "sim_support.h"
 
-#define NUMBER_OF_FMUS 2
-#define NUMBER_OF_EDGES 1
+#define NUMBER_OF_FMUS 3
+#define NUMBER_OF_EDGES 2
 
 double tEnd = 1.0;
 double tStart = 0;                       // start time
@@ -51,8 +51,6 @@ static fmiComponent initializeFMU(FMU *fmu, fmiBoolean visible, fmiBoolean loggi
     fmu->callbacks.freeMemory = free;
     fmu->callbacks.stepFinished = NULL; // fmiDoStep has to be carried out synchronously
     fmu->callbacks.componentEnvironment = fmu; // pointer to current fmu from the environment.
-
-    // fmu->lastFMUstate = (fmiFMUstate*) calloc(1, sizeof(ModelInstance));
 
     fmiReal tolerance = 0;                   // used in setting up the experiment
     fmiBoolean toleranceDefined = fmiFalse;  // true if model description define tolerance
@@ -136,12 +134,36 @@ static fmiStatus rollbackFMUs(FMU *fmus, int numberOfFMUs) {
 
 static fmiStatus setValue(portConnection* connection)
 {
+    // FIXME: Currently does not support type recognition
+
     fmiStatus fmiFlag;
     fmiInteger tempInt;
     fmiReal tempReal;
-    fmiFlag = connection->sourceFMU->getInteger(connection->sourceFMU->component, &connection->sourcePort, 1, &tempInt);
-    tempReal = (fmiReal)tempInt;
-    fmiFlag = connection->sinkFMU->setReal(connection->sinkFMU->component, &connection->sinkPort, 1, &tempReal);
+
+    // get source value and cast if neccessary
+    switch (connection->sourceType) {
+        case fmi_Integer :
+            fmiFlag = connection->sourceFMU->getInteger(connection->sourceFMU->component, &connection->sourcePort, 1, &tempInt);
+            tempReal = (fmiReal)tempInt;
+            break;
+        case fmi_Real :
+            fmiFlag = connection->sourceFMU->getReal(connection->sourceFMU->component, &connection->sourcePort, 1, &tempReal);
+            break;
+        default :
+            return fmiError;
+    }
+
+    // set sink value
+    switch (connection->sinkType) {
+        case fmi_Integer :
+            fmiFlag = connection->sinkFMU->setInteger(connection->sinkFMU->component, &connection->sinkPort, 1, &tempInt);
+            break;
+        case fmi_Real :
+            fmiFlag = connection->sinkFMU->setReal(connection->sinkFMU->component, &connection->sinkPort, 1, &tempReal);
+            break;
+        default :
+            return fmiError;
+    }
     return fmiFlag;
 }
 
@@ -149,16 +171,18 @@ static fmiStatus setValue(portConnection* connection)
 // simulate the given FMUs from tStart = 0 to tEnd.
 static int simulate(FMU *fmus, portConnection* connections, double h, fmiBoolean loggingOn, char separator) {
 
-    double time;
+    // set up experiment
+    double time = tStart;
     double stepSize = h;
     double newStepSize = h;
-    fmiStatus fmiFlag;   // return code of the fmu functions
-	fmiStatus simulationFlag = fmiOK; // state of the whole simulation
 
-    int i;
+	// temporary variables
+    fmiStatus fmiFlag = fmiOK;   // return code of the fmu functions
+    fmiStatus simulationFlag = fmiOK; // status of the whole simulation
+    int i = 0;
     int nSteps = 0;
+    int returnValue = 1; // 1 = success
     FILE* file;
-    int returnValue = 1; // success!
 
     // open result file
     if (!(file = fopen(RESULT_FILE, "w"))) {
@@ -167,22 +191,16 @@ static int simulate(FMU *fmus, portConnection* connections, double h, fmiBoolean
         return 0; // failure
     }
 
-
+    // TODO: Should be done by an FMU
     // output solution for time t0
-    outputRow(&fmus[NUMBER_OF_FMUS-1], fmus[NUMBER_OF_FMUS-1].component, tStart, file, separator, TRUE);  // output column names
-    outputRow(&fmus[NUMBER_OF_FMUS-1], fmus[NUMBER_OF_FMUS-1].component, tStart, file, separator, FALSE); // output values
+    outputRow(&fmus[NUMBER_OF_FMUS-2], fmus[NUMBER_OF_FMUS-1].component, time, file, separator, TRUE);  // output column names
+    outputRow(&fmus[NUMBER_OF_FMUS-2], fmus[NUMBER_OF_FMUS-1].component, time, file, separator, FALSE); // output values
 
     // enter the simulation loop
-    time = tStart;
-//    fmiInteger tempInt;
-//    fmiReal tempReal;
-//    fmiValueReference inputTwo = getValueReference(getScalarVariable(fmus[1].modelDescription, 0));
-//    fmiValueReference outputOne = getValueReference(getScalarVariable(fmus[0].modelDescription, 0));
 
-// FIXME: remove evil gotos!!
+    // FIXME: remove evil gotos!!
     while (time < tEnd) {
         // Run trough the topologically sorted list of FMUs (Master-Step)
-    	int i;
 
         // Set input values
         for (i = 0 ; i < NUMBER_OF_EDGES; i++) {
@@ -190,8 +208,8 @@ static int simulate(FMU *fmus, portConnection* connections, double h, fmiBoolean
         }
 
         // Save the current state of all FMUs
-        // TODO: The implementation is a HACK! There has to be a way to skip FMUs that do not support states!
-        for (i = 0 ; i < NUMBER_OF_FMUS - 1 ; i++) {
+        // TODO: The implementation does not yet take FMUs into account, that do not support get and set state.
+        for (i = 0 ; i < NUMBER_OF_FMUS ; i++) {
             fmiFlag = fmus[i].getFMUstate(fmus[i].component, &fmus[i].lastFMUstate);
 
             if (fmiFlag > fmiWarning) {
@@ -228,7 +246,7 @@ static int simulate(FMU *fmus, portConnection* connections, double h, fmiBoolean
     	if (simulationFlag == fmiDiscard) {
     	    // TODO: There is currently no way to determine, which FMU supports rollback and which does not!
     	    // There has to be a flag in the FMU struct so that we can go over all FMUs. The implementation below is a hack!
-    	    fmiFlag = rollbackFMUs(fmus, NUMBER_OF_FMUS -1 );
+    	    fmiFlag = rollbackFMUs(fmus, NUMBER_OF_FMUS );
             if (fmiFlag > fmiWarning) {
                 printf("Rolling back of FMUs failed. Terminating simulation.");
                 goto endSimulation;
@@ -239,7 +257,9 @@ static int simulate(FMU *fmus, portConnection* connections, double h, fmiBoolean
     	if (simulationFlag != fmiDiscard) {
     	    time += stepSize;
     	}
-        outputRow(&fmus[NUMBER_OF_FMUS-1], fmus[NUMBER_OF_FMUS-1].component, time, file, separator, FALSE); // output values for this step
+
+    	// TODO: Should be done by FMU
+        outputRow(&fmus[NUMBER_OF_FMUS-2], fmus[NUMBER_OF_FMUS-1].component, time, file, separator, FALSE); // output values for this step
 
         nSteps++;
     }
@@ -273,9 +293,18 @@ static int simulate(FMU *fmus, portConnection* connections, double h, fmiBoolean
 
 void setupConnections(FMU* fmus, portConnection* connections) {
     connections[0].sourceFMU = &fmus[0];
-    connections[0].sinkFMU = &fmus[1];
     connections[0].sourcePort = getValueReference(getScalarVariable(fmus[0].modelDescription, 0));
+    connections[0].sourceType = fmi_Integer;
+    connections[0].sinkFMU = &fmus[1];
     connections[0].sinkPort = getValueReference(getScalarVariable(fmus[1].modelDescription, 0));
+    connections[0].sinkType = fmi_Real;
+
+    connections[1].sourceFMU = &fmus[1];
+    connections[1].sourcePort = getValueReference(getScalarVariable(fmus[1].modelDescription, 1));
+    connections[1].sourceType = fmi_Real;
+    connections[1].sinkFMU = &fmus[2];
+    connections[1].sinkPort = getValueReference(getScalarVariable(fmus[2].modelDescription, 0));
+    connections[1].sinkType = fmi_Real;
 }
 
 int main(int argc, char *argv[]) {
@@ -335,12 +364,6 @@ int main(int argc, char *argv[]) {
         dlclose(fmus[i].dllHandle);
     }
 #endif
-    //    for (i = 0; i < NUMBER_OF_FMUS; i++) {
-    //    if (fmus[i].lastFMUstate != NULL) {
-    //        // FIXME: we are ignoring the return value of this call.
-    //        fmus[i].freeFMUstate(fmus[i].component, fmus[i].lastFMUstate);
-    //    }
-    //}
 
     for (i = 0; i < NUMBER_OF_FMUS; i++) {
         freeModelDescription(fmus[i].modelDescription);

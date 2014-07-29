@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<fmiModelDescription
+  fmiVersion="2.0"
+  modelName="output20RC1pt"
+  guid="{347de34e-28a1-4374-bcb7-293e55bced8b}"
+  numberOfEventIndicators="0">
+
+<CoSimulation
+  modelIdentifier="output20RC1pt"
+  canHandleVariableCommunicationStepSize="true"/>
+
+<LogCategories>
+  <Category name="logAll"/>
+  <Category name="logError"/>
+  <Category name="logFmiCall"/>
+  <Category name="logEvent"/>
+</LogCategories>
+
+<ModelVariables>
+  <ScalarVariable name="output" valueReference="0" description="output written to the csv file" causality="input">
+     <Integer />
+  </ScalarVariable>
+</ModelVariables>
+
+<ModelStructure>
+</ModelStructure>
+
+</fmiModelDescription>

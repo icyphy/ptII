@@ -87,11 +87,20 @@ typedef struct {
     fmiGetNominalsOfContinuousStatesTYPE *getNominalsOfContinuousStates;
 } FMU;
 
+typedef enum {
+    fmi_Integer,
+    fmi_Real,
+    fmi_Boolean,
+    fmi_String
+} fmiValueType;
+
 typedef struct {
     FMU* sourceFMU;
     FMU* sinkFMU;
     fmiValueReference sourcePort;
     fmiValueReference sinkPort;
+    fmiValueType sourceType;
+    fmiValueType sinkType;
 } portConnection;
 
 #endif // FMI_H
