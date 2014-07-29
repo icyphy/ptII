@@ -304,12 +304,18 @@ void loadFMU(FMU *fmu, const char* fmuFileName) {
     const char *modelId;
 
     // get absolute path to FMU, NULL if not found
-    fmuPath = getFmuPath(fmuFileName);
-    if (!fmuPath) exit(EXIT_FAILURE);
+    fmuPath = getFmuPath(fmuFileName); // TODO: Is this function call really neccessary?
+    if (!fmuPath) {
+        printf("Strange function call for FMU file %s failed!\n", fmuFileName);
+        exit(EXIT_FAILURE);
+    }
 
     // unzip the FMU to the tmpPath directory
     tmpPath = getTmpPath();
-    if (!unzip(fmuPath, tmpPath)) exit(EXIT_FAILURE);
+    if (!unzip(fmuPath, tmpPath)) {
+        printf("Could not unzip FMU at %s. Does this file exist?\n", fmuFileName);
+        exit(EXIT_FAILURE);
+    }
 
     // parse tmpPath\modelDescription.xml
     xmlPath = calloc(sizeof(char), strlen(tmpPath) + strlen(XML_FILE) + 1);
@@ -577,80 +583,57 @@ void parseArguments(int argc, char *argv[], char **fmuFileNames, double *tEnd, d
                 break;
             case 's' :
                 if (strlen(optarg) != 1) {
-                printf("error: The given CSV separator char (%s) is not valid\n", optarg);
-                exit(EXIT_FAILURE);
+                    printf("error: The given CSV separator char (%s) is not valid\n", optarg);
+                    exit(EXIT_FAILURE);
+                } else {
+                    switch (*optarg) {
+                        case 'c': *csv_separator = ','; break; // comma
+                        case 's': *csv_separator = ';'; break; // semicolon
+                        default:  *csv_separator = *optarg; break; // any other char
                 }
                 break;
+            }
         }
     }
-
+    // number of positional arguments (arguments without a dash)
     int posArgs = argc - optind;
-    if (posArgs > 1) {
+
+    // parse FMU files
+    if (posArgs > 0) {
         for (i = 0; i < posArgs; i++) {
-            fmuFileNames[i] = argv[optind + i];
+            if (strstr(argv[optind], ".fmu") || strstr(argv[optind], ".FMU")) {
+                // save fmu file path and name to array
+                fmuFileNames[i] = argv[optind];
+                // set optind to next element after current fmu file
+                optind++;
+            }
+            else {
+                break;
+            }
         }
     } else {
-        printf("Error: Not enough FMU files specified. This function requires two.\n");
+        printf("Error: No FMU file specified.\n");
         printHelp(argv[0]);
         exit(EXIT_FAILURE);
     }
 
-
-    // parse command line arguments
-//    if (argc > 2) {
-//        fmuFileNames[0] = argv[1];
-//        fmuFileNames[1] = argv[2];
-//    } else {
-//        printf("error: no fmu file, this method requires two\n");
-//        printHelp(argv[0]);
-//        exit(EXIT_FAILURE);
-//    }
-//    if (argc > 3) {
-//        if (sscanf(argv[3],"%lf", tEnd) != 1) {
-//            printf("error: The given end time (%s) is not a number\n", argv[3]);
-//            exit(EXIT_FAILURE);
-//        }
-//    }
-//    if (argc > 4) {
-//        if (sscanf(argv[4],"%lf", h) != 1) {
-//            printf("error: The given stepsize (%s) is not a number\n", argv[4]);
-//            exit(EXIT_FAILURE);
-//        }
-//    }
-//    if (argc > 5) {
-//        if (sscanf(argv[5],"%d", loggingOn) != 1 || *loggingOn < 0 || *loggingOn > 1) {
-//            printf("error: The given logging flag (%s) is not boolean\n", argv[5]);
-//            exit(EXIT_FAILURE);
-//        }
-//    }
-//    if (argc > 6) {
-//        if (strlen(argv[6]) != 1) {
-//            printf("error: The given CSV separator char (%s) is not valid\n", argv[6]);
-//            exit(EXIT_FAILURE);
-//        }
-//        switch (argv[6][0]) {
-//            case 'c': *csv_separator = ','; break; // comma
-//            case 's': *csv_separator = ';'; break; // semicolon
-//            default:  *csv_separator = argv[6][0]; break; // any other char
-//        }
-//    }
-//    if (argc > 7) {
-//        int i;
-//        *nCategories = argc - 7;
-//        *logCategories = (char **)calloc(sizeof(char *), *nCategories);
-//        for (i = 0; i < *nCategories; i++) {
-//            (*logCategories)[i] = argv[i + 7];
-//        }
-//    }
+    *nCategories = argc - optind;
+    // parse log categories
+    if (*nCategories > 0) {
+        *logCategories = (char **)calloc(sizeof(char *), *nCategories);
+        for (i = 0; i < *nCategories; i++) {
+            (*logCategories)[i] = argv[optind];
+            optind++;
+        }
+    }
 }
 
 void printHelp(const char *fmusim) {
-    printf("command syntax: %s <model1.fmu> <model2.fmu> <tEnd> <h> <loggingOn> <csv separator>\n", fmusim);
-    printf("   <model1.fmu> .... path to FMU, relative to current dir or absolute, required\n");
-    printf("   <model2.fmu> .... path to FMU, relative to current dir or absolute, required\n");
-    printf("   <tEnd> ......... end  time of simulation,   optional, defaults to 1.0 sec\n");
-    printf("   <h> ............ step size of simulation,   optional, defaults to 0.1 sec\n");
-    printf("   <loggingOn> .... 1 to activate logging,     optional, defaults to 0\n");
-    printf("   <csv separator>. separator in csv file,     optional, c for ',', s for';', defaults to c\n");
-    printf("   <logCategories>. list of active categories, optional, see modelDescription.xml for possible values\n");
+    printf("command syntax: %s <model1.fmu> [<modelX.fmu> ...] -t<tEnd> -h<h> -s<csvSeparator> -l <logCategories>\n", fmusim);
+    printf("   <model.fmu> .... path to FMU, relative to current dir or absolute, required\n");
+    printf("   -t<tEnd> ......... end time of simulation,  optional, defaults to 1.0 sec\n");
+    printf("   -h<h> ............ step size of simulation, optional, defaults to 0.1 sec\n");
+    printf("   -l ............... activate logging,        optional, no parameter needed\n");
+    printf("   -s<csvSeparator> . separator in csv file,   optional, c for ',', s for';', defaults to c\n");
+    printf("   <logCategories> .. list of log categories,  optional, see modelDescription.xml for possible values\n");
 }
