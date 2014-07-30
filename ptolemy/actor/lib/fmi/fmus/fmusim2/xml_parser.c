@@ -603,7 +603,7 @@ static void XMLCALL endElement(void *context, const char *elm) {
 /*                  stackPush(stack, cs); */
                  break;
             }
-#endif 
+#endif
 
 #if FMI_VERSION >= 2
     case elm_CoSimulation:

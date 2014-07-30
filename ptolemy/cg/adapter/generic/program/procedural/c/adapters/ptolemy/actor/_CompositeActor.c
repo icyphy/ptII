@@ -105,7 +105,7 @@ void CompositeActor_Fire(struct CompositeActor* actor) {
                     }
                   }
                   // Don't return here or else this will fail:                                                               // $PTII/bin/ptcg -generatorPackage ptolemy.cg.kernel.generic.program.procedural.c $PTII/ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/domains/ptides/lib/test/auto/Network.xml
-                  //return;   
+                  //return;
                   //exit(-1);
                 }
                 //}

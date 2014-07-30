@@ -50,7 +50,7 @@ void eventUpdate(ModelInstance* comp, fmiEventInfo* eventInfo) {
   fprintf(stderr, "inc20RC1.c: eventUpdate()\n");
   fflush(stderr);
     i(counter_) += 1;
-    if (i(counter_) == 13) 
+    if (i(counter_) == 13)
         eventInfo->terminateSimulation = fmiTrue;
     else {
         eventInfo->nextEventTimeDefined   = fmiTrue;

@@ -1789,21 +1789,21 @@ FMI_Export const char* fmiGetVersion() {
 }
 
 FMI_Export fmiStatus fmiSetDebugLogging(fmiComponent    c,
-                                        fmiBoolean      loggingOn, 
-                                        size_t          nCategories, 
+                                        fmiBoolean      loggingOn,
+                                        size_t          nCategories,
                                         const fmiString categories[]) {
     return fmi2_set_debug_logging(c, loggingOn, nCategories, categories);
 }
 
 FMI_Export fmiComponent fmiInstantiate(fmiString instanceName,
-                                       fmiType   fmuType, 
-                                       fmiString fmuGUID, 
-                                       fmiString fmuResourceLocation, 
-                                       const fmiCallbackFunctions* functions, 
+                                       fmiType   fmuType,
+                                       fmiString fmuGUID,
+                                       fmiString fmuResourceLocation,
+                                       const fmiCallbackFunctions* functions,
                                        fmiBoolean                  visible,
                                        fmiBoolean                  loggingOn) {
-                                           
-    
+
+
     if (fmuType == fmiCoSimulation) {
 #ifndef FMUCS20
         functions->logger(0, instanceName, fmiError, "ERROR", "The model is not compiled as a Co-Simulation FMU.");
@@ -1823,11 +1823,11 @@ FMI_Export void fmiFreeInstance(fmiComponent c) {
     fmi2_free_instance(c);
 }
 
-FMI_Export fmiStatus fmiSetupExperiment(fmiComponent c, 
-                                        fmiBoolean   toleranceDefined, 
-                                        fmiReal      tolerance, 
-                                        fmiReal      startTime, 
-                                        fmiBoolean   stopTimeDefined, 
+FMI_Export fmiStatus fmiSetupExperiment(fmiComponent c,
+                                        fmiBoolean   toleranceDefined,
+                                        fmiReal      tolerance,
+                                        fmiReal      startTime,
+                                        fmiBoolean   stopTimeDefined,
                                         fmiReal      stopTime) {
     return fmi2_setup_experiment(c, toleranceDefined, tolerance, startTime,
                                  stopTimeDefined, stopTime);
@@ -1943,8 +1943,8 @@ FMI_Export fmiStatus fmiEnterContinuousTimeMode(fmiComponent c) {
 }
 
 FMI_Export fmiStatus fmiCompletedIntegratorStep(fmiComponent c,
-                                                fmiBoolean   noSetFMUStatePriorToCurrentPoint, 
-                                                fmiBoolean*  enterEventMode, 
+                                                fmiBoolean   noSetFMUStatePriorToCurrentPoint,
+                                                fmiBoolean*  enterEventMode,
                                                 fmiBoolean*   terminateSimulation) {
         return fmi2_completed_integrator_step(c, noSetFMUStatePriorToCurrentPoint,
                                           enterEventMode, terminateSimulation);
@@ -1964,7 +1964,7 @@ FMI_Export fmiStatus fmiGetDerivatives(fmiComponent c, fmiReal derivatives[],
         return fmi2_get_derivatives(c, derivatives, nx);
 }
 
-FMI_Export fmiStatus fmiGetEventIndicators(fmiComponent c, 
+FMI_Export fmiStatus fmiGetEventIndicators(fmiComponent c,
                                            fmiReal eventIndicators[], size_t ni) {
         return fmi2_get_event_indicators(c, eventIndicators, ni);
 }
@@ -1974,8 +1974,8 @@ FMI_Export fmiStatus fmiGetContinuousStates(fmiComponent c, fmiReal x[],
         return fmi2_get_continuous_states(c, x, nx);
 }
 
-FMI_Export fmiStatus fmiGetNominalsOfContinuousStates(fmiComponent c, 
-                                                      fmiReal x_nominal[], 
+FMI_Export fmiStatus fmiGetNominalsOfContinuousStates(fmiComponent c,
+                                                      fmiReal x_nominal[],
                                                       size_t nx) {
         return fmi2_get_nominals_of_continuous_states(c, x_nominal, nx);
 }
@@ -1985,7 +1985,7 @@ FMI_Export fmiStatus fmiGetNominalsOfContinuousStates(fmiComponent c,
 #ifdef FMUCS20
 /* FMI 2.0 functions specific for CS.*/
 
-FMI_Export fmiStatus fmiSetRealInputDerivatives(fmiComponent c, 
+FMI_Export fmiStatus fmiSetRealInputDerivatives(fmiComponent c,
                                                 const fmiValueReference vr[],
                                                 size_t nvr, const fmiInteger order[],
                                                 const fmiReal value[]) {
@@ -2033,7 +2033,7 @@ FMI_Export fmiStatus fmiGetBooleanStatus(fmiComponent c, const fmiStatusKind s,
 FMI_Export fmiStatus fmiGetStringStatus(fmiComponent c, const fmiStatusKind s,
                                         fmiString* value) {
         return fmi2_get_string_status(c, s, value);
-        
+
 }
 
 #endif

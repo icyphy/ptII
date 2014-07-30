@@ -536,7 +536,7 @@ bool CQLinkedList_Insert(struct CQLinkedList * list, struct DEEvent* item) {
         printf("CQ_LinkedList_Insert start %p %p\n", (void*) list, (void*) item);
         CQLinkedList_Print(list);
 #endif
-        
+
         if (list == NULL) {
 #ifdef CQDEBUG
                 printf("CQ_LinkedList_Insert end: list was null %p %p\n", (void*) list, (void*) item);

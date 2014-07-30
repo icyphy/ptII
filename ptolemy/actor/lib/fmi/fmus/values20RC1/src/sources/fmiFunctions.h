@@ -153,7 +153,7 @@ extern "C" {
   it may be set to __declspec(dllimport).
 */
 /* Updated as per https://trac.fmi-standard.org/ticket/173 */
-#if !defined(FMI_Export) 
+#if !defined(FMI_Export)
 #if !defined(FMI_FUNCTION_PREFIX)
   #if defined _WIN32 || defined __CYGWIN__
 /* Note: both gcc & MSVC on Windows support this syntax. */

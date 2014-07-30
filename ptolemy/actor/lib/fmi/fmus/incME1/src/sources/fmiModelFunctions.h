@@ -87,7 +87,7 @@
 #include <stdlib.h>
 
 // Back-ported from https://trac.fmi-standard.org/ticket/173
-#if !defined(DllExport) 
+#if !defined(DllExport)
 #if !defined(FMI_FUNCTION_PREFIX)
   #if defined _WIN32 || defined __CYGWIN__
   /* Note: both gcc & MSVC on Windows support this syntax. */

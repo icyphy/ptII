@@ -1,6 +1,6 @@
 /* ---------------------------------------------------------------------------*
  *
- * This FMU models the ball dynamics of the right ball of Fig 4 in 
+ * This FMU models the ball dynamics of the right ball of Fig 4 in
  * http://www.eecs.berkeley.edu/Pubs/TechRpts/2014/EECS-2014-15.html
  *
  * Authors: David Broman
@@ -34,12 +34,12 @@
 typedef struct {
 
     //Parameters
-    fmiReal m;               
-    fmiReal x_0;               
-    fmiReal v_0;              
+    fmiReal m;
+    fmiReal x_0;
+    fmiReal v_0;
 
     //Input variables
-    fmiReal F;                  // Force 
+    fmiReal F;                  // Force
     fmiReal F_i;                // Impulse force
 
     //Output variables
@@ -131,7 +131,7 @@ fmiStatus FMIAPI fmiDoStep(fmiComponent c, fmiReal currentCommunicationPoint,
         VAR(v) += VAR(F_i) / VAR(m);
         return fmiOK;
     }
-    
+
     // Forward Euler for equatons
     // x' = x;
     // v' = F / MASS;
@@ -142,7 +142,7 @@ fmiStatus FMIAPI fmiDoStep(fmiComponent c, fmiReal currentCommunicationPoint,
         h = (step_left >= STEP) ? STEP : step_left;
         step_left -= STEP;
         VAR(x) = VAR(x) + h * VAR(v);
-        VAR(v) = VAR(v) + h * (VAR(F) / VAR(m));        
+        VAR(v) = VAR(v) + h * (VAR(F) / VAR(m));
     }
 
     return fmiOK;
@@ -186,19 +186,19 @@ fmiStatus FMIAPI fmiGetReal(fmiComponent c, const fmiValueReference vr[], size_t
     for (i = 0; i < nvr; i++) {
         valueReference = vr[i];
         switch(valueReference){
-        case VAR_x: 
+        case VAR_x:
           value[i] = component->x;
           break;
-        case VAR_v: 
+        case VAR_v:
           value[i] = component->v;
           break;
-        case VAR_x_0: 
+        case VAR_x_0:
           value[i] = component->x_0;
           break;
-        case VAR_v_0: 
+        case VAR_v_0:
           value[i] = component->v_0;
           break;
-        case VAR_m: 
+        case VAR_m:
           value[i] = component->m;
           break;
         default:

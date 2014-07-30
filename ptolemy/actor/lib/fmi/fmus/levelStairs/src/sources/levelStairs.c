@@ -1,18 +1,18 @@
 /* ---------------------------------------------------------------------------*
  *
- * This FMU models a staircase as a Mealy machine with fixed time period. 
- * The FMU is intended to be used togehter with a bouncing ball FMU, so 
- * that the ball bounces down the staircase. 
+ * This FMU models a staircase as a Mealy machine with fixed time period.
+ * The FMU is intended to be used togehter with a bouncing ball FMU, so
+ * that the ball bounces down the staircase.
  *
  * Note that this FMU makes use of function:
- * 
+ *
  *   fmiStatus  fmiGetMaxStepSize(fmiComponent c, fmiReal *maxStepSize);
  *
- * that was proposed as an extension to the FMU standard 
+ * that was proposed as an extension to the FMU standard
  * (see EMSOFT 2013 paper by Broman et al.)
  *
  * This file is based on the template FMU 'stepCounter' developed by
- * Christopher Brooks and Edward A. Lee. 
+ * Christopher Brooks and Edward A. Lee.
  *
  * Authors: David Broman
  * ---------------------------------------------------------------------------*/
@@ -49,8 +49,8 @@ typedef enum {STAIR_STATE, FLOOR_STATE} state;
 typedef struct {
 
     //Input variables
-    fmiReal reference;         // The reference signal. 
-  
+    fmiReal reference;         // The reference signal.
+
     //Output variables
     fmiReal level;             // The output level of the stair/floor
 
@@ -59,7 +59,7 @@ typedef struct {
     state current_state;        // Current state of the staircase (stairs or floor)
 
     // Generic Mealy machine state
-    fmiBoolean atBreakpoint;    // Indicator that the first output at a step 
+    fmiBoolean atBreakpoint;    // Indicator that the first output at a step
                                 // time has been produced.
 
     // General states
@@ -79,7 +79,7 @@ typedef struct {
  */
 /* We add a prefix of the MODEL_IDENTIFIER so that when we run two models that
  * both have .so files that have a init_state() function, we get the right function.
- */   
+ */
 #define init_state fmiFullName(init_state)
 void FMIAPI init_state(fmiComponent c) {
     ModelInstance* component = (ModelInstance *) c;
@@ -270,7 +270,7 @@ fmiStatus FMIAPI fmiGetReal(fmiComponent c, const fmiValueReference vr[], size_t
         valueReference = vr[i];
         if (valueReference == LEVEL) {
           value[i] = component->level;
-        } 
+        }
     }
     return fmiOK;
 }
@@ -370,7 +370,7 @@ fmiStatus FMIAPI fmiInitializeSlave(fmiComponent c,
     component->lastSuccessfulTime = tStart;
     component->atBreakpoint = fmiFalse;
     init_state(c);
-    
+
     return fmiOK;
 }
 

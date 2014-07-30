@@ -1,7 +1,7 @@
 /* ---------------------------------------------------------------------------*
  * fmuTemplate.c
  * Implementation of the FMI interface based on functions and macros to
- * be defined by the includer of this file. 
+ * be defined by the includer of this file.
  * If FMI_COSIMULATION is defined, this implements "FMI for Co-Simulation 2.0",
  * otherwise "FMI for Model Exchange 2.0".
  * The "FMI for Co-Simulation 2.0", implementation assumes that exactly the
@@ -21,7 +21,7 @@
 
 fmiBoolean isCategoryLogged(ModelInstance *comp, int categoryIndex);
 
-// macro to be used to log messages. The macro check if current 
+// macro to be used to log messages. The macro check if current
 // log category is valid and, if true, call the logger provided by simulator.
 
 // ## is special to gcc, see http://gcc.gnu.org/onlinedocs/cpp/Variadic-Macros.html
@@ -663,11 +663,11 @@ fmiStatus fmiDoStep(fmiComponent c, fmiReal currentCommunicationPoint,
     ModelInstance *comp = (ModelInstance *)c;
     double h = communicationStepSize / 10;
     int k;
-#if NUMBER_OF_EVENT_INDICATORS>0 || NUMBER_OF_REALS>0 
+#if NUMBER_OF_EVENT_INDICATORS>0 || NUMBER_OF_REALS>0
     int i;
 #endif
     const int n = 10; // how many Euler steps to perform for one do step
-#if NUMBER_OF_REALS>0 
+#if NUMBER_OF_REALS>0
     double prevState[max(NUMBER_OF_STATES, 1)];
 #endif
 #if NUMBER_OF_EVENT_INDICATORS>0

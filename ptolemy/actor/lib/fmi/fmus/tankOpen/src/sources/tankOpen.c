@@ -10,7 +10,7 @@
  *  - Its outputs do not depend on time.
  *
  * This file is based on the template FMU 'helloWorldME2' developed by
- * Christopher Brooks and Edward A. Lee. 
+ * Christopher Brooks and Edward A. Lee.
  *
  * Authors: Michael Wetter.
  * ---------------------------------------------------------------------------*/
@@ -71,13 +71,13 @@ typedef struct {
 
 
 FMI_Export fmiComponent fmiInstantiate(fmiString instanceName,
-        fmiType   fmuType, 
-        fmiString fmuGUID, 
-        fmiString fmuResourceLocation, 
-        const fmiCallbackFunctions* functions, 
+        fmiType   fmuType,
+        fmiString fmuGUID,
+        fmiString fmuResourceLocation,
+        const fmiCallbackFunctions* functions,
         fmiBoolean                  visible,
         fmiBoolean                  loggingOn) {
-                                           
+
     ModelInstance* component;
 
     // Perform checks.
@@ -137,9 +137,9 @@ FMI_Export fmiStatus fmiExitInitializationMode(fmiComponent c) {
     return fmiOK;
 }
 
-FMI_Export fmiStatus fmiGetReal(fmiComponent c, 
-                                const fmiValueReference vr[], 
-                                size_t nvr, 
+FMI_Export fmiStatus fmiGetReal(fmiComponent c,
+                                const fmiValueReference vr[],
+                                size_t nvr,
                                 fmiReal value[]) {
     int i;
     double dp;
@@ -209,21 +209,21 @@ FMI_Export fmiStatus fmiGetString(fmiComponent c, const fmiValueReference vr[],
 
 FMI_Export const char* fmiGetTypesPlatform() {
     // We return a string literal, which does not require malloc.
-    // Note that this is declared const char * because it is not safe to 
+    // Note that this is declared const char * because it is not safe to
     // modify a string literal in C.
     return "default";
 }
 
 FMI_Export const char* fmiGetVersion() {
     // We return a string literal, which does not require malloc.
-    // Note that this is declared const char * because it is not safe to 
+    // Note that this is declared const char * because it is not safe to
     // modify a string literal in C.
     return "2.0";
 }
 
 FMI_Export fmiStatus fmiSetDebugLogging(fmiComponent c,
-        fmiBoolean      loggingOn, 
-        size_t          nCategories, 
+        fmiBoolean      loggingOn,
+        size_t          nCategories,
         const fmiString categories[]) {
     return fmiError;
 }
@@ -314,11 +314,11 @@ FMI_Export fmiStatus fmiSetString(fmiComponent c, const fmiValueReference vr[],
 /*     return fmiOK; */
 /* } */
 
-FMI_Export fmiStatus fmiSetupExperiment(fmiComponent c, 
-        fmiBoolean   toleranceDefined, 
-        fmiReal      tolerance, 
-        fmiReal      startTime, 
-        fmiBoolean   stopTimeDefined, 
+FMI_Export fmiStatus fmiSetupExperiment(fmiComponent c,
+        fmiBoolean   toleranceDefined,
+        fmiReal      tolerance,
+        fmiReal      startTime,
+        fmiBoolean   stopTimeDefined,
         fmiReal      stopTime) {
     // There is nothing to do here.
     return fmiOK;
@@ -358,8 +358,8 @@ FMI_Export fmiStatus fmiGetDirectionalDerivative(fmiComponent c,
         const fmiReal dvKnown[], fmiReal dvUnknown[]) {
     printf("tankOpen.c: fmiGetDirectionalDerivative() called, even though the FMU does not provide them.\n");
     // The standard 2.0, RC 1 says on p. 26:
-    // If the capability attribute “providesDirectionalDerivative” is true, 
-    // fmiGetDirectionalDerivative computes a linear combination of the partial derivatives of h 
+    // If the capability attribute “providesDirectionalDerivative” is true,
+    // fmiGetDirectionalDerivative computes a linear combination of the partial derivatives of h
     // with respect to the selected input variables
     return fmiError;
 }
@@ -382,8 +382,8 @@ FMI_Export fmiStatus fmiGetContinuousStates(fmiComponent c, fmiReal x[],
     }
 }
 
-FMI_Export fmiStatus fmiGetNominalsOfContinuousStates(fmiComponent c, 
-        fmiReal x_nominal[], 
+FMI_Export fmiStatus fmiGetNominalsOfContinuousStates(fmiComponent c,
+        fmiReal x_nominal[],
         size_t nx) {
     int i;
     // The standard says to return 1.0 if the FMU has no information about
@@ -394,8 +394,8 @@ FMI_Export fmiStatus fmiGetNominalsOfContinuousStates(fmiComponent c,
 }
 
 FMI_Export fmiStatus fmiCompletedIntegratorStep(fmiComponent c,
-        fmiBoolean   noSetFMUStatePriorToCurrentPoint, 
-        fmiBoolean*  enterEventMode, 
+        fmiBoolean   noSetFMUStatePriorToCurrentPoint,
+        fmiBoolean*  enterEventMode,
         fmiBoolean*   terminateSimulation) {
     // Model Exchange
     // Return enterEventMode = fmiFalse to indicate that this FMU
@@ -436,7 +436,7 @@ FMI_Export fmiStatus fmiGetDerivatives(fmiComponent c, fmiReal derivatives[],
     return fmiOK;
 }
 
-FMI_Export fmiStatus fmiGetEventIndicators(fmiComponent c, 
+FMI_Export fmiStatus fmiGetEventIndicators(fmiComponent c,
         fmiReal eventIndicators[], size_t ni) {
     // Model Exchange
     printf("tankOpen.c: fmiGetEventIndicators() returning fmiError as it does not trigger events.\n");

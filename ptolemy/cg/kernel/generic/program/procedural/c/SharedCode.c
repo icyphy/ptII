@@ -4,7 +4,7 @@
 #define MISSING 0
 
 // boolean for AVR.  A mess.  I'm sorry...
-#ifndef __AVR__ 
+#ifndef __AVR__
 typedef unsigned char boolean;
 #else
 

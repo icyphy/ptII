@@ -32,13 +32,13 @@ typedef struct {
 
 
 FMI_Export fmiComponent fmiInstantiate(fmiString instanceName,
-        fmiType   fmuType, 
-        fmiString fmuGUID, 
-        fmiString fmuResourceLocation, 
-        const fmiCallbackFunctions* functions, 
+        fmiType   fmuType,
+        fmiString fmuGUID,
+        fmiString fmuResourceLocation,
+        const fmiCallbackFunctions* functions,
         fmiBoolean                  visible,
         fmiBoolean                  loggingOn) {
-                                           
+
 
     // FMI-1.0 declaration here:
     //fmiComponent fmiInstantiateSlave(fmiString  instanceName, fmiString  GUID,
@@ -152,21 +152,21 @@ FMI_Export fmiStatus fmiGetString(fmiComponent c, const fmiValueReference vr[],
 
 FMI_Export const char* fmiGetTypesPlatform() {
     // We return a string literal, which does not require malloc.
-    // Note that this is declared const char * because it is not safe to 
+    // Note that this is declared const char * because it is not safe to
     // modify a string literal in C.
     return "default";
 }
 
 FMI_Export const char* fmiGetVersion() {
     // We return a string literal, which does not require malloc.
-    // Note that this is declared const char * because it is not safe to 
+    // Note that this is declared const char * because it is not safe to
     // modify a string literal in C.
     return "2.0";
 }
 
 FMI_Export fmiStatus fmiSetDebugLogging(fmiComponent    c,
-        fmiBoolean      loggingOn, 
-        size_t          nCategories, 
+        fmiBoolean      loggingOn,
+        size_t          nCategories,
         const fmiString categories[]) {
     return fmiError;
 }
@@ -191,11 +191,11 @@ FMI_Export fmiStatus fmiSetString(fmiComponent c, const fmiValueReference vr[],
     return fmiError;
 }
 
-FMI_Export fmiStatus fmiSetupExperiment(fmiComponent c, 
-        fmiBoolean   toleranceDefined, 
-        fmiReal      tolerance, 
-        fmiReal      startTime, 
-        fmiBoolean   stopTimeDefined, 
+FMI_Export fmiStatus fmiSetupExperiment(fmiComponent c,
+        fmiBoolean   toleranceDefined,
+        fmiReal      tolerance,
+        fmiReal      startTime,
+        fmiBoolean   stopTimeDefined,
         fmiReal      stopTime) {
     printf("helloWorldME2.c: Warning called fmiSetupExperiment, which is not yet implemented.\n");
     return fmiOK;
@@ -245,16 +245,16 @@ FMI_Export fmiStatus fmiGetContinuousStates(fmiComponent c, fmiReal x[],
     return fmiOK;
 }
 
-FMI_Export fmiStatus fmiGetNominalsOfContinuousStates(fmiComponent c, 
-        fmiReal x_nominal[], 
+FMI_Export fmiStatus fmiGetNominalsOfContinuousStates(fmiComponent c,
+        fmiReal x_nominal[],
         size_t nx) {
     // Model Exchange
     return fmiError;
 }
 
 FMI_Export fmiStatus fmiCompletedIntegratorStep(fmiComponent c,
-        fmiBoolean   noSetFMUStatePriorToCurrentPoint, 
-        fmiBoolean*  enterEventMode, 
+        fmiBoolean   noSetFMUStatePriorToCurrentPoint,
+        fmiBoolean*  enterEventMode,
         fmiBoolean*   terminateSimulation) {
     // Model Exchange
     return fmiError;
@@ -276,7 +276,7 @@ FMI_Export fmiStatus fmiGetDerivatives(fmiComponent c, fmiReal derivatives[],
     return fmiError;
 }
 
-FMI_Export fmiStatus fmiGetEventIndicators(fmiComponent c, 
+FMI_Export fmiStatus fmiGetEventIndicators(fmiComponent c,
         fmiReal eventIndicators[], size_t ni) {
     // Model Exchange
     printf("helloWorldME.c: fmiGetEventIndicators() returning fmiOK, though it is not implemented yet.\n");

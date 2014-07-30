@@ -133,7 +133,7 @@ bool PtidesPlatformDirector_TransferOutputs1(struct PtidesPlatformDirector* dire
                                 struct PtidesDirector* ptidesDirector =
                                                 (struct PtidesDirector*) associatedPort->container->getDirector(associatedPort->container);
 
-                                
+
                                 Time timestamps[2];
                                 associatedPort->_getTimeStampForToken(associatedPort, t, timestamps);
                                 Time timestamp = timestamps[0];
