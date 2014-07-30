@@ -84,6 +84,7 @@ public class ImageIcon extends DynamicEditorIcon implements ImageObserver {
      *  @exception CloneNotSupportedException Not thrown in this base class
      *  @return The new Attribute.
      */
+    @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         ImageIcon newObject = (ImageIcon) super.clone(workspace);
         newObject._image = null;
@@ -99,6 +100,7 @@ public class ImageIcon extends DynamicEditorIcon implements ImageObserver {
      *  modification exception could occur.
      *  @return A figure representing the specified shape.
      */
+    @Override
     public Figure createBackgroundFigure() {
         // NOTE: This gets called every time that the graph gets
         // repainted, which seems excessive to me.  This will happen
@@ -157,6 +159,7 @@ public class ImageIcon extends DynamicEditorIcon implements ImageObserver {
      *  and has to be re-opened.
      *  @return A new Swing Icon.
      */
+    @Override
     public javax.swing.Icon createIcon() {
         if (_scalePercentage == _scalePercentageImplemented) {
             // Image processing is done.
@@ -181,6 +184,7 @@ public class ImageIcon extends DynamicEditorIcon implements ImageObserver {
      *  @return False if the infoflags indicate that the image is
      *   completely loaded; true otherwise.
      */
+    @Override
     public synchronized boolean imageUpdate(Image image, int infoflags, int x,
             int y, int width, int height) {
         if ((infoflags & ImageObserver.ALLBITS) != 0) {
@@ -241,6 +245,7 @@ public class ImageIcon extends DynamicEditorIcon implements ImageObserver {
         // the images of any Figures that have already been created.
         // This needs to be in the swing thread.
         Runnable doScale = new Runnable() {
+            @Override
             public void run() {
                 synchronized (ImageIcon.this) {
                     Toolkit tk = Toolkit.getDefaultToolkit();
@@ -321,6 +326,7 @@ public class ImageIcon extends DynamicEditorIcon implements ImageObserver {
         }
 
         ChangeRequest request = new ChangeRequest(this, "Dummy change request") {
+            @Override
             protected void _execute() {
             }
         };

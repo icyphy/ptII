@@ -412,7 +412,8 @@ public class DataflowActorInterpreter {
      * actually needed.
      */
     protected static class SingleTokenReaderThunk implements
-            Environment.VariableContainer {
+    Environment.VariableContainer {
+        @Override
         public Object value() {
             if (val == this) {
                 val = channel.get(index);
@@ -422,11 +423,13 @@ public class DataflowActorInterpreter {
             return val;
         }
 
+        @Override
         public Object value(final Object[] location) {
             // FIXME
             throw new InterpreterException("Indices not yet implemented.");
         }
 
+        @Override
         public void freeze() {
             if (val == this) {
                 val = channel.get(index);
@@ -451,17 +454,20 @@ public class DataflowActorInterpreter {
     }
 
     protected static class MultipleTokenReaderThunk implements
-            Environment.VariableContainer {
+    Environment.VariableContainer {
+        @Override
         public Object value() {
             freeze();
             return val;
         }
 
+        @Override
         public Object value(final Object[] location) {
             // FIXME
             throw new InterpreterException("Indices not yet implemented.");
         }
 
+        @Override
         public void freeze() {
             if (val == this) {
                 Object repeatVal = repeatExpr.value();
@@ -505,11 +511,13 @@ public class DataflowActorInterpreter {
             this.thingy = thingy;
         }
 
+        @Override
         public int hashCode() {
             int n = thingy.hashCode();
             return n * n;
         }
 
+        @Override
         public boolean equals(Object obj) {
             if (obj instanceof EnvironmentKey) {
                 return thingy.equals(((EnvironmentKey) obj).thingy);

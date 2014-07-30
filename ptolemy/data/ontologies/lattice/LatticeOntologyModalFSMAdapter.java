@@ -60,7 +60,7 @@ import ptolemy.kernel.util.NamedObj;
  *  @Pt.AcceptedRating Red (mankit)
  */
 public class LatticeOntologyModalFSMAdapter extends
-        LatticeOntologyCompositeAdapter {
+LatticeOntologyCompositeAdapter {
 
     /** Construct an adapter for the given FSMActor. This is the
      *  base adapter class for any FSMActor that does not have a
@@ -80,6 +80,7 @@ public class LatticeOntologyModalFSMAdapter extends
      *  @return A list of Inequality.
      *  @exception IllegalActionException Not thrown in this base class.
      */
+    @Override
     public List<Inequality> constraintList() throws IllegalActionException {
         // FIMXE: cannot call super here, because LatticeOntologyCompositeAdapter
         // recursively calls constraintList() of its contained components.
@@ -214,6 +215,7 @@ public class LatticeOntologyModalFSMAdapter extends
      *  @exception IllegalActionException Thrown if there is a problem getting
      *   the parse tree root nodes.
      */
+    @Override
     protected List<ASTPtRootNode> _getAttributeParseTrees()
             throws IllegalActionException {
         List<ASTPtRootNode> result = super._getAttributeParseTrees();
@@ -232,6 +234,7 @@ public class LatticeOntologyModalFSMAdapter extends
      *  expressions as propertyable attributes.
      *  @return The list of propertyable attributes.
      */
+    @Override
     protected List<Attribute> _getPropertyableAttributes() {
         List<Attribute> result = super._getPropertyableAttributes();
         FSMActor actor = (FSMActor) getComponent();
@@ -257,6 +260,7 @@ public class LatticeOntologyModalFSMAdapter extends
      *  @return The list of sub-adapters.
      *  @exception IllegalActionException Not thrown in this base class.
      */
+    @Override
     protected List<OntologyAdapter> _getSubAdapters()
             throws IllegalActionException {
         return _getASTNodeAdapters();

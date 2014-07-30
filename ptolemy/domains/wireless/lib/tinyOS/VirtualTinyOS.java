@@ -97,6 +97,7 @@ public class VirtualTinyOS extends TypedAtomicActor {
     /** Initialize the iteration count to 1.
      *  @exception IllegalActionException If the parent class throws it.
      */
+    @Override
     public void initialize() throws IllegalActionException {
         super.initialize();
 
@@ -114,6 +115,7 @@ public class VirtualTinyOS extends TypedAtomicActor {
     /** pass the input to the proper event handler.
      *  @exception IllegalActionException something goes wrong.
      */
+    @Override
     public void fire() throws IllegalActionException {
         super.fire();
         // deal with timer interupt
@@ -171,7 +173,7 @@ public class VirtualTinyOS extends TypedAtomicActor {
 
     public int triggerTimerEvent() {
         System.out
-                .println("about to call the native method to signal an event");
+        .println("about to call the native method to signal an event");
 
         int r = signalTimerEvent();
         System.out.println("return from the native method");
@@ -197,12 +199,12 @@ public class VirtualTinyOS extends TypedAtomicActor {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         protected methods                 ////    
+    ////                         protected methods                 ////
 
     /** Must specify port types using moml (TypeAttribute) - the default
      *  TypedAtomicActor type constraints do not apply in this case, since the
      *  input type may be totally unrelated to the output type and cannot be
-     *  inferred. 
+     *  inferred.
      *  @return null
      */
     public Inequality _defaultConstraints() {

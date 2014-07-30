@@ -184,7 +184,7 @@ public class CollisionDetector extends TypedAtomicActor {
         // Create and configure the ports.
         message = new WirelessIOPort(this, "message", true, false);
         new SingletonParameter(message, "_showName")
-                .setToken(BooleanToken.TRUE);
+        .setToken(BooleanToken.TRUE);
 
         power = new TypedIOPort(this, "power", true, false);
         power.setTypeEquals(BaseType.DOUBLE);
@@ -193,17 +193,17 @@ public class CollisionDetector extends TypedAtomicActor {
         duration = new TypedIOPort(this, "duration", true, false);
         duration.setTypeEquals(BaseType.DOUBLE);
         new SingletonParameter(duration, "_showName")
-                .setToken(BooleanToken.TRUE);
+        .setToken(BooleanToken.TRUE);
 
         received = new TypedIOPort(this, "received", false, true);
         received.setTypeSameAs(message);
         new SingletonParameter(received, "_showName")
-                .setToken(BooleanToken.TRUE);
+        .setToken(BooleanToken.TRUE);
 
         collided = new TypedIOPort(this, "collided", false, true);
         collided.setTypeSameAs(message);
         new SingletonParameter(collided, "_showName")
-                .setToken(BooleanToken.TRUE);
+        .setToken(BooleanToken.TRUE);
 
         // Configure parameters.
         SNRThresholdInDB = new Parameter(this, "SNRThresholdInDB");
@@ -270,6 +270,7 @@ public class CollisionDetector extends TypedAtomicActor {
      *  @exception IllegalActionException If the change is not acceptable
      *   to this container.
      */
+    @Override
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         if (attribute == SNRThresholdInDB) {
@@ -307,6 +308,7 @@ public class CollisionDetector extends TypedAtomicActor {
      *  @exception CloneNotSupportedException Not thrown in this base class
      *  @return The new Attribute.
      */
+    @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         CollisionDetector newObject = (CollisionDetector) super
                 .clone(workspace);
@@ -329,6 +331,7 @@ public class CollisionDetector extends TypedAtomicActor {
      *  @exception IllegalActionException If an error occurs reading
      *   or writing inputs or outputs.
      */
+    @Override
     public void fire() throws IllegalActionException {
         super.fire();
 
@@ -461,6 +464,7 @@ public class CollisionDetector extends TypedAtomicActor {
     /** Initialize the private variables.
      *  @exception IllegalActionException If thrown by the base class.
      */
+    @Override
     public void initialize() throws IllegalActionException {
         super.initialize();
         _totalPower = 0.0;

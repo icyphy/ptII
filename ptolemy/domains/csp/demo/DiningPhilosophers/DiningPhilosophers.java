@@ -24,7 +24,7 @@
    PT_COPYRIGHT_VERSION_2
    COPYRIGHTENDKEY
 
-*/
+ */
 package ptolemy.domains.csp.demo.DiningPhilosophers;
 
 import ptolemy.actor.Manager;
@@ -76,7 +76,7 @@ import ptolemy.kernel.util.NameDuplicationException;
    @since Ptolemy II 0.3
    @Pt.ProposedRating Red (cxh)
    @Pt.AcceptedRating Red (cxh)
-*/
+ */
 public class DiningPhilosophers {
     /** Create an instance of the Dining Philosophers demo.
      */
@@ -135,13 +135,9 @@ public class DiningPhilosophers {
      *  @exception IllegalActionException If thrown while creating the
      *  chopsticks.
      */
-    public static void connect(TypedCompositeActor univ,
-            Philosopher p1,
-            Philosopher p2,
-            Philosopher p3,
-            Philosopher p4,
-            Philosopher p5)
-            throws IllegalActionException, NameDuplicationException {
+    public static void connect(TypedCompositeActor univ, Philosopher p1,
+            Philosopher p2, Philosopher p3, Philosopher p4, Philosopher p5)
+                    throws IllegalActionException, NameDuplicationException {
 
         // Avoid duplicate code and share this with DiningApplet.
         Chopstick f1 = new Chopstick(univ, "Chopstick1");

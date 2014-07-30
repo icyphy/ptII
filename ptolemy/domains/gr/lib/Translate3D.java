@@ -130,6 +130,7 @@ public class Translate3D extends GRTransform {
      *  @exception IllegalActionException If the value of some parameters
      *   can't be obtained
      */
+    @Override
     public void fire() throws IllegalActionException {
         //  all state changes must be done in postfire()
         super.fire();
@@ -194,6 +195,7 @@ public class Translate3D extends GRTransform {
      *  @exception IllegalActionException If the value of some parameters can't
      *   be obtained
      */
+    @Override
     public void initialize() throws IllegalActionException {
         super.initialize();
         _initialXTranslation = ((DoubleToken) initialXTranslation.getToken())
@@ -224,6 +226,7 @@ public class Translate3D extends GRTransform {
      *
      *  @param node The child Java3D node.
      */
+    @Override
     protected void _addChild(Node node) {
         _transformNode.addChild(node);
     }
@@ -233,6 +236,7 @@ public class Translate3D extends GRTransform {
      *
      *  @return the Java3D TransformGroup
      */
+    @Override
     protected Node _getNodeObject() {
         return _transformNode;
     }

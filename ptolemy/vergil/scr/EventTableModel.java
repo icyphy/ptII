@@ -23,7 +23,7 @@
    PT_COPYRIGHT_VERSION_2
    COPYRIGHTENDKEY
 
-*/
+ */
 
 package ptolemy.vergil.scr;
 
@@ -41,7 +41,6 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
-
 /**
    The event table for configuring an SCR Model.
    @author Patricia Derler
@@ -49,7 +48,7 @@ import ptolemy.kernel.util.NameDuplicationException;
    @since Ptolemy II 10.0
    @Pt.ProposedRating Red (pd)
    @Pt.AcceptedRating Red (pd)
-*/
+ */
 @SuppressWarnings("serial")
 public class EventTableModel extends AbstractTableModel {
 
@@ -62,13 +61,13 @@ public class EventTableModel extends AbstractTableModel {
         _model = model;
         _parameter = parameter;
         _columnCount = 3;// FIXME should be configurable
-        
+
     }
 
     public void checkDisjointness() throws IllegalActionException {
-        SCRTableHelper.checkDisjointness(_tableContent, getRowCount(), getColumnCount(), _model);
+        SCRTableHelper.checkDisjointness(_tableContent, getRowCount(),
+                getColumnCount(), _model);
     }
-        
 
     @Override
     public Object getValueAt(int rowIndex, int columnIndex) {
@@ -115,10 +114,10 @@ public class EventTableModel extends AbstractTableModel {
         this.fireTableStructureChanged();
         this.fireTableDataChanged();
     }
-        
+
     public void deleteColumn(int index) {
         if (index > 0 && index < getColumnCount()) {
-            for (int i = getRowCount() - 1; i >= 0 ; i--) {
+            for (int i = getRowCount() - 1; i >= 0; i--) {
                 _tableContent.remove(i * (getColumnCount() - 1) + index - 1);
             }
             _columnCount = _columnCount - 1;
@@ -131,8 +130,9 @@ public class EventTableModel extends AbstractTableModel {
     public int getColumnCount() {
         return _columnCount;
     }
-        
-    public void saveModel() throws IllegalActionException, NameDuplicationException {
+
+    public void saveModel() throws IllegalActionException,
+            NameDuplicationException {
         for (int i = 0; i < getRowCount() - 1; i++) {
             StringBuffer insideModeExpression = new StringBuffer();
             StringBuffer enterModeExpression = new StringBuffer();
@@ -140,10 +140,11 @@ public class EventTableModel extends AbstractTableModel {
             String value = "";
             State state = (State) _model.getEntity((String) getValueAt(i, 0));
             for (int j = 0; j < getColumnCount() - 1; j++) {
-                int contentIndex = _getContentIndex(i, j);
+                _getContentIndex(i, j);
                 String condition = (String) getValueAt(i, j + 1);
                 value = (String) getValueAt(getRowCount() - 1, j + 1);
-                String[] conditions = _handleInmodeExpression(condition, value, state);
+                String[] conditions = _handleInmodeExpression(condition, value,
+                        state);
                 String enterModeCondition = "";
                 if (condition.contains("@T(Inmode)")) {
                     enterModeCondition = "true";
@@ -158,36 +159,41 @@ public class EventTableModel extends AbstractTableModel {
                     guard = guard + " || ";
                 }
                 guard = guard + condition;
-                                
+
                 if (enterModeCondition.equals("")) {
                     enterModeCondition = "false";
                 }
-                insideModeExpression = insideModeExpression.append("(" + condition + " ? " + value + " : ");
-                enterModeExpression = enterModeExpression.append("(" + enterModeCondition + " ? " + value + " : ");
+                insideModeExpression = insideModeExpression.append("("
+                        + condition + " ? " + value + " : ");
+                enterModeExpression = enterModeExpression.append("("
+                        + enterModeCondition + " ? " + value + " : ");
             }
-            // if no condition was true use 
+            // if no condition was true use
             // - nil ?
             // - last value again ?
             //                        insideModeExpression = insideModeExpression.append(" " + _parameter.getName());
             //                        enterModeExpression = enterModeExpression.append(" " + _parameter.getName());
-                        
+
             insideModeExpression = insideModeExpression.append(" nil");
             enterModeExpression = enterModeExpression.append(" nil");
-                        
+
             // close brackets
             for (int j = 0; j < getColumnCount() - 1; j++) {
                 insideModeExpression = insideModeExpression.append(")");
-                enterModeExpression = enterModeExpression.append(")"); 
+                enterModeExpression = enterModeExpression.append(")");
             }
-                        
+
             // ?? self transitions can become problematic when several self transitions are enabled.
-                        
-            // if contains _isPresent then there really is an event. 
+
+            // if contains _isPresent then there really is an event.
             if (guard.contains("_isPresent")) {
-                Transition transition = SCRTableHelper.getSelfTransition(state, _parameter);
+                Transition transition = SCRTableHelper.getSelfTransition(state,
+                        _parameter);
                 if (transition == null) {
                     try {
-                        transition = new Transition(_model, ((CompositeEntity) _model).uniqueName(state.getName() + "_transition"));
+                        transition = new Transition(_model,
+                                ((CompositeEntity) _model).uniqueName(state
+                                        .getName() + "_transition"));
                         state.outgoingPort.link(transition);
                         state.incomingPort.link(transition);
                     } catch (IllegalActionException e) {
@@ -198,11 +204,10 @@ public class EventTableModel extends AbstractTableModel {
                         e.printStackTrace();
                     }
                 }
-                transition.setActions.setExpression(_parameter.getName() + " = " + insideModeExpression);
+                transition.setActions.setExpression(_parameter.getName()
+                        + " = " + insideModeExpression);
                 transition.guardExpression.setExpression(guard);
             }
-                        
-                        
 
             //                        if (state.getRefinement() == null) {
             //                                ((RefinementActor) state.getContainer()).addRefinement(
@@ -217,7 +222,7 @@ public class EventTableModel extends AbstractTableModel {
             //                                ContinuousDirector director = new ContinuousDirector(
             //                                                entity, "Continuous Director");
             //                        }
-            //                        
+            //
             //                        Object setVariableActor = entity.getEntity("set_" + _parameter.getName());
             //                        if (setVariableActor == null) {
             //                                setVariableActor = new SetVariable(entity,
@@ -240,14 +245,14 @@ public class EventTableModel extends AbstractTableModel {
             //                                relationExpressionRemoveNil = new TypedIORelation(entity,
             //                                                entity.uniqueName("relation"));
             //                        }
-            //                        
+            //
             //                        Expression expressionActor = (Expression) expressionActorObject;
             //                        expressionActor.expression.setExpression(insideModeExpression.toString());
-            //                        
+            //
             //                        for (Object portObject : ((CompositeActor) entity).inputPortList()) {
             //                                IOPort modePort = (IOPort) portObject;
             //                                TypedIOPort expressionPort = (TypedIOPort) expressionActor.getPort(modePort.getName());
-            //                                if (expressionPort == null) { 
+            //                                if (expressionPort == null) {
             //                                        expressionPort = new TypedIOPort((ComponentEntity) expressionActorObject, modePort.getName(), true, false);
             //                                }
             //                                TypedIORelation inputRelation = null;
@@ -263,25 +268,30 @@ public class EventTableModel extends AbstractTableModel {
             //                                modePort.link(inputRelation);
             //                                expressionPort.link(inputRelation);
             //                        }
-            //                        
+            //
             //                        if (relation != null) {
             //                                expressionActor.output.link(relationExpressionRemoveNil);
             //                                removeNilTokens.input.link(relationExpressionRemoveNil);
             //                                removeNilTokens.output.link(relation);
             //                                setVariable.input.link(relation);
             //                        }
-                        
+
             Transition transition = null;
             boolean noSetActionSet = true;
             // set inmodeExpression/enter mode expression
-            for (Object intoModeTransition : state.incomingPort.linkedRelationList()) {
-                if (!state.outgoingPort.linkedRelationList().contains(intoModeTransition)) {
+            for (Object intoModeTransition : state.incomingPort
+                    .linkedRelationList()) {
+                if (!state.outgoingPort.linkedRelationList().contains(
+                        intoModeTransition)) {
                     transition = (Transition) intoModeTransition;
-                    String newExpression = _parameter.getName() + " = " + enterModeExpression;
+                    String newExpression = _parameter.getName() + " = "
+                            + enterModeExpression;
                     String expression = transition.setActions.getExpression();
                     try {
-                        if (transition.setActions.getDestinations().contains(_parameter)) {
-                            int index = expression.indexOf(_parameter.getName() + " =");
+                        if (transition.setActions.getDestinations().contains(
+                                _parameter)) {
+                            int index = expression.indexOf(_parameter.getName()
+                                    + " =");
                             String before = expression.substring(0, index);
                             int afterIdx = expression.indexOf(";", index + 1);
                             String after = "";
@@ -290,14 +300,15 @@ public class EventTableModel extends AbstractTableModel {
                                 if (after.startsWith(";")) {
                                     after = after.substring(1).trim();
                                 }
-                            } 
-                            expression = before + after; 
+                            }
+                            expression = before + after;
                             expression = expression.trim();
-                        } 
+                        }
                         if (!expression.equals("") && !expression.endsWith(";")) {
                             expression = expression + "; ";
                         }
-                        transition.setActions.setExpression(expression + newExpression);
+                        transition.setActions.setExpression(expression
+                                + newExpression);
                         transition.setActions.setPersistent(true);
                         noSetActionSet = false;
                     } catch (IllegalActionException e) {
@@ -311,7 +322,7 @@ public class EventTableModel extends AbstractTableModel {
 
         }
     }
-        
+
     /** Map from input port name to input value.
      *  The fire() method populates this map.
      *  This is protected so that if a subclass overrides fire(), it
@@ -324,55 +335,63 @@ public class EventTableModel extends AbstractTableModel {
     }
 
     /** Parse an expression.
-     * 
+     *
      * (condition1 ? value1 : (condition2 ? value2 : (... : originalValue)))
-     * 
+     *
      * @param expression The expression
      * @param rowIndex The column index
      * @param inmode True if "@T(Inmode)" should be the condition.
      */
-    private void _parseExpression(String expression, int rowIndex, boolean inmode) { 
-                
+    private void _parseExpression(String expression, int rowIndex,
+            boolean inmode) {
+
         if (expression != "") {
             String condition = "";
             String value = "";
             for (int i = 1; i < getColumnCount(); i++) {
                 // (condition ? value : (...
-                expression = expression.substring(expression.indexOf("(") + 1).trim();
+                expression = expression.substring(expression.indexOf("(") + 1)
+                        .trim();
                 // condition ? value : (...
-                                
+
                 int endOfCondition = expression.indexOf("?");
-                if (expression.contains("(") && (expression.indexOf("(") < expression.indexOf("?"))) {
-                    endOfCondition = SCRTableHelper.indexOfMatchingCloseBracket(expression, expression.indexOf("("));
+                if (expression.contains("(")
+                        && (expression.indexOf("(") < expression.indexOf("?"))) {
+                    endOfCondition = SCRTableHelper
+                            .indexOfMatchingCloseBracket(expression,
+                                    expression.indexOf("("));
                 }
                 condition = expression.substring(0, endOfCondition).trim();
-                                
-                                
+
                 expression = expression.substring(endOfCondition).trim();
                 // ? value : (...
-                                
-                expression = expression.substring(expression.indexOf("?") + 1).trim();
+
+                expression = expression.substring(expression.indexOf("?") + 1)
+                        .trim();
                 // value : (...
-                                
+
                 int endOfValue = expression.indexOf(":");
-                if (expression.contains("(") && (expression.indexOf("(") < expression.indexOf(":"))) {
-                    endOfValue = SCRTableHelper.indexOfMatchingCloseBracket(expression, expression.indexOf("("));
+                if (expression.contains("(")
+                        && (expression.indexOf("(") < expression.indexOf(":"))) {
+                    endOfValue = SCRTableHelper.indexOfMatchingCloseBracket(
+                            expression, expression.indexOf("("));
                 }
                 value = expression.substring(0, endOfValue).trim();
-                                
-                expression = expression.substring(expression.indexOf(":") + 1).trim();
+
+                expression = expression.substring(expression.indexOf(":") + 1)
+                        .trim();
                 // (...
-                                
+
                 // expression = expression.substring(expression.indexOf("(") + 1).trim();
                 // ...
-                                
+
                 int valueIndex = _getContentIndex(getRowCount() - 1, i);
                 int contentIndex = _getContentIndex(rowIndex, i);
-                                
+
                 if (inmode && condition.equals("true")) {
                     condition = "@T(Inmode)";
                 }
-                                
+
                 // do not put "| false"
                 String content = (String) _tableContent.get(contentIndex);
                 if (!content.equals("")) {
@@ -386,10 +405,10 @@ public class EventTableModel extends AbstractTableModel {
                 } else {
                     content = condition;
                 }
-                                
+
                 _tableContent.add(valueIndex, value);
                 _tableContent.remove(valueIndex + 1);
-                                
+
                 _tableContent.add(contentIndex, content);
                 _tableContent.remove(contentIndex + 1);
             }
@@ -403,18 +422,20 @@ public class EventTableModel extends AbstractTableModel {
                 _tableContent.add("false");
             }
             for (int rowIndex = 0; rowIndex < getRowCount() - 1; rowIndex++) {
-                                
+
                 State state = (State) _model.getEntity((String) getValueAt(
-                                rowIndex, 0));
+                        rowIndex, 0));
                 boolean parsedInmode = false;
                 if (state.incomingPort.linkedRelationList().size() > 0) {
                     for (Object object : state.incomingPort
-                             .linkedRelationList()) {
+                            .linkedRelationList()) {
                         Transition transition = (Transition) object;
                         String expression = null;
                         try {
-                            if (transition.setActions.getDestinations().contains(_parameter)) {
-                                expression = transition.setActions.getExpression(_parameter.getName());
+                            if (transition.setActions.getDestinations()
+                                    .contains(_parameter)) {
+                                expression = transition.setActions
+                                        .getExpression(_parameter.getName());
                             } else {
                                 expression = "";
                             }
@@ -422,18 +443,19 @@ public class EventTableModel extends AbstractTableModel {
                             expression = "";
                         }
                         if (!expression.equals("")) {
-                            if (state.outgoingPort.linkedRelationList().contains(transition)) {
+                            if (state.outgoingPort.linkedRelationList()
+                                    .contains(transition)) {
                                 // self transition
                                 _parseExpression(expression, rowIndex, false);
                             } else if (!parsedInmode) {
                                 // incoming transition -- inmode
-                                _parseExpression(expression, rowIndex, true); 
+                                _parseExpression(expression, rowIndex, true);
                                 parsedInmode = true;
                             }
                         }
                     }
                 }
-                                
+
                 //                                try {
                 //                                        if (state.getRefinement() != null) {
                 //                                                CompositeEntity composite = (CompositeEntity) state
@@ -448,46 +470,53 @@ public class EventTableModel extends AbstractTableModel {
                 //                                                        expression = "";
                 //                                                }
                 //                                                _parseExpression(expression, rowIndex, false);
-                //                                                
+                //
                 //                                                //if (_port.c)
                 //                                        }
                 //                                } catch (IllegalActionException e) {
                 //                                        // TODO Auto-generated catch block
                 //                                        e.printStackTrace();
-                //                                }        
+                //                                }
             }
         }
     }
 
-    private String[] _handleInmodeExpression(String expression, String value, State state) {
+    private String[] _handleInmodeExpression(String expression, String value,
+            State state) {
         StringBuffer inmodeExpression = new StringBuffer();
         if (expression.contains("@T(Inmode)")) {
-            // everything that is connected to inmode with an & goes onto 
+            // everything that is connected to inmode with an & goes onto
             // the transition
-            String before = expression.substring(0, expression.indexOf("@T(Inmode)"));
-            String after = expression.substring(expression.indexOf("@T(Inmode)") + 10);
+            String before = expression.substring(0,
+                    expression.indexOf("@T(Inmode)"));
+            String after = expression.substring(expression
+                    .indexOf("@T(Inmode)") + 10);
             before = before.trim();
             after = after.trim();
             while (before.endsWith("&")) {
                 before = before.substring(0, before.length() - 1).trim();
                 if (before.endsWith(")")) {
-                    int index = SCRTableHelper.indexOfMatchingOpenBracket(before, before.length());
+                    int index = SCRTableHelper.indexOfMatchingOpenBracket(
+                            before, before.length());
                     if (!inmodeExpression.toString().equals("")) {
                         inmodeExpression = inmodeExpression.append(" & ");
                     }
-                    inmodeExpression = inmodeExpression.append(" " +  before.substring(index));
+                    inmodeExpression = inmodeExpression.append(" "
+                            + before.substring(index));
                     before = before.substring(0, index - 1).trim();
                 }
             }
-                        
+
             while (after.startsWith("||")) {
                 after = after.substring(2).trim();
                 if (after.startsWith("(")) {
-                    int index = SCRTableHelper.indexOfMatchingCloseBracket(after, 0);
+                    int index = SCRTableHelper.indexOfMatchingCloseBracket(
+                            after, 0);
                     if (!inmodeExpression.toString().equals("")) {
                         inmodeExpression = inmodeExpression.append(" & ");
                     }
-                    inmodeExpression = inmodeExpression.append(" " + after.substring(0, index));
+                    inmodeExpression = inmodeExpression.append(" "
+                            + after.substring(0, index));
                     if (index < after.length()) {
                         after = after.substring(index + 1).trim();
                     }
@@ -497,11 +526,11 @@ public class EventTableModel extends AbstractTableModel {
                 // if inmodeExpression then value
                 inmodeExpression = inmodeExpression.append(" ? " + value);
             }
-                        
-            expression = before + after; 
-                        
+
+            expression = before + after;
+
         }
-        return new String[]{expression, inmodeExpression.toString()};
+        return new String[] { expression, inmodeExpression.toString() };
     }
 
     private int _columnCount;
@@ -509,6 +538,5 @@ public class EventTableModel extends AbstractTableModel {
     private FSMActor _model;
     private ArrayList _tableContent;
     private int _rowCount = -1;
-
 
 }

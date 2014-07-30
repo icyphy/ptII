@@ -97,6 +97,7 @@ public class BootstrapSampleDelay extends NamedProgramCodeGeneratorAdapter {
      *   or if the initial
      *   outputs of the BootstrapSampleDelay actor is not defined.
      */
+    @Override
     public String generateInitializeCode() throws IllegalActionException {
         super.generateInitializeCode();
 

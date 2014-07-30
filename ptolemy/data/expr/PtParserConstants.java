@@ -25,7 +25,7 @@
                                         COPYRIGHTENDKEY
 
 Created : May 1998
-*/
+ */
 
 package ptolemy.data.expr;
 

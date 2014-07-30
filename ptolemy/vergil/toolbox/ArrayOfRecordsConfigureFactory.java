@@ -106,6 +106,7 @@ public class ArrayOfRecordsConfigureFactory extends EditorFactory {
      *  @param parent The parent window, which is required to be an
      *   instance of TableauFrame.
      */
+    @Override
     public void createEditor(NamedObj object, Frame parent) {
         try {
             Parameter attributeToEdit = (Parameter) object.getAttribute(
@@ -118,8 +119,8 @@ public class ArrayOfRecordsConfigureFactory extends EditorFactory {
             Token value = attributeToEdit.getToken();
             if (!(value instanceof ArrayToken)) {
                 MessageHandler
-                        .error("Parameter does not contain an array token: "
-                                + attributeToEdit.toString());
+                .error("Parameter does not contain an array token: "
+                        + attributeToEdit.toString());
                 return;
             }
             ArrayOfRecordsPane pane = new ArrayOfRecordsPane();

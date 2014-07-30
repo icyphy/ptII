@@ -81,7 +81,7 @@ import diva.gui.toolbox.FigureIcon;
  */
 @SuppressWarnings("serial")
 public class OntologySolverGraphFrame extends ExtendedGraphFrame implements
-        ActionListener {
+ActionListener {
 
     /** Construct a frame associated with the specified ontology solver model. After
      *  constructing this, it is necessary to call setVisible(true) to make the
@@ -121,6 +121,7 @@ public class OntologySolverGraphFrame extends ExtendedGraphFrame implements
      *  this method does nothing.
      *  @param e The action event.
      */
+    @Override
     public void actionPerformed(ActionEvent e) {
     }
 
@@ -130,6 +131,7 @@ public class OntologySolverGraphFrame extends ExtendedGraphFrame implements
      *  dispose() method of the superclass,
      *  {@link ptolemy.vergil.basic.ExtendedGraphFrame}.
      */
+    @Override
     public void dispose() {
         if (_debugClosing) {
             System.out.println("OntologySolverGraphFrame.dispose() : "
@@ -173,6 +175,7 @@ public class OntologySolverGraphFrame extends ExtendedGraphFrame implements
     /** Create the menus that are used by this frame. It is essential that
      *  _createGraphPane() be called before this.
      */
+    @Override
     protected void _addMenus() {
         super._addMenus();
 
@@ -230,6 +233,7 @@ public class OntologySolverGraphFrame extends ExtendedGraphFrame implements
      *  @param entity The object to be displayed in the pane.
      *  @return The pane that is created.
      */
+    @Override
     protected GraphPane _createGraphPane(NamedObj entity) {
         _controller = new OntologySolverGraphController();
         _controller.setConfiguration(getConfiguration());
@@ -297,6 +301,7 @@ public class OntologySolverGraphFrame extends ExtendedGraphFrame implements
         /** React to a menu command.
          *  @param e The event that is received to be reacted to.
          */
+        @Override
         public void actionPerformed(ActionEvent e) {
             JMenuItem target = (JMenuItem) e.getSource();
             String actionCommand = target.getActionCommand();
@@ -314,7 +319,7 @@ public class OntologySolverGraphFrame extends ExtendedGraphFrame implements
     //// InsertOntologyAction
 
     /** An action to insert an ontology into the ontology solver model. */
-        private class InsertOntologyAction extends AbstractAction {
+    private class InsertOntologyAction extends AbstractAction {
 
         /** Create a new action to instantiate an entity. */
         public InsertOntologyAction() {
@@ -334,7 +339,7 @@ public class OntologySolverGraphFrame extends ExtendedGraphFrame implements
             putValue(diva.gui.GUIUtilities.LARGE_ICON, toolbarIcon);
             putValue(GUIUtilities.ACCELERATOR_KEY, KeyStroke.getKeyStroke(
                     KeyEvent.VK_I, Toolkit.getDefaultToolkit()
-                            .getMenuShortcutKeyMask()));
+                    .getMenuShortcutKeyMask()));
             putValue(GUIUtilities.MNEMONIC_KEY, Integer.valueOf(KeyEvent.VK_I));
 
             // Initialize the default ontology directory to null in the
@@ -347,6 +352,7 @@ public class OntologySolverGraphFrame extends ExtendedGraphFrame implements
          *  then issuing a change request.
          *  @param e The event that is received to be reacted to.
          */
+        @Override
         public void actionPerformed(ActionEvent e) {
             // Initialize the default ontology directory to the current directory.
             if (_ontologyDirectory == null) {

@@ -1,7 +1,7 @@
 // Communicate with a client process.
 
 /*
-********************************************************************
+ ********************************************************************
 Copyright Notice
 ----------------
 
@@ -73,8 +73,8 @@ to install, use, modify, prepare derivative works, incorporate into
 other computer software, distribute, and sublicense such enhancements or
 derivative works thereof, in binary and source code form.
 
-********************************************************************
-*/
+ ********************************************************************
+ */
 
 package lbnl.util;
 
@@ -158,6 +158,7 @@ public class ClientProcess extends Thread {
     }
 
     /** Runs the process. */
+    @Override
     public void run() {
         ProcessBuilder pb = new ProcessBuilder(cmdArr);
         try {
@@ -329,7 +330,7 @@ public class ClientProcess extends Thread {
 
                     stdAre.setEditable(false);
                     stdScrPan
-                            .setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+                    .setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
                     stdFra.add(stdScrPan);
                     stdFra.setVisible(true);
                 }
@@ -338,6 +339,7 @@ public class ClientProcess extends Thread {
         }
 
         /** Runs the process. */
+        @Override
         public void run() {
             if (simPro == null) {
                 return;
@@ -429,6 +431,7 @@ public class ClientProcess extends Thread {
         }
 
         /** Runs the process. */
+        @Override
         public void run() {
             if (simPro == null) {
                 return;

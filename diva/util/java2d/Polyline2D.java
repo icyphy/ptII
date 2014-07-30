@@ -55,46 +55,54 @@ public abstract class Polyline2D implements Shape {
 
     /** Return false. A line never contains any point.
      */
+    @Override
     public boolean contains(double x, double y) {
         return false;
     }
 
     /** Return false. A line never contains any point.
      */
+    @Override
     public boolean contains(Point2D p) {
         return false;
     }
 
     /** Return false. A line never contains a rectangle.
      */
+    @Override
     public boolean contains(Rectangle2D r) {
         return false;
     }
 
     /** Return false. A line never contains a rectangle.
      */
+    @Override
     public boolean contains(double x, double y, double w, double h) {
         return false;
     }
 
     /** Get the integer bounds of the polyline.
      */
+    @Override
     public Rectangle getBounds() {
         return getBounds2D().getBounds();
     }
 
     /** Get the floating-point bounds of the polyline.
      */
+    @Override
     public abstract Rectangle2D getBounds2D();
 
     /** Get a path iterator over the object.
      */
+    @Override
     public PathIterator getPathIterator(AffineTransform at, double flatness) {
         return getPathIterator(at);
     }
 
     /** Get a path iterator over the object.
      */
+    @Override
     public PathIterator getPathIterator(AffineTransform at) {
         return new PolylineIterator(this, at);
     }
@@ -120,6 +128,7 @@ public abstract class Polyline2D implements Shape {
     /** Test if the polyline is intersected by the given
      * rectangle.
      */
+    @Override
     public boolean intersects(Rectangle2D r) {
         if (_coordCount == 0) {
             return false;
@@ -150,6 +159,7 @@ public abstract class Polyline2D implements Shape {
     /** Test if the polyline is intersected by the given
      * rectangle.
      */
+    @Override
     public boolean intersects(double x, double y, double w, double h) {
         return intersects(new Rectangle2D.Double(x, y, w, h));
     }
@@ -183,6 +193,7 @@ public abstract class Polyline2D implements Shape {
 
     /** Return a string representing this object
      */
+    @Override
     public String toString() {
         StringBuffer string = new StringBuffer(super.toString());
 
@@ -254,6 +265,7 @@ public abstract class Polyline2D implements Shape {
 
         /** Get the floating-point bounds of the polyline.
          */
+        @Override
         public Rectangle2D getBounds2D() {
             if (_coordCount <= 1) {
                 return new Rectangle2D.Float();
@@ -289,6 +301,7 @@ public abstract class Polyline2D implements Shape {
          *
          * @exception IndexOutOfBoundsException The index is out of bounds.
          */
+        @Override
         public double getX(int index) {
             if (index < 0 || index >= this.getVertexCount()) {
                 throw new IndexOutOfBoundsException("Index: " + index
@@ -302,6 +315,7 @@ public abstract class Polyline2D implements Shape {
          *
          * @exception IndexOutOfBoundsException The index is out of bounds.
          */
+        @Override
         public double getY(int index) {
             if (index < 0 || index >= this.getVertexCount()) {
                 throw new IndexOutOfBoundsException("Index: " + index
@@ -313,6 +327,7 @@ public abstract class Polyline2D implements Shape {
 
         /** Add a new vertex to the end of the line.
          */
+        @Override
         public void lineTo(double x, double y) {
             if (_coordCount == _coords.length) {
                 float[] temp = new float[_coordCount * 2];
@@ -329,6 +344,7 @@ public abstract class Polyline2D implements Shape {
          * @exception UnsupportedOperationException The polyline already
          * has vertices
          */
+        @Override
         public void moveTo(double x, double y) {
             if (_coordCount > 0) {
                 throw new UnsupportedOperationException(
@@ -344,6 +360,7 @@ public abstract class Polyline2D implements Shape {
          *
          * @exception IndexOutOfBoundsException The index is out of bounds.
          */
+        @Override
         public void setX(int index, double x) {
             if (index < 0 || index >= this.getVertexCount()) {
                 throw new IndexOutOfBoundsException("Index: " + index
@@ -357,6 +374,7 @@ public abstract class Polyline2D implements Shape {
          *
          * @exception IndexOutOfBoundsException The index is out of bounds.
          */
+        @Override
         public void setY(int index, double y) {
             if (index < 0 || index >= this.getVertexCount()) {
                 throw new IndexOutOfBoundsException("Index: " + index
@@ -368,12 +386,14 @@ public abstract class Polyline2D implements Shape {
 
         /** Transform the polyline with the given transform.
          */
+        @Override
         public void transform(AffineTransform at) {
             at.transform(_coords, 0, _coords, 0, _coordCount / 2);
         }
 
         /** Translate the polyline the given distance.
          */
+        @Override
         public void translate(double x, double y) {
             float fx = (float) x;
             float fy = (float) y;
@@ -438,6 +458,7 @@ public abstract class Polyline2D implements Shape {
 
         /** Get the floating-point bounds of the polyline.
          */
+        @Override
         public Rectangle2D getBounds2D() {
             if (_coordCount <= 0) {
                 return new Rectangle2D.Double();
@@ -473,6 +494,7 @@ public abstract class Polyline2D implements Shape {
          *
          * @exception IndexOutOfBoundsException The index is out of bounds.
          */
+        @Override
         public double getX(int index) {
             if (index < 0 || index >= this.getVertexCount()) {
                 throw new IndexOutOfBoundsException("Index: " + index
@@ -486,6 +508,7 @@ public abstract class Polyline2D implements Shape {
          *
          * @exception IndexOutOfBoundsException The index is out of bounds.
          */
+        @Override
         public double getY(int index) {
             if (index < 0 || index >= this.getVertexCount()) {
                 throw new IndexOutOfBoundsException("Index: " + index
@@ -497,6 +520,7 @@ public abstract class Polyline2D implements Shape {
 
         /** Add a new vertex to the end of the line.
          */
+        @Override
         public void lineTo(double x, double y) {
             if (_coordCount == _coords.length) {
                 double[] temp = new double[_coordCount * 2];
@@ -513,6 +537,7 @@ public abstract class Polyline2D implements Shape {
          * @exception UnsupportedOperationException The polyline already
          * has vertices
          */
+        @Override
         public void moveTo(double x, double y) {
             if (_coordCount > 0) {
                 throw new UnsupportedOperationException(
@@ -528,6 +553,7 @@ public abstract class Polyline2D implements Shape {
          *
          * @exception IndexOutOfBoundsException The index is out of bounds.
          */
+        @Override
         public void setX(int index, double x) {
             if (index < 0 || index >= this.getVertexCount()) {
                 throw new IndexOutOfBoundsException("Index: " + index
@@ -541,6 +567,7 @@ public abstract class Polyline2D implements Shape {
          *
          * @exception IndexOutOfBoundsException The index is out of bounds.
          */
+        @Override
         public void setY(int index, double y) {
             if (index < 0 || index >= this.getVertexCount()) {
                 throw new IndexOutOfBoundsException("Index: " + index
@@ -552,12 +579,14 @@ public abstract class Polyline2D implements Shape {
 
         /** Transform the polyline with the given transform.
          */
+        @Override
         public void transform(AffineTransform at) {
             at.transform(_coords, 0, _coords, 0, _coordCount / 2);
         }
 
         /** Translate the polyline the given distance.
          */
+        @Override
         public void translate(double x, double y) {
             for (int i = 0; i < _coordCount;) {
                 _coords[i++] += x;

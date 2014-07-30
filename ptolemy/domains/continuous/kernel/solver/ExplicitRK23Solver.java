@@ -77,6 +77,7 @@ public class ExplicitRK23Solver extends ContinuousODESolver {
      *  truncation error).
      *  @return The number of time increments plus one.
      */
+    @Override
     public final int getIntegratorAuxVariableCount() {
         // Allow one for the truncation error
         return _TIME_INCREMENTS.length + 1;
@@ -88,6 +89,7 @@ public class ExplicitRK23Solver extends ContinuousODESolver {
      *  @exception IllegalActionException If there is no director, or can not
      *  read input, or can not send output.
      */
+    @Override
     public void integratorIntegrate(ContinuousIntegrator integrator)
             throws IllegalActionException {
         double outputValue;
@@ -107,7 +109,7 @@ public class ExplicitRK23Solver extends ContinuousODESolver {
 
         case 2:
             outputValue = xn + h
-                    * (k[0] * _B[2][0] + k[1] * _B[2][1] + k[2] * _B[2][2]);
+            * (k[0] * _B[2][0] + k[1] * _B[2][1] + k[2] * _B[2][2]);
             break;
 
         case 3:
@@ -128,6 +130,7 @@ public class ExplicitRK23Solver extends ContinuousODESolver {
      *  @param integrator The integrator of that calls this method.
      *  @return True if the integration is successful.
      */
+    @Override
     public boolean integratorIsAccurate(ContinuousIntegrator integrator) {
         double tolerance = _director.getErrorTolerance();
         double h = _director.getCurrentStepSize();
@@ -165,6 +168,7 @@ public class ExplicitRK23Solver extends ContinuousODESolver {
      *  @param integrator The integrator of that calls this method.
      *  @return The next step size suggested by the given integrator.
      */
+    @Override
     public double integratorSuggestedStepSize(ContinuousIntegrator integrator) {
         double error = integrator.getAuxVariables()[_ERROR_INDEX];
         double h = _director.getCurrentStepSize();
@@ -191,12 +195,14 @@ public class ExplicitRK23Solver extends ContinuousODESolver {
     /** Return the current round.
      *  @return The current round.
      */
+    @Override
     protected int _getRound() {
         return _roundCount;
     }
 
     /** Get the current round factor.
      */
+    @Override
     protected final double _getRoundTimeIncrement() {
         return _TIME_INCREMENTS[_roundCount];
     }
@@ -206,6 +212,7 @@ public class ExplicitRK23Solver extends ContinuousODESolver {
      *  called 4 or more times since _reset().
      *  @see #_reset()
      */
+    @Override
     protected final boolean _isStepFinished() {
         return _roundCount >= _TIME_INCREMENTS.length;
     }
@@ -213,6 +220,7 @@ public class ExplicitRK23Solver extends ContinuousODESolver {
     /** Reset the solver, indicating to it that we are starting an
      *  integration step. This method resets the round counter.
      */
+    @Override
     protected final void _reset() {
         _roundCount = 0;
     }
@@ -220,6 +228,7 @@ public class ExplicitRK23Solver extends ContinuousODESolver {
     /** Set the round for the next integration step.
      *  @param round The round for the next integration step.
      */
+    @Override
     protected void _setRound(int round) {
         _roundCount = round;
     }
@@ -235,11 +244,11 @@ public class ExplicitRK23Solver extends ContinuousODESolver {
 
     /** B coefficients. */
     private static final double[][] _B = { { 0.5 }, { 0, 0.75 },
-            { 2.0 / 9.0, 1.0 / 3.0, 4.0 / 9.0 } };
+        { 2.0 / 9.0, 1.0 / 3.0, 4.0 / 9.0 } };
 
     /** E coefficients. */
     private static final double[] _E = { -5.0 / 72.0, 1.0 / 12.0, 1.0 / 9.0,
-            -1.0 / 8.0 };
+        -1.0 / 8.0 };
 
     /** The index of the error stored in the auxiliary variables. */
     private static final int _ERROR_INDEX = _TIME_INCREMENTS.length;

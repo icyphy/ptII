@@ -88,6 +88,7 @@ public class ArrayAppend extends Transformer {
      *  @exception CloneNotSupportedException If a derived class contains
      *   an attribute that cannot be cloned.
      */
+    @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         ArrayAppend newObject = (ArrayAppend) super.clone(workspace);
 
@@ -107,6 +108,7 @@ public class ArrayAppend extends Transformer {
      *  @exception IllegalActionException If a runtime type conflict occurs,
      *   or if there are no input channels.
      */
+    @Override
     public void fire() throws IllegalActionException {
         super.fire();
         int width = input.getWidth();

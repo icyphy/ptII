@@ -116,6 +116,7 @@ public class WallClockTime extends Source {
      *  @exception CloneNotSupportedException If a derived class includes
      *   an attribute that cannot be cloned.
      */
+    @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         WallClockTime newObject = (WallClockTime) super.clone(workspace);
         newObject.passThrough.setTypeAtLeast(newObject.trigger);
@@ -128,6 +129,7 @@ public class WallClockTime extends Source {
      *  @exception IllegalActionException If there is no director, or
      *   if the base class throws it.
      */
+    @Override
     public void fire() throws IllegalActionException {
         // NOTE: Do not call super.fire() because it reads the trigger
         // input.
@@ -151,6 +153,7 @@ public class WallClockTime extends Source {
     /** Record the start time.
      *  @exception IllegalActionException If the base class throws it.
      */
+    @Override
     public void initialize() throws IllegalActionException {
         super.initialize();
         _startTime = System.currentTimeMillis();

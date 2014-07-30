@@ -82,6 +82,7 @@ public class TupleToken extends Token {
      *  @return True if the argument is a tuple token of the same length
      *   and the elements are equal to that of this token.
      */
+    @Override
     public boolean equals(Object object) {
         if (object == null) {
             return false;
@@ -135,6 +136,7 @@ public class TupleToken extends Token {
      *  with the types of the value of this token.
      *  @return A TupleType.
      */
+    @Override
     public Type getType() {
         Type[] types = new Type[_value.length];
 
@@ -149,6 +151,7 @@ public class TupleToken extends Token {
      *  hash code length xored with the values of the tuples.
      *  @return A hash code value for this token.
      */
+    @Override
     public int hashCode() {
         int results = 0;
         for (Token element : _value) {
@@ -165,6 +168,7 @@ public class TupleToken extends Token {
      *   support this comparison.
      *  @return A true-valued token if the argument is equal.
      */
+    @Override
     public BooleanToken isEqualTo(Token token) throws IllegalActionException {
         if (getClass() != token.getClass()) {
             throw new IllegalActionException("isEqualTo not supported"
@@ -231,6 +235,7 @@ public class TupleToken extends Token {
      *  @exception IllegalActionException If multiplicative identity is not
      *   supported by an element token.
      */
+    @Override
     public Token one() throws IllegalActionException {
         Token[] oneValueTuple = new Token[_value.length];
 
@@ -247,6 +252,7 @@ public class TupleToken extends Token {
      *  @return A string beginning with "<" that contains expressions
      *   for every element in the tuple separated by commas, ending with ">".
      */
+    @Override
     public String toString() {
         StringBuffer buffer = new StringBuffer("<");
 
@@ -271,6 +277,7 @@ public class TupleToken extends Token {
      *  @exception IllegalActionException If the additive identity is not
      *   supported by an element token.
      */
+    @Override
     public Token zero() throws IllegalActionException {
         Token[] zeroValueTuple = new Token[_value.length];
 

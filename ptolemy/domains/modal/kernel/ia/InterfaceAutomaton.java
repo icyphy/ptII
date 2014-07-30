@@ -560,6 +560,7 @@ public class InterfaceAutomaton extends FSMActor {
      *  @exception IllegalActionException If there is more than one
      *   transition enabled.
      */
+    @Override
     public void fire() throws IllegalActionException {
         super.fire();
     }
@@ -692,6 +693,7 @@ public class InterfaceAutomaton extends FSMActor {
      *  @exception NameDuplicationException If name collides with that
      *   of a transition already in this actor.
      */
+    @Override
     public ComponentRelation newRelation(String name)
             throws IllegalActionException, NameDuplicationException {
         try {
@@ -1008,6 +1010,7 @@ public class InterfaceAutomaton extends FSMActor {
      *  @exception NameDuplicationException If the name collides with a name
      *   already on the contained transitions list.
      */
+    @Override
     protected void _addRelation(ComponentRelation relation)
             throws IllegalActionException, NameDuplicationException {
         if (!(relation instanceof InterfaceAutomatonTransition)) {
@@ -1028,7 +1031,7 @@ public class InterfaceAutomaton extends FSMActor {
     // already existed. This method is called from _computeProduct.
     private State _addState(InterfaceAutomaton product, State stateInThis,
             State stateInArgument, HashMap frontier)
-            throws IllegalActionException, NameDuplicationException {
+                    throws IllegalActionException, NameDuplicationException {
         String name = stateInThis.getName() + NAME_CONNECTOR
                 + stateInArgument.getName();
         State state = (State) product.getEntity(name);
@@ -1048,7 +1051,7 @@ public class InterfaceAutomaton extends FSMActor {
     private void _addTransition(InterfaceAutomaton automaton,
             String relationNamePrefix, State sourceState,
             State destinationState, String label)
-            throws IllegalActionException, NameDuplicationException {
+                    throws IllegalActionException, NameDuplicationException {
         String name = automaton.uniqueName(relationNamePrefix);
         InterfaceAutomatonTransition transition = new InterfaceAutomatonTransition(
                 automaton, name);
@@ -1111,7 +1114,7 @@ public class InterfaceAutomaton extends FSMActor {
             } else {
                 throw new InternalErrorException(
                         "InterfaceAutomaton._check: The label " + label
-                                + " does not end with ?, !, or ;.");
+                        + " does not end with ?, !, or ;.");
             }
         }
 
@@ -1170,9 +1173,9 @@ public class InterfaceAutomaton extends FSMActor {
                 || !thatInternals.isEmpty()) {
             throw new IllegalActionException(
                     message
-                            + "the internal "
-                            + "transitions of the former overlaps with the transitions "
-                            + "of the latter.");
+                    + "the internal "
+                    + "transitions of the former overlaps with the transitions "
+                    + "of the latter.");
         }
 
         thatInternals = automaton.internalTransitionNameSet();
@@ -1189,9 +1192,9 @@ public class InterfaceAutomaton extends FSMActor {
                 || !thisInternals.isEmpty()) {
             throw new IllegalActionException(
                     message
-                            + "the internal "
-                            + "transitions of the latter overlaps with the transitions "
-                            + "of the former.");
+                    + "the internal "
+                    + "transitions of the latter overlaps with the transitions "
+                    + "of the former.");
         }
 
         // check the input transitions do not overlap
@@ -1412,7 +1415,7 @@ public class InterfaceAutomaton extends FSMActor {
                                                 destinationInArgument, frontier);
                                         _addTransition(product,
                                                 this.getName() + NAME_CONNECTOR
-                                                        + automaton.getName(),
+                                                + automaton.getName(),
                                                 stateInProduct,
                                                 destinationInProduct,
                                                 transitionName + ";");
@@ -1520,7 +1523,7 @@ public class InterfaceAutomaton extends FSMActor {
                                                 destinationInArgument, frontier);
                                         _addTransition(product,
                                                 this.getName() + NAME_CONNECTOR
-                                                        + automaton.getName(),
+                                                + automaton.getName(),
                                                 stateInProduct,
                                                 destinationInProduct,
                                                 transitionName + ";");
@@ -1651,9 +1654,9 @@ public class InterfaceAutomaton extends FSMActor {
                                             _addTransition(
                                                     product,
                                                     this.getName()
-                                                            + NAME_CONNECTOR
-                                                            + automaton
-                                                                    .getName(),
+                                                    + NAME_CONNECTOR
+                                                    + automaton
+                                                    .getName(),
                                                     stateInProduct,
                                                     destinationInProduct,
                                                     transitionName + ";");
@@ -1746,9 +1749,9 @@ public class InterfaceAutomaton extends FSMActor {
                                             _addTransition(
                                                     product,
                                                     this.getName()
-                                                            + NAME_CONNECTOR
-                                                            + automaton
-                                                                    .getName(),
+                                                    + NAME_CONNECTOR
+                                                    + automaton
+                                                    .getName(),
                                                     stateInProduct,
                                                     destinationInProduct,
                                                     transitionName + ";");

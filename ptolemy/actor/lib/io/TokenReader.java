@@ -62,6 +62,7 @@ import ptolemy.kernel.util.NameDuplicationException;
  @Pt.ProposedRating Red (eal)
  @Pt.AcceptedRating Red (reviewmoderator)
  */
+@Deprecated
 public class TokenReader extends FileReader {
 
     /** Construct an actor with a name and a container.
@@ -129,6 +130,7 @@ public class TokenReader extends FileReader {
     /** Not implemented entirely yet. FIXME
      *  @exception IllegalActionException
      */
+    @Override
     public void fire() throws IllegalActionException {
         try {
             super.fire();
@@ -156,6 +158,7 @@ public class TokenReader extends FileReader {
      *  @param fileContents The contents of the file or URL that was read.
      *  @exception IllegalActionException If sending the data fails.
      */
+    @Override
     protected void _handleFileData(String fileContents)
             throws IllegalActionException {
 

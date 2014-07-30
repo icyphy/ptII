@@ -98,6 +98,7 @@ public class RenameOperation extends Operation {
      *  @exception IllegalActionException If error occurs in generating the
      *   change request.
      */
+    @Override
     public ChangeRequest getChangeRequest(Pattern pattern,
             Replacement replacement, MatchResult matchResult,
             NamedObj patternObject, NamedObj replacementObject,
@@ -144,6 +145,7 @@ public class RenameOperation extends Operation {
      *
      *  @return The array of elements.
      */
+    @Override
     public GTIngredientElement[] getElements() {
         return _ELEMENTS;
     }
@@ -154,6 +156,7 @@ public class RenameOperation extends Operation {
      *  @return The value.
      *  @see #setValue(int, Object)
      */
+    @Override
     public Object getValue(int index) {
         switch (index) {
         case 0:
@@ -168,6 +171,7 @@ public class RenameOperation extends Operation {
      *  @return A string that describes the values of all the elements.
      *  @see #setValues(String)
      */
+    @Override
     public String getValues() {
         StringBuffer buffer = new StringBuffer();
         _encodeStringField(buffer, 0, _name.get());
@@ -189,6 +193,7 @@ public class RenameOperation extends Operation {
      *  @param value The value.
      *  @see #getValue(int)
      */
+    @Override
     public void setValue(int index, Object value) {
         switch (index) {
         case 0:
@@ -203,6 +208,7 @@ public class RenameOperation extends Operation {
      *   elements.
      *  @see #getValues()
      */
+    @Override
     public void setValues(String values) {
         FieldIterator fieldIterator = new FieldIterator(values);
         setName(_decodeStringField(0, fieldIterator));
@@ -212,6 +218,7 @@ public class RenameOperation extends Operation {
      *
      *  @exception ValidationException If some elements are invalid.
      */
+    @Override
     public void validate() throws ValidationException {
         if (_valueParseTree == null) {
             try {

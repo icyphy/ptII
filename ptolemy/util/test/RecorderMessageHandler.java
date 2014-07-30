@@ -23,7 +23,7 @@
 
  PT_COPYRIGHT_VERSION_2
  COPYRIGHTENDKEY
-*/
+ */
 
 package ptolemy.util.test;
 
@@ -43,7 +43,7 @@ import ptolemy.util.MessageHandler;
  @Pt.ProposedRating Green (cxh)
  @Pt.AcceptedRating Green (cxh)
 
-*/
+ */
 public class RecorderMessageHandler extends MessageHandler {
 
     /** Get the messages recorded so far.
@@ -68,6 +68,7 @@ public class RecorderMessageHandler extends MessageHandler {
      *  @param throwable The throwable.
      *  @see ptolemy.util.CancelException
      */
+    @Override
     protected void _error(String info, Throwable throwable) {
         //super._error(info, throwable);
         System.err.println("RecorderMessageHandler: " + info + " " + throwable);

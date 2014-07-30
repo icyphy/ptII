@@ -39,24 +39,28 @@ public class LayerConsumer implements LayerListener {
     /** Invoked when the mouse moves while the button is still held
      * down.
      */
+    @Override
     public void mouseDragged(LayerEvent e) {
         e.consume();
     }
 
     /** Invoked when the mouse is pressed on a layer or figure.
      */
+    @Override
     public void mousePressed(LayerEvent e) {
         e.consume();
     }
 
     /** Invoked when the mouse is released on a layer or figure.
      */
+    @Override
     public void mouseReleased(LayerEvent e) {
         e.consume();
     }
 
     /** Invoked when the mouse is clicked on a layer or figure.
      */
+    @Override
     public void mouseClicked(LayerEvent e) {
         e.consume();
     }

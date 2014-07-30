@@ -62,7 +62,7 @@ public class MoMLModelAttributeController extends AttributeController {
         super(controller, access);
 
         _menuFactory
-                .addMenuItemFactory(new MenuActionFactory(_lookInsideAction));
+        .addMenuItemFactory(new MenuActionFactory(_lookInsideAction));
 
     }
 
@@ -74,6 +74,7 @@ public class MoMLModelAttributeController extends AttributeController {
      * better that this method was added higher in the hierarchy.
      * @param jgraph The JGraph to which hot keys are to be added.
      */
+    @Override
     public void addHotKeys(JGraph jgraph) {
         super.addHotKeys(jgraph);
         GUIUtilities.addHotKey(jgraph, _lookInsideAction);
@@ -84,6 +85,7 @@ public class MoMLModelAttributeController extends AttributeController {
      *  @param configuration The given configuration object to be used to
      *   set the configuration.
      */
+    @Override
     public void setConfiguration(Configuration configuration) {
         super.setConfiguration(configuration);
         _lookInsideAction.setConfiguration(configuration);

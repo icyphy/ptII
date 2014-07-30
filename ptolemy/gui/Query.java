@@ -159,7 +159,7 @@ public class Query extends JPanel {
 
         _messageScrollPane = new JScrollPane(_messageArea);
         _messageScrollPane
-                .setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
+        .setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
 
         // Get rid of the border.
         _messageScrollPane.setBorder(BorderFactory.createEmptyBorder());
@@ -231,8 +231,8 @@ public class Query extends JPanel {
      */
     public JComboBox addChoice(String name, String label, Object[] values,
             Object defaultChoice, boolean editable) {
-        return addChoice(name, label, values, defaultChoice, editable, Color.white,
-                Color.black);
+        return addChoice(name, label, values, defaultChoice, editable,
+                Color.white, Color.black);
     }
 
     /** Create a choice menu.
@@ -260,6 +260,7 @@ public class Query extends JPanel {
         // custom editor.  #$(#&$#(@#!!
         // combobox.setBackground(background);
         combobox.setEditor(new BasicComboBoxEditor() {
+            @Override
             public Component getEditorComponent() {
                 Component result = super.getEditorComponent();
                 result.setBackground(background);
@@ -738,7 +739,7 @@ public class Query extends JPanel {
      */
     public JSlider addSlider(String name, String label, int defaultValue,
             int minimum, int maximum, String minLabelText, String maxLabelText)
-            throws IllegalArgumentException {
+                    throws IllegalArgumentException {
         JLabel lbl = new JLabel(label + ": ");
 
         if (minimum > maximum) {
@@ -876,7 +877,7 @@ public class Query extends JPanel {
      *  @param width The width.
      *  @return The text area.
      */
-        public JTextArea addTextArea(String name, String label, String theValue,
+    public JTextArea addTextArea(String name, String label, String theValue,
             Color background, Color foreground, int height, int width) {
         JLabel lbl = new JLabel(label + ": ");
         lbl.setBackground(_background);
@@ -935,8 +936,9 @@ public class Query extends JPanel {
      *   checkbox.  This is a runtime exception, so it
      *   need not be declared explicitly.
      */
+    @Deprecated
     public boolean booleanValue(String name) throws NoSuchElementException,
-            IllegalArgumentException {
+    IllegalArgumentException {
         return getBooleanValue(name);
     }
 
@@ -957,8 +959,9 @@ public class Query extends JPanel {
      *   line.  This is a runtime exception, so it
      *   need not be declared explicitly.
      */
+    @Deprecated
     public double doubleValue(String name) throws IllegalArgumentException,
-            NoSuchElementException, NumberFormatException {
+    NoSuchElementException, NumberFormatException {
         return getDoubleValue(name);
     }
 
@@ -975,7 +978,7 @@ public class Query extends JPanel {
      *   need not be declared explicitly.
      */
     public boolean getBooleanValue(String name) throws NoSuchElementException,
-            IllegalArgumentException {
+    IllegalArgumentException {
         Object result = _entries.get(name);
 
         if (result == null) {
@@ -1008,7 +1011,7 @@ public class Query extends JPanel {
      *  @since Ptolemy II 3.1
      */
     public char[] getCharArrayValue(String name) throws NoSuchElementException,
-            IllegalArgumentException {
+    IllegalArgumentException {
         Object result = _entries.get(name);
 
         if (result == null) {
@@ -1041,7 +1044,7 @@ public class Query extends JPanel {
      *   need not be declared explicitly.
      */
     public double getDoubleValue(String name) throws IllegalArgumentException,
-            NoSuchElementException, NumberFormatException {
+    NoSuchElementException, NumberFormatException {
         Object result = _entries.get(name);
 
         if (result == null) {
@@ -1082,7 +1085,7 @@ public class Query extends JPanel {
      *   need not be declared explicitly.
      */
     public int getIntValue(String name) throws IllegalArgumentException,
-            NoSuchElementException, NumberFormatException {
+    NoSuchElementException, NumberFormatException {
         Object result = _entries.get(name);
 
         if (result == null) {
@@ -1129,6 +1132,7 @@ public class Query extends JPanel {
      *
      *  @return The maximum desired size.
      */
+    @Override
     public Dimension getMaximumSize() {
         // Unfortunately, if we don't have a message, then we end up with
         // an empty space that is difficult to control the size of, which
@@ -1161,7 +1165,7 @@ public class Query extends JPanel {
      *   have a string representation (this should not be thrown).
      */
     public Object getObjectValue(String name) throws NoSuchElementException,
-            IllegalArgumentException {
+    IllegalArgumentException {
         Object result = _entries.get(name);
 
         if (result == null) {
@@ -1238,7 +1242,7 @@ public class Query extends JPanel {
      *   have a string representation (this should not be thrown).
      */
     public String getStringValue(String name) throws NoSuchElementException,
-            IllegalArgumentException {
+    IllegalArgumentException {
         // NOTE: getObjectValue() may return null if the entry
         // is a combo box and no object is selected. In that case,
         // return an empty string.
@@ -1297,8 +1301,9 @@ public class Query extends JPanel {
      *   choice, line, or slider.  This is a runtime exception, so it
      *   need not be declared explicitly.
      */
+    @Deprecated
     public int intValue(String name) throws IllegalArgumentException,
-            NoSuchElementException, NumberFormatException {
+    NoSuchElementException, NumberFormatException {
         return getIntValue(name);
     }
 
@@ -1341,7 +1346,7 @@ public class Query extends JPanel {
      *   to the appropriate type.
      */
     public void set(String name, String value) throws NoSuchElementException,
-            IllegalArgumentException {
+    IllegalArgumentException {
         Object result = _entries.get(name);
 
         if (result == null) {
@@ -1424,6 +1429,7 @@ public class Query extends JPanel {
     /** Set the background color for all the widgets.
      *  @param color The background color.
      */
+    @Override
     public void setBackground(Color color) {
         super.setBackground(color);
         _background = color;
@@ -1761,8 +1767,9 @@ public class Query extends JPanel {
      *  @exception IllegalArgumentException If the entry type does not
      *   have a string representation (this should not be thrown).
      */
+    @Deprecated
     public String stringValue(String name) throws NoSuchElementException,
-            IllegalArgumentException {
+    IllegalArgumentException {
         return getStringValue(name);
     }
 
@@ -1991,8 +1998,9 @@ public class Query extends JPanel {
         }
 
         /** Call all registered QueryListeners.
-        *  @param event The event, ignored in this method.
-        */
+         *  @param event The event, ignored in this method.
+         */
+        @Override
         public void actionPerformed(ActionEvent event) {
             _owner._notifyListeners(_name);
         }
@@ -2004,7 +2012,7 @@ public class Query extends JPanel {
 
     /** Panel containing an entry box and button that opens a color chooser.
      */
-        public static class QueryColorChooser extends Box implements ActionListener {
+    public static class QueryColorChooser extends Box implements ActionListener {
         /** Create a panel containing an entry box and a color chooser.
          *  @param owner The owner query
          *  @param name The name of the query
@@ -2041,6 +2049,7 @@ public class Query extends JPanel {
             _name = name;
         }
 
+        @Override
         public void actionPerformed(ActionEvent e) {
             // Read the current color from the text field.
             String spec = getSelectedColor().trim();
@@ -2104,8 +2113,8 @@ public class Query extends JPanel {
     /** Panel containing an entry box and file chooser.
      *
      */
-        public/*static*/class QueryFileChooser extends Box implements
-            ActionListener {
+    public/*static*/class QueryFileChooser extends Box implements
+    ActionListener {
         // This class cannot be static because the FileDialog needs to be owned
         // by the parent Query.
 
@@ -2190,6 +2199,7 @@ public class Query extends JPanel {
          *  this method.  Otherwise, {@link #_actionPerformedJFileChooser(ActionEvent)}
          *  is used.
          */
+        @Override
         public void actionPerformed(ActionEvent event) {
             if (PtGUIUtilities.useFileDialog()) {
                 _actionPerformedFileDialog(event);
@@ -2363,7 +2373,8 @@ public class Query extends JPanel {
                 background = jFileChooserBugFix.saveBackground();
                 // NOTE: If the last argument is null, then choose a
                 // default dir.
-                                JFileChooser fileChooser = new JFileChooser(_startingDirectory) {
+                JFileChooser fileChooser = new JFileChooser(_startingDirectory) {
+                    @Override
                     public void approveSelection() {
                         File file = getSelectedFile();
                         if (file.exists() && getDialogType() == SAVE_DIALOG) {
@@ -2393,13 +2404,13 @@ public class Query extends JPanel {
 
                 if (_allowFiles && _allowDirectories) {
                     fileChooser
-                            .setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
+                    .setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
                 } else if (_allowFiles && !_allowDirectories) {
                     // This is the default.
                     fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
                 } else if (!_allowFiles && _allowDirectories) {
                     fileChooser
-                            .setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+                    .setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
                 } else {
                     // Usually, we would use InternalErrorException
                     // here, but if we do, then this package would
@@ -2502,10 +2513,12 @@ public class Query extends JPanel {
             _owner = owner;
         }
 
+        @Override
         public void focusGained(FocusEvent e) {
             // Nothing to do.
         }
 
+        @Override
         public void focusLost(FocusEvent e) {
             // NOTE: Java's lame AWT has no reliable way
             // to take action on window closing, so this focus lost
@@ -2535,6 +2548,7 @@ public class Query extends JPanel {
         }
 
         /** Call all registered QueryListeners. */
+        @Override
         public void itemStateChanged(ItemEvent e) {
             _owner._notifyListeners(_name);
         }
@@ -2561,6 +2575,7 @@ public class Query extends JPanel {
 
         }
 
+        @Override
         public JScrollBar getHorizontalScrollBar() {
             // If the user types in lots of characters, eventually
             // create a scrollbar and make the textArea bigger.  Note
@@ -2578,6 +2593,7 @@ public class Query extends JPanel {
             return scrollBar;
         }
 
+        @Override
         public Dimension getPreferredSize() {
             // For another possible solution, see
             // http://stackoverflow.com/questions/9370561/enabling-scroll-bars-when-jtextarea-exceeds-certain-amount-of-lines
@@ -2615,6 +2631,7 @@ public class Query extends JPanel {
         }
 
         /** Call all registered QueryListeners. */
+        @Override
         public void stateChanged(ChangeEvent event) {
             _owner._notifyListeners(_name);
         }

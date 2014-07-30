@@ -77,6 +77,7 @@ public class FullTreeModel extends ClassAndEntityTreeModel {
      *  @param index The index of the desired child.
      *  @return A node, or null if there is no such child.
      */
+    @Override
     public Object getChild(Object parent, int index) {
         List attributes = _attributes(parent);
         int numAttributes = attributes.size();
@@ -108,6 +109,7 @@ public class FullTreeModel extends ClassAndEntityTreeModel {
      *  @param parent A parent node.
      *  @return The number of children.
      */
+    @Override
     public int getChildCount(Object parent) {
         List attributes = _attributes(parent);
         int numAttributes = attributes.size();
@@ -128,6 +130,7 @@ public class FullTreeModel extends ClassAndEntityTreeModel {
      *  @param child The child.
      *  @return The index of the specified child.
      */
+    @Override
     public int getIndexOfChild(Object parent, Object child) {
         List attributes = _attributes(parent);
 
@@ -177,6 +180,7 @@ public class FullTreeModel extends ClassAndEntityTreeModel {
      *  @param object The object.
      *  @return True if the node has no children.
      */
+    @Override
     public boolean isLeaf(Object object) {
         // FIXME: Ignoring setFilter for now.
         if (_attributes(object).size() > 0) {

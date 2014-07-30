@@ -106,6 +106,7 @@ public class XmlException extends Exception {
      *  @return The cause that was passed in as an argument to the
      *  constructor, or null of no cause was specified.
      */
+    @Override
     public Throwable getCause() {
         return _cause;
     }
@@ -114,6 +115,7 @@ public class XmlException extends Exception {
      * Get the error message from the parser.
      * @return A string describing the error.
      */
+    @Override
     public String getMessage() {
         // Modified by Steve Neuendorffer because the message didn't tell what
         // the location was.
@@ -123,7 +125,7 @@ public class XmlException extends Exception {
                 + (_line == -1 ? "unknown line " : " at line " + _line)
                 + (_column == -1 ? " and unknown column " : " and column "
                         + _column)
-                + (_cause == null ? "" : "\nCaused by:\n " + _cause);
+                        + (_cause == null ? "" : "\nCaused by:\n " + _cause);
     }
 
     /** Get the URI of the entity containing the error.
@@ -152,6 +154,7 @@ public class XmlException extends Exception {
      *  exception is known, print the cause exception and the
      *  cause stacktrace.
      */
+    @Override
     public void printStackTrace() {
         // Note that chained exceptions are new JDK1.4.
         // We are implement them ourselves here so that we can
@@ -167,6 +170,7 @@ public class XmlException extends Exception {
      *  stacktrace.
      *  @param printStream The PrintStream to write to.
      */
+    @Override
     public void printStackTrace(PrintStream printStream) {
         printStackTrace(new PrintWriter(printStream));
     }
@@ -176,6 +180,7 @@ public class XmlException extends Exception {
      *  cause stacktrace.
      *  @param printWriter The PrintWriter to write to.
      */
+    @Override
     public void printStackTrace(PrintWriter printWriter) {
         super.printStackTrace(printWriter);
 

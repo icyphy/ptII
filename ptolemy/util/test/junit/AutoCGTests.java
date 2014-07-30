@@ -24,7 +24,7 @@
    PT_COPYRIGHT_VERSION_2
    COPYRIGHTENDKEY
 
-*/
+ */
 
 package ptolemy.util.test.junit;
 
@@ -102,8 +102,7 @@ public class AutoCGTests extends ModelTests {
     public void runModel(String fullPath, String language,
             boolean generateInSubdirectory, boolean inline,
             int maximumLinesPerBlock, boolean variablesAsArrays,
-            String generatorPackageList)
-            throws Throwable {
+            String generatorPackageList) throws Throwable {
         if (fullPath.endsWith(THERE_ARE_NO_AUTO_TESTS)) {
             System.out.println("No auto/*.xml tests in "
                     + StringUtilities.getProperty("user.dir"));
@@ -117,19 +116,20 @@ public class AutoCGTests extends ModelTests {
             System.out.println("Warning, failed to delete " + _cgDirectory);
         }
 
-        LinkedList<String> argumentsList = new LinkedList<String>(Arrays.asList("-language", language,
-                "-generateInSubdirectory",
-                Boolean.toString(generateInSubdirectory), "-inline",
-                Boolean.toString(inline), "-maximumLinesPerBlock",
-                Integer.toString(maximumLinesPerBlock), "-variablesAsArrays",
-                        Boolean.toString(variablesAsArrays)));
+        LinkedList<String> argumentsList = new LinkedList<String>(
+                Arrays.asList("-language", language, "-generateInSubdirectory",
+                        Boolean.toString(generateInSubdirectory), "-inline",
+                        Boolean.toString(inline), "-maximumLinesPerBlock",
+                        Integer.toString(maximumLinesPerBlock),
+                        "-variablesAsArrays",
+                Boolean.toString(variablesAsArrays)));
         if (generatorPackageList != null && generatorPackageList.length() > 0) {
             argumentsList.add("-generatorPackageList");
             argumentsList.add(generatorPackageList);
         }
         argumentsList.add(fullPath);
 
-        String [] args = argumentsList.toArray(new String[argumentsList.size()]);
+        String[] args = argumentsList.toArray(new String[argumentsList.size()]);
 
         System.out.print("----------------- AutoCG $PTII/bin/ptcg");
         for (int i = 0; i < args.length; i++) {
@@ -140,10 +140,10 @@ public class AutoCGTests extends ModelTests {
                 (Object) args)).intValue();
         if (returnValue != 0) {
             System.out
-                    .println("AutoCGTests: "
-                            + fullPath
-                            + ": Return value of the last command executed was not zero, it was: "
-                            + returnValue + ", marking this as a test failure.");
+            .println("AutoCGTests: "
+                    + fullPath
+                    + ": Return value of the last command executed was not zero, it was: "
+                    + returnValue + ", marking this as a test failure.");
             Assert.fail("Return value of the last command executed was not zero, it was: "
                     + returnValue);
         }
@@ -157,7 +157,5 @@ public class AutoCGTests extends ModelTests {
 
     /** The GenericCodeGenerator.generateCode(String[]) method. */
     protected static Method _generateCodeMethod;
-
-
 
 }

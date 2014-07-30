@@ -86,6 +86,7 @@ public class MultiplyOrDivideUnitConcepts extends ConceptFunction {
      *  @exception IllegalActionException Thrown if there is a problem creating
      *   the output UnitConcept.
      */
+    @Override
     protected Concept _evaluateFunction(List<Concept> argValues)
             throws IllegalActionException {
 

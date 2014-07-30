@@ -41,7 +41,7 @@ Interface for a concept term factory.
 @since Ptolemy II 10.0
 @Pt.ProposedRating Red (mankit)
 @Pt.AcceptedRating Red (mankit)
-*/
+ */
 
 public interface ConceptTermFactory {
 

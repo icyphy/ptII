@@ -78,6 +78,7 @@ public class BasicLayoutTarget implements LayoutTarget {
      * Return the bounds of the figure associated with the given node
      * in the target's view.
      */
+    @Override
     public Rectangle2D getBounds(Object node) {
         Figure f = _controller.getFigure(node);
         return f.getBounds();
@@ -93,6 +94,7 @@ public class BasicLayoutTarget implements LayoutTarget {
     /**
      * Return the graph model that we are operating on.
      */
+    @Override
     public GraphModel getGraphModel() {
         return _controller.getGraphModel();
     }
@@ -126,6 +128,7 @@ public class BasicLayoutTarget implements LayoutTarget {
      * Return the viewport of the given graph as a rectangle
      * in logical coordinates.
      */
+    @Override
     public Rectangle2D getViewport(Object composite) {
         GraphModel model = _controller.getGraphModel();
 
@@ -156,6 +159,7 @@ public class BasicLayoutTarget implements LayoutTarget {
      * purpose of a layout target is to abstract away the visual object and
      * using this method breaks that abstraction.
      */
+    @Override
     public Object getVisualObject(Object object) {
         return _controller.getFigure(object);
     }
@@ -164,6 +168,7 @@ public class BasicLayoutTarget implements LayoutTarget {
      * Return whether or not the given node is actually
      * visible in the view.
      */
+    @Override
     public boolean isNodeVisible(Object node) {
         Figure nf = _controller.getFigure(node);
         return nf != null && nf.isVisible() && nf.getParent() != null;
@@ -173,6 +178,7 @@ public class BasicLayoutTarget implements LayoutTarget {
      * Return whether or not the given edge is actually
      * visible in the view.
      */
+    @Override
     public boolean isEdgeVisible(Object edge) {
         Connector ef = (Connector) _controller.getFigure(edge);
         return ef != null && ef.isVisible() && ef.getParent() != null;
@@ -182,11 +188,13 @@ public class BasicLayoutTarget implements LayoutTarget {
      * Return an iterator over the nodes which intersect the given
      * rectangle in the top-level graph.
      */
+    @Override
     public Iterator intersectingNodes(Rectangle2D r) {
         final GraphModel model = _controller.getGraphModel();
         ZList zlist = getGraphicsPane().getForegroundLayer().getFigures();
         Iterator i = zlist.getIntersectedFigures(r).figuresFromFront();
         Iterator j = new FilteredIterator(i, new Filter() {
+            @Override
             public boolean accept(Object o) {
                 Figure f = (Figure) o;
                 return model.isNode(f.getUserObject());
@@ -194,6 +202,7 @@ public class BasicLayoutTarget implements LayoutTarget {
         });
 
         return new ProxyIterator(j) {
+            @Override
             public Object next() {
                 Figure nf = (Figure) super.next();
                 return nf.getUserObject();
@@ -205,15 +214,18 @@ public class BasicLayoutTarget implements LayoutTarget {
      * Return an iterator over the node or edge figures which
      * intersect the given rectangle.
      */
+    @Override
     public Iterator intersectingEdges(Rectangle2D r) {
         ZList zlist = getGraphicsPane().getForegroundLayer().getFigures();
         Iterator i = zlist.getIntersectedFigures(r).figuresFromFront();
         Iterator j = new FilteredIterator(i, new Filter() {
+            @Override
             public boolean accept(Object o) {
                 return o instanceof Connector;
             }
         });
         return new ProxyIterator(j) {
+            @Override
             public Object next() {
                 Connector ef = (Connector) super.next();
                 return ef.getUserObject();
@@ -225,6 +237,7 @@ public class BasicLayoutTarget implements LayoutTarget {
      * Route absolutely the figure associated with the given edge in
      * the target's view.
      */
+    @Override
     public void route(Object edge) {
         Connector ef = (Connector) _controller.getFigure(edge);
 
@@ -255,6 +268,7 @@ public class BasicLayoutTarget implements LayoutTarget {
      * Translate the figure associated with the given node in the
      * target's view by the given delta.
      */
+    @Override
     public void translate(Object node, double dx, double dy) {
         Figure f = _controller.getFigure(node);
         f.translate(dx, dy);

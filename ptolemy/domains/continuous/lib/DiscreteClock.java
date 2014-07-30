@@ -55,6 +55,7 @@ import ptolemy.kernel.util.NameDuplicationException;
  @Pt.AcceptedRating Yellow (hyzheng)
  @deprecated Use ptolemy.actor.lib.DiscreteClock instead.
  */
+@Deprecated
 public class DiscreteClock extends ptolemy.actor.lib.DiscreteClock {
 
     // This actor only generates predictable events and that is why it does not

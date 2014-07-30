@@ -113,6 +113,7 @@ public class Merge extends DETransformer {
      *  @exception IllegalActionException If there is no director, or
      *  the input can not be read, or the output can not be sent.
      */
+    @Override
     public void fire() throws IllegalActionException {
         super.fire();
         _previousModelTime = ((CompositeActor) this.getContainer())
@@ -172,7 +173,7 @@ public class Merge extends DETransformer {
         int microstep = _getMicrostep();
         if (_moreTokensOnOtherChannels
                 && ((CompositeActor) this.getContainer()).getDirector()
-                        .getModelTime().compareTo(_previousModelTime) == 0
+                .getModelTime().compareTo(_previousModelTime) == 0
                 && microstep == _previousMicrostep) {
             return false;
         }

@@ -57,6 +57,7 @@ public class TextView extends AbstractView {
         return (TextDocument) getDocument();
     }
 
+    @Override
     public JComponent getComponent() {
         if (_scrollPane == null) {
             TextDocument td = (TextDocument) getDocument();
@@ -68,14 +69,17 @@ public class TextView extends AbstractView {
             // javax.swing.text.Document.  Don't get confused!
             _editorPane.getDocument().addDocumentListener(
                     new DocumentListener() {
+                        @Override
                         public void changedUpdate(DocumentEvent e) {
                             getTextDocument().setText(_editorPane.getText());
                         }
 
+                        @Override
                         public void insertUpdate(DocumentEvent e) {
                             getTextDocument().setText(_editorPane.getText());
                         }
 
+                        @Override
                         public void removeUpdate(DocumentEvent e) {
                             getTextDocument().setText(_editorPane.getText());
                         }
@@ -86,10 +90,12 @@ public class TextView extends AbstractView {
         return _scrollPane;
     }
 
+    @Override
     public String getTitle() {
         return getDocument().getTitle();
     }
 
+    @Override
     public String getShortTitle() {
         return getTitle();
     }

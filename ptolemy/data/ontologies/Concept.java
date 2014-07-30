@@ -95,6 +95,7 @@ public abstract class Concept extends ComponentEntity implements InequalityTerm 
      *
      *  @return Null, since concepts have no associated objects.
      */
+    @Override
     final public Object getAssociatedObject() {
         return null;
     }
@@ -134,6 +135,7 @@ public abstract class Concept extends ComponentEntity implements InequalityTerm 
      *  @return This concept.
      *  @see #setValue
      */
+    @Override
     final public Object getValue() {
         return this;
     }
@@ -143,6 +145,7 @@ public abstract class Concept extends ComponentEntity implements InequalityTerm 
      *  it has no variables.
      *  @return An empty array.
      */
+    @Override
     final public InequalityTerm[] getVariables() {
         return new InequalityTerm[0];
     }
@@ -154,6 +157,7 @@ public abstract class Concept extends ComponentEntity implements InequalityTerm 
      *  since a Concept is a static value that cannot be initialized.
      *  @exception IllegalActionException Always thrown.
      */
+    @Override
     final public void initialize(Object object) throws IllegalActionException {
         throw new IllegalActionException(this,
                 "Cannot initialize an ontology concept.");
@@ -186,6 +190,7 @@ public abstract class Concept extends ComponentEntity implements InequalityTerm 
      *  In this case, it is not, since concepts are constants, not variables.
      *  @return False, because this inequality term is a constant.
      */
+    @Override
     final public boolean isSettable() {
         return false;
     }
@@ -199,6 +204,7 @@ public abstract class Concept extends ComponentEntity implements InequalityTerm 
      *  @return True, if this concept is a valid result of inference.
      *   False, otherwise.
      */
+    @Override
     public boolean isValueAcceptable() {
         try {
             return ((BooleanToken) isAcceptable.getToken()).booleanValue();
@@ -218,6 +224,7 @@ public abstract class Concept extends ComponentEntity implements InequalityTerm 
      *  @exception IllegalActionException Always thrown.
      *  @see #getValue
      */
+    @Override
     final public void setValue(Object value) throws IllegalActionException {
         throw new IllegalActionException(this,
                 "Cannot set an ontology concept.");
@@ -227,6 +234,7 @@ public abstract class Concept extends ComponentEntity implements InequalityTerm 
      *
      *  @return The string representation of this concept.
      */
+    @Override
     public abstract String toString();
 
 }

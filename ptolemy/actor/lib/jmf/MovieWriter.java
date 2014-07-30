@@ -105,7 +105,7 @@ import ptolemy.util.MessageHandler;
  @Pt.AcceptedRating Red (cxh)
  */
 public class MovieWriter extends Sink implements ControllerListener,
-        DataSinkListener {
+DataSinkListener {
     /** Construct an actor with the given container and name.
      *  @param container The container.
      *  @param name The name of this actor.
@@ -162,6 +162,7 @@ public class MovieWriter extends Sink implements ControllerListener,
      *  @exception IllegalActionException If the URL is null, or
      *  invalid.
      */
+    @Override
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         if (attribute == fileOrURL) {
@@ -200,6 +201,7 @@ public class MovieWriter extends Sink implements ControllerListener,
      *  @exception CloneNotSupportedException If a derived class contains
      *  an attribute that cannot be cloned.
      */
+    @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         MovieWriter newObject = (MovieWriter) super.clone(workspace);
         newObject._file = null;
@@ -213,6 +215,7 @@ public class MovieWriter extends Sink implements ControllerListener,
      *  initializing of the processor.
      *  @param event The controller event.
      */
+    @Override
     public void controllerUpdate(ControllerEvent event) {
         if (event instanceof ConfigureCompleteEvent
                 || event instanceof RealizeCompleteEvent
@@ -237,6 +240,7 @@ public class MovieWriter extends Sink implements ControllerListener,
      *  when it detects that the stream has ended.
      *  @param event The controller event.
      */
+    @Override
     public void dataSinkUpdate(DataSinkEvent event) {
         if (event instanceof EndOfStreamEvent) {
             synchronized (_waitFileSync) {
@@ -257,6 +261,7 @@ public class MovieWriter extends Sink implements ControllerListener,
      *  JMFImageTokens contain.
      *  @exception IllegalActionException If a contained method throws it.
      */
+    @Override
     public void initialize() throws IllegalActionException {
         super.initialize();
         _bufferArrayList = new ArrayList();
@@ -269,6 +274,7 @@ public class MovieWriter extends Sink implements ControllerListener,
      *   to the queue.
      *  @return true
      */
+    @Override
     public boolean postfire() throws IllegalActionException {
         if (input.hasToken(0)) {
             Token token = input.get(0);
@@ -300,6 +306,7 @@ public class MovieWriter extends Sink implements ControllerListener,
     /** Save the file.
      *  @exception IllegalActionException If a contained method throws it.
      */
+    @Override
     public void wrapup() throws IllegalActionException {
         _bufferIterator = _bufferArrayList.iterator();
 
@@ -483,42 +490,53 @@ public class MovieWriter extends Sink implements ControllerListener,
             _imageSourceStream[0] = new ImageSourceStream(width, height);
         }
 
+        @Override
         public void connect() {
         }
 
+        @Override
         public void disconnect() {
         }
 
+        @Override
         public String getContentType() {
             return ContentDescriptor.RAW;
         }
 
+        @Override
         public Object getControl(String type) {
             return null;
         }
 
+        @Override
         public Object[] getControls() {
             return new Object[0];
         }
 
+        @Override
         public Time getDuration() {
             return DURATION_UNKNOWN;
         }
 
+        @Override
         public MediaLocator getLocator() {
             return null;
         }
 
+        @Override
         public PullBufferStream[] getStreams() {
             return _imageSourceStream;
         }
 
+        @Override
         public void setLocator(MediaLocator source) {
         }
 
+        @Override
         public void start() {
         }
 
+        @Override
         public void stop() {
         }
     }
@@ -533,30 +551,37 @@ public class MovieWriter extends Sink implements ControllerListener,
             _videoFormat = (VideoFormat) _jmfImageToken.getValue().getFormat();
         }
 
+        @Override
         public boolean endOfStream() {
             return _ended;
         }
 
+        @Override
         public ContentDescriptor getContentDescriptor() {
             return new ContentDescriptor(ContentDescriptor.RAW);
         }
 
+        @Override
         public long getContentLength() {
             return 0;
         }
 
+        @Override
         public Object getControl(String type) {
             return null;
         }
 
+        @Override
         public Object[] getControls() {
             return new Object[0];
         }
 
+        @Override
         public Format getFormat() {
             return _videoFormat;
         }
 
+        @Override
         public void read(Buffer buffer) {
             if (_bufferIterator.hasNext()) {
                 //buffer = (Buffer)_bufferIterator.next();
@@ -579,6 +604,7 @@ public class MovieWriter extends Sink implements ControllerListener,
             }
         }
 
+        @Override
         public boolean willReadBlock() {
             return false;
         }

@@ -73,6 +73,7 @@ public class SuperdenseTime implements Comparable {
      *  @exception ClassCastException If the argument is not a superdense
      *   time object.
      */
+    @Override
     public final int compareTo(Object superdenseTime) {
         return compareTo((SuperdenseTime) superdenseTime);
     }
@@ -114,6 +115,7 @@ public class SuperdenseTime implements Comparable {
      *  @return True if the two SuperDenseTime objects have the same
      *  timestamp and index.
      */
+    @Override
     public boolean equals(Object superdenseTime) {
         // See http://www.technofundo.com/tech/java/equalhash.html
 
@@ -155,6 +157,7 @@ public class SuperdenseTime implements Comparable {
      *  then they have the same hashcode.
      *  @return The hash code for this SuperdenseTime object.
      */
+    @Override
     public int hashCode() {
         // See http://www.technofundo.com/tech/java/equalhash.html
         int hashCode = 31;
@@ -181,6 +184,7 @@ public class SuperdenseTime implements Comparable {
     /** Return a description of this superdense time object.
      *  @return A description of this superdense time object.
      */
+    @Override
     public final String toString() {
         return "Superdense Time: time stamp = " + _timeStamp + " and index = "
                 + _index + ".";

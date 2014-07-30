@@ -23,7 +23,7 @@
 
    PT_COPYRIGHT_VERSION_2
    COPYRIGHTENDKEY 2
-*/
+ */
 
 package ptolemy.vergil.basic.imprt.g4ltl;
 
@@ -61,7 +61,7 @@ import ptolemy.moml.MoMLParser;
    @since Ptolemy II 10.0
    @Pt.ProposedRating Red (cxh)
    @Pt.AcceptedRating Red (cxh)
-*/
+ */
 public class G4LTL {
     /** Given a Linear Temporal Logic (LTL) file, generate the
      * corresponding MoML.
@@ -104,7 +104,7 @@ public class G4LTL {
      */
     public static String generateMoML(File ltlFile, int optionTechnique,
             int unrollSteps, boolean findStrategy, NamedObj context)
-            throws Exception {
+                    throws Exception {
         SolverUtility solver = new SolverUtility();
         ResultLTLSynthesis result = G4LTL.synthesizeFromFile(solver, ltlFile,
                 optionTechnique, unrollSteps, /*SynthesisEngine.OUTPUT_FSM_ACTOR_PTOLEMY,*/

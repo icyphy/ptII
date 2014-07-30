@@ -69,6 +69,7 @@ public class HistogramMLParser extends PlotMLParser {
      *  @param elementName The element type name.
      *  @exception Exception If thrown by the base class.
      */
+    @Override
     public void endElement(String elementName) throws Exception {
         if (elementName.equals("bars") || elementName.equals("dataset")) {
             // Ignore
@@ -86,6 +87,7 @@ public class HistogramMLParser extends PlotMLParser {
      *  @exception XmlException If the element produces an error
      *   in constructing the model.
      */
+    @Override
     public void startElement(String elementName) throws XmlException {
         try {
             if (elementName.equals("barGraph")) {
@@ -161,6 +163,7 @@ public class HistogramMLParser extends PlotMLParser {
      *  @param element The name of the element.
      *  @exception Exception if thrown whil parsing the y attribute.
      */
+    @Override
     protected void _addPoint(boolean connected, String element)
             throws Exception {
         String ySpec = (String) _attributes.get("y");

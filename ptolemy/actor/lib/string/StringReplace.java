@@ -112,19 +112,19 @@ public class StringReplace extends TypedAtomicActor {
         pattern.setStringMode(true);
         pattern.setExpression("");
         new SingletonParameter(pattern.getPort(), "_showName")
-                .setToken(BooleanToken.TRUE);
+        .setToken(BooleanToken.TRUE);
 
         replacement = new PortParameter(this, "replacement");
         replacement.setStringMode(true);
         replacement.setExpression("");
         new SingletonParameter(replacement.getPort(), "_showName")
-                .setToken(BooleanToken.TRUE);
+        .setToken(BooleanToken.TRUE);
 
         stringToEdit = new PortParameter(this, "stringToEdit");
         stringToEdit.setStringMode(true);
         stringToEdit.setExpression("");
         new SingletonParameter(stringToEdit.getPort(), "_showName")
-                .setToken(BooleanToken.TRUE);
+        .setToken(BooleanToken.TRUE);
 
         output = new TypedIOPort(this, "output", false, true);
         output.setTypeEquals(BaseType.STRING);
@@ -183,6 +183,7 @@ public class StringReplace extends TypedAtomicActor {
      *   is <i>pattern</i> and the regular expression fails to
      *   compile.
      */
+    @Override
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         if (attribute == pattern) {
@@ -204,6 +205,7 @@ public class StringReplace extends TypedAtomicActor {
      *  @exception CloneNotSupportedException If a derived class contains
      *   an attribute that cannot be cloned.
      */
+    @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         StringReplace newObject = (StringReplace) super.clone(workspace);
         try {
@@ -220,6 +222,7 @@ public class StringReplace extends TypedAtomicActor {
      *  unmodified stringToEdit string.
      *  @exception IllegalActionException If there is no director.
      */
+    @Override
     public void fire() throws IllegalActionException {
         super.fire();
 

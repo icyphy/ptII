@@ -25,7 +25,7 @@ ENHANCEMENTS, OR MODIFICATIONS.
                                                 COPYRIGHTENDKEY
 
 
-*/
+ */
 
 package ptdb.kernel.bl.search;
 
@@ -59,7 +59,7 @@ import ptdb.kernel.database.DBConnection;
  * @Pt.AcceptedRating red (wenjiaow)
  */
 public class SearchResultBuffer extends Observable implements ResultHandler,
-        Observer {
+Observer {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -94,6 +94,7 @@ public class SearchResultBuffer extends Observable implements ResultHandler,
      * the intermediate results.
      */
 
+    @Override
     public void handleIntermediateResults(List<XMLDBModel> intermediateResults,
             ResultHandler resultHandler) {
 
@@ -121,6 +122,7 @@ public class SearchResultBuffer extends Observable implements ResultHandler,
      *
      * @param modelResults The models results to be stored in this buffer.
      */
+    @Override
     public void handleResults(ArrayList<XMLDBModel> modelResults) {
 
         // Only write and notify when the passed results contain results.
@@ -151,6 +153,7 @@ public class SearchResultBuffer extends Observable implements ResultHandler,
      * @return true - The search has been canceled by the user.<br>
      *             false - The search hasn't been canceled.
      */
+    @Override
     public boolean isSearchCancelled() {
 
         return _isSearchCancelled;
@@ -176,6 +179,7 @@ public class SearchResultBuffer extends Observable implements ResultHandler,
      * @param errorModels The passed error models.
      */
 
+    @Override
     public void passErrorModels(List<XMLDBModel> errorModels) {
         if (_errorModels == null) {
             _errorModels = errorModels;
@@ -191,6 +195,7 @@ public class SearchResultBuffer extends Observable implements ResultHandler,
      * @param connection The DBConnection instance to be set in this result
      *  handler.
      */
+    @Override
     public void setConnection(DBConnection connection) {
         _dbConnection = connection;
 
@@ -207,6 +212,7 @@ public class SearchResultBuffer extends Observable implements ResultHandler,
      * SearchResultFrame window.
      * @param argument The argument passed to this SearcResultBuffer.
      */
+    @Override
     public void update(Observable observable, Object argument) {
 
         _isSearchCancelled = true;
@@ -229,6 +235,7 @@ public class SearchResultBuffer extends Observable implements ResultHandler,
      * @exception DBConnectionException Thrown if the DB connection cannot be
      * obtained.
      */
+    @Override
     public void wholeSearchDone() throws DBConnectionException {
 
         // Close the connection.

@@ -274,7 +274,7 @@ public class UtilityFunctions {
             return new ArrayType(
                     ((ArrayType) TypeLattice.lattice().leastUpperBound(
                             firstArrayType, secondArrayType)).getElementType(),
-                    ((ArrayType) firstArrayType).length()
+                            ((ArrayType) firstArrayType).length()
                             + ((ArrayType) secondArrayType).length());
         }
     }
@@ -311,12 +311,12 @@ public class UtilityFunctions {
             if (nElements > 0) {
                 return new ArrayType(
                         ((ArrayType) arrayType.getElementType())
-                                .getElementType(),
+                        .getElementType(),
                         nElements);
             } else {
                 return new ArrayType(
                         ((ArrayType) arrayType.getElementType())
-                                .getElementType());
+                        .getElementType());
             }
         }
     }
@@ -464,7 +464,7 @@ public class UtilityFunctions {
      */
     public static Type filterReturnType(Type predicateType,
             Type arrayTokenType, Type sizeLimitType)
-            throws IllegalActionException {
+                    throws IllegalActionException {
         // Note that this method is deliberately not listed in the Expression
         // chapter because it is very specialized.
         if (predicateType instanceof FunctionType) {
@@ -1191,70 +1191,77 @@ public class UtilityFunctions {
             return BaseType.UNKNOWN;
         }
     }
-    
+
     /** FIXME. Placeholder for a function that will return a model.
      */
     public static ObjectToken model(String classname)
             throws IllegalActionException {
         return new ObjectToken(classname);
     }
+
     /** Generate a sample from a multivariate Gaussian distribution.
      *  @param mean The mean.
      *  @param covariance The covariance.
      *  @return a sample from a multivariate Gaussian distribution
      */
-    public static ArrayToken multivariateGaussian(ArrayToken mean, DoubleMatrixToken covariance)
-            throws IllegalActionException{ 
-        
+    public static ArrayToken multivariateGaussian(ArrayToken mean,
+            DoubleMatrixToken covariance) throws IllegalActionException {
+
         // Cholesky factorization 
-        
+
         // Check dimensions.
         int N = mean.length(); // size of array
         double[][] S = covariance.doubleMatrix();
-        if ((covariance.getColumnCount() != N) || (covariance.getRowCount() != covariance.getColumnCount())) {
-            throw new IllegalActionException("Covariance must be a square matrix and its dimension must " +
-                        "match the mean array length");
-        }else if (!BaseType.DOUBLE.isCompatible(mean.getElementType())) {
-            throw new IllegalActionException("Mean vector must consist of scalar type elements");
+        if ((covariance.getColumnCount() != N)
+                || (covariance.getRowCount() != covariance.getColumnCount())) {
+            throw new IllegalActionException(
+                    "Covariance must be a square matrix and its dimension must "
+                            + "match the mean array length");
+        } else if (!BaseType.DOUBLE.isCompatible(mean.getElementType())) {
+            throw new IllegalActionException(
+                    "Mean vector must consist of scalar type elements");
         }
         // Check if the covariance matrix is symmetric.
         for (int i = 0; i < N; i++) {
-            for (int j = 0; j < i; j ++) {
+            for (int j = 0; j < i; j++) {
                 if (S[i][j] != S[j][i]) {
-                    throw new IllegalActionException("Covariance must be a symmetric matrix.");
+                    throw new IllegalActionException(
+                            "Covariance must be a symmetric matrix.");
                 }
             }
         }
         //S should also be positive semi-definite. The function does not currently check for this.
         double[][] L = new double[N][N]; // the lower triangular cholesky factor s.t. L*L^T = covariance
         for (int i = 0; i < N; i++) {
-            for (int j=0; j <= i ; j++) {
+            for (int j = 0; j <= i; j++) {
                 double lowerSum = 0;
-                for (int k=0; k<j; k++) {
-                    lowerSum += L[i][k]*L[j][k];
+                for (int k = 0; k < j; k++) {
+                    lowerSum += L[i][k] * L[j][k];
                 }
-                if (i!=j) {
+                if (i != j) {
                     L[i][j] = 1.0 / L[j][j] * (S[i][j] - lowerSum);
-                }else {
+                } else {
                     L[i][j] = Math.pow(S[i][i] - lowerSum, 0.5);
                 }
             }
         }
         // Draw uncorrelated samples from a standard Gaussian.
-        ArrayToken uncorrelated = gaussian(0,1,N);
+        ArrayToken uncorrelated = gaussian(0, 1, N);
         Token[] uncorrelatedTokens = uncorrelated.arrayValue();
         Token[] correlatedTokens = new Token[N];
         double[] correlatedSamples = new double[N];
         Token[] meanArray = mean.arrayValue();
-        for (int i=0; i < N; i++) {
-            for (int j=0; j < N; j++) {
-                double uncorr = ((DoubleToken)uncorrelatedTokens[j]).doubleValue();
-                correlatedSamples[i] += L[i][j]*uncorr;
+        for (int i = 0; i < N; i++) {
+            for (int j = 0; j < N; j++) {
+                double uncorr = ((DoubleToken) uncorrelatedTokens[j])
+                        .doubleValue();
+                correlatedSamples[i] += L[i][j] * uncorr;
             }
-            
-            correlatedTokens[i] = new DoubleToken(correlatedSamples[i]).add(meanArray[i]);
+
+            correlatedTokens[i] = new DoubleToken(correlatedSamples[i])
+                    .add(meanArray[i]);
         }
-        return new ArrayToken(BaseType.DOUBLE,correlatedTokens);
+        return new ArrayToken(BaseType.DOUBLE, correlatedTokens);
     }
 
     /** Parse the string provided and return the result wrapped in a token.
@@ -2129,7 +2136,7 @@ public class UtilityFunctions {
                                     + ex2
                                     + (shortLibraryName
                                             .equals(shortLibraryName2) ? ""
-                                            : "\nAlso, loadlibrary(\""
+                                                    : "\nAlso, loadlibrary(\""
                                                     + shortLibraryName2
                                                     + "\") was called, "
                                                     + "the exception  for the loadLibrary call was: "

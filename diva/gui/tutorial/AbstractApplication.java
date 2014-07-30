@@ -127,6 +127,7 @@ public abstract class AbstractApplication implements Application {
     /** Get an iterator over the names of the actions that are
      * contained by this application.
      */
+    @Override
     public Iterator actions() {
         return _actions.keySet().iterator();
     }
@@ -135,6 +136,7 @@ public abstract class AbstractApplication implements Application {
      * the application should be added here so it can be retrieved and
      * invoked later.
      */
+    @Override
     public void addAction(Action action) {
         _actions.put(action.getValue(Action.NAME), action);
     }
@@ -147,6 +149,7 @@ public abstract class AbstractApplication implements Application {
      * action's name and is enabled by default.
      * @deprecated Use method in GUIUtilities instead.
      */
+    @Deprecated
     public JMenuItem addMenuItem(JMenu menu, Action action, int mnemonic,
             String tooltip) {
         return GUIUtilities.addMenuItem(menu, action, mnemonic, tooltip);
@@ -160,6 +163,7 @@ public abstract class AbstractApplication implements Application {
      * and is disabled or enabled according to "isEnabled."
      * @deprecated Use method in GUIUtilities instead.
      */
+    @Deprecated
     public JMenuItem addMenuItem(JMenu menu, String label, Action action,
             int mnemonic, String tooltip, boolean isEnabled) {
         return GUIUtilities.addMenuItem(menu, label, action, mnemonic, tooltip,
@@ -173,6 +177,7 @@ public abstract class AbstractApplication implements Application {
      * default.
      * @deprecated Use method in GUIUtilities instead.
      */
+    @Deprecated
     public JButton addToolBarButton(JToolBar toolbar, Action action,
             String tooltip, Icon icon) {
         return GUIUtilities.addToolBarButton(toolbar, action, tooltip, icon);
@@ -184,6 +189,7 @@ public abstract class AbstractApplication implements Application {
      * as the "toolButton" property.
      * @deprecated Use method in GUIUtilities instead.
      */
+    @Deprecated
     public JButton addToolBarButton(JToolBar toolbar, Action action,
             String tooltip, Icon icon, boolean isEnabled) {
         return GUIUtilities.addToolBarButton(toolbar, action, tooltip, icon,
@@ -194,6 +200,7 @@ public abstract class AbstractApplication implements Application {
      * certain elements of the state will cause all registered
      * property listeners to be notified.
      */
+    @Override
     public void addPropertyChangeListener(PropertyChangeListener listener) {
         if (_propertyChangeSupport == null) {
             _propertyChangeSupport = new PropertyChangeSupport(this);
@@ -207,6 +214,7 @@ public abstract class AbstractApplication implements Application {
      * listeners. Throw an exception if the document is already
      * in the list of documents.
      */
+    @Override
     public void addDocument(Document d) {
         if (_documents.contains(d)) {
             throw new IllegalArgumentException("Document " + d
@@ -221,6 +229,7 @@ public abstract class AbstractApplication implements Application {
      * listeners. Throw an exception if the view is already
      * in the list of views.
      */
+    @Override
     public void addView(View v) {
         if (_views.contains(v)) {
             throw new IllegalArgumentException("View " + v
@@ -244,6 +253,7 @@ public abstract class AbstractApplication implements Application {
      * documents are added or removed, and with a contentsChanged()
      * event when the current document is changed.
      */
+    @Override
     public void addDocumentListener(ListDataListener listener) {
         _documents.addListDataListener(listener);
     }
@@ -254,6 +264,7 @@ public abstract class AbstractApplication implements Application {
      * views are added or removed, and with a contentsChanged()
      * event when the current view is changed.
      */
+    @Override
     public void addViewListener(ListDataListener listener) {
         _views.addListDataListener(listener);
     }
@@ -262,6 +273,7 @@ public abstract class AbstractApplication implements Application {
      * Try to close the given document using the
      * storage policy.
      */
+    @Override
     public boolean closeDocument(Document d) {
         return getStoragePolicy().close(d);
     }
@@ -269,6 +281,7 @@ public abstract class AbstractApplication implements Application {
     /**
      * Try to close the given view using the storage policy.
      */
+    @Override
     public boolean closeView(View v) {
         List views = (List) _documentMap.get(v.getDocument());
 
@@ -285,29 +298,34 @@ public abstract class AbstractApplication implements Application {
      * method, most callers should set this view to be the current
      * view.
      */
+    @Override
     public abstract View createView(Document d);
 
     /** Get list of all document objects known by this
      * application.
      */
+    @Override
     public List documentList() {
         return _documents.getList();
     }
 
     /** Get an action by name.
      */
+    @Override
     public Action getAction(String name) {
         return (Action) _actions.get(name);
     }
 
     /** Get the frame that this application draws itself in.
      */
+    @Override
     public AppContext getAppContext() {
         return _appContext;
     }
 
     /** Get the clipboard object for this application.
      */
+    @Override
     public Clipboard getClipboard() {
         return _clipboard;
     }
@@ -315,12 +333,14 @@ public abstract class AbstractApplication implements Application {
     /** Get the current view. Generally, this will be the one that
      * is displayed in the window that is top-most in the display.
      */
+    @Override
     public View getCurrentView() {
         return (View) _views.getSelectedItem();
     }
 
     /** Get the factory that creates new documents
      */
+    @Override
     public DocumentFactory getDocumentFactory() {
         return _documentFactory;
     }
@@ -333,18 +353,21 @@ public abstract class AbstractApplication implements Application {
 
     /** Get the storage policy of this application.
      */
+    @Override
     public StoragePolicy getStoragePolicy() {
         return _storagePolicy;
     }
 
     /** Get the title of this application
      */
+    @Override
     public abstract String getTitle();
 
     /** Test whether the application frame is visible.
      * Return false if the application has no frame or
      * if the frame is not visible.
      */
+    @Override
     public boolean isVisible() {
         if (getAppContext() == null) {
             return false;
@@ -359,6 +382,7 @@ public abstract class AbstractApplication implements Application {
      * document listeners.  Throw an exception if the document is
      * not known.
      */
+    @Override
     public void removeDocument(Document d) {
         if (!_documents.contains(d)) {
             throw new IllegalArgumentException("Document " + d
@@ -384,6 +408,7 @@ public abstract class AbstractApplication implements Application {
      * the application to decide which view to display next. Throw an
      * exception if the view is not known.
      */
+    @Override
     public void removeView(View v) {
         if (!_views.contains(v)) {
             throw new IllegalArgumentException("View " + v
@@ -401,18 +426,21 @@ public abstract class AbstractApplication implements Application {
 
     /** Remove a document list listener from this application.
      */
+    @Override
     public void removeDocumentListener(ListDataListener listener) {
         _documents.removeListDataListener(listener);
     }
 
     /** Remove a view list listener from this application.
      */
+    @Override
     public void removeViewListener(ListDataListener listener) {
         _views.removeListDataListener(listener);
     }
 
     /** Remove a property change listener from this application.
      */
+    @Override
     public void removePropertyChangeListener(PropertyChangeListener listener) {
         _propertyChangeSupport.removePropertyChangeListener(listener);
     }
@@ -430,6 +458,7 @@ public abstract class AbstractApplication implements Application {
      * contentsChanged() event to registered view listeners.
      * Throw an exception if the view is not known.
      */
+    @Override
     public void setCurrentView(View v) {
         if (v != null && !_views.contains(v)) {
             throw new IllegalArgumentException("View " + v
@@ -455,6 +484,7 @@ public abstract class AbstractApplication implements Application {
 
     /** Set the visibility of the application's frame
      */
+    @Override
     public void setVisible(boolean visible) {
         if (getAppContext() != null) {
             getAppContext().setVisible(visible);
@@ -463,6 +493,7 @@ public abstract class AbstractApplication implements Application {
 
     /** Show an error in a dialog box with stack trace.
      */
+    @Override
     public void showError(String op, Exception e) {
         GUIUtilities.showStackTrace(getAppContext().makeComponent(), e,
                 "Please submit a bug report.\n\n" + op);
@@ -478,6 +509,7 @@ public abstract class AbstractApplication implements Application {
     /** Get a list of all view objects known by this
      * application.
      */
+    @Override
     public List viewList() {
         return _views.getList();
     }

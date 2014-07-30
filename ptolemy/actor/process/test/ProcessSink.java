@@ -68,6 +68,7 @@ public class ProcessSink extends Sink {
 
     /**
      */
+    @Override
     public void fire() throws IllegalActionException {
         super.fire();
         /*Token token =*/input.get(0);
@@ -77,6 +78,7 @@ public class ProcessSink extends Sink {
 
     /**
      */
+    @Override
     public boolean postfire() {
         return false;
     }

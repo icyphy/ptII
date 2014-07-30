@@ -1283,9 +1283,9 @@ public class ComplexMatrixMath {
         if (rows != _rows(matrix2) || columns != _columns(matrix2)) {
             throw new IllegalArgumentException(
                     "ptolemy.math.ComplexMatrixMath." + caller
-                            + "() : one matrix " + _dimensionString(matrix1)
-                            + " is not the same size as another matrix "
-                            + _dimensionString(matrix2) + ".");
+                    + "() : one matrix " + _dimensionString(matrix1)
+                    + " is not the same size as another matrix "
+                    + _dimensionString(matrix2) + ".");
         }
     }
 
@@ -1301,9 +1301,9 @@ public class ComplexMatrixMath {
         if (_rows(matrix) != _columns(matrix)) {
             throw new IllegalArgumentException(
                     "ptolemy.math.ComplexMatrixMath." + caller
-                            + "() : matrix argument "
-                            + _dimensionString(matrix)
-                            + " is not a square matrix.");
+                    + "() : matrix argument "
+                    + _dimensionString(matrix)
+                    + " is not a square matrix.");
         }
 
         return _rows(matrix);
@@ -1396,7 +1396,7 @@ public class ComplexMatrixMath {
                                 ComplexArrayMath.scale(
                                         orthogonalMatrix[j],
                                         dotProduct
-                                                .multiply(oneOverNormSquaredArray[j])));
+                                        .multiply(oneOverNormSquaredArray[j])));
             }
 
             // Compute the dot product between the input and output vector

@@ -37,7 +37,7 @@ import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Workspace;
 
 public class TestInstantiableAttribute extends Attribute implements
-        Instantiable {
+Instantiable {
 
     public TestInstantiableAttribute() {
         super();
@@ -52,6 +52,7 @@ public class TestInstantiableAttribute extends Attribute implements
         super(container, name);
     }
 
+    @Override
     public List getChildren() {
         List results = new LinkedList();
         Iterator attributes = attributeList().iterator();
@@ -62,6 +63,7 @@ public class TestInstantiableAttribute extends Attribute implements
         return results;
     }
 
+    @Override
     public Instantiable getParent() {
         NamedObj container = getContainer();
         if (container instanceof Instantiable) {
@@ -70,12 +72,14 @@ public class TestInstantiableAttribute extends Attribute implements
         return null;
     }
 
+    @Override
     public Instantiable instantiate(NamedObj container, String name)
             throws CloneNotSupportedException, IllegalActionException,
             NameDuplicationException {
         return null;
     }
 
+    @Override
     public boolean isClassDefinition() {
         return false;
     }

@@ -58,9 +58,9 @@ import ptolemy.kernel.util.NameDuplicationException;
 @since Ptolemy II 10.0
 @Pt.ProposedRating Red (cshelton)
 @Pt.AcceptedRating Red (cshelton)
-*/
+ */
 public class BaseDimensionRepresentativeConcept extends
-        DimensionRepresentativeConcept {
+DimensionRepresentativeConcept {
 
     /** Create a new BaseUnitRepresentativeConcept with the specified name and
      *  ontology.
@@ -87,6 +87,7 @@ public class BaseDimensionRepresentativeConcept extends
      *  @exception IllegalActionException Thrown if there is a problem getting any
      *   unit concepts from the ontology.
      */
+    @Override
     public List<BaseUnitConcept> getAllUnits() throws IllegalActionException {
         return (List<BaseUnitConcept>) super.getAllUnits();
     }
@@ -103,6 +104,7 @@ public class BaseDimensionRepresentativeConcept extends
      *  @exception IllegalActionException Thrown if there is a problem creating
      *   the unit concept.
      */
+    @Override
     protected BaseUnitConcept _createInfiniteConceptInstance(
             String infiniteConceptString) throws IllegalActionException {
 

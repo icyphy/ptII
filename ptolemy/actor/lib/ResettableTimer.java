@@ -142,6 +142,7 @@ public class ResettableTimer extends Transformer {
      *  @exception CloneNotSupportedException If a derived class has
      *   has an attribute that cannot be cloned.
      */
+    @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         ResettableTimer newObject = (ResettableTimer) super.clone(workspace);
         newObject.output.setTypeSameAs(newObject.value);
@@ -153,6 +154,7 @@ public class ResettableTimer extends Transformer {
      *  cannot be computed.
      *  @see #getCausalityInterface()
      */
+    @Override
     public void declareDelayDependency() throws IllegalActionException {
         // Declare that output does not immediately depend on the input,
         // though there is no lower bound on the time delay.
@@ -163,6 +165,7 @@ public class ResettableTimer extends Transformer {
      *  @exception IllegalActionException If there is no director, or can not
      *  send or get tokens from ports.
      */
+    @Override
     public void fire() throws IllegalActionException {
         super.fire();
         Director director = getDirector();
@@ -253,6 +256,7 @@ public class ResettableTimer extends Transformer {
     /** Initialize the internal states of this actor.
      *  @exception IllegalActionException If a derived class throws it.
      */
+    @Override
     public void initialize() throws IllegalActionException {
         super.initialize();
         _pendingOutputTime = Time.NEGATIVE_INFINITY;
@@ -266,6 +270,7 @@ public class ResettableTimer extends Transformer {
      *  @exception IllegalActionException If reading the input,
      *   or requesting a refiring throws it.
      */
+    @Override
     public boolean postfire() throws IllegalActionException {
         Token inputToken = null;
         double delayValue = -1;
@@ -397,6 +402,7 @@ public class ResettableTimer extends Transformer {
      *  does not depend on the <i>input</i> in a firing.
      *  @exception IllegalActionException If the superclass throws it.
      */
+    @Override
     public void preinitialize() throws IllegalActionException {
         super.preinitialize();
     }

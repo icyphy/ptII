@@ -103,7 +103,7 @@ public class FileUtilities {
                 // IOException constructor does not take a cause
                 IOException ioException = new IOException(
                         "Cannot find canonical file name of '" + sourceFile
-                                + "'");
+                        + "'");
                 ioException.initCause(ex);
                 throw ioException;
             }
@@ -145,7 +145,8 @@ public class FileUtilities {
                 if (files != null) {
                     for (int i = 0; i < files.length; i++) {
                         if (files[i].isDirectory()) {
-                            FileUtilities.deleteDirectory(files[i].getAbsolutePath());
+                            FileUtilities.deleteDirectory(files[i]
+                                    .getAbsolutePath());
                             if (!files[i].delete()) {
                                 returnValue = false;
                             }
@@ -825,7 +826,7 @@ public class FileUtilities {
                     // IOException constructor does not take a cause
                     IOException ioException = new IOException(
                             "Cannot look up class \"" + referenceClassName
-                                    + "\" or get its ClassLoader.");
+                            + "\" or get its ClassLoader.");
                     ioException.initCause(ex);
                     throw ioException;
                 }

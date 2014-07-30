@@ -78,7 +78,7 @@ public class ImagePartition extends Transformer {
                 "tokenProductionRate");
         output_tokenProductionRate.setTypeEquals(BaseType.INT);
         output_tokenProductionRate
-                .setExpression("imageColumns * imageRows / partitionColumns / partitionRows");
+        .setExpression("imageColumns * imageRows / partitionColumns / partitionRows");
 
         input.setTypeEquals(BaseType.INT_MATRIX);
         output.setTypeEquals(BaseType.INT_MATRIX);
@@ -111,6 +111,7 @@ public class ImagePartition extends Transformer {
      * legal value, or partitionColumns does not equally divide imageColumns,
      * or partitionRows does not equally divide imageRows.
      */
+    @Override
     public void initialize() throws IllegalActionException {
         super.initialize();
 
@@ -144,6 +145,7 @@ public class ImagePartition extends Transformer {
      * @exception IllegalActionException If the input size is not
      * <i>imageRows</i> by <i>imageColumns</i>.
      */
+    @Override
     public void fire() throws IllegalActionException {
         super.fire();
         int i;

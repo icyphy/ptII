@@ -23,7 +23,7 @@
    PT_COPYRIGHT_VERSION_2
    COPYRIGHTENDKEY
 
-*/
+ */
 
 package ptolemy.vergil.scr;
 
@@ -52,7 +52,7 @@ import ptolemy.kernel.util.NameDuplicationException;
    @since Ptolemy II 10.0
    @Pt.ProposedRating Red (pd)
    @Pt.AcceptedRating Red (pd)
-*/
+ */
 @SuppressWarnings("serial")
 public class ConditionsTableModel extends AbstractTableModel {
 
@@ -77,14 +77,15 @@ public class ConditionsTableModel extends AbstractTableModel {
         this.fireTableStructureChanged();
         this.fireTableDataChanged();
     }
-        
+
     public void checkDisjointness() throws IllegalActionException {
-        SCRTableHelper.checkDisjointness(_tableContent, getRowCount(), getColumnCount(), _model);
+        SCRTableHelper.checkDisjointness(_tableContent, getRowCount(),
+                getColumnCount(), _model);
     }
-        
+
     public void deleteColumn(int index) {
         if (index > 0 && index < getColumnCount()) {
-            for (int i = getRowCount() - 1; i >= 0 ; i--) {
+            for (int i = getRowCount() - 1; i >= 0; i--) {
                 _tableContent.remove(i * (getColumnCount() - 1) + index - 1);
             }
             _columnCount = _columnCount - 1;
@@ -110,7 +111,8 @@ public class ConditionsTableModel extends AbstractTableModel {
                 return "----";
             }
         }
-        int contentIndex = SCRTableHelper.getContentIndex(rowIndex, columnIndex, getColumnCount());
+        int contentIndex = SCRTableHelper.getContentIndex(rowIndex,
+                columnIndex, getColumnCount());
         if (contentIndex < 0) {
             return null;
         } else {
@@ -133,7 +135,8 @@ public class ConditionsTableModel extends AbstractTableModel {
 
     @Override
     public void setValueAt(Object aValue, int rowIndex, int columnIndex) {
-        int contentIndex = SCRTableHelper.getContentIndex(rowIndex, columnIndex, getColumnCount());
+        int contentIndex = SCRTableHelper.getContentIndex(rowIndex,
+                columnIndex, getColumnCount());
         _tableContent.add(contentIndex, aValue);
         _tableContent.remove(contentIndex + 1);
     }
@@ -145,10 +148,11 @@ public class ConditionsTableModel extends AbstractTableModel {
             String condition = "";
             String value = "";
             for (int j = 0; j < getColumnCount() - 1; j++) {
-                int contentIndex = SCRTableHelper.getContentIndex(i, j, getColumnCount());
+                SCRTableHelper.getContentIndex(i, j, getColumnCount());
                 condition = (String) getValueAt(i, j + 1);
                 value = (String) getValueAt(getRowCount() - 1, j + 1);
-                expression = expression.append("(" + condition + " ? " + value  + " : ");
+                expression = expression.append("(" + condition + " ? " + value
+                        + " : ");
             }
             // insert the last value as the dummy
             expression = expression.append(" " + value);
@@ -156,23 +160,23 @@ public class ConditionsTableModel extends AbstractTableModel {
                 expression = expression.append(")");
             }
             // System.out.println("Save model - expression: " + expression);
-                        
+
             try {
                 if (state.getRefinement() == null) {
                     ((RefinementActor) state.getContainer()).addRefinement(
                             state,
                             ((CompositeEntity) _model).uniqueName(state
                                     .getName() + "_refinement"), null,
-                            Refinement.class.getName(), null);
+                                    Refinement.class.getName(), null);
                 }
                 CompositeEntity entity = (CompositeEntity) state
-                    .getRefinement()[0];
+                        .getRefinement()[0];
                 if (entity.attributeList(Director.class).size() == 0) {
-                    /* ContinuousDirector director =*/ new ContinuousDirector(
+                    /* ContinuousDirector director =*/new ContinuousDirector(
                             entity, "Continuous Director");
                 }
-                Object expressionActorObject = entity.getEntity(_port
-                        .getName() + "_out");
+                Object expressionActorObject = entity.getEntity(_port.getName()
+                        + "_out");
                 TypedIORelation relation = null;
                 if (expressionActorObject == null) {
                     expressionActorObject = new Expression(entity,
@@ -187,7 +191,7 @@ public class ConditionsTableModel extends AbstractTableModel {
                 if (relation != null) {
                     expressionActor.output.link(relation);
                     IOPort port = (IOPort) ((CompositeActor) entity)
-                        .getPort(_port.getName());
+                            .getPort(_port.getName());
                     port.link(relation);
                 }
             } catch (IllegalActionException e1) {
@@ -198,8 +202,6 @@ public class ConditionsTableModel extends AbstractTableModel {
         }
     }
 
-        
-
     private void _initializeTableContent() {
         if (_tableContent == null) {
             _tableContent = new ArrayList();
@@ -207,14 +209,14 @@ public class ConditionsTableModel extends AbstractTableModel {
                 _tableContent.add("");
             }
             for (int rowIndex = 0; rowIndex < getRowCount() - 1; rowIndex++) {
-                                
+
                 State state = (State) _model.getEntity((String) getValueAt(
-                                rowIndex, 0));
+                        rowIndex, 0));
                 try {
                     if (state.getRefinement() != null) {
                         CompositeEntity composite = (CompositeEntity) state
-                            .getRefinement()[0];
-                        //                                                if parsing existing ModalModels use following code as a start. For now, do not attempt that as there 
+                                .getRefinement()[0];
+                        //                                                if parsing existing ModalModels use following code as a start. For now, do not attempt that as there
                         //                                                might be too many ways of interpreting existing ModalModels.
                         //                                                for (Object insidePortObject : ((IOPort)((CompositeActor) state.getRefinement()[0]).getPort(_port.getName())).insidePortList()) {
                         //                                                        IOPort insidePort = (IOPort) insidePortObject;
@@ -223,14 +225,13 @@ public class ConditionsTableModel extends AbstractTableModel {
                         //                                                                String value = ((Const)actor).value.getToken().toString();
                         //                                                        }
                         //                                                }
-                                                
+
                         Expression expressionActor = (Expression) composite
-                            .getEntity(((IOPort) _port).getName()
-                                    + "_out");
+                                .getEntity(_port.getName() + "_out");
                         String expression = null;
                         if (expressionActor != null) {
                             expression = expressionActor.expression
-                                .getExpression();
+                                    .getExpression();
                         } else {
                             expression = "";
                         }
@@ -245,10 +246,10 @@ public class ConditionsTableModel extends AbstractTableModel {
     }
 
     /**
-     * 
+     *
      * (condition1 ? value1 : (condition2 ? value2 : (... : nil)))
-     * 
-     * 
+     *
+     *
      * @param expression
      * @param rowIndex
      */
@@ -258,36 +259,47 @@ public class ConditionsTableModel extends AbstractTableModel {
             String value = "";
             for (int i = 1; i < getColumnCount(); i++) {
                 // (condition ? value : (...
-                expression = expression.substring(expression.indexOf("(") + 1).trim();
+                expression = expression.substring(expression.indexOf("(") + 1)
+                        .trim();
                 // condition ? value : (...
-                                        
+
                 int endOfCondition = expression.indexOf("?");
-                if (expression.contains("(") && (expression.indexOf("(") < expression.indexOf("?"))) {
-                    endOfCondition = SCRTableHelper.indexOfMatchingCloseBracket(expression, expression.indexOf("("));
+                if (expression.contains("(")
+                        && (expression.indexOf("(") < expression.indexOf("?"))) {
+                    endOfCondition = SCRTableHelper
+                            .indexOfMatchingCloseBracket(expression,
+                                    expression.indexOf("("));
                 }
                 condition = expression.substring(0, endOfCondition).trim();
-                                        
+
                 expression = expression.substring(endOfCondition).trim();
                 // ? value : (...
-                                        
-                expression = expression.substring(expression.indexOf("?") + 1).trim();
+
+                expression = expression.substring(expression.indexOf("?") + 1)
+                        .trim();
                 // value : (...
-                                        
+
                 int endOfValue = expression.indexOf(":");
-                if (expression.contains("(") && (expression.indexOf("(") < expression.indexOf(":"))) {
-                    endOfValue = SCRTableHelper.indexOfMatchingCloseBracket(expression, expression.indexOf("("));
+                if (expression.contains("(")
+                        && (expression.indexOf("(") < expression.indexOf(":"))) {
+                    endOfValue = SCRTableHelper.indexOfMatchingCloseBracket(
+                            expression, expression.indexOf("("));
                 }
                 value = expression.substring(0, endOfValue).trim();
-                                        
-                expression = expression.substring(expression.indexOf(":") + 1).trim();
+
+                expression = expression.substring(expression.indexOf(":") + 1)
+                        .trim();
                 // (...
-                                        
-                expression = expression.substring(expression.indexOf("(") + 1).trim();
+
+                expression = expression.substring(expression.indexOf("(") + 1)
+                        .trim();
                 // ...
-                                        
-                int valueIndex = SCRTableHelper.getContentIndex(getRowCount() - 1, i, getColumnCount());
-                int contentIndex = SCRTableHelper.getContentIndex(rowIndex, i, getColumnCount());
-                                        
+
+                int valueIndex = SCRTableHelper.getContentIndex(
+                        getRowCount() - 1, i, getColumnCount());
+                int contentIndex = SCRTableHelper.getContentIndex(rowIndex, i,
+                        getColumnCount());
+
                 _tableContent.add(valueIndex, value);
                 _tableContent.remove(valueIndex + 1);
                 _tableContent.add(contentIndex, condition);

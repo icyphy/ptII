@@ -147,10 +147,10 @@ public class LinkController extends BasicEdgeController {
             } catch (Exception ex) {
                 //do nothing - will default to ptii right-click menus
                 System.out
-                        .println("Unable to use the alternative right-click menu "
-                                + "handler that was specified in the "
-                                + "configuration; defaulting to ptii handler. "
-                                + "Exception was: " + ex);
+                .println("Unable to use the alternative right-click menu "
+                        + "handler that was specified in the "
+                        + "configuration; defaulting to ptii handler. "
+                        + "Exception was: " + ex);
             }
 
         }
@@ -226,6 +226,7 @@ public class LinkController extends BasicEdgeController {
          *  @param headSite The head site.
          *  @return The Connector that represents the edge.
          */
+        @Override
         public Connector render(Object edge, Site tailSite, Site headSite) {
             Link link = (Link) edge;
             ManhattanConnector connector = new KielerLayoutConnector(tailSite,
@@ -311,6 +312,7 @@ public class LinkController extends BasicEdgeController {
          *  contained by a Port and the super class accepts the head.
          *  Otherwise, return false.
          */
+        @Override
         public boolean acceptHead(Connector c, Figure f) {
             Object object = f.getUserObject();
 
@@ -344,6 +346,7 @@ public class LinkController extends BasicEdgeController {
          *  contained by a Port and the super class accepts the tail
          *  Otherwise, return false.
          */
+        @Override
         public boolean acceptTail(Connector c, Figure f) {
             Object object = f.getUserObject();
 
@@ -376,6 +379,7 @@ public class LinkController extends BasicEdgeController {
          *  @param y The y location.
          *  @return The head site.
          */
+        @Override
         public Site getHeadSite(Figure f, double x, double y) {
             if (f instanceof Terminal) {
                 Site site = ((Terminal) f).getConnectSite();
@@ -415,6 +419,7 @@ public class LinkController extends BasicEdgeController {
          * detach the edge as appropriate.
          * @param evt The connector event.
          */
+        @Override
         public void connectorDropped(ConnectorEvent evt) {
             Connector c = evt.getConnector();
             Figure f = evt.getTarget();
@@ -427,7 +432,7 @@ public class LinkController extends BasicEdgeController {
             case ConnectorEvent.HEAD_END:
                 if (node == link.getTail()) {
                     MessageHandler
-                            .error("Cannot link both ends to the same object.");
+                    .error("Cannot link both ends to the same object.");
                     // FIXME: The panner needs to repaint.  How to get it to do that?
                     return;
                 }
@@ -437,7 +442,7 @@ public class LinkController extends BasicEdgeController {
             case ConnectorEvent.TAIL_END:
                 if (node == link.getHead()) {
                     MessageHandler
-                            .error("Cannot link both ends to the same object.");
+                    .error("Cannot link both ends to the same object.");
                     // FIXME: The panner needs to repaint.  How to get it to do that?
                     return;
                 }

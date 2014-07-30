@@ -129,6 +129,7 @@ public class MultipageParser extends HandlerBase {
      * retrieved in startElement or endElement.
      * @see com.microstar.xml.XmlHandler#attribute
      */
+    @Override
     public void attribute(String name, String value, boolean isSpecified)
             throws Exception {
         _currentAttributes.put(name, value);
@@ -140,6 +141,7 @@ public class MultipageParser extends HandlerBase {
      * this method, the model parser gets called to parse the data in
      * the array.
      */
+    @Override
     public void charData(char[] chars, int offset, int length) throws Exception {
         Object model = _modelParser.parse(new CharArrayReader(chars, offset,
                 length));
@@ -150,6 +152,7 @@ public class MultipageParser extends HandlerBase {
      * Handle the end of an element.  If this is the end of a page, add
      * the current page to the document.
      */
+    @Override
     public void endElement(String name) throws Exception {
         if (name.equalsIgnoreCase(PAGE_TAG)) {
             _multi.addPage(_currentPage);
@@ -166,6 +169,7 @@ public class MultipageParser extends HandlerBase {
      * page, create a Page object and set its label (retrieve from
      * _currentAttributes table)
      */
+    @Override
     public void startElement(String name) throws Exception {
         if (name.equalsIgnoreCase(MULTIPAGE_TAG)) {
         } else if (name.equalsIgnoreCase(PAGE_TAG)) {
@@ -196,6 +200,7 @@ public class MultipageParser extends HandlerBase {
      * @param systemID The system identifier.
      * @return Null, indicating to use the default system identifier.
      */
+    @Override
     public Object resolveEntity(String publicID, String systemID) {
         if (publicID != null && publicID.equals(PUBLIC_ID)) {
             // This is the generic MoML DTD.

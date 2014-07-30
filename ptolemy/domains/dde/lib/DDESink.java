@@ -102,6 +102,7 @@ public class DDESink extends TypedAtomicActor {
      * @exception IllegalActionException If there is an exception while
      *  accessing the receivers of this actor.
      */
+    @Override
     public void fire() throws IllegalActionException {
         super.fire();
         int value = ((IntToken) numTokens.getToken()).intValue();
@@ -136,6 +137,7 @@ public class DDESink extends TypedAtomicActor {
      * continued execution is enabled; false otherwise.
      * @exception IllegalActionException If thrown by the parent class.
      */
+    @Override
     public boolean postfire() throws IllegalActionException {
         // This is similar to DoubleFork, Wire.
         if (!super.postfire()) {

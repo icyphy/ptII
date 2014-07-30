@@ -45,5 +45,6 @@ import ptolemy.vergil.kernel.Link;
  @Pt.AcceptedRating Red (johnr)
  @see FSMGraphModel.ArcModel
  */
+@Deprecated
 public class Arc extends Link {
 }

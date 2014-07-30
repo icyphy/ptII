@@ -159,6 +159,7 @@ public class StringCompare extends TypedAtomicActor {
      *  @param attribute The attribute that changed.
      *  @exception IllegalActionException If the function is not recognized.
      */
+    @Override
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         if (attribute == function) {
@@ -188,6 +189,7 @@ public class StringCompare extends TypedAtomicActor {
      *  <i>ignoreCase</i> parameter.
      *  @exception IllegalActionException If there is no director.
      */
+    @Override
     public void fire() throws IllegalActionException {
         super.fire();
 

@@ -105,6 +105,7 @@ public class ParseTreeTypeInference extends AbstractParseTreeVisitor {
      *  @param node The specified node.
      *  @exception IllegalActionException If an inference error occurs.
      */
+    @Override
     public void visitArrayConstructNode(ASTPtArrayConstructNode node)
             throws IllegalActionException {
         Type[] childTypes = _inferAllChildren(node);
@@ -119,6 +120,7 @@ public class ParseTreeTypeInference extends AbstractParseTreeVisitor {
      *  @param node The specified node.
      *  @exception IllegalActionException If an inference error occurs.
      */
+    @Override
     public void visitBitwiseNode(ASTPtBitwiseNode node)
             throws IllegalActionException {
         Type[] childTypes = _inferAllChildren(node);
@@ -135,6 +137,7 @@ public class ParseTreeTypeInference extends AbstractParseTreeVisitor {
      *  @param node The specified node.
      *  @exception IllegalActionException If an inference error occurs.
      */
+    @Override
     public void visitFunctionApplicationNode(ASTPtFunctionApplicationNode node)
             throws IllegalActionException {
         int argCount = node.jjtGetNumChildren() - 1;
@@ -381,6 +384,7 @@ public class ParseTreeTypeInference extends AbstractParseTreeVisitor {
      *  @param node The specified node.
      *  @exception IllegalActionException If an inference error occurs.
      */
+    @Override
     public void visitFunctionDefinitionNode(ASTPtFunctionDefinitionNode node)
             throws IllegalActionException {
         final Map map = new HashMap();
@@ -393,10 +397,12 @@ public class ParseTreeTypeInference extends AbstractParseTreeVisitor {
         // Push the current scope.
         final ParserScope currentScope = _scope;
         ParserScope functionScope = new ParserScope() {
+            @Override
             public ptolemy.data.Token get(String name) {
                 return null;
             }
 
+            @Override
             public Type getType(String name) throws IllegalActionException {
                 Type type = (Type) map.get(name);
 
@@ -407,6 +413,7 @@ public class ParseTreeTypeInference extends AbstractParseTreeVisitor {
                 }
             }
 
+            @Override
             public InequalityTerm getTypeTerm(String name)
                     throws IllegalActionException {
                 Type type = (Type) map.get(name);
@@ -418,6 +425,7 @@ public class ParseTreeTypeInference extends AbstractParseTreeVisitor {
                 }
             }
 
+            @Override
             public Set identifierSet() throws IllegalActionException {
                 Set set = currentScope.identifierSet();
                 set.addAll(map.keySet());
@@ -440,6 +448,7 @@ public class ParseTreeTypeInference extends AbstractParseTreeVisitor {
      *  @param node The specified node.
      *  @exception IllegalActionException If an inference error occurs.
      */
+    @Override
     public void visitFunctionalIfNode(ASTPtFunctionalIfNode node)
             throws IllegalActionException {
         Type conditionalType = _inferChild(node, 0);
@@ -467,6 +476,7 @@ public class ParseTreeTypeInference extends AbstractParseTreeVisitor {
      *  @exception IllegalActionException If an inference error
      *  occurs, or an identifier is not bound in the current scope.
      */
+    @Override
     public void visitLeafNode(ASTPtLeafNode node) throws IllegalActionException {
         if (node.isConstant() && node.isEvaluated()) {
             _setType(node, node.getToken().getType());
@@ -506,6 +516,7 @@ public class ParseTreeTypeInference extends AbstractParseTreeVisitor {
      *  @param node The specified node.
      *  @exception IllegalActionException If an inference error occurs.
      */
+    @Override
     public void visitLogicalNode(ASTPtLogicalNode node)
             throws IllegalActionException {
         _inferAllChildren(node);
@@ -519,6 +530,7 @@ public class ParseTreeTypeInference extends AbstractParseTreeVisitor {
      *  @param node The specified node.
      *  @exception IllegalActionException If an inference error occurs.
      */
+    @Override
     public void visitMatrixConstructNode(ASTPtMatrixConstructNode node)
             throws IllegalActionException {
         Type[] childTypes = _inferAllChildren(node);
@@ -535,6 +547,7 @@ public class ParseTreeTypeInference extends AbstractParseTreeVisitor {
      *  @param node The specified node.
      *  @exception IllegalActionException If an inference error occurs.
      */
+    @Override
     public void visitMethodCallNode(ASTPtMethodCallNode node)
             throws IllegalActionException {
         Type[] childTypes = _inferAllChildren(node);
@@ -557,6 +570,7 @@ public class ParseTreeTypeInference extends AbstractParseTreeVisitor {
      *  @param node The specified node.
      *  @exception IllegalActionException If an inference error occurs.
      */
+    @Override
     public void visitPowerNode(ASTPtPowerNode node)
             throws IllegalActionException {
         Type[] childTypes = _inferAllChildren(node);
@@ -571,6 +585,7 @@ public class ParseTreeTypeInference extends AbstractParseTreeVisitor {
      *  @param node The specified node.
      *  @exception IllegalActionException If an inference error occurs.
      */
+    @Override
     public void visitProductNode(ASTPtProductNode node)
             throws IllegalActionException {
         Type[] childTypes = _inferAllChildren(node);
@@ -602,6 +617,7 @@ public class ParseTreeTypeInference extends AbstractParseTreeVisitor {
      *  @param node The specified node.
      *  @exception IllegalActionException If an inference error occurs.
      */
+    @Override
     public void visitRecordConstructNode(ASTPtRecordConstructNode node)
             throws IllegalActionException {
         Type[] childTypes = _inferAllChildren(node);
@@ -616,6 +632,7 @@ public class ParseTreeTypeInference extends AbstractParseTreeVisitor {
      *  @param node The specified node.
      *  @exception IllegalActionException If an inference error occurs.
      */
+    @Override
     public void visitRelationalNode(ASTPtRelationalNode node)
             throws IllegalActionException {
         /* Type[] childTypes = */_inferAllChildren(node);
@@ -629,6 +646,7 @@ public class ParseTreeTypeInference extends AbstractParseTreeVisitor {
      *  @param node The specified node.
      *  @exception IllegalActionException If an inference error occurs.
      */
+    @Override
     public void visitShiftNode(ASTPtShiftNode node)
             throws IllegalActionException {
         Type[] childTypes = _inferAllChildren(node);
@@ -643,6 +661,7 @@ public class ParseTreeTypeInference extends AbstractParseTreeVisitor {
      *  @param node The specified node.
      *  @exception IllegalActionException If an inference error occurs.
      */
+    @Override
     public void visitSumNode(ASTPtSumNode node) throws IllegalActionException {
         Type[] childTypes = _inferAllChildren(node);
 
@@ -669,6 +688,7 @@ public class ParseTreeTypeInference extends AbstractParseTreeVisitor {
      *  @param node The specified node.
      *  @exception IllegalActionException If an inference error occurs.
      */
+    @Override
     public void visitUnaryNode(ASTPtUnaryNode node)
             throws IllegalActionException {
         Type[] childTypes = _inferAllChildren(node);

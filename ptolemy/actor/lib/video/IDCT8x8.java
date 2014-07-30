@@ -23,7 +23,7 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
-*/
+ */
 package ptolemy.actor.lib.video;
 
 import ptolemy.actor.TypedAtomicActor;
@@ -48,7 +48,7 @@ import ptolemy.kernel.util.Workspace;
    @since Ptolemy II 8.0
    @Pt.ProposedRating Red (oh)
    @Pt.AcceptedRating Red (oh)
-*/
+ */
 public class IDCT8x8 extends TypedAtomicActor {
     /** Construct an actor in the specified container with the specified
      *  name.
@@ -93,6 +93,7 @@ public class IDCT8x8 extends TypedAtomicActor {
      *  @exception CloneNotSupportedException If a derived class contains
      *   an attribute that cannot be cloned.
      */
+    @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         IDCT8x8 newObject = (IDCT8x8) super.clone(workspace);
         newObject.input.setTypeAtLeast(newObject.input);
@@ -101,6 +102,7 @@ public class IDCT8x8 extends TypedAtomicActor {
         return newObject;
     }
 
+    @Override
     public void initialize() throws IllegalActionException {
         super.initialize();
         _output = new IntMatrixToken[1];
@@ -121,6 +123,7 @@ public class IDCT8x8 extends TypedAtomicActor {
      *   or if addition and subtraction are not supported by the
      *   available tokens.
      */
+    @Override
     public void fire() throws IllegalActionException {
         super.fire();
 

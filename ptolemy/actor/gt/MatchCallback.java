@@ -44,7 +44,7 @@ import ptolemy.actor.gt.data.MatchResult;
  @see GraphMatcher#setMatchCallback(MatchCallback)
  @Pt.ProposedRating Yellow (tfeng)
  @Pt.AcceptedRating Red (tfeng)
-*/
+ */
 public interface MatchCallback {
 
     /** A routine to be called when a match is found in the graph matching. The

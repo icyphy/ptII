@@ -66,6 +66,7 @@ public class StreamValueListener implements ValueListener {
     /** React to the fact that the specified Settable has changed.
      *  @param settable The object that has changed value.
      */
+    @Override
     public void valueChanged(Settable settable) {
         _output.println(settable + " changed, new expression: "
                 + settable.getExpression());

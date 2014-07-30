@@ -66,6 +66,7 @@ public class Exit extends Sink {
     /** Consume and discard at most one token from each input channel.
      *  @exception IllegalActionException If accessing the input throws it.
      */
+    @Override
     public void fire() throws IllegalActionException {
         super.fire();
         for (int i = 0; i < input.getWidth(); i++) {
@@ -83,6 +84,7 @@ public class Exit extends Sink {
      *  If the ptolemy.ptII.exitAfterWrapup property is set, then
      *  we throw an Exception.
      */
+    @Override
     public void wrapup() throws IllegalActionException {
         super.wrapup();
         getManager().exitAfterWrapup();

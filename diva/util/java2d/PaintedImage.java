@@ -62,6 +62,7 @@ public class PaintedImage implements PaintedObject, ImageObserver {
 
     /** Get the bounding box of the object when painted.
      */
+    @Override
     public Rectangle2D getBounds() {
         return _bounds;
     }
@@ -71,12 +72,14 @@ public class PaintedImage implements PaintedObject, ImageObserver {
      * fields in the graphics context such as the current
      * paint, stroke, and composite, depends on the implementing class.
      */
+    @Override
     public void paint(Graphics2D g) {
         g.drawImage(_image, _transform, this);
     }
 
     /**
      */
+    @Override
     public boolean imageUpdate(Image image, int flags, int x, int y, int w,
             int h) {
         if ((flags & (ImageObserver.ABORT | ImageObserver.ERROR)) == 0) {

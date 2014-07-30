@@ -79,7 +79,7 @@ public class CompiledCompositeActor extends TypedCompositeActor {
      */
     public static long copyFilesToCodeDirectory(
             ptolemy.actor.TypedCompositeActor compositeActor)
-            throws IOException, IllegalActionException {
+                    throws IOException, IllegalActionException {
         // This is static so that ptolemy.cg.lib.CompiledCompositeActor
         // will not depend on ptolemy.codegen.
         ProgramCodeGenerator codeGenerator = _getCodeGenerator(compositeActor);
@@ -94,7 +94,7 @@ public class CompiledCompositeActor extends TypedCompositeActor {
      */
     public static void generateCode(
             ptolemy.actor.TypedCompositeActor compositeActor)
-            throws IllegalActionException {
+                    throws IllegalActionException {
 
         // This is static so that ptolemy.cg.lib.CompiledCompositeActor
         // will not depend on ptolemy.codegen.
@@ -143,7 +143,7 @@ public class CompiledCompositeActor extends TypedCompositeActor {
      */
     private static ProgramCodeGenerator _getCodeGenerator(
             ptolemy.actor.TypedCompositeActor compositeActor)
-            throws IllegalActionException {
+                    throws IllegalActionException {
         // This is static so that ptolemy.cg.lib.CompiledCompositeActor
         // will not depend on ptolemy.codegen
         ProgramCodeGenerator codeGenerator = null;
@@ -176,11 +176,11 @@ public class CompiledCompositeActor extends TypedCompositeActor {
             // FIXME: This should not be necessary, but if we don't
             // do it, then getBaseDirectory() thinks we are in the current dir.
             codeGenerator.codeDirectory
-                    .setBaseDirectory(codeGenerator.codeDirectory.asFile()
-                            .toURI());
+            .setBaseDirectory(codeGenerator.codeDirectory.asFile()
+                    .toURI());
 
             codeGenerator.generatorPackageList
-                    .setExpression(actor.generatorPackage.getExpression());
+            .setExpression(actor.generatorPackage.getExpression());
 
             codeGenerator.inline.setExpression(actor.inline.getExpression());
 

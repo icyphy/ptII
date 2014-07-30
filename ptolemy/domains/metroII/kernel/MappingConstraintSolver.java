@@ -54,14 +54,14 @@ import ptolemy.domains.metroII.kernel.util.ProtoBuf.metroIIcomm.Event;
  * <li>Step 3: isSatisfied(event id) is called for each event. It returns true
  * if the event satisfies all the mapping constraints.</li>
  * </ol>
- * 
- * 
+ *
+ *
  * @author Liangpeng Guo
  * @version $Id$
  * @since Ptolemy II 10.0
  * @Pt.ProposedRating Red (glp)
  * @Pt.AcceptedRating Red (glp)
- * 
+ *
  */
 public class MappingConstraintSolver implements ConstraintSolver, Cloneable {
 
@@ -73,7 +73,7 @@ public class MappingConstraintSolver implements ConstraintSolver, Cloneable {
 
     /**
      * Clones MappingConstraintSolver.
-     * 
+     *
      * @exception CloneNotSupportedException
      *                the object's class does not implement the Cloneable
      *                interface.
@@ -99,26 +99,27 @@ public class MappingConstraintSolver implements ConstraintSolver, Cloneable {
     ////                         public methods                    ////
 
     /**
-     * Clears all the mapping constraints. 
+     * Clears all the mapping constraints.
      */
     public void clear() {
-        _mapping.clear(); 
-        _eventIDDictionary.clear(); 
-        _counter = null; 
+        _mapping.clear();
+        _eventIDDictionary.clear();
+        _counter = null;
     }
-    
+
     /**
      * Returns the adjacency matrix of mapping constraints as a string.
-     * 
+     *
      * @return the adjacency matrix.
      */
+    @Override
     public String toString() {
         return _counter.toString();
     }
 
     /**
      * Checks if the debugging option is checked.
-     * 
+     *
      * @return the state of debugging option
      */
     public boolean debugging() {
@@ -210,7 +211,7 @@ public class MappingConstraintSolver implements ConstraintSolver, Cloneable {
 
     /**
      * Returns the number of mapping constraints.
-     * 
+     *
      * @return the number of mapping constraints.
      */
     public int numConstraints() {
@@ -226,7 +227,7 @@ public class MappingConstraintSolver implements ConstraintSolver, Cloneable {
 
     /**
      * Adds a mapping constraint.
-     * 
+     *
      * @param eventName1
      *            first event in the mapping.
      * @param eventName2
@@ -240,10 +241,10 @@ public class MappingConstraintSolver implements ConstraintSolver, Cloneable {
         // System.out.println(id1+" "+id2);
         _mapping.add(id1, id2);
     }
-    
+
     /**
      * Reads mapping constraints from a file.
-     * 
+     *
      * @param filename
      *            Filename of the mapping constraint file.
      * @exception IOException
@@ -251,10 +252,10 @@ public class MappingConstraintSolver implements ConstraintSolver, Cloneable {
      */
     public void readMapping(String filename) throws IOException {
         String buffer = MappingConstraintReaderWriter.readMappingFile(filename);
-        String[] constraints = buffer.split("\n"); 
+        String[] constraints = buffer.split("\n");
         for (String line : constraints) {
             if (line.startsWith("#")) {
-                continue; 
+                continue;
             }
             String[] eventNames = line.split(",");
             assert eventNames.length == 2;
@@ -275,15 +276,15 @@ public class MappingConstraintSolver implements ConstraintSolver, Cloneable {
      * increaseCount(Iterable<Integer> ids) is called, the counter of the
      * constraint whose id is in ids is increased by the number of appearances
      * in ids.
-     * 
+     *
      * @author glp
-     * 
+     *
      */
     private static class ConstraintCounter implements Cloneable {
 
         /**
          * Constructs and initialize the counter for each constraint.
-         * 
+         *
          * @param size
          *            the largest possible id of the constraints + 1.
          */
@@ -296,6 +297,7 @@ public class MappingConstraintSolver implements ConstraintSolver, Cloneable {
         /**
          * Clones the ConstraintCounter
          */
+        @Override
         public ConstraintCounter clone() throws CloneNotSupportedException {
             ConstraintCounter newObject = (ConstraintCounter) super.clone();
             newObject._count = _count.clone();
@@ -305,13 +307,14 @@ public class MappingConstraintSolver implements ConstraintSolver, Cloneable {
         /**
          * Converts the ConstraintCounter to string
          */
+        @Override
         public String toString() {
             return Arrays.toString(_count);
         }
 
         /**
          * Returns the first id in ids whose counter is greater than 1.
-         * 
+         *
          * @param ids
          *            a vector of ids
          * @return the first id in ids whose counter is greater than 1.
@@ -337,7 +340,7 @@ public class MappingConstraintSolver implements ConstraintSolver, Cloneable {
         /**
          * The counter of the constraint whose id is in ids is increased by the
          * number of appearances in ids.
-         * 
+         *
          * @param ids
          *            the vector of ids
          */
@@ -350,7 +353,7 @@ public class MappingConstraintSolver implements ConstraintSolver, Cloneable {
         /**
          * The counter of the constraint whose id is in ids is decreased by the
          * number of appearances in ids.
-         * 
+         *
          * @param ids
          *            the vector of ids
          */

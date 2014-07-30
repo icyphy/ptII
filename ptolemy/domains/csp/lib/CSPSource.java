@@ -100,6 +100,7 @@ public class CSPSource extends Source {
      *  N output tokens for N = tokenCount.
      *  @exception IllegalActionException If thrown by the superclass.
      */
+    @Override
     public void fire() throws IllegalActionException {
         super.fire();
         try {
@@ -126,6 +127,7 @@ public class CSPSource extends Source {
      *  @exception IllegalActionException If thrown by the parent
      *  class.
      */
+    @Override
     public boolean postfire() throws IllegalActionException {
         // We intentially ignore the return value of super.postfire()
         // here.

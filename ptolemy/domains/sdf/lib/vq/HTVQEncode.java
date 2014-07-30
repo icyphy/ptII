@@ -195,6 +195,7 @@ public class HTVQEncode extends Transformer {
      *  @exception CloneNotSupportedException If a derived class contains
      *   an attribute that cannot be cloned.
      */
+    @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         HTVQEncode newObject = (HTVQEncode) super.clone(workspace);
         newObject.ipbuf_encodep1 = new int[8][8];
@@ -211,6 +212,7 @@ public class HTVQEncode extends Transformer {
      * codeword on the output.
      * @exception IllegalActionException If a contained method throws it.
      */
+    @Override
     public void fire() throws IllegalActionException {
         super.fire();
         int j;
@@ -233,6 +235,7 @@ public class HTVQEncode extends Transformer {
      * @exception IllegalActionException If the parameters do not have
      * legal values, or the codebook file cannot be read.
      */
+    @Override
     public void initialize() throws IllegalActionException {
         super.initialize();
 

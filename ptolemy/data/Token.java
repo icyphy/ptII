@@ -369,11 +369,11 @@ public class Token {
             Token firstToken, Token secondToken) {
         // We use this method to factor out a very common message
         return operation + " method not supported between "
-                + firstToken.getClass().getName() + " '"
-                + firstToken.toString() + "' and "
-                + secondToken.getClass().getName() + " '"
-                + secondToken.toString()
-                + "' because the types are incomparable.";
+        + firstToken.getClass().getName() + " '"
+        + firstToken.toString() + "' and "
+        + secondToken.getClass().getName() + " '"
+        + secondToken.toString()
+        + "' because the types are incomparable.";
     }
 
     /** Return a string with an error message that states that the
@@ -388,10 +388,10 @@ public class Token {
             Token firstToken, Token secondToken) {
         // We use this method to factor out a very common message
         return operation + " operation not supported between "
-                + firstToken.getClass().getName() + " '"
-                + firstToken.toString() + "' and "
-                + secondToken.getClass().getName() + " '"
-                + secondToken.toString() + "'";
+        + firstToken.getClass().getName() + " '"
+        + firstToken.toString() + "' and "
+        + secondToken.getClass().getName() + " '"
+        + secondToken.toString() + "'";
     }
 
     /** Returns a new Token representing the multiplicative identity.
@@ -504,6 +504,7 @@ public class Token {
      *  @return The String "present", unless this token is {@link #NIL},
      *  in which case return the String "nil".
      */
+    @Override
     public String toString() {
         if (isNil()) {
             return "nil";
@@ -549,6 +550,7 @@ public class Token {
         /** Return the type of this token.
          *  @return BaseType.NIL.
          */
+        @Override
         public Type getType() {
             return BaseType.NIL;
         }

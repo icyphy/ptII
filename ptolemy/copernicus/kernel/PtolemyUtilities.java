@@ -123,7 +123,7 @@ public class PtolemyUtilities {
                             tokenArrayLocal,
                             Jimple.v().newNewArrayExpr(tokenType,
                                     IntConstant.v(arrayToken.length()))),
-                    insertPoint);
+                                    insertPoint);
 
             // recurse
             for (int i = 0; i < arrayToken.length(); i++) {
@@ -133,7 +133,7 @@ public class PtolemyUtilities {
                         Jimple.v().newAssignStmt(
                                 Jimple.v().newArrayRef(tokenArrayLocal,
                                         IntConstant.v(i)), argLocal),
-                        insertPoint);
+                                        insertPoint);
             }
 
             Local tokenLocal = Jimple.v().newLocal(localName,
@@ -142,13 +142,13 @@ public class PtolemyUtilities {
             units.insertBefore(
                     Jimple.v().newAssignStmt(tokenLocal,
                             Jimple.v().newNewExpr(RefType.v(arrayTokenClass))),
-                    insertPoint);
+                            insertPoint);
             units.insertBefore(
                     Jimple.v().newInvokeStmt(
                             Jimple.v().newSpecialInvokeExpr(tokenLocal,
                                     arrayTokenWithTypeConstructor.makeRef(),
                                     elementTypeLocal, tokenArrayLocal)),
-                    insertPoint);
+                                    insertPoint);
             return tokenLocal;
         } else if (token instanceof ptolemy.data.RecordToken) {
             throw new RuntimeException(
@@ -221,7 +221,7 @@ public class PtolemyUtilities {
             units.insertBefore(
                     Jimple.v().newAssignStmt(tokenLocal,
                             Jimple.v().newNewExpr(RefType.v(tokenClass))),
-                    insertPoint);
+                            insertPoint);
             units.insertBefore(
                     Jimple.v().newInvokeStmt(
                             Jimple.v().newSpecialInvokeExpr(tokenLocal,
@@ -271,14 +271,14 @@ public class PtolemyUtilities {
             units.insertBefore(
                     Jimple.v().newAssignStmt(complexLocal,
                             Jimple.v().newNewExpr(RefType.v(complexClass))),
-                    insertPoint);
+                            insertPoint);
             units.insertBefore(
                     Jimple.v().newInvokeStmt(
                             Jimple.v().newSpecialInvokeExpr(complexLocal,
                                     complexConstructor.makeRef(),
                                     DoubleConstant.v(complex.real),
                                     DoubleConstant.v(complex.imag))),
-                    insertPoint);
+                                    insertPoint);
 
             Local tokenLocal = _buildConstantTokenLocal(body, insertPoint,
                     localName, complexTokenClass, complexTokenConstructor,
@@ -338,13 +338,13 @@ public class PtolemyUtilities {
             units.insertBefore(
                     Jimple.v().newAssignStmt(tokenLocal,
                             Jimple.v().newNewExpr(RefType.v(tokenClass))),
-                    insertPoint);
+                            insertPoint);
             units.insertBefore(
                     Jimple.v().newInvokeStmt(
                             Jimple.v().newSpecialInvokeExpr(tokenLocal,
                                     tokenConstructor.makeRef(),
                                     StringConstant.v(token.toString()))),
-                    insertPoint);
+                                    insertPoint);
             return tokenLocal;
         }
     }
@@ -385,7 +385,7 @@ public class PtolemyUtilities {
                 Jimple.v().newInvokeStmt(
                         Jimple.v().newSpecialInvokeExpr(tokenLocal,
                                 tokenConstructor.makeRef(), constructorArgs)),
-                insertPoint);
+                                insertPoint);
         return tokenLocal;
     }
 
@@ -402,7 +402,7 @@ public class PtolemyUtilities {
                 Jimple.v().newInvokeStmt(
                         Jimple.v().newSpecialInvokeExpr(tokenLocal,
                                 tokenConstructor.makeRef(), constructorArg)),
-                insertPoint);
+                                insertPoint);
         return tokenLocal;
     }
 
@@ -432,56 +432,56 @@ public class PtolemyUtilities {
                                 typeLocal,
                                 Jimple.v().newStaticFieldRef(
                                         unknownTypeField.makeRef())),
-                        insertPoint);
+                                        insertPoint);
             } else if (type.equals(ptolemy.data.type.BaseType.GENERAL)) {
                 units.insertBefore(
                         Jimple.v().newAssignStmt(
                                 typeLocal,
                                 Jimple.v().newStaticFieldRef(
                                         generalTypeField.makeRef())),
-                        insertPoint);
+                                        insertPoint);
             } else if (type.equals(ptolemy.data.type.BaseType.BOOLEAN)) {
                 units.insertBefore(
                         Jimple.v().newAssignStmt(
                                 typeLocal,
                                 Jimple.v().newStaticFieldRef(
                                         booleanTypeField.makeRef())),
-                        insertPoint);
+                                        insertPoint);
             } else if (type.equals(ptolemy.data.type.BaseType.BOOLEAN_MATRIX)) {
                 units.insertBefore(
                         Jimple.v().newAssignStmt(
                                 typeLocal,
                                 Jimple.v().newStaticFieldRef(
                                         booleanMatrixTypeField.makeRef())),
-                        insertPoint);
+                                        insertPoint);
             } else if (type.equals(ptolemy.data.type.BaseType.COMPLEX)) {
                 units.insertBefore(
                         Jimple.v().newAssignStmt(
                                 typeLocal,
                                 Jimple.v().newStaticFieldRef(
                                         complexTypeField.makeRef())),
-                        insertPoint);
+                                        insertPoint);
             } else if (type.equals(ptolemy.data.type.BaseType.COMPLEX_MATRIX)) {
                 units.insertBefore(
                         Jimple.v().newAssignStmt(
                                 typeLocal,
                                 Jimple.v().newStaticFieldRef(
                                         complexMatrixTypeField.makeRef())),
-                        insertPoint);
+                                        insertPoint);
             } else if (type.equals(ptolemy.data.type.BaseType.DOUBLE)) {
                 units.insertBefore(
                         Jimple.v().newAssignStmt(
                                 typeLocal,
                                 Jimple.v().newStaticFieldRef(
                                         doubleTypeField.makeRef())),
-                        insertPoint);
+                                        insertPoint);
             } else if (type.equals(ptolemy.data.type.BaseType.DOUBLE_MATRIX)) {
                 units.insertBefore(
                         Jimple.v().newAssignStmt(
                                 typeLocal,
                                 Jimple.v().newStaticFieldRef(
                                         doubleMatrixTypeField.makeRef())),
-                        insertPoint);
+                                        insertPoint);
             } else if (type.equals(ptolemy.data.type.BaseType.FIX)) {
                 units.insertBefore(
                         Jimple.v().newAssignStmt(
@@ -494,7 +494,7 @@ public class PtolemyUtilities {
                                 typeLocal,
                                 Jimple.v().newStaticFieldRef(
                                         fixMatrixTypeField.makeRef())),
-                        insertPoint);
+                                        insertPoint);
             } else if (type.equals(ptolemy.data.type.BaseType.FLOAT)) {
                 units.insertBefore(
                         Jimple.v().newAssignStmt(
@@ -519,7 +519,7 @@ public class PtolemyUtilities {
                                 typeLocal,
                                 Jimple.v().newStaticFieldRef(
                                         intMatrixTypeField.makeRef())),
-                        insertPoint);
+                                        insertPoint);
             } else if (type.equals(ptolemy.data.type.BaseType.LONG)) {
                 units.insertBefore(
                         Jimple.v().newAssignStmt(
@@ -532,14 +532,14 @@ public class PtolemyUtilities {
                                 typeLocal,
                                 Jimple.v().newStaticFieldRef(
                                         longMatrixTypeField.makeRef())),
-                        insertPoint);
+                                        insertPoint);
             } else if (type.equals(ptolemy.data.type.BaseType.OBJECT)) {
                 units.insertBefore(
                         Jimple.v().newAssignStmt(
                                 typeLocal,
                                 Jimple.v().newStaticFieldRef(
                                         objectTypeField.makeRef())),
-                        insertPoint);
+                                        insertPoint);
             } else if (type.equals(ptolemy.data.type.BaseType.SHORT)) {
                 units.insertBefore(
                         Jimple.v().newAssignStmt(
@@ -552,7 +552,7 @@ public class PtolemyUtilities {
                                 typeLocal,
                                 Jimple.v().newStaticFieldRef(
                                         stringTypeField.makeRef())),
-                        insertPoint);
+                                        insertPoint);
             } else {
                 // Some base type that we didn't special case above.
                 SootMethod typeConstructor = SootUtilities
@@ -563,7 +563,7 @@ public class PtolemyUtilities {
                                 Jimple.v().newStaticInvokeExpr(
                                         typeConstructor.makeRef(),
                                         StringConstant.v(type.toString()))),
-                        insertPoint);
+                                        insertPoint);
             }
 
             return typeLocal;
@@ -585,13 +585,13 @@ public class PtolemyUtilities {
             units.insertBefore(
                     Jimple.v().newAssignStmt(typeLocal,
                             Jimple.v().newNewExpr(RefType.v(arrayTypeClass))),
-                    insertPoint);
+                            insertPoint);
             units.insertBefore(
                     Jimple.v().newInvokeStmt(
                             Jimple.v()
-                                    .newSpecialInvokeExpr(typeLocal,
-                                            typeConstructor.makeRef(),
-                                            elementTypeLocal)), insertPoint);
+                            .newSpecialInvokeExpr(typeLocal,
+                                    typeConstructor.makeRef(),
+                                    elementTypeLocal)), insertPoint);
             return typeLocal;
         } else if (type instanceof ptolemy.data.type.RecordType) {
             ptolemy.data.type.RecordType recordType = (ptolemy.data.type.RecordType) type;
@@ -607,10 +607,10 @@ public class PtolemyUtilities {
                     Jimple.v().newAssignStmt(
                             labelArrayLocal,
                             Jimple.v()
-                                    .newNewArrayExpr(
-                                            RefType.v("java.lang.String"),
-                                            IntConstant.v(recordType.labelSet()
-                                                    .size()))), insertPoint);
+                            .newNewArrayExpr(
+                                    RefType.v("java.lang.String"),
+                                    IntConstant.v(recordType.labelSet()
+                                            .size()))), insertPoint);
 
             // Create the new array of types.
             Local typeArrayLocal = Jimple.v().newLocal("typeArray",
@@ -620,10 +620,10 @@ public class PtolemyUtilities {
                     Jimple.v().newAssignStmt(
                             typeArrayLocal,
                             Jimple.v()
-                                    .newNewArrayExpr(
-                                            RefType.v(typeClass),
-                                            IntConstant.v(recordType.labelSet()
-                                                    .size()))), insertPoint);
+                            .newNewArrayExpr(
+                                    RefType.v(typeClass),
+                                    IntConstant.v(recordType.labelSet()
+                                            .size()))), insertPoint);
 
             int count = 0;
 
@@ -640,14 +640,14 @@ public class PtolemyUtilities {
                         Jimple.v().newAssignStmt(
                                 Jimple.v().newArrayRef(labelArrayLocal,
                                         IntConstant.v(count)),
-                                StringConstant.v(label)), insertPoint);
+                                        StringConstant.v(label)), insertPoint);
 
                 // Store into the array of types.
                 units.insertBefore(
                         Jimple.v()
-                                .newAssignStmt(
-                                        Jimple.v().newArrayRef(typeArrayLocal,
-                                                IntConstant.v(count)),
+                        .newAssignStmt(
+                                Jimple.v().newArrayRef(typeArrayLocal,
+                                        IntConstant.v(count)),
                                         elementTypeLocal), insertPoint);
             }
 
@@ -658,7 +658,7 @@ public class PtolemyUtilities {
             units.insertBefore(
                     Jimple.v().newAssignStmt(typeLocal,
                             Jimple.v().newNewExpr(RefType.v(recordTypeClass))),
-                    insertPoint);
+                            insertPoint);
 
             // invoke the initializer.
             SootMethod typeConstructor = SootUtilities.searchForMethodByName(
@@ -678,8 +678,8 @@ public class PtolemyUtilities {
                     Jimple.v().newAssignStmt(
                             typeLocal,
                             Jimple.v()
-                                    .newStaticFieldRef(fixTypeField.makeRef())),
-                    insertPoint);
+                            .newStaticFieldRef(fixTypeField.makeRef())),
+                            insertPoint);
             return typeLocal;
         } else if (type instanceof ptolemy.data.type.FunctionType) {
             ptolemy.data.type.FunctionType functionType = (ptolemy.data.type.FunctionType) type;
@@ -696,7 +696,7 @@ public class PtolemyUtilities {
                             typeArrayLocal,
                             Jimple.v().newNewArrayExpr(RefType.v(typeClass),
                                     IntConstant.v(functionType.getArgCount()))),
-                    insertPoint);
+                                    insertPoint);
 
             for (int i = 0; i < functionType.getArgCount(); i++) {
                 ptolemy.data.type.Type elementType = functionType.getArgType(i);
@@ -708,7 +708,7 @@ public class PtolemyUtilities {
                         Jimple.v().newAssignStmt(
                                 Jimple.v().newArrayRef(typeArrayLocal,
                                         IntConstant.v(i)), elementTypeLocal),
-                        insertPoint);
+                                        insertPoint);
             }
 
             Local returnTypeLocal = buildConstantTypeLocal(body, insertPoint,
@@ -720,11 +720,11 @@ public class PtolemyUtilities {
             body.getLocals().add(typeLocal);
             units.insertBefore(
                     Jimple.v()
-                            .newAssignStmt(
-                                    typeLocal,
-                                    Jimple.v().newNewExpr(
-                                            RefType.v(functionTypeClass))),
-                    insertPoint);
+                    .newAssignStmt(
+                            typeLocal,
+                            Jimple.v().newNewExpr(
+                                    RefType.v(functionTypeClass))),
+                                    insertPoint);
 
             // invoke the initializer.
             SootMethod typeConstructor = SootUtilities.searchForMethodByName(

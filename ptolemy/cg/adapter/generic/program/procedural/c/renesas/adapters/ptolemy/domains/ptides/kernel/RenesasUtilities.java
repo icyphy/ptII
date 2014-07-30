@@ -25,7 +25,7 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 Ptolemy II includes the work of others, to see those copyrights, follow
 the copyright link on the splash page or see copyright.htm.
-*/
+ */
 package ptolemy.cg.adapter.generic.program.procedural.c.renesas.adapters.ptolemy.domains.ptides.kernel;
 
 import java.util.HashMap;
@@ -62,7 +62,7 @@ public class RenesasUtilities {
 
     /** The interrupt handler letters map from Integers to Characters. */
     @SuppressWarnings("serial")
-        public static final Map<Integer, Character> interruptHandlerLetters = new HashMap<Integer, Character>() {
+    public static final Map<Integer, Character> interruptHandlerLetters = new HashMap<Integer, Character>() {
         {
             put(156, RenesasUtilities.INTERRUPT_HANDLER_LETTER_156);
             put(157, RenesasUtilities.INTERRUPT_HANDLER_LETTER_157);
@@ -78,7 +78,7 @@ public class RenesasUtilities {
 
     /** The map from interrupt handler integers to timer numbers. */
     @SuppressWarnings("serial")
-        public static final Map<Integer, Integer> timerNumbers = new HashMap<Integer, Integer>() {
+    public static final Map<Integer, Integer> timerNumbers = new HashMap<Integer, Integer>() {
         {
             put(156, 0);
             put(157, 0);

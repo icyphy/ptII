@@ -75,7 +75,8 @@ public interface ActorExecutionAspect extends Decorator {
      * @return The execution time.
      * @exception IllegalActionException Thrown in attribute or token cannot be read.
      */
-    public double getExecutionTime(NamedObj actor) throws IllegalActionException;
+    public double getExecutionTime(NamedObj actor)
+            throws IllegalActionException;
 
     /** Return whether an actor is currently waiting for a resource.
      * @param actor The actor that might be waiting for a resource.
@@ -99,12 +100,12 @@ public interface ActorExecutionAspect extends Decorator {
             ExecutionEventType eventType);
 
     /** Perform rescheduling actions when no new actor requests to be
-         *  scheduled.
-         * @param environmentTime The outside time.
-         * @return Relative time when this Scheduler has to be executed
-         *    again to perform rescheduling actions.
-         * @exception IllegalActionException Thrown in subclasses.
-         */
+     *  scheduled.
+     * @param environmentTime The outside time.
+     * @return Relative time when this Scheduler has to be executed
+     *    again to perform rescheduling actions.
+     * @exception IllegalActionException Thrown in subclasses.
+     */
     public Time schedule(Time environmentTime) throws IllegalActionException;
 
     /** Schedule the actor. In this base class, do nothing.  Derived

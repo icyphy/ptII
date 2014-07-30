@@ -51,7 +51,7 @@ import ptolemy.kernel.util.Workspace;
  *  @Pt.AcceptedRating Red (eal)
  */
 public abstract class AbstractInitializableAttribute extends Attribute
-        implements HierarchyListener, Initializable {
+implements HierarchyListener, Initializable {
 
     /** Construct an instance of the attribute.
      *  @param container The container.
@@ -74,6 +74,7 @@ public abstract class AbstractInitializableAttribute extends Attribute
      *  @param initializable The object whose methods should be invoked.
      *  @see #removeInitializable(Initializable)
      */
+    @Override
     public void addInitializable(Initializable initializable) {
         if (_initializables == null) {
             _initializables = new LinkedHashSet<Initializable>();
@@ -87,6 +88,7 @@ public abstract class AbstractInitializableAttribute extends Attribute
      *  @see java.lang.Object#clone()
      *  @return The cloned variable.
      */
+    @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         AbstractInitializableAttribute newObject = (AbstractInitializableAttribute) super
                 .clone(workspace);
@@ -100,6 +102,7 @@ public abstract class AbstractInitializableAttribute extends Attribute
      *  @exception IllegalActionException If the change is not
      *   acceptable.
      */
+    @Override
     public void hierarchyChanged() throws IllegalActionException {
         // Make sure we are registered as to be initialized
         // with the container.
@@ -113,6 +116,7 @@ public abstract class AbstractInitializableAttribute extends Attribute
      *  changed.
      *  @exception IllegalActionException If unlinking to a published port fails.
      */
+    @Override
     public void hierarchyWillChange() throws IllegalActionException {
         // Unregister to be initialized with the initializable container.
         // We will be re-registered when hierarchyChanged() is called.
@@ -125,6 +129,7 @@ public abstract class AbstractInitializableAttribute extends Attribute
     /** Invoke initialize() on registered initializables.
      *  @exception IllegalActionException If thrown by a subclass.
      */
+    @Override
     public void initialize() throws IllegalActionException {
         // Invoke initializable methods.
         if (_initializables != null) {
@@ -137,6 +142,7 @@ public abstract class AbstractInitializableAttribute extends Attribute
     /** Invoke preinitialize() on registered initializables.
      *  @exception IllegalActionException If thrown by a subclass.
      */
+    @Override
     public void preinitialize() throws IllegalActionException {
         // Invoke initializable methods.
         if (_initializables != null) {
@@ -154,6 +160,7 @@ public abstract class AbstractInitializableAttribute extends Attribute
      *  @param initializable The object whose methods should no longer be invoked.
      *  @see #addInitializable(Initializable)
      */
+    @Override
     public void removeInitializable(Initializable initializable) {
         if (_initializables != null) {
             _initializables.remove(initializable);
@@ -177,7 +184,7 @@ public abstract class AbstractInitializableAttribute extends Attribute
      */
     @Override
     public void setContainer(NamedObj container) throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         Initializable previousInitializableContainer = _getInitializableContainer();
         NamedObj previousContainer = getContainer();
         super.setContainer(container);
@@ -203,6 +210,7 @@ public abstract class AbstractInitializableAttribute extends Attribute
     /** Invoke wrapup() on registered initializables.
      *  @exception IllegalActionException If thrown by a subclass.
      */
+    @Override
     public void wrapup() throws IllegalActionException {
         // Invoke initializable methods.
         if (_initializables != null) {

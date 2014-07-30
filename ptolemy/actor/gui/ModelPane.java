@@ -118,7 +118,7 @@ public class ModelPane extends JPanel implements CloseListener {
             _controlPanel.setLayout(new BoxLayout(_controlPanel,
                     BoxLayout.Y_AXIS));
             _controlPanel
-                    .setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
+            .setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
 
             // Add a listener that requests the focus when we click
             // in the pane. This allows keyboard bindings to work.
@@ -143,6 +143,7 @@ public class ModelPane extends JPanel implements CloseListener {
                 _buttonPanel.add(_goButton);
                 _buttonPanel.add(Box.createRigidArea(new Dimension(10, 0)));
                 _goButton.addActionListener(new ActionListener() {
+                    @Override
                     public void actionPerformed(ActionEvent event) {
                         startRun();
                     }
@@ -153,6 +154,7 @@ public class ModelPane extends JPanel implements CloseListener {
                 _buttonPanel.add(_pauseButton);
                 _buttonPanel.add(Box.createRigidArea(new Dimension(10, 0)));
                 _pauseButton.addActionListener(new ActionListener() {
+                    @Override
                     public void actionPerformed(ActionEvent event) {
                         pauseRun();
                     }
@@ -163,6 +165,7 @@ public class ModelPane extends JPanel implements CloseListener {
                 _buttonPanel.add(_resumeButton);
                 _buttonPanel.add(Box.createRigidArea(new Dimension(10, 0)));
                 _resumeButton.addActionListener(new ActionListener() {
+                    @Override
                     public void actionPerformed(ActionEvent event) {
                         resumeRun();
                     }
@@ -172,6 +175,7 @@ public class ModelPane extends JPanel implements CloseListener {
                 _stopButton.setToolTipText("Stop executing the model");
                 _buttonPanel.add(_stopButton);
                 _stopButton.addActionListener(new ActionListener() {
+                    @Override
                     public void actionPerformed(ActionEvent event) {
                         stopRun();
                     }
@@ -259,6 +263,7 @@ public class ModelPane extends JPanel implements CloseListener {
      *   The displays are handled by setModel().
      *  @see #getDisplayPane()
      */
+    @Deprecated
     public void setDisplayPane(Container pane) {
         if (_displays != null) {
             remove(_displays);
@@ -418,6 +423,7 @@ public class ModelPane extends JPanel implements CloseListener {
      *  @param window The window that closed.
      *  @param button The name of the button that was used to close the window.
      */
+    @Override
     public void windowClosed(Window window, String button) {
         if (_directorQuery != null) {
             _directorQuery.windowClosed(window, button);
@@ -562,12 +568,14 @@ public class ModelPane extends JPanel implements CloseListener {
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
     private class ClickListener extends MouseAdapter {
+        @Override
         public void mouseClicked(MouseEvent e) {
             _controlPanel.requestFocus();
         }
     }
 
     private class CommandListener extends KeyAdapter {
+        @Override
         public void keyPressed(KeyEvent e) {
             int keycode = e.getKeyCode();
 

@@ -67,6 +67,7 @@ public abstract class FMIType {
     /** Return the string value of the base element.
      *  @return The string value.
      */
+    @Override
     abstract public String toString();
 
     ///////////////////////////////////////////////////////////////////

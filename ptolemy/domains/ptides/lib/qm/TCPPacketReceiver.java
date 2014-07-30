@@ -26,7 +26,7 @@ ENHANCEMENTS, OR MODIFICATIONS.
                                                 PT_COPYRIGHT_VERSION_2
                                                 COPYRIGHTENDKEY
 
-*/
+ */
 
 package ptolemy.domains.ptides.lib.qm;
 
@@ -65,7 +65,7 @@ import ptolemy.kernel.util.NameDuplicationException;
  *  @since Ptolemy II 10.0
  *  @Pt.ProposedRating
  *  @Pt.AcceptedRating
-*/
+ */
 public class TCPPacketReceiver extends InputDevice {
 
     /** Construct a TCPPacketReceiver.
@@ -100,6 +100,7 @@ public class TCPPacketReceiver extends InputDevice {
      *  @exception IllegalActionException If thrown by the super cass or
      *  if there are problems decomposing the record.
      */
+    @Override
     public void fire() throws IllegalActionException {
         super.fire();
         Director director = getDirector();
@@ -145,7 +146,7 @@ public class TCPPacketReceiver extends InputDevice {
                         .get(singleEventLabel);
                 new Time(getDirector(),
                         ((DoubleToken) singleEventRecord.get(timestamp))
-                                .doubleValue());
+                        .doubleValue());
 
                 ((IntToken) singleEventRecord.get(microstep)).intValue();
 
@@ -167,6 +168,7 @@ public class TCPPacketReceiver extends InputDevice {
      *  ports, or if any of the outside source ports is not a network
      *  port.
      */
+    @Override
     public void preinitialize() throws IllegalActionException {
 
         super.preinitialize();
@@ -192,8 +194,8 @@ public class TCPPacketReceiver extends InputDevice {
     ////                         protected methods                 ////
 
     /** Do not establish the usual default type constraints.
-    *  @return null
-    */
+     *  @return null
+     */
     @Override
     protected Set<Inequality> _defaultTypeConstraints() {
         return null;

@@ -25,7 +25,7 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 Ptolemy II includes the work of others, to see those copyrights, follow
 the copyright link on the splash page or see copyright.htm.
-*/
+ */
 // A state that is passed through in a firing of the FSM.
 package ptolemy.domains.modal.kernel;
 
@@ -50,7 +50,7 @@ import ptolemy.kernel.util.SingletonAttribute;
  @see State
  @see FSMActor
  @see FSMDirector
-*/
+ */
 public class TransientState extends State {
 
     /** Construct a transient state.

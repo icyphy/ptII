@@ -145,6 +145,7 @@ public class Sequence extends TypedAtomicActor {
      *  @exception CloneNotSupportedException If a derived class contains
      *   an attribute that cannot be cloned.
      */
+    @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         Sequence newObject = (Sequence) super.clone(workspace);
         try {
@@ -162,6 +163,7 @@ public class Sequence extends TypedAtomicActor {
      *  determined by checking the width of the port.
      *  @exception IllegalActionException If there is no director.
      */
+    @Override
     public void fire() throws IllegalActionException {
         super.fire();
         if (!enable.isOutsideConnected() || enable.hasToken(0)
@@ -178,6 +180,7 @@ public class Sequence extends TypedAtomicActor {
     /** Initialize the actor by resetting to the first output value.
      *  @exception IllegalActionException If there is no director.
      */
+    @Override
     public void initialize() throws IllegalActionException {
         // Note that this will default to null if there is no initialValue set.
         _currentIndex = 0;
@@ -189,6 +192,7 @@ public class Sequence extends TypedAtomicActor {
      *  in the <i>values</i> array.
      *  @exception IllegalActionException If there is no director.
      */
+    @Override
     public boolean postfire() throws IllegalActionException {
         boolean result = super.postfire();
         if (_outputProduced) {

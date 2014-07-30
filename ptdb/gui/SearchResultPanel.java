@@ -25,7 +25,7 @@ ENHANCEMENTS, OR MODIFICATIONS.
                                                 COPYRIGHTENDKEY
 
 
-*/
+ */
 package ptdb.gui;
 
 import java.awt.Color;
@@ -45,17 +45,17 @@ import ptolemy.actor.gui.Configuration;
 ////SearchResultPanel
 
 /**
-* An extended JPanel displaying a search result model and all of the branches of its
-* parent hierarchy.  The panel layout is taken care of in the constructor.  A public method getSelections()
-* is available for getting the list of all model names for models that have been selected for
-* loading.
-*
-* @author Lyle Holsinger
-* @since Ptolemy II 10.0
-* @version $Id$
-* @Pt.ProposedRating red (lholsing)
-* @Pt.AcceptedRating red (lholsing)
-*/
+ * An extended JPanel displaying a search result model and all of the branches of its
+ * parent hierarchy.  The panel layout is taken care of in the constructor.  A public method getSelections()
+ * is available for getting the list of all model names for models that have been selected for
+ * loading.
+ *
+ * @author Lyle Holsinger
+ * @since Ptolemy II 10.0
+ * @version $Id$
+ * @Pt.ProposedRating red (lholsing)
+ * @Pt.AcceptedRating red (lholsing)
+ */
 
 @SuppressWarnings("serial")
 public class SearchResultPanel extends JPanel {

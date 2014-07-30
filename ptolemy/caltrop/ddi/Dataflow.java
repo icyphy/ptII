@@ -118,13 +118,16 @@ public class Dataflow extends AbstractDDI {
 
     protected Action _lastFiredAction;
 
+    @Override
     public boolean isLegalActor() {
         return PriorityUtil.isValidPriorityOrder(_actor);
     }
 
+    @Override
     public void setupActor() {
     }
 
+    @Override
     public String getName() {
         return "Default";
     }
@@ -142,6 +145,7 @@ public class Dataflow extends AbstractDDI {
      * interpretation of the action.
 
      */
+    @Override
     public void fire() throws IllegalActionException {
         // Don't call super.fire(); here, super.fire() is abstract.;
         // FIXMELATER: state transition and potentially rollback
@@ -167,6 +171,7 @@ public class Dataflow extends AbstractDDI {
 
     /** Preinitialize this actor.
      */
+    @Override
     public void preinitialize() throws IllegalActionException {
     }
 
@@ -224,6 +229,7 @@ public class Dataflow extends AbstractDDI {
      * preinitialize().
      * @exception IllegalActionException
      */
+    @Override
     public void initialize() throws IllegalActionException {
         if (_actor.getScheduleFSM() == null) {
             _currentStateSet = null;
@@ -282,6 +288,7 @@ public class Dataflow extends AbstractDDI {
     /**
      * Postfire this actor.
      */
+    @Override
     public boolean postfire() throws IllegalActionException {
         computeNextStateSet(_lastFiredAction);
         _commitInputChannels();
@@ -297,6 +304,7 @@ public class Dataflow extends AbstractDDI {
      * action selection.
      *
      */
+    @Override
     public boolean prefire() throws IllegalActionException {
         _lastFiredAction = null;
 
@@ -377,7 +385,7 @@ public class Dataflow extends AbstractDDI {
         }
 
         _currentTransitions = (Transition[]) nt.toArray(new Transition[nt
-                .size()]);
+                                                                       .size()]);
     }
 
     private static boolean isPrefixedByTagList(QID tag, QID[] tags) {

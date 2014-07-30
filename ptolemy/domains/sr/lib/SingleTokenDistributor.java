@@ -55,7 +55,7 @@ import ptolemy.kernel.util.NameDuplicationException;
  @Pt.AcceptedRating Yellow (cxh)
  */
 public class SingleTokenDistributor extends Transformer implements
-        SequenceActor {
+SequenceActor {
     /** Construct an actor in the specified container with the specified
      *  name. Create ports and make the input port a multiport. Create
      *  the actor parameters.
@@ -81,6 +81,7 @@ public class SingleTokenDistributor extends Transformer implements
      *  port, do nothing.
      *  @exception IllegalActionException If there is no director.
      */
+    @Override
     public void fire() throws IllegalActionException {
         super.fire();
         if (input.hasToken(0)) {
@@ -91,6 +92,7 @@ public class SingleTokenDistributor extends Transformer implements
     /** Begin execution by setting the current output channel to zero.
      *  @exception IllegalActionException If there is no director.
      */
+    @Override
     public void initialize() throws IllegalActionException {
         super.initialize();
         _currentOutputPosition = 0;
@@ -102,6 +104,7 @@ public class SingleTokenDistributor extends Transformer implements
      *  will be sent.
      *  @exception IllegalActionException If there is no director.
      */
+    @Override
     public boolean postfire() throws IllegalActionException {
         _currentOutputPosition++;
 

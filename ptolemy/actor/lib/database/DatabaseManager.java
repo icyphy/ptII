@@ -168,6 +168,7 @@ public class DatabaseManager extends TypedAtomicActor {
      *  @exception IllegalActionException If the change is not acceptable
      *   to this container (not thrown in this base class).
      */
+    @Override
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         if (attribute == database || attribute == userName) {
@@ -586,6 +587,7 @@ public class DatabaseManager extends TypedAtomicActor {
      *  then request that execution be stopped.
      *  @exception IllegalActionException If opening the database fails.
      */
+    @Override
     public void preinitialize() throws IllegalActionException {
         super.preinitialize();
         getConnection();
@@ -599,6 +601,7 @@ public class DatabaseManager extends TypedAtomicActor {
      *   one of the associated actors throws it, or if we fail to
      *   close the database connection.
      */
+    @Override
     public void wrapup() throws IllegalActionException {
         try {
             super.wrapup();

@@ -208,6 +208,7 @@ public class Publisher extends TypedAtomicActor {
      *  @exception CloneNotSupportedException If a derived class contains
      *   an attribute that cannot be cloned.
      */
+    @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         Publisher newObject = (Publisher) super.clone(workspace);
 
@@ -226,6 +227,7 @@ public class Publisher extends TypedAtomicActor {
      *  if any.
      *  @exception IllegalActionException If there is no director.
      */
+    @Override
     public void fire() throws IllegalActionException {
         super.fire();
         for (int i = 0; i < input.getWidth(); i++) {
@@ -242,6 +244,7 @@ public class Publisher extends TypedAtomicActor {
      *   publishing on the same channel, or if the channel name has not
      *   been specified.
      */
+    @Override
     public void preinitialize() throws IllegalActionException {
         String channelValue = channel.stringValue();
         if (channelValue == null || channelValue.trim().equals("")) {

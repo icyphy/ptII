@@ -49,6 +49,7 @@ public class XMLElementTest extends TestSuite {
     /**
      * runSuite()
      */
+    @Override
     public void runSuite() {
         testConstructor();
         testAttributes();
@@ -64,6 +65,7 @@ public class XMLElementTest extends TestSuite {
         runTestCase(new TestCase("XmlElement constructor") {
             XmlElement elt = null;
 
+            @Override
             public void run() throws Exception {
                 TreeMap attrs = new TreeMap();
                 attrs.put("name0", "value0");
@@ -71,6 +73,7 @@ public class XMLElementTest extends TestSuite {
                 elt = new XmlElement("element", attrs);
             }
 
+            @Override
             public void check() throws TestFailedException {
                 String result = "<element name0=\"value0\" name1=\"value1\"></element>\n";
                 assertEquals(result, elt.toString(),
@@ -85,12 +88,14 @@ public class XMLElementTest extends TestSuite {
         runTestCase(new TestCase("XmlElement attributes") {
             XmlElement elt = null;
 
+            @Override
             public void run() throws Exception {
                 elt = new XmlElement("element");
                 elt.setAttribute("name0", "value0");
                 elt.setAttribute("name1", "value1");
             }
 
+            @Override
             public void check() throws TestFailedException {
                 String result = "<element name0=\"value0\" name1=\"value1\"></element>\n";
                 assertEquals(result, elt.toString(),
@@ -123,17 +128,20 @@ public class XMLElementTest extends TestSuite {
 
             XmlElement elt2 = null;
 
+            @Override
             public void init() throws Exception {
                 elt0 = new XmlElement("element0");
                 elt1 = new XmlElement("element1");
                 elt2 = new XmlElement("element2");
             }
 
+            @Override
             public void run() throws Exception {
                 elt0.addElement(elt1);
                 elt1.addElement(elt2);
             }
 
+            @Override
             public void check() throws TestFailedException {
                 String result = "<element0>\n<element1>\n<element2></element2>\n</element1>\n</element0>\n";
                 assertEquals(result, elt0.toString(),

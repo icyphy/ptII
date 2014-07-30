@@ -76,9 +76,9 @@ import ptolemy.kernel.util.NameDuplicationException;
 @since Ptolemy II 10.0
 @Pt.ProposedRating Red (cshelton)
 @Pt.AcceptedRating Red (cshelton)
-*/
+ */
 public class DerivedDimensionRepresentativeConcept extends
-        DimensionRepresentativeConcept {
+DimensionRepresentativeConcept {
 
     /** Create a new DerivedUnitRepresentativeConcept with the specified name and
      *  ontology.
@@ -152,7 +152,7 @@ public class DerivedDimensionRepresentativeConcept extends
      */
     public static Map<BaseDimensionRepresentativeConcept, Integer> deriveComponentBaseDimensionsMap(
             Map<DimensionRepresentativeConcept, Integer> dimensionMap)
-            throws IllegalActionException {
+                    throws IllegalActionException {
 
         Map<BaseDimensionRepresentativeConcept, Integer> baseComponentDimensions = new HashMap<BaseDimensionRepresentativeConcept, Integer>();
 
@@ -185,6 +185,7 @@ public class DerivedDimensionRepresentativeConcept extends
      *  @exception IllegalActionException Thrown if there is a problem getting any
      *   unit concepts from the ontology.
      */
+    @Override
     public List<DerivedUnitConcept> getAllUnits() throws IllegalActionException {
         return (List<DerivedUnitConcept>) super.getAllUnits();
     }
@@ -214,6 +215,7 @@ public class DerivedDimensionRepresentativeConcept extends
      *  @exception IllegalActionException Thrown if there is a problem creating
      *   the unit concept.
      */
+    @Override
     protected DerivedUnitConcept _createInfiniteConceptInstance(
             String infiniteConceptString) throws IllegalActionException {
         _updateDimensionInformation();
@@ -263,8 +265,8 @@ public class DerivedDimensionRepresentativeConcept extends
                         .getValue();
                 if (dimensionConceptObject instanceof DimensionRepresentativeConcept) {
                     _dimensionNameToReferenceName
-                            .put(((DimensionRepresentativeConcept) dimensionConceptObject)
-                                    .getName(), dimensionName);
+                    .put(((DimensionRepresentativeConcept) dimensionConceptObject)
+                            .getName(), dimensionName);
                     return (DimensionRepresentativeConcept) dimensionConceptObject;
                 } else {
                     throw new IllegalActionException(this, "Invalid dimension "
@@ -325,7 +327,7 @@ public class DerivedDimensionRepresentativeConcept extends
     private static int _getExponentValueForComponentDimension(
             Map<DimensionRepresentativeConcept, Integer> dimensionMap,
             DimensionRepresentativeConcept dimension)
-            throws IllegalActionException {
+                    throws IllegalActionException {
         Integer exponent = dimensionMap.get(dimension);
         if (exponent == null) {
             throw new IllegalActionException("Exponent value for "
@@ -346,12 +348,12 @@ public class DerivedDimensionRepresentativeConcept extends
     private static void _incrementBaseDimensionExponent(
             Map<BaseDimensionRepresentativeConcept, Integer> baseDimensionsMap,
             BaseDimensionRepresentativeConcept dimension, int exponentValue)
-            throws IllegalActionException {
+                    throws IllegalActionException {
         Integer currentExponent = baseDimensionsMap.get(dimension);
         if (currentExponent == null) {
             if (exponentValue != 0) {
                 baseDimensionsMap
-                        .put(dimension, Integer.valueOf(exponentValue));
+                .put(dimension, Integer.valueOf(exponentValue));
             }
         } else {
             int newExponentValue = currentExponent.intValue() + exponentValue;

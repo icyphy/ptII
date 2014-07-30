@@ -82,7 +82,7 @@ import ptolemy.plot.plotml.PlotMLParser;
  @Pt.AcceptedRating Green (cxh)
  */
 public class PlotterBase extends TypedAtomicActor implements Configurable,
-        PortablePlaceable {
+PortablePlaceable {
     /** Construct an actor with the given container and name.
      *  @param container The container.
      *  @param name The name of this actor.
@@ -149,6 +149,7 @@ public class PlotterBase extends TypedAtomicActor implements Configurable,
      *  @param attribute The attribute that changed.
      *  @exception IllegalActionException If the superclass throws it.
      */
+    @Override
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         // NOTE: Do not react to changes in _windowProperties.
@@ -186,6 +187,7 @@ public class PlotterBase extends TypedAtomicActor implements Configurable,
      *  @exception CloneNotSupportedException If a derived class has an
      *   attribute that cannot be cloned.
      */
+    @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         PlotterBase newObject = (PlotterBase) super.clone(workspace);
 
@@ -232,6 +234,7 @@ public class PlotterBase extends TypedAtomicActor implements Configurable,
      *  @exception Exception If the configuration source cannot be read
      *   or if the configuration information is incorrect.
      */
+    @Override
     public void configure(URL base, String source, String text)
             throws Exception {
         _base = base;
@@ -292,6 +295,7 @@ public class PlotterBase extends TypedAtomicActor implements Configurable,
      *  method was called.
      *  @return The string representation of the input URL.
      */
+    @Override
     public String getConfigureSource() {
         return _configureSource;
     }
@@ -302,6 +306,7 @@ public class PlotterBase extends TypedAtomicActor implements Configurable,
      *  This returns a null string if there is no associated plot.
      *  @return The text string that represent the current configuration.
      */
+    @Override
     public String getConfigureText() {
         if (plot == null) {
             // NOTE: Is this the right thing to do?
@@ -345,6 +350,7 @@ public class PlotterBase extends TypedAtomicActor implements Configurable,
      *  @param container The container into which to place the plot, or
      *   null to specify that a new plot should be created.
      */
+    @Override
     public void place(PortableContainer container) {
         _getImplementation().setPlatformContainer(
                 container != null ? container.getPlatformContainer() : null);
@@ -388,6 +394,7 @@ public class PlotterBase extends TypedAtomicActor implements Configurable,
      *  @see #initialize()
      *  @exception IllegalActionException If the parent class throws it.
      */
+    @Override
     public void preinitialize() throws IllegalActionException {
         super.preinitialize();
 
@@ -409,6 +416,7 @@ public class PlotterBase extends TypedAtomicActor implements Configurable,
      *  @exception IllegalActionException If the base class throws it.
      *  @exception NameDuplicationException If the base class throws it.
      */
+    @Override
     public void setContainer(CompositeEntity container)
             throws IllegalActionException, NameDuplicationException {
         Nameable previousContainer = getContainer();
@@ -433,6 +441,7 @@ public class PlotterBase extends TypedAtomicActor implements Configurable,
      *  @param name A name to present to the user.
      *  @see #getDisplayName()
      */
+    @Override
     public void setDisplayName(String name) {
         super.setDisplayName(name);
         // See http://bugzilla.ecoinformatics.org/show_bug.cgi?id=4302
@@ -455,8 +464,9 @@ public class PlotterBase extends TypedAtomicActor implements Configurable,
      *  @see #getName()
      *  @see #getName(NamedObj)
      */
+    @Override
     public void setName(String name) throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         super.setName(name);
         // See http://bugzilla.ecoinformatics.org/show_bug.cgi?id=4302
         _getImplementation().setTableauTitle(name);
@@ -466,6 +476,7 @@ public class PlotterBase extends TypedAtomicActor implements Configurable,
      *  plot so that all the data is visible.
      *  @exception IllegalActionException If the superclass throws it.
      */
+    @Override
     public void wrapup() throws IllegalActionException {
         if (((BooleanToken) fillOnWrapup.getToken()).booleanValue()) {
             if (plot != null) {
@@ -492,6 +503,7 @@ public class PlotterBase extends TypedAtomicActor implements Configurable,
      *  @param depth The depth in the hierarchy, to determine indenting.
      *  @exception IOException If an I/O error occurs.
      */
+    @Override
     protected void _exportMoMLContents(Writer output, int depth)
             throws IOException {
         // Make sure that the current position of the frame, if any,
@@ -598,9 +610,12 @@ public class PlotterBase extends TypedAtomicActor implements Configurable,
             // something different, so copying the lists is a good
             // idea.
 
-            Iterator<String> sources = new LinkedList<String>(_configureSources).iterator();
-            Iterator<String> texts = new LinkedList<String>(_configureTexts).iterator();
-            Iterator<URL> bases = new LinkedList<URL>(_configureBases).iterator();
+            Iterator<String> sources = new LinkedList<String>(_configureSources)
+                    .iterator();
+            Iterator<String> texts = new LinkedList<String>(_configureTexts)
+                    .iterator();
+            Iterator<URL> bases = new LinkedList<URL>(_configureBases)
+                    .iterator();
 
             while (sources.hasNext()) {
                 URL base = bases.next();
@@ -635,6 +650,7 @@ public class PlotterBase extends TypedAtomicActor implements Configurable,
      *  @param depth The depth.
      *  @return True to export MoML.
      */
+    @Override
     protected boolean _isMoMLSuppressed(int depth) {
         if (plot != null || _configureSources != null) {
             return false;
@@ -659,6 +675,7 @@ public class PlotterBase extends TypedAtomicActor implements Configurable,
      *  @exception IllegalActionException If the value cannot
      *   be propagated.
      */
+    @Override
     protected void _propagateValue(NamedObj destination)
             throws IllegalActionException {
         try {

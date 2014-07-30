@@ -62,6 +62,7 @@ public class Complex {
     /** Construct a Complex equal to zero.
      *  @deprecated Use Complex.ZERO instead.
      */
+    @Deprecated
     public Complex() {
         this.real = 0.0;
         this.imag = 0.0;
@@ -494,6 +495,7 @@ public class Complex {
      *  @param z The argument to which this number is being compared.
      *  @return True if the real and imaginary parts are equal.
      */
+    @Override
     public final boolean equals(Object z) {
         if (z instanceof Complex) {
             return ((Complex) z).real == real && ((Complex) z).imag == imag;
@@ -528,6 +530,7 @@ public class Complex {
      *  bitwise xor of the hashcode of the real and imaginary parts.
      *  @return A hash code value for this Complex.
      */
+    @Override
     public int hashCode() {
         // Use bitwise xor here so that if either real or imag is 0
         // we get better values.
@@ -1129,6 +1132,7 @@ public class Complex {
      *
      * @return A string of the form "<em>x</em> + <em>y</em>i".
      */
+    @Override
     public final String toString() {
         if (imag >= 0) {
             return Double.toString(real) + " + " + Double.toString(imag) + "i";

@@ -53,7 +53,7 @@ PortablePlaceable.
 @since Ptolemy II 10.0
 @Pt.ProposedRating Red (ishwinde)
 @Pt.AcceptedRating Red (ishwinde)
-*/
+ */
 
 public abstract class AbstractPlaceableJavaSE {
 
@@ -65,7 +65,7 @@ public abstract class AbstractPlaceableJavaSE {
      *   actor with this name.
      */
     public void init(TypedAtomicActor actor) throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         // An actor may already have _windowProperties set.
         _windowProperties = (WindowPropertiesAttribute) actor.getAttribute(
                 "_windowProperties", WindowPropertiesAttribute.class);
@@ -138,7 +138,7 @@ public abstract class AbstractPlaceableJavaSE {
      *  @exception IOException If an I/O error occurs.
      */
     protected void _exportMoMLContents(
-    /*TypedAtomicActor actor, */Writer output, int depth) throws IOException {
+            /*TypedAtomicActor actor, */Writer output, int depth) throws IOException {
         // Make sure that the current position of the frame, if any,
         // is up to date.
         if (_frame != null) {
@@ -175,6 +175,7 @@ public abstract class AbstractPlaceableJavaSE {
 
     /** Listener for windowClosing action. */
     public class WindowClosingAdapter extends WindowAdapter {
+        @Override
         public void windowClosing(WindowEvent e) {
             cleanUp();
         }

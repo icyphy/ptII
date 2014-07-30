@@ -217,7 +217,7 @@ public class ConfigurationApplication implements ExecutionListener {
      */
     public ConfigurationApplication(String basePath, String[] args,
             MessageHandler messageHandler, ErrorHandler errorHandler)
-            throws Exception {
+                    throws Exception {
         this();
 
         _initializeApplication();
@@ -287,7 +287,7 @@ public class ConfigurationApplication implements ExecutionListener {
                     PtolemyPreferences preferences = PtolemyPreferences
                             .getPtolemyPreferencesWithinConfiguration(_configuration);
                     preferences.backgroundColor
-                            .setExpression("{1.0, 1.0, 1.0, 1.0}");
+                    .setExpression("{1.0, 1.0, 1.0, 1.0}");
 
                 }
                 if (_run20x) {
@@ -308,6 +308,7 @@ public class ConfigurationApplication implements ExecutionListener {
                     // So instead, we create a new thread to
                     // do it.
                     Thread waitThread = new Thread() {
+                        @Override
                         public void run() {
                             waitForFinish();
                             if (_printPDF) {
@@ -394,6 +395,7 @@ public class ConfigurationApplication implements ExecutionListener {
      *  @param manager The manager calling this method.
      *  @param throwable The throwable being reported.
      */
+    @Override
     public synchronized void executionError(Manager manager, Throwable throwable) {
         _activeCount--;
 
@@ -407,6 +409,7 @@ public class ConfigurationApplication implements ExecutionListener {
      *  be waiting for this event.
      *  @param manager The manager calling this method.
      */
+    @Override
     public synchronized void executionFinished(Manager manager) {
         _activeCount--;
 
@@ -457,6 +460,7 @@ public class ConfigurationApplication implements ExecutionListener {
     /** Do nothing.
      *  @param manager The manager calling this method.
      */
+    @Override
     public void managerStateChanged(Manager manager) {
     }
 
@@ -526,6 +530,7 @@ public class ConfigurationApplication implements ExecutionListener {
      *  the case where the modelFileName refers to a HTML or text file
      *  or an interface diagram.
      */
+    @Deprecated
     public static TypedCompositeActor openModel(String modelFileName)
             throws Throwable {
         CompositeEntity model = openModelOrEntity(modelFileName);
@@ -1007,7 +1012,7 @@ public class ConfigurationApplication implements ExecutionListener {
                                 // usage for that configuration
                                 try {
                                     MoMLParser
-                                            .setErrorHandler(new IgnoreErrorHandler());
+                                    .setErrorHandler(new IgnoreErrorHandler());
                                     configuration = readConfiguration(specificationURL);
                                 } finally {
                                     MoMLParser.setErrorHandler(errorHandler);
@@ -1162,9 +1167,9 @@ public class ConfigurationApplication implements ExecutionListener {
             _test = true;
         } else if (arg.equals("-version")) {
             System.out
-                    .println("Version "
-                            + VersionAttribute.CURRENT_VERSION.getExpression()
-                            + ", Build $Id$");
+            .println("Version "
+                    + VersionAttribute.CURRENT_VERSION.getExpression()
+                    + ", Build $Id$");
 
             // NOTE: This means the test suites cannot test -version
             StringUtilities.exit(0);
@@ -1301,7 +1306,7 @@ public class ConfigurationApplication implements ExecutionListener {
                             in readConfiguration except for the loading of
                             _applicationInitializer.
                             -chad
-                            */
+                             */
                             System.out.println("reading configuration");
                             _configuration = readConfiguration(inURL);
 
@@ -1503,8 +1508,8 @@ public class ConfigurationApplication implements ExecutionListener {
                             .getFullName()
                             .equals(".configuration.directory.configuration.graphTableau")
                             && !tableau
-                                    .getFullName()
-                                    .equals(".configuration.directory.UserLibrary.graphTableau")) {
+                            .getFullName()
+                            .equals(".configuration.directory.UserLibrary.graphTableau")) {
                         try {
                             // Set the background to white
 
@@ -1513,11 +1518,11 @@ public class ConfigurationApplication implements ExecutionListener {
                             PtolemyPreferences preferences = PtolemyPreferences
                                     .getPtolemyPreferencesWithinConfiguration(_configuration);
                             preferences.backgroundColor
-                                    .setExpression("{1.0, 1.0, 1.0, 1.0}");
+                            .setExpression("{1.0, 1.0, 1.0, 1.0}");
                             frame.repaint();
                         } catch (Exception ex) {
                             System.out
-                                    .println("Failed to set the background to white.");
+                            .println("Failed to set the background to white.");
                             ex.printStackTrace();
                         }
                         ((TableauFrame) frame).printPDF();
@@ -1537,6 +1542,7 @@ public class ConfigurationApplication implements ExecutionListener {
      *   if the contents of the URL is not a configuration.
      *  @deprecated Use readConfiguration() instead.
      */
+    @Deprecated
     protected Configuration _readConfiguration(URL specificationURL)
             throws Exception {
         return readConfiguration(specificationURL);
@@ -1568,15 +1574,15 @@ public class ConfigurationApplication implements ExecutionListener {
             { "-run", "Run the models" },
             { "-run20x", "Run the models 20 times, then exit" },
             { "-runThenExit",
-                    "Run the models, then exit after the models finish." },
+            "Run the models, then exit after the models finish." },
             { "-statistics", "Open the model, print statistics and exit." },
             { "-test", "Exit after two seconds." },
             { "-version", "Print version information." } };
 
     /** The command-line options that take arguments. */
     protected static String[][] _commandOptions = {
-            { "-class", "<classname>" },
-            { "-<parameter name>", "<parameter value>" }, };
+        { "-class", "<classname>" },
+        { "-<parameter name>", "<parameter value>" }, };
 
     /** The form of the command line. */
     protected String _commandTemplate = "moml [ options ] [file ...]";
@@ -1624,6 +1630,7 @@ public class ConfigurationApplication implements ExecutionListener {
          *  @return true if the file is a directory that
          *  contains a file called configuration.xml
          */
+        @Override
         public boolean accept(File directory, String name) {
             try {
                 File configurationDirectory = new File(directory, name);
@@ -1659,6 +1666,7 @@ public class ConfigurationApplication implements ExecutionListener {
         /** Enable or disable skipping of errors.  This method does nothing.
          *  @param enable True to enable skipping, false to disable.
          */
+        @Override
         public void enableErrorSkipping(boolean enable) {
         }
 
@@ -1668,6 +1676,7 @@ public class ConfigurationApplication implements ExecutionListener {
          *  @param exception The exception that was thrown.
          *  @return CONTINUE to request skipping this element.
          */
+        @Override
         public int handleError(String element, NamedObj context,
                 Throwable exception) {
             return CONTINUE;

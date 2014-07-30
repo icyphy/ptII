@@ -46,7 +46,7 @@ import ptserver.communication.ProxyModelResponse;
  *  @since Ptolemy II 10.0
  *  @Pt.ProposedRating Red (jkillian)
  *  @Pt.AcceptedRating Red (jkillian)
-*/
+ */
 public interface IServerManager {
 
     /** Shut down the thread associated with the user's ticket.

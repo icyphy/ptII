@@ -71,6 +71,7 @@ public class DDEPutToken extends DDEPut {
 
     /**
      */
+    @Override
     public void fire() throws IllegalActionException {
         int cnt = 0;
 
@@ -96,6 +97,7 @@ public class DDEPutToken extends DDEPut {
 
     /**
      */
+    @Override
     public boolean postfire() {
         return false;
     }

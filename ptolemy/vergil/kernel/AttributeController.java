@@ -99,7 +99,7 @@ public class AttributeController extends IconController {
             Action[] appearanceActions = {
                     new MoveAction(_moveToFirstDescription(),
                             MoveAction.TO_FIRST),
-                    new MoveAction(_moveToLastDescription(), MoveAction.TO_LAST) };
+                            new MoveAction(_moveToLastDescription(), MoveAction.TO_LAST) };
             _appearanceMenuActionFactory = new MenuActionFactory(
                     appearanceActions, "Appearance");
             _menuFactory.addMenuItemFactory(_appearanceMenuActionFactory);
@@ -117,10 +117,11 @@ public class AttributeController extends IconController {
     ////                         public methods                    ////
 
     /** Add hot keys to the actions in the given JGraph.
-    *   It would be better that this method was added higher in the hierarchy. Now
-    *   most controllers
-    *  @param jgraph The JGraph to which hot keys are to be added.
-    */
+     *   It would be better that this method was added higher in the hierarchy. Now
+     *   most controllers
+     *  @param jgraph The JGraph to which hot keys are to be added.
+     */
+    @Override
     public void addHotKeys(JGraph jgraph) {
         super.addHotKeys(jgraph);
         GUIUtilities.addHotKey(jgraph, _renameAction);
@@ -180,6 +181,7 @@ public class AttributeController extends IconController {
      *  file at any one time.
      *  @param configuration The configuration.
      */
+    @Override
     public void setConfiguration(Configuration configuration) {
         super.setConfiguration(configuration);
         _getDocumentationAction.setConfiguration(configuration);

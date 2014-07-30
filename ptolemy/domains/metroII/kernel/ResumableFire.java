@@ -90,7 +90,7 @@ public class ResumableFire extends FireMachine {
     }
 
     /**
-     * Fires the wrapped actor in a resumable style. The function getfire() 
+     * Fires the wrapped actor in a resumable style. The function getfire()
      * of the wrapped actor is called in startOrResume() as follows:
      * <ol>
      * <li>Propose MetroII event POSTFIRE_END_PREFIRE_BEGIN and wait for the
@@ -159,7 +159,7 @@ public class ResumableFire extends FireMachine {
                 }
             } else {
                 if (_eventIterator.getMessageIllegalAction() != null) {
-                    // reset(); 
+                    // reset();
                     throw _eventIterator.getMessageIllegalAction();
                 }
                 setState(State.END);
@@ -189,7 +189,7 @@ public class ResumableFire extends FireMachine {
             _eventIterator.dispose();
             actor().stop();
         }
-        // System.out.println(actor().getFullName()+" stops!"); 
+        // System.out.println(actor().getFullName()+" stops!");
         super.reset();
     }
 

@@ -61,11 +61,11 @@ public abstract class FMUDriver {
      *  @return the function.
      *  @deprecated Call FMIModelDescription.getFmiFunction() instead.
      */
+    @Deprecated
     public Function getFunction(String name) {
         // This is syntactic sugar.
         if (_enableLogging) {
-            System.out.println("About to get the " + name
-                    + " function.");
+            System.out.println("About to get the " + name + " function.");
         }
         return _nativeLibrary.getFunction(_modelIdentifier + name);
     }
@@ -82,8 +82,9 @@ public abstract class FMUDriver {
      *  @exception UnsatisfiedLinkError If the function is not found using either format.
      *  @exception IOException If the native library cannot be found.
      */
-    public void invoke(FMIModelDescription fmiModelDescription, String name, Object[] arguments, String message)
-            throws UnsatisfiedLinkError, IOException {
+    public void invoke(FMIModelDescription fmiModelDescription, String name,
+            Object[] arguments, String message) throws UnsatisfiedLinkError,
+            IOException {
         Function function = fmiModelDescription.getFmiFunction(name);
         invoke(function, arguments, message);
     }
@@ -117,7 +118,7 @@ public abstract class FMUDriver {
                 .intValue();
         if (fmiFlag > FMILibrary.FMIStatus.fmiWarning) {
             throw new RuntimeException(message
-                                       + FMIModelDescription.fmiStatusDescription(fmiFlag));
+                    + FMIModelDescription.fmiStatusDescription(fmiFlag));
         }
     }
 

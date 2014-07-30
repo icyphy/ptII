@@ -97,7 +97,7 @@ import ptolemy.kernel.util.Workspace;
  @Pt.ProposedRating Yellow (yuhong)
  @Pt.AcceptedRating Yellow (cxh)
  @see RecordAssembler
-*/
+ */
 public class RecordDisassembler extends TypedAtomicActor {
     /** Construct a RecordDisassembler with the given container and name.
      *  @param container The container.
@@ -132,6 +132,7 @@ public class RecordDisassembler extends TypedAtomicActor {
      *  @exception CloneNotSupportedException If a derived class contains
      *   an attribute that cannot be cloned.
      */
+    @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         RecordDisassembler newObject = (RecordDisassembler) super
                 .clone(workspace);
@@ -144,6 +145,7 @@ public class RecordDisassembler extends TypedAtomicActor {
      *  If the input does not have a token, suspend firing and return.
      *  @exception IllegalActionException If there is no director.
      */
+    @Override
     public void fire() throws IllegalActionException {
         super.fire();
         Director director = getDirector();

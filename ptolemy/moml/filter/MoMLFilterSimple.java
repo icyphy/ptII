@@ -55,6 +55,7 @@ public abstract class MoMLFilterSimple implements MoMLFilter {
      *  in this method.
      *  @return The value of the attributeValue argument.
      */
+    @Override
     public String filterAttributeValue(NamedObj container, String element,
             String attributeName, String attributeValue, String xmlFile,
             MoMLParser parser) {
@@ -73,9 +74,10 @@ public abstract class MoMLFilterSimple implements MoMLFilter {
      *  @exception Exception if there is a problem substituting
      *  in the new value.
      */
+    @Override
     public void filterEndElement(NamedObj container, String elementName,
             StringBuffer currentCharData, String xmlFile, MoMLParser parser)
-            throws Exception {
+                    throws Exception {
         filterEndElement(container, elementName, currentCharData, xmlFile);
     }
 }

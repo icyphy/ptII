@@ -46,6 +46,7 @@ public class ProxyModelAdapter implements ProxyModelListener {
     /** Notify listener about the expiration of the model connection to another remote model.
      *  @param proxyModelInfrastructure The infrastructure whose connection expired.
      */
+    @Override
     public void modelConnectionExpired(
             ProxyModelInfrastructure proxyModelInfrastructure) {
     }
@@ -55,6 +56,7 @@ public class ProxyModelAdapter implements ProxyModelListener {
      *  @param message The message explaining what has happened.
      *  @param exception The exception that triggered this event.
      */
+    @Override
     public void modelException(
             ProxyModelInfrastructure proxyModelInfrastructure, String message,
             Throwable exception) {
@@ -65,6 +67,7 @@ public class ProxyModelAdapter implements ProxyModelListener {
      * @param proxyModelInfrastructure The proxyModelInfrastructure that received the event
      * @param event The remote event
      */
+    @Override
     public void onRemoteEvent(
             ProxyModelInfrastructure proxyModelInfrastructure,
             RemoteEventToken event) {

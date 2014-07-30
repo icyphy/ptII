@@ -147,6 +147,7 @@ public class DoubleRangeParameter extends Parameter {
      *  @exception IllegalActionException If the change is not acceptable
      *   to this container (should not be thrown).
      */
+    @Override
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         if (attribute == max && !_inCheck) {
@@ -195,6 +196,7 @@ public class DoubleRangeParameter extends Parameter {
      *  @exception IllegalActionException If the token is not an IntToken
      *   or its value is out of range.
      */
+    @Override
     protected void _setTokenAndNotify(Token newToken)
             throws IllegalActionException {
         if (_inCheck) {

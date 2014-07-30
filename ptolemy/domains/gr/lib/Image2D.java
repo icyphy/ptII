@@ -91,6 +91,7 @@ public class Image2D extends GRActor2D {
      *  @exception IllegalActionException If the base class throws such
      *  an exception.
      */
+    @Override
     public void initialize() throws IllegalActionException {
         super.initialize();
         _figure = _createFigure();
@@ -118,6 +119,7 @@ public class Image2D extends GRActor2D {
      *
      *  @exception IllegalActionException Always thrown for this base class.
      */
+    @Override
     protected void _makeSceneGraphConnection() throws IllegalActionException {
         sceneGraphOut.send(0, new Scene2DToken(_figure));
     }

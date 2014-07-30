@@ -92,6 +92,7 @@ public class PDFIcon extends DynamicEditorIcon {
      *  @exception CloneNotSupportedException Not thrown in this base class
      *  @return The new Attribute.
      */
+    @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         PDFIcon newObject = (PDFIcon) super.clone(workspace);
         newObject._page = null;
@@ -102,6 +103,7 @@ public class PDFIcon extends DynamicEditorIcon {
      *  of PDFFigure.
      *  @return A figure representing the specified PDF page.
      */
+    @Override
     public Figure createBackgroundFigure() {
         PaintedFigure newFigure = new PaintedFigure();
         newFigure.add(new PDFPaintedObject());
@@ -136,6 +138,7 @@ public class PDFIcon extends DynamicEditorIcon {
 
     private class PDFPaintedObject implements PaintedObject {
 
+        @Override
         public Rectangle2D getBounds() {
             if (_page == null) {
                 return new Rectangle2D.Double(0.0, 0.0, 40.0, 40.0);
@@ -146,6 +149,7 @@ public class PDFIcon extends DynamicEditorIcon {
                     boundingBox.getHeight() * _scale);
         }
 
+        @Override
         public void paint(Graphics2D graphics) {
             if (_page == null) {
                 // No page. Paint an error image.
@@ -162,8 +166,8 @@ public class PDFIcon extends DynamicEditorIcon {
                     new Rectangle(0, 0,
                             (int) (boundingBox.getWidth() * _scale),
                             (int) (boundingBox.getHeight() * _scale)), null, // No clipping.
-                    null // Transparent background.
-            );
+                            null // Transparent background.
+                    );
             try {
                 _page.waitForFinish();
             } catch (InterruptedException e) {

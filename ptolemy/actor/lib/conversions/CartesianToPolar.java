@@ -107,6 +107,7 @@ public class CartesianToPolar extends TypedAtomicActor {
      *  the Cartesian pair given at the inputs. The angle is in radians.
      *  @exception IllegalActionException If there is no director.
      */
+    @Override
     public void fire() throws IllegalActionException {
         super.fire();
         double xValue = ((DoubleToken) x.get(0)).doubleValue();
@@ -123,6 +124,7 @@ public class CartesianToPolar extends TypedAtomicActor {
      *  return what the superclass returns (presumably true).
      *  @exception IllegalActionException If there is no director.
      */
+    @Override
     public boolean prefire() throws IllegalActionException {
         if (!x.hasToken(0) || !y.hasToken(0)) {
             return false;

@@ -71,6 +71,7 @@ public class PathManipulator extends Manipulator {
      * instance will have the same grab handle, and interactor
      * for grab-handles, as this one.
      */
+    @Override
     public FigureDecorator newInstance(Figure f) {
         PathManipulator m = new PathManipulator();
         m.setGrabHandleFactory(this.getGrabHandleFactory());
@@ -80,6 +81,7 @@ public class PathManipulator extends Manipulator {
 
     /** Refresh the geometry.
      */
+    @Override
     public void refresh() {
         if (_geometry != null) {
             _geometry.setShape(getChild().getShape());
@@ -90,6 +92,7 @@ public class PathManipulator extends Manipulator {
      * Then get a path geometry object set on this figure (the
      * manipulator, not the child) and create grab-handles on it.
      */
+    @Override
     public void setChild(Figure f) {
         super.setChild(f);
         clearGrabHandles();
@@ -137,6 +140,7 @@ public class PathManipulator extends Manipulator {
     private static class Resizer extends DragInteractor {
         /** Translate the grab-handle
          */
+        @Override
         public void translate(LayerEvent e, double x, double y) {
             // Translate the grab-handle, resizing the geometry
             GrabHandle g = (GrabHandle) e.getFigureSource();

@@ -63,6 +63,7 @@ public class UnsizedArrayToken extends ArrayToken {
     /** Return the type of this token.
      *  @return an unsized array type, having the correct element type.
      */
+    @Override
     public Type getType() {
         return new ArrayType(getElementType());
     }
@@ -72,6 +73,7 @@ public class UnsizedArrayToken extends ArrayToken {
      *  @return A string beginning with "{" that contains expressions
      *  for every element in the array separated by commas, ending with "}".
      */
+    @Override
     public String toString() {
         return getType().toString();
     }

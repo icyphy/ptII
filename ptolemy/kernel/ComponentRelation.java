@@ -124,6 +124,7 @@ public class ComponentRelation extends Relation {
      *   cannot be cloned.
      *  @return A new ComponentRelation.
      */
+    @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         ComponentRelation newObject = (ComponentRelation) super
                 .clone(workspace);
@@ -183,6 +184,7 @@ public class ComponentRelation extends Relation {
      *  @return An enumeration of ComponentPorts.
      *  @deprecated Use deepLinkedPortList() instead.
      */
+    @Deprecated
     public Enumeration deepLinkedPorts() {
         return Collections.enumeration(deepLinkedPortList());
     }
@@ -191,6 +193,7 @@ public class ComponentRelation extends Relation {
      *  @return An instance of CompositeEntity.
      *  @see #setContainer(CompositeEntity)
      */
+    @Override
     public NamedObj getContainer() {
         return _container;
     }
@@ -203,6 +206,7 @@ public class ComponentRelation extends Relation {
      *  @exception IllegalActionException If this object has
      *   no container.
      */
+    @Override
     public int moveDown() throws IllegalActionException {
         CompositeEntity container = (CompositeEntity) getContainer();
 
@@ -238,6 +242,7 @@ public class ComponentRelation extends Relation {
      *  @exception IllegalActionException If this object has
      *   no container.
      */
+    @Override
     public int moveToFirst() throws IllegalActionException {
         CompositeEntity container = (CompositeEntity) getContainer();
 
@@ -275,6 +280,7 @@ public class ComponentRelation extends Relation {
      *  @exception IllegalActionException If this object has
      *   no container or if the index is out of bounds.
      */
+    @Override
     public int moveToIndex(int index) throws IllegalActionException {
         CompositeEntity container = (CompositeEntity) getContainer();
 
@@ -310,6 +316,7 @@ public class ComponentRelation extends Relation {
      *  @exception IllegalActionException If this object has
      *   no container.
      */
+    @Override
     public int moveToLast() throws IllegalActionException {
         CompositeEntity container = (CompositeEntity) getContainer();
 
@@ -345,6 +352,7 @@ public class ComponentRelation extends Relation {
      *  @exception IllegalActionException If this object has
      *   no container.
      */
+    @Override
     public int moveUp() throws IllegalActionException {
         CompositeEntity container = (CompositeEntity) getContainer();
 
@@ -481,8 +489,9 @@ public class ComponentRelation extends Relation {
      *  @exception NameDuplicationException If there is already a relation
      *   with the same name in the container.
      */
+    @Override
     public void setName(String name) throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         if (name == null) {
             name = "";
         }
@@ -506,6 +515,7 @@ public class ComponentRelation extends Relation {
      *  This method is write-synchronized on the workspace and increments
      *  its version number.
      */
+    @Override
     public void unlinkAll() {
         // NOTE: Do not just use _portList.unlinkAll() because then the
         // containers of the ports are not notified of the change.
@@ -558,6 +568,7 @@ public class ComponentRelation extends Relation {
      *  @param port The port to link to.
      *  @exception IllegalActionException If the port is not a ComponentPort.
      */
+    @Override
     protected void _checkPort(Port port) throws IllegalActionException {
         if (!(port instanceof ComponentPort)) {
             throw new IllegalActionException(this, port,
@@ -574,6 +585,7 @@ public class ComponentRelation extends Relation {
      *   or if this port is not an acceptable port for the specified
      *   relation.
      */
+    @Override
     protected void _checkRelation(Relation relation, boolean symmetric)
             throws IllegalActionException {
         if (!(relation instanceof ComponentRelation)) {
@@ -593,6 +605,7 @@ public class ComponentRelation extends Relation {
      *  @return A new object of the same class and name
      *   as this one.
      */
+    @Override
     protected NamedObj _propagateExistence(NamedObj container)
             throws IllegalActionException {
         try {

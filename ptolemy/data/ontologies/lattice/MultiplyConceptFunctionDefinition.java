@@ -47,7 +47,7 @@ import ptolemy.kernel.util.Settable;
  *  @Pt.AcceptedRating Red (cshelton)
  */
 public class MultiplyConceptFunctionDefinition extends
-        BinaryOperationMonotonicFunctionDefinition {
+BinaryOperationMonotonicFunctionDefinition {
 
     /** Construct the MultiplyConceptFunctionDefinition attribute
      *  with the given container and name.

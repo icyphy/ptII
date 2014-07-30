@@ -86,6 +86,7 @@ public class JAIIDCT extends Transformer {
      *  image.
      *  @exception IllegalActionException If a contained method throws it.
      */
+    @Override
     public void fire() throws IllegalActionException {
         super.fire();
 

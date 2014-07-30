@@ -151,11 +151,11 @@ public class ArcConnector extends AbstractConnector {
         // Hm... I don't know why I need the PI/2 here -- johnr
         return new Point2D.Double(
                 _centerX
-                        + _radius
-                        * Math.sin(_startAngle + _extentAngle / 2 + Math.PI / 2),
+                + _radius
+                * Math.sin(_startAngle + _extentAngle / 2 + Math.PI / 2),
                 _centerY
-                        + _radius
-                        * Math.cos(_startAngle + _extentAngle / 2 + Math.PI / 2));
+                + _radius
+                * Math.cos(_startAngle + _extentAngle / 2 + Math.PI / 2));
     }
 
     /** Get the site that marks the midpoint of the connector.
@@ -179,6 +179,7 @@ public class ArcConnector extends AbstractConnector {
     /** Tell the connector to reposition its label if it has one.
      * The label is currently only positioned at the center of the arc.
      */
+    @Override
     public void repositionLabel() {
         LabelFigure label = getLabelFigure();
 
@@ -194,6 +195,7 @@ public class ArcConnector extends AbstractConnector {
     /** Tell the connector to route itself between the
      * current positions of the head and tail sites.
      */
+    @Override
     public void route() {
         repaint();
 
@@ -424,6 +426,7 @@ public class ArcConnector extends AbstractConnector {
      * controllers may wish to translate connectors when the
      * sites at both ends are moved the same distance.
      */
+    @Override
     public void translate(double x, double y) {
         Rectangle2D bounds = _arc.getBounds();
         repaint();

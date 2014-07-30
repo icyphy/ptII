@@ -259,6 +259,7 @@ public class ArcTutorial {
         // The listener just tells both connectors to reroute themselves.
         DragInteractor i = controller.getDragInteractor();
         i.addLayerListener(new LayerAdapter() {
+            @Override
             public void mouseDragged(LayerEvent e) {
                 connectorA.reroute();
                 connectorB.reroute();
@@ -284,6 +285,7 @@ public class ArcTutorial {
         // Make resizing reroute the connectors too
         DragInteractor j = figureManipulator.getHandleInteractor();
         j.addLayerListener(new LayerAdapter() {
+            @Override
             public void mouseDragged(LayerEvent e) {
                 connectorA.reroute();
                 connectorB.reroute();
@@ -320,6 +322,7 @@ public class ArcTutorial {
      */
     public static void main(String[] argv) {
         SwingUtilities.invokeLater(new Runnable() {
+            @Override
             public void run() {
                 ArcTutorial ex = new ArcTutorial();
                 ex.createFigures();
@@ -343,12 +346,14 @@ public class ArcTutorial {
 
         /** Return true. This allows "self-arcs"
          */
+        @Override
         public boolean acceptHead(Connector c, Figure f) {
             return true;
         }
 
         /** Return true. This allows "self-arcs"
          */
+        @Override
         public boolean acceptTail(Connector c, Figure f) {
             return true;
         }

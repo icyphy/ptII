@@ -47,6 +47,7 @@ public class BasicEdgeRenderer implements EdgeRenderer {
     /**
      * Render a visual representation of the given edge.
      */
+    @Override
     public Connector render(Object edge, Site tailSite, Site headSite) {
         AbstractConnector c;
         Figure tf = tailSite.getFigure();

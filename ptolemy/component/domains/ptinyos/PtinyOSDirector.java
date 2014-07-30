@@ -54,6 +54,7 @@ public class PtinyOSDirector extends ComponentDirector {
      *  @exception IllegalActionException If initialization
      *   cannot be completed.
      */
+    @Override
     public void initialize() throws IllegalActionException {
         // FIXME
     }
@@ -77,6 +78,7 @@ public class PtinyOSDirector extends ComponentDirector {
      *  @exception IllegalActionException If preinitialization
      *   cannot be completed.
      */
+    @Override
     public void preinitialize() throws IllegalActionException {
         // FIXME
     }
@@ -97,6 +99,7 @@ public class PtinyOSDirector extends ComponentDirector {
      *  and initialize(), and may be invoked repeatedly.
      * @exception IllegalActionException If the run cannot be completed.
      */
+    @Override
     public void run() throws IllegalActionException {
         // FIXME
     }
@@ -108,6 +111,7 @@ public class PtinyOSDirector extends ComponentDirector {
      *  begin with preinitialize().
      *  @exception IllegalActionException If wrapup fails.
      */
+    @Override
     public void wrapup() throws IllegalActionException {
         // FIXME
     }

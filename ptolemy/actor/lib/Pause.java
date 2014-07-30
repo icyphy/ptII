@@ -39,7 +39,7 @@ import ptolemy.kernel.util.Settable;
 //// Stop
 
 /** An actor that pauses execution of a model when it receives a true
- token on any input channel. This is accomplished by calling 
+ token on any input channel. This is accomplished by calling
  pause() on the manager.
 
 
@@ -50,7 +50,7 @@ import ptolemy.kernel.util.Settable;
  @Pt.AcceptedRating Red (pd)
  */
 public class Pause extends Sink {
-        
+
     /** Construct an actor in the specified container with the specified
      *  name.
      *  @param container The container.
@@ -103,6 +103,7 @@ public class Pause extends Sink {
      *  is not trying to pause execution, then return the value
      *  returned by super.postfire().
      */
+    @Override
     public boolean postfire() throws IllegalActionException {
         boolean result = false;
 
@@ -122,8 +123,7 @@ public class Pause extends Sink {
 
         if (result) {
             getManager().pause();
-            
-            
+
         }
 
         // If this actor is not trying to stop execution, then return

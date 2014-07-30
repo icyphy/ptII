@@ -180,6 +180,7 @@ public class GTEntityUtils {
                     final String superclass = criterion.getSuperclass();
                     object.requestChange(new ChangeRequest(entity,
                             "Deferred load actor icon action.") {
+                        @Override
                         protected void _execute() throws Exception {
                             _loadActorIcon(entity, superclass);
                         }
@@ -355,6 +356,7 @@ public class GTEntityUtils {
          *  @exception Exception If the icon cannot be retrieved, or it cannot
          *   be associated with the entity.
          */
+        @Override
         protected void _execute() throws Exception {
             ComponentEntity actor;
             try {
@@ -423,6 +425,7 @@ public class GTEntityUtils {
          *
          *  @exception Exception The default icon cannot be set for the entity.
          */
+        @Override
         protected void _execute() throws Exception {
             if (_removeEditorIcons(_entity)) {
                 _setIconDescription(_entity,

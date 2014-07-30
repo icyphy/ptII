@@ -76,6 +76,7 @@ public class JAIImageToken extends ImageToken {
      * @return A new token containing the result.
      * @exception IllegalActionException If the data type is not supported.
      */
+    @Override
     public Token add(Token rightArgument) throws IllegalActionException {
         if (rightArgument instanceof JAIImageToken) {
             ParameterBlock parameters = _parameterize(_renderedOp,
@@ -91,6 +92,7 @@ public class JAIImageToken extends ImageToken {
      *
      * @return A bufferedImage that is a rendering of the internal image.
      */
+    @Override
     public Image asAWTImage() {
         _bufferedImage = _renderedOp.getRendering().getAsBufferedImage();
         return _bufferedImage;
@@ -106,6 +108,7 @@ public class JAIImageToken extends ImageToken {
      * @return A new token containing the result.
      * @exception IllegalActionException If the data type is not supported.
      */
+    @Override
     public Token divide(Token rightArgument) throws IllegalActionException {
         if (rightArgument instanceof JAIImageToken) {
             ParameterBlock parameters = _parameterize(_renderedOp,
@@ -121,6 +124,7 @@ public class JAIImageToken extends ImageToken {
     /** Return the type of this token.
      *  @return BaseType.OBJECT
      */
+    @Override
     public Type getType() {
         return BaseType.OBJECT;
     }
@@ -142,6 +146,7 @@ public class JAIImageToken extends ImageToken {
      * @return A new token containing the result.
      * @exception IllegalActionException If the data type is not supported.
      */
+    @Override
     public Token multiply(Token rightArgument) throws IllegalActionException {
         if (rightArgument instanceof JAIImageToken) {
             ParameterBlock parameters = _parameterize(_renderedOp,
@@ -163,6 +168,7 @@ public class JAIImageToken extends ImageToken {
      * @return A new token containing the result.
      * @exception IllegalActionException If the data type is not supported.
      */
+    @Override
     public Token subtract(Token rightArgument) throws IllegalActionException {
         if (rightArgument instanceof JAIImageToken) {
             ParameterBlock parameters = _parameterize(_renderedOp,
@@ -182,14 +188,15 @@ public class JAIImageToken extends ImageToken {
      *  @return A string representation of a record that partially
      *  describes the token.
      */
+    @Override
     public String toString() {
         // FIXME: return a value that can be parsed by the expression language.
         _bufferedImage = _renderedOp.getRendering().getAsBufferedImage();
         return "{type=\"" + getClass() + "\" width=\""
-                + _bufferedImage.getWidth(null) + "\" height=\""
-                + _bufferedImage.getHeight(null) + "\" bands=\""
-                + _renderedOp.getNumBands() + "\" toString=\""
-                + _renderedOp.toString() + "\"}";
+        + _bufferedImage.getWidth(null) + "\" height=\""
+        + _bufferedImage.getHeight(null) + "\" bands=\""
+        + _renderedOp.getNumBands() + "\" toString=\""
+        + _renderedOp.toString() + "\"}";
     }
 
     ///////////////////////////////////////////////////////////////////

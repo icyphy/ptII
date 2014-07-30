@@ -79,6 +79,7 @@ public class AutoCGCNoInlineArduinoTests extends AutoCGTests {
      * @exception Throwable
      *                If the class or constructor cannot be found.
      */
+    @Override
     @Before
     public void setUp() throws Throwable {
         super.setUp();
@@ -97,7 +98,8 @@ public class AutoCGCNoInlineArduinoTests extends AutoCGTests {
     @Parameters(method = "modelValues")
     public void runModelNoInlineArduino(String fullPath) throws Throwable {
         runModel(fullPath, "c", false /* generateInSubdirectory */,
-                false /* inline */, 2500 /* maximumLinesPerBlock */, false /*variablesAsArrays*/, 
+                false /* inline */, 2500 /* maximumLinesPerBlock */,
+                false /*variablesAsArrays*/,
                 "generic.program.procedural.c.arduino");
     }
 }

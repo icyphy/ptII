@@ -70,6 +70,7 @@ public class ASTPtLeafNode extends LatticeOntologyASTNodeAdapter {
      *  @exception IllegalActionException If there is an error building the constraint list.
      *  @return The list of constraints for this adapter.
      */
+    @Override
     public List<Inequality> constraintList() throws IllegalActionException {
 
         ptolemy.data.expr.ASTPtLeafNode node = (ptolemy.data.expr.ASTPtLeafNode) _getNode();

@@ -129,6 +129,7 @@ abstract public class AbstractCalInterpreter extends TypedAtomicActor {
      *  @exception CloneNotSupportedException If any of the attributes
      *   cannot be cloned.
      */
+    @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         AbstractCalInterpreter newObject = (AbstractCalInterpreter) super
                 .clone(workspace);
@@ -143,6 +144,7 @@ abstract public class AbstractCalInterpreter extends TypedAtomicActor {
      *  @exception IllegalActionException If thrown by the parent or by the
      *  fire() meethod of the domain-dependent interpreter.
      */
+    @Override
     public void fire() throws IllegalActionException {
         super.fire();
         _ddi.fire();
@@ -153,6 +155,7 @@ abstract public class AbstractCalInterpreter extends TypedAtomicActor {
      *
      * @exception IllegalActionException If the superclass throws it.
      */
+    @Override
     public void initialize() throws IllegalActionException {
         super.initialize();
         _ddi.initialize();
@@ -164,6 +167,7 @@ abstract public class AbstractCalInterpreter extends TypedAtomicActor {
      * @return Returns whatever <tt>super.postfire()</tt> returns.
      * @exception IllegalActionException If the superclass throws it.
      */
+    @Override
     public boolean postfire() throws IllegalActionException {
         super.postfire();
         return _ddi.postfire();
@@ -179,6 +183,7 @@ abstract public class AbstractCalInterpreter extends TypedAtomicActor {
      * retrieval of parameter values or the evaluation of actor state
      * variable values.
      */
+    @Override
     public void preinitialize() throws IllegalActionException {
         super.preinitialize();
 
@@ -216,6 +221,7 @@ abstract public class AbstractCalInterpreter extends TypedAtomicActor {
      *  @exception IllegalActionException If thrown by the parent or by the
      *  prefire() meethod of the domain-dependent interpreter.
      */
+    @Override
     public boolean prefire() throws IllegalActionException {
         super.prefire();
         return _ddi.prefire();
@@ -351,7 +357,7 @@ abstract public class AbstractCalInterpreter extends TypedAtomicActor {
     // Create parameters of the Ptolemy actor to correspond with the
     // interface specified in the CAL code.
     private void _refreshParameters() throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         Set parNames = new HashSet();
 
         if (_actor.getParameters() != null) {
@@ -389,8 +395,8 @@ abstract public class AbstractCalInterpreter extends TypedAtomicActor {
 
             if (port != null
                     && (port.isInput() != isInput
-                            || port.isOutput() != isOutput || port
-                            .isMultiport() != port2.isMultiport())) {
+                    || port.isOutput() != isOutput || port
+                    .isMultiport() != port2.isMultiport())) {
                 port.setContainer(null);
                 port = null;
             }
@@ -415,7 +421,7 @@ abstract public class AbstractCalInterpreter extends TypedAtomicActor {
         // Set the types.
         for (PortDecl port : ports) {
             ((TypedIOPort) getPort(port.getName()))
-                    .setTypeEquals(_getPtolemyType(port.getType()));
+            .setTypeEquals(_getPtolemyType(port.getType()));
         }
     }
 
@@ -473,7 +479,7 @@ abstract public class AbstractCalInterpreter extends TypedAtomicActor {
                 PtolemyPlatform.thePlatform));
         importHandlers.add(new ClassLoadingImportHandler(
                 PtolemyPlatform.thePlatform, AbstractCalInterpreter.class
-                        .getClassLoader()));
+                .getClassLoader()));
     }
 
     // Map of substitutions from CAL types to Ptolemy types.

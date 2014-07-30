@@ -158,6 +158,7 @@ public class MonotonicityCounterexamples {
         return entrySet;
     }
 
+    @Override
     public boolean equals(Object o) {
         if (!(o instanceof MonotonicityCounterexamples)) {
             return false;
@@ -174,6 +175,7 @@ public class MonotonicityCounterexamples {
         return true;
     }
 
+    @Override
     public int hashCode() {
         return _counterexamples.hashCode();
     }
@@ -182,6 +184,7 @@ public class MonotonicityCounterexamples {
      *  @return The string representation of this set.
      *  @see java.lang.Object#toString()
      */
+    @Override
     public String toString() {
         StringBuffer resultBuffer = new StringBuffer();
 
@@ -226,12 +229,12 @@ public class MonotonicityCounterexamples {
     ////                         private variables                 ////
 
     /** A multimap to keep track of the mapping of lesser concepts
-    *  to greater concepts.  This must be a multimap, because there
-    *  could be multiple counterexamples with the same lesser concept.
-    *
-    *  If our MultiMap supported Java Generics, this would have a type of
-    *    MultiMap<Concept, Concept>
-    */
+     *  to greater concepts.  This must be a multimap, because there
+     *  could be multiple counterexamples with the same lesser concept.
+     *
+     *  If our MultiMap supported Java Generics, this would have a type of
+     *    MultiMap<Concept, Concept>
+     */
     private MultiHashMap<Concept, Concept> _counterexamples;
 
     ///////////////////////////////////////////////////////////////////
@@ -269,6 +272,7 @@ public class MonotonicityCounterexamples {
          *  @return The lesser concept.
          *  @see java.util.Map.Entry#getKey()
          */
+        @Override
         public Concept getKey() {
             return lesser;
         }
@@ -279,6 +283,7 @@ public class MonotonicityCounterexamples {
          *  @see java.util.Map.Entry#getValue()
          *  @see #setValue(Concept)
          */
+        @Override
         public Concept getValue() {
             return greater;
         }
@@ -291,6 +296,7 @@ public class MonotonicityCounterexamples {
          *  @see java.util.Map.Entry#setValue(java.lang.Object)
          *  @see #getValue()
          */
+        @Override
         public Concept setValue(Concept value) {
             return null;
         }

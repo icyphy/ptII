@@ -25,7 +25,7 @@ ENHANCEMENTS, OR MODIFICATIONS.
                                                 COPYRIGHTENDKEY
 
 
-*/
+ */
 package ptdb.gui;
 
 import java.awt.Component;
@@ -153,6 +153,7 @@ public class ActorGraphDBFrame extends ActorGraphFrame {
      * Create the menus that are used by this frame. It is essential that
      * _createGraphPane() be called before this.
      */
+    @Override
     protected void _addMenus() {
 
         super._addMenus();
@@ -174,8 +175,8 @@ public class ActorGraphDBFrame extends ActorGraphFrame {
             _dbMenu.addSeparator();
 
             _simpleSearchAction
-                    .putValue(Action.ACCELERATOR_KEY, KeyStroke.getKeyStroke(
-                            KeyEvent.VK_F, InputEvent.CTRL_MASK));
+            .putValue(Action.ACCELERATOR_KEY, KeyStroke.getKeyStroke(
+                    KeyEvent.VK_F, InputEvent.CTRL_MASK));
 
             GUIUtilities.addHotKey(_getRightComponent(), _simpleSearchAction);
             GUIUtilities.addMenuItem(_dbMenu, _simpleSearchAction);
@@ -189,15 +190,15 @@ public class ActorGraphDBFrame extends ActorGraphFrame {
             GUIUtilities.addMenuItem(_dbMenu, _saveModelToDBAction);
 
             _renameModelAction
-                    .putValue(Action.ACCELERATOR_KEY, KeyStroke.getKeyStroke(
-                            KeyEvent.VK_R, InputEvent.CTRL_MASK));
+            .putValue(Action.ACCELERATOR_KEY, KeyStroke.getKeyStroke(
+                    KeyEvent.VK_R, InputEvent.CTRL_MASK));
 
             GUIUtilities.addHotKey(_getRightComponent(), _renameModelAction);
             GUIUtilities.addMenuItem(_dbMenu, _renameModelAction);
 
             _openModelMigrationFrameAction
-                    .putValue(Action.ACCELERATOR_KEY, KeyStroke.getKeyStroke(
-                            KeyEvent.VK_M, InputEvent.CTRL_MASK));
+            .putValue(Action.ACCELERATOR_KEY, KeyStroke.getKeyStroke(
+                    KeyEvent.VK_M, InputEvent.CTRL_MASK));
 
             GUIUtilities.addHotKey(_getRightComponent(),
                     _openModelMigrationFrameAction);
@@ -255,6 +256,7 @@ public class ActorGraphDBFrame extends ActorGraphFrame {
 
     }
 
+    @Override
     protected boolean _close() {
         boolean closeResult = super._close();
 
@@ -277,6 +279,7 @@ public class ActorGraphDBFrame extends ActorGraphFrame {
      * saving to the Database), and _FAILED if the user selects save and the
      * save fails.
      */
+    @Override
     protected int _queryForSave() {
 
         if (getModel().getAttribute(DB_NO_EDIT_ATTR) != null) {
@@ -366,6 +369,7 @@ public class ActorGraphDBFrame extends ActorGraphFrame {
         ///////////////////////////////////////////////////////////////
         ////            public methods                          //////
 
+        @Override
         public void actionPerformed(ActionEvent e) {
 
             ConfigureAttributesFrame configureAttributesFrame = new ConfigureAttributesFrame();
@@ -374,7 +378,7 @@ public class ActorGraphDBFrame extends ActorGraphFrame {
 
             configureAttributesFrame.pack();
             configureAttributesFrame
-                    .setLocationRelativeTo(ActorGraphDBFrame.this);
+            .setLocationRelativeTo(ActorGraphDBFrame.this);
             configureAttributesFrame.setVisible(true);
 
         }
@@ -460,6 +464,7 @@ public class ActorGraphDBFrame extends ActorGraphFrame {
             _source = source;
         }
 
+        @Override
         public void actionPerformed(ActionEvent e) {
 
             _saveModelToDBFrame = new SaveModelToDBFrame(getModel(), _source);
@@ -497,11 +502,12 @@ public class ActorGraphDBFrame extends ActorGraphFrame {
 
         }
 
+        @Override
         public void actionPerformed(ActionEvent e) {
 
             JFrame frame = new DatabaseSetupFrame();
             _containedFramesManager
-                    .addContainedFrame((DatabaseSetupFrame) frame);
+            .addContainedFrame((DatabaseSetupFrame) frame);
             frame.pack();
             frame.setLocationRelativeTo(ActorGraphDBFrame.this);
             frame.setVisible(true);
@@ -529,6 +535,7 @@ public class ActorGraphDBFrame extends ActorGraphFrame {
 
         }
 
+        @Override
         public void actionPerformed(ActionEvent e) {
 
             JFrame frame = new ModelMigrationFrame();
@@ -557,6 +564,7 @@ public class ActorGraphDBFrame extends ActorGraphFrame {
 
         }
 
+        @Override
         public void actionPerformed(ActionEvent e) {
 
             // Check whether the model is an existing model.
@@ -603,6 +611,7 @@ public class ActorGraphDBFrame extends ActorGraphFrame {
         /**
          * Open the models list frame.
          */
+        @Override
         public void actionPerformed(ActionEvent e) {
             JFrame frame = new ModelsListFrame(_configuration);
             frame.pack();
@@ -645,13 +654,14 @@ public class ActorGraphDBFrame extends ActorGraphFrame {
 
         }
 
+        @Override
         public void actionPerformed(ActionEvent e) {
 
             JFrame frame = new SimpleSearchFrame(_containerModel, _sourceFrame,
                     _configuration, getTableau());
 
             _containedFramesManager
-                    .addContainedFrame((SimpleSearchFrame) frame);
+            .addContainedFrame((SimpleSearchFrame) frame);
 
             frame.pack();
             frame.setLocationRelativeTo(_sourceFrame);
@@ -671,10 +681,11 @@ public class ActorGraphDBFrame extends ActorGraphFrame {
     /** Listener for help menu commands. */
     private class DBHistoryMenuListener implements ActionListener {
 
+        @Override
         public void actionPerformed(ActionEvent e) {
             // Make this the default context for modal messages.
             UndeferredGraphicalMessageHandler
-                    .setContext(ActorGraphDBFrame.this);
+            .setContext(ActorGraphDBFrame.this);
 
             JMenuItem target = (JMenuItem) e.getSource();
             String actionCommand = target.getActionCommand();
@@ -692,9 +703,9 @@ public class ActorGraphDBFrame extends ActorGraphFrame {
                 } else {
 
                     JOptionPane
-                            .showMessageDialog(ActorGraphDBFrame.this,
-                                    "The specified model could "
-                                            + "not be found in the database.",
+                    .showMessageDialog(ActorGraphDBFrame.this,
+                            "The specified model could "
+                                    + "not be found in the database.",
                                     "Load Error",
                                     JOptionPane.INFORMATION_MESSAGE, null);
 
@@ -748,7 +759,7 @@ public class ActorGraphDBFrame extends ActorGraphFrame {
         if (history == null) {
             throw new KernelRuntimeException(
 
-            "Unexpected loss of Recently Opened Models menu.");
+                    "Unexpected loss of Recently Opened Models menu.");
 
         }
 

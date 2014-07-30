@@ -85,6 +85,7 @@ public class ScopeExtendingAttribute extends Attribute implements ScopeExtender 
      *  @exception IllegalActionException If any required attribute cannot be
      *   created.
      */
+    @Override
     public void expand() throws IllegalActionException {
     }
 
@@ -106,8 +107,9 @@ public class ScopeExtendingAttribute extends Attribute implements ScopeExtender 
      *  @exception NameDuplicationException If the container already has
      *   an attribute with the name of this attribute.
      */
+    @Override
     public void setContainer(NamedObj container) throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         Nameable oldContainer = getContainer();
         super.setContainer(container);
 
@@ -130,16 +132,17 @@ public class ScopeExtendingAttribute extends Attribute implements ScopeExtender 
      *  @exception IllegalActionException If any required attribute cannot be
      *   created.
      */
+    @Override
     public void validate() throws IllegalActionException {
-            List<Settable> settables = attributeList(Settable.class);
-            for (Settable settable : settables) {
-                    settable.validate();
-            }
+        List<Settable> settables = attributeList(Settable.class);
+        for (Settable settable : settables) {
+            settable.validate();
+        }
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
-    
+
     private void _invalidateShadowedSettables(NamedObj object)
             throws IllegalActionException {
         if (object == null) {

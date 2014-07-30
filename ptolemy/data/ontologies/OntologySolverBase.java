@@ -172,6 +172,7 @@ public abstract class OntologySolverBase extends MoMLModelAttribute {
      *  @exception CloneNotSupportedException If any of the attributes
      *   cannot be cloned.
      */
+    @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         OntologySolverBase newObject = (OntologySolverBase) super
                 .clone(workspace);
@@ -605,7 +606,7 @@ public abstract class OntologySolverBase extends MoMLModelAttribute {
                     "No ontology has been given.");
         }
         return solver.getClass().getPackage().getName() + ".adapters."
-                + ontology.getName();
+        + ontology.getName();
     }
 
     /**

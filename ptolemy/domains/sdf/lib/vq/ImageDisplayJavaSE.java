@@ -58,11 +58,11 @@ classes.</p>
 @since Ptolemy II 10.0
 @Pt.ProposedRating
 @Pt.AcceptedRating
-*/
+ */
 
 public class ImageDisplayJavaSE extends
-        ptolemy.actor.lib.image.ImageDisplayJavaSE implements
-        ptolemy.domains.sdf.lib.vq.ImageDisplayInterface {
+ptolemy.actor.lib.image.ImageDisplayJavaSE implements
+ptolemy.domains.sdf.lib.vq.ImageDisplayInterface {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -71,9 +71,11 @@ public class ImageDisplayJavaSE extends
      *  event thread.
      *  @param in The token to display
      */
+    @Override
     public void display(final Token in) {
         // Display probably to be done in the Swing event thread.
         Runnable doDisplay = new Runnable() {
+            @Override
             public void run() {
                 _display(in);
             }

@@ -80,12 +80,14 @@ public class ExternalTextTableau extends TextEditorTableau {
      *  on the same effigy may still modify the associated file.
      *  @param flag False to make the tableau uneditable.
      */
+    @Override
     public void setEditable(boolean flag) {
         ((ExternalTextEffigy) getContainer()).setModifiable(flag);
     }
 
     /** Make this tableau visible - by calling show() on the container
      * (ExternalTextEffigy). */
+    @Override
     public void show() {
         ((ExternalTextEffigy) getContainer()).show();
     }

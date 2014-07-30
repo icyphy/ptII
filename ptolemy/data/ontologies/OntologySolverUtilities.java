@@ -48,7 +48,7 @@ import ptolemy.kernel.util.Attribute;
  @since Ptolemy II 10.0
  @Pt.ProposedRating Red (cshelton)
  @Pt.AcceptedRating Red (cshelton)
-*/
+ */
 public class OntologySolverUtilities {
 
     /**
@@ -123,6 +123,7 @@ public class OntologySolverUtilities {
      *
      * @return The string representation of the SharedUtilities object
      */
+    @Override
     public String toString() {
         String result = "sharedUtilities#" + _id;
         return result;

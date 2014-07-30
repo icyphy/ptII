@@ -90,7 +90,7 @@ public class Case extends MultiCompositeActor {
      *   an entity with the specified name.
      */
     public Case(Workspace workspace) throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         super(workspace);
         _init();
     }
@@ -114,6 +114,7 @@ public class Case extends MultiCompositeActor {
      *  @exception CloneNotSupportedException If any of the attributes
      *   cannot be cloned.
      */
+    @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         Case newObject = (Case) super.clone(workspace);
         newObject._default = (Refinement) newObject.getEntity("default");
@@ -139,6 +140,7 @@ public class Case extends MultiCompositeActor {
      *   the director's fire() method throws it, or if the actor is not
      *   opaque.
      */
+    @Override
     public void fire() throws IllegalActionException {
         // FIXME: Case.fire() does not invoke the piggyback methods as
         // is done in CompositeActor.fire().
@@ -179,7 +181,7 @@ public class Case extends MultiCompositeActor {
      *  exists with this name.
      */
     public Refinement newRefinement(String name) throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         return new Refinement(this, name);
     }
 
@@ -201,6 +203,7 @@ public class Case extends MultiCompositeActor {
      *  @exception NameDuplicationException If the name collides with a name
      *  already in the entity.
      */
+    @Override
     protected void _addEntity(ComponentEntity entity)
             throws IllegalActionException, NameDuplicationException {
         super._addEntity(entity);
@@ -221,7 +224,7 @@ public class Case extends MultiCompositeActor {
      *  attribute with the name "_director".
      */
     protected CaseDirector _createDirector() throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         return new CaseDirector(this, "_director");
     }
 
@@ -242,7 +245,7 @@ public class Case extends MultiCompositeActor {
 
     /** Initialize the class. */
     private void _init() throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         setClassName("ptolemy.actor.lib.hoc.Case");
 
         // Create the control port.

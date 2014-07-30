@@ -60,6 +60,7 @@ public class QuadrantConstraint implements PointConstraint {
 
     /** Ask the bounds constraint to constrain this point.
      */
+    @Override
     public void constrain(Point2D point) {
         double x = point.getX();
         double y = point.getY();
@@ -143,6 +144,7 @@ public class QuadrantConstraint implements PointConstraint {
 
     /** Return false. This constraint never snaps.
      */
+    @Override
     public boolean snapped() {
         return false;
     }

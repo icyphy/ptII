@@ -59,6 +59,7 @@ public class CSPHasRoom extends CSPPut {
 
     /**
      */
+    @Override
     public void fire() throws IllegalActionException {
         Receiver[][] rcvrs = outputPort.getRemoteReceivers();
         CSPReceiver rcvr = null;

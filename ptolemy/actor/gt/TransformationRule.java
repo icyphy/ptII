@@ -78,7 +78,7 @@ import ptolemy.kernel.util.Workspace;
  @Pt.AcceptedRating Red (tfeng)
  */
 public class TransformationRule extends MultiCompositeActor implements
-        GTCompositeActor, ValueListener {
+GTCompositeActor, ValueListener {
 
     /** Construct a transformation rule with a name and a container.
      *  The container argument must not be null, or a
@@ -119,6 +119,7 @@ public class TransformationRule extends MultiCompositeActor implements
      *  @exception IllegalActionException If the change is not acceptable
      *   to this container (not thrown in this base class).
      */
+    @Override
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         if (attribute == mode || attribute == repeatUntilFixpoint) {
@@ -148,6 +149,7 @@ public class TransformationRule extends MultiCompositeActor implements
      *  @exception CloneNotSupportedException If any of the attributes
      *   cannot be cloned.
      */
+    @Override
     public Object clone() throws CloneNotSupportedException {
         TransformationRule actor = (TransformationRule) super.clone();
         actor._lastModel = null;
@@ -191,6 +193,7 @@ public class TransformationRule extends MultiCompositeActor implements
      *  @exception IllegalActionException If error occurs in reading the input,
      *   in sending the output, or in the transformation.
      */
+    @Override
     public void fire() throws IllegalActionException {
         // Obtain updated value for any PortParameter before each firing.
         try {
@@ -328,6 +331,7 @@ public class TransformationRule extends MultiCompositeActor implements
      *
      *  @exception IllegalActionException If the superclass throws it.
      */
+    @Override
     public void initialize() throws IllegalActionException {
         super.initialize();
         _lastModel = null;
@@ -340,6 +344,7 @@ public class TransformationRule extends MultiCompositeActor implements
      *  @return The result from postfire of the superclass.
      *  @exception IllegalActionException If thrown by the superclass.
      */
+    @Override
     public boolean postfire() throws IllegalActionException {
         if (_removeFirst) {
             _lastResults.remove(0);
@@ -354,6 +359,7 @@ public class TransformationRule extends MultiCompositeActor implements
      *   mode cannot be retrieved.
      *  @see #fire()
      */
+    @Override
     public boolean prefire() throws IllegalActionException {
         if (super.prefire()) {
             _removeFirst = false;
@@ -380,6 +386,7 @@ public class TransformationRule extends MultiCompositeActor implements
      *  @return An empty list.
      *  @exception IllegalActionException Not thrown in this class.
      */
+    @Override
     public Set<Inequality> typeConstraints() throws IllegalActionException {
         return _EMPTY_SET;
     }
@@ -388,6 +395,7 @@ public class TransformationRule extends MultiCompositeActor implements
      *
      *  @param settable The attribute changed.
      */
+    @Override
     public void valueChanged(Settable settable) {
         // Create or remove ports depending on the mode.
         if (settable == mode) {
@@ -430,7 +438,7 @@ public class TransformationRule extends MultiCompositeActor implements
                         trigger.setTypeEquals(BaseType.BOOLEAN);
                         trigger.setDerivedLevel(1);
                         new StringAttribute(trigger, "_cardinal")
-                                .setExpression("SOUTH");
+                        .setExpression("SOUTH");
                     }
                     if (remaining == null) {
                         remaining = new TypedIOPort(this, "remaining", false,
@@ -438,7 +446,7 @@ public class TransformationRule extends MultiCompositeActor implements
                         remaining.setTypeEquals(BaseType.INT);
                         remaining.setDerivedLevel(1);
                         new StringAttribute(remaining, "_cardinal")
-                                .setExpression("SOUTH");
+                        .setExpression("SOUTH");
                     }
                     if (matched != null) {
                         matched.setContainer(null);
@@ -479,7 +487,7 @@ public class TransformationRule extends MultiCompositeActor implements
                         matched.setTypeEquals(BaseType.BOOLEAN);
                         matched.setDerivedLevel(1);
                         new StringAttribute(matched, "_cardinal")
-                                .setExpression("SOUTH");
+                        .setExpression("SOUTH");
                     }
                 }
             } catch (KernelException e) {
@@ -493,6 +501,7 @@ public class TransformationRule extends MultiCompositeActor implements
      *
      *  @exception IllegalActionException If thrown by the superclass.
      */
+    @Override
     public void wrapup() throws IllegalActionException {
         super.wrapup();
         _lastResults.clear();
@@ -581,6 +590,7 @@ public class TransformationRule extends MultiCompositeActor implements
          *
          *  @exception IllegalActionException Not thrown in this class.
          */
+        @Override
         public void initialize() throws IllegalActionException {
             // FIXME: Director.initialize() does quite a bit,
             // including calling methods on initializables,
@@ -599,6 +609,7 @@ public class TransformationRule extends MultiCompositeActor implements
          *
          *  @exception IllegalActionException Not thrown in this class.
          */
+        @Override
         public void preinitialize() throws IllegalActionException {
             // FIXME: Director.preinitialize() does quite a bit,
             // including calling methods on initializables, validating
@@ -613,6 +624,7 @@ public class TransformationRule extends MultiCompositeActor implements
          *
          *  @exception IllegalActionException Not thrown in this class.
          */
+        @Override
         public void wrapup() throws IllegalActionException {
         }
     }
@@ -626,7 +638,7 @@ public class TransformationRule extends MultiCompositeActor implements
      *   with a name already in the container.
      */
     protected void _init() throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         setClassName("ptolemy.actor.gt.TransformationRule");
 
         // Create the default refinement.

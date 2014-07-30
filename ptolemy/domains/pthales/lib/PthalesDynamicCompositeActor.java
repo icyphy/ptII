@@ -71,7 +71,7 @@ public class PthalesDynamicCompositeActor extends PthalesCompositeActor {
      *   actor with this name.
      */
     public PthalesDynamicCompositeActor() throws NameDuplicationException,
-            IllegalActionException {
+    IllegalActionException {
         // FIXME: Don't you want to call super() here?
     }
 
@@ -171,6 +171,7 @@ public class PthalesDynamicCompositeActor extends PthalesCompositeActor {
      *  will be lost.
      *  @exception IllegalActionException If any port throws it.
      */
+    @Override
     public void createReceivers() throws IllegalActionException {
         super.createReceivers();
         for (Object port : inputPortList()) {
@@ -204,6 +205,7 @@ public class PthalesDynamicCompositeActor extends PthalesCompositeActor {
      *  @exception IllegalActionException If iterating is not
      *   permitted, or if prefire(), fire(), or postfire() throw it.
      */
+    @Override
     public int iterate(int count) throws IllegalActionException {
         int iterations = count;
 
@@ -223,7 +225,7 @@ public class PthalesDynamicCompositeActor extends PthalesCompositeActor {
                             // safe?  Depends on the Java
                             // implementation of LinkedHashMap.
                             ((PthalesReceiver) receiver)
-                                    .setReadParameters(_repetitions);
+                            .setReadParameters(_repetitions);
                         }
                     }
                 }
@@ -244,6 +246,7 @@ public class PthalesDynamicCompositeActor extends PthalesCompositeActor {
      *   or if the director's prefire() method throws it, or if this actor
      *   is not opaque.
      */
+    @Override
     public boolean prefire() throws IllegalActionException {
         boolean result = super.prefire();
 

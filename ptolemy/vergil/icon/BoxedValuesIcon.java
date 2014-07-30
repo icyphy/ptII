@@ -100,6 +100,7 @@ public class BoxedValuesIcon extends XMLIcon {
      *  box depends on the value.
      *  @return A new figure.
      */
+    @Override
     public Figure createBackgroundFigure() {
         String displayString = _displayString();
         double width = 60;
@@ -130,6 +131,7 @@ public class BoxedValuesIcon extends XMLIcon {
      *  values of the attributes of the container.
      *  @return A new CompositeFigure consisting of the label.
      */
+    @Override
     public Figure createFigure() {
         CompositeFigure result = (CompositeFigure) super.createFigure();
         String truncated = _displayString();

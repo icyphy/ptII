@@ -24,7 +24,7 @@
  PT_COPYRIGHT_VERSION_2
  COPYRIGHTENDKEY
 
-*/
+ */
 
 package ptolemy.actor.gt.controller;
 
@@ -80,6 +80,7 @@ public class PersistenceAttribute extends SingletonAttribute {
      *  @exception CloneNotSupportedException If a derived class contains
      *   an attribute that cannot be cloned.
      */
+    @Override
     public NamedObj clone(Workspace workspace)
             throws CloneNotSupportedException {
         PersistenceAttribute object = (PersistenceAttribute) super
@@ -93,6 +94,7 @@ public class PersistenceAttribute extends SingletonAttribute {
      *  @return Always return false, indicating that this attribute is not
      *  persistent.
      */
+    @Override
     public boolean isPersistent() {
         // FIXME: shouldn't this return the value of _persistance?
         // For example, if I create a clone, then isn't _persistance true?
@@ -112,8 +114,9 @@ public class PersistenceAttribute extends SingletonAttribute {
      *  @exception NameDuplicationException If the container already has
      *   an attribute with the name of this attribute.
      */
+    @Override
     public void setContainer(NamedObj container) throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         NamedObj oldContainer;
         if (_oldPersistence != null && (oldContainer = getContainer()) != null) {
             oldContainer.setPersistent(_oldPersistence);

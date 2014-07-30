@@ -79,6 +79,7 @@ public class ArrayAccumulate extends Transformer {
      *  @exception CloneNotSupportedException If a derived class contains
      *   an attribute that cannot be cloned.
      */
+    @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         ArrayAccumulate newObject = (ArrayAccumulate) super.clone(workspace);
 
@@ -96,6 +97,7 @@ public class ArrayAccumulate extends Transformer {
      *  @exception IllegalActionException If a runtime type conflict occurs,
      *   or if there are no input channels.
      */
+    @Override
     public void fire() throws IllegalActionException {
         super.fire();
         // NOTE: Do not use System.arraycopy here because the
@@ -123,6 +125,7 @@ public class ArrayAccumulate extends Transformer {
     /** Initialize this actor to have an empty accumulating array.
      *  @exception IllegalActionException If the superclass throws it.
      */
+    @Override
     public void initialize() throws IllegalActionException {
         super.initialize();
         _accumulating = null;
@@ -133,6 +136,7 @@ public class ArrayAccumulate extends Transformer {
      *  @return True.
      *  @exception IllegalActionException If the superclass throws it.
      */
+    @Override
     public boolean postfire() throws IllegalActionException {
         boolean result = super.postfire();
         _accumulating = _tentativeAccumulating;

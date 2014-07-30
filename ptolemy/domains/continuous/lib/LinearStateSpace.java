@@ -113,7 +113,7 @@ public class LinearStateSpace extends TypedCompositeActor {
      *   an entity with the specified name.
      */
     public LinearStateSpace(Workspace workspace) throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         super(workspace);
         _init();
     }
@@ -179,6 +179,7 @@ public class LinearStateSpace extends TypedCompositeActor {
      *  @exception IllegalActionException If the numerator and the
      *   denominator matrix is not a row vector.
      */
+    @Override
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         if (attribute == A) {
@@ -242,6 +243,7 @@ public class LinearStateSpace extends TypedCompositeActor {
      *  //FIXME: this is not what this method does!!!
      *  @return the executive director.
      */
+    @Override
     public Director getDirector() {
         if (_opaque) {
             return null;
@@ -254,6 +256,7 @@ public class LinearStateSpace extends TypedCompositeActor {
      *  opaque if it has not been preinitialized after creation or
      *  changes of parameters. Otherwise, it is not opaque.
      */
+    @Override
     public boolean isOpaque() {
         return _opaque;
     }
@@ -262,6 +265,7 @@ public class LinearStateSpace extends TypedCompositeActor {
      *  @return True if the super class returns true.
      *  @exception IllegalActionException If thrown by super class.
      */
+    @Override
     public boolean postfire() throws IllegalActionException {
         // FIXME: the parameter change does affect the workspace version.
         if (_requestInitialization) {
@@ -279,6 +283,7 @@ public class LinearStateSpace extends TypedCompositeActor {
      *  @exception IllegalActionException If there is no CTDirector,
      *  or any contained actors throw it in its preinitialize() method.
      */
+    @Override
     public void preinitialize() throws IllegalActionException {
         // Check parameters.
         _checkParameters();
@@ -294,7 +299,7 @@ public class LinearStateSpace extends TypedCompositeActor {
         /* DoubleMatrixToken d = (DoubleMatrixToken)*/D.getToken();
 
         /* DoubleMatrixToken x0 = (DoubleMatrixToken)*/initialStates
-                .getToken();
+        .getToken();
 
         try {
             _workspace.getWriteAccess();
@@ -422,6 +427,7 @@ public class LinearStateSpace extends TypedCompositeActor {
      *  should not be called after initialization phase, i.e. when
      *  the actor is transparent.
      */
+    @Override
     public void stopFire() {
         return;
     }
@@ -430,6 +436,7 @@ public class LinearStateSpace extends TypedCompositeActor {
      *  of the super class.
      *  @exception IllegalActionException If there is no director.
      */
+    @Override
     public void wrapup() throws IllegalActionException {
         _opaque = true;
         super.wrapup();
@@ -449,8 +456,8 @@ public class LinearStateSpace extends TypedCompositeActor {
         if (b.getRowCount() != n) {
             throw new IllegalActionException(this,
                     "The number of rows of the B matrix (" + b.getRowCount()
-                            + ") should be equal to "
-                            + "the number of rows of the A matrix (" + n + ").");
+                    + ") should be equal to "
+                    + "the number of rows of the A matrix (" + n + ").");
         }
 
         int m = b.getColumnCount();
@@ -479,9 +486,9 @@ public class LinearStateSpace extends TypedCompositeActor {
         if (c.getRowCount() != d.getRowCount()) {
             throw new IllegalActionException(this,
                     "The number of rows of the D matrix (" + d.getRowCount()
-                            + ") should be equal to "
-                            + "the number of rows of the C matrix ("
-                            + c.getRowCount() + ").");
+                    + ") should be equal to "
+                    + "the number of rows of the C matrix ("
+                    + c.getRowCount() + ").");
         }
 
         if (d.getColumnCount() != input.getWidth()) {
@@ -497,15 +504,15 @@ public class LinearStateSpace extends TypedCompositeActor {
         if (x0.getColumnCount() != n) {
             throw new IllegalActionException(this,
                     "The number of initial states (" + x0.getColumnCount()
-                            + ") should equal to "
-                            + "the number of columns of the A matrix (" + n
-                            + ").");
+                    + ") should equal to "
+                    + "the number of columns of the A matrix (" + n
+                    + ").");
         }
     }
 
     /** Initialize the class. */
     private void _init() throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         input = new TypedIOPort(this, "input", true, false);
         input.setMultiport(true);
         output = new TypedIOPort(this, "output", false, true);

@@ -72,6 +72,7 @@ public class LempelZivCoder extends Transformer {
      *  code book.
      *  @exception IllegalActionException if the super class throws it.
      */
+    @Override
     public void fire() throws IllegalActionException {
         super.fire();
         if (input.hasToken(0)) {
@@ -112,6 +113,7 @@ public class LempelZivCoder extends Transformer {
      *  only one empty string "".
      *  @exception IllegalActionException If thrown by a super class.
      */
+    @Override
     public void initialize() throws IllegalActionException {
         super.initialize();
         _codeBook = new LinkedList();

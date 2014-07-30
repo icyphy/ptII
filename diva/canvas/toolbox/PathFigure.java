@@ -42,6 +42,7 @@ import java.awt.Shape;
  * @author         John Reekie
  * @deprecated  BasicFigure now does everything this class used to do.
  */
+@Deprecated
 public class PathFigure extends BasicFigure {
     /** Create a new figure with the given shape. The figure, by
      *  default, has a unit-width continuous black outline and no
@@ -59,6 +60,7 @@ public class PathFigure extends BasicFigure {
      *
      * @deprecated  Use the float constructor instead.
      */
+    @Deprecated
     public PathFigure(Shape shape, int lineWidth) {
         this(shape, null, lineWidth);
     }

@@ -85,6 +85,7 @@ public class Inequality {
      *  greater term and lesser term are equal to the corresponding
      *  terms of this object.
      */
+    @Override
     public boolean equals(Object object) {
         if (object instanceof Inequality) {
             return ((Inequality) object)._greaterTerm.equals(_greaterTerm)
@@ -114,6 +115,7 @@ public class Inequality {
      *  hashcode.
      *  @return The XOR of the greater and lesser terms.
      */
+    @Override
     public int hashCode() {
         return _lesserTerm.hashCode() ^ _greaterTerm.hashCode();
     }
@@ -135,6 +137,7 @@ public class Inequality {
     /** Override the base class to describe the inequality.
      *  @return A string describing the inequality.
      */
+    @Override
     public String toString() {
         return _lesserTerm.toString() + " <= " + _greaterTerm.toString();
     }

@@ -20,11 +20,10 @@ public abstract class YieldAdapterIterator<T> implements Iterator<T> {
      */
     public abstract void dispose();
 
-
     public IllegalActionException getMessageIllegalAction() {
         return messageIllegalAction;
     }
 
-    protected IllegalActionException messageIllegalAction = null; 
+    protected IllegalActionException messageIllegalAction = null;
 
 }

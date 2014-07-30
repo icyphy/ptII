@@ -95,7 +95,7 @@ import diva.graph.JGraph;
  */
 @SuppressWarnings("serial")
 public class UnitSolverDialog extends PtolemyDialog implements
-        ListSelectionListener, SelectionListener {
+ListSelectionListener, SelectionListener {
     /**
      * Construct a Unit Solver Dialog.
      * @param dialogTableau The DialogTableau.
@@ -209,6 +209,7 @@ public class UnitSolverDialog extends PtolemyDialog implements
     /* (non-Javadoc)
      * @see java.awt.event.ActionListener#actionPerformed(ActionEvent)
      */
+    @Override
     public void actionPerformed(ActionEvent aEvent) {
         //String command = aEvent.getActionCommand();
         if (aEvent.getSource() == _runMinimalSpanSolverButton) {
@@ -308,6 +309,7 @@ public class UnitSolverDialog extends PtolemyDialog implements
      * @see diva.canvas.interactor
      *                 .SelectionListener#selectionChanged(SelectionEvent)
      */
+    @Override
     public void selectionChanged(SelectionEvent e) {
         _setToSelectedButton.setEnabled(true);
     }
@@ -316,6 +318,7 @@ public class UnitSolverDialog extends PtolemyDialog implements
      * @see javax.swing.event
      *               .ListSelectionListener#valueChanged(ListSelectionEvent)
      */
+    @Override
     public void valueChanged(ListSelectionEvent e) {
         if (e.getValueIsAdjusting()) {
             return;
@@ -342,6 +345,7 @@ public class UnitSolverDialog extends PtolemyDialog implements
          *  @param index The index of the element to be returned.
          *  @return The element at the specified index.
          */
+        @Override
         public Object getElementAt(int index) {
             return ((Solution) _solutions.elementAt(index)).getStateDesc();
         }
@@ -349,6 +353,7 @@ public class UnitSolverDialog extends PtolemyDialog implements
         /** Return the number of solutions.
          *  @return The number of solutions.
          */
+        @Override
         public int getSize() {
             return _solutions.size();
         }
@@ -370,6 +375,7 @@ public class UnitSolverDialog extends PtolemyDialog implements
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
+    @Override
     protected void _cancel() {
         _selectionModel.removeSelectionListener(this);
         _selectionModel.clearSelection();
@@ -381,9 +387,11 @@ public class UnitSolverDialog extends PtolemyDialog implements
     /* (non-Javadoc)
      * @see ptolemy.actor.gui.PtolemyDialog#_createExtendedButtons(JPanel)
      */
+    @Override
     protected void _createExtendedButtons(JPanel _buttons) {
     }
 
+    @Override
     protected URL _getHelpURL() {
         URL helpURL = getClass().getClassLoader().getResource(
                 "ptolemy/actor/gui/doc/unitConstraintsSolver.htm");

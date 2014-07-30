@@ -110,6 +110,7 @@ public class SequenceScope extends SequencePlotter {
      *  @exception IllegalActionException If the expression of the
      *  attribute cannot be parsed or cannot be evaluated.
      */
+    @Override
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         if ((attribute == width || attribute == xUnit || attribute == xInit)
@@ -133,6 +134,7 @@ public class SequenceScope extends SequencePlotter {
      *  using the current parameter values.
      *  @exception IllegalActionException If the parent class throws it.
      */
+    @Override
     public void initialize() throws IllegalActionException {
         super.initialize();
 
@@ -162,6 +164,7 @@ public class SequenceScope extends SequencePlotter {
      *   or if the base class throws it.
      *  @return True if it is OK to continue.
      */
+    @Override
     public boolean postfire() throws IllegalActionException {
         boolean result = super.postfire();
         Thread.yield();

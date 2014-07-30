@@ -133,6 +133,7 @@ public class LEDMatrix extends TypedAtomicActor {
      *  @exception CloneNotSupportedException If a derived class contains
      *   an attribute that cannot be cloned.
      */
+    @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         LEDMatrix newActor = (LEDMatrix) super.clone(workspace);
         try {
@@ -176,6 +177,7 @@ public class LEDMatrix extends TypedAtomicActor {
      *  @exception IllegalActionException If the row or column ports
      *  cannot be read.
      */
+    @Override
     public void fire() throws IllegalActionException {
         super.fire();
         if (row.hasToken(0) && column.hasToken(0) && control.hasToken(0)) {
@@ -185,14 +187,15 @@ public class LEDMatrix extends TypedAtomicActor {
                     .booleanValue();
             if (controlValue) {
                 _leds[rowValue][columnValue].fillColor
-                        .setToken("{1.0, 0.0, 0.0, 1.0}");
+                .setToken("{1.0, 0.0, 0.0, 1.0}");
             } else {
                 _leds[rowValue][columnValue].fillColor
-                        .setToken("{0.0, 0.0, 0.0, 1.0}");
+                .setToken("{0.0, 0.0, 0.0, 1.0}");
             }
         }
     }
 
+    @Override
     public void preinitialize() throws IllegalActionException {
         super.preinitialize();
 
@@ -210,7 +213,7 @@ public class LEDMatrix extends TypedAtomicActor {
 
     /** Create the LED Array. */
     private void _init() throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
 
         int columnsValue = ((IntToken) columns.getToken()).intValue();
         int rowsValue = ((IntToken) rows.getToken()).intValue();

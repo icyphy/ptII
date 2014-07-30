@@ -115,6 +115,7 @@ public class MatrixJoin extends SDFTransformer {
      *  @param attribute The attribute that has changed.
      *  @exception IllegalActionException If the parameters are out of range.
      */
+    @Override
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         if (attribute == columns) {
@@ -136,6 +137,7 @@ public class MatrixJoin extends SDFTransformer {
     /** Consume the inputs and produce the output matrix.
      *  @exception IllegalActionException If not enough tokens are available.
      */
+    @Override
     public void fire() throws IllegalActionException {
         super.fire();
         int numberOfColumns = ((IntToken) columns.getToken()).intValue();
@@ -158,6 +160,7 @@ public class MatrixJoin extends SDFTransformer {
      *   input port throws it.
      *  @see ptolemy.actor.IOPort#hasToken(int, int)
      */
+    @Override
     public boolean prefire() throws IllegalActionException {
         int columnsValue = ((IntToken) columns.getToken()).intValue();
         int rowsValue = ((IntToken) rows.getToken()).intValue();

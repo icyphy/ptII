@@ -78,7 +78,7 @@ import ptolemy.vergil.gt.GTFrameTools;
  @since Ptolemy II 6.0
  @Pt.ProposedRating Yellow (eal)
  @Pt.AcceptedRating Red (cxh)
-*/
+ */
 public class ModelView extends TypedAtomicActor implements WindowListener {
 
     /** Construct an actor with the specified container and name.
@@ -172,6 +172,7 @@ public class ModelView extends TypedAtomicActor implements WindowListener {
      *  @exception IllegalActionException If there is an error reading
      *   the input.
      */
+    @Override
     public void fire() throws IllegalActionException {
         super.fire();
 
@@ -300,7 +301,7 @@ public class ModelView extends TypedAtomicActor implements WindowListener {
                         // and then close the optimized model.  You should not be
                         // prompted for save.
                         ((Effigy) tableau.getContainer())
-                                .setPersistent(isPersistentValue);
+                        .setPersistent(isPersistentValue);
                         model.setDeferringChangeRequests(false);
                         output.send(i, token);
                     } catch (NameDuplicationException e) {
@@ -320,6 +321,7 @@ public class ModelView extends TypedAtomicActor implements WindowListener {
      *
      *  @exception IllegalActionException If thrown by the superclass.
      */
+    @Override
     public void initialize() throws IllegalActionException {
         super.initialize();
 
@@ -340,6 +342,7 @@ public class ModelView extends TypedAtomicActor implements WindowListener {
      *
      *  @param e The event.
      */
+    @Override
     public void windowActivated(WindowEvent e) {
     }
 
@@ -347,6 +350,7 @@ public class ModelView extends TypedAtomicActor implements WindowListener {
      *
      *  @param e The event.
      */
+    @Override
     public synchronized void windowClosed(WindowEvent e) {
         Window window = (Window) e.getSource();
         if (_tableaus != null) {
@@ -366,6 +370,7 @@ public class ModelView extends TypedAtomicActor implements WindowListener {
      *
      *  @param e The event.
      */
+    @Override
     public void windowClosing(WindowEvent e) {
     }
 
@@ -373,6 +378,7 @@ public class ModelView extends TypedAtomicActor implements WindowListener {
      *
      *  @param e The event.
      */
+    @Override
     public void windowDeactivated(WindowEvent e) {
     }
 
@@ -380,6 +386,7 @@ public class ModelView extends TypedAtomicActor implements WindowListener {
      *
      *  @param e The event.
      */
+    @Override
     public void windowDeiconified(WindowEvent e) {
     }
 
@@ -387,6 +394,7 @@ public class ModelView extends TypedAtomicActor implements WindowListener {
      *
      *  @param e The event.
      */
+    @Override
     public void windowIconified(WindowEvent e) {
     }
 
@@ -394,6 +402,7 @@ public class ModelView extends TypedAtomicActor implements WindowListener {
      *
      *  @param e The event.
      */
+    @Override
     public void windowOpened(WindowEvent e) {
     }
 

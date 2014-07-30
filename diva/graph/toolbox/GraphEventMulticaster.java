@@ -92,6 +92,7 @@ public class GraphEventMulticaster implements GraphListener {
      * Dispatch the edgeHeadChanged() event to the
      * listeners.
      */
+    @Override
     public void edgeHeadChanged(GraphEvent e) {
         for (Iterator i = listeners(); i.hasNext();) {
             GraphListener l = (GraphListener) i.next();
@@ -103,6 +104,7 @@ public class GraphEventMulticaster implements GraphListener {
      * Dispatch the edgeTailChanged() event to the
      * listeners.
      */
+    @Override
     public void edgeTailChanged(GraphEvent e) {
         for (Iterator i = listeners(); i.hasNext();) {
             GraphListener l = (GraphListener) i.next();
@@ -120,6 +122,7 @@ public class GraphEventMulticaster implements GraphListener {
     /**
      * Dispatch the nodeAdded() event to each of the listeners.
      */
+    @Override
     public void nodeAdded(GraphEvent e) {
         for (Iterator i = listeners(); i.hasNext();) {
             GraphListener l = (GraphListener) i.next();
@@ -130,6 +133,7 @@ public class GraphEventMulticaster implements GraphListener {
     /**
      * Dispatch the nodeRemoved() event to each of the listeners.
      */
+    @Override
     public void nodeRemoved(GraphEvent e) {
         for (Iterator i = listeners(); i.hasNext();) {
             GraphListener l = (GraphListener) i.next();
@@ -148,6 +152,7 @@ public class GraphEventMulticaster implements GraphListener {
     /**
      * Dispatch the structureChanged() event to each of the listeners.
      */
+    @Override
     public void structureChanged(GraphEvent e) {
         for (Iterator i = listeners(); i.hasNext();) {
             GraphListener l = (GraphListener) i.next();

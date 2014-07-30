@@ -203,7 +203,7 @@ public class Check {
             check.go();
         } catch (Exception ex) {
             System.out
-                    .println(ex.getClass().getName() + ": " + ex.getMessage());
+            .println(ex.getClass().getName() + ": " + ex.getMessage());
             ex.printStackTrace();
         }
     }

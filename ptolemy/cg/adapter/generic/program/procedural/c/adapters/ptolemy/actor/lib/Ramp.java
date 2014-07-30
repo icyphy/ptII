@@ -40,8 +40,8 @@ package ptolemy.cg.adapter.generic.program.procedural.c.adapters.ptolemy.actor.l
  @Pt.AcceptedRating Red (jiazou)
  */
 public class Ramp
-        extends
-        ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.actor.lib.Ramp {
+extends
+ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.actor.lib.Ramp {
     /**
      *  Construct the Ramp adapter.
      *  @param actor the associated actor

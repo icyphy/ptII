@@ -226,6 +226,7 @@ public class ViterbiDecoder extends Transformer {
      *  or <i>delay</i> is non-positive, or any element of
      *  <i>polynomialArray</i> is non-positive.
      */
+    @Override
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         /*if (attribute == mode) {
@@ -331,6 +332,7 @@ public class ViterbiDecoder extends Transformer {
      *  @exception CloneNotSupportedException If a derived class contains
      *   an attribute that cannot be cloned.
      */
+    @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         ViterbiDecoder newObject = (ViterbiDecoder) super.clone(workspace);
 
@@ -355,6 +357,7 @@ public class ViterbiDecoder extends Transformer {
      *  input sequence and find the one that has the minimum distance
      *  to the observed inputs.
      */
+    @Override
     public void fire() throws IllegalActionException {
         super.fire();
         //boolean trellisMode =
@@ -472,10 +475,10 @@ public class ViterbiDecoder extends Transformer {
                     _truthTable[state][head][0] = outValue;
 
                     int oldState = reg >> _inputNumber;
-                    _truthTable[state][head][1] = oldState;
+                        _truthTable[state][head][1] = oldState;
 
-                    int input = reg & inputMask;
-                    _truthTable[state][head][2] = input;
+                        int input = reg & inputMask;
+                        _truthTable[state][head][2] = input;
                 }
             }
         }
@@ -602,6 +605,7 @@ public class ViterbiDecoder extends Transformer {
     /** Initialize the actor.
      *  @exception IllegalActionException If the parent class throws it.
      */
+    @Override
     public void initialize() throws IllegalActionException {
         super.initialize();
         _inputNumberInvalid = true;
@@ -611,6 +615,7 @@ public class ViterbiDecoder extends Transformer {
     /** Record the datum in buffers into their temporary versions.
      *  @exception IllegalActionException If the base class throws it
      */
+    @Override
     public boolean postfire() throws IllegalActionException {
         // Copy datum in buffers to their temp versions.
         for (int i = 0; i < _rowNum; i++) {
@@ -668,8 +673,8 @@ public class ViterbiDecoder extends Transformer {
             int truthBit = truthValue & 1;
             truthValue = truthValue >> 1;
 
-            // Compute Hamming distance for hard decoding.
-            hammingDistance = hammingDistance + ((y[i] ? 1 : 0) ^ truthBit);
+        // Compute Hamming distance for hard decoding.
+        hammingDistance = hammingDistance + ((y[i] ? 1 : 0) ^ truthBit);
         }
 
         return hammingDistance;

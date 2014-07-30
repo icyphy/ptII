@@ -117,6 +117,7 @@ public class Vertex extends Location {
      *  @param name The name to use instead of the current name.
      *  @exception IOException If an I/O error occurs.
      */
+    @Override
     public void exportMoML(Writer output, int depth, String name)
             throws IOException {
         if (_isMoMLSuppressed(depth)) {
@@ -184,6 +185,7 @@ public class Vertex extends Location {
      *  the location in parentheses.
      *  @return A string describing the object.
      */
+    @Override
     public String toString() {
         // FIXME add linked ports.
         return super.toString();
@@ -202,6 +204,7 @@ public class Vertex extends Location {
      *  @exception IOException If an I/O error occurs.
      *  @see ptolemy.kernel.util.NamedObj#_exportMoMLContents
      */
+    @Override
     protected void _exportMoMLContents(Writer output, int depth)
             throws IOException {
         super._exportMoMLContents(output, depth);

@@ -590,6 +590,7 @@ public class DirectedGraph extends Graph {
      *  @param node The node.
      *  @return The number of self loop edges.
      */
+    @Override
     public int selfLoopEdgeCount(Node node) {
         // This can be determined more efficiently for directed
         // graphs, so we override the method from the base class.
@@ -794,6 +795,7 @@ public class DirectedGraph extends Graph {
      * @exception GraphConstructionException If the edge has already
      * been connected to the node.
      */
+    @Override
     protected void _connect(Edge edge, Node node) {
         super._connect(edge, node);
 
@@ -871,6 +873,7 @@ public class DirectedGraph extends Graph {
      *  @param edge The edge.
      *  @param node The node.
      */
+    @Override
     protected void _disconnect(Edge edge, Node node) {
         super._disconnect(edge, node);
         _removeIfPresent(_inputEdgeList(node), edge);
@@ -881,6 +884,7 @@ public class DirectedGraph extends Graph {
      *  and initialize the change counter of the graph.
      *  @see ptolemy.graph.analysis.Analysis
      */
+    @Override
     protected void _initializeAnalyses() {
         super._initializeAnalyses();
         _transitiveClosureAnalysis = new TransitiveClosureAnalysis(this);
@@ -892,6 +896,7 @@ public class DirectedGraph extends Graph {
     /** Register a new node in the graph.
      *  @param node The new node.
      */
+    @Override
     protected void _registerNode(Node node) {
         super._registerNode(node);
         _inputEdgeMap.put(node, new ArrayList());

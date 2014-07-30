@@ -82,6 +82,7 @@ public class MatrixType extends StructuredType implements Cloneable {
     /** Return this, that is, return the reference to this object.
      *  @return A MatrixType.
      */
+    @Override
     public Object clone() {
         return this;
     }
@@ -93,6 +94,7 @@ public class MatrixType extends StructuredType implements Cloneable {
      *  @exception IllegalActionException If the argument is not
      *   an instance of this class.
      */
+    @Override
     public Token convert(Token token) throws IllegalActionException {
         if (token instanceof MatrixToken) {
             return token;
@@ -107,6 +109,7 @@ public class MatrixType extends StructuredType implements Cloneable {
      *  @return True if the argument type is a matrix type representing the
      *  same class, with the same number of rows and columns.
      */
+    @Override
     public boolean equals(Object object) {
         if (!(object instanceof MatrixType)) {
             return false;
@@ -171,6 +174,7 @@ public class MatrixType extends StructuredType implements Cloneable {
     /** Return the class for tokens that this type represents.
      *  @return A class that represents a matrix token.
      */
+    @Override
     public Class getTokenClass() {
         return _tokenClass;
     }
@@ -178,6 +182,7 @@ public class MatrixType extends StructuredType implements Cloneable {
     /** Return a hash code value for this object.
      *  @return The hash code for the token class of this type.
      */
+    @Override
     public int hashCode() {
         return getTokenClass().hashCode();
     }
@@ -186,6 +191,7 @@ public class MatrixType extends StructuredType implements Cloneable {
      *  specified type.
      *  @param type A Type.
      */
+    @Override
     public void initialize(Type type) {
         // Ignore... This type has no components that are unknown.
     }
@@ -193,6 +199,7 @@ public class MatrixType extends StructuredType implements Cloneable {
     /** Return true if the element type is abstract.
      *  @return True.
      */
+    @Override
     public boolean isAbstract() {
         return _elementType.isAbstract();
     }
@@ -205,6 +212,7 @@ public class MatrixType extends StructuredType implements Cloneable {
      *  @param type An instance of Type.
      *  @return True if the argument is compatible with this type.
      */
+    @Override
     public boolean isCompatible(Type type) {
         int typeInfo = TypeLattice.compare(this, type);
         return typeInfo == CPO.SAME || typeInfo == CPO.HIGHER;
@@ -214,6 +222,7 @@ public class MatrixType extends StructuredType implements Cloneable {
      *  does not contain BaseType.UNKNOWN in any level within it.
      *  @return False.
      */
+    @Override
     public boolean isConstant() {
         return true;
     }
@@ -222,6 +231,7 @@ public class MatrixType extends StructuredType implements Cloneable {
      *  exist.
      *  @return True.
      */
+    @Override
     public boolean isInstantiable() {
         return _elementType.isInstantiable();
     }
@@ -230,6 +240,7 @@ public class MatrixType extends StructuredType implements Cloneable {
      *  @param type A Type.
      *  @return False.
      */
+    @Override
     public boolean isSubstitutionInstance(Type type) {
         if (type instanceof StructuredType) {
             return ((StructuredType) type)._getRepresentative() == _getRepresentative();
@@ -241,6 +252,7 @@ public class MatrixType extends StructuredType implements Cloneable {
     /** Return the string representation of this type.
      *  @return A String.
      */
+    @Override
     public String toString() {
         return _name;
     }
@@ -253,6 +265,7 @@ public class MatrixType extends StructuredType implements Cloneable {
      *  @exception IllegalActionException If the specified type has a
      *   different structure.
      */
+    @Override
     public void updateType(StructuredType newType)
             throws IllegalActionException {
         if (newType._getRepresentative() != _getRepresentative()) {
@@ -267,6 +280,7 @@ public class MatrixType extends StructuredType implements Cloneable {
             super(BooleanMatrixToken.class, BaseType.BOOLEAN, "[boolean]");
         }
 
+        @Override
         public Token convert(Token token) throws IllegalActionException {
             if (token instanceof MatrixToken) {
                 return BooleanMatrixToken.convert(token);
@@ -285,6 +299,7 @@ public class MatrixType extends StructuredType implements Cloneable {
             super(ComplexMatrixToken.class, BaseType.COMPLEX, "[complex]");
         }
 
+        @Override
         public Token convert(Token token) throws IllegalActionException {
             if (token instanceof MatrixToken) {
                 return ComplexMatrixToken.convert(token);
@@ -312,6 +327,7 @@ public class MatrixType extends StructuredType implements Cloneable {
             super(DoubleMatrixToken.class, BaseType.DOUBLE, "[double]");
         }
 
+        @Override
         public Token convert(Token token) throws IllegalActionException {
             if (token instanceof MatrixToken) {
                 return DoubleMatrixToken.convert(token);
@@ -345,6 +361,7 @@ public class MatrixType extends StructuredType implements Cloneable {
             super(IntMatrixToken.class, BaseType.INT, "[int]");
         }
 
+        @Override
         public Token convert(Token token) throws IllegalActionException {
             if (token instanceof MatrixToken) {
                 return IntMatrixToken.convert(token);
@@ -372,6 +389,7 @@ public class MatrixType extends StructuredType implements Cloneable {
             super(FixMatrixToken.class, BaseType.UNSIZED_FIX, "[fixedpoint]");
         }
 
+        @Override
         public Token convert(Token token) throws IllegalActionException {
             if (token instanceof MatrixToken) {
                 return FixMatrixToken.convert(token);
@@ -398,6 +416,7 @@ public class MatrixType extends StructuredType implements Cloneable {
             super(LongMatrixToken.class, BaseType.LONG, "[long]");
         }
 
+        @Override
         public Token convert(Token token) throws IllegalActionException {
             if (token instanceof MatrixToken) {
                 return LongMatrixToken.convert(token);
@@ -434,6 +453,7 @@ public class MatrixType extends StructuredType implements Cloneable {
      *  @exception IllegalArgumentException If the specified type is
      *   not the same structured type as this one.
      */
+    @Override
     protected int _compare(StructuredType type) {
         return CPO.SAME;
 
@@ -448,6 +468,7 @@ public class MatrixType extends StructuredType implements Cloneable {
      *  value is used by TypeLattice to represent this type.
      *  @return a StructuredType.
      */
+    @Override
     protected StructuredType _getRepresentative() {
         return this;
     }
@@ -460,6 +481,7 @@ public class MatrixType extends StructuredType implements Cloneable {
      *  @exception IllegalArgumentException If the specified type is
      *   not the same structured type as this one.
      */
+    @Override
     protected StructuredType _greatestLowerBound(StructuredType type) {
         return this;
     }
@@ -472,6 +494,7 @@ public class MatrixType extends StructuredType implements Cloneable {
      *  @exception IllegalArgumentException If the specified type is
      *   not the same structured type as this one.
      */
+    @Override
     protected StructuredType _leastUpperBound(StructuredType type) {
         return this;
 

@@ -164,6 +164,7 @@ public class Subscriber extends TypedAtomicActor {
      *  @exception CloneNotSupportedException If a derived class contains
      *   an attribute that cannot be cloned.
      */
+    @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         Subscriber newObject = (Subscriber) super.clone(workspace);
 
@@ -182,6 +183,7 @@ public class Subscriber extends TypedAtomicActor {
      *  @exception IllegalActionException If there is no director, or
      *   if there is no input connection.
      */
+    @Override
     public void fire() throws IllegalActionException {
         super.fire();
         int width = input.getWidth();
@@ -222,7 +224,7 @@ public class Subscriber extends TypedAtomicActor {
      *  @exception NameDuplicationException If there is already a port named "input".
      */
     protected void _createInputPort() throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         input = new SubscriberPort(this, "input");
     }
 }

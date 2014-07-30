@@ -136,6 +136,7 @@ public class GraphMatcher extends GraphAnalyzer {
         String hostXMLFile = all ? args[2] : args[1];
 
         MatchCallback matchCallback = new MatchCallback() {
+            @Override
             public boolean foundMatch(GraphMatcher matcher) {
                 MatchResult match = matcher.getMatchResult();
                 System.out.println("--- Match " + ++count + " ---");
@@ -296,6 +297,7 @@ public class GraphMatcher extends GraphAnalyzer {
      *  #getMatchResult()}.
      */
     public static final MatchCallback DEFAULT_CALLBACK = new MatchCallback() {
+        @Override
         public boolean foundMatch(GraphMatcher matcher) {
             return true;
         }
@@ -312,6 +314,7 @@ public class GraphMatcher extends GraphAnalyzer {
      *  @param object The object to be tested.
      *  @return true if the object is ignored.
      */
+    @Override
     protected boolean _isIgnored(Object object) {
         Boolean ignored = _cachedIgnoredObjects.get(object);
         if (ignored != null) {
@@ -345,6 +348,7 @@ public class GraphMatcher extends GraphAnalyzer {
      *  @return true if the composite entity is an instance of {@link
      *   CompositeActor} and it is opaque.
      */
+    @Override
     protected boolean _isOpaque(CompositeEntity entity) {
         if (entity instanceof CompositeActor
                 && ((CompositeActor) entity).isOpaque()) {
@@ -369,6 +373,7 @@ public class GraphMatcher extends GraphAnalyzer {
      *  @param container The container of the relations.
      *  @return true if the relation should be collapsed.
      */
+    @Override
     protected boolean _relationCollapsing(NamedObj container) {
         Token collapsingToken = _getAttribute(container,
                 RelationCollapsingAttribute.class, true, false, false);
@@ -1012,7 +1017,7 @@ public class GraphMatcher extends GraphAnalyzer {
                 optionalContainer = _getOptionalContainer((NamedObj) patternObject);
                 if (optionalContainer != null
                         && !_ignoredOptionalObjects
-                                .containsKey(optionalContainer)) {
+                        .containsKey(optionalContainer)) {
                     _ignoredOptionalObjects.put(optionalContainer, false);
                     _clearCaches();
                 } else {
@@ -1625,7 +1630,7 @@ public class GraphMatcher extends GraphAnalyzer {
      *
      */
     @SuppressWarnings("serial")
-        private static class LookbackEntry extends Tuple<Object> {
+    private static class LookbackEntry extends Tuple<Object> {
 
         /** Get the list containing objects in the host model.
          *
@@ -1725,6 +1730,7 @@ public class GraphMatcher extends GraphAnalyzer {
          *  @return -1 is the first object is less; 1 if it is greater; or 0 if
          *   the two objects are equal.
          */
+        @Override
         public int compare(Object object1, Object object2) {
             return _getNameString(object1).compareTo(_getNameString(object2));
         }
@@ -1786,6 +1792,7 @@ public class GraphMatcher extends GraphAnalyzer {
          *  @param entity The entity to test.
          *  @return true if it is opaque; false otherwise.
          */
+        @Override
         protected boolean _isOpaque(CompositeEntity entity) {
             return !GraphMatcher.this._isOpaque(entity);
         }
@@ -1796,6 +1803,7 @@ public class GraphMatcher extends GraphAnalyzer {
          *  @param container The container.
          *  @return true if the relations should be collapsed.
          */
+        @Override
         protected boolean _relationCollapsing(NamedObj container) {
             return GraphMatcher.this._relationCollapsing(container);
         }

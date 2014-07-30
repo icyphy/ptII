@@ -86,6 +86,7 @@ public class TestDE {
     public void doublePeriod() {
         // Create an anonymous inner class
         ChangeRequest change = new ChangeRequest(this, "test") {
+            @Override
             protected void _execute() throws Exception {
                 _clock.period.setExpression("2.0");
                 _clock.period.validate();
@@ -111,6 +112,7 @@ public class TestDE {
     public void insertClock() {
         // Create an anonymous inner class
         ChangeRequest change = new ChangeRequest(this, "test2") {
+            @Override
             protected void _execute() throws Exception {
                 _clock.output.unlinkAll();
                 _rec.input.unlinkAll();

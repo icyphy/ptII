@@ -24,7 +24,7 @@
  PT_COPYRIGHT_VERSION_2
  COPYRIGHTENDKEY
 
-*/
+ */
 package ptolemy.actor.gt.controller;
 
 import java.awt.Dimension;
@@ -150,6 +150,7 @@ public class View extends GTEvent {
      *  @exception CloneNotSupportedException If a derived class contains
      *   an attribute that cannot be cloned.
      */
+    @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         View newObject = (View) super.clone(workspace);
         newObject._init();
@@ -167,6 +168,7 @@ public class View extends GTEvent {
      *  @exception IllegalActionException If the tableau cannot be used, or if
      *   thrown by the superclass.
      */
+    @Override
     public RefiringData fire(Token arguments) throws IllegalActionException {
         RefiringData data = super.fire(arguments);
 
@@ -205,7 +207,7 @@ public class View extends GTEvent {
                     && !(tableau.getFrame() instanceof ExtendedGraphFrame)) {
 
                 EventUtils
-                        .setTableau(this, referredTableau, this.tableau, null);
+                .setTableau(this, referredTableau, this.tableau, null);
                 EventUtils.closeTableau(tableau);
                 tableau = null;
             }
@@ -304,6 +306,7 @@ public class View extends GTEvent {
      *
      *  @exception IllegalActionException If thrown by the superclass.
      */
+    @Override
     public void initialize() throws IllegalActionException {
         super.initialize();
         _workspace.removeAll();

@@ -120,6 +120,7 @@ public class TaskReporter extends Sink {
      *  @exception IllegalActionException If any of the above actions
      *  failted.
      */
+    @Override
     public void initialize() throws IllegalActionException {
         super.initialize();
 
@@ -147,6 +148,7 @@ public class TaskReporter extends Sink {
      *  action fails due to network problems, transaction errors,
      *  or any remote exceptions.
      */
+    @Override
     public void fire() throws IllegalActionException {
         super.fire();
         for (int i = 0; i < input.getWidth(); i++) {

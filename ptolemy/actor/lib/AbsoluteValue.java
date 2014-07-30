@@ -90,10 +90,11 @@ public class AbsoluteValue extends Transformer {
      *  @exception CloneNotSupportedException If a derived class has
      *   an attribute that cannot be cloned.
      */
+    @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         AbsoluteValue newObject = (AbsoluteValue) super.clone(workspace);
         newObject.output
-                .setTypeAtLeast(new TypeOfAbsoluteValue(newObject.input));
+        .setTypeAtLeast(new TypeOfAbsoluteValue(newObject.input));
         return newObject;
     }
 
@@ -101,6 +102,7 @@ public class AbsoluteValue extends Transformer {
      *  produce no output.
      *  @exception IllegalActionException If there is no director.
      */
+    @Override
     public void fire() throws IllegalActionException {
         super.fire();
         if (input.hasToken(0)) {
@@ -170,6 +172,7 @@ public class AbsoluteValue extends Transformer {
         /** Return the function result.
          *  @return A Type.
          */
+        @Override
         public Object getValue() {
             return _outputType(_port.getType());
         }
@@ -180,6 +183,7 @@ public class AbsoluteValue extends Transformer {
          *  length.
          *  @return An array of InequalityTerm.
          */
+        @Override
         public InequalityTerm[] getVariables() {
             if (_port.getTypeTerm().isSettable()) {
                 InequalityTerm[] variable = new InequalityTerm[1];

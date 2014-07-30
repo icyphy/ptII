@@ -86,7 +86,7 @@ public class ModularCodeGenerator extends JavaCodeGenerator {
         super(container, name);
 
         generatorPackageList
-                .setExpression("generic.program.procedural.java.modular");
+        .setExpression("generic.program.procedural.java.modular");
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -130,10 +130,11 @@ public class ModularCodeGenerator extends JavaCodeGenerator {
                 Profile.Port profilePort = null;
                 try {
                     if (port instanceof TypedIOPort) {
-                        profilePort = model.convertProfilePort((TypedIOPort)port);
+                        profilePort = model
+                                .convertProfilePort((TypedIOPort) port);
                     } else {
-                        throw new InternalErrorException(port, null,
-                                "Port " + port + " is not a TypedIOPort?");
+                        throw new InternalErrorException(port, null, "Port "
+                                + port + " is not a TypedIOPort?");
                     }
                 } catch (Throwable throwable) {
                     throw new IllegalActionException(
@@ -157,10 +158,10 @@ public class ModularCodeGenerator extends JavaCodeGenerator {
                         + (port.isInput() ? DFUtilities
                                 .getTokenConsumptionRate(port) : DFUtilities
                                 .getTokenProductionRate(port)) + ", "
-                        + ptTypeToCodegenType(((TypedIOPort) port).getType())
-                        + ", " + port.isInput() + ", " + port.isOutput() + ", "
-                        + profilePort.multiport() + ", \""
-                        + profilePort.getPubSubChannelName() + "\"));" + _eol);
+                                + ptTypeToCodegenType(((TypedIOPort) port).getType())
+                                + ", " + port.isInput() + ", " + port.isOutput() + ", "
+                                + profilePort.multiport() + ", \""
+                                + profilePort.getPubSubChannelName() + "\"));" + _eol);
             }
         }
         profileCode.append(INDENT2 + "return ports;" + _eol);
@@ -214,13 +215,13 @@ public class ModularCodeGenerator extends JavaCodeGenerator {
         StringBuffer actorGraph = new StringBuffer();
 
         actorGraph
-                .append(INDENT1
-                        + "public List<Profile.FiringFunction> firings() throws IllegalActionException {"
-                        + _eol);
+        .append(INDENT1
+                + "public List<Profile.FiringFunction> firings() throws IllegalActionException {"
+                + _eol);
         actorGraph
-                .append(INDENT2
-                        + "List<Profile.FiringFunction> firingFunctions = new LinkedList<Profile.FiringFunction>();"
-                        + _eol);
+        .append(INDENT2
+                + "List<Profile.FiringFunction> firingFunctions = new LinkedList<Profile.FiringFunction>();"
+                + _eol);
         actorGraph.append(INDENT2 + "FiringFunction firingFunction;" + _eol
                 + _eol);
         int index = 0;
@@ -252,15 +253,15 @@ public class ModularCodeGenerator extends JavaCodeGenerator {
                 if (!externalPortName.equals("")) {
                     appendFiringFunction = true;
                     firingFunction
-                            .append(INDENT2
-                                    + "firingFunction.ports.add(new FiringFunctionPort(\""
-                                    + inputPort.getName()
-                                    + "\",\""
-                                    + externalPortName
-                                    + "\","
-                                    + DFUtilities
-                                            .getTokenConsumptionRate(inputPort)
-                                    + "," + inputPort.isInput() + "));" + _eol);
+                    .append(INDENT2
+                            + "firingFunction.ports.add(new FiringFunctionPort(\""
+                            + inputPort.getName()
+                            + "\",\""
+                            + externalPortName
+                            + "\","
+                            + DFUtilities
+                            .getTokenConsumptionRate(inputPort)
+                            + "," + inputPort.isInput() + "));" + _eol);
                 }
             }
 
@@ -278,15 +279,15 @@ public class ModularCodeGenerator extends JavaCodeGenerator {
                 if (!externalPortName.equals("")) {
                     appendFiringFunction = true;
                     firingFunction
-                            .append(INDENT2
-                                    + "firingFunction.ports.add(new FiringFunctionPort(\""
-                                    + outputPort.getName()
-                                    + "\",\""
-                                    + externalPortName
-                                    + "\","
-                                    + DFUtilities
-                                            .getTokenProductionRate(outputPort)
-                                    + "," + outputPort.isInput() + "));" + _eol);
+                    .append(INDENT2
+                            + "firingFunction.ports.add(new FiringFunctionPort(\""
+                            + outputPort.getName()
+                            + "\",\""
+                            + externalPortName
+                            + "\","
+                            + DFUtilities
+                            .getTokenProductionRate(outputPort)
+                            + "," + outputPort.isInput() + "));" + _eol);
                 }
             }
             firingFunction.append(INDENT2
@@ -313,6 +314,7 @@ public class ModularCodeGenerator extends JavaCodeGenerator {
      * @exception KernelException
      *                If a type conflict occurs or the model is running.
      */
+    @Override
     public int generateCode(StringBuffer code) throws KernelException {
 
         int returnValue = -1;
@@ -370,6 +372,7 @@ public class ModularCodeGenerator extends JavaCodeGenerator {
      * @exception IllegalActionException
      *                Not thrown in this base class.
      */
+    @Override
     public String generateMainEntryCode() throws IllegalActionException {
 
         StringBuffer mainEntryCode = new StringBuffer();
@@ -378,13 +381,13 @@ public class ModularCodeGenerator extends JavaCodeGenerator {
         // for the whole model.
         if (_isTopLevel()) {
             mainEntryCode
-                    .append(_eol
-                            + _eol
-                            + "public static void main(String [] args) throws Exception {"
-                            + _eol + _sanitizedModelName + " model = new "
-                            + _sanitizedModelName + "();" + _eol
-                            + "model.run();" + _eol + "}" + _eol
-                            + "public void run() throws Exception {" + _eol);
+            .append(_eol
+                    + _eol
+                    + "public static void main(String [] args) throws Exception {"
+                    + _eol + _sanitizedModelName + " model = new "
+                    + _sanitizedModelName + "();" + _eol
+                    + "model.run();" + _eol + "}" + _eol
+                    + "public void run() throws Exception {" + _eol);
         } else {
             boolean addComma = false;
 
@@ -448,7 +451,7 @@ public class ModularCodeGenerator extends JavaCodeGenerator {
                             }
                             addComma = true;
                         }
-                        */
+             */
 
             mainEntryCode.append(") {" + _eol);
 
@@ -464,6 +467,7 @@ public class ModularCodeGenerator extends JavaCodeGenerator {
      * @exception IllegalActionException
      *                Not thrown in this base class.
      */
+    @Override
     public String generateMainExitCode() throws IllegalActionException {
 
         if (_isTopLevel()) {

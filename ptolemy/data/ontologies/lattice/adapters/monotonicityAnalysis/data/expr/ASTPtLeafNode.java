@@ -73,13 +73,14 @@ public class ASTPtLeafNode extends LatticeOntologyASTNodeAdapter {
      *  @exception IllegalActionException If there is an error building the constraint list.
      *  @return The list of constraints for this adapter.
      */
+    @Override
     public List<Inequality> constraintList() throws IllegalActionException {
 
         ptolemy.data.expr.ASTPtLeafNode leafNode = (ptolemy.data.expr.ASTPtLeafNode) _getNode();
 
         ASTPtLeafNodeFunction astRelationFunction = new ASTPtLeafNodeFunction(
                 leafNode, getSolver().getOntology(), getSolver()
-                        .getAllContainedOntologies());
+                .getAllContainedOntologies());
 
         ConceptFunctionInequalityTerm constraint = new ConceptFunctionInequalityTerm(
                 astRelationFunction, _getChildNodeTerms());
@@ -100,7 +101,7 @@ public class ASTPtLeafNode extends LatticeOntologyASTNodeAdapter {
      *  syntax trees of Ptolemy expressions.
      */
     private static class ASTPtLeafNodeFunction extends
-            MonotonicityConceptFunction {
+    MonotonicityConceptFunction {
         // FindBugs indicates that this should be a static class.
 
         /** Create a new function for inferring the monotonicity concept
@@ -115,7 +116,7 @@ public class ASTPtLeafNode extends LatticeOntologyASTNodeAdapter {
          */
         public ASTPtLeafNodeFunction(ptolemy.data.expr.ASTPtLeafNode leafNode,
                 Ontology monotonicityOntology, List<Ontology> domainOntologies)
-                throws IllegalActionException {
+                        throws IllegalActionException {
             super("MonotonicityASTPtLeafNodeFunction", 0, monotonicityOntology,
                     domainOntologies);
             _leafNode = leafNode;
@@ -130,6 +131,7 @@ public class ASTPtLeafNode extends LatticeOntologyASTNodeAdapter {
          *   the concept value from the original domain ontology with the
          *   leaf node's name string.
          */
+        @Override
         protected Concept _evaluateFunction(List<Concept> inputConceptValues)
                 throws IllegalActionException {
 

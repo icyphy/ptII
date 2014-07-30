@@ -143,6 +143,7 @@ public class JAIBorder extends Transformer {
      *  @exception IllegalActionException If the function is not recognized,
      *  or if a contained method throws it.
      */
+    @Override
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         if (attribute == borderType) {
@@ -188,6 +189,7 @@ public class JAIBorder extends Transformer {
      *  @exception CloneNotSupportedException If a derived class contains
      *  an attribute that cannot be cloned.
      */
+    @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         JAIBorder newObject = (JAIBorder) super.clone(workspace);
         newObject._constantValues = null;
@@ -198,6 +200,7 @@ public class JAIBorder extends Transformer {
      *  @exception IllegalActionException If a contained method throws it,
      *   or if a token is received that contains a null image.
      */
+    @Override
     public void fire() throws IllegalActionException {
         super.fire();
 

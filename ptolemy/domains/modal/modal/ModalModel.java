@@ -150,7 +150,7 @@ public class ModalModel extends TypedCompositeActor implements ChangeListener {
      *   an entity with the specified name.
      */
     public ModalModel(Workspace workspace) throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         super(workspace);
         _init();
     }
@@ -197,6 +197,7 @@ public class ModalModel extends TypedCompositeActor implements ChangeListener {
     ////                         public methods                    ////
 
     /** React to a change of the director or other property. */
+    @Override
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         if (attribute == directorClass) {
@@ -220,7 +221,7 @@ public class ModalModel extends TypedCompositeActor implements ChangeListener {
                         } catch (ClassNotFoundException e2) {
                             throw new IllegalActionException(this, null, e2,
                                     "Invalid directorClass. \"" + className
-                                            + "\".");
+                                    + "\".");
                         }
                     } else {
                         throw new IllegalActionException(this, null, e,
@@ -233,6 +234,7 @@ public class ModalModel extends TypedCompositeActor implements ChangeListener {
                 // change request.
                 ChangeRequest request = new ChangeRequest(this,
                         "Create a new director") {
+                    @Override
                     protected void _execute() throws Exception {
                         Director director = getDirector();
 
@@ -256,9 +258,9 @@ public class ModalModel extends TypedCompositeActor implements ChangeListener {
                         } catch (Exception e) {
                             throw new IllegalActionException(
                                     "Director class \"" + newDirectorClass
-                                            + "\" cannot be used "
-                                            + "because it does not have a "
-                                            + "\"controllerName\" attribute.");
+                                    + "\" cannot be used "
+                                    + "because it does not have a "
+                                    + "\"controllerName\" attribute.");
                         }
 
                         if (director != null
@@ -276,7 +278,7 @@ public class ModalModel extends TypedCompositeActor implements ChangeListener {
                             // support multirate firing in order for this to work.
                             if (newDirector.supportMultirateFiring()
                                     && executiveDirector
-                                            .supportMultirateFiring()) {
+                                    .supportMultirateFiring()) {
                                 getController().setSupportMultirate(true);
                             }
                         }
@@ -296,6 +298,7 @@ public class ModalModel extends TypedCompositeActor implements ChangeListener {
      *  @param change The change that has been executed, or null if
      *   the change was not done via a ChangeRequest.
      */
+    @Override
     public void changeExecuted(ChangeRequest change) {
         // Ignore... Nothing to do.
     }
@@ -307,6 +310,7 @@ public class ModalModel extends TypedCompositeActor implements ChangeListener {
      *   the change was not done via a ChangeRequest.
      *  @param exception The exception that resulted.
      */
+    @Override
     public void changeFailed(ChangeRequest change, Exception exception) {
         MessageHandler.error("Failed to create a new director.", exception);
     }
@@ -319,6 +323,7 @@ public class ModalModel extends TypedCompositeActor implements ChangeListener {
      *   if one of the attributes cannot be cloned.
      *  @return The new Entity.
      */
+    @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         ModalModel newModel = (ModalModel) super.clone(workspace);
         newModel._controller = (FSMActor) newModel.getEntity("_Controller");
@@ -345,6 +350,7 @@ public class ModalModel extends TypedCompositeActor implements ChangeListener {
      *  @exception IOException If an I/O error occurs.
      *  @see ptolemy.kernel.util.MoMLExportable
      */
+    @Override
     public void exportMoML(Writer output, int depth, String name)
             throws IOException {
         try {
@@ -395,6 +401,7 @@ public class ModalModel extends TypedCompositeActor implements ChangeListener {
      *  @param name The name of the desired attribute.
      *  @return The requested attribute if it is found, null otherwise.
      */
+    @Override
     public Attribute getAttribute(String name) {
         try {
             _workspace.getReadAccess();
@@ -418,6 +425,7 @@ public class ModalModel extends TypedCompositeActor implements ChangeListener {
      *  @return A representation of the dependencies between input ports
      *   and output ports.
      */
+    @Override
     public CausalityInterface getCausalityInterface() {
         try {
             boolean stateDependentCausality = ((BooleanToken) _controller.stateDependentCausality
@@ -477,6 +485,7 @@ public class ModalModel extends TypedCompositeActor implements ChangeListener {
      *  @exception IllegalActionException If the handler handles the
      *   error by throwing an exception.
      */
+    @Override
     public boolean handleModelError(NamedObj context,
             IllegalActionException exception) throws IllegalActionException {
         if (_debugging) {
@@ -501,6 +510,7 @@ public class ModalModel extends TypedCompositeActor implements ChangeListener {
      *                controller, or can not find refinement of the
      *                current state.
      */
+    @Override
     public void initialize() throws IllegalActionException {
         // Reset local receivers here before the initialize method
         // of the director so that any initial outputs that
@@ -525,6 +535,7 @@ public class ModalModel extends TypedCompositeActor implements ChangeListener {
      *  @exception NameDuplicationException If the entity already has a port
      *   with the specified name.
      */
+    @Override
     public Port newPort(String name) throws NameDuplicationException {
         try {
             _workspace.getWriteAccess();
@@ -570,7 +581,7 @@ public class ModalModel extends TypedCompositeActor implements ChangeListener {
     ////                         private methods                   ////
     // Initialize the model.
     private void _init() throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         // The base class identifies the class name as TypedCompositeActor
         // irrespective of the actual class name.  We override that here.
         setClassName("ptolemy.domains.modal.modal.ModalModel");
@@ -587,7 +598,7 @@ public class ModalModel extends TypedCompositeActor implements ChangeListener {
         // Whether the controller does conservative analysis or not should
         // depend on the parameter of this actor.
         _controller.stateDependentCausality
-                .setExpression("stateDependentCausality");
+        .setExpression("stateDependentCausality");
 
         // configure the directorClass parameter
         directorClass = new StringParameter(this, "directorClass");
@@ -628,7 +639,7 @@ public class ModalModel extends TypedCompositeActor implements ChangeListener {
             // dropped into a blank editor. Model designers need to configure
             // it if FSMDirector is not the desired director.
             directorClass
-                    .setExpression("ptolemy.domains.modal.kernel.FSMDirector");
+            .setExpression("ptolemy.domains.modal.kernel.FSMDirector");
         }
 
         // Create a more reasonable default icon.

@@ -75,6 +75,7 @@ import diva.util.xml.XmlReader;
  @Pt.AcceptedRating Red (johnr)
  @deprecated Use ptolemy.vergil.kernel.attributes.TextAttribute.
  */
+@Deprecated
 public class AnnotationEditorFactory extends EditorFactory {
     /** Construct a factory with the specified container and name.
      *  @param container The container.
@@ -95,6 +96,7 @@ public class AnnotationEditorFactory extends EditorFactory {
 
     /** Create an editor for configuring the specified object.
      */
+    @Override
     public void createEditor(NamedObj object, Frame parent) {
         ComponentDialog dialog = new ComponentDialog(parent, "Edit Annotation",
                 createEditorPane());
@@ -240,7 +242,7 @@ public class AnnotationEditorFactory extends EditorFactory {
      *  visible attributes).
      */
     @SuppressWarnings("serial")
-        public class AnnotationTextEditor extends JPanel {
+    public class AnnotationTextEditor extends JPanel {
         /** Create an annotation text editor.
          *  @param textArea The text area.
          */

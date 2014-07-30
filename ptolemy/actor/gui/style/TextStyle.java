@@ -110,6 +110,7 @@ public class TextStyle extends ParameterEditorStyle {
      *  @param param The attribute that this annotates.
      *  @return True.
      */
+    @Override
     public boolean acceptable(Settable param) {
         return true;
     }
@@ -121,6 +122,7 @@ public class TextStyle extends ParameterEditorStyle {
      *
      *  @param query The query into which to add the entry.
      */
+    @Override
     public void addEntry(PtolemyQuery query) {
         Settable container = (Settable) getContainer();
         String name = container.getName();
@@ -155,7 +157,7 @@ public class TextStyle extends ParameterEditorStyle {
     // Initialize height and width.  This method is called by the
     // constructors so as to avoid code duplication.
     private void _initialize() throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         height = new Parameter(this, "height");
         height.setToken("10");
         height.setTypeEquals(BaseType.INT);

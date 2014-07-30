@@ -98,6 +98,7 @@ public class URIAttribute extends SingletonAttribute {
      *  @exception CloneNotSupportedException If a derived class contains
      *   an attribute that cannot be cloned.
      */
+    @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         URIAttribute newObject = (URIAttribute) super.clone(workspace);
         // This line is not strictly necessary because the way

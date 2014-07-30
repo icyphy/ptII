@@ -24,7 +24,7 @@
  PT_COPYRIGHT_VERSION_2
  COPYRIGHTENDKEY
 
-*/
+ */
 package ptolemy.actor.gui.properties;
 
 import java.awt.event.ActionEvent;
@@ -80,6 +80,7 @@ public class Button extends ActionGUIProperty {
      *  @param name A name to present to the user.
      *  @see #getDisplayName()
      */
+    @Override
     public void setDisplayName(String name) {
         super.setDisplayName(name);
         ((JButton) getComponent()).setText(name);
@@ -93,6 +94,7 @@ public class Button extends ActionGUIProperty {
      *  @exception IllegalActionException If the change is not acceptable
      *   to this container (not thrown in this base class).
      */
+    @Override
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         super.attributeChanged(attribute);
@@ -119,9 +121,11 @@ public class Button extends ActionGUIProperty {
      *  @return A Swing component that can be enclosed in this GUI property.
      *  @exception IllegalActionException Not thrown in this base class.
      */
+    @Override
     protected JComponent _createComponent() throws IllegalActionException {
         JButton button = new JButton(getDisplayName());
         button.addActionListener(new ActionListener() {
+            @Override
             public void actionPerformed(ActionEvent e) {
                 perform();
             }

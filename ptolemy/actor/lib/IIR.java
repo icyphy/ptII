@@ -121,6 +121,7 @@ public class IIR extends Transformer {
      *  @exception IllegalActionException If this method is invoked
      *   with an unrecognized parameter.
      */
+    @Override
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         if (attribute == numerator) {
@@ -136,8 +137,8 @@ public class IIR extends Transformer {
                     .booleanValue()) {
                 try {
                     MessageHandler
-                            .warning("First denominator value is required to be 1. "
-                                    + "Using 1.");
+                    .warning("First denominator value is required to be 1. "
+                            + "Using 1.");
                 } catch (CancelException ex) {
                     throw new IllegalActionException(this,
                             "Canceled parameter change.");
@@ -164,6 +165,7 @@ public class IIR extends Transformer {
      *  @exception CloneNotSupportedException If a derived class has
      *   an attribute that cannot be cloned.
      */
+    @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         IIR newObject = (IIR) super.clone(workspace);
 
@@ -204,6 +206,7 @@ public class IIR extends Transformer {
      *
      *  @exception IllegalActionException Not thrown in this base class.
      */
+    @Override
     public void fire() throws IllegalActionException {
         super.fire();
         if (input.hasToken(0)) {
@@ -226,6 +229,7 @@ public class IIR extends Transformer {
      *   @exception IllegalActionException If the base class throws
      *    it.
      */
+    @Override
     public void initialize() throws IllegalActionException {
         super.initialize();
 
@@ -236,6 +240,7 @@ public class IIR extends Transformer {
 
     /** Return false if the input does not have a token.
      * @exception IllegalActionException */
+    @Override
     public boolean prefire() throws IllegalActionException {
         boolean result = super.prefire();
         return result && input.hasToken(0);
@@ -245,6 +250,7 @@ public class IIR extends Transformer {
      *
      *  @exception IllegalActionException If the base class throws it.
      */
+    @Override
     public boolean postfire() throws IllegalActionException {
         _stateVector[_currentTap] = _latestWindow;
 
@@ -262,7 +268,7 @@ public class IIR extends Transformer {
         for (int j = 1; j < _denominator.length; j++) {
             xCurrent = xCurrent.subtract(_denominator[j]
                     .multiply(_stateVector[(_currentTap + j)
-                            % _stateVector.length]));
+                                           % _stateVector.length]));
         }
 
         _stateVector[_currentTap] = xCurrent;
@@ -272,7 +278,7 @@ public class IIR extends Transformer {
         for (int k = 0; k < _numerator.length; k++) {
             yCurrent = yCurrent.add(_numerator[k]
                     .multiply(_stateVector[(_currentTap + k)
-                            % _stateVector.length]));
+                                           % _stateVector.length]));
         }
 
         return yCurrent;

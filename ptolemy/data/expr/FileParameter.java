@@ -218,6 +218,7 @@ public class FileParameter extends StringParameter implements FileOrURLAccessor 
      *  @exception IllegalActionException If a parse error occurs
      *   reading the file name.
      */
+    @Override
     public File asFile() throws IllegalActionException {
         String name = stringValue();
 
@@ -241,6 +242,7 @@ public class FileParameter extends StringParameter implements FileOrURLAccessor 
      *   if the file cannot be represented as a URL (e.g. System.in), or
      *   the name specification cannot be parsed.
      */
+    @Override
     public URL asURL() throws IllegalActionException {
         String name = stringValue();
 
@@ -260,6 +262,7 @@ public class FileParameter extends StringParameter implements FileOrURLAccessor 
      *  @exception CloneNotSupportedException If a derived class contains
      *   an attribute that cannot be cloned.
      */
+    @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         FileParameter newObject = (FileParameter) super.clone(workspace);
         newObject._baseDirectory = null;
@@ -275,6 +278,7 @@ public class FileParameter extends StringParameter implements FileOrURLAccessor 
      *  @exception IllegalActionException If the file or URL cannot be
      *   closed.
      */
+    @Override
     public void close() throws IllegalActionException {
         if (_reader != null) {
             if (_reader != FileUtilities.STD_IN) {
@@ -311,6 +315,7 @@ public class FileParameter extends StringParameter implements FileOrURLAccessor 
      *  @see URIAttribute#getModelURI(NamedObj)
      *  @return A directory name, or null if there is none.
      */
+    @Override
     public URI getBaseDirectory() {
         if (_baseDirectory != null) {
             return _baseDirectory;
@@ -337,6 +342,7 @@ public class FileParameter extends StringParameter implements FileOrURLAccessor 
      *  @exception IllegalActionException If the file or URL cannot be
      *   opened.
      */
+    @Override
     public BufferedReader openForReading() throws IllegalActionException {
         try {
             // In case there is anything open, close it.
@@ -365,6 +371,7 @@ public class FileParameter extends StringParameter implements FileOrURLAccessor 
      *  @exception IllegalActionException If the file cannot be opened
      *   or created.
      */
+    @Override
     public Writer openForWriting() throws IllegalActionException {
         return openForWriting(false);
     }
@@ -388,6 +395,7 @@ public class FileParameter extends StringParameter implements FileOrURLAccessor 
      *  @exception IllegalActionException If the file cannot be opened
      *   or created.
      */
+    @Override
     public Writer openForWriting(boolean append) throws IllegalActionException {
         try {
             // In case there is anything open, close it.
@@ -406,6 +414,7 @@ public class FileParameter extends StringParameter implements FileOrURLAccessor 
      *  @see #getBaseDirectory()
      *  @see URIAttribute#getModelURI(NamedObj)
      */
+    @Override
     public void setBaseDirectory(URI directory) {
         _baseDirectory = directory;
     }

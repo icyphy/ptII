@@ -49,7 +49,8 @@ the time of the top level director.
 @Pt.ProposedRating Yellow (jiazou)
 @Pt.AcceptedRating
 @deprecated Use CurrentTime with useLocalTime unchecked.
-*/
+ */
+@Deprecated
 public class TopLevelCurrentTime extends TimedSource {
     /** Construct an actor with the given container and name.
      *
@@ -74,6 +75,7 @@ public class TopLevelCurrentTime extends TimedSource {
     /** Send the model time of the top level to the output.
      *  @exception IllegalActionException If send() throws it.
      */
+    @Override
     public void fire() throws IllegalActionException {
 
         NamedObj container = getContainer();

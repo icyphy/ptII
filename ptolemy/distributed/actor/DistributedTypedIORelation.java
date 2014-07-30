@@ -105,6 +105,7 @@ public class DistributedTypedIORelation extends TypedIORelation {
      *  @param except The port to exclude.
      *  @return The receivers associated with this relation.
      */
+    @Override
     public Receiver[][] deepReceivers(IOPort except) {
         if (VERBOSE) {
             System.out.println("> DistributedTypedIORelation.deepReceivers()");
@@ -125,7 +126,7 @@ public class DistributedTypedIORelation extends TypedIORelation {
         }
 
         ((DistributedReceiver) intermediateReceiver[0][0])
-                .setServicesReceiversListMap(servicesReceiversListMap);
+        .setServicesReceiversListMap(servicesReceiversListMap);
     }
 
     ///////////////////////////////////////////////////////////////////

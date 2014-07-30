@@ -115,6 +115,7 @@ public class Translate2D extends GRTransform2D {
      *  @exception IllegalActionException If the value of some
      *  parameters can't be obtained.
      */
+    @Override
     protected void _applyInitialTransform(Figure figure)
             throws IllegalActionException {
         double initialX = ((DoubleToken) initialXTranslation.getToken())
@@ -132,6 +133,7 @@ public class Translate2D extends GRTransform2D {
      *  @exception IllegalActionException If the value of some
      *  parameters can't be obtained.
      */
+    @Override
     protected void _applyTransform(Figure figure) throws IllegalActionException {
         boolean applyTransform = false;
         double xOffset = 0.0;

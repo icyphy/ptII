@@ -58,7 +58,7 @@ public class ProductLatticeWrapperConceptFunction extends ConceptFunction {
     public ProductLatticeWrapperConceptFunction(String name,
             ProductLatticeOntology inputOutputOntology,
             Ontology originalFunctionOntology, ConceptFunction originalFunction)
-            throws IllegalActionException {
+                    throws IllegalActionException {
         super(name, originalFunction.getNumberOfArguments(),
                 inputOutputOntology);
 
@@ -79,6 +79,7 @@ public class ProductLatticeWrapperConceptFunction extends ConceptFunction {
      *  @return The concept output result of the function.
      *  @exception IllegalActionException If there is an error evaluating the function.
      */
+    @Override
     protected Concept _evaluateFunction(List<Concept> argValues)
             throws IllegalActionException {
 

@@ -81,6 +81,7 @@ public class ConceptTermManager implements ConceptTermFactory {
      * @param object The given object.
      * @return The property term.
      */
+    @Override
     public ptolemy.graph.InequalityTerm getConceptTerm(Object object) {
         if (object == null || object instanceof ptolemy.graph.InequalityTerm) {
             return (ptolemy.graph.InequalityTerm) object;
@@ -120,7 +121,7 @@ public class ConceptTermManager implements ConceptTermFactory {
      */
     public List<ptolemy.graph.InequalityTerm> getAffectedTerms(
             ptolemy.graph.InequalityTerm updateTerm)
-            throws IllegalActionException {
+                    throws IllegalActionException {
         return new ArrayList<ptolemy.graph.InequalityTerm>();
     }
 
@@ -166,6 +167,7 @@ public class ConceptTermManager implements ConceptTermFactory {
          *
          *  @return The associated model object
          */
+        @Override
         public Object getAssociatedObject() {
             return _object;
         }
@@ -177,6 +179,7 @@ public class ConceptTermManager implements ConceptTermFactory {
          * term is not effective
          * @see #setValue(Object)
          */
+        @Override
         public Object getValue() {
             //if (_isEffective) {
             return _solver.getConcept(_object);
@@ -190,6 +193,7 @@ public class ConceptTermManager implements ConceptTermFactory {
          *  If the property of this port is set, return an array of size zero.
          *  @return An array of InequalityTerm.
          */
+        @Override
         public InequalityTerm[] getVariables() {
             if (isSettable()) {
                 InequalityTerm[] variable = new InequalityTerm[1];
@@ -223,6 +227,7 @@ public class ConceptTermManager implements ConceptTermFactory {
          *  @exception IllegalActionException If the type is not settable,
          *   or the argument is not a Type.
          */
+        @Override
         public void initialize(Object property) throws IllegalActionException {
             if (!isSettable()) {
                 throw new IllegalActionException(
@@ -257,6 +262,7 @@ public class ConceptTermManager implements ConceptTermFactory {
          *
          *  @return True if the property can be changed; false otherwise.
          */
+        @Override
         public boolean isSettable() {
             return _solver.isSettable(_object);
         }
@@ -267,6 +273,7 @@ public class ConceptTermManager implements ConceptTermFactory {
          *
          *  @return True if the current value is acceptable.
          */
+        @Override
         public boolean isValueAcceptable() {
             Concept property = (Concept) getValue();
 
@@ -299,6 +306,7 @@ public class ConceptTermManager implements ConceptTermFactory {
          *   the declared property of this port.
          *  @see #getValue()
          */
+        @Override
         public void setValue(Object property) throws IllegalActionException {
             if (!isSettable()) {
                 throw new IllegalActionException(
@@ -312,6 +320,7 @@ public class ConceptTermManager implements ConceptTermFactory {
          *  and its property.
          *  @return A description of the port and its property.
          */
+        @Override
         public String toString() {
 
             //return "( " + _object.hashCode() + "--" + hashCode() +

@@ -70,6 +70,7 @@ public class ChangeFixedWidth1ToAuto extends MoMLFilterSimple {
      *   to leave it unchanged, or null to cause the current element
      *   to be ignored (unless the attributeValue argument is null).
      */
+    @Override
     public String filterAttributeValue(NamedObj container, String element,
             String attributeName, String attributeValue, String xmlFile) {
         return attributeValue;
@@ -87,6 +88,7 @@ public class ChangeFixedWidth1ToAuto extends MoMLFilterSimple {
      *  @exception Exception If there is a problem modifying the
      *  specified container.
      */
+    @Override
     public void filterEndElement(NamedObj container, String elementName,
             StringBuffer currentCharData, String xmlFile) throws Exception {
         if (container instanceof IORelation) {
@@ -140,6 +142,7 @@ public class ChangeFixedWidth1ToAuto extends MoMLFilterSimple {
     /** Return a string that describes what the filter does.
      *  @return A description of the filter (ending with a newline).
      */
+    @Override
     public String toString() {
         return Integer.toHexString(hashCode());
     }
@@ -161,13 +164,13 @@ public class ChangeFixedWidth1ToAuto extends MoMLFilterSimple {
                 int length = filename.length();
                 if (length > 3
                         && filename.substring(length - 4, length)
-                                .toLowerCase(Locale.getDefault())
-                                .equals(".xml")) {
+                        .toLowerCase(Locale.getDefault())
+                        .equals(".xml")) {
                     try {
                         if (filter == null
                                 || file.toURI().toString()
-                                        .toLowerCase(Locale.getDefault())
-                                        .contains("/" + filter + "/")) {
+                                .toLowerCase(Locale.getDefault())
+                                .contains("/" + filter + "/")) {
                             _updateFile(file.toString());
                         }
                     } catch (Exception e) {

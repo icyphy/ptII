@@ -54,6 +54,7 @@ public class AttributeNodeModel extends NamedObjNodeModel {
      *  @param node The node to be deleted.
      *  @return A valid MoML string.
      */
+    @Override
     public String getDeleteNodeMoML(Object node) {
         NamedObj attribute = ((Locatable) node).getContainer();
         return "<deleteProperty name=\"" + attribute.getName() + "\"/>\n";
@@ -64,6 +65,7 @@ public class AttributeNodeModel extends NamedObjNodeModel {
      *  @return The container of the location's container, which should be
      *   the root of the graph.
      */
+    @Override
     public Object getParent(Object node) {
         return ((Locatable) node).getContainer().getContainer();
     }
@@ -72,6 +74,7 @@ public class AttributeNodeModel extends NamedObjNodeModel {
      *  @param node The node.
      *  @return A NullIterator, since no edges are attached to attributes.
      */
+    @Override
     public Iterator inEdges(Object node) {
         return new NullIterator();
     }
@@ -80,6 +83,7 @@ public class AttributeNodeModel extends NamedObjNodeModel {
      *  @param node The node.
      *  @return A NullIterator, since no edges are attached to attributes.
      */
+    @Override
     public Iterator outEdges(Object node) {
         return new NullIterator();
     }
@@ -91,6 +95,7 @@ public class AttributeNodeModel extends NamedObjNodeModel {
      *  @param eventSource The source of the remove event (ignored).
      *  @param node The node.
      */
+    @Override
     public void removeNode(final Object eventSource, final Object node) {
         NamedObj attribute = ((Locatable) node).getContainer();
         NamedObj container = attribute.getContainer();

@@ -102,6 +102,7 @@ public class JAITIFFWriter extends JAIWriter {
      *  or created, if the user refuses to overwrite an existing file,
      *  of if the image in unable to be encoded.
      */
+    @Override
     public boolean postfire() throws IllegalActionException {
         _imageEncoderName = "TIFF";
 

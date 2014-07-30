@@ -72,6 +72,7 @@ public class PortNameChanges extends MoMLFilterSimple {
      *  @param xmlFile The file currently being parsed.
      *  @return the value of the attributeValue argument.
      */
+    @Override
     public String filterAttributeValue(NamedObj container, String element,
             String attributeName, String attributeValue, String xmlFile) {
         // This method gets called many times by the MoMLParser,
@@ -97,7 +98,8 @@ public class PortNameChanges extends MoMLFilterSimple {
                 // to a map for later use.
 
                 // Coverity says that container could be null.
-                String containerName = (container == null ? "" : container.getFullName());
+                String containerName = (container == null ? "" : container
+                        .getFullName());
 
                 String newPort = (String) _portMap.get(attributeValue);
 
@@ -118,10 +120,10 @@ public class PortNameChanges extends MoMLFilterSimple {
                 _currentlyProcessingActorWithPortNameChanges = true;
                 _doneProcessingActorWithPortNameChanges = false;
                 // Coverity says that container could be null.
-                String containerName = (container == null ? "" : container.getFullName());
+                String containerName = (container == null ? "" : container
+                        .getFullName());
 
-                _currentActorFullName = containerName + "."
-                        + _lastNameSeen;
+                _currentActorFullName = containerName + "." + _lastNameSeen;
                 _portMap = (HashMap) _actorsWithPortNameChanges
                         .get(attributeValue);
             } else if (_currentlyProcessingActorWithPortNameChanges
@@ -138,17 +140,17 @@ public class PortNameChanges extends MoMLFilterSimple {
             }
         } else if (_doneProcessingActorWithPortNameChanges
                 && attributeName.equals("port")
-                && _containerPortMap.containsKey(
-                        (container == null ? "" : container.getFullName())
-                        + "." + attributeValue)) {
+                && _containerPortMap.containsKey((container == null ? ""
+                        : container.getFullName()) + "." + attributeValue)) {
             // We are processing actors that have port names.
             // Now map the old port to the new port.
 
             // Coverity says that container could be null.
-            String containerName = (container == null ? "" : container.getFullName());
+            String containerName = (container == null ? "" : container
+                    .getFullName());
 
-            String newPort = (String) _containerPortMap.get(containerName
-                    + "." + attributeValue);
+            String newPort = (String) _containerPortMap.get(containerName + "."
+                    + attributeValue);
 
             // Extreme chaos here because sometimes
             // container.getFullName() will be ".transform_2.transform" and
@@ -214,6 +216,7 @@ public class PortNameChanges extends MoMLFilterSimple {
      *  by this method.
      *  @exception Exception Not thrown in this base class.
      */
+    @Override
     public void filterEndElement(NamedObj container, String elementName,
             StringBuffer currentCharData, String xmlFile) throws Exception {
         if (elementName.equals("entity") || elementName.equals("class")) {
@@ -252,6 +255,7 @@ public class PortNameChanges extends MoMLFilterSimple {
     /** Return a string that describes what the filter does.
      *  @return the description of the filter that ends with a newline.
      */
+    @Override
     public String toString() {
         StringBuffer results = new StringBuffer(getClass().getName()
                 + ": Update any actor port names that have been\n"

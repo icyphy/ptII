@@ -90,6 +90,7 @@ public class TypedNodeRenderer implements NodeRenderer {
      * Return the rendered visual representation of this node by
      * looking up the class of its semantic object.
      */
+    @Override
     public Figure render(Object node) {
         try {
             Object o = _controller.getGraphModel().getSemanticObject(node);

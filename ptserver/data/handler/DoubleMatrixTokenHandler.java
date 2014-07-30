@@ -47,7 +47,7 @@ import ptserver.data.TokenParser;
  *  @Pt.AcceptedRating Red (ishwinde)
  */
 public class DoubleMatrixTokenHandler implements
-        TokenHandler<DoubleMatrixToken> {
+TokenHandler<DoubleMatrixToken> {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -59,6 +59,7 @@ public class DoubleMatrixTokenHandler implements
      *  @exception IllegalActionException Not thrown in this class.
      *  @see ptserver.data.handler.TokenHandler#convertToBytes(ptolemy.data.Token, java.io.DataOutputStream)
      */
+    @Override
     public void convertToBytes(DoubleMatrixToken token,
             DataOutputStream outputStream) throws IOException,
             IllegalActionException {
@@ -84,6 +85,7 @@ public class DoubleMatrixTokenHandler implements
      *  @exception IllegalActionException if there is a problem converting to a DoubleToken.
      *  @see ptserver.data.handler.TokenHandler#convertToToken(java.io.DataInputStream, Class)
      */
+    @Override
     public DoubleMatrixToken convertToToken(DataInputStream inputStream,
             Class<? extends DoubleMatrixToken> tokenType) throws IOException,
             IllegalActionException {

@@ -108,6 +108,7 @@ public class FilterMpdu extends MACActorBase {
      *  @exception IllegalActionException If an error occurs reading
      *   or writing inputs or outputs.
      */
+    @Override
     public void fire() throws IllegalActionException {
         super.fire();
 
@@ -139,9 +140,9 @@ public class FilterMpdu extends MACActorBase {
                 RecordToken msgout = new RecordToken(RxIndicateMessageFields,
                         new Token[] { new IntToken(RxIndicate),
 
-                                //TODO: how to implement this?
-                                //msgout->pdu=pdu->copyEncapMsg();
-                                pdu, msg.get("endRx"), msg.get("rxRate") });
+                        //TODO: how to implement this?
+                        //msgout->pdu=pdu->copyEncapMsg();
+                        pdu, msg.get("endRx"), msg.get("rxRate") });
 
                 // send RxIndicate message to the ProtocolControl block
                 toProtocolControl.send(0, msgout);
@@ -176,8 +177,8 @@ public class FilterMpdu extends MACActorBase {
                 if (intFieldValue(pdu, "Type") == DataType) {
                     RecordToken msgout = new RecordToken(NeedAckMessageFields,
                             new Token[] { new IntToken(NeedAck),
-                                    pdu.get("Addr2"), msg.get("endRx"),
-                                    msg.get("rxRate"), new IntToken(dAck) });
+                            pdu.get("Addr2"), msg.get("endRx"),
+                            msg.get("rxRate"), new IntToken(dAck) });
 
                     // if it is a data packet, an Ack is needed
                     toProtocolControl.send(0, msgout);
@@ -200,8 +201,8 @@ public class FilterMpdu extends MACActorBase {
                 if (intFieldValue(pdu, "durId") <= 32767) {
                     RecordToken msgout = new RecordToken(SetNavMessageFields,
                             new Token[] { new IntToken(SetNav),
-                                    msg.get("endRx"), new IntToken(dNav),
-                                    new IntToken(src) });
+                            msg.get("endRx"), new IntToken(dNav),
+                            new IntToken(src) });
 
                     //TODO: send(msgout, toChannelstateGateId+msgin->channel);
                     // ask the ChannelState process to make reservation
@@ -214,6 +215,7 @@ public class FilterMpdu extends MACActorBase {
     /** Initialize this actor.
      *  @exception IllegalActionException If thrown by the superclass.
      */
+    @Override
     public void preinitialize() throws IllegalActionException {
         super.preinitialize();
         _tupleCache = new LinkedList();

@@ -65,7 +65,7 @@ import ptolemy.util.MessageHandler;
  @Pt.AcceptedRating Red (ptolemy)
  */
 public class TextEditorConfigureFactory extends EditorFactory implements
-        TextEditorFactory {
+TextEditorFactory {
     /** Construct a factory with the specified container and name.
      *  @param container The container.
      *  @param name The name of the factory.
@@ -111,6 +111,7 @@ public class TextEditorConfigureFactory extends EditorFactory implements
     /** Remove any editor that may have been associated with this object
      *  by a previous call to createEditor().
      */
+    @Override
     public void clear() {
         _editor = null;
     }
@@ -122,6 +123,7 @@ public class TextEditorConfigureFactory extends EditorFactory implements
      *  @param parent The frame with respect to which to define the
      *   editor.
      */
+    @Override
     public void createEditor(NamedObj object, Frame parent) {
         if (_editor == null) {
             try {
@@ -159,6 +161,7 @@ public class TextEditorConfigureFactory extends EditorFactory implements
      *  @return The current text of the text editor, or null if there
      *   is none.
      */
+    @Override
     public String getText() {
         if (_editor != null) {
             return _editor.text.getText();

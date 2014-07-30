@@ -50,6 +50,7 @@ public class HistogramDemo extends HistogramApplet {
 
     /** Initialize the applet.  Read the applet parameters.
      */
+    @Override
     public void init() {
         super.init();
 

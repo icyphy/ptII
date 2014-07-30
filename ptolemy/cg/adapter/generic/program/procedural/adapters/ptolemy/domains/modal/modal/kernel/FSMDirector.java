@@ -40,10 +40,10 @@ Code generator helper for FSMDirector.
 @since Ptolemy II 10.0
 @Pt.ProposedRating red (sssf)
 @Pt.AcceptedRating red (sssf)
-*/
+ */
 public class FSMDirector
-        extends
-        ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.domains.modal.kernel.FSMDirector {
+extends
+ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.domains.modal.kernel.FSMDirector {
 
     /** Construct the code generator adapter associated with the given
      *  FSMDirector.
@@ -54,6 +54,7 @@ public class FSMDirector
         super(director);
     }
 
+    @Override
     public String generateFireCode() {
         StringBuffer code = new StringBuffer();
         code.append(_eol + "//generate fire code in the fsm director called"

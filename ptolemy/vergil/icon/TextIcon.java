@@ -80,6 +80,7 @@ public class TextIcon extends DynamicEditorIcon {
      *  @exception CloneNotSupportedException Not thrown in this base class
      *  @return The new Attribute.
      */
+    @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         TextIcon newObject = (TextIcon) super.clone(workspace);
         return newObject;
@@ -91,6 +92,7 @@ public class TextIcon extends DynamicEditorIcon {
      *  modification exception could occur.
      *  @return A figure representing the specified shape.
      */
+    @Override
     public Figure createBackgroundFigure() {
         // NOTE: This gets called every time that the graph gets
         // repainted, which seems excessive to me.  This will happen
@@ -127,6 +129,7 @@ public class TextIcon extends DynamicEditorIcon {
      *  @see #setIconText(String)
      *  @return A new Swing Icon.
      */
+    @Override
     public javax.swing.Icon createIcon() {
         // In this class, we cache the rendered icon, since creating icons from
         // figures is expensive.
@@ -149,6 +152,7 @@ public class TextIcon extends DynamicEditorIcon {
         _anchor = anchor;
 
         Runnable doSet = new Runnable() {
+            @Override
             public void run() {
                 synchronized (_figures) {
                     Iterator figures = _liveFigureIterator();
@@ -178,6 +182,7 @@ public class TextIcon extends DynamicEditorIcon {
         // conflict here where that method is trying to add to the _figures
         // list while this method is traversing it.
         Runnable doSet = new Runnable() {
+            @Override
             public void run() {
                 synchronized (_figures) {
                     Iterator figures = _liveFigureIterator();
@@ -216,6 +221,7 @@ public class TextIcon extends DynamicEditorIcon {
         // conflict here where that method is trying to add to the _figures
         // list while this method is traversing it.
         Runnable doSet = new Runnable() {
+            @Override
             public void run() {
                 synchronized (_figures) {
                     Iterator figures = _liveFigureIterator();
@@ -244,6 +250,7 @@ public class TextIcon extends DynamicEditorIcon {
         // is also called in the Swing thread, there is no possibility of
         // conflict here in adding the figure to the list of live figures.
         Runnable doSet = new Runnable() {
+            @Override
             public void run() {
                 synchronized (_figures) {
                     Iterator figures = _liveFigureIterator();

@@ -133,6 +133,7 @@ public class ResizableImageWidget extends Widget {
     /** Calculates a client area of the image.
      *  @return The calculated client area.
      */
+    @Override
     protected Rectangle calculateClientArea() {
         if (_image != null) {
             return new Rectangle(0, 0, _width, _height);
@@ -143,6 +144,7 @@ public class ResizableImageWidget extends Widget {
 
     /** Paints the image widget.
      */
+    @Override
     protected void paintWidget() {
         if (_image == null) {
             return;
@@ -180,6 +182,7 @@ public class ResizableImageWidget extends Widget {
     /** The image observer.
      */
     protected ImageObserver _observer = new ImageObserver() {
+        @Override
         public boolean imageUpdate(Image img, int infoflags, int x, int y,
                 int width, int height) {
             setImageCore(_image);

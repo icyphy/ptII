@@ -126,7 +126,7 @@ import ptolemy.kernel.util.Workspace;
  @Pt.AcceptedRating Red (yuhong)
  */
 public class ContinuousIntegrator extends TypedAtomicActor implements
-        ContinuousStatefulComponent, ContinuousStepSizeController {
+ContinuousStatefulComponent, ContinuousStepSizeController {
 
     /** Construct an integrator with the specified name and a container.
      *  The integrator is in the same workspace as the container.
@@ -190,6 +190,7 @@ public class ContinuousIntegrator extends TypedAtomicActor implements
      *  @exception IllegalActionException If the new parameter value
      *  is not valid.
      */
+    @Override
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         if (attribute == initialState) {
@@ -197,7 +198,7 @@ public class ContinuousIntegrator extends TypedAtomicActor implements
                     .doubleValue();
             _state = _tentativeState;
             if (_debugging) {
-                    _debug("initialState changed. Updating state to " + _state);
+                _debug("initialState changed. Updating state to " + _state);
             }
         } else {
             super.attributeChanged(attribute);
@@ -216,6 +217,7 @@ public class ContinuousIntegrator extends TypedAtomicActor implements
      *   if one of the attributes cannot be cloned.
      *  @return A new ComponentEntity.
      */
+    @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         ContinuousIntegrator newObject = (ContinuousIntegrator) super
                 .clone(workspace);
@@ -242,6 +244,7 @@ public class ContinuousIntegrator extends TypedAtomicActor implements
      *   or if data is present at either <i>impulse</i>
      *   or <i>initialState</i> and the step size is greater than zero.
      */
+    @Override
     public void fire() throws IllegalActionException {
         super.fire();
         ContinuousDirector dir = (ContinuousDirector) getDirector();
@@ -365,6 +368,7 @@ public class ContinuousIntegrator extends TypedAtomicActor implements
      *  @return A representation of the dependencies between input ports
      *   and output ports.
      */
+    @Override
     public CausalityInterface getCausalityInterface() {
         return _causalityInterface;
     }
@@ -376,7 +380,7 @@ public class ContinuousIntegrator extends TypedAtomicActor implements
      *  the input.
      */
     public double getDerivative() throws NoTokenException,
-            IllegalActionException {
+    IllegalActionException {
         double result = ((DoubleToken) derivative.get(0)).doubleValue();
         if (_debugging) {
             _debug("Read input: " + result);
@@ -408,6 +412,7 @@ public class ContinuousIntegrator extends TypedAtomicActor implements
      *   parameter does not contain a valid token, or the superclass
      *   throws it.
      */
+    @Override
     public void initialize() throws IllegalActionException {
         ContinuousDirector dir = (ContinuousDirector) getDirector();
 
@@ -444,6 +449,7 @@ public class ContinuousIntegrator extends TypedAtomicActor implements
      *  divide by zero, a NumericalNonconvergeException is thrown.
      *  @return True if the state is resolved successfully.
      */
+    @Override
     public boolean isStepSizeAccurate() {
         ContinuousODESolver solver = ((ContinuousDirector) getDirector())
                 ._getODESolver();
@@ -458,6 +464,7 @@ public class ContinuousIntegrator extends TypedAtomicActor implements
      *  return true (if they are connected).
      *  @return False.
      */
+    @Override
     public boolean isStrict() {
         return false;
     }
@@ -466,6 +473,7 @@ public class ContinuousIntegrator extends TypedAtomicActor implements
      *  @return True always.
      *  @exception IllegalActionException Not thrown in this base class.
      */
+    @Override
     public boolean postfire() throws IllegalActionException {
         _lastRound = -1;
         _firstFiring = false;
@@ -485,11 +493,12 @@ public class ContinuousIntegrator extends TypedAtomicActor implements
      *  @return True If the actor is ready to fire.
      *  @exception IllegalActionException If the superclass throws it.
      */
+    @Override
     public boolean prefire() throws IllegalActionException {
         boolean result = super.prefire();
         if ((impulse.getWidth() == 0 || impulse.isKnown(0))
                 && (initialState.getPort().getWidth() == 0 || initialState
-                        .getPort().isKnown(0))) {
+                .getPort().isKnown(0))) {
             return result;
         }
         return false;
@@ -499,6 +508,7 @@ public class ContinuousIntegrator extends TypedAtomicActor implements
      *  the integratorPredictedStepSize() method of the current ODESolver.
      *  @return The suggested next step size.
      */
+    @Override
     public double suggestedStepSize() {
         ContinuousODESolver solver = ((ContinuousDirector) getDirector())
                 ._getODESolver();
@@ -511,6 +521,7 @@ public class ContinuousIntegrator extends TypedAtomicActor implements
      *  current step size.
      *  @return The refined step size.
      */
+    @Override
     public double refinedStepSize() {
         double step = ((ContinuousDirector) getDirector()).getCurrentStepSize();
 
@@ -524,6 +535,7 @@ public class ContinuousIntegrator extends TypedAtomicActor implements
     /** Roll back to committed state. This resets the tentative state
      *  to the current state.
      */
+    @Override
     public void rollBackToCommittedState() {
         if (_debugging) {
             _debug("Rolling back to state: " + _state);
@@ -605,7 +617,7 @@ public class ContinuousIntegrator extends TypedAtomicActor implements
      *  the initialState input is a ParameterPort).
      */
     private static class IntegratorCausalityInterface extends
-            DefaultCausalityInterface {
+    DefaultCausalityInterface {
         public IntegratorCausalityInterface(ContinuousIntegrator actor,
                 Dependency defaultDependency) {
             super(actor, defaultDependency);
@@ -629,6 +641,7 @@ public class ContinuousIntegrator extends TypedAtomicActor implements
          *  @exception IllegalArgumentException If the argument is not
          *   contained by the associated actor.
          */
+        @Override
         public Collection<IOPort> equivalentPorts(IOPort input) {
             if (input == _actor.derivative) {
                 return _derivativeEquivalents;

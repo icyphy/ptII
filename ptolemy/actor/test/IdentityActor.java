@@ -82,6 +82,7 @@ public class IdentityActor extends AtomicActor {
      *  @exception IllegalActionException If there's no token
      *      in the input port.
      */
+    @Override
     public void fire() throws IllegalActionException {
         super.fire();
         try {

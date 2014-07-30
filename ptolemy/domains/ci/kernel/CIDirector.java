@@ -114,7 +114,7 @@ public class CIDirector extends Director {
      *  @exception IllegalActionException If construction of Time objects fails.
      */
     public CIDirector(Workspace workspace) throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         super(workspace);
     }
 
@@ -147,6 +147,7 @@ public class CIDirector extends Director {
      *  @exception CloneNotSupportedException Not thrown in this base class
      *  @return The new object.
      */
+    @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         CIDirector newObject = (CIDirector) super.clone(workspace);
         newObject._actorManagers = new HashSet();
@@ -173,6 +174,7 @@ public class CIDirector extends Director {
      *  @exception IllegalActionException If any called method of one
      *  of the associated actors throws it.
      */
+    @Override
     public void fire() throws IllegalActionException {
         Actor pushedActor = _nextAsyncPushedActor();
 
@@ -256,6 +258,7 @@ public class CIDirector extends Director {
      *  @exception IllegalActionException If the initialize() method of
      *   one of the associated actors throws it.
      */
+    @Override
     public void initialize() throws IllegalActionException {
         super.initialize();
 
@@ -285,6 +288,7 @@ public class CIDirector extends Director {
     /** Return a new receiver of type CIReceiver.
      *  @return A new CIReceiver.
      */
+    @Override
     public Receiver newReceiver() {
         Receiver r = new CIReceiver(this);
         return r;
@@ -295,6 +299,7 @@ public class CIDirector extends Director {
      *  otherwise, return true.
      *  @exception IllegalActionException Not thrown in this base class.
      */
+    @Override
     public boolean postfire() throws IllegalActionException {
         if (_actorManagers.size() == 0 && _asyncPushedActors.size() == 0
                 && _asyncPulledActors.size() == 0 && _actorsToFire.size() == 0) {
@@ -309,6 +314,7 @@ public class CIDirector extends Director {
      *  false.
      *  @exception IllegalActionException Not thrown in this base class.
      */
+    @Override
     public boolean prefire() throws IllegalActionException {
         _iteratingStarted = true;
         super.prefire();
@@ -342,6 +348,7 @@ public class CIDirector extends Director {
      *  @exception IllegalActionException If the preinitialize() method of
      *   one of the associated actors throws it.
      */
+    @Override
     public void preinitialize() throws IllegalActionException {
         super.preinitialize();
         _asyncPushedActors.clear();
@@ -366,6 +373,7 @@ public class CIDirector extends Director {
      *  the container of this director, and sets a flag
      *  so that the next call to postfire() returns false.
      */
+    @Override
     public void stop() {
         super.stop();
 
@@ -384,6 +392,7 @@ public class CIDirector extends Director {
      *  container of this director. Notify the threads that manage active
      *  actors to stop.
      */
+    @Override
     public void stopFire() {
         super.stopFire();
 
@@ -421,6 +430,7 @@ public class CIDirector extends Director {
      *  of this director. Set the <i>_stopRequested</i> flag to be true,
      *  and interrupt the actor manager threads.
      */
+    @Override
     public void terminate() {
         super.terminate();
 
@@ -450,6 +460,7 @@ public class CIDirector extends Director {
      *  @exception IllegalActionException If the wrapup() method of
      *   one of the associated actors throws it.
      */
+    @Override
     public void wrapup() throws IllegalActionException {
         _stopRequested = true;
 
@@ -575,7 +586,7 @@ public class CIDirector extends Director {
         }
 
         return (!hasInput && outputIsPush) || (!hasOutput && !inputIsPush)
-            || (!inputIsPush && outputIsPush);
+                || (!inputIsPush && outputIsPush);
     }
 
     /** Return true if the given actor has a pending pull request.

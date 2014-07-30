@@ -98,6 +98,7 @@ public class MatrixToArray extends Transformer {
      *  @exception CloneNotSupportedException If a derived class
      *   contains an attribute that cannot be cloned.
      */
+    @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         MatrixToArray newObject = (MatrixToArray) super.clone(workspace);
         newObject.input.setTypeAtMost(BaseType.MATRIX);
@@ -111,6 +112,7 @@ public class MatrixToArray extends Transformer {
      *  @exception IllegalActionException If a runtime
      *   type conflict occurs.
      */
+    @Override
     public void fire() throws IllegalActionException {
         super.fire();
         if (input.hasToken(0)) {

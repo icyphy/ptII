@@ -24,7 +24,7 @@
    PT_COPYRIGHT_VERSION_2
    COPYRIGHTENDKEY
 
-*/
+ */
 package org.ptolemy.fmi;
 
 import org.w3c.dom.Element;

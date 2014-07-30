@@ -61,6 +61,7 @@ public class Pair<E1, E2> extends Tuple<Object> {
      *  @return The first element.
      *  @see #setFirst(Object)
      */
+    @Override
     public E1 getFirst() {
         return (E1) get(0);
     }

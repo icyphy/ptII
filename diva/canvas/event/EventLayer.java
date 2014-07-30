@@ -105,6 +105,7 @@ public class EventLayer extends CanvasLayer implements EventAcceptor {
     /** Dispatch an AWT event on this layer. Currently only
      * layer events are handled.
      */
+    @Override
     public void dispatchEvent(AWTEvent event) {
         if (event instanceof LayerEvent) {
             processLayerEvent((LayerEvent) event);
@@ -132,6 +133,7 @@ public class EventLayer extends CanvasLayer implements EventAcceptor {
      *  does not indicate whether the layer is actually enabled,
      * as its pane or one if its ancestors may not be enabled.
      */
+    @Override
     public boolean isEnabled() {
         return _enabled;
     }
@@ -267,6 +269,7 @@ public class EventLayer extends CanvasLayer implements EventAcceptor {
     /** Set the enabled flag of this layer. If the flag is false,
      * then the layer will not respond to user input events.
      */
+    @Override
     public void setEnabled(boolean flag) {
         _enabled = flag;
     }

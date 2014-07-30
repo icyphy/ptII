@@ -92,6 +92,7 @@ public class ProductLatticeCPO extends ConceptGraph {
      *  @return An Object representing the bottom element, or
      *   <code>null</code> if the bottom does not exist.
      */
+    @Override
     public Concept bottom() {
         return _bottomConcept;
     }
@@ -109,6 +110,7 @@ public class ProductLatticeCPO extends ConceptGraph {
      *   instances of {@link ProductLatticeConcept}, the arguments are not from
      *   the same ontology, or either argument has an empty or null concept tuple list.
      */
+    @Override
     public int compare(Object e1, Object e2) {
         if (e1 == null || e2 == null) {
             return CPO.INCOMPARABLE;
@@ -189,6 +191,7 @@ public class ProductLatticeCPO extends ConceptGraph {
      *  @exception IllegalArgumentException If the passed object is not a
      *   ProductLatticeConcept or does not belong to this CPO.
      */
+    @Override
     public ProductLatticeConcept[] downSet(Object e) {
         // FIXME: Modify _validateInputArguments to check single argument more
         // gracefully.  (Right now the error messages will be a little weird.)
@@ -245,6 +248,7 @@ public class ProductLatticeCPO extends ConceptGraph {
      *   greatest lower bound cannot be created from the component greatest lower
      *   bound concepts.
      */
+    @Override
     public Concept greatestLowerBound(Object e1, Object e2) {
         List<Concept> inputs = new ArrayList<Concept>();
         inputs.add((Concept) e1);
@@ -288,6 +292,7 @@ public class ProductLatticeCPO extends ConceptGraph {
      *   this not being a lattice;
      *   <code>null</code> otherwise.
      */
+    @Override
     public NonProductLatticeCounterExample nonLatticeReason() {
         for (Ontology ontology : _ontologyList) {
             if (!ontology.isLattice()) {
@@ -307,6 +312,7 @@ public class ProductLatticeCPO extends ConceptGraph {
      *   least upper bound cannot be created from the component least upper bound
      *   concepts.
      */
+    @Override
     public Concept leastUpperBound(Object e1, Object e2) {
         List<Concept> inputs = new ArrayList<Concept>();
         inputs.add((Concept) e1);
@@ -355,6 +361,7 @@ public class ProductLatticeCPO extends ConceptGraph {
      *  @return An Object representing the top element, or
      *   <code>null</code> if the top does not exist.
      */
+    @Override
     public Concept top() {
         return _topConcept;
     }
@@ -381,7 +388,7 @@ public class ProductLatticeCPO extends ConceptGraph {
         StringBuffer conceptNameBuffer = new StringBuffer();
         for (Ontology ontology : _ontologyList) {
             conceptNameBuffer
-                    .append(ontology.getConceptGraph().top().getName());
+            .append(ontology.getConceptGraph().top().getName());
         }
         String productLatticeConceptName = conceptNameBuffer.toString();
         _topConcept = (ProductLatticeConcept) _productOntology

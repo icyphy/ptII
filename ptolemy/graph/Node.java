@@ -64,6 +64,7 @@ public final class Node extends Element {
     /** A one-word description of the type of this graph element.
      *  @return The description.
      */
+    @Override
     public String descriptor() {
         return "node";
     }
@@ -73,6 +74,7 @@ public final class Node extends Element {
      *  weight (or the string <code>"&lt;unweighted node&gt;"</code> if
      *  the node is unweighted.
      */
+    @Override
     public String toString() {
         if (_weight == null) {
             return "<unweighted node>";

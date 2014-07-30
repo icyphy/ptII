@@ -161,6 +161,7 @@ public class SecretKey extends Source {
      *  @param attribute The attribute that changed.
      *  @exception IllegalActionException Not thrown in this base class.
      */
+    @Override
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         if (attribute == algorithm) {
@@ -181,6 +182,7 @@ public class SecretKey extends Source {
      *
      *  @exception IllegalActionException If thrown by base class.
      */
+    @Override
     public void fire() throws IllegalActionException {
         super.fire();
         _updateSecretKey();
@@ -193,6 +195,7 @@ public class SecretKey extends Source {
      *  if the algorithm is not found, or if the padding scheme is illegal,
      *  or if the specified provider does not exist.
      */
+    @Override
     public void initialize() throws IllegalActionException {
         super.initialize();
         _updateSecretKey();

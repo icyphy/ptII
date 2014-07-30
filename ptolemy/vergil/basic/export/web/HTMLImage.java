@@ -116,6 +116,7 @@ public class HTMLImage extends WebContent {
     // FIXME: Implement other file extensions (do we use any?)
     // How to determine which file extension should be used?  If file has not
     // been created yet?
+    @Override
     public String getMimeType() {
         return "image/gif";
     }
@@ -124,6 +125,7 @@ public class HTMLImage extends WebContent {
      *
      * @return True, since old images should be overwritten with new
      */
+    @Override
     public boolean isOverwriteable() {
         return true;
     }
@@ -138,6 +140,7 @@ public class HTMLImage extends WebContent {
      *  @exception IllegalActionException If something is wrong generating the
      *  image file or generating the additional web content
      */
+    @Override
     public void _provideElements(WebExporter exporter)
             throws IllegalActionException {
 

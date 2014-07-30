@@ -177,6 +177,7 @@ public class LMSAdaptive extends FIR {
      *  @exception IllegalActionException If the attribute contains
      *  an invalid value or if the super method throws it.
      */
+    @Override
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         if (attribute == initialTaps) {
@@ -193,6 +194,7 @@ public class LMSAdaptive extends FIR {
      *  @exception CloneNotSupportedException If a derived class contains
      *   an attribute that cannot be cloned.
      */
+    @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         LMSAdaptive newObject = (LMSAdaptive) super.clone(workspace);
 
@@ -211,6 +213,7 @@ public class LMSAdaptive extends FIR {
      *  @exception IllegalActionException If parameter values are invalid,
      *   or if there is no director, or if runtime type conflicts occur.
      */
+    @Override
     public void fire() throws IllegalActionException {
         // First update the taps
         int errorDelayValue = ((IntToken) errorDelay.getToken()).intValue();
@@ -242,6 +245,7 @@ public class LMSAdaptive extends FIR {
      *   equal to the decimation parameter.
      *  @exception IllegalActionException If the superclass throws it.
      */
+    @Override
     public boolean prefire() throws IllegalActionException {
         if (error.hasToken(0)) {
             return super.prefire();
@@ -257,6 +261,7 @@ public class LMSAdaptive extends FIR {
     /** Override the base class to re-initialize the taps.
      *  @exception IllegalActionException If the superclass throws it.
      */
+    @Override
     public void initialize() throws IllegalActionException {
         super.initialize();
         // Explicit call of _initializeTabs necessary, since this actor changes

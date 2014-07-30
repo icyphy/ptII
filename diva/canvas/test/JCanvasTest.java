@@ -58,6 +58,7 @@ public class JCanvasTest extends TestSuite {
     /**
      * runSuite()
      */
+    @Override
     public void runSuite() {
         testConstructor1();
         testConstructor2();
@@ -72,18 +73,20 @@ public class JCanvasTest extends TestSuite {
         runTestCase(new TestCase("JCanvas constructor 1") {
             JCanvas canvas = null;
 
+            @Override
             public void run() throws Exception {
                 canvas = factory.createJCanvas();
             }
 
+            @Override
             public void check() throws TestFailedException {
                 CanvasPane pane = canvas.getCanvasPane();
                 assertExpr(pane != null, "pane != null");
                 assertExpr(
                         pane.getClass().getName()
-                                .equals("diva.canvas.GraphicsPane"), pane
-                                .getClass().getName()
-                                + " != diva.canvas.GraphicsPane");
+                        .equals("diva.canvas.GraphicsPane"), pane
+                        .getClass().getName()
+                        + " != diva.canvas.GraphicsPane");
             }
         });
     }
@@ -96,10 +99,12 @@ public class JCanvasTest extends TestSuite {
 
             CanvasPane pane = new BasicCanvasPane();
 
+            @Override
             public void run() throws Exception {
                 canvas = factory.createJCanvas(pane);
             }
 
+            @Override
             public void check() throws TestFailedException {
                 CanvasPane pane = canvas.getCanvasPane();
                 assertExpr(pane != null, "pane != null");

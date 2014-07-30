@@ -24,7 +24,7 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
-*/
+ */
 
 package ptolemy.cg.kernel.generic.program.procedural.java;
 
@@ -49,7 +49,7 @@ perspective.
 @since Ptolemy II 10.0
 @Pt.ProposedRating Red (rodiers)
 @Pt.AcceptedRating Red (rodiers)
-*/
+ */
 
 public class JavaTemplateParser extends ProceduralTemplateParser {
 
@@ -69,6 +69,7 @@ public class JavaTemplateParser extends ProceduralTemplateParser {
      *  @exception IllegalActionException The given function string is
      *   not well-formed.
      */
+    @Override
     public String getFunctionInvocation(String functionString, boolean isStatic)
             throws IllegalActionException {
         //System.out.println("JTP.getFunctionInvocation: " + functionString + " " + isStatic);
@@ -156,6 +157,7 @@ public class JavaTemplateParser extends ProceduralTemplateParser {
     /** Return a new parse tree code generator to use with expressions.
      *  @return the parse tree code generator to use with expressions.
      */
+    @Override
     public ParseTreeCodeGenerator getParseTreeCodeGenerator() {
         // FIXME: We need to create new ParseTreeCodeGenerator each time
         // here or else we get lots of test failures.  It would be better
@@ -174,6 +176,7 @@ public class JavaTemplateParser extends ProceduralTemplateParser {
      *  @exception IllegalActionException The given constructor string is
      *   not well-formed.
      */
+    @Override
     public String getNewInvocation(String constructorString)
             throws IllegalActionException {
         addFunctionUsed("new");
@@ -186,6 +189,7 @@ public class JavaTemplateParser extends ProceduralTemplateParser {
     /** Get the code generator associated with this adapter class.
      *  @return The code generator associated with this adapter class.
      */
+    @Override
     protected JavaCodeGenerator _getCodeGenerator() {
         return (JavaCodeGenerator) super._getCodeGenerator();
     }
@@ -199,6 +203,7 @@ public class JavaTemplateParser extends ProceduralTemplateParser {
      * @exception IllegalActionException Thrown if the given macro or
      *  parameter is not valid.
      */
+    @Override
     protected String _replaceMacro(String macro, String parameter)
             throws IllegalActionException {
         ProgramCodeGenerator codeGenerator = _getCodeGenerator();
@@ -221,7 +226,7 @@ public class JavaTemplateParser extends ProceduralTemplateParser {
             if (port == null) {
                 throw new IllegalActionException(
                         parameter
-                                + " is not a port. $refinePrimitiveType macro takes in a port.");
+                        + " is not a port. $refinePrimitiveType macro takes in a port.");
             }
             if (codeGenerator.isPrimitive(port.getType())) {
                 return ".payload/*jcgh*/."

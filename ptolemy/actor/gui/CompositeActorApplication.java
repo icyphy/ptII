@@ -107,6 +107,7 @@ public class CompositeActorApplication extends CompositeActorSimpleApplication {
      *  @param args The command-line arguments.
      *  @exception Exception If something goes wrong.
      */
+    @Override
     public void processArgs(String[] args) throws Exception {
         if (args != null) {
             _parseArgs(args);
@@ -135,6 +136,7 @@ public class CompositeActorApplication extends CompositeActorSimpleApplication {
      *  @return The ModelFrame that for the model.
      *  @see ptolemy.actor.Manager#startRun()
      */
+    @Override
     public synchronized Object startRun(CompositeActor model) {
         // This method is synchronized so that it can atomically modify
         // the count of executing processes.
@@ -161,6 +163,7 @@ public class CompositeActorApplication extends CompositeActorSimpleApplication {
                 frame = new ModelFrame(model);
                 _openCount++;
                 frame.addWindowListener(new WindowAdapter() {
+                    @Override
                     public void windowClosed(WindowEvent event) {
                         synchronized (CompositeActorApplication.this) {
                             _openCount--;

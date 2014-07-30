@@ -25,7 +25,7 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 Ptolemy II includes the work of others, to see those copyrights, follow
 the copyright link on the splash page or see copyright.htm.
-*/
+ */
 package org.json;
 
 /**
@@ -37,8 +37,8 @@ package org.json;
  */
 public class JSONException extends Exception {
     /**
-         *
-         */
+     *
+     */
     private static final long serialVersionUID = 0;
     private Throwable cause;
 
@@ -55,6 +55,7 @@ public class JSONException extends Exception {
         this.cause = t;
     }
 
+    @Override
     public Throwable getCause() {
         return this.cause;
     }

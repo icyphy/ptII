@@ -46,6 +46,7 @@ import ptolemy.data.Token;
  */
 public class JavaSESysOutActor implements SysOutActorInterface {
 
+    @Override
     public void printToken(Token token) {
         if (_area == null) {
             return;
@@ -53,6 +54,7 @@ public class JavaSESysOutActor implements SysOutActorInterface {
         _area.append(token.toString() + " ");
     }
 
+    @Override
     public void place(PortableContainer container) {
         Container javaContainer = (Container) container.getPlatformContainer();
         _area = new TextArea();

@@ -25,7 +25,7 @@ ENHANCEMENTS, OR MODIFICATIONS.
                                                 COPYRIGHTENDKEY
 
 
-*/
+ */
 package ptdb.common.dto;
 
 ///////////////////////////////////////////////////////////////////
@@ -133,6 +133,6 @@ public class DBConnectionParameters {
     /*
     private String _userName;
     private String _password;
-    */
+     */
 
 }

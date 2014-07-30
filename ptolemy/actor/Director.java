@@ -150,7 +150,7 @@ public class Director extends Attribute implements Executable {
      *  @exception IllegalActionException If construction of Time objects fails.
      */
     public Director(Workspace workspace) throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         super(workspace);
         _addIcon();
         _initializeParameters();
@@ -196,6 +196,7 @@ public class Director extends Attribute implements Executable {
      *  @see #removeInitializable(Initializable)
      *  @see ptolemy.actor.CompositeActor#addPiggyback(Executable)
      */
+    @Override
     public void addInitializable(Initializable initializable) {
         if (_initializables == null) {
             _initializables = new LinkedHashSet<Initializable>();
@@ -209,6 +210,7 @@ public class Director extends Attribute implements Executable {
      *   being changed and the model is executing (and not in
      *   preinitialize()).
      */
+    @Override
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         if (attribute == startTime) {
@@ -238,6 +240,7 @@ public class Director extends Attribute implements Executable {
      *  @exception CloneNotSupportedException Not thrown in this base class
      *  @return The new Attribute.
      */
+    @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         Director newObject = (Director) super.clone(workspace);
         newObject._actorsFinishedExecution = null;
@@ -319,6 +322,7 @@ public class Director extends Attribute implements Executable {
      *  @exception IllegalActionException If any called method of one
      *  of the associated actors throws it.
      */
+    @Override
     public void fire() throws IllegalActionException {
         if (_debugging) {
             _debug("Director: Called fire().");
@@ -372,6 +376,7 @@ public class Director extends Attribute implements Executable {
      *  time object instead. As of Ptolemy 4.1, replaced by
      *  {@link #fireAt(Actor, Time)}
      */
+    @Deprecated
     public void fireAt(Actor actor, double time) throws IllegalActionException {
         fireAt(actor, new Time(this, time));
     }
@@ -582,6 +587,7 @@ public class Director extends Attribute implements Executable {
      *  {@link #getModelTime()}
      *  @see #setCurrentTime(double)
      */
+    @Deprecated
     public double getCurrentTime() {
         return getModelTime().getDoubleValue();
     }
@@ -757,6 +763,7 @@ public class Director extends Attribute implements Executable {
      *  @deprecated As of Ptolemy II 4.1, replaced by
      *  {@link #getModelNextIterationTime}
      */
+    @Deprecated
     public double getNextIterationTime() throws IllegalActionException {
         return getModelNextIterationTime().getDoubleValue();
     }
@@ -773,6 +780,7 @@ public class Director extends Attribute implements Executable {
      *  @exception IllegalActionException If the specified start time
      *   is invalid.
      */
+    @Deprecated
     public double getStartTime() throws IllegalActionException {
         return 0.0;
     }
@@ -790,6 +798,7 @@ public class Director extends Attribute implements Executable {
      *  @exception IllegalActionException If the specified stop time
      *   is invalid.
      */
+    @Deprecated
     public double getStopTime() throws IllegalActionException {
         return getModelStopTime().getDoubleValue();
     }
@@ -849,6 +858,7 @@ public class Director extends Attribute implements Executable {
      *  @exception IllegalActionException If the initialize() method of
      *   one of the associated actors throws it.
      */
+    @Override
     public void initialize() throws IllegalActionException {
         // Note that the inner director in gt.TransformationRule
         // does not call super.initialize(), so changes made to this
@@ -872,7 +882,7 @@ public class Director extends Attribute implements Executable {
 
         localClock.resetLocalTime(getModelStartTime());
         localClock.start();
-                
+
         if (_nextScheduleTime != null) {
             _nextScheduleTime.clear();
         }
@@ -988,6 +998,7 @@ public class Director extends Attribute implements Executable {
      *
      *  @return False.
      */
+    @Override
     public boolean isFireFunctional() {
         return false;
     }
@@ -1002,6 +1013,7 @@ public class Director extends Attribute implements Executable {
      *  @return True.
      *  @exception IllegalActionException Thrown by subclass.
      */
+    @Override
     public boolean isStrict() throws IllegalActionException {
         return true;
     }
@@ -1035,6 +1047,7 @@ public class Director extends Attribute implements Executable {
      *  @exception IllegalActionException If iterating is not
      *   permitted, or if prefire(), fire(), or postfire() throw it.
      */
+    @Override
     public int iterate(int count) throws IllegalActionException {
         int n = 0;
 
@@ -1073,13 +1086,13 @@ public class Director extends Attribute implements Executable {
     public Receiver newReceiver() {
         return new Mailbox();
     }
-    
+
     /** Notify this director that a token was sent to a communication
      *  aspect. Some directors need to perform specific actions but the
      *  base class just sets a boolean flag.
      */
     public void notifyTokenSentToCommunicationAspect() {
-            _tokenSentToCommunicationAspect = true;
+        _tokenSentToCommunicationAspect = true;
     }
 
     /** Return true if the director wishes to be scheduled for another
@@ -1097,6 +1110,7 @@ public class Director extends Attribute implements Executable {
      *  @return True to continue execution, and false otherwise.
      *  @exception IllegalActionException Not thrown in this base class.
      */
+    @Override
     public boolean postfire() throws IllegalActionException {
         if (_debugging) {
             _debug("Director: Called postfire().");
@@ -1121,6 +1135,7 @@ public class Director extends Attribute implements Executable {
      *  @return True.
      *  @exception IllegalActionException Not thrown in this base class.
      */
+    @Override
     public boolean prefire() throws IllegalActionException {
         // FIXME: Note that ProcessDirector does *not*
         // invoke this method, so changes made here might
@@ -1158,6 +1173,7 @@ public class Director extends Attribute implements Executable {
      *  @exception IllegalActionException If the preinitialize() method of
      *   one of the associated actors throws it.
      */
+    @Override
     public void preinitialize() throws IllegalActionException {
         // Note that the inner director in gt.TransformationRule
         // does not call super.preinitialize(), so changes made to this
@@ -1242,23 +1258,24 @@ public class Director extends Attribute implements Executable {
             Manager manager = ((Actor) container).getManager();
             if (manager == null
                     || manager.getPreinitializeVersion() != workspace()
-                            .getVersion()) {
+                    .getVersion()) {
                 // This increments the workspace version.
                 _createReceivers();
             }
         }
-        
+
         _aspectsPresent = false;
-        
+
         _executionAspects = new ArrayList<ActorExecutionAspect>();
         _aspectForActor = new HashMap<NamedObj, ActorExecutionAspect>();
         if (getContainer() instanceof CompositeActor) {
-            for (Object entity : ((CompositeActor)getContainer()).entityList(
-                    ActorExecutionAspect.class)) {
+            for (Object entity : ((CompositeActor) getContainer())
+                    .entityList(ActorExecutionAspect.class)) {
                 ActorExecutionAspect aspect = (ActorExecutionAspect) entity;
                 _executionAspects.add(aspect);
             }
-            _aspectsPresent = ((CompositeActor)getContainer()).entityList(CommunicationAspect.class).size() > 0;
+            _aspectsPresent = ((CompositeActor) getContainer()).entityList(
+                    CommunicationAspect.class).size() > 0;
         }
 
         if (_debugging) {
@@ -1288,6 +1305,7 @@ public class Director extends Attribute implements Executable {
      *  @see #addInitializable(Initializable)
      *  @see ptolemy.actor.CompositeActor#removePiggyback(Executable)
      */
+    @Override
     public void removeInitializable(Initializable initializable) {
         if (_initializables != null) {
             _initializables.remove(initializable);
@@ -1362,8 +1380,9 @@ public class Director extends Attribute implements Executable {
      *   be thrown if the container argument is an instance of
      *   CompositeActor.
      */
+    @Override
     public void setContainer(NamedObj container) throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         try {
             _workspace.getWriteAccess();
 
@@ -1417,6 +1436,7 @@ public class Director extends Attribute implements Executable {
      *  {@link #setModelTime}
      *  @see #getCurrentTime()
      */
+    @Deprecated
     public void setCurrentTime(double newTime) throws IllegalActionException {
         setModelTime(new Time(this, newTime));
     }
@@ -1466,6 +1486,7 @@ public class Director extends Attribute implements Executable {
      *  to request that all actors conclude ongoing firings.</p>
      *
      */
+    @Override
     public void stop() {
         // Set _stopRequested first before looping through actors below
         // so isStopRequested() more useful while we are still looping
@@ -1502,6 +1523,7 @@ public class Director extends Attribute implements Executable {
      *  If the container is not an instance of CompositeActor, then this
      *  method does nothing.
      */
+    @Override
     public void stopFire() {
         Nameable container = getContainer();
 
@@ -1579,6 +1601,7 @@ public class Director extends Attribute implements Executable {
      *  this method does nothing.
      *  <p>
      */
+    @Override
     public void terminate() {
         Nameable container = getContainer();
 
@@ -1656,6 +1679,7 @@ public class Director extends Attribute implements Executable {
      *  @exception IllegalActionException If the wrapup() method of
      *   one of the associated actors throws it.
      */
+    @Override
     public void wrapup() throws IllegalActionException {
         // FIXME: Note that ProcessDirector and the inner director in
         // gt TransformationRule do not invoke this method, so changes
@@ -1736,6 +1760,7 @@ public class Director extends Attribute implements Executable {
      *  @return A description of the object.
      * @exception IllegalActionException
      */
+    @Override
     protected String _description(int detail, int indent, int bracket)
             throws IllegalActionException {
         try {
@@ -1774,6 +1799,7 @@ public class Director extends Attribute implements Executable {
      *  actor contained by another composite actor.
      * @deprecated Use {@link #isEmbedded()} instead
      */
+    @Deprecated
     protected boolean _isEmbedded() {
         return isEmbedded();
     }
@@ -1945,7 +1971,7 @@ public class Director extends Attribute implements Executable {
      */
     protected boolean _schedule(NamedObj actor, Time timestamp)
             throws IllegalActionException {
-        ActorExecutionAspect aspect = getExecutionAspect((NamedObj) actor);
+        ActorExecutionAspect aspect = getExecutionAspect(actor);
         Time time = null;
         Boolean finished = true;
         if (timestamp == null) {
@@ -1955,7 +1981,7 @@ public class Director extends Attribute implements Executable {
             Time environmentTime = ((CompositeActor) aspect.getContainer())
                     .getDirector().getEnvironmentTime();
             time = ExecutionAspectHelper.schedule(aspect, actor,
-                    environmentTime, getDeadline((NamedObj) actor, timestamp));
+                    environmentTime, getDeadline(actor, timestamp));
             if (_nextScheduleTime == null) {
                 _nextScheduleTime = new HashMap<ActorExecutionAspect, Time>();
             }
@@ -1980,22 +2006,22 @@ public class Director extends Attribute implements Executable {
     protected Set _actorsFinishedExecution;
 
     /** Contains a map of actors and the ExecutionAspect that is specified for the actor. */
-        protected HashMap<NamedObj, ActorExecutionAspect> _aspectForActor;
+    protected HashMap<NamedObj, ActorExecutionAspect> _aspectForActor;
 
-        /** True if any of the directed actors specifies a ExecutionAspect
-         *  in the parameters and this ExecutionAspect exists on this or
-         *  a hierarchy level above (i.e. has not been deleted).
-         */
-        protected boolean _aspectsPresent;
+    /** True if any of the directed actors specifies a ExecutionAspect
+     *  in the parameters and this ExecutionAspect exists on this or
+     *  a hierarchy level above (i.e. has not been deleted).
+     */
+    protected boolean _aspectsPresent;
 
-        /** The director's default microstep. */
-        protected int _defaultMicrostep;
+    /** The director's default microstep. */
+    protected int _defaultMicrostep;
 
-        /** ExecutionAspects in the container of this director.
-         */
-        protected List<ActorExecutionAspect> _executionAspects;
+    /** ExecutionAspects in the container of this director.
+     */
+    protected List<ActorExecutionAspect> _executionAspects;
 
-        /** Indicator that finish() has been called. */
+    /** Indicator that finish() has been called. */
     protected boolean _finishRequested;
 
     /** Set of objects whose (pre)initialize() and wrapup() methods
@@ -2007,7 +2033,7 @@ public class Director extends Attribute implements Executable {
     protected HashMap<ActorExecutionAspect, Time> _nextScheduleTime;
 
     /** Flag set to true if a token has been sent to a communication aspect
-     *  by any port/receiver where the aspect is enabled. 
+     *  by any port/receiver where the aspect is enabled.
      */
     protected boolean _tokenSentToCommunicationAspect;
 
@@ -2045,7 +2071,7 @@ public class Director extends Attribute implements Executable {
      *  @exception NameDuplicationException
      */
     private void _initializeParameters() throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         localClock = new LocalClock(this, "localClock");
 
         startTime = new Parameter(this, "startTime");

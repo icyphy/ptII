@@ -76,6 +76,7 @@ public class DeltaConstraintSolverDisplayActions extends OntologyDisplayActions 
      *  @param controller The associated graph controller.
      *  @return A new node controller.
      */
+    @Override
     public NamedObjController create(GraphController controller) {
         super.create(controller);
         return new DeltaConstraintSolverHighlighterController(this, controller);
@@ -88,7 +89,7 @@ public class DeltaConstraintSolverDisplayActions extends OntologyDisplayActions 
      *  DeltaConstraintSolver ontology solver.
      */
     private static class DeltaConstraintSolverHighlighterController extends
-            HighlighterController {
+    HighlighterController {
 
         /** Create a DeltaConstraintSolverHighlighterController that is associated with a controller.
          *  @param displayActions The OntologyDisplayActions object reference.
@@ -109,7 +110,7 @@ public class DeltaConstraintSolverDisplayActions extends OntologyDisplayActions 
      *  to the context menu.
      */
     @SuppressWarnings("serial")
-        private class HighlightConflicts extends FigureAction {
+    private class HighlightConflicts extends FigureAction {
 
         /** Create a new ResolveConflicts object to be added to the
          *  OntologySolver's context menu.
@@ -125,6 +126,7 @@ public class DeltaConstraintSolverDisplayActions extends OntologyDisplayActions 
          *  @param e The action event that is passed in when the action
          *   is triggered.
          */
+        @Override
         public void actionPerformed(ActionEvent e) {
             super.actionPerformed(e);
             NamedObj container = getContainer();

@@ -237,18 +237,21 @@ public class XSLTUtilities {
         // which causes problems with the test harness
         transformerFactory.setErrorListener(new ErrorListener() {
             /** Receive notification of a recoverable error. */
+            @Override
             public void error(TransformerException exception)
                     throws TransformerException {
                 throw exception;
             }
 
             /** Receive notification of a non-recoverable error. */
+            @Override
             public void fatalError(TransformerException exception)
                     throws TransformerException {
                 throw exception;
             }
 
             /** Receive notification of a warning. */
+            @Override
             public void warning(TransformerException exception) {
                 System.err.println("ptolemy.util.XSLTUtilities.transform()"
                         + ": Warning: " + exception);
@@ -386,8 +389,8 @@ public class XSLTUtilities {
             // of more DTDs is necessray, modify the main() method and
             // setExportDTD() method to allow configuration of DTD.
             fileWriter
-                    .write("\r\n<!DOCTYPE entity PUBLIC \"-//UC Berkeley//DTD MoML 1//EN\" "
-                            + "\r\n\"http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd\">");
+            .write("\r\n<!DOCTYPE entity PUBLIC \"-//UC Berkeley//DTD MoML 1//EN\" "
+                    + "\r\n\"http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd\">");
             fileWriter.write(outputString.substring(positionToInsertDTD));
         } else {
             fileWriter.write(outputString);

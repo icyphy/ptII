@@ -146,6 +146,7 @@ public class SoundActor extends TypedAtomicActor {
      *  @exception IllegalActionException If the change is not
      *   allowed.
      */
+    @Override
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         if (attribute == bufferSize) {
@@ -173,6 +174,7 @@ public class SoundActor extends TypedAtomicActor {
      *  @exception IllegalActionException If there is a problem
      *   beginning audio playback.
      */
+    @Override
     public void initialize() throws IllegalActionException {
         super.initialize();
         _isExecuting = true;
@@ -182,6 +184,7 @@ public class SoundActor extends TypedAtomicActor {
      *  to release access to the audio resources.
      *  @exception IllegalActionException May be thrown by derived classes.
      */
+    @Override
     public void wrapup() throws IllegalActionException {
         super.wrapup();
         _isExecuting = false;
@@ -236,18 +239,18 @@ public class SoundActor extends TypedAtomicActor {
                 case 4:
                     playbackData[base + 3] = (byte) intValue;
                     intValue >>>= 8;
-                case 3:
-                    playbackData[base + 2] = (byte) intValue;
-                    intValue >>>= 8;
-                case 2:
-                    playbackData[base + 1] = (byte) intValue;
-                    intValue >>>= 8;
-                case 1:
-                    playbackData[base] = (byte) intValue;
-                    break;
-                default:
-                    throw new IllegalArgumentException(_bytesPerSample
-                            + " is not supported.");
+        case 3:
+            playbackData[base + 2] = (byte) intValue;
+            intValue >>>= 8;
+        case 2:
+            playbackData[base + 1] = (byte) intValue;
+            intValue >>>= 8;
+        case 1:
+            playbackData[base] = (byte) intValue;
+            break;
+        default:
+            throw new IllegalArgumentException(_bytesPerSample
+                    + " is not supported.");
                 }
             }
         }

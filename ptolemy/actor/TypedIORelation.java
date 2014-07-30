@@ -112,6 +112,7 @@ public class TypedIORelation extends IORelation {
      *   TypedCompositeActor or null, or this relation and the container
      *   are not in the same workspace.
      */
+    @Override
     protected void _checkContainer(CompositeEntity container)
             throws IllegalActionException {
         if (!(container instanceof TypedCompositeActor) && container != null) {
@@ -127,6 +128,7 @@ public class TypedIORelation extends IORelation {
      *  @exception IllegalActionException If the port is not an
      *   TypedIOPort.
      */
+    @Override
     protected void _checkPort(Port port) throws IllegalActionException {
         if (!(port instanceof TypedIOPort)) {
             throw new IllegalActionException(this, port,
@@ -143,6 +145,7 @@ public class TypedIORelation extends IORelation {
      *   or if this port is not an acceptable port for the specified
      *   relation.
      */
+    @Override
     protected void _checkRelation(Relation relation, boolean symmetric)
             throws IllegalActionException {
         if (!(relation instanceof TypedIORelation)) {

@@ -80,6 +80,7 @@ public class InsideEntityEditorPaneFactory extends EditorPaneFactory {
      *  the container and return a configurer for that.
      *  @return A new widget for configuring the container.
      */
+    @Override
     public Component createEditorPane() {
         NamedObj object = getContainer();
 

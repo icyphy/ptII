@@ -78,6 +78,7 @@ public class GiottoReceiver extends AbstractReceiver implements StateReceiver {
      *  FIXME.
      *  Should rename and replace all the reset() with clear().
      */
+    @Override
     public void clear() {
         reset();
     }
@@ -86,6 +87,7 @@ public class GiottoReceiver extends AbstractReceiver implements StateReceiver {
      *  an empty list if there is no such token.
      *  @return A list of instances of Token.
      */
+    @Override
     public List<Token> elementList() {
         List<Token> result = new LinkedList<Token>();
         if (_token != null) {
@@ -100,6 +102,7 @@ public class GiottoReceiver extends AbstractReceiver implements StateReceiver {
      *  @return A token.
      *  @exception NoTokenException If no token is available.
      */
+    @Override
     public Token get() throws NoTokenException {
         if (_token == null) {
             throw new NoTokenException(getContainer(),
@@ -112,6 +115,7 @@ public class GiottoReceiver extends AbstractReceiver implements StateReceiver {
     /** Return true, since writing to this receiver is always allowed.
      *  @return True.
      */
+    @Override
     public boolean hasRoom() {
         return true;
     }
@@ -120,6 +124,7 @@ public class GiottoReceiver extends AbstractReceiver implements StateReceiver {
      *  @param numberOfTokens The size of tokens to be written to the receiver.
      *  @return True.
      */
+    @Override
     public final boolean hasRoom(int numberOfTokens) {
         return true;
     }
@@ -129,6 +134,7 @@ public class GiottoReceiver extends AbstractReceiver implements StateReceiver {
      *  by a call to the update() method.
      *  @return True if there is a token available.
      */
+    @Override
     public boolean hasToken() {
         return _token != null;
     }
@@ -139,6 +145,7 @@ public class GiottoReceiver extends AbstractReceiver implements StateReceiver {
      *  @param numberOfTokens The number of tokens available in this receiver.
      *  @return True if there is a token available.
      */
+    @Override
     public final boolean hasToken(int numberOfTokens) {
         return _token != null;
     }
@@ -155,6 +162,7 @@ public class GiottoReceiver extends AbstractReceiver implements StateReceiver {
      *  @param token The token to be put into this receiver.
      *  @exception NoRoomException Not thrown in this base class.
      */
+    @Override
     public void put(Token token) throws NoRoomException {
         _nextToken = token;
     }
@@ -178,6 +186,7 @@ public class GiottoReceiver extends AbstractReceiver implements StateReceiver {
 
     /** Reset the receiver by removing all tokens from the receiver.
      */
+    @Override
     public void reset() {
         _token = null;
         _nextToken = null;

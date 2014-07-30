@@ -53,6 +53,7 @@ public class BasicZList implements ZList {
     /** Add a figure to the container.  See the implemented method for
      * a detailed description.
      */
+    @Override
     public void add(Figure f) {
         _elements.add(f);
     }
@@ -60,18 +61,21 @@ public class BasicZList implements ZList {
     /** Insert a figure at the given position.  See the implemented
      * method for a detailed description.
      */
+    @Override
     public void add(int index, Figure f) {
         _elements.add(_elements.size() - index, f);
     }
 
     /** Removes all of the figures from this list.
      */
+    @Override
     public void clear() {
         _elements.clear();
     }
 
     /** Get the bounding box of all the figures in this list.
      */
+    @Override
     public Rectangle2D getBounds() {
         return CanvasUtilities.computeCompositeBounds(figures());
     }
@@ -83,6 +87,7 @@ public class BasicZList implements ZList {
      * making this same test is to check if the parent of the figure
      * is the same object as this container.
      */
+    @Override
     public boolean contains(Figure f) {
         return _elements.contains(f);
     }
@@ -92,6 +97,7 @@ public class BasicZList implements ZList {
      * is, from front to back. Clients must not rely on this, though,
      * and use figuresFromBack() if they require that order.
      */
+    @Override
     public Iterator figures() {
         return _elements.iterator();
     }
@@ -101,6 +107,7 @@ public class BasicZList implements ZList {
      * figures should normally be painted, so that figures at lower
      * indexes are painted over the top of figures at higher indexes.
      */
+    @Override
     public Iterator figuresFromBack() {
         return _elements.iterator();
     }
@@ -109,14 +116,17 @@ public class BasicZList implements ZList {
      * lowest index to highest index. This is the order in which
      * events should normally be intercepted.
      */
+    @Override
     public Iterator figuresFromFront() {
         return new Iterator() {
             int cursor = _elements.size();
 
+            @Override
             public boolean hasNext() {
                 return cursor > 0;
             }
 
+            @Override
             public Object next() throws NoSuchElementException {
                 if (cursor <= 0) {
                     throw new NoSuchElementException("Can't get " + cursor
@@ -127,6 +137,7 @@ public class BasicZList implements ZList {
                 return _elements.get(cursor);
             }
 
+            @Override
             public void remove() {
                 throw new UnsupportedOperationException(
                         "Cannot delete figure from zlist");
@@ -136,12 +147,14 @@ public class BasicZList implements ZList {
 
     /** Get the figure at the given index.
      */
+    @Override
     public Figure get(int index) {
         return (Figure) _elements.get(_elements.size() - 1 - index);
     }
 
     /** Return the number of figures in this list.
      */
+    @Override
     public int getFigureCount() {
         return _elements.size();
     }
@@ -149,6 +162,7 @@ public class BasicZList implements ZList {
     /** Get the figures that are entirely contained by the given
      * region.
      */
+    @Override
     public GeometricSet getContainedFigures(Rectangle2D region) {
         return new EnclosedGSet(region);
     }
@@ -158,6 +172,7 @@ public class BasicZList implements ZList {
      * that do not intersect the region -- this method only
      * looks at the bounding boxes.
      */
+    @Override
     public GeometricSet getIntersectedFigures(Rectangle2D region) {
         return new IntersectedGSet(region);
     }
@@ -165,6 +180,7 @@ public class BasicZList implements ZList {
     /** Return the index of the given figure in the Z-list.
      * See the implemented method for a detailed description.
      */
+    @Override
     public int indexOf(Figure f) {
         int i = _elements.indexOf(f);
 
@@ -178,6 +194,7 @@ public class BasicZList implements ZList {
     /** Remove the given figure from this container.
      * See the implemented method for a detailed description.
      */
+    @Override
     public void remove(Figure f) {
         _elements.remove(f);
     }
@@ -185,6 +202,7 @@ public class BasicZList implements ZList {
     /** Remove the figure at the given position in the list.
      * See the implemented method for a detailed description.
      */
+    @Override
     public void remove(int index) {
         _elements.remove(_elements.size() - 1 - index);
     }
@@ -192,6 +210,7 @@ public class BasicZList implements ZList {
     /** Replace the figure at the given index with the passed-in
      * figure.
      */
+    @Override
     public void set(int index, Figure f) {
         _elements.set(_elements.size() - 1 - index, f);
     }
@@ -199,6 +218,7 @@ public class BasicZList implements ZList {
     /** Set the index of the given figure.
      * See the implemented method for a detailed description.
      */
+    @Override
     public void setIndex(int index, Figure f) {
         _elements.remove(f);
         _elements.add(_elements.size() - index, f);
@@ -226,32 +246,38 @@ public class BasicZList implements ZList {
         /** Test if the given figure is within the bounds of this
          * region.
          */
+        @Override
         public boolean contains(Figure f) {
             return _contains(f, _region);
         }
 
         /** Return the figures in undefined order.
          */
+        @Override
         public Iterator figures() {
             return _currentFigures.iterator();
         }
 
         /** Return the figures from highest index to lowest index.
          */
+        @Override
         public Iterator figuresFromBack() {
             return _currentFigures.iterator();
         }
 
         /** Return the figures from lowest index to highest index.
          */
+        @Override
         public Iterator figuresFromFront() {
             return new Iterator() {
                 int cursor = _currentFigures.size();
 
+                @Override
                 public boolean hasNext() {
                     return cursor > 0;
                 }
 
+                @Override
                 public Object next() throws NoSuchElementException {
                     if (cursor <= 0) {
                         throw new NoSuchElementException("Can't get " + cursor
@@ -262,6 +288,7 @@ public class BasicZList implements ZList {
                     return _currentFigures.get(cursor);
                 }
 
+                @Override
                 public void remove() {
                     throw new UnsupportedOperationException(
                             "Cannot delete figure from geometric set");
@@ -271,6 +298,7 @@ public class BasicZList implements ZList {
 
         /** Get the geometry.
          */
+        @Override
         public Shape getGeometry() {
             return _region;
         }
@@ -278,6 +306,7 @@ public class BasicZList implements ZList {
         /** Set the geometry. All previously-obtained iterators
          * are invalid and must be discarded.
          */
+        @Override
         public void setGeometry(Shape geometry) {
             _region = (Rectangle2D) geometry;
 
@@ -307,12 +336,14 @@ public class BasicZList implements ZList {
 
         /** Test if the given figure is within this set
          */
+        @Override
         public boolean _contains(Figure f, Rectangle2D region) {
             return f.getBounds().intersects(region);
         }
 
         /* Filter the figures into the given ArrayList
          */
+        @Override
         public void _filter(ArrayList result, Iterator i, Rectangle2D region) {
             while (i.hasNext()) {
                 Figure f = (Figure) i.next();
@@ -333,12 +364,14 @@ public class BasicZList implements ZList {
 
         /** Test if the given figure is within this set
          */
+        @Override
         public boolean _contains(Figure f, Rectangle2D region) {
             return region.contains(f.getBounds());
         }
 
         /* Filter the figures into the given ArrayList
          */
+        @Override
         public void _filter(ArrayList result, Iterator i, Rectangle2D region) {
             while (i.hasNext()) {
                 Figure f = (Figure) i.next();

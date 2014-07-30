@@ -104,6 +104,7 @@ public class ThrowModelError extends Sink {
      *  and if any token is true, invoke the model error handler.
      *  @exception IllegalActionException If thrown by the parent class.
      */
+    @Override
     public void fire() throws IllegalActionException {
         super.fire();
         if (!((BooleanToken) throwInPostfire.getToken()).booleanValue()) {
@@ -131,6 +132,7 @@ public class ThrowModelError extends Sink {
      *  @exception IllegalActionException If thrown by the parent class.
      *  @return Whatever the base class returns (probably true).
      */
+    @Override
     public boolean postfire() throws IllegalActionException {
         if (((BooleanToken) throwInPostfire.getToken()).booleanValue()) {
             boolean result = false;

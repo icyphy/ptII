@@ -95,6 +95,7 @@ public class ImageDisplay extends ptolemy.actor.lib.image.ImageDisplay {
      *
      *  @return the instance of the implementation.
      */
+    @Override
     protected ImageDisplayInterface _getImplementation() {
         if (_implementation == null) {
             if (PtolemyInjector.getInjector() == null) {

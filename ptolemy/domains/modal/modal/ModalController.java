@@ -71,7 +71,7 @@ import ptolemy.moml.MoMLChangeRequest;
  @Pt.AcceptedRating Red (reviewmoderator)
  */
 public class ModalController extends FSMActor implements DropTargetHandler,
-        RefinementActor {
+RefinementActor {
 
     /** Construct a modal controller with a name and a container.
      *  The container argument must not be null, or a
@@ -110,34 +110,36 @@ public class ModalController extends FSMActor implements DropTargetHandler,
     }
 
     /** Create a refinement for the given state.
-         *
-         *  @param state The state that will contain the new refinement.
-         *  @param name The name of the composite entity that stores the refinement.
-         *  @param template The template used to create the refinement, or null if
-         *   template is not used.
-         *  @param className The class name for the refinement, which is used when
-         *   template is null.
-         *  @param instanceOpener The instanceOpener, typically a
-         *   Configuration, that is used to open the refinement (as a
-         *   look-inside action) after it is created, or null if it is not
-         *   needed to open the refinement.
-         *  @exception IllegalActionException If error occurs while creating the
-         *   refinement.
-         */
-        public void addRefinement(State state, final String name, Entity template,
-                String className, final InstanceOpener instanceOpener)
-                throws IllegalActionException {
-            ModalRefinement.addRefinement(state, name, template, className,
-                    instanceOpener, (CompositeEntity)getContainer());
-        }
-
-        /** React to a list of objects being dropped onto a target.
      *
-     *  @param target The target on which the objects are dropped.
-     *  @param dropObjects The list of objects dropped onto the target.
-     *  @param moml The moml string generated for the dropped objects.
-     *  @exception IllegalActionException If the handling is unsuccessful.
+     *  @param state The state that will contain the new refinement.
+     *  @param name The name of the composite entity that stores the refinement.
+     *  @param template The template used to create the refinement, or null if
+     *   template is not used.
+     *  @param className The class name for the refinement, which is used when
+     *   template is null.
+     *  @param instanceOpener The instanceOpener, typically a
+     *   Configuration, that is used to open the refinement (as a
+     *   look-inside action) after it is created, or null if it is not
+     *   needed to open the refinement.
+     *  @exception IllegalActionException If error occurs while creating the
+     *   refinement.
      */
+    @Override
+    public void addRefinement(State state, final String name, Entity template,
+            String className, final InstanceOpener instanceOpener)
+            throws IllegalActionException {
+        ModalRefinement.addRefinement(state, name, template, className,
+                instanceOpener, (CompositeEntity) getContainer());
+    }
+
+    /** React to a list of objects being dropped onto a target.
+    *
+    *  @param target The target on which the objects are dropped.
+    *  @param dropObjects The list of objects dropped onto the target.
+    *  @param moml The moml string generated for the dropped objects.
+    *  @exception IllegalActionException If the handling is unsuccessful.
+    */
+    @Override
     public void dropObject(NamedObj target, List dropObjects, String moml)
             throws IllegalActionException {
         boolean merge = false;
@@ -222,6 +224,7 @@ public class ModalController extends FSMActor implements DropTargetHandler,
      *  @exception IllegalActionException If the specified refinement cannot be
      *   found in a state, or if a comma-separated list is malformed.
      */
+    @Override
     public State getRefinedState() throws IllegalActionException {
         NamedObj container = getContainer();
         if (container instanceof ModalModel) {
@@ -255,6 +258,7 @@ public class ModalController extends FSMActor implements DropTargetHandler,
      *  @exception NameDuplicationException If the entity already has a port
      *   with the specified name.
      */
+    @Override
     public Port newPort(String name) throws NameDuplicationException {
         try {
             _workspace.getWriteAccess();
@@ -339,6 +343,7 @@ public class ModalController extends FSMActor implements DropTargetHandler,
      *   if mirroring should not occur downwards in the hierarchy,
      *   1 if mirroring should not occur upwards in the hierarchy.
      */
+    @Override
     public void setMirrorDisable(int disable) {
         _mirrorDisable = disable != 0;
     }
@@ -358,8 +363,9 @@ public class ModalController extends FSMActor implements DropTargetHandler,
      *  @exception NameDuplicationException If the port name collides with a
      *   name already in the entity.
      */
+    @Override
     protected void _addPort(Port port) throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         // If mirroring is disabled, then the port is being added by the
         // container, which is surely OK.
         if (!_mirrorDisable) {
@@ -386,7 +392,7 @@ public class ModalController extends FSMActor implements DropTargetHandler,
                 }
             }
         }
-        
+
         super._addPort(port);
     }
 

@@ -106,7 +106,7 @@ public abstract class Source extends TypedAtomicActor {
 
         // Parameter to get Vergil to label the trigger port.
         new SingletonParameter(trigger, "_showName")
-                .setToken(BooleanToken.TRUE);
+        .setToken(BooleanToken.TRUE);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -135,6 +135,7 @@ public abstract class Source extends TypedAtomicActor {
      *  tokens themselves, so that they aren't left unconsumed.
      *  @exception IllegalActionException Not thrown in this base class.
      */
+    @Override
     public void fire() throws IllegalActionException {
         super.fire();
 
@@ -167,6 +168,7 @@ public abstract class Source extends TypedAtomicActor {
      *  @exception IllegalActionException If checking the trigger for
      *   a token throws it or if the super class throws it.
      */
+    @Override
     public boolean prefire() throws IllegalActionException {
         if (trigger.numberOfSources() > 0) {
             // Have to consume all trigger inputs.

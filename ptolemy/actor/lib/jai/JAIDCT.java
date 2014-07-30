@@ -83,6 +83,7 @@ public class JAIDCT extends Transformer {
      *  Output the discrete cosine transform of the inputted image.
      *  @exception IllegalActionException If a contained method throws it.
      */
+    @Override
     public void fire() throws IllegalActionException {
         super.fire();
 

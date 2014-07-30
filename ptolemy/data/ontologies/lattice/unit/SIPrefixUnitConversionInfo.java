@@ -47,7 +47,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 @since Ptolemy II 10.0
 @Pt.ProposedRating Red (cshelton)
 @Pt.AcceptedRating Red (cshelton)
-*/
+ */
 public class SIPrefixUnitConversionInfo extends UnitConversionInfo {
 
     /** Create a new UnitConversionInfo parameter with the given name and
@@ -136,7 +136,7 @@ public class SIPrefixUnitConversionInfo extends UnitConversionInfo {
     private static void createUnitConversionParameterForFactor(
             DimensionRepresentativeConcept dimension, String unitName,
             double unitFactor, RecordToken unitRecord)
-            throws IllegalActionException {
+                    throws IllegalActionException {
         SIPrefixUnitConversionInfo unitParameter = null;
         try {
             unitParameter = new SIPrefixUnitConversionInfo(dimension, unitName);
@@ -172,7 +172,7 @@ public class SIPrefixUnitConversionInfo extends UnitConversionInfo {
      */
     private static void removeAllSIPrefixConversionParameters(
             DimensionRepresentativeConcept dimension)
-            throws IllegalActionException {
+                    throws IllegalActionException {
         for (SIPrefixUnitConversionInfo prefixUnitParameter : dimension
                 .attributeList(SIPrefixUnitConversionInfo.class)) {
             try {

@@ -65,6 +65,7 @@ public class ColtBinomialSelector extends ColtRandomSource {
      * @exception IllegalActionException If the code stream encounters an
      *  error in processing the specified code block(s).
      */
+    @Override
     public String generatePreinitializeCode() throws IllegalActionException {
         // Automatically append the "preinitBlock" by default.
         super.generatePreinitializeCode();
@@ -92,6 +93,7 @@ public class ColtBinomialSelector extends ColtRandomSource {
      *  needed by the code generated for the ColtBinomialSelector actor.
      * @exception IllegalActionException Not Thrown in this subclass.
      */
+    @Override
     public Set getHeaderFiles() throws IllegalActionException {
         Set files = super.getHeaderFiles();
         files.add("cern.jet.random.Binomial;");
@@ -105,6 +107,7 @@ public class ColtBinomialSelector extends ColtRandomSource {
      *  @exception IllegalActionException Not thrown in this base class.
      *  @return The code that produces a new random number.
      */
+    @Override
     protected String _generateRandomNumber() throws IllegalActionException {
         CodeStream codeStream = _templateParser.getCodeStream();
         codeStream.clear();

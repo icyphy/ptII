@@ -24,7 +24,7 @@
  PT_COPYRIGHT_VERSION_2
  COPYRIGHTENDKEY
 
-*/
+ */
 package ptolemy.actor.gt;
 
 import ptolemy.actor.gt.ingredients.criteria.Criterion;

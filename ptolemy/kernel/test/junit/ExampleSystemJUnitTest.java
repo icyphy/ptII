@@ -92,7 +92,7 @@ public class ExampleSystemJUnitTest {
      */
     public static void main(String args[]) {
         org.junit.runner.JUnitCore
-                .main("ptolemy.kernel.test.junit.ExampleSystemJUnitTest");
+        .main("ptolemy.kernel.test.junit.ExampleSystemJUnitTest");
     }
 
     private static String _eol = System.getProperty("line.separator");

@@ -111,6 +111,7 @@ public class JAIPolarToComplex extends TypedAtomicActor {
      *  @exception IllegalActionException If a contained method throws
      *  it.
      */
+    @Override
     public void fire() throws IllegalActionException {
         super.fire();
 

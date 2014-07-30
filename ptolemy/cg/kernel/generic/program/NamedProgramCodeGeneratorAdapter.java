@@ -69,33 +69,33 @@ import ptolemy.util.StringUtilities;
 //FIXME: Overhaul comments.
 
 /**
-* Base class for code generator adapter.  Actor adapters extend this
-* class.
-* <p>Subclasses should override generateFireCode(),
-* generateInitializeCode() generatePostfireCode(),
-* generatePreinitializeCode(), and generateWrapupCode() methods by
-* appending a corresponding code block.
-*
-* <p>Subclasses should be sure to properly indent the code by
-* either using the code block functionality in methods like
-* _generateBlockCode(String) or by calling
-* {@link ptolemy.cg.kernel.generic.program.CodeStream#indent(String)},
-* for example:
-* <pre>
-*     StringBuffer code = new StringBuffer();
-*     code.append(super.generateWrapupCode());
-*     code.append("// Local wrapup code");
-*     return processCode(CodeStream.indent(code.toString()));
-* </pre>
-*
-* @author Ye Zhou, Gang Zhou, Edward A. Lee, Bert Rodiers Contributors: Christopher Brooks, Teale Fristoe
-* @version $Id$
-* @since Ptolemy II 10.0
-* @Pt.ProposedRating Yellow (eal)
-* @Pt.AcceptedRating Yellow (eal)
-*/
+ * Base class for code generator adapter.  Actor adapters extend this
+ * class.
+ * <p>Subclasses should override generateFireCode(),
+ * generateInitializeCode() generatePostfireCode(),
+ * generatePreinitializeCode(), and generateWrapupCode() methods by
+ * appending a corresponding code block.
+ *
+ * <p>Subclasses should be sure to properly indent the code by
+ * either using the code block functionality in methods like
+ * _generateBlockCode(String) or by calling
+ * {@link ptolemy.cg.kernel.generic.program.CodeStream#indent(String)},
+ * for example:
+ * <pre>
+ *     StringBuffer code = new StringBuffer();
+ *     code.append(super.generateWrapupCode());
+ *     code.append("// Local wrapup code");
+ *     return processCode(CodeStream.indent(code.toString()));
+ * </pre>
+ *
+ * @author Ye Zhou, Gang Zhou, Edward A. Lee, Bert Rodiers Contributors: Christopher Brooks, Teale Fristoe
+ * @version $Id$
+ * @since Ptolemy II 10.0
+ * @Pt.ProposedRating Yellow (eal)
+ * @Pt.AcceptedRating Yellow (eal)
+ */
 public class NamedProgramCodeGeneratorAdapter extends
-        ProgramCodeGeneratorAdapter {
+ProgramCodeGeneratorAdapter {
 
     /** Construct the code generator adapter associated
      *  with the given component.
@@ -264,7 +264,7 @@ public class NamedProgramCodeGeneratorAdapter extends
                 if (!necessaryFileDestination.exists()
                         || necessaryFileSource.exists()
                         && necessaryFileSource.lastModified() > necessaryFileDestination
-                                .lastModified()) {
+                        .lastModified()) {
                     // If the dest file does not exist or is older than the
                     // source file, we do the copy
                     System.out.println("Copying " + necessaryFileSource
@@ -302,6 +302,7 @@ public class NamedProgramCodeGeneratorAdapter extends
     /** Get the component associated with this adapter.
      *  @return The associated component.
      */
+    @Override
     public NamedObj getComponent() {
         return (NamedObj) super.getComponent();
     }
@@ -406,7 +407,7 @@ public class NamedProgramCodeGeneratorAdapter extends
                         "Fire "
                                 + composite
                                 + CodeGeneratorAdapter
-                                        .generateName(getComponent())));
+                                .generateName(getComponent())));
 
         if (getCodeGenerator().inline.getToken() == BooleanToken.TRUE) {
             code.append(_generateFireCode());
@@ -525,9 +526,9 @@ public class NamedProgramCodeGeneratorAdapter extends
     }
 
     /** Generate the prefire code of the associated composite actor.
-    *  @return The prefire code of the associated composite actor.
-    *  @exception IllegalActionException If illegal macro names are found.
-    */
+     *  @return The prefire code of the associated composite actor.
+     *  @exception IllegalActionException If illegal macro names are found.
+     */
     public String generatePrefireCode() throws IllegalActionException {
         // FIXME: This is to be used in future re-structuring.
         StringBuffer code = new StringBuffer();
@@ -795,6 +796,7 @@ public class NamedProgramCodeGeneratorAdapter extends
      *  @return The name of the object.
      *  @see #setName(String)
      */
+    @Override
     public String getName() {
         return generateName(getComponent());
     }
@@ -1145,7 +1147,7 @@ public class NamedProgramCodeGeneratorAdapter extends
     protected String _generateTypeConvertStatement(
             ProgramCodeGeneratorAdapter.Channel source,
             ProgramCodeGeneratorAdapter.Channel sink, int offset)
-            throws IllegalActionException {
+                    throws IllegalActionException {
         return _templateParser.generateTypeConvertStatement(source, sink,
                 offset, null);
     }
@@ -1188,6 +1190,7 @@ public class NamedProgramCodeGeneratorAdapter extends
          * @exception IllegalActionException If thrown while getting buffer
          * sizes or creating ObjectToken.
          */
+        @Override
         public Token get(String name) throws IllegalActionException {
 
             NamedObj container = getComponent();
@@ -1205,7 +1208,7 @@ public class NamedProgramCodeGeneratorAdapter extends
                 // referenced by the name anywhere it is used.
                 if (getCodeGenerator() != null
                         && getCodeGenerator()._modifiedVariables
-                                .contains(result)) { // figure out how to get the containers code generator that may help
+                        .contains(result)) { // figure out how to get the containers code generator that may help
                     return new ObjectToken(getCodeGenerator()//_codeGenerator
                             .generateVariableName(result));
                 } else {
@@ -1242,6 +1245,7 @@ public class NamedProgramCodeGeneratorAdapter extends
          * @exception IllegalActionException If a value in the scope exists with
          * the given name, but cannot be evaluated.
          */
+        @Override
         public ptolemy.data.type.Type getType(String name)
                 throws IllegalActionException {
             if (_variable != null) {
@@ -1260,6 +1264,7 @@ public class NamedProgramCodeGeneratorAdapter extends
          * @exception IllegalActionException If a value in the scope exists with
          * the given name, but cannot be evaluated.
          */
+        @Override
         public ptolemy.graph.InequalityTerm getTypeTerm(String name)
                 throws IllegalActionException {
             if (_variable != null) {
@@ -1274,6 +1279,7 @@ public class NamedProgramCodeGeneratorAdapter extends
          * @exception IllegalActionException If there is a problem getting the
          * identifier set from the variable.
          */
+        @Override
         public Set identifierSet() throws IllegalActionException {
             if (_variable != null) {
                 return _variable.getParserScope().identifierSet();
@@ -1281,6 +1287,7 @@ public class NamedProgramCodeGeneratorAdapter extends
             return null;
         }
 
+        @Override
         public String toString() {
             return super.toString()
                     + " variable: "
@@ -1332,7 +1339,7 @@ public class NamedProgramCodeGeneratorAdapter extends
     private String _generateTypeConvertStatements(
             ProgramCodeGeneratorAdapter.Channel source,
             ProgramCodeGeneratorAdapter.Channel sink)
-            throws IllegalActionException {
+                    throws IllegalActionException {
 
         StringBuffer statements = new StringBuffer();
 

@@ -61,7 +61,7 @@ import ptolemy.moml.HandlesInternalLinks;
 /**
  A composite that contains one actor and mirror the ports and
  parameters of that actor. If TypedIOPorts exist as part of the
- class definition, these are not mirrored. 
+ class definition, these are not mirrored.
 
  @author Edward A. Lee
  @version $Id$
@@ -70,7 +70,7 @@ import ptolemy.moml.HandlesInternalLinks;
  @Pt.AcceptedRating Red (neuendor)
  */
 public class ReflectComposite extends TypedCompositeActor implements
-HandlesInternalLinks {
+        HandlesInternalLinks {
 
     /** Create an actor with a name and a container.
      *  The container argument must not be null, or a
@@ -140,6 +140,7 @@ HandlesInternalLinks {
      *   cannot be cloned.
      *  @see #exportMoML(Writer, int, String)
      */
+    @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         ReflectComposite result = (ReflectComposite) super.clone(workspace);
 
@@ -156,10 +157,10 @@ HandlesInternalLinks {
 
                 if (insidePort instanceof MirrorPort) {
                     ((MirrorPort) port)
-                    .setAssociatedPort((MirrorPort) insidePort);
+                            .setAssociatedPort((MirrorPort) insidePort);
                 } else if (insidePort instanceof ParameterMirrorPort) {
                     ((ParameterMirrorPort) port)
-                    .setAssociatedPort((ParameterMirrorPort) insidePort);
+                            .setAssociatedPort((ParameterMirrorPort) insidePort);
                 }
             }
         }
@@ -172,6 +173,7 @@ HandlesInternalLinks {
      *  @exception NameDuplicationException If the container already has a port
      *  with this name.
      */
+    @Override
     public Port newPort(String name) throws NameDuplicationException {
         try {
             Port result = new MirrorPort(this, name);
@@ -222,13 +224,14 @@ HandlesInternalLinks {
      *   already on the actor contents list, or if the added element is a
      *   class definition.
      */
+    @Override
     protected void _addEntity(ComponentEntity entity)
             throws IllegalActionException, NameDuplicationException {
         if (entity.isClassDefinition()) {
             throw new IllegalActionException(this,
                     "Cannot place a class definition in an "
                             + "ReflectComposite actor.");
-        } 
+        }
 
         super._addEntity(entity);
 
@@ -239,10 +242,12 @@ HandlesInternalLinks {
             // Override this to indicate that the change is localized.
             // This keeps the EntityTreeModel from closing open libraries
             // when notified of this change.
+            @Override
             public NamedObj getLocality() {
                 return ReflectComposite.this;
             }
 
+            @Override
             protected void _execute() throws Exception {
                 // NOTE: We defer to a change request
                 // because only at this point can we be sure that the
@@ -299,8 +304,8 @@ HandlesInternalLinks {
                             ComponentPort insidePort = (ComponentPort) entityPorts
                                     .next();
                             // do not mirror ports that are not instances of MirrorPort
-                            if ((!_mirrorParameterPorts
-                                    && insidePort instanceof ParameterPort)||!(insidePort instanceof MirrorPort)) {
+                            if ((!_mirrorParameterPorts && insidePort instanceof ParameterPort)
+                                    || !(insidePort instanceof MirrorPort)) {
                                 continue;
                             }
                             String name = insidePort.getName();
@@ -351,13 +356,14 @@ HandlesInternalLinks {
      *  @exception NameDuplicationException If the port name collides with a
      *   name already in the actor.
      */
+    @Override
     protected void _addPort(Port port) throws IllegalActionException,
-    NameDuplicationException { 
+            NameDuplicationException {
 
         super._addPort(port);
 
         if ((port instanceof MirrorPort || port instanceof ParameterMirrorPort)) {
-         // Create and connect a matching inside port on contained entities.
+            // Create and connect a matching inside port on contained entities.
             // Do this as a change request to ensure that the action of
             // creating the port passed in as an argument is complete by
             // the time this executes.  Do not use MoML here because it
@@ -370,10 +376,12 @@ HandlesInternalLinks {
                 // Override this to indicate that the change is localized.
                 // This keeps the EntityTreeModel from closing open libraries
                 // when notified of this change.
+                @Override
                 public NamedObj getLocality() {
                     return ReflectComposite.this;
                 }
 
+                @Override
                 protected void _execute() throws Exception {
                     // NOTE: We defer the construction of the MoML
                     // change request to here because only at this
@@ -397,11 +405,13 @@ HandlesInternalLinks {
 
                             if (entities.hasNext()) {
                                 Entity insideEntity = (Entity) entities.next();
-                                Port insidePort = insideEntity.getPort(portName);
+                                Port insidePort = insideEntity
+                                        .getPort(portName);
 
                                 if (insidePort == null) {
                                     if (castPort instanceof MirrorPort) {
-                                        insidePort = insideEntity.newPort(portName);
+                                        insidePort = insideEntity
+                                                .newPort(portName);
                                     } else if (castPort instanceof ParameterMirrorPort) { // ParameterMirrorPort
                                         insidePort = ((MirrorComposite) insideEntity)
                                                 .newParameterPort(portName);
@@ -409,7 +419,8 @@ HandlesInternalLinks {
 
                                     if (insidePort instanceof IOPort) {
                                         IOPort castInsidePort = (IOPort) insidePort;
-                                        castInsidePort.setInput(castPort.isInput());
+                                        castInsidePort.setInput(castPort
+                                                .isInput());
                                         castInsidePort.setOutput(castPort
                                                 .isOutput());
                                         castInsidePort.setMultiport(castPort
@@ -429,25 +440,27 @@ HandlesInternalLinks {
 
                                 if (insidePort instanceof MirrorPort) {
                                     ((MirrorPort) castPort)
-                                            .setAssociatedPort((MirrorPort) insidePort);
+                                    .setAssociatedPort((MirrorPort) insidePort);
                                 } else if (insidePort instanceof ParameterMirrorPort) { // ParameterMirrorPort
                                     ((ParameterMirrorPort) castPort)
-                                            .setAssociatedPort((ParameterMirrorPort) insidePort);
+                                    .setAssociatedPort((ParameterMirrorPort) insidePort);
                                 }
 
                                 // Create a link only if it doesn't already exist.
                                 List connectedPorts = insidePort
                                         .connectedPortList();
-                                
+
                                 // Check if inside port is already connected to a port with that name.
                                 // Skipping this step causes duplicate link attempts between castPort and insidePort
                                 // in the case that _addPort() is called during clone(), in which CompositeEntity.clone()
                                 // will already have created a link between the two ports.
-                                
-                                Iterator connectedPortsIterator = connectedPorts.iterator();
+
+                                Iterator connectedPortsIterator = connectedPorts
+                                        .iterator();
                                 boolean alreadyConnected = false;
                                 while (connectedPortsIterator.hasNext()) {
-                                    Port cp = (Port) connectedPortsIterator.next();
+                                    Port cp = (Port) connectedPortsIterator
+                                            .next();
                                     if (cp.getName().equals(portName)) {
                                         // do not connect
                                         alreadyConnected = true;
@@ -480,6 +493,7 @@ HandlesInternalLinks {
      *  @param depth The depth in the hierarchy, to determine indenting.
      *  @exception IOException If an I/O error occurs.
      */
+    @Override
     protected void _exportMoMLContents(Writer output, int depth)
             throws IOException {
         Iterator attributes = attributeList().iterator();
@@ -509,6 +523,7 @@ HandlesInternalLinks {
      *  on the workspace.
      *  @param entity The entity being removed from this entity.
      */
+    @Override
     protected void _removeEntity(ComponentEntity entity) {
         super._removeEntity(entity);
 
@@ -548,6 +563,7 @@ HandlesInternalLinks {
      *  workspace.
      *  @param port The port being removed from this entity.
      */
+    @Override
     protected void _removePort(final Port port) {
         super._removePort(port);
 
@@ -651,6 +667,7 @@ HandlesInternalLinks {
          *  @exception NameDuplicationException If the container already has
          *  a port with this name.
          */
+        @Override
         public Port newPort(String name) throws NameDuplicationException {
             try {
                 return new MirrorPort(this, name);
@@ -658,11 +675,12 @@ HandlesInternalLinks {
                 // This exception should not occur, so we throw a runtime
                 // exception.
                 throw new InternalErrorException(this, ex, null);
-            } 
+            }
         }
+
         /** Add a port to this actor. This overrides the base class to
          *  add a corresponding port to the container using a change
-         *  request, if the port is an instance of MirrorPort and 
+         *  request, if the port is an instance of MirrorPort and
          *  does not already exist.
          *  @param port The TypedIOPort to add to this actor.
          *  @exception IllegalActionException If the port is not an instance of
@@ -670,8 +688,9 @@ HandlesInternalLinks {
          *  @exception NameDuplicationException If the port name
          *  collides with a name already in the actor.
          */
+        @Override
         protected void _addPort(final Port port) throws IllegalActionException,
-        NameDuplicationException {
+                NameDuplicationException {
 
             super._addPort(port);
 
@@ -690,10 +709,12 @@ HandlesInternalLinks {
                     // Override this to indicate that the change is localized.
                     // This keeps the EntityTreeModel from closing open libraries
                     // when notified of this change.
+                    @Override
                     public NamedObj getLocality() {
                         return getContainer();
                     }
 
+                    @Override
                     protected void _execute() throws Exception {
                         try {
                             workspace().getWriteAccess();
@@ -711,13 +732,14 @@ HandlesInternalLinks {
                                         .getPort(port.getName());
 
                                 if (newPort == null) {
-                                    newPort = (MirrorPort) container.newPort(port
-                                            .getName());
+                                    newPort = (MirrorPort) container
+                                            .newPort(port.getName());
                                 }
 
                                 if (port instanceof IOPort) {
                                     newPort.setInput(((IOPort) port).isInput());
-                                    newPort.setOutput(((IOPort) port).isOutput());
+                                    newPort.setOutput(((IOPort) port)
+                                            .isOutput());
                                     newPort.setMultiport(((IOPort) port)
                                             .isMultiport());
                                 }
@@ -726,7 +748,7 @@ HandlesInternalLinks {
                             workspace().doneWriting();
                         }
                     }
-                }; 
+                };
                 container.requestChange(request);
             }
         }

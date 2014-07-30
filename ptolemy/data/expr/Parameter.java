@@ -179,6 +179,7 @@ public class Parameter extends Variable {
      *  @exception CloneNotSupportedException If any of the attributes
      *   cannot be cloned.
      */
+    @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         Parameter newObject = (Parameter) super.clone(workspace);
         newObject._choices = null;
@@ -204,6 +205,7 @@ public class Parameter extends Variable {
      *  @exception IOException If an I/O error occurs.
      *  @see #isPersistent()
      */
+    @Override
     public void exportMoML(Writer output, int depth, String name)
             throws IOException {
         if (_isMoMLSuppressed(depth)) {

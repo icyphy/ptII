@@ -107,6 +107,7 @@ public class Const extends LimitedFiringSource {
      *  @exception CloneNotSupportedException If a derived class contains
      *   an attribute that cannot be cloned.
      */
+    @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         Const newObject = (Const) super.clone(workspace);
 
@@ -120,6 +121,7 @@ public class Const extends LimitedFiringSource {
      *  @exception IllegalActionException If it is thrown by the
      *   send() method sending out the token.
      */
+    @Override
     public void fire() throws IllegalActionException {
         super.fire();
         output.send(0, value.getToken());

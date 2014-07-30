@@ -101,6 +101,7 @@ public abstract class SynchronousFixTransformer extends FixTransformer {
      * @exception IllegalActionException
      *  @exception IllegalActionException If the function is not recognized.
      */
+    @Override
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         super.attributeChanged(attribute);
@@ -121,7 +122,7 @@ public abstract class SynchronousFixTransformer extends FixTransformer {
             }
             Precision precision = new Precision(
                     ((Parameter) getAttribute("outputPrecision"))
-                            .getExpression());
+                    .getExpression());
 
             Overflow overflow = Overflow
                     .getName(((Parameter) getAttribute("outputOverflow"))
@@ -139,7 +140,7 @@ public abstract class SynchronousFixTransformer extends FixTransformer {
         if (attribute == initialValue) {
             Precision precision = new Precision(
                     ((Parameter) getAttribute("outputPrecision"))
-                            .getExpression());
+                    .getExpression());
 
             Overflow overflow = Overflow
                     .getName(((Parameter) getAttribute("outputOverflow"))
@@ -159,6 +160,7 @@ public abstract class SynchronousFixTransformer extends FixTransformer {
     /** Initialize the state of the actor.
      *  @exception IllegalActionException If there is no director.
      */
+    @Override
     public void initialize() throws IllegalActionException {
         super.initialize();
         Precision precision = new Precision(
@@ -184,6 +186,7 @@ public abstract class SynchronousFixTransformer extends FixTransformer {
      *
      *  @return False.
      */
+    @Override
     public boolean isStrict() {
         try {
             int latencyValue = ((ScalarToken) latency.getToken()).intValue();
@@ -201,6 +204,7 @@ public abstract class SynchronousFixTransformer extends FixTransformer {
     /** Override the base class to declare that the <i>output</i>
      *  does not depend on the <i>input</i> in a firing.
      */
+    @Override
     public void preinitialize() throws IllegalActionException {
         super.preinitialize();
         try {

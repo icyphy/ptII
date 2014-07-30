@@ -155,7 +155,7 @@ public abstract class ConditionalBranch implements Debuggable {
      */
     public ConditionalBranch(boolean guard, IOPort port, int branchID,
             ConditionalBranchController controller)
-            throws IllegalActionException {
+                    throws IllegalActionException {
         _branchID = branchID;
         _guard = guard;
         _controller = controller;
@@ -179,6 +179,7 @@ public abstract class ConditionalBranch implements Debuggable {
      *  @param listener The listener to which to send debug messages.
      *  @see #removeDebugListener(DebugListener)
      */
+    @Override
     public void addDebugListener(DebugListener listener) {
         if (_debugListeners == null) {
             _debugListeners = new LinkedList();
@@ -262,6 +263,7 @@ public abstract class ConditionalBranch implements Debuggable {
      *   to which debug messages are sent.
      *  @see #addDebugListener(DebugListener)
      */
+    @Override
     public void removeDebugListener(DebugListener listener) {
         if (_debugListeners == null) {
             return;

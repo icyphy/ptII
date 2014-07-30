@@ -155,6 +155,7 @@ public class TableIcon extends DynamicEditorIcon {
      *  box depends on the value.
      *  @return A new figure.
      */
+    @Override
     public Figure createBackgroundFigure() {
         NamedObj container = getContainer();
         CompositeFigure result = new CompositeFigure();
@@ -257,7 +258,7 @@ public class TableIcon extends DynamicEditorIcon {
                                     double columnPosition = _HORIZONTAL_PADDING;
                                     while (labelSet.hasNext()) {
                                         /*String column = (String) */labelSet
-                                                .next();
+                                        .next();
                                         tableElement[i][j].translateTo(
                                                 columnPosition, rowPosition);
                                         result.add(tableElement[i][j]);

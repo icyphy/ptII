@@ -98,6 +98,7 @@ public class ParameterPort extends TypedIOPort {
      *  @see java.lang.Object#clone()
      *  @return The cloned port.
      */
+    @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         ParameterPort newObject = (ParameterPort) super.clone(workspace);
 
@@ -118,8 +119,9 @@ public class ParameterPort extends TypedIOPort {
      *  @exception IllegalActionException If the superclass throws it.
      *  @exception NameDuplicationException If the superclass throws it.
      */
+    @Override
     public void setContainer(Entity entity) throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         Entity previousContainer = (Entity) getContainer();
         super.setContainer(entity);
 
@@ -160,6 +162,7 @@ public class ParameterPort extends TypedIOPort {
      *  This method is write-synchronized on the workspace.
      *  @param name The new display name..
      */
+    @Override
     public void setDisplayName(String name) {
         if (_settingName || _parameter == null) {
             super.setDisplayName(name);
@@ -183,8 +186,9 @@ public class ParameterPort extends TypedIOPort {
      *  @exception NameDuplicationException If the container already
      *   contains an attribute with the proposed name.
      */
+    @Override
     public void setName(String name) throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         if (_settingName || _parameter == null) {
             super.setName(name);
         } else {

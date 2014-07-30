@@ -52,17 +52,17 @@ import ptolemy.kernel.util.NameDuplicationException;
 public class Count extends TypedAtomicActor {
 
     /** Construct an actor with the given container and name.
-    *  In addition to invoking the base class constructors, construct
-    *  the <i>init</i> and <i>step</i> parameter and the <i>step</i>
-    *  port. Initialize <i>init</i>
-    *  to IntToken with value 0, and <i>step</i> to IntToken with value 1.
-    *  @param container The container.
-    *  @param name The name of this actor.
-    *  @exception IllegalActionException If the actor cannot be contained
-    *   by the proposed container.
-    *  @exception NameDuplicationException If the container already has an
-    *   actor with this name.
-    */
+     *  In addition to invoking the base class constructors, construct
+     *  the <i>init</i> and <i>step</i> parameter and the <i>step</i>
+     *  port. Initialize <i>init</i>
+     *  to IntToken with value 0, and <i>step</i> to IntToken with value 1.
+     *  @param container The container.
+     *  @param name The name of this actor.
+     *  @exception IllegalActionException If the actor cannot be contained
+     *   by the proposed container.
+     *  @exception NameDuplicationException If the container already has an
+     *   actor with this name.
+     */
     public Count(CompositeEntity container, String name)
             throws NameDuplicationException, IllegalActionException {
         super(container, name);
@@ -83,12 +83,14 @@ public class Count extends TypedAtomicActor {
     public Parameter initial;
 
     /** Reset the count to the initial value. */
+    @Override
     public void initialize() throws IllegalActionException {
         super.initialize();
         _count = ((IntToken) initial.getToken()).intValue();
     }
 
     /** Consume the trigger input and output the incremented count. */
+    @Override
     public void fire() throws IllegalActionException {
         super.fire();
         if (trigger.getWidth() > 0 && trigger.hasToken(0)) {
@@ -98,6 +100,7 @@ public class Count extends TypedAtomicActor {
     }
 
     /** Record the most updated count. */
+    @Override
     public boolean postfire() throws IllegalActionException {
         _count += 1;
         return super.postfire();

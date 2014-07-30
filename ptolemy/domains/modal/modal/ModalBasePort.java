@@ -456,7 +456,7 @@ public class ModalBasePort extends TypedIOPort {
      *   with the same name in the container.
      */
     protected void _setName(String name) throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         try {
             _workspace.getWriteAccess();
 
@@ -570,6 +570,7 @@ public class ModalBasePort extends TypedIOPort {
      *  @exception IllegalActionException If the proposed container is not a
      *   TypedActor, or if the base class throws it.
      */
+    @Override
     protected void _checkContainer(Entity container)
             throws IllegalActionException {
         if (!(container instanceof CompositeEntity) && container != null) {

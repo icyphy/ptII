@@ -52,7 +52,7 @@ These attributes can be retrieved by using
 @since Ptolemy II 10.0
 @Pt.ProposedRating Yellow (eal)
 @Pt.AcceptedRating Red (rodiers)
-*/
+ */
 public class DecoratorAttributes extends Attribute {
 
     // FIXME: The decoratorName mechanism is very fragile.
@@ -128,6 +128,7 @@ public class DecoratorAttributes extends Attribute {
      *  @exception IllegalActionException If the change is not acceptable
      *   to this container (not thrown in this base class).
      */
+    @Override
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         if (attribute == decoratorName) {
@@ -147,6 +148,7 @@ public class DecoratorAttributes extends Attribute {
      *  @exception CloneNotSupportedException Not thrown in this base class
      *  @return The new Attribute.
      */
+    @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         DecoratorAttributes newObject = (DecoratorAttributes) super
                 .clone(workspace);
@@ -164,6 +166,7 @@ public class DecoratorAttributes extends Attribute {
      *  @exception IOException If an I/O error occurs.
      *  @see #exportMoML(Writer, int)
      */
+    @Override
     public void exportMoML(Writer output, int depth, String name)
             throws IOException {
         try {

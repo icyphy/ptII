@@ -111,6 +111,7 @@ public class OpenInstanceDialog extends PtolemyDialog implements ChangeListener 
         setScrollableContents(_parameterTable);
 
         _parameterTable.addKeyListener(new KeyAdapter() {
+            @Override
             public void keyReleased(KeyEvent event) {
                 int code = event.getKeyCode();
                 if (code == KeyEvent.VK_ENTER || code == KeyEvent.VK_ESCAPE) {
@@ -130,6 +131,7 @@ public class OpenInstanceDialog extends PtolemyDialog implements ChangeListener 
      *  This is called when a change has been successfully executed.
      *  @param change The change that has been executed.
      */
+    @Override
     public void changeExecuted(ChangeRequest change) {
         // The ports of the _target may have changed.
         _setupTableModel();
@@ -143,6 +145,7 @@ public class OpenInstanceDialog extends PtolemyDialog implements ChangeListener 
      *  @param change The change that was attempted.
      *  @param exception The exception that resulted.
      */
+    @Override
     public void changeFailed(ChangeRequest change, Exception exception) {
     }
 
@@ -151,6 +154,7 @@ public class OpenInstanceDialog extends PtolemyDialog implements ChangeListener 
 
     /** Do nothing. This dialog doesn't need additional buttons.
      */
+    @Override
     protected void _createExtendedButtons(JPanel _buttons) {
     }
 
@@ -158,6 +162,7 @@ public class OpenInstanceDialog extends PtolemyDialog implements ChangeListener 
      *  dialog is the expressions documentation.
      *  @return A URL that points to the help page
      */
+    @Override
     protected URL _getHelpURL() {
         URL doc = getClass().getClassLoader().getResource(
                 "doc/openInstanceHelp.htm");
@@ -249,6 +254,7 @@ public class OpenInstanceDialog extends PtolemyDialog implements ChangeListener 
         /** Return the number of columns.
          *  @see javax.swing.table.TableModel#getColumnCount()
          */
+        @Override
         public int getColumnCount() {
             return _columnNames.size();
         }
@@ -256,6 +262,7 @@ public class OpenInstanceDialog extends PtolemyDialog implements ChangeListener 
         /** Return the number of rows.
          *  @see javax.swing.table.TableModel#getRowCount()
          */
+        @Override
         public int getRowCount() {
             return _parameters.size();
         }
@@ -263,6 +270,7 @@ public class OpenInstanceDialog extends PtolemyDialog implements ChangeListener 
         /** Return the column header name.
          *  @see javax.swing.table.TableModel#getColumnName(int)
          */
+        @Override
         public String getColumnName(int col) {
             return (String) _columnNames.get(col);
         }
@@ -272,6 +280,7 @@ public class OpenInstanceDialog extends PtolemyDialog implements ChangeListener 
          *  @param col The column number.
          *  @see javax.swing.table.TableModel#getValueAt(int, int)
          */
+        @Override
         public Object getValueAt(int row, int col) {
             Settable parameter = (Settable) _parameters.get(row);
             if (ColumnNames.COL_NAME.equals(getColumnName(col))) {
@@ -290,6 +299,7 @@ public class OpenInstanceDialog extends PtolemyDialog implements ChangeListener 
          *  @param col The column number.
          *  @see javax.swing.table.TableModel#setValueAt(Object, int, int)
          */
+        @Override
         public void setValueAt(Object value, int row, int col) {
         }
 
@@ -298,6 +308,7 @@ public class OpenInstanceDialog extends PtolemyDialog implements ChangeListener 
          *  @return String.class.
          *  @see javax.swing.table.TableModel#getColumnClass(int)
          */
+        @Override
         public Class getColumnClass(int col) {
             return String.class;
         }
@@ -308,6 +319,7 @@ public class OpenInstanceDialog extends PtolemyDialog implements ChangeListener 
          *  @return False.
          *  @see javax.swing.table.TableModel#isCellEditable(int, int)
          */
+        @Override
         public boolean isCellEditable(int row, int col) {
             return false;
         }
@@ -316,11 +328,12 @@ public class OpenInstanceDialog extends PtolemyDialog implements ChangeListener 
     /** Default renderer for table cells.
      */
     private class StringCellRenderer extends JLabel implements
-            TableCellRenderer {
+    TableCellRenderer {
         public StringCellRenderer() {
             super();
         }
 
+        @Override
         public Component getTableCellRendererComponent(JTable table,
                 Object value, boolean isSelected, boolean hasFocus, int row,
                 int col) {

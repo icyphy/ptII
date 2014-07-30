@@ -100,6 +100,7 @@ public class DirectedAcyclicGraph extends DirectedGraph implements CPO<Object> {
      *  @return An Object representing the bottom element, or
      *   <code>null</code> if the bottom does not exist.
      */
+    @Override
     public Object bottom() {
         _validate();
         return _bottom;
@@ -113,6 +114,7 @@ public class DirectedAcyclicGraph extends DirectedGraph implements CPO<Object> {
      *  @exception IllegalArgumentException If at least one of the
      *   specified Objects is not an element of this CPO.
      */
+    @Override
     public int compare(Object e1, Object e2) {
         _validate();
 
@@ -129,6 +131,7 @@ public class DirectedAcyclicGraph extends DirectedGraph implements CPO<Object> {
      *  @exception IllegalArgumentException If the specified Object is not
      *   an element in this CPO.
      */
+    @Override
     public Object[] downSet(Object e) {
         _validateDual();
         return _upSetShared(e);
@@ -141,6 +144,7 @@ public class DirectedAcyclicGraph extends DirectedGraph implements CPO<Object> {
      *  @exception IllegalArgumentException If at least one Object in the
      *   specified array is not an element of this CPO.
      */
+    @Override
     public Object greatestElement(Set<Object> subset) {
         _validateDual();
         return _leastElementShared(subset);
@@ -154,6 +158,7 @@ public class DirectedAcyclicGraph extends DirectedGraph implements CPO<Object> {
      *  @exception IllegalArgumentException If at least one of the
      *   specified Objects is not an element of this CPO.
      */
+    @Override
     public Object greatestLowerBound(Object e1, Object e2) {
         _validateDual();
         return _lubShared(e1, e2);
@@ -170,6 +175,7 @@ public class DirectedAcyclicGraph extends DirectedGraph implements CPO<Object> {
      *  @exception IllegalArgumentException If at least one Object
      *   in the specified array is not an element of this CPO.
      */
+    @Override
     public Object greatestLowerBound(Set<Object> subset) {
         _validateDual();
         return _lubShared(subset);
@@ -179,6 +185,7 @@ public class DirectedAcyclicGraph extends DirectedGraph implements CPO<Object> {
      *  @return True if this CPO is a lattice;
      *   <code>false</code> otherwise.
      */
+    @Override
     public boolean isLattice() {
         return nonLatticeReason() == null;
     }
@@ -190,6 +197,7 @@ public class DirectedAcyclicGraph extends DirectedGraph implements CPO<Object> {
      *  @exception IllegalArgumentException If at least one Object in the
      *   specified array is not an element of this CPO.
      */
+    @Override
     public Object leastElement(Set<Object> subset) {
         _validate();
         return _leastElementShared(subset);
@@ -203,6 +211,7 @@ public class DirectedAcyclicGraph extends DirectedGraph implements CPO<Object> {
      *  @exception IllegalArgumentException If at least one of the
      *   specified Objects is not an element of this CPO.
      */
+    @Override
     public Object leastUpperBound(Object e1, Object e2) {
         _validate();
         return _lubShared(e1, e2);
@@ -219,6 +228,7 @@ public class DirectedAcyclicGraph extends DirectedGraph implements CPO<Object> {
      *  @exception IllegalArgumentException If at least one Object
      *   in the specified array is not an element of this CPO.
      */
+    @Override
     public Object leastUpperBound(Set<Object> subset) {
         _validate();
         return _lubShared(subset);
@@ -300,6 +310,7 @@ public class DirectedAcyclicGraph extends DirectedGraph implements CPO<Object> {
      *  @return An Object representing the top element, or
      *   <code>null</code> if the top does not exist.
      */
+    @Override
     public Object top() {
         _validate();
         return _top;
@@ -381,6 +392,7 @@ public class DirectedAcyclicGraph extends DirectedGraph implements CPO<Object> {
      *  @param weights The given node weights.
      *  @return The weights in their sorted order.
      */
+    @Override
     public Object[] topologicalSort(Object[] weights) {
         _validate();
 
@@ -418,6 +430,7 @@ public class DirectedAcyclicGraph extends DirectedGraph implements CPO<Object> {
      *  @exception IllegalArgumentException If the specified Object is not
      *   an element of this CPO.
      */
+    @Override
     public Object[] upSet(Object e) {
         _validate();
         return _upSetShared(e);
@@ -445,6 +458,7 @@ public class DirectedAcyclicGraph extends DirectedGraph implements CPO<Object> {
      *  @exception NullPointerException If the edge is to be weighted, but
      *  the specified weight is null.
      */
+    @Override
     protected Edge _addEdge(Node node1, Node node2, boolean weighted,
             Object weight) {
         if (node1 == node2) {
@@ -460,6 +474,7 @@ public class DirectedAcyclicGraph extends DirectedGraph implements CPO<Object> {
      *  and initialize the change counter of the graph.
      *  @see ptolemy.graph.analysis.Analysis
      */
+    @Override
     protected void _initializeAnalyses() {
         super._initializeAnalyses();
         _transitiveClosureAnalysis = new TransitiveClosureAnalysis(this);

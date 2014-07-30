@@ -120,6 +120,7 @@ public class ProcessAttribute extends SequenceAttribute {
      *   @param object The SequenceAttribute or ProcessAttribute object.
      *   @return 0 if the sequence numbers are the same.
      */
+    @Override
     public int compareTo(Object object) {
 
         int sequenceNumber1 = 0;
@@ -187,6 +188,7 @@ public class ProcessAttribute extends SequenceAttribute {
      *  @return True if the two ProcessAttribute objects have the same
      *  sequence number, methodName and processName.
      */
+    @Override
     public boolean equals(Object processAttribute) {
         // See http://www.technofundo.com/tech/java/equalhash.html
 
@@ -285,6 +287,7 @@ public class ProcessAttribute extends SequenceAttribute {
      * @exception IllegalActionException If there is a problem getting the token
      *   from the ProcessAttribute.
      */
+    @Override
     public int getSequenceNumber() throws IllegalActionException {
         // FIXME:  0 is actually a valid sequence number - want different default return?
         int seqNumber = 0;
@@ -334,6 +337,7 @@ public class ProcessAttribute extends SequenceAttribute {
      *  have the same hashCode.
      *  @return The hash code for this TimedEvent object.
      */
+    @Override
     public int hashCode() {
         // See http://www.technofundo.com/tech/java/equalhash.html
         int hashCode = 7;

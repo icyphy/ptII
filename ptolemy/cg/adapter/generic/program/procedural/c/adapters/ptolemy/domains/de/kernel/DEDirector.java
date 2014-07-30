@@ -74,7 +74,7 @@ import ptolemy.util.StringUtilities;
  *  @since Ptolemy II 10.0
  *  @Pt.ProposedRating red (wlc)
  *  @Pt.AcceptedRating red (wlc)
-*/
+ */
 
 public class DEDirector extends PortDirector {
 
@@ -99,6 +99,7 @@ public class DEDirector extends PortDirector {
      *   violates type constraints, or if the result of evaluation is null
      *   and there are variables that depend on this one.
      */
+    @Override
     final public Boolean allowDynamicMultiportReference()
             throws IllegalActionException {
         return false;
@@ -115,6 +116,7 @@ public class DEDirector extends PortDirector {
      * @return The generated constructor code
      * @exception IllegalActionException Not thrown in this base class.
      */
+    @Override
     public String generateConstructorCode() throws IllegalActionException {
         StringBuffer result = new StringBuffer();
         CompositeActor container = (CompositeActor) _director.getContainer();
@@ -135,14 +137,14 @@ public class DEDirector extends PortDirector {
                 + _sanitizedDirectorName
                 + "->isCQAdaptive = "
                 + ((BooleanToken) director.isCQAdaptive.getToken())
-                        .booleanValue() + ";");
+                .booleanValue() + ";");
         result.append(_eol + _sanitizedDirectorName + "->minBinCount = "
                 + ((IntToken) director.minBinCount.getToken()).intValue() + ";");
         result.append(_eol
                 + _sanitizedDirectorName
                 + "->stopWhenQueueIsEmpty = "
                 + ((BooleanToken) director.stopWhenQueueIsEmpty.getToken())
-                        .booleanValue() + ";");
+                .booleanValue() + ";");
         result.append(_eol + _sanitizedDirectorName
                 + "->localClock->container = (struct Director*)"
                 + _sanitizedDirectorName + ";");
@@ -430,6 +432,7 @@ public class DEDirector extends PortDirector {
      *  @return The fire function code.
      *  @exception IllegalActionException If thrown while generating fire code.
      */
+    @Override
     public String generateFireFunctionCode() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
 
@@ -542,7 +545,7 @@ public class DEDirector extends PortDirector {
                         + _sanitizedDirectorName
                         + ".currentMicrostep = "
                         + ((SuperdenseTimeDirector) executiveDirector)
-                                .getIndex() + ";");
+                        .getIndex() + ";");
             }
         }
 
@@ -581,7 +584,7 @@ public class DEDirector extends PortDirector {
         code.append(_eol + _sanitizedDirectorName + ".isInitializing = false;");
         code.append(_eol
                 + codeGenerator
-                        .comment("End of the Initialization of the director"));
+                .comment("End of the Initialization of the director"));
 
         return code.toString();
     }
@@ -676,6 +679,7 @@ public class DEDirector extends PortDirector {
      *  @return Code for the main loop of an execution.
      *  @exception IllegalActionException If something goes wrong.
      */
+    @Override
     public String generateMainLoop() throws IllegalActionException {
         // Need a leading _eol here or else the execute decl. gets stripped out.
         StringBuffer code = new StringBuffer();
@@ -815,6 +819,7 @@ public class DEDirector extends PortDirector {
      * @exception IllegalActionException If the variablesAsArrays parameter
      * cannot be read or if the buffer size of the port cannot be read.
      */
+    @Override
     public String generatePortName(TypedIOPort port)
             throws IllegalActionException {
 
@@ -961,6 +966,7 @@ public class DEDirector extends PortDirector {
      *   or if generating the preinitialize code for a adapter fails,
      *   or if there is a problem getting the buffer size of a port.
      */
+    @Override
     public String generatePreinitializeCode() throws IllegalActionException {
         StringBuffer code = new StringBuffer(super.generatePreinitializeCode());
 
@@ -1012,6 +1018,7 @@ public class DEDirector extends PortDirector {
      *   or if generating the preinitialize code for a adapter fails,
      *   or if there is a problem getting the buffer size of a port.
      */
+    @Override
     public String generatePreinitializeMethodBodyCode()
             throws IllegalActionException {
         StringBuffer code = new StringBuffer();
@@ -1054,6 +1061,7 @@ public class DEDirector extends PortDirector {
      *  @return The wrapup function code.
      *  @exception IllegalActionException If thrown while generating fire code.
      */
+    @Override
     public String generateWrapupCode() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
 
@@ -1078,6 +1086,7 @@ public class DEDirector extends PortDirector {
      *  generated from this adapter class.
      *  @exception IllegalActionException If something goes wrong.
      */
+    @Override
     public Set<String> getHeaderFiles() throws IllegalActionException {
         HashSet<String> result = new HashSet<String>(super.getHeaderFiles());
         CompositeActor container = ((CompositeActor) _director.getContainer());
@@ -1097,6 +1106,7 @@ public class DEDirector extends PortDirector {
      *   violates type constraints, or if the result of evaluation is null
      *   and there are variables that depend on this one.
      */
+    @Override
     final public Boolean padBuffers() throws IllegalActionException {
         return false;
         // FIXME : for now never do it (test)
@@ -1115,7 +1125,7 @@ public class DEDirector extends PortDirector {
     @Override
     protected String _generateVariableDeclaration(
             NamedProgramCodeGeneratorAdapter target)
-            throws IllegalActionException {
+                    throws IllegalActionException {
         StringBuffer code = new StringBuffer();
 
         ProgramCodeGenerator codeGenerator = getCodeGenerator();
@@ -1169,9 +1179,10 @@ public class DEDirector extends PortDirector {
      *  @exception IllegalActionException If the adapter class for the model
      *   director cannot be found.
      */
+    @Override
     protected String _generateVariableInitialization(
             NamedProgramCodeGeneratorAdapter target)
-            throws IllegalActionException {
+                    throws IllegalActionException {
         StringBuffer code = new StringBuffer();
 
         ProgramCodeGenerator codeGenerator = getCodeGenerator();
@@ -1217,7 +1228,7 @@ public class DEDirector extends PortDirector {
     @Override
     protected String _getParameter(NamedProgramCodeGeneratorAdapter target,
             Attribute attribute, String[] channelAndOffset)
-            throws IllegalActionException {
+                    throws IllegalActionException {
         StringBuffer result = new StringBuffer();
         //FIXME: potential bug: if the attribute is not a parameter,
         //it will be referenced but not declared.
@@ -1243,7 +1254,7 @@ public class DEDirector extends PortDirector {
             if (!(attribute instanceof Parameter)) {
                 throw new InternalErrorException(attribute, null,
                         "The attribute " + attribute.getFullName()
-                                + " is not a Parameter.");
+                        + " is not a Parameter.");
             } else {
                 Type elementType = ((ArrayType) ((Parameter) attribute)
                         .getType()).getElementType();
@@ -1363,7 +1374,7 @@ public class DEDirector extends PortDirector {
                             + targetType(parameter.getType())
                             + " "
                             + getCodeGenerator()
-                                    .generateVariableName(parameter) + ";"
+                            .generateVariableName(parameter) + ";"
                             + _eol);
                 }
             }

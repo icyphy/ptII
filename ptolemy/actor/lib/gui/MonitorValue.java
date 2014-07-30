@@ -115,6 +115,7 @@ public class MonitorValue extends Sink implements PortablePlaceable {
     ////                         public methods                    ////
 
     /** Initialize the actor by clearing the display. */
+    @Override
     public void initialize() throws IllegalActionException {
         super.initialize();
         value.setExpression(initial.getExpression());
@@ -125,6 +126,7 @@ public class MonitorValue extends Sink implements PortablePlaceable {
      *  @param container The container in which to place the object, or
      *   null to specify that there is no current container.
      */
+    @Override
     public void place(PortableContainer container) {
         _getImplementation().place(container);
     }
@@ -133,6 +135,7 @@ public class MonitorValue extends Sink implements PortablePlaceable {
      *  @exception IllegalActionException If there is no director.
      *  @return True.
      */
+    @Override
     public boolean postfire() throws IllegalActionException {
         if (input.hasToken(0)) {
             Token oldToken = value.getToken();

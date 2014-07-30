@@ -21,7 +21,7 @@
  CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
  ENHANCEMENTS, OR MODIFICATIONS.
 
-************************************************
+ ************************************************
  Copyright (c) 2011-2014 The University of Florida
 
  All rights reserved.
@@ -67,7 +67,7 @@ import ptolemy.kernel.util.IllegalActionException;
    @since Ptolemy II 10.0
    @Pt.ProposedRating Red (cxh)
    @Pt.AcceptedRating Red (cxh)
-*/
+ */
 public interface PetriNetDisplayer {
 
     ///////////////////////////////////////////////////////////////////

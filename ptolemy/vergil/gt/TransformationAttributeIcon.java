@@ -64,6 +64,7 @@ public class TransformationAttributeIcon extends EditorIcon {
         super(container, name);
     }
 
+    @Override
     public Figure createBackgroundFigure() {
         String text = "T";
         LabelFigure label = new LabelFigure(text, _LABEL_FONT, 1.0,
@@ -76,6 +77,7 @@ public class TransformationAttributeIcon extends EditorIcon {
         return figure;
     }
 
+    @Override
     public Figure createFigure() {
         String text = "T: " + getContainer().getName();
         LabelFigure label = new LabelFigure(text, _LABEL_FONT, 1.0,

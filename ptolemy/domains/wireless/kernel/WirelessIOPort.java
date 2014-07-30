@@ -109,7 +109,7 @@ public class WirelessIOPort extends TypedIOPort {
      *  of this port throws it.
      */
     public WirelessIOPort(Workspace workspace) throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         super(workspace);
         outsideChannel = new StringParameter(this, "outsideChannel");
         outsideChannel.setExpression("");
@@ -212,6 +212,7 @@ public class WirelessIOPort extends TypedIOPort {
      *  @exception IllegalActionException If the change is not acceptable
      *   to this container.
      */
+    @Override
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         if (attribute == insideTransmitProperties) {
@@ -249,6 +250,7 @@ public class WirelessIOPort extends TypedIOPort {
      *   or if the <i>outsideChannel</i> parameter cannot be evaluated
      *   or if the transmit() method throws an IllegalActionException.
      */
+    @Override
     public void broadcast(Token token) throws IllegalActionException {
         WirelessChannel channel = getOutsideChannel();
 
@@ -275,6 +277,7 @@ public class WirelessIOPort extends TypedIOPort {
      *  @exception IllegalActionException If the tokens to be sent cannot
      *   be converted to the type of this port
      */
+    @Override
     public void broadcast(Token[] tokenArray, int vectorLength)
             throws IllegalActionException, NoRoomException {
         WirelessChannel channel = getOutsideChannel();
@@ -301,6 +304,7 @@ public class WirelessIOPort extends TypedIOPort {
      *  @exception IllegalActionException If a receiver does not support
      *   clear().
      */
+    @Override
     public void broadcastClear() throws IllegalActionException {
         WirelessChannel channel = getOutsideChannel();
 
@@ -323,6 +327,7 @@ public class WirelessIOPort extends TypedIOPort {
      *  @exception CloneNotSupportedException Not thrown in this base class
      *  @return The new Attribute.
      */
+    @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         WirelessIOPort newObject = (WirelessIOPort) super.clone(workspace);
         newObject._receivers = null;
@@ -341,6 +346,7 @@ public class WirelessIOPort extends TypedIOPort {
      *  @exception IllegalActionException If this port is not
      *   an opaque input port or if there is no director.
      */
+    @Override
     public void createReceivers() throws IllegalActionException {
         // This call will create receivers based on relations that
         // are linked to the port.
@@ -394,6 +400,7 @@ public class WirelessIOPort extends TypedIOPort {
      *  @return The local inside receivers, or an empty array if there are
      *   none.
      */
+    @Override
     public Receiver[][] getInsideReceivers() {
         try {
             if (getInsideChannel() != null) {
@@ -514,6 +521,7 @@ public class WirelessIOPort extends TypedIOPort {
      *  defer to the base class.
      *  @return The local receivers, or an empty array if there are none.
      */
+    @Override
     public Receiver[][] getReceivers() {
         try {
             if (getOutsideChannel() != null) {
@@ -538,6 +546,7 @@ public class WirelessIOPort extends TypedIOPort {
      *  @return The width of the port.
      * @exception IllegalActionException
      */
+    @Override
     public int getWidth() throws IllegalActionException {
         if (_outsideIsWireless()) {
             return 1;
@@ -552,6 +561,7 @@ public class WirelessIOPort extends TypedIOPort {
      *  @return The inside width of this port.
      * @exception IllegalActionException
      */
+    @Override
     public int getWidthInside() throws IllegalActionException {
         if (_insideIsWireless()) {
             return 1;
@@ -570,6 +580,7 @@ public class WirelessIOPort extends TypedIOPort {
      *   this query, if this is not an output port, or if the channel index
      *   is out of range.
      */
+    @Override
     public boolean hasRoom(int channelIndex) throws IllegalActionException {
         WirelessChannel channel = getOutsideChannel();
 
@@ -594,6 +605,7 @@ public class WirelessIOPort extends TypedIOPort {
      *   this query, if this is not an output port, or if the channel index
      *   is out of range.
      */
+    @Override
     public boolean hasRoomInside(int channelIndex)
             throws IllegalActionException {
         WirelessChannel channel = getInsideChannel();
@@ -618,6 +630,7 @@ public class WirelessIOPort extends TypedIOPort {
      *  that are connected on the inside to this one.
      *  @return A list of IOPort objects.
      */
+    @Override
     public List insideSinkPortList() {
         try {
             WirelessChannel channel = getInsideChannel();
@@ -644,6 +657,7 @@ public class WirelessIOPort extends TypedIOPort {
      *  on the inside to this one.
      *  @return A list of IOPort objects.
      */
+    @Override
     public List insideSourcePortList() {
         try {
             WirelessChannel channel = getInsideChannel();
@@ -671,6 +685,7 @@ public class WirelessIOPort extends TypedIOPort {
      *  defer to the base class.
      *  @return The number of ports that can receive data from this one.
      */
+    @Override
     public int numberOfSinks() {
         try {
             WirelessChannel channel = getOutsideChannel();
@@ -692,6 +707,7 @@ public class WirelessIOPort extends TypedIOPort {
      *  the base class.
      *  @return The number of ports that can receive data from this one.
      */
+    @Override
     public int numberOfSources() {
         try {
             WirelessChannel channel = getOutsideChannel();
@@ -720,6 +736,7 @@ public class WirelessIOPort extends TypedIOPort {
      *  @exception NoRoomException If there is no room in the receiver.
      *   This should not occur in the DE domain.
      */
+    @Override
     public void send(int channelIndex, Token token)
             throws IllegalActionException, NoRoomException {
         WirelessChannel channel = getOutsideChannel();
@@ -753,6 +770,7 @@ public class WirelessIOPort extends TypedIOPort {
      *   argument is greater than the length of the <i>tokenArray</i>
      *   argument.
      */
+    @Override
     public void send(int channelIndex, Token[] tokenArray, int vectorLength)
             throws IllegalActionException, NoRoomException {
         WirelessChannel channel = getOutsideChannel();
@@ -781,6 +799,7 @@ public class WirelessIOPort extends TypedIOPort {
      *  @exception IllegalActionException If a receiver does not support
      *   clear().
      */
+    @Override
     public void sendClear(int channelIndex) throws IllegalActionException {
         WirelessChannel channel = getOutsideChannel();
 
@@ -804,6 +823,7 @@ public class WirelessIOPort extends TypedIOPort {
      *  @exception IllegalActionException If a receiver does not support
      *   clear().
      */
+    @Override
     public void sendClearInside(int channelIndex) throws IllegalActionException {
         WirelessChannel channel = getInsideChannel();
 
@@ -831,6 +851,7 @@ public class WirelessIOPort extends TypedIOPort {
      *  @exception IllegalActionException If conversion to the type of
      *   the destination port cannot be done.
      */
+    @Override
     public void sendInside(int channelIndex, Token token)
             throws IllegalActionException, NoRoomException {
         WirelessChannel channel = getInsideChannel();
@@ -857,6 +878,7 @@ public class WirelessIOPort extends TypedIOPort {
      *  that are connected on the inside to this one.
      *  @return A list of IOPort objects.
      */
+    @Override
     public List sinkPortList() {
         try {
             WirelessChannel channel = getOutsideChannel();
@@ -882,6 +904,7 @@ public class WirelessIOPort extends TypedIOPort {
      *  and opaque input ports that are connected on the inside to this one.
      *  @return A list of IOPort objects.
      */
+    @Override
     public List sourcePortList() {
         try {
             WirelessChannel channel = getOutsideChannel();

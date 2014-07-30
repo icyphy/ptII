@@ -102,6 +102,7 @@ public class JAIBandCombine extends Transformer {
      *  @param attribute The attribute that changed.
      *  @exception IllegalActionException If a contained method throws it.
      */
+    @Override
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         if (attribute == matrix) {
@@ -118,6 +119,7 @@ public class JAIBandCombine extends Transformer {
      *  @exception CloneNotSupportedException If a derived class contains
      *  an attribute that cannot be cloned.
      */
+    @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         JAIBandCombine newObject = (JAIBandCombine) super.clone(workspace);
         newObject._matrixValue = null;
@@ -127,6 +129,7 @@ public class JAIBandCombine extends Transformer {
     /** Fire this actor.
      *  @exception IllegalActionException If a contained method throws it.
      */
+    @Override
     public void fire() throws IllegalActionException {
         super.fire();
 
@@ -144,8 +147,8 @@ public class JAIBandCombine extends Transformer {
         } catch (IllegalArgumentException ex) {
             throw new IllegalActionException(this, ex,
                     "Failed to band combine the image\n" + ex.getMessage()
-                            + "\n  Number of bands: " + oldImage.getNumBands()
-                            + "\n  Image: " + oldImage.toString());
+                    + "\n  Number of bands: " + oldImage.getNumBands()
+                    + "\n  Image: " + oldImage.toString());
         }
 
         output.send(0, new JAIImageToken(newImage));

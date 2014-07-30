@@ -63,7 +63,7 @@ public class PthalesRemoveHeaderActor extends PthalesAtomicActor {
      *   actor with this name.
      */
     public PthalesRemoveHeaderActor() throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         super();
     }
 
@@ -106,6 +106,7 @@ public class PthalesRemoveHeaderActor extends PthalesAtomicActor {
     /** Create receivers for each input port.
      *  @exception IllegalActionException If any port throws it.
      */
+    @Override
     public void createReceivers() throws IllegalActionException {
         super.createReceivers();
 
@@ -123,6 +124,7 @@ public class PthalesRemoveHeaderActor extends PthalesAtomicActor {
      * the number of dimensions and the size of each dimension
      * at the beginning of the array then send only the useful information.
      */
+    @Override
     public void fire() throws IllegalActionException {
 
         // Variables
@@ -160,8 +162,9 @@ public class PthalesRemoveHeaderActor extends PthalesAtomicActor {
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
+    @Override
     protected void _initialize() throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         super._initialize();
 
         // input port

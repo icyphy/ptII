@@ -176,6 +176,7 @@ public class LevinsonDurbin extends TypedAtomicActor {
      *  coefficients, reflection coefficients, and prediction error power.
      *  @exception IllegalActionException If there is no director.
      */
+    @Override
     public void fire() throws IllegalActionException {
         super.fire();
         ArrayToken autocorrelationValue = (ArrayToken) autocorrelation.get(0);
@@ -264,6 +265,7 @@ public class LevinsonDurbin extends TypedAtomicActor {
      *  @exception IllegalActionException If the base class throws it.
      *  @return True if it is ok to continue.
      */
+    @Override
     public boolean prefire() throws IllegalActionException {
         if (!autocorrelation.hasToken(0)) {
             return false;

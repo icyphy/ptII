@@ -63,6 +63,7 @@ public class BasicModularGraphModel extends MutableModularGraphModel {
      * a composite, meaning that it does not contain other nodes,
      * then return null.
      */
+    @Override
     public CompositeModel getCompositeModel(Object composite) {
         if (composite instanceof Graph) {
             return _nodeModel;
@@ -75,6 +76,7 @@ public class BasicModularGraphModel extends MutableModularGraphModel {
      * Return the model for the given edge object.  If the object is not
      * an edge, then return null.
      */
+    @Override
     public EdgeModel getEdgeModel(Object edge) {
         if (edge instanceof Edge) {
             return _edgeModel;
@@ -87,6 +89,7 @@ public class BasicModularGraphModel extends MutableModularGraphModel {
      * Return the node model for the given object.  If the object is not
      * a node, then return null.
      */
+    @Override
     public NodeModel getNodeModel(Object node) {
         if (node instanceof Node) {
             return _nodeModel;
@@ -99,6 +102,7 @@ public class BasicModularGraphModel extends MutableModularGraphModel {
      * Return the property of the object associated with
      * the given property name.
      */
+    @Override
     public Object getProperty(Object o, String propertyName) {
         return ((PropertyContainer) o).getProperty(propertyName);
     }
@@ -107,6 +111,7 @@ public class BasicModularGraphModel extends MutableModularGraphModel {
      * Return the semantic object corresponding
      * to the given node, edge, or composite.
      */
+    @Override
     public Object getSemanticObject(Object o) {
         return ((SemanticObjectContainer) o).getSemanticObject();
     }
@@ -115,6 +120,7 @@ public class BasicModularGraphModel extends MutableModularGraphModel {
      * Set the property of the object associated with
      * the given property name.
      */
+    @Override
     public void setProperty(Object o, String propertyName, Object value) {
         ((PropertyContainer) o).setProperty(propertyName, value);
     }
@@ -123,6 +129,7 @@ public class BasicModularGraphModel extends MutableModularGraphModel {
      * Set the semantic object corresponding
      * to the given node, edge, or composite.
      */
+    @Override
     public void setSemanticObject(Object o, Object sem) {
         ((SemanticObjectContainer) o).setSemanticObject(sem);
     }
@@ -135,6 +142,7 @@ public class BasicModularGraphModel extends MutableModularGraphModel {
          * Return true if the head of the given edge can be attached to the
          * given node.
          */
+        @Override
         public boolean acceptHead(Object edge, Object node) {
             return ((Edge) edge).acceptHead((Node) node);
         }
@@ -143,6 +151,7 @@ public class BasicModularGraphModel extends MutableModularGraphModel {
          * Return true if the tail of the given edge can be attached to the
          * given node.
          */
+        @Override
         public boolean acceptTail(Object edge, Object node) {
             return ((Edge) edge).acceptTail((Node) node);
         }
@@ -150,6 +159,7 @@ public class BasicModularGraphModel extends MutableModularGraphModel {
         /**
          * Return the head node of the given edge.
          */
+        @Override
         public Object getHead(Object edge) {
             Edge edgePeer = (Edge) edge;
             Node headPeer = edgePeer.getHead();
@@ -159,6 +169,7 @@ public class BasicModularGraphModel extends MutableModularGraphModel {
         /**
          * Return the tail node of this edge.
          */
+        @Override
         public Object getTail(Object edge) {
             Edge edgePeer = (Edge) edge;
             Node tailPeer = edgePeer.getTail();
@@ -168,6 +179,7 @@ public class BasicModularGraphModel extends MutableModularGraphModel {
         /**
          * Return whether or not this edge is directed.
          */
+        @Override
         public boolean isDirected(Object edge) {
             Edge edgePeer = (Edge) edge;
             return edgePeer.isDirected();
@@ -177,6 +189,7 @@ public class BasicModularGraphModel extends MutableModularGraphModel {
          * Connect an edge to the given head node and notify listeners
          * with an EDGE_HEAD_CHANGED event.
          */
+        @Override
         public void setHead(Object edge, Object newHead) {
             Edge edgePeer = (Edge) edge;
             Node headPeer = (Node) newHead;
@@ -187,6 +200,7 @@ public class BasicModularGraphModel extends MutableModularGraphModel {
          * Connect an edge to the given tail node and notify listeners
          * with an EDGE_TAIL_CHANGED event.
          */
+        @Override
         public void setTail(Object edge, Object newTail) {
             Edge edgePeer = (Edge) edge;
             Node tailPeer = (Node) newTail;
@@ -201,6 +215,7 @@ public class BasicModularGraphModel extends MutableModularGraphModel {
         /**
          * Return an iterator over the edges coming into the given node.
          */
+        @Override
         public Iterator inEdges(Object node) {
             Node nodePeer = (Node) node;
             return nodePeer.inEdges();
@@ -209,6 +224,7 @@ public class BasicModularGraphModel extends MutableModularGraphModel {
         /**
          * Return an iterator over the edges coming out of the given node.
          */
+        @Override
         public Iterator outEdges(Object node) {
             Node nodePeer = (Node) node;
             return nodePeer.outEdges();
@@ -217,6 +233,7 @@ public class BasicModularGraphModel extends MutableModularGraphModel {
         /**
          * Return the graph parent of the given node.
          */
+        @Override
         public Object getParent(Object node) {
             Node nodePeer = (Node) node;
             return nodePeer.getParent();
@@ -227,6 +244,7 @@ public class BasicModularGraphModel extends MutableModularGraphModel {
          * are also responsible for insuring that it is set properly as
          * the child of the graph in the graph.
          */
+        @Override
         public void setParent(Object node, Object parent) {
             Node nodePeer = (Node) node;
             Graph parentPeer = (Graph) parent;
@@ -237,6 +255,7 @@ public class BasicModularGraphModel extends MutableModularGraphModel {
          * Return the number of nodes contained in
          * this graph or composite node.
          */
+        @Override
         public int getNodeCount(Object composite) {
             CompositeNode compositePeer = (CompositeNode) composite;
             return compositePeer.getNodeCount();
@@ -247,6 +266,7 @@ public class BasicModularGraphModel extends MutableModularGraphModel {
          * given graph or composite node.  This iterator
          * does not necessarily support removal operations.
          */
+        @Override
         public Iterator nodes(Object composite) {
             CompositeNode compositePeer = (CompositeNode) composite;
             return compositePeer.nodes();
@@ -259,6 +279,7 @@ public class BasicModularGraphModel extends MutableModularGraphModel {
          * In this base class, this returns the same iterator
          * as the nodes(Object) method.
          */
+        @Override
         public Iterator nodesBeforeEdges(Object composite) {
             return nodes(composite);
         }
@@ -270,6 +291,7 @@ public class BasicModularGraphModel extends MutableModularGraphModel {
          * In this base class, this returns an iterator over
          * nothing.
          */
+        @Override
         public Iterator nodesAfterEdges(Object composite) {
             return new NullIterator();
         }

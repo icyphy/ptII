@@ -158,6 +158,7 @@ public class DatabaseSelect extends Source {
      *  @exception CloneNotSupportedException If a derived class contains
      *   an attribute that cannot be cloned.
      */
+    @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         DatabaseSelect newObject = (DatabaseSelect) super.clone(workspace);
 
@@ -178,6 +179,7 @@ public class DatabaseSelect extends Source {
      *  on the output port.
      *  @exception IllegalActionException If the database query fails.
      */
+    @Override
     public void fire() throws IllegalActionException {
         super.fire();
         columns.update();

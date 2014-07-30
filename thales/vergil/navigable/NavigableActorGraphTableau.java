@@ -108,6 +108,7 @@ public class NavigableActorGraphTableau extends Tableau {
     /* (non-Javadoc)
      * @see ptolemy.actor.gui.Tableau#show()
      */
+    @Override
     public void show() {
         JFrame frame = getFrame();
 
@@ -157,6 +158,7 @@ public class NavigableActorGraphTableau extends Tableau {
          *  @exception Exception If an exception occurs when creating the
          *  tableau.
          */
+        @Override
         public Tableau createTableau(Effigy effigy) throws Exception {
             if (effigy instanceof NavigableEffigy) {
                 // First see whether the effigy already contains a RunTableau.

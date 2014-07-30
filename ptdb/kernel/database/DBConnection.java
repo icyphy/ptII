@@ -25,7 +25,7 @@ ENHANCEMENTS, OR MODIFICATIONS.
                                                 COPYRIGHTENDKEY
 
 
-*/
+ */
 package ptdb.kernel.database;
 
 import java.util.ArrayList;
@@ -252,7 +252,7 @@ public interface DBConnection {
      */
     public ArrayList<XMLDBModel> executeModelNameSearchTask(
             ModelNameSearchTask modelNameSearchTask)
-            throws DBExecutionException;
+                    throws DBExecutionException;
 
     /**
      * Execute the necessary commands to save/update a model in the database

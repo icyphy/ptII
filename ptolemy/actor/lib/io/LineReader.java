@@ -108,7 +108,7 @@ public class LineReader extends Source {
         fileOrURL = new FilePortParameter(this, "fileOrURL");
         // Parameter to get Vergil to label the fileOrURL port.
         new SingletonParameter(fileOrURL.getPort(), "_showName")
-                .setToken(BooleanToken.TRUE);
+        .setToken(BooleanToken.TRUE);
 
         numberOfLinesToSkip = new Parameter(this, "numberOfLinesToSkip");
         numberOfLinesToSkip.setExpression("0");
@@ -158,6 +158,7 @@ public class LineReader extends Source {
      *   opened file cannot be closed; or if the attribute is
      *   <i>numberOfLinesToSkip</i> and its value is negative.
      */
+    @Override
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         if (attribute == fileOrURL) {
@@ -204,6 +205,7 @@ public class LineReader extends Source {
      *  @exception CloneNotSupportedException If a derived class contains
      *   an attribute that cannot be cloned.
      */
+    @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         LineReader newObject = (LineReader) super.clone(workspace);
         newObject._currentLine = null;
@@ -215,6 +217,7 @@ public class LineReader extends Source {
      *  invocation of postfire(), if there is any.
      *  @exception IllegalActionException If there's no director.
      */
+    @Override
     public void fire() throws IllegalActionException {
         super.fire();
         fileOrURL.update();
@@ -244,6 +247,7 @@ public class LineReader extends Source {
      *   opened, or if the lines to be skipped and the first line to be
      *   sent out in the fire() method cannot be read.
      */
+    @Override
     public void initialize() throws IllegalActionException {
         super.initialize();
         // In case the file has been previously opened, close
@@ -259,6 +263,7 @@ public class LineReader extends Source {
      *  @exception IllegalActionException If there is a problem reading
      *   the file.
      */
+    @Override
     public boolean postfire() throws IllegalActionException {
         boolean returnValue = super.postfire();
         if (_reader == null) {
@@ -284,6 +289,7 @@ public class LineReader extends Source {
     /** Close the reader if there is one.
      *  @exception IllegalActionException If an IO error occurs.
      */
+    @Override
     public void wrapup() throws IllegalActionException {
         fileOrURL.close();
         _reader = null;

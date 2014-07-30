@@ -93,6 +93,7 @@ public class DelayStart extends TypedAtomicActor {
      *  @exception IllegalActionException If the parent class throws it,
      *   or if the time cannot be parsed.
      */
+    @Override
     public void initialize() throws IllegalActionException {
         DateFormat dateFormat = DateFormat.getTimeInstance(DateFormat.SHORT);
 

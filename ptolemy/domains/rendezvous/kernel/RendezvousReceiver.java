@@ -70,7 +70,7 @@ import ptolemy.kernel.util.InvalidStateException;
  * @Pt.AcceptedRating Green (tfeng)
  */
 public class RendezvousReceiver extends AbstractReceiver implements
-        ProcessReceiver {
+ProcessReceiver {
 
     /**
      * Construct a RendezvousReceiver with no container.
@@ -100,6 +100,7 @@ public class RendezvousReceiver extends AbstractReceiver implements
     /**
      * Reset local flags.
      */
+    @Override
     public void clear() {
         reset();
     }
@@ -114,6 +115,7 @@ public class RendezvousReceiver extends AbstractReceiver implements
      * receiver belongs has been terminated while still running i.e it
      * was not allowed to run to completion.
      */
+    @Override
     public Token get() throws TerminateProcessException {
         return getFromAll(_thisReceiver, _getDirector())[0][0];
     }
@@ -216,7 +218,7 @@ public class RendezvousReceiver extends AbstractReceiver implements
      */
     public static void getFromAnyPutToAll(Receiver[][] getReceivers,
             Receiver[][] putReceivers, RendezvousDirector director)
-            throws IllegalActionException, TerminateProcessException {
+                    throws IllegalActionException, TerminateProcessException {
         _getOrPutTokens(getReceivers, putReceivers, director, null, null,
                 GET_FROM_ANY_PUT_TO_ALL);
     }
@@ -231,6 +233,7 @@ public class RendezvousReceiver extends AbstractReceiver implements
      *
      * @return True.
      */
+    @Override
     public boolean hasRoom() {
         return true;
     }
@@ -245,6 +248,7 @@ public class RendezvousReceiver extends AbstractReceiver implements
      * @param tokens Ignored by this method.
      * @return True.
      */
+    @Override
     public boolean hasRoom(int tokens) {
         return true;
     }
@@ -259,6 +263,7 @@ public class RendezvousReceiver extends AbstractReceiver implements
      *
      * @return True.
      */
+    @Override
     public boolean hasToken() {
         return true;
     }
@@ -274,6 +279,7 @@ public class RendezvousReceiver extends AbstractReceiver implements
      * @param tokens Ignored by this method.
      * @return True.
      */
+    @Override
     public boolean hasToken(int tokens) {
         return true;
     }
@@ -288,6 +294,7 @@ public class RendezvousReceiver extends AbstractReceiver implements
      * boundary port; return false otherwise.
      * @exception IllegalActionException
      */
+    @Override
     public boolean isConnectedToBoundary() throws IllegalActionException {
         return _boundaryDetector.isConnectedToBoundary();
     }
@@ -304,8 +311,9 @@ public class RendezvousReceiver extends AbstractReceiver implements
      * @exception InvalidStateException
      * @see ptolemy.actor.process.BoundaryDetector
      */
+    @Override
     public boolean isConnectedToBoundaryInside() throws InvalidStateException,
-            IllegalActionException {
+    IllegalActionException {
         return _boundaryDetector.isConnectedToBoundaryInside();
     }
 
@@ -320,6 +328,7 @@ public class RendezvousReceiver extends AbstractReceiver implements
      * @exception IllegalActionException
      * @see ptolemy.actor.process.BoundaryDetector
      */
+    @Override
     public boolean isConnectedToBoundaryOutside() throws IllegalActionException {
         return _boundaryDetector.isConnectedToBoundaryOutside();
     }
@@ -330,6 +339,7 @@ public class RendezvousReceiver extends AbstractReceiver implements
      * @exception IllegalActionException
      * @see #isConnectedToBoundary
      */
+    @Override
     public boolean isConsumerReceiver() throws IllegalActionException {
         if (isConnectedToBoundary()) {
             return true;
@@ -348,6 +358,7 @@ public class RendezvousReceiver extends AbstractReceiver implements
      * @return True if this receiver is contained on the inside of a boundary
      * port; return false otherwise.
      */
+    @Override
     public boolean isInsideBoundary() {
         return _boundaryDetector.isInsideBoundary();
     }
@@ -362,6 +373,7 @@ public class RendezvousReceiver extends AbstractReceiver implements
      * @return True if this receiver is contained on the outside of a
      * boundary port; return false otherwise.
      */
+    @Override
     public boolean isOutsideBoundary() {
         return _boundaryDetector.isOutsideBoundary();
     }
@@ -369,6 +381,7 @@ public class RendezvousReceiver extends AbstractReceiver implements
     /**
      * Return true if this receiver is on an outside or an inside boundary.
      */
+    @Override
     public boolean isProducerReceiver() {
         if (isOutsideBoundary() || isInsideBoundary()) {
             return true;
@@ -383,6 +396,7 @@ public class RendezvousReceiver extends AbstractReceiver implements
      *
      * @return True if a read is pending on this receiver.
      */
+    @Override
     public boolean isReadBlocked() {
         synchronized (_getDirector()) {
             return _getWaiting != null;
@@ -396,6 +410,7 @@ public class RendezvousReceiver extends AbstractReceiver implements
      * @return A boolean indicating whether a write is pending on this
      * receiver.
      */
+    @Override
     public boolean isWriteBlocked() {
         synchronized (_getDirector()) {
             return _putWaiting != null;
@@ -414,8 +429,9 @@ public class RendezvousReceiver extends AbstractReceiver implements
      * receiver belongs has been terminated while still running i.e it
      * was not allowed to run to completion.
      */
+    @Override
     public void put(Token token) throws IllegalActionException,
-            TerminateProcessException {
+    TerminateProcessException {
         if (token == null) {
             return;
         }
@@ -441,6 +457,7 @@ public class RendezvousReceiver extends AbstractReceiver implements
      * was not allowed to run to completion.
 
      */
+    @Override
     public void putArrayToAll(Token[] tokens, int numberOfTokens,
             Receiver[] receivers) throws NoRoomException,
             IllegalActionException, TerminateProcessException {
@@ -465,6 +482,7 @@ public class RendezvousReceiver extends AbstractReceiver implements
      * @exception IllegalActionException If the token is not
      * acceptable to one of the ports (e.g., wrong type).
      */
+    @Override
     public void putToAll(Token token, Receiver[] receivers)
             throws NoRoomException, IllegalActionException {
         putToAll(token, receivers, _getDirector());
@@ -551,6 +569,7 @@ public class RendezvousReceiver extends AbstractReceiver implements
      * next time an actor tries to get or put it gets a
      * TerminateProcessException which will cause it to finish.
      */
+    @Override
     public void requestFinish() {
         Object lock = _getDirector();
 
@@ -563,6 +582,7 @@ public class RendezvousReceiver extends AbstractReceiver implements
     /**
      * Reset local flags.
      */
+    @Override
     public void reset() {
         synchronized (_getDirector()) {
             _resetFlags(true, true);
@@ -956,7 +976,7 @@ public class RendezvousReceiver extends AbstractReceiver implements
     private static Map _getOrPutTokens(Receiver[][] getReceivers,
             Receiver[][] putReceivers, RendezvousDirector director,
             Token token, Token[][] tokenArray, int flag)
-            throws IllegalActionException, TerminateProcessException {
+                    throws IllegalActionException, TerminateProcessException {
 
         // Extract information from the flag.
         boolean isGet = (flag & GET) == GET;

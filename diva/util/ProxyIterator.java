@@ -42,10 +42,12 @@ public class ProxyIterator extends IteratorAdapter {
         _iterator = i;
     }
 
+    @Override
     public boolean hasNext() {
         return _iterator.hasNext();
     }
 
+    @Override
     public Object next() {
         return _iterator.next();
     }

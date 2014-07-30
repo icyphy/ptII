@@ -51,9 +51,9 @@ public interface PlotBoxInterface {
     ////                         public methods                    ////
 
     /** Add a line to the caption (displayed at below graph) .
-      * @param captionLine The string to be added.
-      * @see #getCaptions()
-      */
+     * @param captionLine The string to be added.
+     * @see #getCaptions()
+     */
     public void addCaptionLine(String captionLine);
 
     /** Add a legend (displayed at the upper right) for the specified

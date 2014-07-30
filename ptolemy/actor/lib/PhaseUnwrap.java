@@ -78,6 +78,7 @@ public class PhaseUnwrap extends Transformer {
      *  If there is no input token, then no output is produced.
      *  @exception IllegalActionException If there is no director.
      */
+    @Override
     public void fire() throws IllegalActionException {
         super.fire();
         if (input.hasToken(0)) {
@@ -104,6 +105,7 @@ public class PhaseUnwrap extends Transformer {
      *  phase is zero.
      *  @exception IllegalActionException If the parent class throws it.
      */
+    @Override
     public void initialize() throws IllegalActionException {
         super.initialize();
         _previousPhaseInput = 0.0;
@@ -116,6 +118,7 @@ public class PhaseUnwrap extends Transformer {
      *  for use in the next phase.
      *  @exception IllegalActionException If the base class throws it.
      */
+    @Override
     public boolean postfire() throws IllegalActionException {
         _previousPhaseInput = _tempPreviousPhaseInput;
         _previousPhaseOutput = _tempPreviousPhaseOutput;

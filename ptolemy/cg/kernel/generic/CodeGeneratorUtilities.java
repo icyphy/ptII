@@ -263,7 +263,7 @@ public class CodeGeneratorUtilities {
      */
     public static void substitute(BufferedReader inputFile,
             Map<String, String> substituteMap, String outputFileName)
-            throws FileNotFoundException, IOException {
+                    throws FileNotFoundException, IOException {
         PrintWriter outputFile = null;
         try {
             outputFile = new PrintWriter(new BufferedWriter(new FileWriter(
@@ -296,7 +296,7 @@ public class CodeGeneratorUtilities {
      */
     public static void substitute(String inputFileName,
             Map<String, String> substituteMap, String outputFileName)
-            throws FileNotFoundException, IOException {
+                    throws FileNotFoundException, IOException {
         BufferedReader inputFile = openAsFileOrURL(inputFileName);
         substitute(inputFile, substituteMap, outputFileName);
     }

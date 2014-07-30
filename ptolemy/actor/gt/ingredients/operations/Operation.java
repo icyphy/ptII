@@ -101,7 +101,7 @@ public abstract class Operation extends GTIngredient {
      */
     protected ASTPtLeafNode _evaluate(ASTPtRootNode parseTree,
             ParseTreeEvaluator evaluator, ParserScope scope)
-            throws IllegalActionException {
+                    throws IllegalActionException {
         Token token = evaluator.evaluateParseTree(parseTree, scope);
         ASTPtLeafNode newNode = new ASTPtLeafNode(
                 PtParserTreeConstants.JJTPTLEAFNODE);
@@ -117,6 +117,7 @@ public abstract class Operation extends GTIngredient {
      */
     protected ParseTreeWriter _parseTreeWriter = new ParseTreeWriter() {
 
+        @Override
         public void visitLeafNode(ASTPtLeafNode node)
                 throws IllegalActionException {
             if (node.isConstant() && node.isEvaluated()) {

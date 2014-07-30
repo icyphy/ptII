@@ -81,6 +81,7 @@ public class SDF extends DataflowWithRates {
      * @return True if the actor associated with this <tt>DDI</tt> is
      * a legal SDF actor.
      */
+    @Override
     public boolean isLegalActor() {
         try {
             if (!_atLeastOneUnguardedAction()) {
@@ -119,6 +120,7 @@ public class SDF extends DataflowWithRates {
      * Get the name of this DDI.
      * @return "SDF".
      */
+    @Override
     public String getName() {
         return "SDF";
     }
@@ -131,6 +133,7 @@ public class SDF extends DataflowWithRates {
      * consumption/production rates to the input and output ports of
      * the actor associated with this <tt>DDI</tt>.
      */
+    @Override
     public void setupActor() {
         // use the 0th element because the rates are all the same.
         _annotatePortsWithRates(_ptActor.inputPortList(),

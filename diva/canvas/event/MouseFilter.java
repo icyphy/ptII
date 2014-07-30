@@ -193,6 +193,7 @@ public class MouseFilter {
 
     /** Print a useful description of the mouse filter.
      */
+    @Override
     public String toString() {
         StringBuffer result = new StringBuffer();
         result.append(super.toString() + "; Button "

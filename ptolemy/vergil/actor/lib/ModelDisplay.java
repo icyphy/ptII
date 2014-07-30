@@ -74,9 +74,9 @@ import diva.graph.JGraph;
  @since Ptolemy II 8.0
  @Pt.ProposedRating Yellow (eal)
  @Pt.AcceptedRating Red (cxh)
-*/
+ */
 public class ModelDisplay extends AbstractPlaceableActor implements
-        ChangeListener {
+ChangeListener {
 
     /** Construct an actor with the specified container and name.
      *  @param container The container.
@@ -117,6 +117,7 @@ public class ModelDisplay extends AbstractPlaceableActor implements
      *  @exception IllegalActionException If the change is not acceptable
      *   to this container (not thrown in this base class).
      */
+    @Override
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         if (attribute == modelURL) {
@@ -146,6 +147,7 @@ public class ModelDisplay extends AbstractPlaceableActor implements
     /** Do nothing.
      *  @param change The change that succeeded.
      */
+    @Override
     public void changeExecuted(ChangeRequest change) {
     }
 
@@ -153,6 +155,7 @@ public class ModelDisplay extends AbstractPlaceableActor implements
      *  @param change The change.
      *  @param exception The exception.
      */
+    @Override
     public void changeFailed(ChangeRequest change, Exception exception) {
         stop();
     }
@@ -162,6 +165,7 @@ public class ModelDisplay extends AbstractPlaceableActor implements
      *  @exception IllegalActionException If there is an error reading
      *   the input.
      */
+    @Override
     public void fire() throws IllegalActionException {
         super.fire();
         if (input.isOutsideConnected() && input.hasToken(0)) {
@@ -179,6 +183,7 @@ public class ModelDisplay extends AbstractPlaceableActor implements
      *  @exception CloneNotSupportedException If a derived class has an
      *   attribute that cannot be cloned.
      */
+    @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         ModelDisplay newObject = (ModelDisplay) super.clone(workspace);
         newObject._entity = _createBlankEntity();
@@ -190,6 +195,7 @@ public class ModelDisplay extends AbstractPlaceableActor implements
      *  @exception IllegalActionException If there is an constructing
      *   the display.
      */
+    @Override
     public void initialize() throws IllegalActionException {
         super.initialize();
 
@@ -228,6 +234,7 @@ public class ModelDisplay extends AbstractPlaceableActor implements
      *  @param container The container, or null to remove it from any
      *   existing container.
      */
+    @Override
     public void place(Container container) {
         if (container == null) {
             if (_frame != null) {

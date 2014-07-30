@@ -101,6 +101,7 @@ public class CSPMultiSink extends CSPActor {
      *  consumption.
      *  @exception IllegalActionException If thrown by the super class.
      */
+    @Override
     public void fire() throws IllegalActionException {
         super.fire();
         try {
@@ -163,12 +164,14 @@ public class CSPMultiSink extends CSPActor {
      * @return false Indicating that iteration of this actor should
      *  should not continue.
      */
+    @Override
     public boolean postfire() {
         return false;
     }
 
     /** Discontinue the execution of this actor.
      */
+    @Override
     public void wrapup() {
         System.out.println(Thread.currentThread().getName()
                 + ":Invoking wrapup of CSPMultiSink...\n");
@@ -177,7 +180,7 @@ public class CSPMultiSink extends CSPActor {
             for (int i = 0; i < input.getWidth(); i++) {
                 System.out.println("MultiSink: Branch " + i
                         + " successfully  rendezvoused " + _branchCount[i]
-                        + " times.");
+                                + " times.");
             }
         } catch (IllegalActionException ex) {
             throw new InternalErrorException(this, ex,

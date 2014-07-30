@@ -87,7 +87,7 @@ public class ProcessDirector extends Director {
      *  @exception IllegalActionException If construction of Time objects fails.
      */
     public ProcessDirector() throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         super();
     }
 
@@ -99,7 +99,7 @@ public class ProcessDirector extends Director {
      *  @exception IllegalActionException If construction of Time objects fails.
      */
     public ProcessDirector(Workspace workspace) throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         super(workspace);
     }
 
@@ -159,6 +159,7 @@ public class ProcessDirector extends Director {
      *   cannot be cloned.
      *  @return The new ProcessDirector.
      */
+    @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         ProcessDirector newObject = (ProcessDirector) super.clone(workspace);
 
@@ -182,6 +183,7 @@ public class ProcessDirector extends Director {
      *  terminate, such as PN, you may wish to call stopFire() as well to request
      *  that those actors complete their firings.
      */
+    @Override
     public void finish() {
         super.finish();
         stop();
@@ -192,6 +194,7 @@ public class ProcessDirector extends Director {
      *  This method is synchronized on the director.
      *  @exception IllegalActionException If a derived class throws it.
      */
+    @Override
     public void fire() throws IllegalActionException {
         // Don't call "Director.super.fire();" here, do the work instead.
         Workspace workspace = workspace();
@@ -246,8 +249,8 @@ public class ProcessDirector extends Director {
                     } finally {
                         if (outsideDirector != null) {
                             ((ProcessDirector) outsideDirector)
-                                    .threadUnblocked(Thread.currentThread(),
-                                            null);
+                            .threadUnblocked(Thread.currentThread(),
+                                    null);
                         }
                     }
                 }
@@ -291,6 +294,7 @@ public class ProcessDirector extends Director {
      *  @exception IllegalActionException If the actor is not
      *  acceptable to the domain.  Not thrown in this base class.
      */
+    @Override
     public synchronized void initialize(Actor actor)
             throws IllegalActionException {
         // FIXME: Note that ProcessDirector does *not* invoke
@@ -353,6 +357,7 @@ public class ProcessDirector extends Director {
      *   a stop has been requested.
      *  @exception IllegalActionException If a derived class throws it.
      */
+    @Override
     public boolean postfire() throws IllegalActionException {
         _notDone = _notDone && super.postfire();
 
@@ -375,6 +380,7 @@ public class ProcessDirector extends Director {
      *  @return True.
      *  @exception IllegalActionException If a derived class throws it.
      */
+    @Override
     public boolean prefire() throws IllegalActionException {
         // FIXME: Note that ProcessDirector does *not* invoke
         // super.prefire(), so changes made to Director.prefire()
@@ -411,6 +417,7 @@ public class ProcessDirector extends Director {
      *  @exception IllegalActionException If creating an actor thread
      *  throws it.
      */
+    @Override
     public void preinitialize() throws IllegalActionException {
         // This method calls super.preinitialize() at the end.
 
@@ -452,6 +459,7 @@ public class ProcessDirector extends Director {
      *  controlled by this director. This also sets a flag
      *  so that the next call to postfire() returns false.
      */
+    @Override
     public void stop() {
         // This method does not call super.stop() by design.
 
@@ -503,6 +511,7 @@ public class ProcessDirector extends Director {
      *  the actors that are contained by these threads. This method is
      *  non-blocking.
      */
+    @Override
     public void stopFire() {
         // This method does not call super.stopFire() by design.
 
@@ -537,6 +546,7 @@ public class ProcessDirector extends Director {
      *  this method. This method uses Thread.stop(), a deprecated method
      *  in Java.
      */
+    @Override
     public void terminate() {
         // First need to invoke terminate on all actors under the
         // control of this director.
@@ -623,6 +633,7 @@ public class ProcessDirector extends Director {
      *  @return False, to indicate that no tokens were transferred.
      *  @exception IllegalActionException Not thrown in this base class.
      */
+    @Override
     public boolean transferInputs(IOPort port) throws IllegalActionException {
         return false;
     }
@@ -633,6 +644,7 @@ public class ProcessDirector extends Director {
      *  @return False, to indicate that no tokens were transferred.
      *  @exception IllegalActionException Not thrown in this base class.
      */
+    @Override
     public boolean transferOutputs(IOPort port) throws IllegalActionException {
         return false;
     }
@@ -651,6 +663,7 @@ public class ProcessDirector extends Director {
      *   accessing the receivers of all actors under the control of
      *   this director.
      */
+    @Override
     public void wrapup() throws IllegalActionException {
         // FIXME: Note that ProcessDirector does *not*
         // invoke super.wrapup(), so changes made to Director.wrapup()

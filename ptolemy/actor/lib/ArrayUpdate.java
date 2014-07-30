@@ -71,13 +71,13 @@ public class ArrayUpdate extends Transformer {
         index = new PortParameter(this, "index");
         index.setExpression("0");
         new StringAttribute(index.getPort(), "_cardinal")
-                .setExpression("SOUTH");
+        .setExpression("SOUTH");
         new Parameter(index.getPort(), "_showName").setExpression("true");
 
         value = new PortParameter(this, "value");
         value.setExpression("1");
         new StringAttribute(value.getPort(), "_cardinal")
-                .setExpression("SOUTH");
+        .setExpression("SOUTH");
         new Parameter(value.getPort(), "_showName").setExpression("true");
 
         // Set type constraints.
@@ -110,6 +110,7 @@ public class ArrayUpdate extends Transformer {
      *  @exception CloneNotSupportedException If a derived class contains
      *   an attribute that cannot be cloned.
      */
+    @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         ArrayUpdate newObject = (ArrayUpdate) super.clone(workspace);
 
@@ -131,6 +132,7 @@ public class ArrayUpdate extends Transformer {
      *  @exception IllegalActionException If any parameter value
      *   is out of range.
      */
+    @Override
     public void fire() throws IllegalActionException {
         super.fire();
         index.update();

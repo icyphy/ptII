@@ -99,7 +99,7 @@ public abstract class RandomSource extends Source {
         resetOnEachRun.setTypeEquals(BaseType.BOOLEAN);
 
         new SingletonParameter(trigger, "_showName")
-                .setToken(BooleanToken.TRUE);
+        .setToken(BooleanToken.TRUE);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -155,6 +155,7 @@ public abstract class RandomSource extends Source {
      *  @exception IllegalActionException If the change is not acceptable
      *   to this container (not thrown in this base class).
      */
+    @Override
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         if (attribute == seed || attribute == privateSeed) {
@@ -180,6 +181,7 @@ public abstract class RandomSource extends Source {
      *  @exception CloneNotSupportedException If a derived class contains
      *   an attribute that cannot be cloned.
      */
+    @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         RandomSource newObject = (RandomSource) super.clone(workspace);
 
@@ -195,6 +197,7 @@ public abstract class RandomSource extends Source {
      *  of the iteration.
      *  @exception IllegalActionException If there is no director.
      */
+    @Override
     public void fire() throws IllegalActionException {
         super.fire();
         if (_needNewGenerator) {
@@ -214,6 +217,7 @@ public abstract class RandomSource extends Source {
      *  sure that two identical sequences will not be returned.
      *  @exception IllegalActionException If the parent class throws it.
      */
+    @Override
     public void initialize() throws IllegalActionException {
         super.initialize();
 
@@ -228,6 +232,7 @@ public abstract class RandomSource extends Source {
      *  @exception IllegalActionException If the base class throws it.
      *  @return True if it is ok to continue.
      */
+    @Override
     public boolean postfire() throws IllegalActionException {
         _needNew = true;
         return super.postfire();

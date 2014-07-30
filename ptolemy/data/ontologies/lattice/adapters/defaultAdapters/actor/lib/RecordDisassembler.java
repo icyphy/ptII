@@ -61,7 +61,7 @@ public class RecordDisassembler extends LatticeOntologyAdapter {
      */
     public RecordDisassembler(LatticeOntologySolver solver,
             ptolemy.actor.lib.RecordDisassembler actor)
-            throws IllegalActionException {
+                    throws IllegalActionException {
         super(solver, actor, false);
     }
 
@@ -73,6 +73,7 @@ public class RecordDisassembler extends LatticeOntologyAdapter {
      *  @exception IllegalActionException If there is an error creating
      *   the constraint list.
      */
+    @Override
     public List<Inequality> constraintList() throws IllegalActionException {
         ptolemy.actor.lib.RecordDisassembler actor = (ptolemy.actor.lib.RecordDisassembler) getComponent();
         Ontology ontology = _solver.getOntology();
@@ -87,7 +88,7 @@ public class RecordDisassembler extends LatticeOntologyAdapter {
         // label names.  This is necessary to ensure that the RecordFromIndividualConcepts
         // concept function is correctly evaluated.
         InequalityTerm[] outputPortTerms = new InequalityTerm[fieldLabels
-                .size()];
+                                                              .size()];
         int counter = 0;
         for (String field : fieldLabels) {
             outputPortTerms[counter++] = getPropertyTerm(actor.getPort(field));
@@ -106,7 +107,7 @@ public class RecordDisassembler extends LatticeOntologyAdapter {
                 setAtLeast(port, new ConceptFunctionInequalityTerm(
                         new ConceptFromRecordField("conceptFromRecord",
                                 ((Port) port).getName(), ontology),
-                        new InequalityTerm[] { getPropertyTerm(actor.input) }));
+                                new InequalityTerm[] { getPropertyTerm(actor.input) }));
             }
         }
 

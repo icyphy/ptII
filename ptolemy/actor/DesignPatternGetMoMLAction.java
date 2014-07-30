@@ -25,7 +25,7 @@
  PT_COPYRIGHT_VERSION_2
  COPYRIGHTENDKEY
 
-*/
+ */
 package ptolemy.actor;
 
 import java.io.StringWriter;
@@ -54,7 +54,7 @@ import ptolemy.util.StringUtilities;
   @since Ptolemy II 8.0
   @Pt.ProposedRating Red (tfeng)
   @Pt.AcceptedRating Red (tfeng)
-*/
+ */
 public class DesignPatternGetMoMLAction {
 
     /** Generate the Moml string for the given object. If the object is a group
@@ -169,7 +169,7 @@ public class DesignPatternGetMoMLAction {
                 Attribute attribute = entity.getAttribute("_noAutonaming");
                 if (attribute != null
                         && ((BooleanToken) ((Parameter) attribute).getToken())
-                                .booleanValue()) {
+                        .booleanValue()) {
                     entity.exportMoML(buffer, extraIndent + 2);
                 }
             }
@@ -179,7 +179,7 @@ public class DesignPatternGetMoMLAction {
                 Attribute attribute = entity.getAttribute("_noAutonaming");
                 if (attribute != null
                         && ((BooleanToken) ((Parameter) attribute).getToken())
-                                .booleanValue()) {
+                        .booleanValue()) {
                     entity.exportMoML(buffer, extraIndent + 2);
                 }
             }
@@ -192,7 +192,7 @@ public class DesignPatternGetMoMLAction {
                 Attribute attribute = entity.getAttribute("_noAutonaming");
                 if (attribute == null
                         || !((BooleanToken) ((Parameter) attribute).getToken())
-                                .booleanValue()) {
+                        .booleanValue()) {
                     entity.exportMoML(buffer, extraIndent + 2);
                 }
             }
@@ -202,7 +202,7 @@ public class DesignPatternGetMoMLAction {
                 Attribute attribute = entity.getAttribute("_noAutonaming");
                 if (attribute == null
                         || !((BooleanToken) ((Parameter) attribute).getToken())
-                                .booleanValue()) {
+                        .booleanValue()) {
                     entity.exportMoML(buffer, extraIndent + 2);
                 }
             }

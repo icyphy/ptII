@@ -77,6 +77,7 @@ public class ASTPtSumNode extends LatticeOntologyASTNodeAdapter {
      *  @exception IllegalActionException If there is an error building the constraint list.
      *  @return The list of constraints for this adapter.
      */
+    @Override
     public List<Inequality> constraintList() throws IllegalActionException {
 
         // Find the add and subtract concept functions that
@@ -154,7 +155,7 @@ public class ASTPtSumNode extends LatticeOntologyASTNodeAdapter {
         public ASTPtSumNodeFunction(List<Ontology> argumentDomainOntologies,
                 Ontology outputRangeOntology, ConceptFunction addFunction,
                 ConceptFunction subtractFunction, List<Token> operatorTokenList)
-                throws IllegalActionException {
+                        throws IllegalActionException {
             super("defaultASTPtSumNodeFunction", true,
                     argumentDomainOntologies, outputRangeOntology);
 
@@ -171,6 +172,7 @@ public class ASTPtSumNode extends LatticeOntologyASTNodeAdapter {
          *  @return The concept value that is output from this function.
          *  @exception IllegalActionException If there is a problem evaluating the function
          */
+        @Override
         protected Concept _evaluateFunction(List<Concept> inputConceptValues)
                 throws IllegalActionException {
 

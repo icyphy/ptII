@@ -7,5 +7,6 @@ import ptolemy.kernel.util.IllegalActionException;
  */
 public interface YieldAdapter<T> {
 
-    YieldAdapterIterable<T> adapt(Collector<T> client) throws IllegalActionException;
+    YieldAdapterIterable<T> adapt(Collector<T> client)
+            throws IllegalActionException;
 }

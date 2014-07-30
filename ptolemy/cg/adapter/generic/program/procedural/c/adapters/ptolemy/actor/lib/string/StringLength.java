@@ -40,8 +40,8 @@ package ptolemy.cg.adapter.generic.program.procedural.c.adapters.ptolemy.actor.l
 @Pt.AcceptedRating Red (cxh)
  */
 public class StringLength
-        extends
-        ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.actor.lib.string.StringLength {
+extends
+ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.actor.lib.string.StringLength {
     /**
      *  Construct a StringLength adapter.
      *  @param actor The given ptolemy.actor.lib.string.StringLength actor.

@@ -140,6 +140,7 @@ public class MultiplyDivide extends TypedAtomicActor {
      *   or if multiplication and division are not supported by the
      *   available tokens.
      */
+    @Override
     public void fire() throws IllegalActionException {
         super.fire();
         Token numerator = null;

@@ -24,7 +24,7 @@
    PT_COPYRIGHT_VERSION_2
    COPYRIGHTENDKEY
 
-*/
+ */
 
 package ptolemy.util.test.junit;
 
@@ -89,6 +89,7 @@ public class ModelTests {
                  *            The name of the file.
                  * @return true if the file name ends with .xml or .moml
                  */
+                @Override
                 public boolean accept(File directory, String name) {
                     String fileName = name.toLowerCase(Locale.getDefault());
                     return fileName.endsWith(".xml")
@@ -100,7 +101,7 @@ public class ModelTests {
             if (modelFiles.length > 0) {
                 for (String modelFile : modelFiles) {
                     data[i++][0] = new File(directory + modelFile)
-                            .getCanonicalPath();
+                    .getCanonicalPath();
                 }
                 // Sort the files so that we execute the tests in
                 // a predictable order.  Tests in ptolemy/actor/lib/test/auto

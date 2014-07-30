@@ -60,6 +60,7 @@ import ptolemy.kernel.util.Workspace;
  in the actors, instead of using this class.  This allows the
  dependence of rates to be understood by various SDF schedulers.
  */
+@Deprecated
 public final class SDFIOPort extends TypedIOPort {
     /** Construct an SDFIOPort with no container and no name that is
      *  neither an input nor an output.
@@ -147,6 +148,7 @@ public final class SDFIOPort extends TypedIOPort {
      *  @exception CloneNotSupportedException If one of the attributes
      *   cannot be cloned.
      */
+    @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         SDFIOPort newObject = (SDFIOPort) super.clone(workspace);
         newObject.tokenConsumptionRate = (Parameter) newObject
@@ -203,6 +205,7 @@ public final class SDFIOPort extends TypedIOPort {
      *  @exception IllegalActionException If changing the port status is
      *   not permitted.
      */
+    @Override
     public void setInput(boolean isInput) throws IllegalActionException {
         super.setInput(isInput);
 
@@ -227,6 +230,7 @@ public final class SDFIOPort extends TypedIOPort {
      *  @exception IllegalActionException If changing the port status is
      *   not permitted.
      */
+    @Override
     public void setOutput(boolean isOutput) throws IllegalActionException {
         super.setOutput(isOutput);
 

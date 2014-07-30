@@ -91,7 +91,7 @@ public class LayoutParser {
         try {
             screenOrientation = Enum.valueOf(ScreenOrientation.class,
                     ((Settable) orientation).getExpression().trim()
-                            .toUpperCase(Locale.getDefault()));
+                    .toUpperCase(Locale.getDefault()));
         } catch (IllegalArgumentException e) {
             return DEFAULT_SCREEN_ORIENTATION;
         }
@@ -272,6 +272,7 @@ public class LayoutParser {
         /** Return the enumeration value in lowercase lettering.
          *  @return The value in lowercase.
          */
+        @Override
         public String toString() {
             return name().toLowerCase(Locale.getDefault());
         }
@@ -292,7 +293,7 @@ public class LayoutParser {
      */
     private void _initPositionableAttributes(NamedObj container,
             ArrayList<AttributeElement> attributeContainer)
-            throws IllegalActionException {
+                    throws IllegalActionException {
         for (Attribute attribute : ServerUtility.deepAttributeList(container)) {
             if (isPositionable(attribute)) {
                 attributeContainer.add(new AttributeElement(attribute));

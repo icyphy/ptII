@@ -121,6 +121,7 @@ public class Inhibit extends Transformer {
      *  @exception CloneNotSupportedException If a derived class has
      *   has an attribute that cannot be cloned.
      */
+    @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         Inhibit newObject = (Inhibit) super.clone(workspace);
         newObject.output.setTypeAtLeast(newObject.input);
@@ -135,6 +136,7 @@ public class Inhibit extends Transformer {
      *  input tokens then no output is produced.
      *  @exception IllegalActionException If there is no director.
      */
+    @Override
     public void fire() throws IllegalActionException {
         super.fire();
         boolean hasInhibit = false;

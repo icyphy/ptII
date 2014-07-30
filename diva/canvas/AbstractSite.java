@@ -49,15 +49,18 @@ public abstract class AbstractSite implements Site {
 
     /** Get the figure to which this site is attached.
      */
+    @Override
     public abstract Figure getFigure();
 
     /** Get the ID of this site.
      */
+    @Override
     public abstract int getID();
 
     /** Get the angle of the normal to this site, in radians
      * between zero and 2pi. This default method returns 0.0.
      */
+    @Override
     public double getNormal() {
         return _normal;
     }
@@ -67,6 +70,7 @@ public abstract class AbstractSite implements Site {
      * the getPoint(double) method, so subclasses only have to override
      * that method.
      */
+    @Override
     public Point2D getPoint() {
         return getPoint(getNormal());
     }
@@ -78,6 +82,7 @@ public abstract class AbstractSite implements Site {
      * the getPoint(double) method, so subclasses only have to override
      * that method.
      */
+    @Override
     public Point2D getPoint(TransformContext tc) {
         return getTransformContext().getTransform(tc).transform(getPoint(),
                 null);
@@ -89,6 +94,7 @@ public abstract class AbstractSite implements Site {
     /** Get the point location of the site, in the enclosing
      * transform context with the given normal.
      */
+    @Override
     public Point2D getPoint(double normal) {
         return new Point2D.Double(getX(), getY());
     }
@@ -100,6 +106,7 @@ public abstract class AbstractSite implements Site {
      * the getPoint(double) method, so subclasses only have to override
      * that method.
      */
+    @Override
     public Point2D getPoint(TransformContext tc, double normal) {
         AffineTransform transform = getTransformContext().getTransform(tc);
         Point2D point = getPoint(normal);
@@ -110,6 +117,7 @@ public abstract class AbstractSite implements Site {
      *  As a default behavior, return the transform context
      *  of the associated figure.
      */
+    @Override
     public TransformContext getTransformContext() {
         return getFigure().getParent().getTransformContext();
     }
@@ -117,16 +125,19 @@ public abstract class AbstractSite implements Site {
     /** Get the x-coordinate of the site, in the enclosing
      * transform context.
      */
+    @Override
     public abstract double getX();
 
     /** Get the y-coordinate of the site, in the enclosing
      * transform context.
      */
+    @Override
     public abstract double getY();
 
     /** Test if this site has a "normal" to it. Return true if
      * setNormal has been called and false otherwise.
      */
+    @Override
     public boolean hasNormal() {
         return _hasNormal;
     }
@@ -134,6 +145,7 @@ public abstract class AbstractSite implements Site {
     /** Test if this site has a normal in the given direction.
      * This default implementation returns false.
      */
+    @Override
     public boolean isNormal(int direction) {
         return false;
     }
@@ -145,6 +157,7 @@ public abstract class AbstractSite implements Site {
      * "upside down" coordinate system is consistent with the upside down
      * coordinate system of the canvas, which has the origin in the upper left.
      */
+    @Override
     public void setNormal(double normal) {
         _hasNormal = true;
         _normal = CanvasUtilities.moduloAngle(normal);
@@ -153,6 +166,7 @@ public abstract class AbstractSite implements Site {
     /** Translate the site by the indicated distance. This
      * default implementation does nothing.
      */
+    @Override
     public void translate(double x, double y) {
         // do nothing
     }

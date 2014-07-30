@@ -79,6 +79,7 @@ public class EntityTreeModel implements TreeModel {
      *  @param listener The listener to add.
      *  @see #removeTreeModelListener(TreeModelListener)
      */
+    @Override
     public void addTreeModelListener(TreeModelListener listener) {
         // In http://bugzilla.ecoinformatics.org/show_bug.cgi?id=4801,
         // Jianwu Wang found that the _listenerList attribute in
@@ -103,6 +104,7 @@ public class EntityTreeModel implements TreeModel {
      *  @param index The index of the desired child.
      *  @return A node, or null if there is no such child.
      */
+    @Override
     public Object getChild(Object parent, int index) {
         if (index > getChildCount(parent)) {
             return null;
@@ -117,6 +119,7 @@ public class EntityTreeModel implements TreeModel {
      *  @param parent A parent node.
      *  @return The number of contained entities.
      */
+    @Override
     public int getChildCount(Object parent) {
         if (!(parent instanceof CompositeEntity)) {
             return 0;
@@ -133,6 +136,7 @@ public class EntityTreeModel implements TreeModel {
      *  @param child The child.
      *  @return The index of the specified child.
      */
+    @Override
     public int getIndexOfChild(Object parent, Object child) {
         if (!(parent instanceof CompositeEntity)) {
             return -1;
@@ -146,6 +150,7 @@ public class EntityTreeModel implements TreeModel {
      *  @return A NamedObj, usually an Entity.
      *  @see #setRoot(NamedObj)
      */
+    @Override
     public Object getRoot() {
         return _root;
     }
@@ -155,6 +160,7 @@ public class EntityTreeModel implements TreeModel {
      *  @param object The object in question.
      *  @return True if the node has no children.
      */
+    @Override
     public boolean isLeaf(Object object) {
         if (!(object instanceof CompositeEntity)) {
             return true;
@@ -187,6 +193,7 @@ public class EntityTreeModel implements TreeModel {
      *  @param listener The listener to remove.
      *  @see #addTreeModelListener(TreeModelListener)
      */
+    @Override
     public void removeTreeModelListener(TreeModelListener listener) {
         int i = 0;
         int size = _listenerList.size();
@@ -209,6 +216,7 @@ public class EntityTreeModel implements TreeModel {
      *  @param path The path of the node that has changed.
      *  @param newValue The new value of the node.
      */
+    @Override
     public void valueForPathChanged(TreePath path, Object newValue) {
         Iterator listeners = _listenerList.iterator();
         TreeModelEvent event = new TreeModelEvent(this, path);
@@ -231,6 +239,7 @@ public class EntityTreeModel implements TreeModel {
          *  the relevant portion of the tree is updated.
          *  Otherwise, the entire tree is modified.
          */
+        @Override
         public void changeExecuted(final ChangeRequest change) {
             // If the change is not structural, say for example SetVariable setting its variable,
             // then ignore the change because it will not modify the tree.
@@ -240,6 +249,7 @@ public class EntityTreeModel implements TreeModel {
             //System.out.println("change = " + change + change.getDescription());
             // Note that this should be in the swing thread.
             SwingUtilities.invokeLater(new Runnable() {
+                @Override
                 public void run() {
                     ArrayList path = new ArrayList();
                     Object root = getRoot();
@@ -319,6 +329,7 @@ public class EntityTreeModel implements TreeModel {
          *  the relevant portion of the tree is updated.
          *  Otherwise, the entire tree is modified.
          */
+        @Override
         public void changeFailed(ChangeRequest change, Exception exception) {
             // We do the same thing whether the change succeeded or failed.
             changeExecuted(change);

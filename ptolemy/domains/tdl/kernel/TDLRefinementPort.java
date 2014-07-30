@@ -120,6 +120,7 @@ public class TDLRefinementPort extends RefinementPort {
      * @param isOutput True if port is an output port.
      * @exception IllegalActionException Thrown by parent class.
      */
+    @Override
     public void setOutput(boolean isOutput) throws IllegalActionException {
         super.setOutput(isOutput);
         setMirrorDisable(false);
@@ -135,6 +136,7 @@ public class TDLRefinementPort extends RefinementPort {
      * @param isInput True if port is an input port.
      * @exception IllegalActionException Thrown by parent class.
      */
+    @Override
     public void setInput(boolean isInput) throws IllegalActionException {
         super.setInput(isInput);
         setMirrorDisable(false);
@@ -155,7 +157,7 @@ public class TDLRefinementPort extends RefinementPort {
      * @exception NameDuplicationException Thrown if parameters cannot be set.
      */
     private void _init() throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         setMirrorDisable(false);
         frequency = new Parameter(this, "frequency");
         initialValue = new Parameter(this, "initialValue");

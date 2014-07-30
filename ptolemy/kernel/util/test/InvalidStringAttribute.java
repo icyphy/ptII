@@ -95,6 +95,7 @@ public class InvalidStringAttribute extends StringAttribute {
      *  @exception IllegalActionException If the expression is not valid, or
      *   its value is not acceptable to the container or the listeners.
      */
+    @Override
     public Collection validate() throws IllegalActionException {
         if (getName().equals("KernelRuntimeException")) {
             throw new KernelRuntimeException(this,

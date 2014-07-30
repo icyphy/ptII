@@ -92,7 +92,7 @@ import ptolemy.kernel.util.Workspace;
  @Pt.AcceptedRating Red (pjb2e)
  */
 public class TransmitPropertyTransformer extends LifeCycleManager implements
-        PropertyTransformer {
+PropertyTransformer {
     /** Construct an actor with the specified container and name.
      *  @param container The container.
      *  @param name The name.
@@ -173,6 +173,7 @@ public class TransmitPropertyTransformer extends LifeCycleManager implements
      *  @exception CloneNotSupportedException If a derived class contains
      *   an attribute that cannot be cloned.
      */
+    @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         TransmitPropertyTransformer newObject = (TransmitPropertyTransformer) super
                 .clone(workspace);
@@ -187,6 +188,7 @@ public class TransmitPropertyTransformer extends LifeCycleManager implements
      *  @exception IllegalActionException If there is no director, or if
      *   the director's action methods throw it.
      */
+    @Override
     public void fire() throws IllegalActionException {
         if (input.hasToken(0)) {
             Token inputValue = input.get(0);
@@ -203,6 +205,7 @@ public class TransmitPropertyTransformer extends LifeCycleManager implements
      *  @exception IllegalActionException Not thrown in this class,
      *   but declared so the subclasses can throw it.
      */
+    @Override
     public boolean postfire() throws IllegalActionException {
         // Do not call the superclass postfire(), as that will
         // call postfire() on the diretor.
@@ -217,6 +220,7 @@ public class TransmitPropertyTransformer extends LifeCycleManager implements
      *  @exception IllegalActionException Not thrown in this class,
      *   but declared so the subclasses can throw it.
      */
+    @Override
     public boolean prefire() throws IllegalActionException {
         // Do not call the superclass prefire(), as that will
         // call prefire() on the diretor.
@@ -236,6 +240,7 @@ public class TransmitPropertyTransformer extends LifeCycleManager implements
      *   container does not have a container, or if no channel is
      *   found.
      */
+    @Override
     public void preinitialize() throws IllegalActionException {
         super.preinitialize();
 
@@ -339,9 +344,10 @@ public class TransmitPropertyTransformer extends LifeCycleManager implements
      *  @exception IllegalActionException If executing the model
      *   throws it.
      */
+    @Override
     public RecordToken transformProperties(RecordToken initialProperties,
             WirelessIOPort sender, WirelessIOPort destination)
-            throws IllegalActionException {
+                    throws IllegalActionException {
         double[] p1 = _locationOf(sender);
         double[] p2 = _locationOf(destination);
 
@@ -381,6 +387,7 @@ public class TransmitPropertyTransformer extends LifeCycleManager implements
      *  channel.
      *  @exception IllegalActionException If the base class throws it.
      */
+    @Override
     public void wrapup() throws IllegalActionException {
         // Do not call the superclass wrapup(), as that will
         // call wrapup() on the diretor.
@@ -404,11 +411,13 @@ public class TransmitPropertyTransformer extends LifeCycleManager implements
 
     /** Override the base class to not read any inputs.
      */
+    @Override
     protected void _readInputs() {
     }
 
     /** Override the base class to not write any outputs.
      */
+    @Override
     protected void _writeOutputs() {
     }
 
@@ -431,7 +440,7 @@ public class TransmitPropertyTransformer extends LifeCycleManager implements
         if (location == null) {
             throw new IllegalActionException(
                     "Cannot determine location for port " + port.getName()
-                            + ".");
+                    + ".");
         }
 
         return location.getLocation();

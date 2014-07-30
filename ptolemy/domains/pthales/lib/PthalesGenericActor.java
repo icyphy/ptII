@@ -76,7 +76,7 @@ public class PthalesGenericActor extends PthalesAtomicActor {
      *   actor with this name.
      */
     public PthalesGenericActor() throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         super();
     }
 
@@ -120,6 +120,7 @@ public class PthalesGenericActor extends PthalesAtomicActor {
      *  @exception IllegalActionException If there is no director, or the
      *  input can not be read, or the output can not be sent.
      */
+    @Override
     public void fire() throws IllegalActionException {
 
         // Variables
@@ -161,8 +162,8 @@ public class PthalesGenericActor extends PthalesAtomicActor {
         // Outputs ports arrays created before elementary task called
         for (IOPort port : portsOut) {
             realOut[portNumber] = new float[PthalesIOPort
-                    .getDataProducedSize(port)
-                    * PthalesIOPort.getNbTokenPerData(port)];
+                                            .getDataProducedSize(port)
+                                            * PthalesIOPort.getNbTokenPerData(port)];
             portNumber++;
         }
 
@@ -238,6 +239,7 @@ public class PthalesGenericActor extends PthalesAtomicActor {
      *  that execution can continue into the next iteration.
      *  @exception IllegalActionException Not thrown in this base class.
      */
+    @Override
     public boolean postfire() throws IllegalActionException {
         // FIXME: This should either call super.postfire()
         // or else print the debugging message as AtomicActor.postfire() does.
@@ -247,8 +249,9 @@ public class PthalesGenericActor extends PthalesAtomicActor {
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
 
+    @Override
     protected void _initialize() throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
 
         super._initialize();
 

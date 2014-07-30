@@ -74,6 +74,7 @@ public class StreamLoader extends Source {
      */
     public FileParameter fileOrURL;
 
+    @Override
     public void initialize() throws IllegalActionException {
         super.initialize();
 
@@ -99,6 +100,7 @@ public class StreamLoader extends Source {
         }
     }
 
+    @Override
     public boolean postfire() throws IllegalActionException {
         if (getDirector().getModelTime().getDoubleValue() == 0.0) {
             output.send(0, new ObjectToken(_dataSource));

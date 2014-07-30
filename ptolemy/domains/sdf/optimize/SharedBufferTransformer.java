@@ -52,10 +52,10 @@ See {@link ptolemy.domains.sdf.optimize.OptimizingSDFDirector} and
 @since Ptolemy II 10.0
 @Pt.ProposedRating Red (mgeilen)
 @Pt.AcceptedRating Red ()
-*/
+ */
 
 public abstract class SharedBufferTransformer extends Transformer implements
-        BufferingProfile {
+BufferingProfile {
 
     /**
      * Construct an instance of a SharedBufferTransformer. Should not be used
@@ -76,6 +76,7 @@ public abstract class SharedBufferTransformer extends Transformer implements
     /**
      * initialize. Set the default firing to non exclusive.
      */
+    @Override
     public void initialize() throws IllegalActionException {
         // default to copying firing
         _nextIterationExclusive = false;
@@ -86,6 +87,7 @@ public abstract class SharedBufferTransformer extends Transformer implements
      * Fire according to the value _nextIterationExclusive in shared or exclusive
      * firing mode.
      */
+    @Override
     public void fire() throws IllegalActionException {
         if (_nextIterationExclusive) {
             _fireExclusive();
@@ -98,6 +100,7 @@ public abstract class SharedBufferTransformer extends Transformer implements
      * Default value for number of frame buffers required for shared firing.
      * @return the number of buffers required for a shared buffer firing
      */
+    @Override
     public int sharedBuffers() {
         return 1;
     }
@@ -106,6 +109,7 @@ public abstract class SharedBufferTransformer extends Transformer implements
      * Default value for number of frame buffers required for exclusive firing.
      * @return the number of buffers required for an exclusive buffer firing
      */
+    @Override
     public int exclusiveBuffers() {
         return 0;
     }
@@ -114,6 +118,7 @@ public abstract class SharedBufferTransformer extends Transformer implements
      * Default value for execution time for shared firing.
      * @return execution time of a shared buffer firing
      */
+    @Override
     public int sharedExecutionTime() {
         return 1;
     }
@@ -122,6 +127,7 @@ public abstract class SharedBufferTransformer extends Transformer implements
      * Default value for execution time for exclusive firing.
      * @return execution time of an exclusive buffer firing
      */
+    @Override
     public int exclusiveExecutionTime() {
         return 2;
     }
@@ -149,6 +155,7 @@ public abstract class SharedBufferTransformer extends Transformer implements
      * @exception IllegalActionException If iterating is not
      *  permitted, or if prefire(), fire(), or postfire() throw it.
      **/
+    @Override
     public int iterate(int iterationCount, boolean fireExclusive)
             throws IllegalActionException {
         _nextIterationExclusive = fireExclusive;

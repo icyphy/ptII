@@ -25,7 +25,7 @@ ENHANCEMENTS, OR MODIFICATIONS.
                                                 COPYRIGHTENDKEY
 
 
-*/
+ */
 package ptdb.kernel.database;
 
 import java.util.ArrayList;
@@ -95,6 +95,7 @@ public class AsynchronousDBConnection implements DBConnection {
      * Abort connection signifies that the execution needs to be terminated
      * as there was some error in execution.
      */
+    @Override
     public void abortConnection() {
         _taskQueue.setProcessingError();
     }
@@ -107,6 +108,7 @@ public class AsynchronousDBConnection implements DBConnection {
      * @exception DBConnectionException If thrown while
      * closing a connection.
      */
+    @Override
     public void closeConnection() throws DBConnectionException {
 
         boolean hasExecutionCompleted = false;
@@ -141,6 +143,7 @@ public class AsynchronousDBConnection implements DBConnection {
      * @exception DBConnectionException If thrown while committing a
      * transaction in the database.
      */
+    @Override
     public void commitConnection() throws DBConnectionException {
         /*
          * All tasks added denotes that the tasks have been added
@@ -160,6 +163,7 @@ public class AsynchronousDBConnection implements DBConnection {
      *
      * @exception DBExecutionException If thrown while searching.
      */
+    @Override
     public ArrayList<XMLDBModel> executeAttributeSearchTask(
             AttributeSearchTask task) throws DBExecutionException {
         throw new DBExecutionException(
@@ -178,6 +182,7 @@ public class AsynchronousDBConnection implements DBConnection {
      *
      * @exception DBExecutionException Thrown if the operation fails.
      */
+    @Override
     public XMLDBAttribute executeCreateAttributeTask(CreateAttributeTask task)
             throws DBExecutionException {
 
@@ -198,6 +203,7 @@ public class AsynchronousDBConnection implements DBConnection {
      * @exception DBExecutionException If thrown while creating a model.
      * @exception ModelAlreadyExistException Thrown if the model being created already exists.
      */
+    @Override
     public String executeCreateModelTask(CreateModelTask task)
             throws DBExecutionException, ModelAlreadyExistException {
 
@@ -217,6 +223,7 @@ public class AsynchronousDBConnection implements DBConnection {
      *          This will tell the DB layer to delete an attribute from the database.
      * @exception DBExecutionException Thrown if the operation fails.
      */
+    @Override
     public void executeDeleteAttributeTask(DeleteAttributeTask task)
             throws DBExecutionException {
 
@@ -236,6 +243,7 @@ public class AsynchronousDBConnection implements DBConnection {
      * @return List of models that contain the parent hierarchies.
      * @exception DBExecutionException If thrown while searching.
      */
+    @Override
     public ArrayList<XMLDBModel> executeFetchHierarchyTask(
             FetchHierarchyTask task) throws DBExecutionException {
         throw new DBExecutionException(
@@ -253,6 +261,7 @@ public class AsynchronousDBConnection implements DBConnection {
      * @exception DBExecutionException If thrown while getting attributes from the
      * database.
      */
+    @Override
     public List<XMLDBAttribute> executeGetAttributesTask(GetAttributesTask task)
             throws DBExecutionException {
         throw new DBExecutionException(
@@ -274,6 +283,7 @@ public class AsynchronousDBConnection implements DBConnection {
      * @exception DBExecutionException If thrown while fetching the parents list
      * from the database.
      */
+    @Override
     public List<XMLDBModel> executeGetFirstLevelParents(
             GetFirstLevelParentsTask task) throws DBExecutionException {
         throw new DBExecutionException(
@@ -291,6 +301,7 @@ public class AsynchronousDBConnection implements DBConnection {
      * @exception DBExecutionException If thrown while fetching the reference
      * string.
      */
+    @Override
     public String executeGetReferenceStringTask(GetReferenceStringTask task)
             throws DBExecutionException {
         throw new DBExecutionException(
@@ -308,6 +319,7 @@ public class AsynchronousDBConnection implements DBConnection {
      *          This object will be populated with the model's MoML string.
      * @exception DBExecutionException Thrown if the operations fails.
      */
+    @Override
     public XMLDBModel executeGetModelTask(GetModelTask task)
             throws DBExecutionException {
         throw new DBExecutionException(
@@ -327,6 +339,7 @@ public class AsynchronousDBConnection implements DBConnection {
      *          This object will be populated with the model's MoML string.
      * @exception DBExecutionException Thrown if the operations fails.
      */
+    @Override
     public XMLDBModel executeGetCompleteModelTask(GetModelTask task)
             throws DBExecutionException {
         throw new DBExecutionException(
@@ -341,6 +354,7 @@ public class AsynchronousDBConnection implements DBConnection {
      * @exception DBExecutionException thrown if there is an error while reading
      * the model list from the database.
      */
+    @Override
     public List<XMLDBModel> executeGetListOfAllModels()
             throws DBExecutionException {
 
@@ -359,6 +373,7 @@ public class AsynchronousDBConnection implements DBConnection {
      * @exception DBExecutionException If thrown while searching
      * in the database.
      */
+    @Override
     public ArrayList<XMLDBModel> executeGraphSearchTask(GraphSearchTask task)
             throws DBExecutionException {
         throw new DBExecutionException(
@@ -376,9 +391,10 @@ public class AsynchronousDBConnection implements DBConnection {
      * @return List of matching models.
      * @exception DBExecutionException If thrown while searching the database.
      */
+    @Override
     public ArrayList<XMLDBModel> executeModelNameSearchTask(
             ModelNameSearchTask modelNameSearchTask)
-            throws DBExecutionException {
+                    throws DBExecutionException {
         throw new DBExecutionException(
                 "Asynchronous DB Execution error - executeModelNameSearchTask "
                         + "is not supported by this type of DBConnection");
@@ -399,6 +415,7 @@ public class AsynchronousDBConnection implements DBConnection {
      * @exception DBExecutionException If thrown while saving model
      * in the database.
      */
+    @Override
     public String executeSaveModelTask(SaveModelTask task)
             throws DBExecutionException {
 
@@ -413,6 +430,7 @@ public class AsynchronousDBConnection implements DBConnection {
      * @param task Contains a list of models to be deleted from the database.
      * @exception DBExecutionException Thrown if the operation fails.
      */
+    @Override
     public void executeRemoveModelsTask(RemoveModelsTask task)
             throws DBExecutionException {
 
@@ -431,6 +449,7 @@ public class AsynchronousDBConnection implements DBConnection {
      * @exception DBModelNotFoundException Thrown if the model with the name to be changed does not exist.
      * @exception ModelAlreadyExistException Thrown if the new name is a name of a model that is already in the database.
      */
+    @Override
     public void executeRenameModelTask(RenameModelTask task)
             throws DBConnectionException, DBExecutionException,
             ModelAlreadyExistException, DBModelNotFoundException {
@@ -450,6 +469,7 @@ public class AsynchronousDBConnection implements DBConnection {
      *          This will tell the DB layer to update an attribute in the database.
      * @exception DBExecutionException Thrown if the operation fails.
      */
+    @Override
     public void executeUpdateAttributeTask(UpdateAttributeTask task)
             throws DBExecutionException {
 
@@ -469,6 +489,7 @@ public class AsynchronousDBConnection implements DBConnection {
      * @exception DBExecutionException Thrown if the operation fails.
      * already exists.
      */
+    @Override
     public void executeUpdateModelInCache(XMLDBModel xmlDBModel)
             throws DBExecutionException {
 
@@ -486,6 +507,7 @@ public class AsynchronousDBConnection implements DBConnection {
      * @exception DBExecutionException If thrown while updating the parents in the
      * database.
      */
+    @Override
     public void executeUpdateParentsToNewVersion(
             UpdateParentsToNewVersionTask task) throws DBExecutionException {
         _executeTask(task);
@@ -499,13 +521,14 @@ public class AsynchronousDBConnection implements DBConnection {
      * @return String representation of the
      * internal parameters of the class.
      */
+    @Override
     public String toString() {
 
         StringBuffer connState = new StringBuffer();
         connState.append(":Processing Error-")
-                .append(_taskQueue.hasProcessingError()).append(":");
+        .append(_taskQueue.hasProcessingError()).append(":");
         connState.append(":All Tasks Added-")
-                .append(_taskQueue.areAllTasksAdded()).append(":");
+        .append(_taskQueue.areAllTasksAdded()).append(":");
         return connState.toString();
     }
 

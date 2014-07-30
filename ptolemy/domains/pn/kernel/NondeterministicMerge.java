@@ -135,6 +135,7 @@ public class NondeterministicMerge extends TypedCompositeActor {
      *  actors, if the number is no longer correct.
      *  @param port The port that has connection changes.
      */
+    @Override
     public void connectionsChanged(Port port) {
         super.connectionsChanged(port);
 
@@ -169,15 +170,15 @@ public class NondeterministicMerge extends TypedCompositeActor {
              *          that width inference might happen multiple times (and definitely
              *          will for certain type of models).
              */
-                // If the model is running, create new internal actors if needed.
+            // If the model is running, create new internal actors if needed.
             Manager manager = getManager();
             if (manager != null) {
-                    Manager.State managerState = manager.getState();
-                    if (managerState == Manager.ITERATING
-                                    || managerState == Manager.PAUSED
-                                    || managerState == Manager.PAUSED_ON_BREAKPOINT) {
-                    _reinitializeInnerActors();                            
-                    }
+                Manager.State managerState = manager.getState();
+                if (managerState == Manager.ITERATING
+                        || managerState == Manager.PAUSED
+                        || managerState == Manager.PAUSED_ON_BREAKPOINT) {
+                    _reinitializeInnerActors();
+                }
             }
         }
     }
@@ -185,6 +186,7 @@ public class NondeterministicMerge extends TypedCompositeActor {
     /** Initialize this actor.
      *  @exception IllegalActionException If the parent class throws it.
      */
+    @Override
     public void initialize() throws IllegalActionException {
         _reinitializeInnerActors();
 
@@ -205,6 +207,7 @@ public class NondeterministicMerge extends TypedCompositeActor {
      *   cannot be cloned.
      *  @see #exportMoML(Writer, int, String)
      */
+    @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         NondeterministicMerge result = (NondeterministicMerge) super
                 .clone(workspace);
@@ -240,7 +243,7 @@ public class NondeterministicMerge extends TypedCompositeActor {
 
     /** Construct a NondeterministicMerge. */
     private void _constructor() throws NameDuplicationException,
-            IllegalActionException {
+    IllegalActionException {
 
         input = new TypedIOPort(this, "input", true, false);
         output = new TypedIOPort(this, "output", false, true);
@@ -332,9 +335,11 @@ public class NondeterministicMerge extends TypedCompositeActor {
         }
 
         // Override the base class to not export anything.
+        @Override
         public void exportMoML(Writer output, int depth, String name) {
         }
 
+        @Override
         public void fire() throws IllegalActionException {
             // If there is no connection, do nothing.
             if (input.getWidth() > _channelIndex) {
@@ -343,8 +348,8 @@ public class NondeterministicMerge extends TypedCompositeActor {
                         && input.hasToken(_channelIndex)) {
                     if (_debugging) {
                         NondeterministicMerge.this
-                                ._debug("Waiting for input from channel "
-                                        + _channelIndex);
+                        ._debug("Waiting for input from channel "
+                                + _channelIndex);
                     }
 
                     // NOTE: Writing to the port of the host actor.
@@ -385,6 +390,7 @@ public class NondeterministicMerge extends TypedCompositeActor {
         }
 
         // Override to return the manager associate with the host.
+        @Override
         public Manager getManager() {
             return NondeterministicMerge.this.getManager();
         }
@@ -434,6 +440,7 @@ public class NondeterministicMerge extends TypedCompositeActor {
          *  newly created actors. Hence we don't need to do it again here.
          *  @param actor The actor to initialize.
          */
+        @Override
         public void requestInitialization(Actor actor) {
         }
 
@@ -441,6 +448,7 @@ public class NondeterministicMerge extends TypedCompositeActor {
          *  This director does not keep track of threads.
          *  @param thread The thread.
          */
+        @Override
         public synchronized void addThread(Thread thread) {
             Director director = getExecutiveDirector();
 
@@ -455,6 +463,7 @@ public class NondeterministicMerge extends TypedCompositeActor {
 
         /** Do nothing.
          */
+        @Override
         public void fire() {
             // Do not call super.fire() here because ProcessDirector.fire()
             // waits until a deadlock is detected, which we don't want to do.
@@ -463,6 +472,7 @@ public class NondeterministicMerge extends TypedCompositeActor {
         /** Return false since this director has nothing to do.
          *  @return False.
          */
+        @Override
         public boolean postfire() {
             return false;
         }
@@ -471,6 +481,7 @@ public class NondeterministicMerge extends TypedCompositeActor {
          *  This director does not keep track of threads.
          *  @param thread The thread.
          */
+        @Override
         public synchronized void removeThread(Thread thread) {
             Director director = getExecutiveDirector();
 
@@ -490,6 +501,7 @@ public class NondeterministicMerge extends TypedCompositeActor {
          *   or null if it is not a specific receiver.
          *  @see #threadBlocked(Thread, ProcessReceiver, boolean)
          */
+        @Override
         public synchronized void threadBlocked(Thread thread,
                 ProcessReceiver receiver) {
             Director director = getExecutiveDirector();
@@ -512,6 +524,7 @@ public class NondeterministicMerge extends TypedCompositeActor {
          *   to indicate whether the thread is blocked on read or write.
          *  @see #threadBlocked(Thread, ProcessReceiver)
          */
+        @Override
         public synchronized void threadBlocked(Thread thread,
                 ProcessReceiver receiver, boolean readOrWrite) {
             Director director = getExecutiveDirector();
@@ -530,6 +543,7 @@ public class NondeterministicMerge extends TypedCompositeActor {
          *  This director does not keep track of threads.
          *  @param thread The thread.
          */
+        @Override
         public synchronized void threadHasPaused(Thread thread) {
             Director director = getExecutiveDirector();
 
@@ -546,6 +560,7 @@ public class NondeterministicMerge extends TypedCompositeActor {
          *  This director does not keep track of threads.
          *  @param thread The thread.
          */
+        @Override
         public synchronized void threadHasResumed(Thread thread) {
             Director director = getExecutiveDirector();
 
@@ -565,6 +580,7 @@ public class NondeterministicMerge extends TypedCompositeActor {
          *   or null if it is not a specific receiver.
          *  @see #threadBlocked(Thread, ProcessReceiver)
          */
+        @Override
         public synchronized void threadUnblocked(Thread thread,
                 ProcessReceiver receiver) {
             Director director = getExecutiveDirector();
@@ -587,6 +603,7 @@ public class NondeterministicMerge extends TypedCompositeActor {
          *   to indicate whether the thread is blocked on read or write.
          *  @see #threadBlocked(Thread, ProcessReceiver, boolean)
          */
+        @Override
         public synchronized void threadUnblocked(Thread thread,
                 ProcessReceiver receiver, boolean readOrWrite) {
             Director director = getExecutiveDirector();
@@ -603,10 +620,12 @@ public class NondeterministicMerge extends TypedCompositeActor {
 
         /** Do nothing.
          */
+        @Override
         public void wrapup() {
         }
 
         // Override since deadlock cannot ever occur internally.
+        @Override
         protected boolean _resolveDeadlock() {
             if (_debugging) {
                 _debug("Deadlock is not real as "

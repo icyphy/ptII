@@ -24,7 +24,7 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
-*/
+ */
 package org.ptolemy.machineLearning.hmm;
 
 import ptolemy.actor.TypedAtomicActor;
@@ -136,6 +136,7 @@ public abstract class ObservationClassifier extends TypedAtomicActor {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
+    @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         ObservationClassifier newObject = (ObservationClassifier) super
                 .clone(workspace);
@@ -147,6 +148,7 @@ public abstract class ObservationClassifier extends TypedAtomicActor {
     /** Consume the inputs and produce the outputs of the FFT filter.
      *  @exception IllegalActionException If a runtime type error occurs.
      */
+    @Override
     public void fire() throws IllegalActionException {
         super.fire();
 

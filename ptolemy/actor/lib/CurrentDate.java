@@ -47,7 +47,7 @@ import ptolemy.kernel.util.NameDuplicationException;
  @Pt.AcceptedRating Red (pd)
  */
 public class CurrentDate extends TimedSource {
-    
+
     /** Construct an actor with the given container and name.
      *
      *  @param container The container.
@@ -74,6 +74,7 @@ public class CurrentDate extends TimedSource {
      *  domain).  Otherwise, current time is that reported by the director.
      *  @exception IllegalActionException If send() throws it.
      */
+    @Override
     public void fire() throws IllegalActionException {
 
         if (trigger.isOutsideConnected()) {

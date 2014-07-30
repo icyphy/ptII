@@ -72,7 +72,7 @@ import ptolemy.kernel.util.KernelException;
  @see "Jini Documentation"
  */
 public class ClientServerInteractionManager implements DiscoveryListener,
-        ServiceDiscoveryListener {
+ServiceDiscoveryListener {
     /** Construct a ClientServerInteractionManager initializing it with a given
      *  VERBOSE option.
      *
@@ -93,6 +93,7 @@ public class ClientServerInteractionManager implements DiscoveryListener,
      *
      *  @param evt The event that describes the discarded registrars
      */
+    @Override
     public void discarded(DiscoveryEvent evt) {
         if (VERBOSE) {
             System.out.println("Registrars discarded: " + evt);
@@ -108,6 +109,7 @@ public class ClientServerInteractionManager implements DiscoveryListener,
      *
      *  @param evt The event that describes the discovered registrars
      */
+    @Override
     public void discovered(DiscoveryEvent evt) {
         ServiceRegistrar[] serviceRegistrars = evt.getRegistrars();
 
@@ -217,6 +219,7 @@ public class ClientServerInteractionManager implements DiscoveryListener,
      *  service item corresponding to the event, including representations of
      *  the service's state both before and after the event.
      */
+    @Override
     public void serviceAdded(ServiceDiscoveryEvent evt) {
         ServiceItem postItem = evt.getPostEventServiceItem();
 
@@ -241,6 +244,7 @@ public class ClientServerInteractionManager implements DiscoveryListener,
      *  service item corresponding to the event, including representations of
      *  the service's state both before and after the event.
      */
+    @Override
     public void serviceChanged(ServiceDiscoveryEvent evt) {
         ServiceItem postItem = evt.getPostEventServiceItem();
 
@@ -264,6 +268,7 @@ public class ClientServerInteractionManager implements DiscoveryListener,
      *  service item corresponding to the event, including representations of
      *  the service's state both before and after the event.
      */
+    @Override
     public void serviceRemoved(ServiceDiscoveryEvent evt) {
         ServiceItem preItem = evt.getPreEventServiceItem();
 

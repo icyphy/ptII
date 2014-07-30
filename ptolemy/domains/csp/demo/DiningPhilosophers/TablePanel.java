@@ -50,6 +50,7 @@ class TablePanel extends Panel {
      * Paint the panel. The state of all the chopsticks and philosophers
      * must be checked.
      */
+    @Override
     public void paint(Graphics g) {
         Coordinate newOrigin;
 

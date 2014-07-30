@@ -84,6 +84,7 @@ public abstract class CanvasPane implements EventAcceptor, CanvasComponent {
     /** Dispatch an AWT event on this pane. Currently only
      * layer events are handled.
      */
+    @Override
     public void dispatchEvent(AWTEvent event) {
         if (event instanceof LayerEvent) {
             processLayerEvent((LayerEvent) event);
@@ -96,6 +97,7 @@ public abstract class CanvasPane implements EventAcceptor, CanvasComponent {
     /** Get the parent component, or null if there isn't one.
      * Only one of the canvas or the display parent can be non-null.
      */
+    @Override
     public final CanvasComponent getParent() {
         return _parent;
     }
@@ -146,6 +148,7 @@ public abstract class CanvasPane implements EventAcceptor, CanvasComponent {
 
     /** Return the transform context of this pane.
      */
+    @Override
     public final TransformContext getTransformContext() {
         return _transformContext;
     }
@@ -170,6 +173,7 @@ public abstract class CanvasPane implements EventAcceptor, CanvasComponent {
      *  does not indicate whether the pane is actually enabled,
      *  as its canvas or one if its ancestors may not be enabled.
      */
+    @Override
     public final boolean isEnabled() {
         return _enabled;
     }
@@ -290,6 +294,7 @@ public abstract class CanvasPane implements EventAcceptor, CanvasComponent {
     /** Schedule a repaint of this pane. The pane passes
      * the repaint request to its parent, if it has one.
      */
+    @Override
     public void repaint() {
         if (_canvas != null) {
             _canvas.repaint();
@@ -303,6 +308,7 @@ public abstract class CanvasPane implements EventAcceptor, CanvasComponent {
      * through a transform context, and then forward the
      * notification up to the parent.
      */
+    @Override
     public void repaint(DamageRegion d) {
         // Check the transform cache
         d.checkCacheValid(_transformContext);
@@ -340,6 +346,7 @@ public abstract class CanvasPane implements EventAcceptor, CanvasComponent {
     /** Set the enabled flag of this pane. If the flag is false,
      * then the pane will not respond to user input events.
      */
+    @Override
     public final void setEnabled(boolean flag) {
         _enabled = flag;
     }

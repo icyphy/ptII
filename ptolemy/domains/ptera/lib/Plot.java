@@ -24,7 +24,7 @@
  PT_COPYRIGHT_VERSION_2
  COPYRIGHTENDKEY
 
-*/
+ */
 package ptolemy.domains.ptera.lib;
 
 import java.io.IOException;
@@ -105,6 +105,7 @@ public class Plot extends Event implements ConfigurableEntity {
      *  @exception CloneNotSupportedException If a derived class contains
      *   an attribute that cannot be cloned.
      */
+    @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         Plot newObject = (Plot) super.clone(workspace);
         try {
@@ -133,6 +134,7 @@ public class Plot extends Event implements ConfigurableEntity {
      *   none.
      *  @exception Exception If something goes wrong.
      */
+    @Override
     public void configure(URL base, String source, String text)
             throws Exception {
         _plotter.configure(base, source, text);
@@ -153,6 +155,7 @@ public class Plot extends Event implements ConfigurableEntity {
      *   evaluated.
      *  @see #refire(Token, RefiringData)
      */
+    @Override
     public RefiringData fire(Token arguments) throws IllegalActionException {
         RefiringData data = super.fire(arguments);
         /*_value = DoubleToken.convert(arguments.getElement(index));*/
@@ -166,6 +169,7 @@ public class Plot extends Event implements ConfigurableEntity {
      *  no source has been used to configure this object, or null if no
      *  external source need be used to configure this object.
      */
+    @Override
     public String getConfigureSource() {
         return _plotter.getConfigureSource();
     }
@@ -178,6 +182,7 @@ public class Plot extends Event implements ConfigurableEntity {
      *  has been used to configure this object, or null if no
      *  configuration string need be used to configure this object.
      */
+    @Override
     public String getConfigureText() {
         return _plotter.getConfigureText();
     }
@@ -185,6 +190,7 @@ public class Plot extends Event implements ConfigurableEntity {
     /** Get the {@link Configurer} object for this entity.
      *  @return the Configurer object for this entity.
      */
+    @Override
     public Configurer getConfigurer() {
         return _configurer;
     }
@@ -197,6 +203,7 @@ public class Plot extends Event implements ConfigurableEntity {
      *  @param depth The depth in the hierarchy, to determine indenting.
      *  @exception IOException If an I/O error occurs.
      */
+    @Override
     protected void _exportMoMLContents(Writer output, int depth)
             throws IOException {
         super._exportMoMLContents(output, depth);
@@ -240,6 +247,7 @@ public class Plot extends Event implements ConfigurableEntity {
             addInitializable(_configurer);
             new DEDirector(_configurer, "DEDirector");
             _plotter = new TimedPlotter(_configurer, "Plotter") {
+                @Override
                 public boolean postfire() throws IllegalActionException {
                     List<String> names = Plot.this.parameters
                             .getParameterNames();
@@ -261,6 +269,7 @@ public class Plot extends Event implements ConfigurableEntity {
                     return super.postfire();
                 }
 
+                @Override
                 public NamedObj toplevel() {
                     return Plot.this.toplevel();
                 }

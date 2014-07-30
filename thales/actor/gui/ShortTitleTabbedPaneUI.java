@@ -48,6 +48,7 @@ public class ShortTitleTabbedPaneUI extends BasicTabbedPaneUI {
     /* (non-Javadoc)
      * @see javax.swing.plaf.basic.BasicTabbedPaneUI#paintText(java.awt.Graphics, int, java.awt.Font, java.awt.FontMetrics, int, java.lang.String, java.awt.Rectangle, boolean)
      */
+    @Override
     protected void paintText(Graphics g, int tabPlacement, Font font,
             FontMetrics metrics, int tabIndex, String title,
             Rectangle textRect, boolean isSelected) {
@@ -65,6 +66,7 @@ public class ShortTitleTabbedPaneUI extends BasicTabbedPaneUI {
     /* (non-Javadoc)
      * @see javax.swing.plaf.basic.BasicTabbedPaneUI#calculateTabWidth(int, int, java.awt.FontMetrics)
      */
+    @Override
     protected int calculateTabWidth(int tabPlacement, int tabIndex,
             FontMetrics metrics) {
         int taille = 0;

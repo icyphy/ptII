@@ -118,6 +118,7 @@ public class Buffer extends CSPActor {
      *  @exception TerminateProcessException If the process termination
      *   is requested by the director.
      */
+    @Override
     public void fire() throws IllegalActionException {
         super.fire();
         int bufferSize = _buffer.size();
@@ -194,6 +195,7 @@ public class Buffer extends CSPActor {
      *  @exception IllegalActionException Not thrown in this base class,
      *  but might be in a derived class.
      */
+    @Override
     public void initialize() throws IllegalActionException {
         super.initialize();
         _buffer.clear();
@@ -204,6 +206,7 @@ public class Buffer extends CSPActor {
      *  @return True if another iteration can occur.
      *  @exception IllegalActionException If thrown by the base class.
      */
+    @Override
     public boolean postfire() throws IllegalActionException {
         // FIXME: We deliberately ignore the return value of super.postfire()
         // here because CSPActor.postfire() returns false.

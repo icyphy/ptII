@@ -109,6 +109,7 @@ public class PetriNetActor extends TypedCompositeActor {
      *   an attribute that cannot be cloned.
 
      */
+    @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         PetriNetActor newObject = (PetriNetActor) super.clone(workspace);
         return newObject;
@@ -137,6 +138,7 @@ public class PetriNetActor extends TypedCompositeActor {
      *  throws exception.
      *  @return true or false, a PetriNetActor is ready to fire or not.
      */
+    @Override
     public boolean prefire() throws IllegalActionException {
         PetriNetDirector director = (PetriNetDirector) getDirector();
 

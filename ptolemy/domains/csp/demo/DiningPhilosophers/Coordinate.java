@@ -62,6 +62,7 @@ public class Coordinate {
      *
      * @return whether it is equal or not.
      */
+    @Override
     public boolean equals(Object o) {
         Coordinate c;
 
@@ -82,6 +83,7 @@ public class Coordinate {
      *  bitwise and of the X and Y integer values.
      *  @return A hash code value for this Coordinate
      */
+    @Override
     public int hashCode() {
         return Integer.valueOf(X).hashCode() & Integer.valueOf(Y).hashCode();
     }
@@ -91,6 +93,7 @@ public class Coordinate {
      *
      * @return a string representation of the Coordinates.
      */
+    @Override
     public String toString() {
         return "(" + X + ", " + Y + ")";
     }

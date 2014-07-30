@@ -211,6 +211,7 @@ public class ExportModel {
         // Open the model.
         // FIXME: Refactor this and KielerLayoutJUnitTest to a common class.
         Runnable openModelAction = new Runnable() {
+            @Override
             public void run() {
                 try {
                     model[0] = ConfigurationApplication
@@ -294,23 +295,24 @@ public class ExportModel {
         if (run) {
             if (!_runnable(model[0])) {
                 System.out
-                        .println("Model \""
-                                + model[0].getFullName()
-                                + "\" contains actors such cannot be run "
-                                + " as part of the export process from ExportModel or "
-                                + "it has a WebExportParameters value that runBeforeExport set to false. "
-                                + "To export run this model and export it, use vergil.");
+                .println("Model \""
+                        + model[0].getFullName()
+                        + "\" contains actors such cannot be run "
+                        + " as part of the export process from ExportModel or "
+                        + "it has a WebExportParameters value that runBeforeExport set to false. "
+                        + "To export run this model and export it, use vergil.");
             } else {
                 // Optionally run the model.
                 Runnable runAction = new Runnable() {
+                    @Override
                     public void run() {
                         try {
                             if (!(model[0] instanceof TypedCompositeActor)) {
                                 System.out
-                                        .println(model[0].getFullName()
-                                                + " is a "
-                                                + model[0].getClass().getName()
-                                                + " not a TypedCompositeActor, so it cannot be run.");
+                                .println(model[0].getFullName()
+                                        + " is a "
+                                        + model[0].getClass().getName()
+                                        + " not a TypedCompositeActor, so it cannot be run.");
                                 return;
                             }
                             TypedCompositeActor composite = (TypedCompositeActor) model[0];
@@ -323,16 +325,17 @@ public class ExportModel {
                                 composite.setManager(manager);
                             }
                             composite
-                                    .setModelErrorHandler(new BasicModelErrorHandler());
+                            .setModelErrorHandler(new BasicModelErrorHandler());
                             _timer = new Timer(true);
                             final Director finalDirector = composite
                                     .getDirector();
                             TimerTask doTimeToDie = new TimerTask() {
+                                @Override
                                 public void run() {
                                     System.out
-                                            .println("ExportHTMLTimer went off after "
-                                                    + timeOut
-                                                    + " ms., calling getDirector().finish and getDirector().stopFire()");
+                                    .println("ExportHTMLTimer went off after "
+                                            + timeOut
+                                            + " ms., calling getDirector().finish and getDirector().stopFire()");
 
                                     // NOTE: This used to call stop() on
                                     // the manager, but that's not the
@@ -371,12 +374,13 @@ public class ExportModel {
                             final Manager finalManager = manager;
                             _failSafeTimer = new Timer(true);
                             TimerTask doFailSafeTimeToDie = new TimerTask() {
+                                @Override
                                 public void run() {
                                     System.out
-                                            .println("ExportHTMLTimer went off after "
-                                                    + timeOut
-                                                    * 2
-                                                    + " ms., calling manager.stop().");
+                                    .println("ExportHTMLTimer went off after "
+                                            + timeOut
+                                            * 2
+                                            + " ms., calling manager.stop().");
 
                                     finalManager.stop();
                                 }
@@ -406,12 +410,13 @@ public class ExportModel {
             // Sadly, running the DOPCenter.xml model does not seem to update the
             // graph.  So, we run it and save it and then open it again.
             Runnable saveAction = new Runnable() {
+                @Override
                 public void run() {
                     try {
                         System.out.println("Saving " + model[0].getFullName());
                         ((PtolemyEffigy) _basicGraphFrame.getTableau()
                                 .getContainer()).writeFile(new File(
-                                modelFileName));
+                                        modelFileName));
                     } catch (Exception ex) {
                         ex.printStackTrace();
                         throw new RuntimeException(ex);
@@ -425,6 +430,7 @@ public class ExportModel {
         if (openComposites && !isHTM) {
             // Optionally open any composites.
             Runnable openCompositesAction = new Runnable() {
+                @Override
                 public void run() {
                     try {
                         System.out.println("Opening submodels of "
@@ -445,9 +451,9 @@ public class ExportModel {
                                 JFrame frame = tableau.getFrame();
                                 frame.setBackground(java.awt.Color.WHITE);
                                 ((ptolemy.vergil.basic.BasicGraphFrame) frame)
-                                        .getJGraph().getCanvasPane()
-                                        .getCanvas()
-                                        .setBackground(java.awt.Color.WHITE);
+                                .getJGraph().getCanvasPane()
+                                .getCanvas()
+                                .setBackground(java.awt.Color.WHITE);
                             }
                             //}
                         }
@@ -466,6 +472,7 @@ public class ExportModel {
             // ExportParameters facility handles this for us for
             // exporting htm.
             Runnable whiteBackgroundAction = new Runnable() {
+                @Override
                 public void run() {
                     try {
                         System.out.println("Setting the background to white.");
@@ -490,18 +497,18 @@ public class ExportModel {
                                             .getFullName()
                                             .equals(".configuration.directory.configuration.graphTableau")
                                             && !tableau
-                                                    .getFullName()
-                                                    .equals(".configuration.directory.UserLibrary.graphTableau")) {
+                                            .getFullName()
+                                            .equals(".configuration.directory.UserLibrary.graphTableau")) {
                                         try {
                                             // Set the background to white.
 
                                             frame.setBackground(java.awt.Color.WHITE);
                                             ((ptolemy.vergil.basic.BasicGraphFrame) frame)
-                                                    .getJGraph()
-                                                    .getCanvasPane()
-                                                    .getCanvas()
-                                                    .setBackground(
-                                                            java.awt.Color.WHITE);
+                                            .getJGraph()
+                                            .getCanvasPane()
+                                            .getCanvas()
+                                            .setBackground(
+                                                    java.awt.Color.WHITE);
 
                                             // FIXME: It should be
                                             // possible to use
@@ -523,7 +530,7 @@ public class ExportModel {
                                             frame.repaint();
                                         } catch (Exception ex) {
                                             System.out
-                                                    .println("Failed to set the background to white.");
+                                            .println("Failed to set the background to white.");
                                             ex.printStackTrace();
                                         }
                                     }
@@ -542,6 +549,7 @@ public class ExportModel {
 
         // Export images
         Runnable exportModelAction = new Runnable() {
+            @Override
             public void run() {
                 try {
                     OutputStream out = null;
@@ -602,6 +610,7 @@ public class ExportModel {
         if (openResults && !isHTM) {
             // Optionally open the results.
             Runnable openResultsAction = new Runnable() {
+                @Override
                 public void run() {
                     try {
                         System.out.println("Opening " + imageFile);
@@ -626,10 +635,11 @@ public class ExportModel {
         /////
         // Close the model.
         Runnable closeAction = new Runnable() {
+            @Override
             public void run() {
                 try {
                     ConfigurationApplication
-                            .closeModelWithoutSavingOrExiting(model[0]);
+                    .closeModelWithoutSavingOrExiting(model[0]);
                 } catch (Exception ex) {
                     ex.printStackTrace();
                     throw new RuntimeException(ex);
@@ -855,17 +865,17 @@ public class ExportModel {
                         timeOut = Long.parseLong(args[i + 1]);
                     } catch (NumberFormatException ex) {
                         System.err
-                                .println(args[i + 1]
-                                        + "cannot be parsed to long value for the time out."
-                                        + ex);
+                        .println(args[i + 1]
+                                + "cannot be parsed to long value for the time out."
+                                + ex);
                     }
                     i++;
                 } else if (args[i].toUpperCase(Locale.getDefault()).equals(
                         "GIF")
                         || args[i].toUpperCase(Locale.getDefault()).startsWith(
                                 "HTM")
-                        || args[i].toUpperCase(Locale.getDefault()).equals(
-                                "PNG")) {
+                                || args[i].toUpperCase(Locale.getDefault()).equals(
+                                        "PNG")) {
                     // The default is GIF.
                     if (web) {
                         throw new IllegalArgumentException("Only one of "

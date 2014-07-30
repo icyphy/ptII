@@ -201,6 +201,7 @@ public class Sensor extends TypedAtomicActor {
      *  @exception IllegalActionException If the causality interface
      *  cannot be computed.
      */
+    @Override
     public void declareDelayDependency() throws IllegalActionException {
         // Declare that output does not immediately depend on the input,
         // though there is no lower bound on the time delay.
@@ -222,6 +223,7 @@ public class Sensor extends TypedAtomicActor {
      *  performs update and broadcast a message. Otherwise, simply
      *  consumes the messge.
      */
+    @Override
     public void fire() throws IllegalActionException {
         super.fire();
 
@@ -311,6 +313,7 @@ public class Sensor extends TypedAtomicActor {
     /** Initialize the private varialbles of the sensor node.
      *  @exception IllegalActionException If thrown by the base class.
      */
+    @Override
     public void initialize() throws IllegalActionException {
         super.initialize();
 

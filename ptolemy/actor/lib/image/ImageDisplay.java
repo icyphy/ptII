@@ -94,6 +94,7 @@ public class ImageDisplay extends Sink implements Placeable {
      *  @exception CloneNotSupportedException If a derived class contains
      *   an attribute that cannot be cloned.
      */
+    @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         ImageDisplay newObject = (ImageDisplay) super.clone(workspace);
 
@@ -102,9 +103,9 @@ public class ImageDisplay extends Sink implements Placeable {
             // See _getImplementation():
             if (PtolemyInjector.getInjector() == null) {
                 System.err
-                        .println("Warning: main() did not call "
-                                + "ActorModuleInitializer.initializeInjector(), "
-                                + "so ImageDisplayInterface.clone() is calling it for you.");
+                .println("Warning: main() did not call "
+                        + "ActorModuleInitializer.initializeInjector(), "
+                        + "so ImageDisplayInterface.clone() is calling it for you.");
                 ActorModuleInitializer.initializeInjector();
             }
             newObject._implementation = PtolemyInjector.getInjector()
@@ -133,6 +134,7 @@ public class ImageDisplay extends Sink implements Placeable {
      *  image in.
      *  @exception IllegalActionException If a contained method throws it.
      */
+    @Override
     public void initialize() throws IllegalActionException {
         super.initialize();
         _getImplementation().initializeEffigy();
@@ -141,6 +143,7 @@ public class ImageDisplay extends Sink implements Placeable {
     /** Set the container that this actor should image display data in.  If place
      * is not called, then the actor will create its own frame for display.
      */
+    @Override
     public void place(Container container) {
         _getImplementation().placeContainer(container);
     }
@@ -151,6 +154,7 @@ public class ImageDisplay extends Sink implements Placeable {
      *  @exception IllegalActionException If there is no director, or
      *   if the base class throws it.
      */
+    @Override
     public boolean postfire() throws IllegalActionException {
         if (input.hasToken(0)) {
             final Token in = input.get(0);

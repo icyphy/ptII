@@ -95,7 +95,7 @@ public class PID extends NamedProgramCodeGeneratorAdapter {
             templateArgs.set(0, Integer.valueOf(channel).toString());
             codeStream.appendCodeBlock("updateValueBlock", templateArgs);
         }
-        */
+         */
 
         return processCode(codeStream.toString());
     }

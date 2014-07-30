@@ -48,7 +48,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 @since Ptolemy II 10.0
 @Pt.ProposedRating Red (cshelton)
 @Pt.AcceptedRating Red (cshelton)
-*/
+ */
 public abstract class UnitConcept extends FlatTokenInfiniteConcept {
 
     ///////////////////////////////////////////////////////////////////
@@ -103,6 +103,7 @@ public abstract class UnitConcept extends FlatTokenInfiniteConcept {
      *
      *  @return The string representation of this concept.
      */
+    @Override
     public String toString() {
         return _representative.getName() + "_" + _unitName;
     }
@@ -124,7 +125,7 @@ public abstract class UnitConcept extends FlatTokenInfiniteConcept {
      */
     protected UnitConcept(Ontology ontology,
             DimensionRepresentativeConcept representative, RecordToken unitInfo)
-            throws IllegalActionException, NameDuplicationException {
+                    throws IllegalActionException, NameDuplicationException {
         super(ontology, representative, unitInfo);
 
         Token unitName = unitInfo.get(UnitConversionInfo.unitNameLabel);

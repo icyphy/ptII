@@ -45,7 +45,7 @@ import ptolemy.kernel.util.NameDuplicationException;
  *
  */
 public abstract class MapTypeInfiniteConcept<C extends Concept> extends
-        InfiniteConcept {
+InfiniteConcept {
 
     /** Create a new MapTypeInfiniteConcept contained in the given ontology,
      *  with the given default concept.
@@ -83,6 +83,7 @@ public abstract class MapTypeInfiniteConcept<C extends Concept> extends
      *  @return True if the argument is equal to this token.
      *  @see #hashCode()
      */
+    @Override
     public boolean equals(Object object) {
         if (object == null) {
             return false;
@@ -129,6 +130,7 @@ public abstract class MapTypeInfiniteConcept<C extends Concept> extends
      *  determined by the ontology and the set of key-concept mappings.
      *  @return The hash code of this concept.
      */
+    @Override
     public int hashCode() {
         return getOntology().hashCode() + _keyToConcept.hashCode();
     }
@@ -154,6 +156,7 @@ public abstract class MapTypeInfiniteConcept<C extends Concept> extends
      *
      *  @return The string representation of this concept.
      */
+    @Override
     public String toString() {
         StringBuffer result = new StringBuffer("{");
         boolean firstIteration = true;

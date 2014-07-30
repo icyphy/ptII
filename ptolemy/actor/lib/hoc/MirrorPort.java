@@ -98,6 +98,7 @@ public class MirrorPort extends TypedIOPort {
      *   cannot be cloned.
      *  @see #exportMoML(java.io.Writer, int, String)
      */
+    @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         MirrorPort result = (MirrorPort) super.clone(workspace);
         result._associatedPort = null;
@@ -143,8 +144,9 @@ public class MirrorPort extends TypedIOPort {
      *  @exception NameDuplicationException If the container already has
      *   a port with the name of this port.
      */
+    @Override
     public void setContainer(Entity container) throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         super.setContainer(container);
 
         if (container == null && _associatedPort != null
@@ -167,6 +169,7 @@ public class MirrorPort extends TypedIOPort {
      *  @exception IllegalActionException If changing the port status is
      *   not permitted.
      */
+    @Override
     public void setInput(boolean isInput) throws IllegalActionException {
         super.setInput(isInput);
 
@@ -190,6 +193,7 @@ public class MirrorPort extends TypedIOPort {
      *  @exception IllegalActionException If changing the port status is
      *   not permitted.
      */
+    @Override
     public void setMultiport(boolean isMultiport) throws IllegalActionException {
         super.setMultiport(isMultiport);
 
@@ -225,8 +229,9 @@ public class MirrorPort extends TypedIOPort {
     /** Override the base class to also set the associated port,
      *  if there is one.
      */
+    @Override
     public void setName(String name) throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         super.setName(name);
 
         if (_associatedPort != null && !_associatedPort.getName().equals(name)) {
@@ -247,6 +252,7 @@ public class MirrorPort extends TypedIOPort {
      *  @exception IllegalActionException If changing the port status is
      *   not permitted.
      */
+    @Override
     public void setOutput(boolean isOutput) throws IllegalActionException {
         super.setOutput(isOutput);
 

@@ -85,6 +85,7 @@ public class OpenCVToAWTImage extends Transformer {
     /** Output a frame.
      *  @exception IllegalActionException If thrown while writing to the port.
      */
+    @Override
     public void fire() throws IllegalActionException {
         if (input.hasToken(0)) {
             ObjectToken inputToken = (ObjectToken) input.get(0);

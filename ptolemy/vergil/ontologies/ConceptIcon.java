@@ -70,6 +70,7 @@ public class ConceptIcon extends NameIcon {
      *  ColorAttribute in the container, or white if there is no such instance.
      *  @return The fill color.
      */
+    @Override
     protected Paint _getFill() {
         NamedObj container = getContainer();
         List<ColorAttribute> colors = container
@@ -85,6 +86,7 @@ public class ConceptIcon extends NameIcon {
      *  a thicker width.
      *  @return The line width.
      */
+    @Override
     protected float _getLineWidth() {
         NamedObj container = getContainer();
         if (container instanceof FiniteConcept) {

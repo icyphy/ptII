@@ -59,6 +59,7 @@ public class SimpleErrorHandler implements ErrorHandler {
     /** Enable or disable skipping of errors.  This method does nothing.
      *  @param enable True to enable skipping, false to disable.
      */
+    @Override
     public void enableErrorSkipping(boolean enable) {
     }
 
@@ -68,6 +69,7 @@ public class SimpleErrorHandler implements ErrorHandler {
      *  @param exception The exception that was thrown.
      *  @return Never returns.
      */
+    @Override
     public int handleError(String element, NamedObj context, Throwable exception) {
         throw new InternalErrorException(context, exception, "Element "
                 + element + " caused an exception to be thrown.");

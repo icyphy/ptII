@@ -129,6 +129,7 @@ public class TwoPort extends TypedAtomicActor {
      *
      *  @exception IllegalActionException If there is no director.
      */
+    @Override
     public final void fire() throws IllegalActionException {
         int i;
 

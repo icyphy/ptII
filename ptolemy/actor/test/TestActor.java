@@ -76,6 +76,7 @@ public class TestActor extends AtomicActor {
     /** Record the firing.
      *  @exception IllegalActionException If the super class throws it.
      */
+    @Override
     public void fire() throws IllegalActionException {
         super.fire();
         _actions.append(getFullName() + ".fire\n");
@@ -90,6 +91,7 @@ public class TestActor extends AtomicActor {
     /** Record the initialization.
      *  @exception IllegalActionException If the parent class throws it.
      */
+    @Override
     public void initialize() throws IllegalActionException {
         super.initialize();
         _actions.append(getFullName() + ".initialize\n");
@@ -97,6 +99,7 @@ public class TestActor extends AtomicActor {
 
     /** Record the invocation, then return true.
      */
+    @Override
     public boolean postfire() {
         _actions.append(getFullName() + ".postfire\n");
         return true;
@@ -104,6 +107,7 @@ public class TestActor extends AtomicActor {
 
     /** Record the invocation, then return true.
      */
+    @Override
     public boolean prefire() {
         _actions.append(getFullName() + ".prefire\n");
         return true;
@@ -111,6 +115,7 @@ public class TestActor extends AtomicActor {
 
     /** Record the invocation.
      */
+    @Override
     public void wrapup() {
         _actions.append(getFullName() + ".wrapup\n");
     }

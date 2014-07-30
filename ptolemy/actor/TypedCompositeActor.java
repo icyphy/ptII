@@ -179,6 +179,7 @@ public class TypedCompositeActor extends CompositeActor implements TypedActor {
      *  @exception IllegalActionException Not thrown in this base class.
      *   Derived classes can throw this exception if type change is not allowed.
      */
+    @Override
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         if (attribute.getName().equals("enableBackwardTypeInference")) {
@@ -204,6 +205,7 @@ public class TypedCompositeActor extends CompositeActor implements TypedActor {
      *  @exception IllegalActionException Not thrown in this base class.
      *   Derived classes can throw this exception if type change is not allowed.
      */
+    @Override
     public void attributeTypeChanged(Attribute attribute)
             throws IllegalActionException {
         Director director = getDirector();
@@ -225,6 +227,7 @@ public class TypedCompositeActor extends CompositeActor implements TypedActor {
      *  return its value, if it exists.
      *  @return True if backward type inference is enabled.
      */
+    @Override
     public boolean isBackwardTypeInferenceEnabled() {
         try {
             Parameter backwardTypeInf = (Parameter) getAttribute(
@@ -261,6 +264,7 @@ public class TypedCompositeActor extends CompositeActor implements TypedActor {
      *  @exception NameDuplicationException If this actor already has a
      *   port with the specified name.
      */
+    @Override
     public Port newPort(String name) throws NameDuplicationException {
         try {
             workspace().getWriteAccess();
@@ -286,6 +290,7 @@ public class TypedCompositeActor extends CompositeActor implements TypedActor {
      *  @exception NameDuplicationException If name collides with a name
      *   already on the container's contents list.
      */
+    @Override
     public ComponentRelation newRelation(String name)
             throws NameDuplicationException {
         try {
@@ -335,7 +340,7 @@ public class TypedCompositeActor extends CompositeActor implements TypedActor {
             while (constraintsIterator.hasNext()) {
                 System.out.println(constraintsIterator.next().toString());
             }
-            */
+             */
 
             if (constraintList.size() > 0) {
                 CPO cpo = TypeLattice.lattice();
@@ -400,7 +405,7 @@ public class TypedCompositeActor extends CompositeActor implements TypedActor {
             if (conflicts.size() > 0) {
                 throw new TypeConflictException(conflicts,
                         "Type conflicts occurred in " + topLevel.getFullName()
-                                + " on the following inequalities:");
+                        + " on the following inequalities:");
             }
             if (unacceptable.size() > 0) {
                 throw new TypeConflictException(unacceptable,
@@ -441,6 +446,7 @@ public class TypedCompositeActor extends CompositeActor implements TypedActor {
      *  of one of the deeply contained objects throws it.
      *  @see ptolemy.graph.Inequality
      */
+    @Override
     public Set<Inequality> typeConstraints() throws IllegalActionException {
         try {
             workspace().getReadAccess();
@@ -534,6 +540,7 @@ public class TypedCompositeActor extends CompositeActor implements TypedActor {
      *  @exception IllegalActionException If thrown while constructing
      *  the set of type constraints.
      */
+    @Deprecated
     public List typeConstraintList() throws IllegalActionException {
         LinkedList result = new LinkedList();
         result.addAll(typeConstraints());
@@ -557,6 +564,7 @@ public class TypedCompositeActor extends CompositeActor implements TypedActor {
      *  @exception NameDuplicationException If the name collides with a name
      *   already on the actor contents list.
      */
+    @Override
     protected void _addEntity(ComponentEntity entity)
             throws IllegalActionException, NameDuplicationException {
         if (!(entity instanceof TypedActor)) {
@@ -584,8 +592,9 @@ public class TypedCompositeActor extends CompositeActor implements TypedActor {
      *  @exception NameDuplicationException If the port name collides with a
      *   name already in the actor.
      */
+    @Override
     protected void _addPort(Port port) throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         if (!(port instanceof TypedIOPort)) {
             throw new IllegalActionException(this, port,
                     "TypedCompositeActor can only contain instances of "
@@ -609,6 +618,7 @@ public class TypedCompositeActor extends CompositeActor implements TypedActor {
      *  @exception NameDuplicationException If the name collides with a name
      *   already on the contained relations list.
      */
+    @Override
     protected void _addRelation(ComponentRelation relation)
             throws IllegalActionException, NameDuplicationException {
         if (!(relation instanceof TypedIORelation)) {

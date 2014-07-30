@@ -66,7 +66,7 @@ public class PthalesAddHeaderActor extends PthalesAtomicActor {
      *   actor with this name.
      */
     public PthalesAddHeaderActor() throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         super();
     }
 
@@ -110,6 +110,7 @@ public class PthalesAddHeaderActor extends PthalesAtomicActor {
      * number of dimensions and the size of each dimension at the
      * beginning of the array.
      */
+    @Override
     public void fire() throws IllegalActionException {
 
         // Variables
@@ -155,8 +156,9 @@ public class PthalesAddHeaderActor extends PthalesAtomicActor {
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
+    @Override
     protected void _initialize() throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         super._initialize();
 
         // input port

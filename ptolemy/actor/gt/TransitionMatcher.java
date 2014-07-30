@@ -54,7 +54,7 @@ import ptolemy.vergil.gt.GTIngredientsEditor;
  @Pt.AcceptedRating Red (tfeng)
  */
 public class TransitionMatcher extends Transition implements GTEntity,
-        ValueListener {
+ValueListener {
 
     /** Construct a transition matcher with the given name contained by the
      *  specified entity. The container argument must not be null, or a
@@ -93,6 +93,7 @@ public class TransitionMatcher extends Transition implements GTEntity,
      *
      *  @return The attribute that stores all the criteria.
      */
+    @Override
     public GTIngredientsAttribute getCriteriaAttribute() {
         return criteria;
     }
@@ -101,6 +102,7 @@ public class TransitionMatcher extends Transition implements GTEntity,
      *
      *  @return null
      */
+    @Override
     public String getDefaultIconDescription() {
         return null;
     }
@@ -109,6 +111,7 @@ public class TransitionMatcher extends Transition implements GTEntity,
      *
      *  @return The attribute that stores all the operations.
      */
+    @Override
     public GTIngredientsAttribute getOperationsAttribute() {
         return operations;
     }
@@ -120,6 +123,7 @@ public class TransitionMatcher extends Transition implements GTEntity,
      *  @return The attribute that stores the name of the corresponding entity.
      *  @see #labelSet()
      */
+    @Override
     public PatternObjectAttribute getPatternObjectAttribute() {
         return patternObject;
     }
@@ -129,6 +133,7 @@ public class TransitionMatcher extends Transition implements GTEntity,
      *
      *  @return The set of names.
      */
+    @Override
     public Set<String> labelSet() {
         long version = workspace().getVersion();
         if (_labelSet == null || version > _version) {
@@ -155,10 +160,11 @@ public class TransitionMatcher extends Transition implements GTEntity,
      *  @param object The object to match.
      *  @return true if the object matches a transition.
      */
+    @Override
     public boolean match(NamedObj object) {
         return object instanceof Transition
                 || object.getClass().getName()
-                        .equals("ptolemy.domains.modal.kernel.Transition");
+                .equals("ptolemy.domains.modal.kernel.Transition");
     }
 
     /** Update appearance of this entity.
@@ -166,6 +172,7 @@ public class TransitionMatcher extends Transition implements GTEntity,
      *  @param attribute The attribute containing ingredients of this entity.
      *  @see GTEntityUtils#updateAppearance(GTEntity, GTIngredientsAttribute)
      */
+    @Override
     public void updateAppearance(GTIngredientsAttribute attribute) {
         // GTEntityUtils.updateAppearance(this, attribute);
     }
@@ -175,6 +182,7 @@ public class TransitionMatcher extends Transition implements GTEntity,
      *  @param settable The object that has changed value.
      *  @see GTEntityUtils#valueChanged(GTEntity, Settable)
      */
+    @Override
     public void valueChanged(Settable settable) {
         GTEntityUtils.valueChanged(this, settable);
     }

@@ -70,6 +70,7 @@ public class ObjectTokenSink extends Sink {
      *  @exception IllegalActionException If it is thrown by the
      *   send() method sending out the token.
      */
+    @Override
     public void fire() throws IllegalActionException {
         super.fire();
         if (input.hasToken(0)) {

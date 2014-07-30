@@ -164,6 +164,7 @@ public class OrderedMerge extends TypedAtomicActor {
      *  @exception CloneNotSupportedException If a derived class has
      *   an attribute that cannot be cloned.
      */
+    @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         OrderedMerge newObject = (OrderedMerge) super.clone(workspace);
         newObject.inputA.setTypeAtMost(BaseType.SCALAR);
@@ -181,6 +182,7 @@ public class OrderedMerge extends TypedAtomicActor {
      *  if it came from <i>inputB</i>.
      *  @exception IllegalActionException If there is no director.
      */
+    @Override
     public void fire() throws IllegalActionException {
         super.fire();
         if (_nextPort.hasToken(0)) {
@@ -331,6 +333,7 @@ public class OrderedMerge extends TypedAtomicActor {
     /** Initialize this actor to indicate that no token is recorded.
      *  @exception IllegalActionException If a derived class throws it.
      */
+    @Override
     public void initialize() throws IllegalActionException {
         super.initialize();
         _nextPort = inputA;
@@ -345,6 +348,7 @@ public class OrderedMerge extends TypedAtomicActor {
      *  @return True.
      *  @exception IllegalActionException Not thrown in this base class.
      */
+    @Override
     public boolean postfire() throws IllegalActionException {
         _recordedToken = _tentativeRecordedToken;
         _readFromA = _tentativeReadFromA;

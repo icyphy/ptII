@@ -24,7 +24,7 @@
  PT_COPYRIGHT_VERSION_2
  COPYRIGHTENDKEY
 
-*/
+ */
 package ptolemy.actor.gt.controller;
 
 import java.awt.EventQueue;
@@ -76,7 +76,7 @@ import ptolemy.vergil.gt.TransformationAttributeIcon;
  @Pt.AcceptedRating Red (tfeng)
  */
 public class TransformationAttribute extends Attribute implements Configurable,
-        GTAttribute {
+GTAttribute {
 
     /** Construct an attribute with the given name contained by the specified
      *  entity. The container argument must not be null, or a
@@ -134,6 +134,7 @@ public class TransformationAttribute extends Attribute implements Configurable,
      *  @exception CloneNotSupportedException Not thrown in this base class
      *  @return The new Attribute.
      */
+    @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         TransformationAttribute newObject = (TransformationAttribute) super
                 .clone(workspace);
@@ -142,7 +143,7 @@ public class TransformationAttribute extends Attribute implements Configurable,
             newObject._configurer.setName("Configurer");
             new DEDirector(newObject._configurer, "_director");
             newObject._configurer
-                    .setManager(new Manager(workspace, "_manager"));
+            .setManager(new Manager(workspace, "_manager"));
             newObject._configurer.setConfiguredObject(newObject);
             newObject._executionListeners = new LinkedList<ExecutionListener>();
             newObject._modelUpdater = (PteraModalModel) _modelUpdater
@@ -172,6 +173,7 @@ public class TransformationAttribute extends Attribute implements Configurable,
      *   none.
      *  @exception Exception If something goes wrong.
      */
+    @Override
     public void configure(URL base, String source, String text)
             throws Exception {
         _configureSource = source;
@@ -190,10 +192,12 @@ public class TransformationAttribute extends Attribute implements Configurable,
                 .getExpression();
         if ("delayed".equals(type)) {
             EventQueue.invokeLater(new Runnable() {
+                @Override
                 public void run() {
                     getContainer().requestChange(
                             new ChangeRequest(this,
                                     "Perform delayed transformation.") {
+                                @Override
                                 protected void _execute() throws Exception {
                                     try {
                                         executeTransformation();
@@ -267,6 +271,7 @@ public class TransformationAttribute extends Attribute implements Configurable,
      *  no source has been used to configure this object, or null if no
      *  external source need be used to configure this object.
      */
+    @Override
     public String getConfigureSource() {
         return _configureSource;
     }
@@ -279,6 +284,7 @@ public class TransformationAttribute extends Attribute implements Configurable,
      *  has been used to configure this object, or null if no
      *  configuration string need be used to configure this object.
      */
+    @Override
     public String getConfigureText() {
         return null;
     }
@@ -324,6 +330,7 @@ public class TransformationAttribute extends Attribute implements Configurable,
      *  @param depth The depth in the hierarchy, to determine indenting.
      *  @exception IOException If an I/O error occurs.
      */
+    @Override
     protected void _exportMoMLContents(Writer output, int depth)
             throws IOException {
         super._exportMoMLContents(output, depth);
@@ -368,7 +375,7 @@ public class TransformationAttribute extends Attribute implements Configurable,
      *   parameters.
      */
     private void _init() throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         condition = new Parameter(this, "condition");
         condition.setExpression("true");
 
@@ -429,7 +436,7 @@ public class TransformationAttribute extends Attribute implements Configurable,
      @Pt.AcceptedRating Red (tfeng)
      */
     private class TransformationListener extends Attribute implements
-            ExecutionListener {
+    ExecutionListener {
 
         /** Construct an attribute with the given name contained by the specified
          *  entity. The container argument must not be null, or a
@@ -457,6 +464,7 @@ public class TransformationAttribute extends Attribute implements Configurable,
          *  @param manager The manager controlling the execution.
          *  @param throwable The throwable to report.
          */
+        @Override
         public void executionError(Manager manager, Throwable throwable) {
         }
 
@@ -464,6 +472,7 @@ public class TransformationAttribute extends Attribute implements Configurable,
          *
          *  @param manager The manager controlling the execution.
          */
+        @Override
         public void executionFinished(Manager manager) {
         }
 
@@ -474,6 +483,7 @@ public class TransformationAttribute extends Attribute implements Configurable,
          *
          *  @param manager The manager controlling the execution.
          */
+        @Override
         public void managerStateChanged(Manager manager) {
             if (manager.getState() == Manager.INITIALIZING) {
                 ModelParameter modelAttribute = (ModelParameter) _modelUpdater

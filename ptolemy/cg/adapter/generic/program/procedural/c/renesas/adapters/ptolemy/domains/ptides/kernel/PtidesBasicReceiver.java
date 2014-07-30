@@ -42,8 +42,8 @@ import ptolemy.kernel.util.IllegalActionException;
  */
 @Deprecated
 public class PtidesBasicReceiver
-        extends
-        ptolemy.cg.adapter.generic.program.procedural.c.adapters.ptolemy.domains.ptides.kernel.PtidesBasicReceiver {
+extends
+ptolemy.cg.adapter.generic.program.procedural.c.adapters.ptolemy.domains.ptides.kernel.PtidesBasicReceiver {
 
     /** Construct a ptides basic receiver.
      *  @param receiver The ptolemy.domains.ptides.kernel.PtidesBasicReceiver
@@ -52,7 +52,7 @@ public class PtidesBasicReceiver
      */
     public PtidesBasicReceiver(
             ptolemy.domains.ptides.kernel.PtidesReceiver receiver)
-            throws IllegalActionException {
+                    throws IllegalActionException {
         super(receiver);
     }
 

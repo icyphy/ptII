@@ -24,7 +24,7 @@
    PT_COPYRIGHT_VERSION_2
    COPYRIGHTENDKEY
 
-*/
+ */
 
 package org.ptolemy.fmi;
 
@@ -86,6 +86,7 @@ public interface FMULibrary extends FMILibrary {
          *  values are "log" or "error".
          *  @param message The printf style format string.
          */
+        @Override
         public void apply(Pointer fmiComponent, String instanceName,
                 int status, String category, String message) {
             // We place this method in separate file for testing purposes.
@@ -107,6 +108,7 @@ public interface FMULibrary extends FMILibrary {
          *  @param size The size of the object in bytes.
          *  @return a Pointer to the allocated memory.
          */
+        @Override
         public Pointer apply(NativeSizeT numberOfObjects, NativeSizeT size) {
             // For hints, see http://markmail.org/message/6ssggt4q6lkq3hen
 
@@ -149,6 +151,7 @@ public interface FMULibrary extends FMILibrary {
         /** Free memory.
          *  @param object The object to be freed.
          */
+        @Override
         public void apply(Pointer object) {
             FMUAllocateMemory.pointers.remove(object);
         }
@@ -160,6 +163,7 @@ public interface FMULibrary extends FMILibrary {
          *  @param fmiComponent The FMI component that was instantiate.
          *  @param status The status flag.  See the FMI documentation.
          */
+        @Override
         public void apply(Pointer fmiComponent, int status) {
             // FIXME: More should be done here.
             System.out.println("Java fmiStepFinished: " + fmiComponent + " "

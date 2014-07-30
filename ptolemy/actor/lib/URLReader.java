@@ -136,6 +136,7 @@ public abstract class URLReader extends Source {
      *  @exception IllegalActionException If the specified attribute
      *   is <i>URL</i> and the file cannot be opened.
      */
+    @Override
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         if (attribute == sourceURL) {
@@ -173,6 +174,7 @@ public abstract class URLReader extends Source {
     /** Open the file at the URL, and set the width of the output.
      *  @exception IllegalActionException Not thrown in this base class
      */
+    @Override
     public void initialize() throws IllegalActionException {
         super.initialize();
         attributeChanged(sourceURL);
@@ -181,6 +183,7 @@ public abstract class URLReader extends Source {
     /** Close the reader if there is one.
      *  @exception IllegalActionException If an IO error occurs.
      */
+    @Override
     public void wrapup() throws IllegalActionException {
         try {
             if (_reader != null && _reader != _stdIn) {

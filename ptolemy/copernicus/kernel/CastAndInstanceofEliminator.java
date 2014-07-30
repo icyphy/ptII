@@ -77,6 +77,7 @@ public class CastAndInstanceofEliminator extends BodyTransformer {
         return "targetPackage debug";
     }
 
+    @Override
     protected void internalTransform(Body b, String phaseName, Map options) {
         JimpleBody body = (JimpleBody) b;
 

@@ -124,6 +124,7 @@ public class ArrayToSequence extends SDFTransformer {
      *  @param attribute The attribute that has changed.
      *  @exception IllegalActionException If the parameters are out of range.
      */
+    @Override
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         if (attribute == arrayLength) {
@@ -145,6 +146,7 @@ public class ArrayToSequence extends SDFTransformer {
      *  @exception CloneNotSupportedException If a derived class contains
      *   an attribute that cannot be cloned.
      */
+    @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         ArrayToSequence newObject = (ArrayToSequence) super.clone(workspace);
         try {
@@ -159,6 +161,7 @@ public class ArrayToSequence extends SDFTransformer {
     /** Consume the input ArrayToken and produce the outputs.
      *  @exception IllegalActionException If a runtime type conflict occurs.
      */
+    @Override
     public void fire() throws IllegalActionException {
         super.fire();
 

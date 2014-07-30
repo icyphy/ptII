@@ -119,6 +119,7 @@ public class StringAttribute extends AbstractSettableAttribute {
      *  @param listener The listener to add.
      *  @see #removeValueListener(ValueListener)
      */
+    @Override
     public void addValueListener(ValueListener listener) {
         if (_valueListeners == null) {
             _valueListeners = new LinkedList();
@@ -135,6 +136,7 @@ public class StringAttribute extends AbstractSettableAttribute {
      *  @exception CloneNotSupportedException If any of the attributes
      *   cannot be cloned.
      */
+    @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         StringAttribute newObject = (StringAttribute) super.clone(workspace);
         newObject._valueListeners = null;
@@ -159,6 +161,7 @@ public class StringAttribute extends AbstractSettableAttribute {
      *  @exception IOException If an I/O error occurs.
      *  @see #isPersistent()
      */
+    @Override
     public void exportMoML(Writer output, int depth, String name)
             throws IOException {
         if (_isMoMLSuppressed(depth)) {
@@ -189,6 +192,7 @@ public class StringAttribute extends AbstractSettableAttribute {
      *  @return The string value.
      *  @see #setExpression(String)
      */
+    @Override
     public String getExpression() {
         return _value;
     }
@@ -198,6 +202,7 @@ public class StringAttribute extends AbstractSettableAttribute {
      *  @return The visibility of this attribute.
      *  @see #setVisibility(Settable.Visibility)
      */
+    @Override
     public Settable.Visibility getVisibility() {
         return _visibility;
     }
@@ -208,6 +213,7 @@ public class StringAttribute extends AbstractSettableAttribute {
      *  @param listener The listener to remove.
      *  @see #addValueListener(ValueListener)
      */
+    @Override
     public void removeValueListener(ValueListener listener) {
         if (_valueListeners != null) {
             _valueListeners.remove(listener);
@@ -222,6 +228,7 @@ public class StringAttribute extends AbstractSettableAttribute {
      *   to the container.
      *  @see #getExpression()
      */
+    @Override
     public void setExpression(String expression) throws IllegalActionException {
         super.setExpression(expression);
         _value = expression;
@@ -249,6 +256,7 @@ public class StringAttribute extends AbstractSettableAttribute {
      *  @param visibility The visibility of this attribute.
      *  @see #getVisibility()
      */
+    @Override
     public void setVisibility(Settable.Visibility visibility) {
         _visibility = visibility;
     }
@@ -262,6 +270,7 @@ public class StringAttribute extends AbstractSettableAttribute {
      *  @exception IllegalActionException If the change is not acceptable
      *   to the container.
      */
+    @Override
     public Collection validate() throws IllegalActionException {
         return null;
     }
@@ -278,6 +287,7 @@ public class StringAttribute extends AbstractSettableAttribute {
      *  @exception IllegalActionException If the value cannot
      *   be propagated.
      */
+    @Override
     protected void _propagateValue(NamedObj destination)
             throws IllegalActionException {
         ((Settable) destination).setExpression(getExpression());

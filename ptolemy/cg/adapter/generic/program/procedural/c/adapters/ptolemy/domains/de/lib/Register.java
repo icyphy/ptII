@@ -62,6 +62,7 @@ public class Register extends MostRecent {
      * @return A string representing the preFire C code for this actor
      * @exception IllegalActionException If illegal macro names are found.
      */
+    @Override
     public String generatePrefireCode() throws IllegalActionException {
         CodeStream codeStream = _templateParser.getCodeStream();
         codeStream.clear();

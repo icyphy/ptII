@@ -60,6 +60,7 @@ public class LimitedFiringSource extends NamedProgramCodeGeneratorAdapter {
      * @exception IllegalActionException If the code stream encounters an
      *  error in processing the specified code block(s).
      */
+    @Override
     public String generatePostfireCode() throws IllegalActionException {
         StringBuffer code = new StringBuffer(super.generatePostfireCode());
 
@@ -79,6 +80,7 @@ public class LimitedFiringSource extends NamedProgramCodeGeneratorAdapter {
      * @exception IllegalActionException If the code stream encounters an
      *  error in processing the specified code block(s).
      */
+    @Override
     public String generatePreinitializeCode() throws IllegalActionException {
         StringBuffer code = new StringBuffer(super.generatePreinitializeCode());
 

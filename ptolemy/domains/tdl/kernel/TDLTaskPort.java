@@ -55,7 +55,7 @@ public class TDLTaskPort extends TypedIOPort {
      * @exception IllegalActionException
      */
     public TDLTaskPort() throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         super();
         _init();
     }
@@ -72,7 +72,7 @@ public class TDLTaskPort extends TypedIOPort {
      * @exception IllegalActionException Thrown if the initial value parameter cannot be created.
      */
     public TDLTaskPort(Workspace workspace) throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         super(workspace);
         _init();
     }
@@ -146,6 +146,7 @@ public class TDLTaskPort extends TypedIOPort {
      * @param isInput true if port is an input port.
      * @exception IllegalActionException Thrown by parent class.
      */
+    @Override
     public void setInput(boolean isInput) throws IllegalActionException {
         super.setInput(isInput);
         if (!isOutput()) {
@@ -159,6 +160,7 @@ public class TDLTaskPort extends TypedIOPort {
      * @param isOutput true if port is an output port.
      * @exception IllegalActionException Thrown by parent class.
      */
+    @Override
     public void setOutput(boolean isOutput) throws IllegalActionException {
         super.setOutput(isOutput);
         initialValue.setVisibility(Settable.FULL);
@@ -173,7 +175,7 @@ public class TDLTaskPort extends TypedIOPort {
      * @exception NameDuplicationException Thrown if the initial value parameter cannot be created.
      */
     private void _init() throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         initialValue = new Parameter(this, "initialValue");
         initialValue.setVisibility(Settable.FULL);
     }

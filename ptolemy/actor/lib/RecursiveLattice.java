@@ -127,7 +127,7 @@ public class RecursiveLattice extends Transformer {
 
         // Note that setExpression() will call attributeChanged().
         reflectionCoefficients
-                .setExpression("{0.804534, -0.820577, 0.521934, -0.205}");
+        .setExpression("{0.804534, -0.820577, 0.521934, -0.205}");
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -148,6 +148,7 @@ public class RecursiveLattice extends Transformer {
      *  @param attribute The attribute that changed.
      *  @exception IllegalActionException If the base class throws it.
      */
+    @Override
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         if (attribute == reflectionCoefficients) {
@@ -178,6 +179,7 @@ public class RecursiveLattice extends Transformer {
      *  @exception CloneNotSupportedException If a derived class contains
      *   an attribute that cannot be cloned.
      */
+    @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         RecursiveLattice newObject = (RecursiveLattice) super.clone(workspace);
 
@@ -254,6 +256,7 @@ public class RecursiveLattice extends Transformer {
      *  token.  If there is no input, then produce no output.
      *  @exception IllegalActionException If there is no director.
      */
+    @Override
     public void fire() throws IllegalActionException {
         super.fire();
         if (input.hasToken(0)) {
@@ -286,6 +289,7 @@ public class RecursiveLattice extends Transformer {
 
     /** Initialize the state of the filter.
      */
+    @Override
     public void initialize() throws IllegalActionException {
         // Invoke any initializable methods.
         super.initialize();
@@ -302,6 +306,7 @@ public class RecursiveLattice extends Transformer {
      *  @return False if the number of iterations matches the number requested.
      *  @exception IllegalActionException If there is no director.
      */
+    @Override
     public boolean postfire() throws IllegalActionException {
         System.arraycopy(_backwardCache, 0, _backward, 0, _backwardCache.length);
         System.arraycopy(_forwardCache, 0, _forward, 0, _forwardCache.length);
@@ -311,6 +316,7 @@ public class RecursiveLattice extends Transformer {
     /** Check to see if this actor is ready to fire.
      *  @exception IllegalActionException If there is no director.
      */
+    @Override
     public boolean prefire() throws IllegalActionException {
         // Get a copy of the current filter state that we can modify.
         System.arraycopy(_backward, 0, _backwardCache, 0, _backwardCache.length);

@@ -46,6 +46,7 @@ import ptolemy.kernel.util.NameDuplicationException;
  @see FSMActor
  @deprecated Use FSMDirector
  */
+@Deprecated
 public class ModalDirector extends FSMDirector {
 
     /** Construct a director in the given container with the given name.

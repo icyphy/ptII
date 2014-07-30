@@ -214,6 +214,7 @@ public class Precision implements Cloneable {
     /** Return this, that is, return the reference to this object.
      *  @return This Precision.
      */
+    @Override
     public Object clone() {
         // FIXME: Note that we do not call super.clone() here.  Is that right?
         return this;
@@ -224,6 +225,7 @@ public class Precision implements Cloneable {
      *  @param object Object to test for equality
      *  @return True if the precisions are equal.
      */
+    @Override
     public boolean equals(Object object) {
         if (object instanceof Precision) {
             Precision other = (Precision) object;
@@ -390,6 +392,7 @@ public class Precision implements Cloneable {
      *  bitwise and of the length, exponent and sign.
      *  @return A hash code value for this Precision.
      */
+    @Override
     public int hashCode() {
         return Integer.valueOf(_length).hashCode() >>> Integer.valueOf(
                 _exponent).hashCode() >>> Integer.valueOf(_sign).hashCode();
@@ -484,6 +487,7 @@ public class Precision implements Cloneable {
      *  the number of fractional bits.
      *  @return A string representing this precision.
      */
+    @Override
     public String toString() {
         return _format.printPrecisionFormat(this);
     }
@@ -677,6 +681,7 @@ public class Precision implements Cloneable {
                 + OPTIONAL_WHITE_SPACE + OPTIONAL_R_PARANBRACKET
                 + OPTIONAL_WHITE_SPACE;
 
+        @Override
         public Precision parseString(String str)
                 throws IllegalArgumentException {
             int sign = 1;
@@ -710,10 +715,11 @@ public class Precision implements Cloneable {
             return null;
         }
 
+        @Override
         public String printPrecisionFormat(Precision p) {
             String sign = p.isSigned() ? "" : "U";
             return "(" + sign + p.getIntegerBitLength() + "."
-                    + p.getFractionBitLength() + ")";
+            + p.getFractionBitLength() + ")";
         }
     }
 
@@ -764,6 +770,7 @@ public class Precision implements Cloneable {
                 + OPTIONAL_WHITE_SPACE + OPTIONAL_R_PARANBRACKET
                 + OPTIONAL_WHITE_SPACE;
 
+        @Override
         public Precision parseString(String str)
                 throws IllegalArgumentException {
             int sign = 1;
@@ -796,19 +803,21 @@ public class Precision implements Cloneable {
             return null;
         }
 
+        @Override
         public String printPrecisionFormat(Precision p) {
             String sign = p.isSigned() ? "" : "U";
             return "(" + sign + p.getNumberOfBits() + "/"
-                    + p.getIntegerBitLength() + ")";
+            + p.getIntegerBitLength() + ")";
         }
     }
 
     /** Precision format for use with the Expression Language. */
     public static class ExpressionLanguagePrecisionFormat extends
-            LengthIntegerPrecisionFormat {
+    LengthIntegerPrecisionFormat {
         /** Regular expression for ExpressionLanguagePrecisionFormat.
          *  For example: (3,2).
          */
+        @Override
         public String printPrecisionFormat(Precision p) {
             return "(" + p.getNumberOfBits() + "," + p.getIntegerBitLength()
                     + ")";
@@ -855,6 +864,7 @@ public class Precision implements Cloneable {
                 + OPTIONAL_WHITE_SPACE + OPTIONAL_R_PARANBRACKET
                 + OPTIONAL_WHITE_SPACE;
 
+        @Override
         public Precision parseString(String str)
                 throws IllegalArgumentException {
             int sign = 1;
@@ -885,6 +895,7 @@ public class Precision implements Cloneable {
             return null;
         }
 
+        @Override
         public String printPrecisionFormat(Precision p) {
             String sign = p.isSigned() ? "" : "U";
             return "(" + sign + p.getNumberOfBits() + "e" + p.getExponent()
@@ -933,6 +944,7 @@ public class Precision implements Cloneable {
                 + SIGNED_INTEGER_GROUP + OPTIONAL_WHITE_SPACE
                 + OPTIONAL_R_PARAN + OPTIONAL_WHITE_SPACE;
 
+        @Override
         public Precision parseString(String str) {
             int sign = 1;
             int msb = 0;
@@ -964,10 +976,11 @@ public class Precision implements Cloneable {
             return null;
         }
 
+        @Override
         public String printPrecisionFormat(Precision p) {
             String sign = p.isSigned() ? "" : "U";
             return "(" + sign + p.getMostSignificantBitPosition() + ":"
-                    + p.getLeastSignificantBitPosition() + ")";
+            + p.getLeastSignificantBitPosition() + ")";
         }
     }
 

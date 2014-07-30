@@ -106,6 +106,7 @@ public class JAIToDoubleMatrix extends Transformer {
      *  @param attribute The attribute that changed.
      *  @exception IllegalActionException If the base class throws it.
      */
+    @Override
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         if (attribute == normalize) {
@@ -119,6 +120,7 @@ public class JAIToDoubleMatrix extends Transformer {
      *  Output the data contained inside the image as a DoubleMatrixToken.
      *  @exception IllegalActionException If a contained method throws it.
      */
+    @Override
     public void fire() throws IllegalActionException {
         super.fire();
 

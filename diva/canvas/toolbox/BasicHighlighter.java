@@ -108,6 +108,7 @@ public class BasicHighlighter extends FigureDecorator {
     /** Get the bounds. This is the child's bounding box stretched
      * by the "halo."
      */
+    @Override
     public Rectangle2D getBounds() {
         Rectangle2D b = getChild().getBounds();
         Rectangle2D bounds = new Rectangle2D.Double(b.getX() - _halo, b.getY()
@@ -137,6 +138,7 @@ public class BasicHighlighter extends FigureDecorator {
     /** Return false. This method always returns false, as it
      * is meaningless (and dangerous!) to be able to hit a highlight.
      */
+    @Override
     public boolean hit(Rectangle2D region) {
         return false;
     }
@@ -145,6 +147,7 @@ public class BasicHighlighter extends FigureDecorator {
      * instance will have the same paint, halo, and composite
      * as this one.
      */
+    @Override
     public FigureDecorator newInstance(Figure f) {
         return new BasicHighlighter(_paint, _halo, _composite, _stroke);
     }
@@ -153,6 +156,7 @@ public class BasicHighlighter extends FigureDecorator {
      * the contained figure's bounding box stretched by the halo. It
      * then paints the contained figure.
      */
+    @Override
     public void paint(Graphics2D g) {
         if (_composite != null) {
             g.setComposite(_composite);
@@ -184,6 +188,7 @@ public class BasicHighlighter extends FigureDecorator {
      * repaint() call, with a larger region, in order to ensure
      * that the highlight is repainted.
      */
+    @Override
     public void repaint(DamageRegion d) {
         repaint();
     }
@@ -193,6 +198,7 @@ public class BasicHighlighter extends FigureDecorator {
      * figure, and requests a repaint of that box stretched
      * in each direction by the halo.
      */
+    @Override
     public void repaint() {
         Rectangle2D bounds = getChild().getBounds();
         double x = bounds.getX() - _halo;

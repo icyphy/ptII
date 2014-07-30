@@ -83,6 +83,7 @@ public class SuperdenseDependency extends BooleanDependency {
      *  @exception ClassCastException If the argument is not an instance
      *   of SuperdenseDependency.
      */
+    @Override
     public int compareTo(Dependency dependency) {
         if (equals(dependency)) {
             return Dependency.EQUALS;
@@ -112,6 +113,7 @@ public class SuperdenseDependency extends BooleanDependency {
      *  @param object The object to compare against.
      *  @return true if this object is the same as the object argument.
      */
+    @Override
     public boolean equals(Object object) {
         // See http://www.technofundo.com/tech/java/equalhash.html
         if (object == this) {
@@ -133,6 +135,7 @@ public class SuperdenseDependency extends BooleanDependency {
      *  return had it the same value as the real part of the value
      *  of this dependency.
      */
+    @Override
     public int hashCode() {
         long v = Double.doubleToLongBits(_time);
         return (int) (v ^ v >>> 32);
@@ -152,6 +155,7 @@ public class SuperdenseDependency extends BooleanDependency {
      *   values.
      *  @exception ClassCastException if dependency is not a SuperdenseDependency.
      */
+    @Override
     public Dependency oPlus(Dependency dependency) {
         // NOTE: Findbugs reports this as an Unchecked/unconfirmed cast
         if (((SuperdenseDependency) dependency)._time < _time
@@ -166,6 +170,7 @@ public class SuperdenseDependency extends BooleanDependency {
      *  dependency using oPlus() yields the other dependency.
      *  @return The additive identity.
      */
+    @Override
     public Dependency oPlusIdentity() {
         return OPLUS_IDENTITY;
     }
@@ -184,6 +189,7 @@ public class SuperdenseDependency extends BooleanDependency {
      *   this one and the specified one.
      *  @exception ClassCastException if dependency is not a RealDependency.
      */
+    @Override
     public Dependency oTimes(Dependency dependency) {
         int index = 0;
         // NOTE: Findbugs reports this as an Unchecked/unconfirmed cast
@@ -198,6 +204,7 @@ public class SuperdenseDependency extends BooleanDependency {
      *  dependency using oTimes() yields the other dependency.
      *  @return The multiplicative identity.
      */
+    @Override
     public Dependency oTimesIdentity() {
         return OTIMES_IDENTITY;
     }
@@ -213,6 +220,7 @@ public class SuperdenseDependency extends BooleanDependency {
      *  "SuperdenseDependency(_time, _index)".
      *  @return A string representation.
      */
+    @Override
     public String toString() {
         return "SuperdenseDependency(" + _time + ", " + _index + ")";
     }

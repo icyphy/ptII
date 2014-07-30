@@ -104,6 +104,7 @@ public class SDFReceiver extends AbstractReceiver {
 
     /** Clear this receiver of any contained tokens.
      */
+    @Override
     public void clear() {
         _queue.clear();
         _waitingTokens = 0;
@@ -113,6 +114,7 @@ public class SDFReceiver extends AbstractReceiver {
      *  an empty list if there are no such tokens.
      *  @return A list of instances of Token.
      */
+    @Override
     public List<Token> elementList() {
         return _queue.elementList();
     }
@@ -123,6 +125,7 @@ public class SDFReceiver extends AbstractReceiver {
      *  @return The oldest token in the receiver.
      *  @exception NoTokenException If there is no token in the receiver.
      */
+    @Override
     public Token get() {
         if (_queue.isEmpty()) {
             // The queue is empty.
@@ -173,6 +176,7 @@ public class SDFReceiver extends AbstractReceiver {
      *  @exception NoTokenException If there are not <i>count</i>
      *   tokens.
      */
+    @Override
     public Token[] getArray(int count) {
         // Check if we need to reallocate the cached
         // token array.
@@ -211,6 +215,7 @@ public class SDFReceiver extends AbstractReceiver {
      *  @return A boolean indicating whether a token can be put in this
      *   receiver.
      */
+    @Override
     public boolean hasRoom() {
         return !_queue.isFull();
     }
@@ -224,6 +229,7 @@ public class SDFReceiver extends AbstractReceiver {
      *   than one.  This is a runtime exception, so it need not be
      *   declared explicitly by the caller.
      */
+    @Override
     public boolean hasRoom(int tokens) throws IllegalArgumentException {
         if (tokens < 1) {
             throw new IllegalArgumentException("The argument "
@@ -243,6 +249,7 @@ public class SDFReceiver extends AbstractReceiver {
      *  @return A boolean indicating whether there is a token in this
      *   receiver.
      */
+    @Override
     public boolean hasToken() {
         return !_queue.isEmpty();
     }
@@ -256,6 +263,7 @@ public class SDFReceiver extends AbstractReceiver {
      *   than one.  This is a runtime exception, so it need not be
      *   declared explicitly by the caller.
      */
+    @Override
     public boolean hasToken(int tokens) throws IllegalArgumentException {
         if (tokens < 0) {
             throw new IllegalArgumentException("The argument "
@@ -300,6 +308,7 @@ public class SDFReceiver extends AbstractReceiver {
      *   not put any token.
      *  @exception NoRoomException If the receiver is full.
      */
+    @Override
     public void put(Token token) {
         if (token == null) {
             return;
@@ -307,7 +316,7 @@ public class SDFReceiver extends AbstractReceiver {
         if (!_queue.put(token)) {
             throw new NoRoomException(getContainer(),
                     "Queue is at capacity of " + _queue.getCapacity()
-                            + ". Cannot put a token.");
+                    + ". Cannot put a token.");
         }
     }
 

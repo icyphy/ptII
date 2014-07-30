@@ -10,13 +10,14 @@ package ptolemy.actor.corba.CoordinatorUtil;
 /* A CORBA compatible interface for a coordinator.
  */
 public class _CoordinatorStub extends org.omg.CORBA.portable.ObjectImpl
-        implements ptolemy.actor.corba.CoordinatorUtil.Coordinator {
+implements ptolemy.actor.corba.CoordinatorUtil.Coordinator {
     /* this method is intended to be called remotely by the client
      * to register with the coordinator.
      */
+    @Override
     public void register(String clientName,
             ptolemy.actor.corba.CoordinatorUtil.Client clientRef)
-            throws ptolemy.actor.corba.CoordinatorUtil.CorbaIllegalActionException {
+                    throws ptolemy.actor.corba.CoordinatorUtil.CorbaIllegalActionException {
         org.omg.CORBA.portable.InputStream $in = null;
 
         try {
@@ -34,7 +35,7 @@ public class _CoordinatorStub extends org.omg.CORBA.portable.ObjectImpl
 
             if (_id.equals("IDL:CoordinatorUtil/CorbaIllegalActionException:1.0")) {
                 throw ptolemy.actor.corba.CoordinatorUtil.CorbaIllegalActionExceptionHelper
-                        .read($in);
+                .read($in);
             } else {
                 throw new org.omg.CORBA.MARSHAL(_id);
             }
@@ -48,6 +49,7 @@ public class _CoordinatorStub extends org.omg.CORBA.portable.ObjectImpl
     /* this method is intended to be called remotely by the client,
      * so that data can be delived back over the network.
      */
+    @Override
     public void result(String clientName, org.omg.CORBA.Any data)
             throws ptolemy.actor.corba.CoordinatorUtil.CorbaIllegalActionException {
         org.omg.CORBA.portable.InputStream $in = null;
@@ -65,7 +67,7 @@ public class _CoordinatorStub extends org.omg.CORBA.portable.ObjectImpl
 
             if (_id.equals("IDL:CoordinatorUtil/CorbaIllegalActionException:1.0")) {
                 throw ptolemy.actor.corba.CoordinatorUtil.CorbaIllegalActionExceptionHelper
-                        .read($in);
+                .read($in);
             } else {
                 throw new org.omg.CORBA.MARSHAL(_id);
             }
@@ -79,6 +81,7 @@ public class _CoordinatorStub extends org.omg.CORBA.portable.ObjectImpl
     /* this method is intended to be called remotely by the client
      * to unregister with this when it leaves.
      */
+    @Override
     public void unregister(String consumerName)
             throws ptolemy.actor.corba.CoordinatorUtil.CorbaIllegalActionException {
         org.omg.CORBA.portable.InputStream $in = null;
@@ -96,7 +99,7 @@ public class _CoordinatorStub extends org.omg.CORBA.portable.ObjectImpl
 
             if (_id.equals("IDL:CoordinatorUtil/CorbaIllegalActionException:1.0")) {
                 throw ptolemy.actor.corba.CoordinatorUtil.CorbaIllegalActionExceptionHelper
-                        .read($in);
+                .read($in);
             } else {
                 throw new org.omg.CORBA.MARSHAL(_id);
             }
@@ -110,6 +113,7 @@ public class _CoordinatorStub extends org.omg.CORBA.portable.ObjectImpl
     // Type-specific CORBA::Object operations
     private static String[] __ids = { "IDL:CoordinatorUtil/Coordinator:1.0" };
 
+    @Override
     public String[] _ids() {
         return __ids.clone();
     }

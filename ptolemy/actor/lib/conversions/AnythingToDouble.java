@@ -52,6 +52,7 @@ import ptolemy.kernel.util.NameDuplicationException;
  @Pt.AcceptedRating Red (cxh)
  @deprecated Use ptolemy.actor.lib.conversions.ExpressionToToken or StringToDouble.
  */
+@Deprecated
 public class AnythingToDouble extends Converter {
     /** Construct an actor with the given container and name.
      *  @param container The container.
@@ -75,6 +76,7 @@ public class AnythingToDouble extends Converter {
      *  if it is double or a NaN token.
      *  @exception IllegalActionException If there is no director.
      */
+    @Override
     public void fire() throws IllegalActionException {
         super.fire();
         DoubleToken inputToken;
@@ -90,6 +92,7 @@ public class AnythingToDouble extends Converter {
      *  what the superclass returns (presumably true).
      *  @exception IllegalActionException If there is no director.
      */
+    @Override
     public boolean prefire() throws IllegalActionException {
         if (!input.hasToken(0)) {
             return false;

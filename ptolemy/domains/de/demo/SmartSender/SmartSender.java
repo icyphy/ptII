@@ -125,6 +125,7 @@ public class SmartSender extends TypedAtomicActor {
      *  @exception IllegalActionException If there is no director or if
      *   producing the output causes an exception.
      */
+    @Override
     public void fire() throws IllegalActionException {
         super.fire();
 
@@ -138,6 +139,7 @@ public class SmartSender extends TypedAtomicActor {
         } else {
             ChangeRequest request = new ChangeRequest(this,
                     "Find a destination") {
+                @Override
                 protected void _execute() throws IllegalActionException {
                     CompositeEntity container = (CompositeEntity) getContainer();
                     List entityList = container.entityList();
@@ -169,6 +171,7 @@ public class SmartSender extends TypedAtomicActor {
      *  the current time.
      *  @exception IllegalActionException If a derived class throws it.
      */
+    @Override
     public void initialize() throws IllegalActionException {
         super.initialize();
 

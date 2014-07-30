@@ -305,7 +305,7 @@ public class Polygon2DJUnitTest {
      */
     public static void main(String args[]) {
         org.junit.runner.JUnitCore
-                .main("diva.util.java2d.test.junit.Polygon2DJUnitTest");
+        .main("diva.util.java2d.test.junit.Polygon2DJUnitTest");
     }
 
     /** A 1.0 x 1.0 diamond centered on 0.0, 0.0. */

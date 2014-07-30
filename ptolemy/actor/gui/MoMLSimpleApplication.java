@@ -53,6 +53,7 @@ package ptolemy.actor.gui;
  @Pt.ProposedRating Red (cxh)
  @Pt.AcceptedRating Red (eal)
  */
+@Deprecated
 public class MoMLSimpleApplication extends ptolemy.moml.MoMLSimpleApplication {
     /** A Nullary constructor is necessary so that we can extends this
      *  base class with a subclass.

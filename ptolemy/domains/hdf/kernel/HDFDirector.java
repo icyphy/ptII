@@ -101,7 +101,7 @@ public class HDFDirector extends SDFDirector {
      *   an entity with the specified name.
      */
     public HDFDirector() throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         super();
         _init();
     }
@@ -116,7 +116,7 @@ public class HDFDirector extends SDFDirector {
      *   an entity with the specified name.
      */
     public HDFDirector(Workspace workspace) throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         super(workspace);
         _init();
     }
@@ -164,6 +164,7 @@ public class HDFDirector extends SDFDirector {
      *  @param attribute The attribute that changed.
      *  @exception IllegalActionException If the super class throws it.
      */
+    @Override
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         if (attribute == scheduleCacheSize) {
@@ -180,6 +181,7 @@ public class HDFDirector extends SDFDirector {
      *  @exception IllegalActionException If no schedule can be found,
      *  or if the super class method throws it.
      */
+    @Override
     public boolean postfire() throws IllegalActionException {
         // If this director is not at the top level, the HDFFSMDirector
         // of the modal model that it contains may change rates after
@@ -189,6 +191,7 @@ public class HDFDirector extends SDFDirector {
         if (!isScheduleValid() || getContainer() != toplevel()) {
             CompositeActor container = (CompositeActor) getContainer();
             ChangeRequest request = new ChangeRequest(this, "reschedule") {
+                @Override
                 protected void _execute() throws KernelException {
                     getScheduler().getSchedule();
                 }
@@ -206,6 +209,7 @@ public class HDFDirector extends SDFDirector {
      *  @exception IllegalActionException If the super class
      *  preinitialize throws it.
      */
+    @Override
     public void preinitialize() throws IllegalActionException {
         ((CachedSDFScheduler) getScheduler()).clearCaches();
         super.preinitialize();
@@ -220,6 +224,7 @@ public class HDFDirector extends SDFDirector {
      *  @exception NameDuplicationException Not thrown in this base class,
      *   but derived classes may throw it if the scheduler is not compatible.
      */
+    @Override
     public void setScheduler(Scheduler scheduler)
             throws IllegalActionException, NameDuplicationException {
         if (!(scheduler instanceof SDFScheduler)) {
@@ -239,7 +244,7 @@ public class HDFDirector extends SDFDirector {
      *  cacheSize parameter with default value 100.
      */
     private void _init() throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         // During construction, create the scheduleCacheSize parameter
         // with default value of 100.
         int cacheSize = 100;

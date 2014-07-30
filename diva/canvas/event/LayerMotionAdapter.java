@@ -36,16 +36,19 @@ package diva.canvas.event;
 public class LayerMotionAdapter implements LayerMotionListener {
     /** Invoked when the mouse enters a layer or figure.
      */
+    @Override
     public void mouseEntered(LayerEvent e) {
     }
 
     /** Invoked when the mouse exits a layer or figure.
      */
+    @Override
     public void mouseExited(LayerEvent e) {
     }
 
     /** Invoked when the mouse moves while over a layer or figure.
      */
+    @Override
     public void mouseMoved(LayerEvent e) {
     }
 }

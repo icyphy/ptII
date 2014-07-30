@@ -128,6 +128,7 @@ public class CPort extends TypedIOPort {
      *  @exception IllegalActionException If changing the port status is
      *   not permitted (not thrown in this base class).
      */
+    @Override
     public void setOutput(boolean isOutput) throws IllegalActionException {
         super.setOutput(isOutput);
 

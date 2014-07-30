@@ -57,7 +57,7 @@ import ptolemy.kernel.util.IllegalActionException;
  @see ptolemy.data.expr.ASTPtRootNode
  */
 public class ExpressionConceptFunctionParseTreeEvaluator extends
-        ParseTreeEvaluator {
+ParseTreeEvaluator {
 
     /** Construct an ExpressionConceptFunctionParseTreeEvaluator for
      *  evaluating expressions that represent concept functions.
@@ -104,7 +104,7 @@ public class ExpressionConceptFunctionParseTreeEvaluator extends
     public ExpressionConceptFunctionParseTreeEvaluator(
             Map<String, Concept> arguments, OntologySolverModel solverModel,
             List<Ontology> domainOntologies, Ontology outputRangeOntology)
-            throws IllegalActionException {
+                    throws IllegalActionException {
         _solverModel = solverModel;
         _scopeOntologies = new LinkedList<Ontology>(domainOntologies);
         _scopeOntologies.add(outputRangeOntology);
@@ -129,6 +129,7 @@ public class ExpressionConceptFunctionParseTreeEvaluator extends
      *  @return The result of evaluation which must be a ConceptToken.
      *  @exception IllegalActionException If an evaluation error occurs.
      */
+    @Override
     public ConceptToken evaluateParseTree(ASTPtRootNode node)
             throws IllegalActionException {
         return evaluateParseTree(node, null);
@@ -144,6 +145,7 @@ public class ExpressionConceptFunctionParseTreeEvaluator extends
      *   evaluation or if the result is not a ConceptToken or an ObjectToken
      *   containing a Concept.
      */
+    @Override
     public ConceptToken evaluateParseTree(ASTPtRootNode node, ParserScope scope)
             throws IllegalActionException {
         Token evaluatedToken = super.evaluateParseTree(node, scope);
@@ -152,7 +154,7 @@ public class ExpressionConceptFunctionParseTreeEvaluator extends
             return (ConceptToken) evaluatedToken;
         } else if (evaluatedToken instanceof ObjectToken
                 && ((ObjectToken) evaluatedToken).getValueClass()
-                        .isAssignableFrom(Concept.class)) {
+                .isAssignableFrom(Concept.class)) {
             return new ConceptToken(
                     (Concept) ((ObjectToken) evaluatedToken).getValue());
         } else {
@@ -169,6 +171,7 @@ public class ExpressionConceptFunctionParseTreeEvaluator extends
      *  @exception IllegalActionException If the function cannot be
      *  parsed correctly.
      */
+    @Override
     public void visitFunctionApplicationNode(ASTPtFunctionApplicationNode node)
             throws IllegalActionException {
         String functionName = node.getFunctionName();
@@ -221,7 +224,7 @@ public class ExpressionConceptFunctionParseTreeEvaluator extends
         if (function == null) {
             throw new IllegalActionException(
                     "Unrecognized concept function name: " + functionName
-                            + " in the concept function expression string.");
+                    + " in the concept function expression string.");
         }
 
         if (function.isNumberOfArgumentsFixed()
@@ -249,6 +252,7 @@ public class ExpressionConceptFunctionParseTreeEvaluator extends
      *  @exception IllegalActionException If the node label cannot be
      *   resolved to a concept.
      */
+    @Override
     public void visitLeafNode(ASTPtLeafNode node) throws IllegalActionException {
         _evaluatedChildToken = null;
         String nodeLabel = _getNodeLabel(node);

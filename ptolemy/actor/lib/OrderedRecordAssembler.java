@@ -88,6 +88,7 @@ public class OrderedRecordAssembler extends RecordAssembler {
      *  and send the RecordToken to the output.
      *  @exception IllegalActionException If there is no director.
      */
+    @Override
     public void fire() throws IllegalActionException {
         int i = 0;
         Set<Entry<String, TypedIOPort>> entries = _portMap.entrySet();

@@ -143,6 +143,7 @@ public class ComponentPort extends Port {
      *   attributes cannot be cloned.
      *  @return A new ComponentPort.
      */
+    @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         ComponentPort newObject = (ComponentPort) super.clone(workspace);
         newObject._insideLinks = new CrossRefList(newObject);
@@ -182,6 +183,7 @@ public class ComponentPort extends Port {
      *  @return An enumeration of ComponentPort objects.
      *  @deprecated Use deepConnectedPortList() instead.
      */
+    @Deprecated
     public Enumeration deepConnectedPorts() {
         return Collections.enumeration(deepConnectedPortList());
     }
@@ -213,6 +215,7 @@ public class ComponentPort extends Port {
      *  @return An enumeration of ComponentPort objects.
      *  @deprecated Use deepInsidePortList() instead.
      */
+    @Deprecated
     public Enumeration deepInsidePorts() {
         return Collections.enumeration(deepInsidePortList());
     }
@@ -303,6 +306,7 @@ public class ComponentPort extends Port {
      *   or the port has no container, or the port is not in the
      *   same workspace as the relation.
      */
+    @Override
     public void insertLink(int index, Relation relation)
             throws IllegalActionException {
         if (relation != null && _workspace != relation.workspace()) {
@@ -371,6 +375,7 @@ public class ComponentPort extends Port {
      *  @return An enumeration of ComponentPort objects.
      *  @deprecated Use insidePortList() instead.
      */
+    @Deprecated
     public Enumeration insidePorts() {
         return Collections.enumeration(insidePortList());
     }
@@ -539,6 +544,7 @@ public class ComponentPort extends Port {
      *   is not a ComponentRelation, or if the port is contained
      *   by a class definition.
      */
+    @Override
     public void link(Relation relation) throws IllegalActionException {
         if (relation != null) {
             _checkLink(relation);
@@ -572,8 +578,9 @@ public class ComponentPort extends Port {
      *  @exception NameDuplicationException If the container already has
      *   a port with the name of this port.
      */
+    @Override
     public void setContainer(Entity entity) throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         if (entity != null && _workspace != entity.workspace()) {
             throw new IllegalActionException(this, entity,
                     "Cannot set container because workspaces are different.");
@@ -602,6 +609,7 @@ public class ComponentPort extends Port {
      *  workspace and increments its version number.
      *  @param relation The relation to unlink.
      */
+    @Override
     public void unlink(Relation relation) {
         if (relation != null && _isInsideLinkable(relation.getContainer())) {
             // An inside link
@@ -616,6 +624,7 @@ public class ComponentPort extends Port {
      *  This method is write-synchronized on the workspace
      *  and increments its version number.
      */
+    @Override
     public void unlinkAll() {
         // NOTE: This overrides the base class only to update the docs
         // to refer to _outside_ links.
@@ -700,6 +709,7 @@ public class ComponentPort extends Port {
      *  @exception IllegalActionException If the container is not a
      *   ComponentEntity.
      */
+    @Override
     protected void _checkContainer(Entity container)
             throws IllegalActionException {
         if (!(container instanceof ComponentEntity) && container != null) {
@@ -797,6 +807,7 @@ public class ComponentPort extends Port {
      *   or if the container of this port is a class definition and the
      *   link is not an inside link.
      */
+    @Override
     protected void _checkLink(Relation relation) throws IllegalActionException {
         _checkLiberalLink(relation);
         super._checkLink(relation);
@@ -832,7 +843,7 @@ public class ComponentPort extends Port {
                         "Link crosses levels of the hierarchy");
             }
         }
-        */
+         */
     }
 
     /** Deeply list the opaque ports connected to this port on the outside.
@@ -932,6 +943,7 @@ public class ComponentPort extends Port {
      *  @deprecated Use _deepConnectedPortList() instead.
      *  @return An enumeration of ComponentPort objects.
      */
+    @Deprecated
     protected Enumeration _deepConnectedPorts(LinkedList path) {
         return Collections.enumeration(_deepConnectedPortList(path));
     }
@@ -1033,6 +1045,7 @@ public class ComponentPort extends Port {
      *  @return An enumeration of ComponentPort objects.
      *  @deprecated Use _deepInsidePortList() instead.
      */
+    @Deprecated
     protected Enumeration _deepInsidePorts(LinkedList path) {
         return Collections.enumeration(_deepInsidePortList(path));
     }
@@ -1053,6 +1066,7 @@ public class ComponentPort extends Port {
      *  @return A description of the object.
      * @exception IllegalActionException
      */
+    @Override
     protected String _description(int detail, int indent, int bracket)
             throws IllegalActionException {
         try {

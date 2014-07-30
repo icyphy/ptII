@@ -75,6 +75,7 @@ public class BasicSelectionModel implements SelectionModel {
     /**
      * Add a selection listener to this model.
      */
+    @Override
     public void addSelectionListener(SelectionListener l) {
         _listeners.add(SelectionListener.class, l);
     }
@@ -85,6 +86,7 @@ public class BasicSelectionModel implements SelectionModel {
      * added to the selection, but if the selection model is a single
      * selection, the current selection is cleared.
      */
+    @Override
     public void addSelection(Object sel) {
         Object[] additions = null;
         Object[] removals = null;
@@ -111,6 +113,7 @@ public class BasicSelectionModel implements SelectionModel {
      * Add an array of objects to the selection and
      * highlight the selected objects.
      */
+    @Override
     public void addSelections(Object[] sels) {
         if (getSelectionMode() == SINGLE_SELECTION) {
             //only add the last selection
@@ -130,6 +133,7 @@ public class BasicSelectionModel implements SelectionModel {
      * Clear the selection. The model should remove highlighting from
      * the previously selected objects.
      */
+    @Override
     public void clearSelection() {
         Object[] removals = _selection.toArray();
         _selection.clear();
@@ -145,6 +149,7 @@ public class BasicSelectionModel implements SelectionModel {
     /**
      * Test if the selection contains the given object
      */
+    @Override
     public boolean containsSelection(Object sel) {
         return _selection.contains(sel);
     }
@@ -164,6 +169,7 @@ public class BasicSelectionModel implements SelectionModel {
     /**
      * Return the first selection in the list.
      */
+    @Override
     public Object getFirstSelection() {
         if (_selection.size() == 0) {
             return null;
@@ -175,6 +181,7 @@ public class BasicSelectionModel implements SelectionModel {
     /**
      * Return the last selection in the list.
      */
+    @Override
     public Object getLastSelection() {
         if (_selection.size() == 0) {
             return null;
@@ -186,6 +193,7 @@ public class BasicSelectionModel implements SelectionModel {
     /**
      * Return an iterator over the selected objects.
      */
+    @Override
     public Iterator getSelection() {
         return _selection.iterator();
     }
@@ -197,6 +205,7 @@ public class BasicSelectionModel implements SelectionModel {
      * that does not know about selection models, and which needs
      * to traverse the selection contents multiple times.
      */
+    @Override
     public Object[] getSelectionAsArray() {
         return _selection.toArray();
     }
@@ -204,6 +213,7 @@ public class BasicSelectionModel implements SelectionModel {
     /**
      * Return the number of selected objects.
      */
+    @Override
     public int getSelectionCount() {
         return _selection.size();
     }
@@ -212,6 +222,7 @@ public class BasicSelectionModel implements SelectionModel {
      * Return the mode of the selection, either
      * SINGLE_SELECTION or MULTIPLE_SELECTION.
      */
+    @Override
     public int getSelectionMode() {
         return _mode;
     }
@@ -219,6 +230,7 @@ public class BasicSelectionModel implements SelectionModel {
     /**
      * Remove an object from the selection.
      */
+    @Override
     public void removeSelection(Object sel) {
         Object[] removals = new Object[1];
         removals[0] = sel;
@@ -232,6 +244,7 @@ public class BasicSelectionModel implements SelectionModel {
     /**
      * Remove a listener from the list of listeners.
      */
+    @Override
     public void removeSelectionListener(SelectionListener l) {
         _listeners.remove(SelectionListener.class, l);
     }
@@ -278,6 +291,7 @@ public class BasicSelectionModel implements SelectionModel {
      * Set the selection mode, either
      * SINGLE_SELECTION or MULTIPLE_SELECTION.
      */
+    @Override
     public void setSelectionMode(int mode) {
         _mode = mode;
     }

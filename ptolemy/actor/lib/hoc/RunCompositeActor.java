@@ -114,7 +114,7 @@ public class RunCompositeActor extends LifeCycleManager {
      *   initialized.
      */
     public RunCompositeActor() throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         super();
         _init();
     }
@@ -190,6 +190,7 @@ public class RunCompositeActor extends LifeCycleManager {
      *  @exception IllegalActionException If there is no director, or if
      *   the director's action methods throw it.
      */
+    @Override
     public void fire() throws IllegalActionException {
         // Note that super.fire() is not called here probably because
         // CompositeActor.fire() transfers inputs.
@@ -212,6 +213,7 @@ public class RunCompositeActor extends LifeCycleManager {
      *  @exception IllegalActionException Not thrown in this base class,
      *  but declared so the subclasses can throw it.
      */
+    @Override
     public void initialize() throws IllegalActionException {
         // FIXME: Why does this method not call super.initialize()?
         // CompositeActor.initialize() invokes the initialize method
@@ -230,6 +232,7 @@ public class RunCompositeActor extends LifeCycleManager {
      *  @exception IllegalActionException Not thrown in this base class,
      *  but declared so the subclasses can throw it.
      */
+    @Override
     public boolean postfire() throws IllegalActionException {
         int limitValue = ((IntToken) firingCountLimit.getToken()).intValue();
         if (limitValue > 0) {
@@ -254,6 +257,7 @@ public class RunCompositeActor extends LifeCycleManager {
      *  @exception IllegalActionException Not thrown in this base class,
      *  but declared so the subclasses can throw it.
      */
+    @Override
     public boolean prefire() throws IllegalActionException {
         // FIXME: Why is super.prefire() not called here, which calls
         // CompositeActor.prefire().  CompositeActor.prefire() invokes
@@ -277,6 +281,7 @@ public class RunCompositeActor extends LifeCycleManager {
      *   the director's preinitialize() method throws it, or if this actor
      *   is not opaque.
      */
+    @Override
     public void preinitialize() throws IllegalActionException {
         super.preinitialize();
 
@@ -329,6 +334,7 @@ public class RunCompositeActor extends LifeCycleManager {
      *  @exception IllegalActionException Not thrown in this base class,
      *  but declared so the subclasses can throw it.
      */
+    @Override
     public void wrapup() throws IllegalActionException {
         if (_debugging) {
             _debug("Called wrapup(), which does nothing.");
@@ -345,7 +351,7 @@ public class RunCompositeActor extends LifeCycleManager {
      *   initialized.
      */
     protected void _init() throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         // By default, when exporting MoML, the class name is whatever
         // the Java class is, which in this case is RunCompositeActor.
         // In derived classes, however, we usually do not want to identify

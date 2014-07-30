@@ -114,15 +114,18 @@ public class ApplicationTutorial extends AbstractApplication {
         // When the currently selected document is changed, this listener
         // is notified.
         addViewListener(new ListDataListener() {
+            @Override
             public void contentsChanged(ListDataEvent e) {
                 System.out.println("current document = "
                         + getCurrentView().getDocument());
                 setCurrentView(getCurrentView()); //FIXME
             }
 
+            @Override
             public void intervalAdded(ListDataEvent e) {
             }
 
+            @Override
             public void intervalRemoved(ListDataEvent e) {
             }
         });
@@ -136,6 +139,7 @@ public class ApplicationTutorial extends AbstractApplication {
 
     /** Return a view of this document.
      */
+    @Override
     public View createView(Document d) {
         return new TextView((TextDocument) d);
     }
@@ -172,6 +176,7 @@ public class ApplicationTutorial extends AbstractApplication {
      */
     /** Get the title of this application
      */
+    @Override
     public String getTitle() {
         return "Application Tutorial";
     }
@@ -185,11 +190,13 @@ public class ApplicationTutorial extends AbstractApplication {
             setStoragePolicy(storage);
 
             FileFilter ff = new FileFilter() {
+                @Override
                 public boolean accept(File file) {
                     return GUIUtilities.getFileExtension(file)
                             .toLowerCase(Locale.getDefault()).equals("txt");
                 }
 
+                @Override
                 public String getDescription() {
                     return "Text files";
                 }
@@ -228,7 +235,7 @@ public class ApplicationTutorial extends AbstractApplication {
         action = DefaultActions.openAction(this);
         addAction(action);
         GUIUtilities
-                .addMenuItem(menuFile, action, 'O', "Open a graph document");
+        .addMenuItem(menuFile, action, 'O', "Open a graph document");
 
         action = DefaultActions.closeAction(this);
         addAction(action);

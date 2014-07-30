@@ -50,6 +50,7 @@ public class TopTest extends Top {
      *  @param url The URL to read.
      *  @exception Exception If the URL cannot be read.
      */
+    @Override
     protected void _read(URL url) throws Exception {
         throw new RuntimeException("TopTest._readFile() not implemented");
     }
@@ -58,6 +59,7 @@ public class TopTest extends Top {
      *  @param file The file to write to.
      *  @exception IOException If the write fails.
      */
+    @Override
     protected void _writeFile(File file) throws IOException {
         throw new RuntimeException("TopTest._writeFile() not implemented");
     }

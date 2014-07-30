@@ -65,12 +65,14 @@ public class PerimeterSite extends AbstractSite {
 
     /** Get the figure to which this site is attached.
      */
+    @Override
     public Figure getFigure() {
         return _parentFigure;
     }
 
     /** Get the ID of this site.
      */
+    @Override
     public int getID() {
         return _id;
     }
@@ -78,6 +80,7 @@ public class PerimeterSite extends AbstractSite {
     /** Get the point location of the site, in the enclosing
      * transform context.
      */
+    @Override
     public Point2D getPoint(double normal) {
         // We operate on the figure's shape, not the bounds!
         Shape shape = _parentFigure.getShape();
@@ -247,6 +250,7 @@ public class PerimeterSite extends AbstractSite {
      * is located in the center of the parent figure's bounding
      * box.
      */
+    @Override
     public double getX() {
         return getPoint().getX();
     }
@@ -255,6 +259,7 @@ public class PerimeterSite extends AbstractSite {
      * is located in the center of the parent figure's bounding
      * box.
      */
+    @Override
     public double getY() {
         return getPoint().getY();
     }

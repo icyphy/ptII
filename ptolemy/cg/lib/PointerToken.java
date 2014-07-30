@@ -46,7 +46,7 @@ Attempts to access the object from Java will raise an IllegalActionException.
 @since Ptolemy II 10.0
 @Pt.ProposedRating Red (tbf)
 @Pt.AcceptedRating Red
-*/
+ */
 public class PointerToken extends Token {
     /** Construct an empty token.
      */
@@ -71,6 +71,7 @@ public class PointerToken extends Token {
      *  @return {@link #POINTER}, the least upper bound of all the pointer
      *  types.
      */
+    @Override
     public Type getType() {
         return POINTER;
     }
@@ -90,6 +91,7 @@ public class PointerToken extends Token {
      *  @return A boolean token that contains the value true if the
      *  addresses are the same.
      */
+    @Override
     public final BooleanToken isEqualTo(Token rightArgument)
             throws IllegalActionException {
         if (!(rightArgument instanceof PointerToken)) {
@@ -107,6 +109,7 @@ public class PointerToken extends Token {
      *  including the address.
      *  @return A String representation of the PointerToken.
      */
+    @Override
     public String toString() {
         return "Memory @" + getValue();
     }
@@ -136,6 +139,7 @@ public class PointerToken extends Token {
          *  @return A new type, or BaseType.GENERAL, if the operation does
          *  not make sense for the given types.
          */
+        @Override
         public Type add(Type rightArgumentType) {
             return this;
         }
@@ -143,6 +147,7 @@ public class PointerToken extends Token {
         /** Return this, that is, return the reference to this object.
          *  @return A PointerType
          */
+        @Override
         public Object clone() {
 
             // FIXME: Note that we do not call super.clone() here.  Is that right?
@@ -156,6 +161,7 @@ public class PointerToken extends Token {
          *  @exception IllegalActionException If lossless conversion cannot
          *   be done.
          */
+        @Override
         public Token convert(Token token) throws IllegalActionException {
             if (token instanceof PointerToken) {
                 return token;
@@ -173,6 +179,7 @@ public class PointerToken extends Token {
          *  @return A new type, or BaseType.GENERAL, if the operation does
          *  not make sense for the given types.
          */
+        @Override
         public Type divide(Type rightArgumentType) {
             return this;
         }
@@ -180,6 +187,7 @@ public class PointerToken extends Token {
         /** Return the class for tokens that this basetype represents.
          *  @return the class for tokens that this basetype represents.
          */
+        @Override
         public Class getTokenClass() {
             return PointerToken.class;
         }
@@ -189,6 +197,7 @@ public class PointerToken extends Token {
          *  represents either an abstract base class or an interface.
          *  @return Always return false, this token is instantiable.
          */
+        @Override
         public boolean isAbstract() {
             return false;
         }
@@ -201,6 +210,7 @@ public class PointerToken extends Token {
          *  @param type An instance of Type.
          *  @return True if the argument type is compatible with this type.
          */
+        @Override
         public boolean isCompatible(Type type) {
             return type == this;
         }
@@ -208,6 +218,7 @@ public class PointerToken extends Token {
         /** Test if this Type is UNKNOWN.
          *  @return True if this Type is not UNKNOWN; false otherwise.
          */
+        @Override
         public boolean isConstant() {
             return true;
         }
@@ -215,6 +226,7 @@ public class PointerToken extends Token {
         /** Return this type's node index in the (constant) type lattice.
          * @return this type's node index in the (constant) type lattice.
          */
+        @Override
         public int getTypeHash() {
             return Type.HASH_INVALID;
         }
@@ -224,6 +236,7 @@ public class PointerToken extends Token {
          *  to an abstract token class, or an interface, or UNKNOWN.
          *  @return True if this type is instantiable.
          */
+        @Override
         public boolean isInstantiable() {
             return true;
         }
@@ -233,6 +246,7 @@ public class PointerToken extends Token {
          *  @param type A Type.
          *  @return True if this type is UNKNOWN; false otherwise.
          */
+        @Override
         public boolean isSubstitutionInstance(Type type) {
             return this == type;
         }
@@ -244,6 +258,7 @@ public class PointerToken extends Token {
          *  @return A new type, or BaseType.GENERAL, if the operation does
          *  not make sense for the given types.
          */
+        @Override
         public Type modulo(Type rightArgumentType) {
             return this;
         }
@@ -255,6 +270,7 @@ public class PointerToken extends Token {
          *  @return A new type, or BaseType.GENERAL, if the operation does
          *  not make sense for the given types.
          */
+        @Override
         public Type multiply(Type rightArgumentType) {
             return this;
         }
@@ -264,6 +280,7 @@ public class PointerToken extends Token {
          *  @return A new type, or BaseType.GENERAL, if the operation does
          *  not make sense for the given types.
          */
+        @Override
         public Type one() {
             return this;
         }
@@ -275,6 +292,7 @@ public class PointerToken extends Token {
          *  @return A new type, or BaseType.GENERAL, if the operation does
          *  not make sense for the given types.
          */
+        @Override
         public Type subtract(Type rightArgumentType) {
             return this;
         }
@@ -282,6 +300,7 @@ public class PointerToken extends Token {
         /** Return the string representation of this type.
          *  @return A String.
          */
+        @Override
         public String toString() {
             return "Pointer";
         }
@@ -291,6 +310,7 @@ public class PointerToken extends Token {
          *  @return A new type, or BaseType.GENERAL, if the operation does
          *  not make sense for the given types.
          */
+        @Override
         public Type zero() {
             return this;
         }

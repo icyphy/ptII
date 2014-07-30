@@ -81,6 +81,7 @@ public class PteraGraphController extends FSMGraphController {
     /** React to an event by highlighting the new state.
      *  @param debugEvent The debug event.
      */
+    @Override
     public void event(DebugEvent debugEvent) {
         if (debugEvent instanceof EventDebugEvent) {
             Event event = ((EventDebugEvent) debugEvent).getEvent();
@@ -116,6 +117,7 @@ public class PteraGraphController extends FSMGraphController {
         }
     }
 
+    @Override
     public void addToMenuAndToolbar(JMenu menu, JToolBar toolbar) {
         super.addToMenuAndToolbar(menu, toolbar);
 
@@ -153,7 +155,7 @@ public class PteraGraphController extends FSMGraphController {
 
     /** An action to create a new event. */
     @SuppressWarnings("serial")
-        public class NewEventAction extends FigureAction {
+    public class NewEventAction extends FigureAction {
 
         /** Construct a new state. */
         public NewEventAction() {
@@ -173,6 +175,7 @@ public class PteraGraphController extends FSMGraphController {
         /** Execute the action.
          *  @param e The action event.
          */
+        @Override
         public void actionPerformed(ActionEvent e) {
             super.actionPerformed(e);
 
@@ -218,6 +221,7 @@ public class PteraGraphController extends FSMGraphController {
                 MoMLChangeRequest request = new MoMLChangeRequest(this,
                         toplevel, moml) {
 
+                    @Override
                     protected void _postParse(MoMLParser parser) {
                         List<NamedObj> topObjects = parser.topObjectsCreated();
                         if (topObjects == null) {
@@ -245,6 +249,7 @@ public class PteraGraphController extends FSMGraphController {
                         super._postParse(parser);
                     }
 
+                    @Override
                     protected void _preParse(MoMLParser parser) {
                         super._preParse(parser);
                         parser.clearTopObjectsList();
@@ -261,6 +266,7 @@ public class PteraGraphController extends FSMGraphController {
         }
     }
 
+    @Override
     protected void _createControllers() {
         super._createControllers();
         _transitionController = new SchedulingRelationController(this);

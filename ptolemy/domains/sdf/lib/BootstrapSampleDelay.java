@@ -82,6 +82,7 @@ public class BootstrapSampleDelay extends SampleDelay {
      *  @exception IllegalActionException If the get() or send() methods
      *   of the ports throw it.
      */
+    @Override
     public void fire() throws IllegalActionException {
         if (once) {
             final Token message = input.get(0);
@@ -98,6 +99,7 @@ public class BootstrapSampleDelay extends SampleDelay {
      * Reset the state for the next run.
      * @exception IllegalActionException If thrown by a base class.
      */
+    @Override
     public void wrapup() throws IllegalActionException {
         super.wrapup();
         once = true;

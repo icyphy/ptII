@@ -69,6 +69,7 @@ public class PortSite extends AbstractSite {
 
     /** Get the figure to which this site is attached.
      */
+    @Override
     public Figure getFigure() {
         return _parentFigure;
     }
@@ -76,18 +77,21 @@ public class PortSite extends AbstractSite {
     /** Return the ID for this site, which is the number of the port.
      *  @return The number of the port.
      */
+    @Override
     public int getID() {
         return _number;
     }
 
     /** Get the normal of the site.
      */
+    @Override
     public double getNormal() {
         return _normal;
     }
 
     /** Get the x-coordinate of the site.
      */
+    @Override
     public double getX() {
         Rectangle2D bounds = _parentFigure.getShape().getBounds();
         if (_direction == SwingConstants.WEST) {
@@ -115,6 +119,7 @@ public class PortSite extends AbstractSite {
 
     /** Get the y-coordinate of the site.
      */
+    @Override
     public double getY() {
         Rectangle2D bounds = _parentFigure.getShape().getBounds();
         if (_direction == SwingConstants.SOUTH) {
@@ -139,6 +144,7 @@ public class PortSite extends AbstractSite {
         }
     }
 
+    @Override
     public String toString() {
         return "BoundsSite[" + getX() + "," + getY() + "," + getNormal() + "]";
     }

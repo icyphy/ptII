@@ -278,6 +278,7 @@ public class SequenceSchedule extends Schedule {
      *   underlying schedule structure is modified while the iterator
      *   is active.
      */
+    @Override
     public Iterator firingIterator() {
         return new FiringIterator(this);
     }
@@ -462,7 +463,7 @@ public class SequenceSchedule extends Schedule {
                     }
                 }
             }
-            */
+             */
 
         }
 
@@ -480,6 +481,7 @@ public class SequenceSchedule extends Schedule {
          *   any leaf nodes that are not an instance of Firing.
          *  @return true if the iterator has more elements.
          */
+        @Override
         public boolean hasNext() {
 
             // This code may look messy, but it simply walks the
@@ -502,7 +504,7 @@ public class SequenceSchedule extends Schedule {
                 // then there are no more firings - don't have to check anything else
                 if (_schedulePosition > 0
                         && ((Firing) _schedule.get(_schedulePosition - 1))
-                                .getActor() instanceof Break) {
+                        .getActor() instanceof Break) {
                     return _lastHasNext; // which was just set to false
                 }
 
@@ -649,8 +651,8 @@ public class SequenceSchedule extends Schedule {
                             // Get the list of actors, if any, for this branch
                             // Get the sequence attributes of actors for this key
                             seqAttributes
-                                    .addAll((List<SequenceAttribute>) branches
-                                            .get(portName));
+                            .addAll((List<SequenceAttribute>) branches
+                                    .get(portName));
 
                             // return seqAttributes
                             // The calling function will set _lastHasNext
@@ -705,6 +707,7 @@ public class SequenceSchedule extends Schedule {
          *  @return the next object in the iteration.
          *  @exception NoSuchElementException If there is no next element to return.
          */
+        @Override
         public Object next() throws NoSuchElementException {
             if (!hasNext()) {
                 throw new NoSuchElementException("No element to return.");
@@ -734,15 +737,15 @@ public class SequenceSchedule extends Schedule {
                 else {
                     // Check if we are currently executing a control branch
                     /*
-                    *  Control branches:  Check _currentControlSeqAttr
-                    *      which is set by hasNext() to see if a branch is currently
-                    *      executing.  if so, look up branch in table.  Insert these
-                    *      actors, ordered by sequence number, into the sequenced actor
-                    *      list at the current position
-                    *      (so that we can check for control actors).
-                    *      Set _currentControlSeqAttr to null.
-                    *      Call next() again to get the firing (applying all rules again).
-                    */
+                     *  Control branches:  Check _currentControlSeqAttr
+                     *      which is set by hasNext() to see if a branch is currently
+                     *      executing.  if so, look up branch in table.  Insert these
+                     *      actors, ordered by sequence number, into the sequenced actor
+                     *      list at the current position
+                     *      (so that we can check for control actors).
+                     *      Set _currentControlSeqAttr to null.
+                     *      Call next() again to get the firing (applying all rules again).
+                     */
                     if (_currentControlSeqAttr != null) {
                         // Check for branch actors to add to the _independentList
                         ArrayList seqAttributes = findBranchActors(
@@ -760,7 +763,7 @@ public class SequenceSchedule extends Schedule {
                             for (int i = seqAttributes.size() - 1; i >= 0; i--) {
                                 _independentList.add(_independentListPosition,
                                         (SequenceAttribute) seqAttributes
-                                                .get(i));
+                                        .get(i));
                             }
 
                         }
@@ -796,7 +799,7 @@ public class SequenceSchedule extends Schedule {
 
                         if (_independentList != null
                                 && _independentListPosition < _independentList
-                                        .size()) {
+                                .size()) {
                             // Get the next sequenced actor
                             SequenceAttribute seq = _independentList
                                     .get(_independentListPosition);
@@ -836,7 +839,7 @@ public class SequenceSchedule extends Schedule {
                                         String methodName = null;
                                         if (act instanceof MultipleFireMethodsInterface
                                                 && ((MultipleFireMethodsInterface) act)
-                                                        .numFireMethods() > 1) {
+                                                .numFireMethods() > 1) {
                                             if (node instanceof ProcessAttribute) {
                                                 try {
                                                     methodName = ((ProcessAttribute) node)
@@ -860,7 +863,7 @@ public class SequenceSchedule extends Schedule {
                                                             "Problem scheduling the next actor to fire in the sequence schedule "
                                                                     + "because the output port "
                                                                     + ((IOPort) node)
-                                                                            .getName()
+                                                                    .getName()
                                                                     + " for a MultipleFireMethodsInterface "
                                                                     + act.getName()
                                                                     + " with more than one fire method has no fire method name attribute.");
@@ -922,6 +925,7 @@ public class SequenceSchedule extends Schedule {
          *  between the firing in a firing iterator and a firing in the
          *  schedule.
          */
+        @Override
         public void remove() {
             throw new UnsupportedOperationException();
         }

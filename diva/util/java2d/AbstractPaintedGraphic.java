@@ -63,11 +63,13 @@ public abstract class AbstractPaintedGraphic implements PaintedGraphic {
 
     /** Get the line width.
      */
+    @Override
     public abstract float getLineWidth();
 
     /** Get the bounding box of the shape when stroked. This method takes
      * account of the thickness of the stroke.
      */
+    @Override
     public Rectangle2D getBounds() {
         // FIXME: these bounds REALLY need to be cached.  But it's
         // painful because of the public members.
@@ -97,6 +99,7 @@ public abstract class AbstractPaintedGraphic implements PaintedGraphic {
 
     /** Get the stroke.
      */
+    @Override
     public Stroke getStroke() {
         return stroke;
     }
@@ -139,9 +142,11 @@ public abstract class AbstractPaintedGraphic implements PaintedGraphic {
      * geometry testing with GeneralPath in the first version of
      * JDK1.2.
      */
+    @Override
     public abstract boolean hit(Rectangle2D r);
 
     /** Set the line width.
      */
+    @Override
     public abstract void setLineWidth(float lineWidth);
 }

@@ -37,28 +37,28 @@ import ptolemy.util.StringUtilities;
 ////HTMLCodeGeneratorAdapter
 
 /**
-* Base class for a html code generator adapter.
-*
-* <p>Subclasses should override generateHTML().
-*
-* <p>Subclasses should be sure to properly indent the code by
-* either using the code block functionality in methods like
-* _generateBlockCode(String) or by calling
-* {@link ptolemy.cg.kernel.generic.program.CodeStream#indent(String)},
-* for example:
-* <pre>
-*     StringBuffer code = new StringBuffer();
-*     code.append(super.generateWrapupCode());
-*     code.append("// Local wrapup code");
-*     return processCode(CodeStream.indent(code.toString()));
-* </pre>
-*
-* @author Bert Rodiers
-* @version $Id$
-* @since Ptolemy II 10.0
-* @Pt.ProposedRating Yellow (rodiers)
-* @Pt.AcceptedRating Yellow (rodiers)
-*/
+ * Base class for a html code generator adapter.
+ *
+ * <p>Subclasses should override generateHTML().
+ *
+ * <p>Subclasses should be sure to properly indent the code by
+ * either using the code block functionality in methods like
+ * _generateBlockCode(String) or by calling
+ * {@link ptolemy.cg.kernel.generic.program.CodeStream#indent(String)},
+ * for example:
+ * <pre>
+ *     StringBuffer code = new StringBuffer();
+ *     code.append(super.generateWrapupCode());
+ *     code.append("// Local wrapup code");
+ *     return processCode(CodeStream.indent(code.toString()));
+ * </pre>
+ *
+ * @author Bert Rodiers
+ * @version $Id$
+ * @since Ptolemy II 10.0
+ * @Pt.ProposedRating Yellow (rodiers)
+ * @Pt.AcceptedRating Yellow (rodiers)
+ */
 public abstract class HTMLCodeGeneratorAdapter extends CodeGeneratorAdapter {
 
     /** Construct the code generator adapter associated
@@ -80,6 +80,7 @@ public abstract class HTMLCodeGeneratorAdapter extends CodeGeneratorAdapter {
      *  @return The code generator associated with this adapter class.
      *  @see #setCodeGenerator(GenericCodeGenerator)
      */
+    @Override
     public GenericCodeGenerator getCodeGenerator() {
         return _codeGenerator;
     }
@@ -96,6 +97,7 @@ public abstract class HTMLCodeGeneratorAdapter extends CodeGeneratorAdapter {
      *   adapter class.
      *  @see #getCodeGenerator()
      */
+    @Override
     public void setCodeGenerator(GenericCodeGenerator codeGenerator) {
         _codeGenerator = codeGenerator;
     }

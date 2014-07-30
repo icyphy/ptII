@@ -84,11 +84,11 @@ public class HttpPost extends TypedAtomicActor {
         url.setStringMode(true);
         url.setExpression("http://localhost");
         new SingletonParameter(url.getPort(), "_showName")
-                .setToken(BooleanToken.TRUE);
+        .setToken(BooleanToken.TRUE);
         StringAttribute cardinal = new StringAttribute(url.getPort(),
                 "_cardinal");
         cardinal.setExpression("SOUTH");
-        
+
         timeout = new Parameter(this, "timeout");
         timeout.setTypeEquals(BaseType.INT);
         timeout.setExpression("30000");
@@ -105,10 +105,10 @@ public class HttpPost extends TypedAtomicActor {
         output = new TypedIOPort(this, "output", false, true);
         output.setTypeEquals(BaseType.STRING);
         new SingletonParameter(output, "_showName").setToken(BooleanToken.TRUE);
-        
+
         status = new TypedIOPort(this, "status", false, true);
         status.setTypeEquals(HttpResponse.getStatusType());
-        new SingletonParameter(status, "_showName").setToken(BooleanToken.TRUE); 
+        new SingletonParameter(status, "_showName").setToken(BooleanToken.TRUE);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -121,14 +121,14 @@ public class HttpPost extends TypedAtomicActor {
     /** The output port, which delivers a string, the response to the post.
      */
     public TypedIOPort output;
-    
-    /** An output port for transmitting a token containing the status of the 
-     * request.  This is a RecordToken comprised of the response code, 
+
+    /** An output port for transmitting a token containing the status of the
+     * request.  This is a RecordToken comprised of the response code,
      * response message, a boolean indicating if the request was successful,
      * and a boolean indicating if further action is expected.
      */
     public TypedIOPort status;
-    
+
     /** The timeout in milliseconds for establishing a connection or reading a value.
      *  Set to NONE to specify no timeout.
      *  This is an integer that defaults to 30000, giving a timeout of 30 seconds.
@@ -136,7 +136,7 @@ public class HttpPost extends TypedAtomicActor {
     public Parameter timeout;
 
     /** The response to send upon timeout.
-     *  If this is empty, then this actor will throw an exception rather than 
+     *  If this is empty, then this actor will throw an exception rather than
      *  send a response.  This is a string that defaults to empty.
      */
     public StringParameter timeoutResponse;
@@ -156,6 +156,7 @@ public class HttpPost extends TypedAtomicActor {
      *  @exception CloneNotSupportedException If a derived class contains
      *   an attribute that cannot be cloned.
      */
+    @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         HttpPost newObject = (HttpPost) super.clone(workspace);
         newObject.input.setTypeAtMost(BaseType.RECORD);
@@ -167,10 +168,11 @@ public class HttpPost extends TypedAtomicActor {
      *  the response on the output port.
      *  @exception IllegalActionException If an IO error occurs.
      */
+    @Override
     public void fire() throws IllegalActionException {
         super.fire();
         url.update();
-        
+
         // If there is no input, do nothing.
         if (input.hasToken(0)) {
             RecordToken record = (RecordToken) input.get(0);
@@ -187,7 +189,7 @@ public class HttpPost extends TypedAtomicActor {
                 try {
                     data.append(URLEncoder.encode(field, "UTF-8"));
                     data.append("=");
-                    // If the value of the record is a StringToken, may strip 
+                    // If the value of the record is a StringToken, may strip
                     // surrounding quotation marks.
                     Token value = record.get(field);
                     String string = value.toString();
@@ -199,62 +201,62 @@ public class HttpPost extends TypedAtomicActor {
                     throw new InternalErrorException(e);
                 }
             }
-        
+
             if (_request == null) {
                 _request = new HttpRequest();
             }
-            
+
             String urlValue = ((StringToken) url.getToken()).stringValue();
             if (urlValue == null || urlValue.isEmpty()) {
                 throw new IllegalActionException("No URL provided.");
             }
-            
+
             try {
                 _request.setUrl(new URL(urlValue));
                 _request.setMethod(Method.POST);
                 _request.setBody(data.toString());
-                
+
                 if (_debugging) {
                     _debug("Posted: " + data.toString());
                     _debug("To URL: " + url.toString());
                     _debug("Waiting for response.");
                 }
-                
+
                 // If a timeout has been specified, set it.
                 int timeoutValue = ((IntToken) timeout.getToken()).intValue();
                 if (timeoutValue >= 0) {
                     _request.setTimeout(timeoutValue);
                 }
-    
+
                 HttpResponse response = _request.execute();
-                
+
                 // If a timeout occurs, check if an exception should be thrown
-                if (response.timedOut()) { 
+                if (response.timedOut()) {
                     if (_debugging) {
                         _debug("*** Timeout occurred.");
                     }
                     String timeout = timeoutResponse.stringValue();
                     if (timeout.trim().equals("")) {
-                        throw new IllegalActionException(this,
-                                "HTTP " + _request.getMethod() 
-                                + " " + response.getResponseMessage());
+                        throw new IllegalActionException(this, "HTTP "
+                                + _request.getMethod() + " "
+                                + response.getResponseMessage());
                     }
                 }
-                
-                // FIXME: default response upon failure or empty string? 
-                output.send(0, new StringToken(response.getBody()));         
+
+                // FIXME: default response upon failure or empty string?
+                output.send(0, new StringToken(response.getBody()));
                 status.send(0, response.getStatus());
             } catch (IOException e) {
-                throw new IllegalActionException(this, e,"HTTP request failed");
+                throw new IllegalActionException(this, e, "HTTP request failed");
             }
         } else if (_debugging) {
             _debug("No input token.");
         }
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-    
+
     /** The Http request **/
     HttpRequest _request;
 }

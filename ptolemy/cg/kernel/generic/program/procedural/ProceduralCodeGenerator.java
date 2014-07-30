@@ -24,7 +24,7 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
-*/
+ */
 
 package ptolemy.cg.kernel.generic.program.procedural;
 
@@ -53,13 +53,13 @@ import ptolemy.kernel.util.Workspace;
 ////ProceduralCodeGenerator
 
 /** Base class for Procedural code generator.
-*
-*  @author Bert Rodiers
-*  @version $Id$
-*  @since Ptolemy II 10.0
-*  @Pt.ProposedRating red (rodiers)
-*  @Pt.AcceptedRating red (rodiers)
-*/
+ *
+ *  @author Bert Rodiers
+ *  @version $Id$
+ *  @since Ptolemy II 10.0
+ *  @Pt.ProposedRating red (rodiers)
+ *  @Pt.AcceptedRating red (rodiers)
+ */
 public class ProceduralCodeGenerator extends ProgramCodeGenerator {
 
     /** Create a new instance of the ProceduralCodeGenerator.
@@ -76,7 +76,7 @@ public class ProceduralCodeGenerator extends ProgramCodeGenerator {
      */
     public ProceduralCodeGenerator(NamedObj container, String name,
             String outputFileExtension, String templateExtension)
-            throws IllegalActionException, NameDuplicationException {
+                    throws IllegalActionException, NameDuplicationException {
         super(container, name, outputFileExtension, templateExtension);
 
         compile = new Parameter(this, "compile");
@@ -172,6 +172,7 @@ public class ProceduralCodeGenerator extends ProgramCodeGenerator {
      *  @exception CloneNotSupportedException If any of the attributes
      *   cannot be cloned.
      */
+    @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         ProceduralCodeGenerator newObject = (ProceduralCodeGenerator) super
                 .clone(workspace);
@@ -197,7 +198,7 @@ public class ProceduralCodeGenerator extends ProgramCodeGenerator {
      */
     public void markFunctionCalled(String name,
             ProceduralTemplateParser templateParser)
-            throws IllegalActionException {
+                    throws IllegalActionException {
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -226,6 +227,7 @@ public class ProceduralCodeGenerator extends ProgramCodeGenerator {
      *  class, thrown by the parent if the container of the model
      *  cannot be set to null.
      */
+    @Override
     protected void _reset() throws IllegalActionException {
         super._reset();
 
@@ -240,6 +242,7 @@ public class ProceduralCodeGenerator extends ProgramCodeGenerator {
      *  @exception IllegalActionException If there are problems reading
      *  parameters or executing the commands.
      */
+    @Override
     protected int _executeCommands() throws IllegalActionException {
         List<String> commands = new LinkedList<String>();
 
@@ -342,10 +345,10 @@ public class ProceduralCodeGenerator extends ProgramCodeGenerator {
      *  a parameter, if there is a problem creating the codeDirectory directory
      *  or if there is a problem writing the code to a file.
      */
+    @Override
     protected void _writeMakefile(CompositeEntity container,
             String currentDirectory) throws IllegalActionException {
-        _substituteMap
-            .put("@PTCGIncludes@", _concatenateElements(_includes));
+        _substituteMap.put("@PTCGIncludes@", _concatenateElements(_includes));
         super._writeMakefile(container, currentDirectory);
     }
 

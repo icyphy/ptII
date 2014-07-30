@@ -103,7 +103,7 @@ public class PteraController extends ModalController {
      *   already in the container.
      */
     public PteraController(Workspace workspace) throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         super(workspace);
         _init();
     }
@@ -115,6 +115,7 @@ public class PteraController extends ModalController {
      *   attributeChanged() method, or if the value of the LIFO parameter cannot
      *   be read.
      */
+    @Override
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         if (attribute == LIFO) {
@@ -133,6 +134,7 @@ public class PteraController extends ModalController {
      *  @exception CloneNotSupportedException If a derived class contains
      *   an attribute that cannot be cloned.
      */
+    @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         PteraController controller = (PteraController) super.clone(workspace);
         controller._executiveDirector = null;
@@ -147,6 +149,7 @@ public class PteraController extends ModalController {
      *  @exception IllegalActionException If the PteraDirector throws it.
      *  @see PteraDirector#fire()
      */
+    @Override
     public void fire() throws IllegalActionException {
         director.fire();
     }
@@ -161,6 +164,7 @@ public class PteraController extends ModalController {
      *  @return A representation of the dependencies between input ports
      *   and output ports.
      */
+    @Override
     public CausalityInterface getCausalityInterface() {
         return new BreakCausalityInterface(this,
                 BooleanDependency.OPLUS_IDENTITY);
@@ -170,6 +174,7 @@ public class PteraController extends ModalController {
      *
      *  @return The director responsible for the execution of this actor.
      */
+    @Override
     public Director getDirector() {
         return director;
     }
@@ -182,6 +187,7 @@ public class PteraController extends ModalController {
      *
      *  @return The executive director.
      */
+    @Override
     public Director getExecutiveDirector() {
         Workspace workspace = workspace();
         try {
@@ -241,6 +247,7 @@ public class PteraController extends ModalController {
      *
      *  @return null
      */
+    @Override
     public State getInitialState() {
         return null;
     }
@@ -252,6 +259,7 @@ public class PteraController extends ModalController {
      *  @exception IllegalActionException If the director or initialize() of the
      *  superclass throws it.
      */
+    @Override
     public void initialize() throws IllegalActionException {
         director.initialize();
         super.initialize();
@@ -261,16 +269,18 @@ public class PteraController extends ModalController {
      *
      *  @return The result of isFireFunctional() from the director.
      */
+    @Override
     public boolean isFireFunctional() {
         return director.isFireFunctional();
     }
 
     /** Return the result of isStrict() from the director.
-    *
-    *  @return The result of isStrict() from the director.
+     *
+     *  @return The result of isStrict() from the director.
      * @exception IllegalActionException Thrown if causality interface
      *  cannot be computed.
-    */
+     */
+    @Override
     public boolean isStrict() throws IllegalActionException {
         return director.isStrict();
     }
@@ -292,6 +302,7 @@ public class PteraController extends ModalController {
      *  @exception IllegalActionException If iterating is not
      *   permitted, or if prefire(), fire(), or postfire() throw it.
      */
+    @Override
     public int iterate(int count) throws IllegalActionException {
         return director.iterate(count);
     }
@@ -306,6 +317,7 @@ public class PteraController extends ModalController {
      *  @exception NameDuplicationException If name collides with that
      *   of a scheduling relation already in this actor.
      */
+    @Override
     public ComponentRelation newRelation(String name)
             throws IllegalActionException, NameDuplicationException {
         try {
@@ -324,6 +336,7 @@ public class PteraController extends ModalController {
      *  @exception IllegalActionException If postfire() of the director throws
      *   it.
      */
+    @Override
     public boolean postfire() throws IllegalActionException {
         return director.postfire();
     }
@@ -334,6 +347,7 @@ public class PteraController extends ModalController {
      *  @exception IllegalActionException If prefire() of the director throws
      *   it.
      */
+    @Override
     public boolean prefire() throws IllegalActionException {
         return director.prefire();
     }
@@ -344,6 +358,7 @@ public class PteraController extends ModalController {
      *  @exception IllegalActionException If preinitialize() of the director or
      *   refinements throws it.
      */
+    @Override
     public void preinitialize() throws IllegalActionException {
         director.preinitialize();
         super.preinitialize();
@@ -354,6 +369,7 @@ public class PteraController extends ModalController {
      *  @exception IllegalActionException If a shadow variable cannot take
      *   the token read from its corresponding channel (should not occur).
      */
+    @Override
     public void readInputs() throws IllegalActionException {
         _setCurrentConnectionMap();
         super.readInputs();
@@ -361,6 +377,7 @@ public class PteraController extends ModalController {
 
     /** Stop execution by invoking stop() of the director.
      */
+    @Override
     public void stop() {
         director.stop();
     }
@@ -368,6 +385,7 @@ public class PteraController extends ModalController {
     /** Request that execution of the current iteration stop as soon
      *  as possible by invoking stopFire() of the director.
      */
+    @Override
     public void stopFire() {
         director.stopFire();
     }
@@ -395,6 +413,7 @@ public class PteraController extends ModalController {
 
     /** Invoke terminate() of the director.
      */
+    @Override
     public void terminate() {
         director.terminate();
     }
@@ -414,6 +433,7 @@ public class PteraController extends ModalController {
      *  @return A list of inequalities.
      *  @see ptolemy.graph.Inequality
      */
+    @Override
     public Set<Inequality> typeConstraints() {
         Set<Inequality> constraintList = new HashSet<Inequality>(
                 super.typeConstraints());
@@ -435,6 +455,7 @@ public class PteraController extends ModalController {
      *  @exception IllegalActionException If wrapup() of the director or
      *   refinements throws it.
      */
+    @Override
     public void wrapup() throws IllegalActionException {
         director.wrapup();
         super.wrapup();
@@ -455,6 +476,7 @@ public class PteraController extends ModalController {
      *
      *  @return The map.
      */
+    @Override
     protected TreeMap<Class<? extends Entity>, String> _getRefinementClasses() {
         TreeMap<Class<? extends Entity>, String> map = super
                 ._getRefinementClasses();
@@ -479,7 +501,7 @@ public class PteraController extends ModalController {
      *  coincides with a director already in the controller.
      */
     private void _init() throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         director = new PteraDirector(this, "_Director");
         new SingletonAttribute(director, "_hide");
 

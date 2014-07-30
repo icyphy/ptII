@@ -58,6 +58,7 @@ public class TMEventComparator implements CQComparator {
      * @exception ClassCastException If one of the arguments is not
      *  an instance of TMEvent.
      */
+    @Override
     public final int compare(Object object1, Object object2) {
         return ((TMEvent) object1).compareTo(object2);
     }
@@ -74,6 +75,7 @@ public class TMEventComparator implements CQComparator {
      *  @return The index of the virtual bin containing the event.
      *
      */
+    @Override
     public final long getVirtualBinNumber(Object event) {
         return ((TMEvent) event).priority();
     }
@@ -83,12 +85,14 @@ public class TMEventComparator implements CQComparator {
      *  @param entryArray An array of TMEvent objects.
      *
      */
+    @Override
     public void setBinWidth(Object[] entryArray) {
     }
 
     /** Do nothing.
      *  @param zeroReference The zero reference of the comparator.
      */
+    @Override
     public void setZeroReference(Object zeroReference) {
     }
 

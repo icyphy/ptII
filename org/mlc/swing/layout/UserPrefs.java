@@ -93,7 +93,7 @@ public class UserPrefs {
         Rectangle r = new Rectangle(prefStore.getInt(winname + "_WinX", 0),
                 prefStore.getInt(winname + "_WinY", 0), prefStore.getInt(
                         winname + "_WinW", 800), prefStore.getInt(winname
-                        + "_WinH", 600));
+                                + "_WinH", 600));
         return r;
     }
 
@@ -105,8 +105,8 @@ public class UserPrefs {
     }
 
     /** Fetch a window's size and position data and apply it. The window name
-    * must be the same as supplied when calling @see saveWinLoc.
-    */
+     * must be the same as supplied when calling @see saveWinLoc.
+     */
     public void useSavedBounds(String winname, Window window) {
         if (window == null) {
             return;
@@ -117,8 +117,8 @@ public class UserPrefs {
     }
 
     /** Save a window's size and position data under the provided name.
-    * (The data must be fetched using the same name).
-    */
+     * (The data must be fetched using the same name).
+     */
     public void saveWinLoc(String winname, Window window) {
         if (window == null) {
             return;

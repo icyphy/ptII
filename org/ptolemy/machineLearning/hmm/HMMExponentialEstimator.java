@@ -1,4 +1,3 @@
-
 /* Parameter Estimation for Graphical Models.
 
 Copyright (c) 1998-2014 The Regents of the University of California.
@@ -25,7 +24,7 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
-*/
+ */
 package org.ptolemy.machineLearning.hmm;
 
 import java.util.Arrays;
@@ -96,6 +95,7 @@ public class HMMExponentialEstimator extends ParameterEstimator {
         lambda.setTypeEquals(new ArrayType(BaseType.DOUBLE));
     }
 
+    @Override
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         if (attribute == lambdaGuess) {
@@ -120,6 +120,7 @@ public class HMMExponentialEstimator extends ParameterEstimator {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
+    @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         HMMExponentialEstimator newObject = (HMMExponentialEstimator) super
                 .clone(workspace);
@@ -128,6 +129,7 @@ public class HMMExponentialEstimator extends ParameterEstimator {
         return newObject;
     }
 
+    @Override
     public void fire() throws IllegalActionException {
         super.fire();
 
@@ -153,11 +155,13 @@ public class HMMExponentialEstimator extends ParameterEstimator {
 
     }
 
+    @Override
     protected double emissionProbability(double y, int hiddenState) {
         double m = _lambda[hiddenState];
         return m * Math.exp(-m * y);
     }
 
+    @Override
     protected boolean _checkForConvergence(int iterations) {
 
         // check for null estimates
@@ -172,7 +176,7 @@ public class HMMExponentialEstimator extends ParameterEstimator {
                 A_new = _A0; // reset to initial guess
                 prior_new = _priors; // reset to input priors
                 System.out
-                        .println("Expectation Maximization failed to converge");
+                .println("Expectation Maximization failed to converge");
                 return false;
             } else if (_randomize) {
                 // randomize means
@@ -204,6 +208,7 @@ public class HMMExponentialEstimator extends ParameterEstimator {
         return true;
     }
 
+    @Override
     protected void _initializeEMParameters() {
         // set the initial values of parameters
         _lambda = _lambda0;
@@ -215,6 +220,7 @@ public class HMMExponentialEstimator extends ParameterEstimator {
         prior_new = new double[_nStates];
     }
 
+    @Override
     protected void _iterateEM() {
         newEstimates = HMMAlphaBetaRecursion(_observations, _transitionMatrix,
                 _priorIn, 0);
@@ -224,6 +230,7 @@ public class HMMExponentialEstimator extends ParameterEstimator {
         likelihood = (Double) (newEstimates.get("likelihood"));
     }
 
+    @Override
     protected void _updateEstimates() {
 
         _transitionMatrix = A_new;

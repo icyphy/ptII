@@ -99,7 +99,7 @@ public class HierarchicalStateController extends StateController {
         _menuFactory.addMenuItemFactory(new MenuActionFactory(
                 _removeRefinementAction));
         _menuFactory
-                .addMenuItemFactory(new MenuActionFactory(_lookInsideAction));
+        .addMenuItemFactory(new MenuActionFactory(_lookInsideAction));
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -108,12 +108,13 @@ public class HierarchicalStateController extends StateController {
     /** An action to add a new refinement.
      */
     @SuppressWarnings("serial")
-        public class AddRefinementAction extends FigureAction {
+    public class AddRefinementAction extends FigureAction {
 
         public AddRefinementAction() {
             super("Add Refinement");
         }
 
+        @Override
         public void actionPerformed(ActionEvent e) {
             super.actionPerformed(e);
 
@@ -225,7 +226,7 @@ public class HierarchicalStateController extends StateController {
             } else {
                 currentRefinements = currentRefinements.trim() + ", " + newName;
             }
-            */
+             */
 
             // The MoML we create depends on whether the configuration
             // specified a set of prototype refinements.
@@ -246,7 +247,7 @@ public class HierarchicalStateController extends StateController {
 
     /** Action to remove refinements. */
     @SuppressWarnings("serial")
-        public static class RemoveRefinementAction extends FigureAction {
+    public static class RemoveRefinementAction extends FigureAction {
         // FindBugs suggests making this class static so as to decrease
         // the size of instances and avoid dangling references.
 
@@ -254,6 +255,7 @@ public class HierarchicalStateController extends StateController {
             super("Remove Refinement");
         }
 
+        @Override
         public void actionPerformed(ActionEvent e) {
             super.actionPerformed(e);
 
@@ -261,7 +263,7 @@ public class HierarchicalStateController extends StateController {
 
             if (!(target instanceof State)) {
                 MessageHandler
-                        .error("Can only remove refinements from states.");
+                .error("Can only remove refinements from states.");
                 return;
             }
 

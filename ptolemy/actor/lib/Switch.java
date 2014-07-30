@@ -104,6 +104,7 @@ public class Switch extends Transformer {
      *  the most recent control token, if it is in range.
      *  @exception IllegalActionException If there is no director.
      */
+    @Override
     public void fire() throws IllegalActionException {
         super.fire();
         if (control.hasToken(0)) {
@@ -123,6 +124,7 @@ public class Switch extends Transformer {
      *  from until a token arrives on the <i>control</i> input.
      *  @exception IllegalActionException If the parent class throws it.
      */
+    @Override
     public void initialize() throws IllegalActionException {
         super.initialize();
         _control = 0;

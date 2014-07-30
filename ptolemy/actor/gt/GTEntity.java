@@ -27,7 +27,7 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 
 
-*/
+ */
 package ptolemy.actor.gt;
 
 import java.util.Set;

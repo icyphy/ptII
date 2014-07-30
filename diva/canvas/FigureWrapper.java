@@ -54,6 +54,7 @@ public abstract class FigureWrapper extends AbstractFigure {
 
     /** Get the bounds of the child figure.
      */
+    @Override
     public Rectangle2D getBounds() {
         if (_child == null) {
             return new Rectangle2D.Double();
@@ -70,6 +71,7 @@ public abstract class FigureWrapper extends AbstractFigure {
 
     /** Get the outline shape of the child figure.
      */
+    @Override
     public Shape getShape() {
         if (_child == null) {
             return new Rectangle2D.Double();
@@ -80,6 +82,7 @@ public abstract class FigureWrapper extends AbstractFigure {
 
     /** Paint the child if this figure is visible.
      */
+    @Override
     public void paint(Graphics2D g) {
         if (_child != null && isVisible()) {
             _child.paint(g);
@@ -106,6 +109,7 @@ public abstract class FigureWrapper extends AbstractFigure {
 
     /** Transform the child figure with the supplied transform.
      */
+    @Override
     public void transform(AffineTransform at) {
         if (_child != null) {
             _child.transform(at);

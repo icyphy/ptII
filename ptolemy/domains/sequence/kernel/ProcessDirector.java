@@ -75,7 +75,7 @@ public class ProcessDirector extends SequencedModelDirector {
      *   an entity with the specified name.
      */
     public ProcessDirector() throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         super();
     }
 
@@ -91,7 +91,7 @@ public class ProcessDirector extends SequencedModelDirector {
      *   an entity with the specified name.
      */
     public ProcessDirector(Workspace workspace) throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         super(workspace);
     }
 
@@ -156,6 +156,7 @@ public class ProcessDirector extends SequencedModelDirector {
      *  @exception InvalidStateException If this director does not have a
      *  container.
      */
+    @Override
     public void fire() throws IllegalActionException {
         // Collected all the unexecuted sequence numbers from each process in a single list.
         ArrayList<SequenceAttribute> unexecutedSequenceNumbersList = new ArrayList<SequenceAttribute>();
@@ -212,6 +213,7 @@ public class ProcessDirector extends SequencedModelDirector {
      *  @exception IllegalActionException If the preinitialize() method of
      *  one of the associated actors throws it.
      */
+    @Override
     public void preinitialize() throws IllegalActionException {
 
         // First, identify which sequenced actors go with which processes
@@ -252,7 +254,7 @@ public class ProcessDirector extends SequencedModelDirector {
                 }
                 Collections.sort(processes);
                 _processExecutionArray = processes.toArray(new String[processes
-                        .size()]);
+                                                                      .size()]);
             }
         }
 
@@ -274,7 +276,7 @@ public class ProcessDirector extends SequencedModelDirector {
             {
                 System.out.println(((ProcessAttribute) i.next()).getFullName());
             }
-            */
+             */
 
             // Create a schedule for it
             SequenceSchedule seqSchedule = _scheduler
@@ -317,7 +319,7 @@ public class ProcessDirector extends SequencedModelDirector {
             // Throw exception
             throw new IllegalActionException("There are unreachable upstream actors in the model: " + unreachableActors.substring(0, unreachableActors.length() - 2));
         }
-        */
+         */
 
         // The SequenceSchedule will check for duplicate attributes
     }
@@ -345,8 +347,9 @@ public class ProcessDirector extends SequencedModelDirector {
      *  @exception NameDuplicationException If there is a problem instantiating
      *   the director's parameters.
      */
+    @Override
     protected void _init() throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         super._init();
 
         defaultProcessExecutionArray = new Parameter(this,

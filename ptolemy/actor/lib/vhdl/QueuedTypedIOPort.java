@@ -141,6 +141,7 @@ public class QueuedTypedIOPort extends TypedIOPort {
      *  channel.
      *  @exception NoRoomException If thrown while sending to the channel.
      */
+    @Override
     public void send(int channelIndex, Token token)
             throws IllegalActionException, NoRoomException {
         if (latency == 0) {
@@ -161,7 +162,7 @@ public class QueuedTypedIOPort extends TypedIOPort {
      * @exception NoRoomException If super class throws it.
      */
     public void resend(int channelIndex) throws IllegalActionException,
-            NoRoomException {
+    NoRoomException {
         if (latency != 0) {
             super.send(channelIndex, _oldToken);
         }

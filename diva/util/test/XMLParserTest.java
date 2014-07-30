@@ -55,6 +55,7 @@ public class XMLParserTest extends TestSuite {
     /**
      * runSuite()
      */
+    @Override
     public void runSuite() {
         testParse();
     }
@@ -76,6 +77,7 @@ public class XMLParserTest extends TestSuite {
 
             String xmlout;
 
+            @Override
             public void init() throws Exception {
                 url = new URL("file:/java/diva/util/test/xml1.xml"); //FIXME
                 document = new XmlDocument(url);
@@ -83,6 +85,7 @@ public class XMLParserTest extends TestSuite {
                 writer = new XmlWriter();
             }
 
+            @Override
             public void run() throws Exception {
                 reader.parse(document);
 
@@ -93,6 +96,7 @@ public class XMLParserTest extends TestSuite {
                 xmlout = w.toString();
             }
 
+            @Override
             public void check() throws TestFailedException {
                 StringBuffer result = new StringBuffer();
                 BufferedReader input = null;

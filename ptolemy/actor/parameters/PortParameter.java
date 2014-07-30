@@ -126,7 +126,7 @@ import ptolemy.kernel.util.Workspace;
  @Pt.AcceptedRating Yellow (neuendor)
  */
 public class PortParameter extends AbstractInitializableParameter implements
-        Initializable {
+Initializable {
     /** Construct a parameter with the given name contained by the specified
      *  entity. The container argument must not be null, or a
      *  NullPointerException will be thrown.  This parameter will create
@@ -219,6 +219,7 @@ public class PortParameter extends AbstractInitializableParameter implements
      *  @exception IllegalActionException If the change is not acceptable
      *   to this container (not thrown in this base class).
      */
+    @Override
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         if (attribute instanceof Locatable) {
@@ -260,6 +261,7 @@ public class PortParameter extends AbstractInitializableParameter implements
      *  @see java.lang.Object#clone()
      *  @return The cloned parameter.
      */
+    @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         PortParameter newObject = (PortParameter) super.clone(workspace);
         // Cannot establish an association with the cloned port until
@@ -272,6 +274,7 @@ public class PortParameter extends AbstractInitializableParameter implements
      *  @return The expression used by this variable.
      *  @see #setExpression(String)
      */
+    @Override
     public String getExpression() {
         if (_persistentExpression == null) {
             return "";
@@ -288,19 +291,21 @@ public class PortParameter extends AbstractInitializableParameter implements
     public ParameterPort getPort() {
         return _port;
     }
-    
+
     /** Reset the current value to match the persistent value.
      *  @exception IllegalActionException If thrown by a subclass.
      */
+    @Override
     public void initialize() throws IllegalActionException {
         super.initialize();
         super.setExpression(_persistentExpression);
         validate();
     }
-    
+
     /** Reset the current value to match the persistent value.
      *  @exception IllegalActionException If thrown by a subclass.
      */
+    @Override
     public void preinitialize() throws IllegalActionException {
         super.preinitialize();
         super.setExpression(_persistentExpression);
@@ -342,6 +347,7 @@ public class PortParameter extends AbstractInitializableParameter implements
      *  This method is write-synchronized on the workspace.
      *  @param name The new display name.
      */
+    @Override
     public void setDisplayName(String name) {
         if (_settingName) {
             return;
@@ -379,8 +385,9 @@ public class PortParameter extends AbstractInitializableParameter implements
      *  @exception NameDuplicationException If the container already
      *   contains an attribute with the proposed name.
      */
+    @Override
     public void setName(String name) throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         if (_settingName) {
             return;
         }
@@ -429,8 +436,7 @@ public class PortParameter extends AbstractInitializableParameter implements
         super.setToken(newValue);
     }
 
-    
-    /** Declare the type of this parameter to by equal the specified value. 
+    /** Declare the type of this parameter to by equal the specified value.
      *  In addition, if a port is associated, declare its type to be equal
      *  to this value.
      *  To undo, call this method with the argument BaseType.UNKNOWN.
@@ -443,7 +449,7 @@ public class PortParameter extends AbstractInitializableParameter implements
     public void setTypeEquals(Type type) throws IllegalActionException {
         super.setTypeEquals(type);
         if (_port != null) {
-          _port.setTypeEquals(type);
+            _port.setTypeEquals(type);
         }
     }
 

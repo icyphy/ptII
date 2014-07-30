@@ -83,16 +83,19 @@ public class ParseTreeSpecializer extends AbstractParseTreeVisitor {
         return result;
     }
 
+    @Override
     public void visitArrayConstructNode(ASTPtArrayConstructNode node)
             throws IllegalActionException {
         _defaultVisit(node);
     }
 
+    @Override
     public void visitBitwiseNode(ASTPtBitwiseNode node)
             throws IllegalActionException {
         _defaultVisit(node);
     }
 
+    @Override
     public void visitFunctionApplicationNode(ASTPtFunctionApplicationNode node)
             throws IllegalActionException {
         // Check to see if we are referencing a function closure in scope.
@@ -121,6 +124,7 @@ public class ParseTreeSpecializer extends AbstractParseTreeVisitor {
         }
     }
 
+    @Override
     public void visitFunctionDefinitionNode(ASTPtFunctionDefinitionNode node)
             throws IllegalActionException {
         List excludedNames = new LinkedList(_excludedNames);
@@ -138,11 +142,13 @@ public class ParseTreeSpecializer extends AbstractParseTreeVisitor {
         _excludedNames = oldExcludedNames;
     }
 
+    @Override
     public void visitFunctionalIfNode(ASTPtFunctionalIfNode node)
             throws IllegalActionException {
         _defaultVisit(node);
     }
 
+    @Override
     public void visitLeafNode(ASTPtLeafNode node) throws IllegalActionException {
         if (node.isConstant() && node.isEvaluated()) {
             return;
@@ -173,50 +179,60 @@ public class ParseTreeSpecializer extends AbstractParseTreeVisitor {
         }
     }
 
+    @Override
     public void visitLogicalNode(ASTPtLogicalNode node)
             throws IllegalActionException {
         _defaultVisit(node);
     }
 
+    @Override
     public void visitMatrixConstructNode(ASTPtMatrixConstructNode node)
             throws IllegalActionException {
         _defaultVisit(node);
     }
 
+    @Override
     public void visitMethodCallNode(ASTPtMethodCallNode node)
             throws IllegalActionException {
         _defaultVisit(node);
     }
 
+    @Override
     public void visitPowerNode(ASTPtPowerNode node)
             throws IllegalActionException {
         _defaultVisit(node);
     }
 
+    @Override
     public void visitProductNode(ASTPtProductNode node)
             throws IllegalActionException {
         _defaultVisit(node);
     }
 
+    @Override
     public void visitRecordConstructNode(ASTPtRecordConstructNode node)
             throws IllegalActionException {
         _defaultVisit(node);
     }
 
+    @Override
     public void visitRelationalNode(ASTPtRelationalNode node)
             throws IllegalActionException {
         _defaultVisit(node);
     }
 
+    @Override
     public void visitShiftNode(ASTPtShiftNode node)
             throws IllegalActionException {
         _defaultVisit(node);
     }
 
+    @Override
     public void visitSumNode(ASTPtSumNode node) throws IllegalActionException {
         _defaultVisit(node);
     }
 
+    @Override
     public void visitUnaryNode(ASTPtUnaryNode node)
             throws IllegalActionException {
         _defaultVisit(node);

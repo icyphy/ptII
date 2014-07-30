@@ -89,7 +89,7 @@ public class MovieReader extends Source implements ControllerListener {
         output.setTypeEquals(BaseType.OBJECT);
         fileOrURL = new FileParameter(this, "fileOrURL");
         fileOrURL
-                .setExpression("$CLASSPATH/ptolemy/actor/lib/jmf/MrPtolemy.mov");
+        .setExpression("$CLASSPATH/ptolemy/actor/lib/jmf/MrPtolemy.mov");
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -111,6 +111,7 @@ public class MovieReader extends Source implements ControllerListener {
      *  @exception IllegalActionException If the URL is null, or
      *  invalid.
      */
+    @Override
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         if (attribute == fileOrURL) {
@@ -143,10 +144,10 @@ public class MovieReader extends Source implements ControllerListener {
                                         + "', to '"
                                         + (urlCopy == null ? "null" : urlCopy
                                                 .toString())
-                                        + "', (copyFileName was: '"
-                                        + copyFileName
-                                        + "') but that failed with:\n"
-                                        + KernelException
+                                                + "', (copyFileName was: '"
+                                                + copyFileName
+                                                + "') but that failed with:\n"
+                                                + KernelException
                                                 .stackTraceToString(throwable));
                     }
                 }
@@ -162,6 +163,7 @@ public class MovieReader extends Source implements ControllerListener {
      *  @exception CloneNotSupportedException If a derived class contains
      *  an attribute that cannot be cloned.
      */
+    @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         MovieReader newObject = (MovieReader) super.clone(workspace);
         newObject._dataSource = null;
@@ -175,6 +177,7 @@ public class MovieReader extends Source implements ControllerListener {
      *  player.
      *  @param event The controller event.
      */
+    @Override
     public void controllerUpdate(ControllerEvent event) {
         if (event instanceof ConfigureCompleteEvent
                 || event instanceof RealizeCompleteEvent
@@ -200,6 +203,7 @@ public class MovieReader extends Source implements ControllerListener {
     /** Send a JMFImageToken out through the output port.
      *  @exception IllegalActionException If there's no director.
      */
+    @Override
     public void fire() throws IllegalActionException {
         super.fire();
         output.send(0, new JMFImageToken(_frame));
@@ -212,6 +216,7 @@ public class MovieReader extends Source implements ControllerListener {
      *  grabbing control or frame positioning control cannot
      *  be acquired, or if a contained method throws it.
      */
+    @Override
     public void initialize() throws IllegalActionException {
         super.initialize();
 
@@ -290,6 +295,7 @@ public class MovieReader extends Source implements ControllerListener {
      *  return super.postfire().
      *  @exception IllegalActionException If thrown by the super class.
      */
+    @Override
     public boolean postfire() throws IllegalActionException {
         if (_playerOpen == false) {
             _dataSource.disconnect();

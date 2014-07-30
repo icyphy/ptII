@@ -80,10 +80,11 @@ public class ListenToAction extends FigureAction {
      *  @param event The action event, used to determine which entity
      *  was selected for the listen to NamedObj action
      */
+    @Override
     public void actionPerformed(ActionEvent event) {
         if (_configuration == null) {
             MessageHandler
-                    .error("Cannot listen to component without a configuration.");
+            .error("Cannot listen to component without a configuration.");
             return;
         }
 

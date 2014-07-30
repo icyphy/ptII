@@ -23,7 +23,7 @@ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
 PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 ENHANCEMENTS, OR MODIFICATIONS.
-*/
+ */
 package ptolemy.actor.gt;
 
 import java.util.LinkedList;
@@ -56,7 +56,7 @@ import ptolemy.kernel.util.Workspace;
  @Pt.AcceptedRating Red (tfeng)
  */
 public class TransformationMode extends ChoiceParameter implements
-        MatchCallback {
+MatchCallback {
 
     /** Construct a parameter with the given name contained by the specified
      *  entity. The container argument must not be null, or a
@@ -91,6 +91,7 @@ public class TransformationMode extends ChoiceParameter implements
      *  @see java.lang.Object#clone()
      *  @return The cloned variable.
      */
+    @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         TransformationMode newObject = (TransformationMode) super
                 .clone(workspace);
@@ -139,6 +140,7 @@ public class TransformationMode extends ChoiceParameter implements
      *  @param matcher The graph matcher.
      *  @return Whether the matching should terminate right away.
      */
+    @Override
     public boolean foundMatch(GraphMatcher matcher) {
         _matchResults.add((MatchResult) matcher.getMatchResult().clone());
         return !_collectAllMatches;
@@ -226,6 +228,7 @@ public class TransformationMode extends ChoiceParameter implements
             return false;
         } else {
             ChangeRequest request = new ChangeRequest(this, "") {
+                @Override
                 protected void _execute() throws Exception {
                     switch (mode) {
                     case REPLACE_FIRST:
@@ -279,6 +282,7 @@ public class TransformationMode extends ChoiceParameter implements
         /** Replace only the first occurrence of the pattern.
          */
         REPLACE_FIRST {
+            @Override
             public String toString() {
                 return "replace first";
             }
@@ -286,6 +290,7 @@ public class TransformationMode extends ChoiceParameter implements
         /** Replace only the last occurrence of the pattern.
          */
         REPLACE_LAST {
+            @Override
             public String toString() {
                 return "replace last";
             }
@@ -293,6 +298,7 @@ public class TransformationMode extends ChoiceParameter implements
         /** Replace a randomly selected occurrence of the pattern.
          */
         REPLACE_ANY {
+            @Override
             public String toString() {
                 return "replace any";
             }
@@ -300,6 +306,7 @@ public class TransformationMode extends ChoiceParameter implements
         /** Replace all the occurrences of the pattern, if possible.
          */
         REPLACE_ALL {
+            @Override
             public String toString() {
                 return "replace all";
             }
@@ -307,6 +314,7 @@ public class TransformationMode extends ChoiceParameter implements
         /** Perform pattern matching only without transformation.
          */
         MATCH_ONLY {
+            @Override
             public String toString() {
                 return "match only";
             }
@@ -359,13 +367,14 @@ public class TransformationMode extends ChoiceParameter implements
      @Pt.AcceptedRating Red (tfeng)
      */
     private static class WorkingCopyScopeExtender extends Attribute implements
-            ScopeExtender {
+    ScopeExtender {
 
         /** Return a list of the attributes contained by this object.
          *  If there are no attributes, return an empty list.
          *  This method is read-synchronized on the workspace.
          *  @return An unmodifiable list of instances of Attribute.
          */
+        @Override
         public List<?> attributeList() {
             NamedObj container = _masterRule;
             Set<?> names = ModelScope
@@ -383,6 +392,7 @@ public class TransformationMode extends ChoiceParameter implements
          *  @exception IllegalActionException If any required attribute cannot be
          *   created.
          */
+        @Override
         public void expand() throws IllegalActionException {
         }
 
@@ -392,20 +402,22 @@ public class TransformationMode extends ChoiceParameter implements
          *  @param name The name of the desired attribute.
          *  @return The requested attribute if it is found, null otherwise.
          */
+        @Override
         public Attribute getAttribute(String name) {
             NamedObj container = _masterRule;
             return ModelScope.getScopedVariable(null, container, name);
         }
-        
+
         /** Validate contained settables.
          *  @exception IllegalActionException If any required attribute cannot be
          *   created.
          */
+        @Override
         public void validate() throws IllegalActionException {
-                List<Settable> settables = attributeList(Settable.class);
-                for (Settable settable : settables) {
-                        settable.validate();
-                }
+            List<Settable> settables = attributeList(Settable.class);
+            for (Settable settable : settables) {
+                settable.validate();
+            }
         }
 
         /** Construct a scope extender.

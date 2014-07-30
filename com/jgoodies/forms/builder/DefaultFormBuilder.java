@@ -304,6 +304,7 @@ public final class DefaultFormBuilder extends I15dPanelBuilder {
      *
      * @deprecated Replaced by {@link #DefaultFormBuilder(FormLayout, JPanel)}.
      */
+    @Deprecated
     public DefaultFormBuilder(JPanel panel, FormLayout layout) {
         this(layout, null, panel);
     }
@@ -319,6 +320,7 @@ public final class DefaultFormBuilder extends I15dPanelBuilder {
      *
      * @deprecated Replaced by {@link #DefaultFormBuilder(FormLayout, ResourceBundle, JPanel)}.
      */
+    @Deprecated
     public DefaultFormBuilder(JPanel panel, FormLayout layout,
             ResourceBundle bundle) {
         super(layout, bundle, panel);
@@ -825,6 +827,7 @@ public final class DefaultFormBuilder extends I15dPanelBuilder {
      *
      * @return the leading column
      */
+    @Override
     protected int getLeadingColumn() {
         int column = super.getLeadingColumn();
         return column + getLeadingColumnOffset() * getColumnIncrementSign();

@@ -71,6 +71,7 @@ public class ActorModelScope extends ModelScope {
      *  @exception IllegalActionException If a value in the scope
      *  exists with the given name, but cannot be evaluated.
      */
+    @Override
     public Token get(String name) throws IllegalActionException {
         if (_modelObject != null) {
             NamedObj element = getScopedObject(_modelObject, name);
@@ -92,6 +93,7 @@ public class ActorModelScope extends ModelScope {
      *  @exception IllegalActionException If a value in the scope
      *  exists with the given name, but cannot be evaluated.
      */
+    @Override
     public Type getType(String name) throws IllegalActionException {
         Token result = get(name);
         if (result != null) {
@@ -110,6 +112,7 @@ public class ActorModelScope extends ModelScope {
      *  @exception IllegalActionException If a value in the scope
      *  exists with the given name, but cannot be evaluated.
      */
+    @Override
     public InequalityTerm getTypeTerm(String name)
             throws IllegalActionException {
         NamedObj result;
@@ -137,6 +140,7 @@ public class ActorModelScope extends ModelScope {
      *  @exception IllegalActionException If constructing the list causes
      *  it.
      */
+    @Override
     public Set<String> identifierSet() throws IllegalActionException {
         return getAllScopedObjectNames(_modelObject);
     }

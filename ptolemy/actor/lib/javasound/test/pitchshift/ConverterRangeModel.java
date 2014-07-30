@@ -88,6 +88,7 @@ public class ConverterRangeModel implements BoundedRangeModel {
         fireStateChanged();
     }
 
+    @Override
     public int getMaximum() {
         if (DEBUG) {
             System.out.println("In ConverterRangeModel getMaximum");
@@ -96,6 +97,7 @@ public class ConverterRangeModel implements BoundedRangeModel {
         return maximum;
     }
 
+    @Override
     public void setMaximum(int newMaximum) {
         if (DEBUG) {
             System.out.println("In ConverterRangeModel setMaximum");
@@ -104,16 +106,19 @@ public class ConverterRangeModel implements BoundedRangeModel {
         setRangeProperties(value, extent, minimum, newMaximum, isAdjusting);
     }
 
+    @Override
     public int getMinimum() {
         return minimum;
     }
 
+    @Override
     public void setMinimum(int newMinimum) {
         System.out.println("In ConverterRangeModel setMinimum");
 
         //Do nothing.
     }
 
+    @Override
     public int getValue() {
         if (DEBUG) {
             System.out.println("In ConverterRangeModel getValue");
@@ -122,6 +127,7 @@ public class ConverterRangeModel implements BoundedRangeModel {
         return (int) getDoubleValue();
     }
 
+    @Override
     public void setValue(int newValue) {
         if (DEBUG) {
             System.out.println("In ConverterRangeModel setValue");
@@ -146,22 +152,27 @@ public class ConverterRangeModel implements BoundedRangeModel {
         setRangeProperties(newValue, extent, minimum, maximum, isAdjusting);
     }
 
+    @Override
     public int getExtent() {
         return extent;
     }
 
+    @Override
     public void setExtent(int newExtent) {
         //Do nothing.
     }
 
+    @Override
     public boolean getValueIsAdjusting() {
         return isAdjusting;
     }
 
+    @Override
     public void setValueIsAdjusting(boolean b) {
         setRangeProperties(value, extent, minimum, maximum, b);
     }
 
+    @Override
     public void setRangeProperties(int newValue, int newExtent, int newMin,
             int newMax, boolean newAdjusting) {
         System.out.println("In ConverterRangeModel setRangeProperties");
@@ -227,10 +238,12 @@ public class ConverterRangeModel implements BoundedRangeModel {
      * The rest of this is event handling code copied from
      * DefaultBoundedRangeModel.
      */
+    @Override
     public void addChangeListener(ChangeListener l) {
         listenerList.add(ChangeListener.class, l);
     }
 
+    @Override
     public void removeChangeListener(ChangeListener l) {
         listenerList.remove(ChangeListener.class, l);
     }

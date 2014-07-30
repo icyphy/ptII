@@ -90,6 +90,7 @@ public class UpdateAnnotations extends MoMLFilterSimple {
      *  @param xmlFile The file currently being parsed.
      *  @return the value of the attributeValue argument.
      */
+    @Override
     public String filterAttributeValue(NamedObj container, String element,
             String attributeName, String attributeValue, String xmlFile) {
         //System.out.println("filterAttributeValue: " + container + "\t"
@@ -128,7 +129,7 @@ public class UpdateAnnotations extends MoMLFilterSimple {
         } else if (_currentlyProcessingAnnotation) {
             if (attributeName.equals("class")
                     && attributeValue
-                            .equals("ptolemy.vergil.kernel.attributes.TextAttribute")
+                    .equals("ptolemy.vergil.kernel.attributes.TextAttribute")
                     && container.getFullName().equals(
                             _currentAnnotationContainerFullName)) {
                 // We have an annotation, but it is a TextAttribute, so we are done.
@@ -143,9 +144,11 @@ public class UpdateAnnotations extends MoMLFilterSimple {
         if (_currentlyProcessingAnnotation) {
             if (container != null) {
                 if (!container.getFullName().equals(_currentAnnotationFullName)) {
-                    if (_currentAnnotationFullName == null 
-                            || (!_currentAnnotationFullName.startsWith(container.getFullName())
-                                    && !container.getFullName().startsWith(_currentAnnotationFullName))) {
+                    if (_currentAnnotationFullName == null
+                            || (!_currentAnnotationFullName
+                                    .startsWith(container.getFullName()) && !container
+                                    .getFullName().startsWith(
+                                            _currentAnnotationFullName))) {
                         // We found another class in a different container
                         // while handling an annotation.
                         _reset();
@@ -167,6 +170,7 @@ public class UpdateAnnotations extends MoMLFilterSimple {
      *  @exception Exception if there is a problem substituting
      *  in the new value.
      */
+    @Override
     public void filterEndElement(NamedObj container, String elementName,
             StringBuffer currentCharData, String xmlFile) throws Exception {
 
@@ -232,20 +236,20 @@ public class UpdateAnnotations extends MoMLFilterSimple {
             if (charData.contains(" fill:")) {
                 if (charData.contains(" fill:black")) {
                     _textAttribute.textColor
-                            .setExpression("{0.0, 0.0, 0.0, 1.0}");
+                    .setExpression("{0.0, 0.0, 0.0, 1.0}");
                 }
                 if (charData.contains(" fill:darkgray")
                         || charData.contains(" fill:gray")) {
                     _textAttribute.textColor
-                            .setExpression("{0.2, 0.2, 0.2, 1.0}");
+                    .setExpression("{0.2, 0.2, 0.2, 1.0}");
                 }
                 if (charData.contains(" fill:green")) {
                     _textAttribute.textColor
-                            .setExpression("{0.0, 1.0, 0.0, 1.0}");
+                    .setExpression("{0.0, 1.0, 0.0, 1.0}");
                 }
                 if (charData.contains(" fill:red")) {
                     _textAttribute.textColor
-                            .setExpression("{1.0, 0.0, 0.0, 1.0}");
+                    .setExpression("{1.0, 0.0, 0.0, 1.0}");
                 }
             }
 
@@ -313,6 +317,7 @@ public class UpdateAnnotations extends MoMLFilterSimple {
     /** Return a string that describes what the filter does.
      *  @return the description of the filter that ends with a newline.
      */
+    @Override
     public String toString() {
         return getClass().getName() + ": Update annotation to new style\n";
     }

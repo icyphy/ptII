@@ -70,6 +70,7 @@ public abstract class SimpleGraphController extends AbstractGraphController {
      * Given an edge, return the controller associated with that
      * edge.
      */
+    @Override
     public EdgeController getEdgeController(Object edge) {
         return getEdgeController();
     }
@@ -78,6 +79,7 @@ public abstract class SimpleGraphController extends AbstractGraphController {
      * Given an node, return the controller associated with that
      * node.
      */
+    @Override
     public NodeController getNodeController(Object node) {
         return getNodeController();
     }

@@ -276,6 +276,7 @@ public class TableauFrame extends Top {
      *  has not been called.
      *  @return True if the data has been modified.
      */
+    @Override
     public boolean isModified() {
         Effigy effigy = getEffigy();
 
@@ -293,6 +294,7 @@ public class TableauFrame extends Top {
      *  This overrides the base class to delegate to the effigy.
      *  @param modified True if the data has been modified.
      */
+    @Override
     public void setModified(boolean modified) {
         Effigy effigy = getEffigy();
 
@@ -319,6 +321,7 @@ public class TableauFrame extends Top {
      * If the _alternateTopPackClass attribute is not set or set
      * improperly, then Top.pack() is called from this method.
      */
+    @Override
     public void pack() {
         super.pack();
         Configuration configuration = getConfiguration();
@@ -351,7 +354,7 @@ public class TableauFrame extends Top {
                     if (topPackClass == null) {
                         throw new ClassNotFoundException(
                                 "Failed to find class \"" + topPackClass
-                                        + "\", Class.forName() returned null.");
+                                + "\", Class.forName() returned null.");
                     }
                     _topPack = (TopPack) topPackClass.newInstance();
                     // Do the alternate pack
@@ -405,6 +408,7 @@ public class TableauFrame extends Top {
     /** Override the base class to open the intro.htm splash window,
      *  which is in the directory ptolemy/configs.
      */
+    @Override
     protected void _about() {
         // NOTE: We take some care here to ensure that this window is
         // only opened once.
@@ -485,6 +489,7 @@ public class TableauFrame extends Top {
      *  <p>If the configuration has a _disableFileNew parameter that
      *  is set to true, then we do not populate the File-&gt;New menu.
      */
+    @Override
     protected void _addMenus() {
         super._addMenus();
 
@@ -495,7 +500,7 @@ public class TableauFrame extends Top {
             final Configuration configuration = getConfiguration();
             if (configuration == null) {
                 System.out
-                        .println("TableauFrame._addMenus: configuration == null?");
+                .println("TableauFrame._addMenus: configuration == null?");
                 return;
             }
             EffigyFactory effigyFactory = (EffigyFactory) configuration
@@ -548,7 +553,7 @@ public class TableauFrame extends Top {
                         // From Daniel Crawl for Kepler
                         item.setAccelerator(KeyStroke.getKeyStroke(
                                 KeyEvent.VK_N, Toolkit.getDefaultToolkit()
-                                        .getMenuShortcutKeyMask()));
+                                .getMenuShortcutKeyMask()));
                     }
                     ((JMenu) _fileMenuItems[_NEW_MENU_INDEX]).add(item);
                 }
@@ -603,6 +608,7 @@ public class TableauFrame extends Top {
      *  then ask the user whether to save the data before closing.
      *  @return False if the user cancels on a save query.
      */
+    @Override
     protected boolean _close() {
         if (_debugClosing) {
             System.out.println("TableauFrame._close() : " + this.getName());
@@ -675,11 +681,11 @@ public class TableauFrame extends Top {
                     if (_debugClosing) {
                         NamedObj model = ((PtolemyEffigy) effigy).getModel();
                         System.out
-                                .println("TableauFrame._close(): model "
-                                        + model.getFullName()
-                                        + " has Effigy "
-                                        + effigy
-                                        + ", which is not persistent, so it will not be saved.");
+                        .println("TableauFrame._close(): model "
+                                + model.getFullName()
+                                + " has Effigy "
+                                + effigy
+                                + ", which is not persistent, so it will not be saved.");
                     }
                     dispose();
                     return true;
@@ -737,6 +743,7 @@ public class TableauFrame extends Top {
      *  dispose() method of the superclass,
      *  {@link ptolemy.gui.Top}.
      */
+    @Override
     public void dispose() {
         if (_debugClosing) {
             System.out.println("TableauFrame.dispose() : " + this.getName());
@@ -882,6 +889,7 @@ public class TableauFrame extends Top {
      *  then do not exit.
      *  @see Tableau#close()
      */
+    @Override
     protected void _exit() {
         ModelDirectory directory = getDirectory();
 
@@ -1002,6 +1010,7 @@ public class TableauFrame extends Top {
      *  for the title of the window.
      *  @return The name.
      */
+    @Override
     protected String _getName() {
         Effigy effigy = getEffigy();
 
@@ -1024,6 +1033,7 @@ public class TableauFrame extends Top {
      *  _about() method.
      *  @see FileParameter
      */
+    @Override
     protected void _help() {
         try {
             Configuration configuration = getConfiguration();
@@ -1050,6 +1060,7 @@ public class TableauFrame extends Top {
      *  @exception Exception If the URL cannot be read, or if there is no
      *   tableau.
      */
+    @Override
     protected void _read(URL url) throws Exception {
         if (_tableau == null) {
             throw new Exception("No associated Tableau!"
@@ -1078,6 +1089,7 @@ public class TableauFrame extends Top {
      *  _saveAs(). This calls _writeFile() to perform the save.
      *  @return True if the save succeeds.
      */
+    @Override
     protected boolean _save() {
         if (_tableau == null) {
             throw new InternalErrorException(
@@ -1108,6 +1120,7 @@ public class TableauFrame extends Top {
      *  ModelDirectory and to rename the model to match the file name.
      *  @return True if the save succeeds.
      */
+    @Override
     protected boolean _saveAs() {
         return _saveAs(null);
     }
@@ -1158,6 +1171,7 @@ public class TableauFrame extends Top {
      *  @param file The file to write to.
      *  @exception IOException If the write fails.
      */
+    @Override
     protected void _writeFile(File file) throws IOException {
         Tableau tableau = getTableau();
 
@@ -1529,6 +1543,7 @@ public class TableauFrame extends Top {
             _configuration = configuration;
         }
 
+        @Override
         public void actionPerformed(ActionEvent event) {
             Effigy effigy = null;
 
@@ -1554,8 +1569,9 @@ public class TableauFrame extends Top {
      *
      *  @deprecated Use diva.gui.ExtensionFileFilter or javax.swing.filechooser.FileNameExtensionFilter
      */
+    @Deprecated
     protected static class ExtensionFileFilter extends
-            diva.gui.ExtensionFileFilter {
+    diva.gui.ExtensionFileFilter {
         // NetBeans wants this protected.  If it is package visibility,
         // then there are problems accessing it from the same package
         // but a different jar.
@@ -1569,6 +1585,7 @@ public class TableauFrame extends Top {
          *   a String.
          *  @deprecated Use diva.gui.ExtensionFileFilter.addExtension().
          */
+        @Deprecated
         public ExtensionFileFilter(List extensions) {
             super(extensions);
         }
@@ -1576,6 +1593,7 @@ public class TableauFrame extends Top {
 
     /** Listener for view menu commands. */
     class ViewMenuListener implements ActionListener {
+        @Override
         public void actionPerformed(ActionEvent e) {
             // Make this the default context for modal messages.
             UndeferredGraphicalMessageHandler.setContext(TableauFrame.this);
@@ -1613,7 +1631,7 @@ public class TableauFrame extends Top {
                                 .createTableau(tableauContainer);
                         if (tableau == null) {
                             MessageHandler
-                                    .warning("Cannot create view. Perhaps the model needs to be saved first?");
+                            .warning("Cannot create view. Perhaps the model needs to be saved first?");
                         } else {
                             tableau.show();
                         }

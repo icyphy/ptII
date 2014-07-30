@@ -42,7 +42,7 @@ import ptolemy.kernel.util.KernelException;
  @since Ptolemy II 8.0
  @Pt.ProposedRating Yellow (tfeng)
  @Pt.AcceptedRating Red (tfeng)
-*/
+ */
 @SuppressWarnings("serial")
 public class MalformedStringException extends KernelException {
 

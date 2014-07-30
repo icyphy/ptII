@@ -73,6 +73,7 @@ public class SceneGraphToken extends Token {
     /** Return the type of this token.
      *  @return the type of this token.
      */
+    @Override
     public Type getType() {
         return TYPE;
     }
@@ -85,6 +86,7 @@ public class SceneGraphToken extends Token {
      *   supported by the derived class.
      *  @return A BooleanToken which contains the result of the test.
      */
+    @Override
     public BooleanToken isEqualTo(Token token) throws IllegalActionException {
         if (token instanceof SceneGraphToken) {
             return new BooleanToken(this == token);
@@ -103,13 +105,14 @@ public class SceneGraphToken extends Token {
      *  that an event is present.
      *  @return The String "present".
      */
+    @Override
     public String toString() {
         return "SceneGraphToken(" + _node + ")";
     }
 
     /** The SceneGraphToken type. */
     @SuppressWarnings("serial")
-        public static class SceneGraphType implements Type, Serializable, Cloneable {
+    public static class SceneGraphType implements Type, Serializable, Cloneable {
         ///////////////////////////////////////////////////////////////////
         ////                         public methods                    ////
 
@@ -119,6 +122,7 @@ public class SceneGraphToken extends Token {
          *  @param rightArgumentType The type to add to this type.
          *  @return This type.
          */
+        @Override
         public Type add(Type rightArgumentType) {
             return this;
         }
@@ -126,6 +130,7 @@ public class SceneGraphToken extends Token {
         /** Return this, that is, return the reference to this object.
          *  @return A BaseType.
          */
+        @Override
         public Object clone() {
             // FIXME: Note that we do not call super.clone() here.  Is
             // that right?
@@ -139,6 +144,7 @@ public class SceneGraphToken extends Token {
          *  @exception IllegalActionException If lossless conversion cannot
          *   be done.
          */
+        @Override
         public Token convert(Token token) throws IllegalActionException {
             if (token instanceof SceneGraphToken) {
                 return token;
@@ -155,6 +161,7 @@ public class SceneGraphToken extends Token {
          *  @param rightArgumentType The type to add to this type.
          *  @return This type.
          */
+        @Override
         public Type divide(Type rightArgumentType) {
             return this;
         }
@@ -162,6 +169,7 @@ public class SceneGraphToken extends Token {
         /** Return the class for tokens that this basetype represents.
          *  @return the class for tokens that this basetype represents.
          */
+        @Override
         public Class getTokenClass() {
             return SceneGraphToken.class;
         }
@@ -171,6 +179,7 @@ public class SceneGraphToken extends Token {
          *  represents either an abstract base class or an interface.
          *  @return Always return false, this token is instantiable.
          */
+        @Override
         public boolean isAbstract() {
             return false;
         }
@@ -183,6 +192,7 @@ public class SceneGraphToken extends Token {
          *  @param type An instance of Type.
          *  @return True if the argument type is compatible with this type.
          */
+        @Override
         public boolean isCompatible(Type type) {
             return type == this;
         }
@@ -190,6 +200,7 @@ public class SceneGraphToken extends Token {
         /** Test if this Type is UNKNOWN.
          *  @return True if this Type is not UNKNOWN; false otherwise.
          */
+        @Override
         public boolean isConstant() {
             return true;
         }
@@ -207,6 +218,7 @@ public class SceneGraphToken extends Token {
         /** Return this type's node index in the (constant) type lattice.
          * @return this type's node index in the (constant) type lattice.
          */
+        @Override
         public int getTypeHash() {
             return Type.HASH_INVALID;
         }
@@ -216,6 +228,7 @@ public class SceneGraphToken extends Token {
          *  to an abstract token class, or an interface, or UNKNOWN.
          *  @return True if this type is instantiable.
          */
+        @Override
         public boolean isInstantiable() {
             return true;
         }
@@ -225,6 +238,7 @@ public class SceneGraphToken extends Token {
          *  @param type A Type.
          *  @return True if this type is UNKNOWN; false otherwise.
          */
+        @Override
         public boolean isSubstitutionInstance(Type type) {
             return this == type;
         }
@@ -235,6 +249,7 @@ public class SceneGraphToken extends Token {
          *  @param rightArgumentType The type to add to this type.
          *  @return This type.
          */
+        @Override
         public Type modulo(Type rightArgumentType) {
             return this;
         }
@@ -245,6 +260,7 @@ public class SceneGraphToken extends Token {
          *  @param rightArgumentType The type to add to this type.
          *  @return This type.
          */
+        @Override
         public Type multiply(Type rightArgumentType) {
             return this;
         }
@@ -253,6 +269,7 @@ public class SceneGraphToken extends Token {
          *  this type.
          *  @return This type.
          */
+        @Override
         public Type one() {
             return this;
         }
@@ -263,6 +280,7 @@ public class SceneGraphToken extends Token {
          *  @param rightArgumentType The type to add to this type.
          *  @return This type.
          */
+        @Override
         public Type subtract(Type rightArgumentType) {
             return this;
         }
@@ -270,6 +288,7 @@ public class SceneGraphToken extends Token {
         /** Return the string representation of this type.
          *  @return A String.
          */
+        @Override
         public String toString() {
             return "sceneGraph";
         }
@@ -278,6 +297,7 @@ public class SceneGraphToken extends Token {
          *  this type.
          *  @return Return this type.
          */
+        @Override
         public Type zero() {
             return this;
         }

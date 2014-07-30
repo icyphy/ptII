@@ -71,7 +71,7 @@ import com.jgoodies.forms.layout.CellConstraints;
  */
 @SuppressWarnings("serial")
 class DnDTable extends JTable implements DragSourceListener,
-        DragGestureListener, DropTargetListener, Autoscroll {
+DragGestureListener, DropTargetListener, Autoscroll {
     protected DragSource fDragSource = null;
     protected DropTarget fDropTarget = null;
     protected Component dragComponent = null;
@@ -100,6 +100,7 @@ class DnDTable extends JTable implements DragSourceListener,
      * handling code get's the event the selection has moved into a cell that
      * does have a component in it and the drag fails.
      */
+    @Override
     public void changeSelection(int rowIndex, int columnIndex, boolean toggle,
             boolean extend) {
         super.changeSelection(rowIndex, columnIndex, toggle, extend);
@@ -120,6 +121,7 @@ class DnDTable extends JTable implements DragSourceListener,
     /**
      * Implements autoscrolling.
      */
+    @Override
     public Insets getAutoscrollInsets() {
         Rectangle visible = getVisibleRect();
         Dimension size = getSize();
@@ -144,6 +146,7 @@ class DnDTable extends JTable implements DragSourceListener,
     /**
      * Implements autoscrolling.
      */
+    @Override
     public void autoscroll(Point cursorLocn) {
         Rectangle visible = getVisibleRect();
         int x = 0, y = 0, width = 0, height = 0;
@@ -173,9 +176,11 @@ class DnDTable extends JTable implements DragSourceListener,
                 width, height));
     }
 
+    @Override
     public void dragEnter(DragSourceDragEvent event) {
     }
 
+    @Override
     public void dragOver(DragSourceDragEvent event) {
         DragSourceContext context = event.getDragSourceContext();
         java.awt.Point location = event.getLocation();
@@ -193,21 +198,27 @@ class DnDTable extends JTable implements DragSourceListener,
         }
     }
 
+    @Override
     public void dropActionChanged(DragSourceDragEvent event) {
     }
 
+    @Override
     public void dragExit(DragSourceEvent event) {
     }
 
+    @Override
     public void dragDropEnd(DragSourceDropEvent event) {
     }
 
+    @Override
     public void dropActionChanged(DropTargetDragEvent event) {
     }
 
+    @Override
     public void dragExit(DropTargetEvent event) {
     }
 
+    @Override
     public void dragGestureRecognized(DragGestureEvent event) {
         Point p = event.getDragOrigin();
         int row = rowAtPoint(p);
@@ -219,6 +230,7 @@ class DnDTable extends JTable implements DragSourceListener,
         }
     }
 
+    @Override
     public void dragEnter(DropTargetDragEvent dropTargetDragEvent) {
         try {
             if (dropTargetDragEvent.isDataFlavorSupported(new DataFlavor(
@@ -232,6 +244,7 @@ class DnDTable extends JTable implements DragSourceListener,
         }
     }
 
+    @Override
     public void dragOver(java.awt.dnd.DropTargetDragEvent dropTargetDragEvent) {
         //DropTargetContext context = dropTargetDragEvent.getDropTargetContext();
 
@@ -251,6 +264,7 @@ class DnDTable extends JTable implements DragSourceListener,
         }
     }
 
+    @Override
     public void drop(java.awt.dnd.DropTargetDropEvent e) {
         CellConstraints componentConstraints = null;
         Component component = null;
@@ -359,11 +373,11 @@ class DnDTable extends JTable implements DragSourceListener,
                         componentConstraints.gridWidth = Math.min(
                                 componentConstraints.gridWidth,
                                 parent.containerLayout.getColumnCount()
-                                        - componentConstraints.gridX + 1);
+                                - componentConstraints.gridX + 1);
                         componentConstraints.gridHeight = Math.min(
                                 componentConstraints.gridHeight,
                                 parent.containerLayout.getRowCount()
-                                        - componentConstraints.gridY + 1);
+                                - componentConstraints.gridY + 1);
 
                         if (!component.isVisible()) {
                             component.setVisible(true);

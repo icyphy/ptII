@@ -82,6 +82,7 @@ public class PtolemyMenuFactory implements MenuFactory {
      *  @param figure The figure for which to create a context menu.
      *  @return The instance of the menu.
      */
+    @Override
     public JContextMenu create(Figure figure) {
         NamedObj object = _getObjectFromFigure(figure);
 

@@ -68,6 +68,7 @@ import ptolemy.kernel.util.NameDuplicationException;
  @Pt.AcceptedRating Red (hyzheng)
  @deprecated Use ptolemy.actor.lib.ResettableTimer.
  */
+@Deprecated
 public class NonInterruptibleTimer extends Timer {
     /** Construct an actor with the specified container and name.
      *  @param container The container.
@@ -92,6 +93,7 @@ public class NonInterruptibleTimer extends Timer {
      *  this actor can not send tokens to ports, or this actor can not get
      *  tokens from ports.
      */
+    @Override
     public void fire() throws IllegalActionException {
         // Don't call "super.fire();" here, the parent class is an actor.
         if (_debugging) {
@@ -143,6 +145,7 @@ public class NonInterruptibleTimer extends Timer {
      *  processing any inputs.
      *  @exception IllegalActionException If the base class throws it.
      */
+    @Override
     public void initialize() throws IllegalActionException {
         super.initialize();
         _nextTimeFree = Time.NEGATIVE_INFINITY;
@@ -155,6 +158,7 @@ public class NonInterruptibleTimer extends Timer {
      *  @exception IllegalActionException If there is no director or can not
      *  schedule future firings to handle delayed input events.
      */
+    @Override
     public boolean postfire() throws IllegalActionException {
         Time currentTime = getDirector().getModelTime();
 

@@ -59,6 +59,7 @@ public class UndoActionTest implements UndoAction {
     /** Execute the undo or redo action by printing the name on stdout.
      *  @exception Exception If something goes wrong.
      */
+    @Override
     public void execute() throws Exception {
         if (_name.equals("throwException")) {
             throw new Exception("Name was \"throw Exception\", so we do so.");
@@ -69,6 +70,7 @@ public class UndoActionTest implements UndoAction {
     /** Return a string representation of this object.
      *  @return The name of the class and the name of this object
      */
+    @Override
     public String toString() {
         return "UndoActionTest-" + _name;
     }

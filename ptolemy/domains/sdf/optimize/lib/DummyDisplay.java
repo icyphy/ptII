@@ -52,7 +52,7 @@ See {@link ptolemy.domains.sdf.optimize.OptimizingSDFDirector},
 @since Ptolemy II 10.0
 @Pt.ProposedRating Red (mgeilen)
 @Pt.AcceptedRating Red ()
-*/
+ */
 
 public class DummyDisplay extends Sink implements BufferingProfile {
 
@@ -79,6 +79,7 @@ public class DummyDisplay extends Sink implements BufferingProfile {
      *  @exception IllegalActionException If iterating is not
      *   permitted, or if prefire(), fire(), or postfire() throw it.
      */
+    @Override
     public int iterate(int iterationCount, boolean fireExclusive)
             throws IllegalActionException {
         return super.iterate(iterationCount);
@@ -88,6 +89,7 @@ public class DummyDisplay extends Sink implements BufferingProfile {
      * Provides the buffering profile, number of buffers required for a shared firing.
      * @return number of buffers for shared firing
      */
+    @Override
     public int sharedBuffers() {
         return 0;
     }
@@ -96,6 +98,7 @@ public class DummyDisplay extends Sink implements BufferingProfile {
      * Provides the buffering profile, number of buffers required for an exclusive firing.
      * @return number of buffers for exclusive firing
      */
+    @Override
     public int exclusiveBuffers() {
         return 0;
     }
@@ -104,6 +107,7 @@ public class DummyDisplay extends Sink implements BufferingProfile {
      * Provides the buffering profile, execution time estimate required for a shared firing.
      * @return execution time for shared firing
      */
+    @Override
     public int sharedExecutionTime() {
         return 1;
     }
@@ -113,6 +117,7 @@ public class DummyDisplay extends Sink implements BufferingProfile {
      * firing.
      * @return execution time for exclusive firing
      */
+    @Override
     public int exclusiveExecutionTime() {
         return 1;
     }

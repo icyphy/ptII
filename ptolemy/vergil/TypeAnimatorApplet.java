@@ -73,6 +73,7 @@ public class TypeAnimatorApplet extends MoMLViewerApplet {
      *  the initial types.
      *  @param manager The manager that changed.
      */
+    @Override
     public void managerStateChanged(Manager manager) {
         super.managerStateChanged(manager);
 
@@ -88,6 +89,7 @@ public class TypeAnimatorApplet extends MoMLViewerApplet {
      *  when the applet starts, and instead to update type displays
      *  to the initial types of the ports.
      */
+    @Override
     public void start() {
         _updateAllTypeDisplays();
     }
@@ -101,6 +103,7 @@ public class TypeAnimatorApplet extends MoMLViewerApplet {
      *  @exception Exception If there was a problem creating the model.
      *  @return  The model that was created
      */
+    @Override
     protected NamedObj _createModel(Workspace workspace) throws Exception {
         _toplevel = super._createModel(workspace);
 
@@ -174,6 +177,7 @@ public class TypeAnimatorApplet extends MoMLViewerApplet {
     // The local listener class
     private class PortTypeListener implements TypeListener {
         // Called to indicate that a type has changed.
+        @Override
         public void typeChanged(final TypeEvent event) {
             TypedIOPort port = (TypedIOPort) event.getSource();
             _updateTypeDisplay(port);

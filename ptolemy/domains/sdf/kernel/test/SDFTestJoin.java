@@ -87,6 +87,7 @@ public class SDFTestJoin extends TypedAtomicActor {
      * from input2 to the output.
      * @exception IllegalActionException If a contained method throws it.
      */
+    @Override
     public void fire() throws IllegalActionException {
         IntToken message;
 

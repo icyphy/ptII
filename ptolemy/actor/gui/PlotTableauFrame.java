@@ -88,7 +88,7 @@ import ptolemy.util.StringUtilities;
  */
 @SuppressWarnings("serial")
 public class PlotTableauFrame extends TableauFrame implements Printable,
-        ImageExportable {
+ImageExportable {
     /** Construct a plot frame with a default title and by default contains
      *  an instance of Plot. After constructing this, it is necessary
      *  to call setVisible(true) to make the plot appear.
@@ -176,6 +176,7 @@ public class PlotTableauFrame extends TableauFrame implements Printable,
      *   NO_SUCH_PAGE if pageIndex specifies a non-existent page.
      *  @exception PrinterException If the print job is terminated.
      */
+    @Override
     public int print(Graphics graphics, PageFormat format, int index)
             throws PrinterException {
         // Note that the Plot print menu does not directly call
@@ -200,6 +201,7 @@ public class PlotTableauFrame extends TableauFrame implements Printable,
      *  method invokes the dispose() method of the superclass,
      *  {@link ptolemy.gui.Top}.</p>
      */
+    @Override
     public void dispose() {
         if (_debugClosing) {
             System.out.println("TableauFrame.dispose() : " + this.getName());
@@ -215,6 +217,7 @@ public class PlotTableauFrame extends TableauFrame implements Printable,
      *  @exception IOException If writing to the stream fails.
      *  @exception PrinterException  If the specified format is not supported.
      */
+    @Override
     public void writeImage(OutputStream stream, String format)
             throws PrinterException, IOException {
         if (plot == null) {
@@ -258,6 +261,7 @@ public class PlotTableauFrame extends TableauFrame implements Printable,
 
     /** Create the menus that are used by this frame.
      */
+    @Override
     protected void _addMenus() {
         super._addMenus();
 
@@ -306,6 +310,7 @@ public class PlotTableauFrame extends TableauFrame implements Printable,
      *  indicates that the user has canceled the action.
      *  @return False if the user cancels the clear.
      */
+    @Override
     protected boolean _clear() {
         boolean result = super._clear();
 
@@ -319,6 +324,7 @@ public class PlotTableauFrame extends TableauFrame implements Printable,
      *  in GIF, PNG, and possibly PDF.
      *  @return The items in the File menu.
      */
+    @Override
     protected JMenuItem[] _createFileMenuItems() {
         JMenuItem[] fileMenuItems = super._createFileMenuItems();
 
@@ -370,8 +376,8 @@ public class PlotTableauFrame extends TableauFrame implements Printable,
             // case is that we will have no Export PDF in the menu.
             // That is better than preventing the user from opening a model.
             System.err
-                    .println("Warning: Tried to create Export PDF menu item, but failed: "
-                            + ex);
+            .println("Warning: Tried to create Export PDF menu item, but failed: "
+                    + ex);
         }
 
         // Uncomment the next block to have Export PDF *ALWAYS* enabled.
@@ -483,18 +489,20 @@ public class PlotTableauFrame extends TableauFrame implements Printable,
 
     /** Display more detailed information than given by _about().
      */
+    @Override
     protected void _help() {
         JOptionPane.showMessageDialog(this,
                 "PlotTableauFrame is a plot in a top-level window.\n"
                         + "  File formats understood: Ptplot ASCII.\n"
                         + "  Left mouse button: Zooming.",
-                "About Ptolemy Plot", JOptionPane.INFORMATION_MESSAGE);
+                        "About Ptolemy Plot", JOptionPane.INFORMATION_MESSAGE);
     }
 
     /** Write the plot to the specified file in PlotML syntax.
      *  @param file The file to which to write.
      *  @exception IOException If the write fails.
      */
+    @Override
     protected void _writeFile(File file) throws IOException {
         FileOutputStream out = null;
         try {
@@ -533,6 +541,7 @@ public class PlotTableauFrame extends TableauFrame implements Printable,
         /** Export an image.
          *  @param e The ActionEvent that invoked this action.
          */
+        @Override
         public void actionPerformed(ActionEvent e) {
             JFileChooserBugFix jFileChooserBugFix = new JFileChooserBugFix();
             Color background = null;
@@ -622,6 +631,7 @@ public class PlotTableauFrame extends TableauFrame implements Printable,
             putValue(Action.MNEMONIC_KEY, Integer.valueOf(KeyEvent.VK_F));
         }
 
+        @Override
         public void actionPerformed(ActionEvent e) {
             try {
                 _editFormat();
@@ -642,6 +652,7 @@ public class PlotTableauFrame extends TableauFrame implements Printable,
     }
 
     class SpecialMenuListener implements ActionListener {
+        @Override
         public void actionPerformed(ActionEvent e) {
             JMenuItem target = (JMenuItem) e.getSource();
             String actionCommand = target.getActionCommand();
@@ -688,6 +699,7 @@ public class PlotTableauFrame extends TableauFrame implements Printable,
          *  @param fileOrDirectory The file to be checked.
          *  @return true if the file is a directory, a .eps file
          */
+        @Override
         public boolean accept(File fileOrDirectory) {
             if (fileOrDirectory.isDirectory()) {
                 return true;
@@ -714,6 +726,7 @@ public class PlotTableauFrame extends TableauFrame implements Printable,
         }
 
         /**  The description of this filter */
+        @Override
         public String getDescription() {
             return "Encapsulated PostScript (.eps) files";
         }

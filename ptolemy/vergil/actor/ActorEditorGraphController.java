@@ -131,6 +131,7 @@ public class ActorEditorGraphController extends ActorViewerGraphController {
      *  @param menu The menu to add to, or null if none.
      *  @param toolbar The toolbar to add to, or null if none.
      */
+    @Override
     public void addToMenuAndToolbar(JMenu menu, JToolBar toolbar) {
         super.addToMenuAndToolbar(menu, toolbar);
         // Only include the port actions if there is an actor library.
@@ -138,13 +139,13 @@ public class ActorEditorGraphController extends ActorViewerGraphController {
         if (getConfiguration().getEntity("actor library") != null) {
             diva.gui.GUIUtilities.addMenuItem(menu, _newInputPortAction);
             diva.gui.GUIUtilities
-                    .addToolBarButton(toolbar, _newInputPortAction);
+            .addToolBarButton(toolbar, _newInputPortAction);
             diva.gui.GUIUtilities.addMenuItem(menu, _newOutputPortAction);
             diva.gui.GUIUtilities.addToolBarButton(toolbar,
                     _newOutputPortAction);
             diva.gui.GUIUtilities.addMenuItem(menu, _newInoutPortAction);
             diva.gui.GUIUtilities
-                    .addToolBarButton(toolbar, _newInoutPortAction);
+            .addToolBarButton(toolbar, _newInoutPortAction);
             diva.gui.GUIUtilities.addMenuItem(menu, _newInputMultiportAction);
             diva.gui.GUIUtilities.addToolBarButton(toolbar,
                     _newInputMultiportAction);
@@ -167,6 +168,7 @@ public class ActorEditorGraphController extends ActorViewerGraphController {
      *  opening documentation files.
      *  @param configuration The configuration.
      */
+    @Override
     public void setConfiguration(Configuration configuration) {
         super.setConfiguration(configuration);
 
@@ -190,7 +192,7 @@ public class ActorEditorGraphController extends ActorViewerGraphController {
     //// NewRelationAction
     /** An action to create a new relation. */
     @SuppressWarnings("serial")
-        public class NewRelationAction extends FigureAction {
+    public class NewRelationAction extends FigureAction {
         /** Create an action that creates a new relation.
          */
         public NewRelationAction() {
@@ -228,6 +230,7 @@ public class ActorEditorGraphController extends ActorViewerGraphController {
                     Integer.valueOf(KeyEvent.VK_R));
         }
 
+        @Override
         public void actionPerformed(ActionEvent e) {
             super.actionPerformed(e);
 
@@ -383,6 +386,7 @@ public class ActorEditorGraphController extends ActorViewerGraphController {
      *
      *  @param jgraph The JGraph to which hot keys are to be added.
      */
+    @Override
     protected void _addHotKeys(JGraph jgraph) {
         super._addHotKeys(jgraph);
 
@@ -410,6 +414,7 @@ public class ActorEditorGraphController extends ActorViewerGraphController {
      *  defined in the derived classes, because the derived classes
      *  will not have been fully constructed by the time this is called.
      */
+    @Override
     protected void _createControllers() {
         Configuration _config = (Configuration) Configuration.configurations()
                 .iterator().next();
@@ -476,12 +481,12 @@ public class ActorEditorGraphController extends ActorViewerGraphController {
                         .newInstance(args);
             } catch (Exception e) {
                 System.out
-                        .println("The configuration has "
-                                + "_alternateActorInstanceController set, but the class "
-                                + _alternateActorInstanceClassName
-                                + " is not found.  Defaulting "
-                                + " to ActorInstanceController: "
-                                + e.getMessage());
+                .println("The configuration has "
+                        + "_alternateActorInstanceController set, but the class "
+                        + _alternateActorInstanceClassName
+                        + " is not found.  Defaulting "
+                        + " to ActorInstanceController: "
+                        + e.getMessage());
                 e.printStackTrace();
             }
         }
@@ -497,6 +502,7 @@ public class ActorEditorGraphController extends ActorViewerGraphController {
         // an instance of Locatable and the semantic object associated
         // with it is an instance of Entity.
         Filter portFilter = new Filter() {
+            @Override
             public boolean accept(Object candidate) {
                 GraphModel model = getGraphModel();
                 Object semanticObject = model.getSemanticObject(candidate);
@@ -518,6 +524,7 @@ public class ActorEditorGraphController extends ActorViewerGraphController {
         GlobalLayout layout = new EntityLayout();
         addGraphViewListener(new IncrementalLayoutListener(
                 new IncrLayoutAdapter(layout) {
+                    @Override
                     public void nodeDrawn(Object node) {
                         layout(node);
                     }
@@ -538,6 +545,7 @@ public class ActorEditorGraphController extends ActorViewerGraphController {
      *  IOPortController, or RelationController.
      *  @param controller The controller for which to initialize interaction.
      */
+    @Override
     protected void _initializeInteraction(NamedObjController controller) {
         super._initializeInteraction(controller);
 
@@ -558,6 +566,7 @@ public class ActorEditorGraphController extends ActorViewerGraphController {
      *  the controller does not yet have a reference to its pane
      *  at that time.
      */
+    @Override
     protected void initializeInteraction() {
         // FIXME: why is this protected, but does not have a leading underscore
         // how is this different from _initializeInteraction above?
@@ -595,30 +604,30 @@ public class ActorEditorGraphController extends ActorViewerGraphController {
         // still in the constructor, and that method is overloaded in
         // derived classes.
         ((CompositeInteractor) _portController.getNodeInteractor())
-                .addInteractor(_linkCreator);
+        .addInteractor(_linkCreator);
         ((CompositeInteractor) _entityPortController.getNodeInteractor())
-                .addInteractor(_linkCreator);
+        .addInteractor(_linkCreator);
         ((CompositeInteractor) _relationController.getNodeInteractor())
-                .addInteractor(_linkCreator);
+        .addInteractor(_linkCreator);
 
         LinkCreator linkCreator2 = new LinkCreator();
         linkCreator2
-                .setMouseFilter(new MouseFilter(InputEvent.BUTTON1_MASK, 0));
+        .setMouseFilter(new MouseFilter(InputEvent.BUTTON1_MASK, 0));
         ((CompositeInteractor) _entityPortController.getNodeInteractor())
-                .addInteractor(linkCreator2);
+        .addInteractor(linkCreator2);
     }
 
     /** Action for creating a new relation. */
     protected Action _newRelationAction = new NewRelationAction(
             new String[][] {
                     { "/ptolemy/vergil/actor/img/relation.gif",
-                            GUIUtilities.LARGE_ICON },
-                    { "/ptolemy/vergil/actor/img/relation_o.gif",
+                        GUIUtilities.LARGE_ICON },
+                        { "/ptolemy/vergil/actor/img/relation_o.gif",
                             GUIUtilities.ROLLOVER_ICON },
-                    { "/ptolemy/vergil/actor/img/relation_ov.gif",
-                            GUIUtilities.ROLLOVER_SELECTED_ICON },
-                    { "/ptolemy/vergil/actor/img/relation_on.gif",
-                            GUIUtilities.SELECTED_ICON } });
+                            { "/ptolemy/vergil/actor/img/relation_ov.gif",
+                                GUIUtilities.ROLLOVER_SELECTED_ICON },
+                                { "/ptolemy/vergil/actor/img/relation_on.gif",
+                                    GUIUtilities.SELECTED_ICON } });
 
     //   private LinkCreator _linkCreator2;  // For shift-click
 
@@ -630,6 +639,7 @@ public class ActorEditorGraphController extends ActorViewerGraphController {
      */
     protected class LinkCreator extends AbstractInteractor {
         /** Create a new edge when the mouse is pressed. */
+        @Override
         public void mousePressed(LayerEvent event) {
             Figure source = event.getFigureSource();
             NamedObj sourceObject = (NamedObj) source.getUserObject();
@@ -715,78 +725,78 @@ public class ActorEditorGraphController extends ActorViewerGraphController {
             ExternalIOPortController._GENERIC_INOUT_MULTIPORT,
             "New input/output multiport", KeyEvent.VK_T, new String[][] {
                     { "/ptolemy/vergil/actor/img/multi_inout.gif",
-                            GUIUtilities.LARGE_ICON },
-                    { "/ptolemy/vergil/actor/img/multi_inout_o.gif",
+                        GUIUtilities.LARGE_ICON },
+                        { "/ptolemy/vergil/actor/img/multi_inout_o.gif",
                             GUIUtilities.ROLLOVER_ICON },
-                    { "/ptolemy/vergil/actor/img/multi_inout_ov.gif",
-                            GUIUtilities.ROLLOVER_SELECTED_ICON },
-                    { "/ptolemy/vergil/actor/img/multi_inout_on.gif",
-                            GUIUtilities.SELECTED_ICON } });
+                            { "/ptolemy/vergil/actor/img/multi_inout_ov.gif",
+                                GUIUtilities.ROLLOVER_SELECTED_ICON },
+                                { "/ptolemy/vergil/actor/img/multi_inout_on.gif",
+                                    GUIUtilities.SELECTED_ICON } });
 
     /** Action for creating a new input/output port. */
     private Action _newInoutPortAction = new NewPortAction(
             ExternalIOPortController._GENERIC_INOUT, "New input/output port",
             KeyEvent.VK_P, new String[][] {
                     { "/ptolemy/vergil/actor/img/single_inout.gif",
-                            GUIUtilities.LARGE_ICON },
-                    { "/ptolemy/vergil/actor/img/single_inout_o.gif",
+                        GUIUtilities.LARGE_ICON },
+                        { "/ptolemy/vergil/actor/img/single_inout_o.gif",
                             GUIUtilities.ROLLOVER_ICON },
-                    { "/ptolemy/vergil/actor/img/single_inout_ov.gif",
-                            GUIUtilities.ROLLOVER_SELECTED_ICON },
-                    { "/ptolemy/vergil/actor/img/single_inout_on.gif",
-                            GUIUtilities.SELECTED_ICON } });
+                            { "/ptolemy/vergil/actor/img/single_inout_ov.gif",
+                                GUIUtilities.ROLLOVER_SELECTED_ICON },
+                                { "/ptolemy/vergil/actor/img/single_inout_on.gif",
+                                    GUIUtilities.SELECTED_ICON } });
 
     /** Action for creating a new input multiport. */
     private Action _newInputMultiportAction = new NewPortAction(
             ExternalIOPortController._GENERIC_INPUT_MULTIPORT,
             "New input multiport", KeyEvent.VK_N, new String[][] {
                     { "/ptolemy/vergil/actor/img/multi_in.gif",
-                            GUIUtilities.LARGE_ICON },
-                    { "/ptolemy/vergil/actor/img/multi_in_o.gif",
+                        GUIUtilities.LARGE_ICON },
+                        { "/ptolemy/vergil/actor/img/multi_in_o.gif",
                             GUIUtilities.ROLLOVER_ICON },
-                    { "/ptolemy/vergil/actor/img/multi_in_ov.gif",
-                            GUIUtilities.ROLLOVER_SELECTED_ICON },
-                    { "/ptolemy/vergil/actor/img/multi_in_on.gif",
-                            GUIUtilities.SELECTED_ICON } });
+                            { "/ptolemy/vergil/actor/img/multi_in_ov.gif",
+                                GUIUtilities.ROLLOVER_SELECTED_ICON },
+                                { "/ptolemy/vergil/actor/img/multi_in_on.gif",
+                                    GUIUtilities.SELECTED_ICON } });
 
     /** Action for creating a new input port. */
     private Action _newInputPortAction = new NewPortAction(
             ExternalIOPortController._GENERIC_INPUT, "New input port",
             KeyEvent.VK_I, new String[][] {
                     { "/ptolemy/vergil/actor/img/single_in.gif",
-                            GUIUtilities.LARGE_ICON },
-                    { "/ptolemy/vergil/actor/img/single_in_o.gif",
+                        GUIUtilities.LARGE_ICON },
+                        { "/ptolemy/vergil/actor/img/single_in_o.gif",
                             GUIUtilities.ROLLOVER_ICON },
-                    { "/ptolemy/vergil/actor/img/single_in_ov.gif",
-                            GUIUtilities.ROLLOVER_SELECTED_ICON },
-                    { "/ptolemy/vergil/actor/img/single_in_on.gif",
-                            GUIUtilities.SELECTED_ICON } });
+                            { "/ptolemy/vergil/actor/img/single_in_ov.gif",
+                                GUIUtilities.ROLLOVER_SELECTED_ICON },
+                                { "/ptolemy/vergil/actor/img/single_in_on.gif",
+                                    GUIUtilities.SELECTED_ICON } });
 
     /** Action for creating a new output multiport. */
     private Action _newOutputMultiportAction = new NewPortAction(
             ExternalIOPortController._GENERIC_OUTPUT_MULTIPORT,
             "New output multiport", KeyEvent.VK_U, new String[][] {
                     { "/ptolemy/vergil/actor/img/multi_out.gif",
-                            GUIUtilities.LARGE_ICON },
-                    { "/ptolemy/vergil/actor/img/multi_out_o.gif",
+                        GUIUtilities.LARGE_ICON },
+                        { "/ptolemy/vergil/actor/img/multi_out_o.gif",
                             GUIUtilities.ROLLOVER_ICON },
-                    { "/ptolemy/vergil/actor/img/multi_out_ov.gif",
-                            GUIUtilities.ROLLOVER_SELECTED_ICON },
-                    { "/ptolemy/vergil/actor/img/multi_out_on.gif",
-                            GUIUtilities.SELECTED_ICON } });
+                            { "/ptolemy/vergil/actor/img/multi_out_ov.gif",
+                                GUIUtilities.ROLLOVER_SELECTED_ICON },
+                                { "/ptolemy/vergil/actor/img/multi_out_on.gif",
+                                    GUIUtilities.SELECTED_ICON } });
 
     /** Action for creating a new output port. */
     private Action _newOutputPortAction = new NewPortAction(
             ExternalIOPortController._GENERIC_OUTPUT, "New output port",
             KeyEvent.VK_O, new String[][] {
                     { "/ptolemy/vergil/actor/img/single_out.gif",
-                            GUIUtilities.LARGE_ICON },
-                    { "/ptolemy/vergil/actor/img/single_out_o.gif",
+                        GUIUtilities.LARGE_ICON },
+                        { "/ptolemy/vergil/actor/img/single_out_o.gif",
                             GUIUtilities.ROLLOVER_ICON },
-                    { "/ptolemy/vergil/actor/img/single_out_ov.gif",
-                            GUIUtilities.ROLLOVER_SELECTED_ICON },
-                    { "/ptolemy/vergil/actor/img/single_out_on.gif",
-                            GUIUtilities.SELECTED_ICON } });
+                            { "/ptolemy/vergil/actor/img/single_out_ov.gif",
+                                GUIUtilities.ROLLOVER_SELECTED_ICON },
+                                { "/ptolemy/vergil/actor/img/single_out_on.gif",
+                                    GUIUtilities.SELECTED_ICON } });
 
     /** The port dialog factory. */
     private PortDialogAction _portDialogAction;
@@ -804,8 +814,8 @@ public class ActorEditorGraphController extends ActorViewerGraphController {
      */
     private MouseFilter _shortcutFilter = new MouseFilter(
             InputEvent.BUTTON1_MASK, Toolkit.getDefaultToolkit()
-                    .getMenuShortcutKeyMask(), Toolkit.getDefaultToolkit()
-                    .getMenuShortcutKeyMask());
+            .getMenuShortcutKeyMask(), Toolkit.getDefaultToolkit()
+            .getMenuShortcutKeyMask());
 
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
@@ -818,6 +828,7 @@ public class ActorEditorGraphController extends ActorViewerGraphController {
          *  @param menu The context menu.
          *  @param object The object whose ports are being manipulated.
          */
+        @Override
         public JMenuItem create(final JContextMenu menu, NamedObj object) {
             String name = "Listen to Actor";
             final NamedObj target = object;

@@ -80,6 +80,7 @@ public class ListenFork extends DoubleFork {
      * @exception IllegalActionException If there is an exception
      *  with the thread activity of this method.
      */
+    @Override
     public boolean postfire() throws IllegalActionException {
         _debug(new ExecEvent(this, ExecEvent.WAITING));
 
@@ -96,6 +97,7 @@ public class ListenFork extends DoubleFork {
      * @exception IllegalActionException if there is an exception
      *  with the thread activity of this method.
      */
+    @Override
     public boolean prefire() throws IllegalActionException {
         _debug(new ExecEvent(this, ExecEvent.ACCESSING));
 
@@ -108,6 +110,7 @@ public class ListenFork extends DoubleFork {
      * @exception IllegalActionException If there is an exception in
      *  the execution of the wrapup method of this actor's superclass.
      */
+    @Override
     public void wrapup() throws IllegalActionException {
         _debug(new ExecEvent(this, ExecEvent.BLOCKED));
         super.wrapup();

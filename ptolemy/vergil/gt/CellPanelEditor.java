@@ -50,12 +50,14 @@ import javax.swing.table.TableCellRenderer;
  */
 @SuppressWarnings("serial")
 public class CellPanelEditor extends AbstractCellEditor implements
-        TableCellEditor, TableCellRenderer {
+TableCellEditor, TableCellRenderer {
 
+    @Override
     public Object getCellEditorValue() {
         return _currentValue;
     }
 
+    @Override
     public Component getTableCellEditorComponent(JTable table, Object value,
             boolean isSelected, int row, int column) {
         JPanel panel = (JPanel) value;
@@ -65,6 +67,7 @@ public class CellPanelEditor extends AbstractCellEditor implements
         return panel;
     }
 
+    @Override
     public Component getTableCellRendererComponent(JTable table, Object value,
             boolean isSelected, boolean hasFocus, int row, int column) {
         JPanel panel = (JPanel) value;

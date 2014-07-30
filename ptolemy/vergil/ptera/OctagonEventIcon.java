@@ -85,6 +85,7 @@ public class OctagonEventIcon extends NameIcon {
     /** Create a background Figure.
      *  @return The figure.
      */
+    @Override
     public Figure createBackgroundFigure() {
         Point2D size = _getBackgroundSize();
         double width = size.getX();
@@ -113,6 +114,7 @@ public class OctagonEventIcon extends NameIcon {
     /** Create a Figure.
      *  @return The figure.
      */
+    @Override
     public Figure createFigure() {
         CompositeFigure figure = (CompositeFigure) super.createFigure();
 
@@ -149,6 +151,7 @@ public class OctagonEventIcon extends NameIcon {
     /** Create an icon.
      *  @return The icon.
      */
+    @Override
     public Icon createIcon() {
         if (_iconCache != null) {
             return _iconCache;
@@ -166,6 +169,7 @@ public class OctagonEventIcon extends NameIcon {
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
+    @Override
     protected Point2D _getBackgroundSize() {
         Point2D size = super._getBackgroundSize();
         if (size.getY() < _MIN_HEIGHT) {
@@ -174,6 +178,7 @@ public class OctagonEventIcon extends NameIcon {
         return size;
     }
 
+    @Override
     protected Paint _getFill() {
         Parameter colorParameter;
         try {
@@ -183,13 +188,13 @@ public class OctagonEventIcon extends NameIcon {
                 if (array.length() == 4) {
                     Color color = new Color(
                             (float) ((ScalarToken) array.getElement(0))
-                                    .doubleValue(),
+                            .doubleValue(),
                             (float) ((ScalarToken) array.getElement(1))
-                                    .doubleValue(),
+                            .doubleValue(),
                             (float) ((ScalarToken) array.getElement(2))
-                                    .doubleValue(),
+                            .doubleValue(),
                             (float) ((ScalarToken) array.getElement(3))
-                                    .doubleValue());
+                            .doubleValue());
                     return color;
                 }
             }
@@ -217,6 +222,7 @@ public class OctagonEventIcon extends NameIcon {
      *  and its <i>isInitialState</i> parameter is set to true.
      *  @return The line width to use in rendering the box.
      */
+    @Override
     protected float _getLineWidth() {
         NamedObj container = getContainer();
         if (container instanceof Event) {
@@ -274,7 +280,7 @@ public class OctagonEventIcon extends NameIcon {
 
         label.translateTo(background.getBounds().getCenterX(),
                 backBounds.getMaxY() + stringBounds.getHeight() / 2.0 - 1.0
-                        - _spacingValue);
+                - _spacingValue);
         figure.add(label);
     }
 

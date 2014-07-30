@@ -71,7 +71,7 @@ import ptolemy.vergil.gt.GTIngredientsEditor;
  @Pt.AcceptedRating Red (tfeng)
  */
 public class AtomicActorMatcher extends TypedAtomicActor implements GTEntity,
-        ValueListener {
+ValueListener {
 
     /** Construct an atomic actor matcher to be either contained in the pattern
      *  of a {@link TransformationRule} or in the replacement.
@@ -113,6 +113,7 @@ public class AtomicActorMatcher extends TypedAtomicActor implements GTEntity,
      *
      *  @return The attribute that stores all the criteria.
      */
+    @Override
     public GTIngredientsAttribute getCriteriaAttribute() {
         return criteria;
     }
@@ -124,6 +125,7 @@ public class AtomicActorMatcher extends TypedAtomicActor implements GTEntity,
      *
      *  @return The icon description.
      */
+    @Override
     public String getDefaultIconDescription() {
         return _ICON_DESCRIPTION;
     }
@@ -132,6 +134,7 @@ public class AtomicActorMatcher extends TypedAtomicActor implements GTEntity,
      *
      *  @return The attribute that stores all the operations.
      */
+    @Override
     public GTIngredientsAttribute getOperationsAttribute() {
         return operations;
     }
@@ -143,6 +146,7 @@ public class AtomicActorMatcher extends TypedAtomicActor implements GTEntity,
      *  @return The attribute that stores the name of the corresponding entity.
      *  @see #labelSet()
      */
+    @Override
     public PatternObjectAttribute getPatternObjectAttribute() {
         return patternObject;
     }
@@ -152,6 +156,7 @@ public class AtomicActorMatcher extends TypedAtomicActor implements GTEntity,
      *
      *  @return The set of names.
      */
+    @Override
     public Set<String> labelSet() {
         long version = workspace().getVersion();
         if (_labelSet == null || version > _version) {
@@ -181,6 +186,7 @@ public class AtomicActorMatcher extends TypedAtomicActor implements GTEntity,
      *  @param object The NamedObj.
      *  @return Whether this AtomicActorMatcher can match the given object.
      */
+    @Override
     public boolean match(NamedObj object) {
         return object instanceof ComponentEntity;
     }
@@ -190,6 +196,7 @@ public class AtomicActorMatcher extends TypedAtomicActor implements GTEntity,
      *  @param attribute The attribute containing ingredients of this entity.
      *  @see GTEntityUtils#updateAppearance(GTEntity, GTIngredientsAttribute)
      */
+    @Override
     public void updateAppearance(GTIngredientsAttribute attribute) {
         GTEntityUtils.updateAppearance(this, attribute);
     }
@@ -199,6 +206,7 @@ public class AtomicActorMatcher extends TypedAtomicActor implements GTEntity,
      *  @param settable The object that has changed value.
      *  @see GTEntityUtils#valueChanged(GTEntity, Settable)
      */
+    @Override
     public void valueChanged(Settable settable) {
         GTEntityUtils.valueChanged(this, settable);
     }
@@ -233,6 +241,7 @@ public class AtomicActorMatcher extends TypedAtomicActor implements GTEntity,
      *  @param depth The depth in the hierarchy, to determine indenting.
      *  @exception IOException If an I/O error occurs.
      */
+    @Override
     protected void _exportMoMLContents(Writer output, int depth)
             throws IOException {
         super._exportMoMLContents(output, depth);

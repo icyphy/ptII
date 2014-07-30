@@ -56,6 +56,7 @@ public class FastLinkedList<E> implements Collection<E> {
      *  @param element The element to be added.
      *  @return Always true.
      */
+    @Override
     public boolean add(E element) {
         Entry entry = new Entry(this, element);
         addEntryToTail(entry);
@@ -68,6 +69,7 @@ public class FastLinkedList<E> implements Collection<E> {
      *  @param collection The collection.
      *  @return Always true.
      */
+    @Override
     public boolean addAll(Collection<? extends E> collection) {
         for (E element : collection) {
             add(element);
@@ -156,6 +158,7 @@ public class FastLinkedList<E> implements Collection<E> {
 
     /** Clear this linked list.
      */
+    @Override
     public void clear() {
         _head = _tail = null;
         _size = 0;
@@ -167,6 +170,7 @@ public class FastLinkedList<E> implements Collection<E> {
      *  @param element The element.
      *  @return true if the element is found.
      */
+    @Override
     public boolean contains(Object element) {
         return findEntry((E) element) != null;
     }
@@ -177,6 +181,7 @@ public class FastLinkedList<E> implements Collection<E> {
      *  @param collection The collection.
      *  @return true if all the elements are found.
      */
+    @Override
     public boolean containsAll(Collection<?> collection) {
         for (Object element : collection) {
             if (!contains(element)) {
@@ -223,6 +228,7 @@ public class FastLinkedList<E> implements Collection<E> {
      *
      *  @return true if this collection is empty.
      */
+    @Override
     public boolean isEmpty() {
         return _head == null;
     }
@@ -231,6 +237,7 @@ public class FastLinkedList<E> implements Collection<E> {
      *
      *  @return The iterator to iterate elements in this linked list.
      */
+    @Override
     public Iterator<E> iterator() {
         throw new KernelRuntimeException("Not implemented.");
     }
@@ -241,6 +248,7 @@ public class FastLinkedList<E> implements Collection<E> {
      *  @return true if an entry is removed, or false if an entry cannot be
      *   found.
      */
+    @Override
     public boolean remove(Object element) {
         Entry entry = findEntry((E) element);
         if (entry == null) {
@@ -269,6 +277,7 @@ public class FastLinkedList<E> implements Collection<E> {
      *  @return true if this linked list is altered, or false if no entry is
      *   removed.
      */
+    @Override
     public boolean removeAll(Collection<?> collection) {
         boolean modified = false;
         for (Object element : collection) {
@@ -336,6 +345,7 @@ public class FastLinkedList<E> implements Collection<E> {
      *  @return true if this linked list is altered, or false if no entry is
      *   removed.
      */
+    @Override
     public boolean retainAll(Collection<?> collection) {
         boolean modified = false;
         Entry entry = _head;
@@ -353,6 +363,7 @@ public class FastLinkedList<E> implements Collection<E> {
      *
      *  @return The size.
      */
+    @Override
     public int size() {
         if (_recalculateSize) {
             _size = 0;
@@ -366,9 +377,10 @@ public class FastLinkedList<E> implements Collection<E> {
     }
 
     /** Return an array that contains all the elements in this linked list.
-    *
-    *  @return The array.
-    */
+     *
+     *  @return The array.
+     */
+    @Override
     public Object[] toArray() {
         Object[] array = new Object[size()];
         Entry entry = _head;
@@ -389,6 +401,7 @@ public class FastLinkedList<E> implements Collection<E> {
      *  @return The given array, or a new array if the given array is not big
      *   enough.
      */
+    @Override
     public <T> T[] toArray(T[] array) {
         if (array.length < size()) {
             array = (T[]) Array.newInstance(

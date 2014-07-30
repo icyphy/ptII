@@ -120,6 +120,7 @@ public class TotallyOrderedSet {
      *  @return The enumeration of all the elements.
      *  @deprecated Use elementList() instead.
      */
+    @Deprecated
     public Enumeration elements() {
         return Collections.enumeration(_set);
     }
@@ -234,6 +235,7 @@ public class TotallyOrderedSet {
      *  @return The smallest element.
      *  @deprecated Use removeFirst() instead.
      */
+    @Deprecated
     public Object take() {
         return _set.removeFirst();
     }
@@ -243,6 +245,7 @@ public class TotallyOrderedSet {
      *  value. This method is for test purpose.
      *  @return The string description of the set.
      */
+    @Override
     public String toString() {
         StringBuffer result = new StringBuffer();
         Iterator elements = elementList().iterator();

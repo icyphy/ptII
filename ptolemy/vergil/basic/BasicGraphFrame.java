@@ -206,8 +206,8 @@ import diva.util.java2d.ShapeUtilities;
  */
 @SuppressWarnings("serial")
 public abstract class BasicGraphFrame extends PtolemyFrame implements
-        Printable, ClipboardOwner, ChangeListener, MouseWheelListener,
-        MouseListener, MouseMotionListener, ImageExportable, HTMLExportable {
+Printable, ClipboardOwner, ChangeListener, MouseWheelListener,
+MouseListener, MouseMotionListener, ImageExportable, HTMLExportable {
 
     /** Construct a frame associated with the specified Ptolemy II model
      *  or object. After constructing this, it is necessary
@@ -258,6 +258,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
      *  user to save the data.
      *  @param change The change that has been executed.
      */
+    @Override
     public void changeExecuted(ChangeRequest change) {
         boolean persistent = true;
 
@@ -283,6 +284,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
      *  @param change The change that was attempted.
      *  @param exception The exception that resulted.
      */
+    @Override
     public void changeFailed(ChangeRequest change, Exception exception) {
         // Do not report if it has already been reported.
         if (change == null) {
@@ -582,10 +584,10 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
                             // Create external links.
                             if (duplicateRelation) {
                                 extRelations
-                                        .append("<relation name=\""
-                                                + relation.getName()
-                                                + "\" class=\""
-                                                + "ptolemy.actor.TypedIORelation\"/>\n");
+                                .append("<relation name=\""
+                                        + relation.getName()
+                                        + "\" class=\""
+                                        + "ptolemy.actor.TypedIORelation\"/>\n");
 
                                 ComponentEntity otherEntity = (ComponentEntity) tailProperties.port
                                         .getContainer();
@@ -649,10 +651,10 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
                             // Create external links.
                             if (duplicateRelation) {
                                 intRelations
-                                        .append("<relation name=\""
-                                                + relation.getName()
-                                                + "\" class=\""
-                                                + "ptolemy.actor.TypedIORelation\"/>\n");
+                                .append("<relation name=\""
+                                        + relation.getName()
+                                        + "\" class=\""
+                                        + "ptolemy.actor.TypedIORelation\"/>\n");
 
                                 ComponentEntity otherEntity = (ComponentEntity) tailProperties.port
                                         .getContainer();
@@ -722,7 +724,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
                     + "\" class=\"ptolemy.actor.TypedCompositeActor\">\n");
             moml.append("\t<property name=\"_location\" class=\""
                     + "ptolemy.kernel.util.Location\" value=\"" + location[0]
-                    + ", " + location[1] + "\">\n");
+                            + ", " + location[1] + "\">\n");
             moml.append("\t</property>\n");
             moml.append(newPorts);
 
@@ -800,7 +802,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
                     container);
         } catch (Exception ex) {
             MessageHandler
-                    .error("Delete failed, changeRequest was:" + moml, ex);
+            .error("Delete failed, changeRequest was:" + moml, ex);
         }
 
         graphModel.dispatchGraphEvent(new GraphEvent(this,
@@ -812,6 +814,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
      *  this model from getting garbage collected.  This method calls
      *  {@link #disposeSuper()}.
      */
+    @Override
     public void dispose() {
         if (_debugClosing) {
             System.out.println("BasicGraphFrame.dispose() : " + this.getName());
@@ -873,6 +876,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
     /** Expand all the rows of the library.
      *  Expanding all the rows is useful for testing.
      */
+    @Override
     public void expandAllLibraryRows() {
         for (int i = 0; i < _library.getRowCount(); i++) {
             _library.expandRow(i);
@@ -892,8 +896,8 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
                     alternateGetMoml = new StringAttribute(model,
                             "_alternateGetMomlAction");
                     alternateGetMoml
-                            .setExpression(DesignPatternGetMoMLAction.class
-                                    .getName());
+                    .setExpression(DesignPatternGetMoMLAction.class
+                            .getName());
                 }
 
                 if (model.getAttribute("_designPatternIcon") == null) {
@@ -982,6 +986,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
     /** Return the size of the contents of this window.
      *  @return The size of the contents.
      */
+    @Override
     public Dimension getContentSize() {
         return getJGraph().getSize();
     }
@@ -1012,6 +1017,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
                 point.getY() - halo, width, width);
         // Filter away all figures given by the filteredFigures array
         CanvasComponent figureUnderMouse = layer.pick(region, new Filter() {
+            @Override
             public boolean accept(Object o) {
                 for (Object filter : filteredFigures) {
                     CanvasComponent figure = (CanvasComponent) o;
@@ -1089,7 +1095,6 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
         // static members.
         setDirectory(directory);
     }
-
 
     /** Return a set of instances of NamedObj representing the objects
      *  that are currently selected.  This set has no particular order
@@ -1175,7 +1180,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
                     if (attribute == null
                             || !(attribute instanceof StringAttribute)
                             || !((StringAttribute) attribute).getExpression()
-                                    .equals(className)) {
+                            .equals(className)) {
                         report(new IllegalActionException("The model \"" + file
                                 + "\" is not a design pattern."));
                     } else {
@@ -1195,6 +1200,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
 
     /** Do nothing.
      */
+    @Override
     public void lostOwnership(Clipboard clipboard, Transferable transferable) {
     }
 
@@ -1257,9 +1263,9 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
                 NamedObj targetContainer = target.getContainer();
                 while (targetContainer != null
                         && (locationAttribute = (Location) targetContainer
-                                .getAttribute("_location", Location.class)) == null) {
+                        .getAttribute("_location", Location.class)) == null) {
                     // FindBugs: Load of known null value.  locationAttribute is always null here.
-                    // The break is unnecessary as if locationAttribute is non-null, then 
+                    // The break is unnecessary as if locationAttribute is non-null, then
                     // the body of the while loop is not executed.
                     //if (locationAttribute != null
                     if (targetContainer.equals(container)) {
@@ -1370,6 +1376,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
      *   NO_SUCH_PAGE if pageIndex specifies a non-existent page.
      *  @exception PrinterException If the print job is terminated.
      */
+    @Override
     public int print(Graphics graphics, PageFormat format, int index)
             throws PrinterException {
         if (getJGraph() != null) {
@@ -1488,6 +1495,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
      *  @since Ptolemy 2.1
      *  @deprecated Use {@link ptolemy.actor.gui.UserActorLibrary#saveComponentInLibrary(Configuration, Entity)}
      */
+    @Deprecated
     public static void saveComponentInLibrary(Configuration configuration,
             Entity entity) {
         try {
@@ -1497,7 +1505,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
             // We catch exceptions here because this method used to
             // not throw Exceptions, and we don't want to break compatibility.
             MessageHandler
-                    .error("Failed to save \"" + entity.getName() + "\".");
+            .error("Failed to save \"" + entity.getName() + "\".");
         }
     }
 
@@ -1551,7 +1559,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
      *  creating a parameter.
      */
     public void updateWindowAttributes() throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         // First, record size and position.
 
         // See "composite window size & position not always saved"
@@ -1697,6 +1705,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
      *  @exception PrinterException If unable to write associated files.
      *  @exception IllegalActionException If something goes wrong accessing the model.
      */
+    @Override
     public void writeHTML(ExportParameters parameters, Writer writer)
             throws PrinterException, IOException, IllegalActionException {
         if (_exportHTMLAction != null) {
@@ -1717,6 +1726,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
      *  @exception IOException If writing to the stream fails.
      *  @exception PrinterException  If the specified format is not supported.
      */
+    @Override
     public void writeImage(OutputStream stream, String format)
             throws PrinterException, IOException {
         writeImage(stream, format, null);
@@ -1831,6 +1841,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
      * However, events _are_ handled by the components within this component.
      * @param event The mouse event.
      */
+    @Override
     public void mouseClicked(MouseEvent event) {
         // Implementation of the MouseMotionListener interface.
     }
@@ -1839,6 +1850,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
      *  while the middle mouse button is held down.
      * @param event The drag event.
      */
+    @Override
     public void mouseDragged(MouseEvent event) {
         // Implementation of the MouseMotionListener interface.
         // See https://chess.eecs.berkeley.edu/bugzilla/show_bug.cgi?id=73
@@ -1865,16 +1877,18 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
      * However, events _are_ handled by the components within this component.
      * @param event The mouse event.
      */
+    @Override
     public void mouseEntered(MouseEvent event) {
         // Implementation of the MouseMotionListener interface.
     }
 
     /**
-      * Called when the mouse leaves this component.
-      * This base class does nothing when the exits this component.
-      * However, events _are_ handled by the components within this component.
-      * @param event The mouse event.
-      */
+     * Called when the mouse leaves this component.
+     * This base class does nothing when the exits this component.
+     * However, events _are_ handled by the components within this component.
+     * @param event The mouse event.
+     */
+    @Override
     public void mouseExited(MouseEvent event) {
         // Implementation of the MouseMotionListener interface.
     }
@@ -1884,6 +1898,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
      * @param event Contains details of the movement event.
      * However, events _are_ handled by the components within this component.
      */
+    @Override
     public void mouseMoved(MouseEvent event) {
         // Implementation of the MouseMotionListener interface.
     }
@@ -1891,6 +1906,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
     /** Store the location of the middle mouse event.
      * @param event The mouse event.
      */
+    @Override
     public void mousePressed(MouseEvent event) {
         if (event.isAltDown()) {
             // Only interested in middle button. (defined as the alt modifier)
@@ -1901,11 +1917,12 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
     }
 
     /**
-      * Called when the mouse is released.
-      * This base class does nothing when the mouse is moved.
-      * However, events _are_ handled by the components within this component.
-      * @param event The mouse event.
-      */
+     * Called when the mouse is released.
+     * This base class does nothing when the mouse is moved.
+     * However, events _are_ handled by the components within this component.
+     * @param event The mouse event.
+     */
+    @Override
     public void mouseReleased(MouseEvent event) {
         // Implementation of the MouseMotionListener interface.
     }
@@ -1913,6 +1930,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
     /** Scroll in when the mouse wheel is moved.
      * @param event The mouse wheel event.
      */
+    @Override
     public void mouseWheelMoved(MouseWheelEvent event) {
         // Scrolling the wheel away from you zooms in. This is arbitrary and
         // should be configurable by the user.
@@ -1939,6 +1957,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
      *  in the Vergil left hand tree menu.
      *  @deprecated Use {@link ptolemy.actor.gui.UserActorLibrary#USER_LIBRARY_NAME}
      */
+    @Deprecated
     public static String VERGIL_USER_LIBRARY_NAME = UserActorLibrary.USER_LIBRARY_NAME;
 
     ///////////////////////////////////////////////////////////////////
@@ -1963,6 +1982,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
 
     /** Create the menus that are used by this frame.
      */
+    @Override
     protected void _addMenus() {
         super._addMenus();
 
@@ -2052,6 +2072,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
      *  Also remove the listeners our graph model has created.
      *  @return True if the close completes, and false otherwise.
      */
+    @Override
     protected boolean _close() {
         if (_debugClosing) {
             System.out.println("BasicGraphFrame._close() : " + this.getName());
@@ -2131,6 +2152,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
      *  in GIF, PNG, and possibly PDF.
      *  @return The items in the File menu.
      */
+    @Override
     protected JMenuItem[] _createFileMenuItems() {
         JMenuItem[] fileMenuItems = super._createFileMenuItems();
 
@@ -2181,14 +2203,14 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
                         // case is that we will have no Import FMU in the menu.
                         // That is better than preventing the user from opening a model.
                         System.err
-                                .println("Warning: Tried to create the an import menu item, but failed: "
-                                        + throwable);
+                        .println("Warning: Tried to create the an import menu item, but failed: "
+                                + throwable);
                     }
                 }
             } catch (Throwable throwable) {
                 System.err
-                        .println("Problem reading the _importActionClassNames parameter from "
-                                + "the confinguration: " + throwable);
+                .println("Problem reading the _importActionClassNames parameter from "
+                        + "the confinguration: " + throwable);
             }
 
             // PDF Action.
@@ -2218,8 +2240,8 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
                 // case is that we will have no Export to Web in the menu.
                 // That is better than preventing the user from opening a model.
                 System.err
-                        .println("Warning: Tried to create the Export to Web menu item, but failed: "
-                                + throwable);
+                .println("Warning: Tried to create the Export to Web menu item, but failed: "
+                        + throwable);
             }
         }
 
@@ -2376,7 +2398,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
 
                 String[] attributeNames = { "_alternateGetMomlAction",
                         "_designPatternIcon", "_transformationBefore",
-                        "_transformationAfter" };
+                "_transformationAfter" };
                 for (String attributeName : attributeNames) {
                     Attribute attribute = model.getAttribute(attributeName);
                     if (attribute != null) {
@@ -2423,6 +2445,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
      *  @return The directory last accessed.
      *  @deprecated Use {@link #getLastDirectory()} instead
      */
+    @Deprecated
     protected File _getDirectory() {
         return _getCurrentDirectory();
     }
@@ -2703,9 +2726,9 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
 
             _libraryContextMenuCreator = new PTreeMenuCreator();
             _libraryContextMenuCreator
-                    .addMenuItemFactory(new OpenLibraryMenuItemFactory());
+            .addMenuItemFactory(new OpenLibraryMenuItemFactory());
             _libraryContextMenuCreator
-                    .addMenuItemFactory(new DocumentationMenuItemFactory());
+            .addMenuItemFactory(new DocumentationMenuItemFactory());
             _library.addMouseListener(_libraryContextMenuCreator);
 
             _libraryScrollPane = new JScrollPane(_library);
@@ -2758,7 +2781,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
                 // I'm not sure if that is relevant for the hierarchy tree browser.
                 _treeView = new PTree(_treeViewModel, false);
                 _treeView
-                        .addTreeSelectionListener(new HierarchyTreeSelectionListener());
+                .addTreeSelectionListener(new HierarchyTreeSelectionListener());
                 _treeView.setBackground(BACKGROUND_COLOR);
                 _treeView.setCellRenderer(new HierarchyTreeCellRenderer());
 
@@ -2841,7 +2864,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
         GUIUtilities.addToolBarButton(_toolbar, _openContainerAction);
         if (getModel() == getModel().toplevel()
                 || getModel().getClass().getName()
-                        .equals("ptolemy.domains.modal.modal.ModalController")) {
+                .equals("ptolemy.domains.modal.modal.ModalController")) {
             // If we are at the top level, disable.  If we are in a
             // ModalModel, disable.  See "Up button does not work in
             // modal models"
@@ -2969,6 +2992,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
         final IGuiAction layoutGuiAction = _createLayoutAction();
         if (layoutGuiAction != null) {
             _layoutAction = new AbstractAction("Automatic Layout") {
+                @Override
                 public void actionPerformed(ActionEvent e) {
                     layoutGuiAction.doAction(getModel());
                 }
@@ -2980,6 +3004,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
             // The advanced layout action is not available, so use the simple
             // Ptolemy layout algorithm.
             _layoutAction = new AbstractAction("Automatic Layout") {
+                @Override
                 public void actionPerformed(ActionEvent e) {
                     new PtolemyLayoutAction().doAction(getModel());
                 }
@@ -3017,6 +3042,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
      *  {@link #_saveAsJFileChooserComponent()} is used.</p>
      *  @return A file dialog for save as.
      */
+    @Override
     protected FileDialog _saveAsFileDialogComponent() {
         FileDialog fileDialog = super._saveAsFileDialogComponent();
         if (_isDesignPattern()) {
@@ -3048,6 +3074,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
 
      *  @return A file dialog for save as.
      */
+    @Override
     protected JFileChooser _saveAsJFileChooserComponent() {
         JFileChooser fileChooser = super._saveAsJFileChooserComponent();
 
@@ -3069,6 +3096,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
      *  @param directory The directory last accessed.
      *  @deprecated Use {@link #setDirectory(File)} instead
      */
+    @Deprecated
     protected void _setDirectory(File directory) {
         setDirectory(directory);
     }
@@ -3086,6 +3114,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
      *  @param file The file to write to.
      *  @exception IOException If the write fails.
      */
+    @Override
     protected void _writeFile(File file) throws IOException {
         try {
             updateWindowAttributes();
@@ -3093,8 +3122,8 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
             // Ignore problems here.  Errors simply result in a
             // default size and location.
             System.out
-                    .println("While writing, failed to save size, position or zoom factor: "
-                            + ex);
+            .println("While writing, failed to save size, position or zoom factor: "
+                    + ex);
         }
 
         if (_isDesignPattern()) {
@@ -3453,6 +3482,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
         /** Invoked when the mouse is pressed on a layer
          * or figure.
          */
+        @Override
         public void mousePressed(LayerEvent event) {
             Component component = event.getComponent();
 
@@ -3474,11 +3504,12 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
                     "Copy the current selection onto the clipboard.");
             putValue(GUIUtilities.ACCELERATOR_KEY, KeyStroke.getKeyStroke(
                     KeyEvent.VK_C, Toolkit.getDefaultToolkit()
-                            .getMenuShortcutKeyMask()));
+                    .getMenuShortcutKeyMask()));
             putValue(GUIUtilities.MNEMONIC_KEY, Integer.valueOf(KeyEvent.VK_C));
         }
 
         /** Copy the current selection. */
+        @Override
         public void actionPerformed(ActionEvent e) {
             copy();
         }
@@ -3495,11 +3526,12 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
             putValue("tooltip", "Cut the current selection onto the clipboard.");
             putValue(GUIUtilities.ACCELERATOR_KEY, KeyStroke.getKeyStroke(
                     KeyEvent.VK_X, Toolkit.getDefaultToolkit()
-                            .getMenuShortcutKeyMask()));
+                    .getMenuShortcutKeyMask()));
             putValue(GUIUtilities.MNEMONIC_KEY, Integer.valueOf(KeyEvent.VK_T));
         }
 
         /** Copy and delete the current selection. */
+        @Override
         public void actionPerformed(ActionEvent e) {
             cut();
         }
@@ -3514,6 +3546,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
          *  currently selected.  In addition, delete any edges
          *  that are connected to any deleted nodes.
          */
+        @Override
         public void actionPerformed(ActionEvent e) {
             delete();
         }
@@ -3530,8 +3563,10 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
          * Add an item to the given context menu that bring up the
          * documentation for the given object
          */
+        @Override
         public JMenuItem create(final JContextMenu menu, final NamedObj object) {
             Action action = new GetDocumentationAction() {
+                @Override
                 public void actionPerformed(ActionEvent e) {
                     Configuration configuration = getConfiguration();
                     setConfiguration(configuration);
@@ -3558,6 +3593,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
             putValue(GUIUtilities.MNEMONIC_KEY, Integer.valueOf(KeyEvent.VK_E));
         }
 
+        @Override
         public void actionPerformed(ActionEvent e) {
             Configuration configuration = getConfiguration();
             PtolemyPreferences preferences = null;
@@ -3573,7 +3609,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
 
             if (preferences == null) {
                 MessageHandler
-                        .message("No preferences given in the configuration.");
+                .message("No preferences given in the configuration.");
             } else {
                 // Open a modal dialog to edit the parameters.
                 new EditParametersDialog(BasicGraphFrame.this, preferences,
@@ -3597,9 +3633,9 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
                     GraphModel graphModel = frame._getGraphController()
                             .getGraphModel();
                     graphModel
-                            .dispatchGraphEvent(new GraphEvent(this,
-                                    GraphEvent.STRUCTURE_CHANGED, graphModel
-                                            .getRoot()));
+                    .dispatchGraphEvent(new GraphEvent(this,
+                            GraphEvent.STRUCTURE_CHANGED, graphModel
+                            .getRoot()));
 
                     if (frame._graphPanner != null) {
                         frame._graphPanner.repaint();
@@ -3685,6 +3721,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
          *
          *  @param e The event that triggered this action.
          */
+        @Override
         public void actionPerformed(ActionEvent e) {
             JFileChooserBugFix jFileChooserBugFix = new JFileChooserBugFix();
             Color background = null;
@@ -3701,8 +3738,8 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
                 LinkedList extensions = new LinkedList();
                 extensions.add(_formatName);
                 ptFileChooser
-                        .addChoosableFileFilter(new ExtensionFilenameFilter(
-                                extensions));
+                .addChoosableFileFilter(new ExtensionFilenameFilter(
+                        extensions));
                 ptFileChooser.setCurrentDirectory(_directory);
 
                 int returnVal = ptFileChooser.showDialog(
@@ -3778,6 +3815,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
          *  @param fileOrDirectory The file or directory to be checked.
          *  @return true if the file is a directory.
          */
+        @Override
         public boolean accept(File fileOrDirectory) {
             if (fileOrDirectory.isDirectory()) {
                 return true;
@@ -3786,6 +3824,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
         }
 
         /**  The description of this filter. */
+        @Override
         public String getDescription() {
             return "Choose a Folder";
         }
@@ -3802,11 +3841,12 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
             putValue("tooltip", "Find occurrences of specified text.");
             putValue(GUIUtilities.ACCELERATOR_KEY, KeyStroke.getKeyStroke(
                     KeyEvent.VK_F, Toolkit.getDefaultToolkit()
-                            .getMenuShortcutKeyMask()));
+                    .getMenuShortcutKeyMask()));
             putValue(GUIUtilities.MNEMONIC_KEY, Integer.valueOf(KeyEvent.VK_F));
         }
 
         /** Open a dialog to find the specified text. */
+        @Override
         public void actionPerformed(ActionEvent e) {
             DialogTableau dialogTableau = DialogTableau.createDialog(
                     BasicGraphFrame.this, getConfiguration(), getEffigy(),
@@ -3827,6 +3867,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
          *  currently selected.  In addition, delete any edges
          *  that are connected to any deleted nodes.
          */
+        @Override
         public void actionPerformed(ActionEvent e) {
             _library.clearSelection();
             String text = _findInLibraryEntryBox.getText().trim()
@@ -4027,6 +4068,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
          *  If the object is the same as the currently displayed Ptolemy
          *  model, then make it bold.
          */
+        @Override
         public Component getTreeCellRendererComponent(JTree tree, Object value,
                 boolean sel, boolean expanded, boolean leaf, int row,
                 boolean hasFocus) {
@@ -4048,11 +4090,12 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
 
     /** The user selected a node in the Hierarchy tree browser */
     private class HierarchyTreeSelectionListener implements
-            TreeSelectionListener {
+    TreeSelectionListener {
         /** The value of the selection in the model hierarchy tree
          *  browser changed.
          *  @param event The event.
          */
+        @Override
         public void valueChanged(TreeSelectionEvent event) {
             // Returns the last path element of the selection.
             // This method is useful only when the selection model allows a single selection.
@@ -4083,10 +4126,11 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
             putValue("tooltip", "Send to back of like objects");
             putValue(GUIUtilities.ACCELERATOR_KEY, KeyStroke.getKeyStroke(
                     KeyEvent.VK_B, Toolkit.getDefaultToolkit()
-                            .getMenuShortcutKeyMask()));
+                    .getMenuShortcutKeyMask()));
             putValue(GUIUtilities.MNEMONIC_KEY, Integer.valueOf(KeyEvent.VK_B));
         }
 
+        @Override
         public void actionPerformed(ActionEvent e) {
             final NamedObj container = (NamedObj) _getGraphModel().getRoot();
 
@@ -4103,6 +4147,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
 
             // Issue a change request, since this requires write access.
             ChangeRequest request = new ChangeRequest(container, "Send to back") {
+                @Override
                 protected void _execute() throws IllegalActionException {
                     MoveAction.move(elements, MoveAction.TO_FIRST, container);
                 }
@@ -4126,10 +4171,11 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
             putValue("tooltip", "Bring to front of like objects");
             putValue(GUIUtilities.ACCELERATOR_KEY, KeyStroke.getKeyStroke(
                     KeyEvent.VK_F, Toolkit.getDefaultToolkit()
-                            .getMenuShortcutKeyMask()));
+                    .getMenuShortcutKeyMask()));
             putValue(GUIUtilities.MNEMONIC_KEY, Integer.valueOf(KeyEvent.VK_F));
         }
 
+        @Override
         public void actionPerformed(ActionEvent e) {
             final NamedObj container = (NamedObj) _getGraphModel().getRoot();
 
@@ -4147,6 +4193,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
             // Issue a change request, since this requires write access.
             ChangeRequest request = new ChangeRequest(container,
                     "Bring to front") {
+                @Override
                 protected void _execute() throws IllegalActionException {
                     MoveAction.move(elements, MoveAction.TO_LAST, container);
                 }
@@ -4169,13 +4216,14 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
             putValue("tooltip", "Paste the contents of the clipboard.");
             putValue(GUIUtilities.ACCELERATOR_KEY, KeyStroke.getKeyStroke(
                     KeyEvent.VK_V, Toolkit.getDefaultToolkit()
-                            .getMenuShortcutKeyMask()));
+                    .getMenuShortcutKeyMask()));
             putValue(GUIUtilities.MNEMONIC_KEY, Integer.valueOf(KeyEvent.VK_P));
         }
 
         /** Paste the current contents of the clipboard into
          *  the current model.
          */
+        @Override
         public void actionPerformed(ActionEvent e) {
             paste();
         }
@@ -4201,13 +4249,13 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
             // jdk1.3/docs/guide/resources/resources.html
             GUIUtilities.addIcons(this, new String[][] {
                     { "/ptolemy/vergil/basic/img/up.gif",
-                            GUIUtilities.LARGE_ICON },
-                    { "/ptolemy/vergil/basic/img/up_o.gif",
+                        GUIUtilities.LARGE_ICON },
+                        { "/ptolemy/vergil/basic/img/up_o.gif",
                             GUIUtilities.ROLLOVER_ICON },
-                    { "/ptolemy/vergil/basic/img/up_ov.gif",
-                            GUIUtilities.ROLLOVER_SELECTED_ICON },
-                    { "/ptolemy/vergil/basic/img/up_on.gif",
-                            GUIUtilities.SELECTED_ICON } });
+                            { "/ptolemy/vergil/basic/img/up_ov.gif",
+                                GUIUtilities.ROLLOVER_SELECTED_ICON },
+                                { "/ptolemy/vergil/basic/img/up_on.gif",
+                                    GUIUtilities.SELECTED_ICON } });
 
             putValue("tooltip", description);
 
@@ -4216,6 +4264,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
         /** Open the parent container, if any.
          *  @param event The action event, ignored by this method.
          */
+        @Override
         public void actionPerformed(ActionEvent event) {
             openContainer();
         }
@@ -4232,8 +4281,10 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
          * Add an item to the given context menu that will open the
          * given object as an editable model.
          */
+        @Override
         public JMenuItem create(final JContextMenu menu, final NamedObj object) {
             Action action = new AbstractAction("Open for Editing") {
+                @Override
                 public void actionPerformed(ActionEvent e) {
                     try {
                         getConfiguration().openModel(object);
@@ -4272,18 +4323,19 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
             // jdk1.3/docs/guide/resources/resources.html
             GUIUtilities.addIcons(this, new String[][] {
                     { "/ptolemy/vergil/basic/img/print.gif",
-                            GUIUtilities.LARGE_ICON },
-                    { "/ptolemy/vergil/basic/img/print_o.gif",
+                        GUIUtilities.LARGE_ICON },
+                        { "/ptolemy/vergil/basic/img/print_o.gif",
                             GUIUtilities.ROLLOVER_ICON },
-                    { "/ptolemy/vergil/basic/img/print_ov.gif",
-                            GUIUtilities.ROLLOVER_SELECTED_ICON },
-                    { "/ptolemy/vergil/basic/img/print_on.gif",
-                            GUIUtilities.SELECTED_ICON } });
+                            { "/ptolemy/vergil/basic/img/print_ov.gif",
+                                GUIUtilities.ROLLOVER_SELECTED_ICON },
+                                { "/ptolemy/vergil/basic/img/print_on.gif",
+                                    GUIUtilities.SELECTED_ICON } });
         }
 
         /** Print the current layout.
          *  @param event The action event, ignored by this method.
          */
+        @Override
         public void actionPerformed(ActionEvent event) {
             _print();
         }
@@ -4315,6 +4367,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
          *
          * @param e The event for the action.
          */
+        @Override
         public void actionPerformed(ActionEvent e) {
             redo();
         }
@@ -4341,19 +4394,20 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
             // jdk1.3/docs/guide/resources/resources.html
             GUIUtilities.addIcons(this, new String[][] {
                     { "/ptolemy/vergil/basic/img/save.gif",
-                            GUIUtilities.LARGE_ICON },
-                    { "/ptolemy/vergil/basic/img/save_o.gif",
+                        GUIUtilities.LARGE_ICON },
+                        { "/ptolemy/vergil/basic/img/save_o.gif",
                             GUIUtilities.ROLLOVER_ICON },
-                    { "/ptolemy/vergil/basic/img/save_ov.gif",
-                            GUIUtilities.ROLLOVER_SELECTED_ICON },
-                    { "/ptolemy/vergil/basic/img/save_on.gif",
-                            GUIUtilities.SELECTED_ICON } });
+                            { "/ptolemy/vergil/basic/img/save_ov.gif",
+                                GUIUtilities.ROLLOVER_SELECTED_ICON },
+                                { "/ptolemy/vergil/basic/img/save_on.gif",
+                                    GUIUtilities.SELECTED_ICON } });
             putValue(GUIUtilities.MNEMONIC_KEY, Integer.valueOf(KeyEvent.VK_Z));
         }
 
         /** Save the current layout.
          *  @param e The action event, ignored by this method.
          */
+        @Override
         public void actionPerformed(ActionEvent e) {
             _save();
         }
@@ -4385,6 +4439,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
          *
          * @param e The event for the action.
          */
+        @Override
         public void actionPerformed(ActionEvent e) {
             undo();
         }
@@ -4408,13 +4463,13 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
             // jdk1.3/docs/guide/resources/resources.html
             GUIUtilities.addIcons(this, new String[][] {
                     { "/ptolemy/vergil/basic/img/zoomin.gif",
-                            GUIUtilities.LARGE_ICON },
-                    { "/ptolemy/vergil/basic/img/zoomin_o.gif",
+                        GUIUtilities.LARGE_ICON },
+                        { "/ptolemy/vergil/basic/img/zoomin_o.gif",
                             GUIUtilities.ROLLOVER_ICON },
-                    { "/ptolemy/vergil/basic/img/zoomin_ov.gif",
-                            GUIUtilities.ROLLOVER_SELECTED_ICON },
-                    { "/ptolemy/vergil/basic/img/zoomin_on.gif",
-                            GUIUtilities.SELECTED_ICON } });
+                            { "/ptolemy/vergil/basic/img/zoomin_ov.gif",
+                                GUIUtilities.ROLLOVER_SELECTED_ICON },
+                                { "/ptolemy/vergil/basic/img/zoomin_on.gif",
+                                    GUIUtilities.SELECTED_ICON } });
 
             putValue("tooltip", description + " (Ctrl+Shift+=)");
 
@@ -4423,13 +4478,14 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
             // work, so we have to do it this way.
             putValue(GUIUtilities.ACCELERATOR_KEY, KeyStroke.getKeyStroke(
                     KeyEvent.VK_EQUALS, Toolkit.getDefaultToolkit()
-                            .getMenuShortcutKeyMask() | Event.SHIFT_MASK));
+                    .getMenuShortcutKeyMask() | Event.SHIFT_MASK));
             putValue(GUIUtilities.MNEMONIC_KEY, Integer.valueOf(KeyEvent.VK_Z));
         }
 
         /** Zoom in by a factor of 1.25.
          *  @param e The action event, ignored by this method.
          */
+        @Override
         public void actionPerformed(ActionEvent e) {
             zoom(1.25);
         }
@@ -4453,26 +4509,27 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
             // jdk1.3/docs/guide/resources/resources.html
             GUIUtilities.addIcons(this, new String[][] {
                     { "/ptolemy/vergil/basic/img/zoomreset.gif",
-                            GUIUtilities.LARGE_ICON },
-                    { "/ptolemy/vergil/basic/img/zoomreset_o.gif",
+                        GUIUtilities.LARGE_ICON },
+                        { "/ptolemy/vergil/basic/img/zoomreset_o.gif",
                             GUIUtilities.ROLLOVER_ICON },
-                    { "/ptolemy/vergil/basic/img/zoomreset_ov.gif",
-                            GUIUtilities.ROLLOVER_SELECTED_ICON },
-                    { "/ptolemy/vergil/basic/img/zoomreset_on.gif",
-                            GUIUtilities.SELECTED_ICON } });
+                            { "/ptolemy/vergil/basic/img/zoomreset_ov.gif",
+                                GUIUtilities.ROLLOVER_SELECTED_ICON },
+                                { "/ptolemy/vergil/basic/img/zoomreset_on.gif",
+                                    GUIUtilities.SELECTED_ICON } });
 
             // Control-m is usually carriage return.  In this case, we use
             // it to mean "return the zoom to the original state".
             putValue("tooltip", description + " (Ctrl+M)");
             putValue(GUIUtilities.ACCELERATOR_KEY, KeyStroke.getKeyStroke(
                     KeyEvent.VK_M, Toolkit.getDefaultToolkit()
-                            .getMenuShortcutKeyMask()));
+                    .getMenuShortcutKeyMask()));
             putValue(GUIUtilities.MNEMONIC_KEY, Integer.valueOf(KeyEvent.VK_M));
         }
 
         /** Reset the zoom.
          *  @param e The action event, ignored by this method.
          */
+        @Override
         public void actionPerformed(ActionEvent e) {
             zoomReset();
         }
@@ -4496,24 +4553,25 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
             // jdk1.3/docs/guide/resources/resources.html
             GUIUtilities.addIcons(this, new String[][] {
                     { "/ptolemy/vergil/basic/img/zoomfit.gif",
-                            GUIUtilities.LARGE_ICON },
-                    { "/ptolemy/vergil/basic/img/zoomfit_o.gif",
+                        GUIUtilities.LARGE_ICON },
+                        { "/ptolemy/vergil/basic/img/zoomfit_o.gif",
                             GUIUtilities.ROLLOVER_ICON },
-                    { "/ptolemy/vergil/basic/img/zoomfit_ov.gif",
-                            GUIUtilities.ROLLOVER_SELECTED_ICON },
-                    { "/ptolemy/vergil/basic/img/zoomfit_on.gif",
-                            GUIUtilities.SELECTED_ICON } });
+                            { "/ptolemy/vergil/basic/img/zoomfit_ov.gif",
+                                GUIUtilities.ROLLOVER_SELECTED_ICON },
+                                { "/ptolemy/vergil/basic/img/zoomfit_on.gif",
+                                    GUIUtilities.SELECTED_ICON } });
 
             putValue("tooltip", description + " (Ctrl+Shift+-)");
             putValue(GUIUtilities.ACCELERATOR_KEY, KeyStroke.getKeyStroke(
                     KeyEvent.VK_MINUS, Toolkit.getDefaultToolkit()
-                            .getMenuShortcutKeyMask() | Event.SHIFT_MASK));
+                    .getMenuShortcutKeyMask() | Event.SHIFT_MASK));
             putValue(GUIUtilities.MNEMONIC_KEY, Integer.valueOf(KeyEvent.VK_F));
         }
 
         /** Zoom so that the entire graph is visible.
          *  @param e The action event, ignored by this method.
          */
+        @Override
         public void actionPerformed(ActionEvent e) {
             zoomFit();
         }
@@ -4537,24 +4595,25 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
             // jdk1.3/docs/guide/resources/resources.html
             GUIUtilities.addIcons(this, new String[][] {
                     { "/ptolemy/vergil/basic/img/zoomout.gif",
-                            GUIUtilities.LARGE_ICON },
-                    { "/ptolemy/vergil/basic/img/zoomout_o.gif",
+                        GUIUtilities.LARGE_ICON },
+                        { "/ptolemy/vergil/basic/img/zoomout_o.gif",
                             GUIUtilities.ROLLOVER_ICON },
-                    { "/ptolemy/vergil/basic/img/zoomout_ov.gif",
-                            GUIUtilities.ROLLOVER_SELECTED_ICON },
-                    { "/ptolemy/vergil/basic/img/zoomout_on.gif",
-                            GUIUtilities.SELECTED_ICON } });
+                            { "/ptolemy/vergil/basic/img/zoomout_ov.gif",
+                                GUIUtilities.ROLLOVER_SELECTED_ICON },
+                                { "/ptolemy/vergil/basic/img/zoomout_on.gif",
+                                    GUIUtilities.SELECTED_ICON } });
 
             putValue("tooltip", description + " (Ctrl+-)");
             putValue(GUIUtilities.ACCELERATOR_KEY, KeyStroke.getKeyStroke(
                     KeyEvent.VK_MINUS, Toolkit.getDefaultToolkit()
-                            .getMenuShortcutKeyMask()));
+                    .getMenuShortcutKeyMask()));
             putValue(GUIUtilities.MNEMONIC_KEY, Integer.valueOf(KeyEvent.VK_U));
         }
 
         /** Zoom out by a factor of 1/1.25.
          *  @param e The action event, ignored by this method.
          */
+        @Override
         public void actionPerformed(ActionEvent e) {
             zoom(1.0 / 1.25);
         }
@@ -4573,6 +4632,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
         }
 
         /** Show the layout configuration dialog. */
+        @Override
         public void actionPerformed(ActionEvent e) {
             NamedObj model = getModel();
             Attribute attribute = model.getAttribute("_layoutConfiguration");
@@ -4583,7 +4643,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
                 attribute = model.getAttribute("_layoutConfiguration");
                 if (attribute == null) {
                     MessageHandler
-                            .error("Could not create the layout configuration attribute.");
+                    .error("Could not create the layout configuration attribute.");
                     return;
                 }
             }

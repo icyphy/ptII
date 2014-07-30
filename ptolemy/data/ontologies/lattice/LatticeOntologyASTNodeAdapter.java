@@ -87,7 +87,7 @@ public class LatticeOntologyASTNodeAdapter extends LatticeOntologyAdapter {
      */
     public LatticeOntologyASTNodeAdapter(LatticeOntologySolver solver,
             ASTPtRootNode node, boolean useDefaultConstraints)
-            throws IllegalActionException {
+                    throws IllegalActionException {
 
         super(solver, node, useDefaultConstraints);
     }
@@ -97,6 +97,7 @@ public class LatticeOntologyASTNodeAdapter extends LatticeOntologyAdapter {
      *  @return A list of Inequalities.
      *  @exception IllegalActionException Not thrown in this base class.
      */
+    @Override
     public List<Inequality> constraintList() throws IllegalActionException {
         boolean constrainParent = interconnectConstraintType == ConstraintType.SINK_GE_SOURCE;
         boolean isEqualConstraint = interconnectConstraintType == ConstraintType.EQUALS;
@@ -186,6 +187,7 @@ public class LatticeOntologyASTNodeAdapter extends LatticeOntologyAdapter {
      * property-able.
      * @return The list of property-able named object.
      */
+    @Override
     public List<Object> getPropertyables() {
         List<Object> list = new ArrayList<Object>();
         list.add(getComponent());
@@ -232,6 +234,7 @@ public class LatticeOntologyASTNodeAdapter extends LatticeOntologyAdapter {
      * return an empty list.
      * @return The list of sub-adapters.
      */
+    @Override
     protected List<OntologyAdapter> _getSubAdapters() {
         return new ArrayList<OntologyAdapter>();
     }

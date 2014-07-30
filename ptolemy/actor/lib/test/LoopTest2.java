@@ -22,7 +22,7 @@ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
 PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 ENHANCEMENTS, OR MODIFICATIONS.
-*/
+ */
 //package gov.nasa.gsfc.giovanni;
 package ptolemy.actor.lib.test;
 
@@ -81,6 +81,7 @@ public class LoopTest2 extends TypedAtomicActor {
     /**
      *
      */
+    @Override
     public boolean prefire() throws IllegalActionException {
         return super.prefire();
     }
@@ -88,6 +89,7 @@ public class LoopTest2 extends TypedAtomicActor {
     /**
      *
      */
+    @Override
     public void fire() throws IllegalActionException {
         super.fire();
 
@@ -99,7 +101,7 @@ public class LoopTest2 extends TypedAtomicActor {
             } catch (NumberFormatException ex) {
                 throw new IllegalActionException(this, ex,
                         "Could not convert \"" + counterStr
-                        + "\" to an integer.");
+                                + "\" to an integer.");
             }
             System.out.println("counter input  is " + counterInt);
 
@@ -114,7 +116,7 @@ public class LoopTest2 extends TypedAtomicActor {
                 if (xmlResultsStr.equals("Results Found")) {
                     System.out.println("Got data, set to " + xmlResultsStr);
                     foundResultsOutput
-                            .broadcast(new StringToken(xmlResultsStr));
+                    .broadcast(new StringToken(xmlResultsStr));
                     continueLooping = false;
                 }
             } else {
@@ -136,6 +138,7 @@ public class LoopTest2 extends TypedAtomicActor {
      *
      *@return the value of the continueLooping flag.
      */
+    @Override
     public boolean postfire() throws IllegalActionException {
         return continueLooping;
         //                return super.postfire();

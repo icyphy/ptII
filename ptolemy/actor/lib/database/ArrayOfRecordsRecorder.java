@@ -110,7 +110,7 @@ public class ArrayOfRecordsRecorder extends Sink {
         /*
         ArrayOfRecordsConfigureFactory factory = new ArrayOfRecordsConfigureFactory(this, "factory");
         factory.parameterName.setExpression("records");
-        */
+         */
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -159,6 +159,7 @@ public class ArrayOfRecordsRecorder extends Sink {
      *  @exception CloneNotSupportedException If a derived class contains
      *   an attribute that cannot be cloned.
      */
+    @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         ArrayOfRecordsRecorder newObject = (ArrayOfRecordsRecorder) super
                 .clone(workspace);
@@ -170,6 +171,7 @@ public class ArrayOfRecordsRecorder extends Sink {
      *  @exception IllegalActionException If we fail to update the
      *   contents parameter.
      */
+    @Override
     public void fire() throws IllegalActionException {
         super.fire();
         if (input.hasToken(0)) {

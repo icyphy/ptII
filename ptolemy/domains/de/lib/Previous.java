@@ -96,6 +96,7 @@ public class Previous extends DETransformer {
      *  @exception IllegalActionException If getting token from input or
      *  sending token to output throws it.
      */
+    @Override
     public void fire() throws IllegalActionException {
         super.fire();
 
@@ -112,6 +113,7 @@ public class Previous extends DETransformer {
      *  @exception IllegalActionException If the super class throws it
      *  or can not get a valid token from the initializeValue parameter.
      */
+    @Override
     public void initialize() throws IllegalActionException {
         super.initialize();
 
@@ -123,6 +125,7 @@ public class Previous extends DETransformer {
     /** Update the state of the actor.
      *  @exception IllegalActionException If the base class throws it.
      */
+    @Override
     public boolean postfire() throws IllegalActionException {
         _previous = _tempPrevious;
         _tempPrevious = null;
@@ -157,7 +160,7 @@ public class Previous extends DETransformer {
 
             return typeConstraints;
         }
-    */
+     */
 
     /**
      * Adds to the set of inequalities returned by the overridden method
@@ -186,6 +189,7 @@ public class Previous extends DETransformer {
     /** Reset the state variables.
      *  @exception IllegalActionException If the base class throws it.
      */
+    @Override
     public void wrapup() throws IllegalActionException {
         super.wrapup();
         _tempPrevious = null;

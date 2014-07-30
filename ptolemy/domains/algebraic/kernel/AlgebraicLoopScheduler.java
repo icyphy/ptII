@@ -67,8 +67,9 @@ public class AlgebraicLoopScheduler extends Scheduler {
      *  @exception NameDuplicationException If the name coincides with
      *   an attribute already in the container.
      */
-    public AlgebraicLoopScheduler(StaticSchedulingDirector container, String name)
-            throws IllegalActionException, NameDuplicationException {
+    public AlgebraicLoopScheduler(StaticSchedulingDirector container,
+            String name) throws IllegalActionException,
+            NameDuplicationException {
         super(container, name);
     }
 
@@ -87,17 +88,19 @@ public class AlgebraicLoopScheduler extends Scheduler {
      *  @return A schedule.
      *  @exception IllegalActionException If a causality loop is found.
      */
+    @Override
     protected Schedule _getSchedule() throws IllegalActionException {
         StaticSchedulingDirector director = (StaticSchedulingDirector) getContainer();
         if (director == null) {
             throw new NotSchedulableException(this, "No director.  ");
         }
-        CompositeActor compositeActor = (CompositeActor) director.getContainer();
+        CompositeActor compositeActor = (CompositeActor) director
+                .getContainer();
         if (compositeActor == null) {
             throw new NotSchedulableException(this, "No container.");
         }
-        CausalityInterfaceForComposites causality
-                        = (CausalityInterfaceForComposites) compositeActor.getCausalityInterface();
+        CausalityInterfaceForComposites causality = (CausalityInterfaceForComposites) compositeActor
+                .getCausalityInterface();
         List<Actor> sortedActors = causality.topologicalSort();
         Schedule schedule = new Schedule();
         if (_debugging) {

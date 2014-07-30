@@ -25,7 +25,7 @@
  PT_COPYRIGHT_VERSION_2
  COPYRIGHTENDKEY
 
-*/
+ */
 package ptolemy.actor.gt.controller;
 
 import java.io.IOException;
@@ -74,7 +74,7 @@ import ptolemy.vergil.gt.TransformEventController.Factory;
  @Pt.AcceptedRating Red (tfeng)
  */
 public class Transform extends GTEvent implements ConfigurableEntity,
-        TransformationListener {
+TransformationListener {
 
     /** Construct an event with the given name contained by the specified
      *  composite entity. The container argument must not be null, or a
@@ -123,6 +123,7 @@ public class Transform extends GTEvent implements ConfigurableEntity,
      *
      *  @param object The added object.
      */
+    @Override
     public void addObject(NamedObj object) {
         if (object instanceof Initializable) {
             Initializable initializable = (Initializable) object;
@@ -145,6 +146,7 @@ public class Transform extends GTEvent implements ConfigurableEntity,
      *  @exception CloneNotSupportedException If a derived class contains
      *   an attribute that cannot be cloned.
      */
+    @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         Transform newObject = (Transform) super.clone(workspace);
         try {
@@ -171,6 +173,7 @@ public class Transform extends GTEvent implements ConfigurableEntity,
      *   none.
      *  @exception Exception If something goes wrong.
      */
+    @Override
     public void configure(URL base, String source, String text)
             throws Exception {
         _configureSource = source;
@@ -204,6 +207,7 @@ public class Transform extends GTEvent implements ConfigurableEntity,
      *   if thrown by the superclass.
      *  @see TransformationMode
      */
+    @Override
     public RefiringData fire(Token arguments) throws IllegalActionException {
         RefiringData data = super.fire(arguments);
 
@@ -225,7 +229,7 @@ public class Transform extends GTEvent implements ConfigurableEntity,
             }
             isMatched = mode.transform(mode.getWorkingCopy(_transformation),
                     model, initializeObjects ? this : null,
-                    ((BooleanToken) defer.getToken()).booleanValue());
+                            ((BooleanToken) defer.getToken()).booleanValue());
             if (isMatched) {
                 _debug(new PteraDebugEvent(this, "Match found."));
             } else {
@@ -257,6 +261,7 @@ public class Transform extends GTEvent implements ConfigurableEntity,
      *  no source has been used to configure this object, or null if no
      *  external source need be used to configure this object.
      */
+    @Override
     public String getConfigureSource() {
         return _configureSource;
     }
@@ -269,6 +274,7 @@ public class Transform extends GTEvent implements ConfigurableEntity,
      *  has been used to configure this object, or null if no
      *  configuration string need be used to configure this object.
      */
+    @Override
     public String getConfigureText() {
         return null;
     }
@@ -276,6 +282,7 @@ public class Transform extends GTEvent implements ConfigurableEntity,
     /** Get the {@link Configurer} object for this entity.
      *  @return the Configurer object for this entity.
      */
+    @Override
     public Configurer getConfigurer() {
         return _configurer;
     }
@@ -285,6 +292,7 @@ public class Transform extends GTEvent implements ConfigurableEntity,
      *
      *  @return The refinement.
      */
+    @Override
     public TypedActor[] getRefinement() {
         return new TypedActor[] { _transformation };
     }
@@ -321,9 +329,9 @@ public class Transform extends GTEvent implements ConfigurableEntity,
     public static class EmbeddedConfigurer extends Configurer {
 
         /** Construct a configurer in the given workspace.
-        *
-        *  @param workspace The workspace.
-        */
+         *
+         *  @param workspace The workspace.
+         */
         public EmbeddedConfigurer(Workspace workspace) {
             super(workspace);
         }
@@ -331,6 +339,7 @@ public class Transform extends GTEvent implements ConfigurableEntity,
         /** Get the container entity.
          *  @return The container, which is an instance of CompositeEntity.
          */
+        @Override
         public NamedObj getContainer() {
             if (_container == null) {
                 return super.getContainer();
@@ -344,6 +353,7 @@ public class Transform extends GTEvent implements ConfigurableEntity,
          *  @param configured The object that this configurer configures.
          *  @see #getConfiguredObject()
          */
+        @Override
         public void setConfiguredObject(NamedObj configured) {
             super.setConfiguredObject(configured);
             _container = configured;
@@ -362,6 +372,7 @@ public class Transform extends GTEvent implements ConfigurableEntity,
      *  @param depth The depth in the hierarchy, to determine indenting.
      *  @exception IOException If an I/O error occurs.
      */
+    @Override
     protected void _exportMoMLContents(Writer output, int depth)
             throws IOException {
         super._exportMoMLContents(output, depth);
@@ -384,6 +395,7 @@ public class Transform extends GTEvent implements ConfigurableEntity,
      *  @param refinement The refinement.
      *  @return Whether the refinement is active.
      */
+    @Override
     protected boolean _isActiveRefinement(TypedActor refinement) {
         return refinement != _transformation;
     }

@@ -35,11 +35,13 @@ package diva.gui;
 public class ViewAdapter implements ViewListener {
     /** Invoked when the view is about to be closed.
      */
+    @Override
     public void viewClosing(ViewEvent e) {
     }
 
     /** Invoked when the view has been closed.
      */
+    @Override
     public void viewClosed(ViewEvent e) {
     }
 
@@ -47,6 +49,7 @@ public class ViewAdapter implements ViewListener {
      * happens when the view no longer is the front-most view or when
      * it loses the focus.
      */
+    @Override
     public void viewDeselected(ViewEvent e) {
     }
 
@@ -54,16 +57,19 @@ public class ViewAdapter implements ViewListener {
      * because another view is placed over the top of it, or because
      * an internal frame is iconified.
      */
+    @Override
     public void viewHidden(ViewEvent e) {
     }
 
     /** Invoked when the view moves
      */
+    @Override
     public void viewMoved(ViewEvent e) {
     }
 
     /** Invoked when the view was resized
      */
+    @Override
     public void viewResized(ViewEvent e) {
     }
 
@@ -71,12 +77,14 @@ public class ViewAdapter implements ViewListener {
      * happens when the view becomes the front-most view or when it
      * gets the focus.
      */
+    @Override
     public void viewSelected(ViewEvent e) {
     }
 
     /** Invoked when the view has been shown. This might happen
      * because an internal frame is deiconified, for example.
      */
+    @Override
     public void viewShown(ViewEvent e) {
     }
 }

@@ -78,6 +78,7 @@ public class FCFSScheduler extends AtomicExecutionAspect {
      *  @return The decorated attributes for the target NamedObj, or
      *   null if the specified target is not an Actor.
      */
+    @Override
     public DecoratorAttributes createDecoratorAttributes(NamedObj target) {
         if (target instanceof Actor) {
             try {
@@ -103,13 +104,13 @@ public class FCFSScheduler extends AtomicExecutionAspect {
      *    as execution time or priority cannot be read.
      */
     @Override
-    public Time schedule(NamedObj actor, Time currentPlatformTime, Time deadline,
-            Time executionTime) throws IllegalActionException {
+    public Time schedule(NamedObj actor, Time currentPlatformTime,
+            Time deadline, Time executionTime) throws IllegalActionException {
         super.schedule(actor, currentPlatformTime, deadline, executionTime);
         _lastActorFinished = false;
         if (currentlyExecuting == null) {
             currentlyExecuting = actor;
-            notifyExecutionListeners((NamedObj) currentlyExecuting,
+            notifyExecutionListeners(currentlyExecuting,
                     currentPlatformTime.getDoubleValue(),
                     ExecutionEventType.START);
         }
@@ -117,23 +118,23 @@ public class FCFSScheduler extends AtomicExecutionAspect {
         Time remainingTime = null;
         if (_remainingTimes.get(currentlyExecuting) == null) { // hasn't been scheduled
             remainingTime = executionTime;
-            _remainingTimes.put((NamedObj) currentlyExecuting, executionTime);
+            _remainingTimes.put(currentlyExecuting, executionTime);
         } else { //has been scheduled
             Time lasttime = _lastTimeScheduled.get(currentlyExecuting);
             Time timePassed = currentPlatformTime.subtract(lasttime);
             remainingTime = _remainingTimes.get(currentlyExecuting).subtract(
                     timePassed);
-            _remainingTimes.put((NamedObj) currentlyExecuting, remainingTime);
+            _remainingTimes.put(currentlyExecuting, remainingTime);
         }
 
-        _lastTimeScheduled.put((NamedObj) currentlyExecuting, currentPlatformTime);
+        _lastTimeScheduled.put(currentlyExecuting, currentPlatformTime);
 
         if (remainingTime.getDoubleValue() == 0.0) {
-            notifyExecutionListeners((NamedObj) currentlyExecuting,
+            notifyExecutionListeners(currentlyExecuting,
                     currentPlatformTime.getDoubleValue(),
                     ExecutionEventType.STOP);
 
-            _remainingTimes.put((NamedObj) currentlyExecuting, null);
+            _remainingTimes.put(currentlyExecuting, null);
             currentlyExecuting = null;
             _lastActorFinished = true;
         }

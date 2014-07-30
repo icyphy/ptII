@@ -142,6 +142,7 @@ public final class ColumnSpec extends FormSpec {
      *
      * @return  always true (for horizontal)
      */
+    @Override
     protected final boolean isHorizontal() {
         return true;
     }

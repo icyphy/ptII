@@ -43,7 +43,7 @@ to trigger it.
 @since Ptolemy II 10.0
 @Pt.ProposedRating Red (cmot)
 @Pt.AcceptedRating Red (cmot)
-*/
+ */
 public interface IGuiAction {
 
     /**

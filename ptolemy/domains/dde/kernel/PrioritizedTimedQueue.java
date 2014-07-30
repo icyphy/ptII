@@ -156,6 +156,7 @@ public class PrioritizedTimedQueue extends AbstractReceiver {
      *  an empty list if there is no such token.
      *  @return A list of instances of Token.
      */
+    @Override
     public List<Token> elementList() {
         return _queue.elementList();
     }
@@ -171,6 +172,7 @@ public class PrioritizedTimedQueue extends AbstractReceiver {
      * @return The oldest token off of the queue.
      * @exception NoTokenException If the queue is empty.
      */
+    @Override
     public Token get() {
         // Get a token and set all relevant
         // local time parameters
@@ -228,6 +230,7 @@ public class PrioritizedTimedQueue extends AbstractReceiver {
      * @return The last time.
      * @deprecated Only used for testing purposes
      */
+    @Deprecated
     public Time getLastTime() {
         return _lastTime;
     }
@@ -246,6 +249,7 @@ public class PrioritizedTimedQueue extends AbstractReceiver {
      *  less than the capacity of the queue. Return false otherwise.
      * @return True if the queue is not full; return false otherwise.
      */
+    @Override
     public boolean hasRoom() {
         return !_queue.isFull();
     }
@@ -258,6 +262,7 @@ public class PrioritizedTimedQueue extends AbstractReceiver {
      *   This is a runtime exception, so it does not need to be declared
      *   explicitly.
      */
+    @Override
     public boolean hasRoom(int numberOfTokens) throws IllegalArgumentException {
         if (numberOfTokens < 1) {
             throw new IllegalArgumentException(
@@ -272,6 +277,7 @@ public class PrioritizedTimedQueue extends AbstractReceiver {
      * @return True if the queue is not empty; return
      *  false otherwise.
      */
+    @Override
     public boolean hasToken() {
         return _queue.size() > 0;
     }
@@ -283,6 +289,7 @@ public class PrioritizedTimedQueue extends AbstractReceiver {
      *   This is a runtime exception, so it does not need to be declared
      *   explicitly.
      */
+    @Override
     public boolean hasToken(int numberOfTokens) throws IllegalArgumentException {
         if (numberOfTokens < 1) {
             throw new IllegalArgumentException(
@@ -297,6 +304,7 @@ public class PrioritizedTimedQueue extends AbstractReceiver {
      *  @param token The token to be put to the receiver.
      *  @exception NoRoomException If the receiver is full.
      */
+    @Override
     public void put(Token token) {
         throw new NoRoomException("put(Token) is not used in the "
                 + "DDE domain.");
@@ -426,6 +434,7 @@ public class PrioritizedTimedQueue extends AbstractReceiver {
      *  receiver.
      *  This method is not synchronized so the caller should be.
      */
+    @Override
     public void reset() {
         DDEDirector director = (DDEDirector) ((Actor) getContainer()
                 .getContainer()).getDirector();

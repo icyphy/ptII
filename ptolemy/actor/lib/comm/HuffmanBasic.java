@@ -117,6 +117,7 @@ public class HuffmanBasic extends Transformer {
      *  @exception CloneNotSupportedException If a derived class contains
      *   an attribute that cannot be cloned.
      */
+    @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         HuffmanBasic newObject = (HuffmanBasic) super.clone(workspace);
         newObject.alphabet.setTypeAtLeast(ArrayType.ARRAY_BOTTOM);
@@ -194,6 +195,7 @@ public class HuffmanBasic extends Transformer {
      *  @exception IllegalActionException If any element in <i>pmf</i>
      *  is non-positive or the sum is not 1.0.
      */
+    @Override
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         _parametersInvalid = true;
@@ -226,6 +228,7 @@ public class HuffmanBasic extends Transformer {
     /** Generate the Huffman codebook for the given <i>pmf</i>, and
      *  encode the input into booleans and send them to the output port.
      */
+    @Override
     public void fire() throws IllegalActionException {
         super.fire();
         ArrayToken alphabetArrayToken = (ArrayToken) alphabet.getToken();
@@ -301,6 +304,7 @@ public class HuffmanBasic extends Transformer {
      *  Creat a linked list to store the nodes for the binary tree.
      *  @exception IllegalActionException If the parent class throws it.
      */
+    @Override
     public void initialize() throws IllegalActionException {
         super.initialize();
         _parametersInvalid = true;

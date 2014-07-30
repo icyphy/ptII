@@ -78,6 +78,7 @@ public class ExpressionShellFrame extends TableauFrame {
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
+    @Override
     protected void _help() {
         try {
             URL doc = getClass().getClassLoader().getResource(

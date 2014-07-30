@@ -194,6 +194,7 @@ public class FixToken extends ScalarToken { // implements BitwiseOperationToken 
      *  @return True if the argument is a FixToken with the
      *  same value.
      */
+    @Override
     public boolean equals(Object object) {
         if (object == null) {
             return false;
@@ -213,6 +214,7 @@ public class FixToken extends ScalarToken { // implements BitwiseOperationToken 
     /** Return the value of this token as a FixPoint.
      *  @return A FixPoint.
      */
+    @Override
     public FixPoint fixValue() {
         return _value;
     }
@@ -220,6 +222,7 @@ public class FixToken extends ScalarToken { // implements BitwiseOperationToken 
     /** Return the type of this token.
      *  @return an instance of FixType;
      */
+    @Override
     public Type getType() {
         return new FixType(_value.getPrecision());
     }
@@ -228,6 +231,7 @@ public class FixToken extends ScalarToken { // implements BitwiseOperationToken 
      *  low order 32 bits of the integer representation.
      *  @return A hash code value for this token.
      */
+    @Override
     public int hashCode() {
         return _value.hashCode();
     }
@@ -236,6 +240,7 @@ public class FixToken extends ScalarToken { // implements BitwiseOperationToken 
      *  with the same precision as this FixToken.
      *  @return A new FixToken with value 1.0.
      */
+    @Override
     public Token one() {
         return new FixToken(1.0, _value.getPrecision());
     }
@@ -271,6 +276,7 @@ public class FixToken extends ScalarToken { // implements BitwiseOperationToken 
      *
      *  @return A String representing of this Token.
      */
+    @Override
     public String toString() {
         String unitString = "";
 
@@ -287,6 +293,7 @@ public class FixToken extends ScalarToken { // implements BitwiseOperationToken 
      *  the same precision as this FixToken.
      *  @return A new FixToken with value 0.0.
      */
+    @Override
     public Token zero() {
         return new FixToken(0.0, _value.getPrecision());
     }
@@ -301,6 +308,7 @@ public class FixToken extends ScalarToken { // implements BitwiseOperationToken 
      *  token, since the units are the same.
      *  @return A FixToken.
      */
+    @Override
     protected ScalarToken _absolute() {
         FixToken result = new FixToken(_value.abs());
         return result;
@@ -312,6 +320,7 @@ public class FixToken extends ScalarToken { // implements BitwiseOperationToken 
      *  @param rightArgument The token to add to this token.
      *  @return A new FixToken containing the result.
      */
+    @Override
     protected ScalarToken _add(ScalarToken rightArgument) {
         FixPoint result = _value.add(((FixToken) rightArgument).fixValue());
         return new FixToken(result);
@@ -325,6 +334,7 @@ public class FixToken extends ScalarToken { // implements BitwiseOperationToken 
      *  compatible for this operation, or the operation does not make
      *  sense for this type.
      */
+    @Override
     protected ScalarToken _bitwiseAnd(ScalarToken rightArgument)
             throws IllegalActionException {
         throw new IllegalActionException(notSupportedMessage("bitwiseAnd",
@@ -337,6 +347,7 @@ public class FixToken extends ScalarToken { // implements BitwiseOperationToken 
      *  compatible for this operation, or the operation does not make
      *  sense for this type.
      */
+    @Override
     protected ScalarToken _bitwiseNot() throws IllegalActionException {
         throw new IllegalActionException(notSupportedMessage("bitwiseNot",
                 this, this));
@@ -350,6 +361,7 @@ public class FixToken extends ScalarToken { // implements BitwiseOperationToken 
      *  compatible for this operation, or the operation does not make
      *  sense for this type.
      */
+    @Override
     protected ScalarToken _bitwiseOr(ScalarToken rightArgument)
             throws IllegalActionException {
         throw new IllegalActionException(notSupportedMessage("bitwiseOr", this,
@@ -364,6 +376,7 @@ public class FixToken extends ScalarToken { // implements BitwiseOperationToken 
      *  compatible for this operation, or the operation does not make
      *  sense for this type.
      */
+    @Override
     protected ScalarToken _bitwiseXor(ScalarToken rightArgument)
             throws IllegalActionException {
         throw new IllegalActionException(notSupportedMessage("bitwiseXor",
@@ -376,6 +389,7 @@ public class FixToken extends ScalarToken { // implements BitwiseOperationToken 
      *  @param rightArgument The token to divide this token by.
      *  @return A new FixToken containing the result.
      */
+    @Override
     protected ScalarToken _divide(ScalarToken rightArgument) {
         FixPoint result = _value.divide(((FixToken) rightArgument).fixValue());
         return new FixToken(result);
@@ -406,6 +420,7 @@ public class FixToken extends ScalarToken { // implements BitwiseOperationToken 
      *  @return A token containing true if the value of the first
      *   argument is close to the value of this token.
      */
+    @Override
     protected BooleanToken _isCloseTo(ScalarToken rightArgument, double epsilon) {
         double right = ((FixToken) rightArgument).convertToDouble();
         double left = convertToDouble();
@@ -424,6 +439,7 @@ public class FixToken extends ScalarToken { // implements BitwiseOperationToken 
      *  supported by the derived class.
      *  @return A new Token containing the result.
      */
+    @Override
     protected BooleanToken _isLessThan(ScalarToken rightArgument)
             throws IllegalActionException {
         FixToken convertedArgument = (FixToken) rightArgument;
@@ -441,6 +457,7 @@ public class FixToken extends ScalarToken { // implements BitwiseOperationToken 
      *  @return A new Token containing the result that is of the same class
      *  as this token.
      */
+    @Override
     protected ScalarToken _modulo(ScalarToken rightArgument)
             throws IllegalActionException {
         throw new IllegalActionException(notSupportedMessage("modulo", this,
@@ -453,6 +470,7 @@ public class FixToken extends ScalarToken { // implements BitwiseOperationToken 
      *  @param rightArgument The token to multiply this token by.
      *  @return A new FixToken containing the result.
      */
+    @Override
     protected ScalarToken _multiply(ScalarToken rightArgument) {
         FixPoint result = _value
                 .multiply(((FixToken) rightArgument).fixValue());
@@ -475,6 +493,7 @@ public class FixToken extends ScalarToken { // implements BitwiseOperationToken 
      *  @param rightArgument The token to subtract from this token.
      *  @return A new FixToken containing the result.
      */
+    @Override
     protected ScalarToken _subtract(ScalarToken rightArgument) {
         FixPoint result = _value
                 .subtract(((FixToken) rightArgument).fixValue());

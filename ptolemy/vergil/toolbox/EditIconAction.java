@@ -66,6 +66,7 @@ public class EditIconAction extends FigureAction {
     /** Process the edit icon command.
      *  @param e The event.
      */
+    @Override
     public void actionPerformed(ActionEvent e) {
         if (_configuration == null) {
             MessageHandler.error("Cannot edit icon without a configuration.");
@@ -79,6 +80,7 @@ public class EditIconAction extends FigureAction {
 
         // Do this as a change request since it may add a new icon.
         ChangeRequest request = new ChangeRequest(this, "Edit Custom Icon") {
+            @Override
             protected void _execute() throws Exception {
                 EditorIcon icon = null;
                 List iconList = object.attributeList(EditorIcon.class);

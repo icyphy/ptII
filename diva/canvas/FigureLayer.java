@@ -54,7 +54,7 @@ import diva.util.Filter;
  * @Pt.AcceptedRating Yellow
  */
 public class FigureLayer extends CanvasLayer implements FigureContainer,
-        EventAcceptor {
+EventAcceptor {
     /** The figures contained in this layer.
      */
     private ZList _zlist = null;
@@ -126,6 +126,7 @@ public class FigureLayer extends CanvasLayer implements FigureContainer,
      * check whether the figure is already in the layer -- clients
      * clients are therefore responsible for being bug-free.
      */
+    @Override
     public void add(Figure f) {
         _zlist.add(0, f);
         f.setParent(this);
@@ -162,6 +163,7 @@ public class FigureLayer extends CanvasLayer implements FigureContainer,
      * if the parent of the figure is the same object as this
      * layer.
      */
+    @Override
     public boolean contains(Figure f) {
         return _zlist.contains(f);
     }
@@ -169,6 +171,7 @@ public class FigureLayer extends CanvasLayer implements FigureContainer,
     /** Decorate a child figure, replacing the child figure with the
      * decorator.
      */
+    @Override
     public void decorate(Figure child, FigureDecorator decorator) {
         if (child.getParent() != this) {
             throw new IllegalArgumentException("The object " + child
@@ -190,6 +193,7 @@ public class FigureLayer extends CanvasLayer implements FigureContainer,
      * </b>processLayerMotionEvent</b>. Currently other events types
      * are not handled.
      */
+    @Override
     public void dispatchEvent(AWTEvent event) {
         if (!isEnabled()) {
             return;
@@ -218,6 +222,7 @@ public class FigureLayer extends CanvasLayer implements FigureContainer,
     /** Return an iteration of the figures in this container. The order
      * in which figures are iterated is <i>undefined</i>.
      */
+    @Override
     public Iterator figures() {
         return _zlist.figures();
     }
@@ -226,6 +231,7 @@ public class FigureLayer extends CanvasLayer implements FigureContainer,
      * back to front. This is the order in which figures should
      * normally be painted.
      */
+    @Override
     public Iterator figuresFromBack() {
         return _zlist.figuresFromBack();
     }
@@ -234,6 +240,7 @@ public class FigureLayer extends CanvasLayer implements FigureContainer,
      * front to back. This is the order in which events should normally
      * be intercepted.
      */
+    @Override
     public Iterator figuresFromFront() {
         return _zlist.figuresFromFront();
     }
@@ -248,6 +255,7 @@ public class FigureLayer extends CanvasLayer implements FigureContainer,
 
     /** Return the number of figures in this layer.
      */
+    @Override
     public int getFigureCount() {
         return _zlist.getFigureCount();
     }
@@ -276,6 +284,7 @@ public class FigureLayer extends CanvasLayer implements FigureContainer,
     /** Get the bounds of the shapes draw in this layer.  In this class,
      *  we return the bounds of all the figures in the z-list.
      */
+    @Override
     public Rectangle2D getLayerBounds() {
         return _zlist.getBounds();
     }
@@ -327,6 +336,7 @@ public class FigureLayer extends CanvasLayer implements FigureContainer,
      * returns a tool tip, or until it reaches a root figure. If it
      * finds a tool tip, it returns it, otherwise it returns null.
      */
+    @Override
     public String getToolTipText(LayerEvent e) {
         String tip = null;
 
@@ -364,6 +374,7 @@ public class FigureLayer extends CanvasLayer implements FigureContainer,
      *  does not indicate whether the layer is actually enabled,
      * as its pane or one if its ancestors may not be enabled.
      */
+    @Override
     public final boolean isEnabled() {
         return _enabled;
     }
@@ -372,6 +383,7 @@ public class FigureLayer extends CanvasLayer implements FigureContainer,
      *  does not indicate whether the layer is actually visible on
      *  the screen, as its pane or one if its ancestors may not be visible.
      */
+    @Override
     public final boolean isVisible() {
         return _visible;
     }
@@ -380,6 +392,7 @@ public class FigureLayer extends CanvasLayer implements FigureContainer,
      * is not visible, return immediately. Otherwise paint all figures
      * from back to front.
      */
+    @Override
     public void paint(Graphics2D g) {
         if (!isVisible()) {
             return;
@@ -399,6 +412,7 @@ public class FigureLayer extends CanvasLayer implements FigureContainer,
      * immediately. Otherwise paint all figures that overlap the given
      * region, from back to front.
      */
+    @Override
     public void paint(Graphics2D g, Rectangle2D region) {
         if (!isVisible()) {
             return;
@@ -419,6 +433,7 @@ public class FigureLayer extends CanvasLayer implements FigureContainer,
      * can be implemented. If no figure is picked, return null.  The
      * region should not have zero size, or no figure will be hit.
      */
+    @Override
     public Figure pick(Rectangle2D region) {
         return CanvasUtilities.pick(_zlist.getIntersectedFigures(region)
                 .figuresFromFront(), region);
@@ -430,6 +445,7 @@ public class FigureLayer extends CanvasLayer implements FigureContainer,
      * can be implemented. If no figure is picked, return null.  The
      * region should not have zero size, or no figure will be hit.
      */
+    @Override
     public Figure pick(Rectangle2D region, Filter filter) {
         Iterator iterator = _zlist.getIntersectedFigures(region)
                 .figuresFromFront();
@@ -439,6 +455,7 @@ public class FigureLayer extends CanvasLayer implements FigureContainer,
     /** Remove the given figure from this layer. The figure's
      * layer is set to null.
      */
+    @Override
     public void remove(Figure f) {
         _zlist.remove(f);
         f.setParent(null);
@@ -464,6 +481,7 @@ public class FigureLayer extends CanvasLayer implements FigureContainer,
     /** Set the enabled flag of this layer. If the flag is false,
      * then the layer will not respond to user input events.
      */
+    @Override
     public final void setEnabled(boolean flag) {
         _enabled = flag;
     }
@@ -499,6 +517,7 @@ public class FigureLayer extends CanvasLayer implements FigureContainer,
     /** Set the visibility flag of this layer. If the flag is false,
      * then the layer will not be drawn on the screen.
      */
+    @Override
     public final void setVisible(boolean flag) {
         _visible = flag;
         repaint();
@@ -507,6 +526,7 @@ public class FigureLayer extends CanvasLayer implements FigureContainer,
     /** Remove a figure from the given decorator and add
      * it back into this container.
      */
+    @Override
     public void undecorate(FigureDecorator decorator) {
         if (decorator.getParent() != this) {
             throw new IllegalArgumentException("The object " + decorator
@@ -722,11 +742,11 @@ public class FigureLayer extends CanvasLayer implements FigureContainer,
             _pointerGrabber = null;
             break;
 
-        // Process a click event only. This code ignores the
-        // grab, as it should have already been cleared by a
-        // preceding MOUSE_RELEASED event. I'm not entirely
-        // sure if this is actually correct or not.
-        //
+            // Process a click event only. This code ignores the
+            // grab, as it should have already been cleared by a
+            // preceding MOUSE_RELEASED event. I'm not entirely
+            // sure if this is actually correct or not.
+            //
         case MouseEvent.MOUSE_CLICKED:
 
             // Get the figure that the mouse hit, if any

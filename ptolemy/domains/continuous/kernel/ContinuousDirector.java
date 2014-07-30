@@ -210,7 +210,7 @@ import ptolemy.kernel.util.Workspace;
  @Pt.AcceptedRating Red (hyzheng)
  */
 public class ContinuousDirector extends FixedPointDirector implements
-        ContinuousStatefulDirector, ContinuousStepSizeController {
+ContinuousStatefulDirector, ContinuousStepSizeController {
 
     /** Construct a director in the given container with the given name.
      *  The container argument must not be null, or a NullPointerException
@@ -286,6 +286,7 @@ public class ContinuousDirector extends FixedPointDirector implements
      *  @exception IllegalActionException If the new parameter value
      *  is not valid.
      */
+    @Override
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         if (_debugging) {
@@ -335,6 +336,7 @@ public class ContinuousDirector extends FixedPointDirector implements
      *  @exception CloneNotSupportedException Not thrown in this base class
      *  @return The new Attribute.
      */
+    @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         ContinuousDirector newObject = (ContinuousDirector) super
                 .clone(workspace);
@@ -362,6 +364,7 @@ public class ContinuousDirector extends FixedPointDirector implements
      *  director, using the step size of the enclosing director.
      *  @exception IllegalActionException If an actor throws it.
      */
+    @Override
     public void fire() throws IllegalActionException {
         if (_debugging) {
             _debug("Calling fire() at time " + getModelTime() + " index "
@@ -485,7 +488,7 @@ public class ContinuousDirector extends FixedPointDirector implements
                     // but they should not be consumed yet.
                     // FIXME: Shouldn't this be done only if enclosingContinousDirector is null?
                     if (enclosingContinuousDirector == null) {
-                            _assertAbsentInside();
+                        _assertAbsentInside();
                     }
 
                     super.fire();
@@ -558,12 +561,12 @@ public class ContinuousDirector extends FixedPointDirector implements
                     // There is some step size control actor that is
                     // unsatisfied with the current step size, refine the
                     // step size to a smaller one.
-                        double refinedStep = refinedStepSize();
-                        // Make sure the result is actually a change.
+                    double refinedStep = refinedStepSize();
+                    // Make sure the result is actually a change.
                     if (refinedStep >= _currentStepSize) {
-                            // Actors suggestion is not useful.
-                            // Choose instead half the current step size.
-                            refinedStep = _currentStepSize*0.5;
+                        // Actors suggestion is not useful.
+                        // Choose instead half the current step size.
+                        refinedStep = _currentStepSize * 0.5;
                         if (_debugging) {
                             _debug("-- Adjusting step size to: " + refinedStep);
                         }
@@ -599,6 +602,7 @@ public class ContinuousDirector extends FixedPointDirector implements
      *  @exception IllegalActionException If the time is earlier than
      *  the current time.
      */
+    @Override
     public Time fireAt(Actor actor, Time time, int index)
             throws IllegalActionException {
         if (_debugging) {
@@ -645,6 +649,7 @@ public class ContinuousDirector extends FixedPointDirector implements
     /** Return the current integration step size.
      *  @return The current integration step size.
      */
+    @Override
     public final double getCurrentStepSize() {
         // This method is final for performance reason.
         return _currentStepSize;
@@ -653,6 +658,7 @@ public class ContinuousDirector extends FixedPointDirector implements
     /** Return the local truncation error tolerance.
      *  @return The local truncation error tolerance.
      */
+    @Override
     public final double getErrorTolerance() {
         // This method is final for performance reason.
         return _errorTolerance;
@@ -669,6 +675,7 @@ public class ContinuousDirector extends FixedPointDirector implements
      *
      *  @exception IllegalActionException If the super class throws it.
      */
+    @Override
     public void initialize() throws IllegalActionException {
         _isInitializing = true;
 
@@ -755,6 +762,7 @@ public class ContinuousDirector extends FixedPointDirector implements
      *  @return True if all step size control actors agree with the current
      *   step size.
      */
+    @Override
     public boolean isStepSizeAccurate() {
         _debug("-- Check accuracy for output step size control actors:");
 
@@ -808,6 +816,7 @@ public class ContinuousDirector extends FixedPointDirector implements
      *  @exception IllegalActionException If the current model time exceeds
      *   the stop time, or refiring can not be granted, or the super class throws it.
      */
+    @Override
     public boolean postfire() throws IllegalActionException {
         if (_debugging) {
             _debug("Calling postfire().");
@@ -846,6 +855,7 @@ public class ContinuousDirector extends FixedPointDirector implements
      *   or if the model time of the environment is less than our current
      *   model time.
      */
+    @Override
     public boolean prefire() throws IllegalActionException {
         if (_debugging) {
             _debug("\nCalling prefire() at time " + getModelTime()
@@ -870,6 +880,7 @@ public class ContinuousDirector extends FixedPointDirector implements
      *  @exception IllegalActionException If the super class throws it, or
      *  local variables cannot be initialized.
      */
+    @Override
     public void preinitialize() throws IllegalActionException {
         super.preinitialize();
         // Time objects can only be instantiated after super.preinitialize()
@@ -889,6 +900,7 @@ public class ContinuousDirector extends FixedPointDirector implements
      *  @exception IllegalActionException If the scheduler throws it or the
      *  refined step size is less than the time resolution.
      */
+    @Override
     public double refinedStepSize() throws IllegalActionException {
         if (_debugging) {
             _debug("-- Refining the current step size from " + _currentStepSize);
@@ -957,6 +969,7 @@ public class ContinuousDirector extends FixedPointDirector implements
      *  has no effect.
      *  @exception IllegalActionException If the fireAt() request throws it.
      */
+    @Override
     public void resume() throws IllegalActionException {
         super.resume();
         // Request a firing at the current time to ensure that
@@ -970,6 +983,7 @@ public class ContinuousDirector extends FixedPointDirector implements
      *  @exception IllegalActionException If the rollback attempts to go
      *   back further than the last committed time.
      */
+    @Override
     public void rollBackToCommittedState() throws IllegalActionException {
         // Restore the local view of model time to
         // the start of the integration step.
@@ -999,6 +1013,7 @@ public class ContinuousDirector extends FixedPointDirector implements
      *  @exception IllegalActionException If the time is in the past
      *   relative to the time of local committed state.
      */
+    @Override
     public final void setModelTime(Time newTime) throws IllegalActionException {
         // We don't call super.getModelTime() because Director.setModelTime()
         // merely sets the local time of the localClock.  We want to do more here.
@@ -1037,15 +1052,15 @@ public class ContinuousDirector extends FixedPointDirector implements
             // which is probably reasonable since things may have
             // changed significantly.
             _currentStepSize = 0.0;
-            */
+             */
         } else if (comparison < 0) {
             // The new time is behind the current time.
             // This is legal only if we have a commit pending.
             if (!_commitIsPending) {
                 throw new IllegalActionException(this,
                         "Attempting to roll back time from " + currentTime
-                                + " to " + newTime
-                                + ", but state has been committed.");
+                        + " to " + newTime
+                        + ", but state has been committed.");
             }
             // We have to re-do the integration
             // with a smaller step size that brings us up to the current
@@ -1077,6 +1092,7 @@ public class ContinuousDirector extends FixedPointDirector implements
      *  the strict actor semantics.
      *  @return An array of suggested directors to be used with ModalModel.
      */
+    @Override
     public String[] suggestedModalModelDirectors() {
         // This method does not call the method defined in the super class,
         // because this method provides complete new information.
@@ -1097,6 +1113,7 @@ public class ContinuousDirector extends FixedPointDirector implements
      *  @return The suggested step size for next integration.
      *  @exception IllegalActionException If an actor suggests an illegal step size.
      */
+    @Override
     public double suggestedStepSize() throws IllegalActionException {
         double suggestedStep = _initStepSize;
 
@@ -1190,6 +1207,7 @@ public class ContinuousDirector extends FixedPointDirector implements
      *  @return False.
      *  @exception IllegalActionException Not thrown in this base class.
      */
+    @Override
     public boolean transferInputs(IOPort port) throws IllegalActionException {
         return false;
     }
@@ -1200,6 +1218,7 @@ public class ContinuousDirector extends FixedPointDirector implements
      *  @return False.
      *  @exception IllegalActionException Not thrown in this base class.
      */
+    @Override
     public boolean transferOutputs(IOPort port) throws IllegalActionException {
         return false;
     }
@@ -1518,7 +1537,7 @@ public class ContinuousDirector extends FixedPointDirector implements
                 _breakpoints.removeFirst();
             }
         }
-        */
+         */
     }
 
     /** Initialize the local variables of this ContinuousDirector. Create or
@@ -1702,7 +1721,7 @@ public class ContinuousDirector extends FixedPointDirector implements
                 // At the top level, we should not have missed a breakpoint.
                 throw new IllegalActionException(this,
                         "Missed a breakpoint time at " + breakpointTime
-                                + ", with index " + nextBreakpoint.index());
+                        + ", with index " + nextBreakpoint.index());
             } else if (comparison == 0 && nextBreakpoint.index() <= _index) {
                 if (_debugging) {
                     _debug("-- The current superdense time is a breakpoint, "
@@ -1770,7 +1789,7 @@ public class ContinuousDirector extends FixedPointDirector implements
         } else if (_currentStepSize == 0.0) {
             /* FIXME: Bogus. This will force the first execution to be at microstep 1.
             _index++;
-            */
+             */
         }
 
         _iterationBeginIndex = enclosingDirector._iterationBeginIndex;
@@ -1900,7 +1919,7 @@ public class ContinuousDirector extends FixedPointDirector implements
             if (executiveDirector instanceof SuperdenseTimeDirector) {
                 _index = ((SuperdenseTimeDirector) executiveDirector).getIndex();
             }
-            */
+             */
             return true;
         } else if (localTimeExceedsOutsideTime < 0) {
             ///////////////////////////////////////////////////////////////
@@ -1952,7 +1971,7 @@ public class ContinuousDirector extends FixedPointDirector implements
             if (executiveDirector instanceof SuperdenseTimeDirector) {
                 _index = ((SuperdenseTimeDirector) executiveDirector).getIndex();
             }
-            */
+             */
         }
 
         // If the current time and index match the first entry in the breakpoint
@@ -1991,7 +2010,7 @@ public class ContinuousDirector extends FixedPointDirector implements
                 localTimeExceedsOutsideTime = breakpointTime
                         .compareTo(_currentTime);
             }
-            */
+             */
             if (localTimeExceedsOutsideTime == 0
                     && nextBreakpoint.index() <= _index) {
                 if (_debugging) {

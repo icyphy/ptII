@@ -45,12 +45,12 @@ import ptolemy.kernel.util.Workspace;
 
 /**
  Convert an input record to a URL-encoded query string. A query string can be
- part of a URL (e.g., <code>http://server/program/path/?query_string</code>), 
- or be send as part of a HTTP request like <code>POST</code> 
- or <code>PUT</code> with a header that specifies 
+ part of a URL (e.g., <code>http://server/program/path/?query_string</code>),
+ or be send as part of a HTTP request like <code>POST</code>
+ or <code>PUT</code> with a header that specifies
  <code>Content-Type: "application/x-www-form-urlencoded"</code>.
 
- The string representation of each field of the input record is encoded 
+ The string representation of each field of the input record is encoded
  by {@link URLEncoder#encode}.
 
  @see URLEncoder
@@ -73,7 +73,7 @@ public class RecordToQueryString extends Converter {
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
-        // The type record is the top of the record sub-lattice, hence 
+        // The type record is the top of the record sub-lattice, hence
         // the most general record type.
         // This constraint ensures that the input will be a record token.
         input.setTypeAtMost(BaseType.RECORD);
@@ -91,6 +91,7 @@ public class RecordToQueryString extends Converter {
      *  @exception CloneNotSupportedException If a derived class contains
      *   an attribute that cannot be cloned.
      */
+    @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         RecordToQueryString newObject = (RecordToQueryString) super
                 .clone(workspace);
@@ -103,6 +104,7 @@ public class RecordToQueryString extends Converter {
      *  the response on the output port.
      *  @exception IllegalActionException If an IO error occurs.
      */
+    @Override
     public void fire() throws IllegalActionException {
         super.fire();
 

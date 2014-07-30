@@ -106,7 +106,7 @@ import ptolemy.kernel.util.Workspace;
  @see ptolemy.domains.dde.kernel.DDEThread
  */
 public class DDEReceiver extends PrioritizedTimedQueue implements
-        ProcessReceiver {
+ProcessReceiver {
     /** Construct an empty receiver with no container.
      */
     public DDEReceiver() {
@@ -142,6 +142,7 @@ public class DDEReceiver extends PrioritizedTimedQueue implements
 
     /** Clear this receiver of any contained tokens.
      */
+    @Override
     public void clear() {
         // FIXME
         //queue.clear();
@@ -151,6 +152,7 @@ public class DDEReceiver extends PrioritizedTimedQueue implements
      *  @return The token contained by this receiver.
      *  @exception NoTokenException If there is no token.
      */
+    @Override
     public Token get() {
         if (!_hasTokenCache) {
             throw new NoTokenException(getContainer(),
@@ -201,6 +203,7 @@ public class DDEReceiver extends PrioritizedTimedQueue implements
      *  Returning true in this method should also guarantee that calling
      *  the put() method will not result in an exception.
      */
+    @Override
     public boolean hasRoom(int tokens) {
         return true;
     }
@@ -221,6 +224,7 @@ public class DDEReceiver extends PrioritizedTimedQueue implements
      *   return a token without throwing a NoTokenException.  Return
      *   false if the current thread is not a DDEThread.
      */
+    @Override
     public boolean hasToken() {
         Workspace workspace = getContainer().workspace();
         Thread thread = Thread.currentThread();
@@ -326,6 +330,7 @@ public class DDEReceiver extends PrioritizedTimedQueue implements
      *  Returning true in this method should also guarantee that calling
      *  the get() method will not result in an exception.
      */
+    @Override
     public boolean hasToken(int tokens) {
         return true;
 
@@ -342,6 +347,7 @@ public class DDEReceiver extends PrioritizedTimedQueue implements
      * @exception IllegalActionException
      *  @see ptolemy.actor.process.BoundaryDetector
      */
+    @Override
     public boolean isConnectedToBoundary() throws IllegalActionException {
         return _boundaryDetector.isConnectedToBoundary();
     }
@@ -357,8 +363,9 @@ public class DDEReceiver extends PrioritizedTimedQueue implements
      * @exception InvalidStateException
      *  @see ptolemy.actor.process.BoundaryDetector
      */
+    @Override
     public boolean isConnectedToBoundaryInside() throws InvalidStateException,
-            IllegalActionException {
+    IllegalActionException {
         return _boundaryDetector.isConnectedToBoundaryInside();
     }
 
@@ -372,6 +379,7 @@ public class DDEReceiver extends PrioritizedTimedQueue implements
      * @exception IllegalActionException
      *  @see ptolemy.actor.process.BoundaryDetector
      */
+    @Override
     public boolean isConnectedToBoundaryOutside() throws IllegalActionException {
         return _boundaryDetector.isConnectedToBoundaryOutside();
     }
@@ -384,6 +392,7 @@ public class DDEReceiver extends PrioritizedTimedQueue implements
      *   false otherwise.
      * @exception IllegalActionException
      */
+    @Override
     public boolean isConsumerReceiver() throws IllegalActionException {
         if (isConnectedToBoundary()) {
             return true;
@@ -401,6 +410,7 @@ public class DDEReceiver extends PrioritizedTimedQueue implements
      *   a boundary port; return false otherwise.
      *  @see ptolemy.actor.process.BoundaryDetector
      */
+    @Override
     public boolean isInsideBoundary() {
         return _boundaryDetector.isInsideBoundary();
     }
@@ -414,6 +424,7 @@ public class DDEReceiver extends PrioritizedTimedQueue implements
      *   a boundary port; return false otherwise.
      *  @see BoundaryDetector
      */
+    @Override
     public boolean isOutsideBoundary() {
         return _boundaryDetector.isOutsideBoundary();
     }
@@ -425,6 +436,7 @@ public class DDEReceiver extends PrioritizedTimedQueue implements
      *  @return True if this is a producer receiver; return false
      *   otherwise.
      */
+    @Override
     public boolean isProducerReceiver() {
         if (isOutsideBoundary() || isInsideBoundary()) {
             return true;
@@ -438,6 +450,7 @@ public class DDEReceiver extends PrioritizedTimedQueue implements
      *  @return a boolean indicating whether a read is blocked on this
      *  receiver or not.
      */
+    @Override
     public boolean isReadBlocked() {
         synchronized (_director) {
             return _readPending != null;
@@ -449,6 +462,7 @@ public class DDEReceiver extends PrioritizedTimedQueue implements
      *  @return A boolean indicating whether a write is blocked  on this
      *  receiver or not.
      */
+    @Override
     public boolean isWriteBlocked() {
         synchronized (_director) {
             return _writePending != null;
@@ -471,6 +485,7 @@ public class DDEReceiver extends PrioritizedTimedQueue implements
      *  @exception TerminateProcessException If activity is scheduled
      *   to cease.
      */
+    @Override
     public void put(Token token) {
         if (token == null) {
             return;
@@ -502,6 +517,7 @@ public class DDEReceiver extends PrioritizedTimedQueue implements
      *  @exception TerminateProcessException If activity is scheduled
      *   to cease.
      */
+    @Override
     public void put(Token token, Time time) {
         Workspace workspace = getContainer().workspace();
 
@@ -567,6 +583,7 @@ public class DDEReceiver extends PrioritizedTimedQueue implements
      *  called, a TerminateProcessException will be thrown during
      *  the next call to get() or put() of this class.
      */
+    @Override
     public void requestFinish() {
         synchronized (_director) {
             _terminate = true;
@@ -579,6 +596,7 @@ public class DDEReceiver extends PrioritizedTimedQueue implements
      *  the termination flag will make sure that this receiver is not
      *  scheduled for termination.
      */
+    @Override
     public void reset() {
         super.reset();
 
@@ -604,6 +622,7 @@ public class DDEReceiver extends PrioritizedTimedQueue implements
      *   an appropriate subclass of IOPort, or if the container's director
      *   is not an instance of DDEDirector.
      */
+    @Override
     public void setContainer(IOPort port) throws IllegalActionException {
         super.setContainer(port);
 

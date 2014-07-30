@@ -109,6 +109,7 @@ public class LimitedRangeChannel extends DelayChannel {
      *  do not affect the validity of this cache.
      *  @param settable The object that has changed value.
      */
+    @Override
     public void valueChanged(Settable settable) {
         _receiversInRangeCacheValid = false;
     }
@@ -135,9 +136,10 @@ public class LimitedRangeChannel extends DelayChannel {
      *   whether the destination is in range (not thrown in this base
      *   class).
      */
+    @Override
     protected boolean _isInRange(WirelessIOPort source,
             WirelessIOPort destination, RecordToken properties)
-            throws IllegalActionException {
+                    throws IllegalActionException {
         double range = Double.POSITIVE_INFINITY;
         boolean rangeIsSet = false;
 

@@ -63,6 +63,7 @@ public class PoissonClock extends NamedProgramCodeGeneratorAdapter {
      *  the initialization code, while appending the code block or
      *  while converting the codeStream to a string.
      */
+    @Override
     public String generateInitializeCode() throws IllegalActionException {
         CodeStream codeStream = _templateParser.getCodeStream();
         codeStream.clear();
@@ -156,7 +157,7 @@ public class PoissonClock extends NamedProgramCodeGeneratorAdapter {
         if (seed.getToken() instanceof LongToken) {
             longSeed = ((LongToken) seed.getToken()).longValue()
                     + ((ptolemy.actor.lib.PoissonClock) getComponent())
-                            .getFullName().hashCode();
+                    .getFullName().hashCode();
         }
         args.add(Long.toString(longSeed));
 

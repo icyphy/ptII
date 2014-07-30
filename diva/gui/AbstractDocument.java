@@ -90,6 +90,7 @@ public abstract class AbstractDocument implements Document {
      * certain elements of the state will cause all registered
      * property listeners to be notified.
      */
+    @Override
     public void addPropertyChangeListener(PropertyChangeListener listener) {
         if (_propertyChange == null) {
             _propertyChange = new PropertyChangeSupport(this);
@@ -101,6 +102,7 @@ public abstract class AbstractDocument implements Document {
     /**
      * Return the undoable edit support.  You need this to post edits.
      */
+    @Override
     public UndoableEditSupport getEditSupport() {
         return _editSupport;
     }
@@ -108,6 +110,7 @@ public abstract class AbstractDocument implements Document {
     /**
      * Return the undo manager of this document.
      */
+    @Override
     public UndoManager getUndoManager() {
         return _undoManager;
     }
@@ -122,11 +125,13 @@ public abstract class AbstractDocument implements Document {
      *
      * @exception Exception If the close operation fails.
      */
+    @Override
     public void close() throws Exception {
     }
 
     /** Get the application that this document belongs to.
      */
+    @Override
     public Application getApplication() {
         return _application;
     }
@@ -137,6 +142,7 @@ public abstract class AbstractDocument implements Document {
      *
      * @see #getURL()
      */
+    @Override
     public File getFile() {
         return _file;
     }
@@ -144,6 +150,7 @@ public abstract class AbstractDocument implements Document {
     /** Get the short title of this document. By default this is the
      * tail of the filename.
      */
+    @Override
     public String getShortTitle() {
         if (getFile() != null) {
             return getFile().getName();
@@ -157,6 +164,7 @@ public abstract class AbstractDocument implements Document {
     /** Get the title of this document. By default it is equal to the
      * file or URL path.
      */
+    @Override
     public String getTitle() {
         if (getFile() != null) {
             return getFile().getAbsolutePath();
@@ -173,6 +181,7 @@ public abstract class AbstractDocument implements Document {
      *
      * @see #getFile()
      */
+    @Override
     public URL getURL() {
         return _url;
     }
@@ -180,6 +189,7 @@ public abstract class AbstractDocument implements Document {
     /** Test the "dirty" flag.  If changes made to a document
      * haven't been saved, this flag is set to true.
      */
+    @Override
     public boolean isDirty() {
         return _dirty;
     }
@@ -188,6 +198,7 @@ public abstract class AbstractDocument implements Document {
      * allow a document's data to be changed if this flag is set. This
      * flag is true by default.
      */
+    @Override
     public boolean isEditable() {
         return _editable;
     }
@@ -196,6 +207,7 @@ public abstract class AbstractDocument implements Document {
      * allow a document's data to be written to storage if this flag
      * is set.  This flag is true by default.
      */
+    @Override
     public boolean isWritable() {
         return _writable;
     }
@@ -205,10 +217,12 @@ public abstract class AbstractDocument implements Document {
      *
      * @exception Exception If the close operation fails.
      */
+    @Override
     public abstract void open() throws Exception;
 
     /** Remove a property change listener from this document.
      */
+    @Override
     public void removePropertyChangeListener(PropertyChangeListener listener) {
         _propertyChange.removePropertyChangeListener(listener);
     }
@@ -218,6 +232,7 @@ public abstract class AbstractDocument implements Document {
      *
      * @exception Exception If the save operation fails.
      */
+    @Override
     public abstract void save() throws Exception;
 
     /** Save the document to the given file.  Return true if
@@ -229,6 +244,7 @@ public abstract class AbstractDocument implements Document {
      * @see #save()
      * @exception Exception If the save-as operation fails.
      */
+    @Override
     public abstract void saveAs(File file) throws Exception;
 
     /** Save the document to the given file.  Throw an exception if
@@ -240,6 +256,7 @@ public abstract class AbstractDocument implements Document {
      * @see #save()
      * @exception Exception If the save-as operation fails.
      */
+    @Override
     public abstract void saveAs(URL url) throws Exception;
 
     /** Set the file that this document saves itself to. This is a
@@ -247,6 +264,7 @@ public abstract class AbstractDocument implements Document {
      * classes. Fire a property change listener to registered
      * listeners.
      */
+    @Override
     public void setFile(File file) {
         File old = _file;
         _file = file;
@@ -261,6 +279,7 @@ public abstract class AbstractDocument implements Document {
      * classes. Fire a property change listener to registered
      * listeners.
      */
+    @Override
     public void setURL(URL url) {
         URL old = _url;
         _url = url;
@@ -273,6 +292,7 @@ public abstract class AbstractDocument implements Document {
     /** Set the "editable" flag. Fire a property change event
      * to registered listeners.
      */
+    @Override
     public void setEditable(boolean flag) {
         boolean old = _editable;
         _editable = flag;
@@ -285,6 +305,7 @@ public abstract class AbstractDocument implements Document {
     /** Set the "dirty" flag.  Fire a property change event to
      * registered listeners.
      */
+    @Override
     public void setDirty(boolean flag) {
         boolean old = _dirty;
         _dirty = flag;
@@ -297,6 +318,7 @@ public abstract class AbstractDocument implements Document {
     /** Set the "writable" flag. Fire a property change event
      * to registered listeners.
      */
+    @Override
     public void setWritable(boolean flag) {
         boolean old = _writable;
         _writable = flag;

@@ -74,6 +74,7 @@ public class EditIconGraphController extends BasicGraphController {
      *  @param menu The menu to add to, which is ignored.
      *  @param toolbar The toolbar to add to, which is also ignored.
      */
+    @Override
     public void addToMenuAndToolbar(JMenu menu, JToolBar toolbar) {
         super.addToMenuAndToolbar(menu, toolbar);
 
@@ -85,6 +86,7 @@ public class EditIconGraphController extends BasicGraphController {
      *  @exception InternalErrorException If this is called.
      *  @return An exception.
      */
+    @Override
     public EdgeController getEdgeController(Object edge) {
         throw new InternalErrorException("An icon editor has no edges.");
     }
@@ -102,6 +104,7 @@ public class EditIconGraphController extends BasicGraphController {
      *  @exception RuntimeException If the specified object is not
      *   a Locatable contained by an Attribute.
      */
+    @Override
     public NodeController getNodeController(Object object) {
         // Defer to the superclass if it can provide a controller.
         NodeController result = super.getNodeController(object);
@@ -133,6 +136,7 @@ public class EditIconGraphController extends BasicGraphController {
      *  opening documentation files, for example.
      *  @param configuration The configuration.
      */
+    @Override
     public void setConfiguration(Configuration configuration) {
         super.setConfiguration(configuration);
         _attributeController.setConfiguration(configuration);
@@ -147,6 +151,7 @@ public class EditIconGraphController extends BasicGraphController {
      *  defined in the derived classes, because the derived classes
      *  will not have been fully constructed by the time this is called.
      */
+    @Override
     protected void _createControllers() {
         super._createControllers();
         _attributeController = new AttributeController(this,
@@ -162,6 +167,7 @@ public class EditIconGraphController extends BasicGraphController {
      *  the controller does not yet have a reference to its pane
      *  at that time.
      */
+    @Override
     protected void initializeInteraction() {
         GraphPane pane = getGraphPane();
 

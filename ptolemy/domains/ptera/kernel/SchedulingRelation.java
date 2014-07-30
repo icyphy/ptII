@@ -121,6 +121,7 @@ public class SchedulingRelation extends Transition {
         refinementName.setVisibility(Settable.NONE);
 
         delay = new StringAttribute(this, "delay") {
+            @Override
             protected void _exportMoMLContents(Writer output, int depth)
                     throws IOException {
                 String displayName = getDisplayName();
@@ -166,6 +167,7 @@ public class SchedulingRelation extends Transition {
      *   scheduling relation is set to cancelling but the values of
      *   <i>arguments</i> and <i>delay</i> are not acceptable.
      */
+    @Override
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         if (attribute == arguments) {
@@ -203,6 +205,7 @@ public class SchedulingRelation extends Transition {
      *  @exception CloneNotSupportedException If a derived class contains
      *   an attribute that cannot be cloned.
      */
+    @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         SchedulingRelation relation = (SchedulingRelation) super
                 .clone(workspace);
@@ -266,6 +269,7 @@ public class SchedulingRelation extends Transition {
      *
      *  @return A string describing this transition.
      */
+    @Override
     public String getLabel() {
         StringBuffer buffer = new StringBuffer(super.getLabel());
 
@@ -284,8 +288,8 @@ public class SchedulingRelation extends Transition {
             boolean emptyArguments = trimmedArguments.startsWith("{")
                     && trimmedArguments.endsWith("}")
                     && trimmedArguments
-                            .substring(1, trimmedArguments.length() - 1).trim()
-                            .equals("");
+                    .substring(1, trimmedArguments.length() - 1).trim()
+                    .equals("");
             if (!emptyArguments) {
                 if (buffer.length() > 0) {
                     buffer.append("\n");
@@ -382,6 +386,7 @@ public class SchedulingRelation extends Transition {
      *  @return True if the transition is enabled and some event is detected.
      *  @exception IllegalActionException If thrown when evaluating the guard.
      */
+    @Override
     public boolean isEnabled(ParserScope scope) throws IllegalActionException {
         String guard = getGuardExpression();
         if (guard.trim().equals("")) {
@@ -458,7 +463,7 @@ public class SchedulingRelation extends Transition {
 
     /** An array of all recognizable constant values that equal to 0.0d. */
     private static final String[] _ZERO_CONSTS = new String[] { "0", "0.0",
-            "0l", "0s", "0ub", "0.0d", "0.0f" };
+        "0l", "0s", "0ub", "0.0d", "0.0f" };
 
     /** The parse tree of arguments. */
     private ASTPtRootNode _argumentsTree;

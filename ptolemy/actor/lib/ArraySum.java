@@ -81,6 +81,7 @@ public class ArraySum extends Transformer {
      *  @exception CloneNotSupportedException If a derived class contains
      *   an attribute that cannot be cloned.
      */
+    @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         ArraySum newObject = (ArraySum) super.clone(workspace);
         try {
@@ -99,6 +100,7 @@ public class ArraySum extends Transformer {
      *  is empty, then no output is produced.
      *  @exception IllegalActionException If there is no director.
      */
+    @Override
     public void fire() throws IllegalActionException {
         super.fire();
         if (input.hasToken(0)) {

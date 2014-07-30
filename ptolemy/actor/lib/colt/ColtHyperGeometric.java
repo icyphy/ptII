@@ -76,17 +76,17 @@ public class ColtHyperGeometric extends ColtRandomSource {
         N = new PortParameter(this, "N", new IntToken(2));
         N.setTypeEquals(BaseType.INT);
         new SingletonParameter(N.getPort(), "_showName")
-                .setToken(BooleanToken.TRUE);
+        .setToken(BooleanToken.TRUE);
 
         s = new PortParameter(this, "s", new IntToken(1));
         s.setTypeEquals(BaseType.INT);
         new SingletonParameter(s.getPort(), "_showName")
-                .setToken(BooleanToken.TRUE);
+        .setToken(BooleanToken.TRUE);
 
         n = new PortParameter(this, "n", new IntToken(1));
         n.setTypeEquals(BaseType.INT);
         new SingletonParameter(n.getPort(), "_showName")
-                .setToken(BooleanToken.TRUE);
+        .setToken(BooleanToken.TRUE);
 
         n.moveToFirst();
         s.moveToFirst();
@@ -119,6 +119,7 @@ public class ColtHyperGeometric extends ColtRandomSource {
      *  remain constant throughout an iteration.
      *  @exception IllegalActionException If there is no director.
      */
+    @Override
     public void fire() throws IllegalActionException {
         N.update();
         s.update();
@@ -132,6 +133,7 @@ public class ColtHyperGeometric extends ColtRandomSource {
 
     /** Method that is called after _randomNumberGenerator is changed.
      */
+    @Override
     protected void _createdNewRandomNumberGenerator() {
         _generator = new HyperGeometric(2, 1, 1, _randomNumberGenerator);
     }
@@ -139,6 +141,7 @@ public class ColtHyperGeometric extends ColtRandomSource {
     /** Generate a new random number.
      *  @exception IllegalActionException If parameter values are incorrect.
      */
+    @Override
     protected void _generateRandomNumber() throws IllegalActionException {
         int NValue = ((IntToken) N.getToken()).intValue();
         int sValue = ((IntToken) s.getToken()).intValue();

@@ -117,6 +117,7 @@ public class PtolemyExpressionString {
      *
      *  @return The Ptolemy expression.
      */
+    @Override
     public String toString() {
         return get();
     }

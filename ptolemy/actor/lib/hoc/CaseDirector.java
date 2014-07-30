@@ -101,6 +101,7 @@ public class CaseDirector extends Director {
      *   or the specified time if there isn't one.
      *  @exception IllegalActionException If by the executive director.
      */
+    @Override
     public Time fireAt(Actor actor, Time time, int microstep)
             throws IllegalActionException {
         // Note that the actor parameter is ignored, because it does not
@@ -122,6 +123,7 @@ public class CaseDirector extends Director {
     /** Fire the current refinement.
      *  @exception IllegalActionException If refinement throws it.
      */
+    @Override
     public void fire() throws IllegalActionException {
         if (_debugging) {
             _debug("Calling fire()");
@@ -147,12 +149,15 @@ public class CaseDirector extends Director {
      *  receiver will overwrite any token already in the receiver.
      *  @return A receiver that is a one-place buffer.
      */
+    @Override
     public Receiver newReceiver() {
         return new Mailbox() {
+            @Override
             public boolean hasRoom() {
                 return true;
             }
 
+            @Override
             public void put(Token token) {
                 try {
                     if (hasToken() == true) {
@@ -177,6 +182,7 @@ public class CaseDirector extends Director {
      *   or if the director's prefire() method throws it, or if this actor
      *   is not opaque.
      */
+    @Override
     public boolean prefire() throws IllegalActionException {
         if (_debugging) {
             _debug("Calling prefire()");
@@ -232,7 +238,7 @@ public class CaseDirector extends Director {
                                             _debug(new IOPortEvent(port,
                                                     insideReceivers[i][j]
                                                             .getContainer(),
-                                                    true, i, false, token));
+                                                            true, i, false, token));
                                         }
 
                                         insideReceivers[i][j].put(token);
@@ -241,7 +247,7 @@ public class CaseDirector extends Director {
                                             _debug(new IOPortEvent(port,
                                                     insideReceivers[i][j]
                                                             .getContainer(),
-                                                    false, i, false, token));
+                                                            false, i, false, token));
                                             _debug(getFullName(),
                                                     "transferring input from "
                                                             + port.getFullName()
@@ -281,6 +287,7 @@ public class CaseDirector extends Director {
      *   or if the director's postfire() method throws it, or if this
      *   actor is not opaque.
      */
+    @Override
     public boolean postfire() throws IllegalActionException {
         if (_debugging) {
             _debug("Calling postfire()");

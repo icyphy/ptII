@@ -112,6 +112,7 @@ public class MultiFrameTask extends TypedCompositeActor implements Task {
      *  current task frame.
      *  @throws IllegalActionException
      */
+    @Override
     public void fire() throws IllegalActionException {
         if (nextFireTime().compareTo(_scheduler.getModelTime()) == 0) {
             int deadline = _currentFrame._deadline;
@@ -131,6 +132,7 @@ public class MultiFrameTask extends TypedCompositeActor implements Task {
      *   guaranteed that a director is contained, or if more than one task frames are declared
      *   initial.
      */
+    @Override
     public void initialize() throws IllegalActionException {
         super.initialize();
         for (TaskFrame taskFrame : _taskFrames) {
@@ -150,6 +152,7 @@ public class MultiFrameTask extends TypedCompositeActor implements Task {
     /** Return true
      *  @return True.
      */
+    @Override
     public boolean isOpaque() {
         return true;
     }
@@ -157,6 +160,7 @@ public class MultiFrameTask extends TypedCompositeActor implements Task {
     /** Return the next time that the multiframe task will release a job.
      *  @return The next fire time.
      */
+    @Override
     public Time nextFireTime() {
         return _nextFireTime;
     }
@@ -165,6 +169,7 @@ public class MultiFrameTask extends TypedCompositeActor implements Task {
      *  and set the next fire time to be zero.
      *  @throws IllegalActionException If the superclass preinitialize() throws it.
      */
+    @Override
     public void preinitialize() throws IllegalActionException {
         super.preinitialize();
         _taskFrames.clear();

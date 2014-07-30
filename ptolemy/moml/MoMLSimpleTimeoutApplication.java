@@ -64,6 +64,7 @@ public class MoMLSimpleTimeoutApplication extends MoMLSimpleApplication {
     /**
      * Wait for all executing runs to finish or 5 seconds to pass, then return.
      */
+    @Override
     public synchronized void waitForFinish() {
         long timeout = 5000;
         try {

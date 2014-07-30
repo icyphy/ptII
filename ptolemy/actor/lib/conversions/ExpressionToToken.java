@@ -97,6 +97,7 @@ public class ExpressionToToken extends Converter {
      *  @exception IllegalActionException If there is no director, or
      *   if the expression read from the input cannot be parsed.
      */
+    @Override
     public void fire() throws IllegalActionException {
         super.fire();
         String string = ((StringToken) input.get(0)).stringValue();
@@ -135,6 +136,7 @@ public class ExpressionToToken extends Converter {
      *  @exception IllegalActionException If there is no director, or
      *   if no connection has been made to the input.
      */
+    @Override
     public boolean prefire() throws IllegalActionException {
         if (input.hasToken(0)) {
             return super.prefire();
@@ -146,6 +148,7 @@ public class ExpressionToToken extends Converter {
     /** Wrapup execution of this actor.  This method overrides the
      *  base class to discard the internal parser to save memory.
      */
+    @Override
     public void wrapup() {
         _parser = null;
     }
@@ -157,6 +160,7 @@ public class ExpressionToToken extends Converter {
          *  scope. Return null if such an attribute does not exist.
          *  @return The attribute with the specified name in the scope.
          */
+        @Override
         public Token get(String name) throws IllegalActionException {
             Variable result = getScopedVariable(null, ExpressionToToken.this,
                     name);
@@ -173,6 +177,7 @@ public class ExpressionToToken extends Converter {
          *  attribute does not exist.
          *  @return The attribute with the specified name in the scope.
          */
+        @Override
         public Type getType(String name) throws IllegalActionException {
             Variable result = getScopedVariable(null, ExpressionToToken.this,
                     name);
@@ -192,6 +197,7 @@ public class ExpressionToToken extends Converter {
          *  @exception IllegalActionException If a value in the scope
          *  exists with the given name, but cannot be evaluated.
          */
+        @Override
         public ptolemy.graph.InequalityTerm getTypeTerm(String name)
                 throws IllegalActionException {
             Variable result = getScopedVariable(null, ExpressionToToken.this,
@@ -207,6 +213,7 @@ public class ExpressionToToken extends Converter {
         /** Return the list of identifiers within the scope.
          *  @return The list of identifiers within the scope.
          */
+        @Override
         public Set identifierSet() {
             return getAllScopedVariableNames(null, ExpressionToToken.this);
         }

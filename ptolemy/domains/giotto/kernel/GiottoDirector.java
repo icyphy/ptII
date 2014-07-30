@@ -86,7 +86,7 @@ import ptolemy.kernel.util.Workspace;
  @see GiottoReceiver
  */
 public class GiottoDirector extends StaticSchedulingDirector implements
-        Decorator {
+Decorator {
 
     /** Construct a director in the default workspace with an empty string
      *  as its name. The director is added to the list of objects in
@@ -97,7 +97,7 @@ public class GiottoDirector extends StaticSchedulingDirector implements
      *  an entity with the specified name.
      */
     public GiottoDirector() throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         super();
         _init();
     }
@@ -132,7 +132,7 @@ public class GiottoDirector extends StaticSchedulingDirector implements
      *  that duplicates an existing name during initialization.
      */
     public GiottoDirector(Workspace workspace) throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         super(workspace);
         _init();
     }
@@ -150,6 +150,7 @@ public class GiottoDirector extends StaticSchedulingDirector implements
      *  @exception IllegalActionException If the specified attribute
      *   is <i>filename</i> and the file cannot be opened.
      */
+    @Override
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         if (attribute == period) {
@@ -170,6 +171,7 @@ public class GiottoDirector extends StaticSchedulingDirector implements
      *  @exception CloneNotSupportedException Not thrown in this base class
      *  @return The new object.
      */
+    @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         GiottoDirector newObject = (GiottoDirector) super.clone(workspace);
         newObject._receivers = new LinkedList();
@@ -180,6 +182,7 @@ public class GiottoDirector extends StaticSchedulingDirector implements
      *  @param target The NamedObj that will be decorated.
      *  @return The decorated attributes for the target NamedObj.
      */
+    @Override
     public DecoratorAttributes createDecoratorAttributes(NamedObj target) {
         if (_debugging) {
             _debug("createDecoratorAttributes method called for Giotto Director");
@@ -199,6 +202,7 @@ public class GiottoDirector extends StaticSchedulingDirector implements
      *  of this resource scheduler.
      *  @return A list of the objects decorated by this decorator.
      */
+    @Override
     public List<NamedObj> decoratedObjects() {
         CompositeEntity container = (CompositeEntity) getContainer();
         return container.deepEntityList();
@@ -216,6 +220,7 @@ public class GiottoDirector extends StaticSchedulingDirector implements
      *  @exception IllegalActionException If this director does not have a
      *   container.
      */
+    @Override
     public void fire() throws IllegalActionException {
         if (_debugging) {
             _debug("the fire method for the giotto director was called");
@@ -401,6 +406,7 @@ public class GiottoDirector extends StaticSchedulingDirector implements
      *  @exception IllegalActionException If the operation is not
      *    permissible (e.g. the given time is in the past).
      */
+    @Override
     public Time fireAt(Actor actor, Time time, int microstep)
             throws IllegalActionException {
         if (_debugging) {
@@ -497,6 +503,7 @@ public class GiottoDirector extends StaticSchedulingDirector implements
     /** Return the next time that this director expects activity.
      *  @return The time of the next iteration.
      */
+    @Override
     public Time getModelNextIterationTime() {
         return getModelTime().add(_unitTimeIncrement);
     }
@@ -516,13 +523,13 @@ public class GiottoDirector extends StaticSchedulingDirector implements
     ////                         public methods                    ////
 
     /** Handle a model error.
-           *  @param context The object in which the error occurred.
-           *  @param exception An exception that represents the error.
-           *  @return True if the error has been handled, or false if the
-           *   error is not handled.
-           *  @exception IllegalActionException If the handler handles the
-           *   error by throwing an exception.///
-           */
+     *  @param context The object in which the error occurred.
+     *  @param exception An exception that represents the error.
+     *  @return True if the error has been handled, or false if the
+     *   error is not handled.
+     *  @exception IllegalActionException If the handler handles the
+     *   error by throwing an exception.///
+     */
 
     //    public boolean handleModelError(NamedObj context,
     //         IllegalActionException exception) throws IllegalActionException {
@@ -547,6 +554,7 @@ public class GiottoDirector extends StaticSchedulingDirector implements
      *  @exception IllegalActionException If the initialize() method of
      *   one of the associated actors throws it.
      */
+    @Override
     public void initialize() throws IllegalActionException {
         _iterationCount = 0;
         _unitIndex = 0;
@@ -612,6 +620,7 @@ public class GiottoDirector extends StaticSchedulingDirector implements
     /** Return false to indicate that this decorator should not
      *  decorate objects across opaque hierarchy boundaries.
      */
+    @Override
     public boolean isGlobalDecorator() {
         return false;
     }
@@ -619,6 +628,7 @@ public class GiottoDirector extends StaticSchedulingDirector implements
     /** Return a new receiver consistent with the Giotto domain.
      *  @return A new GiottoReceiver.
      */
+    @Override
     public Receiver newReceiver() {
         Receiver receiver = new GiottoReceiver();
         _receivers.add(receiver);
@@ -632,6 +642,7 @@ public class GiottoDirector extends StaticSchedulingDirector implements
      *  @exception IllegalActionException If the iterations parameter does
      *   not have a valid token.
      */
+    @Override
     public boolean postfire() throws IllegalActionException {
         // FIXME: We are ignoring the return value here.
         super.postfire();
@@ -681,6 +692,7 @@ public class GiottoDirector extends StaticSchedulingDirector implements
      *  @return True if the director is ready to run for one iteration.
      *  @exception IllegalActionException If time is set backwards.
      */
+    @Override
     public boolean prefire() throws IllegalActionException {
         if (isEmbedded()) {
             CompositeActor container = (CompositeActor) getContainer();
@@ -726,6 +738,7 @@ public class GiottoDirector extends StaticSchedulingDirector implements
      *  @exception IllegalActionException If the preinitialize() method of
      *   one of the associated actors throws it.
      */
+    @Override
     public void preinitialize() throws IllegalActionException {
         super.preinitialize();
         if (_debugging) {
@@ -772,8 +785,9 @@ public class GiottoDirector extends StaticSchedulingDirector implements
      *   an attribute with the name of this attribute.
      *  @see #getContainer()
      */
+    @Override
     public void setContainer(NamedObj container) throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         super.setContainer(container);
         if (container != null) {
             List<NamedObj> decoratedObjects = decoratedObjects();
@@ -792,6 +806,7 @@ public class GiottoDirector extends StaticSchedulingDirector implements
      *  @return An array of suggested directors to be used with ModalModel.
      *  @see ptolemy.actor.Director#suggestedModalModelDirectors()
      */
+    @Override
     public String[] suggestedModalModelDirectors() {
         String[] defaultSuggestions = new String[2];
         defaultSuggestions[0] = "ptolemy.domains.modal.kernel.NonStrictFSMDirector";
@@ -811,6 +826,7 @@ public class GiottoDirector extends StaticSchedulingDirector implements
      *  @exception IllegalActionException If the port is not an opaque
      *  input port.
      */
+    @Override
     public boolean transferInputs(IOPort port) throws IllegalActionException {
         if (!port.isInput() || !port.isOpaque()) {
             throw new IllegalActionException(this, port,
@@ -829,7 +845,7 @@ public class GiottoDirector extends StaticSchedulingDirector implements
                     if (_debugging) {
                         _debug(getName(),
                                 "transferring input from " + port.getName()
-                                        + " channel " + i);
+                                + " channel " + i);
                     }
 
                     for (int j = 0; j < insideReceivers[i].length; j++) {
@@ -861,6 +877,7 @@ public class GiottoDirector extends StaticSchedulingDirector implements
      *  @exception IllegalActionException If the port is not an opaque
      *   output port.
      */
+    @Override
     public boolean transferOutputs(IOPort port) throws IllegalActionException {
         if (!port.isOutput() || !port.isOpaque()) {
             throw new IllegalActionException(port,
@@ -937,17 +954,17 @@ public class GiottoDirector extends StaticSchedulingDirector implements
     ////                         private methods                   ////
 
     /* Initialize the director by creating a scheduler and parameters.
-    *  @exception NameDuplicationException If the container reports an entity
-    *  that duplicates an existing name during initialization.
-    *  @exception IllegalActionException If any of the methods called by
-    *  _init()throws an exception. For instance a call to setToken() may
-    *  throw an IllegalActionException if the token type is not
-    *  compatible with specified constraints, or if you are attempting
-    *  to set to null a variable that has value dependents, or if the
-    *  container rejects the change.
-    */
+     *  @exception NameDuplicationException If the container reports an entity
+     *  that duplicates an existing name during initialization.
+     *  @exception IllegalActionException If any of the methods called by
+     *  _init()throws an exception. For instance a call to setToken() may
+     *  throw an IllegalActionException if the token type is not
+     *  compatible with specified constraints, or if you are attempting
+     *  to set to null a variable that has value dependents, or if the
+     *  container rejects the change.
+     */
     private void _init() throws NameDuplicationException,
-            IllegalActionException {
+    IllegalActionException {
         GiottoScheduler scheduler = new GiottoScheduler(workspace());
         setScheduler(scheduler);
 

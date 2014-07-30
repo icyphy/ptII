@@ -93,6 +93,7 @@ public class RectangleAttribute extends FilledShapeAttribute {
      *  @exception IllegalActionException If the change is not acceptable
      *   to this container (should not be thrown).
      */
+    @Override
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         if (attribute == rounding) {
@@ -122,6 +123,7 @@ public class RectangleAttribute extends FilledShapeAttribute {
      *  @exception CloneNotSupportedException Not thrown in this base class
      *  @return The new Attribute.
      */
+    @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         RectangleAttribute newObject = (RectangleAttribute) super
                 .clone(workspace);
@@ -141,6 +143,7 @@ public class RectangleAttribute extends FilledShapeAttribute {
     /** Return the a new rectangle given a new width and height.
      *  @return A new shape.
      */
+    @Override
     protected Shape _newShape() {
         double roundingValue = 0.0;
 

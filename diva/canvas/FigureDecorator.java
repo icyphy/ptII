@@ -56,18 +56,21 @@ public abstract class FigureDecorator extends AbstractFigureContainer {
      * for Decorators, but has to be here anyway. This method is
      * set same as calling setChild(f).
      */
+    @Override
     public void add(Figure f) {
         setChild(f);
     }
 
     /** Test if the given figure is the one contained by this decorator.
      */
+    @Override
     public boolean contains(Figure f) {
         return f == _child;
     }
 
     /** Return an iteration containing the one child.
      */
+    @Override
     public Iterator figures() {
         if (_child == null) {
             return new NullIterator();
@@ -78,12 +81,14 @@ public abstract class FigureDecorator extends AbstractFigureContainer {
 
     /** Return an iteration containing the one child.
      */
+    @Override
     public Iterator figuresFromBack() {
         return figures();
     }
 
     /** Return an iteration containing the one child.
      */
+    @Override
     public Iterator figuresFromFront() {
         return figures();
     }
@@ -92,6 +97,7 @@ public abstract class FigureDecorator extends AbstractFigureContainer {
      * same as the child figure, if there is one, or a very small
      * rectangle if there isn't.
      */
+    @Override
     public Rectangle2D getBounds() {
         if (_child == null) {
             return new Rectangle2D.Double();
@@ -130,6 +136,7 @@ public abstract class FigureDecorator extends AbstractFigureContainer {
 
     /** Return zero if there is no child, or one if there is.
      */
+    @Override
     public int getFigureCount() {
         if (_child == null) {
             return 0;
@@ -142,6 +149,7 @@ public abstract class FigureDecorator extends AbstractFigureContainer {
      * same as the child figure, if there is one, or a very small
      * rectangle if there isn't.
      */
+    @Override
     public Shape getShape() {
         if (_child == null) {
             return new Rectangle2D.Double();
@@ -152,6 +160,7 @@ public abstract class FigureDecorator extends AbstractFigureContainer {
 
     /** Test if the child is hit.
      */
+    @Override
     public boolean hit(Rectangle2D r) {
         return _child.hit(r);
     }
@@ -168,6 +177,7 @@ public abstract class FigureDecorator extends AbstractFigureContainer {
     /** Paint the figure. By default, this method simply forwards the
      * paint request to the contained figure.
      */
+    @Override
     public void paint(Graphics2D g) {
         if (_child != null) {
             _child.paint(g);
@@ -197,6 +207,7 @@ public abstract class FigureDecorator extends AbstractFigureContainer {
      * is the same as calling setChild(null). Otherwise, it does
      * nothing.
      */
+    @Override
     public void remove(Figure f) {
         if (_child == f) {
             setChild(null);
@@ -206,6 +217,7 @@ public abstract class FigureDecorator extends AbstractFigureContainer {
     /** Replace the first figure, which must be a child, with the
      * second, which must not be a child.
      */
+    @Override
     protected void replaceChild(Figure child, Figure replacement) {
         _child = replacement;
     }
@@ -214,6 +226,7 @@ public abstract class FigureDecorator extends AbstractFigureContainer {
      * this method simply forwards the paint request to the child
      * figure.
      */
+    @Override
     public void transform(AffineTransform at) {
         if (_child != null) {
             _child.transform(at);
@@ -223,6 +236,7 @@ public abstract class FigureDecorator extends AbstractFigureContainer {
     /** Translate the figure by the given distance.  By default, this
      * method simply forwards the paint request to the child figure.
      */
+    @Override
     public void translate(double x, double y) {
         if (_child != null) {
             _child.translate(x, y);

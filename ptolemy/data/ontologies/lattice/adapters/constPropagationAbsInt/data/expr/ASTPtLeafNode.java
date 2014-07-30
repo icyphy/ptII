@@ -71,6 +71,7 @@ public class ASTPtLeafNode extends LatticeOntologyASTNodeAdapter {
      *  @exception IllegalActionException If there is an error building the constraint list.
      *  @return The list of constraints for this adapter.
      */
+    @Override
     public List<Inequality> constraintList() throws IllegalActionException {
 
         ptolemy.data.expr.ASTPtLeafNode node = (ptolemy.data.expr.ASTPtLeafNode) _getNode();
@@ -99,7 +100,7 @@ public class ASTPtLeafNode extends LatticeOntologyASTNodeAdapter {
                         setAtLeast(
                                 node,
                                 positiveRepresentative
-                                        .getFlatTokenInfiniteConceptByToken(nodeToken));
+                                .getFlatTokenInfiniteConceptByToken(nodeToken));
                     } else {
                         FlatScalarTokenRepresentativeConcept negativeRepresentative = (FlatScalarTokenRepresentativeConcept) getSolver()
                                 .getOntology().getConceptByString(
@@ -107,7 +108,7 @@ public class ASTPtLeafNode extends LatticeOntologyASTNodeAdapter {
                         setAtLeast(
                                 node,
                                 negativeRepresentative
-                                        .getFlatTokenInfiniteConceptByToken(nodeToken));
+                                .getFlatTokenInfiniteConceptByToken(nodeToken));
                     }
                 } else {
                     setAtLeast(node, getSolver().getOntology()

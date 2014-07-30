@@ -88,6 +88,7 @@ public class JopReadPort extends Source {
 
     /** The <i>portAddress</i> has to be in a valid range.
      */
+    @Override
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         if (attribute == portAddress) {
@@ -107,6 +108,7 @@ public class JopReadPort extends Source {
      *  @exception CloneNotSupportedException If a derived class contains
      *   an attribute that cannot be cloned.
      */
+    @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         JopReadPort newObject = (JopReadPort) super.clone(workspace);
         newObject.output.setTypeEquals(BaseType.INT);
@@ -118,6 +120,7 @@ public class JopReadPort extends Source {
      *
      *  @exception IllegalActionException If there is no director.
      */
+    @Override
     public void fire() throws IllegalActionException {
         super.fire();
         if (_firstFire) {
@@ -134,6 +137,7 @@ public class JopReadPort extends Source {
     /** Enable read on the next invocation of fire().
      *  @exception IllegalActionException If the base class throws it.
      */
+    @Override
     public boolean postfire() throws IllegalActionException {
         _firstFire = true;
         return super.postfire();

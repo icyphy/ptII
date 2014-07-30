@@ -45,6 +45,7 @@ import diva.graph.EdgeRenderer;
 public class ArcRenderer implements EdgeRenderer {
     /** Render a visual representation of the given edge.
      */
+    @Override
     public Connector render(Object edge, Site tailSite, Site headSite) {
         // FIXME: Find a way to set the curvature (the third argument).
         ArcConnector c = new ArcConnector(tailSite, headSite);

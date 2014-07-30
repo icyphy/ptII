@@ -59,6 +59,7 @@ public class PaintedList implements PaintedObject {
     /** Get the bounding box of the list of painted objects.  Clients
      * should cache the bounding box if performance is important.
      */
+    @Override
     public Rectangle2D getBounds() {
         if (paintedObjects.size() == 0) {
             return new Rectangle2D.Double();
@@ -79,6 +80,7 @@ public class PaintedList implements PaintedObject {
     /** Paint the list of objects. Objects are painted from the
      * <i>front</i> of the list backwards.
      */
+    @Override
     public void paint(Graphics2D g) {
         for (Iterator i = paintedObjects.iterator(); i.hasNext();) {
             PaintedObject o = (PaintedObject) i.next();

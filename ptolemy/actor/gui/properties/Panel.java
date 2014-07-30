@@ -24,7 +24,7 @@
  PT_COPYRIGHT_VERSION_2
  COPYRIGHTENDKEY
 
-*/
+ */
 package ptolemy.actor.gui.properties;
 
 import javax.swing.JComponent;
@@ -128,10 +128,11 @@ public class Panel extends GUIProperty {
     }
 
     /** Create a new JPanel component.
-    *
-    *  @return A Swing component that can be enclosed in this GUI property.
-    *  @exception IllegalActionException Not thrown in this base class.
-    */
+     *
+     *  @return A Swing component that can be enclosed in this GUI property.
+     *  @exception IllegalActionException Not thrown in this base class.
+     */
+    @Override
     protected JComponent _createComponent() throws IllegalActionException {
         return new JPanel();
     }

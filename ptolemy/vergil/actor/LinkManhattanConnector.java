@@ -100,6 +100,7 @@ public class LinkManhattanConnector extends ManhattanConnector {
      *  connection to a multiport.
      *  @return The connection site.
      */
+    @Override
     public Site getHeadSite() {
         Site result = super.getHeadSite();
         if (_headPort == null || !_headPort.isMultiport()) {
@@ -147,6 +148,7 @@ public class LinkManhattanConnector extends ManhattanConnector {
      *  connection to a multiport.
      *  @return The connection site.
      */
+    @Override
     public Site getTailSite() {
         Site result = super.getTailSite();
         if (_tailPort == null || !_tailPort.isMultiport()) {

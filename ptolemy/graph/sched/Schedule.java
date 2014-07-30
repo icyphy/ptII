@@ -236,6 +236,7 @@ public class Schedule extends ScheduleElement {
      *   underlying schedule structure is modified while the iterator
      *   is active.
      */
+    @Override
     public Iterator firingElementIterator() {
         return new FiringElementIterator();
     }
@@ -258,6 +259,7 @@ public class Schedule extends ScheduleElement {
      *   underlying schedule structure is modified while the iterator
      *   is active.
      */
+    @Override
     public Iterator firingIterator() {
         return new FiringIterator(this);
     }
@@ -381,6 +383,7 @@ public class Schedule extends ScheduleElement {
      *  @param delimiter The delimiter between iterands.
      *  @return A nested parenthesis expression of the schedule.
      */
+    @Override
     public String toParenthesisString(Map nameMap, String delimiter) {
         StringBuffer result = new StringBuffer("(");
         int iterations = getIterationCount();
@@ -405,6 +408,7 @@ public class Schedule extends ScheduleElement {
      *
      *  @return Return a string representation of this Schedule.
      */
+    @Override
     public String toString() {
         StringBuffer result = new StringBuffer("Execute Schedule{\n");
         Iterator i = iterator();
@@ -446,6 +450,7 @@ public class Schedule extends ScheduleElement {
          *  data structure has changed since this iterator was created.
          *  @return True if the iterator has more elements.
          */
+        @Override
         public boolean hasNext() {
             if (_currentVersion != _getVersion()) {
                 throw new ConcurrentModificationException(
@@ -505,6 +510,7 @@ public class Schedule extends ScheduleElement {
          *  has changed since this iterator was created.
          *  @return The next object in the iteration.
          */
+        @Override
         public Object next() throws NoSuchElementException {
             if (!hasNext()) {
                 throw new NoSuchElementException("No element to return.");
@@ -521,6 +527,7 @@ public class Schedule extends ScheduleElement {
          *  doesn't make sense to remove an actor from an actor invocation
          *  sequence anyway.
          */
+        @Override
         public void remove() {
             throw new UnsupportedOperationException();
         }
@@ -580,6 +587,7 @@ public class Schedule extends ScheduleElement {
          *  any leaf nodes that are not an instance of Firing.
          *  @return True if the iterator has more elements.
          */
+        @Override
         public boolean hasNext() {
             // This code may look messy, but it simply walks the
             // schedule tree.
@@ -632,6 +640,7 @@ public class Schedule extends ScheduleElement {
          *  data structure has changed since this iterator was created.
          *  @return The next object in the iteration.
          */
+        @Override
         public Object next() throws NoSuchElementException {
             if (!hasNext()) {
                 throw new NoSuchElementException("No element to return.");
@@ -650,6 +659,7 @@ public class Schedule extends ScheduleElement {
          *  between the firing in a firing iterator and a firing in the
          *  schedule.
          */
+        @Override
         public void remove() {
             throw new UnsupportedOperationException();
         }

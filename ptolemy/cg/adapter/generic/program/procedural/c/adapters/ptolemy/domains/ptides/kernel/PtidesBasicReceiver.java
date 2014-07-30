@@ -54,8 +54,8 @@ import ptolemy.kernel.util.IllegalActionException;
  *  @Pt.AcceptedRating Red (jiazou)
  */
 public class PtidesBasicReceiver
-        extends
-        ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.actor.Receiver {
+extends
+ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.actor.Receiver {
 
     /** Construct a ptides basic receiver.
      *  @param receiver The ptolemy.domains.ptides.kernel.PtidesBasicReceiver
@@ -64,7 +64,7 @@ public class PtidesBasicReceiver
      */
     public PtidesBasicReceiver(
             ptolemy.domains.ptides.kernel.PtidesReceiver receiver)
-            throws IllegalActionException {
+                    throws IllegalActionException {
         super(receiver);
     }
 
@@ -79,6 +79,7 @@ public class PtidesBasicReceiver
      * not found or it encounters an error while generating the
      * get code.
      */
+    @Override
     public String generateGetCode(String offset) throws IllegalActionException {
         TypedIOPort port = (TypedIOPort) getComponent().getContainer();
         int channel = port.getChannelForReceiver(getComponent());
@@ -93,6 +94,7 @@ public class PtidesBasicReceiver
      *  getting the receiver adapters or generating their initialize
      *  code.
      */
+    @Override
     public String generateHasTokenCode(String offset)
             throws IllegalActionException {
         IOPort port = getComponent().getContainer();
@@ -111,6 +113,7 @@ public class PtidesBasicReceiver
      * not found or it encounters an error while generating the send
      * code.
      */
+    @Override
     public String generatePutCode(IOPort sourcePort, String offset, String token)
             throws IllegalActionException {
         TypedIOPort sinkPort = (TypedIOPort) getComponent().getContainer();
@@ -217,6 +220,7 @@ public class PtidesBasicReceiver
      * @exception IllegalActionException If there is a problem getting the
      * adapters for the ports or if the conversion cannot be handled.
      */
+    @Override
     protected String _generateTypeConvertStatement(Channel source)
             throws IllegalActionException {
         // TODO Auto-generated method stub

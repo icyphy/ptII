@@ -32,7 +32,7 @@ public class MinimumDistanceCalculator extends Attribute {
      *  any number of relations to a port of another entity.
      *  This method considers whether ports are inputs or
      *  outputs, and respects the direction of the connection.
-     * 
+     *
      * @param entities
      * @param start
      * @param end

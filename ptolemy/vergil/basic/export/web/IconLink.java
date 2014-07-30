@@ -110,6 +110,7 @@ public class IconLink extends WebContent implements WebExportable {
      *
      * @return The string text/html
      */
+    @Override
     public String getMimeType() {
         return "text/html";
     }
@@ -118,6 +119,7 @@ public class IconLink extends WebContent implements WebExportable {
      *
      * @return True, since new content should overwrite old
      */
+    @Override
     public boolean isOverwriteable() {
         return true;
     }
@@ -134,6 +136,7 @@ public class IconLink extends WebContent implements WebExportable {
      *  @exception IllegalActionException If evaluating the value
      *   of this parameter fails, or creating a web attribute fails.
      */
+    @Override
     protected void _provideAttributes(WebExporter exporter)
             throws IllegalActionException {
 
@@ -161,7 +164,8 @@ public class IconLink extends WebContent implements WebExportable {
                     // Create class attribute and add to exporter.
                     // Content should only be added once (onceOnly -> true).
                     webAttribute = WebAttribute.appendToWebAttribute(
-                            getContainer(), "classWebAttribute", "class", "iframe");
+                            getContainer(), "classWebAttribute", "class",
+                            "iframe");
                     exporter.defineAttribute(webAttribute, true);
                 } else {
 

@@ -60,6 +60,7 @@ public class WatchDog {
         }
 
         TimerTask doTimeToDie = new TimerTask() {
+            @Override
             public void run() {
                 try {
                     System.err.println("*** util.testsuite.WatchDog went "

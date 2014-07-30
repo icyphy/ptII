@@ -61,6 +61,7 @@ public class EditablePlotMLApplet extends PlotMLApplet {
     /** Initialize the applet.  Place an instance of EditablePlot
      *  and a widget for selecting the data set to edit.
      */
+    @Override
     public void init() {
         super.init();
 
@@ -85,6 +86,7 @@ public class EditablePlotMLApplet extends PlotMLApplet {
     /**
      * Return a string describing this applet.
      */
+    @Override
     public String getAppletInfo() {
         return "EditablePlotDemo "
                 + PlotBox.PTPLOT_RELEASE
@@ -96,6 +98,7 @@ public class EditablePlotMLApplet extends PlotMLApplet {
     /** Create a new Plot object for the applet.  Derived classes can
      *  redefine this method to return a different type of plot object.
      */
+    @Override
     public PlotBox newPlot() {
         return new EditablePlot();
     }
@@ -109,6 +112,7 @@ public class EditablePlotMLApplet extends PlotMLApplet {
      *  @param appletWidth The width of the applet.
      *  @param appletHeight The height of the applet.
      */
+    @Override
     protected void _setPlotSize(int appletWidth, int appletHeight) {
         if (appletHeight > 50) {
             plot().setSize(appletWidth, appletHeight - 50);
@@ -125,6 +129,7 @@ public class EditablePlotMLApplet extends PlotMLApplet {
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
     private class ChoiceListener implements ActionListener {
+        @Override
         public void actionPerformed(ActionEvent e) {
             ((EditablePlot) plot()).setEditable(_choice.getSelectedIndex());
         }

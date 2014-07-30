@@ -49,6 +49,7 @@ public class GraphLogger implements GraphListener {
     /**
      * Add this event to the log.
      */
+    @Override
     public void edgeHeadChanged(GraphEvent e) {
         _log.add(e);
     }
@@ -56,6 +57,7 @@ public class GraphLogger implements GraphListener {
     /**
      * Add this event to the log.
      */
+    @Override
     public void edgeTailChanged(GraphEvent e) {
         _log.add(e);
     }
@@ -63,6 +65,7 @@ public class GraphLogger implements GraphListener {
     /**
      * Add this event to the log.
      */
+    @Override
     public void nodeAdded(GraphEvent e) {
         _log.add(e);
     }
@@ -70,6 +73,7 @@ public class GraphLogger implements GraphListener {
     /**
      * Add this event to the log.
      */
+    @Override
     public void nodeRemoved(GraphEvent e) {
         _log.add(e);
     }
@@ -77,6 +81,7 @@ public class GraphLogger implements GraphListener {
     /**
      * Add this event to the log.
      */
+    @Override
     public void structureChanged(GraphEvent e) {
         _log.add(e);
     }
@@ -92,6 +97,7 @@ public class GraphLogger implements GraphListener {
     /**
      * Print the contents of the log into a string.
      */
+    @Override
     public String toString() {
         StringBuffer ret = new StringBuffer("LOG: \n");
 

@@ -134,6 +134,7 @@ public class Accumulator extends Transformer {
      *  @exception CloneNotSupportedException If a derived class contains
      *   an attribute that cannot be cloned.
      */
+    @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         Accumulator newObject = (Accumulator) super.clone(workspace);
 
@@ -156,6 +157,7 @@ public class Accumulator extends Transformer {
      *  @exception IllegalActionException If addition is not
      *   supported by the supplied tokens.
      */
+    @Override
     public void fire() throws IllegalActionException {
         super.fire();
         _latestSum = _sum;
@@ -212,6 +214,7 @@ public class Accumulator extends Transformer {
     /** Reset the running sum to equal the value of <i>init</i>.
      *  @exception IllegalActionException If the parent class throws it.
      */
+    @Override
     public void initialize() throws IllegalActionException {
         super.initialize();
         _latestSum = _sum = output.getType().convert(init.getToken());
@@ -221,6 +224,7 @@ public class Accumulator extends Transformer {
      *  Do nothing if there is no input.
      *  @exception IllegalActionException If the base class throws it.
      */
+    @Override
     public boolean postfire() throws IllegalActionException {
         _sum = _latestSum;
         return super.postfire();

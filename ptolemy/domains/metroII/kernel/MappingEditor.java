@@ -49,19 +49,19 @@ import ptolemy.kernel.util.NamedObj;
 
 /**
  * MappingEditor is an attribute used to edit the mapping constraints.
- * 
+ *
  * @author Liangpeng Guo
  * @version $Id$
  * @since Ptolemy II 10.0
  * @Pt.ProposedRating Red (glp)
  * @Pt.AcceptedRating Red (glp)
- * 
+ *
  */
 public class MappingEditor extends Attribute {
 
     /**
      * Constructs a mapping editor.
-     * 
+     *
      * @param container
      *            Container of the director.
      * @param name
@@ -96,7 +96,7 @@ public class MappingEditor extends Attribute {
      */
     public File getMappingFile() throws IllegalActionException {
         CompositeActor actor = (CompositeActor) this.getContainer();
-        Director director = (Director) actor.getDirector();
+        Director director = actor.getDirector();
 
         if (!(director instanceof MetroIIDirector)) {
             throw new IllegalActionException("Need a MetroIIDirector!");
@@ -121,7 +121,7 @@ public class MappingEditor extends Attribute {
 
     /**
      * Reads mapping constraints.
-     * 
+     *
      * @return The mapping constraints.
      * @exception IllegalActionException If the mapping file cannot be read.
      */
@@ -146,7 +146,7 @@ public class MappingEditor extends Attribute {
 
     /**
      * Saves content to mapping file.
-     * 
+     *
      * @param content
      *            the content to save to the mapping file.
      * @exception IllegalActionException
@@ -163,7 +163,7 @@ public class MappingEditor extends Attribute {
                 } catch (IOException ex) {
                     throw new IllegalActionException(this, ex,
                             "Failed to save to mapping file \"" + filename
-                                    + "\".");
+                            + "\".");
                 }
             }
         }
@@ -171,7 +171,7 @@ public class MappingEditor extends Attribute {
 
     /**
      * Returns actors names on all hierarchies.
-     * 
+     *
      * @return actors names on all hierarchies.
      * @exception IllegalActionException
      */

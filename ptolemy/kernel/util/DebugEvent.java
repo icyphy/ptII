@@ -59,5 +59,6 @@ public interface DebugEvent {
     /** Return a string representation of this event.
      *  @return A user-readable string describing the event.
      */
+    @Override
     public String toString();
 }

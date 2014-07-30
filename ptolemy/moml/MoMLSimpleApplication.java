@@ -113,7 +113,7 @@ public class MoMLSimpleApplication implements ChangeListener, ExecutionListener 
         // has problems finding resources like files specified in
         // parameters if the xml file was specified as an absolute path.
         _toplevel = (CompositeActor) _parser.parse(null, new File(xmlFileName)
-                .toURI().toURL());
+        .toURI().toURL());
 
         // If the model is a top level, and a model error handler has not been set,
         // then set a BasicModelErrorHandler.
@@ -156,6 +156,7 @@ public class MoMLSimpleApplication implements ChangeListener, ExecutionListener 
      *  @param change The change that has been executed, or null if
      *   the change was not done via a ChangeRequest.
      */
+    @Override
     public void changeExecuted(ChangeRequest change) {
     }
 
@@ -168,6 +169,7 @@ public class MoMLSimpleApplication implements ChangeListener, ExecutionListener 
      *   the change was not done via a ChangeRequest.
      *  @param exception The exception that resulted.
      */
+    @Override
     public void changeFailed(ChangeRequest change, Exception exception) {
         // If we do not implement ChangeListener, then ChangeRequest
         // will print any errors to stdout and continue.
@@ -236,6 +238,7 @@ public class MoMLSimpleApplication implements ChangeListener, ExecutionListener 
      *  @param manager The manager controlling the execution.
      *  @param throwable The throwable to report.
      */
+    @Override
     public synchronized void executionError(Manager manager, Throwable throwable) {
         _sawThrowable = throwable;
         _executionFinishedOrError = true;
@@ -252,6 +255,7 @@ public class MoMLSimpleApplication implements ChangeListener, ExecutionListener 
      *  In this class, we set a flag indicating that execution has finished.
      *  @param manager The manager controlling the execution.
      */
+    @Override
     public synchronized void executionFinished(Manager manager) {
         _activeCount--;
         _executionFinishedOrError = true;
@@ -266,6 +270,7 @@ public class MoMLSimpleApplication implements ChangeListener, ExecutionListener 
      *  @param manager The manager controlling the execution.
      *  @see Manager#getState()
      */
+    @Override
     public void managerStateChanged(Manager manager) {
     }
 
@@ -341,6 +346,7 @@ public class MoMLSimpleApplication implements ChangeListener, ExecutionListener 
     /** Wait for the run to finish and the unload the model.
      */
     private class UnloadThread extends Thread {
+        @Override
         public void run() {
             waitForFinish();
             if (_sawThrowable != null) {

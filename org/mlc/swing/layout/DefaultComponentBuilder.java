@@ -100,6 +100,7 @@ public class DefaultComponentBuilder implements ComponentBuilder {
         }
     }
 
+    @Override
     public String getDeclaration(String name, Map<String, Object> beanProperties) {
         StringBuffer buffer = new StringBuffer();
         buffer.append(clazz.getName() + " " + name + " = new "
@@ -113,6 +114,7 @@ public class DefaultComponentBuilder implements ComponentBuilder {
         return buffer.toString();
     }
 
+    @Override
     public ComponentDef getComponentDef(String name,
             Map<String, Object> beanProperties) {
         // imports
@@ -137,10 +139,11 @@ public class DefaultComponentBuilder implements ComponentBuilder {
         return cd;
     }
 
+    @Override
     public java.awt.Component getInstance(
             java.util.Map<String, Object> objectProperties)
-            throws InstantiationException, IllegalAccessException,
-            InvocationTargetException {
+                    throws InstantiationException, IllegalAccessException,
+                    InvocationTargetException {
         Object instance = clazz.newInstance();
 
         for (Object element : objectProperties.keySet()) {
@@ -154,14 +157,17 @@ public class DefaultComponentBuilder implements ComponentBuilder {
         return (Component) instance;
     }
 
+    @Override
     public boolean isComponentALayoutContainer() {
         return clazz.equals(JPanel.class);
     }
 
+    @Override
     public String toString() {
         return clazz.getName();
     }
 
+    @Override
     public List<BeanProperty> getProperties() {
         return properties;
     }

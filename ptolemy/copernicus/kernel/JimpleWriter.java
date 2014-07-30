@@ -60,14 +60,17 @@ public class JimpleWriter extends SceneTransformer implements HasPhaseOptions {
         return instance;
     }
 
+    @Override
     public String getPhaseName() {
         return "";
     }
 
+    @Override
     public String getDefaultOptions() {
         return "";
     }
 
+    @Override
     public String getDeclaredOptions() {
         return "debug outputDirectory";
     }
@@ -83,6 +86,7 @@ public class JimpleWriter extends SceneTransformer implements HasPhaseOptions {
      *  <code>outdir</code> option to specify where the .jimple
      *  file should be written
      */
+    @Override
     protected void internalTransform(String phaseName, Map options) {
         System.out.println("JimpleWriter.internalTransform(" + phaseName + ", "
                 + options + ")");

@@ -157,6 +157,7 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
      *  @exception CloneNotSupportedException If a derived class contains
      *   an attribute that cannot be cloned.
      */
+    @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         CCodeGenerator newObject = (CCodeGenerator) super.clone(workspace);
 
@@ -172,11 +173,12 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
      *  @param value The value of the constant.
      *  @return A #define that defines the constant.
      */
+    @Override
     public String generateConstantDefinition(String constant, String type,
             String value) {
         // Maybe we should keep track of these in a Set?
         return "#ifndef " + constant + _eol + "#define " + constant + " "
-                + value + _eol + "#endif" + _eol;
+        + value + _eol + "#endif" + _eol;
     }
 
     /** Generate the fire function method name. This method is called
@@ -190,6 +192,7 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
      *  Derived classes should throw this exception if there are problems
      *  accessing the name or generating the name.
      */
+    @Override
     public String generateFireFunctionMethodName(NamedObj namedObj)
             throws IllegalActionException {
         return TemplateParser.escapeName(CodeGeneratorAdapter
@@ -264,6 +267,7 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
      *  @return a string for the initialization procedure entry point.
      *  @exception IllegalActionException Not thrown in this base class.
      */
+    @Override
     public String generateInitializeEntryCode() throws IllegalActionException {
         // If the container is in the top level, we are generating code
         // for the whole model.
@@ -275,19 +279,26 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
             // If the container is not in the top level, we are generating code
             // for the Java and C co-simulation.
         } else {
-            String throwExceptionCode = _eol + _eol + "void throwInternalErrorException()" + _eol
-                + "{" + _eol
-                + "   jclass exceptionClass;" + _eol
-                + "   char *className = \"java/lang/Exception\";" + _eol
-                + "   exceptionClass = (*env)->FindClass(env,className);" + _eol
-                + "   fprintf(stderr, \"%s: %d: throwing %s, class %p.\\n\", __FILE__, __LINE__, className, exceptionClass);" + _eol
+            String throwExceptionCode = _eol
+                    + _eol
+                    + "void throwInternalErrorException()"
+                    + _eol
+                    + "{"
+                    + _eol
+                    + "   jclass exceptionClass;"
+                    + _eol
+                    + "   char *className = \"java/lang/Exception\";"
+                    + _eol
+                    + "   exceptionClass = (*env)->FindClass(env,className);"
+                    + _eol
+                    + "   fprintf(stderr, \"%s: %d: throwing %s, class %p.\\n\", __FILE__, __LINE__, className, exceptionClass);"
+                    + _eol
 
-                + "   fprintf(stderr, \"throwing returned %d\\n\", (*env)->ThrowNew(env, exceptionClass, \"Check stdout\"));"
-                + "}" + _eol;
+                    + "   fprintf(stderr, \"throwing returned %d\\n\", (*env)->ThrowNew(env, exceptionClass, \"Check stdout\"));"
+                    + "}" + _eol;
             String escapeName = _sanitizedModelName.replaceAll("_", "_1");
-            return throwExceptionCode 
-                + _eol + _eol + "JNIEXPORT void JNICALL" + _eol + "Java_"
-                    + escapeName + "_initialize("
+            return throwExceptionCode + _eol + _eol + "JNIEXPORT void JNICALL"
+                    + _eol + "Java_" + escapeName + "_initialize("
                     + "JNIEnv *env_glob, jobject obj_glob) {" + _eol
                     + "env = env_glob;" + _eol + "obj = obj_glob;";
 
@@ -297,6 +308,7 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
     /** Return the closing entry code, if any.
      *  @return the closing entry code.
      */
+    @Override
     public String generateClosingEntryCode() {
         return "void doWrapup() { " + _eol;
     }
@@ -304,6 +316,7 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
     /** Return the closing exit code, if any.
      *  @return the closing exit code.
      */
+    @Override
     public String generateClosingExitCode() {
         return "}" + _eol;
     }
@@ -312,6 +325,7 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
      *  @return a string for the initialization procedure exit point.
      *  @exception IllegalActionException Not thrown in this base class.
      */
+    @Override
     public String generateInitializeExitCode() throws IllegalActionException {
         return "}" + _eol;
     }
@@ -320,6 +334,7 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
      *  @return a string for the initialization procedure name.
      *  @exception IllegalActionException Not thrown in this base class.
      */
+    @Override
     public String generateInitializeProcedureName()
             throws IllegalActionException {
         if (_isTopLevel()) {
@@ -332,8 +347,8 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
         } else {
             String escapeName = _sanitizedModelName.replaceAll("_", "_1");
             return _eol + _eol + "JNIEXPORT void JNICALL" + _eol + "Java_"
-                    + escapeName + "_initialize("
-                    + "JNIEnv *env_glob, jobject obj_glob);" + _eol;
+            + escapeName + "_initialize("
+            + "JNIEnv *env_glob, jobject obj_glob);" + _eol;
         }
         //return "// Don't call initialize() here, it is called in main.";
     }
@@ -350,6 +365,7 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
      *  code blocks.
      *  @return text that is suitable for the C preprocessor.
      */
+    @Override
     public String generateLineInfo(int lineNumber, String filename) {
         return "#line " + lineNumber + " \"" + filename + "\"" + _eol;
     }
@@ -359,6 +375,7 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
      *   In C, this would be defining main().
      *  @exception IllegalActionException Not thrown in this base class.
      */
+    @Override
     public String generateMainEntryCode() throws IllegalActionException {
         StringBuffer mainEntryCode = new StringBuffer();
 
@@ -429,8 +446,8 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
                         + inputPort.getName() + "_glob;");
             }
 
-            mainEntryCode.append(_eol + "(*(" + _sanitizedModelName + "->fire))("
-                    + _sanitizedModelName + ");");
+            mainEntryCode.append(_eol + "(*(" + _sanitizedModelName
+                    + "->fire))(" + _sanitizedModelName + ");");
         }
         return mainEntryCode.toString();
     }
@@ -439,6 +456,7 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
      *  @return Return a string that declares the end of the main() function.
      *  @exception IllegalActionException Not thrown in this base class.
      */
+    @Override
     public String generateMainExitCode() throws IllegalActionException {
         if (_isTopLevel()) {
             return _eol + "}" + _eol;
@@ -454,6 +472,7 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
      *  @return a string for the postfire procedure entry point.
      *  @exception IllegalActionException Not thrown in this base class.
      */
+    @Override
     public String generatePostfireEntryCode() throws IllegalActionException {
         // If the container is in the top level, we are generating code
         // for the whole model.
@@ -465,8 +484,8 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
         } else {
             String escapeName = _sanitizedModelName.replaceAll("_", "_1");
             return _eol + _eol + "JNIEXPORT void JNICALL" + _eol + "Java_"
-                    + escapeName + "_postfire(" + "JNIEnv *env, jobject obj) {"
-                    + _eol;
+            + escapeName + "_postfire(" + "JNIEnv *env, jobject obj) {"
+            + _eol;
         }
     }
 
@@ -474,6 +493,7 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
      *  @return a string for the postfire procedure exit point.
      *  @exception IllegalActionException Not thrown in this base class.
      */
+    @Override
     public String generatePostfireExitCode() throws IllegalActionException {
         return INDENT1 + "return true;" + _eol + "}" + _eol;
     }
@@ -482,6 +502,7 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
      *  @return a string for the postfire procedure name.
      *  @exception IllegalActionException Not thrown in this base class.
      */
+    @Override
     public String generatePostfireProcedureName() throws IllegalActionException {
 
         return INDENT1 + "postfire(void);" + _eol;
@@ -575,7 +596,7 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
                         "$CLASSPATH/ptolemy/cg/kernel/generic/program/procedural/c/structures/"
                                 + typesArray[i].substring(0,
                                         typesArray[i].indexOf("Structure"))
-                                + ".c", this);
+                                        + ".c", this);
             } else {
                 // Open the .c file for each type.
                 typeStreams[i] = new CodeStream(
@@ -650,10 +671,10 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
         // Define the generic convert method
         StringBuffer convertImplementation = new StringBuffer(_eol
                 + "Token* convert(Token* t, char type) {" + _eol);
-        convertImplementation.append("if (t->type == type)" + _eol + "return t;"
-                + _eol);
-        String convertDeclaration = _eol + "Token* convert(Token* t, char type);"
-                + _eol;
+        convertImplementation.append("if (t->type == type)" + _eol
+                + "return t;" + _eol);
+        String convertDeclaration = _eol
+                + "Token* convert(Token* t, char type);" + _eol;
         codeH.append(convertDeclaration);
 
         // Append functions that are specified used by this type (without
@@ -670,8 +691,7 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
             convertImplementation.append(_eol + "return " + typesArray[i]
                     + "_convert(t);" + _eol + "}");
         }
-        convertImplementation.append(_eol + "return NULL;" + _eol + "}"
-                + _eol);
+        convertImplementation.append(_eol + "return NULL;" + _eol + "}" + _eol);
         codeC.append(convertImplementation.toString());
 
         // FIXME: in the future we need to load the convertPrimitivesBlock
@@ -718,7 +738,7 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
                     } else {
                         if (!_unsupportedTypeFunctions.contains(functionName)
                                 && !_overloadedFunctionSet
-                                        .contains(functionName)) {
+                                .contains(functionName)) {
 
                             markFunctionCalled(functionName, null);
                         }
@@ -734,8 +754,8 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
                     _unsupportedTypeFunctions.add(functionName);
 
                     System.out
-                            .println("Warning -- missing function defintion: "
-                                    + functionName + "()");
+                    .println("Warning -- missing function defintion: "
+                            + functionName + "()");
 
                     // It is ok because this polymorphic function may not be
                     // supported by all types.
@@ -902,6 +922,7 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
      *  @exception IllegalActionException If the adapter class for the model
      *   director cannot be found.
      */
+    @Override
     public String generateVariableInitialization()
             throws IllegalActionException {
         StringBuffer code = new StringBuffer();
@@ -937,6 +958,7 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
      *  @return a string for the wrapup procedure entry point.
      *  @exception IllegalActionException Not thrown in this base class.
      */
+    @Override
     public String generateWrapupEntryCode() throws IllegalActionException {
 
         // If the container is in the top level, we are generating code
@@ -949,8 +971,8 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
         } else {
             String escapeName = _sanitizedModelName.replaceAll("_", "_1");
             return _eol + _eol + "JNIEXPORT void JNICALL" + _eol + "Java_"
-                    + escapeName + "_wrapup(" + "JNIEnv *env, jobject obj) {"
-                    + _eol;
+            + escapeName + "_wrapup(" + "JNIEnv *env, jobject obj) {"
+            + _eol;
         }
     }
 
@@ -958,6 +980,7 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
      *  @return a string for the wrapup procedure exit point.
      *  @exception IllegalActionException Not thrown in this base class.
      */
+    @Override
     public String generateWrapupExitCode() throws IllegalActionException {
 
         return "}" + _eol;
@@ -967,6 +990,7 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
      *  @return a string for the wrapup procedure name.
      *  @exception IllegalActionException Not thrown in this base class.
      */
+    @Override
     public String generateWrapupProcedureName() throws IllegalActionException {
 
         // If the container is in the top level, we are generating code
@@ -979,8 +1003,8 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
         } else {
             String escapeName = _sanitizedModelName.replaceAll("_", "_1");
             return _eol + _eol + "JNIEXPORT void JNICALL" + _eol + "Java_"
-                    + escapeName + "_wrapup(" + "JNIEnv *env, jobject obj);"
-                    + _eol;
+            + escapeName + "_wrapup(" + "JNIEnv *env, jobject obj);"
+            + _eol;
         }
     }
 
@@ -1002,9 +1026,10 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
      *  @exception IllegalActionException If there is a problem adding
      *  a function to the set of overloaded functions.
      */
+    @Override
     public void markFunctionCalled(String name,
             ProceduralTemplateParser templateParser)
-            throws IllegalActionException {
+                    throws IllegalActionException {
 
         try {
             String functionCode = _overloadedFunctions.getCodeBlock(name);
@@ -1076,6 +1101,7 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
      *  the code parameter.
      *  @exception IOException If thrown will reading the code.
      */
+    @Override
     public String[] splitLongBody(int linesPerMethod, String prefix, String code)
             throws IOException {
         BufferedReader bufferedReader = null;
@@ -1135,7 +1161,7 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
      */
     protected void _addActorIncludeDirectories(
             NamedProgramCodeGeneratorAdapter adapter)
-            throws IllegalActionException {
+                    throws IllegalActionException {
 
         Set<String> actorIncludeDirectories = adapter.getIncludeDirectories();
         Iterator<String> includeIterator = actorIncludeDirectories.iterator();
@@ -1170,6 +1196,7 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
      *  @exception IllegalActionException If the adapter of the
      *   top composite actor is unavailable.
      */
+    @Override
     protected void _analyzeTypeConversions() throws IllegalActionException {
         super._analyzeTypeConversions();
         _overloadedFunctionSet = new LinkedHashSet<String>();
@@ -1233,6 +1260,7 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
      * @return The processed code.
      * @exception IllegalActionException If #getOutputFilename() throws it.
      */
+    @Override
     protected StringBuffer _finalPassOverCode(StringBuffer code)
             throws IllegalActionException {
 
@@ -1319,6 +1347,7 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
      *  @exception KernelException If the target file cannot be overwritten
      *   or write-to-file throw any exception.
      */
+    @Override
     protected int _generateCode(StringBuffer code) throws KernelException {
         // Record the current time so that we can monitor performance of the
         // code generator by printing messages whenever any part of the code
@@ -1350,15 +1379,16 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
 
         String directoryCommons = directory + "commons/";
 
-
-        if ((!_isTopLevel() &&  ((BooleanToken) generateEmbeddedCode.getToken()).booleanValue())) {
+        if ((!_isTopLevel() && ((BooleanToken) generateEmbeddedCode.getToken())
+                .booleanValue())) {
             System.out.println("Not deleting " + directory
                     + ", there might be .class files that we just generated.");
         } else {
-            System.out.println("CCodeGenerator._generateCode(): Deleting " + directory);
+            System.out.println("CCodeGenerator._generateCode(): Deleting "
+                    + directory);
             if (!FileUtilities.deleteDirectory(directory)) {
                 throw new IllegalActionException(this, "Failed to delete \""
-                        + directory + "\"");                
+                        + directory + "\"");
             }
         }
 
@@ -1417,7 +1447,7 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
         // Header file declaration
 
         codeMainH
-                .append(_eol + "#include \"" + sanitizedNameContainer + ".h\"");
+        .append(_eol + "#include \"" + sanitizedNameContainer + ".h\"");
         code.append(_eol + "#include \"" + _sanitizedModelName + "_Main.h\"");
         if (((BooleanToken) measureTime.getToken()).booleanValue()) {
             code.append(_eol + "#include <sys/time.h>");
@@ -1434,8 +1464,8 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
         if (!_isTopLevel()) {
             codeMainH.append(_eol + "static jobjectArray input;" + _eol
                     + "static jobjectArray tokensToAllOutputPorts;" + _eol
-                    + "static JNIEnv* env;" + _eol
-                    + "static jobject obj;" + _eol);
+                    + "static JNIEnv* env;" + _eol + "static jobject obj;"
+                    + _eol);
         }
 
         // Preinitialize function
@@ -1711,15 +1741,22 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
         // Only set the container if the container of the actor is non null
         // and we are not generating embedded code.
 
-        System.out.println("CCodeGenerator set the container? : actor.getContainer(): " + actor.getContainer() + " _isTopLevel: " + _isTopLevel() + " generateEmbeddedCode: " + ((BooleanToken) ((Parameter)generateEmbeddedCode).getToken()).booleanValue());
+        System.out
+                .println("CCodeGenerator set the container? : actor.getContainer(): "
+                        + actor.getContainer()
+                        + " _isTopLevel: "
+                        + _isTopLevel()
+                        + " generateEmbeddedCode: "
+                        + ((BooleanToken) generateEmbeddedCode.getToken())
+                                .booleanValue());
 
         // Checking for being at the top level caused problems with:
         // $PTII/bin/ptcg -language c -generateInSubdirectory false -inline false -maximumLinesPerBlock 2500 -variablesAsArrays false ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/domains/ptides/lib/test/auto/Microstep.xml
 
         if (actor.getContainer() != null
-            // && (!_isTopLevel() &&  !((BooleanToken) generateEmbeddedCode.getToken()).booleanValue())
-            &&  !((BooleanToken) generateEmbeddedCode.getToken()).booleanValue()
-            ) {
+        // && (!_isTopLevel() &&  !((BooleanToken) generateEmbeddedCode.getToken()).booleanValue())
+                && !((BooleanToken) generateEmbeddedCode.getToken())
+                        .booleanValue()) {
             CompositeActor container = (CompositeActor) actor.getContainer();
             while (!container.isOpaque()) {
                 container = (CompositeActor) container.getContainer();
@@ -1895,7 +1932,7 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
     protected void _generateAndWriteActorCode(NamedObj actor,
             NamedProgramCodeGeneratorAdapter directorAdapter,
             CompositeEntity container, String directory)
-            throws IllegalActionException {
+                    throws IllegalActionException {
         /////////////////////////////////////////////
         // Initialization of the actor             //
         /////////////////////////////////////////////
@@ -1918,7 +1955,7 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
 
         if (actor instanceof ptolemy.cg.lib.CompiledCompositeActor) {
             actorDefinition
-                    .append(_eol + "JNIEnv *env;" + _eol + "jobject obj");
+            .append(_eol + "JNIEnv *env;" + _eol + "jobject obj");
             Iterator<?> inputPorts = ((Actor) getContainer()).inputPortList()
                     .iterator();
             while (inputPorts.hasNext()) {
@@ -2047,11 +2084,11 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
         if (directorAdapter instanceof ptolemy.cg.adapter.generic.adapters.ptolemy.actor.Director) {
             variableDeclarationCode += _eol
                     + ((ptolemy.cg.adapter.generic.adapters.ptolemy.actor.Director) directorAdapter)
-                            .generateVariableDeclaration(actorAdapter);
+                    .generateVariableDeclaration(actorAdapter);
             variableDeclarationCode += _eol + generateVariableDeclaration();
             preinitializeMethodBodyCode += _eol
                     + ((ptolemy.cg.adapter.generic.adapters.ptolemy.actor.Director) directorAdapter)
-                            .generateVariableInitialization(actorAdapter);
+                    .generateVariableInitialization(actorAdapter);
             preinitializeMethodBodyCode += _eol
                     + generateVariableInitialization();
         }
@@ -2076,17 +2113,14 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
         codeContainerH.append(generateCopyright());
         codeContainerC.append(generateCopyright());
 
-
         codeContainerC.append(_eol + "#ifdef __cplusplus" + _eol
-                + "extern \"C\" {" + _eol
-                + "#endif" + _eol + _eol);
+                + "extern \"C\" {" + _eol + "#endif" + _eol + _eol);
 
         // Appending the includes
         codeContainerC.append("#include \"" + sanitizedActorName + ".h\""
                 + _eol);
 
-        codeContainerC.append(_eol + "#ifdef __cplusplus" + _eol
-                + "}" + _eol
+        codeContainerC.append(_eol + "#ifdef __cplusplus" + _eol + "}" + _eol
                 + "#endif" + _eol + _eol);
 
         String sanitizedContainerName = CodeGeneratorAdapter
@@ -2101,15 +2135,14 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
             codeContainerH.append("#include \"_SDFReceiver.h\"" + _eol);
         }
         codeContainerH.append("#include \"" + sanitizedContainerName + ".h\""
-                    + _eol);
+                + _eol);
         codeContainerH.append(includeFiles);
 
         // Free up space as we go.
         includeFiles = null;
 
         codeContainerH.append(_eol + "#ifdef __cplusplus" + _eol
-                + "extern \"C\" {" + _eol
-                + "#endif" + _eol + _eol);
+                + "extern \"C\" {" + _eol + "#endif" + _eol + _eol);
 
         // Appending the name of the actor
         codeContainerH.append(comment("Actor declaration"));
@@ -2118,16 +2151,13 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
         codeContainerH.append(actorDefinition.toString());
         codeContainerH.append(comment("end actor declaration"));
 
-
         // Appending the variable declaration
         codeContainerC.append(comment("Variable declaration code"));
         codeContainerC.append(variableDeclarationCode);
         codeContainerC.append(comment("end variable declaration code"));
 
-
         codeContainerC.append(_eol + "#ifdef __cplusplus" + _eol
-                + "extern \"C\" {" + _eol
-                + "#endif" + _eol + _eol);
+                + "extern \"C\" {" + _eol + "#endif" + _eol + _eol);
 
         variableDeclarationCode = null;
 
@@ -2178,8 +2208,7 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
         prefireMethodBodyCode = null;
         prefireMethodExitCode = null;
 
-        codeContainerC.append(_eol + "#ifdef __cplusplus" + _eol
-                + "}" + _eol
+        codeContainerC.append(_eol + "#ifdef __cplusplus" + _eol + "}" + _eol
                 + "#endif" + _eol + _eol);
 
         // Appending the fire code
@@ -2187,8 +2216,7 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
         fireMethodBodyCode = null;
 
         codeContainerC.append(_eol + "#ifdef __cplusplus" + _eol
-                + "extern \"C\" {" + _eol
-                + "#endif" + _eol + _eol);
+                + "extern \"C\" {" + _eol + "#endif" + _eol + _eol);
 
         // Appending the postfire code
         codeContainerC.append(postfireMethodEntryCode);
@@ -2206,17 +2234,17 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
         wrapupMethodBodyCode = null;
         wrapupMethodExitCode = null;
 
-        codeContainerC.append(_eol + "#ifdef __cplusplus" + _eol
-                + "}" + _eol
+        codeContainerC.append(_eol + "#ifdef __cplusplus" + _eol + "}" + _eol
                 + "#endif" + _eol + _eol);
 
-        codeContainerH.append(_eol + "#ifdef __cplusplus" + _eol
-                + "}" + _eol
+        codeContainerH.append(_eol + "#ifdef __cplusplus" + _eol + "}" + _eol
                 + "#endif" + _eol + _eol);
 
         // Closing the ifdef
-        codeContainerH.append(_eol + "#endif /* "
-                + sanitizedActorName.toUpperCase(Locale.getDefault()) + "_H */");
+        codeContainerH
+                .append(_eol + "#endif /* "
+                        + sanitizedActorName.toUpperCase(Locale.getDefault())
+                        + "_H */");
 
         // Final pass on the code
         codeContainerH = _finalPassOverCode(codeContainerH);
@@ -2249,7 +2277,7 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
      */
     protected void _generateAndWriteCompositeActorCode(
             CompositeEntity container, String containerDirectory)
-            throws IllegalActionException {
+                    throws IllegalActionException {
 
         /////////////////////////////////////////////
         // Initialization of the container         //
@@ -2281,8 +2309,9 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
         boolean inlineValue = ((BooleanToken) inline.getToken()).booleanValue();
         if (inlineValue && director != null && director instanceof DEDirector) {
             inline.setExpression("false");
-            System.out.println("inline was set to true, which is not relevant to a DE model, "
-                    + "so it is being reset to false.");
+            System.out
+                    .println("inline was set to true, which is not relevant to a DE model, "
+                            + "so it is being reset to false.");
         }
 
         // Create the needed directories
@@ -2378,15 +2407,22 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
         // Only include a .h file for the container if we are not at
         // the top level and we are not generating embedded code.
 
-        System.out.println("CCodeGenerator include the container .h? : container.getContainer(): " + container.getContainer() + " _isTopLevel: " + _isTopLevel() + " generateEmbeddedCode: " + ((BooleanToken) ((Parameter)generateEmbeddedCode).getToken()).booleanValue());
+        System.out
+                .println("CCodeGenerator include the container .h? : container.getContainer(): "
+                        + container.getContainer()
+                        + " _isTopLevel: "
+                        + _isTopLevel()
+                        + " generateEmbeddedCode: "
+                        + ((BooleanToken) ((Parameter) generateEmbeddedCode)
+                                .getToken()).booleanValue());
 
         // Checking for being at the top level caused problems with:
         // $PTII/bin/ptcg -language c -generateInSubdirectory false -inline false -maximumLinesPerBlock 2500 -variablesAsArrays false ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/domains/ptides/lib/test/auto/Microstep.xml
 
         if (container.getContainer() != null
-            //&& !_isTopLevel() &&  !((BooleanToken) ((Parameter)generateEmbeddedCode).getToken()).booleanValue()
-            &&  !((BooleanToken) ((Parameter)generateEmbeddedCode).getToken()).booleanValue()
-            ) {
+        //&& !_isTopLevel() &&  !((BooleanToken) ((Parameter)generateEmbeddedCode).getToken()).booleanValue()
+                && !((BooleanToken) ((Parameter) generateEmbeddedCode)
+                        .getToken()).booleanValue()) {
             HCode.append("#include \""
                     + CodeGeneratorAdapter.generateName(container
                             .getContainer()) + ".h\"" + _eol);
@@ -2403,14 +2439,13 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
                     + ".h\"" + _eol);
         }
 
-        HCode.append(_eol + "#ifdef __cplusplus" + _eol
-                + "extern \"C\" {" + _eol
-                + "#endif" + _eol + _eol);
+        HCode.append(_eol + "#ifdef __cplusplus" + _eol + "extern \"C\" {"
+                + _eol + "#endif" + _eol + _eol);
 
-        HCode.append("extern struct " + actorType + "* " + sanitizedContainerName
-                + ";" + _eol);
-        HCode.append("extern struct " + actorType + "* " + sanitizedContainerName
-                + "_New();" + _eol);
+        HCode.append("extern struct " + actorType + "* "
+                + sanitizedContainerName + ";" + _eol);
+        HCode.append("extern struct " + actorType + "* "
+                + sanitizedContainerName + "_New();" + _eol);
         if (((CompositeActor) container).getDirector() instanceof SDFDirector) {
             HCode.append(_eol + "void " + sanitizedContainerName
                     + "_Schedule_iterate();" + _eol);
@@ -2447,9 +2482,8 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
         HCode.append(portAccessorsDeclaration);
         CCode.append(portAccessors);
 
-        HCode.append(_eol + "#ifdef __cplusplus" + _eol
-                + "}" + _eol
-                + "#endif" + _eol + _eol);
+        HCode.append(_eol + "#ifdef __cplusplus" + _eol + "}" + _eol + "#endif"
+                + _eol + _eol);
 
         HCode.append("#endif /* "
                 + sanitizedContainerName.toUpperCase(Locale.getDefault())
@@ -2751,6 +2785,7 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
      *  @return The generated body code.
      *  @exception IllegalActionException If there is no director.
      */
+    @Override
     protected String _generateBodyCode() throws IllegalActionException {
 
         String code = "";
@@ -2818,7 +2853,7 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
      */
     protected String _generateIncludeFiles(
             NamedProgramCodeGeneratorAdapter actorAdapter)
-            throws IllegalActionException {
+                    throws IllegalActionException {
         StringBuffer code = new StringBuffer();
 
         Set<String> includingFiles = actorAdapter.getHeaderFiles();
@@ -2829,7 +2864,9 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
         // level and generateEmbeddedCode is true.   Otherwise
         // $PTII/bin/ptcg $PTII/ptolemy/cg/lib/test/auto/ScaleC.xml
         // includes jni.h, which will fail under targets like Arduino.
-        if (!_isTopLevel() &&  ((BooleanToken) generateEmbeddedCode.getToken()).booleanValue()) {
+        if (!_isTopLevel()
+                && ((BooleanToken) generateEmbeddedCode.getToken())
+                        .booleanValue()) {
             includingFiles.addAll(_getJVMHeaderFiles());
         }
 
@@ -2844,6 +2881,7 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
      * @return The string"(void)" so as to avoid the avr-gcc 3.4.6
      * warning: "function declaration isn't a prototype"
      */
+    @Override
     protected String _getFireFunctionArguments() {
         return "(struct AtomicActor* actor)";
     }
@@ -2852,6 +2890,7 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
      *  the code generated by _recordStartTime() was called.
      *  @return Return the code for printing the total execution time.
      */
+    @Override
     protected String _printExecutionTime() {
         StringBuffer endCode = new StringBuffer();
         endCode.append(super._printExecutionTime());
@@ -2865,6 +2904,7 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
      *  This writes current time into a timespec struct called "start".
      *  @return Return the code for recording the current time.
      */
+    @Override
     protected String _recordStartTime() {
         StringBuffer startCode = new StringBuffer();
         startCode.append(super._recordStartTime());
@@ -2877,6 +2917,7 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
      *  there isn't one return null.
      *  @return The base class for templateParser.
      */
+    @Override
     protected Class<? extends TemplateParser> _templateParserClass() {
         return CTemplateParser.class;
     }
@@ -2914,7 +2955,7 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
      *  <p>See the parent class
      *  {@link ptolemy.cg.kernel.generic.program.procedural.ProceduralCodeGenerator#_writeMakefile(CompositeEntity, String)}
      *  for variable that are substutited by the parent class.</p>
-     * 
+     *
      *  <p>The following variables are substituted:
      *  <code>PTCG_CFILES</code>, <code>PTCG_OFILES</code>,
      *  <code>PTCGCompiler</code>.</p>
@@ -2925,57 +2966,55 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
      *  a parameter, if there is a problem creating the codeDirectory directory
      *  or if there is a problem writing the code to a file.
      */
+    @Override
     protected void _writeMakefile(CompositeEntity container,
             String currentDirectory) throws IllegalActionException {
 
-            if (generatorPackageList.stringValue().contains("arduino")) {
-                // FIXME: Temporary hack to set up platform dependent -I
-                // directive for the Arduino, see
-                // $PTII/ptolemy/cg/adapter/generic/program/procedural/c/arduino/makefile.in
-                _substituteMap.put("@ARDUINO_INCLUDES@",
-                        _arduinoIncludes());
-            }
+        if (generatorPackageList.stringValue().contains("arduino")) {
+            // FIXME: Temporary hack to set up platform dependent -I
+            // directive for the Arduino, see
+            // $PTII/ptolemy/cg/adapter/generic/program/procedural/c/arduino/makefile.in
+            _substituteMap.put("@ARDUINO_INCLUDES@", _arduinoIncludes());
+        }
 
-            // Adds the .c and .o needed files
-            Director director = null;
-            if (container instanceof CompositeActor) {
-                director = ((CompositeActor) container).getDirector();
-            } else if (container instanceof FSMActor) {
-                director = ((FSMActor) container).getDirector();
-            } else {
-                throw new IllegalActionException(container,
-                        "Unsupported type of Actor : "
-                                + container.getFullName());
-            }
+        // Adds the .c and .o needed files
+        Director director = null;
+        if (container instanceof CompositeActor) {
+            director = ((CompositeActor) container).getDirector();
+        } else if (container instanceof FSMActor) {
+            director = ((FSMActor) container).getDirector();
+        } else {
+            throw new IllegalActionException(container,
+                    "Unsupported type of Actor : " + container.getFullName());
+        }
 
-            if (director != null && director instanceof DEDirector) {
-                StringBuffer ptcgC = new StringBuffer(
-                        "$(shell find . -type f -name '*.c')");//"src/types.c src/Actor.c src/CalendarQueue.c src/DEDirector.c src/DEEvent.c src/DEReceiver.c src/IOPort.c";
-                StringBuffer ptcgO = new StringBuffer();//"build/types.o build/Actor.o build/CalendarQueue.o build/DEDirector.o build/DEEvent.o build/DEReceiver.o build/IOPort.o";
-                if (_actorsToInclude != null) {
-                    Iterator<String> actors = _actorsToInclude.iterator();
-                    while (actors.hasNext()) {
-                        String actor = actors.next();
-                        ptcgC.append(actor + ".c");
-                        ptcgO.append(actor + ".o");
-                    }
+        if (director != null && director instanceof DEDirector) {
+            StringBuffer ptcgC = new StringBuffer(
+                    "$(shell find . -type f -name '*.c')");//"src/types.c src/Actor.c src/CalendarQueue.c src/DEDirector.c src/DEEvent.c src/DEReceiver.c src/IOPort.c";
+            StringBuffer ptcgO = new StringBuffer();//"build/types.o build/Actor.o build/CalendarQueue.o build/DEDirector.o build/DEEvent.o build/DEReceiver.o build/IOPort.o";
+            if (_actorsToInclude != null) {
+                Iterator<String> actors = _actorsToInclude.iterator();
+                while (actors.hasNext()) {
+                    String actor = actors.next();
+                    ptcgC.append(actor + ".c");
+                    ptcgO.append(actor + ".o");
                 }
-                _substituteMap.put("@PTCG_CFILES@", ptcgC.toString());
-                _substituteMap.put("@PTCG_OFILES@", ptcgO.toString());
-            } else {
-                _substituteMap.put("@PTCG_CFILES@",
-                        "$(shell find . -type f -name '*.c')");
-                _substituteMap.put("@PTCG_OFILES@", "");
             }
+            _substituteMap.put("@PTCG_CFILES@", ptcgC.toString());
+            _substituteMap.put("@PTCG_OFILES@", ptcgO.toString());
+        } else {
+            _substituteMap.put("@PTCG_CFILES@",
+                    "$(shell find . -type f -name '*.c')");
+            _substituteMap.put("@PTCG_OFILES@", "");
+        }
 
-            if (((BooleanToken) generateCpp.getToken()).booleanValue()) {
-                _substituteMap.put("@PTCGCompiler@", "g++");
-            } else {
-                _substituteMap.put("@PTCGCompiler@", "gcc");
-            }
+        if (((BooleanToken) generateCpp.getToken()).booleanValue()) {
+            _substituteMap.put("@PTCGCompiler@", "g++");
+        } else {
+            _substituteMap.put("@PTCGCompiler@", "gcc");
+        }
 
-        _substituteMap.put("@PTCGLibraries@",
-                           _concatenateElements(_libraries));
+        _substituteMap.put("@PTCGLibraries@", _concatenateElements(_libraries));
 
         super._writeMakefile(container, currentDirectory);
     }
@@ -2985,45 +3024,47 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
 
     /** Return the platform dependent -I directive for the Arduino.
      *  See $PTII/ptolemy/cg/adapter/generic/program/procedural/c/arduino/makefile.in
-     *  @return the -I directive for the Arduino.   
+     *  @return the -I directive for the Arduino.
      */
     private String _arduinoIncludes() {
         // FIXME: Temporary hack to set up platform dependent -I directive.
         // The real fix would be to execute "avr-gcc -print-libgcc-file-name"
         // and then search up the path.
         String environmentVariableName = "ARDUINO_INCLUDES_DIRECTORY";
-        String arduinoIncludeDirectoryEnvironmentVariable = System.getenv(environmentVariableName);
-        String [] includeSearchPath = new String [] {
-            arduinoIncludeDirectoryEnvironmentVariable,
-            "/usr/local/arduino/hardware/arduino/sam/cores/arduino",
-            "/usr/local/arduino-1.5.6-r2/hardware/arduino/sam/cores/arduino",
-            "/Applications/Arduino.app/Contents/Resources/Java/hardware/arduino/avr/cores/arduino"
-        };
+        String arduinoIncludeDirectoryEnvironmentVariable = System
+                .getenv(environmentVariableName);
+        String[] includeSearchPath = new String[] {
+                arduinoIncludeDirectoryEnvironmentVariable,
+                "/usr/local/arduino/hardware/arduino/sam/cores/arduino",
+                "/usr/local/arduino-1.5.6-r2/hardware/arduino/sam/cores/arduino",
+                "/Applications/Arduino.app/Contents/Resources/Java/hardware/arduino/avr/cores/arduino" };
         // If the env is not set, then we don't want to print a null.
         StringBuffer directories = new StringBuffer();
         for (int i = 0; i < includeSearchPath.length; i++) {
             if (includeSearchPath != null
                     && new File(includeSearchPath[i], "Arduino.h").isFile()) {
-                if (includeSearchPath[i].equals(arduinoIncludeDirectoryEnvironmentVariable)) {
-                    System.out.println("Using the value defined by " + environmentVariableName
-                            + ": "
+                if (includeSearchPath[i]
+                        .equals(arduinoIncludeDirectoryEnvironmentVariable)) {
+                    System.out.println("Using the value defined by "
+                            + environmentVariableName + ": "
                             + arduinoIncludeDirectoryEnvironmentVariable);
                 }
                 return "-I" + includeSearchPath[i];
-            } 
+            }
             directories.append(includeSearchPath[i] + ", ");
         }
         System.err.println("Could not find Arduino.h. Checked "
                 + directories.toString().substring(0, directories.length() - 2)
-                + ". Try setting the " + environmentVariableName + " environment variable and re-running Ptolemy.");
+                + ". Try setting the " + environmentVariableName
+                + " environment variable and re-running Ptolemy.");
         return "-I/SetThe" + environmentVariableName + "EnvironmentVariable";
     }
 
     /** Get the header files needed to compile with the jvm library.
-      *  @return A set of strings that are names of the header files
-      *   needed by the code generated for jvm library
-      *  @exception IllegalActionException Not Thrown in this subclass.
-      */
+     *  @return A set of strings that are names of the header files
+     *   needed by the code generated for jvm library
+     *  @exception IllegalActionException Not Thrown in this subclass.
+     */
     private Set<String> _getJVMHeaderFiles() throws IllegalActionException {
         String javaHome = StringUtilities.getProperty("java.home");
 
@@ -3055,9 +3096,9 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
         String jreBinClientPath = javaHome + File.separator + "bin"
                 + File.separator + "client";
         executeCommands
-                .stdout(_eol + _eol
-                        + "CCodeGeneratorAdapter: appended to path "
-                        + jreBinClientPath);
+        .stdout(_eol + _eol
+                + "CCodeGeneratorAdapter: appended to path "
+                + jreBinClientPath);
 
         executeCommands.appendToPath(jreBinClientPath);
 
@@ -3070,7 +3111,7 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
             // It could be that we are running under WebStart
             // or otherwise in a JRE, so we should look for the JDK.
             File potentialJavaHomeParentFile = new File(javaHome)
-                    .getParentFile();
+            .getParentFile();
             // Loop through twice, once with the parent, once with
             // C:/Program Files/Java.  This is lame, but easy
             for (int loop = 2; loop > 0; loop--) {
@@ -3115,7 +3156,6 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
         if (platform.equals("Mac OS X")) {
             addInclude("-I\"" + javaHome + "/include/darwin\"");
         }
-
 
         String jvmLoaderDirective = "-ljvm";
         String libjvmAbsoluteDirectory = "";
@@ -3168,15 +3208,15 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
                             jvmLoaderDirective = "-l"
                                     + libjvmAbsolutePath.substring(
                                             libjvmAbsolutePath
-                                                    .lastIndexOf("/lib") + 4,
+                                            .lastIndexOf("/lib") + 4,
                                             libjvmAbsolutePath.length() - 6);
 
                         }
                     } catch (Throwable throwable) {
                         throw new IllegalActionException(getComponent(),
                                 throwable, "Could not copy \"" + libjvmURL
-                                        + "\" to the file system, path was: \""
-                                        + libjvmAbsolutePath + "\"");
+                                + "\" to the file system, path was: \""
+                                + libjvmAbsolutePath + "\"");
                     }
                 }
             }
@@ -3187,22 +3227,23 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
                     libjvmAbsoluteDirectory = javaHome + "/../Libraries";
 
                     // Why do people who work at Apple insist on changing the
-                    // names of things?  Why is jvmlinkage necessary?  
+                    // names of things?  Why is jvmlinkage necessary?
 
                     // We also need to adjust the rpath here so that this works:
-                    // $PTII/bin/ptcg -language c $PTII/ptolemy/cg/lib/test/auto/ScaleC.xml 
-                    jvmLoaderDirective = "-Wl,-rpath," + libjvmAbsoluteDirectory + " -ljvmlinkage";
-                } else  {
+                    // $PTII/bin/ptcg -language c $PTII/ptolemy/cg/lib/test/auto/ScaleC.xml
+                    jvmLoaderDirective = "-Wl,-rpath,"
+                            + libjvmAbsoluteDirectory + " -ljvmlinkage";
+                } else {
                     // Oracle Java 1.7
                     addInclude("-I\"" + javaHome + "/include/darwin\"");
                     libjvmAbsoluteDirectory = javaHome + "/jre/lib/server";
 
                     // We also need to adjust the rpath here so that this works:
-                    // $PTII/bin/ptcg -language c $PTII/ptolemy/cg/lib/test/auto/ScaleC.xml 
-                    jvmLoaderDirective = "-Wl,-rpath," + libjvmAbsoluteDirectory;
+                    // $PTII/bin/ptcg -language c $PTII/ptolemy/cg/lib/test/auto/ScaleC.xml
+                    jvmLoaderDirective = "-Wl,-rpath,"
+                            + libjvmAbsoluteDirectory;
                 }
             }
-
 
         } else {
             // Solaris, Linux etc.
@@ -3261,7 +3302,8 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
         // If the code generator is invoked with "-verbosity N" and N is greater than 0,
         // then debugging is enabled.
         if (_debugging) {
-            System.out.println("CCodeGenerator: all referenced functions: " + functions);
+            System.out.println("CCodeGenerator: all referenced functions: "
+                    + functions);
         }
         return functions;
     }
@@ -3283,9 +3325,9 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
         }
 
         if (functions.contains("isCloseTo")
-        //&& _newTypesUsed.contains("Int")
-        //&& !_newTypesUsed.contains("Double")
-        ) {
+                //&& _newTypesUsed.contains("Int")
+                //&& !_newTypesUsed.contains("Double")
+                ) {
             // FIXME: we should not need Double for Int_isCloseTo()
             types.add("Double");
         }
@@ -3308,6 +3350,7 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
         /** Return true if include/jni.h is found.
          *  @return true if include/jni.h is found.
          */
+        @Override
         public boolean accept(File pathname) {
             return new File(pathname, "/include/jni.h").canRead();
         }

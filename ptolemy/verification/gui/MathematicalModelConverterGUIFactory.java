@@ -58,6 +58,7 @@ import ptolemy.verification.kernel.MathematicalModelConverter;
  @Pt.ProposedRating Red (patrickj)
  @Pt.AcceptedRating Red ()
  */
+@Deprecated
 public class MathematicalModelConverterGUIFactory extends EditorFactory {
     /** Construct a factory with the specified container and name.
      *  @param container The container.
@@ -80,6 +81,7 @@ public class MathematicalModelConverterGUIFactory extends EditorFactory {
      *  @param object The object to configure.
      *  @param parent The parent window, or null if there is none.
      */
+    @Override
     public void createEditor(NamedObj object, Frame parent) {
         // This is always used to configure the container, so
         // we just use that.
@@ -96,9 +98,11 @@ public class MathematicalModelConverterGUIFactory extends EditorFactory {
                 tableau.setName("MathematicalModelConverterGUI");
                 tableau.setTitle("MathematicalModelConverterGUI");
             } else {
-                tableau = (Tableau) effigy.getEntity("MathematicalModelConverterGUI");
+                tableau = (Tableau) effigy
+                        .getEntity("MathematicalModelConverterGUI");
                 if (tableau == null) {
-                    tableau = new Tableau(effigy, "MathematicalModelConverterGUI");
+                    tableau = new Tableau(effigy,
+                            "MathematicalModelConverterGUI");
                 }
             }
         } catch (KernelException e) {

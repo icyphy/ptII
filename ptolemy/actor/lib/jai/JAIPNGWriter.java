@@ -148,6 +148,7 @@ public class JAIPNGWriter extends JAIWriter {
      *  @param attribute The attribute that changed.
      *  @exception IllegalActionException If a contained method throws it.
      */
+    @Override
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         // We use attributeChanged here to avoid code duplication
@@ -182,6 +183,7 @@ public class JAIPNGWriter extends JAIWriter {
      *  @exception CloneNotSupportedException If a derived class contains
      *  an attribute that cannot be cloned.
      */
+    @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         JAIPNGWriter newObject = (JAIPNGWriter) super.clone(workspace);
         newObject._valueArray = null;
@@ -196,6 +198,7 @@ public class JAIPNGWriter extends JAIWriter {
      *  of if the image in unable to be encoded.
      *  @return True if the execution can continue.
      */
+    @Override
     public boolean postfire() throws IllegalActionException {
         // This class is different from most classes derived from
         // JAIWriter in that it reads the input in the derived class

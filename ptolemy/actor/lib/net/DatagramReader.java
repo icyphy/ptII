@@ -445,6 +445,7 @@ public class DatagramReader extends TypedAtomicActor {
      *  @exception IllegalActionException If the change is not
      *   allowed.
      */
+    @Override
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         if (attribute == defaultReturnAddress) {
@@ -567,7 +568,7 @@ public class DatagramReader extends TypedAtomicActor {
 
                     if (_multicastSocket != null
                             && newSocketNumber != _multicastSocket
-                                    .getLocalPort()) {
+                            .getLocalPort()) {
                         synchronized (_syncSocket) {
                             if (_inReceive) {
                                 // Wait for receive to finish, if it
@@ -675,6 +676,7 @@ public class DatagramReader extends TypedAtomicActor {
      *  @exception CloneNotSupportedException If a derived class contains
      *   an attribute that cannot be cloned.
      */
+    @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         DatagramReader newObject = (DatagramReader) super.clone(workspace);
 
@@ -699,6 +701,7 @@ public class DatagramReader extends TypedAtomicActor {
      *  converted into a token of the same type as the configured type
      *  of the output port.
      */
+    @Override
     public void fire() throws IllegalActionException {
         super.fire();
         // Consume trigger input(s), otherwise model can hang.
@@ -826,6 +829,7 @@ public class DatagramReader extends TypedAtomicActor {
      *  @exception IllegalActionException If the
      *  <i>localSocketNumber</i> parameter has a value outside 0..65535
      * or a socket could not be created.  */
+    @Override
     public void initialize() throws IllegalActionException {
         super.initialize();
 
@@ -922,6 +926,7 @@ public class DatagramReader extends TypedAtomicActor {
      *  evaluation variable, the DatagramSocket, and the
      *  SocketReadingThread.
      */
+    @Override
     public void setContainer(CompositeEntity container)
             throws IllegalActionException, NameDuplicationException {
         // FIXME: Is this necessary?
@@ -1020,6 +1025,7 @@ public class DatagramReader extends TypedAtomicActor {
      *  stopFire paradigm ought to be rearchitected to incorporate a
      *  flag.  (Does it already and I just don't know about it?)
      */
+    @Override
     public void stopFire() {
         super.stopFire();
         synchronized (_syncFireAndThread) {
@@ -1038,6 +1044,7 @@ public class DatagramReader extends TypedAtomicActor {
      *  as possible. Wake up the manager thread if it is blocking on
      *  fire() of this actor.
      */
+    @Override
     public void stop() {
         super.stop();
 
@@ -1061,6 +1068,7 @@ public class DatagramReader extends TypedAtomicActor {
      *  closes the DatagramSocket, wrapup() additionally makes the
      *  DatagramSocket null.  This signals the thread to terminate.
      */
+    @Override
     public void wrapup() throws IllegalActionException {
         // FIXME - Look into whether I ought to make it null first
         // and then interrupt it (having made a copy of the pointer
@@ -1178,6 +1186,7 @@ public class DatagramReader extends TypedAtomicActor {
         /** Run.  Run the thread.  This begins running when .start()
          *  is called on the thread.
          */
+        @Override
         public void run() {
             while (true) {
                 // [Set and] get platform's buffer length.
@@ -1195,8 +1204,8 @@ public class DatagramReader extends TypedAtomicActor {
                                     .getToken()).booleanValue()) {
                                 if (_multiCast) {
                                     _multicastSocket
-                                            .setReceiveBufferSize(((IntToken) platformBufferLength
-                                                    .getToken()).intValue());
+                                    .setReceiveBufferSize(((IntToken) platformBufferLength
+                                            .getToken()).intValue());
                                 } else {
                                     _socket.setReceiveBufferSize(((IntToken) platformBufferLength
                                             .getToken()).intValue());

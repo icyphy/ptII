@@ -91,6 +91,7 @@ public abstract class DEThreadActor extends DEActor implements Runnable {
 
     /** Awake the thread running this actor.
      */
+    @Override
     public void fire() {
 
         synchronized (_monitor) {
@@ -112,6 +113,7 @@ public abstract class DEThreadActor extends DEActor implements Runnable {
 
     /** Create a thread for the actor and start the thread.
      */
+    @Override
     public void initialize() {
         // start a thread.
         _thread = new PtolemyThread(this);
@@ -121,6 +123,7 @@ public abstract class DEThreadActor extends DEActor implements Runnable {
 
     /** Implement this method to define the job of the threaded actor.
      */
+    @Override
     public abstract void run();
 
     /** Clear input ports then wait until

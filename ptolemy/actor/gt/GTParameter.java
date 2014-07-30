@@ -130,6 +130,7 @@ public class GTParameter extends Parameter {
          *  @exception IllegalActionException If an error occurs during
          *   evaluation.
          */
+        @Override
         public Token evaluateParseTree(ASTPtRootNode node, ParserScope scope)
                 throws IllegalActionException {
             return super.evaluateParseTree(node,
@@ -143,6 +144,7 @@ public class GTParameter extends Parameter {
          *  @param node The specified node.
          *  @exception IllegalActionException If an evaluation error occurs.
          */
+        @Override
         public void visitMethodCallNode(ASTPtMethodCallNode node)
                 throws IllegalActionException {
             int argCount = node.jjtGetNumChildren();
@@ -234,6 +236,7 @@ public class GTParameter extends Parameter {
          *  @exception IllegalActionException If a value in the scope
          *  exists with the given name, but cannot be evaluated.
          */
+        @Override
         public Token get(String name) throws IllegalActionException {
             // Resolve ports, entities and relations in the pattern.
             NamedObj patternChild = GTTools.getChild(_pattern, name, false,
@@ -283,6 +286,7 @@ public class GTParameter extends Parameter {
          *  @exception IllegalActionException If a value in the scope
          *  exists with the given name, but cannot be evaluated.
          */
+        @Override
         public Type getType(String name) throws IllegalActionException {
             Token token = get(name);
             if (token != null) {
@@ -301,6 +305,7 @@ public class GTParameter extends Parameter {
          *  @exception IllegalActionException If a value in the scope
          *  exists with the given name, but cannot be evaluated.
          */
+        @Override
         public InequalityTerm getTypeTerm(String name)
                 throws IllegalActionException {
             return _superscope.getTypeTerm(name);
@@ -317,6 +322,7 @@ public class GTParameter extends Parameter {
          *  @exception IllegalActionException If constructing the list causes
          *  it.
          */
+        @Override
         public Set<?> identifierSet() throws IllegalActionException {
             Set<Object> identifiers = new HashSet<Object>(
                     _superscope.identifierSet());
@@ -380,6 +386,7 @@ public class GTParameter extends Parameter {
          *  @exception IllegalActionException If an error occurs during
          *   evaluation.
          */
+        @Override
         public Type inferTypes(ASTPtRootNode node, ParserScope scope)
                 throws IllegalActionException {
             return super.inferTypes(node, new Scope(_pattern, _matchResult,
@@ -391,6 +398,7 @@ public class GTParameter extends Parameter {
          *  @param node The specified node.
          *  @exception IllegalActionException If an inference error occurs.
          */
+        @Override
         public void visitMethodCallNode(ASTPtMethodCallNode node)
                 throws IllegalActionException {
             int argCount = node.jjtGetNumChildren();

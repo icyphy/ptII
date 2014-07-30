@@ -122,6 +122,7 @@ public abstract class WithIconGraphController extends BasicGraphController {
      *  when opening files or URLs.
      *  @param configuration The configuration.
      */
+    @Override
     public void setConfiguration(Configuration configuration) {
         super.setConfiguration(configuration);
         _portController.setConfiguration(configuration);
@@ -139,6 +140,7 @@ public abstract class WithIconGraphController extends BasicGraphController {
      *  defined in the derived classes, because the derived classes
      *  will not have been fully constructed by the time this is called.
      */
+    @Override
     protected void _createControllers() {
         super._createControllers();
         _portController = new ExternalIOPortController(this,
@@ -156,13 +158,14 @@ public abstract class WithIconGraphController extends BasicGraphController {
      *  with the GraphPane, so you can't do any initialization that
      *  involves the canvas.
      */
+    @Override
     protected void initializeInteraction() {
         super.initializeInteraction();
 
         //GraphPane pane = getGraphPane();
         _menuFactory.addMenuItemFactory(new MenuActionFactory(_editIconAction));
         _menuFactory
-                .addMenuItemFactory(new MenuActionFactory(_removeIconAction));
+        .addMenuItemFactory(new MenuActionFactory(_removeIconAction));
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -221,7 +224,7 @@ public abstract class WithIconGraphController extends BasicGraphController {
 
     /** An action to create a new port. */
     @SuppressWarnings("serial")
-        public class NewPortAction extends FigureAction {
+    public class NewPortAction extends FigureAction {
         /** Create a new port that has the same input, output, and
          *  multiport properties as the specified port.  If the specified
          *  port is null, then a new port that is neither an input, an
@@ -291,6 +294,7 @@ public abstract class WithIconGraphController extends BasicGraphController {
         }
 
         /** Create a new port. */
+        @Override
         public void actionPerformed(ActionEvent e) {
             super.actionPerformed(e);
 
@@ -382,6 +386,7 @@ public abstract class WithIconGraphController extends BasicGraphController {
 
             MoMLChangeRequest request = new MoMLChangeRequest(this, toplevel,
                     moml.toString()) {
+                @Override
                 protected void _execute() throws Exception {
                     super._execute();
 

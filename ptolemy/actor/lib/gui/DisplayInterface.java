@@ -42,7 +42,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 @since Ptolemy II 10.0
 @Pt.ProposedRating Yellow (ishwinde)
 @Pt.AcceptedRating Yellow (ishwinde)
-*/
+ */
 public interface DisplayInterface {
 
     /** Free up memory when closing. */
@@ -68,7 +68,7 @@ public interface DisplayInterface {
      * actor with this name.
      */
     public void init(Display display) throws IllegalActionException,
-            NameDuplicationException;
+    NameDuplicationException;
 
     /** Open the display window if it has not been opened.
      *  @exception IllegalActionException If there is a problem creating

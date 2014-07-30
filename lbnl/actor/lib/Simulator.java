@@ -1,7 +1,7 @@
 // Actor that calls a simulation program of a dynamic system that is coupled to Ptolemy II
 
 /*
-********************************************************************
+ ********************************************************************
 Copyright Notice
 ----------------
 
@@ -73,8 +73,8 @@ to install, use, modify, prepare derivative works, incorporate into
 other computer software, distribute, and sublicense such enhancements or
 derivative works thereof, in binary and source code form.
 
-********************************************************************
-*/
+ ********************************************************************
+ */
 
 package lbnl.actor.lib;
 
@@ -171,7 +171,7 @@ public class Simulator extends SDFTransformer {
         // expert settings
         socketPortNumber = new Parameter(this, "socketPortNumber");
         socketPortNumber
-                .setDisplayName("socketPortNumber (used if non-negative)");
+        .setDisplayName("socketPortNumber (used if non-negative)");
         socketPortNumber.setExpression("-1");
         socketPortNumber.setTypeEquals(BaseType.INT);
         socketPortNumber.setVisibility(Settable.EXPERT);
@@ -200,6 +200,7 @@ public class Simulator extends SDFTransformer {
      *  @exception CloneNotSupportedException If a derived class contains
      *   an attribute that cannot be cloned.
      */
+    @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         Simulator newObject = (Simulator) super.clone(workspace);
 
@@ -229,6 +230,7 @@ public class Simulator extends SDFTransformer {
      *  @exception IllegalActionException If the simulation time between Ptolemy
      *    and the client program is not synchronized.
      */
+    @Override
     public void fire() throws IllegalActionException {
         super.fire();
 
@@ -480,13 +482,13 @@ public class Simulator extends SDFTransformer {
             } catch (IOException e2) {
             }
             ; // do nothing here
-              // If the client sent a termination flag, then clientTerminated=true
-              // In this case, the client may have closed the socket connection, and
-              // hence we don't throw an IOException, but rather issue a warning
-              // in case that Ptolemy proceeds with its iterations.
-              // Without the check (!clientTerminated), an IOException is thrown
-              // on Windows (but not on Mac or Linux) from the actor that connects
-              // to EnergyPlus.
+            // If the client sent a termination flag, then clientTerminated=true
+            // In this case, the client may have closed the socket connection, and
+            // hence we don't throw an IOException, but rather issue a warning
+            // in case that Ptolemy proceeds with its iterations.
+            // Without the check (!clientTerminated), an IOException is thrown
+            // on Windows (but not on Mac or Linux) from the actor that connects
+            // to EnergyPlus.
             if (!clientTerminated) {
                 throw new IllegalActionException(this, e, em);
             }
@@ -500,6 +502,7 @@ public class Simulator extends SDFTransformer {
      *     actor are invalid, or if the file with the socket
      *     information cannot be written to disk.
      */
+    @Override
     public void preinitialize() throws IllegalActionException {
         super.preinitialize();
 
@@ -678,8 +681,9 @@ public class Simulator extends SDFTransformer {
             String property = "java.io.tmpdir";
             parent = StringUtilities.getProperty(property);
 
-            System.out.println("Could not get the path of the URIAttribute of " + namedObj.getFullName()
-                    + ".  Using the value of the " + property + " property instead. (" + parent + ").");
+            System.out.println("Could not get the path of the URIAttribute of "
+                    + namedObj.getFullName() + ".  Using the value of the "
+                    + property + " property instead. (" + parent + ").");
         }
         final File file = new File(parent, child);
         child = file.getPath();
@@ -769,6 +773,7 @@ public class Simulator extends SDFTransformer {
      *  @exception IllegalActionException If the parent class throws it or
      *                              if the server socket cannot be opened
      */
+    @Override
     public void initialize() throws IllegalActionException {
         super.initialize();
 
@@ -788,6 +793,7 @@ public class Simulator extends SDFTransformer {
      *  @exception IllegalActionException if the base class throws it or
      *        if an I/O error occurs when closing the socket.
      */
+    @Override
     public void wrapup() throws IllegalActionException {
         super.wrapup();
         // Remove the entry for the working directory. Otherwise,
@@ -940,7 +946,7 @@ public class Simulator extends SDFTransformer {
         This is equal to the Ptolemy time minus one time step, because at time t_k,
         a client gets the output of other clients at t_{k-1}, which allows the client to
         compute the states and outputs at t_k
-    */
+     */
     protected double tokTim;
 
     ///////////////////////////////////////////////////////////////////
@@ -948,6 +954,6 @@ public class Simulator extends SDFTransformer {
     /** Map that contains the working directory and the name of the
         Simulator actor. This map is used to enforce that each Simulator
         actor uses its own working directory.
-    */
+     */
     private static ConcurrentHashMap<String, String> _simulatorWorkingDirs = new ConcurrentHashMap<String, String>();
 }

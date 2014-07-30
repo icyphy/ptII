@@ -118,6 +118,7 @@ public class JTreePane extends JSplitPane {
         _tree.getSelectionModel().setSelectionMode(
                 TreeSelectionModel.SINGLE_TREE_SELECTION);
         _tree.addTreeSelectionListener(new TreeSelectionListener() {
+            @Override
             public void valueChanged(TreeSelectionEvent e) {
                 DefaultMutableTreeNode treeNode = (DefaultMutableTreeNode) _tree
                         .getLastSelectedPathComponent();
@@ -283,6 +284,7 @@ public class JTreePane extends JSplitPane {
     /**
      * Remove all of the entries.
      */
+    @Override
     public void removeAll() {
         DefaultTreeModel model = (DefaultTreeModel) _tree.getModel();
         DefaultMutableTreeNode root = (DefaultMutableTreeNode) model.getRoot();
@@ -413,6 +415,7 @@ public class JTreePane extends JSplitPane {
             _enabled = true;
         }
 
+        @Override
         public String toString() {
             return _title;
         }
@@ -422,6 +425,7 @@ public class JTreePane extends JSplitPane {
         try {
             // Run this in the Swing Event Thread.
             Runnable doActions = new Runnable() {
+                @Override
                 public void run() {
                     try {
                         final JTreePane sp = new JTreePane();

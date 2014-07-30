@@ -140,6 +140,7 @@ public class PeriodicSampler extends Transformer {
     /** If the attribute is microstep, adjust the causality interface.
      *  @exception IllegalActionException If the superclass throws it.
      */
+    @Override
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         if (attribute == microstep) {
@@ -179,6 +180,7 @@ public class PeriodicSampler extends Transformer {
      *   if one of the attributes cannot be cloned.
      *  @return A new ComponentEntity.
      */
+    @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         PeriodicSampler newObject = (PeriodicSampler) super.clone(workspace);
         newObject.output.setWidthEquals(newObject.input, true);
@@ -193,6 +195,7 @@ public class PeriodicSampler extends Transformer {
      *  current time at the microstep specified by the microstep parameter.
      *  @exception IllegalActionException If the transfer of tokens failed.
      */
+    @Override
     public void fire() throws IllegalActionException {
         super.fire();
         SuperdenseTimeDirector director = (SuperdenseTimeDirector) getDirector();
@@ -259,6 +262,7 @@ public class PeriodicSampler extends Transformer {
      *  director will fire at the start time any way.
      *  @exception IllegalActionException If thrown by the supper class.
      */
+    @Override
     public void initialize() throws IllegalActionException {
         super.initialize();
         int width = output.getWidth();
@@ -279,6 +283,7 @@ public class PeriodicSampler extends Transformer {
      *  loops. It does not read inputs in the fire() method.
      *  @return False.
      */
+    @Override
     public boolean isStrict() {
         if (_microstep == 0) {
             return false;
@@ -293,6 +298,7 @@ public class PeriodicSampler extends Transformer {
      *  @return True.
      *  @exception IllegalActionException If the superclass throws it.
      */
+    @Override
     public boolean postfire() throws IllegalActionException {
         Director director = getDirector();
         Time currentTime = director.getModelTime();
@@ -368,6 +374,7 @@ public class PeriodicSampler extends Transformer {
      *  @exception IllegalActionException If the director is not
      *  a SuperdenseTimeDirector or the parent class throws it.
      */
+    @Override
     public void preinitialize() throws IllegalActionException {
         if (!(getDirector() instanceof SuperdenseTimeDirector)) {
             throw new IllegalActionException("PeriodicSampler can only"

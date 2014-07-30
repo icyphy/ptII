@@ -154,28 +154,29 @@ public class MostRecent extends Transformer {
      *  @exception IllegalActionException If the change is not acceptable
      *   to this container (not thrown in this base class).
      */
+    @Override
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
-            
+
         if (attribute == initialValue) {
             if (initialValue.getToken() != null) {
-                    int width = 1;
-                    // Calling input.getWidth() when the model is not being 
-                    // executed can cause Exceptions because the width cannot
-                    // be resolved. This method is called also, for instance, when a
-                    // class containing a MostRecent actor is saved. In this case,
-                    // the model is not executed and the width is irrelevant.
-                    if (_initializeDone) {
-                            width = input.getWidth();
-                    }
-                        if (width < 1) {
-                                width = 1;
-                        }
-                    _lastInputs = new Token[width];
-                    for (int i = 0; i < width; i++) {
+                int width = 1;
+                // Calling input.getWidth() when the model is not being 
+                // executed can cause Exceptions because the width cannot
+                // be resolved. This method is called also, for instance, when a
+                // class containing a MostRecent actor is saved. In this case,
+                // the model is not executed and the width is irrelevant.
+                if (_initializeDone) {
+                    width = input.getWidth();
+                }
+                if (width < 1) {
+                    width = 1;
+                }
+                _lastInputs = new Token[width];
+                for (int i = 0; i < width; i++) {
                     _lastInputs[i] = initialValue.getToken();
                 }
-                    
+
             } else {
                 _lastInputs = null;
             }
@@ -191,6 +192,7 @@ public class MostRecent extends Transformer {
      *  @exception CloneNotSupportedException If a derived class has
      *   has an attribute that cannot be cloned.
      */
+    @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         MostRecent newObject = (MostRecent) super.clone(workspace);
         newObject.output.setTypeAtLeast(newObject.input);
@@ -213,6 +215,7 @@ public class MostRecent extends Transformer {
      *  Otherwise, emit nothing.
      *  @exception IllegalActionException If there is no director.
      */
+    @Override
     public void fire() throws IllegalActionException {
         super.fire();
 
@@ -238,6 +241,7 @@ public class MostRecent extends Transformer {
      *  ports, if there are any.
      *  @exception IllegalActionException If there is no director.
      */
+    @Override
     public boolean prefire() throws IllegalActionException {
         super.prefire();
 
@@ -259,6 +263,7 @@ public class MostRecent extends Transformer {
     /** Clear the cached input tokens.
      *  @exception IllegalActionException If there is no director.
      */
+    @Override
     public void initialize() throws IllegalActionException {
         if (initialValue.getToken() != null) {
             _lastInputs = new Token[input.getWidth()];
@@ -272,13 +277,13 @@ public class MostRecent extends Transformer {
         _initializeDone = true;
         super.initialize();
     }
-    
+
     /** Wrapup and reset variables.
      */
     @Override
     public void wrapup() throws IllegalActionException {
-            super.wrapup();
-            _initializeDone = false;
+        super.wrapup();
+        _initializeDone = false;
     }
 
     /** Override the method in the base class so that the type
@@ -310,7 +315,7 @@ public class MostRecent extends Transformer {
 
             return typeConstraints;
         }
-    */
+     */
     /**
      * Adds two inequalities to the set returned by the overridden method that
      * together constrain the input to be equal to the type of the initial
@@ -375,11 +380,11 @@ public class MostRecent extends Transformer {
      */
     protected void sendOutputIfTriggered(int commonWidth)
             throws IllegalActionException {
-            // If the trigger input is not known, return without
-            // doing anything.
-            if (!trigger.isKnown()) {
-                    return;
-            }
+        // If the trigger input is not known, return without
+        // doing anything.
+        if (!trigger.isKnown()) {
+            return;
+        }
         // If we have a trigger...
         boolean triggered = false;
         for (int j = 0; j < trigger.getWidth(); j++) {
@@ -392,7 +397,7 @@ public class MostRecent extends Transformer {
 
         for (int i = 0; i < commonWidth; i++) {
             if (triggered) {
-                    // Do not output anything if the <i>initialValue</i>
+                // Do not output anything if the <i>initialValue</i>
                 // parameter was not set and this actor has not
                 // received any inputs.
                 if (_lastInputs[i] != null) {
@@ -401,12 +406,12 @@ public class MostRecent extends Transformer {
                     output.send(i, _lastInputs[i]);
                 }
             } else {
-                    // Indicate that the output is absent so that this
-                    // be used in an SR or Continuous feedback loop.
-                    output.sendClear(i);
+                // Indicate that the output is absent so that this
+                // be used in an SR or Continuous feedback loop.
+                output.sendClear(i);
             }
         }
     }
 
-        private boolean _initializeDone = false;
+    private boolean _initializeDone = false;
 }

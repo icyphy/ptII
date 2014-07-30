@@ -52,6 +52,7 @@ public class Expression extends LatticeOntologyAdapter {
      *  @return A list of conceptable objects with the input ports removed.
      *  @see ptolemy.data.ontologies.OntologyAdapter#getPropertyables()
      */
+    @Override
     public List<Object> getPropertyables() {
         List<Object> originalConceptables = super.getPropertyables();
         List<Object> newConceptables = new LinkedList<Object>();
@@ -85,6 +86,7 @@ public class Expression extends LatticeOntologyAdapter {
      *  @exception IllegalActionException If the parent throws it.
      *  @see ptolemy.data.ontologies.lattice.LatticeOntologyAdapter#constraintList()
      */
+    @Override
     public List<Inequality> constraintList() throws IllegalActionException {
         ptolemy.actor.lib.Expression actor = (ptolemy.actor.lib.Expression) getComponent();
 
@@ -101,6 +103,7 @@ public class Expression extends LatticeOntologyAdapter {
      *  @return A list with just the expression.
      *  @see ptolemy.data.ontologies.OntologyAdapter#_getPropertyableAttributes()
      */
+    @Override
     protected List<Attribute> _getPropertyableAttributes() {
         // Note that we don't call the superclass because the expression is
         // the only propertyable attribute inside the expression actor.

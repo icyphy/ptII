@@ -25,7 +25,7 @@
  PT_COPYRIGHT_VERSION_2
  COPYRIGHTENDKEY
 
-*/
+ */
 package ptolemy.actor.gt.controller;
 
 import ptolemy.data.ActorToken;
@@ -86,6 +86,7 @@ public class InputModel extends GTEvent {
      *  @exception IllegalActionException If the port cannot be read, or if
      *   thrown by the superclass.
      */
+    @Override
     public RefiringData fire(Token arguments) throws IllegalActionException {
         RefiringData data = super.fire(arguments);
 
@@ -115,6 +116,7 @@ public class InputModel extends GTEvent {
      *  @exception IllegalActionException If the presence of a model token
      *   cannot be tested, or if thrown by the superclass.
      */
+    @Override
     public void scheduleEvents() throws IllegalActionException {
         ParserScope scope = _getParserScope();
         BooleanToken inputPortPresent = (BooleanToken) scope

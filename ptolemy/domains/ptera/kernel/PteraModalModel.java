@@ -101,7 +101,7 @@ public class PteraModalModel extends ModalModel {
      *   an entity with the specified name.
      */
     public PteraModalModel(Workspace workspace) throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         super(workspace);
         _init();
     }
@@ -116,6 +116,7 @@ public class PteraModalModel extends ModalModel {
      *  @return A representation of the dependencies between input ports
      *   and output ports.
      */
+    @Override
     public CausalityInterface getCausalityInterface() {
         return new BreakCausalityInterface(this,
                 BooleanDependency.OPLUS_IDENTITY);
@@ -144,7 +145,7 @@ public class PteraModalModel extends ModalModel {
      *   collides with a name already in the container.
      */
     private void _init() throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         setClassName("ptolemy.domains.ptera.kernel.PteraModalModel");
 
         // Set the director before changing directorClass, because changing the
@@ -161,7 +162,7 @@ public class PteraModalModel extends ModalModel {
 
         directorClass.removeAllChoices();
         directorClass
-                .setExpression("ptolemy.domains.ptera.kernel.PteraDirector");
+        .setExpression("ptolemy.domains.ptera.kernel.PteraDirector");
         directorClass.setVisibility(Settable.NONE);
 
         ComponentEntity controller = getEntity("_Controller");

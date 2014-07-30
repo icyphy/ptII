@@ -25,7 +25,7 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 Ptolemy II includes the work of others, to see those copyrights, follow
 the copyright link on the splash page or see copyright.htm.
-*/
+ */
 package org.json;
 
 import java.io.StringWriter;
@@ -88,11 +88,13 @@ public class Test {
                 return "x";
             }
 
+            @Override
             public String toJSONString() {
                 return "{" + JSONObject.quote(this.aString) + ":"
                         + JSONObject.doubleToString(this.aNumber) + "}";
             }
 
+            @Override
             public String toString() {
                 return this.getString() + " " + this.getNumber() + " "
                         + this.isBoolean() + "." + this.getBENT() + " "

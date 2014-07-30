@@ -89,7 +89,7 @@ public class ActorConstraintsDefinitionAdapter extends LatticeOntologyAdapter {
     public ActorConstraintsDefinitionAdapter(LatticeOntologySolver solver,
             ComponentEntity component,
             List<StringParameter> constraintExpressions)
-            throws IllegalActionException {
+                    throws IllegalActionException {
         // Don't use default constraints for user-defined actor constraints.
         super(solver, component, false);
         _constraintTermExpressions = constraintExpressions;
@@ -107,6 +107,7 @@ public class ActorConstraintsDefinitionAdapter extends LatticeOntologyAdapter {
      *   parsing the constraint expression strings to create the actor
      *   constraints.
      */
+    @Override
     public List<Inequality> constraintList() throws IllegalActionException {
 
         for (StringParameter constraintExpression : _constraintTermExpressions) {
@@ -125,14 +126,15 @@ public class ActorConstraintsDefinitionAdapter extends LatticeOntologyAdapter {
                 }
                 if (actorElement == null) {
                     throw new InternalErrorException(
-                            (getComponent() instanceof NamedObj ? ((NamedObj)getComponent()) : null),
-                            null,
+                            (getComponent() instanceof NamedObj ? ((NamedObj) getComponent())
+                                    : null), null,
                             "Could not find a component or attribute named \""
-                            + objName + "\".  Thus, actorElement is null?");
+                                    + objName
+                                    + "\".  Thus, actorElement is null?");
                 } else {
                     _setConstraints(actorElement,
                             ((StringToken) constraintExpression.getToken())
-                            .stringValue());
+                                    .stringValue());
                 }
             }
         }
@@ -145,6 +147,7 @@ public class ActorConstraintsDefinitionAdapter extends LatticeOntologyAdapter {
      *  property-able objects.
      *  @return The list of property-able ports and attributes.
      */
+    @Override
     public List<Object> getPropertyables() {
         List<Object> list = new ArrayList<Object>();
 
@@ -187,7 +190,7 @@ public class ActorConstraintsDefinitionAdapter extends LatticeOntologyAdapter {
      */
     protected ConceptFunctionInequalityTerm _getConceptFunctionTerm(
             NamedObj actorElement, String functionString)
-            throws IllegalActionException {
+                    throws IllegalActionException {
         ArrayList<String> argumentNameList = new ArrayList<String>();
         ArrayList<InequalityTerm> argumentList = new ArrayList<InequalityTerm>();
 
@@ -242,7 +245,7 @@ public class ActorConstraintsDefinitionAdapter extends LatticeOntologyAdapter {
                                         + actorElement.getName() + " cannot refer to itself in the "
                                         + "concept function.");
                     }
-                    */
+                     */
                     argumentList.add(getPropertyTerm(argument));
                 }
             }
@@ -262,8 +265,8 @@ public class ActorConstraintsDefinitionAdapter extends LatticeOntologyAdapter {
         ConceptFunction function = new ExpressionConceptFunction(
                 ((ComponentEntity) getComponent()).getName() + "_"
                         + actorElement.getName() + "_ConstraintFunction", true,
-                domainOntologies, functionOntology, argumentNameList,
-                functionString, (OntologySolverModel) getSolver()
+                        domainOntologies, functionOntology, argumentNameList,
+                        functionString, (OntologySolverModel) getSolver()
                         .getContainedModel(), actorElement);
 
         ConceptFunctionInequalityTerm functionTerm = new ConceptFunctionInequalityTerm(
@@ -278,6 +281,7 @@ public class ActorConstraintsDefinitionAdapter extends LatticeOntologyAdapter {
      *  attributes.
      *  @return The list of property-able Attributes.
      */
+    @Override
     protected List<Attribute> _getPropertyableAttributes() {
         List<Attribute> result = new LinkedList<Attribute>();
 

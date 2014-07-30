@@ -113,6 +113,7 @@ public class FixConst extends FixTransformer {
      *  @exception CloneNotSupportedException If a derived class contains
      *   an attribute that cannot be cloned.
      */
+    @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         FixConst newObject = (FixConst) super.clone(workspace);
         newObject.output.setTypeEquals(BaseType.FIX);
@@ -123,6 +124,7 @@ public class FixConst extends FixTransformer {
      *  @exception IllegalActionException If it is thrown by the
      *   send() method sending out the token.
      */
+    @Override
     public void fire() throws IllegalActionException {
         super.fire();
 
@@ -162,6 +164,7 @@ public class FixConst extends FixTransformer {
      *  @exception IllegalActionException If checking the trigger for
      *   a token throws it or if the super class throws it.
      */
+    @Override
     public boolean prefire() throws IllegalActionException {
         if (trigger.numberOfSources() > 0) {
             for (int i = 0; i < trigger.getWidth(); i++) {

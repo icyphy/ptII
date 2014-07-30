@@ -65,7 +65,7 @@ public class ASTPtRelationalNode extends LatticeOntologyASTNodeAdapter {
      */
     public ASTPtRelationalNode(LatticeOntologySolver solver,
             ptolemy.data.expr.ASTPtRelationalNode node)
-            throws IllegalActionException {
+                    throws IllegalActionException {
         super(solver, node, false);
     }
 
@@ -76,6 +76,7 @@ public class ASTPtRelationalNode extends LatticeOntologyASTNodeAdapter {
      *  @exception IllegalActionException If there is an error building the constraint list.
      *  @return The list of constraints for this adapter.
      */
+    @Override
     public List<Inequality> constraintList() throws IllegalActionException {
 
         ptolemy.data.expr.ASTPtRelationalNode _relationalNode = (ptolemy.data.expr.ASTPtRelationalNode) _getNode();
@@ -98,7 +99,7 @@ public class ASTPtRelationalNode extends LatticeOntologyASTNodeAdapter {
      *  syntax trees of Ptolemy expressions.
      */
     private static class ASTPtRelationalNodeFunction extends
-            MonotonicityConceptFunction {
+    MonotonicityConceptFunction {
         // FindBugs indicates that this should be a static class.
 
         /** Create a new function for inferring the monotonicity concept
@@ -113,7 +114,7 @@ public class ASTPtRelationalNode extends LatticeOntologyASTNodeAdapter {
          */
         public ASTPtRelationalNodeFunction(ptolemy.data.expr.Token operator,
                 Ontology monotonicityOntology, List<Ontology> domainOntologies)
-                throws IllegalActionException {
+                        throws IllegalActionException {
             super("defaultASTPtRelationalNodeFunction", 2,
                     monotonicityOntology, domainOntologies);
             _operator = operator.toString();
@@ -137,6 +138,7 @@ public class ASTPtRelationalNode extends LatticeOntologyASTNodeAdapter {
          *  @exception IllegalActionException If there is an error evaluating the function.
          *  @see ptolemy.data.ontologies.ConceptFunction#_evaluateFunction(java.util.List)
          */
+        @Override
         protected Concept _evaluateFunction(List<Concept> inputConceptValues)
                 throws IllegalActionException {
 

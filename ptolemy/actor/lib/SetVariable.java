@@ -130,7 +130,7 @@ import ptolemy.util.MessageHandler;
  @Pt.AcceptedRating Red (cxh)
  */
 public class SetVariable extends TypedAtomicActor implements ChangeListener,
-        ExplicitChangeContext {
+ExplicitChangeContext {
 
     /** Construct an actor in the specified workspace with an empty
      *  string as a name. You can then change the name with setName().
@@ -186,6 +186,7 @@ public class SetVariable extends TypedAtomicActor implements ChangeListener,
     /** Do nothing.
      *  @param change The change that executed.
      */
+    @Override
     public void changeExecuted(ChangeRequest change) {
     }
 
@@ -195,6 +196,7 @@ public class SetVariable extends TypedAtomicActor implements ChangeListener,
      *  @param change The change request.
      *  @param exception The exception that resulted.
      */
+    @Override
     public void changeFailed(ChangeRequest change, java.lang.Exception exception) {
         _setFailed = true;
         MessageHandler.error("Failed to set variable.", exception);
@@ -206,6 +208,7 @@ public class SetVariable extends TypedAtomicActor implements ChangeListener,
      *  @exception CloneNotSupportedException If a derived class contains
      *   an attribute that cannot be cloned.
      */
+    @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         SetVariable newObject = (SetVariable) super.clone(workspace);
         // Derived classes need this.
@@ -218,6 +221,7 @@ public class SetVariable extends TypedAtomicActor implements ChangeListener,
      *  request to update variables as indicated by the input.
      *  @exception IllegalActionException If thrown reading the input.
      */
+    @Override
     public void fire() throws IllegalActionException {
         super.fire();
         if (!delayed.getToken().equals(BooleanToken.TRUE)) {
@@ -242,6 +246,7 @@ public class SetVariable extends TypedAtomicActor implements ChangeListener,
      * the change context returned is this actor.
      * @return The change context being made explicit
      */
+    @Override
     public Entity getContext() {
         try {
             if (delayed.getToken().equals(BooleanToken.TRUE)) {
@@ -290,8 +295,8 @@ public class SetVariable extends TypedAtomicActor implements ChangeListener,
                 } catch (IllegalActionException ex) {
                     throw new IllegalActionException(this, ex,
                             "Failed to create Variable \"" + variableNameValue
-                                    + "\" in " + getContainer().getFullName()
-                                    + ".");
+                            + "\" in " + getContainer().getFullName()
+                            + ".");
                 } catch (NameDuplicationException ex) {
                     throw new InternalErrorException(ex);
                 } finally {
@@ -310,6 +315,7 @@ public class SetVariable extends TypedAtomicActor implements ChangeListener,
      * @exception IllegalActionException If the list of modified
      * variables cannot be returned.
      */
+    @Override
     public List getModifiedVariables() throws IllegalActionException {
         Attribute attribute = getModifiedVariable();
         List list = new ArrayList(1);
@@ -325,6 +331,7 @@ public class SetVariable extends TypedAtomicActor implements ChangeListener,
      *  request to update variables as indicated by the input.
      *  @exception IllegalActionException If thrown reading the input.
      */
+    @Override
     public boolean postfire() throws IllegalActionException {
         if (delayed.getToken().equals(BooleanToken.TRUE)) {
             if (input.hasToken(0)) {
@@ -354,6 +361,7 @@ public class SetVariable extends TypedAtomicActor implements ChangeListener,
                 ChangeRequest request = new ChangeRequest(this,
                         "SetVariable change request", /* isStructuralChange */
                         false) {
+                    @Override
                     protected void _execute() throws IllegalActionException {
                         _setValue(value);
                     }
@@ -377,6 +385,7 @@ public class SetVariable extends TypedAtomicActor implements ChangeListener,
      *  @exception IllegalActionException If the superclass throws it,
      *   or if there is no container.
      */
+    @Override
     public void preinitialize() throws IllegalActionException {
         super.preinitialize();
 

@@ -84,6 +84,7 @@ public interface ZList extends FigureSet {
      * of making this same test is to check if the parent of the figure
      * is the same object as this list.
      */
+    @Override
     public boolean contains(Figure f);
 
     /** Return the figure at the given index.

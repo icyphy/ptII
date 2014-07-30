@@ -96,7 +96,7 @@ import ptolemy.kernel.util.Workspace;
  @Pt.AcceptedRating Yellow (cxh)
  */
 public class AtomicWirelessChannel extends TypedAtomicActor implements
-        WirelessChannel, ValueListener {
+WirelessChannel, ValueListener {
 
     /** Construct a relation with the given name contained by the specified
      *  entity. The container argument must not be null, or a
@@ -161,6 +161,7 @@ public class AtomicWirelessChannel extends TypedAtomicActor implements
      *  @param listener The channel listener to add.
      *  @see #removeChannelListener(ChannelListener)
      */
+    @Override
     public void addChannelListener(ChannelListener listener) {
         if (_channelListeners == null) {
             _channelListeners = new HashSet();
@@ -175,6 +176,7 @@ public class AtomicWirelessChannel extends TypedAtomicActor implements
      *  @param destination The receiving port.
      *  @see #addChannelListener(ChannelListener)
      */
+    @Override
     public void channelNotify(RecordToken properties, Token token,
             WirelessIOPort source, WirelessIOPort destination) {
         if (_channelListeners != null) {
@@ -194,6 +196,7 @@ public class AtomicWirelessChannel extends TypedAtomicActor implements
      *  @exception CloneNotSupportedException Not thrown in this base class
      *  @return The new Attribute.
      */
+    @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         AtomicWirelessChannel newObject = (AtomicWirelessChannel) super
                 .clone(workspace);
@@ -223,6 +226,7 @@ public class AtomicWirelessChannel extends TypedAtomicActor implements
      *  @exception IllegalActionException If the causality interface
      *  cannot be computed.
      */
+    @Override
     public void declareDelayDependency() throws IllegalActionException {
         // Declare that output does not immediately depend on the input,
         // though there is no lower bound on the time delay.
@@ -236,6 +240,7 @@ public class AtomicWirelessChannel extends TypedAtomicActor implements
      *  ports using the channel.
      *  @return The channel port.
      */
+    @Override
     public ChannelPort getChannelPort() {
         return _channelPort;
     }
@@ -250,6 +255,7 @@ public class AtomicWirelessChannel extends TypedAtomicActor implements
      *  @exception IllegalActionException If a port is encountered
      *   whose <i>outsideChannel</i> parameter cannot be evaluated.
      */
+    @Override
     public List listeningInputPorts() throws IllegalActionException {
         try {
             workspace().getReadAccess();
@@ -305,6 +311,7 @@ public class AtomicWirelessChannel extends TypedAtomicActor implements
      *  @exception IllegalActionException If a port is encountered
      *   whose <i>insideChannel</i> parameter cannot be evaluated.
      */
+    @Override
     public List listeningOutputPorts() throws IllegalActionException {
         try {
             workspace().getReadAccess();
@@ -355,6 +362,7 @@ public class AtomicWirelessChannel extends TypedAtomicActor implements
      *   property transformer, or null to make them subject to all
      *   transmissions through this channel.
      */
+    @Override
     public void registerPropertyTransformer(PropertyTransformer transformer,
             WirelessIOPort port) {
         if (port != null) {
@@ -384,6 +392,7 @@ public class AtomicWirelessChannel extends TypedAtomicActor implements
      *  @param listener The channel listener to remove.
      *  @see #addChannelListener(ChannelListener)
      */
+    @Override
     public void removeChannelListener(ChannelListener listener) {
         if (_channelListeners != null) {
             _channelListeners.remove(listener);
@@ -400,6 +409,7 @@ public class AtomicWirelessChannel extends TypedAtomicActor implements
      *  @exception IllegalActionException If a port is encountered
      *   whose <i>insideChannel</i> parameter cannot be evaluated.
      */
+    @Override
     public List sendingInputPorts() throws IllegalActionException {
         try {
             workspace().getReadAccess();
@@ -450,6 +460,7 @@ public class AtomicWirelessChannel extends TypedAtomicActor implements
      *  @exception IllegalActionException If a port is encountered
      *   whose <i>outsideChannel</i> parameter cannot be evaluated.
      */
+    @Override
     public List sendingOutputPorts() throws IllegalActionException {
         try {
             workspace().getReadAccess();
@@ -510,9 +521,10 @@ public class AtomicWirelessChannel extends TypedAtomicActor implements
      *   be transformed. Not thrown in this base class.
      *  @see #registerPropertyTransformer(PropertyTransformer, WirelessIOPort)
      */
+    @Override
     public RecordToken transformProperties(RecordToken properties,
             WirelessIOPort source, WirelessIOPort destination)
-            throws IllegalActionException {
+                    throws IllegalActionException {
         RecordToken result = properties;
         Token defaultPropertiesValue = defaultProperties.getToken();
 
@@ -593,6 +605,7 @@ public class AtomicWirelessChannel extends TypedAtomicActor implements
      *  @exception IllegalActionException If a type conflict occurs, or the
      *   director is not a WirelessDirector.
      */
+    @Override
     public void transmit(Token token, WirelessIOPort port,
             RecordToken properties) throws IllegalActionException {
         try {
@@ -636,6 +649,7 @@ public class AtomicWirelessChannel extends TypedAtomicActor implements
      *   property transformer, or null for a generic transformer.
      *  @see #registerPropertyTransformer(PropertyTransformer, WirelessIOPort)
      */
+    @Override
     public void unregisterPropertyTransformer(PropertyTransformer transformer,
             WirelessIOPort port) {
         if (port != null) {
@@ -664,6 +678,7 @@ public class AtomicWirelessChannel extends TypedAtomicActor implements
      *  with a non-zero duration is still in range.
      *  @param settable The object that has changed value.
      */
+    @Override
     public void valueChanged(Settable settable) {
         if (settable instanceof Locatable) {
             _receiversInRangeCacheValid = false;
@@ -712,7 +727,7 @@ public class AtomicWirelessChannel extends TypedAtomicActor implements
      */
     protected boolean _isInRange(WirelessIOPort source,
             WirelessIOPort destination, RecordToken properties)
-            throws IllegalActionException {
+                    throws IllegalActionException {
         return true;
     }
 
@@ -747,7 +762,7 @@ public class AtomicWirelessChannel extends TypedAtomicActor implements
         if (location == null) {
             throw new IllegalActionException(
                     "Cannot determine location for port " + port.getName()
-                            + " with container\n" + container + ".");
+                    + " with container\n" + container + ".");
         }
 
         // NOTE: We assume here that the implementation
@@ -792,7 +807,7 @@ public class AtomicWirelessChannel extends TypedAtomicActor implements
         if (_receiversInRangeCache != null
                 && _receiversInRangeCache.containsKey(sourcePort)
                 && ((Long) _receiversInRangeCacheVersion.get(sourcePort))
-                        .longValue() == workspace().getVersion()
+                .longValue() == workspace().getVersion()
                 && _receiversInRangeCacheValid) {
             // Cached list is valid. Return that.
             return (List) _receiversInRangeCache.get(sourcePort);
@@ -862,7 +877,7 @@ public class AtomicWirelessChannel extends TypedAtomicActor implements
      */
     protected void _transmitTo(Token token, WirelessIOPort sender,
             WirelessReceiver receiver, RecordToken properties)
-            throws IllegalActionException {
+                    throws IllegalActionException {
         if (_debugging) {
             _debug(" * transmitting to: "
                     + receiver.getContainer().getFullName());

@@ -177,6 +177,7 @@ public class ConfigurationSwitch extends TypedAtomicActor {
      *  @exception IllegalActionException If the change is not acceptable
      *   to this container (not thrown in this base class).
      */
+    @Override
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         if (attribute == selector) {
@@ -208,6 +209,7 @@ public class ConfigurationSwitch extends TypedAtomicActor {
      *   if one of the attributes cannot be cloned.
      *  @return A new ComponentEntity.
      */
+    @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         ConfigurationSwitch newObject = (ConfigurationSwitch) super
                 .clone(workspace);
@@ -226,6 +228,7 @@ public class ConfigurationSwitch extends TypedAtomicActor {
      *  otherwise output the token on the <i>falseOutput</i> port.
      *  @exception IllegalActionException If there is no director.
      */
+    @Override
     public void fire() throws IllegalActionException {
         super.fire();
         for (int i = 0; i < input.getWidth(); i++) {

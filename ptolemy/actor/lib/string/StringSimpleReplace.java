@@ -70,6 +70,7 @@ import ptolemy.kernel.util.NameDuplicationException;
  @Pt.ProposedRating ret (cxh)
  @Pt.AcceptedRating red (cxh)
  */
+@Deprecated
 public class StringSimpleReplace extends TypedAtomicActor {
     /** Construct an actor with the given container and name.
      *  @param container The container.
@@ -89,19 +90,19 @@ public class StringSimpleReplace extends TypedAtomicActor {
         pattern.setStringMode(true);
         pattern.setExpression("");
         new SingletonParameter(pattern.getPort(), "_showName")
-                .setToken(BooleanToken.TRUE);
+        .setToken(BooleanToken.TRUE);
 
         replacement = new PortParameter(this, "replacement");
         replacement.setStringMode(true);
         replacement.setExpression("");
         new SingletonParameter(replacement.getPort(), "_showName")
-                .setToken(BooleanToken.TRUE);
+        .setToken(BooleanToken.TRUE);
 
         stringToEdit = new PortParameter(this, "stringToEdit");
         stringToEdit.setStringMode(true);
         stringToEdit.setExpression("");
         new SingletonParameter(stringToEdit.getPort(), "_showName")
-                .setToken(BooleanToken.TRUE);
+        .setToken(BooleanToken.TRUE);
 
         output = new TypedIOPort(this, "output", false, true);
         output.setTypeEquals(BaseType.STRING);
@@ -138,6 +139,7 @@ public class StringSimpleReplace extends TypedAtomicActor {
      *   is <i>pattern</i> and the regular expression fails to
      *   compile.
      */
+    @Override
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         if (attribute == pattern) {
@@ -157,6 +159,7 @@ public class StringSimpleReplace extends TypedAtomicActor {
      *  unmodified stringToEdit string.
      *  @exception IllegalActionException If there is no director.
      */
+    @Override
     public void fire() throws IllegalActionException {
         super.fire();
         replacement.update();

@@ -215,6 +215,7 @@ abstract public class CipherActor extends CryptographyActor {
      *  @param attribute The attribute that changed.
      *  @exception IllegalActionException Not thrown in this base class.
      */
+    @Override
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         if (attribute == mode) {
@@ -237,6 +238,7 @@ abstract public class CipherActor extends CryptographyActor {
      *  @exception IllegalActionException If thrown by the base class or
      *  if there is a problem processing the data.
      */
+    @Override
     public void fire() throws IllegalActionException {
         super.fire();
         _updateCipher();
@@ -249,6 +251,7 @@ abstract public class CipherActor extends CryptographyActor {
      * the padding scheme is illegal for the the given algorithm or
      * if the specified provider does not exist.
      */
+    @Override
     public void initialize() throws IllegalActionException {
         super.initialize();
 

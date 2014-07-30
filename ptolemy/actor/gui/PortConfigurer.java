@@ -62,6 +62,7 @@ import ptolemy.util.StringUtilities;
  @Pt.AcceptedRating Red (neuendor)
  @deprecated This class is no longer used.  Use PortConfigurerDialog.
  */
+@Deprecated
 @SuppressWarnings("serial")
 public class PortConfigurer extends Query implements QueryListener {
     /** Construct a port configurer for the specified entity.
@@ -248,6 +249,7 @@ public class PortConfigurer extends Query implements QueryListener {
      *  when the apply() method is called.
      *  @param name The name of the entry that changed.
      */
+    @Override
     public void changed(String name) {
         _changed.add(name);
     }

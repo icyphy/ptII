@@ -119,6 +119,7 @@ public class JAIMedianFilter extends Transformer {
      *  @exception IllegalActionException If the function is not recognized,
      *  or if a contained method throws it.
      */
+    @Override
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         if (attribute == shape) {
@@ -149,6 +150,7 @@ public class JAIMedianFilter extends Transformer {
      *  @exception CloneNotSupportedException If a derived class contains
      *  an attribute that cannot be cloned.
      */
+    @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         JAIMedianFilter newObject = (JAIMedianFilter) super.clone(workspace);
         newObject._shape = null;
@@ -160,6 +162,7 @@ public class JAIMedianFilter extends Transformer {
      *  @exception IllegalActionException If a contained method throws
      *  it.
      */
+    @Override
     public void fire() throws IllegalActionException {
         super.fire();
 

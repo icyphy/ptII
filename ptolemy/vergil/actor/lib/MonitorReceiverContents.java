@@ -64,7 +64,7 @@ import ptolemy.kernel.util.SingletonAttribute;
  @since Ptolemy II 8.0
  @Pt.ProposedRating Yellow (eal)
  @Pt.AcceptedRating Red (cxh)
-*/
+ */
 public class MonitorReceiverContents extends SingletonAttribute {
 
     /** Construct an actor with the specified container and name.
@@ -107,6 +107,7 @@ public class MonitorReceiverContents extends SingletonAttribute {
      *   an attribute with the name of this attribute.
      *  @see #getContainer()
      */
+    @Override
     public void setContainer(final NamedObj container)
             throws IllegalActionException, NameDuplicationException {
         NamedObj previousContainer = getContainer();
@@ -143,6 +144,7 @@ public class MonitorReceiverContents extends SingletonAttribute {
                 // lead to repaints of the GUI.
                 _executable = new Executable() {
 
+                    @Override
                     public void initialize() throws IllegalActionException {
                         // Add _showInfo attributes to any input port that does not already have one.
                         try {
@@ -167,11 +169,13 @@ public class MonitorReceiverContents extends SingletonAttribute {
                     }
 
                     // Request repaint on postfire() and wrapup().
+                    @Override
                     public boolean postfire() {
                         ChangeRequest request = new ChangeRequest(this,
                                 "SetVariable change request", true /*Although this not a structural change in my point of view
                                                                    , we however for some reason need to specify it is, otherwise the GUI won't update.*/
-                        ) {
+                                ) {
+                            @Override
                             protected void _execute()
                                     throws IllegalActionException {
                             }
@@ -183,9 +187,11 @@ public class MonitorReceiverContents extends SingletonAttribute {
                         return true;
                     }
 
+                    @Override
                     public void wrapup() {
                         ChangeRequest request = new ChangeRequest(this,
                                 "SetVariable change request", true) {
+                            @Override
                             protected void _execute()
                                     throws IllegalActionException {
                             }
@@ -197,40 +203,51 @@ public class MonitorReceiverContents extends SingletonAttribute {
                     }
 
                     // All other methods are empty.
+                    @Override
                     public void fire() throws IllegalActionException {
                     }
 
+                    @Override
                     public boolean isFireFunctional() {
                         return true;
                     }
 
+                    @Override
                     public boolean isStrict() {
                         return true;
                     }
 
+                    @Override
                     public int iterate(int count) {
                         return Executable.COMPLETED;
                     }
 
+                    @Override
                     public boolean prefire() throws IllegalActionException {
                         return true;
                     }
 
+                    @Override
                     public void stop() {
                     }
 
+                    @Override
                     public void stopFire() {
                     }
 
+                    @Override
                     public void terminate() {
                     }
 
+                    @Override
                     public void addInitializable(Initializable initializable) {
                     }
 
+                    @Override
                     public void preinitialize() throws IllegalActionException {
                     }
 
+                    @Override
                     public void removeInitializable(Initializable initializable) {
                     }
                 };

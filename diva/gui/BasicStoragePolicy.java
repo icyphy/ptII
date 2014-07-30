@@ -43,6 +43,7 @@ public class BasicStoragePolicy extends AbstractStoragePolicy {
      * nothing if the document is null. Always return true, unless an
      * I/O exception occurs.
      */
+    @Override
     public boolean close(Document d) {
         if (d != null) {
             try {
@@ -61,6 +62,7 @@ public class BasicStoragePolicy extends AbstractStoragePolicy {
      * document if one was created, otherwise null.  If the file
      * exists, then remember it for the next call to getDirectory.
      */
+    @Override
     public Document open(Application app) {
         String dir = getDirectory();
         JFileChooser fc = new JFileChooser(dir);
@@ -87,6 +89,7 @@ public class BasicStoragePolicy extends AbstractStoragePolicy {
      * document if one was created, otherwise null.  If the file
      * exists, then remember it for the next call to getDirectory.
      */
+    @Override
     public Document open(File file, Application app) {
         Document doc;
 
@@ -105,6 +108,7 @@ public class BasicStoragePolicy extends AbstractStoragePolicy {
     /** Open a URL and create a new document. Return the new document
      * if one was created, otherwise null.
      */
+    @Override
     public Document open(URL url, Application app) {
         Document doc;
 
@@ -123,6 +127,7 @@ public class BasicStoragePolicy extends AbstractStoragePolicy {
      * nothing if the document is null. Always return true, unless an
      * I/O exception occurred.
      */
+    @Override
     public boolean save(Document d) {
         if (d != null) {
             try {
@@ -141,6 +146,7 @@ public class BasicStoragePolicy extends AbstractStoragePolicy {
      * the document's file object.  Do nothing if the document is
      * null. Return true if successful, otherwise false.
      */
+    @Override
     public boolean saveAs(Document d) {
         if (d != null) {
             String dir = getDirectory();

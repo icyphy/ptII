@@ -26,7 +26,7 @@
  PT_COPYRIGHT_VERSION_2
  COPYRIGHTENDKEY
 
-*/
+ */
 
 package ptolemy.vergil.basic.export.web;
 
@@ -91,23 +91,24 @@ public class WebAttribute extends StringAttribute {
      * (perhaps another Attribute exists with the requested name)
      */
     public static WebAttribute appendToWebAttribute(NamedObj container,
-            String id, String webName, String content) throws IllegalActionException {
+            String id, String webName, String content)
+            throws IllegalActionException {
         WebAttribute webAttribute = createWebAttribute(container, id, webName);
-        
+
         String previousValue = webAttribute.getExpression();
         if (previousValue == null || previousValue.trim().length() == 0) {
-                // No previous value.
-                webAttribute.setExpression(content);
-                return webAttribute;
+            // No previous value.
+            webAttribute.setExpression(content);
+            return webAttribute;
         }
-        
+
         // Assume values are space-separated, as they are with the class attribute.
         String[] previousValues = previousValue.split(" ");
         for (String value : previousValues) {
-                if (value.equals(content)) {
-                        // Already present.
-                        return webAttribute;
-                }
+            if (value.equals(content)) {
+                // Already present.
+                return webAttribute;
+            }
         }
         // Append to the previous value.
         webAttribute.setExpression(previousValue + " " + content);

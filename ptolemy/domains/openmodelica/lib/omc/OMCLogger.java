@@ -80,6 +80,7 @@ public class OMCLogger {
         }
         // Set format of the log to show date and time first.
         _fileHandler.setFormatter(new Formatter() {
+            @Override
             public String format(LogRecord rec) {
                 StringBuffer buf = new StringBuffer(1000);
                 buf.append(new java.util.Date());
@@ -118,7 +119,7 @@ public class OMCLogger {
 
         if (username == null) {
             System.err
-            .println("Could not get user.name property?  Using 'nobody'.");
+                    .println("Could not get user.name property?  Using 'nobody'.");
             logPath = temp + "/nobody/OpenModelica/";
         } else {
             logPath = temp + "/" + username + "/OpenModelica/";

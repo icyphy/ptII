@@ -106,6 +106,7 @@ public class FIFOQueue implements Cloneable {
      *  @return A clone of this queue.
      *  @exception CloneNotSupportedException If thrown by object.clone().F
      */
+    @Override
     public Object clone() throws CloneNotSupportedException {
         // This method used to not call super.clone() and return "new FIFOQueue(this)"
         // FindBugs reports this as:
@@ -124,7 +125,7 @@ public class FIFOQueue implements Cloneable {
 
         // Instead we call super.clone() and then adjust the fields of the clone.
 
-        FIFOQueue returnValue = (FIFOQueue)super.clone();
+        FIFOQueue returnValue = (FIFOQueue) super.clone();
         returnValue._queueList = new LinkedList();
         returnValue._historyList = new LinkedList();
         synchronized (this) {
@@ -146,6 +147,7 @@ public class FIFOQueue implements Cloneable {
      *  @return An enumeration of objects.
      *  @deprecated Used elementList() instead.
      */
+    @Deprecated
     public Enumeration elements() {
         return Collections.enumeration(_queueList);
     }
@@ -234,6 +236,7 @@ public class FIFOQueue implements Cloneable {
      *  @return An enumeration of objects in the history.
      *  @deprecated Use historyElementList() instead.
      */
+    @Deprecated
     public Enumeration historyElements() {
         return Collections.enumeration(_historyList);
     }

@@ -440,7 +440,7 @@ public class SoundReader {
                 for (int i = 0; i < bytesPerSample; i += 1) {
                     // Assume we are dealing with big endian.
                     _b[i] = byteArray[currSamp * bytesPerSample * channels
-                            + bytesPerSample * currChannel + i];
+                                      + bytesPerSample * currChannel + i];
                 }
 
                 int result = _b[0] >> 7;

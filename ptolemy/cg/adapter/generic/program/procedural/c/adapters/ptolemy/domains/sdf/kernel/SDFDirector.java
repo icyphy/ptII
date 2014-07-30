@@ -76,8 +76,8 @@ import ptolemy.kernel.util.NamedObj;
  @Pt.AcceptedRating Red (eal)
  */
 public class SDFDirector
-        extends
-        ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.domains.sdf.kernel.SDFDirector {
+extends
+ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.domains.sdf.kernel.SDFDirector {
 
     /** Construct the code generator adapter associated with the given
      *  SDFDirector.
@@ -98,6 +98,7 @@ public class SDFDirector
      * @return The generated constructor code
      * @exception IllegalActionException Not thrown in this base class.
      */
+    @Override
     public String generateConstructorCode() throws IllegalActionException {
         StringBuffer result = new StringBuffer();
         CompositeActor container = (CompositeActor) _director.getContainer();
@@ -272,10 +273,10 @@ public class SDFDirector
     }
 
     /** Generate The functions' declaration code for this director.
-    *
-    *  @return The functions' declaration function code.
-    *  @exception IllegalActionException If thrown while generating code.
-    */
+     *
+     *  @return The functions' declaration function code.
+     *  @exception IllegalActionException If thrown while generating code.
+     */
     public String generateFunctionsDeclaration() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
         _sanitizedDirectorName = CodeGeneratorAdapter.generateName(_director);
@@ -326,7 +327,7 @@ public class SDFDirector
                         + _sanitizedDirectorName
                         + ".currentMicrostep = "
                         + ((SuperdenseTimeDirector) executiveDirector)
-                                .getIndex() + ";");
+                        .getIndex() + ";");
             }
         }
 
@@ -355,7 +356,7 @@ public class SDFDirector
         code.append(_eol + _sanitizedDirectorName + ".isInitializing = false;");
         code.append(_eol
                 + codeGenerator
-                        .comment("End of the Initialization of the director"));
+                .comment("End of the Initialization of the director"));
 
         return code.toString();
     }
@@ -378,6 +379,7 @@ public class SDFDirector
      *  @return Code for the main loop of an execution.
      *  @exception IllegalActionException If something goes wrong.
      */
+    @Override
     public String generateMainLoop() throws IllegalActionException {
         // Need a leading _eol here or else the execute decl. gets stripped out.
         StringBuffer code = new StringBuffer();
@@ -420,7 +422,7 @@ public class SDFDirector
         code.append("void " + _sanitizedDirectorName + "_Fire() {" + _eol);
         String[] splitFireCode = getCodeGenerator()._splitBody(
                 "_" + CodeGeneratorAdapter.generateName(getComponent())
-                        + "_run_", generateFireCode());
+                + "_run_", generateFireCode());
         code.append(splitFireCode[1]);
         // The code generated in generateModeTransitionCode() is executed
         // after one global iteration, e.g., in HDF model.
@@ -516,6 +518,7 @@ public class SDFDirector
      *   or if generating the preinitialize code for a adapter fails,
      *   or if there is a problem getting the buffer size of a port.
      */
+    @Override
     public String generatePreinitializeCode() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
         //code.append(super.generatePreinitializeCode());
@@ -564,6 +567,7 @@ public class SDFDirector
      *   or if generating the preinitialize code for a adapter fails,
      *   or if there is a problem getting the buffer size of a port.
      */
+    @Override
     public String generatePreinitializeMethodBodyCode()
             throws IllegalActionException {
         StringBuffer code = new StringBuffer();
@@ -622,6 +626,7 @@ public class SDFDirector
      *  @param code The string buffer that the generated code is appended to.
      *  @exception IllegalActionException If thrown while transferring tokens.
      */
+    @Override
     public void generateTransferInputsCode(IOPort inputPort, StringBuffer code)
             throws IllegalActionException {
         code.append(CodeStream.indent(getCodeGenerator().comment(
@@ -667,7 +672,7 @@ public class SDFDirector
                             + " = "
                             + CCodegenUtilities.jniGetObjectArrayElement(
                                     portName, String.valueOf(i), targetCpp)
-                            + ";" + _eol);
+                                    + ";" + _eol);
 
                     if (type == BaseType.INT) {
                         code.append("jint * "
@@ -675,7 +680,7 @@ public class SDFDirector
                                 + " = "
                                 + CCodegenUtilities.jniGetArrayElements("Int",
                                         tokensFromOneChannel, targetCpp) + ";"
-                                + _eol);
+                                        + _eol);
                     } else if (type == BaseType.DOUBLE) {
                         code.append("jdouble * "
                                 + pointerToTokensFromOneChannel
@@ -689,7 +694,7 @@ public class SDFDirector
                                 + " = "
                                 + CCodegenUtilities.jniGetArrayElements("Int",
                                         tokensFromOneChannel, targetCpp) + ";"
-                                + _eol);
+                                        + _eol);
                     } else if (type == BaseType.BOOLEAN) {
                         code.append("jboolean * "
                                 + pointerToTokensFromOneChannel
@@ -802,6 +807,7 @@ public class SDFDirector
      *  @param code The string buffer that the generated code is appended to.
      *  @exception IllegalActionException If thrown while transferring tokens.
      */
+    @Override
     public void generateTransferOutputsCode(IOPort outputPort, StringBuffer code)
             throws IllegalActionException {
         code.append(CodeStream.indent(getCodeGenerator().comment(
@@ -992,7 +998,7 @@ public class SDFDirector
                             + " = "
                             + CCodegenUtilities.jniNewArray("Int",
                                     String.valueOf(rate), targetCpp) + ";"
-                            + _eol);
+                                    + _eol);
                     code.append(CCodegenUtilities.jniSetArrayRegion("Int",
                             tokensToOneChannelArray, "0", String.valueOf(rate),
                             tokensToOneChannel, targetCpp)
@@ -1004,7 +1010,7 @@ public class SDFDirector
                             + " = "
                             + CCodegenUtilities.jniNewArray("Double",
                                     String.valueOf(rate), targetCpp) + ";"
-                            + _eol);
+                                    + _eol);
                     code.append(CCodegenUtilities.jniSetArrayRegion("Double",
                             tokensToOneChannelArray, "0", String.valueOf(rate),
                             tokensToOneChannel, targetCpp)
@@ -1016,7 +1022,7 @@ public class SDFDirector
                             + " = "
                             + CCodegenUtilities.jniNewArray("Int",
                                     String.valueOf(rate), targetCpp) + ";"
-                            + _eol);
+                                    + _eol);
                     code.append(CCodegenUtilities.jniSetArrayRegion("Int",
                             tokensToOneChannelArray, "0", String.valueOf(rate),
                             tokensToOneChannel, targetCpp)
@@ -1028,7 +1034,7 @@ public class SDFDirector
                             + " = "
                             + CCodegenUtilities.jniNewArray("Boolean",
                                     String.valueOf(rate), targetCpp) + ";"
-                            + _eol);
+                                    + _eol);
                     code.append(CCodegenUtilities.jniSetArrayRegion("Boolean",
                             tokensToOneChannelArray, "0", String.valueOf(rate),
                             tokensToOneChannel, targetCpp)
@@ -1087,6 +1093,7 @@ public class SDFDirector
      *  @exception IllegalActionException If the adapter class for the model
      *   director cannot be found.
      */
+    @Override
     public String generateVariableDeclaration() throws IllegalActionException {
         StringBuffer variableDeclarations = new StringBuffer();
 
@@ -1128,6 +1135,7 @@ public class SDFDirector
      *  @return The wrapup function code.
      *  @exception IllegalActionException If thrown while generating fire code.
      */
+    @Override
     public String generateWrapupCode() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
 
@@ -1149,6 +1157,7 @@ public class SDFDirector
      *  @return The code generator associated with this adapter class.
      *  @see #setCodeGenerator(GenericCodeGenerator)
      */
+    @Override
     public CCodeGenerator getCodeGenerator() {
         return (CCodeGenerator) super.getCodeGenerator();
     }
@@ -1166,7 +1175,7 @@ public class SDFDirector
     @Override
     protected String _generateVariableDeclaration(
             NamedProgramCodeGeneratorAdapter target)
-            throws IllegalActionException {
+                    throws IllegalActionException {
         StringBuffer code = new StringBuffer();
 
         ProgramCodeGenerator codeGenerator = getCodeGenerator();
@@ -1351,7 +1360,7 @@ public class SDFDirector
                             + targetType(parameter.getType())
                             + " "
                             + getCodeGenerator()
-                                    .generateVariableName(parameter) + ";"
+                            .generateVariableName(parameter) + ";"
                             + _eol);
                 }
             }

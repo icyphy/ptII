@@ -68,21 +68,21 @@ import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Workspace;
 
 /** This class implements functionality of a composite communication aspect.
-*
-*  <p>
-*  When an intermediate receiver sends a token to an input port of this
-*  communication aspect, the original receiver and the token are encoded in a
-*  RecordToken. When such a token arrives at an output port, the original token
-*  is extracted and sent to the original receiver.
-*
-*  @author Patricia Derler
-*  @version $Id$
-*  @since Ptolemy II 10.0
-*  @Pt.ProposedRating Yellow (derler)
-*  @Pt.AcceptedRating Red (derler)
-*/
+ *
+ *  <p>
+ *  When an intermediate receiver sends a token to an input port of this
+ *  communication aspect, the original receiver and the token are encoded in a
+ *  RecordToken. When such a token arrives at an output port, the original token
+ *  is extracted and sent to the original receiver.
+ *
+ *  @author Patricia Derler
+ *  @version $Id$
+ *  @since Ptolemy II 10.0
+ *  @Pt.ProposedRating Yellow (derler)
+ *  @Pt.AcceptedRating Red (derler)
+ */
 public class CompositeCommunicationAspect extends TypedCompositeActor implements
-        CommunicationAspect, Decorator {
+CommunicationAspect, Decorator {
 
     /** Construct a CompositeCommunicationAspectAttributes in the specified workspace with
      *  no container and an empty string as a name. You can then change
@@ -158,6 +158,7 @@ public class CompositeCommunicationAspect extends TypedCompositeActor implements
      *  @exception CloneNotSupportedException Not thrown here.
      *  @return A new CompositeQM.
      */
+    @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         CompositeCommunicationAspect newObject = (CompositeCommunicationAspect) super
                 .clone(workspace);
@@ -173,6 +174,7 @@ public class CompositeCommunicationAspect extends TypedCompositeActor implements
      *  @return The decorated attributes for the target NamedObj, or
      *   null if the specified target is not an Actor.
      */
+    @Override
     public DecoratorAttributes createDecoratorAttributes(NamedObj target) {
         if (target instanceof IOPort) {
             try {
@@ -191,6 +193,7 @@ public class CompositeCommunicationAspect extends TypedCompositeActor implements
      *  @return A new intermediate receiver.
      *  @exception IllegalActionException Not thrown in this class but may be thrown in derived classes.
      */
+    @Override
     public Receiver createIntermediateReceiver(Receiver receiver)
             throws IllegalActionException {
         IntermediateReceiver intermediateReceiver = new IntermediateReceiver(
@@ -202,6 +205,7 @@ public class CompositeCommunicationAspect extends TypedCompositeActor implements
      *  of this resource scheduler.
      *  @return A list of the objects decorated by this decorator.
      */
+    @Override
     public List<NamedObj> decoratedObjects() {
         if (workspace().getVersion() == _decoratedObjectsVersion) {
             return _decoratedObjects;
@@ -223,6 +227,7 @@ public class CompositeCommunicationAspect extends TypedCompositeActor implements
     /** Override the fire and change the transferring tokens
      * from and to input/output placeholders.
      */
+    @Override
     public void fire() throws IllegalActionException {
         super.fire();
         if (_debugging) {
@@ -295,6 +300,7 @@ public class CompositeCommunicationAspect extends TypedCompositeActor implements
     /** Return true to indicate that this decorator should
      *  decorate objects across opaque hierarchy boundaries.
      */
+    @Override
     public boolean isGlobalDecorator() {
         return true;
     }
@@ -302,6 +308,7 @@ public class CompositeCommunicationAspect extends TypedCompositeActor implements
     /** Add a communication aspect monitor to the list of listeners.
      *  @param monitor The communication aspect monitor.
      */
+    @Override
     public void registerListener(CommunicationAspectListener monitor) {
         if (_listeners == null) {
             _listeners = new ArrayList<CommunicationAspectListener>();
@@ -311,6 +318,7 @@ public class CompositeCommunicationAspect extends TypedCompositeActor implements
 
     /** Reset - nothing to do here.
      */
+    @Override
     public void reset() {
         // nothing to do here.
     }
@@ -327,6 +335,7 @@ public class CompositeCommunicationAspect extends TypedCompositeActor implements
      *   an attribute with the name of this attribute.
      *  @see #getContainer()
      */
+    @Override
     public void setContainer(CompositeEntity container)
             throws IllegalActionException, NameDuplicationException {
         super.setContainer(container);
@@ -363,6 +372,7 @@ public class CompositeCommunicationAspect extends TypedCompositeActor implements
      *  @param token The token to send.
      *  @exception IllegalActionException If the refiring request fails.
      */
+    @Override
     public void sendToken(Receiver source, Receiver receiver, Token token)
             throws IllegalActionException {
         String name = _communicationRequestPortNames.get(receiver
@@ -371,8 +381,8 @@ public class CompositeCommunicationAspect extends TypedCompositeActor implements
         if (port == null) {
             throw new IllegalActionException(this,
                     "CommunicationRequestPort with name " + name
-                            + " specified by " + receiver.getContainer()
-                            + " missing");
+                    + " specified by " + receiver.getContainer()
+                    + " missing");
         }
         if (_tokens == null) {
             _tokens = new HashMap<CommunicationRequestPort, Token>();
@@ -412,7 +422,7 @@ public class CompositeCommunicationAspect extends TypedCompositeActor implements
      * @exception NameDuplicationException If color attribute cannot be initialized.
      */
     private void _initialize() throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         ColorAttribute color = new ColorAttribute(this,
                 decoratorHighlightColorName);
         color.setExpression("{1.0,0.6,0.0,1.0}");
@@ -454,7 +464,7 @@ public class CompositeCommunicationAspect extends TypedCompositeActor implements
      *  @author Patricia Derler
      */
     public static class CompositeCommunicationAspectAttributes extends
-            CommunicationAspectAttributes {
+    CommunicationAspectAttributes {
 
         /** Constructor to use when editing a model.
          *  @param target The object being decorated.
@@ -464,7 +474,7 @@ public class CompositeCommunicationAspect extends TypedCompositeActor implements
          */
         public CompositeCommunicationAspectAttributes(NamedObj target,
                 CompositeCommunicationAspect decorator)
-                throws IllegalActionException, NameDuplicationException {
+                        throws IllegalActionException, NameDuplicationException {
             super(target, decorator);
             _init();
         }
@@ -502,9 +512,12 @@ public class CompositeCommunicationAspect extends TypedCompositeActor implements
             if (attribute == inputPort) {
                 Token token = ((Parameter) attribute).getToken();
                 if (!(token instanceof StringToken)) {
-                    throw new IllegalActionException(this, "Decorator attribute for "
-                            + "mapped port in communication aspect for actor port " 
-                            + port.getName() + " could not be retrieved.");
+                    throw new IllegalActionException(
+                            this,
+                            "Decorator attribute for "
+                                    + "mapped port in communication aspect for actor port "
+                                    + port.getName()
+                                    + " could not be retrieved.");
                 }
                 _inputPort = ((StringToken) token).stringValue();
                 CompositeCommunicationAspect compositeQM = (CompositeCommunicationAspect) getDecorator();

@@ -183,6 +183,7 @@ class CAMatrixViewer extends Component {
      * Return the minimum size of this component.
      * @return The minimum size.
      */
+    @Override
     public Dimension getMinimumSize() {
         int minimumWidth = 200;
         int minimumHeight = 200;
@@ -205,6 +206,7 @@ class CAMatrixViewer extends Component {
      * size.
      * @return the preferred size.
      */
+    @Override
     public Dimension getPreferredSize() {
         return getMinimumSize();
     }
@@ -218,6 +220,7 @@ class CAMatrixViewer extends Component {
      * paint the Component.
      *
      */
+    @Override
     public void paint(Graphics graphics) {
 
         super.paint(graphics);

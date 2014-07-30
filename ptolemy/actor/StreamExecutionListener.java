@@ -63,6 +63,7 @@ public class StreamExecutionListener implements ExecutionListener {
     /** Report an execution failure by printing a message to output
      *  stream specified to the constructor.
      */
+    @Override
     public void executionError(Manager manager, Throwable throwable) {
         _output.println("Execution error.");
         throwable.printStackTrace(_output);
@@ -72,6 +73,7 @@ public class StreamExecutionListener implements ExecutionListener {
      *  message to output stream specified to the constructor.
      *  @param manager The manager controlling the execution.
      */
+    @Override
     public void executionFinished(Manager manager) {
         _output.println("Completed execution with "
                 + manager.getIterationCount() + " iterations");
@@ -81,6 +83,7 @@ public class StreamExecutionListener implements ExecutionListener {
      *  message to output stream specified to the constructor.
      *  @param manager The manager controlling the execution.
      */
+    @Override
     public void managerStateChanged(Manager manager) {
         Manager.State state = manager.getState();
         String message;

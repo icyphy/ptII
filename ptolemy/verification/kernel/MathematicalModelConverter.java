@@ -66,6 +66,7 @@ import ptolemy.verification.kernel.maude.RTMaudeUtility;
  * @Pt.ProposedRating Red (patrickj)
  * @Pt.AcceptedRating Red (patrickj)
  */
+@Deprecated
 public class MathematicalModelConverter extends Attribute {
     /**
      * Create a new instance of the code generator.
@@ -139,6 +140,7 @@ public class MathematicalModelConverter extends Attribute {
      *  @exception CloneNotSupportedException Not thrown in this base class
      *  @return The new object.
      */
+    @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         MathematicalModelConverter newObject = (MathematicalModelConverter) super
                 .clone(workspace);
@@ -150,8 +152,8 @@ public class MathematicalModelConverter extends Attribute {
     public StringBuffer generateCode(ModelType modelType,
             String inputTemporalFormula, FormulaType formulaType,
             int variableSpanSize, int delayActorBufferSize)
-            throws IllegalActionException, NameDuplicationException,
-            CloneNotSupportedException {
+                    throws IllegalActionException, NameDuplicationException,
+                    CloneNotSupportedException {
         StringBuffer systemDescription = new StringBuffer("");
 
         switch (modelType) {
@@ -201,8 +203,8 @@ public class MathematicalModelConverter extends Attribute {
     public StringBuffer generateFile(File file, ModelType modelType,
             String inputTemporalFormula, FormulaType formulaType,
             int variableSpanSize, OutputType outputChoice, int FSMBufferSize)
-            throws IllegalActionException, NameDuplicationException,
-            CloneNotSupportedException, IOException {
+                    throws IllegalActionException, NameDuplicationException,
+                    CloneNotSupportedException, IOException {
         StringBuffer returnStringBuffer = new StringBuffer("");
         _codeFile = null;
 
@@ -210,7 +212,7 @@ public class MathematicalModelConverter extends Attribute {
 
             if (REDUtility.isValidModelForVerification((CompositeActor) _model)
                     || SMVUtility
-                            .isValidModelForVerification((CompositeActor) _model)
+                    .isValidModelForVerification((CompositeActor) _model)
                     || _model instanceof FSMActor) {
 
                 StringBuffer systemDescription = generateCode(modelType,
@@ -284,29 +286,35 @@ public class MathematicalModelConverter extends Attribute {
                         }
 
                         List execCommands = new LinkedList();
-                        execCommands.add("NuSMV " + "\"" + fileAbsolutePath + "\"");
+                        execCommands.add("NuSMV " + "\"" + fileAbsolutePath
+                                + "\"");
                         StringBufferExec exec = new StringBufferExec();
-                            
-                        System.out.println("MathematicalModelConverter: About to execute: " + execCommands);
+
+                        System.out
+                                .println("MathematicalModelConverter: About to execute: "
+                                        + execCommands);
                         exec.setCommands(execCommands);
                         exec.setWaitForLastSubprocess(true);
                         try {
                             exec.start();
                         } catch (Throwable throwable) {
                             StringBuffer errorMessage = new StringBuffer();
-                            Iterator<String> allCommands = execCommands.iterator();
+                            Iterator<String> allCommands = execCommands
+                                    .iterator();
                             while (allCommands.hasNext()) {
                                 errorMessage.append(allCommands.next() + "\n");
                             }
-                            throw new IllegalActionException("Problem executing the "
-                                    + "commands:\n" + errorMessage + "\n" + throwable);
+                            throw new IllegalActionException(
+                                    "Problem executing the " + "commands:\n"
+                                            + errorMessage + "\n" + throwable);
                         }
 
                         returnStringBuffer = exec.buffer;
                         if (exec.getLastSubprocessReturnCode() != 0) {
-                            System.err.println("Executing " + execCommands + " returned non-zero: "
-                                    + exec.getLastSubprocessReturnCode() + ".  Not deleting "
-                                    + smvFolder);
+                            System.err.println("Executing " + execCommands
+                                    + " returned non-zero: "
+                                    + exec.getLastSubprocessReturnCode()
+                                    + ".  Not deleting " + smvFolder);
                         } else {
                             _deleteFolder(smvFolder);
                         }
@@ -314,13 +322,13 @@ public class MathematicalModelConverter extends Attribute {
                         return returnStringBuffer;
                     } else {
                         MessageHandler
-                                .error("The functionality for invoking RED is not implemented.\n");
+                        .error("The functionality for invoking RED is not implemented.\n");
                     }
                 }
 
             } else {
                 MessageHandler
-                        .error("The execution director is not SR or DE.\nCurrently it is beyond our scope of analysis.");
+                .error("The execution director is not SR or DE.\nCurrently it is beyond our scope of analysis.");
             }
         }
 
@@ -355,17 +363,20 @@ public class MathematicalModelConverter extends Attribute {
 
     public enum ModelType {
         CTA {
+            @Override
             public String toString() {
                 return "Communicating Timed Automata (Acceptable by RED "
                         + "under DE)";
             }
         },
         Kripke {
+            @Override
             public String toString() {
                 return "Kripke Structures (Acceptable by NuSMV under SR)";
             }
         },
         Maude {
+            @Override
             public String toString() {
                 return "Real-time Maude Translation(under SR or DE)";
             }
@@ -374,6 +385,7 @@ public class MathematicalModelConverter extends Attribute {
 
     public enum FormulaType {
         CTL, LTL, TCTL, Buffer {
+            @Override
             public String toString() {
                 return "Buffer Overflow";
             }
@@ -383,11 +395,13 @@ public class MathematicalModelConverter extends Attribute {
 
     public enum OutputType {
         Text {
+            @Override
             public String toString() {
                 return "Text Only";
             }
         },
         SMV {
+            @Override
             public String toString() {
                 return "Invoke NuSMV";
             }
@@ -430,7 +444,7 @@ public class MathematicalModelConverter extends Attribute {
     /** This is used to delete recursively the folder and files within.
      */
     private void _deleteFolder(File folder) throws IllegalActionException,
-            IOException {
+    IOException {
 
         if (folder.list() == null || folder.list().length <= 0) {
             boolean isDeleted = folder.delete();

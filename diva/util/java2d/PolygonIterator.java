@@ -79,6 +79,7 @@ public class PolygonIterator implements PathIterator {
 
     /** Get the current segment
      */
+    @Override
     public int currentSegment(double[] coords) {
         if (_index == _coords.length) {
             if (_done) {
@@ -102,6 +103,7 @@ public class PolygonIterator implements PathIterator {
 
     /** Get the current segment
      */
+    @Override
     public int currentSegment(float[] coords) {
         if (_index == _coords.length) {
             if (_done) {
@@ -125,18 +127,21 @@ public class PolygonIterator implements PathIterator {
 
     /** Return the winding rule. This is WIND_NON_ZERO.
      */
+    @Override
     public int getWindingRule() {
         return PathIterator.WIND_NON_ZERO;
     }
 
     /** Test if the iterator is done.
      */
+    @Override
     public boolean isDone() {
         return _done;
     }
 
     /** Move the iterator along by one point.
      */
+    @Override
     public void next() {
         if (_index == _coords.length) {
             _done = true;

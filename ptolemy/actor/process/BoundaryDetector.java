@@ -152,7 +152,7 @@ public class BoundaryDetector {
      * @exception InvalidStateException
      */
     public boolean isConnectedToBoundaryInside() throws InvalidStateException,
-            IllegalActionException {
+    IllegalActionException {
         if (_connectedInsideOfBoundaryCacheIsOn) {
             return _isConnectedInsideOfBoundaryValue;
         } else {

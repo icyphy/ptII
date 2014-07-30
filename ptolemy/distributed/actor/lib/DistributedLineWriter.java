@@ -68,6 +68,7 @@ public class DistributedLineWriter extends Sink {
      *
      *  @exception IllegalActionException Not thrown in this base class.
      */
+    @Override
     public boolean postfire() throws IllegalActionException {
         if (input.hasToken(0)) {
             Token token = input.get(0);

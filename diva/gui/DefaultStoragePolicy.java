@@ -58,6 +58,7 @@ public class DefaultStoragePolicy extends AbstractStoragePolicy {
      * nothing if the document is null.  If the file is successfully saved and
      * closed, then return true, otherwise return false.
      */
+    @Override
     public boolean close(Document d) {
         if (d != null) {
             try {
@@ -113,6 +114,7 @@ public class DefaultStoragePolicy extends AbstractStoragePolicy {
      *
      * @deprecated Use getOpenFileChooser() or getSaveFileChooser()
      */
+    @Deprecated
     public JFileChooser getFileChooser() {
         return _openFileChooser;
     }
@@ -128,6 +130,7 @@ public class DefaultStoragePolicy extends AbstractStoragePolicy {
      * file using the application's document factory.  Return the new
      * document if one was created, otherwise null.
      */
+    @Override
     public Document open(Application app) {
         int result;
         Document doc;
@@ -155,6 +158,7 @@ public class DefaultStoragePolicy extends AbstractStoragePolicy {
      * to canonical form in the process.   Return the new
      * document if one was created, otherwise null.
      */
+    @Override
     public Document open(File file, Application app) {
         Document doc;
 
@@ -174,6 +178,7 @@ public class DefaultStoragePolicy extends AbstractStoragePolicy {
     /** Open a URL and create a new document. Return the new document
      * if one was created, otherwise null.
      */
+    @Override
     public Document open(URL url, Application app) {
         Document doc;
 
@@ -192,6 +197,7 @@ public class DefaultStoragePolicy extends AbstractStoragePolicy {
      * nothing if the document is null. Always return true, unless an
      * I/O exception occurred.
      */
+    @Override
     public boolean save(Document d) {
         if (d != null) {
             if (d.getFile() == null) {
@@ -205,7 +211,7 @@ public class DefaultStoragePolicy extends AbstractStoragePolicy {
                 }
 
                 d.getApplication().getAppContext()
-                        .showStatus("Saved " + d.getTitle());
+                .showStatus("Saved " + d.getTitle());
                 d.setDirty(false);
             }
         }
@@ -218,6 +224,7 @@ public class DefaultStoragePolicy extends AbstractStoragePolicy {
      * the document's file object.  Do nothing if the document is
      * null. Return true if successful, otherwise false.
      */
+    @Override
     public boolean saveAs(Document d) {
         if (d != null) {
             int result;
@@ -237,7 +244,7 @@ public class DefaultStoragePolicy extends AbstractStoragePolicy {
                     int opt = JOptionPane.showConfirmDialog(
                             context.makeComponent(),
                             "File \"" + chosenFile.getName()
-                                    + "\" exists. Overwrite?",
+                            + "\" exists. Overwrite?",
                             "Overwrite file?", JOptionPane.YES_NO_OPTION);
 
                     if (opt != JOptionPane.YES_OPTION) {

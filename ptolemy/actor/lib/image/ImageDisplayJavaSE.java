@@ -68,16 +68,17 @@ classes.</p>
 @since Ptolemy II 10.0
 @Pt.ProposedRating
 @Pt.AcceptedRating
-*/
+ */
 
 public class ImageDisplayJavaSE extends AbstractPlaceableJavaSE implements
-        ImageDisplayInterface {
+ImageDisplayInterface {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
     /**
      * Free up memory when closing.
      */
+    @Override
     public void cleanUp() {
         _tableau = null;
     }
@@ -86,9 +87,11 @@ public class ImageDisplayJavaSE extends AbstractPlaceableJavaSE implements
      *  event thread.
      *  @param in The token to display
      */
+    @Override
     public void display(final Token in) {
         // Display probably to be done in the Swing event thread.
         Runnable doDisplay = new Runnable() {
+            @Override
             public void run() {
                 _display(in);
             }
@@ -101,6 +104,7 @@ public class ImageDisplayJavaSE extends AbstractPlaceableJavaSE implements
      *  @return The background color.
      *  @see #setBackground(Color)
      */
+    @Override
     public Color getBackground() {
         return _container.getBackground();
     }
@@ -110,6 +114,7 @@ public class ImageDisplayJavaSE extends AbstractPlaceableJavaSE implements
      * @return the image's frame.
      * @see #setFrame(Object)
      */
+    @Override
     public Object getFrame() {
         return _imageWindowFrame;
     }
@@ -119,6 +124,7 @@ public class ImageDisplayJavaSE extends AbstractPlaceableJavaSE implements
      * @return the platform dependent container.
      * @see #setPicture(Object)
      */
+    @Override
     public Object getPicture() {
         return _picture;
     }
@@ -128,6 +134,7 @@ public class ImageDisplayJavaSE extends AbstractPlaceableJavaSE implements
      * @return the platform dependent container.
      * @see #setPlatformContainer(Object)
      */
+    @Override
     public Object getPlatformContainer() {
         return _container;
     }
@@ -136,6 +143,7 @@ public class ImageDisplayJavaSE extends AbstractPlaceableJavaSE implements
      * Get the image tableau.
      * @return the image tableau.
      */
+    @Override
     public Object getTableau() {
         return _tableau;
     }
@@ -147,6 +155,7 @@ public class ImageDisplayJavaSE extends AbstractPlaceableJavaSE implements
      * @exception NameDuplicationException If the container already has an
      * actor with this name.
      */
+    @Override
     public void init(ImageDisplay imageDisplayActor)
             throws IllegalActionException, NameDuplicationException {
         _display = imageDisplayActor;
@@ -157,9 +166,11 @@ public class ImageDisplayJavaSE extends AbstractPlaceableJavaSE implements
      * Initialize the effigy of the image.
      * @exception IllegalActionException If there is a problem initializing the effigy
      */
+    @Override
     public void initializeEffigy() throws IllegalActionException {
         // This has to be done in the Swing event thread.
         Runnable doDisplay = new Runnable() {
+            @Override
             public void run() {
                 _createOrShowWindow();
             }
@@ -172,8 +183,9 @@ public class ImageDisplayJavaSE extends AbstractPlaceableJavaSE implements
      * Initialize the effigy of the plotter.
      * @exception IllegalActionException If there is a problem initializing the effigy
      */
+    @Override
     public void initWindowAndSizeProperties() throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         _windowProperties = (WindowPropertiesAttribute) _display.getAttribute(
                 "_windowProperties", WindowPropertiesAttribute.class);
         if (_windowProperties == null) {
@@ -198,6 +210,7 @@ public class ImageDisplayJavaSE extends AbstractPlaceableJavaSE implements
     /**
      * Remove the plot from the frame if the container is null.
      */
+    @Override
     public void placeContainer(Container container) {
         // If there was a previous container that doesn't match this one,
         // remove the pane from it.
@@ -247,6 +260,7 @@ public class ImageDisplayJavaSE extends AbstractPlaceableJavaSE implements
      *  @param background The background color.
      *  @see #getBackground()
      */
+    @Override
     public void setBackground(Color background) {
         _container.setBackground(background);
     }
@@ -256,6 +270,7 @@ public class ImageDisplayJavaSE extends AbstractPlaceableJavaSE implements
      * @param frame The frame to set.
      * @see #getFrame()
      */
+    @Override
     public void setFrame(Object frame) {
         if (_imageWindowFrame != null) {
             _imageWindowFrame.removeWindowListener(_windowClosingAdapter);
@@ -280,6 +295,7 @@ public class ImageDisplayJavaSE extends AbstractPlaceableJavaSE implements
      * @param picture The picture
      * @see #getPicture()
      */
+    @Override
     public void setPicture(Object picture) {
         _picture = (Picture) picture;
     }
@@ -290,6 +306,7 @@ public class ImageDisplayJavaSE extends AbstractPlaceableJavaSE implements
      * @param container the platform dependent container.
      * @see #getPlatformContainer()
      */
+    @Override
     public void setPlatformContainer(Object container) {
         _container = (Container) container;
     }
@@ -462,7 +479,7 @@ public class ImageDisplayJavaSE extends AbstractPlaceableJavaSE implements
      *  ImageDisplay upon closing, and also records the size of the display.
      */
     @SuppressWarnings("serial")
-        protected class ImageWindow extends TableauFrame {
+    protected class ImageWindow extends TableauFrame {
         /** Construct an empty window.
          *  After constructing this, it is necessary
          *  to call setVisible(true) to make the frame appear
@@ -478,6 +495,7 @@ public class ImageDisplayJavaSE extends AbstractPlaceableJavaSE implements
          *  properties.
          *  @return True.
          */
+        @Override
         protected boolean _close() {
             // Record the window properties before closing.
             _windowProperties.recordProperties(this);
@@ -499,7 +517,8 @@ public class ImageDisplayJavaSE extends AbstractPlaceableJavaSE implements
 
     /** Listener for windowClosing action. */
     class WindowClosingAdapter extends
-            AbstractPlaceableJavaSE.WindowClosingAdapter {
+    AbstractPlaceableJavaSE.WindowClosingAdapter {
+        @Override
         public void windowClosing(WindowEvent e) {
             _display.cleanUp();
         }

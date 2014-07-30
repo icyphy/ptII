@@ -97,6 +97,7 @@ public class Bernoulli extends RandomSource {
      *  @exception IllegalActionException If calling send() or super.fire()
      *  throws it.
      */
+    @Override
     public void fire() throws IllegalActionException {
         super.fire();
         output.send(0, new BooleanToken(_current));
@@ -108,6 +109,7 @@ public class Bernoulli extends RandomSource {
     /** Generate a new random number.
      *  @exception IllegalActionException If parameter values are incorrect.
      */
+    @Override
     protected void _generateRandomNumber() throws IllegalActionException {
         if (_random.nextDouble() < ((DoubleToken) trueProbability.getToken())
                 .doubleValue()) {

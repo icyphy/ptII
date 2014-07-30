@@ -64,6 +64,7 @@ public class ToIntMapMapping extends MapMapping implements ToIntMapping {
      *  @param object The given object.
      *  @return True if the given object is in the domain of this Mapping.
      */
+    @Override
     public boolean inDomain(Object object) {
         return _map.containsKey(object) && _map.get(object) instanceof Integer;
     }
@@ -80,10 +81,12 @@ public class ToIntMapMapping extends MapMapping implements ToIntMapping {
      *  of {@link java.lang.Integer} or if the given object is not in the
      *  domain of the mapping.
      */
+    @Override
     public int toInt(Object object) {
         return ((Integer) _map.get(object)).intValue();
     }
 
+    @Override
     public Object toObject(Object object) {
         return _map.get(object);
     }

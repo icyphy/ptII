@@ -83,6 +83,7 @@ public interface Type {
      *  @return True if the argument represents the same type as this
      *   object; false otherwise.
      */
+    @Override
     public boolean equals(Object object);
 
     /** Return a perfect hash for this type.  This number corresponds
@@ -181,6 +182,7 @@ public interface Type {
     /** Return the string representation of this type.
      *  @return A String.
      */
+    @Override
     public String toString();
 
     /** Return the type of the additive identity for elements of

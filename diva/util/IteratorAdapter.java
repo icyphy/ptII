@@ -38,16 +38,19 @@ import java.util.NoSuchElementException;
  * @version $Id$
  */
 public class IteratorAdapter implements Iterator {
+    @Override
     public boolean hasNext() {
         throw new UnsupportedOperationException(
                 "This method must be overridden");
     }
 
+    @Override
     public Object next() throws NoSuchElementException {
         // FindBugs: throw NoSuchElementException here.
         throw new NoSuchElementException("This method must be overridden");
     }
 
+    @Override
     public void remove() {
         throw new UnsupportedOperationException("Can't remove element");
     }

@@ -52,7 +52,7 @@ import ptolemy.kernel.util.StringAttribute;
  *  @Pt.AcceptedRating Red (cshelton)
  */
 public abstract class BaseMultipleMethodsActor extends
-        SequencedSharedMemoryActor implements MultipleFireMethodsInterface {
+SequencedSharedMemoryActor implements MultipleFireMethodsInterface {
 
     /** Create a new instance of an ASCETClassActor with the given
      *  name and container.
@@ -88,6 +88,7 @@ public abstract class BaseMultipleMethodsActor extends
      *  @return The string name of the default fire method for the actor.
      *   If the actor does not have multiple fire methods, return null.
      */
+    @Override
     public String getDefaultFireMethodName() {
         if (numFireMethods() > 1) {
             return _defaultFireMethodName;
@@ -101,6 +102,7 @@ public abstract class BaseMultipleMethodsActor extends
      *
      *  @return The list of fire method names strings.
      */
+    @Override
     public List<String> getFireMethodNames() {
         return _methodList;
     }
@@ -112,6 +114,7 @@ public abstract class BaseMultipleMethodsActor extends
      *  @param methodName The specified method name.
      *  @return The list of input ports associated with the method name.
      */
+    @Override
     public List<IOPort> getMethodInputPortList(String methodName) {
         List<IOPort> result = null;
 
@@ -131,6 +134,7 @@ public abstract class BaseMultipleMethodsActor extends
      *  @param methodName The specified name of the method.
      *  @return The output port associated with this method, or null is there is none.
      */
+    @Override
     public IOPort getMethodOutputPort(String methodName) {
         if (numFireMethods() > 1) {
             for (Object outputPort : outputPortList()) {
@@ -153,6 +157,7 @@ public abstract class BaseMultipleMethodsActor extends
      *  @return the number of fire methods the actor has, which should be
      *   at least one.
      */
+    @Override
     public int numFireMethods() {
         return _methodList.size();
     }
@@ -163,11 +168,12 @@ public abstract class BaseMultipleMethodsActor extends
      *  @exception IllegalActionException If the specified fire method cannot be found
      *   in the actor.
      */
+    @Override
     public void setFireMethod(String methodName) throws IllegalActionException {
         if (!_methodList.contains(methodName)) {
             throw new IllegalActionException(this,
                     "Unrecognized fire method name: " + methodName
-                            + " for actor " + getName() + ".");
+                    + " for actor " + getName() + ".");
         } else {
             _fireMethodName = methodName;
         }

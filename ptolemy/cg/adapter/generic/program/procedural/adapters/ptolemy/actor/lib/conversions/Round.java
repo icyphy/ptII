@@ -61,6 +61,7 @@ public class Round extends NamedProgramCodeGeneratorAdapter {
      * @exception IllegalActionException If the code stream encounters an
      *  error in processing the specified code block(s).
      */
+    @Override
     protected String _generateFireCode() throws IllegalActionException {
         //StringBuffer code = new StringBuffer();
         //code.append(super._generateFireCode());
@@ -71,7 +72,7 @@ public class Round extends NamedProgramCodeGeneratorAdapter {
         String function = actor.function.getExpression();
         String codeBlockName = function.equals("ceil") ? "ceilBlock" : function
                 .equals("floor") ? "floorBlock"
-                : function.equals("round") ? "roundBlock" : "truncateBlock";
+                        : function.equals("round") ? "roundBlock" : "truncateBlock";
 
         //code.append(getTemplateParser().generateBlockCode(codeBlockName, null));
         //return code.toString();

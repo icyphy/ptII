@@ -23,7 +23,7 @@
 
  PT_COPYRIGHT_VERSION_2
  COPYRIGHTENDKEY
-*/
+ */
 package ptolemy.actor.lib.hoc.test;
 
 import java.lang.reflect.Field;
@@ -98,10 +98,10 @@ public class IterateOverArrayCloneTest {
 
         if (outerIterateOverArray.equals(clonedOuterIterateOverArray)) {
             System.err
-                    .println("Error! the outer IterateOverArray objects are equal?");
+            .println("Error! the outer IterateOverArray objects are equal?");
         } else {
             System.err
-                    .println("Passed! the outer IterateOverArray objects are not equal!");
+            .println("Passed! the outer IterateOverArray objects are not equal!");
         }
 
         if (outerIterateOverArrayWorkspace

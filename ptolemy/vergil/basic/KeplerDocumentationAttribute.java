@@ -60,7 +60,7 @@ import ptolemy.util.StringUtilities;
  @Pt.AcceptedRating Red (cxh)
  */
 public class KeplerDocumentationAttribute extends Attribute implements
-        Configurable {
+Configurable {
 
     /** Construct a Kepler documentation attribute.  */
     public KeplerDocumentationAttribute() {
@@ -127,6 +127,7 @@ public class KeplerDocumentationAttribute extends Attribute implements
      *  @param source The source of this configuration.
      *  @param text The configuration text.
      */
+    @Override
     public void configure(java.net.URL base, String source, String text) {
         this.source = source;
         this.text = text;
@@ -244,6 +245,7 @@ public class KeplerDocumentationAttribute extends Attribute implements
      *  @param name The name to use in the exported MoML.
      *  @exception IOException If an I/O error occurs.
      */
+    @Override
     public void exportMoML(Writer output, int depth, String name)
             throws IOException {
         createInstanceFromExisting(this);
@@ -316,6 +318,7 @@ public class KeplerDocumentationAttribute extends Attribute implements
     /** Get the configuration source.
      *  @return The configuration source.
      */
+    @Override
     public String getConfigureSource() {
         return source;
     }
@@ -323,6 +326,7 @@ public class KeplerDocumentationAttribute extends Attribute implements
     /** Get the configuration text.
      *  @return The configuration text
      */
+    @Override
     public String getConfigureText() {
         return text;
     }
@@ -369,7 +373,7 @@ public class KeplerDocumentationAttribute extends Attribute implements
             documentationAttribute.description = new StringAttribute(
                     documentationAttribute, "description");
             documentationAttribute.description
-                    .setExpression(_userLevelDocumentation);
+            .setExpression(_userLevelDocumentation);
 
             //add ports and params
             Enumeration ports = _portHash.keys();
@@ -497,7 +501,7 @@ public class KeplerDocumentationAttribute extends Attribute implements
      *  @see #addPort(String, String)
      */
     public String removePort(String name) throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         String retval = (String) _portHash.remove(name);
         if (retval != null) {
             Attribute attribute = getAttribute("port:" + name);
@@ -516,7 +520,7 @@ public class KeplerDocumentationAttribute extends Attribute implements
      *  @see #addProperty(String, String)
      */
     public String removeProperty(String name) throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         String retval = (String) _propertyHash.remove(name);
         if (retval != null) {
             Attribute attribute = getAttribute("prop:" + name);
@@ -630,6 +634,7 @@ public class KeplerDocumentationAttribute extends Attribute implements
      * Method for configurable.
      * In this class, we do nothing.
      */
+    @Override
     public void updateContent() throws InternalErrorException {
         //do nothing
     }
@@ -687,7 +692,7 @@ public class KeplerDocumentationAttribute extends Attribute implements
                         replaced = true;
                     }
                 } else if (attributeName.indexOf("port:") != -1) { // add to the
-                                                                   // port hash
+                    // port hash
                     String portName = attributeName.substring(
                             attributeName.indexOf(":") + 1,
                             attributeName.length());
@@ -707,7 +712,7 @@ public class KeplerDocumentationAttribute extends Attribute implements
                     }
 
                 } else if (attributeName.indexOf("prop:") != -1) { // add to the
-                                                                   // prop hash
+                    // prop hash
                     String propertyName = attributeName.substring(
                             attributeName.indexOf(":") + 1,
                             attributeName.length());
@@ -721,7 +726,7 @@ public class KeplerDocumentationAttribute extends Attribute implements
                         if (newPropDoc != null && _isEmpty(newPropDoc)
                                 && !_isEmpty(propertyDescription)) {
                             _propertyHash
-                                    .put(propertyName, propertyDescription);
+                            .put(propertyName, propertyDescription);
                             replaced = true;
                         }
                     }

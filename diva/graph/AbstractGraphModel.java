@@ -57,6 +57,7 @@ public abstract class AbstractGraphModel implements GraphModel {
      * Add a graph listener to the model.  Graph listeners are
      * notified with a GraphEvent any time the graph is modified.
      */
+    @Override
     public void addGraphListener(GraphListener l) {
         _graphListeners.add(l);
     }
@@ -71,6 +72,7 @@ public abstract class AbstractGraphModel implements GraphModel {
      * dispatched in the event thread.
      * @see #setDispatchEnabled(boolean)
      */
+    @Override
     public void dispatchGraphEvent(final GraphEvent e) {
         if (_dispatch) {
             if (SwingUtilities.isEventDispatchThread()) {
@@ -81,6 +83,7 @@ public abstract class AbstractGraphModel implements GraphModel {
                 if (_addEvent(e)) {
 
                     SwingUtilities.invokeLater(new Runnable() {
+                        @Override
                         public void run() {
                             // _getEvent will remove the event from the queue
                             // which allows new events to be added. You could argue
@@ -105,6 +108,7 @@ public abstract class AbstractGraphModel implements GraphModel {
      * The listener will no longer be notified of changes
      * to the graph.
      */
+    @Override
     public void removeGraphListener(GraphListener l) {
         _graphListeners.remove(l);
     }
@@ -118,6 +122,7 @@ public abstract class AbstractGraphModel implements GraphModel {
      *
      * @see #dispatchGraphEvent(GraphEvent)
      */
+    @Override
     public void setDispatchEnabled(boolean val) {
         _dispatch = val;
     }

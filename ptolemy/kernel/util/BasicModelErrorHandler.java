@@ -56,6 +56,7 @@ public class BasicModelErrorHandler implements ModelErrorHandler {
      *  @exception IllegalActionException The exception passed
      *   as an argument is always thrown.
      */
+    @Override
     public boolean handleModelError(NamedObj context,
             IllegalActionException exception) throws IllegalActionException {
         throw exception;

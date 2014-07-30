@@ -194,6 +194,7 @@ public class TypeLattice {
         /** Return the bottom element of the type lattice, which is UNKNOWN.
          *  @return The Type object representing UNKNOWN.
          */
+        @Override
         public Object bottom() {
             return _basicLattice.bottom();
         }
@@ -211,6 +212,7 @@ public class TypeLattice {
          *  @exception IllegalArgumentException If one or both arguments
          *   are not instances of Type.
          */
+        @Override
         public int compare(Object t1, Object t2) {
             if (!(t1 instanceof Type) || !(t2 instanceof Type)) {
                 throw new IllegalArgumentException("TheTypeLattice.compare: "
@@ -231,7 +233,7 @@ public class TypeLattice {
             // _lattice.compare() on ptolemy.data package performance... Run
             // ptolemy/data/type/test/performance.xml before and after...(zk)
             if (//false &&
-            (val = _getCachedTypeComparisonResult(key.toString())) != null) {
+                    (val = _getCachedTypeComparisonResult(key.toString())) != null) {
                 return val;
             }
 
@@ -325,6 +327,7 @@ public class TypeLattice {
          *  type lattice is infinite,
          *  @exception UnsupportedOperationException Always thrown.
          */
+        @Override
         public Object[] downSet(Object e) {
             throw new UnsupportedOperationException(
                     "TheTypeLattice.downSet(): operation not supported for "
@@ -338,6 +341,7 @@ public class TypeLattice {
          *  @exception IllegalArgumentException If one or both of the
          *   specified arguments are not instances of Type.
          */
+        @Override
         public Object greatestLowerBound(Object t1, Object t2) {
             if (!(t1 instanceof Type) || !(t2 instanceof Type)) {
                 throw new IllegalArgumentException(
@@ -450,6 +454,7 @@ public class TypeLattice {
          *  @param subset a set of Types.
          *  @return an instance of Type.
          */
+        @Override
         public Object greatestLowerBound(Set<Object> subset) {
             if (subset.size() == 0) {
                 return BaseType.GENERAL;
@@ -477,6 +482,7 @@ public class TypeLattice {
          *  @param subset a set of Types.
          *  @return A Type or null.
          */
+        @Override
         public Object greatestElement(Set<Object> subset) {
             // Compare each element with all of the other elements to search
             // for the greatest one. This is a simple, brute force algorithm,
@@ -505,6 +511,7 @@ public class TypeLattice {
         /** Return true.
          *  @return true.
          */
+        @Override
         public boolean isLattice() {
             return true;
         }
@@ -519,6 +526,7 @@ public class TypeLattice {
          *  @param subset a set of Types.
          *  @return A Type or null.
          */
+        @Override
         public Object leastElement(Set<Object> subset) {
             // Compare each element with all of the other elements to search
             // for the least one. This is a simple, brute force algorithm,
@@ -549,6 +557,7 @@ public class TypeLattice {
          *  @param t2 an instance of Type.
          *  @return an instance of Type.
          */
+        @Override
         public Object leastUpperBound(Object t1, Object t2) {
             if (!(t1 instanceof Type) || !(t2 instanceof Type)) {
                 throw new IllegalArgumentException(
@@ -589,7 +598,7 @@ public class TypeLattice {
                         // INCOMPARABLE
                         if (_basicLattice.containsNodeWeight(t2Rep)
                                 && _basicLattice
-                                        .containsNodeWeight(elementType)) {
+                                .containsNodeWeight(elementType)) {
                             // The least upper bound is an array of the LUB
                             // of t2Rep and the element type of t1.
                             return new ArrayType(
@@ -640,7 +649,7 @@ public class TypeLattice {
                         // INCOMPARABLE
                         if (_basicLattice.containsNodeWeight(t1Rep)
                                 && _basicLattice
-                                        .containsNodeWeight(elementType)) {
+                                .containsNodeWeight(elementType)) {
                             // The least upper bound is an array of the LUB
                             // of t2Rep and the element type of t1.
                             return new ArrayType(
@@ -706,6 +715,7 @@ public class TypeLattice {
          *  @param subset a set of Types.
          *  @return an instance of Type.
          */
+        @Override
         public Object leastUpperBound(Set<Object> subset) {
             if (subset.size() == 0) {
                 return BaseType.UNKNOWN;
@@ -726,6 +736,7 @@ public class TypeLattice {
         /** Return the top element of the type lattice, which is General.
          *  @return The Type object representing General.
          */
+        @Override
         public Object top() {
             return _basicLattice.top();
         }
@@ -735,6 +746,7 @@ public class TypeLattice {
          *  this operation is not supported.
          *  @exception UnsupportedOperationException Always thrown.
          */
+        @Override
         public Object[] upSet(Object e) {
             throw new UnsupportedOperationException(
                     "TheTypeLattice.upSet(): operation not supported for "
@@ -748,14 +760,14 @@ public class TypeLattice {
             _basicLattice = new DirectedAcyclicGraph();
 
             StructuredType arrayRep = new ArrayType(BaseType.UNKNOWN)
-                    ._getRepresentative();
+            ._getRepresentative();
 
             String[] labels = new String[0];
             Type[] types = new Type[0];
             StructuredType recordRep = new RecordType(labels, types)
-                    ._getRepresentative();
+            ._getRepresentative();
             StructuredType unionRep = new UnionType(labels, types)
-                    ._getRepresentative();
+            ._getRepresentative();
 
             /*StructuredType functionRep = */new ptolemy.data.type.FunctionType(
                     new ptolemy.data.type.Type[0],

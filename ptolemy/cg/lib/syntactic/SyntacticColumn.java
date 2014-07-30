@@ -24,7 +24,7 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
-*/
+ */
 
 package ptolemy.cg.lib.syntactic;
 
@@ -81,6 +81,7 @@ public class SyntacticColumn extends SyntacticTermList {
      *  Sorting a column will change its neighboring permutations. */
     public void sort() {
         final Comparator<SyntacticTerm> compareNodes = new Comparator<SyntacticTerm>() {
+            @Override
             public int compare(SyntacticTerm a, SyntacticTerm b) {
                 return a.getOrder() - b.getOrder();
             }
@@ -90,6 +91,7 @@ public class SyntacticColumn extends SyntacticTermList {
         _refreshPorts();
     }
 
+    @Override
     public String generateCode() {
         LinkedList<String> termStrs = new LinkedList();
         for (SyntacticTerm node : this) {
@@ -101,6 +103,7 @@ public class SyntacticColumn extends SyntacticTermList {
         return SyntacticGraph.stringJoin(termStrs, " | ");
     }
 
+    @Override
     public boolean hasCode() {
         return !isEmpty();
     }

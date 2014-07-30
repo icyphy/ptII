@@ -63,6 +63,7 @@ public class Ramp extends NamedProgramCodeGeneratorAdapter {
      *  the initialization code, while appending the code block or
      *  while converting the codeStream to a string.
      */
+    @Override
     public String generateInitializeCode() throws IllegalActionException {
         super.generateInitializeCode();
 
@@ -103,6 +104,7 @@ public class Ramp extends NamedProgramCodeGeneratorAdapter {
      * @exception IllegalActionException If the code stream encounters an
      *  error in processing the specified code block(s).
      */
+    @Override
     protected String _generateFireCode() throws IllegalActionException {
         super._generateFireCode();
 

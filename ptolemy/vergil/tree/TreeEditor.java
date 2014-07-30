@@ -60,6 +60,7 @@ public class TreeEditor extends JFrame {
 
         // Handle window closing by exiting the application.
         addWindowListener(new WindowAdapter() {
+            @Override
             public void windowClosing(WindowEvent e) {
                 StringUtilities.exit(0);
             }
@@ -81,7 +82,7 @@ public class TreeEditor extends JFrame {
     public static void main(String[] args) {
         if (args.length != 1) {
             System.out
-                    .println("usage : ptolemy.vergil.tree.TreeEditor file.java");
+            .println("usage : ptolemy.vergil.tree.TreeEditor file.java");
             return;
         }
 

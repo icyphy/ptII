@@ -191,6 +191,7 @@ public class JCanvas extends JComponent implements Printable {
      *  if you call setToolTipText(null), then tooltips will probably get
      *  disabled entirely!
      */
+    @Override
     public String getToolTipText(MouseEvent e) {
         LayerEvent layerevent = null;
 
@@ -214,6 +215,7 @@ public class JCanvas extends JComponent implements Printable {
      *  This must return true to allow keyboard events to be grabbed.  Return
      *  true in this class.
      */
+    @Override
     public boolean isFocusTraversable() {
         return true;
     }
@@ -229,6 +231,7 @@ public class JCanvas extends JComponent implements Printable {
      * posted by Jonathon Knudsen to the Java2D mailing list, May
      * 1998.
      */
+    @Override
     public void paint(Graphics g) {
         // It appears that Swing already sets the clip region when
         // we are ready to draw. So let's see if we are drawing the
@@ -314,6 +317,7 @@ public class JCanvas extends JComponent implements Printable {
      *   NO_SUCH_PAGE if pageIndex specifies a non-existent page.
      *  @exception PrinterException If the print job is terminated.
      */
+    @Override
     public int print(Graphics graphics, PageFormat format, int index)
             throws PrinterException {
         Dimension dimension = getSize();
@@ -381,6 +385,7 @@ public class JCanvas extends JComponent implements Printable {
      * This method overrides the inherited method to
      * delete the off-screen buffer.
      */
+    @Override
     public void setDoubleBuffered(boolean flag) {
         super.setDoubleBuffered(flag);
 
@@ -392,6 +397,7 @@ public class JCanvas extends JComponent implements Printable {
     /** Set the preferred size of this JCanvas. In addition to calling
      * the superclass method, this calls setSize() on the contained pane.
      */
+    @Override
     public void setPreferredSize(Dimension d) {
         super.setPreferredSize(d);
 
@@ -476,6 +482,7 @@ public class JCanvas extends JComponent implements Printable {
      * The mouse event is passed to the superclass' method for
      * handling.
      */
+    @Override
     protected void processMouseEvent(MouseEvent e) {
         internalProcessMouseEvent(e);
 
@@ -492,6 +499,7 @@ public class JCanvas extends JComponent implements Printable {
      * The mouse event is passed to the superclass' method for
      * handling.
      */
+    @Override
     protected void processMouseMotionEvent(MouseEvent e) {
         internalProcessMouseEvent(e);
 

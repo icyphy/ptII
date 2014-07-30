@@ -84,6 +84,7 @@ public class BasicPage implements Page {
     /**
      * Return the model of the page.
      */
+    @Override
     public Object getModel() {
         return _model;
     }
@@ -91,6 +92,7 @@ public class BasicPage implements Page {
     /**
      * Return the title of the page.
      */
+    @Override
     public String getTitle() {
         return _title;
     }
@@ -98,6 +100,7 @@ public class BasicPage implements Page {
     /**
      * Set the model of the page.
      */
+    @Override
     public void setModel(Object model) {
         _model = model;
     }
@@ -105,6 +108,7 @@ public class BasicPage implements Page {
     /**
      * Set the title of the page.
      */
+    @Override
     public void setTitle(String title) {
         _title = title;
     }

@@ -126,6 +126,7 @@ public abstract class DamageRegion {
 
         /** Apply it
          */
+        @Override
         public void apply(JCanvas canvas) {
             Rectangle2D r = _rectangle;
 
@@ -152,18 +153,21 @@ public abstract class DamageRegion {
 
         /** Get the bounds of this damage region.
          */
+        @Override
         public Rectangle2D getBounds() {
             return _rectangle;
         }
 
         /** Extend it
          */
+        @Override
         public void extend(Rectangle2D r) {
             Rectangle2D.union(_rectangle, r, _rectangle);
         }
 
         /** Describe it
          */
+        @Override
         public String toString() {
             return "Damage region: " + _rectangle;
         }

@@ -77,6 +77,7 @@ public class ASTPtLeafNode extends ASTPtRootNode {
      *  renaming from identifiers in this node to identifiers in the
      *  given node.
      */
+    @Override
     public boolean isCongruent(ASTPtRootNode node, Map renaming) {
         if (!super.isCongruent(node, renaming)) {
             return false;
@@ -115,12 +116,14 @@ public class ASTPtLeafNode extends ASTPtRootNode {
 
     /** Return a string representation
      */
+    @Override
     public String toString() {
         return super.toString() + ":" + _name;
     }
 
     /** Traverse this node with the given visitor.
      */
+    @Override
     public void visit(ParseTreeVisitor visitor) throws IllegalActionException {
         visitor.visitLeafNode(this);
     }

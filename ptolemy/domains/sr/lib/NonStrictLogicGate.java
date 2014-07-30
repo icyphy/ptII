@@ -97,9 +97,10 @@ public class NonStrictLogicGate extends LogicGate {
      *  If there is no input on any channel, then produce no output.
      *  @exception IllegalActionException If there is no director.
      */
+    @Override
     public void fire() throws IllegalActionException {
         // Don't call "super.fire();" here, the parent class is an actor.
-            
+
         BooleanToken value = _readInputs();
 
         if (value == null) {
@@ -129,6 +130,7 @@ public class NonStrictLogicGate extends LogicGate {
      *
      *  @return False.
      */
+    @Override
     public boolean isStrict() {
         return false;
     }
@@ -137,6 +139,7 @@ public class NonStrictLogicGate extends LogicGate {
      *  does not depend on the <i>input</i> in a firing.
      *  @exception IllegalActionException If the superclass throws it.
      */
+    @Override
     public void preinitialize() throws IllegalActionException {
         super.preinitialize();
         removeDependency(input, output);
@@ -150,29 +153,28 @@ public class NonStrictLogicGate extends LogicGate {
      *  @exception IllegalActionException If it fails.
      */
     protected boolean _allInputsKnown() throws IllegalActionException {
-            return input.isKnown();
+        return input.isKnown();
     }
-    
-        /** Read the inputs, and return the logic function applied to
-         *  all the are known and present.
-         *  @return The logic function applied to all available inputs.
-         *  @exception IllegalActionException If reading inputs fails.
-         */
-        protected BooleanToken _readInputs()
-                        throws IllegalActionException {
-                BooleanToken value = null;
-                for (int i = 0; i < input.getWidth(); i++) {
+
+    /** Read the inputs, and return the logic function applied to
+     *  all the are known and present.
+     *  @return The logic function applied to all available inputs.
+     *  @exception IllegalActionException If reading inputs fails.
+     */
+    protected BooleanToken _readInputs() throws IllegalActionException {
+        BooleanToken value = null;
+        for (int i = 0; i < input.getWidth(); i++) {
             if (input.isKnown(i)) {
                 if (input.hasToken(i)) {
-                        BooleanToken in = (BooleanToken) input.get(i);
+                    BooleanToken in = (BooleanToken) input.get(i);
                     if (in != null) {
                         value = _updateFunction(in, value);
                     }
                 }
             }
         }
-                return value;
-        }
+        return value;
+    }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
@@ -189,7 +191,7 @@ public class NonStrictLogicGate extends LogicGate {
 
                 // Cannot assert that the output of AND or is true unless
                 // all inputs are known, unless one of the inputs is known
-                    // to be false.
+                // to be false.
                 if (inValue.booleanValue()) {
                     outValue = null;
                 }

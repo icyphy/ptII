@@ -60,6 +60,7 @@ public class StraightConnector extends AbstractConnector {
     /** Tell the connector to reposition its label if it has one.
      * The label is currently only positioned at the center of the arc.
      */
+    @Override
     public void repositionLabel() {
         if (getLabelFigure() != null) {
             Point2D pt = new Point2D.Double(
@@ -73,6 +74,7 @@ public class StraightConnector extends AbstractConnector {
     /** Tell the connector to route itself between the
      * current positions of the head and tail sites.
      */
+    @Override
     public void route() {
         TransformContext currentContext = getTransformContext();
         Site headSite = getHeadSite();
@@ -166,6 +168,7 @@ public class StraightConnector extends AbstractConnector {
      * controllers may wish to translate connectors when the
      * sites at both ends are moved the same distance.
      */
+    @Override
     public void translate(double x, double y) {
         repaint();
 

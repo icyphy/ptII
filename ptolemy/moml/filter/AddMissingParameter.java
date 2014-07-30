@@ -63,6 +63,7 @@ public class AddMissingParameter extends MoMLFilterSimple {
      *  @param xmlFile The file currently being parsed.
      *  @return the value of the attributeValue argument.
      */
+    @Override
     public String filterAttributeValue(NamedObj container, String element,
             String attributeName, String attributeValue, String xmlFile) {
         // This method gets called many times by the MoMLParser,
@@ -138,6 +139,8 @@ public class AddMissingParameter extends MoMLFilterSimple {
      *  @deprecated Use {@link #filterEndElement(NamedObj, String, StringBuffer, String, MoMLParser)}
      * instead and pass a MoMLParser.
      */
+    @Deprecated
+    @Override
     public void filterEndElement(NamedObj container, String elementName,
             StringBuffer currentCharData, String xmlFile) throws Exception {
         filterEndElement(container, elementName, currentCharData, xmlFile,
@@ -155,9 +158,10 @@ public class AddMissingParameter extends MoMLFilterSimple {
      *  @exception Exception if there is a problem substituting
      *  in the new value.
      */
+    @Override
     public void filterEndElement(NamedObj container, String elementName,
             StringBuffer currentCharData, String xmlFile, MoMLParser parser)
-            throws Exception {
+                    throws Exception {
         //          System.out.println("AddMissingParameter: filterEndElement: "
         //                  + _currentlyProcessingActorThatMayNeedUpdating
         //                  + " elementName: " + (elementName == null? "null" : elementName)
@@ -168,7 +172,7 @@ public class AddMissingParameter extends MoMLFilterSimple {
             return;
         } else if (_addProperty != null
                 && (_addProperty.onlyAddIfPresent != null
-                        && _currentAttributeHasValue || _addProperty.onlyAddIfPresent == null)
+                && _currentAttributeHasValue || _addProperty.onlyAddIfPresent == null)
                 && elementName != null && elementName.equals("property")
                 && container != null
                 && container.getFullName().equals(_currentActorFullName)) {
@@ -205,13 +209,14 @@ public class AddMissingParameter extends MoMLFilterSimple {
     /** Return a string that describes what the filter does.
      *  @return the description of the filter that ends with a newline.
      */
+    @Override
     public String toString() {
         StringBuffer results = new StringBuffer(
                 getClass().getName()
-                        + ": If a NamedObj is missing a property, then add it.\n"
-                        + "Optionally, only add the property if another property, "
-                        + "such as _location is present.\n"
-                        + "Below are the property names, the optional property and the moml:\n");
+                + ": If a NamedObj is missing a property, then add it.\n"
+                + "Optionally, only add the property if another property, "
+                + "such as _location is present.\n"
+                + "Below are the property names, the optional property and the moml:\n");
         for (Map.Entry<String, AddProperty> entry : _namedObjsWithMissingProperties
                 .entrySet()) {
             String namedObjName = entry.getKey();
@@ -222,7 +227,7 @@ public class AddMissingParameter extends MoMLFilterSimple {
                     + "\t"
                     + (addProperty.onlyAddIfPresent == null ? "null"
                             : addProperty.onlyAddIfPresent) + "\n\t"
-                    + addProperty.moml + "\n");
+                            + addProperty.moml + "\n");
         }
         return results.toString();
     }
@@ -271,7 +276,7 @@ public class AddMissingParameter extends MoMLFilterSimple {
     private boolean _currentlyProcessingActorThatMayNeedUpdating = false;
 
     // Last "name" value seen, for use if we see a "class".
-    private  String _lastNameSeen;
+    private String _lastNameSeen;
 
     static {
         _namedObjsWithMissingProperties = new HashMap<String, AddProperty>();

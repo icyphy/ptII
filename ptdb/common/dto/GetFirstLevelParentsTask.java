@@ -25,7 +25,7 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 Ptolemy II includes the work of others, to see those copyrights, follow
 the copyright link on the splash page or see copyright.htm.
-*/
+ */
 /*
  *
  */

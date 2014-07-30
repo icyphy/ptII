@@ -78,11 +78,11 @@ public class SetProperties extends TypedAtomicActor {
 
         payload = new TypedIOPort(this, "payload", true, false);
         new SingletonParameter(payload, "_showName")
-                .setToken(BooleanToken.TRUE);
+        .setToken(BooleanToken.TRUE);
 
         properties = new TypedIOPort(this, "properties", true, false);
         new SingletonParameter(properties, "_showName")
-                .setToken(BooleanToken.TRUE);
+        .setToken(BooleanToken.TRUE);
 
         // FIXME: This should be constrained to be a record token.
         // How to do that?
@@ -123,6 +123,7 @@ public class SetProperties extends TypedAtomicActor {
      *  @exception CloneNotSupportedException If a derived class contains
      *   an attribute that cannot be cloned.
      */
+    @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         SetProperties newObject = (SetProperties) super.clone(workspace);
 
@@ -138,6 +139,7 @@ public class SetProperties extends TypedAtomicActor {
      *  @exception IllegalActionException If the specified port is not
      *   an instance of WirelessIOPort, or if there is no such port.
      */
+    @Override
     public void fire() throws IllegalActionException {
         super.fire();
 
@@ -154,7 +156,7 @@ public class SetProperties extends TypedAtomicActor {
                 if (port.isOutput() && port instanceof WirelessIOPort) {
                     // Found the port.
                     ((WirelessIOPort) port).outsideTransmitProperties
-                            .setToken(propertiesValue);
+                    .setToken(propertiesValue);
                 }
             }
         }

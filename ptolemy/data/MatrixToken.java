@@ -80,6 +80,7 @@ public abstract class MatrixToken extends Token {
      *   and this token are of incomparable types, or the operation
      *   does not make sense for the given types.
      */
+    @Override
     public Token add(Token rightArgument) throws IllegalActionException {
         // Get the corresponding element type for this matrix type,
         // and try a scalar operation.
@@ -163,6 +164,7 @@ public abstract class MatrixToken extends Token {
      *   is not of a type that can be added to this token, or
      *   the units of this token and the argument token are not the same.
      */
+    @Override
     public Token addReverse(ptolemy.data.Token leftArgument)
             throws IllegalActionException {
         // Get the corresponding element type for this matrix type,
@@ -384,6 +386,7 @@ public abstract class MatrixToken extends Token {
      *  the array is null.
      *  @deprecated Use arrayToMatrix() instead.
      */
+    @Deprecated
     public static MatrixToken create(Token[] tokens, int rows, int columns)
             throws IllegalActionException {
         return arrayToMatrix(tokens, rows, columns);
@@ -450,6 +453,7 @@ public abstract class MatrixToken extends Token {
      *  tokens of the given type cannot be added together.
      *  @deprecated Use createSequence() instead.
      */
+    @Deprecated
     public static Token[] createTokenSequence(Token start, Token increment,
             int length) throws IllegalActionException {
         return createSequence(start, increment, length);
@@ -490,7 +494,7 @@ public abstract class MatrixToken extends Token {
      */
     public static int determineSequenceLength(ScalarToken start,
             ScalarToken increment, ScalarToken end)
-            throws IllegalActionException {
+                    throws IllegalActionException {
         ScalarToken zero = (ScalarToken) increment.zero();
 
         if (increment.isEqualTo(increment.zero()).booleanValue()) {
@@ -537,6 +541,7 @@ public abstract class MatrixToken extends Token {
      *  @exception IllegalActionException If the operation
      *   does not make sense for the given types.
      */
+    @Override
     public final Token divide(Token rightArgument)
             throws IllegalActionException {
         // Get the corresponding element type for this matrix type,
@@ -622,6 +627,7 @@ public abstract class MatrixToken extends Token {
      *  this token are of incomparable types, or the operation does
      *  not make sense for the given types.
      */
+    @Override
     public Token divideReverse(Token leftArgument)
             throws IllegalActionException {
         throw new IllegalActionException(notSupportedMessage("divideReverse",
@@ -705,6 +711,7 @@ public abstract class MatrixToken extends Token {
      *  @exception IllegalActionException If the argument token is
      *   not of a type that can be compared with this token.
      */
+    @Override
     public final BooleanToken isCloseTo(Token rightArgument, double epsilon)
             throws IllegalActionException {
         // Note that if we had absolute(), subtraction() and islessThan()
@@ -753,6 +760,7 @@ public abstract class MatrixToken extends Token {
      *  supported by the derived class.
      *  @return A BooleanToken which contains the result of the test.
      */
+    @Override
     public final BooleanToken isEqualTo(Token rightArgument)
             throws IllegalActionException {
         int typeInfo = TypeLattice.compare(getType(), rightArgument);
@@ -845,6 +853,7 @@ public abstract class MatrixToken extends Token {
      *  @exception IllegalActionException If the operation
      *   does not make sense for the given types.
      */
+    @Override
     public final Token modulo(Token rightArgument)
             throws IllegalActionException {
         /*
@@ -942,6 +951,7 @@ public abstract class MatrixToken extends Token {
      *  @exception IllegalActionException If the the operation does
      *  not make sense for the given types.
      */
+    @Override
     public final Token moduloReverse(Token leftArgument)
             throws IllegalActionException {
         throw new IllegalActionException(notSupportedMessage("moduloReverse",
@@ -966,6 +976,7 @@ public abstract class MatrixToken extends Token {
      *   and this token are of incomparable types, or the operation
      *   does not make sense for the given types.
      */
+    @Override
     public final Token multiply(Token rightArgument)
             throws IllegalActionException {
         // MatrixType type = (MatrixType)getType();
@@ -1050,6 +1061,7 @@ public abstract class MatrixToken extends Token {
      *  @exception IllegalActionException If the argument token
      *   is not of a type that can be multiplied by this token.
      */
+    @Override
     public final Token multiplyReverse(Token leftArgument)
             throws IllegalActionException {
         // Get the corresponding element type for this matrix type,
@@ -1205,6 +1217,7 @@ public abstract class MatrixToken extends Token {
      *   and this token are of incomparable types, or the operation
      *   does not make sense for the given types.
      */
+    @Override
     public final Token subtract(Token rightArgument)
             throws IllegalActionException {
         // Get the corresponding element type for this matrix type,
@@ -1289,6 +1302,7 @@ public abstract class MatrixToken extends Token {
      *  of a type that can be subtracted to this token, or the units
      *  of this token and the argument token are not the same.
      */
+    @Override
     public final Token subtractReverse(Token leftArgument)
             throws IllegalActionException {
         // Get the corresponding element type for this matrix type,
@@ -1453,6 +1467,7 @@ public abstract class MatrixToken extends Token {
      *  using its toString method.
      *  @return A String representing a matrix similar to Matlab.
      */
+    @Override
     public String toString() {
         int rowCount = getRowCount();
         int columnCount = getColumnCount();

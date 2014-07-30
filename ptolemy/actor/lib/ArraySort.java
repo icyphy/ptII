@@ -112,6 +112,7 @@ public class ArraySort extends Transformer {
      *  @exception CloneNotSupportedException If a derived class contains
      *   an attribute that cannot be cloned.
      */
+    @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         ArraySort newObject = (ArraySort) super.clone(workspace);
         newObject.input.setTypeAtLeast(ArrayType.ARRAY_BOTTOM);
@@ -128,6 +129,7 @@ public class ArraySort extends Transformer {
      *  @exception IllegalActionException If there is no director, or
      *   if sorting is not supported for the input array.
      */
+    @Override
     public void fire() throws IllegalActionException {
         super.fire();
         if (input.hasToken(0)) {

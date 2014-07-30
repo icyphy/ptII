@@ -44,7 +44,7 @@ import ptolemy.homer.kernel.PositionableElement;
  *  @Pt.AcceptedRating Red (ahuseyno)
  */
 public abstract class NamedObjectWidget extends Widget implements
-        NamedObjectWidgetInterface {
+NamedObjectWidgetInterface {
 
     /** Create new instance of the widget.
      *  @param scene The scene of the widget.
@@ -62,6 +62,7 @@ public abstract class NamedObjectWidget extends Widget implements
     /** Return positionable element that the instance is visualizing.
      *  @return The positionable element.
      */
+    @Override
     public PositionableElement getPositionableElement() {
         return _element;
     }

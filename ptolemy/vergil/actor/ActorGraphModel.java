@@ -143,6 +143,7 @@ public class ActorGraphModel extends AbstractBasicGraphModel {
      *
      *  @param change The change that has been executed.
      */
+    @Override
     public void changeExecuted(ChangeRequest change) {
         super.changeExecuted(change);
 
@@ -164,6 +165,7 @@ public class ActorGraphModel extends AbstractBasicGraphModel {
      *   e.g. the view that made this call.
      *  @param edge The edge.
      */
+    @Override
     public void disconnectEdge(Object eventSource, Object edge) {
         if (!(getEdgeModel(edge) instanceof MutableEdgeModel)) {
             return;
@@ -196,6 +198,7 @@ public class ActorGraphModel extends AbstractBasicGraphModel {
      *  @param composite A composite object.
      *  @return A model of a composite node.
      */
+    @Override
     public CompositeModel getCompositeModel(Object composite) {
         CompositeModel result = super.getCompositeModel(composite);
 
@@ -212,6 +215,7 @@ public class ActorGraphModel extends AbstractBasicGraphModel {
      *  @param edge The edge.
      *  @return A valid MoML string.
      */
+    @Override
     public String getDeleteEdgeMoML(Object edge) {
         // Note: the abstraction here is rather broken.  Ideally this
         // should look like getDeleteNodeMoML()
@@ -228,6 +232,7 @@ public class ActorGraphModel extends AbstractBasicGraphModel {
      *  @param node The node.
      *  @return A valid MoML string.
      */
+    @Override
     public String getDeleteNodeMoML(Object node) {
         if (!(getNodeModel(node) instanceof NamedObjNodeModel)) {
             return "";
@@ -243,6 +248,7 @@ public class ActorGraphModel extends AbstractBasicGraphModel {
      *  @return An instance of LinkModel if the object is a Link.
      *   Otherwise return null.
      */
+    @Override
     public EdgeModel getEdgeModel(Object edge) {
         if (edge instanceof Link) {
             return _linkModel;
@@ -270,6 +276,7 @@ public class ActorGraphModel extends AbstractBasicGraphModel {
      *  @return The node model for the specified node, or null if there
      *   is none.
      */
+    @Override
     public NodeModel getNodeModel(Object node) {
         if (node instanceof Port) {
             return _portModel;
@@ -298,6 +305,7 @@ public class ActorGraphModel extends AbstractBasicGraphModel {
      *  @return The semantic object associated with this element, or null
      *   if the object is not recognized.
      */
+    @Override
     public Object getSemanticObject(Object element) {
         if (element instanceof Vertex) {
             return ((Vertex) element).getContainer();
@@ -314,6 +322,7 @@ public class ActorGraphModel extends AbstractBasicGraphModel {
      *   e.g. the view that made this call.
      *  @param node The node.
      */
+    @Override
     public void removeNode(Object eventSource, Object node) {
         if (!(getNodeModel(node) instanceof NamedObjNodeModel)) {
             return;
@@ -391,6 +400,7 @@ public class ActorGraphModel extends AbstractBasicGraphModel {
      *  @return True if the model was successfully updated, or false if
      *  further change requests were queued.
      */
+    @Override
     protected boolean _update() {
         // Go through all the links that currently exist, and remove
         // any that don't have both ends in the model.
@@ -757,6 +767,7 @@ public class ActorGraphModel extends AbstractBasicGraphModel {
          *  @param node The node.
          *  @return A valid MoML string.
          */
+        @Override
         public String getDeleteNodeMoML(Object node) {
             Locatable location = (Locatable) node;
             ComponentPort port = (ComponentPort) location.getContainer();
@@ -770,6 +781,7 @@ public class ActorGraphModel extends AbstractBasicGraphModel {
          *   the root of this graph model.
          *  @return The root of this graph model.
          */
+        @Override
         public Object getParent(Object node) {
             return ((Locatable) node).getContainer().getContainer();
         }
@@ -784,6 +796,7 @@ public class ActorGraphModel extends AbstractBasicGraphModel {
          *  @return An iterator of Link objects, all of which have
          *   the given node as their head.
          */
+        @Override
         public Iterator inEdges(Object node) {
             Locatable location = (Locatable) node;
             //ComponentPort port = (ComponentPort) location.getContainer();
@@ -815,6 +828,7 @@ public class ActorGraphModel extends AbstractBasicGraphModel {
          *  @return An iterator of Link objects, all of which have their
          *   tail as the given node.
          */
+        @Override
         public Iterator outEdges(Object node) {
             Locatable location = (Locatable) node;
             //ComponentPort port = (ComponentPort) location.getContainer();
@@ -841,6 +855,7 @@ public class ActorGraphModel extends AbstractBasicGraphModel {
          *   e.g. the view that made this call.
          *  @param node The node.
          */
+        @Override
         public void removeNode(final Object eventSource, Object node) {
             Locatable location = (Locatable) node;
             ComponentPort port = (ComponentPort) location.getContainer();
@@ -862,7 +877,7 @@ public class ActorGraphModel extends AbstractBasicGraphModel {
     /** The model for an icon that contains ports.
      */
     public static class IconModel extends NamedObjNodeModel implements
-            CompositeNodeModel {
+    CompositeNodeModel {
         // FindBugs suggests making this class static so as to decrease
         // the size of instances and avoid dangling references.
 
@@ -872,6 +887,7 @@ public class ActorGraphModel extends AbstractBasicGraphModel {
          *  @param node The node.
          *  @return A valid MoML string.
          */
+        @Override
         public String getDeleteNodeMoML(Object node) {
             NamedObj deleteObj = ((Locatable) node).getContainer();
             String moml = "<deleteEntity name=\"" + deleteObj.getName()
@@ -884,6 +900,7 @@ public class ActorGraphModel extends AbstractBasicGraphModel {
          *  @param composite The composite, which is assumed to be an icon.
          *  @return The number of ports contained in the container of the icon.
          */
+        @Override
         public int getNodeCount(Object composite) {
             Locatable location = (Locatable) composite;
             return ((ComponentEntity) location.getContainer()).portList()
@@ -895,6 +912,7 @@ public class ActorGraphModel extends AbstractBasicGraphModel {
          *  @return The container of the Icon's container, which should be
          *   the root of the graph.
          */
+        @Override
         public Object getParent(Object node) {
             return ((Locatable) node).getContainer().getContainer();
         }
@@ -903,6 +921,7 @@ public class ActorGraphModel extends AbstractBasicGraphModel {
          *  @param node The node, which is assumed to be an icon.
          *  @return A NullIterator, since no edges are attached to icons.
          */
+        @Override
         public Iterator inEdges(Object node) {
             return new NullIterator();
         }
@@ -916,6 +935,7 @@ public class ActorGraphModel extends AbstractBasicGraphModel {
          *  @return An iterator over the ports contained in the container
          *   of the icon.
          */
+        @Override
         public Iterator nodes(Object composite) {
             Locatable location = (Locatable) composite;
             Nameable container = location.getContainer();
@@ -938,6 +958,7 @@ public class ActorGraphModel extends AbstractBasicGraphModel {
          * @return An iterator of nodes that should be rendered before
          * the edges.
          */
+        @Override
         public Iterator nodesBeforeEdges(Object composite) {
             return nodes(composite);
         }
@@ -952,6 +973,7 @@ public class ActorGraphModel extends AbstractBasicGraphModel {
          * @return An iterator of nodes that should be rendered after
          * the edges.
          */
+        @Override
         public Iterator nodesAfterEdges(Object composite) {
             return new NullIterator();
         }
@@ -960,6 +982,7 @@ public class ActorGraphModel extends AbstractBasicGraphModel {
          *  @param node The node, which is assumed to be an icon.
          *  @return A NullIterator, since no edges are attached to icons.
          */
+        @Override
         public Iterator outEdges(Object node) {
             return new NullIterator();
         }
@@ -970,6 +993,7 @@ public class ActorGraphModel extends AbstractBasicGraphModel {
          *   e.g. the view that made this call.
          *  @param node The node.
          */
+        @Override
         public void removeNode(final Object eventSource, Object node) {
             NamedObj deleteObj = ((Locatable) node).getContainer();
 
@@ -1004,6 +1028,7 @@ public class ActorGraphModel extends AbstractBasicGraphModel {
          *  @return True if the node is a port or a vertex, or a location
          *  representing a port.
          */
+        @Override
         public boolean acceptHead(Object edge, Object node) {
             if (node instanceof Port || node instanceof Vertex
                     || node instanceof Locatable
@@ -1021,6 +1046,7 @@ public class ActorGraphModel extends AbstractBasicGraphModel {
          *  @return True if the node is a port or a vertex, or a location
          *  representing a port.
          */
+        @Override
         public boolean acceptTail(Object edge, Object node) {
             if (node instanceof Port || node instanceof Vertex
                     || node instanceof Locatable
@@ -1089,8 +1115,8 @@ public class ActorGraphModel extends AbstractBasicGraphModel {
                 int headRelationIndex = oldHeadSemantic instanceof IOPort ? IOPort
                         .getRelationIndex((IOPort) oldHeadSemantic, relation,
                                 headIsActorPort) : -1;
-                _linkWithRelation(moml, failmoml, container, oldHeadSemantic,
-                        headRelationIndex, newRelationName);
+                        _linkWithRelation(moml, failmoml, container, oldHeadSemantic,
+                                headRelationIndex, newRelationName);
             }
 
             NamedObj oldTailSemantic = (NamedObj) getSemanticObject(oldTail);
@@ -1100,8 +1126,8 @@ public class ActorGraphModel extends AbstractBasicGraphModel {
                         .getRelationIndex((IOPort) oldTailSemantic, relation,
                                 tailIsActorPort) : -1;
 
-                _linkWithRelation(moml, failmoml, container, oldTailSemantic,
-                        tailRelationIndex, newRelationName);
+                        _linkWithRelation(moml, failmoml, container, oldTailSemantic,
+                                tailRelationIndex, newRelationName);
             }
         }
 
@@ -1138,6 +1164,7 @@ public class ActorGraphModel extends AbstractBasicGraphModel {
          *  @return The node that is the head of the specified edge.
          *  @see #setHead(Object, Object)
          */
+        @Override
         public Object getHead(Object edge) {
             return ((Link) edge).getHead();
         }
@@ -1147,6 +1174,7 @@ public class ActorGraphModel extends AbstractBasicGraphModel {
          *  @return The node that is the tail of the specified edge.
          *  @see #setTail(Object, Object)
          */
+        @Override
         public Object getTail(Object edge) {
             return ((Link) edge).getTail();
         }
@@ -1157,6 +1185,7 @@ public class ActorGraphModel extends AbstractBasicGraphModel {
          *  @param edge The edge, which is assumed to be a link.
          *  @return False.
          */
+        @Override
         public boolean isDirected(Object edge) {
             return false;
         }
@@ -1169,6 +1198,7 @@ public class ActorGraphModel extends AbstractBasicGraphModel {
          *  be a location representing a port, a port or a vertex.
          *  @see #getHead(Object)
          */
+        @Override
         public void setHead(final Object edge, final Object newLinkHead) {
             _setHeadOrTail(edge, newLinkHead, true);
         }
@@ -1182,6 +1212,7 @@ public class ActorGraphModel extends AbstractBasicGraphModel {
          *  vertex.
          *  @see #getTail(Object)
          */
+        @Override
         public void setTail(final Object edge, final Object newLinkTail) {
             _setHeadOrTail(edge, newLinkTail, false);
         }
@@ -1230,7 +1261,7 @@ public class ActorGraphModel extends AbstractBasicGraphModel {
          */
         private String _linkMoML(NamedObj container, StringBuffer moml,
                 StringBuffer failmoml, NamedObj linkHead, NamedObj linkTail)
-                throws Exception {
+                        throws Exception {
             if (linkHead != null && linkTail != null) {
                 NamedObj head = (NamedObj) getSemanticObject(linkHead);
                 NamedObj tail = (NamedObj) getSemanticObject(linkTail);
@@ -1445,37 +1476,37 @@ public class ActorGraphModel extends AbstractBasicGraphModel {
                         boolean headIsActorPort = oldHeadSemantic != null ? oldLink
                                 .getHead() instanceof IOPort
                                 : linkTail instanceof IOPort;
-                        boolean tailIsActorPort = oldLink.getTail() instanceof IOPort;
+                                boolean tailIsActorPort = oldLink.getTail() instanceof IOPort;
 
-                        final NamedObj toplevel = getPtolemyModel();
-                        String newRelationName = toplevel
-                                .uniqueName("relation");
+                                final NamedObj toplevel = getPtolemyModel();
+                                String newRelationName = toplevel
+                                        .uniqueName("relation");
 
-                        double[] newLocation = _getNewLocation(
-                                oldHeadSemantic != null ? oldHeadSemantic
-                                        : (NamedObj) getSemanticObject(linkTail),
-                                oldTailSemantic, headIsActorPort,
-                                tailIsActorPort);
+                                double[] newLocation = _getNewLocation(
+                                        oldHeadSemantic != null ? oldHeadSemantic
+                                                : (NamedObj) getSemanticObject(linkTail),
+                                                oldTailSemantic, headIsActorPort,
+                                                tailIsActorPort);
 
-                        relationName = newRelationName;
+                                relationName = newRelationName;
 
-                        addNewVertexToLink(moml, failmoml, container, oldLink,
-                                newRelationName, newLocation[0], newLocation[1]);
+                                addNewVertexToLink(moml, failmoml, container, oldLink,
+                                        newRelationName, newLocation[0], newLocation[1]);
 
-                        if (isHead) {
-                            _linkWithRelation(moml, failmoml, container,
-                                    (NamedObj) getSemanticObject(linkTail), -1,
-                                    newRelationName);
-                        } else {
-                            _linkWithRelation(moml, failmoml, container,
-                                    (NamedObj) getSemanticObject(linkHead), -1,
-                                    newRelationName);
-                        }
+                                if (isHead) {
+                                    _linkWithRelation(moml, failmoml, container,
+                                            (NamedObj) getSemanticObject(linkTail), -1,
+                                            newRelationName);
+                                } else {
+                                    _linkWithRelation(moml, failmoml, container,
+                                            (NamedObj) getSemanticObject(linkHead), -1,
+                                            newRelationName);
+                                }
 
-                        failmoml.append("<deleteRelation name=\""
-                                + newRelationName + "\"/>\n");
+                                failmoml.append("<deleteRelation name=\""
+                                        + newRelationName + "\"/>\n");
 
-                        appendedMoML = true;
+                                appendedMoML = true;
                     }
                 } else {
                     // create moml to make the new links.
@@ -1514,6 +1545,7 @@ public class ActorGraphModel extends AbstractBasicGraphModel {
             // it.
             MoMLChangeRequest request = new MoMLChangeRequest(
                     ActorGraphModel.this, container, moml.toString()) {
+                @Override
                 protected void _execute() throws Exception {
                     // If nonEmptyMoML is false, then the MoML code is empty.
                     // Do not execute it, as this will put spurious empty
@@ -1661,6 +1693,7 @@ public class ActorGraphModel extends AbstractBasicGraphModel {
              *  @param change  The change request.
              *  @param exception The exception.
              */
+            @Override
             public void changeFailed(ChangeRequest change, Exception exception) {
                 // If we fail here, then we remove the link entirely.
                 _linkSet.remove(_link);
@@ -1682,6 +1715,7 @@ public class ActorGraphModel extends AbstractBasicGraphModel {
             /** Called after the change has been executed.
              *  @param change The change request.
              */
+            @Override
             public void changeExecuted(ChangeRequest change) {
                 // modification to the linkset HAS to occur in the swing
                 // thread.
@@ -1719,6 +1753,7 @@ public class ActorGraphModel extends AbstractBasicGraphModel {
          *  @param node The node.
          *  @return A valid MoML string.
          */
+        @Override
         public String getDeleteNodeMoML(Object node) {
             NamedObj deleteObj = ((Locatable) node).getContainer();
             NamedObj container = deleteObj.getContainer();
@@ -1734,6 +1769,7 @@ public class ActorGraphModel extends AbstractBasicGraphModel {
          *  @return The (presumably unique) icon contained in the port's
          *   container.
          */
+        @Override
         public Object getParent(Object node) {
             ComponentPort port = (ComponentPort) node;
             Entity entity = (Entity) port.getContainer();
@@ -1770,6 +1806,7 @@ public class ActorGraphModel extends AbstractBasicGraphModel {
          *  @return An iterator of Link objects, all of which have their
          *   head as the given node.
          */
+        @Override
         public Iterator inEdges(Object node) {
             ComponentPort port = (ComponentPort) node;
 
@@ -1798,6 +1835,7 @@ public class ActorGraphModel extends AbstractBasicGraphModel {
          *  @return An iterator of Link objects, all of which have their
          *   tail as the given node.
          */
+        @Override
         public Iterator outEdges(Object node) {
             ComponentPort port = (ComponentPort) node;
 
@@ -1823,6 +1861,7 @@ public class ActorGraphModel extends AbstractBasicGraphModel {
          *   e.g. the view that made this call.
          *  @param node The node.
          */
+        @Override
         public void removeNode(final Object eventSource, Object node) {
             ComponentPort port = (ComponentPort) node;
             NamedObj container = port.getContainer();
@@ -1848,6 +1887,7 @@ public class ActorGraphModel extends AbstractBasicGraphModel {
          *  @param node The node.
          *  @return A valid MoML string.
          */
+        @Override
         public String getDeleteNodeMoML(Object node) {
             ComponentRelation deleteObj = (ComponentRelation) ((Vertex) node)
                     .getContainer();
@@ -1861,6 +1901,7 @@ public class ActorGraphModel extends AbstractBasicGraphModel {
          *  @return The container of the vertex's container, which is
          *   presumably the root of the graph model.
          */
+        @Override
         public Object getParent(Object node) {
             // Undo: If we use automatic layout, then we need to check to
             // see if the container is null here.
@@ -1881,6 +1922,7 @@ public class ActorGraphModel extends AbstractBasicGraphModel {
          *  @return An iterator of Link objects, all of which have their
          *   head as the given node.
          */
+        @Override
         public Iterator inEdges(Object node) {
             Vertex vertex = (Vertex) node;
 
@@ -1909,6 +1951,7 @@ public class ActorGraphModel extends AbstractBasicGraphModel {
          *  @return An iterator of Link objects, all of which have their
          *   tail as the given node.
          */
+        @Override
         public Iterator outEdges(Object node) {
             Vertex vertex = (Vertex) node;
 
@@ -1935,6 +1978,7 @@ public class ActorGraphModel extends AbstractBasicGraphModel {
          *   e.g. the view that made this call.
          *  @param node The node.
          */
+        @Override
         public void removeNode(final Object eventSource, Object node) {
             ComponentRelation relation = (ComponentRelation) ((Vertex) node)
                     .getContainer();

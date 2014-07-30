@@ -70,6 +70,7 @@ public class ConceptToken extends ObjectToken implements PartiallyOrderedToken {
     /** Return the type of this token.
      *  @return ConceptType.CONCEPT
      */
+    @Override
     public ConceptType getType() {
         return ConceptType.CONCEPT;
     }
@@ -81,6 +82,7 @@ public class ConceptToken extends ObjectToken implements PartiallyOrderedToken {
      *  @param rightArgument The argument.
      *  @return true if the values are the same Concept, or false otherwise.
      */
+    @Override
     public BooleanToken isEqualTo(Token rightArgument) {
         if (this != null
                 && rightArgument != null
@@ -106,6 +108,7 @@ public class ConceptToken extends ObjectToken implements PartiallyOrderedToken {
      *    token are of incomparable types, or are concepts from
      *    different ontologies.
      */
+    @Override
     public BooleanToken isLessThan(PartiallyOrderedToken rightArgument)
             throws IllegalActionException {
         if (!(rightArgument instanceof ConceptToken)) {
@@ -128,6 +131,7 @@ public class ConceptToken extends ObjectToken implements PartiallyOrderedToken {
     /** Return the value of this concept token as a string.
      *  @return The name of the concept contained by this token as a string value.
      */
+    @Override
     public String toString() {
         if (conceptValue() != null) {
             return conceptValue().toString();

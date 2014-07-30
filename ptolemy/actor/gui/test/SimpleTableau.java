@@ -71,6 +71,7 @@ public class SimpleTableau extends Tableau {
     /** Close this tableau.
      *  @return Always return true.
      */
+    @Override
     public boolean close() {
         Effigy effigy = (Effigy) getContainer();
         System.out.println("SimpleTableau.close(): effigy: " + effigy);
@@ -121,6 +122,7 @@ public class SimpleTableau extends Tableau {
          *  @exception Exception If the factory should be able to create a
          *   tableau for the effigy, but something goes wrong.
          */
+        @Override
         public Tableau createTableau(Effigy effigy) throws Exception {
             if (effigy instanceof PtolemyEffigy) {
                 // First see whether the effigy already contains a SimpleTableau.
@@ -179,6 +181,7 @@ public class SimpleTableau extends Tableau {
          *  @exception Exception If the factory should be able to create a
          *   tableau for the effigy, but something goes wrong.
          */
+        @Override
         public Tableau createTableau(Effigy effigy) throws Exception {
             return super.createTableau(effigy.masterEffigy());
         }

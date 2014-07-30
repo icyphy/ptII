@@ -96,6 +96,7 @@ public class DBActorController extends ActorController {
      * The hot key to open the referenced model from the database is Ctrl-D.
      *  @param jgraph The JGraph to which hot keys are to be added.
      */
+    @Override
     public void addHotKeys(JGraph jgraph) {
         super.addHotKeys(jgraph);
         GUIUtilities.addHotKey(jgraph, _openActorFromDB);
@@ -107,6 +108,7 @@ public class DBActorController extends ActorController {
     /** Draw the node at its location. This overrides the base class
      *  to highlight the actor to indicate that it is a DB reference actor.
      */
+    @Override
     protected Figure _renderNode(Object node) {
         Figure nf = super._renderNode(node);
 
@@ -157,17 +159,18 @@ public class DBActorController extends ActorController {
      *  An action to open a model from the database.
      */
     @SuppressWarnings("serial")
-        private class OpenActorFromDB extends FigureAction {
+    private class OpenActorFromDB extends FigureAction {
         public OpenActorFromDB() {
             super("Open Actor From Database");
 
             if (!StringUtilities.inApplet()) {
                 putValue(GUIUtilities.ACCELERATOR_KEY, KeyStroke.getKeyStroke(
                         KeyEvent.VK_D, Toolkit.getDefaultToolkit()
-                                .getMenuShortcutKeyMask()));
+                        .getMenuShortcutKeyMask()));
             }
         }
 
+        @Override
         public void actionPerformed(ActionEvent e) {
             if (_configuration == null) {
                 MessageHandler.error("Cannot open an actor "
@@ -193,7 +196,7 @@ public class DBActorController extends ActorController {
                                         ((StringParameter) object
                                                 .getAttribute(XMLDBModel.DB_MODEL_ID_ATTR))
                                                 .getExpression(),
-                                        _configuration);
+                                                _configuration);
 
                         if (effigy != null) {
                             effigy.showTableaux();

@@ -72,8 +72,9 @@ public class Mutate {
     public void insertClock() {
         // Create an anonymous inner class
         ChangeRequest change = new ChangeRequest(_top, "test2") {
+            @Override
             public void _execute() throws IllegalActionException,
-                    NameDuplicationException {
+            NameDuplicationException {
                 _clock.output.unlinkAll();
                 _rec.input.unlinkAll();
 

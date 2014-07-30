@@ -24,7 +24,7 @@
  PT_COPYRIGHT_VERSION_2
  COPYRIGHTENDKEY
 
-*/
+ */
 package ptolemy.vergil.gt;
 
 import ptolemy.kernel.util.IllegalActionException;
@@ -58,7 +58,7 @@ public class TransformEventController extends StateController {
         super(controller, access);
 
         _menuFactory
-                .addMenuItemFactory(new MenuActionFactory(_lookInsideAction));
+        .addMenuItemFactory(new MenuActionFactory(_lookInsideAction));
     }
 
     public static class Factory extends NodeControllerFactory {
@@ -83,6 +83,7 @@ public class TransformEventController extends StateController {
          *  @param controller The associated graph controller.
          *  @return A new node controller.
          */
+        @Override
         public NamedObjController create(GraphController controller) {
             return new TransformEventController(controller);
         }

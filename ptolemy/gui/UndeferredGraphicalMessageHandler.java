@@ -74,7 +74,8 @@ import ptolemy.util.StringUtilities;
  @Pt.ProposedRating Yellow (eal)
  @Pt.AcceptedRating Red (reviewmoderator)
  */
-public class UndeferredGraphicalMessageHandler extends ptolemy.util.MessageHandler {
+public class UndeferredGraphicalMessageHandler extends
+        ptolemy.util.MessageHandler {
 
     /** Get the component set by a call to setContext(), or null if none.
      *  @see #setContext(Component)
@@ -131,6 +132,7 @@ public class UndeferredGraphicalMessageHandler extends ptolemy.util.MessageHandl
      *  called outside that thread.
      *  @param info The message.
      */
+    @Override
     protected void _error(String info) {
         Object[] message = new Object[1];
         String string = info;
@@ -157,6 +159,7 @@ public class UndeferredGraphicalMessageHandler extends ptolemy.util.MessageHandl
      *  @param throwable The throwable.
      *  @see ptolemy.util.CancelException
      */
+    @Override
     protected void _error(String info, Throwable throwable) {
         if (throwable instanceof ptolemy.util.CancelException) {
             return;
@@ -206,6 +209,7 @@ public class UndeferredGraphicalMessageHandler extends ptolemy.util.MessageHandl
      *  called outside that thread.
      *  @param info The message.
      */
+    @Override
     protected void _message(String info) {
         Object[] message = new Object[1];
         message[0] = _messageComponent(StringUtilities.ellipsis(info,
@@ -242,6 +246,7 @@ public class UndeferredGraphicalMessageHandler extends ptolemy.util.MessageHandl
      *  @exception ptolemy.util.CancelException If the user clicks on the
      * "Cancel" button.
      */
+    @Override
     protected void _warning(String info) throws CancelException {
         Object[] options = { "OK", "Cancel" };
         Object[] message = new Object[1];
@@ -282,6 +287,7 @@ public class UndeferredGraphicalMessageHandler extends ptolemy.util.MessageHandl
      *  @exception ptolemy.util.CancelException If the user clicks on the
      *  "Cancel" button.
      */
+    @Override
     protected void _warning(String info, Throwable throwable)
             throws CancelException {
         Object[] message = new Object[1];
@@ -315,6 +321,7 @@ public class UndeferredGraphicalMessageHandler extends ptolemy.util.MessageHandl
      *  @param question The yes/no question.
      *  @return True if the answer is yes.
      */
+    @Override
     protected boolean _yesNoQuestion(String question) {
         Object[] message = new Object[1];
         message[0] = _messageComponent(StringUtilities.ellipsis(question,
@@ -345,9 +352,10 @@ public class UndeferredGraphicalMessageHandler extends ptolemy.util.MessageHandl
      *  @return True if the answer is the first option, false if it is the second.
      *  @exception ptolemy.util.CancelException If the user selects the third option.
      */
+    @Override
     protected boolean _yesNoCancelQuestion(String question, String trueOption,
             String falseOption, String exceptionOption)
-            throws ptolemy.util.CancelException {
+                    throws ptolemy.util.CancelException {
         Object[] message = new Object[1];
         message[0] = _messageComponent(StringUtilities.ellipsis(question,
                 StringUtilities.ELLIPSIS_LENGTH_LONG));

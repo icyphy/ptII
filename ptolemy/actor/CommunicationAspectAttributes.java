@@ -93,6 +93,7 @@ public class CommunicationAspectAttributes extends ExecutionAttributes {
      *  @exception IllegalActionException If the parameter set is not valid.
      *  Not thrown in this class.
      */
+    @Override
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         IOPort port = (IOPort) getContainer();
@@ -111,7 +112,7 @@ public class CommunicationAspectAttributes extends ExecutionAttributes {
     }
 
     private void _init() throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         sequenceNumber = new Parameter(this, "sequenceNumber", new IntToken(-1));
         sequenceNumber.setPersistent(true);
         sequenceNumber.setVisibility(Settable.EXPERT);

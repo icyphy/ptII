@@ -116,6 +116,7 @@ public class TaskCoordinator extends Transformer {
      *  @exception IllegalActionException If any of the above actions
      *  failted.
      */
+    @Override
     public void initialize() throws IllegalActionException {
         super.initialize();
         _clientRefs.clear();
@@ -149,6 +150,7 @@ public class TaskCoordinator extends Transformer {
      *  action fails due to network problems, transaction errors,
      *  or any remote exceptions.
      */
+    @Override
     public void fire() throws IllegalActionException {
         super.fire();
         for (int i = 0; i < input.getWidth(); i++) {
@@ -230,6 +232,7 @@ public class TaskCoordinator extends Transformer {
     /** Request that execution of the current iteration stop as soon
      *  as possible. Wake up the waiting if there is any.
      */
+    @Override
     public void stop() {
         if (_fireIsWaiting) {
             synchronized (_lock1) {
@@ -302,7 +305,7 @@ public class TaskCoordinator extends Transformer {
     ///////////////////////////////////////////////////////////////////
     ////                         inner class                       ////
     @SuppressWarnings("serial")
-        private class Coordinator extends _CoordinatorImplBase {
+    private class Coordinator extends _CoordinatorImplBase {
         /**
          * Construct a Coordinator.
          */
@@ -310,6 +313,7 @@ public class TaskCoordinator extends Transformer {
             super();
         }
 
+        @Override
         public void register(String clientName, Client clientRef)
                 throws CorbaIllegalActionException {
             synchronized (_lock2) {
@@ -326,6 +330,7 @@ public class TaskCoordinator extends Transformer {
             }
         }
 
+        @Override
         public void result(String clientName, Any data)
                 throws CorbaIllegalActionException {
             //FIXME: this only works for string result data.
@@ -361,6 +366,7 @@ public class TaskCoordinator extends Transformer {
             }
         }
 
+        @Override
         public void unregister(String clientName)
                 throws CorbaIllegalActionException {
             synchronized (_lock2) {

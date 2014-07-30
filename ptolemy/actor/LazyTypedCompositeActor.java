@@ -144,7 +144,7 @@ import ptolemy.util.StringUtilities;
  @Pt.AcceptedRating Red (cxh)
  */
 public class LazyTypedCompositeActor extends TypedCompositeActor implements
-        LazyComposite {
+LazyComposite {
 
     // FIXME: Have to do ports and relations.  Only done attributes and entities.
 
@@ -218,6 +218,7 @@ public class LazyTypedCompositeActor extends TypedCompositeActor implements
      *   or if one of the attributes cannot be cloned.
      *  @return A new LazyTypedCompositeActor.
      */
+    @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         // To prevent populating during cloning, we set a flag.
         _cloning = true;
@@ -253,6 +254,7 @@ public class LazyTypedCompositeActor extends TypedCompositeActor implements
      *  @param text Configuration information given as text, or null if
      *   none.
      */
+    @Override
     public void configure(URL base, String source, String text) {
         _base = base;
         _configureSource = source;
@@ -271,6 +273,7 @@ public class LazyTypedCompositeActor extends TypedCompositeActor implements
      *  This method is read-synchronized on the workspace.
      *  @return An unmodifiable list of ComponentEntity objects.
      */
+    @Override
     public List classDefinitionList() {
         populate();
         return super.classDefinitionList();
@@ -288,6 +291,7 @@ public class LazyTypedCompositeActor extends TypedCompositeActor implements
      *  @see ptolemy.kernel.CompositeEntity#isAtomic()
      *  @return True if this contains the argument, directly or indirectly.
      */
+    @Override
     public boolean deepContains(NamedObj inside) {
         // If this has not yet been populated, then it can't possibly contain
         // the proposed object because the proposed object would not
@@ -311,6 +315,7 @@ public class LazyTypedCompositeActor extends TypedCompositeActor implements
      *  This method is read-synchronized on the workspace.
      *  @return A list of opaque ComponentEntity objects.
      */
+    @Override
     public List deepEntityList() {
         populate();
         return super.deepEntityList();
@@ -325,6 +330,7 @@ public class LazyTypedCompositeActor extends TypedCompositeActor implements
      *  This method is read-synchronized on the workspace.
      *  @return A set of ComponentRelation objects.
      */
+    @Override
     public Set<ComponentRelation> deepRelationSet() {
         populate();
         return super.deepRelationSet();
@@ -339,6 +345,7 @@ public class LazyTypedCompositeActor extends TypedCompositeActor implements
      *  @see #classDefinitionList()
      *  @see #allAtomicEntityList()
      */
+    @Override
     public List deepOpaqueEntityList() {
         populate();
         return super.deepOpaqueEntityList();
@@ -355,6 +362,7 @@ public class LazyTypedCompositeActor extends TypedCompositeActor implements
      *  This method is read-synchronized on the workspace.
      *  @return An unmodifiable list of ComponentEntity objects.
      */
+    @Override
     public List entityList() {
         populate();
         return super.entityList();
@@ -369,6 +377,7 @@ public class LazyTypedCompositeActor extends TypedCompositeActor implements
      *  @return A list of instances of specified class.
      *  @see #classDefinitionList()
      */
+    @Override
     public List entityList(Class filter) {
         populate();
         return super.entityList(filter);
@@ -382,6 +391,7 @@ public class LazyTypedCompositeActor extends TypedCompositeActor implements
      *  @param name The name to use in the exported MoML.
      *  @exception IOException If an I/O error occurs.
      */
+    @Override
     public void exportMoML(Writer output, int depth, String name)
             throws IOException {
         populate();
@@ -399,6 +409,7 @@ public class LazyTypedCompositeActor extends TypedCompositeActor implements
      *  @param name The name of the desired entity.
      *  @return An entity with the specified name, or null if none exists.
      */
+    @Override
     public ComponentEntity getEntity(String name) {
         populate();
         return super.getEntity(name);
@@ -410,6 +421,7 @@ public class LazyTypedCompositeActor extends TypedCompositeActor implements
      *  no source has been used to configure this object, or null if no
      *  external source need be used to configure this object.
      */
+    @Override
     public String getConfigureSource() {
         return _configureSource;
     }
@@ -422,6 +434,7 @@ public class LazyTypedCompositeActor extends TypedCompositeActor implements
      *  has been used to configure this object, or null if no
      *  configuration string need be used to configure this object.
      */
+    @Override
     public String getConfigureText() {
         try {
             StringWriter stringWriter = new StringWriter();
@@ -461,6 +474,7 @@ public class LazyTypedCompositeActor extends TypedCompositeActor implements
      *  @param name The name of the desired relation.
      *  @return A relation with the specified name, or null if none exists.
      */
+    @Override
     public ComponentRelation getRelation(String name) {
         populate();
         return super.getRelation(name);
@@ -474,6 +488,7 @@ public class LazyTypedCompositeActor extends TypedCompositeActor implements
      *  are class definitions.
      *  @return a List of all atomic entities in the model.
      */
+    @Override
     public List lazyAllAtomicEntityList() {
         LinkedList result = new LinkedList();
         // We don't use an Iterator here so that we can modify the list
@@ -495,6 +510,7 @@ public class LazyTypedCompositeActor extends TypedCompositeActor implements
      *  definitions whose instantiation is deferred.
      *  @return A list of ComponentEntity objects.
      */
+    @Override
     public List lazyAllCompositeEntityList() {
         try {
             _workspace.getReadAccess();
@@ -521,6 +537,7 @@ public class LazyTypedCompositeActor extends TypedCompositeActor implements
      *  definitions whose instantiation is deferred.
      *  @return A list of ComponentEntity objects.
      */
+    @Override
     public List lazyClassDefinitionList() {
         return super.classDefinitionList();
     }
@@ -535,6 +552,7 @@ public class LazyTypedCompositeActor extends TypedCompositeActor implements
      *  @return An iterator over instances of NamedObj contained by this
      *   object.
      */
+    @Override
     public Iterator lazyContainedObjectsIterator() {
         return new ContainedObjectsIterator();
     }
@@ -544,6 +562,7 @@ public class LazyTypedCompositeActor extends TypedCompositeActor implements
      *  whose instantiation is deferred.
      *  @return A list of ComponentEntity objects.
      */
+    @Override
     public List lazyDeepEntityList() {
         try {
             _workspace.getReadAccess();
@@ -571,6 +590,7 @@ public class LazyTypedCompositeActor extends TypedCompositeActor implements
      *  entities whose instantiation is deferred.
      *  @return A list of ComponentEntity objects.
      */
+    @Override
     public List lazyEntityList() {
         return super.entityList();
     }
@@ -581,6 +601,7 @@ public class LazyTypedCompositeActor extends TypedCompositeActor implements
      *  relations whose instantiation is deferred.
      *  @return A list of ComponentEntity objects.
      */
+    @Override
     public List lazyRelationList() {
         return super.relationList();
     }
@@ -599,6 +620,7 @@ public class LazyTypedCompositeActor extends TypedCompositeActor implements
      *  @exception NameDuplicationException If name collides with a name
      *   already in the container.
      */
+    @Override
     public ComponentRelation newRelation(String name)
             throws NameDuplicationException {
         populate();
@@ -612,6 +634,7 @@ public class LazyTypedCompositeActor extends TypedCompositeActor implements
      *  This method is read-synchronized on the workspace.
      *  @return The number of entities.
      */
+    @Override
     public int numberOfEntities() {
         populate();
         return super.numberOfEntities();
@@ -625,6 +648,7 @@ public class LazyTypedCompositeActor extends TypedCompositeActor implements
      *  This method is read-synchronized on the workspace.
      *  @return The number of relations.
      */
+    @Override
     public int numberOfRelations() {
         populate();
         return super.numberOfRelations();
@@ -640,6 +664,7 @@ public class LazyTypedCompositeActor extends TypedCompositeActor implements
      *  @exception InvalidStateException If the source cannot be read, or if
      *   an exception is thrown parsing its MoML data.
      */
+    @Override
     public void populate() throws InvalidStateException {
         boolean resetPolulatingValue = false;
         try {
@@ -664,7 +689,7 @@ public class LazyTypedCompositeActor extends TypedCompositeActor implements
                 if (prototypes == null || prototypes.size() == 0) {
                     throw new InternalErrorException(
                             getFullName()
-                                    + ": Object says it is derived but reports no prototypes!");
+                            + ": Object says it is derived but reports no prototypes!");
                 }
                 // The prototype must have the same class as this.
                 LazyTypedCompositeActor prototype = (LazyTypedCompositeActor) prototypes
@@ -786,6 +811,7 @@ public class LazyTypedCompositeActor extends TypedCompositeActor implements
      *  This method is read-synchronized on the workspace.
      *  @return An unmodifiable list of ComponentRelation objects.
      */
+    @Override
     public List relationList() {
         populate();
         return super.relationList();
@@ -800,6 +826,7 @@ public class LazyTypedCompositeActor extends TypedCompositeActor implements
      *  @see #isClassDefinition()
      *  @see ptolemy.kernel.util.Instantiable
      */
+    @Override
     public void setClassDefinition(boolean isClass)
             throws IllegalActionException {
         try {
@@ -838,6 +865,7 @@ public class LazyTypedCompositeActor extends TypedCompositeActor implements
      *  @param prefix A prefix for the name.
      *  @return A unique name.
      */
+    @Override
     public String uniqueName(String prefix) {
         populate();
         return super.uniqueName(prefix);
@@ -865,6 +893,7 @@ public class LazyTypedCompositeActor extends TypedCompositeActor implements
      *  @exception NameDuplicationException If the name collides with a name
      *  already in the entity.
      */
+    @Override
     protected void _addEntity(ComponentEntity entity)
             throws IllegalActionException, NameDuplicationException {
         populate();
@@ -885,6 +914,7 @@ public class LazyTypedCompositeActor extends TypedCompositeActor implements
      *  @exception NameDuplicationException If the name collides with a name
      *   already on the contained relations list.
      */
+    @Override
     protected void _addRelation(ComponentRelation relation)
             throws IllegalActionException, NameDuplicationException {
         populate();
@@ -900,6 +930,7 @@ public class LazyTypedCompositeActor extends TypedCompositeActor implements
      *  @param depth The depth in the hierarchy, to determine indenting.
      *  @exception IOException If an I/O error occurs.
      */
+    @Override
     protected void _exportMoMLContents(Writer output, int depth)
             throws IOException {
         populate();
@@ -993,6 +1024,7 @@ public class LazyTypedCompositeActor extends TypedCompositeActor implements
      *  This ensures that the entity being removed now actually exists.
      *  @param entity The entity to remove.
      */
+    @Override
     protected void _removeEntity(ComponentEntity entity) {
         populate();
         super._removeEntity(entity);
@@ -1009,6 +1041,7 @@ public class LazyTypedCompositeActor extends TypedCompositeActor implements
      *  This ensures that the relation being removed now actually exists.
      *  @param relation The relation to remove.
      */
+    @Override
     protected void _removeRelation(ComponentRelation relation) {
         populate();
         super._removeRelation(relation);
@@ -1048,7 +1081,7 @@ public class LazyTypedCompositeActor extends TypedCompositeActor implements
      *  then relations.
      */
     protected class ContainedObjectsIterator extends
-            Entity.ContainedObjectsIterator {
+    Entity.ContainedObjectsIterator {
         /** Create an iterator over all the contained objects, which
          *  for CompositeEntities are attributes, ports, classes
          *  entities, and relations.
@@ -1065,6 +1098,7 @@ public class LazyTypedCompositeActor extends TypedCompositeActor implements
          *  attributes, ports, classes, entities, or relations.
          *  @return True if there are more elements.
          */
+        @Override
         public boolean hasNext() {
             if (super.hasNext()) {
                 return true;
@@ -1082,6 +1116,7 @@ public class LazyTypedCompositeActor extends TypedCompositeActor implements
          *  In this base class, this is the next attribute or port.
          *  @return The next attribute or port.
          */
+        @Override
         public Object next() {
             if (super.hasNext()) {
                 return super.next();
@@ -1101,6 +1136,7 @@ public class LazyTypedCompositeActor extends TypedCompositeActor implements
         /** The remove() method is not supported because is is not
          *  supported in NamedObj.ContainedObjectsIterator.remove().
          */
+        @Override
         public void remove() {
             super.remove();
         }

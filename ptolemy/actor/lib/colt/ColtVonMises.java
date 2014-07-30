@@ -76,7 +76,7 @@ public class ColtVonMises extends ColtRandomSource {
         freedom = new PortParameter(this, "freedom", new DoubleToken(1.0));
         freedom.setTypeEquals(BaseType.DOUBLE);
         new SingletonParameter(freedom.getPort(), "_showName")
-                .setToken(BooleanToken.TRUE);
+        .setToken(BooleanToken.TRUE);
 
         freedom.moveToFirst();
     }
@@ -97,6 +97,7 @@ public class ColtVonMises extends ColtRandomSource {
      *  remain constant throughout an iteration.
      *  @exception IllegalActionException If there is no director.
      */
+    @Override
     public void fire() throws IllegalActionException {
         freedom.update();
         super.fire();
@@ -108,6 +109,7 @@ public class ColtVonMises extends ColtRandomSource {
 
     /** Method that is called after _randomNumberGenerator is changed.
      */
+    @Override
     protected void _createdNewRandomNumberGenerator() {
         _generator = new VonMises(1.0, _randomNumberGenerator);
     }
@@ -115,6 +117,7 @@ public class ColtVonMises extends ColtRandomSource {
     /** Generate a new random number.
      *  @exception IllegalActionException If parameter values are incorrect.
      */
+    @Override
     protected void _generateRandomNumber() throws IllegalActionException {
         double freedomValue = ((DoubleToken) freedom.getToken()).doubleValue();
 

@@ -122,6 +122,7 @@ public class ObjectToken extends Token {
      *  @return True if the argument is an instance of ObjectToken and its
      *   contained object is equal to the object contained in this token.
      */
+    @Override
     public boolean equals(Object object) {
         if (object == null) {
             return false;
@@ -144,6 +145,7 @@ public class ObjectToken extends Token {
     /** Return the type of this token.
      *  @return BaseType.OBJECT
      */
+    @Override
     public Type getType() {
         if (_class == null) {
             return BaseType.OBJECT;
@@ -176,6 +178,7 @@ public class ObjectToken extends Token {
      *  hash code of the contained object.
      *  @return A hash code value for this token.
      */
+    @Override
     public int hashCode() {
         if (_value == null && _class == null) {
             return 0;
@@ -210,6 +213,7 @@ public class ObjectToken extends Token {
      *   this token are of incomparable types, or the operation does
      *   not make sense for the given types.
      */
+    @Override
     public final BooleanToken isCloseTo(Token token, double epsilon)
             throws IllegalActionException {
         // FIXME: This is copied from AbstractConvertibleToken.
@@ -248,6 +252,7 @@ public class ObjectToken extends Token {
      *  @param rightArgument The argument.
      *  @return true if the values are the same Java object, or false otherwise.
      */
+    @Override
     public BooleanToken isEqualTo(Token rightArgument) {
         if (rightArgument instanceof ObjectToken
                 && ((ObjectToken) rightArgument)._value == _value) {
@@ -283,6 +288,7 @@ public class ObjectToken extends Token {
      *  that this syntax is not currently parsable by the expression language.
      *  @return A String representing the object.
      */
+    @Override
     public String toString() {
         String value = _value == null ? "null" : _value.toString();
         // String clazz = _class == null ? "" : ": " + _class.getName();

@@ -136,6 +136,7 @@ public class PNProcessEvent {
     /** Return the string value of this event.
      *  @return The string value of this event.
      */
+    @Override
     public String toString() {
         String result;
         String state = null;

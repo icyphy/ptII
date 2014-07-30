@@ -24,7 +24,7 @@
  PT_COPYRIGHT_VERSION_2
  COPYRIGHTENDKEY
 
-*/
+ */
 package ptolemy.actor.gt.data;
 
 import java.util.Collections;
@@ -52,6 +52,7 @@ public class SequentialTwoWayHashMap<K, V> extends TwoWayHashMap<K, V> {
 
     /** Clear this two-way hash map.
      */
+    @Override
     public void clear() {
         super.clear();
         _keySequence.clear();
@@ -61,6 +62,7 @@ public class SequentialTwoWayHashMap<K, V> extends TwoWayHashMap<K, V> {
      *
      *  @return The clone.
      */
+    @Override
     public Object clone() {
         SequentialTwoWayHashMap result = (SequentialTwoWayHashMap) super
                 .clone();
@@ -83,6 +85,7 @@ public class SequentialTwoWayHashMap<K, V> extends TwoWayHashMap<K, V> {
      *  @return The value previously associated with the key in this two-way
      *   hash map.
      */
+    @Override
     public V put(K key, V value) {
         if (value != null && !super.containsKey(key)) {
             _keySequence.add(key);
@@ -95,6 +98,7 @@ public class SequentialTwoWayHashMap<K, V> extends TwoWayHashMap<K, V> {
      *  @param key The key.
      *  @return The removed value, or null if not found.
      */
+    @Override
     public V remove(Object key) {
         V oldValue = super.remove(key);
         if (oldValue != null) {

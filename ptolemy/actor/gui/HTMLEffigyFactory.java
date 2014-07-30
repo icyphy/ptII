@@ -77,6 +77,7 @@ public class HTMLEffigyFactory extends EffigyFactory {
      *  There is no point in creating an unmodifiable blank HTML page.
      *  @return False.
      */
+    @Override
     public boolean canCreateBlankEffigy() {
         return false;
     }
@@ -96,6 +97,7 @@ public class HTMLEffigyFactory extends EffigyFactory {
      *  @exception Exception If the URL cannot be read, or if the data
      *   is malformed in some way.
      */
+    @Override
     public Effigy createEffigy(CompositeEntity container, URL base, URL input)
             throws Exception {
         if (input == null) {

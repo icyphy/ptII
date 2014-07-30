@@ -102,6 +102,7 @@ public class StringToKeyValue extends TypedAtomicActor {
      *  @exception CloneNotSupportedException If a derived class contains
      *   an attribute that cannot be cloned.
      */
+    @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         StringToKeyValue newObject = (StringToKeyValue) super.clone(workspace);
         return newObject;
@@ -111,6 +112,7 @@ public class StringToKeyValue extends TypedAtomicActor {
      *  version of the token.
      *  @exception IllegalActionException If there is no director.
      */
+    @Override
     public void fire() throws IllegalActionException {
         super.fire();
         String keyString = ((StringToken) input.get(0)).stringValue();
@@ -130,6 +132,7 @@ public class StringToKeyValue extends TypedAtomicActor {
      *  what the superclass returns (presumably true).
      *  @exception IllegalActionException If there is no director.
      */
+    @Override
     public boolean prefire() throws IllegalActionException {
         if (!input.hasToken(0, 2)) {
             return false;

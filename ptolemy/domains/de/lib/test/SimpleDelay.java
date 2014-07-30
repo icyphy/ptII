@@ -38,6 +38,7 @@ import ptolemy.kernel.util.NameDuplicationException;
  @Pt.ProposedRating Yellow (hyzheng)
  @Pt.AcceptedRating Red (cxh)
  */
+@Deprecated
 public class SimpleDelay extends TimedDelay {
     public SimpleDelay(TypedCompositeActor container, String name)
             throws NameDuplicationException, IllegalActionException {

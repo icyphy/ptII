@@ -10,7 +10,7 @@ package ptolemy.domains.openmodelica.lib.omc.corba;
 /* A CORBA compatible interface for omc.
  */
 public final class OmcCommunicationHolder implements
-        org.omg.CORBA.portable.Streamable {
+org.omg.CORBA.portable.Streamable {
 
     public OmcCommunicationHolder() {
     }
@@ -21,14 +21,17 @@ public final class OmcCommunicationHolder implements
 
     public OmcCommunication value = null;
 
+    @Override
     public void _read(org.omg.CORBA.portable.InputStream i) {
         value = OmcCommunicationHelper.read(i);
     }
 
+    @Override
     public org.omg.CORBA.TypeCode _type() {
         return OmcCommunicationHelper.type();
     }
 
+    @Override
     public void _write(org.omg.CORBA.portable.OutputStream o) {
         OmcCommunicationHelper.write(o, value);
     }

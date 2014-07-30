@@ -51,7 +51,7 @@ import ptolemy.graph.analysis.analyzer.SelfLoopAnalyzer;
  @version $Id$
  */
 public class SelfLoopStrategy extends CachedStrategy implements
-        SelfLoopAnalyzer {
+SelfLoopAnalyzer {
     /** Construct an instance of this strategy for a given graph.
      *
      *  @param graph The given graph.
@@ -67,6 +67,7 @@ public class SelfLoopStrategy extends CachedStrategy implements
      *  a collection. Each element of the collection is an {@link Edge}.
      *  @return The self-loop edges.
      */
+    @Override
     public List edges() {
         return (List) _result();
     }
@@ -75,6 +76,7 @@ public class SelfLoopStrategy extends CachedStrategy implements
      *
      *  @return Return a description of the analyzer..
      */
+    @Override
     public String toString() {
         return "Ordinary Self-loop analyzer.\n";
     }
@@ -83,6 +85,7 @@ public class SelfLoopStrategy extends CachedStrategy implements
      *
      *  @return True since this strategy is always valid.
      */
+    @Override
     public boolean valid() {
         return true;
     }
@@ -95,6 +98,7 @@ public class SelfLoopStrategy extends CachedStrategy implements
      *
      *  @return The self-loop edges.
      */
+    @Override
     protected Object _compute() {
         ArrayList selfLoopEdges = new ArrayList();
         Iterator edges = graph().edges().iterator();

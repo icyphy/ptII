@@ -63,6 +63,7 @@ public class StringCompare extends NamedProgramCodeGeneratorAdapter {
      * @exception IllegalActionException If the code stream encounters an
      *  error in processing the specified code block(s).
      */
+    @Override
     protected String _generateFireCode() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
         code.append(super._generateFireCode());
@@ -75,7 +76,7 @@ public class StringCompare extends NamedProgramCodeGeneratorAdapter {
         String codeBlockName = ignoreCase
                 + (function.equals("equals") ? "EqualsBlock" : function
                         .equals("startsWith") ? "StartsWithBlock" : function
-                        .equals("endsWith") ? "EndsWithBlock" : "ContainsBlock");
+                                .equals("endsWith") ? "EndsWithBlock" : "ContainsBlock");
         ArrayList<String> args = new ArrayList<String>();
         code.append(getTemplateParser().generateBlockCode(codeBlockName, args));
 

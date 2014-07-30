@@ -56,7 +56,7 @@ import ptserver.data.TokenParser;
  *  @Pt.AcceptedRating Red (ahuseyno)
  */
 public class CommunicationTokenHandler implements
-        TokenHandler<CommunicationToken> {
+TokenHandler<CommunicationToken> {
 
     /** Serialize the communication token to the binary according to the format defined in {@link CommunicationTokenHandler}.
      *  @param token Token to be converted to bytes.
@@ -65,6 +65,7 @@ public class CommunicationTokenHandler implements
      *  @exception IllegalActionException if there is the state becomes inconsistent
      *  @see ptserver.data.handler.TokenHandler#convertToBytes(ptolemy.data.Token, java.io.DataOutputStream)
      */
+    @Override
     public void convertToBytes(CommunicationToken token,
             DataOutputStream outputStream) throws IOException,
             IllegalActionException {
@@ -99,6 +100,7 @@ public class CommunicationTokenHandler implements
      *  @exception IllegalActionException Not thrown in this class.
      *  @see ptserver.data.handler.TokenHandler#convertToToken(java.io.DataInputStream, Class)
      */
+    @Override
     public CommunicationToken convertToToken(DataInputStream inputStream,
             Class<? extends CommunicationToken> tokenType) throws IOException,
             IllegalActionException {

@@ -41,10 +41,12 @@ public class UnitIterator extends IteratorAdapter {
         _item = item;
     }
 
+    @Override
     public boolean hasNext() {
         return _item != null;
     }
 
+    @Override
     public Object next() {
         if (_item != null) {
             Object item = _item;

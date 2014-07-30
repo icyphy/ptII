@@ -82,7 +82,7 @@ public abstract class PortDirector extends Director {
      *   and there are variables that depend on this one.
      */
     abstract public Boolean allowDynamicMultiportReference()
-            throws IllegalActionException; 
+            throws IllegalActionException;
 
     /**
      * Generate sanitized name for the given named object. Remove all
@@ -123,9 +123,10 @@ public abstract class PortDirector extends Director {
      *  @exception IllegalActionException If the parameter or port does not
      *   exist or does not have a value.
      */
+    @Override
     public String getReference(String name, boolean isWrite,
             NamedProgramCodeGeneratorAdapter target)
-            throws IllegalActionException {
+                    throws IllegalActionException {
         name = processCode(name);
         String castType = _getCastType(name);
         String refName = _getRefName(name);
@@ -192,7 +193,7 @@ public abstract class PortDirector extends Director {
     public String getReference(TypedIOPort port, String[] channelAndOffset,
             boolean forComposite, boolean isWrite,
             NamedProgramCodeGeneratorAdapter target)
-            throws IllegalActionException {
+                    throws IllegalActionException {
         boolean dynamicReferencesAllowed = allowDynamicMultiportReference();
 
         int channelNumber = 0;
@@ -289,7 +290,7 @@ public abstract class PortDirector extends Director {
                                     .max(DFUtilities
                                             .getTokenProductionRate(sourceChannel.port),
                                             DFUtilities
-                                                    .getTokenConsumptionRate(sourceChannel.port));
+                                            .getTokenConsumptionRate(sourceChannel.port));
                             if (rate > 1
                                     && channelAndOffset[1].trim().length() > 0) {
                                 result.append("[" + channelAndOffset[1].trim()
@@ -379,11 +380,11 @@ public abstract class PortDirector extends Director {
     }
 
     /** Return true if the port is a remote port.
-    *  @param forComposite True if this for a composite.
-    *  @param port The port to check.
-    *  @return True if the port is an output and not a composite
-    *  or the port is an input and this is for a composite.
-    */
+     *  @param forComposite True if this for a composite.
+     *  @param port The port to check.
+     *  @return True if the port is an output and not a composite
+     *  or the port is an input and this is for a composite.
+     */
     static protected boolean _checkRemote(boolean forComposite, IOPort port) {
         return port.isOutput() && !forComposite || port.isInput()
                 && forComposite;
@@ -399,9 +400,9 @@ public abstract class PortDirector extends Director {
      *  dynamically in the generated code.
      * @exception IllegalActionException If thrown while generating the port name.
      */
-    protected /*static*/ String _generateChannelOffset(TypedIOPort port,
+    protected/*static*/String _generateChannelOffset(TypedIOPort port,
             boolean isWrite, String channelString)
-            throws IllegalActionException {
+                    throws IllegalActionException {
         // By default, return the channel offset for the first channel.
         if (channelString.equals("")) {
             channelString = "0";
@@ -425,7 +426,7 @@ public abstract class PortDirector extends Director {
      */
     protected String _generatePortReference(TypedIOPort port,
             String[] channelAndOffset, boolean isWrite)
-            throws IllegalActionException {
+                    throws IllegalActionException {
 
         StringBuffer result = new StringBuffer();
         String channelOffset;
@@ -520,7 +521,7 @@ public abstract class PortDirector extends Director {
      * @return The string which represents the reference
      * @exception IllegalActionException If the reference cannot
      * be found or is an invalid cast type.
-     */   
+     */
     protected String _getRefName(String name) throws IllegalActionException {
         StringTokenizer tokenizer = new StringTokenizer(name, "#,", true);
 
@@ -562,6 +563,7 @@ public abstract class PortDirector extends Director {
         }
         return null;
     }
+
     ///////////////////////////////////////////////////////////////////
     ////                         protected members                 ////
 

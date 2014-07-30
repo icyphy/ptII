@@ -55,6 +55,7 @@ import ptolemy.vergil.modal.FSMGraphTableau;
  @Pt.ProposedRating Red (patrickj)
  @Pt.AcceptedRating Red ()
  */
+@Deprecated
 public class FmvAutomatonGraphTableau extends FSMGraphTableau {
     /** Create a new editor tableau with the specified container
      *  and name, with no default library.
@@ -95,6 +96,7 @@ public class FmvAutomatonGraphTableau extends FSMGraphTableau {
      *  @param defaultLibrary The default library, or null to not specify
      *   one.
      */
+    @Override
     public void createGraphFrame(CompositeEntity model,
             LibraryAttribute defaultLibrary) {
         FmvAutomatonGraphFrame frame = new FmvAutomatonGraphFrame(model, this,
@@ -143,6 +145,7 @@ public class FmvAutomatonGraphTableau extends FSMGraphTableau {
          *  @exception Exception If an exception occurs when creating the
          *  tableau.
          */
+        @Override
         public Tableau createTableau(Effigy proxy) throws Exception {
             if (!(proxy instanceof PtolemyEffigy)) {
                 return null;

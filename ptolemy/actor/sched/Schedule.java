@@ -150,6 +150,7 @@ public class Schedule extends ScheduleElement {
      *  @exception InternalErrorException If the schedule contains
      *   any leaf nodes that are not an instance of Firing.
      */
+    @Override
     public Iterator actorIterator() {
         return new ActorIterator();
     }
@@ -206,6 +207,7 @@ public class Schedule extends ScheduleElement {
      *   underlying schedule structure is modified while the iterator
      *   is active.
      */
+    @Override
     public Iterator firingIterator() {
         return new FiringIterator(this);
     }
@@ -259,6 +261,7 @@ public class Schedule extends ScheduleElement {
     /**
      * Output a string representation of this Schedule.
      */
+    @Override
     public String toString() {
         StringBuffer result = new StringBuffer("Execute Schedule{\n");
 
@@ -301,6 +304,7 @@ public class Schedule extends ScheduleElement {
          *   was created.
          *  @return true if the iterator has more elements.
          */
+        @Override
         public boolean hasNext() {
             if (_currentVersion != _getVersion()) {
                 throw new ConcurrentModificationException(
@@ -359,6 +363,7 @@ public class Schedule extends ScheduleElement {
          *   was created.
          *  @return the next object in the iteration.
          */
+        @Override
         public Object next() throws NoSuchElementException {
             if (!hasNext()) {
                 throw new NoSuchElementException("No element to return.");
@@ -375,6 +380,7 @@ public class Schedule extends ScheduleElement {
          *  doesn't make sense to remove an actor from an actor invocation
          *  sequence anyway.
          */
+        @Override
         public void remove() {
             throw new UnsupportedOperationException();
         }
@@ -435,6 +441,7 @@ public class Schedule extends ScheduleElement {
          *   any leaf nodes that are not an instance of Firing.
          *  @return true if the iterator has more elements.
          */
+        @Override
         public boolean hasNext() {
             // This code may look messy, but it simply walks the
             // schedule tree.
@@ -488,6 +495,7 @@ public class Schedule extends ScheduleElement {
          *   was created.
          *  @return the next object in the iteration.
          */
+        @Override
         public Object next() throws NoSuchElementException {
             if (!hasNext()) {
                 throw new NoSuchElementException("No element to return.");
@@ -506,6 +514,7 @@ public class Schedule extends ScheduleElement {
          *  between the firing in a firing iterator and a firing in the
          *  schedule.
          */
+        @Override
         public void remove() {
             throw new UnsupportedOperationException();
         }

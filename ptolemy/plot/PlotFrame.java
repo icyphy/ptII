@@ -105,7 +105,7 @@ import ptolemy.util.StringUtilities;
  */
 @SuppressWarnings("serial")
 public class PlotFrame extends JFrame implements PropertyChangeListener,
-        ImageExportable {
+ImageExportable {
     /** Construct a plot frame with a default title and by default contains
      *  an instance of Plot. After constructing this, it is necessary
      *  to call setVisible(true) to make the plot appear.
@@ -235,6 +235,7 @@ public class PlotFrame extends JFrame implements PropertyChangeListener,
     /** Respond to dialog action.
      *  @param event The dialog event.
      */
+    @Override
     public void propertyChange(PropertyChangeEvent event) {
         // System.out.println(event.paramString());
         Object source = event.getSource();
@@ -269,6 +270,7 @@ public class PlotFrame extends JFrame implements PropertyChangeListener,
      *  @param visible True if the Frame is to be visible, false
      *  if it is not visible.
      */
+    @Override
     public void setVisible(boolean visible) {
         super.setVisible(visible);
         _editMenu.setBackground(_menubar.getBackground());
@@ -285,6 +287,7 @@ public class PlotFrame extends JFrame implements PropertyChangeListener,
      *  @exception IOException If writing to the stream fails.
      *  @exception PrinterException  If the specified format is not supported.
      */
+    @Override
     public void writeImage(OutputStream stream, String format)
             throws PrinterException, IOException {
         if (plot == null) {
@@ -326,18 +329,18 @@ public class PlotFrame extends JFrame implements PropertyChangeListener,
     /** Display a menu that describes the Plotter. */
     protected void _about() {
         JOptionPane
-                .showMessageDialog(
-                        this,
-                        "PlotFrame class\n"
-                                + "By: Edward A. Lee "
-                                + "and Christopher Brooks\n"
-                                + "Version "
-                                + PlotBox.PTPLOT_RELEASE
-                                + ", Build: $Id$\n\n"
-                                + "For more information, see\n"
-                                + "http://ptolemy.eecs.berkeley.edu/java/ptplot\n\n"
-                                + "Copyright (c) 1997-2014, "
-                                + "The Regents of the University of California.",
+        .showMessageDialog(
+                this,
+                "PlotFrame class\n"
+                        + "By: Edward A. Lee "
+                        + "and Christopher Brooks\n"
+                        + "Version "
+                        + PlotBox.PTPLOT_RELEASE
+                        + ", Build: $Id$\n\n"
+                        + "For more information, see\n"
+                        + "http://ptolemy.eecs.berkeley.edu/java/ptplot\n\n"
+                        + "Copyright (c) 1997-2014, "
+                        + "The Regents of the University of California.",
                         "About Ptolemy Plot", JOptionPane.INFORMATION_MESSAGE);
     }
 
@@ -438,7 +441,7 @@ public class PlotFrame extends JFrame implements PropertyChangeListener,
                 "PlotFrame is a plot in a top-level window.\n"
                         + "  File formats understood: Ptplot ASCII.\n"
                         + "  Left mouse button: Zooming.",
-                "About Ptolemy Plot", JOptionPane.INFORMATION_MESSAGE);
+                        "About Ptolemy Plot", JOptionPane.INFORMATION_MESSAGE);
     }
 
     /** Open a new file and plot its data.
@@ -583,9 +586,9 @@ public class PlotFrame extends JFrame implements PropertyChangeListener,
         job.print(aset);
         if (foundPDFPrinter) {
             System.out
-                    .println("Plot printed from command line. "
-                            + "Under MacOSX, look for "
-                            + "~/Desktop/Java Printing.pdf");
+            .println("Plot printed from command line. "
+                    + "Under MacOSX, look for "
+                    + "~/Desktop/Java Printing.pdf");
         }
     }
 
@@ -690,6 +693,7 @@ public class PlotFrame extends JFrame implements PropertyChangeListener,
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
     class FileMenuListener implements ActionListener {
+        @Override
         public void actionPerformed(ActionEvent e) {
             JMenuItem target = (JMenuItem) e.getSource();
             String actionCommand = target.getActionCommand();
@@ -725,6 +729,7 @@ public class PlotFrame extends JFrame implements PropertyChangeListener,
     }
 
     class FormatListener implements ActionListener {
+        @Override
         public void actionPerformed(ActionEvent e) {
             try {
                 _editFormat();
@@ -748,6 +753,7 @@ public class PlotFrame extends JFrame implements PropertyChangeListener,
     }
 
     class SpecialMenuListener implements ActionListener {
+        @Override
         public void actionPerformed(ActionEvent e) {
             JMenuItem target = (JMenuItem) e.getSource();
             String actionCommand = target.getActionCommand();
@@ -793,6 +799,7 @@ public class PlotFrame extends JFrame implements PropertyChangeListener,
          *  @param fileOrDirectory The file or directory to be checked.
          *  @return true if the file is a directory, a .eps file
          */
+        @Override
         public boolean accept(File fileOrDirectory) {
             if (fileOrDirectory.isDirectory()) {
                 return true;
@@ -815,6 +822,7 @@ public class PlotFrame extends JFrame implements PropertyChangeListener,
         }
 
         /**  The description of this filter */
+        @Override
         public String getDescription() {
             return "Encapsulated PostScript (.eps) files";
         }
@@ -826,6 +834,7 @@ public class PlotFrame extends JFrame implements PropertyChangeListener,
          *  @param fileOrDirectory The file or directory to be checked.
          *  @return true if the file is a directory.
          */
+        @Override
         public boolean accept(File fileOrDirectory) {
             if (fileOrDirectory.isDirectory()) {
                 return true;
@@ -834,6 +843,7 @@ public class PlotFrame extends JFrame implements PropertyChangeListener,
         }
 
         /**  The description of this filter */
+        @Override
         public String getDescription() {
             return "Latex Export to a Folder";
         }
@@ -845,6 +855,7 @@ public class PlotFrame extends JFrame implements PropertyChangeListener,
          *  @param fileOrDirectory The file or directory to be checked.
          *  @return true if the file is a directory, a .eps file
          */
+        @Override
         public boolean accept(File fileOrDirectory) {
             if (fileOrDirectory.isDirectory()) {
                 return true;
@@ -867,6 +878,7 @@ public class PlotFrame extends JFrame implements PropertyChangeListener,
         }
 
         /**  The description of this filter */
+        @Override
         public String getDescription() {
             return "GIF Image File (.gif)";
         }
@@ -878,6 +890,7 @@ public class PlotFrame extends JFrame implements PropertyChangeListener,
          *  @param fileOrDirectory The file to be checked.
          *  @return true if the file is a directory, a .plot or a .xml file.
          */
+        @Override
         public boolean accept(File fileOrDirectory) {
             if (fileOrDirectory.isDirectory()) {
                 return true;
@@ -901,6 +914,7 @@ public class PlotFrame extends JFrame implements PropertyChangeListener,
         }
 
         /**  The description of this filter */
+        @Override
         public String getDescription() {
             return ".plt and .xml files";
         }

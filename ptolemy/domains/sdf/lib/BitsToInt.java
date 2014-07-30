@@ -97,6 +97,7 @@ public class BitsToInt extends SDFConverter {
      *  @param attribute The attribute that has changed.
      *  @exception IllegalActionException If the parameter is out of range.
      */
+    @Override
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         if (attribute == numberOfBits) {
@@ -118,6 +119,7 @@ public class BitsToInt extends SDFConverter {
      *  The last token consumed is the least significant bit
      *  @exception IllegalActionException If there is no director.
      */
+    @Override
     public final void fire() throws IllegalActionException {
         super.fire();
 

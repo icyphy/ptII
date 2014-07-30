@@ -51,7 +51,7 @@ abstract public class CorbaUnknownParamExceptionHelper {
                             .init()
                             .create_struct_tc(
                                     ptolemy.actor.corba.util.CorbaUnknownParamExceptionHelper
-                                            .id(),
+                                    .id(),
                                     "CorbaUnknownParamException", _members0);
                     __active = false;
                 }

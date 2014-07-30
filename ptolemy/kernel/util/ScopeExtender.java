@@ -53,7 +53,7 @@ public interface ScopeExtender {
      *  @return An unmodifiable list of instances of Attribute.
      */
     public List attributeList();
-    
+
     /** Expand the scope of the container by creating any required parameters.
      *  This should set the expressions of the parameters, but not evaluate
      *  them (not call validate().
@@ -69,7 +69,7 @@ public interface ScopeExtender {
      *  @return The requested attribute if it is found, null otherwise.
      */
     public Attribute getAttribute(String name);
-    
+
     /** Evaluate the expressions of all the parameters of the scope extender.
      *  @exception IllegalActionException If any required attribute cannot be
      *   created.

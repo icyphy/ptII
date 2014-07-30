@@ -105,6 +105,7 @@ public class NonStrictThreeBitAdder extends TypedAtomicActor {
      *   if there are not exactly three channels connected to the input,
      *   or if invalid inputs are received.
      */
+    @Override
     public void fire() throws IllegalActionException {
         super.fire();
         int numKnown = 0;
@@ -169,6 +170,7 @@ public class NonStrictThreeBitAdder extends TypedAtomicActor {
      *
      *  @return False.
      */
+    @Override
     public boolean isStrict() {
         return false;
     }
@@ -177,6 +179,7 @@ public class NonStrictThreeBitAdder extends TypedAtomicActor {
      *  output port does not depend on the <i>inputBits</i> port in a firing.
      *  @exception IllegalActionException If the superclass throws it.
      */
+    @Override
     public void preinitialize() throws IllegalActionException {
         super.preinitialize();
         removeDependency(inputBits, highBit);

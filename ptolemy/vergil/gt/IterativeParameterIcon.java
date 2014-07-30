@@ -24,7 +24,7 @@
  PT_COPYRIGHT_VERSION_2
  COPYRIGHTENDKEY
 
-*/
+ */
 package ptolemy.vergil.gt;
 
 import java.awt.Color;
@@ -79,6 +79,7 @@ public class IterativeParameterIcon extends XMLIcon {
         super(workspace, name);
     }
 
+    @Override
     public Figure createBackgroundFigure() {
         IterativeParameter parameter = (IterativeParameter) getContainer();
 

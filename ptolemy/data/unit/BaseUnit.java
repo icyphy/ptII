@@ -88,6 +88,7 @@ public class BaseUnit extends Parameter {
      *   violates type constraints, or if the result of evaluation is null
      *   and there are variables that depend on this one.
      */
+    @Override
     public Token getToken() throws IllegalActionException {
         Token token = super.getToken();
 

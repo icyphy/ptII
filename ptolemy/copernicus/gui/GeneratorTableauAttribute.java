@@ -102,6 +102,7 @@ public class GeneratorTableauAttribute extends GeneratorAttribute {
          *  @param object The object to configure.
          *  @param parent The parent window, or null if there is none.
          */
+        @Override
         public void createEditor(NamedObj object, Frame parent) {
             try {
                 Effigy effigy = ((TableauFrame) parent).getEffigy();

@@ -68,6 +68,7 @@ public class MenuCreator extends AbstractInteractor {
      * it on the screen.  Consume the mouse event.  If the factory is set to
      * null, then ignore the event and do not consume it.
      */
+    @Override
     public void mousePressed(LayerEvent e) {
         _doEvent(e);
     }
@@ -77,6 +78,7 @@ public class MenuCreator extends AbstractInteractor {
      * it on the screen.  Consume the mouse event.  If the factory is set to
      * null, then ignore the event and do not consume it.
      */
+    @Override
     public void mouseReleased(LayerEvent e) {
         _doEvent(e);
     }

@@ -72,6 +72,7 @@ public class ConceptAttribute extends AbstractSettableAttribute {
      *  @param listener The listener to add.
      *  @see #removeValueListener
      */
+    @Override
     public void addValueListener(ValueListener listener) {
         /* This method is required since ConceptAttribute extends AbstractSettableAttribute
          * which implements the ptolemy.kernel.util.Settable interface.
@@ -89,6 +90,7 @@ public class ConceptAttribute extends AbstractSettableAttribute {
      * @exception IOException If an I/O error occurs.
      * @see ptolemy.kernel.util.NamedObj#exportMoML(Writer, int, String)
      */
+    @Override
     public void exportMoML(Writer output, int depth, String name)
             throws IOException {
         String value = getExpression();
@@ -112,6 +114,7 @@ public class ConceptAttribute extends AbstractSettableAttribute {
      *
      * @return The name of the Concept as a string, or the empty string "".
      */
+    @Override
     public String getExpression() {
         return _concept == null ? "" : _concept.toString();
     }
@@ -135,6 +138,7 @@ public class ConceptAttribute extends AbstractSettableAttribute {
      *
      *  @see #setVisibility(Settable.Visibility)
      */
+    @Override
     public Visibility getVisibility() {
         return _visibility;
     }
@@ -146,6 +150,7 @@ public class ConceptAttribute extends AbstractSettableAttribute {
      * @param listener The listener to remove.
      * @see #addValueListener
      */
+    @Override
     public void removeValueListener(ValueListener listener) {
         /* This method is required since ConceptAttribute extends AbstractSettableAttribute
          * which implements the ptolemy.kernel.util.Settable interface.
@@ -173,6 +178,7 @@ public class ConceptAttribute extends AbstractSettableAttribute {
      *  @param visibility The visibility of this Settable.
      *  @see #getVisibility()
      */
+    @Override
     public void setVisibility(Visibility visibility) {
         _visibility = visibility;
     }
@@ -189,6 +195,7 @@ public class ConceptAttribute extends AbstractSettableAttribute {
      * method in the {@linkplain ptolemy.kernel.util.Settable Settable}
      * interface, but this is not ever thrown here.
      */
+    @Override
     public Collection<?> validate() throws IllegalActionException {
         // not relevant
         return null;

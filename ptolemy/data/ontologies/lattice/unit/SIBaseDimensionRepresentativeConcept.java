@@ -60,9 +60,9 @@ import ptolemy.kernel.util.StringAttribute;
 @since Ptolemy II 10.0
 @Pt.ProposedRating Red (cshelton)
 @Pt.AcceptedRating Red (cshelton)
-*/
+ */
 public class SIBaseDimensionRepresentativeConcept extends
-        BaseDimensionRepresentativeConcept {
+BaseDimensionRepresentativeConcept {
 
     /** Create a new SIBaseUnitRepresentativeConcept with the specified name and
      *  ontology.
@@ -111,6 +111,7 @@ public class SIBaseDimensionRepresentativeConcept extends
      *  @exception IllegalActionException Thrown if there is a problem creating
      *   the SIPrefixUnitConversionInfo parameters.
      */
+    @Override
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
 

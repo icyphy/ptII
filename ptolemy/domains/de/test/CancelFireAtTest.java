@@ -79,12 +79,13 @@ public class CancelFireAtTest extends TypedAtomicActor {
      *  @exception IllegalActionException If sending the
      *   outputs fails.
      */
+    @Override
     public synchronized void fire() throws IllegalActionException {
         // The methods of the servlet are invoked in another
         // thread, so we synchronize on this actor for mutual exclusion.
         super.fire();
         out.send(0, BooleanToken.TRUE);
-        DEDirector director = (DEDirector)getDirector();
+        DEDirector director = (DEDirector) getDirector();
         director.cancelFireAt(this, new Time(director, 1.0), 1);
         director.cancelFireAt(this, new Time(director, 3.0));
     }
@@ -92,6 +93,7 @@ public class CancelFireAtTest extends TypedAtomicActor {
     /** Schedule firings at times 0, 1, 2, 3, 4.
      *  @exception IllegalActionException If the superclass throws it.
      */
+    @Override
     public void initialize() throws IllegalActionException {
         super.initialize();
         Director director = getDirector();

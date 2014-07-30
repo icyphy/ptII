@@ -125,6 +125,7 @@ public class Minimum extends TypedAtomicActor {
      *  @exception CloneNotSupportedException If a derived class has
      *   an attribute that cannot be cloned.
      */
+    @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         Minimum newObject = (Minimum) super.clone(workspace);
         newObject.input.setTypeAtMost(BaseType.SCALAR);
@@ -138,6 +139,7 @@ public class Minimum extends TypedAtomicActor {
      *  produce no output.
      *  @exception IllegalActionException If there is no director.
      */
+    @Override
     public void fire() throws IllegalActionException {
         super.fire();
         ScalarToken result = null;

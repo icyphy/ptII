@@ -180,6 +180,7 @@ public class TabbedLayoutScene extends JPanel implements ActionListener {
             add(closeButton, BorderLayout.EAST);
             closeButton.addActionListener(new ActionListener() {
 
+                @Override
                 public void actionPerformed(ActionEvent e) {
                     _mainFrame.removeTab(_tabScenes
                             .indexOfTabComponent(TabSceneButton.this));
@@ -231,6 +232,7 @@ public class TabbedLayoutScene extends JPanel implements ActionListener {
         _tabScenes.setTabComponentAt(0, addTabButton);
 
         addTabButton.addActionListener(new ActionListener() {
+            @Override
             public void actionPerformed(ActionEvent e) {
                 _mainFrame.addTab("Tab " + _tabScenes.getTabCount());
                 selectTab(_tabScenes.getTabCount() - 2);
@@ -248,6 +250,7 @@ public class TabbedLayoutScene extends JPanel implements ActionListener {
      *  @param event The event object.
      *  @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
      */
+    @Override
     public void actionPerformed(ActionEvent event) {
         if (event instanceof TabEvent) {
             TabEvent tabEvent = (TabEvent) event;
@@ -368,6 +371,7 @@ public class TabbedLayoutScene extends JPanel implements ActionListener {
     /** The standard mouse adapter to be used on on all buttons.
      */
     private static final MouseAdapter MOUSE_ADAPTER = new MouseAdapter() {
+        @Override
         public void mouseEntered(MouseEvent e) {
             Component component = e.getComponent();
             if (component instanceof AbstractButton) {
@@ -375,6 +379,7 @@ public class TabbedLayoutScene extends JPanel implements ActionListener {
             }
         }
 
+        @Override
         public void mouseExited(MouseEvent e) {
             Component component = e.getComponent();
             if (component instanceof AbstractButton) {

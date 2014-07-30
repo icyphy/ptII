@@ -48,7 +48,7 @@ import java.util.List;
  @Pt.AcceptedRating Green (hyzheng)
  */
 public abstract class AbstractSettableAttribute extends Attribute implements
-        Settable {
+Settable {
     /** Construct an attribute in the default workspace with an empty string
      *  as its name.
      *  The object is added to the directory of the workspace.
@@ -124,6 +124,7 @@ public abstract class AbstractSettableAttribute extends Attribute implements
      *  @see #setExpression(String)
      *  @see Instantiable
      */
+    @Override
     public String getDefaultExpression() {
         try {
             // Get the list of objects from which this is derived,
@@ -145,6 +146,7 @@ public abstract class AbstractSettableAttribute extends Attribute implements
      *  @return The same as getExpression().
      *  @see #getExpression()
      */
+    @Override
     public String getValueAsString() {
         return getExpression();
     }
@@ -159,6 +161,7 @@ public abstract class AbstractSettableAttribute extends Attribute implements
      *   (not thrown in this base class).
      *  @see #getDefaultExpression()
      */
+    @Override
     public void setExpression(String expression) throws IllegalActionException {
         if (_default == null) {
             _default = expression;

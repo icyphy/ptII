@@ -24,7 +24,7 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 PT_COPYRIGHT_VERSION 2
 COPYRIGHTENDKEY
-*/
+ */
 package ptolemy.actor.lib.xslt;
 
 import java.io.BufferedReader;
@@ -71,7 +71,7 @@ import ptolemy.kernel.util.Workspace;
    @since Ptolemy II 4.0
    @Pt.ProposedRating Red (liuj)
    @Pt.AcceptedRating Red (liuj)
-*/
+ */
 public class XSLTransformer extends Transformer {
     /** Construct an actor with the given container and name.
      *  @param container The container.
@@ -130,6 +130,7 @@ public class XSLTransformer extends Transformer {
      *  @exception CloneNotSupportedException If a derived class contains
      *   an attribute that cannot be cloned.
      */
+    @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         XSLTransformer newObject = (XSLTransformer) super.clone(workspace);
         newObject.input.setTypeEquals(BaseType.XMLTOKEN);
@@ -143,6 +144,7 @@ public class XSLTransformer extends Transformer {
      *  without modification.
      *  @exception IllegalActionException If the parent class throws it
      */
+    @Override
     public void fire() throws IllegalActionException {
         super.fire();
         styleSheetParameters.update();
@@ -231,6 +233,7 @@ public class XSLTransformer extends Transformer {
      *  @exception IllegalActionException If the TransformFactory
      *  class name does not start with net.sf.saxon.
      */
+    @Override
     public void initialize() throws IllegalActionException {
         super.initialize();
         _xsltSource = null;

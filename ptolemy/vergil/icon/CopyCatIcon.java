@@ -118,6 +118,7 @@ public class CopyCatIcon extends XMLIcon {
      *  @exception CloneNotSupportedException Not thrown in this base class
      *  @return The new Attribute.
      */
+    @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         CopyCatIcon newObject = (CopyCatIcon) super.clone(workspace);
         newObject._originalDescription = null;
@@ -130,6 +131,7 @@ public class CopyCatIcon extends XMLIcon {
      *  behaves like the base class.
      *  @return A new figure.
      */
+    @Override
     public Figure createBackgroundFigure() {
         Figure result = null;
         Nameable container = getContainer();
@@ -229,7 +231,7 @@ public class CopyCatIcon extends XMLIcon {
             BasicRectangle rectangle = new BasicRectangle(bounds.getX() + 5.0
                     * i - _MARGIN, bounds.getY() + 5.0 * i - _MARGIN,
                     bounds.getWidth() + 2 * _MARGIN, bounds.getHeight() + 2
-                            * _MARGIN, echoBoxColor.asColor());
+                    * _MARGIN, echoBoxColor.asColor());
             composite.add(rectangle);
         }
         BasicRectangle rectangle3 = new BasicRectangle(bounds.getX() - _MARGIN,

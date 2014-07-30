@@ -49,7 +49,7 @@ public class DropSensorHandler extends GPInputHandler {
      */
     public DropSensorHandler(
             ptolemy.domains.ptides.lib.luminary.DropSensorHandler actor)
-            throws IllegalActionException, NameDuplicationException {
+                    throws IllegalActionException, NameDuplicationException {
         super(actor);
     }
 

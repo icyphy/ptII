@@ -69,6 +69,7 @@ public class ColtPoisson extends ColtRandomSource {
      *  @return The initialize code of this actor.
      *  @exception IllegalActionException Not thrown in this class.
      */
+    @Override
     public String generateInitializeCode() throws IllegalActionException {
         super.generateInitializeCode();
         CodeStream codeStream = _templateParser.getCodeStream();
@@ -84,6 +85,7 @@ public class ColtPoisson extends ColtRandomSource {
      *  needed by the code generated for the ColtPoisson actor.
      * @exception IllegalActionException Not Thrown in this subclass.
      */
+    @Override
     public Set getHeaderFiles() throws IllegalActionException {
         Set files = super.getHeaderFiles();
         files.add("cern.jet.random.Poisson;");
@@ -97,6 +99,7 @@ public class ColtPoisson extends ColtRandomSource {
      *  @exception IllegalActionException Not thrown in this base class.
      *  @return The code that produces a new random number.
      */
+    @Override
     protected String _generateRandomNumber() throws IllegalActionException {
         ArrayList<String> args = new ArrayList<String>();
         return getTemplateParser().generateBlockCode(

@@ -73,6 +73,7 @@ public class BrowserTableau extends Tableau {
      *  on the same effigy may still modify the associated file.
      *  @param flag False to make the tableau uneditable.
      */
+    @Override
     public void setEditable(boolean flag) {
         super.setEditable(flag);
     }
@@ -89,6 +90,7 @@ public class BrowserTableau extends Tableau {
      *  {@link ptolemy.actor.gui.HTMLViewer} to force a hyperlink to be
      *  opened in a browser.
      */
+    @Override
     public void show() {
         // FIXME: Unfortunately, the _config.showAll() at the bottom
         // of MoMLApplication.parseArgs() will end up calling this method
@@ -212,6 +214,7 @@ public class BrowserTableau extends Tableau {
          *  @exception Exception If the factory should be able to create a
          *   tableau for the effigy, but something goes wrong.
          */
+        @Override
         public Tableau createTableau(Effigy effigy) throws Exception {
             if (effigy instanceof BrowserEffigy) {
                 // First see whether the effigy already contains a

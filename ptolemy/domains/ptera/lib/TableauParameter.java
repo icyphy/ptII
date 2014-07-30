@@ -24,7 +24,7 @@
  PT_COPYRIGHT_VERSION_2
  COPYRIGHTENDKEY
 
-*/
+ */
 package ptolemy.domains.ptera.lib;
 
 import ptolemy.actor.Initializable;
@@ -82,6 +82,7 @@ public class TableauParameter extends Parameter implements Initializable {
      *
      *  @param initializable The initializable.
      */
+    @Override
     public void addInitializable(Initializable initializable) {
     }
 
@@ -98,6 +99,7 @@ public class TableauParameter extends Parameter implements Initializable {
      *  @see java.lang.Object#clone()
      *  @return The cloned variable.
      */
+    @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         TableauParameter newObject = (TableauParameter) super.clone(workspace);
         try {
@@ -114,6 +116,7 @@ public class TableauParameter extends Parameter implements Initializable {
      *  @return An empty string.
      *  @see #setExpression(String)
      */
+    @Override
     public String getExpression() {
         return "";
     }
@@ -123,6 +126,7 @@ public class TableauParameter extends Parameter implements Initializable {
      *  @exception IllegalActionException If the existing tableau cannot be
      *   retrieved.
      */
+    @Override
     public void initialize() throws IllegalActionException {
         final Tableau tableau = (Tableau) ((ObjectToken) getToken()).getValue();
         if (tableau != null) {
@@ -135,6 +139,7 @@ public class TableauParameter extends Parameter implements Initializable {
      *
      *  @exception IllegalActionException Not thrown in this class.
      */
+    @Override
     public void preinitialize() throws IllegalActionException {
     }
 
@@ -142,6 +147,7 @@ public class TableauParameter extends Parameter implements Initializable {
      *
      *  @param initializable The initializable.
      */
+    @Override
     public void removeInitializable(Initializable initializable) {
     }
 
@@ -172,8 +178,9 @@ public class TableauParameter extends Parameter implements Initializable {
      *  @exception NameDuplicationException If the container already has
      *   an attribute with the name of this variable.
      */
+    @Override
     public void setContainer(NamedObj container) throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         NamedObj oldContainer = getContainer();
         if (oldContainer instanceof Initializable) {
             ((Initializable) oldContainer).removeInitializable(this);
@@ -191,6 +198,7 @@ public class TableauParameter extends Parameter implements Initializable {
      *  @param expression The expression.
      *  @see #getExpression()
      */
+    @Override
     public void setExpression(String expression) {
     }
 
@@ -198,6 +206,7 @@ public class TableauParameter extends Parameter implements Initializable {
      *
      *  @exception IllegalActionException Not thrown in this class.
      */
+    @Override
     public void wrapup() throws IllegalActionException {
     }
 }

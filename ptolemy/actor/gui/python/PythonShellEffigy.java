@@ -84,6 +84,7 @@ public class PythonShellEffigy extends Effigy {
      *  @exception CloneNotSupportedException If a derived class contains
      *   an attribute that cannot be cloned.
      */
+    @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         PythonShellEffigy newObject = (PythonShellEffigy) super
                 .clone(workspace);
@@ -148,6 +149,7 @@ public class PythonShellEffigy extends Effigy {
          *  capable of creating an effigy without a URL being specified.
          *  @return True.
          */
+        @Override
         public boolean canCreateBlankEffigy() {
             return true;
         }
@@ -165,6 +167,7 @@ public class PythonShellEffigy extends Effigy {
          *  @exception Exception If there is some failure.
          *   is malformed in some way.
          */
+        @Override
         public Effigy createEffigy(CompositeEntity container, URL base,
                 URL input) throws Exception {
             return new PythonShellEffigy(container,

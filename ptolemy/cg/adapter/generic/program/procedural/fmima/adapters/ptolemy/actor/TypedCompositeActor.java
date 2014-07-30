@@ -58,24 +58,29 @@ public class TypedCompositeActor extends FMIMACodeGeneratorAdapter {
      *  @exception IllegalActionException If there is a problem getting the adapter, getting
      *  the director or generating FMIMA for the director.
      */
+    @Override
     public String generateFMIMA() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
-        
+
         // Extending ProceduralCodeGenerator start.
         //if (getContainer() == null) {
         //    return "fmima: TypedCompositeActor: top level";
         //}
         //NamedProgramCodeGeneratorAdapter adapter = (NamedProgramCodeGeneratorAdapter) getAdapter(getContainer());
         NamedProgramCodeGeneratorAdapter adapter = (NamedProgramCodeGeneratorAdapter) getAdapter(getComponent());
-        
-        code.append(getCodeGenerator().comment("ptolemy/cg/adapter/generic/program/procedural/fmima/adapters/ptolemy/actor/TypedCompositeActor.java start" + _eol
-                        + "   " + adapter.getComponent().getName() + " contains: "));
+
+        code.append(getCodeGenerator()
+                .comment(
+                        "ptolemy/cg/adapter/generic/program/procedural/fmima/adapters/ptolemy/actor/TypedCompositeActor.java start"
+                                + _eol
+                                + "   "
+                                + adapter.getComponent().getName()
+                                + " contains: "));
         // Extending ProceduralCodeGenerator end.
 
         // Extending GenericCodeGenerator start.
         //code.append(getComponent().getName() + " contains: ");
         // Extending GenericCodeGenerator end.
-
 
         Object director = getCodeGenerator().getAdapter(
                 ((ptolemy.actor.CompositeActor) getComponent()).getDirector());
@@ -84,21 +89,22 @@ public class TypedCompositeActor extends FMIMACodeGeneratorAdapter {
             directorAdapter = (Director) director;
         } catch (ClassCastException ex) {
             throw new IllegalActionException(
-                    // Extending ProceduralCodeGenerator start.
+            // Extending ProceduralCodeGenerator start.
                     adapter.getComponent(),
                     // Extending ProceduralCodeGenerator end.
-                    
+
                     // Extending GenericCodeGenerator start.
                     // /*adapter.*/getComponent(),
                     // Extending GenericCodeGenerator end
-                    ex,
-                    "Failed to cast " + director + " of class "
+                    ex, "Failed to cast " + director + " of class "
                             + director.getClass().getName() + " to "
                             + Director.class.getName() + ".");
         }
         code.append(directorAdapter.generateFMIMA());
 
-        code.append(getCodeGenerator().comment("ptolemy/cg/adapter/generic/program/procedural/fmima/adapters/ptolemy/actor/TypedCompositeActor.java end"));
+        code.append(getCodeGenerator()
+                .comment(
+                        "ptolemy/cg/adapter/generic/program/procedural/fmima/adapters/ptolemy/actor/TypedCompositeActor.java end"));
         return /*processCode(code.toString())*/code.toString();
     }
 }

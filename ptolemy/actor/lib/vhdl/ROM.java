@@ -100,6 +100,7 @@ public class ROM extends SynchronousFixTransformer {
      * @exception IllegalActionException
      *  @exception IllegalActionException If the function is not recognized.
      */
+    @Override
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         super.attributeChanged(attribute);
@@ -117,6 +118,7 @@ public class ROM extends SynchronousFixTransformer {
      *  If there is no inputs, then produce no output.
      *  @exception IllegalActionException If there is no director.
      */
+    @Override
     public void fire() throws IllegalActionException {
         super.fire();
 
@@ -142,7 +144,7 @@ public class ROM extends SynchronousFixTransformer {
             ArrayToken valuesArray = (ArrayToken) values.getToken();
             FixPoint value = new FixPoint(
                     ((ScalarToken) valuesArray.getElement(addressValue))
-                            .intValue());
+                    .intValue());
             Token result = new FixToken(value);
 
             sendOutput(output, 0, result);
@@ -154,6 +156,7 @@ public class ROM extends SynchronousFixTransformer {
     /** Override the base class to declare that the <i>address</i>
      *  port does not depend on the <i>output</i> in a firing.
      */
+    @Override
     public void preinitialize() throws IllegalActionException {
         super.preinitialize();
         removeDependency(address, output);

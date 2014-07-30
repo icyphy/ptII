@@ -293,7 +293,7 @@ public final class Sizes {
      * <em>min, pref, default</em>.
      */
     @SuppressWarnings("serial")
-        static final class ComponentSize implements Size, Serializable {
+    static final class ComponentSize implements Size, Serializable {
 
         private final transient String name;
 
@@ -333,6 +333,7 @@ public final class Sizes {
          * @param defaultMeasure  the measure used to determine the default size
          * @return the maximum size in pixels for the given list of components
          */
+        @Override
         public int maximumSize(Container container, List components,
                 FormLayout.Measure minMeasure, FormLayout.Measure prefMeasure,
                 FormLayout.Measure defaultMeasure) {
@@ -347,6 +348,7 @@ public final class Sizes {
             return maximum;
         }
 
+        @Override
         public String toString() {
             return name.substring(0, 1);
         }

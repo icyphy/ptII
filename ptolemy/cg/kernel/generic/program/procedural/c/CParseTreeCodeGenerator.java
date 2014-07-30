@@ -104,6 +104,7 @@ public class CParseTreeCodeGenerator extends ProceduralParseTreeCodeGenerator {
      *  @param node The specified node.
      *  @exception IllegalActionException If an parse error occurs.
      */
+    @Override
     public void visitArrayConstructNode(ASTPtArrayConstructNode node)
             throws IllegalActionException {
         if (node.isConstant() && node.isEvaluated()) {
@@ -187,6 +188,7 @@ public class CParseTreeCodeGenerator extends ProceduralParseTreeCodeGenerator {
      *  @param node The specified node.
      *  @exception IllegalActionException If an parse error occurs.
      */
+    @Override
     public void visitFunctionDefinitionNode(ASTPtFunctionDefinitionNode node)
             throws IllegalActionException {
         ASTPtRootNode cloneTree;
@@ -242,6 +244,7 @@ public class CParseTreeCodeGenerator extends ProceduralParseTreeCodeGenerator {
      *  @param node The specified node.
      *  @exception IllegalActionException If an parse error occurs.
      */
+    @Override
     public void visitFunctionalIfNode(ASTPtFunctionalIfNode node)
             throws IllegalActionException {
         if (node.isConstant() && node.isEvaluated()) {
@@ -327,6 +330,7 @@ public class CParseTreeCodeGenerator extends ProceduralParseTreeCodeGenerator {
      *  @param node The specified node.
      *  @exception IllegalActionException If an parse error occurs.
      */
+    @Override
     public void visitLeafNode(ASTPtLeafNode node) throws IllegalActionException {
         if (node.isConstant() && node.isEvaluated()) {
             _evaluatedChildToken = node.getToken();
@@ -410,6 +414,7 @@ public class CParseTreeCodeGenerator extends ProceduralParseTreeCodeGenerator {
      *  @param node The specified node.
      *  @exception IllegalActionException If an parse error occurs.
      */
+    @Override
     public void visitMatrixConstructNode(ASTPtMatrixConstructNode node)
             throws IllegalActionException {
         if (node.isConstant() && node.isEvaluated()) {
@@ -490,7 +495,7 @@ public class CParseTreeCodeGenerator extends ProceduralParseTreeCodeGenerator {
                 }
 
                 ptolemy.data.Token[] matrixTokens = new ptolemy.data.Token[node
-                        .getRowCount() * columnCount];
+                                                                           .getRowCount() * columnCount];
 
                 for (int i = 0; i < node.getRowCount(); i++) {
                     ptolemy.data.Token[] newTokens = MatrixToken
@@ -521,6 +526,7 @@ public class CParseTreeCodeGenerator extends ProceduralParseTreeCodeGenerator {
      *  @param node The specified node.
      *  @exception IllegalActionException If an parse error occurs.
      */
+    @Override
     public void visitProductNode(ASTPtProductNode node)
             throws IllegalActionException {
         if (node.isConstant() && node.isEvaluated()) {
@@ -622,6 +628,7 @@ public class CParseTreeCodeGenerator extends ProceduralParseTreeCodeGenerator {
      * @param ptType The given Ptolemy type.
      * @return The code generation type.
      */
+    @Override
     protected String _codeGenType(Type ptType) {
         // This method exists because JavaParseTreeCodeGenerator specializes it.
         return _generator.codeGenType(ptType);
@@ -634,6 +641,7 @@ public class CParseTreeCodeGenerator extends ProceduralParseTreeCodeGenerator {
      *  @param type The element type.
      *  @exception IllegalActionException If an parse error occurs.
      */
+    @Override
     protected void _evaluateArrayIndex(ASTPtRootNode node,
             ptolemy.data.Token value, Type type) throws IllegalActionException {
 
@@ -664,6 +672,7 @@ public class CParseTreeCodeGenerator extends ProceduralParseTreeCodeGenerator {
      *  @return The resulting token.
      *  @exception IllegalActionException If an parse error occurs.
      */
+    @Override
     protected ptolemy.data.Token _evaluateChild(ASTPtRootNode node, int i)
             throws IllegalActionException {
         ASTPtRootNode child = (ASTPtRootNode) node.jjtGetChild(i);
@@ -720,10 +729,10 @@ public class CParseTreeCodeGenerator extends ProceduralParseTreeCodeGenerator {
      *  @param y The second argument for pow().
      *  @return The string to invoke the pow() function.
      */
+    @Override
     protected String _powCall(String x, String y) {
         return "pow((double)" + x + ", (double)" + y + ")";
     }
-
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////

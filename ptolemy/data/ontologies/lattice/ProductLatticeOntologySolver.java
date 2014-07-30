@@ -95,6 +95,7 @@ public class ProductLatticeOntologySolver extends LatticeOntologySolver {
      *  @exception IllegalActionException Thrown if there is an error getting the
      *   ontology objects from the solver model.
      */
+    @Override
     public ProductLatticeOntology getOntology() throws IllegalActionException {
         List<Ontology> ontologies = getAllContainedOntologies();
         List<ProductLatticeOntology> productLatticeOntologies = new ArrayList<ProductLatticeOntology>();
@@ -148,6 +149,7 @@ public class ProductLatticeOntologySolver extends LatticeOntologySolver {
      *  @exception IllegalActionException If an exception occurs when
      *  collecting the constraints.
      */
+    @Override
     public void initialize() throws IllegalActionException {
         //reset();
         OntologySolverUtilities productLatticeSolverUtilities = getOntologySolverUtilities();
@@ -159,7 +161,7 @@ public class ProductLatticeOntologySolver extends LatticeOntologySolver {
         if (containedSolvers != null) {
             for (LatticeOntologySolver innerSolver : containedSolvers) {
                 innerSolver
-                        .setOntologySolverUtilities(productLatticeSolverUtilities);
+                .setOntologySolverUtilities(productLatticeSolverUtilities);
             }
         }
 
@@ -177,7 +179,7 @@ public class ProductLatticeOntologySolver extends LatticeOntologySolver {
             }
         }
         _initialConstraintList = toplevelAdapter.constraintList();
-        */
+         */
     }
 
     /** Reset the solver. This removes the internal states of the
@@ -186,6 +188,7 @@ public class ProductLatticeOntologySolver extends LatticeOntologySolver {
      *  and clears the trained constraints. For the ProductLatticeOntologySolver,
      *  also reset the solvers for the component ontologies in the solver model.
      */
+    @Override
     public void reset() {
         super.reset();
 
@@ -230,6 +233,7 @@ public class ProductLatticeOntologySolver extends LatticeOntologySolver {
      *  @exception IllegalActionException Thrown if the LatticeOntologyAdapter
      *   cannot be instantiated.
      */
+    @Override
     protected OntologyAdapter _getAdapter(Object component)
             throws IllegalActionException {
         OntologyAdapter adapter = null;
@@ -243,7 +247,7 @@ public class ProductLatticeOntologySolver extends LatticeOntologySolver {
             for (ActorConstraintsDefinitionAttribute adapterDefinitionAttribute : modelDefinedAdapters) {
                 if (((StringToken) adapterDefinitionAttribute.actorClassName
                         .getToken()).stringValue().equals(
-                        component.getClass().getName())) {
+                                component.getClass().getName())) {
                     adapter = adapterDefinitionAttribute.createAdapter(
                             (ComponentEntity) component, this);
                     break;

@@ -156,6 +156,7 @@ public class VideoCamera extends Source implements ControllerListener {
      *  @exception CloneNotSupportedException If a derived class contains
      *  an attribute that cannot be cloned.
      */
+    @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         VideoCamera newObject = (VideoCamera) super.clone(workspace);
         newObject._frameBuffer = new Buffer();
@@ -166,6 +167,7 @@ public class VideoCamera extends Source implements ControllerListener {
     /**
      * Controller Listener.
      */
+    @Override
     public void controllerUpdate(ControllerEvent evt) {
         if (evt instanceof ConfigureCompleteEvent
                 || evt instanceof RealizeCompleteEvent
@@ -189,6 +191,7 @@ public class VideoCamera extends Source implements ControllerListener {
      *  to the output port.
      *  @exception IllegalActionException If there's no director.
      */
+    @Override
     public void fire() throws IllegalActionException {
         super.fire();
         _bufferNew = _cameraCodec.getFrame();
@@ -202,6 +205,7 @@ public class VideoCamera extends Source implements ControllerListener {
      *  @exception IllegalActionException If there are no video capture
      *   devices.
      */
+    @Override
     public void initialize() throws IllegalActionException {
         super.initialize();
 
@@ -344,6 +348,7 @@ public class VideoCamera extends Source implements ControllerListener {
 
     /** Close the media processor.
      */
+    @Override
     public void wrapup() {
         if (_processor != null) {
             _processor.close();
@@ -419,25 +424,30 @@ public class VideoCamera extends Source implements ControllerListener {
         /** Return the name of this codec.
          *  @return Always return "Pre-Access Codec".
          */
+        @Override
         public String getName() {
             return "Pre-Access Codec";
         }
 
         /** In this class, do nothing. */
+        @Override
         public void open() {
         }
 
         /** In this class, do nothing. */
+        @Override
         public void close() {
         }
 
         /** In this class, do nothing. */
+        @Override
         public void reset() {
         }
 
         /** Return the supported input formats, which are YUV and RGB.
          *  @return the supported input formats.
          */
+        @Override
         public Format[] getSupportedInputFormats() {
             return new Format[] { new YUVFormat(), new RGBFormat() };
         }
@@ -448,6 +458,7 @@ public class VideoCamera extends Source implements ControllerListener {
          *  is non-null, then it is returned.
          *  @return the supported output formats.
          */
+        @Override
         public Format[] getSupportedOutputFormats(Format in) {
             if (in == null) {
                 return new Format[] { new YUVFormat(), new RGBFormat() };
@@ -465,6 +476,7 @@ public class VideoCamera extends Source implements ControllerListener {
          *  @param format The input format.
          *  @return the input format.
          */
+        @Override
         public Format setInputFormat(Format format) {
             input = format;
             return input;
@@ -474,6 +486,7 @@ public class VideoCamera extends Source implements ControllerListener {
          *  @param format The output format.
          *  @return the output format.
          */
+        @Override
         public Format setOutputFormat(Format format) {
             output = format;
             return output;
@@ -484,6 +497,7 @@ public class VideoCamera extends Source implements ControllerListener {
          *  @param out The output buffer.
          *  @return BUFFER_PROCESSED_OK if no exception was thrown.
          */
+        @Override
         public int process(Buffer in, Buffer out) {
             // This is the "Callback" to access individual frames.
             accessFrame(in);
@@ -494,6 +508,7 @@ public class VideoCamera extends Source implements ControllerListener {
          *  of size 0.
          *  @return The controls.
          */
+        @Override
         public Object[] getControls() {
             return new Object[0];
         }
@@ -502,6 +517,7 @@ public class VideoCamera extends Source implements ControllerListener {
          *  @param type The type, which is ignored.
          *  @return Always return null.
          */
+        @Override
         public Object getControl(String type) {
             return null;
         }

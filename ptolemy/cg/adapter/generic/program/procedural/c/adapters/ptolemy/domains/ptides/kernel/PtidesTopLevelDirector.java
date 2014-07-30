@@ -66,6 +66,7 @@ public class PtidesTopLevelDirector extends Director
      *  @return Whatever generateFireCode() returns.
      *  @exception IllegalActionException Not thrown in this base class.
      */
+    @Override
     public String generateMainLoop() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
 
@@ -75,6 +76,7 @@ public class PtidesTopLevelDirector extends Director
         return code.toString();
     }
 
+    @Override
     public String generateFireFunctionCode() throws IllegalActionException {
         return "";
     }

@@ -1,4 +1,3 @@
-
 /* A sequence classifier for Exponential emission HMMs
 
 Copyright (c) 1998-2014 The Regents of the University of California.
@@ -25,7 +24,7 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
-*/
+ */
 package org.ptolemy.machineLearning.hmm;
 
 import ptolemy.actor.parameters.PortParameter;
@@ -97,6 +96,7 @@ public class HMMExponentialClassifier extends ObservationClassifier {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
+    @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         HMMExponentialClassifier newObject = (HMMExponentialClassifier) super
                 .clone(workspace);
@@ -107,6 +107,7 @@ public class HMMExponentialClassifier extends ObservationClassifier {
     /** Consume the inputs and produce the outputs of the FFT filter.
      *  @exception IllegalActionException If a runtime type error occurs.
      */
+    @Override
     public void fire() throws IllegalActionException {
         super.fire();
 
@@ -146,6 +147,7 @@ public class HMMExponentialClassifier extends ObservationClassifier {
         output.broadcast(new ArrayToken(BaseType.INT, _outTokenArray));
     }
 
+    @Override
     protected double emissionProbability(double y, int hiddenState) {
         double m = _lambda[hiddenState];
         return m * Math.exp(-m * y);

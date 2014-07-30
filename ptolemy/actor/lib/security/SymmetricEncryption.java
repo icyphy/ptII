@@ -133,6 +133,7 @@ public class SymmetricEncryption extends CipherActor {
      *
      *  @exception IllegalActionException If thrown by base class.
      */
+    @Override
     public void fire() throws IllegalActionException {
         if (key.hasToken(0)) {
             try {
@@ -170,6 +171,7 @@ public class SymmetricEncryption extends CipherActor {
      * ByteArrayOutputStream, if the key is invalid, if the padding is bad
      * or if the block size is illegal.
      */
+    @Override
     protected byte[] _process(byte[] dataBytes) throws IllegalActionException {
         // FIXME: should this method try to stream the data and
         // have a wrapup method that calls _cipher.doFinal() instead?

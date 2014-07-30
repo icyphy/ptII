@@ -40,7 +40,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 /**
  Convert a StringToken to an IntToken.
 
- <p>This actor is a simpler version of 
+ <p>This actor is a simpler version of
  {@link ptolemy.actor.lib.conversions.ExpressionToToken}, which can perform
  the same conversion, but since ExpressionToToken just evaluates an
  expression, it is much more powerful.</p>
@@ -77,12 +77,13 @@ public class StringToInt extends Converter {
      *  @exception IllegalActionException If thrown while getting
      *  or sending a token.
      */
+    @Override
     public void fire() throws IllegalActionException {
         super.fire();
         String inputValue = ((StringToken) input.get(0)).stringValue();
 
         int value = Integer.parseInt(inputValue);
-        
+
         output.send(0, new IntToken(value));
     }
 
@@ -90,6 +91,7 @@ public class StringToInt extends Converter {
      *  what the superclass returns (presumably true).
      *  @exception IllegalActionException If there is no director.
      */
+    @Override
     public boolean prefire() throws IllegalActionException {
         if (!input.hasToken(0)) {
             return false;

@@ -79,6 +79,7 @@ public class CodeGeneratorGUIFactory extends EditorFactory {
      *  @param object The object to configure.
      *  @param parent The parent window, or null if there is none.
      */
+    @Override
     public void createEditor(NamedObj object, Frame parent) {
         // This is always used to configure the container, so
         // we just use that.

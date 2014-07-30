@@ -40,16 +40,16 @@ import ptolemy.kernel.util.NamedObj;
 ////MultiContent
 
 /** Store a model's element representations on multiple contents.
-*
-*  @author Peter Foldes
-*  @version $Id$
-*  @since Ptolemy II 10.0
-*  @Pt.ProposedRating Red (pdf)
-*  @Pt.AcceptedRating Red (pdf)
-*
-*  @param <T> The class implementing a ContentPrototype. It represents a tab
-*  that can create one similar to itself using the prototype pattern.
-*/
+ *
+ *  @author Peter Foldes
+ *  @version $Id$
+ *  @since Ptolemy II 10.0
+ *  @Pt.ProposedRating Red (pdf)
+ *  @Pt.AcceptedRating Red (pdf)
+ *
+ *  @param <T> The class implementing a ContentPrototype. It represents a tab
+ *  that can create one similar to itself using the prototype pattern.
+ */
 public class MultiContent<T extends ContentPrototype> {
 
     /** Create a new multi-content frame based on a content prototype.
@@ -100,11 +100,11 @@ public class MultiContent<T extends ContentPrototype> {
      */
     public String addTab(ComponentEntity topLevel, String tabTag,
             String tabName, ContentPrototype content)
-            throws IllegalActionException, NameDuplicationException {
+                    throws IllegalActionException, NameDuplicationException {
         if (tabTag != null && _contents.containsKey(tabTag)) {
             throw new IllegalActionException(
                     "A content area with the identifier " + tabTag
-                            + " already exists.");
+                    + " already exists.");
         }
 
         TabDefinition tabDefinition = new TabDefinition(topLevel, tabTag,

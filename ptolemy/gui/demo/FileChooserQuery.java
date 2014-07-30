@@ -95,6 +95,7 @@ public class FileChooserQuery extends JFrame implements QueryListener {
      *  The name of the entry is passed as an argument.
      *  @param name The name of the entry.
      */
+    @Override
     public void changed(String name) {
         System.out.println("Changed " + name + " to: "
                 + _query.getStringValue(name));
@@ -111,11 +112,13 @@ public class FileChooserQuery extends JFrame implements QueryListener {
         try {
             // Run this in the Swing Event Thread.
             Runnable doActions = new Runnable() {
+                @Override
                 public void run() {
                     try {
                         JFrame frame = new FileChooserQuery();
 
                         frame.addWindowListener(new WindowAdapter() {
+                            @Override
                             public void windowClosing(WindowEvent e) {
                                 StringUtilities.exit(0);
                             }

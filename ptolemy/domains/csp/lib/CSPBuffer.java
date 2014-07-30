@@ -74,6 +74,7 @@ public class CSPBuffer extends CSPActor {
      *   coincides with a parameter already in this actor.
      *  @deprecated Use ptolemy.domains.csp.lib.Buffer instead.
      */
+    @Deprecated
     public CSPBuffer() throws IllegalActionException, NameDuplicationException {
         super();
         depth = new Parameter(this, "depth", new IntToken(1));
@@ -162,6 +163,7 @@ public class CSPBuffer extends CSPActor {
      *  @exception IllegalActionException If an error occurs during
      *   executing the process.
      */
+    @Override
     public void fire() throws IllegalActionException {
         super.fire();
         try {

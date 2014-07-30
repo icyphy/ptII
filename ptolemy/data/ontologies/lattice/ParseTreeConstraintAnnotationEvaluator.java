@@ -47,7 +47,7 @@ import ptolemy.kernel.util.IllegalActionException;
  @see ptolemy.data.expr.ASTPtRootNode
  */
 public class ParseTreeConstraintAnnotationEvaluator extends
-        ParseTreeAnnotationEvaluator {
+ParseTreeAnnotationEvaluator {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -67,6 +67,7 @@ public class ParseTreeConstraintAnnotationEvaluator extends
      *  @exception IllegalActionException If the node label cannot be resolved to a
      *  component in the model
      */
+    @Override
     public void visitLeafNode(ASTPtLeafNode node) throws IllegalActionException {
         try {
             super.visitLeafNode(node);
@@ -78,9 +79,9 @@ public class ParseTreeConstraintAnnotationEvaluator extends
             if (_evaluatedObject == null) {
                 throw new IllegalActionException(_adapter.getSolver()
                         .getOntology(), "Cannot resolve label: "
-                        + _getNodeLabel(node)
-                        + ". There is no matching component in the model, "
-                        + "and there is no matching Concept in the Ontology.");
+                                + _getNodeLabel(node)
+                                + ". There is no matching component in the model, "
+                                + "and there is no matching Concept in the Ontology.");
             }
         }
 
@@ -96,6 +97,7 @@ public class ParseTreeConstraintAnnotationEvaluator extends
      * @exception IllegalActionException If the operator is not supported (should be
      * one of '==', '>=', or '<=')
      */
+    @Override
     public void visitRelationalNode(ASTPtRelationalNode node)
             throws IllegalActionException {
 
@@ -108,7 +110,7 @@ public class ParseTreeConstraintAnnotationEvaluator extends
         Token operator = node.getOperator();
         if (operator.kind == PtParserConstants.EQUALS) {
             ((LatticeOntologyAdapter) _adapter)
-                    .setSameAs(leftChild, rightChild);
+            .setSameAs(leftChild, rightChild);
 
         } else if (operator.kind == PtParserConstants.GTE) {
             ((LatticeOntologyAdapter) _adapter).setAtLeast(leftChild,

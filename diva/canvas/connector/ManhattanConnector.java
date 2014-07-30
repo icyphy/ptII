@@ -98,6 +98,7 @@ public class ManhattanConnector extends AbstractConnector {
 
     /** Tell the connector to reposition the text label.
      */
+    @Override
     public void repositionLabel() {
         if (_labelLocation == null) {
             route();
@@ -116,6 +117,7 @@ public class ManhattanConnector extends AbstractConnector {
      * Tell the connector to route itself between the
      * current positions of the head and tail sites.
      */
+    @Override
     public void route() {
         repaint();
 
@@ -226,15 +228,16 @@ public class ManhattanConnector extends AbstractConnector {
      * controllers may wish to translate connectors when the
      * sites at both ends are moved the same distance.
      */
+    @Override
     public void translate(double x, double y) {
         repaint();
         Shape shape = getShape();
         // Ignore if the shape doesn't have a translate method.
         // This is better than a class cast exception.
         if (shape instanceof Polyline2D) {
-                Polyline2D line = (Polyline2D) getShape();
-                line.translate(x, y);
-                repaint();
+            Polyline2D line = (Polyline2D) getShape();
+            line.translate(x, y);
+            repaint();
         }
     }
 }

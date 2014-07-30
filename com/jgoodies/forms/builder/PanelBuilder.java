@@ -134,6 +134,7 @@ public class PanelBuilder extends AbstractFormBuilder {
      *
      * @deprecated Replaced by {@link #PanelBuilder(FormLayout, JPanel)}.
      */
+    @Deprecated
     public PanelBuilder(JPanel panel, FormLayout layout) {
         super(layout, panel);
     }

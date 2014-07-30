@@ -84,6 +84,7 @@ public abstract class PlotLive extends Plot implements Runnable {
      *  This method is deprecated.  Use setButtons() instead.
      *  @deprecated
      */
+    @Deprecated
     public void makeButtons() {
         if (_startButton == null) {
             _startButton = new JButton("start");
@@ -125,6 +126,7 @@ public abstract class PlotLive extends Plot implements Runnable {
      *  plotting more points at once may also decrease the
      *  responsiveness of the user interface.
      */
+    @Override
     public void run() {
         while (_plotting || _paused) {
             if (_plotting) {
@@ -154,6 +156,7 @@ public abstract class PlotLive extends Plot implements Runnable {
      *  the printed plot will not have spurious buttons.  Thus, this method
      *  should be used only by applets, which normally do not have menus.
      */
+    @Override
     public void setButtons(boolean visible) {
         super.setButtons(visible);
 
@@ -236,6 +239,7 @@ public abstract class PlotLive extends Plot implements Runnable {
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
     class StartButtonListener implements ActionListener {
+        @Override
         public void actionPerformed(ActionEvent event) {
             start();
         }
@@ -243,6 +247,7 @@ public abstract class PlotLive extends Plot implements Runnable {
 
     // Despite the name, the stop button calls pause.
     class StopButtonListener implements ActionListener {
+        @Override
         public void actionPerformed(ActionEvent event) {
             pause();
         }

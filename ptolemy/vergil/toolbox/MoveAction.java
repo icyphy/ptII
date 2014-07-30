@@ -108,6 +108,7 @@ public class MoveAction extends FigureAction {
     /** Perform the move action and register the undo action.
      *  @param event The event.
      */
+    @Override
     public void actionPerformed(final ActionEvent event) {
         // Determine which entity was selected for the look inside action.
         super.actionPerformed(event);
@@ -126,6 +127,7 @@ public class MoveAction extends FigureAction {
         }
 
         ChangeRequest request = new ChangeRequest(target, "Move towards last") {
+            @Override
             protected void _execute() throws IllegalActionException {
                 // Static method takes a list, so we construct a
                 // list with one element.
@@ -217,6 +219,7 @@ public class MoveAction extends FigureAction {
         }
 
         UndoAction undoAction = new UndoAction() {
+            @Override
             public void execute() {
                 try {
                     // Undo has to reverse the order of the do.
@@ -248,6 +251,7 @@ public class MoveAction extends FigureAction {
 
                 // Create redo action.
                 UndoAction redoAction = new UndoAction() {
+                    @Override
                     public void execute() {
                         move(targets, type, context);
                     }

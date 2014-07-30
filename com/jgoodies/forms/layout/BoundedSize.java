@@ -102,6 +102,7 @@ final class BoundedSize implements Size, Serializable {
      * @return the maximum size in pixels
      * @see FormSpec#maximumSize(Container, List, FormLayout.Measure, FormLayout.Measure, FormLayout.Measure)
      */
+    @Override
     public int maximumSize(Container container, List components,
             FormLayout.Measure minMeasure, FormLayout.Measure prefMeasure,
             FormLayout.Measure defaultMeasure) {
@@ -129,6 +130,7 @@ final class BoundedSize implements Size, Serializable {
      * @see     Object#hashCode()
      * @see     java.util.Hashtable
      */
+    @Override
     public boolean equals(Object object) {
         if (this == object) {
             return true;
@@ -139,9 +141,9 @@ final class BoundedSize implements Size, Serializable {
         BoundedSize size = (BoundedSize) object;
         return basis.equals(size.basis)
                 && (lowerBound == null && size.lowerBound == null || lowerBound != null
-                        && lowerBound.equals(size.lowerBound))
+                && lowerBound.equals(size.lowerBound))
                 && (upperBound == null && size.upperBound == null || upperBound != null
-                        && upperBound.equals(size.upperBound));
+                && upperBound.equals(size.upperBound));
     }
 
     /**
@@ -153,6 +155,7 @@ final class BoundedSize implements Size, Serializable {
      * @see     Object#equals(Object)
      * @see     java.util.Hashtable
      */
+    @Override
     public int hashCode() {
         int hashValue = basis.hashCode();
         if (lowerBound != null) {
@@ -173,11 +176,12 @@ final class BoundedSize implements Size, Serializable {
      *
      * @return  a string representation of the constant size
      */
+    @Override
     public String toString() {
         if (lowerBound != null) {
             return upperBound == null ? "max(" + basis + ';' + lowerBound + ')'
                     : "max(" + lowerBound + ';' + "min(" + basis + ';'
-                            + upperBound + "))";
+                    + upperBound + "))";
         } else if (upperBound != null) {
             return "min(" + basis + ';' + upperBound + ')';
         } else {

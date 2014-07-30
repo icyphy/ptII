@@ -58,10 +58,12 @@ public class AWTImageToken extends ImageToken {
     /** Because all tokens that contain images must extend ImageToken,
      *  we must include the following method.
      */
+    @Override
     public Image asAWTImage() {
         return _value;
     }
 
+    @Override
     public Type getType() {
         return BaseType.OBJECT;
     }
@@ -83,6 +85,7 @@ public class AWTImageToken extends ImageToken {
      *  @return The classname, width and height as string representation
      *  of a record.
      */
+    @Override
     public String toString() {
         return "{type=\"" + getClass() + "\" width=\""
                 + (_value == null ? -1 : _value.getWidth(null))

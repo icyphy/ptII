@@ -110,6 +110,7 @@ public class IconController extends ParameterizedNodeController {
          * is set then use it to set the tooltip.
          * @see diva.graph.NodeRenderer#render(java.lang.Object)
          */
+        @Override
         public Figure render(Object n) {
             Locatable location = (Locatable) n;
             final NamedObj object = location.getContainer();
@@ -171,6 +172,7 @@ public class IconController extends ParameterizedNodeController {
                             "Set the container of a new XMLIcon.") {
                         // NOTE: The KernelException should not be thrown,
                         // but if it is, it will be handled properly.
+                        @Override
                         protected void _execute() throws KernelException {
                             _iconsPendingContainer.remove(object);
 
@@ -244,7 +246,7 @@ public class IconController extends ParameterizedNodeController {
                     if (decoratorAttributes instanceof ExecutionAttributes) {
                         if (decoratorAttributes.getDecorator() != null
                                 && ((ExecutionAttributes) decoratorAttributes)
-                                        .enabled()) {
+                                .enabled()) {
                             try {
                                 if (object
                                         .getAttribute("_decoratorHighlightColor") == null) {
@@ -258,7 +260,7 @@ public class IconController extends ParameterizedNodeController {
                                                 .getToken()).toString();
                                     }
                                     ((ColorAttribute) highlightColor)
-                                            .setExpression(colorExpression);
+                                    .setExpression(colorExpression);
                                 }
                             } catch (NameDuplicationException e) {
                                 // Not gonna happen.
@@ -301,7 +303,7 @@ public class IconController extends ParameterizedNodeController {
                                         ColorAttribute.class);
                         if (shadowAttribute != null
                                 && !shadowAttribute.getExpression().trim()
-                                        .equals("")) {
+                                .equals("")) {
                             Color color = shadowAttribute.asColor();
                             // FIXME: How to set the size of the shadow?
                             ShadowRenderer animationRenderer = new ShadowRenderer(

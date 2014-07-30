@@ -64,6 +64,7 @@ public class TestConstant implements InequalityTerm {
     /** Return the string value.
      *  @return A String
      */
+    @Override
     public Object getAssociatedObject() {
         return _value;
     }
@@ -80,6 +81,7 @@ public class TestConstant implements InequalityTerm {
      *  @return a String
      *  @see #setValue(Object)
      */
+    @Override
     public Object getValue() {
         return _value;
     }
@@ -87,6 +89,7 @@ public class TestConstant implements InequalityTerm {
     /** Return an array of size zero.
      *  @return an array of InequalityTerms
      */
+    @Override
     public InequalityTerm[] getVariables() {
         return new InequalityTerm[0];
     }
@@ -94,6 +97,7 @@ public class TestConstant implements InequalityTerm {
     /** Return false.
      *  @return false
      */
+    @Override
     public boolean isSettable() {
         return false;
     }
@@ -102,6 +106,7 @@ public class TestConstant implements InequalityTerm {
      *  @exception GraphActionException Always thrown since this term is a
      *   constant.
      */
+    @Override
     public void initialize(Object e) throws GraphActionException {
         throw new GraphActionException("TestConstant.initialize: This term "
                 + "is a constant.");
@@ -112,6 +117,7 @@ public class TestConstant implements InequalityTerm {
      *  acceptable.
      *  @return True.
      */
+    @Override
     public boolean isValueAcceptable() {
         return true;
     }
@@ -133,6 +139,7 @@ public class TestConstant implements InequalityTerm {
      *  @exception GraphActionException always thrown.
      *  @see #getValue()
      */
+    @Override
     public void setValue(Object e) throws GraphActionException {
         throw new GraphActionException("TestConstant.setValue: This term "
                 + "is a constant.");
@@ -141,6 +148,7 @@ public class TestConstant implements InequalityTerm {
     /** Override the base class to describe the constant.
      *  @return A string describing the constant
      */
+    @Override
     public String toString() {
         return getClass().getName() + getInfo();
     }

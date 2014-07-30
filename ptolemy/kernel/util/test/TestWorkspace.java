@@ -61,6 +61,7 @@ public class TestWorkspace extends Thread {
         _workspace = workspace;
     }
 
+    @Override
     public synchronized void run() {
         for (int i = 0; i < 3; i++) {
             try {

@@ -65,15 +65,15 @@ import ptolemy.kernel.util.Settable;
 //// AttributeStyleWidget
 
 /**
-* This widget visualizes attributes based on their style definition.
-* @author Anar Huseynov
-* @version $Id$
-* @since Ptolemy II 10.0
-* @Pt.ProposedRating Red (ahuseyno)
-* @Pt.AcceptedRating Red (ahuseyno)
-*/
+ * This widget visualizes attributes based on their style definition.
+ * @author Anar Huseynov
+ * @version $Id$
+ * @since Ptolemy II 10.0
+ * @Pt.ProposedRating Red (ahuseyno)
+ * @Pt.AcceptedRating Red (ahuseyno)
+ */
 public class AttributeStyleWidget extends GlassPaneWidget implements
-        MinSizeInterface {
+MinSizeInterface {
 
     /**
      * Create a new instance visualizing the positionable element based on its style definitions.
@@ -196,6 +196,7 @@ public class AttributeStyleWidget extends GlassPaneWidget implements
     /**
      * Return minimal width which is the preferred width of the widget if it's defined.
      */
+    @Override
     public Integer getMinWidth() {
         Dimension preferredSize = _attributeComponent.getPreferredSize();
         return preferredSize != null ? preferredSize.width : null;
@@ -204,6 +205,7 @@ public class AttributeStyleWidget extends GlassPaneWidget implements
     /**
      * Return minimal height which is the preferred height of the widget if it's defined.
      */
+    @Override
     public Integer getMinHeight() {
         Dimension preferredSize = _attributeComponent.getPreferredSize();
         return preferredSize != null ? preferredSize.height : null;

@@ -347,6 +347,7 @@ public class FixPoint implements Cloneable {
     /** Return this, that is, return the reference to this object.
      *  @return This FixPoint.
      */
+    @Override
     public Object clone() {
         // FIXME: Note that we do not call super.clone() here.  Is that right?
         return this;
@@ -427,13 +428,13 @@ public class FixPoint implements Cloneable {
             BigInteger infinity = _value.signum() >= 0 ? anOverflow
                     .plusInfinity(quant) : anOverflow.minusInfinity(quant);
 
-            if (infinity != null) {
-                return new FixPoint(infinity, quant.getPrecision());
-            }
+                    if (infinity != null) {
+                        return new FixPoint(infinity, quant.getPrecision());
+                    }
 
-            throw new IllegalArgumentException("ArithmeticException "
-                    + "while dividing " + toString() + " by " + arg.toString()
-                    + '.');
+                    throw new IllegalArgumentException("ArithmeticException "
+                            + "while dividing " + toString() + " by " + arg.toString()
+                            + '.');
         }
     }
 
@@ -456,6 +457,7 @@ public class FixPoint implements Cloneable {
      *  checking.
      *  @return True if the FixPoints are equal; false otherwise.
      */
+    @Override
     public boolean equals(Object arg) {
         if (arg instanceof FixPoint) {
             int exponentBits = Math.min(_precision.getExponent(),
@@ -475,6 +477,7 @@ public class FixPoint implements Cloneable {
      *  required behaviour or use Overflow.TRAP and/or Rounding.UNNECESSARY
      *  to throw exceptions if external interaction is required.
      */
+    @Deprecated
     public Error getError() {
         return _error;
     }
@@ -501,6 +504,7 @@ public class FixPoint implements Cloneable {
      *  low order 32 bits of the integer representation.
      *  @return A hash code value for this value.
      */
+    @Override
     public int hashCode() {
         return _value.intValue();
     }
@@ -738,6 +742,7 @@ public class FixPoint implements Cloneable {
      *  point as there fractional bits in this FixPoint.
      * @return A decimal string representation of the value.
      */
+    @Override
     public String toString() {
         BigDecimal decimal = bigDecimalValue();
         String bigString = decimal.toString();
@@ -985,6 +990,7 @@ public class FixPoint implements Cloneable {
          * @return A description of the Error.
          * @deprecated This functionality is obsolete.
          */
+        @Deprecated
         public String getDescription() {
             return " Overflow status is no longer tracked.";
         }

@@ -76,6 +76,7 @@ public class TerminalFigure extends AbstractFigure implements Terminal {
     /** Test whether this figure contains the point given. The point
      * given is in the enclosing transform context.
      */
+    @Override
     public boolean contains(Point2D p) {
         return _figure.contains(p);
     }
@@ -83,18 +84,21 @@ public class TerminalFigure extends AbstractFigure implements Terminal {
     /** Get the bounding box of this figure. The result rectangle is
      *  given in the enclosing transform context.
      */
+    @Override
     public Rectangle2D getBounds() {
         return _figure.getBounds();
     }
 
     /** Get the site that the terminal is attached to.
      */
+    @Override
     public Site getAttachSite() {
         return _attachSite;
     }
 
     /** Get the site that a connector can connect to.
      */
+    @Override
     public Site getConnectSite() {
         return _connectSite;
     }
@@ -110,12 +114,14 @@ public class TerminalFigure extends AbstractFigure implements Terminal {
     /** Return the interactor of this figure. Return
      *  null if there isn't one.
      */
+    @Override
     public Interactor getInteractor() {
         return _figure.getInteractor();
     }
 
     /** Get the most immediate layer containing this figure.
      */
+    @Override
     public CanvasLayer getLayer() {
         return _figure.getLayer();
     }
@@ -124,6 +130,7 @@ public class TerminalFigure extends AbstractFigure implements Terminal {
      *  transform context.
      *  @return The origin of the background figure.
      */
+    @Override
     public Point2D getOrigin() {
         return _figure.getOrigin();
     }
@@ -131,6 +138,7 @@ public class TerminalFigure extends AbstractFigure implements Terminal {
     /** Return the parent of this component. Return null if the component
      *  does not have a parent.
      */
+    @Override
     public CanvasComponent getParent() {
         return _figure.getParent();
     }
@@ -139,6 +147,7 @@ public class TerminalFigure extends AbstractFigure implements Terminal {
      * has its own transform context, this method should return it,
      * otherwise it should return the transform context of its parent.
      */
+    @Override
     public TransformContext getTransformContext() {
         return _figure.getTransformContext();
     }
@@ -147,12 +156,14 @@ public class TerminalFigure extends AbstractFigure implements Terminal {
      *  used for things like highlighting. The result shape is given
      *  in the enclosing transform context.
      */
+    @Override
     public Shape getShape() {
         return _figure.getShape();
     }
 
     /** Return the tooltip for this figure.
      */
+    @Override
     public String getToolTipText() {
         return _figure.getToolTipText();
     }
@@ -160,6 +171,7 @@ public class TerminalFigure extends AbstractFigure implements Terminal {
     /**
      * Return the user object.
      */
+    @Override
     public Object getUserObject() {
         return _figure.getUserObject();
     }
@@ -174,6 +186,7 @@ public class TerminalFigure extends AbstractFigure implements Terminal {
      * <p>(This method would be better named <b>hits</b>, but
      * the name <b>hit</b> is consistent with java.awt.Graphics2D.)
      */
+    @Override
     public boolean hit(Rectangle2D r) {
         return _figure.hit(r);
     }
@@ -181,6 +194,7 @@ public class TerminalFigure extends AbstractFigure implements Terminal {
     /** Test if this figure intersects the given rectangle. The
      *  rectangle is given in the enclosing transform context.
      */
+    @Override
     public boolean intersects(Rectangle2D r) {
         return _figure.intersects(r);
     }
@@ -189,12 +203,14 @@ public class TerminalFigure extends AbstractFigure implements Terminal {
      *  does not indicate whether the object is actually visible on
      *  the screen, as one of its ancestors may not be visible.
      */
+    @Override
     public boolean isVisible() {
         return _figure.isVisible();
     }
 
     /** Paint the figure.
      */
+    @Override
     public void paint(Graphics2D g) {
         _figure.paint(g);
     }
@@ -205,6 +221,7 @@ public class TerminalFigure extends AbstractFigure implements Terminal {
      * used to optimize the paint, but implementors can assume that the
      * clip region is correctly set beforehand.
      */
+    @Override
     public void paint(Graphics2D g, Rectangle2D region) {
         _figure.paint(g, region);
     }
@@ -212,6 +229,7 @@ public class TerminalFigure extends AbstractFigure implements Terminal {
     /** Tell the terminal to relocate itself because the
      * attachment site (or the figure that owns it) has moved.
      */
+    @Override
     public void relocate() {
         // FIXME implement
     }
@@ -219,6 +237,7 @@ public class TerminalFigure extends AbstractFigure implements Terminal {
     /** Schedule a repaint of the component. This should be called after
      *  performing modifications on the component.
      */
+    @Override
     public void repaint() {
         _figure.repaint();
     }
@@ -228,12 +247,14 @@ public class TerminalFigure extends AbstractFigure implements Terminal {
      * clear any cached data that depends on its children and
      * forward the notification upwards.
      */
+    @Override
     public void repaint(DamageRegion d) {
         _figure.repaint(d);
     }
 
     /** Set the site that the terminal is attached to.
      */
+    @Override
     public void setAttachSite(Site s) {
         _attachSite = s;
     }
@@ -242,6 +263,7 @@ public class TerminalFigure extends AbstractFigure implements Terminal {
      *  interactor given to it, it will respond to events
      *  on the canvas, in the ways determined by the interactor.
      */
+    @Override
     public void setInteractor(Interactor interactor) {
         _figure.setInteractor(interactor);
     }
@@ -252,12 +274,14 @@ public class TerminalFigure extends AbstractFigure implements Terminal {
      * responsibility of the caller to do this. This method is not intended
      * for public use, and should never be called by client code.
      */
+    @Override
     public void setParent(CanvasComponent fc) {
         _figure.setParent(fc);
     }
 
     /** Set the tool tip for this figure.
      */
+    @Override
     public void setToolTipText(String tip) {
         _figure.setToolTipText(tip);
     }
@@ -266,12 +290,14 @@ public class TerminalFigure extends AbstractFigure implements Terminal {
      *  be used to perform arbitrary translation, scaling, shearing, and
      *  rotation operations.
      */
+    @Override
     public void transform(AffineTransform at) {
         _figure.transform(at);
     }
 
     /** Move the figure the indicated distance.
      */
+    @Override
     public void translate(double x, double y) {
         _figure.translate(x, y);
     }
@@ -279,6 +305,7 @@ public class TerminalFigure extends AbstractFigure implements Terminal {
     /**
      * Set the user object.
      */
+    @Override
     public void setUserObject(Object o) {
         _figure.setUserObject(o);
     }
@@ -286,6 +313,7 @@ public class TerminalFigure extends AbstractFigure implements Terminal {
     /** Set the visibility flag of this object. If the flag is false,
      * then the object will not be painted on the screen.
      */
+    @Override
     public void setVisible(boolean flag) {
         _figure.setVisible(flag);
     }

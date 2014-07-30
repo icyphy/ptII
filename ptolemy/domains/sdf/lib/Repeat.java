@@ -101,6 +101,7 @@ public class Repeat extends SDFTransformer {
      *  @param attribute The attribute that has changed.
      *  @exception IllegalActionException If the parameters are out of range.
      */
+    @Override
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
 
@@ -134,6 +135,7 @@ public class Repeat extends SDFTransformer {
      *  <pre>  1 2 3 1 2 3 4 5 6 4 5 6</pre><br>
      *  @exception IllegalActionException If there is no director.
      */
+    @Override
     public void fire() throws IllegalActionException {
         super.fire();
 

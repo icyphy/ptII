@@ -71,6 +71,7 @@ public class DisplayAll extends Display {
      *
      *  @exception IllegalActionException Thrown if there is no director.
      */
+    @Override
     public boolean postfire() throws IllegalActionException {
         //  TODO: Order by channel first and then by position in channel will be nicer,
         //  but this requires to override the Display.postfire() method completely and

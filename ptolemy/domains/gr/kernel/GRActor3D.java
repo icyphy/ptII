@@ -90,6 +90,7 @@ abstract public class GRActor3D extends GRActor {
      *  @exception IllegalActionException If the given actor is not a
      *  ViewScreen3D.
      */
+    @Override
     protected void _setViewScreen(GRActor actor) throws IllegalActionException {
         if (actor instanceof ViewScreen3D) {
             _viewScreen = (ViewScreen3D) actor;

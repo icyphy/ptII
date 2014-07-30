@@ -25,7 +25,7 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 Ptolemy II includes the work of others, to see those copyrights, follow
 the copyright link on the splash page or see copyright.htm.
-*/
+ */
 package ptolemy.actor.util;
 
 import ptolemy.data.type.ArrayType;
@@ -66,6 +66,7 @@ public class ArrayElementTypeFunction extends MonotonicFunction {
      *  @exception IllegalActionException If the type of the argument
      *   cannot be determined.
      */
+    @Override
     public Object getValue() throws IllegalActionException {
         Type type = _typeable.getType();
         if (type instanceof ArrayType) {
@@ -82,6 +83,7 @@ public class ArrayElementTypeFunction extends MonotonicFunction {
      *  in which case return an empty array.
      *  @return An array of InequalityTerms.
      */
+    @Override
     public InequalityTerm[] getVariables() {
         InequalityTerm term = _typeable.getTypeTerm();
         if (term.isSettable()) {

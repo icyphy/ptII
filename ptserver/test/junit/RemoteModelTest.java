@@ -144,6 +144,7 @@ public class RemoteModelTest {
         assertNotNull(actor);
         actor.setDelegator(new TokenDelegator() {
 
+            @Override
             public void getToken(Token token) {
                 if (counter < 10) {
                     if (token instanceof IntToken) {
@@ -203,6 +204,7 @@ public class RemoteModelTest {
                 .getTopLevelActor().getEntity("Display2");
         actor2.setDelegator(new TokenDelegator() {
 
+            @Override
             public void getToken(Token token) {
             }
         });
@@ -215,7 +217,7 @@ public class RemoteModelTest {
         Ticket ticket = response.getTicket();
         ProxyModelInfrastructure model = new ProxyModelInfrastructure(
                 ProxyModelType.CLIENT, (CompositeActor) ServerUtility
-                .createMoMLParser().parse(response.getModelXML()),
+                        .createMoMLParser().parse(response.getModelXML()),
                 response.getModelTypes());
         model.setUpInfrastructure(ticket, _server.getBrokerUrl());
 
@@ -262,6 +264,7 @@ public class RemoteModelTest {
         assertNotNull(actor);
         actor.setDelegator(new TokenDelegator() {
 
+            @Override
             public void getToken(Token token) {
                 if (counter < 10) {
                     if (token instanceof IntToken) {
@@ -284,12 +287,14 @@ public class RemoteModelTest {
                 .getTopLevelActor().getEntity("Display2");
         actor2.setDelegator(new TokenDelegator() {
 
+            @Override
             public void getToken(Token token) {
             }
         });
         assertNotNull(actor);
         actor.setDelegator(new TokenDelegator() {
 
+            @Override
             public void getToken(Token token) {
                 if (counter < 10) {
                     if (token instanceof IntToken) {
@@ -337,6 +342,7 @@ public class RemoteModelTest {
         task.getProxyModelInfrastructure().addProxyModelListener(
                 new ProxyModelAdapter() {
 
+                    @Override
                     public void modelConnectionExpired(
                             ProxyModelInfrastructure remoteModel) {
                         synchronized (RemoteModelTest.this) {

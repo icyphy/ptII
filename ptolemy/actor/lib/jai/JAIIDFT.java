@@ -128,6 +128,7 @@ public class JAIIDFT extends Transformer {
      *  @param attribute The attribute that changed.
      *  @exception IllegalActionException If the function is not recognized.
      */
+    @Override
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         if (attribute == dataNature) {
@@ -168,6 +169,7 @@ public class JAIIDFT extends Transformer {
      *  or if there is an invalid scaling type, or an invalid data nature
      *  set.
      */
+    @Override
     public void fire() throws IllegalActionException {
         super.fire();
 

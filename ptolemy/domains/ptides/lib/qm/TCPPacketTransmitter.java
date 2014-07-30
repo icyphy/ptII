@@ -26,7 +26,7 @@ ENHANCEMENTS, OR MODIFICATIONS.
                                                 PT_COPYRIGHT_VERSION_2
                                                 COPYRIGHTENDKEY
 
-*/
+ */
 package ptolemy.domains.ptides.lib.qm;
 
 import java.util.ArrayList;
@@ -118,6 +118,7 @@ public class TCPPacketTransmitter extends OutputDevice {
      *  <i>priority</i>, then set the specified values.
      *  @exception IllegalActionException If value is less than zero.
      */
+    @Override
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         if (attribute == defaultFrameSize) {
@@ -150,12 +151,12 @@ public class TCPPacketTransmitter extends OutputDevice {
     public TypedIOPort output;
 
     /** The default TCP Packet size parameter. The initial default
-     *  value is an integer with the value 5. 
+     *  value is an integer with the value 5.
      */
     public Parameter defaultFrameSize;
 
     /** Default TCP Packet priority parameter. The initial default
-     *  value is an integer with the value 1. 
+     *  value is an integer with the value 1.
      */
     public Parameter priority;
 
@@ -211,6 +212,7 @@ public class TCPPacketTransmitter extends OutputDevice {
      *  input token cannot be read or output token cannot be
      *  sent.
      */
+    @Override
     public void fire() throws IllegalActionException {
 
         super.fire();
@@ -255,7 +257,7 @@ public class TCPPacketTransmitter extends OutputDevice {
             Token[] values = new Token[] {
                     new DoubleToken(ptidesDirector.getModelTime()
                             .getDoubleValue()),
-                    new IntToken(ptidesDirector.getMicrostep()), input.get(0) };
+                            new IntToken(ptidesDirector.getMicrostep()), input.get(0) };
             RecordToken record = new RecordToken(labels, values);
 
             // add the token into packet values List
@@ -307,6 +309,7 @@ public class TCPPacketTransmitter extends OutputDevice {
      *  ports, or if any of the outside sink ports is not a network
      *  port.
      */
+    @Override
     public void preinitialize() throws IllegalActionException {
 
         super.preinitialize();
@@ -334,6 +337,7 @@ public class TCPPacketTransmitter extends OutputDevice {
      * within the actor, since they affect correct execution in the next
      * run
      */
+    @Override
     public void wrapup() throws IllegalActionException {
 
         // send last packet

@@ -127,7 +127,7 @@ public class RunTableau extends Tableau {
     /** The frame that is created by an instance of RunTableau.
      */
     @SuppressWarnings("serial")
-        public class RunFrame extends ModelFrame implements Printable {
+    public class RunFrame extends ModelFrame implements Printable {
         /** Construct a frame to control the specified Ptolemy II model.
          *  After constructing this, it is necessary
          *  to call setVisible(true) to make the frame appear.
@@ -149,6 +149,7 @@ public class RunTableau extends Tableau {
          *   NO_SUCH_PAGE if pageIndex specifies a non-existent page.
          *  @exception PrinterException If the print job is terminated.
          */
+        @Override
         public synchronized int print(Graphics graphics, PageFormat format,
                 int index) throws PrinterException {
             if (graphics == null) {
@@ -170,6 +171,7 @@ public class RunTableau extends Tableau {
 
         /** Add a Debug menu.
          */
+        @Override
         protected void _addMenus() {
             super._addMenus();
 
@@ -207,6 +209,7 @@ public class RunTableau extends Tableau {
 
         /** Listener for debug menu commands. */
         public class DebugMenuListener implements ActionListener {
+            @Override
             public void actionPerformed(ActionEvent e) {
                 JMenuItem target = (JMenuItem) e.getSource();
                 String actionCommand = target.getActionCommand();
@@ -239,8 +242,8 @@ public class RunTableau extends Tableau {
                     } catch (KernelException ex) {
                         try {
                             MessageHandler
-                                    .warning("Failed to create debug listener: "
-                                            + ex);
+                            .warning("Failed to create debug listener: "
+                                    + ex);
                         } catch (CancelException exception) {
                         }
                     }
@@ -282,6 +285,7 @@ public class RunTableau extends Tableau {
          *  @exception Exception If the factory should be able to create a
          *   tableau for the effigy, but something goes wrong.
          */
+        @Override
         public Tableau createTableau(Effigy effigy) throws Exception {
             if (effigy instanceof PtolemyEffigy) {
                 // First see whether the effigy already contains a RunTableau.
@@ -340,6 +344,7 @@ public class RunTableau extends Tableau {
          *  @exception Exception If the factory should be able to create a
          *   tableau for the effigy, but something goes wrong.
          */
+        @Override
         public Tableau createTableau(Effigy effigy) throws Exception {
             return super.createTableau(effigy.masterEffigy());
         }

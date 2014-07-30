@@ -99,8 +99,8 @@ public class Project {
     public static void main(String[] args) {
         if (args.length != 2) {
             System.out
-                    .println("Usage: java ptolemy.domains.modal.kernel."
-                            + "test.Project <first_automaton.xml> <second_automaton.xml>");
+            .println("Usage: java ptolemy.domains.modal.kernel."
+                    + "test.Project <first_automaton.xml> <second_automaton.xml>");
             System.out.println("This program computes the projection of the "
                     + "first automaton to the second one.");
             StringUtilities.exit(1);

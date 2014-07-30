@@ -25,7 +25,7 @@ ENHANCEMENTS, OR MODIFICATIONS.
                                                 COPYRIGHTENDKEY
 
 
-*/
+ */
 
 package ptdb.kernel.bl.search;
 
@@ -86,6 +86,7 @@ public class PatternMatchGraphSearcher extends GraphSearcher {
      * occurs during some execution.
      */
 
+    @Override
     protected void _search() throws DBConnectionException, DBExecutionException {
 
         Pattern pattern = _dbGraphSearchCriteria.getPattern();

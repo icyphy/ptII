@@ -71,7 +71,7 @@ public class PortMatcher extends TypedIOPort implements Checkable {
      */
     public PortMatcher(PortCriterion criterion, ComponentEntity container,
             String name, boolean isInput, boolean isOutput)
-            throws IllegalActionException, NameDuplicationException {
+                    throws IllegalActionException, NameDuplicationException {
         super(container, name, isInput, isOutput);
         _criterion = criterion;
     }
@@ -81,6 +81,7 @@ public class PortMatcher extends TypedIOPort implements Checkable {
      *  @return The criterion, or null if this port is not created for a
      *   PortCriterion.
      */
+    @Override
     public Criterion getCriterion() {
         return _criterion;
     }
@@ -98,8 +99,9 @@ public class PortMatcher extends TypedIOPort implements Checkable {
      *  @exception NameDuplicationException If the container already has
      *   a port with the name of this port.
      */
+    @Override
     public void setContainer(Entity container) throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         if (container == null && _criterion != null) {
             GTIngredientList list = _criterion.getOwner();
             GTIngredientsAttribute attribute = list.getOwner();

@@ -136,6 +136,7 @@ public class SliderSource extends Source implements ChangeListener, Placeable {
      *  @exception IllegalActionException If the specified range for the
      *   slider is invalid.
      */
+    @Override
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         if (attribute == minimum || attribute == maximum
@@ -170,6 +171,7 @@ public class SliderSource extends Source implements ChangeListener, Placeable {
      *  @exception CloneNotSupportedException If a derived class contains
      *   an attribute that cannot be cloned.
      */
+    @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         SliderSource newObject = (SliderSource) super.clone(workspace);
         newObject.slider = null;
@@ -179,6 +181,7 @@ public class SliderSource extends Source implements ChangeListener, Placeable {
 
     /** Output the value of the slider recorded when prefire() is last called.
      */
+    @Override
     public void fire() throws IllegalActionException {
         super.fire();
         output.send(0, _outputVal);
@@ -197,6 +200,7 @@ public class SliderSource extends Source implements ChangeListener, Placeable {
      *  Otherwise, place it in the specified container.
      *  @exception IllegalActionException If the parent class throws it.
      */
+    @Override
     public void initialize() throws IllegalActionException {
         super.initialize();
 
@@ -237,6 +241,7 @@ public class SliderSource extends Source implements ChangeListener, Placeable {
      *  (unless it is null).
      *  @param container The container into which to place the slider.
      */
+    @Override
     public void place(Container container) {
 
         _container = container;
@@ -287,6 +292,7 @@ public class SliderSource extends Source implements ChangeListener, Placeable {
     /** Record the current value of the slider. This value is output in the
      *  subsequent firings of this actor.
      */
+    @Override
     public boolean prefire() throws IllegalActionException {
         _outputVal = new IntToken(slider.getValue());
         return super.prefire();
@@ -306,6 +312,7 @@ public class SliderSource extends Source implements ChangeListener, Placeable {
      *  @exception IllegalActionException If the base class throws it.
      *  @exception NameDuplicationException If the base class throws it.
      */
+    @Override
     public void setContainer(CompositeEntity container)
             throws IllegalActionException, NameDuplicationException {
         super.setContainer(container);
@@ -316,13 +323,14 @@ public class SliderSource extends Source implements ChangeListener, Placeable {
     }
 
     /** The value of the slider changed, record the new value. */
+    @Override
     public void stateChanged(ChangeEvent e) {
         slider.getValue();
     }
 
     /** The frame for the slider. */
     @SuppressWarnings("serial")
-        public static class SliderFrame extends JFrame {
+    public static class SliderFrame extends JFrame {
 
         /**  Create a frame for the slider.
          * @param minimum the minimum value.
@@ -388,6 +396,7 @@ public class SliderSource extends Source implements ChangeListener, Placeable {
      */
     private void _remove() {
         SwingUtilities.invokeLater(new Runnable() {
+            @Override
             public void run() {
                 if (slider != null) {
                     if (_container != null) {

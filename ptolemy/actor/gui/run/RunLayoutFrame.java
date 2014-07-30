@@ -95,9 +95,9 @@ public class RunLayoutFrame extends TableauFrame implements MultiContainerFrame 
                 // If data is malformed, issue a warning and proceed.
                 try {
                     MessageHandler
-                            .warning("A container with name "
-                                    + containerLayout.getName()
-                                    + " was found in the contstraints file but was not found in the container");
+                    .warning("A container with name "
+                            + containerLayout.getName()
+                            + " was found in the contstraints file but was not found in the container");
                 } catch (CancelException ex) {
                     throw new IllegalActionException(model, "Canceled");
                 }
@@ -120,6 +120,7 @@ public class RunLayoutFrame extends TableauFrame implements MultiContainerFrame 
      *  @param name The name of the container.
      *  @param container The container.
      */
+    @Override
     public void addContainer(String name, Container container) {
         // check to see if another panel with this name already exists
         ContainerLayout layout = _constraintsManager.getContainerLayout(name);
@@ -140,6 +141,7 @@ public class RunLayoutFrame extends TableauFrame implements MultiContainerFrame 
      *  @param name The name of the container.
      *  @return true if the frame has a container with the specified name.
      */
+    @Override
     public boolean hasContainer(String name) {
         return _constraintsManager.getContainerLayout(name) != null;
     }
@@ -148,6 +150,7 @@ public class RunLayoutFrame extends TableauFrame implements MultiContainerFrame 
      *  This may throw an InternalErrorException if the container does not exist.
      *  @param name The name of the container.
      */
+    @Override
     public void removeContainer(String name) {
         ContainerLayout layout = _constraintsManager.getContainerLayout(name);
         if (layout == null) {
@@ -178,6 +181,7 @@ public class RunLayoutFrame extends TableauFrame implements MultiContainerFrame 
      *  the modified layout, if it has been modified.
      *  @return False if the user cancels on a save query.
      */
+    @Override
     protected boolean _close() {
         if (super._close()) {
             // Save the XML.

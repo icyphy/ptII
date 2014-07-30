@@ -157,6 +157,7 @@ public class MobileModel extends TypedCompositeActor {
      *  @exception CloneNotSupportedException If a derived class contains
      *   an attribute that cannot be cloned.
      */
+    @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         MobileModel newObject = (MobileModel) super.clone(workspace);
         return newObject;
@@ -168,6 +169,7 @@ public class MobileModel extends TypedCompositeActor {
      *  the director's fire() method throws it, or if the actor is not
      *  opaque.
      */
+    @Override
     public void fire() throws IllegalActionException {
         if (_debugging) {
             _debug("Invoking fire");
@@ -216,11 +218,12 @@ public class MobileModel extends TypedCompositeActor {
                 }
             } catch (Exception ex) {
                 if (_debugging) {
-                    _debug("Problem parsing " + (str == null ? "null" : str.stringValue()));
+                    _debug("Problem parsing "
+                            + (str == null ? "null" : str.stringValue()));
                 }
 
                 throw new IllegalActionException(this, ex, "Problem parsing "
-                        + (str == null ? "null": str.stringValue()));
+                        + (str == null ? "null" : str.stringValue()));
             }
         }
 
@@ -229,6 +232,7 @@ public class MobileModel extends TypedCompositeActor {
 
     /** Return true.
      */
+    @Override
     public boolean isOpaque() {
         return true;
     }
@@ -238,6 +242,7 @@ public class MobileModel extends TypedCompositeActor {
      *  or if the director's postfire() method throws it, or if this actor
      *  is not opaque.
      */
+    @Override
     public boolean postfire() throws IllegalActionException {
         if (!_stopRequested && _moml != null) {
             //remove the old model inside first, if there is one.
@@ -273,6 +278,7 @@ public class MobileModel extends TypedCompositeActor {
     /** Return true if the actor either of its input port has token.
      *  @exception IllegalActionException Not thrown in this base class.
      */
+    @Override
     public boolean prefire() throws IllegalActionException {
         if (_debugging) {
             _debug("Invoking prefire");
@@ -302,6 +308,7 @@ public class MobileModel extends TypedCompositeActor {
      *  @exception IllegalActionException If can't create the director, or
      *  if the director's preinitialize() method throws it.
      */
+    @Override
     public void preinitialize() throws IllegalActionException {
         _director = null;
         _createDirector();
@@ -333,6 +340,7 @@ public class MobileModel extends TypedCompositeActor {
      *  or if the director's wrapup() method throws it, or if this
      *  actor is not opaque.
      */
+    @Override
     public void wrapup() throws IllegalActionException {
         // clean the inside content.
         String delete = _requestToRemoveAll(this);
@@ -357,6 +365,7 @@ public class MobileModel extends TypedCompositeActor {
 
     /** Export the moml description of this.
      */
+    @Override
     protected void _exportMoMLContents(Writer output, int depth)
             throws IOException {
         Iterator attributes = attributeList().iterator();

@@ -83,7 +83,7 @@ import ptolemy.util.StringUtilities;
  */
 @SuppressWarnings("serial")
 public class EditParametersDialog extends ComponentDialog implements
-        ChangeListener {
+ChangeListener {
     /** Construct a dialog with the specified owner and target.
      *  A "Commit" and a "Cancel" button are added to the dialog.
      *  The dialog is placed relative to the owner.
@@ -217,7 +217,7 @@ public class EditParametersDialog extends ComponentDialog implements
 
                     if (configuration != null) {
                         configuration
-                                .openModel(null, doc, doc.toExternalForm());
+                        .openModel(null, doc, doc.toExternalForm());
                         success = true;
                     }
                 }
@@ -248,6 +248,7 @@ public class EditParametersDialog extends ComponentDialog implements
      *  was closed.
      *  @param change The change that was executed.
      */
+    @Override
     public void changeExecuted(ChangeRequest change) {
         // Ignore if this is not the originator.
         if (change == null || change.getSource() != this) {
@@ -268,6 +269,7 @@ public class EditParametersDialog extends ComponentDialog implements
      *  @param change The change that was attempted.
      *  @param exception The exception that resulted.
      */
+    @Override
     public void changeFailed(ChangeRequest change, final Exception exception) {
         // Ignore if this is not the originator.
         if (change == null || change.getSource() != this) {
@@ -295,6 +297,7 @@ public class EditParametersDialog extends ComponentDialog implements
     /** If the contents of this dialog implements the CloseListener
      *  interface, then notify it that the window has closed.
      */
+    @Override
     protected void _handleClosing() {
         super._handleClosing();
 
@@ -328,8 +331,8 @@ public class EditParametersDialog extends ComponentDialog implements
                 "ptolemy.data.expr.Parameter",
                 "ptolemy.data.expr.FileParameter",
                 "ptolemy.kernel.util.StringAttribute",
-                "ptolemy.actor.gui.ColorAttribute" },
-                "ptolemy.data.expr.Parameter", true);
+        "ptolemy.actor.gui.ColorAttribute" },
+        "ptolemy.data.expr.Parameter", true);
 
         _query.addLine("name", "Name", name);
         _query.addLine("default", "Default value", defValue);
@@ -367,6 +370,7 @@ public class EditParametersDialog extends ComponentDialog implements
 
     /** A runnable for the change executed event. */
     class ChangeExecutedRunnable implements Runnable {
+        @Override
         public void run() {
             new EditParametersDialog(_owner, _target);
         }
@@ -378,6 +382,7 @@ public class EditParametersDialog extends ComponentDialog implements
             _exception = exception;
         }
 
+        @Override
         public void run() {
             // When a parameter is removed, and something depends on
             // it, this gets called when _query is null.
@@ -477,5 +482,5 @@ public class EditParametersDialog extends ComponentDialog implements
     ////                         private variables                 ////
     // Button labels.
     private static String[] _moreButtons = { "Commit", "Add", "Remove",
-            "Defaults", "Preferences", "Help", "Cancel" };
+        "Defaults", "Preferences", "Help", "Cancel" };
 }

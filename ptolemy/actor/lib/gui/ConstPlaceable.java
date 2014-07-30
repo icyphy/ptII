@@ -81,6 +81,7 @@ public class ConstPlaceable extends Const implements PortablePlaceable {
      *  @exception IllegalActionException If it is thrown by the
      *   send() method sending out the token.
      */
+    @Override
     public void fire() throws IllegalActionException {
         super.fire();
         _getImplementation().setValue(value.getToken());
@@ -90,6 +91,7 @@ public class ConstPlaceable extends Const implements PortablePlaceable {
      *  @param container The container in which to place the object, or
      *   null to specify that there is no current container.
      */
+    @Override
     public void place(PortableContainer container) {
         _getImplementation().place(container);
     }

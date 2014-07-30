@@ -65,6 +65,7 @@ public class ImageDisplay extends Sink {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
+    @Override
     public void initialize() throws IllegalActionException {
         super.initialize();
 
@@ -74,6 +75,7 @@ public class ImageDisplay extends Sink {
     /** Display IplImage.
      *  @exception IllegalActionException If thrown while writing to the port.
      */
+    @Override
     public boolean postfire() throws IllegalActionException {
         if (input.hasToken(0)) {
             ObjectToken inputToken = (ObjectToken) input.get(0);
@@ -102,6 +104,7 @@ public class ImageDisplay extends Sink {
     /** Close window.
      *  @exception IllegalActionException If thrown by the super class.
      */
+    @Override
     public void wrapup() throws IllegalActionException {
         super.wrapup();
         //cvReleaseImage(new PointerByReference(_frame));

@@ -134,6 +134,7 @@ public class ArrowKeySensor extends TypedAtomicActor {
     /** Broadcast the integer value 1 for each key pressed and 0 for
      *  each released.
      */
+    @Override
     public void fire() throws IllegalActionException {
         super.fire();
         // Broadcast key presses.
@@ -182,6 +183,7 @@ public class ArrowKeySensor extends TypedAtomicActor {
     /** Create the JFrame window capable of detecting the key-presses.
      *  @exception IllegalActionException If a derived class throws it.
      */
+    @Override
     public void initialize() throws IllegalActionException {
         super.initialize();
         _myFrame = new MyFrame();
@@ -190,6 +192,7 @@ public class ArrowKeySensor extends TypedAtomicActor {
     /** Dispose of the JFrame, causing the window to vanish.
      *  @exception IllegalActionException Not thrown in this base class.
      */
+    @Override
     public void wrapup() throws IllegalActionException {
         super.wrapup();
         if (_myFrame != null) {
@@ -252,7 +255,7 @@ public class ArrowKeySensor extends TypedAtomicActor {
     ///////////////////////////////////////////////////////////////////
     ////                     private inner classes                 ////
     @SuppressWarnings("serial")
-        private class MyFrame extends JFrame {
+    private class MyFrame extends JFrame {
         /** Construct a frame.  After constructing this, it is
          *  necessary to call setVisible(true) to make the frame
          *  appear.  This is done by calling show() at the end of this
@@ -263,6 +266,7 @@ public class ArrowKeySensor extends TypedAtomicActor {
             // up-arrow call-backs
             ActionListener myUpPressedListener = new ActionListenerExceptionCatcher(
                     new ActionListener() {
+                        @Override
                         public void actionPerformed(ActionEvent e) {
                             _upKeyPressed = true;
                             _upKeyReleased = false;
@@ -272,6 +276,7 @@ public class ArrowKeySensor extends TypedAtomicActor {
 
             ActionListener myUpReleasedListener = new ActionListenerExceptionCatcher(
                     new ActionListener() {
+                        @Override
                         public void actionPerformed(ActionEvent e) {
                             _upKeyReleased = true;
                             _upKeyPressed = false;
@@ -282,6 +287,7 @@ public class ArrowKeySensor extends TypedAtomicActor {
             // left-arrow call-backs
             ActionListener myLeftPressedListener = new ActionListenerExceptionCatcher(
                     new ActionListener() {
+                        @Override
                         public void actionPerformed(ActionEvent e) {
                             _leftKeyPressed = true;
                             _leftKeyReleased = false;
@@ -291,6 +297,7 @@ public class ArrowKeySensor extends TypedAtomicActor {
 
             ActionListener myLeftReleasedListener = new ActionListenerExceptionCatcher(
                     new ActionListener() {
+                        @Override
                         public void actionPerformed(ActionEvent e) {
                             _leftKeyReleased = true;
                             _leftKeyPressed = false;
@@ -301,6 +308,7 @@ public class ArrowKeySensor extends TypedAtomicActor {
             // right-arrow call-backs
             ActionListener myRightPressedListener = new ActionListenerExceptionCatcher(
                     new ActionListener() {
+                        @Override
                         public void actionPerformed(ActionEvent e) {
                             _rightKeyPressed = true;
                             _rightKeyReleased = false;
@@ -310,6 +318,7 @@ public class ArrowKeySensor extends TypedAtomicActor {
 
             ActionListener myRightReleasedListener = new ActionListenerExceptionCatcher(
                     new ActionListener() {
+                        @Override
                         public void actionPerformed(ActionEvent e) {
                             _rightKeyReleased = true;
                             _rightKeyPressed = false;
@@ -320,6 +329,7 @@ public class ArrowKeySensor extends TypedAtomicActor {
             // down-arrow call-backs
             ActionListener myDownPressedListener = new ActionListenerExceptionCatcher(
                     new ActionListener() {
+                        @Override
                         public void actionPerformed(ActionEvent e) {
                             _downKeyPressed = true;
                             _downKeyReleased = false;
@@ -329,6 +339,7 @@ public class ArrowKeySensor extends TypedAtomicActor {
 
             ActionListener myDownReleasedListener = new ActionListenerExceptionCatcher(
                     new ActionListener() {
+                        @Override
                         public void actionPerformed(ActionEvent e) {
                             _downKeyReleased = true;
                             _downKeyPressed = false;
@@ -414,6 +425,7 @@ public class ArrowKeySensor extends TypedAtomicActor {
              *  Ignored in this listener.
              *  @param event The corresponding event.
              */
+            @Override
             public void mouseReleased(MouseEvent event) {
             }
 
@@ -421,6 +433,7 @@ public class ArrowKeySensor extends TypedAtomicActor {
              *  Ignored in this listener.
              *  @param event The corresponding event.
              */
+            @Override
             public void mouseEntered(MouseEvent event) {
             }
 
@@ -428,6 +441,7 @@ public class ArrowKeySensor extends TypedAtomicActor {
              *  Ignored in this listener.
              *  @param event The corresponding event.
              */
+            @Override
             public void mouseExited(MouseEvent event) {
             }
 
@@ -436,6 +450,7 @@ public class ArrowKeySensor extends TypedAtomicActor {
              * listener is attached to is clicked on.
              *  @param event The corresponding event.
              */
+            @Override
             public void mousePressed(MouseEvent event) {
                 Component component = event.getComponent();
 
@@ -448,6 +463,7 @@ public class ArrowKeySensor extends TypedAtomicActor {
              *  Ignored in this listener.
              *  @param event The corresponding event.
              */
+            @Override
             public void mouseClicked(MouseEvent event) {
             }
         }
@@ -468,7 +484,7 @@ public class ArrowKeySensor extends TypedAtomicActor {
     }
 
     private static class ActionListenerExceptionCatcher implements
-            ActionListener {
+    ActionListener {
         ///////////////////////////////////////////////////////////////////
         ////                         public methods                    ////
 
@@ -481,6 +497,7 @@ public class ArrowKeySensor extends TypedAtomicActor {
             _actionListener = actionListener;
         }
 
+        @Override
         public void actionPerformed(ActionEvent e) {
             try {
                 _actionListener.actionPerformed(e);

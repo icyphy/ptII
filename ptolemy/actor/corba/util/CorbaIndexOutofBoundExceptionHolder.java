@@ -7,7 +7,7 @@ package ptolemy.actor.corba.util;
  * Thursday, January 18, 2001 7:07:58 PM PST
  */
 public final class CorbaIndexOutofBoundExceptionHolder implements
-        org.omg.CORBA.portable.Streamable {
+org.omg.CORBA.portable.Streamable {
     public ptolemy.actor.corba.util.CorbaIndexOutofBoundException value = null;
 
     public CorbaIndexOutofBoundExceptionHolder() {
@@ -18,16 +18,19 @@ public final class CorbaIndexOutofBoundExceptionHolder implements
         value = initialValue;
     }
 
+    @Override
     public void _read(org.omg.CORBA.portable.InputStream i) {
         value = ptolemy.actor.corba.util.CorbaIndexOutofBoundExceptionHelper
                 .read(i);
     }
 
+    @Override
     public void _write(org.omg.CORBA.portable.OutputStream o) {
         ptolemy.actor.corba.util.CorbaIndexOutofBoundExceptionHelper.write(o,
                 value);
     }
 
+    @Override
     public org.omg.CORBA.TypeCode _type() {
         return ptolemy.actor.corba.util.CorbaIndexOutofBoundExceptionHelper
                 .type();

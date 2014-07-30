@@ -192,7 +192,8 @@ public class ComponentDef implements Comparable<Object> {
                 try {
                     jf.close();
                 } catch (IOException ex) {
-                    System.out.println("Failed to close \"" + jarFileName + "\": " + ex);
+                    System.out.println("Failed to close \"" + jarFileName
+                            + "\": " + ex);
                 }
             }
         }
@@ -201,7 +202,7 @@ public class ComponentDef implements Comparable<Object> {
 
     /** Creates a new instance of Component Palette. All component configurations
     are pulled out of components.xml
-    */
+     */
     @SuppressWarnings("unchecked")
     public static List<ComponentDef> createComponentDefs() {
         List<ComponentDef> components = new ArrayList<ComponentDef>();
@@ -296,7 +297,8 @@ public class ComponentDef implements Comparable<Object> {
 
     /** When dragging from the palette we need a clone rather than modify
         the original.
-    */
+     */
+    @Override
     public ComponentDef clone() {
         ComponentDef newone = new ComponentDef();
         newone.name = name;
@@ -311,7 +313,8 @@ public class ComponentDef implements Comparable<Object> {
     }
 
     /** Make it sortable on name so the palette is ordered.
-    */
+     */
+    @Override
     public int compareTo(Object o) {
         return name.compareTo(((ComponentDef) o).name);
     }

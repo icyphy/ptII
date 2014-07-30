@@ -65,6 +65,7 @@ public class ClassAndEntityTreeModel extends EntityTreeModel {
      *  @param index The index of the desired child.
      *  @return A node, or null if there is no such child.
      */
+    @Override
     public Object getChild(Object parent, int index) {
         List classes = _classes(parent);
         int numClasses = classes.size();
@@ -85,6 +86,7 @@ public class ClassAndEntityTreeModel extends EntityTreeModel {
      *  @param parent A parent node.
      *  @return The number of children.
      */
+    @Override
     public int getChildCount(Object parent) {
         List classes = _classes(parent);
         int numClasses = classes.size();
@@ -98,6 +100,7 @@ public class ClassAndEntityTreeModel extends EntityTreeModel {
      *  @param child The child.
      *  @return The index of the specified child.
      */
+    @Override
     public int getIndexOfChild(Object parent, Object child) {
         List classes = _classes(parent);
 
@@ -124,6 +127,7 @@ public class ClassAndEntityTreeModel extends EntityTreeModel {
      *  @param object The object.
      *  @return True if the node has no children.
      */
+    @Override
     public boolean isLeaf(Object object) {
         // FIXME: Ignoring setFilter for now.
         if (_classes(object).size() > 0) {

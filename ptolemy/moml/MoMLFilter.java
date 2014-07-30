@@ -216,10 +216,11 @@ public interface MoMLFilter {
      */
     public void filterEndElement(NamedObj container, String elementName,
             StringBuffer currentCharData, String xmlFile, MoMLParser parser)
-            throws Exception;
+                    throws Exception;
 
     /** Return a string that describes what the filter does.
      *  @return A description of the filter (ending with a newline).
      */
+    @Override
     public String toString();
 }

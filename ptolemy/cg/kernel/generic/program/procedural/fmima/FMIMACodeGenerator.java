@@ -24,7 +24,7 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
-*/
+ */
 
 package ptolemy.cg.kernel.generic.program.procedural.fmima;
 
@@ -54,8 +54,8 @@ $PTII/bin/ptcg -generatorPackage ptolemy.cg.kernel.generic.program.procedural.fm
  *  @since Ptolemy II 10.0
  *  @Pt.ProposedRating red (cxh)
  *  @Pt.AcceptedRating red (cxh)
-*/
-public class FMIMACodeGenerator extends ProceduralCodeGenerator /*GenericCodeGenerator*/ {
+ */
+public class FMIMACodeGenerator extends ProceduralCodeGenerator /*GenericCodeGenerator*/{
 
     /** Create a new instance of the FMIMACodeGenerator.
      *  The value of the <i>generatorPackageList</i> parameter of the
@@ -83,6 +83,7 @@ public class FMIMACodeGenerator extends ProceduralCodeGenerator /*GenericCodeGen
      *  @param comment The string to put in the comment.
      *  @return A formatted comment.
      */
+    @Override
     public String comment(String comment) {
         return "/" + "* " + comment + " *" + "/" + _eol;
     }
@@ -92,14 +93,15 @@ public class FMIMACodeGenerator extends ProceduralCodeGenerator /*GenericCodeGen
      *   In C, this would be defining main().
      *  @exception IllegalActionException Not thrown in this base class.
      */
+    @Override
     public String generateMainEntryCode() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
         code.append(comment("ptolemy/cg/kernel/generic/program/procedural/fmima/FMIMACodeGenerator.java"));
         code.append(comment("Probably the thing to do is to create .c files and copy them over to the cg/ directory."));
         code.append(comment("Then we can create a few functions that do the real work."));
         if (_isTopLevel()) {
-            code.append(_eol + _eol
-                    + "int main(int argc, char *argv[]) {" + _eol);
+            code.append(_eol + _eol + "int main(int argc, char *argv[]) {"
+                    + _eol);
             code.append(((FMIMACodeGeneratorAdapter) getAdapter(toplevel()))
                     .generateFMIMA());
 
@@ -107,6 +109,7 @@ public class FMIMACodeGenerator extends ProceduralCodeGenerator /*GenericCodeGen
         }
         return code.toString();
     }
+
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
@@ -127,10 +130,11 @@ public class FMIMACodeGenerator extends ProceduralCodeGenerator /*GenericCodeGen
      *  @exception KernelException If the target file cannot be overwritten
      *   or write-to-file throw any exception.
      */
+    @Override
     protected int _generateCode(StringBuffer code) throws KernelException {
 
         // Hint:  Look at ptolemy/cg/kernel/generic/program/procedural/c/CCodeGenerator.java
-        
+
         code.append(comment("Generated from ptolemy/cg/kernel/generic/program/procedural/fmima/FMIMACodeGenerator.java _generateCode"));
 
         // Copy the .c and .h files from $PTII/ptolemy/actor/lib/fmi/ma.
@@ -155,10 +159,10 @@ public class FMIMACodeGenerator extends ProceduralCodeGenerator /*GenericCodeGen
                 _includes.add("-I " + directoryFmiShared);
             }
         }
-        _copyCFileTosrc("ptolemy/actor/lib/fmi/ma/shared/",
-                directoryFmiShared, "sim_support.c");
-        _copyCFileTosrc("ptolemy/actor/lib/fmi/ma/shared/",
-                directoryFmiShared, "sim_support.h");
+        _copyCFileTosrc("ptolemy/actor/lib/fmi/ma/shared/", directoryFmiShared,
+                "sim_support.c");
+        _copyCFileTosrc("ptolemy/actor/lib/fmi/ma/shared/", directoryFmiShared,
+                "sim_support.h");
 
         String directoryFmiIncludes = directoryFmi + "includes/";
         if (new File(directoryFmiIncludes).mkdirs()) {
@@ -167,8 +171,9 @@ public class FMIMACodeGenerator extends ProceduralCodeGenerator /*GenericCodeGen
             }
         }
         _copyCFilesTosrc("ptolemy/actor/lib/fmi/ma/includes/",
-                         directoryFmiIncludes,
-                         new String [] {"fmi.h", "fmiFunctionTypes.h", "fmiFunctions.h", "fmiTypesPlatform.h"});
+                directoryFmiIncludes, new String[] { "fmi.h",
+                        "fmiFunctionTypes.h", "fmiFunctions.h",
+                        "fmiTypesPlatform.h" });
 
         String directoryFmiParser = directoryFmi + "parser/";
         if (new File(directoryFmiParser).mkdirs()) {
@@ -176,11 +181,12 @@ public class FMIMACodeGenerator extends ProceduralCodeGenerator /*GenericCodeGen
                 _includes.add("-I " + directoryFmiParser);
             }
         }
-        _copyCFilesTosrc("ptolemy/actor/lib/fmi/ma/parser/",
-                         directoryFmiParser,
-                         new String [] {"XmlElement.cpp", "XmlElement.h", "XmlParserCApi.cpp",
-                                        "XmlParserCApi.h", "XmlParser.cpp", "XmlParserException.h",
-                                        "XmlParser.h"});
+        _copyCFilesTosrc(
+                "ptolemy/actor/lib/fmi/ma/parser/",
+                directoryFmiParser,
+                new String[] { "XmlElement.cpp", "XmlElement.h",
+                        "XmlParserCApi.cpp", "XmlParserCApi.h",
+                        "XmlParser.cpp", "XmlParserException.h", "XmlParser.h" });
 
         String directoryFmiParserLibxml = directoryFmi + "parser/libxml/";
         if (new File(directoryFmiParserLibxml).mkdirs()) {
@@ -189,9 +195,14 @@ public class FMIMACodeGenerator extends ProceduralCodeGenerator /*GenericCodeGen
             }
         }
         _copyCFilesTosrc("ptolemy/actor/lib/fmi/ma/parser/libxml/",
-                         directoryFmiParserLibxml,
-                         new String [] {"dict.h", "encoding.h", "entities.h", "globals.h", "hash.h", "list.h", "parser.h", "relaxng.h", "SAX2.h", "SAX.h", "threads.h", "tree.h", "valid.h", "xlink.h", "xmlautomata.h", "xmlerror.h", "xmlexports.h", "xmlIO.h", "xmlmemory.h", "xmlreader.h", "xmlregexp.h", "xmlschemas.h", "xmlstring.h", "xmlversion.h"});
-         if (_executeCommands == null) {
+                directoryFmiParserLibxml, new String[] { "dict.h",
+                        "encoding.h", "entities.h", "globals.h", "hash.h",
+                        "list.h", "parser.h", "relaxng.h", "SAX2.h", "SAX.h",
+                        "threads.h", "tree.h", "valid.h", "xlink.h",
+                        "xmlautomata.h", "xmlerror.h", "xmlexports.h",
+                        "xmlIO.h", "xmlmemory.h", "xmlreader.h", "xmlregexp.h",
+                        "xmlschemas.h", "xmlstring.h", "xmlversion.h" });
+        if (_executeCommands == null) {
             _executeCommands = new StreamExec();
         }
 
@@ -209,6 +220,7 @@ public class FMIMACodeGenerator extends ProceduralCodeGenerator /*GenericCodeGen
      *  adapters have to extend this class.
      *  @return The base class for the adapters.
      */
+    @Override
     protected Class<?> _getAdapterClassFilter() {
         return FMIMACodeGeneratorAdapter.class;
     }
@@ -231,13 +243,13 @@ public class FMIMACodeGenerator extends ProceduralCodeGenerator /*GenericCodeGen
      *  a parameter, if there is a problem creating the codeDirectory directory
      *  or if there is a problem writing the code to a file.
      */
+    @Override
     protected void _writeMakefile(CompositeEntity container,
             String currentDirectory) throws IllegalActionException {
         _substituteMap.put("@PTCGPPCompiler@", "g++");
         _substituteMap.put("@PTCGCompiler@", "gcc");
 
-        _substituteMap.put("@PTCGLibraries@",
-                           _concatenateElements(_libraries));
+        _substituteMap.put("@PTCGLibraries@", _concatenateElements(_libraries));
 
         super._writeMakefile(container, currentDirectory);
     }

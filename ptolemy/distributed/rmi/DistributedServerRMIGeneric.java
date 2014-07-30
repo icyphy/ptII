@@ -73,7 +73,7 @@ import ptolemy.kernel.util.KernelException;
  @Pt.AcceptedRating Red (cxh)
  */
 public class DistributedServerRMIGeneric implements ServiceIDListener,
-        DiscoveryListener {
+DiscoveryListener {
     /** Construct a DistributedServerRMIGeneric with a configuration file.
      *  It performs the following tasks:
      * <ul>
@@ -150,6 +150,7 @@ public class DistributedServerRMIGeneric implements ServiceIDListener,
      *
      *  @param evt The event that describes the discovered registrars.
      */
+    @Override
     public void discarded(DiscoveryEvent evt) {
     }
 
@@ -159,6 +160,7 @@ public class DistributedServerRMIGeneric implements ServiceIDListener,
      *
      *  @param evt The event that describes the discovered registrars.
      */
+    @Override
     public void discovered(DiscoveryEvent evt) {
         ServiceRegistrar[] registrars = evt.getRegistrars();
 
@@ -201,6 +203,7 @@ public class DistributedServerRMIGeneric implements ServiceIDListener,
      *
      *  @param serviceID the service ID assigned by the lookup service.
      */
+    @Override
     public void serviceIDNotify(ServiceID serviceID) {
         // called as a ServiceIDListener
         // Should save the id to permanent storage

@@ -148,6 +148,7 @@ public class BooleanToken extends ScalarToken {
      *  value. If either this object or the argument is a nil Token,
      *  return false.
      */
+    @Override
     public boolean equals(Object object) {
         if (object == null) {
             return false;
@@ -185,6 +186,7 @@ public class BooleanToken extends ScalarToken {
     /** Return the type of this token.
      *  @return BaseType.BOOLEAN
      */
+    @Override
     public Type getType() {
         return BaseType.BOOLEAN;
     }
@@ -194,6 +196,7 @@ public class BooleanToken extends ScalarToken {
      *  false.
      *  @return A hash code value for this token.
      */
+    @Override
     public int hashCode() {
         if (_value) {
             return 1;
@@ -206,6 +209,7 @@ public class BooleanToken extends ScalarToken {
      *  Nil or missing tokens occur when a data source is sparsely populated.
      *  @return True if the token is the {@link #NIL} token.
      */
+    @Override
     public boolean isNil() {
         // We use a method here so that we can easily change how
         // we determine if a token is nil without modify lots of classes.
@@ -231,6 +235,7 @@ public class BooleanToken extends ScalarToken {
     /** Returns a token representing the multiplicative identity.
      *  @return TRUE.
      */
+    @Override
     public Token one() {
         return TRUE;
     }
@@ -258,6 +263,7 @@ public class BooleanToken extends ScalarToken {
      *  @return The string "true" if this token represents true, or the
      *  string "false" if it represents false.
      */
+    @Override
     public String toString() {
         if (isNil()) {
             return super.toString();
@@ -290,6 +296,7 @@ public class BooleanToken extends ScalarToken {
     /** Returns a token representing the additive identity.
      *  @return FALSE.
      */
+    @Override
     public Token zero() {
         return FALSE;
     }
@@ -318,6 +325,7 @@ public class BooleanToken extends ScalarToken {
     /** Return this token.
      *  @return This token.
      */
+    @Override
     protected ScalarToken _absolute() {
         return this;
     }
@@ -328,6 +336,7 @@ public class BooleanToken extends ScalarToken {
      *  @param rightArgument The token to add to this token.
      *  @return A new BooleanToken containing the result.
      */
+    @Override
     protected ScalarToken _add(ScalarToken rightArgument) {
         return this.or((BooleanToken) rightArgument);
     }
@@ -338,6 +347,7 @@ public class BooleanToken extends ScalarToken {
      *  @return The bitwise AND.
      *  @exception IllegalActionException Always thrown by this base class.
      */
+    @Override
     protected ScalarToken _bitwiseAnd(ScalarToken rightArgument)
             throws IllegalActionException {
         return and((BooleanToken) rightArgument);
@@ -348,6 +358,7 @@ public class BooleanToken extends ScalarToken {
      *  @return The bitwise NOT of this token.
      *  @exception IllegalActionException Always thrown by this base class.
      */
+    @Override
     protected ScalarToken _bitwiseNot() throws IllegalActionException {
         return not();
     }
@@ -358,6 +369,7 @@ public class BooleanToken extends ScalarToken {
      *  @return The bitwise OR.
      *  @exception IllegalActionException Always thrown by this base class.
      */
+    @Override
     protected ScalarToken _bitwiseOr(ScalarToken rightArgument)
             throws IllegalActionException {
         return or((BooleanToken) rightArgument);
@@ -369,6 +381,7 @@ public class BooleanToken extends ScalarToken {
      *  @return The bitwise XOR.
      *  @exception IllegalActionException Always thrown by this base class.
      */
+    @Override
     protected ScalarToken _bitwiseXor(ScalarToken rightArgument)
             throws IllegalActionException {
         return xor((BooleanToken) rightArgument);
@@ -389,6 +402,7 @@ public class BooleanToken extends ScalarToken {
      *  @exception IllegalActionException If the argument token is
      *  FALSE.
      */
+    @Override
     protected ScalarToken _divide(ScalarToken rightArgument)
             throws IllegalActionException {
         if (isNil() || ((BooleanToken) rightArgument).isNil()) {
@@ -412,6 +426,7 @@ public class BooleanToken extends ScalarToken {
      *  @param epsilon Ignored in this method.
      *  @return A token containing the result.
      */
+    @Override
     protected BooleanToken _isCloseTo(ScalarToken token, double epsilon) {
         return _isEqualTo(token);
     }
@@ -424,6 +439,7 @@ public class BooleanToken extends ScalarToken {
      *  If either this object or the argument is a nil Token, return
      *  false.
      */
+    @Override
     protected BooleanToken _isEqualTo(ScalarToken token) {
         if (equals(token)) {
             return TRUE;
@@ -437,6 +453,7 @@ public class BooleanToken extends ScalarToken {
      *  @exception IllegalActionException Always.
      *  @return Does not return.
      */
+    @Override
     protected BooleanToken _isLessThan(ScalarToken rightArgument)
             throws IllegalActionException {
         throw new IllegalActionException(notSupportedMessage("isLessThan",
@@ -448,6 +465,7 @@ public class BooleanToken extends ScalarToken {
      *  @exception IllegalActionException Always.
      *  @return Does not return.
      */
+    @Override
     protected ScalarToken _modulo(ScalarToken rightArgument)
             throws IllegalActionException {
         throw new IllegalActionException(notSupportedMessage("modulo", this,
@@ -463,6 +481,7 @@ public class BooleanToken extends ScalarToken {
      *  @exception IllegalActionException If ANDing the argument
      *  and the token throws it.
      */
+    @Override
     protected ScalarToken _multiply(ScalarToken rightArgument)
             throws IllegalActionException {
         return this.and((BooleanToken) rightArgument);
@@ -470,6 +489,7 @@ public class BooleanToken extends ScalarToken {
 
     /** Subtraction is not supported in Boolean algebras.
      */
+    @Override
     protected ScalarToken _subtract(ScalarToken rightArgument)
             throws IllegalActionException {
         throw new IllegalActionException(notSupportedMessage("subtract", this,

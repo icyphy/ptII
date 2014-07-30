@@ -59,7 +59,7 @@ import soot.SceneTransformer;
  @Pt.AcceptedRating Red (cxh)
  */
 public class InterpretedWriter extends SceneTransformer implements
-        HasPhaseOptions {
+HasPhaseOptions {
     /** Construct a new transformer
      */
     private InterpretedWriter(CompositeActor model) {
@@ -77,14 +77,17 @@ public class InterpretedWriter extends SceneTransformer implements
         return new InterpretedWriter(model);
     }
 
+    @Override
     public String getDefaultOptions() {
         return "";
     }
 
+    @Override
     public String getDeclaredOptions() {
         return "targetPackage outputDirectory";
     }
 
+    @Override
     public String getPhaseName() {
         return "";
     }
@@ -107,6 +110,7 @@ public class InterpretedWriter extends SceneTransformer implements
      *  <code>targetPackage</code> option to specify package
      *  to generate code in.
      */
+    @Override
     protected void internalTransform(String phaseName, Map options) {
         // FIXME: Perhaps AppletWriter should call this transformer?
         System.out.println("InterpretedWriter.internalTransform(" + phaseName
@@ -132,7 +136,7 @@ public class InterpretedWriter extends SceneTransformer implements
             if (!outputDirectoryFile.mkdirs()) {
                 throw new InternalErrorException(
                         "Failed to create directory \"" + outputDirectoryFile
-                                + "\"");
+                        + "\"");
             }
         }
 

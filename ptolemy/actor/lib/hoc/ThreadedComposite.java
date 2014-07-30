@@ -295,6 +295,7 @@ public class ThreadedComposite extends MirrorComposite {
      *  @exception IllegalActionException If the change is not acceptable
      *   to this container (not thrown in this base class).
      */
+    @Override
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         if (attribute == delay) {
@@ -310,6 +311,7 @@ public class ThreadedComposite extends MirrorComposite {
      *  @exception CloneNotSupportedException If a derived class has
      *   has an attribute that cannot be cloned.
      */
+    @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         ThreadedComposite newObject = (ThreadedComposite) super
                 .clone(workspace);
@@ -344,6 +346,7 @@ public class ThreadedComposite extends MirrorComposite {
      *  @return A representation of the dependencies between input ports
      *  and output ports.
      */
+    @Override
     public CausalityInterface getCausalityInterface() {
         // FIXME: This will not work property with Ptides because it will effectively
         // declare that the delay from input to output is infinite, which it is not.
@@ -489,6 +492,7 @@ public class ThreadedComposite extends MirrorComposite {
 
         public final IOPort port;
 
+        @Override
         public String toString() {
             return "token " + token + " for port " + port.getFullName() + "("
                     + channel + ")";
@@ -542,6 +546,7 @@ public class ThreadedComposite extends MirrorComposite {
          *  @exception CloneNotSupportedException If a derived class has
          *   has an attribute that cannot be cloned.
          */
+        @Override
         public Object clone(Workspace workspace)
                 throws CloneNotSupportedException {
             ThreadedDirector newObject = (ThreadedDirector) super
@@ -562,6 +567,7 @@ public class ThreadedComposite extends MirrorComposite {
          *   fails (e.g. type error), or if this thread is interrupted
          *   while we are waiting for output to produce.
          */
+        @Override
         public synchronized void fire() throws IllegalActionException {
             // NOTE: This method is synchronized to ensure that when
             // delay is UNDEFINED and the inside thread calls
@@ -605,7 +611,7 @@ public class ThreadedComposite extends MirrorComposite {
                     while (_outputFrames.isEmpty() && !_stopRequested) {
                         if (ThreadedComposite.this._debugging) {
                             ThreadedComposite.this
-                                    ._debug("Waiting for outputs from inside thread.");
+                            ._debug("Waiting for outputs from inside thread.");
                         }
                         // The timeout allows this to respond to stop()
                         // even if we have a deadlock for some reason.
@@ -666,6 +672,7 @@ public class ThreadedComposite extends MirrorComposite {
          *   will be fired.
          *  @exception IllegalActionException If the executive director throws it.
          */
+        @Override
         public Time fireAt(Actor actor, Time time, int microstep)
                 throws IllegalActionException {
             Time result = time;
@@ -673,8 +680,8 @@ public class ThreadedComposite extends MirrorComposite {
             if (director != null) {
                 if (ThreadedComposite.this._debugging) {
                     ThreadedComposite.this
-                            ._debug("---- Request refiring at time " + time
-                                    + " for actor: " + actor.getFullName());
+                    ._debug("---- Request refiring at time " + time
+                            + " for actor: " + actor.getFullName());
                 }
                 try {
                     result = director.fireAt(ThreadedComposite.this, time,
@@ -702,6 +709,7 @@ public class ThreadedComposite extends MirrorComposite {
          *  @exception IllegalActionException If the initialize() method of
          *   one of the inside actors throws it.
          */
+        @Override
         public synchronized void initialize() throws IllegalActionException {
             // The following must be done before the initialize() methods
             // of the actors is called because those methods may call fireAt().
@@ -740,6 +748,7 @@ public class ThreadedComposite extends MirrorComposite {
          *  @return A new instance of QueueReceiver.
          *  @see QueueReceiver
          */
+        @Override
         public Receiver newReceiver() {
             return new QueueReceiver();
         }
@@ -747,6 +756,7 @@ public class ThreadedComposite extends MirrorComposite {
         /** Return true if the inside thread is alive.
          *  @return True if the inside thread is still alive.
          */
+        @Override
         public boolean prefire() throws IllegalActionException {
             // Do not call super.prefire()!
             // Superclass sets current time of this
@@ -774,6 +784,7 @@ public class ThreadedComposite extends MirrorComposite {
          *  been made for the current time.
          *  @return True if the inside thread is still alive.
          */
+        @Override
         public boolean postfire() throws IllegalActionException {
 
             Time environmentTime = ThreadedComposite.this
@@ -799,10 +810,10 @@ public class ThreadedComposite extends MirrorComposite {
             if (refireRequested || !_inputTokens.isEmpty()) {
                 if (ThreadedComposite.this._debugging) {
                     ThreadedComposite.this
-                            ._debug("Queueing input tokens for the inside thread: "
-                                    + _inputTokens.toString()
-                                    + " to be processed at time "
-                                    + environmentTime);
+                    ._debug("Queueing input tokens for the inside thread: "
+                            + _inputTokens.toString()
+                            + " to be processed at time "
+                            + environmentTime);
                 }
                 synchronized (this) {
                     _inputFrames.add(new TokenFrame(environmentTime,
@@ -841,14 +852,15 @@ public class ThreadedComposite extends MirrorComposite {
         /** Override the base class to post a "stop frame" on the queue
          *  for the inside thread to stop.
          */
+        @Override
         public void stop() {
             super.stop();
             Time environmentTime = ThreadedComposite.this
                     .getExecutiveDirector().getModelTime();
             if (ThreadedComposite.this._debugging) {
                 ThreadedComposite.this
-                        ._debug("Queueing a stop-frame token for the inside thread with time: "
-                                + environmentTime);
+                ._debug("Queueing a stop-frame token for the inside thread with time: "
+                        + environmentTime);
             }
             synchronized (this) {
                 _inputFrames.add(new TokenFrame(environmentTime, null,
@@ -867,6 +879,7 @@ public class ThreadedComposite extends MirrorComposite {
          *  @return True if at least one data token is transferred.
          *  @exception IllegalActionException If reading the inputs fails.
          */
+        @Override
         public boolean transferInputs(IOPort port)
                 throws IllegalActionException {
             boolean result = false;
@@ -878,8 +891,8 @@ public class ThreadedComposite extends MirrorComposite {
                             _inputTokens.add(new QueuedToken(port, i, token));
                             if (ThreadedComposite.this._debugging) {
                                 ThreadedComposite.this
-                                        ._debug("Transferring input from "
-                                                + port.getName());
+                                ._debug("Transferring input from "
+                                        + port.getName());
                             }
                             result = true;
                         }
@@ -901,6 +914,7 @@ public class ThreadedComposite extends MirrorComposite {
          *  @return False, indicating that no data token is produced now.
          *  @exception IllegalActionException If writing the outputs fails.
          */
+        @Override
         public boolean transferOutputs(IOPort port)
                 throws IllegalActionException {
             return false;
@@ -911,6 +925,7 @@ public class ThreadedComposite extends MirrorComposite {
          *  @exception IllegalActionException If the wrapup() method of
          *   one of the associated actors throws it.
          */
+        @Override
         public void wrapup() throws IllegalActionException {
             // First, post a "stop frame" in case one has not been posted.
             // In the case of a finite run, one will likely have not been posted.
@@ -936,12 +951,12 @@ public class ThreadedComposite extends MirrorComposite {
                 try {
                     if (ThreadedComposite.this._debugging) {
                         ThreadedComposite.this
-                                ._debug("Waiting for inside thread to stop.");
+                        ._debug("Waiting for inside thread to stop.");
                     }
                     _thread.join();
                     if (ThreadedComposite.this._debugging) {
                         ThreadedComposite.this
-                                ._debug("Inside thread has stopped.");
+                        ._debug("Inside thread has stopped.");
                     }
                     if (_exception != null) {
                         throw new IllegalActionException(
@@ -1029,12 +1044,13 @@ public class ThreadedComposite extends MirrorComposite {
                 super("CompositeThread_" + ThreadedComposite.this.getFullName());
             }
 
+            @Override
             public void run() {
                 while (!_stopRequested) {
                     try {
                         if (ThreadedComposite.this._debugging) {
                             ThreadedComposite.this
-                                    ._debug("---- Waiting for inputs in the inside thread.");
+                            ._debug("---- Waiting for inputs in the inside thread.");
                         }
                         TokenFrame frame = null;
                         synchronized (ThreadedDirector.this) {
@@ -1054,16 +1070,16 @@ public class ThreadedComposite extends MirrorComposite {
                         if (frame.type == TokenFrame.STOP) {
                             if (ThreadedComposite.this._debugging) {
                                 ThreadedComposite.this
-                                        ._debug("---- Read a stop frame in inside thread.");
+                                ._debug("---- Read a stop frame in inside thread.");
                             }
                             break;
                         }
                         if (ThreadedComposite.this._debugging) {
                             ThreadedComposite.this
-                                    ._debug("---- Reading input tokens in inside thread with time "
-                                            + frame.time
-                                            + " and value "
-                                            + frame.tokens);
+                            ._debug("---- Reading input tokens in inside thread with time "
+                                    + frame.time
+                                    + " and value "
+                                    + frame.tokens);
                         }
                         // Current time of the director should match the frame time.
                         // This is the view of time that should be presented to any inside actors.
@@ -1121,10 +1137,10 @@ public class ThreadedComposite extends MirrorComposite {
                                     outputTokens.add(tokenBundle);
                                     if (ThreadedComposite.this._debugging) {
                                         ThreadedComposite.this
-                                                ._debug("---- Inside actor produced token "
-                                                        + token
-                                                        + " for port "
-                                                        + port.getName());
+                                        ._debug("---- Inside actor produced token "
+                                                + token
+                                                + " for port "
+                                                + port.getName());
                                     }
                                 }
                             }
@@ -1162,7 +1178,7 @@ public class ThreadedComposite extends MirrorComposite {
                             _outputFrames.add(outputFrame);
                             if (ThreadedComposite.this._debugging) {
                                 ThreadedComposite.this
-                                        ._debug("---- Inside thread posted output frame.");
+                                ._debug("---- Inside thread posted output frame.");
                             }
                             ThreadedDirector.this.notifyAll();
                             // Give the director thread a chance to react.

@@ -22,7 +22,7 @@ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
 PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 ENHANCEMENTS, OR MODIFICATIONS.
-*/
+ */
 
 package ptolemy.kernel.test;
 
@@ -49,15 +49,15 @@ public class ComponentEntityTimeTest {
         long totalMemory = runtime.totalMemory() / 1024;
         long freeMemory = runtime.freeMemory() / 1024;
         System.out
-                .println(stopTime
-                        - startTime
-                        + " ms. Memory: "
-                        + totalMemory
-                        + " K Free: "
-                        + freeMemory
-                        + " K ("
-                        + Math.round((double) freeMemory / (double) totalMemory
-                                * 100.0) + "%)");
+        .println(stopTime
+                - startTime
+                + " ms. Memory: "
+                + totalMemory
+                + " K Free: "
+                + freeMemory
+                + " K ("
+                + Math.round((double) freeMemory / (double) totalMemory
+                        * 100.0) + "%)");
 
     }
 }

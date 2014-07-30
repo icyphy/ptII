@@ -114,6 +114,7 @@ public class Datagram extends TypedAtomicActor implements ClipboardOwner {
      *  <i>output</i>.  Paste is done before copy when both
      *  inputs are present.
      */
+    @Override
     public void fire() throws IllegalActionException {
         super.fire();
         if (_debugging) {
@@ -162,6 +163,7 @@ public class Datagram extends TypedAtomicActor implements ClipboardOwner {
      *  argument, known as the "requestor", must be an object which
      *  offers this lostOwnership() method.
      */
+    @Override
     public void lostOwnership(Clipboard clipboard, Transferable contents) {
         // In case of lost ownership, do nothing.
     }

@@ -75,6 +75,7 @@ public class RequireVersion extends VersionAttribute {
      *  @param object  The specified object that is compared against.
      *  @return True if the specified version is the same as this one.
      */
+    @Override
     public boolean equals(Object object) {
         // VersionAttribute.equals() has a bug where if we had a
         // VersionAttribute and a RequireVersion and the RequireVersion
@@ -93,6 +94,7 @@ public class RequireVersion extends VersionAttribute {
      *  method of the super class is <b>not</b> called.
      *  @return A hash code value for this token.
      */
+    @Override
     public int hashCode() {
         return System.identityHashCode(this);
     }
@@ -107,6 +109,7 @@ public class RequireVersion extends VersionAttribute {
      *   space, which violates the JNLP Version format specification,
      *   and if the specified version is newer than the executing version.
      */
+    @Override
     public void setExpression(String expression) throws IllegalActionException {
         super.setExpression(expression);
 

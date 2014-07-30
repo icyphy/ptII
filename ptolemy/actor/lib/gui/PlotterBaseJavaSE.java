@@ -66,6 +66,7 @@ import ptolemy.plot.PlotBoxInterface;
 public class PlotterBaseJavaSE implements PlotterBaseInterface {
 
     /** Show and then bing the frame to the front. */
+    @Override
     public void bringToFront() {
         if (_frame != null) {
             // show() used to call pack, which would override any manual
@@ -78,6 +79,7 @@ public class PlotterBaseJavaSE implements PlotterBaseInterface {
     /**
      * Free up memory when closing.
      */
+    @Override
     public void cleanUp() {
         _tableau = null;
     }
@@ -87,6 +89,7 @@ public class PlotterBaseJavaSE implements PlotterBaseInterface {
      * @return the plotter's frame.
      * @see #setFrame(Object)
      */
+    @Override
     public Object getFrame() {
         return _frame;
     }
@@ -96,6 +99,7 @@ public class PlotterBaseJavaSE implements PlotterBaseInterface {
      * @return the platform dependent container.
      * @see #setPlatformContainer(Object)
      */
+    @Override
     public Object getPlatformContainer() {
         return _container;
     }
@@ -104,6 +108,7 @@ public class PlotterBaseJavaSE implements PlotterBaseInterface {
      * Get the plotter tableau.
      * @return the plotter tableau.
      */
+    @Override
     public Object getTableau() {
         return _tableau;
     }
@@ -112,6 +117,7 @@ public class PlotterBaseJavaSE implements PlotterBaseInterface {
      * Initialize the implementation.
      * @param plotterBase the instance that created the implementation.
      */
+    @Override
     public void init(PlotterBase plotterBase) {
         _plotterBase = plotterBase;
     }
@@ -120,6 +126,7 @@ public class PlotterBaseJavaSE implements PlotterBaseInterface {
      * Initialize the effigy of the plotter.
      * @exception IllegalActionException If there is a problem initializing the effigy
      */
+    @Override
     public void initializeEffigy() throws IllegalActionException {
         // Need an effigy and a tableau so that menu ops work properly.
         Effigy containerEffigy = Configuration.findEffigy(_plotterBase
@@ -168,8 +175,9 @@ public class PlotterBaseJavaSE implements PlotterBaseInterface {
      * Initialize the effigy of the plotter.
      * @exception IllegalActionException If there is a problem initializing the effigy
      */
+    @Override
     public void initWindowAndSizeProperties() throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         _windowProperties = (WindowPropertiesAttribute) _plotterBase
                 .getAttribute("_windowProperties",
                         WindowPropertiesAttribute.class);
@@ -196,6 +204,7 @@ public class PlotterBaseJavaSE implements PlotterBaseInterface {
      * Create a new instance of the PlotBoxInterface implementation.
      * @return a new instance of the PlotBoxInterface implementation.
      */
+    @Override
     public PlotBoxInterface newPlot() {
         return new Plot();
     }
@@ -203,8 +212,10 @@ public class PlotterBaseJavaSE implements PlotterBaseInterface {
     /**
      * Remove the plot from the current container, if there is one.
      */
+    @Override
     public void remove() {
         SwingUtilities.invokeLater(new Runnable() {
+            @Override
             public void run() {
                 if (_plotterBase.plot != null) {
                     if (_container != null) {
@@ -222,6 +233,7 @@ public class PlotterBaseJavaSE implements PlotterBaseInterface {
     /**
      * Remove the plot from the frame if the container is null.
      */
+    @Override
     public void removeNullContainer() {
         // NOTE: This actor always shows the plot buttons, even if
         // the plot is in a separate frame.  They are very useful.
@@ -247,6 +259,7 @@ public class PlotterBaseJavaSE implements PlotterBaseInterface {
      * @param frame The frame to set.
      * @see #getFrame()
      */
+    @Override
     public void setFrame(Object frame) {
         if (_frame != null) {
             _frame.removeWindowListener(_windowClosingAdapter);
@@ -271,6 +284,7 @@ public class PlotterBaseJavaSE implements PlotterBaseInterface {
      * @param container the platform dependent container.
      * @see #getPlatformContainer()
      */
+    @Override
     public void setPlatformContainer(Object container) {
         _container = (Container) container;
     }
@@ -279,6 +293,7 @@ public class PlotterBaseJavaSE implements PlotterBaseInterface {
      * Set the title of the tableau.
      * @param title the title to set.
      */
+    @Override
     public void setTableauTitle(String title) {
         if (_tableau != null) {
             _tableau.setTitle(title);
@@ -288,6 +303,7 @@ public class PlotterBaseJavaSE implements PlotterBaseInterface {
     /**
      * Update size attribute of the plotter.
      */
+    @Override
     public void updateSize() {
         if (_plotSize != null) {
             _plotSize.setSize((Component) _plotterBase.plot);
@@ -301,6 +317,7 @@ public class PlotterBaseJavaSE implements PlotterBaseInterface {
     /**
      * Update values of the attributes.
      */
+    @Override
     public void updateWindowAndSizeAttributes() {
         if (_frame != null) {
             _windowProperties.recordProperties(_frame);
@@ -363,6 +380,7 @@ public class PlotterBaseJavaSE implements PlotterBaseInterface {
 
     /** Listener for windowClosing action. */
     class WindowClosingAdapter extends WindowAdapter {
+        @Override
         public void windowClosing(WindowEvent e) {
             _plotterBase.cleanUp();
         }

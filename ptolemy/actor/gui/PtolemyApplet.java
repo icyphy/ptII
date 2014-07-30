@@ -136,6 +136,7 @@ public class PtolemyApplet extends BasicJApplet implements ExecutionListener {
      *  by the browser or appletviewer to inform this applet that
      *  it should clean up.
      */
+    @Override
     public void destroy() {
         // Note: we used to call manager.terminate() here to get rid
         // of a lingering browser problem.
@@ -150,6 +151,7 @@ public class PtolemyApplet extends BasicJApplet implements ExecutionListener {
      *  @param manager The manager in charge of the execution.
      *  @param throwable The throwable that triggered the error.
      */
+    @Override
     public void executionError(Manager manager, Throwable throwable) {
         report(throwable);
     }
@@ -158,6 +160,7 @@ public class PtolemyApplet extends BasicJApplet implements ExecutionListener {
      *  called by the manager.
      *  @param manager The manager in charge of the execution.
      */
+    @Override
     public void executionFinished(Manager manager) {
         report("execution finished.");
     }
@@ -165,6 +168,7 @@ public class PtolemyApplet extends BasicJApplet implements ExecutionListener {
     /** Return a string describing this applet.
      *  @return A string describing the applet.
      */
+    @Override
     public String getAppletInfo() {
         return "Ptolemy applet for Ptolemy II "
                 + VersionAttribute.CURRENT_VERSION
@@ -176,14 +180,15 @@ public class PtolemyApplet extends BasicJApplet implements ExecutionListener {
     /** Describe the applet parameters.
      *  @return An array describing the applet parameters.
      */
+    @Override
     public String[][] getParameterInfo() {
         String[][] newInfo = {
                 { "modelClass", "", "Class name for an instance of NamedObj" },
                 { "orientation", "",
-                        "Orientation: vertical, horizontal, or controls_only" },
+                "Orientation: vertical, horizontal, or controls_only" },
                 { "controls", "", "List of on-screen controls" },
                 { "autoRun", "boolean",
-                        "Determines if the model is run automatically" } };
+                "Determines if the model is run automatically" } };
         return _concatStringArrays(super.getParameterInfo(), newInfo);
     }
 
@@ -196,6 +201,7 @@ public class PtolemyApplet extends BasicJApplet implements ExecutionListener {
      *  by the <i>modelClass</i> applet parameter.  If that model
      *  does not contain a manager, then this method creates one for it.
      */
+    @Override
     public void init() {
         super.init();
         _setupOK = true;
@@ -229,6 +235,7 @@ public class PtolemyApplet extends BasicJApplet implements ExecutionListener {
     /** Report that the manager state has changed.  This is
      *  called by the manager.
      */
+    @Override
     public void managerStateChanged(Manager manager) {
         Manager.State newState = manager.getState();
 
@@ -248,6 +255,7 @@ public class PtolemyApplet extends BasicJApplet implements ExecutionListener {
      *  each time start() is called, it should override this method
      *  with a blank method.
      */
+    @Override
     public void start() {
         // If an exception occurred during init, do not execute.
         if (!_setupOK) {
@@ -280,6 +288,7 @@ public class PtolemyApplet extends BasicJApplet implements ExecutionListener {
      *  In this base class, this method calls the stop() method
      *  of the manager. If there is no manager, do nothing.
      */
+    @Override
     public void stop() {
         if (_manager != null && _setupOK) {
             _manager.stop();
@@ -370,6 +379,7 @@ public class PtolemyApplet extends BasicJApplet implements ExecutionListener {
      *  @return The run control panel.
      *  @deprecated Use the <i>control</i> applet parameter.
      */
+    @Deprecated
     protected JPanel _createRunControls(int numberOfButtons) {
         JPanel panel = new JPanel();
 
@@ -510,6 +520,7 @@ public class PtolemyApplet extends BasicJApplet implements ExecutionListener {
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
     private class GoButtonListener implements ActionListener {
+        @Override
         public void actionPerformed(ActionEvent event) {
             try {
                 _go();
@@ -520,6 +531,7 @@ public class PtolemyApplet extends BasicJApplet implements ExecutionListener {
     }
 
     private class StopButtonListener implements ActionListener {
+        @Override
         public void actionPerformed(ActionEvent event) {
             _stop();
         }

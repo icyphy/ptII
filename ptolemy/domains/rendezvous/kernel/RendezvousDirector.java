@@ -74,7 +74,7 @@ public class RendezvousDirector extends CompositeProcessDirector {
      *  @exception IllegalActionException If construction of Time objects fails.
      */
     public RendezvousDirector() throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         super();
     }
 
@@ -118,6 +118,7 @@ public class RendezvousDirector extends CompositeProcessDirector {
      *  @exception CloneNotSupportedException If a derived class contains
      *  an attribute that cannot be cloned.
      */
+    @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         RendezvousDirector newObject = (RendezvousDirector) super
                 .clone(workspace);
@@ -129,6 +130,7 @@ public class RendezvousDirector extends CompositeProcessDirector {
      *  this director.
      *  @return A new instance of RendezvousReceiver.
      */
+    @Override
     public Receiver newReceiver() {
         return new RendezvousReceiver();
     }
@@ -137,6 +139,7 @@ public class RendezvousDirector extends CompositeProcessDirector {
      *  @return False if no more execution is possible, and true otherwise.
      *  @exception IllegalActionException If thrown by the parent class.
      */
+    @Override
     public boolean postfire() throws IllegalActionException {
         if (!super.postfire()) {
             return false;
@@ -155,6 +158,7 @@ public class RendezvousDirector extends CompositeProcessDirector {
      *  @return An array of suggested directors to be used with ModalModel.
      *  @see ptolemy.actor.Director#suggestedModalModelDirectors()
      */
+    @Override
     public String[] suggestedModalModelDirectors() {
         // This method does not call the method defined in the super class,
         // because this method provides complete new information.
@@ -162,7 +166,7 @@ public class RendezvousDirector extends CompositeProcessDirector {
         // in the array.
         String[] defaultSuggestions = new String[] {
                 "ptolemy.domains.modal.kernel.FSMDirector",
-                "ptolemy.domains.modal.kernel.NonStrictFSMDirector" };
+        "ptolemy.domains.modal.kernel.NonStrictFSMDirector" };
         return defaultSuggestions;
     }
 
@@ -170,6 +174,7 @@ public class RendezvousDirector extends CompositeProcessDirector {
      *  wrapup phase.
      *  @exception IllegalActionException If the parent class throws it.
      */
+    @Override
     public void wrapup() throws IllegalActionException {
         try {
             _inWrapup = true;
@@ -186,6 +191,7 @@ public class RendezvousDirector extends CompositeProcessDirector {
      *  of stopped (paused) or blocked threads.  Otherwise return false.
      *  @return True if all threads are stopped or blocked.
      */
+    @Override
     protected synchronized boolean _areAllThreadsStopped() {
         return _getActiveThreadsCount() == _getStoppedThreadsCount()
                 + _getBlockedThreadsCount();
@@ -194,6 +200,7 @@ public class RendezvousDirector extends CompositeProcessDirector {
     /** Return true if all active threads are blocked.
      *  @return True if all active threads are blocked.
      */
+    @Override
     protected synchronized boolean _areThreadsDeadlocked() {
         if (_getActiveThreadsCount() == _getBlockedThreadsCount()) {
             return true;
@@ -224,6 +231,7 @@ public class RendezvousDirector extends CompositeProcessDirector {
      *  @exception IllegalActionException If thrown while getting
      *  the "SuppressDeadlockReporting" token.
      */
+    @Override
     protected synchronized boolean _resolveInternalDeadlock()
             throws IllegalActionException {
         if (_getBlockedThreadsCount() == _getActiveThreadsCount()) {
@@ -235,10 +243,10 @@ public class RendezvousDirector extends CompositeProcessDirector {
                     || !(suppress.getToken() instanceof BooleanToken)
                     || !((BooleanToken) suppress.getToken()).booleanValue()) {
                 MessageHandler
-                        .message("Model ended with a deadlock "
-                                + "(this may be normal for this model).\n"
-                                + "A parameter with name SuppressDeadlockReporting and "
-                                + "value true will suppress this message.");
+                .message("Model ended with a deadlock "
+                        + "(this may be normal for this model).\n"
+                        + "A parameter with name SuppressDeadlockReporting and "
+                        + "value true will suppress this message.");
             }
 
             return false;

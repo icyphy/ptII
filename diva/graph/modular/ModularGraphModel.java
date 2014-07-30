@@ -57,6 +57,7 @@ public abstract class ModularGraphModel extends AbstractGraphModel {
     /**
      * Return true if this composite node contains the given node.
      */
+    @Override
     public boolean containsNode(Object composite, Object node) {
         return composite.equals(getNodeModel(node).getParent(node));
     }
@@ -77,6 +78,7 @@ public abstract class ModularGraphModel extends AbstractGraphModel {
     /**
      * Return the head node of the given edge.
      */
+    @Override
     public Object getHead(Object edge) {
         return getEdgeModel(edge).getHead(edge);
     }
@@ -85,6 +87,7 @@ public abstract class ModularGraphModel extends AbstractGraphModel {
      * Return the number of nodes contained in
      * this graph or composite node.
      */
+    @Override
     public int getNodeCount(Object composite) {
         return getCompositeModel(composite).getNodeCount(composite);
     }
@@ -99,6 +102,7 @@ public abstract class ModularGraphModel extends AbstractGraphModel {
      * Return the parent graph of this node, return
      * null if there is no parent.
      */
+    @Override
     public Object getParent(Object node) {
         if (node != _root) {
             NodeModel model = getNodeModel(node);
@@ -115,11 +119,13 @@ public abstract class ModularGraphModel extends AbstractGraphModel {
      * Return the property of the object associated with
      * the given property name.
      */
+    @Override
     public abstract Object getProperty(Object o, String propertyName);
 
     /**
      * Return the root graph of this graph model.
      */
+    @Override
     public Object getRoot() {
         return _root;
     }
@@ -128,11 +134,13 @@ public abstract class ModularGraphModel extends AbstractGraphModel {
      * Return the semantic object corresponding
      * to the given node, edge, or composite.
      */
+    @Override
     public abstract Object getSemanticObject(Object o);
 
     /**
      * Return the tail node of this edge.
      */
+    @Override
     public Object getTail(Object edge) {
         return getEdgeModel(edge).getTail(edge);
     }
@@ -140,6 +148,7 @@ public abstract class ModularGraphModel extends AbstractGraphModel {
     /**
      * Return whether or not this edge is directed.
      */
+    @Override
     public boolean isDirected(Object edge) {
         return getEdgeModel(edge).isDirected(edge);
     }
@@ -148,6 +157,7 @@ public abstract class ModularGraphModel extends AbstractGraphModel {
      * Return true if the given object is a composite
      * node in this model, i.e. it contains children.
      */
+    @Override
     public boolean isComposite(Object o) {
         return getCompositeModel(o) != null;
     }
@@ -156,6 +166,7 @@ public abstract class ModularGraphModel extends AbstractGraphModel {
      * Return true if the given object is a
      * node in this model.
      */
+    @Override
     public boolean isEdge(Object o) {
         return getEdgeModel(o) != null;
     }
@@ -164,6 +175,7 @@ public abstract class ModularGraphModel extends AbstractGraphModel {
      * Return true if the given object is a
      * node in this model.
      */
+    @Override
     public boolean isNode(Object o) {
         return getNodeModel(o) != null;
     }
@@ -173,6 +185,7 @@ public abstract class ModularGraphModel extends AbstractGraphModel {
      * given graph or composite node.  This iterator
      * does not necessarily support removal operations.
      */
+    @Override
     public Iterator nodes(Object composite) {
         return getCompositeModel(composite).nodes(composite);
     }
@@ -184,6 +197,7 @@ public abstract class ModularGraphModel extends AbstractGraphModel {
      * In this base class, this returns the same iterator
      * as the nodes(Object) method.
      */
+    @Override
     public Iterator nodesBeforeEdges(Object composite) {
         return getCompositeModel(composite).nodesBeforeEdges(composite);
     }
@@ -195,6 +209,7 @@ public abstract class ModularGraphModel extends AbstractGraphModel {
      * In this base class, this returns an iterator over
      * nothing.
      */
+    @Override
     public Iterator nodesAfterEdges(Object composite) {
         return getCompositeModel(composite).nodesAfterEdges(composite);
     }
@@ -205,6 +220,7 @@ public abstract class ModularGraphModel extends AbstractGraphModel {
      * If there are no in-edges, an iterator with no elements is
      * returned.
      */
+    @Override
     public Iterator inEdges(Object node) {
         NodeModel model = getNodeModel(node);
 
@@ -221,6 +237,7 @@ public abstract class ModularGraphModel extends AbstractGraphModel {
      * If there are no out-edges, an iterator with no elements is
      * returned.
      */
+    @Override
     public Iterator outEdges(Object node) {
         NodeModel model = getNodeModel(node);
 
@@ -235,11 +252,13 @@ public abstract class ModularGraphModel extends AbstractGraphModel {
      * Set the property of the object associated with
      * the given property name.
      */
+    @Override
     public abstract void setProperty(Object o, String propertyName, Object value);
 
     /**
      * Set the semantic object corresponding
      * to the given node, edge, or composite.
      */
+    @Override
     public abstract void setSemanticObject(Object o, Object sem);
 }

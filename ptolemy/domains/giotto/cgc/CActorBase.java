@@ -130,6 +130,7 @@ public class CActorBase extends TypedAtomicActor {
      *  @exception NameDuplicationException If the actor already has a port
      *   with the specified name.
      */
+    @Override
     public Port newPort(String name) throws NameDuplicationException {
         try {
             _workspace.getWriteAccess();
@@ -165,14 +166,14 @@ public class CActorBase extends TypedAtomicActor {
      *   the name of another port already in the actor.
      */
     protected void _addPort(CPort port) throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         super._addPort(port);
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
     private void _init() throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         source = new FileParameter(this, "source");
         source.setExpression("$PTII/ptolemy/domains/giotto/cgc/demo/task_code.c");
 

@@ -90,6 +90,7 @@ public class ConceptFunctionInequalityTerm implements InequalityTerm {
      *  @return The concept function evaluated by this concept
      *  function inequality term.
      */
+    @Override
     public Object getAssociatedObject() {
         return _conceptFunction;
     }
@@ -136,6 +137,7 @@ public class ConceptFunctionInequalityTerm implements InequalityTerm {
      *  inequality term is not valid.
      *  @see #setValue(Object)
      */
+    @Override
     public Object getValue() throws IllegalActionException {
         List<Concept> inputConcepts = new ArrayList<Concept>();
 
@@ -155,6 +157,7 @@ public class ConceptFunctionInequalityTerm implements InequalityTerm {
      *  depends on.
      *  @return An array of InequalityTerms.
      */
+    @Override
     public final InequalityTerm[] getVariables() {
         List<InequalityTerm> terms = new ArrayList<InequalityTerm>();
 
@@ -177,6 +180,7 @@ public class ConceptFunctionInequalityTerm implements InequalityTerm {
      *   parameter is never used.
      *  @exception IllegalActionException Always thrown.
      */
+    @Override
     public final void initialize(Object e) throws IllegalActionException {
         throw new IllegalActionException(getClass().getName()
                 + ": Cannot initialize a function term.");
@@ -185,6 +189,7 @@ public class ConceptFunctionInequalityTerm implements InequalityTerm {
     /** Return false.  Concept function terms are not settable.
      *  @return False.
      */
+    @Override
     public final boolean isSettable() {
         return false;
     }
@@ -193,6 +198,7 @@ public class ConceptFunctionInequalityTerm implements InequalityTerm {
      *  acceptable.
      *  @return True.
      */
+    @Override
     public boolean isValueAcceptable() {
         return true;
     }
@@ -204,6 +210,7 @@ public class ConceptFunctionInequalityTerm implements InequalityTerm {
      *  @exception IllegalActionException Always thrown.
      *  @see #getValue()
      */
+    @Override
     public final void setValue(Object e) throws IllegalActionException {
         throw new IllegalActionException(getClass().getName()
                 + ": The inequality term is not settable.");
@@ -212,6 +219,7 @@ public class ConceptFunctionInequalityTerm implements InequalityTerm {
     /** Override the base class to give a description of this term.
      *  @return A description of this term.
      */
+    @Override
     public String toString() {
         StringBuffer output = new StringBuffer("(" + _conceptFunction + "(");
 

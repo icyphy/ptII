@@ -79,7 +79,7 @@ public class ValueIcon extends XMLIcon {
         displayWidth = new Parameter(this, "displayWidth");
         displayWidth.setExpression("80");
         displayWidth.setTypeEquals(BaseType.INT);
-        
+
         numberOfLines = new Parameter(this, "numberOfLines");
         numberOfLines.setExpression("1");
         numberOfLines.setTypeEquals(BaseType.INT);
@@ -92,7 +92,7 @@ public class ValueIcon extends XMLIcon {
      *  default value 60.
      */
     public Parameter displayWidth;
-    
+
     /** The number of lines to display. This is an integer, with default
      *  value 1.
      */
@@ -105,6 +105,7 @@ public class ValueIcon extends XMLIcon {
      *  element with the name of the container, a colon, and its value.
      *  @return A figure for this icon.
      */
+    @Override
     public Figure createBackgroundFigure() {
         return createFigure();
     }
@@ -114,6 +115,7 @@ public class ValueIcon extends XMLIcon {
      *  container name and value, separated by a colon.
      *  @return A new CompositeFigure consisting of the label.
      */
+    @Override
     public Figure createFigure() {
         CompositeFigure background = new CompositeFigure(
                 super.createBackgroundFigure());
@@ -134,7 +136,8 @@ public class ValueIcon extends XMLIcon {
             } catch (IllegalActionException e) {
                 // This should not happen.
             }
-            String truncated = StringUtilities.truncateString(value, width, lines);
+            String truncated = StringUtilities.truncateString(value, width,
+                    lines);
             LabelFigure label = new LabelFigure(name + ": " + truncated,
                     _labelFont, 1.0, SwingConstants.SOUTH_WEST);
             background.add(label);
@@ -154,6 +157,7 @@ public class ValueIcon extends XMLIcon {
     /** Create a new default background figure, which is a bullet.
      *  @return A figure representing a bullet.
      */
+    @Override
     protected Figure _createDefaultBackgroundFigure() {
         Color color = Color.black;
         List colorAttributes = attributeList(ColorAttribute.class);

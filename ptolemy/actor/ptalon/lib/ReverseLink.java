@@ -47,6 +47,7 @@ import java.util.concurrent.BlockingQueue;
  */
 public class ReverseLink extends MapReduceAlgorithm {
 
+    @Override
     public List<KeyValuePair> map(String key, String value) {
         StringTokenizer tokenizer = new StringTokenizer(value);
         LinkedList<KeyValuePair> output = new LinkedList<KeyValuePair>();
@@ -56,6 +57,7 @@ public class ReverseLink extends MapReduceAlgorithm {
         return output;
     }
 
+    @Override
     public List<String> reduce(String key, BlockingQueue<String> values)
             throws InterruptedException {
         List<String> output = new LinkedList<String>();

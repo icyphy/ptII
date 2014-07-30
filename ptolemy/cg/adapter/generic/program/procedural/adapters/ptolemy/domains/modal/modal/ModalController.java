@@ -76,6 +76,7 @@ public class ModalController extends NamedProgramCodeGeneratorAdapter {
      * @exception IllegalActionException If thrown by the superclass or thrown
      * while generating code for the director.
      */
+    @Override
     public String generatePreinitializeCode() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
         code.append(super.generatePreinitializeCode());
@@ -86,6 +87,7 @@ public class ModalController extends NamedProgramCodeGeneratorAdapter {
         return code.toString();
     }
 
+    @Override
     public String generateFireCode() throws IllegalActionException {
         NamedProgramCodeGeneratorAdapter controller = (NamedProgramCodeGeneratorAdapter) getCodeGenerator()
                 .getAdapter(_myController);
@@ -152,6 +154,7 @@ public class ModalController extends NamedProgramCodeGeneratorAdapter {
      *  @return The fire function code.
      *  @exception IllegalActionException If thrown while generating fire code.
      */
+    @Override
     public String generateFireFunctionCode() throws IllegalActionException {
 
         StringBuffer code = new StringBuffer();
@@ -177,11 +180,11 @@ public class ModalController extends NamedProgramCodeGeneratorAdapter {
     }
 
     /** Generate code for transferring enough tokens to complete an internal
-         *  iteration.
-         *  @param inputPort The port to transfer tokens.
-         *  @param code The string buffer that the generated code is appended to.
-         *  @exception IllegalActionException If thrown while transferring tokens.
-         */
+     *  iteration.
+     *  @param inputPort The port to transfer tokens.
+     *  @param code The string buffer that the generated code is appended to.
+     *  @exception IllegalActionException If thrown while transferring tokens.
+     */
     public void generateTransferInputsCode(TypedIOPort inputPort,
             StringBuffer code) throws IllegalActionException {
 
@@ -194,7 +197,7 @@ public class ModalController extends NamedProgramCodeGeneratorAdapter {
                 code.append(getCodeGenerator().generatePortName(
                         t,
                         StringUtilities.sanitizeName(t.getFullName())
-                                .substring(1), 1)
+                        .substring(1), 1)
                         + " = ");
             }
         }
@@ -202,15 +205,15 @@ public class ModalController extends NamedProgramCodeGeneratorAdapter {
         int i = name.indexOf("_Controller");
         name = name.substring(0, i) + name.substring(i + 12);
         code.append( // FIXME: Defaulting to buffer size 1.
-        getCodeGenerator().generatePortName(
-                inputPort,
-                StringUtilities.sanitizeName(inputPort.getFullName())
+                getCodeGenerator().generatePortName(
+                        inputPort,
+                        StringUtilities.sanitizeName(inputPort.getFullName())
                         .substring(1), 1)
-                + " = "
-                // FIXME: Defaulting to buffer size 1.
-                + getCodeGenerator().generatePortName(inputPort,
-                        StringUtilities.sanitizeName(name).substring(1), 1)
-                + "; ");
+                        + " = "
+                        // FIXME: Defaulting to buffer size 1.
+                        + getCodeGenerator().generatePortName(inputPort,
+                                StringUtilities.sanitizeName(name).substring(1), 1)
+                                + "; ");
 
     }
 
@@ -226,7 +229,7 @@ public class ModalController extends NamedProgramCodeGeneratorAdapter {
         NamedProgramCodeGeneratorAdapter _compositeActorAdapter = (NamedProgramCodeGeneratorAdapter) getCodeGenerator()
                 .getAdapter(
                         ((ptolemy.domains.modal.modal.ModalController) getComponent())
-                                .getDirector().getContainer());
+                        .getDirector().getContainer());
 
         //executive If true, then look for the reference in the
         // executive director (the director of the container).  The
@@ -259,12 +262,12 @@ public class ModalController extends NamedProgramCodeGeneratorAdapter {
     }
 
     /** Generate code for the firing of refinements.
-    *
-    *  @param code The string buffer that the generated code is appended to.
-    *  @return The refinemebt code.
-    *  @exception IllegalActionException If the helper associated with
-    *   an actor throws it while generating fire code for the actor.
-    */
+     *
+     *  @param code The string buffer that the generated code is appended to.
+     *  @return The refinemebt code.
+     *  @exception IllegalActionException If the helper associated with
+     *   an actor throws it while generating fire code for the actor.
+     */
     protected boolean _generateRefinementCode(StringBuffer code)
             throws IllegalActionException {
 
@@ -317,11 +320,11 @@ public class ModalController extends NamedProgramCodeGeneratorAdapter {
                                 + getCodeGenerator().generatePortName(
                                         (TypedIOPort) outputPort, destination,
                                         1)
-                                + " = "
-                                // FIXME: Defaulting to buffer size 1.
-                                + getCodeGenerator().generatePortName(
-                                        (TypedIOPort) outputPort, source, 1)
-                                + ";" + _eol);
+                                        + " = "
+                                        // FIXME: Defaulting to buffer size 1.
+                                        + getCodeGenerator().generatePortName(
+                                                (TypedIOPort) outputPort, source, 1)
+                                                + ";" + _eol);
                     }
 
                 }
@@ -340,13 +343,13 @@ public class ModalController extends NamedProgramCodeGeneratorAdapter {
     }
 
     /** Update the read offsets of the buffer associated with the given port.
-    *
-    *  @param port The port whose read offset is to be updated.
-    *  @param code The string buffer that the generated code is appended to.
-    *  @param rate The rate, which must be greater than or equal to 0.
-    *  @exception IllegalActionException If thrown while reading or writing
-    *   offsets, or getting the buffer size, or if the rate is less than 0.
-    */
+     *
+     *  @param port The port whose read offset is to be updated.
+     *  @param code The string buffer that the generated code is appended to.
+     *  @param rate The rate, which must be greater than or equal to 0.
+     *  @exception IllegalActionException If thrown while reading or writing
+     *   offsets, or getting the buffer size, or if the rate is less than 0.
+     */
     protected void _updatePortOffset(TypedIOPort port, StringBuffer code,
             int rate) throws IllegalActionException {
         if (_debugging) {
@@ -583,12 +586,13 @@ public class ModalController extends NamedProgramCodeGeneratorAdapter {
 
     /** Retrieve the nonpreemtive transitions. */
     private static class NonPreemptiveTransitions implements
-            TransitionRetriever {
+    TransitionRetriever {
         // Findbugs wants this to be static.
         /** Retrieve the nonpreemtive transitions.
          *  @param state The state
          *  @return An iterator that refers to the nonpreemptive transitions.
          */
+        @Override
         public Iterator retrieveTransitions(State state) {
             try {
                 return state.nonpreemptiveTransitionList().iterator();
@@ -606,6 +610,7 @@ public class ModalController extends NamedProgramCodeGeneratorAdapter {
          *  @param state The state
          *  @return An iterator that refers to the preemptive transitions.
          */
+        @Override
         public Iterator retrieveTransitions(State state) {
             try {
                 return state.preemptiveTransitionList().iterator();

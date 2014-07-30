@@ -99,6 +99,7 @@ public class OntologyGraphController extends WithIconGraphController {
      *  @param menu The menu to add to, or null if none.
      *  @param toolbar The toolbar to add to, or null if none.
      */
+    @Override
     public void addToMenuAndToolbar(JMenu menu, JToolBar toolbar) {
         super.addToMenuAndToolbar(menu, toolbar);
 
@@ -113,6 +114,7 @@ public class OntologyGraphController extends WithIconGraphController {
      *  @return The RelationController for all ontology relations in the
      *   ontology editor.
      */
+    @Override
     public EdgeController getEdgeController(Object object) {
         return _relationController;
     }
@@ -125,6 +127,7 @@ public class OntologyGraphController extends WithIconGraphController {
      *  @return Either a ConceptController object or an AttributeController
      *   object.
      */
+    @Override
     public NodeController getNodeController(Object object) {
 
         // Defer to the superclass if it can provide a controller.
@@ -153,6 +156,7 @@ public class OntologyGraphController extends WithIconGraphController {
      *  when opening files or URLs.
      *  @param configuration The configuration.
      */
+    @Override
     public void setConfiguration(Configuration configuration) {
         super.setConfiguration(configuration);
         _attributeController.setConfiguration(configuration);
@@ -167,6 +171,7 @@ public class OntologyGraphController extends WithIconGraphController {
      *  attribute controller.
      *  @param jgraph The JGraph to which hot keys are to be added.
      */
+    @Override
     protected void _addHotKeys(JGraph jgraph) {
         super._addHotKeys(jgraph);
 
@@ -181,6 +186,7 @@ public class OntologyGraphController extends WithIconGraphController {
      *  controller, so we must initialize it here even though the ontology
      *  model editor has no visible ports.
      */
+    @Override
     protected void _createControllers() {
         _attributeController = new AttributeInOntologyController(this);
         _conceptController = new ConceptController(this);
@@ -198,6 +204,7 @@ public class OntologyGraphController extends WithIconGraphController {
      *  constructor because the controller does not yet have a reference to
      *  its pane at that time.
      */
+    @Override
     protected void initializeInteraction() {
         // NOTE: This method name does not have a leading underscore
         // because it is a diva method.
@@ -221,7 +228,7 @@ public class OntologyGraphController extends WithIconGraphController {
         // still in the constructor, and that method is overloaded in
         // derived classes.
         ((CompositeInteractor) _conceptController.getNodeInteractor())
-                .addInteractor(_relationCreator);
+        .addInteractor(_relationCreator);
     }
 
     /** Initialize interactions for the specified controller.  This
@@ -230,6 +237,7 @@ public class OntologyGraphController extends WithIconGraphController {
      *  if the controller is an instance of ConceptController.
      *  @param controller The controller for which to initialize interaction.
      */
+    @Override
     protected void _initializeInteraction(NamedObjController controller) {
         super._initializeInteraction(controller);
 
@@ -238,7 +246,7 @@ public class OntologyGraphController extends WithIconGraphController {
 
             if (interactor instanceof CompositeInteractor) {
                 ((CompositeInteractor) interactor)
-                        .addInteractor(_relationCreator);
+                .addInteractor(_relationCreator);
             }
         }
     }
@@ -277,7 +285,7 @@ public class OntologyGraphController extends WithIconGraphController {
      */
     private MouseFilter _shortcutFilter = new MouseFilter(
             InputEvent.BUTTON1_MASK, Toolkit.getDefaultToolkit()
-                    .getMenuShortcutKeyMask());
+            .getMenuShortcutKeyMask());
 
     ///////////////////////////////////////////////////////////////////
     ////                         private inner classes             ////
@@ -287,7 +295,7 @@ public class OntologyGraphController extends WithIconGraphController {
 
     /** An action to create a new concept in the ontology model. */
     @SuppressWarnings("serial")
-        private class NewConceptAction extends FigureAction {
+    private class NewConceptAction extends FigureAction {
 
         /** Construct a new concept. */
         public NewConceptAction() {
@@ -298,6 +306,7 @@ public class OntologyGraphController extends WithIconGraphController {
         /** Execute the action.
          *  @param e The event that is received to perform the new concept action.
          */
+        @Override
         public void actionPerformed(ActionEvent e) {
             super.actionPerformed(e);
 
@@ -353,7 +362,7 @@ public class OntologyGraphController extends WithIconGraphController {
                             newConceptLocation = new Location(prototype,
                                     locationName);
                             newConceptLocation
-                                    .setLocation(new double[] { x, y });
+                            .setLocation(new double[] { x, y });
                         }
                         newConceptLocation.setLocation(new double[] { x, y });
                         moml = prototype.exportMoML(conceptName);
@@ -403,6 +412,7 @@ public class OntologyGraphController extends WithIconGraphController {
          *  @param event The mouse event to be reacted to by the relation
          *   creator.
          */
+        @Override
         public void mousePressed(LayerEvent event) {
             Figure source = event.getFigureSource();
             NamedObj sourceObject = (NamedObj) source.getUserObject();

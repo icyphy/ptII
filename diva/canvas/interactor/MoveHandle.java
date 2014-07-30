@@ -72,6 +72,7 @@ public class MoveHandle extends BasicRectangle implements GrabHandle {
     /**
      * Get the site that this handle is attached to
      */
+    @Override
     public Site getSite() {
         return _site;
     }
@@ -80,6 +81,7 @@ public class MoveHandle extends BasicRectangle implements GrabHandle {
      * Get the "size" of the grab-handle. The size is half the
      * length of each side. The default is 4.0.
      */
+    @Override
     public float getSize() {
         return _size;
     }
@@ -87,6 +89,7 @@ public class MoveHandle extends BasicRectangle implements GrabHandle {
     /**
      * Reposition the grab-handle if necessary
      */
+    @Override
     public void relocate() {
         // BIG FIXME This doesn't work for hierarchical figures because we
         // need to take the transformcontext into account.
@@ -114,6 +117,7 @@ public class MoveHandle extends BasicRectangle implements GrabHandle {
     /**
      * Set the set to which this grab-handle is attached.
      */
+    @Override
     public void setSite(Site s) {
         _site = s;
         relocate();
@@ -123,6 +127,7 @@ public class MoveHandle extends BasicRectangle implements GrabHandle {
      * Set the "size" of the grab-handle.  The size is half the
      * length of each side.
      */
+    @Override
     public void setSize(float size) {
         this._size = size;
         ((Rectangle2D) getShape()).setFrame(_x - _size, _y - _size, _size * 2,
@@ -133,6 +138,7 @@ public class MoveHandle extends BasicRectangle implements GrabHandle {
      * Translating a grab-handle moves its parent object, but _doesn't_
      * move the grab-handle itself.
      */
+    @Override
     public void translate(double x, double y) {
         _site.getFigure().translate(x, y);
     }

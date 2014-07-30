@@ -101,6 +101,7 @@ public class DDEGetNToken extends DDEGet {
         return _tokens[cntr];
     }
 
+    @Override
     public void initialize() throws IllegalActionException {
         _numTokens = ((IntToken) numTokens.getToken()).intValue();
         _tokens = new Token[_numTokens];
@@ -115,6 +116,7 @@ public class DDEGetNToken extends DDEGet {
 
     /**
      */
+    @Override
     public void fire() throws IllegalActionException {
         int cnt = 0;
 
@@ -136,7 +138,7 @@ public class DDEGetNToken extends DDEGet {
                         if (rcvr.hasToken()) {
                             // System.out.println("#####");
                             System.out
-                                    .println("#####Past DDEGetNToken.rcvr.hasToken()");
+                            .println("#####Past DDEGetNToken.rcvr.hasToken()");
 
                             // System.out.println("#####");
                             _tokens[cnt] = rcvr.get();

@@ -80,6 +80,7 @@ public class ExpandPortNames extends EquationVisitor {
      *  the model name of the port.
      * @see ptolemy.moml.unit.EquationVisitor#_visitUnitTerm(UnitTerm)
      */
+    @Override
     protected Object _visitUnitTerm(UnitTerm uTerm)
             throws IllegalActionException {
         if (uTerm.isVariable()) {

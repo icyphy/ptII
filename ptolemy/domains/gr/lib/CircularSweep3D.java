@@ -123,6 +123,7 @@ public class CircularSweep3D extends GRShadedShape {
      *  @exception IllegalActionException If the value of some parameters can't
      *   be obtained.
      */
+    @Override
     protected void _createModel() throws IllegalActionException {
         super._createModel();
 
@@ -205,6 +206,7 @@ public class CircularSweep3D extends GRShadedShape {
      *  node for this actor is a circular sweep.
      *  @return the Java3D circular sweep
      */
+    @Override
     protected Node _getNodeObject() {
         return _containedNode;
     }

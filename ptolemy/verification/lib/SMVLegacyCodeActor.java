@@ -116,6 +116,7 @@ public class SMVLegacyCodeActor extends TypedCompositeActor {
      *  is used for code generation only.
      *  @exception IllegalActionException No simulation
      */
+    @Override
     public void preinitialize() throws IllegalActionException {
         throw new IllegalActionException(this, getName() + " can not run in "
                 + "simulation mode.");

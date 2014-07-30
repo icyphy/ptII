@@ -95,12 +95,14 @@ public class StateBubble extends AbstractFigure {
      * the inherited method to take account of the thickness of
      * the stroke, if there is one.
      */
+    @Override
     public Rectangle2D getBounds() {
         return _outsideEllipse.getBounds();
     }
 
     /** Get the shape of this figure.
      */
+    @Override
     public Shape getShape() {
         return _outsideEllipse.shape;
     }
@@ -133,6 +135,7 @@ public class StateBubble extends AbstractFigure {
      * a stroke, then return false. If the figure is not visible,
      * always return false.
      */
+    @Override
     public boolean hit(Rectangle2D r) {
         if (!isVisible()) {
             return false;
@@ -144,6 +147,7 @@ public class StateBubble extends AbstractFigure {
     /** Paint the figure. The figure is redrawn with the current
      *  shape, fill, and outline.
      */
+    @Override
     public void paint(Graphics2D g) {
         if (!isVisible()) {
             return;
@@ -244,6 +248,7 @@ public class StateBubble extends AbstractFigure {
      * that loses the type of the shape, converting it into a
      * GeneralPath.
      */
+    @Override
     public void transform(AffineTransform at) {
         repaint();
         _outsideEllipse.shape = ShapeUtilities.transformModify(
@@ -265,6 +270,7 @@ public class StateBubble extends AbstractFigure {
      * that loses the type of the shape, converting it into a
      * GeneralPath.
      */
+    @Override
     public void translate(double x, double y) {
         repaint();
         _outsideEllipse.shape = ShapeUtilities.translateModify(

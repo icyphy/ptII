@@ -64,9 +64,9 @@ import ptolemy.kernel.util.Settable;
  @since Ptolemy II 10.0
  @Pt.ProposedRating Yellow (eal)
  @Pt.AcceptedRating Red (cxh)
-*/
+ */
 public class ShowTypes extends AbstractInitializableAttribute implements
-        ExecutionListener {
+ExecutionListener {
 
     /** Construct an actor with the specified container and name.
      *  @param container The container.
@@ -100,6 +100,7 @@ public class ShowTypes extends AbstractInitializableAttribute implements
      *  @param manager The manager controlling the execution.
      *  @param throwable The throwable to report.
      */
+    @Override
     public void executionError(Manager manager, Throwable throwable) {
         _showTypes();
     }
@@ -107,6 +108,7 @@ public class ShowTypes extends AbstractInitializableAttribute implements
     /** Do nothing.
      *  @param manager The manager controlling the execution.
      */
+    @Override
     public void executionFinished(Manager manager) {
     }
 
@@ -114,6 +116,7 @@ public class ShowTypes extends AbstractInitializableAttribute implements
      *  @param manager The manager controlling the execution.
      *  @see Manager#getState()
      */
+    @Override
     public void managerStateChanged(Manager manager) {
         // NOTE: This could be done only when changing state from
         // RESOLVING_TYPES to ITERATING, but for now, we just always do it.
@@ -148,6 +151,7 @@ public class ShowTypes extends AbstractInitializableAttribute implements
      *   an attribute with the name of this attribute.
      *  @see #getContainer()
      */
+    @Override
     public void setContainer(final NamedObj container)
             throws IllegalActionException, NameDuplicationException {
         NamedObj previousContainer = getContainer();
@@ -181,6 +185,7 @@ public class ShowTypes extends AbstractInitializableAttribute implements
         if (container != null && container instanceof CompositeEntity) {
             ChangeRequest request = new ChangeRequest(this,
                     "Update types on ports", true) {
+                @Override
                 protected void _execute() throws IllegalActionException {
                     List<Entity> entities = ((CompositeEntity) container)
                             .entityList();
@@ -202,11 +207,11 @@ public class ShowTypes extends AbstractInitializableAttribute implements
                             if (attribute instanceof StringParameter) {
                                 if (port instanceof TypedIOPort) {
                                     ((StringParameter) attribute)
-                                            .setExpression(((TypedIOPort) port)
-                                                    .getType().toString());
+                                    .setExpression(((TypedIOPort) port)
+                                            .getType().toString());
                                 } else {
                                     ((StringParameter) attribute)
-                                            .setExpression("untyped");
+                                    .setExpression("untyped");
                                 }
                             }
                         }

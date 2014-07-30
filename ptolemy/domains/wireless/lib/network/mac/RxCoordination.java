@@ -126,6 +126,7 @@ public class RxCoordination extends MACActorBase {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
+    @Override
     public void fire() throws IllegalActionException {
         super.fire();
 
@@ -287,6 +288,7 @@ public class RxCoordination extends MACActorBase {
     /** Initialize the private variables.
      *  @exception IllegalActionException If thrown by the base class.
      */
+    @Override
     public void initialize() throws IllegalActionException {
         super.initialize();
         _dSifsDly = _aSifsTime - _aRxTxTurnaroundTime;

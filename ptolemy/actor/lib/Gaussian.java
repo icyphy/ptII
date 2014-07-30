@@ -100,6 +100,7 @@ public class Gaussian extends RandomSource {
      *  remain constant throughout an iteration.
      *  @exception IllegalActionException If there is no director.
      */
+    @Override
     public void fire() throws IllegalActionException {
         mean.update();
         standardDeviation.update();
@@ -113,6 +114,7 @@ public class Gaussian extends RandomSource {
     /** Generate a new random number.
      *  @exception IllegalActionException If parameter values are incorrect.
      */
+    @Override
     protected void _generateRandomNumber() throws IllegalActionException {
         double meanValue = ((DoubleToken) mean.getToken()).doubleValue();
         double standardDeviationValue = ((DoubleToken) standardDeviation

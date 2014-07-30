@@ -84,6 +84,7 @@ public class ExpressionShellEffigy extends Effigy {
      *  @exception CloneNotSupportedException If a derived class contains
      *   an attribute that cannot be cloned.
      */
+    @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         ExpressionShellEffigy newObject = (ExpressionShellEffigy) super
                 .clone(workspace);
@@ -148,6 +149,7 @@ public class ExpressionShellEffigy extends Effigy {
          *  capable of creating an effigy without a URL being specified.
          *  @return True.
          */
+        @Override
         public boolean canCreateBlankEffigy() {
             return true;
         }
@@ -165,6 +167,7 @@ public class ExpressionShellEffigy extends Effigy {
          *  @exception Exception If there is some failure.
          *   is malformed in some way.
          */
+        @Override
         public Effigy createEffigy(CompositeEntity container, URL base,
                 URL input) throws Exception {
             if (input == null) {

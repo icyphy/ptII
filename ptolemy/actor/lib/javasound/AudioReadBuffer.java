@@ -155,6 +155,7 @@ public class AudioReadBuffer extends Transformer {
      *  @exception IllegalActionException If the change is not
      *   allowed.
      */
+    @Override
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         if (attribute == sourceURL) {
@@ -186,6 +187,7 @@ public class AudioReadBuffer extends Transformer {
      *   the specified URL, or if the file has an unsupported audio
      *   format.
      */
+    @Override
     public void initialize() throws IllegalActionException {
         super.initialize();
 
@@ -213,6 +215,7 @@ public class AudioReadBuffer extends Transformer {
      *  sent to the output. Note that if a stereo sound file is
      *  specified, only the left channel will be used.
      */
+    @Override
     public void fire() throws IllegalActionException {
         super.fire();
         if (input.hasToken(0)) {
@@ -243,6 +246,7 @@ public class AudioReadBuffer extends Transformer {
      *  @exception IllegalActionException If there is a problem reading
      *   from the specified sound file.
      */
+    @Override
     public boolean postfire() throws IllegalActionException {
         if (!super.postfire()) {
             return false;
@@ -256,6 +260,7 @@ public class AudioReadBuffer extends Transformer {
      *  @exception IllegalActionException If there is a
      *   problem closing the file.
      */
+    @Override
     public void wrapup() throws IllegalActionException {
         // Stop capturing audio.
         if (_soundReader != null) {
@@ -281,7 +286,7 @@ public class AudioReadBuffer extends Transformer {
      *   the audio reader.
      */
     private synchronized void _initializeReader() throws IOException,
-            IllegalActionException {
+    IllegalActionException {
         if (_soundReader != null) {
             _soundReader.closeFile();
         }

@@ -60,6 +60,7 @@ public class SensorHandler extends InputDevice {
      *  @return A string that sets the timeVariable to the value at the timestamp pointer.
      *  @exception IllegalActionException Not thrown in this base class.
      */
+    @Override
     public String getSourceTimeString(String timeVariable)
             throws IllegalActionException {
         String s = timeVariable + " = *timestamp;";

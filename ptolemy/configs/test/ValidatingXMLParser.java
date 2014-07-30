@@ -121,6 +121,7 @@ public class ValidatingXMLParser extends DefaultHandler {
          *  otherwise return null.
          *  @exception SAXException If the MoML DTD cannot be created.
          */
+        @Override
         public InputSource resolveEntity(String publicID, String systemID)
                 throws SAXException {
             if (systemID
@@ -134,41 +135,51 @@ public class ValidatingXMLParser extends DefaultHandler {
     //===========================================================
     // SAX DocumentHandler methods
     //===========================================================
+    @Override
     public void setDocumentLocator(Locator l) {
     }
 
+    @Override
     public void startDocument() throws SAXException {
     }
 
+    @Override
     public void endDocument() throws SAXException {
     }
 
+    @Override
     public void startElement(String namespaceURI, String sName, // simple name
             String qName, // qualified name
             Attributes attrs) throws SAXException {
     }
 
+    @Override
     public void endElement(String namespaceURI, String sName, // simple name
             String qName // qualified name
-    ) throws SAXException {
+            ) throws SAXException {
     }
 
+    @Override
     public void characters(char[] buf, int offset, int len) throws SAXException {
     }
 
+    @Override
     public void ignorableWhitespace(char[] buf, int offset, int len)
             throws SAXException {
     }
 
+    @Override
     public void processingInstruction(String target, String data)
             throws SAXException {
     }
 
+    @Override
     public void error(SAXParseException exception) throws SAXParseException {
         warning(exception);
         throw exception;
     }
 
+    @Override
     public void warning(SAXParseException exception) throws SAXParseException {
         System.out.println("Warning: line " + exception.getLineNumber()
                 + ", uri " + exception.getSystemId());

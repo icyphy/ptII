@@ -11,7 +11,7 @@ package ptolemy.actor.corba.util;
  * methods of Ptolemy II.
  */
 public final class CorbaActorHolder implements
-        org.omg.CORBA.portable.Streamable {
+org.omg.CORBA.portable.Streamable {
     public ptolemy.actor.corba.util.CorbaActor value = null;
 
     public CorbaActorHolder() {
@@ -21,14 +21,17 @@ public final class CorbaActorHolder implements
         value = initialValue;
     }
 
+    @Override
     public void _read(org.omg.CORBA.portable.InputStream i) {
         value = ptolemy.actor.corba.util.CorbaActorHelper.read(i);
     }
 
+    @Override
     public void _write(org.omg.CORBA.portable.OutputStream o) {
         ptolemy.actor.corba.util.CorbaActorHelper.write(o, value);
     }
 
+    @Override
     public org.omg.CORBA.TypeCode _type() {
         return ptolemy.actor.corba.util.CorbaActorHelper.type();
     }

@@ -65,7 +65,7 @@ import ptolemy.kernel.util.Workspace;
  @Pt.AcceptedRating Yellow (eal)
  */
 public class VariableRecursiveLattice extends RecursiveLattice implements
-        ExplicitChangeContext {
+ExplicitChangeContext {
     /** Construct an actor with the given container and name.
      *  @param container The container.
      *  @param name The name of this actor.
@@ -131,6 +131,7 @@ public class VariableRecursiveLattice extends RecursiveLattice implements
      *  @exception IllegalActionException If the block size is invalid,
      *   or if the base class throws it.
      */
+    @Override
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         if (attribute == blockSize) {
@@ -153,12 +154,13 @@ public class VariableRecursiveLattice extends RecursiveLattice implements
      *  @exception CloneNotSupportedException If a derived class contains
      *   an attribute that cannot be cloned.
      */
+    @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         VariableRecursiveLattice newObject = (VariableRecursiveLattice) super
                 .clone(workspace);
 
         newObject.newCoefficients
-                .setTypeSameAs(newObject.reflectionCoefficients);
+        .setTypeSameAs(newObject.reflectionCoefficients);
 
         // FIXME: Is this needed?  If so, shouldn't it be in the base class?
         newObject.output.setTypeSameAs(newObject.input);
@@ -169,6 +171,7 @@ public class VariableRecursiveLattice extends RecursiveLattice implements
      *  @exception IllegalActionException If parameter values are invalid,
      *   or if there is no director.
      */
+    @Override
     public void fire() throws IllegalActionException {
         if (newCoefficients.hasToken(0)) {
             ArrayToken coefficientsToken = (ArrayToken) newCoefficients.get(0);
@@ -187,6 +190,7 @@ public class VariableRecursiveLattice extends RecursiveLattice implements
      * @exception IllegalActionException If the list of modified
      * variables cannot be returned.
      */
+    @Override
     public List getModifiedVariables() throws IllegalActionException {
         List list = new LinkedList();
         list.add(reflectionCoefficients);
@@ -201,6 +205,7 @@ public class VariableRecursiveLattice extends RecursiveLattice implements
      * @return The change context being made explicit.
      * @exception IllegalActionException Not thrown in this base class.
      */
+    @Override
     public Entity getContext() throws IllegalActionException {
         return this;
     }
@@ -211,6 +216,7 @@ public class VariableRecursiveLattice extends RecursiveLattice implements
      *   equal to the <i>blockSize</i> parameter.
      *  @exception IllegalActionException If the superclass throws it.
      */
+    @Override
     public boolean prefire() throws IllegalActionException {
         if (input.hasToken(0, _blockSizeValue) && newCoefficients.hasToken(0)) {
             return super.prefire();

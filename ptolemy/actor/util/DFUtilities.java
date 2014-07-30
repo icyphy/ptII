@@ -74,6 +74,7 @@ public class DFUtilities {
          *  @param object2 The second object to be compared.
          *  @return 0 if the objects are the same.
          */
+        @Override
         public int compare(Object object1, Object object2) {
             // Note: This is rather slow, because getFullName is not cached.
 
@@ -129,7 +130,7 @@ public class DFUtilities {
      *  @see #setRate
      */
     public static int getRate(IOPort port) throws NotSchedulableException,
-            IllegalActionException {
+    IllegalActionException {
         if (port.isInput() && port.isOutput()) {
             throw new NotSchedulableException(port,
                     "Port is both an input and an output, which is not"

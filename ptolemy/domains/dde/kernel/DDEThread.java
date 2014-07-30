@@ -154,6 +154,7 @@ public class DDEThread extends ProcessThread {
      *  NOTE: This method assumes an implementation of fireAt() that
      *  would be more appropriately named <I>continueAt()</I>.
      */
+    @Override
     public void start() {
         Actor actor = getActor();
         DDEDirector director = (DDEDirector) actor.getDirector();
@@ -184,6 +185,7 @@ public class DDEThread extends ProcessThread {
      *  ending execution of the actor under the control of this
      *  thread.
      */
+    @Override
     public void wrapup() throws IllegalActionException {
         noticeOfTermination();
         super.wrapup();

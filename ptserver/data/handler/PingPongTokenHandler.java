@@ -58,6 +58,7 @@ public class PingPongTokenHandler implements TokenHandler<Token> {
      * @exception IOException if there is a problem with the outputStream
      * @exception IllegalActionException if there is the state becomes inconsistent
      */
+    @Override
     public void convertToBytes(Token token, DataOutputStream outputStream)
             throws IOException, IllegalActionException {
         if (token instanceof PingToken) {
@@ -78,6 +79,7 @@ public class PingPongTokenHandler implements TokenHandler<Token> {
      * @exception IOException if there is a problem with the outputStream
      * @exception IllegalActionException if there is the state becomes inconsistent
      */
+    @Override
     public Token convertToToken(DataInputStream inputStream,
             Class<? extends Token> tokenType) throws IOException,
             IllegalActionException {

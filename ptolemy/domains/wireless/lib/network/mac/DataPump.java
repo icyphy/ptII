@@ -154,6 +154,7 @@ public class DataPump extends MACActorBase {
      *  @exception CloneNotSupportedException Not thrown in this base class
      *  @return The new Attribute.
      */
+    @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         DataPump newObject = (DataPump) super.clone(workspace);
         return newObject;
@@ -166,6 +167,7 @@ public class DataPump extends MACActorBase {
      *  @exception IllegalActionException If the causality interface
      *  cannot be computed.
      */
+    @Override
     public void declareDelayDependency() throws IllegalActionException {
         // Declare that output does not immediately depend on the input,
         // though there is no lower bound on the time delay.
@@ -179,6 +181,7 @@ public class DataPump extends MACActorBase {
      *  @exception IllegalActionException If an error occurs reading
      *   or writing inputs or outputs.
      */
+    @Override
     public void fire() throws IllegalActionException {
         super.fire();
 
@@ -217,7 +220,7 @@ public class DataPump extends MACActorBase {
                     Token[] value = { new IntToken(TxStart),
                             new IntToken(length), new IntToken(rate) };
                     toPHYLayer
-                            .send(0, new RecordToken(TxStartMsgFields, value));
+                    .send(0, new RecordToken(TxStartMsgFields, value));
                     _state = Wait_TxStart;
 
                     break;
@@ -270,6 +273,7 @@ public class DataPump extends MACActorBase {
     /** Initialize the private variables.
      *  @exception IllegalActionException If thrown by the base class.
      */
+    @Override
     public void initialize() throws IllegalActionException {
         super.initialize();
         _state = 0;

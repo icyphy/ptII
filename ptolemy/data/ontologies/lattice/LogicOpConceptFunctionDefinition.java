@@ -47,7 +47,7 @@ import ptolemy.kernel.util.Settable;
  *  @Pt.AcceptedRating Red (cshelton)
  */
 public class LogicOpConceptFunctionDefinition extends
-        BinaryOperationMonotonicFunctionDefinition {
+BinaryOperationMonotonicFunctionDefinition {
 
     /** Construct the LogicOpConceptFunctionDefinition attribute
      *  with the given container and name.

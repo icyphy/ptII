@@ -79,6 +79,7 @@ public class LogicalNot extends Transformer {
      *  it to the output.
      *  @exception IllegalActionException If there is no director.
      */
+    @Override
     public void fire() throws IllegalActionException {
         super.fire();
         if (input.hasToken(0)) {

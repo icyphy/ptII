@@ -84,6 +84,7 @@ public class HuffmanDecoder extends HuffmanBasic {
      *  @exception CloneNotSupportedException If a derived class contains
      *   an attribute that cannot be cloned.
      */
+    @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         HuffmanDecoder newObject = (HuffmanDecoder) super.clone(workspace);
         try {
@@ -100,6 +101,7 @@ public class HuffmanDecoder extends HuffmanBasic {
      *  encode the input into booleans and send them to the output port.
      *  @exception IllegalActionException If the input is not a decodable code.
      */
+    @Override
     public void fire() throws IllegalActionException {
         super.fire();
 
@@ -136,6 +138,7 @@ public class HuffmanDecoder extends HuffmanBasic {
 
     /** Initialize the actor. set the current input string to be empty.
      */
+    @Override
     public void initialize() throws IllegalActionException {
         super.initialize();
         _code = "";

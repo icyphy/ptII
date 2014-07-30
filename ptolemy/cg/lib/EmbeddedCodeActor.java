@@ -157,6 +157,7 @@ public class EmbeddedCodeActor extends CompiledCompositeActor {
 
     /** Create the embedded actor and add ports to it.
      */
+    @Override
     public void preinitialize() throws IllegalActionException {
 
         Director executiveDirector = getExecutiveDirector();
@@ -228,6 +229,7 @@ public class EmbeddedCodeActor extends CompiledCompositeActor {
 
     /** Remove inside relations.
      */
+    @Override
     public void wrapup() throws IllegalActionException {
         try {
             for (TypedIOPort port : (List<TypedIOPort>) portList()) {
@@ -263,7 +265,7 @@ public class EmbeddedCodeActor extends CompiledCompositeActor {
      *   by the proposed container.
      */
     protected void setEmbeddedActor() throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
 
         // This code was separated into its own function so that
         // embeddedJavaFileActor can extend this class without a large

@@ -102,7 +102,7 @@ public class TestSharedParameter extends SharedParameter {
      */
     public TestSharedParameter(NamedObj container, String name,
             Class containerClass, String defaultValue)
-            throws IllegalActionException, NameDuplicationException {
+                    throws IllegalActionException, NameDuplicationException {
         super(container, name, containerClass, defaultValue);
     }
 
@@ -120,6 +120,7 @@ public class TestSharedParameter extends SharedParameter {
      *   shared parameters in the model, but their values
      *   do not match.
      */
+    @Override
     public void inferValueFromContext(String defaultValue) {
         super.inferValueFromContext(defaultValue);
         inferValueFromContextCount++;
@@ -131,6 +132,7 @@ public class TestSharedParameter extends SharedParameter {
      *  @return Returns whether this instance is suppressing propagation.
      *  @see #setSuppressingPropagation(boolean)
      */
+    @Override
     public boolean isSuppressingPropagation() {
         isSuppressingPropagationCount++;
         return super.isSuppressingPropagation();
@@ -140,6 +142,7 @@ public class TestSharedParameter extends SharedParameter {
      *  parameters.
      *  @param expression The expression.
      */
+    @Override
     public void setExpression(String expression) {
         setExpressionCount++;
         super.setExpression(expression);
@@ -155,6 +158,7 @@ public class TestSharedParameter extends SharedParameter {
      *  class specified in the constructor.
      *  @return A list of parameters.
      */
+    @Override
     public synchronized Collection sharedParameterSet() {
         sharedParameterSetCount++;
         //new Exception("TestSharedParameter.sharedParameterSet(): "
@@ -169,6 +173,7 @@ public class TestSharedParameter extends SharedParameter {
      *   not lazy) and the model error handler throws an exception.
      *   Also thrown if the change is not acceptable to the container.
      */
+    @Override
     public Collection validate() throws IllegalActionException {
         validateCount++;
         //new Exception("TestSharedParameter.validate(): "
@@ -186,6 +191,7 @@ public class TestSharedParameter extends SharedParameter {
      *  @exception IllegalActionException If the value cannot
      *   be propagated.
      */
+    @Override
     protected void _propagateValue(NamedObj destination)
             throws IllegalActionException {
         propagateValueCount++;

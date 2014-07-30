@@ -117,7 +117,7 @@ import ptolemy.kernel.util.Workspace;
  @Pt.AcceptedRating Red (eal)
  */
 public class SysMLSequentialDirector extends Director implements
-        SuperdenseTimeDirector {
+SuperdenseTimeDirector {
 
     /** Construct a director in the given container with the given name.
      *  @param container Container of the director.
@@ -141,6 +141,7 @@ public class SysMLSequentialDirector extends Director implements
      *   cannot be cloned.
      *  @return The new PNDirector.
      */
+    @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         SysMLSequentialDirector newObject = (SysMLSequentialDirector) super
                 .clone(workspace);
@@ -157,6 +158,7 @@ public class SysMLSequentialDirector extends Director implements
      *  This method is synchronized on the director.
      *  @exception IllegalActionException If a derived class throws it.
      */
+    @Override
     public synchronized void fire() throws IllegalActionException {
 
         Time currentTime = getModelTime();
@@ -276,6 +278,7 @@ public class SysMLSequentialDirector extends Director implements
      *   and it throws it. Derived classes may choose to throw this
      *   exception for other reasons.
      */
+    @Override
     public synchronized Time fireAt(Actor actor, Time time, int microstep)
             throws IllegalActionException {
         RefireRequest request = new RefireRequest();
@@ -287,8 +290,8 @@ public class SysMLSequentialDirector extends Director implements
         if (time.compareTo(currentTime) < 0) {
             throw new IllegalActionException(actor,
                     "Requesting firing at time " + time
-                            + ", which is in the past. Current time is "
-                            + currentTime);
+                    + ", which is in the past. Current time is "
+                    + currentTime);
         }
 
         if (time.compareTo(currentTime) == 0 && microstep <= _microstep
@@ -321,6 +324,7 @@ public class SysMLSequentialDirector extends Director implements
      *  @exception IllegalActionException If the initialize() method of one
      *  of the deeply contained actors throws it.
      */
+    @Override
     public synchronized void initialize() throws IllegalActionException {
         _isInitializing = true;
         _advanceablesVersion = -1;
@@ -388,6 +392,7 @@ public class SysMLSequentialDirector extends Director implements
      *  @exception IllegalActionException If the actor is not
      *  acceptable to the domain.  Not thrown in this base class.
      */
+    @Override
     public void initialize(Actor actor) throws IllegalActionException {
         // Reset the receivers.
         Iterator ports = actor.inputPortList().iterator();
@@ -411,6 +416,7 @@ public class SysMLSequentialDirector extends Director implements
      *  @see #setIndex(int)
      *  @see ptolemy.actor.SuperdenseTimeDirector
      */
+    @Override
     public int getIndex() {
         return _microstep;
     }
@@ -418,6 +424,7 @@ public class SysMLSequentialDirector extends Director implements
     /** Return a new receiver SysMLAReceiver.
      *  @return A new SysMLAReceiver.
      */
+    @Override
     public Receiver newReceiver() {
         return new SysMLSequentialReceiver();
     }
@@ -427,6 +434,7 @@ public class SysMLSequentialDirector extends Director implements
      *  @return true If next actor can execute.
      *  @exception IllegalActionException If request to resource scheduler fails.
      */
+    @Override
     public boolean scheduleContainedActors() throws IllegalActionException {
         RefireRequest request = _fireAtRequests.peek();
         if (request == null) {
@@ -445,6 +453,7 @@ public class SysMLSequentialDirector extends Director implements
      *   a stop has been requested.
      *  @exception IllegalActionException If a derived class throws it.
      */
+    @Override
     public boolean postfire() throws IllegalActionException {
         super.postfire();
 
@@ -528,6 +537,7 @@ public class SysMLSequentialDirector extends Director implements
      *  @return Whatever the superclass returns.
      *  @exception IllegalActionException Not thrown in this base class.
      */
+    @Override
     public boolean prefire() throws IllegalActionException {
         if (_debugging) {
             _debug("Director: Called prefire() at time " + getModelTime());
@@ -554,6 +564,7 @@ public class SysMLSequentialDirector extends Director implements
      *  @see #getIndex()
      *  @see ptolemy.actor.SuperdenseTimeDirector
      */
+    @Override
     public void setIndex(int index) throws IllegalActionException {
         if (_debugging) {
             _debug("Setting superdense time index to " + index);
@@ -567,6 +578,7 @@ public class SysMLSequentialDirector extends Director implements
      *  the current time returned by getCurrentTime().
      *  @see #getModelTime()
      */
+    @Override
     public void setModelTime(Time newTime) throws IllegalActionException {
         // FIXME: Needed only for debugging.
         super.setModelTime(newTime);
@@ -794,6 +806,7 @@ public class SysMLSequentialDirector extends Director implements
         public SysMLSequentialReceiver receiver;
         public Token token;
 
+        @Override
         public String toString() {
             IOPort port = receiver.getContainer();
             int channel;
@@ -808,7 +821,7 @@ public class SysMLSequentialDirector extends Director implements
                         + channel + "]";
             }
             return "[" + token + " for port " + port.getName() + " channel "
-                    + channel + "]";
+            + channel + "]";
         }
     }
 
@@ -838,6 +851,7 @@ public class SysMLSequentialDirector extends Director implements
          *  @param object An instance of Object.
          *  @return True if the argument is a RefireRequest.
          */
+        @Override
         public boolean equals(Object object) {
             // See http://www.technofundo.com/tech/java/equalhash.html
             if (object == this) {
@@ -889,6 +903,7 @@ public class SysMLSequentialDirector extends Director implements
          *  @return The token contained by this mailbox.
          *  @exception NoTokenException If this mailbox is empty.
          */
+        @Override
         public Token get() throws NoTokenException {
             if (_token == null) {
                 throw new NoTokenException(getContainer(),
@@ -909,6 +924,7 @@ public class SysMLSequentialDirector extends Director implements
         /** Put a token into the queue for containing actor.
          *  @param token The token to be put into the queue.
          */
+        @Override
         public void put(Token token) {
             IOPort port = getContainer();
             boolean isFlowPort = _isFlowPort(port);
@@ -920,9 +936,9 @@ public class SysMLSequentialDirector extends Director implements
             if (SysMLSequentialDirector.this._debugging) {
                 Actor actor = (Actor) port.getContainer();
                 SysMLSequentialDirector.this
-                        ._debug("Adding to queue event destined for "
-                                + actor.getName() + " at time "
-                                + getModelTime() + ": " + input);
+                ._debug("Adding to queue event destined for "
+                        + actor.getName() + " at time "
+                        + getModelTime() + ": " + input);
                 SysMLSequentialDirector.this._debug("input queue: "
                         + _inputQueue);
             }

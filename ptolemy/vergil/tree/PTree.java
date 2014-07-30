@@ -96,6 +96,7 @@ public class PTree extends JTree {
      *  If the value is a Nameable, this returns its name.
      *  Otherwise, it returns value.toString();
      */
+    @Override
     public String convertValueToText(Object value, boolean selected,
             boolean expanded, boolean leaf, int row, boolean hasFocus) {
         String result;
@@ -111,14 +112,17 @@ public class PTree extends JTree {
     ////                         inner classes                     ////
     // A Drag Gesture listener for the tree.
     private static class PTreeDragGestureListener implements
-            DragGestureListener {
+    DragGestureListener {
         // FindBugs suggests making this class static so as to decrease
         // the size of instances and avoid dangling references.
+        @Override
         public void dragGestureRecognized(DragGestureEvent e) {
             final DragSourceListener dsl = new DragSourceListener() {
+                @Override
                 public void dragDropEnd(DragSourceDropEvent dsde) {
                 }
 
+                @Override
                 public void dragEnter(DragSourceDragEvent dsde) {
                     DragSourceContext context = dsde.getDragSourceContext();
 
@@ -133,12 +137,15 @@ public class PTree extends JTree {
                     }
                 }
 
+                @Override
                 public void dragExit(DragSourceEvent dse) {
                 }
 
+                @Override
                 public void dragOver(DragSourceDragEvent dsde) {
                 }
 
+                @Override
                 public void dropActionChanged(DragSourceDragEvent dsde) {
                 }
             };

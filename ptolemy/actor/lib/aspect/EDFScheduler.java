@@ -76,6 +76,7 @@ public class EDFScheduler extends FixedPriorityScheduler {
      *  @return The decorated attributes for the target NamedObj, or
      *   null if the specified target is not an Actor.
      */
+    @Override
     public DecoratorAttributes createDecoratorAttributes(NamedObj target) {
         if (target instanceof Actor) {
             try {
@@ -110,8 +111,8 @@ public class EDFScheduler extends FixedPriorityScheduler {
      *    as execution time or priority cannot be read.
      */
     @Override
-    public Time schedule(NamedObj actor, Time currentPlatformTime, Time deadline,
-            Time executionTime) throws IllegalActionException {
+    public Time schedule(NamedObj actor, Time currentPlatformTime,
+            Time deadline, Time executionTime) throws IllegalActionException {
         if (!_currentlyExecuting.contains(actor)) {
             _deadlines.put(actor, deadline);
         }

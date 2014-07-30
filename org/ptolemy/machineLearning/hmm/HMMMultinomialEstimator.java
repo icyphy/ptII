@@ -1,4 +1,3 @@
-
 /* Parameter Estimation for Graphical Models.
 
 Copyright (c) 1998-2014 The Regents of the University of California.
@@ -25,7 +24,7 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
-*/
+ */
 package org.ptolemy.machineLearning.hmm;
 
 import ptolemy.actor.TypedIOPort;
@@ -111,13 +110,14 @@ public class HMMMultinomialEstimator extends ParameterEstimator {
         _B0 = new double[_nStates][_nCategories];
     }
 
+    @Override
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         if (attribute == observationProbabilities) {
 
             int nCat = ((MatrixToken) observationProbabilities.getToken())
                     .getColumnCount();
-            _nStates = ((IntToken)nStates.getToken()).intValue();
+            _nStates = ((IntToken) nStates.getToken()).intValue();
             _B0 = new double[_nStates][nCat];
             for (int i = 0; i < _nStates; i++) {
                 for (int j = 0; j < nCat; j++) {
@@ -151,6 +151,7 @@ public class HMMMultinomialEstimator extends ParameterEstimator {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
+    @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         HMMMultinomialEstimator newObject = (HMMMultinomialEstimator) super
                 .clone(workspace);
@@ -159,6 +160,7 @@ public class HMMMultinomialEstimator extends ParameterEstimator {
         return newObject;
     }
 
+    @Override
     public void fire() throws IllegalActionException {
         super.fire();
 
@@ -180,15 +182,18 @@ public class HMMMultinomialEstimator extends ParameterEstimator {
         priorEstimates.send(0, new ArrayToken(pTokens));
     }
 
+    @Override
     public boolean postfire() throws IllegalActionException {
         _likelihood = 0.0;
         return true;
     }
 
+    @Override
     protected boolean _checkForConvergence(int iterations) {
         return true;
     }
 
+    @Override
     protected void _initializeEMParameters() {
         _transitionMatrix = _A0;
         _B = _B0;
@@ -198,6 +203,7 @@ public class HMMMultinomialEstimator extends ParameterEstimator {
         prior_new = new double[_nStates];
     }
 
+    @Override
     protected void _iterateEM() {
         newEstimates = HMMAlphaBetaRecursion(_observations, _transitionMatrix,
                 _priorIn, _nCategories);
@@ -207,12 +213,14 @@ public class HMMMultinomialEstimator extends ParameterEstimator {
         likelihood = (Double) (newEstimates.get("likelihood"));
     }
 
+    @Override
     protected void _updateEstimates() {
         _transitionMatrix = A_new;
         _B = B_new;
         _priorIn = prior_new;
     }
 
+    @Override
     protected double emissionProbability(double y, int hiddenState) {
         return _B[hiddenState][(int) y];
     }

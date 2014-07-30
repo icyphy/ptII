@@ -126,6 +126,7 @@ public class ActorViewerGraphController extends RunnableGraphController {
      *  This effectively animates the execution.
      *  @param event The debug event.
      */
+    @Override
     public void event(DebugEvent event) {
         if (event instanceof FiringEvent) {
             Actor actor = ((FiringEvent) event).getActor();
@@ -192,6 +193,7 @@ public class ActorViewerGraphController extends RunnableGraphController {
      *  @param edge The edge object.
      *  @return the edge controller.
      */
+    @Override
     public EdgeController getEdgeController(Object edge) {
         return _linkController;
     }
@@ -218,6 +220,7 @@ public class ActorViewerGraphController extends RunnableGraphController {
      *  @param object A Vertex, Locatable, or Port.
      *  @return the node controller
      */
+    @Override
     public NodeController getNodeController(Object object) {
         // Defer to the superclass if it can provide a controller.
         NodeController result = super.getNodeController(object);
@@ -291,6 +294,7 @@ public class ActorViewerGraphController extends RunnableGraphController {
      *  opening documentation files.
      *  @param configuration The configuration.
      */
+    @Override
     public void setConfiguration(Configuration configuration) {
         super.setConfiguration(configuration);
         _attributeController.setConfiguration(configuration);
@@ -321,6 +325,7 @@ public class ActorViewerGraphController extends RunnableGraphController {
      *
      *  @param jgraph The JGraph to which hot keys are to be added.
      */
+    @Override
     protected void _addHotKeys(JGraph jgraph) {
         super._addHotKeys(jgraph);
         _entityController.addHotKeys(jgraph);
@@ -348,6 +353,7 @@ public class ActorViewerGraphController extends RunnableGraphController {
      *  defined in the derived classes, because the derived classes
      *  will not have been fully constructed by the time this is called.
      */
+    @Override
     protected void _createControllers() {
         super._createControllers();
         _attributeController = new AttributeController(this,
@@ -397,6 +403,7 @@ public class ActorViewerGraphController extends RunnableGraphController {
      *  the controller does not yet have a reference to its pane
      *  at that time.
      */
+    @Override
     protected void initializeInteraction() {
         GraphPane pane = getGraphPane();
 
@@ -474,6 +481,7 @@ public class ActorViewerGraphController extends RunnableGraphController {
          * @param node
          *            The node, which is assumed to be an entity.
          */
+        @Override
         public void layout(Object node) {
             GraphModel model = ActorViewerGraphController.this.getGraphModel();
 
@@ -669,7 +677,7 @@ public class ActorViewerGraphController extends RunnableGraphController {
                             && portHide instanceof Variable
                             && ((Variable) portHide).getToken().equals(
                                     BooleanToken.TRUE) && port
-                            .linkedRelationList().isEmpty())) {
+                                    .linkedRelationList().isEmpty())) {
                         count++;
                     }
                 } catch (IllegalActionException ex) {
@@ -700,7 +708,7 @@ public class ActorViewerGraphController extends RunnableGraphController {
                             && portHide instanceof Variable
                             && ((Variable) portHide).getToken().equals(
                                     BooleanToken.TRUE)
-                            && port.linkedRelationList().isEmpty()) {
+                                    && port.linkedRelationList().isEmpty()) {
                         continue;
                     }
                 } catch (IllegalActionException ex) {
@@ -830,32 +838,33 @@ public class ActorViewerGraphController extends RunnableGraphController {
                         }
                     }
                 } catch (IllegalActionException e) {
-                        if (toShow == null) {
-                                toShow = e.getMessage();
-                        } else {
-                                toShow += e.getMessage();
-                        }
+                    if (toShow == null) {
+                        toShow = e.getMessage();
+                    } else {
+                        toShow += e.getMessage();
+                    }
                 }
-                
+
                 // Finally, if the port is an IOPort and it has a defaultValue,
                 // show that value. If there is already text to show, the insert
                 // a colon before the value.
                 if (port instanceof IOPort) {
-                        try {
-                                                Token defaultValue = ((IOPort)port).defaultValue.getToken();
-                                                if (defaultValue != null) {
-                                                        if (toShow == null) {
-                                                                toShow = defaultValue.toString();
-                                                        } else {
-                                                                toShow += ": " + defaultValue.toString();
-                                                        }
-                                                }
-                    } catch (IllegalActionException e) {
+                    try {
+                        Token defaultValue = ((IOPort) port).defaultValue
+                                .getToken();
+                        if (defaultValue != null) {
                             if (toShow == null) {
-                                    toShow = e.getMessage();
+                                toShow = defaultValue.toString();
                             } else {
-                                    toShow += e.getMessage();
+                                toShow += ": " + defaultValue.toString();
                             }
+                        }
+                    } catch (IllegalActionException e) {
+                        if (toShow == null) {
+                            toShow = e.getMessage();
+                        } else {
+                            toShow += e.getMessage();
+                        }
                     }
                 }
 

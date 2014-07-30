@@ -53,7 +53,7 @@ import ptolemy.graph.mapping.ToDoubleMapping;
  @version $Id$
  */
 public class AllEdgeSingleSourceLongestPathStrategy extends CachedStrategy
-        implements SingleSourceLongestPathAnalyzer {
+implements SingleSourceLongestPathAnalyzer {
     /** Construct an instance of this analyzer.
      *
      *  @param graph The given graph.
@@ -79,6 +79,7 @@ public class AllEdgeSingleSourceLongestPathStrategy extends CachedStrategy
      *  @return Return the distance from the start node to all the other nodes
      *  in the graph.
      */
+    @Override
     public double[] distance() {
         return (double[]) _result();
     }
@@ -88,6 +89,7 @@ public class AllEdgeSingleSourceLongestPathStrategy extends CachedStrategy
      *  @return Return the starting node of this analyzer.
      *  @see #setStartNode(Node)
      */
+    @Override
     public Node getStartNode() {
         return _startNode;
     }
@@ -100,6 +102,7 @@ public class AllEdgeSingleSourceLongestPathStrategy extends CachedStrategy
      *  @param endNode The ending node of the path.
      *  @return The longest path.
      */
+    @Override
     public List path(Node endNode) {
         int[] predecessors = predecessors();
         ArrayList pathNodes = new ArrayList();
@@ -135,6 +138,7 @@ public class AllEdgeSingleSourceLongestPathStrategy extends CachedStrategy
      *  @param endNode The ending node of the path.
      *  @return The length of the longest path.
      */
+    @Override
     public double pathLength(Node endNode) {
         double[] distance = distance();
         return distance[graph().nodeLabel(endNode)];
@@ -146,6 +150,7 @@ public class AllEdgeSingleSourceLongestPathStrategy extends CachedStrategy
      *  @param startNode The given node.
      *  @see #getStartNode()
      */
+    @Override
     public void setStartNode(Node startNode) {
         _startNode = startNode;
         reset();
@@ -155,6 +160,7 @@ public class AllEdgeSingleSourceLongestPathStrategy extends CachedStrategy
      *
      *  @return Return a description of the analyzer..
      */
+    @Override
     public String toString() {
         return "Single source longest path analyzer"
                 + " which runs in O(E) in which E is the number of edges.";
@@ -167,6 +173,7 @@ public class AllEdgeSingleSourceLongestPathStrategy extends CachedStrategy
      *
      *  @return True if the graph is a directed graph and acyclic.
      */
+    @Override
     public boolean valid() {
         boolean result = false;
 
@@ -186,6 +193,7 @@ public class AllEdgeSingleSourceLongestPathStrategy extends CachedStrategy
      *
      *  @return The result of the computation.
      */
+    @Override
     protected Object _compute() {
         DirectedGraph graph = (DirectedGraph) graph();
         ArrayList queue = new ArrayList();

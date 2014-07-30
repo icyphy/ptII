@@ -54,6 +54,7 @@ public class ConcreteScalarToken extends ScalarToken {
     /** Return the type of this token.
      *  @return BaseType.SCALAR.
      */
+    @Override
     public Type getType() {
         return BaseType.SCALAR;
     }
@@ -61,12 +62,14 @@ public class ConcreteScalarToken extends ScalarToken {
     /** Return this token.
      *  @return This token.
      */
+    @Override
     protected ScalarToken _absolute() {
         return this;
     }
 
     /** Throw an exception.
      */
+    @Override
     protected ScalarToken _add(ScalarToken rightArgument)
             throws IllegalActionException {
         throw new IllegalActionException(notSupportedMessage("add", this,
@@ -75,6 +78,7 @@ public class ConcreteScalarToken extends ScalarToken {
 
     /** Throw an exception.
      */
+    @Override
     protected ScalarToken _bitwiseAnd(ScalarToken rightArgument)
             throws IllegalActionException {
         throw new IllegalActionException(notSupportedMessage("bitwiseAnd",
@@ -83,6 +87,7 @@ public class ConcreteScalarToken extends ScalarToken {
 
     /** Throw an exception.
      */
+    @Override
     protected ScalarToken _bitwiseNot() throws IllegalActionException {
         throw new IllegalActionException(notSupportedMessage("bitwiseNot",
                 this, this));
@@ -90,6 +95,7 @@ public class ConcreteScalarToken extends ScalarToken {
 
     /** Throw an exception.
      */
+    @Override
     protected ScalarToken _bitwiseOr(ScalarToken rightArgument)
             throws IllegalActionException {
         throw new IllegalActionException(notSupportedMessage("bitwiseOr", this,
@@ -98,6 +104,7 @@ public class ConcreteScalarToken extends ScalarToken {
 
     /** Throw an exception.
      */
+    @Override
     protected ScalarToken _bitwiseXor(ScalarToken rightArgument)
             throws IllegalActionException {
         throw new IllegalActionException(notSupportedMessage("bitwiseXor",
@@ -106,6 +113,7 @@ public class ConcreteScalarToken extends ScalarToken {
 
     /** Throw an exception.
      */
+    @Override
     protected ScalarToken _divide(ScalarToken rightArgument)
             throws IllegalActionException {
         throw new IllegalActionException(notSupportedMessage("divide", this,
@@ -114,6 +122,7 @@ public class ConcreteScalarToken extends ScalarToken {
 
     /** Throw an exception.
      */
+    @Override
     protected BooleanToken _isCloseTo(ScalarToken rightArgument, double epsilon)
             throws IllegalActionException {
         throw new IllegalActionException(notSupportedMessage("isCloseTo", this,
@@ -122,6 +131,7 @@ public class ConcreteScalarToken extends ScalarToken {
 
     /** Throw an exception.
      */
+    @Override
     protected BooleanToken _isLessThan(ScalarToken rightArgument)
             throws IllegalActionException {
         throw new IllegalActionException(notSupportedMessage("isLessThan",
@@ -130,6 +140,7 @@ public class ConcreteScalarToken extends ScalarToken {
 
     /** Throw an exception.
      */
+    @Override
     protected ScalarToken _modulo(ScalarToken rightArgument)
             throws IllegalActionException {
         throw new IllegalActionException(notSupportedMessage("modulo", this,
@@ -138,6 +149,7 @@ public class ConcreteScalarToken extends ScalarToken {
 
     /** Throw an exception.
      */
+    @Override
     protected ScalarToken _multiply(ScalarToken rightArgument)
             throws IllegalActionException {
         throw new IllegalActionException(notSupportedMessage("multiply", this,
@@ -146,6 +158,7 @@ public class ConcreteScalarToken extends ScalarToken {
 
     /** Throw an exception.
      */
+    @Override
     protected ScalarToken _subtract(ScalarToken rightArgument)
             throws IllegalActionException {
         throw new IllegalActionException(notSupportedMessage("subtract", this,

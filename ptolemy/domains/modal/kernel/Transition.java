@@ -23,7 +23,7 @@
 
    PT_COPYRIGHT_VERSION_2
    COPYRIGHTENDKEY
-*/
+ */
 package ptolemy.domains.modal.kernel;
 
 import java.util.Iterator;
@@ -191,7 +191,7 @@ import ptolemy.moml.MoMLChangeRequest;
    @see CommitActionsAttribute
    @see FSMActor
    @see OutputActionsAttribute
-*/
+ */
 public class Transition extends ComponentRelation {
     /** Construct a transition with the given name contained by the specified
      *  entity. The container argument must not be null, or a
@@ -224,7 +224,7 @@ public class Transition extends ComponentRelation {
      *   any relation already in the container.
      */
     public Transition(Workspace workspace) throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         super(workspace);
         _init();
     }
@@ -243,6 +243,7 @@ public class Transition extends ComponentRelation {
      *   <i>preemptive</i> parameter and is given an expression that
      *   does not evaluate to a boolean value.
      */
+    @Override
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         if (attribute == preemptive) {
@@ -254,7 +255,7 @@ public class Transition extends ComponentRelation {
             _immediate = ((BooleanToken) immediate.getToken()).booleanValue();
         } else if (attribute == nondeterministic) {
             _nondeterministic = ((BooleanToken) nondeterministic.getToken())
-                .booleanValue();
+                    .booleanValue();
         } else if (attribute == guardExpression) {
             // The guard expression can only be evaluated at run
             // time, because the input variables it can reference are created
@@ -277,16 +278,21 @@ public class Transition extends ComponentRelation {
         } else if (attribute == setActions && _debugging) {
             setActions.addDebugListener(new StreamListener());
         } else if (attribute == fsmTransitionParameterName) {
-            if (((BooleanToken)showFSMTransitionParameter.getToken()).booleanValue()) {
+            if (((BooleanToken) showFSMTransitionParameter.getToken())
+                    .booleanValue()) {
                 _getFSMTransitionParameter();
                 try {
-                    _fsmTransitionParameter.setName(((StringToken)fsmTransitionParameterName.getToken()).stringValue());
+                    _fsmTransitionParameter
+                            .setName(((StringToken) fsmTransitionParameterName
+                                    .getToken()).stringValue());
                 } catch (NameDuplicationException e) {
-                    throw new IllegalActionException(this, e.getCause(), e.getLocalizedMessage());
+                    throw new IllegalActionException(this, e.getCause(),
+                            e.getLocalizedMessage());
                 }
             }
         } else if (attribute == showFSMTransitionParameter) {
-            if (((BooleanToken)showFSMTransitionParameter.getToken()).booleanValue()) {
+            if (((BooleanToken) showFSMTransitionParameter.getToken())
+                    .booleanValue()) {
                 _getFSMTransitionParameter();
                 if (_fsmTransitionParameter != null) {
                     _fsmTransitionParameter.hide(false);
@@ -323,6 +329,7 @@ public class Transition extends ComponentRelation {
      *  @exception CloneNotSupportedException If a derived class contains
      *   an attribute that cannot be cloned.
      */
+    @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         Transition newObject = (Transition) super.clone(workspace);
         /*
@@ -331,7 +338,7 @@ public class Transition extends ComponentRelation {
           newObject.preemptive = (Parameter) newObject.getAttribute("preemptive");
           newObject.immediate = (Parameter) newObject.getAttribute("immediate");
           newObject.refinementName = (StringAttribute) newObject.getAttribute("refinementName");
-        */
+         */
         newObject._actionListsVersion = -1;
         newObject._choiceActionList = new LinkedList();
         newObject._commitActionList = new LinkedList();
@@ -373,11 +380,11 @@ public class Transition extends ComponentRelation {
 
     /** Return the full label, which may include the guard expression,
      *  the output expression and the set actions.
-     *  @return The full label   
-     */   
+     *  @return The full label
+     */
     public String getFullLabel() {
-            StringBuffer buffer = new StringBuffer("");
-            boolean hasAnnotation = false;
+        StringBuffer buffer = new StringBuffer("");
+        boolean hasAnnotation = false;
         String text;
         try {
             text = annotation.stringValue();
@@ -422,7 +429,7 @@ public class Transition extends ComponentRelation {
     public String getGuardExpression() {
         return guardExpression.getExpression();
     }
-    
+
     /** Return a string describing this transition. The string has up to
      *  three lines. The first line is the guard expression, preceded
      *  by "guard: ".  The second line is the <i>outputActions</i> preceded
@@ -433,8 +440,10 @@ public class Transition extends ComponentRelation {
      */
     public String getLabel() {
         try {
-            if (((BooleanToken)showFSMTransitionParameter.getToken()).booleanValue()) {
-                return ((StringToken)fsmTransitionParameterName.getToken()).stringValue();
+            if (((BooleanToken) showFSMTransitionParameter.getToken())
+                    .booleanValue()) {
+                return ((StringToken) fsmTransitionParameterName.getToken())
+                        .stringValue();
             } else {
                 return getFullLabel();
             }
@@ -506,7 +515,7 @@ public class Transition extends ComponentRelation {
 
             Nameable container = getContainer();
             TypedCompositeActor containerContainer = (TypedCompositeActor) container
-                .getContainer();
+                    .getContainer();
             int index = 0;
 
             while (tokenizer.hasMoreTokens()) {
@@ -518,7 +527,7 @@ public class Transition extends ComponentRelation {
                 }
 
                 TypedActor element = (TypedActor) containerContainer
-                    .getEntity(name);
+                        .getEntity(name);
 
                 if (element == null) {
                     throw new IllegalActionException(this, "Cannot find "
@@ -590,9 +599,9 @@ public class Transition extends ComponentRelation {
         if (!(token instanceof BooleanToken)) {
             throw new IllegalActionException(this,
                     "Guard expression does not evaluate to a boolean!"
-                    + " The gaurd expression is: \""
-                    + guardExpression.getExpression()
-                    + "\", which evaluates to " + token);
+                            + " The gaurd expression is: \""
+                            + guardExpression.getExpression()
+                            + "\", which evaluates to " + token);
         }
         boolean result = ((BooleanToken) token).booleanValue();
         return result;
@@ -631,7 +640,7 @@ public class Transition extends ComponentRelation {
         // or old default depending on the version of Ptolemy that created the model.
         try {
             VersionAttribute version = (VersionAttribute) toplevel()
-                .getAttribute("_createdBy", VersionAttribute.class);
+                    .getAttribute("_createdBy", VersionAttribute.class);
             if (version == null) {
                 // No version attribute. Return whatever the value
                 // of the history parameter is.
@@ -661,7 +670,7 @@ public class Transition extends ComponentRelation {
                     // Otherwise, leave the history parameter at its default.
                     if (resetValue instanceof BooleanToken) {
                         boolean resetValueBoolean = ((BooleanToken) resetValue)
-                            .booleanValue();
+                                .booleanValue();
                         if (!resetValueBoolean) {
                             // reset parameter exists and has value false, but if the destination
                             // state has no refinement, we nonetheless change this to make
@@ -669,7 +678,7 @@ public class Transition extends ComponentRelation {
                             State destinationState = destinationState();
                             if (destinationState != null) {
                                 TypedActor[] refinements = destinationState
-                                    .getRefinement();
+                                        .getRefinement();
                                 if (refinements == null
                                         || refinements.length == 0) {
                                     // No need to make history true. Stick with the default.
@@ -704,7 +713,7 @@ public class Transition extends ComponentRelation {
                     State destinationState = destinationState();
                     if (destinationState != null) {
                         TypedActor[] refinements = destinationState
-                            .getRefinement();
+                                .getRefinement();
                         if (refinements == null || refinements.length == 0) {
                             // No need to make history true. Stick with the default.
                             return false;
@@ -775,13 +784,14 @@ public class Transition extends ComponentRelation {
      *  @exception NameDuplicationException If the container already has
      *   an relation with the name of this transition.
      */
+    @Override
     public void setContainer(CompositeEntity container)
             throws IllegalActionException, NameDuplicationException {
         if (container != null) {
             if (!(container instanceof FSMActor)) {
                 throw new IllegalActionException(container, this,
                         "Transition can only be contained by instances of "
-                        + "FSMActor.");
+                                + "FSMActor.");
             }
         } else {
             if (_fsmTransitionParameter != null) {
@@ -806,7 +816,7 @@ public class Transition extends ComponentRelation {
                     + "guard expression of a transition.");
         }
     }
-    
+
     /** Set the FSMTransitionParameter.
      * @param parameter The parameter.
      */
@@ -861,7 +871,7 @@ public class Transition extends ComponentRelation {
     public Parameter exitAngle;
 
     /** The name of the transition, which defaults to the name of
-     *  the transition followed by the string "Parameter".   
+     *  the transition followed by the string "Parameter".
      */
     public Parameter fsmTransitionParameterName;
 
@@ -912,6 +922,7 @@ public class Transition extends ComponentRelation {
      *  expression when the state is not refined.
      *  @deprecated Use immediate transitions.
      */
+    @Deprecated
     public StringAttribute refinementName;
 
     /** The action commands that set parameters when the transition is taken.
@@ -929,11 +940,6 @@ public class Transition extends ComponentRelation {
      *  for the transition to be enabled.
      */
     public Parameter termination;
-    
-    
-
-    
-    
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
@@ -946,6 +952,7 @@ public class Transition extends ComponentRelation {
      *  @exception IllegalActionException If the port cannot be linked
      *   to this transition.
      */
+    @Override
     protected void _checkPort(Port port) throws IllegalActionException {
         super._checkPort(port);
 
@@ -959,7 +966,7 @@ public class Transition extends ComponentRelation {
         if (port != st.incomingPort && port != st.outgoingPort) {
             throw new IllegalActionException(this, port.getContainer(),
                     "Transition can only be linked to incoming or outgoing "
-                    + "port of State.");
+                            + "port of State.");
         }
 
         if (numLinks() == 0) {
@@ -1024,7 +1031,7 @@ public class Transition extends ComponentRelation {
         if (container != null) {
             // Get the containing modal model.
             CompositeActor modalModel = (CompositeActor) container
-                .getContainer();
+                    .getContainer();
             if (modalModel != null) {
                 // Get the director for the modal model.
                 Director director = modalModel.getDirector();
@@ -1039,44 +1046,52 @@ public class Transition extends ComponentRelation {
     private void _getFSMTransitionParameter() throws IllegalActionException {
         if (getContainer() != null) {
             if (_fsmTransitionParameter == null) {
-                _fsmTransitionParameter = (FSMTransitionParameter) getContainer().getAttribute(((StringToken)fsmTransitionParameterName.getToken()).stringValue());
+                _fsmTransitionParameter = (FSMTransitionParameter) getContainer()
+                        .getAttribute(
+                                ((StringToken) fsmTransitionParameterName
+                                        .getToken()).stringValue());
                 if (_fsmTransitionParameter != null) {
                     try {
                         _fsmTransitionParameter.setTransition(this);
                     } catch (NameDuplicationException e) {
-                        throw new IllegalActionException(this, e.getCause(), e.getLocalizedMessage());
+                        throw new IllegalActionException(this, e.getCause(),
+                                e.getLocalizedMessage());
                     }
                 }
-            }    
+            }
             if (_fsmTransitionParameter == null) {
-                Location sourceStateLocation = (Location)sourceState().getAttribute("_location");
-                Location destinationStateLocation = (Location)destinationState().getAttribute("_location");
-                String moml = 
-                    "<property name=\"" 
-                    + ((StringToken)fsmTransitionParameterName.getToken()).stringValue() 
-                    + "\" class=\"ptolemy.domains.modal.kernel.FSMTransitionParameter\">\n"
-                    + "    <property name=\"_hideName\" class=\"ptolemy.kernel.util.SingletonAttribute\"/>\n"
-                    + "    <property name=\"_icon\" class=\"ptolemy.vergil.icon.ValueIcon\">\n"
-                    + "        <property name=\"_color\" class=\"ptolemy.actor.gui.ColorAttribute\" value=\"{0.0, 0.0, 1.0, 1.0}\"/>\n"
-                    + "        <property name=\"displayWidth\" value=\"1000\"/>\n"
-                    + "        <property name=\"numberOfLines\" value=\"100\"/>\n"
-                    + "    </property>\n"
-                    + "    <property name=\"_location\" class=\"ptolemy.kernel.util.Location\" value=\"["
-                    + (int)(destinationStateLocation.getLocation()[0] + 
-                            (sourceStateLocation.getLocation()[0] - destinationStateLocation.getLocation()[0])/2)
-                    + ", "
-                    + (int)(destinationStateLocation.getLocation()[1] + 
-                            (sourceStateLocation.getLocation()[1] - destinationStateLocation.getLocation()[1])/2)
-                    + "]\"/>\n"
-                    + "    <property name=\"_smallIconDescription\" class=\"ptolemy.kernel.util.SingletonConfigurableAttribute\">\n"
-                    + "        <configure><svg><text x=\"20\" style=\"font-size:14; font-family:SansSerif; fill:blue\" y=\"20\">-P-</text></svg></configure>\n"
-                    + "    </property>\n"
-                    + "    <property name=\"_editorFactory\" class=\"ptolemy.vergil.toolbox.VisibleParameterEditorFactory\"/>\n"
-                    + "    <property name=\"_configurer\" class=\"ptolemy.actor.gui.TransitionEditorPaneFactory\"/>\n"
-                    + "</property>";
+                Location sourceStateLocation = (Location) sourceState()
+                        .getAttribute("_location");
+                Location destinationStateLocation = (Location) destinationState()
+                        .getAttribute("_location");
+                String moml = "<property name=\""
+                        + ((StringToken) fsmTransitionParameterName.getToken())
+                                .stringValue()
+                        + "\" class=\"ptolemy.domains.modal.kernel.FSMTransitionParameter\">\n"
+                        + "    <property name=\"_hideName\" class=\"ptolemy.kernel.util.SingletonAttribute\"/>\n"
+                        + "    <property name=\"_icon\" class=\"ptolemy.vergil.icon.ValueIcon\">\n"
+                        + "        <property name=\"_color\" class=\"ptolemy.actor.gui.ColorAttribute\" value=\"{0.0, 0.0, 1.0, 1.0}\"/>\n"
+                        + "        <property name=\"displayWidth\" value=\"1000\"/>\n"
+                        + "        <property name=\"numberOfLines\" value=\"100\"/>\n"
+                        + "    </property>\n"
+                        + "    <property name=\"_location\" class=\"ptolemy.kernel.util.Location\" value=\"["
+                        + (int) (destinationStateLocation.getLocation()[0] + (sourceStateLocation
+                                .getLocation()[0] - destinationStateLocation
+                                .getLocation()[0]) / 2)
+                        + ", "
+                        + (int) (destinationStateLocation.getLocation()[1] + (sourceStateLocation
+                                .getLocation()[1] - destinationStateLocation
+                                .getLocation()[1]) / 2)
+                        + "]\"/>\n"
+                        + "    <property name=\"_smallIconDescription\" class=\"ptolemy.kernel.util.SingletonConfigurableAttribute\">\n"
+                        + "        <configure><svg><text x=\"20\" style=\"font-size:14; font-family:SansSerif; fill:blue\" y=\"20\">-P-</text></svg></configure>\n"
+                        + "    </property>\n"
+                        + "    <property name=\"_editorFactory\" class=\"ptolemy.vergil.toolbox.VisibleParameterEditorFactory\"/>\n"
+                        + "    <property name=\"_configurer\" class=\"ptolemy.actor.gui.TransitionEditorPaneFactory\"/>\n"
+                        + "</property>";
 
-                MoMLChangeRequest request = new MoMLChangeRequest(this, getContainer(),
-                        moml);
+                MoMLChangeRequest request = new MoMLChangeRequest(this,
+                        getContainer(), moml);
                 getContainer().requestChange(request);
             }
         }
@@ -1084,15 +1099,17 @@ public class Transition extends ComponentRelation {
 
     // Initialize the variables of this transition.
     private void _init() throws IllegalActionException,
-            NameDuplicationException {
-            fsmTransitionParameterName = new StringParameter(this, "fsmTransitionParameterName");
+    NameDuplicationException {
+        fsmTransitionParameterName = new StringParameter(this,
+                "fsmTransitionParameterName");
         fsmTransitionParameterName.setExpression(this.getName() + "Parameter");
         fsmTransitionParameterName.setVisibility(Settable.FULL);
-        
-        showFSMTransitionParameter = new Parameter(this, "showFSMTransitionParameter");
+
+        showFSMTransitionParameter = new Parameter(this,
+                "showFSMTransitionParameter");
         showFSMTransitionParameter.setTypeEquals(BaseType.BOOLEAN);
         showFSMTransitionParameter.setToken(BooleanToken.FALSE);
-        
+
         annotation = new StringParameter(this, "annotation");
         annotation.setExpression("");
         // Add a hint to indicate to the PtolemyQuery class to open with a text style.
@@ -1168,10 +1185,8 @@ public class Transition extends ComponentRelation {
         // Add refinement name parameter
         refinementName = new StringAttribute(this, "refinementName");
         refinementName.setVisibility(Settable.EXPERT);
-        
+
     }
-    
-    
 
     // Update the cached lists of actions.
     // This method is read-synchronized on the workspace.

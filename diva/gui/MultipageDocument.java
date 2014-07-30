@@ -99,6 +99,7 @@ public abstract class MultipageDocument extends AbstractDocument {
     /** Close the document. This method doesn't do anything, as
      * graph data doesn't change.
      */
+    @Override
     public void close() throws Exception {
         System.out.println("Close " + _title);
 
@@ -108,6 +109,7 @@ public abstract class MultipageDocument extends AbstractDocument {
     /** Return the title of this document.
      *  @return The title.
      */
+    @Override
     public String getTitle() {
         return _title;
     }
@@ -124,6 +126,7 @@ public abstract class MultipageDocument extends AbstractDocument {
      *
      * @exception Exception  If there is no file, or if the I/O operation failed.
      */
+    @Override
     public void open() throws Exception {
         if (getFile() == null) {
             throw new IllegalStateException("MultipageDocument " + getTitle()
@@ -147,6 +150,7 @@ public abstract class MultipageDocument extends AbstractDocument {
      *
      * @exception Exception  If there is no file, or if the I/O operation failed.
      */
+    @Override
     public void save() throws Exception {
         if (getFile() == null) {
             throw new IllegalStateException("MultipageDocument " + getTitle()
@@ -161,6 +165,7 @@ public abstract class MultipageDocument extends AbstractDocument {
      *
      * @exception Exception  If the I/O operation failed.
      */
+    @Override
     public void saveAs(File file) throws Exception {
         String filename = file.getName();
         _title = filename;
@@ -181,6 +186,7 @@ public abstract class MultipageDocument extends AbstractDocument {
      *
      * @exception UnsupportedOperationException Always thrown.
      */
+    @Override
     public void saveAs(URL url) {
         throw new UnsupportedOperationException("SketchDocument " + getTitle()
                 + ": save to URL not supported");

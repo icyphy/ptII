@@ -226,6 +226,7 @@ public class DoubleMatrixToken extends MatrixToken {
     /** Return the content of this token as a 2-D Complex matrix.
      *  @return A 2-D Complex matrix
      */
+    @Override
     public final Complex[][] complexMatrix() {
         return ComplexMatrixMath
                 .toMatrixFromArray(DoubleArrayMath.toComplexArray(_value),
@@ -290,6 +291,7 @@ public class DoubleMatrixToken extends MatrixToken {
      *  @exception IllegalActionException If the returned matrix is empty or if the specified
      *   parameters result in out of bounds accesses.
      */
+    @Override
     public MatrixToken crop(int rowStart, int colStart, int rowSpan, int colSpan)
             throws IllegalActionException {
         double[][] value = this.doubleMatrix();
@@ -300,8 +302,8 @@ public class DoubleMatrixToken extends MatrixToken {
         } catch (ArrayIndexOutOfBoundsException ex) {
             throw new IllegalActionException(
                     "Matrix crop indices out of bounds (rowStart = " + rowStart
-                            + ", colStart = " + colStart + ", rowSpan = "
-                            + rowSpan + ", colSpan = " + colSpan + ").");
+                    + ", colStart = " + colStart + ", rowSpan = "
+                    + rowSpan + ", colSpan = " + colSpan + ").");
         }
     }
 
@@ -310,6 +312,7 @@ public class DoubleMatrixToken extends MatrixToken {
      *  modify it.
      *  @return A 2-D double matrix.
      */
+    @Override
     public final double[][] doubleMatrix() {
         return DoubleMatrixMath.toMatrixFromArray(_value, _rowCount,
                 _columnCount);
@@ -323,6 +326,7 @@ public class DoubleMatrixToken extends MatrixToken {
      *   of the same dimensions and the corresponding elements of the
      *   matrices are equal.
      */
+    @Override
     public boolean equals(Object object) {
         if (object == null) {
             return false;
@@ -357,6 +361,7 @@ public class DoubleMatrixToken extends MatrixToken {
     /** Return the number of columns in the matrix.
      *  @return The number of columns in the matrix.
      */
+    @Override
     public final int getColumnCount() {
         return _columnCount;
     }
@@ -369,6 +374,7 @@ public class DoubleMatrixToken extends MatrixToken {
      *  @exception ArrayIndexOutOfBoundsException If the specified
      *   row or column number is outside the range of the matrix.
      */
+    @Override
     public final Token getElementAsToken(final int row, final int column)
             throws ArrayIndexOutOfBoundsException {
         return new DoubleToken(_value[row * _columnCount + column]);
@@ -390,6 +396,7 @@ public class DoubleMatrixToken extends MatrixToken {
      *  This must be a type representing a scalar token.
      *  @return BaseType.DOUBLE.
      */
+    @Override
     public Type getElementType() {
         return BaseType.DOUBLE;
     }
@@ -397,6 +404,7 @@ public class DoubleMatrixToken extends MatrixToken {
     /** Return the number of rows in the matrix.
      *  @return The number of rows in the matrix.
      */
+    @Override
     public final int getRowCount() {
         return _rowCount;
     }
@@ -404,6 +412,7 @@ public class DoubleMatrixToken extends MatrixToken {
     /** Return the type of this token.
      *  @return BaseType.DOUBLE_MATRIX
      */
+    @Override
     public final Type getType() {
         return BaseType.DOUBLE_MATRIX;
     }
@@ -412,6 +421,7 @@ public class DoubleMatrixToken extends MatrixToken {
      *  integer portion of the sum of the elements.
      *  @return A hash code value for this token.
      */
+    @Override
     public int hashCode() {
         double code = 0.0;
         int elements = _rowCount * _columnCount;
@@ -445,6 +455,7 @@ public class DoubleMatrixToken extends MatrixToken {
      *   to size incompatibilities, or if the input matrix has no
      *   tokens.
      */
+    @Override
     public MatrixToken join(MatrixToken[][] matrices)
             throws IllegalActionException {
         if (matrices == null || matrices.length == 0 || matrices[0].length == 0) {
@@ -495,6 +506,7 @@ public class DoubleMatrixToken extends MatrixToken {
      *  @return A new DoubleMatrixToken containing the left multiplicative
      *   identity.
      */
+    @Override
     public final Token one() {
         try {
             return new DoubleMatrixToken(DoubleMatrixMath.identity(_rowCount),
@@ -513,6 +525,7 @@ public class DoubleMatrixToken extends MatrixToken {
      *  @return A new DoubleMatrixToken containing the right multiplicative
      *   identity.
      */
+    @Override
     public final Token oneRight() {
         try {
             return new DoubleMatrixToken(
@@ -530,6 +543,7 @@ public class DoubleMatrixToken extends MatrixToken {
      *  @param columns The number of columns per submatrix.
      *  @return An array of matrix tokens.
      */
+    @Override
     public MatrixToken[][] split(int[] rows, int[] columns) {
         MatrixToken[][] result = new MatrixToken[rows.length][columns.length];
         double[][] source = doubleMatrix();
@@ -568,6 +582,7 @@ public class DoubleMatrixToken extends MatrixToken {
      *  matrix contained in this token.
      *  @return A new DoubleMatrixToken containing the additive identity.
      */
+    @Override
     public final Token zero() {
         try {
             return new DoubleMatrixToken(new double[_rowCount * _columnCount],
@@ -591,6 +606,7 @@ public class DoubleMatrixToken extends MatrixToken {
      *  class.
      *  @return A new DoubleMatrixToken containing the result.
      */
+    @Override
     protected MatrixToken _add(MatrixToken rightArgument)
             throws IllegalActionException {
         DoubleMatrixToken convertedArgument = (DoubleMatrixToken) rightArgument;
@@ -610,6 +626,7 @@ public class DoubleMatrixToken extends MatrixToken {
      *  supported by the derived class.
      *  @return A new Token containing the result.
      */
+    @Override
     protected MatrixToken _addElement(Token rightArgument)
             throws IllegalActionException {
         double scalar;
@@ -638,6 +655,7 @@ public class DoubleMatrixToken extends MatrixToken {
      *  supported by the derived class.
      *  @return A new Token containing the result.
      */
+    @Override
     protected MatrixToken _divideElement(Token rightArgument)
             throws IllegalActionException {
         double scalar;
@@ -675,6 +693,7 @@ public class DoubleMatrixToken extends MatrixToken {
      *  supported by the derived class.
      *  @return A new Token containing the result.
      */
+    @Override
     protected MatrixToken _moduloElement(Token rightArgument)
             throws IllegalActionException {
         double scalar;
@@ -702,6 +721,7 @@ public class DoubleMatrixToken extends MatrixToken {
      *  class.
      *  @return A new DoubleMatrixToken containing the result.
      */
+    @Override
     protected MatrixToken _multiply(MatrixToken rightArgument)
             throws IllegalActionException {
         DoubleMatrixToken convertedArgument = (DoubleMatrixToken) rightArgument;
@@ -742,6 +762,7 @@ public class DoubleMatrixToken extends MatrixToken {
      *   supported by the derived class.
      *  @return A new DoubleMatrixToken containing the result.
      */
+    @Override
     protected MatrixToken _multiplyElement(Token rightArgument)
             throws IllegalActionException {
         double scalar;
@@ -769,6 +790,7 @@ public class DoubleMatrixToken extends MatrixToken {
      *  class.
      *  @return A new DoubleMatrixToken containing the result.
      */
+    @Override
     protected MatrixToken _subtract(MatrixToken rightArgument)
             throws IllegalActionException {
         DoubleMatrixToken convertedArgument = (DoubleMatrixToken) rightArgument;
@@ -788,6 +810,7 @@ public class DoubleMatrixToken extends MatrixToken {
      *  supported by the derived class.
      *  @return A new Token containing the result.
      */
+    @Override
     protected MatrixToken _subtractElement(Token rightArgument)
             throws IllegalActionException {
         double scalar;
@@ -816,6 +839,7 @@ public class DoubleMatrixToken extends MatrixToken {
      *  supported by the derived class.
      *  @return A new Token containing the result.
      */
+    @Override
     protected MatrixToken _subtractElementReverse(Token rightArgument)
             throws IllegalActionException {
         double scalar;

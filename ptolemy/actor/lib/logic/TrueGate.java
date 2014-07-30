@@ -88,6 +88,7 @@ public class TrueGate extends Transformer {
      *  The value of the boolean is true if the input is present and
      *  false otherwise.
      */
+    @Override
     public void fire() throws IllegalActionException {
         super.fire();
         int outputWidth = output.getWidth();

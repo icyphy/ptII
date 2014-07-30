@@ -107,6 +107,7 @@ public class TriggeredClock extends Clock {
      *   fireAt() method of the director throws it, or if the director does not
      *   agree to fire the actor at the specified time.
      */
+    @Override
     public void initialize() throws IllegalActionException {
         super.initialize();
         _enabled = false;
@@ -123,6 +124,7 @@ public class TriggeredClock extends Clock {
      *  @exception IllegalActionException If thrown accessing start or stop
      *   input data.
      */
+    @Override
     protected void _updateTentativeValues() throws IllegalActionException {
         // Check the start input, to see whether everything needs to
         // be reset.

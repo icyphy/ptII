@@ -171,6 +171,7 @@ public class ExtensionFilenameFilter extends PtFilenameFilter {
      * @see #getExtension(File)
      * @see FileFilter#accept(File)
      */
+    @Override
     public boolean accept(File f) {
         if (f != null) {
             if (f.isDirectory()) {
@@ -203,6 +204,7 @@ public class ExtensionFilenameFilter extends PtFilenameFilter {
      * @see #getExtension(File)
      * @see FileFilter#accept(File)
      */
+    @Override
     public boolean accept(File directory, String name) {
         int i = name.lastIndexOf('.');
 
@@ -267,6 +269,7 @@ public class ExtensionFilenameFilter extends PtFilenameFilter {
      * @see #isExtensionListInDescription()
      * @see FileFilter#getDescription()
      */
+    @Override
     public String getDescription() {
         if (_fullDescription == null) {
             if (_description == null || isExtensionListInDescription()) {
@@ -394,6 +397,7 @@ public class ExtensionFilenameFilter extends PtFilenameFilter {
      *
      * @see #getDescription()
      */
+    @Override
     public String toString() {
         return getDescription();
     }

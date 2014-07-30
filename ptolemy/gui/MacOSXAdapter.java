@@ -58,6 +58,7 @@ public class MacOSXAdapter implements InvocationHandler {
      *  @return the result, which in this case is always null because
      *  the com.apple.eawt.ApplicationListener methods are all void.
      */
+    @Override
     public Object invoke(Object proxy, Method method, Object[] args)
             throws Throwable {
         if (_topMethod == null || !_proxySignature.equals(method.getName())
@@ -182,21 +183,21 @@ public class MacOSXAdapter implements InvocationHandler {
                         if (ex.getCause() instanceof SecurityException) {
                             if (!_printedSecurityExceptionMessage) {
                                 System.out
-                                    .println("Warning: Failed to get the"
-                                            + "constructor of \""
-                                            + applicationClassName
-                                            + "\" ("
-                                            + applicationClass
-                                            + "): "
-                                            + ex
-                                            + "(applets and -sandbox always causes this)");
+                                        .println("Warning: Failed to get the"
+                                                + "constructor of \""
+                                                + applicationClassName
+                                                + "\" ("
+                                                + applicationClass
+                                                + "): "
+                                                + ex
+                                                + "(applets and -sandbox always causes this)");
                             }
                         }
                         return;
                     }
                 }
                 Class applicationListenerClass = Class
-                    .forName("com.apple.eawt.ApplicationListener");
+                        .forName("com.apple.eawt.ApplicationListener");
                 Method addListenerMethod = applicationClass.getDeclaredMethod(
                         "addApplicationListener",
                         new Class[] { applicationListenerClass });
@@ -234,8 +235,8 @@ public class MacOSXAdapter implements InvocationHandler {
     private static boolean _printedNoClassDefFoundMessage = false;
 
     /**  The name of a method in com.apple.eawt.ApplicationListener,
-      *  for example "handleQuit".
-      */
+     *  for example "handleQuit".
+     */
     private String _proxySignature;
 
     /** The Top level window to perform the operation.  This window is also

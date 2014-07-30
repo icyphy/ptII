@@ -89,6 +89,7 @@ public class CountTrues extends SDFTransformer {
      *  @exception CloneNotSupportedException If a derived class has
      *   an attribute that cannot be cloned.
      */
+    @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         CountTrues newObject = (CountTrues) super.clone(workspace);
         return newObject;
@@ -100,6 +101,7 @@ public class CountTrues extends SDFTransformer {
      *  output.  If there is no input, then produce no output.
      *  @exception IllegalActionException If there is no director.
      */
+    @Override
     public void fire() throws IllegalActionException {
         super.fire();
         int count = ((IntToken) blockSize.getToken()).intValue();

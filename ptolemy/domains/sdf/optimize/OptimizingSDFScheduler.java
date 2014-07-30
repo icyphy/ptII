@@ -76,7 +76,7 @@ See {@link ptolemy.domains.sdf.kernel.SDFScheduler} and
 @since Ptolemy II 10.0
 @Pt.ProposedRating Red (mgeilen)
 @Pt.AcceptedRating Red ()
-*/
+ */
 
 public class OptimizingSDFScheduler extends SDFScheduler {
 
@@ -121,8 +121,9 @@ public class OptimizingSDFScheduler extends SDFScheduler {
      *  of the model are not correct, or the computed rates for
      *  external ports are not correct.
      */
+    @Override
     protected Schedule _getSchedule() throws NotSchedulableException,
-            IllegalActionException {
+    IllegalActionException {
         SDFDirector director = (SDFDirector) getContainer();
         CompositeActor model = (CompositeActor) director.getContainer();
 
@@ -215,7 +216,7 @@ public class OptimizingSDFScheduler extends SDFScheduler {
      */
     private Schedule _scheduleConnectedActors(Map externalRates,
             List actorList, CompositeActor container)
-            throws NotSchedulableException {
+                    throws NotSchedulableException {
         // A linked list containing all the actors that have no inputs.
         LinkedList readyToScheduleActorList = new LinkedList();
 

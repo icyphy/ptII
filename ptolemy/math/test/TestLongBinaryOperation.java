@@ -45,6 +45,7 @@ public class TestLongBinaryOperation implements LongBinaryOperation {
     /** Operate on the operands, returning a value of the same
      *  type. Note that the operation need not be commutative.
      */
+    @Override
     public long operate(long leftOperand, long rightOperand) {
         return leftOperand - rightOperand;
     }

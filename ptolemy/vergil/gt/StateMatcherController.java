@@ -89,6 +89,7 @@ public class StateMatcherController extends HierarchicalStateController {
          *  @param controller The associated graph controller.
          *  @return A new node controller.
          */
+        @Override
         public NamedObjController create(GraphController controller) {
             return new StateMatcherController(controller);
         }
@@ -99,6 +100,7 @@ public class StateMatcherController extends HierarchicalStateController {
      *  types.
      *  @return The map of supported refinement types.
      */
+    @Override
     protected Map<String, String> getRefinementClasses() {
         Map<String, String> map = new TreeMap<String, String>();
         map.put("CompositeActorMatcher Refinement",

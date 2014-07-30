@@ -42,21 +42,22 @@ import ptolemy.util.MessageHandler;
 //// ActorCellRenderer
 
 /**
-* A renderer that displays getDisplayName() instead of the standard
-* name in a JList.
-*
-* @author Bastian Ristau
-* @version $Id$
-* @since Ptolemy II 10.0
-* @Pt.ProposedRating Red (ristau)
-* @Pt.AcceptedRating Red (ristau)
-*/
+ * A renderer that displays getDisplayName() instead of the standard
+ * name in a JList.
+ *
+ * @author Bastian Ristau
+ * @version $Id$
+ * @since Ptolemy II 10.0
+ * @Pt.ProposedRating Red (ristau)
+ * @Pt.AcceptedRating Red (ristau)
+ */
 @SuppressWarnings("serial")
 public class ActorCellRenderer extends DefaultListCellRenderer {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
+    @Override
     public Component getListCellRendererComponent(JList list, // the list
             Object value, // value to display
             int index, // cell index
@@ -79,10 +80,10 @@ public class ActorCellRenderer extends DefaultListCellRenderer {
                             + ")";
                 } catch (IllegalActionException e) {
                     MessageHandler
-                            .error("Actor "
-                                    + actor.getName()
-                                    + "'s SequenceAttribute does not have a valid sequence number.",
-                                    e);
+                    .error("Actor "
+                            + actor.getName()
+                            + "'s SequenceAttribute does not have a valid sequence number.",
+                            e);
                 }
             }
             this.setText(name);

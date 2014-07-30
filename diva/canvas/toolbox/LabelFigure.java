@@ -106,9 +106,9 @@ public class LabelFigure extends AbstractFigure {
     /** The order of anchors used by the autoanchor method.
      */
     private static int[] _anchors = { SwingConstants.SOUTH,
-            SwingConstants.NORTH, SwingConstants.WEST, SwingConstants.EAST,
-            SwingConstants.SOUTH_WEST, SwingConstants.SOUTH_EAST,
-            SwingConstants.NORTH_WEST, SwingConstants.NORTH_EAST };
+        SwingConstants.NORTH, SwingConstants.WEST, SwingConstants.EAST,
+        SwingConstants.SOUTH_WEST, SwingConstants.SOUTH_EAST,
+        SwingConstants.NORTH_WEST, SwingConstants.NORTH_EAST };
 
     /**
      * Construct an empty label figure.
@@ -225,6 +225,7 @@ public class LabelFigure extends AbstractFigure {
     /**
      * Get the bounds of this string
      */
+    @Override
     public Rectangle2D getBounds() {
         if (_cachedBounds == null) {
             if (_shape == null) {
@@ -257,6 +258,7 @@ public class LabelFigure extends AbstractFigure {
     /** Return the origin, which is the anchor point.
      *  @return The anchor point.
      */
+    @Override
     public Point2D getOrigin() {
         return getAnchorPoint();
     }
@@ -276,6 +278,7 @@ public class LabelFigure extends AbstractFigure {
      * object anyway, and not have to click on an actual
      * filled pixel).
      */
+    @Override
     public Shape getShape() {
         return getBounds();
     }
@@ -290,6 +293,7 @@ public class LabelFigure extends AbstractFigure {
     /**
      * Paint the figure.
      */
+    @Override
     public void paint(Graphics2D g) {
         if (!isVisible()) {
             return;
@@ -428,6 +432,7 @@ public class LabelFigure extends AbstractFigure {
      * to move it back again if this method being called to
      * (for example) rotate the label.
      */
+    @Override
     public void transform(AffineTransform at) {
         repaint();
         _cachedBounds = null;

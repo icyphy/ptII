@@ -87,7 +87,7 @@ public class TclShellTableau extends Tableau implements ShellInterpreter {
             // FIXME: what about user initializations in ~/.tclrc?
             // Source Ptolemy specific initializations.
             _tclInterp
-                    .eval("if [catch {source [java::call ptolemy.data.expr.UtilityFunctions findFile \"ptolemy/actor/gui/ptjacl/init.tcl\"]} errMsg ] { puts $errorInfo};");
+            .eval("if [catch {source [java::call ptolemy.data.expr.UtilityFunctions findFile \"ptolemy/actor/gui/ptjacl/init.tcl\"]} errMsg ] { puts $errorInfo};");
         } catch (TclException ex) {
             throw new IllegalActionException(this, ex,
                     "Could not initialize the " + "tcl interpreter:\n"
@@ -103,6 +103,7 @@ public class TclShellTableau extends Tableau implements ShellInterpreter {
      *  @return The return value of the command, or null if there is none.
      *  @exception Exception If something goes wrong processing the command.
      */
+    @Override
     public String evaluateCommand(String command) throws Exception {
         try {
             _tclInterp.eval(command);
@@ -117,6 +118,7 @@ public class TclShellTableau extends Tableau implements ShellInterpreter {
      *  @param command The command.
      *  @return True if the command is complete.
      */
+    @Override
     public boolean isCommandComplete(String command) {
         return Interp.commandComplete(command);
     }
@@ -133,7 +135,7 @@ public class TclShellTableau extends Tableau implements ShellInterpreter {
     /** The frame that is created by an instance of TclShellTableau.
      */
     @SuppressWarnings("serial")
-        public static class TclShellFrame extends TableauFrame {
+    public static class TclShellFrame extends TableauFrame {
         // FindBugs suggested refactoring this into a static class.
 
         /** Construct a frame to display the TclShell window.
@@ -168,6 +170,7 @@ public class TclShellTableau extends Tableau implements ShellInterpreter {
 
         ///////////////////////////////////////////////////////////////////
         ////                         protected methods                 ////
+        @Override
         protected void _help() {
             try {
                 URL doc = getClass().getClassLoader().getResource(
@@ -208,6 +211,7 @@ public class TclShellTableau extends Tableau implements ShellInterpreter {
          *  @exception Exception If the factory should be able to create a
          *   tableau for the effigy, but something goes wrong.
          */
+        @Override
         public Tableau createTableau(Effigy effigy) throws Exception {
             // NOTE: Can create any number of tableaux within the same
             // effigy.  Is this what we want?

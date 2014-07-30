@@ -114,6 +114,7 @@ public class SequenceAttribute extends Parameter implements Comparable {
      *  @param object The SequenceAttribute object.
      *  @return 0 if the sequence numbers are the same.
      */
+    @Override
     public int compareTo(Object object) {
 
         try {
@@ -159,6 +160,7 @@ public class SequenceAttribute extends Parameter implements Comparable {
      *  @return True if the two SequenceAttribute objects have the same
      *  sequence number, name and workspace
      */
+    @Override
     public boolean equals(Object sequenceAttribute) {
         // See http://www.technofundo.com/tech/java/equalhash.html
 
@@ -233,6 +235,7 @@ public class SequenceAttribute extends Parameter implements Comparable {
      *   as a consequence of this call to validate().
      *  @exception IllegalActionException If thrown by the parent class.
      */
+    @Override
     public Collection validate() throws IllegalActionException {
 
         Collection result = null;
@@ -249,7 +252,7 @@ public class SequenceAttribute extends Parameter implements Comparable {
 
                 if (this.getClass() == SequenceAttribute.class
                         && ((CompositeActor) container.getContainer())
-                                .getDirector().getClass() == ProcessDirector.class) {
+                        .getDirector().getClass() == ProcessDirector.class) {
 
                     sbf.append("Warning: " + container.getName()
                             + "'s Sequence Attribute will be ignored");
@@ -257,7 +260,7 @@ public class SequenceAttribute extends Parameter implements Comparable {
                 }
                 if (this.getClass() == ProcessAttribute.class
                         && ((CompositeActor) container.getContainer())
-                                .getDirector().getClass() == SequenceDirector.class) {
+                        .getDirector().getClass() == SequenceDirector.class) {
                     sbf.append("Warning: " + container.getName()
                             + "'s Process Attribute will be ignored");
                     System.out.println(sbf);
@@ -279,10 +282,10 @@ public class SequenceAttribute extends Parameter implements Comparable {
                         // Want to allow any non-whitespace character as a process name
                         if (i == 0 && !Pattern.matches("[^\\s]+", token)) {
                             System.out
-                                    .println("Warning for actor "
-                                            + container.getName()
-                                            + ": A process name must have at least one character; please change atrribute: "
-                                            + this.getToken().toString());
+                            .println("Warning for actor "
+                                    + container.getName()
+                                    + ": A process name must have at least one character; please change atrribute: "
+                                    + this.getToken().toString());
                         }
 
                         // Beth changed 01/19/09
@@ -291,10 +294,10 @@ public class SequenceAttribute extends Parameter implements Comparable {
                         // expression, i.e. an empty string)
                         if (i == 1 && !Pattern.matches("[\\d]+", token)) {
                             System.out
-                                    .println("Warning for actor "
-                                            + container.getName()
-                                            + ": A sequence number must be at least one digit; please change atrribute: "
-                                            + this.getToken().toString());
+                            .println("Warning for actor "
+                                    + container.getName()
+                                    + ": A sequence number must be at least one digit; please change atrribute: "
+                                    + this.getToken().toString());
                         }
 
                     }
@@ -310,6 +313,7 @@ public class SequenceAttribute extends Parameter implements Comparable {
      *  have the same hashCode.
      *  @return The hash code for this TimedEvent object.
      */
+    @Override
     public int hashCode() {
         // See http://www.technofundo.com/tech/java/equalhash.html
         int hashCode = 32;

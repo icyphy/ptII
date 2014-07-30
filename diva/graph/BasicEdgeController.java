@@ -96,6 +96,7 @@ public class BasicEdgeController implements EdgeController {
         // Create and set up the target for connectors
         PerimeterTarget ct = new PerimeterTarget() {
             // Accept the head if the model graph model allows it.
+            @Override
             public boolean acceptHead(Connector c, Figure f) {
                 Object node = f.getUserObject();
                 Object edge = c.getUserObject();
@@ -111,6 +112,7 @@ public class BasicEdgeController implements EdgeController {
             }
 
             // Accept the tail if the model graph model allows it.
+            @Override
             public boolean acceptTail(Connector c, Figure f) {
                 Object node = f.getUserObject();
                 Object edge = c.getUserObject();
@@ -129,6 +131,8 @@ public class BasicEdgeController implements EdgeController {
              *  site of the terminal instead of a new perimeter site.
              * @deprecated Use getHeadSite that takes a connector.
              */
+            @Deprecated
+            @Override
             public Site getHeadSite(Figure f, double x, double y) {
                 if (f instanceof Terminal) {
                     Site site = ((Terminal) f).getConnectSite();
@@ -150,6 +154,7 @@ public class BasicEdgeController implements EdgeController {
      * @exception GraphException If the connector target cannot return a
      * valid site on the node's figure.
      */
+    @Override
     public void addEdge(Object edge, Object node, int end, double x, double y) {
         MutableGraphModel model = (MutableGraphModel) _controller
                 .getGraphModel();
@@ -200,6 +205,7 @@ public class BasicEdgeController implements EdgeController {
      * Add an edge to this graph between the given tail and head
      * nodes.  Give the new edge the given semanticObject.
      */
+    @Override
     public void addEdge(Object edge, Object tail, Object head) {
         // Connect the edge
         MutableGraphModel model = (MutableGraphModel) _controller
@@ -213,6 +219,7 @@ public class BasicEdgeController implements EdgeController {
      * Remove the figure for the given edge, but do not remove the
      * edge from the graph model.
      */
+    @Override
     public void clearEdge(Object edge) {
         Figure f = _controller.getFigure(edge);
 
@@ -236,6 +243,7 @@ public class BasicEdgeController implements EdgeController {
      * the view, then use any information in that figure to help draw the
      * edge.
      */
+    @Override
     public Figure drawEdge(Object edge) {
         GraphModel model = _controller.getGraphModel();
         FigureLayer layer = _controller.getGraphPane().getForegroundLayer();
@@ -300,6 +308,7 @@ public class BasicEdgeController implements EdgeController {
     /**
      * Get the target used to find sites on nodes to connect to.
      */
+    @Override
     public ConnectorTarget getConnectorTarget() {
         return _connectorTarget;
     }
@@ -307,6 +316,7 @@ public class BasicEdgeController implements EdgeController {
     /**
      * Get the graph controller that this controller is contained in.
      */
+    @Override
     public GraphController getController() {
         return _controller;
     }
@@ -314,6 +324,7 @@ public class BasicEdgeController implements EdgeController {
     /**
      * Get the interactor given to edge figures.
      */
+    @Override
     public Interactor getEdgeInteractor() {
         return _interactor;
     }
@@ -321,6 +332,7 @@ public class BasicEdgeController implements EdgeController {
     /**
      * Return the edge renderer for this view.
      */
+    @Override
     public EdgeRenderer getEdgeRenderer() {
         return _renderer;
     }
@@ -328,6 +340,7 @@ public class BasicEdgeController implements EdgeController {
     /**
      * Remove the edge.
      */
+    @Override
     public void removeEdge(Object edge) {
         clearEdge(edge);
 
@@ -344,6 +357,7 @@ public class BasicEdgeController implements EdgeController {
      * starting point of an edge) and the manipulator's connector target, which
      * is used after the connector is being dragged.
      */
+    @Override
     public void setConnectorTarget(ConnectorTarget t) {
         _connectorTarget = t;
 
@@ -359,6 +373,7 @@ public class BasicEdgeController implements EdgeController {
     /**
      * Set the interactor given to edge figures.
      */
+    @Override
     public void setEdgeInteractor(Interactor interactor) {
         _interactor = interactor;
     }
@@ -366,12 +381,14 @@ public class BasicEdgeController implements EdgeController {
     /**
      * Set the edge renderer for this view.
      */
+    @Override
     public void setEdgeRenderer(EdgeRenderer er) {
         _renderer = er;
     }
 
     /** Render the edge on the given layer between the two sites.
      */
+    @Override
     public Connector render(Object edge, FigureLayer layer, Site tailSite,
             Site headSite) {
         Connector ef = getEdgeRenderer().render(edge, tailSite, headSite);
@@ -394,6 +411,7 @@ public class BasicEdgeController implements EdgeController {
          * Called when a connector end is dropped--attach or
          * detach the edge as appropriate.
          */
+        @Override
         public void connectorDropped(ConnectorEvent evt) {
             Connector c = evt.getConnector();
             Figure f = evt.getTarget();

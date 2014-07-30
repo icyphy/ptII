@@ -114,6 +114,7 @@ public class NonStrictFSMDirector extends FSMDirector {
      *  @exception CloneNotSupportedException If a derived class contains
      *   an attribute that cannot be cloned.
      */
+    @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         NonStrictFSMDirector newObject = (NonStrictFSMDirector) super
                 .clone(workspace);
@@ -146,6 +147,7 @@ public class NonStrictFSMDirector extends FSMDirector {
      *  of the enabled transition and executed the output actions.
      *  @exception IllegalActionException If the super class throws it.
      */
+    @Override
     public void fire() throws IllegalActionException {
         FSMActor controller = getController();
         controller.readInputs();
@@ -451,9 +453,9 @@ public class NonStrictFSMDirector extends FSMDirector {
 
                             if (inputPortOutside.getContainer() == container
                                     && !_refinementReferredInputPorts
-                                            .contains(inputPortOutside)) {
+                                    .contains(inputPortOutside)) {
                                 _refinementReferredInputPorts
-                                        .add(inputPortOutside);
+                                .add(inputPortOutside);
                             }
                         }
                     }
@@ -535,6 +537,7 @@ public class NonStrictFSMDirector extends FSMDirector {
      *  expressions of all preemptive transitions leaving the initial state.
      *  @exception IllegalActionException If the super class throws it.
      */
+    @Override
     public void initialize() throws IllegalActionException {
         super.initialize();
 
@@ -549,6 +552,7 @@ public class NonStrictFSMDirector extends FSMDirector {
      *  that go out from the current state.
      *  @exception IllegalActionException If the super class throws it.
      */
+    @Override
     public boolean postfire() throws IllegalActionException {
         boolean postfireValue = super.postfire();
         FSMActor controller = getController();
@@ -562,6 +566,7 @@ public class NonStrictFSMDirector extends FSMDirector {
      *  input ports that are referred by the guard expressions of the
      *  preemptive transitions leaving the current state.
      */
+    @Override
     public boolean transferInputs(IOPort port) throws IllegalActionException {
         if (_preemptiveTransitionsInputs.contains(port)) {
             return super.transferInputs(port);

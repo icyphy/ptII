@@ -78,6 +78,7 @@ public class Replacement extends CompositeActorMatcher {
      *  @exception NameDuplicationException If the container already has
      *   an entity with the name of this entity.
      */
+    @Override
     public void setContainer(CompositeEntity container)
             throws IllegalActionException, NameDuplicationException {
         super.setContainer(container);

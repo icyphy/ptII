@@ -95,6 +95,7 @@ public class IntToBits extends SDFConverter {
      *  @param attribute The attribute that has changed.
      *  @exception IllegalActionException If the parameter is out of range.
      */
+    @Override
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         if (attribute == numberOfBits) {
@@ -119,6 +120,7 @@ public class IntToBits extends SDFConverter {
      *  @exception IllegalActionException If there is no director.
      *  or if the input integer is out of range.
      */
+    @Override
     public final void fire() throws IllegalActionException {
         super.fire();
 

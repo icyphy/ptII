@@ -10,5 +10,5 @@ package ptolemy.actor.corba.CoordinatorUtil;
 /* A CORBA compatible interface for a coordinator.
  */
 public interface Coordinator extends CoordinatorOperations,
-        org.omg.CORBA.Object, org.omg.CORBA.portable.IDLEntity {
+org.omg.CORBA.Object, org.omg.CORBA.portable.IDLEntity {
 } // interface Coordinator

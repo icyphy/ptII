@@ -88,13 +88,13 @@ public class ColtBinomialSelector extends ColtRandomSource {
         trials = new PortParameter(this, "trials", new IntToken(1));
         trials.setTypeEquals(BaseType.INT);
         new SingletonParameter(trials.getPort(), "_showName")
-                .setToken(BooleanToken.TRUE);
+        .setToken(BooleanToken.TRUE);
 
         populations = new TypedIOPort(this, "populations", true, false);
         populations.setMultiport(true);
         populations.setTypeEquals(BaseType.LONG);
         new SingletonParameter(populations, "_showName")
-                .setToken(BooleanToken.TRUE);
+        .setToken(BooleanToken.TRUE);
 
         output.setMultiport(true);
         output.setTypeEquals(BaseType.INT);
@@ -121,6 +121,7 @@ public class ColtBinomialSelector extends ColtRandomSource {
      *  iteration.
      *  @exception IllegalActionException If there is no director.
      */
+    @Override
     public void fire() throws IllegalActionException {
         trials.update();
         super.fire();
@@ -136,6 +137,7 @@ public class ColtBinomialSelector extends ColtRandomSource {
     /** Create a new random number generator.  This method is called
      *  after _randomNumberGenerator is changed.
      */
+    @Override
     protected void _createdNewRandomNumberGenerator() {
         _generator = new Binomial(1, 0.5, _randomNumberGenerator);
     }
@@ -143,6 +145,7 @@ public class ColtBinomialSelector extends ColtRandomSource {
     /** Generate a new random number.
      *  @exception IllegalActionException If parameter values are incorrect.
      */
+    @Override
     protected void _generateRandomNumber() throws IllegalActionException {
         // Pull out the source values, make sure they're valid, and
         // calculate the total.

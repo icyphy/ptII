@@ -110,6 +110,7 @@ public class LookupTable extends Transformer {
      *  @exception CloneNotSupportedException If a derived class contains
      *   an attribute that cannot be cloned.
      */
+    @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         LookupTable newObject = (LookupTable) super.clone(workspace);
 
@@ -130,6 +131,7 @@ public class LookupTable extends Transformer {
      *  is produced.
      *  @exception IllegalActionException If there is no director.
      */
+    @Override
     public void fire() throws IllegalActionException {
         super.fire();
         if (input.hasToken(0)) {

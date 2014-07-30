@@ -93,6 +93,7 @@ public class MovingAverage extends Transformer {
      *  @exception IllegalActionException If the attribute contains
      *  an invalid value or if the super method throws it.
      */
+    @Override
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         if (attribute == maxPastInputsToAverage) {
@@ -114,6 +115,7 @@ public class MovingAverage extends Transformer {
      *  @exception IllegalActionException If parameter values are invalid,
      *   or if there is no director, or if runtime type conflicts occur.
      */
+    @Override
     public void fire() throws IllegalActionException {
         super.fire();
 
@@ -145,6 +147,7 @@ public class MovingAverage extends Transformer {
      *   equal to the decimation parameter.
      *  @exception IllegalActionException If the superclass throws it.
      */
+    @Override
     public boolean prefire() throws IllegalActionException {
         // If an attribute has changed since the last fire(), or if
         // this is the first fire(), then reinitialize.
@@ -169,6 +172,7 @@ public class MovingAverage extends Transformer {
      *  Set a flag that reinitializes the data buffer at the first firing.
      *  @exception IllegalActionException If the superclass throws it.
      */
+    @Override
     public void initialize() throws IllegalActionException {
         super.initialize();
 

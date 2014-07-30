@@ -95,6 +95,7 @@ public class Pre extends Transformer {
      *  If the <i>initialValue</i> has not been set, the produce
      *  absent.
      */
+    @Override
     public void fire() throws IllegalActionException {
         super.fire();
         if (input.hasToken(0)) {
@@ -110,6 +111,7 @@ public class Pre extends Transformer {
      *  if there is one.
      *  @exception IllegalActionException If there is no director.
      */
+    @Override
     public void initialize() throws IllegalActionException {
         // Note that this will default to null if there is no initialValue set.
         _currentToken = initialValue.getToken();
@@ -120,6 +122,7 @@ public class Pre extends Transformer {
      *  value, if there is one.
      *  @exception IllegalActionException If there is no director.
      */
+    @Override
     public boolean postfire() throws IllegalActionException {
         if (input.hasToken(0)) {
             _currentToken = input.get(0);
@@ -132,6 +135,7 @@ public class Pre extends Transformer {
      *  does not depend on the <i>input</i> in a firing.
      *  @exception IllegalActionException If the superclass throws it.
      */
+    @Override
     public void preinitialize() throws IllegalActionException {
         super.preinitialize();
         removeDependency(input, output);

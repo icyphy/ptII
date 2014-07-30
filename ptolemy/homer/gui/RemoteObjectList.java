@@ -89,7 +89,7 @@ public class RemoteObjectList extends JPanel implements ActionListener {
     /** Create the listing of remote objects.
      *  @param parent The reference to the parent frame.
      */
-        public RemoteObjectList(HomerMainFrame parent) {
+    public RemoteObjectList(HomerMainFrame parent) {
         setLayout(new BorderLayout(0, 0));
         setBorder(new TitledBorder(null, "Remote Named Objects",
                 TitledBorder.LEADING, TitledBorder.TOP, null, null));
@@ -101,6 +101,7 @@ public class RemoteObjectList extends JPanel implements ActionListener {
         _list.setModel(_listModel);
         _list.setPreferredSize(new Dimension(WIDTH, HEIGHT));
         _list.setCellRenderer(new DefaultListCellRenderer() {
+            @Override
             public Component getListCellRendererComponent(JList list,
                     Object value, int index, boolean isSelected,
                     boolean cellHasFocus) {
@@ -131,10 +132,12 @@ public class RemoteObjectList extends JPanel implements ActionListener {
         });
 
         MouseListener mouseListener = new MouseAdapter() {
+            @Override
             public void mouseClicked(final MouseEvent e) {
                 if (e.getButton() == MouseEvent.BUTTON3) {
                     JMenuItem delete = new JMenuItem("Delete");
                     delete.addActionListener(new ActionListener() {
+                        @Override
                         public void actionPerformed(ActionEvent actionEvent) {
                             int index = _list.locationToIndex(e.getPoint());
                             NamedObj namedObject = (NamedObj) _listModel
@@ -160,6 +163,7 @@ public class RemoteObjectList extends JPanel implements ActionListener {
              *  this listener.
              *  @param dropEvent The drop event.
              */
+            @Override
             public void dragEnter(DropTargetDragEvent dropEvent) {
                 try {
                     // Reject is data flavor is not supported.
@@ -214,6 +218,7 @@ public class RemoteObjectList extends JPanel implements ActionListener {
             /** Perform the drop of the item onto the scene and
              *  load the appropriate graphical widget.
              */
+            @Override
             public void drop(DropTargetDropEvent dropEvent) {
 
                 if (!dropEvent
@@ -259,6 +264,7 @@ public class RemoteObjectList extends JPanel implements ActionListener {
     /** Handle the action that was performed.
      *  @param e The action event details.
      */
+    @Override
     public void actionPerformed(ActionEvent e) {
         if (e instanceof NonVisualContentEvent
                 && ((NonVisualContentEvent) e).getElement() != null) {

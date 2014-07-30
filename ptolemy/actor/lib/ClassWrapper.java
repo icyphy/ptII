@@ -125,6 +125,7 @@ public class ClassWrapper extends TypedAtomicActor {
      *  named <i>methodName</i>Result.
      *  @exception IllegalActionException If the method invocation fails.
      */
+    @Override
     public void fire() throws IllegalActionException {
         super.fire();
         Iterator inPorts = inputPortList().iterator();
@@ -146,6 +147,7 @@ public class ClassWrapper extends TypedAtomicActor {
      *   be loaded, or there is no method of the same name as an input
      *   port, or an instance of the class cannot be created.
      */
+    @Override
     public void preinitialize() throws IllegalActionException {
         super.preinitialize();
         try {

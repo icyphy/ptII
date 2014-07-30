@@ -24,7 +24,7 @@
  PT_COPYRIGHT_VERSION_2
  COPYRIGHTENDKEY
 
-*/
+ */
 package ptolemy.actor.ptalon.gt;
 
 import java.util.HashMap;
@@ -69,7 +69,7 @@ import ptolemy.kernel.util.Settable;
  @Pt.AcceptedRating Red (tfeng)
  */
 public class PtalonMatcher extends TypedCompositeActor implements
-        GTCompositeActor {
+GTCompositeActor {
 
     /** Construct a PtalonMatcher with a name and a container.
      *  The container argument must not be null, or a
@@ -111,6 +111,7 @@ public class PtalonMatcher extends TypedCompositeActor implements
      *  @exception IllegalActionException If there are problems setting
      *  up parameters for this actor, or if the superclass throws it.
      */
+    @Override
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         super.attributeChanged(attribute);
@@ -138,11 +139,11 @@ public class PtalonMatcher extends TypedCompositeActor implements
                 } else {
                     _currentActor = _actors.get(key);
                     _currentActor.getAttribute(_IGNORING_ATTRIBUTE_NAME)
-                            .setContainer(null);
+                    .setContainer(null);
                 }
                 if (_currentActor != null) {
                     Attribute ignoringAttribute = _currentActor
-                        .getAttribute(_IGNORING_ATTRIBUTE_NAME);
+                            .getAttribute(_IGNORING_ATTRIBUTE_NAME);
                     if (ignoringAttribute != null) {
                         ignoringAttribute.setContainer(null);
                     }
@@ -173,6 +174,7 @@ public class PtalonMatcher extends TypedCompositeActor implements
      *  @exception NameDuplicationException If the container already has
      *   an entity with the name of this entity.
      */
+    @Override
     public void setContainer(CompositeEntity container)
             throws IllegalActionException, NameDuplicationException {
         super.setContainer(container);
@@ -203,7 +205,7 @@ public class PtalonMatcher extends TypedCompositeActor implements
     /**  A nested ptalon actor.
      */
     public static class NestedPtalonActor extends PtalonActor implements
-            GTCompositeActor {
+    GTCompositeActor {
 
         /** Construct a NestedPtalonActor with a name and a container.
          *  The container argument must not be null, or a
@@ -235,6 +237,7 @@ public class PtalonMatcher extends TypedCompositeActor implements
          *  @param attribute The attribute that changed.
          *  @exception IllegalActionException If thrown by the superclass.
          */
+        @Override
         public void attributeChanged(Attribute attribute)
                 throws IllegalActionException {
             if (!_initializing && !_fixed) {
@@ -257,6 +260,7 @@ public class PtalonMatcher extends TypedCompositeActor implements
          *  @param actor The actor for which to create a PtalonEvaluator.
          *  @return The PtalonEvaluator
          */
+        @Override
         protected PtalonEvaluator _createPtalonEvaluator(PtalonActor actor) {
             return new TransformationEvaluator(actor);
         }
@@ -265,6 +269,7 @@ public class PtalonMatcher extends TypedCompositeActor implements
          *  @param lexer The lexer for which to create a PtalonRecognizer
          *  @return The PtalonRecognizer
          */
+        @Override
         protected PtalonRecognizer _createPtalonRecognizer(PtalonLexer lexer) {
             PtalonRecognizer parser = super._createPtalonRecognizer(lexer);
             parser.enableGTExtension(true);
@@ -280,7 +285,7 @@ public class PtalonMatcher extends TypedCompositeActor implements
     ////                         private methods                   ////
 
     private void _createParameters() throws IllegalActionException,
-            NameDuplicationException, CloneNotSupportedException {
+    NameDuplicationException, CloneNotSupportedException {
         _currentActor._fixed = true;
         Set<PtalonExpressionParameter> parameters = new HashSet<PtalonExpressionParameter>();
         for (Object parameterObject : _currentActor
@@ -317,14 +322,14 @@ public class PtalonMatcher extends TypedCompositeActor implements
             if (!parameters.contains(parameter)) {
                 if (parameter.getAttribute("_hide") == null) {
                     new Parameter(parameter, "_hide")
-                            .setToken(BooleanToken.TRUE);
+                    .setToken(BooleanToken.TRUE);
                 }
             }
         }
     }
 
     private void _createPtalonActor(HashKey key) throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         NestedPtalonActor actor = new NestedPtalonActor(this,
                 uniqueName("PtalonActor"));
         actor.ptalonCodeLocation.setToken(key._codeLocation);
@@ -365,7 +370,7 @@ public class PtalonMatcher extends TypedCompositeActor implements
     }
 
     private void _mirrorPtalonActor() throws IllegalActionException,
-            NameDuplicationException, CloneNotSupportedException {
+    NameDuplicationException, CloneNotSupportedException {
         removeAllPorts();
         removeAllRelations();
         for (Object portObject : _currentActor.portList()) {
@@ -380,7 +385,7 @@ public class PtalonMatcher extends TypedCompositeActor implements
     }
 
     private void _rearrangePtalonActors() throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         final int width = 640;
         final int xSpace = 80;
         final int ySpace = 80;
@@ -419,6 +424,7 @@ public class PtalonMatcher extends TypedCompositeActor implements
 
     private static class HashKey {
 
+        @Override
         public boolean equals(Object object) {
             if (object instanceof HashKey) {
                 HashKey key = (HashKey) object;
@@ -430,6 +436,7 @@ public class PtalonMatcher extends TypedCompositeActor implements
             return false;
         }
 
+        @Override
         public int hashCode() {
             int code = 0;
             if (_codeLocation != null) {

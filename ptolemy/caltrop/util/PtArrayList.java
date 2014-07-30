@@ -60,6 +60,7 @@ public class PtArrayList extends AbstractList<Token> {
      *  @exception ArrayIndexOutOfBoundsException If the specified index is
      *   outside the range of the token array.
      */
+    @Override
     public Token get(int index) throws ArrayIndexOutOfBoundsException {
         return _arrayToken.getElement(index);
     }
@@ -67,6 +68,7 @@ public class PtArrayList extends AbstractList<Token> {
     /** Return the size of the array.
      *  @return size The length of the ArrayToken.
      */
+    @Override
     public int size() {
         return _arrayToken.length();
     }

@@ -138,6 +138,7 @@ public class Bus extends AtomicCommunicationAspect {
      *  @param attribute The attribute that changed.
      *  @exception IllegalActionException If the service time is negative.
      */
+    @Override
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         if (attribute == serviceTimeMultiplicationFactor) {
@@ -162,6 +163,7 @@ public class Bus extends AtomicCommunicationAspect {
      *  @return The decorated attributes for the target NamedObj, or
      *   null if the specified target is not an Actor.
      */
+    @Override
     public DecoratorAttributes createDecoratorAttributes(NamedObj target) {
         if (target instanceof IOPort && ((IOPort) target).isInput()) {
             try {
@@ -180,6 +182,7 @@ public class Bus extends AtomicCommunicationAspect {
      *  @return A new intermediate receiver.
      * @exception IllegalActionException Thrown if Bus is used in container different from the container of the bus.
      */
+    @Override
     public IntermediateReceiver createIntermediateReceiver(Receiver receiver)
             throws IllegalActionException {
         // Only allow use of Bus on Ports in the same hierarchy level.
@@ -207,6 +210,7 @@ public class Bus extends AtomicCommunicationAspect {
      *   if one of the attributes cannot be cloned.
      *  @return A new Bus.
      */
+    @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         Bus newObject = (Bus) super.clone(workspace);
         newObject._tokens = new FIFOQueue();
@@ -224,6 +228,7 @@ public class Bus extends AtomicCommunicationAspect {
 
     /** Send first token in the queue to the target receiver.
      */
+    @Override
     public void fire() throws IllegalActionException {
         super.fire();
         Time currentTime = getDirector().getModelTime();
@@ -246,6 +251,7 @@ public class Bus extends AtomicCommunicationAspect {
     /** Initialize the actor.
      *  @exception IllegalActionException If the superclass throws it.
      */
+    @Override
     public void initialize() throws IllegalActionException {
         super.initialize();
         _receiversAndTokensToSendTo.clear();
@@ -259,6 +265,7 @@ public class Bus extends AtomicCommunicationAspect {
     /** If there are still tokens in the queue and a token has been produced in the fire,
      *  schedule a refiring.
      */
+    @Override
     public boolean postfire() throws IllegalActionException {
         // This method contains two places where refirings can be
         // scheduled. We only want to schedule a refiring once.
@@ -295,7 +302,7 @@ public class Bus extends AtomicCommunicationAspect {
         }
         if (_tokens.size() > 0
                 && (_nextTimeFree == null || currentTime
-                        .compareTo(_nextTimeFree) >= 0)) {
+                .compareTo(_nextTimeFree) >= 0)) {
             _scheduleRefire();
         }
         _receiversAndTokensToSendTo.clear();
@@ -310,6 +317,7 @@ public class Bus extends AtomicCommunicationAspect {
      *  @param token The token to send.
      *  @exception IllegalActionException If the refiring request fails.
      */
+    @Override
     public void sendToken(Receiver source, Receiver receiver, Token token)
             throws IllegalActionException {
         // If the token is null, then this means there is not actually
@@ -386,6 +394,7 @@ public class Bus extends AtomicCommunicationAspect {
      *   an attribute with the name of this attribute.
      *  @see #getContainer()
      */
+    @Override
     public void setContainer(CompositeEntity container)
             throws IllegalActionException, NameDuplicationException {
         super.setContainer(container);
@@ -416,6 +425,7 @@ public class Bus extends AtomicCommunicationAspect {
     /**
      * Nothing to do.
      */
+    @Override
     public void reset() {
     }
 
@@ -484,7 +494,7 @@ public class Bus extends AtomicCommunicationAspect {
          */
         public BusAttributes(NamedObj target,
                 AtomicCommunicationAspect decorator)
-                throws IllegalActionException, NameDuplicationException {
+                        throws IllegalActionException, NameDuplicationException {
             super(target, decorator);
             _init();
         }
@@ -516,6 +526,7 @@ public class Bus extends AtomicCommunicationAspect {
          *  @exception IllegalActionException If the parameter set is not valid.
          *  Not thrown in this class.
          */
+        @Override
         public void attributeChanged(Attribute attribute)
                 throws IllegalActionException {
             if (attribute == messageLength) {

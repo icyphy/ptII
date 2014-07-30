@@ -118,7 +118,7 @@ public class GeneratorTableau extends Tableau {
     /** The frame that is created by an instance of GeneratorTableau.
      */
     @SuppressWarnings("serial")
-        public class GeneratorFrame extends PtolemyFrame {
+    public class GeneratorFrame extends PtolemyFrame {
         /** Construct a frame to control code generation for
          *  the specified Ptolemy II model.
          *  After constructing this, it is necessary
@@ -162,7 +162,7 @@ public class GeneratorTableau extends Tableau {
             JPanel caveatsPanel = new JPanel();
             caveatsPanel.setBorder(BorderFactory.createEmptyBorder(5, 0, 0, 0));
             caveatsPanel
-                    .setLayout(new BoxLayout(caveatsPanel, BoxLayout.X_AXIS));
+            .setLayout(new BoxLayout(caveatsPanel, BoxLayout.X_AXIS));
 
             JTextArea messageArea = new JTextArea(
                     "NOTE: This is a highly preliminary "
@@ -177,6 +177,7 @@ public class GeneratorTableau extends Tableau {
 
             JButton moreInfoButton = new JButton("More Info");
             moreInfoButton.addActionListener(new ActionListener() {
+                @Override
                 public void actionPerformed(ActionEvent evt) {
                     Configuration configuration = getConfiguration();
                     URL infoURL = getClass().getResource(
@@ -205,8 +206,8 @@ public class GeneratorTableau extends Tableau {
             // Button panel first.
             JButton parametersButton = new JButton("Parameters");
             parametersButton
-                    .setToolTipText("Sanity check the Parameters and then "
-                            + "display a summary.");
+            .setToolTipText("Sanity check the Parameters and then "
+                    + "display a summary.");
             buttonPanel.add(parametersButton);
 
             JButton goButton = new JButton("Generate");
@@ -266,6 +267,7 @@ public class GeneratorTableau extends Tableau {
 
             // ActionListeners for the buttons
             parametersButton.addActionListener(new ActionListener() {
+                @Override
                 public void actionPerformed(ActionEvent evt) {
                     try {
                         options.sanityCheckAndUpdateParameters(null);
@@ -278,18 +280,21 @@ public class GeneratorTableau extends Tableau {
             });
 
             stopButton.addActionListener(new ActionListener() {
+                @Override
                 public void actionPerformed(ActionEvent evt) {
                     exec.cancel();
                 }
             });
 
             clearButton.addActionListener(new ActionListener() {
+                @Override
                 public void actionPerformed(ActionEvent evt) {
                     exec.clear();
                 }
             });
 
             goButton.addActionListener(new ActionListener() {
+                @Override
                 public void actionPerformed(ActionEvent evt) {
                     try {
                         // The code generator to run.  The value of this
@@ -309,10 +314,10 @@ public class GeneratorTableau extends Tableau {
                         if (!directory.isDirectory()) {
                             throw new IllegalActionException(model,
                                     "Not a directory: " + ptIIUserDirectory
-                                            + "/" + targetPath
-                                            + "\n.Try hitting the "
-                                            + "Parameters button to "
-                                            + "create the directory.");
+                                    + "/" + targetPath
+                                    + "\n.Try hitting the "
+                                    + "Parameters button to "
+                                    + "create the directory.");
                         }
 
                         if (!directory.canWrite()) {
@@ -375,6 +380,7 @@ public class GeneratorTableau extends Tableau {
          *  @exception Exception If the factory should be able to create a
          *   tableau for the effigy, but something goes wrong.
          */
+        @Override
         public Tableau createTableau(Effigy effigy) throws Exception {
             if (effigy instanceof PtolemyEffigy) {
                 // First see whether the effigy already contains a tableau
@@ -407,7 +413,7 @@ public class GeneratorTableau extends Tableau {
     // "applet" or "java" or "shallow".
     private List _generateCodeGeneratorCommands(CompositeEntity model,
             GeneratorAttribute generatorAttribute, String codeGenerator)
-            throws IllegalArgumentException, InternalErrorException {
+                    throws IllegalArgumentException, InternalErrorException {
         List results = new LinkedList();
 
         try {
@@ -441,8 +447,8 @@ public class GeneratorTableau extends Tableau {
 
             // Replace the original modelPath.
             generatorAttribute
-                    .sanityCheckAndUpdateParameters(((GeneratorFrame) getFrame())
-                            .getEffigy().uri.getURI().toString());
+            .sanityCheckAndUpdateParameters(((GeneratorFrame) getFrame())
+                    .getEffigy().uri.getURI().toString());
         } catch (Exception ex) {
             throw new InternalErrorException(model, ex, "Failed to generate "
                     + "command strings");

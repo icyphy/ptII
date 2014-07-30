@@ -108,6 +108,7 @@ public class CalInterpreter extends AbstractCalInterpreter {
      * @exception IllegalActionException If an error occurs parsing or
      * transforming the CAL source code.
      */
+    @Override
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         if (attribute == calCode) {
@@ -143,9 +144,9 @@ public class CalInterpreter extends AbstractCalInterpreter {
             // something other than Throwable here.
             throw new IllegalActionException(this, ex,
                     "Failed to read in actor in:\n  " + s
-                            + "\nThis sometimes occurs if saxon8.jar "
-                            + "or saxon8-dom.jar are not in "
-                            + "your classpath.");
+                    + "\nThis sometimes occurs if saxon8.jar "
+                    + "or saxon8-dom.jar are not in "
+                    + "your classpath.");
         }
 
         try {

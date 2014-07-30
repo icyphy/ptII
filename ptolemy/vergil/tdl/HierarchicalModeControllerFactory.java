@@ -73,6 +73,7 @@ public class HierarchicalModeControllerFactory extends NodeControllerFactory {
      *  @param controller The associated graph controller.
      *  @return A new node controller.
      */
+    @Override
     public NamedObjController create(GraphController controller) {
         return new HierarchicalModeController(controller);
     }

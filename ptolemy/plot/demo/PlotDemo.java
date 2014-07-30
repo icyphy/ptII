@@ -50,6 +50,7 @@ public class PlotDemo extends PlotApplet {
     /**
      * Return a string describing this applet.
      */
+    @Override
     public String getAppletInfo() {
         return "PlotDemo 2.0: Demo of Plot.\n" + "By: Edward A. Lee\n "
                 + "($Id$)";
@@ -59,6 +60,7 @@ public class PlotDemo extends PlotApplet {
      * Initialize the applet.  Here we step through an example of what the
      * the applet can do.
      */
+    @Override
     public void init() {
         super.init();
 

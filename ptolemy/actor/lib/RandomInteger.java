@@ -63,6 +63,7 @@ public class RandomInteger extends RandomSource {
      *  remain constant throughout an iteration.
      *  @exception IllegalActionException If there is no director.
      */
+    @Override
     public void fire() throws IllegalActionException {
         super.fire();
         output.send(0, new IntToken(_current));
@@ -73,6 +74,7 @@ public class RandomInteger extends RandomSource {
 
     /** Generate a new random integer.
      */
+    @Override
     protected void _generateRandomNumber() {
         _current = _random.nextInt();
     }

@@ -163,6 +163,7 @@ public class GTTableau extends Tableau {
          *  @exception Exception If an exception occurs when creating the
          *   tableau.
          */
+        @Override
         public Tableau createTableau(Effigy effigy) throws Exception {
             if (!(effigy instanceof PtolemyEffigy)) {
                 return null;
@@ -223,6 +224,7 @@ public class GTTableau extends Tableau {
          *  @exception Exception If the factory should be able to create a
          *   Tableau for the effigy, but something goes wrong.
          */
+        @Override
         public Tableau createTableau(Effigy effigy) throws Exception {
             Configuration configuration = (Configuration) effigy.toplevel();
             ModalModelMatcher model = (ModalModelMatcher) ((PtolemyEffigy) effigy)

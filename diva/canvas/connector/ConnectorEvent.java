@@ -212,6 +212,7 @@ public class ConnectorEvent extends java.util.EventObject {
         }
     }
 
+    @Override
     public String toString() {
         return "ConnectorEvent[" + idToString() + ", " + getConnector() + ", "
                 + endToString() + "]";

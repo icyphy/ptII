@@ -91,6 +91,7 @@ public class PtidesReceiver extends DEReceiver {
      * @param token
      *            The token to be put, or null to not put a token.
      */
+    @Override
     public void put(Token token) {
         if (token == null) {
             return;
@@ -258,6 +259,7 @@ public class PtidesReceiver extends DEReceiver {
          *         they should be processed at the same time, 1 if arg1 should
          *         be processed before arg0.
          */
+        @Override
         public int compare(Object arg0, Object arg1) {
             Event event1 = (Event) arg0;
             Event event2 = (Event) arg1;

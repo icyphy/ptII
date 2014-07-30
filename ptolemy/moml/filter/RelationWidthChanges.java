@@ -72,6 +72,7 @@ public class RelationWidthChanges extends MoMLFilterSimple {
      *   to leave it unchanged, or null to cause the current element
      *   to be ignored (unless the attributeValue argument is null).
      */
+    @Override
     public String filterAttributeValue(NamedObj container, String element,
             String attributeName, String attributeValue, String xmlFile) {
 
@@ -137,6 +138,7 @@ public class RelationWidthChanges extends MoMLFilterSimple {
      *  @exception Exception If there is a problem modifying the
      *  specified container.
      */
+    @Override
     public void filterEndElement(NamedObj container, String elementName,
             StringBuffer currentCharData, String xmlFile) throws Exception {
         if (container instanceof VersionAttribute) {
@@ -174,6 +176,7 @@ public class RelationWidthChanges extends MoMLFilterSimple {
     /** Return a string that describes what the filter does.
      *  @return A description of the filter (ending with a newline).
      */
+    @Override
     public String toString() {
         return Integer.toHexString(hashCode());
     }
@@ -191,35 +194,35 @@ public class RelationWidthChanges extends MoMLFilterSimple {
         // First Check whether we already have the version
         Boolean changesNeeded = xmlFile != null ? _changesNeededForXmlFile
                 .get(xmlFile) : null;
-        if (changesNeeded != null && changesNeeded) {
-            return _changesNeededForXmlFile.get(xmlFile);
-        } else {
-            // Retrieve the version number. This is only available on the toplevel.
-            NamedObj toplevel = container;
-            NamedObj parent = toplevel.getContainer();
+                if (changesNeeded != null && changesNeeded) {
+                    return _changesNeededForXmlFile.get(xmlFile);
+                } else {
+                    // Retrieve the version number. This is only available on the toplevel.
+                    NamedObj toplevel = container;
+                    NamedObj parent = toplevel.getContainer();
 
-            while (parent != null) {
-                toplevel = parent;
-                parent = toplevel.getContainer();
-            }
-            Attribute version = toplevel.getAttribute("_createdBy");
-            if (version != null) {
-                try {
-                    return ((VersionAttribute) version)
-                            .isLessThan(new VersionAttribute("7.2.devel"));
-                } catch (IllegalActionException e) {
+                    while (parent != null) {
+                        toplevel = parent;
+                        parent = toplevel.getContainer();
+                    }
+                    Attribute version = toplevel.getAttribute("_createdBy");
+                    if (version != null) {
+                        try {
+                            return ((VersionAttribute) version)
+                                    .isLessThan(new VersionAttribute("7.2.devel"));
+                        } catch (IllegalActionException e) {
+                        }
+                    } else {
+                        // If there is no _createdBy attribute, then this might be a
+                        // copy and paste, in which case we assume we are copying
+                        // from the current version.  Note that this might not
+                        // be always be true, but it is more likely that we are copying
+                        // from a version recent version than a pre 7.2.devel version.
+                        // See http://bugzilla.ecoinformatics.org/show_bug.cgi?id=4804
+                        return false;
+                    }
                 }
-            } else {
-                // If there is no _createdBy attribute, then this might be a
-                // copy and paste, in which case we assume we are copying
-                // from the current version.  Note that this might not
-                // be always be true, but it is more likely that we are copying
-                // from a version recent version than a pre 7.2.devel version.
-                // See http://bugzilla.ecoinformatics.org/show_bug.cgi?id=4804
-                return false;
-            }
-        }
-        return true;
+                return true;
     }
 
     ///////////////////////////////////////////////////////////////////

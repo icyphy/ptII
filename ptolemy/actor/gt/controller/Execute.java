@@ -24,7 +24,7 @@
  PT_COPYRIGHT_VERSION_2
  COPYRIGHTENDKEY
 
-*/
+ */
 package ptolemy.actor.gt.controller;
 
 import java.util.LinkedList;
@@ -89,6 +89,7 @@ public class Execute extends GTEvent {
      *  @exception CloneNotSupportedException If a derived class contains
      *   an attribute that cannot be cloned.
      */
+    @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         Execute newObject = (Execute) super.clone(workspace);
         newObject._effigy = null;
@@ -107,6 +108,7 @@ public class Execute extends GTEvent {
      *  @exception IllegalActionException If the model cannot be executed, or if
      *   thrown by the superclass.
      */
+    @Override
     public RefiringData fire(Token arguments) throws IllegalActionException {
         RefiringData data = super.fire(arguments);
 
@@ -172,6 +174,7 @@ public class Execute extends GTEvent {
     /** Stop the execution of this event, which causes the model being executed
      *  to be stopped, if any.
      */
+    @Override
     public void stop() {
         synchronized (_managers) {
             for (Manager manager : _managers) {

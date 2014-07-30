@@ -69,6 +69,7 @@ public class ButtonBarComponentBuilder implements ComponentBuilder {
         properties.add(new BeanProperty("button5Text", String.class));
     }
 
+    @Override
     public String getDeclaration(String name, Map<String, Object> properties) {
         StringBuffer declaration = new StringBuffer();
         StringBuffer buttonAdds = new StringBuffer(
@@ -119,14 +120,16 @@ public class ButtonBarComponentBuilder implements ComponentBuilder {
         return declaration.toString();
     }
 
+    @Override
     public String toString() {
         return "ButtonBar";
     }
 
+    @Override
     public java.awt.Component getInstance(
             java.util.Map<String, Object> properties)
-            throws InstantiationException, IllegalAccessException,
-            InvocationTargetException {
+                    throws InstantiationException, IllegalAccessException,
+                    InvocationTargetException {
         List<JButton> buttons = new ArrayList<JButton>();
 
         for (int i = 1; i < 6; i++) {
@@ -157,14 +160,17 @@ public class ButtonBarComponentBuilder implements ComponentBuilder {
         }
     }
 
+    @Override
     public boolean isComponentALayoutContainer() {
         return false;
     }
 
+    @Override
     public List<BeanProperty> getProperties() {
         return properties;
     }
 
+    @Override
     public ComponentDef getComponentDef(String name,
             Map<String, Object> beanProperties) {
         String decl = getDeclaration("${name}", beanProperties);

@@ -116,6 +116,7 @@ public class PortCriterion extends Criterion {
      *  @param object The object.
      *  @return true if the object can be checked.
      */
+    @Override
     public boolean canCheck(NamedObj object) {
         return super.canCheck(object) && object instanceof Port;
     }
@@ -124,6 +125,7 @@ public class PortCriterion extends Criterion {
      *
      *  @return The array of elements.
      */
+    @Override
     public GTIngredientElement[] getElements() {
         return _ELEMENTS;
     }
@@ -172,6 +174,7 @@ public class PortCriterion extends Criterion {
      *  @return The value.
      *  @see #setValue(int, Object)
      */
+    @Override
     public Object getValue(int index) {
         switch (index) {
         case 0:
@@ -196,6 +199,7 @@ public class PortCriterion extends Criterion {
      *  @return A string that describes the values of all the elements.
      *  @see #setValues(String)
      */
+    @Override
     public String getValues() {
         StringBuffer buffer = new StringBuffer();
         _encodeStringField(buffer, 0, _portName.get());
@@ -212,6 +216,7 @@ public class PortCriterion extends Criterion {
      *  @param object The object.
      *  @return true if this GTIngredient is applicable; false otherwise.
      */
+    @Override
     public boolean isApplicable(NamedObj object) {
         return super.isApplicable(object) && object instanceof ComponentEntity
                 && !(object instanceof State);
@@ -295,6 +300,7 @@ public class PortCriterion extends Criterion {
      *  @param object The object.
      *  @return true if the object matches.
      */
+    @Override
     public boolean match(NamedObj object) {
         // Check the input/output/multiport type
         if (object instanceof IOPort) {
@@ -417,6 +423,7 @@ public class PortCriterion extends Criterion {
      *  @param value The value.
      *  @see #getValue(int)
      */
+    @Override
     public void setValue(int index, Object value) {
         switch (index) {
         case 0:
@@ -446,6 +453,7 @@ public class PortCriterion extends Criterion {
      *   elements.
      *  @see #getValues()
      */
+    @Override
     public void setValues(String values) {
         FieldIterator fieldIterator = new FieldIterator(values);
         _portName.set(_decodeStringField(0, fieldIterator));
@@ -460,6 +468,7 @@ public class PortCriterion extends Criterion {
      *
      *  @exception ValidationException If some elements are invalid.
      */
+    @Override
     public void validate() throws ValidationException {
         if (isPortNameEnabled()) {
             if (_portName.get().equals("")) {
@@ -522,12 +531,12 @@ public class PortCriterion extends Criterion {
     /** The elements.
      */
     private static final CriterionElement[] _ELEMENTS = {
-            new StringCriterionElement("name", true, true, false),
-            new ChoiceCriterionElement("type", true, false, true, true),
-            new BooleanCriterionElement("input", true),
-            new BooleanCriterionElement("output", true),
-            new BooleanCriterionElement("multi", true),
-            new StringCriterionElement("matcherName", true, false, false) };
+        new StringCriterionElement("name", true, true, false),
+        new ChoiceCriterionElement("type", true, false, true, true),
+        new BooleanCriterionElement("input", true),
+        new BooleanCriterionElement("output", true),
+        new BooleanCriterionElement("multi", true),
+        new StringCriterionElement("matcherName", true, false, false) };
 
     /** Value of the input element.
      */

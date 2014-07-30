@@ -201,6 +201,7 @@ public class BooleanSelect extends TypedAtomicActor {
      *   if one of the attributes cannot be cloned.
      *  @return A new ComponentEntity.
      */
+    @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         BooleanSelect newObject = (BooleanSelect) super.clone(workspace);
         newObject._control = null;
@@ -219,6 +220,7 @@ public class BooleanSelect extends TypedAtomicActor {
      *  case, send nothing to the output.
      *  @exception IllegalActionException If there is no director.
      */
+    @Override
     public void fire() throws IllegalActionException {
         super.fire();
         if (_control == null) {
@@ -246,6 +248,7 @@ public class BooleanSelect extends TypedAtomicActor {
      *  from until a token arrives on the <i>control</i> input.
      *  @exception IllegalActionException If the parent class throws it.
      */
+    @Override
     public void initialize() throws IllegalActionException {
         super.initialize();
         _control = null;
@@ -260,6 +263,7 @@ public class BooleanSelect extends TypedAtomicActor {
      *  @return True if execution can continue into the next iteration.
      *  @exception IllegalActionException If the base class throws it.
      */
+    @Override
     public boolean postfire() throws IllegalActionException {
         // If on this iteration the control token was used, set it to null.
         if (_controlUsed) {
@@ -291,6 +295,7 @@ public class BooleanSelect extends TypedAtomicActor {
      *  @return False if there are not enough tokens to fire.
      *  @exception IllegalActionException If there is no director.
      */
+    @Override
     public boolean prefire() throws IllegalActionException {
         boolean result = super.prefire();
         if (_control == null) {

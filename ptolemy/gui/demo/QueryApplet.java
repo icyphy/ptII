@@ -61,7 +61,9 @@ public class QueryApplet extends BasicJApplet implements QueryListener {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
         } catch (Exception ex) {
             // Ignore exceptions, which only result in the wrong look and feel.
-            System.err.println("Failed to set the look and feel? Exception was: " + ex);
+            System.err
+                    .println("Failed to set the look and feel? Exception was: "
+                            + ex);
         }
     }
 
@@ -72,12 +74,14 @@ public class QueryApplet extends BasicJApplet implements QueryListener {
      *  The name of the entry is passed as an argument.
      *  @param name The name of the entry.
      */
+    @Override
     public void changed(String name) {
         showStatus("Changed " + name + " to: " + _query.getStringValue(name));
     }
 
     /** Create a Query object and configure it.
      */
+    @Override
     public void init() {
         super.init();
         _query = new Query();

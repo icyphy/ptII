@@ -138,6 +138,7 @@ public class Stop extends Sink {
      *  is not trying to stop execution, then return the value
      *  returned by super.postfire().
      */
+    @Override
     public boolean postfire() throws IllegalActionException {
         boolean result = false;
 

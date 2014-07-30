@@ -198,6 +198,7 @@ abstract public class CryptographyActor extends TypedAtomicActor {
      *  @param attribute The attribute that changed.
      *  @exception IllegalActionException Not thrown in this base class.
      */
+    @Override
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         if (attribute == algorithm) {
@@ -219,6 +220,7 @@ abstract public class CryptographyActor extends TypedAtomicActor {
      *  @exception IllegalActionException If thrown by the base class or
      *  if there is a problem processing the data.
      */
+    @Override
     public void fire() throws IllegalActionException {
         super.fire(); // super.fire() will print out debugging messages.
 

@@ -82,15 +82,15 @@ public class BinaryNonStrictLogicGate extends NonStrictLogicGate {
     public BinaryNonStrictLogicGate(CompositeEntity container, String name)
             throws NameDuplicationException, IllegalActionException {
         super(container, name);
-        
+
         input.setMultiport(false);
-        
+
         input2 = new TypedIOPort(this, "input2", true, false);
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         ports                             ////
-    
+
     /** The second input port. */
     public TypedIOPort input2;
 
@@ -101,34 +101,35 @@ public class BinaryNonStrictLogicGate extends NonStrictLogicGate {
      *  @return True if all inputs are known.
      *  @exception IllegalActionException If it fails.
      */
+    @Override
     protected boolean _allInputsKnown() throws IllegalActionException {
-            return input.isKnown() && input2.isKnown();
+        return input.isKnown() && input2.isKnown();
     }
-    
-        /** Read the inputs, and return the logic function applied to
-         *  all the are known and present.
-         *  @return The logic function applied to all available inputs.
-         *  @exception IllegalActionException If reading inputs fails.
-         */
-        protected BooleanToken _readInputs()
-                        throws IllegalActionException {
-                BooleanToken value = null;
-                if (input.isKnown(0)) {
-                        if (input.hasToken(0)) {
-                                BooleanToken in = (BooleanToken) input.get(0);
-                                if (in != null) {
-                                        value = _updateFunction(in, value);
-                                }
+
+    /** Read the inputs, and return the logic function applied to
+     *  all the are known and present.
+     *  @return The logic function applied to all available inputs.
+     *  @exception IllegalActionException If reading inputs fails.
+     */
+    @Override
+    protected BooleanToken _readInputs() throws IllegalActionException {
+        BooleanToken value = null;
+        if (input.isKnown(0)) {
+            if (input.hasToken(0)) {
+                BooleanToken in = (BooleanToken) input.get(0);
+                if (in != null) {
+                    value = _updateFunction(in, value);
+                }
             }
         }
-                if (input2.isKnown(0)) {
-                        if (input2.hasToken(0)) {
-                                BooleanToken in = (BooleanToken) input2.get(0);
-                                if (in != null) {
-                                        value = _updateFunction(in, value);
-                                }
+        if (input2.isKnown(0)) {
+            if (input2.hasToken(0)) {
+                BooleanToken in = (BooleanToken) input2.get(0);
+                if (in != null) {
+                    value = _updateFunction(in, value);
+                }
             }
         }
-                return value;
-        }
+        return value;
+    }
 }

@@ -124,6 +124,7 @@ public class OrderedRecordToken extends RecordToken {
      *  @return True if the argument is equal to this token.
      *  @see #hashCode()
      */
+    @Override
     public boolean equals(Object object) {
         if (object == null) {
             return false;
@@ -150,6 +151,7 @@ public class OrderedRecordToken extends RecordToken {
      *  of the hash codes of the labels and the element tokens.
      *  @return A hash code value for this token.
      */
+    @Override
     public int hashCode() {
         int code = 0;
         Set<String> labelSet = _fields.keySet();
@@ -178,6 +180,7 @@ public class OrderedRecordToken extends RecordToken {
      *  @return A String beginning with "[" that contains label and value
      *  pairs separated by commas, ending with "]".
      */
+    @Override
     public String toString() {
         Object[] labelsObjects = _fields.keySet().toArray();
 
@@ -209,6 +212,7 @@ public class OrderedRecordToken extends RecordToken {
     /**
      * @see RecordToken
      */
+    @Override
     protected RecordToken _createRecordToken(String[] labels, Token[] values)
             throws IllegalActionException {
         return new OrderedRecordToken(labels, values);
@@ -218,6 +222,7 @@ public class OrderedRecordToken extends RecordToken {
      *   uses a LinkedHashMap so that the original order of the record
      *   is maintained.
      */
+    @Override
     protected void _initializeStorage() {
         _fields = new LinkedHashMap<String, Token>();
     }
@@ -227,6 +232,7 @@ public class OrderedRecordToken extends RecordToken {
      * Here we are using an ordered set.
      * @return a new Set.
      */
+    @Override
     protected Set<String> _createSet() {
         return new LinkedHashSet<String>();
     }
@@ -242,6 +248,7 @@ public class OrderedRecordToken extends RecordToken {
      *  supported by the derived class.
      *  @return True if the argument is equal to this.
      */
+    @Override
     protected BooleanToken _isEqualTo(Token rightArgument)
             throws IllegalActionException {
         RecordToken recordToken = (RecordToken) rightArgument;

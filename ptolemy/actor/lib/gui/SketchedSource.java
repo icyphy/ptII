@@ -189,6 +189,7 @@ public class SketchedSource extends SequencePlotter implements EditListener {
      *  @exception IllegalActionException If the specified attribute
      *   is <i>length</i> and its value is not positive.
      */
+    @Override
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         if (attribute == length) {
@@ -217,6 +218,7 @@ public class SketchedSource extends SequencePlotter implements EditListener {
      *  @exception CloneNotSupportedException If a derived class has an
      *   attribute that cannot be cloned.
      */
+    @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         SketchedSource newObject = (SketchedSource) super.clone(workspace);
         _data = null;
@@ -234,6 +236,7 @@ public class SketchedSource extends SequencePlotter implements EditListener {
      *  @param source The plot containing the modified data.
      *  @param dataset The data set that has been modified.
      */
+    @Override
     public synchronized void editDataModified(EditablePlot source, int dataset) {
         if (dataset == 0 && !_settingInitialTrace) {
             _dataModified = true;
@@ -267,6 +270,7 @@ public class SketchedSource extends SequencePlotter implements EditListener {
      *  @exception IllegalActionException If there is no director, or
      *   if the base class throws it.
      */
+    @Override
     public void fire() throws IllegalActionException {
         // Read the trigger input, if there is one.
         super.fire();
@@ -295,6 +299,7 @@ public class SketchedSource extends SequencePlotter implements EditListener {
      *  produce all the data on the output.
      *  @exception IllegalActionException If the parent class throws it.
      */
+    @Override
     public void initialize() throws IllegalActionException {
         // NOTE: These gets overridden with zero after construction
         // if the MoML file gives the value.
@@ -321,6 +326,7 @@ public class SketchedSource extends SequencePlotter implements EditListener {
     /** Override the base class to create an initial trace.
      *  @param container The container into which to place the plot.
      */
+    @Override
     public void place(PortableContainer container) {
         super.place(container);
 
@@ -338,6 +344,7 @@ public class SketchedSource extends SequencePlotter implements EditListener {
      *  class clears the entire plot, which will erase sketched data.
      *  @exception IllegalActionException If triggered by creating receivers.
      */
+    @Override
     public void preinitialize() throws IllegalActionException {
         // This code is copied from AtomicActor, since we can't call super.
         _stopRequested = false;
@@ -349,6 +356,7 @@ public class SketchedSource extends SequencePlotter implements EditListener {
     /** Create a new plot. In this class, it is an instance of EditablePlot.
      *  @return A new editable plot object.
      */
+    @Override
     protected PlotBox _newPlot() {
         EditablePlot result = new EditablePlot();
         result.addEditListener(this);

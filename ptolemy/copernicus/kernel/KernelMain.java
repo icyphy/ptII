@@ -161,7 +161,7 @@ public abstract class KernelMain {
         } catch (Exception exception) {
             // This could be a problem with NonStrictTest.
             throw new KernelRuntimeException(exception,
-                                 "Could not wrapup composite actor");
+                    "Could not wrapup composite actor");
         }
 
         // Print out memory usage info
@@ -315,6 +315,7 @@ public abstract class KernelMain {
          *  @param phaseName The phase this transform is operating under.
          *  @param options The options to apply.
          */
+        @Override
         protected void internalTransform(String phaseName, Map options) {
             // For some reason, soot 2.0.1 gives java.lang.Object as
             // its own superclass!

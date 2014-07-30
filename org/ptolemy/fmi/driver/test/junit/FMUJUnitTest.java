@@ -67,15 +67,14 @@ public class FMUJUnitTest {
      *  or if the results is not the same as the known good results.
      */
     public void cosimulate(String fmuFileName, double endTime, double stepSize,
-                           String knownGoodFileName)
-            throws Exception {
+            String knownGoodFileName) throws Exception {
         String resultsFileName = File.createTempFile("FMUJUnitTest", "csv")
                 .getCanonicalPath();
         System.out.println("To update " + knownGoodFileName + ", run:\n"
                 + "java -classpath \"" + topDirectory + "/lib/jna.jar:"
                 + topDirectory + "\" org.ptolemy.fmi.driver.FMUCoSimulation "
-                + fmuFileName + " " + endTime + " " + stepSize
-                    + " false c " + knownGoodFileName);
+                + fmuFileName + " " + endTime + " " + stepSize + " false c "
+                + knownGoodFileName);
         new FMUCoSimulation().simulate(fmuFileName, endTime, stepSize,
                 true /*logging*/, ',', resultsFileName);
 
@@ -97,11 +96,10 @@ public class FMUJUnitTest {
      *  or if the results is not the same as the known good results.
      */
     public void cosimulate(String testName, double endTime, double stepSize)
-        throws Exception {
+            throws Exception {
         cosimulate(topDirectory + "/org/ptolemy/fmi/fmu/cs/" + testName
-                   + ".fmu", endTime, stepSize,
-                   topDirectory + "/org/ptolemy/fmi/driver/test/junit/"
-                + testName + ".csv");
+                + ".fmu", endTime, stepSize, topDirectory
+                + "/org/ptolemy/fmi/driver/test/junit/" + testName + ".csv");
     }
 
     /** Run the bouncing ball co-simulation functional mock-up unit test.
@@ -213,7 +211,7 @@ public class FMUJUnitTest {
     public void modelExchange(String testName) throws Exception {
         modelExchange(topDirectory + "/org/ptolemy/fmi/fmu/me/" + testName
                 + ".fmu", topDirectory + "/org/ptolemy/fmi/driver/test/junit/"
-                + testName + "_me.csv");
+                        + testName + "_me.csv");
     }
 
     /** Run the bouncing ball model exchange functional mock-up unit test.
@@ -264,7 +262,7 @@ public class FMUJUnitTest {
      */
     public static void main(String args[]) {
         org.junit.runner.JUnitCore
-                .main("org.ptolemy.fmi.driver.test.junit.FMUJUnitTest");
+        .main("org.ptolemy.fmi.driver.test.junit.FMUJUnitTest");
     }
 
     /** Read in the named file and returns the contents as a string.

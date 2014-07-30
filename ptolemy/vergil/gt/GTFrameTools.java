@@ -98,6 +98,7 @@ public class GTFrameTools {
         effigy.setModel(model);
 
         SwingUtilities.invokeLater(new Runnable() {
+            @Override
             public void run() {
                 Point2D center = frame.getCenter();
 
@@ -152,18 +153,22 @@ public class GTFrameTools {
             }
         }
 
+        @Override
         public void mergeTopTwo() {
             _oldAttribute.mergeTopTwo();
         }
 
+        @Override
         public void push(UndoAction action) {
             _oldAttribute.push(action);
         }
 
+        @Override
         public void redo() throws Exception {
             _oldAttribute.redo();
         }
 
+        @Override
         public void undo() throws Exception {
             _oldAttribute.undo();
         }
@@ -190,6 +195,7 @@ public class GTFrameTools {
             _undoable = undoable;
         }
 
+        @Override
         protected void _execute() throws Exception {
             _oldModel = (CompositeEntity) _frame.getModel();
             if (_undoable) {
@@ -197,6 +203,7 @@ public class GTFrameTools {
                         .getUndoInfo(_oldModel);
                 if (_undoAction == null) {
                     undoInfo.push(new UndoAction() {
+                        @Override
                         public void execute() throws Exception {
                             ModelChangeRequest request = new ModelChangeRequest(
                                     ModelChangeRequest.this, _frame, _oldModel);

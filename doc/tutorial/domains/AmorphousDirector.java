@@ -23,7 +23,7 @@ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
 PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 ENHANCEMENTS, OR MODIFICATIONS.
-*/
+ */
 package doc.tutorial.domains;
 
 import ptolemy.actor.AbstractReceiver;
@@ -67,6 +67,7 @@ public class AmorphousDirector extends Director {
     }
 
     /** Return a Receiver that can delegate to another receiver. */
+    @Override
     public Receiver newReceiver() {
         return new DelegatingReceiver();
     }
@@ -90,6 +91,7 @@ public class AmorphousDirector extends Director {
          *  the create an instance of the receiver whose class name
          *  is given, replacing the current receiver.
          */
+        @Override
         public void clear() throws IllegalActionException {
             IOPort container = getContainer();
             if (container != null) {
@@ -113,33 +115,39 @@ public class AmorphousDirector extends Director {
         }
 
         /** Delegate to the specified receiver. */
+        @Override
         public Token get() throws NoTokenException {
             return _receiver.get();
         }
 
         /** Delegate to the specified receiver. */
+        @Override
         public boolean hasRoom() {
             return _receiver.hasRoom();
         }
 
         /** Delegate to the specified receiver. */
+        @Override
         public boolean hasRoom(int numberOfTokens) {
             return _receiver.hasRoom(numberOfTokens);
         }
 
         /** Delegate to the specified receiver. */
+        @Override
         public boolean hasToken() {
             return _receiver.hasToken();
         }
 
         /** Delegate to the specified receiver. */
+        @Override
         public boolean hasToken(int numberOfTokens) {
             return _receiver.hasToken(numberOfTokens);
         }
 
         /** Delegate to the specified receiver. */
+        @Override
         public void put(Token token) throws NoRoomException,
-                IllegalActionException {
+        IllegalActionException {
             _receiver.put(token);
         }
     }

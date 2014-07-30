@@ -227,25 +227,26 @@ public class KernelException extends Exception {
                 || whereString.equals("");
         boolean detailNullOrEmpty = detail == null || detail.equals("");
         return
-        // Do we print the detail?
-        (detailNullOrEmpty ? "" : detail)
-        // Do we add a \n?
+                // Do we print the detail?
+                (detailNullOrEmpty ? "" : detail)
+                // Do we add a \n?
                 + (!whereNullOrEmpty && !detailNullOrEmpty ? "\n" : "")
                 // Do we print the whereString?
                 + (whereNullOrEmpty ? "" : whereString)
                 // Do we add a \n?
                 + ((!whereNullOrEmpty || !detailNullOrEmpty) && cause != null ? "\n"
                         : "")
-                // Do we print the cause?
-                + (cause == null ? "" : "Because:\n"
-                        + (cause.getMessage() != null ? cause.getMessage()
-                                : cause.toString()));
+                        // Do we print the cause?
+                        + (cause == null ? "" : "Because:\n"
+                                + (cause.getMessage() != null ? cause.getMessage()
+                                        : cause.toString()));
     }
 
     /** Get the cause of this exception.
      *  @return The cause that was passed in as an argument to the
      *  constructor, or null if no cause was specified.
      */
+    @Override
     public Throwable getCause() {
         return _cause;
     }
@@ -308,6 +309,7 @@ public class KernelException extends Exception {
      *
      *  @return The error message.
      */
+    @Override
     public String getMessage() {
         return _message;
     }
@@ -362,6 +364,7 @@ public class KernelException extends Exception {
      *  exception is known, print the cause exception and the
      *  cause stacktrace.
      */
+    @Override
     public void printStackTrace() {
         // Note that chained exceptions are new JDK1.4.
         // We are implement them ourselves here so that we can
@@ -378,6 +381,7 @@ public class KernelException extends Exception {
      *
      *  @param printStream The PrintStream to write to.
      */
+    @Override
     public void printStackTrace(PrintStream printStream) {
         printStackTrace(new PrintWriter(printStream));
     }
@@ -388,6 +392,7 @@ public class KernelException extends Exception {
      *
      *  @param printWriter The PrintWriter to write to.
      */
+    @Override
     public void printStackTrace(PrintWriter printWriter) {
         super.printStackTrace(printWriter);
 

@@ -60,7 +60,7 @@ public class ParseTreeFreeVariableRenamer extends AbstractParseTreeVisitor {
      */
     public void renameVariables(ASTPtRootNode node, Variable dependentVariable,
             Variable variableToRename, String name)
-            throws IllegalActionException {
+                    throws IllegalActionException {
         _scope = dependentVariable.getParserScope();
         _dependentVariable = dependentVariable;
         _variableToRename = variableToRename;
@@ -77,21 +77,25 @@ public class ParseTreeFreeVariableRenamer extends AbstractParseTreeVisitor {
         _name = null;
     }
 
+    @Override
     public void visitArrayConstructNode(ASTPtArrayConstructNode node)
             throws IllegalActionException {
         _visitAllChildren(node);
     }
 
+    @Override
     public void visitBitwiseNode(ASTPtBitwiseNode node)
             throws IllegalActionException {
         _visitAllChildren(node);
     }
 
+    @Override
     public void visitFunctionApplicationNode(ASTPtFunctionApplicationNode node)
             throws IllegalActionException {
         _visitAllChildren(node);
     }
 
+    @Override
     public void visitFunctionDefinitionNode(ASTPtFunctionDefinitionNode node)
             throws IllegalActionException {
         Collection arguments = node.getArgumentNameList();
@@ -104,11 +108,13 @@ public class ParseTreeFreeVariableRenamer extends AbstractParseTreeVisitor {
         _formalParameters.addAll(alreadyFormal);
     }
 
+    @Override
     public void visitFunctionalIfNode(ASTPtFunctionalIfNode node)
             throws IllegalActionException {
         _visitAllChildren(node);
     }
 
+    @Override
     public void visitLeafNode(ASTPtLeafNode node) throws IllegalActionException {
         if (node.isConstant() && node.isEvaluated()) {
             return;
@@ -121,50 +127,60 @@ public class ParseTreeFreeVariableRenamer extends AbstractParseTreeVisitor {
         }
     }
 
+    @Override
     public void visitLogicalNode(ASTPtLogicalNode node)
             throws IllegalActionException {
         _visitAllChildren(node);
     }
 
+    @Override
     public void visitMatrixConstructNode(ASTPtMatrixConstructNode node)
             throws IllegalActionException {
         _visitAllChildren(node);
     }
 
+    @Override
     public void visitMethodCallNode(ASTPtMethodCallNode node)
             throws IllegalActionException {
         _visitAllChildren(node);
     }
 
+    @Override
     public void visitPowerNode(ASTPtPowerNode node)
             throws IllegalActionException {
         _visitAllChildren(node);
     }
 
+    @Override
     public void visitProductNode(ASTPtProductNode node)
             throws IllegalActionException {
         _visitAllChildren(node);
     }
 
+    @Override
     public void visitRecordConstructNode(ASTPtRecordConstructNode node)
             throws IllegalActionException {
         _visitAllChildren(node);
     }
 
+    @Override
     public void visitRelationalNode(ASTPtRelationalNode node)
             throws IllegalActionException {
         _visitAllChildren(node);
     }
 
+    @Override
     public void visitShiftNode(ASTPtShiftNode node)
             throws IllegalActionException {
         _visitAllChildren(node);
     }
 
+    @Override
     public void visitSumNode(ASTPtSumNode node) throws IllegalActionException {
         _visitAllChildren(node);
     }
 
+    @Override
     public void visitUnaryNode(ASTPtUnaryNode node)
             throws IllegalActionException {
         _visitAllChildren(node);
@@ -194,6 +210,7 @@ public class ParseTreeFreeVariableRenamer extends AbstractParseTreeVisitor {
      *  visiting each one of them, which will cause their token
      *  value to be determined.
      */
+    @Override
     protected void _visitAllChildren(ASTPtRootNode node)
             throws IllegalActionException {
         int numChildren = node.jjtGetNumChildren();
@@ -206,6 +223,7 @@ public class ParseTreeFreeVariableRenamer extends AbstractParseTreeVisitor {
     /** Visit the child with the given index of the given node.
      *  This is usually called while visiting the given node.
      */
+    @Override
     protected void _visitChild(ASTPtRootNode node, int i)
             throws IllegalActionException {
         ASTPtRootNode child = (ASTPtRootNode) node.jjtGetChild(i);

@@ -67,6 +67,7 @@ public class BasicJApplet extends JApplet {
     /** Return generic applet information.
      *  @return A string giving minimal information about Ptolemy II.
      */
+    @Override
     public String getAppletInfo() {
         return "Ptolemy II swing-based applet.\n"
                 + "Ptolemy II comes from UC Berkeley, Department of EECS.\n"
@@ -78,9 +79,10 @@ public class BasicJApplet extends JApplet {
      *  _concatStringArrays() is provided to make this easy to do.
      *  @return An array describing the applet parameters.
      */
+    @Override
     public String[][] getParameterInfo() {
         String[][] pinfo = { { "background", "#RRGGBB",
-                "color of the background" }, };
+        "color of the background" }, };
         return pinfo;
     }
 
@@ -92,6 +94,7 @@ public class BasicJApplet extends JApplet {
      *  If the background color parameter has not been set, then the
      *  background color is set to white.
      */
+    @Override
     public void init() {
         UndeferredGraphicalMessageHandler.setContext(this);
         MessageHandler.setMessageHandler(new GraphicalMessageHandler());
@@ -193,6 +196,7 @@ public class BasicJApplet extends JApplet {
      *  @return The background color.
      *  @deprecated Use the public method getBackground() instead.
      */
+    @Deprecated
     protected Color _getBackground() {
         return _background;
     }

@@ -61,6 +61,7 @@ public class PopupMouseFilter extends ExtendedMouseFilter {
     /**
      * Test whether the given MouseEvent passes the filter.
      */
+    @Override
     public boolean accept(MouseEvent event) {
         if (PtGUIUtilities.macOSLookAndFeel()) {
             return event.isPopupTrigger();

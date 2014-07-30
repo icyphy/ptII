@@ -81,6 +81,7 @@ public class DECQEventQueue implements DEEventQueue {
      *  @param listener A listener to which to send debug messages.
      *  @see #removeDebugListener(DebugListener)
      */
+    @Override
     public void addDebugListener(DebugListener listener) {
         _cQueue.addDebugListener(listener);
     }
@@ -88,6 +89,7 @@ public class DECQEventQueue implements DEEventQueue {
     /** Empty the event queue. This method is synchronized since there
      *  may be actors running under different threads in the DE domain.
      */
+    @Override
     public void clear() {
         _cQueue.clear();
     }
@@ -97,6 +99,7 @@ public class DECQEventQueue implements DEEventQueue {
      *  @return The earliest DE event in the queue.
      *  @exception InvalidStateException If the queue is empty.
      */
+    @Override
     public final DEEvent get() {
         return (DEEvent) _cQueue.get();
     }
@@ -104,6 +107,7 @@ public class DECQEventQueue implements DEEventQueue {
     /** Return true if this event queue is empty.
      *  @return True if there are no event in the queue.
      */
+    @Override
     public final boolean isEmpty() {
         return _cQueue.isEmpty();
     }
@@ -116,6 +120,7 @@ public class DECQEventQueue implements DEEventQueue {
      *  may be actors running under different threads in the DE domain.
      *  @param event The event to enqueue.
      */
+    @Override
     public synchronized final void put(DEEvent event) {
         if (!_cQueue.includes(event)) {
             _cQueue.put(event);
@@ -135,8 +140,9 @@ public class DECQEventQueue implements DEEventQueue {
      *  @param event The event to enqueue.
      *  @return True If a match is found and the entry is removed.
      */
+    @Override
     public synchronized final boolean remove(DEEvent event) {
-            return _cQueue.remove(event);
+        return _cQueue.remove(event);
     }
 
     /** Unregister a debug listener.  If the specified listener has not
@@ -145,6 +151,7 @@ public class DECQEventQueue implements DEEventQueue {
      *   to which debug messages are sent.
      *  @see #addDebugListener(DebugListener)
      */
+    @Override
     public void removeDebugListener(DebugListener listener) {
         _cQueue.removeDebugListener(listener);
     }
@@ -152,6 +159,7 @@ public class DECQEventQueue implements DEEventQueue {
     /** Return the size of the event queue.
      *  @return The size of the event queue.
      */
+    @Override
     public final int size() {
         return _cQueue.size();
     }
@@ -160,6 +168,7 @@ public class DECQEventQueue implements DEEventQueue {
      *  @return The earliest DE event in the queue.
      *  @exception InvalidStateException If the queue is empty.
      */
+    @Override
     public final DEEvent take() {
         return (DEEvent) _cQueue.take();
     }
@@ -167,6 +176,7 @@ public class DECQEventQueue implements DEEventQueue {
     /** Return the events currently in the queue as an array.
      *  @return The events currently in the queue.
      */
+    @Override
     public final Object[] toArray() {
         return _cQueue.toArray();
     }
@@ -174,6 +184,7 @@ public class DECQEventQueue implements DEEventQueue {
     /** Describe the Contents of the queue as a string.
      *  @return A string with a comma-separated list of events.
      */
+    @Override
     public String toString() {
         Object[] array = toArray();
         StringBuffer buffer = new StringBuffer("");
@@ -226,6 +237,7 @@ public class DECQEventQueue implements DEEventQueue {
          *  @exception ClassCastException If any of the arguments is not
          *   an instance of DEEvent.
          */
+        @Override
         public final int compare(Object object1, Object object2) {
             return ((DEEvent) object1).compareTo((DEEvent) object2);
         }
@@ -247,6 +259,7 @@ public class DECQEventQueue implements DEEventQueue {
          *  @exception ClassCastException If the argument is not
          *   an instance of DEEvent.
          */
+        @Override
         public final long getVirtualBinNumber(Object event) {
             // Note: The longValue() method will only
             // returns the low-order 64 bits of the result.
@@ -277,6 +290,7 @@ public class DECQEventQueue implements DEEventQueue {
          *  @exception ClassCastException If any entry in the array is not
          *  an instance of DEEvent.
          */
+        @Override
         public void setBinWidth(Object[] entryArray) {
             if (entryArray == null || entryArray.length < 2) {
                 // Reset to default.
@@ -336,6 +350,7 @@ public class DECQEventQueue implements DEEventQueue {
          *  @exception ClassCastException If the argument is not an instance
          *   of DEEvent.
          */
+        @Override
         public void setZeroReference(Object zeroReference) {
             _zeroReference = ((DEEvent) zeroReference).timeStamp()
                     .getDoubleValue();

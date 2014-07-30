@@ -118,6 +118,7 @@ public class SVGIcon extends EditorIcon implements ValueListener {
      *  @exception CloneNotSupportedException Not thrown in this base class
      *  @return The new Attribute.
      */
+    @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         SVGIcon newObject = (SVGIcon) super.clone(workspace);
         newObject._description = null;
@@ -135,8 +136,9 @@ public class SVGIcon extends EditorIcon implements ValueListener {
      *  @exception NameDuplicationException If the container already has
      *   an attribute with the name of this attribute.
      */
+    @Override
     public void setContainer(NamedObj container) throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         super.setContainer(container);
         _bindToContainer(container);
     }
@@ -156,6 +158,7 @@ public class SVGIcon extends EditorIcon implements ValueListener {
      *  @param container The container that will eventually be set.
      *  @see #getContainerOrContainerToBe()
      */
+    @Override
     public void setContainerToBe(NamedObj container) {
         super.setContainerToBe(container);
         _bindToContainer(container);
@@ -166,6 +169,7 @@ public class SVGIcon extends EditorIcon implements ValueListener {
      *  value by redrawing the figure.
      *  @param settable The object that has changed value.
      */
+    @Override
     public void valueChanged(Settable settable) {
         String name = ((Nameable) settable).getName();
 

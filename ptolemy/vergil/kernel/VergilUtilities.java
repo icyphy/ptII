@@ -67,6 +67,7 @@ public class VergilUtilities {
      *  ptolemy.ptII.MacOS property is set to true.
      *  @deprecated Use {@link ptolemy.gui.PtGUIUtilities#macOSLookAndFeel()}.
      */
+    @Deprecated
     public static boolean macOSLookAndFeel() {
         return PtGUIUtilities.macOSLookAndFeel();
     }

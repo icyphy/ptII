@@ -119,6 +119,7 @@ public class SubscriberPort extends PubSubPort {
      *  @exception IllegalActionException Thrown if the new color attribute cannot
      *      be created.
      */
+    @Override
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         if (attribute == channel) {

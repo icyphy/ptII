@@ -35,16 +35,19 @@ public class EventDemo extends XmlApp {
      * Resolve an entity and print an event.
      * @see com.microstar.xml.XmlHandler#resolveEntity
      */
+    @Override
     public Object resolveEntity(String publicId, String systemId) {
         displayText("Resolving entity: pubid=" + publicId + ", sysid="
                 + systemId);
         return null;
     }
 
+    @Override
     public void startExternalEntity(String systemId) {
         displayText("Starting external entity:  " + systemId);
     }
 
+    @Override
     public void endExternalEntity(String systemId) {
         displayText("Ending external entity:  " + systemId);
     }
@@ -53,6 +56,7 @@ public class EventDemo extends XmlApp {
      * Handle the start of the document by printing an event.
      * @see com.microstar.xml.XmlHandler#startDocument
      */
+    @Override
     public void startDocument() {
         displayText("Start document");
     }
@@ -61,6 +65,7 @@ public class EventDemo extends XmlApp {
      * Handle the end of the document by printing an event.
      * @see com.microstar.xml.XmlHandler#endDocument
      */
+    @Override
     public void endDocument() {
         displayText("End document");
     }
@@ -69,6 +74,7 @@ public class EventDemo extends XmlApp {
      * Handle a DOCTYPE declaration by printing an event.
      * @see com.microstar.xml.XmlHandler#doctypeDecl
      */
+    @Override
     public void doctypeDecl(String name, String pubid, String sysid) {
         displayText("Doctype declaration:  " + name + ", pubid=" + pubid
                 + ", sysid=" + sysid);
@@ -78,6 +84,7 @@ public class EventDemo extends XmlApp {
      * Handle an attribute value assignment by printing an event.
      * @see com.microstar.xml.XmlHandler#attribute
      */
+    @Override
     public void attribute(String name, String value, boolean isSpecified) {
         String s;
 
@@ -94,6 +101,7 @@ public class EventDemo extends XmlApp {
      * Handle the start of an element by printing an event.
      * @see com.microstar.xml.XmlHandler#startElement
      */
+    @Override
     public void startElement(String name) {
         displayText("Start element:  name=" + name);
     }
@@ -102,6 +110,7 @@ public class EventDemo extends XmlApp {
      * Handle the end of an element by printing an event.
      * @see com.microstar.xml.XmlHandler#endElement
      */
+    @Override
     public void endElement(String name) {
         displayText("End element:  " + name);
     }
@@ -110,6 +119,7 @@ public class EventDemo extends XmlApp {
      * Handle character data by printing an event.
      * @see com.microstar.xml.XmlHandler#charData
      */
+    @Override
     public void charData(char[] ch, int start, int length) {
         displayText("Character data:  \"" + escape(ch, length) + '"');
     }
@@ -118,6 +128,7 @@ public class EventDemo extends XmlApp {
      * Handle ignorable whitespace by printing an event.
      * @see com.microstar.xml.XmlHandler#ignorableWhitespace
      */
+    @Override
     public void ignorableWhitespace(char[] ch, int start, int length) {
         displayText("Ignorable whitespace:  \"" + escape(ch, length) + '"');
     }
@@ -126,6 +137,7 @@ public class EventDemo extends XmlApp {
      * Handle a processing instruction by printing an event.
      * @see com.microstar.xml.XmlHandler#processingInstruction
      */
+    @Override
     public void processingInstruction(String target, String data) {
         displayText("Processing Instruction:  " + target + ' '
                 + escape(data.toCharArray(), data.length()));

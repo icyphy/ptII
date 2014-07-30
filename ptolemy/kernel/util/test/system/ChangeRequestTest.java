@@ -67,7 +67,7 @@ public class ChangeRequestTest implements ChangeListener {
     /** Constructor.
      */
     public ChangeRequestTest() throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         _top = new TypedCompositeActor();
         _top.setName("top");
         _manager = new Manager();
@@ -94,6 +94,7 @@ public class ChangeRequestTest implements ChangeListener {
      *  @param change The change that has been executed, or null if
      *   the change was not done via a ChangeRequest.
      */
+    @Override
     public void changeExecuted(ChangeRequest change) {
     }
 
@@ -106,6 +107,7 @@ public class ChangeRequestTest implements ChangeListener {
      *   the change was not done via a ChangeRequest.
      *  @param exception The exception that resulted.
      */
+    @Override
     public void changeFailed(ChangeRequest change, Exception exception) {
         // If we do not implement ChangeListener, then ChangeRequest
         // will print any errors to stdout and continue.
@@ -134,6 +136,7 @@ public class ChangeRequestTest implements ChangeListener {
     public void insertFeedback() {
         // Create an anonymous inner class
         ChangeRequest change = new ChangeRequest(this, "test2") {
+            @Override
             protected void _execute() throws Exception {
                 _const.output.unlinkAll();
                 _rec.input.unlinkAll();
@@ -169,6 +172,7 @@ public class ChangeRequestTest implements ChangeListener {
 
     public void waitForCompletionTask() {
         Thread waitForCompletionThread = new Thread(new Runnable() {
+            @Override
             public void run() {
                 System.out.println(Thread.currentThread().getName()
                         + " About to wait for completion");
@@ -193,6 +197,7 @@ public class ChangeRequestTest implements ChangeListener {
         // Create an anonymous inner class
         changeRequest = new ChangeRequest(this,
                 "Change request that always throws an Exception") {
+            @Override
             protected void _execute() throws Exception {
                 // Compare against true so that the code compiles.
                 if (true) {
@@ -207,6 +212,7 @@ public class ChangeRequestTest implements ChangeListener {
     public ChangeRequest mutateConst2ChangeRequest() {
         // Create an anonymous inner class
         changeRequest = new ChangeRequest(this, "Changing Const to 2.0") {
+            @Override
             protected void _execute() throws Exception {
                 _const.value.setToken(new DoubleToken(2.0));
             }

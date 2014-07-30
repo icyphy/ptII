@@ -25,7 +25,7 @@ ENHANCEMENTS, OR MODIFICATIONS.
                                                 COPYRIGHTENDKEY
 
 
-*/
+ */
 
 package ptdb.kernel.bl.search;
 
@@ -51,7 +51,7 @@ import ptdb.common.exception.DBExecutionException;
  *
  */
 public class XQueryGraphSearcher extends GraphSearcher implements
-        AbstractDBSearcher {
+AbstractDBSearcher {
 
     /**
      * Construct the XQueryGraphSearcher from the search criteria.
@@ -74,6 +74,7 @@ public class XQueryGraphSearcher extends GraphSearcher implements
      * occurs in the database execution.
      */
 
+    @Override
     protected void _search() throws DBExecutionException {
 
         GraphSearchTask graphSearchTask = new GraphSearchTask();

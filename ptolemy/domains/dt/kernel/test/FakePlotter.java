@@ -95,6 +95,7 @@ public class FakePlotter extends TypedAtomicActor {
      *   if the base class throws it.
      *  @return True if it is OK to continue.
      */
+    @Override
     public boolean postfire() throws IllegalActionException {
         Time currentTime;
         int width = input.getWidth();

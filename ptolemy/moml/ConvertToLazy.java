@@ -126,6 +126,7 @@ public class ConvertToLazy implements ChangeListener {
      *  @param change The change that has been executed, or null if
      *   the change was not done via a ChangeRequest.
      */
+    @Override
     public void changeExecuted(ChangeRequest change) {
     }
 
@@ -138,6 +139,7 @@ public class ConvertToLazy implements ChangeListener {
      *   the change was not done via a ChangeRequest.
      *  @param exception The exception that resulted.
      */
+    @Override
     public void changeFailed(ChangeRequest change, Exception exception) {
         // If we do not implement ChangeListener, then ChangeRequest
         // will print any errors to stdout and continue.

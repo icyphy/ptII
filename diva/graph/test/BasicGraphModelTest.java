@@ -56,6 +56,7 @@ public class BasicGraphModelTest extends TestSuite {
         /** Create a BasicGraphModel.
          *  @return a BasicGraphModel.
          */
+        @Override
         public BasicGraphModel createGraph() {
             return new BasicGraphModel();
         }
@@ -77,6 +78,7 @@ public class BasicGraphModelTest extends TestSuite {
     /** Run the test.
      *
      */
+    @Override
     public void runSuite() {
         testEmpty();
         testStarConnected();
@@ -102,14 +104,17 @@ public class BasicGraphModelTest extends TestSuite {
         runTestCase(new TestCase("Empty graph") {
             //BasicGraphModel g;
 
+            @Override
             public void init() throws Exception {
                 /*g = */factory.createGraph();
             }
 
+            @Override
             public void run() throws Exception {
                 ;
             }
 
+            @Override
             public void check() throws TestFailedException {
                 // assertExpr(g.getNodeCount(g) == 0, "Node count != 0");
             }
@@ -124,12 +129,14 @@ public class BasicGraphModelTest extends TestSuite {
 
             CompositeNode root;
 
+            @Override
             public void init() throws Exception {
                 startTimer();
                 g = factory.createGraph();
                 root = (CompositeNode) g.getRoot();
             }
 
+            @Override
             public void run() throws Exception {
                 Node first = g.createNode(null);
                 g.addNode(this, first, root);
@@ -145,6 +152,7 @@ public class BasicGraphModelTest extends TestSuite {
                 stopTimer();
             }
 
+            @Override
             public void check() throws TestFailedException {
                 assertExpr(g.getNodeCount(root) == 32, "Node count != 32");
             }
@@ -164,12 +172,14 @@ public class BasicGraphModelTest extends TestSuite {
 
             //Node[] nodes = new Node[65536];
 
+            @Override
             public void init() throws Exception {
                 startTimer();
                 g = factory.createGraph();
                 root = (CompositeNode) g.getRoot();
             }
 
+            @Override
             public void run() throws Exception {
                 Node first = g.createNode(null);
                 g.addNode(this, first, root);
@@ -187,6 +197,7 @@ public class BasicGraphModelTest extends TestSuite {
                 stopTimer();
             }
 
+            @Override
             public void check() throws TestFailedException {
                 assertExpr(g.getNodeCount(root) == 65536, "Node count != 65536");
             }

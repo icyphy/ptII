@@ -111,6 +111,7 @@ public class ObjectType extends StructuredType implements Cloneable {
     /** Return a deep clone of this type.
      *  @return A Type.
      */
+    @Override
     public Object clone() {
         ObjectType type = new ObjectType();
         type._value = _value;
@@ -125,6 +126,7 @@ public class ObjectType extends StructuredType implements Cloneable {
      *  @exception IllegalActionException If lossless conversion
      *   cannot be done.
      */
+    @Override
     public Token convert(Token token) throws IllegalActionException {
         if (token instanceof ObjectToken) {
             ObjectToken objectToken = (ObjectToken) token;
@@ -142,6 +144,7 @@ public class ObjectType extends StructuredType implements Cloneable {
      *  @return True if the argument represents the same type as this
      *   object; false otherwise.
      */
+    @Override
     public boolean equals(Object object) {
         if (!(object instanceof ObjectType)) {
             return false;
@@ -156,6 +159,7 @@ public class ObjectType extends StructuredType implements Cloneable {
      *  class is always {@link ObjectToken}.
      *  @return The class for tokens that this type represents.
      */
+    @Override
     public Class<?> getTokenClass() {
         return ObjectToken.class;
     }
@@ -181,6 +185,7 @@ public class ObjectType extends StructuredType implements Cloneable {
      *
      *  @return The hash code.
      */
+    @Override
     public int hashCode() {
         int hash = 324342;
         if (_class != null) {
@@ -202,6 +207,7 @@ public class ObjectType extends StructuredType implements Cloneable {
      *  @return True if this type does not correspond to a single token
      *  class.
      */
+    @Override
     public boolean isAbstract() {
         return _class != null;
     }
@@ -210,6 +216,7 @@ public class ObjectType extends StructuredType implements Cloneable {
      *  @param type The type to be checked
      *  @return True if the specified type is less than or equal to this type.
      */
+    @Override
     public boolean isCompatible(Type type) {
         if (type.equals(BaseType.UNKNOWN)) {
             return true;
@@ -227,6 +234,7 @@ public class ObjectType extends StructuredType implements Cloneable {
      *  compatible if it is a substitution instance of this type.
      *  @return True if the argument is compatible with this type.
      */
+    @Override
     public boolean isConstant() {
         return true;
     }
@@ -236,6 +244,7 @@ public class ObjectType extends StructuredType implements Cloneable {
      *  @return True if this type corresponds to an instantiable
      *   token class.
      */
+    @Override
     public boolean isInstantiable() {
         return true;
     }
@@ -248,6 +257,7 @@ public class ObjectType extends StructuredType implements Cloneable {
      *  @param type A Type.
      *  @return True if the argument is a substitution instance of this type.
      */
+    @Override
     public boolean isSubstitutionInstance(Type type) {
         return equals(type);
     }
@@ -255,6 +265,7 @@ public class ObjectType extends StructuredType implements Cloneable {
     /** Return a string describing this object.
      *  @return A string of form 'object("classname")'.
      */
+    @Override
     public String toString() {
         if (_class == null) {
             return "object(null)";
@@ -299,6 +310,7 @@ public class ObjectType extends StructuredType implements Cloneable {
      *  @exception IllegalArgumentException If the specified type is
      *   not the same structured type as this one.
      */
+    @Override
     protected int _compare(StructuredType type) {
         if (!(type instanceof ObjectType)) {
             throw new IllegalArgumentException("ObjectType._compare: "
@@ -320,6 +332,7 @@ public class ObjectType extends StructuredType implements Cloneable {
      *  value is used by TypeLattice to represent this type.
      *  @return The bottom object type.
      */
+    @Override
     protected StructuredType _getRepresentative() {
         return BOTTOM;
     }
@@ -332,6 +345,7 @@ public class ObjectType extends StructuredType implements Cloneable {
      *  @exception IllegalArgumentException If the specified type is
      *   not the same structured type as this one.
      */
+    @Override
     protected StructuredType _greatestLowerBound(StructuredType type) {
         if (!(type instanceof ObjectType)) {
             throw new IllegalArgumentException(
@@ -357,6 +371,7 @@ public class ObjectType extends StructuredType implements Cloneable {
      *  @exception IllegalArgumentException If the specified type is
      *   not the same structured type as this one.
      */
+    @Override
     protected StructuredType _leastUpperBound(StructuredType type) {
         if (!(type instanceof ObjectType)) {
             throw new IllegalArgumentException(

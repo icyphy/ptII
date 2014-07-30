@@ -75,6 +75,7 @@ public abstract class CanvasLayer implements CanvasComponent {
     /** Get the parent component, or null if there isn't one.
      * This will return the same object as getCanvasPane().
      */
+    @Override
     public final CanvasComponent getParent() {
         return _containingPane;
     }
@@ -89,6 +90,7 @@ public abstract class CanvasLayer implements CanvasComponent {
 
     /** Return the transform context of the parent pane, if there is one.
      */
+    @Override
     public final TransformContext getTransformContext() {
         if (_containingPane == null) {
             return null;
@@ -101,6 +103,7 @@ public abstract class CanvasLayer implements CanvasComponent {
      * the repaint request to its containing pane, if there is one.
      * Otherwise it does nothing.
      */
+    @Override
     public void repaint() {
         if (_containingPane != null) {
             _containingPane.repaint();
@@ -110,6 +113,7 @@ public abstract class CanvasLayer implements CanvasComponent {
     /** Accept notification that a repaint has occurred somewhere
      * in this layer. Pass the notification up to the parent pane.
      */
+    @Override
     public void repaint(DamageRegion d) {
         if (_containingPane != null) {
             _containingPane.repaint(d);

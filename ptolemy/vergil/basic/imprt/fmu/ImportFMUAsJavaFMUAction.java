@@ -23,7 +23,7 @@
 
    PT_COPYRIGHT_VERSION_2
    COPYRIGHTENDKEY 2
-*/
+ */
 
 package ptolemy.vergil.basic.imprt.fmu;
 
@@ -92,7 +92,7 @@ import diva.graph.GraphController;
    @since Ptolemy II 10.0
    @Pt.ProposedRating Red (cxh)
    @Pt.AcceptedRating Red (cxh)
-*/
+ */
 @SuppressWarnings("serial")
 public class ImportFMUAsJavaFMUAction extends AbstractAction {
     // This package is called "imprt" because "import" is a Java keyword.
@@ -104,7 +104,8 @@ public class ImportFMUAsJavaFMUAction extends AbstractAction {
     public ImportFMUAsJavaFMUAction(Top frame) {
         super("Import FMU as a Java FMU (experimental)");
         _frame = frame;
-        putValue("tooltip", "Import a Functional Mock-up Unit (FMU) file as a Java FMU (experimental).");
+        putValue("tooltip",
+                "Import a Functional Mock-up Unit (FMU) file as a Java FMU (experimental).");
         //putValue(GUIUtilities.MNEMONIC_KEY, Integer.valueOf(KeyEvent.VK_X));
     }
 
@@ -112,6 +113,7 @@ public class ImportFMUAsJavaFMUAction extends AbstractAction {
     ////                         ppublic methods                   ////
 
     /** Import a FMU. */
+    @Override
     public void actionPerformed(ActionEvent e) {
         _importFMU();
     }
@@ -148,7 +150,7 @@ public class ImportFMUAsJavaFMUAction extends AbstractAction {
                         _lastLocation,
                         /* URI base */null,
                         /* File startingDirectory */basicGraphFrame
-                                .getLastDirectory(),
+                        .getLastDirectory(),
                         /* allowFiles */true,
                         /* allowDirectories */false,
                         /* Color background */
@@ -199,8 +201,8 @@ public class ImportFMUAsJavaFMUAction extends AbstractAction {
                         fmuFileParameter.setPersistent(false);
                         fmuFileParameter.setVisibility(Settable.EXPERT);
 
-                        FMU.importFMU(this, fmuFileParameter, context, x,
-                                y, _lastModelExchange);
+                        FMU.importFMU(this, fmuFileParameter, context, x, y,
+                                _lastModelExchange);
                     } finally {
                         if (fmuFileParameter != null) {
                             // Avoid leaving a parameter in the model.

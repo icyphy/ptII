@@ -68,6 +68,7 @@ public class NestedTutorial {
     public static void main(String[] argv) {
         final AppContext context = new BasicFrame("Nested Tutorial");
         SwingUtilities.invokeLater(new Runnable() {
+            @Override
             public void run() {
                 new NestedTutorial(context);
                 context.setVisible(true);
@@ -126,6 +127,7 @@ public class NestedTutorial {
         final BasicGraphController bgc = new BasicGraphController();
         context.getContentPane().add(new JGraph(new GraphPane(bgc, model)));
         SwingUtilities.invokeLater(new Runnable() {
+            @Override
             public void run() {
                 RandomLayout random = new RandomLayout(new BasicLayoutTarget(
                         bgc));

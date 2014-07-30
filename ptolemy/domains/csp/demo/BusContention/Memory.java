@@ -103,6 +103,7 @@ public class Memory extends CSPActor {
      * @exception IllegalActionException If there is an error
      *  during communication via the ports.
      */
+    @Override
     public void fire() throws IllegalActionException {
         super.fire();
         if (_numInChannels == -1) {

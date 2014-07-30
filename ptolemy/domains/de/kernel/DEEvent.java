@@ -163,6 +163,7 @@ public class DEEvent implements Comparable {
      *  @exception ClassCastException If the argument event is not an instance
      *  of DEEvent.
      */
+    @Override
     public final int compareTo(Object event) {
         return compareTo((DEEvent) event);
     }
@@ -184,6 +185,7 @@ public class DEEvent implements Comparable {
      *  the object and of this object are equal.
      *  @see #hashCode()
      */
+    @Override
     public boolean equals(Object object) {
         if (!(object instanceof DEEvent)) {
             return false;
@@ -214,6 +216,7 @@ public class DEEvent implements Comparable {
      *  @return The hash code for the event object.
      *  @see #equals(Object)
      */
+    @Override
     public int hashCode() {
         int primitiveFieldHash = _depth >>> _microstep;
         int objectFieldHash = (_actor != null ? _actor.hashCode() : 1) >>> (_ioPort != null ? _ioPort
@@ -253,6 +256,7 @@ public class DEEvent implements Comparable {
      *  and destination information.
      *  @return The token as a string with the time stamp.
      */
+    @Override
     public String toString() {
         String name = "null";
         if (_actor != null) {

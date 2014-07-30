@@ -73,6 +73,7 @@ public class SDFTestRamp extends TypedAtomicActor {
      *  @exception CloneNotSupportedException If one of the attributes
      *   cannot be cloned.
      */
+    @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         SDFTestRamp newObject = (SDFTestRamp) super.clone(workspace);
         newObject.output = (TypedIOPort) newObject.getPort("output");
@@ -86,6 +87,7 @@ public class SDFTestRamp extends TypedAtomicActor {
      * firings.
      * @exception IllegalActionException If a contained method throws it.
      */
+    @Override
     public void fire() throws IllegalActionException {
         int i;
 
@@ -103,6 +105,7 @@ public class SDFTestRamp extends TypedAtomicActor {
      * Initialize the sequence so the first token created has value zero.
      *  @exception IllegalActionException If the parent class throws it.
      */
+    @Override
     public void initialize() throws IllegalActionException {
         super.initialize();
         _value = 0;

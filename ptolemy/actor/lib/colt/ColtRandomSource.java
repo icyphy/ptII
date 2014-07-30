@@ -122,6 +122,7 @@ public abstract class ColtRandomSource extends RandomSource {
      *  @exception IllegalActionException If the change is not acceptable
      *   to this container (not thrown in this base class).
      */
+    @Override
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         if (attribute == generatorClass) {
@@ -144,6 +145,7 @@ public abstract class ColtRandomSource extends RandomSource {
     protected abstract void _createdNewRandomNumberGenerator();
 
     /** Create the random number generator using current parameter values. */
+    @Override
     protected void _createGenerator() throws IllegalActionException {
         long seedValue = ((LongToken) seed.getToken()).longValue();
         Token token = privateSeed.getToken();

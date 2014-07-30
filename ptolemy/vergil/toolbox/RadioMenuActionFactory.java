@@ -24,7 +24,7 @@
  PT_COPYRIGHT_VERSION_2
  COPYRIGHTENDKEY
 
-*/
+ */
 package ptolemy.vergil.toolbox;
 
 import java.util.Enumeration;
@@ -82,6 +82,7 @@ public class RadioMenuActionFactory extends MenuActionFactory {
      *  @param object The object that the menu item command will operate on.
      *  @return A menu item, or null to decline to provide a menu item.
      */
+    @Override
     public JMenuItem create(JContextMenu menu, NamedObj object) {
         int selected = -1;
         if (_group != null) {
@@ -117,6 +118,7 @@ public class RadioMenuActionFactory extends MenuActionFactory {
      *  @param tooltip The tooltip for the action.
      *  @return The added menu item.
      */
+    @Override
     protected JMenuItem _add(JContextMenu menu, Action action, String tooltip) {
         String label = (String) action.getValue(Action.NAME);
 
@@ -140,6 +142,7 @@ public class RadioMenuActionFactory extends MenuActionFactory {
      *  @param action The action to be added to the submenu.
      *  @return The added menu item.
      */
+    @Override
     protected JMenuItem _add(JMenu submenu, Action action) {
         String label = (String) action.getValue(Action.NAME);
 

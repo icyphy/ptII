@@ -79,6 +79,7 @@ public class ReceiverComparator implements Comparator {
      *  @exception ClassCastException If object1 and obj2 are
      *   not instances of PrioritizedTimedQueue.
      */
+    @Override
     public int compare(Object object1, Object object2) {
         PrioritizedTimedQueue receiver1 = null;
         PrioritizedTimedQueue receiver2 = null;

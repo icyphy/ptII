@@ -71,6 +71,7 @@ public class CustomizeDocumentationAction extends FigureAction {
      *  instance of DocAttribute, and then opening an edit parameters
      *  dialog on that attribute.
      */
+    @Override
     public void actionPerformed(ActionEvent e) {
         super.actionPerformed(e);
         final NamedObj target = getTarget();
@@ -134,14 +135,15 @@ public class CustomizeDocumentationAction extends FigureAction {
 
                     if (docAttributeList.size() == 0) {
                         docApplicationSpecializer
-                                .handleDocumentationAttributeDoesNotExist(
-                                        getFrame(), target);
+                        .handleDocumentationAttributeDoesNotExist(
+                                getFrame(), target);
 
                     } else { //edit the existing attribute
                         final Attribute docAttribute = (Attribute) docAttributeList
                                 .get(docAttributeList.size() - 1);
                         ChangeRequest request = new ChangeRequest(this,
                                 "Customize documentation.") {
+                            @Override
                             protected void _execute() throws Exception {
                                 //_editDocAttribute(getFrame(), docAttribute, target);
                                 docApplicationSpecializer.editDocumentation(
@@ -152,12 +154,12 @@ public class CustomizeDocumentationAction extends FigureAction {
                     }
                 } catch (Throwable throwable) {
                     System.out
-                            .println("Failed to call doc application specializer "
-                                    + "class \""
-                                    + docApplicationSpecializerClassName
-                                    + "\" on class \""
-                                    + docApplicationSpecializerClassName
-                                    + "\".");
+                    .println("Failed to call doc application specializer "
+                            + "class \""
+                            + docApplicationSpecializerClassName
+                            + "\" on class \""
+                            + docApplicationSpecializerClassName
+                            + "\".");
                 }
                 done = true;
             }
@@ -173,6 +175,7 @@ public class CustomizeDocumentationAction extends FigureAction {
                             + "\" class=\"ptolemy.vergil.basic.DocAttribute\"/>";
                     MoMLChangeRequest request = new MoMLChangeRequest(this,
                             target, moml) {
+                        @Override
                         protected void _execute() throws Exception {
                             super._execute();
                             List docAttributes = target
@@ -201,6 +204,7 @@ public class CustomizeDocumentationAction extends FigureAction {
 
                     ChangeRequest request = new ChangeRequest(this,
                             "Customize documentation.") {
+                        @Override
                         protected void _execute() throws Exception {
 
                             // In case parameters or ports have been

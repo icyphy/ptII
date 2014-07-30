@@ -50,7 +50,7 @@ import ptolemy.domains.metroII.kernel.util.ProtoBuf.metroIIcomm.Event.Builder;
  * @Pt.ProposedRating Red (glp)
  * @Pt.AcceptedRating Red (glp)
  *
-*/
+ */
 public class MappingConstraintSolverTest extends TestCase {
 
     /**

@@ -68,6 +68,7 @@ public class Expression extends LatticeOntologyAdapter {
      *  @exception IllegalActionException If there is an error creating
      *   the constraint list.
      */
+    @Override
     public List<Inequality> constraintList() throws IllegalActionException {
         ptolemy.actor.lib.Expression actor = (ptolemy.actor.lib.Expression) getComponent();
         setAtLeast(actor.output, actor.expression);

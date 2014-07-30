@@ -152,6 +152,7 @@ public class DocViewer extends HTMLViewer {
      *  @return The configuration controlling this frame, or null
      *   if there isn't one.
      */
+    @Override
     public Configuration getConfiguration() {
         return _configuration;
     }
@@ -160,6 +161,7 @@ public class DocViewer extends HTMLViewer {
      *  #parentClass.
      *  @param event The hyperlink event.
      */
+    @Override
     public void hyperlinkUpdate(HyperlinkEvent event) {
         if (event.getEventType() == HyperlinkEvent.EventType.ACTIVATED
                 && event.getDescription().equals("#parentClass")) {
@@ -174,7 +176,7 @@ public class DocViewer extends HTMLViewer {
                 Effigy effigy = getEffigy();
                 DocEffigy newEffigy = new DocEffigy(
                         (CompositeEntity) effigy.getContainer(), effigy
-                                .getContainer().uniqueName("parentClass"));
+                        .getContainer().uniqueName("parentClass"));
                 newEffigy.setDocAttribute(attribute);
                 DocTableau tableau = new DocTableau(newEffigy, "docTableau");
                 tableau.show();
@@ -192,6 +194,7 @@ public class DocViewer extends HTMLViewer {
     /** Override the base class to do nothing.
      *  The main content pane is added after the top content.
      */
+    @Override
     protected void _addMainPane() {
     }
 
@@ -203,6 +206,7 @@ public class DocViewer extends HTMLViewer {
      *  _help() method of the superclass.
      *  @see FileParameter
      */
+    @Override
     protected void _help() {
         try {
             Configuration configuration = getConfiguration();
@@ -226,6 +230,7 @@ public class DocViewer extends HTMLViewer {
      *  @param width The width.
      *  @param height The width.
      */
+    @Override
     protected void _setScrollerSize(final int width, final int height) {
     }
 
@@ -262,6 +267,7 @@ public class DocViewer extends HTMLViewer {
 
         // Defer this to get it to happen after rendering.
         Runnable defer = new Runnable() {
+            @Override
             public void run() {
                 Rectangle2D bounds = graphPane.getForegroundLayer()
                         .getLayerBounds();
@@ -743,6 +749,7 @@ public class DocViewer extends HTMLViewer {
              *  @param change The change that has failed.
              *  @param exception The exception that was thrown.
              */
+            @Override
             public void changeFailed(ChangeRequest change, Exception exception) {
                 if (_graphPane == null) {
                     super.changeFailed(change, exception);
@@ -899,6 +906,7 @@ public class DocViewer extends HTMLViewer {
         if (moml != null) {
             MoMLChangeRequest request = new MoMLChangeRequest(this,
                     _iconContainer, moml) {
+                @Override
                 protected void _execute() throws Exception {
                     super._execute();
                     NamedObj sample = null;
@@ -999,6 +1007,7 @@ public class DocViewer extends HTMLViewer {
 
     /** Add a Build menu item.
      */
+    @Override
     protected void _addMenus() {
         super._addMenus();
 
@@ -1072,6 +1081,7 @@ public class DocViewer extends HTMLViewer {
 
     /** Listener for build menu commands. */
     private class BuildMenuListener implements ActionListener {
+        @Override
         public void actionPerformed(ActionEvent e) {
             try {
                 Effigy effigy = (Effigy) getTableau().getContainer();

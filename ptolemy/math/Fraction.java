@@ -122,6 +122,7 @@ public class Fraction extends Object {
      *  @return True if the given object is a fraction
      *  and equal to this fraction.
      */
+    @Override
     public boolean equals(Object b) {
         // The Fractions are already in lowest terms, so we just compare the
         // numerator and denominator
@@ -166,6 +167,7 @@ public class Fraction extends Object {
      *  bitwise and of the hashcode of the denominator and the numerator.
      *  @return A hash code value for this Coordinate
      */
+    @Override
     public int hashCode() {
         return Integer.valueOf(_denominator).hashCode()
                 & Integer.valueOf(_numerator).hashCode();
@@ -248,6 +250,7 @@ public class Fraction extends Object {
 
     /** Convert the fraction to a readable string.
      */
+    @Override
     public String toString() {
         _simplify();
         return _numerator + "/" + _denominator;

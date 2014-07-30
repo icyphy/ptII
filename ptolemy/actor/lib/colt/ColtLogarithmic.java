@@ -76,7 +76,7 @@ public class ColtLogarithmic extends ColtRandomSource {
         p = new PortParameter(this, "p", new DoubleToken(0.5));
         p.setTypeEquals(BaseType.DOUBLE);
         new SingletonParameter(p.getPort(), "_showName")
-                .setToken(BooleanToken.TRUE);
+        .setToken(BooleanToken.TRUE);
 
         p.moveToFirst();
     }
@@ -97,6 +97,7 @@ public class ColtLogarithmic extends ColtRandomSource {
      *  remain constant throughout an iteration.
      *  @exception IllegalActionException If there is no director.
      */
+    @Override
     public void fire() throws IllegalActionException {
         p.update();
         super.fire();
@@ -108,6 +109,7 @@ public class ColtLogarithmic extends ColtRandomSource {
 
     /** Method that is called after _randomNumberGenerator is changed.
      */
+    @Override
     protected void _createdNewRandomNumberGenerator() {
         _generator = new Logarithmic(0.5, _randomNumberGenerator);
     }
@@ -115,6 +117,7 @@ public class ColtLogarithmic extends ColtRandomSource {
     /** Generate a new random number.
      *  @exception IllegalActionException If parameter values are incorrect.
      */
+    @Override
     protected void _generateRandomNumber() throws IllegalActionException {
         double pValue = ((DoubleToken) p.getToken()).doubleValue();
 

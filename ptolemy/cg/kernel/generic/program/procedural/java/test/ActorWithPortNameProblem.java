@@ -100,6 +100,7 @@ public class ActorWithPortNameProblem extends TypedAtomicActor {
      *  @exception IllegalActionException If it is thrown by the
      *   send() method sending out the token.
      */
+    @Override
     public void fire() throws IllegalActionException {
         super.fire();
         Token sum = null;

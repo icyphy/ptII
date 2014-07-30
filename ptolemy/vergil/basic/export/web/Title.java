@@ -155,10 +155,10 @@ public class Title extends StringParameter implements WebExportable {
                 "_smallIconDescription");
         try {
             smallIcon
-                    .configure(
-                            null,
-                            null,
-                            "<svg><text x=\"20\" style=\"font-size:14; font-family:SansSerif; fill:blue\" y=\"20\">title</text></svg>");
+            .configure(
+                    null,
+                    null,
+                    "<svg><text x=\"20\" style=\"font-size:14; font-family:SansSerif; fill:blue\" y=\"20\">title</text></svg>");
         } catch (Exception e) {
             // Show exception on the console. Should not occur.
             e.printStackTrace();
@@ -214,6 +214,7 @@ public class Title extends StringParameter implements WebExportable {
      *  @exception IllegalActionException If the change is not acceptable
      *   to this container (should not be thrown).
      */
+    @Override
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         if (attribute == center) {
@@ -264,6 +265,7 @@ public class Title extends StringParameter implements WebExportable {
      *  @exception CloneNotSupportedException If any of the attributes
      *   cannot be cloned.
      */
+    @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         Title result = (Title) super.clone(workspace);
         result._icon = (TextIcon) result.getAttribute("_icon");
@@ -274,6 +276,7 @@ public class Title extends StringParameter implements WebExportable {
      *
      * @return The string text/html
      */
+    @Override
     public String getMimeType() {
         return "text/html";
     }
@@ -282,6 +285,7 @@ public class Title extends StringParameter implements WebExportable {
      *
      * @return True, since new title content should overwrite old title content.
      */
+    @Override
     public boolean isOverwriteable() {
         return true;
     }
@@ -299,6 +303,7 @@ public class Title extends StringParameter implements WebExportable {
      *  @exception IllegalActionException If this object has
      *   no container.
      */
+    @Override
     public int moveToFirst() throws IllegalActionException {
         try {
             new SingletonAttribute(this, "_renderFirst");
@@ -328,6 +333,7 @@ public class Title extends StringParameter implements WebExportable {
      *  @exception IllegalActionException If this object has
      *   no container.
      */
+    @Override
     public int moveToLast() throws IllegalActionException {
         try {
             new SingletonAttribute(this, "_renderLast");
@@ -351,6 +357,7 @@ public class Title extends StringParameter implements WebExportable {
      *  @exception IllegalActionException If there is a problem creating
      *  the content or setting the attribute.
      */
+    @Override
     public void provideContent(WebExporter exporter)
             throws IllegalActionException {
         // Provide a WebElement containing the title.  Title does not
@@ -379,7 +386,7 @@ public class Title extends StringParameter implements WebExportable {
                 getContainer(), "titleWebAttribute", "title");
         webAttribute.setExpression(stringValue());
         exporter.defineAttribute(webAttribute, true);
-        */
+         */
     }
 
     /** Provide the <title> </title> element to the specified web exporter.
@@ -402,11 +409,12 @@ public class Title extends StringParameter implements WebExportable {
         webElement.setExpression(stringValue());
         exporter.defineElement(webElement, true);
     }
-    */
+     */
 
     /** Override the base class to set the text to be displayed
      *  in the icon.
      */
+    @Override
     public Collection validate() throws IllegalActionException {
         Collection result = super.validate();
         _icon.setText(stringValue());

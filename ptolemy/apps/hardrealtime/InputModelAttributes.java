@@ -99,6 +99,7 @@ public class InputModelAttributes extends DecoratorAttributes {
      *   attributeChanged() method, if the value of the minimum inter-arrival
      *   parameter cannot be read, or if that value is negative.
      */
+    @Override
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         if (attribute == minimumInterarrivalTime

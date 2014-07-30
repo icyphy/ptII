@@ -151,6 +151,7 @@ public class DDFBooleanSelect extends TypedAtomicActor {
      *  @exception CloneNotSupportedException If a derived class has
      *   an attribute that cannot be cloned.
      */
+    @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         DDFBooleanSelect newObject = (DDFBooleanSelect) super.clone(workspace);
         newObject.output.setTypeAtLeast(newObject.trueInput);
@@ -169,6 +170,7 @@ public class DDFBooleanSelect extends TypedAtomicActor {
      *  @exception IllegalActionException If there is no director, and hence
      *   no receivers have been created.
      */
+    @Override
     public void fire() throws IllegalActionException {
         super.fire();
 
@@ -190,6 +192,7 @@ public class DDFBooleanSelect extends TypedAtomicActor {
      *  from the <i>control</i> port in the first iteration.
      *  @exception IllegalActionException If setToken() throws it.
      */
+    @Override
     public void initialize() throws IllegalActionException {
         super.initialize();
         _isControlRead = false;
@@ -203,6 +206,7 @@ public class DDFBooleanSelect extends TypedAtomicActor {
      *  @return True if execution can continue into the next iteration.
      *  @exception IllegalActionException If setToken() throws it.
      */
+    @Override
     public boolean postfire() throws IllegalActionException {
         if (_isControlRead) {
             if (_control) {
@@ -234,6 +238,7 @@ public class DDFBooleanSelect extends TypedAtomicActor {
      *  @exception IllegalActionException If the receivers do not support
      *   the query, or if there is no director, and hence no receivers.
      */
+    @Override
     public boolean prefire() throws IllegalActionException {
         if (_isControlRead) {
             if (_control) {

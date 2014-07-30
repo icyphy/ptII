@@ -68,12 +68,14 @@ public class BasicEdgeHighlighter extends FigureDecorator {
     /** Return false. This method always returns false, as it
      * is meaningless (and dangerous!) to be able to hit a highlight.
      */
+    @Override
     public boolean hit(Rectangle2D region) {
         return false;
     }
 
     /** Create a new instance of this highlighter.
      */
+    @Override
     public FigureDecorator newInstance(Figure f) {
         return new BasicEdgeHighlighter();
     }
@@ -82,6 +84,7 @@ public class BasicEdgeHighlighter extends FigureDecorator {
      * the contained edge by drawing a line width determined by halo. It
      * then paints the contained edge.
      */
+    @Override
     public void paint(Graphics2D g) {
         g.setPaint(_paint);
 
@@ -101,6 +104,7 @@ public class BasicEdgeHighlighter extends FigureDecorator {
      * repaint() call, with a larger region, in order to ensure
      * that the highlight is repainted.
      */
+    @Override
     public void repaint(DamageRegion d) {
         repaint();
     }
@@ -110,6 +114,7 @@ public class BasicEdgeHighlighter extends FigureDecorator {
      * figure, and requests a repaint of that box stretched
      * in each direction by the halo.
      */
+    @Override
     public void repaint() {
         Rectangle2D bounds = getChild().getBounds();
         double x = bounds.getX() - _halo;

@@ -186,6 +186,7 @@ public class MoMLChangeRequest extends ChangeRequest {
      *  a context.
 
      */
+    @Deprecated
     public static NamedObj getDeferredToParent(NamedObj object) {
         if (object == null) {
             return null;
@@ -245,6 +246,7 @@ public class MoMLChangeRequest extends ChangeRequest {
      *  @exception Exception If an exception is thrown
      *   while evaluating the request.
      */
+    @Override
     protected void _execute() throws Exception {
         // NOTE: To see what is being parsed, change _DEBUG to true.
         if (_DEBUG) {

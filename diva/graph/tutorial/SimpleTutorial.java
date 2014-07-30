@@ -57,6 +57,7 @@ public class SimpleTutorial {
     public static void main(String[] argv) {
         final AppContext context = new BasicFrame("Simple Tutorial");
         SwingUtilities.invokeLater(new Runnable() {
+            @Override
             public void run() {
                 new SimpleTutorial(context);
                 context.setVisible(true);

@@ -71,6 +71,7 @@ public class BasicNodeController implements NodeController {
     /** Given a node, add it to this graph editor and perform a layout
      * on the new node.
      */
+    @Override
     public void addNode(Object node) {
         // FIXME this may cause a classcast exception.
         MutableGraphModel model = (MutableGraphModel) _controller
@@ -82,6 +83,7 @@ public class BasicNodeController implements NodeController {
     /** Add the node to this graph editor and render it
      * at the given location.
      */
+    @Override
     public void addNode(Object node, double x, double y) {
         MutableGraphModel model = (MutableGraphModel) _controller
                 .getGraphModel();
@@ -95,6 +97,7 @@ public class BasicNodeController implements NodeController {
      * Add the node to this graph editor, inside the given parent node
      * and place it where convenient
      */
+    @Override
     public void addNode(Object node, Object parent) {
         MutableGraphModel model = (MutableGraphModel) _controller
                 .getGraphModel();
@@ -106,6 +109,7 @@ public class BasicNodeController implements NodeController {
      * Add the node to this graph editor, inside the given parent node
      * and render it at the given location relative to its parent.
      */
+    @Override
     public void addNode(Object node, Object parent, double x, double y) {
         MutableGraphModel model = (MutableGraphModel) _controller
                 .getGraphModel();
@@ -118,6 +122,7 @@ public class BasicNodeController implements NodeController {
     /**
      * Remove the figure for the given node.
      */
+    @Override
     public void clearNode(Object node) {
         GraphModel model = _controller.getGraphModel();
 
@@ -159,6 +164,7 @@ public class BasicNodeController implements NodeController {
      * layer of the graph pane.  If the node was previously rendered, then
      * infer the new location of the figure from the old.
      */
+    @Override
     public Figure drawNode(Object node) {
         Figure oldFigure = _controller.getFigure(node);
 
@@ -184,7 +190,7 @@ public class BasicNodeController implements NodeController {
             // place the new figure where the old one was, if there
             // was an old figure.
             CanvasUtilities
-                    .translateTo(newFigure, center.getX(), center.getY());
+            .translateTo(newFigure, center.getX(), center.getY());
         }
 
         _controller.dispatch(new GraphViewEvent(this,
@@ -198,6 +204,7 @@ public class BasicNodeController implements NodeController {
      * node's figure, which is assumed to be a CompositeFigure
      * in the controller's graph pane.
      */
+    @Override
     public Figure drawNode(Object node, Object parent) {
         // FIXME what if node was previously rendered?
         Figure newFigure = _renderNode(node);
@@ -216,6 +223,7 @@ public class BasicNodeController implements NodeController {
     /**
      * Return the graph controller containing this controller.
      */
+    @Override
     public GraphController getController() {
         return _controller;
     }
@@ -223,6 +231,7 @@ public class BasicNodeController implements NodeController {
     /**
      * Return the node interactor associated with this controller.
      */
+    @Override
     public Interactor getNodeInteractor() {
         return _interactor;
     }
@@ -230,6 +239,7 @@ public class BasicNodeController implements NodeController {
     /**
      * Return the node renderer associated with this controller.
      */
+    @Override
     public NodeRenderer getNodeRenderer() {
         return _renderer;
     }
@@ -237,6 +247,7 @@ public class BasicNodeController implements NodeController {
     /**
      * Remove the node.
      */
+    @Override
     public void removeNode(Object node) {
         // FIXME why isn't this symmetric with addNode?
         MutableGraphModel model = (MutableGraphModel) _controller
@@ -261,6 +272,7 @@ public class BasicNodeController implements NodeController {
     /**
      * Set the node interactor for this controller
      */
+    @Override
     public void setNodeInteractor(Interactor interactor) {
         _interactor = interactor;
     }
@@ -268,6 +280,7 @@ public class BasicNodeController implements NodeController {
     /**
      * Set the node renderer for this controller
      */
+    @Override
     public void setNodeRenderer(NodeRenderer renderer) {
         _renderer = renderer;
     }

@@ -94,7 +94,7 @@ public class CompilerResult {
     ////                         private variables                 ////
     // The error resulted from sending the Modelica command to OMC.
     private String _error;
-    
+
     // The first result of sending the Modelica command to OMC.
     private String[] _result;
 }

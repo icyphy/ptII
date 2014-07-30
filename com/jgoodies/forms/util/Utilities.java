@@ -102,7 +102,7 @@ public final class Utilities {
      * Listens to changes of the Look and Feel and invalidates the cache.
      */
     private static final class LookAndFeelChangeHandler implements
-            PropertyChangeListener {
+    PropertyChangeListener {
 
         /**
          * Invalidates the cached laf states, if the UIManager has fired
@@ -115,6 +115,7 @@ public final class Utilities {
          *
          * @param evt  describes the property change
          */
+        @Override
         public void propertyChange(PropertyChangeEvent evt) {
             String propertyName = evt.getPropertyName();
             if (propertyName == null || propertyName.equals("lookAndFeel")) {

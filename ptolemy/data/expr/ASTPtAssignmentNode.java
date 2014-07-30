@@ -61,7 +61,7 @@ public class ASTPtAssignmentNode extends ASTPtRootNode {
     public String getAssignment() {
         ParseTreeWriter writer = new ParseTreeWriter();
         return getIdentifier() + "="
-                + writer.printParseTree(getExpressionTree());
+        + writer.printParseTree(getExpressionTree());
     }
 
     public ASTPtRootNode getExpressionTree() {
@@ -84,6 +84,7 @@ public class ASTPtAssignmentNode extends ASTPtRootNode {
         }
     }
 
+    @Override
     public void jjtClose() {
         super.jjtClose();
 
@@ -94,6 +95,7 @@ public class ASTPtAssignmentNode extends ASTPtRootNode {
 
     /** Traverse this node with the given visitor.
      */
+    @Override
     public void visit(ParseTreeVisitor visitor) throws IllegalActionException {
         visitor.visitAssignmentNode(this);
     }

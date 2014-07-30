@@ -101,6 +101,7 @@ public class SDFTransformer extends TypedAtomicActor implements SequenceActor {
      *  @exception IllegalActionException If it is thrown accessing the port.
      *  @return True if there are enough tokens.
      */
+    @Override
     public boolean prefire() throws IllegalActionException {
         Token rateToken = input_tokenConsumptionRate.getToken();
         int required = ((IntToken) rateToken).intValue();

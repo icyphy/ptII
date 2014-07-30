@@ -74,6 +74,7 @@ public class StringLength extends Transformer {
      *   if it is thrown reading the input port or writing to the
      *   output port.
      */
+    @Override
     public void fire() throws IllegalActionException {
         super.fire();
 

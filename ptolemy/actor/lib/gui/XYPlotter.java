@@ -123,6 +123,7 @@ public class XYPlotter extends Plotter {
      *   if the base class throws it.
      *  @return True if it is OK to continue.
      */
+    @Override
     public boolean postfire() throws IllegalActionException {
         int widthX = inputX.getWidth();
         int widthY = inputY.getWidth();

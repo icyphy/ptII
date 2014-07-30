@@ -141,6 +141,7 @@ public abstract class Script extends WebContent implements WebExportable {
     // .js     application/ecmascript
     // .js     text/javascript
     // .js     text/ecmascript
+    @Override
     public String getMimeType() {
         return "text/javascript";
     }
@@ -149,6 +150,7 @@ public abstract class Script extends WebContent implements WebExportable {
      *
      * @return True, since new scripts and method calls should overwrite old
      */
+    @Override
     public boolean isOverwriteable() {
         return true;
     }

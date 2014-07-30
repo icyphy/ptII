@@ -93,6 +93,7 @@ public class LevelSkippingTableauFactory extends TableauFactory {
      *  @exception Exception If the factory should be able to create a
      *   Tableau for the effigy, but something goes wrong.
      */
+    @Override
     public Tableau createTableau(Effigy effigy) throws Exception {
         if (!(effigy instanceof PtolemyEffigy)) {
             return null;

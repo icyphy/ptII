@@ -79,6 +79,7 @@ import ptolemy.kernel.util.StringAttribute;
  @Pt.ProposedRating Green (pwhitake)
  @Pt.AcceptedRating Green (pwhitake)
  */
+@Deprecated
 public class LogicFunction extends Transformer {
     /** Construct an actor with the given container and name.  Set the
      *  logic function to the default ("and").  Set the types of the ports
@@ -128,6 +129,7 @@ public class LogicFunction extends Transformer {
      *  @param attribute The attribute that changed.
      *  @exception IllegalActionException If the function is not recognized.
      */
+    @Override
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         if (attribute == function) {
@@ -155,8 +157,8 @@ public class LogicFunction extends Transformer {
             } else {
                 throw new IllegalActionException(this,
                         "Unrecognized logic function: " + functionName
-                                + ".  Valid functions are 'and', 'or', 'xor', "
-                                + "'nand', 'nor', and 'xnor'.");
+                        + ".  Valid functions are 'and', 'or', 'xor', "
+                        + "'nand', 'nor', and 'xnor'.");
             }
         } else {
             super.attributeChanged(attribute);
@@ -168,6 +170,7 @@ public class LogicFunction extends Transformer {
      *  input on any channel, then produce no output.
      *  @exception IllegalActionException If there is no director.
      */
+    @Override
     public void fire() throws IllegalActionException {
         super.fire();
         BooleanToken value = null;

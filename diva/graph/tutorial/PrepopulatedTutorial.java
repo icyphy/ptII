@@ -75,6 +75,7 @@ public class PrepopulatedTutorial {
         context.setSize(300, 600);
 
         SwingUtilities.invokeLater(new Runnable() {
+            @Override
             public void run() {
                 new PrepopulatedTutorial(context);
                 context.setVisible(true);
@@ -145,6 +146,7 @@ public class PrepopulatedTutorial {
         final BasicGraphController bgc = new BasicGraphController();
         context.getContentPane().add(new JGraph(new GraphPane(bgc, model)));
         SwingUtilities.invokeLater(new Runnable() {
+            @Override
             public void run() {
                 RandomLayout random = new RandomLayout(new BasicLayoutTarget(
                         bgc));

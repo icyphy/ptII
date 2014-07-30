@@ -234,7 +234,7 @@ public final class LayoutFileOperations {
             orientationNode.setPersistent(true);
             orientationNode.setVisibility(Settable.NONE);
             orientationNode
-                    .setExpression(mainFrame.getOrientation().toString());
+            .setExpression(mainFrame.getOrientation().toString());
 
             // Add screen dimensions to top level actor.
             ArrayToken token = new ArrayToken(new IntToken[] {
@@ -328,7 +328,7 @@ public final class LayoutFileOperations {
                     }
                     new HomerLocation(elementInModel,
                             HomerConstants.POSITION_NODE)
-                            .setToken(getLocationToken(homerElement.getWidget()));
+                    .setToken(getLocationToken(homerElement.getWidget()));
 
                     // Add tab information
                     Attribute tabNode = elementInModel
@@ -337,7 +337,7 @@ public final class LayoutFileOperations {
                         elementInModel.removeAttribute(tabNode);
                     }
                     new StringAttribute(elementInModel, HomerConstants.TAB_NODE)
-                            .setExpression(tab.getTag());
+                    .setExpression(tab.getTag());
                 }
             }
 
@@ -389,9 +389,9 @@ public final class LayoutFileOperations {
         Rectangle bounds = widget.getPreferredBounds();
         Insets insets = widget.getBorder().getInsets();
         int[][] location = new int[][] { {
-                bounds.x + preferredLocation.x + insets.left,
-                bounds.y + preferredLocation.y + insets.top,
-                bounds.width - insets.right, bounds.height - insets.bottom } };
+            bounds.x + preferredLocation.x + insets.left,
+            bounds.y + preferredLocation.y + insets.top,
+            bounds.width - insets.right, bounds.height - insets.bottom } };
 
         IntMatrixToken locationToken = null;
         try {
@@ -508,7 +508,7 @@ public final class LayoutFileOperations {
                     parameter.setVisibility(Settable.NONE);
                     parameter.setPersistent(true);
                     parameter
-                            .setExpression(ServerUtility.PROXY_SOURCE_ATTRIBUTE);
+                    .setExpression(ServerUtility.PROXY_SOURCE_ATTRIBUTE);
                 } else if (sinkOrSource == SinkOrSource.SINK) {
                     SingletonParameter parameter = new SingletonParameter(
                             entityInModel, ServerUtility.REMOTE_OBJECT_TAG);

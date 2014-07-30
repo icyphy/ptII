@@ -64,6 +64,7 @@ public class StreamChangeListener implements ChangeListener {
     /** Print the description of the change to the stream output.
      *  @param change The change that has been executed.
      */
+    @Override
     public void changeExecuted(ChangeRequest change) {
         String description = "";
 
@@ -79,6 +80,7 @@ public class StreamChangeListener implements ChangeListener {
      *  @param change The change that has been executed.
      *  @param exception The exception that occurred.
      */
+    @Override
     public void changeFailed(ChangeRequest change, Exception exception) {
         String description = "";
 

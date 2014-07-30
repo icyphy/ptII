@@ -61,6 +61,7 @@ public abstract class StructuredType implements Type {
      *  @return A new type, or BaseType.GENERAL, if the operation does
      *  not make sense for the given types.
      */
+    @Override
     public Type add(Type rightArgumentType) {
         return TypeLattice.leastUpperBound(this, rightArgumentType);
     }
@@ -69,6 +70,7 @@ public abstract class StructuredType implements Type {
      *  @return A StructuredType.
      *  @exception CloneNotSupportedException Not thrown in this base class.
      */
+    @Override
     abstract public Object clone() throws CloneNotSupportedException;
 
     /** Return a new type which represents the type that results from
@@ -78,6 +80,7 @@ public abstract class StructuredType implements Type {
      *  @return A new type, or BaseType.GENERAL, if the operation does
      *  not make sense for the given types.
      */
+    @Override
     public Type divide(Type rightArgumentType) {
         return TypeLattice.leastUpperBound(this, rightArgumentType);
     }
@@ -104,6 +107,7 @@ public abstract class StructuredType implements Type {
      *  instances.  This base class returns HASH_INVALID.
      *  @return A number between 0 and HASH_MAX, or HASH_INVALID.
      */
+    @Override
     public int getTypeHash() {
         return Type.HASH_INVALID;
     }
@@ -115,6 +119,7 @@ public abstract class StructuredType implements Type {
      *  true only for types which are not abstract.
      *  @return true.
      */
+    @Override
     public boolean isAbstract() {
         return true;
 
@@ -133,6 +138,7 @@ public abstract class StructuredType implements Type {
      *  @return A new type, or BaseType.GENERAL, if the operation does
      *  not make sense for the given types.
      */
+    @Override
     public Type modulo(Type rightArgumentType) {
         return TypeLattice.leastUpperBound(this, rightArgumentType);
     }
@@ -144,6 +150,7 @@ public abstract class StructuredType implements Type {
      *  @return A new type, or BaseType.GENERAL, if the operation does
      *  not make sense for the given types.
      */
+    @Override
     public Type multiply(Type rightArgumentType) {
         return TypeLattice.leastUpperBound(this, rightArgumentType);
     }
@@ -153,6 +160,7 @@ public abstract class StructuredType implements Type {
      *  @return A new type, or BaseType.GENERAL, if the operation does
      *  not make sense for the given types.
      */
+    @Override
     public Type one() {
         return this;
     }
@@ -164,6 +172,7 @@ public abstract class StructuredType implements Type {
      *  @return A new type, or BaseType.GENERAL, if the operation does
      *  not make sense for the given types.
      */
+    @Override
     public Type subtract(Type rightArgumentType) {
         return TypeLattice.leastUpperBound(this, rightArgumentType);
     }
@@ -196,6 +205,7 @@ public abstract class StructuredType implements Type {
      *  @return A new type, or BaseType.GENERAL, if the operation does
      *  not make sense for the given types.
      */
+    @Override
     public Type zero() {
         return this;
     }

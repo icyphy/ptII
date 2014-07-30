@@ -229,6 +229,7 @@ abstract public class GRShadedShape extends GRActor3D {
     /** Adjust the appearance when an attribute changes if such
      *  an update is supported by the <i>allowRuntimeChanges</i> parameter.
      */
+    @Override
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         // If allowRuntimeChanges is null, then we are in the
@@ -242,10 +243,10 @@ abstract public class GRShadedShape extends GRActor3D {
 
                     if (transparent > 0.0) {
                         _transparencyAttributes
-                                .setTransparencyMode(TransparencyAttributes.NICEST);
+                        .setTransparencyMode(TransparencyAttributes.NICEST);
                     } else {
                         _transparencyAttributes
-                                .setTransparencyMode(TransparencyAttributes.NONE);
+                        .setTransparencyMode(TransparencyAttributes.NONE);
                     }
 
                     _transparencyAttributes.setTransparency(transparent);
@@ -313,6 +314,7 @@ abstract public class GRShadedShape extends GRActor3D {
 
     /** Override the base class to null out private variables.
      */
+    @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         GRShadedShape newObject = (GRShadedShape) super.clone(workspace);
         newObject._appearance = null;
@@ -327,6 +329,7 @@ abstract public class GRShadedShape extends GRActor3D {
      *  @exception IllegalActionException If the current director
      *  is not a GRDirector.
      */
+    @Override
     public void initialize() throws IllegalActionException {
         super.initialize();
         _createModel();
@@ -336,6 +339,7 @@ abstract public class GRShadedShape extends GRActor3D {
      *  @return False if the scene graph is already initialized.
      *  @exception IllegalActionException Not thrown in this base class
      */
+    @Override
     public boolean prefire() throws IllegalActionException {
         if (_isSceneGraphInitialized) {
             return false;
@@ -349,6 +353,7 @@ abstract public class GRShadedShape extends GRActor3D {
      *  @exception IllegalActionException If the current director
      *   is not a GRDirector.
      */
+    @Override
     public void preinitialize() throws IllegalActionException {
         _appearance = null;
         _coloringAttributes = null;
@@ -364,6 +369,7 @@ abstract public class GRShadedShape extends GRActor3D {
      *  @exception IllegalActionException If the current director
      *   is not a GRDirector.
      */
+    @Override
     public void wrapup() throws IllegalActionException {
         _appearance = null;
         _coloringAttributes = null;
@@ -456,15 +462,15 @@ abstract public class GRShadedShape extends GRActor3D {
         // appropriate capabilities.
         if (allowChanges) {
             _transparencyAttributes
-                    .setCapability(TransparencyAttributes.ALLOW_VALUE_WRITE);
+            .setCapability(TransparencyAttributes.ALLOW_VALUE_WRITE);
             _transparencyAttributes
-                    .setCapability(TransparencyAttributes.ALLOW_MODE_WRITE);
+            .setCapability(TransparencyAttributes.ALLOW_MODE_WRITE);
             _material.setCapability(Material.ALLOW_COMPONENT_WRITE);
             _coloringAttributes
-                    .setCapability(ColoringAttributes.ALLOW_SHADE_MODEL_WRITE);
+            .setCapability(ColoringAttributes.ALLOW_SHADE_MODEL_WRITE);
             _appearance.setCapability(Appearance.ALLOW_TEXTURE_WRITE);
             _polygonAttributes
-                    .setCapability(PolygonAttributes.ALLOW_MODE_WRITE);
+            .setCapability(PolygonAttributes.ALLOW_MODE_WRITE);
         }
 
         _changesAllowedNow = allowChanges;
@@ -480,6 +486,7 @@ abstract public class GRShadedShape extends GRActor3D {
     }
 
     /** Send the scene graph token on the output. */
+    @Override
     protected void _makeSceneGraphConnection() throws IllegalActionException {
         sceneGraphOut.send(0, new SceneGraphToken(_getNodeObject()));
     }
@@ -489,6 +496,7 @@ abstract public class GRShadedShape extends GRActor3D {
      *  @exception IllegalActionException If the given actor is not a
      *   ViewScreen3D or if an invalid texture is specified.
      */
+    @Override
     protected void _setViewScreen(GRActor actor) throws IllegalActionException {
         super._setViewScreen(actor);
 
@@ -514,7 +522,7 @@ abstract public class GRShadedShape extends GRActor3D {
         // attributes even if not needed now.
         if (attributes == null
                 && ((BooleanToken) allowRuntimeChanges.getToken())
-                        .booleanValue()) {
+                .booleanValue()) {
             attributes = new TextureAttributes();
             attributes.setTextureMode(TextureAttributes.MODULATE);
             _appearance.setTextureAttributes(attributes);

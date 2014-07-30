@@ -68,12 +68,14 @@ public interface ConnectorTarget {
      * passed site is the best one available.
      * @deprecated Use getHeadSite that takes a connector.
      */
+    @Deprecated
     public Site getHeadSite(Site s, double x, double y);
 
     /** Return a suitable site to connect a connector's tail to.
      * See the description for getheadSite().
      * @deprecated Use getTailSite that takes a connector.
      */
+    @Deprecated
     public Site getTailSite(Site s, double x, double y);
 
     /** Return a suitable site to connect the given connector's head to,

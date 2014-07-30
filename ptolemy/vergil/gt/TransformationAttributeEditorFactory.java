@@ -61,6 +61,7 @@ public class TransformationAttributeEditorFactory extends EditorFactory {
         super(container, name);
     }
 
+    @Override
     public void createEditor(NamedObj object, final Frame parent) {
         TransformationAttribute attribute = (TransformationAttribute) object;
         try {
@@ -87,6 +88,7 @@ public class TransformationAttributeEditorFactory extends EditorFactory {
 
     public static class ExecutionThread extends Thread {
 
+        @Override
         public void run() {
             Manager manager = _attribute.getModelUpdater().getManager();
             manager.addExecutionListener(_listener);
@@ -127,16 +129,19 @@ public class TransformationAttributeEditorFactory extends EditorFactory {
             _frame = frame;
         }
 
+        @Override
         public void executionError(Manager manager, Throwable throwable) {
             _frame.report("");
         }
 
+        @Override
         public void executionFinished(Manager manager) {
             _frame.setModified(true);
             _frame.report("");
             GTFrameTools.changeModel(_frame, _model, true, true);
         }
 
+        @Override
         public void managerStateChanged(Manager manager) {
             if (manager.getState() == Manager.INITIALIZING) {
                 _frame.report("Applying model transformation...");

@@ -72,6 +72,7 @@ public class MoMLGenerator extends Transformer {
      *  @exception IllegalActionException If the model cannot be read or the
      *   moml cannot be produced.
      */
+    @Override
     public void fire() throws IllegalActionException {
         super.fire();
         ActorToken token = (ActorToken) input.get(0);
@@ -85,6 +86,7 @@ public class MoMLGenerator extends Transformer {
      *  @exception IllegalActionException If availability of input tokens cannot
      *   be tested.
      */
+    @Override
     public boolean prefire() throws IllegalActionException {
         return super.prefire() && input.hasToken(0);
     }

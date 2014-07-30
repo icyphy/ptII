@@ -66,7 +66,7 @@ public class TDLTransition extends Transition {
      *   any relation already in the container.
      */
     public TDLTransition(Workspace workspace) throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         super(workspace);
         _init();
     }
@@ -166,7 +166,7 @@ public class TDLTransition extends Transition {
      * @exception NameDuplicationException Thrown if The frequency parameter cannot be created.
      */
     private void _init() throws NameDuplicationException,
-            IllegalActionException {
+    IllegalActionException {
         outputActions.setVisibility(Settable.NONE);
         setActions.setVisibility(Settable.NONE);
         history.setVisibility(Settable.NONE);

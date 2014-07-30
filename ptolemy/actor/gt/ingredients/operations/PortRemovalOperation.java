@@ -87,6 +87,7 @@ public class PortRemovalOperation extends Operation {
      *   object in the replacement.
      *  @return The change request.
      */
+    @Override
     public ChangeRequest getChangeRequest(Pattern pattern,
             Replacement replacement, MatchResult matchResult,
             NamedObj patternObject, NamedObj replacementObject,
@@ -111,6 +112,7 @@ public class PortRemovalOperation extends Operation {
      *
      *  @return The array of elements.
      */
+    @Override
     public GTIngredientElement[] getElements() {
         return _ELEMENTS;
     }
@@ -129,6 +131,7 @@ public class PortRemovalOperation extends Operation {
      *  @return The value.
      *  @see #setValue(int, Object)
      */
+    @Override
     public Object getValue(int index) {
         switch (index) {
         case 0:
@@ -143,6 +146,7 @@ public class PortRemovalOperation extends Operation {
      *  @return A string that describes the values of all the elements.
      *  @see #setValues(String)
      */
+    @Override
     public String getValues() {
         StringBuffer buffer = new StringBuffer();
         _encodeStringField(buffer, 0, _name);
@@ -154,15 +158,16 @@ public class PortRemovalOperation extends Operation {
      *  @param object The object.
      *  @return true if this GTIngredient is applicable; false otherwise.
      */
+    @Override
     public boolean isApplicable(NamedObj object) {
         return super.isApplicable(object) && object instanceof ComponentEntity
                 && !(object instanceof State);
     }
 
     /** Return whether the port name element is enabled.
-    *
-    *  @return true if the port name element is enabled.
-    */
+     *
+     *  @return true if the port name element is enabled.
+     */
     public boolean isNameEnabled() {
         return isEnabled(0);
     }
@@ -173,6 +178,7 @@ public class PortRemovalOperation extends Operation {
      *  @param value The value.
      *  @see #getValue(int)
      */
+    @Override
     public void setValue(int index, Object value) {
         switch (index) {
         case 0:
@@ -187,6 +193,7 @@ public class PortRemovalOperation extends Operation {
      *   elements.
      *  @see #getValues()
      */
+    @Override
     public void setValues(String values) {
         FieldIterator fieldIterator = new FieldIterator(values);
         _name = _decodeStringField(0, fieldIterator);
@@ -196,6 +203,7 @@ public class PortRemovalOperation extends Operation {
      *
      *  @exception ValidationException If some elements are invalid.
      */
+    @Override
     public void validate() throws ValidationException {
         if (_name.equals("")) {
             throw new ValidationException("Name must not be empty.");

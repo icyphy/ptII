@@ -125,7 +125,7 @@ import ptolemy.kernel.util.SingletonAttribute;
  *  @Pt.AcceptedRating Red (sssf)
  */
 public class GiottoTimingManager extends SingletonAttribute implements
-        Decorator { //extends SingletonAttribute
+Decorator { //extends SingletonAttribute
 
     /** Construct an instance with the specified container and name.
      *  @param container The container.
@@ -218,6 +218,7 @@ public class GiottoTimingManager extends SingletonAttribute implements
      *  @exception IllegalActionException If the change is not acceptable
      *   to this container (not thrown in this base class).
      */
+    @Override
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         if (attribute == seed) {
@@ -238,6 +239,7 @@ public class GiottoTimingManager extends SingletonAttribute implements
      *  @param target The NamedObj that will be decorated.
      *  @return The decorated attributes for the target NamedObj.
      */
+    @Override
     public DecoratorAttributes createDecoratorAttributes(NamedObj target) {
         if (_debugging) {
             _debug("createDecoratorAttributes method called for Giotto Director");
@@ -257,6 +259,7 @@ public class GiottoTimingManager extends SingletonAttribute implements
      *  of this resource scheduler.
      *  @return A list of the objects decorated by this decorator.
      */
+    @Override
     public List<NamedObj> decoratedObjects() {
         CompositeEntity container = (CompositeEntity) getContainer();
         return container.deepEntityList();
@@ -265,6 +268,7 @@ public class GiottoTimingManager extends SingletonAttribute implements
     /** Return false to indicate that this decorator should not
      *  decorate objects across opaque hierarchy boundaries.
      */
+    @Override
     public boolean isGlobalDecorator() {
         return false;
     }
@@ -280,6 +284,7 @@ public class GiottoTimingManager extends SingletonAttribute implements
      *   an attribute with the name of this attribute.
      *  @see #getContainer()
      */
+    @Override
     public void setContainer(final NamedObj container)
             throws IllegalActionException, NameDuplicationException {
         if (_debugging) {
@@ -339,16 +344,18 @@ public class GiottoTimingManager extends SingletonAttribute implements
 
                 _executable = new Executable() {
 
+                    @Override
                     public void initialize() throws IllegalActionException {
                         if (_random == null
                                 || ((BooleanToken) resetOnEachRun.getToken())
-                                        .booleanValue()) {
+                                .booleanValue()) {
                             _createGenerator();
                         }
                         _needNew = true;
 
                     }
 
+                    @Override
                     public boolean postfire() throws IllegalActionException {
 
                         if (_debugging) {
@@ -381,7 +388,7 @@ public class GiottoTimingManager extends SingletonAttribute implements
                                                     + _totalExpectedExecutionTime
                                                     + ")  for actor "
                                                     + container
-                                                            .getDisplayName()));
+                                                    .getDisplayName()));
 
                         }
                         _totalObservedExecutionTime = 0; // reset the observed time
@@ -389,7 +396,8 @@ public class GiottoTimingManager extends SingletonAttribute implements
                         ChangeRequest request = new ChangeRequest(this,
                                 "SetVariable change request", true /*Although this not a structural change in my point of view
                                                                    , we however for some reason need to specify it is, otherwise the GUI won't update.*/
-                        ) {
+                                ) {
+                            @Override
                             protected void _execute()
                                     throws IllegalActionException {
                             }
@@ -404,9 +412,11 @@ public class GiottoTimingManager extends SingletonAttribute implements
                         return true;
                     }
 
+                    @Override
                     public void wrapup() {
                         ChangeRequest request = new ChangeRequest(this,
                                 "SetVariable change request", true) {
+                            @Override
                             protected void _execute()
                                     throws IllegalActionException {
                             }
@@ -417,6 +427,7 @@ public class GiottoTimingManager extends SingletonAttribute implements
                         requestChange(request);
                     }
 
+                    @Override
                     public void fire() throws IllegalActionException {
                         if (!_readyToFire) {
                             return;
@@ -486,8 +497,8 @@ public class GiottoTimingManager extends SingletonAttribute implements
                                                 + (actor.getDirector()
                                                         .getModelTime()
                                                         .getDoubleValue() + actorWCET)
-                                                + "physical time is actually "
-                                                + _myPhysicalTime);
+                                                        + "physical time is actually "
+                                                        + _myPhysicalTime);
                                     }
                                 }
                                 Parameter dummyP = (Parameter) executionTime;
@@ -516,10 +527,10 @@ public class GiottoTimingManager extends SingletonAttribute implements
                                     // FIXME: How to handle this?
                                     // put the actor on a no-fire hashtable?
                                     System.err
-                                            .println("Warning: Giotto iterate returned "
-                                                    + "STOP_ITERATING for actor \""
-                                                    + actor1.getFullName()
-                                                    + "\"");
+                                    .println("Warning: Giotto iterate returned "
+                                            + "STOP_ITERATING for actor \""
+                                            + actor1.getFullName()
+                                            + "\"");
                                 }
                             }
 
@@ -533,35 +544,44 @@ public class GiottoTimingManager extends SingletonAttribute implements
 
                     }
 
+                    @Override
                     public boolean isFireFunctional() {
                         return true;
                     }
 
+                    @Override
                     public boolean isStrict() {
                         return true;
                     }
 
+                    @Override
                     public int iterate(int count) {
                         return Executable.COMPLETED;
                     }
 
+                    @Override
                     public boolean prefire() throws IllegalActionException {
 
                         return true;
                     }
 
+                    @Override
                     public void stop() {
                     }
 
+                    @Override
                     public void stopFire() {
                     }
 
+                    @Override
                     public void terminate() {
                     }
 
+                    @Override
                     public void addInitializable(Initializable initializable) {
                     }
 
+                    @Override
                     public void preinitialize() throws IllegalActionException {
                         double wcet = 0;
                         double _periodValue = 0;
@@ -595,7 +615,7 @@ public class GiottoTimingManager extends SingletonAttribute implements
                                             + _periodValue
                                             + ") for actor "
                                             + ((CompositeActor) getContainer())
-                                                    .getDisplayName());
+                                            .getDisplayName());
 
                         } //end of if
                         if (_debugging) {
@@ -603,6 +623,7 @@ public class GiottoTimingManager extends SingletonAttribute implements
                         }
                     }
 
+                    @Override
                     public void removeInitializable(Initializable initializable) {
                     }
                 };
@@ -744,10 +765,10 @@ public class GiottoTimingManager extends SingletonAttribute implements
     private double _totalExpectedExecutionTime;
 
     /** This variable stores the simulated execution time of actors
-    * thus far. It is reset to 0 after the number of firings reaches
-    * _numberofExpectedFirings and a comparison of observed and expected
-    * times is done
-    * */
+     * thus far. It is reset to 0 after the number of firings reaches
+     * _numberofExpectedFirings and a comparison of observed and expected
+     * times is done
+     * */
     private double _totalObservedExecutionTime;
 
     /** Counter for minimum time steps.*/

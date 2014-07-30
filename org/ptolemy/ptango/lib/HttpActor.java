@@ -123,7 +123,7 @@ import ptolemy.kernel.util.Workspace;
  *  @see org.ptolemy.ptango.lib.WebServer
  */
 public class HttpActor extends TypedAtomicActor implements HttpService,
- ExceptionSubscriber {
+        ExceptionSubscriber {
 
     /** Create an instance of the actor.
      *  @param container The container
@@ -295,6 +295,7 @@ public class HttpActor extends TypedAtomicActor implements HttpService,
      *  @exception IllegalActionException If the change is not acceptable
      *   to this container (not thrown in this base class).
      */
+    @Override
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         if (attribute == path) {
@@ -325,6 +326,7 @@ public class HttpActor extends TypedAtomicActor implements HttpService,
      *  @see java.lang.Object#clone()
      *  @return The cloned attribute.
      */
+    @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         HttpActor newObject = (HttpActor) super.clone(workspace);
         newObject._initializeModelTime = null;
@@ -338,26 +340,28 @@ public class HttpActor extends TypedAtomicActor implements HttpService,
 
         return newObject;
     }
-    
+
     /** Not used here.  Required for ExceptionSubscriber interface. */
-    // FIXME:  Would it make more sense to send the retry page here, only 
+    // FIXME:  Would it make more sense to send the retry page here, only
     // if restart is successful?  Write a test case.
+    @Override
     public void exceptionHandled(boolean succesful, String message) {
-        
+
     }
-    
+
     /** Generate an HTTP response for the client if an exception occurs.  No
-     *  response will be received on the input port in the event of an 
+     *  response will be received on the input port in the event of an
      *  exception.
-     *  
+     *
      *  @param policy The exception handling policy of the exception handler;
      *   see CatchExceptionAttribute
      */
-    
+
+    @Override
     public synchronized boolean exceptionOccurred(String policy) {
-        
+
         // If there is a pending request,
-        // For "restart" policy, generate an error page with retry 
+        // For "restart" policy, generate an error page with retry
         // For other policies, generate a Server Error error page
         // These method calls notifyAll() so that the response will be sent
         // by the servlet thread
@@ -368,7 +372,7 @@ public class HttpActor extends TypedAtomicActor implements HttpService,
                 _respondWithServerErrorMessage();
             }
         }
-        
+
         return true;
     }
 
@@ -378,6 +382,7 @@ public class HttpActor extends TypedAtomicActor implements HttpService,
      *  @return The relative path that this HttpService is mapped to.
      *  @see #setRelativePath(URI)
      */
+    @Override
     public URI getRelativePath() {
         return _URIpath;
     }
@@ -387,6 +392,7 @@ public class HttpActor extends TypedAtomicActor implements HttpService,
      *  This method is required by the HttpService interface.
      *  @return An HttpServlet to handle requests.
      */
+    @Override
     public HttpServlet getServlet() {
         if (_debugging) {
             _debug("*** Creating new servlet.");
@@ -415,6 +421,7 @@ public class HttpActor extends TypedAtomicActor implements HttpService,
      *  @exception IllegalActionException If sending the
      *   outputs fails.
      */
+    @Override
     public synchronized void fire() throws IllegalActionException {
         // The methods of the servlet are invoked in another
         // thread, so we synchronize on this actor for mutual exclusion.
@@ -498,11 +505,12 @@ public class HttpActor extends TypedAtomicActor implements HttpService,
                 getRequestURI.send(0, new StringToken(_request.requestURI));
                 // Send parameters, but handle type errors locally.
                 try {
-                        getParameters.send(0, _request.parameters);
+                    getParameters.send(0, _request.parameters);
                 } catch (TypedIOPort.RunTimeTypeCheckException ex) {
-                        // Parameters provided do not match the required type.
-                        // Construct an appropriate response.
-                        _respondWithBadRequestMessage(_request.parameters, getParameters.getType(), "parameters");
+                    // Parameters provided do not match the required type.
+                    // Construct an appropriate response.
+                    _respondWithBadRequestMessage(_request.parameters,
+                            getParameters.getType(), "parameters");
                 }
                 if (_request.cookies != null && _request.cookies.length() > 0) {
                     if (_debugging) {
@@ -510,11 +518,12 @@ public class HttpActor extends TypedAtomicActor implements HttpService,
                                 + _request.cookies);
                     }
                     try {
-                            getCookies.send(0, _request.cookies);
+                        getCookies.send(0, _request.cookies);
                     } catch (TypedIOPort.RunTimeTypeCheckException ex) {
-                            // Parameters provided do not match the required type.
-                            // Construct an appropriate response.
-                            _respondWithBadRequestMessage(_request.parameters, getParameters.getType(), "cookies");
+                        // Parameters provided do not match the required type.
+                        // Construct an appropriate response.
+                        _respondWithBadRequestMessage(_request.parameters,
+                                getParameters.getType(), "cookies");
                     }
                 }
             } else {
@@ -525,20 +534,22 @@ public class HttpActor extends TypedAtomicActor implements HttpService,
                 }
                 postRequestURI.send(0, new StringToken(_request.requestURI));
                 try {
-                        postParameters.send(0, _request.parameters);
+                    postParameters.send(0, _request.parameters);
                 } catch (TypedIOPort.RunTimeTypeCheckException ex) {
-                        // Parameters provided do not match the required type.
-                        // Construct an appropriate response.
-                        _respondWithBadRequestMessage(_request.parameters, getParameters.getType(), "parameters");
+                    // Parameters provided do not match the required type.
+                    // Construct an appropriate response.
+                    _respondWithBadRequestMessage(_request.parameters,
+                            getParameters.getType(), "parameters");
                 }
                 if (_request.cookies != null && _request.cookies.length() > 0) {
-                        try {
-                                postCookies.send(0, _request.cookies);
-                        } catch (TypedIOPort.RunTimeTypeCheckException ex) {
-                                // Parameters provided do not match the required type.
-                                // Construct an appropriate response.
-                                _respondWithBadRequestMessage(_request.parameters, getParameters.getType(), "cookies");
-                        }
+                    try {
+                        postCookies.send(0, _request.cookies);
+                    } catch (TypedIOPort.RunTimeTypeCheckException ex) {
+                        // Parameters provided do not match the required type.
+                        // Construct an appropriate response.
+                        _respondWithBadRequestMessage(_request.parameters,
+                                getParameters.getType(), "cookies");
+                    }
                     if (_debugging) {
                         _debug("Sending cookies to postCookies port: "
                                 + _request.cookies);
@@ -556,13 +567,14 @@ public class HttpActor extends TypedAtomicActor implements HttpService,
      *  time since model start.
      *  @exception IllegalActionException If the superclass throws it.
      */
+    @Override
     public void initialize() throws IllegalActionException {
         super.initialize();
         _request = null;
         _response = null;
         _initializeModelTime = getDirector().getModelTime();
         // Subtract a tenth of a second.  As this actor is initialized
-        // after the director, the initial time here could be later than what 
+        // after the director, the initial time here could be later than what
         // the director perceives as the initial real time.
         // FIXME:  The director could offer e.g. a getInitialRealTime() function
         // to avoid this workaround
@@ -575,6 +587,7 @@ public class HttpActor extends TypedAtomicActor implements HttpService,
      *  @param path The relative path that this HttpService is mapped to.
      *  @see #getRelativePath()
      */
+    @Override
     public void setRelativePath(URI path) {
         _URIpath = path;
     }
@@ -585,6 +598,7 @@ public class HttpActor extends TypedAtomicActor implements HttpService,
      *  information about the web server (such as
      *  the resourcePath, resourceLocation, or temporaryFileLocation).
      */
+    @Override
     public void setWebServer(WebServer server) {
         // Ignore. This actor doesn't need to know.
     }
@@ -592,168 +606,175 @@ public class HttpActor extends TypedAtomicActor implements HttpService,
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
-        /** Given a record token type, construct the URL string that would result
-         *  in that record, and record that string in the specified message buffer.
-         *  @param expected The record type.
-         *  @param message The message buffer.
-         */
-        private void _recordToURLString(RecordType expected, StringBuffer message) {
-                boolean first = true;
-                for (String label : expected.labelSet()) {
-                        if (first) {
-                                message.append("?");
-                        } else {
-                                message.append("&");
-                        }
-                        first = false;
-                        message.append(label);
-                        message.append("=");
-                        message.append(expected.get(label).toString());
-                }
+    /** Given a record token type, construct the URL string that would result
+     *  in that record, and record that string in the specified message buffer.
+     *  @param expected The record type.
+     *  @param message The message buffer.
+     */
+    private void _recordToURLString(RecordType expected, StringBuffer message) {
+        boolean first = true;
+        for (String label : expected.labelSet()) {
+            if (first) {
+                message.append("?");
+            } else {
+                message.append("&");
+            }
+            first = false;
+            message.append(label);
+            message.append("=");
+            message.append(expected.get(label).toString());
         }
+    }
 
     /** Issue a response to the current request indicating malformed syntax.
      *  According to: www.w3.org/Protocols/rfc2616/rfc2616-sec10.html,
      *  the correct response is
-     *  10.4.1 400 Bad Request, "The request could not be understood 
-     *  by the server due to malformed syntax. 
+     *  10.4.1 400 Bad Request, "The request could not be understood
+     *  by the server due to malformed syntax.
      *  The client SHOULD NOT repeat the request without modifications."
      *  @param record The record that was received.
      *  @param expectedType The type of record expected.
      *  @param what What triggered the error ("parameters" or "cookies").
      */
-    private void _respondWithBadRequestMessage(RecordToken record, Type expectedType, String what) {
-            _response = new HttpResponseItems();
-            _response.statusCode = HttpServletResponse.SC_BAD_REQUEST;
-            StringBuffer message = new StringBuffer();
-            message.append("<html><body><h1> Bad Request (code " + HttpServletResponse.SC_BAD_REQUEST + ")</h1>\n");
-            message.append("<p>Expected ");
-            message.append(what);
-            message.append(" of the form: ");
-            if (expectedType instanceof RecordType) {
-                    _recordToURLString((RecordType)expectedType, message);
-            } else {
-                    message.append(expectedType.toString());
-            }
-            message.append("</p><p>Got: ");
-            _recordToURLString((RecordType)record.getType(), message);
-            message.append("</p></body></html>");
-            
-            _response.response = message.toString();
-            
-            notifyAll();
+    private void _respondWithBadRequestMessage(RecordToken record,
+            Type expectedType, String what) {
+        _response = new HttpResponseItems();
+        _response.statusCode = HttpServletResponse.SC_BAD_REQUEST;
+        StringBuffer message = new StringBuffer();
+        message.append("<html><body><h1> Bad Request (code "
+                + HttpServletResponse.SC_BAD_REQUEST + ")</h1>\n");
+        message.append("<p>Expected ");
+        message.append(what);
+        message.append(" of the form: ");
+        if (expectedType instanceof RecordType) {
+            _recordToURLString((RecordType) expectedType, message);
+        } else {
+            message.append(expectedType.toString());
+        }
+        message.append("</p><p>Got: ");
+        _recordToURLString((RecordType) record.getType(), message);
+        message.append("</p></body></html>");
+
+        _response.response = message.toString();
+
+        notifyAll();
     }
-    
-    /** Issue a response indicating a server error and the intent to retry.  
-     *  The Javascript on the response page will invoke the 
-     *  
+
+    /** Issue a response indicating a server error and the intent to retry.
+     *  The Javascript on the response page will invoke the
+     *
      *  @param timeout The time to wait, in seconds
      */
     private void _respondWithRetryMessage(int timeout) {
-        
+
         int timeoutValue = timeout;
-        
+
         if (timeoutValue < 1) {
             timeoutValue = 1;
         }
-        
-        // Construct a response page.  The page will issue a second request to 
+
+        // Construct a response page.  The page will issue a second request to
         // the URL after a specified period of time.  The retry page content and
         // time are currently fixed.
         // TODO:  Allow dynamic content and timers for retry
 
-        
         // FIXME:  Only supports GET at the moment.  For POST, have to re-submit
         // the parameters
         // FIXME:  Add a test for POST request
         // FIXME:  Make string constants for methods (available from other class?)
-        
+
         _response = new HttpResponseItems();
         _response.statusCode = HttpServletResponse.SC_INTERNAL_SERVER_ERROR;
-        
+
         String ajax = "";
         if (_request.requestType == 0) {
-            ajax = "jQuery.get(\"" + _request.requestURI + "\")\n" +
-                    ".done(function(data) { \n " +   
-                 // Wrap result page with <div> </div> since an HTML page is not 
-                     // valid xml due to unclosed <!DOCTYPE HTML> tag
-                 // jQuery has problems parsing otherwise
-                     // http://www.sitepoint.com/secrets-selecting-elements-returned-jquery-ajax-response-strings/
-                "result = \"<div>\" + data + \"</div>\";" +
-                "jQuery(\"#contents\").html(jQuery(result).find(\"#contents\").html());" + 
-                 "\n });";  
+            ajax = "jQuery.get(\""
+                    + _request.requestURI
+                    + "\")\n"
+                    + ".done(function(data) { \n "
+                    +
+                    // Wrap result page with <div> </div> since an HTML page is not 
+                    // valid xml due to unclosed <!DOCTYPE HTML> tag
+                    // jQuery has problems parsing otherwise
+                    // http://www.sitepoint.com/secrets-selecting-elements-returned-jquery-ajax-response-strings/
+                    "result = \"<div>\" + data + \"</div>\";"
+                    + "jQuery(\"#contents\").html(jQuery(result).find(\"#contents\").html());"
+                    + "\n });";
         } else if (_request.requestType == 1) {
             StringBuffer parameters = new StringBuffer("{");
             if (_request.parameters != null) {
                 for (String label : _request.parameters.labelSet()) {
                     // TODO:  Test if this works for strings
                     // I believe these require quotation marks around them
-                    parameters.append(label + ": " 
+                    parameters.append(label + ": "
                             + _request.parameters.get(label).toString() + ",");
                 }
-                
+
                 // Erase the last , and add }
                 if (parameters.length() > 0) {
                     parameters.deleteCharAt(parameters.length() - 1);
                     parameters.append('}');
-                    ajax = "jQuery.post(\"" + _request.requestURI + "\", " +
-                                    parameters.toString() + ")\n" +
-                      ".done(function(data) { \n " +
-                      "result = \"<div>\" + data + \"</div>\";" +
-                      "jQuery(\"#contents\").html(jQuery(result).find(\"#contents\").html());" + 
-                       "\n });";  
+                    ajax = "jQuery.post(\""
+                            + _request.requestURI
+                            + "\", "
+                            + parameters.toString()
+                            + ")\n"
+                            + ".done(function(data) { \n "
+                            + "result = \"<div>\" + data + \"</div>\";"
+                            + "jQuery(\"#contents\").html(jQuery(result).find(\"#contents\").html());"
+                            + "\n });";
                 } else {
-                    ajax = "jQuery.post(\"" + _request.requestURI + "\")\n" +
-                      ".done(function(data) { \n " +
-                      "result = \"<div>\" + data + \"</div>\";" +
-                      "jQuery(\"#contents\").html(jQuery(result).find(\"#contents\").html());" + 
-                       "\n });";  
+                    ajax = "jQuery.post(\""
+                            + _request.requestURI
+                            + "\")\n"
+                            + ".done(function(data) { \n "
+                            + "result = \"<div>\" + data + \"</div>\";"
+                            + "jQuery(\"#contents\").html(jQuery(result).find(\"#contents\").html());"
+                            + "\n });";
                 }
             }
         }
-                
+
         StringBuffer message = new StringBuffer();
-        
-        message.append("<!DOCTYPE html>\n<html>\n<head> " +
-                        "<meta charset=\"UTF-8\">\n");
+
+        message.append("<!DOCTYPE html>\n<html>\n<head> "
+                + "<meta charset=\"UTF-8\">\n");
         message.append("<script src=\"http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js\"></script>\n");
         message.append("<script>\n var count=" + timeoutValue + ";\n");
         message.append("var interval=setInterval(timer,1000);\nvar result;\n");
-        message.append("function timer() {\n " +
-                         "count=count-1;\n" +
-                         "jQuery(\"#countdown\").html(count+1);\n" + 
-                         "if (count <= 0) {\n" +
-                         "clearInterval(interval);\n" + 
-                         ajax.toString() + "\n}\n}\n");
-        message.append("jQuery(document).ready(function() {\n" +
-                        "timer();\n});");
+        message.append("function timer() {\n " + "count=count-1;\n"
+                + "jQuery(\"#countdown\").html(count+1);\n"
+                + "if (count <= 0) {\n" + "clearInterval(interval);\n"
+                + ajax.toString() + "\n}\n}\n");
+        message.append("jQuery(document).ready(function() {\n"
+                + "timer();\n});");
         message.append("</script></head>\n");
-        message.append("<body><div id=\"contents\"> \n" +
-                        "<h1> Internal Server Error (code " 
+        message.append("<body><div id=\"contents\"> \n"
+                + "<h1> Internal Server Error (code "
                 + HttpServletResponse.SC_INTERNAL_SERVER_ERROR + ")</h1>\n");
-        message.append("<div> Retrying in <div id=\"countdown\">" + 
-                    timeoutValue + "</div></div></div>\n");
+        message.append("<div> Retrying in <div id=\"countdown\">"
+                + timeoutValue + "</div></div></div>\n");
         message.append("</body></html>");
-        
+
         _response.response = message.toString();
-        
+
         notifyAll();
-        
+
     }
 
     /** Issue a response indicating a server error (i.e., a problem running the
-     *  Ptolemy model.  
+     *  Ptolemy model.
      */
     private void _respondWithServerErrorMessage() {
         _response = new HttpResponseItems();
         _response.statusCode = HttpServletResponse.SC_INTERNAL_SERVER_ERROR;
         StringBuffer message = new StringBuffer();
-        message.append("<html><body><h1> Internal Server Error (code " 
+        message.append("<html><body><h1> Internal Server Error (code "
                 + HttpServletResponse.SC_INTERNAL_SERVER_ERROR + ")</h1>\n");
         message.append("</p></body></html>");
-        
+
         _response.response = message.toString();
-        
+
         notifyAll();
     }
 
@@ -806,7 +827,7 @@ public class HttpActor extends TypedAtomicActor implements HttpService,
      *  See <a href"http://wiki.eclipse.org/Jetty/Tutorial/Embedding_Jetty">http://wiki.eclipse.org/Jetty/Tutorial/Embedding_Jetty</a>
      */
     @SuppressWarnings("serial")
-        protected class ActorServlet extends HttpServlet {
+    protected class ActorServlet extends HttpServlet {
 
         /** Handle an HTTP get request by creating a web page as the HTTP
          *  response.
@@ -822,6 +843,7 @@ public class HttpActor extends TypedAtomicActor implements HttpService,
          *  @exception IOException  If there is a problem writing to the servlet
          *  response
          */
+        @Override
         protected synchronized void doGet(HttpServletRequest request,
                 HttpServletResponse response) throws ServletException,
                 IOException {
@@ -841,6 +863,7 @@ public class HttpActor extends TypedAtomicActor implements HttpService,
          *  @exception IOException  If there is a problem writing to the servlet
          *  response
          */
+        @Override
         protected synchronized void doPost(HttpServletRequest request,
                 HttpServletResponse response) throws ServletException,
                 IOException {
@@ -860,7 +883,7 @@ public class HttpActor extends TypedAtomicActor implements HttpService,
          */
         private void _handleRequest(HttpServletRequest request,
                 HttpServletResponse response, int type)
-                throws ServletException, IOException {
+                        throws ServletException, IOException {
             // The following codeblock is synchronized on the enclosing
             // actor. This lock _is_ released while waiting for the response,
             // allowing the fire method to execute its own synchronized blocks.
@@ -871,13 +894,13 @@ public class HttpActor extends TypedAtomicActor implements HttpService,
                 _request.requestType = type;
 
                 response.setContentType("text/html");
-                
+
                 // Set up a buffer for the output so we can set the length of
                 // the response, thereby enabling persistent connections
                 // http://docstore.mik.ua/orelly/java-ent/servlet/ch05_03.htm
                 ByteArrayOutputStream bytes = new ByteArrayOutputStream();
-                PrintWriter writer = new PrintWriter(bytes, true);// true forces 
-                                                                  // flushing
+                PrintWriter writer = new PrintWriter(bytes, true);// true forces
+                // flushing
 
                 if (_debugging) {
                     _debug("**** Handling a " + ((type == 0) ? "get" : "post")
@@ -897,7 +920,7 @@ public class HttpActor extends TypedAtomicActor implements HttpService,
                     // Figure out what time to request a firing for.
                     long elapsedRealTime = System.currentTimeMillis()
                             - _initializeRealTime;
-                    
+
                     // Assume model time is in seconds, not milliseconds.
                     Time timeOfRequest = _initializeModelTime
                             .add(elapsedRealTime / 1000.0);
@@ -906,12 +929,12 @@ public class HttpActor extends TypedAtomicActor implements HttpService,
                         _debug("**** Request firing at time " + timeOfRequest);
                     }
 
-                    // Note that fireAt() will modify the requested firing time 
+                    // Note that fireAt() will modify the requested firing time
                     // if it is in the past.
                     // Note that past firing times might not be modified
-                    // if ThreadedComposite actors are used (since the request 
-                    // might be at a present time inside the ThreadedComposite, 
-                    // but a past time for the top-level model).  
+                    // if ThreadedComposite actors are used (since the request
+                    // might be at a present time inside the ThreadedComposite,
+                    // but a past time for the top-level model).
                     getDirector().fireAt(HttpActor.this, timeOfRequest);
                 } catch (IllegalActionException e) {
                     _request = null;
@@ -943,59 +966,57 @@ public class HttpActor extends TypedAtomicActor implements HttpService,
                             if (_debugging) {
                                 _debug("**** Request timed out.");
                             }
-                            
-                            // Set the content length (enables persistent 
+
+                            // Set the content length (enables persistent
                             // connections) and send the buffer
                             writer.println("Request timed out");
                             response.setContentLength(bytes.size());
                             bytes.writeTo(response.getOutputStream());
-                            
+
                             // Indicate that there is no longer a pending request or response.
                             _request = null;
                             _response = null;
-                            
-                            // Close the PrintWriter  
-                            // Close the ByteArrayOutputStream to avoid a 
+
+                            // Close the PrintWriter
+                            // Close the ByteArrayOutputStream to avoid a
                             // warning, though this is not necessary since
-                            // ByteArrayOutputStream's close() method has no 
+                            // ByteArrayOutputStream's close() method has no
                             // effect
                             // http://docs.oracle.com/javase/6/docs/api/java/io/ByteArrayOutputStream.html#close%28%29
-                            writer.close(); 
+                            writer.close();
                             bytes.close();
-                            response.setStatus(HttpServletResponse
-                                    .SC_REQUEST_TIMEOUT);
-                                                
+                            response.setStatus(HttpServletResponse.SC_REQUEST_TIMEOUT);
+
                             return;
                         }
                     } catch (InterruptedException e) {
                         if (_debugging) {
                             _debug("*** Request thread interrupted.");
                         }
-                        
-                        // Set the content length (enables persistent 
+
+                        // Set the content length (enables persistent
                         // connections) and send the buffer
                         writer.println("Get request thread interrupted");
                         response.setContentLength(bytes.size());
                         bytes.writeTo(response.getOutputStream());
-                        
+
                         // Indicate that there is no longer a pending request or response.
                         _request = null;
                         _response = null;
-                        
-                        // Close the PrintWriter  
-                        // Close the ByteArrayOutputStream to avoid a 
+
+                        // Close the PrintWriter
+                        // Close the ByteArrayOutputStream to avoid a
                         // warning, though this is not necessary since
-                        // ByteArrayOutputStream's close() method has no 
+                        // ByteArrayOutputStream's close() method has no
                         // effect
                         // http://docs.oracle.com/javase/6/docs/api/java/io/ByteArrayOutputStream.html#close%28%29
-                        writer.close(); 
+                        writer.close();
                         bytes.close();
-                        response.setStatus(HttpServletResponse
-                                .SC_INTERNAL_SERVER_ERROR);
+                        response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
                         return;
                     }
                 }
-                
+
                 response.setStatus(_response.statusCode);
 
                 // Write all cookies to the response, if there are some new
@@ -1007,22 +1028,22 @@ public class HttpActor extends TypedAtomicActor implements HttpService,
                     _debug("**** Servet received response: "
                             + _response.response);
                 }
-                
-                // Set the content length (enables persistent 
+
+                // Set the content length (enables persistent
                 // connections) and send the buffer
                 writer.println(_response.response);
                 response.setContentLength(bytes.size());
                 bytes.writeTo(response.getOutputStream());
-                
-                // Close the PrintWriter  
-                // Close the ByteArrayOutputStream to avoid a 
+
+                // Close the PrintWriter
+                // Close the ByteArrayOutputStream to avoid a
                 // warning, though this is not necessary since
-                // ByteArrayOutputStream's close() method has no 
+                // ByteArrayOutputStream's close() method has no
                 // effect
                 // http://docs.oracle.com/javase/6/docs/api/java/io/ByteArrayOutputStream.html#close%28%29
-                writer.close(); 
+                writer.close();
                 bytes.close();
-                
+
                 // Indicate response has been handled.
                 _response = null;
             }
@@ -1160,9 +1181,9 @@ public class HttpActor extends TypedAtomicActor implements HttpService,
          *  @exception IOException If the write fails.
          */
         private void _writeError(HttpServletResponse response,
-                int responseCode, String message, ByteArrayOutputStream bytes, 
+                int responseCode, String message, ByteArrayOutputStream bytes,
                 PrintWriter writer) throws IOException {
-            
+
             response.setContentType("text/html");
             response.setStatus(responseCode);
 
@@ -1173,17 +1194,17 @@ public class HttpActor extends TypedAtomicActor implements HttpService,
             writer.println(message);
             writer.println("</body>");
             writer.println("</html>");
-            
+
             response.setContentLength(bytes.size());
             bytes.writeTo(response.getOutputStream());
-            
-            // Close the PrintWriter  
-            // Close the ByteArrayOutputStream to avoid a 
+
+            // Close the PrintWriter
+            // Close the ByteArrayOutputStream to avoid a
             // warning, though this is not necessary since
-            // ByteArrayOutputStream's close() method has no 
+            // ByteArrayOutputStream's close() method has no
             // effect
             // http://docs.oracle.com/javase/6/docs/api/java/io/ByteArrayOutputStream.html#close%28%29
-            writer.close(); 
+            writer.close();
             bytes.close();
         }
     }
@@ -1233,7 +1254,7 @@ public class HttpActor extends TypedAtomicActor implements HttpService,
 
         /** The text of the response. */
         public String response;
-        
+
         /** Status code of the response. */
         public int statusCode = HttpServletResponse.SC_OK;
     }

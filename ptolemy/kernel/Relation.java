@@ -136,6 +136,7 @@ public class Relation extends NamedObj {
      *   be cloned.
      *  @return A new Relation.
      */
+    @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         Relation newObject = (Relation) super.clone(workspace);
         newObject._linkList = new CrossRefList(newObject);
@@ -294,6 +295,7 @@ public class Relation extends NamedObj {
      *  @deprecated Use linkedPortList() instead.
      *  @return An Enumeration of Port objects.
      */
+    @Deprecated
     public Enumeration linkedPorts() {
         return Collections.enumeration(linkedPortList());
     }
@@ -306,6 +308,7 @@ public class Relation extends NamedObj {
      *  @return An Enumeration of Port objects.
      *  @deprecated Use linkedPortList(Port) instead.
      */
+    @Deprecated
     public Enumeration linkedPorts(Port except) {
         return Collections.enumeration(linkedPortList(except));
     }
@@ -442,6 +445,7 @@ public class Relation extends NamedObj {
      *  @return A description of the object.
      * @exception IllegalActionException
      */
+    @Override
     protected String _description(int detail, int indent, int bracket)
             throws IllegalActionException {
         try {
@@ -504,6 +508,7 @@ public class Relation extends NamedObj {
      *   and has the wrong class, or if the specified container is not
      *   an instance of CompositeEntity.
      */
+    @Override
     protected NamedObj _getContainedObject(NamedObj container,
             String relativeName) throws IllegalActionException {
         if (!(container instanceof CompositeEntity)) {

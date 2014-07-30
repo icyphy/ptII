@@ -85,6 +85,7 @@ public class KielerLayoutAction extends Object implements IGuiAction, Filter {
      *
      * @param model the model
      */
+    @Override
     public void doAction(NamedObj model) {
         try {
             if (!accept(model)) {
@@ -125,7 +126,7 @@ public class KielerLayoutAction extends Object implements IGuiAction, Filter {
                             + " found by findEffigy() is "
                             + (firstFrame == null ? "null" : "a \""
                                     + firstFrame.getClass().getName() + "\"")
-                            + ", which is not an ActorGraphFrame or FSMGraphFrame.";
+                                    + ", which is not an ActorGraphFrame or FSMGraphFrame.";
                 }
                 throw new InternalErrorException(model, null,
                         "For now only actor models and modal models are supported by KIELER layout. "
@@ -172,6 +173,7 @@ public class KielerLayoutAction extends Object implements IGuiAction, Filter {
      * @param o The object to be be checked.
      * @return true if the model can be laid out with this action.
      */
+    @Override
     public boolean accept(Object o) {
         return o instanceof CompositeActor || o instanceof FSMActor;
     }

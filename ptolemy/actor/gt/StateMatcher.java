@@ -72,7 +72,7 @@ import ptolemy.vergil.gt.StateMatcherController;
  @Pt.AcceptedRating Red (tfeng)
  */
 public class StateMatcher extends State implements GTEntity, TypedActor,
-        ValueListener {
+ValueListener {
 
     /** Construct a state with the given name contained by the specified
      *  composite entity. The container argument must not be null, or a
@@ -115,6 +115,7 @@ public class StateMatcher extends State implements GTEntity, TypedActor,
      *
      *  @param initializable The initializable.
      */
+    @Override
     public void addInitializable(Initializable initializable) {
     }
 
@@ -125,6 +126,7 @@ public class StateMatcher extends State implements GTEntity, TypedActor,
      *  @exception CloneNotSupportedException If a derived class has
      *   has an attribute that cannot be cloned.
      */
+    @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         StateMatcher newObject = (StateMatcher) super.clone(workspace);
         newObject._causalityInterface = null;
@@ -138,6 +140,7 @@ public class StateMatcher extends State implements GTEntity, TypedActor,
      *  In this implementation no receivers will be created
      *  @exception IllegalActionException If any port throws it.
      */
+    @Override
     public void createReceivers() throws IllegalActionException {
     }
 
@@ -145,6 +148,7 @@ public class StateMatcher extends State implements GTEntity, TypedActor,
      *
      *  @exception IllegalActionException Not thrown in this class.
      */
+    @Override
     public void fire() throws IllegalActionException {
     }
 
@@ -160,6 +164,7 @@ public class StateMatcher extends State implements GTEntity, TypedActor,
      *  @return A representation of the dependencies between input ports
      *   and output ports.
      */
+    @Override
     public CausalityInterface getCausalityInterface() {
         Director director = getDirector();
         if (_causalityInterface != null
@@ -180,6 +185,7 @@ public class StateMatcher extends State implements GTEntity, TypedActor,
      *
      *  @return The attribute that stores all the criteria.
      */
+    @Override
     public GTIngredientsAttribute getCriteriaAttribute() {
         return criteria;
     }
@@ -188,6 +194,7 @@ public class StateMatcher extends State implements GTEntity, TypedActor,
      *
      *  @return null.
      */
+    @Override
     public String getDefaultIconDescription() {
         return null;
     }
@@ -196,6 +203,7 @@ public class StateMatcher extends State implements GTEntity, TypedActor,
      *
      *  @return null.
      */
+    @Override
     public Director getDirector() {
         return null;
     }
@@ -204,6 +212,7 @@ public class StateMatcher extends State implements GTEntity, TypedActor,
      *
      *  @return null.
      */
+    @Override
     public Director getExecutiveDirector() {
         return null;
     }
@@ -212,6 +221,7 @@ public class StateMatcher extends State implements GTEntity, TypedActor,
      *
      *  @return null.
      */
+    @Override
     public Manager getManager() {
         return null;
     }
@@ -220,6 +230,7 @@ public class StateMatcher extends State implements GTEntity, TypedActor,
      *
      *  @return The attribute that stores all the operations.
      */
+    @Override
     public GTIngredientsAttribute getOperationsAttribute() {
         return operations;
     }
@@ -231,6 +242,7 @@ public class StateMatcher extends State implements GTEntity, TypedActor,
      *  @return The attribute that stores the name of the corresponding entity.
      *  @see #labelSet()
      */
+    @Override
     public PatternObjectAttribute getPatternObjectAttribute() {
         return patternObject;
     }
@@ -239,6 +251,7 @@ public class StateMatcher extends State implements GTEntity, TypedActor,
      *
      *  @exception IllegalActionException Not thrown in this class.
      */
+    @Override
     public void initialize() throws IllegalActionException {
     }
 
@@ -246,6 +259,7 @@ public class StateMatcher extends State implements GTEntity, TypedActor,
      *
      *  @return An empty list.
      */
+    @Override
     public List<?> inputPortList() {
         return _EMPTY_LIST;
     }
@@ -254,6 +268,7 @@ public class StateMatcher extends State implements GTEntity, TypedActor,
      *  for this actor.
      *  @return false
      */
+    @Override
     public boolean isBackwardTypeInferenceEnabled() {
         return false;
     }
@@ -262,6 +277,7 @@ public class StateMatcher extends State implements GTEntity, TypedActor,
      *
      *  @return true.
      */
+    @Override
     public boolean isFireFunctional() {
         return true;
     }
@@ -270,6 +286,7 @@ public class StateMatcher extends State implements GTEntity, TypedActor,
      *
      *  @return false.
      */
+    @Override
     public boolean isStrict() {
         return false;
     }
@@ -280,6 +297,7 @@ public class StateMatcher extends State implements GTEntity, TypedActor,
      *  @return 0
      *  @exception IllegalActionException Not thrown in this class.
      */
+    @Override
     public int iterate(int count) throws IllegalActionException {
         return 0;
     }
@@ -289,6 +307,7 @@ public class StateMatcher extends State implements GTEntity, TypedActor,
      *
      *  @return The set of names.
      */
+    @Override
     public Set<String> labelSet() {
         long version = workspace().getVersion();
         if (_labelSet == null || version > _version) {
@@ -316,10 +335,11 @@ public class StateMatcher extends State implements GTEntity, TypedActor,
      *  @param object The object to be tested.
      *  @return true if the object is an instance of State.
      */
+    @Override
     public boolean match(NamedObj object) {
         return object instanceof State
                 || object.getClass().getName()
-                        .equals("ptolemy.domains.modal.kernel.State");
+                .equals("ptolemy.domains.modal.kernel.State");
     }
 
     /** Return null.
@@ -327,6 +347,7 @@ public class StateMatcher extends State implements GTEntity, TypedActor,
      *  @return null.
      *  @exception IllegalActionException Not thrown in this class.
      */
+    @Override
     public Receiver newReceiver() throws IllegalActionException {
         return null;
     }
@@ -335,6 +356,7 @@ public class StateMatcher extends State implements GTEntity, TypedActor,
      *
      *  @return An empty list.
      */
+    @Override
     public List<?> outputPortList() {
         return _EMPTY_LIST;
     }
@@ -344,6 +366,7 @@ public class StateMatcher extends State implements GTEntity, TypedActor,
      *  @return false
      *  @exception IllegalActionException Not thrown in this class.
      */
+    @Override
     public boolean postfire() throws IllegalActionException {
         return false;
     }
@@ -353,6 +376,7 @@ public class StateMatcher extends State implements GTEntity, TypedActor,
      *  @return false
      *  @exception IllegalActionException Not thrown in this class.
      */
+    @Override
     public boolean prefire() throws IllegalActionException {
         return false;
     }
@@ -361,6 +385,7 @@ public class StateMatcher extends State implements GTEntity, TypedActor,
      *
      *  @exception IllegalActionException Not thrown in this class.
      */
+    @Override
     public void preinitialize() throws IllegalActionException {
     }
 
@@ -368,6 +393,7 @@ public class StateMatcher extends State implements GTEntity, TypedActor,
      *
      *  @param initializable The initializable.
      */
+    @Override
     public void removeInitializable(Initializable initializable) {
     }
 
@@ -403,6 +429,7 @@ public class StateMatcher extends State implements GTEntity, TypedActor,
      *   collides with a name already in the container.
      *  @see #getContainer()
      */
+    @Override
     public void setContainer(CompositeEntity container)
             throws IllegalActionException, NameDuplicationException {
         super.setContainer(container);
@@ -422,16 +449,19 @@ public class StateMatcher extends State implements GTEntity, TypedActor,
 
     /** Do nothing.
      */
+    @Override
     public void stop() {
     }
 
     /** Do nothing.
      */
+    @Override
     public void stopFire() {
     }
 
     /** Do nothing.
      */
+    @Override
     public void terminate() {
     }
 
@@ -440,6 +470,7 @@ public class StateMatcher extends State implements GTEntity, TypedActor,
      *  @return An empty list.
      *  @exception IllegalActionException Not thrown in this class.
      */
+    @Override
     public Set<Inequality> typeConstraints() throws IllegalActionException {
         return _EMPTY_SET;
     }
@@ -449,6 +480,7 @@ public class StateMatcher extends State implements GTEntity, TypedActor,
      *  @param attribute The attribute containing ingredients of this entity.
      *  @see GTEntityUtils#updateAppearance(GTEntity, GTIngredientsAttribute)
      */
+    @Override
     public void updateAppearance(GTIngredientsAttribute attribute) {
         // GTEntityUtils.updateAppearance(this, attribute);
     }
@@ -458,6 +490,7 @@ public class StateMatcher extends State implements GTEntity, TypedActor,
      *  @param settable The object that has changed value.
      *  @see GTEntityUtils#valueChanged(GTEntity, Settable)
      */
+    @Override
     public void valueChanged(Settable settable) {
         GTEntityUtils.valueChanged(this, settable);
     }
@@ -466,6 +499,7 @@ public class StateMatcher extends State implements GTEntity, TypedActor,
      *
      *  @exception IllegalActionException Not thrown in this class.
      */
+    @Override
     public void wrapup() throws IllegalActionException {
     }
 

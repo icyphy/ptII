@@ -82,7 +82,7 @@ public class SequenceDirector extends SequencedModelDirector {
      *   an entity with the specified name.
      */
     public SequenceDirector() throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         super();
     }
 
@@ -98,7 +98,7 @@ public class SequenceDirector extends SequencedModelDirector {
      *   an entity with the specified name.
      */
     public SequenceDirector(Workspace workspace) throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         super(workspace);
     }
 
@@ -141,6 +141,7 @@ public class SequenceDirector extends SequencedModelDirector {
      *  @exception InvalidStateException If this director does not have a
      *  container.
      */
+    @Override
     public void fire() throws IllegalActionException {
 
         // Must call preinitialize() before fire(), since otherwise the
@@ -177,6 +178,7 @@ public class SequenceDirector extends SequencedModelDirector {
      *  one of the associated actors throws it.
      */
 
+    @Override
     public void preinitialize() throws IllegalActionException {
         super.preinitialize();
 

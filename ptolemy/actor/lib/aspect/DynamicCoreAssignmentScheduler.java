@@ -101,8 +101,8 @@ public class DynamicCoreAssignmentScheduler extends AtomicExecutionAspect {
      *    as execution time or priority cannot be read.
      */
     @Override
-    public Time schedule(NamedObj actor, Time currentPlatformTime, Time deadline,
-            Time executionTime) throws IllegalActionException {
+    public Time schedule(NamedObj actor, Time currentPlatformTime,
+            Time deadline, Time executionTime) throws IllegalActionException {
         super.schedule(actor, currentPlatformTime, deadline, executionTime);
         Time minimumRemainingTime = null;
         // Check if is already executing somewhere.

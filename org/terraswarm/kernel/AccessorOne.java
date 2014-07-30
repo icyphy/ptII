@@ -46,13 +46,13 @@ import ptolemy.kernel.util.StringAttribute;
  It also sets the actor to "restricted" mode, which restricts
  the functionality of the methods methods and variables
  provided in the JavaScript context.
- 
+
  FIXME: This should support versioning of accessors.
  It should check the accessorSource for updates and replace
  itself if there is a newer version and the user agrees to
  the replacement. This will be tricky because any parameters
  and connections previously set should be preserved.
- 
+
  @author Edward A. Lee
  @version $Id$
  @since Ptolemy II 10.0
@@ -60,7 +60,7 @@ import ptolemy.kernel.util.StringAttribute;
  @Pt.AcceptedRating Red (bilung)
  */
 public class AccessorOne extends JavaScript {
-        
+
     /** Construct a library with the given container and name.
      *  @param container The container.
      *  @param name The name of this library.
@@ -72,29 +72,29 @@ public class AccessorOne extends JavaScript {
     public AccessorOne(CompositeEntity container, String name)
             throws NameDuplicationException, IllegalActionException {
         super(container, name);
-        
+
         accessorSource = new StringAttribute(this, "accessorSource");
         accessorSource.setVisibility(Settable.NOT_EDITABLE);
-        
+
         SingletonParameter hide = new SingletonParameter(scriptIn, "_hide");
         hide.setExpression("true");
-        
-            // The base class, by default, exposes the instance of this actor in the
-            // JavaScript variable "actor", which gives an accessor full access
-            // to the model, and hence a way to invoke Java code. Prevent this
+
+        // The base class, by default, exposes the instance of this actor in the
+        // JavaScript variable "actor", which gives an accessor full access
+        // to the model, and hence a way to invoke Java code. Prevent this
         // by putting the actor in "restricted" mode.
         _restricted = true;
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         parameters                        ////
-    
+
     /** The source of the accessor (a URL). */
     public StringAttribute accessorSource;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
@@ -103,9 +103,10 @@ public class AccessorOne extends JavaScript {
      *  @exception NameDuplicationException If the superclass throws it.
      */
     @Override
-    protected void _addPort(TypedIOPort port) throws IllegalActionException, NameDuplicationException {
-            super._addPort(port);
-            SingletonParameter showName = new SingletonParameter(port, "_showName");
-            showName.setExpression("true");
+    protected void _addPort(TypedIOPort port) throws IllegalActionException,
+            NameDuplicationException {
+        super._addPort(port);
+        SingletonParameter showName = new SingletonParameter(port, "_showName");
+        showName.setExpression("true");
     }
 }

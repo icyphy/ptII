@@ -85,6 +85,7 @@ public class TestNullNamedObj extends NamedObj {
      *  then return an empty string, "".
      *  @return The name of the object.
      */
+    @Override
     public String getName() {
         return _name;
     }
@@ -98,6 +99,7 @@ public class TestNullNamedObj extends NamedObj {
      *   class. May be thrown by derived classes if the container
      *   already contains an object with this name.
      */
+    @Override
     public void setName(String name) throws NameDuplicationException {
         //if (name == null) {
         //    name = new String("");

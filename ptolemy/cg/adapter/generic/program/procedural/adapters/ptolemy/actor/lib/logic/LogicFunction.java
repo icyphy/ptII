@@ -54,6 +54,7 @@ public class LogicFunction extends NamedProgramCodeGeneratorAdapter {
      * @return The generated code.
      * @exception IllegalActionException Not thrown in this base class.
      */
+    @Override
     protected String _generateFireCode() throws IllegalActionException {
         StringBuffer codeBuffer = new StringBuffer();
         codeBuffer.append(super._generateFireCode());
@@ -95,6 +96,7 @@ public class LogicFunction extends NamedProgramCodeGeneratorAdapter {
     /** Return the name of the port that is the time source.
      *  @return The string "input".
      */
+    @Override
     public String getTimeSourcePortName() {
         return "input";
     }

@@ -71,6 +71,7 @@ public class PropertyChangeMulticaster implements PropertyChangeListener {
         propertyChange(evt);
     }
 
+    @Override
     public void propertyChange(PropertyChangeEvent evt) {
         for (Iterator i = listeners(); i.hasNext();) {
             PropertyChangeListener l = (PropertyChangeListener) i.next();

@@ -54,6 +54,7 @@ public class LongTokenHandler implements TokenHandler<LongToken> {
      *  @exception IOException If the stream cannot be written.
      *  @see ptserver.data.handler.TokenHandler#convertToBytes(ptolemy.data.Token, java.io.DataOutputStream)
      */
+    @Override
     public void convertToBytes(LongToken token, DataOutputStream outputStream)
             throws IOException {
         outputStream.writeLong(token.longValue());
@@ -66,6 +67,7 @@ public class LongTokenHandler implements TokenHandler<LongToken> {
      *  @exception IOException If the stream cannot be read.
      *  @see ptserver.data.handler.TokenHandler#convertToToken(java.io.DataInputStream, Class)
      */
+    @Override
     public LongToken convertToToken(DataInputStream inputStream,
             Class<? extends LongToken> tokenType) throws IOException {
         return new LongToken(inputStream.readLong());

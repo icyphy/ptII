@@ -46,10 +46,10 @@ is also associated with a code generator.
 @since Ptolemy II 10.0
 @Pt.ProposedRating Red (sssf)
 @Pt.AcceptedRating Red (sssf)
-*/
+ */
 public class FSMDirector
-        extends
-        ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.domains.modal.kernel.FSMDirector {
+extends
+ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.domains.modal.kernel.FSMDirector {
 
     /** Construct the code generator helper associated
      *  with the given modal controller.
@@ -57,7 +57,8 @@ public class FSMDirector
      */
     public FSMDirector(ptolemy.domains.modal.kernel.FSMDirector component) {
         super(component);
-        System.out.println("ptolemy/cg/adapter/generic/program/procedural/java/adapters/ptolemy/domains/modal/kernel/FSMDirector.java ctor");
+        System.out
+                .println("ptolemy/cg/adapter/generic/program/procedural/java/adapters/ptolemy/domains/modal/kernel/FSMDirector.java ctor");
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -71,7 +72,8 @@ public class FSMDirector
      */
     @Override
     public String generateVariableDeclaration() throws IllegalActionException {
-        StringBuffer code = new StringBuffer(super.generateVariableDeclaration());
+        StringBuffer code = new StringBuffer(
+                super.generateVariableDeclaration());
         Iterator<?> actors = ((CompositeActor) _director.getContainer())
                 .deepEntityList().iterator();
         while (actors.hasNext()) {

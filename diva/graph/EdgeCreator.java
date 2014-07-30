@@ -54,6 +54,7 @@ public abstract class EdgeCreator extends AbstractInteractor {
     /** Create a new edge, add it to the graph controller and add
      * the connector to the selection.
      */
+    @Override
     public void mousePressed(LayerEvent e) {
         Figure source = e.getFigureSource();
         FigureLayer layer = (FigureLayer) e.getLayerSource();

@@ -126,6 +126,7 @@ public class NavigableEffigy extends PtolemyEffigy {
      * this is to fix a TableauFrame bug in the _close() method
      * @see thales.vergil.navigable.NavigableActorGraphFrame#_close()
      */
+    @Override
     public int numberOfOpenTableaux() {
         if (_lieAtNumberOfOpendTableaux) {
             _lieAtNumberOfOpendTableaux = false;
@@ -172,6 +173,7 @@ public class NavigableEffigy extends PtolemyEffigy {
          *  capable of creating an effigy without a URL being specified.
          *  @return True.
          */
+        @Override
         public boolean canCreateBlankEffigy() {
             return true;
         }
@@ -198,6 +200,7 @@ public class NavigableEffigy extends PtolemyEffigy {
          *  @exception Exception If the URL cannot be read, or if the data
          *   is malformed in some way.
          */
+        @Override
         public Effigy createEffigy(CompositeEntity container, URL base,
                 URL input) throws Exception {
             if (input == null) {
@@ -486,7 +489,7 @@ public class NavigableEffigy extends PtolemyEffigy {
                 while ((aLine = reader.readLine()) != null) {
                     if (aLine.indexOf("<property") != -1
                             && (aLine.indexOf("name=\"" + _tagToCheck + "\"") != -1 || aLine
-                                    .indexOf("name='" + _tagToCheck + "'") != -1)) {
+                            .indexOf("name='" + _tagToCheck + "'") != -1)) {
                         answer = true;
                         break;
                     }
@@ -546,6 +549,7 @@ public class NavigableEffigy extends PtolemyEffigy {
          *  capable of creating an effigy without a URL being specified.
          *  @return False.
          */
+        @Override
         public boolean canCreateBlankEffigy() {
             return false;
         }

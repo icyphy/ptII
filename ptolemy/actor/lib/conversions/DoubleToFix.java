@@ -128,6 +128,7 @@ public class DoubleToFix extends Converter {
      *  @param attribute The attribute that changed.
      *  @exception IllegalActionException If the parameter value is invalid.
      */
+    @Override
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         if (attribute == precision) {
@@ -159,6 +160,7 @@ public class DoubleToFix extends Converter {
      *  @exception CloneNotSupportedException If a derived class contains
      *   an attribute that cannot be cloned.
      */
+    @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         DoubleToFix newObject = (DoubleToFix) super.clone(workspace);
 
@@ -177,6 +179,7 @@ public class DoubleToFix extends Converter {
      *  <i>rounding</i> parameter.
      *  @exception IllegalActionException If there is no director.
      */
+    @Override
     public void fire() throws IllegalActionException {
         super.fire();
         DoubleToken in = (DoubleToken) input.get(0);
@@ -189,6 +192,7 @@ public class DoubleToFix extends Converter {
      *  what the superclass returns (presumably true).
      *  @exception IllegalActionException If there is no director.
      */
+    @Override
     public boolean prefire() throws IllegalActionException {
         if (!input.hasToken(0)) {
             return false;

@@ -406,6 +406,7 @@ public class Quantizer {
      *  @return A fixed-point representation of the value.
      *  @deprecated Use roundToZero instead.
      */
+    @Deprecated
     public static FixPoint truncate(double value, Precision precision) {
         Quantization q = new FixPointQuantization(precision, Overflow.SATURATE,
                 Rounding.TRUNCATE);
@@ -431,6 +432,7 @@ public class Quantizer {
      *  @return A fixed-point representation of the value.
      *  @deprecated Use roundToZero instead.
      */
+    @Deprecated
     public static FixPoint truncate(BigDecimal value, Precision precision) {
         Quantization q = new FixPointQuantization(precision, Overflow.SATURATE,
                 Rounding.TRUNCATE);
@@ -460,6 +462,7 @@ public class Quantizer {
      *  @return A new fixed-point representation of the value.
      *  @deprecated Use roundToZero instead.
      */
+    @Deprecated
     public static FixPoint truncate(FixPoint value, Precision newPrecision,
             Overflow mode) {
         Quantization q = new FixPointQuantization(newPrecision, mode,

@@ -133,7 +133,7 @@ public class ActorGraphFrame extends ExtendedGraphFrame
     public ActorGraphFrame(CompositeEntity entity, Tableau tableau) {
         this(entity, tableau, null);
     }
-    
+
     /**
      * Construct a frame associated with the specified Ptolemy II model. After
      * constructing this, it is necessary to call setVisible(true) to make the
@@ -180,6 +180,7 @@ public class ActorGraphFrame extends ExtendedGraphFrame
      *  dispose() method of the superclass,
      *  {@link ptolemy.vergil.basic.ExtendedGraphFrame}.
      */
+    @Override
     public void dispose() {
         if (_debugClosing) {
             System.out.println("ActorGraphFrame.dispose() : " + this.getName());
@@ -321,6 +322,7 @@ public class ActorGraphFrame extends ExtendedGraphFrame
      * Create the menus that are used by this frame. It is essential that
      * _createGraphPane() be called before this.
      */
+    @Override
     protected void _addMenus() {
         super._addMenus();
 
@@ -384,6 +386,7 @@ public class ActorGraphFrame extends ExtendedGraphFrame
      *
      * @return True if the close completes, and false otherwise.
      */
+    @Override
     protected boolean _close() {
         if (_debugClosing) {
             System.out.println("ActorGraphFrame._close() : " + this.getName());
@@ -409,6 +412,7 @@ public class ActorGraphFrame extends ExtendedGraphFrame
      *
      * @return The items in the File menu.
      */
+    @Override
     protected JMenuItem[] _createFileMenuItems() {
         // NOTE: Cannot use getConfiguration() because the configuration is
         // not set when this method is called when instantiating Top. Hence, we assume that there
@@ -435,7 +439,9 @@ public class ActorGraphFrame extends ExtendedGraphFrame
                     JMenuItem importLibraryItem = new JMenuItem(
                             _importLibraryAction);
                     item.add(importLibraryItem);
-                    _importAccessorAction = new ImportAccessorAction(ActorGraphFrame.this, "http://www.terraswarm.org/accessors");
+                    _importAccessorAction = new ImportAccessorAction(
+                            ActorGraphFrame.this,
+                            "http://www.terraswarm.org/accessors");
                     JMenuItem importAccessorItem = new JMenuItem(
                             _importAccessorAction);
                     item.add(importAccessorItem);
@@ -474,6 +480,7 @@ public class ActorGraphFrame extends ExtendedGraphFrame
      * @param entity The object to be displayed in the pane.
      * @return The pane that is created.
      */
+    @Override
     protected GraphPane _createGraphPane(NamedObj entity) {
         _controller = new ActorEditorGraphController();
         _controller.setConfiguration(getConfiguration());
@@ -508,7 +515,7 @@ public class ActorGraphFrame extends ExtendedGraphFrame
 
     /** The action for importing a library of components. */
     protected Action _importLibraryAction;
-    
+
     /** The action for importing accessors. */
     protected Action _importAccessorAction;
 
@@ -534,6 +541,7 @@ public class ActorGraphFrame extends ExtendedGraphFrame
     /** Listener for debug menu commands. */
     public class DebugMenuListener implements ActionListener {
         /** React to a menu command. */
+        @Override
         public void actionPerformed(ActionEvent e) {
             JMenuItem target = (JMenuItem) e.getSource();
             String actionCommand = target.getActionCommand();
@@ -607,16 +615,16 @@ public class ActorGraphFrame extends ExtendedGraphFrame
                                         && _listeningTo != director) {
                                     if (_listeningTo != null) {
                                         _listeningTo
-                                                .removeDebugListener(_controller);
+                                        .removeDebugListener(_controller);
                                     }
 
                                     director.addDebugListener(_controller);
                                     _listeningTo = director;
                                 } else {
                                     MessageHandler
-                                            .error("Cannot find the director. "
-                                                    + "Possibly this is because this "
-                                                    + "is a class, not an instance.");
+                                    .error("Cannot find the director. "
+                                            + "Possibly this is because this "
+                                            + "is a class, not an instance.");
                                 }
 
                             } catch (NumberFormatException ex) {
@@ -627,7 +635,7 @@ public class ActorGraphFrame extends ExtendedGraphFrame
                         }
                     } else {
                         MessageHandler
-                                .error("Model is not an actor. Cannot animate.");
+                        .error("Model is not an actor. Cannot animate.");
                     }
                 } else if (actionCommand.equals("Stop Animating")) {
                     if (_listeningTo != null) {
@@ -680,6 +688,7 @@ public class ActorGraphFrame extends ExtendedGraphFrame
          *
          * @param e The event that initiates the action.
          */
+        @Override
         public void actionPerformed(ActionEvent e) {
             Query query = new Query();
             query.setTextWidth(60);
@@ -756,6 +765,7 @@ public class ActorGraphFrame extends ExtendedGraphFrame
          *
          * @param e The event that initiates the action.
          */
+        @Override
         public void actionPerformed(ActionEvent e) {
             Query query = new Query();
             query.setTextWidth(60);
@@ -847,6 +857,7 @@ public class ActorGraphFrame extends ExtendedGraphFrame
             // Integer.valueOf(KeyEvent.VK_H));
         }
 
+        @Override
         public void actionPerformed(ActionEvent e) {
             createHierarchy();
         }
@@ -869,6 +880,7 @@ public class ActorGraphFrame extends ExtendedGraphFrame
          * Export a design pattern by first opening a file chooser dialog and then
          * exporting the specified library.
          */
+        @Override
         public void actionPerformed(ActionEvent e) {
             exportDesignPattern();
         }
@@ -891,6 +903,7 @@ public class ActorGraphFrame extends ExtendedGraphFrame
          * Import a design pattern by first opening a file chooser dialog and then
          * importing the specified design pattern.
          */
+        @Override
         public void actionPerformed(ActionEvent e) {
             importDesignPattern();
         }
@@ -915,19 +928,20 @@ public class ActorGraphFrame extends ExtendedGraphFrame
          * See {@link ptolemy.actor.gui.UserActorLibrary#openLibrary(Configuration, File)}
          * for information on the file format.
          */
+        @Override
         public void actionPerformed(ActionEvent e) {
             setLastDirectory(ActorGraphFrame.importLibrary(getLastDirectory(),
                     ActorGraphFrame.this, getConfiguration()));
         }
     }
-    
-    /** Action to import an accessor. 
+
+    /** Action to import an accessor.
      *  @author Patricia Derler
      */
     private static class ImportAccessorAction extends AbstractAction {
         // FindBugs suggests making this static.
 
-        /** Create a new action to import an accessor. 
+        /** Create a new action to import an accessor.
          * @param graphFrame
          * @param initialLastLocation
          */
@@ -939,16 +953,16 @@ public class ActorGraphFrame extends ExtendedGraphFrame
             putValue("tooltip", "Instantiate an accessor");
             // putValue(GUIUtilities.MNEMONIC_KEY, Integer.valueOf(KeyEvent.VK_E));
         }
-        
+
         /** The graph frame that contains this action. */
         private ExtendedGraphFrame _graphFrame;
-        
+
         /** The most recent accessor. */
         private String _lastAccessorName;
-        
+
         /** The most recent location. */
         private String _lastLocation;
-        
+
         /** Import an accessor.
          */
         @Override
@@ -956,10 +970,11 @@ public class ActorGraphFrame extends ExtendedGraphFrame
             final Query query = new Query();
             query.setTextWidth(60);
             query.addLine("location", "location", _lastLocation);
-            final JComboBox box = query.addChoice("accessor", "accessor", new String[]{}, _lastAccessorName);
+            final JComboBox box = query.addChoice("accessor", "accessor",
+                    new String[] {}, _lastAccessorName);
             updateComboBox(box, query);
             query.addQueryListener(new QueryListener() {
-                
+
                 @Override
                 public void changed(String name) {
                     if (name.equals("location")) {
@@ -977,12 +992,12 @@ public class ActorGraphFrame extends ExtendedGraphFrame
                 AbstractBasicGraphModel model = (AbstractBasicGraphModel) controller
                         .getGraphModel();
                 NamedObj context = model.getPtolemyModel();
-                
+
                 // Use the center of the screen as a location.
                 Rectangle2D bounds = _graphFrame.getVisibleCanvasRectangle();
                 final double x = bounds.getWidth() / 2.0;
                 final double y = bounds.getHeight() / 2.0;
-                
+
                 URL url;
                 String input = "";
                 _lastAccessorName = query.getStringValue("accessor");
@@ -991,36 +1006,40 @@ public class ActorGraphFrame extends ExtendedGraphFrame
                 buffer.append("<group name=\"auto\">\n");
                 try {
                     url = new URL(urlSpec);
-                    
+
                     BufferedReader in = new BufferedReader(
                             new InputStreamReader(url.openStream()));
                     StringBuffer contents = new StringBuffer();
                     while ((input = in.readLine()) != null) {
                         contents.append(input);
                     }
-                    
-                    TransformerFactory factory = TransformerFactory.newInstance();
+
+                    TransformerFactory factory = TransformerFactory
+                            .newInstance();
                     String xsltLocation = "$CLASSPATH/org/terraswarm/kernel/XMLJStoMOML.xslt";
-                    Source xslt = new StreamSource(FileUtilities.nameToFile(xsltLocation, null));
-                    Transformer transformer = factory.newTransformer(xslt); 
-                    StreamSource source = new StreamSource(new InputStreamReader(url.openStream()));
+                    Source xslt = new StreamSource(FileUtilities.nameToFile(
+                            xsltLocation, null));
+                    Transformer transformer = factory.newTransformer(xslt);
+                    StreamSource source = new StreamSource(
+                            new InputStreamReader(url.openStream()));
                     StringWriter outWriter = new StringWriter();
-                    StreamResult result = new StreamResult( outWriter );
+                    StreamResult result = new StreamResult(outWriter);
                     transformer.transform(source, result);
-                    contents = outWriter.getBuffer(); 
-                    
+                    contents = outWriter.getBuffer();
+
                     buffer.append(contents);
                     in.close();
                 } catch (Exception e1) {
-                        MessageHandler.error("Failed to import accessor.", e1);
+                    MessageHandler.error("Failed to import accessor.", e1);
                     return;
                 }
                 buffer.append("</group>\n");
-                
+
                 // TODO set location
-                
+
                 MoMLChangeRequest request = new MoMLChangeRequest(this,
                         context, buffer.toString()) {
+                    @Override
                     protected void _postParse(MoMLParser parser) {
                         List<NamedObj> topObjects = parser.topObjectsCreated();
                         if (topObjects == null) {
@@ -1045,24 +1064,29 @@ public class ActorGraphFrame extends ExtendedGraphFrame
                                 }
                             }
                             // Set the source.
-                            Attribute source = object.getAttribute("accessorSource");
+                            Attribute source = object
+                                    .getAttribute("accessorSource");
                             if (source instanceof StringAttribute) {
-                                    try {
-                                                                        ((StringAttribute)source).setExpression(urlSpec);
-                                                                        // Have to mark persistent or the urlSpec will be assumed to be part
-                                                                        // of the class definition and hence will not be exported to MoML.
-                                                                        /// FIXME: NOTHING WORKS HERE!!!! Tried setPersistent(true) and setDerviedLevel(1).
-                                                                        ((StringAttribute)source).setDerivedLevel(Integer.MAX_VALUE);
-                                                                } catch (IllegalActionException e) {
-                                                                        // Should not happen.
-                                                                        throw new InternalErrorException(object, e, "Failed to set accessorSource");
-                                                                }
+                                try {
+                                    ((StringAttribute) source)
+                                            .setExpression(urlSpec);
+                                    // Have to mark persistent or the urlSpec will be assumed to be part
+                                    // of the class definition and hence will not be exported to MoML.
+                                    /// FIXME: NOTHING WORKS HERE!!!! Tried setPersistent(true) and setDerviedLevel(1).
+                                    ((StringAttribute) source)
+                                            .setDerivedLevel(Integer.MAX_VALUE);
+                                } catch (IllegalActionException e) {
+                                    // Should not happen.
+                                    throw new InternalErrorException(object, e,
+                                            "Failed to set accessorSource");
+                                }
                             }
                         }
                         parser.clearTopObjectsList();
                         super._postParse(parser);
                     }
 
+                    @Override
                     protected void _preParse(MoMLParser parser) {
                         super._preParse(parser);
                         parser.clearTopObjectsList();
@@ -1082,19 +1106,18 @@ public class ActorGraphFrame extends ExtendedGraphFrame
                     return;
                 } else if (!_lastLocation.endsWith("/")) {
                     _lastLocation = _lastLocation + "/";
-                } 
+                }
                 url = new URL(_lastLocation + "index.json");
-                
-                in = new BufferedReader(
-                        new InputStreamReader(url.openStream()));
-        
+
+                in = new BufferedReader(new InputStreamReader(url.openStream()));
+
                 StringBuffer buffer = new StringBuffer();
                 String inputLine;
                 while ((inputLine = in.readLine()) != null) {
                     buffer.append(inputLine);
                 }
                 in.close();
-                
+
                 JSONArray array = new JSONArray(buffer.toString());
                 for (int i = 0; i < array.length(); i++) {
                     box.addItem(array.get(i));
@@ -1105,7 +1128,7 @@ public class ActorGraphFrame extends ExtendedGraphFrame
             } catch (JSONException e) {
                 // TODO Auto-generated catch block
                 e.printStackTrace();
-            } 
+            }
         }
     }
 
@@ -1125,6 +1148,7 @@ public class ActorGraphFrame extends ExtendedGraphFrame
          * Instantiate a class by first opening a dialog to get a class name and
          * then issuing a change request.
          */
+        @Override
         public void actionPerformed(ActionEvent e) {
             Query query = new Query();
             query.setTextWidth(60);
@@ -1203,6 +1227,7 @@ public class ActorGraphFrame extends ExtendedGraphFrame
          * Create a new instance of the current model in the actor library of
          * the configuration.
          */
+        @Override
         public void actionPerformed(ActionEvent e) {
             PtolemyEffigy effigy = (PtolemyEffigy) getTableau().getContainer();
             NamedObj object = effigy.getModel();

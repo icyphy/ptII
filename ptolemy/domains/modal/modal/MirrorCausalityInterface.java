@@ -63,15 +63,15 @@ equivalent.
 @since Ptolemy II 8.0
 @Pt.ProposedRating Yellow (eal)
 @Pt.AcceptedRating Red (eal)
-*/
+ */
 public class MirrorCausalityInterface extends CausalityInterfaceForComposites {
 
     /** Construct a causality interface that mirrors the specified causality
      *  interface.
      *  @param actor The actor for which this is an interface.
      *  @param causality The interface to mirror.
-      * @exception IllegalArgumentException If the actor parameter is not
-      * an instance of CompositeEntity.
+     * @exception IllegalArgumentException If the actor parameter is not
+     * an instance of CompositeEntity.
      */
     public MirrorCausalityInterface(Actor actor, CausalityInterface causality)
             throws IllegalArgumentException {
@@ -98,14 +98,15 @@ public class MirrorCausalityInterface extends CausalityInterfaceForComposites {
      *  the FSM and caches the result. Subsequent calls just
      *  look up the result.
      *  @param input The input port.
-      *  @param output The output port, or null to update the
-      *   dependencies (and record equivalence classes) without
-      *   requiring there to be an output port.
-      *  @return The dependency between the specified input port
-      *   and the specified output port, or null if a null output
-      *   is port specified.
+     *  @param output The output port, or null to update the
+     *   dependencies (and record equivalence classes) without
+     *   requiring there to be an output port.
+     *  @return The dependency between the specified input port
+     *   and the specified output port, or null if a null output
+     *   is port specified.
      *  @exception IllegalActionException If a guard expression cannot be parsed.
      */
+    @Override
     public Dependency getDependency(IOPort input, IOPort output)
             throws IllegalActionException {
         // If the dependency is not up-to-date, then update it.
@@ -192,7 +193,7 @@ public class MirrorCausalityInterface extends CausalityInterfaceForComposites {
                             throw new IllegalActionException(_actor,
                                     localInput, "Expected matching port in "
                                             + causality.getActor()
-                                                    .getFullName());
+                                            .getFullName());
                         }
                         equivalences.addAll(_localMirrors(causality
                                 .equivalentPorts(mirrorInput)));

@@ -76,6 +76,7 @@ public class GRReceiver extends Mailbox {
      *
      *  @return True.
      */
+    @Override
     public boolean hasRoom() {
         return true;
     }
@@ -89,6 +90,7 @@ public class GRReceiver extends Mailbox {
      *  @param token The token to be put into this receiver.
      *  @exception NoRoomException Not thrown in this base class
      */
+    @Override
     public void put(Token token) throws NoRoomException {
         _token = token;
     }

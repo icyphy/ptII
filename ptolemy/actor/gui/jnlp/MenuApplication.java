@@ -106,8 +106,8 @@ public class MenuApplication {
                         StringUtilities.getProperty("user.home"));
             } catch (SecurityException ex) {
                 System.out
-                        .println("Warning: MenuApplication: Could not get user.home property "
-                                + "or set user.dir property. (-sandbox always causes this)");
+                .println("Warning: MenuApplication: Could not get user.home property "
+                        + "or set user.dir property. (-sandbox always causes this)");
             } catch (Exception ex) {
                 // Don't crash here, just print a message and move on
                 ex.printStackTrace();

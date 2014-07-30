@@ -250,6 +250,7 @@ public class PthalesDirector extends SDFDirector {
     /** Attribute update.
      * @see ptolemy.domains.sdf.kernel.SDFDirector#attributeChanged(ptolemy.kernel.util.Attribute)
      */
+    @Override
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         if (attribute == _library) {
@@ -265,6 +266,7 @@ public class PthalesDirector extends SDFDirector {
      *  @exception CloneNotSupportedException Not thrown in this base class
      *  @return The new object.
      */
+    @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         PthalesDirector newObject = (PthalesDirector) super.clone(workspace);
         newObject._library = (StringParameter) newObject
@@ -291,6 +293,7 @@ public class PthalesDirector extends SDFDirector {
      *  @exception InvalidStateException If this director does not have a
      *   container.
      */
+    @Override
     public void fire() throws IllegalActionException {
         // Don't call "super.fire();" here because if you do then
         // everything happens twice.
@@ -356,6 +359,7 @@ public class PthalesDirector extends SDFDirector {
 
     /** Add a new receiver.
      */
+    @Override
     public Receiver newReceiver() {
         PthalesReceiver receiver = new PthalesReceiver();
         _receivers.add(receiver);
@@ -368,6 +372,7 @@ public class PthalesDirector extends SDFDirector {
      *  director have enough tokens.
      *  @exception IllegalActionException If the port methods throw it.
      */
+    @Override
     public boolean prefire() throws IllegalActionException {
         // Set current time based on the enclosing model.
         for (PthalesReceiver recv : _receivers) {
@@ -387,6 +392,7 @@ public class PthalesDirector extends SDFDirector {
      *  @exception IllegalActionException If the preinitialize() method of
      *  one of the associated actors throws it.
      */
+    @Override
     public void preinitialize() throws IllegalActionException {
         // Garbage collector
         System.gc();
@@ -424,6 +430,7 @@ public class PthalesDirector extends SDFDirector {
      *  @exception IllegalActionException If the port is not an opaque
      *   input port, or if there are not enough input tokens available.
      */
+    @Override
     public boolean transferInputs(IOPort port) throws IllegalActionException {
         if (!port.isInput() || !port.isOpaque()) {
             throw new IllegalActionException(this, port,
@@ -504,10 +511,10 @@ public class PthalesDirector extends SDFDirector {
                                                             for (Receiver receiver : receiverss) {
                                                                 if (receiver instanceof PthalesReceiver) {
                                                                     ((PthalesReceiver) receiver)
-                                                                            .setExternalBuffer(
-                                                                                    compositeActor,
-                                                                                    externalPort,
-                                                                                    buffer);
+                                                                    .setExternalBuffer(
+                                                                            compositeActor,
+                                                                            externalPort,
+                                                                            buffer);
                                                                 }
                                                             }
                                                         }
@@ -565,6 +572,7 @@ public class PthalesDirector extends SDFDirector {
      *  @exception IllegalActionException If the port is not an opaque
      *   output port.
      */
+    @Override
     public boolean transferOutputs(IOPort port) throws IllegalActionException {
         if (_debugging) {
             _debug("Calling transferOutputs on port: " + port.getFullName());

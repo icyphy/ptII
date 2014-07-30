@@ -117,6 +117,7 @@ public class TextEditorTableau extends Tableau {
      *  on the same effigy may still modify the associated file.
      *  @param flag False to make the tableau uneditable.
      */
+    @Override
     public void setEditable(boolean flag) {
         super.setEditable(flag);
 
@@ -176,7 +177,7 @@ public class TextEditorTableau extends Tableau {
                         new Class[] { CompositeEntity.class, String.class });
                 _newTextEffigyURL = effigyClass.getMethod("newTextEffigy",
                         new Class[] { CompositeEntity.class, URL.class,
-                                URL.class });
+                        URL.class });
             } catch (ClassNotFoundException ex) {
                 throw new IllegalActionException(ex.toString());
             } catch (NoSuchMethodException ex) {
@@ -210,6 +211,7 @@ public class TextEditorTableau extends Tableau {
          *  @exception Exception If the factory should be able to create a
          *   tableau for the effigy, but something goes wrong.
          */
+        @Override
         public Tableau createTableau(Effigy effigy) throws Exception {
             if (effigy instanceof TextEffigy) {
                 // First see whether the effigy already contains a

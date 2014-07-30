@@ -60,5 +60,6 @@ public interface UnitPresentation {
      */
     public String descriptiveForm();
 
+    @Override
     public String toString();
 }

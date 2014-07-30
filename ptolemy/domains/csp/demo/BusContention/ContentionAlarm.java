@@ -121,6 +121,7 @@ public class ContentionAlarm extends CSPActor {
      * @exception IllegalActionException If communication through
      *  the input or output ports throws an IllegalActionException.
      */
+    @Override
     public void fire() throws IllegalActionException {
         super.fire();
         while (true) {

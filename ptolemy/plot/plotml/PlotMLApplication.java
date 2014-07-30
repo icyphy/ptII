@@ -108,6 +108,7 @@ public class PlotMLApplication extends PlotApplication {
     public static void main(final String[] args) {
         try {
             Runnable doActions = new Runnable() {
+                @Override
                 public void run() {
                     try {
                         new PlotMLApplication(new Plot(), args);
@@ -142,34 +143,36 @@ public class PlotMLApplication extends PlotApplication {
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
+    @Override
     protected void _about() {
         JOptionPane
-                .showMessageDialog(
-                        this,
-                        "PlotMLApplication class\n"
-                                + "By: Edward A. Lee "
-                                + "and Christopher Hylands\n"
-                                + "Version "
-                                + PlotBox.PTPLOT_RELEASE
-                                + ", Build: $Id$\n\n"
-                                + "For more information, see\n"
-                                + "http://ptolemy.eecs.berkeley.edu/java/ptplot\n\n"
-                                + "Copyright (c) 1997-2014, "
-                                + "The Regents of the University of California.",
+        .showMessageDialog(
+                this,
+                "PlotMLApplication class\n"
+                        + "By: Edward A. Lee "
+                        + "and Christopher Hylands\n"
+                        + "Version "
+                        + PlotBox.PTPLOT_RELEASE
+                        + ", Build: $Id$\n\n"
+                        + "For more information, see\n"
+                        + "http://ptolemy.eecs.berkeley.edu/java/ptplot\n\n"
+                        + "Copyright (c) 1997-2014, "
+                        + "The Regents of the University of California.",
                         "About Ptolemy Plot", JOptionPane.INFORMATION_MESSAGE);
     }
 
     /** Display more detailed information than given by _about().
      */
+    @Override
     protected void _help() {
         JOptionPane
-                .showMessageDialog(
-                        this,
-                        "PlotMLApplication is a standalone plot "
-                                + " application.\n"
-                                + "  File formats understood: PlotML and Ptplot ASCII.\n"
-                                + "  Left mouse button: Zooming.\n\n"
-                                + _usage(), "About Ptolemy Plot",
+        .showMessageDialog(
+                this,
+                "PlotMLApplication is a standalone plot "
+                        + " application.\n"
+                        + "  File formats understood: PlotML and Ptplot ASCII.\n"
+                        + "  Left mouse button: Zooming.\n\n"
+                        + _usage(), "About Ptolemy Plot",
                         JOptionPane.INFORMATION_MESSAGE);
     }
 
@@ -181,6 +184,7 @@ public class PlotMLApplication extends PlotApplication {
      *  @param in The input stream.
      *  @exception IOException If the stream cannot be read.
      */
+    @Override
     protected void _read(URL base, InputStream in) throws IOException {
         // Create a buffered input stream so that mark and reset
         // are supported.

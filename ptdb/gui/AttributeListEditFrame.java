@@ -25,7 +25,7 @@ ENHANCEMENTS, OR MODIFICATIONS.
                                                 COPYRIGHTENDKEY
 
 
-*/
+ */
 
 package ptdb.gui;
 
@@ -95,6 +95,7 @@ public class AttributeListEditFrame extends JFrame implements PTDBBasicFrame {
      * Close the window.
      */
 
+    @Override
     public void closeFrame() {
         dispose();
 
@@ -124,38 +125,45 @@ public class AttributeListEditFrame extends JFrame implements PTDBBasicFrame {
 
         addWindowListener(new WindowListener() {
 
+            @Override
             public void windowOpened(WindowEvent e) {
                 // Do nothing special.
 
             }
 
+            @Override
             public void windowIconified(WindowEvent e) {
                 // Do nothing special.
 
             }
 
+            @Override
             public void windowDeiconified(WindowEvent e) {
                 // Do nothing special.
 
             }
 
+            @Override
             public void windowDeactivated(WindowEvent e) {
                 // Do nothing special.
 
             }
 
+            @Override
             public void windowClosing(WindowEvent e) {
                 _parentFrame.setEnabled(true);
                 AttributeListEditFrame.this.dispose();
 
             }
 
+            @Override
             public void windowClosed(WindowEvent e) {
                 _parentFrame.setEnabled(true);
                 AttributeListEditFrame.this.dispose();
 
             }
 
+            @Override
             public void windowActivated(WindowEvent e) {
                 // Do nothing special.
 
@@ -166,6 +174,7 @@ public class AttributeListEditFrame extends JFrame implements PTDBBasicFrame {
 
         _itemsJList.addListSelectionListener(new ListSelectionListener() {
 
+            @Override
             public void valueChanged(ListSelectionEvent e) {
                 _deleteButton.setEnabled(true);
 
@@ -179,13 +188,14 @@ public class AttributeListEditFrame extends JFrame implements PTDBBasicFrame {
 
         _addButton.addActionListener(new ActionListener() {
 
+            @Override
             public void actionPerformed(ActionEvent e) {
 
                 try {
                     _validate();
 
                     ((ArrayModelList) _itemsJList.getModel())
-                            .addItem(_listItemTextField.getText());
+                    .addItem(_listItemTextField.getText());
 
                     _addButton.setEnabled(false);
                     _listItemTextField.setText("");
@@ -205,9 +215,10 @@ public class AttributeListEditFrame extends JFrame implements PTDBBasicFrame {
 
         _deleteButton.addActionListener(new ActionListener() {
 
+            @Override
             public void actionPerformed(ActionEvent e) {
                 ((ArrayModelList) _itemsJList.getModel())
-                        .removeItem((String) _itemsJList.getSelectedValue());
+                .removeItem((String) _itemsJList.getSelectedValue());
 
                 _deleteButton.setEnabled(false);
 
@@ -216,7 +227,7 @@ public class AttributeListEditFrame extends JFrame implements PTDBBasicFrame {
 
         _editListItemsLabel.setFont(new Font("Title", Font.BOLD, 12));
         _editListItemsLabel
-                .setText("Edit List Items in " + _listName + " List");
+        .setText("Edit List Items in " + _listName + " List");
 
         _newItemLabel.setText("New Item ");
 
@@ -230,12 +241,12 @@ public class AttributeListEditFrame extends JFrame implements PTDBBasicFrame {
                 .addGroup(
                         javax.swing.GroupLayout.Alignment.TRAILING,
                         layout.createSequentialGroup()
-                                .addContainerGap(50, Short.MAX_VALUE)
-                                .addComponent(_newItemLabel)
-                                .addComponent(_listItemTextField,
-                                        javax.swing.GroupLayout.PREFERRED_SIZE,
-                                        143,
-                                        javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap(50, Short.MAX_VALUE)
+                        .addComponent(_newItemLabel)
+                        .addComponent(_listItemTextField,
+                                javax.swing.GroupLayout.PREFERRED_SIZE,
+                                143,
+                                javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(18, 18, 18)
                                 .addGroup(
                                         layout.createParallelGroup(
@@ -246,66 +257,68 @@ public class AttributeListEditFrame extends JFrame implements PTDBBasicFrame {
                                                         javax.swing.GroupLayout.DEFAULT_SIZE,
                                                         javax.swing.GroupLayout.DEFAULT_SIZE,
                                                         Short.MAX_VALUE)
-                                                .addComponent(
-                                                        _addButton,
-                                                        javax.swing.GroupLayout.DEFAULT_SIZE,
-                                                        javax.swing.GroupLayout.DEFAULT_SIZE,
-                                                        Short.MAX_VALUE))
-                                .addGap(18, 18, 18)
-                                .addComponent(_jScrollPane1,
-                                        javax.swing.GroupLayout.PREFERRED_SIZE,
-                                        156,
-                                        javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(62, 62, 62))
-                .addGroup(
-                        layout.createSequentialGroup().addGap(28, 28, 28)
-                                .addComponent(_editListItemsLabel)
-                                .addContainerGap(380, Short.MAX_VALUE))
-                .addGroup(
-                        layout.createSequentialGroup()
-                                .addGap(224, 224, 224)
-                                .addComponent(_saveButton,
-                                        javax.swing.GroupLayout.DEFAULT_SIZE,
-                                        javax.swing.GroupLayout.DEFAULT_SIZE,
-                                        Short.MAX_VALUE).addGap(241, 241, 241)));
+                                                        .addComponent(
+                                                                _addButton,
+                                                                javax.swing.GroupLayout.DEFAULT_SIZE,
+                                                                javax.swing.GroupLayout.DEFAULT_SIZE,
+                                                                Short.MAX_VALUE))
+                                                                .addGap(18, 18, 18)
+                                                                .addComponent(_jScrollPane1,
+                                                                        javax.swing.GroupLayout.PREFERRED_SIZE,
+                                                                        156,
+                                                                        javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                                        .addGap(62, 62, 62))
+                                                                        .addGroup(
+                                                                                layout.createSequentialGroup().addGap(28, 28, 28)
+                                                                                .addComponent(_editListItemsLabel)
+                                                                                .addContainerGap(380, Short.MAX_VALUE))
+                                                                                .addGroup(
+                                                                                        layout.createSequentialGroup()
+                                                                                        .addGap(224, 224, 224)
+                                                                                        .addComponent(_saveButton,
+                                                                                                javax.swing.GroupLayout.DEFAULT_SIZE,
+                                                                                                javax.swing.GroupLayout.DEFAULT_SIZE,
+                                                                                                Short.MAX_VALUE).addGap(241, 241, 241)));
         layout.setVerticalGroup(layout
                 .createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(
                         layout.createSequentialGroup()
-                                .addGap(38, 38, 38)
-                                .addComponent(_editListItemsLabel)
-                                .addGap(76, 76, 76)
-                                .addGroup(
-                                        layout.createParallelGroup(
-                                                javax.swing.GroupLayout.Alignment.BASELINE)
-                                                .addComponent(_newItemLabel)
-                                                .addComponent(
-                                                        _listItemTextField,
-                                                        javax.swing.GroupLayout.PREFERRED_SIZE,
-                                                        javax.swing.GroupLayout.DEFAULT_SIZE,
-                                                        javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(38, 38, 38)
+                        .addComponent(_editListItemsLabel)
+                        .addGap(76, 76, 76)
+                        .addGroup(
+                                layout.createParallelGroup(
+                                        javax.swing.GroupLayout.Alignment.BASELINE)
+                                        .addComponent(_newItemLabel)
+                                        .addComponent(
+                                                _listItemTextField,
+                                                javax.swing.GroupLayout.PREFERRED_SIZE,
+                                                javax.swing.GroupLayout.DEFAULT_SIZE,
+                                                javax.swing.GroupLayout.PREFERRED_SIZE)
                                                 .addComponent(_addButton))
-                                .addGap(30, 30, 30)
-                                .addComponent(_deleteButton)
-                                .addPreferredGap(
-                                        javax.swing.LayoutStyle.ComponentPlacement.RELATED,
-                                        120, Short.MAX_VALUE)
-                                .addComponent(_saveButton).addGap(48, 48, 48))
-                .addGroup(
-                        layout.createSequentialGroup()
-                                .addGap(74, 74, 74)
-                                .addComponent(_jScrollPane1,
-                                        javax.swing.GroupLayout.PREFERRED_SIZE,
-                                        202,
-                                        javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addContainerGap(105, Short.MAX_VALUE)));
+                                                .addGap(30, 30, 30)
+                                                .addComponent(_deleteButton)
+                                                .addPreferredGap(
+                                                        javax.swing.LayoutStyle.ComponentPlacement.RELATED,
+                                                        120, Short.MAX_VALUE)
+                                                        .addComponent(_saveButton).addGap(48, 48, 48))
+                                                        .addGroup(
+                                                                layout.createSequentialGroup()
+                                                                .addGap(74, 74, 74)
+                                                                .addComponent(_jScrollPane1,
+                                                                        javax.swing.GroupLayout.PREFERRED_SIZE,
+                                                                        202,
+                                                                        javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                                        .addContainerGap(105, Short.MAX_VALUE)));
 
         _listItemTextField.addKeyListener(new KeyListener() {
 
+            @Override
             public void keyTyped(KeyEvent e) {
                 // Do nothing.
             }
 
+            @Override
             public void keyReleased(KeyEvent e) {
                 if (_listItemTextField.getText().isEmpty()) {
                     _addButton.setEnabled(false);
@@ -315,6 +328,7 @@ public class AttributeListEditFrame extends JFrame implements PTDBBasicFrame {
 
             }
 
+            @Override
             public void keyPressed(KeyEvent e) {
                 // Do nothing.
             }
@@ -322,6 +336,7 @@ public class AttributeListEditFrame extends JFrame implements PTDBBasicFrame {
 
         _saveButton.addActionListener(new ActionListener() {
 
+            @Override
             public void actionPerformed(ActionEvent e) {
 
                 _parentFrame.setEnabled(true);

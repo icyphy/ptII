@@ -24,7 +24,7 @@
  PT_COPYRIGHT_VERSION_2
  COPYRIGHTENDKEY
 
-*/
+ */
 package ptolemy.vergil.icon;
 
 import java.awt.Color;
@@ -71,6 +71,7 @@ public class DesignPatternIcon extends NameIcon {
      *
      *  @return The icon.
      */
+    @Override
     public Icon createIcon() {
         if (_iconCache != null) {
             return _iconCache;

@@ -63,6 +63,7 @@ public abstract class ColtRandomSource extends NamedProgramCodeGeneratorAdapter 
      * @exception IllegalActionException If the code stream encounters an
      *  error in processing the specified code block(s).
      */
+    @Override
     protected String _generateFireCode() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
         code.append(super._generateFireCode());
@@ -78,6 +79,7 @@ public abstract class ColtRandomSource extends NamedProgramCodeGeneratorAdapter 
      *  @return The initialize code of this actor.
      *  @exception IllegalActionException Not thrown in this class.
      */
+    @Override
     public String generateInitializeCode() throws IllegalActionException {
         super.generateInitializeCode();
 
@@ -123,6 +125,7 @@ public abstract class ColtRandomSource extends NamedProgramCodeGeneratorAdapter 
      *  needed by the code generated for the ColtRandomSource actor.
      *  @exception IllegalActionException Not Thrown in this subclass.
      */
+    @Override
     public Set getHeaderFiles() throws IllegalActionException {
         Set files = super.getHeaderFiles();
         files.add("cern.jet.random.engine.DRand;");
@@ -133,7 +136,7 @@ public abstract class ColtRandomSource extends NamedProgramCodeGeneratorAdapter 
         files.add("edu.cornell.lassp.houle.RngPack.Ranmar;");
 
         ((ProceduralCodeGenerator) getCodeGenerator())
-                .addLibraryIfNecessary("$(PTII)/lib/ptcolt.jar");
+        .addLibraryIfNecessary("$(PTII)/lib/ptcolt.jar");
         return files;
     }
 

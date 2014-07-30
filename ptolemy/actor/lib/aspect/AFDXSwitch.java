@@ -177,6 +177,7 @@ public class AFDXSwitch extends AtomicCommunicationAspect {
      *  director of this actor is not a DEDirector.
      *  @exception NameDuplicationException If thrown by the super class.
      */
+    @Override
     public void setContainer(CompositeEntity container)
             throws IllegalActionException, NameDuplicationException {
         super.setContainer(container);
@@ -191,6 +192,7 @@ public class AFDXSwitch extends AtomicCommunicationAspect {
      *  @param attribute The attribute that changed.
      *  @exception IllegalActionException If the buffer delays are negative.
      */
+    @Override
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         if (attribute == technologicalDelay) {
@@ -232,6 +234,7 @@ public class AFDXSwitch extends AtomicCommunicationAspect {
      *   if one of the attributes cannot be cloned.
      *  @return A new Bus.
      */
+    @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         AFDXSwitch newObject = (AFDXSwitch) super.clone(workspace);
         //newObject._actorPorts = new HashMap();
@@ -250,6 +253,7 @@ public class AFDXSwitch extends AtomicCommunicationAspect {
      *  @return The decorated attributes for the target NamedObj, or
      *   null if the specified target is not an Actor.
      */
+    @Override
     public DecoratorAttributes createDecoratorAttributes(NamedObj target) {
         if (target instanceof IOPort) {
             try {
@@ -267,6 +271,7 @@ public class AFDXSwitch extends AtomicCommunicationAspect {
      *  @exception IllegalActionException If the superclass throws it or
      *  the switch table could not be parsed from the actor parameters.
      */
+    @Override
     public void initialize() throws IllegalActionException {
         super.initialize();
         _nextFireTime = null;
@@ -313,6 +318,7 @@ public class AFDXSwitch extends AtomicCommunicationAspect {
      *  @exception IllegalActionException If the token cannot be sent to
      *  target receiver.
      */
+    @Override
     public void fire() throws IllegalActionException {
         super.fire();
         Time currentTime = getDirector().getModelTime();
@@ -423,8 +429,8 @@ public class AFDXSwitch extends AtomicCommunicationAspect {
                             Token[] values = new Token[] {
                                     new DoubleToken(
                                             event.timeStamp.getDoubleValue()),
-                                    new ObjectToken(output[2]),
-                                    (Token) output[1] };
+                                            new ObjectToken(output[2]),
+                                            (Token) output[1] };
                             RecordToken record = new RecordToken(labels, values);
                             _sendToReceiver((Receiver) output[0], record);
                         } else { // Else the receiver is an actor.
@@ -448,6 +454,7 @@ public class AFDXSwitch extends AtomicCommunicationAspect {
      *  @exception IllegalActionException If the refiring cannot be scheduled or
      *  by super class.
      */
+    @Override
     public boolean postfire() throws IllegalActionException {
         _scheduleRefire();
         return super.postfire();
@@ -461,6 +468,7 @@ public class AFDXSwitch extends AtomicCommunicationAspect {
      *  @param token The token to send.
      *  @exception IllegalActionException If the refiring request fails.
      */
+    @Override
     public void sendToken(Receiver source, Receiver receiver, Token token)
             throws IllegalActionException {
         Time currentTime = getDirector().getModelTime();
@@ -531,6 +539,7 @@ public class AFDXSwitch extends AtomicCommunicationAspect {
 
     /** Reset the communication aspect and clear the tokens.
      */
+    @Override
     public void reset() {
         _inputTokens.clear();
         _outputTokens.clear();
@@ -678,7 +687,7 @@ public class AFDXSwitch extends AtomicCommunicationAspect {
      *  @author Gilles Lasnier, Based on BasiSwitch.java by Patricia Derler
      */
     public static class AfdxSwitchAttributes extends
-            CommunicationAspectAttributes {
+    CommunicationAspectAttributes {
 
         /** Constructor to use when editing a model.
          *  @param container The object being decorated.
@@ -725,6 +734,7 @@ public class AFDXSwitch extends AtomicCommunicationAspect {
          *  @exception IllegalActionException If the parameter set is not valid.
          *  Not thrown in this class.
          */
+        @Override
         public void attributeChanged(Attribute attribute)
                 throws IllegalActionException {
             IOPort port = (IOPort) getContainer();

@@ -24,7 +24,7 @@
    PT_COPYRIGHT_VERSION_2
    COPYRIGHTENDKEY
 
-*/
+ */
 package ptolemy.cg.adapter.generic.adapters.ptolemy.actor;
 
 import java.util.HashMap;
@@ -148,8 +148,7 @@ public class Ports {
      *  @return The code to initialize the offsets.
      *  @exception IllegalActionException Thrown if offsets can't be initialized.
      */
-    public String initializeOffsets(IOPort port)
-            throws IllegalActionException {
+    public String initializeOffsets(IOPort port) throws IllegalActionException {
         return _getPortInfo(port).initializeOffsets();
     }
 
@@ -175,8 +174,8 @@ public class Ports {
      *   be found.
      *  @see #getReadOffset(IOPort, int)
      */
-    public void setReadOffset(IOPort port, int channelNumber,
-            Object readOffset) throws IllegalActionException {
+    public void setReadOffset(IOPort port, int channelNumber, Object readOffset)
+            throws IllegalActionException {
         _getPortInfo(port).setReadOffset(channelNumber, readOffset);
     }
 
@@ -228,39 +227,35 @@ public class Ports {
      *  @return The information necessary to generate communication code.
      *  @exception IllegalActionException If thrown while getting the adapter.
      */
-    private PortInfo _getPortInfo(IOPort port)
-            throws IllegalActionException {
+    private PortInfo _getPortInfo(IOPort port) throws IllegalActionException {
         PortInfo info = null;
         if (!_portInfo.containsKey(port)) {
-            NamedObj container = getComponent().getContainer()
-                .getContainer();
+            NamedObj container = getComponent().getContainer().getContainer();
             // If we don't have portInfo for the port, then go up the hierarchy and look
             // for portInfo elsewhere.  This is very convoluted, but necessary for
             // $PTII/bin/ptcg -language java $PTII/ptolemy/cg/adapter/generic/program/procedural/java/adapters/ptolemy/domains/sdf/lib/test/auto/SampleDelay5.xml
             if (container != null
                     && getComponent().getContainer() != port.getContainer()
-                    .getContainer()
+                            .getContainer()
                     && getComponent().getContainer() != port.getContainer()
                     && getComponent()
-                    .getContainer()
-                    .getFullName()
-                    .startsWith(
-                            port.getContainer().getContainer()
-                            .getFullName())) {
+                            .getContainer()
+                            .getFullName()
+                            .startsWith(
+                                    port.getContainer().getContainer()
+                                            .getFullName())) {
                 while (container != null) {
                     if (container instanceof CompositeEntity) {
                         List entities = ((CompositeEntity) container)
-                            .attributeList(ptolemy.actor.Director.class);
+                                .attributeList(ptolemy.actor.Director.class);
                         if (entities.size() > 0) {
                             Director entity = (Director) getCodeGenerator()
-                                .getAdapter(
-                                        entities.get(entities.size() - 1));
+                                    .getAdapter(
+                                            entities.get(entities.size() - 1));
                             if (entity instanceof PortDirector) {
                                 PortDirector parent = (PortDirector) entity;
-                                if (parent.ports._portInfo
-                                        .containsKey(port)) {
-                                    info = parent.ports._portInfo
-                                        .get(port);
+                                if (parent.ports._portInfo.containsKey(port)) {
+                                    info = parent.ports._portInfo.get(port);
                                 }
                                 break;
                             }
@@ -288,4 +283,3 @@ public class Ports {
     /** The director associated with the ports. */
     private PortDirector _director;
 }
-

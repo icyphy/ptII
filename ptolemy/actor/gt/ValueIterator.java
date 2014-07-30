@@ -25,7 +25,7 @@ initial value with the next method.
  PT_COPYRIGHT_VERSION_2
  COPYRIGHTENDKEY
 
-*/
+ */
 package ptolemy.actor.gt;
 
 import ptolemy.data.Token;

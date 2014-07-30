@@ -110,18 +110,19 @@ public class PlotMLFrame extends PlotFrame {
 
     /** Display basic information about the application.
      */
+    @Override
     protected void _about() {
         JOptionPane
-                .showMessageDialog(
-                        this,
-                        "Ptolemy plot frame\n"
-                                + "By: Edward A. Lee\n"
-                                + "and Christopher Hylands\n"
-                                + "Version "
-                                + PlotBox.PTPLOT_RELEASE
-                                + ", Build: $Id$"
-                                + "For more information, see\n"
-                                + "http://ptolemy.eecs.berkeley.edu/java/ptplot\n",
+        .showMessageDialog(
+                this,
+                "Ptolemy plot frame\n"
+                        + "By: Edward A. Lee\n"
+                        + "and Christopher Hylands\n"
+                        + "Version "
+                        + PlotBox.PTPLOT_RELEASE
+                        + ", Build: $Id$"
+                        + "For more information, see\n"
+                        + "http://ptolemy.eecs.berkeley.edu/java/ptplot\n",
                         "About Ptolemy Plot", JOptionPane.INFORMATION_MESSAGE);
     }
 
@@ -135,6 +136,7 @@ public class PlotMLFrame extends PlotFrame {
      *  @param in The input stream.
      *  @exception IOException If the stream cannot be read.
      */
+    @Override
     protected void _read(URL base, InputStream in) throws IOException {
         // Create a buffered input stream so that mark and reset
         // are supported.

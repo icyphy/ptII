@@ -79,6 +79,7 @@ public class InterfaceAutomatonGraphController extends FSMGraphController {
      *  @param menu The menu to add to, or null if none.
      *  @param toolbar The toolbar to add to, or null if none.
      */
+    @Override
     public void addToMenuAndToolbar(JMenu menu, JToolBar toolbar) {
         super.addToMenuAndToolbar(menu, toolbar);
 
@@ -104,7 +105,7 @@ public class InterfaceAutomatonGraphController extends FSMGraphController {
 
     /** An action to perform composition. */
     @SuppressWarnings("serial")
-        public class ComposeWithAction extends AbstractAction {
+    public class ComposeWithAction extends AbstractAction {
         /** Create a new action to perform composition. */
         public ComposeWithAction() {
             super("Compose With");
@@ -118,6 +119,7 @@ public class InterfaceAutomatonGraphController extends FSMGraphController {
          *  The specified model and the composition result are shown in
          *  two new interface automaton graph frames.
          */
+        @Override
         public void actionPerformed(ActionEvent e) {
             // NOTE: This code is mostly copied from Top.
 
@@ -129,7 +131,7 @@ public class InterfaceAutomatonGraphController extends FSMGraphController {
                 background = jFileChooserBugFix.saveBackground();
                 JFileChooser fileDialog = new JFileChooser();
                 fileDialog
-                        .setDialogTitle("Select an interface automaton to compose with.");
+                .setDialogTitle("Select an interface automaton to compose with.");
 
                 if (_directory != null) {
                     fileDialog.setCurrentDirectory(_directory);

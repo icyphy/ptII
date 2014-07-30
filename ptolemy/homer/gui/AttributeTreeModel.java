@@ -24,7 +24,7 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
-*/
+ */
 package ptolemy.homer.gui;
 
 import java.util.ArrayList;
@@ -55,7 +55,7 @@ number of attributes.
 @since Ptolemy II 10.0
 @Pt.ProposedRating Red (ishwinde)
 @Pt.AcceptedRating Red (ishwinde)
-*/
+ */
 public class AttributeTreeModel extends ClassAndEntityTreeModel {
 
     ///////////////////////////////////////////////////////////////////

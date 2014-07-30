@@ -98,7 +98,7 @@ public class PlotFormatter extends JPanel {
                 + _originalYRange[1]);
 
         String[] marks = { "none", "points", "dots", "various", "bigdots",
-                "pixels" };
+        "pixels" };
         _originalMarks = "none";
 
         if (plot instanceof Plot) {
@@ -196,6 +196,7 @@ public class PlotFormatter extends JPanel {
         //}
         // Attach listeners.
         _wideQuery.addQueryListener(new QueryListener() {
+            @Override
             public void changed(String name) {
                 if (name.equals("title")) {
                     _plot.setTitle(_wideQuery.getStringValue("title"));
@@ -248,6 +249,7 @@ public class PlotFormatter extends JPanel {
         });
 
         _narrowQuery.addQueryListener(new QueryListener() {
+            @Override
             public void changed(String name) {
                 if (name.equals("grid")) {
                     _plot.setGrid(_narrowQuery.getBooleanValue("grid"));
@@ -451,7 +453,7 @@ public class PlotFormatter extends JPanel {
                 first = false;
             }
         }
-        */
+         */
     }
 
     // Restore the connected state of all the point that were in the

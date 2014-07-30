@@ -147,6 +147,7 @@ public class Pursuer extends TypedAtomicActor {
      *  or output is next location when receives token from it trigger
      *  port.
      */
+    @Override
     public void fire() throws IllegalActionException {
         //super.fire();
         Entity container = (Entity) this.getContainer();
@@ -204,6 +205,7 @@ public class Pursuer extends TypedAtomicActor {
     /** Initialize the private varialbles of the pursuer.
      *  @exception IllegalActionException If thrown by the base class.
      */
+    @Override
     public void initialize() throws IllegalActionException {
         super.initialize();
 

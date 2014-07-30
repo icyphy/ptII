@@ -77,7 +77,7 @@ public class ColtPoissonSlow extends ColtRandomSource {
         mean = new PortParameter(this, "mean", new DoubleToken(1.0));
         mean.setTypeEquals(BaseType.DOUBLE);
         new SingletonParameter(mean.getPort(), "_showName")
-                .setToken(BooleanToken.TRUE);
+        .setToken(BooleanToken.TRUE);
 
         mean.moveToFirst();
     }
@@ -98,6 +98,7 @@ public class ColtPoissonSlow extends ColtRandomSource {
      *  remain constant throughout an iteration.
      *  @exception IllegalActionException If there is no director.
      */
+    @Override
     public void fire() throws IllegalActionException {
         mean.update();
         super.fire();
@@ -109,6 +110,7 @@ public class ColtPoissonSlow extends ColtRandomSource {
 
     /** Method that is called after _randomNumberGenerator is changed.
      */
+    @Override
     protected void _createdNewRandomNumberGenerator() {
         _generator = new PoissonSlow(1.0, _randomNumberGenerator);
     }
@@ -116,6 +118,7 @@ public class ColtPoissonSlow extends ColtRandomSource {
     /** Generate a new random number.
      *  @exception IllegalActionException If parameter values are incorrect.
      */
+    @Override
     protected void _generateRandomNumber() throws IllegalActionException {
         double meanValue = ((DoubleToken) mean.getToken()).doubleValue();
 

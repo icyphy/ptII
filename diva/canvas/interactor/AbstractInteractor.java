@@ -59,6 +59,7 @@ public abstract class AbstractInteractor implements Interactor {
      * implementation returns true if the interactor is enabled
      * and the mouse filter accepts the event.
      */
+    @Override
     public boolean accept(LayerEvent event) {
         return isEnabled() && getMouseFilter().accept(event);
     }
@@ -67,6 +68,7 @@ public abstract class AbstractInteractor implements Interactor {
      * decide whether to accept an event. The result may
      * be null.
      */
+    @Override
     public MouseFilter getMouseFilter() {
         return _mouseFilter;
     }
@@ -75,6 +77,7 @@ public abstract class AbstractInteractor implements Interactor {
      * set, the interactor consumes all input events that get past its
      * mouse filter.
      */
+    @Override
     public boolean isConsuming() {
         return _consuming;
     }
@@ -82,6 +85,7 @@ public abstract class AbstractInteractor implements Interactor {
     /** Test the enabled flag of this interactor. If true, the interactor
      * is prepared to handle layer events.
      */
+    @Override
     public boolean isEnabled() {
         return _enabled;
     }
@@ -89,48 +93,56 @@ public abstract class AbstractInteractor implements Interactor {
     /** Test the motion enabled flag of this interactor. If true, the
      * interactor is prepared to handle layer motion events.
      */
+    @Override
     public boolean isMotionEnabled() {
         return _motionEnabled;
     }
 
     /** Do nothing.
      */
+    @Override
     public void mouseDragged(LayerEvent layerEvent) {
         // empty
     }
 
     /** Do nothing.
      */
+    @Override
     public void mouseEntered(LayerEvent layerEvent) {
         // empty
     }
 
     /** Do nothing.
      */
+    @Override
     public void mouseExited(LayerEvent layerEvent) {
         // empty
     }
 
     /** Do nothing.
      */
+    @Override
     public void mouseMoved(LayerEvent layerEvent) {
         // empty
     }
 
     /** Do nothing.
      */
+    @Override
     public void mousePressed(LayerEvent layerEvent) {
         // empty
     }
 
     /** Do nothing.
      */
+    @Override
     public void mouseReleased(LayerEvent layerEvent) {
         // empty
     }
 
     /** Do nothing.
      */
+    @Override
     public void mouseClicked(LayerEvent layerEvent) {
         //empty
     }
@@ -147,6 +159,7 @@ public abstract class AbstractInteractor implements Interactor {
      * is prepared to handle layer events. The default setting
      * of this flag is <b>true</b>.
      */
+    @Override
     public void setEnabled(boolean flag) {
         _enabled = flag;
     }
@@ -161,6 +174,7 @@ public abstract class AbstractInteractor implements Interactor {
 
     /** Set the mouse filter of this interactor.
      */
+    @Override
     public void setMouseFilter(MouseFilter filter) {
         _mouseFilter = filter;
     }

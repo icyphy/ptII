@@ -25,7 +25,7 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 Ptolemy II includes the work of others, to see those copyrights, follow
 the copyright link on the splash page or see copyright.htm.
-*/
+ */
 package ptolemy.domains.coroutine.lib;
 
 import ptolemy.domains.coroutine.kernel.AtomicContinuationActor;
@@ -119,7 +119,7 @@ public class Pause extends AtomicContinuationActor {
     ///////////////////////////////////////////////////////////////////
 
     protected void _init() throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
 
         addEntryLocation(pauseEntry);
         addEntryLocation(resumeEntry);

@@ -99,6 +99,7 @@ public class ExecutionTimeAttributes extends ExecutionAttributes {
      *  @exception IllegalActionException If the change is not acceptable
      *   to this container (not thrown in this base class).
      */
+    @Override
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         if (attribute == executionTime) {
@@ -111,11 +112,11 @@ public class ExecutionTimeAttributes extends ExecutionAttributes {
         }
         super.attributeChanged(attribute);
     }
-    
+
     /** Return whether the target can have an execution time that can be
      *  simulated. For instance, it does not make sense to simulate execution
-     *  time of states in modal models, but it does make sense to monitor 
-     *  the execution of states such as entry times. 
+     *  time of states in modal models, but it does make sense to monitor
+     *  the execution of states such as entry times.
      * @param target The object decorated with the attributes.
      * @return True if execution target can have execution time.
      */

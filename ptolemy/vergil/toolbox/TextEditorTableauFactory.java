@@ -63,7 +63,7 @@ import ptolemy.kernel.util.StringAttribute;
  @see TextEditorConfigureFactory
  */
 public class TextEditorTableauFactory extends TableauFactory implements
-        TextEditorFactory {
+TextEditorFactory {
     /** Create a factory with the given name and container.
      *  @param container The container.
      *  @param name The name.
@@ -109,6 +109,7 @@ public class TextEditorTableauFactory extends TableauFactory implements
     /** Remove any editor that may have been associated with this object
      *  by a previous call to createEditor().
      */
+    @Override
     public void clear() {
         _editor = null;
     }
@@ -123,6 +124,7 @@ public class TextEditorTableauFactory extends TableauFactory implements
      *  @exception Exception If the factory should be able to create a
      *   Tableau for the effigy, but something goes wrong.
      */
+    @Override
     public Tableau createTableau(Effigy effigy) throws Exception {
         if (!(effigy instanceof PtolemyEffigy)) {
             return null;
@@ -180,6 +182,7 @@ public class TextEditorTableauFactory extends TableauFactory implements
      *  @return The current text of the text editor, or null if there
      *   is none.
      */
+    @Override
     public String getText() {
         if (_editor != null) {
             return _editor.text.getText();

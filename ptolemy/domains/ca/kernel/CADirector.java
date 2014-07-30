@@ -198,6 +198,7 @@ public class CADirector extends Director {
      *  @exception CloneNotSupportedException Not thrown in this base class
      *  @return The new object.
      */
+    @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         CADirector newObject = (CADirector) super.clone(workspace);
         newObject.delay = (Parameter) newObject.getAttribute("delay");
@@ -221,6 +222,7 @@ public class CADirector extends Director {
      *
      * @exception IllegalActionException If an actor is unable to iterate().
      */
+    @Override
     public void fire() throws IllegalActionException {
         Nameable container = getContainer();
         if (container instanceof TypedCompositeActor) {
@@ -307,6 +309,7 @@ public class CADirector extends Director {
      *              If exception occurs in base class.
      *
      */
+    @Override
     public void preinitialize() throws IllegalActionException {
 
         _matrixSize = ((IntToken) size.getToken()).intValue();
@@ -375,6 +378,7 @@ public class CADirector extends Director {
      * @exception IllegalActionException If an exception occurs in the
      * base class.
      */
+    @Override
     public boolean postfire() throws IllegalActionException {
         super.postfire();
 
@@ -407,7 +411,7 @@ public class CADirector extends Director {
      * with a specified name.
      */
     protected void _initParameters() throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
 
         // FIXME: we need an attributeChanged() method.  What happens
         // if one of these parameters changes while the model is running?

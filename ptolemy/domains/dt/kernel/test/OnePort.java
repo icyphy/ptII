@@ -85,6 +85,7 @@ public class OnePort extends TypedAtomicActor {
 
     public Parameter step;
 
+    @Override
     public final void fire() throws IllegalActionException {
         int i;
         DoubleToken token = new DoubleToken(0.0);

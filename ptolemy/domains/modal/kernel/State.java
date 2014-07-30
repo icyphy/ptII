@@ -94,7 +94,7 @@ import ptolemy.moml.MoMLParser;
  @see FSMDirector
  */
 public class State extends ComponentEntity implements ConfigurableEntity,
-        DropTargetHandler, Flowable {
+DropTargetHandler, Flowable {
 
     /** Construct a state with the given name contained by the specified
      *  composite entity. The container argument must not be null, or a
@@ -239,6 +239,7 @@ public class State extends ComponentEntity implements ConfigurableEntity,
      *  @exception IllegalActionException If thrown by the superclass
      *   attributeChanged() method.
      */
+    @Override
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         super.attributeChanged(attribute);
@@ -256,7 +257,7 @@ public class State extends ComponentEntity implements ConfigurableEntity,
                     if (((FSMActor) container)._initialState != null
                             && ((FSMActor) container)._initialState != this) {
                         ((FSMActor) container)._initialState.isInitialState
-                                .setToken("false");
+                        .setToken("false");
                     }
                     ((FSMActor) container)._initialState = this;
                     // If the initial state name of the container is set,
@@ -265,7 +266,7 @@ public class State extends ComponentEntity implements ConfigurableEntity,
                             .getExpression();
                     if (!name.equals("")) {
                         ((FSMActor) container).initialStateName
-                                .setExpression("");
+                        .setExpression("");
                     }
                 }
             }
@@ -280,6 +281,7 @@ public class State extends ComponentEntity implements ConfigurableEntity,
      *  @exception CloneNotSupportedException If a derived class contains
      *   an attribute that cannot be cloned.
      */
+    @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         State newObject = (State) super.clone(workspace);
         newObject.incomingPort = (ComponentPort) newObject
@@ -310,11 +312,12 @@ public class State extends ComponentEntity implements ConfigurableEntity,
      *  @param base The base relative to which references within the input
      *   are found, or null if this is not known, or there is none.
      *  @param source The input source, which specifies a URL, or null
-     *   if none. 
+     *   if none.
      *  @param text Configuration information given as text, or null if
      *   none.
      *  @exception Exception If something goes wrong.
      */
+    @Override
     public void configure(URL base, String source, String text)
             throws Exception {
         refinementName.setExpression("");
@@ -340,6 +343,7 @@ public class State extends ComponentEntity implements ConfigurableEntity,
      *  @param moml The moml string generated for the dropped objects.
      *  @exception IllegalActionException If the handling is unsuccessful.
      */
+    @Override
     public void dropObject(NamedObj target, List dropObjects, String moml)
             throws IllegalActionException {
         NamedObj container = getContainer();
@@ -369,6 +373,7 @@ public class State extends ComponentEntity implements ConfigurableEntity,
      *  no source has been used to configure this object, or null if no
      *  external source need be used to configure this object.
      */
+    @Override
     public String getConfigureSource() {
         return _configureSource;
     }
@@ -381,12 +386,14 @@ public class State extends ComponentEntity implements ConfigurableEntity,
      *  has been used to configure this object, or null if no
      *  configuration string need be used to configure this object.
      */
+    @Override
     public String getConfigureText() {
         return null;
     }
 
     /** Get the {@link Configurer} object for this entity.
      */
+    @Override
     public Configurer getConfigurer() {
         return _configurer;
     }
@@ -394,6 +401,7 @@ public class State extends ComponentEntity implements ConfigurableEntity,
     /** Return the incoming port.
      *  @return The incoming port.
      */
+    @Override
     public ComponentPort getIncomingPort() {
         return incomingPort;
     }
@@ -444,6 +452,7 @@ public class State extends ComponentEntity implements ConfigurableEntity,
     /** Return the outgoing port.
      *  @return The outgoing port.
      */
+    @Override
     public ComponentPort getOutgoingPort() {
         return outgoingPort;
     }
@@ -597,6 +606,7 @@ public class State extends ComponentEntity implements ConfigurableEntity,
      *  @param depth The depth in the hierarchy, to determine indenting.
      *  @exception IOException If an I/O error occurs.
      */
+    @Override
     protected void _exportMoMLContents(Writer output, int depth)
             throws IOException {
         super._exportMoMLContents(output, depth);
@@ -660,7 +670,7 @@ public class State extends ComponentEntity implements ConfigurableEntity,
         CompositeEntity modalModel = (CompositeEntity) container.getContainer();
         boolean isModalModelInvisible = modalModel != null
                 && !modalModel.attributeList(InvisibleModalModel.class)
-                        .isEmpty();
+                .isEmpty();
         if (!(modalModel instanceof TypedCompositeActor)
                 || isModalModelInvisible) {
             if (modalModel == null || isModalModelInvisible) {
@@ -912,6 +922,7 @@ public class State extends ComponentEntity implements ConfigurableEntity,
         /** Execute the change.
          *  @exception Exception If the change fails.
          */
+        @Override
         protected void _execute() throws Exception {
             ComponentEntity entity = _modalModel.getEntity(_name);
             MoMLChangeRequest request = new MoMLChangeRequest(this, entity,

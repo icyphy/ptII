@@ -162,7 +162,7 @@ import ptolemy.kernel.util.Workspace;
  @Pt.AcceptedRating Yellow (cxh)
  */
 public class SDFDirector extends StaticSchedulingDirector implements
-        PeriodicDirector {
+PeriodicDirector {
     /** Construct a director in the default workspace with an empty string
      *  as its name. The director is added to the list of objects in
      *  the workspace. Increment the version number of the workspace.
@@ -174,7 +174,7 @@ public class SDFDirector extends StaticSchedulingDirector implements
      *   an entity with the specified name.
      */
     public SDFDirector() throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         super();
         _init();
     }
@@ -191,7 +191,7 @@ public class SDFDirector extends StaticSchedulingDirector implements
      *   an entity with the specified name.
      */
     public SDFDirector(Workspace workspace) throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         super(workspace);
         _init();
     }
@@ -341,6 +341,7 @@ public class SDFDirector extends StaticSchedulingDirector implements
      *  @param attribute The changed parameter.
      *  @exception IllegalActionException If the parameter set is not valid.
      */
+    @Override
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         // NOTE: Invalidate the schedules only if the values of these
@@ -371,6 +372,7 @@ public class SDFDirector extends StaticSchedulingDirector implements
      *  @exception CloneNotSupportedException Not thrown in this base class
      *  @return The new Attribute.
      */
+    @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         SDFDirector newObject = (SDFDirector) super.clone(workspace);
 
@@ -387,7 +389,8 @@ public class SDFDirector extends StaticSchedulingDirector implements
     }
 
     /**  Create the SDF schedule for this director.
-      */
+     */
+    @Override
     public void createSchedule() throws IllegalActionException {
         BaseSDFScheduler scheduler = (BaseSDFScheduler) getScheduler();
 
@@ -465,6 +468,7 @@ public class SDFDirector extends StaticSchedulingDirector implements
      *  @return The time of the next iteration.
      *  @exception IllegalActionException If time objects cannot be created.
      */
+    @Override
     public Time getModelNextIterationTime() throws IllegalActionException {
         if (!_isTopLevel()) {
             return super.getModelNextIterationTime();
@@ -511,6 +515,7 @@ public class SDFDirector extends StaticSchedulingDirector implements
      *  @return Either the requested time or the current time plus the
      *  period.
      */
+    @Override
     public Time fireAt(Actor actor, Time time, int microstep)
             throws IllegalActionException {
         if (_periodicDirectorHelper != null) {
@@ -529,6 +534,7 @@ public class SDFDirector extends StaticSchedulingDirector implements
      *  one of the associated actors throws it, or if there is no
      *  scheduler.
      */
+    @Override
     public void initialize() throws IllegalActionException {
 
         super.initialize();
@@ -562,8 +568,8 @@ public class SDFDirector extends StaticSchedulingDirector implements
                         } else {
                             throw new IllegalActionException(this, port,
                                     "Port should produce " + rate
-                                            + " tokens, but there were only "
-                                            + k + " tokens available.");
+                                    + " tokens, but there were only "
+                                    + k + " tokens available.");
                         }
                     }
                 } catch (NoTokenException ex) {
@@ -579,6 +585,7 @@ public class SDFDirector extends StaticSchedulingDirector implements
     /** Return a new receiver consistent with the SDF domain.
      *  @return A new SDFReceiver.
      */
+    @Override
     public Receiver newReceiver() {
         return new SDFReceiver();
     }
@@ -588,6 +595,7 @@ public class SDFDirector extends StaticSchedulingDirector implements
      *  @exception IllegalActionException If the period parameter
      *   cannot be evaluated
      */
+    @Override
     public double periodValue() throws IllegalActionException {
         return ((DoubleToken) period.getToken()).doubleValue();
     }
@@ -605,6 +613,7 @@ public class SDFDirector extends StaticSchedulingDirector implements
      *  @return true If all of the input ports of the container of this
      *  director have enough tokens.
      */
+    @Override
     public boolean prefire() throws IllegalActionException {
         // Set current time based on the enclosing model.
 
@@ -749,6 +758,7 @@ public class SDFDirector extends StaticSchedulingDirector implements
      *  @exception IllegalActionException If the preinitialize() method of
      *  one of the associated actors throws it.
      */
+    @Override
     public void preinitialize() throws IllegalActionException {
         super.preinitialize();
         createSchedule();
@@ -770,6 +780,7 @@ public class SDFDirector extends StaticSchedulingDirector implements
      *  @exception IllegalActionException If the iterations parameter
      *  does not contain a legal value.
      */
+    @Override
     public boolean postfire() throws IllegalActionException {
         int iterationsValue = getIterations();
         _iterationCount++;
@@ -777,7 +788,8 @@ public class SDFDirector extends StaticSchedulingDirector implements
         if (iterationsValue > 0 && _iterationCount >= iterationsValue) {
             _iterationCount = 0;
             if (_debugging) {
-                    _debug("Reached specified number of iterations: " + iterationsValue);
+                _debug("Reached specified number of iterations: "
+                        + iterationsValue);
             }
             return false;
         }
@@ -803,10 +815,11 @@ public class SDFDirector extends StaticSchedulingDirector implements
      *  @return An array of suggested directors to be used with ModalModel.
      *  @see ptolemy.actor.Director#suggestedModalModelDirectors()
      */
+    @Override
     public String[] suggestedModalModelDirectors() {
         return new String[] { "ptolemy.domains.modal.kernel.FSMDirector",
                 "ptolemy.domains.modal.kernel.MultirateFSMDirector",
-                "ptolemy.domains.hdf.kernel.HDFFSMDirector" };
+        "ptolemy.domains.hdf.kernel.HDFFSMDirector" };
     }
 
     /** Return true to indicate that a ModalModel under control
@@ -814,6 +827,7 @@ public class SDFDirector extends StaticSchedulingDirector implements
      *  @return True indicating a ModalModel under control of this director
      *  supports multirate firing.
      */
+    @Override
     public boolean supportMultirateFiring() {
         return true;
     }
@@ -832,6 +846,7 @@ public class SDFDirector extends StaticSchedulingDirector implements
      *  @exception IllegalActionException If the port is not an opaque
      *  input port, or if there are not enough input tokens available.
      */
+    @Override
     public boolean transferInputs(IOPort port) throws IllegalActionException {
         if (!port.isInput() || !port.isOpaque()) {
             throw new IllegalActionException(this, port,
@@ -863,8 +878,8 @@ public class SDFDirector extends StaticSchedulingDirector implements
                         } else {
                             throw new IllegalActionException(this, port,
                                     "Port should consume " + rate
-                                            + " tokens, but there were only "
-                                            + k + " tokens available.");
+                                    + " tokens, but there were only "
+                                    + k + " tokens available.");
                         }
                     }
                 } else if (port.isKnown(i)) {
@@ -902,6 +917,7 @@ public class SDFDirector extends StaticSchedulingDirector implements
      *  @exception IllegalActionException If the port is not an opaque
      *  output port.
      */
+    @Override
     public boolean transferOutputs(IOPort port) throws IllegalActionException {
         if (_debugging) {
             _debug("Calling transferOutputs on port: " + port.getFullName());
@@ -932,8 +948,8 @@ public class SDFDirector extends StaticSchedulingDirector implements
                     } else {
                         throw new IllegalActionException(this, port,
                                 "Port should produce " + rate
-                                        + " tokens, but there were only " + k
-                                        + " tokens available.");
+                                + " tokens, but there were only " + k
+                                + " tokens available.");
                     }
                 }
             } catch (NoTokenException ex) {
@@ -962,7 +978,7 @@ public class SDFDirector extends StaticSchedulingDirector implements
      *  parameter and a vectorizationFactor parameter.
      */
     private void _init() throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
 
         // AUTO and UNBOUNDED are used to set the value of iterations,
         // see the getIterations() method.

@@ -124,7 +124,7 @@ public class ExecuteActor extends RunCompositeActor {
     public ExecuteActor(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-        
+
         actor = new TypedIOPort(this, "actor", true, false);
         actor.setTypeEquals(BaseType.ACTOR);
         StringAttribute cardinal = new StringAttribute(actor, "_cardinal");
@@ -144,9 +144,9 @@ public class ExecuteActor extends RunCompositeActor {
     /** Make this actor opaque. */
     @Override
     public boolean isOpaque() {
-            return true;
+        return true;
     }
-    
+
     /** Override the base class to not set type constraints between the
      *  output ports and parameters of the actor.
      *  This actor cannot manage type inference across independent models,
@@ -155,22 +155,23 @@ public class ExecuteActor extends RunCompositeActor {
      *   the director's preinitialize() method throws it, or if this actor
      *   is not opaque.
      */
+    @Override
     public void preinitialize() throws IllegalActionException {
-            // Do not call super.preinitialize().
+        // Do not call super.preinitialize().
         _stopRequested = false;
-        
+
         Effigy parentEffigy = EventUtils.findToplevelEffigy(this);
         if (parentEffigy != null) {
-                try {
-                        parentEffigy.workspace().getWriteAccess();
-                        _wrapperEffigy = new PtolemyEffigy(parentEffigy,
-                                        parentEffigy.uniqueName("_wrapperEffigy"));
-                } catch (NameDuplicationException e) {
-                        throw new IllegalActionException(this, e, "Unable to create an "
-                                        + "effigy for the model.");
-                } finally {
-                        parentEffigy.workspace().doneWriting();
-                }
+            try {
+                parentEffigy.workspace().getWriteAccess();
+                _wrapperEffigy = new PtolemyEffigy(parentEffigy,
+                        parentEffigy.uniqueName("_wrapperEffigy"));
+            } catch (NameDuplicationException e) {
+                throw new IllegalActionException(this, e,
+                        "Unable to create an " + "effigy for the model.");
+            } finally {
+                parentEffigy.workspace().doneWriting();
+            }
         }
 
         if (_debugging) {
@@ -185,28 +186,30 @@ public class ExecuteActor extends RunCompositeActor {
      *  @exception IllegalActionException If the execution throws it.
      *  @return One of COMPLETED or STOP_ITERATING.
      */
+    @Override
     protected int _executeInsideModel() throws IllegalActionException {
         if (actor.hasToken(0)) {
-                Entity entity = ((ActorToken)actor.get(0)).getEntity();
-                if (!(entity instanceof TypedCompositeActor)) {
-                        throw new IllegalActionException(this, "actor input has to specify a TypedCompositeActor.");
-                }
-                _model = (TypedCompositeActor)entity;
-                
-                // In case we are running headless.
-                if (_wrapperEffigy != null) {
-                        _wrapperEffigy.setModel(_model);
-                }
+            Entity entity = ((ActorToken) actor.get(0)).getEntity();
+            if (!(entity instanceof TypedCompositeActor)) {
+                throw new IllegalActionException(this,
+                        "actor input has to specify a TypedCompositeActor.");
+            }
+            _model = (TypedCompositeActor) entity;
+
+            // In case we are running headless.
+            if (_wrapperEffigy != null) {
+                _wrapperEffigy.setModel(_model);
+            }
 
             Manager manager = new Manager("_manager");
             _model.setManager(manager);
-            
+
             _readInputs();
             try {
-                                manager.execute();
-                        } catch (KernelException e) {
-                                throw new IllegalActionException(this, e, "Execution failed.");
-                        }
+                manager.execute();
+            } catch (KernelException e) {
+                throw new IllegalActionException(this, e, "Execution failed.");
+            }
             _writeOutputs();
 
             if (_debugging) {
@@ -215,21 +218,22 @@ public class ExecuteActor extends RunCompositeActor {
         }
         return COMPLETED;
     }
-    
+
     /** Return the actor whose life cycle is being managed by this actor,
      *  which is the most recently received actor on the actor input port.
      *  @return This.
      */
+    @Override
     protected TypedCompositeActor _getManagedActor() {
-            return _model;
+        return _model;
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-    
+
     /** The most recently received actor on the actor input port. */
     private TypedCompositeActor _model;
-    
+
     /** The effigy to execute models at run time. */
     private PtolemyEffigy _wrapperEffigy;
 }

@@ -79,6 +79,7 @@ public class TwoPut extends TypedAtomicActor {
 
     /**
      */
+    @Override
     public void fire() throws IllegalActionException {
         Token token = null;
         Receiver[][] inRcvrs = input.getReceivers();
@@ -101,6 +102,7 @@ public class TwoPut extends TypedAtomicActor {
 
     /**
      */
+    @Override
     public boolean postfire() throws IllegalActionException {
         return _continueIterations;
     }

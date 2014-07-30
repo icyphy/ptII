@@ -67,7 +67,7 @@ See {@link ptolemy.domains.sdf.optimize.OptimizingSDFDirector},
 @since Ptolemy II 10.0
 @Pt.ProposedRating Red (mgeilen)
 @Pt.AcceptedRating Red ()
-*/
+ */
 
 public class OptimalScheduleFinder {
 
@@ -136,7 +136,7 @@ public class OptimalScheduleFinder {
                             if (_optimizationCriterion == OptimizationCriteria.BUFFERS) {
                                 newState.value = Math.max(
                                         _channels.channelSize(newState)
-                                                + actor.exclusiveBuffers,
+                                        + actor.exclusiveBuffers,
                                         newState.value);
                             } else if (_optimizationCriterion == OptimizationCriteria.EXECUTIONTIME) {
                                 newState.value = state.value
@@ -156,7 +156,7 @@ public class OptimalScheduleFinder {
                             if (_optimizationCriterion == OptimizationCriteria.BUFFERS) {
                                 newState.value = Math.max(
                                         _channels.channelSize(newState)
-                                                + actor.sharedBuffers,
+                                        + actor.sharedBuffers,
                                         newState.value);
                             } else if (_optimizationCriterion == OptimizationCriteria.EXECUTIONTIME) {
                                 newState.value = state.value
@@ -233,7 +233,7 @@ public class OptimalScheduleFinder {
                             if (_optimizationCriterion == OptimizationCriteria.BUFFERS) {
                                 newState.value = Math.max(
                                         _channels.channelSize(newState)
-                                                + actor.exclusiveBuffers,
+                                        + actor.exclusiveBuffers,
                                         newState.value);
                             } else if (_optimizationCriterion == OptimizationCriteria.EXECUTIONTIME) {
                                 newState.value = state.value
@@ -253,7 +253,7 @@ public class OptimalScheduleFinder {
                             if (_optimizationCriterion == OptimizationCriteria.BUFFERS) {
                                 newState.value = Math.max(
                                         _channels.channelSize(newState)
-                                                + actor.sharedBuffers,
+                                        + actor.sharedBuffers,
                                         newState.value);
                             } else if (_optimizationCriterion == OptimizationCriteria.EXECUTIONTIME) {
                                 newState.value = state.value
@@ -534,7 +534,7 @@ public class OptimalScheduleFinder {
      * A list of channels, based on LinkedList.
      */
     @SuppressWarnings("serial")
-        protected static class _ListOfChannels extends LinkedList {
+    protected static class _ListOfChannels extends LinkedList {
 
         /**
          * Count the overall memory taken by channels in the list in state 'state'.
@@ -555,11 +555,11 @@ public class OptimalScheduleFinder {
     }
 
     /**
-    * A port of an actor, connected to a channel.
-    * A port as a rate determining the number of tokens produced/consumed in
-    * a firing of its actor.
-    * Negative rates represent input ports, positive rates output ports.
-    */
+     * A port of an actor, connected to a channel.
+     * A port as a rate determining the number of tokens produced/consumed in
+     * a firing of its actor.
+     * Negative rates represent input ports, positive rates output ports.
+     */
     protected static class _Port {
 
         /**
@@ -647,7 +647,7 @@ public class OptimalScheduleFinder {
      * A list of ports, based on LinkeList.
      */
     @SuppressWarnings("serial")
-        protected static class _ListOfPorts extends LinkedList {
+    protected static class _ListOfPorts extends LinkedList {
     }
 
     /**
@@ -840,7 +840,7 @@ public class OptimalScheduleFinder {
      * A list of actors, derived from LinkedList.
      */
     @SuppressWarnings("serial")
-        protected static class _ListOfActors extends LinkedList {
+    protected static class _ListOfActors extends LinkedList {
     }
 
     /**
@@ -951,7 +951,7 @@ public class OptimalScheduleFinder {
      * A set of states, based on HashSet.
      */
     @SuppressWarnings("serial")
-        protected static class _SetOfStates extends HashSet {
+    protected static class _SetOfStates extends HashSet {
     }
 
     /**
@@ -959,15 +959,15 @@ public class OptimalScheduleFinder {
      * list of states.
      */
     @SuppressWarnings("serial")
-        protected static abstract class _StateComparator implements Comparator,
-            Serializable {
+    protected static abstract class _StateComparator implements Comparator,
+    Serializable {
     }
 
     /**
      * A Comparator to maintain a sorted list of states, sorted on their value.
      */
     @SuppressWarnings("serial")
-        protected static class _StateComparatorLowestValue extends _StateComparator {
+    protected static class _StateComparatorLowestValue extends _StateComparator {
 
         /**
          * compare two states on their value. If values tie, then sort
@@ -976,6 +976,7 @@ public class OptimalScheduleFinder {
          * @param o2 second object to compare
          * @return -1 if o1<o2, +1 if o1>o2 0 otherwise
          */
+        @Override
         public int compare(Object o1, Object o2) {
             _State state1 = (_State) o1;
             _State state2 = (_State) o2;
@@ -1007,8 +1008,8 @@ public class OptimalScheduleFinder {
      * progress to the final state.
      */
     @SuppressWarnings("serial")
-        protected static class _StateComparatorMaximumProgress extends
-            _StateComparator {
+    protected static class _StateComparatorMaximumProgress extends
+    _StateComparator {
 
         /**
          * Construct an instance of StateComparatorMaximumProgress. It creates
@@ -1024,6 +1025,7 @@ public class OptimalScheduleFinder {
          * @param o2 second object to compare
          * @return -1 if o1<o2, +1 if o1>o2 0 otherwise
          */
+        @Override
         public int compare(Object o1, Object o2) {
             _State state1 = (_State) o1;
             _State state2 = (_State) o2;
@@ -1164,10 +1166,10 @@ public class OptimalScheduleFinder {
     ////                   private fields                                  ////
 
     /**
-    * Build the final schedule from the end state found
-    * @param state optimal end state
-    * @return schedule
-    */
+     * Build the final schedule from the end state found
+     * @param state optimal end state
+     * @return schedule
+     */
     private Schedule _buildSchedule(_State state) {
         // create a new schedule
         Schedule result = new Schedule();

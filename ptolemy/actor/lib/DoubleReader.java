@@ -75,6 +75,7 @@ import ptolemy.kernel.util.NameDuplicationException;
  @Pt.AcceptedRating Red (liuj)
  @deprecated Use ExpressionReader instead.
  */
+@Deprecated
 public class DoubleReader extends URLReader {
     /** Construct an actor with the given container and name.
      *  @param container The container.
@@ -92,6 +93,7 @@ public class DoubleReader extends URLReader {
     /** Output the data read in the prefire.
      *  @exception IllegalActionException If there's no director.
      */
+    @Override
     public void fire() throws IllegalActionException {
         super.fire();
 
@@ -103,6 +105,7 @@ public class DoubleReader extends URLReader {
     /** Open the file at the URL, and set the width of the output.
      *  @exception IllegalActionException Not thrown in this base class
      */
+    @Override
     public void initialize() throws IllegalActionException {
         super.initialize();
         _dataSize = output.getWidth();
@@ -113,6 +116,7 @@ public class DoubleReader extends URLReader {
     /** Read one row from the input and prepare for output them.
      *  @exception IllegalActionException If an IO error occurs.
      */
+    @Override
     public boolean prefire() throws IllegalActionException {
         try {
             _dataSize = output.getWidth();

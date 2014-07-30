@@ -88,6 +88,7 @@ public class ASTPtFunctionDefinitionNode extends ASTPtRootNode {
      *  @exception CloneNotSupportedException If the superclass clone()
      *   method throws it.
      */
+    @Override
     public Object clone() throws CloneNotSupportedException {
         ASTPtFunctionDefinitionNode newNode = (ASTPtFunctionDefinitionNode) super
                 .clone();
@@ -124,6 +125,7 @@ public class ASTPtFunctionDefinitionNode extends ASTPtRootNode {
      *  renaming from identifiers in this node to identifiers in the
      *  given node.
      */
+    @Override
     public boolean isCongruent(ASTPtRootNode node, Map renaming) {
         if (!(node instanceof ASTPtFunctionDefinitionNode)) {
             return false;
@@ -156,6 +158,7 @@ public class ASTPtFunctionDefinitionNode extends ASTPtRootNode {
 
     /** Close this node.
      */
+    @Override
     public void jjtClose() {
         super.jjtClose();
         _argList.trimToSize();
@@ -163,6 +166,7 @@ public class ASTPtFunctionDefinitionNode extends ASTPtRootNode {
 
     /** Traverse this node with the given visitor.
      */
+    @Override
     public void visit(ParseTreeVisitor visitor) throws IllegalActionException {
         visitor.visitFunctionDefinitionNode(this);
     }

@@ -97,6 +97,7 @@ public class Location extends SingletonAttribute implements Locatable {
      *  @param listener The listener to add.
      *  @see #removeValueListener(ValueListener)
      */
+    @Override
     public void addValueListener(ValueListener listener) {
         if (_valueListeners == null) {
             _valueListeners = new LinkedList();
@@ -114,6 +115,7 @@ public class Location extends SingletonAttribute implements Locatable {
      *  @exception CloneNotSupportedException If the base class throws it.
      *  @return A new Location.
      */
+    @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         Location newObject = (Location) super.clone(workspace);
 
@@ -148,6 +150,7 @@ public class Location extends SingletonAttribute implements Locatable {
      *  @exception IOException If an I/O error occurs.
      *  @see #isPersistent()
      */
+    @Override
     public void exportMoML(Writer output, int depth, String name)
             throws IOException {
         // If the object is not persistent, and we are not
@@ -182,6 +185,7 @@ public class Location extends SingletonAttribute implements Locatable {
      *   if there is none.
      *  @see #setExpression(String)
      */
+    @Override
     public String getDefaultExpression() {
         try {
             List prototypeList = getPrototypeList();
@@ -201,6 +205,7 @@ public class Location extends SingletonAttribute implements Locatable {
      *  is the same as the name returned by getName().
      *  @return A name to present to the user.
      */
+    @Override
     public String getDisplayName() {
         return getName();
     }
@@ -222,6 +227,7 @@ public class Location extends SingletonAttribute implements Locatable {
      *  @return The expression.
      *  @see #setExpression(String)
      */
+    @Override
     public String getExpression() {
         if (_expressionSet) {
             // FIXME: If setExpression() was called with a string that does
@@ -251,6 +257,7 @@ public class Location extends SingletonAttribute implements Locatable {
      *  @return The location.
      *  @see #setLocation(double[])
      */
+    @Override
     public double[] getLocation() {
         return _location;
     }
@@ -259,6 +266,7 @@ public class Location extends SingletonAttribute implements Locatable {
      *  @return The same as getExpression().
      *  @see #getExpression()
      */
+    @Override
     public String getValueAsString() {
         return getExpression();
     }
@@ -268,6 +276,7 @@ public class Location extends SingletonAttribute implements Locatable {
      *  @return The visibility of this attribute.
      *  @see #setVisibility(Settable.Visibility)
      */
+    @Override
     public Settable.Visibility getVisibility() {
         return _visibility;
     }
@@ -278,6 +287,7 @@ public class Location extends SingletonAttribute implements Locatable {
      *  @param listener The listener to remove.
      *  @see #addValueListener(ValueListener)
      */
+    @Override
     public void removeValueListener(ValueListener listener) {
         if (_valueListeners != null) {
             _valueListeners.remove(listener);
@@ -291,6 +301,7 @@ public class Location extends SingletonAttribute implements Locatable {
      *  @param expression The value of the attribute.
      *  @see #getExpression()
      */
+    @Override
     public void setExpression(String expression) {
         if (_default == null) {
             _default = expression;
@@ -311,6 +322,7 @@ public class Location extends SingletonAttribute implements Locatable {
      *  is called.
      *  @see #getLocation()
      */
+    @Override
     public void setLocation(double[] location) throws IllegalActionException {
         _expressionSet = false;
 
@@ -328,6 +340,7 @@ public class Location extends SingletonAttribute implements Locatable {
      *  @param visibility The visibility of this attribute.
      *  @see #getVisibility()
      */
+    @Override
     public void setVisibility(Settable.Visibility visibility) {
         _visibility = visibility;
     }
@@ -336,6 +349,7 @@ public class Location extends SingletonAttribute implements Locatable {
      *  the location in parentheses.
      *  @return A string describing the object.
      */
+    @Override
     public String toString() {
         String className = getClass().getName();
 
@@ -355,6 +369,7 @@ public class Location extends SingletonAttribute implements Locatable {
      *   validated.
      *  @exception IllegalActionException If the expression is invalid.
      */
+    @Override
     public Collection validate() throws IllegalActionException {
         // If the value has not been set via setExpression(), there is
         // nothing to do.
@@ -404,6 +419,7 @@ public class Location extends SingletonAttribute implements Locatable {
      *  @exception IllegalActionException If the value cannot
      *   be propagated.
      */
+    @Override
     protected void _propagateValue(NamedObj destination)
             throws IllegalActionException {
         // NOTE: Cannot use the _location value because the

@@ -96,6 +96,7 @@ public class SampleDelay extends NamedProgramCodeGeneratorAdapter {
      *   or if the initial
      *   outputs of the SampleDelay actor is not defined.
      */
+    @Override
     public String generateInitializeCode() throws IllegalActionException {
         super.generateInitializeCode();
 

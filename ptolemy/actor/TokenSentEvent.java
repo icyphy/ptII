@@ -47,6 +47,7 @@ import ptolemy.data.Token;
  @Pt.ProposedRating Red (barney)
  @Pt.AcceptedRating Red (barney)
  */
+@Deprecated
 public class TokenSentEvent {
     /** Create a new token sent event with the given parameters.  This
      *  constructor is used when an array of tokens is sent.
@@ -153,6 +154,7 @@ public class TokenSentEvent {
     /** Return a string representation of this event.
      *  @return A user-readable string describing the event.
      */
+    @Override
     public String toString() {
         StringBuffer buffer = new StringBuffer();
         buffer.append("The port " + _port + " sent ");

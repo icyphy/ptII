@@ -148,6 +148,7 @@ public class LocalClock extends AbstractSettableAttribute {
      *  @param listener The listener to be added.
      *  @see #removeValueListener(ValueListener)
      */
+    @Override
     public void addValueListener(ValueListener listener) {
         // nothing to do.
     }
@@ -215,6 +216,7 @@ public class LocalClock extends AbstractSettableAttribute {
      *  @return The cloned object.
      *  @exception CloneNotSupportedException If thrown by super class.
      */
+    @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         LocalClock newObject = (LocalClock) super.clone(workspace);
         newObject._localTime = Time.NEGATIVE_INFINITY;
@@ -245,9 +247,9 @@ public class LocalClock extends AbstractSettableAttribute {
         if (time.compareTo(_lastCommitLocalTime) < 0) {
             throw new IllegalActionException(
                     "Cannot compute environment time for local time " + time
-                            + " because "
-                            + "the last commit of the local time occurred at "
-                            + "local time " + _lastCommitLocalTime);
+                    + " because "
+                    + "the last commit of the local time occurred at "
+                    + "local time " + _lastCommitLocalTime);
         }
         Time localTimePassedSinceCommit = time.subtract(_lastCommitLocalTime);
         Time environmentTimePassedSinceCommit = localTimePassedSinceCommit;
@@ -268,6 +270,7 @@ public class LocalClock extends AbstractSettableAttribute {
     /** Return the local time.
      *  @return The local time as a string value.
      */
+    @Override
     public String getExpression() {
         if (_localTime == null) {
             return "";
@@ -315,11 +318,11 @@ public class LocalClock extends AbstractSettableAttribute {
                 || time.compareTo(_lastCommitEnvironmentTime) < 0) {
             throw new IllegalActionException(
                     "Cannot compute local time for environment time " + time
-                            + " because "
-                            + "the last commit of the local time occurred at "
-                            + "local time " + _lastCommitLocalTime + " which "
-                            + "corresponds to environment time "
-                            + _lastCommitEnvironmentTime);
+                    + " because "
+                    + "the last commit of the local time occurred at "
+                    + "local time " + _lastCommitLocalTime + " which "
+                    + "corresponds to environment time "
+                    + _lastCommitEnvironmentTime);
         }
 
         Time environmentTimePassedSinceCommit = time
@@ -354,6 +357,7 @@ public class LocalClock extends AbstractSettableAttribute {
      *  @return NOT_EDITABLE.
      *  @see #setVisibility(Visibility)
      */
+    @Override
     public Visibility getVisibility() {
         return _visibility;
     }
@@ -377,6 +381,7 @@ public class LocalClock extends AbstractSettableAttribute {
      *  @param listener The listener to be removed.
      *  @see #addValueListener(ValueListener)
      */
+    @Override
     public void removeValueListener(ValueListener listener) {
         // nothing to do.
     }
@@ -405,7 +410,7 @@ public class LocalClock extends AbstractSettableAttribute {
         if (drift <= 0.0) {
             throw new IllegalActionException(getContainer(),
                     "Illegal clock drift: " + drift
-                            + ". Clock drift is required to be positive.");
+                    + ". Clock drift is required to be positive.");
         }
         _drift = drift;
         _commit();
@@ -448,6 +453,7 @@ public class LocalClock extends AbstractSettableAttribute {
      *  @param visibility The new visibility.
      *  @see #getVisibility()
      */
+    @Override
     public void setVisibility(Visibility visibility) {
         _visibility = visibility;
     }
@@ -479,6 +485,7 @@ public class LocalClock extends AbstractSettableAttribute {
      *  @return Null.
      *  @exception IllegalActionException Not thrown in this base class.
      */
+    @Override
     public Collection validate() throws IllegalActionException {
         return null;
     }
@@ -533,7 +540,7 @@ public class LocalClock extends AbstractSettableAttribute {
      *  By default, the offset is zero.
      */
     private Time _offset;
-    
+
     private Visibility _visibility;
 
     /** Time resolution cache, with a reasonable default value. */

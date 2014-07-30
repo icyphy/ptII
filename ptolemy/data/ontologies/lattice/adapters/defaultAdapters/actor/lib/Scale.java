@@ -81,6 +81,7 @@ public class Scale extends LatticeOntologyAdapter {
      *  @exception IllegalActionException If there is an error creating
      *   the constraint list.
      */
+    @Override
     public List<Inequality> constraintList() throws IllegalActionException {
         ptolemy.actor.lib.Scale actor = (ptolemy.actor.lib.Scale) getComponent();
 
@@ -118,6 +119,7 @@ public class Scale extends LatticeOntologyAdapter {
      *  by this adapter.
      *  @return The list of propertyable attributes.
      */
+    @Override
     protected List<Attribute> _getPropertyableAttributes() {
         List<Attribute> result = super._getPropertyableAttributes();
 

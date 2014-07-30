@@ -127,6 +127,7 @@ public class MetroIIPNDirector extends PNDirector implements GetFirable {
      *                If a derived class contains an attribute that cannot be
      *                cloned.
      */
+    @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         MetroIIPNDirector newObject = (MetroIIPNDirector) super
                 .clone(workspace);
@@ -144,6 +145,7 @@ public class MetroIIPNDirector extends PNDirector implements GetFirable {
      * The same as super class except replacing the PNQueueReceiver by
      * MetroIIPNQueueReceiver.
      */
+    @Override
     public Receiver newReceiver() {
         MetroIIPNQueueReceiver receiver = new MetroIIPNQueueReceiver();
         _receivers.add(new WeakReference(receiver));
@@ -180,9 +182,10 @@ public class MetroIIPNDirector extends PNDirector implements GetFirable {
     public YieldAdapterIterable<Iterable<Builder>> adapter() {
         return new ThreadedYieldAdapter<Iterable<Event.Builder>>()
                 .adapt(new Collector<Iterable<Event.Builder>>() {
+                    @Override
                     public void collect(
                             ResultHandler<Iterable<Event.Builder>> resultHandler)
-                            throws CollectionAbortedException {
+                                    throws CollectionAbortedException {
                         getfire(resultHandler);
                     }
                 });
@@ -259,7 +262,7 @@ public class MetroIIPNDirector extends PNDirector implements GetFirable {
                         while (!_areThreadsDeadlocked()
                                 && !_areAllThreadsStopped()
                                 && _getActiveThreadsCount() != _getMetroIIEventBlockedThreadsCount()
-                                        + _getBlockedThreadsCount()) {
+                                + _getBlockedThreadsCount()) {
                             wait(1);
                         }
 
@@ -301,8 +304,8 @@ public class MetroIIPNDirector extends PNDirector implements GetFirable {
                     } finally {
                         if (outsideDirector != null) {
                             ((ProcessDirector) outsideDirector)
-                                    .threadUnblocked(Thread.currentThread(),
-                                            null);
+                            .threadUnblocked(Thread.currentThread(),
+                                    null);
                         }
                     }
                 }

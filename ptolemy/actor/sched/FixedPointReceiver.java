@@ -95,6 +95,7 @@ public class FixedPointReceiver extends AbstractReceiver {
      *  @exception IllegalActionException If this receiver is known and
      *   present.
      */
+    @Override
     public void clear() throws IllegalActionException {
         if (isKnown()) {
             if (hasToken()) {
@@ -114,6 +115,7 @@ public class FixedPointReceiver extends AbstractReceiver {
      *  an empty list if there is no such token.
      *  @return A list of instances of Token.
      */
+    @Override
     public List<Token> elementList() {
         List<Token> result = new LinkedList<Token>();
         if (_token != null) {
@@ -128,6 +130,7 @@ public class FixedPointReceiver extends AbstractReceiver {
      *  @exception NoTokenException If there is no token.
      *  @exception InvalidStateException If the status is unknown.
      */
+    @Override
     public Token get() throws NoTokenException {
         if (!isKnown()) {
             throw new InvalidStateException(
@@ -146,6 +149,7 @@ public class FixedPointReceiver extends AbstractReceiver {
      *  @return True if the status of the receiver is unknown.
      *  @see #isKnown()
      */
+    @Override
     public boolean hasRoom() {
         return !isKnown();
     }
@@ -159,6 +163,7 @@ public class FixedPointReceiver extends AbstractReceiver {
      *  @see #isKnown()
      *  @see #hasRoom()
      */
+    @Override
     public boolean hasRoom(int numberOfTokens) throws IllegalArgumentException {
         if (numberOfTokens < 1) {
             throw new IllegalArgumentException(
@@ -177,6 +182,7 @@ public class FixedPointReceiver extends AbstractReceiver {
      *  @return True if this receiver contains a token.
      *  @exception InvalidStateException If the status is unknown.
      */
+    @Override
     public boolean hasToken() {
         if (isKnown()) {
             return _token != null;
@@ -197,6 +203,7 @@ public class FixedPointReceiver extends AbstractReceiver {
      *  @see #hasToken()
      *  @exception InvalidStateException If the status is unknown.
      */
+    @Override
     public boolean hasToken(int numberOfTokens) {
         if (!isKnown()) {
             throw new InvalidStateException(getContainer(), "hasToken(int)"
@@ -218,6 +225,7 @@ public class FixedPointReceiver extends AbstractReceiver {
      *  not to have a token.
      *  @return True if this receiver has status known.
      */
+    @Override
     public boolean isKnown() {
         return _known;
     }
@@ -234,6 +242,7 @@ public class FixedPointReceiver extends AbstractReceiver {
      *   or a token is present but not have the same value, or a token
      *   is present and cannot be compared to the specified token.
      */
+    @Override
     public void put(Token token) throws IllegalActionException {
         if (token == null) {
             clear();
@@ -268,6 +277,7 @@ public class FixedPointReceiver extends AbstractReceiver {
      *  by the , normally in its initialize() and postfire()
      *  methods.
      */
+    @Override
     public void reset() {
         _token = null;
         _known = false;
@@ -283,6 +293,7 @@ public class FixedPointReceiver extends AbstractReceiver {
      *   but may be thrown in derived classes.
      *  @see #getContainer()
      */
+    @Override
     public void setContainer(IOPort port) throws IllegalActionException {
         if (port == null && _director != null) {
             _director._receivers.remove(this);

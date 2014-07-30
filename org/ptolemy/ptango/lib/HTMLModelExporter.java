@@ -215,6 +215,7 @@ public class HTMLModelExporter extends VisualModelReference {
      *  @exception IllegalActionException If the change is not acceptable
      *   to this container (not thrown in this base class).
      */
+    @Override
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         if (attribute == backgroundColor) {
@@ -306,6 +307,7 @@ public class HTMLModelExporter extends VisualModelReference {
      *  @see java.lang.Object#clone()
      *  @return The cloned attribute.
      */
+    @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         HTMLModelExporter newObject = (HTMLModelExporter) super
                 .clone(workspace);
@@ -314,6 +316,7 @@ public class HTMLModelExporter extends VisualModelReference {
         return newObject;
     }
 
+    @Override
     public void fire() throws IllegalActionException {
         super.fire();
         // NOTE: The opening must occur in the event thread.
@@ -322,6 +325,7 @@ public class HTMLModelExporter extends VisualModelReference {
         // invokeAndWait() method.
         _exception = null;
         Runnable doExport = new Runnable() {
+            @Override
             public void run() {
                 // Since we do not support running in a new thread,
                 // the model has completed execution if it is to execute at all.

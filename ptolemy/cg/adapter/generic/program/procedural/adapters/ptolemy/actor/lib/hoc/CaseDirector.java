@@ -72,6 +72,7 @@ public class CaseDirector extends Director {
      *  @exception IllegalActionException If the adapter associated with
      *   an actor throws it while generating fire code for the actor.
      */
+    @Override
     public String generateFireCode() throws IllegalActionException {
         //new Exception("CaseDirector.generateFireCode()").printStackTrace();
         StringBuffer code = new StringBuffer();
@@ -177,6 +178,7 @@ public class CaseDirector extends Director {
      *  @param code The string buffer that the generated code is appended to.
      *  @exception IllegalActionException If thrown while transferring tokens.
      */
+    @Override
     final public void generateTransferInputsCode(IOPort inputPort,
             StringBuffer code) throws IllegalActionException {
         generateTransferInputsCode(inputPort, code, true);
@@ -188,6 +190,7 @@ public class CaseDirector extends Director {
      *  @param code The string buffer that the generated code is appended to.
      *  @exception IllegalActionException If thrown while transferring tokens.
      */
+    @Override
     public void generateTransferOutputsCode(IOPort outputPort, StringBuffer code)
             throws IllegalActionException {
         generateTransferOutputsCode(outputPort, code, true);

@@ -78,6 +78,7 @@ public class ProductLatticeDerivedConceptFunction extends ConceptFunction {
      *  @return The concept output result of the function.
      *  @exception IllegalActionException If there is an error evaluating the function.
      */
+    @Override
     protected Concept _evaluateFunction(List<Concept> argValues)
             throws IllegalActionException {
         Concept inputConcept = argValues.get(0);

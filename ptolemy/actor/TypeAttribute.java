@@ -158,8 +158,9 @@ public class TypeAttribute extends Parameter {
      *   an attribute with the name of this attribute that is not an instance
      *   of TypeAttribute.
      */
+    @Override
     public void setContainer(NamedObj container) throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         _checkContainer(container);
         try {
             workspace().getWriteAccess();
@@ -223,6 +224,7 @@ public class TypeAttribute extends Parameter {
      *  @exception IllegalActionException If the proposed container is not a
      *   TypedIOPort, or if the base class throws it.
      */
+    @Override
     protected void _checkContainer(NamedObj container)
             throws IllegalActionException {
         if (container != null && !(container instanceof TypedIOPort)) {

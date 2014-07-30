@@ -112,6 +112,7 @@ public class MoMLApplet extends PtolemyApplet {
      *  is included in the applet information.
      *  @return A string giving information about the applet.
      */
+    @Override
     public String getAppletInfo() {
         // Include the release and build number to aid in user support.
         String version = "Ptolemy II " + VersionAttribute.CURRENT_VERSION;
@@ -135,6 +136,7 @@ public class MoMLApplet extends PtolemyApplet {
     /** Describe the applet parameters.
      *  @return An array describing the applet parameters.
      */
+    @Override
     public String[][] getParameterInfo() {
         String[][] newInfo = { { "modelURL", "", "URL for the MoML file" }, };
         return _concatStringArrays(super.getParameterInfo(), newInfo);
@@ -150,6 +152,7 @@ public class MoMLApplet extends PtolemyApplet {
      *  @return A model.
      *  @exception Exception If something goes wrong.
      */
+    @Override
     protected NamedObj _createModel(Workspace workspace) throws Exception {
         // Filter out graphical classes.
         return _createModel(workspace, true);
@@ -190,8 +193,8 @@ public class MoMLApplet extends PtolemyApplet {
         removeNonAppletClasses.put(
                 "ptolemy.codegen.kernel.StaticSchedulingCodeGenerator", null);
         removeNonAppletClasses
-                .put("ptolemy.vergil.kernel.attributes.DocumentationAttribute",
-                        null);
+        .put("ptolemy.vergil.kernel.attributes.DocumentationAttribute",
+                null);
         MoMLParser.addMoMLFilter(removeNonAppletClasses);
 
         URL docBase = getDocumentBase();

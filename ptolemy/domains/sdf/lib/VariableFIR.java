@@ -130,6 +130,7 @@ public class VariableFIR extends FIR {
      *  @exception IllegalActionException If the attribute contains
      *  an invalid value or if the super method throws it.
      */
+    @Override
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         super.attributeChanged(attribute);
@@ -147,6 +148,7 @@ public class VariableFIR extends FIR {
      *  @exception CloneNotSupportedException If a derived class contains
      *   an attribute that cannot be cloned.
      */
+    @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         VariableFIR newObject = (VariableFIR) super.clone(workspace);
 
@@ -159,6 +161,7 @@ public class VariableFIR extends FIR {
      *  @exception IllegalActionException If parameter values are invalid,
      *   or if there is no director, or if runtime type conflicts occur.
      */
+    @Override
     public void fire() throws IllegalActionException {
         if (newTaps.hasToken(0)) {
             ArrayToken tapsToken = (ArrayToken) newTaps.get(0);
@@ -184,6 +187,7 @@ public class VariableFIR extends FIR {
      *   <i>blockSize</i> parameter.
      *  @exception IllegalActionException If the superclass throws it.
      */
+    @Override
     public boolean prefire() throws IllegalActionException {
         // If an attribute has changed since the last fire(), or if
         // this is the first fire(), then reinitialize.

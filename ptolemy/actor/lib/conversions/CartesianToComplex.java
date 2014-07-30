@@ -104,6 +104,7 @@ public class CartesianToComplex extends TypedAtomicActor {
      *  converted complex token on the output port.
      *  @exception IllegalActionException If there is no director.
      */
+    @Override
     public void fire() throws IllegalActionException {
         super.fire();
         double xValue = ((DoubleToken) x.get(0)).doubleValue();
@@ -116,6 +117,7 @@ public class CartesianToComplex extends TypedAtomicActor {
      *  return what the superclass returns (presumably true).
      *  @exception IllegalActionException If there is no director.
      */
+    @Override
     public boolean prefire() throws IllegalActionException {
         if (!x.hasToken(0) || !y.hasToken(0)) {
             return false;

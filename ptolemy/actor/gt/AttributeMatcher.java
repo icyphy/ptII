@@ -24,7 +24,7 @@
  PT_COPYRIGHT_VERSION_2
  COPYRIGHTENDKEY
 
-*/
+ */
 package ptolemy.actor.gt;
 
 import java.util.HashSet;
@@ -92,6 +92,7 @@ public class AttributeMatcher extends Attribute implements GTEntity {
      *
      *  @return The attribute that stores all the criteria.
      */
+    @Override
     public GTIngredientsAttribute getCriteriaAttribute() {
         return criteria;
     }
@@ -103,6 +104,7 @@ public class AttributeMatcher extends Attribute implements GTEntity {
      *
      *  @return The icon description.
      */
+    @Override
     public String getDefaultIconDescription() {
         return _ICON_DESCRIPTION;
     }
@@ -111,6 +113,7 @@ public class AttributeMatcher extends Attribute implements GTEntity {
      *
      *  @return The attribute that stores all the operations.
      */
+    @Override
     public GTIngredientsAttribute getOperationsAttribute() {
         return operations;
     }
@@ -122,6 +125,7 @@ public class AttributeMatcher extends Attribute implements GTEntity {
      *  @return The attribute that stores the name of the corresponding entity.
      *  @see #labelSet()
      */
+    @Override
     public PatternObjectAttribute getPatternObjectAttribute() {
         return patternObject;
     }
@@ -131,6 +135,7 @@ public class AttributeMatcher extends Attribute implements GTEntity {
      *
      *  @return The set of names.
      */
+    @Override
     public Set<String> labelSet() {
         long version = workspace().getVersion();
         if (_labelSet == null || version > _version) {
@@ -160,6 +165,7 @@ public class AttributeMatcher extends Attribute implements GTEntity {
      *  @param object The NamedObj.
      *  @return Whether this AtomicActorMatcher can match the given object.
      */
+    @Override
     public boolean match(NamedObj object) {
         return object instanceof Attribute;
     }
@@ -169,6 +175,7 @@ public class AttributeMatcher extends Attribute implements GTEntity {
      *
      *  @param attribute The attribute containing ingredients of this entity.
      */
+    @Override
     public void updateAppearance(GTIngredientsAttribute attribute) {
     }
 

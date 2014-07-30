@@ -72,6 +72,7 @@ public class ConcreteFigures extends TestSuite {
     /**
      * runSuite()
      */
+    @Override
     public void runSuite() {
         new FigureTest(getTestHarness(), new BasicRectangleFactory1()).run();
         new FigureTest(getTestHarness(), new BasicRectangleFactory2()).run();
@@ -101,14 +102,16 @@ public class ConcreteFigures extends TestSuite {
      * Create a BasicRectangle with stroked outline
      */
     public static class BasicRectangleFactory1 implements
-            FigureTest.FigureFactory {
+    FigureTest.FigureFactory {
         // FindBugs suggests making this class static so as to decrease
         // the size of instances and avoid dangling references.
 
+        @Override
         public Figure createFigure() {
             return new BasicRectangle(10, 10, 20, 20);
         }
 
+        @Override
         public String toString() {
             return "Basic rectangle, no fill";
         }
@@ -118,14 +121,16 @@ public class ConcreteFigures extends TestSuite {
      * Create a filled BasicRectangle
      */
     public static class BasicRectangleFactory2 implements
-            FigureTest.FigureFactory {
+    FigureTest.FigureFactory {
         // FindBugs suggests making this class static so as to decrease
         // the size of instances and avoid dangling references.
 
+        @Override
         public Figure createFigure() {
             return new BasicRectangle(10, 10, 20, 20, Color.blue);
         }
 
+        @Override
         public String toString() {
             return "Basic rectangle, filled blue";
         }
@@ -179,6 +184,7 @@ public class ConcreteFigures extends TestSuite {
             icon.addTerminal(east, SwingConstants.EAST, 50);
         }
 
+        @Override
         public Figure createFigure() {
             // Create the graphic
             PaintedList graphic = new PaintedList();
@@ -206,6 +212,7 @@ public class ConcreteFigures extends TestSuite {
             return icon;
         }
 
+        @Override
         public String toString() {
             return "Icon figure";
         }
@@ -222,6 +229,7 @@ public class ConcreteFigures extends TestSuite {
 
         public Component component = new Canvas();
 
+        @Override
         public Figure createFigure() {
             Image img = Toolkit.getDefaultToolkit().getImage(IMAGE_FILE_NAME);
             MediaTracker tracker = new MediaTracker(component);
@@ -238,6 +246,7 @@ public class ConcreteFigures extends TestSuite {
             return imgFig;
         }
 
+        @Override
         public String toString() {
             return "Image figure";
         }
@@ -250,12 +259,14 @@ public class ConcreteFigures extends TestSuite {
         // FindBugs suggests making this class static so as to decrease
         // the size of instances and avoid dangling references.
 
+        @Override
         public Figure createFigure() {
             LabelFigure label = new LabelFigure("Hello!");
             label.translate(200, 200);
             return label;
         }
 
+        @Override
         public String toString() {
             return "Label figure";
         }
@@ -265,15 +276,17 @@ public class ConcreteFigures extends TestSuite {
      * Create a CompositeFigure with a filled rectangle background
      */
     public static class CompositeFigureFactory1 implements
-            FigureTest.FigureFactory {
+    FigureTest.FigureFactory {
         // FindBugs suggests making this class static so as to decrease
         // the size of instances and avoid dangling references.
+        @Override
         public Figure createFigure() {
             Figure bg = new BasicRectangle(10, 10, 20, 20, Color.blue);
             Figure cf = new CompositeFigure(bg);
             return cf;
         }
 
+        @Override
         public String toString() {
             return "Composite figure with basic rectangle background";
         }
@@ -286,6 +299,7 @@ public class ConcreteFigures extends TestSuite {
         // FindBugs suggests making this class static so as to decrease
         // the size of instances and avoid dangling references.
 
+        @Override
         public Figure createFigure() {
             Figure bg = new BasicRectangle(10, 10, 20, 20, Color.blue);
             CanvasPane pane = new GraphicsPane();
@@ -296,6 +310,7 @@ public class ConcreteFigures extends TestSuite {
             return wrapper;
         }
 
+        @Override
         public String toString() {
             return "Pane wrapper containing an empty graphics pane";
         }

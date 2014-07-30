@@ -39,10 +39,11 @@ import java.util.concurrent.BlockingQueue;
  @since Ptolemy II 6.1
  @Pt.ProposedRating Red (cxh)
  @Pt.AcceptedRating Red (cxh)
-*/
+ */
 
 public class WordCount extends MapReduceAlgorithm {
 
+    @Override
     public List<KeyValuePair> map(String key, String value) {
         StringTokenizer tokenizer = new StringTokenizer(value);
         LinkedList<KeyValuePair> output = new LinkedList<KeyValuePair>();
@@ -52,6 +53,7 @@ public class WordCount extends MapReduceAlgorithm {
         return output;
     }
 
+    @Override
     public List<String> reduce(String key, BlockingQueue<String> values)
             throws InterruptedException {
         int result = 0;

@@ -25,7 +25,7 @@ ENHANCEMENTS, OR MODIFICATIONS.
                                                 COPYRIGHTENDKEY
 
 
-*/
+ */
 package ptdb.gui;
 
 import java.awt.Color;
@@ -51,11 +51,11 @@ This adds Database interface menues
 
 @see ActorGraphDBFrame
 @author  Lyle Holsinger
-* @since Ptolemy II 10.0
-* @version $Id$
-* @Pt.ProposedRating red (lholsing)
-* @Pt.AcceptedRating red (lholsing)
-*/
+ * @since Ptolemy II 10.0
+ * @version $Id$
+ * @Pt.ProposedRating red (lholsing)
+ * @Pt.AcceptedRating red (lholsing)
+ */
 public class ActorGraphDBTableau extends Tableau {
 
     /** Create a tableau in the specified workspace.
@@ -184,6 +184,7 @@ public class ActorGraphDBTableau extends Tableau {
          *  @exception Exception If an exception occurs when creating the
          *  tableau.
          */
+        @Override
         public Tableau createTableau(Effigy effigy) throws Exception {
             if (effigy instanceof PtolemyEffigy) {
                 // First see whether the effigy already contains a graphDBTableau.

@@ -96,6 +96,7 @@ public class DataCollector extends TypedAtomicActor {
      *  to indicate whether the parking lot is full.
      *  @exception IllegalActionException If the superclass throws it.
      */
+    @Override
     public void fire() throws IllegalActionException {
         super.fire();
 
@@ -121,6 +122,7 @@ public class DataCollector extends TypedAtomicActor {
     /** Initialize the private varialbles.
      *  @exception IllegalActionException If thrown by the base class.
      */
+    @Override
     public void initialize() throws IllegalActionException {
         super.initialize();
         _parkingManager = new ParkingManager();

@@ -56,6 +56,7 @@ import ptolemy.kernel.util.Workspace;
  @Pt.ProposedRating Red (eal)
  @Pt.AcceptedRating Red (reviewmoderator)
  */
+@Deprecated
 public class MobileFunction extends TypedAtomicActor {
     /** Construct a MobileFunction in the specified workspace with
      *  no container and an empty string as a name. You can then change
@@ -68,7 +69,7 @@ public class MobileFunction extends TypedAtomicActor {
      *   actor with this name.
      */
     public MobileFunction(Workspace workspace) throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         super(workspace);
         input = new TypedIOPort(this, "input", true, false);
         function = new TypedIOPort(this, "function", true, false);
@@ -132,6 +133,7 @@ public class MobileFunction extends TypedAtomicActor {
      *   the director's fire() method throws it, or if the actor is not
      *   opaque.
      */
+    @Override
     public void fire() throws IllegalActionException {
         super.fire();
         if (_debugging) {
@@ -160,6 +162,7 @@ public class MobileFunction extends TypedAtomicActor {
     /** Initialize this actor.
      *  @exception IllegalActionException If the superclass throws it.
      */
+    @Override
     public void initialize() throws IllegalActionException {
         _function = null;
         super.initialize();
@@ -168,6 +171,7 @@ public class MobileFunction extends TypedAtomicActor {
     /** Return true if the actor either of its input port has token.
      *  @exception IllegalActionException Not thrown in this base class.
      */
+    @Override
     public boolean prefire() throws IllegalActionException {
         if (!super.prefire()) {
             return false;

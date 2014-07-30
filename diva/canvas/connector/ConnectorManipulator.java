@@ -147,6 +147,7 @@ public class ConnectorManipulator extends Manipulator {
      * instance will have the same grab handle, and interactor
      * for grab-handles, as this one.
      */
+    @Override
     public FigureDecorator newInstance(Figure f) {
         ConnectorManipulator m = new ConnectorManipulator();
         m.setGrabHandleFactory(this.getGrabHandleFactory());
@@ -160,7 +161,7 @@ public class ConnectorManipulator extends Manipulator {
      */
     public void removeConnectorListener(ConnectorListener l) {
         ((ConnectorInteractor) getHandleInteractor())
-                .removeConnectorListener(l);
+        .removeConnectorListener(l);
     }
 
     /** Remove the given layer motion listener from this interactor.
@@ -178,6 +179,7 @@ public class ConnectorManipulator extends Manipulator {
      * re-attached accordingly, grabbing and moving them will cause
      * unpredictable results.
      */
+    @Override
     public void refresh() {
         Connector c = (Connector) getChild();
 
@@ -196,6 +198,7 @@ public class ConnectorManipulator extends Manipulator {
     /** Set the child figure. If we have any grab-handles, lose them.
      * Then create the grab-handles on the ends of the connector.
      */
+    @Override
     public void setChild(Figure f) {
         if (f == null) {
             super.setChild(null);
@@ -277,6 +280,7 @@ public class ConnectorManipulator extends Manipulator {
 
         FigureContainer _parent;
 
+        @Override
         public void mouseEntered(LayerEvent e) {
             Figure f = e.getFigureSource();
             _parent = (FigureContainer) f.getParent();
@@ -287,12 +291,14 @@ public class ConnectorManipulator extends Manipulator {
             }
         }
 
+        @Override
         public void mouseExited(LayerEvent e) {
             _parent.undecorate(_high);
             _high = null;
             _parent = null;
         }
 
+        @Override
         public void mouseMoved(LayerEvent e) {
             //XXX System.out.println(e);
         }

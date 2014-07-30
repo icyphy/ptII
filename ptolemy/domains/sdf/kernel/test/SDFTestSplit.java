@@ -84,6 +84,7 @@ public class SDFTestSplit extends TypedAtomicActor {
      * output1, and the second to the port output2
      * @exception IllegalActionException if a contained method throws it.
      */
+    @Override
     public void fire() throws IllegalActionException {
         IntToken message;
 

@@ -49,6 +49,7 @@ import ptolemy.kernel.util.Workspace;
 
  */
 public class TestWorkspace3 extends TestWorkspaceBase {
+    @Override
     public void initializeTest() {
         Workspace workspace = new Workspace();
         List actions = new LinkedList();

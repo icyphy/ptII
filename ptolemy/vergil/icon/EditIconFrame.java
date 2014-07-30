@@ -116,6 +116,7 @@ public class EditIconFrame extends BasicGraphFrame {
     /** Set zoom to the nominal.  This overrides the base class to set
      *  a zoom factor and center more appropriate for editing icons.
      */
+    @Override
     public void zoomReset() {
         JCanvas canvas = getJGraph().getGraphPane().getCanvas();
         AffineTransform current = canvas.getCanvasPane().getTransformContext()
@@ -135,6 +136,7 @@ public class EditIconFrame extends BasicGraphFrame {
     /** Create the menus that are used by this frame.
      *  It is essential that _createGraphPane() be called before this.
      */
+    @Override
     protected void _addMenus() {
         super._addMenus();
     }
@@ -153,6 +155,7 @@ public class EditIconFrame extends BasicGraphFrame {
      *  @return The new library, or null if there is no
      *   configuration.
      */
+    @Override
     protected CompositeEntity _createDefaultLibrary(Workspace workspace) {
         Configuration configuration = getConfiguration();
 
@@ -189,6 +192,7 @@ public class EditIconFrame extends BasicGraphFrame {
      *  @param entity The object to be displayed in the pane.
      *  @return The pane that is created.
      */
+    @Override
     protected GraphPane _createGraphPane(NamedObj entity) {
         _controller = new EditIconGraphController();
         _controller.setConfiguration(getConfiguration());

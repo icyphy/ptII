@@ -316,11 +316,13 @@ public class UndoStackAttribute extends SingletonAttribute {
         }
 
         /** Execute the action. */
+        @Override
         public void execute() throws Exception {
             _firstAction.execute();
             _secondAction.execute();
         }
 
+        @Override
         public String toString() {
             return "Merged action.\nFirst part:\n" + _firstAction
                     + "\n\nSecond part:\n" + _secondAction;

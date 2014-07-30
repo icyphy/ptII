@@ -60,6 +60,7 @@ public class NavigationTreeModel extends ClassAndEntityTreeModel {
      * l'utilisation de biblioth&egrave;que.
      *  @return True if the node has no children.
      */
+    @Override
     public boolean isLeaf(Object object) {
         if (!(object instanceof CompositeEntity)) {
             return true;

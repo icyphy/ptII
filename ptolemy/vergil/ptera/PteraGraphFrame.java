@@ -94,6 +94,7 @@ public class PteraGraphFrame extends FSMGraphFrame {
      *   an instance of CompositeEntity).
      *  @return The pane that is created.
      */
+    @Override
     protected GraphPane _createGraphPane(NamedObj entity) {
         _controller = new PteraGraphController();
         _controller.setConfiguration(getConfiguration());

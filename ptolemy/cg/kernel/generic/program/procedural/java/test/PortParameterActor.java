@@ -87,6 +87,7 @@ public class PortParameterActor extends TypedAtomicActor {
      *  @exception IllegalActionException If it is thrown by the
      *   send() method sending out the token.
      */
+    @Override
     public void fire() throws IllegalActionException {
         super.fire();
         myPortParameter.update();
@@ -95,14 +96,14 @@ public class PortParameterActor extends TypedAtomicActor {
     }
 
     /**
-     * 
+     *
      */
     @Override
     protected Set<Inequality> _defaultTypeConstraints() {
         Set<Inequality> result = new HashSet<Inequality>();
-        result.add(new Inequality(myPortParameter.getTypeTerm(), output.getTypeTerm()));
+        result.add(new Inequality(myPortParameter.getTypeTerm(), output
+                .getTypeTerm()));
         return result;
     }
-    
-    
+
 }

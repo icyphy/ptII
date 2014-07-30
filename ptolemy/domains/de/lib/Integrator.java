@@ -94,6 +94,7 @@ public class Integrator extends DETransformer {
      *  @exception CloneNotSupportedException If a derived class has
      *   has an attribute that cannot be cloned.
      */
+    @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         Integrator newObject = (Integrator) super.clone(workspace);
 
@@ -118,6 +119,7 @@ public class Integrator extends DETransformer {
      *  @exception IllegalActionException If subtraction or division is not
      *   supported by the supplied tokens.
      */
+    @Override
     public void fire() throws IllegalActionException {
         super.fire();
         if (input.hasToken(0)) {
@@ -156,6 +158,7 @@ public class Integrator extends DETransformer {
     /** Reset to indicate that no input has yet been seen.
      *  @exception IllegalActionException If the parent class throws it.
      */
+    @Override
     public void initialize() throws IllegalActionException {
         super.initialize();
         _lastInput = null;
@@ -167,6 +170,7 @@ public class Integrator extends DETransformer {
      *  event has been received, process it here.
      *  @exception IllegalActionException If the base class throws it.
      */
+    @Override
     public boolean postfire() throws IllegalActionException {
         //If reset port is connected and has a token, reset state.
         if (reset.getWidth() > 0) {

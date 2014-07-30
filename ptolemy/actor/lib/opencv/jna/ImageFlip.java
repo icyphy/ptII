@@ -88,6 +88,7 @@ public class ImageFlip extends Transformer {
     /** Output a frame.
      *  @exception IllegalActionException If thrown while writing to the port.
      */
+    @Override
     public void fire() throws IllegalActionException {
         int flipMode = ((IntToken) flipModeParam.getToken()).intValue();
 
@@ -108,6 +109,7 @@ public class ImageFlip extends Transformer {
     /** Release image.
      *  @exception IllegalActionException If thrown by the super class.
      */
+    @Override
     public void wrapup() throws IllegalActionException {
         super.wrapup();
     }

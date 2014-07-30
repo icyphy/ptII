@@ -79,6 +79,7 @@ public class JopSerialRead extends Source {
      *  @exception CloneNotSupportedException If a derived class contains
      *   an attribute that cannot be cloned.
      */
+    @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         JopSerialRead newObject = (JopSerialRead) super.clone(workspace);
         newObject.output.setTypeEquals(BaseType.INT);
@@ -90,6 +91,7 @@ public class JopSerialRead extends Source {
      *
      *  @exception IllegalActionException If there is no director.
      */
+    @Override
     public void fire() throws IllegalActionException {
 
         String hello = "Hello World! ";
@@ -109,6 +111,7 @@ public class JopSerialRead extends Source {
     /** Enable read on the next invocation of fire().
      *  @exception IllegalActionException If the base class throws it.
      */
+    @Override
     public boolean postfire() throws IllegalActionException {
         _firstFire = true;
         return super.postfire();

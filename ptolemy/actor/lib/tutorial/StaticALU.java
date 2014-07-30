@@ -113,6 +113,7 @@ public class StaticALU extends TypedAtomicActor {
      *  @exception CloneNotSupportedException If a derived class contains
      *   an attribute that cannot be cloned.
      */
+    @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         StaticALU newObject = (StaticALU) super.clone(workspace);
         newObject.A.setTypeEquals(BaseType.INT);
@@ -133,6 +134,7 @@ public class StaticALU extends TypedAtomicActor {
      *  @exception IllegalActionException If the input operation code
      *  is not supported.
      */
+    @Override
     public void fire() throws IllegalActionException {
         super.fire();
         Token result = null;

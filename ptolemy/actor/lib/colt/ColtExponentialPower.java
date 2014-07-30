@@ -76,7 +76,7 @@ public class ColtExponentialPower extends ColtRandomSource {
         tau = new PortParameter(this, "tau", new DoubleToken(1.0));
         tau.setTypeEquals(BaseType.DOUBLE);
         new SingletonParameter(tau.getPort(), "_showName")
-                .setToken(BooleanToken.TRUE);
+        .setToken(BooleanToken.TRUE);
 
         tau.moveToFirst();
     }
@@ -97,6 +97,7 @@ public class ColtExponentialPower extends ColtRandomSource {
      *  remain constant throughout an iteration.
      *  @exception IllegalActionException If there is no director.
      */
+    @Override
     public void fire() throws IllegalActionException {
         tau.update();
         super.fire();
@@ -108,6 +109,7 @@ public class ColtExponentialPower extends ColtRandomSource {
 
     /** Method that is called after _randomNumberGenerator is changed.
      */
+    @Override
     protected void _createdNewRandomNumberGenerator() {
         _generator = new ExponentialPower(1.0, _randomNumberGenerator);
     }
@@ -115,6 +117,7 @@ public class ColtExponentialPower extends ColtRandomSource {
     /** Generate a new random number.
      *  @exception IllegalActionException If parameter values are incorrect.
      */
+    @Override
     protected void _generateRandomNumber() throws IllegalActionException {
         double tauValue = ((DoubleToken) tau.getToken()).doubleValue();
 

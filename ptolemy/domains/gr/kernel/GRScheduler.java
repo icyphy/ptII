@@ -127,6 +127,7 @@ public class GRScheduler extends Scheduler {
      * @exception NotSchedulableException If the CompositeActor is not
      *  schedulable.
      */
+    @Override
     protected Schedule _getSchedule() {
         // FIXME: should check whether graph is connected
         // FIXME: should check whether multiple output ports are

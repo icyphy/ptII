@@ -273,6 +273,7 @@ public class ConnectorTutorial {
         // The listener just tells both connectors to reroute themselves.
         DragInteractor i = controller.getDragInteractor();
         i.addLayerListener(new LayerAdapter() {
+            @Override
             public void mouseDragged(LayerEvent e) {
                 connectorA.reroute();
                 connectorB.reroute();
@@ -297,18 +298,22 @@ public class ConnectorTutorial {
         // manipulator, here is an simple example of a connector
         // listener
         ConnectorListener cl = new ConnectorListener() {
+            @Override
             public void connectorDragged(ConnectorEvent e) {
                 //// System.out.println("Dragged");
             }
 
+            @Override
             public void connectorDropped(ConnectorEvent e) {
                 System.out.println("Dropped");
             }
 
+            @Override
             public void connectorSnapped(ConnectorEvent e) {
                 System.out.println("Snapped");
             }
 
+            @Override
             public void connectorUnsnapped(ConnectorEvent e) {
                 System.out.println("Unsnapped");
             }
@@ -322,6 +327,7 @@ public class ConnectorTutorial {
     public static void main(String[] argv) {
         // Always invoke graphics code in the event thread
         SwingUtilities.invokeLater(new Runnable() {
+            @Override
             public void run() {
                 ConnectorTutorial ex = new ConnectorTutorial();
                 ex.createFigures();
@@ -385,6 +391,7 @@ public class ConnectorTutorial {
 
         /** Update the geometry
          */
+        @Override
         public void transform(AffineTransform at) {
             super.transform(at);
             _geometry.setShape(getShape());
@@ -392,6 +399,7 @@ public class ConnectorTutorial {
 
         /** Update the geometry
          */
+        @Override
         public void translate(double x, double y) {
             super.translate(x, y);
             _geometry.translate(x, y);
@@ -409,6 +417,7 @@ public class ConnectorTutorial {
 
         /** Return the nearest site on the figure
          */
+        @Override
         public Site getHeadSite(Figure f, double x, double y) {
             if (f instanceof SitedRectangle) {
                 SitedRectangle sr = (SitedRectangle) f;

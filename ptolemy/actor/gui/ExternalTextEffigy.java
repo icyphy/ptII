@@ -94,6 +94,7 @@ public class ExternalTextEffigy extends TextEffigy {
      *  @param attribute The attribute that changed.
      *  @exception IllegalActionException If the base class throws it.
      */
+    @Override
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         // Let Effigy handle it first
@@ -168,6 +169,7 @@ public class ExternalTextEffigy extends TextEffigy {
     }
 
     /** Pass the modifiable flag onto the external text editor. */
+    @Override
     public void setModifiable(boolean flag) {
         super.setModifiable(flag);
     }

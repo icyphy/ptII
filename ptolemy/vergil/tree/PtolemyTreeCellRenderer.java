@@ -84,6 +84,7 @@ public class PtolemyTreeCellRenderer extends DefaultTreeCellRenderer {
      *  use that.  Otherwise, consolidate all the Documentation
      *  attributes and use those.
      */
+    @Override
     public Component getTreeCellRendererComponent(JTree tree, Object value,
             boolean selected, boolean expanded, boolean leaf, int row,
             boolean hasFocus) {

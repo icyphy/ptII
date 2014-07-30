@@ -49,7 +49,7 @@ import ptolemy.kernel.util.NameDuplicationException;
  @Pt.AcceptedRating Red (cxh)
  */
 public class PetriNetRecorder extends TypedAtomicActor implements
-        PetriNetDisplayer {
+PetriNetDisplayer {
     /** Construct an actor that accepts descriptions from the
      *  PetriNetDirector.
      *  @param container The container.
@@ -78,6 +78,7 @@ public class PetriNetRecorder extends TypedAtomicActor implements
     /** Initialize the StringBuffer used to messages.
      *  @exception IllegalActionException If the parent class throws it.
      */
+    @Override
     public void initialize() throws IllegalActionException {
         super.initialize();
         messages = new StringBuffer();
@@ -87,6 +88,7 @@ public class PetriNetRecorder extends TypedAtomicActor implements
      *
      * @exception IllegalActionException Not thrown in this class.
      */
+    @Override
     public void openDisplay() throws IllegalActionException {
     }
 
@@ -96,6 +98,7 @@ public class PetriNetRecorder extends TypedAtomicActor implements
      * @param text
      *          The text to be shown in the display.
      */
+    @Override
     public void setText(String text) {
         messages.append(text);
     }

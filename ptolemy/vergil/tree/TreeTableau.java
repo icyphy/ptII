@@ -88,6 +88,7 @@ public class TreeTableau extends Tableau {
      *  @exception IllegalActionException If the frame is not an instance
      *   of PlotTableauFrame.
      */
+    @Override
     public void setFrame(JFrame frame) throws IllegalActionException {
         if (!(frame instanceof TreeFrame)) {
             throw new IllegalActionException(this,
@@ -105,6 +106,7 @@ public class TreeTableau extends Tableau {
      *  PlotTableauFrame.  If a URL has been specified but not yet
      *  processed, then process it.
      */
+    @Override
     public void show() {
         JFrame frame = getFrame();
 
@@ -144,7 +146,7 @@ public class TreeTableau extends Tableau {
      *  entity.
      */
     @SuppressWarnings("serial")
-        public static class TreeFrame extends PtolemyFrame {
+    public static class TreeFrame extends PtolemyFrame {
         /** Construct a TreeFrame containing a tree view of the specified
          *  composite entity.
          *  @param entity The composite entity to view as a tree.
@@ -163,6 +165,7 @@ public class TreeTableau extends Tableau {
          *  @param file The file to write to.
          *  @exception IOException If the write fails.
          */
+        @Override
         protected void _writeFile(File file) throws IOException {
             java.io.FileWriter fout = null;
 
@@ -212,6 +215,7 @@ public class TreeTableau extends Tableau {
          *   that of a composite entity.
          *  @exception Exception If the effigy is a PtolemyEffigy, but
          *   construction of the tree view fails for some reason.  */
+        @Override
         public Tableau createTableau(Effigy effigy) throws Exception {
             if (effigy instanceof PtolemyEffigy) {
                 // First see whether the effigy already contains a TreeTableau.

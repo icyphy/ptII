@@ -52,6 +52,7 @@ public abstract class AbstractView implements View {
     /** Close the view.
      * @exception Exception If the close operation fails.
      */
+    @Override
     public void close() throws Exception {
     }
 
@@ -59,6 +60,7 @@ public abstract class AbstractView implements View {
      * and place them on the given clipboard.  If the view does not
      * support such an operation, then do nothing.
      */
+    @Override
     public void copy(Clipboard c) {
     }
 
@@ -66,6 +68,7 @@ public abstract class AbstractView implements View {
      * and place them on the given clipboard.  If the view does not
      * support such an operation, then do nothing.
      */
+    @Override
     public void cut(Clipboard c) {
     }
 
@@ -73,22 +76,26 @@ public abstract class AbstractView implements View {
      * The returned object should be a unique object that corresponds
      * to this view.
      */
+    @Override
     public abstract JComponent getComponent();
 
     /** Get the document that this view is viewing.
      */
+    @Override
     public Document getDocument() {
         return _document;
     }
 
     /** Get the title of this document
      */
+    @Override
     public abstract String getTitle();
 
     /** Get the short title of this document. The short title
      * is used in situations where the regular title is likely
      * to be too long, such as iconified windows, menus, and so on.
      */
+    @Override
     public abstract String getShortTitle();
 
     /** Clone the objects currently on the clipboard, if any, and
@@ -96,6 +103,7 @@ public abstract class AbstractView implements View {
      * such an operation, then do nothing.  This method is responsible
      * for copying the data.
      */
+    @Override
     public void paste(Clipboard c) {
     }
 }

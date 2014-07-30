@@ -190,6 +190,7 @@ public class PlotApplication extends PlotFrame {
         try {
             // Run this in the Swing Event Thread.
             Runnable doActions = new Runnable() {
+                @Override
                 public void run() {
                     try {
                         new PlotApplication(new Plot(), args);
@@ -218,37 +219,40 @@ public class PlotApplication extends PlotFrame {
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
+    @Override
     protected void _about() {
         JOptionPane
-                .showMessageDialog(
-                        this,
-                        "PlotApplication class\n"
-                                + "By: Edward A. Lee "
-                                + "and Christopher Brooks\n"
-                                + "Version "
-                                + PlotBox.PTPLOT_RELEASE
-                                + ", Build: $Id$\n\n"
-                                + "For more information, see\n"
-                                + "http://ptolemy.eecs.berkeley.edu/java/ptplot\n\n"
-                                + "Copyright (c) 1997-2014, "
-                                + "The Regents of the University of California.",
+        .showMessageDialog(
+                this,
+                "PlotApplication class\n"
+                        + "By: Edward A. Lee "
+                        + "and Christopher Brooks\n"
+                        + "Version "
+                        + PlotBox.PTPLOT_RELEASE
+                        + ", Build: $Id$\n\n"
+                        + "For more information, see\n"
+                        + "http://ptolemy.eecs.berkeley.edu/java/ptplot\n\n"
+                        + "Copyright (c) 1997-2014, "
+                        + "The Regents of the University of California.",
                         "About Ptolemy Plot", JOptionPane.INFORMATION_MESSAGE);
     }
 
     /** Exit the application.
      */
+    @Override
     protected void _close() {
         StringUtilities.exit(0);
     }
 
     /** Display more detailed information than given by _about().
      */
+    @Override
     protected void _help() {
         JOptionPane.showMessageDialog(this,
                 "PlotApplication is a standalone plot " + " application.\n"
                         + "  File formats understood: Ptplot ASCII.\n"
                         + "  Left mouse button: Zooming.\n\n" + _usage(),
-                "About Ptolemy Plot", JOptionPane.INFORMATION_MESSAGE);
+                        "About Ptolemy Plot", JOptionPane.INFORMATION_MESSAGE);
     }
 
     /** Parse the command-line
@@ -262,7 +266,7 @@ public class PlotApplication extends PlotFrame {
      *  @exception IOException If there is a problem reading an input.
      */
     protected int _parseArgs(String[] args) throws CmdLineArgException,
-            FileNotFoundException, IOException {
+    FileNotFoundException, IOException {
         int i = 0;
         int argumentsRead;
         String arg;
@@ -293,9 +297,9 @@ public class PlotApplication extends PlotFrame {
                 continue;
             } else if (arg.equals("-version")) {
                 System.out
-                        .println("Version "
-                                + PlotBox.PTPLOT_RELEASE
-                                + ", Build $Id$");
+                .println("Version "
+                        + PlotBox.PTPLOT_RELEASE
+                        + ", Build $Id$");
                 StringUtilities.exit(0);
                 continue;
             } else if (arg.equals("-width")) {
@@ -396,6 +400,7 @@ public class PlotApplication extends PlotFrame {
     protected static boolean _test = false;
 
     private static class WindowClosingAdapter extends WindowAdapter {
+        @Override
         public void windowClosing(WindowEvent e) {
             // Strangely, calling _close() here sends javac into
             // an infinite loop (in jdk 1.1.4).

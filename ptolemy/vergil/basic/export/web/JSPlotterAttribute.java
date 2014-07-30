@@ -56,7 +56,7 @@ import ptolemy.kernel.util.NamedObj;
  * @Pt.AcceptedRating Red (cxh)
  */
 public abstract class JSPlotterAttribute extends WebContent implements
-        WebExportable {
+WebExportable {
 
     /** Create an instance for each parameter.
      *  @param container The container.
@@ -344,6 +344,7 @@ public abstract class JSPlotterAttribute extends WebContent implements
     /** BasicJSPlotter is of type text/html.
      *  @return The string "text/html"
      */
+    @Override
     public String getMimeType() {
         return "text/html";
     }
@@ -351,6 +352,7 @@ public abstract class JSPlotterAttribute extends WebContent implements
     /** Return true, since new content should overwrite old.
      *  @return true, since new content should overwrite old
      */
+    @Override
     public boolean isOverwriteable() {
         return true;
     }
@@ -398,13 +400,13 @@ public abstract class JSPlotterAttribute extends WebContent implements
         _config.put("xAxisMode", xAxisMode.stringValue().trim());
         _config.put("drawVerticalGridLine",
                 ((BooleanToken) drawVerticalGridLine.getToken()).toString()
-                        .trim());
+                .trim());
         _config.put("xAxisTitle", xAxisTitle.stringValue().trim());
 
         _config.put("yAxisMode", yAxisMode.stringValue().trim());
         _config.put("drawHorizontalGridLine",
                 ((BooleanToken) drawHorizontalGridLine.getToken()).toString()
-                        .trim());
+                .trim());
         _config.put("yAxisTitle", yAxisTitle.stringValue().trim());
         return _config;
     }
@@ -432,7 +434,7 @@ public abstract class JSPlotterAttribute extends WebContent implements
     public String getHTMLPageContent() {
         StringBuffer pageContent = new StringBuffer();
         pageContent
-                .append("<!DOCTYPE HTML>\n<html>\n\t<head>\n\t\t<meta charset=\"utf-8\">\n");
+        .append("<!DOCTYPE HTML>\n<html>\n\t<head>\n\t\t<meta charset=\"utf-8\">\n");
         pageContent.append(getHeaderContent());
         pageContent.append("\t</head>\n\n\t<body>\n");
         pageContent.append(getBodyContent());
@@ -477,6 +479,7 @@ public abstract class JSPlotterAttribute extends WebContent implements
      *  @exception IllegalActionException If evaluating the value
      *   of this parameter fails, or creating a web attribute fails.
      */
+    @Override
     protected void _provideAttributes(WebExporter exporter)
             throws IllegalActionException {
         WebAttribute webAttribute;
@@ -505,8 +508,8 @@ public abstract class JSPlotterAttribute extends WebContent implements
 
                     // Create class attribute and add to exporter.
                     // Content should only be added once (onceOnly -> true).
-                    webAttribute = WebAttribute.appendToWebAttribute(
-                            container, "classWebAttribute", "class", "iframe");
+                    webAttribute = WebAttribute.appendToWebAttribute(container,
+                            "classWebAttribute", "class", "iframe");
                     exporter.defineAttribute(webAttribute, true);
                 } else {
 

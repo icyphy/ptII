@@ -127,6 +127,7 @@ public class ChannelState extends MACActorBase {
      *  @exception CloneNotSupportedException Not thrown in this base class
      *  @return The new Attribute.
      */
+    @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         ChannelState newObject = (ChannelState) super.clone(workspace);
 
@@ -149,6 +150,7 @@ public class ChannelState extends MACActorBase {
      *  @exception IllegalActionException If an error occurs reading
      *   or writing inputs or outputs.
      */
+    @Override
     public void fire() throws IllegalActionException {
         super.fire();
 
@@ -329,6 +331,7 @@ public class ChannelState extends MACActorBase {
     /** Initialize the private variables.
      *  @exception IllegalActionException If thrown by the base class.
      */
+    @Override
     public void initialize() throws IllegalActionException {
         super.initialize();
         _dDIfs = _aSifsTime + 2 * _aSlotTime;
@@ -367,8 +370,8 @@ public class ChannelState extends MACActorBase {
             // new NAV
             Time tNew = new Time(getDirector(),
                     ((DoubleToken) _inputMessage.get("tRef")).doubleValue()
-                            + ((IntToken) _inputMessage.get("dNav")).intValue()
-                            * 1e-6);
+                    + ((IntToken) _inputMessage.get("dNav")).intValue()
+                    * 1e-6);
 
             // if the new NAV is larger than the existing one, use it instead
             if (tNew.compareTo(_NavTimer.expirationTime) > 0) {
@@ -399,8 +402,8 @@ public class ChannelState extends MACActorBase {
     private boolean _setNav() throws IllegalActionException {
         Time expirationTime = new Time(getDirector(),
                 ((DoubleToken) _inputMessage.get("tRef")).doubleValue()
-                        + ((IntToken) _inputMessage.get("dNav")).intValue()
-                        * 1e-6);
+                + ((IntToken) _inputMessage.get("dNav")).intValue()
+                * 1e-6);
         _setAttribute(_tNavEnd,
                 new DoubleToken(expirationTime.getDoubleValue()));
 

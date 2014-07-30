@@ -43,88 +43,88 @@ import ptolemy.kernel.util.NameDuplicationException;
 //// BlockingFireTest
 
 /**
-* BlockingFireTest is a unit test for BlockingFire. It tests
-* <ol>
-* <li> whether the state of actor is set correctly</li>
-* <li> whether the events are proposed correctly</li>
-* </ol>
-*
-* @author Liangpeng Guo
-* @version $Id$
-* @since Ptolemy II 10.0
-* @Pt.ProposedRating Red (glp)
-* @Pt.AcceptedRating Red (glp)
-*
-*/
+ * BlockingFireTest is a unit test for BlockingFire. It tests
+ * <ol>
+ * <li> whether the state of actor is set correctly</li>
+ * <li> whether the events are proposed correctly</li>
+ * </ol>
+ *
+ * @author Liangpeng Guo
+ * @version $Id$
+ * @since Ptolemy II 10.0
+ * @Pt.ProposedRating Red (glp)
+ * @Pt.AcceptedRating Red (glp)
+ *
+ */
 public class BlockingFireTest extends TestCase {
 
     /**
      * Execution sequence and expected states and events:
      * <ol>
-     * <li> initialization: expect the state is set to START. </li>  
-     * <li> startOrResume(): expect the state is set to BEGIN and FIRE_BEGIN is proposed. </li>  
-     * <li> startOrResume(): expect the state is set to BEGIN and FIRE_BEGIN is proposed. </li>  
-     * <li> notify FIRE_BEGIN and startOrResume(): expect the state is set to END and FIRE_END is proposed. </li>  
-     * <li> startOrResume(): expect the state is set to END and FIRE_END is proposed. </li>  
-     * <li> notify FIRE_END and startOrResume(): expect the state is set to FINAL. </li>  
-     * <li> startOrResume(): expect the state is set to FINAL. </li>  
-     * <li> reset(): expect the state is set to START. </li>  
+     * <li> initialization: expect the state is set to START. </li>
+     * <li> startOrResume(): expect the state is set to BEGIN and FIRE_BEGIN is proposed. </li>
+     * <li> startOrResume(): expect the state is set to BEGIN and FIRE_BEGIN is proposed. </li>
+     * <li> notify FIRE_BEGIN and startOrResume(): expect the state is set to END and FIRE_END is proposed. </li>
+     * <li> startOrResume(): expect the state is set to END and FIRE_END is proposed. </li>
+     * <li> notify FIRE_END and startOrResume(): expect the state is set to FINAL. </li>
+     * <li> startOrResume(): expect the state is set to FINAL. </li>
+     * <li> reset(): expect the state is set to START. </li>
      * </ol>
-     * 
+     *
      */
     @org.junit.Test
     public void test() {
         TestActor actor;
         try {
             actor = new TestActor(new CompositeActor(), "TestActor");
-            BlockingFire firing = new BlockingFire(actor); 
-            
+            BlockingFire firing = new BlockingFire(actor);
+
             assertEquals(firing.getState(), FireMachine.State.START);
-            
+
             LinkedList<Builder> events = new LinkedList<Builder>();
 
             firing.startOrResume(events);
             assertEquals(firing.getState(), FireMachine.State.BEGIN);
             assertEquals(events.size(), 1);
-            System.out.println(events.getFirst().getName()); 
+            System.out.println(events.getFirst().getName());
             assertEquals(events.getFirst().getStatus(), Event.Status.PROPOSED);
-            
+
             firing.startOrResume(events);
             assertEquals(firing.getState(), FireMachine.State.BEGIN);
             assertEquals(events.size(), 1);
-            System.out.println(events.getFirst().getName()); 
+            System.out.println(events.getFirst().getName());
             assertEquals(events.getFirst().getStatus(), Event.Status.PROPOSED);
 
-            events.getFirst().setStatus(Event.Status.NOTIFIED); 
+            events.getFirst().setStatus(Event.Status.NOTIFIED);
             firing.startOrResume(events);
             assertEquals(events.size(), 1);
             assertEquals(firing.getState(), FireMachine.State.END);
-            System.out.println(events.getFirst().getName()); 
+            System.out.println(events.getFirst().getName());
             assertEquals(events.getFirst().getStatus(), Event.Status.PROPOSED);
-            
+
             firing.startOrResume(events);
             assertEquals(events.size(), 1);
             assertEquals(firing.getState(), FireMachine.State.END);
-            System.out.println(events.getFirst().getName()); 
+            System.out.println(events.getFirst().getName());
             assertEquals(events.getFirst().getStatus(), Event.Status.PROPOSED);
 
-            events.getFirst().setStatus(Event.Status.NOTIFIED); 
+            events.getFirst().setStatus(Event.Status.NOTIFIED);
             firing.startOrResume(events);
             assertEquals(events.size(), 0);
             assertEquals(firing.getState(), FireMachine.State.FINAL);
-            
+
             firing.startOrResume(events);
             assertEquals(events.size(), 0);
             assertEquals(firing.getState(), FireMachine.State.FINAL);
 
             firing.reset();
             assertEquals(firing.getState(), FireMachine.State.START);
-            
+
         } catch (IllegalActionException e) {
             e.printStackTrace();
         } catch (NameDuplicationException e) {
             e.printStackTrace();
-        } 
+        }
     }
 
 }

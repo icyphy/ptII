@@ -85,6 +85,7 @@ public class FSMViewerGraphController extends RunnableGraphController {
     /** React to an event by highlighting the new state.
      *  @param event The debug event.
      */
+    @Override
     public void event(DebugEvent event) {
         if (event instanceof StateEvent) {
             State state = ((StateEvent) event).getState();
@@ -126,6 +127,7 @@ public class FSMViewerGraphController extends RunnableGraphController {
 
     /** Return the node controller appropriate for the given node.
      */
+    @Override
     public NodeController getNodeController(Object object) {
         // Defer to the superclass if it can provide a controller.
         NodeController result = super.getNodeController(object);
@@ -155,6 +157,7 @@ public class FSMViewerGraphController extends RunnableGraphController {
 
     /** Return the edge controller appropriate for the given node.
      */
+    @Override
     public EdgeController getEdgeController(Object edge) {
         if (((FSMGraphModel) getGraphModel()).getPtolemyModel() instanceof ModalController) {
             return _modalTransitionController;
@@ -167,6 +170,7 @@ public class FSMViewerGraphController extends RunnableGraphController {
      *  to open files or URLs.
      *  @param configuration The configuration.
      */
+    @Override
     public void setConfiguration(Configuration configuration) {
         super.setConfiguration(configuration);
         _attributeController.setConfiguration(configuration);
@@ -182,6 +186,7 @@ public class FSMViewerGraphController extends RunnableGraphController {
      *
      *  @param jgraph The JGraph to which hot keys are to be added.
      */
+    @Override
     protected void _addHotKeys(JGraph jgraph) {
         super._addHotKeys(jgraph);
 
@@ -200,6 +205,7 @@ public class FSMViewerGraphController extends RunnableGraphController {
      *  defined in the derived classes, because the derived classes
      *  will not have been fully constructed by the time this is called.
      */
+    @Override
     protected void _createControllers() {
         super._createControllers();
         _attributeController = new AttributeController(this,
@@ -216,6 +222,7 @@ public class FSMViewerGraphController extends RunnableGraphController {
      *  the controller does not yet have a reference to its pane
      *  at that time.
      */
+    @Override
     protected void initializeInteraction() {
         // NOTE: This method name does not have a leading underscore
         // because it is a diva method.

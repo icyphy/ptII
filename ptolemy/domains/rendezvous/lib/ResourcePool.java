@@ -154,6 +154,7 @@ public class ResourcePool extends TypedAtomicActor {
      *  @exception IllegalActionException If the change is not acceptable
      *   to this container (not thrown in this base class).
      */
+    @Override
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         if (attribute == initialPool) {
@@ -176,6 +177,7 @@ public class ResourcePool extends TypedAtomicActor {
      *   if one of the attributes cannot be cloned.
      *  @return A new ResourcePool actor.
      */
+    @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         ResourcePool newObject = (ResourcePool) super.clone(workspace);
         newObject._pool = new LinkedList();
@@ -202,6 +204,7 @@ public class ResourcePool extends TypedAtomicActor {
      *  @exception TerminateProcessException If the process termination
      *   is requested by the director.
      */
+    @Override
     public void fire() throws IllegalActionException {
         super.fire();
         final RendezvousDirector director = (RendezvousDirector) getDirector();
@@ -214,6 +217,7 @@ public class ResourcePool extends TypedAtomicActor {
         _postfireReturns = true;
         if (release.isOutsideConnected() && _readThread == null) {
             _readThread = new Thread(getFullName() + "_readThread") {
+                @Override
                 public void run() {
                     try {
                         while (!_stopRequested) {
@@ -280,6 +284,7 @@ public class ResourcePool extends TypedAtomicActor {
     /** Initialize.
      *  @exception IllegalActionException If a derived class throws it.
      */
+    @Override
     public void initialize() throws IllegalActionException {
         super.initialize();
         _readThread = null;
@@ -291,6 +296,7 @@ public class ResourcePool extends TypedAtomicActor {
     /** Return false if it is time to stop the process.
      *  @return False a TerminateProcessException was thrown during I/O.
      */
+    @Override
     public boolean postfire() {
         return _postfireReturns;
     }

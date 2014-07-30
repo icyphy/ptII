@@ -87,6 +87,7 @@ public class UpdatedValueIcon extends AttributeValueIcon {
      *  @param attribute The attribute that changed.
      *  @exception IllegalActionException Not thrown in this class.
      */
+    @Override
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         if (attribute == attributeName) {
@@ -123,6 +124,7 @@ public class UpdatedValueIcon extends AttributeValueIcon {
      *  @exception CloneNotSupportedException Not thrown in this base class
      *  @return The new Attribute.
      */
+    @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         UpdatedValueIcon newObject = (UpdatedValueIcon) super.clone(workspace);
         newObject._associatedAttribute = null;
@@ -141,6 +143,7 @@ public class UpdatedValueIcon extends AttributeValueIcon {
      *  to draw a fixed-width box.
      *  @return A new figure.
      */
+    @Override
     public Figure createBackgroundFigure() {
         // Measure width of a character.  Unfortunately, this
         // requires generating a label figure that we will not use.
@@ -176,6 +179,7 @@ public class UpdatedValueIcon extends AttributeValueIcon {
      *  repaint of the most recently constructed figures.
      *  @param settable The object that has changed value.
      */
+    @Override
     public void valueChanged(Settable settable) {
         if (settable == _associatedAttribute) {
             _updateFigures();
@@ -199,6 +203,7 @@ public class UpdatedValueIcon extends AttributeValueIcon {
         // some values being skipped, so it seems like it's not
         // a good idea.
         SwingUtilities.invokeLater(new Runnable() {
+            @Override
             public void run() {
                 String string = _displayString();
                 synchronized (_figures) {

@@ -38,13 +38,13 @@ import ptolemy.actor.sched.NotSchedulableException;
 //// SequenceEstimator
 
 /** A base class for estimating sequence numbers in the sequence domain.
-*
-* @author Bastian Ristau
-* @version $Id$
-* @since Ptolemy II 10.0
-* @Pt.ProposedRating Red (ristau)
-* @Pt.AcceptedRating Red (ristau)
-*/
+ *
+ * @author Bastian Ristau
+ * @version $Id$
+ * @since Ptolemy II 10.0
+ * @Pt.ProposedRating Red (ristau)
+ * @Pt.AcceptedRating Red (ristau)
+ */
 public abstract class SequenceEstimator {
 
     /** Construct an estimator for the given director.
@@ -71,7 +71,7 @@ public abstract class SequenceEstimator {
      */
     public abstract Vector<Actor> estimateSequencedSchedule(
             List<SequenceAttribute> independentList)
-            throws NotSchedulableException;
+                    throws NotSchedulableException;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////

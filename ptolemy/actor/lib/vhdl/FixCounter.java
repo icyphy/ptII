@@ -98,6 +98,7 @@ public class FixCounter extends SynchronousFixTransformer {
      *  counter.
      *  @exception IllegalActionException If there is no director.
      */
+    @Override
     public void fire() throws IllegalActionException {
         super.fire();
         if (increment.isKnown() && decrement.isKnown()) {
@@ -136,6 +137,7 @@ public class FixCounter extends SynchronousFixTransformer {
     /** Reset the count of inputs to zero.
      *  @exception IllegalActionException If the parent class throws it.
      */
+    @Override
     public void initialize() throws IllegalActionException {
         super.initialize();
         _count = 0;
@@ -144,6 +146,7 @@ public class FixCounter extends SynchronousFixTransformer {
     /** Record the most recent output count as the actual count.
      *  @exception IllegalActionException If the base class throws it.
      */
+    @Override
     public boolean postfire() throws IllegalActionException {
         _count = _latestCount;
         return super.postfire();
@@ -153,6 +156,7 @@ public class FixCounter extends SynchronousFixTransformer {
      *  and <i>decrement</i> ports do not depend on the <i>output</i>
      *  in a firing.
      */
+    @Override
     public void preinitialize() throws IllegalActionException {
         super.preinitialize();
         removeDependency(increment, output);

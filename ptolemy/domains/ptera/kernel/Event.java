@@ -176,6 +176,7 @@ public class Event extends State implements Initializable {
      *  @param initializable The object whose methods should be invoked.
      *  @see #removeInitializable(Initializable)
      */
+    @Override
     public void addInitializable(Initializable initializable) {
         if (_initializables == null) {
             _initializables = new LinkedList<Initializable>();
@@ -197,6 +198,7 @@ public class Event extends State implements Initializable {
      *  @exception IllegalActionException If thrown by the superclass
      *   attributeChanged() method, or the parser scope cannot be updated.
      */
+    @Override
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         if (attribute != isInitialState) {
@@ -273,6 +275,7 @@ public class Event extends State implements Initializable {
      *  @exception CloneNotSupportedException If a derived class contains
      *   an attribute that cannot be cloned.
      */
+    @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         Event newObject = (Event) super.clone(workspace);
         newObject._parserScope = null;
@@ -378,6 +381,7 @@ public class Event extends State implements Initializable {
      *
      *  @exception IllegalActionException If execution is not permitted.
      */
+    @Override
     public void initialize() throws IllegalActionException {
         if (_initializables != null) {
             for (Initializable initializable : _initializables) {
@@ -439,6 +443,7 @@ public class Event extends State implements Initializable {
      *
      *  @exception IllegalActionException If initializing is not permitted.
      */
+    @Override
     public void preinitialize() throws IllegalActionException {
         if (_initializables != null) {
             for (Initializable initializable : _initializables) {
@@ -480,6 +485,7 @@ public class Event extends State implements Initializable {
      *  @param initializable The object whose methods should no longer be invoked.
      *  @see #addInitializable(Initializable)
      */
+    @Override
     public void removeInitializable(Initializable initializable) {
         if (_initializables != null) {
             _initializables.remove(initializable);
@@ -550,6 +556,7 @@ public class Event extends State implements Initializable {
         }
 
         Collections.sort(relations, new Comparator<SchedulingRelation>() {
+            @Override
             public int compare(SchedulingRelation relation1,
                     SchedulingRelation relation2) {
                 Time time1 = times.get(relation1);
@@ -562,67 +569,67 @@ public class Event extends State implements Initializable {
                     int priority2 = priorities.get(relation2);
                     int priorityCompare = priority1 < priority2 ? -1
                             : priority1 > priority2 ? 1 : 0;
-                    if (priorityCompare != 0) {
-                        return lifo ? -priorityCompare : priorityCompare;
-                    } else {
-                        String name1 = relation1.destinationState().getName();
-                        String name2 = relation2.destinationState().getName();
-                        int eventCompare = name1.compareTo(name2);
-                        if (eventCompare != 0) {
-                            // FIXME: FindBugs: "RV: Negating the result of
-                            // compareTo()/compare()
-                            // (RV_NEGATING_RESULT_OF_COMPARETO)
-                            //
-                            // "This code negatives the return value
-                            // of a compareTo or compare method. This
-                            // is a questionable or bad programming
-                            // practice, since if the return value is
-                            // Integer.MIN_VALUE, negating the return
-                            // value won't negate the sign of the
-                            // result. You can achieve the same
-                            // intended result by reversing the order
-                            // of the operands rather than by negating
-                            // the results."
-                            //return lifo ? -eventCompare : eventCompare;
-                            if (lifo) {
-                                if (eventCompare == Integer.MIN_VALUE) {
-                                    return Integer.MAX_VALUE;
-                                } else {
-                                    return -eventCompare;
-                                }
+                            if (priorityCompare != 0) {
+                                return lifo ? -priorityCompare : priorityCompare;
                             } else {
-                                return eventCompare;
-                            }
-                        } else {
-                            name1 = relation1.getName();
-                            name2 = relation2.getName();
-                            int relationCompare = name1.compareTo(name2);
-                            // FIXME: FindBugs: "RV: Negating the result of
-                            // compareTo()/compare()
-                            // (RV_NEGATING_RESULT_OF_COMPARETO)
-                            //
-                            // "This code negatives the return value
-                            // of a compareTo or compare method. This
-                            // is a questionable or bad programming
-                            // practice, since if the return value is
-                            // Integer.MIN_VALUE, negating the return
-                            // value won't negate the sign of the
-                            // result. You can achieve the same
-                            // intended result by reversing the order
-                            // of the operands rather than by negating
-                            // the results."
-                            //return lifo ? -relationCompare : relationCompare;
-                            if (lifo) {
-                                if (relationCompare == Integer.MIN_VALUE) {
-                                    return Integer.MAX_VALUE;
+                                String name1 = relation1.destinationState().getName();
+                                String name2 = relation2.destinationState().getName();
+                                int eventCompare = name1.compareTo(name2);
+                                if (eventCompare != 0) {
+                                    // FIXME: FindBugs: "RV: Negating the result of
+                                    // compareTo()/compare()
+                                    // (RV_NEGATING_RESULT_OF_COMPARETO)
+                                    //
+                                    // "This code negatives the return value
+                                    // of a compareTo or compare method. This
+                                    // is a questionable or bad programming
+                                    // practice, since if the return value is
+                                    // Integer.MIN_VALUE, negating the return
+                                    // value won't negate the sign of the
+                                    // result. You can achieve the same
+                                    // intended result by reversing the order
+                                    // of the operands rather than by negating
+                                    // the results."
+                                    //return lifo ? -eventCompare : eventCompare;
+                                    if (lifo) {
+                                        if (eventCompare == Integer.MIN_VALUE) {
+                                            return Integer.MAX_VALUE;
+                                        } else {
+                                            return -eventCompare;
+                                        }
+                                    } else {
+                                        return eventCompare;
+                                    }
                                 } else {
-                                    return -relationCompare;
+                                    name1 = relation1.getName();
+                                    name2 = relation2.getName();
+                                    int relationCompare = name1.compareTo(name2);
+                                    // FIXME: FindBugs: "RV: Negating the result of
+                                    // compareTo()/compare()
+                                    // (RV_NEGATING_RESULT_OF_COMPARETO)
+                                    //
+                                    // "This code negatives the return value
+                                    // of a compareTo or compare method. This
+                                    // is a questionable or bad programming
+                                    // practice, since if the return value is
+                                    // Integer.MIN_VALUE, negating the return
+                                    // value won't negate the sign of the
+                                    // result. You can achieve the same
+                                    // intended result by reversing the order
+                                    // of the operands rather than by negating
+                                    // the results."
+                                    //return lifo ? -relationCompare : relationCompare;
+                                    if (lifo) {
+                                        if (relationCompare == Integer.MIN_VALUE) {
+                                            return Integer.MAX_VALUE;
+                                        } else {
+                                            return -relationCompare;
+                                        }
+                                    } else {
+                                        return relationCompare;
+                                    }
                                 }
-                            } else {
-                                return relationCompare;
                             }
-                        }
-                    }
                 }
             }
         });
@@ -674,6 +681,7 @@ public class Event extends State implements Initializable {
      *   collides with a name already in the container.
      *  @see #getContainer()
      */
+    @Override
     public void setContainer(CompositeEntity container)
             throws IllegalActionException, NameDuplicationException {
         CompositeEntity oldContainer = (CompositeEntity) getContainer();
@@ -702,6 +710,7 @@ public class Event extends State implements Initializable {
      *
      *  @exception IllegalActionException If wrapup is not permitted.
      */
+    @Override
     public void wrapup() throws IllegalActionException {
         if (_initializables != null) {
             for (Initializable initializable : _initializables) {

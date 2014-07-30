@@ -98,11 +98,13 @@ public class GTFrame extends ExtendedGraphFrame {
         super(entity, tableau, defaultLibrary);
     }
 
+    @Override
     public void cancelFullScreen() {
         super.cancelFullScreen();
         _fullscreen = false;
     }
 
+    @Override
     public void fullScreen() {
         _fullscreen = true;
         super.fullScreen();
@@ -117,6 +119,7 @@ public class GTFrame extends ExtendedGraphFrame {
      *  @return the JGraph.
      *  @see #setJGraph(JGraph)
      */
+    @Override
     public JGraph getJGraph() {
         JGraph graph = _frameController.getJGraph();
         if (graph == null) {
@@ -129,6 +132,7 @@ public class GTFrame extends ExtendedGraphFrame {
         return _fullscreen;
     }
 
+    @Override
     protected boolean _close() {
         boolean result = super._close();
         if (result) {
@@ -145,10 +149,12 @@ public class GTFrame extends ExtendedGraphFrame {
         return new FSMGraphController();
     }
 
+    @Override
     protected GraphPane _createGraphPane(NamedObj entity) {
         return _frameController._createGraphPane(entity);
     }
 
+    @Override
     protected JComponent _createRightComponent(NamedObj entity) {
         _frameController = new GTFrameController(this);
         JComponent component = _frameController._createRightComponent(entity);
@@ -165,6 +171,7 @@ public class GTFrame extends ExtendedGraphFrame {
         return component;
     }
 
+    @Override
     protected SizeAttribute _createSizeAttribute()
             throws IllegalActionException, NameDuplicationException {
         SizeAttribute size = super._createSizeAttribute();
@@ -181,8 +188,9 @@ public class GTFrame extends ExtendedGraphFrame {
     }
 
     protected static class ConfigureCriteriaAction extends
-            ConfigureIngredientsAction {
+    ConfigureIngredientsAction {
 
+        @Override
         protected String _getAttributeName() {
             return "criteria";
         }
@@ -193,8 +201,9 @@ public class GTFrame extends ExtendedGraphFrame {
     }
 
     protected static abstract class ConfigureIngredientsAction extends
-            FigureAction {
+    FigureAction {
 
+        @Override
         public void actionPerformed(ActionEvent event) {
             // Determine which entity was selected for the look inside action.
             super.actionPerformed(event);
@@ -253,8 +262,9 @@ public class GTFrame extends ExtendedGraphFrame {
     }
 
     protected static class ConfigureOperationsAction extends
-            ConfigureIngredientsAction {
+    ConfigureIngredientsAction {
 
+        @Override
         protected String _getAttributeName() {
             return "operations";
         }

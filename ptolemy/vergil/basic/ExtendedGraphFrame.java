@@ -201,6 +201,7 @@ public abstract class ExtendedGraphFrame extends BasicGraphFrame {
      *  dispose() method of the superclass,
      *  {@link ptolemy.vergil.basic.BasicGraphFrame}.
      */
+    @Override
     public void dispose() {
         if (_debugClosing) {
             System.out.println("ExtendedGraphFrame.dispose() : "
@@ -225,6 +226,7 @@ public abstract class ExtendedGraphFrame extends BasicGraphFrame {
 
     /** Create the menus that are used by this frame.
      */
+    @Override
     protected void _addMenus() {
         super._addMenus();
 
@@ -240,6 +242,7 @@ public abstract class ExtendedGraphFrame extends BasicGraphFrame {
      *  This method is used for debugging memory leaks.
      *  @return True if the close completes, and false otherwise.
      */
+    @Override
     protected boolean _close() {
         if (_debugClosing) {
             System.out.println("ExtendedGraphFrame._close() : "
@@ -282,13 +285,13 @@ public abstract class ExtendedGraphFrame extends BasicGraphFrame {
             // jdk1.3/docs/guide/resources/resources.html
             GUIUtilities.addIcons(this, new String[][] {
                     { "/ptolemy/vergil/basic/img/fullscreen.gif",
-                            GUIUtilities.LARGE_ICON },
-                    { "/ptolemy/vergil/basic/img/fullscreen_o.gif",
+                        GUIUtilities.LARGE_ICON },
+                        { "/ptolemy/vergil/basic/img/fullscreen_o.gif",
                             GUIUtilities.ROLLOVER_ICON },
-                    { "/ptolemy/vergil/basic/img/fullscreen_ov.gif",
-                            GUIUtilities.ROLLOVER_SELECTED_ICON },
-                    { "/ptolemy/vergil/basic/img/fullscreen_on.gif",
-                            GUIUtilities.SELECTED_ICON } });
+                            { "/ptolemy/vergil/basic/img/fullscreen_ov.gif",
+                                GUIUtilities.ROLLOVER_SELECTED_ICON },
+                                { "/ptolemy/vergil/basic/img/fullscreen_on.gif",
+                                    GUIUtilities.SELECTED_ICON } });
 
             putValue("tooltip", description);
 
@@ -299,6 +302,7 @@ public abstract class ExtendedGraphFrame extends BasicGraphFrame {
          *  to full-screen mode.
          *  @param e The action event, ignored by this method.
          */
+        @Override
         public void actionPerformed(ActionEvent e) {
             if (_screen == null) {
                 fullScreen();
@@ -310,6 +314,7 @@ public abstract class ExtendedGraphFrame extends BasicGraphFrame {
         /** React to a key press by removing full-screen mode.
          *  @param e The key event, ignored by this method.
          */
+        @Override
         public void keyPressed(KeyEvent e) {
             if (_screen != null) {
                 cancelFullScreen();
@@ -319,6 +324,7 @@ public abstract class ExtendedGraphFrame extends BasicGraphFrame {
         /** React to a key press by removing full-screen mode.
          *  @param e The key event, ignored by this method.
          */
+        @Override
         public void keyReleased(KeyEvent e) {
             if (_screen != null) {
                 cancelFullScreen();
@@ -328,6 +334,7 @@ public abstract class ExtendedGraphFrame extends BasicGraphFrame {
         /** React to a key press by removing full-screen mode.
          *  @param e The key event, ignored by this method.
          */
+        @Override
         public void keyTyped(KeyEvent e) {
             if (_screen != null) {
                 cancelFullScreen();

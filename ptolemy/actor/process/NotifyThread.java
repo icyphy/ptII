@@ -80,6 +80,7 @@ public class NotifyThread extends Thread {
     /** Call NotifyAll() on the lock object (or objects) passed to this
      *  class in its constructor.
      */
+    @Override
     public void run() {
         if (_locks != null) {
             Iterator objects = _locks.iterator();

@@ -56,6 +56,7 @@ public class TypedCompositeActor extends CodeGeneratorAdapter {
      *  @return The code generator associated with this adapter class.
      *  @see #setCodeGenerator(GenericCodeGenerator)
      */
+    @Override
     public GenericCodeGenerator getCodeGenerator() {
         return _codeGenerator;
     }
@@ -72,6 +73,7 @@ public class TypedCompositeActor extends CodeGeneratorAdapter {
      *   adapter class.
      *  @see #getCodeGenerator()
      */
+    @Override
     public void setCodeGenerator(GenericCodeGenerator codeGenerator) {
         _codeGenerator = codeGenerator;
     }

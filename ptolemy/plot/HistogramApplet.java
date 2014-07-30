@@ -49,6 +49,7 @@ public class HistogramApplet extends PlotApplet {
     /** Return a string describing this applet.
      *  @return A string describing the applet.
      */
+    @Override
     public String getAppletInfo() {
         return "Histogram 1.0: Demo of PlotApplet.\n"
                 + "By: Edward A. Lee\n "
@@ -58,6 +59,7 @@ public class HistogramApplet extends PlotApplet {
     /** Create a new Histogram object for the applet.
      *  @return A new instance of Histogram.
      */
+    @Override
     public PlotBox newPlot() {
         return new Histogram();
     }

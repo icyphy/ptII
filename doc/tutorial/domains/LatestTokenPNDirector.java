@@ -23,7 +23,7 @@ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
 PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 ENHANCEMENTS, OR MODIFICATIONS.
-*/
+ */
 package doc.tutorial.domains;
 
 import ptolemy.actor.NoRoomException;
@@ -64,6 +64,7 @@ public class LatestTokenPNDirector extends PNDirector {
     /** Return a new instance of the specialized receiver used by
      *  this director.
      */
+    @Override
     public Receiver newReceiver() {
         return new LatestTokenReceiver();
     }
@@ -79,6 +80,7 @@ public class LatestTokenPNDirector extends PNDirector {
          *  @param token The token to be put into the mailbox.
          *  @exception NoRoomException If this mailbox is not empty.
          */
+        @Override
         public void put(Token token) throws NoRoomException {
             while (size() >= 1) {
                 get();

@@ -76,7 +76,7 @@ public class OntologyEntityController extends AttributeInOntologyController {
         // get the "Look Inside" menu to work for composite actors in
         // Kepler, we create these menu items now.
         _menuFactory
-                .addMenuItemFactory(new MenuActionFactory(_lookInsideAction));
+        .addMenuItemFactory(new MenuActionFactory(_lookInsideAction));
         _menuFactory.addMenuItemFactory(new MenuActionFactory(
                 _openInstanceAction));
     }
@@ -87,6 +87,7 @@ public class OntologyEntityController extends AttributeInOntologyController {
     /** Add hot keys to the actions in the given JGraph.
      *  @param jgraph The JGraph to which hot keys are to be added.
      */
+    @Override
     public void addHotKeys(JGraph jgraph) {
         super.addHotKeys(jgraph);
         GUIUtilities.addHotKey(jgraph, _lookInsideAction);
@@ -97,6 +98,7 @@ public class OntologyEntityController extends AttributeInOntologyController {
      *  @param configuration The given configuration object to be used to
      *   set the configuration.
      */
+    @Override
     public void setConfiguration(Configuration configuration) {
         super.setConfiguration(configuration);
         _lookInsideAction.setConfiguration(configuration);
@@ -108,6 +110,7 @@ public class OntologyEntityController extends AttributeInOntologyController {
     /** Get the class label of the component which is an Ontology.
      *  @return The string "Ontology".
      */
+    @Override
     protected String _getComponentType() {
         return "Ontology";
     }
@@ -133,7 +136,7 @@ public class OntologyEntityController extends AttributeInOntologyController {
      *  instance.
      */
     @SuppressWarnings("serial")
-        private class OpenInstanceAction extends FigureAction {
+    private class OpenInstanceAction extends FigureAction {
 
         /** Create a new OpenInstanceAction object. */
         public OpenInstanceAction() {
@@ -143,6 +146,7 @@ public class OntologyEntityController extends AttributeInOntologyController {
         /** React to the action event received by the user interface.
          *  @param event The event received to execute the action.
          */
+        @Override
         public void actionPerformed(ActionEvent event) {
             if (_configuration == null) {
                 MessageHandler.error("Cannot open an instance "

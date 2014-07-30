@@ -178,6 +178,7 @@ public class ConfigurationSelect extends TypedAtomicActor {
      *  @exception IllegalActionException If the change is not acceptable
      *   to this container (not thrown in this base class).
      */
+    @Override
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         if (attribute == selector) {
@@ -209,6 +210,7 @@ public class ConfigurationSelect extends TypedAtomicActor {
      *   if one of the attributes cannot be cloned.
      *  @return A new ComponentEntity.
      */
+    @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         ConfigurationSelect newObject = (ConfigurationSelect) super
                 .clone(workspace);
@@ -226,6 +228,7 @@ public class ConfigurationSelect extends TypedAtomicActor {
      *  <i>falseInput</i> port.
      *  @exception IllegalActionException If there is no director.
      */
+    @Override
     public void fire() throws IllegalActionException {
         super.fire();
         if (_selector) {
@@ -249,6 +252,7 @@ public class ConfigurationSelect extends TypedAtomicActor {
      *  @return False if there are not enough tokens to fire.
      *  @exception IllegalActionException If there is no director.
      */
+    @Override
     public boolean prefire() throws IllegalActionException {
         boolean result = super.prefire();
         if (_selector) {

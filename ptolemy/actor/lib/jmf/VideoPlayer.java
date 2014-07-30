@@ -84,6 +84,7 @@ public class VideoPlayer extends Sink implements ControllerListener {
     /** React to notification of a change in controller status.
      *  @param event The event.
      */
+    @Override
     public synchronized void controllerUpdate(ControllerEvent event) {
         notifyAll();
     }
@@ -95,6 +96,7 @@ public class VideoPlayer extends Sink implements ControllerListener {
      *  throws an exception.
      *  @return super.postfire()
      */
+    @Override
     public boolean postfire() throws IllegalActionException {
         ObjectToken objectToken;
         Token token = input.get(0);

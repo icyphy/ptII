@@ -24,7 +24,7 @@
  PT_COPYRIGHT_VERSION_2
  COPYRIGHTENDKEY
 
-*/
+ */
 package ptolemy.domains.ptera.lib;
 
 import java.util.LinkedList;
@@ -71,7 +71,7 @@ import ptolemy.kernel.util.NamedObj;
  @Pt.AcceptedRating Red (tfeng)
  */
 public class DebuggerParameter extends TableauParameter implements
-        DebugListener {
+DebugListener {
 
     /** Construct a parameter with the given name contained by the specified
      *  entity. The container argument must not be null, or a
@@ -117,6 +117,7 @@ public class DebuggerParameter extends TableauParameter implements
     /** React to the given event.
      *  @param event The event.
      */
+    @Override
     public void event(DebugEvent event) {
         if (event instanceof PteraDebugEvent) {
             NamedObj container = getContainer();
@@ -151,7 +152,7 @@ public class DebuggerParameter extends TableauParameter implements
                 } catch (Throwable e) {
                     throw new InternalErrorException(this, e,
                             "Unable to report " + "message \"" + message
-                                    + "\".");
+                            + "\".");
                 }
                 break;
             case B_CHECK_LOG:
@@ -178,6 +179,7 @@ public class DebuggerParameter extends TableauParameter implements
      *
      *  @exception IllegalActionException If execution is not permitted.
      */
+    @Override
     public void initialize() throws IllegalActionException {
         super.initialize();
         _lineNumber = 0;
@@ -198,6 +200,7 @@ public class DebuggerParameter extends TableauParameter implements
      *
      *  @exception IllegalActionException If wrapup is not permitted.
      */
+    @Override
     public void wrapup() throws IllegalActionException {
         super.wrapup();
         _registerDebugListener(false);
@@ -252,6 +255,7 @@ public class DebuggerParameter extends TableauParameter implements
         /** The mode to display the messages in a tableau.
          */
         A_DISPLAY {
+            @Override
             public String toString() {
                 return "display";
             }
@@ -260,6 +264,7 @@ public class DebuggerParameter extends TableauParameter implements
          *  log.
          */
         B_CHECK_LOG {
+            @Override
             public String toString() {
                 return "check log";
             }
@@ -267,6 +272,7 @@ public class DebuggerParameter extends TableauParameter implements
         /** The mode to record the messages in the log.
          */
         C_RECORD_LOG {
+            @Override
             public String toString() {
                 return "record log";
             }
@@ -343,7 +349,7 @@ public class DebuggerParameter extends TableauParameter implements
                             for (TypedActor refinement : refinements) {
                                 if (refinement instanceof PteraController) {
                                     controllers
-                                            .add((PteraController) refinement);
+                                    .add((PteraController) refinement);
                                 }
                             }
                         }

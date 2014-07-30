@@ -116,7 +116,7 @@ public final class NamedList implements Cloneable, Serializable {
      *   an element already on the list.
      */
     public void append(Nameable element) throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         String newName = element.getName();
 
         if (newName == null) {
@@ -139,6 +139,7 @@ public final class NamedList implements Cloneable, Serializable {
      *  The elements themselves are not cloned.
      *  @return A new instance of NamedList.
      */
+    @Override
     public Object clone() {
         return new NamedList(this);
     }
@@ -154,6 +155,7 @@ public final class NamedList implements Cloneable, Serializable {
      *  @deprecated Use elementList() instead.
      *  @return An enumeration of Nameable objects.
      */
+    @Deprecated
     public Enumeration elements() {
         return Collections.enumeration(_namedList);
     }
@@ -411,7 +413,7 @@ public final class NamedList implements Cloneable, Serializable {
      *   an element already on the list.
      */
     public void prepend(Nameable element) throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         _insertAt(0, element);
         if (_hashEnabled) {
             _hashedList.put(element.getName(), element);
@@ -467,6 +469,7 @@ public final class NamedList implements Cloneable, Serializable {
     /** Return a string description of the list.
      *  @return A string description of the list.
      */
+    @Override
     public String toString() {
         if (_namedList != null) {
             return _namedList.toString();
@@ -553,7 +556,8 @@ public final class NamedList implements Cloneable, Serializable {
     private static final int _threshhold = 100;
 
     /** @serial A LinkedList containing the elements. */
-        private LinkedList<Nameable> _namedList = new LinkedList<Nameable>() {
+    private LinkedList<Nameable> _namedList = new LinkedList<Nameable>() {
+        @Override
         public boolean add(Nameable obj) {
             // Findbugs: "Ambiguous invocation of either an outer or
             // inherited method java.util.LinkedList.size()," so we use super.size()

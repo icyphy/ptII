@@ -43,6 +43,7 @@ public class DtdDemo extends XmlApp {
     /**
      * Print a comment showing where the DTD (if any) begins.
      */
+    @Override
     public void startDocument() {
         displayText("<-- Start of DTD -->\n");
     }
@@ -63,6 +64,7 @@ public class DtdDemo extends XmlApp {
      * @see #dumpEntities
      * @see #dumpElements
      */
+    @Override
     public void doctypeDecl(String name, String pubid, String sysid) {
         dumpNotations();
         dumpEntities();
@@ -123,7 +125,7 @@ public class DtdDemo extends XmlApp {
                 value = makeLiteral(parser.getEntityValue(ename));
                 break;
 
-            // External binary entity
+                // External binary entity
             case XmlParser.ENTITY_NDATA:
                 value = makeExternalIdentifiers(
                         parser.getEntityPublicId(ename),
@@ -131,7 +133,7 @@ public class DtdDemo extends XmlApp {
                         + "NDATA " + parser.getEntityNotationName(ename);
                 break;
 
-            // External text entity
+                // External text entity
             case XmlParser.ENTITY_TEXT:
                 value = makeExternalIdentifiers(
                         parser.getEntityPublicId(ename),
@@ -294,8 +296,8 @@ public class DtdDemo extends XmlApp {
 
         case XmlParser.ATTRIBUTE_DEFAULT_FIXED:
             return "#FIXED "
-                    + makeLiteral(parser
-                            .getAttributeDefaultValue(elname, aname));
+            + makeLiteral(parser
+                    .getAttributeDefaultValue(elname, aname));
         }
 
         return null;

@@ -1,7 +1,7 @@
 // Class to create a warning window in a new thread.
 
 /*
-********************************************************************
+ ********************************************************************
 Copyright Notice
 ----------------
 
@@ -73,8 +73,8 @@ to install, use, modify, prepare derivative works, incorporate into
 other computer software, distribute, and sublicense such enhancements or
 derivative works thereof, in binary and source code form.
 
-********************************************************************
-*/
+ ********************************************************************
+ */
 
 package lbnl.util;
 
@@ -106,6 +106,7 @@ public class WarningWindow implements Runnable {
     }
 
     /** Display the message dialog. */
+    @Override
     public void run() {
         JOptionPane.showMessageDialog(null, msg, "Warning",
                 JOptionPane.WARNING_MESSAGE);

@@ -130,6 +130,7 @@ public class IfThenElse extends ControlActor {
      *
      *  @exception IllegalActionException If there is no director.
      */
+    @Override
     public void fire() throws IllegalActionException {
         super.fire();
 

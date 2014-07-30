@@ -51,6 +51,7 @@ public class PlotFourierSeries extends PlotApplet {
     /**
      * Return a string describing this applet.
      */
+    @Override
     public String getAppletInfo() {
         return "PlotFourierSeries 1.1: Demo of PlotApplet.\n"
                 + "By: Edward A. Lee\n "
@@ -60,6 +61,7 @@ public class PlotFourierSeries extends PlotApplet {
     /**
      * Initialize the applet.
      */
+    @Override
     public void init() {
         super.init();
 

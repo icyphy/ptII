@@ -97,6 +97,7 @@ public class MouseInput3D extends GRActor3D {
      *  @exception IllegalActionException If thrown while sending the
      *  data to the output ports.
      */
+    @Override
     public void fire() throws IllegalActionException {
         super.fire();
 
@@ -114,6 +115,7 @@ public class MouseInput3D extends GRActor3D {
     /** Set up this actor to listen to mouse motion events.
      *  @exception IllegalActionException If thrown by the parent class.
      */
+    @Override
     public void initialize() throws IllegalActionException {
         super.initialize();
         _containedNode = new BranchGroup();
@@ -129,6 +131,7 @@ public class MouseInput3D extends GRActor3D {
     /** Get the user input BranchGroup node.
      *  @return The user input BranchGroup node for this actor.
      */
+    @Override
     protected Node _getNodeObject() {
         return _containedNode;
     }
@@ -137,6 +140,7 @@ public class MouseInput3D extends GRActor3D {
      *  @exception IllegalActionException If throw while adding this
      *  node to the viewscreen.
      */
+    @Override
     protected void _makeSceneGraphConnection() throws IllegalActionException {
         if (_viewScreen == null) {
             throw new IllegalActionException("GR error: no ViewScreen actor");
@@ -152,10 +156,12 @@ public class MouseInput3D extends GRActor3D {
     ////                         inner classes                     ////
 
     private class React extends Behavior {
+        @Override
         public void initialize() {
             this.wakeupOn(new WakeupOnAWTEvent(MouseEvent.MOUSE_PRESSED));
         }
 
+        @Override
         public void processStimulus(Enumeration criteria) {
             WakeupCriterion wakeup;
             int eventId;

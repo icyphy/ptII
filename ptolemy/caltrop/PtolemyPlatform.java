@@ -87,28 +87,34 @@ import caltrop.interpreter.util.Platform;
  @Pt.AcceptedRating Red (cxh)
  */
 public class PtolemyPlatform implements Platform {
+    @Override
     public Context context() {
         return _theContext;
     }
 
+    @Override
     public Environment createGlobalEnvironment() {
         return createGlobalEnvironment(null);
     }
 
+    @Override
     public Environment createGlobalEnvironment(Environment parent) {
         Environment env = new HashEnvironment(parent, context());
 
         env.bind("println", _theContext.createProcedure(new Procedure() {
+            @Override
             public void call(Object[] args) {
                 System.out.println(args[0]);
             }
 
+            @Override
             public int arity() {
                 return 1;
             }
         }));
 
         env.bind("SOP", _theContext.createFunction(new Function() {
+            @Override
             public Object apply(Object[] args) {
                 try {
                     System.out.println(args[0]);
@@ -118,12 +124,14 @@ public class PtolemyPlatform implements Platform {
                 }
             }
 
+            @Override
             public int arity() {
                 return 1;
             }
         }));
 
         env.bind("logValue", _theContext.createFunction(new Function() {
+            @Override
             public Object apply(Object[] args) {
                 try {
                     PrintStream output = new PrintStream(new FileOutputStream(
@@ -136,12 +144,14 @@ public class PtolemyPlatform implements Platform {
                 }
             }
 
+            @Override
             public int arity() {
                 return 2;
             }
         }));
 
         env.bind("Integers", _theContext.createFunction(new Function() {
+            @Override
             public Object apply(Object[] args) {
                 try {
                     int a = _theContext.intValue(args[0]);
@@ -155,12 +165,14 @@ public class PtolemyPlatform implements Platform {
                 }
             }
 
+            @Override
             public int arity() {
                 return 2;
             }
         }));
 
         env.bind("$not", _theContext.createFunction(new Function() {
+            @Override
             public Object apply(Object[] args) {
                 try {
                     BooleanToken b = (BooleanToken) args[0];
@@ -170,12 +182,14 @@ public class PtolemyPlatform implements Platform {
                 }
             }
 
+            @Override
             public int arity() {
                 return 1;
             }
         }));
 
         env.bind("$and", _theContext.createFunction(new Function() {
+            @Override
             public Object apply(Object[] args) {
                 try {
                     BooleanToken a = (BooleanToken) args[0];
@@ -187,12 +201,14 @@ public class PtolemyPlatform implements Platform {
                 }
             }
 
+            @Override
             public int arity() {
                 return 2;
             }
         }));
 
         env.bind("$or", _theContext.createFunction(new Function() {
+            @Override
             public Object apply(Object[] args) {
                 try {
                     BooleanToken a = (BooleanToken) args[0];
@@ -203,12 +219,14 @@ public class PtolemyPlatform implements Platform {
                 }
             }
 
+            @Override
             public int arity() {
                 return 2;
             }
         }));
 
         env.bind("$eq", _theContext.createFunction(new Function() {
+            @Override
             public Object apply(Object[] args) {
                 try {
                     Token a = (Token) args[0];
@@ -219,12 +237,14 @@ public class PtolemyPlatform implements Platform {
                 }
             }
 
+            @Override
             public int arity() {
                 return 2;
             }
         }));
 
         env.bind("$ne", _theContext.createFunction(new Function() {
+            @Override
             public Object apply(Object[] args) {
                 try {
                     Token a = (Token) args[0];
@@ -235,12 +255,14 @@ public class PtolemyPlatform implements Platform {
                 }
             }
 
+            @Override
             public int arity() {
                 return 2;
             }
         }));
 
         env.bind("$lt", _theContext.createFunction(new Function() {
+            @Override
             public Object apply(Object[] args) {
                 try {
                     ScalarToken a = (ScalarToken) args[0];
@@ -251,12 +273,14 @@ public class PtolemyPlatform implements Platform {
                 }
             }
 
+            @Override
             public int arity() {
                 return 2;
             }
         }));
 
         env.bind("$le", _theContext.createFunction(new Function() {
+            @Override
             public Object apply(Object[] args) {
                 try {
                     ScalarToken a = (ScalarToken) args[0];
@@ -267,12 +291,14 @@ public class PtolemyPlatform implements Platform {
                 }
             }
 
+            @Override
             public int arity() {
                 return 2;
             }
         }));
 
         env.bind("$gt", _theContext.createFunction(new Function() {
+            @Override
             public Object apply(Object[] args) {
                 try {
                     ScalarToken a = (ScalarToken) args[0];
@@ -283,12 +309,14 @@ public class PtolemyPlatform implements Platform {
                 }
             }
 
+            @Override
             public int arity() {
                 return 2;
             }
         }));
 
         env.bind("$ge", _theContext.createFunction(new Function() {
+            @Override
             public Object apply(Object[] args) {
                 try {
                     ScalarToken a = (ScalarToken) args[0];
@@ -299,12 +327,14 @@ public class PtolemyPlatform implements Platform {
                 }
             }
 
+            @Override
             public int arity() {
                 return 2;
             }
         }));
 
         env.bind("$negate", _theContext.createFunction(new Function() {
+            @Override
             public Object apply(Object[] args) {
                 try {
                     ScalarToken a = (ScalarToken) args[0];
@@ -315,6 +345,7 @@ public class PtolemyPlatform implements Platform {
                 }
             }
 
+            @Override
             public int arity() {
                 return 1;
             }
@@ -324,6 +355,7 @@ public class PtolemyPlatform implements Platform {
             // Compute the add operation on scalar arguments, the
             // list concatenation operation on lists, or the set
             // union on sets.
+            @Override
             public Object apply(Object[] args) {
                 try {
                     Token a = (Token) args[0];
@@ -361,6 +393,7 @@ public class PtolemyPlatform implements Platform {
                 }
             }
 
+            @Override
             public int arity() {
                 return 2;
             }
@@ -369,6 +402,7 @@ public class PtolemyPlatform implements Platform {
         env.bind("$mul", _theContext.createFunction(new Function() {
             // Compute the multiply operation on scalar arguments,
             // or the set intersection operation on sets.
+            @Override
             public Object apply(Object[] args) {
                 try {
                     Token a = (Token) args[0];
@@ -395,6 +429,7 @@ public class PtolemyPlatform implements Platform {
                 }
             }
 
+            @Override
             public int arity() {
                 return 2;
             }
@@ -403,6 +438,7 @@ public class PtolemyPlatform implements Platform {
         env.bind("$sub", _theContext.createFunction(new Function() {
             // Compute the subtraction operation on scalar arguments,
             // or the set subtraction operation on sets.
+            @Override
             public Object apply(Object[] args) {
                 try {
                     Token a = (Token) args[0];
@@ -440,12 +476,14 @@ public class PtolemyPlatform implements Platform {
                 }
             }
 
+            @Override
             public int arity() {
                 return 2;
             }
         }));
 
         env.bind("$div", _theContext.createFunction(new Function() {
+            @Override
             public Object apply(Object[] args) {
                 try {
                     Token a = (Token) args[0];
@@ -457,12 +495,14 @@ public class PtolemyPlatform implements Platform {
                 }
             }
 
+            @Override
             public int arity() {
                 return 2;
             }
         }));
 
         env.bind("$mod", _theContext.createFunction(new Function() {
+            @Override
             public Object apply(Object[] args) {
                 try {
                     Token a = (Token) args[0];
@@ -474,6 +514,7 @@ public class PtolemyPlatform implements Platform {
                 }
             }
 
+            @Override
             public int arity() {
                 return 2;
             }
@@ -482,6 +523,7 @@ public class PtolemyPlatform implements Platform {
         env.bind("$size", _theContext.createFunction(new Function() {
             // Compute the number of elements in the given set,
             // list, or array.
+            @Override
             public Object apply(Object[] args) {
                 try {
                     Token a = (Token) args[0];
@@ -507,6 +549,7 @@ public class PtolemyPlatform implements Platform {
                 }
             }
 
+            @Override
             public int arity() {
                 return 1;
             }
@@ -516,6 +559,7 @@ public class PtolemyPlatform implements Platform {
             // Create a list that contains the results of applying
             // the second argument (a one argument function) to
             // every element in the first argument (a collection).
+            @Override
             public Object apply(Object[] args) {
                 try {
                     Collection c = _theContext.getCollection(args[0]);
@@ -538,6 +582,7 @@ public class PtolemyPlatform implements Platform {
                 }
             }
 
+            @Override
             public int arity() {
                 return 2;
             }
@@ -547,6 +592,7 @@ public class PtolemyPlatform implements Platform {
             // Create a set that contains the results of applying
             // the second argument (a one argument function) to
             // every element in the first argument (a collection).
+            @Override
             public Object apply(Object[] args) {
                 try {
                     Collection c = _theContext.getCollection(args[0]);
@@ -569,6 +615,7 @@ public class PtolemyPlatform implements Platform {
                 }
             }
 
+            @Override
             public int arity() {
                 return 2;
             }
@@ -578,6 +625,7 @@ public class PtolemyPlatform implements Platform {
             // Create a map that contains the results of applying
             // the second argument (a one argument function) to
             // every element in the first argument (a collection).
+            @Override
             public Object apply(Object[] args) {
                 try {
                     Collection c = _theContext.getCollection(args[0]);
@@ -600,6 +648,7 @@ public class PtolemyPlatform implements Platform {
                 }
             }
 
+            @Override
             public int arity() {
                 return 2;
             }
@@ -609,6 +658,7 @@ public class PtolemyPlatform implements Platform {
             // Invoke the second argument (a one argument
             // procedure) on every element of the first argument
             // (a collection).
+            @Override
             public void call(Object[] args) {
                 try {
                     Collection c = _theContext.getCollection(args[0]);
@@ -625,6 +675,7 @@ public class PtolemyPlatform implements Platform {
                 }
             }
 
+            @Override
             public int arity() {
                 return 2;
             }
@@ -632,6 +683,7 @@ public class PtolemyPlatform implements Platform {
 
         env.bind("listToArray", _theContext.createFunction(new Function() {
             // Convert the given list to an array.
+            @Override
             public Object apply(Object[] args) {
                 try {
                     ObjectToken input = (ObjectToken) args[0];
@@ -644,6 +696,7 @@ public class PtolemyPlatform implements Platform {
                 }
             }
 
+            @Override
             public int arity() {
                 return 1;
             }
@@ -651,6 +704,7 @@ public class PtolemyPlatform implements Platform {
 
         env.bind("listToMatrix", _theContext.createFunction(new Function() {
             // Convert the given list to an array.
+            @Override
             public Object apply(Object[] args) {
                 try {
                     ObjectToken input = (ObjectToken) args[0];
@@ -666,6 +720,7 @@ public class PtolemyPlatform implements Platform {
                 }
             }
 
+            @Override
             public int arity() {
                 return 3;
             }
@@ -697,6 +752,7 @@ public class PtolemyPlatform implements Platform {
         env.bind("UVOFFSET", _theContext.createInteger(128));
 
         env.bind("INT19_mul", _theContext.createFunction(new Function() {
+            @Override
             public Object apply(Object[] args) {
                 try {
                     IntToken a = (IntToken) args[0];
@@ -709,12 +765,14 @@ public class PtolemyPlatform implements Platform {
                 }
             }
 
+            @Override
             public int arity() {
                 return 2;
             }
         }));
 
         env.bind("RGBCLIP", _theContext.createFunction(new Function() {
+            @Override
             public Object apply(Object[] args) {
                 try {
                     Token a = (Token) args[0];
@@ -733,12 +791,14 @@ public class PtolemyPlatform implements Platform {
                 }
             }
 
+            @Override
             public int arity() {
                 return 1;
             }
         }));
 
         env.bind("readByte", _theContext.createFunction(new Function() {
+            @Override
             public Object apply(Object[] args) {
                 try {
                     Token a = (Token) args[0];
@@ -756,12 +816,14 @@ public class PtolemyPlatform implements Platform {
                 }
             }
 
+            @Override
             public int arity() {
                 return 1;
             }
         }));
 
         env.bind("openFile", _theContext.createFunction(new Function() {
+            @Override
             public Object apply(Object[] args) {
                 try {
                     Token a = (Token) args[0];
@@ -780,6 +842,7 @@ public class PtolemyPlatform implements Platform {
                 }
             }
 
+            @Override
             public int arity() {
                 return 1;
             }
@@ -805,6 +868,7 @@ public class PtolemyPlatform implements Platform {
      * @see caltrop.interpreter.StmtEvaluator
      */
     private static final Context _theContext = new Context() {
+        @Override
         public Object createNull() {
             try {
                 return new ObjectToken(null);
@@ -813,19 +877,23 @@ public class PtolemyPlatform implements Platform {
             }
         }
 
+        @Override
         public boolean isNull(Object o) {
             return o instanceof ObjectToken
                     && ((ObjectToken) o).getValue() == null;
         }
 
+        @Override
         public Object createBoolean(boolean b) {
             return b ? BooleanToken.TRUE : BooleanToken.FALSE;
         }
 
+        @Override
         public boolean isBoolean(Object o) {
             return o instanceof BooleanToken;
         }
 
+        @Override
         public boolean booleanValue(Object b) {
             try {
                 return ((BooleanToken) b).booleanValue();
@@ -835,6 +903,7 @@ public class PtolemyPlatform implements Platform {
             }
         }
 
+        @Override
         public Object createCharacter(char c) {
             try {
                 return new ObjectToken(Character.valueOf(c));
@@ -844,33 +913,39 @@ public class PtolemyPlatform implements Platform {
             }
         }
 
+        @Override
         public boolean isCharacter(Object o) {
             return o instanceof ObjectToken
                     && ((ObjectToken) o).getValue() instanceof Character;
         }
 
+        @Override
         public char charValue(Object o) {
             return ((Character) ((ObjectToken) o).getValue()).charValue();
         }
 
+        @Override
         public Object createInteger(String s) {
             try {
                 return new IntToken(s);
             } catch (IllegalActionException ex) {
                 throw new InterpreterException(
                         "Failed to create integer value from string: '" + s
-                                + "'.", ex);
+                        + "'.", ex);
             }
         }
 
+        @Override
         public Object createInteger(int n) {
             return new IntToken(n);
         }
 
+        @Override
         public boolean isInteger(Object o) {
             return o instanceof IntToken;
         }
 
+        @Override
         public int intValue(Object o) {
             try {
                 return ((IntToken) o).intValue();
@@ -880,10 +955,12 @@ public class PtolemyPlatform implements Platform {
             }
         }
 
+        @Override
         public Object createReal(double d) {
             return new DoubleToken(d);
         }
 
+        @Override
         public Object createReal(String s) {
             try {
                 return new DoubleToken(s);
@@ -894,10 +971,12 @@ public class PtolemyPlatform implements Platform {
             }
         }
 
+        @Override
         public boolean isReal(Object o) {
             return o instanceof DoubleToken;
         }
 
+        @Override
         public double realValue(Object o) {
             try {
                 return ((DoubleToken) o).doubleValue();
@@ -907,14 +986,17 @@ public class PtolemyPlatform implements Platform {
             }
         }
 
+        @Override
         public Object createString(String s) {
             return new StringToken(s);
         }
 
+        @Override
         public boolean isString(Object o) {
             return o instanceof StringToken;
         }
 
+        @Override
         public String stringValue(Object o) {
             try {
                 return ((StringToken) o).stringValue();
@@ -925,6 +1007,7 @@ public class PtolemyPlatform implements Platform {
         }
 
         ///////// Collections
+        @Override
         public Object createList(List a) {
             try {
                 return new ObjectToken(a);
@@ -934,11 +1017,13 @@ public class PtolemyPlatform implements Platform {
             }
         }
 
+        @Override
         public boolean isList(Object o) {
             return o instanceof PtArrayList || o instanceof ObjectToken
                     && ((ObjectToken) o).getValue() instanceof List;
         }
 
+        @Override
         public List getList(Object o) {
             if (o instanceof ArrayToken) {
                 return new PtArrayList((ArrayToken) o);
@@ -952,6 +1037,7 @@ public class PtolemyPlatform implements Platform {
             }
         }
 
+        @Override
         public Object createSet(Set s) {
             try {
                 return new ObjectToken(s);
@@ -961,15 +1047,18 @@ public class PtolemyPlatform implements Platform {
             }
         }
 
+        @Override
         public boolean isSet(Object o) {
             return o instanceof ObjectToken
                     && ((ObjectToken) o).getValue() instanceof Set;
         }
 
+        @Override
         public Set getSet(Object o) {
             return (Set) ((ObjectToken) o).getValue();
         }
 
+        @Override
         public Object createMap(Map m) {
             try {
                 return new ObjectToken(m);
@@ -979,11 +1068,13 @@ public class PtolemyPlatform implements Platform {
             }
         }
 
+        @Override
         public boolean isMap(Object o) {
             return o instanceof ObjectToken
                     && ((ObjectToken) o).getValue() instanceof Map;
         }
 
+        @Override
         public Map getMap(Object a) {
             try {
                 return (Map) ((ObjectToken) a).getValue();
@@ -993,16 +1084,19 @@ public class PtolemyPlatform implements Platform {
             }
         }
 
+        @Override
         public Object applyMap(Object map, Object arg) {
             Map m = getMap(map);
             return m.get(arg);
         }
 
+        @Override
         public boolean isCollection(Object o) {
             return o instanceof ObjectToken
                     && ((ObjectToken) o).getValue() instanceof Collection;
         }
 
+        @Override
         public Collection getCollection(Object a) {
             try {
                 return (Collection) ((ObjectToken) a).getValue();
@@ -1013,6 +1107,7 @@ public class PtolemyPlatform implements Platform {
         }
 
         ///////// Functional and procedural closures
+        @Override
         public Object createFunction(Function f) {
             Type[] argTypes = new Type[f.arity()];
 
@@ -1024,12 +1119,14 @@ public class PtolemyPlatform implements Platform {
                     argTypes, BaseType.UNKNOWN));
         }
 
+        @Override
         public boolean isFunction(Object a) {
             return a instanceof FunctionToken || a instanceof ObjectToken
                     && ((ObjectToken) a).getValue() instanceof Function
                     || a instanceof Function;
         }
 
+        @Override
         public Object applyFunction(Object function, Object[] args) {
             // TODO: perhaps need to optimize array creation
             try {
@@ -1049,6 +1146,7 @@ public class PtolemyPlatform implements Platform {
             }
         }
 
+        @Override
         public Object createProcedure(Procedure p) {
             try {
                 return new ObjectToken(p);
@@ -1058,11 +1156,13 @@ public class PtolemyPlatform implements Platform {
             }
         }
 
+        @Override
         public boolean isProcedure(Object a) {
             return a instanceof ObjectToken
                     && ((ObjectToken) a).getValue() instanceof Procedure;
         }
 
+        @Override
         public void callProcedure(Object procedure, Object[] args) {
             try {
                 ObjectToken pToken = (ObjectToken) procedure;
@@ -1074,6 +1174,7 @@ public class PtolemyPlatform implements Platform {
         }
 
         ///////// Class
+        @Override
         public Object createClass(Class c) {
             try {
                 return new ObjectToken(new ClassObject(c, this));
@@ -1082,11 +1183,13 @@ public class PtolemyPlatform implements Platform {
             }
         }
 
+        @Override
         public boolean isClass(Object o) {
             return o instanceof ObjectToken
                     && ((ObjectToken) o).getValue() instanceof ClassObject;
         }
 
+        @Override
         public Class getJavaClass(Object o) {
             try {
                 return ((ClassObject) ((ObjectToken) o).getValue())
@@ -1096,7 +1199,7 @@ public class PtolemyPlatform implements Platform {
                     throw new RuntimeException(
                             "Expected ClassObject, got instance of '"
                                     + ((ObjectToken) o).getValue().getClass()
-                                            .getName() + "'.", e);
+                                    .getName() + "'.", e);
                 } else {
                     throw new RuntimeException(
                             "Expected ClassObject inside ObjectToken, got instance of '"
@@ -1107,6 +1210,7 @@ public class PtolemyPlatform implements Platform {
         }
 
         ///////// Misc.
+        @Override
         public Object getLocation(Object structure, Object[] location) {
             if (location.length == 1 && isInteger(location[0])) {
                 int index = intValue(location[0]);
@@ -1145,6 +1249,7 @@ public class PtolemyPlatform implements Platform {
                     + structure);
         }
 
+        @Override
         public void setLocation(Object structure, Object[] location,
                 Object value) {
             if (location.length == 1 && isInteger(location[0])) {
@@ -1176,6 +1281,7 @@ public class PtolemyPlatform implements Platform {
                     + " of class " + structure.getClass().getName());
         }
 
+        @Override
         public Class getJavaClassOfObject(Object o) {
             // FIXME very preliminary. what about FunctionToken?
             // also, how will reflection work on methods that
@@ -1207,6 +1313,7 @@ public class PtolemyPlatform implements Platform {
             }
         }
 
+        @Override
         public Object toJavaObject(Object o) {
             if (o instanceof BooleanToken) {
                 //return new Boolean(booleanValue(o));
@@ -1234,6 +1341,7 @@ public class PtolemyPlatform implements Platform {
             }
         }
 
+        @Override
         public Object fromJavaObject(Object o) {
             try {
                 if (o instanceof Token) {
@@ -1258,6 +1366,7 @@ public class PtolemyPlatform implements Platform {
             }
         }
 
+        @Override
         public Object selectField(Object composite, String fieldName) {
             Class c = getJavaClassOfObject(composite);
             Field f;

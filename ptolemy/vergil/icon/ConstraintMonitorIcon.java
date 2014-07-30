@@ -111,6 +111,7 @@ public class ConstraintMonitorIcon extends BoxedValueIcon {
     /** Override the base class to modify the background color, if appropriate.
      *  @return A new figure.
      */
+    @Override
     public Figure createBackgroundFigure() {
         ConstraintMonitor container = (ConstraintMonitor) getContainer();
         try {
@@ -145,8 +146,9 @@ public class ConstraintMonitorIcon extends BoxedValueIcon {
      *   an attribute with the name of this attribute.
      *  @see #getContainer()
      */
+    @Override
     public void setContainer(NamedObj container) throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         if (container != null && !(container instanceof ConstraintMonitor)) {
             throw new IllegalActionException(this, container,
                     "Container is required to be a ConstraintMonitor");

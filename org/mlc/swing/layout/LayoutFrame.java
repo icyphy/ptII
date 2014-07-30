@@ -141,18 +141,21 @@ public class LayoutFrame extends JFrame implements MultiContainerFrame {
         fileChooser.setFileFilter(new XmlFileFilter());
 
         this.addWindowListener(new WindowAdapter() {
+            @Override
             public void windowClosing(WindowEvent e) {
                 exitApplication();
             }
         });
 
         exit.addActionListener(new ActionListener() {
+            @Override
             public void actionPerformed(ActionEvent e) {
                 exitApplication();
             }
         });
 
         viewDebugMenu.addActionListener(new ActionListener() {
+            @Override
             public void actionPerformed(ActionEvent e) {
                 LayoutFrame.this.enableDebugPreview(viewDebugMenu.isSelected());
             }
@@ -178,6 +181,7 @@ public class LayoutFrame extends JFrame implements MultiContainerFrame {
         // getContentPane().add (palette, BorderLayout.SOUTH);
 
         viewCode.addActionListener(new ActionListener() {
+            @Override
             public void actionPerformed(ActionEvent e) {
                 List<ContainerLayout> layouts = LayoutFrame.this.constraintsManager
                         .getLayouts();
@@ -201,11 +205,11 @@ public class LayoutFrame extends JFrame implements MultiContainerFrame {
 
                 StringBuffer declBuffer = new StringBuffer();
                 declBuffer
-                        .append("// here are declarations for the controls you created\n");
+                .append("// here are declarations for the controls you created\n");
 
                 StringBuffer addBuffer2 = new StringBuffer();
                 addBuffer2
-                        .append("// here we add the controls to the container.\n");
+                .append("// here we add the controls to the container.\n");
 
                 StringBuffer confBuffer = new StringBuffer();
                 confBuffer.append("// control configuration\n");
@@ -245,7 +249,7 @@ public class LayoutFrame extends JFrame implements MultiContainerFrame {
                                 _decl = component.getClass().getName()
                                         + " "
                                         + containerLayout
-                                                .getComponentName(component)
+                                        .getComponentName(component)
                                         + " = new "
                                         + component.getClass().getName() + "("
                                         + constructorArg + ");\n";
@@ -294,7 +298,7 @@ public class LayoutFrame extends JFrame implements MultiContainerFrame {
                                     .getName()
                                     + " "
                                     + containerLayout
-                                            .getComponentName(component)
+                                    .getComponentName(component)
                                     + " = new "
                                     + component.getClass().getName()
                                     + "("
@@ -336,6 +340,7 @@ public class LayoutFrame extends JFrame implements MultiContainerFrame {
         });
 
         saveXML.addActionListener(new ActionListener() {
+            @Override
             public void actionPerformed(ActionEvent e) {
                 java.util.prefs.Preferences prefs = java.util.prefs.Preferences
                         .userNodeForPackage(getClass());
@@ -406,12 +411,14 @@ public class LayoutFrame extends JFrame implements MultiContainerFrame {
         pack();
     }
 
+    @Override
     public boolean hasContainer(String name) {
         return constraintsManager.getContainerLayout(name) != null;
     }
 
     private class XmlFileFilter extends FileFilter {
 
+        @Override
         public boolean accept(File f) {
             if (f.isDirectory()) {
                 return true;
@@ -431,6 +438,7 @@ public class LayoutFrame extends JFrame implements MultiContainerFrame {
 
         }
 
+        @Override
         public String getDescription() {
             return "xml files";
         }
@@ -453,6 +461,7 @@ public class LayoutFrame extends JFrame implements MultiContainerFrame {
         }
     }
 
+    @Override
     public void removeContainer(String name) {
         ContainerLayout layout = constraintsManager.getContainerLayout(name);
         if (layout == null) {
@@ -481,6 +490,7 @@ public class LayoutFrame extends JFrame implements MultiContainerFrame {
      * creates a new panel in one of the existing FormEditors, it can be added
      * here and then they can lay it out.
      */
+    @Override
     public void addContainer(String name, Container container)
             throws IllegalArgumentException {
         // check to see if another panel with this name already exists
@@ -529,9 +539,10 @@ public class LayoutFrame extends JFrame implements MultiContainerFrame {
             pack();
 
             addWindowListener(new WindowAdapter() {
+                @Override
                 public void windowClosing(WindowEvent e) {
                     UserPrefs.getPrefs()
-                            .saveWinLoc("codeview", CodeDialog.this);
+                    .saveWinLoc("codeview", CodeDialog.this);
                 }
             });
         }
@@ -596,7 +607,7 @@ public class LayoutFrame extends JFrame implements MultiContainerFrame {
         lcm.setLayout("panel", fdp);
         debugFrame.getContentPane().add(fdp, BorderLayout.CENTER);
         debugFrame
-                .setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
+        .setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
         return debugFrame;
     }
 
@@ -615,7 +626,7 @@ public class LayoutFrame extends JFrame implements MultiContainerFrame {
         //    layoutFrame.setSize(r.width, r.height);
         layoutFrame.setVisible(true);
         layoutFrame
-                .setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
+        .setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
         layoutFrame.setPreviewFrame(constraintsManager, frame);
         layoutFrame.enableDebugPreview(UserPrefs.getPrefs().showDebugPanel());
     }

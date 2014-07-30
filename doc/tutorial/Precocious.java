@@ -25,7 +25,7 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 Ptolemy II includes the work of others, to see those copyrights, follow
 the copyright link on the splash page or see copyright.htm.
-*/
+ */
 package doc.tutorial;
 
 import java.util.List;
@@ -76,7 +76,7 @@ or any domain that respects fireAt() calls.
 @since Ptolemy II 10.0
 @Pt.ProposedRating Yellow (eal)
 @Pt.AcceptedRating Red (eal)
-*/
+ */
 public class Precocious extends TypedAtomicActor {
 
     /** Create a new actor in the specified container with the specified
@@ -122,6 +122,7 @@ public class Precocious extends TypedAtomicActor {
      *  @exception IllegalActionException If there is no director or if
      *   producing the output causes an exception.
      */
+    @Override
     public void fire() throws IllegalActionException {
         super.fire();
         _count++;
@@ -129,6 +130,7 @@ public class Precocious extends TypedAtomicActor {
             output.send(0, new IntToken(_count));
         } else {
             ChangeRequest request = new ChangeRequest(this, "Find recipient") {
+                @Override
                 protected void _execute() throws IllegalActionException {
                     CompositeEntity container = (CompositeEntity) getContainer();
                     List<Entity> entities = container.entityList();
@@ -154,6 +156,7 @@ public class Precocious extends TypedAtomicActor {
      *  the current time.
      *  @exception IllegalActionException If a derived class throws it.
      */
+    @Override
     public void initialize() throws IllegalActionException {
         super.initialize();
         _count = 0;

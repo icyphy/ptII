@@ -47,7 +47,7 @@ import ptolemy.kernel.util.NamedObj;
 @since Ptolemy II 10.0
 @Pt.ProposedRating Red (cshelton)
 @Pt.AcceptedRating Red (cshelton)
-*/
+ */
 public class UnitConversionInfo extends Parameter {
 
     /** Create a new UnitConversionInfo parameter with the given name and
@@ -97,8 +97,9 @@ public class UnitConversionInfo extends Parameter {
      *  @exception NameDuplicationException Thrown if there is already a NamedObj
      *   in the DimensionRepresentativeConcept container with the same name.
      */
+    @Override
     public void setContainer(NamedObj container) throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         if (container == null
                 || container instanceof DimensionRepresentativeConcept) {
             super.setContainer(container);

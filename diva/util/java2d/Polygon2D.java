@@ -78,6 +78,7 @@ public abstract class Polygon2D implements Shape {
 
     /** Return true if the given point is inside the polygon.
      */
+    @Override
     public boolean contains(double x, double y) {
         // This method creates a java.awt.geom.Area and calls contains()
         // on it.
@@ -85,7 +86,7 @@ public abstract class Polygon2D implements Shape {
         // edge with the same value as one of the arguments.
         // See diva/util/java2d/test/junit/Polygon2DJUnitTest.java
         Path2D path = this instanceof Polygon2D.Float ? new Path2D.Float()
-                : new Path2D.Double();
+        : new Path2D.Double();
         path.moveTo(getX(0), getY(0));
         for (int i = 1; i < getVertexCount(); i++) {
             path.lineTo(getX(i), getY(i));
@@ -97,6 +98,7 @@ public abstract class Polygon2D implements Shape {
 
     /** Return true if the given point is inside the polygon.
      */
+    @Override
     public boolean contains(Point2D p) {
         return contains(p.getX(), p.getY());
     }
@@ -106,6 +108,7 @@ public abstract class Polygon2D implements Shape {
      * supplying a rectangle that has all four corners inside the
      * polygon, but which intersects some edges.)
      */
+    @Override
     public boolean contains(Rectangle2D r) {
         return contains(r.getX(), r.getY(), r.getWidth(), r.getHeight());
     }
@@ -115,6 +118,7 @@ public abstract class Polygon2D implements Shape {
      * supplying a rectangle that has all four corners inside the
      * polygon, but which intersects some edges.)
      */
+    @Override
     public boolean contains(double x1, double y1, double w, double h) {
         double x2 = x1 + w;
         double y2 = y1 + h;
@@ -124,22 +128,26 @@ public abstract class Polygon2D implements Shape {
 
     /** Get the integer bounds of the polygon.
      */
+    @Override
     public Rectangle getBounds() {
         return getBounds2D().getBounds();
     }
 
     /** Get the floating-point bounds of the polygon.
      */
+    @Override
     public abstract Rectangle2D getBounds2D();
 
     /** Get a path iterator over the object.
      */
+    @Override
     public PathIterator getPathIterator(AffineTransform at, double flatness) {
         return getPathIterator(at);
     }
 
     /** Get a path iterator over the object.
      */
+    @Override
     public PathIterator getPathIterator(AffineTransform at) {
         return new PolygonIterator(this, at);
     }
@@ -168,6 +176,7 @@ public abstract class Polygon2D implements Shape {
      * polygon, and does not contain any vertex of the polygon,
      * but which intersects some edges.)
      */
+    @Override
     public boolean intersects(Rectangle2D r) {
         return intersects(r.getX(), r.getY(), r.getWidth(), r.getHeight());
     }
@@ -175,6 +184,7 @@ public abstract class Polygon2D implements Shape {
     /** Test if the polygon is intersected by the given
      * rectangle.
      */
+    @Override
     public boolean intersects(double x1, double y1, double w, double h) {
         double x2 = x1 + w;
         double y2 = y1 + h;
@@ -272,6 +282,7 @@ public abstract class Polygon2D implements Shape {
 
     /** Return a string representation of the polygon.
      */
+    @Override
     public String toString() {
         StringBuffer out = new StringBuffer(getClass().getName() + "[\n");
 
@@ -326,6 +337,7 @@ public abstract class Polygon2D implements Shape {
 
         /** Get the floating-point bounds of the polygon.
          */
+        @Override
         public Rectangle2D getBounds2D() {
             if (_coordCount <= 1) {
                 return new Rectangle2D.Float();
@@ -361,6 +373,7 @@ public abstract class Polygon2D implements Shape {
          *
          * @exception IndexOutOfBoundsException The index is out of bounds.
          */
+        @Override
         public double getX(int index) {
             return _coords[index * 2];
         }
@@ -369,12 +382,14 @@ public abstract class Polygon2D implements Shape {
          *
          * @exception IndexOutOfBoundsException The index is out of bounds.
          */
+        @Override
         public double getY(int index) {
             return _coords[index * 2 + 1];
         }
 
         /** Add a new vertex to the end of the line.
          */
+        @Override
         public void lineTo(double x, double y) {
             if (_closed) {
                 throw new UnsupportedOperationException(
@@ -396,6 +411,7 @@ public abstract class Polygon2D implements Shape {
          * @exception UnsupportedOperationException The polygon already
          * has vertices
          */
+        @Override
         public void moveTo(double x, double y) {
             if (_coordCount > 0) {
                 throw new UnsupportedOperationException(
@@ -411,6 +427,7 @@ public abstract class Polygon2D implements Shape {
          *
          * @exception IndexOutOfBoundsException The index is out of bounds.
          */
+        @Override
         public void setX(int index, double x) {
             _coords[index * 2] = (float) x;
         }
@@ -419,18 +436,21 @@ public abstract class Polygon2D implements Shape {
          *
          * @exception IndexOutOfBoundsException The index is out of bounds.
          */
+        @Override
         public void setY(int index, double y) {
             _coords[index * 2 + 1] = (float) y;
         }
 
         /** Transform the polygon with the given transform.
          */
+        @Override
         public void transform(AffineTransform at) {
             at.transform(_coords, 0, _coords, 0, _coordCount / 2);
         }
 
         /** Translate the polygon the given distance.
          */
+        @Override
         public void translate(double x, double y) {
             float fx = (float) x;
             float fy = (float) y;
@@ -486,6 +506,7 @@ public abstract class Polygon2D implements Shape {
 
         /** Get the floating-point bounds of the polygon.
          */
+        @Override
         public Rectangle2D getBounds2D() {
             if (_coordCount <= 0) {
                 return new Rectangle2D.Double();
@@ -519,6 +540,7 @@ public abstract class Polygon2D implements Shape {
 
         /** Get the number of vertices
          */
+        @Override
         public int getVertexCount() {
             return _coordCount / 2;
         }
@@ -527,6 +549,7 @@ public abstract class Polygon2D implements Shape {
          *
          * @exception IndexOutOfBoundsException The index is out of bounds.
          */
+        @Override
         public double getX(int index) {
             return _coords[index * 2];
         }
@@ -535,12 +558,14 @@ public abstract class Polygon2D implements Shape {
          *
          * @exception IndexOutOfBoundsException The index is out of bounds.
          */
+        @Override
         public double getY(int index) {
             return _coords[index * 2 + 1];
         }
 
         /** Add a new vertex to the end of the line.
          */
+        @Override
         public void lineTo(double x, double y) {
             if (_coordCount == _coords.length) {
                 double[] temp = new double[_coordCount * 2];
@@ -557,6 +582,7 @@ public abstract class Polygon2D implements Shape {
          * @exception UnsupportedOperationException The polygon already
          * has vertices
          */
+        @Override
         public void moveTo(double x, double y) {
             if (_coordCount > 0) {
                 throw new UnsupportedOperationException(
@@ -572,6 +598,7 @@ public abstract class Polygon2D implements Shape {
          *
          * @exception IndexOutOfBoundsException The index is out of bounds.
          */
+        @Override
         public void setX(int index, double x) {
             _coords[index * 2] = x;
         }
@@ -580,18 +607,21 @@ public abstract class Polygon2D implements Shape {
          *
          * @exception IndexOutOfBoundsException The index is out of bounds.
          */
+        @Override
         public void setY(int index, double y) {
             _coords[index * 2 + 1] = y;
         }
 
         /** Transform the polygon with the given transform.
          */
+        @Override
         public void transform(AffineTransform at) {
             at.transform(_coords, 0, _coords, 0, _coordCount / 2);
         }
 
         /** Translate the polygon the given distance.
          */
+        @Override
         public void translate(double x, double y) {
             for (int i = 0; i < _coordCount;) {
                 _coords[i++] += x;

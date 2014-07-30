@@ -78,6 +78,7 @@ public class Branch implements Runnable {
      *  @exception IllegalActionException Not thrown in this base class.
      *  @deprecated Use this constructor for testing purposes only.
      */
+    @Deprecated
     public Branch(BranchController controller) throws IllegalActionException {
         _controller = controller;
     }
@@ -93,7 +94,7 @@ public class Branch implements Runnable {
      */
     public Branch(ProcessReceiver producerReceiver,
             ProcessReceiver consumerReceiver, BranchController controller)
-            throws IllegalActionException {
+                    throws IllegalActionException {
         _controller = controller;
 
         if (producerReceiver == null || consumerReceiver == null) {
@@ -153,6 +154,7 @@ public class Branch implements Runnable {
      *  receiver and the consumer receiver as long as the branch
      *  is active or until a TerminateProcessException is thrown.
      */
+    @Override
     public void run() {
         try {
             setActive(true);

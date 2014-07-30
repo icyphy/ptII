@@ -146,6 +146,7 @@ public class Attribute extends NamedObj {
      *  @exception CloneNotSupportedException Not thrown in this base class
      *  @return The new Attribute.
      */
+    @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         Attribute newObject = (Attribute) super.clone(workspace);
         newObject._container = null;
@@ -161,6 +162,7 @@ public class Attribute extends NamedObj {
      *  @exception IllegalActionException If this object has
      *   no container.
      */
+    @Override
     public int moveDown() throws IllegalActionException {
         NamedObj container = getContainer();
 
@@ -197,6 +199,7 @@ public class Attribute extends NamedObj {
      *  @exception IllegalActionException If this object has
      *   no container.
      */
+    @Override
     public int moveToFirst() throws IllegalActionException {
         NamedObj container = getContainer();
 
@@ -235,6 +238,7 @@ public class Attribute extends NamedObj {
      *  @exception IllegalActionException If this object has
      *   no container or if the index is out of bounds.
      */
+    @Override
     public int moveToIndex(int index) throws IllegalActionException {
         NamedObj container = getContainer();
 
@@ -271,6 +275,7 @@ public class Attribute extends NamedObj {
      *  @exception IllegalActionException If this object has
      *   no container.
      */
+    @Override
     public int moveToLast() throws IllegalActionException {
         NamedObj container = getContainer();
 
@@ -307,6 +312,7 @@ public class Attribute extends NamedObj {
      *  @exception IllegalActionException If this object has
      *   no container.
      */
+    @Override
     public int moveUp() throws IllegalActionException {
         NamedObj container = getContainer();
 
@@ -338,6 +344,7 @@ public class Attribute extends NamedObj {
      *  @return The container, an instance of NamedObj.
      *  @see #setContainer(NamedObj)
      */
+    @Override
     public NamedObj getContainer() {
         return _container;
     }
@@ -372,7 +379,7 @@ public class Attribute extends NamedObj {
      *  @see #getContainer()
      */
     public void setContainer(NamedObj container) throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         if (container != null && _workspace != container.workspace()) {
             throw new IllegalActionException(this, container,
                     "Cannot set container because workspaces are different.");
@@ -452,8 +459,9 @@ public class Attribute extends NamedObj {
      *  @exception NameDuplicationException If there is already an
      *       attribute with the same name in the container.
      */
+    @Override
     public void setName(String name) throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         if (name == null) {
             name = "";
         }
@@ -505,6 +513,7 @@ public class Attribute extends NamedObj {
      *  @exception IllegalActionException If the object exists
      *   and has the wrong class.
      */
+    @Override
     protected NamedObj _getContainedObject(NamedObj container,
             String relativeName) throws IllegalActionException {
         Attribute candidate = container.getAttribute(relativeName);
@@ -528,6 +537,7 @@ public class Attribute extends NamedObj {
      *  @return A new object of the same class and name
      *   as this one.
      */
+    @Override
     protected NamedObj _propagateExistence(NamedObj container)
             throws IllegalActionException {
         try {

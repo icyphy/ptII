@@ -76,7 +76,7 @@ public class StaticSchedulingDirector extends Director {
      *  @exception IllegalActionException If construction of Time objects fails.
      */
     public StaticSchedulingDirector() throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         super();
     }
 
@@ -119,6 +119,7 @@ public class StaticSchedulingDirector extends Director {
      *  @param listener The listener to which to send debug messages.
      *  @see #removeDebugListener(DebugListener)
      */
+    @Override
     public synchronized void addDebugListener(DebugListener listener) {
         super.addDebugListener(listener);
 
@@ -136,6 +137,7 @@ public class StaticSchedulingDirector extends Director {
      *  @exception CloneNotSupportedException Not thrown in this base class
      *  @return The new Attribute.
      */
+    @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         StaticSchedulingDirector newObject = (StaticSchedulingDirector) super
                 .clone(workspace);
@@ -152,6 +154,7 @@ public class StaticSchedulingDirector extends Director {
     /** Initialize local variables.
      *  @exception IllegalActionException Thrown by super class.
      */
+    @Override
     public void initialize() throws IllegalActionException {
         super.initialize();
 
@@ -180,6 +183,7 @@ public class StaticSchedulingDirector extends Director {
      *  @exception InvalidStateException If this director does not have a
      *   container.
      */
+    @Override
     public void fire() throws IllegalActionException {
         // Don't call "super.fire();" here because if you do then
         // everything happens twice.
@@ -214,7 +218,8 @@ public class StaticSchedulingDirector extends Director {
             if (returnValue == STOP_ITERATING) {
                 _postfireReturns = false;
                 if (_debugging) {
-                        _debug("Actor requests no more firings: " + actor.getFullName());
+                    _debug("Actor requests no more firings: "
+                            + actor.getFullName());
                 }
             } else if (returnValue == NOT_READY) {
                 // See de/test/auto/knownFailedTests/DESDFClockTest.xml
@@ -256,6 +261,7 @@ public class StaticSchedulingDirector extends Director {
      *  that forces scheduling to be redone at the next opportunity.
      *  If there is no scheduler, do nothing.
      */
+    @Override
     public void invalidateSchedule() {
         _debug("Invalidating schedule.");
         if (_scheduler != null) {
@@ -286,6 +292,7 @@ public class StaticSchedulingDirector extends Director {
      *  future.
      *  @exception IllegalActionException Not thrown in this base class.
      */
+    @Override
     public boolean postfire() throws IllegalActionException {
         boolean result = super.postfire() && _postfireReturns;
         if (_debugging) {
@@ -322,6 +329,7 @@ public class StaticSchedulingDirector extends Director {
      *  @return True.
      *  @exception IllegalActionException Not thrown in this base class.
      */
+    @Override
     public boolean prefire() throws IllegalActionException {
         _postfireReturns = true;
         _prefire = super.prefire();
@@ -351,16 +359,18 @@ public class StaticSchedulingDirector extends Director {
                 Actor actor = firing.getActor();
 
                 if (!_actorFinished) {
-                        if (_tokenSentToCommunicationAspect) {
-                            _tokenSentToCommunicationAspect = false;
-                            if (((CompositeActor)getContainer()).getContainer() != null) {
-                                    ((CompositeActor)getContainer()).getExecutiveDirector()
-                                                    .fireAtCurrentTime((CompositeActor)getContainer());
-                            }
-                            _prefire = false;
+                    if (_tokenSentToCommunicationAspect) {
+                        _tokenSentToCommunicationAspect = false;
+                        if (((CompositeActor) getContainer()).getContainer() != null) {
+                            ((CompositeActor) getContainer())
+                                    .getExecutiveDirector().fireAtCurrentTime(
+                                            (CompositeActor) getContainer());
+                        }
+                        _prefire = false;
                         return false;
                     }
-                    boolean finished =  _schedule((NamedObj) actor, getModelTime());
+                    boolean finished = _schedule((NamedObj) actor,
+                            getModelTime());
                     if (!finished) {
                         _prefire = false;
                         return false;
@@ -391,6 +401,7 @@ public class StaticSchedulingDirector extends Director {
      *   to which debug messages are sent.
      *  @see #addDebugListener(DebugListener)
      */
+    @Override
     public synchronized void removeDebugListener(DebugListener listener) {
         super.removeDebugListener(listener);
 

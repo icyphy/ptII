@@ -64,6 +64,7 @@ public class FMIIntegerType extends FMIType {
     /** Return the string value of the base element.
      *  @return The string value.
      */
+    @Override
     public String toString() {
         return Integer.toString(start);
     }

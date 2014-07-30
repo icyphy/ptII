@@ -70,6 +70,7 @@ public class SubclassCriterion extends Criterion {
      *
      *  @return The array of elements.
      */
+    @Override
     public GTIngredientElement[] getElements() {
         return _ELEMENTS;
     }
@@ -88,6 +89,7 @@ public class SubclassCriterion extends Criterion {
      *  @return The value.
      *  @see #setValue(int, Object)
      */
+    @Override
     public Object getValue(int index) {
         switch (index) {
         case 0:
@@ -102,6 +104,7 @@ public class SubclassCriterion extends Criterion {
      *  @return A string that describes the values of all the elements.
      *  @see #setValues(String)
      */
+    @Override
     public String getValues() {
         StringBuffer buffer = new StringBuffer();
         _encodeStringField(buffer, 0, _superclass);
@@ -114,6 +117,7 @@ public class SubclassCriterion extends Criterion {
      *  @param object The object.
      *  @return true if the object matches.
      */
+    @Override
     public boolean match(NamedObj object) {
         try {
             Class<?> superclass = Class.forName(_superclass);
@@ -133,6 +137,7 @@ public class SubclassCriterion extends Criterion {
      *  @param value The value.
      *  @see #getValue(int)
      */
+    @Override
     public void setValue(int index, Object value) {
         switch (index) {
         case 0:
@@ -147,6 +152,7 @@ public class SubclassCriterion extends Criterion {
      *   elements.
      *  @see #getValues()
      */
+    @Override
     public void setValues(String values) {
         FieldIterator fieldIterator = new FieldIterator(values);
         _superclass = _decodeStringField(0, fieldIterator);
@@ -156,6 +162,7 @@ public class SubclassCriterion extends Criterion {
      *
      *  @exception ValidationException If some elements are invalid.
      */
+    @Override
     public void validate() throws ValidationException {
         if (_superclass.equals("")) {
             throw new ValidationException("Superclass name must not be "

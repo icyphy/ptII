@@ -111,6 +111,7 @@ public class LinkToOpenTableaux extends DefaultIconLink {
      *  definition is exported only once.
      *  @exception IllegalActionException If a subclass throws it.
      */
+    @Override
     public void provideContent(WebExporter exporter)
             throws IllegalActionException {
         try {
@@ -132,6 +133,7 @@ public class LinkToOpenTableaux extends DefaultIconLink {
      *  @param object The Ptolemy II object.
      *  @exception IllegalActionException If evaluating parameters fails.
      */
+    @Override
     protected void _provideEachAttribute(WebExporter exporter, NamedObj object)
             throws IllegalActionException {
 
@@ -164,9 +166,9 @@ public class LinkToOpenTableaux extends DefaultIconLink {
                     // ptolemy/actor/gt/demo/ModelExecution/ModelExecution.xml
                     // $PTII/ptolemy/actor/gt/demo/ModelExecution/ModelExecution
                     System.out
-                            .println("Warning: LinkToOpenTableaux._provideEachAttribute() "
-                                    + object.getFullName()
-                                    + ", an open effigy was null?");
+                    .println("Warning: LinkToOpenTableaux._provideEachAttribute() "
+                            + object.getFullName()
+                            + ", an open effigy was null?");
                 } else {
                     NamedObj container = component.getContainer();
                     while (container != null) {
@@ -225,8 +227,7 @@ public class LinkToOpenTableaux extends DefaultIconLink {
                             effigy = openEffigies.get(refinements[0]);
                             if (effigy != null) {
                                 // _linkTo() recursively calls writeHTML();
-                                _linkTo(exporter, effigy,
-                                        (NamedObj) object,
+                                _linkTo(exporter, effigy, object,
                                         (NamedObj) refinements[0],
                                         exporter.getExportParameters());
                             }
@@ -400,8 +401,8 @@ public class LinkToOpenTableaux extends DefaultIconLink {
                 webAttribute.setExpression(name + ".gif");
                 exporter.defineAttribute(webAttribute, true);
 
-                webAttribute = WebAttribute.appendToWebAttribute(
-                        sourceObject, "classWebAttribute", "class", "iframe");
+                webAttribute = WebAttribute.appendToWebAttribute(sourceObject,
+                        "classWebAttribute", "class", "iframe");
 
                 exporter.defineAttribute(webAttribute, true);
             }

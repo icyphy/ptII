@@ -44,6 +44,7 @@ import ptolemy.moml.MoMLParser;
  @Pt.ProposedRating Red (cxh)
  @Pt.AcceptedRating Red (cxh)
  */
+@Deprecated
 public class AddEditorFactory extends MoMLFilterSimple {
     /**  Identify Parameters that need a VisibleParameterEditorFactory
      *   named _editorFactory added.
@@ -56,6 +57,7 @@ public class AddEditorFactory extends MoMLFilterSimple {
      *  @param xmlFile The file currently being parsed.
      *  @return the value of the attributeValue argument.
      */
+    @Override
     public String filterAttributeValue(NamedObj container, String element,
             String attributeName, String attributeValue, String xmlFile) {
         // This method gets called many times by the MoMLParser,
@@ -128,6 +130,8 @@ public class AddEditorFactory extends MoMLFilterSimple {
      *  @deprecated Use {@link #filterEndElement(NamedObj, String, StringBuffer, String, MoMLParser)}
      * instead and pass a MoMLParser.
      */
+    @Deprecated
+    @Override
     public void filterEndElement(NamedObj container, String elementName,
             StringBuffer currentCharData, String xmlFile) throws Exception {
         filterEndElement(container, elementName, currentCharData, xmlFile,
@@ -145,9 +149,10 @@ public class AddEditorFactory extends MoMLFilterSimple {
      *  @exception Exception if there is a problem substituting
      *  in the new value.
      */
+    @Override
     public void filterEndElement(NamedObj container, String elementName,
             StringBuffer currentCharData, String xmlFile, MoMLParser parser)
-            throws Exception {
+                    throws Exception {
         if (!_currentlyProcessingActorThatMayNeedAnEditorFactory) {
             return;
         } else if (_currentAttributeHasLocation && elementName != null
@@ -186,6 +191,7 @@ public class AddEditorFactory extends MoMLFilterSimple {
     /** Return a string that describes what the filter does.
      *  @return the description of the filter that ends with a newline.
      */
+    @Override
     public String toString() {
         return getClass().getName()
                 + ": If a parameter has a _location, then\n"

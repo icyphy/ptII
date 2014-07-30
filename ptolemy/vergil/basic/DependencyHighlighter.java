@@ -129,6 +129,7 @@ public class DependencyHighlighter extends NodeControllerFactory {
      *  @param controller The associated graph controller.
      *  @return A new node controller.
      */
+    @Override
     public NamedObjController create(GraphController controller) {
         return new DependencyController(controller);
     }
@@ -228,7 +229,7 @@ public class DependencyHighlighter extends NodeControllerFactory {
             HighlightDependents prerequisites = new HighlightDependents(
                     "Highlight prerequisites", false, false, false);
             _menuFactory
-                    .addMenuItemFactory(new MenuActionFactory(prerequisites));
+            .addMenuItemFactory(new MenuActionFactory(prerequisites));
 
             HighlightDependents clear2 = new HighlightDependents(
                     "Clear prerequisites", false, true, false);
@@ -257,6 +258,7 @@ public class DependencyHighlighter extends NodeControllerFactory {
             _list = list;
         }
 
+        @Override
         public void actionPerformed(ActionEvent e) {
             // Determine which entity was selected for the create instance action.
             super.actionPerformed(e);
@@ -271,8 +273,8 @@ public class DependencyHighlighter extends NodeControllerFactory {
                 BasicGraphFrame frame = BasicGraphFrame
                         .getBasicGraphFrame(actor.toplevel());
                 if (frame == null) {
-                    throw new NullPointerException("The frame for " + actor.toplevel().getName() 
-                            + " was null?");
+                    throw new NullPointerException("The frame for "
+                            + actor.toplevel().getName() + " was null?");
                 } else {
                     frame.report("Preinitializing");
                     long startTime = new Date().getTime();

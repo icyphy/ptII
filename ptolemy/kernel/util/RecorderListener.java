@@ -57,6 +57,7 @@ public class RecorderListener implements DebugListener {
     /** Append a string representation of the event to the current
      *  set of messages.
      */
+    @Override
     public void event(DebugEvent event) {
         _buffer.append(event.toString() + "\n");
     }
@@ -71,6 +72,7 @@ public class RecorderListener implements DebugListener {
     /** Append the message to the current set of messages.
      *  A newline is automatically appended to the message.
      */
+    @Override
     public void message(String message) {
         _buffer.append(message + "\n");
     }

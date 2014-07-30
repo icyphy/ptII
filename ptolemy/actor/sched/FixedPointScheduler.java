@@ -83,6 +83,7 @@ public class FixedPointScheduler extends Scheduler {
      *  schedule is invalid.  This method is not synchronized on the workspace.
      *  @return A schedule.
      */
+    @Override
     protected Schedule _getSchedule() {
         StaticSchedulingDirector director = (StaticSchedulingDirector) getContainer();
         if (director == null) {

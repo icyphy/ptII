@@ -107,6 +107,7 @@ public abstract class UnitConstraint {
         _source = source;
     }
 
+    @Override
     public String toString() {
         return _lhs.toString() + _operator + _rhs.toString();
     }

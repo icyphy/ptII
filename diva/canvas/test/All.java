@@ -44,13 +44,14 @@ public class All extends TestSuite {
     /**
      * runSuite()
      */
+    @Override
     public void runSuite() {
         // Test concrete figures
         new ConcreteFigures(getTestHarness()).run();
 
         // Canvas tests
         new JCanvasTest(getTestHarness(), new JCanvasTest.CanvasFactory())
-                .run();
+        .run();
     }
 
     ///////////////////////////////////////////////////////////////////

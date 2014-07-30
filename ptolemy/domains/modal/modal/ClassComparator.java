@@ -23,7 +23,7 @@
 
    PT_COPYRIGHT_VERSION_2
    COPYRIGHTENDKEY
-*/
+ */
 package ptolemy.domains.modal.modal;
 
 import java.util.Comparator;
@@ -32,7 +32,6 @@ import ptolemy.kernel.Entity;
 
 ///////////////////////////////////////////////////////////////////
 //// ClassComparator
-
 
 /**
    A comparator to compare classes, which is used to sort the map returned by
@@ -43,8 +42,8 @@ import ptolemy.kernel.Entity;
    @since Ptolemy II 10.0
    @Pt.ProposedRating Red (tfeng)
    @Pt.AcceptedRating Red (tfeng)
-*/
- class ClassComparator implements Comparator<Class<? extends Entity>> {
+ */
+class ClassComparator implements Comparator<Class<? extends Entity>> {
 
     /** Compare class1 and class2, and return -1 if class1 is a subclass of
      *  class2, 1 if class2 is a subclass of class1, and otherwise, the
@@ -55,6 +54,7 @@ import ptolemy.kernel.Entity;
      *  @return -1, 0, or 1 representing whether class1 is less than, equal
      *   to, or greater than class2.
      */
+    @Override
     public int compare(Class<? extends Entity> class1,
             Class<? extends Entity> class2) {
         if (!class1.equals(class2)) {

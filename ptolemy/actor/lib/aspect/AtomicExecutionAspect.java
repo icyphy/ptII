@@ -95,7 +95,7 @@ hierarchy layers by a PtidesDirector. </li>
 @Pt.AcceptedRating Red (derler)
  */
 public class AtomicExecutionAspect extends TypedAtomicActor implements
-        ActorExecutionAspect {
+ActorExecutionAspect {
 
     /** Create a new resource schedule in the specified container with the specified
      *  name.  The name must be unique within the container or an exception
@@ -126,6 +126,7 @@ public class AtomicExecutionAspect extends TypedAtomicActor implements
      *  @exception IllegalActionException If an error occurs in the initialization
      *  of actors scheduled by this resource scheduler.
      */
+    @Override
     public void addExecutingListener(ExecutionAspectListener listener)
             throws IllegalActionException {
         _executionAspectListeners.add(listener);
@@ -141,6 +142,7 @@ public class AtomicExecutionAspect extends TypedAtomicActor implements
      *  @exception CloneNotSupportedException If a derived class contains
      *   an attribute that cannot be cloned.
      */
+    @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         AtomicExecutionAspect newObject = (AtomicExecutionAspect) super
                 .clone(workspace);
@@ -157,6 +159,7 @@ public class AtomicExecutionAspect extends TypedAtomicActor implements
      *  @return The decorated attributes for the target NamedObj, or
      *   null if the specified target is not an Actor.
      */
+    @Override
     public DecoratorAttributes createDecoratorAttributes(NamedObj target) {
         if (target instanceof Actor
                 && !(target instanceof ActorExecutionAspect)) {
@@ -175,14 +178,15 @@ public class AtomicExecutionAspect extends TypedAtomicActor implements
      *  of this resource scheduler.
      *  @return A list of the objects decorated by this decorator.
      */
+    @Override
     public List<NamedObj> decoratedObjects() {
         CompositeEntity container = (CompositeEntity) getContainer();
         return ExecutionAspectHelper.getEntitiesToDecorate(container);
     }
 
     /** Perform rescheduling if necessary.
-         *  @exception IllegalActionException Not thrown here.
-         */
+     *  @exception IllegalActionException Not thrown here.
+     */
     @Override
     public void fire() throws IllegalActionException {
         super.fire();
@@ -193,15 +197,16 @@ public class AtomicExecutionAspect extends TypedAtomicActor implements
     }
 
     /** Get the execution time of an actor. If the actor does not have an attribute
-    *  specifying the execution time, return the minimum execution time.
-    * @param actor The actor.
-    * @return The execution time.
-    * @exception IllegalActionException Thrown in attribute or token cannot be read.
-    */
+     *  specifying the execution time, return the minimum execution time.
+     * @param actor The actor.
+     * @return The execution time.
+     * @exception IllegalActionException Thrown in attribute or token cannot be read.
+     */
     @Override
-    public double getExecutionTime(NamedObj actor) throws IllegalActionException {
+    public double getExecutionTime(NamedObj actor)
+            throws IllegalActionException {
         double executionTime = 0.0;
-        for (ExecutionTimeAttributes resourceAttributes : ((NamedObj) actor)
+        for (ExecutionTimeAttributes resourceAttributes : actor
                 .attributeList(ExecutionTimeAttributes.class)) {
             if (resourceAttributes.getDecorator() != null
                     && resourceAttributes.getDecorator().equals(this)) {
@@ -216,9 +221,9 @@ public class AtomicExecutionAspect extends TypedAtomicActor implements
     }
 
     /** Return remaining time actor needs to finish.
-    *  @param actor The actor.
-    *  @return The time the actor still needs.
-    */
+     *  @param actor The actor.
+     *  @return The time the actor still needs.
+     */
     public Time getRemainingTime(NamedObj actor) {
         return _remainingTimes.get(actor);
     }
@@ -236,6 +241,7 @@ public class AtomicExecutionAspect extends TypedAtomicActor implements
      * @exception IllegalActionException Thrown if list of actors
      *   scheduled by this scheduler cannot be retrieved.
      */
+    @Override
     public void initialize() throws IllegalActionException {
         super.initialize();
         _remainingTimes = new HashMap<NamedObj, Time>();
@@ -265,19 +271,19 @@ public class AtomicExecutionAspect extends TypedAtomicActor implements
     }
 
     /** Return true to indicate that this decorator should
-    *  decorate objects across opaque hierarchy boundaries.
-    */
+     *  decorate objects across opaque hierarchy boundaries.
+     */
     @Override
     public boolean isGlobalDecorator() {
         return true;
     }
 
     /** Check whether the execution of an actor is handled by
-    *  this aspect actor.
-    *  @param actor The actor.
-    *  @return True, if the actor execution is handled by this
-    *  aspect actor.
-    */
+     *  this aspect actor.
+     *  @param actor The actor.
+     *  @return True, if the actor execution is handled by this
+     *  aspect actor.
+     */
     @Override
     public boolean isWaitingForResource(Actor actor) {
         return _remainingTimes.get(actor) != null;
@@ -350,18 +356,18 @@ public class AtomicExecutionAspect extends TypedAtomicActor implements
     }
 
     /** Schedule the actor. In this base class, do nothing.  Derived
-         *  classes should schedule the actor.
-         *  @param actor The actor to be scheduled.
-         *  @param environmentTime The current platform time.
-         *  @param deadline The deadline timestamp of the event to be scheduled.
-         *  This can be the same as the environmentTime.
-         *  @param executionTime The execution time of the actor.
-         *  @return Relative time when this Scheduler has to be executed
-         *    again to perform rescheduling actions.  In this base class, null
-         *    is returned.
-         *  @exception IllegalActionException Thrown if actor parameters such
-         *    as execution time or priority cannot be read.
-         */
+     *  classes should schedule the actor.
+     *  @param actor The actor to be scheduled.
+     *  @param environmentTime The current platform time.
+     *  @param deadline The deadline timestamp of the event to be scheduled.
+     *  This can be the same as the environmentTime.
+     *  @param executionTime The execution time of the actor.
+     *  @return Relative time when this Scheduler has to be executed
+     *    again to perform rescheduling actions.  In this base class, null
+     *    is returned.
+     *  @exception IllegalActionException Thrown if actor parameters such
+     *    as execution time or priority cannot be read.
+     */
     @Override
     public Time schedule(NamedObj actor, Time environmentTime, Time deadline,
             Time executionTime) throws IllegalActionException {
@@ -377,8 +383,8 @@ public class AtomicExecutionAspect extends TypedAtomicActor implements
     }
 
     /** Create end events for the plotter.
-    *  @exception IllegalActionException Thrown by super class.
-    */
+     *  @exception IllegalActionException Thrown by super class.
+     */
     @Override
     public void wrapup() throws IllegalActionException {
         super.wrapup();
@@ -386,8 +392,9 @@ public class AtomicExecutionAspect extends TypedAtomicActor implements
         // so the model might not have been initialized.
         if (_actors != null) {
             for (NamedObj actor : _actors) {
-                notifyExecutionListeners(actor, ((CompositeActor) getContainer())
-                                 .getDirector().getEnvironmentTime().getDoubleValue(), null);
+                notifyExecutionListeners(actor,
+                        ((CompositeActor) getContainer()).getDirector()
+                                .getEnvironmentTime().getDoubleValue(), null);
             }
         }
     }
@@ -408,8 +415,8 @@ public class AtomicExecutionAspect extends TypedAtomicActor implements
     }
 
     /** Return whether last actor that was scheduled finished execution.
-         *  @return True if last actor finished execution.
-         */
+     *  @return True if last actor finished execution.
+     */
     protected boolean lastActorFinished() {
         return _lastActorFinished;
     }

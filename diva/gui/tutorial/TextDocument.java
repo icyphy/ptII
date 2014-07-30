@@ -83,6 +83,7 @@ public class TextDocument extends AbstractDocument {
      * are the responsibility of the application, not the Document
      * implementation.
      */
+    @Override
     public void close() {
         // DO NOTHING.
     }
@@ -98,6 +99,7 @@ public class TextDocument extends AbstractDocument {
      *
      * @exception Exception If the close operation fails.
      */
+    @Override
     public void open() throws Exception {
         BufferedReader reader = null;
 
@@ -129,6 +131,7 @@ public class TextDocument extends AbstractDocument {
      *
      * @exception Exception If the save operation fails.
      */
+    @Override
     public void save() throws Exception {
         saveAs(getFile());
     }
@@ -142,6 +145,7 @@ public class TextDocument extends AbstractDocument {
      * @see #save()
      * @exception Exception If the save-as operation fails.
      */
+    @Override
     public void saveAs(File file) throws Exception {
         Writer writer = null;
 
@@ -163,6 +167,7 @@ public class TextDocument extends AbstractDocument {
      * @see #save()
      * @exception Exception If the save-as operation fails.
      */
+    @Override
     public void saveAs(URL url) throws Exception {
         throw new UnsupportedOperationException("Saving as a URL is not"
                 + " supported for" + " text documents.");
@@ -184,6 +189,7 @@ public class TextDocument extends AbstractDocument {
     public static class Factory implements DocumentFactory {
         /** Create an empty document.
          */
+        @Override
         public Document createDocument(Application app) {
             TextDocument d = new TextDocument(app);
             return d;
@@ -191,6 +197,7 @@ public class TextDocument extends AbstractDocument {
 
         /** Create a new document that contains data from the given URL.
          */
+        @Override
         public Document createDocument(Application app, URL url) {
             TextDocument d = new TextDocument(app);
             d.setURL(url);
@@ -199,6 +206,7 @@ public class TextDocument extends AbstractDocument {
 
         /** Create a new document that contains data from the given file.
          */
+        @Override
         public Document createDocument(Application app, File file) {
             TextDocument d = new TextDocument(app);
             d.setFile(file);

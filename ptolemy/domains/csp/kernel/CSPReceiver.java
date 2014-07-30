@@ -91,6 +91,7 @@ public class CSPReceiver extends AbstractReceiver implements ProcessReceiver {
 
     /** Reset local flags.
      */
+    @Override
     public void clear() {
         reset();
     }
@@ -103,6 +104,7 @@ public class CSPReceiver extends AbstractReceiver implements ProcessReceiver {
      *   which this receiver belongs has been terminated while still
      *   running i.e it was not allowed to run to completion.
      */
+    @Override
     public Token get() throws TerminateProcessException {
         CSPDirector director = _getDirector();
         synchronized (director) {
@@ -209,6 +211,7 @@ public class CSPReceiver extends AbstractReceiver implements ProcessReceiver {
      *  would busy wait.
      *  @return True.
      */
+    @Override
     public boolean hasRoom() {
         return true;
     }
@@ -222,6 +225,7 @@ public class CSPReceiver extends AbstractReceiver implements ProcessReceiver {
      *  @param tokens Ignored by this method.
      *  @return True.
      */
+    @Override
     public boolean hasRoom(int tokens) {
         return true;
     }
@@ -234,6 +238,7 @@ public class CSPReceiver extends AbstractReceiver implements ProcessReceiver {
      *  would busy wait.
      *  @return True.
      */
+    @Override
     public boolean hasToken() {
         return true;
     }
@@ -247,6 +252,7 @@ public class CSPReceiver extends AbstractReceiver implements ProcessReceiver {
      *  @param tokens Ignored by this method.
      *  @return True.
      */
+    @Override
     public boolean hasToken(int tokens) {
         return true;
     }
@@ -259,6 +265,7 @@ public class CSPReceiver extends AbstractReceiver implements ProcessReceiver {
      *   boundary port; return false otherwise.
      * @exception IllegalActionException
      */
+    @Override
     public boolean isConnectedToBoundary() throws IllegalActionException {
         return _boundaryDetector.isConnectedToBoundary();
     }
@@ -274,8 +281,9 @@ public class CSPReceiver extends AbstractReceiver implements ProcessReceiver {
      * @exception InvalidStateException
      *  @see ptolemy.actor.process.BoundaryDetector
      */
+    @Override
     public boolean isConnectedToBoundaryInside() throws InvalidStateException,
-            IllegalActionException {
+    IllegalActionException {
         return _boundaryDetector.isConnectedToBoundaryInside();
     }
 
@@ -289,6 +297,7 @@ public class CSPReceiver extends AbstractReceiver implements ProcessReceiver {
      * @exception IllegalActionException
      *  @see ptolemy.actor.process.BoundaryDetector
      */
+    @Override
     public boolean isConnectedToBoundaryOutside() throws IllegalActionException {
         return _boundaryDetector.isConnectedToBoundaryOutside();
     }
@@ -297,6 +306,7 @@ public class CSPReceiver extends AbstractReceiver implements ProcessReceiver {
      *  hence this method returns true.
      * @exception IllegalActionException
      */
+    @Override
     public boolean isConsumerReceiver() throws IllegalActionException {
         if (isConnectedToBoundary()) {
             return true;
@@ -313,6 +323,7 @@ public class CSPReceiver extends AbstractReceiver implements ProcessReceiver {
      *  @return True if this receiver is contained on the inside of
      *   a boundary port; return false otherwise.
      */
+    @Override
     public boolean isInsideBoundary() {
         return _boundaryDetector.isInsideBoundary();
     }
@@ -325,6 +336,7 @@ public class CSPReceiver extends AbstractReceiver implements ProcessReceiver {
      *  @return True if this receiver is contained on the outside of
      *   a boundary port; return false otherwise.
      */
+    @Override
     public boolean isOutsideBoundary() {
         return _boundaryDetector.isOutsideBoundary();
     }
@@ -332,6 +344,7 @@ public class CSPReceiver extends AbstractReceiver implements ProcessReceiver {
     /** Return true if this receiver is on an outside or
      *  an inside boundary.
      */
+    @Override
     public boolean isProducerReceiver() {
         if (isOutsideBoundary() || isInsideBoundary()) {
             return true;
@@ -343,6 +356,7 @@ public class CSPReceiver extends AbstractReceiver implements ProcessReceiver {
      *  waiting on this receiver.
      *  @return True if a read is pending on this receiver.
      */
+    @Override
     public boolean isReadBlocked() {
         synchronized (_getDirector()) {
             return _getWaiting != null || _conditionalReceiveWaiting != null;
@@ -354,6 +368,7 @@ public class CSPReceiver extends AbstractReceiver implements ProcessReceiver {
      *  @return A boolean indicating whether a write is pending on this
      *   receiver.
      */
+    @Override
     public boolean isWriteBlocked() {
         synchronized (_getDirector()) {
             return _putWaiting != null || _conditionalSendWaiting != null;
@@ -369,6 +384,7 @@ public class CSPReceiver extends AbstractReceiver implements ProcessReceiver {
      *   which this receiver belongs has been terminated while still
      *   running i.e it was not allowed to run to completion.
      */
+    @Override
     public void put(Token token) throws TerminateProcessException {
         if (token == null) {
             return;
@@ -481,6 +497,7 @@ public class CSPReceiver extends AbstractReceiver implements ProcessReceiver {
      *   which this receiver belongs has been terminated while still
      *   running i.e it was not allowed to run to completion.
      */
+    @Override
     public void putArrayToAll(Token[] tokens, int numberOfTokens,
             Receiver[] receivers) throws NoRoomException,
             IllegalActionException, TerminateProcessException {
@@ -512,6 +529,7 @@ public class CSPReceiver extends AbstractReceiver implements ProcessReceiver {
      *   which this receiver belongs has been terminated while still
      *   running i.e it was not allowed to run to completion.
      */
+    @Override
     public void putToAll(final Token token, final Receiver[] receivers)
             throws NoRoomException, IllegalActionException,
             TerminateProcessException {
@@ -551,6 +569,7 @@ public class CSPReceiver extends AbstractReceiver implements ProcessReceiver {
                     String name = "Send to "
                             + receiver.getContainer().getFullName();
                     Thread putThread = new Thread(name) {
+                        @Override
                         public void run() {
                             // System.out.println("**** starting thread on: " + CSPDirector._receiverStatus(receiver));
                             try {
@@ -624,6 +643,7 @@ public class CSPReceiver extends AbstractReceiver implements ProcessReceiver {
      *  next time an actor tries to get or put it gets a
      *  TerminateProcessException which will cause it to finish.
      */
+    @Override
     public void requestFinish() {
         Object lock = _getDirector();
         synchronized (lock) {
@@ -649,6 +669,7 @@ public class CSPReceiver extends AbstractReceiver implements ProcessReceiver {
 
     /** Reset local flags.
      */
+    @Override
     public void reset() {
         Object lock = _getDirector();
         synchronized (lock) {
@@ -680,7 +701,7 @@ public class CSPReceiver extends AbstractReceiver implements ProcessReceiver {
      *   interrupted while waiting(for a rendezvous to complete).
      */
     protected void _checkFlagsAndWait() throws TerminateProcessException,
-            InterruptedException {
+    InterruptedException {
         // Actually you should already have a lock before calling this
         // method. Otherwise you will miss notifies and cause deadlocks.
         Object lock = _getDirector();

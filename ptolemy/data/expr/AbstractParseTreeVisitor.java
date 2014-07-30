@@ -49,89 +49,107 @@ import ptolemy.kernel.util.IllegalActionException;
 public class AbstractParseTreeVisitor implements ParseTreeVisitor {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
+    @Override
     public void visitArrayConstructNode(ASTPtArrayConstructNode node)
             throws IllegalActionException {
         throw _unsupportedVisitException("ASTPtArrayConstructNode");
     }
 
+    @Override
     public void visitAssignmentNode(ASTPtAssignmentNode node)
             throws IllegalActionException {
         throw _unsupportedVisitException("ASTPtAssignmentNode");
     }
 
+    @Override
     public void visitBitwiseNode(ASTPtBitwiseNode node)
             throws IllegalActionException {
         throw _unsupportedVisitException("ASTPtBitwiseNode");
     }
 
+    @Override
     public void visitFunctionApplicationNode(ASTPtFunctionApplicationNode node)
             throws IllegalActionException {
         throw _unsupportedVisitException("ASTPtFunctionApplicationNode");
     }
 
+    @Override
     public void visitFunctionDefinitionNode(ASTPtFunctionDefinitionNode node)
             throws IllegalActionException {
         throw _unsupportedVisitException("ASTPtFunctionDefinitionNode");
     }
 
+    @Override
     public void visitFunctionalIfNode(ASTPtFunctionalIfNode node)
             throws IllegalActionException {
         throw _unsupportedVisitException("ASTPtFunctionalIfNode");
     }
 
+    @Override
     public void visitLeafNode(ASTPtLeafNode node) throws IllegalActionException {
         throw _unsupportedVisitException("ASTPtLeafNode");
     }
 
+    @Override
     public void visitLogicalNode(ASTPtLogicalNode node)
             throws IllegalActionException {
         throw _unsupportedVisitException("ASTPtLogicalNode");
     }
 
+    @Override
     public void visitMatrixConstructNode(ASTPtMatrixConstructNode node)
             throws IllegalActionException {
         throw _unsupportedVisitException("ASTPtMatrixConstructNode");
     }
 
+    @Override
     public void visitMethodCallNode(ASTPtMethodCallNode node)
             throws IllegalActionException {
         throw _unsupportedVisitException("ASTPtMethodCallNode");
     }
 
+    @Override
     public void visitPowerNode(ASTPtPowerNode node)
             throws IllegalActionException {
         throw _unsupportedVisitException("ASTPtPowerNode");
     }
 
+    @Override
     public void visitProductNode(ASTPtProductNode node)
             throws IllegalActionException {
         throw _unsupportedVisitException("ASTPtProductNode");
     }
 
+    @Override
     public void visitRecordConstructNode(ASTPtRecordConstructNode node)
             throws IllegalActionException {
         throw _unsupportedVisitException("ASTPtRecordConstructNode");
     }
 
+    @Override
     public void visitRelationalNode(ASTPtRelationalNode node)
             throws IllegalActionException {
         throw _unsupportedVisitException("ASTPtRelationalNode");
     }
 
+    @Override
     public void visitShiftNode(ASTPtShiftNode node)
             throws IllegalActionException {
         throw _unsupportedVisitException("ASTPtShiftNode");
     }
 
+    @Override
     public void visitSumNode(ASTPtSumNode node) throws IllegalActionException {
         throw _unsupportedVisitException("ASTPtSumNode");
     }
 
+    @Override
     public void visitUnaryNode(ASTPtUnaryNode node)
             throws IllegalActionException {
         throw _unsupportedVisitException("ASTPtUnaryNode");
     }
 
+    @Override
     public void visitUnionConstructNode(ASTPtUnionConstructNode node)
             throws IllegalActionException {
         throw _unsupportedVisitException("ASTPtUnionConstructNode");

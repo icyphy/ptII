@@ -111,6 +111,7 @@ public class MonotonicityConcept extends MapTypeInfiniteConcept<Concept> {
      *          does not have the same ontology as this one.
      *  @see ptolemy.data.ontologies.Concept#isAboveOrEqualTo(ptolemy.data.ontologies.Concept)
      */
+    @Override
     public int compare(Concept concept) throws IllegalActionException {
         if (!concept.getOntology().equals(getOntology())) {
             throw new IllegalActionException(this,
@@ -176,6 +177,7 @@ public class MonotonicityConcept extends MapTypeInfiniteConcept<Concept> {
      *  @exception IllegalActionException Thrown if there is an error getting
      *   the color for the finite monotonicity concept.
      */
+    @Override
     public ColorAttribute getColor() throws IllegalActionException {
         return _toFiniteMonotonicity().getColor();
     }
@@ -208,6 +210,7 @@ public class MonotonicityConcept extends MapTypeInfiniteConcept<Concept> {
      *  @return The concept that is the GLB of this and the given concept.
      */
     // FIXME: GLB method needs to be implemented.
+    @Override
     public Concept greatestLowerBound(Concept concept) {
         throw new IllegalArgumentException("greatestLowerBound method not "
                 + "implemented.");
@@ -218,6 +221,7 @@ public class MonotonicityConcept extends MapTypeInfiniteConcept<Concept> {
      *  @param concept The other concept.
      *  @return The concept that is the LUB of this and the given concept.
      */
+    @Override
     public Concept leastUpperBound(Concept concept) {
         Concept top = getOntology().getConceptGraph().top();
         if (!(concept instanceof MonotonicityConcept)) {

@@ -57,6 +57,7 @@ public class LongMatrixTokenHandler implements TokenHandler<LongMatrixToken> {
      *  @exception IllegalActionException If there is a problem loading the mapping from TokenHandlers.properties file.
      *  @see ptserver.data.handler.TokenHandler#convertToBytes(ptolemy.data.Token, java.io.DataOutputStream)
      */
+    @Override
     public void convertToBytes(LongMatrixToken token,
             DataOutputStream outputStream) throws IOException,
             IllegalActionException {
@@ -82,6 +83,7 @@ public class LongMatrixTokenHandler implements TokenHandler<LongMatrixToken> {
      *  @exception IllegalActionException If there is a problem loading the mapping from TokenHandlers.properties file.
      *  @see ptserver.data.handler.TokenHandler#convertToToken(java.io.DataInputStream, Class)
      */
+    @Override
     public LongMatrixToken convertToToken(DataInputStream inputStream,
             Class<? extends LongMatrixToken> tokenType) throws IOException,
             IllegalActionException {

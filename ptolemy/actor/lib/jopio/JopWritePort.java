@@ -87,6 +87,7 @@ public class JopWritePort extends Sink {
 
     /** The <i>portAddress</i> has to be in a valid range.
      */
+    @Override
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         if (attribute == portAddress) {
@@ -106,6 +107,7 @@ public class JopWritePort extends Sink {
      *  @exception CloneNotSupportedException If a derived class contains
      *   an attribute that cannot be cloned.
      */
+    @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         JopWritePort newObject = (JopWritePort) super.clone(workspace);
         newObject.input.setTypeEquals(BaseType.INT);
@@ -117,6 +119,7 @@ public class JopWritePort extends Sink {
      *
      *  @exception IllegalActionException If there is no director.
      */
+    @Override
     public void fire() throws IllegalActionException {
         super.fire();
         _last_val = _val;
@@ -128,6 +131,7 @@ public class JopWritePort extends Sink {
     /** Record the most recent token for the output value.
      *  @exception IllegalActionException If the base class throws it.
      */
+    @Override
     public boolean postfire() throws IllegalActionException {
         _val = _last_val;
         System.out.print(_val);

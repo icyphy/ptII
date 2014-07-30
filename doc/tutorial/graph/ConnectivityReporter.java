@@ -25,7 +25,7 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 Ptolemy II includes the work of others, to see those copyrights, follow
 the copyright link on the splash page or see copyright.htm.
-*/
+ */
 package doc.tutorial.graph;
 
 import java.awt.Frame;
@@ -109,6 +109,7 @@ public class ConnectivityReporter extends Attribute {
          *  @param object The object on which the double click occurred.
          *  @param parent The parent Frame (top-level window).
          */
+        @Override
         public void createEditor(NamedObj object, Frame parent) {
             List<Entity> entities = ((CompositeEntity) ConnectivityReporter.this
                     .getContainer()).entityList();

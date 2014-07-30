@@ -280,6 +280,7 @@ public class DataflowWithRates extends Dataflow {
     private ExprEvaluator _eval;
 
     protected static class ActionRateSignature {
+        @Override
         public boolean equals(Object o) {
             if (o == this) {
                 return true;
@@ -288,13 +289,14 @@ public class DataflowWithRates extends Dataflow {
                     return inputRates
                             .equals(((ActionRateSignature) o).inputRates)
                             && outputRates
-                                    .equals(((ActionRateSignature) o).outputRates);
+                            .equals(((ActionRateSignature) o).outputRates);
                 } else {
                     return false;
                 }
             }
         }
 
+        @Override
         public int hashCode() {
             return inputRates.hashCode() * outputRates.hashCode();
         }

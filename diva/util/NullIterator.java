@@ -35,10 +35,12 @@ import java.util.NoSuchElementException;
  * @version $Id$
  */
 public class NullIterator extends IteratorAdapter {
+    @Override
     public boolean hasNext() {
         return false;
     }
 
+    @Override
     public Object next() {
         throw new NoSuchElementException("No more elements");
     }

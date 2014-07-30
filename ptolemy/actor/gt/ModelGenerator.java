@@ -68,7 +68,7 @@ PortParameter.
 @since Ptolemy II 6.0
 @Pt.ProposedRating Yellow (eal)
 @Pt.AcceptedRating Red (cxh)
-*/
+ */
 public class ModelGenerator extends Source {
 
     /** Construct an actor with the given container and name.
@@ -102,6 +102,7 @@ public class ModelGenerator extends Source {
      *  @exception CloneNotSupportedException If a derived class contains
      *   an attribute that cannot be cloned.
      */
+    @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         ModelGenerator newObject = (ModelGenerator) super.clone(workspace);
         newObject._emptyModel = null;
@@ -118,6 +119,7 @@ public class ModelGenerator extends Source {
      *  @exception IllegalActionException If the ports cannot be read, or if the
      *   model cannot be produced.
      */
+    @Override
     public void fire() throws IllegalActionException {
         super.fire();
 
@@ -186,6 +188,7 @@ public class ModelGenerator extends Source {
      *  @exception IllegalActionException If connectivity of the input ports
      *   cannot be determined, or availability of the tokens cannot be tested.
      */
+    @Override
     public boolean prefire() throws IllegalActionException {
         ParameterPort modelNamePort = modelName.getPort();
         return super.prefire()

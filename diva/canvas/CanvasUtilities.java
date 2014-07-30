@@ -101,6 +101,7 @@ public final class CanvasUtilities {
      *
      * @deprecated Use ShapeUtilities.cloneShape() instead
      */
+    @Deprecated
     public static Shape clone(Shape s) {
         // FIXME Add more specific shapes
         if (s instanceof RectangularShape) {
@@ -501,6 +502,7 @@ public final class CanvasUtilities {
         return new FilteredIterator(i, new Filter() {
             Rectangle2D _region = rl;
 
+            @Override
             public boolean accept(Object o) {
                 Figure f = (Figure) o;
                 return f.hit(_region);
@@ -559,6 +561,7 @@ public final class CanvasUtilities {
      * @deprecated Use diva.util.java2d.ShapeUtilities.transformRectangle()
      * or diva.util.java2d.ShapeUtilities.transformRectangularShape()
      */
+    @Deprecated
     public static Shape transform(RectangularShape r, AffineTransform at) {
         // FIXME: should be able to deal with quadrant rotations
         if (_transformRectangularShapeIsBroken) {
@@ -583,9 +586,9 @@ public final class CanvasUtilities {
 
             switch (at.getType()) {
             case AffineTransform.TYPE_GENERAL_SCALE
-                    | AffineTransform.TYPE_TRANSLATION:
+            | AffineTransform.TYPE_TRANSLATION:
             case AffineTransform.TYPE_UNIFORM_SCALE
-                    | AffineTransform.TYPE_TRANSLATION:
+            | AffineTransform.TYPE_TRANSLATION:
                 xdash = x * m[m00] + m[m02];
                 ydash = y * m[m11] + m[m12];
                 wdash = w * m[m00];
@@ -632,6 +635,7 @@ public final class CanvasUtilities {
      *
      * @deprecated Use ShapeUtilities.transformModify()
      */
+    @Deprecated
     public static Shape transform(Shape s, AffineTransform at) {
         return ShapeUtilities.transformModify(s, at);
     }
@@ -642,6 +646,7 @@ public final class CanvasUtilities {
      * loop.  You asked for it.
      *  @deprecated Use local.getTransform(root) instead.
      */
+    @Deprecated
     public static Point2D transformInto(Point2D p, TransformContext local,
             TransformContext root) {
         Point2D p2 = p;
@@ -786,6 +791,7 @@ public final class CanvasUtilities {
      *
      * @deprecated Use ShapeUtilities.translateModify()
      */
+    @Deprecated
     public static Shape translate(Shape s, double x, double y) {
         return ShapeUtilities.translateModify(s, x, y);
     }

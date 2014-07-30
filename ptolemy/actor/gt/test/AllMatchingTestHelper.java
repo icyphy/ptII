@@ -50,6 +50,7 @@ public class AllMatchingTestHelper {
      *
      *  @return The string of match results.
      */
+    @Override
     public String toString() {
         StringBuffer buffer = new StringBuffer();
         Iterator<MatchResult> iterator = _results.iterator();
@@ -69,6 +70,7 @@ public class AllMatchingTestHelper {
      *  algorithm executing until all matches are found.
      */
     public final MatchCallback callback = new MatchCallback() {
+        @Override
         public boolean foundMatch(GraphMatcher matcher) {
             _results.add((MatchResult) matcher.getMatchResult().clone());
             return false;

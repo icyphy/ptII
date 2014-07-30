@@ -54,7 +54,7 @@ import ptolemy.vergil.toolbox.VisibleParameterEditorFactory;
  @Pt.AcceptedRating Red (tfeng)
  */
 public class RelationCollapsingAttribute extends Parameter implements
-        GTAttribute {
+GTAttribute {
 
     /** Construct an attribute with the given name contained by the specified
      *  entity. The container argument must not be null, or a
@@ -108,8 +108,9 @@ public class RelationCollapsingAttribute extends Parameter implements
      *   an attribute with the name of this attribute.
      *  @see #getContainer()
      */
+    @Override
     public void setContainer(NamedObj container) throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         super.setContainer(container);
         if (container != null) {
             GTTools.checkContainerClass(this, container, Pattern.class, true);
@@ -139,6 +140,7 @@ public class RelationCollapsingAttribute extends Parameter implements
      *   not lazy) and the model error handler throws an exception.
      *   Also thrown if the change is not acceptable to the container.
      */
+    @Override
     public Collection validate() throws IllegalActionException {
         Collection collection = super.validate();
         try {

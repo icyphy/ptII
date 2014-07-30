@@ -67,7 +67,7 @@ public class ASTPtProductNode extends LatticeOntologyASTNodeAdapter {
      */
     public ASTPtProductNode(LatticeOntologySolver solver,
             ptolemy.data.expr.ASTPtProductNode node)
-            throws IllegalActionException {
+                    throws IllegalActionException {
         super(solver, node, false);
     }
 
@@ -78,6 +78,7 @@ public class ASTPtProductNode extends LatticeOntologyASTNodeAdapter {
      *  @exception IllegalActionException If there is an error building the constraint list.
      *  @return The list of constraints for this adapter.
      */
+    @Override
     public List<Inequality> constraintList() throws IllegalActionException {
 
         // Find the multiply and divide concept functions that
@@ -157,7 +158,7 @@ public class ASTPtProductNode extends LatticeOntologyASTNodeAdapter {
                 List<Ontology> argumentDomainOntologies,
                 Ontology outputRangeOntology, ConceptFunction multiplyFunction,
                 ConceptFunction divideFunction, List<Token> operatorTokenList)
-                throws IllegalActionException {
+                        throws IllegalActionException {
             super("defaultASTPtProductNodeFunction", true,
                     argumentDomainOntologies, outputRangeOntology);
 
@@ -174,6 +175,7 @@ public class ASTPtProductNode extends LatticeOntologyASTNodeAdapter {
          *  @return The concept value that is output from this function.
          *  @exception IllegalActionException If there is a problem evaluating the function
          */
+        @Override
         protected Concept _evaluateFunction(List<Concept> inputConceptValues)
                 throws IllegalActionException {
             // Updated by Charles Shelton 12/15/09:

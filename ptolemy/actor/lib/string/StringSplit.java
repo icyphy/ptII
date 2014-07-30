@@ -101,6 +101,7 @@ public class StringSplit extends Transformer {
      *  If there is no input, do nothing.
      *  @exception IllegalActionException If there's no director.
      */
+    @Override
     public void fire() throws IllegalActionException {
         super.fire();
 

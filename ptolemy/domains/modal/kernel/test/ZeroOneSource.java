@@ -68,6 +68,7 @@ public class ZeroOneSource extends SequenceSource {
 
     /** Send the current output in the sequence.
      */
+    @Override
     public void fire() {
         try {
             if (_iterationCount >= _seq.length) {
@@ -86,6 +87,7 @@ public class ZeroOneSource extends SequenceSource {
      *   which could occur if, for example, the director will not accept
      *   sequence actors.
      */
+    @Override
     public void initialize() throws IllegalActionException {
         super.initialize();
         _iterationCount = 0;
@@ -97,6 +99,7 @@ public class ZeroOneSource extends SequenceSource {
      *  @exception IllegalActionException If firingCountLimit has
      *   an invalid expression.
      */
+    @Override
     public boolean postfire() throws IllegalActionException {
         _iterationCount++;
         return super.postfire();

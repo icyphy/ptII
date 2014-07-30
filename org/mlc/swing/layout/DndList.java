@@ -54,7 +54,7 @@ import javax.swing.ListSelectionModel;
  * @Pt.AcceptedRating Red (cxh)
  */
 public class DndList extends JList implements DragSourceListener,
-        DragGestureListener {
+DragGestureListener {
     /**
      *
      */
@@ -81,22 +81,28 @@ public class DndList extends JList implements DragSourceListener,
                 DnDConstants.ACTION_MOVE, this);
     }
 
+    @Override
     public void dragDropEnd(java.awt.dnd.DragSourceDropEvent dragSourceDropEvent) {
     }
 
+    @Override
     public void dragEnter(java.awt.dnd.DragSourceDragEvent dragSourceDragEvent) {
     }
 
+    @Override
     public void dragExit(java.awt.dnd.DragSourceEvent dragSourceEvent) {
     }
 
+    @Override
     public void dragOver(java.awt.dnd.DragSourceDragEvent dragSourceDragEvent) {
     }
 
+    @Override
     public void dropActionChanged(
             java.awt.dnd.DragSourceDragEvent dragSourceDragEvent) {
     }
 
+    @Override
     public void dragGestureRecognized(DragGestureEvent event) {
         int dragIndex = locationToIndex(event.getDragOrigin());
         if (dragIndex >= 0) {
@@ -106,6 +112,7 @@ public class DndList extends JList implements DragSourceListener,
         }
     }
 
+    @Override
     public String getToolTipText(MouseEvent evt) {
         // return a tooltip for the specific entry in the list
         // Get item index

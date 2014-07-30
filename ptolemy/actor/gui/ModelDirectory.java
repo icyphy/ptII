@@ -122,6 +122,7 @@ public class ModelDirectory extends CompositeEntity {
      *  empty, and if so, calls system.exit
      *  @param entity The entity to remove.
      */
+    @Override
     protected void _removeEntity(ComponentEntity entity) {
         super._removeEntity(entity);
 

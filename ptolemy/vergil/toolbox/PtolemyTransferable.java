@@ -90,6 +90,7 @@ public class PtolemyTransferable implements Transferable, Serializable {
      * Return the data flavors that this transferable supports.
      * @return The data flavors.
      */
+    @Override
     public synchronized DataFlavor[] getTransferDataFlavors() {
         return _flavors;
     }
@@ -99,6 +100,7 @@ public class PtolemyTransferable implements Transferable, Serializable {
      * @param flavor The data flavor that is searched for.
      * @return true if the given data flavor is supported.
      */
+    @Override
     public boolean isDataFlavorSupported(DataFlavor flavor) {
         int i;
 
@@ -126,6 +128,7 @@ public class PtolemyTransferable implements Transferable, Serializable {
      * not supported.
      * @exception IOException If thrown while creating the MoML.
      */
+    @Override
     public Object getTransferData(DataFlavor flavor)
             throws UnsupportedFlavorException, IOException {
         if (flavor.equals(DataFlavor.plainTextFlavor)) {
@@ -171,12 +174,12 @@ public class PtolemyTransferable implements Transferable, Serializable {
         if (PtGUIUtilities.macOSLookAndFeel()) {
             namedObjFlavor = new DataFlavor(
                     DataFlavor.javaJVMLocalObjectMimeType
-                            + ";class=ptolemy.kernel.util.NamedObj",
+                    + ";class=ptolemy.kernel.util.NamedObj",
                     "Named Object");
         } else {
             namedObjFlavor = new DataFlavor(
                     DataFlavor.javaJVMLocalObjectMimeType
-                            + "ptolemy.kernel.util.NamedObj", "Named Object");
+                    + "ptolemy.kernel.util.NamedObj", "Named Object");
         }
     }
 

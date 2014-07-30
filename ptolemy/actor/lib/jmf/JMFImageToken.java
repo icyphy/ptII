@@ -66,6 +66,7 @@ public class JMFImageToken extends ImageToken {
      *  A new javax.media.util.BufferToImage is created when the
      *  video format of the Buffer changes.
      */
+    @Override
     public Image asAWTImage() {
         if (_bufferToImage == null || _videoFormat != _value.getFormat()) {
             _videoFormat = (VideoFormat) _value.getFormat();
@@ -79,6 +80,7 @@ public class JMFImageToken extends ImageToken {
     /** Return the type of this token.
      *  @return BaseType.OBJECT
      */
+    @Override
     public Type getType() {
         return BaseType.OBJECT;
     }
@@ -99,6 +101,7 @@ public class JMFImageToken extends ImageToken {
      *  @return A string representation of a record that partially
      *  describes the token.
      */
+    @Override
     public String toString() {
         // FIXME: return a value that can be parsed by the expression language.
         Image image = asAWTImage();

@@ -64,6 +64,7 @@ public class Accumulator extends NamedProgramCodeGeneratorAdapter {
      * @exception IllegalActionException If the code stream encounters an
      *  error in processing the specified code block(s).
      */
+    @Override
     protected String _generateFireCode() throws IllegalActionException {
         super._generateFireCode();
 
@@ -86,8 +87,8 @@ public class Accumulator extends NamedProgramCodeGeneratorAdapter {
             codeStream.appendCodeBlock("ifReset");
 
             codeStream
-                    .appendCodeBlock(targetType.equals("String") ? "StringInitSum"
-                            : "InitSum");
+            .appendCodeBlock(targetType.equals("String") ? "StringInitSum"
+                    : "InitSum");
             codeStream.append("}");
         }
 
@@ -111,6 +112,7 @@ public class Accumulator extends NamedProgramCodeGeneratorAdapter {
      *  @exception IllegalActionException If the code stream encounters an
      *   error in processing the specified code block(s).
      */
+    @Override
     public String generateInitializeCode() throws IllegalActionException {
         super.generateInitializeCode();
 
@@ -118,8 +120,8 @@ public class Accumulator extends NamedProgramCodeGeneratorAdapter {
 
         CodeStream codeStream = _templateParser.getCodeStream();
         codeStream
-                .appendCodeBlock(actor.output.getType() == BaseType.STRING ? "StringInitSum"
-                        : "InitSum");
+        .appendCodeBlock(actor.output.getType() == BaseType.STRING ? "StringInitSum"
+                : "InitSum");
 
         return processCode(codeStream.toString());
     }
@@ -132,6 +134,7 @@ public class Accumulator extends NamedProgramCodeGeneratorAdapter {
      *  @exception IllegalActionException If the code stream encounters an
      *   error in processing the specified code block(s).
      */
+    @Override
     public String generatePreinitializeCode() throws IllegalActionException {
         super.generatePreinitializeCode();
 

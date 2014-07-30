@@ -108,6 +108,7 @@ public class DownSample extends SDFTransformer {
      *  @param attribute The attribute that has changed.
      *  @exception IllegalActionException If the parameters are out of range.
      */
+    @Override
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         if (attribute == factor) {
@@ -134,6 +135,7 @@ public class DownSample extends SDFTransformer {
      *  @exception IllegalActionException If there is no director, or
      *   if the <i>phase</i> value is out of range.
      */
+    @Override
     public void fire() throws IllegalActionException {
         super.fire();
 

@@ -11,9 +11,9 @@ package ptolemy.actor.corba.CoordinatorUtil;
  */
 @SuppressWarnings("serial")
 public abstract class _CoordinatorImplBase extends
-        org.omg.CORBA.portable.ObjectImpl implements
-        ptolemy.actor.corba.CoordinatorUtil.Coordinator,
-        org.omg.CORBA.portable.InvokeHandler {
+org.omg.CORBA.portable.ObjectImpl implements
+ptolemy.actor.corba.CoordinatorUtil.Coordinator,
+org.omg.CORBA.portable.InvokeHandler {
     // Constructors
     public _CoordinatorImplBase() {
     }
@@ -26,6 +26,7 @@ public abstract class _CoordinatorImplBase extends
         _methods.put("unregister", new java.lang.Integer(2));
     }
 
+    @Override
     public org.omg.CORBA.portable.OutputStream _invoke(String $method,
             org.omg.CORBA.portable.InputStream in,
             org.omg.CORBA.portable.ResponseHandler $rh) {
@@ -52,7 +53,7 @@ public abstract class _CoordinatorImplBase extends
             } catch (ptolemy.actor.corba.CoordinatorUtil.CorbaIllegalActionException $ex) {
                 out = $rh.createExceptionReply();
                 ptolemy.actor.corba.CoordinatorUtil.CorbaIllegalActionExceptionHelper
-                        .write(out, $ex);
+                .write(out, $ex);
             }
 
             break;
@@ -71,7 +72,7 @@ public abstract class _CoordinatorImplBase extends
             } catch (ptolemy.actor.corba.CoordinatorUtil.CorbaIllegalActionException $ex) {
                 out = $rh.createExceptionReply();
                 ptolemy.actor.corba.CoordinatorUtil.CorbaIllegalActionExceptionHelper
-                        .write(out, $ex);
+                .write(out, $ex);
             }
 
             break;
@@ -89,7 +90,7 @@ public abstract class _CoordinatorImplBase extends
             } catch (ptolemy.actor.corba.CoordinatorUtil.CorbaIllegalActionException $ex) {
                 out = $rh.createExceptionReply();
                 ptolemy.actor.corba.CoordinatorUtil.CorbaIllegalActionExceptionHelper
-                        .write(out, $ex);
+                .write(out, $ex);
             }
 
             break;
@@ -106,6 +107,7 @@ public abstract class _CoordinatorImplBase extends
     // Type-specific CORBA::Object operations
     private static String[] __ids = { "IDL:CoordinatorUtil/Coordinator:1.0" };
 
+    @Override
     public String[] _ids() {
         return __ids.clone();
     }

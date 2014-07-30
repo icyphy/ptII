@@ -121,6 +121,7 @@ public class Select extends Transformer {
      *  it on the output.
      *  @exception IllegalActionException If there is no director.
      */
+    @Override
     public void fire() throws IllegalActionException {
         super.fire();
         // Redo this check in case the control has changed since prefire().
@@ -133,6 +134,7 @@ public class Select extends Transformer {
      *  from until a token arrives on the <i>control</i> input.
      *  @exception IllegalActionException If the parent class throws it.
      */
+    @Override
     public void initialize() throws IllegalActionException {
         super.initialize();
         _control = 0;
@@ -146,6 +148,7 @@ public class Select extends Transformer {
      *  @return True if the actor is ready to fire.
      *  @exception IllegalActionException If there is no director.
      */
+    @Override
     public boolean prefire() throws IllegalActionException {
         if (control.hasToken(0)) {
             _control = ((IntToken) control.get(0)).intValue();

@@ -74,6 +74,7 @@ public class DefaultActions {
     @SuppressWarnings("serial")
     public static Action copyAction(final Application app) {
         return new AbstractAction(COPY) {
+            @Override
             public void actionPerformed(ActionEvent e) {
                 View view = app.getCurrentView();
                 Clipboard c = app.getClipboard();
@@ -91,6 +92,7 @@ public class DefaultActions {
     @SuppressWarnings("serial")
     public static Action closeAction(final Application app) {
         return new AbstractAction(CLOSE) {
+            @Override
             public void actionPerformed(ActionEvent e) {
                 app.closeDocument(app.getCurrentView().getDocument());
             }
@@ -105,6 +107,7 @@ public class DefaultActions {
     @SuppressWarnings("serial")
     public static Action cutAction(final Application app) {
         return new AbstractAction(CUT) {
+            @Override
             public void actionPerformed(ActionEvent e) {
                 View view = app.getCurrentView();
                 Clipboard c = app.getClipboard();
@@ -124,6 +127,7 @@ public class DefaultActions {
     @SuppressWarnings("serial")
     public static Action exitAction(final Application app) {
         return new AbstractAction(EXIT) {
+            @Override
             public void actionPerformed(ActionEvent e) {
                 Iterator docs = app.documentList().iterator();
                 boolean succeeded = true;
@@ -146,6 +150,7 @@ public class DefaultActions {
     @SuppressWarnings("serial")
     public static Action newAction(final Application app) {
         return new AbstractAction(NEW) {
+            @Override
             public void actionPerformed(ActionEvent e) {
                 Document doc = app.getDocumentFactory().createDocument(app);
                 app.addDocument(doc);
@@ -163,6 +168,7 @@ public class DefaultActions {
     @SuppressWarnings("serial")
     public static Action openAction(final Application app) {
         return new AbstractAction(OPEN) {
+            @Override
             public void actionPerformed(ActionEvent e) {
                 Document doc = app.getStoragePolicy().open(app);
 
@@ -186,6 +192,7 @@ public class DefaultActions {
     @SuppressWarnings("serial")
     public static Action printAction(final Application app) {
         return new AbstractAction(PRINT) {
+            @Override
             public void actionPerformed(ActionEvent e) {
                 View view = app.getCurrentView();
 
@@ -226,6 +233,7 @@ public class DefaultActions {
     @SuppressWarnings("serial")
     public static Action pasteAction(final Application app) {
         return new AbstractAction(PASTE) {
+            @Override
             public void actionPerformed(ActionEvent e) {
                 View view = app.getCurrentView();
                 Clipboard c = app.getClipboard();
@@ -241,6 +249,7 @@ public class DefaultActions {
      *
      * @deprecated The standard windows term is "Exit," so use exitAction()
      */
+    @Deprecated
     public static Action quitAction(final Application app) {
         return exitAction(app);
     }
@@ -251,6 +260,7 @@ public class DefaultActions {
     @SuppressWarnings("serial")
     public static Action saveAction(final Application app) {
         return new AbstractAction(SAVE) {
+            @Override
             public void actionPerformed(ActionEvent e) {
                 app.getStoragePolicy().save(app.getCurrentView().getDocument()); //FIXME???
             }
@@ -264,6 +274,7 @@ public class DefaultActions {
     @SuppressWarnings("serial")
     public static Action saveAsAction(final Application app) {
         return new AbstractAction(SAVE_AS) {
+            @Override
             public void actionPerformed(ActionEvent e) {
                 app.getStoragePolicy().saveAs(
                         app.getCurrentView().getDocument());

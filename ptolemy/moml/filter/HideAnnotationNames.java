@@ -65,6 +65,7 @@ public class HideAnnotationNames extends MoMLFilterSimple {
      *  @param xmlFile The file currently being parsed.
      *  @return the value of the attributeValue argument.
      */
+    @Override
     public String filterAttributeValue(NamedObj container, String element,
             String attributeName, String attributeValue, String xmlFile) {
         if (attributeValue == null) {
@@ -80,8 +81,8 @@ public class HideAnnotationNames extends MoMLFilterSimple {
                 //          class="ptolemy.kernel.util.Attribute">
                 _currentlyProcessingAnnotation = true;
                 // Coverity says that container could be null.
-                _currentAnnotationFullName = (container == null ? "" : container.getFullName())
-                    + "." + attributeValue;
+                _currentAnnotationFullName = (container == null ? ""
+                        : container.getFullName()) + "." + attributeValue;
             } else if (_currentlyProcessingAnnotation
                     && attributeValue.equals("_hideName")) {
                 // We are processing an annotation and it already
@@ -94,9 +95,11 @@ public class HideAnnotationNames extends MoMLFilterSimple {
         if (_currentlyProcessingAnnotation) {
             if (container != null) {
                 if (!container.getFullName().equals(_currentAnnotationFullName)) {
-                    if (_currentAnnotationFullName == null 
-                            || (!_currentAnnotationFullName.startsWith(container.getFullName())
-                                    && !container.getFullName().startsWith(_currentAnnotationFullName))) {
+                    if (_currentAnnotationFullName == null
+                            || (!_currentAnnotationFullName
+                                    .startsWith(container.getFullName()) && !container
+                                    .getFullName().startsWith(
+                                            _currentAnnotationFullName))) {
                         // We found another class in a different container
                         // while handling an annotation.
                         _currentlyProcessingAnnotation = false;
@@ -119,6 +122,7 @@ public class HideAnnotationNames extends MoMLFilterSimple {
      *  @exception Exception if there is a problem substituting
      *  in the new value.
      */
+    @Override
     public void filterEndElement(NamedObj container, String elementName,
             StringBuffer currentCharData, String xmlFile) throws Exception {
         if (!elementName.equals("property")) {
@@ -147,6 +151,7 @@ public class HideAnnotationNames extends MoMLFilterSimple {
     /** Return a string that describes what the filter does.
      *  @return the description of the filter that ends with a newline.
      */
+    @Override
     public String toString() {
         return getClass().getName() + ": If an annotation name ends with\n"
                 + "'annotation1', then add _hideName if necessary.\n";

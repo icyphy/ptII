@@ -215,6 +215,7 @@ public class AudioWriteBuffer extends TypedAtomicActor {
      *  @exception IllegalActionException If the change is not
      *   allowed.
      */
+    @Override
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         if (attribute == channels) {
@@ -266,6 +267,7 @@ public class AudioWriteBuffer extends TypedAtomicActor {
      *  @exception IllegalActionException If the file cannot be opened,
      *   or if the parent class throws it.
      */
+    @Override
     public void initialize() throws IllegalActionException {
         super.initialize();
 
@@ -283,6 +285,7 @@ public class AudioWriteBuffer extends TypedAtomicActor {
      *  buffer will be written to the sound file specified by the
      *  <i>pathName</i> parameter on wrapup.
      */
+    @Override
     public void fire() throws IllegalActionException {
         super.fire();
         if (address.hasToken(0) && data.hasToken(0)) {
@@ -329,6 +332,7 @@ public class AudioWriteBuffer extends TypedAtomicActor {
     /** Return true unless super.postfire() returns false.
      *  @exception IllegalActionException Not thrown in this base class.
      */
+    @Override
     public boolean postfire() throws IllegalActionException {
         if (!super.postfire()) {
             return false;
@@ -340,6 +344,7 @@ public class AudioWriteBuffer extends TypedAtomicActor {
      *  for use in the postfire() method.
      *  @exception IllegalActionException If the parent class throws it.
      */
+    @Override
     public void preinitialize() throws IllegalActionException {
         super.preinitialize();
         _channels = ((IntToken) channels.getToken()).intValue();
@@ -349,6 +354,7 @@ public class AudioWriteBuffer extends TypedAtomicActor {
      *  @exception IllegalActionException If there is a problem
      *   closing the file.
      */
+    @Override
     public void wrapup() throws IllegalActionException {
         super.wrapup();
 

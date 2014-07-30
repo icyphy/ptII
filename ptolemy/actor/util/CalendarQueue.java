@@ -168,6 +168,7 @@ public class CalendarQueue implements Debuggable {
      *  @param listener The listener to which to send debug messages.
      *  @see #removeDebugListener
      */
+    @Override
     public void addDebugListener(DebugListener listener) {
         if (_debugListeners == null) {
             _debugListeners = new LinkedList();
@@ -350,7 +351,7 @@ public class CalendarQueue implements Debuggable {
 
         CQLinkedList bucket = _bucket[_getBinIndex(entry)];
         if (bucket == null) {
-                return false;
+            return false;
         }
         boolean result = bucket.remove(entry);
 
@@ -368,6 +369,7 @@ public class CalendarQueue implements Debuggable {
      *  to which debug messages are sent.
      *  @see #addDebugListener
      */
+    @Override
     public void removeDebugListener(DebugListener listener) {
         if (_debugListeners == null) {
             return;
@@ -959,12 +961,12 @@ public class CalendarQueue implements Debuggable {
             CQCell previousCell = head;
             CQCell currentCell = previousCell.next;
             if (currentCell == null) {
-                    return false;
+                return false;
             }
 
             do {
                 if (currentCell.contents != null
-                                && currentCell.contents.equals(object)) {
+                        && currentCell.contents.equals(object)) {
                     // Found a match.
                     if (tail == currentCell) {
                         // Removing the tail. Need to update.

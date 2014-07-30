@@ -171,6 +171,7 @@ public class AbstractTextAttribute extends VisibleAttribute {
      *  @exception IllegalActionException If the change is not acceptable
      *   to this container (should not be thrown).
      */
+    @Override
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         if (attribute == anchor) {
@@ -236,6 +237,7 @@ public class AbstractTextAttribute extends VisibleAttribute {
      *  @exception CloneNotSupportedException If any of the attributes
      *   cannot be cloned.
      */
+    @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         AbstractTextAttribute result = (AbstractTextAttribute) super
                 .clone(workspace);

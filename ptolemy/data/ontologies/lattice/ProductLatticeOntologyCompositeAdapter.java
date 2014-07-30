@@ -44,7 +44,7 @@ import ptolemy.kernel.util.IllegalActionException;
  *  @Pt.AcceptedRating Red (cshelton)
  */
 public class ProductLatticeOntologyCompositeAdapter extends
-        LatticeOntologyCompositeAdapter {
+LatticeOntologyCompositeAdapter {
 
     /** Construct the product lattice ontology adapter associated
      *  with the given composite actor.
@@ -54,7 +54,7 @@ public class ProductLatticeOntologyCompositeAdapter extends
      */
     public ProductLatticeOntologyCompositeAdapter(
             ProductLatticeOntologySolver solver, CompositeEntity component)
-            throws IllegalActionException {
+                    throws IllegalActionException {
         super(solver, component);
         _tupleAdapters = ProductLatticeOntologyAdapter.getTupleAdapters(solver,
                 component);
@@ -71,6 +71,7 @@ public class ProductLatticeOntologyCompositeAdapter extends
      * @exception IllegalActionException Thrown if there is a problem creating
      *  the constraints.
      */
+    @Override
     public List<Inequality> constraintList() throws IllegalActionException {
         for (LatticeOntologyAdapter adapter : _tupleAdapters) {
             if (adapter != null) {
@@ -83,10 +84,10 @@ public class ProductLatticeOntologyCompositeAdapter extends
                 adapter._addDefaultConstraints(adapter.getSolver()
                         ._getConstraintType());
                 ((LatticeOntologyCompositeAdapter) adapter)
-                        ._addInterConnectionConstraints();
+                ._addInterConnectionConstraints();
                 ProductLatticeOntologyAdapter
-                        .addConstraintsFromTupleOntologyAdapter(
-                                adapter._ownConstraints, adapterOntology, this);
+                .addConstraintsFromTupleOntologyAdapter(
+                        adapter._ownConstraints, adapterOntology, this);
             }
         }
         return super.constraintList();
@@ -102,6 +103,7 @@ public class ProductLatticeOntologyCompositeAdapter extends
      *  of the component LatticeOntologyAdapters.
      *  @exception IllegalActionException Not thrown in this derived class.
      */
+    @Override
     protected void _addInterConnectionConstraints()
             throws IllegalActionException {
         // Do nothing here.

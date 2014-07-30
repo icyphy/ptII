@@ -119,6 +119,7 @@ public class IconScript extends Script implements WebExportable {
     //*  If the <i>eventType</i> parameter is "default", then
     //*  remove all previously defined defaults and use the global
     //*  defaults.
+    @Override
     protected void _provideElements(WebExporter exporter)
             throws IllegalActionException {
 
@@ -192,6 +193,7 @@ public class IconScript extends Script implements WebExportable {
      *  @exception IllegalActionException If the eventType cannot be obtained,
      *  the web attribute cannot be created or set.
      */
+    @Override
     protected void _provideAttributes(WebExporter exporter)
             throws IllegalActionException {
 

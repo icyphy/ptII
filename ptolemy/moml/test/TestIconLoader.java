@@ -60,6 +60,7 @@ public class TestIconLoader implements IconLoader {
      *  @exception Exception If there is a problem adding
      *  the icon.
      */
+    @Override
     public boolean loadIconForClass(String className, NamedObj context)
             throws Exception {
         String fileName = className.replace('.', '/') + "Icon.xml";

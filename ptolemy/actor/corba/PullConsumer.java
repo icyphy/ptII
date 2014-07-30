@@ -136,6 +136,7 @@ public class PullConsumer extends Source {
      *  @param attribute The attribute that changed.
      *  @exception IllegalActionException Not thrown in this base class.
      */
+    @Override
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         if (attribute == blocking) {
@@ -151,6 +152,7 @@ public class PullConsumer extends Source {
      *  @exception IllegalActionException If any of the above actions
      *  failted.
      */
+    @Override
     public void initialize() throws IllegalActionException {
         super.initialize();
 
@@ -185,6 +187,7 @@ public class PullConsumer extends Source {
      *  action fails due to network problems, transaction errors,
      *  or any remote exceptions.
      */
+    @Override
     public void fire() throws IllegalActionException {
         super.fire();
         try {
@@ -239,6 +242,7 @@ public class PullConsumer extends Source {
     /** Request that execution of the current iteration stop as soon
      *  as possible. Wake up the waiting if there is any.
      */
+    @Override
     public void stop() {
         if (_fireIsWaiting) {
             synchronized (_fire) {
@@ -254,6 +258,7 @@ public class PullConsumer extends Source {
     /** interrupt the thread that is pulling data from the remote supplier.
      *
      */
+    @Override
     public void wrapup() throws IllegalActionException {
         if (_dataReadingThread != null) {
             _dataReadingThread.interrupt();
@@ -350,6 +355,7 @@ public class PullConsumer extends Source {
          *  (blocking), wake up fire to send the data to its output. If
          *  fire is not waiting, then save the data for next firing.
          */
+        @Override
         public void run() {
             while (true) {
                 try {

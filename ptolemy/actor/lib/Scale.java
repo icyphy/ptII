@@ -111,6 +111,7 @@ public class Scale extends Transformer {
      *  @exception CloneNotSupportedException If a derived class has
      *   an attribute that cannot be cloned.
      */
+    @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         Scale newObject = (Scale) super.clone(workspace);
         newObject.output.setTypeAtLeast(newObject.input);
@@ -122,6 +123,7 @@ public class Scale extends Transformer {
      *  If there is no input, then produce no output.
      *  @exception IllegalActionException If there is no director.
      */
+    @Override
     public void fire() throws IllegalActionException {
         super.fire();
         if (input.hasToken(0)) {

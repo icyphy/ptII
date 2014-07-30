@@ -24,7 +24,7 @@
  PT_COPYRIGHT_VERSION_2
  COPYRIGHTENDKEY
 
-*/
+ */
 package ptolemy.domains.ptera.lib;
 
 import java.awt.Color;
@@ -108,6 +108,7 @@ public class Configure extends Event {
      *  @exception CloneNotSupportedException If a derived class contains
      *   an attribute that cannot be cloned.
      */
+    @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         Configure newObject = (Configure) super.clone(workspace);
         newObject._ignoredParameters = new HashSet<String>(_ignoredParameters);
@@ -130,6 +131,7 @@ public class Configure extends Event {
      *   evaluated.
      *  @see #refire(Token, RefiringData)
      */
+    @Override
     public RefiringData fire(Token arguments) throws IllegalActionException {
         RefiringData data = super.fire(arguments);
 
@@ -154,7 +156,7 @@ public class Configure extends Event {
                     options = new JOptionPane(query,
                             JOptionPane.QUESTION_MESSAGE,
                             JOptionPane.YES_NO_OPTION, null, new String[] {
-                                    "Set", "Default" }, "Set");
+                            "Set", "Default" }, "Set");
                 } else {
                     options = new JOptionPane(query,
                             JOptionPane.INFORMATION_MESSAGE,
@@ -206,6 +208,7 @@ public class Configure extends Event {
      *
      *  @exception IllegalActionException If execution is not permitted.
      */
+    @Override
     public void initialize() throws IllegalActionException {
         super.initialize();
         List<Settable> parameters = attributeList(Settable.class);
@@ -225,6 +228,7 @@ public class Configure extends Event {
      *
      *  @exception IllegalActionException If wrapup is not permitted.
      */
+    @Override
     public void wrapup() throws IllegalActionException {
         for (Map.Entry<Settable, String> entry : _oldValues.entrySet()) {
             entry.getKey().setExpression(entry.getValue());
@@ -278,12 +282,13 @@ public class Configure extends Event {
      @Pt.AcceptedRating Red (tfeng)
      */
     private static class Listener extends KeyAdapter implements
-            PropertyChangeListener {
+    PropertyChangeListener {
 
         /** React to a key being pressed in the dialog.
          *
          *  @param event The key event.
          */
+        @Override
         public void keyPressed(KeyEvent event) {
             if (event.getKeyCode() == KeyEvent.VK_ENTER) {
                 event.consume();
@@ -296,6 +301,7 @@ public class Configure extends Event {
          *
          *  @param event The property change event.
          */
+        @Override
         public void propertyChange(PropertyChangeEvent event) {
             String property = event.getPropertyName();
             if (_dialog.isVisible()
@@ -348,7 +354,7 @@ public class Configure extends Event {
      @Pt.AcceptedRating Red (tfeng)
      */
     @SuppressWarnings("serial")
-        private class Query extends PtolemyQuery {
+    private class Query extends PtolemyQuery {
 
         /** Construct a query.
          */
@@ -388,6 +394,7 @@ public class Configure extends Event {
          *
          *  @param name The name of the entry that has changed.
          */
+        @Override
         public void changed(String name) {
             // Do not update the variables until the commit action is taken.
         }

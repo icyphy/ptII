@@ -77,6 +77,7 @@ public class PlotMLParser extends PlotBoxMLParser {
      *  @exception Exception If thrown by the superclass or while calling
      *  setConnected().
      */
+    @Override
     public void endElement(String elementName) throws Exception {
         super.endElement(elementName);
 
@@ -90,6 +91,7 @@ public class PlotMLParser extends PlotBoxMLParser {
      *  attempts to read the first entity (the root of the document).
      *  It is guaranteed that this will be the first method called.
      */
+    @Override
     public void startDocument() {
         super.startDocument();
         _currentDataset = -1;
@@ -105,6 +107,7 @@ public class PlotMLParser extends PlotBoxMLParser {
      *  @exception XmlException If the element produces an error
      *   in constructing the model.
      */
+    @Override
     public void startElement(String elementName) throws XmlException {
         try {
             // NOTE: The elements are alphabetical below...

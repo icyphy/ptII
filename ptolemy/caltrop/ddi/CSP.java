@@ -100,17 +100,21 @@ public class CSP extends AbstractDDI {
 
     private ConditionalBranchController _cbc;
 
+    @Override
     public boolean isLegalActor() {
         return !PriorityUtil.hasPriorityOrder(_actor);
     }
 
+    @Override
     public void setupActor() {
     }
 
+    @Override
     public String getName() {
         return "CSP";
     }
 
+    @Override
     public void fire() throws IllegalActionException {
         // Don't call super.fire(); here, super.fire() is abstract.
         // assume repeat expressions are statically computable,
@@ -221,17 +225,21 @@ public class CSP extends AbstractDDI {
         return env;
     }
 
+    @Override
     public void initialize() throws IllegalActionException {
     }
 
+    @Override
     public boolean postfire() throws IllegalActionException {
         return true;
     }
 
+    @Override
     public boolean prefire() throws IllegalActionException {
         return true;
     }
 
+    @Override
     public void preinitialize() throws IllegalActionException {
     }
 

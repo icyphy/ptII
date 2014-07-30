@@ -175,6 +175,7 @@ public class FormDebugPanel extends JPanel {
      *
      * @see #paint(Graphics)
      */
+    @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
         if (paintInBackground) {
@@ -192,6 +193,7 @@ public class FormDebugPanel extends JPanel {
      *
      * @see #paintComponent(Graphics)
      */
+    @Override
     public void paint(Graphics g) {
         super.paint(g);
         if (!paintInBackground) {

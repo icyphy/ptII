@@ -77,12 +77,12 @@ public class ColtZeta extends ColtRandomSource {
         ro = new PortParameter(this, "ro", new DoubleToken(1.0));
         ro.setTypeEquals(BaseType.DOUBLE);
         new SingletonParameter(ro.getPort(), "_showName")
-                .setToken(BooleanToken.TRUE);
+        .setToken(BooleanToken.TRUE);
 
         pk = new PortParameter(this, "pk", new DoubleToken(1.0));
         pk.setTypeEquals(BaseType.DOUBLE);
         new SingletonParameter(pk.getPort(), "_showName")
-                .setToken(BooleanToken.TRUE);
+        .setToken(BooleanToken.TRUE);
 
         pk.moveToFirst();
         ro.moveToFirst();
@@ -109,6 +109,7 @@ public class ColtZeta extends ColtRandomSource {
      *  remain constant throughout an iteration.
      *  @exception IllegalActionException If there is no director.
      */
+    @Override
     public void fire() throws IllegalActionException {
         ro.update();
         pk.update();
@@ -121,6 +122,7 @@ public class ColtZeta extends ColtRandomSource {
 
     /** Method that is called after _randomNumberGenerator is changed.
      */
+    @Override
     protected void _createdNewRandomNumberGenerator() {
         _generator = new Zeta(1.0, 1.0, _randomNumberGenerator);
     }
@@ -128,6 +130,7 @@ public class ColtZeta extends ColtRandomSource {
     /** Generate a new random number.
      *  @exception IllegalActionException If the parameter values are incorrect.
      */
+    @Override
     protected void _generateRandomNumber() throws IllegalActionException {
         double roValue = ((DoubleToken) ro.getToken()).doubleValue();
         double pkValue = ((DoubleToken) pk.getToken()).doubleValue();

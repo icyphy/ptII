@@ -87,6 +87,7 @@ public class StreamExec implements ExecuteCommands {
      *  in the path, then it is not appended.
      *  @param directoryName The name of the directory to append to the path.
      */
+    @Override
     public void appendToPath(String directoryName) {
         // FIXME: Code Duplication from JTextAreaExec.java
         if (_debug) {
@@ -118,7 +119,7 @@ public class StreamExec implements ExecuteCommands {
             }
             _envp = StreamExec.updateEnvironment(keyPath,
                     File.pathSeparatorChar + directoryName
-                            + File.pathSeparatorChar);
+                    + File.pathSeparatorChar);
 
             if (_debug) {
                 // For debugging
@@ -130,6 +131,7 @@ public class StreamExec implements ExecuteCommands {
     }
 
     /** Cancel any running commands. */
+    @Override
     public void cancel() {
         //_worker.interrupt();
         if (_process != null) {
@@ -138,6 +140,7 @@ public class StreamExec implements ExecuteCommands {
     }
 
     /** Clear the text area, status bar and progress bar. */
+    @Override
     public void clear() {
         updateStatusBar("");
         _updateProgressBar(0);
@@ -152,6 +155,7 @@ public class StreamExec implements ExecuteCommands {
      *  because appendToPath() was called.  Note that that key is searche
      *  for in a case-insensitive mode.
      */
+    @Override
     public String getenv(String key) {
         // FIXME: Code Duplication from JTextAreaExec.java
         if (_envp == null) {
@@ -192,6 +196,7 @@ public class StreamExec implements ExecuteCommands {
     /** Return the return code of the last subprocess that was executed.
      *  @return the return code of the last subprocess that was executed.
      */
+    @Override
     public int getLastSubprocessReturnCode() {
         return _subprocessReturnCode;
     }
@@ -199,6 +204,7 @@ public class StreamExec implements ExecuteCommands {
     /** Set the list of commands.
      *  @param commands A list of Strings, where each element is a command.
      */
+    @Override
     public void setCommands(List commands) {
         _commands = commands;
     }
@@ -234,6 +240,7 @@ public class StreamExec implements ExecuteCommands {
      *  subprocess.  If this argument is null, then the subprocess is
      *  executed in the working directory of the current process.
      */
+    @Override
     public void setWorkingDirectory(File workingDirectory) {
         _workingDirectory = workingDirectory;
     }
@@ -242,6 +249,7 @@ public class StreamExec implements ExecuteCommands {
      *  By default, the start() method returns after the last subprocess
      *  finishes. See {@link #setWaitForLastSubprocess(boolean)}.
      */
+    @Override
     public void start() {
         String returnValue = _executeCommands();
         updateStatusBar(returnValue);
@@ -254,6 +262,7 @@ public class StreamExec implements ExecuteCommands {
      *  appended.
      *  @param text The text to append to standard error.
      */
+    @Override
     public void stderr(final String text) {
         if (_pattern != null && _pattern.matcher(text).matches()) {
             _patternErrorLog.append(text + _eol);
@@ -272,6 +281,7 @@ public class StreamExec implements ExecuteCommands {
      *  may be read with {@link #getPatternLog()}.</p>
      *  @param text The text to append to standard out.
      */
+    @Override
     public void stdout(final String text) {
         if (_pattern != null && _pattern.matcher(text).matches()) {
             _patternOutLog.append(text + _eol);
@@ -318,6 +328,7 @@ public class StreamExec implements ExecuteCommands {
      *  nothing, derived classes may update a status bar.
      *  @param text The text with which the status bar is updated.
      */
+    @Override
     public void updateStatusBar(final String text) {
     }
 
@@ -468,6 +479,7 @@ public class StreamExec implements ExecuteCommands {
         }
 
         /** Read lines from the _inputStream and output them. */
+        @Override
         public void run() {
             try {
                 InputStreamReader inputStreamReader = new InputStreamReader(
@@ -478,7 +490,7 @@ public class StreamExec implements ExecuteCommands {
 
                 while ((line = bufferedReader.readLine()) != null) {
                     _streamExec.stdout( /*_streamType + ">" +*/
-                    line);
+                            line);
                 }
             } catch (IOException ioe) {
                 _streamExec.stderr("IOException: " + ioe);

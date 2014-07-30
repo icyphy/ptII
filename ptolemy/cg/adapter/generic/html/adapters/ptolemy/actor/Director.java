@@ -72,6 +72,7 @@ public class Director extends HTMLCodeGeneratorAdapter {
      *  @exception IllegalActionException If the adapter associated with
      *   an actor throws it while generating fire code for the actor.
      */
+    @Override
     public String generateHTML() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
 

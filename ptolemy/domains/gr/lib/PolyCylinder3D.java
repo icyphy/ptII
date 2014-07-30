@@ -114,6 +114,7 @@ public class PolyCylinder3D extends GRShadedShape {
      *  @param attribute The attribute that changed.
      *  @exception IllegalActionException If thrown by the parent class.
      */
+    @Override
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         if (allowRuntimeChanges != null) {
@@ -134,6 +135,7 @@ public class PolyCylinder3D extends GRShadedShape {
      *  @exception IllegalActionException If the value of some
      *   parameters can't be obtained.
      */
+    @Override
     protected void _createModel() throws IllegalActionException {
         super._createModel();
         _containedNode = new Shape3D();
@@ -150,6 +152,7 @@ public class PolyCylinder3D extends GRShadedShape {
      *
      *  @return the generalized polygonal cylinder
      */
+    @Override
     protected Node _getNodeObject() {
         return _containedNode;
     }

@@ -26,7 +26,7 @@
  PT_COPYRIGHT_VERSION_2
  COPYRIGHTENDKEY
 
-*/
+ */
 package ptolemy.vergil.basic.export.web;
 
 import ptolemy.kernel.util.IllegalActionException;
@@ -108,8 +108,9 @@ public class WebElement extends StringAttribute {
 
         webElement = (WebElement) container.getAttribute(id, WebElement.class);
         if (webElement == null) {
-            throw new NullPointerException("Could not get the WebElement attribute \""
-                    + id + "\" from \"" + container.getFullName() + "\"");
+            throw new NullPointerException(
+                    "Could not get the WebElement attribute \"" + id
+                            + "\" from \"" + container.getFullName() + "\"");
         } else {
             webElement.setWebName(webName);
             webElement.setPersistent(false);

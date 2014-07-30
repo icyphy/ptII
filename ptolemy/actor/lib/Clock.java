@@ -230,6 +230,7 @@ public class Clock extends TimedSource {
      *   nondecreasing and nonnegative, or if the director will not
      *   respect the fireAt() call.
      */
+    @Override
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         if (attribute == offsets) {
@@ -315,6 +316,7 @@ public class Clock extends TimedSource {
      *  @exception CloneNotSupportedException If a derived class contains
      *   an attribute that cannot be cloned.
      */
+    @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         Clock newObject = (Clock) super.clone(workspace);
 
@@ -347,6 +349,7 @@ public class Clock extends TimedSource {
      *   the value in the offsets parameter is encountered that is greater
      *   than the period, or if there is no director.
      */
+    @Override
     public void fire() throws IllegalActionException {
         // Cannot call super.fire() because it consumes
         // trigger inputs.
@@ -408,6 +411,7 @@ public class Clock extends TimedSource {
      *   fireAt() method of the director throws it, or if the director will not
      *   respect the fireAt() call.
      */
+    @Override
     public void initialize() throws IllegalActionException {
         super.initialize();
 
@@ -445,6 +449,7 @@ public class Clock extends TimedSource {
      *  @exception IllegalActionException If the director throws it when
      *   scheduling the next firing.
      */
+    @Override
     public boolean postfire() throws IllegalActionException {
         if (_debugging) {
             _debug("Postfiring at " + getDirector().getModelTime());
@@ -463,6 +468,7 @@ public class Clock extends TimedSource {
      *  @exception IllegalActionException If the <i>values</i> and
      *   <i>offsets</i> parameters do not have the same length.
      */
+    @Override
     public boolean prefire() throws IllegalActionException {
         if (_debugging) {
             _debug("Called prefire()");

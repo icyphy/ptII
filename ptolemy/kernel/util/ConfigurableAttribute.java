@@ -62,7 +62,7 @@ import java.util.List;
  @Pt.AcceptedRating Green (janneck)
  */
 public class ConfigurableAttribute extends Attribute implements Configurable,
-        Settable {
+Settable {
     /** Construct a new attribute with no
      *  container and an empty string as its name. Add the attribute to the
      *  default workspace directory.
@@ -105,6 +105,7 @@ public class ConfigurableAttribute extends Attribute implements Configurable,
      *  @param listener The listener to add.
      *  @see #removeValueListener(ValueListener)
      */
+    @Override
     public void addValueListener(ValueListener listener) {
         if (_valueListeners == null) {
             _valueListeners = new LinkedList();
@@ -121,6 +122,7 @@ public class ConfigurableAttribute extends Attribute implements Configurable,
      *  @see java.lang.Object#clone()
      *  @return The cloned attribute.
      */
+    @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         ConfigurableAttribute newObject = (ConfigurableAttribute) super
                 .clone(workspace);
@@ -144,6 +146,7 @@ public class ConfigurableAttribute extends Attribute implements Configurable,
      *  @param text Configuration information given as text.
      *  @exception Exception Not thrown in this base class.
      */
+    @Override
     public void configure(URL base, String source, String text)
             throws Exception {
         if (_defaultText == null) {
@@ -169,6 +172,7 @@ public class ConfigurableAttribute extends Attribute implements Configurable,
      *  @return A URL specifying an external source for configure
      *   information.
      */
+    @Override
     public String getConfigureSource() {
         return _configureSource;
     }
@@ -177,6 +181,7 @@ public class ConfigurableAttribute extends Attribute implements Configurable,
      *  configure() method, or null if none.
      *  @return Text giving configure information.
      */
+    @Override
     public String getConfigureText() {
         return _configureText;
     }
@@ -191,6 +196,7 @@ public class ConfigurableAttribute extends Attribute implements Configurable,
      *   if there is none.
      *  @see #setExpression(String)
      */
+    @Override
     public String getDefaultExpression() {
         try {
             List prototypeList = getPrototypeList();
@@ -211,6 +217,7 @@ public class ConfigurableAttribute extends Attribute implements Configurable,
      *  @see #value()
      *  @see #setExpression(String)
      */
+    @Override
     public String getExpression() {
         try {
             return value();
@@ -223,6 +230,7 @@ public class ConfigurableAttribute extends Attribute implements Configurable,
      *  @return The same as getExpression().
      *  @see #getExpression()
      */
+    @Override
     public String getValueAsString() {
         return getExpression();
     }
@@ -232,6 +240,7 @@ public class ConfigurableAttribute extends Attribute implements Configurable,
      *  @return The visibility of this attribute.
      *  @see #setVisibility(Settable.Visibility)
      */
+    @Override
     public Settable.Visibility getVisibility() {
         return _visibility;
     }
@@ -242,6 +251,7 @@ public class ConfigurableAttribute extends Attribute implements Configurable,
      *  @param listener The listener to remove.
      *  @see #addValueListener(ValueListener)
      */
+    @Override
     public void removeValueListener(ValueListener listener) {
         if (_valueListeners != null) {
             _valueListeners.remove(listener);
@@ -259,6 +269,7 @@ public class ConfigurableAttribute extends Attribute implements Configurable,
      *   to the container.
      *  @see #getExpression()
      */
+    @Override
     public void setExpression(String expression) throws IllegalActionException {
         try {
             configure(null, null, expression);
@@ -275,6 +286,7 @@ public class ConfigurableAttribute extends Attribute implements Configurable,
      *  @param visibility The visibility of this attribute.
      *  @see #getVisibility()
      */
+    @Override
     public void setVisibility(Settable.Visibility visibility) {
         _visibility = visibility;
     }
@@ -286,6 +298,7 @@ public class ConfigurableAttribute extends Attribute implements Configurable,
      *  @exception IllegalActionException If the change is not acceptable
      *   to the container.
      */
+    @Override
     public Collection validate() throws IllegalActionException {
         // Validate by obtaining the value.
         try {
@@ -376,6 +389,7 @@ public class ConfigurableAttribute extends Attribute implements Configurable,
      *  @param depth The depth in the hierarchy, to determine indenting.
      *  @exception IOException If an I/O error occurs.
      */
+    @Override
     protected void _exportMoMLContents(Writer output, int depth)
             throws IOException {
         super._exportMoMLContents(output, depth);
@@ -406,6 +420,7 @@ public class ConfigurableAttribute extends Attribute implements Configurable,
      *  @exception IllegalActionException If the value cannot
      *   be propagated.
      */
+    @Override
     protected void _propagateValue(NamedObj destination)
             throws IllegalActionException {
         try {

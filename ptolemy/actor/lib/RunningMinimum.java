@@ -86,6 +86,7 @@ public class RunningMinimum extends Transformer {
      *   if one of the attributes cannot be cloned.
      *  @return A new ComponentEntity.
      */
+    @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         RunningMinimum newObject = (RunningMinimum) super.clone(workspace);
         return newObject;
@@ -97,6 +98,7 @@ public class RunningMinimum extends Transformer {
      *  @exception IllegalActionException If getting token from input or
      *  sending token to output throws it.
      */
+    @Override
     public void fire() throws IllegalActionException {
         super.fire();
 
@@ -114,6 +116,7 @@ public class RunningMinimum extends Transformer {
      *  @exception IllegalActionException If the initialize() method of the
      *  superclass throws it.
      */
+    @Override
     public void initialize() throws IllegalActionException {
         super.initialize();
 
@@ -126,6 +129,7 @@ public class RunningMinimum extends Transformer {
      *  @exception IllegalActionException If the postfire() method of the
      *  superclass throws it.
      */
+    @Override
     public boolean postfire() throws IllegalActionException {
         boolean result = super.postfire();
 
@@ -142,6 +146,7 @@ public class RunningMinimum extends Transformer {
      *  @exception IllegalActionException If the prefire() method of the
      *  superclass throws it.
      */
+    @Override
     public boolean prefire() throws IllegalActionException {
         return super.prefire() && input.hasToken(0);
     }

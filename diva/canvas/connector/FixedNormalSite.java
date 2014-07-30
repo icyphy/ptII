@@ -44,6 +44,7 @@ public class FixedNormalSite extends SiteDecorator {
         super(site);
     }
 
+    @Override
     public void setNormal(double normal) {
         // Do nothing
     }

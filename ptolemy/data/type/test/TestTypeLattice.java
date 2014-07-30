@@ -56,10 +56,11 @@ public class TestTypeLattice {
     public static void main(String[] args) throws Exception {
         for (int i = 0; i < 1000; i++) {
             Thread thread = new Thread(new Runnable() {
+                @Override
                 public void run() {
                     try {
                         ((DirectedAcyclicGraph) TypeLattice.basicLattice())
-                                .bottom();
+                        .bottom();
                     } catch (Exception ex) {
                         ex.printStackTrace();
                     }

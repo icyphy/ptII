@@ -119,6 +119,7 @@ public class GetProperties extends TypedAtomicActor {
      *  @exception IllegalActionException If the specified port is not
      *   an instance of WirelessIOPort, or if there is no such port.
      */
+    @Override
     public void fire() throws IllegalActionException {
         super.fire();
 
@@ -155,6 +156,7 @@ public class GetProperties extends TypedAtomicActor {
      *  <i>output</i> port.
      *  @exception IllegalActionException If the base class throws it.
      */
+    @Override
     public void preinitialize() throws IllegalActionException {
         super.preinitialize();
 

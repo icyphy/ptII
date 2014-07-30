@@ -82,6 +82,7 @@ public class ClientThread extends Thread {
      *  thread is set to ready in the synchronizer. This is performed until
      *  de command is exit.
      */
+    @Override
     public void run() {
         super.run();
 

@@ -24,7 +24,7 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
-*/
+ */
 
 package ptolemy.cg.lib.syntactic;
 
@@ -46,7 +46,7 @@ import java.util.List;
  @since Ptolemy II 10.0
  @Pt.ProposedRating Red (shaver)
  @Pt.AcceptedRating Red
-*/
+ */
 public class SyntacticName implements SyntacticTerm {
 
     // TODO: make alternative constructor with name parameter.
@@ -61,6 +61,7 @@ public class SyntacticName implements SyntacticTerm {
      *
      *  @return list of input ports.
      */
+    @Override
     public List<SyntacticPort> getInputs() {
         return _term == null ? null : _term.getInputs();
     }
@@ -70,6 +71,7 @@ public class SyntacticName implements SyntacticTerm {
      *
      *  @return list of output ports.
      */
+    @Override
     public List<SyntacticPort> getOutputs() {
         return _term == null ? null : _term.getOutputs();
     }
@@ -78,6 +80,7 @@ public class SyntacticName implements SyntacticTerm {
      *
      *  @return number of inputs or zero if no kernel.
      */
+    @Override
     public int sizeInputs() {
         return _term == null ? 0 : _term.sizeInputs();
     }
@@ -86,6 +89,7 @@ public class SyntacticName implements SyntacticTerm {
      *
      *  @return number of outputs or zero if no kernel.
      */
+    @Override
     public int sizeOutputs() {
         return _term == null ? 0 : _term.sizeOutputs();
     }
@@ -94,6 +98,7 @@ public class SyntacticName implements SyntacticTerm {
      *
      *  @return rank of term.
      */
+    @Override
     public SyntacticRank rank() {
         if (_term == null) {
             return null;
@@ -110,6 +115,7 @@ public class SyntacticName implements SyntacticTerm {
      *  @param port Port to find the index of.
      *  @return the index of the port or null if none.
      */
+    @Override
     public Integer inputIndex(SyntacticPort port) {
         return _term == null ? null : _term.inputIndex(port);
     }
@@ -121,6 +127,7 @@ public class SyntacticName implements SyntacticTerm {
      *  @param port Port to find the index of.
      *  @return the index of the port or null if none.
      */
+    @Override
     public Integer outputIndex(SyntacticPort port) {
         return _term == null ? null : _term.outputIndex(port);
     }
@@ -133,6 +140,7 @@ public class SyntacticName implements SyntacticTerm {
      *
      *  @return lexical representation of term.
      */
+    @Override
     public String generateCode() {
         String boundary = SyntacticRank.noCode();
         if (_term != null) {
@@ -159,6 +167,7 @@ public class SyntacticName implements SyntacticTerm {
     /** Get the sort order of the term.
      *  @return sort order of the term.
      */
+    @Override
     public int getOrder() {
         return 0;
     }
@@ -166,6 +175,7 @@ public class SyntacticName implements SyntacticTerm {
     /** Decide whether code can be generated from this term.
      *  @return whether code can be generated.
      */
+    @Override
     public boolean hasCode() {
         return true;
     }

@@ -79,6 +79,7 @@ public class FileOrURLEditorFactory extends EditorFactory {
 
     /** Create an editor for configuring the specified object.
      */
+    @Override
     public void createEditor(NamedObj object, Frame parent) {
 
         ComponentDialog dialog = null;
@@ -180,8 +181,8 @@ public class FileOrURLEditorFactory extends EditorFactory {
                 "To specify the name of the file that contains the parameters, select "
                         + "\""
                         + _moreButtons[0]
-                        + "\".  To edit the file itself that contains the parameters,"
-                        + " select \"" + _moreButtons[1] + "\".", 3, 40);
+                                + "\".  To edit the file itself that contains the parameters,"
+                                + " select \"" + _moreButtons[1] + "\".", 3, 40);
         textArea.setEditable(false);
         textArea.setBorder(BorderFactory.createEtchedBorder());
         textArea.setLineWrap(true);
@@ -201,9 +202,9 @@ public class FileOrURLEditorFactory extends EditorFactory {
 
     // Button labels.
     private static String[] _moreButtons = { "Configure Parameters",
-            "Edit File", "Help", "Cancel" };
+        "Edit File", "Help", "Cancel" };
 
     private static String[] _moreButtonsNoHelp = { "Configure Parameters",
-            "Edit File", "Cancel" };
+        "Edit File", "Cancel" };
 
 }

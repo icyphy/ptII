@@ -25,7 +25,7 @@
  PT_COPYRIGHT_VERSION_2
  COPYRIGHTENDKEY
 
-*/
+ */
 package ptolemy.actor.gt;
 
 import java.util.Collection;
@@ -59,7 +59,7 @@ import ptolemy.vergil.gt.IterativeParameterIcon;
  @Pt.AcceptedRating Red (tfeng)
  */
 public class IterativeParameter extends Parameter implements MatchCallback,
-        ValueIterator {
+ValueIterator {
 
     /** Construct a parameter with the given name contained by the specified
      *  entity. The container argument must not be null, or a
@@ -102,6 +102,7 @@ public class IterativeParameter extends Parameter implements MatchCallback,
      *  @exception IllegalActionException If the change is not acceptable
      *   to this container (not thrown in this base class).
      */
+    @Override
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         super.attributeChanged(attribute);
@@ -127,6 +128,7 @@ public class IterativeParameter extends Parameter implements MatchCallback,
      *  @see java.lang.Object#clone()
      *  @return The cloned variable.
      */
+    @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         IterativeParameter newObject = (IterativeParameter) super
                 .clone(workspace);
@@ -148,6 +150,7 @@ public class IterativeParameter extends Parameter implements MatchCallback,
      *  @param matcher The graph matcher.
      *  @return Whether the matching should terminate right away.
      */
+    @Override
     public boolean foundMatch(GraphMatcher matcher) {
         _foundMatch = true;
         return true;
@@ -159,6 +162,7 @@ public class IterativeParameter extends Parameter implements MatchCallback,
      *  @return The initial value.
      *  @exception IllegalActionException If the initial value cannot be set.
      */
+    @Override
     public Token initial() throws IllegalActionException {
         Token initialToken = initial.getToken();
         setToken(initialToken);
@@ -172,6 +176,7 @@ public class IterativeParameter extends Parameter implements MatchCallback,
      *  @return The next value.
      *  @exception IllegalActionException If the next value cannot be set.
      */
+    @Override
     public Token next() throws IllegalActionException {
         Object mode = this.mode.getChosenValue();
         if (mode == Mode.STOP_WHEN_MATCH && _foundMatch) {
@@ -211,6 +216,7 @@ public class IterativeParameter extends Parameter implements MatchCallback,
      *   not lazy) and the model error handler throws an exception.
      *   Also thrown if the change is not acceptable to the container.
      */
+    @Override
     public Collection<?> validate() throws IllegalActionException {
         Collection<?> result = super.validate();
         _validateConstraint();
@@ -248,7 +254,7 @@ public class IterativeParameter extends Parameter implements MatchCallback,
      @Pt.AcceptedRating Red (tfeng)
      */
     @SuppressWarnings("serial")
-        public class ConstraintViolationException extends IllegalActionException {
+    public class ConstraintViolationException extends IllegalActionException {
 
         /** Construct an exception.
          */
@@ -274,6 +280,7 @@ public class IterativeParameter extends Parameter implements MatchCallback,
         /** Try all values (until constraint is violated).
          */
         ALL_VALUES {
+            @Override
             public String toString() {
                 return "try all values";
             }
@@ -281,6 +288,7 @@ public class IterativeParameter extends Parameter implements MatchCallback,
         /** Once a match is found, stop returning more values.
          */
         STOP_WHEN_MATCH {
+            @Override
             public String toString() {
                 return "stop when match";
             }
@@ -288,6 +296,7 @@ public class IterativeParameter extends Parameter implements MatchCallback,
         /** Once a match is not found, stop returning more values.
          */
         STOP_WHEN_NOT_MATCH {
+            @Override
             public String toString() {
                 return "stop when not match";
             }

@@ -141,6 +141,7 @@ public class Controller extends CSPActor {
      *  during communication through any of the input or output
      *  ports.
      */
+    @Override
     public void fire() throws IllegalActionException {
         super.fire();
         if (_numRequestInChannels == -1) {

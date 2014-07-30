@@ -122,7 +122,7 @@ public class CSPDirector extends CompositeProcessDirector {
      *  @exception IllegalActionException If construction of Time objects fails.
      */
     public CSPDirector() throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         super();
     }
 
@@ -134,7 +134,7 @@ public class CSPDirector extends CompositeProcessDirector {
      *  @exception IllegalActionException If construction of Time objects fails.
      */
     public CSPDirector(Workspace workspace) throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         super(workspace);
     }
 
@@ -171,6 +171,7 @@ public class CSPDirector extends CompositeProcessDirector {
      *   cannot be cloned.
      *  @return The new CSPDirector.
      */
+    @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         CSPDirector newObject = (CSPDirector) super.clone(workspace);
 
@@ -189,6 +190,7 @@ public class CSPDirector extends CompositeProcessDirector {
     /** Reset flags to initialize values.
      * @exception IllegalActionException If the super class throws it.
      */
+    @Override
     public void initialize() throws IllegalActionException {
         // _actorsBlocked = 0;
         _actorsDelayed = 0;
@@ -200,6 +202,7 @@ public class CSPDirector extends CompositeProcessDirector {
      *  In the CSP domain, we use CSPReceivers.
      *  @return A new CSPReceiver.
      */
+    @Override
     public Receiver newReceiver() {
         return new CSPReceiver();
     }
@@ -210,6 +213,7 @@ public class CSPDirector extends CompositeProcessDirector {
      *  @return False if no more execution is possible, and true otherwise.
      *  @exception IllegalActionException If thrown by the superclass.
      */
+    @Override
     public boolean postfire() throws IllegalActionException {
         // This is a little odd because ProcessDirector.postfire()
         // sets _notDone, but we want to be sure to call it and
@@ -229,6 +233,7 @@ public class CSPDirector extends CompositeProcessDirector {
      *  @return An array of suggested directors to be used with ModalModel.
      *  @see ptolemy.actor.Director#suggestedModalModelDirectors()
      */
+    @Override
     public String[] suggestedModalModelDirectors() {
         // This method does not call the method defined in the super class,
         // because this method provides complete new information.
@@ -244,14 +249,14 @@ public class CSPDirector extends CompositeProcessDirector {
      *  in a call to delay().
      *  @exception IllegalActionException If the parent class throws it.
      */
+    @Override
     public void wrapup() throws IllegalActionException {
         try {
             _inWrapup = true;
 
             // Generating WebStart calls wrapup() after preinitialize(),
             // so the model might not have been initialized.
-            while (_delayedActorList != null 
-                   && _delayedActorList.size() > 0) {
+            while (_delayedActorList != null && _delayedActorList.size() > 0) {
                 DelayListLink value = (DelayListLink) _delayedActorList.get(0);
                 value._actor._cancelDelay();
                 _delayedActorList.remove(0);
@@ -304,6 +309,7 @@ public class CSPDirector extends CompositeProcessDirector {
     /** Returns true if all active processes are either blocked or
      *  delayed, false otherwise.
      */
+    @Override
     protected synchronized boolean _areThreadsDeadlocked() {
         if (_getActiveThreadsCount() == _getBlockedThreadsCount()
                 + _actorsDelayed) {
@@ -317,6 +323,7 @@ public class CSPDirector extends CompositeProcessDirector {
      *  of stopped, blocked, and delayed threads.  Otherwise return false.
      *  @return True if all threads are stopped.
      */
+    @Override
     protected synchronized boolean _areAllThreadsStopped() {
         return _getActiveThreadsCount() == _getStoppedThreadsCount()
                 + _getBlockedThreadsCount() + _actorsDelayed;
@@ -328,7 +335,7 @@ public class CSPDirector extends CompositeProcessDirector {
      * @exception InvalidStateException
      */
     private String _receiverStatus() throws InvalidStateException,
-            IllegalActionException {
+    IllegalActionException {
         StringBuffer result = new StringBuffer();
         CompositeActor container = (CompositeActor) getContainer();
 
@@ -428,6 +435,7 @@ public class CSPDirector extends CompositeProcessDirector {
      *  @exception IllegalActionException If setting the model time,
      *  or getting a parameter throws it.
      */
+    @Override
     protected synchronized boolean _resolveInternalDeadlock()
             throws IllegalActionException {
         if (_actorsDelayed > 0) {

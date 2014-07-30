@@ -57,8 +57,8 @@ import ptolemy.kernel.util.NamedObj;
  @Pt.AcceptedRating Red (wlc)
  */
 public class ModalController
-        extends
-        ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.domains.modal.modal.ModalController {
+extends
+ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.domains.modal.modal.ModalController {
 
     /** Construct the code generator helper associated
      *  with the given modal controller.
@@ -80,6 +80,7 @@ public class ModalController
      *  @exception IllegalActionException If the adapter associated with
      *   an actor throws it while generating fire code for the actor
      */
+    @Override
     public String generateFireCode() throws IllegalActionException {
         FSMActor controllerHelper;
         try {
@@ -94,7 +95,7 @@ public class ModalController
         String name = _myController.getFullName().substring(1);
         String modalName = name.replace("_Controller", "");
         modalName = modalName.replace('.', '_');
-        
+
         // Generate code for preemptive transition.
         code.append(_eol
                 + getCodeGenerator().comment("1. Preemptive Transition"));
@@ -110,14 +111,18 @@ public class ModalController
         // Generate code for refinements.
         if (_generateRefinementCode(code)) {
             // Transfer the outputs from the refinement to modal model
-            code.append(_eol + "director->directorTransferModalOutputs(director);" + _eol);
+            code.append(_eol
+                    + "director->directorTransferModalOutputs(director);"
+                    + _eol);
         } else {
-            code.append(_eol + "director->transferModalOutputs(pblMapNewHashMap());" + _eol);
+            code.append(_eol
+                    + "director->transferModalOutputs(pblMapNewHashMap());"
+                    + _eol);
         }
 
         // Generate code for non-preemptive transition
         code.append(getCodeGenerator().comment("2. Nonpreemptive Transition"));
-        
+
         // generateTransitionCode(code);
         controllerHelper.generateTransitionCode(code,
                 new NonPreemptiveTransitions());
@@ -125,19 +130,19 @@ public class ModalController
 
         // Transfer the outputs from inside to outside of the modal model
         code.append(_eol + "director->transferOutputs(director);" + _eol);
-        
+
         return code.toString();
 
     }
 
     /** Generate the postfire code of the associated controller.
-    * We generate a switch because we only need to call the postfire method
-    * of the current state.
-    *
-    *  @return The postfire code of the associated controller.
-    *  @exception IllegalActionException If the adapter associated with
-    *   an actor throws it while generating postfire code for the actor
-    */
+     * We generate a switch because we only need to call the postfire method
+     * of the current state.
+     *
+     *  @return The postfire code of the associated controller.
+     *  @exception IllegalActionException If the adapter associated with
+     *   an actor throws it while generating postfire code for the actor
+     */
     @Override
     public String generatePostfireCode() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
@@ -168,6 +173,7 @@ public class ModalController
         return code.toString();
     }
 
+    @Override
     public String generateVariableDeclaration() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
 
@@ -254,15 +260,16 @@ public class ModalController
     ////                      Protected methods                    ////
 
     /** Generate code for the firing of refinements.
-    *
-    *  @param code The string buffer that the generated code is appended to.
-    *  @return true if any of the states had refinements.
-    *  @exception IllegalActionException If the helper associated with
-    *   an actor throws it while generating fire code for the actor.
-    */
+     *
+     *  @param code The string buffer that the generated code is appended to.
+     *  @return true if any of the states had refinements.
+     *  @exception IllegalActionException If the helper associated with
+     *   an actor throws it while generating fire code for the actor.
+     */
+    @Override
     protected boolean _generateRefinementCode(StringBuffer code)
             throws IllegalActionException {
-        
+
         boolean refined = false;
         String name = _myController.getFullName().substring(1);
         name = name.replace('.', '_');
@@ -305,7 +312,7 @@ public class ModalController
         depth--;
         code.append(_getIndentPrefix(depth));
         code.append("}" + _eol); //end of switch statement
-        
+
         return refined;
 
     }
@@ -315,11 +322,12 @@ public class ModalController
 
     /** Retrieve the non-preemptive transitions. */
     private static class NonPreemptiveTransitions implements
-            TransitionRetriever {
+    TransitionRetriever {
         /** Retrieve the non-preemptive transitions.
          *  @param state The state
          *  @return An iterator that refers to the non-preemptive transitions.
          */
+        @Override
         public Iterator retrieveTransitions(State state) {
             try {
                 return state.nonpreemptiveTransitionList().iterator();
@@ -336,6 +344,7 @@ public class ModalController
          *  @param state The state
          *  @return An iterator that refers to the preemptive transitions.
          */
+        @Override
         public Iterator retrieveTransitions(State state) {
             try {
                 return state.preemptiveTransitionList().iterator();

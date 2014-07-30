@@ -85,7 +85,7 @@ public class WirelessToWired extends TypedAtomicActor {
 
         properties = new TypedIOPort(this, "properties", false, true);
         new SingletonParameter(properties, "_showName")
-                .setToken(BooleanToken.TRUE);
+        .setToken(BooleanToken.TRUE);
 
         // Create and configure the parameters.
         inputChannelName = new StringParameter(this, "inputChannelName");
@@ -98,7 +98,7 @@ public class WirelessToWired extends TypedAtomicActor {
         payload = new TypedIOPort(this, "payload", false, true);
         payload.setTypeSameAs(input);
         new SingletonParameter(payload, "_showName")
-                .setToken(BooleanToken.TRUE);
+        .setToken(BooleanToken.TRUE);
 
         _attachText("_iconDescription", "<svg>\n"
                 + "<polygon points=\"-15,-15 15,15 15,-15 -15,15\" "
@@ -137,6 +137,7 @@ public class WirelessToWired extends TypedAtomicActor {
      *  @exception CloneNotSupportedException If a derived class contains
      *   an attribute that cannot be cloned.
      */
+    @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         WirelessToWired newObject = (WirelessToWired) super.clone(workspace);
 
@@ -150,6 +151,7 @@ public class WirelessToWired extends TypedAtomicActor {
      *  port.  If there are no properties, then output a token only
      *  on the <i>payload</i> port.
      */
+    @Override
     public void fire() throws IllegalActionException {
         super.fire();
 
@@ -180,6 +182,7 @@ public class WirelessToWired extends TypedAtomicActor {
      *  <i>properties</i> port.
      *  @exception IllegalActionException If the base class throws it.
      */
+    @Override
     public void preinitialize() throws IllegalActionException {
         super.preinitialize();
 

@@ -53,6 +53,7 @@ public class IntTokenHandler implements TokenHandler<IntToken> {
      *  @exception IOException If the stream cannot be written.
      *  @see ptserver.data.handler.TokenHandler#convertToBytes(ptolemy.data.Token, java.io.DataOutputStream)
      */
+    @Override
     public void convertToBytes(IntToken token, DataOutputStream outputStream)
             throws IOException {
         outputStream.writeInt(token.intValue());
@@ -65,6 +66,7 @@ public class IntTokenHandler implements TokenHandler<IntToken> {
      *  @exception IOException If the stream cannot be read.
      *  @see ptserver.data.handler.TokenHandler#convertToToken(java.io.DataInputStream, Class)
      */
+    @Override
     public IntToken convertToToken(DataInputStream inputStream,
             Class<? extends IntToken> tokenType) throws IOException {
         return new IntToken(inputStream.readInt());

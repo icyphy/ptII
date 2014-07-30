@@ -120,6 +120,7 @@ public class ComponentEntity<T extends ComponentPort> extends Entity<T> {
      *   cannot be cloned.
      *  @return A new instance of ComponentEntity.
      */
+    @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         ComponentEntity newObject = (ComponentEntity) super.clone(workspace);
         newObject._container = null;
@@ -130,6 +131,7 @@ public class ComponentEntity<T extends ComponentPort> extends Entity<T> {
      *  @return The container, which is an instance of CompositeEntity.
      *  @see #setContainer(CompositeEntity)
      */
+    @Override
     public NamedObj getContainer() {
         return _container;
     }
@@ -167,6 +169,7 @@ public class ComponentEntity<T extends ComponentPort> extends Entity<T> {
      *  @exception NameDuplicationException If the name collides with
      *   an object already in the container.
      */
+    @Override
     public Instantiable instantiate(NamedObj container, String name)
             throws CloneNotSupportedException, IllegalActionException,
             NameDuplicationException {
@@ -232,6 +235,7 @@ public class ComponentEntity<T extends ComponentPort> extends Entity<T> {
      *  @exception IllegalActionException If this object has
      *   no container.
      */
+    @Override
     public int moveDown() throws IllegalActionException {
         CompositeEntity container = (CompositeEntity) getContainer();
 
@@ -267,6 +271,7 @@ public class ComponentEntity<T extends ComponentPort> extends Entity<T> {
      *  @exception IllegalActionException If this object has
      *   no container.
      */
+    @Override
     public int moveToFirst() throws IllegalActionException {
         CompositeEntity container = (CompositeEntity) getContainer();
 
@@ -304,6 +309,7 @@ public class ComponentEntity<T extends ComponentPort> extends Entity<T> {
      *  @exception IllegalActionException If this object has
      *   no container or if the index is out of bounds.
      */
+    @Override
     public int moveToIndex(int index) throws IllegalActionException {
         CompositeEntity container = (CompositeEntity) getContainer();
 
@@ -340,6 +346,7 @@ public class ComponentEntity<T extends ComponentPort> extends Entity<T> {
      *  @exception IllegalActionException If this object has
      *   no container.
      */
+    @Override
     public int moveToLast() throws IllegalActionException {
         CompositeEntity container = (CompositeEntity) getContainer();
 
@@ -375,6 +382,7 @@ public class ComponentEntity<T extends ComponentPort> extends Entity<T> {
      *  @exception IllegalActionException If this object has
      *   no container.
      */
+    @Override
     public int moveUp() throws IllegalActionException {
         CompositeEntity container = (CompositeEntity) getContainer();
 
@@ -414,8 +422,9 @@ public class ComponentEntity<T extends ComponentPort> extends Entity<T> {
      *  @exception NameDuplicationException If this entity already has a
      *   port with the specified name.
      */
+    @Override
     public Port newPort(String name) throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         try {
             _workspace.getWriteAccess();
 
@@ -438,6 +447,7 @@ public class ComponentEntity<T extends ComponentPort> extends Entity<T> {
      *  @exception IllegalActionException If the object does
      *   not exists and cannot be created.
      */
+    @Override
     public List propagateExistence() throws IllegalActionException {
         // Otherwise, _override probably doesn't get set in the
         // derived object that is created.
@@ -600,8 +610,9 @@ public class ComponentEntity<T extends ComponentPort> extends Entity<T> {
      *  @exception NameDuplicationException If there already is an entity
      *   in the container with the same name.
      */
+    @Override
     public void setName(String name) throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         if (name == null) {
             name = "";
         }
@@ -752,6 +763,7 @@ public class ComponentEntity<T extends ComponentPort> extends Entity<T> {
      *   and has the wrong class, or if the specified container is not
      *   an instance of CompositeEntity.
      */
+    @Override
     protected NamedObj _getContainedObject(NamedObj container,
             String relativeName) throws IllegalActionException {
         if (!(container instanceof CompositeEntity)) {
@@ -783,6 +795,7 @@ public class ComponentEntity<T extends ComponentPort> extends Entity<T> {
      *  @return A new object of the same class and name
      *   as this one.
      */
+    @Override
     protected NamedObj _propagateExistence(NamedObj container)
             throws IllegalActionException {
         try {

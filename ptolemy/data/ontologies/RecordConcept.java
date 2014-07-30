@@ -100,6 +100,7 @@ public class RecordConcept extends MapTypeInfiniteConcept<Concept> {
      *          does not have the same ontology as this one.
      *  @see ptolemy.data.ontologies.Concept#isAboveOrEqualTo(ptolemy.data.ontologies.Concept)
      */
+    @Override
     public int compare(Concept concept) throws IllegalActionException {
         if (concept.getOntology() == null
                 || !concept.getOntology().equals(getOntology())) {
@@ -172,6 +173,7 @@ public class RecordConcept extends MapTypeInfiniteConcept<Concept> {
      *  @param concept The other concept
      *  @return The concept that is the GLB of this and the given concept.
      */
+    @Override
     public Concept greatestLowerBound(Concept concept) {
         return _getBoundWithOtherConcept(concept, BoundType.GREATESTLOWER);
     }
@@ -181,6 +183,7 @@ public class RecordConcept extends MapTypeInfiniteConcept<Concept> {
      *  @param concept The other concept
      *  @return The concept that is the LUB of this and the given concept.
      */
+    @Override
     public Concept leastUpperBound(Concept concept) {
         return _getBoundWithOtherConcept(concept, BoundType.LEASTUPPER);
     }
@@ -306,7 +309,7 @@ public class RecordConcept extends MapTypeInfiniteConcept<Concept> {
      *  @exception IllegalActionException If the base class throws it.
      */
     protected RecordConcept(Ontology ontology) throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         super(ontology);
     }
 

@@ -193,6 +193,7 @@ public class EditorIcon extends Attribute {
      *  @exception CloneNotSupportedException Not thrown in this base class
      *  @return The new Attribute.
      */
+    @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         EditorIcon newObject = (EditorIcon) super.clone(workspace);
         newObject._containerToBe = null;
@@ -381,11 +382,11 @@ public class EditorIcon extends Attribute {
                             && _isPropertySet((NamedObj) settable, "_hide")) {
                         continue;
                     }
-                    
+
                     // Skip parameters whose names begin with underscore.
                     // These are intended to be hidden.
                     if (settable.getName().startsWith("_")) {
-                            continue;
+                        continue;
                     }
 
                     String name = settable.getName();

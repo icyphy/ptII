@@ -52,6 +52,7 @@ public class JTableComponentBuilder implements ComponentBuilder {
     public JTableComponentBuilder() {
     }
 
+    @Override
     public String getDeclaration(String name,
             java.util.Map<String, Object> beanProperties) {
         return "javax.swing.JTable "
@@ -61,19 +62,23 @@ public class JTableComponentBuilder implements ComponentBuilder {
                 + "Control);\n";
     }
 
+    @Override
     @SuppressWarnings("serial")
-        public java.awt.Component getInstance(
+    public java.awt.Component getInstance(
             java.util.Map<String, Object> beanProperties) throws Exception {
         JTable table = new JTable();
         table.setModel(new AbstractTableModel() {
+            @Override
             public int getRowCount() {
                 return 10;
             }
 
+            @Override
             public int getColumnCount() {
                 return 10;
             }
 
+            @Override
             public Object getValueAt(int row, int col) {
                 return "" + row + ":" + col;
             }
@@ -83,18 +88,22 @@ public class JTableComponentBuilder implements ComponentBuilder {
         return scrollPane;
     }
 
+    @Override
     public java.util.List<BeanProperty> getProperties() {
         return properties;
     }
 
+    @Override
     public boolean isComponentALayoutContainer() {
         return false;
     }
 
+    @Override
     public String toString() {
         return "javax.swing.JTable";
     }
 
+    @Override
     public ComponentDef getComponentDef(String name,
             Map<String, Object> beanProperties) {
         String imp = "import javax.swing.JTable;\n"

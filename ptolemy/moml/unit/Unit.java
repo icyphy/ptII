@@ -108,6 +108,7 @@ public class Unit implements UnitPresentation {
      * common expression "calorie second^-1".
      * @see ptolemy.moml.unit.UnitPresentation#descriptiveForm()
      */
+    @Override
     public String descriptiveForm() {
         StringBuffer retv = null;
         Unit unit = UnitLibrary.getUnit(this);
@@ -142,19 +143,19 @@ public class Unit implements UnitPresentation {
                 for (int i = 1; i < numerator.size(); i++) {
                     retv.append(" "
                             + ((UnitTerm) numerator.elementAt(i)).getUnit()
-                                    .getPrimaryLabel());
+                            .getPrimaryLabel());
                 }
             }
 
             if (denominator.size() > 0) {
                 retv.append("/"
                         + ((UnitTerm) denominator.elementAt(0)).getUnit()
-                                .getPrimaryLabel());
+                        .getPrimaryLabel());
 
                 for (int i = 1; i < denominator.size(); i++) {
                     retv.append(" "
                             + ((UnitTerm) denominator.elementAt(i)).getUnit()
-                                    .getPrimaryLabel());
+                            .getPrimaryLabel());
                 }
             }
 
@@ -211,6 +212,7 @@ public class Unit implements UnitPresentation {
      * @return True if this Unit equals the other Unit.  Return false
      * if the other object is null or not an instance of Unit.
      */
+    @Override
     public boolean equals(Object object) {
         if (object == null) {
             return false;
@@ -355,6 +357,7 @@ public class Unit implements UnitPresentation {
      *  categories and the hashCode() of the scale.
      *  @return A hash code value for this Unit.
      */
+    @Override
     public int hashCode() {
         int hashCode = getLabelsString().hashCode();
         for (int i = 0; i < UnitLibrary.getNumCategories(); i++) {
@@ -460,6 +463,7 @@ public class Unit implements UnitPresentation {
     /* (non-Javadoc)
      * @see java.lang.Object#toString()
      */
+    @Override
     public String toString() {
         StringBuffer retv = new StringBuffer("Unit:(" + getLabelsString()
                 + ") " + _scale + "*<" + _type[0]);

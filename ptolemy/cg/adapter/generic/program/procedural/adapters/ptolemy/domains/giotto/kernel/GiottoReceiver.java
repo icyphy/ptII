@@ -47,12 +47,12 @@ import ptolemy.kernel.util.InternalErrorException;
 
 /** The adapter for Giotto receiver.
  * Based on the SDF reciever created by Jia Zou, Man-Kit Leung, Isaac Liu, Bert Rodiers
-*  @author Shanna-Shaye Forbes
-*  @version $Id$
-*  @since Ptolemy II 10.0
-*  @Pt.ProposedRating Red (sssf)
-*  @Pt.AcceptedRating Red (sssf)
-*/
+ *  @author Shanna-Shaye Forbes
+ *  @version $Id$
+ *  @since Ptolemy II 10.0
+ *  @Pt.ProposedRating Red (sssf)
+ *  @Pt.AcceptedRating Red (sssf)
+ */
 public class GiottoReceiver extends Receiver {
 
     /** Construct an adapter for an Giotto receiver.
@@ -74,6 +74,7 @@ public class GiottoReceiver extends Receiver {
      *  @exception IllegalActionException If thrown while getting the component,
      *  getting the adapter, getting the director or getting the port reference.
      */
+    @Override
     public String generateGetCode(String offset) throws IllegalActionException {
         TypedIOPort port = (TypedIOPort) getComponent().getContainer();
         int channel = port.getChannelForReceiver(getComponent());
@@ -92,6 +93,7 @@ public class GiottoReceiver extends Receiver {
      *  is returned
      *  @exception IllegalActionException Not thrown in this base class.
      */
+    @Override
     public String generateHasTokenCode(String offset)
             throws IllegalActionException {
         return "true"; // Assume "true" is a defined constant.
@@ -105,6 +107,7 @@ public class GiottoReceiver extends Receiver {
      *  @exception IllegalActionException If thrown while getting the component,
      *  getting the adapter, getting the director or getting the port reference.
      */
+    @Override
     public String generatePutCode(IOPort sourcePort, String offset, String token)
             throws IllegalActionException {
         TypedIOPort port = (TypedIOPort) getComponent().getContainer();
@@ -138,7 +141,7 @@ public class GiottoReceiver extends Receiver {
         if (!(sourcePort instanceof TypedIOPort)) {
             throw new InternalErrorException(sourcePort, null,
                     "Could not cast " + sourcePort.getFullName()
-                            + " to a TypedIOPort.");
+                    + " to a TypedIOPort.");
         } else {
             //TypedIOPort sourceTypedIOPort = (TypedIOPort) sourcePort;
             try {
@@ -159,6 +162,7 @@ public class GiottoReceiver extends Receiver {
 
     }
 
+    @Override
     protected String _generateTypeConvertStatement(Channel source)
             throws IllegalActionException {
 
@@ -183,6 +187,7 @@ public class GiottoReceiver extends Receiver {
      *  This is probably because the information of the receiver is in the director of
      *  the container?
      */
+    @Override
     protected StaticSchedulingDirector _getDirectorForReceiver()
             throws IllegalActionException {
         return (StaticSchedulingDirector) super._getDirectorForReceiver();

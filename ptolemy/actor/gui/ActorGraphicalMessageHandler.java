@@ -65,6 +65,7 @@ public class ActorGraphicalMessageHandler extends GraphicalMessageHandler {
      *  is added to the array as the last element.  Otherwise, the
      *  options argument is returned.
      */
+    @Override
     protected Object[] _checkThrowableNameable(Object[] options,
             Throwable throwable) {
 
@@ -111,6 +112,7 @@ public class ActorGraphicalMessageHandler extends GraphicalMessageHandler {
      *  @param throwable The throwable that may be a KernelException
      *  or KernelRuntimeException.
      */
+    @Override
     protected void _showNameable(Throwable throwable) {
         Nameable nameable1 = _getNameable(throwable);
         if (nameable1 != null) {

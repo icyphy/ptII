@@ -112,6 +112,7 @@ public class Memory extends SynchronousFixTransformer {
      * @exception IllegalActionException
      *  @exception IllegalActionException If the function is not recognized.
      */
+    @Override
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         super.attributeChanged(attribute);
@@ -123,7 +124,7 @@ public class Memory extends SynchronousFixTransformer {
 
         } else if (attribute.getName().equals("outputPrecision")) {
             _dataWidth = new Precision(getPortPrecision(output))
-                    .getNumberOfBits();
+            .getNumberOfBits();
         }
     }
 
@@ -131,6 +132,7 @@ public class Memory extends SynchronousFixTransformer {
      *  If there is no inputs, then produce no output.
      *  @exception IllegalActionException If there is no director.
      */
+    @Override
     public void fire() throws IllegalActionException {
         super.fire();
 
@@ -180,6 +182,7 @@ public class Memory extends SynchronousFixTransformer {
     /**
      *
      */
+    @Override
     public void initialize() throws IllegalActionException {
         super.initialize();
         _storage = new FixToken[_capacity];
@@ -189,6 +192,7 @@ public class Memory extends SynchronousFixTransformer {
      *        <i>dataIn</i> and <i>writeEnable</i> ports do not depend on
      *        the <i>output</i> in a firing.
      */
+    @Override
     public void preinitialize() throws IllegalActionException {
         super.preinitialize();
         removeDependency(address, output);

@@ -115,6 +115,7 @@ public class CurrentTime extends TimedSource {
      *  domain).  Otherwise, current time is that reported by the director.
      *  @exception IllegalActionException If send() throws it.
      */
+    @Override
     public void fire() throws IllegalActionException {
         // For domain polymorphism getCurrentTime(channel_number) has
         // to be called before get(channel_number).  Currently,

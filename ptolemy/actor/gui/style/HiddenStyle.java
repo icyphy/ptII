@@ -94,6 +94,7 @@ public class HiddenStyle extends ParameterEditorStyle {
      *  @param param The attribute that this annotates.
      *  @return True.
      */
+    @Override
     public boolean acceptable(Settable param) {
         return true;
     }
@@ -102,6 +103,7 @@ public class HiddenStyle extends ParameterEditorStyle {
      *  attribute containing this style.
      *  @param query The given query.
      */
+    @Override
     public void addEntry(PtolemyQuery query) {
     }
 }

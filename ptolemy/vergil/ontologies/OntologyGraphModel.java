@@ -94,6 +94,7 @@ public class OntologyGraphModel extends AbstractBasicGraphModel {
      *   e.g. the view that made this call.
      *  @param edge The edge to be disconnected.
      */
+    @Override
     public void disconnectEdge(Object eventSource, Object edge) {
         Object head = _relationModel.getHead(edge);
         Object tail = _relationModel.getTail(edge);
@@ -126,6 +127,7 @@ public class OntologyGraphModel extends AbstractBasicGraphModel {
      *  @param edge The edge.
      *  @return A valid MoML string.
      */
+    @Override
     public String getDeleteEdgeMoML(Object edge) {
         if (!(getEdgeModel(edge) instanceof RelationModel)) {
             return "";
@@ -140,6 +142,7 @@ public class OntologyGraphModel extends AbstractBasicGraphModel {
      *  @param node The node.
      *  @return A valid MoML string.
      */
+    @Override
     public String getDeleteNodeMoML(Object node) {
         if (!(getNodeModel(node) instanceof NamedObjNodeModel)) {
             return "";
@@ -155,6 +158,7 @@ public class OntologyGraphModel extends AbstractBasicGraphModel {
      *  @return An instance of RelationModel if the object is a Link.
      *   Otherwise return null.
      */
+    @Override
     public EdgeModel getEdgeModel(Object edge) {
         if (edge instanceof Link) {
             return _relationModel;
@@ -172,6 +176,7 @@ public class OntologyGraphModel extends AbstractBasicGraphModel {
      *  @return The node model for the specified node, or null if there
      *   is none.
      */
+    @Override
     public NodeModel getNodeModel(Object node) {
         if (node instanceof Locatable) {
             Object container = ((Locatable) node).getContainer();
@@ -202,6 +207,7 @@ public class OntologyGraphModel extends AbstractBasicGraphModel {
      *  @return The semantic object associated with this element, or null
      *   if the object is not recognized.
      */
+    @Override
     public Object getSemanticObject(Object element) {
         if (element instanceof Link) {
             return ((Link) element).getRelation();
@@ -216,6 +222,7 @@ public class OntologyGraphModel extends AbstractBasicGraphModel {
      *   e.g. the view that made this call.
      *  @param node The node to be removed.
      */
+    @Override
     public void removeNode(Object eventSource, Object node) {
         if (!(getNodeModel(node) instanceof NamedObjNodeModel)) {
             return;
@@ -234,6 +241,7 @@ public class OntologyGraphModel extends AbstractBasicGraphModel {
      *  @return True if the model was successfully updated, or false if
      *   further change requests were queued.
      */
+    @Override
     protected boolean _update() {
         // Go through all the links that currently exist, and remove
         // any that don't have both ends in the model.
@@ -396,6 +404,7 @@ public class OntologyGraphModel extends AbstractBasicGraphModel {
          *  @param node The node to be deleted.
          *  @return A valid MoML string.
          */
+        @Override
         public String getDeleteNodeMoML(Object node) {
             NamedObj deleteObj = ((Locatable) node).getContainer();
             NamedObj container = deleteObj.getContainer();
@@ -408,6 +417,7 @@ public class OntologyGraphModel extends AbstractBasicGraphModel {
          *  @return The container of the icon's container, which should
          *   be the root of this graph model.
          */
+        @Override
         public Object getParent(Object node) {
             return ((Locatable) node).getContainer().getContainer();
         }
@@ -419,6 +429,7 @@ public class OntologyGraphModel extends AbstractBasicGraphModel {
          *  @return An iterator of Link objects, all of which have
          *   the given node as their head.
          */
+        @Override
         public Iterator inEdges(Object node) {
             return _getEdgeIterator(node, true);
         }
@@ -430,6 +441,7 @@ public class OntologyGraphModel extends AbstractBasicGraphModel {
          *  @return An iterator of Link objects, all of which have
          *   the given node as their tail.
          */
+        @Override
         public Iterator outEdges(Object node) {
             return _getEdgeIterator(node, false);
         }
@@ -440,6 +452,7 @@ public class OntologyGraphModel extends AbstractBasicGraphModel {
          *   the node.
          *  @param node The node to be removed.
          */
+        @Override
         public void removeNode(final Object eventSource, Object node) {
             NamedObj deleteObj = ((Locatable) node).getContainer();
 
@@ -480,6 +493,7 @@ public class OntologyGraphModel extends AbstractBasicGraphModel {
             MoMLChangeRequest request = new MoMLChangeRequest(
                     OntologyGraphModel.this, container, moml);
             request.addChangeListener(new ChangeListener() {
+                @Override
                 public void changeFailed(ChangeRequest change,
                         Exception exception) {
                     // If we fail, then issue structureChanged.
@@ -487,6 +501,7 @@ public class OntologyGraphModel extends AbstractBasicGraphModel {
                             GraphEvent.STRUCTURE_CHANGED, getRoot()));
                 }
 
+                @Override
                 public void changeExecuted(ChangeRequest change) {
                     // If we succeed, then issue structureChanged, since
                     // this is likely connected to something.
@@ -551,6 +566,7 @@ public class OntologyGraphModel extends AbstractBasicGraphModel {
          *  @param head The node to attach to.
          *  @return True if the node can be attached to the head of the edge.
          */
+        @Override
         public boolean acceptHead(Object edge, Object head) {
             return _acceptConnection(edge, head);
         }
@@ -561,6 +577,7 @@ public class OntologyGraphModel extends AbstractBasicGraphModel {
          *  @param tail The node to attach to.
          *  @return True if the node can be attached to the tail of the edge.
          */
+        @Override
         public boolean acceptTail(Object edge, Object tail) {
             return _acceptConnection(edge, tail);
         }
@@ -590,6 +607,7 @@ public class OntologyGraphModel extends AbstractBasicGraphModel {
          *  @see #getTail(Object)
          *  @see #setHead(Object, Object)
          */
+        @Override
         public Object getHead(Object edge) {
             return ((Link) edge).getHead();
         }
@@ -600,6 +618,7 @@ public class OntologyGraphModel extends AbstractBasicGraphModel {
          *  @see #getHead(Object)
          *  @see #setTail(Object, Object)
          */
+        @Override
         public Object getTail(Object edge) {
             return ((Link) edge).getTail();
         }
@@ -609,6 +628,7 @@ public class OntologyGraphModel extends AbstractBasicGraphModel {
          *  @param edge The edge, which is assumed to be a Link object.
          *  @return True.
          */
+        @Override
         public boolean isDirected(Object edge) {
             return true;
         }
@@ -625,6 +645,7 @@ public class OntologyGraphModel extends AbstractBasicGraphModel {
 
             MoMLChangeRequest request = new MoMLChangeRequest(
                     OntologyGraphModel.this, container, removeEdgeMoML) {
+                @Override
                 protected void _execute() throws Exception {
                     super._execute();
                     relationLink.setHead(null);
@@ -635,11 +656,13 @@ public class OntologyGraphModel extends AbstractBasicGraphModel {
 
             // Handle what happens if the mutation fails.
             request.addChangeListener(new ChangeListener() {
+                @Override
                 public void changeFailed(ChangeRequest change,
                         Exception exception) {
                     // Ignore... nothing we can do about it anyway.
                 }
 
+                @Override
                 public void changeExecuted(ChangeRequest change) {
                     _linkSet.remove(relationLink);
                 }
@@ -657,6 +680,7 @@ public class OntologyGraphModel extends AbstractBasicGraphModel {
          *  @see #setTail(Object, Object)
          *  @see #getHead(Object)
          */
+        @Override
         public void setHead(final Object edge, final Object head) {
             _setHeadOrTail(edge, head, true);
         }
@@ -670,6 +694,7 @@ public class OntologyGraphModel extends AbstractBasicGraphModel {
          *  @see #setHead(Object, Object)
          *  @see #getTail(Object)
          */
+        @Override
         public void setTail(final Object edge, final Object tail) {
             _setHeadOrTail(edge, tail, false);
         }
@@ -917,6 +942,7 @@ public class OntologyGraphModel extends AbstractBasicGraphModel {
             final String relationNameToAdd = relationName;
             MoMLChangeRequest request = new MoMLChangeRequest(
                     OntologyGraphModel.this, container, moml.toString()) {
+                @Override
                 protected void _execute() throws Exception {
                     super._execute();
                     if (isHead) {
@@ -935,6 +961,7 @@ public class OntologyGraphModel extends AbstractBasicGraphModel {
 
             // Handle what happens if the mutation fails.
             request.addChangeListener(new ChangeListener() {
+                @Override
                 public void changeFailed(ChangeRequest change,
                         Exception exception) {
                     // If we fail here, then we remove the link entirely.
@@ -948,12 +975,13 @@ public class OntologyGraphModel extends AbstractBasicGraphModel {
                     // called request or we get a compile error.
                     MoMLChangeRequest requestChange = new MoMLChangeRequest(
                             OntologyGraphModel.this, container, failmoml
-                                    .toString());
+                            .toString());
 
                     // Fail moml execution not undoable
                     container.requestChange(requestChange);
                 }
 
+                @Override
                 public void changeExecuted(ChangeRequest change) {
                     if (GraphUtilities.isPartiallyContainedEdge(relationLink,
                             getRoot(), OntologyGraphModel.this)) {

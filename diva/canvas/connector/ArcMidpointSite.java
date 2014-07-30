@@ -57,12 +57,14 @@ public class ArcMidpointSite extends AbstractSite {
 
     /** Get the figure to which this site is attached.
      */
+    @Override
     public Figure getFigure() {
         return _parentFigure;
     }
 
     /** Get the ID of this site.
      */
+    @Override
     public int getID() {
         return _id;
     }
@@ -71,6 +73,7 @@ public class ArcMidpointSite extends AbstractSite {
      * is located in the center of the parent figure's bounding
      * box.
      */
+    @Override
     public double getX() {
         return _parentFigure.getArcMidpoint().getX();
     }
@@ -79,6 +82,7 @@ public class ArcMidpointSite extends AbstractSite {
      * is located in the center of the parent figure's bounding
      * box.
      */
+    @Override
     public double getY() {
         return _parentFigure.getArcMidpoint().getY();
     }

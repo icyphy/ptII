@@ -95,6 +95,7 @@ public class BoxedValueIcon extends AttributeValueIcon {
      *  box depends on the value.
      *  @return A new figure.
      */
+    @Override
     public Figure createBackgroundFigure() {
         String displayString = _displayString();
         double width = 60;

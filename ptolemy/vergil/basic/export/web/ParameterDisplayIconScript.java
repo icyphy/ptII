@@ -79,6 +79,7 @@ public class ParameterDisplayIconScript extends DefaultIconScript {
      * @return False, since default content should only be added if no content
      * already exists
      */
+    @Override
     public boolean isOverwriteable() {
         return false;
     }
@@ -157,6 +158,7 @@ public class ParameterDisplayIconScript extends DefaultIconScript {
      *  @exception IllegalActionException If there is a problem creating the content
      * or if there is a name duplication with the created attributes
      */
+    @Override
     protected void _provideDefaultAttributes(NamedObj object,
             WebExporter exporter) throws IllegalActionException {
 
@@ -166,8 +168,8 @@ public class ParameterDisplayIconScript extends DefaultIconScript {
                 + getParameterTable(object);
 
         // Create WebAttribute for the class "tooltip".
-        webAttribute = WebAttribute.appendToWebAttribute(
-                object, "classWebAttribute", "class", "tooltip");
+        webAttribute = WebAttribute.appendToWebAttribute(object,
+                "classWebAttribute", "class", "tooltip");
         exporter.defineAttribute(webAttribute, true);
 
         // Content of the tooltip.
@@ -188,6 +190,7 @@ public class ParameterDisplayIconScript extends DefaultIconScript {
      *  @exception IllegalActionException If evaluating the value
      *   of this parameter fails.
      */
+    @Override
     protected void _provideElements(WebExporter exporter)
             throws IllegalActionException {
         // FIXME:  How to do this, from old comments?
@@ -213,8 +216,8 @@ public class ParameterDisplayIconScript extends DefaultIconScript {
                         + "   document.getElementById(\"afterImage\").innerHTML = text;\n"
                         + "};\n" + "</script>");
         exporter.defineElement(webElement, true);
-        */
-        
+         */
+
         // Define the JavaScript command to initialize tooltipster,
         // the JQuery library being used to display parameters.  Script with this name
         // should only be included once (onceOnly -> true)
@@ -223,30 +226,27 @@ public class ParameterDisplayIconScript extends DefaultIconScript {
         webElement.setParent(WebElement.HEAD);
         webElement.setExpression("<script type=\"text/javascript\">\n"
                 + "$(document).ready(function() {\n"
-            + "  $('.tooltip').tooltipster({\n"
-            + "    contentAsHTML: true\n"
-            + "  });\n"
-                + "});\n"
-            + "</script>");
+                + "  $('.tooltip').tooltipster({\n"
+                + "    contentAsHTML: true\n" + "  });\n" + "});\n"
+                + "</script>");
         exporter.defineElement(webElement, true);
-
 
         // Put a destination paragraph in the end section of the HTML.
         webElement = WebElement.createWebElement(getContainer(),
                 "afterImageWebElement", "afterImage");
         webElement.setParent(WebElement.END);
         webElement
-                .setExpression("<div id=\"afterImage\">\n"
-                        + "  <script type=\"text/javascript\">\n"
-                        + "     writeText('Mouse over the icons to see their parameters. "
-                        + "Click on composites and plotters to reveal their contents (if provided).');\n"
-                        + "  </script>\n"
-                        + "  <noscript>\n"
-                        + "     Your browser does not support JavaScript so moving the mouse\n"
-                        + "     over the actors will not display their parameters. To enable\n"
-                        + "     JavaScript, consult the security preferences of your browser.\n"
-                        + "     <br/>See <a href=\"http://support.microsoft.com/gp/howtoscript\"><code>http://support.microsoft.com/gp/howtoscript</code></a> for details.\n"
-                        + "  </noscript>\n" + "</div>");
+        .setExpression("<div id=\"afterImage\">\n"
+                + "  <script type=\"text/javascript\">\n"
+                + "     writeText('Mouse over the icons to see their parameters. "
+                + "Click on composites and plotters to reveal their contents (if provided).');\n"
+                + "  </script>\n"
+                + "  <noscript>\n"
+                + "     Your browser does not support JavaScript so moving the mouse\n"
+                + "     over the actors will not display their parameters. To enable\n"
+                + "     JavaScript, consult the security preferences of your browser.\n"
+                + "     <br/>See <a href=\"http://support.microsoft.com/gp/howtoscript\"><code>http://support.microsoft.com/gp/howtoscript</code></a> for details.\n"
+                + "  </noscript>\n" + "</div>");
         exporter.defineElement(webElement, true);
     }
 }

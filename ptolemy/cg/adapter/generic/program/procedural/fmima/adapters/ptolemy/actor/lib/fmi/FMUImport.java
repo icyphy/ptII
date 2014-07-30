@@ -57,18 +57,25 @@ public class FMUImport extends FMIMACodeGeneratorAdapter {
      *  @exception IllegalActionException If there is a problem getting the adapter, getting
      *  the director or generating FMIMA for the director.
      */
+    @Override
     public String generateFMIMA() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
         //NamedProgramCodeGeneratorAdapter adapter = (NamedProgramCodeGeneratorAdapter) getAdapter(getContainer());
         ptolemy.actor.lib.fmi.FMUImport actor = (ptolemy.actor.lib.fmi.FMUImport) getComponent();
-        code.append(getCodeGenerator().comment("ptolemy/cg/adapter/generic/program/procedural/fmima/adapters/ptolemy/actor/lib/fmi/FMUImport.java " + _eol
-                        + "   " + actor.getName() + " is a FMUImport: "));
+        code.append(getCodeGenerator()
+                .comment(
+                        "ptolemy/cg/adapter/generic/program/procedural/fmima/adapters/ptolemy/actor/lib/fmi/FMUImport.java "
+                                + _eol
+                                + "   "
+                                + actor.getName()
+                                + " is a FMUImport: "));
         for (TypedIOPort input : actor.inputPortList()) {
             code.append(getCodeGenerator().comment(" input " + input.getName()));
         }
 
         for (TypedIOPort output : actor.outputPortList()) {
-            code.append(getCodeGenerator().comment(" output " + output.getName()));
+            code.append(getCodeGenerator().comment(
+                    " output " + output.getName()));
         }
 
         return /*processCode(code.toString())*/code.toString();

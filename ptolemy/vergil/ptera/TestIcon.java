@@ -62,7 +62,7 @@ import diva.util.java2d.Polygon2D;
  @since Ptolemy II 8.0
  @Pt.ProposedRating Red (tfeng)
  @Pt.AcceptedRating Red (tfeng)
-*/
+ */
 public class TestIcon extends NameIcon {
 
     /** Create a new icon with the given name in the given container.
@@ -86,6 +86,7 @@ public class TestIcon extends NameIcon {
     /** Create a background Figure.
      *  @return The figure.
      */
+    @Override
     public Figure createBackgroundFigure() {
         String name = "No Name";
         NamedObj container = getContainer();
@@ -141,6 +142,7 @@ public class TestIcon extends NameIcon {
     /** Create a Figure.
      *  @return The figure.
      */
+    @Override
     public Figure createFigure() {
         CompositeFigure figure = (CompositeFigure) super.createFigure();
         LabelFigure label = null;
@@ -195,6 +197,7 @@ public class TestIcon extends NameIcon {
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
+    @Override
     protected Paint _getFill() {
         Parameter colorParameter;
         try {
@@ -204,13 +207,13 @@ public class TestIcon extends NameIcon {
                 if (array.length() == 4) {
                     Color color = new Color(
                             (float) ((ScalarToken) array.getElement(0))
-                                    .doubleValue(),
+                            .doubleValue(),
                             (float) ((ScalarToken) array.getElement(1))
-                                    .doubleValue(),
+                            .doubleValue(),
                             (float) ((ScalarToken) array.getElement(2))
-                                    .doubleValue(),
+                            .doubleValue(),
                             (float) ((ScalarToken) array.getElement(3))
-                                    .doubleValue());
+                            .doubleValue());
                     return color;
                 }
             }

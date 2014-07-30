@@ -124,8 +124,9 @@ public abstract class ParameterEditorStyle extends Attribute {
      *  @exception NameDuplicationException If the container already has
      *   an attribute with the name of this attribute.
      */
+    @Override
     public void setContainer(NamedObj container) throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         // We want this check, but here is not the place.
         //     if (container != null && !(container instanceof Settable)) {
         //    throw new IllegalActionException(this, container,

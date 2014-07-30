@@ -53,7 +53,7 @@ import ptolemy.kernel.util.NamedObj;
  @Pt.AcceptedRating Red (pd)
  */
 public class SCRTableauFactory extends TableauFactory {
-        
+
     /** Create a factory with the given name and container.
      *  @param container The container.
      *  @param name The name.
@@ -79,25 +79,27 @@ public class SCRTableauFactory extends TableauFactory {
      *  @exception Exception If the factory should be able to create a
      *   Tableau for the effigy, but something goes wrong.
      */
+    @Override
     public Tableau createTableau(Effigy effigy) throws Exception {
         Configuration configuration = (Configuration) effigy.toplevel();
         SCRModel model = null;
         if (effigy instanceof PtolemyEffigy) {
-                PtolemyEffigy ptolemyEffigy = (PtolemyEffigy) effigy;
-                if (ptolemyEffigy.getModel() instanceof SCRModel) {
-                        model = (SCRModel) ptolemyEffigy.getModel();
-                } else {
-                        throw new IllegalActionException("SCRTableau cannot be created for models other than SCRModels");
-                }
+            PtolemyEffigy ptolemyEffigy = (PtolemyEffigy) effigy;
+            if (ptolemyEffigy.getModel() instanceof SCRModel) {
+                model = (SCRModel) ptolemyEffigy.getModel();
+            } else {
+                throw new IllegalActionException(
+                        "SCRTableau cannot be created for models other than SCRModels");
+            }
         }
         if (model == null) {
-            throw new InternalErrorException(effigy, null,  "The effigy " + effigy
-                    + " was a " + effigy.getClass()
+            throw new InternalErrorException(effigy, null, "The effigy "
+                    + effigy + " was a " + effigy.getClass()
                     + " not a PtolemyEffigy.");
         } else {
             FSMActor controller = ((FSMDirector) model.getDirector())
-                .getController();
-       
+                    .getController();
+
             Tableau tableau = configuration.openModel(controller);
             tableau.setContainer(effigy);
             return tableau;

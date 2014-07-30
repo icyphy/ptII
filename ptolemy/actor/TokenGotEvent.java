@@ -48,6 +48,7 @@ import ptolemy.data.Token;
  @Pt.ProposedRating Red (pnorbert)
  @Pt.AcceptedRating Red (pnorbert)
  */
+@Deprecated
 public class TokenGotEvent {
     /** Create a new token got event with the given parameters.  This
      *  constructor is used when an array of tokens is taken.
@@ -143,6 +144,7 @@ public class TokenGotEvent {
     /** Return a string representation of this event.
      *  @return A user-readable string describing the event.
      */
+    @Override
     public String toString() {
         StringBuffer buffer = new StringBuffer();
         buffer.append("The port " + _port + " took ");

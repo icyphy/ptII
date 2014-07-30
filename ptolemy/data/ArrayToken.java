@@ -218,6 +218,7 @@ public class ArrayToken extends AbstractNotConvertibleToken {
      *   token, or if multiplication is not supported between the elements
      *   of this array and the argument.
      */
+    @Override
     public Token add(Token rightArgument) throws IllegalActionException {
         try {
             return _add(rightArgument);
@@ -245,6 +246,7 @@ public class ArrayToken extends AbstractNotConvertibleToken {
      *   token, or if multiplication is not supported between the elements
      *   of this array and the argument.
      */
+    @Override
     public Token addReverse(Token leftArgument) throws IllegalActionException {
         try {
             return _add(leftArgument);
@@ -422,6 +424,7 @@ public class ArrayToken extends AbstractNotConvertibleToken {
      *   token, or if division is not supported between the elements
      *   of this array and the argument.
      */
+    @Override
     public Token divide(Token rightArgument) throws IllegalActionException {
         try {
             return _divide(rightArgument);
@@ -446,6 +449,7 @@ public class ArrayToken extends AbstractNotConvertibleToken {
      *   token, or if division is not supported between the elements
      *   of this array and the argument.
      */
+    @Override
     public Token divideReverse(Token rightArgument)
             throws IllegalActionException {
         try {
@@ -609,6 +613,7 @@ public class ArrayToken extends AbstractNotConvertibleToken {
      *  @return True if the argument is an array token of the same length
      *   and the elements are equal to that of this token.
      */
+    @Override
     public boolean equals(Object object) {
         if (object == null) {
             return false;
@@ -717,6 +722,7 @@ public class ArrayToken extends AbstractNotConvertibleToken {
     /** Return the type of this ArrayToken.
      *  @return An ArrayType.
      */
+    @Override
     public Type getType() {
         return new ArrayType(getElementType(), length());
     }
@@ -727,6 +733,7 @@ public class ArrayToken extends AbstractNotConvertibleToken {
      *  there is no element type, in which case it returns the superclass hash code.
      *  @return A hash code value for this token.
      */
+    @Override
     public int hashCode() {
         if (length() > 0) {
             return getElement(0).hashCode();
@@ -753,6 +760,7 @@ public class ArrayToken extends AbstractNotConvertibleToken {
      *  @exception IllegalActionException If the argument token and
      *   this token are implemented in different classes.
      */
+    @Override
     public BooleanToken isCloseTo(Token token, double epsilon)
             throws IllegalActionException {
         if (!(token instanceof ArrayToken)) {
@@ -776,6 +784,7 @@ public class ArrayToken extends AbstractNotConvertibleToken {
      *  Nil or missing tokens occur when a data source is sparsely populated.
      *  @return True if the token is the {@link #NIL} token.
      */
+    @Override
     public boolean isNil() {
         // We use a method here so that we can easily change how
         // we determine if a token is nil without modify lots of classes.
@@ -799,6 +808,7 @@ public class ArrayToken extends AbstractNotConvertibleToken {
      *  this token are implemented in different classes, or the
      *  operation does not make sense for the given types.
      */
+    @Override
     public Token modulo(Token rightArgument) throws IllegalActionException {
         try {
             return _modulo(rightArgument);
@@ -820,6 +830,7 @@ public class ArrayToken extends AbstractNotConvertibleToken {
      *  this token are implemented in different classes, or the
      *  operation does not make sense for the given types.
      */
+    @Override
     public Token moduloReverse(Token rightArgument)
             throws IllegalActionException {
         try {
@@ -845,6 +856,7 @@ public class ArrayToken extends AbstractNotConvertibleToken {
      *   token, or if multiplication is not supported between the elements
      *   of this array and the argument.
      */
+    @Override
     public Token multiply(Token rightArgument) throws IllegalActionException {
         try {
             return _multiply(rightArgument);
@@ -869,6 +881,7 @@ public class ArrayToken extends AbstractNotConvertibleToken {
      *   token, or if multiplication is not supported between the elements
      *   of this array and the argument.
      */
+    @Override
     public Token multiplyReverse(Token leftArgument)
             throws IllegalActionException {
         try {
@@ -891,6 +904,7 @@ public class ArrayToken extends AbstractNotConvertibleToken {
      *  @exception IllegalActionException If multiplicative identity is not
      *   supported by the element token.
      */
+    @Override
     public Token one() throws IllegalActionException {
         Token[] oneValueArray = new Token[length()];
 
@@ -982,6 +996,7 @@ public class ArrayToken extends AbstractNotConvertibleToken {
      *   token or length 1, or if division is not supported between the elements
      *   of this array and the argument.
      */
+    @Override
     public Token subtract(Token rightArgument) throws IllegalActionException {
         try {
             return _subtract(rightArgument);
@@ -1006,6 +1021,7 @@ public class ArrayToken extends AbstractNotConvertibleToken {
      *   token or length 1, or if division is not supported between the elements
      *   of this array and the argument.
      */
+    @Override
     public Token subtractReverse(Token rightArgument)
             throws IllegalActionException {
         try {
@@ -1024,6 +1040,7 @@ public class ArrayToken extends AbstractNotConvertibleToken {
      *  @return A string beginning with "{" that contains expressions
      *  for every element in the array separated by commas, ending with "}".
      */
+    @Override
     public String toString() {
         StringBuffer buffer = new StringBuffer("{");
 
@@ -1085,6 +1102,7 @@ public class ArrayToken extends AbstractNotConvertibleToken {
      *  @exception IllegalActionException If additive identity is not
      *  supported by an element token.
      */
+    @Override
     public Token zero() throws IllegalActionException {
         if (length() == 0) {
             return this;
@@ -1123,6 +1141,7 @@ public class ArrayToken extends AbstractNotConvertibleToken {
      *  ArrayToken of different length, or calling the add method of
      *  an element token throws it.
      */
+    @Override
     protected Token _add(Token rightArgument) throws IllegalActionException {
         Token[] result = new Token[length()];
         if (rightArgument instanceof ArrayToken) {
@@ -1172,6 +1191,7 @@ public class ArrayToken extends AbstractNotConvertibleToken {
      *   ArrayToken of different length, or calling the divide method
      *   of the element token throws it.
      */
+    @Override
     protected Token _divide(Token rightArgument) throws IllegalActionException {
         Token[] result = new Token[length()];
         if (rightArgument instanceof ArrayToken) {
@@ -1249,6 +1269,7 @@ public class ArrayToken extends AbstractNotConvertibleToken {
      *  @return A true-valued token if the first argument is close
      *  to this token.
      */
+    @Override
     protected BooleanToken _isCloseTo(Token token, double epsilon)
             throws IllegalActionException {
         ArrayToken rightArray = (ArrayToken) token;
@@ -1280,6 +1301,7 @@ public class ArrayToken extends AbstractNotConvertibleToken {
      *   support this comparison.
      *  @return A true-valued token if the argument is equal.
      */
+    @Override
     protected BooleanToken _isEqualTo(Token token)
             throws IllegalActionException {
         if (isNil() || token.isNil()) {
@@ -1311,6 +1333,7 @@ public class ArrayToken extends AbstractNotConvertibleToken {
      *  ArrayToken of different length, or calling the modulo method
      *  of the element token throws it.
      */
+    @Override
     protected Token _modulo(Token rightArgument) throws IllegalActionException {
         Token[] result = new Token[length()];
         if (rightArgument instanceof ArrayToken) {
@@ -1385,6 +1408,7 @@ public class ArrayToken extends AbstractNotConvertibleToken {
      *  ArrayToken of different length, or calling the multiply method
      *  of the element token throws it.
      */
+    @Override
     protected Token _multiply(Token rightArgument)
             throws IllegalActionException {
         Token[] result = new Token[length()];
@@ -1433,6 +1457,7 @@ public class ArrayToken extends AbstractNotConvertibleToken {
      *  ArrayToken of different length, or calling the subtract method
      *  of the element token throws it.
      */
+    @Override
     protected Token _subtract(Token rightArgument)
             throws IllegalActionException {
         Token[] result = new Token[length()];

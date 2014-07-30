@@ -215,6 +215,7 @@ public class DesktopContext extends AppContextDelegate implements MDIContext {
      * and closing operations should be handled by adding a view
      * listener instead.
      */
+    @Override
     public void addContentPane(String title, JComponent pane) {
         JInternalFrame iframe = new DesktopInternalFrame(title, true, true,
                 true, true);
@@ -247,6 +248,7 @@ public class DesktopContext extends AppContextDelegate implements MDIContext {
     /**
      * Add a view listener to this frame.
      */
+    @Override
     public void addViewListener(ViewListener listener) {
         _listeners.add(ViewListener.class, listener);
     }
@@ -255,6 +257,7 @@ public class DesktopContext extends AppContextDelegate implements MDIContext {
      * pane. In this class, this will return the content of the
      * topmost internal frame.
      */
+    @Override
     public JComponent getCurrentContentPane() {
         return _currentPane;
     }
@@ -262,6 +265,7 @@ public class DesktopContext extends AppContextDelegate implements MDIContext {
     /**
      * Return the icon that is displayed in the frame.
      */
+    @Override
     public Icon getFrameIcon() {
         return _frameIcon;
     }
@@ -337,6 +341,7 @@ public class DesktopContext extends AppContextDelegate implements MDIContext {
     /** Remove the given content pane from the display and close.
      *  This assumes a subsequent call to setCurrentContentPane.
      */
+    @Override
     public void removeContentPane(JComponent pane) {
         // Watch out if we are removing the pane that is currently maximized.
         if (pane == _currentPane) {
@@ -356,6 +361,7 @@ public class DesktopContext extends AppContextDelegate implements MDIContext {
     /**
      * Remove a view listener from this frame.
      */
+    @Override
     public void removeViewListener(ViewListener listener) {
         _listeners.remove(ViewListener.class, listener);
     }
@@ -365,6 +371,7 @@ public class DesktopContext extends AppContextDelegate implements MDIContext {
      * be displayed maximized. Otherwise, deiconify it if it is
      * iconified, and raise it to the front.
      */
+    @Override
     public void setCurrentContentPane(JComponent pane) {
         JInternalFrame iframe = getInternalFrame(pane);
 
@@ -406,6 +413,7 @@ public class DesktopContext extends AppContextDelegate implements MDIContext {
     /** Set the icon that is displayed in
      * internal frames.
      */
+    @Override
     public void setFrameIcon(Icon icon) {
         _frameIcon = icon;
     }
@@ -456,6 +464,7 @@ public class DesktopContext extends AppContextDelegate implements MDIContext {
      * In this class, the status is shown in the status bar at the bottom
      * of the frame.
      */
+    @Override
     public void showStatus(String status) {
         _statusBar.setMessage(status);
     }
@@ -464,7 +473,7 @@ public class DesktopContext extends AppContextDelegate implements MDIContext {
      * jdk1.2. This should go away when we switch to 1.3 completely.
      */
     @SuppressWarnings("serial")
-        private static class DesktopInternalFrame extends JInternalFrame {
+    private static class DesktopInternalFrame extends JInternalFrame {
 
         // FindBugs suggests making this class static so as to decrease
         // the size of instances and avoid dangling references.
@@ -489,25 +498,29 @@ public class DesktopContext extends AppContextDelegate implements MDIContext {
         // This method is implemented in jdk1.3, but not in 1.2.  so we
         // use this class and provide the method so that 1.2 and 1.3 try to
         // look the same.
+        @Override
         public void doDefaultCloseAction() {
             fireInternalFrameEvent(InternalFrameEvent.INTERNAL_FRAME_CLOSING);
         }
     }
 
     @SuppressWarnings("serial")
-        private class DesktopPseudoFrame extends JPseudoFrame {
+    private class DesktopPseudoFrame extends JPseudoFrame {
         public DesktopPseudoFrame(JDesktopPane desktopPane, JMenuBar menuBar) {
             super(desktopPane, menuBar);
         }
 
+        @Override
         protected void removeComponent(JComponent c) {
             _splitPane.setRightComponent(null);
         }
 
+        @Override
         protected void setComponent(JComponent c) {
             _splitPane.setRightComponent(c);
         }
 
+        @Override
         public void setClosed(boolean flag) throws PropertyVetoException {
             // To close the pseudoFrame, we don't call hideFrame. This confuses
             // the maximizeMode.  Instead rely on removeContentPane to hide
@@ -518,6 +531,7 @@ public class DesktopContext extends AppContextDelegate implements MDIContext {
             }
         }
 
+        @Override
         public void setIcon(boolean flag) throws PropertyVetoException {
             // to iconify, unset the maximize mode, instead of just
             // hiding the frame.
@@ -528,6 +542,7 @@ public class DesktopContext extends AppContextDelegate implements MDIContext {
             }
         }
 
+        @Override
         public void setMaximum(boolean flag) throws PropertyVetoException {
             // unset the maximize mode, instead of just hiding the frame.
             setMaximizeMode(flag);
@@ -539,8 +554,9 @@ public class DesktopContext extends AppContextDelegate implements MDIContext {
      * internal frames and generates other events and does useful stuff.
      */
     private class FrameManager extends InternalFrameAdapter implements
-            ComponentListener, PropertyChangeListener, ActionListener {
+    ComponentListener, PropertyChangeListener, ActionListener {
         // Update when the pseudo-frame has things done to it
+        @Override
         public void actionPerformed(ActionEvent e) {
             // We could listen to the pseudoframe here, but it works
             // better to override the default behavior in the
@@ -548,48 +564,59 @@ public class DesktopContext extends AppContextDelegate implements MDIContext {
         }
 
         // Propagate frame moves as view events
+        @Override
         public void componentMoved(ComponentEvent e) {
             fire(e, ViewEvent.VIEW_MOVED);
         }
 
+        @Override
         public void componentResized(ComponentEvent e) {
             fire(e, ViewEvent.VIEW_RESIZED);
         }
 
+        @Override
         public void componentShown(ComponentEvent e) {
             fire(e, ViewEvent.VIEW_SHOWN);
         }
 
+        @Override
         public void componentHidden(ComponentEvent e) {
             fire(e, ViewEvent.VIEW_HIDDEN);
         }
 
         // Some internal frame events get propagated as view events
+        @Override
         public void internalFrameActivated(InternalFrameEvent e) {
             fire(e, ViewEvent.VIEW_SELECTED);
         }
 
+        @Override
         public void internalFrameClosed(InternalFrameEvent e) {
             fire(e, ViewEvent.VIEW_CLOSED);
         }
 
+        @Override
         public void internalFrameClosing(InternalFrameEvent e) {
             fire(e, ViewEvent.VIEW_CLOSING);
         }
 
+        @Override
         public void internalFrameDeactivated(InternalFrameEvent e) {
             fire(e, ViewEvent.VIEW_DESELECTED);
         }
 
+        @Override
         public void internalFrameDeiconified(InternalFrameEvent e) {
             fire(e, ViewEvent.VIEW_SHOWN);
         }
 
+        @Override
         public void internalFrameIconified(InternalFrameEvent e) {
             fire(e, ViewEvent.VIEW_HIDDEN);
         }
 
         // If the window is maximized, do it properly
+        @Override
         public void propertyChange(PropertyChangeEvent e) {
             String property = e.getPropertyName();
 

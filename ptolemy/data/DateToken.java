@@ -26,7 +26,7 @@
    COPYRIGHTENDKEY
 
 
-*/
+ */
 
 package ptolemy.data;
 
@@ -44,19 +44,19 @@ import ptolemy.graph.CPO;
 import ptolemy.kernel.util.IllegalActionException;
 
 /** A token that contains a date.
- * 
+ *
  *  Note: Java 8 provides a much improved implementation of dates and times.
- *  This implementation should be upgraded when  
+ *  This implementation should be upgraded when
  * @author Patricia Derler, Christopher  based on DateToken in Kepler by Daniel Crawl and Christopher Brooks
  * @version $Id$
  * @since Ptolemy II 10.0
  * @Pt.ProposedRating Red (cxh)
  * @Pt.AcceptedRating Red (cxh)
  */
-public class DateToken extends AbstractConvertibleToken 
-                               implements PartiallyOrderedToken {
+public class DateToken extends AbstractConvertibleToken implements
+        PartiallyOrderedToken {
 
-    /** Construct a date token. The current time is used for the date, 
+    /** Construct a date token. The current time is used for the date,
      *  the default precision is milliseconds and the default time zone
      *  is the local time zone.
      */
@@ -66,7 +66,7 @@ public class DateToken extends AbstractConvertibleToken
         _timeZone = TimeZone.getDefault();
         _value = Calendar.getInstance().getTimeInMillis();
     }
-        
+
     /** Construct a DateToken that represents the time since January 1, 1970.
      *  The time zone defaults to the local time zone.
      *  @param value The time since January 1, 1970 in the default precision
@@ -78,7 +78,7 @@ public class DateToken extends AbstractConvertibleToken
         _timeZone = TimeZone.getDefault();
         _value = value;
     }
-    
+
     /** Construct a DateToken that represents the time since January 1, 1970.
      *  The time zone defaults to the local time zone.
      *  @param value The time since January 1, 1970 in the given precision.
@@ -90,7 +90,7 @@ public class DateToken extends AbstractConvertibleToken
         _timeZone = TimeZone.getDefault();
         _value = value;
     }
-    
+
     /** Construct a DateToken that represents the time since January 1, 1970.
      *  @param value The time since January 1, 1970 in the given precision.
      *  @param precision The precision.
@@ -102,7 +102,7 @@ public class DateToken extends AbstractConvertibleToken
         _timeZone = TimeZone.getTimeZone(timeZone);
         _value = value;
     }
-    
+
     /** Construct a DateToken that represents the time since January 1, 1970.
      *  @param value The time since January 1, 1970 in the given precision.
      *  @param precision The precision.
@@ -114,10 +114,10 @@ public class DateToken extends AbstractConvertibleToken
         _timeZone = timeZone;
         _value = value;
     }
-        
+
     /** Construct a DateToken that represents the time specified as a
      *  string. The string is first parsed by the default
-     *  java.text.DateFormat parser. Because we have up to nanosecond 
+     *  java.text.DateFormat parser. Because we have up to nanosecond
      *  precision, we might have to
      *  pre-process the string and take out the digits representing
      *  nanoseconds and microseconds. Then any leading
@@ -144,7 +144,6 @@ public class DateToken extends AbstractConvertibleToken
             return;
         }
 
-
         DateFormat dateFormat = DateFormat.getDateInstance();
         try {
             // FIXME: One possibility would be to make this parser much
@@ -155,10 +154,10 @@ public class DateToken extends AbstractConvertibleToken
             try {
                 // See https://stackoverflow.com/questions/4713825/how-to-parse-output-of-new-date-tostring
                 // FIXME: this is probably Locale.US-specific
-                
+
                 // Remove leading and trailing double quotes.
                 if (value.startsWith("\"") && value.endsWith("\"")) {
-                    value = value.substring(1, value.length()-1);
+                    value = value.substring(1, value.length() - 1);
                 }
                 Calendar calendar = Calendar.getInstance();
                 if (value.length() == _SIMPLE_DATE_FORMAT.length()) {
@@ -168,9 +167,10 @@ public class DateToken extends AbstractConvertibleToken
                     _precision = PRECISION_MILLISECOND;
                     _calendar = calendar;
                 } else if (value.length() == _SIMPLE_DATE_FORMAT.length() + 3) {
-                    String micros = value.substring(value.indexOf(".") + 4, value.indexOf(".") + 7);
-                    value = value.substring(0, value.indexOf(".") + 4) + 
-                            value.substring(value.indexOf(".") + 7);
+                    String micros = value.substring(value.indexOf(".") + 4,
+                            value.indexOf(".") + 7);
+                    value = value.substring(0, value.indexOf(".") + 4)
+                            + value.substring(value.indexOf(".") + 7);
                     calendar.setTime(_simpleDateFormat.parse(value));
                     _value = calendar.getTimeInMillis();
                     _value = _value * 1000 + Integer.parseInt(micros);
@@ -178,19 +178,23 @@ public class DateToken extends AbstractConvertibleToken
                     _precision = PRECISION_MICROSECOND;
                     _calendar = calendar;
                 } else if (value.length() == _SIMPLE_DATE_FORMAT.length() + 6) {
-                    String micros = value.substring(value.indexOf(".") + 4, value.indexOf(".") + 7);
-                    String nanos = value.substring(value.indexOf(".") + 7, value.indexOf(".") + 10);
-                    value = value.substring(0, value.indexOf(".") + 4) + 
-                            value.substring(value.indexOf(".") + 10);
+                    String micros = value.substring(value.indexOf(".") + 4,
+                            value.indexOf(".") + 7);
+                    String nanos = value.substring(value.indexOf(".") + 7,
+                            value.indexOf(".") + 10);
+                    value = value.substring(0, value.indexOf(".") + 4)
+                            + value.substring(value.indexOf(".") + 10);
                     calendar.setTime(_simpleDateFormat.parse(value));
                     _value = calendar.getTimeInMillis();
-                    _value = (_value * 1000 + Integer.parseInt(micros)) * 1000 + Integer.parseInt(nanos);
+                    _value = (_value * 1000 + Integer.parseInt(micros)) * 1000
+                            + Integer.parseInt(nanos);
                     _timeZone = calendar.getTimeZone();
                     _precision = PRECISION_NANOSECOND;
                     _calendar = calendar;
                 }
             } catch (ParseException ex2) {
-                throw new IllegalActionException(null, ex, "The date value \"" + value + "\" could not be parsed to a Date."
+                throw new IllegalActionException(null, ex, "The date value \""
+                        + value + "\" could not be parsed to a Date."
                         + "Also tried parsing with the \""
                         + _simpleDateFormat.toPattern()
                         + "\" pattern, the exception was: " + ex2.getMessage());
@@ -202,8 +206,8 @@ public class DateToken extends AbstractConvertibleToken
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-    
-    /** Add nanoseconds to time. If the precision is less than nanoseconds, 
+
+    /** Add nanoseconds to time. If the precision is less than nanoseconds,
      *  do nothing.
      *  @param nanoseconds The nanoseconds to add.
      */
@@ -213,10 +217,10 @@ public class DateToken extends AbstractConvertibleToken
             if (nanoseconds >= 1000000) {
                 _calendar.setTimeInMillis(getTimeInMilliseconds());
             }
-        } 
+        }
     }
-    
-    /** Add microseconds to time. If the precision is less than microseconds, 
+
+    /** Add microseconds to time. If the precision is less than microseconds,
      *  do nothing.
      *  @param microseconds The microseconds to add.
      */
@@ -360,7 +364,7 @@ public class DateToken extends AbstractConvertibleToken
         }
         return 0;
     }
-    
+
     /** Get the precision of this date.
      *  @return The precision.
      */
@@ -418,18 +422,19 @@ public class DateToken extends AbstractConvertibleToken
      *  @return {@link ptolemy.data.type.BaseType#DATE},
      *  the least upper bound of all the date types.
      */
+    @Override
     public Type getType() {
         return BaseType.DATE;
     }
 
-    /** Get the year of this date. 
+    /** Get the year of this date.
      * @return The year.
      */
     public int getYear() {
         Calendar calendar = getCalendarInstance();
         return calendar.get(Calendar.YEAR);
     }
-    
+
     /** Check whether the value of this token is strictly greater than
      *  that of the argument token.  The argument and this token are
      *  converted to equivalent types, and then compared.  Generally,
@@ -450,13 +455,14 @@ public class DateToken extends AbstractConvertibleToken
     public final BooleanToken isGreaterThan(PartiallyOrderedToken rightArgument)
             throws IllegalActionException {
         // Similar to the same method in ScalarToken.
-        int typeInfo = TypeLattice.compare(getType(), (Token)rightArgument);
+        int typeInfo = TypeLattice.compare(getType(), (Token) rightArgument);
 
         if (typeInfo == CPO.SAME) {
-            return ((DateToken)rightArgument)._doIsLessThan(this);
+            return ((DateToken) rightArgument)._doIsLessThan(this);
         } else if (typeInfo == CPO.HIGHER) {
             // This line is different from ScalarToken and causes problems with StringTokens.
-            PartiallyOrderedToken convertedArgument = (PartiallyOrderedToken) getType().convert((Token)rightArgument);
+            PartiallyOrderedToken convertedArgument = (PartiallyOrderedToken) getType()
+                    .convert((Token) rightArgument);
             try {
                 return convertedArgument.isLessThan(this);
             } catch (IllegalActionException ex) {
@@ -464,13 +470,13 @@ public class DateToken extends AbstractConvertibleToken
                 // better error message that has the types of the
                 // arguments that were passed in.
                 throw new IllegalActionException(null, ex, notSupportedMessage(
-                                "isGreaterThan", (Token)this, (Token)rightArgument));
+                        "isGreaterThan", (Token) this, (Token) rightArgument));
             }
         } else if (typeInfo == CPO.LOWER) {
             return rightArgument.isLessThan(this);
         } else {
             throw new IllegalActionException(notSupportedIncomparableMessage(
-                            "isGreaterThan", (Token)this, (Token)rightArgument));
+                    "isGreaterThan", (Token) this, (Token) rightArgument));
         }
     }
 
@@ -484,11 +490,12 @@ public class DateToken extends AbstractConvertibleToken
      *    argument token. BooleanToken.FALSE, otherwise.
      *  @exception IllegalActionException If the tokens are incomparable.
      */
+    @Override
     public BooleanToken isLessThan(PartiallyOrderedToken rightArgument)
             throws IllegalActionException {
         DateToken rightDateToken = null;
         try {
-            rightDateToken = convert((Token)rightArgument);
+            rightDateToken = convert((Token) rightArgument);
         } catch (IllegalActionException ex) {
             //// FIXME: Since PartiallyOrderedToken is an interface, we cannot do:
             //throw new IllegalActionException(null, ex, notSupportedMessage(
@@ -542,6 +549,7 @@ public class DateToken extends AbstractConvertibleToken
      *  To create a nil DateToken, call new DateToken("nil");
      *  @return True if the token is the {@link #NIL} token.
      */
+    @Override
     public boolean isNil() {
         return _isNil;
     }
@@ -550,25 +558,26 @@ public class DateToken extends AbstractConvertibleToken
      * Return a String representation of the DateToken. The string is surrounded
      * by double-quotes; without them, the Ptolemy expression parser fails to
      * parse it.
-     * 
-     * <p>Unfortunately, the Java Date class has a fatal flaw in that 
+     *
+     * <p>Unfortunately, the Java Date class has a fatal flaw in that
      * Date.toString() does not return the value of the number of ms., so
      * we use a format that includes the number of ms.</p>
      *
      * @return A String representation of the DateToken.
      */
+    @Override
     public String toString() {
         if (isNil()) {
             return _NIL;
         }
         Calendar c = getCalendarInstance();
         _simpleDateFormat.setTimeZone(_timeZone);
-        String timeString = _simpleDateFormat.format(c.getTime()); 
-                
-        return "\"" + timeString.substring(0, timeString.length() - 9) + 
-                 String.format("%03d", getMicrosecond()) + 
-                 String.format("%03d", getNanosecond()) + 
-                timeString.substring(timeString.length() - 9) + "\"";
+        String timeString = _simpleDateFormat.format(c.getTime());
+
+        return "\"" + timeString.substring(0, timeString.length() - 9)
+                + String.format("%03d", getMicrosecond())
+                + String.format("%03d", getNanosecond())
+                + timeString.substring(timeString.length() - 9) + "\"";
     }
 
     /** A token that represents a missing value.
@@ -592,40 +601,42 @@ public class DateToken extends AbstractConvertibleToken
     /** The flag indicating that the the precision is nanoseconds. */
     public static final int PRECISION_NANOSECOND = 4;
 
-
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
     /** Subtract is not supported for Dates.
      *  @param rightArgument The token to subtract from this token.
      *  @return A new token containing the result.
-     *  @exception IllegalActionException Always thrown because 
+     *  @exception IllegalActionException Always thrown because
      *  multiplying a Date does not make sense.
      */
+    @Override
     protected Token _add(Token rightArgument) throws IllegalActionException {
-        throw new IllegalActionException(null, notSupportedMessage(
-                "add", this, rightArgument));
+        throw new IllegalActionException(null, notSupportedMessage("add", this,
+                rightArgument));
     }
 
     /** Subtract is not supported for Dates.
      *  @param rightArgument The token to subtract from this token.
      *  @return A new token containing the result.
-     *  @exception IllegalActionException Always thrown because 
+     *  @exception IllegalActionException Always thrown because
      *  dividing a Date does not make sense.
      */
+    @Override
     protected Token _divide(Token rightArgument) throws IllegalActionException {
-        throw new IllegalActionException(null, notSupportedMessage(
-                        "divide", this, rightArgument));
+        throw new IllegalActionException(null, notSupportedMessage("divide",
+                this, rightArgument));
     }
 
     /** The isCloseTo() method is not supported for Dates because
-     *  epsilon is not losslessly convertable to Long.   
+     *  epsilon is not losslessly convertable to Long.
      *  @param token The token to compare to this token
      *  @param epsilon the epsilon
      *  @return A new token containing the result.
-     *  @exception IllegalActionException Always thrown because 
+     *  @exception IllegalActionException Always thrown because
      *  isCloseTo() on a Date does not make sense.
      */
+    @Override
     protected BooleanToken _isCloseTo(Token token, double epsilon)
             throws IllegalActionException {
         // FIXME: If we convert the two tokens to longs and the
@@ -633,8 +644,8 @@ public class DateToken extends AbstractConvertibleToken
         // However, double is not losslessly convertible to long?
         // Probably throw an IllegalActionException here.
 
-        throw new IllegalActionException(null, notSupportedMessage(
-                        "isCloseTo", this, token));
+        throw new IllegalActionException(null, notSupportedMessage("isCloseTo",
+                this, token));
     }
 
     /** Return true of the the value of this token is equal
@@ -648,13 +659,14 @@ public class DateToken extends AbstractConvertibleToken
      *  @return true if the right argument is equal to this token.
      *  @exception IllegalActionException Not thrown in this baseclass
      */
+    @Override
     protected BooleanToken _isEqualTo(Token rightArgument)
-        throws IllegalActionException {
+            throws IllegalActionException {
 
         // The caller of this method should convert
         // the rightArgument to a DateToken, but we check anyway.
         if (!(rightArgument instanceof DateToken)) {
-            return BooleanToken.FALSE;            
+            return BooleanToken.FALSE;
         }
         DateToken rightArgumentDateToken = (DateToken) rightArgument;
 
@@ -664,9 +676,10 @@ public class DateToken extends AbstractConvertibleToken
 
         Calendar left = getCalendarInstance();
         Calendar right = rightArgumentDateToken.getCalendarInstance();
-        
-        return BooleanToken.getInstance(left.compareTo(right) == 0 && 
-                _getMicroAndNanoSeconds() == rightArgumentDateToken._getMicroAndNanoSeconds());
+
+        return BooleanToken.getInstance(left.compareTo(right) == 0
+                && _getMicroAndNanoSeconds() == rightArgumentDateToken
+                        ._getMicroAndNanoSeconds());
     }
 
     /** Test for ordering of the values of this Token and the argument
@@ -682,48 +695,52 @@ public class DateToken extends AbstractConvertibleToken
         if (isNil() || rightArgument.isNil()) {
             return BooleanToken.FALSE;
         }
-        
+
         Calendar left = getCalendarInstance();
         Calendar right = rightArgument.getCalendarInstance();
-        
-        return BooleanToken.getInstance(left.compareTo(right) < 0 || 
-                (left.compareTo(right) == 0 && 
-                _getMicroAndNanoSeconds() < rightArgument._getMicroAndNanoSeconds()));
+
+        return BooleanToken
+                .getInstance(left.compareTo(right) < 0
+                        || (left.compareTo(right) == 0 && _getMicroAndNanoSeconds() < rightArgument
+                                ._getMicroAndNanoSeconds()));
     }
 
     /** Modulo is not supported for Dates.
      *  @param rightArgument The token to divide into this token.
      *  @return A new token containing the result.
-     *  @exception IllegalActionException Always thrown because 
+     *  @exception IllegalActionException Always thrown because
      *  modulo of a Date does not make sense.
      */
+    @Override
     protected Token _modulo(Token rightArgument) throws IllegalActionException {
-        throw new IllegalActionException(null, notSupportedMessage(
-                "modulo", this, rightArgument));
+        throw new IllegalActionException(null, notSupportedMessage("modulo",
+                this, rightArgument));
     }
 
     /** Multiply is not supported for Dates.
      *  @param rightArgument The token to multiply this token by.
      *  @return A new token containing the result.
-     *  @exception IllegalActionException Always thrown because 
+     *  @exception IllegalActionException Always thrown because
      *  multiplying a Date does not make sense.
      */
+    @Override
     protected Token _multiply(Token rightArgument)
             throws IllegalActionException {
-        throw new IllegalActionException(null, notSupportedMessage(
-                        "multiply", this, rightArgument));
+        throw new IllegalActionException(null, notSupportedMessage("multiply",
+                this, rightArgument));
     }
 
     /** Subtract is not supported for Dates.
      *  @param rightArgument The token to subtract from this token.
      *  @return A new token containing the result.
-     *  @exception IllegalActionException Always thrown because 
+     *  @exception IllegalActionException Always thrown because
      *  subtracting a Date does not make sense.
      */
+    @Override
     protected Token _subtract(Token rightArgument)
             throws IllegalActionException {
-        throw new IllegalActionException(null, notSupportedMessage(
-                "subtract", this, rightArgument));
+        throw new IllegalActionException(null, notSupportedMessage("subtract",
+                this, rightArgument));
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -736,7 +753,6 @@ public class DateToken extends AbstractConvertibleToken
      *  to the same Date.
      */
     protected static final String _SIMPLE_DATE_FORMAT = "EEE MMM dd HH:mm:ss.SSS zzz yyyy";
-
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
@@ -756,13 +772,14 @@ public class DateToken extends AbstractConvertibleToken
      */
     private BooleanToken _doIsLessThan(PartiallyOrderedToken rightArgument)
             throws IllegalActionException {
-        if (isNil() || ((Token)rightArgument).isNil()) {
+        if (isNil() || ((Token) rightArgument).isNil()) {
             throw new IllegalActionException(notSupportedMessage("isLessThan",
-                            this, (Token)rightArgument) + " because one or the other is nil");
+                    this, (Token) rightArgument)
+                    + " because one or the other is nil");
         }
-    
+
         DateToken convertedArgument = (DateToken) rightArgument;
-    
+
         return _isLessThan(convertedArgument);
     }
 
@@ -771,7 +788,7 @@ public class DateToken extends AbstractConvertibleToken
             return _value % 1000000;
         } else if (_precision == PRECISION_MICROSECOND) {
             return (_value % 1000) * 1000;
-        } 
+        }
         return 0l;
     }
 
@@ -786,15 +803,15 @@ public class DateToken extends AbstractConvertibleToken
 
     /** The time in a given precision */
     private long _value;
-    
+
     private int _precision;
-    
+
     private Calendar _calendar;
-    
+
     /** The time zone.
      */
     private TimeZone _timeZone;
-    
+
     static {
         try {
             NIL = new DateToken(_NIL);

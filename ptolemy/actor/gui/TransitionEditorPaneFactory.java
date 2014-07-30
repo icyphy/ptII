@@ -67,12 +67,14 @@ public class TransitionEditorPaneFactory extends EditorPaneFactory {
      *  the container and return a configurer for that.
      *  @return A new widget for configuring the container.
      */
+    @Override
     public Component createEditorPane() {
         NamedObj object = getContainer();
 
-        if (object instanceof FSMTransitionParameter &&
-                ((FSMTransitionParameter)object).getTransition() != null) {
-            return super.createEditorPane(((FSMTransitionParameter)object).getTransition());
+        if (object instanceof FSMTransitionParameter
+                && ((FSMTransitionParameter) object).getTransition() != null) {
+            return super.createEditorPane(((FSMTransitionParameter) object)
+                    .getTransition());
         }
 
         return super.createEditorPane(object);

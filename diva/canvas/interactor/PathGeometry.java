@@ -116,6 +116,7 @@ public class PathGeometry implements Geometry {
     /** Get the figure to which this geometry object is attached.
      * Returns null if there isn't one.
      */
+    @Override
     public Figure getFigure() {
         return _parentFigure;
     }
@@ -124,6 +125,7 @@ public class PathGeometry implements Geometry {
      * the sites have been translated since this shape was set, a
      * new shape will be produced and returned.
      */
+    @Override
     public Shape getShape() {
         if (_path == null) {
             GeneralPath p = new GeneralPath(Path2D.WIND_NON_ZERO,
@@ -198,6 +200,7 @@ public class PathGeometry implements Geometry {
 
     /** Set the shape that defines this geometry object.
      */
+    @Override
     public void setShape(Shape shape) {
         _path = shape;
         invalidateGeometry();
@@ -205,6 +208,7 @@ public class PathGeometry implements Geometry {
 
     /** Translate the geometry object
      */
+    @Override
     public void translate(double x, double y) {
         if (!_geometryValid) {
             updateGeometry();
@@ -230,11 +234,13 @@ public class PathGeometry implements Geometry {
             // control_point is an internal counter to cursor, needed if the segment is quadratic or cubic.
             int control_point = 0;
 
+            @Override
             public boolean hasNext() {
                 return cursor < _vertexCount;
             }
 
             // Get the next Vertex
+            @Override
             public Object next() throws NoSuchElementException {
                 if (!hasNext()) {
                     throw new NoSuchElementException("Can't get " + cursor
@@ -280,6 +286,7 @@ public class PathGeometry implements Geometry {
                 }
             }
 
+            @Override
             public void remove() {
                 throw new UnsupportedOperationException(
                         "Vertex sites cannot be removed");
@@ -401,6 +408,7 @@ public class PathGeometry implements Geometry {
 
         /** Get the ID of this site.
          */
+        @Override
         public int getID() {
             return _id;
         }
@@ -414,6 +422,7 @@ public class PathGeometry implements Geometry {
         /** Get the figure to which this site is attached, or null
          * if it is not attached to a figure.
          */
+        @Override
         public Figure getFigure() {
             return _parentFigure;
         }
@@ -421,6 +430,7 @@ public class PathGeometry implements Geometry {
         /** Get the x-coordinate of the site, in the local
          * coordinates of the containing pane.
          */
+        @Override
         public double getX() {
             if (!_geometryValid) {
                 updateGeometry();
@@ -441,6 +451,7 @@ public class PathGeometry implements Geometry {
         /** Get the y-coordinate of the site, in the local
          * coordinates of the containing pane.
          */
+        @Override
         public double getY() {
             if (!_geometryValid) {
                 updateGeometry();
@@ -470,6 +481,7 @@ public class PathGeometry implements Geometry {
          * this site is one end of a quadratic curve, move
          * the adjacent control points half of the distance.
          */
+        @Override
         public void translate(double x, double y) {
             if (!_geometryValid) {
                 updateGeometry();
@@ -496,6 +508,7 @@ public class PathGeometry implements Geometry {
 
         /** Describe this site
          */
+        @Override
         public String toString() {
             StringBuffer s = new StringBuffer(getClass().getName());
             s.append(": vertex " + _id + " of " + _vertexCount);
@@ -547,6 +560,7 @@ public class PathGeometry implements Geometry {
         /** Get the x-coordinate of the site, in the local
          * coordinates of the containing pane
          */
+        @Override
         public double getX() {
             if (!_geometryValid) {
                 updateGeometry();
@@ -558,6 +572,7 @@ public class PathGeometry implements Geometry {
         /** Get the y-coordinate of the site, in the local
          * coordinates of the containing pane.
          */
+        @Override
         public double getY() {
             if (!_geometryValid) {
                 updateGeometry();
@@ -568,6 +583,7 @@ public class PathGeometry implements Geometry {
 
         /** Set the point location of the site
          */
+        @Override
         public void setPoint(Point2D point) {
             translate(point.getX() - getX(), point.getY() - getY());
         }
@@ -576,6 +592,7 @@ public class PathGeometry implements Geometry {
          * is an illegal operation for close segments and throws an
          * exception.
          */
+        @Override
         public void translate(double x, double y) {
             throw new UnsupportedOperationException(
                     "Cannot translate close segments of a path");

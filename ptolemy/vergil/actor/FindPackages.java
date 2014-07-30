@@ -131,6 +131,7 @@ public class FindPackages {
          *  @param pathname The pathname to be checked
          *  @return true if the pathname ends with .class.
          */
+        @Override
         public boolean accept(File pathname) {
             return pathname.getName().endsWith(".class");
         }
@@ -142,6 +143,7 @@ public class FindPackages {
          *  @param pathname The pathname to be checked
          *  @return true if the pathname is a directory.
          */
+        @Override
         public boolean accept(File pathname) {
             return pathname.isDirectory();
         }

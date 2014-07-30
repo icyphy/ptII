@@ -25,7 +25,7 @@
                                         COPYRIGHTENDKEY
 
 Created : May 1998
-*/
+ */
 
 package ptolemy.data.expr;
 
@@ -97,7 +97,7 @@ public class PtParserTokenManager implements PtParserConstants {
     }
 
     static final long[] jjbitVec0 = { 0x0L, 0x0L, 0xffffffffffffffffL,
-            0xffffffffffffffffL };
+        0xffffffffffffffffL };
 
     private int jjMoveNfa_5(int startState, int curPos) {
         int startsAt = 0;
@@ -162,23 +162,23 @@ public class PtParserTokenManager implements PtParserConstants {
                 } while (i != startsAt);
             } else {
                 int i2 = (curChar & 0xff) >> 6;
-                long l2 = 1L << (curChar & 077);
-                do {
-                    switch (jjstateSet[--i]) {
-                    case 3:
-                    case 2:
-                        if ((jjbitVec0[i2] & l2) == 0L) {
-                            break;
-                        }
-                        if (kind > 59) {
-                            kind = 59;
-                        }
-                        jjCheckNAddTwoStates(1, 2);
-                        break;
-                    default:
+            long l2 = 1L << (curChar & 077);
+            do {
+                switch (jjstateSet[--i]) {
+                case 3:
+                case 2:
+                    if ((jjbitVec0[i2] & l2) == 0L) {
                         break;
                     }
-                } while (i != startsAt);
+                    if (kind > 59) {
+                        kind = 59;
+                    }
+                    jjCheckNAddTwoStates(1, 2);
+                    break;
+                default:
+                    break;
+                }
+            } while (i != startsAt);
             }
             if (kind != 0x7fffffff) {
                 jjmatchedKind = kind;
@@ -1702,36 +1702,36 @@ public class PtParserTokenManager implements PtParserConstants {
     }
 
     static final int[] jjnextStates = { 50, 51, 54, 45, 46, 49, 56, 57, 62, 63,
-            66, 67, 49, 70, 71, 76, 77, 80, 81, 54, 19, 20, 21, 1, 2, 3, 39,
-            42, 2, 43, 40, 2, 41, 42, 2, 43, 58, 59, 49, 66, 67, 49, 72, 73,
-            54, 80, 81, 54, 13, 14, 16, 34, 37, 28, 30, 23, 24, 47, 48, 52, 53,
-            60, 61, 64, 65, 68, 69, 74, 75, 78, 79, 82, 83, 2, 3, 5, 6, 7, 9,
-            2, 3, 5, 6, 7, 9, };
+        66, 67, 49, 70, 71, 76, 77, 80, 81, 54, 19, 20, 21, 1, 2, 3, 39,
+        42, 2, 43, 40, 2, 41, 42, 2, 43, 58, 59, 49, 66, 67, 49, 72, 73,
+        54, 80, 81, 54, 13, 14, 16, 34, 37, 28, 30, 23, 24, 47, 48, 52, 53,
+        60, 61, 64, 65, 68, 69, 74, 75, 78, 79, 82, 83, 2, 3, 5, 6, 7, 9,
+        2, 3, 5, 6, 7, 9, };
 
     /** Token literal values. */
     public static final String[] jjstrLiteralImages = { "", null, null, null,
-            null, null, null, null, null, null, "\53", "\55", "\52", "\57",
-            "\45", "\136", "\50", "\51", "\173", "\175", "\133", "\135", "\54",
-            "\56", "\72", "\77", "\173\174", "\174\175", "\76", "\74",
-            "\76\75", "\74\75", "\41\75", "\75\75", "\46\46", "\174\174",
-            "\41", "\176", "\46", "\174", "\43", "\74\74", "\76\76",
-            "\76\76\76", null, null, null, null, null, null, null, null, null,
-            "\146\165\156\143\164\151\157\156", null, null, null, "\75", "\73",
-            null, "\44", "\44\173", "\44\50", null, null, null, null, null,
-            null, null, };
+        null, null, null, null, null, null, "\53", "\55", "\52", "\57",
+        "\45", "\136", "\50", "\51", "\173", "\175", "\133", "\135", "\54",
+        "\56", "\72", "\77", "\173\174", "\174\175", "\76", "\74",
+        "\76\75", "\74\75", "\41\75", "\75\75", "\46\46", "\174\174",
+        "\41", "\176", "\46", "\174", "\43", "\74\74", "\76\76",
+        "\76\76\76", null, null, null, null, null, null, null, null, null,
+        "\146\165\156\143\164\151\157\156", null, null, null, "\75", "\73",
+        null, "\44", "\44\173", "\44\50", null, null, null, null, null,
+        null, null, };
 
     /** Lexer state names. */
     public static final String[] lexStateNames = { "DEFAULT",
-            "SingleLineCommentMode", "MultiLineCommentMode",
-            "StringModeIDBrace", "StringModeIDParen", "StringMode",
-            "StringModeIDNone", };
+        "SingleLineCommentMode", "MultiLineCommentMode",
+        "StringModeIDBrace", "StringModeIDParen", "StringMode",
+        "StringModeIDNone", };
 
     /** Lex State array. */
     public static final int[] jjnewLexState = { -1, 1, 2, 0, 0, -1, -1, -1, -1,
-            -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
-            -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
-            -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
-            6, 3, 4, 5, -1, -1, 5, -1, 5, -1, };
+        -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
+        -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
+        -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
+        6, 3, 4, 5, -1, -1, 5, -1, 5, -1, };
     static final long[] jjtoToken = { 0xff7c1ffffffffc01L, 0x3eL, };
     static final long[] jjtoSkip = { 0x3feL, 0x0L, };
     protected SimpleCharStream input_stream;

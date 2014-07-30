@@ -24,7 +24,7 @@ ENHANCEMENTS, OR MODIFICATIONS.
                                                 PT_COPYRIGHT_VERSION_2
                                                 COPYRIGHTENDKEY
 
-*/
+ */
 
 package ptolemy.domains.ptides.lib;
 
@@ -96,6 +96,7 @@ public class ActuatorSetup extends OutputDevice {
      *  @exception IllegalActionException If there is no director, or the
      *  input can not be read, or the output can not be sent.
      */
+    @Override
     public void fire() throws IllegalActionException {
         super.fire();
 
@@ -120,6 +121,7 @@ public class ActuatorSetup extends OutputDevice {
      *  ports, or if any of the outside sink ports is a network
      *  port.
      */
+    @Override
     public void preinitialize() throws IllegalActionException {
 
         super.preinitialize();

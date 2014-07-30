@@ -108,6 +108,7 @@ public class IntegerCounter extends SynchronousFixTransformer {
      *  @param attribute The attribute that changed.
      *  @exception IllegalActionException If the function is not recognized.
      */
+    @Override
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         if (attribute == hasEnable) {
@@ -145,11 +146,12 @@ public class IntegerCounter extends SynchronousFixTransformer {
      *
      *  @exception IllegalActionException If there is no director.
      */
+    @Override
     public void fire() throws IllegalActionException {
         super.fire();
         if (reset.isKnown()
                 && (enable.getContainer() == null || enable.getContainer() != null
-                        && enable.isKnown())) {
+                && enable.isKnown())) {
 
             _currentCount = _previousCount;
 
@@ -195,6 +197,7 @@ public class IntegerCounter extends SynchronousFixTransformer {
     /** Reset the count of inputs to zero.
      *  @exception IllegalActionException If the parent class throws it.
      */
+    @Override
     public void initialize() throws IllegalActionException {
         super.initialize();
         _previousCount = 0;
@@ -203,6 +206,7 @@ public class IntegerCounter extends SynchronousFixTransformer {
     /** Record the most recent output count as the actual count.
      *  @exception IllegalActionException If the base class throws it.
      */
+    @Override
     public boolean postfire() throws IllegalActionException {
         _previousCount = _currentCount;
         return super.postfire();
@@ -211,6 +215,7 @@ public class IntegerCounter extends SynchronousFixTransformer {
     /** Override the base class to declare that the <i>enable</i> and
      *  <i>reset</i> ports do not depend on the <i>output</i> in a firing.
      */
+    @Override
     public void preinitialize() throws IllegalActionException {
         super.preinitialize();
         removeDependency(enable, output);

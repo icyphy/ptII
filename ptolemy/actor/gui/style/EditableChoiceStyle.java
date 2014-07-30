@@ -93,6 +93,7 @@ public class EditableChoiceStyle extends ChoiceStyle {
      *  @exception IllegalActionException If the containing attribute
      *   has a value that cannot be edited using this style.
      */
+    @Override
     public void addEntry(PtolemyQuery query) throws IllegalActionException {
         super.addEntry(query);
         _isEditable = true;

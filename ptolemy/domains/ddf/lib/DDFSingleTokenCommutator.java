@@ -104,6 +104,7 @@ public class DDFSingleTokenCommutator extends SingleTokenCommutator {
      *  the rest of the channels.
      *  @param port The port that has connection changes.
      */
+    @Override
     public void connectionsChanged(Port port) {
         super.connectionsChanged(port);
 
@@ -136,6 +137,7 @@ public class DDFSingleTokenCommutator extends SingleTokenCommutator {
      *  read the zeroth input channel.
      *  @exception IllegalActionException If there is no director.
      */
+    @Override
     public void initialize() throws IllegalActionException {
         super.initialize();
 
@@ -147,12 +149,13 @@ public class DDFSingleTokenCommutator extends SingleTokenCommutator {
      *  @exception IllegalActionException If any called method throws
      *   IllegalActionException.
      */
+    @Override
     public boolean postfire() throws IllegalActionException {
         // Call postfire first so that current input position is updated.
         boolean postfireReturn = super.postfire();
 
         input_tokenConsumptionRate
-                .setToken(_rateArray[_getCurrentInputPosition()]);
+        .setToken(_rateArray[_getCurrentInputPosition()]);
 
         return postfireReturn;
     }

@@ -109,6 +109,7 @@ public class PxgraphApplication extends PlotApplication {
         try {
             // Run this in the Swing Event Thread.
             Runnable doActions = new Runnable() {
+                @Override
                 public void run() {
                     try {
                         new PxgraphApplication(new Plot(), args);
@@ -140,21 +141,22 @@ public class PxgraphApplication extends PlotApplication {
 
     /** Display basic information about the application.
      */
+    @Override
     protected void _about() {
         JOptionPane
-                .showMessageDialog(
-                        this,
-                        "               pxgraph\n"
-                                + "        A Java Plotting Tool\n\n"
-                                + "By: Edward A. Lee and\n"
-                                + "    Christopher Brooks\n"
-                                + "Version "
-                                + PlotBox.PTPLOT_RELEASE
-                                + ", Build: $Id$\n\n"
-                                + "For help, type 'pxgraph -help', or see \n"
-                                + "the class documentation in the plot.compat package.\n"
-                                + "For more information, see\n"
-                                + "http://ptolemy.eecs.berkeley.edu/java/ptplot\n",
+        .showMessageDialog(
+                this,
+                "               pxgraph\n"
+                        + "        A Java Plotting Tool\n\n"
+                        + "By: Edward A. Lee and\n"
+                        + "    Christopher Brooks\n"
+                        + "Version "
+                        + PlotBox.PTPLOT_RELEASE
+                        + ", Build: $Id$\n\n"
+                        + "For help, type 'pxgraph -help', or see \n"
+                        + "the class documentation in the plot.compat package.\n"
+                        + "For more information, see\n"
+                        + "http://ptolemy.eecs.berkeley.edu/java/ptplot\n",
                         "About pxgraph", JOptionPane.INFORMATION_MESSAGE);
     }
 
@@ -168,8 +170,9 @@ public class PxgraphApplication extends PlotApplication {
      *  @exception FileNotFoundException If an input file cannot be found.
      *  @exception IOException If there is a problem reading an input.
      */
+    @Override
     protected int _parseArgs(String[] args) throws CmdLineArgException,
-            FileNotFoundException, IOException {
+    FileNotFoundException, IOException {
         int i = 0;
         int argumentsRead;
         String arg;
@@ -199,9 +202,9 @@ public class PxgraphApplication extends PlotApplication {
             } else if (arg.equals("-v") || arg.equals("-version")) {
                 // -version is not in the original X11 pxgraph.
                 System.out
-                        .println("Version "
-                                + PlotBox.PTPLOT_RELEASE
-                                + ", Build $Id$");
+                .println("Version "
+                        + PlotBox.PTPLOT_RELEASE
+                        + ", Build $Id$");
                 StringUtilities.exit(0);
                 continue;
             } else if (arg.startsWith("=")) {
@@ -264,6 +267,7 @@ public class PxgraphApplication extends PlotApplication {
      *  @param in The input stream.
      *  @exception IOException If the stream cannot be read.
      */
+    @Override
     protected void _read(URL base, InputStream in) throws IOException {
         _parser.read(in);
     }
@@ -271,6 +275,7 @@ public class PxgraphApplication extends PlotApplication {
     /** Return a string summarizing the command-line arguments.
      *  @return A usage string.
      */
+    @Override
     protected String _usage() {
         // We use a table here to keep things neat.
         // If we have:

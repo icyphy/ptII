@@ -10,10 +10,11 @@ package ptolemy.actor.corba.CorbaIOUtil;
 /* A CORBA compatible interface for a pull supplier.
  */
 public class _pullSupplierStub extends org.omg.CORBA.portable.ObjectImpl
-        implements ptolemy.actor.corba.CorbaIOUtil.pullSupplier {
+implements ptolemy.actor.corba.CorbaIOUtil.pullSupplier {
     /* this method is intended to be called remotely by a pull consumer
      * to request data from its supplier.
      */
+    @Override
     public org.omg.CORBA.Any pull()
             throws ptolemy.actor.corba.CorbaIOUtil.CorbaIllegalActionException {
         org.omg.CORBA.portable.InputStream $in = null;
@@ -31,7 +32,7 @@ public class _pullSupplierStub extends org.omg.CORBA.portable.ObjectImpl
 
             if (_id.equals("IDL:CorbaIOUtil/CorbaIllegalActionException:1.0")) {
                 throw ptolemy.actor.corba.CorbaIOUtil.CorbaIllegalActionExceptionHelper
-                        .read($in);
+                .read($in);
             } else {
                 throw new org.omg.CORBA.MARSHAL(_id);
             }
@@ -45,6 +46,7 @@ public class _pullSupplierStub extends org.omg.CORBA.portable.ObjectImpl
     // Type-specific CORBA::Object operations
     private static String[] __ids = { "IDL:CorbaIOUtil/pullSupplier:1.0" };
 
+    @Override
     public String[] _ids() {
         return __ids.clone();
     }

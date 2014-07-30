@@ -105,6 +105,7 @@ public class TaskFrame extends Transformer {
      *  @param attribute The attribute that changed.
      *  @throws IllegalActionException If getting a token of a parameter throws it.
      */
+    @Override
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         if (attribute == deadline) {

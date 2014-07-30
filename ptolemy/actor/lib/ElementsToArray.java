@@ -89,6 +89,7 @@ public class ElementsToArray extends Transformer {
      *  @exception CloneNotSupportedException If a derived class contains
      *   an attribute that cannot be cloned.
      */
+    @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         ElementsToArray newObject = (ElementsToArray) super.clone(workspace);
         try {
@@ -106,6 +107,7 @@ public class ElementsToArray extends Transformer {
      *  @exception IllegalActionException If not enough tokens
      *   are available.
      */
+    @Override
     public void fire() throws IllegalActionException {
         super.fire();
         int size = input.getWidth();
@@ -126,6 +128,7 @@ public class ElementsToArray extends Transformer {
      *   to the input port throws it.
      *  @see ptolemy.actor.IOPort#hasToken(int)
      */
+    @Override
     public boolean prefire() throws IllegalActionException {
         for (int i = 0; i < input.getWidth(); i++) {
             if (!input.hasToken(i)) {

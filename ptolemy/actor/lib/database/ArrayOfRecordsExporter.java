@@ -116,6 +116,7 @@ public class ArrayOfRecordsExporter extends LineWriter {
      *  @param token The token to write.
      *  @exception IllegalActionException If the input token cannot be read.
      */
+    @Override
     protected void _writeToken(Token token) throws IllegalActionException {
         ArrayToken castToken = (ArrayToken) token;
         ArrayToken columnsValue = (ArrayToken) columns.getToken();
@@ -170,7 +171,7 @@ public class ArrayOfRecordsExporter extends LineWriter {
                         rowHeight = height;
                     }
                 }
-                */
+                 */
             }
         }
     }

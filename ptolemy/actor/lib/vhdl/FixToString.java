@@ -78,6 +78,7 @@ public class FixToString extends Transformer {
      *  If there is no input, then produce no output.
      *  @exception IllegalActionException If there is no director.
      */
+    @Override
     public void fire() throws IllegalActionException {
         super.fire();
 

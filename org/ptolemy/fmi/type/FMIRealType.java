@@ -81,8 +81,8 @@ public class FMIRealType extends FMIType {
                 indexState = Integer.parseInt(derivative);
             } catch (NumberFormatException ex) {
                 throw new NumberFormatException(
-                        "Failed to parse derivative index "
-                        + derivative + " of " + name);
+                        "Failed to parse derivative index " + derivative
+                                + " of " + name);
             }
         } else {
             indexState = -1;
@@ -93,6 +93,7 @@ public class FMIRealType extends FMIType {
      *  @return The string value.  If the element does not have a start
      *  element, then the string "NaN" is returned.
      */
+    @Override
     public String toString() {
         if (start == null) {
             // Dymola had a system.p_start parameter that had no start value.
@@ -108,7 +109,7 @@ public class FMIRealType extends FMIType {
 
     /** The starting value of this real. */
     public Double start;
-    
+
     /** The nominal value of this real. */
     public Double nominal;
 }

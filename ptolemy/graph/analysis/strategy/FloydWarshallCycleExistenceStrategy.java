@@ -45,7 +45,7 @@ import ptolemy.graph.analysis.analyzer.CycleExistenceAnalyzer;
  @version $Id$
  */
 public class FloydWarshallCycleExistenceStrategy extends CachedStrategy
-        implements CycleExistenceAnalyzer {
+implements CycleExistenceAnalyzer {
     /** Construct an instance of this analyzer for a given graph.
      *
      *  @param graph The given graph.
@@ -62,6 +62,7 @@ public class FloydWarshallCycleExistenceStrategy extends CachedStrategy
      *
      *  @return True if cyclic.
      */
+    @Override
     public boolean hasCycle() {
         return ((Boolean) _result()).booleanValue();
     }
@@ -70,6 +71,7 @@ public class FloydWarshallCycleExistenceStrategy extends CachedStrategy
      *
      *  @return Return a description of the analyzer.
      */
+    @Override
     public String toString() {
         return "Cycle existence analyzer"
                 + " based on the Floyd-Warshall algorithm.";
@@ -81,6 +83,7 @@ public class FloydWarshallCycleExistenceStrategy extends CachedStrategy
      *
      *  @return True if the graph is a directed graph.
      */
+    @Override
     public boolean valid() {
         return graph() instanceof DirectedGraph;
     }
@@ -93,6 +96,7 @@ public class FloydWarshallCycleExistenceStrategy extends CachedStrategy
      *  @return Return a true {@link Boolean} {@link Object} if the graph is
      *  cyclic.
      */
+    @Override
     protected Object _compute() {
         boolean cyclic = false;
         boolean[][] transitiveClosure = _strategy.transitiveClosureMatrix();

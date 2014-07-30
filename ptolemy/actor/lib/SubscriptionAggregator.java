@@ -85,7 +85,7 @@ public class SubscriptionAggregator extends Subscriber {
         // Set the operation attribute of the input port to inherit
         // the value of the operation parameter of this actor.
         ((SubscriptionAggregatorPort) input).operation
-                .setExpression("$operation");
+        .setExpression("$operation");
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -108,6 +108,7 @@ public class SubscriptionAggregator extends Subscriber {
      *  @exception IllegalActionException If there is no director, or
      *   if there is no input connection.
      */
+    @Override
     public void fire() throws IllegalActionException {
         // Do not call super.fire() here because that does the wrong thing.
         if (_debugging) {
@@ -135,8 +136,9 @@ public class SubscriptionAggregator extends Subscriber {
      *  @exception IllegalActionException If creating the input port fails.
      *  @exception NameDuplicationException If there is already a port named "input".
      */
+    @Override
     protected void _createInputPort() throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         input = new SubscriptionAggregatorPort(this, "input");
     }
 }

@@ -24,7 +24,7 @@
  PT_COPYRIGHT_VERSION_2
  COPYRIGHTENDKEY
 
-*/
+ */
 package ptolemy.domains.ptera.lib;
 
 import java.io.File;
@@ -132,6 +132,7 @@ public class ListDirectory extends Event {
      *   evaluated.
      *  @see #refire(Token, RefiringData)
      */
+    @Override
     public RefiringData fire(Token arguments) throws IllegalActionException {
         File[] listedFiles = RecursiveFileFilter.listFiles(directory.asFile(),
                 ((BooleanToken) recursive.getToken()).booleanValue(),
@@ -190,6 +191,7 @@ public class ListDirectory extends Event {
      *   collides with a name already in the container.
      *  @see #getContainer()
      */
+    @Override
     public void setContainer(CompositeEntity container)
             throws IllegalActionException, NameDuplicationException {
         super.setContainer(container);

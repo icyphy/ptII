@@ -112,6 +112,7 @@ public class DefaultIconScript extends IconScript {
      *  @param exporter The web exporter to add content to
      *  @exception IllegalActionException If a subclass throws it.
      */
+    @Override
     protected void _provideAttributes(WebExporter exporter)
             throws IllegalActionException {
         WebAttribute webAttribute;
@@ -163,21 +164,21 @@ public class DefaultIconScript extends IconScript {
             }
             // If the container is a CompositeActor, then also include
             // the director, unless specific instances are requested.
-                if ((container instanceof CompositeActor) && instances.trim().equals("")) {
-                        NamedObj director = ((CompositeActor)container).getDirector();
-                        if (director != null) {
+            if ((container instanceof CompositeActor)
+                    && instances.trim().equals("")) {
+                NamedObj director = ((CompositeActor) container).getDirector();
+                if (director != null) {
                     String eventTypeValue = eventType.stringValue();
                     // Create WebAttribute for event and add to exporter.
                     // Content should only be added once (onceOnly -> true).
-                    webAttribute = WebAttribute
-                            .createWebAttribute(getContainer(),
-                                    eventTypeValue + "WebAttribute",
-                                    eventTypeValue);
+                    webAttribute = WebAttribute.createWebAttribute(
+                            getContainer(), eventTypeValue + "WebAttribute",
+                            eventTypeValue);
                     webAttribute.setExpression(stringValue());
                     exporter.defineAttribute(webAttribute, true);
 
                     _provideDefaultAttributes(director, exporter);
-                        }
+                }
             }
         }
         if (attributes) {

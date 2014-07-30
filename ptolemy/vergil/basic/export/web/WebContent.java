@@ -58,7 +58,7 @@ import ptolemy.vergil.toolbox.VisibleParameterEditorFactory;
  * @Pt.AcceptedRating Red (cxh)
  */
 public abstract class WebContent extends StringParameter implements
-        WebExportable {
+WebExportable {
 
     /** Create an instance of this parameter.
      *  @param container The container.
@@ -119,6 +119,7 @@ public abstract class WebContent extends StringParameter implements
      *  @exception IllegalActionException If thrown while setting the
      *  icon text or by the superclass.
      */
+    @Override
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         if (attribute == displayText) {
@@ -134,6 +135,7 @@ public abstract class WebContent extends StringParameter implements
      *  @exception CloneNotSupportedException If any of the attributes
      *   cannot be cloned.
      */
+    @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         WebContent newObject = (WebContent) super.clone(workspace);
         try {
@@ -168,6 +170,7 @@ public abstract class WebContent extends StringParameter implements
      *  @exception IllegalActionException If something is wrong with the web
      *  content.
      */
+    @Override
     public void provideContent(WebExporter exporter)
             throws IllegalActionException {
         _provideAttributes(exporter);

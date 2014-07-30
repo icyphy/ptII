@@ -25,7 +25,7 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 Ptolemy II includes the work of others, to see those copyrights, follow
 the copyright link on the splash page or see copyright.htm.
-*/
+ */
 package org.ptolemy.qss;
 
 import java.util.ArrayList;
@@ -55,7 +55,7 @@ A quantized-state vector integrator.
 @since Ptolemy II 10.0
 @Pt.ProposedRating Yellow (eal)
 @Pt.AcceptedRating Red (cxh)
-*/
+ */
 public class QSSVectorIntegrator extends TypedAtomicActor {
 
     public QSSVectorIntegrator(CompositeEntity container, String name)
@@ -77,6 +77,7 @@ public class QSSVectorIntegrator extends TypedAtomicActor {
      *  Otherwise, indicate that the output is absent.
      *  @exception IllegalActionException If sending an output fails.
      */
+    @Override
     public void fire() throws IllegalActionException {
         super.fire();
         Time currentTime = getDirector().getModelTime();
@@ -102,6 +103,7 @@ public class QSSVectorIntegrator extends TypedAtomicActor {
 
     /** Initialize this actor to indicate that no input has yet been provided.
      */
+    @Override
     public void initialize() throws IllegalActionException {
         super.initialize();
         // Get the input port lists
@@ -153,7 +155,7 @@ public class QSSVectorIntegrator extends TypedAtomicActor {
         previousInput = new Token[dx.size()];
         inputReceived = new boolean[dx.size()];
         _firstFiring = new boolean[dx.size()];
-        nextOutputTime = new Time[dx.size()];        
+        nextOutputTime = new Time[dx.size()];
         index_min = new ArrayList<Integer>();
 
         for (int i = 0; i < dx.size(); i++) {
@@ -173,6 +175,7 @@ public class QSSVectorIntegrator extends TypedAtomicActor {
      *  input is unknown.
      *  @return False.
      */
+    @Override
     public boolean isStrict() {
         return false;
     }
@@ -183,6 +186,7 @@ public class QSSVectorIntegrator extends TypedAtomicActor {
      *  @return True if the base class returns true.
      *  @exception IllegalActionException If reading inputs or parameters fails.
      */
+    @Override
     public boolean postfire() throws IllegalActionException {
         Time currentTime = getDirector().getModelTime();
         for (int i = 0; i < dx.size(); i++) {
@@ -196,9 +200,10 @@ public class QSSVectorIntegrator extends TypedAtomicActor {
                     if (_firstFiring[i]) {
                         previousInput[i] = u[i];
                         _firstFiring[i] = false;
-                    }                
+                    }
                     // Save the previous slope
-                    previousSlope [i] = ((DoubleToken) previousInput[i]).doubleValue();
+                    previousSlope[i] = ((DoubleToken) previousInput[i])
+                            .doubleValue();
                     // Compute the new slope.
                     slope[i] = ((DoubleToken) u[i]).doubleValue();
                     // Save the previous input.
@@ -222,9 +227,10 @@ public class QSSVectorIntegrator extends TypedAtomicActor {
                 // of the way it handles feedback loops. It may invoke fire and
                 // postfire more than once in each iteration.
                 nextOutputTime[i] = _nextCrossingTime(slope[i], 0.0, 0.0,
-                        dq[i], currentTime);              
+                        dq[i], currentTime);
                 // Calculate the next output value
-                nextOutputValue[i] = _nextOutputValue(slope[i],previousOutputValue[i], dq[i]);
+                nextOutputValue[i] = _nextOutputValue(slope[i],
+                        previousOutputValue[i], dq[i]);
             } else {
                 // The fire method did not send an output.
                 // If we did not receive a new input, there is nothing to do.
@@ -233,13 +239,16 @@ public class QSSVectorIntegrator extends TypedAtomicActor {
                 if (inputReceived[i]) {
                     x[i] += previousSlope[i]
                             * (currentTime.subtract(previousStateUpdateTime))
-                                    .getDoubleValue();
-                    System.out.println("This is the index in received " + String.valueOf(i) + ": " + String.valueOf((x[i])));
+                            .getDoubleValue();
+                    System.out
+                            .println("This is the index in received "
+                                    + String.valueOf(i) + ": "
+                                    + String.valueOf((x[i])));
                     // Update the time of the next output, which is the time it will take to
                     // get from the current state to previous output value plus or minus the quantum
                     // at the updated slope.
-                    nextOutputTime[i] = _nextCrossingTime(previousSlope[i], x[i],
-                            nextOutputValue[i], dq[i], currentTime);
+                    nextOutputTime[i] = _nextCrossingTime(previousSlope[i],
+                            x[i], nextOutputValue[i], dq[i], currentTime);
                     inputReceived[i] = false;
                 }
                 // Calculate the next output value
@@ -316,7 +325,7 @@ public class QSSVectorIntegrator extends TypedAtomicActor {
         }
     }
 
-    /** Return the argument quantized to a multiple of quantum given by 
+    /** Return the argument quantized to a multiple of quantum given by
      *  the {@link #quantum} parameter.
      *  @param x The value to quantize.
      *  @param dq The quantum.
@@ -329,21 +338,21 @@ public class QSSVectorIntegrator extends TypedAtomicActor {
         return (Math.floor(x / dq)) * dq;
     }
 
-    /** Compute from the vector of nextOutputTime 
+    /** Compute from the vector of nextOutputTime
      * the minimal time to produce the next output.
      * Save in a list indexes which need to produce outputs at this time.
      */
     protected void _minNextCrossingTime() {
         index_min.clear();
         t_min = nextOutputTime[0];
-        index_min.add(0); 
+        index_min.add(0);
         t_min = nextOutputTime[0];
         for (int i = 1; i < nextOutputTime.length; i++) {
             if (t_min.compareTo(nextOutputTime[i]) > 0) {
                 t_min = nextOutputTime[i];
                 index_min.clear();
                 index_min.add(i);
-            } else if (t_min.compareTo(nextOutputTime[i])== 0) {
+            } else if (t_min.compareTo(nextOutputTime[i]) == 0) {
                 index_min.add(i);
             }
         }
@@ -364,11 +373,11 @@ public class QSSVectorIntegrator extends TypedAtomicActor {
     }
 
     /** Get a double array from the Parameter.
-    * @param t the parameter which must be a type that can be converted to an ArrayToken
-    * @param n the size of the parameter
-    * @return the double[] array with the elements of the Token
-    * @exception IllegalActionException if the base class throws it.
-    */
+     * @param t the parameter which must be a type that can be converted to an ArrayToken
+     * @param n the size of the parameter
+     * @return the double[] array with the elements of the Token
+     * @exception IllegalActionException if the base class throws it.
+     */
     protected double[] _getDoubleArray(Parameter t, int n)
             throws IllegalActionException {
         double[] ret = new double[n];
@@ -422,7 +431,7 @@ public class QSSVectorIntegrator extends TypedAtomicActor {
 
     /** The slope at the time of the most recent input. */
     private double slope[];
-    
+
     /** The slope at the time of the last recent input. */
     private double previousSlope[];
 
@@ -446,7 +455,7 @@ public class QSSVectorIntegrator extends TypedAtomicActor {
 
     /** The flag to indicate input received. */
     boolean inputReceived[];
-    
+
     /** The flag to indicate first firing. */
     boolean _firstFiring[];
 

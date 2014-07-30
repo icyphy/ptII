@@ -103,7 +103,7 @@ public class AudioReader extends Source {
         // We use voice.wav so that we can include the voice.wav file
         // in the jar file for use under Web Start.
         fileOrURL
-                .setExpression("$CLASSPATH/ptolemy/actor/lib/javasound/voice.wav");
+        .setExpression("$CLASSPATH/ptolemy/actor/lib/javasound/voice.wav");
 
         // Set the type of the output port.
         output.setMultiport(true);
@@ -131,6 +131,7 @@ public class AudioReader extends Source {
      *   is <i>fileOrURL</i> and the file cannot be opened, or the previously
      *   opened file cannot be closed.
      */
+    @Override
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         if (attribute == fileOrURL) {
@@ -155,6 +156,7 @@ public class AudioReader extends Source {
      *   the specified URL, or if the file has an unsupported audio
      *   format.
      */
+    @Override
     public void initialize() throws IllegalActionException {
         super.initialize();
 
@@ -177,6 +179,7 @@ public class AudioReader extends Source {
      *  @exception IllegalActionException If there is a problem reading
      *   from the specified sound file.
      */
+    @Override
     public boolean postfire() throws IllegalActionException {
         super.postfire();
 
@@ -238,6 +241,7 @@ public class AudioReader extends Source {
      *  Otherwise, return whatever the superclass returns.
      *  @exception IllegalActionException If the superclass throws it.
      */
+    @Override
     public boolean prefire() throws IllegalActionException {
         _firedSinceWrapup = true;
 
@@ -254,6 +258,7 @@ public class AudioReader extends Source {
      *  @exception IllegalActionException If there is a
      *   problem closing the file.
      */
+    @Override
     public void wrapup() throws IllegalActionException {
         fileOrURL.close();
         _soundReader = null;

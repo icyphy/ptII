@@ -109,12 +109,14 @@ public class StraightTerminal extends AbstractFigure implements Terminal {
 
     /** Get the site to which the terminal is attached
      */
+    @Override
     public Site getAttachSite() {
         return _attachSite;
     }
 
     /** Get the bounding box of this terminal.
      */
+    @Override
     public Rectangle2D getBounds() {
         Rectangle2D bounds = _stroke.createStrokedShape(_line).getBounds2D();
 
@@ -127,6 +129,7 @@ public class StraightTerminal extends AbstractFigure implements Terminal {
 
     /** Get the site to which a connector can attach
      */
+    @Override
     public Site getConnectSite() {
         return _connectSite;
     }
@@ -146,6 +149,7 @@ public class StraightTerminal extends AbstractFigure implements Terminal {
 
     /** Get the outline shape of this terminal.
      */
+    @Override
     public Shape getShape() {
         // FIXME: this really should include the "end"
         return _line;
@@ -159,6 +163,7 @@ public class StraightTerminal extends AbstractFigure implements Terminal {
 
     /** Test if this terminal is hit by the given rectangle.
      */
+    @Override
     public boolean hit(Rectangle2D r) {
         if (!isVisible()) {
             return false;
@@ -176,6 +181,7 @@ public class StraightTerminal extends AbstractFigure implements Terminal {
 
     /** Paint the terminal.
      */
+    @Override
     public void paint(Graphics2D g) {
         g.setStroke(_stroke);
         g.setPaint(_paint);
@@ -206,6 +212,7 @@ public class StraightTerminal extends AbstractFigure implements Terminal {
     /** Tell the terminal to reposition itself over the attachment
      * site.
      */
+    @Override
     public void relocate() {
         translate(_attachSite.getX() - _line.getX1(), _attachSite.getY()
                 - _line.getY1());
@@ -213,6 +220,7 @@ public class StraightTerminal extends AbstractFigure implements Terminal {
 
     /** Set the site to which the terminal is attached.
      */
+    @Override
     public void setAttachSite(Site s) {
         _attachSite = s;
         recompute();
@@ -253,6 +261,7 @@ public class StraightTerminal extends AbstractFigure implements Terminal {
      * and orientation of a terminal is determined solely by its
      * attachment site and other parameters.
      */
+    @Override
     public void transform(AffineTransform at) {
         // do nothing
     }
@@ -263,6 +272,7 @@ public class StraightTerminal extends AbstractFigure implements Terminal {
      * call repaint(), on the assumption that the parent figure
      * will do so anyway.
      */
+    @Override
     public void translate(double x, double y) {
         //// repaint();
         _line.setLine(_line.getX1() + x, _line.getY1() + y, _line.getX2() + x,
@@ -285,12 +295,14 @@ public class StraightTerminal extends AbstractFigure implements Terminal {
     private class ConnectSite extends AbstractSite {
         /** Get the ID of this site.
          */
+        @Override
         public int getID() {
             return 0;
         }
 
         /** Get the figure to which this site is attached.
          */
+        @Override
         public Figure getFigure() {
             return StraightTerminal.this;
         }
@@ -298,18 +310,21 @@ public class StraightTerminal extends AbstractFigure implements Terminal {
         /** Get the normal to this site, in radians
          * between zero and 2pi. The direction is "out" of the site.
          */
+        @Override
         public double getNormal() {
             return _attachSite.getNormal();
         }
 
         /** Get the x-coordinate of the site.
          */
+        @Override
         public double getX() {
             return _line.getX2();
         }
 
         /** Get the y-coordinate of the site.
          */
+        @Override
         public double getY() {
             return _line.getY2();
         }
@@ -317,6 +332,7 @@ public class StraightTerminal extends AbstractFigure implements Terminal {
         /** Test if this site has a "normal" to it. This method
          * returns the same value as the attachment site.
          */
+        @Override
         public boolean hasNormal() {
             return _attachSite.hasNormal();
         }
@@ -326,6 +342,7 @@ public class StraightTerminal extends AbstractFigure implements Terminal {
          * NORTH, SOUTH, EAST, or WEST, defined in
          * <b>javax.swing.SwingConstants</b>.
          */
+        @Override
         public boolean isNormal(int direction) {
             return _attachSite.isNormal(direction);
         }
@@ -333,6 +350,7 @@ public class StraightTerminal extends AbstractFigure implements Terminal {
         /** Translate the site by the indicated distance. This
          * method throws an exception.
          */
+        @Override
         public void translate(double x, double y) {
             throw new UnsupportedOperationException(
                     "Terminal connection points cannot be moved");

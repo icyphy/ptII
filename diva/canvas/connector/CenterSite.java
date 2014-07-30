@@ -66,12 +66,14 @@ public class CenterSite extends AbstractSite {
 
     /** Get the figure to which this site is attached.
      */
+    @Override
     public Figure getFigure() {
         return _parentFigure;
     }
 
     /** Get the ID of this site.
      */
+    @Override
     public int getID() {
         return _id;
     }
@@ -80,6 +82,7 @@ public class CenterSite extends AbstractSite {
      * is located in the center of the parent figure's bounding
      * box.
      */
+    @Override
     public double getX() {
         Rectangle2D bounds = _parentFigure.getBounds();
         return bounds.getX() + bounds.getWidth() / 2;
@@ -89,6 +92,7 @@ public class CenterSite extends AbstractSite {
      * is located in the center of the parent figure's bounding
      * box.
      */
+    @Override
     public double getY() {
         Rectangle2D bounds = _parentFigure.getBounds();
         return bounds.getY() + bounds.getHeight() / 2;

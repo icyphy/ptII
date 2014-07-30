@@ -105,7 +105,7 @@ public class StringToken extends AbstractConvertibleToken {
                         + "\"";
             }
         }
-        */
+         */
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -163,6 +163,7 @@ public class StringToken extends AbstractConvertibleToken {
      *  value. If either this object or the argument is nil, return
      *  false.
      */
+    @Override
     public boolean equals(Object object) {
         if (object == null) {
             return false;
@@ -186,6 +187,7 @@ public class StringToken extends AbstractConvertibleToken {
     /** Return the type of this token.
      *  @return BaseType.STRING
      */
+    @Override
     public Type getType() {
         return BaseType.STRING;
     }
@@ -194,6 +196,7 @@ public class StringToken extends AbstractConvertibleToken {
      *  hash code of the contained string.
      *  @return A hash code value for this token.
      */
+    @Override
     public int hashCode() {
         return _value.hashCode();
     }
@@ -202,6 +205,7 @@ public class StringToken extends AbstractConvertibleToken {
      *  Nil or missing tokens occur when a data source is sparsely populated.
      *  @return True if the token is the {@link #NIL} token.
      */
+    @Override
     public boolean isNil() {
         // We use a method here so that we can easily change how
         // we determine if a token is nil without modify lots of classes.
@@ -228,6 +232,7 @@ public class StringToken extends AbstractConvertibleToken {
      *  expression language.
      *  @return A String.
      */
+    @Override
     public String toString() {
         if (isNil()) {
             return super.toString();
@@ -239,6 +244,7 @@ public class StringToken extends AbstractConvertibleToken {
      *  as the additive identity of string.
      *  @return A new StringToken containing an empty string.
      */
+    @Override
     public Token zero() {
         return new StringToken("");
     }
@@ -267,6 +273,7 @@ public class StringToken extends AbstractConvertibleToken {
      *   supported by the derived class.
      *  @return A new Token containing the result.
      */
+    @Override
     protected Token _add(Token rightArgument) throws IllegalActionException {
         String result = _value + ((StringToken) rightArgument).stringValue();
         return new StringToken(result);
@@ -281,6 +288,7 @@ public class StringToken extends AbstractConvertibleToken {
      *  @return A new Token containing the result that is of the same class
      *  as this token.
      */
+    @Override
     protected Token _divide(Token rightArgument) throws IllegalActionException {
         throw new IllegalActionException(notSupportedMessage("divide", this,
                 rightArgument));
@@ -296,6 +304,7 @@ public class StringToken extends AbstractConvertibleToken {
      *  @exception IllegalActionException If this method is not
      *  supported by the derived class.
      */
+    @Override
     protected BooleanToken _isCloseTo(Token rightArgument, double epsilon)
             throws IllegalActionException {
         return _isEqualTo(rightArgument);
@@ -309,6 +318,7 @@ public class StringToken extends AbstractConvertibleToken {
      *  @exception IllegalActionException If this method is not
      *  supported by the derived class.
      */
+    @Override
     protected BooleanToken _isEqualTo(Token rightArgument)
             throws IllegalActionException {
         StringToken convertedArgument = (StringToken) rightArgument;
@@ -325,6 +335,7 @@ public class StringToken extends AbstractConvertibleToken {
      *  @return A new Token containing the result that is of the same
      *  class as this token.
      */
+    @Override
     protected Token _modulo(Token rightArgument) throws IllegalActionException {
         throw new IllegalActionException(notSupportedMessage("modulo", this,
                 rightArgument));
@@ -340,6 +351,7 @@ public class StringToken extends AbstractConvertibleToken {
      *  @return A new Token containing the result that is of the same class
      *  as this token.
      */
+    @Override
     protected Token _multiply(Token rightArgument)
             throws IllegalActionException {
         throw new IllegalActionException(notSupportedMessage("multiply", this,
@@ -355,6 +367,7 @@ public class StringToken extends AbstractConvertibleToken {
      *  @return A new Token containing the result that is of the same class
      *  as this token.
      */
+    @Override
     protected Token _subtract(Token rightArgument)
             throws IllegalActionException {
         throw new IllegalActionException(notSupportedMessage("subtract", this,

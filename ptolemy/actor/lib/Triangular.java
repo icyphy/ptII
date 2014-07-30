@@ -75,17 +75,17 @@ public class Triangular extends RandomSource {
         mode = new PortParameter(this, "mode", new DoubleToken(0.5));
         mode.setTypeEquals(BaseType.DOUBLE);
         new SingletonParameter(mode.getPort(), "_showName")
-                .setToken(BooleanToken.TRUE);
+        .setToken(BooleanToken.TRUE);
 
         min = new PortParameter(this, "min", new DoubleToken(0.0));
         min.setTypeEquals(BaseType.DOUBLE);
         new SingletonParameter(min.getPort(), "_showName")
-                .setToken(BooleanToken.TRUE);
+        .setToken(BooleanToken.TRUE);
 
         max = new PortParameter(this, "max", new DoubleToken(1.0));
         max.setTypeEquals(BaseType.DOUBLE);
         new SingletonParameter(max.getPort(), "_showName")
-                .setToken(BooleanToken.TRUE);
+        .setToken(BooleanToken.TRUE);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -114,6 +114,7 @@ public class Triangular extends RandomSource {
      *  remain constant throughout an iteration.
      *  @exception IllegalActionException If there is no director.
      */
+    @Override
     public void fire() throws IllegalActionException {
         mode.update();
         min.update();
@@ -128,6 +129,7 @@ public class Triangular extends RandomSource {
     /** Generate a new random number.
      *  @exception IllegalActionException If parameter values are incorrect.
      */
+    @Override
     protected void _generateRandomNumber() throws IllegalActionException {
         double minValue = ((DoubleToken) min.getToken()).doubleValue();
         double maxValue = ((DoubleToken) max.getToken()).doubleValue();

@@ -188,6 +188,7 @@ public class LinearDifferenceEquationSystem extends Transformer {
      *  @exception IllegalActionException If the numerator and the
      *   denominator matrix is not a row vector.
      */
+    @Override
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         if (attribute == A) {
@@ -246,6 +247,7 @@ public class LinearDifferenceEquationSystem extends Transformer {
      *  @exception IllegalActionException If the get() or send() methods
      *   of the ports throw this exception.
      */
+    @Override
     public void fire() throws IllegalActionException {
         super.fire();
         if (input.hasToken(0)) {
@@ -270,6 +272,7 @@ public class LinearDifferenceEquationSystem extends Transformer {
     /** Update the internal state.
      *  @exception IllegalActionException If thrown by the super class.
      */
+    @Override
     public boolean postfire() throws IllegalActionException {
         if (super.postfire()) {
             _x = _xPrime;
@@ -285,6 +288,7 @@ public class LinearDifferenceEquationSystem extends Transformer {
      *  @exception IllegalActionException If <i>initialStates</i>
      *  parameter is invalid, or if the base class throws it.
      */
+    @Override
     public boolean prefire() throws IllegalActionException {
         super.prefire();
 
@@ -309,6 +313,7 @@ public class LinearDifferenceEquationSystem extends Transformer {
      *  @exception IllegalActionException If the dimensions do not
      *  match.
      */
+    @Override
     public void preinitialize() throws IllegalActionException {
         super.preinitialize();
 

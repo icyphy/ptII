@@ -73,7 +73,7 @@ import ptolemy.kernel.util.Workspace;
  *  @Pt.AcceptedRating Red (derler)
  */
 public abstract class AtomicCommunicationAspect extends TypedAtomicActor
-        implements CommunicationAspect, Decorator {
+implements CommunicationAspect, Decorator {
 
     /** Construct an AtomicQuantityManager in the specified workspace with an empty
      *  string as a name. You can then change the name with setName().
@@ -118,6 +118,7 @@ public abstract class AtomicCommunicationAspect extends TypedAtomicActor
      *  @return The decorated attributes for the target NamedObj, or
      *   null if the specified target is not an Actor.
      */
+    @Override
     public DecoratorAttributes createDecoratorAttributes(NamedObj target) {
         if (target instanceof IOPort) {
             try {
@@ -135,6 +136,7 @@ public abstract class AtomicCommunicationAspect extends TypedAtomicActor
      *  of this resource scheduler.
      *  @return A list of the objects decorated by this decorator.
      */
+    @Override
     public List<NamedObj> decoratedObjects() {
         if (workspace().getVersion() == _decoratedObjectsVersion) {
             return _decoratedObjects;
@@ -156,6 +158,7 @@ public abstract class AtomicCommunicationAspect extends TypedAtomicActor
     /** Return true to indicate that this decorator should
      *  decorate objects across opaque hierarchy boundaries.
      */
+    @Override
     public boolean isGlobalDecorator() {
         return true;
     }
@@ -166,6 +169,7 @@ public abstract class AtomicCommunicationAspect extends TypedAtomicActor
      *  @exception CloneNotSupportedException If any of the attributes
      *   cannot be cloned.
      */
+    @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         AtomicCommunicationAspect newObject = (AtomicCommunicationAspect) super
                 .clone(workspace);
@@ -182,6 +186,7 @@ public abstract class AtomicCommunicationAspect extends TypedAtomicActor
      *  @return A new intermediate receiver.
      *  @exception IllegalActionException Not thrown in this class but may be thrown in derived classes.
      */
+    @Override
     public Receiver createIntermediateReceiver(Receiver receiver)
             throws IllegalActionException {
         IntermediateReceiver intermediateReceiver = new IntermediateReceiver(
@@ -192,6 +197,7 @@ public abstract class AtomicCommunicationAspect extends TypedAtomicActor
     /** Add a communication aspect monitor to the list of listeners.
      *  @param monitor The communication aspect monitor.
      */
+    @Override
     public void registerListener(CommunicationAspectListener monitor) {
         if (_listeners == null) {
             _listeners = new ArrayList<CommunicationAspectListener>();
@@ -202,6 +208,7 @@ public abstract class AtomicCommunicationAspect extends TypedAtomicActor
     /** Initialize the actor.
      *  @exception IllegalActionException Thrown by super class.
      */
+    @Override
     public void initialize() throws IllegalActionException {
         super.initialize();
         _tokenCount = 0;
@@ -223,7 +230,7 @@ public abstract class AtomicCommunicationAspect extends TypedAtomicActor
             while (listeners.hasNext()) {
                 ((CommunicationAspectListener) listeners.next()).event(this,
                         source, messageId, messageCnt, getDirector()
-                                .getModelTime().getDoubleValue(), eventType);
+                        .getModelTime().getDoubleValue(), eventType);
             }
         }
     }
@@ -240,6 +247,7 @@ public abstract class AtomicCommunicationAspect extends TypedAtomicActor
      *   an attribute with the name of this attribute.
      *  @see #getContainer()
      */
+    @Override
     public void setContainer(CompositeEntity container)
             throws IllegalActionException, NameDuplicationException {
         super.setContainer(container);

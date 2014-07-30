@@ -73,6 +73,7 @@ public class SDFTestConsumer extends TypedAtomicActor {
      *  @exception CloneNotSupportedException If one of the attributes
      *   cannot be cloned.
      */
+    @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         SDFTestConsumer newObject = (SDFTestConsumer) super.clone(workspace);
         newObject._history = new StringBuffer(_history.toString());
@@ -84,6 +85,7 @@ public class SDFTestConsumer extends TypedAtomicActor {
      * Consume an input token, and append its value to the history.
      * @exception IllegalActionException If a contained method throws it.
      */
+    @Override
     public void fire() throws IllegalActionException {
         int tokens = ((IntToken) input_tokenConsumptionRate.getToken())
                 .intValue();

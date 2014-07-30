@@ -24,7 +24,7 @@
  PT_COPYRIGHT_VERSION_2
  COPYRIGHTENDKEY
 
-*/
+ */
 package ptolemy.actor.gui.properties;
 
 import javax.swing.JComponent;
@@ -142,16 +142,17 @@ public class Separator extends GUIProperty {
      *  @exception IllegalActionException If the change is not acceptable
      *   to this container (not thrown in this base class).
      */
+    @Override
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         if (attribute == orientation) {
             String value = orientation.stringValue();
             if (value.equalsIgnoreCase("Horizontal")) {
                 ((JSeparator) getComponent())
-                        .setOrientation(SwingConstants.HORIZONTAL);
+                .setOrientation(SwingConstants.HORIZONTAL);
             } else if (value.equalsIgnoreCase("Vertical")) {
                 ((JSeparator) getComponent())
-                        .setOrientation(SwingConstants.VERTICAL);
+                .setOrientation(SwingConstants.VERTICAL);
             } else {
                 throw new IllegalActionException(this, "Orientation of a "
                         + "separator must be either \"Horozontal\" or "
@@ -168,10 +169,11 @@ public class Separator extends GUIProperty {
     public StringParameter orientation;
 
     /** Create a new JSeparator component.
-    *
-    *  @return A Swing component that can be enclosed in this GUI property.
-    *  @exception IllegalActionException Not thrown in this base class.
-    */
+     *
+     *  @return A Swing component that can be enclosed in this GUI property.
+     *  @exception IllegalActionException Not thrown in this base class.
+     */
+    @Override
     protected JComponent _createComponent() throws IllegalActionException {
         return new JSeparator();
     }
@@ -184,7 +186,7 @@ public class Separator extends GUIProperty {
      *   a parameter already in the container.
      */
     private void _init() throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         orientation = new StringParameter(this, "orientation");
         orientation.setExpression("Horizontal");
     }

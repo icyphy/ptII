@@ -149,6 +149,7 @@ public class Comparator extends TypedAtomicActor {
      *  @param attribute The attribute that changed.
      *  @exception IllegalActionException If the comparison is not recognized.
      */
+    @Override
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         if (attribute == tolerance) {
@@ -180,6 +181,7 @@ public class Comparator extends TypedAtomicActor {
      *  that both ports have an input, as checked by prefire().
      *  @exception IllegalActionException If there is no director.
      */
+    @Override
     public void fire() throws IllegalActionException {
         super.fire();
         BooleanToken result = BooleanToken.FALSE;
@@ -222,7 +224,7 @@ public class Comparator extends TypedAtomicActor {
         case _EQ:
 
             if (leftIn <= rightIn + _tolerance
-                    && leftIn >= rightIn - _tolerance) {
+            && leftIn >= rightIn - _tolerance) {
                 result = BooleanToken.TRUE;
             }
 
@@ -244,6 +246,7 @@ public class Comparator extends TypedAtomicActor {
      *  @return True if there inputs available on both input ports.
      *  @exception IllegalActionException If the base class throws it.
      */
+    @Override
     public boolean prefire() throws IllegalActionException {
         if (!left.hasToken(0) || !right.hasToken(0)) {
             return false;

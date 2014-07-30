@@ -80,6 +80,7 @@ public class PaneWrapper extends AbstractFigure implements EventAcceptor {
     /** Dispatch an AWT event on this pane figure. Currently only
      * layer events are handled.
      */
+    @Override
     public void dispatchEvent(AWTEvent event) {
         if (event instanceof LayerEvent) {
             processLayerEvent((LayerEvent) event);
@@ -100,6 +101,7 @@ public class PaneWrapper extends AbstractFigure implements EventAcceptor {
      * formed by taking the size of the contained pane and
      * converting it with its transform.
      */
+    @Override
     public Shape getShape() {
         if (_background != null) {
             return _background.getShape();
@@ -129,6 +131,7 @@ public class PaneWrapper extends AbstractFigure implements EventAcceptor {
      * whole pane will be treated as though it were a single figure, and
      * events passed to its event dispatcher, if it has one.
      */
+    @Override
     public boolean isEnabled() {
         return _wrappedPane.isEnabled();
     }
@@ -139,6 +142,7 @@ public class PaneWrapper extends AbstractFigure implements EventAcceptor {
      * appears to change the way that lines are rendered in the presence
      * of scaling. Don't know why...)
      */
+    @Override
     public void paint(Graphics2D g) {
         // Paint the background, if any
         if (_background != null) {
@@ -177,6 +181,7 @@ public class PaneWrapper extends AbstractFigure implements EventAcceptor {
      * lines are rendered in the presence of scaling. Don't know
      * why...)
      */
+    @Override
     public void paint(Graphics2D g, Rectangle2D region) {
         // Paint the background, if any
         if (_background != null) {
@@ -255,6 +260,7 @@ public class PaneWrapper extends AbstractFigure implements EventAcceptor {
     /** Accept notification that a repaint has occurred in the wrapped
      * pane.  This implementation forwards the notification to its parent.
      */
+    @Override
     public void repaint(DamageRegion d) {
         if (getParent() != null) {
             getParent().repaint(d);
@@ -290,6 +296,7 @@ public class PaneWrapper extends AbstractFigure implements EventAcceptor {
      * whole pane will be treated as though it were a single figure, and
      * events passed to its event dispatcher, if it has one.
      */
+    @Override
     public void setEnabled(boolean flag) {
         _wrappedPane.setEnabled(flag);
     }
@@ -307,6 +314,7 @@ public class PaneWrapper extends AbstractFigure implements EventAcceptor {
     /** Transform the figure with the supplied transform. The background,
      *  if any, will also be transformed.
      */
+    @Override
     public void transform(AffineTransform at) {
         repaint();
 
@@ -320,6 +328,7 @@ public class PaneWrapper extends AbstractFigure implements EventAcceptor {
 
     /** Translate this pane wrapper the given distance.
      */
+    @Override
     public void translate(double x, double y) {
         repaint();
 

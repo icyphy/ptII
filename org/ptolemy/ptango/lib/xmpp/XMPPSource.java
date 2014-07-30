@@ -113,6 +113,7 @@ public class XMPPSource extends TypedAtomicActor implements XMPPSubscriber {
      *   or cannot be converted to the output type, or if the superclass
      *   throws it.
      */
+    @Override
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         if (attribute == nodeId) {
@@ -128,6 +129,7 @@ public class XMPPSource extends TypedAtomicActor implements XMPPSubscriber {
      *  @exception CloneNotSupportedException If a derived class contains
      *   an attribute that cannot be cloned.
      */
+    @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         XMPPSource newObject = (XMPPSource) super.clone(workspace);
         newObject.lock = new Object();
@@ -143,6 +145,7 @@ public class XMPPSource extends TypedAtomicActor implements XMPPSubscriber {
      *  be called.
      *  @exception IllegalActionException If the superclass throws it.
      */
+    @Override
     public synchronized void initialize() throws IllegalActionException {
         super.initialize();
         _hasFired = false;
@@ -161,6 +164,7 @@ public class XMPPSource extends TypedAtomicActor implements XMPPSubscriber {
      *  @exception IllegalActionException If calling send() or super.fire()
      *  throws it.
      */
+    @Override
     public void fire() throws IllegalActionException {
         synchronized (lock) {
             super.fire();
@@ -225,6 +229,7 @@ public class XMPPSource extends TypedAtomicActor implements XMPPSubscriber {
      *  handlePublishedItems (from a different thread) will wait until the model
      *  has been initialized on the next execution.
      */
+    @Override
     public void wrapup() throws IllegalActionException {
 
         synchronized (lock) {

@@ -53,12 +53,14 @@ public class IncrLayoutAdapter implements IncrementalLayout {
 
     /** Called in response to the given node being added.
      */
+    @Override
     public void nodeDrawn(Object node) {
         layout(_target.getGraphModel().getParent(node));
     }
 
     /** Called in response to the given node being moved.
      */
+    @Override
     public void nodeMoved(Object node) {
         //FIXME
         //layout(oldContainer);
@@ -67,6 +69,7 @@ public class IncrLayoutAdapter implements IncrementalLayout {
     /**
      * Called in response to the edge head being changed.
      */
+    @Override
     public void edgeDrawn(Object edge) {
         GraphModel model = _target.getGraphModel();
 
@@ -78,6 +81,7 @@ public class IncrLayoutAdapter implements IncrementalLayout {
     /**
      * Called in response to the edge tail being changed.
      */
+    @Override
     public void edgeRouted(Object edge) {
         GraphModel model = _target.getGraphModel();
 
@@ -88,12 +92,14 @@ public class IncrLayoutAdapter implements IncrementalLayout {
 
     /** Return the layout target.
      */
+    @Override
     public LayoutTarget getLayoutTarget() {
         return _layout.getLayoutTarget();
     }
 
     /** Set the layout target.
      */
+    @Override
     public void setLayoutTarget(LayoutTarget target) {
         _layout.setLayoutTarget(target);
     }
@@ -101,6 +107,7 @@ public class IncrLayoutAdapter implements IncrementalLayout {
     /**
      * Call the global layout on the graph.
      */
+    @Override
     public void layout(Object composite) {
         try {
             _layout.layout(composite);

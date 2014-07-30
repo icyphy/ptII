@@ -1,7 +1,7 @@
 // Server that opens a BSD socket for communication with simulation engine.
 
 /*
-********************************************************************
+ ********************************************************************
 Copyright Notice
 ----------------
 
@@ -73,8 +73,8 @@ to install, use, modify, prepare derivative works, incorporate into
 other computer software, distribute, and sublicense such enhancements or
 derivative works thereof, in binary and source code form.
 
-********************************************************************
-*/
+ ********************************************************************
+ */
 
 package lbnl.actor.lib.net;
 
@@ -125,7 +125,7 @@ public class Server {
     /** Get the port number.
      *
      *@return The port number.
-    */
+     */
     public int getLocalPort() {
         return serSoc.getLocalPort();
     }
@@ -186,7 +186,7 @@ public class Server {
     /** Returns the last communication flag read from the socket.
      *
      * @return The communication flag.
-    */
+     */
     public int getClientFlag() {
         return flaFroCli;
     }
@@ -219,7 +219,7 @@ public class Server {
      *
      * @exception IOException If communication problems occur.
      * @exception SocketTimeoutException If the socket does not respond.
-    */
+     */
     public void read() throws IOException, SocketTimeoutException {
         if (cliSoc == null) { // first call
             cliSoc = serSoc.accept(); // accept calls from client

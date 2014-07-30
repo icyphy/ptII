@@ -126,7 +126,7 @@ public class FloatToken extends ScalarToken {
             FloatToken result = new FloatToken(shortToken.floatValue());
             if (shortToken._unitCategoryExponents != null
                     && !UnitUtilities
-                            .isUnitless(shortToken._unitCategoryExponents)) {
+                    .isUnitless(shortToken._unitCategoryExponents)) {
                 result._unitCategoryExponents = shortToken
                         ._copyOfCategoryExponents();
             }
@@ -140,6 +140,7 @@ public class FloatToken extends ScalarToken {
     /** Return the value in the token as a double.
      *  @return The value contained in this token represented as a double.
      */
+    @Override
     public double doubleValue() {
         return _value;
     }
@@ -151,6 +152,7 @@ public class FloatToken extends ScalarToken {
      *  value. If either this object or the argument is a nil Token, return
      *  false.
      */
+    @Override
     public boolean equals(Object object) {
         if (object == null) {
             return false;
@@ -174,6 +176,7 @@ public class FloatToken extends ScalarToken {
     /** Return the value in the token as a flaot.
      *  @return The value contained in this token as a float.
      */
+    @Override
     public float floatValue() {
         return _value;
     }
@@ -181,6 +184,7 @@ public class FloatToken extends ScalarToken {
     /** Return the type of this token.
      *  @return BaseType.FLOAT
      */
+    @Override
     public Type getType() {
         return BaseType.FLOAT;
     }
@@ -189,6 +193,7 @@ public class FloatToken extends ScalarToken {
      *  integer portion of the contained float.
      *  @return A hash code value for this token.
      */
+    @Override
     public int hashCode() {
         return (int) _value;
     }
@@ -197,6 +202,7 @@ public class FloatToken extends ScalarToken {
      *  Nil or missing tokens occur when a data source is sparsely populated.
      *  @return True if the token is the {@link #NIL} token.
      */
+    @Override
     public boolean isNil() {
         // We use a method here so that we can easily change how
         // we determine if a token is nil without modify lots of classes.
@@ -206,6 +212,7 @@ public class FloatToken extends ScalarToken {
     /** Returns a FloatToken with value 1.0.
      *  @return A FloatToken with value 1.0.
      */
+    @Override
     public Token one() {
         return ONE;
     }
@@ -225,6 +232,7 @@ public class FloatToken extends ScalarToken {
      *   any) of this token.
      *  @see ptolemy.data.ScalarToken#unitsString
      */
+    @Override
     public String toString() {
         String unitString = "";
 
@@ -255,6 +263,7 @@ public class FloatToken extends ScalarToken {
     /** Returns a FloatToken with value 0.0.
      *  @return A FloatToken with value 0.0.
      */
+    @Override
     public Token zero() {
         return ZERO;
     }
@@ -287,6 +296,7 @@ public class FloatToken extends ScalarToken {
      *  token, since the units are the same.
      *  @return An FloatToken.
      */
+    @Override
     protected ScalarToken _absolute() {
         FloatToken result;
 
@@ -305,6 +315,7 @@ public class FloatToken extends ScalarToken {
      *  @param rightArgument The token to add to this token.
      *  @return A new FloatToken containing the result.
      */
+    @Override
     protected ScalarToken _add(ScalarToken rightArgument) {
         float sum = _value + ((FloatToken) rightArgument).floatValue();
         return new FloatToken(sum);
@@ -316,6 +327,7 @@ public class FloatToken extends ScalarToken {
      *  @return The bitwise AND.
      *  @exception IllegalActionException Always thrown by this base class.
      */
+    @Override
     protected ScalarToken _bitwiseAnd(ScalarToken rightArgument)
             throws IllegalActionException {
         throw new IllegalActionException(notSupportedMessage("bitwiseAnd",
@@ -326,6 +338,7 @@ public class FloatToken extends ScalarToken {
      *  @return The bitwise NOT of this token.
      *  @exception IllegalActionException Always thrown by this base class.
      */
+    @Override
     protected ScalarToken _bitwiseNot() throws IllegalActionException {
         throw new IllegalActionException(notSupportedMessage("bitwiseNot",
                 this, this));
@@ -337,6 +350,7 @@ public class FloatToken extends ScalarToken {
      *  @return The bitwise OR.
      *  @exception IllegalActionException Always thrown by this base class.
      */
+    @Override
     protected ScalarToken _bitwiseOr(ScalarToken rightArgument)
             throws IllegalActionException {
         throw new IllegalActionException(notSupportedMessage("bitwiseOr", this,
@@ -349,6 +363,7 @@ public class FloatToken extends ScalarToken {
      *  @return The bitwise XOR.
      *  @exception IllegalActionException Always thrown by this base class.
      */
+    @Override
     protected ScalarToken _bitwiseXor(ScalarToken rightArgument)
             throws IllegalActionException {
         throw new IllegalActionException(notSupportedMessage("bitwiseXor",
@@ -361,6 +376,7 @@ public class FloatToken extends ScalarToken {
      *  @param divisor The token to divide this token by.
      *  @return A new FloatToken containing the result.
      */
+    @Override
     protected ScalarToken _divide(ScalarToken divisor) {
         float quotient = _value / ((FloatToken) divisor).floatValue();
         return new FloatToken(quotient);
@@ -375,6 +391,7 @@ public class FloatToken extends ScalarToken {
      *  @return A token containing tue if the value of this token is close
      *   to that of the argument.
      */
+    @Override
     protected BooleanToken _isCloseTo(ScalarToken rightArgument, double epsilon) {
         // NOTE: Used to compare against epsilon the following expression:
         // Math.abs(floatValue() - ((FloatToken)rightArgument).floatValue()))
@@ -396,6 +413,7 @@ public class FloatToken extends ScalarToken {
      *  supported by the derived class.
      *  @return A new Token containing the result.
      */
+    @Override
     protected BooleanToken _isLessThan(ScalarToken rightArgument)
             throws IllegalActionException {
         FloatToken convertedArgument = (FloatToken) rightArgument;
@@ -409,6 +427,7 @@ public class FloatToken extends ScalarToken {
      *  @param rightArgument The token to modulo this token by.
      *  @return A new FloatToken containing the result.
      */
+    @Override
     protected ScalarToken _modulo(ScalarToken rightArgument) {
         float remainder = _value % ((FloatToken) rightArgument).floatValue();
         return new FloatToken(remainder);
@@ -420,6 +439,7 @@ public class FloatToken extends ScalarToken {
      *  @param rightArgument The token to multiply this token by.
      *  @return A new FloatToken containing the result.
      */
+    @Override
     protected ScalarToken _multiply(ScalarToken rightArgument) {
         float product = _value * ((FloatToken) rightArgument).floatValue();
         return new FloatToken(product);
@@ -431,6 +451,7 @@ public class FloatToken extends ScalarToken {
      *  @param rightArgument The token to subtract from this token.
      *  @return A new FloatToken containing the result.
      */
+    @Override
     protected ScalarToken _subtract(ScalarToken rightArgument) {
         float difference = _value - ((FloatToken) rightArgument).floatValue();
         return new FloatToken(difference);

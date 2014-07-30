@@ -130,6 +130,7 @@ public abstract class AbstractFormBuilder {
      *
      * @deprecated Replaced by {@link #AbstractFormBuilder(FormLayout, Container)}.
      */
+    @Deprecated
     public AbstractFormBuilder(Container container, FormLayout layout) {
         this(layout, container);
     }

@@ -146,6 +146,7 @@ public class Joystick extends TypedAtomicActor implements JoystickListener {
      *  @param attribute The attribute that changed.
      *  @exception IllegalActionException Not thrown in this base class.
      */
+    @Override
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         if (_debugging) {
@@ -183,6 +184,7 @@ public class Joystick extends TypedAtomicActor implements JoystickListener {
     /** Get the current location values from the joystick
      *  and generate a DoubleMatrixToken on the output.
      */
+    @Override
     public synchronized void fire() throws IllegalActionException {
         super.fire();
 
@@ -199,6 +201,7 @@ public class Joystick extends TypedAtomicActor implements JoystickListener {
      *  @exception IllegalActionException If the joystick cannot
      *  be initialized or if the parent class throws it.
      */
+    @Override
     public void initialize() throws IllegalActionException {
         super.initialize();
 
@@ -237,18 +240,21 @@ public class Joystick extends TypedAtomicActor implements JoystickListener {
     /* This method gets called periodically when the joystick changes
      * its value.
      */
+    @Override
     public void joystickAxisChanged(com.centralnexus.input.Joystick j) {
     }
 
     /** This method gets called periodically when a joystick button
      *  changes its value.
      */
+    @Override
     public void joystickButtonChanged(com.centralnexus.input.Joystick j) {
     }
 
     /** Wrap up deallocates resources, specifically the serial port.
      *  @exception IllegalActionException Not thrown in this base class.
      */
+    @Override
     public void wrapup() throws IllegalActionException {
         if (_joy != null && !_isPollingValue) {
             _joy.removeJoystickListener(this);

@@ -140,6 +140,7 @@ public class VQDecode extends Transformer {
      *  @exception CloneNotSupportedException If a derived class contains
      *   an attribute that cannot be cloned.
      */
+    @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         VQDecode newObject = (VQDecode) super.clone(workspace);
         newObject._codebook = new int[6][256][][];
@@ -158,6 +159,7 @@ public class VQDecode extends Transformer {
      * @exception ArrayIndexOutOfBoundsException If the input codewords are
      * not between 0 and 255.
      */
+    @Override
     public void fire() throws IllegalActionException {
         super.fire();
         int j;
@@ -179,6 +181,7 @@ public class VQDecode extends Transformer {
      * @exception IllegalActionException If the parameters do not have
      * legal values, or the codebook file cannot be read.
      */
+    @Override
     public void initialize() throws IllegalActionException {
         super.initialize();
 
@@ -301,7 +304,7 @@ public class VQDecode extends Transformer {
 
         while (length > 2) {
             length = length >> 1;
-            x++;
+                x++;
         }
 
         return x;

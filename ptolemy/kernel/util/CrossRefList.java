@@ -578,6 +578,7 @@ public final class CrossRefList {
         }
 
         /** Return true if there are more elements to enumerate. */
+        @Override
         public boolean hasMoreElements() {
             if (_enumeratorVersion != _listVersion) {
                 throw new InvalidStateException(
@@ -596,6 +597,7 @@ public final class CrossRefList {
          *  @exception java.util.NoSuchElementException If the enumeration is
          *  exhausted.
          */
+        @Override
         public Object nextElement() throws NoSuchElementException {
             if (_enumeratorVersion != _listVersion) {
                 throw new InvalidStateException("CrossRefList.nextElement(): "

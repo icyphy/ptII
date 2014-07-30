@@ -45,6 +45,7 @@ public class TestIntegerBinaryOperation implements IntegerBinaryOperation {
     /** Operate on the operands, returning a value of the same
      *  type. Note that the operation need not be commutative.
      */
+    @Override
     public int operate(int leftOperand, int rightOperand) {
         return leftOperand - rightOperand;
     }

@@ -111,8 +111,9 @@ public class SingletonAttribute extends Attribute implements Singleton {
      *   an attribute with the name of this attribute that is of class
      *   SingletonConfigurableAttribute.
      */
+    @Override
     public void setContainer(NamedObj container) throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         Attribute previous = null;
 
         if (container != null) {

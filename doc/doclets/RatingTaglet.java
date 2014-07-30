@@ -61,6 +61,7 @@ public class RatingTaglet implements Taglet {
     /**
      * Return the name of this custom tag.
      */
+    @Override
     public String getName() {
         return _name;
     }
@@ -69,6 +70,7 @@ public class RatingTaglet implements Taglet {
      * Return true if the tag can annotate a field.
      * @return false.
      */
+    @Override
     public boolean inField() {
         return false;
     }
@@ -77,6 +79,7 @@ public class RatingTaglet implements Taglet {
      * Return true if the tag can annotate a constructor.
      * @return false.
      */
+    @Override
     public boolean inConstructor() {
         return false;
     }
@@ -85,6 +88,7 @@ public class RatingTaglet implements Taglet {
      * Return true if the tag can annotate a method.
      * @return false.
      */
+    @Override
     public boolean inMethod() {
         return false;
     }
@@ -93,6 +97,7 @@ public class RatingTaglet implements Taglet {
      * Return true if the tag can annotate a class.
      * @return true.
      */
+    @Override
     public boolean inOverview() {
         return true;
     }
@@ -101,6 +106,7 @@ public class RatingTaglet implements Taglet {
      * Return true if the tag can annotate a package.
      * @return true.
      */
+    @Override
     public boolean inPackage() {
         return true;
     }
@@ -109,6 +115,7 @@ public class RatingTaglet implements Taglet {
      * Return true if the tag can annotate a class or interface.
      * @return true.
      */
+    @Override
     public boolean inType() {
         return true;
     }
@@ -117,6 +124,7 @@ public class RatingTaglet implements Taglet {
      * Return true if the tag is an inline tag.
      * @return false.
      */
+    @Override
     public boolean isInlineTag() {
         return false;
     }
@@ -144,6 +152,7 @@ public class RatingTaglet implements Taglet {
      * @param tag the <code>Tag</code> representation of this custom tag.
      * @return The string representation.
      */
+    @Override
     public String toString(Tag tag) {
         String color = tag.text();
 
@@ -157,9 +166,9 @@ public class RatingTaglet implements Taglet {
         }
 
         return "<DT><B>" + _tagName + ":</B><DD>"
-                + "<table cellpadding=2 cellspacing=0><tr><td bgcolor=\""
-                + color.toLowerCase() + "\">" + tag.text()
-                + "</td></tr></table></DD>\n";
+        + "<table cellpadding=2 cellspacing=0><tr><td bgcolor=\""
+        + color.toLowerCase() + "\">" + tag.text()
+        + "</td></tr></table></DD>\n";
     }
 
     /**
@@ -168,6 +177,7 @@ public class RatingTaglet implements Taglet {
      * @param tags  the array of <code>Tag</code>s representing of this custom tag.
      * @return The string representation.
      */
+    @Override
     public String toString(Tag[] tags) {
         if (tags.length == 0) {
             return null;

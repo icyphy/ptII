@@ -98,6 +98,7 @@ public class PtolemyEffigy extends Effigy implements ChangeListener {
      *  This method does nothing.
      *  @param change The change that has been executed.
      */
+    @Override
     public void changeExecuted(ChangeRequest change) {
         // Initially, the undo facility wanted us to call
         // setModified(true) here.  However, if we do, then running an
@@ -113,6 +114,7 @@ public class PtolemyEffigy extends Effigy implements ChangeListener {
      *  @param change The change that was attempted.
      *  @param exception The exception that resulted.
      */
+    @Override
     public void changeFailed(ChangeRequest change, Exception exception) {
         // Do not report if it has already been reported.
         // NOTE: This method assumes that the context of the error handler
@@ -134,6 +136,7 @@ public class PtolemyEffigy extends Effigy implements ChangeListener {
      *  @exception CloneNotSupportedException If a derived class contains
      *   an attribute that cannot be cloned.
      */
+    @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         PtolemyEffigy newObject = (PtolemyEffigy) super.clone(workspace);
 
@@ -160,6 +163,7 @@ public class PtolemyEffigy extends Effigy implements ChangeListener {
      *  @return The effigy associated with the top-level of the
      *   model.
      */
+    @Override
     public Effigy masterEffigy() {
         if (_model != null) {
             NamedObj toplevel = _model.toplevel();
@@ -202,6 +206,7 @@ public class PtolemyEffigy extends Effigy implements ChangeListener {
      *  @param file The file to write to.
      *  @exception IOException If the write fails.
      */
+    @Override
     public void writeFile(File file) throws IOException {
         java.io.FileWriter fileWriter = null;
 
@@ -251,6 +256,7 @@ public class PtolemyEffigy extends Effigy implements ChangeListener {
      *  @exception IllegalActionException If the container is not of
      *   an acceptable class.
      */
+    @Override
     protected void _checkContainer(CompositeEntity container)
             throws IllegalActionException {
         if (container != null && !(container instanceof ModelDirectory)
@@ -292,6 +298,7 @@ public class PtolemyEffigy extends Effigy implements ChangeListener {
          *  capable of creating an effigy without a URL being specified.
          *  @return True.
          */
+        @Override
         public boolean canCreateBlankEffigy() {
             return true;
         }
@@ -326,6 +333,7 @@ public class PtolemyEffigy extends Effigy implements ChangeListener {
          *  @exception Exception If the URL cannot be read, or if the data
          *   is malformed in some way.
          */
+        @Override
         public Effigy createEffigy(CompositeEntity container, URL base,
                 URL input) throws Exception {
             if (input == null) {
@@ -447,32 +455,32 @@ public class PtolemyEffigy extends Effigy implements ChangeListener {
                                         + Manager.minimumStatisticsTime)
                                         && model instanceof CompositeEntity) {
                                     System.out
-                                            .println("Opened "
-                                                    + input
-                                                    + " in "
-                                                    + (System
-                                                            .currentTimeMillis() - startTime)
+                                    .println("Opened "
+                                            + input
+                                            + " in "
+                                            + (System
+                                                    .currentTimeMillis() - startTime)
                                                     + " ms.");
 
                                     long statisticsStartTime = System
                                             .currentTimeMillis();
                                     System.out
-                                            .println(((CompositeEntity) model)
-                                                    .statistics(entityClassName));
+                                    .println(((CompositeEntity) model)
+                                            .statistics(entityClassName));
                                     long statisticsEndTime = System
                                             .currentTimeMillis();
                                     if (statisticsEndTime - statisticsStartTime > Manager.minimumStatisticsTime) {
                                         System.out
-                                                .println("Generating statistics took"
-                                                        + (statisticsEndTime - statisticsStartTime)
-                                                        + " ms. ");
+                                        .println("Generating statistics took"
+                                                + (statisticsEndTime - statisticsStartTime)
+                                                + " ms. ");
                                     }
                                 }
                             } catch (SecurityException ex) {
                                 System.err
-                                        .println("Warning, while trying to print timing statistics,"
-                                                + " failed to read the entityClassName"
-                                                + " property (-sandbox always causes this)");
+                                .println("Warning, while trying to print timing statistics,"
+                                        + " failed to read the entityClassName"
+                                        + " property (-sandbox always causes this)");
                             }
                             effigy.setModel(model);
 
@@ -664,6 +672,7 @@ public class PtolemyEffigy extends Effigy implements ChangeListener {
          *  capable of creating an effigy without a URL being specified.
          *  @return False.
          */
+        @Override
         public boolean canCreateBlankEffigy() {
             return false;
         }

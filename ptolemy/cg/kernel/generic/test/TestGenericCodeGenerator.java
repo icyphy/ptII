@@ -68,6 +68,7 @@ public class TestGenericCodeGenerator extends GenericCodeGenerator {
      *  @param comment The string to put in the comment.
      *  @return A formatted comment.
      */
+    @Override
     public String comment(String comment) {
         return "<TGCF" + comment + "TGCF>";
     }

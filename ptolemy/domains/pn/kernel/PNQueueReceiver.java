@@ -110,6 +110,7 @@ public class PNQueueReceiver extends QueueReceiver implements ProcessReceiver {
      *   an appropriate subclass of IOPort, or if the container's director
      *   is not an instance of PNDirector.
      */
+    @Override
     public void setContainer(IOPort port) throws IllegalActionException {
         super.setContainer(port);
         if (port == null) {
@@ -146,6 +147,7 @@ public class PNQueueReceiver extends QueueReceiver implements ProcessReceiver {
      *  TerminateProcessException.
      *  @return The token contained by this receiver.
      */
+    @Override
     public Token get() {
         Token result = null;
         Workspace workspace = getContainer().workspace();
@@ -216,6 +218,7 @@ public class PNQueueReceiver extends QueueReceiver implements ProcessReceiver {
      *  model of computation is of infinite capacity and always has room.
      *  @return True.
      */
+    @Override
     public boolean hasRoom() {
         return true;
     }
@@ -225,6 +228,7 @@ public class PNQueueReceiver extends QueueReceiver implements ProcessReceiver {
      *  @param tokens The number of tokens, which is ignored in this method.
      *  @return True.
      */
+    @Override
     public boolean hasRoom(int tokens) {
         return true;
     }
@@ -233,6 +237,7 @@ public class PNQueueReceiver extends QueueReceiver implements ProcessReceiver {
      *  always return a token if the call to get() ever returns.
      *  @return True.
      */
+    @Override
     public boolean hasToken() {
         return true;
     }
@@ -242,6 +247,7 @@ public class PNQueueReceiver extends QueueReceiver implements ProcessReceiver {
      *  @param tokens The number of tokens, which is ignored in this method.
      *  @return True.
      */
+    @Override
     public boolean hasToken(int tokens) {
         return true;
     }
@@ -256,6 +262,7 @@ public class PNQueueReceiver extends QueueReceiver implements ProcessReceiver {
      * @exception IllegalActionException
      *  @see ptolemy.actor.process.BoundaryDetector
      */
+    @Override
     public boolean isConnectedToBoundary() throws IllegalActionException {
         return _boundaryDetector.isConnectedToBoundary();
     }
@@ -271,8 +278,9 @@ public class PNQueueReceiver extends QueueReceiver implements ProcessReceiver {
      * @exception InvalidStateException
      *  @see ptolemy.actor.process.BoundaryDetector
      */
+    @Override
     public boolean isConnectedToBoundaryInside() throws InvalidStateException,
-            IllegalActionException {
+    IllegalActionException {
         return _boundaryDetector.isConnectedToBoundaryInside();
     }
 
@@ -286,6 +294,7 @@ public class PNQueueReceiver extends QueueReceiver implements ProcessReceiver {
      * @exception IllegalActionException
      *  @see ptolemy.actor.process.BoundaryDetector
      */
+    @Override
     public boolean isConnectedToBoundaryOutside() throws IllegalActionException {
         return _boundaryDetector.isConnectedToBoundaryOutside();
     }
@@ -299,6 +308,7 @@ public class PNQueueReceiver extends QueueReceiver implements ProcessReceiver {
      *  @return True if this is connected to the boundary.
      * @exception IllegalActionException
      */
+    @Override
     public boolean isConsumerReceiver() throws IllegalActionException {
         if (isConnectedToBoundary()) {
             return true;
@@ -316,6 +326,7 @@ public class PNQueueReceiver extends QueueReceiver implements ProcessReceiver {
      *   a boundary port; return false otherwise.
      *  @see ptolemy.actor.process.BoundaryDetector
      */
+    @Override
     public boolean isInsideBoundary() {
         return _boundaryDetector.isInsideBoundary();
     }
@@ -329,6 +340,7 @@ public class PNQueueReceiver extends QueueReceiver implements ProcessReceiver {
      *   a boundary port; return false otherwise.
      *  @see BoundaryDetector
      */
+    @Override
     public boolean isOutsideBoundary() {
         return _boundaryDetector.isOutsideBoundary();
     }
@@ -336,6 +348,7 @@ public class PNQueueReceiver extends QueueReceiver implements ProcessReceiver {
     /** Return true if this receiver is at a boundary.
      *  @return True if this receiver is at a boundary.
      */
+    @Override
     public boolean isProducerReceiver() {
         if (isOutsideBoundary() || isInsideBoundary()) {
             return true;
@@ -349,6 +362,7 @@ public class PNQueueReceiver extends QueueReceiver implements ProcessReceiver {
      *  @return a boolean indicating whether a read is blocked on this
      *  receiver or not.
      */
+    @Override
     public boolean isReadBlocked() {
         // NOTE: This method used to be synchronized on this
         // receiver, but since it is called by synchronized methods in
@@ -363,6 +377,7 @@ public class PNQueueReceiver extends QueueReceiver implements ProcessReceiver {
      *  @return A boolean indicating whether a write is blocked  on this
      *  receiver or not.
      */
+    @Override
     public boolean isWriteBlocked() {
         // NOTE: This method used to be synchronized on this
         // receiver, but since it is called by synchronized methods in
@@ -386,6 +401,7 @@ public class PNQueueReceiver extends QueueReceiver implements ProcessReceiver {
      *  @exception NoRoomException If during initialization, capacity cannot be increased
      *   enough to accommodate initial tokens.
      */
+    @Override
     public void put(Token token) throws NoRoomException {
         IOPort port = getContainer();
         if (port == null || token == null) {
@@ -395,10 +411,10 @@ public class PNQueueReceiver extends QueueReceiver implements ProcessReceiver {
         while (!_terminate) {
             int depth = 0;
             try {
-                    // NOTE: Avoid acquiring read access on the workspace
-                    // while holding the lock on the director because if
-                    // some other process is trying to acquire write access,
-                    // the request for read access will be deferred.
+                // NOTE: Avoid acquiring read access on the workspace
+                // while holding the lock on the director because if
+                // some other process is trying to acquire write access,
+                // the request for read access will be deferred.
                 Nameable container = getContainer().getContainer();
                 Manager manager = ((Actor) container).getManager();
                 // NOTE: This used to synchronize on this, but since it calls
@@ -483,6 +499,7 @@ public class PNQueueReceiver extends QueueReceiver implements ProcessReceiver {
 
     /** Reset the state variables in the receiver.
      */
+    @Override
     public void reset() {
         if (_readPending != null) {
             _director.threadUnblocked(_readPending, this,
@@ -504,6 +521,7 @@ public class PNQueueReceiver extends QueueReceiver implements ProcessReceiver {
      *  This will result in termination of any process that is either blocked
      *  on the receiver or is trying to read from or write to it.
      */
+    @Override
     public void requestFinish() {
         // NOTE: This method used to be synchronized on this
         // receiver, but since it calls synchronized methods in

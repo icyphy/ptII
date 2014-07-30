@@ -58,6 +58,7 @@ public class DTDValidator {
          *@param e The exception
          *@exception SAXException If a SAXException occurs
          */
+        @Override
         public void warning(SAXParseException e) throws SAXException {
             printInfo("Warning: ", e);
         }
@@ -67,6 +68,7 @@ public class DTDValidator {
          *@param e The exception
          *@exception SAXException If a SAXException occurs
          */
+        @Override
         public void error(SAXParseException e) throws SAXException {
             printInfo("Error: ", e);
         }
@@ -76,6 +78,7 @@ public class DTDValidator {
          *@param e The exception
          *@exception SAXException If a SAXException occurs
          */
+        @Override
         public void fatalError(SAXParseException e) throws SAXException {
             error(e);
         }
@@ -163,5 +166,5 @@ to install, use, modify, prepare derivative works, incorporate into
 other computer software, distribute, and sublicense such enhancements or
 derivative works thereof, in binary and source code form.
 
-********************************************************************
-*/
+ ********************************************************************
+ */

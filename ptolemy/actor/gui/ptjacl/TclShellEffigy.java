@@ -84,6 +84,7 @@ public class TclShellEffigy extends Effigy {
      *  @exception CloneNotSupportedException If a derived class contains
      *   an attribute that cannot be cloned.
      */
+    @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         TclShellEffigy newObject = (TclShellEffigy) super.clone(workspace);
 
@@ -147,6 +148,7 @@ public class TclShellEffigy extends Effigy {
          *  capable of creating an effigy without a URL being specified.
          *  @return True.
          */
+        @Override
         public boolean canCreateBlankEffigy() {
             return true;
         }
@@ -164,6 +166,7 @@ public class TclShellEffigy extends Effigy {
          *  @exception Exception If there is some failure.
          *   is malformed in some way.
          */
+        @Override
         public Effigy createEffigy(CompositeEntity container, URL base,
                 URL input) throws Exception {
             return new TclShellEffigy(container, container.uniqueName("effigy"));

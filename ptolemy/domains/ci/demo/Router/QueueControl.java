@@ -144,6 +144,7 @@ public class QueueControl extends TypedAtomicActor {
      *  token, otherwise, distribute the input data to
      *  corresponding output.
      *  @exception IllegalActionException Not thrown in this base class */
+    @Override
     public void fire() throws IllegalActionException {
         super.fire();
         if (q1Length.hasToken(0)) {
@@ -181,6 +182,7 @@ public class QueueControl extends TypedAtomicActor {
      *  and _q2Length to zero.
      *  @exception IllegalActionException If the parent class throws it.
      */
+    @Override
     public void preinitialize() throws IllegalActionException {
         super.preinitialize();
         _q1Length = 0;

@@ -110,6 +110,7 @@ public class SRRandomizedScheduler extends Scheduler {
      *  @exception NotSchedulableException If the CompositeActor is not
      *   schedulable.
      */
+    @Override
     protected Schedule _getSchedule() throws NotSchedulableException {
         StaticSchedulingDirector director = (StaticSchedulingDirector) getContainer();
 

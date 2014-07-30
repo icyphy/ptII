@@ -37,7 +37,7 @@ Code generator adapter.
 @since Ptolemy II 10.0
 @Pt.ProposedRating Red (mankit)
 @Pt.AcceptedRating Red (mankit)
-*/
+ */
 public class MultiCompositePort extends IOPort {
 
     /** Construct the code generator adapter associated

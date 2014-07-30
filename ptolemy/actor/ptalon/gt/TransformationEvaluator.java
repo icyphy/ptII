@@ -24,7 +24,7 @@
  PT_COPYRIGHT_VERSION_2
  COPYRIGHTENDKEY
 
-*/
+ */
 package ptolemy.actor.ptalon.gt;
 
 import java.util.LinkedList;
@@ -73,6 +73,7 @@ public class TransformationEvaluator extends PtalonEvaluator {
      *  @param incremental  True if this is an incremental transformation.
      *  @exception PtalonRuntimeException Not thrown in this baseclass.
      */
+    @Override
     public void enterTransformation(boolean incremental)
             throws PtalonRuntimeException {
         _isInTransformation = true;
@@ -86,6 +87,7 @@ public class TransformationEvaluator extends PtalonEvaluator {
     /** Exit the transformation.
      *  @exception PtalonRuntimeException Not thrown in this baseclass.
      */
+    @Override
     public void exitTransformation() throws PtalonRuntimeException {
         _isInTransformation = false;
         _removedObjects.clear();
@@ -100,6 +102,7 @@ public class TransformationEvaluator extends PtalonEvaluator {
      * @exception PtalonRuntimeException If we are in a transformation
      * or if the object has already been negated.
      */
+    @Override
     public void negateObject(String name) throws PtalonRuntimeException {
         if (_isInTransformation) {
             throw new PtalonRuntimeException("Objects can be marked negated "
@@ -134,6 +137,7 @@ public class TransformationEvaluator extends PtalonEvaluator {
      * @exception PtalonRuntimeException If we are in a transformation or if the object has
      * already been marked optional
      */
+    @Override
     public void optionalObject(String name) throws PtalonRuntimeException {
         if (_isInTransformation) {
             throw new PtalonRuntimeException("Objects can be marked optional "
@@ -168,6 +172,7 @@ public class TransformationEvaluator extends PtalonEvaluator {
      * @exception PtalonRuntimeException If we are in a transformation or if the object has
      * already been preserved.
      */
+    @Override
     public void preserveObject(String name) throws PtalonRuntimeException {
         if (_isIncrementalTransformation) {
             throw new PtalonRuntimeException(
@@ -210,6 +215,7 @@ public class TransformationEvaluator extends PtalonEvaluator {
      * @exception PtalonRuntimeException If we are in a transformation or if the object has
      * already been marked as removed.
      */
+    @Override
     public void removeObject(String name) throws PtalonRuntimeException {
         if (!_isIncrementalTransformation) {
             throw new PtalonRuntimeException("Objects can be marked removed "
@@ -246,6 +252,7 @@ public class TransformationEvaluator extends PtalonEvaluator {
     /** Prepare the compiler to start at the outermost scope of the Ptalon
      *  program during run time.
      */
+    @Override
     public void startAtTop() {
         _negatedObjects.clear();
         _optionalObjects.clear();
@@ -260,6 +267,7 @@ public class TransformationEvaluator extends PtalonEvaluator {
      *  @exception PtalonRuntimeException If thrown while processing
      *  the attribute.
      */
+    @Override
     protected void _processAttributes(NamedObj object)
             throws PtalonRuntimeException {
         if (_isInTransformation) {
@@ -287,7 +295,7 @@ public class TransformationEvaluator extends PtalonEvaluator {
     ////                         private methods                   ////
 
     private NamedObj _getObject(String name) throws PtalonScopeException,
-            PtalonRuntimeException {
+    PtalonRuntimeException {
         String type = _getType(name);
         String uniqueId = _actor.getMappedName(name);
         NamedObj object = null;

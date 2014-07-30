@@ -176,6 +176,7 @@ public class FIR extends SDFTransformer {
      *  @exception IllegalActionException If the attribute contains
      *  an invalid value or if the super method throws it.
      */
+    @Override
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         if (attribute == interpolation) {
@@ -185,7 +186,7 @@ public class FIR extends SDFTransformer {
             if (_interpolationValue <= 0) {
                 throw new IllegalActionException(this,
                         "Invalid interpolation: " + _interpolationValue
-                                + ". Must be positive.");
+                        + ". Must be positive.");
             }
 
             _reinitializeNeeded = true;
@@ -206,7 +207,7 @@ public class FIR extends SDFTransformer {
             if (_decimationPhaseValue < 0) {
                 throw new IllegalActionException(this,
                         "Invalid decimationPhase: " + _decimationPhaseValue
-                                + ". Must be nonnegative.");
+                        + ". Must be nonnegative.");
             }
 
             _reinitializeNeeded = true;
@@ -224,6 +225,7 @@ public class FIR extends SDFTransformer {
      *  @exception CloneNotSupportedException If a derived class contains
      *   an attribute that cannot be cloned.
      */
+    @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         FIR newObject = (FIR) super.clone(workspace);
 
@@ -240,6 +242,7 @@ public class FIR extends SDFTransformer {
      *  @exception IllegalActionException If parameter values are invalid,
      *   or if there is no director, or if runtime type conflicts occur.
      */
+    @Override
     public void fire() throws IllegalActionException {
         super.fire();
 
@@ -298,6 +301,7 @@ public class FIR extends SDFTransformer {
      *  Set a flag that reinitializes the data buffer at the first firing.
      *  @exception IllegalActionException If the superclass throws it.
      */
+    @Override
     public void initialize() throws IllegalActionException {
         super.initialize();
 
@@ -315,6 +319,7 @@ public class FIR extends SDFTransformer {
      *   equal to the decimation parameter.
      *  @exception IllegalActionException If the superclass throws it.
      */
+    @Override
     public boolean prefire() throws IllegalActionException {
         // If an attribute has changed since the last fire(), or if
         // this is the first fire(), then reinitialize.
@@ -470,6 +475,7 @@ public class FIR extends SDFTransformer {
         /** Return the function result.
          *  @return A Type.
          */
+        @Override
         public Object getValue() {
             Type inputType = input.getType();
             Type tapsElementType = BaseType.UNKNOWN;
@@ -519,6 +525,7 @@ public class FIR extends SDFTransformer {
          *  length.
          *  @return An array of InequalityTerm.
          */
+        @Override
         public InequalityTerm[] getVariables() {
             try {
                 InequalityTerm elementTerm = ArrayType.elementType(taps);

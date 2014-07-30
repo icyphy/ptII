@@ -97,6 +97,7 @@ public class UpdatedArrayToken extends ArrayToken {
      *  @exception ArrayIndexOutOfBoundsException If the specified index is
      *   outside the range of the token array.
      */
+    @Override
     public Token getElement(int index) {
         if (index == _index) {
             return _newValue;
@@ -112,6 +113,7 @@ public class UpdatedArrayToken extends ArrayToken {
     /** Return the length of the contained token array.
      *  @return The length of the contained token array.
      */
+    @Override
     public int length() {
         return _baseToken.length();
     }

@@ -25,7 +25,7 @@ ENHANCEMENTS, OR MODIFICATIONS.
                                                 COPYRIGHTENDKEY
 
 
-*/
+ */
 package ptdb.kernel.bl.load;
 
 import java.util.ArrayList;
@@ -51,42 +51,42 @@ import ptolemy.moml.MoMLParser;
 //// LoadManager
 
 /**
-* The business layer is used by the GUI to pass models to load.
-* It uses the LoadManager to interface with the database to get MoML strings.
-*
-* @author Lyle Holsinger
-* @since Ptolemy II 10.0
-* @version $Id$
-* @Pt.ProposedRating red (lholsing)
-* @Pt.AcceptedRating red (lholsing)
-*/
+ * The business layer is used by the GUI to pass models to load.
+ * It uses the LoadManager to interface with the database to get MoML strings.
+ *
+ * @author Lyle Holsinger
+ * @since Ptolemy II 10.0
+ * @version $Id$
+ * @Pt.ProposedRating red (lholsing)
+ * @Pt.AcceptedRating red (lholsing)
+ */
 
 public class LoadManager {
 
     /** Given a model name, return an Entity object.
-    *
-    * @param name
-    *          The model name.  An alphanumeric
-    *          string without special characters.
-    *          If no model with the given name is found, return null.
-    * @param byReference
-    *          Indication that the model should be included by reference.
+     *
+     * @param name
+     *          The model name.  An alphanumeric
+     *          string without special characters.
+     *          If no model with the given name is found, return null.
+     * @param byReference
+     *          Indication that the model should be included by reference.
      * @param container
      *          The NamedObj that will contain this imported model.
      *          It is used here to obtain a unique name.
-    * @return
-    *          An Entity object that the GUI can display.
-    * @exception DBConnectionException
-    *          Thrown by DBModelFetcher if a problem occurs with the
-    *          database connection.
-    * @exception DBExecutionException
-    *          Thrown by DBModelFetcher if a problem while executing a
-    *          command.
-    * @exception Exception
-    *          Thrown if a problem occurs creating an effigy from the MoML.
+     * @return
+     *          An Entity object that the GUI can display.
+     * @exception DBConnectionException
+     *          Thrown by DBModelFetcher if a problem occurs with the
+     *          database connection.
+     * @exception DBExecutionException
+     *          Thrown by DBModelFetcher if a problem while executing a
+     *          command.
+     * @exception Exception
+     *          Thrown if a problem occurs creating an effigy from the MoML.
      * @exception CircularDependencyException
      *          Thrown if an import would result in a circular dependency.
-    */
+     */
     public static Entity importModel(String name, boolean byReference,
             NamedObj container) throws DBConnectionException,
             DBExecutionException, Exception, CircularDependencyException {
@@ -233,25 +233,25 @@ public class LoadManager {
     }
 
     /** Given a model id, return a PtolemyEffigy objects.
-    *
-    * @param id
-    *          The model id.  An alphanumeric
-    *          string without special characters.
-    *          If no model with the given name is found, return null.
-    * @param configuration
-    *          The configuration used to create the effigy.
-    * @return
-    *          A PtolemyEffigy object that the
-    *          GUI can display.
-    * @exception DBConnectionException
-    *          Thrown by DBModelFetcher if a problem occurs with the
-    *          database connection.
-    * @exception DBExecutionException
-    *          Thrown by DBModelFetcher if a problem while executing a
-    *          command.
-    * @exception Exception
-    *          Thrown if a problem occurs creating an effigy from the MoML.
-    */
+     *
+     * @param id
+     *          The model id.  An alphanumeric
+     *          string without special characters.
+     *          If no model with the given name is found, return null.
+     * @param configuration
+     *          The configuration used to create the effigy.
+     * @return
+     *          A PtolemyEffigy object that the
+     *          GUI can display.
+     * @exception DBConnectionException
+     *          Thrown by DBModelFetcher if a problem occurs with the
+     *          database connection.
+     * @exception DBExecutionException
+     *          Thrown by DBModelFetcher if a problem while executing a
+     *          command.
+     * @exception Exception
+     *          Thrown if a problem occurs creating an effigy from the MoML.
+     */
     public static PtolemyEffigy loadModelUsingId(String id,
             Configuration configuration) throws DBConnectionException,
             DBExecutionException, Exception {
@@ -301,7 +301,7 @@ public class LoadManager {
      *
      */
     public void getAllModelsFromDatabase() throws DBConnectionException,
-            DBExecutionException {
+    DBExecutionException {
         DBConnection conn = DBConnectorFactory.getSyncConnection(false);
         _allModelsList = conn.executeGetListOfAllModels();
         if (_allModelsList != null) {
@@ -321,7 +321,7 @@ public class LoadManager {
      * query in the database.
      */
     public int getTotalNumberOfModels() throws DBConnectionException,
-            DBExecutionException {
+    DBExecutionException {
         if (!_isFetched) {
             getAllModelsFromDatabase();
         }
@@ -338,7 +338,7 @@ public class LoadManager {
      * query in the database.
      */
     public int getNoOfPages() throws DBConnectionException,
-            DBExecutionException {
+    DBExecutionException {
         if (!_isFetched) {
             getAllModelsFromDatabase();
         }

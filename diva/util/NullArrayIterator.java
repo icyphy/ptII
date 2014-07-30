@@ -92,12 +92,14 @@ public class NullArrayIterator extends IteratorAdapter {
 
     /** Return true if there are more non-null elements in the array.
      */
+    @Override
     public boolean hasNext() {
         return _nextindex >= 0;
     }
 
     /** Return the next non-null element in the array.
      */
+    @Override
     public Object next() {
         if (!hasNext()) {
             throw new NoSuchElementException("No more elements");

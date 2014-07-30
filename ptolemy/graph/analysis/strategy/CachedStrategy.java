@@ -113,6 +113,7 @@ abstract public class CachedStrategy extends Strategy implements GraphAnalyzer {
      *
      *  @return The input graph.
      */
+    @Override
     public Graph graph() {
         return _graph;
     }
@@ -152,6 +153,7 @@ abstract public class CachedStrategy extends Strategy implements GraphAnalyzer {
      *
      * @return Return a description of the strategy.
      */
+    @Override
     public String toString() {
         return "Cached strategy.";
     }

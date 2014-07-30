@@ -92,6 +92,7 @@ public class XMPPSink extends Sink implements XMPPPublisher {
      * @param attribute The attribute
      * @exception IllegalActionException If thrown while getting the token.
      */
+    @Override
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
 
@@ -102,6 +103,7 @@ public class XMPPSink extends Sink implements XMPPPublisher {
 
     /** Publish the tokens on the input ports.
      */
+    @Override
     public void fire() throws IllegalActionException {
         // FIXME: Should we use postfire() instead? @see Display
         super.fire();

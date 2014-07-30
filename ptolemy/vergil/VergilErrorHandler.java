@@ -71,6 +71,7 @@ public class VergilErrorHandler implements ErrorHandler {
      *  then called with a false argument after the operation ends.
      *  @param enable True to enable skipping, false to disable.
      */
+    @Override
     public void enableErrorSkipping(boolean enable) {
         _skippingEnabled = enable;
 
@@ -87,6 +88,7 @@ public class VergilErrorHandler implements ErrorHandler {
      *   of the XML, IGNORE to continue to process the XML as if nothing
      *   had happened, or RETHROW to request that the exception be rethrown.
      */
+    @Override
     public int handleError(String element, NamedObj context, Throwable exception) {
         if (_skipping) {
             return CONTINUE;
@@ -147,7 +149,7 @@ public class VergilErrorHandler implements ErrorHandler {
             } else {
                 // Skipping is not enabled.
                 Object[] options = { "Skip element", "Display stack trace",
-                        "Cancel" };
+                "Cancel" };
 
                 // Show the MODAL dialog
                 int selected = JOptionPane.showOptionDialog(parentWindow,
@@ -216,7 +218,7 @@ public class VergilErrorHandler implements ErrorHandler {
 
         if (skippingEnabled) {
             options = new Object[] { "Skip element", "Skip remaining errors",
-                    "Cancel" };
+            "Cancel" };
         } else {
             if (skipElement) {
                 options = new Object[] { "Skip element", "Cancel" };

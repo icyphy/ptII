@@ -142,6 +142,7 @@ public class Scheduler extends Attribute {
      *   cannot be cloned.
      *  @return The new Scheduler.
      */
+    @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         Scheduler newObject = (Scheduler) super.clone(workspace);
         newObject._valid = false;
@@ -165,7 +166,7 @@ public class Scheduler extends Attribute {
      *  by the derived schedulers.
      */
     public Schedule getSchedule() throws IllegalActionException,
-            NotSchedulableException {
+    NotSchedulableException {
         try {
             workspace().getReadAccess();
 
@@ -238,8 +239,9 @@ public class Scheduler extends Attribute {
      *   be thrown if the container argument is an instance of
      *   CompositeActor.
      */
+    @Override
     public void setContainer(NamedObj container) throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         try {
             _workspace.getWriteAccess();
 
@@ -327,7 +329,7 @@ public class Scheduler extends Attribute {
      *  @see ptolemy.kernel.CompositeEntity#deepEntityList()
      */
     protected Schedule _getSchedule() throws IllegalActionException,
-            NotSchedulableException {
+    NotSchedulableException {
         StaticSchedulingDirector director = (StaticSchedulingDirector) getContainer();
         CompositeActor compositeActor = (CompositeActor) director
                 .getContainer();

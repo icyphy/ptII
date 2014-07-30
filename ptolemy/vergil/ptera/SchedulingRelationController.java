@@ -69,6 +69,7 @@ public class SchedulingRelationController extends TransitionController {
      *  to open files or URLs.
      *  @param configuration The configuration.
      */
+    @Override
     public void setConfiguration(Configuration configuration) {
         super.setConfiguration(configuration);
 
@@ -91,6 +92,7 @@ public class SchedulingRelationController extends TransitionController {
          * @param headSite The headSite of the edge
          * @return The connector between the headSite and the tailSite.
          */
+        @Override
         public Connector render(Object edge, Site tailSite, Site headSite) {
             ArcConnector connector = (ArcConnector) super.render(edge,
                     tailSite, headSite);
@@ -119,6 +121,7 @@ public class SchedulingRelationController extends TransitionController {
      *  @see ptolemy.actor.gui.Configuration#openInstance(NamedObj)
      *  @see ptolemy.actor.gui.Configuration#openModel(NamedObj)
      */
+    @Override
     protected void _openInstanceOrModel(Configuration configuration,
             NamedObj refinement) throws IllegalActionException,
             NameDuplicationException {

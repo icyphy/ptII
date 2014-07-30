@@ -53,7 +53,7 @@ import ptolemy.kernel.util.NamedObj;
  *  @since Ptolemy II 10.0
  *  @Pt.ProposedRating Red (pdf)
  *  @Pt.AcceptedRating Red (pdf)
-*/
+ */
 public class HomerMultiContent extends MultiContent<TabScenePanel> {
 
     ///////////////////////////////////////////////////////////////////

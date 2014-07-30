@@ -57,13 +57,16 @@ public class XmlApplet extends Applet implements XmlHandler {
      * just return the URL supplied.
      * @see com.microstar.xml.XmlHandler#resolveEntity
      */
+    @Override
     public Object resolveEntity(String publicId, String systemId) {
         return null;
     }
 
+    @Override
     public void startExternalEntity(String systemId) {
     }
 
+    @Override
     public void endExternalEntity(String systemId) {
     }
 
@@ -74,6 +77,7 @@ public class XmlApplet extends Applet implements XmlHandler {
      * <p>This method will always be called first.
      * @see com.microstar.xml.XmlHandler#startDocument
      */
+    @Override
     public void startDocument() {
     }
 
@@ -84,6 +88,7 @@ public class XmlApplet extends Applet implements XmlHandler {
      * <p>This method will always be called last.
      * @see com.microstar.xml.XmlHandler#endDocument
      */
+    @Override
     public void endDocument() {
     }
 
@@ -96,6 +101,7 @@ public class XmlApplet extends Applet implements XmlHandler {
      * values only after this callback.
      * @see com.microstar.xml.XmlHandler#doctypeDecl
      */
+    @Override
     public void doctypeDecl(String name, String pubid, String sysid) {
     }
 
@@ -105,6 +111,7 @@ public class XmlApplet extends Applet implements XmlHandler {
      * if they want to take a specific action.
      * @see com.microstar.xml.XmlHandler#attribute
      */
+    @Override
     public void attribute(String name, String value, boolean isSpecified) {
     }
 
@@ -114,6 +121,7 @@ public class XmlApplet extends Applet implements XmlHandler {
      * if they want to take a specific action.
      * @see com.microstar.xml.XmlHandler#startElement
      */
+    @Override
     public void startElement(String name) {
     }
 
@@ -123,6 +131,7 @@ public class XmlApplet extends Applet implements XmlHandler {
      * if they want to take a specific action.
      * @see com.microstar.xml.XmlHandler#endElement
      */
+    @Override
     public void endElement(String name) {
     }
 
@@ -132,6 +141,7 @@ public class XmlApplet extends Applet implements XmlHandler {
      * if they want to take a specific action.
      * @see com.microstar.xml.XmlHandler#charData
      */
+    @Override
     public void charData(char[] ch, int start, int length) {
     }
 
@@ -141,6 +151,7 @@ public class XmlApplet extends Applet implements XmlHandler {
      * if they want to take a specific action.
      * @see com.microstar.xml.XmlHandler#ignorableWhitespace
      */
+    @Override
     public void ignorableWhitespace(char[] ch, int start, int length) {
     }
 
@@ -150,6 +161,7 @@ public class XmlApplet extends Applet implements XmlHandler {
      * if they want to take a specific action.
      * @see com.microstar.xml.XmlHandler#processingInstruction
      */
+    @Override
     public void processingInstruction(String target, String data) {
     }
 
@@ -160,6 +172,7 @@ public class XmlApplet extends Applet implements XmlHandler {
      * different.
      * @see com.microstar.xml.XmlHandler#error
      */
+    @Override
     public void error(String message, String url, int line, int column) {
         displayText("FATAL ERROR: " + message);
         displayText("  at " + url + ": line " + line + " column " + column);
@@ -252,7 +265,7 @@ public class XmlApplet extends Applet implements XmlHandler {
     //////////////////////////////////////////////////////////////////////
     // Applet support.
     //
-    // These methods and variables are used only if we are running as an 
+    // These methods and variables are used only if we are running as an
     // applet.
     //////////////////////////////////////////////////////////////////////
     TextArea textArea;
@@ -264,6 +277,7 @@ public class XmlApplet extends Applet implements XmlHandler {
     /**
      * Initialise the applet the first time it runs.
      */
+    @Override
     public void init() {
         startButton = new Button("Parse " + getParameter("url"));
         isApplet = true;
@@ -282,6 +296,7 @@ public class XmlApplet extends Applet implements XmlHandler {
      * existing browsers.  It will cause a 'deprecated' warning
      * when you compile.
      */
+    @Override
     public boolean action(Event ev, Object target) {
         if (target == startButton.getLabel()) {
             try {

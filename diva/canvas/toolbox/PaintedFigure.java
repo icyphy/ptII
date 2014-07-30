@@ -100,6 +100,7 @@ public class PaintedFigure extends AbstractFigure {
 
     /** Get the bounding box of this figure.
      */
+    @Override
     public Rectangle2D getBounds() {
         Rectangle2D bounds = (Rectangle2D) ShapeUtilities.transformModify(
                 _paintedList.getBounds(), _transform);
@@ -110,6 +111,7 @@ public class PaintedFigure extends AbstractFigure {
      *  contained objects are drawn.
      *  @return The origin.
      */
+    @Override
     public Point2D getOrigin() {
         return new Point2D.Double(_transform.getTranslateX(),
                 _transform.getTranslateY());
@@ -118,6 +120,7 @@ public class PaintedFigure extends AbstractFigure {
     /** Get the shape of this figure. This is the same as the
      * bounding box.
      */
+    @Override
     public Shape getShape() {
         return getBounds();
     }
@@ -130,6 +133,7 @@ public class PaintedFigure extends AbstractFigure {
 
     /** Paint the figure.
      */
+    @Override
     public void paint(Graphics2D g) {
         if (!isVisible()) {
             return;
@@ -159,6 +163,7 @@ public class PaintedFigure extends AbstractFigure {
      * used to perform arbitrary translation, scaling, shearing, and
      * rotation operations.
      */
+    @Override
     public void transform(AffineTransform at) {
         repaint();
         _transform.preConcatenate(at);

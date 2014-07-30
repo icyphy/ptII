@@ -105,6 +105,7 @@ public class VariableSleep extends Transformer {
      *  that of the input port, the tokens in the extra channels
      *  are lost.
      *  @exception IllegalActionException Not thrown in this base class */
+    @Override
     public void fire() throws IllegalActionException {
         super.fire();
         if (!_wasSleepCalledInFireYet) {
@@ -147,6 +148,7 @@ public class VariableSleep extends Transformer {
      *  @exception IllegalActionException If the parent class throws it.
      *  @return Whatever the superclass returns (probably true).
      */
+    @Override
     public boolean postfire() throws IllegalActionException {
         _wasSleepCalledInFireYet = false;
         return super.postfire();
@@ -156,6 +158,7 @@ public class VariableSleep extends Transformer {
      *  @exception IllegalActionException If the parent class throws it.
      *  @return Whatever the superclass returns (probably true).
      */
+    @Override
     public boolean prefire() throws IllegalActionException {
         _wasSleepCalledInFireYet = false;
         return super.prefire();

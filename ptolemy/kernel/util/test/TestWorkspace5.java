@@ -51,6 +51,7 @@ import ptolemy.kernel.util.Workspace;
 
  */
 public class TestWorkspace5 extends TestWorkspaceBase {
+    @Override
     public void initializeTest() {
         Workspace workspace = new Workspace();
         List actions = new LinkedList();
@@ -73,8 +74,10 @@ public class TestWorkspace5 extends TestWorkspaceBase {
         _testTime = 5000; // ms
     }
 
+    @Override
     public void runTest() {
         new Thread() {
+            @Override
             public void run() {
                 try {
                     sleep(1000);

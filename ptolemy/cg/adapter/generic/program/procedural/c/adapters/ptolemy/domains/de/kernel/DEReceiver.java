@@ -57,13 +57,13 @@ import ptolemy.kernel.util.IllegalActionException;
  * @since Ptolemy II 10.0
  * @Pt.ProposedRating Red (wlc)
  * @Pt.AcceptedRating Red (wlc)
-*/
+ */
 
 public class DEReceiver extends Receiver {
     /** Construct an adapter for an DE receiver.
-    *  @param receiver The DEReceiver for which an adapter is constructed.
-    *  @exception IllegalActionException If thrown by the superclass.
-    */
+     *  @param receiver The DEReceiver for which an adapter is constructed.
+     *  @exception IllegalActionException If thrown by the superclass.
+     */
     public DEReceiver(ptolemy.domains.de.kernel.DEReceiver receiver)
             throws IllegalActionException {
         super(receiver);
@@ -83,6 +83,7 @@ public class DEReceiver extends Receiver {
      *  @exception IllegalActionException If thrown while getting the component,
      *  getting the adapter, getting the director or getting the port reference.
      */
+    @Override
     public String generateGetCode(String offset) throws IllegalActionException {
         TypedIOPort port = (TypedIOPort) getComponent().getContainer();
         int channel = port.getChannelForReceiver(getComponent());
@@ -106,6 +107,7 @@ public class DEReceiver extends Receiver {
      *  @return The generated hasToken code
      *  @exception IllegalActionException Not thrown in this base class.
      */
+    @Override
     public String generateHasTokenCode(String offset)
             throws IllegalActionException {
         TypedIOPort port = (TypedIOPort) getComponent().getContainer();
@@ -132,6 +134,7 @@ public class DEReceiver extends Receiver {
      *  @exception IllegalActionException If thrown while getting the component,
      *  getting the adapter, getting the director or getting the port reference.
      */
+    @Override
     public String generatePutCode(IOPort sourcePort, String offset, String token)
             throws IllegalActionException {
         TypedIOPort port = (TypedIOPort) getComponent().getContainer();
@@ -207,6 +210,7 @@ public class DEReceiver extends Receiver {
         return result;
     }
 
+    @Override
     protected String _generateTypeConvertStatement(Channel source)
             throws IllegalActionException {
 
@@ -233,6 +237,7 @@ public class DEReceiver extends Receiver {
      *  This is probably because the information of the receiver is in the director of
      *  the container?
      */
+    @Override
     protected DEDirector _getDirectorForReceiver()
             throws IllegalActionException {
         return (DEDirector) super._getDirectorForReceiver();

@@ -33,16 +33,16 @@ import java.util.ArrayList;
 //// Graph
 
 /**
- * 
+ *
  * Graph is an adjacency list data structure for representing mapping
  * constraints.
- * 
+ *
  * @author Liangpeng Guo
  * @version $Id$
  * @since Ptolemy II 10.0
  * @Pt.ProposedRating Red (glp)
  * @Pt.AcceptedRating Red (glp)
- * 
+ *
  */
 public class Graph implements Cloneable {
 
@@ -59,7 +59,7 @@ public class Graph implements Cloneable {
 
     /**
      * Clones the linked list.
-     * 
+     *
      * @exception CloneNotSupportedException
      *                the object's class does not implement the Cloneable
      *                interface.
@@ -85,7 +85,7 @@ public class Graph implements Cloneable {
     /**
      * Checks if there is a mapping constraint constraining event id1 and event
      * id2.
-     * 
+     *
      * @param id1
      *            ID of the first event.
      * @param id2
@@ -109,7 +109,7 @@ public class Graph implements Cloneable {
 
     /**
      * Adds a mapping constraint (A, B). Event A and B are given by id1 and id2.
-     * 
+     *
      * @param id1
      *            ID of event A in the constraint
      * @param id2
@@ -134,7 +134,7 @@ public class Graph implements Cloneable {
 
     /**
      * Gets the iterator of the edges associated with nodeId.
-     * 
+     *
      * @param nodeId
      *            ID of the node
      * @return An iterator of the edges connected to nodeId.
@@ -145,7 +145,7 @@ public class Graph implements Cloneable {
 
     /**
      * Return the size of nodes.
-     * 
+     *
      * @return the size of nodes.
      */
     public int nodeSize() {
@@ -154,7 +154,7 @@ public class Graph implements Cloneable {
 
     /**
      * Returns the size of edges.
-     * 
+     *
      * @return the size of edges.
      */
     public int edgeSize() {
@@ -163,7 +163,7 @@ public class Graph implements Cloneable {
 
     /**
      * Gets the edge with the given edge ID.
-     * 
+     *
      * @param edgeId
      *            the edge Id.
      * @return the edge.

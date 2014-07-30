@@ -85,7 +85,7 @@ public class NamedObjectTree extends JPanel {
 
     /** Create a new NamedObj tree for dragging and dropping into the scene.
      */
-        public NamedObjectTree() {
+    public NamedObjectTree() {
         setBorder(new TitledBorder(null, "Named Objects", TitledBorder.LEADING,
                 TitledBorder.TOP, null, null));
         setLayout(new BorderLayout());
@@ -96,6 +96,7 @@ public class NamedObjectTree extends JPanel {
         _search.setFocusable(true);
         _search.requestFocus();
         _search.addKeyListener(new KeyAdapter() {
+            @Override
             public void keyReleased(KeyEvent e) {
                 AttributeTreeModel treeModel = (AttributeTreeModel) _tree
                         .getModel();

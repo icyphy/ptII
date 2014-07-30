@@ -89,6 +89,7 @@ import ptolemy.kernel.util.Workspace;
  awkward to have the ports of an actor depend on parameter values.
  Use UnaryMathFunction instead.
  */
+@Deprecated
 public class MathFunction extends TypedAtomicActor {
     /** Construct an actor with the given container and name.
      *  @param container The container.
@@ -159,6 +160,7 @@ public class MathFunction extends TypedAtomicActor {
      *  @param attribute The attribute that changed.
      *  @exception IllegalActionException If the function is not recognized.
      */
+    @Override
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         try {
@@ -217,6 +219,7 @@ public class MathFunction extends TypedAtomicActor {
      *  @exception CloneNotSupportedException If a derived class contains
      *   an attribute that cannot be cloned.
      */
+    @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         MathFunction newObject = (MathFunction) super.clone(workspace);
 
@@ -231,6 +234,7 @@ public class MathFunction extends TypedAtomicActor {
      *  If there is no input, then produce no output.
      *  @exception IllegalActionException If there is no director.
      */
+    @Override
     public void fire() throws IllegalActionException {
         super.fire();
         if (firstOperand.hasToken(0)) {
@@ -263,6 +267,7 @@ public class MathFunction extends TypedAtomicActor {
      *   not consume any input tokens.
      *  @exception IllegalActionException Not thrown in this base class
      */
+    @Override
     public int iterate(int count) throws IllegalActionException {
         // Check whether we need to reallocate the output token array.
         Token[] inArray1;
@@ -318,7 +323,7 @@ public class MathFunction extends TypedAtomicActor {
     /** Create the second port needed by modulo function
      */
     private void _createSecondPort() throws NameDuplicationException,
-            IllegalActionException {
+    IllegalActionException {
         // Go looking for the port in case somebody else created the port
         // already.  For example, this might
         // happen in shallow code generation.

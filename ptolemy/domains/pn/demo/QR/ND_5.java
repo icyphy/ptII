@@ -109,6 +109,7 @@ public class ND_5 extends TypedAtomicActor {
     /** Initialize the PN actor.
      *  @exception IllegalActionException If the parent class throws it.
      */
+    @Override
     public void initialize() throws IllegalActionException {
         super.initialize();
         //_returnValue = true;
@@ -122,6 +123,7 @@ public class ND_5 extends TypedAtomicActor {
     /** Fire the actor.
      *  @exception IllegalActionException If there is no director.
      */
+    @Override
     public void fire() throws IllegalActionException {
         super.fire();
         for (int j = 1; j <= 1 * N; j += 1) {
@@ -152,6 +154,7 @@ public class ND_5 extends TypedAtomicActor {
      *  @exception IllegalActionException If thrown by the parent
      *  class.
      */
+    @Override
     public boolean postfire() throws IllegalActionException {
         // We intentially ignore the return value of super.postfire()
         // here.

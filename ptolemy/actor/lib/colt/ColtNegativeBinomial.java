@@ -113,12 +113,12 @@ public class ColtNegativeBinomial extends ColtRandomSource {
         n = new PortParameter(this, "n", new IntToken(1));
         n.setTypeEquals(BaseType.INT);
         new SingletonParameter(n.getPort(), "_showName")
-                .setToken(BooleanToken.TRUE);
+        .setToken(BooleanToken.TRUE);
 
         p = new PortParameter(this, "p", new DoubleToken(0.5));
         p.setTypeEquals(BaseType.DOUBLE);
         new SingletonParameter(p.getPort(), "_showName")
-                .setToken(BooleanToken.TRUE);
+        .setToken(BooleanToken.TRUE);
 
         p.moveToFirst();
         n.moveToFirst();
@@ -145,6 +145,7 @@ public class ColtNegativeBinomial extends ColtRandomSource {
      *  remain constant throughout an iteration.
      *  @exception IllegalActionException If there is no director.
      */
+    @Override
     public void fire() throws IllegalActionException {
         n.update();
         p.update();
@@ -157,6 +158,7 @@ public class ColtNegativeBinomial extends ColtRandomSource {
 
     /** Method that is called after _randomNumberGenerator is changed.
      */
+    @Override
     protected void _createdNewRandomNumberGenerator() {
         _generator = new NegativeBinomial(1, 0.5, _randomNumberGenerator);
     }
@@ -164,6 +166,7 @@ public class ColtNegativeBinomial extends ColtRandomSource {
     /** Generate a new random number.
      *  @exception IllegalActionException If parameter values are incorrect.
      */
+    @Override
     protected void _generateRandomNumber() throws IllegalActionException {
         int nValue = ((IntToken) n.getToken()).intValue();
         double pValue = ((DoubleToken) p.getToken()).doubleValue();

@@ -51,6 +51,7 @@ public abstract class MonotonicFunction implements InequalityTerm {
     /** Return null.
      *  @return null.
      */
+    @Override
     public Object getAssociatedObject() {
         return null;
     }
@@ -64,6 +65,7 @@ public abstract class MonotonicFunction implements InequalityTerm {
      *  @return A Type.
      *  @see #setValue(Object)
      */
+    @Override
     public abstract Object getValue() throws IllegalActionException;
 
     /** Return the type variables in this inequality term. These are
@@ -72,6 +74,7 @@ public abstract class MonotonicFunction implements InequalityTerm {
      *  InequalityTerms that this function depends on.
      *  @return An array of InequalityTerm.
      */
+    @Override
     public abstract InequalityTerm[] getVariables();
 
     /** Return an additional string describing the current value
@@ -89,6 +92,7 @@ public abstract class MonotonicFunction implements InequalityTerm {
      *  monotonic function term.
      *  @exception IllegalActionException Always thrown.
      */
+    @Override
     public final void initialize(Object e) throws IllegalActionException {
         throw new IllegalActionException(getClass().getName()
                 + ": Cannot initialize a function term.");
@@ -97,6 +101,7 @@ public abstract class MonotonicFunction implements InequalityTerm {
     /** Return false.  Monotonic Functions are not settable.
      *  @return False.
      */
+    @Override
     public final boolean isSettable() {
         return false;
     }
@@ -105,6 +110,7 @@ public abstract class MonotonicFunction implements InequalityTerm {
      *  acceptable.  This method might be overridden by derived classes.
      *  @return True.
      */
+    @Override
     public boolean isValueAcceptable() {
         return true;
     }
@@ -113,6 +119,7 @@ public abstract class MonotonicFunction implements InequalityTerm {
      *  @exception IllegalActionException Always thrown.
      *  @see #getValue()
      */
+    @Override
     public final void setValue(Object e) throws IllegalActionException {
         throw new IllegalActionException(getClass().getName()
                 + ": The type is not settable.");
@@ -121,6 +128,7 @@ public abstract class MonotonicFunction implements InequalityTerm {
     /** Override the base class to give a description of this term.
      *  @return A description of this term.
      */
+    @Override
     public String toString() {
         String string = getVerboseString();
 

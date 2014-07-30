@@ -95,6 +95,7 @@ public class EventButton extends Source implements Placeable {
 
     /** Fire the actor.
      */
+    @Override
     public void fire() throws IllegalActionException {
         super.fire();
         if (_buttonPressed) {
@@ -116,6 +117,7 @@ public class EventButton extends Source implements Placeable {
      *  Otherwise, place it in the specified container.
      *  @exception IllegalActionException If the parent class throws it.
      */
+    @Override
     public void initialize() throws IllegalActionException {
         super.initialize();
         _buttonPressed = false;
@@ -135,6 +137,7 @@ public class EventButton extends Source implements Placeable {
      *  Otherwise, an instance of JButton will be placed in its own frame.
      *  @param container The container into which to place the button.
      */
+    @Override
     public void place(Container container) {
         _container = container;
         _button = new JButton(text.getExpression());
@@ -157,6 +160,7 @@ public class EventButton extends Source implements Placeable {
      *  returns.
      *  @exception IllegalActionException If there is no director.
      */
+    @Override
     public boolean postfire() throws IllegalActionException {
         if (_buttonPressed) {
             _buttonPressed = false;
@@ -179,6 +183,7 @@ public class EventButton extends Source implements Placeable {
      *  @exception IllegalActionException If the base class throws it.
      *  @exception NameDuplicationException If the base class throws it.
      */
+    @Override
     public void setContainer(CompositeEntity container)
             throws IllegalActionException, NameDuplicationException {
         super.setContainer(container);
@@ -195,6 +200,7 @@ public class EventButton extends Source implements Placeable {
      */
     private void _remove() {
         SwingUtilities.invokeLater(new Runnable() {
+            @Override
             public void run() {
                 if (_button != null) {
                     if (_container != null) {
@@ -229,6 +235,7 @@ public class EventButton extends Source implements Placeable {
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
     class ButtonListener implements ActionListener {
+        @Override
         public void actionPerformed(ActionEvent event) {
             try {
                 _buttonPressed = true;

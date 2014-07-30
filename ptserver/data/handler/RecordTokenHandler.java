@@ -58,6 +58,7 @@ public class RecordTokenHandler implements TokenHandler<RecordToken> {
      *  @exception IllegalActionException Not thrown in this class.
      *  @see ptserver.data.handler.TokenHandler#convertToBytes(ptolemy.data.Token, java.io.DataOutputStream)
      */
+    @Override
     public void convertToBytes(RecordToken token, DataOutputStream outputStream)
             throws IOException, IllegalActionException {
 
@@ -81,6 +82,7 @@ public class RecordTokenHandler implements TokenHandler<RecordToken> {
      *  @exception IllegalActionException Not thrown in this class.
      *  @see ptserver.data.handler.TokenHandler#convertToToken(java.io.DataInputStream, Class)
      */
+    @Override
     public RecordToken convertToToken(DataInputStream inputStream,
             Class<? extends RecordToken> tokenType) throws IOException,
             IllegalActionException {

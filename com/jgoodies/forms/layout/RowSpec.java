@@ -137,6 +137,7 @@ public final class RowSpec extends FormSpec {
      *
      * @return true for horizontal, false for vertical
      */
+    @Override
     protected boolean isHorizontal() {
         return false;
     }

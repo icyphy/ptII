@@ -64,6 +64,7 @@ public class ASTPtFunctionalIfNode extends ASTPtRootNode {
 
     /** Traverse this node with the given visitor.
      */
+    @Override
     public void visit(ParseTreeVisitor visitor) throws IllegalActionException {
         visitor.visitFunctionalIfNode(this);
     }

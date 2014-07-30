@@ -96,7 +96,7 @@ public class MoMLApplication extends ConfigurationApplication {
      */
     public MoMLApplication(String basePath, String[] args,
             MessageHandler messageHandler, ErrorHandler errorHandler)
-            throws Exception {
+                    throws Exception {
         super(basePath, args, messageHandler, errorHandler);
     }
 
@@ -106,6 +106,7 @@ public class MoMLApplication extends ConfigurationApplication {
      *  derived classes should not access fields from a
      *  parent class.
      */
+    @Override
     protected void _initializeApplication() {
         // The Java look & feel is pretty lame, so we use the native
         // look and feel of the platform we are running on.

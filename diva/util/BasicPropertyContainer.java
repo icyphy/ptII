@@ -65,6 +65,7 @@ public class BasicPropertyContainer implements PropertyContainer {
      * the given key, or null if no such property
      * exists.
      */
+    @Override
     public Object getProperty(String key) {
         Object o = null;
 
@@ -83,6 +84,7 @@ public class BasicPropertyContainer implements PropertyContainer {
      * Set the property corresponding to
      * the given key.
      */
+    @Override
     public void setProperty(String key, Object value) {
         if (_mapping == null) {
             _mapping = new HashMap();
@@ -104,6 +106,7 @@ public class BasicPropertyContainer implements PropertyContainer {
 
     /** Return an iteration of the names of the properties
      */
+    @Override
     public Iterator propertyNames() {
         return _mapping.keySet().iterator();
     }

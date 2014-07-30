@@ -96,6 +96,7 @@ public class JAIPeriodicShift extends Transformer {
      *  @param attribute The attribute that changed.
      *  @exception IllegalActionException If a contained method throws it.
      */
+    @Override
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         if (attribute == xShift) {
@@ -112,6 +113,7 @@ public class JAIPeriodicShift extends Transformer {
      *  @exception IllegalActionException If a contained method throws it,
      *   or if a token is received that contains a null image.
      */
+    @Override
     public void fire() throws IllegalActionException {
         super.fire();
 

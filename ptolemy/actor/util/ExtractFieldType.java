@@ -59,7 +59,7 @@ import ptolemy.kernel.util.IllegalActionException;
  @since Ptolemy II 10.0
  @Pt.ProposedRating Red (marten)
  @Pt.AcceptedRating Red
-*/
+ */
 public class ExtractFieldType extends MonotonicFunction {
 
     /** Construct a new monotonic function.
@@ -88,6 +88,7 @@ public class ExtractFieldType extends MonotonicFunction {
      *   not <code>BaseType.UNKNOWN</code> or <code>BaseType.GENERAL</code>
      *   and is not an instance of <code>AssociateType</code>.
      */
+    @Override
     public Object getValue() throws IllegalActionException {
         Type portType;
 
@@ -129,6 +130,7 @@ public class ExtractFieldType extends MonotonicFunction {
     /** Return an additional string describing the current value
      *  of this function.
      */
+    @Override
     public String getVerboseString() {
         if (_port.getType() instanceof AssociativeType) {
             AssociativeType type = (AssociativeType) _port.getType();
@@ -148,6 +150,7 @@ public class ExtractFieldType extends MonotonicFunction {
      *  the type of the port; otherwise, return an empty array.
      *  @return An array of InequalityTerm.
      */
+    @Override
     public InequalityTerm[] getVariables() {
         InequalityTerm portTerm = _port.getTypeTerm();
 

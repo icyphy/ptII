@@ -329,10 +329,10 @@ public class HomerMainFrame extends JFrame {
     }
 
     /** Prepare the scene for creating a new layout and prompt the user for
-    *  file selection.
-    *  @param modelURL The url of the model file to be opened.
-    *  @param layoutURL The url of the layout file to be opened.
-    */
+     *  file selection.
+     *  @param modelURL The url of the model file to be opened.
+     *  @param layoutURL The url of the layout file to be opened.
+     */
     public void openLayout(URL modelURL, URL layoutURL) {
         _contents.clear();
         _modelURL = modelURL;
@@ -599,7 +599,7 @@ public class HomerMainFrame extends JFrame {
         _graphPanel.add(
                 new JCanvasPanner(new JGraph(new BasicGraphPane(controller,
                         new ActorGraphModel(topLevelActor), topLevelActor))),
-                BorderLayout.CENTER);
+                        BorderLayout.CENTER);
         _graphPanel.revalidate();
     }
 

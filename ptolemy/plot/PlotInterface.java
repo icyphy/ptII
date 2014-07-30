@@ -43,6 +43,7 @@ import java.net.URL;
  * @Pt.AcceptedRating Red (cxh)
  */
 public interface PlotInterface extends PlotBoxInterface {
+    @Override
     public void addLegend(int dataset, String legend);
 
     /** In the specified data set, add the specified x, y point to the
@@ -116,6 +117,7 @@ public interface PlotInterface extends PlotBoxInterface {
      *  coordinate so that they are executed in the order that you
      *  called them.
      */
+    @Override
     public void clear(final boolean format);
 
     /** Clear the plot of data points in the specified dataset.
@@ -166,6 +168,7 @@ public interface PlotInterface extends PlotBoxInterface {
      *  coordinate so that they are executed in the order that you
      *  called them.
      */
+    @Override
     public void fillPlot();
 
     /** Return whether the default is to connect
@@ -230,6 +233,7 @@ public interface PlotInterface extends PlotBoxInterface {
      *  the new (XML) file format.
      *  @deprecated
      */
+    @Override
     @Deprecated
     public void parseFile(String filespec, URL documentBase);
 
@@ -245,6 +249,7 @@ public interface PlotInterface extends PlotBoxInterface {
      *  @param inputStream The input stream.
      *  @exception IOException If the stream cannot be read.
      */
+    @Override
     public void read(InputStream inputStream) throws IOException;
 
     /** Create a sample plot.  This is not actually done immediately
@@ -254,6 +259,7 @@ public interface PlotInterface extends PlotBoxInterface {
      *  lock on the Plot object, or deadlock will result (unless the
      *  calling thread is the event dispatch thread).
      */
+    @Override
     public void samplePlot();
 
     /** Turn bars on or off (for bar charts).  Note that this is a global
@@ -414,11 +420,13 @@ public interface PlotInterface extends PlotBoxInterface {
     /** Write plot data information to the specified output stream in PlotML.
      *  @param output A buffered print writer.
      */
+    @Override
     public void writeData(PrintWriter output);
 
     /** Write plot format information to the specified output stream in
      *  PlotML, an XML scheme.
      *  @param output A buffered print writer.
      */
+    @Override
     public void writeFormat(PrintWriter output);
 }

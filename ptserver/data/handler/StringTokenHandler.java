@@ -55,6 +55,7 @@ public class StringTokenHandler implements TokenHandler<StringToken> {
      *  @param outputStream The byte stream to write the token to.
      *  @exception IOException If cannot write to the stream.
      */
+    @Override
     public void convertToBytes(StringToken token, DataOutputStream outputStream)
             throws IOException {
         outputStream.writeUTF(token.stringValue());
@@ -69,6 +70,7 @@ public class StringTokenHandler implements TokenHandler<StringToken> {
      *  @exception IOException If the stream cannot be read.
      */
 
+    @Override
     public StringToken convertToToken(DataInputStream inputStream,
             Class<? extends StringToken> tokenType) throws IOException {
         return new StringToken(inputStream.readUTF());

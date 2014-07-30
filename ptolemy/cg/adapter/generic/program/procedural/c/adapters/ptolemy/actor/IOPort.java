@@ -65,8 +65,8 @@ import ptolemy.kernel.util.NamedObj;
  */
 
 public class IOPort
-        extends
-        ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.actor.IOPort {
+extends
+ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.actor.IOPort {
 
     /**
      * Construct the code generator adapter for the given IOPort.
@@ -93,6 +93,7 @@ public class IOPort
      *                If the receiver adapter is not found or it encounters an
      *                error while generating the get code.
      */
+    @Override
     public String generateGetCode(String channel, String offset)
             throws IllegalActionException {
 
@@ -219,17 +220,17 @@ public class IOPort
                         + portName
                         + ")->deviceDelay = "
                         + ((DoubleToken) ptidesPort.deviceDelay.getToken())
-                                .doubleValue() + ";" + _eol);
+                        .doubleValue() + ";" + _eol);
                 result.append("((struct PtidesPort*)"
                         + portName
                         + ")->deviceDelayBound = "
                         + ((DoubleToken) ptidesPort.deviceDelayBound.getToken())
-                                .doubleValue() + ";" + _eol);
+                        .doubleValue() + ";" + _eol);
                 result.append("((struct PtidesPort*)"
                         + portName
                         + ")->isNetworkPort = "
                         + ((BooleanToken) ptidesPort.isNetworkPort.getToken())
-                                .booleanValue() + ";" + _eol);
+                        .booleanValue() + ";" + _eol);
                 if (ptidesPort.isNetworkReceiverPort()
                         || ptidesPort.isNetworkTransmitterPort()) {
                     result.append("((struct PtidesPort*)"
@@ -288,7 +289,7 @@ public class IOPort
         if (port instanceof PtidesPort) {
             directorCall = (!port.isInput() && actor instanceof CompositeActor
                     && ((CompositeActor) actor).isOpaque() ? "getDirector"
-                    : "getExecutiveDirector");
+                            : "getExecutiveDirector");
         }
         String localReceiver = (port.isInput() ? "_localReceivers"
                 : "_localInsideReceivers");
@@ -364,6 +365,7 @@ public class IOPort
      *                If the receiver adapter is not found or it encounters an
      *                error while generating the hasToken code.
      */
+    @Override
     public String generateHasTokenCode(String channel, String offset)
             throws IllegalActionException {
         if (!((ptolemy.actor.IOPort) getComponent()).isOutsideConnected()) {
@@ -393,6 +395,7 @@ public class IOPort
      *                If the receiver adapter is not found or it encounters an
      *                error while generating the send code.
      */
+    @Override
     public String generatePutCode(String channel, String offset,
             String dataToken) throws IllegalActionException {
 
@@ -408,8 +411,7 @@ public class IOPort
             tokenCode = "$new(" + typeString + "(" + dataToken + "))";
         } else if (type instanceof RecordType) {
             tokenCode = "$new(Record(" + dataToken + "->timestamp, "
-                    + dataToken + "->microstep, " + dataToken
-                    + "->payload))";
+                    + dataToken + "->microstep, " + dataToken + "->payload))";
         } else {
             tokenCode = dataToken;
         }
@@ -418,7 +420,7 @@ public class IOPort
 
         return result;
     }
-    
+
     /**
      * Generate code for replacing the sendLocalInside() macro.
      *
@@ -433,6 +435,7 @@ public class IOPort
      *                If the receiver adapter is not found or it encounters an
      *                error while generating the send code.
      */
+    @Override
     public String generatePutLocalInsideCode(String channel, String offset,
             String dataToken) throws IllegalActionException {
 
@@ -448,13 +451,13 @@ public class IOPort
             tokenCode = "$new(" + typeString + "(" + dataToken + "))";
         } else if (type instanceof RecordType) {
             tokenCode = "$new(Record(" + dataToken + "->timestamp, "
-                    + dataToken + "->microstep, " + dataToken
-                    + "->payload))";
+                    + dataToken + "->microstep, " + dataToken + "->payload))";
         } else {
             tokenCode = dataToken;
         }
-        String result = "(*(" + port.getName() + "->sendLocalInside))((struct IOPort*) "
-                + port.getName() + ", " + channelIndex + ", " + tokenCode + ")";
+        String result = "(*(" + port.getName()
+                + "->sendLocalInside))((struct IOPort*) " + port.getName()
+                + ", " + channelIndex + ", " + tokenCode + ")";
 
         return result;
     }

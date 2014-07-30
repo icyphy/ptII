@@ -114,7 +114,7 @@ public class ExecuteCompositeActor extends LifeCycleManager {
      *   initialized.
      */
     public ExecuteCompositeActor() throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         super();
         _init();
     }
@@ -190,6 +190,7 @@ public class ExecuteCompositeActor extends LifeCycleManager {
      *  @exception IllegalActionException If there is no director, or if
      *   the director's action methods throw it.
      */
+    @Override
     public void fire() throws IllegalActionException {
         super.fire();
         if (_debugging) {
@@ -207,6 +208,7 @@ public class ExecuteCompositeActor extends LifeCycleManager {
      *  @exception IllegalActionException Not thrown in this base class,
      *  but declared so the subclasses can throw it.
      */
+    @Override
     public void initialize() throws IllegalActionException {
         super.initialize();
         if (_debugging) {
@@ -222,6 +224,7 @@ public class ExecuteCompositeActor extends LifeCycleManager {
      *  @exception IllegalActionException Not thrown in this base class,
      *  but declared so the subclasses can throw it.
      */
+    @Override
     public boolean postfire() throws IllegalActionException {
         int limitValue = ((IntToken) firingCountLimit.getToken()).intValue();
         if (limitValue > 0) {
@@ -247,6 +250,7 @@ public class ExecuteCompositeActor extends LifeCycleManager {
      *   the director's preinitialize() method throws it, or if this actor
      *   is not opaque.
      */
+    @Override
     public void preinitialize() throws IllegalActionException {
         super.preinitialize();
 
@@ -299,6 +303,7 @@ public class ExecuteCompositeActor extends LifeCycleManager {
      *  @exception IllegalActionException Not thrown in this base class,
      *  but declared so the subclasses can throw it.
      */
+    @Override
     public void wrapup() throws IllegalActionException {
         // No need to call super.wrapup(), the parent class
         // _executeInsideModel() will do it for us.
@@ -317,7 +322,7 @@ public class ExecuteCompositeActor extends LifeCycleManager {
      *   initialized.
      */
     private void _init() throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         // By default, when exporting MoML, the class name is whatever
         // the Java class is, which in this case is ExecuteCompositeActor.
         // In derived classes, however, we usually do not want to identify

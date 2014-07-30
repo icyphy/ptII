@@ -127,6 +127,7 @@ public class Locator extends TypedAtomicActor {
      *  current position and time of the last input on the <i>input</i>
      *  port.  The value of the input is ignored.
      */
+    @Override
     public void fire() throws IllegalActionException {
         super.fire();
 

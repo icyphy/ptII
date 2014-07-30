@@ -22,7 +22,7 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
-*/
+ */
 
 /**
  * This provides static methods to convert comma delimited text into a
@@ -216,8 +216,8 @@ public class CDL {
                 String s = o.toString();
                 if (s.length() > 0
                         && (s.indexOf(',') >= 0 || s.indexOf('\n') >= 0
-                                || s.indexOf('\r') >= 0 || s.indexOf(0) >= 0 || s
-                                .charAt(0) == '"')) {
+                        || s.indexOf('\r') >= 0 || s.indexOf(0) >= 0 || s
+                        .charAt(0) == '"')) {
                     sb.append('"');
                     int length = s.length();
                     for (int j = 0; j < length; j += 1) {

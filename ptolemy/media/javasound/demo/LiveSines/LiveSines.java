@@ -107,12 +107,12 @@ public class LiveSines {
                             * 0.1
                             + Math.sin(2 * fundamental1_Hz * 2 * Math.PI
                                     * samples[channelNumber])
-                            * 0.3
-                            + Math.sin(3 * fundamental1_Hz * 2 * Math.PI
-                                    * samples[channelNumber])
-                            * 0.3
-                            + Math.sin(4 * fundamental1_Hz * 2 * Math.PI
-                                    * samples[channelNumber]) * 0.2;
+                                    * 0.3
+                                    + Math.sin(3 * fundamental1_Hz * 2 * Math.PI
+                                            * samples[channelNumber])
+                                            * 0.3
+                                            + Math.sin(4 * fundamental1_Hz * 2 * Math.PI
+                                                    * samples[channelNumber]) * 0.2;
 
                     // Increment time for the signal on this channel.
                     samples[channelNumber] = samples[channelNumber] + 1.0
@@ -126,12 +126,12 @@ public class LiveSines {
                             * 0.4
                             + Math.sin(2 * fundamental2_Hz * 2 * Math.PI
                                     * samples[channelNumber])
-                            * 0.3
-                            + Math.sin(3 * fundamental2_Hz * 2 * Math.PI
-                                    * samples[channelNumber])
-                            * 0.25
-                            + Math.sin(4 * fundamental2_Hz * 2 * Math.PI
-                                    * samples[channelNumber]) * 0.2;
+                                    * 0.3
+                                    + Math.sin(3 * fundamental2_Hz * 2 * Math.PI
+                                            * samples[channelNumber])
+                                            * 0.25
+                                            + Math.sin(4 * fundamental2_Hz * 2 * Math.PI
+                                                    * samples[channelNumber]) * 0.2;
 
                     // Increment time for the signal on this channel.
                     samples[channelNumber] = samples[channelNumber] + 1.0

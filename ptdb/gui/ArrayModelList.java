@@ -25,7 +25,7 @@ ENHANCEMENTS, OR MODIFICATIONS.
                                                 COPYRIGHTENDKEY
 
 
-*/
+ */
 
 package ptdb.gui;
 
@@ -89,6 +89,7 @@ public class ArrayModelList extends AbstractListModel {
      * @param i The index of item to be gotten.
      * @return The item at the given index.
      */
+    @Override
     public String getElementAt(int i) {
         return _items.get(i);
     }
@@ -98,6 +99,7 @@ public class ArrayModelList extends AbstractListModel {
      *
      * @return The size of the stored list.
      */
+    @Override
     public int getSize() {
         return _items.size();
     }

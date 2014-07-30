@@ -177,6 +177,7 @@ public class DifferentialSystem extends TypedCompositeActor {
      *  @exception IllegalActionException If the numerator and the
      *   denominator matrix is not a row vector.
      */
+    @Override
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         super.attributeChanged(attribute);
@@ -200,6 +201,7 @@ public class DifferentialSystem extends TypedCompositeActor {
      *  the local parameters that mirror input values,
      *  and then to fire the contained actors.
      */
+    @Override
     public void fire() throws IllegalActionException {
         // Set the time variable.
         double currentTime = getDirector().getModelTime().getDoubleValue();
@@ -216,7 +218,7 @@ public class DifferentialSystem extends TypedCompositeActor {
                 parameter.setToken(input.get(0));
             }
         }
-        */
+         */
 
         super.fire();
     }
@@ -227,6 +229,7 @@ public class DifferentialSystem extends TypedCompositeActor {
      *   or if any contained actors throws it in its preinitialize() method.
      *
      */
+    @Override
     public void preinitialize() throws IllegalActionException {
         if (_upToDate) {
             super.preinitialize();
@@ -268,8 +271,8 @@ public class DifferentialSystem extends TypedCompositeActor {
                 equations[i] = new Expression(this, states[i] + "_dot");
                 equations[i].setPersistent(false);
                 equations[i].expression
-                        .setExpression(((Parameter) getAttribute(states[i]
-                                + "_dot")).getExpression());
+                .setExpression(((Parameter) getAttribute(states[i]
+                        + "_dot")).getExpression());
 
                 connect(equations[i].output, integrators[i].derivative);
             }
@@ -302,8 +305,8 @@ public class DifferentialSystem extends TypedCompositeActor {
                 maps[outIndex].setPersistent(false);
 
                 maps[outIndex].expression
-                        .setExpression(((Parameter) getAttribute(outputs[outIndex]))
-                                .getExpression());
+                .setExpression(((Parameter) getAttribute(outputs[outIndex]))
+                        .getExpression());
                 maps[outIndex].output.setTypeEquals(BaseType.DOUBLE);
                 connect(maps[outIndex].output,
                         (TypedIOPort) getPort(outputs[outIndex]));
@@ -396,8 +399,9 @@ public class DifferentialSystem extends TypedCompositeActor {
      *  @exception NameDuplicationException If the port name collides with a
      *   name already in the actor.
      */
+    @Override
     protected void _addPort(Port port) throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         super._addPort(port);
 
         // Add the parameter, if it does not already exist.
@@ -470,7 +474,7 @@ public class DifferentialSystem extends TypedCompositeActor {
 
     /** Initialize the class. */
     private void _init() throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         StringToken[] empty = new StringToken[1];
         stateVariableNames = new Parameter(this, "stateVariableNames");
         empty[0] = new StringToken("");

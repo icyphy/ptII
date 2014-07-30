@@ -75,10 +75,11 @@ public class StringToDate extends Converter {
      *  @exception IllegalActionException If thrown while getting
      *  or sending a token.
      */
+    @Override
     public void fire() throws IllegalActionException {
         super.fire();
         String inputValue = ((StringToken) input.get(0)).stringValue();
-        
+
         output.send(0, new DateToken(inputValue));
     }
 
@@ -86,6 +87,7 @@ public class StringToDate extends Converter {
      *  what the superclass returns (presumably true).
      *  @exception IllegalActionException If there is no director.
      */
+    @Override
     public boolean prefire() throws IllegalActionException {
         if (!input.hasToken(0)) {
             return false;

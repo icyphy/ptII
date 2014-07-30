@@ -50,6 +50,7 @@ public class ReverseIterator extends IteratorAdapter {
     /** Test if there are more elements.
      *  @return true if there more elements.
      */
+    @Override
     public boolean hasNext() {
         return _cursor > 0;
     }
@@ -58,6 +59,7 @@ public class ReverseIterator extends IteratorAdapter {
      *  @return the next element.
      *  @exception NoSuchElementException If the element does not exist.
      */
+    @Override
     public Object next() throws NoSuchElementException {
         if (!hasNext()) {
             throw new NoSuchElementException("Can't get " + _cursor

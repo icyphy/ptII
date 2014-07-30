@@ -134,7 +134,7 @@ public class PSDFScheduler extends BaseSDFScheduler {
      *   an entity with the specified name.
      */
     public PSDFScheduler() throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         super();
         _init();
     }
@@ -152,7 +152,7 @@ public class PSDFScheduler extends BaseSDFScheduler {
      *   an entity with the specified name.
      */
     public PSDFScheduler(Workspace workspace) throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         super(workspace);
         _init();
     }
@@ -179,6 +179,7 @@ public class PSDFScheduler extends BaseSDFScheduler {
     /** Declare the rate dependency on any external ports of the model.
      *  SDF directors should invoke this method once during preinitialize.
      */
+    @Override
     public void declareRateDependency() throws IllegalActionException {
         // Not necessary, since rates are declared symbolically.
     }
@@ -226,9 +227,10 @@ public class PSDFScheduler extends BaseSDFScheduler {
      *  of the model are not correct, or the computed rates for
      *  external ports are not correct.
      */
+    @Override
     @SuppressWarnings("unused")
     protected Schedule _getSchedule() throws NotSchedulableException,
-            IllegalActionException {
+    IllegalActionException {
         PSDFDirector director = (PSDFDirector) getContainer();
         CompositeActor model = (CompositeActor) director.getContainer();
 
@@ -612,7 +614,7 @@ public class PSDFScheduler extends BaseSDFScheduler {
      *  a symbolic expression.
      */
     private class SymbolicFiring extends Firing implements
-            SymbolicScheduleElement {
+    SymbolicScheduleElement {
         /** Construct a firing with the given actor and the given
          *  expression.  The given actor is assumed to fire the number
          *  of times determined by evaluating the given expression.
@@ -630,12 +632,14 @@ public class PSDFScheduler extends BaseSDFScheduler {
          *  @return The most recent expression.
          *  @see #setIterationCount(String)
          */
+        @Override
         public String expression() {
             return _expression;
         }
 
         /** Return the current iteration count of this firing.
          */
+        @Override
         public int getIterationCount() {
             try {
                 IntToken token = (IntToken) _evaluateExpressionInModelScope(_parseTree);
@@ -653,6 +657,7 @@ public class PSDFScheduler extends BaseSDFScheduler {
         /** Get the parse tree of the iteration expression.
          *  @return The parse tree.
          */
+        @Override
         public ASTPtRootNode parseTree() {
             return _parseTree;
         }
@@ -665,6 +670,7 @@ public class PSDFScheduler extends BaseSDFScheduler {
          *  @param expression The expression to be associated with the
          *  iteration count.
          */
+        @Override
         public void setIterationCount(String expression) {
             _expression = expression;
 
@@ -681,6 +687,7 @@ public class PSDFScheduler extends BaseSDFScheduler {
         /**
          * Output a string representation of this symbolic firing.
          */
+        @Override
         public String toString() {
             return "Fire Actor " + getActor().toString() + "[" + expression()
                     + "] times";
@@ -697,7 +704,7 @@ public class PSDFScheduler extends BaseSDFScheduler {
     /** A schedule whose iteration count is given by an expression.
      */
     private class SymbolicSchedule extends Schedule implements
-            SymbolicScheduleElement {
+    SymbolicScheduleElement {
         /** Construct a symbolic schedule with the given expression.
          *  This schedule is assumed to fire the number of times determined
          *  by evaluating the given expression.
@@ -713,12 +720,14 @@ public class PSDFScheduler extends BaseSDFScheduler {
          *  @return The most recent expression.
          *  @see #setIterationCount(String)
          */
+        @Override
         public String expression() {
             return _expression;
         }
 
         /** Return the current iteration count of this symbolic schedule.
          */
+        @Override
         public int getIterationCount() {
             try {
                 IntToken token = (IntToken) _evaluateExpressionInModelScope(_parseTree);
@@ -734,6 +743,7 @@ public class PSDFScheduler extends BaseSDFScheduler {
         /** Get the parse tree of the iteration expression.
          *  @return The parse tree.
          */
+        @Override
         public ASTPtRootNode parseTree() {
             return _parseTree;
         }
@@ -746,6 +756,7 @@ public class PSDFScheduler extends BaseSDFScheduler {
          *  @param expression The expression to be associated with the
          *  iteration count.
          */
+        @Override
         public void setIterationCount(String expression) {
             _expression = expression;
 
@@ -762,6 +773,7 @@ public class PSDFScheduler extends BaseSDFScheduler {
         /** Return a string representation of this symbolic schedule.
          *  @return The string representation.
          */
+        @Override
         public String toString() {
             StringBuffer result = new StringBuffer(
                     "Execute Symbolic Schedule{\n");
@@ -829,6 +841,7 @@ public class PSDFScheduler extends BaseSDFScheduler {
          *  @exception IllegalActionException If a value in the scope
          *  exists with the given name, but cannot be evaluated.
          */
+        @Override
         public ptolemy.data.Token get(String name)
                 throws IllegalActionException {
             PSDFDirector director = (PSDFDirector) getContainer();
@@ -849,6 +862,7 @@ public class PSDFScheduler extends BaseSDFScheduler {
          *  @exception IllegalActionException If a value in the scope
          *  exists with the given name, but cannot be evaluated.
          */
+        @Override
         public ptolemy.data.type.Type getType(String name)
                 throws IllegalActionException {
             PSDFDirector director = (PSDFDirector) getContainer();
@@ -870,6 +884,7 @@ public class PSDFScheduler extends BaseSDFScheduler {
          *  @exception IllegalActionException If a value in the scope
          *  exists with the given name, but cannot be evaluated.
          */
+        @Override
         public ptolemy.graph.InequalityTerm getTypeTerm(String name)
                 throws IllegalActionException {
             PSDFDirector director = (PSDFDirector) getContainer();
@@ -886,6 +901,7 @@ public class PSDFScheduler extends BaseSDFScheduler {
         /** Return the list of identifiers within the scope.
          *  @return The list of variable names within the scope.
          */
+        @Override
         public Set identifierSet() {
             PSDFDirector director = (PSDFDirector) getContainer();
             NamedObj reference = director.getContainer();

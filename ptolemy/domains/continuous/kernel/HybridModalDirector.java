@@ -73,7 +73,7 @@ import ptolemy.kernel.util.Workspace;
  @Pt.AcceptedRating Red (liuxj)
  */
 public class HybridModalDirector extends FSMDirector implements
-        ContinuousStatefulComponent, ContinuousStepSizeController {
+ContinuousStatefulComponent, ContinuousStepSizeController {
 
     /** Construct a director in the given container with the given name.
      *  The container argument must not be null, or a
@@ -103,6 +103,7 @@ public class HybridModalDirector extends FSMDirector implements
      *  @exception CloneNotSupportedException If a derived class contains
      *   an attribute that cannot be cloned.
      */
+    @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         HybridModalDirector newObject = (HybridModalDirector) super
                 .clone(workspace);
@@ -119,6 +120,7 @@ public class HybridModalDirector extends FSMDirector implements
      *   or there is no controller, or it is thrown by any
      *   choice action.
      */
+    @Override
     public void fire() throws IllegalActionException {
         ContinuousDirector enclosingDirector = _enclosingContinuousDirector();
         if (enclosingDirector != null
@@ -159,6 +161,7 @@ public class HybridModalDirector extends FSMDirector implements
      *  error tolerance from that director. Otherwise, return 1e-4.
      *  @return The error tolerance used for detecting enabled transitions.
      */
+    @Override
     public final double getErrorTolerance() {
         ContinuousDirector enclosingDirector = _enclosingContinuousDirector();
         if (enclosingDirector == null) {
@@ -173,6 +176,7 @@ public class HybridModalDirector extends FSMDirector implements
      *  The parse tree evaluator is set to construction mode.
      *  @return ParseTreeEvaluator used to evaluate guard expressions.
      */
+    @Override
     public ParseTreeEvaluator getParseTreeEvaluator() {
         RelationList relationList = new RelationList();
         ParseTreeEvaluatorForGuardExpression evaluator = new ParseTreeEvaluatorForGuardExpression(
@@ -185,6 +189,7 @@ public class HybridModalDirector extends FSMDirector implements
      *  report that the step size is accurate and if no transition is enabled.
      *  @return True if the current step is accurate.
      */
+    @Override
     public boolean isStepSizeAccurate() {
         _lastDistanceToBoundary = 0.0;
         _distanceToBoundary = 0.0;
@@ -391,6 +396,7 @@ public class HybridModalDirector extends FSMDirector implements
      *  @exception IllegalActionException If thrown by any commit action
      *  or there is no controller.
      */
+    @Override
     public boolean postfire() throws IllegalActionException {
         FSMActor controller = getController();
         State currentState = controller.currentState();
@@ -458,6 +464,7 @@ public class HybridModalDirector extends FSMDirector implements
      *  @return Whatever the superclass returns.
      *  @exception IllegalActionException If thrown by the superclass.
      */
+    @Override
     public boolean prefire() throws IllegalActionException {
         boolean result = super.prefire();
         // If any refinement is not ready to fire, stop prefiring the
@@ -487,6 +494,7 @@ public class HybridModalDirector extends FSMDirector implements
      *  @return The suggested refined step size.
      *  @exception IllegalActionException If the step size cannot be further refined.
      */
+    @Override
     public double refinedStepSize() throws IllegalActionException {
         double result = Double.POSITIVE_INFINITY;
         Iterator actors = new ActorsFiredIterator();
@@ -547,6 +555,7 @@ public class HybridModalDirector extends FSMDirector implements
      *  @exception IllegalActionException If the rollback attempts to go
      *   back further than the last committed time.
      */
+    @Override
     public void rollBackToCommittedState() throws IllegalActionException {
         Iterator actors = null;
         try {
@@ -558,7 +567,7 @@ public class HybridModalDirector extends FSMDirector implements
             Actor actor = (Actor) actors.next();
             if (actor instanceof ContinuousStatefulComponent) {
                 ((ContinuousStatefulComponent) actor)
-                        .rollBackToCommittedState();
+                .rollBackToCommittedState();
             } else if (actor instanceof CompositeActor) {
                 // Delegate to the director.
                 Director director = actor.getDirector();
@@ -589,6 +598,7 @@ public class HybridModalDirector extends FSMDirector implements
      *  @exception IllegalActionException If an actor requests an
      *   illegal step size.
      */
+    @Override
     public double suggestedStepSize() throws IllegalActionException {
         double result = Double.POSITIVE_INFINITY;
         Iterator actors = new ActorsFiredIterator();
@@ -696,6 +706,7 @@ public class HybridModalDirector extends FSMDirector implements
             _iterator = _getStateRefinementsToPostfire().iterator();
         }
 
+        @Override
         public boolean hasNext() {
             if (_iterator.hasNext()) {
                 return true;
@@ -708,10 +719,12 @@ public class HybridModalDirector extends FSMDirector implements
             return _iterator.hasNext();
         }
 
+        @Override
         public Object next() {
             return _iterator.next();
         }
 
+        @Override
         public void remove() {
             // Ignore.
         }

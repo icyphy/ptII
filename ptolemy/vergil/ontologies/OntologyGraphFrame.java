@@ -52,7 +52,7 @@ import diva.graph.GraphPane;
  */
 @SuppressWarnings("serial")
 public class OntologyGraphFrame extends ExtendedGraphFrame implements
-        ActionListener {
+ActionListener {
 
     /** Construct a frame associated with the specified ontology model. After
      *  constructing this, it is necessary to call setVisible(true) to make the
@@ -98,6 +98,7 @@ public class OntologyGraphFrame extends ExtendedGraphFrame implements
      *  method does nothing.
      *  @param e The action event.
      */
+    @Override
     public void actionPerformed(ActionEvent e) {
     }
 
@@ -107,6 +108,7 @@ public class OntologyGraphFrame extends ExtendedGraphFrame implements
     /** Create the menus that are used by this ontology graph frame.
      *  It is essential that _createGraphPane() be called before this.
      */
+    @Override
     protected void _addMenus() {
         super._addMenus();
 
@@ -147,6 +149,7 @@ public class OntologyGraphFrame extends ExtendedGraphFrame implements
      *  @param entity The ontology model entity to be shown in the graph pane.
      *  @return The pane that is created.
      */
+    @Override
     protected GraphPane _createGraphPane(NamedObj entity) {
         // Initialize the ontology graph controller before it is passed
         // to the BasicGraphPane constructor.
@@ -219,6 +222,7 @@ public class OntologyGraphFrame extends ExtendedGraphFrame implements
         /** React to a menu command in the debug menu.
          *  @param e The event received from the menu command.
          */
+        @Override
         public void actionPerformed(ActionEvent e) {
             JMenuItem target = (JMenuItem) e.getSource();
             String actionCommand = target.getActionCommand();
@@ -226,8 +230,8 @@ public class OntologyGraphFrame extends ExtendedGraphFrame implements
             if (actionCommand.equals(CHECK_LATTICE)) {
                 Ontology ontologyModel = (Ontology) getModel();
                 ReportOntologyLatticeStatus
-                        .showStatusAndHighlightCounterExample(ontologyModel,
-                                _controller);
+                .showStatusAndHighlightCounterExample(ontologyModel,
+                        _controller);
             } else if (actionCommand.equals(CLEAR_LATTICE_ERRORS)) {
                 _controller.clearAllErrorHighlights();
             }

@@ -75,13 +75,14 @@ public class LatticeOntologyCompositeAdapter extends LatticeOntologyAdapter {
      * for the composite actor referred to by this LatticeOntologyCompositeAdapter
      * @exception IllegalActionException If an exception is thrown
      */
+    @Override
     protected void _addDefaultConstraints(ConstraintType actorConstraintType)
             throws IllegalActionException {
 
         for (OntologyAdapter adapter : _getSubAdapters()) {
 
             ((LatticeOntologyAdapter) adapter)
-                    ._addDefaultConstraints(actorConstraintType);
+            ._addDefaultConstraints(actorConstraintType);
         }
     }
 
@@ -93,6 +94,7 @@ public class LatticeOntologyCompositeAdapter extends LatticeOntologyAdapter {
      * @exception IllegalActionException Thrown if there is an error
      *  getting the adapter for any contained entities.
      */
+    @Override
     protected List<OntologyAdapter> _getSubAdapters()
             throws IllegalActionException {
         List<OntologyAdapter> adapters = super._getSubAdapters();
@@ -111,6 +113,7 @@ public class LatticeOntologyCompositeAdapter extends LatticeOntologyAdapter {
      *  @exception IllegalActionException Thrown if _addInterConnectionConstraints()
      *  has an error or if the superclass call to constraintList() has an error.
      */
+    @Override
     public List<Inequality> constraintList() throws IllegalActionException {
         _addInterConnectionConstraints();
         return super.constraintList();

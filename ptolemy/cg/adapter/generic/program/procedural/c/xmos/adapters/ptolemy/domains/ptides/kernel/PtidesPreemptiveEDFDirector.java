@@ -59,8 +59,8 @@ import ptolemy.kernel.util.NamedObj;
  @Pt.AcceptedRating red (derler)
  */
 public class PtidesPreemptiveEDFDirector
-        extends
-        ptolemy.cg.adapter.generic.program.procedural.c.adapters.ptolemy.domains.ptides.kernel.PtidesPreemptiveEDFDirector {
+extends
+ptolemy.cg.adapter.generic.program.procedural.c.adapters.ptolemy.domains.ptides.kernel.PtidesPreemptiveEDFDirector {
 
     /** Construct the code generator adapter associated with the given
      *  PtidesDirector.
@@ -79,6 +79,7 @@ public class PtidesPreemptiveEDFDirector
      *  @return The generated assembly file code.
      *  @exception IllegalActionException If thrown while generating the XC file.
      */
+    @Override
     public Map<String, String> generateAdditionalCodeFiles()
             throws IllegalActionException {
         Map<String, String> list = new HashMap<String, String>();
@@ -94,6 +95,7 @@ public class PtidesPreemptiveEDFDirector
      * @return The generated fire code.
      * @exception IllegalActionException Not thrown in this class.
      */
+    @Override
     public String generateFireCode() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
 
@@ -121,6 +123,7 @@ public class PtidesPreemptiveEDFDirector
      * @exception IllegalActionException If there is an exception in
      *  generating the task function code.
      */
+    @Override
     public String generateFireFunctionCode() throws IllegalActionException {
         return "";
     }
@@ -133,6 +136,7 @@ public class PtidesPreemptiveEDFDirector
      * @exception IllegalActionException If the adapter associated with
      *  an actor throws it while generating initialize code for the actor.
      */
+    @Override
     public String generateInitializeCode() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
 
@@ -162,6 +166,7 @@ public class PtidesPreemptiveEDFDirector
      *   an actor throws it while generating preinitialize code for the actor.
      *   FIXME: Take care of platform dependent code.
      */
+    @Override
     public String generatePreinitializeCode() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
 
@@ -219,6 +224,7 @@ public class PtidesPreemptiveEDFDirector
      * @return code The empty string.
      * @exception IllegalActionException Not thrown in this class.
      */
+    @Override
     public String generateVariableInitialization()
             throws IllegalActionException {
         return "";
@@ -234,6 +240,7 @@ public class PtidesPreemptiveEDFDirector
      * @return An empty set in this base class.
      * @exception IllegalActionException Not thrown in this base class.
      */
+    @Override
     public Set getSharedCode() throws IllegalActionException {
         Set sharedCode = new HashSet();
 
@@ -316,9 +323,9 @@ public class PtidesPreemptiveEDFDirector
             String deviceName = CodeGeneratorAdapter
                     .generateName((NamedObj) actuator);
             switchstatement
-                    .append("case " + _deviceIds.get(actuator) + ":\n"
-                            + "    newEvent->fire = " + deviceName + ";\n"
-                            + "break;\n");
+            .append("case " + _deviceIds.get(actuator) + ":\n"
+                    + "    newEvent->fire = " + deviceName + ";\n"
+                    + "break;\n");
             if (actuatorIds.length() > 0) {
                 actuatorIds.append(", ");
             }
@@ -347,6 +354,7 @@ public class PtidesPreemptiveEDFDirector
      * @return fire methods for each actor
      * @exception IllegalActionException If thrown when getting the port's adapter.
      */
+    @Override
     public String _generateActorFireCode() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
         Iterator actors = ((CompositeActor) _director.getContainer())
@@ -421,13 +429,13 @@ public class PtidesPreemptiveEDFDirector
         StringBuffer code = new StringBuffer();
 
         //for (Actor actor : (List<Actor>) ((CompositeActor) _director
-           //     .getContainer()).deepEntityList()) {
-            //            if (actor instanceof SensorHandler) {
-            //                code.append("void "
-            //                        + CodeGeneratorAdapter.generateName((NamedObj) actor)
-            //                        + "(streaming chanend schedulerChannel, const Time &timestamp);"
-            //                        + _eol);
-            //            }
+        //     .getContainer()).deepEntityList()) {
+        //            if (actor instanceof SensorHandler) {
+        //                code.append("void "
+        //                        + CodeGeneratorAdapter.generateName((NamedObj) actor)
+        //                        + "(streaming chanend schedulerChannel, const Time &timestamp);"
+        //                        + _eol);
+        //            }
         //}
 
         return code.toString();
@@ -475,13 +483,13 @@ public class PtidesPreemptiveEDFDirector
                     + " = " + _devicePortIds.get(actuator) + ";\n");
 
             doActuation
-                    .append("void "
-                            + deviceName
-                            + "_Actuation() {\n"
-                            + "timer time;\n uint32 count;\n"
-                            + deviceName
-                            + " <: 1;\n time :> count;\ntime when timerafter(count + 5000) :> void;"
-                            + deviceName + " <: 0;\n}\n");
+            .append("void "
+                    + deviceName
+                    + "_Actuation() {\n"
+                    + "timer time;\n uint32 count;\n"
+                    + deviceName
+                    + " <: 1;\n time :> count;\ntime when timerafter(count + 5000) :> void;"
+                    + deviceName + " <: 0;\n}\n");
 
             initActuatorString.append(deviceName + " <: 0;\n");
         }

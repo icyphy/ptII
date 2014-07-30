@@ -115,6 +115,7 @@ public class CausalityInterfaceForComposites extends DefaultCausalityInterface {
      *  by the specified port.
      *  @exception IllegalActionException Not thrown in this base class.
      */
+    @Override
     public Collection<IOPort> dependentPorts(IOPort port)
             throws IllegalActionException {
         // FIXME: This does not support ports that are both input and output.
@@ -198,6 +199,7 @@ public class CausalityInterfaceForComposites extends DefaultCausalityInterface {
      *  @exception IllegalActionException If the argument is not
      *   contained by the associated actor.
      */
+    @Override
     public Collection<IOPort> equivalentPorts(IOPort input)
             throws IllegalActionException {
         if (input.getContainer() != _actor || !input.isInput()) {
@@ -249,6 +251,7 @@ public class CausalityInterfaceForComposites extends DefaultCausalityInterface {
      *   is port specified.
      *  @exception IllegalActionException Not thrown in this base class.
      */
+    @Override
     public Dependency getDependency(IOPort input, IOPort output)
             throws IllegalActionException {
         // Cast is safe because this is checked in the constructor
@@ -345,8 +348,8 @@ public class CausalityInterfaceForComposites extends DefaultCausalityInterface {
         }
         throw new IllegalActionException(_actor,
                 "Attempt to get depth of actor " + actor.getFullName()
-                        + " that was not sorted. It is probably not"
-                        + " contained by " + _actor.getFullName());
+                + " that was not sorted. It is probably not"
+                + " contained by " + _actor.getFullName());
     }
 
     /** Return the depth of a port of the associated actor
@@ -399,6 +402,7 @@ public class CausalityInterfaceForComposites extends DefaultCausalityInterface {
      *  @param outputPort The output port that does not depend on the
      *   input port.
      */
+    @Override
     public void removeDependency(IOPort inputPort, IOPort outputPort) {
         // First ensure that all dependencies are calculated.
         try {
@@ -653,7 +657,7 @@ public class CausalityInterfaceForComposites extends DefaultCausalityInterface {
      */
     private void _computeInputDepth(IOPort inputPort,
             Set<IOPort> visitedInputs, Set<IOPort> visitedOutputs)
-            throws IllegalActionException {
+                    throws IllegalActionException {
         int depth = 0;
         // Iterate over all the ports in the equivalence class.
         Actor actor = (Actor) inputPort.getContainer();
@@ -728,7 +732,7 @@ public class CausalityInterfaceForComposites extends DefaultCausalityInterface {
      */
     private void _computeOutputPortDepth(IOPort outputPort,
             Set<IOPort> visitedInputs, Set<IOPort> visitedOutputs)
-            throws IllegalActionException {
+                    throws IllegalActionException {
         visitedOutputs.add(outputPort);
         int depth = 0;
         // Iterate over the input ports of the same actor that
@@ -736,40 +740,40 @@ public class CausalityInterfaceForComposites extends DefaultCausalityInterface {
         Actor actor = (Actor) outputPort.getContainer();
         CausalityInterface causality = actor.getCausalityInterface();
         for (IOPort inputPort : causality.dependentPorts(outputPort)) {
-                // if outputPort is an IO port then inputPort can be an output 
-                // port as well. Check here and ignore if inputPort is actually
-                // an output port.
-                if (inputPort.isInput()) {
-                
-            // The output port depends directly on this input port.
-            // Find the depth of the input port.
-            Integer inputPortDepth = _portToDepth.get(inputPort);
-            if (inputPortDepth == null) {
-                // Have to compute the depth of the input port.
-                if (visitedInputs.contains(inputPort)) {
-                    // Found a causality loop.
-                    throw new IllegalActionException(_actor, actor,
-                            "Found a zero delay loop containing "
-                                    + actor.getFullName());
-                }
-                // The following computes only the source depth,
-                // which may not be the final depth. As a consequence,
-                // _computeActorDepth(), the output depth that
-                // we calculate here may need to be modified.
-                _computeInputDepth(inputPort, visitedInputs, visitedOutputs);
-                inputPortDepth = _portToDepth.get(inputPort);
+            // if outputPort is an IO port then inputPort can be an output 
+            // port as well. Check here and ignore if inputPort is actually
+            // an output port.
+            if (inputPort.isInput()) {
+
+                // The output port depends directly on this input port.
+                // Find the depth of the input port.
+                Integer inputPortDepth = _portToDepth.get(inputPort);
                 if (inputPortDepth == null) {
-                    throw new InternalErrorException(
-                            "Failed to compute port depth for "
-                                    + inputPort.getFullName());
+                    // Have to compute the depth of the input port.
+                    if (visitedInputs.contains(inputPort)) {
+                        // Found a causality loop.
+                        throw new IllegalActionException(_actor, actor,
+                                "Found a zero delay loop containing "
+                                        + actor.getFullName());
+                    }
+                    // The following computes only the source depth,
+                    // which may not be the final depth. As a consequence,
+                    // _computeActorDepth(), the output depth that
+                    // we calculate here may need to be modified.
+                    _computeInputDepth(inputPort, visitedInputs, visitedOutputs);
+                    inputPortDepth = _portToDepth.get(inputPort);
+                    if (inputPortDepth == null) {
+                        throw new InternalErrorException(
+                                "Failed to compute port depth for "
+                                        + inputPort.getFullName());
+                    }
+                }
+
+                int newDepth = inputPortDepth.intValue();
+                if (depth < newDepth) {
+                    depth = newDepth;
                 }
             }
-            
-            int newDepth = inputPortDepth.intValue();
-            if (depth < newDepth) {
-                depth = newDepth;
-            }
-                }
         }
         _portToDepth.put(outputPort, Integer.valueOf(depth));
     }
@@ -797,7 +801,7 @@ public class CausalityInterfaceForComposites extends DefaultCausalityInterface {
     private boolean _recordDependency(IOPort inputPort, IOPort port,
             Map<IOPort, Dependency> map, Dependency dependency,
             Map<IOPort, Collection<IOPort>> dependsOnInputsMap)
-            throws IllegalActionException {
+                    throws IllegalActionException {
         if (dependency.equals(_defaultDependency.oPlusIdentity())) {
             return false;
         }
@@ -908,7 +912,7 @@ public class CausalityInterfaceForComposites extends DefaultCausalityInterface {
     private void _setDependency(IOPort inputPort, Map<IOPort, Dependency> map,
             Collection<IOPort> portsToProcess,
             Map<IOPort, Collection<IOPort>> dependsOnInputsMap)
-            throws IllegalActionException {
+                    throws IllegalActionException {
         Set<IOPort> portsToProcessNext = new HashSet<IOPort>();
         for (IOPort port : portsToProcess) {
             // The argument map is required to contain this dependency.
@@ -984,6 +988,7 @@ public class CausalityInterfaceForComposites extends DefaultCausalityInterface {
          *  NOTE: This method assumes and does not check that the
          *  depth cache is up to date and contains both specified actors.
          */
+        @Override
         public int compare(Actor actor1, Actor actor2) {
             Integer level1 = _actorToDepth.get(actor1);
             Integer level2 = _actorToDepth.get(actor2);

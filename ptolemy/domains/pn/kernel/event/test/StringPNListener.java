@@ -67,6 +67,7 @@ public class StringPNListener implements PNProcessListener {
      *  @param event A PNProcessEvent that contains a reference to an
      *  actor.
      */
+    @Override
     public void processFinished(PNProcessEvent event) {
         _profile.append(event.toString() + "\n");
     }
@@ -78,6 +79,7 @@ public class StringPNListener implements PNProcessListener {
      *
      *  @param event A PNProcessEvent that contains a reference to an actor.
      */
+    @Override
     public void processStateChanged(PNProcessEvent event) {
         _profile.append(event.toString() + "\n");
     }

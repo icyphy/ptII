@@ -194,6 +194,7 @@ public class ConnectorInteractor extends DragInteractor {
     /** Handle a mouse-released event. This overrides the inherited
      * method to generate a connector-dropped event.
      */
+    @Override
     public void mouseReleased(LayerEvent event) {
         super.mouseReleased(event);
         fireConnectorEvent(ConnectorEvent.CONNECTOR_DROPPED);
@@ -209,6 +210,7 @@ public class ConnectorInteractor extends DragInteractor {
     /** Initialize the interactor when a grab-handle
      * is grabbed.
      */
+    @Override
     public void setup(LayerEvent e) {
         _handle = (GrabHandle) e.getFigureSource();
 
@@ -229,6 +231,7 @@ public class ConnectorInteractor extends DragInteractor {
             final Rectangle2D hitRect) {
         //debug("SNAPPING TO SITE IN: " + container);
         Figure figure = container.pick(hitRect, new Filter() {
+            @Override
             public boolean accept(Object o) {
                 // debug("checking = " + o);
                 if (!(o instanceof Figure)) {
@@ -286,6 +289,7 @@ public class ConnectorInteractor extends DragInteractor {
      * grab-handle, and adjust the connector accordingly,
      * snapping it to a suitable target if possible.
      */
+    @Override
     public void translate(LayerEvent e, double dx, double dy) {
         double x = e.getLayerX();
         double y = e.getLayerY();

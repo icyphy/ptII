@@ -87,14 +87,16 @@ public class TransformationAttributeController extends AttributeController {
             super(container, name);
         }
 
+        @Override
         public NamedObjController create(GraphController controller) {
             return new TransformationAttributeController(controller);
         }
     }
 
     private static class Listener extends TransformationListener implements
-            ChangeListener, WindowListener {
+    ChangeListener, WindowListener {
 
+        @Override
         public void changeExecuted(ChangeRequest change) {
             if (_child.isModified()) {
                 _parent.setModified(true);
@@ -102,9 +104,11 @@ public class TransformationAttributeController extends AttributeController {
             }
         }
 
+        @Override
         public void changeFailed(ChangeRequest change, Exception exception) {
         }
 
+        @Override
         public void managerStateChanged(Manager manager) {
             if (manager.getState() == Manager.PREINITIALIZING) {
                 try {
@@ -118,30 +122,37 @@ public class TransformationAttributeController extends AttributeController {
             super.managerStateChanged(manager);
         }
 
+        @Override
         public void windowActivated(WindowEvent e) {
         }
 
+        @Override
         public void windowClosed(WindowEvent e) {
             if (e.getWindow() == _child) {
                 _removeListeners();
             }
         }
 
+        @Override
         public void windowClosing(WindowEvent e) {
             if (e.getWindow() == _parent) {
                 _child.close();
             }
         }
 
+        @Override
         public void windowDeactivated(WindowEvent e) {
         }
 
+        @Override
         public void windowDeiconified(WindowEvent e) {
         }
 
+        @Override
         public void windowIconified(WindowEvent e) {
         }
 
+        @Override
         public void windowOpened(WindowEvent e) {
         }
 
@@ -184,12 +195,13 @@ public class TransformationAttributeController extends AttributeController {
     }
 
     @SuppressWarnings("serial")
-        private static class LookInsideAction extends FigureAction {
+    private static class LookInsideAction extends FigureAction {
 
         public LookInsideAction() {
             super("Open Transformation Controller");
         }
 
+        @Override
         public void actionPerformed(ActionEvent event) {
             super.actionPerformed(event);
 

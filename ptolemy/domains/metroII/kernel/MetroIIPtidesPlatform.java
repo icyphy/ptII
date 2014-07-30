@@ -26,7 +26,7 @@ ENHANCEMENTS, OR MODIFICATIONS.
                                             COPYRIGHTENDKEY
 
 
-*/
+ */
 
 package ptolemy.domains.metroII.kernel;
 
@@ -166,6 +166,7 @@ public class MetroIIPtidesPlatform extends MetroIIMirrorComposite {
      *                If any of the attributes cannot be cloned.
      * @see #exportMoML(Writer, int, String)
      */
+    @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         MetroIIPtidesPlatform result = (MetroIIPtidesPlatform) super
                 .clone(workspace);
@@ -208,6 +209,7 @@ public class MetroIIPtidesPlatform extends MetroIIMirrorComposite {
      * @exception NameDuplicationException
      *                If the container already has a port with this name.
      */
+    @Override
     public Port newPort(String name) throws NameDuplicationException {
         try {
             PtidesMirrorPort result = new PtidesMirrorPort(this, name);
@@ -225,7 +227,7 @@ public class MetroIIPtidesPlatform extends MetroIIMirrorComposite {
 
     @Override
     protected void _addPort(Port port) throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         // TODO Auto-generated method stub
         super._addPort(port);
     }
@@ -237,6 +239,7 @@ public class MetroIIPtidesPlatform extends MetroIIMirrorComposite {
      * @exception IllegalActionException
      *                If reading from parameter associated with port fails.
      */
+    @Override
     protected void _transferPortParameterInputs() throws IllegalActionException {
         // Need to read from port parameters
         // first because in some domains (e.g. SDF)
@@ -253,8 +256,7 @@ public class MetroIIPtidesPlatform extends MetroIIMirrorComposite {
                         .getParameter();
 
                 // Coverity says that port cannot be null here.
-                if (port.isOutsideConnected()
-                        && port.hasToken(0)) {
+                if (port.isOutsideConnected() && port.hasToken(0)) {
                     Token token = port.get(0);
                     associatedParameter.setCurrentValue(token);
                     // Have to validate so that containers of dependent
@@ -284,6 +286,7 @@ public class MetroIIPtidesPlatform extends MetroIIMirrorComposite {
      * @return A list of instances of Inequality indicating the type constraints
      *         that are not satisfied.
      */
+    @Override
     protected List _checkTypesFromTo(TypedIOPort sourcePort,
             List destinationPortList) {
         List result = new LinkedList();
@@ -362,6 +365,7 @@ public class MetroIIPtidesPlatform extends MetroIIMirrorComposite {
      *            The source port.
      * @return A list of instances of Inequality.
      */
+    @Override
     protected List _destinationTypeConstraints(TypedIOPort sourcePort) {
         Iterator<IOPort> destinationPorts;
         List<Inequality> result = new LinkedList<Inequality>();
@@ -400,14 +404,14 @@ public class MetroIIPtidesPlatform extends MetroIIMirrorComposite {
 
                     if (destinationPort instanceof MetroIIPtidesPort
                             && ((MetroIIPtidesPort) destinationPort)
-                                    .isSensorPort()) {
+                            .isSensorPort()) {
                         Inequality ineq = new Inequality(
                                 sourcePort.getTypeTerm(),
                                 destinationPort.getTypeTerm());
                         result.add(ineq);
                     } else if (destinationPort instanceof MetroIIPtidesPort
                             && ((MetroIIPtidesPort) destinationPort)
-                                    .isNetworkReceiverPort()) {
+                            .isNetworkReceiverPort()) {
 
                         sourcePort.setTypeEquals(new PtidesNetworkType());
                         RecordType sourcePortType = (RecordType) sourcePort
@@ -424,12 +428,12 @@ public class MetroIIPtidesPlatform extends MetroIIMirrorComposite {
                     Inequality ineq = null;
                     if (sourcePort instanceof MetroIIPtidesPort
                             && ((MetroIIPtidesPort) sourcePort)
-                                    .isActuatorPort()) {
+                            .isActuatorPort()) {
                         ineq = new Inequality(sourcePort.getTypeTerm(),
                                 destinationPort.getTypeTerm());
                     } else if (sourcePort instanceof MetroIIPtidesPort
                             && ((MetroIIPtidesPort) sourcePort)
-                                    .isNetworkTransmitterPort()) {
+                            .isNetworkTransmitterPort()) {
 
                         destinationPort.setTypeEquals(new PtidesNetworkType());
                         RecordType outputType = (RecordType) destinationPort
@@ -451,7 +455,7 @@ public class MetroIIPtidesPlatform extends MetroIIMirrorComposite {
 
     /** Initializes the class. */
     private void _init() throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         setClassName("ptolemy.domains.ptides.kernel.PtidesPlatform");
 
         // Create the PtidesPlatformDirector in the proper workspace.
@@ -503,11 +507,11 @@ public class MetroIIPtidesPlatform extends MetroIIMirrorComposite {
 
         /** The types of the RecordType fields. */
         public static Type[] TYPES = { BaseType.DOUBLE, BaseType.INT,
-                BaseType.UNKNOWN };
+            BaseType.UNKNOWN };
 
         /** The labels of the RecordType fields. */
         public static String[] LABELS = new String[] { "timestamp",
-                "microstep", "payload" };
+            "microstep", "payload" };
 
         /**
          * Label of the timestamp that is transmitted within the RecordToken.
@@ -536,7 +540,7 @@ public class MetroIIPtidesPlatform extends MetroIIMirrorComposite {
      * addition will result in appropriate connections being made.
      */
     public static class PtidesPlatformContents extends
-            MetroIIMirrorComposite.MetroIIMirrorCompositeContents {
+    MetroIIMirrorComposite.MetroIIMirrorCompositeContents {
         // NOTE: This has to be a static class so that MoML can
         // instantiate it.
 
@@ -567,6 +571,7 @@ public class MetroIIPtidesPlatform extends MetroIIMirrorComposite {
          * @exception NameDuplicationException
          *                If the container already has a port with this name.
          */
+        @Override
         public Port newPort(String name) throws NameDuplicationException {
             try {
                 return new MetroIIPtidesPort(this, name);
@@ -639,6 +644,7 @@ public class MetroIIPtidesPlatform extends MetroIIMirrorComposite {
          * @exception IllegalActionException
          *                Thrown by embedded PtidesDirector.
          */
+        @Override
         public void fire() throws IllegalActionException {
             _getEmbeddedPtidesDirector().fire();
         }
@@ -651,6 +657,7 @@ public class MetroIIPtidesPlatform extends MetroIIMirrorComposite {
          *                Thrown if fireContainerAt of the enclosing director
          *                cannot be invoked.
          */
+        @Override
         public Time fireContainerAt(Time time) throws IllegalActionException {
             if (getContainer() instanceof Actor) {
                 Actor container = (Actor) getContainer();
@@ -674,6 +681,7 @@ public class MetroIIPtidesPlatform extends MetroIIMirrorComposite {
          *
          * @return Environment time.
          */
+        @Override
         public Time getEnvironmentTime() {
             if (getContainer() instanceof Actor) {
                 Actor container = (Actor) getContainer();
@@ -696,6 +704,7 @@ public class MetroIIPtidesPlatform extends MetroIIMirrorComposite {
          * @exception IllegalActionException
          *                Thrown by embedded PtidesDirector.
          */
+        @Override
         public void initialize() throws IllegalActionException {
             super.initialize();
             //_getEmbeddedPtidesDirector().initialize();
@@ -707,6 +716,7 @@ public class MetroIIPtidesPlatform extends MetroIIMirrorComposite {
          * @return A new instance of QueueReceiver.
          * @see QueueReceiver
          */
+        @Override
         public Receiver newReceiver() {
             return new QueueReceiver();
         }
@@ -718,6 +728,7 @@ public class MetroIIPtidesPlatform extends MetroIIMirrorComposite {
          * @exception IllegalActionException
          *                Thrown by embedded PtidesDirector.
          */
+        @Override
         public boolean prefire() throws IllegalActionException {
             super.prefire();
             return _getEmbeddedPtidesDirector().prefire();
@@ -729,6 +740,7 @@ public class MetroIIPtidesPlatform extends MetroIIMirrorComposite {
          * @exception IllegalActionException
          *                Thrown by embedded PtidesDirector.
          */
+        @Override
         public boolean postfire() throws IllegalActionException {
             return _getEmbeddedPtidesDirector().postfire();
         }
@@ -742,6 +754,7 @@ public class MetroIIPtidesPlatform extends MetroIIMirrorComposite {
          * @return True if at least one data token is transferred.
          * @exception IllegalActionException Not thrown in this base class.
          */
+        @Override
         public boolean transferInputs(IOPort port)
                 throws IllegalActionException {
             boolean result = false;
@@ -809,7 +822,7 @@ public class MetroIIPtidesPlatform extends MetroIIMirrorComposite {
                                                         record.get(PtidesNetworkType.payload),
                                                         farReceivers[channelIndex][i],
                                                         sourceTimestamp),
-                                                MetroIIPtidesDirector
+                                                        MetroIIPtidesDirector
                                                         ._getDoubleParameterValue(
                                                                 associatedPort,
                                                                 "deviceDelay"));
@@ -831,7 +844,7 @@ public class MetroIIPtidesPlatform extends MetroIIMirrorComposite {
                                                         t,
                                                         farReceivers[channelIndex][i],
                                                         director.getModelTime()),
-                                                MetroIIPtidesDirector
+                                                        MetroIIPtidesDirector
                                                         ._getDoubleParameterValue(
                                                                 associatedPort,
                                                                 "deviceDelay"));
@@ -839,7 +852,7 @@ public class MetroIIPtidesPlatform extends MetroIIMirrorComposite {
                                 }
                             } else {
                                 ((MirrorPort) port).getAssociatedPort()
-                                        .sendInside(channelIndex, t);
+                                .sendInside(channelIndex, t);
                             }
 
                             result = true;
@@ -864,6 +877,7 @@ public class MetroIIPtidesPlatform extends MetroIIMirrorComposite {
          * @exception IllegalActionException Not thrown in this base class.
          * @see IOPort#transferOutputs
          */
+        @Override
         public boolean transferOutputs(IOPort port)
                 throws IllegalActionException {
             boolean result = false;
@@ -963,16 +977,16 @@ public class MetroIIPtidesPlatform extends MetroIIMirrorComposite {
                 throws CollectionAbortedException, IllegalActionException {
 
             // try {
-                Director director = _getEmbeddedPtidesDirector();
-                if (director instanceof GetFirable) {
-                    ((GetFirable) director).getfire(resultHandler);
-                } else {
-                    director.fire();
-                }
-//            } catch (IllegalActionException e) {
-//                // TODO Auto-generated catch block
-//                e.printStackTrace();
-//            }
+            Director director = _getEmbeddedPtidesDirector();
+            if (director instanceof GetFirable) {
+                ((GetFirable) director).getfire(resultHandler);
+            } else {
+                director.fire();
+            }
+            //            } catch (IllegalActionException e) {
+            //                // TODO Auto-generated catch block
+            //                e.printStackTrace();
+            //            }
 
         }
 
@@ -998,7 +1012,8 @@ public class MetroIIPtidesPlatform extends MetroIIMirrorComposite {
          *            The workspace that will list the port.
          * @exception IllegalActionException If port parameters cannot be initialized.
          */
-        public PtidesMirrorPort(Workspace workspace) throws IllegalActionException {
+        public PtidesMirrorPort(Workspace workspace)
+                throws IllegalActionException {
             // This constructor is needed for Shallow codgen.
             super(workspace);
         }
@@ -1045,11 +1060,12 @@ public class MetroIIPtidesPlatform extends MetroIIMirrorComposite {
          * @exception IllegalActionException
          *                If the conversion is invalid.
          */
+        @Override
         public Token convert(Token token) throws IllegalActionException {
             if (!(getContainer() instanceof MetroIIPtidesPlatform)
                     || !isOutput()
                     || !((MetroIIPtidesPort) this.insidePortList().get(0))
-                            .isNetworkTransmitterPort()) {
+                    .isNetworkTransmitterPort()) {
                 return super.convert(token);
             }
             if (getType().equals(BaseType.GENERAL)) {

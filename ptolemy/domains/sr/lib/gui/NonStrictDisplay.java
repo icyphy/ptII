@@ -81,6 +81,7 @@ public class NonStrictDisplay extends Display {
      *   "absent" or "unknown" if the input is absent or unknown.
      *  @exception IllegalActionException If reading the input fails.
      */
+    @Override
     protected String _getInputString(int i) throws IllegalActionException {
         if (input.isKnown(i)) {
             if (input.hasToken(i)) {

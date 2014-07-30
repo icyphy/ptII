@@ -85,6 +85,7 @@ public abstract class EditorFactory extends Attribute implements Editable {
     /** Create an editor for configuring the container.
      *  This editor will have no parent window.
      */
+    @Override
     public void createEditor() {
         createEditor(getContainer(), null);
     }
@@ -93,6 +94,7 @@ public abstract class EditorFactory extends Attribute implements Editable {
      *  This editor will have no parent window.
      *  @param object The object to configure.
      */
+    @Override
     public void createEditor(NamedObj object) {
         createEditor(object, null);
     }
@@ -102,5 +104,6 @@ public abstract class EditorFactory extends Attribute implements Editable {
      *  @param object The object to configure.
      *  @param parent The parent window, or null if there is none.
      */
+    @Override
     public abstract void createEditor(NamedObj object, Frame parent);
 }

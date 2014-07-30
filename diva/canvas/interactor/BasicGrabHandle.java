@@ -68,6 +68,7 @@ public class BasicGrabHandle extends BasicRectangle implements GrabHandle {
     /**
      * Get the site that this handle is attached to
      */
+    @Override
     public Site getSite() {
         return _site;
     }
@@ -76,6 +77,7 @@ public class BasicGrabHandle extends BasicRectangle implements GrabHandle {
      * Get the "size" of the grab-handle. The size is half the
      * length of each side. The default is 4.0.
      */
+    @Override
     public float getSize() {
         return _size;
     }
@@ -83,6 +85,7 @@ public class BasicGrabHandle extends BasicRectangle implements GrabHandle {
     /**
      * Reposition the grab-handle if necessary
      */
+    @Override
     public void relocate() {
         // Be sure to take into account that the transformContext of the
         // site and the context of the grab handle may be different.
@@ -103,6 +106,7 @@ public class BasicGrabHandle extends BasicRectangle implements GrabHandle {
     /**
      * Set the set to which this grab-handle is attached.
      */
+    @Override
     public void setSite(Site s) {
         _site = s;
         relocate();
@@ -112,6 +116,7 @@ public class BasicGrabHandle extends BasicRectangle implements GrabHandle {
      * Set the "size" of the grab-handle.  The size is half the
      * length of each side.
      */
+    @Override
     public void setSize(float size) {
         this._size = size;
         ((Rectangle2D) getShape()).setFrame(_x - _size, _y - _size, _size * 2,
@@ -123,6 +128,7 @@ public class BasicGrabHandle extends BasicRectangle implements GrabHandle {
      * move the grab-handle itself (that will be handled by the
      * reshape manipulator).
      */
+    @Override
     public void translate(double x, double y) {
         _site.translate(x, y);
     }

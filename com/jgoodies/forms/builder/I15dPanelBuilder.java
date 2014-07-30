@@ -106,6 +106,7 @@ public class I15dPanelBuilder extends PanelBuilder {
      *
      * @deprecated Replaced by {@link #I15dPanelBuilder(FormLayout, ResourceBundle, JPanel)}.
      */
+    @Deprecated
     public I15dPanelBuilder(JPanel panel, FormLayout layout,
             ResourceBundle bundle) {
         this(layout, bundle, panel);

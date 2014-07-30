@@ -87,7 +87,7 @@ import ptolemy.util.StringUtilities;
  */
 @SuppressWarnings("serial")
 public class TextEditor extends TableauFrame implements DocumentListener,
-        ImageExportable, Printable {
+ImageExportable, Printable {
     /** Construct an empty text editor with no name.
      *  After constructing this, it is necessary
      *  to call setVisible(true) to make the frame appear.
@@ -156,6 +156,7 @@ public class TextEditor extends TableauFrame implements DocumentListener,
     /** React to notification that an attribute or set of attributes
      *  changed.
      */
+    @Override
     public void changedUpdate(DocumentEvent e) {
         // Do nothing... We don't care about attributes.
     }
@@ -165,6 +166,7 @@ public class TextEditor extends TableauFrame implements DocumentListener,
      *  If _scrollPane is null, then null is returned.
      *  @see #setBackground(Color)
      */
+    @Override
     public Color getBackground() {
         // Under Java 1.7 on the Mac, the _scrollbar is sometimes null.
         // See http://bugzilla.ecoinformatics.org/show_bug.cgi?id=5574
@@ -174,12 +176,12 @@ public class TextEditor extends TableauFrame implements DocumentListener,
             return null;
         }
     }
-    
+
     /** Return the scroll pane, if there is one, and null if not.
      *  @return The scroll pane.
      */
     public JScrollPane getScrollPane() {
-            return _scrollPane;
+        return _scrollPane;
     }
 
     // CONTRIBUTED CODE.  The exportImage() methods are from PlotBox,
@@ -279,6 +281,7 @@ public class TextEditor extends TableauFrame implements DocumentListener,
 
     /** React to notification that there was an insert into the document.
      */
+    @Override
     public void insertUpdate(DocumentEvent e) {
         setModified(true);
     }
@@ -292,6 +295,7 @@ public class TextEditor extends TableauFrame implements DocumentListener,
      *   NO_SUCH_PAGE if pageIndex specifies a non-existent page.
      *  @exception PrinterException If the print job is terminated.
      */
+    @Override
     public int print(Graphics graphics, PageFormat format, int index)
             throws PrinterException {
         if (graphics == null) {
@@ -315,7 +319,7 @@ public class TextEditor extends TableauFrame implements DocumentListener,
 
         return _print(graphics2D, index, linesPerPage, lineHeight,
                 (int) format.getImageableX(), lineYPosition, format.getHeight()
-                        - bottomMargin);
+                - bottomMargin);
 
     }
 
@@ -363,6 +367,7 @@ public class TextEditor extends TableauFrame implements DocumentListener,
 
     /** React to notification that there was a removal from the document.
      */
+    @Override
     public void removeUpdate(DocumentEvent e) {
         setModified(true);
     }
@@ -379,6 +384,7 @@ public class TextEditor extends TableauFrame implements DocumentListener,
      *  @param background The background color.
      *  @see #getBackground()
      */
+    @Override
     public void setBackground(Color background) {
         super.setBackground(background);
 
@@ -400,6 +406,7 @@ public class TextEditor extends TableauFrame implements DocumentListener,
      *  dispose() method of the superclass,
      *  {@link ptolemy.actor.gui.TableauFrame}.
      */
+    @Override
     public void dispose() {
         if (_debugClosing) {
             System.out.println("TextEditor.dispose() : " + this.getName());
@@ -417,6 +424,7 @@ public class TextEditor extends TableauFrame implements DocumentListener,
      *  @exception IOException If writing to the stream fails.
      *  @exception PrinterException  If the specified format is not supported.
      */
+    @Override
     public void writeImage(OutputStream stream, String format)
             throws PrinterException, IOException {
         exportImage(stream, format);
@@ -431,6 +439,7 @@ public class TextEditor extends TableauFrame implements DocumentListener,
      *  indicates that the user has canceled the action.
      *  @return False if the user cancels the clear.
      */
+    @Override
     protected boolean _clear() {
         if (super._clear()) {
             text.setText("");
@@ -445,6 +454,7 @@ public class TextEditor extends TableauFrame implements DocumentListener,
      *  in GIF, PNG, and possibly PDF.
      *  @return The items in the File menu.
      */
+    @Override
     protected JMenuItem[] _createFileMenuItems() {
         // This method is similar to ptolemy/actor/gui/PlotTableauFrame.java, but we don't
         // handle pdfs.
@@ -473,6 +483,7 @@ public class TextEditor extends TableauFrame implements DocumentListener,
 
     /** Display more detailed information than given by _about().
      */
+    @Override
     protected void _help() {
         // FIXME: Give instructions for the editor here.
         _about();
@@ -508,12 +519,14 @@ public class TextEditor extends TableauFrame implements DocumentListener,
      *  This overrides the base class to use the ".txt" extension.
      *  @return True if the save succeeds.
      */
+    @Override
     protected boolean _saveAs() {
         return _saveAs(".txt");
     }
 
     /** Print the contents.
      */
+    @Override
     protected void _print() {
         // FIXME: What should we print?
         super._print();
@@ -540,7 +553,7 @@ public class TextEditor extends TableauFrame implements DocumentListener,
     //// ExportImageAction
 
     /** Export an image. */
-        public class ExportImageAction extends AbstractAction {
+    public class ExportImageAction extends AbstractAction {
         // FIXME: this is very similar to PlotTableaFrame.ExportImageAction.
 
         /** Create a new action to export an image.
@@ -560,6 +573,7 @@ public class TextEditor extends TableauFrame implements DocumentListener,
         /** Export an image.
          *  @param e The ActionEvent that invoked this action.
          */
+        @Override
         public void actionPerformed(ActionEvent e) {
             JFileChooserBugFix jFileChooserBugFix = new JFileChooserBugFix();
             Color background = null;
@@ -674,7 +688,7 @@ public class TextEditor extends TableauFrame implements DocumentListener,
                 String linetext = text.getText(
                         text.getLineStartOffset(line),
                         text.getLineEndOffset(line)
-                                - text.getLineStartOffset(line));
+                        - text.getLineStartOffset(line));
                 graphics2D.drawString(linetext, lineXPosition, linePosition);
             } catch (BadLocationException e) {
                 // Ignore. Never a bad location.

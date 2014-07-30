@@ -73,7 +73,7 @@ import diva.gui.GUIUtilities;
  @Pt.AcceptedRating Red (johnr)
  */
 public abstract class RunnableGraphController extends WithIconGraphController
-        implements ExecutionListener {
+implements ExecutionListener {
     /** Create a new controller.
      */
     public RunnableGraphController() {
@@ -87,6 +87,7 @@ public abstract class RunnableGraphController extends WithIconGraphController
      *  @param menu The menu to add to, which is ignored.
      *  @param toolbar The toolbar to add to, or null if none.
      */
+    @Override
     public void addToMenuAndToolbar(JMenu menu, JToolBar toolbar) {
         super.addToMenuAndToolbar(menu, toolbar);
         GUIUtilities.addToolBarButton(toolbar, _runModelAction);
@@ -100,6 +101,7 @@ public abstract class RunnableGraphController extends WithIconGraphController
      *  @param manager The manager calling this method.
      *  @param throwable The throwable being reported.
      */
+    @Override
     public void executionError(Manager manager, Throwable throwable) {
         getFrame().report(throwable);
 
@@ -150,6 +152,7 @@ public abstract class RunnableGraphController extends WithIconGraphController
     /** Report that execution of the model has finished.
      *  @param manager The manager calling this method.
      */
+    @Override
     public synchronized void executionFinished(Manager manager) {
         // Display the amount of time and memory used.
         // See http://bugzilla.ecoinformatics.org/show_bug.cgi?id=5571
@@ -167,6 +170,7 @@ public abstract class RunnableGraphController extends WithIconGraphController
      *  This method is called by the specified manager.
      *  @param manager The manager calling this method.
      */
+    @Override
     public void managerStateChanged(Manager manager) {
         Manager.State newState = manager.getState();
 
@@ -230,6 +234,7 @@ public abstract class RunnableGraphController extends WithIconGraphController
      *
      *  @param jgraph The JGraph to which hot keys are to be added.
      */
+    @Override
     protected void _addHotKeys(JGraph jgraph) {
         super._addHotKeys(jgraph);
         GUIUtilities.addHotKey(jgraph, _runModelAction);
@@ -303,7 +308,7 @@ public abstract class RunnableGraphController extends WithIconGraphController
 
     /** An action to run the model that includes a button. */
     @SuppressWarnings("serial")
-        private class ButtonFigureAction extends FigureAction {
+    private class ButtonFigureAction extends FigureAction {
         public ButtonFigureAction(String description) {
             super(description);
         }
@@ -321,7 +326,7 @@ public abstract class RunnableGraphController extends WithIconGraphController
 
     /** An action to run the model. */
     @SuppressWarnings("serial")
-        private class RunModelAction extends ButtonFigureAction {
+    private class RunModelAction extends ButtonFigureAction {
         /** Run the model without opening a run-control window.
          *  @param description The description used for menu entries and
          *   tooltips.
@@ -336,21 +341,22 @@ public abstract class RunnableGraphController extends WithIconGraphController
             // jdk1.3/docs/guide/resources/resources.html
             GUIUtilities.addIcons(this, new String[][] {
                     { "/ptolemy/vergil/basic/img/run.gif",
-                            GUIUtilities.LARGE_ICON },
-                    { "/ptolemy/vergil/basic/img/run_o.gif",
+                        GUIUtilities.LARGE_ICON },
+                        { "/ptolemy/vergil/basic/img/run_o.gif",
                             GUIUtilities.ROLLOVER_ICON },
-                    { "/ptolemy/vergil/basic/img/run_ov.gif",
-                            GUIUtilities.ROLLOVER_SELECTED_ICON },
-                    { "/ptolemy/vergil/basic/img/run_on.gif",
-                            GUIUtilities.SELECTED_ICON } });
+                            { "/ptolemy/vergil/basic/img/run_ov.gif",
+                                GUIUtilities.ROLLOVER_SELECTED_ICON },
+                                { "/ptolemy/vergil/basic/img/run_on.gif",
+                                    GUIUtilities.SELECTED_ICON } });
 
             putValue("tooltip", description + " (Ctrl+R)");
             putValue(GUIUtilities.ACCELERATOR_KEY, KeyStroke.getKeyStroke(
                     KeyEvent.VK_R, Toolkit.getDefaultToolkit()
-                            .getMenuShortcutKeyMask()));
+                    .getMenuShortcutKeyMask()));
         }
 
         /** Run the model. */
+        @Override
         public void actionPerformed(ActionEvent e) {
             super.actionPerformed(e);
 
@@ -381,7 +387,7 @@ public abstract class RunnableGraphController extends WithIconGraphController
 
     /** An action to pause the model. */
     @SuppressWarnings("serial")
-        private class PauseModelAction extends ButtonFigureAction {
+    private class PauseModelAction extends ButtonFigureAction {
         /** Pause the model if it is running.
          *  @param description The description used for menu entries and
          *   tooltips.
@@ -396,21 +402,22 @@ public abstract class RunnableGraphController extends WithIconGraphController
             // jdk1.3/docs/guide/resources/resources.html
             GUIUtilities.addIcons(this, new String[][] {
                     { "/ptolemy/vergil/basic/img/pause.gif",
-                            GUIUtilities.LARGE_ICON },
-                    { "/ptolemy/vergil/basic/img/pause_o.gif",
+                        GUIUtilities.LARGE_ICON },
+                        { "/ptolemy/vergil/basic/img/pause_o.gif",
                             GUIUtilities.ROLLOVER_ICON },
-                    { "/ptolemy/vergil/basic/img/pause_ov.gif",
-                            GUIUtilities.ROLLOVER_SELECTED_ICON },
-                    { "/ptolemy/vergil/basic/img/pause_on.gif",
-                            GUIUtilities.SELECTED_ICON } });
+                            { "/ptolemy/vergil/basic/img/pause_ov.gif",
+                                GUIUtilities.ROLLOVER_SELECTED_ICON },
+                                { "/ptolemy/vergil/basic/img/pause_on.gif",
+                                    GUIUtilities.SELECTED_ICON } });
 
             putValue("tooltip", description + " (Ctrl+U)");
             putValue(GUIUtilities.ACCELERATOR_KEY, KeyStroke.getKeyStroke(
                     KeyEvent.VK_U, Toolkit.getDefaultToolkit()
-                            .getMenuShortcutKeyMask()));
+                    .getMenuShortcutKeyMask()));
         }
 
         /** Pause the model. */
+        @Override
         public void actionPerformed(ActionEvent e) {
             super.actionPerformed(e);
 
@@ -427,7 +434,7 @@ public abstract class RunnableGraphController extends WithIconGraphController
 
     /** An action to stop the model. */
     @SuppressWarnings("serial")
-        private class StopModelAction extends ButtonFigureAction {
+    private class StopModelAction extends ButtonFigureAction {
         /** Stop the model, if it is running.
          *  @param description The description used for menu entries and
          *   tooltips.
@@ -442,21 +449,22 @@ public abstract class RunnableGraphController extends WithIconGraphController
             // jdk1.3/docs/guide/resources/resources.html
             GUIUtilities.addIcons(this, new String[][] {
                     { "/ptolemy/vergil/basic/img/stop.gif",
-                            GUIUtilities.LARGE_ICON },
-                    { "/ptolemy/vergil/basic/img/stop_o.gif",
+                        GUIUtilities.LARGE_ICON },
+                        { "/ptolemy/vergil/basic/img/stop_o.gif",
                             GUIUtilities.ROLLOVER_ICON },
-                    { "/ptolemy/vergil/basic/img/stop_ov.gif",
-                            GUIUtilities.ROLLOVER_SELECTED_ICON },
-                    { "/ptolemy/vergil/basic/img/stop_on.gif",
-                            GUIUtilities.SELECTED_ICON } });
+                            { "/ptolemy/vergil/basic/img/stop_ov.gif",
+                                GUIUtilities.ROLLOVER_SELECTED_ICON },
+                                { "/ptolemy/vergil/basic/img/stop_on.gif",
+                                    GUIUtilities.SELECTED_ICON } });
 
             putValue("tooltip", description + " (Ctrl+H)");
             putValue(GUIUtilities.ACCELERATOR_KEY, KeyStroke.getKeyStroke(
                     KeyEvent.VK_H, Toolkit.getDefaultToolkit()
-                            .getMenuShortcutKeyMask()));
+                    .getMenuShortcutKeyMask()));
         }
 
         /** Stop the model. */
+        @Override
         public void actionPerformed(ActionEvent e) {
             super.actionPerformed(e);
 

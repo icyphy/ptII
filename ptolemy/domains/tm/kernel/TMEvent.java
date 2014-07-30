@@ -120,6 +120,7 @@ public class TMEvent implements Comparable {
      * @exception ClassCastException If the argument is not an instance
      *  of TMEvent.
      */
+    @Override
     public final int compareTo(Object event) {
         return compareTo((TMEvent) event);
     }
@@ -163,6 +164,7 @@ public class TMEvent implements Comparable {
      *  @return True if the two TMEvent objects have the same
      *  sequence number, name and workspace
      */
+    @Override
     public boolean equals(Object tmEvent) {
         // See http://www.technofundo.com/tech/java/equalhash.html
 
@@ -211,6 +213,7 @@ public class TMEvent implements Comparable {
      *  they will have the same hashCode.
      *  @return The hash code for this TimedEvent object.
      */
+    @Override
     public int hashCode() {
         // See http://www.technofundo.com/tech/java/equalhash.html
         int hashCode = 27;
@@ -314,6 +317,7 @@ public class TMEvent implements Comparable {
      *  whether it has been started, and the remaining processing time.
      *  @return The token as a string with necessary information.
      */
+    @Override
     public final String toString() {
         return "TMEvent(token = " + _token + ", priority = " + _priority
                 + ", destination = " + _actor + ", hasStarted = " + _hasStarted

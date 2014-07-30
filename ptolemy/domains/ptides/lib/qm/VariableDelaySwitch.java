@@ -108,22 +108,22 @@ public class VariableDelaySwitch extends BasicSwitch {
     ////                         public variables                  ////
 
     /** A Boolean to enable/disable packet-length dependent input delay.
-     *  The initial default value is true.   
+     *  The initial default value is true.
      */
     public Parameter allowPDV;
 
     /** A Boolean to enable/disable priority dependent input delay.
-     *  The initial default value is false.   
+     *  The initial default value is false.
      */
     public Parameter allowPriority;
 
     /** The channel bandwidth in bits/second.  The initial default
-     *  value is the integer 1000000, signifying 1Mbps.   
+     *  value is the integer 1000000, signifying 1Mbps.
      */
     public Parameter channelBandwidth;
 
     /** The size of one data token in bits. The initial default value
-     *  is an integer with the value 1000.   
+     *  is an integer with the value 1000.
      */
     public Parameter unitTokenSize;
 
@@ -132,7 +132,8 @@ public class VariableDelaySwitch extends BasicSwitch {
 
     /** Process the attributes.
      *  @exception IllegalActionException If value is inappropriate.
-     */   
+     */
+    @Override
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         if (attribute == channelBandwidth) {
@@ -171,6 +172,7 @@ public class VariableDelaySwitch extends BasicSwitch {
      *  @exception IllegalActionException If the refiring request fails.
      *
      */
+    @Override
     public void sendToken(Receiver source, Receiver receiver, Token token)
             throws IllegalActionException {
         Time currentTime = getDirector().getModelTime();
@@ -229,7 +231,7 @@ public class VariableDelaySwitch extends BasicSwitch {
         _inputTokens.get(inputPortID).add(
                 new TimedEvent(lastTimeStamp.add(_inputBufferDelay
                         + _priorityDelay + _packetSizeDelay), new Object[] {
-                        receiver, token }));
+                    receiver, token }));
         _tokenCount++;
         sendCommunicationEvent((Actor) source.getContainer().getContainer(), 0,
                 _tokenCount, EventType.RECEIVED);

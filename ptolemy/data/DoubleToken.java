@@ -94,6 +94,7 @@ public class DoubleToken extends ScalarToken {
      *  is set to 0.
      *  @return A Complex
      */
+    @Override
     public Complex complexValue() {
         return new Complex(_value, 0.0);
     }
@@ -141,7 +142,7 @@ public class DoubleToken extends ScalarToken {
             DoubleToken result = new DoubleToken(floatToken.doubleValue());
             if (floatToken._unitCategoryExponents != null
                     && !UnitUtilities
-                            .isUnitless(floatToken._unitCategoryExponents)) {
+                    .isUnitless(floatToken._unitCategoryExponents)) {
                 result._unitCategoryExponents = floatToken
                         ._copyOfCategoryExponents();
             }
@@ -155,7 +156,7 @@ public class DoubleToken extends ScalarToken {
             DoubleToken result = new DoubleToken(intToken.doubleValue());
             if (intToken._unitCategoryExponents != null
                     && !UnitUtilities
-                            .isUnitless(intToken._unitCategoryExponents)) {
+                    .isUnitless(intToken._unitCategoryExponents)) {
                 result._unitCategoryExponents = intToken
                         ._copyOfCategoryExponents();
             }
@@ -169,6 +170,7 @@ public class DoubleToken extends ScalarToken {
     /** Return the value in the token as a double.
      *  @return The value contained in this token as a double.
      */
+    @Override
     public double doubleValue() {
         return _value;
     }
@@ -180,6 +182,7 @@ public class DoubleToken extends ScalarToken {
      *  value. If either this object or the argument is a nil Token, return
      *  false.
      */
+    @Override
     public boolean equals(Object object) {
         if (object == null) {
             return false;
@@ -203,6 +206,7 @@ public class DoubleToken extends ScalarToken {
     /** Return the type of this token.
      *  @return BaseType.DOUBLE
      */
+    @Override
     public Type getType() {
         return BaseType.DOUBLE;
     }
@@ -211,6 +215,7 @@ public class DoubleToken extends ScalarToken {
      *  integer portion of the contained double.
      *  @return A hash code value for this token.
      */
+    @Override
     public int hashCode() {
         return (int) _value;
     }
@@ -219,6 +224,7 @@ public class DoubleToken extends ScalarToken {
      *  Nil or missing tokens occur when a data source is sparsely populated.
      *  @return True if the token is the {@link #NIL} token.
      */
+    @Override
     public boolean isNil() {
         // We use a method here so that we can easily change how
         // we determine if a token is nil without modify lots of classes.
@@ -228,6 +234,7 @@ public class DoubleToken extends ScalarToken {
     /** Returns a DoubleToken with value 1.0.
      *  @return A DoubleToken with value 1.0.
      */
+    @Override
     public Token one() {
         return ONE;
     }
@@ -247,6 +254,7 @@ public class DoubleToken extends ScalarToken {
      *   any) of this token.
      *  @see ptolemy.data.ScalarToken#unitsString
      */
+    @Override
     public String toString() {
         String unitString = "";
 
@@ -276,6 +284,7 @@ public class DoubleToken extends ScalarToken {
     /** Returns a DoubleToken with value 0.0.
      *  @return A DoubleToken with value 0.0.
      */
+    @Override
     public Token zero() {
         return ZERO;
     }
@@ -308,6 +317,7 @@ public class DoubleToken extends ScalarToken {
      *  token, since the units are the same.
      *  @return An DoubleToken.
      */
+    @Override
     protected ScalarToken _absolute() {
         DoubleToken result;
 
@@ -326,6 +336,7 @@ public class DoubleToken extends ScalarToken {
      *  @param rightArgument The token to add to this token.
      *  @return A new DoubleToken containing the result.
      */
+    @Override
     protected ScalarToken _add(ScalarToken rightArgument) {
         double sum = _value + ((DoubleToken) rightArgument).doubleValue();
         return new DoubleToken(sum);
@@ -337,6 +348,7 @@ public class DoubleToken extends ScalarToken {
      *  @return The bitwise AND.
      *  @exception IllegalActionException Always thrown by this base class.
      */
+    @Override
     protected ScalarToken _bitwiseAnd(ScalarToken rightArgument)
             throws IllegalActionException {
         throw new IllegalActionException(notSupportedMessage("bitwiseAnd",
@@ -347,6 +359,7 @@ public class DoubleToken extends ScalarToken {
      *  @return The bitwise NOT of this token.
      *  @exception IllegalActionException Always thrown by this base class.
      */
+    @Override
     protected ScalarToken _bitwiseNot() throws IllegalActionException {
         throw new IllegalActionException(notSupportedMessage("bitwiseNot",
                 this, this));
@@ -358,6 +371,7 @@ public class DoubleToken extends ScalarToken {
      *  @return The bitwise OR.
      *  @exception IllegalActionException Always thrown by this base class.
      */
+    @Override
     protected ScalarToken _bitwiseOr(ScalarToken rightArgument)
             throws IllegalActionException {
         throw new IllegalActionException(notSupportedMessage("bitwiseOr", this,
@@ -370,6 +384,7 @@ public class DoubleToken extends ScalarToken {
      *  @return The bitwise XOR.
      *  @exception IllegalActionException Always thrown by this base class.
      */
+    @Override
     protected ScalarToken _bitwiseXor(ScalarToken rightArgument)
             throws IllegalActionException {
         throw new IllegalActionException(notSupportedMessage("bitwiseXor",
@@ -382,6 +397,7 @@ public class DoubleToken extends ScalarToken {
      *  @param divisor The token to divide this token by.
      *  @return A new DoubleToken containing the result.
      */
+    @Override
     protected ScalarToken _divide(ScalarToken divisor) {
         double quotient = _value / ((DoubleToken) divisor).doubleValue();
         return new DoubleToken(quotient);
@@ -396,6 +412,7 @@ public class DoubleToken extends ScalarToken {
      *  @return A token containing tue if the value of this token is close
      *   to that of the argument.
      */
+    @Override
     protected BooleanToken _isCloseTo(ScalarToken rightArgument, double epsilon) {
         // NOTE: This code is duplicated in
         // ptolemy.math.DoubleMatrixMath.within(); if this
@@ -421,6 +438,7 @@ public class DoubleToken extends ScalarToken {
      *  supported by the derived class.
      *  @return A new Token containing the result.
      */
+    @Override
     protected BooleanToken _isLessThan(ScalarToken rightArgument)
             throws IllegalActionException {
         DoubleToken convertedArgument = (DoubleToken) rightArgument;
@@ -434,6 +452,7 @@ public class DoubleToken extends ScalarToken {
      *  @param rightArgument The token to modulo this token by.
      *  @return A new DoubleToken containing the result.
      */
+    @Override
     protected ScalarToken _modulo(ScalarToken rightArgument) {
         double remainder = _value % ((DoubleToken) rightArgument).doubleValue();
         return new DoubleToken(remainder);
@@ -445,6 +464,7 @@ public class DoubleToken extends ScalarToken {
      *  @param rightArgument The token to multiply this token by.
      *  @return A new DoubleToken containing the result.
      */
+    @Override
     protected ScalarToken _multiply(ScalarToken rightArgument) {
         double product = _value * ((DoubleToken) rightArgument).doubleValue();
         return new DoubleToken(product);
@@ -456,6 +476,7 @@ public class DoubleToken extends ScalarToken {
      *  @param rightArgument The token to subtract from this token.
      *  @return A new DoubleToken containing the result.
      */
+    @Override
     protected ScalarToken _subtract(ScalarToken rightArgument) {
         double difference = _value
                 - ((DoubleToken) rightArgument).doubleValue();

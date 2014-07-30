@@ -53,6 +53,7 @@ public final class ActorEnablingStatus {
     /** Return the string representation of this object.
      *  @return the string representation of this object.
      */
+    @Override
     public String toString() {
         return _status;
     }

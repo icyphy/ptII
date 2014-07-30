@@ -90,6 +90,7 @@ public class BubbleRenderer implements NodeRenderer {
     /**
      * Return the rendered visual representation of this node.
      */
+    @Override
     public Figure render(Object n) {
         StateBubble e = new StateBubble(0, 0, _size, _size);
         e.setFillPaint(_fillPaint);

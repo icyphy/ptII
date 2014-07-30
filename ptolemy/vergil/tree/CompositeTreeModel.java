@@ -68,6 +68,7 @@ public class CompositeTreeModel extends EntityTreeModel {
      *  @param index The index of the desired child.
      *  @return A node, or null if there is no such child.
      */
+    @Override
     public Object getChild(Object parent, int index) {
         if (index > getChildCount(parent)) {
             return null;
@@ -82,6 +83,7 @@ public class CompositeTreeModel extends EntityTreeModel {
      *  @param parent A parent node.
      *  @return The number of contained entities.
      */
+    @Override
     public int getChildCount(Object parent) {
         if (!(parent instanceof CompositeEntity)) {
             return 0;
@@ -98,6 +100,7 @@ public class CompositeTreeModel extends EntityTreeModel {
      *  @param child The child.
      *  @return The index of the specified child.
      */
+    @Override
     public int getIndexOfChild(Object parent, Object child) {
         if (!(parent instanceof CompositeEntity)) {
             return -1;
@@ -112,6 +115,7 @@ public class CompositeTreeModel extends EntityTreeModel {
      *  @param object The object in question.
      *  @return True if the node has no children.
      */
+    @Override
     public boolean isLeaf(Object object) {
         if (!(object instanceof CompositeEntity)) {
             return true;

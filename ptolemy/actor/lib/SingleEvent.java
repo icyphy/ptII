@@ -116,6 +116,7 @@ public class SingleEvent extends TypedAtomicActor {
      *  @exception CloneNotSupportedException If a derived class has
      *   has an attribute that cannot be cloned.
      */
+    @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         SingleEvent newObject = (SingleEvent) super.clone(workspace);
         newObject.output.setTypeSameAs(newObject.value);
@@ -126,6 +127,7 @@ public class SingleEvent extends TypedAtomicActor {
      *  then produce an output token with value given by the <i>value</i>
      *  parameter.
      */
+    @Override
     public void fire() throws IllegalActionException {
         double eventTimeValue = ((DoubleToken) time.getToken()).doubleValue();
         Director director = getDirector();
@@ -167,6 +169,7 @@ public class SingleEvent extends TypedAtomicActor {
      *  If the time is negative, then do nothing.
      *  @exception IllegalActionException If there is no director.
      */
+    @Override
     public void initialize() throws IllegalActionException {
         super.initialize();
 

@@ -62,6 +62,7 @@ import ptolemy.kernel.util.Workspace;
  @Pt.AcceptedRating Red (reviewmoderator)
  @deprecated Use ptolemy.actor.lib.hoc.Case instead.
  */
+@Deprecated
 public class Case extends ModalModel {
 
     /** Construct
@@ -100,6 +101,7 @@ public class Case extends ModalModel {
      *  @exception CloneNotSupportedException If any of the attributes
      *   cannot be cloned.
      */
+    @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         Case newObject = (Case) super.clone(workspace);
         newObject._default = (Refinement) newObject.getEntity("default");
@@ -117,6 +119,7 @@ public class Case extends ModalModel {
      *  @exception NameDuplicationException If the name collides with a name
      *  already in the entity.
      */
+    @Override
     protected void _addEntity(ComponentEntity entity)
             throws IllegalActionException, NameDuplicationException {
         super._addEntity(entity);
@@ -164,7 +167,7 @@ public class Case extends ModalModel {
     /** Initialize the model with a single state.
      */
     private void _init() throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         if (!_printedDeprecatedMessage) {
             _printedDeprecatedMessage = true;
             System.out.println("Warning: " + getFullName()

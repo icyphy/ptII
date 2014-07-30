@@ -119,6 +119,7 @@ public class SchedulePlotter extends Attribute implements ScheduleListener {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
+    @Override
     public void event(final String actorName, double time, int scheduleEvent) {
         try {
             if (scheduleEvent == -1) {
@@ -142,6 +143,7 @@ public class SchedulePlotter extends Attribute implements ScheduleListener {
                         // Note: addLegend is not intended to be
                         // called from outside the swing thread.
                         Runnable doAddPoint = new Runnable() {
+                            @Override
                             public void run() {
                                 plot.addLegend(finalid, actorName);
                             }
@@ -200,6 +202,7 @@ public class SchedulePlotter extends Attribute implements ScheduleListener {
          *  @param object The object to configure.
          *  @param parent The parent window, or null if there is none.
          */
+        @Override
         public void createEditor(NamedObj object, Frame parent) {
             try {
                 Configuration configuration = ((TableauFrame) parent)

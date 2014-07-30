@@ -93,6 +93,7 @@ public class TDLController extends TDLActor {
      * @exception NameDuplicationException
      *                If the entity already has a port with the specified name.
      */
+    @Override
     public Port newPort(String name) throws NameDuplicationException {
         try {
             _workspace.getWriteAccess();

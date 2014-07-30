@@ -93,13 +93,13 @@ public class FMIEventInfo extends Structure {
     /** Access the structure by reference.
      */
     public static class ByReference extends FMIEventInfo implements
-            Structure.ByReference {
+    Structure.ByReference {
     };
 
     /** Access the structure by value.
      */
     public static class ByValue extends FMIEventInfo implements
-            Structure.ByValue {
+    Structure.ByValue {
     };
 
     // The fields below are in the order in which they are expected to be in the
@@ -127,6 +127,7 @@ public class FMIEventInfo extends Structure {
      *  <p>This is new in jna-3.5.0.
      *  @return a list of strings that name the fields in order.
      */
+    @Override
     protected List getFieldOrder() {
         return Arrays.asList(new String[] { "iterationConverged",
                 "stateValueReferencesChanged", "stateValuesChanged",
@@ -137,6 +138,7 @@ public class FMIEventInfo extends Structure {
      * matches the order of the C structure.
      * @deprecated As of jna-3.5.0, use getFieldOrder() instead.
      */
+    @Deprecated
     protected void initFieldOrder() {
         // Note that the name of this method does not have a leading
         // underscore because the name of the protected method in the

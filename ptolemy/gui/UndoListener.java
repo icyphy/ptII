@@ -24,7 +24,7 @@
  PT_COPYRIGHT_VERSION_2
  COPYRIGHTENDKEY
 
-*/
+ */
 package ptolemy.gui;
 
 import java.awt.Toolkit;
@@ -98,6 +98,7 @@ public class UndoListener implements UndoableEditListener {
     /** Remember the edit and update the action state.
      *  @param event The event that occurred.
      */
+    @Override
     public void undoableEditHappened(UndoableEditEvent event) {
         _undo.addEdit(event.getEdit());
         _undoAction._updateUndoState();
@@ -120,12 +121,13 @@ public class UndoListener implements UndoableEditListener {
      * Perform the undo action.
      */
     @SuppressWarnings("serial")
-        protected class UndoAction extends AbstractAction {
+    protected class UndoAction extends AbstractAction {
         public UndoAction() {
             super("Undo");
             setEnabled(false);
         }
 
+        @Override
         public void actionPerformed(ActionEvent e) {
             try {
                 _undo.undo();
@@ -152,12 +154,13 @@ public class UndoListener implements UndoableEditListener {
      * Perform the redo action.
      */
     @SuppressWarnings("serial")
-        protected class RedoAction extends AbstractAction {
+    protected class RedoAction extends AbstractAction {
         public RedoAction() {
             super("Redo");
             setEnabled(false);
         }
 
+        @Override
         public void actionPerformed(ActionEvent e) {
             try {
                 _undo.redo();

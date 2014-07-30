@@ -422,7 +422,7 @@ public class PxgraphParser {
      *  @exception IOException If an error occurs reading an input file.
      */
     public int parseArgs(String[] args) throws CmdLineArgException,
-            FileNotFoundException, IOException {
+    FileNotFoundException, IOException {
         return parseArgs(args, null);
     }
 
@@ -439,7 +439,7 @@ public class PxgraphParser {
      *  @exception IOException If an error occurs reading an input file.
      */
     public int parseArgs(String[] args, URL base) throws CmdLineArgException,
-            FileNotFoundException, IOException {
+    FileNotFoundException, IOException {
         int i = 0;
         int j;
         int argumentsRead = 0;
@@ -666,7 +666,8 @@ public class PxgraphParser {
             } else {
                 if (arg.startsWith("=")) {
                     // Process =WxH+X+Y
-                    width = Integer.parseInt(arg.substring(1, arg.indexOf('x')));
+                    width = Integer
+                            .parseInt(arg.substring(1, arg.indexOf('x')));
 
                     int plusIndex = arg.indexOf('+');
                     int minusIndex = arg.indexOf('-');
@@ -681,27 +682,24 @@ public class PxgraphParser {
                                 index = plusIndex;
                             }
 
-                            height = Integer.parseInt(
-                                    arg.substring(arg.indexOf('x') + 1, index));
+                            height = Integer.parseInt(arg.substring(
+                                    arg.indexOf('x') + 1, index));
                         } else {
                             if (plusIndex != -1) {
                                 // =WxH+X+Y
-                                height = Integer.parseInt(
-                                        arg.substring(arg.indexOf('x') + 1,
-                                                plusIndex));
+                                height = Integer.parseInt(arg.substring(
+                                        arg.indexOf('x') + 1, plusIndex));
                             } else {
                                 // =WxH-X-Y
-                                height = Integer.parseInt(
-                                        arg.substring(arg.indexOf('x') + 1,
-                                                minusIndex));
+                                height = Integer.parseInt(arg.substring(
+                                        arg.indexOf('x') + 1, minusIndex));
                             }
                         }
                     } else {
                         if (arg.length() > arg.indexOf('x')) {
                             // =WxH
-                            height = Integer.parseInt(
-                                    arg.substring(arg.indexOf('x') + 1,
-                                            arg.length()));
+                            height = Integer.parseInt(arg.substring(
+                                    arg.indexOf('x') + 1, arg.length()));
                         }
                     }
 
@@ -808,7 +806,7 @@ public class PxgraphParser {
                             argvector.addElement("-" + stoken.sval);
                         } else {
                             argvector
-                                    .addElement("-" + partialarg + stoken.sval);
+                            .addElement("-" + partialarg + stoken.sval);
                         }
                     } else {
                         if (partialarg == null) {

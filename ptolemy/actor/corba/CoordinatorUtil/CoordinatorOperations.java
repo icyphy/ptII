@@ -15,7 +15,7 @@ public interface CoordinatorOperations {
      */
     void register(String clientName,
             ptolemy.actor.corba.CoordinatorUtil.Client clientRef)
-            throws ptolemy.actor.corba.CoordinatorUtil.CorbaIllegalActionException;
+                    throws ptolemy.actor.corba.CoordinatorUtil.CorbaIllegalActionException;
 
     /* this method is intended to be called remotely by the client,
      * so that data can be delived back over the network.

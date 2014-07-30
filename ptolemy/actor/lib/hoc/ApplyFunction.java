@@ -75,12 +75,12 @@ public class ApplyFunction extends TypedAtomicActor {
      *   actor with this name.
      */
     public ApplyFunction(Workspace workspace) throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         super(workspace);
         output = new TypedIOPort(this, "output", false, true);
         function = new PortParameter(this, "function");
         new SingletonParameter(function, "_showName")
-                .setToken(BooleanToken.TRUE);
+        .setToken(BooleanToken.TRUE);
     }
 
     /** Construct a ApplyFunction with a name and a container.
@@ -129,6 +129,7 @@ public class ApplyFunction extends TypedAtomicActor {
      *  @exception CloneNotSupportedException If a derived class contains
      *   an attribute that cannot be cloned.
      */
+    @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         ApplyFunction newObject = (ApplyFunction) super.clone(workspace);
         newObject.output.setTypeAtLeast(new ReturnTypeFunction());
@@ -142,6 +143,7 @@ public class ApplyFunction extends TypedAtomicActor {
      *   the director's fire() method throws it, or if the actor is not
      *   opaque.
      */
+    @Override
     public void fire() throws IllegalActionException {
         super.fire();
 
@@ -168,6 +170,7 @@ public class ApplyFunction extends TypedAtomicActor {
     /** Return true if the actor either of its input port has token.
      *  @exception IllegalActionException Not thrown in this base class.
      */
+    @Override
     public boolean prefire() throws IllegalActionException {
         super.prefire();
 
@@ -197,6 +200,7 @@ public class ApplyFunction extends TypedAtomicActor {
      */
     private class ReturnTypeFunction extends MonotonicFunction {
 
+        @Override
         public Object getValue() throws IllegalActionException {
             Type functionType = function.getType();
             if (functionType.equals(BaseType.UNKNOWN)) {
@@ -209,6 +213,7 @@ public class ApplyFunction extends TypedAtomicActor {
                     "function is not a function. It is a " + functionType);
         }
 
+        @Override
         public InequalityTerm[] getVariables() {
             InequalityTerm[] result = new InequalityTerm[1];
             result[0] = function.getTypeTerm();

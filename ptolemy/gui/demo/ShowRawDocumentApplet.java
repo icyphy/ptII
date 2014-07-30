@@ -71,6 +71,7 @@ public class ShowRawDocumentApplet extends BasicJApplet {
     /** Read applet parameters, open the URL and display the contents
      *  in a TextArea.
      */
+    @Override
     public void init() {
         super.init();
 
@@ -160,6 +161,7 @@ public class ShowRawDocumentApplet extends BasicJApplet {
     /** Describe the applet parameters.
      *  @return An array describing the applet parameters.
      */
+    @Override
     public String[][] getParameterInfo() {
         String[][] newinfo = { { "columns", "integer", "40" },
                 { "rows", "integer", "10" },

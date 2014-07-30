@@ -24,7 +24,7 @@
  PT_COPYRIGHT_VERSION_2
  COPYRIGHTENDKEY
 
-*/
+ */
 package ptolemy.actor.gt.controller;
 
 import java.util.ArrayList;
@@ -139,6 +139,7 @@ public class TestModel extends GTEvent {
      *  @exception CloneNotSupportedException If a derived class contains
      *   an attribute that cannot be cloned.
      */
+    @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         TestModel newObject = (TestModel) super.clone(workspace);
         newObject._init();
@@ -157,6 +158,7 @@ public class TestModel extends GTEvent {
      *  @exception IllegalActionException If the tableau cannot be used, or if
      *   thrown by the superclass.
      */
+    @Override
     public RefiringData fire(Token arguments) throws IllegalActionException {
         _firedOnce = true;
         RefiringData data = super.fire(arguments);
@@ -255,6 +257,7 @@ public class TestModel extends GTEvent {
      *
      *  @exception IllegalActionException If thrown by the superclass.
      */
+    @Override
     public void initialize() throws IllegalActionException {
         super.initialize();
         super.initialize();
@@ -273,6 +276,7 @@ public class TestModel extends GTEvent {
      *  is not greater than or equal to the number of elements in the
      *  <i>correctValues</i> array.
      */
+    @Override
     public void wrapup() throws IllegalActionException {
         super.wrapup();
 
@@ -326,38 +330,38 @@ public class TestModel extends GTEvent {
             Token[] newTokens = new Token[newValues.length];
 
             // Coverity points out that bufferSize is 1, so the if will never be false.
-//             if (width == 1) {
-                for (int i = 0; i < newValues.length; i++) {
-                    if (newValues[i] instanceof Token[]) {
-                        // Handle width of 1, ArrayToken
-                        newTokens[i] = new ArrayToken((Token[]) newValues[i]);
-                    } else {
-                        newTokens[i] = (Token) newValues[i];
-                    }
+            //             if (width == 1) {
+            for (int i = 0; i < newValues.length; i++) {
+                if (newValues[i] instanceof Token[]) {
+                    // Handle width of 1, ArrayToken
+                    newTokens[i] = new ArrayToken((Token[]) newValues[i]);
+                } else {
+                    newTokens[i] = (Token) newValues[i];
                 }
-//             } else {
-//                 for (int i = 0; i < newValues.length; i++) {
-//                     ArrayList entry = (ArrayList) newValues[i];
+            }
+            //             } else {
+            //                 for (int i = 0; i < newValues.length; i++) {
+            //                     ArrayList entry = (ArrayList) newValues[i];
 
-//                     // Entry may be an empty array, in which case,
-//                     // we cannot do the update, so we return.
-//                     if (entry.size() < 1) {
-//                         System.err.println("Warning: '" + getFullName()
-//                                 + "': Unable to train. "
-//                                 + "Zero tokens received in iteration " + i);
-//                         return;
-//                     }
+            //                     // Entry may be an empty array, in which case,
+            //                     // we cannot do the update, so we return.
+            //                     if (entry.size() < 1) {
+            //                         System.err.println("Warning: '" + getFullName()
+            //                                 + "': Unable to train. "
+            //                                 + "Zero tokens received in iteration " + i);
+            //                         return;
+            //                     }
 
-//                     Object[] entries = entry.toArray();
-//                     Token[] newEntry = new Token[entries.length];
+            //                     Object[] entries = entry.toArray();
+            //                     Token[] newEntry = new Token[entries.length];
 
-//                     for (int j = 0; j < entries.length; j++) {
-//                         newEntry[j] = (Token) entries[j];
-//                     }
+            //                     for (int j = 0; j < entries.length; j++) {
+            //                         newEntry[j] = (Token) entries[j];
+            //                     }
 
-//                     newTokens[i] = new ArrayToken(newEntry);
-//                 }
-//             }
+            //                     newTokens[i] = new ArrayToken(newEntry);
+            //                 }
+            //             }
 
             correctValues.setToken(new ArrayToken(newTokens));
             correctValues.setPersistent(true);

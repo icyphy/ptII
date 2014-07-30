@@ -46,7 +46,7 @@ See {@link ptolemy.domains.sdf.optimize.OptimizingSDFDirector} for more informat
 @since Ptolemy II 10.0
 @Pt.ProposedRating Red (mgeilen)
 @Pt.AcceptedRating Red ()
-*/
+ */
 public class DummyFrame implements Cloneable {
 
     /**
@@ -58,6 +58,7 @@ public class DummyFrame implements Cloneable {
      * Provides a string representation of the object.
      * @return string representation of the object
      */
+    @Override
     public String toString() {
         return "Frame(" + Integer.toString(value) + ")";
     }
@@ -66,6 +67,7 @@ public class DummyFrame implements Cloneable {
      * Clone the DummyFrame.
      * @return the cloned frame
      */
+    @Override
     public DummyFrame clone() {
         DummyFrame f;
         // TODO: below seems a silly solution, but I don't want expose callers

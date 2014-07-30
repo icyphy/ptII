@@ -78,7 +78,7 @@ public class Excel extends TypedAtomicActor {
      *   actor with this name.
      */
     public Excel(Workspace workspace) throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         super(workspace);
     }
 
@@ -106,6 +106,7 @@ public class Excel extends TypedAtomicActor {
      *  @exception IllegalActionException If there is no director, or the
      *  input can not be read, or the output can not be sent.
      */
+    @Override
     public void fire() throws IllegalActionException {
         super.fire();
 
@@ -243,6 +244,7 @@ public class Excel extends TypedAtomicActor {
      *  that execution can continue into the next iteration.
      *  @exception IllegalActionException Not thrown in this base class.
      */
+    @Override
     public boolean postfire() throws IllegalActionException {
         if (!super.postfire()) {
             return false;
@@ -266,7 +268,7 @@ public class Excel extends TypedAtomicActor {
      *   actor with this name.
      */
     protected void _initialize() throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         //super._initialize();
 
         // Only has an input port
@@ -290,6 +292,7 @@ public class Excel extends TypedAtomicActor {
      *
      *  @exception IllegalActionException If a derived class throws it.
      */
+    @Override
     public void initialize() throws IllegalActionException {
         super.initialize();
 

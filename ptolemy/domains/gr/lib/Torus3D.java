@@ -109,6 +109,7 @@ public class Torus3D extends GRShadedShape {
      *  @exception IllegalActionException If the value of some parameters can't
      *  be obtained.
      */
+    @Override
     protected void _createModel() throws IllegalActionException {
         super._createModel();
 
@@ -204,6 +205,7 @@ public class Torus3D extends GRShadedShape {
      *
      *  @return the torus node
      */
+    @Override
     protected Node _getNodeObject() {
         return _containedNode;
     }

@@ -86,6 +86,7 @@ public class ParkingClient extends TypedAtomicActor {
      * park.
      * @exception IllegalActionException If the superclass throws it.
      */
+    @Override
     public void fire() throws IllegalActionException {
         super.fire();
 
@@ -110,6 +111,7 @@ public class ParkingClient extends TypedAtomicActor {
     /** Initialize the private varialbles.
      *  @exception IllegalActionException If thrown by the base class.
      */
+    @Override
     public void initialize() throws IllegalActionException {
         super.initialize();
         _random = new Random();

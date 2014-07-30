@@ -47,10 +47,12 @@ import javax.swing.JScrollPane;
 public class JListComponentBuilder implements ComponentBuilder {
     List<BeanProperty> properties = new ArrayList<BeanProperty>();
 
+    @Override
     public List<BeanProperty> getProperties() {
         return properties;
     }
 
+    @Override
     public String getDeclaration(String name, Map<String, Object> properties) {
         return "javax.swing.JList "
                 + name
@@ -59,6 +61,7 @@ public class JListComponentBuilder implements ComponentBuilder {
                 + "Control);\n";
     }
 
+    @Override
     public Component getInstance(Map<String, Object> properties)
             throws Exception {
         JList tree = new JList();
@@ -66,14 +69,17 @@ public class JListComponentBuilder implements ComponentBuilder {
         return scrollPane;
     }
 
+    @Override
     public boolean isComponentALayoutContainer() {
         return false;
     }
 
+    @Override
     public String toString() {
         return "javax.swing.JList";
     }
 
+    @Override
     public ComponentDef getComponentDef(String name,
             Map<String, Object> beanProperties) {
         String imp = "import javax.swing.JList;\n"

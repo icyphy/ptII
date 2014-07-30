@@ -162,6 +162,7 @@ public class Recorder extends Sink {
      *  @return An enumeration of Token objects.
      *  @deprecated This method is deprecated. Use getHistory().
      */
+    @Deprecated
     public Enumeration getRecord(int channel) {
         return Collections.enumeration(getHistory(channel));
     }
@@ -177,6 +178,7 @@ public class Recorder extends Sink {
      *  @return An enumeration of Double objects.
      *  @deprecated This method is deprecated. Use getTimeHistory().
      */
+    @Deprecated
     public Enumeration getTimeRecord() {
         return Collections.enumeration(_timeRecord);
     }
@@ -184,6 +186,7 @@ public class Recorder extends Sink {
     /** Initialize the lists used to record input data.
      *  @exception IllegalActionException If the parent class throws it.
      */
+    @Override
     public void initialize() throws IllegalActionException {
         super.initialize();
         _records = new LinkedList();
@@ -195,6 +198,7 @@ public class Recorder extends Sink {
     /** Read at most one token from each input channel and record its value.
      *  @exception IllegalActionException If there is no director.
      */
+    @Override
     public boolean postfire() throws IllegalActionException {
         if (!super.postfire()) {
             return false;

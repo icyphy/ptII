@@ -79,6 +79,7 @@ public class ParseTreeAnnotationEvaluator extends AbstractParseTreeVisitor {
      * @param node The assignment node to be visited.
      * @exception IllegalActionException If the assignment is not possible.
      */
+    @Override
     public void visitAssignmentNode(ASTPtAssignmentNode node)
             throws IllegalActionException {
         ((ASTPtRootNode) node.jjtGetChild(0)).visit(this);
@@ -113,6 +114,7 @@ public class ParseTreeAnnotationEvaluator extends AbstractParseTreeVisitor {
      *  @exception IllegalActionException If the node label cannot be resolved to a
      *  component in the model
      */
+    @Override
     public void visitLeafNode(ASTPtLeafNode node) throws IllegalActionException {
         _evaluatedObject = _resolveLabel(_getNodeLabel(node),
                 _adapter.getComponent());
@@ -130,6 +132,7 @@ public class ParseTreeAnnotationEvaluator extends AbstractParseTreeVisitor {
      * @param node The method call node to be visited
      * @exception IllegalActionException If the method label cannot be resolved.
      */
+    @Override
     public void visitMethodCallNode(ASTPtMethodCallNode node)
             throws IllegalActionException {
         String name = node.getMethodName();
@@ -188,6 +191,7 @@ public class ParseTreeAnnotationEvaluator extends AbstractParseTreeVisitor {
      * @param name The name of the node type.
      * @return An exception that describes an unsupported node type.
      */
+    @Override
     protected IllegalActionException _unsupportedVisitException(String name) {
         return new IllegalActionException("Nodes of type " + name
                 + " cannot be visited by a " + getClass().getName() + ".");

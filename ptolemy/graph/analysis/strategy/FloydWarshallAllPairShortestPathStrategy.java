@@ -60,7 +60,7 @@ import ptolemy.graph.mapping.ToDoubleMapping;
  @version $Id$
  */
 public class FloydWarshallAllPairShortestPathStrategy extends
-        FloydWarshallStrategy implements AllPairShortestPathAnalyzer {
+FloydWarshallStrategy implements AllPairShortestPathAnalyzer {
     /** Construct an AllPairShortestPathAnalyzer which works using the
      *  Floyd-Warshall strategy.
      *
@@ -84,6 +84,7 @@ public class FloydWarshallAllPairShortestPathStrategy extends
      *  @return Return the nodes on the shortest path from the
      *  node startNode to the node endNode in the form of an ordered list.
      */
+    @Override
     public List shortestPath(Node startNode, Node endNode) {
         ArrayList shortestPath = null;
         int startNodeLabel = graph().nodeLabel(startNode);
@@ -116,12 +117,13 @@ public class FloydWarshallAllPairShortestPathStrategy extends
      *  @return Return the length of the shortest path from the node
      *  startNode to the node endNode.
      */
+    @Override
     public double shortestPathLength(Node startNode, Node endNode) {
         double result = 0.0;
         //int n = graph().nodeCount();
         double[][] shortestPathResults = (double[][]) _result();
         result = shortestPathResults[graph().nodeLabel(startNode)][graph()
-                .nodeLabel(endNode)];
+                                                                   .nodeLabel(endNode)];
         return result;
     }
 
@@ -139,6 +141,7 @@ public class FloydWarshallAllPairShortestPathStrategy extends
      *  @see ptolemy.graph.Graph#nodeLabel
      *  @return The all pair shortest path matrix as a double[][].
      */
+    @Override
     public double[][] shortestPathMatrix() {
         return (double[][]) _result();
     }
@@ -147,6 +150,7 @@ public class FloydWarshallAllPairShortestPathStrategy extends
      *
      *  @return Return a description of the analyzer..
      */
+    @Override
     public String toString() {
         return "All pair shortest path analyzer"
                 + " based on the Floyd-Warshall algorithm.";
@@ -159,6 +163,7 @@ public class FloydWarshallAllPairShortestPathStrategy extends
      *
      *  @return True if the graph is a directed graph.
      */
+    @Override
     public boolean valid() {
         return graph() instanceof DirectedGraph;
     }
@@ -171,6 +176,7 @@ public class FloydWarshallAllPairShortestPathStrategy extends
      *
      *  @return The all pair shortest path matrix as a double[][] Object.
      */
+    @Override
     protected Object _compute() {
         int n = graph().nodeCount();
 
@@ -219,6 +225,7 @@ public class FloydWarshallAllPairShortestPathStrategy extends
      *  @param j The counting parameter of the third and last loop of the
      *  Floyd-Warshall computation.
      */
+    @Override
     protected final void _floydWarshallComputation(int k, int i, int j) {
         double b = Double.MAX_VALUE;
         double a = _allPairShortestPath[k][i][j];

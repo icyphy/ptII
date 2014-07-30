@@ -56,7 +56,7 @@ import ptolemy.kernel.util.Workspace;
  @Pt.AcceptedRating Yellow (cxh)
  */
 public abstract class AbstractPlaceableActor extends TypedAtomicActor implements
-        Placeable {
+Placeable {
 
     /** Construct an actor with the specified container and name.
      *  @param container The container.
@@ -92,6 +92,7 @@ public abstract class AbstractPlaceableActor extends TypedAtomicActor implements
      *  @see java.lang.Object#clone()
      *  @return The cloned variable.
      */
+    @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         AbstractPlaceableActor newObject = (AbstractPlaceableActor) super
                 .clone(workspace);
@@ -119,6 +120,7 @@ public abstract class AbstractPlaceableActor extends TypedAtomicActor implements
      *  @param container The container in which to place the object, or
      *   null to specify that there is no current container.
      */
+    @Override
     public abstract void place(Container container);
 
     /** Specify the associated frame and set its properties (size, etc.)
@@ -168,6 +170,7 @@ public abstract class AbstractPlaceableActor extends TypedAtomicActor implements
      *  @param depth The depth in the hierarchy, to determine indenting.
      *  @exception IOException If an I/O error occurs.
      */
+    @Override
     protected void _exportMoMLContents(Writer output, int depth)
             throws IOException {
         // Make sure that the current position of the frame, if any,
@@ -208,6 +211,7 @@ public abstract class AbstractPlaceableActor extends TypedAtomicActor implements
 
     /** Listener for windowClosing action. */
     class WindowClosingAdapter extends WindowAdapter {
+        @Override
         public void windowClosing(WindowEvent e) {
             cleanUp();
         }

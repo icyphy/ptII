@@ -86,6 +86,7 @@ public class MicrostepDelay extends Transformer {
      *  @exception CloneNotSupportedException If a derived class has
      *   has an attribute that cannot be cloned.
      */
+    @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         MicrostepDelay newObject = (MicrostepDelay) super.clone(workspace);
         newObject.output.setTypeSameAs(newObject.input);
@@ -97,6 +98,7 @@ public class MicrostepDelay extends Transformer {
      *  cannot be computed.
      *  @see #getCausalityInterface()
      */
+    @Override
     public void declareDelayDependency() throws IllegalActionException {
         _declareDelayDependency(input, output, 0.0);
     }
@@ -106,6 +108,7 @@ public class MicrostepDelay extends Transformer {
      *  @exception IllegalActionException If there is no director, or the
      *  input can not be read, or the output can not be sent.
      */
+    @Override
     public void fire() throws IllegalActionException {
         super.fire();
         if (_pendingOutput != null) {
@@ -127,6 +130,7 @@ public class MicrostepDelay extends Transformer {
      *  @exception IllegalActionException If the director does
      *   not implement SuperdenseTimeDirector.
      */
+    @Override
     public void initialize() throws IllegalActionException {
         super.initialize();
         _pendingOutput = null;
@@ -143,6 +147,7 @@ public class MicrostepDelay extends Transformer {
      *  the inputs are unknown.
      *  @return False.
      */
+    @Override
     public boolean isStrict() {
         return false;
     }
@@ -152,6 +157,7 @@ public class MicrostepDelay extends Transformer {
      *  be performed, or if there is input and the current microstep is
      *  zero, or if the superclass throws it.
      */
+    @Override
     public boolean postfire() throws IllegalActionException {
         // No point in using the isTime() method here, since we need
         // all the intermediate values.
@@ -163,7 +169,7 @@ public class MicrostepDelay extends Transformer {
                 throw new IllegalActionException(this,
                         "Input is not purely discrete.");
             }
-            */
+             */
             _pendingOutput = input.get(0);
             director.fireAtCurrentTime(this);
             if (_debugging) {

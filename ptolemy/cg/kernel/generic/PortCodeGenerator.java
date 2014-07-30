@@ -62,7 +62,7 @@ public interface PortCodeGenerator {
      */
     public String generatePutCode(String channel, String offset,
             String dataToken) throws IllegalActionException;
-    
+
     /** Generate the code to put a token to a port's local inside receivers.
      *  @param channel The channel for which the send code is generated.
      *  @param offset The offset in the array representation of the port.
@@ -81,7 +81,7 @@ public interface PortCodeGenerator {
      *  the port the channel resides is a multiport, if it is, then only a static
      *  variable is needed instead of an array of length 1.
      *  @exception IllegalActionException If code can't be generated.
-    */
+     */
     public String generateHasTokenCode(String channel, String offset)
             throws IllegalActionException;
 

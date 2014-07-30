@@ -148,6 +148,7 @@ public class Noise extends Gaussian {
      *  step otherwise.
      *  @exception IllegalActionException If the superclass throws it.
      */
+    @Override
     public void fire() throws IllegalActionException {
         if (_needNewGenerator) {
             _createGenerator();
@@ -201,6 +202,7 @@ public class Noise extends Gaussian {
      *  sure that two identical sequences will not be returned.
      *  @exception IllegalActionException If the parent class throws it.
      */
+    @Override
     public void initialize() throws IllegalActionException {
         super.initialize();
         // Generate the first random number.
@@ -221,6 +223,7 @@ public class Noise extends Gaussian {
      *  @exception IllegalActionException If the base class throws it.
      *  @return True if it is OK to continue.
      */
+    @Override
     public boolean postfire() throws IllegalActionException {
         // The next line will set _needNew = true.
         boolean result = super.postfire();
@@ -256,6 +259,7 @@ public class Noise extends Gaussian {
      *  iteration.
      *  @exception IllegalActionException If parameter values are incorrect.
      */
+    @Override
     protected void _generateRandomNumber() throws IllegalActionException {
         Director director = getDirector();
         if (!(director instanceof ContinuousDirector)) {

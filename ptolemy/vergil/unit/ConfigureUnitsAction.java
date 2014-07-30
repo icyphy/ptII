@@ -67,6 +67,7 @@ public class ConfigureUnitsAction extends FigureAction {
     /** Open a dialog to rename the target.
      *  @param event The action event.
      */
+    @Override
     public void actionPerformed(ActionEvent event) {
         try {
             // Determine which entity was selected for the look inside action.
@@ -90,8 +91,8 @@ public class ConfigureUnitsAction extends FigureAction {
             // was throwing an exception here that was not being displayed
             // in the UI.
             MessageHandler
-                    .error("Failed to open a dialog to configure the ports the target.",
-                            throwable);
+            .error("Failed to open a dialog to configure the ports the target.",
+                    throwable);
         }
     }
 

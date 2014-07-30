@@ -68,6 +68,7 @@ public class StreamListener implements DebugListener {
     /** Print a string representation of the event to the stream
      *  associated with this listener.
      */
+    @Override
     public void event(DebugEvent event) {
         _output.println(event.toString());
     }
@@ -76,6 +77,7 @@ public class StreamListener implements DebugListener {
      *  the listener.  Note that a newline is appended to the
      *  end of the message.
      */
+    @Override
     public void message(String message) {
         _output.println(message);
     }

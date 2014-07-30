@@ -186,7 +186,7 @@ import ptolemy.kernel.util.Workspace;
  * @see FSMActor
  */
 public class FSMDirector extends Director implements ExplicitChangeContext,
-        QuasiTransparentDirector, SuperdenseTimeDirector {
+QuasiTransparentDirector, SuperdenseTimeDirector {
     /**
      * Construct a director in the default workspace with an empty
      * string as its name. The director is added to the list of
@@ -196,7 +196,7 @@ public class FSMDirector extends Director implements ExplicitChangeContext,
      *  @exception IllegalActionException If construction of Time objects fails.
      */
     public FSMDirector() throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         super();
         _createAttribute();
     }
@@ -210,7 +210,7 @@ public class FSMDirector extends Director implements ExplicitChangeContext,
      *  @exception IllegalActionException If construction of Time objects fails.
      */
     public FSMDirector(Workspace workspace) throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         super(workspace);
         _createAttribute();
     }
@@ -258,6 +258,7 @@ public class FSMDirector extends Director implements ExplicitChangeContext,
      * @exception IllegalActionException If thrown by the superclass attributeChanged()
      * method.
      */
+    @Override
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         super.attributeChanged(attribute);
@@ -277,6 +278,7 @@ public class FSMDirector extends Director implements ExplicitChangeContext,
      * @exception CloneNotSupportedException If a derived class contains an attribute that
      * cannot be cloned.
      */
+    @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         FSMDirector newObject = (FSMDirector) super.clone(workspace);
         // Protected variables.
@@ -302,6 +304,7 @@ public class FSMDirector extends Director implements ExplicitChangeContext,
      * @see Actor#getCausalityInterface()
      * @return A default dependency between input ports and output ports.
      */
+    @Override
     public Dependency defaultDependency() {
         Director executiveDirector = ((Actor) getContainer())
                 .getExecutiveDirector();
@@ -325,6 +328,7 @@ public class FSMDirector extends Director implements ExplicitChangeContext,
      *                permitted, or there is no controller, or it is
      *                thrown by any choice action.
      */
+    @Override
     public void fire() throws IllegalActionException {
         FSMActor controller = getController();
         State currentState = controller.currentState();
@@ -359,6 +363,7 @@ public class FSMDirector extends Director implements ExplicitChangeContext,
      * @return The time at which the actor passed as an argument will be fired.
      * @exception IllegalActionException If thrown by the executive director.
      */
+    @Override
     public Time fireAt(Actor actor, Time time, int microstep)
             throws IllegalActionException {
         Actor container = (Actor) getContainer();
@@ -442,6 +447,7 @@ public class FSMDirector extends Director implements ExplicitChangeContext,
      *
      * @return The explicit change context.
      */
+    @Override
     public Entity getContext() {
         return (Entity) getContainer();
     }
@@ -451,6 +457,7 @@ public class FSMDirector extends Director implements ExplicitChangeContext,
      * a guard that evaluates to true, then return the current
      * time. Otherwise, delegate to the enclosing director.
      */
+    @Override
     public Time getModelNextIterationTime() {
         try {
             FSMActor controller = getController();
@@ -488,6 +495,7 @@ public class FSMDirector extends Director implements ExplicitChangeContext,
      *                found, or the variables to be assigned by the
      *                actions can not be found.
      */
+    @Override
     public List getModifiedVariables() throws IllegalActionException {
         List list = new LinkedList();
 
@@ -560,6 +568,7 @@ public class FSMDirector extends Director implements ExplicitChangeContext,
      * @see #setIndex(int)
      * @see ptolemy.actor.SuperdenseTimeDirector
      */
+    @Override
     public int getIndex() {
         Director executiveDirector = ((Actor) getContainer())
                 .getExecutiveDirector();
@@ -597,6 +606,7 @@ public class FSMDirector extends Director implements ExplicitChangeContext,
      * @exception IllegalActionException If multiple enabled transition is detected,
      * or mode controller can not be found, or can not read outputs from refinements.
      */
+    @Override
     public boolean handleModelError(NamedObj context,
             IllegalActionException exception) throws IllegalActionException {
         // NOTE: Besides throwing exception directly, we can handle
@@ -648,6 +658,7 @@ public class FSMDirector extends Director implements ExplicitChangeContext,
      *  implement the strict actor semantics.
      *  @return True if the director exports strict actor semantics.
      */
+    @Override
     public boolean implementsStrictActorSemantics() {
         // Iterate over the state refinements.
         try {
@@ -693,6 +704,7 @@ public class FSMDirector extends Director implements ExplicitChangeContext,
      *                controller, or can not find refinement of the
      *                current state.
      */
+    @Override
     public void initialize() throws IllegalActionException {
         super.initialize();
         // Transitions may produce initial outputs that need to be transferred
@@ -730,6 +742,7 @@ public class FSMDirector extends Director implements ExplicitChangeContext,
      * the FSM may affect the causality interface of the FSM, which
      * may be used in scheduling by the enclosing director.
      */
+    @Override
     public void invalidateSchedule() {
         Director executiveDirector = ((Actor) getContainer())
                 .getExecutiveDirector();
@@ -747,6 +760,7 @@ public class FSMDirector extends Director implements ExplicitChangeContext,
      * @exception IllegalActionException
      *                Not thrown in this base class.
      */
+    @Override
     public boolean isStrict() throws IllegalActionException {
         return false;
         /*
@@ -772,6 +786,7 @@ public class FSMDirector extends Director implements ExplicitChangeContext,
      *
      * @return A receiver that is a one-place buffer.
      */
+    @Override
     public Receiver newReceiver() {
         return new FSMReceiver();
     }
@@ -795,6 +810,7 @@ public class FSMDirector extends Director implements ExplicitChangeContext,
      * @exception IllegalActionException
      *                If thrown by any commit action or there is no controller.
      */
+    @Override
     public boolean postfire() throws IllegalActionException {
         boolean result = true;
         if (_debugging) {
@@ -816,6 +832,7 @@ public class FSMDirector extends Director implements ExplicitChangeContext,
      *  @exception IllegalActionException If a contained refinement
      *  does not have a director.
      */
+    @Override
     public void preinitialize() throws IllegalActionException {
         Iterator<?> actors = ((CompositeActor) getContainer()).deepEntityList()
                 .iterator();
@@ -842,6 +859,7 @@ public class FSMDirector extends Director implements ExplicitChangeContext,
      * @exception IllegalActionException
      *                If there is no controller.
      */
+    @Override
     public boolean prefire() throws IllegalActionException {
         if (_debugging) {
             _debug("Prefire called at time: " + getModelTime());
@@ -874,8 +892,9 @@ public class FSMDirector extends Director implements ExplicitChangeContext,
      * @exception NameDuplicationException If the name of this entity
      * collides with a name already in the container.
      */
+    @Override
     public void setContainer(NamedObj container) throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         super.setContainer(container);
 
         if (container != null) {
@@ -893,6 +912,7 @@ public class FSMDirector extends Director implements ExplicitChangeContext,
      * @see #getIndex()
      * @see ptolemy.actor.SuperdenseTimeDirector
      */
+    @Override
     public void setIndex(int index) throws IllegalActionException {
         // FIXME: Is this right?
         Actor[] actors = _controller.currentState().getRefinement();
@@ -905,7 +925,7 @@ public class FSMDirector extends Director implements ExplicitChangeContext,
                 if (destinationDirector != this
                         && destinationDirector instanceof SuperdenseTimeDirector) {
                     ((SuperdenseTimeDirector) destinationDirector)
-                            .setIndex(index);
+                    .setIndex(index);
                 }
             }
         }
@@ -927,6 +947,7 @@ public class FSMDirector extends Director implements ExplicitChangeContext,
      * @exception IllegalActionException
      *                If the port is not an opaque input port.
      */
+    @Override
     public boolean transferInputs(IOPort port) throws IllegalActionException {
         if (!port.isInput() || !port.isOpaque()) {
             throw new IllegalActionException(this, port,
@@ -941,17 +962,17 @@ public class FSMDirector extends Director implements ExplicitChangeContext,
         // just make the input data available to all refinements, whether
         // they run or not.
         Receiver[][] insideReceivers = _currentLocalReceivers(port);
-        
+
         // If the port is not connected, then the input is known to be absent
         // and we can safely send a clear to the inside.
         int numberOfSources = port.numberOfSources();
         if (numberOfSources < insideReceivers.length) {
-                // At least one inside channel has no viable sources.
-                for (int i = numberOfSources; i < insideReceivers.length; i++) {
-                        for (Receiver receiver : insideReceivers[i]) {
-                                receiver.clear();
-                        }
+            // At least one inside channel has no viable sources.
+            for (int i = numberOfSources; i < insideReceivers.length; i++) {
+                for (Receiver receiver : insideReceivers[i]) {
+                    receiver.clear();
                 }
+            }
         }
 
         for (int i = 0; i < port.getWidth(); i++) {
@@ -1094,7 +1115,7 @@ public class FSMDirector extends Director implements ExplicitChangeContext,
                                     Transition transition = (Transition) transitions
                                             .next();
                                     stateList
-                                            .add(transition.destinationState());
+                                    .add(transition.destinationState());
                                     _checkActorsForReceiver(
                                             transition.getRefinement(), cont,
                                             receiver, resultsList);
@@ -1280,6 +1301,7 @@ public class FSMDirector extends Director implements ExplicitChangeContext,
      *                If the port is not an opaque output port.
      *
      */
+    @Override
     protected boolean _transferOutputs(IOPort port)
             throws IllegalActionException {
         boolean result = false;

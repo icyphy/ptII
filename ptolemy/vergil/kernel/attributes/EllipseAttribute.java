@@ -82,6 +82,7 @@ public class EllipseAttribute extends FilledShapeAttribute {
      *  @exception CloneNotSupportedException Not thrown in this base class
      *  @return The new Attribute.
      */
+    @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         EllipseAttribute newObject = (EllipseAttribute) super.clone(workspace);
 
@@ -100,6 +101,7 @@ public class EllipseAttribute extends FilledShapeAttribute {
     /** Return a circle.
      *  @return A Circle.
      */
+    @Override
     protected Shape _getDefaultShape() {
         return new Ellipse2D.Double(0.0, 0.0, 20.0, 20.0);
     }
@@ -107,6 +109,7 @@ public class EllipseAttribute extends FilledShapeAttribute {
     /** Return the a new ellipse given a new width and height.
      *  @return A new shape.
      */
+    @Override
     protected Shape _newShape() {
         if (_centeredValue) {
             double halfWidth = _widthValue * 0.5;

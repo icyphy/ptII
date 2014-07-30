@@ -234,6 +234,7 @@ public class LevelLayout extends AbstractGlobalLayout {
      * then copies the layout results back into the original view (the
      * given layout target).
      */
+    @Override
     public void layout(Object composite) {
         LevelData levelData = calculateLayout(composite);
 

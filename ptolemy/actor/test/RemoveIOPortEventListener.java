@@ -52,6 +52,7 @@ public class RemoveIOPortEventListener implements IOPortEventListener {
      *  @param event The event to report.
      *  @exception IllegalActionException If thrown by the implementation.
      */
+    @Override
     public void portEvent(IOPortEvent event) throws IllegalActionException {
         IOPort port = event.getPort();
         System.out.println("Removing " + this);

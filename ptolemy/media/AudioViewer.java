@@ -140,28 +140,30 @@ public class AudioViewer extends PlotApplication {
 
     /** Display basic information about the application.
      */
+    @Override
     protected void _about() {
         JOptionPane
-                .showMessageDialog(
-                        this,
-                        "Ptolemy AudioViewer (ptaudio program)\n"
-                                + "By: Edward A. Lee\n"
-                                + "Version 2.0, Build: "
-                                + "$Id$"
-                                + "\n\n"
-                                + "For more information, see\n"
-                                + "http://ptolemy.eecs.berkeley.edu/java/ptplot",
+        .showMessageDialog(
+                this,
+                "Ptolemy AudioViewer (ptaudio program)\n"
+                        + "By: Edward A. Lee\n"
+                        + "Version 2.0, Build: "
+                        + "$Id$"
+                        + "\n\n"
+                        + "For more information, see\n"
+                        + "http://ptolemy.eecs.berkeley.edu/java/ptplot",
                         "About Ptolemy AudioViewer",
                         JOptionPane.INFORMATION_MESSAGE);
     }
 
     /** Display some help.
      */
+    @Override
     protected void _help() {
         JOptionPane
-                .showMessageDialog(this, "Use Control-P to play the sound",
-                        "Usage of Ptolemy AudioViewer",
-                        JOptionPane.INFORMATION_MESSAGE);
+        .showMessageDialog(this, "Use Control-P to play the sound",
+                "Usage of Ptolemy AudioViewer",
+                JOptionPane.INFORMATION_MESSAGE);
     }
 
     /** Read the specified stream.  This method checks to see whether
@@ -172,6 +174,7 @@ public class AudioViewer extends PlotApplication {
      *  @param in The input stream.
      *  @exception IOException If the stream cannot be read.
      */
+    @Override
     protected void _read(URL base, InputStream in) throws IOException {
         try {
             _dataInputStream = new DataInputStream(in);
@@ -242,6 +245,7 @@ public class AudioViewer extends PlotApplication {
     /** Save the plot to the current file, determined by the _directory
      *  and _file protected variables.
      */
+    @Override
     protected void _save() {
         if (_file != null) {
             FileOutputStream out = null;
@@ -271,6 +275,7 @@ public class AudioViewer extends PlotApplication {
     /** Return a string summarizing the command-line arguments.
      *  @return A usage string.
      */
+    @Override
     protected String _usage() {
         String result = "Usage: ptaudio file";
         return result;
@@ -287,6 +292,7 @@ public class AudioViewer extends PlotApplication {
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
     private class PlayListener implements ActionListener {
+        @Override
         public void actionPerformed(ActionEvent e) {
             JMenuItem target = (JMenuItem) e.getSource();
             String actionCommand = target.getActionCommand();

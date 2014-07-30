@@ -1,4 +1,4 @@
-/* MappingConstraintReaderWriter provides methods to read or write mapping constraints from or to a csv file. 
+/* MappingConstraintReaderWriter provides methods to read or write mapping constraints from or to a csv file.
 
 Copyright (c) 2012-2014 The Regents of the University of California.
 All rights reserved.
@@ -24,7 +24,7 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
-*/
+ */
 package ptolemy.domains.metroII.kernel;
 
 import java.io.BufferedReader;
@@ -43,20 +43,20 @@ import java.util.LinkedList;
 /**
  * MappingConstraintReaderWriter provides methods to read or write mapping
  * constraints from or to a csv file.
- * 
+ *
  * @author Liangpeng Guo
  * @version $Id: MappingConstraintReaderWriter.java 68172 2014-01-22 02:03:40Z
  *          glp $
  * @since Ptolemy II 10.0
  * @Pt.ProposedRating Red (glp)
  * @Pt.AcceptedRating Red (glp)
- * 
+ *
  */
 public class MappingConstraintReaderWriter {
 
     /**
      * Reads mapping constraints from a file. MappingConstraintSolver
-     * 
+     *
      * @param filename
      *            Filename of the mapping constraint file.
      * @return the constraint file in a string.
@@ -81,10 +81,10 @@ public class MappingConstraintReaderWriter {
     }
 
     /**
-     * Returns a list of mapping constraints. 
-     * 
+     * Returns a list of mapping constraints.
+     *
      * @param buffer constraints in a string.
-     * @return a list of mapping constraints. 
+     * @return a list of mapping constraints.
      */
     public static LinkedList<Pair<String, String>> readConstraints(String buffer) {
         LinkedList<Pair<String, String>> constraintList = new LinkedList<Pair<String, String>>();
@@ -105,7 +105,7 @@ public class MappingConstraintReaderWriter {
 
     /**
      * Writes content to mapping file.
-     * 
+     *
      * @param file The mapping file to be written.
      * @param content the content to save to the mapping file.
      * @exception IOException If a failed or interrupted I/O operations

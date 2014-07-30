@@ -105,6 +105,7 @@ public class StringToIntArray extends TypedAtomicActor {
      *  @exception IllegalActionException If there is no director.
      *  FIXME: Does this method actually check if there is a director?
      */
+    @Override
     public void fire() throws IllegalActionException {
         super.fire();
         String inputValue = ((StringToken) input.get(0)).stringValue();
@@ -129,6 +130,7 @@ public class StringToIntArray extends TypedAtomicActor {
      *  what the superclass returns (presumably true).
      *  @exception IllegalActionException If there is no director.
      */
+    @Override
     public boolean prefire() throws IllegalActionException {
         if (!input.hasToken(0)) {
             return false;

@@ -69,5 +69,6 @@ public interface Function {
     /** Return a string representation.
      *  @return A string representation of this function.
      */
+    @Override
     public String toString();
 }

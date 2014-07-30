@@ -84,6 +84,7 @@ public class MultipleConceptIcon extends ConceptIcon {
      *  This overrides the base class to draw a set of backgrounds.
      *  @return A new figure.
      */
+    @Override
     public Figure createBackgroundFigure() {
         CompositeFigure composite = new CompositeFigure();
         Figure background = super.createBackgroundFigure();
@@ -106,6 +107,7 @@ public class MultipleConceptIcon extends ConceptIcon {
      *  multiple concepts.
      *  @return The icon.
      */
+    @Override
     public Icon createIcon() {
         if (_iconCache != null) {
             return _iconCache;
@@ -128,6 +130,7 @@ public class MultipleConceptIcon extends ConceptIcon {
      *  @param name The name on which to base the label.
      *  @return The label figure.
      */
+    @Override
     protected LabelFigure _getLabel(CompositeFigure background, String name) {
         LabelFigure result = super._getLabel(background, name);
         double translationValue = 10.0;

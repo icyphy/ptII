@@ -24,7 +24,7 @@
  PT_COPYRIGHT_VERSION_2
  COPYRIGHTENDKEY
 
-*/
+ */
 package ptolemy.domains.ptera.lib;
 
 import ptolemy.actor.Manager;
@@ -86,6 +86,7 @@ public class Stop extends Event {
      *  @exception IllegalActionException If a manager cannot be found, or if
      *   thrown by the superclass.
      */
+    @Override
     public RefiringData fire(Token arguments) throws IllegalActionException {
         // FIXME: super.fire() is not called here, which is probably correct.
         PteraController controller = getController();

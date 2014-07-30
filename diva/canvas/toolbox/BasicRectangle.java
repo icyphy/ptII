@@ -86,6 +86,7 @@ public class BasicRectangle extends BasicFigure {
 
     /** Translate the rectangle the given distance
      */
+    @Override
     public void translate(double x, double y) {
         Shape s = getShape();
 

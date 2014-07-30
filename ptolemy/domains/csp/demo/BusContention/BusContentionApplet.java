@@ -128,6 +128,7 @@ public class BusContentionApplet extends PtolemyApplet {
      *   exception to allow derived classes wide lattitude as to which
      *   exception to throw.
      */
+    @Override
     protected NamedObj _createModel(Workspace workspace) throws Exception {
         TypedCompositeActor toplevel = new TypedCompositeActor(workspace);
         _toplevel = toplevel;
@@ -168,6 +169,7 @@ public class BusContentionApplet extends PtolemyApplet {
 
     /** Create an animation pane.
      */
+    @Override
     protected void _createView() {
         super._createView();
 
@@ -207,6 +209,7 @@ public class BusContentionApplet extends PtolemyApplet {
      *  since this can't be done in the init method, because the graph
      *  hasn't yet been displayed.
      */
+    @Override
     public void start() {
         _doLayout(_graph, _jgraph.getGraphPane());
     }
@@ -287,6 +290,7 @@ public class BusContentionApplet extends PtolemyApplet {
             final GraphController gc = gp.getGraphController();
             final GraphPane pane = gp;
             SwingUtilities.invokeLater(new Runnable() {
+                @Override
                 public void run() {
                     // Layout is a bit stupid
                     LayoutTarget target = new BasicLayoutTarget(gc);
@@ -342,7 +346,7 @@ public class BusContentionApplet extends PtolemyApplet {
     ///////////////////////////////////////////////////////////////////
     //// BusContentionGraphController
     public static class BusContentionGraphController extends
-            BasicGraphController {
+    BasicGraphController {
         private SelectionDragger _selectionDragger;
 
         /**
@@ -364,6 +368,7 @@ public class BusContentionApplet extends PtolemyApplet {
          * the controller does not yet have a reference to its pane
          * at that time.
          */
+        @Override
         protected void initializeInteraction() {
             GraphPane pane = getGraphPane();
 
@@ -386,6 +391,7 @@ public class BusContentionApplet extends PtolemyApplet {
         /**
          * Render the edge
          */
+        @Override
         public Connector render(Object edge, Site tailSite, Site headSite) {
             StraightConnector c = new StraightConnector(tailSite, headSite);
 
@@ -424,11 +430,13 @@ public class BusContentionApplet extends PtolemyApplet {
 
         /** Ignore messages.
          */
+        @Override
         public void message(String message) {
         }
 
         /** React to the given event.
          */
+        @Override
         public void event(DebugEvent debugEvent) {
             // only trap ExecEvents.
             if (!(debugEvent instanceof ExecEvent)) {
@@ -449,6 +457,7 @@ public class BusContentionApplet extends PtolemyApplet {
             try {
                 // Used to use invokeAndWait() here, but this leads to deadlock!
                 SwingUtilities.invokeLater(new Runnable() {
+                    @Override
                     public void run() {
                         if (state == ExecEvent.WAITING) {
                             figure.setFillPaint(Color.yellow);
@@ -492,6 +501,7 @@ public class BusContentionApplet extends PtolemyApplet {
         /**
          * Return the rendered visual representation of this node.
          */
+        @Override
         public Figure render(Object n) {
             ComponentEntity actor = (ComponentEntity) _controller
                     .getGraphModel().getSemanticObject(n);

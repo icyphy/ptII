@@ -68,6 +68,7 @@ public class ActionInteractor extends AbstractInteractor {
     /** Activate the action referenced by this interactor.  The source of
      *  the ActionEvent is the layer event.
      */
+    @Override
     public void mousePressed(LayerEvent layerEvent) {
         ActionEvent event = new ActionEvent(layerEvent, layerEvent.getID(),
                 "Pressed", layerEvent.getModifiers());

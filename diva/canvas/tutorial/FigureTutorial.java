@@ -263,6 +263,7 @@ public class FigureTutorial {
     public static void main(String[] argv) {
         // Always invoke graphics code in the event thread
         SwingUtilities.invokeLater(new Runnable() {
+            @Override
             public void run() {
                 new FigureTutorial();
             }
@@ -307,6 +308,7 @@ public class FigureTutorial {
          * being created each time, but it would normally be created
          * only once.
          */
+        @Override
         public Rectangle2D getBounds() {
             Stroke s = new BasicStroke(1.0f);
             return s.createStrokedShape(_bounds).getBounds2D();
@@ -318,6 +320,7 @@ public class FigureTutorial {
          * that clients will not modify the object returned by
          * this method.
          */
+        @Override
         public Shape getShape() {
             return _bounds;
         }
@@ -331,6 +334,7 @@ public class FigureTutorial {
          * Note that we have to set the stroke and paint in the
          * graphics context before we can do anything useful.
          */
+        @Override
         public void paint(Graphics2D g) {
             // Create a stroke and fill then outline the rectangle
             Stroke s = new BasicStroke(1.0f);
@@ -362,6 +366,7 @@ public class FigureTutorial {
          * we have to call the repaint() method so that the region
          * of the canvas that changed is properly repainted.
          */
+        @Override
         public void transform(AffineTransform at) {
             repaint();
             _bounds = ShapeUtilities.transformBounds(_bounds, at);

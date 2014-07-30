@@ -59,6 +59,7 @@ public class CompositeInteractor extends AbstractInteractor {
     /**
      * Accept an event if any attached interactor will accept it.
      */
+    @Override
     public boolean accept(LayerEvent e) {
         for (Interactor interactor : _interactors) {
             if (interactor.accept(e)) {
@@ -87,6 +88,7 @@ public class CompositeInteractor extends AbstractInteractor {
     /**
      * Return true if any contained interactor is motion enabled.
      */
+    @Override
     public boolean isMotionEnabled() {
         for (Interactor interactor : _interactors) {
             if (interactor.isMotionEnabled()) {
@@ -101,6 +103,7 @@ public class CompositeInteractor extends AbstractInteractor {
      * Handle a mouse drag event. If there's a current interactor
      * receiving events, pass the event to it.
      */
+    @Override
     public void mouseDragged(LayerEvent event) {
         if (!isEnabled()) {
             return;
@@ -121,6 +124,7 @@ public class CompositeInteractor extends AbstractInteractor {
      * it will accept the event, and if it will, pass this event and
      * the subsequent motion and exited events to it.
      */
+    @Override
     public void mouseEntered(LayerEvent event) {
         if (!isMotionEnabled()) {
             return;
@@ -144,6 +148,7 @@ public class CompositeInteractor extends AbstractInteractor {
      * interactor receiving motion events, pass the event
      * to it.
      */
+    @Override
     public void mouseExited(LayerEvent event) {
         if (!isMotionEnabled()) {
             return;
@@ -165,6 +170,7 @@ public class CompositeInteractor extends AbstractInteractor {
      * interactor receiving motion events, pass the event
      * to it.
      */
+    @Override
     public void mouseMoved(LayerEvent event) {
         if (!isMotionEnabled()) {
             return;
@@ -187,6 +193,7 @@ public class CompositeInteractor extends AbstractInteractor {
      * to.  Continue this process for all attached interactors until the
      * event is consumed.
      */
+    @Override
     public void mousePressed(LayerEvent event) {
         if (!isEnabled()) {
             return;
@@ -213,6 +220,7 @@ public class CompositeInteractor extends AbstractInteractor {
      * Handle a mouse released event. If there's a current interactor
      * receiving events, pass the event to it.
      */
+    @Override
     public void mouseReleased(LayerEvent event) {
         if (!isEnabled()) {
             return;

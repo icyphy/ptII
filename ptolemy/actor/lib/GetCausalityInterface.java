@@ -105,6 +105,7 @@ public class GetCausalityInterface extends Source {
      *  description of it as an output.
      *  @exception IllegalActionException Not thrown in this base class.
      */
+    @Override
     public void fire() throws IllegalActionException {
         super.fire();
         Actor container = (Actor) getContainer();

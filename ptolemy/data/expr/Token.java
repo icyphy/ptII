@@ -26,7 +26,7 @@
                                         COPYRIGHTENDKEY
 
 Created : May 1998
-*/
+ */
 
 package ptolemy.data.expr;
 
@@ -124,6 +124,7 @@ public class Token implements java.io.Serializable {
     /**
      * Returns the image.
      */
+    @Override
     public String toString() {
         return image;
     }

@@ -135,6 +135,7 @@ public class GridLayer extends CanvasLayer implements VisibleComponent {
      *  does not indicate whether the layer is actually visible on
      *  the screen, as its pane or one if its ancestors may not be visible.
      */
+    @Override
     public boolean isVisible() {
         return _visible;
     }
@@ -194,6 +195,7 @@ public class GridLayer extends CanvasLayer implements VisibleComponent {
      }
      }
      */
+    @Override
     public void paint(Graphics2D g) {
         Point2D paneSize = getCanvasPane().getSize();
 
@@ -236,6 +238,7 @@ public class GridLayer extends CanvasLayer implements VisibleComponent {
      * lines if they have a non-null paint, and paint the grid vertices
      * if they have a non-null paint.
      */
+    @Override
     public void paint(Graphics2D g, Rectangle2D region) {
         if (!isVisible()) {
             return;
@@ -294,6 +297,7 @@ public class GridLayer extends CanvasLayer implements VisibleComponent {
     /** Set the visibility flag of this layer. If the flag is false,
      * then the layer will not be drawn on the screen.
      */
+    @Override
     public void setVisible(boolean flag) {
         _visible = flag;
     }

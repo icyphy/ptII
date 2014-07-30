@@ -49,7 +49,7 @@ import ptolemy.kernel.util.NamedObj;
  @Pt.AcceptedRating Red (cxh)
  */
 public class SynchronizeToRealTime extends AbstractInitializableAttribute
-        implements TimeRegulator {
+implements TimeRegulator {
 
     /** Construct an instance of the attribute.
      * @param container The container.
@@ -68,6 +68,7 @@ public class SynchronizeToRealTime extends AbstractInitializableAttribute
     /** Initialize by recording the real start time.
      *  @exception IllegalActionException If the superclass throws it.
      */
+    @Override
     public void initialize() throws IllegalActionException {
         super.initialize();
         _realStartTime = System.currentTimeMillis();
@@ -79,6 +80,7 @@ public class SynchronizeToRealTime extends AbstractInitializableAttribute
      *  @exception IllegalActionException If this attribute is not
      *   contained by an Actor.
      */
+    @Override
     public Time proposeTime(Time proposedTime) throws IllegalActionException {
         NamedObj container = getContainer();
         if (!(container instanceof Actor)) {

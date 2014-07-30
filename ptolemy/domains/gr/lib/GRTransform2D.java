@@ -104,6 +104,7 @@ abstract public class GRTransform2D extends GRActor2D {
      *  @exception IllegalActionException If the value of some parameters
      *   can't be obtained.
      */
+    @Override
     public void fire() throws IllegalActionException {
         //  all state changes must be done in postfire()
         super.fire();
@@ -112,6 +113,7 @@ abstract public class GRTransform2D extends GRActor2D {
 
     /** Setup the transform object.
      */
+    @Override
     public void initialize() throws IllegalActionException {
         super.initialize();
 
@@ -136,6 +138,7 @@ abstract public class GRTransform2D extends GRActor2D {
      *
      *  @exception IllegalActionException Always thrown for this base class.
      */
+    @Override
     protected void _makeSceneGraphConnection() throws IllegalActionException {
         int width = sceneGraphIn.getWidth();
 

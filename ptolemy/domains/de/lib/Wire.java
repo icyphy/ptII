@@ -59,6 +59,7 @@ import ptolemy.kernel.util.NameDuplicationException;
  @see ptolemy.domains.de.lib.MostRecent
  @deprecated Use Sampler instead.
  */
+@Deprecated
 public class Wire extends DETransformer {
     /** Construct an actor with the given container and name.
      *  @param container The container.
@@ -108,6 +109,7 @@ public class Wire extends DETransformer {
      *  channels.
      *  @exception IllegalActionException If the base class throws one.
      */
+    @Override
     public void fire() throws IllegalActionException {
         super.fire();
         int inputWidth = input.getWidth();
@@ -135,6 +137,7 @@ public class Wire extends DETransformer {
     /** Initialize the actor.
      *  @exception IllegalActionException If the superclass throws it.
      */
+    @Override
     public void initialize() throws IllegalActionException {
         super.initialize();
         _lastInputs = null;
@@ -143,6 +146,7 @@ public class Wire extends DETransformer {
     /** Return true if there is any token on an input port.
      *  @exception IllegalActionException If the base class throws it.
      */
+    @Override
     public boolean prefire() throws IllegalActionException {
         boolean writeRequest = false;
         int inputWidth = input.getWidth();

@@ -101,6 +101,7 @@ public class FileEditorTableauFactory extends TableauFactory {
      *  @exception Exception If the factory should be able to create a
      *   Tableau for the effigy, but something goes wrong.
      */
+    @Override
     public Tableau createTableau(Effigy effigy) throws Exception {
         // FIXME: Exceptions thrown here are ignored by the caller,
         // who then just goes to the next tableau factory...

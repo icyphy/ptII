@@ -54,6 +54,7 @@ import ptolemy.kernel.util.NameDuplicationException;
  @Pt.ProposedRating Yellow (yuhong)
  @Pt.AcceptedRating Yellow (mudit)
  */
+@Deprecated
 public class Writer extends Sink {
     /** Construct an actor with the given container and name.
      *  @param container The container.
@@ -85,6 +86,7 @@ public class Writer extends Sink {
      *  characters are written.
      *  @exception IllegalActionException If an IO error occurs.
      */
+    @Override
     public boolean postfire() throws IllegalActionException {
         try {
             String last = "";
@@ -138,6 +140,7 @@ public class Writer extends Sink {
     /** Flush the writer, if there is one.
      *  @exception IllegalActionException If an IO error occurs.
      */
+    @Override
     public void wrapup() throws IllegalActionException {
         try {
             if (_writer != null) {

@@ -102,6 +102,7 @@ public class ResizablePolygonAttribute extends FilledShapeAttribute {
      *  @exception IllegalActionException If the change is not acceptable
      *   to this container (should not be thrown).
      */
+    @Override
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         if (attribute == vertices || attribute == width || attribute == height
@@ -146,6 +147,7 @@ public class ResizablePolygonAttribute extends FilledShapeAttribute {
      *  @exception CloneNotSupportedException Not thrown in this base class
      *  @return The new Attribute.
      */
+    @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         ResizablePolygonAttribute newObject = (ResizablePolygonAttribute) super
                 .clone(workspace);
@@ -165,6 +167,7 @@ public class ResizablePolygonAttribute extends FilledShapeAttribute {
     /** Return the a new polygon with the given vertices.
      *  @return A new shape.
      */
+    @Override
     protected Shape _newShape() {
         try {
             ArrayToken verticesValue = (ArrayToken) vertices.getToken();

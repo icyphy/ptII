@@ -183,6 +183,7 @@ public class Autocorrelation extends SDFTransformer {
      *  @param attribute The attribute that has changed.
      *  @exception IllegalActionException If the parameters are out of range.
      */
+    @Override
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         if (attribute == numberOfInputs || attribute == numberOfLags
@@ -223,6 +224,7 @@ public class Autocorrelation extends SDFTransformer {
      *  @exception CloneNotSupportedException If a derived class has
      *   an attribute that cannot be cloned.
      */
+    @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         Autocorrelation newObject = (Autocorrelation) super.clone(workspace);
         newObject.input.setTypeAtLeast(new FunctionTerm(newObject.input));
@@ -240,6 +242,7 @@ public class Autocorrelation extends SDFTransformer {
      *  the parameters of the object, as described in the class comment.
      *  @exception IllegalActionException If there is no director.
      */
+    @Override
     public void fire() throws IllegalActionException {
         super.fire();
 
@@ -258,7 +261,7 @@ public class Autocorrelation extends SDFTransformer {
                 if (complex) {
                     ComplexToken conjugate = new ComplexToken(
                             ((ComplexToken) inputValues[j]).complexValue()
-                                    .conjugate());
+                            .conjugate());
                     sum = sum.add(conjugate.multiply(inputValues[j + i]));
                 } else {
                     sum = sum.add(inputValues[j].multiply(inputValues[j + i]));
@@ -280,7 +283,7 @@ public class Autocorrelation extends SDFTransformer {
         for (int i = _numberOfLags - 1 - notSymmetric; i >= 0; i--) {
             if (complex) {
                 ComplexToken candidate = (ComplexToken) _outputs[2
-                        * (_numberOfLags - notSymmetric) - i];
+                                                                 * (_numberOfLags - notSymmetric) - i];
                 _outputs[i] = new ComplexToken(candidate.complexValue()
                         .conjugate());
             } else {
@@ -296,6 +299,7 @@ public class Autocorrelation extends SDFTransformer {
      *  @exception IllegalActionException If the base class throws it.
      *  @return True if it is ok to continue.
      */
+    @Override
     public boolean prefire() throws IllegalActionException {
         if (!input.hasToken(0, _numberOfInputs)) {
             if (_debugging) {
@@ -340,6 +344,7 @@ public class Autocorrelation extends SDFTransformer {
         /** Return the function result.
          *  @return A Type.
          */
+        @Override
         public Object getValue() {
             Type inputType = _port.getType();
 
@@ -356,6 +361,7 @@ public class Autocorrelation extends SDFTransformer {
          *  representing the type of the input port.
          *  @return An array of InequalityTerm.
          */
+        @Override
         public InequalityTerm[] getVariables() {
             InequalityTerm[] variable = new InequalityTerm[1];
             variable[0] = _port.getTypeTerm();
@@ -380,6 +386,7 @@ public class Autocorrelation extends SDFTransformer {
          *  @exception IllegalActionException If the type of the
          *  associated typeable cannot be determined.
          */
+        @Override
         public Object getValue() throws IllegalActionException {
             ConstVariableModelAnalysis analysis = ConstVariableModelAnalysis
                     .getAnalysis(symmetricOutput);
@@ -403,6 +410,7 @@ public class Autocorrelation extends SDFTransformer {
          *  input port.
          *  @return An array of InequalityTerm.
          */
+        @Override
         public InequalityTerm[] getVariables() {
             InequalityTerm[] array = new InequalityTerm[1];
             array[0] = input.getTypeTerm();

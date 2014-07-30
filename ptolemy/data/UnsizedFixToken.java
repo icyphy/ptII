@@ -73,6 +73,7 @@ public class UnsizedFixToken extends FixToken {
     /** Return the type of this token.
      *  @return BaseType.UNSIZED_FIX.
      */
+    @Override
     public Type getType() {
         return BaseType.UNSIZED_FIX;
     }

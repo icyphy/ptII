@@ -56,6 +56,7 @@ public class TestDebugEvent implements DebugEvent {
     /**
      * Return the director that activated this event.
      */
+    @Override
     public NamedObj getSource() {
         return _source;
     }
@@ -63,6 +64,7 @@ public class TestDebugEvent implements DebugEvent {
     /**
      * Return the the name of the source
      */
+    @Override
     public String toString() {
         return _source.toString();
     }

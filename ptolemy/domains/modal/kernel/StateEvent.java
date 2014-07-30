@@ -59,6 +59,7 @@ public class StateEvent implements DebugEvent {
     /** Return the source of the event, which is an instance of FSMActor.
      *  @return The ptolemy object that published this event.
      */
+    @Override
     public NamedObj getSource() {
         return _source;
     }
@@ -74,6 +75,7 @@ public class StateEvent implements DebugEvent {
      *  string "New state: <i>name of state</i>".
      *  @return A string describing the event.
      */
+    @Override
     public String toString() {
         return "New state: " + _state.getFullName();
     }

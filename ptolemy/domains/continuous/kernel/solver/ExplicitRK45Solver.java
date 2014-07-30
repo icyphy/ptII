@@ -90,6 +90,7 @@ public class ExplicitRK45Solver extends ContinuousODESolver {
      *  truncation error).
      *  @return The number of time increments plus one.
      */
+    @Override
     public final int getIntegratorAuxVariableCount() {
         // Allow one for the truncation error
         return _TIME_INCREMENTS.length + 1;
@@ -101,6 +102,7 @@ public class ExplicitRK45Solver extends ContinuousODESolver {
      *  @exception IllegalActionException If there is no director, or can not
      *  read input, or can not send output.
      */
+    @Override
     public void integratorIntegrate(ContinuousIntegrator integrator)
             throws IllegalActionException {
         double xn = integrator.getState();
@@ -120,28 +122,28 @@ public class ExplicitRK45Solver extends ContinuousODESolver {
 
         case 2:
             outputValue = xn + h
-                    * (k[0] * _B[2][0] + k[1] * _B[2][1] + k[2] * _B[2][2]);
+            * (k[0] * _B[2][0] + k[1] * _B[2][1] + k[2] * _B[2][2]);
             break;
 
         case 3:
             outputValue = xn
-                    + h
-                    * (k[0] * _B[3][0] + k[1] * _B[3][1] + k[2] * _B[3][2] + k[3]
-                            * _B[3][3]);
+            + h
+            * (k[0] * _B[3][0] + k[1] * _B[3][1] + k[2] * _B[3][2] + k[3]
+                    * _B[3][3]);
             break;
 
         case 4:
             outputValue = xn
-                    + h
-                    * (k[0] * _B[4][0] + k[1] * _B[4][1] + k[2] * _B[4][2]
-                            + k[3] * _B[4][3] + k[4] * _B[4][4]);
+            + h
+            * (k[0] * _B[4][0] + k[1] * _B[4][1] + k[2] * _B[4][2]
+                    + k[3] * _B[4][3] + k[4] * _B[4][4]);
             break;
 
         case 5:
             outputValue = xn
-                    + h
-                    * (k[0] * _B[5][0] + k[1] * _B[5][1] + k[2] * _B[5][2]
-                            + k[3] * _B[5][3] + k[4] * _B[5][4] + k[5]
+            + h
+            * (k[0] * _B[5][0] + k[1] * _B[5][1] + k[2] * _B[5][2]
+                    + k[3] * _B[5][3] + k[4] * _B[5][4] + k[5]
                             * _B[5][5]);
             break;
 
@@ -163,6 +165,7 @@ public class ExplicitRK45Solver extends ContinuousODESolver {
      *  @param integrator The integrator of that calls this method.
      *  @return True if the integration is successful.
      */
+    @Override
     public boolean integratorIsAccurate(ContinuousIntegrator integrator) {
         double tolerance = _director.getErrorTolerance();
         double h = _director.getCurrentStepSize();
@@ -200,6 +203,7 @@ public class ExplicitRK45Solver extends ContinuousODESolver {
      *  @param integrator The integrator that calls this method.
      *  @return The next step size suggested by the given integrator.
      */
+    @Override
     public double integratorSuggestedStepSize(ContinuousIntegrator integrator) {
         double error = integrator.getAuxVariables()[_ERROR_INDEX];
         double h = _director.getCurrentStepSize();
@@ -224,6 +228,7 @@ public class ExplicitRK45Solver extends ContinuousODESolver {
     /** Return the current round.
      *  @return The current round.
      */
+    @Override
     protected int _getRound() {
         return _roundCount;
     }
@@ -231,6 +236,7 @@ public class ExplicitRK45Solver extends ContinuousODESolver {
     /** Get the current round factor. If the
      *  step is finished, then return 1.0.
      */
+    @Override
     protected final double _getRoundTimeIncrement() {
         return _TIME_INCREMENTS[_roundCount];
     }
@@ -240,6 +246,7 @@ public class ExplicitRK45Solver extends ContinuousODESolver {
      *  called 6 or more times since _reset().
      *  @see #_reset()
      */
+    @Override
     protected final boolean _isStepFinished() {
         return _roundCount >= _TIME_INCREMENTS.length;
     }
@@ -247,6 +254,7 @@ public class ExplicitRK45Solver extends ContinuousODESolver {
     /** Reset the solver, indicating to it that we are starting an
      *  integration step. This method resets the round counter.
      */
+    @Override
     protected final void _reset() {
         _roundCount = 0;
     }
@@ -254,6 +262,7 @@ public class ExplicitRK45Solver extends ContinuousODESolver {
     /** Set the round for the next integration step.
      *  @param round The round for the next integration step.
      */
+    @Override
     protected void _setRound(int round) {
         _roundCount = round;
     }
@@ -263,22 +272,22 @@ public class ExplicitRK45Solver extends ContinuousODESolver {
 
     /** The ratio of time increments within one integration step. */
     protected static final double[] _TIME_INCREMENTS = { 0.2, 0.3, 0.6, 1.0,
-            0.875, 1.0, 1.0 };
+        0.875, 1.0, 1.0 };
 
     /** B coefficients */
     private static final double[][] _B = {
-            { 0.2 },
-            { 3.0 / 40, 9.0 / 40 },
-            { 0.3, -0.9, 1.2 },
-            { -11.0 / 54, 5.0 / 2, -70.0 / 27, 35.0 / 27 },
-            { 1631.0 / 55296, 175.0 / 512, 575.0 / 13824, 44275.0 / 110592,
-                    253.0 / 4096 },
+        { 0.2 },
+        { 3.0 / 40, 9.0 / 40 },
+        { 0.3, -0.9, 1.2 },
+        { -11.0 / 54, 5.0 / 2, -70.0 / 27, 35.0 / 27 },
+        { 1631.0 / 55296, 175.0 / 512, 575.0 / 13824, 44275.0 / 110592,
+            253.0 / 4096 },
             { 37.0 / 378, 0.0, 250.0 / 621, 125.0 / 594, 0.0, 512.0 / 1771 } };
 
     /** E coefficients */
     private static final double[] _E = { 37.0 / 378 - 2825.0 / 27648, 0.0,
-            250.0 / 621 - 18575.0 / 48384, 125.0 / 594 - 13525.0 / 55296,
-            0.0 - 277.0 / 14336, 512.0 / 1771 - 0.25 };
+        250.0 / 621 - 18575.0 / 48384, 125.0 / 594 - 13525.0 / 55296,
+        0.0 - 277.0 / 14336, 512.0 / 1771 - 0.25 };
 
     /** The index of the error stored in the auxiliary variables. */
     private static final int _ERROR_INDEX = _TIME_INCREMENTS.length;

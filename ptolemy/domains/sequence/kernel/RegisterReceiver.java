@@ -67,6 +67,7 @@ public class RegisterReceiver extends Mailbox {
      *  @return The token contained by this receiver.
      *  @exception NoTokenException If this receiver is empty.
      */
+    @Override
     public Token get() throws NoTokenException {
         if (_token == null) {
             throw new NoTokenException(getContainer(),
@@ -81,6 +82,7 @@ public class RegisterReceiver extends Mailbox {
      *   the mailbox to empty.
      *  @exception NoRoomException Not thrown in this base class.
      */
+    @Override
     public void put(Token token) throws NoRoomException {
         _token = token;
     }

@@ -101,6 +101,7 @@ public class PlotTableau extends Tableau {
      *  @exception IllegalActionException If the URL cannot be opened,
      *   or if the base class throws it.
      */
+    @Override
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         if (attribute == uri) {
@@ -121,6 +122,7 @@ public class PlotTableau extends Tableau {
      *  @exception IllegalActionException If the frame is not an instance
      *   of PlotTableauFrame.
      */
+    @Override
     public void setFrame(JFrame frame) throws IllegalActionException {
         if (frame != null && !(frame instanceof PlotTableauFrame)) {
             throw new IllegalActionException(this,
@@ -140,6 +142,7 @@ public class PlotTableau extends Tableau {
      *  PlotTableauFrame.  If a URL has been specified but not yet
      *  processed, then process it.
      */
+    @Override
     public void show() {
         JFrame frame = getFrame();
 
@@ -233,6 +236,7 @@ public class PlotTableau extends Tableau {
          *  @exception Exception If the factory should be able to create a
          *   tableau for the effigy, but something goes wrong.
          */
+        @Override
         public Tableau createTableau(Effigy effigy) throws Exception {
             if (effigy instanceof PlotEffigy) {
                 // Indicate to the effigy that this factory contains effigies

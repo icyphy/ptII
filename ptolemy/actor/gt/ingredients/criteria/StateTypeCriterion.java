@@ -88,6 +88,7 @@ public class StateTypeCriterion extends Criterion {
      *
      *  @return The array of elements.
      */
+    @Override
     public GTIngredientElement[] getElements() {
         return _ELEMENTS;
     }
@@ -98,6 +99,7 @@ public class StateTypeCriterion extends Criterion {
      *  @return The value.
      *  @see #setValue(int, Object)
      */
+    @Override
     public Object getValue(int index) {
         switch (index) {
         case 0:
@@ -114,6 +116,7 @@ public class StateTypeCriterion extends Criterion {
      *  @return A string that describes the values of all the elements.
      *  @see #setValues(String)
      */
+    @Override
     public String getValues() {
         StringBuffer buffer = new StringBuffer();
 
@@ -128,6 +131,7 @@ public class StateTypeCriterion extends Criterion {
      *  @param object The object.
      *  @return true if this GTIngredient is applicable; false otherwise.
      */
+    @Override
     public boolean isApplicable(NamedObj object) {
         return super.isApplicable(object) && object instanceof State;
     }
@@ -170,6 +174,7 @@ public class StateTypeCriterion extends Criterion {
      *  @param object The object.
      *  @return true if the object matches.
      */
+    @Override
     public boolean match(NamedObj object) {
         State state = (State) object;
         try {
@@ -214,6 +219,7 @@ public class StateTypeCriterion extends Criterion {
      *  @param value The value.
      *  @see #getValue(int)
      */
+    @Override
     public void setValue(int index, Object value) {
         switch (index) {
         case 0:
@@ -230,6 +236,7 @@ public class StateTypeCriterion extends Criterion {
      *   elements.
      *  @see #getValues()
      */
+    @Override
     public void setValues(String values) {
         FieldIterator fieldIterator = new FieldIterator(values);
 
@@ -241,14 +248,15 @@ public class StateTypeCriterion extends Criterion {
      *
      *  @exception ValidationException If some elements are invalid.
      */
+    @Override
     public void validate() throws ValidationException {
     }
 
     /** The elements.
      */
     private static final CriterionElement[] _ELEMENTS = {
-            new BooleanCriterionElement("isInit", true),
-            new BooleanCriterionElement("isFinal", true) };
+        new BooleanCriterionElement("isInit", true),
+        new BooleanCriterionElement("isFinal", true) };
 
     /** Value of the isFinal element.
      */

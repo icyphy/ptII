@@ -90,6 +90,7 @@ public class ShadowHighlighter extends BasicHighlighter {
      *  by the "halo."
      *  @return The bounds.
      */
+    @Override
     public Rectangle2D getBounds() {
         Rectangle2D b = getChild().getBounds();
         Rectangle2D bounds = new Rectangle2D.Double(b.getX(), b.getY()
@@ -104,6 +105,7 @@ public class ShadowHighlighter extends BasicHighlighter {
      *  @param figure The figure, ignored in this method.
      *  @return A new instance of the ShadowHighlighter class.
      */
+    @Override
     public FigureDecorator newInstance(Figure figure) {
         return new ShadowHighlighter(getPaint(), getHalo(), getComposite(),
                 getStroke());
@@ -114,6 +116,7 @@ public class ShadowHighlighter extends BasicHighlighter {
      *  then paints the contained figure.
      *  @param g The Graphics2D context.
      */
+    @Override
     public void paint(Graphics2D g) {
         Composite composite = getComposite();
         if (composite != null) {
@@ -147,6 +150,7 @@ public class ShadowHighlighter extends BasicHighlighter {
      * figure, and requests a repaint of that box stretched
      * in each direction by the size.
      */
+    @Override
     public void repaint() {
         Rectangle2D bounds = getChild().getBounds();
         double x = bounds.getX();

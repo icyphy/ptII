@@ -72,6 +72,7 @@ public class WirelessDirector extends DEDirector {
     /** Return a new receiver of a type WirelessReceiver.
      *  @return A new WirelessReceiver.
      */
+    @Override
     public Receiver newReceiver() {
         if (_debugging) {
             _debug("Creating new WirelessReceiver.");

@@ -40,8 +40,8 @@ package ptolemy.cg.adapter.generic.program.procedural.c.adapters.ptolemy.actor.l
  @Pt.AcceptedRating Green (cxh)
  */
 public class MultiplyDivide
-        extends
-        ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.actor.lib.MultiplyDivide {
+extends
+ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.actor.lib.MultiplyDivide {
     /**
      * Constructor method for the MultiplyDivide adapter.
      * @param actor the associated actor

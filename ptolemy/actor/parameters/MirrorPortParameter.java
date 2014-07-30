@@ -26,7 +26,7 @@ ENHANCEMENTS, OR MODIFICATIONS.
                                             COPYRIGHTENDKEY
 
 
-*/
+ */
 
 package ptolemy.actor.parameters;
 
@@ -45,7 +45,7 @@ This is a PortParameter for MirrorComposites.
 @since Ptolemy II 10.0
 @Pt.ProposedRating Red (derler)
 @Pt.AcceptedRating Red (derler)
-*/
+ */
 
 public class MirrorPortParameter extends PortParameter {
 

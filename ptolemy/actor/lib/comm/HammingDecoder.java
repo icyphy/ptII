@@ -124,6 +124,7 @@ public class HammingDecoder extends Transformer {
      *  or <i>uncodedRate</i> is non-positive or any element of
      *  <i>polynomialArray</i> is non-positive.
      */
+    @Override
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         if (attribute == codedRate) {
@@ -163,6 +164,7 @@ public class HammingDecoder extends Transformer {
      *  @exception CloneNotSupportedException If a derived class contains
      *   an attribute that cannot be cloned.
      */
+    @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         HammingDecoder newObject = (HammingDecoder) super.clone(workspace);
 
@@ -179,6 +181,7 @@ public class HammingDecoder extends Transformer {
      *  and compute the syndrome. If the syndrome is non-zero, correct
      *  one-bit error and send the decoded result to the output.
      */
+    @Override
     public void fire() throws IllegalActionException {
         super.fire();
         if (_parameterInvalid) {

@@ -22,7 +22,7 @@ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
 PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 ENHANCEMENTS, OR MODIFICATIONS.
-*/
+ */
 package ptolemy.verification.kernel.maude;
 
 import java.io.PrintWriter;
@@ -90,6 +90,7 @@ public class RTMExpTranslator extends AbstractParseTreeVisitor {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
+    @Override
     public void visitLeafNode(ASTPtLeafNode node) throws IllegalActionException {
         if (node.isConstant() && node.isEvaluated()) {
             String res = node.getToken().toString();
@@ -112,6 +113,7 @@ public class RTMExpTranslator extends AbstractParseTreeVisitor {
         }
     }
 
+    @Override
     public void visitArrayConstructNode(ASTPtArrayConstructNode node)
             throws IllegalActionException {
         _writer.print("(| "); // (| instead {
@@ -119,6 +121,7 @@ public class RTMExpTranslator extends AbstractParseTreeVisitor {
         _writer.print(" |)"); // |) instead }
     }
 
+    @Override
     public void visitLogicalNode(ASTPtLogicalNode node)
             throws IllegalActionException {
         _writer.print("(");
@@ -126,6 +129,7 @@ public class RTMExpTranslator extends AbstractParseTreeVisitor {
         _writer.print(")");
     }
 
+    @Override
     public void visitBitwiseNode(ASTPtBitwiseNode node)
             throws IllegalActionException {
         _writer.print("(");
@@ -133,6 +137,7 @@ public class RTMExpTranslator extends AbstractParseTreeVisitor {
         _writer.print(")");
     }
 
+    @Override
     public void visitPowerNode(ASTPtPowerNode node)
             throws IllegalActionException {
         _writer.print("(");
@@ -140,6 +145,7 @@ public class RTMExpTranslator extends AbstractParseTreeVisitor {
         _writer.print(")");
     }
 
+    @Override
     public void visitProductNode(ASTPtProductNode node)
             throws IllegalActionException {
         _writer.print("(");
@@ -147,6 +153,7 @@ public class RTMExpTranslator extends AbstractParseTreeVisitor {
         _writer.print(")");
     }
 
+    @Override
     public void visitRelationalNode(ASTPtRelationalNode node)
             throws IllegalActionException {
         _writer.print("(");
@@ -154,6 +161,7 @@ public class RTMExpTranslator extends AbstractParseTreeVisitor {
         _writer.print(")");
     }
 
+    @Override
     public void visitShiftNode(ASTPtShiftNode node)
             throws IllegalActionException {
         _writer.print("(");
@@ -161,12 +169,14 @@ public class RTMExpTranslator extends AbstractParseTreeVisitor {
         _writer.print(")");
     }
 
+    @Override
     public void visitSumNode(ASTPtSumNode node) throws IllegalActionException {
         _writer.print("(");
         _printChildrenSeparated(node, node.getLexicalTokenList());
         _writer.print(")");
     }
 
+    @Override
     public void visitUnaryNode(ASTPtUnaryNode node)
             throws IllegalActionException {
         _writer.print("(");
@@ -181,6 +191,7 @@ public class RTMExpTranslator extends AbstractParseTreeVisitor {
         _writer.print(")");
     }
 
+    @Override
     public void visitFunctionalIfNode(ASTPtFunctionalIfNode node)
             throws IllegalActionException {
         _writer.print("(");
@@ -192,6 +203,7 @@ public class RTMExpTranslator extends AbstractParseTreeVisitor {
         _writer.print(")");
     }
 
+    @Override
     public void visitFunctionApplicationNode(ASTPtFunctionApplicationNode node)
             throws IllegalActionException {
         _writer.print("(");
@@ -206,6 +218,7 @@ public class RTMExpTranslator extends AbstractParseTreeVisitor {
         _writer.print("))");
     }
 
+    @Override
     public void visitFunctionDefinitionNode(ASTPtFunctionDefinitionNode node)
             throws IllegalActionException {
         _writer.print("(function(");
@@ -226,6 +239,7 @@ public class RTMExpTranslator extends AbstractParseTreeVisitor {
         _writer.print(")");
     }
 
+    @Override
     public void visitMatrixConstructNode(ASTPtMatrixConstructNode node)
             throws IllegalActionException {
         int n = 0;
@@ -247,6 +261,7 @@ public class RTMExpTranslator extends AbstractParseTreeVisitor {
         _writer.print("]");
     }
 
+    @Override
     public void visitMethodCallNode(ASTPtMethodCallNode node)
             throws IllegalActionException {
         _writer.print("(");
@@ -263,6 +278,7 @@ public class RTMExpTranslator extends AbstractParseTreeVisitor {
         _writer.print("))");
     }
 
+    @Override
     public void visitRecordConstructNode(ASTPtRecordConstructNode node)
             throws IllegalActionException {
         Iterator names = node.getFieldNames().iterator();

@@ -133,8 +133,11 @@ public class FMUModelExchange extends FMUDriver {
     public static void main(String[] args) throws Exception {
         FMUModelExchange fmuModelExchange = new FMUModelExchange();
         fmuModelExchange._processArgs(args);
-        fmuModelExchange.simulate(fmuModelExchange._fmuFileName, fmuModelExchange._endTime, fmuModelExchange._stepSize,
-                fmuModelExchange._enableLogging, fmuModelExchange._csvSeparator, fmuModelExchange._outputFileName);
+        fmuModelExchange.simulate(fmuModelExchange._fmuFileName,
+                fmuModelExchange._endTime, fmuModelExchange._stepSize,
+                fmuModelExchange._enableLogging,
+                fmuModelExchange._csvSeparator,
+                fmuModelExchange._outputFileName);
     }
 
     /** Perform model exchange using the named Functional Mock-up Unit (FMU) file.
@@ -148,9 +151,10 @@ public class FMUModelExchange extends FMUDriver {
      *  @exception Exception If there is a problem parsing the .fmu file or invoking
      *  the methods in the shared library.
      */
+    @Override
     public void simulate(String fmuFileName, double endTime, double stepSize,
             boolean enableLogging, char csvSeparator, String outputFileName)
-            throws Exception {
+                    throws Exception {
         // Avoid a warning from FindBugs.
         _setEnableLogging(enableLogging);
 
@@ -183,29 +187,30 @@ public class FMUModelExchange extends FMUDriver {
         // Callbacks
         if (_fmiVersion < 1.5) {
             FMICallbackFunctions.ByValue callbacks = new FMICallbackFunctions.ByValue(
-                new FMULibrary.FMULogger(fmiModelDescription),
-                fmiModelDescription.getFMUAllocateMemory(),
-                new FMULibrary.FMUFreeMemory(),
-                new FMULibrary.FMUStepFinished());
+                    new FMULibrary.FMULogger(fmiModelDescription),
+                    fmiModelDescription.getFMUAllocateMemory(),
+                    new FMULibrary.FMUFreeMemory(),
+                    new FMULibrary.FMUStepFinished());
 
             // Instantiate the model.
             Function instantiateModelFunction;
             try {
                 instantiateModelFunction = fmiModelDescription
-                    .getFmiFunction("fmiInstantiateModel");
+                        .getFmiFunction("fmiInstantiateModel");
             } catch (UnsatisfiedLinkError ex) {
                 UnsatisfiedLinkError error = new UnsatisfiedLinkError(
-                    "Could not load " + _modelIdentifier
-                            + "_fmiInstantiateModel()"
-                            + ". This can happen when a co-simulation .fmu "
-                            + "is run in a model exchange context.");
+                        "Could not load "
+                                + _modelIdentifier
+                                + "_fmiInstantiateModel()"
+                                + ". This can happen when a co-simulation .fmu "
+                                + "is run in a model exchange context.");
                 error.initCause(ex);
                 throw error;
             }
 
             fmiComponent = (Pointer) instantiateModelFunction.invoke(
-                Pointer.class, new Object[] { _modelIdentifier,
-                        fmiModelDescription.guid, callbacks, loggingOn });
+                    Pointer.class, new Object[] { _modelIdentifier,
+                            fmiModelDescription.guid, callbacks, loggingOn });
         } else {
             // FMI 1.5 and greater
             FMICallbackFunctions callbacks = new FMICallbackFunctions(
@@ -213,7 +218,8 @@ public class FMUModelExchange extends FMUDriver {
                     new FMULibrary.FMUAllocateMemory(),
                     new FMULibrary.FMUFreeMemory(),
                     new FMULibrary.FMUStepFinished());
-            Function fmiInstantiateFunction = fmiModelDescription.getFmiFunction("fmiInstantiate");
+            Function fmiInstantiateFunction = fmiModelDescription
+                    .getFmiFunction("fmiInstantiate");
             // There is no simulator UI.
             byte toBeVisible = 0;
             // FIXME: Not sure about the fmiType enumeration, see
@@ -221,17 +227,16 @@ public class FMUModelExchange extends FMUDriver {
             // which was copied from
             // /usr/local/jmodelica/ThirdParty/FMI/2.0/.
 
-            int fmiType = 1;  // CoSimulation
+            int fmiType = 1; // CoSimulation
             if (fmiModelDescription.modelExchange) {
                 // Presumably Hybrid-Cosimulation would be 3?  Ptolemy could be 4?
                 fmiType = 0;
             }
             fmiComponent = (Pointer) fmiInstantiateFunction.invoke(
-                                                                   Pointer.class, new Object[] { _modelIdentifier,
-                                                      fmiType,
-                                                      fmiModelDescription.guid,
-                                                      fmiModelDescription.fmuResourceLocation,
-                                                  callbacks, toBeVisible, loggingOn });
+                    Pointer.class, new Object[] { _modelIdentifier, fmiType,
+                            fmiModelDescription.guid,
+                            fmiModelDescription.fmuResourceLocation, callbacks,
+                            toBeVisible, loggingOn });
 
         }
 
@@ -271,11 +276,11 @@ public class FMUModelExchange extends FMUDriver {
         if (_fmiVersion < 1.5) {
             eventInfo = new FMIEventInfo();
             invoke(setTime, new Object[] { fmiComponent, startTime },
-                "Could not set time to start time: " + startTime + ": ");
+                    "Could not set time to start time: " + startTime + ": ");
 
-            invoke(fmiModelDescription,"fmiInitialize", new Object[] { fmiComponent,
-                toleranceControlled, startTime, eventInfo },
-                "Could not initialize model: ");
+            invoke(fmiModelDescription, "fmiInitialize", new Object[] {
+                    fmiComponent, toleranceControlled, startTime, eventInfo },
+                    "Could not initialize model: ");
         } else {
             // _fmiVersion => 2.0
             eventInfo20 = new FMI20EventInfo();
@@ -283,84 +288,87 @@ public class FMUModelExchange extends FMUDriver {
             double relativeTolerance = 1e-4;
             byte _toleranceControlled = (byte) 0; // fmiBoolean
 
-            invoke(fmiModelDescription, "fmiSetupExperiment",
-                   new Object[] { fmiComponent, _toleranceControlled,
-                                  relativeTolerance, startTime,
-                                  (byte) 1, endTime },
-                   "Failed to setup the experiment of the FMU: ");
+            invoke(fmiModelDescription, "fmiSetupExperiment", new Object[] {
+                    fmiComponent, _toleranceControlled, relativeTolerance,
+                    startTime, (byte) 1, endTime },
+                    "Failed to setup the experiment of the FMU: ");
 
-            invoke(setTime,
-                   new Object[] { fmiComponent, startTime },
-                   "Could not set time to start time: " + startTime + ": ");
+            invoke(setTime, new Object[] { fmiComponent, startTime },
+                    "Could not set time to start time: " + startTime + ": ");
 
             invoke(fmiModelDescription, "fmiEnterInitializationMode",
-                   new Object[] { fmiComponent },
-                   "Failed to enter the initialization mode of the FMU: ");
+                    new Object[] { fmiComponent },
+                    "Failed to enter the initialization mode of the FMU: ");
 
             invoke(fmiModelDescription, "fmiExitInitializationMode",
-                   new Object[] { fmiComponent },
-                   "Failed to exit the initialization mode of the FMU:");
+                    new Object[] { fmiComponent },
+                    "Failed to exit the initialization mode of the FMU:");
 
             // event iteration
             eventInfo20.newDiscreteStatesNeeded = (byte) 1;
             eventInfo20.terminateSimulation = (byte) 0;
             System.out.println(eventInfo20.toString());
             while (eventInfo20.newDiscreteStatesNeeded == (byte) 1
-                   && !(eventInfo20.terminateSimulation == (byte) 1)) {
+                    && !(eventInfo20.terminateSimulation == (byte) 1)) {
                 // update discrete states
-                eventInfo20Reference = new FMI20EventInfo.ByReference(eventInfo20);
+                eventInfo20Reference = new FMI20EventInfo.ByReference(
+                        eventInfo20);
                 System.out.println(eventInfo20Reference.toString());
 
                 invoke(fmiModelDescription, "fmiNewDiscreteStates",
-                       new Object[] { fmiComponent, eventInfo20Reference },
-                       "could not set a new discrete state");
+                        new Object[] { fmiComponent, eventInfo20Reference },
+                        "could not set a new discrete state");
             }
         }
 
         double time = startTime;
-        
+
         if (eventInfo20 != null && eventInfo20.terminateSimulation != 0) {
             System.out.println("Model requested terminate at t=" + time);
             endTime = time;
         }
 
-        if ((eventInfo20 != null && eventInfo20.terminateSimulation != 1) || _fmiVersion < 1.5) {
+        if ((eventInfo20 != null && eventInfo20.terminateSimulation != 1)
+                || _fmiVersion < 1.5) {
             if (_fmiVersion > 1.5) {
                 invoke(fmiModelDescription, "fmiEnterContinuousTimeMode",
-                       new Object[] { fmiComponent },
-                       "could not enter continuous time mode:");
+                        new Object[] { fmiComponent },
+                        "could not enter continuous time mode:");
             }
 
             PrintStream file = null;
             try {
                 file = new PrintStream(outputFileName);
                 if (enableLogging) {
-                    System.out.println("FMUModelExchange: about to write header");
+                    System.out
+                            .println("FMUModelExchange: about to write header");
                 }
                 // Generate header row
                 OutputRow.outputRow(_nativeLibrary, fmiModelDescription,
-                                    fmiComponent, startTime, file, csvSeparator, Boolean.TRUE);
+                        fmiComponent, startTime, file, csvSeparator,
+                        Boolean.TRUE);
                 // Output the initial values.
                 OutputRow.outputRow(_nativeLibrary, fmiModelDescription,
-                                    fmiComponent, startTime, file, csvSeparator, Boolean.FALSE);
+                        fmiComponent, startTime, file, csvSeparator,
+                        Boolean.FALSE);
 
                 // Functions used within the while loop, organized
                 // alphabetically.
                 Function completedIntegratorStep = fmiModelDescription
-                    .getFmiFunction("fmiCompletedIntegratorStep");
+                        .getFmiFunction("fmiCompletedIntegratorStep");
                 Function eventUpdate = null;
                 if (_fmiVersion < 1.5) {
                     eventUpdate = fmiModelDescription
-                        .getFmiFunction("fmiEventUpdate");
+                            .getFmiFunction("fmiEventUpdate");
                 }
                 Function getContinuousStates = fmiModelDescription
-                    .getFmiFunction("fmiGetContinuousStates");
+                        .getFmiFunction("fmiGetContinuousStates");
                 Function getDerivatives = fmiModelDescription
-                    .getFmiFunction("fmiGetDerivatives");
+                        .getFmiFunction("fmiGetDerivatives");
                 Function getEventIndicators = fmiModelDescription
-                    .getFmiFunction("fmiGetEventIndicators");
+                        .getFmiFunction("fmiGetEventIndicators");
                 Function setContinuousStates = fmiModelDescription
-                    .getFmiFunction("fmiSetContinuousStates");
+                        .getFmiFunction("fmiSetContinuousStates");
 
                 boolean stateEvent = false;
 
@@ -368,13 +376,14 @@ public class FMUModelExchange extends FMUDriver {
                 // Loop until the time is greater than the end time.
                 while (time < endTime) {
                     invoke(getContinuousStates, new Object[] { fmiComponent,
-                        states, numberOfStates },
-                        "Could not get continuous states, time was " + time
-                                + ": ");
+                            states, numberOfStates },
+                            "Could not get continuous states, time was " + time
+                                    + ": ");
 
                     invoke(getDerivatives, new Object[] { fmiComponent,
-                        derivatives, numberOfStates },
-                        "Could not get derivatives, time was " + time + ": ");
+                            derivatives, numberOfStates },
+                            "Could not get derivatives, time was " + time
+                                    + ": ");
 
                     // Update time.
                     double stepStartTime = time;
@@ -383,10 +392,10 @@ public class FMUModelExchange extends FMUDriver {
                     boolean timeEvent = false;
                     if (_fmiVersion < 1.5) {
                         timeEvent = eventInfo.upcomingTimeEvent == 1
-                            && eventInfo.nextEventTime < time;
+                                && eventInfo.nextEventTime < time;
                     } else {
                         timeEvent = eventInfo20.nextEventTimeDefined == 1
-                            && eventInfo20.nextEventTime < time;
+                                && eventInfo20.nextEventTime < time;
                     }
                     if (timeEvent) {
                         time = eventInfo.nextEventTime;
@@ -394,7 +403,7 @@ public class FMUModelExchange extends FMUDriver {
 
                     double dt = time - stepStartTime;
                     invoke(setTime, new Object[] { fmiComponent, time },
-                        "Could not set time, time was " + time + ": ");
+                            "Could not set time, time was " + time + ": ");
 
                     // Perform a step.
                     for (int i = 0; i < numberOfStates; i++) {
@@ -403,11 +412,12 @@ public class FMUModelExchange extends FMUDriver {
                     }
 
                     invoke(setContinuousStates, new Object[] { fmiComponent,
-                        states, numberOfStates },
-                        "Could not set continuous states, time was " + time
-                                + ": ");
+                            states, numberOfStates },
+                            "Could not set continuous states, time was " + time
+                                    + ": ");
                     if (enableLogging) {
-                        System.out.println("Step " + numberOfSteps + " to t=" + time);
+                        System.out.println("Step " + numberOfSteps + " to t="
+                                + time);
                     }
 
                     if (_fmiVersion > 1.5) {
@@ -416,14 +426,15 @@ public class FMUModelExchange extends FMUDriver {
                             preEventIndicators[i] = eventIndicators[i];
                         }
                         // Get the eventIndicators.
-                        invoke(getEventIndicators,
-                               new Object[] { fmiComponent,
-                                              eventIndicators, numberOfEventIndicators },
-                               "Could not set get event indicators, time was " + time
-                               + ": ");
+                        invoke(getEventIndicators, new Object[] { fmiComponent,
+                                eventIndicators, numberOfEventIndicators },
+                                "Could not set get event indicators, time was "
+                                        + time + ": ");
                         stateEvent = false;
                         for (int i = 0; i < numberOfEventIndicators; i++) {
-                            stateEvent = stateEvent || (preEventIndicators[i] * eventIndicators[i] < 0);
+                            stateEvent = stateEvent
+                                    || (preEventIndicators[i]
+                                            * eventIndicators[i] < 0);
                         }
                     }
 
@@ -433,11 +444,11 @@ public class FMUModelExchange extends FMUDriver {
                         // Pass stepEvent in by reference. See
                         // https://github.com/twall/jna/blob/master/www/ByRefArguments.md
                         ByteByReference stepEventReference = new ByteByReference(
-                                                                                 stepEvent);
-                        invoke(completedIntegratorStep, new Object[] { fmiComponent,
-                                                                       stepEventReference },
-                            "Could not set complete integrator step, time was "
-                            + time + ": ");
+                                stepEvent);
+                        invoke(completedIntegratorStep, new Object[] {
+                                fmiComponent, stepEventReference },
+                                "Could not set complete integrator step, time was "
+                                        + time + ": ");
 
                         // Save the state events.
                         for (int i = 0; i < numberOfEventIndicators; i++) {
@@ -447,36 +458,36 @@ public class FMUModelExchange extends FMUDriver {
                         // Pass stepEvent in by reference. See
                         // https://github.com/twall/jna/blob/master/www/ByRefArguments.md
                         ByteByReference stepEventReference = new ByteByReference(
-                                                                                 stepEvent);
+                                stepEvent);
                         Byte terminateSimulation = (byte) 0;
                         ByteByReference terminateSimulationReference = new ByteByReference(
-                                                                                 terminateSimulation);
+                                terminateSimulation);
 
-                        invoke(completedIntegratorStep,
-                               new Object[] { fmiComponent,
-                                              (byte) 1, /* noSetFMUStatePriorToCurrentPoint */
-                                              stepEventReference,
-                                              terminateSimulationReference},
-                               "Could not set complete integrator step, time was "
-                               + time + ": ");
+                        invoke(completedIntegratorStep, new Object[] {
+                                fmiComponent, (byte) 1, /* noSetFMUStatePriorToCurrentPoint */
+                                stepEventReference,
+                                terminateSimulationReference },
+                                "Could not set complete integrator step, time was "
+                                        + time + ": ");
                         if (terminateSimulation != (byte) 0) {
-                            System.out.println("Termination requested: " + time);
+                            System.out
+                                    .println("Termination requested: " + time);
                             break;
                         }
                     }
 
                     if (_fmiVersion < 1.5) {
                         // Get the eventIndicators.
-                        invoke(getEventIndicators,
-                               new Object[] { fmiComponent,
-                                              eventIndicators, numberOfEventIndicators },
-                               "Could not set get event indicators, time was " + time
-                               + ": ");
+                        invoke(getEventIndicators, new Object[] { fmiComponent,
+                                eventIndicators, numberOfEventIndicators },
+                                "Could not set get event indicators, time was "
+                                        + time + ": ");
 
                         stateEvent = Boolean.FALSE;
                         for (int i = 0; i < numberOfEventIndicators; i++) {
                             stateEvent = stateEvent
-                                || preEventIndicators[i] * eventIndicators[i] < 0;
+                                    || preEventIndicators[i]
+                                            * eventIndicators[i] < 0;
                         }
                     }
 
@@ -487,12 +498,12 @@ public class FMUModelExchange extends FMUDriver {
                             if (enableLogging) {
                                 for (int i = 0; i < numberOfEventIndicators; i++) {
                                     System.out
-                                        .println("state event "
-                                                + (preEventIndicators[i] > 0
-                                                        && eventIndicators[i] < 0 ? "-\\-"
-                                                        : "-/-")
-                                                + " eventIndicator[" + i
-                                                + "], time: " + time);
+                                            .println("state event "
+                                                    + (preEventIndicators[i] > 0
+                                                            && eventIndicators[i] < 0 ? "-\\-"
+                                                            : "-/-")
+                                                    + " eventIndicator[" + i
+                                                    + "], time: " + time);
                                 }
                             }
                         }
@@ -510,80 +521,98 @@ public class FMUModelExchange extends FMUDriver {
                             }
                         }
 
-                        if (_fmiVersion < 1.5) {                    
-                            invoke(eventUpdate, new Object[] { fmiComponent, (byte) 0,
-                                                               eventInfo },
-                                "Could not set update event, time was " + time
-                                + ": ");
+                        if (_fmiVersion < 1.5) {
+                            invoke(eventUpdate, new Object[] { fmiComponent,
+                                    (byte) 0, eventInfo },
+                                    "Could not set update event, time was "
+                                            + time + ": ");
                             if (eventInfo.stateValuesChanged != (byte) 0
-                                && enableLogging) {
-                                System.out.println("state values changed: " + time);
+                                    && enableLogging) {
+                                System.out.println("state values changed: "
+                                        + time);
                             }
                             if (eventInfo.stateValueReferencesChanged != (byte) 0
-                                && enableLogging) {
-                                System.out.println("new state variables selected: "
-                                                   + time);
+                                    && enableLogging) {
+                                System.out
+                                        .println("new state variables selected: "
+                                                + time);
                             }
                         } else {
                             // event iteration in one step, ignoring intermediate results
                             eventInfo20.newDiscreteStatesNeeded = (byte) 1;
                             eventInfo20.terminateSimulation = (byte) 0;
-                            while ((eventInfo20.newDiscreteStatesNeeded == (byte) 1)&& !(eventInfo20.terminateSimulation == (byte)1)) {
+                            while ((eventInfo20.newDiscreteStatesNeeded == (byte) 1)
+                                    && !(eventInfo20.terminateSimulation == (byte) 1)) {
                                 // update discrete states
-                                eventInfo20Reference = new FMI20EventInfo.ByReference(eventInfo20);
-                                invoke(fmiModelDescription, "fmiNewDiscreteStates",
-                                       new Object[] { fmiComponent, eventInfo20Reference },
-                                       "could not set a new discrete state");
+                                eventInfo20Reference = new FMI20EventInfo.ByReference(
+                                        eventInfo20);
+                                invoke(fmiModelDescription,
+                                        "fmiNewDiscreteStates", new Object[] {
+                                                fmiComponent,
+                                                eventInfo20Reference },
+                                        "could not set a new discrete state");
                             }
 
                             if (eventInfo20.terminateSimulation != (byte) 0) {
-                                System.out.println("Termination requested: " + time);
+                                System.out.println("Termination requested: "
+                                        + time);
                                 break;
                             }
 
-                            invoke(fmiModelDescription, "fmiEnterContinuousTimeMode",
-                                   new Object[] { fmiComponent },
-                                   "could not enter continuous time mode:");
+                            invoke(fmiModelDescription,
+                                    "fmiEnterContinuousTimeMode",
+                                    new Object[] { fmiComponent },
+                                    "could not enter continuous time mode:");
                             // check for change of value of states
-                            if ((eventInfo20.valuesOfContinuousStatesChanged == (byte) 1) && enableLogging) {
-                                System.out.println("continuous state values changed at t=" + time);
+                            if ((eventInfo20.valuesOfContinuousStatesChanged == (byte) 1)
+                                    && enableLogging) {
+                                System.out
+                                        .println("continuous state values changed at t="
+                                                + time);
                             }
 
-                            if ((eventInfo20.nominalsOfContinuousStatesChanged == (byte) 1) && enableLogging) {
-                                System.out.println("nominals of continuous state changed  at t=" + time);
+                            if ((eventInfo20.nominalsOfContinuousStatesChanged == (byte) 1)
+                                    && enableLogging) {
+                                System.out
+                                        .println("nominals of continuous state changed  at t="
+                                                + time);
                             }
                         }
                     }
-                    
+
                     // Generate a line for this step
                     OutputRow.outputRow(_nativeLibrary, fmiModelDescription,
-                                        fmiComponent, time, file, csvSeparator, Boolean.FALSE);
+                            fmiComponent, time, file, csvSeparator,
+                            Boolean.FALSE);
                     numberOfSteps++;
                 }
 
                 if (_fmiVersion < 1.5) {
                     invoke(fmiModelDescription, "fmiTerminate",
-                           new Object[] { fmiComponent },
-                           "Could not terminate: ");
+                            new Object[] { fmiComponent },
+                            "Could not terminate: ");
                     // Don't throw an exception while freeing a slave.  Some
                     // fmiTerminateSlave calls free the slave for us.
                     Function freeModelInstance = fmiModelDescription
-                        .getFmiFunction("fmiFreeModelInstance");
-                    int fmiFlag = ((Integer) freeModelInstance.invoke(Integer.class,
-                                                              new Object[] { fmiComponent })).intValue();
+                            .getFmiFunction("fmiFreeModelInstance");
+                    int fmiFlag = ((Integer) freeModelInstance.invoke(
+                            Integer.class, new Object[] { fmiComponent }))
+                            .intValue();
                     if (fmiFlag >= FMILibrary.FMIStatus.fmiWarning) {
-                        System.err.println("Warning: Could not free slave instance: "
-                                           + FMIModelDescription.fmiStatusDescription(fmiFlag));
+                        System.err
+                                .println("Warning: Could not free slave instance: "
+                                        + FMIModelDescription
+                                                .fmiStatusDescription(fmiFlag));
                     }
                 } else {
                     if (!(eventInfo20.terminateSimulation == 1)) {
                         invoke(fmiModelDescription, "fmiTerminate",
-                               new Object[] { fmiComponent },
-                               "Could not terminate: ");
+                                new Object[] { fmiComponent },
+                                "Could not terminate: ");
                     }
                     invoke(fmiModelDescription, "fmiFreeInstance",
-                           new Object[] { fmiComponent },
-                           "Could not free the Co-Simulation instance:");
+                            new Object[] { fmiComponent },
+                            "Could not free the Co-Simulation instance:");
                 }
             } finally {
                 if (file != null) {

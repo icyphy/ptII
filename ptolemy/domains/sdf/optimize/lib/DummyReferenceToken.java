@@ -49,7 +49,7 @@ See {@link ptolemy.domains.sdf.optimize.OptimizingSDFDirector} and
 @since Ptolemy II 10.0
 @Pt.ProposedRating Red (mgeilen)
 @Pt.AcceptedRating Red ()
-*/
+ */
 public class DummyReferenceToken extends Token {
 
     /**
@@ -72,6 +72,7 @@ public class DummyReferenceToken extends Token {
      * Provide a string representation of the token.
      * @return string representation of the token
      */
+    @Override
     public String toString() {
         return _ref.toString();
     }

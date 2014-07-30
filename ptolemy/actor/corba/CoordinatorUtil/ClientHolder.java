@@ -19,14 +19,17 @@ public final class ClientHolder implements org.omg.CORBA.portable.Streamable {
         value = initialValue;
     }
 
+    @Override
     public void _read(org.omg.CORBA.portable.InputStream i) {
         value = ptolemy.actor.corba.CoordinatorUtil.ClientHelper.read(i);
     }
 
+    @Override
     public void _write(org.omg.CORBA.portable.OutputStream o) {
         ptolemy.actor.corba.CoordinatorUtil.ClientHelper.write(o, value);
     }
 
+    @Override
     public org.omg.CORBA.TypeCode _type() {
         return ptolemy.actor.corba.CoordinatorUtil.ClientHelper.type();
     }

@@ -145,6 +145,7 @@ public class GraphViewEvent extends java.util.EventObject {
     /**
      * Return a string representation of this event.
      */
+    @Override
     public String toString() {
         return "GraphViewEvent[" + idToString() + ", " + getTarget() + ", "
                 + getOldValue() + "]";

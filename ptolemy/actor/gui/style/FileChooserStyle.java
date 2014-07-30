@@ -100,6 +100,7 @@ public class FileChooserStyle extends ParameterEditorStyle {
      *  @param param The attribute that this annotates.
      *  @return True if the argument is a StringAttribute, false otherwise.
      */
+    @Override
     public boolean acceptable(Settable param) {
         if (!(param instanceof StringAttribute)) {
             return false;
@@ -115,6 +116,7 @@ public class FileChooserStyle extends ParameterEditorStyle {
      *  @exception IllegalActionException If thrown when accessing parameters
      *   specifying whether files or directories should be listed.
      */
+    @Override
     public void addEntry(PtolemyQuery query) throws IllegalActionException {
         Settable container = (Settable) getContainer();
         String name = container.getName();

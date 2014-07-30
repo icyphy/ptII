@@ -24,7 +24,7 @@
  PT_COPYRIGHT_VERSION_2
  COPYRIGHTENDKEY
 
-*/
+ */
 package ptolemy.actor.gui.properties;
 
 import java.awt.event.ItemEvent;
@@ -141,6 +141,7 @@ public class ComboBox extends GUIProperty implements ItemListener {
      *
      *  @param event The item event representing which item is selected.
      */
+    @Override
     public void itemStateChanged(ItemEvent event) {
         if (event.getStateChange() != ItemEvent.SELECTED) {
             return;
@@ -229,6 +230,7 @@ public class ComboBox extends GUIProperty implements ItemListener {
          *   an attribute with the name of this attribute.
          *  @see #getContainer()
          */
+        @Override
         public void setContainer(NamedObj container)
                 throws IllegalActionException, NameDuplicationException {
             ComboBox oldContainer = (ComboBox) getContainer();
@@ -238,7 +240,7 @@ public class ComboBox extends GUIProperty implements ItemListener {
             super.setContainer(container);
             if (container != null) {
                 ((JComboBox) ((ComboBox) container).getComponent())
-                        .addItem(this);
+                .addItem(this);
             }
         }
 
@@ -248,6 +250,7 @@ public class ComboBox extends GUIProperty implements ItemListener {
          *
          *  @return The display name of this item.
          */
+        @Override
         public String toString() {
             return getDisplayName();
         }
@@ -264,6 +267,7 @@ public class ComboBox extends GUIProperty implements ItemListener {
          *  @return A Swing component that can be enclosed in this GUI property.
          *  @exception IllegalActionException Not thrown in this base class.
          */
+        @Override
         protected JComponent _createComponent() throws IllegalActionException {
             // The component should not be used.
             return null;
@@ -271,10 +275,11 @@ public class ComboBox extends GUIProperty implements ItemListener {
     }
 
     /** Create a new JComboBox component.
-    *
-    *  @return A Swing component that can be enclosed in this GUI property.
-    *  @exception IllegalActionException Not thrown in this base class.
-    */
+     *
+     *  @return A Swing component that can be enclosed in this GUI property.
+     *  @exception IllegalActionException Not thrown in this base class.
+     */
+    @Override
     protected JComponent _createComponent() throws IllegalActionException {
         JComboBox comboBox = new JComboBox();
         comboBox.addItemListener(this);

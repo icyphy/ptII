@@ -80,6 +80,7 @@ public class SourceNodeAnalysis extends Analysis {
      *
      *  @return A description of the analysis and the associated analyzer.
      */
+    @Override
     public String toString() {
         return "Source node analysis using the following analyzer:\n"
                 + analyzer().toString();
@@ -92,6 +93,7 @@ public class SourceNodeAnalysis extends Analysis {
      *  @param analyzer The given analyzer.
      *  @return True if the given analyzer is valid for this analysis.
      */
+    @Override
     public boolean validAnalyzerInterface(Analyzer analyzer) {
         return analyzer instanceof SourceNodeAnalyzer;
     }

@@ -132,6 +132,7 @@ public class SDFTestDelay extends TypedAtomicActor {
      *
      *  @exception IllegalActionException If firing is not permitted.
      */
+    @Override
     public void fire() throws IllegalActionException {
         /* First we declare a variable that is a Token that can carry
          * integer data (ptolemy.data.IntToken).
@@ -184,6 +185,7 @@ public class SDFTestDelay extends TypedAtomicActor {
      *  @return True if the execution can continue.
      *  @exception IllegalActionException If postfiring is not permitted.
      */
+    @Override
     public boolean postfire() throws IllegalActionException {
         return true;
     }
@@ -207,6 +209,7 @@ public class SDFTestDelay extends TypedAtomicActor {
      *  @return True if the iteration can proceed.
      *  @exception IllegalActionException If prefiring is not permitted.
      */
+    @Override
     public boolean prefire() throws IllegalActionException {
         return true;
     }
@@ -222,6 +225,7 @@ public class SDFTestDelay extends TypedAtomicActor {
     /** This method is invoked to immediately terminate any execution
      *  within an actor.
      */
+    @Override
     public void terminate() {
         return;
     }
@@ -240,6 +244,7 @@ public class SDFTestDelay extends TypedAtomicActor {
      *
      *  @exception IllegalActionException If wrapup is not permitted.
      */
+    @Override
     public void wrapup() throws IllegalActionException {
         return;
     }

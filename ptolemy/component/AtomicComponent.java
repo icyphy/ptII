@@ -81,6 +81,7 @@ public class AtomicComponent extends ComponentEntity implements Component {
      *  @exception IllegalActionException If initialization
      *   cannot be completed (not thrown in this base class).
      */
+    @Override
     public void initialize() throws IllegalActionException {
     }
 
@@ -96,8 +97,9 @@ public class AtomicComponent extends ComponentEntity implements Component {
      *  @exception NameDuplicationException If this entity already has a
      *   port with the specified name.
      */
+    @Override
     public Port newPort(String name) throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         try {
             _workspace.getWriteAccess();
 
@@ -115,6 +117,7 @@ public class AtomicComponent extends ComponentEntity implements Component {
      *  @exception IllegalActionException If preinitialization
      *   cannot be completed (not thrown in this base class).
      */
+    @Override
     public void preinitialize() throws IllegalActionException {
     }
 
@@ -125,6 +128,7 @@ public class AtomicComponent extends ComponentEntity implements Component {
      *  @exception IllegalActionException If the run cannot be completed
      *   (not thrown in this base class).
      */
+    @Override
     public void run() throws IllegalActionException {
     }
 
@@ -137,6 +141,7 @@ public class AtomicComponent extends ComponentEntity implements Component {
      *  begin with preinitialize().
      *  @exception IllegalActionException If wrapup fails.
      */
+    @Override
     public void wrapup() throws IllegalActionException {
     }
 
@@ -161,8 +166,9 @@ public class AtomicComponent extends ComponentEntity implements Component {
      *  @exception NameDuplicationException If the port name collides with a
      *   name already in the entity.
      */
+    @Override
     protected void _addPort(Port port) throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         if (!(port instanceof MethodCallPort)) {
             throw new IllegalActionException(this, port,
                     "Incompatible port class for this entity.");

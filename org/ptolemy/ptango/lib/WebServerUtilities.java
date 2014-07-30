@@ -24,7 +24,7 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
-*/
+ */
 
 package org.ptolemy.ptango.lib;
 
@@ -359,9 +359,9 @@ public class WebServerUtilities {
                 // Check for matching application path
                 if (handler instanceof ServletContextHandler
                         && ((ServletContextHandler) handler)
-                                .getContextPath()
-                                .equalsIgnoreCase(
-                                        appInfo.getApplicationPath().toString())) {
+                        .getContextPath()
+                        .equalsIgnoreCase(
+                                appInfo.getApplicationPath().toString())) {
                     for (URI servletPath : appInfo.getServletInfo().keySet()) {
                         ServletHandler servletHandler = ((ServletContextHandler) handler)
                                 .getServletHandler();
@@ -450,13 +450,13 @@ public class WebServerUtilities {
 
         for (URI servletPath : appInfo.getServletInfo().keySet()) {
             servletHandler
-                    .addServlet(
-                            new ServletHolder(appInfo.getServletInfo().get(
-                                    servletPath)), servletPath.toString());
+            .addServlet(
+                    new ServletHolder(appInfo.getServletInfo().get(
+                            servletPath)), servletPath.toString());
         }
 
         ((ContextHandlerCollection) _server.getHandler())
-                .addHandler(servletHandler);
+        .addHandler(servletHandler);
 
         // Need to explicitly start the handler since it is added to the
         // server's handler list AFTER the server has already started
@@ -526,9 +526,9 @@ public class WebServerUtilities {
                                                     .getResources()));
                                     newResources.add(resource);
                                     resources
-                                            .setResources(newResources
-                                                    .toArray(new FileResource[newResources
-                                                            .size()]));
+                                    .setResources(newResources
+                                            .toArray(new FileResource[newResources
+                                                                      .size()]));
 
                                 }
                             }
@@ -538,19 +538,19 @@ public class WebServerUtilities {
 
                             if (appInfo.getTemporaryFileLocation() != null
                                     && !appInfo.getTemporaryFileLocation()
-                                            .toString().isEmpty()) {
+                                    .toString().isEmpty()) {
                                 FileResource tempResource = new FileResource(
                                         appInfo.getTemporaryFileLocation()
-                                                .asURL());
+                                        .asURL());
                                 if (!tempResource.isContainedIn(resources)) {
                                     ArrayList<Resource> newResources = new ArrayList<Resource>(
                                             Arrays.asList(resources
                                                     .getResources()));
                                     newResources.add(tempResource);
                                     resources
-                                            .setResources(newResources
-                                                    .toArray(new FileResource[newResources
-                                                            .size()]));
+                                    .setResources(newResources
+                                            .toArray(new FileResource[newResources
+                                                                      .size()]));
                                 }
                             }
 
@@ -591,8 +591,8 @@ public class WebServerUtilities {
                     if (appInfo.getTemporaryFileLocation() != null
                             && (appInfo.getTemporaryFileLocation()
                                     .getExpression() != null)
-                            && (!appInfo.getTemporaryFileLocation()
-                                    .getExpression().isEmpty())) {
+                                    && (!appInfo.getTemporaryFileLocation()
+                                            .getExpression().isEmpty())) {
 
                         try {
                             resources.add(new FileResource(appInfo
@@ -620,7 +620,7 @@ public class WebServerUtilities {
                         // one location.
                         resourceHandler.setBaseResource(new ResourceCollection(
                                 resources.toArray(new FileResource[resources
-                                        .size()])));
+                                                                   .size()])));
 
                         fileHandler.setHandler(resourceHandler);
                         handlers.add(fileHandler);
@@ -631,7 +631,7 @@ public class WebServerUtilities {
 
         for (ContextHandler handler : handlers) {
             ((ContextHandlerCollection) _server.getHandler())
-                    .addHandler(handler);
+            .addHandler(handler);
 
             // Need to explicitly start each new handler since they are added to
             // the server's handler list AFTER the server has already started
@@ -683,6 +683,7 @@ public class WebServerUtilities {
          *  WebServer's wrapup() will interrupt this thread) or if an
          *  exception occurs.
          */
+        @Override
         public void run() {
 
             while (!Thread.interrupted()) {

@@ -109,13 +109,13 @@ public class ColtBeta extends ColtRandomSource {
         alpha.setExpression("2.0");
         alpha.setTypeEquals(BaseType.DOUBLE);
         new SingletonParameter(alpha.getPort(), "_showName")
-                .setToken(BooleanToken.TRUE);
+        .setToken(BooleanToken.TRUE);
 
         beta = new PortParameter(this, "beta");
         beta.setExpression("2.0");
         beta.setTypeEquals(BaseType.DOUBLE);
         new SingletonParameter(beta.getPort(), "_showName")
-                .setToken(BooleanToken.TRUE);
+        .setToken(BooleanToken.TRUE);
 
         beta.moveToFirst();
         alpha.moveToFirst();
@@ -142,6 +142,7 @@ public class ColtBeta extends ColtRandomSource {
      *  remain constant throughout an iteration.
      *  @exception IllegalActionException If there is no director.
      */
+    @Override
     public void fire() throws IllegalActionException {
         alpha.update();
         beta.update();
@@ -154,6 +155,7 @@ public class ColtBeta extends ColtRandomSource {
 
     /** Method that is called after _randomNumberGenerator is changed.
      */
+    @Override
     protected void _createdNewRandomNumberGenerator() {
         _generator = new Beta(2.0, 2.0, _randomNumberGenerator);
     }
@@ -161,6 +163,7 @@ public class ColtBeta extends ColtRandomSource {
     /** Generate a new random number.
      *  @exception IllegalActionException If parameter values are incorrect.
      */
+    @Override
     protected void _generateRandomNumber() throws IllegalActionException {
         double alphaValue = ((DoubleToken) alpha.getToken()).doubleValue();
         double betaValue = ((DoubleToken) beta.getToken()).doubleValue();

@@ -83,6 +83,7 @@ public abstract class AbstractConvertibleToken extends Token {
      *  this token are of incomparable types, or the operation does
      *  not make sense for the given types.
      */
+    @Override
     public Token add(Token rightArgument) throws IllegalActionException {
         int typeInfo = TypeLattice.compare(getType(), rightArgument);
 
@@ -128,6 +129,7 @@ public abstract class AbstractConvertibleToken extends Token {
      *  this token are of incomparable types, or the operation does
      *  not make sense for the given types.
      */
+    @Override
     public Token addReverse(ptolemy.data.Token leftArgument)
             throws IllegalActionException {
         int typeInfo = TypeLattice.compare(leftArgument, getType());
@@ -175,6 +177,7 @@ public abstract class AbstractConvertibleToken extends Token {
      *   and this token are of incomparable types, or the operation
      *   does not make sense for the given types.
      */
+    @Override
     public final Token divide(Token rightArgument)
             throws IllegalActionException {
         int typeInfo = TypeLattice.compare(getType(), rightArgument);
@@ -220,6 +223,7 @@ public abstract class AbstractConvertibleToken extends Token {
      *  this token are of incomparable types, or the operation does
      *  not make sense for the given types.
      */
+    @Override
     public final Token divideReverse(Token leftArgument)
             throws IllegalActionException {
         int typeInfo = TypeLattice.compare(leftArgument, getType());
@@ -275,6 +279,7 @@ public abstract class AbstractConvertibleToken extends Token {
      *   this token are of incomparable types, or the operation does
      *   not make sense for the given types.
      */
+    @Override
     public final BooleanToken isCloseTo(Token token, double epsilon)
             throws IllegalActionException {
         // Note that if we had absolute(), subtraction() and islessThan()
@@ -320,6 +325,7 @@ public abstract class AbstractConvertibleToken extends Token {
      *  this token are of incomparable types, or the operation does
      *  not make sense for the given types.
      */
+    @Override
     public final BooleanToken isEqualTo(Token rightArgument)
             throws IllegalActionException {
         int typeInfo = TypeLattice.compare(getType(), rightArgument);
@@ -363,6 +369,7 @@ public abstract class AbstractConvertibleToken extends Token {
      *  this token are of incomparable types, or the operation does
      *  not make sense for the given types.
      */
+    @Override
     public final Token modulo(Token rightArgument)
             throws IllegalActionException {
         int typeInfo = TypeLattice.compare(getType(), rightArgument);
@@ -409,6 +416,7 @@ public abstract class AbstractConvertibleToken extends Token {
      *  this token are of incomparable types, or the operation does
      *  not make sense for the given types.
      */
+    @Override
     public final Token moduloReverse(Token leftArgument)
             throws IllegalActionException {
         int typeInfo = TypeLattice.compare(leftArgument, getType());
@@ -457,6 +465,7 @@ public abstract class AbstractConvertibleToken extends Token {
      *   and this token are of incomparable types, or the operation
      *   does not make sense for the given types.
      */
+    @Override
     public final Token multiply(Token rightArgument)
             throws IllegalActionException {
         int typeInfo = TypeLattice.compare(getType(), rightArgument);
@@ -503,6 +512,7 @@ public abstract class AbstractConvertibleToken extends Token {
      *  this token are of incomparable types, or the operation does
      *  not make sense for the given types.
      */
+    @Override
     public final Token multiplyReverse(Token leftArgument)
             throws IllegalActionException {
         int typeInfo = TypeLattice.compare(leftArgument, getType());
@@ -551,6 +561,7 @@ public abstract class AbstractConvertibleToken extends Token {
      *  this token are of incomparable types, or the operation does
      *  not make sense for the given types.
      */
+    @Override
     public final Token subtract(Token rightArgument)
             throws IllegalActionException {
         int typeInfo = TypeLattice.compare(getType(), rightArgument);
@@ -597,6 +608,7 @@ public abstract class AbstractConvertibleToken extends Token {
      *  this token are of incomparable types, or the operation does
      *  not make sense for the given types.
      */
+    @Override
     public final Token subtractReverse(Token leftArgument)
             throws IllegalActionException {
         int typeInfo = TypeLattice.compare(leftArgument, getType());

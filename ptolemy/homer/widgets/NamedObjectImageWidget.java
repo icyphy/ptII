@@ -39,15 +39,15 @@ import ptolemy.homer.kernel.PositionableElement;
 //// NamedObjectImageWidget
 
 /**
-* This widget visualizes a named object using an image.
-* @author Anar Huseynov
-* @version $Id$
-* @since Ptolemy II 10.0
-* @Pt.ProposedRating Red (ahuseyno)
-* @Pt.AcceptedRating Red (ahuseyno)
-*/
+ * This widget visualizes a named object using an image.
+ * @author Anar Huseynov
+ * @version $Id$
+ * @since Ptolemy II 10.0
+ * @Pt.ProposedRating Red (ahuseyno)
+ * @Pt.AcceptedRating Red (ahuseyno)
+ */
 public class NamedObjectImageWidget extends ResizableImageWidget implements
-        NamedObjectWidgetInterface {
+NamedObjectWidgetInterface {
     /**
      * Create a new instance of the widget.
      * @param scene The scene containing the widget.
@@ -70,6 +70,7 @@ public class NamedObjectImageWidget extends ResizableImageWidget implements
      * Return positionable element that the instance is visualizing.
      * @return the positionable element.
      */
+    @Override
     public PositionableElement getPositionableElement() {
         return _element;
     }

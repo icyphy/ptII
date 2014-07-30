@@ -148,7 +148,7 @@ public class PNDirector extends CompositeProcessDirector {
      *   an entity with the specified name.
      */
     public PNDirector(Workspace workspace) throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         super(workspace);
         _init();
     }
@@ -212,6 +212,7 @@ public class PNDirector extends CompositeProcessDirector {
      *   cannot be cloned.
      *  @return The new PNDirector.
      */
+    @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         PNDirector newObject = (PNDirector) super.clone(workspace);
         //System.out.println("PNDirector.clone: " + _processListeners);
@@ -230,6 +231,7 @@ public class PNDirector extends CompositeProcessDirector {
      *  @exception IllegalActionException If the initialize() method of one
      *  of the deeply contained actors throws it.
      */
+    @Override
     public void initialize() throws IllegalActionException {
         // Initialize these counts BEFORE creating threads.
         _readBlockedQueues.clear();
@@ -245,6 +247,7 @@ public class PNDirector extends CompositeProcessDirector {
      *  of the parameter is 1.
      *  @return A new PNQueueReceiver.
      */
+    @Override
     public Receiver newReceiver() {
         PNQueueReceiver receiver = new PNQueueReceiver();
         _receivers.add(new WeakReference(receiver));
@@ -274,6 +277,7 @@ public class PNDirector extends CompositeProcessDirector {
      *  @exception IllegalActionException Not thrown in this base class. May be
      *  thrown by derived classes.
      */
+    @Override
     public boolean postfire() throws IllegalActionException {
         _notDone = super.postfire();
 
@@ -292,6 +296,7 @@ public class PNDirector extends CompositeProcessDirector {
     /** Override the base class to reset the capacities of all the receivers.
      *  @exception IllegalActionException If the superclass throws it.
      */
+    @Override
     public void preinitialize() throws IllegalActionException {
         super.preinitialize();
 
@@ -355,11 +360,12 @@ public class PNDirector extends CompositeProcessDirector {
      *  @return An array of suggested directors to be used with ModalModel.
      *  @see ptolemy.actor.Director#suggestedModalModelDirectors()
      */
+    @Override
     public String[] suggestedModalModelDirectors() {
         return new String[] {
                 "ptolemy.domains.modal.kernel.MultirateFSMDirector",
                 "ptolemy.domains.modal.kernel.FSMDirector",
-                "ptolemy.domains.modal.kernel.NonStrictFSMDirector" };
+        "ptolemy.domains.modal.kernel.NonStrictFSMDirector" };
     }
 
     /** Return true to indicate that a ModalModel under control
@@ -367,6 +373,7 @@ public class PNDirector extends CompositeProcessDirector {
      *  @return True indicating a ModalModel under control of this director
      *  supports multirate firing.
      */
+    @Override
     public boolean supportMultirateFiring() {
         return true;
     }
@@ -532,6 +539,7 @@ public class PNDirector extends CompositeProcessDirector {
      *   is exceeded.
      *  This might be thrown by derived classes.
      */
+    @Override
     protected boolean _resolveInternalDeadlock() throws IllegalActionException {
         if (_writeBlockedQueues.isEmpty() && !_readBlockedQueues.isEmpty()) {
             // There is a real deadlock.
@@ -575,7 +583,7 @@ public class PNDirector extends CompositeProcessDirector {
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
     private void _init() throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         initialQueueCapacity = new Parameter(this, "initialQueueCapacity",
                 new IntToken(1));
         initialQueueCapacity.setTypeEquals(BaseType.INT);

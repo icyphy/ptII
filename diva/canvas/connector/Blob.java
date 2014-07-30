@@ -160,6 +160,7 @@ public class Blob implements ConnectorEnd {
     /** Get the bounding box of the shape used to draw
      * this connector end.
      */
+    @Override
     public Rectangle2D getBounds() {
         if (_filled) {
             // No outline, just use the shape
@@ -173,6 +174,7 @@ public class Blob implements ConnectorEnd {
 
     /** Get the connection point into the given point
      */
+    @Override
     public void getConnection(Point2D p) {
         if (!_shapeValid) {
             reshape();
@@ -211,6 +213,7 @@ public class Blob implements ConnectorEnd {
 
     /** Get the origin into the given point.
      */
+    @Override
     public void getOrigin(Point2D p) {
         p.setLocation(_originX, _originY);
     }
@@ -237,6 +240,7 @@ public class Blob implements ConnectorEnd {
      * the graphics context is already set up with the correct
      * paint and stroke.
      */
+    @Override
     public void paint(Graphics2D g) {
         if (!_shapeValid) {
             reshape();
@@ -354,7 +358,7 @@ public class Blob implements ConnectorEnd {
             arrow.lineTo(_originX + 2 * _unit + 3.0 * _unit, _originY);
             arrow.lineTo(_originX + 2 * _unit + 1.5 * _unit, _originY + _unit);
             arrow.lineTo(_originX + 2 * _unit, _originY);
-            */
+             */
             arrow.curveTo(_originX, _originY + 1.3 * _unit, _originX + 2
                     * _unit, _originY + 1.3 * _unit, _originX + 2 * _unit,
                     _originY);
@@ -406,6 +410,7 @@ public class Blob implements ConnectorEnd {
     /** Set the normal of the blob. The argument is the
      * angle in radians away from the origin.
      */
+    @Override
     public void setNormal(double angle) {
         _normal = angle;
         _shapeValid = false;
@@ -413,6 +418,7 @@ public class Blob implements ConnectorEnd {
 
     /** Set the end-point of the blob.
      */
+    @Override
     public void setOrigin(double x, double y) {
         translate(x - _originX, y - _originY);
     }
@@ -435,6 +441,7 @@ public class Blob implements ConnectorEnd {
 
     /** Translate the origin by the given amount.
      */
+    @Override
     public void translate(double x, double y) {
         _originX += x;
         _originY += y;

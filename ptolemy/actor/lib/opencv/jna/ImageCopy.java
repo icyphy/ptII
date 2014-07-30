@@ -78,6 +78,7 @@ public class ImageCopy extends Transformer {
     /** Output a frame.
      *  @exception IllegalActionException If thrown while writing to the port.
      */
+    @Override
     public void fire() throws IllegalActionException {
 
         if (input.hasToken(0)) {
@@ -101,6 +102,7 @@ public class ImageCopy extends Transformer {
     /** Initialize internal frame.
      *  @exception IllegalActionException If thrown by the super class.
      */
+    @Override
     public void initialize() throws IllegalActionException {
         super.initialize();
         _copyFrame = Pointer.NULL;
@@ -108,8 +110,9 @@ public class ImageCopy extends Transformer {
     }
 
     /** Release image.
-    *  @exception IllegalActionException If thrown by the super class.
-    */
+     *  @exception IllegalActionException If thrown by the super class.
+     */
+    @Override
     public void wrapup() throws IllegalActionException {
         super.wrapup();
         if (_copyFrame == Pointer.NULL) {

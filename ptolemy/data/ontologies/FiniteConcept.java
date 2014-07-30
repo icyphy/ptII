@@ -99,6 +99,7 @@ public class FiniteConcept extends Concept implements Flowable {
     /** Return the below port specified in the constructor.
      *  @return The below port specified in the constructor.
      */
+    @Override
     public ComponentPort getIncomingPort() {
         return belowPort;
     }
@@ -106,6 +107,7 @@ public class FiniteConcept extends Concept implements Flowable {
     /** Return the above port specified in the constructor.
      *  @return The above port specified in the constructor.
      */
+    @Override
     public ComponentPort getOutgoingPort() {
         return abovePort;
     }
@@ -114,6 +116,7 @@ public class FiniteConcept extends Concept implements Flowable {
      *
      * @return The name of this concept.
      */
+    @Override
     public String toString() {
         return getName();
     }

@@ -56,6 +56,7 @@ public class SnapConstraint implements PointConstraint {
      *  resolution.
      *  @param point The point to modify.
      */
+    @Override
     public void constrain(Point2D point) {
         double x = Math.round(point.getX() / _resolution) * _resolution;
         double y = Math.round(point.getY() / _resolution) * _resolution;
@@ -141,6 +142,7 @@ public class SnapConstraint implements PointConstraint {
     /** Return true to indicate that this does snap to grid.
      *  @return True.
      */
+    @Override
     public boolean snapped() {
         return true;
     }

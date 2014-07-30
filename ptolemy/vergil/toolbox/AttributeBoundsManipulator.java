@@ -82,6 +82,7 @@ public class AttributeBoundsManipulator extends BoundsManipulator {
     /** Make a persistent record of the new size by issuing a change request.
      *  @param e The mouse event.
      */
+    @Override
     public void mouseReleased(LayerEvent e) {
         Figure child = getChild();
 
@@ -103,8 +104,8 @@ public class AttributeBoundsManipulator extends BoundsManipulator {
             if (_boundsOnMousePressed != null
                     && Math.abs(bounds.getWidth()
                             - _boundsOnMousePressed.getWidth()) < resolution
-                    && Math.abs(bounds.getHeight()
-                            - _boundsOnMousePressed.getHeight()) < resolution) {
+                            && Math.abs(bounds.getHeight()
+                                    - _boundsOnMousePressed.getHeight()) < resolution) {
                 // Change is not big enough. Return.
                 return;
             }
@@ -198,14 +199,14 @@ public class AttributeBoundsManipulator extends BoundsManipulator {
                         // (this is a tricky geometry problem!).
                         newX = snappedXY[0]
                                 + snappedWidthHeight[0]
-                                / _boundsOnMousePressed.getWidth()
-                                * (previousLocation[0] - _boundsOnMousePressed
-                                        .getX());
+                                        / _boundsOnMousePressed.getWidth()
+                                        * (previousLocation[0] - _boundsOnMousePressed
+                                                .getX());
                         newY = snappedXY[1]
                                 + snappedWidthHeight[1]
-                                / _boundsOnMousePressed.getHeight()
-                                * (previousLocation[1] - _boundsOnMousePressed
-                                        .getY());
+                                        / _boundsOnMousePressed.getHeight()
+                                        * (previousLocation[1] - _boundsOnMousePressed
+                                                .getY());
                     } else {
                         // This is legacy code. Should never be invoked.
                         // If the figure is centered, have to use the center
@@ -251,6 +252,7 @@ public class AttributeBoundsManipulator extends BoundsManipulator {
     /** Make a record of the size before resizing.
      *  @param e The mouse event.
      */
+    @Override
     public void mousePressed(LayerEvent e) {
         Figure child = getChild();
 
@@ -279,6 +281,7 @@ public class AttributeBoundsManipulator extends BoundsManipulator {
      *  to yield a decorator that gets displayed while the object
      *  is selected.
      */
+    @Override
     public FigureDecorator newInstance(Figure f) {
         BoundsManipulator m = new AttributeBoundsManipulator(_container);
         m.setGrabHandleFactory(this.getGrabHandleFactory());
@@ -351,6 +354,7 @@ public class AttributeBoundsManipulator extends BoundsManipulator {
         /** Override the base class to notify the enclosing BoundsInteractor.
          *  @param e The mouse event.
          */
+        @Override
         public void mousePressed(LayerEvent e) {
             super.mousePressed(e);
             AttributeBoundsManipulator.this.mousePressed(e);
@@ -359,6 +363,7 @@ public class AttributeBoundsManipulator extends BoundsManipulator {
         /** Override the base class to notify the enclosing BoundsInteractor.
          *  @param e The mouse event.
          */
+        @Override
         public void mouseReleased(LayerEvent e) {
             super.mouseReleased(e);
             AttributeBoundsManipulator.this.mouseReleased(e);
@@ -373,6 +378,7 @@ public class AttributeBoundsManipulator extends BoundsManipulator {
 
         /** Translate the grab-handle.
          */
+        @Override
         public void translate(LayerEvent e, double x, double y) {
             // Snap to grid.
             double[] snapped = _snapConstraint.constrain(x, y);

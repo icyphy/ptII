@@ -70,6 +70,7 @@ public class ASTPtProductNode extends ASTPtRootNode {
      *  @exception CloneNotSupportedException If the superclass clone()
      *   method throws it.
      */
+    @Override
     public Object clone() throws CloneNotSupportedException {
         ASTPtProductNode newNode = (ASTPtProductNode) super.clone();
         newNode._lexicalTokens = (ArrayList<Token>) _lexicalTokens.clone();
@@ -92,6 +93,7 @@ public class ASTPtProductNode extends ASTPtRootNode {
      *  renaming from identifiers in this node to identifiers in the
      *  given node.
      */
+    @Override
     public boolean isCongruent(ASTPtRootNode node, Map renaming) {
         if (!super.isCongruent(node, renaming)) {
             return false;
@@ -119,6 +121,7 @@ public class ASTPtProductNode extends ASTPtRootNode {
 
     /** Close this node.
      */
+    @Override
     public void jjtClose() {
         super.jjtClose();
         _lexicalTokens.trimToSize();
@@ -126,6 +129,7 @@ public class ASTPtProductNode extends ASTPtRootNode {
 
     /** Traverse this node with the given visitor.
      */
+    @Override
     public void visit(ParseTreeVisitor visitor) throws IllegalActionException {
         visitor.visitProductNode(this);
     }

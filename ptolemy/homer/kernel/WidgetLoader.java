@@ -111,7 +111,7 @@ public class WidgetLoader {
      */
     private static Widget _getObjectWidget(Scene scene,
             PositionableElement element, Class<?> targetType)
-            throws IllegalActionException {
+                    throws IllegalActionException {
         if (targetType == null) {
             return null;
         }

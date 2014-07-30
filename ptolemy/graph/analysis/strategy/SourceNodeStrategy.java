@@ -52,7 +52,7 @@ import ptolemy.graph.analysis.analyzer.SourceNodeAnalyzer;
  @version $Id$
  */
 public class SourceNodeStrategy extends CachedStrategy implements
-        SourceNodeAnalyzer {
+SourceNodeAnalyzer {
     /** Construct an instance of this strategy for a given graph.
      *
      *  @param graph The given graph.
@@ -69,6 +69,7 @@ public class SourceNodeStrategy extends CachedStrategy implements
      *
      *  @return The source nodes.
      */
+    @Override
     public List nodes() {
         return (List) _result();
     }
@@ -77,6 +78,7 @@ public class SourceNodeStrategy extends CachedStrategy implements
      *
      *  @return Return a description of the analyzer..
      */
+    @Override
     public String toString() {
         return "Ordinary Source-loop analyzer.\n";
     }
@@ -86,6 +88,7 @@ public class SourceNodeStrategy extends CachedStrategy implements
      *
      *  @return True if the given graph is of class DirectedGraph.
      */
+    @Override
     public boolean valid() {
         return graph() instanceof DirectedGraph;
     }
@@ -98,6 +101,7 @@ public class SourceNodeStrategy extends CachedStrategy implements
      *
      *  @return The source nodes.
      */
+    @Override
     protected Object _compute() {
         ArrayList sourceNodes = new ArrayList();
         Iterator nodes = graph().nodes().iterator();

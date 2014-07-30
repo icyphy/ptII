@@ -51,6 +51,7 @@ public class CurrentMicrostep extends NamedProgramCodeGeneratorAdapter {
     /** Return the name of the port that is the time source.
      *  @return The string "trigger".
      */
+    @Override
     public String getTimeSourcePortName() {
         return "trigger";
     }

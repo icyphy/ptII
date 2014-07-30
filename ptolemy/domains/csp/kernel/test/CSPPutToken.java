@@ -61,6 +61,7 @@ public class CSPPutToken extends CSPPut {
 
     /**
      */
+    @Override
     public void fire() throws IllegalActionException {
         int cnt = 0;
 

@@ -132,6 +132,7 @@ public class CSVWriter extends LineWriter {
      *   opened file cannot be closed; or if the attribute is
      *   <i>numberOfLinesToSkip</i> and its value is negative.
      */
+    @Override
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         if (attribute == separator) {
@@ -157,6 +158,7 @@ public class CSVWriter extends LineWriter {
      *  @exception CloneNotSupportedException If a derived class contains
      *   an attribute that cannot be cloned.
      */
+    @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         CSVWriter newObject = (CSVWriter) super.clone(workspace);
         newObject.input.setTypeEquals(BaseType.UNKNOWN);
@@ -170,6 +172,7 @@ public class CSVWriter extends LineWriter {
      *  produce output data and schedule events.
      *  @exception IllegalActionException If a derived class throws it.
      */
+    @Override
     public void initialize() throws IllegalActionException {
         super.initialize();
         _firstFiring = true;
@@ -183,6 +186,7 @@ public class CSVWriter extends LineWriter {
      *  @param token The token to write.
      *  @exception IllegalActionException Not thrown in this base class.
      */
+    @Override
     protected void _writeToken(Token token) throws IllegalActionException {
         RecordToken record = (RecordToken) token;
         String eol = "\n";

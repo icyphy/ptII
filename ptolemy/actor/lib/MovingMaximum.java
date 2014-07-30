@@ -49,6 +49,7 @@ import ptolemy.kernel.util.Workspace;
  @Pt.AcceptedRating Red (tfeng)
  @deprecated Use RunningMaximum.
  */
+@Deprecated
 public class MovingMaximum extends Transformer {
 
     /** Construct an actor with the specified container and name.
@@ -81,6 +82,7 @@ public class MovingMaximum extends Transformer {
      *   if one of the attributes cannot be cloned.
      *  @return A new ComponentEntity.
      */
+    @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         MovingMaximum newObject = (MovingMaximum) super.clone(workspace);
         newObject.input.setTypeAtMost(BaseType.SCALAR);
@@ -94,6 +96,7 @@ public class MovingMaximum extends Transformer {
      *  @exception IllegalActionException If getting token from input or
      *  sending token to output throws it.
      */
+    @Override
     public void fire() throws IllegalActionException {
         super.fire();
 
@@ -111,6 +114,7 @@ public class MovingMaximum extends Transformer {
      *  @exception IllegalActionException If the initialize() method of the
      *  superclass throws it.
      */
+    @Override
     public void initialize() throws IllegalActionException {
         super.initialize();
 
@@ -123,6 +127,7 @@ public class MovingMaximum extends Transformer {
      *  @exception IllegalActionException If the postfire() method of the
      *  superclass throws it.
      */
+    @Override
     public boolean postfire() throws IllegalActionException {
         boolean result = super.postfire();
 
@@ -139,6 +144,7 @@ public class MovingMaximum extends Transformer {
      *  @exception IllegalActionException If the prefire() method of the
      *  superclass throws it.
      */
+    @Override
     public boolean prefire() throws IllegalActionException {
         return super.prefire() && input.hasToken(0);
     }

@@ -25,7 +25,7 @@ ENHANCEMENTS, OR MODIFICATIONS.
                                                 COPYRIGHTENDKEY
 
 
-*/
+ */
 package ptdb.kernel.database;
 
 import java.io.File;
@@ -179,6 +179,7 @@ public class OracleXMLDBConnection implements DBConnection {
      * @exception DBConnectionException If thrown while aborting transaction in
      * the database.
      */
+    @Override
     public void abortConnection() throws DBConnectionException {
         try {
             _checkConnectionAlive();
@@ -236,7 +237,8 @@ public class OracleXMLDBConnection implements DBConnection {
                     _environment.close();
                 }
             } catch (Exception e) {
-                throw new DBConnectionException("Failed to close the environment?", e);
+                throw new DBConnectionException(
+                        "Failed to close the environment?", e);
             }
 
             _environment = new Environment(dbFile, config);
@@ -259,6 +261,7 @@ public class OracleXMLDBConnection implements DBConnection {
      * @exception DBConnectionException If thrown while committing transaction
      * in the database.
      */
+    @Override
     public void commitConnection() throws DBConnectionException {
         try {
 
@@ -285,6 +288,7 @@ public class OracleXMLDBConnection implements DBConnection {
      * @exception DBConnectionException If thrown while closing database
      * connection.
      */
+    @Override
     public void closeConnection() throws DBConnectionException {
         try {
             _checkConnectionAlive();
@@ -315,6 +319,7 @@ public class OracleXMLDBConnection implements DBConnection {
      * already exists.
      * @exception CircularDependencyException If thrown while creating reference string.
      */
+    @Override
     public String executeCreateModelTask(CreateModelTask task)
             throws DBExecutionException, ModelAlreadyExistException,
             CircularDependencyException {
@@ -382,6 +387,7 @@ public class OracleXMLDBConnection implements DBConnection {
      * @exception DBExecutionException If thrown while searching in the
      * database.
      */
+    @Override
     public ArrayList<XMLDBModel> executeFetchHierarchyTask(
             FetchHierarchyTask task) throws DBExecutionException {
         ArrayList<XMLDBModel> modelsList = task.getModelsList();
@@ -406,6 +412,7 @@ public class OracleXMLDBConnection implements DBConnection {
      * @exception DBExecutionException thrown if there is an error while reading
      * the model list from the database.
      */
+    @Override
     public List<XMLDBModel> executeGetListOfAllModels()
             throws DBExecutionException {
 
@@ -448,6 +455,7 @@ public class OracleXMLDBConnection implements DBConnection {
      * @return List of attributes stored in the database.
      * @exception DBExecutionException Thrown if there is a problem in executing the operation.
      */
+    @Override
     public ArrayList<XMLDBAttribute> executeGetAttributesTask(
             GetAttributesTask task) throws DBExecutionException {
 
@@ -516,6 +524,7 @@ public class OracleXMLDBConnection implements DBConnection {
      * @exception DBExecutionException If thrown while fetching the reference
      * string.
      */
+    @Override
     public String executeGetReferenceStringTask(GetReferenceStringTask task)
             throws DBExecutionException {
         String modelId = _getModelIdFromModelName(task.getModelName());
@@ -537,6 +546,7 @@ public class OracleXMLDBConnection implements DBConnection {
      * @exception DBExecutionException If thrown while fetching the parents list
      * from the database.
      */
+    @Override
     public List<XMLDBModel> executeGetFirstLevelParents(
             GetFirstLevelParentsTask task) throws DBExecutionException {
         StringBuffer references = new StringBuffer("");
@@ -605,6 +615,7 @@ public class OracleXMLDBConnection implements DBConnection {
      * @exception DBExecutionException Thrown if there is a problem executing
      * the task.
      */
+    @Override
     public XMLDBModel executeGetModelTask(GetModelTask task)
             throws DBExecutionException {
 
@@ -651,6 +662,7 @@ public class OracleXMLDBConnection implements DBConnection {
      * @exception DBExecutionException Thrown if there is a problem executing
      * the task.
      */
+    @Override
     public XMLDBModel executeGetCompleteModelTask(GetModelTask task)
             throws DBExecutionException {
 
@@ -789,6 +801,7 @@ public class OracleXMLDBConnection implements DBConnection {
      * @exception DBExecutionException If thrown while searching in the
      * database.
      */
+    @Override
     public ArrayList<XMLDBModel> executeAttributeSearchTask(
             AttributeSearchTask task) throws DBExecutionException {
 
@@ -850,6 +863,7 @@ public class OracleXMLDBConnection implements DBConnection {
      * @return The XMLDBAttribute object that was stored in the Database.
      * @exception DBExecutionException Thrown if the operation fails.
      */
+    @Override
     public XMLDBAttribute executeCreateAttributeTask(CreateAttributeTask task)
             throws DBExecutionException {
 
@@ -914,6 +928,7 @@ public class OracleXMLDBConnection implements DBConnection {
      * @param task The task that contains the attribute to be deleted.
      * @exception DBExecutionException Thrown if the operation fails.
      */
+    @Override
     public void executeDeleteAttributeTask(DeleteAttributeTask task)
             throws DBExecutionException {
 
@@ -955,6 +970,7 @@ public class OracleXMLDBConnection implements DBConnection {
      * @exception DBExecutionException If thrown while searching in the
      * database.
      */
+    @Override
     public ArrayList<XMLDBModel> executeGraphSearchTask(GraphSearchTask task)
             throws DBExecutionException {
 
@@ -1006,7 +1022,7 @@ public class OracleXMLDBConnection implements DBConnection {
                                                 actor, portAttached,
                                                 portConnected,
                                                 (ComponentEntity) portConnected
-                                                        .getContainer(),
+                                                .getContainer(),
                                                 evaluatedPairs);
 
                                         if (componentQuery != null) {
@@ -1068,6 +1084,7 @@ public class OracleXMLDBConnection implements DBConnection {
      * @exception CircularDependencyException If thrown while creating reference
      * string.
      */
+    @Override
     public String executeSaveModelTask(SaveModelTask task)
             throws DBExecutionException, CircularDependencyException {
 
@@ -1138,9 +1155,10 @@ public class OracleXMLDBConnection implements DBConnection {
      * @return List of matching models.
      * @exception DBExecutionException If thrown while searching the database.
      */
+    @Override
     public ArrayList<XMLDBModel> executeModelNameSearchTask(
             ModelNameSearchTask modelNameSearchTask)
-            throws DBExecutionException {
+                    throws DBExecutionException {
 
         String modelNameSearchQuery = "for $entity in collection(\""
                 + _params.getContainerName()
@@ -1177,6 +1195,7 @@ public class OracleXMLDBConnection implements DBConnection {
      * @param task Contains a list of models to be deleted from the database.
      * @exception DBExecutionException Thrown if the operation fails.
      */
+    @Override
     public void executeRemoveModelsTask(RemoveModelsTask task)
             throws DBExecutionException {
 
@@ -1216,6 +1235,7 @@ public class OracleXMLDBConnection implements DBConnection {
      * @exception DBModelNotFoundException Thrown if the model with the name to be changed does not exist.
      * @exception ModelAlreadyExistException Thrown if the new name is a name of a model that is already in the database.
      */
+    @Override
     public void executeRenameModelTask(RenameModelTask task)
             throws DBConnectionException, DBExecutionException,
             ModelAlreadyExistException, DBModelNotFoundException {
@@ -1292,7 +1312,7 @@ public class OracleXMLDBConnection implements DBConnection {
         try {
             if (existingModelDocument == null
                     || (existingModelContent = existingModelDocument
-                            .getContentAsString()) == null) {
+                    .getContentAsString()) == null) {
                 throw new DBModelNotFoundException(
                         "The existing model was not found in the database - "
                                 + existingModelName);
@@ -1318,7 +1338,7 @@ public class OracleXMLDBConnection implements DBConnection {
 
         ArrayList<XMLDBModel> removeModelsList = new ArrayList<XMLDBModel>();
         removeModelsList
-                .add(new XMLDBModel(existingModelName, existingModelId));
+        .add(new XMLDBModel(existingModelName, existingModelId));
         RemoveModelsTask removeModelsTask = new RemoveModelsTask(
                 removeModelsList);
 
@@ -1331,6 +1351,7 @@ public class OracleXMLDBConnection implements DBConnection {
      * @param task The task that holds the attribute to be updated.
      * @exception DBExecutionException Thrown if the operation fails with an error.
      */
+    @Override
     public void executeUpdateAttributeTask(UpdateAttributeTask task)
             throws DBExecutionException {
 
@@ -1389,6 +1410,7 @@ public class OracleXMLDBConnection implements DBConnection {
      * @exception DBExecutionException Thrown if the operation fails.
      * already exists.
      */
+    @Override
     public void executeUpdateModelInCache(XMLDBModel xmlDBModel)
             throws DBExecutionException {
 
@@ -1441,6 +1463,7 @@ public class OracleXMLDBConnection implements DBConnection {
      * @exception DBExecutionException If thrown while updating the parents in the
      * database.
      */
+    @Override
     public void executeUpdateParentsToNewVersion(
             UpdateParentsToNewVersionTask task) throws DBExecutionException {
 
@@ -1514,6 +1537,7 @@ public class OracleXMLDBConnection implements DBConnection {
      * for unit testing purposes.
      * @return String representation for state of internal variables.
      */
+    @Override
     public String toString() {
 
         StringBuffer classState = new StringBuffer();
@@ -1671,7 +1695,7 @@ public class OracleXMLDBConnection implements DBConnection {
             if (hasReferences == true) {
 
                 _xmlModelHierarchyMap
-                        .put(currentModelName, currentModelContent);
+                .put(currentModelName, currentModelContent);
             }
 
             return currentModelContent;
@@ -1722,7 +1746,7 @@ public class OracleXMLDBConnection implements DBConnection {
      */
     private void _checkXMLDBConnectionObjects(boolean checkContainer,
             boolean checkManager, boolean checkTransaction)
-            throws DBExecutionException {
+                    throws DBExecutionException {
 
         if (checkContainer && _xmlContainer == null) {
             throw new DBExecutionException("The XmlContainer object was not "
@@ -1761,7 +1785,7 @@ public class OracleXMLDBConnection implements DBConnection {
 
             /*if (_environment != null)
                 _environment.close();
-            */
+             */
         } catch (DatabaseException e) {
             e.printStackTrace();
             throw new DBConnectionException(
@@ -1845,7 +1869,7 @@ public class OracleXMLDBConnection implements DBConnection {
         if (attribute.getAttributeName() != null
                 && !"".equals(attribute.getAttributeName().trim())) {
             attributesQuery.append("$const/@name=\"")
-                    .append(attribute.getAttributeName()).append("\"");
+            .append(attribute.getAttributeName()).append("\"");
             isPreviousClauseSet = true;
         }
 
@@ -1899,7 +1923,7 @@ public class OracleXMLDBConnection implements DBConnection {
             }
 
             attributesQuery.append("$const/@class=\"").append(attributeClass)
-                    .append("\"");
+            .append("\"");
         }
 
         return attributesQuery.toString();
@@ -1986,7 +2010,7 @@ public class OracleXMLDBConnection implements DBConnection {
      */
     private void _createParentHierarchy(Node currentNode, String parentNodeId,
             HashMap<String, DBModel> dBModelsMap, XMLDBModel baseModel)
-            throws DBExecutionException {
+                    throws DBExecutionException {
         /*
          * If the currentNode is not already visited
          * and it is not the base model,
@@ -2034,9 +2058,9 @@ public class OracleXMLDBConnection implements DBConnection {
         StringBuffer portSearchQuery = new StringBuffer();
 
         portSearchQuery
-                .append(" for $x in collection(\"")
-                .append(_params.getContainerName())
-                .append("\")/entity/port[@class = \"ptolemy.actor.TypedIOPort\"] where ");
+        .append(" for $x in collection(\"")
+        .append(_params.getContainerName())
+        .append("\")/entity/port[@class = \"ptolemy.actor.TypedIOPort\"] where ");
         boolean isFirstClause = true;
         /*
          * If the port is an output port,
@@ -2098,10 +2122,10 @@ public class OracleXMLDBConnection implements DBConnection {
         }
 
         referenceString.append("<entity ").append(XMLDBModel.DB_MODEL_ID_ATTR)
-                .append("=").append("\"").append(modelId).append("\" ");
+        .append("=").append("\"").append(modelId).append("\" ");
 
         referenceString.append(XMLDBModel.DB_MODEL_NAME).append("=")
-                .append("\"").append(modelName).append("\">");
+        .append("\"").append(modelName).append("\">");
 
         HashMap<String, String> modelReferencesMap = new HashMap<String, String>();
         for (String dbModelId : xmlDBModel.getReferencedChildren()) {
@@ -2902,10 +2926,10 @@ public class OracleXMLDBConnection implements DBConnection {
         ArrayList<DBModel> _parentsList;
 
         /* *//**
-                 * Match the given DBModel to the current model
-                 * @param model Model to be compared.
-                 * @return True if the names are same, false otherwise.
-                 */
+                  * Match the given DBModel to the current model
+                  * @param model Model to be compared.
+                  * @return True if the names are same, false otherwise.
+                  */
         /*
         public boolean equals(DBModel model) {
          if (model instanceof DBModel) {
@@ -2918,12 +2942,12 @@ public class OracleXMLDBConnection implements DBConnection {
          return false;
         }
 
-        *//**
-          * Return the hash code of the modelName as two models are equal if
-          * their model names are equal. So their has codes are also derived from
-          * model name.
-          * @return Hash code of the model name.
-          */
+         *//**
+         * Return the hash code of the modelName as two models are equal if
+         * their model names are equal. So their has codes are also derived from
+         * model name.
+         * @return Hash code of the model name.
+         */
         /*
         public int hashCode() {
          return _modelName.hashCode();

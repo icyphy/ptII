@@ -59,6 +59,7 @@ public abstract class MapMapping implements Mapping {
      *  @return True if the given object is of the same class and based
      *  on the same Map as this one.
      */
+    @Override
     public boolean equals(Object object) {
         if (object == null || object.getClass() != getClass()) {
             return false;
@@ -70,6 +71,7 @@ public abstract class MapMapping implements Mapping {
     /** Return the hash code of this MapMapping. The hash code is
      *  simply that of the Map that this Mapping is based on.
      */
+    @Override
     public int hashCode() {
         return _map.hashCode();
     }
@@ -80,6 +82,7 @@ public abstract class MapMapping implements Mapping {
      *  @return True if the given object is a key in the Map that is associated
      *  with this mapping.
      */
+    @Override
     public boolean inDomain(Object object) {
         return _map.containsKey(object);
     }
@@ -89,6 +92,7 @@ public abstract class MapMapping implements Mapping {
      *  delimiting string, followed by a
      *  string representation of the underlying Map.
      */
+    @Override
     public String toString() {
         return getClass().getName() + "based on the following Map\n"
                 + _map.toString() + "\n";

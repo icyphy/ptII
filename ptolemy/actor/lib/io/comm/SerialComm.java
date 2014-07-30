@@ -262,6 +262,7 @@ public class SerialComm extends TypedAtomicActor {
      *  @param attribute The attribute that changed.
      *  @exception IllegalActionException Not thrown in this base class.
      */
+    @Override
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         if (attribute == serialPortName || attribute == baudRate) {
@@ -338,6 +339,7 @@ public class SerialComm extends TypedAtomicActor {
      *
      *  @exception IllegalActionException Not thrown in this base class.
      */
+    @Override
     public void fire() throws IllegalActionException {
         super.fire();
 
@@ -475,6 +477,7 @@ public class SerialComm extends TypedAtomicActor {
                                 + available);
                     }
                     Runnable runnable = new Runnable() {
+                        @Override
                         public void run() {
                             try {
                                 synchronized (PortListener.class) {
@@ -519,6 +522,7 @@ public class SerialComm extends TypedAtomicActor {
      *  serialEvent() method of this actor.
      *  @exception IllegalActionException Not thrown in this base class.
      */
+    @Override
     public void preinitialize() throws IllegalActionException {
         super.preinitialize();
         _directorFiredAtAlready = false;
@@ -570,6 +574,7 @@ public class SerialComm extends TypedAtomicActor {
 
     /** Override the base class to stop waiting for input data.
      */
+    @Override
     public void stop() {
         synchronized (PortListener.class) {
             super.stop();
@@ -579,6 +584,7 @@ public class SerialComm extends TypedAtomicActor {
 
     /** Override the base class to stop waiting for input data.
      */
+    @Override
     public synchronized void stopFire() {
         super.stopFire();
         synchronized (PortListener.class) {
@@ -592,6 +598,7 @@ public class SerialComm extends TypedAtomicActor {
      *  be invoked after it.
      *  @exception IllegalActionException Not thrown in this base class.
      */
+    @Override
     public void wrapup() throws IllegalActionException {
         if (_serialPort != null) {
             // Strangely, this _must_ be called before closing the port.
@@ -638,6 +645,7 @@ public class SerialComm extends TypedAtomicActor {
          *  (which this class implements).  Notifies all threads that
          *  are blocked on this PortListener class.
          */
+        @Override
         public void serialEvent(SerialPortEvent e) {
             synchronized (PortListener.class) {
                 if (e.getEventType() == SerialPortEvent.DATA_AVAILABLE) {

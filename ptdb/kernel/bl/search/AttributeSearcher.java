@@ -25,7 +25,7 @@ ENHANCEMENTS, OR MODIFICATIONS.
                                                 COPYRIGHTENDKEY
 
 
-*/
+ */
 
 package ptdb.kernel.bl.search;
 
@@ -54,7 +54,7 @@ import ptolemy.kernel.util.Attribute;
  *
  */
 public class AttributeSearcher extends AbstractSearcher implements
-        AbstractDBSearcher {
+AbstractDBSearcher {
 
     /**
      * Construct the AttributeSearcher according to the input search criteria.
@@ -95,8 +95,8 @@ public class AttributeSearcher extends AbstractSearcher implements
                         } else {
 
                             newAttribute
-                                    .setClassName(((PTDBSearchAttribute) originalAttribute)
-                                            .getGenericClassName());
+                            .setClassName(((PTDBSearchAttribute) originalAttribute)
+                                    .getGenericClassName());
 
                         }
                     } else {
@@ -137,6 +137,7 @@ public class AttributeSearcher extends AbstractSearcher implements
      *         false - if the search criteria has not been set.
      */
 
+    @Override
     protected boolean _isSearchCriteriaSet() {
 
         if (_attributesCriteria == null || _attributesCriteria.size() == 0) {
@@ -154,6 +155,7 @@ public class AttributeSearcher extends AbstractSearcher implements
      * unexpected problem happens during the execution of DB query tasks.
      */
 
+    @Override
     protected void _search() throws DBExecutionException {
 
         AttributeSearchTask attributeSearchTask = new AttributeSearchTask();

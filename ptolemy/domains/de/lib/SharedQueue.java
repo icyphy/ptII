@@ -25,7 +25,7 @@
  PT_COPYRIGHT_VERSION_2
  COPYRIGHTENDKEY
 
-*/
+ */
 package ptolemy.domains.de.lib;
 
 import java.util.Arrays;
@@ -85,6 +85,7 @@ public class SharedQueue extends Queue {
      *  @exception IllegalActionException If getting tokens from input and
      *   trigger ports or sending token to output throws it.
      */
+    @Override
     public void fire() throws IllegalActionException {
         if (_debugging) {
             _debug("Called fire()");
@@ -117,7 +118,7 @@ public class SharedQueue extends Queue {
             }
             if (_token != null
                     && (_queue.getCapacity() == FIFOQueue.INFINITE_CAPACITY || _queue
-                            .getCapacity() > _queue.size() - _removeTokens)) {
+                    .getCapacity() > _queue.size() - _removeTokens)) {
                 sizeOutput++;
             } else {
                 _token = null;
@@ -133,6 +134,7 @@ public class SharedQueue extends Queue {
      *  @exception IllegalActionException If the ports cannot be tested for
      *   availability of tokens.
      */
+    @Override
     public boolean prefire() throws IllegalActionException {
         if (input.isOutsideConnected() && input.hasToken(0)) {
             return true;
@@ -151,6 +153,7 @@ public class SharedQueue extends Queue {
      *
      *  @exception IllegalActionException If thrown by the superclass.
      */
+    @Override
     public void preinitialize() throws IllegalActionException {
         super.preinitialize();
         _outputReady = new boolean[output.getWidth()];
@@ -161,6 +164,7 @@ public class SharedQueue extends Queue {
      *
      *  @exception IllegalActionException If thrown by the superclass.
      */
+    @Override
     public void wrapup() throws IllegalActionException {
         super.wrapup();
         _outputReady = null;

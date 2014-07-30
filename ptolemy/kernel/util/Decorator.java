@@ -72,7 +72,7 @@ do this:
 @since Ptolemy II 8.0
 @Pt.ProposedRating Red (rodiers)
 @Pt.AcceptedRating Red (rodiers)
-*/
+ */
 
 public interface Decorator extends Nameable {
 

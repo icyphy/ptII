@@ -117,7 +117,7 @@ public class StateController extends AttributeWithIconController {
      *  will report an error with a fairly cryptic message.
      */
     @SuppressWarnings("serial")
-        protected class LookInsideAction extends FigureAction {
+    protected class LookInsideAction extends FigureAction {
         public LookInsideAction() {
             super("Look Inside");
 
@@ -129,14 +129,15 @@ public class StateController extends AttributeWithIconController {
                 // So we use L.
                 putValue(GUIUtilities.ACCELERATOR_KEY, KeyStroke.getKeyStroke(
                         KeyEvent.VK_L, Toolkit.getDefaultToolkit()
-                                .getMenuShortcutKeyMask()));
+                        .getMenuShortcutKeyMask()));
             }
         }
 
+        @Override
         public void actionPerformed(ActionEvent e) {
             if (_configuration == null) {
                 MessageHandler
-                        .error("Cannot look inside without a configuration.");
+                .error("Cannot look inside without a configuration.");
                 return;
             }
 
@@ -181,6 +182,7 @@ public class StateController extends AttributeWithIconController {
          *  of type Locatable.
          *  @return A Figure.
          */
+        @Override
         public Figure render(Object n) {
             Locatable location = (Locatable) n;
             final NamedObj object = location.getContainer();
@@ -240,6 +242,7 @@ public class StateController extends AttributeWithIconController {
                             "Set the container of a new XMLIcon.") {
                         // NOTE: The KernelException should not be thrown,
                         // but if it is, it will be handled properly.
+                        @Override
                         protected void _execute() throws KernelException {
                             _iconsPendingContainer.remove(object);
 
@@ -271,14 +274,14 @@ public class StateController extends AttributeWithIconController {
 
             // New way to specify a highlight color.
             AttributeController.renderHighlight(object, figure);
-            
+
             try {
                 // clear highlighting
                 Attribute highlightColor = object
                         .getAttribute("_decoratorHighlightColor");
                 if (highlightColor != null) {
                     object.removeAttribute(highlightColor);
-                 }
+                }
 
                 List<Decorator> decorators = new ArrayList();
                 decorators.addAll(object.decorators());
@@ -289,7 +292,7 @@ public class StateController extends AttributeWithIconController {
                     if (decoratorAttributes instanceof ExecutionAttributes) {
                         if (decoratorAttributes.getDecorator() != null
                                 && ((ExecutionAttributes) decoratorAttributes)
-                                        .enabled()) {
+                                .enabled()) {
                             try {
                                 if (object
                                         .getAttribute("_decoratorHighlightColor") == null) {
@@ -303,7 +306,7 @@ public class StateController extends AttributeWithIconController {
                                                 .getToken()).toString();
                                     }
                                     ((ColorAttribute) highlightColor)
-                                            .setExpression(colorExpression);
+                                    .setExpression(colorExpression);
                                 }
                             } catch (NameDuplicationException e) {
                                 // Not gonna happen.
@@ -316,7 +319,7 @@ public class StateController extends AttributeWithIconController {
                 // TODO Auto-generated catch block
                 e1.printStackTrace();
             }
-            
+
             AttributeController.renderDecoratorHighlight(object, figure);
 
             return figure;

@@ -76,6 +76,7 @@ public class ModelCombine extends Transformer {
      *  @exception IllegalActionException If the input tokens cannot be read, or
      *   the models cannot be combined.
      */
+    @Override
     public void fire() throws IllegalActionException {
         super.fire();
         Entity entity = ((ActorToken) input.get(0)).getEntity(new Workspace());
@@ -92,6 +93,7 @@ public class ModelCombine extends Transformer {
      *  @exception IllegalActionException If availability of the tokens cannot
      *   be tested.
      */
+    @Override
     public boolean prefire() throws IllegalActionException {
         boolean result = super.prefire();
         if (result) {

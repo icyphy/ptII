@@ -125,6 +125,7 @@ public class Scale3D extends GRTransform {
      *  @exception IllegalActionException If the value of some parameters
      *   can't be obtained
      */
+    @Override
     public void fire() throws IllegalActionException {
         //  all state changes must be done in postfire()
         super.fire();
@@ -163,6 +164,7 @@ public class Scale3D extends GRTransform {
 
     /** Setup the transformation needed for scaling.
      */
+    @Override
     public void initialize() throws IllegalActionException {
         super.initialize();
         _transformNode = new TransformGroup();
@@ -185,6 +187,7 @@ public class Scale3D extends GRTransform {
      *
      *  @param node The child node to be attached.
      */
+    @Override
     protected void _addChild(Node node) {
         _transformNode.addChild(node);
     }
@@ -194,6 +197,7 @@ public class Scale3D extends GRTransform {
      *
      *  @return the Java3D TransformGroup.
      */
+    @Override
     protected Node _getNodeObject() {
         return _transformNode;
     }

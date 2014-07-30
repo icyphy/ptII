@@ -51,16 +51,16 @@ import ptolemy.kernel.util.Workspace;
 /**
  * MetroIICompositeActor extends the composite actor to support enclosing MetroII
  * directors.
- * 
+ *
  * @author Liangpeng Guo
  * @version $Id$
  * @since Ptolemy II 10.0
  * @Pt.ProposedRating Red (glp)
  * @Pt.AcceptedRating Red (glp)
- * 
+ *
  */
 public class MetroIICompositeActor extends TypedCompositeActor implements
-        GetFirable {
+GetFirable {
 
     /**
      * Constructs a MetroIICompositeActor.
@@ -70,7 +70,7 @@ public class MetroIICompositeActor extends TypedCompositeActor implements
 
     /**
      * Constructs a MetroIICompositeActor based on a given worksapce.
-     * 
+     *
      * @param workspace
      *            The workspace for this object.
      */
@@ -80,7 +80,7 @@ public class MetroIICompositeActor extends TypedCompositeActor implements
 
     /**
      * Constructs a MetroIICompositeActor based on a given container and a name.
-     * 
+     *
      * @param container
      *            container of the director.
      * @param name
@@ -102,15 +102,18 @@ public class MetroIICompositeActor extends TypedCompositeActor implements
 
     /**
      * Returns the iterator for the caller function of getfire().
-     * 
+     *
      * @return iterator the iterator for the caller function of getfire()
      */
+    @Override
     public YieldAdapterIterable<Iterable<Event.Builder>> adapter() {
         return new ThreadedYieldAdapter<Iterable<Event.Builder>>()
                 .adapt(new Collector<Iterable<Event.Builder>>() {
+                    @Override
                     public void collect(
                             ResultHandler<Iterable<Event.Builder>> resultHandler)
-                            throws CollectionAbortedException, IllegalActionException {
+                                    throws CollectionAbortedException,
+                            IllegalActionException {
                         getfire(resultHandler);
                     }
                 });
@@ -132,8 +135,9 @@ public class MetroIICompositeActor extends TypedCompositeActor implements
      * output data created by calling the local director's transferOutputs
      * method.
      * </p>
-     * @exception IllegalActionException 
+     * @exception IllegalActionException
      */
+    @Override
     public void getfire(ResultHandler<Iterable<Event.Builder>> resultHandler)
             throws CollectionAbortedException, IllegalActionException {
 
@@ -205,5 +209,5 @@ public class MetroIICompositeActor extends TypedCompositeActor implements
         }
 
     }
-    
+
 }

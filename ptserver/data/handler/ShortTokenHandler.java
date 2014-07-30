@@ -54,6 +54,7 @@ public class ShortTokenHandler implements TokenHandler<ShortToken> {
      *  @param outputStream The byte stream to write the token to.
      *  @exception IOException If cannot write to the stream.
      */
+    @Override
     public void convertToBytes(ShortToken token, DataOutputStream outputStream)
             throws IOException {
         outputStream.writeShort(token.shortValue());
@@ -67,6 +68,7 @@ public class ShortTokenHandler implements TokenHandler<ShortToken> {
      *  @return The token that arrived on the stream.
      *  @exception IOException If the stream cannot be read.
      */
+    @Override
     public ShortToken convertToToken(DataInputStream inputStream,
             Class<? extends ShortToken> tokenType) throws IOException {
         return new ShortToken(inputStream.readShort());

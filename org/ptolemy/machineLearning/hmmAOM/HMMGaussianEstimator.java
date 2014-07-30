@@ -1,4 +1,3 @@
-
 /* Parameter Estimation for Graphical Models.
 
 Copyright (c) 1998-2014 The Regents of the University of California.
@@ -25,7 +24,7 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
-*/
+ */
 package org.ptolemy.machineLearning.hmmAOM;
 
 import java.util.Arrays;
@@ -114,6 +113,7 @@ public class HMMGaussianEstimator extends ParameterEstimator {
 
     }
 
+    @Override
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         if (attribute == meanVectorGuess) {
@@ -149,6 +149,7 @@ public class HMMGaussianEstimator extends ParameterEstimator {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
+    @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         HMMGaussianEstimator newObject = (HMMGaussianEstimator) super
                 .clone(workspace);
@@ -157,6 +158,7 @@ public class HMMGaussianEstimator extends ParameterEstimator {
         return newObject;
     }
 
+    @Override
     public void fire() throws IllegalActionException {
         super.fire();
 
@@ -166,36 +168,36 @@ public class HMMGaussianEstimator extends ParameterEstimator {
             throw new IllegalActionException(this,
                     "Parameter guess vectors must have equal lengths.");
         }
-        
+
         Iterator a = (_observedTokens.keySet()).iterator();
-        String rec = (String)a.next();
-        List tokenS = (List<Double>)_observedTokens.get(rec);
+        String rec = (String) a.next();
+        List tokenS = _observedTokens.get(rec);
         if (tokenS.size() >= _batchSize) {
             _observations = new double[tokenS.size()];
-            for ( int i = 0; i < _observations.length ; i++) {
-                _observations[i] = (Double)tokenS.get(i);
+            for (int i = 0; i < _observations.length; i++) {
+                _observations[i] = (Double) tokenS.get(i);
             }
-            _observedTokens.put(rec.toString(),new LinkedList<Double>()); // clear list
-        
-        
-        _EMParameterEstimation();
-        Token[] mTokens = new Token[_nStates];
-        Token[] sTokens = new Token[_nStates];
-        Token[] pTokens = new Token[_nStates];
+            _observedTokens.put(rec.toString(), new LinkedList<Double>()); // clear list
 
-        for (int i = 0; i < _nStates; i++) {
-            mTokens[i] = new DoubleToken(m_new[i]);
-            sTokens[i] = new DoubleToken(s_new[i]);
-            pTokens[i] = new DoubleToken(prior_new[i]);
-        }
-        mean.send(0, new ArrayToken(mTokens));
-        standardDeviation.send(0, new ArrayToken(sTokens));
-        transitionMatrix.send(0, new DoubleMatrixToken(A_new));
-        priorEstimates.send(0, new ArrayToken(pTokens));
-        // broadcast best-effort parameter estimates
+            _EMParameterEstimation();
+            Token[] mTokens = new Token[_nStates];
+            Token[] sTokens = new Token[_nStates];
+            Token[] pTokens = new Token[_nStates];
+
+            for (int i = 0; i < _nStates; i++) {
+                mTokens[i] = new DoubleToken(m_new[i]);
+                sTokens[i] = new DoubleToken(s_new[i]);
+                pTokens[i] = new DoubleToken(prior_new[i]);
+            }
+            mean.send(0, new ArrayToken(mTokens));
+            standardDeviation.send(0, new ArrayToken(sTokens));
+            transitionMatrix.send(0, new DoubleMatrixToken(A_new));
+            priorEstimates.send(0, new ArrayToken(pTokens));
+            // broadcast best-effort parameter estimates
         }
     }
 
+    @Override
     protected double emissionProbability(double y, int hiddenState) {
 
         double s = _sigma[hiddenState];
@@ -205,6 +207,7 @@ public class HMMGaussianEstimator extends ParameterEstimator {
                 * Math.exp(-0.5 * Math.pow((y - m) / s, 2));
     }
 
+    @Override
     protected boolean _checkForConvergence(int iterations) {
 
         if ((m_new[0] != m_new[0]) || (s_new[0] != s_new[0])
@@ -217,7 +220,7 @@ public class HMMGaussianEstimator extends ParameterEstimator {
                 A_new = _A0;
                 prior_new = _priors;
                 System.out
-                        .println("Expectation Maximization failed to converge");
+                .println("Expectation Maximization failed to converge");
                 return false;
             } else if (_randomize) {
                 // randomize means
@@ -251,6 +254,7 @@ public class HMMGaussianEstimator extends ParameterEstimator {
         return true;
     }
 
+    @Override
     protected void _initializeEMParameters() {
 
         // set the initial values of parameters
@@ -265,6 +269,7 @@ public class HMMGaussianEstimator extends ParameterEstimator {
         prior_new = new double[_nStates];
     }
 
+    @Override
     protected void _iterateEM() {
 
         newEstimates = HMMAlphaBetaRecursion(_observations, _transitionMatrix,
@@ -276,6 +281,7 @@ public class HMMGaussianEstimator extends ParameterEstimator {
         likelihood = (Double) (newEstimates.get("likelihood"));
     }
 
+    @Override
     protected void _updateEstimates() {
         _transitionMatrix = A_new;
         _sigma = s_new;

@@ -87,6 +87,7 @@ public class BusDisassembler extends TypedAtomicActor {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
+    @Override
     public void fire() throws IllegalActionException {
         super.fire();
         int inputWidth = input.getWidth();
@@ -119,6 +120,7 @@ public class BusDisassembler extends TypedAtomicActor {
         }
     }
 
+    @Override
     public void preinitialize() throws IllegalActionException {
         super.preinitialize();
 

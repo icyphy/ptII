@@ -135,7 +135,7 @@ public class DistributedSDFDirector extends SDFDirector {
      *   an entity with the specified name.
      */
     public DistributedSDFDirector() throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         super();
         init();
     }
@@ -215,6 +215,7 @@ public class DistributedSDFDirector extends SDFDirector {
      *  @param attribute The changed parameter.
      *  @exception IllegalActionException If the parameter set is not valid.
      */
+    @Override
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         if (attribute == parallelSchedule) {
@@ -256,6 +257,7 @@ public class DistributedSDFDirector extends SDFDirector {
      *  actor return false in prefire.
 
      */
+    @Override
     public void fire() throws IllegalActionException {
         if (VERBOSE) {
             System.out.println("> Director: fire");
@@ -293,6 +295,7 @@ public class DistributedSDFDirector extends SDFDirector {
      *  one of the associated actors throws it, or if there is no
      *  scheduler.
      */
+    @Override
     public void initialize() throws IllegalActionException {
         if (VERBOSE) {
             System.out.println("> DistributedSDFDirector: initialize");
@@ -318,6 +321,7 @@ public class DistributedSDFDirector extends SDFDirector {
     /** Return a new receiver consistent with the Distributed-SDF domain.
      *  @return A new DistributedSDFReceiver.
      */
+    @Override
     public Receiver newReceiver() {
         return new DistributedSDFReceiver();
     }
@@ -336,6 +340,7 @@ public class DistributedSDFDirector extends SDFDirector {
      *  @exception IllegalActionException If the preinitialize() method of
      *  one of the associated actors throws it.
      */
+    @Override
     public void preinitialize() throws IllegalActionException {
         if (VERBOSE) {
             System.out.println("> DistributedSDFDirector: preinitialize");
@@ -346,7 +351,7 @@ public class DistributedSDFDirector extends SDFDirector {
         if (VERBOSE) {
             System.out.println("parallelSchedule: "
                     + ((BooleanToken) parallelSchedule.getToken())
-                            .booleanValue());
+                    .booleanValue());
         }
 
         //System.out.println(getScheduler().getSchedule().toString());
@@ -366,6 +371,7 @@ public class DistributedSDFDirector extends SDFDirector {
      *  @exception IllegalActionException If the wrapup() method of
      *   one of the associated actors throws it.
      */
+    @Override
     public void wrapup() throws IllegalActionException {
         super.wrapup();
 
@@ -513,7 +519,7 @@ public class DistributedSDFDirector extends SDFDirector {
                                 + currentPort.getFullName()
                                 + "\n"
                                 + DistributedUtilities
-                                        .receiversArrayToString(receivers));
+                                .receiversArrayToString(receivers));
                     }
 
                     if (currentPort.isOutput()) {
@@ -524,7 +530,7 @@ public class DistributedSDFDirector extends SDFDirector {
                     if (currentPort.isInput()) {
                         portsReceiversMap.put(currentPort.getName(),
                                 DistributedUtilities
-                                        .convertReceiversToIntegers(receivers));
+                                .convertReceiversToIntegers(receivers));
                     }
                 }
             }
@@ -572,7 +578,7 @@ public class DistributedSDFDirector extends SDFDirector {
                                     .get(actor)).getService())) {
                         servicesReceiversMap.put(
                                 ((ClientThread) actorsThreadsMap.get(actor))
-                                        .getService(), new LinkedList());
+                                .getService(), new LinkedList());
                     }
 
                     LinkedList list = (LinkedList) servicesReceiversMap

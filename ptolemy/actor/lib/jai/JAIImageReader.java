@@ -97,6 +97,7 @@ public class JAIImageReader extends Source {
      *  @param attribute The attribute that changed.
      *  @exception IllegalActionException If the URL is null.
      */
+    @Override
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         if (attribute == fileOrURL) {
@@ -117,6 +118,7 @@ public class JAIImageReader extends Source {
      *  @exception CloneNotSupportedException If a derived class contains
      *  an attribute that cannot be cloned.
      */
+    @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         JAIImageReader newObject = (JAIImageReader) super.clone(workspace);
         newObject._fileURL = null;
@@ -127,6 +129,7 @@ public class JAIImageReader extends Source {
      *  @exception IllegalActionException If a contained method throws it,
      *  or if the attempt to load the file has failed.
      */
+    @Override
     public void fire() throws IllegalActionException {
         super.fire();
 
@@ -158,7 +161,7 @@ public class JAIImageReader extends Source {
                 } catch (Throwable throwable2) {
                     throw new IllegalActionException(this, throwable2,
                             "Unable to close SeekableStream for '" + _fileURL
-                                    + "'");
+                            + "'");
                 }
             }
 
@@ -168,7 +171,7 @@ public class JAIImageReader extends Source {
                 } catch (Throwable throwable3) {
                     throw new IllegalActionException(this, throwable3,
                             "Unable to close InputStream for '" + _fileURL
-                                    + "'");
+                            + "'");
                 }
             }
         }

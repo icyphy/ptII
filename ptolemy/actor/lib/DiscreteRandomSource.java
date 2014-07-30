@@ -115,6 +115,7 @@ public class DiscreteRandomSource extends RandomSource {
      *  @exception IllegalActionException If the requirements are
      *   violated.
      */
+    @Override
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         if (attribute == pmf) {
@@ -146,6 +147,7 @@ public class DiscreteRandomSource extends RandomSource {
      *  @exception CloneNotSupportedException If a derived class contains
      *   an attribute that cannot be cloned.
      */
+    @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         DiscreteRandomSource newObject = (DiscreteRandomSource) super
                 .clone(workspace);
@@ -178,6 +180,7 @@ public class DiscreteRandomSource extends RandomSource {
     /** Output the token selected in the prefire() method.
      *  @exception IllegalActionException If there is no director.
      */
+    @Override
     public void fire() throws IllegalActionException {
         super.fire();
         output.send(0, _current);
@@ -191,6 +194,7 @@ public class DiscreteRandomSource extends RandomSource {
      *  will be sent to the output in the fire() method.
      *  @exception IllegalActionException If parameter values are incorrect.
      */
+    @Override
     protected void _generateRandomNumber() throws IllegalActionException {
         // Generate a double between 0 and 1, uniformly distributed.
         double randomValue = _random.nextDouble();

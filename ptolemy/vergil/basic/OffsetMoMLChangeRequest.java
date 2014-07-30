@@ -24,7 +24,7 @@
    PT_COPYRIGHT_VERSION_2
    COPYRIGHTENDKEY
    2
-*/
+ */
 package ptolemy.vergil.basic;
 
 import java.awt.MouseInfo;
@@ -69,7 +69,7 @@ import diva.graph.GraphController;
  @since Ptolemy II 6.1
  @Pt.ProposedRating Red (cxh)
  @Pt.AcceptedRating Red (cxh)
-*/
+ */
 public class OffsetMoMLChangeRequest extends MoMLChangeRequest {
 
     /** Construct a mutation request to be executed in the specified
@@ -103,6 +103,7 @@ public class OffsetMoMLChangeRequest extends MoMLChangeRequest {
      *  used.
      *  @param parser The parser
      */
+    @Override
     protected void _postParse(MoMLParser parser) {
         // Find the upper-most, left-most location.  Note that
         // this is the center of the component.
@@ -206,6 +207,7 @@ public class OffsetMoMLChangeRequest extends MoMLChangeRequest {
             final GraphController controllerFinal = controller;
             final NamedObj containerFinal = container;
             Runnable doHelloWorld = new Runnable() {
+                @Override
                 public void run() {
                     Interactor interactor = null;
                     try {
@@ -249,7 +251,8 @@ public class OffsetMoMLChangeRequest extends MoMLChangeRequest {
 
     /** Clear the list of top objects.
      *  @param parser The parser
-      */
+     */
+    @Override
     protected void _preParse(MoMLParser parser) {
         super._preParse(parser);
         parser.clearTopObjectsList();

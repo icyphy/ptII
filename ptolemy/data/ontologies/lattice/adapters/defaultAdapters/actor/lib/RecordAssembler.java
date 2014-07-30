@@ -61,7 +61,7 @@ public class RecordAssembler extends LatticeOntologyAdapter {
      */
     public RecordAssembler(LatticeOntologySolver solver,
             ptolemy.actor.lib.RecordAssembler actor)
-            throws IllegalActionException {
+                    throws IllegalActionException {
         super(solver, actor, false);
     }
 
@@ -73,6 +73,7 @@ public class RecordAssembler extends LatticeOntologyAdapter {
      *  @exception IllegalActionException If there is an error creating
      *   the constraint list.
      */
+    @Override
     public List<Inequality> constraintList() throws IllegalActionException {
         ptolemy.actor.lib.RecordAssembler actor = (ptolemy.actor.lib.RecordAssembler) getComponent();
         Ontology ontology = _solver.getOntology();
@@ -105,7 +106,7 @@ public class RecordAssembler extends LatticeOntologyAdapter {
                 setAtLeast(port, new ConceptFunctionInequalityTerm(
                         new ConceptFromRecordField("conceptFromRecord",
                                 ((Port) port).getName(), ontology),
-                        new InequalityTerm[] { getPropertyTerm(actor.output) }));
+                                new InequalityTerm[] { getPropertyTerm(actor.output) }));
             }
         }
 

@@ -125,6 +125,7 @@ public class Cylinder3D extends GRShadedShape {
 
     /** If the dimensions change, then update the box.
      */
+    @Override
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         // Check that a box has been previously created.
@@ -154,6 +155,7 @@ public class Cylinder3D extends GRShadedShape {
      *  @exception IllegalActionException If the value of some
      *   parameter can't be obtained.
      */
+    @Override
     protected void _createModel() throws IllegalActionException {
         super._createModel();
 
@@ -207,6 +209,7 @@ public class Cylinder3D extends GRShadedShape {
      *  The encapsulated node for this actor is a Java3D Cylinder.
      *  @return The Java3D Cylinder.
      */
+    @Override
     protected Node _getNodeObject() {
         return _containedNode;
     }

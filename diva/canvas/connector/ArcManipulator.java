@@ -66,6 +66,7 @@ public class ArcManipulator extends ConnectorManipulator {
      * instance will have the same grab handle, and interactor
      * for grab-handles, as this one.
      */
+    @Override
     public FigureDecorator newInstance(Figure f) {
         ArcManipulator m = new ArcManipulator();
         m.setGrabHandleFactory(this.getGrabHandleFactory());
@@ -78,6 +79,7 @@ public class ArcManipulator extends ConnectorManipulator {
      *  of the arc.
      *  @param connector The connector.
      */
+    @Override
     protected void _createGrabHandles(Connector connector) {
         super._createGrabHandles(connector);
 

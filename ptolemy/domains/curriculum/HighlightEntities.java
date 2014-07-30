@@ -143,6 +143,7 @@ public class HighlightEntities extends Attribute {
             super(container, name);
         }
 
+        @Override
         public void createEditor(NamedObj object, Frame parent) {
             // Perform the highlighting.
             try {

@@ -98,13 +98,13 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
         // compileCommand is only used if useMake is false.
         if (compileCommand.getExpression().equals(_compileCommandDefault)) {
             compileCommand
-                    .setExpression("javac -classpath \"@PTCGLibraries@\" -J-Xmx1500M @modelName@.java");
+            .setExpression("javac -classpath \"@PTCGLibraries@\" -J-Xmx1500M @modelName@.java");
         }
 
         // runCommand is only used if useMake is false.
         if (runCommand.getExpression().equals(_runCommandDefault)) {
             runCommand
-                    .setExpression("java -classpath \"@PTCGLibraries@\" -Xmx1500M @MODELCLASS@");
+            .setExpression("java -classpath \"@PTCGLibraries@\" -Xmx1500M @MODELCLASS@");
         }
 
         generatorPackageList.setExpression("generic.program.procedural.java");
@@ -125,6 +125,7 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
      * @param type The given Ptolemy type.
      * @return The code generation type.
      */
+    @Override
     public String codeGenType(Type type) {
         //String ptolemyType = super.codeGenType(type);
         String result = type == BaseType.INT ? "Int"
@@ -170,9 +171,9 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
             // It is not an error to resolve to general.  See
             // $PTII/bin/ptcg -language java $PTII/ptolemy/cg/kernel/generic/program/procedural/java/test/auto/Display.xml
             System.out
-                    .println("JavaCodeGenerator.codeGenType(): Cannot resolve codegen type from Ptolemy type: "
-                            + type
-                            + ".  Maybe the type of a port needs to be set from the UI or backward type inference disabled?");
+            .println("JavaCodeGenerator.codeGenType(): Cannot resolve codegen type from Ptolemy type: "
+                    + type
+                    + ".  Maybe the type of a port needs to be set from the UI or backward type inference disabled?");
         }
         if (result == null) {
             return null;
@@ -215,8 +216,8 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
         }
         if (result == null || result.length() == 0) {
             System.out
-                    .println("JavaCodeGenerator.codeGenType2: Cannot resolve codegen type from Ptolemy type: "
-                            + type);
+            .println("JavaCodeGenerator.codeGenType2: Cannot resolve codegen type from Ptolemy type: "
+                    + type);
         }
         if (result == null) {
             return null;
@@ -305,7 +306,7 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
         case 7:
             returnType = PointerToken.POINTER;
             break;
-        // FIXME: case 8 is Matrix
+            // FIXME: case 8 is Matrix
         case 9:
             returnType = BaseType.COMPLEX;
             break;
@@ -366,11 +367,12 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
      *  @param value The value of the constant.
      *  @return A static final that defines the constant.
      */
+    @Override
     public String generateConstantDefinition(String constant, String type,
             String value) {
         // Maybe we should keep track of these in a Set?
         return "static final " + type + " " + constant + " = " + value + ";"
-                + _eol;
+        + _eol;
     }
 
     /** Generate the closing code for a group of fire functions common
@@ -379,6 +381,7 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
      *
      *  @return a curly bracket and _eol.
      */
+    @Override
     public String generateFireFunctionCompositeEnd() {
         return "}" + _eol;
     }
@@ -391,6 +394,7 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
      *  initial code.
      *  @return A string that defines an inner class.
      */
+    @Override
     public String generateFireFunctionCompositeStart(String className) {
         return "class " + className + "{" + _eol;
     }
@@ -409,6 +413,7 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
      *  @return The name of the fire function method to be invoked.
      *  @exception IllegalActionException If thrown while generating fire code.
      */
+    @Override
     public String generateFireFunctionMethodInvocation(NamedObj namedObj)
             throws IllegalActionException {
         String[] results = generateFireFunctionVariableAndMethodName(namedObj);
@@ -430,6 +435,7 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
      *  @return The name of the fire function method.
      *  @exception IllegalActionException If thrown while generating fire code.
      */
+    @Override
     public String generateFireFunctionMethodName(NamedObj namedObj)
             throws IllegalActionException {
         String[] results = generateFireFunctionVariableAndMethodName(namedObj);
@@ -450,6 +456,7 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
      *  that contains the variable name, the second is the name of the method.
      *  @exception IllegalActionException If thrown while generating fire code.
      */
+    @Override
     public String[] generateFireFunctionVariableAndMethodName(NamedObj namedObj)
             throws IllegalActionException {
         // Get the toplevel name and the name of the composite under the
@@ -540,6 +547,7 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
      *  accessing the name of the namedObj or generating the variable
      *  declaration.
      */
+    @Override
     public String generateFireFunctionVariableDeclaration(NamedObj namedObj)
             throws IllegalActionException {
         // Go up the containment chain, looking for a GenericCodeGenerator.
@@ -552,7 +560,7 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
             if (codeGenerators.size() > 0) {
                 String[] results = generateFireFunctionVariableAndMethodName(namedObj);
                 return results[0] + " _inner" + results[0] + " = new "
-                        + results[0] + "();" + _eol;
+                + results[0] + "();" + _eol;
             }
             container = container.getContainer();
         }
@@ -584,7 +592,7 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
                     if (functions[j].equals("isCloseTo")
                             && (types[i].equals("Boolean")
                                     || types[i].equals("String") || types[i]
-                                        .equals("Object"))) {
+                                            .equals("Object"))) {
                         // Boolean_isCloseTo and String_isCloseTo
                         // are the same as their corresponding *_equals
                         code.append(types[i] + "_equals");
@@ -623,6 +631,7 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
     /** Return the closing entry code, if any.
      *  @return the closing entry code.
      */
+    @Override
     public String generateClosingEntryCode() {
         return "public void doWrapup() throws Exception { " + _eol;
     }
@@ -630,6 +639,7 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
     /** Return the closing exit code, if any.
      *  @return the closing exit code.
      */
+    @Override
     public String generateClosingExitCode() {
         return "}" + _eol;
     }
@@ -638,6 +648,7 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
      *  @return a string for the initialization procedure entry point.
      *  @exception IllegalActionException Not thrown in this base class..
      */
+    @Override
     public String generateInitializeEntryCode() throws IllegalActionException {
         return _eol + _eol + "public void initialize() throws Exception {"
                 + _eol;
@@ -647,6 +658,7 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
      *  @return a string for the initialization procedure exit point.
      *  @exception IllegalActionException Not thrown in this base class..
      */
+    @Override
     public String generateInitializeExitCode() throws IllegalActionException {
         return "}" + _eol;
     }
@@ -655,6 +667,7 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
      *  @return a string for the initialization procedure name.
      *  @exception IllegalActionException Not thrown in this baseclass.
      */
+    @Override
     public String generateInitializeProcedureName()
             throws IllegalActionException {
         //return _INDENT1 + "initialize();" + _eol;
@@ -673,6 +686,7 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
      *  code blocks.
      *  @return text that is suitable for the C preprocessor.
      */
+    @Override
     public String generateLineInfo(int lineNumber, String filename) {
         return "#line " + lineNumber + " \"" + filename + "\"\n";
     }
@@ -682,6 +696,7 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
      *   In C, this would be defining main().
      *  @exception IllegalActionException Not thrown in this base class.
      */
+    @Override
     public String generateMainEntryCode() throws IllegalActionException {
 
         StringBuffer mainEntryCode = new StringBuffer();
@@ -705,17 +720,17 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
                 printExecutionTimeCode = _printExecutionTime();
             }
             mainEntryCode
-                    .append(_eol
-                            + _eol
-                            + "public static void main(String [] args) throws Exception {"
-                            + _eol + _sanitizedModelName + " model = new "
-                            + _sanitizedModelName + "();" + _eol
-                            + recordStartTimeCode + _eol
-                            + "model.preinitialize();" + _eol
-                            + "model.initialize();" + _eol + "model.execute();"
-                            + _eol + "model.doWrapup();" + _eol
-                            + printExecutionTimeCode + _eol + "System.exit(0);"
-                            + _eol + "}" + _eol);
+            .append(_eol
+                    + _eol
+                    + "public static void main(String [] args) throws Exception {"
+                    + _eol + _sanitizedModelName + " model = new "
+                    + _sanitizedModelName + "();" + _eol
+                    + recordStartTimeCode + _eol
+                    + "model.preinitialize();" + _eol
+                    + "model.initialize();" + _eol + "model.execute();"
+                    + _eol + "model.doWrapup();" + _eol
+                    + printExecutionTimeCode + _eol + "System.exit(0);"
+                    + _eol + "}" + _eol);
 
         } else {
             mainEntryCode.append(_eol + _eol + "public Object[] " + _eol
@@ -744,6 +759,7 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
      *  @return Return a string that declares the end of the main() function.
      *  @exception IllegalActionException Not thrown in this base class.
      */
+    @Override
     public String generateMainExitCode() throws IllegalActionException {
 
         if (_isTopLevel()) {
@@ -767,6 +783,7 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
      *  @exception IllegalActionException Thrown if <i>generateInSubdirectory</i>
      *  cannot be read.
      */
+    @Override
     public String generatePackageStatement() throws IllegalActionException {
         if (_generateInSubdirectory) {
             return "package " + _sanitizedModelName + ";" + _eol;
@@ -778,6 +795,7 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
      *  @return a string for the postfire procedure entry point.
      *  @exception IllegalActionException Not thrown in this base class.
      */
+    @Override
     public String generatePostfireEntryCode() throws IllegalActionException {
         return _eol + _eol + "public boolean postfire() {" + _eol;
 
@@ -787,6 +805,7 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
      *  @return a string for the postfire procedure exit point.
      *  @exception IllegalActionException Not thrown in this base class.
      */
+    @Override
     public String generatePostfireExitCode() throws IllegalActionException {
         return INDENT1 + "return true;" + _eol + "}" + _eol;
     }
@@ -795,6 +814,7 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
      *  @return a string for the postfire procedure name.
      *  @exception IllegalActionException Not thrown in this base class.
      */
+    @Override
     public String generatePostfireProcedureName() throws IllegalActionException {
 
         return INDENT1 + "postfire();" + _eol;
@@ -816,6 +836,7 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
      *  director cannot be found, or if an error occurs when the adapter
      *  actor generates the type resolution code.
      */
+    @Override
     public String generateTypeConvertCode() throws IllegalActionException {
 
         StringBuffer code = new StringBuffer();
@@ -1015,7 +1036,7 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
                     if (element.equals("isCloseTo")
                             && (typesArray[i].equals("Boolean")
                                     || typesArray[i].equals("String") || typesArray[i]
-                                        .equals("Object"))) {
+                                            .equals("Object"))) {
 
                         if (!functions.contains("equals")) {
                             //typeStreams[i].appendCodeBlock(typesArray[i]
@@ -1027,7 +1048,7 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
 
                         if (!_unsupportedTypeFunctions.contains(functionName)
                                 && !_overloadedFunctionSet
-                                        .contains(functionName)) {
+                                .contains(functionName)) {
 
                             //typeStreams[i].appendCodeBlock(typesArray[i] + "_"
                             //+ functionsArray[j]);
@@ -1075,7 +1096,7 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
                 NamedObj namedObj = (NamedObj) namedObjs.next();
                 if (namedObj instanceof Actor) {
                     variableDeclarations
-                            .add(generateFireFunctionVariableDeclaration(namedObj));
+                    .add(generateFireFunctionVariableDeclaration(namedObj));
                 }
             }
 
@@ -1086,8 +1107,8 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
             }
             if (variables.length() > 0) {
                 variables
-                        .insert(0,
-                                comment("inline: true, Variables that refer to inner classes."));
+                .insert(0,
+                        comment("inline: true, Variables that refer to inner classes."));
             }
             code.append(variables);
 
@@ -1163,6 +1184,7 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
      *  @exception IllegalActionException If the adapter class for the model
      *   director cannot be found.
      */
+    @Override
     public String generateVariableDeclaration() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
         code.append(super.generateVariableDeclaration());
@@ -1194,6 +1216,7 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
      *  @exception IllegalActionException If the adapter class for the model
      *   director cannot be found.
      */
+    @Override
     public String generateVariableInitialization()
             throws IllegalActionException {
         StringBuffer code = new StringBuffer();
@@ -1238,7 +1261,7 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
                         + " = "
                         + containerAdapter.getParameterValue(
                                 variable.getName(), variable.getContainer())
-                        + ";" + _eol);
+                                + ";" + _eol);
             }
         }
         return code.toString();
@@ -1250,6 +1273,7 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
      *  @param attribute The attribute to for which to generate a variable name.
      *  @return The generated variable name.
      */
+    @Override
     public String generateVariableName(NamedObj attribute) {
         if (!_variablesAsArrays || !(attribute instanceof Variable)) {
             return super.generateVariableName(attribute);
@@ -1304,7 +1328,7 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
         }
 
         return "variables_" + StringUtilities.sanitizeName(typeName) + "["
-                + variableIndex + "]";
+        + variableIndex + "]";
 
     }
 
@@ -1312,6 +1336,7 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
      *  @return a string for the wrapup procedure entry point.
      *  @exception IllegalActionException Not thrown in this base class.
      */
+    @Override
     public String generateWrapupEntryCode() throws IllegalActionException {
         return _eol + _eol + "public void wrapup() throws Exception {" + _eol;
     }
@@ -1320,6 +1345,7 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
      *  @return a string for the wrapup procedure exit point.
      *  @exception IllegalActionException Not thrown in this base class.
      */
+    @Override
     public String generateWrapupExitCode() throws IllegalActionException {
 
         return "}" + _eol;
@@ -1329,6 +1355,7 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
      *  @return a string for the wrapup procedure name.
      *  @exception IllegalActionException Not thrown in this base class.
      */
+    @Override
     public String generateWrapupProcedureName() throws IllegalActionException {
 
         return "wrapup();" + _eol;
@@ -1338,6 +1365,7 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
      * Return the return signature for run() and execute().
      * @return The visibility signature.
      */
+    @Override
     public String getMethodVisibiliyString() {
         return "public ";
     }
@@ -1346,6 +1374,7 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
      * Return the exception signature (for Java).
      * @return The exception signature.
      */
+    @Override
     public String getMethodExceptionString() {
         return " throws Exception";
     }
@@ -1362,7 +1391,7 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
      */
     public void markFunctionCalled(String name,
             JavaTemplateParser javaTemplateParser)
-            throws IllegalActionException {
+                    throws IllegalActionException {
 
         try {
             if (_overloadedFunctions == null) {
@@ -1413,6 +1442,7 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
      *  the code parameter.
      *  @exception IOException If thrown while reading the code.
      */
+    @Override
     public String[] splitLongBody(int linesPerMethod, String prefix, String code)
             throws IOException {
         BufferedReader bufferedReader = null;
@@ -1628,6 +1658,7 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
      *  element.
      *  @exception IOException If thrown while reading the code.
      */
+    @Override
     public List<String> splitVariableDeclaration(int linesPerMethod,
             String prefix, String code) throws IOException {
         LinkedList<String> results = new LinkedList<String>();
@@ -1669,7 +1700,7 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
                 } catch (IllegalActionException ex) {
                     IOException exception = new IOException(
                             "Failed to get the declare block for " + element
-                                    + " from " + typesTemplate);
+                            + " from " + typesTemplate);
                     exception.initCause(ex);
                     throw exception;
                 }
@@ -1700,7 +1731,7 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
                     className = _sanitizedModelName + "." + className;
                 }
                 declarations
-                        .append("import static " + className + ".*;" + _eol);
+                .append("import static " + className + ".*;" + _eol);
 
                 String shortClassName = className.substring(className
                         .lastIndexOf('.') + 1);
@@ -1736,6 +1767,7 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
      * @param ptType The given Ptolemy type.
      * @return The Java data type.
      */
+    @Override
     public String targetType(Type ptType) {
         // FIXME: this is duplicated code from ProgramCodeGeneratorAdapter.targetType()
         // FIXME: we may need to add more primitive types.
@@ -1762,6 +1794,7 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
      *  @exception IllegalActionException If thrown when getting an actor's
      *   include directories.
      */
+    @Override
     protected void _addActorIncludeDirectories() throws IllegalActionException {
         // NamedProgramCodeGeneratorAdapter adapter = (NamedProgramCodeGeneratorAdapter) getAdapter(getContainer());
 
@@ -1782,6 +1815,7 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
      *  @exception IllegalActionException If thrown when getting an actor's
      *   libraries.
      */
+    @Override
     protected void _addActorLibraries() throws IllegalActionException {
         NamedProgramCodeGeneratorAdapter adapter = (NamedProgramCodeGeneratorAdapter) getAdapter(getContainer());
 
@@ -1818,6 +1852,7 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
      *  @exception IllegalActionException If the adapter of the
      *   top composite actor is unavailable.
      */
+    @Override
     protected void _analyzeTypeConversions() throws IllegalActionException {
         super._analyzeTypeConversions();
 
@@ -1856,12 +1891,12 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
 
     }
 
-   /** Given a Collection of Strings, return a string where each element of the
-     *  Set is separated by $.
-     *  @param collection The Collection of Strings.
-     *  @return A String that contains each element of the Set separated by
-     *  a space.
-     */
+    /** Given a Collection of Strings, return a string where each element of the
+      *  Set is separated by $.
+      *  @param collection The Collection of Strings.
+      *  @return A String that contains each element of the Set separated by
+      *  a space.
+      */
     protected String _concatenateClasspath(Collection<String> collection) {
         StringBuffer buffer = new StringBuffer();
         Iterator<String> iterator = collection.iterator();
@@ -1888,6 +1923,7 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
      * @return The processed code.
      * @exception IllegalActionException If #getOutputFilename() throws it.
      */
+    @Override
     protected StringBuffer _finalPassOverCode(StringBuffer code)
             throws IllegalActionException {
 
@@ -1956,6 +1992,7 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
      *  @exception IllegalActionException If the adapter class for some actor
      *   cannot be found.
      */
+    @Override
     protected String _generateIncludeFiles() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
 
@@ -1981,6 +2018,7 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
      *  @return a string for the preinitialization method body.
      *  @exception IllegalActionException Not thrown in this base class.
      */
+    @Override
     protected String _generatePreinitializeMethodBodyCode()
             throws IllegalActionException {
         StringBuffer code = new StringBuffer(
@@ -1997,6 +2035,7 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
      *  @return a string for the preinitialization procedure entry point.
      *  @exception IllegalActionException Not thrown in this base class.
      */
+    @Override
     protected String _generatePreinitializeMethodEntryCode()
             throws IllegalActionException {
         return _eol + _eol + "public void preinitialize() throws Exception {"
@@ -2007,6 +2046,7 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
      *  @return a string for the preinitialization procedure exit point.
      *  @exception IllegalActionException Not thrown in this base class.
      */
+    @Override
     protected String _generatePreinitializeMethodExitCode()
             throws IllegalActionException {
         return "}" + _eol;
@@ -2016,6 +2056,7 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
      *  @return a string for the preinitialization procedure name.
      *  @exception IllegalActionException Not thrown in this base class.
      */
+    @Override
     protected String _generatePreinitializeMethodProcedureName()
             throws IllegalActionException {
         return "// Don't call preinitialize() here, it is called in main.";
@@ -2028,6 +2069,7 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
      * @return The code generator adapter or null if no adapter can be
      * automatically generated.
      */
+    @Override
     protected CodeGeneratorAdapter _getAutoGeneratedAdapter(
             GenericCodeGenerator codeGenerator, Object object) {
         // This method is called by GenericCodeGenerator.getAdapter().
@@ -2042,6 +2084,7 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
      * @return The string " throws Exception" is
      * appended to the value returned by the superclass.
      */
+    @Override
     protected String _getFireFunctionArguments() {
         return super._getFireFunctionArguments() + " throws Exception";
     }
@@ -2050,6 +2093,7 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
      *  the code generated by _recordStartTime() was called.
      *  @return Return the code for printing the total execution time.
      */
+    @Override
     protected String _printExecutionTime() {
         StringBuffer endCode = new StringBuffer();
         endCode.append(super._printExecutionTime());
@@ -2080,6 +2124,7 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
      *  This writes current time into a timespec struct called "start".
      *  @return Return the code for recording the current time.
      */
+    @Override
     protected String _recordStartTime() {
         StringBuffer startCode = new StringBuffer();
         startCode.append("long startTime = System.currentTimeMillis();");
@@ -2093,6 +2138,7 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
      *  thrown by the parent if the container of the model
      *  cannot be set to null.
      */
+    @Override
     protected void _reset() throws IllegalActionException {
         super._reset();
         _overloadedFunctions = null;
@@ -2106,15 +2152,16 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
         if (_variableTypeMaxIndex != null) {
             _variableTypeMaxIndex.clear();
         }
-//         if (_substituteMap != null) {
-//             _substituteMap.clear();
-//         }
+        //         if (_substituteMap != null) {
+        //             _substituteMap.clear();
+        //         }
     }
 
     /** Return the class of the templateParser class. In cse
      *  there isn't one return null.
      *  @return The base class for templateParser.
      */
+    @Override
     protected Class<? extends TemplateParser> _templateParserClass() {
         return JavaTemplateParser.class;
     }
@@ -2170,40 +2217,40 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
      *  a parameter, if there is a problem creating the codeDirectory directory
      *  or if there is a problem writing the code to a file.
      */
+    @Override
     protected void _writeMakefile(CompositeEntity container,
             String currentDirectory) throws IllegalActionException {
 
-            if (!_libraries.isEmpty()) {
-                // Loop through the path elements in java.class.path and add
-                // them as libraries.  We need this so that we can find the
-                // JavaScope.zip code coverage file in the nightly build
-                _addClassPathLibraries();
-            }
+        if (!_libraries.isEmpty()) {
+            // Loop through the path elements in java.class.path and add
+            // them as libraries.  We need this so that we can find the
+            // JavaScope.zip code coverage file in the nightly build
+            _addClassPathLibraries();
+        }
 
-            String root = ".";
-            String modelClass = _sanitizedModelName;
-            if (((BooleanToken) generateInSubdirectory.getToken())
-                    .booleanValue()) {
-                root = "..";
-                modelClass = _sanitizedModelName + "." + _sanitizedModelName;
-                addLibraryIfNecessary("..");
-            }
+        String root = ".";
+        String modelClass = _sanitizedModelName;
+        if (((BooleanToken) generateInSubdirectory.getToken()).booleanValue()) {
+            root = "..";
+            modelClass = _sanitizedModelName + "." + _sanitizedModelName;
+            addLibraryIfNecessary("..");
+        }
 
-            _substituteMap.put("@ROOT@", root);
+        _substituteMap.put("@ROOT@", root);
 
-            if (_libraries.size() == 0) {
-                addLibraryIfNecessary(".");
-            }
+        if (_libraries.size() == 0) {
+            addLibraryIfNecessary(".");
+        }
 
-            String ptcgLibraries = _concatenateClasspath(_libraries);
-            // Remove any trailing : and avoid having ".::.." in the makefile.
-            if (ptcgLibraries.endsWith(":")) {
-                ptcgLibraries = ptcgLibraries.substring(0,
-                        ptcgLibraries.length() - 1);
-            }
-            _substituteMap.put("@PTCGLibraries@", ptcgLibraries);
+        String ptcgLibraries = _concatenateClasspath(_libraries);
+        // Remove any trailing : and avoid having ".::.." in the makefile.
+        if (ptcgLibraries.endsWith(":")) {
+            ptcgLibraries = ptcgLibraries.substring(0,
+                    ptcgLibraries.length() - 1);
+        }
+        _substituteMap.put("@PTCGLibraries@", ptcgLibraries);
 
-            _substituteMap.put("@MODELCLASS@", modelClass);
+        _substituteMap.put("@MODELCLASS@", modelClass);
 
         super._writeMakefile(container, currentDirectory);
     }
@@ -2230,6 +2277,7 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
      *  @exception IllegalActionException Thrown if there is a problem
      *  writing the files.
      */
+    @Override
     protected String _writeVariableDeclarations(
             List<String> variableDeclarations) throws IllegalActionException {
         if (variableDeclarations.size() < 2) {
@@ -2316,8 +2364,8 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
                     if (importLine == null) {
                         throw new InternalErrorException(
                                 "Last import line was null? Read " + i
-                                        + " lines of " + typesArray.length
-                                        + " lines.");
+                                + " lines of " + typesArray.length
+                                + " lines.");
                     }
 
                     // Get rid of the ".*;".
@@ -2338,11 +2386,13 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
                     if (((BooleanToken) generateInSubdirectory.getToken())
                             .booleanValue()) {
                         if (directoryName.indexOf('/') >= 0) {
-                            directoryName = directoryName.substring(directoryName
-                                                                    .indexOf('/'));
+                            directoryName = directoryName
+                                    .substring(directoryName.indexOf('/'));
                         } else {
-                            System.out.println("Warning: JavaCodeGenerator: directoryName \""
-                                               + directoryName + "\" has no slashes?");
+                            System.out
+                                    .println("Warning: JavaCodeGenerator: directoryName \""
+                                            + directoryName
+                                            + "\" has no slashes?");
                         }
                     }
                     File directory = new File(codeDirectoryFile, directoryName);
@@ -2439,7 +2489,7 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
                     typeName = _typeNameCG(typeName);
                     _writeCodeFileName(declareTypeOrTokenBlock,
                             codeDirectoryFile.toString() + "/" + directoryName
-                                    + "/" + typeName + ".java", false, true);
+                            + "/" + typeName + ".java", false, true);
                     // FIXME: we should not be deleting the .java and .class file
                     // in the top level, instead, we should be writing our code
                     // into a subdirectory.

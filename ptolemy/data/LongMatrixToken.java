@@ -317,6 +317,7 @@ public class LongMatrixToken extends MatrixToken {
      *  @exception IllegalActionException If the returned matrix is empty or if the specified
      *   parameters result in out of bounds accesses.
      */
+    @Override
     public MatrixToken crop(int rowStart, int colStart, int rowSpan, int colSpan)
             throws IllegalActionException {
         long[][] value = this.longMatrix();
@@ -327,8 +328,8 @@ public class LongMatrixToken extends MatrixToken {
         } catch (ArrayIndexOutOfBoundsException ex) {
             throw new IllegalActionException(
                     "Matrix crop indices out of bounds (rowStart = " + rowStart
-                            + ", colStart = " + colStart + ", rowSpan = "
-                            + rowSpan + ", colSpan = " + colSpan + ").");
+                    + ", colStart = " + colStart + ", rowSpan = "
+                    + rowSpan + ", colSpan = " + colSpan + ").");
         }
     }
 
@@ -340,6 +341,7 @@ public class LongMatrixToken extends MatrixToken {
      *   of the same dimensions and the corresponding elements of the
      *   matrices are equal.
      */
+    @Override
     public boolean equals(Object object) {
         if (object == null) {
             return false;
@@ -374,6 +376,7 @@ public class LongMatrixToken extends MatrixToken {
     /** Return the number of columns in the matrix.
      *  @return The number of columns in the matrix.
      */
+    @Override
     public int getColumnCount() {
         return _columnCount;
     }
@@ -386,6 +389,7 @@ public class LongMatrixToken extends MatrixToken {
      *  @exception ArrayIndexOutOfBoundsException If the specified
      *   row or column number is outside the range of the matrix.
      */
+    @Override
     public Token getElementAsToken(int row, int column)
             throws ArrayIndexOutOfBoundsException {
         return new LongToken(_value[row * _columnCount + column]);
@@ -407,6 +411,7 @@ public class LongMatrixToken extends MatrixToken {
      *  This must be a type representing a scalar token.
      *  @return BaseType.LONG.
      */
+    @Override
     public Type getElementType() {
         return BaseType.LONG;
     }
@@ -414,6 +419,7 @@ public class LongMatrixToken extends MatrixToken {
     /** Return the number of rows in the matrix.
      *  @return The number of rows in the matrix.
      */
+    @Override
     public int getRowCount() {
         return _rowCount;
     }
@@ -421,6 +427,7 @@ public class LongMatrixToken extends MatrixToken {
     /** Return the type of this token.
      *  @return BaseType.LONG_MATRIX
      */
+    @Override
     public Type getType() {
         return BaseType.LONG_MATRIX;
     }
@@ -429,6 +436,7 @@ public class LongMatrixToken extends MatrixToken {
      *  sum of the elements, casted to integer.
      *  @return A hash code value for this token.
      */
+    @Override
     public int hashCode() {
         long code = 0;
         int elements = _rowCount * _columnCount;
@@ -462,6 +470,7 @@ public class LongMatrixToken extends MatrixToken {
      *   to size incompatibilities, or if the input matrix has no
      *   tokens.
      */
+    @Override
     public MatrixToken join(MatrixToken[][] matrices)
             throws IllegalActionException {
         if (matrices == null || matrices.length == 0 || matrices[0].length == 0) {
@@ -510,6 +519,7 @@ public class LongMatrixToken extends MatrixToken {
      *  modify it.
      *  @return A 2-D long matrix.
      */
+    @Override
     public long[][] longMatrix() {
         return LongMatrixMath
                 .toMatrixFromArray(_value, _rowCount, _columnCount);
@@ -522,6 +532,7 @@ public class LongMatrixToken extends MatrixToken {
      *  @return A new LongMatrixToken containing the left multiplicative
      *   identity.
      */
+    @Override
     public Token one() {
         try {
             return new LongMatrixToken(LongMatrixMath.identity(_rowCount),
@@ -540,6 +551,7 @@ public class LongMatrixToken extends MatrixToken {
      *  @return A new LongMatrixToken containing the right multiplicative
      *   identity.
      */
+    @Override
     public Token oneRight() {
         try {
             return new LongMatrixToken(LongMatrixMath.identity(_columnCount),
@@ -557,6 +569,7 @@ public class LongMatrixToken extends MatrixToken {
      *  @param columns The number of columns per submatrix.
      *  @return An array of matrix tokens.
      */
+    @Override
     public MatrixToken[][] split(int[] rows, int[] columns) {
         MatrixToken[][] result = new MatrixToken[rows.length][columns.length];
         long[][] source = longMatrix();
@@ -595,6 +608,7 @@ public class LongMatrixToken extends MatrixToken {
      *  matrix contained in this token.
      *  @return A new LongMatrixToken containing the additive identity.
      */
+    @Override
     public Token zero() {
         try {
             return new LongMatrixToken(new long[_rowCount * _columnCount],
@@ -618,6 +632,7 @@ public class LongMatrixToken extends MatrixToken {
      *  class.
      *  @return A new LongMatrixToken containing the result.
      */
+    @Override
     protected MatrixToken _add(MatrixToken rightArgument)
             throws IllegalActionException {
         LongMatrixToken convertedArgument = (LongMatrixToken) rightArgument;
@@ -635,6 +650,7 @@ public class LongMatrixToken extends MatrixToken {
      *  supported by the derived class.
      *  @return A new Token containing the result.
      */
+    @Override
     protected MatrixToken _addElement(Token rightArgument)
             throws IllegalActionException {
         long scalar;
@@ -661,6 +677,7 @@ public class LongMatrixToken extends MatrixToken {
      *  supported by the derived class.
      *  @return A new Token containing the result.
      */
+    @Override
     protected MatrixToken _divideElement(Token rightArgument)
             throws IllegalActionException {
         long scalar;
@@ -697,6 +714,7 @@ public class LongMatrixToken extends MatrixToken {
      *  supported by the derived class.
      *  @return A new Token containing the result.
      */
+    @Override
     protected MatrixToken _moduloElement(Token rightArgument)
             throws IllegalActionException {
         long scalar;
@@ -723,6 +741,7 @@ public class LongMatrixToken extends MatrixToken {
      *  class.
      *  @return A new LongMatrixToken containing the result.
      */
+    @Override
     protected MatrixToken _multiply(MatrixToken rightArgument)
             throws IllegalActionException {
         LongMatrixToken convertedArgument = (LongMatrixToken) rightArgument;
@@ -760,6 +779,7 @@ public class LongMatrixToken extends MatrixToken {
      *   supported by the derived class.
      *  @return A new LongMatrixToken containing the result.
      */
+    @Override
     protected MatrixToken _multiplyElement(Token rightArgument)
             throws IllegalActionException {
         long scalar;
@@ -786,6 +806,7 @@ public class LongMatrixToken extends MatrixToken {
      *  class.
      *  @return A new LongMatrixToken containing the result.
      */
+    @Override
     protected MatrixToken _subtract(MatrixToken rightArgument)
             throws IllegalActionException {
         LongMatrixToken convertedArgument = (LongMatrixToken) rightArgument;
@@ -803,6 +824,7 @@ public class LongMatrixToken extends MatrixToken {
      *  supported by the derived class.
      *  @return A new Token containing the result.
      */
+    @Override
     protected MatrixToken _subtractElement(Token rightArgument)
             throws IllegalActionException {
         long scalar;
@@ -829,6 +851,7 @@ public class LongMatrixToken extends MatrixToken {
      *  supported by the derived class.
      *  @return A new Token containing the result.
      */
+    @Override
     protected MatrixToken _subtractElementReverse(Token rightArgument)
             throws IllegalActionException {
         long scalar;

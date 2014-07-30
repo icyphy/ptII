@@ -86,6 +86,7 @@ public class VariableScope extends ModelScope {
      *  @exception IllegalActionException If a value in the scope
      *  exists with the given name, but cannot be evaluated.
      */
+    @Override
     public Token get(String name) throws IllegalActionException {
         Variable result = getScopedVariable(null, _container, name);
 
@@ -106,6 +107,7 @@ public class VariableScope extends ModelScope {
      *  @exception IllegalActionException If a value in the scope
      *  exists with the given name, but cannot be evaluated.
      */
+    @Override
     public Type getType(String name) throws IllegalActionException {
         Variable result = getScopedVariable(null, _container, name);
 
@@ -127,6 +129,7 @@ public class VariableScope extends ModelScope {
      *  @exception IllegalActionException If a value in the scope
      *  exists with the given name, but cannot be evaluated.
      */
+    @Override
     public InequalityTerm getTypeTerm(String name)
             throws IllegalActionException {
         Variable result = getScopedVariable(null, _container, name);
@@ -151,6 +154,7 @@ public class VariableScope extends ModelScope {
      *  @exception IllegalActionException If constructing the list causes
      *  it.
      */
+    @Override
     public Set<?> identifierSet() throws IllegalActionException {
         Set<String> set = getAllScopedVariableNames(null, _container);
         if (_superScope != null) {

@@ -117,6 +117,7 @@ public class Rician extends RandomSource {
      *  remain constant throughout an iteration.
      *  @exception IllegalActionException If there is no director.
      */
+    @Override
     public void fire() throws IllegalActionException {
         super.fire();
         output.send(0, new DoubleToken(_current));
@@ -128,6 +129,7 @@ public class Rician extends RandomSource {
     /** Generate a new random number.
      *  @exception IllegalActionException If parameter values are incorrect.
      */
+    @Override
     protected void _generateRandomNumber() throws IllegalActionException {
         double xMeanValue = ((DoubleToken) xMean.getToken()).doubleValue();
         double yMeanValue = ((DoubleToken) yMean.getToken()).doubleValue();

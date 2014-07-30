@@ -86,6 +86,7 @@ public interface Figure extends VisibleComponent, UserObjectContainer {
      *  @return the parent of this figure.
      *  @see #setParent(CanvasComponent)
      */
+    @Override
     public CanvasComponent getParent();
 
     /** Get the outline shape of this figure. The outline shape is

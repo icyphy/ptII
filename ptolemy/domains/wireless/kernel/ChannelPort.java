@@ -91,6 +91,7 @@ public class ChannelPort extends WirelessIOPort {
      *  @exception CloneNotSupportedException Not thrown in this base class
      *  @return The new Attribute.
      */
+    @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         ChannelPort newObject = (ChannelPort) super.clone(workspace);
         newObject._sourcePortList = null;
@@ -104,6 +105,7 @@ public class ChannelPort extends WirelessIOPort {
      *  from the containing channel.
      *  @return The number of ports that can receive data from this one.
      */
+    @Override
     public int numberOfSinks() {
         return sinkPortList().size();
     }
@@ -112,6 +114,7 @@ public class ChannelPort extends WirelessIOPort {
      *  to the containing channel.
      *  @return The number of ports that can send data to this one.
      */
+    @Override
     public int numberOfSources() {
         return sourcePortList().size();
     }
@@ -125,8 +128,9 @@ public class ChannelPort extends WirelessIOPort {
      *  @exception NameDuplicationException If the container already has
      *   a port with the name of this port.
      */
+    @Override
     public void setContainer(Entity container) throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         if (container instanceof WirelessChannel) {
             super.setContainer(container);
         } else {
@@ -142,6 +146,7 @@ public class ChannelPort extends WirelessIOPort {
      *  on the inside.
      *  @return A list of WirelessIOPort objects.
      */
+    @Override
     public List sinkPortList() {
         if (_sinkPortListVersion == workspace().getVersion()) {
             return _sinkPortList;
@@ -166,6 +171,7 @@ public class ChannelPort extends WirelessIOPort {
      *  use it on the inside.
      *  @return A list of IOPort objects.
      */
+    @Override
     public List sourcePortList() {
         if (_sourcePortListVersion == workspace().getVersion()) {
             return _sourcePortList;

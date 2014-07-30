@@ -55,6 +55,7 @@ public class GeneralToken extends Token {
     /** Return the type of this token.
      *  @return BaseType.GENERAL.
      */
+    @Override
     public Type getType() {
         return BaseType.GENERAL;
     }

@@ -84,6 +84,7 @@ public class TypedDecorator extends FigureDecorator {
     /**
      * Return a new decorator, according to the type of the figure.
      */
+    @Override
     public FigureDecorator newInstance(Figure f) {
         FigureDecorator d = (FigureDecorator) _typedDecorators
                 .get(f.getClass());
@@ -107,6 +108,7 @@ public class TypedDecorator extends FigureDecorator {
      * is a bit clumsy, as this object is really a factory masquerading as
      * a figure.
      */
+    @Override
     public void setParent(CanvasComponent fc) {
         throw new UnsupportedOperationException(
                 "TypedDecorator cannot be inserted into a figure tree");

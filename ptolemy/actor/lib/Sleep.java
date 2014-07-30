@@ -114,6 +114,7 @@ public class Sleep extends Transformer {
      *   if one of the attributes cannot be cloned.
      *  @return A new instance of Sleep.
      */
+    @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         Sleep newObject = (Sleep) super.clone(workspace);
         newObject.output.setTypeAtLeast(newObject.input);
@@ -132,6 +133,7 @@ public class Sleep extends Transformer {
      *  are lost.
      *  @exception IllegalActionException Not thrown in this base class
      */
+    @Override
     public void fire() throws IllegalActionException {
         if (!_wasSleepCalledInFireYet) {
             _wasSleepCalledInFireYet = true;
@@ -176,6 +178,7 @@ public class Sleep extends Transformer {
     /** Reset the flag that fire() checks so that fire() only sleeps once.
      *  @exception IllegalActionException If the base class throws it.
      */
+    @Override
     public void initialize() throws IllegalActionException {
         super.initialize();
         _wasSleepCalledInFireYet = false;
@@ -185,6 +188,7 @@ public class Sleep extends Transformer {
      *  @exception IllegalActionException If the parent class throws it.
      *  @return Whatever the superclass returns (probably true).
      */
+    @Override
     public boolean postfire() throws IllegalActionException {
         _wasSleepCalledInFireYet = false;
         return super.postfire();

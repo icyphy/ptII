@@ -133,6 +133,7 @@ public class PDFAttribute extends VisibleAttribute {
      *  @exception IllegalActionException If the change is not acceptable
      *   to this container (should not be thrown).
      */
+    @Override
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         if (attribute == source) {
@@ -179,7 +180,7 @@ public class PDFAttribute extends VisibleAttribute {
                                             + jarURL
                                             + ", exception was: \n"
                                             + KernelException
-                                                    .stackTraceToString(ex3));
+                                            .stackTraceToString(ex3));
                         }
                     }
                 } finally {
@@ -219,6 +220,7 @@ public class PDFAttribute extends VisibleAttribute {
      *  @exception CloneNotSupportedException Not thrown in this base class
      *  @return The new Attribute.
      */
+    @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         PDFAttribute newObject = (PDFAttribute) super.clone(workspace);
         newObject._icon = (PDFIcon) newObject.getAttribute("_icon");

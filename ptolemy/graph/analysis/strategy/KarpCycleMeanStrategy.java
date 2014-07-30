@@ -61,7 +61,7 @@ import ptolemy.graph.mapping.ToDoubleMapping;
  @version $Id$
  */
 public class KarpCycleMeanStrategy extends CachedStrategy implements
-        CycleMeanAnalyzer {
+CycleMeanAnalyzer {
     /** Construct a maximum cycle mean analyzer for a given graph, using the
      *  Karp's algorithm.
      *
@@ -87,6 +87,7 @@ public class KarpCycleMeanStrategy extends CachedStrategy implements
      *  @return The nodes on the cycle that corresponds to one of the
      *  maximum/minimum cycle means as an ordered list.
      */
+    @Override
     public List cycle() {
         return _cycle;
     }
@@ -114,6 +115,7 @@ public class KarpCycleMeanStrategy extends CachedStrategy implements
      *
      *  @return The maximum cycle mean value.
      */
+    @Override
     public double maximumCycleMean() {
         return cycleMean(true);
     }
@@ -122,6 +124,7 @@ public class KarpCycleMeanStrategy extends CachedStrategy implements
      *
      *  @return The minimum cycle mean value.
      */
+    @Override
     public double minimumCycleMean() {
         return cycleMean(false);
     }
@@ -130,6 +133,7 @@ public class KarpCycleMeanStrategy extends CachedStrategy implements
      *
      *  @return Return a description of the analyzer..
      */
+    @Override
     public String toString() {
         return "All pair shortest path analyzer"
                 + " based on Karp's algorithm.";
@@ -142,6 +146,7 @@ public class KarpCycleMeanStrategy extends CachedStrategy implements
      *
      *  @return True if the graph is a directed and cyclic graph.
      */
+    @Override
     public boolean valid() {
         boolean result = false;
 
@@ -156,6 +161,7 @@ public class KarpCycleMeanStrategy extends CachedStrategy implements
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
+    @Override
     protected Object _compute() {
         DirectedGraph[] graph = ((DirectedGraph) graph()).sccDecomposition();
         double maximumResult = -Double.MAX_VALUE;

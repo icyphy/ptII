@@ -109,6 +109,7 @@ public class BasicFigure extends AbstractFigure implements ShapedFigure {
      *
      * @deprecated  Use the float constructor instead.
      */
+    @Deprecated
     public BasicFigure(Shape shape, int lineWidth) {
         this(shape, null, lineWidth);
     }
@@ -145,6 +146,7 @@ public class BasicFigure extends AbstractFigure implements ShapedFigure {
      * the inherited method to take account of the thickness of
      * the stroke, if there is one.
      */
+    @Override
     public Rectangle2D getBounds() {
         if (_stroke == null) {
             return _shape.getBounds2D();
@@ -195,6 +197,7 @@ public class BasicFigure extends AbstractFigure implements ShapedFigure {
      *  shape if the figure is not centered.
      *  @return The origin of the figure.
      */
+    @Override
     public Point2D getOrigin() {
         if (_centered) {
             return super.getOrigin();
@@ -207,6 +210,7 @@ public class BasicFigure extends AbstractFigure implements ShapedFigure {
 
     /** Get the shape of this figure.
      */
+    @Override
     public Shape getShape() {
         return _shape;
     }
@@ -226,6 +230,7 @@ public class BasicFigure extends AbstractFigure implements ShapedFigure {
      * a stroke, then return false. If the figure is not visible,
      * always return false.
      */
+    @Override
     public boolean hit(Rectangle2D r) {
         if (!isVisible()) {
             return false;
@@ -257,6 +262,7 @@ public class BasicFigure extends AbstractFigure implements ShapedFigure {
     /** Paint the figure. The figure is redrawn with the current
      *  shape, fill, and outline.
      */
+    @Override
     public void paint(Graphics2D g) {
         if (!isVisible()) {
             return;
@@ -368,6 +374,7 @@ public class BasicFigure extends AbstractFigure implements ShapedFigure {
      * the shape of the figure without moving the figure, use the
      * setPrototypeShape() method instead.
      */
+    @Override
     public void setShape(Shape s) {
         repaint();
         _shape = s;
@@ -400,6 +407,7 @@ public class BasicFigure extends AbstractFigure implements ShapedFigure {
      * that loses the type of the shape, converting it into a
      * GeneralPath.
      */
+    @Override
     public void transform(AffineTransform at) {
         repaint();
         _transform.preConcatenate(at);

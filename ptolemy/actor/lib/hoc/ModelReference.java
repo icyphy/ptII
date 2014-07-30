@@ -190,7 +190,7 @@ import ptolemy.util.MessageHandler;
  @Pt.AcceptedRating Red (eal)
  */
 public class ModelReference extends TypedAtomicActor implements
-        ExecutionListener {
+ExecutionListener {
     /** Construct a ModelReference with a name and a container.
      *  The container argument must not be null, or a
      *  NullPointerException will be thrown.  This actor will use the
@@ -295,6 +295,7 @@ public class ModelReference extends TypedAtomicActor implements
      *  @exception IllegalActionException If the change is not acceptable
      *   to this container (not thrown in this base class).
      */
+    @Override
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         if (attribute == modelFileOrURL) {
@@ -338,7 +339,7 @@ public class ModelReference extends TypedAtomicActor implements
 
                     if (myURI != null
                             && myURI.toURL().toExternalForm()
-                                    .equals(url.toExternalForm())) {
+                            .equals(url.toExternalForm())) {
                         throw new IllegalActionException(this,
                                 "Cannot reference my own container.");
                     }
@@ -410,6 +411,7 @@ public class ModelReference extends TypedAtomicActor implements
      *  @exception CloneNotSupportedException If a derived class contains
      *   an attribute that cannot be cloned.
      */
+    @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         ModelReference newActor = (ModelReference) super.clone(workspace);
         newActor._manager = null;
@@ -427,6 +429,7 @@ public class ModelReference extends TypedAtomicActor implements
      *  @param manager The manager controlling the execution.
      *  @param throwable The throwable to report.
      */
+    @Override
     public synchronized void executionError(Manager manager, Throwable throwable) {
         _throwable = throwable;
         _executing = false;
@@ -450,6 +453,7 @@ public class ModelReference extends TypedAtomicActor implements
      *  on the manager.
      *  @param manager The manager controlling the execution.
      */
+    @Override
     public synchronized void executionFinished(Manager manager) {
         _executing = false;
 
@@ -480,6 +484,7 @@ public class ModelReference extends TypedAtomicActor implements
      *  @exception IllegalActionException If there is no director, or if
      *   the director's action methods throw it.
      */
+    @Override
     public void fire() throws IllegalActionException {
         super.fire();
 
@@ -605,6 +610,7 @@ public class ModelReference extends TypedAtomicActor implements
                 // actually starts up. But the variable is not accessible.
                 // _manager._finishRequested = false;
                 Thread thread = new Thread() {
+                    @Override
                     public void run() {
                         try {
                             if (_debugging) {
@@ -658,6 +664,7 @@ public class ModelReference extends TypedAtomicActor implements
      *  @param manager The manager controlling the execution.
      *  @see Manager#getState()
      */
+    @Override
     public void managerStateChanged(Manager manager) {
         if (_debugging) {
             _debug("Referenced model manager state: " + manager.getState());
@@ -668,6 +675,7 @@ public class ModelReference extends TypedAtomicActor implements
      *  @return Whatever the superclass returns (probably true).
      *  @exception IllegalActionException Thrown if a parent class throws it.
      */
+    @Override
     public boolean postfire() throws IllegalActionException {
         if (_postfireActionValue == _STOP_EXECUTING && _manager != null) {
             if (_debugging) {
@@ -698,6 +706,7 @@ public class ModelReference extends TypedAtomicActor implements
 
     /** Override the base class to call stop() on the referenced model.
      */
+    @Override
     public void stop() {
         if (_model instanceof Executable) {
             ((Executable) _model).stop();
@@ -712,6 +721,7 @@ public class ModelReference extends TypedAtomicActor implements
 
     /* Override the base class to call stopFire() on the referenced model.
      */
+    @Override
     public void stopFire() {
         if (_model instanceof Executable) {
             ((Executable) _model).stopFire();
@@ -726,6 +736,7 @@ public class ModelReference extends TypedAtomicActor implements
 
     /** Override the base class to call terminate() on the referenced model.
      */
+    @Override
     public void terminate() {
         if (_model instanceof Executable) {
             ((Executable) _model).terminate();
@@ -738,6 +749,7 @@ public class ModelReference extends TypedAtomicActor implements
      *  @exception IllegalActionException If there is no director, or if
      *   a background run threw an exception.
      */
+    @Override
     public void wrapup() throws IllegalActionException {
         super.wrapup();
         _alreadyReadInputs = false;

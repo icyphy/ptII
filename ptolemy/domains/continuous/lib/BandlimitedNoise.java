@@ -124,6 +124,7 @@ public class BandlimitedNoise extends Gaussian {
      *  step otherwise.
      *  @exception IllegalActionException If the superclass throws it.
      */
+    @Override
     public void fire() throws IllegalActionException {
         // NOTE: The superclass fire() doesn't do what we want,
         // so we have to replicate the parts of its superclass
@@ -164,6 +165,7 @@ public class BandlimitedNoise extends Gaussian {
      *  sure that two identical sequences will not be returned.
      *  @exception IllegalActionException If the parent class throws it.
      */
+    @Override
     public void initialize() throws IllegalActionException {
         super.initialize();
 
@@ -184,6 +186,7 @@ public class BandlimitedNoise extends Gaussian {
      *  @exception IllegalActionException If the base class throws it.
      *  @return True if it is OK to continue.
      */
+    @Override
     public boolean postfire() throws IllegalActionException {
         boolean result = super.postfire();
 
@@ -222,6 +225,7 @@ public class BandlimitedNoise extends Gaussian {
      *  iteration.
      *  @exception IllegalActionException If parameter values are incorrect.
      */
+    @Override
     protected void _generateRandomNumber() throws IllegalActionException {
         Director director = getDirector();
         if (!(director instanceof ContinuousDirector)) {

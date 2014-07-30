@@ -28,7 +28,7 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 
 
-*/
+ */
 
 package ptolemy.actor.gt;
 
@@ -55,7 +55,7 @@ import ptolemy.kernel.util.Workspace;
  @Pt.AcceptedRating Red (tfeng)
  */
 public class PatternObjectAttribute extends StringAttribute implements
-        ValueListener {
+ValueListener {
 
     /** Construct an attribute in the default workspace with an empty string
      *  as its name.
@@ -103,6 +103,7 @@ public class PatternObjectAttribute extends StringAttribute implements
      *
      *  @param settable The changed attribute.
      */
+    @Override
     public void valueChanged(Settable settable) {
         if (settable == this) {
             NamedObj container = getContainer();
@@ -141,8 +142,8 @@ public class PatternObjectAttribute extends StringAttribute implements
                     if (container instanceof GTEntity
                             && correspondingEntity instanceof GTEntity) {
                         ((GTEntity) container)
-                                .updateAppearance(((GTEntity) correspondingEntity)
-                                        .getCriteriaAttribute());
+                        .updateAppearance(((GTEntity) correspondingEntity)
+                                .getCriteriaAttribute());
                     }
                 }
             }

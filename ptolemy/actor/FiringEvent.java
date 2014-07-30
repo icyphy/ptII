@@ -114,6 +114,7 @@ public class FiringEvent implements DebugEvent {
      *  that activated the actor.
      *  @return An instance of Director.
      */
+    @Override
     public NamedObj getSource() {
         return _director;
     }
@@ -128,6 +129,7 @@ public class FiringEvent implements DebugEvent {
     /** Return a string representation of this event.
      *  @return A user-readable string describing the event.
      */
+    @Override
     public String toString() {
         // Note that a string buffer is used to reduce the overhead.
         // Additionally it may be useful to cache this string, but since
@@ -241,6 +243,7 @@ public class FiringEvent implements DebugEvent {
         /** Return a string description of this event type.
          *  @return a string description of this event type.
          */
+        @Override
         public String toString() {
             return "FiringEventType(" + getName() + ")";
         }

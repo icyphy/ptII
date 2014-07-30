@@ -184,6 +184,7 @@ public class Chop extends SDFTransformer {
      *  @param attribute The attribute that has changed.
      *  @exception IllegalActionException If the parameters are out of range.
      */
+    @Override
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         // Note: it is important that none of these sections depend on
@@ -247,6 +248,7 @@ public class Chop extends SDFTransformer {
      *  the specified number of output tokens.
      *  @exception IllegalActionException If there is no director.
      */
+    @Override
     public void fire() throws IllegalActionException {
         super.fire();
 
@@ -308,6 +310,7 @@ public class Chop extends SDFTransformer {
      *  gets initialized.
      *  @exception IllegalActionException If the superclass throws it.
      */
+    @Override
     public void initialize() throws IllegalActionException {
         super.initialize();
         _pastNeedsInitializing = true;

@@ -105,6 +105,7 @@ public class PaintedShape extends AbstractPaintedGraphic {
 
     /** Get the line width
      */
+    @Override
     public float getLineWidth() {
         if (stroke == null) {
             return 0.0f;
@@ -119,6 +120,7 @@ public class PaintedShape extends AbstractPaintedGraphic {
      * geometry testing with GeneralPath in the first version of
      * JDK1.2.
      */
+    @Override
     public boolean hit(Rectangle2D r) {
         // Hit testing on strokes doesn't appear to work too
         // well in JDK1.2, so we will cheat and ignore the width
@@ -138,6 +140,7 @@ public class PaintedShape extends AbstractPaintedGraphic {
      * geometry testing with GeneralPath in the first version of
      * JDK1.2.
      */
+    @Override
     public boolean intersects(Rectangle2D r) {
         return shape.intersects(r);
     }
@@ -145,6 +148,7 @@ public class PaintedShape extends AbstractPaintedGraphic {
     /** Paint the shape. The shape is redrawn with the current
      *  shape, fill, and stroke.
      */
+    @Override
     public void paint(Graphics2D g) {
         // Fill it
         if (fillPaint != null) {
@@ -163,6 +167,7 @@ public class PaintedShape extends AbstractPaintedGraphic {
     /** Set the line width. If the line width is less than
      * or equal to zero, the stroke will be removed.
      */
+    @Override
     public void setLineWidth(float lineWidth) {
         if (lineWidth <= 0.0) {
             stroke = null;

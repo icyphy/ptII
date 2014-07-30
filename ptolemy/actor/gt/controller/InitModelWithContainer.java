@@ -25,7 +25,7 @@
  PT_COPYRIGHT_VERSION_2
  COPYRIGHTENDKEY
 
-*/
+ */
 package ptolemy.actor.gt.controller;
 
 import ptolemy.domains.ptera.kernel.PteraController;
@@ -77,6 +77,7 @@ public class InitModelWithContainer extends InitModel {
      *  @exception IllegalActionException If the initial model cannot be
      *   obtained.
      */
+    @Override
     protected CompositeEntity _getInitialModel() throws IllegalActionException {
         PteraController controller = (PteraController) getContainer();
         PteraModalModel modalModel = (PteraModalModel) controller

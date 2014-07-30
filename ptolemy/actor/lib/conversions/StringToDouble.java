@@ -40,7 +40,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 /**
  Convert a string to a double.
 
- <p>This actor is a simpler version of 
+ <p>This actor is a simpler version of
  {@link ptolemy.actor.lib.conversions.ExpressionToToken}, which can perform
  the same conversion, but since ExpressionToToken just evaluates an
  expression, it is much more powerful.</p>
@@ -78,12 +78,13 @@ public class StringToDouble extends Converter {
      *  @exception IllegalActionException If thrown while getting
      *  or sending a token.
      */
+    @Override
     public void fire() throws IllegalActionException {
         super.fire();
         String inputValue = ((StringToken) input.get(0)).stringValue();
 
         double value = Double.parseDouble(inputValue);
-        
+
         output.send(0, new DoubleToken(value));
     }
 
@@ -91,6 +92,7 @@ public class StringToDouble extends Converter {
      *  what the superclass returns (presumably true).
      *  @exception IllegalActionException If there is no director.
      */
+    @Override
     public boolean prefire() throws IllegalActionException {
         if (!input.hasToken(0)) {
             return false;

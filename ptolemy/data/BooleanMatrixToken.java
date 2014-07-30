@@ -148,6 +148,7 @@ public class BooleanMatrixToken extends MatrixToken {
      *  It is safe for the caller to modify the returned matrix.
      *  @return A 2-D boolean matrix.
      */
+    @Override
     public boolean[][] booleanMatrix() {
         boolean[][] result = new boolean[_rowCount][_columnCount];
 
@@ -211,6 +212,7 @@ public class BooleanMatrixToken extends MatrixToken {
      *  @exception IllegalActionException If the returned matrix is empty or if the specified
      *   parameters result in out of bounds accesses.
      */
+    @Override
     public MatrixToken crop(int rowStart, int colStart, int rowSpan, int colSpan)
             throws IllegalActionException {
         boolean[][] value = this.booleanMatrix();
@@ -224,8 +226,8 @@ public class BooleanMatrixToken extends MatrixToken {
         } catch (ArrayIndexOutOfBoundsException ex) {
             throw new IllegalActionException(
                     "Matrix crop indices out of bounds (rowStart = " + rowStart
-                            + ", colStart = " + colStart + ", rowSpan = "
-                            + rowSpan + ", colSpan = " + colSpan + ").");
+                    + ", colStart = " + colStart + ", rowSpan = "
+                    + rowSpan + ", colSpan = " + colSpan + ").");
         }
     }
 
@@ -237,6 +239,7 @@ public class BooleanMatrixToken extends MatrixToken {
      *   of the same dimensions and the corresponding elements of the
      *   matrices are equal.
      */
+    @Override
     public boolean equals(Object object) {
         if (object == null) {
             return false;
@@ -272,6 +275,7 @@ public class BooleanMatrixToken extends MatrixToken {
     /** Return the number of columns in the matrix.
      *  @return The number of columns in the matrix.
      */
+    @Override
     public int getColumnCount() {
         return _columnCount;
     }
@@ -284,6 +288,7 @@ public class BooleanMatrixToken extends MatrixToken {
      *  @exception ArrayIndexOutOfBoundsException If the specified
      *   row or column number is outside the range of the matrix.
      */
+    @Override
     public Token getElementAsToken(int row, int column)
             throws ArrayIndexOutOfBoundsException {
         return BooleanToken.getInstance(_value[row][column]);
@@ -304,6 +309,7 @@ public class BooleanMatrixToken extends MatrixToken {
     /** Return the Type of the tokens contained in this matrix token.
      *  @return BaseType.INT.
      */
+    @Override
     public Type getElementType() {
         return BaseType.INT;
     }
@@ -311,6 +317,7 @@ public class BooleanMatrixToken extends MatrixToken {
     /** Return the number of rows in the matrix.
      *  @return The number of rows in the matrix.
      */
+    @Override
     public int getRowCount() {
         return _rowCount;
     }
@@ -318,6 +325,7 @@ public class BooleanMatrixToken extends MatrixToken {
     /** Return the type of this token.
      *  @return BaseType.BOOLEAN_MATRIX
      */
+    @Override
     public Type getType() {
         return BaseType.BOOLEAN_MATRIX;
     }
@@ -326,6 +334,7 @@ public class BooleanMatrixToken extends MatrixToken {
      *  number of elements with value true in the contained matrix.
      *  @return A hash code value for this token.
      */
+    @Override
     public int hashCode() {
         int code = 0;
 
@@ -362,6 +371,7 @@ public class BooleanMatrixToken extends MatrixToken {
      *   to size incompatibilities, or if the input matrix has no
      *   tokens.
      */
+    @Override
     public MatrixToken join(MatrixToken[][] matrices)
             throws IllegalActionException {
         if (matrices == null || matrices.length == 0 || matrices[0].length == 0) {
@@ -415,6 +425,7 @@ public class BooleanMatrixToken extends MatrixToken {
      *  @param columns The number of columns per submatrix.
      *  @return An array of matrix tokens.
      */
+    @Override
     public MatrixToken[][] split(int[] rows, int[] columns) {
         MatrixToken[][] result = new MatrixToken[rows.length][columns.length];
         boolean[][] source = booleanMatrix();
@@ -458,6 +469,7 @@ public class BooleanMatrixToken extends MatrixToken {
      *  @return A new BooleanMatrixToken containing the left multiplicative
      *   identity.
      */
+    @Override
     public Token one() {
         try {
             return new BooleanMatrixToken(_createIdentity(_rowCount));
@@ -475,6 +487,7 @@ public class BooleanMatrixToken extends MatrixToken {
      *  @return A new BooleanMatrixToken containing the right multiplicative
      *   identity.
      */
+    @Override
     public Token oneRight() {
         try {
             return new BooleanMatrixToken(_createIdentity(_columnCount));
@@ -491,6 +504,7 @@ public class BooleanMatrixToken extends MatrixToken {
      *  matrix contained in this token.
      *  @return A new IntMatrixToken containing the additive identity.
      */
+    @Override
     public Token zero() {
         try {
             return new BooleanMatrixToken(new boolean[_rowCount][_columnCount]);

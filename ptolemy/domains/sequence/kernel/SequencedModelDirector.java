@@ -73,7 +73,7 @@ public abstract class SequencedModelDirector extends Director {
      *   an entity with the specified name.
      */
     public SequencedModelDirector() throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         super();
         _init();
     }
@@ -154,20 +154,21 @@ public abstract class SequencedModelDirector extends Director {
     ////                         public methods                    ////
 
     /** Code copied from StaticSchedulingDirector
-    *  FIXME:  Do we just want a SequencedModelDirector to be a subclass of
-    *  StaticSchedulingDirector?  But, the complete schedule is not statically computable
-    *  if control actors are present
-    *  FIXME:  I am not sure if this works correctly in all situations...
-    *
-    *  Clone is needed in the director to clone the scheduler
-    *
-    *  Clone the object into the specified workspace. The new object is
-    *  <i>not</i> added to the directory of that workspace (you must do this
-    *  yourself if you want it there).
-    *  @param workspace The workspace for the cloned object.
-    *  @exception CloneNotSupportedException Not thrown in this base class
-    *  @return The new Attribute.
-    */
+     *  FIXME:  Do we just want a SequencedModelDirector to be a subclass of
+     *  StaticSchedulingDirector?  But, the complete schedule is not statically computable
+     *  if control actors are present
+     *  FIXME:  I am not sure if this works correctly in all situations...
+     *
+     *  Clone is needed in the director to clone the scheduler
+     *
+     *  Clone the object into the specified workspace. The new object is
+     *  <i>not</i> added to the directory of that workspace (you must do this
+     *  yourself if you want it there).
+     *  @param workspace The workspace for the cloned object.
+     *  @exception CloneNotSupportedException Not thrown in this base class
+     *  @return The new Attribute.
+     */
+    @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         SequencedModelDirector newObject = (SequencedModelDirector) super
                 .clone(workspace);
@@ -209,6 +210,7 @@ public abstract class SequencedModelDirector extends Director {
      *  that forces scheduling to be redone at the next opportunity.
      *  If there is no scheduler, do nothing.
      */
+    @Override
     public void invalidateSchedule() {
         _debug("Invalidating schedule.");
         if (_scheduler != null) {
@@ -240,6 +242,7 @@ public abstract class SequencedModelDirector extends Director {
      *  one of the associated actors throws it, or if there is no
      *  scheduler.
      */
+    @Override
     public void initialize() throws IllegalActionException {
         super.initialize();
         _iterationCount = 0;
@@ -308,7 +311,7 @@ public abstract class SequencedModelDirector extends Director {
                         if (userDefinedDefaultOutputInitialValue.getToken() != null) {
                             port.send(channel,
                                     userDefinedDefaultOutputInitialValue
-                                            .getToken());
+                                    .getToken());
                         } else {
                             initialValueParameter = new Parameter();
                             initialValueParameter.setExpression(port.getType()
@@ -364,6 +367,7 @@ public abstract class SequencedModelDirector extends Director {
     /** Return a new receiver consistent with the Sequence domain.
      *  @return A new SequenceReceiver.
      */
+    @Override
     public Receiver newReceiver() {
         return new RegisterReceiver();
     }
@@ -402,6 +406,7 @@ public abstract class SequencedModelDirector extends Director {
     // FIXME: Also support this??
     //     public void preinitialize(List<SequenceAttribute> _independentList) throws IllegalActionException {
 
+    @Override
     public void preinitialize() throws IllegalActionException {
         super.preinitialize();
 
@@ -466,7 +471,7 @@ public abstract class SequencedModelDirector extends Director {
             }
 
         }
-        */
+         */
 
         //Check for attribute types of Opaque composite Actor and non-composite Actors and create a list of all the actors in model
         List<Entity> deepEntityList = compositeActor.deepEntityList();
@@ -534,7 +539,7 @@ public abstract class SequencedModelDirector extends Director {
                             }
                         }
                     }
-                    */
+                     */
                 }
 
             }
@@ -586,7 +591,7 @@ public abstract class SequencedModelDirector extends Director {
 
         }
 
-            */
+         */
         // Note that a ProcessAttribute is also a SequenceAttribute
 
         // MultipleFireMethodsInterface can potentially have more than one Sequence or Process Attribute,
@@ -628,7 +633,7 @@ public abstract class SequencedModelDirector extends Director {
             {
                 throw new IllegalActionException(this, " Opaque Composite Actor " + actor.getName() + " must have a Sequence Attribute or Process Attribute");
             }
-            */
+             */
 
         }
 
@@ -651,6 +656,7 @@ public abstract class SequencedModelDirector extends Director {
      *  @exception IllegalActionException If the iterations parameter
      *  does not contain a legal value.
      */
+    @Override
     public boolean postfire() throws IllegalActionException {
         int iterationsValue = ((IntToken) iterations.getToken()).intValue();
         _iterationCount++;
@@ -677,10 +683,11 @@ public abstract class SequencedModelDirector extends Director {
      *  @return An array of suggested directors to be used with ModalModel.
      *  @see ptolemy.actor.Director#suggestedModalModelDirectors()
      */
+    @Override
     public String[] suggestedModalModelDirectors() {
         return new String[] { "ptolemy.domains.modal.kernel.FSMDirector",
                 "ptolemy.domains.modal.kernel.MultirateFSMDirector",
-                "ptolemy.domains.hdf.kernel.HDFFSMDirector" };
+        "ptolemy.domains.hdf.kernel.HDFFSMDirector" };
     }
 
     /** Return true to indicate that a ModalModel under control
@@ -688,6 +695,7 @@ public abstract class SequencedModelDirector extends Director {
      *  @return True indicating a ModalModel under control of this director
      *  supports multirate firing.
      */
+    @Override
     public boolean supportMultirateFiring() {
         return false;
     }
@@ -768,7 +776,7 @@ public abstract class SequencedModelDirector extends Director {
                     && ((MultipleFireMethodsInterface) actor).numFireMethods() > 1) {
                 String methodName = firing.getMethodName();
                 ((MultipleFireMethodsInterface) actor)
-                        .setFireMethod(methodName);
+                .setFireMethod(methodName);
             }
 
             int iterationCount = firing.getIterationCount();
@@ -807,7 +815,7 @@ public abstract class SequencedModelDirector extends Director {
      *   the director's parameters.
      */
     protected void _init() throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         // Create a new SequenceScheduler object
         // This sets the container at the same time
         SequenceScheduler scheduler = new SequenceScheduler(this,

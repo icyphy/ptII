@@ -129,6 +129,7 @@ public class FixToFix extends Converter {
      *  @param attribute The attribute that changed.
      *  @exception IllegalActionException If the parameter value is invalid.
      */
+    @Override
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         if (attribute == precision) {
@@ -171,6 +172,7 @@ public class FixToFix extends Converter {
      *  @exception CloneNotSupportedException If a derived class contains
      *   an attribute that cannot be cloned.
      */
+    @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         FixToFix newObject = (FixToFix) super.clone(workspace);
 
@@ -195,6 +197,7 @@ public class FixToFix extends Converter {
      *  and rounding strategy given by the <i>rounding</i> parameter.
      *  @exception IllegalActionException If there is no director.
      */
+    @Override
     public void fire() throws IllegalActionException {
         super.fire();
         FixToken in = (FixToken) input.get(0);
@@ -207,6 +210,7 @@ public class FixToFix extends Converter {
      *  what the superclass returns (presumably true).
      *  @exception IllegalActionException If there is no director.
      */
+    @Override
     public boolean prefire() throws IllegalActionException {
         if (!input.hasToken(0)) {
             return false;

@@ -70,6 +70,7 @@ public class TestProcessActor extends TestActor {
     /** Record the firing and force postfire to return false.
      *  @exception IllegalActionException If the super class throws it.
      */
+    @Override
     public void fire() throws IllegalActionException {
         super.fire();
         _notDone = false;
@@ -78,6 +79,7 @@ public class TestProcessActor extends TestActor {
     /** Record the invocation, then return true if fire was never called.
      *  Else return false.
      */
+    @Override
     public boolean postfire() {
         super.postfire();
         return _notDone;

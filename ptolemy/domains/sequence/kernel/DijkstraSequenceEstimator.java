@@ -49,14 +49,14 @@ import ptolemy.kernel.util.NamedObj;
 //// DijkstraSequenceEstimator
 
 /** A class that estimates a sequential schedule based on a modified version
-* of Dijkstra's algorithm to compute longest paths.
-*
-* @author Bastian Ristau
-* @version $Id$
-* @since Ptolemy II 10.0
-* @Pt.ProposedRating Red (ristau)
-* @Pt.AcceptedRating Red (ristau)
-*/
+ * of Dijkstra's algorithm to compute longest paths.
+ *
+ * @author Bastian Ristau
+ * @version $Id$
+ * @since Ptolemy II 10.0
+ * @Pt.ProposedRating Red (ristau)
+ * @Pt.AcceptedRating Red (ristau)
+ */
 public class DijkstraSequenceEstimator extends SequenceEstimator {
 
     /** Construct an estimator for the given director.
@@ -85,9 +85,10 @@ public class DijkstraSequenceEstimator extends SequenceEstimator {
      * @exception NotSchedulableException If the underlying graph of the actors
      * is not acyclic.
      */
+    @Override
     public Vector<Actor> estimateSequencedSchedule(
             List<SequenceAttribute> independentList)
-            throws NotSchedulableException {
+                    throws NotSchedulableException {
 
         _init();
 

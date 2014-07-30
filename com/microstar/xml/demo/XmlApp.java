@@ -49,13 +49,16 @@ public class XmlApp implements XmlHandler {
      * just return the URL supplied.
      * @see com.microstar.xml.XmlHandler#resolveEntity
      */
+    @Override
     public Object resolveEntity(String publicId, String systemId) {
         return null;
     }
 
+    @Override
     public void startExternalEntity(String systemId) {
     }
 
+    @Override
     public void endExternalEntity(String systemId) {
     }
 
@@ -66,6 +69,7 @@ public class XmlApp implements XmlHandler {
      * <p>This method will always be called first.
      * @see com.microstar.xml.XmlHandler#startDocument
      */
+    @Override
     public void startDocument() {
     }
 
@@ -76,6 +80,7 @@ public class XmlApp implements XmlHandler {
      * <p>This method will always be called last.
      * @see com.microstar.xml.XmlHandler#endDocument
      */
+    @Override
     public void endDocument() {
     }
 
@@ -88,6 +93,7 @@ public class XmlApp implements XmlHandler {
      * values only after this callback.
      * @see com.microstar.xml.XmlHandler#doctypeDecl
      */
+    @Override
     public void doctypeDecl(String name, String pubid, String sysid) {
     }
 
@@ -97,6 +103,7 @@ public class XmlApp implements XmlHandler {
      * if they want to take a specific action.
      * @see com.microstar.xml.XmlHandler#attribute
      */
+    @Override
     public void attribute(String name, String value, boolean isSpecified) {
     }
 
@@ -106,6 +113,7 @@ public class XmlApp implements XmlHandler {
      * if they want to take a specific action.
      * @see com.microstar.xml.XmlHandler#startElement
      */
+    @Override
     public void startElement(String name) {
     }
 
@@ -115,6 +123,7 @@ public class XmlApp implements XmlHandler {
      * if they want to take a specific action.
      * @see com.microstar.xml.XmlHandler#endElement
      */
+    @Override
     public void endElement(String name) {
     }
 
@@ -124,6 +133,7 @@ public class XmlApp implements XmlHandler {
      * if they want to take a specific action.
      * @see com.microstar.xml.XmlHandler#charData
      */
+    @Override
     public void charData(char[] ch, int start, int length) {
     }
 
@@ -133,6 +143,7 @@ public class XmlApp implements XmlHandler {
      * if they want to take a specific action.
      * @see com.microstar.xml.XmlHandler#ignorableWhitespace
      */
+    @Override
     public void ignorableWhitespace(char[] ch, int start, int length) {
     }
 
@@ -142,6 +153,7 @@ public class XmlApp implements XmlHandler {
      * if they want to take a specific action.
      * @see com.microstar.xml.XmlHandler#processingInstruction
      */
+    @Override
     public void processingInstruction(String target, String data) {
     }
 
@@ -152,6 +164,7 @@ public class XmlApp implements XmlHandler {
      * different.
      * @see com.microstar.xml.XmlHandler#error
      */
+    @Override
     public void error(String message, String url, int line, int column) {
         displayText("FATAL ERROR: " + message);
         displayText("  at " + url + ": line " + line + " column " + column);

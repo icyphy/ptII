@@ -69,15 +69,15 @@ public class ModifyDate extends TypedAtomicActor {
 
         input = new TypedIOPort(this, "input", true, false);
         input.setTypeEquals(BaseType.DATE);
-        
+
         operation = new StringParameter(this, "operation");
         operation.addChoice("+");
         operation.addChoice("-");
         operation.setToken(new StringToken("+"));
-        
+
         value = new TypedIOPort(this, "value", true, false);
         value.setTypeEquals(BaseType.INT);
-        
+
         unit = new StringParameter(this, "unit");
         unit.addChoice("Year");
         unit.addChoice("Month");
@@ -89,30 +89,30 @@ public class ModifyDate extends TypedAtomicActor {
         unit.addChoice("Microsecond");
         unit.addChoice("Nanosecond");
         unit.setToken(new StringToken("Second"));
-        
+
         output = new TypedIOPort(this, "output", false, true);
         output.setTypeEquals(BaseType.DATE);
     }
-    
+
     /** Input for date tokens.
      */
     public TypedIOPort input;
-    
+
     /** Parameter for operation. The operation is a choice of the string
      *  values "+" and "-" and defaults to "+".
      */
     public Parameter operation;
-    
+
     /** Input for value in a given unit to be added or subtracted from date
-     *  token received by input. 
+     *  token received by input.
      */
     public TypedIOPort value;
-    
+
     /** Unit of value to be added or subtracted. This can be either part of
      *  the date, i.e. year, month, day, ... and it defaults to second.
      */
     public Parameter unit;
-    
+
     /** Output for the new date token.
      */
     public TypedIOPort output;
@@ -124,26 +124,29 @@ public class ModifyDate extends TypedAtomicActor {
      *  produce no output.
      *  @exception IllegalActionException If there is no director.
      */
+    @Override
     public void fire() throws IllegalActionException {
         super.fire();
         if (input.hasToken(0)) {
             DateToken inputToken = (DateToken) input.get(0);
-            
-            DateToken token = new DateToken(inputToken.getValue(), inputToken.getPrecision(), inputToken.getTimeZone());
-            
-            String operationString = ((StringToken)operation.getToken()).stringValue();
-            String unitString = ((StringToken)unit.getToken()).stringValue();
-            
-            int val = ((IntToken)value.get(0)).intValue();
+
+            DateToken token = new DateToken(inputToken.getValue(),
+                    inputToken.getPrecision(), inputToken.getTimeZone());
+
+            String operationString = ((StringToken) operation.getToken())
+                    .stringValue();
+            String unitString = ((StringToken) unit.getToken()).stringValue();
+
+            int val = ((IntToken) value.get(0)).intValue();
             if (operationString.equals("+")) {
                 //nothing to do;
             } else if (operationString.equals("-")) {
                 val = val * (-1);
             } else {
-                throw new IllegalActionException(this, "Operation " + operationString 
-                        + " not supported.");
+                throw new IllegalActionException(this, "Operation "
+                        + operationString + " not supported.");
             }
-            
+
             if (unitString.equals("Year")) {
                 token.getCalendarInstance().add(Calendar.YEAR, val);
             } else if (unitString.equals("Month")) {
@@ -163,12 +166,12 @@ public class ModifyDate extends TypedAtomicActor {
             } else if (unitString.equals("Nanosecond")) {
                 token.addNanoseconds(val);
             } else {
-                throw new IllegalActionException(this, "The unit " + unitString 
+                throw new IllegalActionException(this, "The unit " + unitString
                         + " is not supported");
             }
-            
+
             output.send(0, token);
-            
+
         }
     }
 }

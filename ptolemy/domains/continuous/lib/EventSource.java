@@ -65,6 +65,7 @@ import ptolemy.kernel.util.Workspace;
  @Pt.AcceptedRating Yellow (hyzheng)
  @deprecated Use {@link ptolemy.actor.lib.DiscreteClock with period set to Infinity}
  */
+@Deprecated
 public class EventSource extends TypedAtomicActor {
     /** Construct an actor in the specified container with the specified
      *  name.  The name must be unique within the container or an exception
@@ -144,6 +145,7 @@ public class EventSource extends TypedAtomicActor {
      *  @exception IllegalActionException If the offsets array is not
      *   nondecreasing and nonnegative, or it is not a row vector.
      */
+    @Override
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         if (attribute == offsets) {
@@ -187,6 +189,7 @@ public class EventSource extends TypedAtomicActor {
      *  @exception CloneNotSupportedException If a derived class contains
      *   an attribute that cannot be cloned.
      */
+    @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         EventSource newObject = (EventSource) super.clone(workspace);
 
@@ -207,6 +210,7 @@ public class EventSource extends TypedAtomicActor {
      *  is no such events, do nothing.
      *  @exception IllegalActionException If the event cannot be sent.
      */
+    @Override
     public void fire() throws IllegalActionException {
         if (_readyToFire == _TIME_RIGHT) {
             super.fire();
@@ -220,6 +224,7 @@ public class EventSource extends TypedAtomicActor {
      *   fireAt() method of the director throws it, or if the director does not
      *   agree to fire the actor at the specified time.
      */
+    @Override
     public synchronized void initialize() throws IllegalActionException {
         super.initialize();
         _cycleStartTime = getDirector().getModelTime();
@@ -238,6 +243,7 @@ public class EventSource extends TypedAtomicActor {
      *   offsets parameters don't match, or if the director does not
      *   agree to fire the actor at the specified time.
      */
+    @Override
     public boolean postfire() throws IllegalActionException {
         if (_readyToFire == _TIME_NOT_RIGHT) {
             return true;
@@ -260,8 +266,8 @@ public class EventSource extends TypedAtomicActor {
         if (_offsets[_phase] >= periodValue) {
             throw new IllegalActionException(this, "Offset number " + _phase
                     + " with value " + _offsets[_phase]
-                    + " must be less than the " + "period, which is "
-                    + periodValue);
+                            + " must be less than the " + "period, which is "
+                            + periodValue);
         }
 
         _nextOutputTime = _cycleStartTime.add(_offsets[_phase]);
@@ -273,6 +279,7 @@ public class EventSource extends TypedAtomicActor {
      *  @return True if this actor is scheduled to fire at the current time.
      *  @exception IllegalActionException If thrown by the super class.
      */
+    @Override
     public boolean prefire() throws IllegalActionException {
         FixedPointDirector director = (FixedPointDirector) getDirector();
         if (director.getModelTime().compareTo(_nextOutputTime) == 0) {

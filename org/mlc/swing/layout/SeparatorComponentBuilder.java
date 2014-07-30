@@ -52,6 +52,7 @@ public class SeparatorComponentBuilder implements ComponentBuilder {
         properties.add(new BeanProperty(TEXT, String.class));
     }
 
+    @Override
     public String getDeclaration(String name,
             java.util.Map<String, Object> beanProperties) {
         String text = (String) beanProperties.get(TEXT);
@@ -59,11 +60,12 @@ public class SeparatorComponentBuilder implements ComponentBuilder {
             text = "";
         }
         return "java.awt.Component "
-                + name
-                + " = com.jgoodies.forms.factories.DefaultComponentFactory.getInstance().createSeparator(\""
-                + text + "\");\n";
+        + name
+        + " = com.jgoodies.forms.factories.DefaultComponentFactory.getInstance().createSeparator(\""
+        + text + "\");\n";
     }
 
+    @Override
     public java.awt.Component getInstance(
             java.util.Map<String, Object> beanProperties) throws Exception {
         String text = (String) beanProperties.get(TEXT);
@@ -73,18 +75,22 @@ public class SeparatorComponentBuilder implements ComponentBuilder {
         return DefaultComponentFactory.getInstance().createSeparator(text);
     }
 
+    @Override
     public java.util.List<BeanProperty> getProperties() {
         return properties;
     }
 
+    @Override
     public boolean isComponentALayoutContainer() {
         return false;
     }
 
+    @Override
     public String toString() {
         return "JGoodies separator";
     }
 
+    @Override
     public ComponentDef getComponentDef(String name,
             Map<String, Object> beanProperties) {
         String imp = "";

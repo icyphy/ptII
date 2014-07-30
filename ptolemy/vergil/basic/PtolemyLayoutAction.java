@@ -73,7 +73,7 @@ good as the Kieler layout mechanism, so use the @see KielerLayoutMechanism.</p>
 @since Ptolemy II 10.0
 @Pt.ProposedRating Red (cmot)
 @Pt.AcceptedRating Red (cmot)
-*/
+ */
 public class PtolemyLayoutAction extends Object implements IGuiAction {
 
     /**
@@ -83,6 +83,7 @@ public class PtolemyLayoutAction extends Object implements IGuiAction {
      *
      * @param model the model
      */
+    @Override
     public void doAction(NamedObj model) {
         try {
             JFrame frame = null;
@@ -203,6 +204,7 @@ public class PtolemyLayoutAction extends Object implements IGuiAction {
         /** Copy the given graph and make the nodes/edges in the copied
          *  graph point to the nodes/edges in the original.
          */
+        @Override
         protected Object copyComposite(Object origComposite) {
             LayoutTarget target = getLayoutTarget();
             GraphModel model = target.getGraphModel();
@@ -335,6 +337,7 @@ public class PtolemyLayoutAction extends Object implements IGuiAction {
         /** Return the viewport of the given graph as a rectangle
          *  in logical coordinates.
          */
+        @Override
         public Rectangle2D getViewport(Object composite) {
             //GraphModel model = getController().getGraphModel();
 
@@ -359,6 +362,7 @@ public class PtolemyLayoutAction extends Object implements IGuiAction {
         /** Translate the figure associated with the given node in the
          *  target's view by the given delta.
          */
+        @Override
         public void translate(Object node, double dx, double dy) {
             super.translate(node, dx, dy);
 

@@ -96,6 +96,7 @@ public class PSNR extends TypedAtomicActor {
      *  @exception IllegalActionException If the dimensions of the
      *  input tokens do not match.
      */
+    @Override
     public void fire() throws IllegalActionException {
         super.fire();
         int i;

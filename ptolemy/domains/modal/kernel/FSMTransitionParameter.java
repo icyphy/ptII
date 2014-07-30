@@ -23,9 +23,7 @@
    PT_COPYRIGHT_VERSION_2
    COPYRIGHTENDKEY
 
-*/
-
-
+ */
 
 package ptolemy.domains.modal.kernel;
 
@@ -50,7 +48,7 @@ import ptolemy.kernel.util.Workspace;
 /** A parameter that contains FSM transition attributes. In large FSMs
  *  with long strings in actions, the graphical representation can be
  *  challenging. This parameter can be used represent configuration of
- *  transitions in a parameter that can be moved independent from the 
+ *  transitions in a parameter that can be moved independent from the
  *  transition in vergil.
  *  @author Patricia Derler
  *  @version $Id$
@@ -60,7 +58,7 @@ import ptolemy.kernel.util.Workspace;
  *  @Pt.AcceptedRating Red (derler)
  */
 public class FSMTransitionParameter extends AbstractSettableAttribute {
-        
+
     /** Construct an attribute with the given name contained by the specified
      *  entity. The container argument must not be null, or a
      *  NullPointerException will be thrown.  This attribute will use the
@@ -79,7 +77,7 @@ public class FSMTransitionParameter extends AbstractSettableAttribute {
         super(container, name);
         _init();
     }
-    
+
     /** Add value listener. Nothing to do.
      */
     @Override
@@ -95,30 +93,33 @@ public class FSMTransitionParameter extends AbstractSettableAttribute {
      *  @exception CloneNotSupportedException If a derived class contains
      *   an attribute that cannot be cloned.
      */
+    @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
-        FSMTransitionParameter newObject = (FSMTransitionParameter) super.clone(workspace);
+        FSMTransitionParameter newObject = (FSMTransitionParameter) super
+                .clone(workspace);
         newObject._transition = null;
         return newObject;
     }
-    
+
     /** Return the name of the parameter.
      *  @return The name.
      */
+    @Override
     public String getExpression() {
-            if (_transition != null) {
+        if (_transition != null) {
             return _transition.getFullLabel();
-            } 
-            return "";
+        }
+        return "";
     }
-    
+
     /** Set the transition that corresponds to the parameters.
      *  @return The transition.
      *  @see #setTransition(Transition)
      */
     public Transition getTransition() {
-            return _transition;
+        return _transition;
     }
-    
+
     /** Get visibility. Nothing to do.
      */
     @Override
@@ -126,14 +127,14 @@ public class FSMTransitionParameter extends AbstractSettableAttribute {
         return NOT_EDITABLE;
     }
 
-    /** If hide is true, hide the parameter and display transition parameters next 
+    /** If hide is true, hide the parameter and display transition parameters next
      * to the transition.
      * FIXME this should probably be done in setVisibility.
      * @param hide True if the parameter should be hidden.
      * @exception IllegalActionException
      */
     public void hide(boolean hide) throws IllegalActionException {
-            Parameter _hide = (Parameter) getAttribute("_hide");
+        Parameter _hide = (Parameter) getAttribute("_hide");
         if (_hide == null) {
             try {
                 _hide = new Parameter(this, "_hide");
@@ -143,7 +144,8 @@ public class FSMTransitionParameter extends AbstractSettableAttribute {
             }
         }
         if (_hide == null) {
-            throw new InternalErrorException(this, null, "Could not create _hide parameter?");
+            throw new InternalErrorException(this, null,
+                    "Could not create _hide parameter?");
         }
         _hide.setExpression("" + hide);
         Location location = (Location) getAttribute("_location");
@@ -154,16 +156,24 @@ public class FSMTransitionParameter extends AbstractSettableAttribute {
             // null" location is known to be null here.
             if (!hide /*&& (location == null || (location.getLocation()[0] == 0 && location.getLocation()[1] == 0))*/) {
                 if (_transition != null && _transition.sourceState() != null) {
-                    Location sourceStateLocation = (Location)_transition.sourceState().getAttribute("_location");
-                    Location destinationStateLocation = (Location)_transition.destinationState().getAttribute("_location");
+                    Location sourceStateLocation = (Location) _transition
+                            .sourceState().getAttribute("_location");
+                    Location destinationStateLocation = (Location) _transition
+                            .destinationState().getAttribute("_location");
                     try {
-                        new Location(this, "_location").setLocation(new double[]{
-                                    destinationStateLocation.getLocation()[0] + 
-                                    (sourceStateLocation.getLocation()[0] - destinationStateLocation.getLocation()[0])/2,
-                                    destinationStateLocation.getLocation()[1] + 
-                                    (sourceStateLocation.getLocation()[1] - destinationStateLocation.getLocation()[1])/2});
+                        new Location(this, "_location")
+                                .setLocation(new double[] {
+                                        destinationStateLocation.getLocation()[0]
+                                                + (sourceStateLocation
+                                                        .getLocation()[0] - destinationStateLocation
+                                                        .getLocation()[0]) / 2,
+                                        destinationStateLocation.getLocation()[1]
+                                                + (sourceStateLocation
+                                                        .getLocation()[1] - destinationStateLocation
+                                                        .getLocation()[1]) / 2 });
                     } catch (NameDuplicationException ex) {
-                        throw new IllegalActionException(_transition, ex, "Could not add _location?");
+                        throw new IllegalActionException(_transition, ex,
+                                "Could not add _location?");
                     }
                 }
             }
@@ -175,30 +185,30 @@ public class FSMTransitionParameter extends AbstractSettableAttribute {
      */
     @Override
     public void setName(String name) throws IllegalActionException,
-            NameDuplicationException {
-            super.setName(name);
-            if (_transition != null) {
+    NameDuplicationException {
+        super.setName(name);
+        if (_transition != null) {
             _transition.fsmTransitionParameterName.setExpression(name);
             _transition.fsmTransitionParameterName.setPersistent(true);
-            }
+        }
     }
-    
+
     /** Remove value listener. Nothing to do.
-     *  @param listener Ignored.   
+     *  @param listener Ignored.
      */
     @Override
     public void removeValueListener(ValueListener listener) {
         // Nothing to do.
     }
-        
-        
+
     @Override
     public void setContainer(NamedObj container) throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         super.setContainer(container);
         if (container == null && _transition != null) {
             _transition.setFsmTransitionParameter(null);
-            _transition.showFSMTransitionParameter.setToken(new BooleanToken(false));
+            _transition.showFSMTransitionParameter.setToken(new BooleanToken(
+                    false));
         }
     }
 
@@ -208,9 +218,10 @@ public class FSMTransitionParameter extends AbstractSettableAttribute {
      * @exception NameDuplicationException Can happen during initialization.
      * @see #getTransition()
      */
-    public void setTransition(Transition transition) throws IllegalActionException, NameDuplicationException {
-            _transition = transition;
-            _init();
+    public void setTransition(Transition transition)
+            throws IllegalActionException, NameDuplicationException {
+        _transition = transition;
+        _init();
     }
 
     /** Set visibility. Nothing to do.
@@ -221,9 +232,8 @@ public class FSMTransitionParameter extends AbstractSettableAttribute {
         // Nothing to do, visibility is always not-editable.
     }
 
-
     /** Validate. Nothing to do.
-     * @return null   
+     * @return null
      * @exception IllegalActionException Not thrown.
      */
     @Override
@@ -234,19 +244,22 @@ public class FSMTransitionParameter extends AbstractSettableAttribute {
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
-    private void _init() throws IllegalActionException, NameDuplicationException  {
+    private void _init() throws IllegalActionException,
+            NameDuplicationException {
         if (getAttribute("_hideName") == null) {
             SingletonParameter hide = new SingletonParameter(this, "_hideName");
             hide.setToken(BooleanToken.TRUE);
             hide.setVisibility(Settable.EXPERT);
         }
-                
+
         hide(false);
         setPersistent(true);
-            
-        List<Transition> transitions = ((ModalController)getContainer()).relationList();
+
+        List<Transition> transitions = ((ModalController) getContainer())
+                .relationList();
         for (Transition transition : transitions) {
-            if (((StringToken)transition.fsmTransitionParameterName.getToken()).stringValue().equals(this.getName())) {
+            if (((StringToken) transition.fsmTransitionParameterName.getToken())
+                    .stringValue().equals(this.getName())) {
                 _transition = transition;
                 _transition.setFsmTransitionParameter(this);
                 break;
@@ -255,5 +268,5 @@ public class FSMTransitionParameter extends AbstractSettableAttribute {
     }
 
     private Transition _transition;
-        
+
 }

@@ -138,6 +138,7 @@ public class UnsignedByteToken extends ScalarToken {
      *  value is greater than 127.
      *  @return The byte value contained in this token, modulo 256.
      */
+    @Override
     public byte byteValue() {
         return _value;
     }
@@ -147,6 +148,7 @@ public class UnsignedByteToken extends ScalarToken {
      *  is set to 0.
      *  @return A Complex.
      */
+    @Override
     public Complex complexValue() {
         return new Complex(unsignedConvert(_value));
     }
@@ -193,6 +195,7 @@ public class UnsignedByteToken extends ScalarToken {
     /** Return the value in the token as a double.
      *  @return The value contained in this token as a double.
      */
+    @Override
     public double doubleValue() {
         return unsignedConvert(_value);
     }
@@ -204,6 +207,7 @@ public class UnsignedByteToken extends ScalarToken {
      *  UnsignedByteToken with the same value.  If either this object
      *  or the argument is a nil Token, return false.
      */
+    @Override
     public boolean equals(Object object) {
         if (object == null) {
             return false;
@@ -227,6 +231,7 @@ public class UnsignedByteToken extends ScalarToken {
     /** Return the type of this token.
      *  @return BaseType.UNSIGNED_BYTE
      */
+    @Override
     public Type getType() {
         return BaseType.UNSIGNED_BYTE;
     }
@@ -235,6 +240,7 @@ public class UnsignedByteToken extends ScalarToken {
      *  the value of this token.
      *  @return A hash code value for this token.
      */
+    @Override
     public int hashCode() {
         return _value;
     }
@@ -242,6 +248,7 @@ public class UnsignedByteToken extends ScalarToken {
     /** Return the value in the token as an integer.
      *  @return The byte value contained in this token as a int.
      */
+    @Override
     public int intValue() {
         return unsignedConvert(_value);
     }
@@ -250,6 +257,7 @@ public class UnsignedByteToken extends ScalarToken {
      *  Nil or missing tokens occur when a data source is sparsely populated.
      *  @return True if the token is the {@link #NIL} token.
      */
+    @Override
     public boolean isNil() {
         // We use a method here so that we can easily change how
         // we determine if a token is nil without modify lots of classes.
@@ -264,6 +272,7 @@ public class UnsignedByteToken extends ScalarToken {
      *  @return The left shift.
      *  If this token is nil, then {@link #NIL} is returned.
      */
+    @Override
     public ScalarToken leftShift(int bits) {
         if (isNil()) {
             return UnsignedByteToken.NIL;
@@ -280,6 +289,7 @@ public class UnsignedByteToken extends ScalarToken {
      *  @return The logical right shift.
      *  If this token is nil, then {@link #NIL} is returned.
      */
+    @Override
     public ScalarToken logicalRightShift(int bits) {
         if (isNil()) {
             return UnsignedByteToken.NIL;
@@ -290,6 +300,7 @@ public class UnsignedByteToken extends ScalarToken {
     /** Return the value in the token as a long.
      *  @return The byte value contained in this token as a long.
      */
+    @Override
     public long longValue() {
         return unsignedConvert(_value);
     }
@@ -297,6 +308,7 @@ public class UnsignedByteToken extends ScalarToken {
     /** Returns an UnsignedByteToken with value 1.
      *  @return an UnsignedByteToken with value 1.
      */
+    @Override
     public Token one() {
         return ONE;
     }
@@ -309,6 +321,7 @@ public class UnsignedByteToken extends ScalarToken {
      *  @return The right shift.
      *  If this token is nil, then {@link #NIL} is returned.
      */
+    @Override
     public ScalarToken rightShift(int bits) {
         if (isNil()) {
             return UnsignedByteToken.NIL;
@@ -321,6 +334,7 @@ public class UnsignedByteToken extends ScalarToken {
     /** Return the value in the token as a short.
      *  @return The value contained in this token as a short.
      */
+    @Override
     public short shortValue() {
         return unsignedConvert(_value);
     }
@@ -333,6 +347,7 @@ public class UnsignedByteToken extends ScalarToken {
      *   any) of this token.
      *  @see ptolemy.data.ScalarToken#unitsString
      */
+    @Override
     public String toString() {
         String unitString = "";
 
@@ -368,6 +383,7 @@ public class UnsignedByteToken extends ScalarToken {
     /** Returns an UnsignedByteToken with value 0.
      *  @return An UnsignedByteToken with value 0.
      */
+    @Override
     public Token zero() {
         return ZERO;
     }
@@ -404,6 +420,7 @@ public class UnsignedByteToken extends ScalarToken {
      *  compatible with the interfaces of the other types.
      *  @return An UnsignedByteToken.
      */
+    @Override
     protected ScalarToken _absolute() {
         return this;
     }
@@ -416,6 +433,7 @@ public class UnsignedByteToken extends ScalarToken {
      *  @param rightArgument The token to add to this token.
      *  @return A new UnsignedByteToken containing the result.
      */
+    @Override
     protected ScalarToken _add(ScalarToken rightArgument) {
         byte sum = (byte) (_value + ((UnsignedByteToken) rightArgument)
                 .byteValue());
@@ -429,6 +447,7 @@ public class UnsignedByteToken extends ScalarToken {
      *  this one.
      *  @return The bitwise AND.
      */
+    @Override
     protected ScalarToken _bitwiseAnd(ScalarToken rightArgument) {
         byte sum = (byte) (_value & ((UnsignedByteToken) rightArgument)
                 .byteValue());
@@ -438,6 +457,7 @@ public class UnsignedByteToken extends ScalarToken {
     /** Returns a token representing the bitwise NOT of this token.
      *  @return The bitwise NOT of this token.
      */
+    @Override
     protected ScalarToken _bitwiseNot() {
         UnsignedByteToken result = new UnsignedByteToken((byte) ~_value);
         return result;
@@ -450,6 +470,7 @@ public class UnsignedByteToken extends ScalarToken {
      *  this one.
      *  @return The bitwise OR.
      */
+    @Override
     protected ScalarToken _bitwiseOr(ScalarToken rightArgument) {
         byte sum = (byte) (_value | ((UnsignedByteToken) rightArgument)
                 .byteValue());
@@ -463,6 +484,7 @@ public class UnsignedByteToken extends ScalarToken {
      *  this one.
      *  @return The bitwise XOR.
      */
+    @Override
     protected ScalarToken _bitwiseXor(ScalarToken rightArgument) {
         byte sum = (byte) (_value ^ ((UnsignedByteToken) rightArgument)
                 .byteValue());
@@ -478,6 +500,7 @@ public class UnsignedByteToken extends ScalarToken {
      *  @param rightArgument The token to divide this token by.
      *  @return A new UnsignedByteToken containing the result.
      */
+    @Override
     protected ScalarToken _divide(ScalarToken rightArgument) {
         byte quotient = (byte) (unsignedConvert(_value) / unsignedConvert(((UnsignedByteToken) rightArgument)
                 .byteValue()));
@@ -493,6 +516,7 @@ public class UnsignedByteToken extends ScalarToken {
      *  @return A true-valued token if the first argument is close to
      *  this token.
      */
+    @Override
     protected BooleanToken _isCloseTo(ScalarToken rightArgument, double epsilon) {
         long right = ((UnsignedByteToken) rightArgument).longValue();
         long left = longValue();
@@ -511,6 +535,7 @@ public class UnsignedByteToken extends ScalarToken {
      *  @param rightArgument The token to add to this token.
      *  @return A new Token containing the result.
      */
+    @Override
     protected BooleanToken _isLessThan(ScalarToken rightArgument) {
         UnsignedByteToken convertedArgument = (UnsignedByteToken) rightArgument;
         return BooleanToken
@@ -525,6 +550,7 @@ public class UnsignedByteToken extends ScalarToken {
      *  @param rightArgument The token to modulo this token by.
      *  @return A new UnsignedByteToken containing the result.
      */
+    @Override
     protected ScalarToken _modulo(ScalarToken rightArgument) {
         byte remainder = (byte) (unsignedConvert(_value) % unsignedConvert(((UnsignedByteToken) rightArgument)
                 .byteValue()));
@@ -540,6 +566,7 @@ public class UnsignedByteToken extends ScalarToken {
      *  @param rightArgument The token to multiply this token by.
      *  @return A new UnsignedByteToken containing the product modulo 256.
      */
+    @Override
     protected ScalarToken _multiply(ScalarToken rightArgument) {
         byte product = (byte) (unsignedConvert(_value) * unsignedConvert(((UnsignedByteToken) rightArgument)
                 .byteValue()));
@@ -554,6 +581,7 @@ public class UnsignedByteToken extends ScalarToken {
      *  @param rightArgument The token to subtract from this token.
      *  @return A new UnsignedByteToken containing the difference modulo 256.
      */
+    @Override
     protected ScalarToken _subtract(ScalarToken rightArgument) {
         byte difference = (byte) (unsignedConvert(_value) - unsignedConvert(((UnsignedByteToken) rightArgument)
                 .byteValue()));

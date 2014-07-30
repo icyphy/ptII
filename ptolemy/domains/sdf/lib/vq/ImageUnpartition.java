@@ -79,7 +79,7 @@ public class ImageUnpartition extends Transformer {
                 "tokenConsumptionRate");
         input_tokenConsumptionRate.setTypeEquals(BaseType.INT);
         input_tokenConsumptionRate
-                .setExpression("imageColumns * imageRows / partitionColumns / partitionRows");
+        .setExpression("imageColumns * imageRows / partitionColumns / partitionRows");
 
         input.setTypeEquals(BaseType.INT_MATRIX);
         output.setTypeEquals(BaseType.INT_MATRIX);
@@ -111,6 +111,7 @@ public class ImageUnpartition extends Transformer {
      * @exception IllegalActionException If a parameter does not contain a
      * legal value.
      */
+    @Override
     public void initialize() throws IllegalActionException {
         super.initialize();
 
@@ -142,6 +143,7 @@ public class ImageUnpartition extends Transformer {
      *
      * @exception IllegalActionException If the ports are not connected.
      */
+    @Override
     public void fire() throws IllegalActionException {
         super.fire();
         int i;

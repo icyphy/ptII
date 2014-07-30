@@ -69,6 +69,7 @@ public class ExecEvent implements DebugEvent {
     /** Return the actor corresponding to the event.
      *  @return The actor that generated this event.
      */
+    @Override
     public NamedObj getSource() {
         return _actor;
     }

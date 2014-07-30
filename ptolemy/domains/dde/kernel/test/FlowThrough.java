@@ -79,6 +79,7 @@ public class FlowThrough extends TypedAtomicActor {
 
     /**
      */
+    @Override
     public void initialize() throws IllegalActionException {
         super.initialize();
         _inRcvrs = input.getReceivers();
@@ -86,6 +87,7 @@ public class FlowThrough extends TypedAtomicActor {
 
     /**
      */
+    @Override
     public void fire() throws IllegalActionException {
         Token token = null;
 
@@ -121,6 +123,7 @@ public class FlowThrough extends TypedAtomicActor {
 
     /**
      */
+    @Override
     public boolean postfire() throws IllegalActionException {
         return _continueIterations;
     }

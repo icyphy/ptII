@@ -168,6 +168,7 @@ public class RelativeBundle extends ResourceBundle {
 
     /** Get an object from a ResourceBundle.
      */
+    @Override
     protected Object handleGetObject(String key)
             throws MissingResourceException {
         try {
@@ -179,6 +180,7 @@ public class RelativeBundle extends ResourceBundle {
 
     /** Get an enumeration over the keys
      */
+    @Override
     public Enumeration getKeys() {
         return _delegate.getKeys();
     }

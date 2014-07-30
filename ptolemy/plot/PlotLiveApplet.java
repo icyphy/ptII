@@ -47,6 +47,7 @@ public class PlotLiveApplet extends PlotApplet {
     /** Return a string describing this applet.
      *  @return A description of the applet.
      */
+    @Override
     public String getAppletInfo() {
         return "PlotLiveApplet " + PlotBox.PTPLOT_RELEASE
                 + " : Demo of PlotLive.\n" + "By: Edward A. Lee\n"
@@ -56,12 +57,14 @@ public class PlotLiveApplet extends PlotApplet {
 
     /** Start the plot thread.
      */
+    @Override
     public void start() {
         ((PlotLive) plot()).start();
     }
 
     /** Stop the plot thread.
      */
+    @Override
     public void stop() {
         ((PlotLive) plot()).stop();
     }

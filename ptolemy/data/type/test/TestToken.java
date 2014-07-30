@@ -71,6 +71,7 @@ public class TestToken extends Token {
     /** Return the type of this token.
      *  @return {@link #TYPE}, the type of this token.
      */
+    @Override
     public Type getType() {
         return TYPE;
     }
@@ -83,6 +84,7 @@ public class TestToken extends Token {
      *   supported by the derived class.
      *  @return A BooleanToken which contains the result of the test.
      */
+    @Override
     public BooleanToken isEqualTo(Token token) throws IllegalActionException {
         if (token instanceof TestToken) {
             return new BooleanToken(this == token);
@@ -101,6 +103,7 @@ public class TestToken extends Token {
      *  that an event is present.
      *  @return The String "present".
      */
+    @Override
     public String toString() {
         return "TestToken(" + _object + ")";
     }
@@ -118,6 +121,7 @@ public class TestToken extends Token {
          *  @return A new type, or BaseType.GENERAL, if the operation does
          *  not make sense for the given types.
          */
+        @Override
         public Type add(Type rightArgumentType) {
             return this;
         }
@@ -127,6 +131,7 @@ public class TestToken extends Token {
          *  @exception CloneNotSupportedException Not thrown in this baseclass
          *  unless thrown by a parent class.
          */
+        @Override
         public Object clone() throws CloneNotSupportedException {
             super.clone();
             return this;
@@ -139,6 +144,7 @@ public class TestToken extends Token {
          *  @exception IllegalActionException If lossless conversion cannot
          *   be done.
          */
+        @Override
         public Token convert(Token token) throws IllegalActionException {
             if (token instanceof TestToken) {
                 return token;
@@ -155,6 +161,7 @@ public class TestToken extends Token {
          *  @return A new type, or BaseType.GENERAL, if the operation does
          *  not make sense for the given types.
          */
+        @Override
         public Type divide(Type rightArgumentType) {
             return this;
         }
@@ -162,6 +169,7 @@ public class TestToken extends Token {
         /** Return the class for tokens that this basetype represents.
          *  @return The class.
          */
+        @Override
         public Class getTokenClass() {
             return TestToken.class;
         }
@@ -171,6 +179,7 @@ public class TestToken extends Token {
          *  represents either an abstract base class or an interface.
          *  @return Always return false, this token is instantiable.
          */
+        @Override
         public boolean isAbstract() {
             return false;
         }
@@ -183,6 +192,7 @@ public class TestToken extends Token {
          *  @param type An instance of Type.
          *  @return True if the argument type is compatible with this type.
          */
+        @Override
         public boolean isCompatible(Type type) {
             return type == this;
         }
@@ -190,6 +200,7 @@ public class TestToken extends Token {
         /** Test if this Type is UNKNOWN.
          *  @return True if this Type is not UNKNOWN; false otherwise.
          */
+        @Override
         public boolean isConstant() {
             return true;
         }
@@ -197,6 +208,7 @@ public class TestToken extends Token {
         /** Return this type's node index in the (constant) type lattice.
          * @return this type's node index in the (constant) type lattice.
          */
+        @Override
         public int getTypeHash() {
             return Type.HASH_INVALID;
         }
@@ -206,6 +218,7 @@ public class TestToken extends Token {
          *  to an abstract token class, or an interface, or UNKNOWN.
          *  @return True if this type is instantiable.
          */
+        @Override
         public boolean isInstantiable() {
             return true;
         }
@@ -215,6 +228,7 @@ public class TestToken extends Token {
          *  @param type A Type.
          *  @return True if this type is UNKNOWN; false otherwise.
          */
+        @Override
         public boolean isSubstitutionInstance(Type type) {
             return this == type;
         }
@@ -226,6 +240,7 @@ public class TestToken extends Token {
          *  @return A new type, or BaseType.GENERAL, if the operation does
          *  not make sense for the given types.
          */
+        @Override
         public Type modulo(Type rightArgumentType) {
             return this;
         }
@@ -237,6 +252,7 @@ public class TestToken extends Token {
          *  @return A new type, or BaseType.GENERAL, if the operation does
          *  not make sense for the given types.
          */
+        @Override
         public Type multiply(Type rightArgumentType) {
             return this;
         }
@@ -246,6 +262,7 @@ public class TestToken extends Token {
          *  @return A new type, or BaseType.GENERAL, if the operation does
          *  not make sense for the given types.
          */
+        @Override
         public Type one() {
             return this;
         }
@@ -257,6 +274,7 @@ public class TestToken extends Token {
          *  @return A new type, or BaseType.GENERAL, if the operation does
          *  not make sense for the given types.
          */
+        @Override
         public Type subtract(Type rightArgumentType) {
             return this;
         }
@@ -264,6 +282,7 @@ public class TestToken extends Token {
         /** Return the string representation of this type.
          *  @return A String.
          */
+        @Override
         public String toString() {
             return "test";
         }
@@ -273,6 +292,7 @@ public class TestToken extends Token {
          *  @return A new type, or BaseType.GENERAL, if the operation does
          *  not make sense for the given types.
          */
+        @Override
         public Type zero() {
             return this;
         }

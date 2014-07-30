@@ -109,6 +109,7 @@ public class ArrayElement extends Transformer {
      *  @exception CloneNotSupportedException If a derived class contains
      *   an attribute that cannot be cloned.
      */
+    @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         ArrayElement newObject = (ArrayElement) super.clone(workspace);
         try {
@@ -140,6 +141,7 @@ public class ArrayElement extends Transformer {
      *  @exception IllegalActionException If the <i>index</i> parameter
      *   (or port value) is out of range.
      */
+    @Override
     public void fire() throws IllegalActionException {
         super.fire();
         // NOTE: This has be outside the if because we need to ensure
@@ -184,6 +186,7 @@ public class ArrayElement extends Transformer {
          *  @exception IllegalActionException If the type of the argument
          *   cannot be determined.
          */
+        @Override
         public Object getValue() throws IllegalActionException {
             return new ArrayType(_typeable.getType());
         }
@@ -193,6 +196,7 @@ public class ArrayElement extends Transformer {
          *  in which case return an empty array.
          *  @return An array of InequalityTerms.
          */
+        @Override
         public InequalityTerm[] getVariables() {
             InequalityTerm term = _typeable.getTypeTerm();
             if (term.isSettable()) {

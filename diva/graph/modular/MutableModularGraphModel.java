@@ -42,7 +42,7 @@ import diva.graph.MutableGraphModel;
  * @Pt.AcceptedRating Red
  */
 public abstract class MutableModularGraphModel extends ModularGraphModel
-        implements MutableGraphModel {
+implements MutableGraphModel {
     /**
      * Construct an empty graph model whose
      * root is the given semantic object.
@@ -55,6 +55,7 @@ public abstract class MutableModularGraphModel extends ModularGraphModel
      * Return true if the head of the given edge can be attached to the
      * given node.
      */
+    @Override
     public boolean acceptHead(Object edge, Object node) {
         return getMutableEdgeModel(edge).acceptHead(edge, node);
     }
@@ -63,6 +64,7 @@ public abstract class MutableModularGraphModel extends ModularGraphModel
      * Return true if the tail of the given edge can be attached to the
      * given node.
      */
+    @Override
     public boolean acceptTail(Object edge, Object node) {
         return getMutableEdgeModel(edge).acceptTail(edge, node);
     }
@@ -71,6 +73,7 @@ public abstract class MutableModularGraphModel extends ModularGraphModel
      * Add a node to the given graph and notify listeners with a
      * NODE_ADDED event. <p>
      */
+    @Override
     public void addNode(Object eventSource, Object node, Object parent) {
         Object prevParent = getMutableNodeModel(node).getParent(node);
         getMutableNodeModel(node).setParent(node, parent);
@@ -84,6 +87,7 @@ public abstract class MutableModularGraphModel extends ModularGraphModel
      * Connect the given edge to the given tail and head nodes,
      * then dispatch events to the listeners.
      */
+    @Override
     public void connectEdge(Object eventSource, Object edge, Object tailNode,
             Object headNode) {
         Object prevTail = getMutableEdgeModel(edge).getTail(edge);
@@ -105,6 +109,7 @@ public abstract class MutableModularGraphModel extends ModularGraphModel
      * listeners with an EDGE_HEAD_CHANGED and an EDGE_TAIL_CHANGED
      * event.
      */
+    @Override
     public void disconnectEdge(Object eventSource, Object edge) {
         MutableEdgeModel model = getMutableEdgeModel(edge);
         Object head = model.getHead(edge);
@@ -149,6 +154,7 @@ public abstract class MutableModularGraphModel extends ModularGraphModel
      * edges that are connected to the given node, or some subnode of that
      * node, and then sets the parent of the node to null.
      */
+    @Override
     public void removeNode(Object eventSource, Object node) {
         // Remove the edges.
         Iterator i = GraphUtilities.partiallyContainedEdges(node, this);
@@ -185,6 +191,7 @@ public abstract class MutableModularGraphModel extends ModularGraphModel
      * Connect an edge to the given head node and notify listeners
      * with an EDGE_HEAD_CHANGED event.
      */
+    @Override
     public void setEdgeHead(Object eventSource, Object edge, Object head) {
         Object prevHead = getMutableEdgeModel(edge).getHead(edge);
         getMutableEdgeModel(edge).setHead(edge, head);
@@ -198,6 +205,7 @@ public abstract class MutableModularGraphModel extends ModularGraphModel
      * Connect an edge to the given tail node and notify listeners
      * with an EDGE_TAIL_CHANGED event.
      */
+    @Override
     public void setEdgeTail(Object eventSource, Object edge, Object tail) {
         Object prevTail = getMutableEdgeModel(edge).getTail(edge);
         getMutableEdgeModel(edge).setTail(edge, tail);

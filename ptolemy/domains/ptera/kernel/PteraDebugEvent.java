@@ -24,7 +24,7 @@
  PT_COPYRIGHT_VERSION_2
  COPYRIGHTENDKEY
 
-*/
+ */
 package ptolemy.domains.ptera.kernel;
 
 import ptolemy.kernel.util.DebugEvent;
@@ -58,6 +58,7 @@ public class PteraDebugEvent implements DebugEvent {
      *
      *  @return The source.
      */
+    @Override
     public NamedObj getSource() {
         return _source;
     }
@@ -66,6 +67,7 @@ public class PteraDebugEvent implements DebugEvent {
      *
      *  @return The message.
      */
+    @Override
     public String toString() {
         return _source.getName() + ": " + _message;
     }

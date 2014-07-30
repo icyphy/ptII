@@ -76,6 +76,7 @@ public class TestDirector extends AtomicActor {
      *  and return after relinquishing the read accesses on the workspace.
      *  This method is synchronized both on this class and the inner class
      */
+    @Override
     public synchronized void fire() throws IllegalActionException {
         int i = 0;
 
@@ -109,6 +110,7 @@ public class TestDirector extends AtomicActor {
         return profile;
     }
 
+    @Override
     public boolean postfire() {
         return false;
     }

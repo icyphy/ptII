@@ -50,7 +50,7 @@ package ptolemy.domains.openmodelica.lib.omc;
  @since Ptolemy II 10.0
  @Pt.ProposedRating Red (cxh)
  @Pt.AcceptedRating Red (cxh)
-*/
+ */
 public interface ICompilerResult {
 
     ///////////////////////////////////////////////////////////////////

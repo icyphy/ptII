@@ -78,6 +78,7 @@ public class PTreeMenuCreator extends MouseAdapter {
      *  @param e The mouse event.  If the mouse event is
      *  a popup event, then menu is created and shown.
      */
+    @Override
     public void mousePressed(MouseEvent e) {
         _doEvent(e);
     }
@@ -86,6 +87,7 @@ public class PTreeMenuCreator extends MouseAdapter {
      *  @param e The mouse event.  If the mouse event is
      *  a popup event, then menu is created and shown.
      */
+    @Override
     public void mouseReleased(MouseEvent e) {
         _doEvent(e);
     }

@@ -90,6 +90,7 @@ public class TestActorPortDepth extends TypedAtomicActor {
      *  @exception IllegalActionException If the superclass throws it,
      *   or if the director is not a DEDirector.
      */
+    @Override
     public void fire() throws IllegalActionException {
         super.fire();
         if (trigger.hasToken(0)) {

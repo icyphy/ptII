@@ -80,6 +80,7 @@ public class ScheduleAnalysis extends Analysis {
      *  @param analyzer The given analyzer.
      *  @return True if the given analyzer is valid for this analysis.
      */
+    @Override
     public boolean validAnalyzerInterface(Analyzer analyzer) {
         return analyzer instanceof ScheduleAnalyzer;
     }

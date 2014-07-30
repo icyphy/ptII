@@ -95,7 +95,7 @@ public class KeyReader extends KeyStoreActor {
 
         signatureAlgorithm = new StringParameter(this, "signatureAlgorithm");
         signatureAlgorithm
-                .setExpression("Unknown, will be set after first run");
+        .setExpression("Unknown, will be set after first run");
         signatureAlgorithm.setVisibility(Settable.NOT_EDITABLE);
         signatureAlgorithm.setPersistent(false);
 
@@ -153,6 +153,7 @@ public class KeyReader extends KeyStoreActor {
      *  @exception IllegalActionException If the specified attribute
      *   is <i>URL</i> and the file cannot be opened.
      */
+    @Override
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         if (attribute == getPublicKey) {
@@ -178,6 +179,7 @@ public class KeyReader extends KeyStoreActor {
      *  @exception IllegalActionException Not thrown in this base class.
      *  @exception IllegalActionException If there's no director.
      */
+    @Override
     public void fire() throws IllegalActionException {
         // Call super.fire() so that the password PortParameters get updated
         // before we access _keyStore.
@@ -235,11 +237,11 @@ public class KeyReader extends KeyStoreActor {
 
                     if (certificate instanceof X509Certificate) {
                         signatureAlgorithm
-                                .setExpression(((X509Certificate) certificate)
-                                        .getSigAlgName());
+                        .setExpression(((X509Certificate) certificate)
+                                .getSigAlgName());
                     } else {
                         signatureAlgorithm
-                                .setExpression("Unknown, certificate was not a X509 cert.");
+                        .setExpression("Unknown, certificate was not a X509 cert.");
                     }
 
                     _key = publicKey;
@@ -251,8 +253,8 @@ public class KeyReader extends KeyStoreActor {
             } catch (Throwable throwable) {
                 throw new IllegalActionException(this, throwable,
                         "Failed to get key store alias '" + _alias
-                                + "' or certificate from "
-                                + fileOrURLDescription());
+                        + "' or certificate from "
+                        + fileOrURLDescription());
             }
         }
     }

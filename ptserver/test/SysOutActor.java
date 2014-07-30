@@ -85,6 +85,7 @@ public class SysOutActor extends TypedAtomicActor implements PortablePlaceable {
         return _delegator;
     }
 
+    @Override
     public void place(PortableContainer container) {
         _implementation.place(container);
     }

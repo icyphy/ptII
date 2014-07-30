@@ -106,22 +106,27 @@ public class EventRecorder {
      * Record all mouse events.
      */
     private class MouseRecorder implements MouseListener {
+        @Override
         public void mouseClicked(MouseEvent e) {
             record(e);
         }
 
+        @Override
         public void mouseEntered(MouseEvent e) {
             record(e);
         }
 
+        @Override
         public void mouseExited(MouseEvent e) {
             record(e);
         }
 
+        @Override
         public void mousePressed(MouseEvent e) {
             record(e);
         }
 
+        @Override
         public void mouseReleased(MouseEvent e) {
             record(e);
         }
@@ -135,10 +140,12 @@ public class EventRecorder {
      * Record all mouse motion events.
      */
     private class MouseMotionRecorder implements MouseMotionListener {
+        @Override
         public void mouseDragged(MouseEvent e) {
             record(e);
         }
 
+        @Override
         public void mouseMoved(MouseEvent e) {
             record(e);
         }
@@ -152,14 +159,17 @@ public class EventRecorder {
      * Record all keyboard events.
      */
     private class KeyRecorder implements KeyListener {
+        @Override
         public void keyPressed(KeyEvent e) {
             record(e);
         }
 
+        @Override
         public void keyReleased(KeyEvent e) {
             record(e);
         }
 
+        @Override
         public void keyTyped(KeyEvent e) {
             record(e);
         }

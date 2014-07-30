@@ -177,6 +177,7 @@ public class ReduceWorker extends TypedAtomicActor {
      *   does not exist, or if the class exists but does not contain a map
      *   method with an appropriate signature, this exception will be thrown.
      */
+    @Override
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         if (attribute == classNameForReduce) {
@@ -193,6 +194,7 @@ public class ReduceWorker extends TypedAtomicActor {
      *  @exception IllegalActionException If there is any trouble calling
      *  the map method.
      */
+    @Override
     public void fire() throws IllegalActionException {
         super.fire();
         if (_readMode) {
@@ -220,11 +222,11 @@ public class ReduceWorker extends TypedAtomicActor {
                         } catch (IllegalAccessException e) {
                             throw new IllegalActionException(
                                     classNameForReduce.stringValue()
-                                            + " does not have a no argument constructor");
+                                    + " does not have a no argument constructor");
                         } catch (InstantiationException e) {
                             throw new IllegalActionException(
                                     classNameForReduce.stringValue()
-                                            + " is abstract.");
+                                    + " is abstract.");
                         } catch (ClassCastException e) {
                             throw new IllegalActionException(
                                     "Unable to cast instance of "
@@ -279,6 +281,7 @@ public class ReduceWorker extends TypedAtomicActor {
      *  @return True if this actor is ready for firing, false otherwise.
      *  @exception IllegalActionException Not thrown in this class.
      */
+    @Override
     public boolean prefire() throws IllegalActionException {
         if (_debugging) {
             _debug("Called prefire(), which returns true");
@@ -295,6 +298,7 @@ public class ReduceWorker extends TypedAtomicActor {
      * @return The base class return value.
      * @exception IllegalActionException If thrown in the base class.
      */
+    @Override
     public boolean postfire() throws IllegalActionException {
         _readMode = false;
         return super.postfire();
@@ -304,6 +308,7 @@ public class ReduceWorker extends TypedAtomicActor {
      * Clean up memory.
      * @exception IllegalActionException If thrown in the base class.
      */
+    @Override
     public void wrapup() throws IllegalActionException {
         _runningAlgorithms = new Hashtable<String, MapReduceAlgorithm>();
         _readMode = false;
@@ -316,6 +321,7 @@ public class ReduceWorker extends TypedAtomicActor {
      *  @exception IllegalActionException If unable to extract an appropriate
      *  map method.
      */
+    @Override
     public void initialize() throws IllegalActionException {
         super.initialize();
         _setReduceMethod();
@@ -362,7 +368,7 @@ public class ReduceWorker extends TypedAtomicActor {
         }
         try {
             /*MapReduceAlgorithm algorithm = (MapReduceAlgorithm) */reduceClass
-                    .newInstance();
+            .newInstance();
         } catch (IllegalAccessException e) {
             throw new IllegalActionException(className
                     + " does not have a no argument constructor");

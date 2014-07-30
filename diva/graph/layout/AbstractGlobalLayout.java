@@ -43,12 +43,14 @@ public abstract class AbstractGlobalLayout implements GlobalLayout {
 
     /** Return the layout target.
      */
+    @Override
     public LayoutTarget getLayoutTarget() {
         return _layoutTarget;
     }
 
     /** Set the layout target.
      */
+    @Override
     public void setLayoutTarget(LayoutTarget target) {
         _layoutTarget = target;
     }
@@ -57,5 +59,6 @@ public abstract class AbstractGlobalLayout implements GlobalLayout {
      * Layout the graph model in the viewport
      * specified by the layout target environment.
      */
+    @Override
     public abstract void layout(Object composite);
 }

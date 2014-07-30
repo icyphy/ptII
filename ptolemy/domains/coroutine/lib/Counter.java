@@ -25,7 +25,7 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 Ptolemy II includes the work of others, to see those copyrights, follow
 the copyright link on the splash page or see copyright.htm.
-*/
+ */
 /**
  *
  */
@@ -173,7 +173,7 @@ public class Counter extends AtomicContinuationActor {
     ///////////////////////////////////////////////////////////////////
 
     protected void _init() throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         _alarm = 0;
         _count = _currentCount = 0;
 

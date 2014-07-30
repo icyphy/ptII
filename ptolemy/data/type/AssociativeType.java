@@ -24,7 +24,7 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
-*/
+ */
 
 package ptolemy.data.type;
 
@@ -41,7 +41,7 @@ key.
 @since Ptolemy II 10.0
 @Pt.ProposedRating Red (marten)
 @Pt.AcceptedRating Red
-*/
+ */
 public abstract class AssociativeType extends StructuredType {
 
     ///////////////////////////////////////////////////////////////////

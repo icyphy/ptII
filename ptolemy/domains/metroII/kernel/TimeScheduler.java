@@ -39,13 +39,13 @@ import ptolemy.domains.metroII.kernel.util.ProtoBuf.metroIIcomm.Event.Status;
 /**
  * TimeScheduler is a ConstraintSolver that handles the time quantity for
  * MetroIIDirector.
- * 
+ *
  * @author Liangpeng Guo
  * @version $Id$
  * @since Ptolemy II 10.0
  * @Pt.ProposedRating Red (glp)
  * @Pt.AcceptedRating Red (glp)
- * 
+ *
  */
 public class TimeScheduler implements ConstraintSolver, Cloneable {
 
@@ -67,8 +67,8 @@ public class TimeScheduler implements ConstraintSolver, Cloneable {
     }
 
     /**
-     * Initialize the current time value and the number of models. 
-     * 
+     * Initialize the current time value and the number of models.
+     *
      * @param numModel the number of models to be synchronized.
      */
     public void initialize(int numModel) {
@@ -171,7 +171,7 @@ public class TimeScheduler implements ConstraintSolver, Cloneable {
 
     /**
      * Get the current time.
-     * 
+     *
      * @return the double valued current time tag.
      */
     public double getTime() {

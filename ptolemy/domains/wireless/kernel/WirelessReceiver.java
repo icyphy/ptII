@@ -82,6 +82,7 @@ public class WirelessReceiver extends DEReceiver {
      *  @exception NoTokenException If there are no more tokens. This is
      *   a runtime exception, so it need not be declared explicitly.
      */
+    @Override
     public synchronized Token get() throws NoTokenException {
         RecordToken bundled = (RecordToken) super.get();
         _properties = bundled.get("properties");
@@ -102,6 +103,7 @@ public class WirelessReceiver extends DEReceiver {
      *   the current microstep is zero.
      *  @see ptolemy.domains.de.kernel.DEReceiver#put(ptolemy.data.Token)
      */
+    @Override
     public synchronized void put(Token token) throws IllegalActionException {
         put(token, (Token) null);
     }

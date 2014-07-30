@@ -466,24 +466,28 @@ public class EditablePlot extends Plot {
         /** Ignored by this listener.
          *  @param event Ignored.
          */
+        @Override
         public void mouseClicked(MouseEvent event) {
         }
 
         /** Ignored by this listener.
          *  @param event Ignored.
          */
+        @Override
         public void mouseEntered(MouseEvent event) {
         }
 
         /** Ignored by this listener.
          *  @param event Ignored.
          */
+        @Override
         public void mouseExited(MouseEvent event) {
         }
 
         /** If the 3rd button is pressed, then start the edit.
          *  @param event The event.
          */
+        @Override
         public void mousePressed(MouseEvent event) {
             if ((event.getModifiers() & InputEvent.BUTTON3_MASK) != 0) {
                 EditablePlot.this._editStart(event.getX(), event.getY());
@@ -494,6 +498,7 @@ public class EditablePlot extends Plot {
          *  coordinates of the edit dataset.
          *  @param event The event.
          */
+        @Override
         public void mouseReleased(MouseEvent event) {
             if ((event.getModifiers() & InputEvent.BUTTON3_MASK) != 0) {
                 EditablePlot.this._edit(event.getX(), event.getY());
@@ -509,6 +514,7 @@ public class EditablePlot extends Plot {
          *  then make a record of a new edit point.
          *  @param event The event.
          */
+        @Override
         public void mouseDragged(MouseEvent event) {
             if ((event.getModifiers() & InputEvent.BUTTON3_MASK) != 0) {
                 EditablePlot.this._editPoint(event.getX(), event.getY());
@@ -518,6 +524,7 @@ public class EditablePlot extends Plot {
         /** Ignored by this listener.
          *  @param event Ignored.
          */
+        @Override
         public void mouseMoved(MouseEvent event) {
         }
     }
@@ -529,6 +536,7 @@ public class EditablePlot extends Plot {
          *  by calling undo() or redo().
          *  @param e The KeyEvent.
          */
+        @Override
         public void keyPressed(KeyEvent e) {
             int keycode = e.getKeyCode();
 
@@ -561,6 +569,7 @@ public class EditablePlot extends Plot {
         /** Handle Control being released.
          *  @param e The KeyEvent.
          */
+        @Override
         public void keyReleased(KeyEvent e) {
             int keycode = e.getKeyCode();
 
@@ -579,6 +588,7 @@ public class EditablePlot extends Plot {
          *  It always gets "unknown key code".
          * @param e Ignored by this method.
          */
+        @Override
         public void keyTyped(KeyEvent e) {
         }
 

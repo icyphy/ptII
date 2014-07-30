@@ -81,6 +81,7 @@ public class DistributedActorWrapper implements RemoteDistributedActor {
      *  @exception RemoteException If a communication-related exception may
      *  occur during the execution of a remote method call.
      */
+    @Override
     public void fire() throws java.rmi.RemoteException {
         // Don't call super.fire(); here, parent class is Object,
         // which has no fire(). Instead, we call actor.fire() below.
@@ -104,6 +105,7 @@ public class DistributedActorWrapper implements RemoteDistributedActor {
      *  @exception RemoteException If a communication-related exception may
      *  occur during the execution of a remote method call.
      */
+    @Override
     public InetAddress getAddress() throws java.rmi.RemoteException {
         try {
             return InetAddress.getLocalHost();
@@ -119,6 +121,7 @@ public class DistributedActorWrapper implements RemoteDistributedActor {
      *  @exception RemoteException If a communication-related exception may
      *  occur during the execution of a remote method call.
      */
+    @Override
     public void initialize() throws java.rmi.RemoteException {
         if (VERBOSE) {
             System.out.println(actor.toString() + " initialize()");
@@ -139,6 +142,7 @@ public class DistributedActorWrapper implements RemoteDistributedActor {
      *  @exception RemoteException If a communication-related exception may
      *  occur during the execution of a remote method call.
      */
+    @Override
     public int iterate(int count) throws java.rmi.RemoteException {
         if (true) {
             System.out.println(actor.getName() + " iterate(" + count + ")");
@@ -160,6 +164,7 @@ public class DistributedActorWrapper implements RemoteDistributedActor {
      *  @exception RemoteException If a communication-related exception may
      *  occur during the execution of a remote method call.
      */
+    @Override
     public boolean loadMoML(String moml) throws java.rmi.RemoteException {
         if (VERBOSE) {
             System.out.println("Loading: " + moml);
@@ -196,6 +201,7 @@ public class DistributedActorWrapper implements RemoteDistributedActor {
      *  @exception RemoteException If a communication-related exception may
      *  occur during the execution of a remote method call.
      */
+    @Override
     public boolean postfire() throws java.rmi.RemoteException {
         System.out.println(actor.toString() + " postfire()");
 
@@ -215,6 +221,7 @@ public class DistributedActorWrapper implements RemoteDistributedActor {
      *  @exception RemoteException If a communication-related exception may
      *  occur during the execution of a remote method call.
      */
+    @Override
     public boolean prefire() throws java.rmi.RemoteException {
         System.out.println(actor.toString() + " prefire()");
 
@@ -233,6 +240,7 @@ public class DistributedActorWrapper implements RemoteDistributedActor {
      *  @exception RemoteException If a communication-related exception may
      *  occur during the execution of a remote method call.
      */
+    @Override
     public void preinitialize() throws java.rmi.RemoteException {
         System.out.println(actor.toString() + " preinitialize()");
 
@@ -253,8 +261,9 @@ public class DistributedActorWrapper implements RemoteDistributedActor {
      *  @exception IllegalActionException If the transaction fails (e.g.
      *   the data type is incompatible).
      */
+    @Override
     public void put(HashMap data) throws RemoteException,
-            IllegalActionException {
+    IllegalActionException {
         Token token = (Token) data.keySet().iterator().next();
         LinkedList idsList = (LinkedList) data.get(token);
 
@@ -302,6 +311,7 @@ public class DistributedActorWrapper implements RemoteDistributedActor {
      *  @exception RemoteException If a communication-related exception may
      *  occur during the execution of a remote method call.
      */
+    @Override
     public void setConnections(HashMap connections)
             throws java.rmi.RemoteException {
         if (VERBOSE) {
@@ -328,7 +338,7 @@ public class DistributedActorWrapper implements RemoteDistributedActor {
                             + portName
                             + "\n"
                             + DistributedUtilities
-                                    .integersArrayToString(integerReceivers));
+                            .integersArrayToString(integerReceivers));
                 }
 
                 for (Integer[] integerReceiver : integerReceivers) {
@@ -405,6 +415,7 @@ public class DistributedActorWrapper implements RemoteDistributedActor {
      *  @exception RemoteException If a communication-related exception may
      *  occur during the execution of a remote method call.
      */
+    @Override
     public void setPortTypes(HashMap portTypes) throws RemoteException {
         if (VERBOSE) {
             System.out.println("Received port Types: " + portTypes.toString());
@@ -439,6 +450,7 @@ public class DistributedActorWrapper implements RemoteDistributedActor {
      *  @exception RemoteException If a communication-related exception may
      *  occur during the execution of a remote method call.
      */
+    @Override
     public void stop() throws java.rmi.RemoteException {
         System.out.println(actor.toString() + " stop()");
         actor.stop();
@@ -450,6 +462,7 @@ public class DistributedActorWrapper implements RemoteDistributedActor {
      *  @exception RemoteException If a communication-related exception may
      *  occur during the execution of a remote method call.
      */
+    @Override
     public void stopFire() throws java.rmi.RemoteException {
         System.out.println(actor.toString() + " stopFire()");
         actor.stopFire();
@@ -460,6 +473,7 @@ public class DistributedActorWrapper implements RemoteDistributedActor {
      *  @exception RemoteException If a communication-related exception may
      *  occur during the execution of a remote method call.
      */
+    @Override
     public void terminate() throws java.rmi.RemoteException {
         System.out.println(actor.toString() + " terminate()");
         actor.terminate();
@@ -471,6 +485,7 @@ public class DistributedActorWrapper implements RemoteDistributedActor {
      *  @exception RemoteException If a communication-related exception may
      *  occur during the execution of a remote method call.
      */
+    @Override
     public void wrapup() throws java.rmi.RemoteException {
         System.out.println(actor.toString() + " wrapup()");
 

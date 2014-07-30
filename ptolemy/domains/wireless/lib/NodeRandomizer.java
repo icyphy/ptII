@@ -213,6 +213,7 @@ public class NodeRandomizer extends TypedAtomicActor {
      *  @exception IllegalActionException If the change is not acceptable
      *   to this container (not thrown in this base class).
      */
+    @Override
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         if (attribute == maxPrecision) {
@@ -240,9 +241,11 @@ public class NodeRandomizer extends TypedAtomicActor {
     /** Issue a change request to randomize the locations of the nodes.
      *  @exception IllegalActionException If the superclass throws it.
      */
+    @Override
     public void fire() throws IllegalActionException {
         super.fire();
         ChangeRequest doRandomize = new ChangeRequest(this, "randomize nodes") {
+            @Override
             protected void _execute() throws IllegalActionException {
                 _randomize();
             }
@@ -261,6 +264,7 @@ public class NodeRandomizer extends TypedAtomicActor {
      *   one of the associated actors throws it, or if the range parameter
      *   is malformed.
      */
+    @Override
     public void initialize() throws IllegalActionException {
         super.initialize();
 
@@ -420,7 +424,7 @@ public class NodeRandomizer extends TypedAtomicActor {
             // throwing an exception here.
             throw new IllegalActionException(
                     "The _location attribute does not exist for node = " + node
-                            + "with container = " + container);
+                    + "with container = " + container);
         }
     }
 

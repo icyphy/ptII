@@ -65,7 +65,7 @@ type, the value of the Token is wrapped into an array of size one.
 @since Ptolemy II 10.0
 @Pt.ProposedRating Yellow (marten)
 @Pt.AcceptedRating Red (chx)
-*/
+ */
 public class TokenToJSON extends Converter {
 
     /** Construct a TokenToJSON actor with the given container and name.
@@ -90,6 +90,7 @@ public class TokenToJSON extends Converter {
      *  @exception IllegalActionException If the input Token cannot be
      *  converted to JSON.
      */
+    @Override
     public void fire() throws IllegalActionException {
         super.fire();
         output.send(0, constructJSONString(input.get(0)));
@@ -99,6 +100,7 @@ public class TokenToJSON extends Converter {
      *  what the superclass returns (presumably true).
      *  @exception IllegalActionException If there is no director.
      */
+    @Override
     public boolean prefire() throws IllegalActionException {
         if (!input.hasToken(0)) {
             return false;
@@ -158,7 +160,7 @@ public class TokenToJSON extends Converter {
      *  expressed in JSON.
      */
     private Object _mapTokenToValue(Token token) throws IllegalActionException,
-            JSONException {
+    JSONException {
 
         // The value can be any of these types:
         // Boolean, Number, String, or the JSONObject.NULL
@@ -200,7 +202,7 @@ public class TokenToJSON extends Converter {
      *  ArrayToken cannot be expressed in JSON.
      */
     private JSONArray _scanArrayToken(ArrayToken token) throws JSONException,
-            IllegalActionException {
+    IllegalActionException {
         int i = 0;
         Object[] array = new Object[token.length()];
 

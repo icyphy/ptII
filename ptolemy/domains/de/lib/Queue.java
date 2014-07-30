@@ -149,6 +149,7 @@ public class Queue extends Transformer {
      *  @exception IllegalActionException If the current size
      *   of the queue exceeds the specified capacity.
      */
+    @Override
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         if (attribute == capacity) {
@@ -177,6 +178,7 @@ public class Queue extends Transformer {
      *  @exception CloneNotSupportedException If a derived class has
      *   has an attribute that cannot be cloned.
      */
+    @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         Queue newObject = (Queue) super.clone(workspace);
         newObject._queue = new FIFOQueue();
@@ -190,6 +192,7 @@ public class Queue extends Transformer {
      *  cannot be computed.
      *  @see #getCausalityInterface()
      */
+    @Override
     public void declareDelayDependency() throws IllegalActionException {
         _declareDelayDependency(input, output, 0.0);
     }
@@ -204,6 +207,7 @@ public class Queue extends Transformer {
      *  @exception IllegalActionException If getting tokens from input and
      *   trigger ports or sending token to output throws it.
      */
+    @Override
     public void fire() throws IllegalActionException {
         super.fire();
         int sizeOutput = _queue.size();
@@ -264,6 +268,7 @@ public class Queue extends Transformer {
     /** Clear the cached input tokens.
      *  @exception IllegalActionException If there is no director.
      */
+    @Override
     public void initialize() throws IllegalActionException {
         _queue.clear();
         _persistentTrigger = false;
@@ -276,6 +281,7 @@ public class Queue extends Transformer {
      *  @return True.
      *  @exception IllegalActionException If the superclass throws it.
      */
+    @Override
     public boolean postfire() throws IllegalActionException {
         if (_token != null) {
             _queue.put(_token);
@@ -295,6 +301,7 @@ public class Queue extends Transformer {
      *  ports, if there are any.
      *  @exception IllegalActionException If there is no director.
      */
+    @Override
     public boolean prefire() throws IllegalActionException {
         // If the trigger input is not connected, never fire.
         boolean hasInput = false;
@@ -314,6 +321,7 @@ public class Queue extends Transformer {
     /** Clear the queue tokens.
      *  @exception IllegalActionException If the superclass throws it.
      */
+    @Override
     public void wrapup() throws IllegalActionException {
         // If we don't clear the queue, then you can't set the capacity
         // to smaller than the final size on the last run.  So we

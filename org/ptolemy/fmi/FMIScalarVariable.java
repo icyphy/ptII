@@ -174,11 +174,9 @@ public class FMIScalarVariable {
                 variability = Variability.continuous;
             } else if (attribute.equals("discrete")) {
                 variability = Variability.discrete;
-            } 
-            else if (attribute.equals("parameter")) {
+            } else if (attribute.equals("parameter")) {
                 variability = Variability.parameter;
-            }    
-            else if (attribute.equals("fixed")) {
+            } else if (attribute.equals("fixed")) {
                 // FMI-2.0
                 _fmi2AttributeCheck(fmiModelDescription, attribute, message);
                 variability = Variability.fixed;
@@ -537,14 +535,14 @@ public class FMIScalarVariable {
         if (fmiFlag > FMILibrary.FMIStatus.fmiWarning) {
             throw new RuntimeException("Could not get or set \"" + name
                     + "\" as a " + typeClass.getName() + ", it was of type \""
-                    + _typeName 
-                    + "\": " + FMULogUtilities.fmiStatusToString(fmiFlag));
+                    + _typeName + "\": "
+                    + FMULogUtilities.fmiStatusToString(fmiFlag));
         }
     }
 
     /** If the fmi version is not 2.0 or later, then throw
      *  an exception stating that the value is not acceptable.
-     *  @param fmiModelDescription The FMIModelDescription that 
+     *  @param fmiModelDescription The FMIModelDescription that
      *  has the fmi version.
      *  @param attribute The name of the attribute that is not present in FMI-1.0.
      *  @param message The string to be displayed that describes possible
@@ -575,7 +573,7 @@ public class FMIScalarVariable {
         if (_fmiGetFunction == null) {
             if (_typeName.equals("skip")) {
                 System.out
-                        .println("Could not process type, it was marked as skip.");
+                .println("Could not process type, it was marked as skip.");
                 return;
             }
             try {
@@ -602,7 +600,7 @@ public class FMIScalarVariable {
         if (_fmiSetFunction == null) {
             if (_typeName.equals("skip")) {
                 System.out
-                        .println("Could not process type, it was marked as skip.");
+                .println("Could not process type, it was marked as skip.");
                 return;
             }
             try {

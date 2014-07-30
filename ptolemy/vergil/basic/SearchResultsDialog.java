@@ -85,7 +85,7 @@ import ptolemy.util.MessageHandler;
  */
 @SuppressWarnings("serial")
 public class SearchResultsDialog extends PtolemyDialog implements
-        ListSelectionListener, QueryListener {
+ListSelectionListener, QueryListener {
 
     /** Construct a dialog for search results.
      *  @param tableau The DialogTableau.
@@ -125,17 +125,18 @@ public class SearchResultsDialog extends PtolemyDialog implements
         _resultsTableModel = new ResultsTableModel();
         _resultsTable = new JTable(_resultsTableModel);
         _resultsTable
-                .setDefaultRenderer(NamedObj.class, new NamedObjRenderer());
+        .setDefaultRenderer(NamedObj.class, new NamedObjRenderer());
 
         // If you change the height, then check that a few rows can be added.
         // Also, check the setRowHeight call below.
         _resultsTable
-                .setPreferredScrollableViewportSize(new Dimension(300, 300));
+        .setPreferredScrollableViewportSize(new Dimension(300, 300));
 
         ListSelectionModel selectionModel = _resultsTable.getSelectionModel();
         selectionModel.addListSelectionListener(this);
 
         addKeyListener(new KeyAdapter() {
+            @Override
             public void keyTyped(KeyEvent ke) {
                 if (ke.getKeyChar() == '\n') {
                     _search();
@@ -148,6 +149,7 @@ public class SearchResultsDialog extends PtolemyDialog implements
         getContentPane().add(scrollPane, BorderLayout.CENTER);
 
         _resultsTable.addKeyListener(new KeyAdapter() {
+            @Override
             public void keyReleased(KeyEvent event) {
                 int code = event.getKeyCode();
                 if (code == KeyEvent.VK_ENTER) {
@@ -187,11 +189,13 @@ public class SearchResultsDialog extends PtolemyDialog implements
      *  notify this dialog that one of the search options has changed.
      *  @param name The name of the query field that changed.
      */
+    @Override
     public void changed(String name) {
         _search();
     }
 
     /** Override to clear highlights. */
+    @Override
     public void dispose() {
         _clearHighlights();
         super.dispose();
@@ -200,6 +204,7 @@ public class SearchResultsDialog extends PtolemyDialog implements
     /** React to notice that the selection has changed.
      *  @param event The selection event.
      */
+    @Override
     public void valueChanged(ListSelectionEvent event) {
         if (event.getValueIsAdjusting()) {
             // Selection change is not finished. Ignore.
@@ -224,6 +229,7 @@ public class SearchResultsDialog extends PtolemyDialog implements
     protected void _clearHighlights() {
         // Clear previous highlights.
         ChangeRequest request = new ChangeRequest(this, "Error Dehighlighter") {
+            @Override
             protected void _execute() throws Exception {
                 for (Attribute highlight : _highlights) {
                     highlight.setContainer(null);
@@ -240,6 +246,7 @@ public class SearchResultsDialog extends PtolemyDialog implements
      */
     protected void _highlightResult(final NamedObj target) {
         ChangeRequest request = new ChangeRequest(this, "Error Highlighter") {
+            @Override
             protected void _execute() throws Exception {
                 _addHighlightIfNeeded(target);
                 NamedObj container = target.getContainer();
@@ -297,6 +304,7 @@ public class SearchResultsDialog extends PtolemyDialog implements
     /** Create buttons.
      *  @param panel The panel into which to put the buttons.
      */
+    @Override
     protected void _createExtendedButtons(JPanel panel) {
         _searchButton = new JButton("Search");
         panel.add(_searchButton);
@@ -373,6 +381,7 @@ public class SearchResultsDialog extends PtolemyDialog implements
     /** Return a URL that points to the help page.
      *  @return A URL that points to the help page
      */
+    @Override
     protected URL _getHelpURL() {
         URL helpURL = getClass().getClassLoader().getResource(
                 "ptolemy/vergil/basic/doc/SearchResultsDialog.htm");
@@ -382,6 +391,7 @@ public class SearchResultsDialog extends PtolemyDialog implements
     /** Process a button press.
      *  @param button The button.
      */
+    @Override
     protected void _processButtonPress(String button) {
         // If the user has typed in a port name, but not
         // moved the focus, we want to tell the model the
@@ -467,6 +477,7 @@ public class SearchResultsDialog extends PtolemyDialog implements
 
     /** Comparator for sorting named objects alphabetically by name. */
     static class NamedObjComparator implements Comparator<NamedObj> {
+        @Override
         public int compare(NamedObj arg0, NamedObj arg1) {
             return arg0.getFullName().compareTo(arg1.getFullName());
         }
@@ -474,6 +485,7 @@ public class SearchResultsDialog extends PtolemyDialog implements
 
     /** Default renderer for results table. */
     class NamedObjRenderer extends DefaultTableCellRenderer {
+        @Override
         public void setValue(Object value) {
             String fullName = ((NamedObj) value).getFullName();
             // Strip the name of the model name and the leading and trailing period.
@@ -495,6 +507,7 @@ public class SearchResultsDialog extends PtolemyDialog implements
         /** Return the number of columns, which is one.
          *  @return the number of columns, which is 1.
          */
+        @Override
         public int getColumnCount() {
             return 1;
         }
@@ -502,6 +515,7 @@ public class SearchResultsDialog extends PtolemyDialog implements
         /** Get the number of rows.
          *  @return the number of rows.
          */
+        @Override
         public int getRowCount() {
             return _results.length;
         }
@@ -510,6 +524,7 @@ public class SearchResultsDialog extends PtolemyDialog implements
          *  @return The string "Found in (select to highlight, double-click to open)".
          *  @see javax.swing.table.TableModel#getColumnName(int)
          */
+        @Override
         public String getColumnName(int col) {
             return "Found in (select to highlight, double-click to open):";
         }
@@ -519,6 +534,7 @@ public class SearchResultsDialog extends PtolemyDialog implements
          *  @param col The column.
          *  @return the value.
          */
+        @Override
         public Object getValueAt(int row, int col) {
             return _results[row];
         }
@@ -527,6 +543,7 @@ public class SearchResultsDialog extends PtolemyDialog implements
          *  @param column The column number.
          *  @return Return NamedObj.class.
          */
+        @Override
         public Class getColumnClass(int column) {
             return NamedObj.class;
         }
@@ -536,6 +553,7 @@ public class SearchResultsDialog extends PtolemyDialog implements
          *  @param column The column number.
          *  @return false.
          */
+        @Override
         public boolean isCellEditable(int row, int column) {
             return false;
         }

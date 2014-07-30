@@ -50,6 +50,7 @@ public class JTreeComponentBuilder implements ComponentBuilder {
     public JTreeComponentBuilder() {
     }
 
+    @Override
     public String getDeclaration(String name,
             java.util.Map<String, Object> beanProperties) {
         return "javax.swing.JTree "
@@ -59,6 +60,7 @@ public class JTreeComponentBuilder implements ComponentBuilder {
                 + "Control);\n";
     }
 
+    @Override
     public java.awt.Component getInstance(
             java.util.Map<String, Object> beanProperties) throws Exception {
         JTree tree = new JTree();
@@ -67,18 +69,22 @@ public class JTreeComponentBuilder implements ComponentBuilder {
         return scrollPane;
     }
 
+    @Override
     public java.util.List<BeanProperty> getProperties() {
         return properties;
     }
 
+    @Override
     public boolean isComponentALayoutContainer() {
         return false;
     }
 
+    @Override
     public String toString() {
         return "javax.swing.JTree";
     }
 
+    @Override
     public ComponentDef getComponentDef(String name,
             Map<String, Object> beanProperties) {
         String imp = "";

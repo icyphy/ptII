@@ -41,13 +41,13 @@ import ptolemy.kernel.util.NameDuplicationException;
 //// MemoryAccess
 
 /** An actor that allows access to a memory of a TaskPtDirector.
-*
-* @author Bastian Ristau
-* @version $Id$
-* @since Ptolemy II 10.0
-* @Pt.ProposedRating red (ristau)
-* @Pt.AcceptedRating red (ristau)
-*/
+ *
+ * @author Bastian Ristau
+ * @version $Id$
+ * @since Ptolemy II 10.0
+ * @Pt.ProposedRating red (ristau)
+ * @Pt.AcceptedRating red (ristau)
+ */
 public abstract class MemoryAccess extends TypedAtomicActor {
 
     /** Construct an actor with the given container and name.

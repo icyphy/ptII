@@ -96,6 +96,7 @@ public class Concat extends FixTransformer {
      *  If there is no inputs, then produce no output.
      *  @exception IllegalActionException If there is no director.
      */
+    @Override
     public void fire() throws IllegalActionException {
         super.fire();
 
@@ -124,7 +125,7 @@ public class Concat extends FixTransformer {
 
         FixPoint result = new FixPoint(new BigDecimal(new BigInteger(
                 bits.toString(), 2)), new FixPointQuantization(precision,
-                overflow, rounding));
+                        overflow, rounding));
 
         sendOutput(output, 0, new FixToken(result));
     }

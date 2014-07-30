@@ -80,15 +80,16 @@ public class AlgebraicLoopReceiver extends AbstractReceiver {
 
     /** Set the status of this receiver to be absent.
      */
-        @Override
+    @Override
     public void clear() throws IllegalActionException {
         _token = null;
     }
-        
+
     /** Return the contained Token. If there is none, throw an exception.
      *  @return The token contained by this receiver.
      *  @exception NoTokenException If this receiver is absent.
      */
+    @Override
     public Token get() throws NoTokenException {
         if (_token == null) {
             throw new NoTokenException(_director,
@@ -100,27 +101,27 @@ public class AlgebraicLoopReceiver extends AbstractReceiver {
     /** Return true.
      *  @return true.
      */
-        @Override
+    @Override
     public boolean hasRoom() {
         return true;
     }
 
     /** Return true.
-     *  @param numberOfTokens Ignored in this base class.   
+     *  @param numberOfTokens Ignored in this base class.
      *  @return true.
      */
-        @Override
+    @Override
     public boolean hasRoom(int numberOfTokens) {
         return true;
     }
 
-        /** Return true if the status is present.
-         *  @return True if the recevier has a token.
-         */
-        @Override
-        public boolean hasToken() {
+    /** Return true if the status is present.
+     *  @return True if the recevier has a token.
+     */
+    @Override
+    public boolean hasToken() {
         return _token != null;
-        }
+    }
 
     /** Return true if the argument is 1 and this mailbox is not empty,
      *  and otherwise return false.
@@ -130,7 +131,7 @@ public class AlgebraicLoopReceiver extends AbstractReceiver {
      *   This is a runtime exception, so it does not need to be declared
      *   explicitly.
      */
-        @Override
+    @Override
     public boolean hasToken(int numberOfTokens) throws IllegalArgumentException {
         if (numberOfTokens < 1) {
             throw new IllegalArgumentException(
@@ -153,18 +154,18 @@ public class AlgebraicLoopReceiver extends AbstractReceiver {
      *  @exception IllegalActionException If a token
      *   is present and cannot be compared to the specified token.
      */
-        @Override
+    @Override
     public void put(Token token) throws IllegalActionException {
-            if (_isBreakVariable) {
-                    _updatedValue = token;
-            } else {
-                    _token = token;
-            }
+        if (_isBreakVariable) {
+            _updatedValue = token;
+        } else {
+            _token = token;
+        }
     }
 
     /** Clear stored tokens.
      */
-        @Override
+    @Override
     public void reset() {
         _updatedValue = null;
         _token = null;
@@ -172,16 +173,16 @@ public class AlgebraicLoopReceiver extends AbstractReceiver {
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
-    
+
     /** If this receiver is a break variable, then return the stored
      *  updated value. Otherwise, return the current value.
-     *  @return The token stored by 
+     *  @return The token stored by
      */
     protected Token _getUpdatedValue() {
-            if (_isBreakVariable) {
-                    return _updatedValue;
-            }
-            return _token;
+        if (_isBreakVariable) {
+            return _updatedValue;
+        }
+        return _token;
     }
 
     /** Indicate to this receiver that it is a break variable and
@@ -201,13 +202,13 @@ public class AlgebraicLoopReceiver extends AbstractReceiver {
 
     /** The director governing this receiver. */
     private AlgebraicLoopDirector _director;
-    
+
     /** Indicator that this receiver stores a break variable. */
     private boolean _isBreakVariable = false;
-    
+
     /** Updated token. */
     private Token _updatedValue;
-    
+
     /** The token held. */
     private Token _token = null;
 }

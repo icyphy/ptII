@@ -40,8 +40,8 @@ package ptolemy.cg.adapter.generic.program.procedural.c.adapters.ptolemy.domains
  @Pt.AcceptedRating Red (mschoebe)
  */
 public class SampleDelay
-        extends
-        ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.domains.sdf.lib.SampleDelay {
+extends
+ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.domains.sdf.lib.SampleDelay {
     /**
      *  Construct a SampleDelay adapter.
      *  @param actor The given ptolemy.domains.sdf.lib.SampleDelay actor.

@@ -50,15 +50,18 @@ public class TransferableWrapper implements java.awt.datatransfer.Transferable {
         this.dragObject = dragObject;
     }
 
+    @Override
     public synchronized Object getTransferData(DataFlavor flavor) {
         return dragObject;
     }
 
+    @Override
     public boolean isDataFlavorSupported(DataFlavor flavor) {
         return flavor.getMimeType().equals(
                 DataFlavor.javaJVMLocalObjectMimeType);
     }
 
+    @Override
     public synchronized DataFlavor[] getTransferDataFlavors() {
         try {
             return new DataFlavor[] { new DataFlavor(

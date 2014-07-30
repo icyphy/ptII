@@ -85,7 +85,7 @@ public class BasicGraphModel extends BasicModularGraphModel {
      * representation.
      */
     private static abstract class Intermediate extends BasicPropertyContainer
-            implements SemanticObjectContainer {
+    implements SemanticObjectContainer {
         /**
          * The semantic object of this intermediate.
          */
@@ -96,6 +96,7 @@ public class BasicGraphModel extends BasicModularGraphModel {
          * application object that is semantically equivalent to this
          * node.
          */
+        @Override
         public Object getSemanticObject() {
             return _semanticObject;
         }
@@ -105,6 +106,7 @@ public class BasicGraphModel extends BasicModularGraphModel {
          * application object that is semantically equivalent to this
          * node.
          */
+        @Override
         public void setSemanticObject(Object o) {
             _semanticObject = o;
         }
@@ -144,6 +146,7 @@ public class BasicGraphModel extends BasicModularGraphModel {
             _out.add(e);
         }
 
+        @Override
         public Graph getParent() {
             return _parent;
         }
@@ -152,6 +155,7 @@ public class BasicGraphModel extends BasicModularGraphModel {
          * Return an iterator over the <i>in</i> edges of this
          * node. This iterator does not support removal operations.
          */
+        @Override
         public Iterator inEdges() {
             return new ArrayIterator(_in.toArray());
         }
@@ -160,6 +164,7 @@ public class BasicGraphModel extends BasicModularGraphModel {
          * Return an iterator over the <i>out</i> edges of this
          * node.  This iterator does not support removal operations.
          */
+        @Override
         public Iterator outEdges() {
             return new ArrayIterator(_out.toArray());
         }
@@ -172,6 +177,7 @@ public class BasicGraphModel extends BasicModularGraphModel {
             _out.remove(e);
         }
 
+        @Override
         public void setParent(Graph parent) {
             if (_parent != null) {
                 ((BasicCompositeNode) _parent).remove(this);
@@ -184,6 +190,7 @@ public class BasicGraphModel extends BasicModularGraphModel {
             }
         }
 
+        @Override
         public String toString() {
             Object o = this.getSemanticObject();
             return "BasicNode[" + o + "]";
@@ -194,7 +201,7 @@ public class BasicGraphModel extends BasicModularGraphModel {
      * A simple composite node implementation.
      */
     private static class BasicCompositeNode extends BasicNode implements
-            CompositeNode {
+    CompositeNode {
         /**
          * The nodes that this composite node
          * contains.
@@ -213,10 +220,12 @@ public class BasicGraphModel extends BasicModularGraphModel {
             _nodes.add(n);
         }
 
+        @Override
         public int getNodeCount() {
             return _nodes.size();
         }
 
+        @Override
         public Iterator nodes() {
             return _nodes.iterator();
         }
@@ -225,6 +234,7 @@ public class BasicGraphModel extends BasicModularGraphModel {
             _nodes.remove(n);
         }
 
+        @Override
         public String toString() {
             Object o = this.getSemanticObject();
             return "CompositeNode[" + o + "]";
@@ -273,26 +283,32 @@ public class BasicGraphModel extends BasicModularGraphModel {
             setHead(head);
         }
 
+        @Override
         public boolean acceptHead(Node head) {
             return true;
         }
 
+        @Override
         public boolean acceptTail(Node tail) {
             return true;
         }
 
+        @Override
         public Node getHead() {
             return _head;
         }
 
+        @Override
         public Node getTail() {
             return _tail;
         }
 
+        @Override
         public boolean isDirected() {
             return _directed;
         }
 
+        @Override
         public void setHead(Node n) {
             if (_head != null) {
                 ((BasicNode) _head).removeInEdge(this);
@@ -305,6 +321,7 @@ public class BasicGraphModel extends BasicModularGraphModel {
             }
         }
 
+        @Override
         public void setTail(Node n) {
             if (_tail != null) {
                 ((BasicNode) _tail).removeOutEdge(this);
@@ -319,6 +336,7 @@ public class BasicGraphModel extends BasicModularGraphModel {
 
         /** Print a readable description of this edge
          */
+        @Override
         public String toString() {
             Object o = this.getSemanticObject();
             return "Edge[" + o + "]";

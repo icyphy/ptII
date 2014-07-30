@@ -178,14 +178,17 @@ public class GraphicsPane extends CanvasPane {
     /** Return an iteration of the layers, in event-processing order
      * (that is, from front to back).
      */
+    @Override
     public Iterator layersFromFront() {
         return new Iterator() {
             int cursor = 0;
 
+            @Override
             public boolean hasNext() {
                 return cursor < _layers.length;
             }
 
+            @Override
             public Object next() throws NoSuchElementException {
                 if (cursor > _layers.length) {
                     throw new NoSuchElementException();
@@ -193,6 +196,7 @@ public class GraphicsPane extends CanvasPane {
                 return _layers[cursor++];
             }
 
+            @Override
             public void remove() {
                 throw new UnsupportedOperationException(
                         "Cannot delete layer from graphics pane");
@@ -203,14 +207,17 @@ public class GraphicsPane extends CanvasPane {
     /** Return an iteration of the layers, in redraw order (that is,
      * from back to front).
      */
+    @Override
     public Iterator layersFromBack() {
         return new Iterator() {
             int cursor = _layers.length - 1;
 
+            @Override
             public boolean hasNext() {
                 return cursor >= 0;
             }
 
+            @Override
             public Object next() throws NoSuchElementException {
                 if (cursor < 0) {
                     throw new NoSuchElementException();
@@ -218,6 +225,7 @@ public class GraphicsPane extends CanvasPane {
                 return _layers[cursor--];
             }
 
+            @Override
             public void remove() {
                 throw new UnsupportedOperationException(
                         "Cannot delete layer from graphics pane");

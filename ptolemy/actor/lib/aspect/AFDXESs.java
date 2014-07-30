@@ -135,6 +135,7 @@ public class AFDXESs extends AtomicCommunicationAspect {
      *  @param attribute The attribute that changed.
      *  @exception IllegalActionException If the service time is negative.
      */
+    @Override
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
 
@@ -162,6 +163,7 @@ public class AFDXESs extends AtomicCommunicationAspect {
      *   if one of the attributes cannot be cloned.
      *  @return A new AFDXESs.
      */
+    @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         AFDXESs newObject = (AFDXESs) super.clone(workspace);
 
@@ -184,6 +186,7 @@ public class AFDXESs extends AtomicCommunicationAspect {
      *
      *  @exception IllegalActionException If firing is not permitted.
      */
+    @Override
     public void fire() throws IllegalActionException {
         super.fire();
         Time currentTime = getDirector().getModelTime();
@@ -253,8 +256,8 @@ public class AFDXESs extends AtomicCommunicationAspect {
                             Token[] values = new Token[] {
                                     new DoubleToken(
                                             e.timeStamp.getDoubleValue()),
-                                    new ObjectToken(output[2]),
-                                    (Token) output[1] };
+                                            new ObjectToken(output[2]),
+                                            (Token) output[1] };
                             RecordToken record = new RecordToken(labels, values);
                             _sendToReceiver((Receiver) output[0], record);
                         } else {
@@ -285,6 +288,7 @@ public class AFDXESs extends AtomicCommunicationAspect {
      *  @return The decorated attributes for the target NamedObj, or
      *   null if the specified target is not an Actor.
      */
+    @Override
     public DecoratorAttributes createDecoratorAttributes(NamedObj target) {
         if (target instanceof IOPort) {
             try {
@@ -323,6 +327,7 @@ public class AFDXESs extends AtomicCommunicationAspect {
     /** Initialize the actor.
      *  @exception IllegalActionException If the superclass throws it.
      */
+    @Override
     public void initialize() throws IllegalActionException {
         super.initialize();
 
@@ -383,6 +388,7 @@ public class AFDXESs extends AtomicCommunicationAspect {
     /**
      * Reset the communication aspect.
      */
+    @Override
     public void reset() {
 
     }
@@ -396,6 +402,7 @@ public class AFDXESs extends AtomicCommunicationAspect {
      *  @param token The token to send.
      *  @exception IllegalActionException If the refiring request fails.
      */
+    @Override
     public void sendToken(Receiver source, Receiver receiver, Token token)
             throws IllegalActionException {
         Time currentTime = getDirector().getModelTime();
@@ -468,7 +475,7 @@ public class AFDXESs extends AtomicCommunicationAspect {
 
             _afdxVLinksQueue.get(vl.getName()).add(
                     new TimedEvent(currentTime.add(_delay), new Object[] {
-                            receiver, token, vl, currentTime }));
+                        receiver, token, vl, currentTime }));
         }
 
         _tokenCount++;
@@ -533,7 +540,7 @@ public class AFDXESs extends AtomicCommunicationAspect {
      * @param name The name.
      * @exception IllegalActionException Not thrown in this base class
      */
-    public void setSchedulerMultiplexorName(IOPort port, String name) 
+    public void setSchedulerMultiplexorName(IOPort port, String name)
             throws IllegalActionException {
         AFDXVlink vl;
 
@@ -689,6 +696,7 @@ public class AFDXESs extends AtomicCommunicationAspect {
          *  @exception IllegalActionException If the parameter set is not valid.
          *  Not thrown in this class.
          */
+        @Override
         public void attributeChanged(Attribute attribute)
                 throws IllegalActionException {
             IOPort port = (IOPort) getContainer();
@@ -757,7 +765,7 @@ public class AFDXESs extends AtomicCommunicationAspect {
                         "schedulerMultiplexorName");
                 schedulerMultiplexorName.setTypeEquals(BaseType.STRING);
                 schedulerMultiplexorName
-                        .setExpression("\"Scheduler multiplexor name\"");
+                .setExpression("\"Scheduler multiplexor name\"");
 
                 //portIn = new Parameter(this, "portIn", new IntToken(0));
                 //portOut = new Parameter(this, "portOut", new IntToken(1));

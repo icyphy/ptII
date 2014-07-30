@@ -60,6 +60,7 @@ public class Scale extends NamedProgramCodeGeneratorAdapter {
      * section
      * @exception IllegalActionException Not thrown in this base class.
      */
+    @Override
     public Set<String> getSharedCode() throws IllegalActionException {
         Set<String> sharedCode = super.getSharedCode();
         CodeStream codestream = _templateParser.getCodeStream();
@@ -80,6 +81,7 @@ public class Scale extends NamedProgramCodeGeneratorAdapter {
      * @exception IllegalActionException If the code stream encounters an
      *  error in processing the specified code block(s).
      */
+    @Override
     protected String _generateFireCode() throws IllegalActionException {
         super._generateFireCode();
 

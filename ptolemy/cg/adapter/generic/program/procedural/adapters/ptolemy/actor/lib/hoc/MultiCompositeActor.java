@@ -158,21 +158,21 @@ public class MultiCompositeActor extends TypedCompositeActor {
             if (!variablesAsArrays) {
                 code.append("[]");
                 // Coverity points out that buffersize is 1;
-//                 if (bufferSize > 1) {
-//                     code.append("[]");
-//                 }
+                //                 if (bufferSize > 1) {
+                //                     code.append("[]");
+                //                 }
             }
             code.append(" = new " + targetType(port.getType()));
             // Coverity points out that bufferSize is 1, so the if will never be new.
-//         } else {
-//             if (bufferSize > 1) {
-//                 if (!variablesAsArrays) {
-//                     code.append("[]");
-//                 }
-//                 code.append(" = new " + targetType(port.getType()));
-//             } else {
-//                 //code.append(" = ");
-//             }
+            //         } else {
+            //             if (bufferSize > 1) {
+            //                 if (!variablesAsArrays) {
+            //                     code.append("[]");
+            //                 }
+            //                 code.append(" = new " + targetType(port.getType()));
+            //             } else {
+            //                 //code.append(" = ");
+            //             }
         }
 
         if (port.isMultiport()) {
@@ -182,11 +182,11 @@ public class MultiCompositeActor extends TypedCompositeActor {
         }
 
         // Coverity points out the bufferSize is 1.
-//         if (bufferSize > 1) {
-//             code.append("[" + bufferSize + "]");
-//         } else {
-//             //code.append("0");
-//         }
+        //         if (bufferSize > 1) {
+        //             code.append("[" + bufferSize + "]");
+        //         } else {
+        //             //code.append("0");
+        //         }
         code.append(";" + _eol);
         if (variablesAsArrays) {
             if (code.toString().indexOf("=") != -1) {

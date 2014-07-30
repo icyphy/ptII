@@ -179,7 +179,7 @@ public class CachedMethod {
      */
     protected CachedMethod(String methodName, Type[] argumentTypes,
             Method method, ArgumentConversion[] conversions, int type)
-            throws IllegalActionException {
+                    throws IllegalActionException {
         // Note clones for safety...
         _methodName = methodName;
         // Kepler (jdk1.4?) requires this cast
@@ -259,6 +259,7 @@ public class CachedMethod {
      *  @param object The object to compare to.
      *  @return True if the argument represents the same method or function.
      */
+    @Override
     public boolean equals(Object object) {
         if (object == this) {
             return true;
@@ -487,6 +488,7 @@ public class CachedMethod {
      *  consistent with the overridden equals method.
      *  @return A hash code.
      */
+    @Override
     public int hashCode() {
         return _hashcode;
     }
@@ -624,6 +626,7 @@ public class CachedMethod {
     /** Return a string representation.
      *  @return A string representation.
      */
+    @Override
     public String toString() {
         int initialArg = 0;
         StringBuffer buffer = new StringBuffer();
@@ -669,6 +672,7 @@ public class CachedMethod {
     /** Conversion from an ArrayToken to a Token array (Token[]). */
     public static final ArgumentConversion ARRAYTOKEN_CONVERSION = new ArgumentConversion(
             1) {
+        @Override
         public Object convert(ptolemy.data.Token input)
                 throws IllegalActionException {
             // Convert ArrayToken to Token[]
@@ -680,6 +684,7 @@ public class CachedMethod {
     /** Conversion from tokens to Java native types. */
     public static final ArgumentConversion NATIVE_CONVERSION = new ArgumentConversion(
             3) {
+        @Override
         public Object convert(ptolemy.data.Token input)
                 throws IllegalActionException {
             // Convert tokens to native types.
@@ -690,6 +695,7 @@ public class CachedMethod {
     /** Identity conversion.  Does nothing. */
     public static final ArgumentConversion IDENTITY_CONVERSION = new ArgumentConversion(
             4) {
+        @Override
         public Object convert(ptolemy.data.Token input)
                 throws IllegalActionException {
             // The do nothing conversion.
@@ -1187,6 +1193,7 @@ public class CachedMethod {
         /** Return a string representation of this conversion.
          *  @return A string representation of this conversion.
          */
+        @Override
         public String toString() {
             return "Conversion " + _preference;
         }
@@ -1217,6 +1224,7 @@ public class CachedMethod {
          *  classes will override this method to provide different
          *  types of argument conversions.
          */
+        @Override
         public Object convert(ptolemy.data.Token input)
                 throws IllegalActionException {
             ptolemy.data.Token token = _conversionType.convert(input);
@@ -1226,6 +1234,7 @@ public class CachedMethod {
         /** Return true if this conversion is preferable to the given
          * conversion.
          */
+        @Override
         public boolean isPreferableTo(ArgumentConversion conversion) {
             if (_preference > conversion.getPreference()) {
                 return true;
@@ -1259,6 +1268,7 @@ public class CachedMethod {
 
         /** Return a string representation of this conversion.
          */
+        @Override
         public String toString() {
             return "TypeConversion(" + _conversionType + ", " + _conversion
                     + ") " + _preference;
@@ -1296,6 +1306,7 @@ public class CachedMethod {
             return _baseConversion;
         }
 
+        @Override
         public ptolemy.data.Token invoke(Object[] argValues)
                 throws IllegalActionException {
             argValues[0] = _baseConversion
@@ -1330,7 +1341,7 @@ public class CachedMethod {
          */
         public ArrayMapCachedMethod(String methodName, Type[] argumentTypes,
                 int type, CachedMethod cachedMethod, boolean[] reducedArgs)
-                throws IllegalActionException {
+                        throws IllegalActionException {
             super(methodName, argumentTypes, null, null, type);
             _cachedMethod = cachedMethod;
             _reducedArgs = reducedArgs;
@@ -1348,6 +1359,7 @@ public class CachedMethod {
          *  @exception IllegalActionException If the invoked method
          *   throws it.
          */
+        @Override
         public ptolemy.data.Token invoke(Object[] argValues)
                 throws IllegalActionException {
             int dim = 0;
@@ -1393,6 +1405,7 @@ public class CachedMethod {
         /** Override the base class to correctly implement the
          * isValid() method.
          */
+        @Override
         public boolean isValid() {
             return _cachedMethod.isValid();
         }
@@ -1402,12 +1415,13 @@ public class CachedMethod {
          *  method.
          *  @return An ArrayType with an appropriate element type.
          */
+        @Override
         public Type getReturnType() throws IllegalActionException {
             if (!isValid()) {
                 throw new IllegalActionException(
                         "The return type of the method " + toString()
-                                + " cannot be determined because "
-                                + "no matching method was found.");
+                        + " cannot be determined because "
+                        + "no matching method was found.");
             }
 
             Type elementType = _cachedMethod.getReturnType();
@@ -1417,6 +1431,7 @@ public class CachedMethod {
         /** Return an appropriate description of the method being invoked.
          *  @return A description of the method being invoked.
          */
+        @Override
         public String methodDescription() {
             return "ArrayMapped{" + _cachedMethod.methodDescription() + "}";
         }
@@ -1450,7 +1465,7 @@ public class CachedMethod {
          */
         public MatrixMapCachedMethod(String methodName, Type[] argumentTypes,
                 int type, CachedMethod cachedMethod, boolean[] reducedArgs)
-                throws IllegalActionException {
+                        throws IllegalActionException {
             super(methodName, argumentTypes, null, null, type);
             _cachedMethod = cachedMethod;
             _reducedArgs = reducedArgs;
@@ -1466,6 +1481,7 @@ public class CachedMethod {
          *  @exception IllegalActionException If the invoked method
          *  throws it.
          */
+        @Override
         public ptolemy.data.Token invoke(Object[] argValues)
                 throws IllegalActionException {
             int xdim = 0;
@@ -1480,7 +1496,7 @@ public class CachedMethod {
                         if (xdim != 0
                                 && ydim != 0
                                 && (matrixToken.getRowCount() != ydim || matrixToken
-                                        .getColumnCount() != xdim)) {
+                                .getColumnCount() != xdim)) {
                             throw new IllegalActionException("Argument " + i
                                     + " is a reducible matrixToken that "
                                     + "does not have compatible size!");
@@ -1499,7 +1515,7 @@ public class CachedMethod {
             // Kepler (jdk1.4?) requires this cast
             Object[] subArgs = argValues.clone();
             ptolemy.data.Token[] tokenArray = new ptolemy.data.Token[xdim
-                    * ydim];
+                                                                     * ydim];
 
             int pos = 0;
 
@@ -1522,16 +1538,18 @@ public class CachedMethod {
         /** Override the base class to correctly implement the
          * isValid() method.
          */
+        @Override
         public boolean isValid() {
             return _cachedMethod.isValid();
         }
 
+        @Override
         public Type getReturnType() throws IllegalActionException {
             if (!isValid()) {
                 throw new IllegalActionException(
                         "The return type of the method " + toString()
-                                + " cannot be determined because "
-                                + "no matching method was found.");
+                        + " cannot be determined because "
+                        + "no matching method was found.");
             }
 
             Type elementType = _cachedMethod.getReturnType();
@@ -1541,6 +1559,7 @@ public class CachedMethod {
         /** Return an appropriate description of the method being invoked.
          *  @return A description of the method being invoked.
          */
+        @Override
         public String methodDescription() {
             return "MatrixMapped{" + _cachedMethod.methodDescription() + "}";
         }

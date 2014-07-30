@@ -126,6 +126,7 @@ public class PtolemyThread extends Thread implements Debuggable {
      *  @see #removeDebugListener(DebugListener)
      *  @since Ptolemy II 2.3
      */
+    @Override
     public synchronized void addDebugListener(DebugListener listener) {
         if (_debugListeners == null) {
             _debugListeners = new LinkedList();
@@ -146,6 +147,7 @@ public class PtolemyThread extends Thread implements Debuggable {
      *  @see #addDebugListener(DebugListener)
      *  @since Ptolemy II 2.3
      */
+    @Override
     public synchronized void removeDebugListener(DebugListener listener) {
         if (_debugListeners == null) {
             return;

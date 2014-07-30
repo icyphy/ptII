@@ -7,27 +7,27 @@ import java.util.Vector;
 ///////////////////////////////////////////////////////////////////
 //// HlaPtidesEvent
 
-/** 
-* <p>This class implements a data structure to encapsulate PTIDES events sent
-* through a HLA/CERTI Federation. The logical time of the PTIDES event and the
-* value are stored in a Vector<Byte>. Only PTIDES event from NetworkPort are
-* supported by this implementation.
-* </p><p>
-* This implementation reuses a subset of methods implemented in the 
-* certi.communiation.MessageBuffer class provided by JCERTI available at:
-* <br><a href="http://savannah.nongnu.org/projects/certi" target="_top">http://savannah.nongnu.org/projects/certi</a></br>
-* </p><p>
-* NOTE: The JVM is big endian, so all the write methods are big endians.
-* The read methods can handle both big and little endians.
-* </p>
-*  
-*  @author Gilles Lasnier, Based on MessageBuffer.java by Pancik et al. (see JCERTI)
-*  @version $Id$
-*  @since Ptolemy II 10.0
-*
-*  @Pt.ProposedRating Yellow (glasnier)
-*  @Pt.AcceptedRating Red (glasnier)
-*/
+/**
+ * <p>This class implements a data structure to encapsulate PTIDES events sent
+ * through a HLA/CERTI Federation. The logical time of the PTIDES event and the
+ * value are stored in a Vector<Byte>. Only PTIDES event from NetworkPort are
+ * supported by this implementation.
+ * </p><p>
+ * This implementation reuses a subset of methods implemented in the
+ * certi.communiation.MessageBuffer class provided by JCERTI available at:
+ * <br><a href="http://savannah.nongnu.org/projects/certi" target="_top">http://savannah.nongnu.org/projects/certi</a></br>
+ * </p><p>
+ * NOTE: The JVM is big endian, so all the write methods are big endians.
+ * The read methods can handle both big and little endians.
+ * </p>
+ *
+ *  @author Gilles Lasnier, Based on MessageBuffer.java by Pancik et al. (see JCERTI)
+ *  @version $Id$
+ *  @since Ptolemy II 10.0
+ *
+ *  @Pt.ProposedRating Yellow (glasnier)
+ *  @Pt.AcceptedRating Red (glasnier)
+ */
 public class HlaPtidesEvent {
 
     /** Construct a HlaPtidesEvent. The HlaPtidesEvent structure stores
@@ -50,9 +50,9 @@ public class HlaPtidesEvent {
     }
 
     /** Construct a HlaPtidesEvent from an array of bytes. The <i>byteArray</i>
-     *  is already a representation of a HlaPtidesEvent sent through the 
+     *  is already a representation of a HlaPtidesEvent sent through the
      *  HLA/CERTI Federation.
-     *  @param byteArray The representation of the HlaPtidesEvent as array of 
+     *  @param byteArray The representation of the HlaPtidesEvent as array of
      *  bytes.
      */
     public HlaPtidesEvent(byte[] byteArray) {
@@ -129,7 +129,7 @@ public class HlaPtidesEvent {
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
-    /** Read the byte from the buffer at the current offset pointed by 
+    /** Read the byte from the buffer at the current offset pointed by
      *  <i>_iter</i>.
      *  @return A byte.
      *  @exception NoSuchElementException If there is no more byte to read.
@@ -138,7 +138,7 @@ public class HlaPtidesEvent {
         return _iter.next();
     }
 
-    /** Read and return an array of bytes from the buffer at the current offset 
+    /** Read and return an array of bytes from the buffer at the current offset
      *  pointed by <i>_iter</i>. First read the size (integer) and then return
      *  the array.
      *  @return An array of bytes.
@@ -155,7 +155,7 @@ public class HlaPtidesEvent {
         return byteArray;
     }
 
-    /** Read a Double encoded in the buffer. The endianness is 
+    /** Read a Double encoded in the buffer. The endianness is
      *  taken care of.
      *  @return a java (big endian IEEE 754) Double.
      */
@@ -165,11 +165,11 @@ public class HlaPtidesEvent {
 
     /** Read an integer from the buffer with correct endianess.
      * NOTE: there are no unsigned integers of any size in java.
-     * This methods assume that the int it is trying to read is inside the 
-     * bounds of a signed int. There are no conversion to an long if it is 
+     * This methods assume that the int it is trying to read is inside the
+     * bounds of a signed int. There are no conversion to an long if it is
      * not the case.
      * @return A int.
-     * @exception NoSuchElementException If there is no more byte to read. 
+     * @exception NoSuchElementException If there is no more byte to read.
      */
     private int _readInt() throws NoSuchElementException {
         int i = 0;
@@ -187,8 +187,8 @@ public class HlaPtidesEvent {
 
     /** Read a long from the buffer with correct endianess.
      * NOTE: there are no unsigned integers of any size in java.
-     * This methods assume that the long it is trying to read is inside the 
-     * bounds of a signed long. There are no conversion to something bigger if 
+     * This methods assume that the long it is trying to read is inside the
+     * bounds of a signed long. There are no conversion to something bigger if
      * it is not the case.
      * @return A long.
      * @exception NoSuchElementException If there is no more byte to read.
@@ -199,26 +199,26 @@ public class HlaPtidesEvent {
             for (int i = 7; i >= 0; i--) {
                 l = l
                         | ((long) _iter.next() & 0x00000000000000FF) << i
-                                * _BYTE_LENGTH;
+                        * _BYTE_LENGTH;
             }
         } else {
             for (int i = 0; i <= 7; i++) {
                 l = l
                         | ((long) _iter.next() & 0x00000000000000FF) << i
-                                * _BYTE_LENGTH;
+                        * _BYTE_LENGTH;
             }
         }
         return l;
     }
 
     /** This method set the buffer back in the state just after its creation.
-     *  Its should be used before re-using the buffer to write. 
+     *  Its should be used before re-using the buffer to write.
      */
     public void reset() {
         _buffer.clear();
     }
 
-    /** Write byte array to buffer. First is the length of the array, stored as 
+    /** Write byte array to buffer. First is the length of the array, stored as
      *  a integer, then the bytes themselves.
      *  @param array The array of bytes to store.
      */

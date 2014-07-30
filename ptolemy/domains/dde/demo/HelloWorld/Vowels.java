@@ -69,6 +69,7 @@ public class Vowels extends StringOut {
 
     /** Set up the string values that this actor will output.
      */
+    @Override
     public LinkedList setUpStrings() {
         _vowels.addLast("e");
 

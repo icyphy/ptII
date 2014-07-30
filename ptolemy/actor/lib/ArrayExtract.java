@@ -85,27 +85,27 @@ public class ArrayExtract extends Transformer {
         sourcePosition = new PortParameter(this, "sourcePosition");
         sourcePosition.setExpression("0");
         new StringAttribute(sourcePosition.getPort(), "_cardinal")
-                .setExpression("SOUTH");
+        .setExpression("SOUTH");
         new Parameter(sourcePosition.getPort(), "_showName")
-                .setExpression("true");
+        .setExpression("true");
         extractLength = new PortParameter(this, "extractLength");
         extractLength.setExpression("1");
         new StringAttribute(extractLength.getPort(), "_cardinal")
-                .setExpression("SOUTH");
+        .setExpression("SOUTH");
         new Parameter(extractLength.getPort(), "_showName")
-                .setExpression("true");
+        .setExpression("true");
         destinationPosition = new PortParameter(this, "destinationPosition");
         destinationPosition.setExpression("0");
         new StringAttribute(destinationPosition.getPort(), "_cardinal")
-                .setExpression("SOUTH");
+        .setExpression("SOUTH");
         new Parameter(destinationPosition.getPort(), "_showName")
-                .setExpression("true");
+        .setExpression("true");
         outputArrayLength = new PortParameter(this, "outputArrayLength");
         outputArrayLength.setExpression("1");
         new StringAttribute(outputArrayLength.getPort(), "_cardinal")
-                .setExpression("SOUTH");
+        .setExpression("SOUTH");
         new Parameter(outputArrayLength.getPort(), "_showName")
-                .setExpression("true");
+        .setExpression("true");
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -147,6 +147,7 @@ public class ArrayExtract extends Transformer {
      *  @exception CloneNotSupportedException If a derived class contains
      *   an attribute that cannot be cloned.
      */
+    @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         ArrayExtract newObject = (ArrayExtract) super.clone(workspace);
 
@@ -163,6 +164,7 @@ public class ArrayExtract extends Transformer {
      *  @exception IllegalActionException If any parameter value
      *   is out of range.
      */
+    @Override
     public void fire() throws IllegalActionException {
         super.fire();
         sourcePosition.update();

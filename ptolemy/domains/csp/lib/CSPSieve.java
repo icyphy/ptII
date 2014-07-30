@@ -99,6 +99,7 @@ public class CSPSieve extends CSPActor {
      *  @exception IllegalActionException If an error occurs during
      *   executing the process.
      */
+    @Override
     public void fire() throws IllegalActionException {
         super.fire();
         Token data;

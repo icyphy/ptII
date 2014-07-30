@@ -37,21 +37,25 @@ public class LayerAdapter implements LayerListener {
     /** Invoked when the mouse moves while the button is still held
      * down.
      */
+    @Override
     public void mouseDragged(LayerEvent e) {
     }
 
     /** Invoked when the mouse is pressed on a layer or figure.
      */
+    @Override
     public void mousePressed(LayerEvent e) {
     }
 
     /** Invoked when the mouse is released on a layer or figure.
      */
+    @Override
     public void mouseReleased(LayerEvent e) {
     }
 
     /** Invoked when the mouse is clicked on a layer or figure.
      */
+    @Override
     public void mouseClicked(LayerEvent e) {
     }
 }

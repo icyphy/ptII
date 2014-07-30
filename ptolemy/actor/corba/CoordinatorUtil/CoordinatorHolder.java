@@ -10,7 +10,7 @@ package ptolemy.actor.corba.CoordinatorUtil;
 /* A CORBA compatible interface for a coordinator.
  */
 public final class CoordinatorHolder implements
-        org.omg.CORBA.portable.Streamable {
+org.omg.CORBA.portable.Streamable {
     public ptolemy.actor.corba.CoordinatorUtil.Coordinator value = null;
 
     public CoordinatorHolder() {
@@ -21,14 +21,17 @@ public final class CoordinatorHolder implements
         value = initialValue;
     }
 
+    @Override
     public void _read(org.omg.CORBA.portable.InputStream i) {
         value = ptolemy.actor.corba.CoordinatorUtil.CoordinatorHelper.read(i);
     }
 
+    @Override
     public void _write(org.omg.CORBA.portable.OutputStream o) {
         ptolemy.actor.corba.CoordinatorUtil.CoordinatorHelper.write(o, value);
     }
 
+    @Override
     public org.omg.CORBA.TypeCode _type() {
         return ptolemy.actor.corba.CoordinatorUtil.CoordinatorHelper.type();
     }

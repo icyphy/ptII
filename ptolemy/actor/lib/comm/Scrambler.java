@@ -209,6 +209,7 @@ public class Scrambler extends Transformer {
      *  @exception IllegalActionException If <i>polynomial</i> is
      *  non-positive or the lower-order bit is not 1.
      */
+    @Override
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         if (attribute == polynomial) {
@@ -233,6 +234,7 @@ public class Scrambler extends Transformer {
      *  port if it is 1; otherwise send <i>false</i> to the output port.
      *  The parity is shifted into the delay line for the next iteration.
      */
+    @Override
     public void fire() throws IllegalActionException {
         super.fire();
         _latestShiftReg = _shiftReg;
@@ -272,6 +274,7 @@ public class Scrambler extends Transformer {
      *  equal to the value of <i>initialState</i>.
      *  @exception IllegalActionException If the parent class throws it.
      */
+    @Override
     public void initialize() throws IllegalActionException {
         super.initialize();
         _latestShiftReg = _shiftReg = ((IntToken) initialState.getToken())
@@ -282,6 +285,7 @@ public class Scrambler extends Transformer {
      *  initial state for the next iteration.
      *  @exception IllegalActionException If the base class throws it
      */
+    @Override
     public boolean postfire() throws IllegalActionException {
         _shiftReg = _latestShiftReg;
         return super.postfire();

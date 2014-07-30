@@ -84,7 +84,7 @@ import ptolemy.vergil.kernel.attributes.FilledShapeAttribute;
  @Pt.AcceptedRating Red (pjb2e)
  */
 public class TerrainProperty extends TypedAtomicActor implements
-        PropertyTransformer {
+PropertyTransformer {
     /** Construct an actor with the specified container and name.
      *  @param container The container.
      *  @param name The name.
@@ -122,6 +122,7 @@ public class TerrainProperty extends TypedAtomicActor implements
         //Create the icon.
         _icon = new EditorIcon(this, "_icon");
         _terrain = new FilledShapeAttribute(_icon, "terrain") {
+            @Override
             protected Shape _newShape() {
                 return new Polygon(_xPoints, _yPoints, _numberOfPoints);
             }
@@ -167,6 +168,7 @@ public class TerrainProperty extends TypedAtomicActor implements
      *  @exception IllegalActionException If the change is not acceptable
      *   to this container (not thrown in this base class).
      */
+    @Override
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         if (attribute == xyPoints) {
@@ -214,6 +216,7 @@ public class TerrainProperty extends TypedAtomicActor implements
      *  @exception CloneNotSupportedException Not thrown in this base class
      *  @return The new Attribute.
      */
+    @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         TerrainProperty newObject = (TerrainProperty) super.clone(workspace);
         ArrayToken xypointsArray;
@@ -240,6 +243,7 @@ public class TerrainProperty extends TypedAtomicActor implements
 
     /** Register PropertyTransformers with the Channel.
      */
+    @Override
     public void initialize() throws IllegalActionException {
         super.initialize();
         _terrain.width.setToken(new IntToken(10));
@@ -285,9 +289,10 @@ public class TerrainProperty extends TypedAtomicActor implements
      * @return The modified transform properties.
      * @exception IllegalActionException If failed to execute the model.
      */
+    @Override
     public RecordToken transformProperties(RecordToken properties,
             WirelessIOPort sender, WirelessIOPort destination)
-            throws IllegalActionException {
+                    throws IllegalActionException {
 
         RecordToken newProperties = properties;
         double[] p1 = _locationOf(sender);
@@ -317,6 +322,7 @@ public class TerrainProperty extends TypedAtomicActor implements
     /** Override the base class to call wrap up to unregister this with the
      *  channel.
      */
+    @Override
     public void wrapup() throws IllegalActionException {
         super.wrapup();
 
@@ -344,7 +350,7 @@ public class TerrainProperty extends TypedAtomicActor implements
         if (location == null) {
             throw new IllegalActionException(
                     "Cannot determine location for port " + port.getName()
-                            + ".");
+                    + ".");
         }
 
         return location.getLocation();

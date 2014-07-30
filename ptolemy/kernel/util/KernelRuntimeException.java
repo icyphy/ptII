@@ -138,6 +138,7 @@ public class KernelRuntimeException extends RuntimeException {
      *  @return The cause that was passed in as an argument to the
      *  constructor, or null if no cause was specified.
      */
+    @Override
     public Throwable getCause() {
         return _cause;
     }
@@ -149,6 +150,7 @@ public class KernelRuntimeException extends RuntimeException {
      *
      *  @return The error message.
      */
+    @Override
     public String getMessage() {
         return _message;
     }
@@ -166,6 +168,7 @@ public class KernelRuntimeException extends RuntimeException {
      *  exception is known, print the cause exception and the
      *  cause stacktrace.
      */
+    @Override
     public void printStackTrace() {
         // Note that chained exceptions are new JDK1.4.
         // We are implement them ourselves here so that we can
@@ -185,6 +188,7 @@ public class KernelRuntimeException extends RuntimeException {
      *
      *  @param printStream The PrintStream to write to.
      */
+    @Override
     public void printStackTrace(PrintStream printStream) {
         printStackTrace(new PrintWriter(printStream));
     }
@@ -195,6 +199,7 @@ public class KernelRuntimeException extends RuntimeException {
      *
      *  @param printWriter The PrintWriter to write to.
      */
+    @Override
     public void printStackTrace(PrintWriter printWriter) {
         super.printStackTrace(printWriter);
 

@@ -24,7 +24,7 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
-*/
+ */
 
 package ptolemy.domains.sdf.demo.OrthogonalCom;
 
@@ -63,7 +63,7 @@ why it is written in Java instead of using MoML.
 @version $Id$
 @Pt.ProposedRating Red (ctsay)
 @Pt.AcceptedRating Red (ctsay)
-*/
+ */
 public class OrthogonalCom extends TypedCompositeActor {
 
     /** Construct the orthogonal communication system.

@@ -73,7 +73,7 @@ import thales.vergil.navigable.NavigationPTree;
  */
 @SuppressWarnings("serial")
 public class SingleWindowHTMLViewer extends HTMLViewer implements
-        ChangeListener {
+ChangeListener {
     /**
      * Main panel
      */
@@ -113,6 +113,7 @@ public class SingleWindowHTMLViewer extends HTMLViewer implements
             /* (non-Javadoc)
              * @see java.awt.event.MouseAdapter#mouseClicked(java.awt.event.MouseEvent)
              */
+            @Override
             public void mouseClicked(MouseEvent e) {
                 if (e.getModifiers() == InputEvent.BUTTON3_MASK) {
                     JTabbedPane tabbedPane = (JTabbedPane) e.getSource();
@@ -127,6 +128,7 @@ public class SingleWindowHTMLViewer extends HTMLViewer implements
                             /* (non-Javadoc)
                              * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
                              */
+                            @Override
                             public void actionPerformed(ActionEvent e) {
                                 closeTabbedPane(theClickedOne);
                             }
@@ -177,6 +179,7 @@ public class SingleWindowHTMLViewer extends HTMLViewer implements
             /* (non-Javadoc)
              * @see java.awt.event.WindowAdapter#windowClosed(java.awt.event.WindowEvent)
              */
+            @Override
             public void windowClosed(WindowEvent e) {
                 removeEmptyTabs();
             }
@@ -184,6 +187,7 @@ public class SingleWindowHTMLViewer extends HTMLViewer implements
             /* (non-Javadoc)
              * @see java.awt.event.WindowAdapter#windowActivated(java.awt.event.WindowEvent)
              */
+            @Override
             public void windowActivated(WindowEvent e) {
                 JFrame frame = (JFrame) e.getSource();
                 frame.setVisible(false);
@@ -252,6 +256,7 @@ public class SingleWindowHTMLViewer extends HTMLViewer implements
     /**
      * Changes menus according to the selected Tab.
      */
+    @Override
     public void stateChanged(ChangeEvent e) {
         removeEmptyTabs();
 
@@ -389,6 +394,7 @@ public class SingleWindowHTMLViewer extends HTMLViewer implements
     /**
      * Closes all the Tableau displayed into the TabbedPane.
      */
+    @Override
     protected boolean _close() {
         boolean close = true;
         int nbTabs = _viewsTabbedPane.getComponentCount();
@@ -409,6 +415,7 @@ public class SingleWindowHTMLViewer extends HTMLViewer implements
     /**
      * @return the configuration.
      */
+    @Override
     public Configuration getConfiguration() {
         return _configuration;
     }

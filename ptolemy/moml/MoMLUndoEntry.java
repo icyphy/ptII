@@ -71,6 +71,7 @@ public class MoMLUndoEntry implements UndoAction, ChangeListener {
      *  executed.
      *  @param change The change that was successfully executed.
      */
+    @Override
     public void changeExecuted(ChangeRequest change) {
         // In case this has been set before...
         _exception = null;
@@ -81,6 +82,7 @@ public class MoMLUndoEntry implements UndoAction, ChangeListener {
      *  @param exception The exception that occurred.
      *  @see #execute()
      */
+    @Override
     public void changeFailed(ChangeRequest change, Exception exception) {
         _exception = exception;
     }
@@ -90,6 +92,7 @@ public class MoMLUndoEntry implements UndoAction, ChangeListener {
      *  with the context (as determined by ParserAttribute.getParser()).
      *  @see ParserAttribute#getParser(NamedObj)
      */
+    @Override
     public void execute() throws Exception {
         // If the MoML is empty, the parser will throw an exception.
         if (_undoMoML == null || _undoMoML.trim().equals("")) {
@@ -116,6 +119,7 @@ public class MoMLUndoEntry implements UndoAction, ChangeListener {
     /** Return the MoML of the undo action.
      *  @return MoML for the undo action.
      */
+    @Override
     public String toString() {
         return _undoMoML + "\n...in context: " + _context.getFullName();
     }

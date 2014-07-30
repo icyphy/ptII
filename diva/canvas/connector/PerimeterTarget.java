@@ -41,6 +41,7 @@ public class PerimeterTarget extends AbstractConnectorTarget {
     /** Return the nearest site on the figure if the figure
      * is not a connector
      */
+    @Override
     public Site getHeadSite(Figure f, final double x, final double y) {
         // Removed the test if (!(f instanceof Connector)) {
         // It is now also possible to connect with other links.
@@ -62,6 +63,7 @@ public class PerimeterTarget extends AbstractConnectorTarget {
             // does not seem to be that easy (without iterating through the
             // complete shape.
             return new PerimeterSite(f, 0) {
+                @Override
                 public Point2D getPoint(double normal) {
                     return new Point2D.Double(x, y);
                 }

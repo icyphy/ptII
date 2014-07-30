@@ -58,6 +58,7 @@ public class NotSchedulableException extends InvalidStateException {
      *  includes a Nameable so that the exception window includes
      *  a "Go To Actor" button.
      */
+    @Deprecated
     public NotSchedulableException(String detail) {
         super(detail);
     }
@@ -89,6 +90,7 @@ public class NotSchedulableException extends InvalidStateException {
      *  @param actors The unschedulable actors.
      *  @param detail The message.
      */
+    @Deprecated
     public NotSchedulableException(Enumeration actors, String detail) {
         this(_list(actors), null, detail);
     }

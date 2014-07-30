@@ -152,7 +152,7 @@ public class StyleConfigurer extends Query implements QueryListener {
                         && _parameterStyles[i] != null; i++) {
                     if (foundOne
                             && _parameterStyles[i].getClass() == foundStyle
-                                    .getClass()) {
+                            .getClass()) {
                         defaultIndex = count;
 
                         if (foundStyle.acceptable(param)) {
@@ -185,6 +185,7 @@ public class StyleConfigurer extends Query implements QueryListener {
      *  The name of the entry is passed as an argument.
      *  @param name The name of the entry.
      */
+    @Override
     public void changed(String name) {
         StringBuffer moml = new StringBuffer();
 
@@ -270,6 +271,7 @@ public class StyleConfigurer extends Query implements QueryListener {
         // That notification occurs some time after the
         // window is destroyed.
         Top.deferIfNecessary(new Runnable() {
+            @Override
             public void run() {
                 // Treat the expertMode entry specially.
                 Attribute currentExpert = _object.getAttribute("_expertMode");

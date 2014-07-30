@@ -87,6 +87,7 @@ public class Starver extends Transformer {
      *  produce that token on the output.
      *  @exception IllegalActionException Not thrown in this base class.
      */
+    @Override
     public void fire() throws IllegalActionException {
         super.fire();
         Token token = null;
@@ -103,6 +104,7 @@ public class Starver extends Transformer {
     /** Initialize this actor by setting the count of outputs to zero.
      *  @exception IllegalActionException If a derived class throws it.
      */
+    @Override
     public void initialize() throws IllegalActionException {
         super.initialize();
         _count = 0;

@@ -99,6 +99,7 @@ public class Multiplexor extends Transformer {
      *  @exception IllegalActionException If there is no director, or if
      *   the <i>select</i> input is out of range.
      */
+    @Override
     public void fire() throws IllegalActionException {
         super.fire();
 
@@ -149,6 +150,7 @@ public class Multiplexor extends Transformer {
     /** Initialize to the default, which is to use channel zero.
      *  @exception IllegalActionException If a derived class throws it.
      */
+    @Override
     public void initialize() throws IllegalActionException {
         super.initialize();
         _selectChannel = null;
@@ -157,6 +159,7 @@ public class Multiplexor extends Transformer {
     /** Return false.
      *  @return False.
      */
+    @Override
     public boolean isStrict() {
         return false;
     }

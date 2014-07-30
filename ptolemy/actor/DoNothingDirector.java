@@ -69,23 +69,29 @@ public class DoNothingDirector extends Director {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
+    @Override
     public void addInitializable(Initializable initializable) {
     }
 
+    @Override
     public void fire() {
     }
 
+    @Override
     public void initialize() {
     }
 
+    @Override
     public boolean postfire() {
         return false;
     }
 
+    @Override
     public boolean prefire() {
         return false;
     }
 
+    @Override
     public void preinitialize() {
         // When exporting the ClassesIllustrated model, the
         // model would run forever because the value returned
@@ -99,10 +105,12 @@ public class DoNothingDirector extends Director {
         }
     }
 
+    @Override
     public boolean transferInputs(IOPort port) {
         return false;
     }
 
+    @Override
     public boolean transferOutputs(IOPort port) {
         return false;
     }

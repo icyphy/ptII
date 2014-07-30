@@ -93,6 +93,7 @@ public class UnionType extends AssociativeType implements Cloneable {
      *  itself if it is a constant.
      *  @return A UnionType.
      */
+    @Override
     public Object clone() {
         if (isConstant()) {
             return this;
@@ -134,6 +135,7 @@ public class UnionType extends AssociativeType implements Cloneable {
      *  @exception IllegalActionException If lossless conversion
      *   cannot be done.
      */
+    @Override
     public Token convert(Token token) throws IllegalActionException {
         if (!isCompatible(token.getType())) {
             throw new IllegalArgumentException(
@@ -154,6 +156,7 @@ public class UnionType extends AssociativeType implements Cloneable {
      *  contains other structured types.
      *  @return the depth of a union type.
      */
+    @Override
     public int depth() {
         Object[] labelsObj = _fields.keySet().toArray();
         String[] labels = new String[labelsObj.length];
@@ -180,6 +183,7 @@ public class UnionType extends AssociativeType implements Cloneable {
      *  @return True if the argument represents the same UnionType as
      *  this object.
      */
+    @Override
     public boolean equals(Object object) {
         if (!(object instanceof UnionType)) {
             return false;
@@ -215,6 +219,7 @@ public class UnionType extends AssociativeType implements Cloneable {
      *  @param label The specified label.
      *  @return a Type.
      */
+    @Override
     public Type get(String label) {
         FieldType fieldType = (FieldType) _fields.get(label);
 
@@ -228,6 +233,7 @@ public class UnionType extends AssociativeType implements Cloneable {
     /** Return the class for tokens that this type represents.
      *  @return The class for tokens that this type represents.
      */
+    @Override
     public Class getTokenClass() {
         return UnionToken.class;
     }
@@ -244,6 +250,7 @@ public class UnionType extends AssociativeType implements Cloneable {
 
     /** Return a hash code value for this object.
      */
+    @Override
     public int hashCode() {
         return _fields.keySet().hashCode() + 2917;
     }
@@ -252,6 +259,7 @@ public class UnionType extends AssociativeType implements Cloneable {
      *  type variable) to the specified type.
      *  @param type the type to set the leaf type variable to.
      */
+    @Override
     public void initialize(Type type) {
         try {
             Iterator fieldNames = _fields.keySet().iterator();
@@ -275,6 +283,7 @@ public class UnionType extends AssociativeType implements Cloneable {
      *  class. A UnionType is abstract if any field is abstract
      *  @return True if this type is instantiable.
      */
+    @Override
     public boolean isAbstract() {
         // Loop through all of the fields.
         Iterator fieldNames = _fields.keySet().iterator();
@@ -299,6 +308,7 @@ public class UnionType extends AssociativeType implements Cloneable {
      *  @param type An instance of Type.
      *  @return True if the argument is compatible with this type.
      */
+    @Override
     public boolean isCompatible(Type type) {
         if (type.equals(BaseType.UNKNOWN)) {
             return true;
@@ -341,6 +351,7 @@ public class UnionType extends AssociativeType implements Cloneable {
      *  the declared type of all of its fields are constant.
      *  @return True if this type is a constant.
      */
+    @Override
     public boolean isConstant() {
         // Loop through all of the fields.
         Iterator fieldTypes = _fields.values().iterator();
@@ -363,6 +374,7 @@ public class UnionType extends AssociativeType implements Cloneable {
      *  instantiable.
      *  @return True if this type is instantiable.
      */
+    @Override
     public boolean isInstantiable() {
         // Loop through all of the fields.
         Iterator fieldNames = _fields.keySet().iterator();
@@ -388,6 +400,7 @@ public class UnionType extends AssociativeType implements Cloneable {
      *  @return True if the argument is a substitution instance of this type.
      *  @see Type#isSubstitutionInstance
      */
+    @Override
     public boolean isSubstitutionInstance(Type type) {
         if (!(type instanceof UnionType)) {
             return false;
@@ -435,6 +448,7 @@ public class UnionType extends AssociativeType implements Cloneable {
      *  labels determined by the java.lang.String.compareTo() method.
      *  @return A String.
      */
+    @Override
     public String toString() {
         Object[] labelArray = _fields.keySet().toArray();
 
@@ -480,6 +494,7 @@ public class UnionType extends AssociativeType implements Cloneable {
      *  @exception IllegalActionException If the specified type is not a
      *   UnionType or it does not have the same structure as this one.
      */
+    @Override
     public void updateType(StructuredType newType)
             throws IllegalActionException {
         if (this.isConstant()) {
@@ -528,6 +543,7 @@ public class UnionType extends AssociativeType implements Cloneable {
      *  @exception IllegalArgumentException If the specified type is
      *   not a UnionType.
      */
+    @Override
     protected int _compare(StructuredType type) {
         if (!(type instanceof UnionType)) {
             throw new IllegalArgumentException("UnionType._compare: "
@@ -552,6 +568,7 @@ public class UnionType extends AssociativeType implements Cloneable {
     /** Return a static instance of RecordType.
      *  @return a UnionType.
      */
+    @Override
     protected StructuredType _getRepresentative() {
         return _representative;
     }
@@ -564,6 +581,7 @@ public class UnionType extends AssociativeType implements Cloneable {
      *  @exception IllegalArgumentException If the specified type is
      *   not a UnionType.
      */
+    @Override
     protected StructuredType _greatestLowerBound(StructuredType type) {
         if (!(type instanceof UnionType)) {
             throw new IllegalArgumentException(
@@ -607,6 +625,7 @@ public class UnionType extends AssociativeType implements Cloneable {
      *  @exception IllegalArgumentException If the specified type is
      *   not a UnionType.
      */
+    @Override
     protected StructuredType _leastUpperBound(StructuredType type) {
         if (!(type instanceof UnionType)) {
             throw new IllegalArgumentException("UnionType.leastUpperBound: "
@@ -707,6 +726,7 @@ public class UnionType extends AssociativeType implements Cloneable {
         /** Return this UnionType.
          *  @return a UnionType.
          */
+        @Override
         public Object getAssociatedObject() {
             return UnionType.this;
         }
@@ -714,6 +734,7 @@ public class UnionType extends AssociativeType implements Cloneable {
         /** Return the resolved type.
          *  @return a Type.
          */
+        @Override
         public Object getValue() {
             return _resolvedType;
         }
@@ -722,6 +743,7 @@ public class UnionType extends AssociativeType implements Cloneable {
          *  variable. Otherwise, return an array of size zero.
          *  @return An array of InequalityTerm.
          */
+        @Override
         public InequalityTerm[] getVariables() {
             if (isSettable()) {
                 InequalityTerm[] variable = new InequalityTerm[1];
@@ -738,6 +760,7 @@ public class UnionType extends AssociativeType implements Cloneable {
          *  @exception IllegalActionException If this type is not settable,
          *   or the argument is not a Type.
          */
+        @Override
         public void initialize(Object e) throws IllegalActionException {
             if (!isSettable()) {
                 throw new IllegalActionException("UnionType$FieldType."
@@ -760,6 +783,7 @@ public class UnionType extends AssociativeType implements Cloneable {
         /** Test if this field type is a type variable.
          *  @return True if this field type is a type variable.
          */
+        @Override
         public boolean isSettable() {
             return !_declaredType.isConstant();
         }
@@ -769,6 +793,7 @@ public class UnionType extends AssociativeType implements Cloneable {
          *  instantiable object.
          *  @return True if the element type is acceptable.
          */
+        @Override
         public boolean isValueAcceptable() {
             return _resolvedType.isInstantiable();
         }
@@ -778,6 +803,7 @@ public class UnionType extends AssociativeType implements Cloneable {
          *  @exception IllegalActionException If the specified type violates
          *   the declared field type.
          */
+        @Override
         public void setValue(Object e) throws IllegalActionException {
             if (!isSettable()) {
                 throw new IllegalActionException(
@@ -809,6 +835,7 @@ public class UnionType extends AssociativeType implements Cloneable {
         /** Return a string representation of this term.
          *  @return A String.
          */
+        @Override
         public String toString() {
             return "(UnionFieldType, " + getValue() + ")";
         }

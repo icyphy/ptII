@@ -227,6 +227,7 @@ public class FMUBuilder {
         }
 
         /** Read lines from the _inputStream and output them. */
+        @Override
         public void run() {
             try {
                 InputStreamReader inputStreamReader = new InputStreamReader(
@@ -237,7 +238,7 @@ public class FMUBuilder {
 
                 while ((line = bufferedReader.readLine()) != null) {
                     _fmuBuilder.stdout( /*_streamType + ">" +*/
-                    line);
+                            line);
                 }
             } catch (IOException ioe) {
                 _fmuBuilder.stderr("IOException: " + ioe);

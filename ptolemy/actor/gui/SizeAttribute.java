@@ -106,6 +106,7 @@ public class SizeAttribute extends Parameter implements ComponentListener {
      *  @exception CloneNotSupportedException If a derived class contains
      *  an attribute that cannot be cloned.
      */
+    @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         SizeAttribute newObject = (SizeAttribute) super.clone(workspace);
         newObject._listeningTo = null;
@@ -116,6 +117,7 @@ public class SizeAttribute extends Parameter implements ComponentListener {
      *  invoked when the component has been made invisible.
      *  @param event The component event.
      */
+    @Override
     public void componentHidden(ComponentEvent event) {
     }
 
@@ -123,6 +125,7 @@ public class SizeAttribute extends Parameter implements ComponentListener {
      *  invoked when the component's position changes.
      *  @param event The component event.
      */
+    @Override
     public void componentMoved(ComponentEvent event) {
     }
 
@@ -130,6 +133,7 @@ public class SizeAttribute extends Parameter implements ComponentListener {
      *  invoked when the component's size changes.
      *  @param event The component event.
      */
+    @Override
     public void componentResized(ComponentEvent event) {
         // FIXME: Due to Swing's lame approach to sizes,
         // the size that is reported by this event is actually,
@@ -144,6 +148,7 @@ public class SizeAttribute extends Parameter implements ComponentListener {
      *  invoked when the component has been made visible.
      *  @param event The component event.
      */
+    @Override
     public void componentShown(ComponentEvent event) {
     }
 

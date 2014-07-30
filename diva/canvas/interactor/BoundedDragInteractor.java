@@ -66,6 +66,7 @@ public class BoundedDragInteractor extends DragInteractor {
     /** Adjust the bounds so that the bounding-box of the target stays
      * within the region.
      */
+    @Override
     public void setup(LayerEvent e) {
         // Get the size of the figure and calculate bounds
         // FIXME: how to parameterize for figure sets?

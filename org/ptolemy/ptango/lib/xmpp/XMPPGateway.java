@@ -73,13 +73,13 @@ import ptolemy.kernel.util.NamedObj;
  *  keeps track of actors within the model that implement the XMPPSubscriber
  *  or XMPPPublisher interface and relays messages between those actors
  *  and the XMPP server.
- *  
- *  The Executable interface is implemented merely to make sure that the 
+ *
+ *  The Executable interface is implemented merely to make sure that the
  *  connection maintained to the server is alive every iteration, before
  *  any firings occur in which actors may attempt to publish something
  *  by invoking the <code>XMPP.publish()</code> method.
- *  
- *  This implementation makes use of the 
+ *
+ *  This implementation makes use of the
  *  <a href="http://www.igniterealtime.org/projects/smack/">Smack</a>
  *  library.
  *
@@ -93,8 +93,8 @@ import ptolemy.kernel.util.NamedObj;
  *  @Pt.AcceptedRating Red (marten)
  */
 public class XMPPGateway extends AbstractInitializableAttribute implements
-        Executable {
-    
+Executable {
+
     /** Construct an instance of the XMPPGateway attribute.
      *  @param container The container.
      *  @param name The name.
@@ -168,6 +168,7 @@ public class XMPPGateway extends AbstractInitializableAttribute implements
      *  value of the port, server or userName token, or if thrown
      *  by the method in the super class.
      */
+    @Override
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
 
@@ -194,7 +195,7 @@ public class XMPPGateway extends AbstractInitializableAttribute implements
     }
 
     /** Attempt to connect to the server and login. Discover subscribers
-     *  and them as listeners. If a subscriber wants to subscribe to a 
+     *  and them as listeners. If a subscriber wants to subscribe to a
      *  non-existent node, create it.
      *  discover publishers and give them a reference to this attribute.
      *  This might change in the future, as changes to running models require
@@ -203,6 +204,7 @@ public class XMPPGateway extends AbstractInitializableAttribute implements
      *  find a node, or subscribe to a node.
      *
      */
+    @Override
     public void initialize() throws IllegalActionException {
         // Invoke any registered initializables in the super class.
         super.initialize();
@@ -387,7 +389,7 @@ public class XMPPGateway extends AbstractInitializableAttribute implements
     }
 
     /** Disconnect from the server.
-     *  @exception IllegalActionException If thrown in the base class.   
+     *  @exception IllegalActionException If thrown in the base class.
      */
     @Override
     public void wrapup() throws IllegalActionException {
@@ -474,7 +476,7 @@ public class XMPPGateway extends AbstractInitializableAttribute implements
                                     throw new IllegalActionException(this, ex,
                                             "Failed to close "
                                                     + passwordFile
-                                                            .stringValue());
+                                                    .stringValue());
                                 }
                             }
                         }

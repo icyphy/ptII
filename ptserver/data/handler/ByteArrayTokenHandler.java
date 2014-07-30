@@ -51,6 +51,7 @@ public class ByteArrayTokenHandler implements TokenHandler<ByteArrayToken> {
      *  @exception IOException If the stream cannot be written.
      *  @see ptserver.data.handler.TokenHandler#convertToBytes(ptolemy.data.Token, java.io.DataOutputStream)
      */
+    @Override
     public void convertToBytes(ByteArrayToken token,
             DataOutputStream outputStream) throws IOException {
         outputStream.writeInt(token.getArray().length);
@@ -64,6 +65,7 @@ public class ByteArrayTokenHandler implements TokenHandler<ByteArrayToken> {
      *  @exception IOException If the stream cannot be read.
      *  @see ptserver.data.handler.TokenHandler#convertToToken(java.io.DataInputStream, Class)
      */
+    @Override
     public ByteArrayToken convertToToken(DataInputStream inputStream,
             Class<? extends ByteArrayToken> tokenType) throws IOException {
         int length = inputStream.readInt();

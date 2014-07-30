@@ -120,6 +120,7 @@ public class Combine extends TypedAtomicActor {
      *  @exception IllegalActionException If calling send() or super.fire()
      *  throws it.
      */
+    @Override
     public void fire() throws IllegalActionException {
         super.fire();
 
@@ -169,14 +170,17 @@ public class Combine extends TypedAtomicActor {
     /** This actor must be *NON-strict* because it must not wait for more than
      * one input within an SR director iteration.
      */
+    @Override
     public boolean isStrict() {
         return false;
     }
 
+    @Override
     public boolean prefire() throws IllegalActionException {
         return true;
     }
 
+    @Override
     public boolean postfire() throws IllegalActionException {
         //cleanup for next run
         _present = false;
@@ -189,6 +193,7 @@ public class Combine extends TypedAtomicActor {
      *  <i>port</i> parameters.
      *  @exception IllegalActionException If the parent class throws it.
      */
+    @Override
     public void initialize() throws IllegalActionException {
         super.initialize();
         //cleanup for first run
@@ -214,6 +219,7 @@ public class Combine extends TypedAtomicActor {
      *
      *  @exception IllegalActionException Not thrown in this base class.
      */
+    @Override
     public void wrapup() throws IllegalActionException {
         super.wrapup();
     }
@@ -289,6 +295,7 @@ public class Combine extends TypedAtomicActor {
      *  @param attribute The attribute that changed.
      *  @exception IllegalActionException If the function is not recognized.
      */
+    @Override
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         if (attribute == function) {

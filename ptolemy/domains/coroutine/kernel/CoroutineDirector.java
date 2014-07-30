@@ -25,7 +25,7 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 Ptolemy II includes the work of others, to see those copyrights, follow
 the copyright link on the splash page or see copyright.htm.
-*/
+ */
 /**
  *
  */
@@ -67,7 +67,7 @@ public class CoroutineDirector extends Director implements Continuation {
 
     ///////////////////////////////////////////////////////////////////
     public CoroutineDirector() throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         super();
     }
 
@@ -84,7 +84,7 @@ public class CoroutineDirector extends Director implements Continuation {
     }
 
     private void _init() throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         initContinuationName = new Parameter(this, "initContinuationName");
         initContinuationName.setStringMode(true);
 
@@ -538,7 +538,7 @@ public class CoroutineDirector extends Director implements Continuation {
     @Override
     public ControlExitToken controlEnterAt(
             ControlEntryToken.EntryLocation location)
-            throws IllegalActionException {
+                    throws IllegalActionException {
         // TODO Auto-generated method stub
         return null;
     }
@@ -562,6 +562,7 @@ public class CoroutineDirector extends Director implements Continuation {
     }
 
     // TODO: Change the below to the above done to automatically connect ports.
+    @Override
     public boolean transferInputs(IOPort port) throws IllegalActionException {
         boolean result = false;
         int insideWidth = port.getWidthInside();
@@ -616,7 +617,7 @@ public class CoroutineDirector extends Director implements Continuation {
         for (int i = port.getWidthInside(); i < outsideWidth; i++) {
             port.send(i, null);
         }
-        */
+         */
         return result;
     }
 
@@ -710,6 +711,7 @@ public class CoroutineDirector extends Director implements Continuation {
          *  ControlEntryToken then they have the same hashcode.
          *  @return The hash code for this InternalEntryLocation object.
          */
+        @Override
         public int hashCode() {
             // See http://www.technofundo.com/tech/java/equalhash.html
             int hashCode = 31;
@@ -793,6 +795,7 @@ public class CoroutineDirector extends Director implements Continuation {
          *  ExitLocation then they have the same hashcode.
          *  @return The hash code for this InternalExitLocation object.
          */
+        @Override
         public int hashCode() {
             // See http://www.technofundo.com/tech/java/equalhash.html
             int hashCode = 31;

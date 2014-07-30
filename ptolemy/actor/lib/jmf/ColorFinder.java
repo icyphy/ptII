@@ -125,14 +125,15 @@ public class ColorFinder extends TypedAtomicActor {
      *  @exception CloneNotSupportedException If a derived class contains
      *  an attribute that cannot be cloned.
      */
+    @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         ColorFinder newObject = (ColorFinder) super.clone(workspace);
         newObject.YArray = new byte[newObject._frameWidth
-                * newObject._frameHeight];
+                                    * newObject._frameHeight];
         newObject.UArray = new byte[newObject._frameWidth / 2
-                * newObject._frameHeight / 2];
+                                    * newObject._frameHeight / 2];
         newObject.VArray = new byte[newObject._frameWidth / 2
-                * newObject._frameHeight / 2];
+                                    * newObject._frameHeight / 2];
         newObject._yClass = new int[newObject._histSize];
         newObject._uClass = new int[newObject._histSize];
         newObject._vClass = new int[newObject._histSize];
@@ -146,6 +147,7 @@ public class ColorFinder extends TypedAtomicActor {
      *  @exception IllegalActionException If a contained method throws it,
      *   or if a token is received that contains a null image.
      */
+    @Override
     public void fire() throws IllegalActionException {
         super.fire();
 
@@ -215,6 +217,7 @@ public class ColorFinder extends TypedAtomicActor {
      *  Set the color to search for in the YUV domain.
      *  @exception IllegalActionException If a contained method throws it.
      */
+    @Override
     public void initialize() throws IllegalActionException {
         super.initialize();
         _yLow = ((IntToken) yLowValue.getToken()).intValue();

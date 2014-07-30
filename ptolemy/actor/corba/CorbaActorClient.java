@@ -169,6 +169,7 @@ public class CorbaActorClient extends TypedAtomicActor {
      *  for the variables and parameters.
      *  @exception IllegalActionException If thrown by the base class.
      */
+    @Override
     public void attributeTypeChanged(Attribute attribute)
             throws IllegalActionException {
         _typesValid = false; // Set flag to invalidate cached type constraints
@@ -181,6 +182,7 @@ public class CorbaActorClient extends TypedAtomicActor {
      *  @exception IllegalActionException If any of the above actions
      *        failted.
      */
+    @Override
     public void initialize() throws IllegalActionException {
         super.initialize();
 
@@ -214,7 +216,7 @@ public class CorbaActorClient extends TypedAtomicActor {
                 //resolve the remote actor reference in Naming
                 NameComponent namecomp = new NameComponent(
                         ((StringToken) remoteActorName.getToken())
-                                .stringValue(),
+                        .stringValue(),
                         "");
                 _debug(getName(), " looking for name: ", remoteActorName
                         .getToken().toString());
@@ -271,7 +273,7 @@ public class CorbaActorClient extends TypedAtomicActor {
 
                 try {
                     _remoteActor
-                            .setPortWidth(p.getName(), (short) p.getWidth());
+                    .setPortWidth(p.getName(), (short) p.getWidth());
                 } catch (UserException ex) {
                     _debug("Port: " + p.getName() + " does not support width");
                     throw new IllegalActionException(this, "Port: "
@@ -293,6 +295,7 @@ public class CorbaActorClient extends TypedAtomicActor {
      *  @exception IllegalActionException If any of the above actions
      *  failed or if there is no director.
      */
+    @Override
     public void fire() throws IllegalActionException {
         super.fire();
         Director dir = getDirector();
@@ -324,6 +327,7 @@ public class CorbaActorClient extends TypedAtomicActor {
      *  @exception IllegalActionException If any of the above actions
      *  failed or if there is no director.
      */
+    @Override
     public boolean postfire() throws IllegalActionException {
         Director dir = getDirector();
 
@@ -357,6 +361,7 @@ public class CorbaActorClient extends TypedAtomicActor {
      *  @exception IllegalActionException If any of the above actions
      *  failed or if there is no director.
      */
+    @Override
     public boolean prefire() throws IllegalActionException {
         boolean superResults = super.prefire();
         Director dir = getDirector();
@@ -389,6 +394,7 @@ public class CorbaActorClient extends TypedAtomicActor {
 
     /** Wrapup the remote actor.
      */
+    @Override
     public void wrapup() throws IllegalActionException {
         super.wrapup();
         try {

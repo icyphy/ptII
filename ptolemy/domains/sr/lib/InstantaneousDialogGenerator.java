@@ -94,6 +94,7 @@ public class InstantaneousDialogGenerator extends TypedAtomicActor {
      *  received on the dataInput port to the dataOutput port.
      *  @exception IllegalActionException If there is no director.
      */
+    @Override
     public void fire() throws IllegalActionException {
         super.fire();
         indexOutput.send(0, new IntToken(_index));
@@ -110,6 +111,7 @@ public class InstantaneousDialogGenerator extends TypedAtomicActor {
     /** Initialize private variables.
      *  @exception IllegalActionException If there is no director.
      */
+    @Override
     public void initialize() throws IllegalActionException {
         super.initialize();
         _index = 0;
@@ -120,6 +122,7 @@ public class InstantaneousDialogGenerator extends TypedAtomicActor {
      *
      *  @return False.
      */
+    @Override
     public boolean isStrict() {
         return false;
     }
@@ -127,6 +130,7 @@ public class InstantaneousDialogGenerator extends TypedAtomicActor {
     /** Increment the index number.
      *  @exception IllegalActionException If there is no director.
      */
+    @Override
     public boolean postfire() throws IllegalActionException {
         _index++;
         return super.postfire();
@@ -137,6 +141,7 @@ public class InstantaneousDialogGenerator extends TypedAtomicActor {
      *  port in a firing.
      *  @exception IllegalActionException If the superclass throws it.
      */
+    @Override
     public void preinitialize() throws IllegalActionException {
         super.preinitialize();
         removeDependency(dataInput, dataOutput);

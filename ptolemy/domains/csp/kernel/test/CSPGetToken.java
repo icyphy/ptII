@@ -67,6 +67,7 @@ public class CSPGetToken extends CSPGet {
 
     /**
      */
+    @Override
     public void fire() throws IllegalActionException {
         int cnt = 0;
 

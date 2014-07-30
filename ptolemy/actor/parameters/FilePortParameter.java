@@ -199,7 +199,7 @@ import ptolemy.util.FileUtilities;
  @Pt.AcceptedRating Red (cxh)
  */
 public class FilePortParameter extends PortParameter implements
-        FileOrURLAccessor {
+FileOrURLAccessor {
     /** Construct a parameter with the given name contained by the specified
      *  entity. The container argument must not be null, or a
      *  NullPointerException will be thrown.  This parameter will create
@@ -277,6 +277,7 @@ public class FilePortParameter extends PortParameter implements
      *  @exception IllegalActionException If a parse error occurs
      *   reading the file name.
      */
+    @Override
     public File asFile() throws IllegalActionException {
         String name = stringValue();
 
@@ -318,6 +319,7 @@ public class FilePortParameter extends PortParameter implements
      *   if the file cannot be represented as a URL (e.g. System.in), or
      *   the name specification cannot be parsed.
      */
+    @Override
     public URL asURL() throws IllegalActionException {
         String name = stringValue();
 
@@ -337,6 +339,7 @@ public class FilePortParameter extends PortParameter implements
      *  @exception CloneNotSupportedException If a derived class contains
      *   an attribute that cannot be cloned.
      */
+    @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         FilePortParameter newObject = (FilePortParameter) super
                 .clone(workspace);
@@ -353,6 +356,7 @@ public class FilePortParameter extends PortParameter implements
      *  @exception IllegalActionException If the file or URL cannot be
      *   closed.
      */
+    @Override
     public void close() throws IllegalActionException {
         if (_reader != null) {
             if (_reader != FileUtilities.STD_IN) {
@@ -389,6 +393,7 @@ public class FilePortParameter extends PortParameter implements
      *  @see URIAttribute#getModelURI(NamedObj)
      *  @see #setBaseDirectory(URI)
      */
+    @Override
     public URI getBaseDirectory() {
         if (_baseDirectory != null) {
             return _baseDirectory;
@@ -406,6 +411,7 @@ public class FilePortParameter extends PortParameter implements
      *  @exception IllegalActionException If the file or URL cannot be
      *   opened.
      */
+    @Override
     public BufferedReader openForReading() throws IllegalActionException {
         try {
             _reader = FileUtilities.openForReading(stringValue(),
@@ -430,6 +436,7 @@ public class FilePortParameter extends PortParameter implements
      *  @exception IllegalActionException If the file cannot be opened
      *   or created.
      */
+    @Override
     public Writer openForWriting() throws IllegalActionException {
         return openForWriting(false);
     }
@@ -450,6 +457,7 @@ public class FilePortParameter extends PortParameter implements
      *  @exception IllegalActionException If the file cannot be opened
      *   or created.
      */
+    @Override
     public Writer openForWriting(boolean append) throws IllegalActionException {
         try {
             _writer = FileUtilities.openForWriting(stringValue(),
@@ -468,6 +476,7 @@ public class FilePortParameter extends PortParameter implements
      *  @see URIAttribute#getModelURI(NamedObj)
      *  @see #getBaseDirectory()
      */
+    @Override
     public void setBaseDirectory(URI directory) {
         _baseDirectory = directory;
     }

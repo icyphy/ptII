@@ -62,6 +62,7 @@ public class StatePair {
      *  @return True if the specified object is an instance of StatePair
      *   and this one contains the same states, false otherwise.
      */
+    @Override
     public boolean equals(Object object) {
         if (object instanceof StatePair) {
             return this.first() == ((StatePair) object).first()
@@ -83,6 +84,7 @@ public class StatePair {
      *  hash code.
      *  @return The hash code.
      */
+    @Override
     public int hashCode() {
         return _first.hashCode() + _second.hashCode();
     }
@@ -100,6 +102,7 @@ public class StatePair {
      *  @return A string containing the names of the two states separated
      *   by a " - ".
      */
+    @Override
     public String toString() {
         return _first.getName() + " - " + _second.getName();
     }

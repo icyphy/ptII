@@ -70,7 +70,7 @@ import diva.graph.modular.NodeModel;
  @Pt.AcceptedRating Red (johnr)
  */
 public abstract class AbstractBasicGraphModel extends ModularGraphModel
-        implements ChangeListener {
+implements ChangeListener {
     /** Create a graph model for the specified Ptolemy II model.
      *  Note that the argument need not be a CompositeEntity, although
      *  if it is not, then it is a rather trivial graph that only has
@@ -92,6 +92,7 @@ public abstract class AbstractBasicGraphModel extends ModularGraphModel
      *  has changed.
      *  @param change The change that has been executed.
      */
+    @Override
     public void changeExecuted(ChangeRequest change) {
         // Ignore anything that comes from this graph model.
         // The other methods take care of issuing the graph event in
@@ -131,6 +132,7 @@ public abstract class AbstractBasicGraphModel extends ModularGraphModel
      *  @param change The change that has failed.
      *  @param exception The exception that was thrown.
      */
+    @Override
     public void changeFailed(ChangeRequest change, Exception exception) {
         // Report it if it has not been reported.
         if (change == null) {
@@ -178,6 +180,7 @@ public abstract class AbstractBasicGraphModel extends ModularGraphModel
      *  @return An instance of CompositePtolemyModel if the object is the root
      *   object of this graph model.  Otherwise return null.
      */
+    @Override
     public CompositeModel getCompositeModel(Object composite) {
         if (composite != null && composite.equals(_composite)) {
             return _compositeModel;
@@ -193,6 +196,7 @@ public abstract class AbstractBasicGraphModel extends ModularGraphModel
      *  the object is an instance of Locatable whose container is an
      *  instance of Attribute, and otherwise, null.
      */
+    @Override
     public NodeModel getNodeModel(Object node) {
         if (node instanceof Locatable
                 && ((Locatable) node).getContainer() instanceof Attribute) {
@@ -217,6 +221,7 @@ public abstract class AbstractBasicGraphModel extends ModularGraphModel
      *  name.
      *  @see #setProperty(Object, String, Object)
      */
+    @Override
     public Object getProperty(Object object, String propertyName) {
         try {
             NamedObj namedObject = (NamedObj) object;
@@ -250,6 +255,7 @@ public abstract class AbstractBasicGraphModel extends ModularGraphModel
      *   if the object is not recognized.
      *  @see #setSemanticObject(Object, Object)
      */
+    @Override
     public Object getSemanticObject(Object element) {
         if (element instanceof Port) {
             return element;
@@ -267,6 +273,7 @@ public abstract class AbstractBasicGraphModel extends ModularGraphModel
      *   (vs. an edge).
      *  @return True if the given object is a node in this model.
      */
+    @Override
     public boolean isNode(Object object) {
         Object nodeModel = getNodeModel(object);
 
@@ -311,6 +318,7 @@ public abstract class AbstractBasicGraphModel extends ModularGraphModel
      *  @param value The new value of the property.
      *  @see #getProperty(Object, String)
      */
+    @Override
     public void setProperty(final Object object, final String propertyName,
             final Object value) {
         throw new UnsupportedOperationException("hack");
@@ -324,6 +332,7 @@ public abstract class AbstractBasicGraphModel extends ModularGraphModel
      *   graph object.
      *  @see #getSemanticObject(Object)
      */
+    @Override
     public void setSemanticObject(Object object, Object semantic) {
         throw new UnsupportedOperationException("Ptolemy Graph Model does"
                 + " not allow semantic objects" + " to be changed");

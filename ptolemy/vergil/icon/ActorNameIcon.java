@@ -86,6 +86,7 @@ public class ActorNameIcon extends BoxedValueIcon {
      *  container if it exists.
      *  @return A new figure.
      */
+    @Override
     public Figure createBackgroundFigure() {
         String displayString = _displayString();
         double width = 60;
@@ -113,8 +114,8 @@ public class ActorNameIcon extends BoxedValueIcon {
                     if (!_printedMessage) {
                         _printedMessage = true;
                         System.out
-                                .println("Failed to create the background figure. "
-                                        + ex);
+                        .println("Failed to create the background figure. "
+                                + ex);
                     }
                 }
             }

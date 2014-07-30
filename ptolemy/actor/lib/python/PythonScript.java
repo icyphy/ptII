@@ -250,6 +250,7 @@ public class PythonScript extends TypedAtomicActor {
      *  @exception IllegalActionException If there is any error in evaluating
      *   the script.
      */
+    @Override
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         if (attribute == script) {
@@ -266,6 +267,7 @@ public class PythonScript extends TypedAtomicActor {
      *  @exception CloneNotSupportedException If a derived class contains
      *   an attribute that cannot be cloned.
      */
+    @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         PythonScript newObject = (PythonScript) super.clone(workspace);
 
@@ -289,6 +291,7 @@ public class PythonScript extends TypedAtomicActor {
      *  @exception IllegalActionException If there is any error in calling the
      *   fire() method defined by the script.
      */
+    @Override
     public void fire() throws IllegalActionException {
         super.fire();
         _invokeMethod("fire", null);
@@ -298,6 +301,7 @@ public class PythonScript extends TypedAtomicActor {
      *  @exception IllegalActionException If there is any error in calling the
      *   initialize() method defined by the script.
      */
+    @Override
     public void initialize() throws IllegalActionException {
         super.initialize();
         _invokeMethod("initialize", null);
@@ -318,6 +322,7 @@ public class PythonScript extends TypedAtomicActor {
      *  @exception IllegalActionException If there is any error in calling the
      *   postfire() method defined by the script.
      */
+    @Override
     public boolean postfire() throws IllegalActionException {
         boolean defaultResult = super.postfire();
         PyObject postfireResult = _invokeMethod("postfire", null);
@@ -337,6 +342,7 @@ public class PythonScript extends TypedAtomicActor {
      *  @exception IllegalActionException If there is any error in calling the
      *   prefire() method.
      */
+    @Override
     public boolean prefire() throws IllegalActionException {
         boolean defaultResult = super.prefire();
         PyObject prefireResult = _invokeMethod("prefire", null);
@@ -357,6 +363,7 @@ public class PythonScript extends TypedAtomicActor {
      *   creating an instance of the class named by the
      *   jythonClassName class defined in the script.
      */
+    @Override
     public void preinitialize() throws IllegalActionException {
         super.preinitialize();
         if (_debugging) {
@@ -370,6 +377,7 @@ public class PythonScript extends TypedAtomicActor {
     /** Invoke the stop() method if defined in the script. Ignore any error
      *  in calling the method.
      */
+    @Override
     public void stop() {
         super.stop();
 
@@ -385,6 +393,7 @@ public class PythonScript extends TypedAtomicActor {
     /** Invoke the stopFire() method if defined in the script. Ignore any error
      *  in calling the method.
      */
+    @Override
     public void stopFire() {
         super.stopFire();
 
@@ -400,6 +409,7 @@ public class PythonScript extends TypedAtomicActor {
     /** Invoke the terminate() method if defined in the script. Ignore any
      *  error in calling the method.
      */
+    @Override
     public void terminate() {
         super.terminate();
 
@@ -417,6 +427,7 @@ public class PythonScript extends TypedAtomicActor {
      *  @exception IllegalActionException If there is any error in calling the
      *   wrapup() method defined in the script.
      */
+    @Override
     public void wrapup() throws IllegalActionException {
         super.wrapup();
         _invokeMethod("wrapup", null);
@@ -546,10 +557,10 @@ public class PythonScript extends TypedAtomicActor {
                             "Failed to cast _interpreter.get(jythonClassName.getExpression()) "
                                     + " which is of type "
                                     + _interpreter
-                                            .get(jythonClassName
-                                                    .getExpression())
+                                    .get(jythonClassName
+                                            .getExpression())
                                             .getClass().getName()
-                                    + " to PyClass.");
+                                            + " to PyClass.");
                 }
             }
 
@@ -727,7 +738,8 @@ public class PythonScript extends TypedAtomicActor {
             }
         } catch (Exception ex) {
             // Ignore, we are probably under an an applet
-            System.err.println("Warning: PythonScript threw an exception.  Perhaps we are under an applet?");
+            System.err
+                    .println("Warning: PythonScript threw an exception.  Perhaps we are under an applet?");
             ex.printStackTrace();
         }
 
@@ -742,7 +754,7 @@ public class PythonScript extends TypedAtomicActor {
             String[] propertyNames = { "file.separator", "line.separator",
                     "path.separator", "java.class.version", "java.vendor",
                     "java.vendor.url", "java.version", "os.name", "os.arch",
-                    "os.version" };
+            "os.version" };
             Properties preProperties = new Properties();
 
             for (String propertyName : propertyNames) {
@@ -761,7 +773,8 @@ public class PythonScript extends TypedAtomicActor {
             //        + "/ptolemy/actor/lib/python/test/')");
 
         } catch (Exception ex) {
-            ExceptionInInitializerError error = new ExceptionInInitializerError("The python command \"import sys\" failed.");
+            ExceptionInInitializerError error = new ExceptionInInitializerError(
+                    "The python command \"import sys\" failed.");
             error.initCause(ex);
             throw error;
         }
@@ -792,6 +805,6 @@ public class PythonScript extends TypedAtomicActor {
     // Listed here are all methods of the Executable interface, except
     // iterate().
     private static final String[] _METHOD_NAMES = { "fire", "initialize",
-            "postfire", "prefire", "preinitialize", "stop", "stopFire",
-            "terminate", "wrapup" };
+        "postfire", "prefire", "preinitialize", "stop", "stopFire",
+        "terminate", "wrapup" };
 }

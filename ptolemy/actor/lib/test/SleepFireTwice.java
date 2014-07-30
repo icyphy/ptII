@@ -64,6 +64,7 @@ public class SleepFireTwice extends Sleep {
     /** Call super.fire() twice.
      *  @exception IllegalActionException Not thrown in this base class
      */
+    @Override
     public void fire() throws IllegalActionException {
         super.fire();
         super.fire();

@@ -149,6 +149,7 @@ public class VectorFigure extends AbstractFigure {
      * calling _setBounds()), then a new bounding box will be computed by
      * traversing the list of objects.
      */
+    @Override
     public Rectangle2D getBounds() {
         if (_bounds == null) {
             Iterator i = _objects.iterator();
@@ -209,6 +210,7 @@ public class VectorFigure extends AbstractFigure {
     /** Get the shape of this figure.  If a shape has not yet been set
      *  by calling setShape(), then the shape will be set to the bounding box.
      */
+    @Override
     public Shape getShape() {
         if (_shape == null) {
             return getBounds();
@@ -230,6 +232,7 @@ public class VectorFigure extends AbstractFigure {
 
     /** Paint the figure.
      */
+    @Override
     public void paint(Graphics2D g) {
         if (!isVisible()) {
             return;
@@ -288,6 +291,7 @@ public class VectorFigure extends AbstractFigure {
      * used to perform arbitrary translation, scaling, shearing, and
      * rotation operations.
      */
+    @Override
     public void transform(AffineTransform at) {
         repaint();
         _cachedBounds = null;

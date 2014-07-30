@@ -23,7 +23,7 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
-*/
+ */
 package ptolemy.actor.lib.video;
 
 import ptolemy.actor.TypedAtomicActor;
@@ -51,7 +51,7 @@ import ptolemy.kernel.util.Workspace;
    @since Ptolemy II 8.0
    @Pt.ProposedRating Red (oh)
    @Pt.AcceptedRating Red (oh)
-*/
+ */
 public class SumofAbsoluteDifferences extends TypedAtomicActor {
     /** Construct an actor in the specified container with the specified
      *  name.
@@ -117,14 +117,15 @@ public class SumofAbsoluteDifferences extends TypedAtomicActor {
      *  @exception CloneNotSupportedException If a derived class contains
      *   an attribute that cannot be cloned.
      */
+    @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         SumofAbsoluteDifferences newObject = (SumofAbsoluteDifferences) super
                 .clone(workspace);
         newObject.previousImageBlock
-                .setTypeAtLeast(newObject.previousImageBlock);
+        .setTypeAtLeast(newObject.previousImageBlock);
         newObject.currentImageBlock.setTypeAtLeast(newObject.currentImageBlock);
         newObject.sumAbsoluteDifference
-                .setTypeAtLeast(newObject.sumAbsoluteDifference);
+        .setTypeAtLeast(newObject.sumAbsoluteDifference);
         return newObject;
     }
 
@@ -143,6 +144,7 @@ public class SumofAbsoluteDifferences extends TypedAtomicActor {
      *   or if addition and subtraction are not supported by the
      *   available tokens.
      */
+    @Override
     public void fire() throws IllegalActionException {
         super.fire();
 
@@ -171,6 +173,7 @@ public class SumofAbsoluteDifferences extends TypedAtomicActor {
 
     }
 
+    @Override
     public void preinitialize() throws IllegalActionException {
         super.preinitialize();
         _blockSize = ((IntToken) blockSize.getToken()).intValue();

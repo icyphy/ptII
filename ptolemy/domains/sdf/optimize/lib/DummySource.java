@@ -23,7 +23,7 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
-*/
+ */
 
 package ptolemy.domains.sdf.optimize.lib;
 
@@ -54,7 +54,7 @@ See {@link ptolemy.domains.sdf.optimize.OptimizingSDFDirector},
 @since Ptolemy II 10.0
 @Pt.ProposedRating Red (mgeilen)
 @Pt.AcceptedRating Red ()
-*/
+ */
 
 public class DummySource extends Source implements BufferingProfile {
     private int _counter;
@@ -81,6 +81,7 @@ public class DummySource extends Source implements BufferingProfile {
      * Fire the source actor and output a frame.
      *  @exception IllegalActionException If thrown while writing to the port.
      */
+    @Override
     public void fire() throws IllegalActionException {
         DummyFrame f = new DummyFrame();
         f.value = _counter;
@@ -93,6 +94,7 @@ public class DummySource extends Source implements BufferingProfile {
      *  @return True if execution can continue into the next iteration.
      *  @exception IllegalActionException Not thrown in this class or it base class.
      */
+    @Override
     public boolean postfire() throws IllegalActionException {
         _counter++;
         return super.postfire();
@@ -101,6 +103,7 @@ public class DummySource extends Source implements BufferingProfile {
     /** Initialize the actor. Initializes its counter.
      *  @exception IllegalActionException If thrown by the super class.
      */
+    @Override
     public void initialize() throws IllegalActionException {
         super.initialize();
         _counter = 0;
@@ -114,6 +117,7 @@ public class DummySource extends Source implements BufferingProfile {
      * @exception IllegalActionException If iterating is not
      *  permitted, or if prefire(), fire(), or postfire() throw it.
      */
+    @Override
     public int iterate(int iterationCount, boolean fireExclusive)
             throws IllegalActionException {
         return super.iterate(iterationCount);
@@ -123,6 +127,7 @@ public class DummySource extends Source implements BufferingProfile {
      * Provides the buffering profile, number of buffers required for an exclusive firing.
      * @return number of buffers for exclusive firing
      */
+    @Override
     public int exclusiveBuffers() {
         return 0;
     }
@@ -132,6 +137,7 @@ public class DummySource extends Source implements BufferingProfile {
      * firing.
      * @return execution time for exclusive firing
      */
+    @Override
     public int exclusiveExecutionTime() {
         return 0;
     }
@@ -140,6 +146,7 @@ public class DummySource extends Source implements BufferingProfile {
      * Provides the buffering profile, number of buffers required for a shared firing.
      * @return number of buffers for shared firing
      */
+    @Override
     public int sharedBuffers() {
         return 0;
     }
@@ -148,6 +155,7 @@ public class DummySource extends Source implements BufferingProfile {
      * Provides the buffering profile, execution time estimate required for a shared firing.
      * @return execution time for shared firing
      */
+    @Override
     public int sharedExecutionTime() {
         return 0;
     }

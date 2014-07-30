@@ -102,6 +102,7 @@ public class AdaptiveMedian extends Transformer {
      *  @exception IllegalActionException If the largest window size is
      *  not an odd integer.
      */
+    @Override
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         if (attribute == maxWindowSize) {
@@ -120,6 +121,7 @@ public class AdaptiveMedian extends Transformer {
      *  Perform the adaptive median filtering.
      *  @exception IllegalActionException If a contained method throws it.
      */
+    @Override
     public void fire() throws IllegalActionException {
         super.fire();
 

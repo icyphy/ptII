@@ -71,7 +71,7 @@ is also associated with a code generator.
 @since Ptolemy II 10.0
 @Pt.ProposedRating Red (rodiers)
 @Pt.AcceptedRating Red (rodiers)
-*/
+ */
 
 public class SDFDirector extends StaticSchedulingDirector {
 
@@ -96,6 +96,7 @@ public class SDFDirector extends StaticSchedulingDirector {
      *  @return The fire function code.
      *  @exception IllegalActionException If thrown while generating fire code.
      */
+    @Override
     public String generateFireFunctionCode() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
         List actorList = ((CompositeActor) _director.getContainer())
@@ -197,6 +198,7 @@ public class SDFDirector extends StaticSchedulingDirector {
      *  @exception IllegalActionException If the adapter associated with
      *   an actor throws it while generating initialize code for the actor.
      */
+    @Override
     public String generateInitializeCode() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
 
@@ -225,7 +227,7 @@ public class SDFDirector extends StaticSchedulingDirector {
                         + getCodeGenerator().comment(
                                 1,
                                 actor.getName()
-                                        + "'s input offset initialization"));
+                                + "'s input offset initialization"));
                 code.append(resetCode);
             }
         }
@@ -236,7 +238,7 @@ public class SDFDirector extends StaticSchedulingDirector {
             code.append(_eol
                     + getCodeGenerator().comment(
                             getComponent().getName()
-                                    + "'s output offset initialization"));
+                            + "'s output offset initialization"));
             code.append(resetCode);
         }
 
@@ -286,6 +288,7 @@ public class SDFDirector extends StaticSchedulingDirector {
      *   or if generating the preinitialize code for a adapter fails,
      *   or if there is a problem getting the buffer size of a port.
      */
+    @Override
     public String generatePreinitializeCode() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
         code.append(super.generatePreinitializeCode());
@@ -312,6 +315,7 @@ public class SDFDirector extends StaticSchedulingDirector {
      *   out of range or if the port is neither an input nor an
      *   output.
      */
+    @Override
     public int getBufferSize(IOPort port, int channelNumber)
             throws IllegalActionException {
         Receiver[][] receivers;
@@ -437,7 +441,7 @@ public class SDFDirector extends StaticSchedulingDirector {
 
                 for (int i = 0; i < port.getWidth(); i++) {
                     int bufferSize = this
-                    /*called on the director*/.getBufferSize(port, i);
+                            /*called on the director*/.getBufferSize(port, i);
                     ports.setBufferSize(port, i, bufferSize);
                 }
 
@@ -468,7 +472,7 @@ public class SDFDirector extends StaticSchedulingDirector {
      */
     protected String _createOffsetVariablesIfNeeded(IOPort port,
             int channelNumber, int readTokens, int writeTokens)
-            throws IllegalActionException {
+                    throws IllegalActionException {
         StringBuffer code = new StringBuffer();
 
         boolean padBuffers = padBuffers();
@@ -538,9 +542,10 @@ public class SDFDirector extends StaticSchedulingDirector {
      *  @exception IllegalActionException If the adapter class for the model
      *   director cannot be found.
      */
+    @Override
     protected String _generateVariableInitialization(
             NamedProgramCodeGeneratorAdapter target)
-            throws IllegalActionException {
+                    throws IllegalActionException {
         StringBuffer code = new StringBuffer();
 
         ProgramCodeGenerator codeGenerator = getCodeGenerator();
@@ -587,7 +592,7 @@ public class SDFDirector extends StaticSchedulingDirector {
     @Override
     protected String _getParameter(NamedProgramCodeGeneratorAdapter target,
             Attribute attribute, String[] channelAndOffset)
-            throws IllegalActionException {
+                    throws IllegalActionException {
         StringBuffer result = new StringBuffer();
         //FIXME: potential bug: if the attribute is not a parameter,
         //it will be referenced but not declared.
@@ -613,7 +618,7 @@ public class SDFDirector extends StaticSchedulingDirector {
             if (!(attribute instanceof Parameter)) {
                 throw new InternalErrorException(attribute, null,
                         "The attribute " + attribute.getFullName()
-                                + " is not a Parameter.");
+                        + " is not a Parameter.");
             } else {
                 Type elementType = ((ArrayType) ((Parameter) attribute)
                         .getType()).getElementType();
@@ -866,7 +871,7 @@ public class SDFDirector extends StaticSchedulingDirector {
                 // the buffer size will be updated later on with the maximum
                 // for all possible schedules.
                 int bufferSize = this
-                /*directorAdapter*/.getBufferSize(port, i);
+                        /*directorAdapter*/.getBufferSize(port, i);
                 ports.setBufferSize(port, i, bufferSize);
             }
 
@@ -959,6 +964,7 @@ public class SDFDirector extends StaticSchedulingDirector {
          *  same number of dots, then return the String compareTo()
          *  of the fullName()s.
          */
+        @Override
         public int compare(Object object1, Object object2) {
             String name1 = ((NamedObj) object1).getFullName();
             String name2 = ((NamedObj) object2).getFullName();

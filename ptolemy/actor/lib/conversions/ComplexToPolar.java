@@ -105,6 +105,7 @@ public class ComplexToPolar extends TypedAtomicActor {
      *
      *  @exception IllegalActionException If there is no director.
      */
+    @Override
     public void fire() throws IllegalActionException {
         super.fire();
         Complex inputValue = ((ComplexToken) input.get(0)).complexValue();
@@ -122,6 +123,7 @@ public class ComplexToPolar extends TypedAtomicActor {
      *  what the superclass returns (presumably true).
      *  @exception IllegalActionException If there is no director.
      */
+    @Override
     public boolean prefire() throws IllegalActionException {
         if (!input.hasToken(0)) {
             return false;

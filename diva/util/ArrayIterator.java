@@ -44,6 +44,7 @@ public class ArrayIterator extends IteratorAdapter {
         _i = 0;
     }
 
+    @Override
     public boolean hasNext() {
         if (_array == null) {
             return false;
@@ -52,6 +53,7 @@ public class ArrayIterator extends IteratorAdapter {
         }
     }
 
+    @Override
     public Object next() {
         if (hasNext()) {
             return _array[_i++];

@@ -20,7 +20,7 @@ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
 PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 ENHANCEMENTS, OR MODIFICATIONS.
-*/
+ */
 package ptolemy.vergil.tdl;
 
 import java.awt.Frame;
@@ -92,11 +92,12 @@ public class HierarchicalModeController extends StateController {
     /** An action to add a new refinement.
      */
     @SuppressWarnings("serial")
-        private class AddRefinementAction extends FigureAction {
+    private class AddRefinementAction extends FigureAction {
         public AddRefinementAction() {
             super("Add Refinement");
         }
 
+        @Override
         public void actionPerformed(ActionEvent e) {
             // This method is similar to a method in
             // ptolemy/vergil/modal/modal/HierarchicalStateController.java
@@ -216,6 +217,7 @@ public class HierarchicalModeController extends StateController {
 
             MoMLChangeRequest change = new MoMLChangeRequest(this, container,
                     moml) {
+                @Override
                 protected void _execute() throws Exception {
                     super._execute();
 
@@ -250,21 +252,21 @@ public class HierarchicalModeController extends StateController {
                                     && port instanceof IOPort) {
                                 try {
                                     ((RefinementPort) newPort)
-                                            .setMirrorDisable(true);
+                                    .setMirrorDisable(true);
 
                                     if (((IOPort) port).isInput()) {
                                         ((RefinementPort) newPort)
-                                                .setInput(true);
+                                        .setInput(true);
                                     }
 
                                     if (((IOPort) port).isOutput()) {
                                         ((RefinementPort) newPort)
-                                                .setOutput(true);
+                                        .setOutput(true);
                                     }
 
                                     if (((IOPort) port).isMultiport()) {
                                         ((RefinementPort) newPort)
-                                                .setMultiport(true);
+                                        .setMultiport(true);
                                     }
 
                                     /* No longer needed since Yuhong modified
@@ -277,7 +279,7 @@ public class HierarchicalModeController extends StateController {
                                      */
                                 } finally {
                                     ((RefinementPort) newPort)
-                                            .setMirrorDisable(false);
+                                    .setMirrorDisable(false);
                                 }
                             }
                         } finally {

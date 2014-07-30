@@ -301,7 +301,7 @@ public class PeriodicDirectorHelper {
                         + _nextFiringTime
                         + " but instead is being fired at time "
                         + enclosingTime);
-                */
+                 */
                 // NOTE: An alternative would be to catch up. The code
                 // to do that is here.
                 /*
@@ -335,7 +335,7 @@ public class PeriodicDirectorHelper {
                     _fireContainerAt(_nextFiringTime);
                     return false;
                 }
-                */
+                 */
             }
         }
         // If period is zero, then just return true.

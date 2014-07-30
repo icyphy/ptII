@@ -133,6 +133,7 @@ public class IOPortEvent implements DebugEvent {
     /** Return the port that caused this event.
      * @return The port.
      */
+    @Override
     public NamedObj getSource() {
         return _port;
     }
@@ -210,6 +211,7 @@ public class IOPortEvent implements DebugEvent {
     /** Return a string representation of this event.
      *  @return A user-readable string describing the event.
      */
+    @Override
     public String toString() {
         StringBuilder buffer = new StringBuilder("The port " + _port);
         if (_event == SEND_BEGIN) {
@@ -247,6 +249,7 @@ public class IOPortEvent implements DebugEvent {
     /** An event corresponding with a token being sent.
      *  @deprecated Use SEND_BEGIN or SEND_END instead.
      */
+    @Deprecated
     public final static int SEND = 1;
 
     /** An event corresponding with the beginning of a token being sent. */

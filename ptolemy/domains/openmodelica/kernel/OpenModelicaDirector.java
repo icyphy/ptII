@@ -66,6 +66,7 @@ public class OpenModelicaDirector extends ContinuousDirector {
      *  @return Check If the stop time is infinite, If yes, it returns false.
      *  @exception IllegalActionException Not thrown in this base class.
      */
+    @Override
     public boolean postfire() throws IllegalActionException {
 
         Time stopTime = getModelStopTime();

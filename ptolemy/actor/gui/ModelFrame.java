@@ -127,6 +127,7 @@ public class ModelFrame extends PtolemyFrame implements ExecutionListener {
      *  @param manager The manager calling this method.
      *  @param throwable The throwable being reported.
      */
+    @Override
     public void executionError(Manager manager, Throwable throwable) {
         report(throwable);
     }
@@ -134,6 +135,7 @@ public class ModelFrame extends PtolemyFrame implements ExecutionListener {
     /** Report that execution of the model has finished.
      *  @param manager The manager calling this method.
      */
+    @Override
     public void executionFinished(Manager manager) {
         // Display the amount of time and memory used.
         // See http://bugzilla.ecoinformatics.org/show_bug.cgi?id=5571
@@ -151,6 +153,7 @@ public class ModelFrame extends PtolemyFrame implements ExecutionListener {
      *  This method is called by the specified manager.
      *  @param manager The manager calling this method.
      */
+    @Override
     public void managerStateChanged(Manager manager) {
         Manager.State newState = manager.getState();
 
@@ -188,6 +191,7 @@ public class ModelFrame extends PtolemyFrame implements ExecutionListener {
      *  background of the contained ModelPane.
      *  @param background The background color.
      */
+    @Override
     public void setBackground(Color background) {
         super.setBackground(background);
         getContentPane().setBackground(background);
@@ -231,6 +235,7 @@ public class ModelFrame extends PtolemyFrame implements ExecutionListener {
      *  new, blank composite actor.
      *  @return False if the user cancels the clear.
      */
+    @Override
     protected boolean _clear() {
         if (super._clear()) {
             setModel(new CompositeActor());
@@ -245,6 +250,7 @@ public class ModelFrame extends PtolemyFrame implements ExecutionListener {
      *  ModelPane.
      *  @return False if the user cancels on a save query.
      */
+    @Override
     protected boolean _close() {
         boolean result = super._close();
 
@@ -276,6 +282,7 @@ public class ModelFrame extends PtolemyFrame implements ExecutionListener {
      *  attributes in the associated model.
      *  @see Documentation
      */
+    @Override
     protected void _help() {
         String message = "Ptolemy II model.";
         NamedObj model = getModel();

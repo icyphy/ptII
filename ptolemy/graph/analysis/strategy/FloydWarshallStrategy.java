@@ -56,6 +56,7 @@ abstract public class FloydWarshallStrategy extends CachedStrategy {
      *  method of this class to provide the correct functionality.
      *  @return The analysis results.
      */
+    @Override
     protected Object _compute() {
         int n = graph().nodeCount();
         Object floydWarshallResult = null;

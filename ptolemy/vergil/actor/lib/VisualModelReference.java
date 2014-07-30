@@ -170,6 +170,7 @@ public class VisualModelReference extends ModelReference {
      *  @exception IllegalActionException If the change is not acceptable
      *   to this container (not thrown in this base class).
      */
+    @Override
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         if (attribute == openOnFiring) {
@@ -233,6 +234,7 @@ public class VisualModelReference extends ModelReference {
      *  @exception CloneNotSupportedException If a derived class contains
      *   an attribute that cannot be cloned.
      */
+    @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         VisualModelReference newActor = (VisualModelReference) super
                 .clone(workspace);
@@ -261,6 +263,7 @@ public class VisualModelReference extends ModelReference {
      *  @exception IllegalActionException If there is no director, or if
      *   the director's action methods throw it.
      */
+    @Override
     public void fire() throws IllegalActionException {
         // NOTE: Even though the superclass calls this, we have to
         // call it here before the actions below. Regrettably,
@@ -288,6 +291,7 @@ public class VisualModelReference extends ModelReference {
                         // the open is complete, so we use the very dangerous
                         // invokeAndWait() method.
                         Runnable doOpen = new Runnable() {
+                            @Override
                             public void run() {
                                 Configuration configuration = (Configuration) myEffigy
                                         .toplevel();
@@ -321,7 +325,7 @@ public class VisualModelReference extends ModelReference {
                                         if (_openOnFiringValue == _OPEN_IN_VERGIL_FULL_SCREEN) {
                                             if (frame instanceof ExtendedGraphFrame) {
                                                 ((ExtendedGraphFrame) frame)
-                                                        .fullScreen();
+                                                .fullScreen();
                                             }
                                         }
 
@@ -391,6 +395,7 @@ public class VisualModelReference extends ModelReference {
      *  @return Whatever the superclass returns (probably true).
      *  @exception IllegalActionException Thrown if a parent class throws it.
      */
+    @Override
     public boolean postfire() throws IllegalActionException {
         // Call this first so execution stops before closing.
         boolean result = super.postfire();
@@ -409,6 +414,7 @@ public class VisualModelReference extends ModelReference {
                     // that the next firing, if it opens vergil, will
                     // do so in the event thread.
                     Runnable doClose = new Runnable() {
+                        @Override
                         public void run() {
                             if (frame instanceof ExtendedGraphFrame) {
                                 ((ExtendedGraphFrame) frame).cancelFullScreen();
@@ -422,6 +428,7 @@ public class VisualModelReference extends ModelReference {
                 } else if (frame != null) {
                     // This should be done in the event thread.
                     Runnable doClose = new Runnable() {
+                        @Override
                         public void run() {
                             if (frame instanceof ExtendedGraphFrame) {
                                 ((ExtendedGraphFrame) frame).cancelFullScreen();
@@ -496,6 +503,7 @@ public class VisualModelReference extends ModelReference {
          *  @exception Exception If there is a problem opening the
          *  model.
          */
+        @Override
         public Tableau createTableau(Effigy effigy) throws Exception {
             if (_model == null) {
                 throw new IllegalActionException(VisualModelReference.this,

@@ -89,16 +89,19 @@ public abstract class PtolemyDialog extends JFrame implements ActionListener {
         JPanel _buttons = _createButtonsPanel();
         getContentPane().add(_buttons, BorderLayout.SOUTH);
         addWindowListener(new WindowAdapter() {
+            @Override
             public void windowClosing(WindowEvent e) {
                 _cancel();
             }
         });
 
         _owner.addWindowListener(new WindowAdapter() {
+            @Override
             public void windowIconified(WindowEvent e) {
                 _iconify();
             }
 
+            @Override
             public void windowDeiconified(WindowEvent e) {
                 _deiconify();
             }
@@ -136,6 +139,7 @@ public abstract class PtolemyDialog extends JFrame implements ActionListener {
     /** If the action event is a JButton, process the button press.
      *  @param aEvent The event.
      */
+    @Override
     public void actionPerformed(ActionEvent aEvent) {
         String command = aEvent.getActionCommand();
 

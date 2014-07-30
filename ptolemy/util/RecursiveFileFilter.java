@@ -24,7 +24,7 @@
 
    PT_COPYRIGHT_VERSION 2
    COPYRIGHTENDKEY
-*/
+ */
 package ptolemy.util;
 
 import java.io.File;
@@ -50,7 +50,7 @@ import java.util.regex.Pattern;
    @since Ptolemy II 10.0
    @Pt.ProposedRating Yellow (tfeng)
    @Pt.AcceptedRating Red (tfeng)
-*/
+ */
 public class RecursiveFileFilter implements FilenameFilter {
 
     /** Construct a recursive file filter.
@@ -136,6 +136,7 @@ public class RecursiveFileFilter implements FilenameFilter {
      *  @param name The file or directory name within the given directory.
      *  @return Whether the name is accepted.
      */
+    @Override
     public boolean accept(File dir, String name) {
         File file = null;
         boolean isDirectory = false;
@@ -155,8 +156,8 @@ public class RecursiveFileFilter implements FilenameFilter {
                 || ((_filesOnly && isFile) || (_directoriesOnly && isDirectory) || (!_directoriesOnly && !_filesOnly))) {
             // ptolemy/domains/sdf/test/auto/filePortParameter.xml wants match.matches() here.
             // ptolemy/actor/lib/test/auto/ExecRunDemos.xml wants match.find() here
-            
-            // Avoid a NPE if the pattern is empty.  
+
+            // Avoid a NPE if the pattern is empty.
             // See ptolemy/actor/lib/io/test/auto/DirectoryListingEmptyPattern.xml
             // and https://projects.ecoinformatics.org/ecoinfo/issues/6233
             if (_pattern != null) {
@@ -336,7 +337,7 @@ public class RecursiveFileFilter implements FilenameFilter {
        @since Ptolemy II 10.0
        @Pt.ProposedRating Yellow (tfeng)
        @Pt.AcceptedRating Red (tfeng)
-    */
+     */
     private static class FileComparator implements Comparator<File> {
 
         /** Compare two files with their names.
@@ -346,6 +347,7 @@ public class RecursiveFileFilter implements FilenameFilter {
          *  @return -1, 0 or 1 if file1 is less than, equal to or greater
          *   than file2.
          */
+        @Override
         public int compare(File file1, File file2) {
             return file1.getAbsolutePath().compareTo(file2.getAbsolutePath());
         }

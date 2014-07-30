@@ -24,7 +24,7 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
-*/
+ */
 package ptolemy.vergil.basic.layout.kieler;
 
 import java.util.HashSet;
@@ -99,6 +99,7 @@ public class UndoLayoutAction implements UndoAction {
      * removes connection routing hints that are marked for removal, and adds
      * connection routing hints that are marked for adding.
      */
+    @Override
     public void execute() throws Exception {
         UndoLayoutAction undoLayoutAction = new UndoLayoutAction(_source);
 

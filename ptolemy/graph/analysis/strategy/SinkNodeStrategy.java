@@ -52,7 +52,7 @@ import ptolemy.graph.analysis.analyzer.SinkNodeAnalyzer;
  @version $Id$
  */
 public class SinkNodeStrategy extends CachedStrategy implements
-        SinkNodeAnalyzer {
+SinkNodeAnalyzer {
     /** Construct a sink node analysis for a given graph.
      *  @param graph The given graph.
      */
@@ -67,6 +67,7 @@ public class SinkNodeStrategy extends CachedStrategy implements
      *  a collection. Each element of the collection is a {@link Node}.
      *  @return The sink nodes.
      */
+    @Override
     public List nodes() {
         return (List) _result();
     }
@@ -75,6 +76,7 @@ public class SinkNodeStrategy extends CachedStrategy implements
      *
      *  @return A description of the sink nodes.
      */
+    @Override
     public String toString() {
         String result = "Sink node analysis for the following graph.\n"
                 + graph().toString();
@@ -87,6 +89,7 @@ public class SinkNodeStrategy extends CachedStrategy implements
      *
      *  @return True if the given graph is of class DirectedGraph.
      */
+    @Override
     public boolean valid() {
         return graph() instanceof DirectedGraph;
     }
@@ -98,6 +101,7 @@ public class SinkNodeStrategy extends CachedStrategy implements
      *  a collection. Each element of the collection is a {@link Node}.
      *  @return The sink nodes.
      */
+    @Override
     protected Object _compute() {
         ArrayList sinkNodes = new ArrayList();
         Iterator nodes = graph().nodes().iterator();

@@ -96,6 +96,7 @@ public class Refinement extends TypedCompositeActor {
      *  @exception NameDuplicationException If the entity already has a port
      *   with the specified name.
      */
+    @Override
     public Port newPort(String name) throws NameDuplicationException {
         try {
             _workspace.getWriteAccess();

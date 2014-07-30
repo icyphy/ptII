@@ -40,8 +40,8 @@ package ptolemy.cg.adapter.generic.program.procedural.c.adapters.ptolemy.actor.l
  @Pt.AcceptedRating Red (cxh)
  */
 public class DB
-        extends
-        ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.actor.lib.DB {
+extends
+ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.actor.lib.DB {
     /**
      *  Construct a DB adapter.
      *  @param actor The given ptolemy.actor.lib.DB actor.

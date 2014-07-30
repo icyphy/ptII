@@ -25,7 +25,7 @@ ENHANCEMENTS, OR MODIFICATIONS.
                                                 COPYRIGHTENDKEY
 
 
-*/
+ */
 package ptdb.kernel.database;
 
 import ptdb.common.dto.CreateModelTask;
@@ -91,6 +91,7 @@ public class ExecutorThread implements Runnable {
      * or if it exceeds its max wait time of 50 seconds. </p>
      *
      */
+    @Override
     public void run() {
         int maxWait = 100;
         while (maxWait != 0) {
@@ -216,7 +217,7 @@ public class ExecutorThread implements Runnable {
      * reference.
      */
     private void _executeTask() throws DBExecutionException,
-            ModelAlreadyExistException, CircularDependencyException {
+    ModelAlreadyExistException, CircularDependencyException {
         Task task = _taskQueue.get(_noOfTasksExecuted);
 
         //if the task is of type save model task, then execute the proper method from the connection

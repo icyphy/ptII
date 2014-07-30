@@ -60,6 +60,7 @@ import ptolemy.kernel.util.Workspace;
  @Pt.ProposedRating Green (hyzheng)
  @Pt.AcceptedRating Yellow (hyzheng)
  */
+@Deprecated
 public class VariableDelay extends Transformer {
 
     // NOTE: This actor has alot copies from TimeDelay, but because it has
@@ -106,6 +107,7 @@ public class VariableDelay extends Transformer {
      *  @param attribute The attribute that changed.
      *  @exception IllegalActionException If the delay is negative.
      */
+    @Override
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         if (attribute == delay) {
@@ -129,6 +131,7 @@ public class VariableDelay extends Transformer {
      *  @exception CloneNotSupportedException If a derived class has
      *   has an attribute that cannot be cloned.
      */
+    @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         VariableDelay newObject = (VariableDelay) super.clone(workspace);
         newObject.output.setTypeSameAs(newObject.input);
@@ -141,6 +144,7 @@ public class VariableDelay extends Transformer {
      *  cannot be computed.
      *  @see #getCausalityInterface()
      */
+    @Override
     public void declareDelayDependency() throws IllegalActionException {
         // Declare that output does not immediately depend on the delay input
         // and the input port,
@@ -155,6 +159,7 @@ public class VariableDelay extends Transformer {
      *  @exception IllegalActionException If the super class throws it,
      *  or a negative delay is received.
      */
+    @Override
     public void fire() throws IllegalActionException {
         super.fire();
 
@@ -206,6 +211,7 @@ public class VariableDelay extends Transformer {
     /** Initialize the states of this actor.
      *  @exception IllegalActionException If a derived class throws it.
      */
+    @Override
     public void initialize() throws IllegalActionException {
         super.initialize();
         _currentOutput = null;
@@ -217,6 +223,7 @@ public class VariableDelay extends Transformer {
      *  the inputs are unknown.
      *  @return False.
      */
+    @Override
     public boolean isStrict() {
         return false;
     }
@@ -226,6 +233,7 @@ public class VariableDelay extends Transformer {
      *  @exception IllegalActionException If scheduling to refire cannot
      *  be performed or the superclass throws it.
      */
+    @Override
     public boolean postfire() throws IllegalActionException {
         Time currentTime = getDirector().getModelTime();
         Time delayToTime = currentTime.add(_delay);

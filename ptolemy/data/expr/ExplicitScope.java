@@ -64,6 +64,7 @@ public class ExplicitScope implements ParserScope {
      *  @exception IllegalActionException If a value in the scope
      *  exists with the given name, but cannot be evaluated.
      */
+    @Override
     public ptolemy.data.Token get(String name) throws IllegalActionException {
         Variable variable = (Variable) _list.get(name);
 
@@ -82,6 +83,7 @@ public class ExplicitScope implements ParserScope {
      *  @exception IllegalActionException If a value in the scope
      *  exists with the given name, but cannot be evaluated.
      */
+    @Override
     public ptolemy.data.type.Type getType(String name)
             throws IllegalActionException {
         Variable variable = (Variable) _list.get(name);
@@ -102,6 +104,7 @@ public class ExplicitScope implements ParserScope {
      *  @exception IllegalActionException If a value in the scope
      *  exists with the given name, but cannot be evaluated.
      */
+    @Override
     public ptolemy.graph.InequalityTerm getTypeTerm(String name)
             throws IllegalActionException {
         Variable variable = (Variable) _list.get(name);
@@ -116,6 +119,7 @@ public class ExplicitScope implements ParserScope {
     /** Return the list of variables within the scope.
      *  @return The list of variables within the scope.
      */
+    @Override
     public Set identifierSet() {
         Set set = new HashSet();
 

@@ -57,6 +57,7 @@ public class FormattedDocument extends PlainDocument {
         return format;
     }
 
+    @Override
     public void insertString(int offs, String str, AttributeSet a)
             throws BadLocationException {
         String currentText = getText(0, getLength());
@@ -74,6 +75,7 @@ public class FormattedDocument extends PlainDocument {
         }
     }
 
+    @Override
     public void remove(int offs, int len) throws BadLocationException {
         String currentText = getText(0, getLength());
         String beforeOffset = currentText.substring(0, offs);

@@ -102,6 +102,7 @@ public class ModelExecutor extends TypedAtomicActor {
      *  @exception IllegalActionException If the input token cannot be read, or
      *   execution of the model throws an exception.
      */
+    @Override
     public void fire() throws IllegalActionException {
         super.fire();
         Workspace workspace = new Workspace();
@@ -131,6 +132,7 @@ public class ModelExecutor extends TypedAtomicActor {
      *  @exception IllegalActionException If thrown when creating the effigy or
      *   thrown by the superclass.
      */
+    @Override
     public void initialize() throws IllegalActionException {
         super.initialize();
 
@@ -153,6 +155,7 @@ public class ModelExecutor extends TypedAtomicActor {
      *  @exception IllegalActionException If availability of input tokens cannot
      *   be tested.
      */
+    @Override
     public boolean prefire() throws IllegalActionException {
         return super.prefire() && actorInput.hasToken(0);
     }
@@ -162,6 +165,7 @@ public class ModelExecutor extends TypedAtomicActor {
      *  @exception IllegalActionException If the superclass throws it, or if the
      *   effigy cannot be deleted.
      */
+    @Override
     public void wrapup() throws IllegalActionException {
         super.wrapup();
 
@@ -205,6 +209,7 @@ public class ModelExecutor extends TypedAtomicActor {
          *
          *  @param entity The entity.
          */
+        @Override
         protected void _finishedAddEntity(ComponentEntity entity) {
             try {
                 _workspace.getWriteAccess();
@@ -225,9 +230,9 @@ public class ModelExecutor extends TypedAtomicActor {
                         executorPort = (TypedIOPort) executorPortObject;
                         if (executorPort.getName().equals(entityPort.getName())
                                 && executorPort.isInput() == entityPort
-                                        .isInput()
+                                .isInput()
                                 && executorPort.isOutput() == entityPort
-                                        .isOutput()
+                                .isOutput()
                                 && entityPort.getType().isCompatible(
                                         executorPort.getType())) {
                             found = true;
@@ -283,7 +288,7 @@ public class ModelExecutor extends TypedAtomicActor {
          *   an entity with the specified name.
          */
         Wrapper(Workspace workspace) throws IllegalActionException,
-                NameDuplicationException {
+        NameDuplicationException {
             super(workspace);
             new WrapperDirector(this, "_director");
         }
@@ -334,6 +339,7 @@ public class ModelExecutor extends TypedAtomicActor {
              *  @exception CloneNotSupportedException Not thrown in this base class
              *  @return The new Attribute.
              */
+            @Override
             public Object clone(Workspace workspace)
                     throws CloneNotSupportedException {
                 WrapperDirector director = (WrapperDirector) super
@@ -350,6 +356,7 @@ public class ModelExecutor extends TypedAtomicActor {
              *  @exception IllegalActionException If thrown when the actor is
              *   fired.
              */
+            @Override
             public void fire() throws IllegalActionException {
                 if (!_hasToken() && !_eventQueue.isEmpty()) {
                     TimedEvent timedEvent = _eventQueue.poll();
@@ -407,6 +414,7 @@ public class ModelExecutor extends TypedAtomicActor {
              *  @return The time at which the actor will be fired.
              *  @exception IllegalActionException Not thrown in this class.
              */
+            @Override
             public Time fireAt(Actor actor, Time time, int microstep)
                     throws IllegalActionException {
                 _eventQueue.add(new TimedEvent(time, actor));
@@ -432,6 +440,7 @@ public class ModelExecutor extends TypedAtomicActor {
              *  @return The time of the next iteration.
              *  @see #getModelTime()
              */
+            @Override
             public Time getModelNextIterationTime() {
                 Time aFutureTime = Time.POSITIVE_INFINITY;
 
@@ -446,6 +455,7 @@ public class ModelExecutor extends TypedAtomicActor {
              *  In this class, this returns an instance of QueueReceiver.
              *  @return A new QueueReceiver.
              */
+            @Override
             public Receiver newReceiver() {
                 return new QueueReceiver();
             }
@@ -456,6 +466,7 @@ public class ModelExecutor extends TypedAtomicActor {
              *   true otherwise.
              *  @exception IllegalActionException If the superclass throws it.
              */
+            @Override
             public boolean postfire() throws IllegalActionException {
                 boolean result = super.postfire();
                 if (result && ModelExecutor.this._stopRequested) {
@@ -475,6 +486,7 @@ public class ModelExecutor extends TypedAtomicActor {
              *  @exception IllegalActionException If the availability of input
              *   tokens cannot be tested.
              */
+            @Override
             public boolean prefire() throws IllegalActionException {
                 return super.prefire()
                         && (_hasToken() || !_eventQueue.isEmpty());
@@ -550,8 +562,9 @@ public class ModelExecutor extends TypedAtomicActor {
          *  @exception NoRoomException If a send to one of the channels throws
          *     it.
          */
+        @Override
         public void broadcast(Token token) throws NoRoomException,
-                IllegalActionException {
+        IllegalActionException {
             // super.broadcast() is not called because we want to send on
             // the executorPort, not on this port.
 
@@ -592,6 +605,7 @@ public class ModelExecutor extends TypedAtomicActor {
          *  @exception IllegalActionException If the tokens to be sent cannot
          *   be converted to the type of this port
          */
+        @Override
         public void broadcast(Token[] tokenArray, int vectorLength)
                 throws NoRoomException, IllegalActionException {
             TypedIOPort executorPort = (TypedIOPort) ModelExecutor.this
@@ -620,8 +634,9 @@ public class ModelExecutor extends TypedAtomicActor {
          *   no receivers have been created, if the port is not an input port, or
          *   if the channel index is out of range.
          */
+        @Override
         public Token get(int channelIndex) throws NoTokenException,
-                IllegalActionException {
+        IllegalActionException {
             TypedIOPort executorPort = (TypedIOPort) ModelExecutor.this
                     .getPort(getName());
             return executorPort.get(channelIndex);
@@ -657,6 +672,7 @@ public class ModelExecutor extends TypedAtomicActor {
          *   no receivers have been created, if the port is not an input port, or
          *   if the channel index is out of range.
          */
+        @Override
         public Token[] get(int channelIndex, int vectorLength)
                 throws NoTokenException, IllegalActionException {
             TypedIOPort executorPort = (TypedIOPort) ModelExecutor.this
@@ -677,6 +693,7 @@ public class ModelExecutor extends TypedAtomicActor {
          *  @return The width of the port.
          *  @exception IllegalActionException If the width cannot be determined.
          */
+        @Override
         public int getWidth() throws IllegalActionException {
             TypedIOPort executorPort = (TypedIOPort) ModelExecutor.this
                     .getPort(getName());
@@ -697,6 +714,7 @@ public class ModelExecutor extends TypedAtomicActor {
          *   if the port is not an input port, or if the channel index is out
          *   of range.
          */
+        @Override
         public boolean hasToken(int channelIndex) throws IllegalActionException {
             TypedIOPort executorPort = (TypedIOPort) ModelExecutor.this
                     .getPort(getName());
@@ -719,6 +737,7 @@ public class ModelExecutor extends TypedAtomicActor {
          *   if the port is not an input port, or if the channel index is out
          *   of range.
          */
+        @Override
         public boolean hasToken(int channelIndex, int tokens)
                 throws IllegalActionException {
             TypedIOPort executorPort = (TypedIOPort) ModelExecutor.this
@@ -756,8 +775,9 @@ public class ModelExecutor extends TypedAtomicActor {
          *   be converted to the type of this port, or if the token is null.
          *  @exception NoRoomException If there is no room in the receiver.
          */
+        @Override
         public void send(int channelIndex, Token token) throws NoRoomException,
-                IllegalActionException {
+        IllegalActionException {
             // super.send() is not called because we want to send on
             // the executorPort, not on this port.
 
@@ -810,6 +830,7 @@ public class ModelExecutor extends TypedAtomicActor {
          *   argument is greater than the length of the <i>tokenArray</i>
          *   argument.
          */
+        @Override
         public void send(int channelIndex, Token[] tokenArray, int vectorLength)
                 throws NoRoomException, IllegalActionException {
             // super.send() is not called because we want to send on

@@ -90,6 +90,7 @@ import ptolemy.util.StringUtilities;
  @Pt.ProposedRating Red (rowland)
  @Pt.AcceptedRating Red (rowland)
  */
+@Deprecated
 public class DocumentationAttribute extends VisibleAttribute {
     /** Construct an icon with the attached this attached.
      *  @param container The container.
@@ -127,6 +128,7 @@ public class DocumentationAttribute extends VisibleAttribute {
          *  @param object The object to configure.
          *  @param parent The parent window, or null if there is none.
          */
+        @Override
         public void createEditor(NamedObj object, Frame parent) {
             try {
                 FileParameter docAttribute = null;
@@ -168,7 +170,7 @@ public class DocumentationAttribute extends VisibleAttribute {
                         background = jFileChooserBugFix.saveBackground();
                         JFileChooser fileDialog = new JFileChooser();
                         fileDialog
-                                .setDialogTitle("Select a documentation file.");
+                        .setDialogTitle("Select a documentation file.");
 
                         //File _directory = null;
 

@@ -39,7 +39,7 @@ A utility class used to simplify creating c templates in EmbeddedCActors.
 @since Ptolemy II 10.0
 @Pt.ProposedRating red (tbf)
 @Pt.AcceptedRating
-*/
+ */
 public class CCodegenUtilities {
 
     /** Return a code block to include a file.

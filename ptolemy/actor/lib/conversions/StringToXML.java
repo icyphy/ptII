@@ -82,6 +82,7 @@ public class StringToXML extends Transformer {
     /** Output the XMLToken constructed from the input string.
      *  @exception IllegalActionException if the superclass throws it..
      */
+    @Override
     public void fire() throws IllegalActionException {
         super.fire();
         //int k = 0;
@@ -124,6 +125,7 @@ public class StringToXML extends Transformer {
      *  Otherwise, return false.
      *  @exception IllegalActionException if the superclass throws it.
      */
+    @Override
     public boolean prefire() throws IllegalActionException {
         for (int i = 0; i < input.getWidth(); i++) {
             if (input.hasToken(i)) {

@@ -48,7 +48,7 @@ import ptolemy.kernel.util.Workspace;
  @Pt.ProposedRating Yellow (eal)
  @Pt.AcceptedRating Red (neuendor)
  */
-public class MirrorComposite extends ReflectComposite{
+public class MirrorComposite extends ReflectComposite {
 
     /** Create an actor with a name and a container.
      *  The container argument must not be null, or a
@@ -65,7 +65,7 @@ public class MirrorComposite extends ReflectComposite{
      */
     public MirrorComposite(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
-        super(container, name); 
+        super(container, name);
         _init();
     }
 
@@ -79,7 +79,7 @@ public class MirrorComposite extends ReflectComposite{
      *  @param workspace The workspace that will list the actor.
      */
     public MirrorComposite(Workspace workspace) {
-        super(workspace); 
+        super(workspace);
         _init();
     }
 
@@ -102,10 +102,9 @@ public class MirrorComposite extends ReflectComposite{
     public MirrorComposite(CompositeEntity container, String name,
             boolean mirrorParameterPorts) throws IllegalActionException,
             NameDuplicationException {
-        super(container, name, mirrorParameterPorts); 
+        super(container, name, mirrorParameterPorts);
         _init();
     }
-
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
@@ -119,8 +118,9 @@ public class MirrorComposite extends ReflectComposite{
      *  @exception NameDuplicationException If the port name collides with a
      *   name already in the actor.
      */
+    @Override
     protected void _addPort(Port port) throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
 
         if (!(port instanceof MirrorPort || port instanceof ParameterMirrorPort)) {
             throw new IllegalActionException(this,
@@ -128,13 +128,12 @@ public class MirrorComposite extends ReflectComposite{
                             + "instances of MirrorPort");
         }
 
-        super._addPort(port); 
+        super._addPort(port);
     }
 
     private void _init() {
         setClassName("ptolemy.actor.lib.hoc.MirrorComposite");
     }
-  
 
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
@@ -148,7 +147,8 @@ public class MirrorComposite extends ReflectComposite{
      *  in the container.  That addition will result in appropriate
      *  connections being made.
      */
-    public static class MirrorCompositeContents extends ReflectCompositeContents {
+    public static class MirrorCompositeContents extends
+            ReflectCompositeContents {
         // NOTE: This has to be a static class so that MoML can
         // instantiate it.
 
@@ -163,7 +163,7 @@ public class MirrorComposite extends ReflectComposite{
         public MirrorCompositeContents(CompositeEntity container, String name)
                 throws IllegalActionException, NameDuplicationException {
             super(container, name);
-        } 
+        }
 
         /** Add a port to this actor. This overrides the base class to
          *  add a corresponding port to the container using a change
@@ -176,14 +176,14 @@ public class MirrorComposite extends ReflectComposite{
          */
         @Override
         protected void _addPort(final Port port) throws IllegalActionException,
-                NameDuplicationException {
+        NameDuplicationException {
 
             if (!(port instanceof MirrorPort || port instanceof ParameterMirrorPort)) {
                 throw new IllegalActionException(this,
                         "Ports in MirrorComposiMirrorCompositeContentsite must be MirrorPort.");
             }
 
-            super._addPort(port); 
+            super._addPort(port);
         }
     }
 }

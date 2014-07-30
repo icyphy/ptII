@@ -61,6 +61,7 @@ import ptolemy.kernel.util.NameDuplicationException;
  @Pt.AcceptedRating Yellow (cxh)
  @deprecated Use OrderedMerge, which now supports DDF.
  */
+@Deprecated
 public class DDFOrderedMerge extends OrderedMerge {
     /** Construct an actor with the given container and name.
      *  @param container The container.

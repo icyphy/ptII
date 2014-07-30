@@ -125,6 +125,7 @@ public class HadamardCode extends Source {
      *  @exception IllegalActionException If <i>index</i> is negative
      *   or <i>log2Length</i> is not strictly positive.
      */
+    @Override
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         if (attribute == index) {
@@ -177,6 +178,7 @@ public class HadamardCode extends Source {
      *  from the beginning of that codeword.
      *  @exception IllegalActionException If <i>index</i> is out of range.
      */
+    @Override
     public void fire() throws IllegalActionException {
         super.fire();
         index.update();
@@ -214,6 +216,7 @@ public class HadamardCode extends Source {
      *  at the beginning of the Hadamard sequence.
      *  @exception IllegalActionException If there is no director.
      */
+    @Override
     public void initialize() throws IllegalActionException {
         super.initialize();
 
@@ -225,6 +228,7 @@ public class HadamardCode extends Source {
         _index = 0;
     }
 
+    @Override
     public boolean postfire() throws IllegalActionException {
         _previousIndex = _latestIndex;
         return super.postfire();

@@ -83,6 +83,7 @@ public class StreamToMatrix extends Transformer {
      *  @exception IllegalActionException if no an integer value can
      *        be obtained from the dimension parameter.
      */
+    @Override
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         if (attribute == dimension) {
@@ -97,6 +98,7 @@ public class StreamToMatrix extends Transformer {
      *  Matrix. The Matrix produced is an Upper Triangular Matrix.
      *  @exception IllegalActionException If there is no director.
      */
+    @Override
     public void fire() throws IllegalActionException {
         super.fire();
         int runL = 0;
@@ -120,6 +122,7 @@ public class StreamToMatrix extends Transformer {
     /** Initialize the row and column number.
      *  @exception IllegalActionException If the parent class throws it.
      */
+    @Override
     public void initialize() throws IllegalActionException {
         super.initialize();
 

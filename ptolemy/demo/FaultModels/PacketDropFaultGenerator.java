@@ -119,6 +119,7 @@ public class PacketDropFaultGenerator extends AtomicCommunicationAspect {
      *  @param attribute The attribute that changed.
      *  @exception IllegalActionException If the service time is negative.
      */
+    @Override
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         if (attribute == packetDropProbability) {
@@ -147,6 +148,7 @@ public class PacketDropFaultGenerator extends AtomicCommunicationAspect {
      *   if one of the attributes cannot be cloned.
      *  @return A new Bus.
      */
+    @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         PacketDropFaultGenerator newObject = (PacketDropFaultGenerator) super
                 .clone(workspace);
@@ -161,6 +163,7 @@ public class PacketDropFaultGenerator extends AtomicCommunicationAspect {
     /** Initialize the actor.
      *  @exception IllegalActionException If the superclass throws it.
      */
+    @Override
     public void initialize() throws IllegalActionException {
         super.initialize();
         _receiversAndTokensToSendTo.clear();
@@ -172,6 +175,7 @@ public class PacketDropFaultGenerator extends AtomicCommunicationAspect {
 
     /** Send first token in the queue to the target receiver.
      */
+    @Override
     public void fire() throws IllegalActionException {
         Time currentTime = getDirector().getModelTime();
         // In a continuous domain this actor could be fired before any token has
@@ -201,6 +205,7 @@ public class PacketDropFaultGenerator extends AtomicCommunicationAspect {
     /** If there are still tokens in the queue and a token has been produced in the fire,
      *  schedule a refiring.
      */
+    @Override
     public boolean postfire() throws IllegalActionException {
         // This method contains two places where refirings can be
         // scheduled. We only want to schedule a refiring once.
@@ -253,7 +258,7 @@ public class PacketDropFaultGenerator extends AtomicCommunicationAspect {
         // FIXME: wrong, more than one token can be received at a time instant! if (_tokens.size() == 1) {
         if (_tokens.size() > 0
                 && (_nextTimeFree == null || currentTime
-                        .compareTo(_nextTimeFree) >= 0)) {
+                .compareTo(_nextTimeFree) >= 0)) {
             _scheduleRefire();
             // FIXME:
             // Not only does this bus need to be fired
@@ -279,6 +284,7 @@ public class PacketDropFaultGenerator extends AtomicCommunicationAspect {
      *  @param token The token to send.
      *  @exception IllegalActionException If the refiring request fails.
      */
+    @Override
     public void sendToken(Receiver source, Receiver receiver, Token token)
             throws IllegalActionException {
         if (getDirector() == null) {
@@ -345,6 +351,7 @@ public class PacketDropFaultGenerator extends AtomicCommunicationAspect {
     /**
      * Reset the communication aspect and clear the tokens.
      */
+    @Override
     public void reset() {
         //_tokens.clear();
     }

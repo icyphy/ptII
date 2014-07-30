@@ -46,15 +46,15 @@ import ptolemy.kernel.util.IllegalActionException;
 ////SDFReceiver
 
 /** The adapter for SDF receiver.
-*  @author Jia Zou, Man-Kit Leung, Isaac Liu, Bert Rodiers
-*  @version $Id$
-*  @since Ptolemy II 10.0
-*  @Pt.ProposedRating Red (jiazou)
-*  @Pt.AcceptedRating Red (jiazou)
-*/
+ *  @author Jia Zou, Man-Kit Leung, Isaac Liu, Bert Rodiers
+ *  @version $Id$
+ *  @since Ptolemy II 10.0
+ *  @Pt.ProposedRating Red (jiazou)
+ *  @Pt.AcceptedRating Red (jiazou)
+ */
 public class SDFReceiver
-        extends
-        ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.domains.sdf.kernel.SDFReceiver {
+extends
+ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.domains.sdf.kernel.SDFReceiver {
     /** Construct an adapter for an SDF receiver.
      *  @param receiver The SDFReceiver for which an adapter is constructed.
      *  @exception IllegalActionException If thrown by the superclass.
@@ -75,6 +75,7 @@ public class SDFReceiver
      *  @exception IllegalActionException If thrown while getting the component,
      *  getting the adapter, getting the director or getting the port reference.
      */
+    @Override
     public String generateGetCode(String offset) throws IllegalActionException {
         //        TypedIOPort port = (TypedIOPort) getComponent().getContainer();
         //        int channel = port.getChannelForReceiver(getComponent());
@@ -116,6 +117,7 @@ public class SDFReceiver
      *  is returned
      *  @exception IllegalActionException Not thrown in this base class.
      */
+    @Override
     public String generateHasTokenCode(String offset)
             throws IllegalActionException {
         return "true"; // Assume "true" is a defined constant.
@@ -129,6 +131,7 @@ public class SDFReceiver
      *  @exception IllegalActionException If thrown while getting the component,
      *  getting the adapter, getting the director or getting the port reference.
      */
+    @Override
     public String generatePutCode(IOPort sourcePort, String offset, String token)
             throws IllegalActionException {
         TypedIOPort port = (TypedIOPort) getComponent().getContainer();
@@ -207,6 +210,7 @@ public class SDFReceiver
         //                + " = " + token + ";" + _eol;
     }
 
+    @Override
     protected String _generateTypeConvertStatement(Channel source)
             throws IllegalActionException {
 
@@ -277,6 +281,7 @@ public class SDFReceiver
      *  This is probably because the information of the receiver is in the director of
      *  the container?
      */
+    @Override
     protected StaticSchedulingDirector _getDirectorForReceiver()
             throws IllegalActionException {
         return super._getDirectorForReceiver();
@@ -288,6 +293,7 @@ public class SDFReceiver
      *
      *  FIXME: This is a patch for hierarchical SDF codegen, need to find a better way of doing this.
      */
+    @Override
     protected StaticSchedulingDirector _getExecutiveDirectorForReceiver()
             throws IllegalActionException {
         return (StaticSchedulingDirector) getAdapter(((Actor) getComponent()

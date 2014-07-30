@@ -117,6 +117,7 @@ public class FunctionToken extends Token {
     /** Return the type of this token.
      *  @return A FunctionType.
      */
+    @Override
     public Type getType() {
         return _type;
     }
@@ -129,6 +130,7 @@ public class FunctionToken extends Token {
      *  @return A true-valued token if the first argument is equal to
      *  this token.
      */
+    @Override
     public BooleanToken isCloseTo(Token rightArgument, double epsilon) {
         return isEqualTo(rightArgument);
     }
@@ -140,6 +142,7 @@ public class FunctionToken extends Token {
      *  @return A token containing true if the value element of the first
      *  argument is equal to the value of this token.
      */
+    @Override
     public BooleanToken isEqualTo(Token rightArgument) {
         FunctionToken convertedArgument = (FunctionToken) rightArgument;
         return BooleanToken.getInstance(convertedArgument._function
@@ -148,6 +151,7 @@ public class FunctionToken extends Token {
 
     /** Return a String representation of this function.
      */
+    @Override
     public String toString() {
         return _function.toString();
     }

@@ -108,6 +108,7 @@ public class PitchSlider extends JFrame {
         sliderModel = new ConverterRangeModel();
         textField.setValue(0.001 * sliderModel.getDoubleValue());
         textField.addActionListener(new ActionListener() {
+            @Override
             public void actionPerformed(ActionEvent e) {
                 sliderModel.setDoubleValue(1000 * textField.getValue());
             }
@@ -116,6 +117,7 @@ public class PitchSlider extends JFrame {
         JSlider pitchSlider = new JSlider(sliderModel);
         pitchSlider.addChangeListener(new SliderListener());
         sliderModel.addChangeListener(new ChangeListener() {
+            @Override
             public void stateChanged(ChangeEvent e) {
                 //textField.setValue(sliderModel.getDoubleValue());
                 textField.setValue(0.001 * sliderModel.getDoubleValue());
@@ -138,6 +140,7 @@ public class PitchSlider extends JFrame {
 
         //Add a listener for window events
         addWindowListener(new WindowAdapter() {
+            @Override
             public void windowClosing(WindowEvent e) {
                 StringUtilities.exit(0);
             }
@@ -146,6 +149,7 @@ public class PitchSlider extends JFrame {
 
     /** Listens to the slider. */
     class SliderListener implements ChangeListener {
+        @Override
         public void stateChanged(ChangeEvent e) {
             JSlider source = (JSlider) e.getSource();
             int fps = source.getValue();
@@ -173,7 +177,7 @@ public class PitchSlider extends JFrame {
         pitchSlider.setVisible(true);
         System.out.println("");
         System.out
-                .println("PitchSlider v1.0 by Brian K. Vogel, vogel@eecs.berkeley.edu");
+        .println("PitchSlider v1.0 by Brian K. Vogel, vogel@eecs.berkeley.edu");
         System.out.println("");
         System.out.println("Usage: java PitchSlider <sample rate>");
         System.out.println("<sample rate> is optional.");

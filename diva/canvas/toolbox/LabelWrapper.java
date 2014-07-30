@@ -82,6 +82,7 @@ public class LabelWrapper extends AbstractFigure {
 
     /** Get the bounds of this figure.
      */
+    @Override
     public Rectangle2D getBounds() {
         Rectangle2D bounds = _child.getBounds();
         Rectangle2D.union(bounds, _label.getBounds(), bounds);
@@ -105,18 +106,21 @@ public class LabelWrapper extends AbstractFigure {
      * of the child figure only -- the label is not included
      * in the shape.
      */
+    @Override
     public Shape getShape() {
         return _child.getShape();
     }
 
     /** We are hit if either the child or the figure is hit.
      */
+    @Override
     public boolean hit(Rectangle2D r) {
         return _child.hit(r) || _label.hit(r);
     }
 
     /** Paint this figure
      */
+    @Override
     public void paint(Graphics2D g) {
         if (_child != null && isVisible()) {
             _child.paint(g);
@@ -140,6 +144,7 @@ public class LabelWrapper extends AbstractFigure {
 
     /** Transform the figure with the supplied transform.
      */
+    @Override
     public void transform(AffineTransform at) {
         repaint();
         _child.transform(at);

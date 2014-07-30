@@ -155,6 +155,7 @@ public class Effigy extends CompositeEntity {
      *  @param attribute The attribute that changed.
      *  @exception IllegalActionException If the base class throws it.
      */
+    @Override
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         if (attribute == identifier) {
@@ -367,6 +368,7 @@ public class Effigy extends CompositeEntity {
      *  @exception NameDuplicationException If the container already has
      *   an entity with the specified name.
      */
+    @Override
     public void setContainer(CompositeEntity container)
             throws IllegalActionException, NameDuplicationException {
         if (container == null) {
@@ -548,6 +550,7 @@ public class Effigy extends CompositeEntity {
      *  this object from its container.
      *  @param entity The tableau to remove.
      */
+    @Override
     protected void _removeEntity(ComponentEntity entity) {
         super._removeEntity(entity);
 

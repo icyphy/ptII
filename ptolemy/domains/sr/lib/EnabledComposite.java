@@ -87,32 +87,32 @@ public class EnabledComposite extends TypedCompositeActor {
     // NOTE: this might be non-strict because it may
     // contain actors that are non-strict.
 
-        /** Construct an actor in the specified workspace.
-         *  This constructor is provided so that this can be a top-level.
-         *  Making it a top level only makes sense if it is a class definition,
-         *  however.
-     *  @param workspace The workspace.
-     *  @exception IllegalActionException If constructing the ports and
-     *   inside director throws it.
-     *  @exception NameDuplicationException If constructing the ports and
-     *   inside director throws it.
-     */
-    public EnabledComposite(Workspace workspace)
-            throws IllegalActionException, NameDuplicationException {
+    /** Construct an actor in the specified workspace.
+     *  This constructor is provided so that this can be a top-level.
+     *  Making it a top level only makes sense if it is a class definition,
+     *  however.
+    *  @param workspace The workspace.
+    *  @exception IllegalActionException If constructing the ports and
+    *   inside director throws it.
+    *  @exception NameDuplicationException If constructing the ports and
+    *   inside director throws it.
+    */
+    public EnabledComposite(Workspace workspace) throws IllegalActionException,
+            NameDuplicationException {
         super(workspace);
 
         _init();
     }
 
-        /** Construct an actor in the specified container with the specified
-     *  name.
-     *  @param container The container.
-     *  @param name The name of this actor within the container.
-     *  @exception IllegalActionException If the actor cannot be contained
-     *   by the proposed container.
-     *  @exception NameDuplicationException If the name coincides with
-     *   an actor already in the container.
-     */
+    /** Construct an actor in the specified container with the specified
+    *  name.
+    *  @param container The container.
+    *  @param name The name of this actor within the container.
+    *  @exception IllegalActionException If the actor cannot be contained
+    *   by the proposed container.
+    *  @exception NameDuplicationException If the name coincides with
+    *   an actor already in the container.
+    */
     public EnabledComposite(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
@@ -136,6 +136,7 @@ public class EnabledComposite extends TypedCompositeActor {
      *  @return A representation of the dependencies between input ports
      *   and output ports.
      */
+    @Override
     public CausalityInterface getCausalityInterface() {
         if (_causalityInterface != null) {
             return _causalityInterface;
@@ -151,6 +152,7 @@ public class EnabledComposite extends TypedCompositeActor {
      *  superclass and return what it returns.
      *  @exception IllegalActionException If the superclass throws it.
      */
+    @Override
     public boolean prefire() throws IllegalActionException {
         boolean prefireReturnValue = false;
         if (enable.isKnown(0)) {
@@ -172,13 +174,13 @@ public class EnabledComposite extends TypedCompositeActor {
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
-        /** Create the enable port and inside director.
-         *  @exception IllegalActionException If creating these things throws it.
-         *  @exception NameDuplicationException If creating these things throws it.
-         */
-        private void _init() throws IllegalActionException,
-                        NameDuplicationException {
-                enable = new TypedIOPort(this, "enable", true, false);
+    /** Create the enable port and inside director.
+     *  @exception IllegalActionException If creating these things throws it.
+     *  @exception NameDuplicationException If creating these things throws it.
+     */
+    private void _init() throws IllegalActionException,
+            NameDuplicationException {
+        enable = new TypedIOPort(this, "enable", true, false);
         enable.setTypeEquals(BaseType.BOOLEAN);
 
         StringAttribute controlCardinal = new StringAttribute(enable,
@@ -192,7 +194,7 @@ public class EnabledComposite extends TypedCompositeActor {
         SRDirector director = new SRDirector(this, "SRDirector");
         location = new Location(director, "_location");
         location.setExpression("[65.0, 35.0]");
-        }
+    }
 
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
@@ -202,12 +204,13 @@ public class EnabledComposite extends TypedCompositeActor {
      *  input port.
      */
     private class CausalityInterfaceForEnabledComposite extends
-            CausalityInterfaceForComposites {
+    CausalityInterfaceForComposites {
         public CausalityInterfaceForEnabledComposite(Actor actor)
                 throws IllegalArgumentException {
             super(actor, BooleanDependency.OTIMES_IDENTITY);
         }
 
+        @Override
         protected void _computeActorDepth() throws IllegalActionException {
             if (_actorDepthVersion == ((NamedObj) _actor).workspace()
                     .getVersion()) {

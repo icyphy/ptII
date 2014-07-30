@@ -282,7 +282,7 @@ public class Copernicus {
             String codeGeneratorClassName = generatorAttribute
                     .getParameter("codeGeneratorClassName");
             System.out
-                    .println("codeGeneratorClass = " + codeGeneratorClassName);
+            .println("codeGeneratorClass = " + codeGeneratorClassName);
 
             Class codeGeneratorClass = Class.forName(codeGeneratorClassName);
             KernelMain codeGenerator = (KernelMain) codeGeneratorClass
@@ -455,6 +455,7 @@ public class Copernicus {
      *  @param namedObj The NamedObj that contains Parameters.
      *  @deprecated See {@link ptolemy.cg.kernel.generic.CodeGeneratorUtilities#newMap(NamedObj)}
      */
+    @Deprecated
     public static HashMap newMap(NamedObj namedObj)
             throws IllegalActionException {
         return CodeGeneratorUtilities.newMap(namedObj);
@@ -469,6 +470,7 @@ public class Copernicus {
      *  the BufferedReader.
      *  @deprecated See {@link ptolemy.cg.kernel.generic.CodeGeneratorUtilities#openAsFileOrURL(String)}
      */
+    @Deprecated
     public static BufferedReader openAsFileOrURL(String inputFileName)
             throws FileNotFoundException, IOException {
         return CodeGeneratorUtilities.openAsFileOrURL(inputFileName);
@@ -610,6 +612,7 @@ public class Copernicus {
      *  their corresponding values.
      *  @deprecated See {@link ptolemy.cg.kernel.generic.CodeGeneratorUtilities#substitute(String, Map)}
      */
+    @Deprecated
     public static String substitute(String input, Map substituteMap) {
         return CodeGeneratorUtilities.substitute(input, substituteMap);
     }
@@ -625,6 +628,7 @@ public class Copernicus {
      *  @return The contents of inputFileName after doing the substitutions
      *  @deprecated See {@link ptolemy.cg.kernel.generic.CodeGeneratorUtilities#substitute(String, NamedObj)}
      */
+    @Deprecated
     public static String substitute(String inputFileName, NamedObj namedObj)
             throws FileNotFoundException, IOException {
         return CodeGeneratorUtilities.substitute(inputFileName, namedObj);
@@ -641,6 +645,7 @@ public class Copernicus {
      *  @see #substitute(String, Map, String)
      *  @deprecated See {@link ptolemy.cg.kernel.generic.CodeGeneratorUtilities#substitute(BufferedReader, Map, String)}
      */
+    @Deprecated
     public static void substitute(BufferedReader inputFile, Map substituteMap,
             String outputFileName) throws FileNotFoundException, IOException {
         CodeGeneratorUtilities.substitute(inputFile, substituteMap,
@@ -658,6 +663,7 @@ public class Copernicus {
      *  @see #substitute(BufferedReader, Map, String)
      *  @deprecated See {@link ptolemy.cg.kernel.generic.CodeGeneratorUtilities#substitute(String, Map, String)}
      */
+    @Deprecated
     public static void substitute(String inputFileName, Map substituteMap,
             String outputFileName) throws FileNotFoundException, IOException {
         CodeGeneratorUtilities.substitute(inputFileName, substituteMap,
@@ -690,9 +696,9 @@ public class Copernicus {
             _verbose = true;
         } else if (arg.equals("-version")) {
             System.out
-                    .println("Version "
-                            + VersionAttribute.CURRENT_VERSION.getExpression()
-                            + ", Build $Id$");
+            .println("Version "
+                    + VersionAttribute.CURRENT_VERSION.getExpression()
+                    + ", Build $Id$");
 
             StringUtilities.exit(0);
         } else if (arg.equals("")) {
@@ -833,7 +839,7 @@ public class Copernicus {
 
     /** The command-line options that take arguments. */
     protected String[][] _commandOptions = { { "-<parameter name>",
-            "<parameter value>" }, };
+    "<parameter value>" }, };
 
     /** The form of the command line. */
     protected String _commandTemplate = "\ncopernicus [options . . .] [relative xml filename]\n"
@@ -893,6 +899,7 @@ public class Copernicus {
 
         // Read lines from the _inputStream and output them to the
         // _stream
+        @Override
         public void run() {
             try {
                 InputStreamReader inputStreamReader = new InputStreamReader(
@@ -911,7 +918,7 @@ public class Copernicus {
 
                 while ((line = bufferedReader.readLine()) != null) {
                     _stream.println( /*prefix + */
-                    line);
+                            line);
                 }
             } catch (IOException ioe) {
                 System.out.flush();

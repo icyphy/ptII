@@ -78,7 +78,7 @@ public class Sampler extends Transformer {
         input.setMultiport(true);
         output.setMultiport(true);
         output.setWidthEquals(input, true);
-        
+
         output.setTypeSameAs(input);
 
         _attachText("_iconDescription", "<svg>\n"
@@ -129,6 +129,7 @@ public class Sampler extends Transformer {
      *   if one of the attributes cannot be cloned.
      *  @return A new ComponentEntity.
      */
+    @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         Sampler newObject = (Sampler) super.clone(workspace);
         newObject.output.setTypeSameAs(newObject.input);
@@ -142,6 +143,7 @@ public class Sampler extends Transformer {
      *  current time.
      *  @exception IllegalActionException If the transfer of tokens failed.
      */
+    @Override
     public void fire() throws IllegalActionException {
         super.fire();
 

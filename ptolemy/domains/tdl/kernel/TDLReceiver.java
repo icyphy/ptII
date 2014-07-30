@@ -77,6 +77,7 @@ public class TDLReceiver extends AbstractReceiver implements StateReceiver {
      * Clear this receiver of any contained tokens. FIXME. Should rename and
      * replace all the reset() with clear().
      */
+    @Override
     public void clear() {
         reset();
     }
@@ -85,6 +86,7 @@ public class TDLReceiver extends AbstractReceiver implements StateReceiver {
      *  an empty list if there is no such token.
      *  @return A list of instances of Token.
      */
+    @Override
     public List<Token> elementList() {
         List<Token> result = new LinkedList<Token>();
         if (_token != null) {
@@ -101,6 +103,7 @@ public class TDLReceiver extends AbstractReceiver implements StateReceiver {
      * @exception NoTokenException
      *                If no token is available.
      */
+    @Override
     public Token get() throws NoTokenException {
         if (_token == null) {
             throw new NoTokenException(getContainer(),
@@ -115,6 +118,7 @@ public class TDLReceiver extends AbstractReceiver implements StateReceiver {
      *
      * @return True.
      */
+    @Override
     public boolean hasRoom() {
         return true;
     }
@@ -126,6 +130,7 @@ public class TDLReceiver extends AbstractReceiver implements StateReceiver {
      *            The size of tokens to be written to the receiver.
      * @return True.
      */
+    @Override
     public final boolean hasRoom(int numberOfTokens) {
         return true;
     }
@@ -137,6 +142,7 @@ public class TDLReceiver extends AbstractReceiver implements StateReceiver {
      *
      * @return True if there is a token available.
      */
+    @Override
     public boolean hasToken() {
         return _token != null;
     }
@@ -149,6 +155,7 @@ public class TDLReceiver extends AbstractReceiver implements StateReceiver {
      *            The number of tokens available in this receiver.
      * @return True if there is a token available.
      */
+    @Override
     public final boolean hasToken(int numberOfTokens) {
         return _token != null;
     }
@@ -167,6 +174,7 @@ public class TDLReceiver extends AbstractReceiver implements StateReceiver {
      * @exception NoRoomException
      *                Not thrown in this base class.
      */
+    @Override
     public void put(Token token) throws NoRoomException {
         if (token == null) {
             return;
@@ -197,6 +205,7 @@ public class TDLReceiver extends AbstractReceiver implements StateReceiver {
     /**
      * Reset the receiver by removing all tokens from the receiver.
      */
+    @Override
     public void reset() {
         _token = null;
         _nextToken = null;

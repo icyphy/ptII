@@ -188,6 +188,7 @@ public class CanBus extends AtomicCommunicationAspect {
      *  @param attribute The attribute that changed.
      *  @exception IllegalActionException If the service time is negative.
      */
+    @Override
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         if (attribute == bitRate) {
@@ -231,6 +232,7 @@ public class CanBus extends AtomicCommunicationAspect {
      *   if one of the attributes cannot be cloned.
      *  @return A new CanBus.
      */
+    @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         CanBus newObject = (CanBus) super.clone(workspace);
 
@@ -253,6 +255,7 @@ public class CanBus extends AtomicCommunicationAspect {
      *  @return The decorated attributes for the target NamedObj, or
      *   null if the specified target is not an Actor.
      */
+    @Override
     public DecoratorAttributes createDecoratorAttributes(NamedObj target) {
         if (target instanceof IOPort) {
             try {
@@ -273,6 +276,7 @@ public class CanBus extends AtomicCommunicationAspect {
      *
      *  @exception IllegalActionException If firing is not permitted.
      */
+    @Override
     public void fire() throws IllegalActionException {
         super.fire();
         Time currentTime = getDirector().getModelTime();
@@ -301,10 +305,10 @@ public class CanBus extends AtomicCommunicationAspect {
                     // arriving at time t must be re-emitted => "> 0" condition.
                     if (listToSort.get(i)[0] == listToSort.get(mostRecent)[0]
                             && this.getDirector()
-                                    .getModelTime()
-                                    .compareTo(
-                                            ((Time) listToSort.get(mostRecent)[2])
-                                                    .add(nextTokenTransmissionTime())) > 0) {
+                            .getModelTime()
+                            .compareTo(
+                                    ((Time) listToSort.get(mostRecent)[2])
+                                    .add(nextTokenTransmissionTime())) > 0) {
                         listToSort.remove(i);
                         i--;
                     }
@@ -331,6 +335,7 @@ public class CanBus extends AtomicCommunicationAspect {
      *  @param receiver The receiver that is being wrapped.
      *  @return A new intermediate receiver.
      */
+    @Override
     public IntermediateReceiver createIntermediateReceiver(Receiver receiver) {
         IntermediateReceiver intermediateReceiver = new IntermediateReceiver(
                 this, receiver);
@@ -352,6 +357,7 @@ public class CanBus extends AtomicCommunicationAspect {
     /** Initialize the actor.
      *  @exception IllegalActionException If the superclass throws it.
      */
+    @Override
     public void initialize() throws IllegalActionException {
         super.initialize();
 
@@ -411,14 +417,16 @@ public class CanBus extends AtomicCommunicationAspect {
             objectOutput.writeObject(nextToken());
 
         } catch (IOException ex) {
-            throw new RuntimeException("Failed to write the token while measuring the size.", ex);
+            throw new RuntimeException(
+                    "Failed to write the token while measuring the size.", ex);
 
         } finally {
             if (objectOutput != null) {
                 try {
                     objectOutput.close();
                 } catch (IOException ex) {
-                    throw new RuntimeException("Failed to close the objectOutput.", ex);
+                    throw new RuntimeException(
+                            "Failed to close the objectOutput.", ex);
                 }
             }
         }
@@ -456,13 +464,13 @@ public class CanBus extends AtomicCommunicationAspect {
                     for (int i = 0; i < entry.getValue().size(); i++) {
                         _debug("Receiver: "
                                 + ((Receiver) entry.getValue().get(i)[0])
-                                        .toString()
+                                .toString()
                                 + " Token: "
                                 + ((Token) entry.getValue().get(i)[1])
-                                        .toString()
+                                .toString()
                                 + " Time: "
                                 + ((Time) entry.getValue().get(i)[2])
-                                        .getDoubleValue());
+                                .getDoubleValue());
                     }
                 }
             }
@@ -481,6 +489,7 @@ public class CanBus extends AtomicCommunicationAspect {
      *   an attribute with the name of this attribute.
      *  @see #getContainer()
      */
+    @Override
     public void setContainer(CompositeEntity container)
             throws IllegalActionException, NameDuplicationException {
         super.setContainer(container);
@@ -513,6 +522,7 @@ public class CanBus extends AtomicCommunicationAspect {
     /**
      * Reset the communication aspect.
      */
+    @Override
     public void reset() {
 
     }
@@ -526,6 +536,7 @@ public class CanBus extends AtomicCommunicationAspect {
      *  @param token The token to send.
      *  @exception IllegalActionException If the refiring request fails.
      */
+    @Override
     public void sendToken(Receiver source, Receiver receiver, Token token)
             throws IllegalActionException {
         Time currentTime = getDirector().getModelTime();
@@ -701,6 +712,7 @@ public class CanBus extends AtomicCommunicationAspect {
          *  @exception IllegalActionException If the parameter set is not valid.
          *  Not thrown in this class.
          */
+        @Override
         public void attributeChanged(Attribute attribute)
                 throws IllegalActionException {
             IOPort port = (IOPort) getContainer();

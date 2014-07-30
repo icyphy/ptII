@@ -55,6 +55,7 @@ public class UnknownToken extends Token {
     /** Return the type of this token.
      *  @return BaseType.UNKNOWN.
      */
+    @Override
     public Type getType() {
         return BaseType.UNKNOWN;
     }

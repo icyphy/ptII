@@ -48,7 +48,7 @@ import ptolemy.kernel.util.NamedObj;
  *  @since Ptolemy II 10.0
  *  @Pt.ProposedRating Red (cshelton)
  *  @Pt.AcceptedRating Red (cshelton)
-*/
+ */
 public class ProductLatticeConcept extends FiniteConcept {
 
     /** Create a new product lattice concept with the specified name and the
@@ -94,6 +94,7 @@ public class ProductLatticeConcept extends FiniteConcept {
      *  @exception IllegalActionException Thrown if there is an error getting the
      *   color from the component concept value.
      */
+    @Override
     public ColorAttribute getColor() throws IllegalActionException {
         Ontology colorOntology = ((ProductLatticeOntology) getOntology())
                 .getColorOntology();
@@ -145,9 +146,10 @@ public class ProductLatticeConcept extends FiniteConcept {
     }
 
     /** Return the product lattice ontology that contains this concept.
-    *
-    *  @return The containing product lattice ontology.
-    */
+     *
+     *  @return The containing product lattice ontology.
+     */
+    @Override
     public Ontology getOntology() {
         NamedObj container = getContainer();
         if (container instanceof ProductLatticeOntology) {
@@ -160,6 +162,7 @@ public class ProductLatticeConcept extends FiniteConcept {
     /** Return the string that represents this concept, its name.
      *  @return The string name that represents this concept.
      */
+    @Override
     public String toString() {
         if (_conceptTuple == null) {
             return "Uninitialized Product Lattice Concept";

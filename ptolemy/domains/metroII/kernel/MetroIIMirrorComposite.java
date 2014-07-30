@@ -75,7 +75,7 @@ import ptolemy.moml.HandlesInternalLinks;
  * @Pt.AcceptedRating Red (neuendor)
  */
 public class MetroIIMirrorComposite extends MetroIICompositeActor implements
-        HandlesInternalLinks {
+HandlesInternalLinks {
 
     /**
      * Create an actor with a name and a container. The container argument must
@@ -159,6 +159,7 @@ public class MetroIIMirrorComposite extends MetroIICompositeActor implements
      *                If any of the attributes cannot be cloned.
      * @see #exportMoML(Writer, int, String)
      */
+    @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         MetroIIMirrorComposite result = (MetroIIMirrorComposite) super
                 .clone(workspace);
@@ -176,10 +177,10 @@ public class MetroIIMirrorComposite extends MetroIICompositeActor implements
 
                 if (insidePort instanceof MirrorPort) {
                     ((MirrorPort) port)
-                            .setAssociatedPort((MirrorPort) insidePort);
+                    .setAssociatedPort((MirrorPort) insidePort);
                 } else if (insidePort instanceof ParameterMirrorPort) {
                     ((ParameterMirrorPort) port)
-                            .setAssociatedPort((ParameterMirrorPort) insidePort);
+                    .setAssociatedPort((ParameterMirrorPort) insidePort);
                 }
             }
         }
@@ -195,6 +196,7 @@ public class MetroIIMirrorComposite extends MetroIICompositeActor implements
      * @exception NameDuplicationException
      *                If the container already has a port with this name.
      */
+    @Override
     public Port newPort(String name) throws NameDuplicationException {
         try {
             Port result = new MirrorPort(this, name);
@@ -253,6 +255,7 @@ public class MetroIIMirrorComposite extends MetroIICompositeActor implements
      *                contents list, or if the added element is a class
      *                definition.
      */
+    @Override
     protected void _addEntity(ComponentEntity entity)
             throws IllegalActionException, NameDuplicationException {
         if (entity.isClassDefinition()) {
@@ -270,10 +273,12 @@ public class MetroIIMirrorComposite extends MetroIICompositeActor implements
             // Override this to indicate that the change is localized.
             // This keeps the EntityTreeModel from closing open libraries
             // when notified of this change.
+            @Override
             public NamedObj getLocality() {
                 return MetroIIMirrorComposite.this;
             }
 
+            @Override
             protected void _execute() throws Exception {
                 // NOTE: We defer to a change request
                 // because only at this point can we be sure that the
@@ -385,8 +390,9 @@ public class MetroIIMirrorComposite extends MetroIICompositeActor implements
      *                If the port name collides with a name already in the
      *                actor.
      */
+    @Override
     protected void _addPort(Port port) throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
 
         if (!(port instanceof MirrorPort || port instanceof ParameterMirrorPort)) {
             throw new IllegalActionException(this,
@@ -409,10 +415,12 @@ public class MetroIIMirrorComposite extends MetroIICompositeActor implements
             // Override this to indicate that the change is localized.
             // This keeps the EntityTreeModel from closing open libraries
             // when notified of this change.
+            @Override
             public NamedObj getLocality() {
                 return MetroIIMirrorComposite.this;
             }
 
+            @Override
             protected void _execute() throws Exception {
                 // NOTE: We defer the construction of the MoML
                 // change request to here because only at this
@@ -458,10 +466,10 @@ public class MetroIIMirrorComposite extends MetroIICompositeActor implements
 
                             if (insidePort instanceof MirrorPort) {
                                 ((MirrorPort) castPort)
-                                        .setAssociatedPort((MirrorPort) insidePort);
+                                .setAssociatedPort((MirrorPort) insidePort);
                             } else if (insidePort instanceof ParameterMirrorPort) { // ParameterMirrorPort
                                 ((ParameterMirrorPort) castPort)
-                                        .setAssociatedPort((ParameterMirrorPort) insidePort);
+                                .setAssociatedPort((ParameterMirrorPort) insidePort);
                             }
 
                             // Create a link only if it doesn't already exist.
@@ -498,6 +506,7 @@ public class MetroIIMirrorComposite extends MetroIICompositeActor implements
      * @exception IOException
      *                If an I/O error occurs.
      */
+    @Override
     protected void _exportMoMLContents(Writer output, int depth)
             throws IOException {
         Iterator attributes = attributeList().iterator();
@@ -529,6 +538,7 @@ public class MetroIIMirrorComposite extends MetroIICompositeActor implements
      * @param entity
      *            The entity being removed from this entity.
      */
+    @Override
     protected void _removeEntity(ComponentEntity entity) {
         super._removeEntity(entity);
 
@@ -570,6 +580,7 @@ public class MetroIIMirrorComposite extends MetroIICompositeActor implements
      * @param port
      *            The port being removed from this entity.
      */
+    @Override
     protected void _removePort(final Port port) {
         super._removePort(port);
 
@@ -654,7 +665,7 @@ public class MetroIIMirrorComposite extends MetroIICompositeActor implements
      * addition will result in appropriate connections being made.
      */
     public static class MetroIIMirrorCompositeContents extends
-            MetroIICompositeActor {
+    MetroIICompositeActor {
         // NOTE: This has to be a static class so that MoML can
         // instantiate it.
 
@@ -686,6 +697,7 @@ public class MetroIIMirrorComposite extends MetroIICompositeActor implements
          * @exception NameDuplicationException
          *                If the container already has a port with this name.
          */
+        @Override
         public Port newPort(String name) throws NameDuplicationException {
             try {
                 return new MirrorPort(this, name);
@@ -710,8 +722,9 @@ public class MetroIIMirrorComposite extends MetroIICompositeActor implements
          *                If the port name collides with a name already in the
          *                actor.
          */
+        @Override
         protected void _addPort(final Port port) throws IllegalActionException,
-                NameDuplicationException {
+        NameDuplicationException {
 
             if (!(port instanceof MirrorPort || port instanceof ParameterMirrorPort)) {
                 throw new IllegalActionException(this,
@@ -733,10 +746,12 @@ public class MetroIIMirrorComposite extends MetroIICompositeActor implements
                 // Override this to indicate that the change is localized.
                 // This keeps the EntityTreeModel from closing open libraries
                 // when notified of this change.
+                @Override
                 public NamedObj getLocality() {
                     return getContainer();
                 }
 
+                @Override
                 protected void _execute() throws Exception {
                     try {
                         workspace().getWriteAccess();

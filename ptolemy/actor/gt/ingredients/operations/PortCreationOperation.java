@@ -122,6 +122,7 @@ public class PortCreationOperation extends Operation {
      *  @exception IllegalActionException If error occurs in generating the
      *   change request.
      */
+    @Override
     public ChangeRequest getChangeRequest(Pattern pattern,
             Replacement replacement, MatchResult matchResult,
             NamedObj patternObject, NamedObj replacementObject,
@@ -165,6 +166,7 @@ public class PortCreationOperation extends Operation {
      *
      *  @return The array of elements.
      */
+    @Override
     public GTIngredientElement[] getElements() {
         return _ELEMENTS;
     }
@@ -175,6 +177,7 @@ public class PortCreationOperation extends Operation {
      *  @return The value.
      *  @see #setValue(int, Object)
      */
+    @Override
     public Object getValue(int index) {
         switch (index) {
         case 0:
@@ -201,6 +204,7 @@ public class PortCreationOperation extends Operation {
      *  @return A string that describes the values of all the elements.
      *  @see #setValues(String)
      */
+    @Override
     public String getValues() {
         StringBuffer buffer = new StringBuffer();
         _encodeStringField(buffer, 0, _portName);
@@ -218,6 +222,7 @@ public class PortCreationOperation extends Operation {
      *  @param object The object.
      *  @return true if this GTIngredient is applicable; false otherwise.
      */
+    @Override
     public boolean isApplicable(NamedObj object) {
         return super.isApplicable(object) && object instanceof ComponentEntity
                 && !(object instanceof State);
@@ -245,6 +250,7 @@ public class PortCreationOperation extends Operation {
      *  @param value The value.
      *  @see #getValue(int)
      */
+    @Override
     public void setValue(int index, Object value) {
         switch (index) {
         case 0:
@@ -276,6 +282,7 @@ public class PortCreationOperation extends Operation {
      *   elements.
      *  @see #getValues()
      */
+    @Override
     public void setValues(String values) {
         FieldIterator fieldIterator = new FieldIterator(values);
         _portName = _decodeStringField(0, fieldIterator);
@@ -291,6 +298,7 @@ public class PortCreationOperation extends Operation {
      *
      *  @exception ValidationException If some elements are invalid.
      */
+    @Override
     public void validate() throws ValidationException {
         if (_portName.equals("")) {
             throw new ValidationException("Port name must not be empty.");
@@ -322,13 +330,13 @@ public class PortCreationOperation extends Operation {
     /** The elements.
      */
     private static final OperationElement[] _ELEMENTS = {
-            new StringOperationElement("name", false, false),
-            new StringOperationElement("class", true, false),
-            new StringOperationElement("type", true, false),
-            new BooleanOperationElement("input", false),
-            new BooleanOperationElement("output", false),
-            new BooleanOperationElement("multiport", false),
-            new BooleanOperationElement("autoRename", false) };
+        new StringOperationElement("name", false, false),
+        new StringOperationElement("class", true, false),
+        new StringOperationElement("type", true, false),
+        new BooleanOperationElement("input", false),
+        new BooleanOperationElement("output", false),
+        new BooleanOperationElement("multiport", false),
+        new BooleanOperationElement("autoRename", false) };
 
     /** Value of the autoRename element.
      */

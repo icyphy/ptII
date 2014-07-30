@@ -101,6 +101,7 @@ public class FlatTokenInfiniteConcept extends InfiniteConcept {
      *          does not have the same ontology as this one.
      *  @see ptolemy.data.ontologies.Concept#isAboveOrEqualTo(ptolemy.data.ontologies.Concept)
      */
+    @Override
     public int compare(Concept concept) throws IllegalActionException {
         if (concept.getOntology() == null
                 || !concept.getOntology().equals(getOntology())) {
@@ -138,6 +139,7 @@ public class FlatTokenInfiniteConcept extends InfiniteConcept {
      *  @return True if the argument is equal to this token.
      *  @see #hashCode()
      */
+    @Override
     public boolean equals(Object object) {
         if (object == null) {
             return false;
@@ -172,6 +174,7 @@ public class FlatTokenInfiniteConcept extends InfiniteConcept {
      *  @exception IllegalActionException Thrown if there is an error getting the
      *   color from the representative concept.
      */
+    @Override
     public ColorAttribute getColor() throws IllegalActionException {
         return _representative.getColor();
     }
@@ -180,6 +183,7 @@ public class FlatTokenInfiniteConcept extends InfiniteConcept {
      *  ontology lattice.
      *  @return The representative concept.
      */
+    @Override
     public FlatTokenRepresentativeConcept getRepresentative() {
         return _representative;
     }
@@ -196,6 +200,7 @@ public class FlatTokenInfiniteConcept extends InfiniteConcept {
      *  @param concept The other concept
      *  @return The concept that is the GLB of this and the given concept.
      */
+    @Override
     public Concept greatestLowerBound(Concept concept) {
         return _getBoundWithOtherConcept(concept, BoundType.GREATESTLOWER);
     }
@@ -205,6 +210,7 @@ public class FlatTokenInfiniteConcept extends InfiniteConcept {
      *  @param concept The other concept
      *  @return The concept that is the LUB of this and the given concept.
      */
+    @Override
     public Concept leastUpperBound(Concept concept) {
         return _getBoundWithOtherConcept(concept, BoundType.LEASTUPPER);
     }
@@ -214,6 +220,7 @@ public class FlatTokenInfiniteConcept extends InfiniteConcept {
      *  mappings.
      *  @return The hash code of this concept.
      */
+    @Override
     public int hashCode() {
         return getOntology().hashCode() + _representative.hashCode()
                 + _tokenValue.hashCode();
@@ -225,6 +232,7 @@ public class FlatTokenInfiniteConcept extends InfiniteConcept {
      *
      *  @return The string representation of this concept.
      */
+    @Override
     public String toString() {
         return _representative.getName() + "_" + _tokenValue.toString();
     }
@@ -244,7 +252,7 @@ public class FlatTokenInfiniteConcept extends InfiniteConcept {
      */
     protected FlatTokenInfiniteConcept(Ontology ontology,
             FlatTokenRepresentativeConcept representative, Token value)
-            throws IllegalActionException, NameDuplicationException {
+                    throws IllegalActionException, NameDuplicationException {
         super(ontology);
         _representative = representative;
         _tokenValue = value;

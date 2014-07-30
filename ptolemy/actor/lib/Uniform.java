@@ -75,12 +75,12 @@ public class Uniform extends RandomSource {
         lowerBound = new PortParameter(this, "lowerBound", new DoubleToken(0.0));
         lowerBound.setTypeEquals(BaseType.DOUBLE);
         new SingletonParameter(lowerBound.getPort(), "_showName")
-                .setToken(BooleanToken.TRUE);
+        .setToken(BooleanToken.TRUE);
 
         upperBound = new PortParameter(this, "upperBound", new DoubleToken(1.0));
         upperBound.setTypeEquals(BaseType.DOUBLE);
         new SingletonParameter(upperBound.getPort(), "_showName")
-                .setToken(BooleanToken.TRUE);
+        .setToken(BooleanToken.TRUE);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -104,6 +104,7 @@ public class Uniform extends RandomSource {
      *  remain constant throughout an iteration.
      *  @exception IllegalActionException If there is no director.
      */
+    @Override
     public void fire() throws IllegalActionException {
         lowerBound.update();
         upperBound.update();
@@ -117,6 +118,7 @@ public class Uniform extends RandomSource {
     /** Generate a new random number.
      *  @exception IllegalActionException If parameter values are incorrect.
      */
+    @Override
     protected void _generateRandomNumber() throws IllegalActionException {
         double lowerValue = ((DoubleToken) lowerBound.getToken()).doubleValue();
         double upperValue = ((DoubleToken) upperBound.getToken()).doubleValue();

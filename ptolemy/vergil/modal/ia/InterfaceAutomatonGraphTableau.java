@@ -94,6 +94,7 @@ public class InterfaceAutomatonGraphTableau extends FSMGraphTableau {
      *  @param defaultLibrary The default library, or null to not specify
      *   one.
      */
+    @Override
     public void createGraphFrame(CompositeEntity model,
             LibraryAttribute defaultLibrary) {
         InterfaceAutomatonGraphFrame frame = new InterfaceAutomatonGraphFrame(
@@ -142,6 +143,7 @@ public class InterfaceAutomatonGraphTableau extends FSMGraphTableau {
          *  @exception Exception If an exception occurs when creating the
          *  tableau.
          */
+        @Override
         public Tableau createTableau(Effigy proxy) throws Exception {
             if (!(proxy instanceof PtolemyEffigy)) {
                 return null;

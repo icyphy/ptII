@@ -109,7 +109,7 @@ import ptolemy.kernel.util.Workspace;
  @see FSMActor
  */
 public class CommitActionsAttribute extends AbstractActionsAttribute implements
-        CommitAction {
+CommitAction {
     /** Construct an action in the specified workspace with an empty
      *  string as a name.
      *  The object is added to the directory of the workspace.
@@ -148,6 +148,7 @@ public class CommitActionsAttribute extends AbstractActionsAttribute implements
      *   or the specified port is not found, or sending to one of the
      *   channels of the port throws a NoRoomException.
      */
+    @Override
     public void execute() throws IllegalActionException {
         super.execute();
 
@@ -258,6 +259,7 @@ public class CommitActionsAttribute extends AbstractActionsAttribute implements
      *  @exception IllegalActionException If the associated FSMActor
      *   does not have a destination with the specified name.
      */
+    @Override
     protected NamedObj _getDestination(String name)
             throws IllegalActionException {
         Transition transition = (Transition) getContainer();
@@ -339,7 +341,7 @@ public class CommitActionsAttribute extends AbstractActionsAttribute implements
                 if (!(variable instanceof Variable)) {
                     throw new IllegalActionException(fsm, this,
                             "The attribute with name \"" + name
-                                    + "\" is not an " + "instance of Variable.");
+                            + "\" is not an " + "instance of Variable.");
                 }
 
                 return variable;

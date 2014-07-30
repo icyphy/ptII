@@ -77,7 +77,7 @@ import ptolemy.moml.MoMLChangeRequest;
  @Pt.AcceptedRating Red (reviewmoderator)
  */
 public class ModalRefinement extends ModalModel implements DropTargetHandler,
-        RefinementActor {
+RefinementActor {
 
     /** Construct a modal controller with a name and a container.
      *  The container argument must not be null, or a
@@ -107,6 +107,7 @@ public class ModalRefinement extends ModalModel implements DropTargetHandler,
      *  @param moml The moml string generated for the dropped objects.
      *  @exception IllegalActionException If the handling is unsuccessful.
      */
+    @Override
     public void dropObject(NamedObj target, List dropObjects, String moml)
             throws IllegalActionException {
         boolean merge = false;
@@ -188,6 +189,7 @@ public class ModalRefinement extends ModalModel implements DropTargetHandler,
      *  @exception IllegalActionException If the specified refinement cannot be
      *   found in a state, or if a comma-separated list is malformed.
      */
+    @Override
     public State getRefinedState() throws IllegalActionException {
         NamedObj container = getContainer();
         if (container instanceof ModalModel) {
@@ -221,6 +223,7 @@ public class ModalRefinement extends ModalModel implements DropTargetHandler,
      *  @exception NameDuplicationException If the entity already has a port
      *   with the specified name.
      */
+    @Override
     public Port newPort(String name) throws NameDuplicationException {
         try {
             _workspace.getWriteAccess();
@@ -313,11 +316,11 @@ public class ModalRefinement extends ModalModel implements DropTargetHandler,
                             if (entity.getPort(name) == null) {
                                 try {
                                     ((RefinementActor) entity)
-                                            .setMirrorDisable(1);
+                                    .setMirrorDisable(1);
                                     entity.newPort(name);
                                 } finally {
                                     ((RefinementActor) entity)
-                                            .setMirrorDisable(0);
+                                    .setMirrorDisable(0);
                                 }
                             }
                         }
@@ -344,6 +347,7 @@ public class ModalRefinement extends ModalModel implements DropTargetHandler,
      *   if mirroring should not occur downwards in the hierarchy,
      *   1 if mirroring should not occur upwards in the hierarchy.
      */
+    @Override
     public void setMirrorDisable(int disable) {
         _mirrorDisable = disable;
     }
@@ -403,11 +407,12 @@ public class ModalRefinement extends ModalModel implements DropTargetHandler,
      *  @exception IllegalActionException If error occurs while creating the
      *   refinement.
      */
+    @Override
     public void addRefinement(State state, final String name, Entity template,
             String className, final InstanceOpener instanceOpener)
-            throws IllegalActionException {
+                    throws IllegalActionException {
         ModalRefinement.addRefinement(state, name, template, className,
-                instanceOpener, (CompositeEntity)getContainer());
+                instanceOpener, (CompositeEntity) getContainer());
     }
 
     /** Create a refinement for the given state.
@@ -426,9 +431,10 @@ public class ModalRefinement extends ModalModel implements DropTargetHandler,
      *  @exception IllegalActionException If error occurs while creating the
      *   refinement.
      */
-    public static void addRefinement(State state, final String name, Entity template,
-            String className, final InstanceOpener instanceOpener,
-            final CompositeEntity container)  throws IllegalActionException {
+    public static void addRefinement(State state, final String name,
+            Entity template, String className,
+            final InstanceOpener instanceOpener, final CompositeEntity container)
+            throws IllegalActionException {
 
         // This method is static so that ModalController can call it
         // and avoid code duplication.
@@ -446,11 +452,10 @@ public class ModalRefinement extends ModalModel implements DropTargetHandler,
         Attribute allowRefinement = state.getAttribute("_allowRefinement");
         if (allowRefinement instanceof Parameter
                 && !((BooleanToken) ((Parameter) allowRefinement).getToken())
-                        .booleanValue()) {
+                .booleanValue()) {
             throw new IllegalActionException(state, "State does not support "
                     + "refinement.");
         }
-
 
         String currentRefinements = state.refinementName.getExpression();
 
@@ -478,6 +483,7 @@ public class ModalRefinement extends ModalModel implements DropTargetHandler,
         }
 
         MoMLChangeRequest change = new MoMLChangeRequest(state, container, moml) {
+            @Override
             protected void _execute() throws Exception {
                 super._execute();
 
@@ -512,7 +518,7 @@ public class ModalRefinement extends ModalModel implements DropTargetHandler,
                                 && port instanceof IOPort) {
                             try {
                                 ((RefinementPort) newPort)
-                                        .setMirrorDisable(true);
+                                .setMirrorDisable(true);
 
                                 if (((IOPort) port).isInput()) {
                                     ((RefinementPort) newPort).setInput(true);
@@ -524,7 +530,7 @@ public class ModalRefinement extends ModalModel implements DropTargetHandler,
 
                                 if (((IOPort) port).isMultiport()) {
                                     ((RefinementPort) newPort)
-                                            .setMultiport(true);
+                                    .setMultiport(true);
                                 }
 
                                 // Copy the location to the new port if any.
@@ -551,7 +557,7 @@ public class ModalRefinement extends ModalModel implements DropTargetHandler,
                                 }
                             } finally {
                                 ((RefinementPort) newPort)
-                                        .setMirrorDisable(false);
+                                .setMirrorDisable(false);
                             }
                         }
                     } finally {

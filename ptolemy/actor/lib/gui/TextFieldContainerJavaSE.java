@@ -44,7 +44,7 @@ JavaSE implementation of the TextFieldContainerInterface.
 @since Ptolemy II 10.0
 @Pt.ProposedRating Red (ishwinde)
 @Pt.AcceptedRating Red (ishwinde)
-*/
+ */
 
 public class TextFieldContainerJavaSE implements TextFieldContainerInterface {
 
@@ -58,13 +58,15 @@ public class TextFieldContainerJavaSE implements TextFieldContainerInterface {
      * @exception NameDuplicationException If the container already has an
      * actor with this name.
      */
+    @Override
     public void init(Sink sink) throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
     }
 
     /** Place the visual representation of the actor into the specified container.
      *  @param container The container in which to place the object
      */
+    @Override
     public void place(PortableContainer container) {
         _textfield = new JTextField();
         _textfield.setText("\t\t");
@@ -78,6 +80,7 @@ public class TextFieldContainerJavaSE implements TextFieldContainerInterface {
     /** Set the text to the value of the token.
      * @param value The Parameter containing the value
      */
+    @Override
     public void setValue(Token value) {
         if (_textfield != null) {
             _textfield.setText(value.toString());

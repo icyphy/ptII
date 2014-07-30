@@ -100,6 +100,7 @@ public class DelayLine extends SDFTransformer {
      *  @exception IllegalActionException If type changes are not
      *   allowed on the specified attribute.
      */
+    @Override
     public void attributeTypeChanged(Attribute attribute)
             throws IllegalActionException {
         if (attribute != initialValues) {
@@ -116,6 +117,7 @@ public class DelayLine extends SDFTransformer {
      *  @exception CloneNotSupportedException If a derived class contains
      *   an attribute that cannot be cloned.
      */
+    @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         DelayLine newObject = (DelayLine) super.clone(workspace);
         try {
@@ -132,6 +134,7 @@ public class DelayLine extends SDFTransformer {
      *  the delay line.
      *  @exception IllegalActionException If not enough tokens are available.
      */
+    @Override
     public void fire() throws IllegalActionException {
         super.fire();
 
@@ -147,6 +150,7 @@ public class DelayLine extends SDFTransformer {
 
     /** Initialize this actor by reading the value of <i>initialValues</i>.
      */
+    @Override
     public void initialize() throws IllegalActionException {
         super.initialize();
         _delayLine = ((ArrayToken) initialValues.getToken()).arrayValue();

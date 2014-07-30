@@ -97,7 +97,7 @@ public class ModularSDFCodeGenerator extends JavaCodeGenerator {
         super(container, name);
 
         generatorPackageList
-                .setExpression("generic.program.procedural.java.modular");
+        .setExpression("generic.program.procedural.java.modular");
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -153,12 +153,12 @@ public class ModularSDFCodeGenerator extends JavaCodeGenerator {
                         + (port.isInput() ? DFUtilities
                                 .getTokenConsumptionRate(port) : DFUtilities
                                 .getTokenProductionRate(port)) + ", "
-                        + ptTypeToCodegenType(port.getType())
-                        + ", " + port.isInput() + ", " + port.isOutput() + ", \""
-                        + profilePort.getPubSubChannelName() + "\"));" + _eol);
+                                + ptTypeToCodegenType(port.getType()) + ", "
+                        + port.isInput() + ", " + port.isOutput() + ", \""
+                                + profilePort.getPubSubChannelName() + "\"));" + _eol);
             } else {
-                throw new InternalErrorException(_model, null,
-                        "Port " + object + " is not a TypedIOPort?");
+                throw new InternalErrorException(_model, null, "Port " + object
+                        + " is not a TypedIOPort?");
             }
         }
 
@@ -297,6 +297,7 @@ public class ModularSDFCodeGenerator extends JavaCodeGenerator {
      * @exception KernelException
      *                If a type conflict occurs or the model is running.
      */
+    @Override
     public int generateCode(StringBuffer code) throws KernelException {
 
         int returnValue = -1;
@@ -354,6 +355,7 @@ public class ModularSDFCodeGenerator extends JavaCodeGenerator {
      * @exception IllegalActionException
      *                Not thrown in this base class.
      */
+    @Override
     public String generateMainEntryCode() throws IllegalActionException {
 
         StringBuffer mainEntryCode = new StringBuffer();
@@ -362,13 +364,13 @@ public class ModularSDFCodeGenerator extends JavaCodeGenerator {
         // for the whole model.
         if (_isTopLevel()) {
             mainEntryCode
-                    .append(_eol
-                            + _eol
-                            + "public static void main(String [] args) throws Exception {"
-                            + _eol + _sanitizedModelName + " model = new "
-                            + _sanitizedModelName + "();" + _eol
-                            + "model.run();" + _eol + "}" + _eol
-                            + "public void run() throws Exception {" + _eol);
+            .append(_eol
+                    + _eol
+                    + "public static void main(String [] args) throws Exception {"
+                    + _eol + _sanitizedModelName + " model = new "
+                    + _sanitizedModelName + "();" + _eol
+                    + "model.run();" + _eol + "}" + _eol
+                    + "public void run() throws Exception {" + _eol);
         } else {
             mainEntryCode.append(_eol + _eol + "public Object[] fire (" + _eol);
 
@@ -412,6 +414,7 @@ public class ModularSDFCodeGenerator extends JavaCodeGenerator {
      * @exception IllegalActionException
      *                Not thrown in this base class.
      */
+    @Override
     public String generateMainExitCode() throws IllegalActionException {
 
         if (_isTopLevel()) {
@@ -452,7 +455,7 @@ public class ModularSDFCodeGenerator extends JavaCodeGenerator {
             Set<IOPort> inInputConnectedPorts,
             Set<IOPort> inOutputConnectedPorts,
             List<FiringCluster> firingClusters, Set clusters, Set actorFirings)
-            throws IllegalActionException {
+                    throws IllegalActionException {
 
         Set<Firing> nonClustered = new HashSet(actorFirings);
 
@@ -506,7 +509,7 @@ public class ModularSDFCodeGenerator extends JavaCodeGenerator {
                             for (FiringFunctionPort firingPort : inputFiringPorts) {
                                 if (firingPort.isInput
                                         && firingPort.externalPortName
-                                                .equals(inputPort.getName())) {
+                                        .equals(inputPort.getName())) {
                                     firingCluster.inputPorts.add(inputPort);
                                     break;
                                 }
@@ -528,7 +531,7 @@ public class ModularSDFCodeGenerator extends JavaCodeGenerator {
                             for (FiringFunctionPort firingPort : outputFiringPorts) {
                                 if (!firingPort.isInput
                                         && firingPort.externalPortName
-                                                .equals(outputPort.getName())) {
+                                        .equals(outputPort.getName())) {
                                     firingCluster.outputPorts.add(outputPort);
                                     break;
                                 }
@@ -592,7 +595,7 @@ public class ModularSDFCodeGenerator extends JavaCodeGenerator {
                             for (FiringFunctionPort firingPort : inputFiringPorts) {
                                 if (firingPort.isInput
                                         && firingPort.externalPortName
-                                                .equals(inputPort.getName())) {
+                                        .equals(inputPort.getName())) {
                                     firingCluster.inputPorts.add(inputPort);
                                     break;
                                 }
@@ -614,7 +617,7 @@ public class ModularSDFCodeGenerator extends JavaCodeGenerator {
                             for (FiringFunctionPort firingPort : outputFiringPorts) {
                                 if (!firingPort.isInput
                                         && firingPort.externalPortName
-                                                .equals(outputPort.getName())) {
+                                        .equals(outputPort.getName())) {
                                     firingCluster.outputPorts.add(outputPort);
                                     break;
                                 }
@@ -705,7 +708,7 @@ public class ModularSDFCodeGenerator extends JavaCodeGenerator {
 
     private void _createDependencyGraph(CompositeActor container,
             Map firingVector, Map port2Junction, Set actorFirings)
-            throws IllegalActionException {
+                    throws IllegalActionException {
         //create the dependency graph
         for (Iterator actors = container.deepEntityList().iterator(); actors
                 .hasNext();) {
@@ -827,7 +830,7 @@ public class ModularSDFCodeGenerator extends JavaCodeGenerator {
                                                     actor, numFirings,
                                                     lastFireFunction);
                                             actorFirings
-                                                    .add(previousIterationFiring);
+                                            .add(previousIterationFiring);
                                         }
 
                                         Firing nextIterationFiring = _getFiring(
@@ -838,13 +841,13 @@ public class ModularSDFCodeGenerator extends JavaCodeGenerator {
                                                     nextActor, 1,
                                                     firstFireFunction);
                                             actorFirings
-                                                    .add(nextIterationFiring);
+                                            .add(nextIterationFiring);
                                         }
 
                                         previousIterationFiring.nextIterationFirings
-                                                .add(nextIterationFiring);
+                                        .add(nextIterationFiring);
                                         nextIterationFiring.previousIterationFirings
-                                                .add(previousIterationFiring);
+                                        .add(previousIterationFiring);
 
                                         firstConsumption = false;
                                     }
@@ -856,7 +859,7 @@ public class ModularSDFCodeGenerator extends JavaCodeGenerator {
                                         previousIterationFiring = new Firing(
                                                 actor, numFirings, j);
                                         actorFirings
-                                                .add(previousIterationFiring);
+                                        .add(previousIterationFiring);
                                     }
 
                                     Firing nextIterationFiring = _getFiring(
@@ -868,9 +871,9 @@ public class ModularSDFCodeGenerator extends JavaCodeGenerator {
                                     }
 
                                     previousIterationFiring.nextIterationFirings
-                                            .add(nextIterationFiring);
+                                    .add(nextIterationFiring);
                                     nextIterationFiring.previousIterationFirings
-                                            .add(previousIterationFiring);
+                                    .add(previousIterationFiring);
 
                                     fired = true;
                                 }
@@ -934,13 +937,13 @@ public class ModularSDFCodeGenerator extends JavaCodeGenerator {
                                                             iterationCount,
                                                             firingFunctionCount);
                                                     actorFirings
-                                                            .add(nextFiring);
+                                                    .add(nextFiring);
                                                 }
 
                                                 currentFiring.nextActorFirings
-                                                        .add(nextFiring);
+                                                .add(nextFiring);
                                                 nextFiring.previousActorFirings
-                                                        .add(currentFiring);
+                                                .add(currentFiring);
                                             }
 
                                             firingFunctionCount++;
@@ -978,7 +981,7 @@ public class ModularSDFCodeGenerator extends JavaCodeGenerator {
 
     private void _createExpandedGraph(CompositeActor container,
             Map port2Junction, Map junction2InputPort, Map junction2OutputPort)
-            throws IllegalActionException {
+                    throws IllegalActionException {
         //construct a extended graph for deadlock analysis
         for (Iterator actors = container.deepEntityList().iterator(); actors
                 .hasNext();) {
@@ -1281,7 +1284,7 @@ public class ModularSDFCodeGenerator extends JavaCodeGenerator {
                     if (!cluster.nextIterationClusters
                             .contains(nextIterationFiring.cluster)) {
                         cluster.nextIterationClusters
-                                .add(nextIterationFiring.cluster);
+                        .add(nextIterationFiring.cluster);
                     }
                 }
 
@@ -1291,7 +1294,7 @@ public class ModularSDFCodeGenerator extends JavaCodeGenerator {
                     if (!cluster.previousIterationClusters
                             .contains(previousIterationFiring.cluster)) {
                         cluster.previousIterationClusters
-                                .add(previousIterationFiring.cluster);
+                        .add(previousIterationFiring.cluster);
                     }
                 }
 
@@ -1424,7 +1427,7 @@ public class ModularSDFCodeGenerator extends JavaCodeGenerator {
     private void _findInputOutputFirings(CompositeActor container,
             List<SimulationFiringFunction> outputFiringFunctions,
             List<SimulationFiringFunction> inputFiringFunctions)
-            throws IllegalActionException {
+                    throws IllegalActionException {
         //find output actors (produce external tokens)
 
         for (Iterator ports = container.outputPortList().iterator(); ports
@@ -1446,7 +1449,7 @@ public class ModularSDFCodeGenerator extends JavaCodeGenerator {
                                     .get(j).ports) {
                                 if (!port.isInput
                                         && port.externalPortName
-                                                .equals(connectedPort.getName())) {
+                                        .equals(connectedPort.getName())) {
 
                                     SimulationFiringFunction function = _getFiringFunction(
                                             outputFiringFunctions,
@@ -1493,7 +1496,7 @@ public class ModularSDFCodeGenerator extends JavaCodeGenerator {
                                     .get(j).ports) {
                                 if (port.isInput
                                         && port.externalPortName
-                                                .equals(connectedPort.getName())) {
+                                        .equals(connectedPort.getName())) {
                                     SimulationFiringFunction function = _getFiringFunction(
                                             inputFiringFunctions,
                                             connectedActor, j);
@@ -1574,7 +1577,7 @@ public class ModularSDFCodeGenerator extends JavaCodeGenerator {
      */
     private void _generateProfile(CompositeActor container, Set actorFirings,
             List<FiringCluster> firingClusters, StringBuffer esdf)
-            throws IllegalActionException {
+                    throws IllegalActionException {
         esdf.append(INDENT1
                 + "public List<FiringFunction> firings() throws IllegalActionException {"
                 + _eol);
@@ -1764,8 +1767,8 @@ public class ModularSDFCodeGenerator extends JavaCodeGenerator {
             if (port.isOutput()) {
                 if (port.getContainer() instanceof SampleDelay) {
                     outputPorts
-                            .addAll(_getConnectedOutputPorts(((SampleDelay) port
-                                    .getContainer()).input));
+                    .addAll(_getConnectedOutputPorts(((SampleDelay) port
+                            .getContainer()).input));
                 } else {
                     outputPorts.add(port);
                 }
@@ -1787,8 +1790,8 @@ public class ModularSDFCodeGenerator extends JavaCodeGenerator {
             if (connectedPort.isInput()) {
                 if (connectedPort.getContainer() instanceof SampleDelay) {
                     connectedInputPorts
-                            .addAll(_getConnectedInputPorts(((SampleDelay) connectedPort
-                                    .getContainer()).output));
+                    .addAll(_getConnectedInputPorts(((SampleDelay) connectedPort
+                            .getContainer()).output));
                 } else {
                     connectedInputPorts.add(connectedPort);
                 }
@@ -2191,6 +2194,7 @@ public class ModularSDFCodeGenerator extends JavaCodeGenerator {
          *  NOTE: This method assumes and does not check that the
          *  depth cache is up to date and contains both specified actors.
          */
+        @Override
         public int compare(FiringCluster c1, FiringCluster c2) {
             return c1.index - c2.index;
         }

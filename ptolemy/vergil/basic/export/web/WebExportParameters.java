@@ -178,6 +178,7 @@ public class WebExportParameters extends Attribute {
      *  @exception IllegalActionException If the change is not acceptable
      *   to this container (not thrown in this base class).
      */
+    @Override
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         if (attribute == backgroundColor) {

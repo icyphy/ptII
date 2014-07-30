@@ -43,7 +43,7 @@ import com.sun.j3d.loaders.objectfile.ObjectFile;
 
 /**
  Load a WaveFront .obj file that contains descriptions of 3-D objects.
- See the 
+ See the
  <a href="http://download.java.net/media/java3d/javadoc/1.3.2/com/sun/j3d/loaders/objectfile/ObjectFile.html" target="_top">com.sun.j3d.loader.objectfile.ObjectFile</a> documentation for details.
  @author C. Fong
  @version $Id$
@@ -83,9 +83,11 @@ public class Loader3D extends GRShadedShape {
      *  @return The scene group.
      */
 
+    @Override
     protected Node _getNodeObject() {
         if (obj == null) {
-            throw new NullPointerException("Call _createModel() before calling _getNodeObject().");
+            throw new NullPointerException(
+                    "Call _createModel() before calling _getNodeObject().");
         }
         return obj.getSceneGroup();
     }
@@ -94,6 +96,7 @@ public class Loader3D extends GRShadedShape {
      *  @exception IllegalActionException If the file cannot be found or
      *  if the file is not a valid Wavefront .obj file"
      */
+    @Override
     protected void _createModel() throws IllegalActionException {
         String fileName = ((StringToken) filename.getToken()).stringValue();
 

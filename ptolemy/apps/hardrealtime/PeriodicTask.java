@@ -56,7 +56,7 @@ import ptolemy.kernel.util.NameDuplicationException;
  */
 public class PeriodicTask extends TypedAtomicActor implements Task {
     /** Construct an actor with the specified container and name.
-     * 
+     *
      *  @param container The container.
      *  @param name The name of the actor.
      *  @throws IllegalActionException If the entity cannot be contained
@@ -127,6 +127,7 @@ public class PeriodicTask extends TypedAtomicActor implements Task {
      *  @throws IllegalActionException If accessing the next fire time or releasing the
      *  job throws it.
      */
+    @Override
     public void fire() throws IllegalActionException {
         super.fire();
         if (_debugging) {
@@ -157,6 +158,7 @@ public class PeriodicTask extends TypedAtomicActor implements Task {
      *  @return The next time a job will be released.
      *  @throws IllegalActionException If creating the Time objects throws it.
      */
+    @Override
     public Time nextFireTime() throws IllegalActionException {
         if (_lastTimeReleasedJob == null) {
             return new Time(_scheduler, (double) _startOffset);

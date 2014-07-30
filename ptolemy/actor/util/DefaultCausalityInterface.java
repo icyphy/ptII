@@ -108,6 +108,7 @@ public class DefaultCausalityInterface implements CausalityInterface {
      *  @param timeDelay The time delay.
      *  @param index The superdense time index.
      */
+    @Override
     public void declareDelayDependency(IOPort input, IOPort output,
             double timeDelay, int index) {
         if (_defaultDependency instanceof SuperdenseDependency) {
@@ -164,6 +165,7 @@ public class DefaultCausalityInterface implements CausalityInterface {
      *  by the specified port.
      *  @exception IllegalActionException Not thrown in this base class.
      */
+    @Override
     public Collection<IOPort> dependentPorts(IOPort port)
             throws IllegalActionException {
         if (_forwardPrunedDependencies == null) {
@@ -266,6 +268,7 @@ public class DefaultCausalityInterface implements CausalityInterface {
      *   contained by the associated actor.
      *  @exception IllegalActionException Not thrown in this base class.
      */
+    @Override
     public Collection<IOPort> equivalentPorts(IOPort input)
             throws IllegalActionException {
         if (input.getContainer() != _actor || !input.isInput()) {
@@ -309,6 +312,7 @@ public class DefaultCausalityInterface implements CausalityInterface {
     /** Return the actor for which this is a dependency.
      *  @return The actor for which this is a dependency.
      */
+    @Override
     public Actor getActor() {
         return _actor;
     }
@@ -316,6 +320,7 @@ public class DefaultCausalityInterface implements CausalityInterface {
     /** Return the default dependency specified in the constructor.
      *  @return The default dependency.
      */
+    @Override
     public Dependency getDefaultDependency() {
         return _defaultDependency;
     }
@@ -340,6 +345,7 @@ public class DefaultCausalityInterface implements CausalityInterface {
      *   and the specified output port.
      *  @exception IllegalActionException Not thrown in this base class.
      */
+    @Override
     public Dependency getDependency(IOPort input, IOPort output)
             throws IllegalActionException {
         // If there is a recorded delay dependency, return that.
@@ -369,6 +375,7 @@ public class DefaultCausalityInterface implements CausalityInterface {
     /** Return a description of the causality interfaces.
      *  @return A description of the causality interfaces.
      */
+    @Override
     public String toString() {
         StringBuffer result = new StringBuffer();
         Iterator inputPorts = _actor.inputPortList().iterator();
@@ -407,6 +414,7 @@ public class DefaultCausalityInterface implements CausalityInterface {
      *  @param outputPort The output port that does not depend on the
      *   input port.
      */
+    @Override
     public void removeDependency(IOPort inputPort, IOPort outputPort) {
         if (_defaultDependency instanceof SuperdenseDependency) {
             // Set time delay to infinity.

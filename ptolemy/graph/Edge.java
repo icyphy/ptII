@@ -84,6 +84,7 @@ public final class Edge extends Element {
     /** A one-word description of the type of this graph element.
      *  @return The description.
      */
+    @Override
     public String descriptor() {
         return "edge";
     }
@@ -145,6 +146,7 @@ public final class Edge extends Element {
      *  @return A string representation of the edge.
      *  @see #toString(boolean)
      */
+    @Override
     public String toString() {
         return toString(true);
     }

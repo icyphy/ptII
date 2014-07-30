@@ -141,6 +141,7 @@ public abstract class Overflow implements Cloneable {
     /** Return this, that is, return the reference to this object.
      *  @return This Overflow.
      */
+    @Override
     public Object clone() {
         return this;
     }
@@ -151,6 +152,7 @@ public abstract class Overflow implements Cloneable {
      *  @return True if the argument represents the same Overflow as
      *   this object; false otherwise.
      */
+    @Override
     public boolean equals(Object object) {
         // since Overflow is a type safe enumeration, can use == to
         // test equality.
@@ -187,6 +189,7 @@ public abstract class Overflow implements Cloneable {
 
     /** Return a hash code value for this object.
      */
+    @Override
     public int hashCode() {
         return _name.hashCode();
     }
@@ -429,6 +432,7 @@ public abstract class Overflow implements Cloneable {
     /** Return the string representation of this overflow.
      *  @return A String.
      */
+    @Override
     public String toString() {
         return _name;
     }
@@ -480,6 +484,7 @@ public abstract class Overflow implements Cloneable {
             super("grow");
         }
 
+        @Override
         public FixPoint quantize(BigInteger integerValue, Precision precision) {
             return quantizeGrow(integerValue, precision);
         }
@@ -493,6 +498,7 @@ public abstract class Overflow implements Cloneable {
             _addOverflow(this, "shrink");
         }
 
+        @Override
         public FixPoint quantize(BigInteger integerValue, Precision precision) {
             return quantizeMinimum(integerValue, precision);
         }
@@ -506,6 +512,7 @@ public abstract class Overflow implements Cloneable {
             _addOverflow(this, "wrap");
         }
 
+        @Override
         public FixPoint quantize(BigInteger integerValue, Precision precision) {
             return quantizeModulo(integerValue, precision);
         }
@@ -519,14 +526,17 @@ public abstract class Overflow implements Cloneable {
             _addOverflow(this, "clip");
         }
 
+        @Override
         public BigInteger minusInfinity(Quantization quant) {
             return quant.getMinimumUnscaledValue();
         }
 
+        @Override
         public BigInteger plusInfinity(Quantization quant) {
             return quant.getMaximumUnscaledValue();
         }
 
+        @Override
         public FixPoint quantize(BigInteger integerValue, Precision precision) {
             return quantizeSaturate(integerValue, precision);
         }
@@ -539,14 +549,17 @@ public abstract class Overflow implements Cloneable {
             _addOverflow(this, "overflow_to_zero"); // For compatibility.
         }
 
+        @Override
         public BigInteger minusInfinity(Quantization quant) {
             return BigInteger.ZERO;
         }
 
+        @Override
         public BigInteger plusInfinity(Quantization quant) {
             return BigInteger.ZERO;
         }
 
+        @Override
         public FixPoint quantize(BigInteger integerValue, Precision precision) {
             return quantizeToZero(integerValue, precision);
         }
@@ -559,6 +572,7 @@ public abstract class Overflow implements Cloneable {
             _addOverflow(this, "throw");
         }
 
+        @Override
         public FixPoint quantize(BigInteger integerValue, Precision precision) {
             if (isUnderflow(integerValue, precision)) {
                 throw new ArithmeticException("Minimum overflow threshold of "

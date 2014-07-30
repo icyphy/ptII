@@ -135,7 +135,8 @@ public abstract class ParameterEstimator extends AtomicCommunicationAspect {
                 "_cardinal");
         cardinality.setExpression("SOUTH");
 
-        serviceTimeMultiplicationFactor = new Parameter(this, "serviceTimeMultiplicationFactor");
+        serviceTimeMultiplicationFactor = new Parameter(this,
+                "serviceTimeMultiplicationFactor");
         serviceTimeMultiplicationFactor.setTypeEquals(BaseType.DOUBLE);
         serviceTimeMultiplicationFactor.setExpression("false");
 
@@ -164,11 +165,10 @@ public abstract class ParameterEstimator extends AtomicCommunicationAspect {
         nStates.setExpression("2");
         nStates.setTypeEquals(BaseType.INT);
         nStates.setDisplayName("numberOfStates");
-        
+
         batchSize = new Parameter(this, "batchSize");
         batchSize.setExpression("200");
         batchSize.setTypeEquals(BaseType.INT);
-        
 
         _initializeArrays();
     }
@@ -193,7 +193,7 @@ public abstract class ParameterEstimator extends AtomicCommunicationAspect {
      * Alpha-Beta Recursion.
      */
     public Parameter maxIterations;
-    
+
     /** The user-provided batch-size to be considered in the estimation. */
     public Parameter batchSize;
 
@@ -223,13 +223,13 @@ public abstract class ParameterEstimator extends AtomicCommunicationAspect {
      * observation set.
      */
     public TypedIOPort transitionMatrix;
-    
-    
+
     /** If the attribute is <i>serviceTime</i>, then ensure that the value
      *  is non-negative.
      *  @param attribute The attribute that changed.
      *  @exception IllegalActionException If the service time is negative.
      */
+    @Override
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         if (attribute == serviceTimeMultiplicationFactor) {
@@ -262,13 +262,13 @@ public abstract class ParameterEstimator extends AtomicCommunicationAspect {
                 _A0 = _transitionMatrix;
             }
         } else if (attribute == batchSize) {
-            int tb = ((IntToken)batchSize.getToken()).intValue();
+            int tb = ((IntToken) batchSize.getToken()).intValue();
             if (tb <= 0) {
                 throw new IllegalActionException(this,
                         "Batch Size must be a positive integer.");
             }
             _batchSize = tb;
-        }else if (attribute == priorDistribution) {
+        } else if (attribute == priorDistribution) {
             int nS = ((ArrayToken) priorDistribution.getToken()).length();
             double[] tempPriors = new double[nS];
             double sum = 0.0;
@@ -283,7 +283,7 @@ public abstract class ParameterEstimator extends AtomicCommunicationAspect {
                 sum += tempPriors[i];
             }
             // check if priors is a valid probability vector.
-            if (! SignalProcessing.close(sum, 1.0)) {
+            if (!SignalProcessing.close(sum, 1.0)) {
                 throw new IllegalActionException(this, "Priors sum to " + sum
                         + " . The sum must be equal to 1.0.");
             } else {
@@ -333,6 +333,7 @@ public abstract class ParameterEstimator extends AtomicCommunicationAspect {
      *  @return The decorated attributes for the target NamedObj, or
      *   null if the specified target is not an Actor.
      */
+    @Override
     public DecoratorAttributes createDecoratorAttributes(NamedObj target) {
         if (target instanceof IOPort && ((IOPort) target).isInput()) {
             try {
@@ -351,6 +352,7 @@ public abstract class ParameterEstimator extends AtomicCommunicationAspect {
      *  @return A new intermediate receiver.
      * @exception IllegalActionException Thrown if Bus is used in container different from the container of the bus.
      */
+    @Override
     public IntermediateReceiver createIntermediateReceiver(Receiver receiver)
             throws IllegalActionException {
         // Only allow use of Bus on Ports in the same hierarchy level.
@@ -378,15 +380,17 @@ public abstract class ParameterEstimator extends AtomicCommunicationAspect {
      *   if one of the attributes cannot be cloned.
      *  @return A new Bus.
      */
+    @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
-        ParameterEstimator newObject = (ParameterEstimator) super.clone(workspace);
+        ParameterEstimator newObject = (ParameterEstimator) super
+                .clone(workspace);
         newObject._tokens = new FIFOQueue();
         newObject._receiversAndTokensToSendTo = new HashMap<Receiver, Token>();
         newObject._tempReceiverQueue = new FIFOQueue();
         newObject._parameters = new HashMap<IOPort, List<Attribute>>();
 
         newObject._nextReceiver = null;
-        
+
         newObject._likelihood = 0.0;
         newObject._transitionMatrix = new double[_nStates][_nStates];
         newObject._A0 = new double[_nStates][_nStates];
@@ -396,6 +400,7 @@ public abstract class ParameterEstimator extends AtomicCommunicationAspect {
 
     /** Send first token in the queue to the target receiver.
      */
+    @Override
     public void fire() throws IllegalActionException {
         super.fire();
         Time currentTime = getDirector().getModelTime();
@@ -407,17 +412,18 @@ public abstract class ParameterEstimator extends AtomicCommunicationAspect {
             Object[] output = (Object[]) _tokens.get(0);
             Receiver receiver = (Receiver) output[0];
             Token token = (Token) output[1];
-            
+
             if ((_observedTokens.keySet()).contains(receiver.toString())) {
-                List tokensForReceiver = (List<Double>)_observedTokens.get(receiver.toString());
-                tokensForReceiver.add(((DoubleToken)token).doubleValue());
+                List tokensForReceiver = _observedTokens.get(receiver
+                        .toString());
+                tokensForReceiver.add(((DoubleToken) token).doubleValue());
                 List newTokens = new LinkedList<Double>();
                 newTokens.addAll(tokensForReceiver);
                 _observedTokens.put(receiver.toString(), newTokens);
-            }else {
+            } else {
                 List tokensForReceiver = new LinkedList<Double>();
-                tokensForReceiver.add(((DoubleToken)token).doubleValue());
-                _observedTokens.put(receiver.toString(),tokensForReceiver);                
+                tokensForReceiver.add(((DoubleToken) token).doubleValue());
+                _observedTokens.put(receiver.toString(), tokensForReceiver);
             }
             _sendToReceiver(receiver, token);
 
@@ -426,12 +432,13 @@ public abstract class ParameterEstimator extends AtomicCommunicationAspect {
                         + receiver.getContainer().getFullName() + ": " + token);
             }
         }
-        
+
     }
 
     /** Initialize the actor.
      *  @exception IllegalActionException If the superclass throws it.
      */
+    @Override
     public void initialize() throws IllegalActionException {
         super.initialize();
         _receiversAndTokensToSendTo.clear();
@@ -444,17 +451,16 @@ public abstract class ParameterEstimator extends AtomicCommunicationAspect {
     /** If there are still tokens in the queue and a token has been produced in the fire,
      *  schedule a refiring.
      */
+    @Override
     public boolean postfire() throws IllegalActionException {
-        // This method contains two places where refirings can be
-        // scheduled. We only want to schedule a refiring once.
-        Time currentTime = getDirector().getModelTime();
+        getDirector().getModelTime();
 
         // If a token was actually sent to a delegated receiver
         // by the fire() method, then remove that token from
         // the queue and, if there are still tokens in the queue,
         // request another firing at the time those tokens should
         // be delivered to the delegated receiver.
-        if ( _tokens.size() > 0) {
+        if (_tokens.size() > 0) {
             // Discard the token that was sent to the output in fire().
             _tokens.take();
             _tokenCount--;
@@ -493,6 +499,7 @@ public abstract class ParameterEstimator extends AtomicCommunicationAspect {
      *  @param token The token to send.
      *  @exception IllegalActionException If the refiring request fails.
      */
+    @Override
     public void sendToken(Receiver source, Receiver receiver, Token token)
             throws IllegalActionException {
         // If the token is null, then this means there is not actually
@@ -502,10 +509,9 @@ public abstract class ParameterEstimator extends AtomicCommunicationAspect {
         if (getDirector() instanceof DEDirector && token == null) {
             return;
         }
-        Time currentTime = getDirector().getModelTime();
+        getDirector().getModelTime();
         // Send "absent" if there is nothing to send.
-        if (_tokens.size() == 0
-                || receiver != _nextReceiver) {
+        if (_tokens.size() == 0 || receiver != _nextReceiver) {
             // At the current time, there is no token to send.
             // At least in the Continuous domain, we need to make sure
             // the delegated receiver knows this so that it becomes
@@ -568,17 +574,15 @@ public abstract class ParameterEstimator extends AtomicCommunicationAspect {
      *   an attribute with the name of this attribute.
      *  @see #getContainer()
      */
+    @Override
     public void setContainer(CompositeEntity container)
             throws IllegalActionException, NameDuplicationException {
         super.setContainer(container);
         if (container != null) {
             List<NamedObj> decoratedObjects = decoratedObjects();
             for (NamedObj decoratedObject : decoratedObjects) {
-                // The following will create the DecoratorAttributes if it does not
-                // already exist, and associate it with this decorator.
-                BusAttributes decoratorAttributes = (BusAttributes) decoratedObject
-                        .getDecoratorAttributes(this);
-                
+                decoratedObject.getDecoratorAttributes(this);
+
             }
         }
     }
@@ -586,13 +590,13 @@ public abstract class ParameterEstimator extends AtomicCommunicationAspect {
     /**
      * Nothing to do.
      */
+    @Override
     public void reset() {
     }
 
     protected boolean _EMParameterEstimation() {
         // get FIRST stream for now
-        
-        
+
         boolean success = false;
         _initializeEMParameters();
 
@@ -615,8 +619,7 @@ public abstract class ParameterEstimator extends AtomicCommunicationAspect {
         }
 
         return success;
-        
-        
+
     }
 
     protected abstract double emissionProbability(double y, int hiddenState);
@@ -630,7 +633,7 @@ public abstract class ParameterEstimator extends AtomicCommunicationAspect {
         _transitionMatrix = new double[_nStates][_nStates];
         _A0 = new double[_nStates][_nStates];
         _priors = new double[_nStates];
-        _observedTokens = new HashMap<String,List<Double>>();
+        _observedTokens = new HashMap<String, List<Double>>();
     }
 
     protected abstract void _initializeEMParameters();
@@ -638,13 +641,13 @@ public abstract class ParameterEstimator extends AtomicCommunicationAspect {
     protected abstract void _iterateEM();
 
     protected abstract boolean _checkForConvergence(int i);
-    
+
     ///////////////////////////////////////////////////////////////////
     //                          public variables                     //
-    
+
     /** Schedule a refiring of the actor.
-    *  @exception IllegalActionException Thrown if the actor cannot be rescheduled
-    */
+     *  @exception IllegalActionException Thrown if the actor cannot be rescheduled
+     */
     protected void _scheduleRefire() throws IllegalActionException {
         Time currentTime = getDirector().getModelTime();
         _nextReceiver = (Receiver) ((Object[]) _tokens.get(0))[0];
@@ -727,7 +730,7 @@ public abstract class ParameterEstimator extends AtomicCommunicationAspect {
                         xi[t][now][next] = alphas[t][now]
                                 * emissionProbability(y[t + 1], next)
                                 * gamma[t + 1][next] * A[now][next]
-                                / alphas[t + 1][next]; // MJ Eqn (11.45)
+                                        / alphas[t + 1][next]; // MJ Eqn (11.45)
                     }
                     A_hat[now][next] += xi[t][now][next];
                 }
@@ -876,7 +879,7 @@ public abstract class ParameterEstimator extends AtomicCommunicationAspect {
                         xi[t][now][next] = alphas[t][now]
                                 * emissionProbability(y[t + 1], next)
                                 * gamma[t + 1][next] * A[now][next]
-                                / alphas[t + 1][next];
+                                        / alphas[t + 1][next];
                     }
                     A_hat[now][next] += xi[t][now][next];
                 }
@@ -987,8 +990,8 @@ public abstract class ParameterEstimator extends AtomicCommunicationAspect {
 
     /* Observation array*/
     protected double[] _observations;
-    
-    protected HashMap<String,List<Double>> _observedTokens;
+
+    protected HashMap<String, List<Double>> _observedTokens;
 
     /* Prior distribution on hidden states*/
     protected double[] _priors;
@@ -1004,11 +1007,9 @@ public abstract class ParameterEstimator extends AtomicCommunicationAspect {
     HashMap newEstimates;
 
     double likelihood;
-    
-    
+
     /** Next receiver to which the next token to be sent is destined. */
     private Receiver _nextReceiver;
-
 
     /** Map of receivers and tokens to which the token provided via
      *  sendToken() should be sent to. This is used with FixedPointDirectors.
@@ -1019,7 +1020,6 @@ public abstract class ParameterEstimator extends AtomicCommunicationAspect {
      *  receivers. The tokens are stored in _receiversAndTokensToSendTo.
      */
     private FIFOQueue _tempReceiverQueue;
-
 
     /** Tokens stored for processing. This is used with the DE Director. */
     private FIFOQueue _tokens;
@@ -1034,7 +1034,7 @@ public abstract class ParameterEstimator extends AtomicCommunicationAspect {
          */
         public BusAttributes(NamedObj target,
                 AtomicCommunicationAspect decorator)
-                throws IllegalActionException, NameDuplicationException {
+                        throws IllegalActionException, NameDuplicationException {
             super(target, decorator);
         }
 
@@ -1049,9 +1049,6 @@ public abstract class ParameterEstimator extends AtomicCommunicationAspect {
             super(target, name);
         }
 
-
-
     }
-    
 
 }

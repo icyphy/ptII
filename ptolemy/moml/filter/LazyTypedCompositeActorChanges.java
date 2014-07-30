@@ -57,6 +57,7 @@ public class LazyTypedCompositeActorChanges extends MoMLFilterSimple {
      *  @param xmlFile The file currently being parsed.
      *  @return the value of the attributeValue argument.
      */
+    @Override
     public String filterAttributeValue(NamedObj container, String element,
             String attributeName, String attributeValue, String xmlFile) {
 
@@ -84,7 +85,7 @@ public class LazyTypedCompositeActorChanges extends MoMLFilterSimple {
                     && container != null) {
                 if (container instanceof InstantiableNamedObj
                         && !((InstantiableNamedObj) container)
-                                .isWithinClassDefinition()) {
+                        .isWithinClassDefinition()) {
                     // We found a class outside of a class change.
                     MoMLParser.setModified(true);
                     return "ptolemy.actor.LazyTypedCompositeActor";
@@ -103,6 +104,7 @@ public class LazyTypedCompositeActorChanges extends MoMLFilterSimple {
      *  @param xmlFile The file currently being parsed.
      *  @exception Exception Not thrown in this base class.
      */
+    @Override
     public void filterEndElement(NamedObj container, String elementName,
             StringBuffer currentCharData, String xmlFile) throws Exception {
     }
@@ -110,6 +112,7 @@ public class LazyTypedCompositeActorChanges extends MoMLFilterSimple {
     /** Return a string that describes what the filter does.
      *  @return the description of the filter that ends with a newline.
      */
+    @Override
     public String toString() {
         return getClass().getName()
                 + ": change TypedCompositeActors that are not within class definitions to"

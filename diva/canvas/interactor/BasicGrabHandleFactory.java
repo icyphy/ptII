@@ -37,6 +37,7 @@ public class BasicGrabHandleFactory implements GrabHandleFactory {
     /** Create a new basic grab-handle. This is a default
      * instance of BasicGrabHandle.
      */
+    @Override
     public GrabHandle createGrabHandle(Site s) {
         return new BasicGrabHandle(s);
     }

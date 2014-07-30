@@ -98,6 +98,7 @@ public class FFT extends SDFTransformer {
      *  @param attribute The attribute that has changed.
      *  @exception IllegalActionException If the parameters are out of range.
      */
+    @Override
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         if (attribute == order) {
@@ -121,6 +122,7 @@ public class FFT extends SDFTransformer {
     /** Consume the inputs and produce the outputs of the FFT filter.
      *  @exception IllegalActionException If a runtime type error occurs.
      */
+    @Override
     public void fire() throws IllegalActionException {
         super.fire();
 

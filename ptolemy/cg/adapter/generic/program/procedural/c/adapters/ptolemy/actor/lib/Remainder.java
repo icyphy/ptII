@@ -57,6 +57,7 @@ public class Remainder extends NamedProgramCodeGeneratorAdapter {
      * code generated for the Remainder actor.
      * @exception IllegalActionException Not Thrown in this subclass.
      */
+    @Override
     public Set getHeaderFiles() throws IllegalActionException {
         Set files = super.getHeaderFiles();
         files.add("<math.h>");

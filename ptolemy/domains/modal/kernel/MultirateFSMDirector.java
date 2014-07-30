@@ -113,6 +113,7 @@ public class MultirateFSMDirector extends FSMDirector {
      *   the current state has no or more than one refinement, or if
      *   the current state has any preemptive transitions.
      */
+    @Override
     public void fire() throws IllegalActionException {
         FSMActor controller = getController();
         State currentState = controller.currentState();
@@ -140,6 +141,7 @@ public class MultirateFSMDirector extends FSMDirector {
      *   superclass returns.
      *  @exception IllegalActionException If thrown by the executive director.
      */
+    @Override
     public Time fireAtCurrentTime(Actor actor) throws IllegalActionException {
         FSMActor controller = getController();
         if (actor != controller) {
@@ -155,6 +157,7 @@ public class MultirateFSMDirector extends FSMDirector {
      *   than one refinement, or the initialize() method of one of the
      *   associated actors throws it.
      */
+    @Override
     public void initialize() throws IllegalActionException {
         try {
             _inInitialize = true;
@@ -181,6 +184,7 @@ public class MultirateFSMDirector extends FSMDirector {
      *  This returns an instance of SDFReceiver.
      *  @return A new SDFReceiver.
      */
+    @Override
     public Receiver newReceiver() {
         return new SDFReceiver();
     }
@@ -191,6 +195,7 @@ public class MultirateFSMDirector extends FSMDirector {
      *  @exception IllegalActionException If a refinement throws it, or
      *   if there is no controller.
      */
+    @Override
     public boolean postfire() throws IllegalActionException {
         return _doPostfire();
     }
@@ -204,6 +209,7 @@ public class MultirateFSMDirector extends FSMDirector {
      *   non-transient initial state has no or more than one refinement, or if
      *   the preinitialize() method of one of the associated actors throws it.
      */
+    @Override
     public void preinitialize() throws IllegalActionException {
         // The following is just a check to make sure the top-level
         // director is not a MultirateFSMDirector. It will throw
@@ -226,6 +232,7 @@ public class MultirateFSMDirector extends FSMDirector {
      *  @return True indicating a ModalModel under control of this director
      *   does support multirate firing.
      */
+    @Override
     public boolean supportMultirateFiring() {
         return true;
     }
@@ -240,6 +247,7 @@ public class MultirateFSMDirector extends FSMDirector {
      *  @exception IllegalActionException If the port is not an opaque
      *   input port.
      */
+    @Override
     public boolean transferInputs(IOPort port) throws IllegalActionException {
         if (!port.isInput() || !port.isOpaque()) {
             throw new IllegalActionException(this, port,
@@ -302,6 +310,7 @@ public class MultirateFSMDirector extends FSMDirector {
      *  @exception IllegalActionException If the port is not an opaque
      *   output port.
      */
+    @Override
     public boolean transferOutputs(IOPort port) throws IllegalActionException {
         if (!port.isOutput() || !port.isOpaque()) {
             throw new IllegalActionException(this, port,
@@ -362,7 +371,7 @@ public class MultirateFSMDirector extends FSMDirector {
      */
     protected void _declareDependency(ConstVariableModelAnalysis analysis,
             IOPort port, String name, List dependents)
-            throws IllegalActionException {
+                    throws IllegalActionException {
         Variable variable = DFUtilities.getRateVariable(port, name);
         DependencyDeclaration declaration = (DependencyDeclaration) variable
                 .getAttribute("_MultirateFSMRateDependencyDeclaration",
@@ -564,7 +573,7 @@ public class MultirateFSMDirector extends FSMDirector {
             // Update the refinement's production and consumption rates.
             refinementDir.invalidateSchedule();
             ((StaticSchedulingDirector) refinementDir).getScheduler()
-                    .getSchedule();
+            .getSchedule();
         }
 
         // Record consumption and production rates in the ports of this actor.

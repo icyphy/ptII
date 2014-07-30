@@ -276,6 +276,7 @@ public class CompositeEntity extends ComponentEntity {
      *  cannot be cloned.
      *  @return A new CompositeEntity.
      */
+    @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         try {
             workspace().getReadAccess();
@@ -615,6 +616,7 @@ public class CompositeEntity extends ComponentEntity {
      *  @return An iterator over instances of NamedObj contained by this
      *   object.
      */
+    @Override
     public Iterator containedObjectsIterator() {
         return new ContainedObjectsIterator();
     }
@@ -647,8 +649,8 @@ public class CompositeEntity extends ComponentEntity {
                 while (entities.hasNext()) {
                     ComponentEntity entity = (ComponentEntity) entities.next();
                     if (/*!entity.isClassDefinition() */
-                    /* &&!entity.isOpaque() */
-                    entity instanceof CompositeEntity) {
+                            /* &&!entity.isOpaque() */
+                            entity instanceof CompositeEntity) {
                         result.add(entity);
                         result.addAll(((CompositeEntity) entity)
                                 .deepCompositeEntityList());
@@ -786,7 +788,7 @@ public class CompositeEntity extends ComponentEntity {
                         if (entity instanceof CompositeEntity) {
                             _addAll(result,
                                     ((CompositeEntity) entity)
-                                            .deepRelationSet());
+                                    .deepRelationSet());
                         }
                     }
                 }
@@ -806,6 +808,7 @@ public class CompositeEntity extends ComponentEntity {
      *  @deprecated Use deepEntityList() instead.
      *  @return An enumeration of opaque ComponentEntity objects.
      */
+    @Deprecated
     public Enumeration deepGetEntities() {
         return Collections.enumeration(deepEntityList());
     }
@@ -1096,7 +1099,7 @@ public class CompositeEntity extends ComponentEntity {
                             && ((port.getContainer()).getDerivedLevel() <= depth)) {
                         continue;
                     }
-                    */
+                     */
 
                     // Apply filter.
                     if (filter == null
@@ -1267,6 +1270,7 @@ public class CompositeEntity extends ComponentEntity {
      *  @exception IOException If an I/O error occurs.
      *  @see ptolemy.kernel.util.MoMLExportable
      */
+    @Override
     public void exportMoML(Writer output, int depth, String name)
             throws IOException {
         try {
@@ -1288,6 +1292,7 @@ public class CompositeEntity extends ComponentEntity {
      *  @param name The name of the desired attribute.
      *  @return The requested attribute if it is found, null otherwise.
      */
+    @Override
     public Attribute getAttribute(String name) {
         try {
             _workspace.getReadAccess();
@@ -1332,6 +1337,7 @@ public class CompositeEntity extends ComponentEntity {
      *  @deprecated Use entityList() instead.
      *  @return An enumeration of ComponentEntity objects.
      */
+    @Deprecated
     public Enumeration getEntities() {
         return Collections.enumeration(entityList());
     }
@@ -1384,6 +1390,7 @@ public class CompositeEntity extends ComponentEntity {
      *  @param name The name of the desired port.
      *  @return A port with the specified name, or null if none exists.
      */
+    @Override
     public Port getPort(String name) {
         try {
             _workspace.getReadAccess();
@@ -1448,6 +1455,7 @@ public class CompositeEntity extends ComponentEntity {
      *  @deprecated Use relationList() instead.
      *  @return An enumeration of ComponentRelation objects.
      */
+    @Deprecated
     public Enumeration getRelations() {
         return Collections.enumeration(relationList());
     }
@@ -1458,6 +1466,7 @@ public class CompositeEntity extends ComponentEntity {
      *  To hide the contents of the entity, they should override isOpaque().
      *  @return False.
      */
+    @Override
     public final boolean isAtomic() {
         return false;
     }
@@ -1467,6 +1476,7 @@ public class CompositeEntity extends ComponentEntity {
      *  @return True if the entity is opaque.
      *  @see ptolemy.kernel.CompositeEntity
      */
+    @Override
     public boolean isOpaque() {
         return false;
     }
@@ -1569,7 +1579,7 @@ public class CompositeEntity extends ComponentEntity {
                 while (entities.hasNext()) {
                     ComponentEntity entity = (ComponentEntity) entities.next();
                     if (/*!entity.isClassDefinition()&& !entity.isOpaque()*/
-                    entity instanceof CompositeEntity) {
+                            entity instanceof CompositeEntity) {
                         result.add(entity);
                         result.addAll(((CompositeEntity) entity)
                                 .lazyAllCompositeTransparentAndOpaqueEntityList());
@@ -1684,6 +1694,7 @@ public class CompositeEntity extends ComponentEntity {
      *  @deprecated Use numberOfEntities
      *  @see #numberOfEntities()
      */
+    @Deprecated
     public int numEntities() {
         return numberOfEntities();
     }
@@ -1693,6 +1704,7 @@ public class CompositeEntity extends ComponentEntity {
      *  @return The number of relations.
      *  @deprecated Use numberOfRelations.
      */
+    @Deprecated
     public int numRelations() {
         return numberOfRelations();
     }
@@ -1810,6 +1822,7 @@ public class CompositeEntity extends ComponentEntity {
      *  @exception IllegalActionException If the argument is true and
      *   this entity contains ports with links.
      */
+    @Override
     public void setClassDefinition(boolean isClass)
             throws IllegalActionException {
         // The situation is that an AO class definition is not allowed to have
@@ -1856,6 +1869,7 @@ public class CompositeEntity extends ComponentEntity {
      *   collides with a name already in the container.
      *  @see #getContainer()
      */
+    @Override
     public void setContainer(CompositeEntity container)
             throws IllegalActionException, NameDuplicationException {
         if (container == null) {
@@ -2019,19 +2033,19 @@ public class CompositeEntity extends ComponentEntity {
             }
 
             return "Size Statistics for "
-                    + getFullName()
-                    + "\nAtomicEntities: "
-                    + entityCount
-                    + "\nCompositeEntities: "
-                    + compositeEntityCount
-                    + "\nOpaqueCompositeEntities: "
-                    + opaqueCompositeEntityCount
-                    + "\nRelations: "
-                    + relationCount
-                    + "\nAttributes: "
-                    + attributeCount
-                    + (clazz == null ? "" : "\nEntities of type \""
-                            + clazz.getName() + "\": " + entityClassCount)
+            + getFullName()
+            + "\nAtomicEntities: "
+            + entityCount
+            + "\nCompositeEntities: "
+            + compositeEntityCount
+            + "\nOpaqueCompositeEntities: "
+            + opaqueCompositeEntityCount
+            + "\nRelations: "
+            + relationCount
+            + "\nAttributes: "
+            + attributeCount
+            + (clazz == null ? "" : "\nEntities of type \""
+                    + clazz.getName() + "\": " + entityClassCount)
                     + "\nAtomic Actor Names and Counts:\n" + actorNames
                     + "\nComposite Entity Depths and Counts:\n"
                     + compositeEntityDepths;
@@ -2060,6 +2074,7 @@ public class CompositeEntity extends ComponentEntity {
      *  @param prefix A prefix for the name.
      *  @return A unique name.
      */
+    @Override
     public String uniqueName(String prefix) {
         if (prefix == null) {
             prefix = "null";
@@ -2175,6 +2190,7 @@ public class CompositeEntity extends ComponentEntity {
      *  @exception IllegalActionException If the class found in scope
      *   cannot be set.
      */
+    @Override
     protected void _adjustDeferrals() throws IllegalActionException {
         super._adjustDeferrals();
 
@@ -2204,6 +2220,7 @@ public class CompositeEntity extends ComponentEntity {
      *  implement the {@link Decorator} interface, but also entities.
      *  @return A list of contained decorators.
      */
+    @Override
     protected List<Decorator> _containedDecorators() {
         List<Decorator> result = super._containedDecorators();
         result.addAll(entityList(Decorator.class));
@@ -2235,7 +2252,7 @@ public class CompositeEntity extends ComponentEntity {
                         result.add(entity);
                     } else {
                         ((CompositeEntity) entity)
-                                ._deepOpaqueEntityList(result);
+                        ._deepOpaqueEntityList(result);
                     }
                 }
             }
@@ -2258,6 +2275,7 @@ public class CompositeEntity extends ComponentEntity {
      *  @return A description of the object.
      * @exception IllegalActionException
      */
+    @Override
     protected String _description(int detail, int indent, int bracket)
             throws IllegalActionException {
         try {
@@ -2330,6 +2348,7 @@ public class CompositeEntity extends ComponentEntity {
      *  @param depth The depth in the hierarchy, to determine indenting.
      *  @exception IOException If an I/O error occurs.
      */
+    @Override
     protected void _exportMoMLContents(Writer output, int depth)
             throws IOException {
         if (depth == 1 && getContainer() == null) {
@@ -2345,8 +2364,8 @@ public class CompositeEntity extends ComponentEntity {
             } else if (getAttribute("_createdBy") != null) {
                 try {
                     ((VersionAttribute) getAttribute("_createdBy"))
-                            .setExpression(VersionAttribute.CURRENT_VERSION
-                                    .getExpression());
+                    .setExpression(VersionAttribute.CURRENT_VERSION
+                            .getExpression());
                 } catch (IllegalActionException ex) {
                     throw new InternalErrorException(this, ex,
                             "Failed to update _createdBy");
@@ -2481,6 +2500,7 @@ public class CompositeEntity extends ComponentEntity {
      *  @exception IllegalActionException If the superclass throws it
      *  or if handleModelError() throws it.
      */
+    @Override
     protected void _validateSettables(Collection attributesValidated)
             throws IllegalActionException {
         super._validateSettables(attributesValidated);
@@ -2832,7 +2852,7 @@ public class CompositeEntity extends ComponentEntity {
      *  then relations.
      */
     protected class ContainedObjectsIterator extends
-            Entity.ContainedObjectsIterator {
+    Entity.ContainedObjectsIterator {
         /** Create an iterator over all the contained objects, which
          *  for CompositeEntities are attributes, ports, classes
          *  entities, and relations.
@@ -2849,6 +2869,7 @@ public class CompositeEntity extends ComponentEntity {
          *  attributes, ports, classes, entities, or relations.
          *  @return True if there are more elements.
          */
+        @Override
         public boolean hasNext() {
             if (super.hasNext()) {
                 return true;
@@ -2866,6 +2887,7 @@ public class CompositeEntity extends ComponentEntity {
          *  In this base class, this is the next attribute or port.
          *  @return The next attribute or port.
          */
+        @Override
         public Object next() {
             if (super.hasNext()) {
                 return super.next();
@@ -2885,6 +2907,7 @@ public class CompositeEntity extends ComponentEntity {
         /** The remove() method is not supported because is is not
          *  supported in NamedObj.ContainedObjectsIterator.remove().
          */
+        @Override
         public void remove() {
             super.remove();
         }
@@ -2898,6 +2921,7 @@ public class CompositeEntity extends ComponentEntity {
 
     /** A comparator for a &lt;String&gt;&lt;Integer&gt; Map. */
     private static class CountComparator implements Comparator {
+        @Override
         public int compare(Object object1, Object object2) {
             int result = 0;
             Map.Entry entry1 = (Map.Entry) object1;

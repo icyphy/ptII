@@ -164,6 +164,7 @@ public class Waveform extends DiscreteClock {
      *   negative; or the argument is the <i>order</i> parameter and the order
      *   is not supported by the Interpolation class.
      */
+    @Override
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         if (attribute == interpolation) {
@@ -192,6 +193,7 @@ public class Waveform extends DiscreteClock {
      *   fireAt() method of the director throws it, or if the director does not
      *   agree to fire the actor at the specified time.
      */
+    @Override
     public synchronized void initialize() throws IllegalActionException {
         super.initialize();
         _nextOutputIndex = 0;
@@ -379,6 +381,7 @@ public class Waveform extends DiscreteClock {
      *  using the specified interpolation method.
      *  @exception IllegalActionException If sending the output fails.
      */
+    @Override
     protected void _produceIntermediateOutput() throws IllegalActionException {
         if (!_enabled) {
             output.sendClear(0);
@@ -394,6 +397,7 @@ public class Waveform extends DiscreteClock {
      *  time of the next one.
      *  @exception IllegalActionException If the period cannot be evaluated.
      */
+    @Override
     protected void _skipToNextPhase() throws IllegalActionException {
         _phase++;
         if (_phase >= _offsets.length) {

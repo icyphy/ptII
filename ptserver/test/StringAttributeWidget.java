@@ -23,7 +23,7 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
-*/
+ */
 package ptserver.test;
 
 import ptolemy.actor.TypedAtomicActor;
@@ -60,8 +60,8 @@ public class StringAttributeWidget extends TypedAtomicActor {
     }
 
     /**
-    * @return the _attribute
-    */
+     * @return the _attribute
+     */
     public String getAttributeValue() {
         return _attribute.getExpression();
     }

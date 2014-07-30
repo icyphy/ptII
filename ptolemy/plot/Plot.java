@@ -237,6 +237,7 @@ public class Plot extends PlotBox implements PlotInterface {
      *  @param dataset The dataset index.
      *  @param legend The label for the dataset.
      */
+    @Override
     public synchronized void addLegend(int dataset, String legend) {
         _checkDatasetIndex(dataset);
 
@@ -248,7 +249,7 @@ public class Plot extends PlotBox implements PlotInterface {
             String possibleLegend = getLegend(dataset);
 
             if (possibleLegend == null
-                    || (/*possibleLegend != null &&*/ !possibleLegend
+                    || (/*possibleLegend != null &&*/!possibleLegend
                             .equals(legend))) {
                 super.addLegend(dataset, legend);
             }
@@ -277,9 +278,11 @@ public class Plot extends PlotBox implements PlotInterface {
      *  @param connected If true, a line is drawn to connect to the previous
      *   point.
      */
+    @Override
     public synchronized void addPoint(final int dataset, final double x,
             final double y, final boolean connected) {
         Runnable doAddPoint = new RunnableExceptionCatcher(new Runnable() {
+            @Override
             public void run() {
                 _addPoint(dataset, x, y, 0, 0, connected, false);
             }
@@ -316,10 +319,12 @@ public class Plot extends PlotBox implements PlotInterface {
      *  @param connected If true, a line is drawn to connect to the previous
      *   point.
      */
+    @Override
     public synchronized void addPointWithErrorBars(final int dataset,
             final double x, final double y, final double yLowEB,
             final double yHighEB, final boolean connected) {
         Runnable doAddPoint = new RunnableExceptionCatcher(new Runnable() {
+            @Override
             public void run() {
                 _addPoint(dataset, x, y, yLowEB, yHighEB, connected, true);
             }
@@ -342,8 +347,10 @@ public class Plot extends PlotBox implements PlotInterface {
      *  coordinate so that they are executed in the order that you
      *  called them.
      */
+    @Override
     public synchronized void clear(final boolean format) {
         Runnable doClear = new RunnableExceptionCatcher(new Runnable() {
+            @Override
             public void run() {
                 _clear(format);
             }
@@ -365,8 +372,10 @@ public class Plot extends PlotBox implements PlotInterface {
      *
      *  @param dataset The dataset to clear.
      */
+    @Override
     public synchronized void clear(final int dataset) {
         Runnable doClear = new RunnableExceptionCatcher(new Runnable() {
+            @Override
             public void run() {
                 _clear(dataset);
             }
@@ -392,8 +401,10 @@ public class Plot extends PlotBox implements PlotInterface {
      *  @param dataset The data set index.
      *  @param index The index of the point to erase.
      */
+    @Override
     public synchronized void erasePoint(final int dataset, final int index) {
         Runnable doErasePoint = new RunnableExceptionCatcher(new Runnable() {
+            @Override
             public void run() {
                 _erasePoint(dataset, index);
             }
@@ -416,8 +427,10 @@ public class Plot extends PlotBox implements PlotInterface {
      *  coordinate so that they are executed in the order that you
      *  called them.
      */
+    @Override
     public synchronized void fillPlot() {
         Runnable doFill = new RunnableExceptionCatcher(new Runnable() {
+            @Override
             public void run() {
                 _fillPlot();
             }
@@ -435,6 +448,7 @@ public class Plot extends PlotBox implements PlotInterface {
      *  @return True if points will be connected by default
      * @see #setConnected
      */
+    @Override
     public boolean getConnected() {
         // FindBugs reports "Unsynchronize get method, synchronized
         // set method".  FindBugs reports that this method is
@@ -451,6 +465,7 @@ public class Plot extends PlotBox implements PlotInterface {
      *  @see #setImpulses(boolean)
      *  @see #setImpulses(boolean, int)
      */
+    @Override
     public boolean getImpulses() {
         // FindBugs reports "Unsynchronize get method, synchronized
         // set method".  FindBugs reports that this method is
@@ -466,6 +481,7 @@ public class Plot extends PlotBox implements PlotInterface {
      *  @return True if line styles are to be used.
      *  @see #setLineStyles(boolean)
      */
+    @Override
     public boolean getLineStyles() {
         // FIXME: should this be syncronized?
         // FindBugs reports "Unsynchronize get method, synchronized
@@ -478,6 +494,7 @@ public class Plot extends PlotBox implements PlotInterface {
      *  @return A string specifying the style for points.
      *  @see #setMarksStyle
      */
+    @Override
     public synchronized String getMarksStyle() {
         // NOTE: If the number of marks increases, we will need to do
         // something better here...
@@ -501,6 +518,7 @@ public class Plot extends PlotBox implements PlotInterface {
      *  @return The maximum number of data sets
      *  @deprecated
      */
+    @Override
     @Deprecated
     public int getMaxDataSets() {
         return Integer.MAX_VALUE;
@@ -509,6 +527,7 @@ public class Plot extends PlotBox implements PlotInterface {
     /** Return the actual number of data sets.
      *  @return The number of data sets that have been created.
      */
+    @Override
     public synchronized int getNumDataSets() {
         return _points.size();
     }
@@ -520,6 +539,7 @@ public class Plot extends PlotBox implements PlotInterface {
      *  @since Ptplot 5.3
      *  @see #setReuseDatasets(boolean)
      */
+    @Override
     public boolean getReuseDatasets() {
         return _reuseDatasets;
     }
@@ -530,6 +550,7 @@ public class Plot extends PlotBox implements PlotInterface {
      *  the new (XML) file format.
      *  @deprecated
      */
+    @Override
     @Deprecated
     public void parseFile(String filespec, URL documentBase) {
         _firstInSet = true;
@@ -541,6 +562,7 @@ public class Plot extends PlotBox implements PlotInterface {
      *  points are not marked.
      *  @param value True when disconnections should be marked.
      */
+    @Override
     public void markDisconnections(boolean value) {
         _markDisconnections = value;
     }
@@ -551,6 +573,7 @@ public class Plot extends PlotBox implements PlotInterface {
      *  @param inputStream The input stream.
      *  @exception IOException If the stream cannot be read.
      */
+    @Override
     public synchronized void read(InputStream inputStream) throws IOException {
         super.read(inputStream);
         _firstInSet = true;
@@ -564,9 +587,11 @@ public class Plot extends PlotBox implements PlotInterface {
      *  lock on the Plot object, or deadlock will result (unless the
      *  calling thread is the event dispatch thread).
      */
+    @Override
     public synchronized void samplePlot() {
         // This needs to be done in the event thread.
         Runnable sample = new RunnableExceptionCatcher(new Runnable() {
+            @Override
             public void run() {
                 synchronized (Plot.this) {
                     // Create a sample plot.
@@ -635,6 +660,7 @@ public class Plot extends PlotBox implements PlotInterface {
      *  property, not per dataset.
      *  @param on If true, turn bars on.
      */
+    @Override
     public void setBars(boolean on) {
         // Ensure replot of offscreen buffer.
         _plotImage = null;
@@ -648,6 +674,7 @@ public class Plot extends PlotBox implements PlotInterface {
      *  @param width The width of the bars.
      *  @param offset The offset per data set.
      */
+    @Override
     public synchronized void setBars(double width, double offset) {
         // Ensure replot of offscreen buffer.
         _plotImage = null;
@@ -670,6 +697,7 @@ public class Plot extends PlotBox implements PlotInterface {
      *  @see #setConnected(boolean, int)
      *  @see #getConnected
      */
+    @Override
     public void setConnected(boolean on) {
         // Ensure replot of offscreen buffer.
         _plotImage = null;
@@ -689,6 +717,7 @@ public class Plot extends PlotBox implements PlotInterface {
      *  @see #setConnected(boolean)
      *  @see #getConnected
      */
+    @Override
     public synchronized void setConnected(boolean on, int dataset) {
         // Ensure replot of offscreen buffer.
         _plotImage = null;
@@ -705,6 +734,7 @@ public class Plot extends PlotBox implements PlotInterface {
      *  @param on If true, draw a stem plot.
      *  @see #getImpulses
      */
+    @Override
     public synchronized void setImpulses(boolean on) {
         // Ensure replot of offscreen buffer.
         _plotImage = null;
@@ -719,6 +749,7 @@ public class Plot extends PlotBox implements PlotInterface {
      *  @param dataset The dataset to which this should apply.
      *  @see #getImpulses
      */
+    @Override
     public synchronized void setImpulses(boolean on, int dataset) {
         // Ensure replot of offscreen buffer.
         _plotImage = null;
@@ -735,6 +766,7 @@ public class Plot extends PlotBox implements PlotInterface {
      *  "dashed", "dotdashed", "dotdotdashed".
      *  @param dataset The data set index.
      */
+    @Override
     public synchronized void setLineStyle(String styleString, int dataset) {
         float[] dashvalues;
         // Ensure replot of offscreen buffer.
@@ -797,6 +829,7 @@ public class Plot extends PlotBox implements PlotInterface {
      *  line styles.
      *  @see #getLineStyles()
      */
+    @Override
     public synchronized void setLineStyles(boolean lineStyles) {
         // Ensure replot of offscreen buffer.
         _plotImage = null;
@@ -817,6 +850,7 @@ public class Plot extends PlotBox implements PlotInterface {
      *  @param style A string specifying the style for points.
      *  @see #getMarksStyle
      */
+    @Override
     public synchronized void setMarksStyle(String style) {
         // Ensure replot of offscreen buffer.
         _plotImage = null;
@@ -844,6 +878,7 @@ public class Plot extends PlotBox implements PlotInterface {
      *  @param dataset The dataset to which this should apply.
      *  @see #getMarksStyle
      */
+    @Override
     public synchronized void setMarksStyle(String style, int dataset) {
         // Ensure replot of offscreen buffer.
         _plotImage = null;
@@ -874,6 +909,7 @@ public class Plot extends PlotBox implements PlotInterface {
      *  @param numSets The number of data sets.
      *  @deprecated
      */
+    @Override
     @Deprecated
     public void setNumSets(int numSets) {
         // Ensure replot of offscreen buffer.
@@ -922,6 +958,7 @@ public class Plot extends PlotBox implements PlotInterface {
      *  on the next call to addPoint().
      *  @param persistence Number of points to persist for.
      */
+    @Override
     public void setPointsPersistence(int persistence) {
         // Ensure replot of offscreen buffer.
         _plotImage = null;
@@ -935,6 +972,7 @@ public class Plot extends PlotBox implements PlotInterface {
      *  @param on If true, then merge datasets.
      *  @see #getReuseDatasets()
      */
+    @Override
     public void setReuseDatasets(boolean on) {
         // Ensure replot of offscreen buffer.
         _plotImage = null;
@@ -960,6 +998,7 @@ public class Plot extends PlotBox implements PlotInterface {
      *  on the next call to addPoint().
      *  @param persistence Persistence in units of the horizontal axis.
      */
+    @Override
     public void setXPersistence(double persistence) {
         // Ensure replot of offscreen buffer.
         _plotImage = null;
@@ -971,6 +1010,7 @@ public class Plot extends PlotBox implements PlotInterface {
     /** Write plot data information to the specified output stream in PlotML.
      *  @param output A buffered print writer.
      */
+    @Override
     public synchronized void writeData(PrintWriter output) {
         super.writeData(output);
 
@@ -1037,6 +1077,7 @@ public class Plot extends PlotBox implements PlotInterface {
      *  PlotML, an XML scheme.
      *  @param output A buffered print writer.
      */
+    @Override
     public synchronized void writeFormat(PrintWriter output) {
         super.writeFormat(output);
 
@@ -1397,6 +1438,7 @@ public class Plot extends PlotBox implements PlotInterface {
      *  @param clearfirst If true, clear the plot before proceeding.
      *  @param drawRectangle The Rectangle to draw in.
      */
+    @Override
     protected synchronized void _drawPlot(Graphics graphics,
             boolean clearfirst, Rectangle drawRectangle) {
         // BRDebug System.err.println("_drawPlot(begin)");
@@ -1490,6 +1532,7 @@ public class Plot extends PlotBox implements PlotInterface {
      *  @param ypos The y position.
      *  @param clip If true, then do not draw outside the range.
      */
+    @Override
     protected void _drawPoint(Graphics graphics, int dataset, long xpos,
             long ypos, boolean clip) {
         // Check to see whether the dataset has a marks directive
@@ -1505,6 +1548,7 @@ public class Plot extends PlotBox implements PlotInterface {
     /** Return Latex plot data.
      *  @return A string suitable for inclusion in Latex.
      */
+    @Override
     protected String _exportLatexPlotData() {
         StringBuilder result = new StringBuilder();
         Formatter formatter = null;
@@ -1547,6 +1591,7 @@ public class Plot extends PlotBox implements PlotInterface {
      *  @param line A command line.
      *  @return True if the line is recognized.
      */
+    @Override
     protected boolean _parseLine(String line) {
         boolean connected = false;
 
@@ -1814,8 +1859,10 @@ public class Plot extends PlotBox implements PlotInterface {
 
     /** Reset a scheduled redraw tasks.
      */
+    @Override
     protected void _resetScheduledTasks() {
         Runnable redraw = new RunnableExceptionCatcher(new Runnable() {
+            @Override
             public void run() {
                 _scheduledBinsToAdd.clear();
                 _scheduledBinsToErase.clear();
@@ -1828,9 +1875,11 @@ public class Plot extends PlotBox implements PlotInterface {
 
     /** Perform a scheduled redraw.
      */
+    @Override
     protected void _scheduledRedraw() {
         if (_needPlotRefill || _needBinRedraw) {
             Runnable redraw = new RunnableExceptionCatcher(new Runnable() {
+                @Override
                 public void run() {
                     ArrayList<Integer> scheduledBinsToAdd = new ArrayList<Integer>();
                     for (int i = 0; i < _scheduledBinsToAdd.size(); ++i) {
@@ -1915,6 +1964,7 @@ public class Plot extends PlotBox implements PlotInterface {
      *  @param output A buffered print writer.
      *  @deprecated
      */
+    @Override
     @Deprecated
     protected void _writeOldSyntax(PrintWriter output) {
         super._writeOldSyntax(output);
@@ -2126,9 +2176,9 @@ public class Plot extends PlotBox implements PlotInterface {
             if (errorBar) {
                 if (yLowEB <= 0.0 || yHighEB <= 0.0) {
                     System.err
-                            .println("Can't plot non-positive Y values "
-                                    + "when the logarithmic Y axis value is specified: "
-                                    + y);
+                    .println("Can't plot non-positive Y values "
+                            + "when the logarithmic Y axis value is specified: "
+                            + y);
                     return;
                 }
 
@@ -2676,9 +2726,9 @@ public class Plot extends PlotBox implements PlotInterface {
                                 dataset,
                                 xpos,
                                 _lry
-                                        - (long) ((point.yLowEB - _yMin) * _yscale),
+                                - (long) ((point.yLowEB - _yMin) * _yscale),
                                 _lry
-                                        - (long) ((point.yHighEB - _yMin) * _yscale),
+                                - (long) ((point.yHighEB - _yMin) * _yscale),
                                 true);
                         prevypos = ypos;
                         prevxpos = xpos;
@@ -2719,208 +2769,208 @@ public class Plot extends PlotBox implements PlotInterface {
         boolean pointinside = ypos <= _lry && ypos >= _uly && xpos <= _lrx
                 && xpos >= _ulx;
 
-        if (!clip || pointinside) {
-            int xposi = (int) xpos;
-            int yposi = (int) ypos;
+                if (!clip || pointinside) {
+                    int xposi = (int) xpos;
+                    int yposi = (int) ypos;
 
-            // If the point is out of range, and being drawn, then it is
-            // probably a legend point.  When printing in black and white,
-            // we want to use a line rather than a point for the legend.
-            // (So that line patterns are visible). The only exception is
-            // when the marks style uses distinct marks, or if there is
-            // no line being drawn.
-            // NOTE: It is unfortunate to have to test the class of graphics,
-            // but there is no easy way around this that I can think of.
-            if (!pointinside && marks != 3 && _isConnected(dataset)
-                    && (graphics instanceof EPSGraphics || !_usecolor)) {
-                // Use our line styles.
-                _drawLine(graphics, dataset, xposi - 6, yposi, xposi + 6,
-                        yposi, false, _width);
-            } else {
-                // Color display.  Use normal legend.
-                switch (marks) {
-                case 0:
-
-                    // If no mark style is given, draw a filled rectangle.
-                    // This is used, for example, to draw the legend.
-                    graphics.fillRect(xposi - 6, yposi - 6, 6, 6);
-                    break;
-
-                case 1:
-
-                    // points -- use 3-pixel ovals.
-                    graphics.fillOval(xposi - 1, yposi - 1, 3, 3);
-                    break;
-
-                case 2:
-
-                    // dots
-                    graphics.fillOval(xposi - _radius, yposi - _radius,
-                            _diameter, _diameter);
-                    break;
-
-                case 3:
-
-                    // various
-                    int[] xpoints;
-
-                    // various
-                    int[] ypoints;
-
-                    // Points are only distinguished up to _MAX_MARKS data sets.
-                    int mark = dataset % _MAX_MARKS;
-
-                    switch (mark) {
-                    case 0:
-
-                        // filled circle
-                        graphics.fillOval(xposi - _radius, yposi - _radius,
-                                _diameter, _diameter);
-                        break;
-
-                    case 1:
-
-                        // cross
-                        graphics.drawLine(xposi - _radius, yposi - _radius,
-                                xposi + _radius, yposi + _radius);
-                        graphics.drawLine(xposi + _radius, yposi - _radius,
-                                xposi - _radius, yposi + _radius);
-                        break;
-
-                    case 2:
-
-                        // square
-                        graphics.drawRect(xposi - _radius, yposi - _radius,
-                                _diameter, _diameter);
-                        break;
-
-                    case 3:
-
-                        // filled triangle
-                        xpoints = new int[4];
-                        ypoints = new int[4];
-                        xpoints[0] = xposi;
-                        ypoints[0] = yposi - _radius;
-                        xpoints[1] = xposi + _radius;
-                        ypoints[1] = yposi + _radius;
-                        xpoints[2] = xposi - _radius;
-                        ypoints[2] = yposi + _radius;
-                        xpoints[3] = xposi;
-                        ypoints[3] = yposi - _radius;
-                        graphics.fillPolygon(xpoints, ypoints, 4);
-                        break;
-
-                    case 4:
-
-                        // diamond
-                        xpoints = new int[5];
-                        ypoints = new int[5];
-                        xpoints[0] = xposi;
-                        ypoints[0] = yposi - _radius;
-                        xpoints[1] = xposi + _radius;
-                        ypoints[1] = yposi;
-                        xpoints[2] = xposi;
-                        ypoints[2] = yposi + _radius;
-                        xpoints[3] = xposi - _radius;
-                        ypoints[3] = yposi;
-                        xpoints[4] = xposi;
-                        ypoints[4] = yposi - _radius;
-                        graphics.drawPolygon(xpoints, ypoints, 5);
-                        break;
-
-                    case 5:
-
-                        // circle
-                        graphics.drawOval(xposi - _radius, yposi - _radius,
-                                _diameter, _diameter);
-                        break;
-
-                    case 6:
-
-                        // plus sign
-                        graphics.drawLine(xposi, yposi - _radius, xposi, yposi
-                                + _radius);
-                        graphics.drawLine(xposi - _radius, yposi, xposi
-                                + _radius, yposi);
-                        break;
-
-                    case 7:
-
-                        // filled square
-                        graphics.fillRect(xposi - _radius, yposi - _radius,
-                                _diameter, _diameter);
-                        break;
-
-                    case 8:
-
-                        // triangle
-                        xpoints = new int[4];
-                        ypoints = new int[4];
-                        xpoints[0] = xposi;
-                        ypoints[0] = yposi - _radius;
-                        xpoints[1] = xposi + _radius;
-                        ypoints[1] = yposi + _radius;
-                        xpoints[2] = xposi - _radius;
-                        ypoints[2] = yposi + _radius;
-                        xpoints[3] = xposi;
-                        ypoints[3] = yposi - _radius;
-                        graphics.drawPolygon(xpoints, ypoints, 4);
-                        break;
-
-                    case 9:
-
-                        // filled diamond
-                        xpoints = new int[5];
-                        ypoints = new int[5];
-                        xpoints[0] = xposi;
-                        ypoints[0] = yposi - _radius;
-                        xpoints[1] = xposi + _radius;
-                        ypoints[1] = yposi;
-                        xpoints[2] = xposi;
-                        ypoints[2] = yposi + _radius;
-                        xpoints[3] = xposi - _radius;
-                        ypoints[3] = yposi;
-                        xpoints[4] = xposi;
-                        ypoints[4] = yposi - _radius;
-                        graphics.fillPolygon(xpoints, ypoints, 5);
-                        break;
-                    default:
-                        throw new RuntimeException("Internal Error.  Mark "
-                                + "style " + mark + " not supported.");
-                    }
-
-                    break;
-
-                case 4:
-
-                    // bigdots
-                    //graphics.setColor(_marksColor);
-                    if (graphics instanceof Graphics2D) {
-                        Object obj = ((Graphics2D) graphics)
-                                .getRenderingHint(RenderingHints.KEY_ANTIALIASING);
-                        ((Graphics2D) graphics).setRenderingHint(
-                                RenderingHints.KEY_ANTIALIASING,
-                                RenderingHints.VALUE_ANTIALIAS_ON);
-                        graphics.fillOval(xposi - 4, yposi - 4, 8, 8);
-                        ((Graphics2D) graphics).setRenderingHint(
-                                RenderingHints.KEY_ANTIALIASING, obj);
+                    // If the point is out of range, and being drawn, then it is
+                    // probably a legend point.  When printing in black and white,
+                    // we want to use a line rather than a point for the legend.
+                    // (So that line patterns are visible). The only exception is
+                    // when the marks style uses distinct marks, or if there is
+                    // no line being drawn.
+                    // NOTE: It is unfortunate to have to test the class of graphics,
+                    // but there is no easy way around this that I can think of.
+                    if (!pointinside && marks != 3 && _isConnected(dataset)
+                            && (graphics instanceof EPSGraphics || !_usecolor)) {
+                        // Use our line styles.
+                        _drawLine(graphics, dataset, xposi - 6, yposi, xposi + 6,
+                                yposi, false, _width);
                     } else {
-                        graphics.fillOval(xposi - 4, yposi - 4, 8, 8);
+                        // Color display.  Use normal legend.
+                        switch (marks) {
+                        case 0:
+
+                            // If no mark style is given, draw a filled rectangle.
+                            // This is used, for example, to draw the legend.
+                            graphics.fillRect(xposi - 6, yposi - 6, 6, 6);
+                            break;
+
+                        case 1:
+
+                            // points -- use 3-pixel ovals.
+                            graphics.fillOval(xposi - 1, yposi - 1, 3, 3);
+                            break;
+
+                        case 2:
+
+                            // dots
+                            graphics.fillOval(xposi - _radius, yposi - _radius,
+                                    _diameter, _diameter);
+                            break;
+
+                        case 3:
+
+                            // various
+                            int[] xpoints;
+
+                            // various
+                            int[] ypoints;
+
+                            // Points are only distinguished up to _MAX_MARKS data sets.
+                            int mark = dataset % _MAX_MARKS;
+
+                            switch (mark) {
+                            case 0:
+
+                                // filled circle
+                                graphics.fillOval(xposi - _radius, yposi - _radius,
+                                        _diameter, _diameter);
+                                break;
+
+                            case 1:
+
+                                // cross
+                                graphics.drawLine(xposi - _radius, yposi - _radius,
+                                        xposi + _radius, yposi + _radius);
+                                graphics.drawLine(xposi + _radius, yposi - _radius,
+                                        xposi - _radius, yposi + _radius);
+                                break;
+
+                            case 2:
+
+                                // square
+                                graphics.drawRect(xposi - _radius, yposi - _radius,
+                                        _diameter, _diameter);
+                                break;
+
+                            case 3:
+
+                                // filled triangle
+                                xpoints = new int[4];
+                                ypoints = new int[4];
+                                xpoints[0] = xposi;
+                                ypoints[0] = yposi - _radius;
+                                xpoints[1] = xposi + _radius;
+                                ypoints[1] = yposi + _radius;
+                                xpoints[2] = xposi - _radius;
+                                ypoints[2] = yposi + _radius;
+                                xpoints[3] = xposi;
+                                ypoints[3] = yposi - _radius;
+                                graphics.fillPolygon(xpoints, ypoints, 4);
+                                break;
+
+                            case 4:
+
+                                // diamond
+                                xpoints = new int[5];
+                                ypoints = new int[5];
+                                xpoints[0] = xposi;
+                                ypoints[0] = yposi - _radius;
+                                xpoints[1] = xposi + _radius;
+                                ypoints[1] = yposi;
+                                xpoints[2] = xposi;
+                                ypoints[2] = yposi + _radius;
+                                xpoints[3] = xposi - _radius;
+                                ypoints[3] = yposi;
+                                xpoints[4] = xposi;
+                                ypoints[4] = yposi - _radius;
+                                graphics.drawPolygon(xpoints, ypoints, 5);
+                                break;
+
+                            case 5:
+
+                                // circle
+                                graphics.drawOval(xposi - _radius, yposi - _radius,
+                                        _diameter, _diameter);
+                                break;
+
+                            case 6:
+
+                                // plus sign
+                                graphics.drawLine(xposi, yposi - _radius, xposi, yposi
+                                        + _radius);
+                                graphics.drawLine(xposi - _radius, yposi, xposi
+                                        + _radius, yposi);
+                                break;
+
+                            case 7:
+
+                                // filled square
+                                graphics.fillRect(xposi - _radius, yposi - _radius,
+                                        _diameter, _diameter);
+                                break;
+
+                            case 8:
+
+                                // triangle
+                                xpoints = new int[4];
+                                ypoints = new int[4];
+                                xpoints[0] = xposi;
+                                ypoints[0] = yposi - _radius;
+                                xpoints[1] = xposi + _radius;
+                                ypoints[1] = yposi + _radius;
+                                xpoints[2] = xposi - _radius;
+                                ypoints[2] = yposi + _radius;
+                                xpoints[3] = xposi;
+                                ypoints[3] = yposi - _radius;
+                                graphics.drawPolygon(xpoints, ypoints, 4);
+                                break;
+
+                            case 9:
+
+                                // filled diamond
+                                xpoints = new int[5];
+                                ypoints = new int[5];
+                                xpoints[0] = xposi;
+                                ypoints[0] = yposi - _radius;
+                                xpoints[1] = xposi + _radius;
+                                ypoints[1] = yposi;
+                                xpoints[2] = xposi;
+                                ypoints[2] = yposi + _radius;
+                                xpoints[3] = xposi - _radius;
+                                ypoints[3] = yposi;
+                                xpoints[4] = xposi;
+                                ypoints[4] = yposi - _radius;
+                                graphics.fillPolygon(xpoints, ypoints, 5);
+                                break;
+                            default:
+                                throw new RuntimeException("Internal Error.  Mark "
+                                        + "style " + mark + " not supported.");
+                            }
+
+                            break;
+
+                        case 4:
+
+                            // bigdots
+                            //graphics.setColor(_marksColor);
+                            if (graphics instanceof Graphics2D) {
+                                Object obj = ((Graphics2D) graphics)
+                                        .getRenderingHint(RenderingHints.KEY_ANTIALIASING);
+                                ((Graphics2D) graphics).setRenderingHint(
+                                        RenderingHints.KEY_ANTIALIASING,
+                                        RenderingHints.VALUE_ANTIALIAS_ON);
+                                graphics.fillOval(xposi - 4, yposi - 4, 8, 8);
+                                ((Graphics2D) graphics).setRenderingHint(
+                                        RenderingHints.KEY_ANTIALIASING, obj);
+                            } else {
+                                graphics.fillOval(xposi - 4, yposi - 4, 8, 8);
+                            }
+                            break;
+
+                        case 5:
+
+                            // If the mark style is pixels, draw a filled rectangle.
+                            graphics.fillRect(xposi, yposi, 1, 1);
+                            break;
+
+                        default:
+                            throw new RuntimeException("Internal Error.  Mark "
+                                    + "style " + marks + " not supported.");
+                        }
                     }
-                    break;
-
-                case 5:
-
-                    // If the mark style is pixels, draw a filled rectangle.
-                    graphics.fillRect(xposi, yposi, 1, 1);
-                    break;
-
-                default:
-                    throw new RuntimeException("Internal Error.  Mark "
-                            + "style " + marks + " not supported.");
                 }
-            }
-        }
     }
 
     /* Erase the points within the first bin in the given dataset.  If
@@ -3074,9 +3124,9 @@ public class Plot extends PlotBox implements PlotInterface {
                                     dataset,
                                     xpos,
                                     _lry
-                                            - (long) ((point.yLowEB - _yMin) * _yscale),
+                                    - (long) ((point.yLowEB - _yMin) * _yscale),
                                     _lry
-                                            - (long) ((point.yHighEB - _yMin) * _yscale),
+                                    - (long) ((point.yHighEB - _yMin) * _yscale),
                                     true);
                             prevypos = ypos;
                             prevxpos = xpos;
@@ -3119,7 +3169,7 @@ public class Plot extends PlotBox implements PlotInterface {
 
         _pointInBinOffset.set(dataset,
                 _pointInBinOffset.get(dataset) + bin.afterLastPointIndex()
-                        - bin.firstPointIndex());
+                - bin.firstPointIndex());
         //FIXME? Warning: Could overflow for scopes with a really large history...
         //  (the points aren't kept in memory, since it is only here where it goes wrong.
         //  We could check for overflow and in this case reset the _pointInBinOffset to
@@ -3376,7 +3426,7 @@ public class Plot extends PlotBox implements PlotInterface {
 
     /** True if different line styles should be used. */
     private static String[] _LINE_STYLES_ARRAY = { "solid", "dotted", "dashed",
-            "dotdashed", "dotdotdashed" };
+        "dotdashed", "dotdotdashed" };
 
     /** @serial The highest data set used. */
     private int _maxDataset = -1;
@@ -3461,7 +3511,7 @@ public class Plot extends PlotBox implements PlotInterface {
      * A bin is meant to avoid superfluous drawings of lines. So instead of having to draw
      * a line between each point, you can draw a line between the minimum and maximum and maximum
      * y position.
-    */
+     */
     private class Bin {
         public Bin(long xPos, int dataset) {
             _dataset = dataset;

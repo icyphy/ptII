@@ -200,6 +200,7 @@ public class PHY extends NetworkActorBase {
      *  @exception IllegalActionException If the causality interface
      *  cannot be computed.
      */
+    @Override
     public void declareDelayDependency() throws IllegalActionException {
         // Declare that output does not immediately depend on the input,
         // though there is no lower bound on the time delay.
@@ -208,6 +209,7 @@ public class PHY extends NetworkActorBase {
         _declareDelayDependency(fromMAC, PHYConfirm, 0.0);
     }
 
+    @Override
     public void fire() throws IllegalActionException {
         super.fire();
 
@@ -447,6 +449,7 @@ public class PHY extends NetworkActorBase {
     /** Initialize the private variables.
      *  @exception IllegalActionException If thrown by the base class.
      */
+    @Override
     public void initialize() throws IllegalActionException {
         super.initialize();
         _currentState = PHY_Idle;
@@ -466,6 +469,7 @@ public class PHY extends NetworkActorBase {
      *  @exception IllegalActionException If the change is not acceptable
      *   to this container.
      */
+    @Override
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         int temp = 0;
@@ -657,7 +661,7 @@ public class PHY extends NetworkActorBase {
                 BaseType.INT };
 
         //If the labels of the DataPacket changes and the "payload" is
-        //not the second last one any more, then we need to change the 
+        //not the second last one any more, then we need to change the
         //code here.
         pduType[DataPacket.length - 2] = new RecordType(payload, payloadType);
 

@@ -122,6 +122,7 @@ public class ActorGraphTableau extends Tableau {
      *  False is returned if the user cancels on a save query in the
      *  super class.
      */
+    @Override
     public boolean close() {
         if (_debugClosing) {
             System.out.println("ActorGraphTableau.close() : "
@@ -169,6 +170,7 @@ public class ActorGraphTableau extends Tableau {
          *  @exception Exception If an exception occurs when creating the
          *  tableau.
          */
+        @Override
         public Tableau createTableau(Effigy effigy) throws Exception {
             // Need to check for PlotEffigy here, or
             // $PTII/bin/vergil $PTII/ptolemy/plot/demo/sinusoids.xml will not open the

@@ -24,7 +24,7 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
-*/
+ */
 
 package ptolemy.cg.kernel.generic.html;
 
@@ -47,7 +47,7 @@ import ptolemy.kernel.util.NamedObj;
  *  @since Ptolemy II 10.0
  *  @Pt.ProposedRating red (rodiers)
  *  @Pt.AcceptedRating red (rodiers)
-*/
+ */
 public class HTMLCodeGenerator extends GenericCodeGenerator {
 
     /** Create a new instance of the HTMLCodeGenerator.
@@ -75,6 +75,7 @@ public class HTMLCodeGenerator extends GenericCodeGenerator {
      *  @param comment The string to put in the comment.
      *  @return A formatted comment.
      */
+    @Override
     public String comment(String comment) {
         return "<!-- " + comment + " -->" + _eol;
     }
@@ -99,6 +100,7 @@ public class HTMLCodeGenerator extends GenericCodeGenerator {
      *  @exception KernelException If the target file cannot be overwritten
      *   or write-to-file throw any exception.
      */
+    @Override
     protected int _generateCode(StringBuffer code) throws KernelException {
         // FIXME: We should put in some default html version info.
         // e.g. <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -125,6 +127,7 @@ public class HTMLCodeGenerator extends GenericCodeGenerator {
      *  adapters have to extend this class.
      *  @return The base class for the adapters.
      */
+    @Override
     protected Class<?> _getAdapterClassFilter() {
         return HTMLCodeGeneratorAdapter.class;
     }

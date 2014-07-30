@@ -176,6 +176,7 @@ public class GraphicElement {
     /**
      * Return a string this representing this GraphicElement.
      */
+    @Override
     public String toString() {
         StringBuffer result = new StringBuffer("{");
         result.append(getClass().getName() + " {" + _type + "}"

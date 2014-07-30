@@ -115,6 +115,7 @@ public class SequencedVariable extends SequencedSharedMemoryActor {
      *
      *  @exception IllegalActionException If the actor cannot be fired.
      */
+    @Override
     public void fire() throws IllegalActionException {
         if (!input.connectedPortList().isEmpty()) {
             // If input is connected, use the function from
@@ -141,6 +142,7 @@ public class SequencedVariable extends SequencedSharedMemoryActor {
      *
      *  @exception IllegalActionException If the actor cannot be preinitialized.
      */
+    @Override
     public void preinitialize() throws IllegalActionException {
         super.preinitialize();
 
@@ -173,8 +175,9 @@ public class SequencedVariable extends SequencedSharedMemoryActor {
      *  @exception NameDuplicationException Thrown if the new name conflicts with
      *   the name of an existing actor in the container.
      */
+    @Override
     public void setName(String name) throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         super.setName(name);
 
         // Set the expression in the copyVariableName for display in the icon
@@ -201,6 +204,7 @@ public class SequencedVariable extends SequencedSharedMemoryActor {
      *  @exception IllegalActionException  Subclasses should throw an exception if
      *   an explicit initial value is required.
      */
+    @Override
     protected Token _getDefaultValue() throws IllegalActionException {
         // Check the type constraints on the variable.  Default to 0 for numeric
         // and true for boolean.  Otherwise, throw an exception.  Messages
@@ -252,7 +256,7 @@ public class SequencedVariable extends SequencedSharedMemoryActor {
                 Variable var = getVariable();
                 if (var != null && var.getToken() != null) {
                     copyVariableName
-                            .setExpression(variableName.getExpression());
+                    .setExpression(variableName.getExpression());
                 }
             }
             // OK if this throws an exception.  Want default of UNDEFINED which was already set.

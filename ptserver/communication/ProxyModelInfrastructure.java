@@ -463,8 +463,8 @@ public class ProxyModelInfrastructure {
      *  @exception CloneNotSupportedException if there is a problem cloning ports or attributes.
      */
     private void _loadPlainModel() throws IllegalActionException,
-            TypeConflictException, NameDuplicationException,
-            CloneNotSupportedException {
+    TypeConflictException, NameDuplicationException,
+    CloneNotSupportedException {
         ProxyModelBuilder builder = new ProxyModelBuilder(_modelType,
                 _topLevelActor);
         builder.build();
@@ -529,13 +529,15 @@ public class ProxyModelInfrastructure {
                         port.typeConstraints().clear();
                     } else {
                         // Not sure if this is possible, but just in case.
-                        throw new IllegalActionException(port,
+                        throw new IllegalActionException(
+                                port,
                                 "Type constraint for the port was not found.\n"
-                                + "The port did not have an attribute named \"targetPortName\", which would be added by ProxyActor "
-                                + "if the port was typed and the full name of the original port saved within an attribute."
-                                + "The port name information is needed for setting port type information when the spliced-up model is recreated from the XML.\n"
-                                + "The _modelTypes map is of size "
-                                + "_modelTypes.size() and modelTypes contains: " + _modelTypes);
+                                        + "The port did not have an attribute named \"targetPortName\", which would be added by ProxyActor "
+                                        + "if the port was typed and the full name of the original port saved within an attribute."
+                                        + "The port name information is needed for setting port type information when the spliced-up model is recreated from the XML.\n"
+                                        + "The _modelTypes map is of size "
+                                        + "_modelTypes.size() and modelTypes contains: "
+                                        + _modelTypes);
                     }
                 }
             }
@@ -587,54 +589,68 @@ public class ProxyModelInfrastructure {
         _topLevelActor.setManager(manager);
         _topLevelActor.addPiggyback(new Executable() {
 
+            @Override
             public void addInitializable(Initializable initializable) {
             }
 
+            @Override
             public void fire() throws IllegalActionException {
             }
 
+            @Override
             public void initialize() throws IllegalActionException {
                 setStopped(false);
             }
 
+            @Override
             public boolean isFireFunctional() {
                 return false;
             }
 
+            @Override
             public boolean isStrict() throws IllegalActionException {
                 return false;
             }
 
+            @Override
             public int iterate(int count) throws IllegalActionException {
                 // FIXME: Not sure if this is correct
                 throw new IllegalActionException("Iterating is not supported");
             }
 
+            @Override
             public boolean postfire() throws IllegalActionException {
                 return true;
             }
 
+            @Override
             public boolean prefire() throws IllegalActionException {
                 return true;
             }
 
+            @Override
             public void preinitialize() throws IllegalActionException {
             }
 
+            @Override
             public void removeInitializable(Initializable initializable) {
             }
 
+            @Override
             public void stop() {
                 _stopExecution();
             }
 
+            @Override
             public void stopFire() {
                 _stopExecution();
             }
 
+            @Override
             public void terminate() {
             }
 
+            @Override
             public void wrapup() throws IllegalActionException {
             }
 
@@ -660,6 +676,7 @@ public class ProxyModelInfrastructure {
         setLastPongToken(new PongToken(System.currentTimeMillis()));
         _pingPongExecutor = Executors.newSingleThreadScheduledExecutor();
         _pingPongFuture = _pingPongExecutor.scheduleAtFixedRate(new Runnable() {
+            @Override
             public void run() {
                 try {
                     long msTime = System.currentTimeMillis();

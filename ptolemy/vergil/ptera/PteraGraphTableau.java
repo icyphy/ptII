@@ -104,6 +104,7 @@ public class PteraGraphTableau extends FSMGraphTableau {
      *  @param defaultLibrary The default library, or null to not specify
      *   one.
      */
+    @Override
     public void createGraphFrame(CompositeEntity model,
             LibraryAttribute defaultLibrary) {
         PteraGraphFrame frame = new PteraGraphFrame(model, this, defaultLibrary);
@@ -147,6 +148,7 @@ public class PteraGraphTableau extends FSMGraphTableau {
          *  @exception Exception If an exception occurs when creating the
          *   tableau.
          */
+        @Override
         public Tableau createTableau(Effigy effigy) throws Exception {
             if (!(effigy instanceof PtolemyEffigy)) {
                 return null;

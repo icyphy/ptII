@@ -59,6 +59,7 @@ import ptolemy.kernel.util.NameDuplicationException;
  @Pt.ProposedRating Yellow (eal)
  @Pt.AcceptedRating Red (eal)
  */
+@Deprecated
 public class DoubleToMatrix extends SDFConverter {
     /** Construct an actor with the given container and name.
      *  @param container The container.
@@ -105,6 +106,7 @@ public class DoubleToMatrix extends SDFConverter {
      *  @param attribute The attribute that has changed.
      *  @exception IllegalActionException If the parameters are out of range.
      */
+    @Override
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         if (attribute == rows || attribute == columns) {
@@ -123,6 +125,7 @@ public class DoubleToMatrix extends SDFConverter {
     /** Consume consecutive input tokens and produce the output matrix.
      *  @exception IllegalActionException If there is no director.
      */
+    @Override
     public final void fire() throws IllegalActionException {
         super.fire();
 

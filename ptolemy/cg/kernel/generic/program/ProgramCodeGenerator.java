@@ -24,7 +24,7 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
-*/
+ */
 
 package ptolemy.cg.kernel.generic.program;
 
@@ -76,16 +76,16 @@ import ptolemy.util.StringUtilities;
 //// ProgramCodeGenerator
 
 /** Generate a programming language version of a model.
-*
-*  <p>This base class contains parameters and methods common to
-*   all programming langauges.</p>
-*
-*  @author Bert Rodiers
-*  @version $Id$
-*  @since Ptolemy II 10.0
-*  @Pt.ProposedRating red (rodiers)
-*  @Pt.AcceptedRating red (rodiers)
-*/
+ *
+ *  <p>This base class contains parameters and methods common to
+ *   all programming langauges.</p>
+ *
+ *  @author Bert Rodiers
+ *  @version $Id$
+ *  @since Ptolemy II 10.0
+ *  @Pt.ProposedRating red (rodiers)
+ *  @Pt.AcceptedRating red (rodiers)
+ */
 public class ProgramCodeGenerator extends GenericCodeGenerator {
 
     /** Create a new instance of the ProgramCodeGenerator.
@@ -102,7 +102,7 @@ public class ProgramCodeGenerator extends GenericCodeGenerator {
      */
     public ProgramCodeGenerator(NamedObj container, String name,
             String outputFileExtension, String templateExtension)
-            throws IllegalActionException, NameDuplicationException {
+                    throws IllegalActionException, NameDuplicationException {
         super(container, name, outputFileExtension);
 
         _templateExtension = templateExtension;
@@ -246,6 +246,7 @@ public class ProgramCodeGenerator extends GenericCodeGenerator {
      *  @exception IllegalActionException If the change is not acceptable
      *   to this container.
      */
+    @Override
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         if (attribute == variablesAsArrays) {
@@ -269,12 +270,14 @@ public class ProgramCodeGenerator extends GenericCodeGenerator {
      *  @exception CloneNotSupportedException If a derived class contains
      *   an attribute that cannot be cloned.
      */
+    @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
-        ProgramCodeGenerator newObject = (ProgramCodeGenerator) super.clone(workspace);
+        ProgramCodeGenerator newObject = (ProgramCodeGenerator) super
+                .clone(workspace);
 
         try {
             newObject._substituteMap = CodeGeneratorUtilities.newMap(this);
-        } catch (IllegalActionException ex) { 
+        } catch (IllegalActionException ex) {
             throw new CloneNotSupportedException(ex.getMessage());
         }
         return newObject;
@@ -352,8 +355,8 @@ public class ProgramCodeGenerator extends GenericCodeGenerator {
         }
         if (result == null || result.length() == 0) {
             System.out
-                    .println("Cannot resolve codegen type from Ptolemy type: "
-                            + ptType);
+            .println("Cannot resolve codegen type from Ptolemy type: "
+                    + ptType);
         }
         return result;
     }
@@ -383,6 +386,7 @@ public class ProgramCodeGenerator extends GenericCodeGenerator {
      *  @param comment The string to put in the comment.
      *  @return A formatted comment.
      */
+    @Override
     public String comment(String comment) {
         try {
             if (generateComment.getToken() == BooleanToken.TRUE) {
@@ -751,7 +755,7 @@ public class ProgramCodeGenerator extends GenericCodeGenerator {
         }
 
         return arrayName + StringUtilities.sanitizeName(typeName) + "["
-                + portIndex + "]";
+        + portIndex + "]";
     }
 
     /** Generate sanitized name for the given Ptolemy IOPort.
@@ -999,12 +1003,12 @@ public class ProgramCodeGenerator extends GenericCodeGenerator {
     public static Type ptolemyType(String cgType) {
         Type result = cgType.equals("Int") ? BaseType.INT : cgType
                 .equals("Long") ? BaseType.LONG
-                : cgType.equals("String") ? BaseType.STRING : cgType
-                        .equals("Boolean") ? BaseType.BOOLEAN : cgType
-                        .equals("Double") ? BaseType.DOUBLE : cgType
-                        .equals("Complex") ? BaseType.COMPLEX : cgType
-                        .equals("Object") ? BaseType.OBJECT : cgType
-                        .equals("Pointer") ? PointerToken.POINTER : null;
+                        : cgType.equals("String") ? BaseType.STRING : cgType
+                                .equals("Boolean") ? BaseType.BOOLEAN : cgType
+                                        .equals("Double") ? BaseType.DOUBLE : cgType
+                                                .equals("Complex") ? BaseType.COMPLEX : cgType
+                                                        .equals("Object") ? BaseType.OBJECT : cgType
+                                                                .equals("Pointer") ? PointerToken.POINTER : null;
 
         if (cgType.endsWith("Array")) {
             String elementType = cgType.replace("Array", "");
@@ -1018,7 +1022,7 @@ public class ProgramCodeGenerator extends GenericCodeGenerator {
                                     : elementType.equals("Boolean") ? BaseType.BOOLEAN_MATRIX
                                             : elementType.equals("Fix") ? BaseType.FIX_MATRIX
                                                     : elementType
-                                                            .equals("Long") ? BaseType.LONG_MATRIX
+                                                    .equals("Long") ? BaseType.LONG_MATRIX
                                                             : null;
 
         }
@@ -1115,6 +1119,7 @@ public class ProgramCodeGenerator extends GenericCodeGenerator {
     /** Return an updated array of command line options.
      *  @return An array of updated command line options.
      */
+    @Override
     public String[][] updateCommandOptions() {
         // This is a hack.
 
@@ -1126,14 +1131,14 @@ public class ProgramCodeGenerator extends GenericCodeGenerator {
                 { "-measureTime", "       true|false (default: false)" },
                 { "-run", "               true|false (default: true)" },
                 { "-runCommand",
-                        "        <a string, default: make -f @modelName@.mk run>" },
+                "        <a string, default: make -f @modelName@.mk run>" },
                 { "-variablesAsArrays", " true|false (default:false)" },
                 { "-verbosity",
-                        "         <an integer, try 1 or 10>, (default: 0)" } };
+                "         <an integer, try 1 or 10>, (default: 0)" } };
 
         String[][] parentOptions = super.updateCommandOptions();
         String[][] allOptions = new String[parentOptions.length
-                + options.length][2];
+                                           + options.length][2];
         int i = 0;
         for (; i < parentOptions.length; i++) {
             allOptions[i][0] = parentOptions[i][0];
@@ -1168,7 +1173,7 @@ public class ProgramCodeGenerator extends GenericCodeGenerator {
      */
     protected void _analyzeTypeConversions() throws IllegalActionException {
         ((NamedProgramCodeGeneratorAdapter) getAdapter(getContainer()))
-                .analyzeTypeConvert();
+        .analyzeTypeConvert();
     }
 
     /** Return the value of the codeDirectory parameter.
@@ -1179,7 +1184,7 @@ public class ProgramCodeGenerator extends GenericCodeGenerator {
      *  codeDirectory parameter.
      */
     protected File _codeDirectoryAsFile() throws IOException,
-            IllegalActionException {
+    IllegalActionException {
         // This method is here to avoid code duplication.
         // It is package protected so we can read it in ProgramCodeGeneratorAdapter
         File codeDirectoryFile = codeDirectory.asFile();
@@ -1285,8 +1290,8 @@ public class ProgramCodeGenerator extends GenericCodeGenerator {
             //Director directorAdapter = (Director) getAdapter(director);
             NamedProgramCodeGeneratorAdapter directorAdapter = (NamedProgramCodeGeneratorAdapter) getAdapter(director);
             code += directorAdapter.generateMainLoop(
-                    /* CodeGenerator.containsCode(_postfireCode)*/
-              );
+            /* CodeGenerator.containsCode(_postfireCode)*/
+            );
 
         } else {
             // Generate embedded code.
@@ -1354,6 +1359,7 @@ public class ProgramCodeGenerator extends GenericCodeGenerator {
      *  @exception KernelException If the target file cannot be overwritten
      *   or write-to-file throw any exception.
      */
+    @Override
     protected int _generateCode(StringBuffer code) throws KernelException {
         // Record the current time so that we can monitor performance of the
         // code generator by printing messages whenever any part of the code
@@ -1739,9 +1745,10 @@ public class ProgramCodeGenerator extends GenericCodeGenerator {
      *  @return The code generator adapter.
      *  @exception IllegalActionException If the adapter class cannot be found.
      */
+    @Override
     protected CodeGeneratorAdapter _instantiateAdapter(Object component,
             Class<?> componentClass, String adapterClassName)
-            throws IllegalActionException {
+                    throws IllegalActionException {
         ProgramCodeGeneratorAdapter adapter = (ProgramCodeGeneratorAdapter) super
                 ._instantiateAdapter(component, componentClass,
                         adapterClassName);
@@ -1791,6 +1798,7 @@ public class ProgramCodeGenerator extends GenericCodeGenerator {
      *  thrown by the parent if the container of the model
      *  cannot be set to null.
      */
+    @Override
     protected void _reset() throws IllegalActionException {
         super._reset();
         // Reset the indent to zero.
@@ -1842,8 +1850,8 @@ public class ProgramCodeGenerator extends GenericCodeGenerator {
         } catch (Throwable throwable) {
             // Ignore
             System.out
-                    .println("Warning: Failed to split variable declaration: "
-                            + throwable);
+            .println("Warning: Failed to split variable declaration: "
+                    + throwable);
             throwable.printStackTrace();
             results.add("");
             results.add(code);
@@ -1927,65 +1935,64 @@ public class ProgramCodeGenerator extends GenericCodeGenerator {
                     + codeDirectory.stringValue() + "\" directory.");
         }
 
-            // Add substitutions for all the parameter.
-            // For example, @generatorPackage@ will be replaced with
-            // the value of the generatorPackage.
-            _substituteMap.put("@modelName@", _sanitizedModelName);
+        // Add substitutions for all the parameter.
+        // For example, @generatorPackage@ will be replaced with
+        // the value of the generatorPackage.
+        _substituteMap.put("@modelName@", _sanitizedModelName);
 
-            _substituteMap.put("@CLASSPATHSEPARATOR@",
-                    StringUtilities.getProperty("path.separator"));
+        _substituteMap.put("@CLASSPATHSEPARATOR@",
+                StringUtilities.getProperty("path.separator"));
 
-            // Define substitutions to be used in the makefile
-            _substituteMap.put("@PTJNI_NO_CYGWIN@", "");
-            _substituteMap.put("@PTJNI_SHAREDLIBRARY_CFLAG@", "");
-            _substituteMap.put("@PTJNI_SHAREDLIBRARY_LDFLAG@", "");
-            _substituteMap.put("@PTJNI_SHAREDLIBRARY_PREFIX@", "");
-            _substituteMap.put("@PTJNI_SHAREDLIBRARY_SUFFIX@", "");
-            _substituteMap.put("@PTJavaCompiler@", "javac");
+        // Define substitutions to be used in the makefile
+        _substituteMap.put("@PTJNI_NO_CYGWIN@", "");
+        _substituteMap.put("@PTJNI_SHAREDLIBRARY_CFLAG@", "");
+        _substituteMap.put("@PTJNI_SHAREDLIBRARY_LDFLAG@", "");
+        _substituteMap.put("@PTJNI_SHAREDLIBRARY_PREFIX@", "");
+        _substituteMap.put("@PTJNI_SHAREDLIBRARY_SUFFIX@", "");
+        _substituteMap.put("@PTJavaCompiler@", "javac");
 
-            String osName = StringUtilities.getProperty("os.name");
-            if (osName != null) {
-                // Keep these alphabetical
-                if (osName.startsWith("Linux")) {
-                    _substituteMap.put("@PTJNI_GCC_SHARED_FLAG@", "-shared");
-                    // Need -fPIC for jni actors, see
-                    // codegen/c/actor/lib/jni/test/auto/Scale.xml
-                    _substituteMap.put("@PTJNI_SHAREDLIBRARY_CFLAG@", "-fPIC");
-                    _substituteMap.put("@PTJNI_SHAREDLIBRARY_LDFLAG@", "-fPIC");
-                    _substituteMap.put("@PTJNI_SHAREDLIBRARY_PREFIX@", "lib");
-                    _substituteMap.put("@PTJNI_SHAREDLIBRARY_SUFFIX@", "so");
-                } else if (osName.startsWith("Mac OS X")) {
-                    String widthFlag = "";
-                    if (!JVMBitWidth.is32Bit()) {
-                        widthFlag = "-m64 ";
-                    }
-                    _substituteMap.put("@PTJNI_GCC_SHARED_FLAG@", widthFlag
-                            + "-dynamiclib");
-                    _substituteMap.put("@PTJNI_SHAREDLIBRARY_PREFIX@", "lib");
-                    _substituteMap.put("@PTJNI_SHAREDLIBRARY_SUFFIX@", "dylib");
-                } else if (osName.startsWith("SunOS")) {
-                    _substituteMap.put("@PTJNI_GCC_SHARED_FLAG@", "-shared");
-                    _substituteMap.put("@PTJNI_SHAREDLIBRARY_CFLAG@", "-fPIC");
-                    _substituteMap.put("@PTJNI_SHAREDLIBRARY_LDFLAG@", "-fPIC");
-                    _substituteMap.put("@PTJNI_SHAREDLIBRARY_PREFIX@", "lib");
-                    _substituteMap.put("@PTJNI_SHAREDLIBRARY_SUFFIX@", "so");
-                } else if (osName.startsWith("Windows")) {
-                    _substituteMap.put("@PTJNI_GCC_SHARED_FLAG@", "-shared");
-                    _substituteMap.put("@PTJNI_NO_CYGWIN@", "-mno-cygwin");
-                    _substituteMap.put("@PTJNI_SHAREDLIBRARY_LDFLAG@",
-                            "-Wl,--add-stdcall-alias");
-                    _substituteMap.put("@PTJNI_SHAREDLIBRARY_SUFFIX@", "dll");
-                } else {
-                    _substituteMap.put("@PTJNI_SHAREDLIBRARY_LDFLAG@",
-                            "# Unknown java property os.name \"" + osName
-                                    + "\" please edit ptolemy/codegen/c/"
-                                    + "kernel/CCodeGenerator.java and "
-                                    + "ptolemy/actor/lib/jni/"
-                                    + "CompiledCompositeActor.java");
+        String osName = StringUtilities.getProperty("os.name");
+        if (osName != null) {
+            // Keep these alphabetical
+            if (osName.startsWith("Linux")) {
+                _substituteMap.put("@PTJNI_GCC_SHARED_FLAG@", "-shared");
+                // Need -fPIC for jni actors, see
+                // codegen/c/actor/lib/jni/test/auto/Scale.xml
+                _substituteMap.put("@PTJNI_SHAREDLIBRARY_CFLAG@", "-fPIC");
+                _substituteMap.put("@PTJNI_SHAREDLIBRARY_LDFLAG@", "-fPIC");
+                _substituteMap.put("@PTJNI_SHAREDLIBRARY_PREFIX@", "lib");
+                _substituteMap.put("@PTJNI_SHAREDLIBRARY_SUFFIX@", "so");
+            } else if (osName.startsWith("Mac OS X")) {
+                String widthFlag = "";
+                if (!JVMBitWidth.is32Bit()) {
+                    widthFlag = "-m64 ";
                 }
-
+                _substituteMap.put("@PTJNI_GCC_SHARED_FLAG@", widthFlag
+                        + "-dynamiclib");
+                _substituteMap.put("@PTJNI_SHAREDLIBRARY_PREFIX@", "lib");
+                _substituteMap.put("@PTJNI_SHAREDLIBRARY_SUFFIX@", "dylib");
+            } else if (osName.startsWith("SunOS")) {
+                _substituteMap.put("@PTJNI_GCC_SHARED_FLAG@", "-shared");
+                _substituteMap.put("@PTJNI_SHAREDLIBRARY_CFLAG@", "-fPIC");
+                _substituteMap.put("@PTJNI_SHAREDLIBRARY_LDFLAG@", "-fPIC");
+                _substituteMap.put("@PTJNI_SHAREDLIBRARY_PREFIX@", "lib");
+                _substituteMap.put("@PTJNI_SHAREDLIBRARY_SUFFIX@", "so");
+            } else if (osName.startsWith("Windows")) {
+                _substituteMap.put("@PTJNI_GCC_SHARED_FLAG@", "-shared");
+                _substituteMap.put("@PTJNI_NO_CYGWIN@", "-mno-cygwin");
+                _substituteMap.put("@PTJNI_SHAREDLIBRARY_LDFLAG@",
+                        "-Wl,--add-stdcall-alias");
+                _substituteMap.put("@PTJNI_SHAREDLIBRARY_SUFFIX@", "dll");
+            } else {
+                _substituteMap.put("@PTJNI_SHAREDLIBRARY_LDFLAG@",
+                        "# Unknown java property os.name \"" + osName
+                                + "\" please edit ptolemy/codegen/c/"
+                                + "kernel/CCodeGenerator.java and "
+                                + "ptolemy/actor/lib/jni/"
+                                + "CompiledCompositeActor.java");
             }
 
+        }
 
         List<String> templateList = new LinkedList<String>();
 
@@ -2030,7 +2037,7 @@ public class ProgramCodeGenerator extends GenericCodeGenerator {
         String makefileOutputName = codeDirectory.stringValue()
                 + (!codeDirectory.stringValue().endsWith("/")
                         && !codeDirectory.stringValue().endsWith("\\") ? "/"
-                        : "") + _sanitizedModelName + ".mk";
+                                : "") + _sanitizedModelName + ".mk";
 
         BufferedReader makefileTemplateReader = null;
 
@@ -2053,7 +2060,7 @@ public class ProgramCodeGenerator extends GenericCodeGenerator {
                             + "\"," + _eol + "    writing \""
                             + makefileOutputName + "\"");
                     CodeGeneratorUtilities.substitute(makefileTemplateReader,
-                                                      _substituteMap, makefileOutputName);
+                            _substituteMap, makefileOutputName);
                     success = true;
                     break;
                 }
@@ -2061,7 +2068,7 @@ public class ProgramCodeGenerator extends GenericCodeGenerator {
         } catch (Throwable throwable) {
             throw new IllegalActionException(this, throwable,
                     "Failed to read \"" + makefileTemplateName
-                            + "\" or write \"" + makefileOutputName + "\"");
+                    + "\" or write \"" + makefileOutputName + "\"");
         } finally {
             if (makefileTemplateReader != null) {
                 try {
@@ -2230,7 +2237,7 @@ public class ProgramCodeGenerator extends GenericCodeGenerator {
      */
     protected static List<String> _primitiveTypes = Arrays.asList(new String[] {
             "Int", "Double", "String", "Long", "Boolean", "UnsignedByte",
-            "Pointer" });
+    "Pointer" });
 
     /** The initial default value of the <i>runCommand</i> parameter.
      *  The constructor of a derived class may compare the value of <i>runCommand</i>

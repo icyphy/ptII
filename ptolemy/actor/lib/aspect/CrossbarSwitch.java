@@ -101,6 +101,7 @@ public class CrossbarSwitch extends BasicSwitch {
      *   if one of the attributes cannot be cloned.
      *  @return A new Bus.
      */
+    @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         CrossbarSwitch newObject = (CrossbarSwitch) super.clone(workspace);
         // This is confusing.  The parent class has a private variable named _switchFabricQueue?
@@ -117,6 +118,7 @@ public class CrossbarSwitch extends BasicSwitch {
      *  @exception IllegalActionException Thrown if token cannot be sent to
      *  target receiver.
      */
+    @Override
     public void fire() throws IllegalActionException {
         Time currentTime = getDirector().getModelTime();
         // In a continuous domain this actor could be fired before any token has
@@ -218,6 +220,7 @@ public class CrossbarSwitch extends BasicSwitch {
 
     /** Initialize actor variables.
      */
+    @Override
     public void initialize() throws IllegalActionException {
         super.initialize();
         for (int i = 0; i < _numberOfPorts; i++) {
@@ -243,6 +246,7 @@ public class CrossbarSwitch extends BasicSwitch {
      *  @exception IllegalActionException If actor cannot be refired at
      *  the computed time.
      */
+    @Override
     protected void _scheduleRefire() throws IllegalActionException {
         Time currentTime = getDirector().getModelTime();
         _nextFireTime = Time.POSITIVE_INFINITY;

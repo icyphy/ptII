@@ -115,6 +115,7 @@ public class LineCoder extends SDFTransformer {
      *  @exception CloneNotSupportedException If a derived class contains
      *   an attribute that cannot be cloned.
      */
+    @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         LineCoder newObject = (LineCoder) super.clone(workspace);
 
@@ -132,6 +133,7 @@ public class LineCoder extends SDFTransformer {
     /** Consume the inputs and produce the corresponding symbol.
      *  @exception IllegalActionException If a runtime type error occurs.
      */
+    @Override
     public void fire() throws IllegalActionException {
         super.fire();
 
@@ -153,6 +155,7 @@ public class LineCoder extends SDFTransformer {
      *  @exception IllegalActionException If the length of the table is not
      *   a power of two.
      */
+    @Override
     public void preinitialize() throws IllegalActionException {
         super.preinitialize();
 

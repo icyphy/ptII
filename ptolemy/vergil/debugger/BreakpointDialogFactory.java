@@ -78,6 +78,7 @@ public class BreakpointDialogFactory implements MenuItemFactory {
      *  @param object The object whose breakpoints are being modified.
      *  @return The context menu item.
      */
+    @Override
     public JMenuItem create(final JContextMenu menu, NamedObj object) {
         String name = "Set Breakpoints";
         final NamedObj target = object;
@@ -93,6 +94,7 @@ public class BreakpointDialogFactory implements MenuItemFactory {
 
         @SuppressWarnings("serial")
         Action action = new AbstractAction(name) {
+            @Override
             public void actionPerformed(ActionEvent e) {
                 try {
                     // Create a dialog for configuring the object.  First,

@@ -121,6 +121,7 @@ public class Documentation extends StringAttribute {
      *  @see NamedObj#_exportMoMLContents
      *  @see #isPersistent()
      */
+    @Override
     public void exportMoML(Writer output, int depth, String name)
             throws IOException {
         if (_isMoMLSuppressed(depth)) {
@@ -148,10 +149,12 @@ public class Documentation extends StringAttribute {
      *  @exception IllegalActionException If the change is not acceptable
      *   to the container.
      */
+    @Override
     public void setExpression(String expression) throws IllegalActionException {
         if (expression.equals("")) {
             ChangeRequest request = new ChangeRequest(this,
                     "Delete empty doc tag.") {
+                @Override
                 protected void _execute() throws Exception {
                     setContainer(null);
                 }
@@ -178,6 +181,7 @@ public class Documentation extends StringAttribute {
     /** Get the documentation as a string, with the class name prepended.
      *  @return A string describing the object.
      */
+    @Override
     public String toString() {
         return "(" + getClass().getName() + ", " + getExpression() + ")";
     }

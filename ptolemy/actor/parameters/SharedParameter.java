@@ -148,7 +148,7 @@ public class SharedParameter extends Parameter implements Initializable {
      */
     public SharedParameter(NamedObj container, String name,
             Class<?> containerClass, String defaultValue)
-            throws IllegalActionException, NameDuplicationException {
+                    throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         if (containerClass == null) {
@@ -174,6 +174,7 @@ public class SharedParameter extends Parameter implements Initializable {
      *  @see #removeInitializable(Initializable)
      *  @see ptolemy.actor.CompositeActor#addPiggyback(Executable)
      */
+    @Override
     public void addInitializable(Initializable initializable) {
         if (_initializables == null) {
             _initializables = new LinkedList<Initializable>();
@@ -190,6 +191,7 @@ public class SharedParameter extends Parameter implements Initializable {
      *  @see #exportMoML(Writer, int, String)
      *  @see #setDeferringChangeRequests(boolean)
      */
+    @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         SharedParameter newObject = (SharedParameter) super.clone(workspace);
         SharedParameterRegistry registry = _getSharedParameterRegistry(workspace);
@@ -216,6 +218,7 @@ public class SharedParameter extends Parameter implements Initializable {
      *   and there are variables that depend on this one.
      *  @see #setToken(Token)
      */
+    @Override
     public Token getToken() throws IllegalActionException {
         if (_delayValidation) {
             boolean previousSuppressing = _suppressingPropagation;
@@ -296,6 +299,7 @@ public class SharedParameter extends Parameter implements Initializable {
      *  @exception IllegalActionException If one of the added objects
      *   throws it.
      */
+    @Override
     public void initialize() throws IllegalActionException {
         // Invoke initializable methods.
         if (_initializables != null) {
@@ -332,6 +336,7 @@ public class SharedParameter extends Parameter implements Initializable {
     /** Traverse the model and update values.
      *  @exception IllegalActionException Not thrown in this base class.
      */
+    @Override
     public void preinitialize() throws IllegalActionException {
         // Invoke initializable methods.
         if (_initializables != null) {
@@ -354,6 +359,7 @@ public class SharedParameter extends Parameter implements Initializable {
      *  @see #addInitializable(Initializable)
      *  @see ptolemy.actor.CompositeActor#removePiggyback(Executable)
      */
+    @Override
     public void removeInitializable(Initializable initializable) {
         if (_initializables != null) {
             _initializables.remove(initializable);
@@ -374,8 +380,9 @@ public class SharedParameter extends Parameter implements Initializable {
      *  @exception NameDuplicationException If the container already has
      *   an entity with the name of this entity.
      */
+    @Override
     public void setContainer(NamedObj container) throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         NamedObj previousContainer = getContainer();
         if (previousContainer != container) {
             if (previousContainer instanceof Initializable) {
@@ -395,8 +402,9 @@ public class SharedParameter extends Parameter implements Initializable {
      *  @exception NameDuplicationException If there is already an
      *       attribute with the same name in the container.
      */
+    @Override
     public void setName(String name) throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         if (name != null && !name.equals(getName())) {
             SharedParameterRegistry registry = _getSharedParameterRegistry(workspace());
             // Unregister under previous name.
@@ -412,6 +420,7 @@ public class SharedParameter extends Parameter implements Initializable {
      *  parameters.
      *  @param expression The expression.
      */
+    @Override
     public void setExpression(String expression) {
         // The expression may have already been inferred from context,
         // in which case we don't want to set it again. This prevents
@@ -460,6 +469,7 @@ public class SharedParameter extends Parameter implements Initializable {
      *  @exception IllegalActionException Thrown if super class throws it.
      *  @see #getToken()
      */
+    @Override
     public void setToken(Token token) throws IllegalActionException {
 
         super.setToken(token);
@@ -528,6 +538,7 @@ public class SharedParameter extends Parameter implements Initializable {
     /** Supress propagation.
      *  @exception IllegalActionException Not thrown in this base class.
      */
+    @Override
     public void wrapup() throws IllegalActionException {
         // Invoke initializable methods.
         if (_initializables != null) {
@@ -548,6 +559,7 @@ public class SharedParameter extends Parameter implements Initializable {
      *   not lazy) and the model error handler throws an exception.
      *   Also thrown if the change is not acceptable to the container.
      */
+    @Override
     public Collection validate() throws IllegalActionException {
         Collection result = super.validate();
         if (result == null) {
@@ -596,6 +608,7 @@ public class SharedParameter extends Parameter implements Initializable {
      *  @exception IllegalActionException If the value cannot
      *   be propagated.
      */
+    @Override
     protected void _propagateValue(NamedObj destination)
             throws IllegalActionException {
         if (!sharedParameterSet().contains(destination)) {

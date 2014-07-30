@@ -68,7 +68,7 @@ public class DefaultTitle extends WebContent implements WebExportable {
 
         _icon.setIconText("T");
         displayText
-                .setExpression("Default title to give to icons in the model.");
+        .setExpression("Default title to give to icons in the model.");
 
         showTitleInHTML = new Parameter(this, "showTitleInHTML");
         showTitleInHTML.setExpression("true");
@@ -116,6 +116,7 @@ public class DefaultTitle extends WebContent implements WebExportable {
      *
      * @return The string text/html
      */
+    @Override
     public String getMimeType() {
         return "text/html";
     }
@@ -124,6 +125,7 @@ public class DefaultTitle extends WebContent implements WebExportable {
      *
      * @return True, since new title content should overwrite old title content.
      */
+    @Override
     public boolean isOverwriteable() {
         return true;
     }
@@ -141,6 +143,7 @@ public class DefaultTitle extends WebContent implements WebExportable {
      *  content or the object already has an attribute with the same name as the
      *  the created WebAttribute
      */
+    @Override
     protected void _provideAttributes(WebExporter exporter)
             throws IllegalActionException {
 
@@ -164,7 +167,7 @@ public class DefaultTitle extends WebContent implements WebExportable {
                 "titleWebAttribute", "title");
         webAttribute.setExpression(titleValue);
         exporter.defineAttribute(webAttribute, true);
-        */
+         */
 
         boolean entities = false, attributes = false;
         String includeValue = include.stringValue().toLowerCase(
@@ -203,7 +206,7 @@ public class DefaultTitle extends WebContent implements WebExportable {
                 webAttribute.setExpression(object.getDisplayName());
                 exporter.defineAttribute(webAttribute, true);
             }
-            */
+             */
         }
         if (attributes) {
             if (instances.trim().equals("")) {

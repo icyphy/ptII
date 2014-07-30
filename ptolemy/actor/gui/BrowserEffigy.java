@@ -148,6 +148,7 @@ public class BrowserEffigy extends Effigy {
          *  capable of creating an effigy without a URL being specified.
          *  @return True.
          */
+        @Override
         public boolean canCreateBlankEffigy() {
             return false;
         }
@@ -169,6 +170,7 @@ public class BrowserEffigy extends Effigy {
          *  @exception Exception If the URL cannot be read, or if the data
          *   is malformed in some way.
          */
+        @Override
         public Effigy createEffigy(CompositeEntity container, URL base, URL in)
                 throws Exception {
             if (in == null) {

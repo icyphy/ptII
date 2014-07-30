@@ -120,6 +120,7 @@ public class TimeKeeper {
      *  {@link #getModelTime()}
      *  @see #setCurrentTime(Time)
      */
+    @Deprecated
     public double getCurrentTime() {
         return getModelTime().getDoubleValue();
     }

@@ -128,6 +128,7 @@ public class RecordAssembler extends TypedAtomicActor {
      *  @exception CloneNotSupportedException If a derived class contains
      *   an attribute that cannot be cloned.
      */
+    @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         RecordAssembler newObject = (RecordAssembler) super.clone(workspace);
         newObject._portMap = new HashMap<String, TypedIOPort>();
@@ -138,6 +139,7 @@ public class RecordAssembler extends TypedAtomicActor {
      *  and send the RecordToken to the output.
      *  @exception IllegalActionException If there is no director.
      */
+    @Override
     public void fire() throws IllegalActionException {
         super.fire();
 
@@ -177,6 +179,7 @@ public class RecordAssembler extends TypedAtomicActor {
      *   input port throws it.
      *  @see ptolemy.actor.IOPort#hasToken(int)
      */
+    @Override
     public boolean prefire() throws IllegalActionException {
         boolean superReturnValue = super.prefire();
         for (TypedIOPort port : _portMap.values()) {

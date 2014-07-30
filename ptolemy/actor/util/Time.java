@@ -337,6 +337,7 @@ public class Time implements Comparable {
      *  @return The integer -1, 0, or 1 if this is less than, equal to, or
      *   greater than the argument.
      */
+    @Override
     public int compareTo(Object time) {
         // NOTE: a time object may contain infinite time values.
         Time castTime = (Time) time;
@@ -391,6 +392,7 @@ public class Time implements Comparable {
      *  @param time The time object that this time object is compared to.
      *  @return True if the two time objects have the same time value.
      */
+    @Override
     public boolean equals(Object time) {
         if (time instanceof Time) {
             return this.compareTo(time) == 0;
@@ -444,6 +446,7 @@ public class Time implements Comparable {
      *  calculating the hash code.
      *  @return The hash code for the time object.
      */
+    @Override
     public int hashCode() {
         if (_isNegativeInfinite) {
             return Integer.MIN_VALUE;
@@ -592,6 +595,7 @@ public class Time implements Comparable {
      *  used to construct the time objects containing infinite time values.
      *  @return A String representation of this time object.
      */
+    @Override
     public String toString() {
         if (_isPositiveInfinite) {
             return "Infinity";

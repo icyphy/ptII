@@ -25,7 +25,7 @@
  PT_COPYRIGHT_VERSION_2
  COPYRIGHTENDKEY
 
-*/
+ */
 package ptolemy.actor.gt.controller;
 
 import java.io.Reader;
@@ -73,7 +73,7 @@ import ptolemy.moml.filter.MoMLFilterSimple;
  @Pt.AcceptedRating Red (tfeng)
  */
 public class DesignPatternImporter extends Attribute implements GTAttribute,
-        ValueListener {
+ValueListener {
 
     /** Construct an attribute with the given name contained by the
      *  specified entity. The container argument must not be null, or
@@ -114,6 +114,7 @@ public class DesignPatternImporter extends Attribute implements GTAttribute,
      *  @exception CloneNotSupportedException Not thrown in this base class
      *  @return The new object.
      */
+    @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         DesignPatternImporter newObject = (DesignPatternImporter) super
                 .clone(workspace);
@@ -128,8 +129,9 @@ public class DesignPatternImporter extends Attribute implements GTAttribute,
      *  @exception IllegalActionException If thrown by the superclass.
      *  @exception NameDuplicationException If thrown by the superclass.
      */
+    @Override
     public void setContainer(NamedObj container) throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         NamedObj oldContainer = getContainer();
         try {
             if (oldContainer != null && _lastUndoStack != null) {
@@ -200,7 +202,7 @@ public class DesignPatternImporter extends Attribute implements GTAttribute,
             URI baseDirectory = designPatternFile.getBaseDirectory();
             model = parser.parse(
                     baseDirectory == null ? null : baseDirectory.toURL(),
-                    value, reader);
+                            value, reader);
         } catch (Exception e) {
             throw new InternalErrorException(this, e, "Unable to read design "
                     + "pattern from file \"" + value + "\".");
@@ -247,13 +249,16 @@ public class DesignPatternImporter extends Attribute implements GTAttribute,
             if (after instanceof TransformationAttribute) {
                 final TransformationAttribute attribute = (TransformationAttribute) after;
                 attribute.addExecutionListener(new ExecutionListener() {
+                    @Override
                     public void executionError(Manager manager,
                             Throwable throwable) {
                     }
 
+                    @Override
                     public void executionFinished(Manager manager) {
                     }
 
+                    @Override
                     public void managerStateChanged(Manager manager) {
                         if (manager.getState() == Manager.PREINITIALIZING) {
                             MoMLParser.addMoMLFilter(filter);
@@ -290,6 +295,7 @@ public class DesignPatternImporter extends Attribute implements GTAttribute,
      *
      *  @param settable The attribute changed.
      */
+    @Override
     public void valueChanged(Settable settable) {
         update();
     }
@@ -331,6 +337,7 @@ public class DesignPatternImporter extends Attribute implements GTAttribute,
          *  @param xmlFile The file currently being parsed.
          *  @return The value of the attribute.
          */
+        @Override
         public String filterAttributeValue(NamedObj container, String element,
                 String attributeName, String attributeValue, String xmlFile) {
             return attributeValue;
@@ -346,6 +353,7 @@ public class DesignPatternImporter extends Attribute implements GTAttribute,
          *  @param xmlFile The file currently being parsed.
          *  @exception Exception Not thrown in this class.
          */
+        @Override
         public void filterEndElement(NamedObj container, String elementName,
                 StringBuffer currentCharData, String xmlFile) throws Exception {
             if (container != null && !"group".equals(elementName)) {

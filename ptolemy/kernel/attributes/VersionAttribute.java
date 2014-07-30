@@ -123,6 +123,7 @@ public class VersionAttribute extends StringAttribute implements Comparable {
      *  @exception CloneNotSupportedException If a derived class contains
      *  an attribute that cannot be cloned.
      */
+    @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         VersionAttribute newObject = (VersionAttribute) super.clone(workspace);
         newObject._tupleList = new LinkedList();
@@ -148,6 +149,7 @@ public class VersionAttribute extends StringAttribute implements Comparable {
      *   object is less than, equal to, or greater than the specified
      *   object, respectively.
      */
+    @Override
     public int compareTo(Object object) {
         VersionAttribute version = (VersionAttribute) object;
         Iterator versionTuples = version.iterator();
@@ -210,6 +212,7 @@ public class VersionAttribute extends StringAttribute implements Comparable {
      *  @param object  The specified object that is compared against.
      *  @return True if the specified version is the same as this one.
      */
+    @Override
     public boolean equals(Object object) {
         // If the _tupleList is null, then we are not fully constructed.
         // Defer to the superclass, so that we return true if the argument
@@ -229,6 +232,7 @@ public class VersionAttribute extends StringAttribute implements Comparable {
      *  hash code of the expression.
      *  @return A hash code value for this token.
      */
+    @Override
     public int hashCode() {
         String expression = getExpression();
         if (expression == null) {
@@ -264,7 +268,7 @@ public class VersionAttribute extends StringAttribute implements Comparable {
     public static String majorCurrentVersion() {
         Iterator versionTuples = CURRENT_VERSION.iterator();
         return (String) versionTuples.next() + "."
-                + (String) versionTuples.next();
+        + (String) versionTuples.next();
     }
 
     /** Set the value of the string attribute and notify the container
@@ -276,6 +280,7 @@ public class VersionAttribute extends StringAttribute implements Comparable {
      *  @exception IllegalActionException If the argument contains a
      *   space, which violates the JNLP Version format specification.
      */
+    @Override
     public void setExpression(String expression) throws IllegalActionException {
         super.setExpression(expression);
 

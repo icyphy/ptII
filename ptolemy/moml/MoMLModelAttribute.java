@@ -119,6 +119,7 @@ public class MoMLModelAttribute extends Attribute implements Configurable {
      *  @exception IllegalActionException Thrown if the URL string contained in the
      *   modelURL attribute is not valid.
      */
+    @Override
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
 
@@ -151,6 +152,7 @@ public class MoMLModelAttribute extends Attribute implements Configurable {
      *  @exception CloneNotSupportedException Thrown if an error occurs while
      *   cloning the attribute or the contained model.
      */
+    @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         MoMLModelAttribute newObject = (MoMLModelAttribute) super
                 .clone(workspace);
@@ -169,6 +171,7 @@ public class MoMLModelAttribute extends Attribute implements Configurable {
      *  @param text The MoML description.
      *  @exception Exception If the parsing fails.
      */
+    @Override
     public void configure(URL base, String source, String text)
             throws Exception {
         _source = null;
@@ -191,6 +194,7 @@ public class MoMLModelAttribute extends Attribute implements Configurable {
      *  no source has been used to configure this object, or null if no
      *  external source need be used to configure this object.
      */
+    @Override
     public String getConfigureSource() {
         return _source;
     }
@@ -199,6 +203,7 @@ public class MoMLModelAttribute extends Attribute implements Configurable {
      *  null otherwise.
      *  @return The text to include in a configure tag.
      */
+    @Override
     public String getConfigureText() {
         // If the source is not null, there is no need for configure text,
         // so return null. Otherwise return the model MoML text.
@@ -228,6 +233,7 @@ public class MoMLModelAttribute extends Attribute implements Configurable {
      *  @param depth The depth in the hierarchy, to determine indenting.
      *  @exception IOException If an I/O error occurs.
      */
+    @Override
     protected void _exportMoMLContents(Writer output, int depth)
             throws IOException {
         super._exportMoMLContents(output, depth);

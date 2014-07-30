@@ -55,7 +55,7 @@ import ptolemy.util.MessageHandler;
  * This is an attribute that creates an editor for configuring mapping for
  * MetroIIDirector. This UI will be invoked when you double click on the code
  * generator.
- * 
+ *
  * @author Liangpeng Guo
  * @version $Id$
  * @since Ptolemy II 10.0
@@ -67,7 +67,7 @@ public class MappingEditorGUI extends PtolemyFrame {
 
     /**
      * Construct a frame for the MappingEditor.
-     * 
+     *
      * @param container
      *            The mapping editor associated with the GUI.
      * @param tableau
@@ -90,9 +90,9 @@ public class MappingEditorGUI extends PtolemyFrame {
 
         File mappingFile = editor.getMappingFile();
         this.setTitle(mappingFile.getAbsolutePath());
-        
+
         JLabel label1 = new JLabel("ActorNames:");
-        
+
         JTextArea actorNameTextArea = new JTextArea(editor.actorNames(), 10, 80);
         actorNameTextArea.setEditable(false);
         actorNameTextArea.setBorder(BorderFactory.createEtchedBorder());
@@ -101,12 +101,13 @@ public class MappingEditorGUI extends PtolemyFrame {
 
         JPanel upper = new JPanel();
         upper.setLayout(new BorderLayout());
-        upper.add(actorNameTextPane); 
-        
+        upper.add(actorNameTextPane);
+
         JPanel buttonPanel = new JPanel();
         JButton commitButton = new JButton("Commit");
         commitButton.setToolTipText("Commit constraints");
         commitButton.addActionListener(new ActionListener() {
+            @Override
             public void actionPerformed(ActionEvent e) {
                 try {
                     editor.saveMapping(textArea.getText());
@@ -121,6 +122,7 @@ public class MappingEditorGUI extends PtolemyFrame {
         JButton cancelButton = new JButton("Cancel");
         cancelButton.setToolTipText("Cancel inputs");
         cancelButton.addActionListener(new ActionListener() {
+            @Override
             public void actionPerformed(ActionEvent e) {
                 dispose();
             }
@@ -128,7 +130,7 @@ public class MappingEditorGUI extends PtolemyFrame {
         buttonPanel.add(cancelButton);
 
         JLabel label2 = new JLabel("Constraints:");
-        
+
         textArea = new JTextArea(editor.readMapping(), 20, 80);
         textArea.setEditable(true);
         textArea.setBorder(BorderFactory.createEtchedBorder());
@@ -141,12 +143,12 @@ public class MappingEditorGUI extends PtolemyFrame {
         middle.setLayout(new BoxLayout(middle, BoxLayout.Y_AXIS));
 
         JPanel complete = new JPanel();
-        complete.add(label1); 
+        complete.add(label1);
         complete.add(upper);
         complete.add(label2);
-        complete.add(middle); 
+        complete.add(middle);
         complete.setLayout(new BoxLayout(complete, BoxLayout.Y_AXIS));
-      
+
         getContentPane().add(complete, BorderLayout.CENTER);
     }
 

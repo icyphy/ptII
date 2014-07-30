@@ -65,6 +65,7 @@ public class ConceptFromRecordField extends ConceptFunction {
      *  @exception IllegalActionException Thrown if there is a problem creating
      *   the output Concept or if the input is not a RecordConcept.
      */
+    @Override
     protected Concept _evaluateFunction(List<Concept> argValues)
             throws IllegalActionException {
         Concept inputRecord = argValues.get(0);
@@ -72,9 +73,9 @@ public class ConceptFromRecordField extends ConceptFunction {
             // If the input is not a RecordConcept, then it should be top, bottom or null.
             if (inputRecord == null
                     || inputRecord.getOntology().getConceptGraph().bottom()
-                            .equals(inputRecord)
+                    .equals(inputRecord)
                     || inputRecord.getOntology().getConceptGraph().top()
-                            .equals(inputRecord)) {
+                    .equals(inputRecord)) {
                 return inputRecord;
             } else {
                 throw new IllegalActionException("The input concept for the "

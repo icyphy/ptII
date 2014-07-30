@@ -44,17 +44,17 @@ import ptolemy.kernel.util.Settable;
 
 /** This actor implements an input port in a composite communication aspect
  *  (@link CompositeCommunicationAspect).
-*
-*  <p>
-*  Tokens received are RecordTokens containing two fields: receiver
-*  and token.
-*
-*  @author Patricia Derler
-*  @version $Id$
-*  @since Ptolemy II 10.0
-*  @Pt.ProposedRating Yellow (derler)
-*  @Pt.AcceptedRating Red (derler)
-*/
+ *
+ *  <p>
+ *  Tokens received are RecordTokens containing two fields: receiver
+ *  and token.
+ *
+ *  @author Patricia Derler
+ *  @version $Id$
+ *  @since Ptolemy II 10.0
+ *  @Pt.ProposedRating Yellow (derler)
+ *  @Pt.AcceptedRating Red (derler)
+ */
 public class CommunicationRequestPort extends Const {
 
     /** Construct a constant source with the default type set to the RecordToken
@@ -89,6 +89,7 @@ public class CommunicationRequestPort extends Const {
      *  @param attribute The attribute that changed.
      *  @exception IllegalActionException Not thrown here.
      */
+    @Override
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         if (attribute == value && _beforeInitialization) {
@@ -104,11 +105,13 @@ public class CommunicationRequestPort extends Const {
      *   which could occur if, for example, the director will not accept
      *   sequence actors.
      */
+    @Override
     public void initialize() throws IllegalActionException {
         super.initialize();
         _beforeInitialization = false;
     }
 
+    @Override
     public void wrapup() throws IllegalActionException {
         super.wrapup();
         // to avoid saving the token.

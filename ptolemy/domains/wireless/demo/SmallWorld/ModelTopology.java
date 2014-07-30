@@ -202,7 +202,7 @@ public class ModelTopology {
         if (location == null) {
             throw new IllegalActionException(
                     "Cannot determine location for port " + port.getName()
-                            + ".");
+                    + ".");
         }
 
         return location.getLocation();

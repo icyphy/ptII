@@ -90,6 +90,7 @@ public class MatrixPane extends JScrollPane {
         // thread.
         // See http://bugzilla.ecoinformatics.org/show_bug.cgi?id=4826
         SwingUtilities.invokeLater(new Runnable() {
+            @Override
             public void run() {
                 table.setModel(_emptyTableModel);
             }
@@ -102,6 +103,7 @@ public class MatrixPane extends JScrollPane {
     public void display(MatrixToken matrix) {
         final MatrixToken myMatrix = matrix;
         SwingUtilities.invokeLater(new Runnable() {
+            @Override
             public void run() {
                 table.setModel(new MatrixAsTable(myMatrix));
             }
@@ -151,6 +153,7 @@ public class MatrixPane extends JScrollPane {
         /** Get the column count of the Matrix.
          *  @return the column count.
          */
+        @Override
         public int getColumnCount() {
             return _matrix.getColumnCount();
         }
@@ -159,6 +162,7 @@ public class MatrixPane extends JScrollPane {
          *  index as a string.
          *  @return The column index as a string.
          */
+        @Override
         public String getColumnName(int columnIndex) {
             return Integer.toString(columnIndex);
         }
@@ -166,6 +170,7 @@ public class MatrixPane extends JScrollPane {
         /** Get the row count of the Matrix.
          *  @return the row count.
          */
+        @Override
         public int getRowCount() {
             return _matrix.getRowCount();
         }
@@ -176,6 +181,7 @@ public class MatrixPane extends JScrollPane {
          *  @return An instance of Token representing the matrix value
          *   at the specified row and column.
          */
+        @Override
         public Object getValueAt(int row, int column) {
             // There is a bug in JTable, where it happily tries to access
             // rows and columns that are outside of range.
@@ -205,6 +211,7 @@ public class MatrixPane extends JScrollPane {
         /** Get the column count of the Matrix.
          *  @return Zero.
          */
+        @Override
         public int getColumnCount() {
             return 0;
         }
@@ -212,6 +219,7 @@ public class MatrixPane extends JScrollPane {
         /** Get the row count of the Matrix.
          *  @return Zero.
          */
+        @Override
         public int getRowCount() {
             return 0;
         }
@@ -222,6 +230,7 @@ public class MatrixPane extends JScrollPane {
          *  @return An instance of Token representing the matrix value
          *   at the specified row and column.
          */
+        @Override
         public Object getValueAt(int row, int column) {
             return _emptyStringToken;
         }

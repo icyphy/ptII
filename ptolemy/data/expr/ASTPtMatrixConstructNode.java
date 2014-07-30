@@ -72,6 +72,7 @@ public class ASTPtMatrixConstructNode extends ASTPtRootNode {
 
     /** Traverse this node with the given visitor.
      */
+    @Override
     public void visit(ParseTreeVisitor visitor) throws IllegalActionException {
         visitor.visitMatrixConstructNode(this);
     }

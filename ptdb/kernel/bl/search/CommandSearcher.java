@@ -25,7 +25,7 @@ ENHANCEMENTS, OR MODIFICATIONS.
                                                 COPYRIGHTENDKEY
 
 
-*/
+ */
 
 package ptdb.kernel.bl.search;
 
@@ -46,7 +46,7 @@ import ptdb.common.dto.SearchCriteria;
  *
  */
 public class CommandSearcher extends AbstractSearcher implements
-        AbstractDBSearcher {
+AbstractDBSearcher {
 
     /**
      * Construct the command searcher.
@@ -69,6 +69,7 @@ public class CommandSearcher extends AbstractSearcher implements
      *         false - if the search criteria has not been set.
      */
 
+    @Override
     protected boolean _isSearchCriteriaSet() {
         if (_commandSearchCriteria == null || _commandSearchCriteria.equals("")) {
             return false;
@@ -82,6 +83,7 @@ public class CommandSearcher extends AbstractSearcher implements
      * <p>This method has not been implemented yet.</p>
      */
 
+    @Override
     protected void _search() {
         // to be implemented in the next requirement
 

@@ -25,7 +25,7 @@ ENHANCEMENTS, OR MODIFICATIONS.
                                                 COPYRIGHTENDKEY
 
 
-*/
+ */
 package ptdb.gui;
 
 import java.awt.Color;
@@ -106,6 +106,7 @@ public class ModelPanel extends JPanel {
 
         _modelLink.addActionListener(new ActionListener() {
 
+            @Override
             public void actionPerformed(ActionEvent event) {
 
                 _loadModel();
@@ -159,7 +160,7 @@ public class ModelPanel extends JPanel {
                 JOptionPane.showMessageDialog(this,
                         "The specified model could "
                                 + "not be found in the database.",
-                        "Load Error", JOptionPane.INFORMATION_MESSAGE, null);
+                                "Load Error", JOptionPane.INFORMATION_MESSAGE, null);
 
             }
 

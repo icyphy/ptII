@@ -111,7 +111,7 @@ public class Port extends NamedObj {
      *   a port already in the container.
      */
     public Port(Entity container, String name) throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         super(container.workspace(), name);
         _elementName = "port";
         setContainer(container);
@@ -129,6 +129,7 @@ public class Port extends NamedObj {
      *   cannot be cloned.
      *  @return A new Port.
      */
+    @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         Port newObject = (Port) super.clone(workspace);
         newObject._relationsList = new CrossRefList(newObject);
@@ -171,6 +172,7 @@ public class Port extends NamedObj {
      *  @deprecated Use connectedPortList() instead.
      *  @return An enumeration of Port objects.
      */
+    @Deprecated
     public Enumeration connectedPorts() {
         return Collections.enumeration(connectedPortList());
     }
@@ -179,6 +181,7 @@ public class Port extends NamedObj {
      *  @return An instance of Entity.
      *  @see #setContainer(Entity)
      */
+    @Override
     public NamedObj getContainer() {
         return _container;
     }
@@ -383,6 +386,7 @@ public class Port extends NamedObj {
      *  @exception IllegalActionException If this object has
      *   no container.
      */
+    @Override
     public int moveDown() throws IllegalActionException {
         Entity container = (Entity) getContainer();
 
@@ -418,6 +422,7 @@ public class Port extends NamedObj {
      *  @exception IllegalActionException If this object has
      *   no container.
      */
+    @Override
     public int moveToFirst() throws IllegalActionException {
         Entity container = (Entity) getContainer();
 
@@ -455,6 +460,7 @@ public class Port extends NamedObj {
      *  @exception IllegalActionException If this object has
      *   no container or if the index is out of bounds.
      */
+    @Override
     public int moveToIndex(int index) throws IllegalActionException {
         Entity container = (Entity) getContainer();
 
@@ -490,6 +496,7 @@ public class Port extends NamedObj {
      *  @exception IllegalActionException If this object has
      *   no container.
      */
+    @Override
     public int moveToLast() throws IllegalActionException {
         Entity container = (Entity) getContainer();
 
@@ -525,6 +532,7 @@ public class Port extends NamedObj {
      *  @exception IllegalActionException If this object has
      *   no container.
      */
+    @Override
     public int moveUp() throws IllegalActionException {
         Entity container = (Entity) getContainer();
 
@@ -597,7 +605,7 @@ public class Port extends NamedObj {
      *  @see #_checkContainer(Entity)
      */
     public void setContainer(Entity entity) throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         if (entity != null && _workspace != entity.workspace()) {
             throw new IllegalActionException(this, entity,
                     "Cannot set container because workspaces are different.");
@@ -687,8 +695,9 @@ public class Port extends NamedObj {
      *  @exception NameDuplicationException If there is already a port
      *   with the same name in the container.
      */
+    @Override
     public void setName(String name) throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         if (name == null) {
             name = "";
         }
@@ -828,6 +837,7 @@ public class Port extends NamedObj {
      *  @return A description of the object.
      * @exception IllegalActionException
      */
+    @Override
     protected String _description(int detail, int indent, int bracket)
             throws IllegalActionException {
         try {
@@ -892,6 +902,7 @@ public class Port extends NamedObj {
      *   and has the wrong class, or if the specified container is not
      *   an instance of CompositeEntity.
      */
+    @Override
     protected NamedObj _getContainedObject(NamedObj container,
             String relativeName) throws IllegalActionException {
         if (!(container instanceof Entity)) {
@@ -922,6 +933,7 @@ public class Port extends NamedObj {
      *  @return A new object of the same class and name
      *   as this one.
      */
+    @Override
     protected NamedObj _propagateExistence(NamedObj container)
             throws IllegalActionException {
         try {

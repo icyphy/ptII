@@ -50,6 +50,7 @@ package ptolemy.actor;
  @Pt.AcceptedRating
  @see IOPort
  */
+@Deprecated
 public interface TokenSentListener {
     /** Report an that a token was sent.  This method will be called
      *  when a token has been sent from one IOPort to another.

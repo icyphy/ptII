@@ -300,6 +300,7 @@ public class UndoContext {
     }
 
     /** Return a string representation of this object. */
+    @Override
     public String toString() {
         return "UndoContext: " + (isUndoable() ? "are" : "are not")
                 + " undoable and "

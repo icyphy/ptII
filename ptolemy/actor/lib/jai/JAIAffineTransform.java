@@ -133,6 +133,7 @@ public class JAIAffineTransform extends Transformer {
      *  @exception CloneNotSupportedException If a derived class contains
      *  an attribute that cannot be cloned.
      */
+    @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         JAIAffineTransform newObject = (JAIAffineTransform) super
                 .clone(workspace);
@@ -145,6 +146,7 @@ public class JAIAffineTransform extends Transformer {
      *  @param attribute The attribute that changed.
      *  @exception IllegalActionException If the function is not recognized.
      */
+    @Override
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         if (attribute == interpolationType) {
@@ -189,6 +191,7 @@ public class JAIAffineTransform extends Transformer {
      *  @exception IllegalActionException If a contained method throws it,
      *   or if a token is received that contains a null image.
      */
+    @Override
     public void fire() throws IllegalActionException {
         super.fire();
 

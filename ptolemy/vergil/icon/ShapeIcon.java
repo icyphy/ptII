@@ -98,6 +98,7 @@ public class ShapeIcon extends DynamicEditorIcon {
      *  @exception CloneNotSupportedException Not thrown in this base class
      *  @return The new Attribute.
      */
+    @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         ShapeIcon newObject = (ShapeIcon) super.clone(workspace);
 
@@ -112,6 +113,7 @@ public class ShapeIcon extends DynamicEditorIcon {
      *  modification exception could occur.
      *  @return A figure representing the specified shape.
      */
+    @Override
     public Figure createBackgroundFigure() {
         // NOTE: This gets called every time that the graph gets
         // repainted, which seems excessive to me.  This will happen
@@ -178,6 +180,7 @@ public class ShapeIcon extends DynamicEditorIcon {
         // conflict here where that method is trying to add to the _figures
         // list while this method is traversing it.
         Runnable doSet = new Runnable() {
+            @Override
             public void run() {
                 synchronized (_figures) {
                     Iterator figures = _liveFigureIterator();
@@ -212,6 +215,7 @@ public class ShapeIcon extends DynamicEditorIcon {
         // conflict here where that method is trying to add to the _figures
         // list while this method is traversing it.
         Runnable doSet = new Runnable() {
+            @Override
             public void run() {
                 synchronized (_figures) {
                     Iterator figures = _liveFigureIterator();
@@ -246,6 +250,7 @@ public class ShapeIcon extends DynamicEditorIcon {
         // conflict here where that method is trying to add to the _figures
         // list while this method is traversing it.
         Runnable doSet = new Runnable() {
+            @Override
             public void run() {
                 synchronized (_figures) {
                     Iterator figures = _liveFigureIterator();
@@ -280,6 +285,7 @@ public class ShapeIcon extends DynamicEditorIcon {
         // conflict here where that method is trying to add to the _figures
         // list while this method is traversing it.
         Runnable doSet = new Runnable() {
+            @Override
             public void run() {
                 synchronized (_figures) {
                     Iterator figures = _liveFigureIterator();
@@ -314,6 +320,7 @@ public class ShapeIcon extends DynamicEditorIcon {
         // conflict here where that method is trying to add to the _figures
         // list while this method is traversing it.
         Runnable doSet = new Runnable() {
+            @Override
             public void run() {
                 synchronized (_figures) {
                     Iterator figures = _liveFigureIterator();
@@ -343,6 +350,7 @@ public class ShapeIcon extends DynamicEditorIcon {
         // conflict here where that method is trying to add to the _figures
         // list while this method is traversing it.
         Runnable doSet = new Runnable() {
+            @Override
             public void run() {
                 synchronized (_figures) {
                     Iterator figures = _liveFigureIterator();

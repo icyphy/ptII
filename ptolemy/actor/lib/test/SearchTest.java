@@ -22,7 +22,7 @@ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
 PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 ENHANCEMENTS, OR MODIFICATIONS.
-*/
+ */
 //package gov.nasa.gsfc.giovanni;
 package ptolemy.actor.lib.test;
 
@@ -58,7 +58,7 @@ public class SearchTest extends TypedAtomicActor {
     // match value.
     public TypedIOPort searchMatch = new TypedIOPort(this,
     "search Match", true, false);
-    */
+     */
 
     /**
      *  Output whether the download failed or passed.
@@ -80,6 +80,7 @@ public class SearchTest extends TypedAtomicActor {
     /**
      *
      */
+    @Override
     public boolean prefire() throws IllegalActionException {
         return super.prefire();
 
@@ -89,6 +90,7 @@ public class SearchTest extends TypedAtomicActor {
      * Read the search parameter, if it matches "Search 50" then
      * we've "got" data. Let the Loop Actor know it can stop searching
      */
+    @Override
     public void fire() throws IllegalActionException {
         super.fire();
 
@@ -111,6 +113,7 @@ public class SearchTest extends TypedAtomicActor {
      *
      *@return The value returned by the parent method.
      */
+    @Override
     public boolean postfire() throws IllegalActionException {
         return super.postfire();
     }

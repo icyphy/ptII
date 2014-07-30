@@ -160,6 +160,7 @@ public class IORelation extends ComponentRelation {
      *  @exception IllegalActionException If the change is not acceptable
      *   to this container.
      */
+    @Override
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         if (attribute instanceof Parameter
@@ -184,6 +185,7 @@ public class IORelation extends ComponentRelation {
      *   cannot be cloned.
      *  @return A new ComponentRelation.
      */
+    @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         IORelation newObject = (IORelation) super.clone(workspace);
         newObject._inferredWidthVersion = -1;
@@ -421,6 +423,7 @@ public class IORelation extends ComponentRelation {
      *  @deprecated Use linkedDestinationPortList() instead.
      *  @return An enumeration of IOPort objects.
      */
+    @Deprecated
     @SuppressWarnings("unchecked")
     public Enumeration linkedDestinationPorts() {
         return linkedDestinationPorts(null);
@@ -438,6 +441,7 @@ public class IORelation extends ComponentRelation {
      *  @deprecated Use linkDestinationPortList(IOPort) instead.
      *  @return An enumeration of IOPort objects.
      */
+    @Deprecated
     @SuppressWarnings("unchecked")
     public Enumeration linkedDestinationPorts(IOPort except) {
         return Collections.enumeration(linkedDestinationPortList(except));
@@ -511,6 +515,7 @@ public class IORelation extends ComponentRelation {
      *  @deprecated Use linkedSourcePortList() instead.
      *  @return An enumeration of IOPort objects.
      */
+    @Deprecated
     @SuppressWarnings("unchecked")
     public Enumeration linkedSourcePorts() {
         return Collections.enumeration(linkedSourcePortList());
@@ -527,6 +532,7 @@ public class IORelation extends ComponentRelation {
      *  @deprecated Use linkedSourcePortList(IOPort) instead.
      *  @return An enumeration of IOPort objects.
      */
+    @Deprecated
     @SuppressWarnings("unchecked")
     public Enumeration linkedSourcePorts(IOPort except) {
         return Collections.enumeration(linkedSourcePortList(except));
@@ -600,6 +606,7 @@ public class IORelation extends ComponentRelation {
      *  @exception NameDuplicationException If the name collides with a name
      *   already on the relations list of the container.
      */
+    @Override
     public void setContainer(CompositeEntity container)
             throws IllegalActionException, NameDuplicationException {
         if (!(container instanceof CompositeActor) && container != null) {
@@ -678,6 +685,7 @@ public class IORelation extends ComponentRelation {
      *  @param port The candidate port to link to.
      *  @exception IllegalActionException If the port is not an IOPort.
      */
+    @Override
     protected void _checkPort(Port port) throws IllegalActionException {
         if (!(port instanceof IOPort)) {
             throw new IllegalActionException(this, port,
@@ -695,6 +703,7 @@ public class IORelation extends ComponentRelation {
      *   relation, or if this relation and the specified relation do not
      *   have the same width.
      */
+    @Override
     protected void _checkRelation(Relation relation, boolean symmetric)
             throws IllegalActionException {
         if (!(relation instanceof IORelation)) {
@@ -714,8 +723,8 @@ public class IORelation extends ComponentRelation {
             } else {
                 throw new IllegalActionException(this, relation,
                         "Relations have different widths: " + _getUserWidth()
-                                + " != "
-                                + ((IORelation) relation)._getUserWidth());
+                        + " != "
+                        + ((IORelation) relation)._getUserWidth());
             }
         }
 
@@ -748,6 +757,7 @@ public class IORelation extends ComponentRelation {
      *  @return A description of the object.
      * @exception IllegalActionException
      */
+    @Override
     protected String _description(int detail, int indent, int bracket)
             throws IllegalActionException {
         try {
@@ -881,7 +891,7 @@ public class IORelation extends ComponentRelation {
      *   be parsed or cannot be evaluated, or if the result of evaluation
      *   violates type constraints, or if the result of evaluation is null
      *   and there are variables that depend on this one.
-      */
+     */
     private int _getUserWidth() throws IllegalActionException {
         if (_cachedWidth == -2) {
             IntToken t = (IntToken) width.getToken();

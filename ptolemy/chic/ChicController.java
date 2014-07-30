@@ -108,6 +108,7 @@ public class ChicController extends AttributeController {
     /** Set the configuration.  This is used to open documentation files.
      *  @param configuration The configuration.
      */
+    @Override
     public void setConfiguration(Configuration configuration) {
         super.setConfiguration(configuration);
 
@@ -142,11 +143,12 @@ public class ChicController extends AttributeController {
     /** An action to invoke CHIC: Asynchronous I/O
      */
     @SuppressWarnings("serial")
-        private static class AsynchronousIOAction extends FigureAction {
+    private static class AsynchronousIOAction extends FigureAction {
         public AsynchronousIOAction() {
             super("CHIC: Asynchronous I/O");
         }
 
+        @Override
         public void actionPerformed(ActionEvent e) {
             // Determine which entity was selected for the look inside action.
             super.actionPerformed(e);
@@ -195,7 +197,7 @@ public class ChicController extends AttributeController {
     /** An action to look inside the Chic visible attribute.
      */
     @SuppressWarnings("serial")
-        private class LookInsideAction extends FigureAction {
+    private class LookInsideAction extends FigureAction {
         public LookInsideAction() {
             super("Look Inside (Ctrl+L)");
 
@@ -205,10 +207,11 @@ public class ChicController extends AttributeController {
                     KeyStroke.getKeyStroke(KeyEvent.VK_L, Event.CTRL_MASK));
         }
 
+        @Override
         public void actionPerformed(ActionEvent e) {
             if (_configuration == null) {
                 MessageHandler
-                        .error("Cannot look inside without a configuration.");
+                .error("Cannot look inside without a configuration.");
                 return;
             }
 
@@ -292,7 +295,7 @@ public class ChicController extends AttributeController {
     /** An action to invoke CHIC: Synchronous A/G
      */
     @SuppressWarnings("serial")
-        private static class SynchronousAGAction extends FigureAction {
+    private static class SynchronousAGAction extends FigureAction {
         // FindBugs suggests making this class static so as to decrease
         // the size of instances and avoid dangling references.
 
@@ -300,6 +303,7 @@ public class ChicController extends AttributeController {
             super("CHIC: Synchronous A/G");
         }
 
+        @Override
         public void actionPerformed(ActionEvent e) {
             // Determine which entity was selected for the look inside action.
             super.actionPerformed(e);

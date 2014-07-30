@@ -72,7 +72,7 @@ public class HomerLocation extends Parameter {
      *  in that container.
      */
     public HomerLocation(NamedObj container) throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         super(container, HomerConstants.POSITION_NODE);
         setVisibility(Settable.NONE);
     }

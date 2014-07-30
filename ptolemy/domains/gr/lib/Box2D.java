@@ -66,6 +66,7 @@ public class Box2D extends GRShape2D {
      *  @return A new Figure.
      *  @exception IllegalActionException If a parameter is not valid.
      */
+    @Override
     protected BasicFigure _createFigure() throws IllegalActionException {
         BasicFigure figure = new BasicFigure(new Rectangle2D.Double(10.0, 10.0,
                 10.0, 10.0));

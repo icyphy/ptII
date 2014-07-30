@@ -25,7 +25,7 @@
  PT_COPYRIGHT_VERSION_2
  COPYRIGHTENDKEY
 
-*/
+ */
 package ptolemy.domains.de.lib;
 
 import java.util.Iterator;
@@ -109,6 +109,7 @@ public class TimeCompare extends DEActor {
      *   if one of the attributes cannot be cloned.
      *  @return A new ComponentEntity.
      */
+    @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         TimeCompare newObject = (TimeCompare) super.clone(workspace);
         newObject._input1TimeStamps = new LinkedList<Double>();
@@ -125,6 +126,7 @@ public class TimeCompare extends DEActor {
      *  @exception IllegalActionException If thrown when trying to consume input
      *  events or produce output events.
      */
+    @Override
     public void fire() throws IllegalActionException {
         super.fire();
 
@@ -172,6 +174,7 @@ public class TimeCompare extends DEActor {
      *
      *  @exception IllegalActionException Never thrown.
      */
+    @Override
     public void initialize() throws IllegalActionException {
         super.initialize();
         _input1TimeStamps.clear();
@@ -186,6 +189,7 @@ public class TimeCompare extends DEActor {
      *  @exception IllegalActionException If thrown when trying to decide
      *  whether the input ports have token or not.
      */
+    @Override
     public boolean prefire() throws IllegalActionException {
         return super.prefire() && (input1.hasToken(0) || input2.hasToken(0));
     }

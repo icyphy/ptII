@@ -66,7 +66,7 @@ import ptolemy.moml.unit.UnitEquation;
  */
 @SuppressWarnings("serial")
 public class UnitConstraintsDialog extends PtolemyDialog implements
-        ChangeListener {
+ChangeListener {
     /**
      * Construct a dialog that presents Unit constraints as a table. Each row
      * of the table corresponds to one constraint. The user modifies the table
@@ -126,18 +126,22 @@ public class UnitConstraintsDialog extends PtolemyDialog implements
             _unitsDataTable = new Vector(unitsExpression);
         }
 
+        @Override
         public int getRowCount() {
             return _unitsDataTable.size();
         }
 
+        @Override
         public int getColumnCount() {
             return 1;
         }
 
+        @Override
         public String getColumnName(int i) {
             return "Constraint";
         }
 
+        @Override
         public Object getValueAt(int row, int col) {
             return _unitsDataTable.elementAt(row);
         }
@@ -149,16 +153,19 @@ public class UnitConstraintsDialog extends PtolemyDialog implements
             fireTableRowsInserted(getRowCount(), getRowCount());
         }
 
+        @Override
         public boolean isCellEditable(int arg0, int arg1) {
             return true;
         }
 
+        @Override
         public void setValueAt(Object value, int row, int col) {
             _unitsDataTable.set(row, value);
             _enableApplyButton(true);
             _setDirty(true);
         }
 
+        @Override
         public String toString() {
             StringBuffer retv = new StringBuffer("");
 
@@ -179,6 +186,7 @@ public class UnitConstraintsDialog extends PtolemyDialog implements
      *
      * @see ptolemy.kernel.util.ChangeListener#changeExecuted(ChangeRequest)
      */
+    @Override
     public void changeExecuted(ChangeRequest change) {
         // TODO Auto-generated method stub
     }
@@ -189,6 +197,7 @@ public class UnitConstraintsDialog extends PtolemyDialog implements
      * @see ptolemy.kernel.util.ChangeListener#changeFailed(ChangeRequest,
      *      Exception)
      */
+    @Override
     public void changeFailed(ChangeRequest change, Exception exception) {
         // TODO Auto-generated method stub
     }
@@ -217,6 +226,7 @@ public class UnitConstraintsDialog extends PtolemyDialog implements
      *
      * @see ptolemy.actor.gui.PtolemyDialog#_createExtendedButtons()
      */
+    @Override
     protected void _createExtendedButtons(JPanel _buttons) {
         _commitButton = new JButton("Commit");
         _buttons.add(_commitButton);
@@ -239,6 +249,7 @@ public class UnitConstraintsDialog extends PtolemyDialog implements
     /** Return the help URL.
      *  @return The help URL
      */
+    @Override
     protected URL _getHelpURL() {
         URL helpURL = getClass().getClassLoader().getResource(
                 "ptolemy/actor/gui/doc/unitConstraintsDialog.htm");
@@ -249,6 +260,7 @@ public class UnitConstraintsDialog extends PtolemyDialog implements
      *  here.  Other button presses are handled by the superclass.
      *  @param button The button to process.
      */
+    @Override
     protected void _processButtonPress(String button) {
         if (button.equals("Add")) {
             _unitsTableModel.addNewConstraint();
@@ -292,6 +304,7 @@ public class UnitConstraintsDialog extends PtolemyDialog implements
     private ListSelectionListener _rowSelectionListener = new ListSelectionListener() {
         ///////////////////////////////////////////////////////////////////
         //// inner class ////
+        @Override
         public void valueChanged(ListSelectionEvent e) {
             if (e.getValueIsAdjusting()) {
                 return;

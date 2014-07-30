@@ -24,7 +24,7 @@
  PT_COPYRIGHT_VERSION_2
  COPYRIGHTENDKEY
 
-*/
+ */
 package ptolemy.vergil.ptera;
 
 import java.awt.Color;
@@ -77,6 +77,7 @@ public class TimeAdvanceEventIcon extends EventIcon {
     /** Create a Figure.
      *  @return The figure.
      */
+    @Override
     public Figure createFigure() {
         CompositeFigure figure = (CompositeFigure) super.createFigure();
         Rectangle2D bounds = figure.getBounds();

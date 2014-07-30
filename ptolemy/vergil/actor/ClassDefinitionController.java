@@ -104,6 +104,7 @@ public class ClassDefinitionController extends ActorController {
     /** Add hot keys to the actions in the given JGraph.
      *  @param jgraph The JGraph to which hot keys are to be added.
      */
+    @Override
     public void addHotKeys(JGraph jgraph) {
         super.addHotKeys(jgraph);
         // _convertToInstanceAction does not have a hot key.
@@ -118,6 +119,7 @@ public class ClassDefinitionController extends ActorController {
     /** Draw the node at its location. This overrides the base class
      *  to highlight the actor to indicate that it is a class definition.
      */
+    @Override
     protected Figure _renderNode(Object node) {
         Figure nf = super._renderNode(node);
 
@@ -221,11 +223,12 @@ public class ClassDefinitionController extends ActorController {
     //// ConvertToInstanceAction
     // An action to convert a class to an instance.
     @SuppressWarnings("serial")
-        private class ConvertToInstanceAction extends FigureAction {
+    private class ConvertToInstanceAction extends FigureAction {
         public ConvertToInstanceAction(String commandName) {
             super(commandName);
         }
 
+        @Override
         public void actionPerformed(ActionEvent e) {
             // If access is not full, do nothing.
             if (_access != FULL) {
@@ -291,14 +294,15 @@ public class ClassDefinitionController extends ActorController {
     //// CreateInstanceAction
     // An action to instantiate a class.
     @SuppressWarnings("serial")
-        private class CreateInstanceAction extends FigureAction {
+    private class CreateInstanceAction extends FigureAction {
         public CreateInstanceAction(String commandName) {
             super(commandName);
             putValue(GUIUtilities.ACCELERATOR_KEY, KeyStroke.getKeyStroke(
                     KeyEvent.VK_I, Toolkit.getDefaultToolkit()
-                            .getMenuShortcutKeyMask()));
+                    .getMenuShortcutKeyMask()));
         }
 
+        @Override
         public void actionPerformed(ActionEvent e) {
             // If access is not full, do nothing.
             if (_access != FULL) {
@@ -317,14 +321,15 @@ public class ClassDefinitionController extends ActorController {
     //// CreateSubclassAction
     // An action to subclass a class.
     @SuppressWarnings("serial")
-        private class CreateSubclassAction extends FigureAction {
+    private class CreateSubclassAction extends FigureAction {
         public CreateSubclassAction(String commandName) {
             super(commandName);
             putValue(GUIUtilities.ACCELERATOR_KEY, KeyStroke.getKeyStroke(
                     KeyEvent.VK_U, Toolkit.getDefaultToolkit()
-                            .getMenuShortcutKeyMask()));
+                    .getMenuShortcutKeyMask()));
         }
 
+        @Override
         public void actionPerformed(ActionEvent e) {
             // If access is not full, do nothing.
             if (_access != FULL) {

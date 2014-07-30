@@ -125,7 +125,7 @@ public class TypedIOPort extends IOPort implements Typeable {
      *  The object is added to the workspace directory.
      *  Increment the version number of the workspace.
      *  @param workspace The workspace that will list the port.
-     * @exception IllegalActionException 
+     * @exception IllegalActionException
      */
     public TypedIOPort(Workspace workspace) throws IllegalActionException {
         super(workspace);
@@ -193,6 +193,7 @@ public class TypedIOPort extends IOPort implements Typeable {
      *  @exception IllegalActionException If the change is not acceptable
      *   to this container.
      */
+    @Override
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         if (attribute instanceof TypeAttribute) {
@@ -206,9 +207,9 @@ public class TypedIOPort extends IOPort implements Typeable {
                 }
             }
         } else if (attribute == defaultValue) {
-                if (defaultValue.getToken() != null) {
-                        setTypeEquals(defaultValue.getType());
-                }
+            if (defaultValue.getToken() != null) {
+                setTypeEquals(defaultValue.getType());
+            }
         } else {
             super.attributeChanged(attribute);
         }
@@ -237,8 +238,9 @@ public class TypedIOPort extends IOPort implements Typeable {
      *  @exception NoRoomException If a send to one of the channels throws
      *     it.
      */
+    @Override
     public void broadcast(Token token) throws IllegalActionException,
-            NoRoomException {
+    NoRoomException {
         _checkType(token);
         super.broadcast(token);
     }
@@ -272,6 +274,7 @@ public class TypedIOPort extends IOPort implements Typeable {
      *  @exception IllegalActionException If the tokens to be sent cannot
      *   be converted to the type of this port
      */
+    @Override
     public void broadcast(Token[] tokenArray, int vectorLength)
             throws IllegalActionException, NoRoomException {
         // Check types.
@@ -294,6 +297,7 @@ public class TypedIOPort extends IOPort implements Typeable {
      *   attributes cannot be cloned.
      *  @return A new TypedIOPort.
      */
+    @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         TypedIOPort newObject = (TypedIOPort) super.clone(workspace);
 
@@ -319,6 +323,7 @@ public class TypedIOPort extends IOPort implements Typeable {
      *  @exception IllegalActionException If the conversion is
      *   invalid.
      */
+    @Override
     public Token convert(Token token) throws IllegalActionException {
         Type type = getType();
 
@@ -345,6 +350,7 @@ public class TypedIOPort extends IOPort implements Typeable {
      *  This method is read-synchronized on the workspace.
      *  @return An instance of Type.
      */
+    @Override
     public Type getType() {
         try {
             _workspace.getReadAccess();
@@ -403,6 +409,7 @@ public class TypedIOPort extends IOPort implements Typeable {
      *  type variable.
      *  @return An InequalityTerm whose value is the type of this port.
      */
+    @Override
     public InequalityTerm getTypeTerm() {
         if (_typeTerm == null) {
             _typeTerm = new TypeTerm();
@@ -417,6 +424,7 @@ public class TypedIOPort extends IOPort implements Typeable {
      *  if the associated port is not connected to anything.
      *  @return True if the current type is acceptable.
      */
+    @Override
     public boolean isTypeAcceptable() {
         if (this.getType().isInstantiable()) {
             return true;
@@ -494,6 +502,7 @@ public class TypedIOPort extends IOPort implements Typeable {
      *   be converted to the type of this port, or if the token is null.
      *  @exception NoRoomException If there is no room in the receiver.
      */
+    @Override
     public void send(int channelIndex, Token token)
             throws IllegalActionException, NoRoomException {
         if (token != null) {
@@ -543,6 +552,7 @@ public class TypedIOPort extends IOPort implements Typeable {
      *   argument is greater than the length of the <i>tokenArray</i>
      *   argument.
      */
+    @Override
     public void send(int channelIndex, Token[] tokenArray, int vectorLength)
             throws IllegalActionException, NoRoomException {
         // Check types.
@@ -598,6 +608,7 @@ public class TypedIOPort extends IOPort implements Typeable {
      *  @exception IllegalActionException If conversion to the type of
      *   the destination port cannot be done.
      */
+    @Override
     public void sendInside(int channelIndex, Token token)
             throws IllegalActionException, NoRoomException {
         if (token != null) {
@@ -628,6 +639,7 @@ public class TypedIOPort extends IOPort implements Typeable {
      *  the constructor.
      *  @param lesser A Typeable object.
      */
+    @Override
     public void setTypeAtLeast(Typeable lesser) {
         Inequality inequality = new Inequality(lesser.getTypeTerm(),
                 this.getTypeTerm());
@@ -641,6 +653,7 @@ public class TypedIOPort extends IOPort implements Typeable {
      *  the constructor.
      *  @param typeTerm An InequalityTerm.
      */
+    @Override
     public void setTypeAtLeast(InequalityTerm typeTerm) {
         Inequality inequality = new Inequality(typeTerm, this.getTypeTerm());
         _constraints.add(inequality);
@@ -652,6 +665,7 @@ public class TypedIOPort extends IOPort implements Typeable {
      *  repeats the relative type constraints that were specified in
      *  the constructor.
      */
+    @Override
     public void setTypeAtMost(Type type) {
         Inequality inequality = new Inequality(this.getTypeTerm(),
                 new TypeConstant(type));
@@ -672,6 +686,7 @@ public class TypedIOPort extends IOPort implements Typeable {
      *  <p> This method is write-synchronized on the workspace.
      *  @param type A Type.
      */
+    @Override
     public void setTypeEquals(Type type) {
         try {
             _workspace.getWriteAccess();
@@ -706,6 +721,7 @@ public class TypedIOPort extends IOPort implements Typeable {
      *  the constructor.
      *  @param equal A Typeable object.
      */
+    @Override
     public void setTypeSameAs(Typeable equal) {
         Inequality inequality = new Inequality(this.getTypeTerm(),
                 equal.getTypeTerm());
@@ -719,6 +735,7 @@ public class TypedIOPort extends IOPort implements Typeable {
      *  @return A set of inequalities.
      *  @see ptolemy.graph.Inequality
      */
+    @Override
     public Set<Inequality> typeConstraints() {
         return _constraints;
     }
@@ -732,6 +749,7 @@ public class TypedIOPort extends IOPort implements Typeable {
      *  @see ptolemy.graph.Inequality
      *  @deprecated Use typeConstraints().
      */
+    @Deprecated
     public List typeConstraintList() {
         LinkedList result = new LinkedList();
         result.addAll(typeConstraints());
@@ -757,6 +775,7 @@ public class TypedIOPort extends IOPort implements Typeable {
      *  @exception IllegalActionException If the proposed container is not a
      *   TypedActor, or if the base class throws it.
      */
+    @Override
     protected void _checkContainer(Entity container)
             throws IllegalActionException {
         _checkTypedIOPortContainer(container);
@@ -817,6 +836,7 @@ public class TypedIOPort extends IOPort implements Typeable {
      *   not exactly one and the port is not a multiport, or the port is
      *   not in the same workspace as the relation.
      */
+    @Override
     protected void _checkLink(Relation relation) throws IllegalActionException {
         if (!(relation instanceof TypedIORelation)) {
             throw new IllegalActionException(this, relation,
@@ -827,7 +847,7 @@ public class TypedIOPort extends IOPort implements Typeable {
         super._checkLink(relation);
     }
 
-    /** Check that the specified token as well as the token in 
+    /** Check that the specified token as well as the token in
      *  the default value, if specified, is compatible with the
      *  resolved type of this port. If the resolved type is unknown,
      *  then we have to assume unknown is acceptable (e.g. the port
@@ -846,13 +866,15 @@ public class TypedIOPort extends IOPort implements Typeable {
         if (compare == CPO.HIGHER || compare == CPO.INCOMPARABLE) {
             throw new RunTimeTypeCheckException(this, token);
         }
-        
+
         if (defaultValue.getToken() != null) {
-                compare = TypeLattice.compare(defaultValue.getToken().getType(), _resolvedType);
-        
-                if (compare == CPO.HIGHER || compare == CPO.INCOMPARABLE) {
-                    throw new RunTimeTypeCheckException(this, defaultValue.getToken());
-                }
+            compare = TypeLattice.compare(defaultValue.getToken().getType(),
+                    _resolvedType);
+
+            if (compare == CPO.HIGHER || compare == CPO.INCOMPARABLE) {
+                throw new RunTimeTypeCheckException(this,
+                        defaultValue.getToken());
+            }
         }
     }
 
@@ -883,6 +905,7 @@ public class TypedIOPort extends IOPort implements Typeable {
      *  @return A description of the object.
      * @exception IllegalActionException
      */
+    @Override
     protected String _description(int detail, int indent, int bracket)
             throws IllegalActionException {
         try {
@@ -961,42 +984,42 @@ public class TypedIOPort extends IOPort implements Typeable {
 
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
-    
+
     /** Exception class for run-time type errors.
      */
-    public static class RunTimeTypeCheckException extends IllegalActionException {
+    public static class RunTimeTypeCheckException extends
+            IllegalActionException {
         /** Create an run-time type error exception.
          *  @param port The port where the error occurred.
          *  @param token The token that caused the error.
          */
-            public RunTimeTypeCheckException(TypedIOPort port, Token token) {
-                    super(port, "Run-time type checking failed. Token " + token
-                                    + " with type " + token.getType()
-                                    + " is incompatible with port type: "
-                                    + port.getType().toString());
-                    _port = port;
-                    _token = token;
-            }
+        public RunTimeTypeCheckException(TypedIOPort port, Token token) {
+            super(port, "Run-time type checking failed. Token " + token
+                    + " with type " + token.getType()
+                    + " is incompatible with port type: "
+                    + port.getType().toString());
+            _port = port;
+            _token = token;
+        }
 
         /** Return the port where the exception occurred.
          *  @return The port.
          */
-            public TypedIOPort getPort() {
-                    return _port;
-            }
+        public TypedIOPort getPort() {
+            return _port;
+        }
 
         /** Return the token that caused the exception.
          *  @return the exception.
          */
-            public Token getToken() {
-                    return _token;
-            }
+        public Token getToken() {
+            return _token;
+        }
 
-
-            private TypedIOPort _port;
-            private Token _token;
+        private TypedIOPort _port;
+        private Token _token;
     }
-    
+
     private class TypeTerm implements InequalityTerm {
         ///////////////////////////////////////////////////////////////
         ////                       public inner methods            ////
@@ -1004,12 +1027,14 @@ public class TypedIOPort extends IOPort implements Typeable {
         /** Return this TypedIOPort.
          *  @return A TypedIOPort.
          */
+        @Override
         public Object getAssociatedObject() {
             return TypedIOPort.this;
         }
 
         /** Return the type of this TypedIOPort.
          */
+        @Override
         public Object getValue() {
             return getType();
         }
@@ -1020,6 +1045,7 @@ public class TypedIOPort extends IOPort implements Typeable {
          *  If the type of this port is set, return an array of size zero.
          *  @return An array of InequalityTerm.
          */
+        @Override
         public InequalityTerm[] getVariables() {
             if (isSettable()) {
                 InequalityTerm[] variable = new InequalityTerm[1];
@@ -1035,6 +1061,7 @@ public class TypedIOPort extends IOPort implements Typeable {
          *  @exception IllegalActionException If the type is not settable,
          *   or the argument is not a Type.
          */
+        @Override
         public void initialize(Object type) throws IllegalActionException {
             if (!isSettable()) {
                 throw new IllegalActionException("TypeTerm.initialize: "
@@ -1066,6 +1093,7 @@ public class TypedIOPort extends IOPort implements Typeable {
          *  @return True if the type of this TypedIOPort can be changed;
          *   false otherwise.
          */
+        @Override
         public boolean isSettable() {
             return !_declaredType.isConstant();
         }
@@ -1075,6 +1103,7 @@ public class TypedIOPort extends IOPort implements Typeable {
          *  method of the outer class.
          *  @return True if the current value is acceptable.
          */
+        @Override
         public boolean isValueAcceptable() {
             return isTypeAcceptable();
         }
@@ -1084,6 +1113,7 @@ public class TypedIOPort extends IOPort implements Typeable {
          *  @exception IllegalActionException If the new type violates
          *   the declared type of this port.
          */
+        @Override
         public void setValue(Object type) throws IllegalActionException {
             // Cannot set value if declared type is a constant
             if (!isSettable()) {
@@ -1121,7 +1151,7 @@ public class TypedIOPort extends IOPort implements Typeable {
             } else {
                 // _declaredType is a StructuredType
                 ((StructuredType) _resolvedType)
-                        .updateType((StructuredType) type);
+                .updateType((StructuredType) type);
             }
 
             if (!oldType.equals(type)) {
@@ -1133,6 +1163,7 @@ public class TypedIOPort extends IOPort implements Typeable {
          *  and its type.
          *  @return A description of the port and its type.
          */
+        @Override
         public String toString() {
             return "(port " + TypedIOPort.this.getFullName() + ": " + getType()
                     + ")";

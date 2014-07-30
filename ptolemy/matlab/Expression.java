@@ -228,24 +228,27 @@ public class Expression extends TypedAtomicActor {
      *  @exception CloneNotSupportedException If a derived class contains
      *   an attribute that cannot be cloned.
      */
+    @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         Expression newObject = (Expression) super.clone(workspace);
 
         newObject._addPathCommand = null;
         try {
-            newObject._iteration = new Variable(newObject, "_iteration", new IntToken(1));
+            newObject._iteration = new Variable(newObject, "_iteration",
+                    new IntToken(1));
         } catch (KernelException ex) {
             throw new CloneNotSupportedException(ex.getMessage());
         }
         newObject._iterationCount = 1;
         newObject._previousPath = null;
-        newObject._inputTokens = new HashMap<String,Token>();
+        newObject._inputTokens = new HashMap<String, Token>();
         return newObject;
     }
 
     /** Open a matlab engine.
      *  @exception IllegalActionException If matlab engine not found.
      */
+    @Override
     public void preinitialize() throws IllegalActionException {
         super.preinitialize();
 
@@ -299,6 +302,7 @@ public class Expression extends TypedAtomicActor {
     /** Initialize the iteration count to 1.
      *  @exception IllegalActionException If the parent class throws it.
      */
+    @Override
     public void initialize() throws IllegalActionException {
         super.initialize();
         _iterationCount = 1;
@@ -354,6 +358,7 @@ public class Expression extends TypedAtomicActor {
      *  @return True if this actor is ready for firing, false otherwise.
      *  @exception IllegalActionException Not thrown in this base class.
      */
+    @Override
     public boolean prefire() throws IllegalActionException {
         Iterator inputPorts = inputPortList().iterator();
 
@@ -373,6 +378,7 @@ public class Expression extends TypedAtomicActor {
      *   triggers it, or the evaluation yields a null result, or the evaluation
      *   yields an incompatible type, or if there is no director.
      */
+    @Override
     public void fire() throws IllegalActionException {
         super.fire();
         Director director = getDirector();
@@ -380,10 +386,9 @@ public class Expression extends TypedAtomicActor {
         if (director == null) {
             throw new IllegalActionException(this, "No director!");
         }
-        
 
         try {
-            
+
             // Read the input ports before acquiring the engine lock since
             // get() may block depending on the director, e.g., PN.
             for (TypedIOPort port : inputPortList()) {
@@ -395,12 +400,13 @@ public class Expression extends TypedAtomicActor {
                 // persistent storage created by a function (this usually
                 // for speed-up purposes to avoid recalculation on every
                 // function call)
-                matlabEngine.evalString(engine, "clear variables;clear globals");
-    
+                matlabEngine
+                        .evalString(engine, "clear variables;clear globals");
+
                 if (_addPathCommand != null) {
                     matlabEngine.evalString(engine, _addPathCommand);
                 }
-    
+
                 try {
                     matlabEngine.put(engine, "time", new DoubleToken(director
                             .getModelTime().getDoubleValue()));
@@ -412,31 +418,32 @@ public class Expression extends TypedAtomicActor {
                                             .getDoubleValue()));
                 }
                 try {
-                    matlabEngine.put(engine, "iteration", _iteration.getToken());
+                    matlabEngine
+                            .put(engine, "iteration", _iteration.getToken());
                 } catch (IllegalActionException ex) {
                     throw new IllegalActionException(this, ex,
                             "Failed to set the \"iteration\" variable in the Matlab "
                                     + "engine to " + _iteration.getToken());
                 }
-                
-                for (Map.Entry<String,Token> entry : _inputTokens.entrySet()) {
+
+                for (Map.Entry<String, Token> entry : _inputTokens.entrySet()) {
                     matlabEngine.put(engine, entry.getKey(), entry.getValue());
                 }
-    
+
                 matlabEngine.evalString(engine, expression.stringValue());
-    
+
                 Iterator outputPorts = outputPortList().iterator();
-    
+
                 while (outputPorts.hasNext()) {
                     IOPort port = (IOPort) outputPorts.next();
-    
+
                     // FIXME: Handle multiports
                     if (port.isOutsideConnected()) {
                         port.send(0, matlabEngine.get(engine, port.getName(),
                                 _dataParameters));
                     }
                 }
-    
+
                 // Restore previous path if path was modified above
                 if (_previousPath != null) {
                     matlabEngine.put(engine, "previousPath_", _previousPath);
@@ -452,6 +459,7 @@ public class Expression extends TypedAtomicActor {
     /** Increment the iteration count.
      *  @exception IllegalActionException If the superclass throws it.
      */
+    @Override
     public boolean postfire() throws IllegalActionException {
         _iterationCount++;
         _iteration.setToken(new IntToken(_iterationCount));
@@ -463,6 +471,7 @@ public class Expression extends TypedAtomicActor {
     /** Close matlab engine if it was open.
      *  @exception IllegalActionException Not thrown in this base class.
      */
+    @Override
     public void wrapup() throws IllegalActionException {
         super.wrapup();
 
@@ -499,7 +508,7 @@ public class Expression extends TypedAtomicActor {
     private Token _previousPath = null;
 
     private transient ConversionParameters _dataParameters;
-    
+
     /** A map of input port names to tokens. */
-    private Map<String,Token> _inputTokens = new HashMap<String,Token>();
+    private Map<String, Token> _inputTokens = new HashMap<String, Token>();
 }

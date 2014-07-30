@@ -24,7 +24,7 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
-*/
+ */
 
 package ptolemy.cg.lib.syntactic;
 
@@ -52,7 +52,7 @@ package ptolemy.cg.lib.syntactic;
 @since Ptolemy II 10.0
 @Pt.ProposedRating Red (shaver)
 @Pt.AcceptedRating Red
-*/
+ */
 public class SyntacticRank {
 
     /** Construct a new rank.
@@ -153,7 +153,7 @@ public class SyntacticRank {
         } else {
             return "<" + +_rank[_forwardIn] + "(" + _rank[_reverseOut] + ")"
                     + " -> " + _rank[_forwardOut] + "(" + _rank[_reverseIn]
-                    + ")" + ">";
+                            + ")" + ">";
         }
     }
 
@@ -188,7 +188,7 @@ public class SyntacticRank {
             System.out.print("Composition problem");
         }
         return canCompose ? new SyntacticRank(a.forwardIn(), b.forwardOut())
-                : null;
+        : null;
     }
 
     /** Compose the ranks of two terms.
@@ -216,7 +216,7 @@ public class SyntacticRank {
     static public SyntacticRank add(SyntacticRank a, SyntacticRank b) {
         return a.forwardIn() == b.forwardIn()
                 && a.forwardOut() == b.forwardOut() ? new SyntacticRank(
-                a.forwardIn(), a.forwardOut()) : null;
+                        a.forwardIn(), a.forwardOut()) : null;
     }
 
     /** Add the ranks of two terms.

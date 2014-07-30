@@ -115,6 +115,7 @@ public class MoMLViewerApplet extends MoMLApplet {
     /** Describe the applet parameters.
      *  @return An array describing the applet parameters.
      */
+    @Override
     public String[][] getParameterInfo() {
         String[][] newinfo = {
                 { "includeRunPanel", "", "Indicator to include run panel" },
@@ -128,6 +129,7 @@ public class MoMLViewerApplet extends MoMLApplet {
      *  start its execution. It is called after the init method
      *  and each time the applet is revisited in a Web page.
      */
+    @Override
     public void start() {
     }
 
@@ -140,6 +142,7 @@ public class MoMLViewerApplet extends MoMLApplet {
      *  @return A model.
      *  @exception Exception If something goes wrong.
      */
+    @Override
     protected NamedObj _createModel(Workspace workspace) throws Exception {
         // Do not filter out graphical classes.
         // FIXME: if we have a configuration, then we are parsing
@@ -151,6 +154,7 @@ public class MoMLViewerApplet extends MoMLApplet {
      *  a ModelPane.  If the toplevel model created by _createModel()
      *  is not an instance of CompositeEntity, then do nothing.
      */
+    @Override
     protected void _createView() {
         if (!(_toplevel instanceof CompositeEntity)) {
             return;
@@ -257,7 +261,7 @@ public class MoMLViewerApplet extends MoMLApplet {
 
         if (panelFlag != null
                 && panelFlag.trim().toLowerCase(Locale.getDefault())
-                        .equals("true")) {
+                .equals("true")) {
             // NOTE: We could create a separator between the schematic
             // and the control panel here.
             super._createView();

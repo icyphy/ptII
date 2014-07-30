@@ -102,6 +102,7 @@ public class DefaultIconLink extends IconLink {
      *  @exception IllegalActionException If evaluating the value
      *   of this parameter fails.
      */
+    @Override
     protected void _provideAttributes(WebExporter exporter)
             throws IllegalActionException {
 
@@ -190,7 +191,8 @@ public class DefaultIconLink extends IconLink {
                         // Create class attribute and add to exporter.
                         // Content should only be added once (onceOnly -> true).
                         webAttribute = WebAttribute.appendToWebAttribute(
-                                getContainer(), "classWebAttribute", "class", "iframe");
+                                getContainer(), "classWebAttribute", "class",
+                                "iframe");
                         exporter.defineAttribute(webAttribute, true);
                     } else {
                         // Create target attribute and add to exporter.

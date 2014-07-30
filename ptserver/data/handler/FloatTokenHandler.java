@@ -53,6 +53,7 @@ public class FloatTokenHandler implements TokenHandler<FloatToken> {
      *  @exception IOException If the stream cannot be written.
      *  @see ptserver.data.handler.TokenHandler#convertToBytes(ptolemy.data.Token, java.io.DataOutputStream)
      */
+    @Override
     public void convertToBytes(FloatToken token, DataOutputStream outputStream)
             throws IOException {
         outputStream.writeFloat(token.floatValue());
@@ -65,6 +66,7 @@ public class FloatTokenHandler implements TokenHandler<FloatToken> {
      *  @exception IOException If the stream cannot be read.
      *  @see ptserver.data.handler.TokenHandler#convertToToken(java.io.DataInputStream, Class)
      */
+    @Override
     public FloatToken convertToToken(DataInputStream inputStream,
             Class<? extends FloatToken> tokenType) throws IOException {
         return new FloatToken(inputStream.readFloat());

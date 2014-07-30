@@ -119,7 +119,7 @@ import com.microstar.xml.XmlException;
  */
 @SuppressWarnings("serial")
 public class PtolemyQuery extends Query implements QueryListener,
-        ValueListener, ChangeListener, CloseListener {
+ValueListener, ChangeListener, CloseListener {
     /** Construct a panel with no queries in it and with the specified
      *  change handler. When an entry changes, a change request is
      *  queued with the given change handler. The change handler should
@@ -423,7 +423,7 @@ public class PtolemyQuery extends Query implements QueryListener,
                             // and the default Line style should be used.
                             if (attribute.getExpression().equals("true")
                                     || attribute.getExpression()
-                                            .equals("false")) {
+                                    .equals("false")) {
                                 component = addCheckBox(name, displayName,
                                         ((BooleanToken) current).booleanValue());
                                 attachParameter(attribute, name);
@@ -590,6 +590,7 @@ public class PtolemyQuery extends Query implements QueryListener,
      *  by the change handler.
      *  @param change The change that has been executed.
      */
+    @Override
     public void changeExecuted(ChangeRequest change) {
         // Ignore if this was not the originator.
         if (change != null) {
@@ -625,6 +626,7 @@ public class PtolemyQuery extends Query implements QueryListener,
      *  @param change The change that was attempted.
      *  @param exception The exception that resulted.
      */
+    @Override
     public void changeFailed(final ChangeRequest change, Exception exception) {
         // Ignore if this was not the originator, or if the error has already
         // been reported, or if the change request is null.
@@ -689,6 +691,7 @@ public class PtolemyQuery extends Query implements QueryListener,
             // NOTE: Do this in the event thread, since this might be invoked
             // in whatever thread is processing mutations.
             SwingUtilities.invokeLater(new Runnable() {
+                @Override
                 public void run() {
                     if (attribute != null) {
                         _query.addStyledEntry(attribute);
@@ -749,6 +752,7 @@ public class PtolemyQuery extends Query implements QueryListener,
      *  do nothing.
      *  @param name The name of the entry that has changed.
      */
+    @Override
     public void changed(final String name) {
         // Check if the entry that changed is in the mapping.
         if (_attributes.containsKey(name)) {
@@ -765,6 +769,7 @@ public class PtolemyQuery extends Query implements QueryListener,
                 // Passwords have to be handled specially because the password
                 // is not represented in a string.
                 request = new ChangeRequest(this, name) {
+                    @Override
                     protected void _execute() throws IllegalActionException {
                         char[] password = getCharArrayValue(name);
                         ((PasswordAttribute) attribute).setPassword(password);
@@ -820,6 +825,7 @@ public class PtolemyQuery extends Query implements QueryListener,
                         parent, // context
                         moml, // MoML code
                         null) { // base
+                    @Override
                     protected void _execute() throws Exception {
                         synchronized (PtolemyQuery.this) {
                             try {
@@ -844,6 +850,7 @@ public class PtolemyQuery extends Query implements QueryListener,
                 // If the attribute is not a NamedObj, then we
                 // set its value directly.
                 request = new ChangeRequest(this, name) {
+                    @Override
                     protected void _execute() throws IllegalActionException {
                         attribute.setExpression(getStringValue(name));
 
@@ -945,6 +952,7 @@ public class PtolemyQuery extends Query implements QueryListener,
      *  all entries that are attached to the attribute.
      *  @param attribute The attribute whose value has changed.
      */
+    @Override
     public void valueChanged(final Settable attribute) {
         // If our own change request is the cause of this notification,
         // then ignore it.
@@ -958,6 +966,7 @@ public class PtolemyQuery extends Query implements QueryListener,
         // from another thread.  And this method is called whenever an
         // attribute change has occurred, which can happen in any thread.
         SwingUtilities.invokeLater(new Runnable() {
+            @Override
             public void run() {
                 // Check that the attribute is attached
                 // to at least one entry.
@@ -991,6 +1000,7 @@ public class PtolemyQuery extends Query implements QueryListener,
      *  @param window The window that closed.
      *  @param button The name of the button that was used to close the window.
      */
+    @Override
     public void windowClosed(Window window, String button) {
         // FIXME: It seems that we need to force notification of
         // all changes before doing the restore!  Otherwise, some
@@ -1029,6 +1039,7 @@ public class PtolemyQuery extends Query implements QueryListener,
      *  @param widget The interactive entry to the right of the label.
      *  @param entry The object that contains user data.
      */
+    @Override
     protected void _addPair(String name, JLabel label, Component widget,
             Object entry) {
         if (_addingStyledEntryFor != null) {
@@ -1077,7 +1088,7 @@ public class PtolemyQuery extends Query implements QueryListener,
      *  @param attribute The attribute edited by the component.
      */
     @SuppressWarnings("serial")
-        private void _addSubmitAction(final JComponent component,
+    private void _addSubmitAction(final JComponent component,
             final String attributeName, final Settable attribute) {
         component.getInputMap().put(
                 KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0), "submit");
@@ -1212,7 +1223,7 @@ public class PtolemyQuery extends Query implements QueryListener,
             // of the first value.
             if (widget instanceof JTextField) {
                 ((JTextField) widget)
-                        .addActionListener(new QueryActionListener(_owner, name));
+                .addActionListener(new QueryActionListener(_owner, name));
 
                 // Add a listener for loss of focus.  When the entry gains
                 // and then loses focus, listeners are notified of an update,
@@ -1230,6 +1241,7 @@ public class PtolemyQuery extends Query implements QueryListener,
             }
         }
 
+        @Override
         public void actionPerformed(ActionEvent e) {
             // Open a dialog to edit parameters contained by the parameter.
             new EditParametersDialog(

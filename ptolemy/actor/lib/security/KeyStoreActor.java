@@ -307,6 +307,7 @@ public class KeyStoreActor extends TypedAtomicActor {
      *  @exception IllegalActionException If the specified attribute
      *   is <i>URL</i> and the file cannot be opened.
      */
+    @Override
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         if (attribute == alias) {
@@ -415,6 +416,7 @@ public class KeyStoreActor extends TypedAtomicActor {
     /** Load the keystore for use by derived classes.
      *  @exception IllegalActionException Not thrown in this base class.
      */
+    @Override
     public void fire() throws IllegalActionException {
         super.fire(); // Print debugging messages etc.
         keyPassword.update();
@@ -444,6 +446,7 @@ public class KeyStoreActor extends TypedAtomicActor {
 
     /** Override the base class to stop waiting for input data.
      */
+    @Override
     public synchronized void stopFire() {
         super.stopFire();
         _stopFireRequested = true;
@@ -456,6 +459,7 @@ public class KeyStoreActor extends TypedAtomicActor {
      *  be invoked after it.
      *  @exception IllegalActionException Not thrown in this base class.
      */
+    @Override
     public void wrapup() throws IllegalActionException {
         _terminateProcess();
     }
@@ -508,7 +512,7 @@ public class KeyStoreActor extends TypedAtomicActor {
             } catch (Throwable throwable) {
                 throw new IllegalActionException(this, throwable,
                         "Failed to get instance '" + keyStoreType
-                                + "'of keyStore");
+                        + "'of keyStore");
             }
         }
     }
@@ -561,8 +565,8 @@ public class KeyStoreActor extends TypedAtomicActor {
                                     .get("PTII")).stringValue()
                                     + "/"
                                     + keystoreFileName
-                                            .substring(classpathProperty
-                                                    .length());
+                                    .substring(classpathProperty
+                                            .length());
                         }
 
                         createKeystore(keystoreFileName);
@@ -609,9 +613,9 @@ public class KeyStoreActor extends TypedAtomicActor {
                 } catch (java.io.EOFException ex) {
                     throw new IllegalActionException(this, ex,
                             "Problem loading " + fileOrURLDescription()
-                                    + ", perhaps the file is of length 0? "
-                                    + "To create a sample file, try "
-                                    + "cd $PTII; make ptKeystore");
+                            + ", perhaps the file is of length 0? "
+                            + "To create a sample file, try "
+                            + "cd $PTII; make ptKeystore");
                 } catch (Exception ex) {
                     throw new IllegalActionException(this, ex,
                             "Problem loading " + fileOrURLDescription());
@@ -817,6 +821,7 @@ public class KeyStoreActor extends TypedAtomicActor {
         /** Read lines from the inputStream and append them to the
          *  stringBuffer.
          */
+        @Override
         public void run() {
             _read();
         }

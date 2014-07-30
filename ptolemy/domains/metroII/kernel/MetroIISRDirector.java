@@ -96,7 +96,7 @@ public class MetroIISRDirector extends SRDirector implements GetFirable {
      *                specified name.
      */
     public MetroIISRDirector() throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         super();
         _init();
     }
@@ -154,6 +154,7 @@ public class MetroIISRDirector extends SRDirector implements GetFirable {
      *                Not thrown in this base class
      * @return The new Attribute.
      */
+    @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         MetroIISRDirector newObject = (MetroIISRDirector) super
                 .clone(workspace);
@@ -171,12 +172,14 @@ public class MetroIISRDirector extends SRDirector implements GetFirable {
      *
      * @return iterator the iterator for the caller function of getfire().
      */
+    @Override
     public YieldAdapterIterable<Iterable<Event.Builder>> adapter() {
         return new ThreadedYieldAdapter<Iterable<Event.Builder>>()
                 .adapt(new Collector<Iterable<Event.Builder>>() {
+                    @Override
                     public void collect(
                             ResultHandler<Iterable<Event.Builder>> resultHandler)
-                            throws CollectionAbortedException {
+                                    throws CollectionAbortedException {
                         getfire(resultHandler);
                     }
                 });
@@ -192,6 +195,7 @@ public class MetroIISRDirector extends SRDirector implements GetFirable {
      * MetroII actor might be affected by MetroIIDirector on the upper level and
      * the architectural model which the MetroII actor is mapped onto.
      */
+    @Override
     public void getfire(ResultHandler<Iterable<Event.Builder>> resultHandler)
             throws CollectionAbortedException {
         try {

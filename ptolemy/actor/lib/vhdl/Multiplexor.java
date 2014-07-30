@@ -100,6 +100,7 @@ public class Multiplexor extends SynchronousFixTransformer {
      *  If there is no input, then produce no output.
      *  @exception IllegalActionException If there is no director.
      */
+    @Override
     public void fire() throws IllegalActionException {
         super.fire();
         if (select.isKnown() && A.isKnown() && B.isKnown()) {
@@ -113,7 +114,7 @@ public class Multiplexor extends SynchronousFixTransformer {
 
             Precision outputPrecision = new Precision(
                     ((Parameter) getAttribute("outputPrecision"))
-                            .getExpression());
+                    .getExpression());
 
             FixToken tokenA = null;
             FixToken tokenB = null;
@@ -148,6 +149,7 @@ public class Multiplexor extends SynchronousFixTransformer {
     }
 
     /** Initialize to the default, which is to use channel zero. */
+    @Override
     public void initialize() throws IllegalActionException {
         super.initialize();
 
@@ -158,6 +160,7 @@ public class Multiplexor extends SynchronousFixTransformer {
      *  and <i>select</i> ports do not depend on the <i>output</i> in
      *  a firing.
      */
+    @Override
     public void preinitialize() throws IllegalActionException {
         super.preinitialize();
         removeDependency(A, output);

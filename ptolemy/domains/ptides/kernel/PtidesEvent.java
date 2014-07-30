@@ -198,6 +198,7 @@ public class PtidesEvent extends DEEvent {
      *  the object and of this object are equal.
      *  @see #hashCode()
      */
+    @Override
     public boolean equals(Object object) {
         if (!(object instanceof PtidesEvent)) {
             return false;
@@ -225,13 +226,14 @@ public class PtidesEvent extends DEEvent {
      *  @return The hash code for the event object.
      *  @see #equals(Object)
      */
+    @Override
     public int hashCode() {
         int primitiveFieldHash = super.hashCode() >>> _channel;
         int absoluteDeadlineHash = _absoluteDeadline == null ? 0
                 : _absoluteDeadline.hashCode();
         int objectFieldHash = isPureEvent() ? absoluteDeadlineHash : _token
                 .hashCode() >>> _receiver.hashCode();
-        return primitiveFieldHash >>> objectFieldHash;
+                return primitiveFieldHash >>> objectFieldHash;
     }
 
     @Override
@@ -260,10 +262,10 @@ public class PtidesEvent extends DEEvent {
                     event.timeStamp()) <= 0
                     && _timestamp.add(clockSyncBound).compareTo(
                             event.timeStamp()) >= 0;
-            // The microstep in Ptides describes a logical ordering. Therefore,
-            // even if the timestamps are not equal, we require the microsteps
-            // to be the same.
-            same = same & _microstep == event.microstep();
+                            // The microstep in Ptides describes a logical ordering. Therefore,
+                            // even if the timestamps are not equal, we require the microsteps
+                            // to be the same.
+                            same = same & _microstep == event.microstep();
         }
 
         return same;
@@ -312,6 +314,7 @@ public class PtidesEvent extends DEEvent {
      *  the token, absolute deadline, and destination information.
      *  @return The token as a string with the time stamp.
      */
+    @Override
     public String toString() {
         // FIXME: Ideally, this would be in a format that could be easily parsed
         // by the expression language, such as a record format.
@@ -320,16 +323,16 @@ public class PtidesEvent extends DEEvent {
             name = ((NamedObj) _actor).getFullName();
         }
         return "PtidesEvent{time = "
-                + _timestamp
-                + ", microstep = "
-                + _microstep
-                + ", depth = "
-                + _depth
-                + ", token = "
-                + _token
-                + ", absoluteDeadline = "
-                + (_absoluteDeadline == null ? "null" : _absoluteDeadline
-                        .toString())
+        + _timestamp
+        + ", microstep = "
+        + _microstep
+        + ", depth = "
+        + _depth
+        + ", token = "
+        + _token
+        + ", absoluteDeadline = "
+        + (_absoluteDeadline == null ? "null" : _absoluteDeadline
+                .toString())
                 + ", dest = "
                 + name
                 + "."
@@ -341,8 +344,8 @@ public class PtidesEvent extends DEEvent {
                         + " {"
                         + (_receiver.getContainer() != null ? _receiver
                                 .getContainer().getFullName() : "")
-                        + ".receiver }") + ", isPureEvent = " + _isPureEvent
-                + ", sourceTimestamp = " + _sourceTimestamp + "}";
+                                + ".receiver }") + ", isPureEvent = " + _isPureEvent
+                                + ", sourceTimestamp = " + _sourceTimestamp + "}";
     }
 
     ///////////////////////////////////////////////////////////////////

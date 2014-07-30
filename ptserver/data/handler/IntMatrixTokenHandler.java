@@ -57,6 +57,7 @@ public class IntMatrixTokenHandler implements TokenHandler<IntMatrixToken> {
      *  @exception IllegalActionException Not thrown in this class.
      *  @see ptserver.data.handler.TokenHandler#convertToBytes(ptolemy.data.Token, java.io.DataOutputStream)
      */
+    @Override
     public void convertToBytes(IntMatrixToken token,
             DataOutputStream outputStream) throws IOException,
             IllegalActionException {
@@ -82,6 +83,7 @@ public class IntMatrixTokenHandler implements TokenHandler<IntMatrixToken> {
      *  @exception IllegalActionException Not thrown in this class.
      *  @see ptserver.data.handler.TokenHandler#convertToToken(java.io.DataInputStream, Class)
      */
+    @Override
     public IntMatrixToken convertToToken(DataInputStream inputStream,
             Class<? extends IntMatrixToken> tokenType) throws IOException,
             IllegalActionException {

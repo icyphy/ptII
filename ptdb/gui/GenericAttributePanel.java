@@ -25,7 +25,7 @@ ENHANCEMENTS, OR MODIFICATIONS.
                                                 COPYRIGHTENDKEY
 
 
-*/
+ */
 package ptdb.gui;
 
 import java.awt.Dimension;
@@ -105,11 +105,13 @@ public class GenericAttributePanel extends JPanel {
 
         _attributeName.addFocusListener(new FocusListener() {
 
+            @Override
             public void focusGained(FocusEvent arg0) {
                 // Do nothing.
 
             }
 
+            @Override
             public void focusLost(FocusEvent arg0) {
 
                 if (!_attributeName.getText().equals(_currentNameText)) {
@@ -123,11 +125,13 @@ public class GenericAttributePanel extends JPanel {
 
         _attributeValue.addFocusListener(new FocusListener() {
 
+            @Override
             public void focusGained(FocusEvent arg0) {
                 // Do nothing.
 
             }
 
+            @Override
             public void focusLost(FocusEvent arg0) {
 
                 if (!_attributeValue.getText().equals(_currentValueText)) {
@@ -141,11 +145,13 @@ public class GenericAttributePanel extends JPanel {
 
         _attributeClass.addFocusListener(new FocusListener() {
 
+            @Override
             public void focusGained(FocusEvent arg0) {
                 // Do nothing.
 
             }
 
+            @Override
             public void focusLost(FocusEvent arg0) {
 
                 if (!_attributeClass.getText().equals(_currentClassText)) {
@@ -170,13 +176,13 @@ public class GenericAttributePanel extends JPanel {
     //                    public methods                          ////
 
     /** Get the value of this attribute.
-    *
-    * @return
-    *          The string value of the attribute,
-    *          It is obtained from the applicable form Component based on
-    *          the type mapped to the selected attribute.
-    *
-    */
+     *
+     * @return
+     *          The string value of the attribute,
+     *          It is obtained from the applicable form Component based on
+     *          the type mapped to the selected attribute.
+     *
+     */
     public String getValue() {
 
         return _attributeValue.getText();
@@ -196,11 +202,11 @@ public class GenericAttributePanel extends JPanel {
     }
 
     /** Get the selected attribute's class.
-    *
-    * @return
-    *          This attribute's class.
-    *
-    */
+     *
+     * @return
+     *          This attribute's class.
+     *
+     */
     public String getAttributeClass() {
 
         return _attributeClass.getText();

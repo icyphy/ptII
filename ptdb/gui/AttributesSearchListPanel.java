@@ -25,7 +25,7 @@ ENHANCEMENTS, OR MODIFICATIONS.
                                                 COPYRIGHTENDKEY
 
 
-*/
+ */
 package ptdb.gui;
 
 import java.awt.Component;
@@ -83,6 +83,7 @@ public class AttributesSearchListPanel extends AttributesListPanel {
 
         _genericSearchButton.addActionListener(new ActionListener() {
 
+            @Override
             public void actionPerformed(ActionEvent event) {
 
                 addGenericAttribute();
@@ -123,6 +124,7 @@ public class AttributesSearchListPanel extends AttributesListPanel {
         _attListPanel.setMaximumSize(getMinimumSize());
 
         deleteButton.addActionListener(new ActionListener() {
+            @Override
             public void actionPerformed(ActionEvent event) {
 
                 _attListPanel.remove((JPanel) _AttDelete.get(event.getSource()));
@@ -143,6 +145,7 @@ public class AttributesSearchListPanel extends AttributesListPanel {
 
     }
 
+    @Override
     protected ArrayList<Attribute> getAttributes()
             throws IllegalActionException {
 
@@ -170,10 +173,10 @@ public class AttributesSearchListPanel extends AttributesListPanel {
                             stringParameter = new StringParameter(
                                     new NamedObj(),
                                     ((ModelAttributePanel) element2)
-                                            .getAttributeName());
+                                    .getAttributeName());
                             stringParameter
-                                    .setExpression(((ModelAttributePanel) element2)
-                                            .getValue());
+                            .setExpression(((ModelAttributePanel) element2)
+                                    .getValue());
                             returnList.add(stringParameter);
 
                         } catch (NameDuplicationException e) {
@@ -208,19 +211,19 @@ public class AttributesSearchListPanel extends AttributesListPanel {
                             if (((GenericAttributePanel) element2)
                                     .getAttributeClass().length() > 0) {
                                 attribute
-                                        .setGenericClassName(((GenericAttributePanel) element2)
-                                                .getAttributeClass());
+                                .setGenericClassName(((GenericAttributePanel) element2)
+                                        .getAttributeClass());
                             }
 
                             attribute
-                                    .setName(((GenericAttributePanel) element2)
-                                            .getAttributeName());
+                            .setName(((GenericAttributePanel) element2)
+                                    .getAttributeName());
 
                             //if ((((GenericAttributePanel) componentArray2[j])
                             //        .getValue()).length()>0) {
                             attribute
-                                    .setExpression(((GenericAttributePanel) element2)
-                                            .getValue());
+                            .setExpression(((GenericAttributePanel) element2)
+                                    .getValue());
                             //}
 
                             returnList.add(attribute);
@@ -244,6 +247,7 @@ public class AttributesSearchListPanel extends AttributesListPanel {
      *           (true they do. false if they do not).
      *
      */
+    @Override
     public boolean allAttributeNamesSet() {
 
         if (!super.allAttributeNamesSet()) {

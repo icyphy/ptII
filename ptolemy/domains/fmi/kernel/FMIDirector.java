@@ -63,6 +63,7 @@ public class FMIDirector extends Director {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
+    @Override
     public void addInitializable(Initializable initializable) {
     }
 
@@ -70,6 +71,7 @@ public class FMIDirector extends Director {
      *  @exception IllegalActionException If the Master Algorithm
      *  cannot be executed or if thrown by the super class.
      */
+    @Override
     public void fire() throws IllegalActionException {
         super.fire();
     }
@@ -78,6 +80,7 @@ public class FMIDirector extends Director {
      *  @return 1.0
      *  @exception IllegalActionException Not thrown in this base class.
      */
+    @Override
     public double getStopTime() throws IllegalActionException {
         System.out.println("FMUDirector: stop time would be "
                 + super.getStopTime() + ", returning 1.0 instead.");
@@ -87,6 +90,7 @@ public class FMIDirector extends Director {
     /** Do nothing except call the super class.
      *  @exception IllegalActionException If thrown by the super class.
      */
+    @Override
     public void initialize() throws IllegalActionException {
         super.initialize();
     }
@@ -94,6 +98,7 @@ public class FMIDirector extends Director {
     /** Do nothing except call the super class.
      *  @exception IllegalActionException If thrown by the super class.
      */
+    @Override
     public boolean postfire() throws IllegalActionException {
         // The DoNothingDirector returns false here, we return true.
         return super.postfire();
@@ -102,6 +107,7 @@ public class FMIDirector extends Director {
     /** Do nothing except call the super class.
      *  @exception IllegalActionException If thrown by the super class.
      */
+    @Override
     public boolean prefire() throws IllegalActionException {
         // The DoNothingDirector returns false here, we return true.
         return super.prefire();
@@ -110,14 +116,17 @@ public class FMIDirector extends Director {
     /** Do nothing except call the super class.
      *  @exception IllegalActionException If thrown by the super class.
      */
+    @Override
     public void preinitialize() throws IllegalActionException {
         super.preinitialize();
     }
 
+    @Override
     public boolean transferInputs(IOPort port) {
         return false;
     }
 
+    @Override
     public boolean transferOutputs(IOPort port) {
         return false;
     }

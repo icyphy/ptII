@@ -99,6 +99,7 @@ public class PlotEffigy extends PtolemyEffigy {
      *  @param file The file to write to.
      *  @exception IOException If the write fails.
      */
+    @Override
     public void writeFile(File file) throws IOException {
         if (_plot != null) {
             FileOutputStream stream = null;
@@ -151,6 +152,7 @@ public class PlotEffigy extends PtolemyEffigy {
          *  capable of creating an effigy without a URL being specified.
          *  @return False.
          */
+        @Override
         public boolean canCreateBlankEffigy() {
             return false;
         }
@@ -177,6 +179,7 @@ public class PlotEffigy extends PtolemyEffigy {
          *   does not have a recognized extension.
          *  @exception Exception If the URL cannot be read.
          */
+        @Override
         public Effigy createEffigy(CompositeEntity container, URL base,
                 URL input) throws Exception {
             if (input != null) {

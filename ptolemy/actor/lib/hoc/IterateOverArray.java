@@ -217,7 +217,7 @@ public class IterateOverArray extends MirrorComposite {
      *   an actor already in the container.
      */
     public IterateOverArray(Workspace workspace) throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         super(workspace);
         _init();
     }
@@ -234,6 +234,7 @@ public class IterateOverArray extends MirrorComposite {
      *   cannot be cloned.
      *  @see #exportMoML(Writer, int, String)
      */
+    @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         IterateOverArray result = (IterateOverArray) super.clone(workspace);
         try {
@@ -270,6 +271,7 @@ public class IterateOverArray extends MirrorComposite {
      *  @exception NameDuplicationException If the container already has a port
      *  with this name.
      */
+    @Override
     public Port newPort(String name) throws NameDuplicationException {
         try {
             IteratePort result = new IteratePort(this, name);
@@ -296,6 +298,7 @@ public class IterateOverArray extends MirrorComposite {
      *  of one of the deeply contained objects throws it.
      *  @see ptolemy.graph.Inequality
      */
+    @Override
     public Set<Inequality> typeConstraints() throws IllegalActionException {
         Iterator ports = inputPortList().iterator();
 
@@ -324,6 +327,7 @@ public class IterateOverArray extends MirrorComposite {
      *  @return A list of instances of Inequality indicating the
      *   type constraints that are not satisfied.
      */
+    @Override
     protected List _checkTypesFromTo(TypedIOPort sourcePort,
             List destinationPortList) {
         List result = new LinkedList();
@@ -521,7 +525,7 @@ public class IterateOverArray extends MirrorComposite {
 
     /** Initialize the class. */
     private void _init() throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         setClassName("ptolemy.actor.lib.hoc.IterateOverArray");
 
         // Create the IterateDirector in the proper workspace.
@@ -554,6 +558,7 @@ public class IterateOverArray extends MirrorComposite {
         /** Return the current value of this monotonic function.
          *  @return A Type.
          */
+        @Override
         public Object getValue() throws IllegalActionException {
             Type elementType = (Type) super.getValue();
             return new ArrayType(elementType);
@@ -578,6 +583,7 @@ public class IterateOverArray extends MirrorComposite {
         /** Return the current value of this monotonic function.
          *  @return A Type.
          */
+        @Override
         public Object getValue() throws IllegalActionException {
             _updateArguments();
 
@@ -630,7 +636,7 @@ public class IterateOverArray extends MirrorComposite {
      *  connections being made.
      */
     public static class IterateComposite extends
-            MirrorComposite.MirrorCompositeContents {
+    MirrorComposite.MirrorCompositeContents {
         // NOTE: This has to be a static class so that MoML can
         // instantiate it.
 
@@ -653,6 +659,7 @@ public class IterateOverArray extends MirrorComposite {
          *  @exception NameDuplicationException If the container already has
          *  a port with this name.
          */
+        @Override
         public Port newPort(String name) throws NameDuplicationException {
             try {
                 return new IteratePort(this, name);
@@ -703,6 +710,7 @@ public class IterateOverArray extends MirrorComposite {
          *   of the contained actor throws it, or if the contained
          *   actor is not opaque.
          */
+        @Override
         public void fire() throws IllegalActionException {
             // Don't call "super.fire();" here, this actor contains its
             // own director.
@@ -781,6 +789,7 @@ public class IterateOverArray extends MirrorComposite {
          *  @return A new instance of QueueReceiver.
          *  @see QueueReceiver
          */
+        @Override
         public Receiver newReceiver() {
             return new QueueReceiver();
         }
@@ -791,6 +800,7 @@ public class IterateOverArray extends MirrorComposite {
          *  false if any contained actor returned false in its
          *  postfire() method.
          */
+        @Override
         public boolean postfire() throws IllegalActionException {
             boolean superReturns = super.postfire();
             return superReturns && _postfireReturns;
@@ -805,6 +815,7 @@ public class IterateOverArray extends MirrorComposite {
          *  @return True if at least one data token is transferred.
          *  @exception IllegalActionException Not thrown in this base class.
          */
+        @Override
         public boolean transferInputs(IOPort port)
                 throws IllegalActionException {
             boolean result = false;
@@ -850,6 +861,7 @@ public class IterateOverArray extends MirrorComposite {
          *  @exception IllegalActionException Not thrown in this base class.
          *  @see IOPort#transferOutputs
          */
+        @Override
         public boolean transferOutputs(IOPort port)
                 throws IllegalActionException {
             boolean result = false;
@@ -873,7 +885,7 @@ public class IterateOverArray extends MirrorComposite {
 
                     if (list.size() != 0) {
                         Token[] tokens = (Token[]) list.toArray(new Token[list
-                                .size()]);
+                                                                          .size()]);
 
                         if (_debugging) {
                             _debug(getName(),
@@ -963,6 +975,7 @@ public class IterateOverArray extends MirrorComposite {
          *  @exception IllegalActionException If the conversion is
          *   invalid.
          */
+        @Override
         public Token convert(Token token) throws IllegalActionException {
             if (!(getContainer() instanceof IterateOverArray) || !isOutput()) {
                 return super.convert(token);
@@ -987,6 +1000,7 @@ public class IterateOverArray extends MirrorComposite {
          *  @exception NoRoomException If there is no room in the receiver.
          *  @exception IllegalActionException Not thrown in this base class.
          */
+        @Override
         public void sendInside(int channelIndex, Token token)
                 throws IllegalActionException, NoRoomException {
             if (!(getContainer() instanceof IterateOverArray)) {

@@ -157,7 +157,7 @@ public class CSVReader extends LineReader {
         trimSpaces.setExpression("true");
 
         new SingletonParameter(endOfFile, "_showName")
-                .setToken(BooleanToken.TRUE);
+        .setToken(BooleanToken.TRUE);
 
         // Base class declares the output to be of type string, so we
         // have to first undo that.
@@ -212,6 +212,7 @@ public class CSVReader extends LineReader {
      *   opened file cannot be closed; or if the attribute is
      *   <i>numberOfLinesToSkip</i> and its value is negative.
      */
+    @Override
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         if (attribute == separator) {
@@ -234,6 +235,7 @@ public class CSVReader extends LineReader {
      *  invocation of postfire(), if there is any.
      *  @exception IllegalActionException If there's no director.
      */
+    @Override
     public void fire() throws IllegalActionException {
         // Cannot invoke super.fire() because it produces the wrong
         // output.
@@ -351,6 +353,7 @@ public class CSVReader extends LineReader {
     /** Wrapup execution of this actor.  This method overrides the
      *  base class to discard the internal parser to save memory.
      */
+    @Override
     public void wrapup() {
         _parser = null;
     }
@@ -393,6 +396,7 @@ public class CSVReader extends LineReader {
          *  scope. Return null if such an attribute does not exist.
          *  @return The attribute with the specified name in the scope.
          */
+        @Override
         public Token get(String name) throws IllegalActionException {
             Variable result = getScopedVariable(null, CSVReader.this, name);
 
@@ -408,6 +412,7 @@ public class CSVReader extends LineReader {
          *  attribute does not exist.
          *  @return The attribute with the specified name in the scope.
          */
+        @Override
         public Type getType(String name) throws IllegalActionException {
             Variable result = getScopedVariable(null, CSVReader.this, name);
 
@@ -426,6 +431,7 @@ public class CSVReader extends LineReader {
          *  @exception IllegalActionException If a value in the scope
          *  exists with the given name, but cannot be evaluated.
          */
+        @Override
         public ptolemy.graph.InequalityTerm getTypeTerm(String name)
                 throws IllegalActionException {
             Variable result = getScopedVariable(null, CSVReader.this, name);
@@ -440,6 +446,7 @@ public class CSVReader extends LineReader {
         /** Return the list of identifiers within the scope.
          *  @return The list of identifiers within the scope.
          */
+        @Override
         public Set identifierSet() {
             return getAllScopedVariableNames(null, CSVReader.this);
         }

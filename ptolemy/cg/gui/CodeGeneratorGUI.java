@@ -180,6 +180,7 @@ public class CodeGeneratorGUI extends PtolemyFrame {
             // FindBugs 1.8.3 incorrectly warns "Could be refactored
             // into a named static inner class".  The issue is that
             // exec is not static.
+            @Override
             public void actionPerformed(ActionEvent evt) {
                 exec.cancel();
             }
@@ -189,12 +190,14 @@ public class CodeGeneratorGUI extends PtolemyFrame {
             // FindBugs 1.8.3 incorrectly warns "Could be refactored
             // into a named static inner class".  The issue is that
             // exec is not static.
+            @Override
             public void actionPerformed(ActionEvent evt) {
                 exec.clear();
             }
         });
 
         goButton.addActionListener(new ActionListener() {
+            @Override
             public void actionPerformed(ActionEvent evt) {
                 try {
                     exec.updateStatusBar("// Starting " + codeGenerator
@@ -232,6 +235,7 @@ public class CodeGeneratorGUI extends PtolemyFrame {
         /** Open the help file at ptolemy/cg/README.html.
          *  @param evt The event.
          */
+        @Override
         public void actionPerformed(ActionEvent evt) {
             try {
                 // This class cannot be static because we get the
@@ -245,7 +249,7 @@ public class CodeGeneratorGUI extends PtolemyFrame {
                         .getResource("ptolemy/cg/README.html");
 
                 configuration
-                        .openModel(null, infoURL, infoURL.toExternalForm());
+                .openModel(null, infoURL, infoURL.toExternalForm());
             } catch (Exception ex) {
                 throw new InternalErrorException(getModel(), ex,
                         "Failed to open doc/codegen.htm: ");

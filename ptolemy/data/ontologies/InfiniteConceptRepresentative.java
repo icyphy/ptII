@@ -76,6 +76,7 @@ public abstract class InfiniteConceptRepresentative extends FiniteConcept {
      *   cannot be cloned.
      *  @return A new instance of InfiniteConceptRepresentative.
      */
+    @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         InfiniteConceptRepresentative newObject = (InfiniteConceptRepresentative) super
                 .clone(workspace);

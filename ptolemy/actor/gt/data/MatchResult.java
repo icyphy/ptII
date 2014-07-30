@@ -73,9 +73,10 @@ public class MatchResult extends SequentialTwoWayHashMap<Object, Object> {
     }
 
     /** Clone this match result and return the clone.
-    *
-    *  @return The clone.
-    */
+     *
+     *  @return The clone.
+     */
+    @Override
     public Object clone() {
         MatchResult result = (MatchResult) super.clone();
         result._parameterValues = (SequentialTwoWayHashMap) _parameterValues
@@ -96,6 +97,7 @@ public class MatchResult extends SequentialTwoWayHashMap<Object, Object> {
      *
      *  @return The string.
      */
+    @Override
     public String toString() {
         return toString(false);
     }
@@ -110,6 +112,7 @@ public class MatchResult extends SequentialTwoWayHashMap<Object, Object> {
      */
     public String toString(boolean allMatches) {
         Comparator<Object> keyComparator = new Comparator<Object>() {
+            @Override
             public int compare(Object key1, Object key2) {
                 return key1.toString().compareTo(key2.toString());
             }

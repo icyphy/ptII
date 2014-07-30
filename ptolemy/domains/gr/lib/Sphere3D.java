@@ -109,6 +109,7 @@ public class Sphere3D extends GRShadedShape {
      *  @param attribute The attribute to change.
      *  @exception IllegalActionException If thrown by the parent class.
      */
+    @Override
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         if (attribute == radius && _changesAllowedNow) {
@@ -132,6 +133,7 @@ public class Sphere3D extends GRShadedShape {
      *  @exception IllegalActionException If the value of some parameters can't
      *   be obtained.
      */
+    @Override
     protected void _createModel() throws IllegalActionException {
         super._createModel();
 
@@ -181,6 +183,7 @@ public class Sphere3D extends GRShadedShape {
      *
      *  @return the Java3D Sphere
      */
+    @Override
     protected Node _getNodeObject() {
         return _containedNode;
     }

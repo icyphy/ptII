@@ -74,7 +74,7 @@ public class ConfigureAction extends FigureAction {
         // http://bugzilla.ecoinformatics.org/show_bug.cgi?id=3094
         putValue(GUIUtilities.ACCELERATOR_KEY, KeyStroke.getKeyStroke(
                 KeyEvent.VK_E, Toolkit.getDefaultToolkit()
-                        .getMenuShortcutKeyMask()));
+                .getMenuShortcutKeyMask()));
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -83,6 +83,7 @@ public class ConfigureAction extends FigureAction {
     /** Open a dialog to edit the target.
      *  @param e The event.
      */
+    @Override
     public void actionPerformed(ActionEvent e) {
         try {
             // Determine which entity was selected for the look inside action.
@@ -137,8 +138,10 @@ public class ConfigureAction extends FigureAction {
 
         //Use the EditorFactory if the alt key is not pressed and the
         // action command is not "Configure".
-        if (attributeList.size() > 0 && !altKeyPressed
-                && (event == null || !event.getActionCommand().equals("Configure"))) {
+        if (attributeList.size() > 0
+                && !altKeyPressed
+                && (event == null || !event.getActionCommand().equals(
+                        "Configure"))) {
 
             // Use the last editor factory if there is more than one.
             Editable factory = attributeList.get(attributeList.size() - 1);

@@ -19,14 +19,17 @@ public class ReferenceYieldAdapter<T> implements YieldAdapter<T> {
     /**
      * Convert a method that implements the Collector<> class with a standard Iterable<>, by
      * collecting the results in a list, and returning an iterator to that list.
-     * @exception IllegalActionException 
+     * @exception IllegalActionException
      */
-    public YieldAdapterIterable<T> adapt(Collector<T> client) throws IllegalActionException {
+    @Override
+    public YieldAdapterIterable<T> adapt(Collector<T> client)
+            throws IllegalActionException {
 
         final ArrayList<T> results = new ArrayList<T>();
 
         try {
             client.collect(new ResultHandler<T>() {
+                @Override
                 public void handleResult(T value) {
                     results.add(value);
                 }
@@ -37,21 +40,26 @@ public class ReferenceYieldAdapter<T> implements YieldAdapter<T> {
 
         // Wrap container's iterator with yield adapter interface for compatibility
         return new YieldAdapterIterable<T>() {
+            @Override
             public YieldAdapterIterator<T> iterator() {
                 final Iterator<T> iterator = results.iterator();
                 return new YieldAdapterIterator<T>() {
+                    @Override
                     public boolean hasNext() {
                         return iterator.hasNext();
                     }
 
+                    @Override
                     public T next() {
                         return iterator.next();
                     }
 
+                    @Override
                     public void remove() {
                         iterator.remove();
                     }
 
+                    @Override
                     public void dispose() {
                         // Does nothing in this implementation
                     }

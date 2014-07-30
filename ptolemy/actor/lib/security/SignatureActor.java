@@ -166,6 +166,7 @@ public class SignatureActor extends TypedAtomicActor {
      *  @param attribute The attribute that changed.
      *  @exception IllegalActionException Not thrown in this base class.
      */
+    @Override
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         if (attribute == signatureAlgorithm) {
@@ -186,6 +187,7 @@ public class SignatureActor extends TypedAtomicActor {
      *  @exception IllegalActionException If thrown by the base class or
      *  if there is a problem processing the data.
      */
+    @Override
     public void fire() throws IllegalActionException {
         super.fire(); // Print debugging messages etc.
         _updateSignature();
@@ -202,6 +204,7 @@ public class SignatureActor extends TypedAtomicActor {
      * if the algorithm is not found, or if the specified provider does
      *  not exist.
      */
+    @Override
     public void initialize() throws IllegalActionException {
         super.initialize();
         _updateSignature();

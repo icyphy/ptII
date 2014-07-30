@@ -242,6 +242,7 @@ public abstract class SequencedSharedMemoryActor extends SetVariable {
      *
      *  @exception IllegalActionException If the actor cannot be fired.
      */
+    @Override
     public void fire() throws IllegalActionException {
         if (input.isOutsideConnected()) {
             // If input is connected, use the function from
@@ -293,6 +294,7 @@ public abstract class SequencedSharedMemoryActor extends SetVariable {
      *  @return The attribute that was found or created.
      *  @exception IllegalActionException If the container is null, or the name is invalid (from checkSingleAttribute).
      */
+    @Override
     public Attribute getModifiedVariable() throws IllegalActionException {
 
         // Look for variable.  If not present, create it.
@@ -379,6 +381,7 @@ public abstract class SequencedSharedMemoryActor extends SetVariable {
      *  and the output and the initial value variable.
      *  @exception IllegalActionException If the actor cannot be preinitialized.
      */
+    @Override
     public void preinitialize() throws IllegalActionException {
         super.preinitialize();
 
@@ -437,20 +440,21 @@ public abstract class SequencedSharedMemoryActor extends SetVariable {
     }
 
     /** When the actor name is changed, update the referenced variables
-      * to point to the new parameters and check to see if these parameters
-      * exist. This is also called when the actor is created, so don't need it in constructor.
-      * Previously, the code for the ASCETArray would allow direct changes in the
-      * variable name, in attributeChanged().  This is no longer allowed.
-      * The user should change the name of the actor; then, the variable name change
-      * will follow.
-      *
-      * @param name  The new name of the actor
-      * @exception IllegalActionException If the name cannot be changed.
-      * @exception NameDuplicationException If there is another actor with the same
-      *  name in the actor's container
-      */
+     * to point to the new parameters and check to see if these parameters
+     * exist. This is also called when the actor is created, so don't need it in constructor.
+     * Previously, the code for the ASCETArray would allow direct changes in the
+     * variable name, in attributeChanged().  This is no longer allowed.
+     * The user should change the name of the actor; then, the variable name change
+     * will follow.
+     *
+     * @param name  The new name of the actor
+     * @exception IllegalActionException If the name cannot be changed.
+     * @exception NameDuplicationException If there is another actor with the same
+     *  name in the actor's container
+     */
+    @Override
     public void setName(String name) throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         super.setName(name);
 
         // Set up strings for moml change requests
@@ -541,7 +545,7 @@ public abstract class SequencedSharedMemoryActor extends SetVariable {
                             }
 
             }
-            */
+             */
 
         }
 

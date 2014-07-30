@@ -78,7 +78,7 @@ import ptolemy.math.DoubleMatrixMath;
 import ptolemy.math.SignalProcessing;
 
 ///////////////////////////////////////////////////////////////////
-//// 
+////
 
 /**
  A Particle Filter Implementation
@@ -95,7 +95,7 @@ import ptolemy.math.SignalProcessing;
 
  <li> For each control input in <i>U</i>, create an input port with an arbitrary name.
  This actor will automatically create a parameter with the same name as the
- input port. That parameter will have its value set during execution to match 
+ input port. That parameter will have its value set during execution to match
  the value of the input.
 
  <li> Fill in the <i>stateVariableNames</i> parameter, which is
@@ -119,24 +119,24 @@ import ptolemy.math.SignalProcessing;
 
  <li> Fill in the measurement covariance parameter, that should be a square double matrix with
  dimension equal to the number of measurement equations defined. In case the measurements are
- independent, the matrix should be a scaled identity 
- 
+ independent, the matrix should be a scaled identity
+
  <li> Fill in the processNoise parameter, which should be a function that samples from the
  (possibly multivariate) distribution the state transition process noise is distributed according
  to. The return type should be an array of size equal to the state-space size
- 
- <li> Specify the prior distribution as a random function from which the particles will be sampled. 
- For instance, use the the random() function to draw uniform random variables in [0,1] or use 
+
+ <li> Specify the prior distribution as a random function from which the particles will be sampled.
+ For instance, use the the random() function to draw uniform random variables in [0,1] or use
  multivariateGaussian() or gaussian() for Gaussian priors.The return type should be an array of size
  equal to the state-space size
- 
+
  <li> It is important to note how multiple measurement inputs are interpreted by the actor.
  This implementation interprets multiple measurement inputs to be conditionally
  independent given the hidden state. This allows the likelihood (weight) of each particle at time
  step t to be computed as a product of its likelihood with respect to each measurement at that time.
 
 <li> For additional parameters that are time varying, add arbitrarily many PortParameters to the actor
-and refer to the port parameter by port name within measurement and/or update equations. 
+and refer to the port parameter by port name within measurement and/or update equations.
  </ul>
 
 
@@ -176,7 +176,7 @@ public class ParticleFilter extends TypedCompositeActor {
      *   an entity with the specified name.
      */
     public ParticleFilter(Workspace workspace) throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         super(workspace);
         _init();
     }
@@ -202,7 +202,7 @@ public class ParticleFilter extends TypedCompositeActor {
     /**
      * The expression that specifies the PDF for the measurementNoise. use N(m,s) for
      * a Gaussian distribution with mean m and standard deviation s. unif (x,y) evaluates
-     * to a uniform distribution in range [x,y] 
+     * to a uniform distribution in range [x,y]
      */
     public Parameter particleCount;
 
@@ -221,7 +221,7 @@ public class ParticleFilter extends TypedCompositeActor {
      */
     public Parameter priorDistribution;
 
-    /** The output port that outputs the produced particles at each firing. 
+    /** The output port that outputs the produced particles at each firing.
      */
     public TypedIOPort particleOutput;
 
@@ -238,7 +238,7 @@ public class ParticleFilter extends TypedCompositeActor {
      *  value equal to the current time as reported by the director.
      */
     public Parameter t;
-    
+
     /** Boolean parameter to determine whether seeds are reset on each run.
      */
     public SharedParameter resetOnEachRun;
@@ -322,11 +322,11 @@ public class ParticleFilter extends TypedCompositeActor {
         } else if (attribute == lowVarianceSampler) {
             _lowVarianceSampler = ((BooleanToken) lowVarianceSampler.getToken())
                     .booleanValue();
-        }else if (attribute == resetOnEachRun)
-        {
-            _resetOnEachRun = ((BooleanToken)resetOnEachRun.getToken()).booleanValue();
-        }else if (attribute == seed) {
-            long seedVal = ((LongToken)seed.getToken()).longValue();
+        } else if (attribute == resetOnEachRun) {
+            _resetOnEachRun = ((BooleanToken) resetOnEachRun.getToken())
+                    .booleanValue();
+        } else if (attribute == seed) {
+            long seedVal = ((LongToken) seed.getToken()).longValue();
             _seed = seedVal;
             _createRandomGenerator();
         } else {
@@ -412,14 +412,14 @@ public class ParticleFilter extends TypedCompositeActor {
         }
         // Check parameters.
         _checkParameters();
-        
+
         if (_resetOnEachRun || _random == null) {
             _createRandomGenerator();
         }
 
         ArrayToken stateNames = (ArrayToken) stateVariableNames.getToken();
-        int n = stateNames.length(); // number of state variables 
-        int m = inputPortList().size(); // number of control inputs 
+        int n = stateNames.length(); // number of state variables
+        int m = inputPortList().size(); // number of control inputs
         _stateSpaceSize = n;
         try {
             _workspace.getWriteAccess();
@@ -440,22 +440,22 @@ public class ParticleFilter extends TypedCompositeActor {
                 //e.setPersistent(false);
                 String updateEqnName = _stateVariables[i] + "_update";
                 e.expression
-                        .setExpression(((Parameter) getAttribute(updateEqnName))
-                                .getExpression());
+                .setExpression(((Parameter) getAttribute(updateEqnName))
+                        .getExpression());
                 if (_stateVariables[i] == null) {
                     System.err.println("One state variable is null at index "
                             + i);
                 } else {
                     _updateEquations.put(_stateVariables[i], e);
                     _updateTrees.put(_stateVariables[i], new PtParser()
-                            .generateParseTree(_updateEquations
-                                    .get(_stateVariables[i]).expression
-                                    .getExpression()));
+                    .generateParseTree(_updateEquations
+                            .get(_stateVariables[i]).expression
+                            .getExpression()));
                 }
             }
             // put an update tree for the process noise
             _updateTrees.put("processNoise", new PtParser()
-                    .generateParseTree(processNoise.getExpression()));
+            .generateParseTree(processNoise.getExpression()));
             // update tree for the prior distribution
             _updateTrees.put("priorDistribution",
                     new PtParser().generateParseTree(prior.getExpression()));
@@ -484,15 +484,15 @@ public class ParticleFilter extends TypedCompositeActor {
                     Expression _measurementEquation = new Expression(this,
                             inputName + "_equation");
                     _measurementEquation.expression
-                            .setExpression(((Parameter) getAttribute(eqnName))
-                                    .getExpression());
+                    .setExpression(((Parameter) getAttribute(eqnName))
+                            .getExpression());
                     _measurementEquations.add(_measurementEquation);
 
                     _measurementCovariance = new Expression(this, inputName
                             + "_covariance");
                     _measurementCovariance.expression
-                            .setExpression(((Parameter) getAttribute("measurementCovariance"))
-                                    .getExpression());
+                    .setExpression(((Parameter) getAttribute("measurementCovariance"))
+                            .getExpression());
 
                     SetVariable zm = new SetVariable(this, "set" + inputName);
                     // add new parameter to the actor
@@ -617,6 +617,7 @@ public class ParticleFilter extends TypedCompositeActor {
             }
         }
     }
+
     private void _createRandomGenerator() throws IllegalActionException {
 
         _seed = ((LongToken) seed.getToken()).longValue();
@@ -683,7 +684,7 @@ public class ParticleFilter extends TypedCompositeActor {
 
     /** Initialize the class. */
     private void _init() throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         StringToken[] empty = new StringToken[1];
         stateVariableNames = new Parameter(this, "stateVariableNames");
         empty[0] = new StringToken("");
@@ -707,19 +708,19 @@ public class ParticleFilter extends TypedCompositeActor {
 
         processNoise = new Parameter(this, "processNoise");
         processNoise
-                .setExpression("multivariateGaussian({0.0,0.0},[1.0,0.4;0.4,1.2])");
+        .setExpression("multivariateGaussian({0.0,0.0},[1.0,0.4;0.4,1.2])");
 
         particleOutput = new TypedIOPort(this, "particleOutput", false, true);
         //particleOutput.setTypeEquals(BaseType.DOUBLE);
         //setClassName("org.ptolemy.machineLearning.ParticleFilter");
         particleOutput.setTypeEquals(RecordType.EMPTY_RECORD);
-        
-        seed = new SharedParameter(this,"seed");
+
+        seed = new SharedParameter(this, "seed");
         seed.setExpression("0L");
         seed.setTypeEquals(BaseType.LONG);
         seed.setVisibility(Settable.EXPERT);
-        
-        resetOnEachRun = new SharedParameter(this,"resetOnEachRun");
+
+        resetOnEachRun = new SharedParameter(this, "resetOnEachRun");
         resetOnEachRun.setExpression("false");
         resetOnEachRun.setVisibility(Settable.EXPERT);
         resetOnEachRun.setTypeEquals(BaseType.BOOLEAN);
@@ -745,8 +746,8 @@ public class ParticleFilter extends TypedCompositeActor {
         _firstIteration = true;
         particles = new Particle[Nparticles];
 
-        _createRandomGenerator() ;
-        
+        _createRandomGenerator();
+
         _tokenMap = new HashMap<String, Token>();
 
         _parseTreeEvaluator = new ParseTreeEvaluator();
@@ -765,7 +766,7 @@ public class ParticleFilter extends TypedCompositeActor {
     }
 
     private void _initializeParticles() throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         // let prior distribution be N(0,1) for now.
         for (int i = 0; i < particles.length; i++) {
             particles[i] = new Particle(_stateSpaceSize);
@@ -775,7 +776,7 @@ public class ParticleFilter extends TypedCompositeActor {
     }
 
     private void _normalizeWeights() throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         // let prior distribution be N(0,1) for now.
         double sum = 0;
         for (int i = 0; i < particles.length; i++) {
@@ -789,7 +790,7 @@ public class ParticleFilter extends TypedCompositeActor {
     /** Propagate particles according to the state update equations
      */
     private void _propagate() throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         for (int i = 0; i < Nparticles; i++) {
             particles[i].setNextParticle();
         }
@@ -818,8 +819,8 @@ public class ParticleFilter extends TypedCompositeActor {
             cumulativeSums[i + 1] = cumulativeSums[i] + w;
             previousParticles[i] = particles[i];
         }
-        // If low-variance sampling has been selected, sample a random particle in [0,1/Nparticles] 
-        // and choose all other particles in reference to the first sample. Yields a low-variance 
+        // If low-variance sampling has been selected, sample a random particle in [0,1/Nparticles]
+        // and choose all other particles in reference to the first sample. Yields a low-variance
         // particle set.
         if (_lowVarianceSampler) {
             double baseValue = _random.nextDouble() * (1.0 / Nparticles);
@@ -876,7 +877,7 @@ public class ParticleFilter extends TypedCompositeActor {
             List<Double> pVal = p.getValue();
             weight = p.getWeight();
             for (int j = 0; j < pVal.size(); j++) {
-                stateValues[j] += weight * (Double) pVal.get(j);
+                stateValues[j] += weight * pVal.get(j);
             }
         }
         for (int j = 0; j < _stateSpaceSize; j++) {
@@ -901,8 +902,8 @@ public class ParticleFilter extends TypedCompositeActor {
                     + particles[i].getWeight();
             previousParticles[i] = particles[i];
         }
-        // If low-variance sampling has been selected, sample a random particle in [0,1/Nparticles] 
-        // and choose all other particles in reference to the first sample. Yields a low-variance 
+        // If low-variance sampling has been selected, sample a random particle in [0,1/Nparticles]
+        // and choose all other particles in reference to the first sample. Yields a low-variance
         // particle set.
         if (_lowVarianceSampler) {
             double baseValue = _random.nextDouble() * (1.0 / Noutput);
@@ -965,7 +966,7 @@ public class ParticleFilter extends TypedCompositeActor {
 
     //TODO: Add seed for random number generation.
     private Random _random;
-    
+
     /** Public seed for random number generation */
     private long _seed;
 
@@ -989,7 +990,7 @@ public class ParticleFilter extends TypedCompositeActor {
     private String[] _particleLabels;
 
     private Type[] _particleTypes;
-    
+
     private boolean _resetOnEachRun;
 
     private String[] _stateLabels;
@@ -1004,7 +1005,7 @@ public class ParticleFilter extends TypedCompositeActor {
     private VariableScope _scope;
     private boolean _firstIteration;
     private HashMap<String, Parameter> _measurementParameters;
-    // The values of the measurement inputs at the given iteration. 
+    // The values of the measurement inputs at the given iteration.
     private HashMap<String, Token> _measurementValues;
     private Expression _measurementCovariance;
 
@@ -1021,7 +1022,7 @@ public class ParticleFilter extends TypedCompositeActor {
             this._particleValue = new LinkedList<Double>();
             List<Double> temp = p.getValue();
             for (int i = 0; i < temp.size(); i++) {
-                this._particleValue.add((Double)temp.get(i));
+                this._particleValue.add(temp.get(i));
             }
         }
 
@@ -1064,7 +1065,7 @@ public class ParticleFilter extends TypedCompositeActor {
                             throw new IllegalActionException(
                                     "Expression yields a null result: "
                                             + measurementEquation.expression
-                                                    .getExpression());
+                                            .getExpression());
                         }
                         ind++;
                     }
@@ -1100,8 +1101,8 @@ public class ParticleFilter extends TypedCompositeActor {
                         _weight *= 1
                                 / (Math.pow(2 * Math.PI, 0.5) * DoubleMatrixMath
                                         .determinant(_Sigma))
-                                * Math.exp(-Math.pow(z_t - _meanEstimate, 2)
-                                        / (2 * Math.pow(_Sigma[0][0], 2)));
+                                        * Math.exp(-Math.pow(z_t - _meanEstimate, 2)
+                                                / (2 * Math.pow(_Sigma[0][0], 2)));
                     }
 
                 } else {
@@ -1171,7 +1172,7 @@ public class ParticleFilter extends TypedCompositeActor {
 
             Type t = priorSample.getType();
             if (t.equals(BaseType.DOUBLE)) {
-                // one dimensional 
+                // one dimensional
                 if (this.getSize() > 1) {
                     throw new IllegalActionException(
                             "Prior distribution and state space dimensions must match.");
@@ -1193,7 +1194,7 @@ public class ParticleFilter extends TypedCompositeActor {
         }
 
         public void setNextParticle() throws NameDuplicationException,
-                IllegalActionException {
+        IllegalActionException {
             Token _result;
             //FIXME: the noise sample does not have to be an arrayToken
             Token processNoiseSample;
@@ -1267,7 +1268,7 @@ public class ParticleFilter extends TypedCompositeActor {
                     throw new IllegalActionException(
                             "Expression yields a null result: "
                                     + _updateEquations.get(_stateVariables[i]).expression
-                                            .getExpression());
+                                    .getExpression());
                 }
                 // set particle weight
 

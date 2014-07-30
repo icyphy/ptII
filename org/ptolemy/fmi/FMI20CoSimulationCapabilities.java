@@ -24,7 +24,7 @@
    PT_COPYRIGHT_VERSION_2
    COPYRIGHTENDKEY
 
-*/
+ */
 package org.ptolemy.fmi;
 
 import org.w3c.dom.Element;
@@ -73,7 +73,6 @@ public class FMI20CoSimulationCapabilities extends FMICapabilities {
     ///////////////////////////////////////////////////////////////////
     ////             public fields                                 ////
 
-    
     /** True if only one FMU can be instantiated per process.
      *  The default value is false.
      */

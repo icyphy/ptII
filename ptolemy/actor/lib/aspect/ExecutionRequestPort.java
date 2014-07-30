@@ -39,17 +39,17 @@ import ptolemy.kernel.util.NameDuplicationException;
 
 /** This actor implements an input port in a composite communication aspect
  *  (@link CompositeQM).
-*
-*  <p>
-*  Tokens received are RecordTokens containing two fields: receiver
-*  and token.
-*
-*  @author Patricia Derler
-*  @version $Id$
-*  @since Ptolemy II 10.0
-*  @Pt.ProposedRating Yellow (derler)
-*  @Pt.AcceptedRating Red (derler)
-*/
+ *
+ *  <p>
+ *  Tokens received are RecordTokens containing two fields: receiver
+ *  and token.
+ *
+ *  @author Patricia Derler
+ *  @version $Id$
+ *  @since Ptolemy II 10.0
+ *  @Pt.ProposedRating Yellow (derler)
+ *  @Pt.AcceptedRating Red (derler)
+ */
 public class ExecutionRequestPort extends CommunicationRequestPort {
 
     /** Construct a constant source with the default type set to the RecordToken
@@ -66,7 +66,7 @@ public class ExecutionRequestPort extends CommunicationRequestPort {
         super(container, name);
 
         RecordType type = new RecordType(new String[] { "actor",
-                "executionTime" }, new Type[] { BaseType.OBJECT,
+        "executionTime" }, new Type[] { BaseType.OBJECT,
                 BaseType.DOUBLE });
         value.setTypeEquals(type);
     }

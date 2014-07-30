@@ -64,6 +64,7 @@ public class SketchApplet extends MoMLApplet implements EditListener {
      *  @param source The plot containing the modified data.
      *  @param dataset The data set that has been modified.
      */
+    @Override
     public void editDataModified(EditablePlot source, int dataset) {
         try {
             if (_manager.getState() == Manager.IDLE) {
@@ -77,6 +78,7 @@ public class SketchApplet extends MoMLApplet implements EditListener {
 
     /** Create the shared plot and set it up based on the director parameters.
      */
+    @Override
     public void _createView() {
         super._createView();
 

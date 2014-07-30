@@ -92,6 +92,7 @@ public abstract class AbstractGraphController implements GraphController {
      * @exception GraphException If the connector target cannot return a
      * valid site on the node's figure.
      */
+    @Override
     public void addEdge(Object edge, Object node, int end, double x, double y) {
         getEdgeController(edge).addEdge(edge, node, end, x, y);
     }
@@ -99,12 +100,14 @@ public abstract class AbstractGraphController implements GraphController {
     /** Add an edge to this graph between the given tail and head
      * nodes.  Give the new edge the given semanticObject.
      */
+    @Override
     public void addEdge(Object edge, Object tail, Object head) {
         getEdgeController(edge).addEdge(edge, tail, head);
     }
 
     /**
      */
+    @Override
     public void addGraphViewListener(GraphViewListener l) {
         _graphViewListenerList.add(l);
     }
@@ -112,6 +115,7 @@ public abstract class AbstractGraphController implements GraphController {
     /**
      * Add the node to this graph editor and place it wherever convenient.
      */
+    @Override
     public void addNode(Object node) {
         NodeController nc = getNodeController(node);
         nc.addNode(node);
@@ -121,6 +125,7 @@ public abstract class AbstractGraphController implements GraphController {
      * Add the node to this graph editor and render it
      * at the given location.
      */
+    @Override
     public void addNode(Object node, double x, double y) {
         NodeController nc = getNodeController(node);
         nc.addNode(node, x, y);
@@ -130,6 +135,7 @@ public abstract class AbstractGraphController implements GraphController {
      * Add the node to this graph editor, inside the given parent node
      * at whatever position is convenient
      */
+    @Override
     public void addNode(Object node, Object parent) {
         NodeController nc = getNodeController(node);
         nc.addNode(node, parent);
@@ -139,6 +145,7 @@ public abstract class AbstractGraphController implements GraphController {
      * Add the node to this graph editor, inside the given parent node
      * and render it at the given location relative to its parent.
      */
+    @Override
     public void addNode(Object node, Object parent, double x, double y) {
         NodeController nc = getNodeController(node);
         nc.addNode(node, parent, x, y);
@@ -147,6 +154,7 @@ public abstract class AbstractGraphController implements GraphController {
     /**
      * Remove all figures from the display
      */
+    @Override
     public void clear() {
         // FIXME
     }
@@ -154,6 +162,7 @@ public abstract class AbstractGraphController implements GraphController {
     /**
      * Remove the figure for the given edge.
      */
+    @Override
     public void clearEdge(Object edge) {
         EdgeController ec = getEdgeController(edge);
         ec.clearEdge(edge);
@@ -162,6 +171,7 @@ public abstract class AbstractGraphController implements GraphController {
     /**
      * Remove the figure for the given node.
      */
+    @Override
     public void clearNode(Object node) {
         NodeController nc = getNodeController(node);
         nc.clearNode(node);
@@ -173,6 +183,7 @@ public abstract class AbstractGraphController implements GraphController {
      * called when the object is in the model but does not yet have a
      * figure associated with it.
      */
+    @Override
     public Figure drawEdge(Object edge) {
         EdgeController ec = getEdgeController(edge);
         Figure f = ec.drawEdge(edge);
@@ -186,6 +197,7 @@ public abstract class AbstractGraphController implements GraphController {
      * figure associated with it.  The location of the figure should be
      * set if some location is appropriate for it.
      */
+    @Override
     public Figure drawNode(Object node) {
         NodeController nc = getNodeController(node);
         Figure f = nc.drawNode(node);
@@ -200,6 +212,7 @@ public abstract class AbstractGraphController implements GraphController {
      * figure associated with it.  The location of the figure should be
      * set if some location is appropriate for it.
      */
+    @Override
     public Figure drawNode(Object node, Object parent) {
         NodeController nc = getNodeController(node);
         Figure f = nc.drawNode(node, parent);
@@ -210,17 +223,20 @@ public abstract class AbstractGraphController implements GraphController {
      * Given an edge, return the controller associated with that
      * edge.
      */
+    @Override
     public abstract EdgeController getEdgeController(Object edge);
 
     /**
      * Given an node, return the controller associated with that
      * node.
      */
+    @Override
     public abstract NodeController getNodeController(Object node);
 
     /**
      * Return the graph being viewed.
      */
+    @Override
     public GraphModel getGraphModel() {
         return _model;
     }
@@ -228,6 +244,7 @@ public abstract class AbstractGraphController implements GraphController {
     /**
      * Return the graphics pane of this controller cast as a GraphPane.
      */
+    @Override
     public GraphPane getGraphPane() {
         return _pane;
     }
@@ -237,6 +254,7 @@ public abstract class AbstractGraphController implements GraphController {
      * semantic object (node or edge), or null
      * if there is no association.
      */
+    @Override
     public Figure getFigure(Object semanticObj) {
         return (Figure) _map.get(semanticObj);
     }
@@ -244,6 +262,7 @@ public abstract class AbstractGraphController implements GraphController {
     /**
      * Get the default selection model
      */
+    @Override
     public SelectionModel getSelectionModel() {
         return _selectionModel;
     }
@@ -252,12 +271,14 @@ public abstract class AbstractGraphController implements GraphController {
      * Remove the given edge.  Find the edge controller associated with that
      * edge and delegate to that edge controller.
      */
+    @Override
     public void removeEdge(Object edge) {
         getEdgeController(edge).removeEdge(edge);
     }
 
     /** Remove the given view listener.
      */
+    @Override
     public void removeGraphViewListener(GraphViewListener l) {
         _graphViewListenerList.remove(l);
     }
@@ -266,6 +287,7 @@ public abstract class AbstractGraphController implements GraphController {
      * Remove the given node.  Find the node controller associated with that
      * node and delegate to that node controller.
      */
+    @Override
     public void removeNode(Object node) {
         getNodeController(node).removeNode(node);
     }
@@ -275,6 +297,7 @@ public abstract class AbstractGraphController implements GraphController {
      * nodes and edges, but do not alter the connectivity in the graph.
      * This should be called when changes to renderers are made.
      */
+    @Override
     public void rerender() {
         // FIXME: it would be nice to be able to do this without all
         // stupid business with the selection model.
@@ -411,6 +434,7 @@ public abstract class AbstractGraphController implements GraphController {
      * This should be called if the state of the edge has changed in such a
      * way that the rendering should change.
      */
+    @Override
     public void rerenderEdge(Object edge) {
         // FIXME this is way overkill.
         rerender();
@@ -433,6 +457,7 @@ public abstract class AbstractGraphController implements GraphController {
      * figure.  This should be called if the state of the node has
      * changed in such a way that the rendering should change.
      */
+    @Override
     public void rerenderNode(Object node) {
         // FIXME this is way overkill.
         rerender();
@@ -468,6 +493,7 @@ public abstract class AbstractGraphController implements GraphController {
      * and it contains data, delete the figures of that graph's
      * nodes and edges (but don't modify the graph itself).
      */
+    @Override
     public void setGraphModel(GraphModel model) {
         Iterator i;
 
@@ -509,6 +535,7 @@ public abstract class AbstractGraphController implements GraphController {
      * Set the figure associated with the given semantic object (node
      * or edge).  A null figure clears the association.
      */
+    @Override
     public void setFigure(Object semanticObj, Figure f) {
         if (f == null) {
             _map.remove(semanticObj);
@@ -521,6 +548,7 @@ public abstract class AbstractGraphController implements GraphController {
      * Set the graph pane. This is called by the GraphPane.
      * FIXME: should this be package private?
      */
+    @Override
     public void setGraphPane(GraphPane pane) {
         _pane = pane;
         initializeInteraction();
@@ -530,6 +558,7 @@ public abstract class AbstractGraphController implements GraphController {
      * Set the default selection model. The caller is expected to ensure
      * that the old model is empty before calling this.
      */
+    @Override
     public void setSelectionModel(SelectionModel m) {
         _selectionModel = m;
     }
@@ -540,6 +569,7 @@ public abstract class AbstractGraphController implements GraphController {
      * representatives of those subclasses, such as a node controller or
      * an edge controller.
      */
+    @Override
     public void dispatch(GraphViewEvent e) {
         for (Iterator i = _graphViewListenerList.iterator(); i.hasNext();) {
             GraphViewListener l = (GraphViewListener) i.next();
@@ -585,6 +615,7 @@ public abstract class AbstractGraphController implements GraphController {
          * is the "source" of the event.  The previous head
          * is accessible via e.getOldValue().
          */
+        @Override
         public void edgeHeadChanged(GraphEvent e) {
             if (e.getSource() != AbstractGraphController.this) {
                 rerenderEdge(e.getTarget());
@@ -597,6 +628,7 @@ public abstract class AbstractGraphController implements GraphController {
          * is the "source" of the event.  The previous tail
          * is accessible via e.getOldValue().
          */
+        @Override
         public void edgeTailChanged(GraphEvent e) {
             if (e.getSource() != AbstractGraphController.this) {
                 rerenderEdge(e.getTarget());
@@ -608,6 +640,7 @@ public abstract class AbstractGraphController implements GraphController {
          * graph or one of its subgraphs.  The added node
          * is the "source" of the event.
          */
+        @Override
         public void nodeAdded(GraphEvent e) {
             if (e.getSource() != AbstractGraphController.this) {
                 drawNode(e.getTarget());
@@ -620,6 +653,7 @@ public abstract class AbstractGraphController implements GraphController {
          * is the "source" of the event.  The previous parent
          * graph is accessible via e.getOldValue().
          */
+        @Override
         public void nodeRemoved(GraphEvent e) {
             if (e.getSource() != AbstractGraphController.this) {
                 //Remove the figure from the view
@@ -633,6 +667,7 @@ public abstract class AbstractGraphController implements GraphController {
          * event signals the listener to refresh its view
          * of that graph from model.
          */
+        @Override
         public void structureChanged(GraphEvent e) {
             if (e.getSource() != AbstractGraphController.this) {
                 rerender();

@@ -23,7 +23,7 @@ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
 PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 ENHANCEMENTS, OR MODIFICATIONS.
-*/
+ */
 package ptolemy.actor.gt.ingredients.criteria;
 
 import java.util.regex.Matcher;
@@ -75,6 +75,7 @@ public class NameCriterion extends Criterion {
      *
      *  @return The array of elements.
      */
+    @Override
     public GTIngredientElement[] getElements() {
         return _ELEMENTS;
     }
@@ -85,6 +86,7 @@ public class NameCriterion extends Criterion {
      *  @return The value.
      *  @see #setValue(int, Object)
      */
+    @Override
     public Object getValue(int index) {
         switch (index) {
         case 0:
@@ -99,6 +101,7 @@ public class NameCriterion extends Criterion {
      *  @return A string that describes the values of all the elements.
      *  @see #setValues(String)
      */
+    @Override
     public String getValues() {
         StringBuffer buffer = new StringBuffer();
         _encodeStringField(buffer, 0, _name.get());
@@ -111,6 +114,7 @@ public class NameCriterion extends Criterion {
      *  @param object The object.
      *  @return true if the object matches.
      */
+    @Override
     public boolean match(NamedObj object) {
         Pattern pattern = _name.getPattern();
         Matcher matcher = pattern.matcher(object.getName());
@@ -123,6 +127,7 @@ public class NameCriterion extends Criterion {
      *  @param value The value.
      *  @see #getValue(int)
      */
+    @Override
     public void setValue(int index, Object value) {
         switch (index) {
         case 0:
@@ -137,6 +142,7 @@ public class NameCriterion extends Criterion {
      *   elements.
      *  @see #getValues()
      */
+    @Override
     public void setValues(String values) {
         FieldIterator fieldIterator = new FieldIterator(values);
         _name.set(_decodeStringField(0, fieldIterator));
@@ -146,6 +152,7 @@ public class NameCriterion extends Criterion {
      *
      *  @exception ValidationException If some elements are invalid.
      */
+    @Override
     public void validate() throws ValidationException {
         if (_name.get().equals("")) {
             throw new ValidationException("Name must not be empty.");

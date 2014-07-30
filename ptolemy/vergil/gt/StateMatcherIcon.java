@@ -68,6 +68,7 @@ public class StateMatcherIcon extends StateIcon {
         super(container, name);
     }
 
+    @Override
     public Figure createBackgroundFigure() {
         _spacingValue = 0.0;
         Figure figure = super.createBackgroundFigure();
@@ -79,6 +80,7 @@ public class StateMatcherIcon extends StateIcon {
         return figure;
     }
 
+    @Override
     public Figure createFigure() {
         CompositeFigure figure = (CompositeFigure) super.createFigure();
         Iterator<?> subfigures = figure.figures();
@@ -91,6 +93,7 @@ public class StateMatcherIcon extends StateIcon {
         return figure;
     }
 
+    @Override
     public Icon createIcon() {
         if (_iconCache != null) {
             return _iconCache;

@@ -59,7 +59,7 @@ public class EntitySootClass extends SootClass {
 
         /*Type stringType = */RefType.v("java.lang.String");
         /*Type compositeEntityType = */RefType
-                .v("ptolemy.kernel.CompositeEntity");
+        .v("ptolemy.kernel.CompositeEntity");
         /*Type workspaceType = */RefType.v("ptolemy.kernel.util.Workspace");
 
         _initMethod = new SootMethod("__CGInit", new LinkedList(),

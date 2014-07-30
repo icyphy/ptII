@@ -85,6 +85,7 @@ public class ConceptController extends AttributeInOntologyController {
      *  this method was added higher in the hierarchy. Now most controllers
      *  @param jgraph The JGraph to which hot keys are to be added.
      */
+    @Override
     public void addHotKeys(JGraph jgraph) {
         super.addHotKeys(jgraph);
         GUIUtilities.addHotKey(jgraph, _toggleAcceptabilityAction);
@@ -96,6 +97,7 @@ public class ConceptController extends AttributeInOntologyController {
     /** Get the class label of the component which is a Concept.
      *  @return The string "Concept".
      */
+    @Override
     protected String _getComponentType() {
         return "Concept";
     }
@@ -117,7 +119,7 @@ public class ConceptController extends AttributeInOntologyController {
      *   report an error with a fairly cryptic message.
      */
     @SuppressWarnings("serial")
-        private class ToggleAcceptabilityAction extends FigureAction {
+    private class ToggleAcceptabilityAction extends FigureAction {
 
         /** Create a new ToggleAcceptabilityAction object.
          */
@@ -125,7 +127,7 @@ public class ConceptController extends AttributeInOntologyController {
             super("Toggle Acceptability");
             putValue(GUIUtilities.ACCELERATOR_KEY, KeyStroke.getKeyStroke(
                     KeyEvent.VK_A, Toolkit.getDefaultToolkit()
-                            .getMenuShortcutKeyMask()));
+                    .getMenuShortcutKeyMask()));
         }
 
         ///////////////////////////////////////////////////////////////////
@@ -135,6 +137,7 @@ public class ConceptController extends AttributeInOntologyController {
          *  @param e The ActionEvent that is received to execute the
          *   toggle acceptability action.
          */
+        @Override
         public void actionPerformed(ActionEvent e) {
             super.actionPerformed(e);
             NamedObj target = getTarget();

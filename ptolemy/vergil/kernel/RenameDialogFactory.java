@@ -53,6 +53,7 @@ import diva.gui.toolbox.JContextMenu;
  @Pt.ProposedRating Red (eal)
  @Pt.AcceptedRating Red (johnr)
  */
+@Deprecated
 public class RenameDialogFactory implements MenuItemFactory {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -65,6 +66,7 @@ public class RenameDialogFactory implements MenuItemFactory {
      *  Entity.
      *
      */
+    @Override
     public JMenuItem create(final JContextMenu menu, NamedObj object) {
         String name = "Customize Name";
 
@@ -78,7 +80,8 @@ public class RenameDialogFactory implements MenuItemFactory {
         }
 
         @SuppressWarnings("serial")
-                Action action = new AbstractAction(name) {
+        Action action = new AbstractAction(name) {
+            @Override
             public void actionPerformed(ActionEvent e) {
                 // Create a dialog for configuring the object.
                 // First, identify the top parent frame.

@@ -67,6 +67,7 @@ public class Ellipse2D extends RectangularFigure2D {
     /** Implement the base class to create a rectangular shape.
      *  @exception IllegalActionException If a parameter value is not valid.
      */
+    @Override
     protected BasicFigure _createFigure() throws IllegalActionException {
         java.awt.geom.Ellipse2D.Double ellipse = new java.awt.geom.Ellipse2D.Double();
         ellipse.setFrameFromCenter(_getCenterPoint(), _getCornerPoint());
@@ -77,6 +78,7 @@ public class Ellipse2D extends RectangularFigure2D {
      *  the appropriate parameters.
      * @exception IllegalActionException If a parameter value is not valid.
      */
+    @Override
     protected void _updateFigure() throws IllegalActionException {
         java.awt.geom.Ellipse2D.Double ellipse = new java.awt.geom.Ellipse2D.Double();
         ellipse.setFrameFromCenter(_getCenterPoint(), _getCornerPoint());

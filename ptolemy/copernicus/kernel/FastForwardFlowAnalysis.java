@@ -45,14 +45,17 @@ public abstract class FastForwardFlowAnalysis extends FlowAnalysis {
         super(graph);
     }
 
+    @Override
     protected boolean isForward() {
         return true;
     }
 
+    @Override
     protected void doAnalysis() {
         // CHANGED
         final HashMap indexMap = new HashMap();
         TreeSet changedUnitsSet = new TreeSet(new Comparator() {
+            @Override
             public int compare(Object o1, Object o2) {
                 Integer i1 = (Integer) indexMap.get(o1);
                 Integer i2 = (Integer) indexMap.get(o2);

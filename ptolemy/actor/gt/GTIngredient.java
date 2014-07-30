@@ -149,6 +149,7 @@ public abstract class GTIngredient {
      *
      *  @return A string.
      */
+    @Override
     public String toString() {
         return getValues();
     }
@@ -391,6 +392,7 @@ public abstract class GTIngredient {
          *
          *  @return true if there is a next field; false otherwise.
          */
+        @Override
         public boolean hasNext() {
             return _values != null && _values.length() > 0;
         }
@@ -400,6 +402,7 @@ public abstract class GTIngredient {
          *
          *  @return The next field of the string.
          */
+        @Override
         public String next() {
             //int position = _values.indexOf(FIELD_SEPARATOR);
             int position = -1;
@@ -441,6 +444,7 @@ public abstract class GTIngredient {
 
         /** Throw a runtime exception because this method is not implemented.
          */
+        @Override
         public void remove() {
             throw new KernelRuntimeException();
         }

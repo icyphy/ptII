@@ -37,14 +37,11 @@ import java.awt.print.Paper;
 import java.awt.print.Printable;
 import java.io.File;
 import java.io.FileOutputStream;
-import java.net.URL;
 import java.util.LinkedList;
 
 import javax.swing.AbstractAction;
 import javax.swing.JFileChooser;
 
-import ptolemy.actor.gui.BrowserEffigy;
-import ptolemy.actor.gui.Configuration;
 import ptolemy.gui.ExtensionFilenameFilter;
 import ptolemy.gui.JFileChooserBugFix;
 import ptolemy.gui.PtFileChooser;
@@ -107,6 +104,7 @@ public class ExportPDFAction extends AbstractAction {
     ////                         ppublic methods                   ////
 
     /** Export PDF. */
+    @Override
     public void actionPerformed(ActionEvent e) {
         if (!(_frame instanceof Printable)) {
             MessageHandler.error("Export PDF not supported.");
@@ -132,10 +130,10 @@ public class ExportPDFAction extends AbstractAction {
         } catch (Throwable ex) {
             // This exception will occur if the iText library is not installed.
             MessageHandler
-                    .error("iText library is not installed. See http://itextpdf.com/."
-                            + "  You must have iText.jar in your classpath.  Sometimes, "
-                            + "iText.jar may be found in $PTII/vendors/itext/iText.jar.",
-                            ex);
+            .error("iText library is not installed. See http://itextpdf.com/."
+                    + "  You must have iText.jar in your classpath.  Sometimes, "
+                    + "iText.jar may be found in $PTII/vendors/itext/iText.jar.",
+                    ex);
             return;
         }
         Document document = new Document(pageSize);
@@ -215,26 +213,26 @@ public class ExportPDFAction extends AbstractAction {
                 if (basicGraphFrame == null) {
                     MessageHandler.message("PDF file exported to "
                             + pdfFile.getName());
-                /* Remove the following. The extra click is annoying...
-                } else {
-                    if (MessageHandler.yesNoQuestion("Open \""
-                            + pdfFile.getCanonicalPath() + "\" in a browser?")) {
-                        Configuration configuration = basicGraphFrame
-                                .getConfiguration();
-                        try {
-                            URL imageURL = new URL(pdfFile.toURI().toURL()
-                                    .toString()
-                                    + "#in_browser");
-                            configuration.openModel(imageURL, imageURL,
-                                    imageURL.toExternalForm(),
-                                    BrowserEffigy.staticFactory);
-                        } catch (Throwable throwable) {
-                            MessageHandler.error(
-                                    "Failed to open \"" + pdfFile.getName()
-                                            + "\".", throwable);
+                    /* Remove the following. The extra click is annoying...
+                    } else {
+                        if (MessageHandler.yesNoQuestion("Open \""
+                                + pdfFile.getCanonicalPath() + "\" in a browser?")) {
+                            Configuration configuration = basicGraphFrame
+                                    .getConfiguration();
+                            try {
+                                URL imageURL = new URL(pdfFile.toURI().toURL()
+                                        .toString()
+                                        + "#in_browser");
+                                configuration.openModel(imageURL, imageURL,
+                                        imageURL.toExternalForm(),
+                                        BrowserEffigy.staticFactory);
+                            } catch (Throwable throwable) {
+                                MessageHandler.error(
+                                        "Failed to open \"" + pdfFile.getName()
+                                                + "\".", throwable);
+                            }
                         }
-                    }
-                    */
+                        */
                 }
             }
         } catch (Exception e) {

@@ -46,6 +46,7 @@ public class TestComplexBinaryOperation implements ComplexBinaryOperation {
     /** Operate on the operands, returning a value of the same
      *  type. Note that the operation need not be commutative;
      */
+    @Override
     public Complex operate(Complex leftOperand, Complex rightOperand) {
         return leftOperand.subtract(rightOperand);
     }

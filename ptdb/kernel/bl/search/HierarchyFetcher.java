@@ -25,7 +25,7 @@ ENHANCEMENTS, OR MODIFICATIONS.
                                                 COPYRIGHTENDKEY
 
 
-*/
+ */
 
 package ptdb.kernel.bl.search;
 
@@ -56,7 +56,7 @@ import ptdb.common.exception.DBExecutionException;
  *
  */
 public class HierarchyFetcher extends AbstractSearcher implements
-        AbstractDBSearcher {
+AbstractDBSearcher {
 
     /**
      * Construct the HierarchyFetcher object.
@@ -82,6 +82,7 @@ public class HierarchyFetcher extends AbstractSearcher implements
      *         false - if the search criteria has not been set.
      */
 
+    @Override
     protected boolean _isSearchCriteriaSet() {
 
         // There is no criteria need to be set in this searcher, so always
@@ -98,6 +99,7 @@ public class HierarchyFetcher extends AbstractSearcher implements
      * unexpected problem happens during the execution of DB query tasks.
      */
 
+    @Override
     protected void _search() throws DBExecutionException {
 
         FetchHierarchyTask fetchHierarchyTask = new FetchHierarchyTask();

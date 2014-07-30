@@ -139,7 +139,7 @@ public class PtIndexer {
      *  dictionary class.
      */
     public static void main(String args[]) throws IOException,
-            ClassNotFoundException {
+    ClassNotFoundException {
         String usage = "Usage: java -classpath $PTII doc.doclets.PtIndexer [target]";
         String dictionaryFile = "PtIndexer.ser";
 
@@ -222,7 +222,7 @@ public class PtIndexer {
      *  dictionary class.
      */
     public void read(String fileName) throws IOException,
-            ClassNotFoundException {
+    ClassNotFoundException {
         FileInputStream fileInputStream = null;
         ObjectInputStream objectInputStream = null;
         try {

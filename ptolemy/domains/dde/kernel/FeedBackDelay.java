@@ -90,7 +90,7 @@ public class FeedBackDelay extends DDEActor {
      *  superclass throws a NameDuplicationException .
      */
     public FeedBackDelay() throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         super();
         _setVariables();
     }
@@ -104,7 +104,7 @@ public class FeedBackDelay extends DDEActor {
      *  superclass throws a NameDuplicationException .
      */
     public FeedBackDelay(Workspace workspace) throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         super(workspace);
         _setVariables();
     }
@@ -165,6 +165,7 @@ public class FeedBackDelay extends DDEActor {
      * @exception IllegalActionException If there is an error when
      *  sending the output token or setting the current time.
      */
+    @Override
     public void fire() throws IllegalActionException {
         Token token = _getNextInput();
         boolean delayNullVal = ((BooleanToken) nullDelay.getToken())
@@ -208,6 +209,7 @@ public class FeedBackDelay extends DDEActor {
      * @see ptolemy.domains.dde.kernel.NullToken
      * @see ptolemy.domains.dde.kernel.DDEReceiver
      */
+    @Override
     public void initialize() throws IllegalActionException {
         super.initialize();
 
@@ -253,7 +255,7 @@ public class FeedBackDelay extends DDEActor {
     /** Syntactic sugar for initializing parameters.
      */
     private void _setVariables() throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         input = new TypedIOPort(this, "input", true, false);
         output = new TypedIOPort(this, "output", false, true);
         input.setTypeEquals(BaseType.GENERAL);

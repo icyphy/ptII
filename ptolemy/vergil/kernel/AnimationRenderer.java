@@ -117,6 +117,7 @@ public class AnimationRenderer implements SelectionRenderer {
      *  @param figure The figure that may be highlighted.
      *  @return True if the figure is highlighted.
      */
+    @Override
     public synchronized boolean isRenderedSelected(Figure figure) {
         return _decorators.containsKey(figure);
     }
@@ -130,8 +131,10 @@ public class AnimationRenderer implements SelectionRenderer {
      *  to give the event thread a chance to catch up.
      *  @param figure The figure to deselect.
      */
+    @Override
     public void renderDeselected(final Figure figure) {
         Runnable doUndecorate = new Runnable() {
+            @Override
             public void run() {
                 synchronized (AnimationRenderer.this) {
                     if (!_decorators.containsKey(figure)) {
@@ -169,8 +172,10 @@ public class AnimationRenderer implements SelectionRenderer {
      *  to give the event thread a chance to catch up.
      *  @param figure The figure to highlight.
      */
+    @Override
     public void renderSelected(final Figure figure) {
         Runnable doDecorate = new Runnable() {
+            @Override
             public void run() {
                 synchronized (AnimationRenderer.this) {
                     if (_decorators.containsKey(figure)) {

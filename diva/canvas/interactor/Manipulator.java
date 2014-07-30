@@ -78,6 +78,7 @@ public abstract class Manipulator extends FigureDecorator {
     /** Get the bounds. This is the union of the child's bounding box
      * and the bounding boxes of all the grab-handles
      */
+    @Override
     public Rectangle2D getBounds() {
         Rectangle2D bounds = getChild().getBounds();
 
@@ -112,6 +113,7 @@ public abstract class Manipulator extends FigureDecorator {
      * paints the child figure, and then paints each of the
      * grab-handles.
      */
+    @Override
     public void paint(Graphics2D g) {
         if (getChild() == null) {
             return;
@@ -131,6 +133,7 @@ public abstract class Manipulator extends FigureDecorator {
      * it. This could be one of the grab-handles, or the child.
      * If nothing hits, return null.
      */
+    @Override
     public Figure pick(Rectangle2D r) {
         if (getChild() == null) {
             return null;
@@ -167,6 +170,7 @@ public abstract class Manipulator extends FigureDecorator {
      * the grab-handles are moved to their new locations. Oh, and
      * move the grab-handles to their new locations.
      */
+    @Override
     public void repaint(DamageRegion d) {
         if (isRepainting()) {
             return;
@@ -199,6 +203,7 @@ public abstract class Manipulator extends FigureDecorator {
      * adjusts the geometry to the current location of the child
      * moves the grab-handles to their new locations.
      */
+    @Override
     public void repaint() {
         // Create the damage region
         DamageRegion d = DamageRegion.createDamageRegion(getTransformContext(),

@@ -105,6 +105,7 @@ public class Arrowhead implements ConnectorEnd {
     /** Get the bounding box of the shape used to draw
      * this connector end.
      */
+    @Override
     public Rectangle2D getBounds() {
         if (_filled) {
             // No outline, just use the shape
@@ -118,6 +119,7 @@ public class Arrowhead implements ConnectorEnd {
 
     /** Get the connection point into the given point
      */
+    @Override
     public void getConnection(Point2D p) {
         if (!_polygonValid) {
             reshape();
@@ -139,6 +141,7 @@ public class Arrowhead implements ConnectorEnd {
 
     /** Get the origin into the given point.
      */
+    @Override
     public void getOrigin(Point2D p) {
         p.setLocation(_originX, _originY);
     }
@@ -159,6 +162,7 @@ public class Arrowhead implements ConnectorEnd {
      * the graphics context is already set up with the correct
      * paint and stroke.
      */
+    @Override
     public void paint(Graphics2D g) {
         if (!_polygonValid) {
             reshape();
@@ -204,6 +208,7 @@ public class Arrowhead implements ConnectorEnd {
      * appears to be pointed in the opposite direction to its
      * "normal."
      */
+    @Override
     public void setNormal(double angle) {
         _normal = angle;
         _polygonValid = false;
@@ -226,6 +231,7 @@ public class Arrowhead implements ConnectorEnd {
 
     /** Set the origin of the decoration.
      */
+    @Override
     public void setOrigin(double x, double y) {
         translate(x - _originX, y - _originY);
     }
@@ -239,6 +245,7 @@ public class Arrowhead implements ConnectorEnd {
 
     /** Translate the origin by the given amount.
      */
+    @Override
     public void translate(double x, double y) {
         _originX += x;
         _originY += y;

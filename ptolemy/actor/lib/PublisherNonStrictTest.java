@@ -132,6 +132,7 @@ public class PublisherNonStrictTest extends Publisher {
      *  @exception IllegalActionException If the change is not acceptable
      *   to this container.
      */
+    @Override
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         if (attribute == tolerance) {
@@ -146,6 +147,7 @@ public class PublisherNonStrictTest extends Publisher {
      *  if any.
      *  @exception IllegalActionException If there is no director.
      */
+    @Override
     public void fire() throws IllegalActionException {
         // We don't call the super class because we want to
         // have token production occur in postfire.
@@ -211,6 +213,7 @@ public class PublisherNonStrictTest extends Publisher {
      *  parameter is set to true.
      *  @see ptolemy.util.MessageHandler#isRunningNightlyBuild()
      */
+    @Override
     public void initialize() throws IllegalActionException {
         super.initialize();
         _numberOfInputTokensSeen = 0;
@@ -236,6 +239,7 @@ public class PublisherNonStrictTest extends Publisher {
      *  @exception IllegalActionException If there is already a publisher
      *   publishing on the same channel.
      */
+    @Override
     public void preinitialize() throws IllegalActionException {
         super.preinitialize();
     }
@@ -249,6 +253,7 @@ public class PublisherNonStrictTest extends Publisher {
      *  @exception IllegalActionException If an input does not match
      *   the required value or if the width of the input is not 1.
      */
+    @Override
     public boolean postfire() throws IllegalActionException {
         boolean superReturnValue = super.postfire();
         if (input.getWidth() != 1) {
@@ -305,8 +310,8 @@ public class PublisherNonStrictTest extends Publisher {
                         && !referenceToken.isNil()
                         && !NonStrictTest._isCloseToIfNilArrayElement(token,
                                 referenceToken, _tolerance)
-                        && !NonStrictTest._isCloseToIfNilRecordElement(token,
-                                referenceToken, _tolerance)) {
+                                && !NonStrictTest._isCloseToIfNilRecordElement(token,
+                                        referenceToken, _tolerance)) {
                     throw new IllegalActionException(this,
                             "Test fails in iteration " + _iteration + ".\n"
                                     + "Value was: " + token
@@ -327,6 +332,7 @@ public class PublisherNonStrictTest extends Publisher {
      *  is not greater than or equal to the number of elements in the
      *  <i>correctValues</i> array.
      */
+    @Override
     public void wrapup() throws IllegalActionException {
         super.wrapup();
 
@@ -483,15 +489,15 @@ public class PublisherNonStrictTest extends Publisher {
                     tolerance.setPersistent(true);
                     attributeChanged(tolerance);
                     System.out
-                            .println("PublisherNonStrictTest: "
-                                    + getFullName()
-                                    + ": exponent of "
-                                    + newValue
-                                    + " is "
-                                    + log
-                                    + ", which cannot be compared with the previous tolerance."
-                                    + " The new tolerance is "
-                                    + tolerance.getExpression() + ".");
+                    .println("PublisherNonStrictTest: "
+                            + getFullName()
+                            + ": exponent of "
+                            + newValue
+                            + " is "
+                            + log
+                            + ", which cannot be compared with the previous tolerance."
+                            + " The new tolerance is "
+                            + tolerance.getExpression() + ".");
                 }
             }
         }

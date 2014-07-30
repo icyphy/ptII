@@ -117,6 +117,7 @@ public class PtExecuteApplication extends MoMLApplication {
      *  @param manager The manager calling this method.
      *  @param throwable The Throwable to be displayed.
      */
+    @Override
     public synchronized void executionError(Manager manager, Throwable throwable) {
 
         // If you modify this code, make sure that the following command
@@ -186,6 +187,7 @@ public class PtExecuteApplication extends MoMLApplication {
      *  @return A default configuration.
      *  @exception Exception If the configuration cannot be opened.
      */
+    @Override
     protected Configuration _createDefaultConfiguration() throws Exception {
         if (_configurationURL == null) {
             _configurationURL = specToURL("ptolemy/configs/runConfiguration.xml");
@@ -206,6 +208,7 @@ public class PtExecuteApplication extends MoMLApplication {
      *  @return Does not return.
      *  @exception Exception Always thrown.
      */
+    @Override
     protected Configuration _createEmptyConfiguration() throws Exception {
         throw new Exception("No model specified.");
     }
@@ -215,6 +218,7 @@ public class PtExecuteApplication extends MoMLApplication {
      *  @exception Exception If an argument is not understood or triggers
      *   an error.
      */
+    @Override
     protected synchronized void _parseArgs(String[] args) throws Exception {
         _commandTemplate = "ptexecute [ options ] file ...";
 
@@ -248,6 +252,7 @@ public class PtExecuteApplication extends MoMLApplication {
     /** Return a string summarizing the command-line arguments.
      *  @return A usage string.
      */
+    @Override
     protected String _usage() {
         return _configurationUsage(_commandTemplate, _localCommandOptions,
                 _localCommandFlags);
@@ -264,7 +269,7 @@ public class PtExecuteApplication extends MoMLApplication {
 
     /** The command-line options that take arguments. */
     protected static String[][] _localCommandOptions = { { "-config",
-            "<configuration URL, defaults to ptolemy/configs/runConfiguration.xml>" }, };
+    "<configuration URL, defaults to ptolemy/configs/runConfiguration.xml>" }, };
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////

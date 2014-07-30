@@ -106,6 +106,7 @@ public class SAXDriver implements XmlHandler, Locator, Attributes, XMLReader //i
      * Set the entity resolver for this parser.
      * @param resolver The object to receive resolve entity events.
      */
+    @Override
     public void setEntityResolver(EntityResolver resolver) {
         this.entityResolver = resolver;
     }
@@ -114,6 +115,7 @@ public class SAXDriver implements XmlHandler, Locator, Attributes, XMLReader //i
      * Set the DTD handler for this parser.
      * @param handler The object to receive DTD events.
      */
+    @Override
     public void setDTDHandler(DTDHandler handler) {
         this.dtdHandler = handler;
     }
@@ -130,6 +132,7 @@ public class SAXDriver implements XmlHandler, Locator, Attributes, XMLReader //i
      * Set the error handler for this parser.
      * @param handler The object to receive error events.
      */
+    @Override
     public void setErrorHandler(ErrorHandler handler) {
         this.errorHandler = handler;
     }
@@ -145,6 +148,7 @@ public class SAXDriver implements XmlHandler, Locator, Attributes, XMLReader //i
      * @see #setErrorHandler
      * @exception SAXException The handlers may throw any exception.
      */
+    @Override
     public void parse(InputSource source) throws SAXException {
         parser = new XmlParser();
         parser.setHandler(this);
@@ -184,6 +188,7 @@ public class SAXDriver implements XmlHandler, Locator, Attributes, XMLReader //i
     /**
      * Parse an XML document from a system identifier (URI).
      */
+    @Override
     public void parse(String systemId) throws SAXException {
         parse(new InputSource(systemId));
     }
@@ -214,6 +219,7 @@ public class SAXDriver implements XmlHandler, Locator, Attributes, XMLReader //i
      * @see com.microstar.xml.XmlHandler#startDocument
      * @exception SAXException May throw any exception.
      */
+    @Override
     public void startDocument() throws SAXException {
         documentHandler.setDocumentLocator(this);
         documentHandler.startDocument();
@@ -228,6 +234,7 @@ public class SAXDriver implements XmlHandler, Locator, Attributes, XMLReader //i
      * @see com.microstar.xml.XmlHandler#endDocument
      * @exception SAXException May throw any exception.
      */
+    @Override
     public void endDocument() throws SAXException {
         documentHandler.endDocument();
     }
@@ -239,6 +246,7 @@ public class SAXDriver implements XmlHandler, Locator, Attributes, XMLReader //i
      * @see com.microstar.xml.XmlHandler#resolveEntity
      * @exception SAXException May throw any exception.
      */
+    @Override
     public Object resolveEntity(String publicId, String systemId)
             throws SAXException, IOException {
         InputSource source = entityResolver.resolveEntity(publicId, systemId);
@@ -264,6 +272,7 @@ public class SAXDriver implements XmlHandler, Locator, Attributes, XMLReader //i
      * @see com.microstar.xml.XmlHandler#startExternalEntity
      * @exception SAXException May throw any exception.
      */
+    @Override
     public void startExternalEntity(String systemId) throws SAXException {
         entityStack.push(systemId);
     }
@@ -275,6 +284,7 @@ public class SAXDriver implements XmlHandler, Locator, Attributes, XMLReader //i
      * @see com.microstar.xml.XmlHandler#endExternalEntity
      * @exception SAXException May throw any exception.
      */
+    @Override
     public void endExternalEntity(String systemId) throws SAXException {
         entityStack.pop();
     }
@@ -286,6 +296,7 @@ public class SAXDriver implements XmlHandler, Locator, Attributes, XMLReader //i
      * @see com.microstar.xml.XmlHandler#doctypeDecl
      * @exception SAXException May throw any exception.
      */
+    @Override
     public void doctypeDecl(String name, String publicId, String systemId)
             throws SAXException {
         // no op
@@ -298,6 +309,7 @@ public class SAXDriver implements XmlHandler, Locator, Attributes, XMLReader //i
      * @see com.microstar.xml.XmlHandler#attribute
      * @exception SAXException May throw any exception.
      */
+    @Override
     public void attribute(String aname, String value, boolean isSpecified)
             throws SAXException {
         if (value != null) {
@@ -313,6 +325,7 @@ public class SAXDriver implements XmlHandler, Locator, Attributes, XMLReader //i
      * @see com.microstar.xml.XmlHandler#startElement
      * @exception SAXException May throw any exception.
      */
+    @Override
     public void startElement(String elname) throws SAXException {
         // We should deliver all DTD events
         // before the first startElement event.
@@ -337,6 +350,7 @@ public class SAXDriver implements XmlHandler, Locator, Attributes, XMLReader //i
      * @see com.microstar.xml.XmlHandler#endElement
      * @exception SAXException May throw any exception.
      */
+    @Override
     public void endElement(String elname) throws SAXException {
         //documentHandler.endElement(elname);
         documentHandler.endElement("", elname, "");
@@ -349,6 +363,7 @@ public class SAXDriver implements XmlHandler, Locator, Attributes, XMLReader //i
      * @see com.microstar.xml.XmlHandler#charData
      * @exception SAXException May throw any exception.
      */
+    @Override
     public void charData(char[] ch, int start, int length) throws SAXException {
         documentHandler.characters(ch, start, length);
     }
@@ -360,6 +375,7 @@ public class SAXDriver implements XmlHandler, Locator, Attributes, XMLReader //i
      * @see com.microstar.xml.XmlHandler#ignorableWhitespace
      * @exception SAXException May throw any exception.
      */
+    @Override
     public void ignorableWhitespace(char[] ch, int start, int length)
             throws SAXException {
         documentHandler.ignorableWhitespace(ch, start, length);
@@ -372,6 +388,7 @@ public class SAXDriver implements XmlHandler, Locator, Attributes, XMLReader //i
      * @see com.microstar.xml.XmlHandler#processingInstruction
      * @exception SAXException May throw any exception.
      */
+    @Override
     public void processingInstruction(String target, String data)
             throws SAXException {
         documentHandler.processingInstruction(target, data);
@@ -384,6 +401,7 @@ public class SAXDriver implements XmlHandler, Locator, Attributes, XMLReader //i
      * @see com.microstar.xml.XmlHandler#error
      * @exception SAXException May throw any exception.
      */
+    @Override
     public void error(String message, String url, int line, int column)
             throws SAXException {
         errorHandler.fatalError(new SAXParseException(message, null, url, line,
@@ -427,6 +445,7 @@ public class SAXDriver implements XmlHandler, Locator, Attributes, XMLReader //i
     //
     // Implementation of org.xml.sax.AttributeList.
     //
+    @Override
     public int getLength() {
         return attributeNames.size();
     }
@@ -435,6 +454,7 @@ public class SAXDriver implements XmlHandler, Locator, Attributes, XMLReader //i
         return (String) attributeNames.elementAt(i);
     }
 
+    @Override
     public String getType(int i) {
         switch (parser.getAttributeType(elementName, getName(i))) {
         case XmlParser.ATTRIBUTE_UNDECLARED:
@@ -470,10 +490,12 @@ public class SAXDriver implements XmlHandler, Locator, Attributes, XMLReader //i
         return null;
     }
 
+    @Override
     public String getValue(int i) {
         return (String) attributeValues.elementAt(i);
     }
 
+    @Override
     public String getType(String name) {
         for (int i = 0; i < getLength(); i++) {
             if (name.equals(getName(i))) {
@@ -484,6 +506,7 @@ public class SAXDriver implements XmlHandler, Locator, Attributes, XMLReader //i
         return null;
     }
 
+    @Override
     public String getValue(String name) {
         for (int i = 0; i < getLength(); i++) {
             if (name.equals(getName(i))) {
@@ -497,22 +520,27 @@ public class SAXDriver implements XmlHandler, Locator, Attributes, XMLReader //i
     //
     // Implementation of org.xml.sax.Locator.
     //
+    @Override
     public String getPublicId() {
         return null; // TODO
     }
 
+    @Override
     public String getSystemId() {
         return (String) entityStack.peek();
     }
 
+    @Override
     public int getLineNumber() {
         return parser.getLineNumber();
     }
 
+    @Override
     public int getColumnNumber() {
         return parser.getColumnNumber();
     }
 
+    @Override
     public boolean getFeature(String name) {
         // Not Yet Implemented
         if (features.containsKey(name)) {
@@ -522,11 +550,13 @@ public class SAXDriver implements XmlHandler, Locator, Attributes, XMLReader //i
         return false;
     }
 
+    @Override
     public void setFeature(String name, boolean value) {
         // Not Yet Implemented
         features.put(name, Boolean.valueOf(value));
     }
 
+    @Override
     public Object getProperty(String name) {
         // Not Yet Implemented
         if (properties.containsKey(name)) {
@@ -536,62 +566,75 @@ public class SAXDriver implements XmlHandler, Locator, Attributes, XMLReader //i
         return null;
     }
 
+    @Override
     public void setProperty(String name, Object value) {
         // Not Yet Implemented
         properties.put(name, value);
     }
 
+    @Override
     public EntityResolver getEntityResolver() {
         // Not Yet Implemented
         return null;
     }
 
+    @Override
     public DTDHandler getDTDHandler() {
         // Not Yet Implemented
         return null;
     }
 
+    @Override
     public void setContentHandler(ContentHandler handler) {
         this.documentHandler = handler;
     }
 
+    @Override
     public ContentHandler getContentHandler() {
         return this.documentHandler;
     }
 
+    @Override
     public ErrorHandler getErrorHandler() {
         return this.errorHandler;
     }
 
+    @Override
     public String getURI(int index) {
         // Not Yet Implemented
         return "";
     }
 
+    @Override
     public String getLocalName(int index) {
         // Not Yet Implemented
         return "";
     }
 
+    @Override
     public String getQName(int index) {
         // Not Yet Implemented
         return "";
     }
 
+    @Override
     public int getIndex(String uri, String localPart) {
         // Not Yet Implemented
         return -1;
     }
 
+    @Override
     public int getIndex(String qName) {
         // Not Yet Implemented
         return -1;
     }
 
+    @Override
     public String getType(String uri, String localName) {
         return "";
     }
 
+    @Override
     public String getValue(String uri, String localName) {
         return "";
     }

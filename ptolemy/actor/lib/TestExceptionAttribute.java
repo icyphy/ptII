@@ -63,7 +63,7 @@ import ptolemy.util.MessageHandler;
  @Pt.AcceptedRating Yellow (hyzheng)
  */
 public class TestExceptionAttribute extends AbstractInitializableAttribute
-        implements ExceptionHandler {
+implements ExceptionHandler {
 
     /** Create a new actor in the specified container with the specified
      *  name.  The name must be unique within the container or an exception
@@ -132,6 +132,7 @@ public class TestExceptionAttribute extends AbstractInitializableAttribute
     ////                         public methods                    ////
 
     /** Initialize. */
+    @Override
     public void initialize() throws IllegalActionException {
         super.initialize();
         _ranInitialize = true;
@@ -149,6 +150,7 @@ public class TestExceptionAttribute extends AbstractInitializableAttribute
      *  the trainingMode parameter or the exception message is not the same as
      *  the stored message.
      */
+    @Override
     public boolean handleException(NamedObj context, Throwable exception)
             throws IllegalActionException {
         _invoked = true;
@@ -182,7 +184,7 @@ public class TestExceptionAttribute extends AbstractInitializableAttribute
                 if (!exception.getMessage().startsWith(prefix)) {
                     throw new IllegalActionException(this, exception,
                             "Expected a message starting with:\n" + prefix
-                                    + "\nBut got:\n" + exception.getMessage());
+                            + "\nBut got:\n" + exception.getMessage());
                 }
             }
         }
@@ -195,6 +197,7 @@ public class TestExceptionAttribute extends AbstractInitializableAttribute
      *  @exception IllegalActionException If this actor has not been
      *   invoked to handle exceptions.
      */
+    @Override
     public void wrapup() throws IllegalActionException {
         super.wrapup();
         if (((BooleanToken) trainingMode.getToken()).booleanValue()) {

@@ -143,6 +143,7 @@ public class ErasureChannel extends AtomicWirelessChannel {
      *  @exception CloneNotSupportedException Not thrown in this base class
      *  @return The new Attribute.
      */
+    @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         ErasureChannel newObject = (ErasureChannel) super.clone(workspace);
         newObject._random = new Random();
@@ -153,6 +154,7 @@ public class ErasureChannel extends AtomicWirelessChannel {
      *  has been given.
      *  @exception IllegalActionException If the parent class throws it.
      */
+    @Override
     public void initialize() throws IllegalActionException {
         super.initialize();
 
@@ -188,9 +190,10 @@ public class ErasureChannel extends AtomicWirelessChannel {
      *   or if the token argument is null and the destination receiver
      *   does not support clear.
      */
+    @Override
     protected void _transmitTo(Token token, WirelessIOPort sender,
             WirelessReceiver receiver, RecordToken properties)
-            throws IllegalActionException {
+                    throws IllegalActionException {
         // Get the distance and set the "distance" variable.
         WirelessIOPort destination = (WirelessIOPort) receiver.getContainer();
         double d = _distanceBetween(sender, destination);

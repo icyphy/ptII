@@ -86,6 +86,7 @@ public class HTMLText extends WebContent {
      *
      * @return The string text/html
      */
+    @Override
     public String getMimeType() {
         return "text/html";
     }
@@ -94,6 +95,7 @@ public class HTMLText extends WebContent {
      *
      * @return true, since new content should overwrite old
      */
+    @Override
     public boolean isOverwriteable() {
         return true;
     }
@@ -104,6 +106,7 @@ public class HTMLText extends WebContent {
      *  @exception IllegalActionException If something is wrong generating the
      *  web content
      */
+    @Override
     protected void _provideElements(WebExporter exporter)
             throws IllegalActionException {
         WebElement webElement = WebElement.createWebElement(getContainer(),

@@ -64,6 +64,7 @@ public class TestComponentPort extends ComponentPort {
     /** @deprecated _deepConnectedPorts is deprecated,
      but we need to test it anyway
      */
+    @Deprecated
     public Enumeration testDeepConnectedPorts(LinkedList path) {
         return _deepConnectedPorts(path);
     }
@@ -71,6 +72,7 @@ public class TestComponentPort extends ComponentPort {
     /** @deprecated _deepInsidePorts is deprecated,
      but we need to test it anyway
      */
+    @Deprecated
     public Enumeration testDeepInsidePorts(LinkedList path) {
         return _deepInsidePorts(path);
     }

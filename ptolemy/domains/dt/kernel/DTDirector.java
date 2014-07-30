@@ -216,7 +216,7 @@ public class DTDirector extends SDFDirector {
      *   an entity with the specified name.
      */
     public DTDirector(Workspace workspace) throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         super(workspace);
         _init();
     }
@@ -250,6 +250,7 @@ public class DTDirector extends SDFDirector {
      *  @exception CloneNotSupportedException Not thrown in this base class
      *  @return The new object.
      */
+    @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         DTDirector newObject = (DTDirector) super.clone(workspace);
         try {
@@ -269,6 +270,7 @@ public class DTDirector extends SDFDirector {
      *  @exception IllegalActionException If an actor executed by this
      *  director returns false in its prefire().
      */
+    @Override
     public void fire() throws IllegalActionException {
         //TypedCompositeActor container = (TypedCompositeActor) getContainer();
         //Director outsideDirector = _getOutsideDirector();
@@ -351,6 +353,7 @@ public class DTDirector extends SDFDirector {
     /** Return the time value of the next iteration.
      *  @return The time of the next iteration.
      */
+    @Override
     public Time getModelNextIterationTime() {
         double period = 0.0;
 
@@ -421,6 +424,7 @@ public class DTDirector extends SDFDirector {
      *  @exception IllegalActionException If the initialize() method of
      *  one of the associated actors throws it.
      */
+    @Override
     public void initialize() throws IllegalActionException {
         //  -initialize-
         _requestRefireAt(new Time(this));
@@ -534,6 +538,7 @@ public class DTDirector extends SDFDirector {
      *  @see ptolemy.kernel.util.NamedObj#attributeChanged
      *  @see ptolemy.kernel.util.NamedObj#attributeTypeChanged
      */
+    @Override
     public void invalidateSchedule() {
         //  -invalidateSchedule-
         super.invalidateSchedule();
@@ -543,6 +548,7 @@ public class DTDirector extends SDFDirector {
      *
      *  @return A new DTReceiver.
      */
+    @Override
     public Receiver newReceiver() {
         DTReceiver dtReceiver = new DTReceiver();
         dtReceiver.initializeLocalTime(new Time(this));
@@ -557,6 +563,7 @@ public class DTDirector extends SDFDirector {
      *  @exception IllegalActionException If the parent class throws
      *  it.
      */
+    @Override
     public boolean postfire() throws IllegalActionException {
         _makeTokensAvailable();
 
@@ -591,6 +598,7 @@ public class DTDirector extends SDFDirector {
      *  it.
      *  @return True.
      */
+    @Override
     public boolean prefire() throws IllegalActionException {
         //  -prefire-
         _inputTokensAvailable = super.prefire();
@@ -618,6 +626,7 @@ public class DTDirector extends SDFDirector {
      *  @exception NameDuplicationException Not thrown in this base class,
      *   but derived classes may throw it if the scheduler is not compatible.
      */
+    @Override
     public void setScheduler(Scheduler scheduler)
             throws IllegalActionException, NameDuplicationException {
         if (!(scheduler instanceof SDFScheduler)) {
@@ -641,6 +650,7 @@ public class DTDirector extends SDFDirector {
      *  @exception IllegalActionException If the port is not an opaque
      *  input port.
      */
+    @Override
     public boolean transferInputs(IOPort port) throws IllegalActionException {
         //  -transferInputs-
         if (_inputTokensAvailable) {
@@ -667,6 +677,7 @@ public class DTDirector extends SDFDirector {
      *  @exception IllegalActionException If the port is not an opaque
      *  output port.
      */
+    @Override
     public boolean transferOutputs(IOPort port) throws IllegalActionException {
         TypedCompositeActor container = (TypedCompositeActor) getContainer();
         Boolean flag = (Boolean) _shouldTransferOutputs.get(port);
@@ -693,6 +704,7 @@ public class DTDirector extends SDFDirector {
      *  @exception IllegalActionException If the parent class
      *  throws it
      */
+    @Override
     public void wrapup() throws IllegalActionException {
         //  -wrapup-
         super.wrapup();

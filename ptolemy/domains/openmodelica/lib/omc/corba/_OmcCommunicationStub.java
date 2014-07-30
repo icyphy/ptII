@@ -10,10 +10,11 @@ package ptolemy.domains.openmodelica.lib.omc.corba;
 /* A CORBA compatible interface for omc.
  */
 public class _OmcCommunicationStub extends org.omg.CORBA.portable.ObjectImpl
-        implements OmcCommunication {
+implements OmcCommunication {
 
     private static final long serialVersionUID = -2199076960265794510L;
 
+    @Override
     public String sendExpression(String expr) {
         org.omg.CORBA.portable.InputStream $in = null;
         try {
@@ -34,6 +35,7 @@ public class _OmcCommunicationStub extends org.omg.CORBA.portable.ObjectImpl
         }
     } // sendExpression
 
+    @Override
     public String sendClass(String model) {
         org.omg.CORBA.portable.InputStream $in = null;
         try {
@@ -57,6 +59,7 @@ public class _OmcCommunicationStub extends org.omg.CORBA.portable.ObjectImpl
     // Type-specific CORBA::Object operations
     private static String[] __ids = { "IDL:OmcCommunication:1.0" };
 
+    @Override
     public String[] _ids() {
         return __ids.clone();
     }

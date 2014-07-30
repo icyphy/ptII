@@ -101,6 +101,7 @@ public class Assert extends Expression {
      *  @exception CloneNotSupportedException If a derived class contains
      *   an attribute that cannot be cloned.
      */
+    @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         Assert newObject = null;
         // NOTE: The following flag will be copied into the clone.
@@ -120,7 +121,8 @@ public class Assert extends Expression {
         } finally {
             _cloning = false;
             if (newObject == null) {
-                throw new CloneNotSupportedException("super.clone(Workspace) returned null?");
+                throw new CloneNotSupportedException(
+                        "super.clone(Workspace) returned null?");
             } else {
                 newObject._cloning = false;
             }
@@ -134,6 +136,7 @@ public class Assert extends Expression {
      *  @exception IllegalActionException If the expression evaluates to false,
      *   or if the superclass throws it.
      */
+    @Override
     public void fire() throws IllegalActionException {
         super.fire();
 
@@ -192,7 +195,7 @@ public class Assert extends Expression {
      */
     @Override
     protected void _addPort(TypedIOPort port) throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         super._addPort(port);
 
         if (_creatingOutputPort || _cloning) {
@@ -279,6 +282,7 @@ public class Assert extends Expression {
                     // Make sure that this output port _never_ appears in MoML.
                     // If it is allowed to appear, subtle bugs will arise, for example
                     // when copying and pasting in actor-oriented classes.
+                    @Override
                     public void exportMoML(Writer output, int depth, String name) {
                     }
                 };
@@ -338,8 +342,9 @@ public class Assert extends Expression {
 
         // Override setName() to also change the name of the corresponding
         // output port.
+        @Override
         public void setName(final String name) throws IllegalActionException,
-                NameDuplicationException {
+        NameDuplicationException {
             final String oldName = getName();
             super.setName(name);
             // No need to do anything for the first name setting

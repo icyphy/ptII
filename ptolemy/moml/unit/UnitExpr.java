@@ -89,6 +89,7 @@ public class UnitExpr implements UnitPresentation {
     /** The expression of the UnitExpr that is commonly used by humans.
      * @see ptolemy.moml.unit.UnitPresentation#descriptiveForm()
      */
+    @Override
     public String descriptiveForm() {
         Iterator iter = _uTerms.iterator();
         StringBuffer retv = new StringBuffer();
@@ -173,6 +174,7 @@ public class UnitExpr implements UnitPresentation {
         return retv;
     }
 
+    @Override
     public String toString() {
         StringBuffer retv = new StringBuffer("UnitExpr:[");
 

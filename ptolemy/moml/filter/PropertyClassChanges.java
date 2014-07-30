@@ -101,6 +101,7 @@ public class PropertyClassChanges extends MoMLFilterSimple {
      *  @return The value of the attributeValue argument or
      *   a new value if the value has changed.
      */
+    @Override
     public String filterAttributeValue(NamedObj container, String element,
             String attributeName, String attributeValue, String xmlFile) {
         // If you change this class, you should run before and after
@@ -158,15 +159,15 @@ public class PropertyClassChanges extends MoMLFilterSimple {
                 if (container != null
                         && !container.getFullName().equals(
                                 _currentActorFullName)
-                        && !container
+                                && !container
                                 .getFullName()
                                 .substring(
                                         0,
                                         container.getFullName()
-                                                .lastIndexOf("."))
-                                .equals(_currentActorFullName)
+                                        .lastIndexOf("."))
+                                        .equals(_currentActorFullName)
 
-                ) {
+                        ) {
                     // This is fix for an unusual bug involving
                     // space.Occupant.
                     // See test 1.1 in test/PropertyClassChanges.tcl
@@ -249,6 +250,7 @@ public class PropertyClassChanges extends MoMLFilterSimple {
      *  @exception Exception if there is a problem substituting
      *  in the new value.
      */
+    @Override
     public void filterEndElement(NamedObj container, String elementName,
             StringBuffer currentCharData, String xmlFile) throws Exception {
         //            System.out.println("<---filterEndElement: "
@@ -285,6 +287,7 @@ public class PropertyClassChanges extends MoMLFilterSimple {
     /** Return a string that describes what the filter does.
      *  @return the description of the filter that ends with a newline.
      */
+    @Override
     public String toString() {
         StringBuffer results = new StringBuffer(getClass().getName()
                 + ": Update any actor port class names\n"
@@ -599,11 +602,11 @@ public class PropertyClassChanges extends MoMLFilterSimple {
         rateParameterChanges.put("tokenInitProduction", null);
         rateParameterChanges.put("tokenInitConsumption", null);
         _actorsWithPropertyClassChanges
-                .put("ptolemy.domains.sdf.lib.Autocorrelation",
-                        rateParameterChanges);
+        .put("ptolemy.domains.sdf.lib.Autocorrelation",
+                rateParameterChanges);
         _actorsWithPropertyClassChanges
-                .put("ptolemy.domains.sdf.lib.ArrayToSequence",
-                        rateParameterChanges);
+        .put("ptolemy.domains.sdf.lib.ArrayToSequence",
+                rateParameterChanges);
         _actorsWithPropertyClassChanges.put(
                 "ptolemy.domains.sdf.lib.BitsToInt", rateParameterChanges);
         _actorsWithPropertyClassChanges.put("ptolemy.domains.sdf.lib.Chop",
@@ -634,8 +637,8 @@ public class PropertyClassChanges extends MoMLFilterSimple {
         _actorsWithPropertyClassChanges.put(
                 "ptolemy.domains.sdf.lib.SampleDelay", rateParameterChanges);
         _actorsWithPropertyClassChanges
-                .put("ptolemy.domains.sdf.lib.SequenceToArray",
-                        rateParameterChanges);
+        .put("ptolemy.domains.sdf.lib.SequenceToArray",
+                rateParameterChanges);
         _actorsWithPropertyClassChanges.put(
                 "ptolemy.domains.sdf.lib.SequenceToMatrix",
                 rateParameterChanges);
@@ -648,8 +651,8 @@ public class PropertyClassChanges extends MoMLFilterSimple {
         HashMap TransitionClassChanges = new HashMap();
         TransitionClassChanges.put("relationList", null);
         _actorsWithPropertyClassChanges
-                .put("ptolemy.domains.fsm.kernel.Transition",
-                        TransitionClassChanges);
+        .put("ptolemy.domains.fsm.kernel.Transition",
+                TransitionClassChanges);
 
         _actorsWithPropertyClassChanges.put(
                 "ptolemy.domains.modal.kernel.Transition",

@@ -24,7 +24,7 @@
  PT_COPYRIGHT_VERSION_2
  COPYRIGHTENDKEY
 
-*/
+ */
 package ptolemy.actor.gui.properties;
 
 import java.net.URL;
@@ -51,7 +51,7 @@ import ptolemy.kernel.util.NamedObj;
  @Pt.AcceptedRating Red (tfeng)
  */
 public abstract class ActionGUIProperty extends GUIProperty implements
-        Configurable {
+Configurable {
 
     /** Construct a GUI property with the given name contained by the specified
      *  entity. The container argument must not be null, or a
@@ -95,6 +95,7 @@ public abstract class ActionGUIProperty extends GUIProperty implements
      *   none.
      *  @exception Exception If something goes wrong.
      */
+    @Override
     public void configure(URL base, String source, String text)
             throws Exception {
         _action.configure(base, source, text);
@@ -106,6 +107,7 @@ public abstract class ActionGUIProperty extends GUIProperty implements
      *  no source has been used to configure this object, or null if no
      *  external source need be used to configure this object.
      */
+    @Override
     public String getConfigureSource() {
         return _action.getConfigureSource();
     }
@@ -118,6 +120,7 @@ public abstract class ActionGUIProperty extends GUIProperty implements
      *  has been used to configure this object, or null if no
      *  configuration string need be used to configure this object.
      */
+    @Override
     public String getConfigureText() {
         return _action.getConfigureText();
     }
@@ -172,7 +175,7 @@ public abstract class ActionGUIProperty extends GUIProperty implements
      *   an attribute already in the container.
      */
     protected GUIAction _createAction() throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         return new GUIAction(this, "_actionHandler");
     }
 

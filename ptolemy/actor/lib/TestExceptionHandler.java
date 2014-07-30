@@ -61,8 +61,9 @@ import ptolemy.util.MessageHandler;
  @Pt.ProposedRating Yellow (hyzheng)
  @Pt.AcceptedRating Yellow (hyzheng)
  */
+@Deprecated
 public class TestExceptionHandler extends TypedAtomicActor implements
-        ExceptionHandler {
+ExceptionHandler {
 
     /** Create a new actor in the specified container with the specified
      *  name.  The name must be unique within the container or an exception
@@ -107,6 +108,7 @@ public class TestExceptionHandler extends TypedAtomicActor implements
     ////                         public methods                    ////
 
     /** Initialize. */
+    @Override
     public void initialize() throws IllegalActionException {
         super.initialize();
         _invoked = false;
@@ -123,6 +125,7 @@ public class TestExceptionHandler extends TypedAtomicActor implements
      *  the trainingMode parameter or the exception message is not the same as
      *  the stored message.
      */
+    @Override
     public boolean handleException(NamedObj context, Throwable exception)
             throws IllegalActionException {
         _invoked = true;
@@ -148,6 +151,7 @@ public class TestExceptionHandler extends TypedAtomicActor implements
      *  @exception IllegalActionException If this actor has not been
      *   invoked to handle exceptions.
      */
+    @Override
     public void wrapup() throws IllegalActionException {
         super.wrapup();
         if (((BooleanToken) trainingMode.getToken()).booleanValue()) {

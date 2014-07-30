@@ -104,6 +104,7 @@ public class SampleDelay extends SDFTransformer {
      *  @exception IllegalActionException If type changes are not
      *   allowed on the specified attribute.
      */
+    @Override
     public void attributeTypeChanged(Attribute attribute)
             throws IllegalActionException {
         if (attribute != initialOutputs) {
@@ -120,6 +121,7 @@ public class SampleDelay extends SDFTransformer {
      *  @exception CloneNotSupportedException If a derived class contains
      *   an attribute that cannot be cloned.
      */
+    @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         SampleDelay newObject = (SampleDelay) super.clone(workspace);
 
@@ -139,6 +141,7 @@ public class SampleDelay extends SDFTransformer {
      *  @exception IllegalActionException If the get() or send() methods
      *   of the ports throw it.
      */
+    @Override
     public void fire() throws IllegalActionException {
         super.fire();
 
@@ -151,6 +154,7 @@ public class SampleDelay extends SDFTransformer {
      *  @exception IllegalActionException If the send() method
      *   of the output port throws it.
      */
+    @Override
     public void initialize() throws IllegalActionException {
         super.initialize();
         output.send(0, _outputsArray.arrayValue(), _outputsArray.length());
@@ -167,6 +171,7 @@ public class SampleDelay extends SDFTransformer {
      *  @exception IllegalActionException If <i>initialOutputs</i> parameter
      *   is invalid, or if the base class throws it.
      */
+    @Override
     public void preinitialize() throws IllegalActionException {
         super.preinitialize();
 

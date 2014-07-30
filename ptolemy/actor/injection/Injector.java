@@ -89,12 +89,17 @@ public class Injector {
                             "Problem instantiating type " + implementationName,
                             e);
                 }
-            }            
+            }
         }
-        throw new IllegalStateException("Implementation for the interface "
-                + type + " was not found. "
-                + "Perhaps\n" + type.getName() + "=" + type.getName()
-                + "\nneeds to be added to the implementations class mappings file ptolemy/actor/*.properties such as ptolemy/actor/ActorModule.properties or some other injector file.");
+        throw new IllegalStateException(
+                "Implementation for the interface "
+                        + type
+                        + " was not found. "
+                        + "Perhaps\n"
+                        + type.getName()
+                        + "="
+                        + type.getName()
+                        + "\nneeds to be added to the implementations class mappings file ptolemy/actor/*.properties such as ptolemy/actor/ActorModule.properties or some other injector file.");
 
     }
 
@@ -114,7 +119,7 @@ public class Injector {
     private HashMap<Class<?>, Class<?>> _resolvedInterfaceToImplementationMap = new HashMap<Class<?>, Class<?>>();
 
     /**
-    * The resolved interface to the implementation class mappings.
-    */
+     * The resolved interface to the implementation class mappings.
+     */
     private HashMap<String, String> _interfaceToImplementationMap = new HashMap<String, String>();
 }

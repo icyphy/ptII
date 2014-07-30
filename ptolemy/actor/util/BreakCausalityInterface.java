@@ -87,6 +87,7 @@ public class BreakCausalityInterface extends DefaultCausalityInterface {
      *  @return a collection of ports, this method returns
      *  an empty collection of ports
      */
+    @Override
     public Collection<IOPort> dependentPorts(IOPort port) {
         return _EMPTY_COLLECTION;
     }
@@ -105,6 +106,7 @@ public class BreakCausalityInterface extends DefaultCausalityInterface {
      *  @return The dependency between the specified input port
      *   and the specified output port.
      */
+    @Override
     public Dependency getDependency(IOPort input, IOPort output) {
         return _defaultDependency.oPlusIdentity();
     }
@@ -117,6 +119,7 @@ public class BreakCausalityInterface extends DefaultCausalityInterface {
      *  @param outputPort The output port that does not depend on the
      *   input port.
      */
+    @Override
     public void removeDependency(IOPort inputPort, IOPort outputPort) {
     }
 }

@@ -38,31 +38,31 @@ import ptolemy.util.StringUtilities;
 //// CodeGeneratorAdapter
 
 /**
-* Base class for code generator adapter.
-*
-* <p>Subclasses should override generateFireCode(),
-* generateInitializeCode() generatePostfireCode(),
-* generatePreinitializeCode(), and generateWrapupCode() methods by
-* appending a corresponding code block.
-*
-* <p>Subclasses should be sure to properly indent the code by
-* either using the code block functionality in methods like
-* _generateBlockCode(String) or by calling
-* {@link ptolemy.cg.kernel.generic.program.CodeStream#indent(String)},
-* for example:
-* <pre>
-*     StringBuffer code = new StringBuffer();
-*     code.append(super.generateWrapupCode());
-*     code.append("// Local wrapup code");
-*     return processCode(CodeStream.indent(code.toString()));
-* </pre>
-*
-* @author Bert Rodiers
-* @version $Id$
-* @since Ptolemy II 10.0
-* @Pt.ProposedRating Red (rodiers)
-* @Pt.AcceptedRating Red (rodiers)
-*/
+ * Base class for code generator adapter.
+ *
+ * <p>Subclasses should override generateFireCode(),
+ * generateInitializeCode() generatePostfireCode(),
+ * generatePreinitializeCode(), and generateWrapupCode() methods by
+ * appending a corresponding code block.
+ *
+ * <p>Subclasses should be sure to properly indent the code by
+ * either using the code block functionality in methods like
+ * _generateBlockCode(String) or by calling
+ * {@link ptolemy.cg.kernel.generic.program.CodeStream#indent(String)},
+ * for example:
+ * <pre>
+ *     StringBuffer code = new StringBuffer();
+ *     code.append(super.generateWrapupCode());
+ *     code.append("// Local wrapup code");
+ *     return processCode(CodeStream.indent(code.toString()));
+ * </pre>
+ *
+ * @author Bert Rodiers
+ * @version $Id$
+ * @since Ptolemy II 10.0
+ * @Pt.ProposedRating Red (rodiers)
+ * @Pt.AcceptedRating Red (rodiers)
+ */
 //FIXME: Why extend NamedObj? Extend Attribute and store in the actor being adapted?
 abstract public class CodeGeneratorAdapter extends NamedObj {
 

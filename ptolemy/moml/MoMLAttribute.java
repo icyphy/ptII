@@ -130,6 +130,7 @@ public class MoMLAttribute extends Attribute {
      *  @see #isPersistent()
      *  @exception IOException If there is a problem writing the MoML.
      */
+    @Override
     public void exportMoML(Writer output, int depth, String name)
             throws IOException {
         if (_isMoMLSuppressed(depth)) {

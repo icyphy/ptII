@@ -25,7 +25,7 @@ ENHANCEMENTS, OR MODIFICATIONS.
                                                 COPYRIGHTENDKEY
 
 
-*/
+ */
 
 package ptdb.gui;
 
@@ -65,6 +65,7 @@ public class DBReferenceActorInteractionAddon implements ActorInteractionAddon {
      * @param actor The actor of interest.
      * @return True if the actor is a database reference actor, False otherwise.
      */
+    @Override
     public boolean isActorOfInterestForLookInside(NamedObj actor) {
         if (actor.getAttribute(XMLDBModel.DB_REFERENCE_ATTR) != null) {
             if (actor.getAttribute(XMLDBModel.DB_REFERENCE_ATTR) instanceof StringConstantParameter
@@ -87,6 +88,7 @@ public class DBReferenceActorInteractionAddon implements ActorInteractionAddon {
      *  @exception NameDuplicationException If the name coincides with
      *   an attribute already in the container.
      */
+    @Override
     public void lookInsideAction(FigureAction figureAction, NamedObj actor)
             throws IllegalActionException, NameDuplicationException {
 
@@ -104,6 +106,7 @@ public class DBReferenceActorInteractionAddon implements ActorInteractionAddon {
      *                  with Full access.
      * @return An new instance a DBActorController.
      */
+    @Override
     public ActorController getControllerInstance(GraphController controller,
             boolean fullAccess) {
         if (fullAccess) {
@@ -120,6 +123,7 @@ public class DBReferenceActorInteractionAddon implements ActorInteractionAddon {
      * @param controller The associated graph controller.
      * @return An instance of the appropriate controller.
      */
+    @Override
     public ActorController getControllerInstance(GraphController controller) {
         return new DBActorController(controller, AttributeController.FULL);
     }
@@ -129,6 +133,7 @@ public class DBReferenceActorInteractionAddon implements ActorInteractionAddon {
      * @param actor The actor of interest.
      * @return True if the actor is a database reference actor, False otherwise.
      */
+    @Override
     public boolean isActorOfInterestForOpenInstance(NamedObj actor) {
         if (actor.getAttribute(XMLDBModel.DB_REFERENCE_ATTR) != null) {
             if (actor.getAttribute(XMLDBModel.DB_REFERENCE_ATTR) instanceof StringConstantParameter
@@ -151,6 +156,7 @@ public class DBReferenceActorInteractionAddon implements ActorInteractionAddon {
      *  @exception NameDuplicationException If the name coincides with
      *   an attribute already in the container.
      */
+    @Override
     public void openInstanceAction(FigureAction figureAction, NamedObj actor)
             throws IllegalActionException, NameDuplicationException {
 
@@ -164,6 +170,7 @@ public class DBReferenceActorInteractionAddon implements ActorInteractionAddon {
      * @param actor The actor of interest.
      * @return True if the actor is a database reference actor, False otherwise.
      */
+    @Override
     public boolean isActorOfInterestForAddonController(NamedObj actor) {
         if (actor.getAttribute(XMLDBModel.DB_REFERENCE_ATTR) != null) {
             if (actor.getAttribute(XMLDBModel.DB_REFERENCE_ATTR) instanceof StringConstantParameter

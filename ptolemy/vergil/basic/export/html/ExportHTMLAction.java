@@ -141,7 +141,7 @@ import diva.graph.GraphController;
  */
 @SuppressWarnings("serial")
 public class ExportHTMLAction extends AbstractAction implements HTMLExportable,
-        WebExporter {
+WebExporter {
 
     /** Create a new action to export HTML.
      *  @param basicGraphFrame The Vergil window to export.
@@ -159,6 +159,7 @@ public class ExportHTMLAction extends AbstractAction implements HTMLExportable,
     /** Export a web page.
      *  @param event The event that triggered this action.
      */
+    @Override
     public void actionPerformed(ActionEvent event) {
         NamedObj model = _basicGraphFrame.getModel();
         WebExportParameters defaultParameters = null;
@@ -244,11 +245,11 @@ public class ExportHTMLAction extends AbstractAction implements HTMLExportable,
                 if (!jsTargetDirectory.exists() && !jsTargetDirectory.mkdir()) {
                     try {
                         MessageHandler
-                                .warning("Warning: Cannot find required JavaScript, CSS, and image files"
-                                        + " for lightbox effect implemented by the fancybox"
-                                        + " package. Perhaps your Ptolemy II"
-                                        + " installation does not include them."
-                                        + " Will use the files on ptolemy.org.");
+                        .warning("Warning: Cannot find required JavaScript, CSS, and image files"
+                                + " for lightbox effect implemented by the fancybox"
+                                + " package. Perhaps your Ptolemy II"
+                                + " installation does not include them."
+                                + " Will use the files on ptolemy.org.");
                     } catch (CancelException e) {
                         // Cancel the action.
                         return false;
@@ -278,9 +279,9 @@ public class ExportHTMLAction extends AbstractAction implements HTMLExportable,
                         } catch (IOException e) {
                             try {
                                 MessageHandler
-                                        .warning("Warning: failed to copy required files."
-                                                + " Use the files on ptolemy.org? "
-                                                + e.getMessage());
+                                .warning("Warning: failed to copy required files."
+                                        + " Use the files on ptolemy.org? "
+                                        + e.getMessage());
                             } catch (CancelException e1) {
                                 // Cancel the action.
                                 return false;
@@ -320,6 +321,7 @@ public class ExportHTMLAction extends AbstractAction implements HTMLExportable,
      *  @return True if the specified attribute and value was defined (i.e.,
      *   if there was a previous value, it was overwritten).
      */
+    @Override
     public boolean defineAttribute(WebAttribute webAttribute, boolean overwrite) {
         if (webAttribute.getContainer() != null) {
             NamedObj object = webAttribute.getContainer();
@@ -345,6 +347,7 @@ public class ExportHTMLAction extends AbstractAction implements HTMLExportable,
      *  @param webElement The element.
      *  @param onceOnly True to prevent duplicate content.
      */
+    @Override
     public void defineElement(WebElement webElement, boolean onceOnly) {
 
         List<StringBuffer> contents = _contents.get(webElement.getParent());
@@ -460,6 +463,7 @@ public class ExportHTMLAction extends AbstractAction implements HTMLExportable,
      *  @return The parameters of the current export, or null if there
      *   is not one in progress.
      */
+    @Override
     public ExportParameters getExportParameters() {
         return _parameters;
     }
@@ -467,6 +471,7 @@ public class ExportHTMLAction extends AbstractAction implements HTMLExportable,
     /** The frame (window) being exported to HTML.
      *  @return The frame provided to the constructor.
      */
+    @Override
     public PtolemyFrame getFrame() {
         return _basicGraphFrame;
     }
@@ -489,7 +494,7 @@ public class ExportHTMLAction extends AbstractAction implements HTMLExportable,
     public static void openRunAndWriteHTML(final BasicGraphFrame graphFrame,
             final ExportParameters parameters, final File indexFile,
             final Writer writer, final boolean waitForCompletion)
-            throws IllegalActionException {
+                    throws IllegalActionException {
         if (graphFrame == null) {
             throw new IllegalActionException(
                     "Cannot export without a graphFrame.");
@@ -516,6 +521,7 @@ public class ExportHTMLAction extends AbstractAction implements HTMLExportable,
         // to close any tableaux that were opened above.
         // It does not wait for the close to complete before finishing itself.
         Runnable exportAction = new Runnable() {
+            @Override
             public void run() {
                 try {
                     // graphFrame.getModel() might return a
@@ -543,6 +549,7 @@ public class ExportHTMLAction extends AbstractAction implements HTMLExportable,
                     // swing event thread. We do this whether the
                     // run succeeded or not.
                     Runnable finishExport = new Runnable() {
+                        @Override
                         public void run() {
                             try {
                                 // -------- Finally, actually export to web.
@@ -564,7 +571,7 @@ public class ExportHTMLAction extends AbstractAction implements HTMLExportable,
                                     } catch (Throwable throwable) {
                                         MessageHandler.error(
                                                 "Failed to open \"" + indexFile
-                                                        + "\".", throwable);
+                                                + "\".", throwable);
                                         throw new RuntimeException(throwable);
                                     }
                                 }
@@ -611,6 +618,7 @@ public class ExportHTMLAction extends AbstractAction implements HTMLExportable,
     // FIXME:  Replaced- a WebExportable will add the title, if any.  If it does not
     // add a title, then there will be no title.
 
+    @Override
     public void setTitle(String title, boolean showInHTML) {
         _title = StringUtilities.escapeForXML(title);
         _showTitleInHTML = showInHTML;
@@ -656,6 +664,7 @@ public class ExportHTMLAction extends AbstractAction implements HTMLExportable,
      *  @exception PrinterException If unable to write associated files.
      *  @exception IllegalActionException If reading parameters fails.
      */
+    @Override
     public void writeHTML(ExportParameters parameters, Writer writer)
             throws PrinterException, IOException, IllegalActionException {
         // Invoke with -Dptolemy.ptII.usePtWebsite=true to get Server
@@ -677,11 +686,11 @@ public class ExportHTMLAction extends AbstractAction implements HTMLExportable,
             // view in this frame shows.
             NamedObj model = _basicGraphFrame.getModel();
 
-            // $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm -run -openComposites -timeOut 30000 -whiteBackground ptolemy/domains/ptera/demo/CarWash/CarWash.xml 
+            // $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm -run -openComposites -timeOut 30000 -whiteBackground ptolemy/domains/ptera/demo/CarWash/CarWash.xml
             // needs this.
             if (model.getName().equals("_Controller")) {
                 model = model.getContainer();
-            } 
+            }
             // Use a sanitized model name and avoid problems with special characters in file names.
             _sanitizedModelName = StringUtilities.sanitizeName(model.getName());
             File imageFile = new File(parameters.directoryToExportTo,
@@ -803,9 +812,9 @@ public class ExportHTMLAction extends AbstractAction implements HTMLExportable,
                 // problem is that we don't know where $PTII is located on
                 // the website.
                 printWriter
-                        .println("<link href=\""
-                                + ssiRoot
-                                + "ptolemyII/ptIIlatest/ptII/doc/default.css\" rel=\"stylesheet\" type=\"text/css\"/>");
+                .println("<link href=\""
+                        + ssiRoot
+                        + "ptolemyII/ptIIlatest/ptII/doc/default.css\" rel=\"stylesheet\" type=\"text/css\"/>");
             }
 
             // Title needed for the HTML validator.
@@ -839,10 +848,10 @@ public class ExportHTMLAction extends AbstractAction implements HTMLExportable,
                 // Reference the server-side includes.
                 // toppremenu.htm includes </head>...<body>
                 printWriter
-                        .println("<!--#include virtual=\"/ssi/toppremenu.htm\" -->");
+                .println("<!--#include virtual=\"/ssi/toppremenu.htm\" -->");
                 printWriter.println("<!--#include virtual=\"toc.htm\" -->");
                 printWriter
-                        .println("<!--#include virtual=\"/ssi/toppostmenu.htm\" -->");
+                .println("<!--#include virtual=\"/ssi/toppostmenu.htm\" -->");
             } else {
                 // The Ptolemy website headers include the closing </head> and <body tag>
                 printWriter.println("</head>");
@@ -874,8 +883,8 @@ public class ExportHTMLAction extends AbstractAction implements HTMLExportable,
 
             if (linkToJNLP
                     && (model.getContainer() == null || /* Ptera */model
-                            .getContainer().getContainer() == null
-                            && model.getName().equals("_Controller"))) {
+                    .getContainer().getContainer() == null
+                    && model.getName().equals("_Controller"))) {
                 String linkToHelp = "<a href=\""
                         + ssiRoot
                         + "/ptolemyII/ptIIlatest/ptII/doc/webStartHelp_index.htm\"><img src=\""
@@ -883,45 +892,46 @@ public class ExportHTMLAction extends AbstractAction implements HTMLExportable,
                         + "/image/question.png\" alt=\"What is Web Start\"></a> (<i>Java Plug-in Required</i>)";
 
                 printWriter
-                    .println("<div id=\"inlineImg\">" // Defined in UCB.css
-                                + "<p>Below is a browsable image of the model.</p> "
-                                + "<ul>\n"
-                                + "<li>For an executable version,"
-                                + "<!-- We use the deployJava.js script so that Java "
-                                + "will be installed if necessary -->\n"
-                                + "<script src=\"http://www.java.com/js/deployJava.js\"></script>\n"
-                                + "<script>\n"
-                                + "  var dir = location.href.substring(0,location.href.lastIndexOf('/'));\n"
-                                + "  var parentDir = dir.substring(0,dir.lastIndexOf('/')+1);\n"
-                                + "  var url = parentDir + \""
-                                + _sanitizedModelName
-                                + ".jnlp\";\n"
-                                + "  deployJava.createWebStartLaunchButton(url);\n"
-                                + "  document.write(\" the WebStart version. "
-                                + linkToHelp.replace("\"", "\\\"")
-                                + "\");\n"
-                                + "</script>\n"
-                                + "<noscript>\n"
-                                + "<a href=\"../"
-                                + _sanitizedModelName
-                                + ".jnlp\">WebStart version</a>. \n"
-                                + linkToHelp + "</noscript>\n" + "</li>\n");
+                        .println("<div id=\"inlineImg\">" // Defined in UCB.css
+                        + "<p>Below is a browsable image of the model.</p> "
+                        + "<ul>\n"
+                        + "<li>For an executable version,"
+                        + "<!-- We use the deployJava.js script so that Java "
+                        + "will be installed if necessary -->\n"
+                        + "<script src=\"http://www.java.com/js/deployJava.js\"></script>\n"
+                        + "<script>\n"
+                        + "  var dir = location.href.substring(0,location.href.lastIndexOf('/'));\n"
+                        + "  var parentDir = dir.substring(0,dir.lastIndexOf('/')+1);\n"
+                        + "  var url = parentDir + \""
+                        + _sanitizedModelName
+                        + ".jnlp\";\n"
+                        + "  deployJava.createWebStartLaunchButton(url);\n"
+                        + "  document.write(\" the WebStart version. "
+                        + linkToHelp.replace("\"", "\\\"")
+                        + "\");\n"
+                        + "</script>\n"
+                        + "<noscript>\n"
+                        + "<a href=\"../"
+                        + _sanitizedModelName
+                        + ".jnlp\">WebStart version</a>. \n"
+                        + linkToHelp + "</noscript>\n" + "</li>\n");
                 printWriter
-                        .println("<li>To view or save the MoML file for this model, "
-                                + "<a href=\"../"
-                                + _sanitizedModelName
-                                + ".xml\">click here</a>.</li>");
+                .println("<li>To view or save the MoML file for this model, "
+                        + "<a href=\"../"
+                        + _sanitizedModelName
+                        + ".xml\">click here</a>.</li>");
                 if (usePtWebsite) {
                     if (_isInDomains(model)) {
-                        printWriter.println("<li>For a domain overview, "
-                                            + "<a href=\"../../../doc/\">click here</a>.</li>");
+                        printWriter
+                                .println("<li>For a domain overview, "
+                                        + "<a href=\"../../../doc/\">click here</a>.</li>");
                     } else {
-                        printWriter.println("<li>For a chapter overview, "
-                                            + "<a href=\"../index.html\">click here</a>.</li>");
+                        printWriter
+                                .println("<li>For a chapter overview, "
+                                        + "<a href=\"../index.html\">click here</a>.</li>");
                     }
                 }
-                printWriter.println("</ul>\n"
-                                    + "</div> <!-- inlineImg -->\n");
+                printWriter.println("</ul>\n" + "</div> <!-- inlineImg -->\n");
 
             }
             // Put the image in.
@@ -940,7 +950,7 @@ public class ExportHTMLAction extends AbstractAction implements HTMLExportable,
                 printWriter.println("<!-- /body -->");
                 printWriter.println("<!-- /html -->");
                 printWriter
-                        .println("<!--#include virtual=\"/ssi/bottom.htm\" -->");
+                .println("<!--#include virtual=\"/ssi/bottom.htm\" -->");
 
                 // Start the top of the toc.htm file.
                 _addContent("toc.htm", false, "<div id=\"menu\">");
@@ -949,17 +959,16 @@ public class ExportHTMLAction extends AbstractAction implements HTMLExportable,
                         "<li><a href=\"/index.htm\">Ptolemy Home</a></li>");
 
                 // The URL of the current release.
-                String ptURL = (usePtWebsite ? "http://ptolemy.org" : "") 
-                    + "/ptolemyII/ptII"
-                    + VersionAttribute.majorCurrentVersion()
-                    + "/ptII" 
-                    + VersionAttribute.CURRENT_VERSION.getExpression()
-                    +"/";
+                String ptURL = (usePtWebsite ? "http://ptolemy.org" : "")
+                        + "/ptolemyII/ptII"
+                        + VersionAttribute.majorCurrentVersion() + "/ptII"
+                        + VersionAttribute.CURRENT_VERSION.getExpression()
+                        + "/";
 
                 _addContent("toc.htm", false,
-                        "<li><a href=\"" + ptURL
-                            +"doc/index.htm\">Ptolemy " + VersionAttribute.majorCurrentVersion()
-                            + "</a></li>");
+                        "<li><a href=\"" + ptURL + "doc/index.htm\">Ptolemy "
+                                + VersionAttribute.majorCurrentVersion()
+                                + "</a></li>");
                 _addContent("toc.htm", false, "</ul>");
                 _addContent("toc.htm", false, "");
 
@@ -968,7 +977,8 @@ public class ExportHTMLAction extends AbstractAction implements HTMLExportable,
                     upHTML = "<li><a href=\"../../../doc/\">Up</a></li>";
                 } else {
                     // If there is a _upHTML parameter, use its value.
-                    StringParameter upHTMLParameter = (StringParameter) model.getAttribute("_upHTML", StringParameter.class);
+                    StringParameter upHTMLParameter = (StringParameter) model
+                            .getAttribute("_upHTML", StringParameter.class);
                     if (upHTMLParameter != null) {
                         upHTML = upHTMLParameter.stringValue();
                     } else {
@@ -977,21 +987,21 @@ public class ExportHTMLAction extends AbstractAction implements HTMLExportable,
                         } else {
                             // Generate links to the domain docs.
                             String domains[] = { "Continuous", "DDF", "DE",
-                                                 "Modal", "PN", "Rendezvous",
-                                                 "SDF", "SR", "Wireless"};
+                                    "Modal", "PN", "Rendezvous", "SDF", "SR",
+                                    "Wireless" };
                             StringBuffer buffer = new StringBuffer();
                             for (int i = 0; i < domains.length; i++) {
                                 buffer.append("<li><a href=\"" + ptURL
-                                              +"ptolemy/domains/"
-                                              + domains[i].toLowerCase()
-                                              + "/doc/index.htm\">"
-                                              + domains[i] + "</a></li>");
+                                        + "ptolemy/domains/"
+                                        + domains[i].toLowerCase()
+                                        + "/doc/index.htm\">" + domains[i]
+                                        + "</a></li>");
                             }
                             upHTML = buffer.toString();
                         }
                     }
                 }
-                
+
                 // Only add <ul> if we have upHTML
                 if (upHTML != null) {
                     _addContent("toc.htm", false, "<ul>");
@@ -1024,7 +1034,7 @@ public class ExportHTMLAction extends AbstractAction implements HTMLExportable,
                         // (cd $PTII/doc/papers/y12/designContracts; $PTII/bin/ptinvoke -Dptolemy.ptII.exportHTML.linkToJNLP=true -Dptolemy.ptII.exportHTML.usePtWebsite=true ptolemy.vergil.basic.export.ExportModel -run -whiteBackground -openComposites htm DCMotorTol.xml)
 
                         System.out
-                                .println("Warning, key of tocContents was empty?");
+                        .println("Warning, key of tocContents was empty?");
                         continue;
                     }
                     // NOTE: A RESTful version of this would create a resource
@@ -1086,19 +1096,23 @@ public class ExportHTMLAction extends AbstractAction implements HTMLExportable,
      */
     // FIXME: I don't like the hardwired version numbers here.
     // Findbugs wants this package protected and final.
-    final static String[] FILENAMES = { "jquery-1.7.2.min.js",
-            "jquery.fancybox-1.3.4.pack.js", "jquery.fancybox-1.3.4.css",
-            "pt-1.0.0.js", "tooltipster.css", "jquery.tooltipster.min.js",
-            // The ones above this line must be in exactly the order given
-            // They are referenced below by index.
-            "blank.gif", "fancybox.png", "fancybox-y.png",
-            "fancybox-x.png", "fancy_title_right.png", "fancy_title_over.png",
-            "fancy_title_main.png", "fancy_title_left.png",
-            "fancy_shadow_w.png", "fancy_shadow_sw.png", "fancy_shadow_se.png",
-            "fancy_shadow_s.png", "fancy_shadow_nw.png", "fancy_shadow_ne.png",
-            "fancy_shadow_n.png", "fancy_shadow_e.png", "fancy_nav_right.png",
-            "fancy_nav_left.png", "fancy_loading.png", "fancy_close.png",
-            "javascript-license.htm" };
+    final static String[] FILENAMES = {
+            "jquery-1.7.2.min.js",
+        "jquery.fancybox-1.3.4.pack.js",
+            "jquery.fancybox-1.3.4.css",
+        "pt-1.0.0.js",
+            "tooltipster.css",
+            "jquery.tooltipster.min.js",
+        // The ones above this line must be in exactly the order given
+        // They are referenced below by index.
+        "blank.gif", "fancybox.png", "fancybox-y.png", "fancybox-x.png",
+            "fancy_title_right.png", "fancy_title_over.png",
+        "fancy_title_main.png", "fancy_title_left.png",
+        "fancy_shadow_w.png", "fancy_shadow_sw.png", "fancy_shadow_se.png",
+        "fancy_shadow_s.png", "fancy_shadow_nw.png", "fancy_shadow_ne.png",
+        "fancy_shadow_n.png", "fancy_shadow_e.png", "fancy_nav_right.png",
+        "fancy_nav_left.png", "fancy_loading.png", "fancy_close.png",
+    "javascript-license.htm" };
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
@@ -1243,8 +1257,8 @@ public class ExportHTMLAction extends AbstractAction implements HTMLExportable,
                                             .stringValue()
                                             .toLowerCase(Locale.getDefault())
                                             .equals("all"))
-                                    && script.instancesOf.stringValue().equals(
-                                            instancesOf)) {
+                                            && script.instancesOf.stringValue().equals(
+                                                    instancesOf)) {
                                 // Skip this default from the configuration.
                                 foundOverride = true;
                                 break;
@@ -1405,7 +1419,7 @@ public class ExportHTMLAction extends AbstractAction implements HTMLExportable,
                     figure = ((CompositeFigure) figure).getBackgroundFigure();
                     figureBounds = figure.getShape().getBounds2D();
                 }
-                */
+                 */
                 // Populate the data structure with bound information
                 // relative to the visible rectangle.
                 // Sadly, neither the figureOrigin nor the figureBounds
@@ -1499,10 +1513,11 @@ public class ExportHTMLAction extends AbstractAction implements HTMLExportable,
     /** Return true if the model is in the domains demo directory.
      *  @param model The model to be checked
      *  @return true if it is in the domains directory
-     */        
+     */
     private static boolean _isInDomains(NamedObj model) {
         try {
-            URIAttribute modelURI = (URIAttribute) model.getAttribute("_uri", URIAttribute.class);
+            URIAttribute modelURI = (URIAttribute) model.getAttribute("_uri",
+                    URIAttribute.class);
             if (modelURI != null) {
                 if (modelURI.getURI().toString().contains("/domains")) {
                     return true;
@@ -1672,6 +1687,7 @@ public class ExportHTMLAction extends AbstractAction implements HTMLExportable,
         public double bottomRightY;
 
         /** String representation. */
+        @Override
         public String toString() {
             return object.getName() + " from (" + topLeftX + ", " + topLeftY
                     + ") to (" + bottomRightX + ", " + bottomRightY + ")";

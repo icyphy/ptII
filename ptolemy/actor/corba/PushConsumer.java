@@ -138,6 +138,7 @@ public class PushConsumer extends Source {
      *  @param attribute The attribute that changed.
      *  @exception IllegalActionException Not thrown in this base class.
      */
+    @Override
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         if (attribute == blocking) {
@@ -153,6 +154,7 @@ public class PushConsumer extends Source {
      *  @exception IllegalActionException If any of the above actions
      *  failted.
      */
+    @Override
     public void initialize() throws IllegalActionException {
         super.initialize();
 
@@ -183,6 +185,7 @@ public class PushConsumer extends Source {
      *  action fails due to network problems, transaction errors,
      *  or any remote exceptions.
      */
+    @Override
     public void fire() throws IllegalActionException {
         super.fire();
         for (int i = 0; i < trigger.getWidth(); i++) {
@@ -226,6 +229,7 @@ public class PushConsumer extends Source {
     /** Request that execution of the current iteration stop as soon
      *  as possible. Wake up the waiting if there is any.
      */
+    @Override
     public void stop() {
         if (_fireIsWaiting) {
             synchronized (_lock) {
@@ -303,7 +307,7 @@ public class PushConsumer extends Source {
     ///////////////////////////////////////////////////////////////////
     ////                         inner class                       ////
     @SuppressWarnings("serial")
-        private class pushConsumer extends _pushConsumerImplBase {
+    private class pushConsumer extends _pushConsumerImplBase {
         /**
          * Construct a pushConsumer.
          */
@@ -318,6 +322,7 @@ public class PushConsumer extends Source {
          * for new data, then wake up fire(), otherwise call fireAt.
          * //FIXME: need to deal with overwrite if the old data is not consumed.
          */
+        @Override
         public void push(org.omg.CORBA.Any data)
                 throws CorbaIllegalActionException {
             if (_debugging) {

@@ -24,7 +24,7 @@
  PT_COPYRIGHT_VERSION_2
  COPYRIGHTENDKEY
 
-*/
+ */
 package ptolemy.domains.modal.kernel;
 
 import ptolemy.kernel.util.Configurable;
@@ -43,7 +43,7 @@ import ptolemy.kernel.util.Configurable;
  @since Ptolemy II 8.0
  @Pt.ProposedRating Red (tfeng)
  @Pt.AcceptedRating Red (tfeng)
-*/
+ */
 public interface ConfigurableEntity extends Configurable {
 
     /** Get the {@link Configurer} object for this entity.

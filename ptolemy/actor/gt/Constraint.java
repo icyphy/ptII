@@ -61,7 +61,7 @@ import ptolemy.vergil.toolbox.VisibleParameterEditorFactory;
  @since Ptolemy II 7.1
  @Pt.ProposedRating Yellow (tfeng)
  @Pt.AcceptedRating Red (tfeng)
-*/
+ */
 public class Constraint extends GTParameter {
 
     /** Constraint a constraint.
@@ -120,8 +120,9 @@ public class Constraint extends GTParameter {
      *  @exception NameDuplicationException If the container already has
      *   an attribute with the name of this attribute.
      */
+    @Override
     public void setContainer(NamedObj container) throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         super.setContainer(container);
         if (container != null) {
             GTTools.checkContainerClass(this, container, Pattern.class, false);
@@ -171,12 +172,15 @@ public class Constraint extends GTParameter {
      *  @exception IllegalActionException If the expression cannot
      *   be parsed or cannot be evaluated, or if a dependency loop is found.
      */
+    @Override
     protected void _evaluate(Pattern pattern, MatchResult matchResult)
             throws IllegalActionException {
         setParseTreeEvaluator(new Evaluator(pattern, matchResult) {
+            @Override
             protected ParserScope _createScope(Pattern pattern,
                     MatchResult matchResult, ParserScope superScope) {
                 return new Scope(pattern, matchResult, superScope) {
+                    @Override
                     public Token get(String name) throws IllegalActionException {
                         if (name.equals("this")) {
                             NamedObj container = Constraint.this.getContainer();

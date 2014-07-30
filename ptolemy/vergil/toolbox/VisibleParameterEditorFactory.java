@@ -78,6 +78,7 @@ public class VisibleParameterEditorFactory extends EditorFactory {
 
     /** Create an editor for configuring the specified object.
      */
+    @Override
     public void createEditor(final NamedObj object, Frame parent) {
         ComponentDialog dialog = new ComponentDialog(parent, "Edit Parameter "
                 + object.getName(), createEditorPane());
@@ -85,6 +86,7 @@ public class VisibleParameterEditorFactory extends EditorFactory {
         // If we were canceled, then restore the old value.
         if (dialog.buttonPressed().equals("Cancel")) {
             SwingUtilities.invokeLater(new Runnable() {
+                @Override
                 public void run() {
                     NamedObj parent = object.getContainer();
                     String moml = "<property name=\"" + object.getName()

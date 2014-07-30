@@ -92,6 +92,7 @@ public class IntToken extends ScalarToken {
      *  is set to 0.
      *  @return A Complex.
      */
+    @Override
     public Complex complexValue() {
         return new Complex(_value);
     }
@@ -134,7 +135,7 @@ public class IntToken extends ScalarToken {
             IntToken result = new IntToken(shortToken.intValue());
             if (shortToken._unitCategoryExponents != null
                     && !UnitUtilities
-                            .isUnitless(shortToken._unitCategoryExponents)) {
+                    .isUnitless(shortToken._unitCategoryExponents)) {
                 result._unitCategoryExponents = shortToken
                         ._copyOfCategoryExponents();
             }
@@ -150,6 +151,7 @@ public class IntToken extends ScalarToken {
     /** Return the value in the token as a double.
      *  @return The value contained in this token as a double.
      */
+    @Override
     public double doubleValue() {
         return _value;
     }
@@ -161,6 +163,7 @@ public class IntToken extends ScalarToken {
      *  value. If either this object or the argument is a nil Token, return
      *  false.
      */
+    @Override
     public boolean equals(Object object) {
         if (object == null) {
             return false;
@@ -184,6 +187,7 @@ public class IntToken extends ScalarToken {
     /** Return the value in the token as a fixpoint.
      *  @return The value contained in this token as a fixpoint.
      */
+    @Override
     public FixPoint fixValue() {
         return new FixPoint(_value);
     }
@@ -191,6 +195,7 @@ public class IntToken extends ScalarToken {
     /** Return the type of this token.
      *  @return BaseType.INT
      */
+    @Override
     public Type getType() {
         return BaseType.INT;
     }
@@ -199,6 +204,7 @@ public class IntToken extends ScalarToken {
      *  contained integer.
      *  @return A hash code value for this token.
      */
+    @Override
     public int hashCode() {
         return _value;
     }
@@ -206,6 +212,7 @@ public class IntToken extends ScalarToken {
     /** Return the value in the token as an int.
      *  @return The int value contained in this token.
      */
+    @Override
     public int intValue() {
         return _value;
     }
@@ -214,6 +221,7 @@ public class IntToken extends ScalarToken {
      *  Nil or missing tokens occur when a data source is sparsely populated.
      *  @return True if the token is the {@link #NIL} token.
      */
+    @Override
     public boolean isNil() {
         // We use a method here so that we can easily change how
         // we determine if a token is nil without modify lots of classes.
@@ -228,6 +236,7 @@ public class IntToken extends ScalarToken {
      *  @return The left shift.
      *  If this token is nil, then {@link #NIL} is returned.
      */
+    @Override
     public ScalarToken leftShift(int bits) {
         if (isNil()) {
             return IntToken.NIL;
@@ -244,6 +253,7 @@ public class IntToken extends ScalarToken {
      *  @return The logical right shift.
      *  If this token is nil, then {@link #NIL} is returned.
      */
+    @Override
     public ScalarToken logicalRightShift(int bits) {
         if (isNil()) {
             return IntToken.NIL;
@@ -254,6 +264,7 @@ public class IntToken extends ScalarToken {
     /** Return the value in the token as a long.
      *  @return The int value contained in this token as a long.
      */
+    @Override
     public long longValue() {
         return _value;
     }
@@ -261,6 +272,7 @@ public class IntToken extends ScalarToken {
     /** Returns an IntToken with value 1.
      *  @return An IntToken with value 1.
      */
+    @Override
     public Token one() {
         return ONE;
     }
@@ -273,6 +285,7 @@ public class IntToken extends ScalarToken {
      *  @return The right shift.
      *  If this token is nil, then {@link #NIL} is returned.
      */
+    @Override
     public ScalarToken rightShift(int bits) {
         if (isNil()) {
             return IntToken.NIL;
@@ -288,6 +301,7 @@ public class IntToken extends ScalarToken {
      *   any) of this token.
      *  @see ptolemy.data.ScalarToken#unitsString
      */
+    @Override
     public String toString() {
         String unitString = "";
 
@@ -305,6 +319,7 @@ public class IntToken extends ScalarToken {
     /** Returns an IntToken with value 0.
      *  @return An IntToken with value 0.
      */
+    @Override
     public Token zero() {
         return ZERO;
     }
@@ -337,6 +352,7 @@ public class IntToken extends ScalarToken {
      *  token, since the units are the same.
      *  @return An IntToken.
      */
+    @Override
     protected ScalarToken _absolute() {
         IntToken result;
 
@@ -355,6 +371,7 @@ public class IntToken extends ScalarToken {
      *  @param rightArgument The token to add to this token.
      *  @return A new IntToken containing the result.
      */
+    @Override
     protected ScalarToken _add(ScalarToken rightArgument) {
         int sum = _value + ((IntToken) rightArgument).intValue();
         return new IntToken(sum);
@@ -366,6 +383,7 @@ public class IntToken extends ScalarToken {
      *  @param rightArgument The IntToken to bitwise AND with this one.
      *  @return The bitwise AND.
      */
+    @Override
     protected ScalarToken _bitwiseAnd(ScalarToken rightArgument) {
         int sum = _value & ((IntToken) rightArgument).intValue();
         return new IntToken(sum);
@@ -374,6 +392,7 @@ public class IntToken extends ScalarToken {
     /** Returns a token representing the bitwise NOT of this token.
      *  @return The bitwise NOT of this token.
      */
+    @Override
     protected ScalarToken _bitwiseNot() {
         IntToken result = new IntToken(~_value);
         return result;
@@ -385,6 +404,7 @@ public class IntToken extends ScalarToken {
      *  @param rightArgument The IntToken to bitwise OR with this one.
      *  @return The bitwise OR.
      */
+    @Override
     protected ScalarToken _bitwiseOr(ScalarToken rightArgument) {
         int sum = _value | ((IntToken) rightArgument).intValue();
         return new IntToken(sum);
@@ -396,6 +416,7 @@ public class IntToken extends ScalarToken {
      *  @param rightArgument The IntToken to bitwise XOR with this one.
      *  @return The bitwise XOR.
      */
+    @Override
     protected ScalarToken _bitwiseXor(ScalarToken rightArgument) {
         int sum = _value ^ ((IntToken) rightArgument).intValue();
         return new IntToken(sum);
@@ -407,6 +428,7 @@ public class IntToken extends ScalarToken {
      *  @param rightArgument The token to divide this token by.
      *  @return A new IntToken containing the result.
      */
+    @Override
     protected ScalarToken _divide(ScalarToken rightArgument) {
         int quotient = _value / ((IntToken) rightArgument).intValue();
         return new IntToken(quotient);
@@ -421,6 +443,7 @@ public class IntToken extends ScalarToken {
      *  @return A token containing true if the value of the first
      *   argument is close to the value of this token.
      */
+    @Override
     protected BooleanToken _isCloseTo(ScalarToken rightArgument, double epsilon) {
         // NOTE: This code is duplicated in
         // ptolemy.math.IntegerMatrixMath.within(); if this
@@ -443,6 +466,7 @@ public class IntToken extends ScalarToken {
      *  supported by the derived class.
      *  @return A new Token containing the result.
      */
+    @Override
     protected BooleanToken _isLessThan(ScalarToken rightArgument)
             throws IllegalActionException {
         IntToken convertedArgument = (IntToken) rightArgument;
@@ -455,6 +479,7 @@ public class IntToken extends ScalarToken {
      *  @param rightArgument The token to modulo this token by.
      *  @return A new IntToken containing the result.
      */
+    @Override
     protected ScalarToken _modulo(ScalarToken rightArgument) {
         int remainder = _value % ((IntToken) rightArgument).intValue();
         return new IntToken(remainder);
@@ -466,6 +491,7 @@ public class IntToken extends ScalarToken {
      *  @param rightArgument The token to multiply this token by.
      *  @return A new IntToken containing the result.
      */
+    @Override
     protected ScalarToken _multiply(ScalarToken rightArgument) {
         int product = _value * ((IntToken) rightArgument).intValue();
         return new IntToken(product);
@@ -477,6 +503,7 @@ public class IntToken extends ScalarToken {
      *  @param rightArgument The token to subtract from this token.
      *  @return A new IntToken containing the result.
      */
+    @Override
     protected ScalarToken _subtract(ScalarToken rightArgument) {
         int difference = _value - ((IntToken) rightArgument).intValue();
         return new IntToken(difference);

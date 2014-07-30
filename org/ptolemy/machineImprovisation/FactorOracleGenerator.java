@@ -24,7 +24,7 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
-*/
+ */
 package org.ptolemy.machineImprovisation;
 
 import java.util.HashMap;
@@ -100,6 +100,7 @@ public class FactorOracleGenerator extends TypedAtomicActor {
 
     }
 
+    @Override
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         if (attribute == repetitionProbability) {
@@ -131,6 +132,7 @@ public class FactorOracleGenerator extends TypedAtomicActor {
 
     // When fired,
 
+    @Override
     public void fire() throws IllegalActionException {
 
         super.fire();
@@ -165,7 +167,7 @@ public class FactorOracleGenerator extends TypedAtomicActor {
 
                 } catch (NameDuplicationException e) {
                     System.err
-                            .println("NameDuplicationException at FactorOracleGenerator");
+                    .println("NameDuplicationException at FactorOracleGenerator");
                 }
             } else if (incomingNote >= 5000) {
                 // long notes and a duration of 5s trigger FO generation
@@ -178,7 +180,7 @@ public class FactorOracleGenerator extends TypedAtomicActor {
                     }
                 } catch (NameDuplicationException e) {
                     System.err
-                            .println("NameDuplicationException at FactorOracleGenerator");
+                    .println("NameDuplicationException at FactorOracleGenerator");
                 }
 
             } else {

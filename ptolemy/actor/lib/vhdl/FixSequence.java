@@ -134,6 +134,7 @@ public class FixSequence extends FixTransformer {
      *  @exception CloneNotSupportedException If a derived class contains
      *   an attribute that cannot be cloned.
      */
+    @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         FixSequence newObject = (FixSequence) super.clone(workspace);
         newObject.output.setTypeEquals(BaseType.FIX);
@@ -146,6 +147,7 @@ public class FixSequence extends FixTransformer {
      *  determined by checking the width of the port.
      *  @exception IllegalActionException If there is no director.
      */
+    @Override
     public void fire() throws IllegalActionException {
         super.fire();
 
@@ -167,7 +169,7 @@ public class FixSequence extends FixTransformer {
             if (_currentIndex < valuesArray.length()) {
                 Precision precision = new Precision(
                         ((Parameter) getAttribute("outputPrecision"))
-                                .getExpression());
+                        .getExpression());
 
                 Overflow overflow = Overflow
                         .getName(((Parameter) getAttribute("outputOverflow"))
@@ -181,7 +183,7 @@ public class FixSequence extends FixTransformer {
 
                 FixPoint result = new FixPoint(
                         ((ScalarToken) valuesArray.getElement(_currentIndex))
-                                .doubleValue(),
+                        .doubleValue(),
                         new FixPointQuantization(precision, overflow, rounding));
                 sendOutput(output, 0, new FixToken(result));
                 _outputProduced = true;
@@ -192,6 +194,7 @@ public class FixSequence extends FixTransformer {
     /** Initialize the actor by resetting to the first output value.
      *  @exception IllegalActionException If there is no director.
      */
+    @Override
     public void initialize() throws IllegalActionException {
         // Note that this will default to null if there is no initialValue set.
         _currentIndex = 0;
@@ -206,6 +209,7 @@ public class FixSequence extends FixTransformer {
      *  @exception IllegalActionException If checking the trigger for
      *   a token throws it or if the super class throws it.
      */
+    @Override
     public boolean prefire() throws IllegalActionException {
         if (trigger.numberOfSources() > 0) {
             for (int i = 0; i < trigger.getWidth(); i++) {
@@ -229,6 +233,7 @@ public class FixSequence extends FixTransformer {
      *  in the <i>values</i> array.
      *  @exception IllegalActionException If there is no director.
      */
+    @Override
     public boolean postfire() throws IllegalActionException {
         if (_outputProduced) {
             _outputProduced = false;

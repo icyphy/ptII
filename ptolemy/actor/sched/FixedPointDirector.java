@@ -120,7 +120,7 @@ import ptolemy.kernel.util.Workspace;
  @Pt.AcceptedRating Yellow (eal)
  */
 public class FixedPointDirector extends StaticSchedulingDirector implements
-        SuperdenseTimeDirector {
+SuperdenseTimeDirector {
 
     /** Construct a director in the default workspace with an empty string
      *  as its name. The director is added to the list of objects in
@@ -131,7 +131,7 @@ public class FixedPointDirector extends StaticSchedulingDirector implements
      *   an entity with the specified name.
      */
     public FixedPointDirector() throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         super();
         _init();
     }
@@ -204,6 +204,7 @@ public class FixedPointDirector extends StaticSchedulingDirector implements
      *  @exception CloneNotSupportedException If a derived class contains
      *  an attribute that cannot be cloned.
      */
+    @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         FixedPointDirector newObject = (FixedPointDirector) super
                 .clone(workspace);
@@ -224,6 +225,7 @@ public class FixedPointDirector extends StaticSchedulingDirector implements
      *   monotonicity constraints, or the prefire() or fire() method
      *   of the actor throws it.
      */
+    @Override
     public void fire() throws IllegalActionException {
         if (_debugging) {
             _debug("FixedPointDirector: invoking fire().");
@@ -280,6 +282,7 @@ public class FixedPointDirector extends StaticSchedulingDirector implements
      *  @see #setIndex(int)
      *  @see ptolemy.actor.SuperdenseTimeDirector
      */
+    @Override
     public int getIndex() {
         return _index;
     }
@@ -316,6 +319,7 @@ public class FixedPointDirector extends StaticSchedulingDirector implements
      *  @exception IllegalActionException If creating a Time object fails.
      *  @see #getModelTime()
      */
+    @Override
     public Time getModelNextIterationTime() throws IllegalActionException {
         if (isEmbedded()) {
             return super.getModelNextIterationTime();
@@ -341,6 +345,7 @@ public class FixedPointDirector extends StaticSchedulingDirector implements
      *  semantics, such as SRDirector and ContinuousDirector.
      *  @return True.
      */
+    @Override
     public boolean implementsStrictActorSemantics() {
         return true;
     }
@@ -349,6 +354,7 @@ public class FixedPointDirector extends StaticSchedulingDirector implements
      *  the super.initialize() method. Reset all private variables.
      *  @exception IllegalActionException If the superclass throws it.
      */
+    @Override
     public void initialize() throws IllegalActionException {
         _currentIteration = 0;
         // This variable has to be reset at the very beginning, because
@@ -397,6 +403,7 @@ public class FixedPointDirector extends StaticSchedulingDirector implements
      *  @return True if all controlled actors are functional.  Return
      *  false if there is no container or no actors in the container.
      */
+    @Override
     public boolean isFireFunctional() {
         if (workspace().getVersion() == _functionalPropertyVersion) {
             return _cachedFunctionalProperty;
@@ -431,6 +438,7 @@ public class FixedPointDirector extends StaticSchedulingDirector implements
      *  Thus this director tolerates unknown inputs.
      *  @return False.
      */
+    @Override
     public boolean isStrict() {
         return false;
     }
@@ -441,6 +449,7 @@ public class FixedPointDirector extends StaticSchedulingDirector implements
      *  member of this class).
      *  @return A new FixedPointReceiver.
      */
+    @Override
     public Receiver newReceiver() {
         Receiver receiver = new FixedPointReceiver(this);
         _receivers.add(receiver);
@@ -459,6 +468,7 @@ public class FixedPointDirector extends StaticSchedulingDirector implements
      *   not have a valid token, or if there still some unknown inputs (which
      *   indicates a causality loop).
      */
+    @Override
     public boolean postfire() throws IllegalActionException {
         if (_debugging) {
             _debug("FixedPointDirector: Called postfire().");
@@ -475,7 +485,7 @@ public class FixedPointDirector extends StaticSchedulingDirector implements
         if ((numberOfActors > 0) && (_actorsFired.size() == 0)) {
             needMoreIterations = false;
         }
-        */
+         */
 
         // The following used to inexplicably iterate only over
         // _actorsFired. Now we iterate over all actors in the order
@@ -547,19 +557,20 @@ public class FixedPointDirector extends StaticSchedulingDirector implements
      *  @return True.
      *  @exception IllegalActionException Not thrown in this base class.
      */
+    @Override
     public boolean prefire() throws IllegalActionException {
         _synchronizeToRealTime();
         _postfireReturns = true;
-        
+
         boolean result = true;
-        List<IOPort> ports = ((CompositeEntity)getContainer()).portList();
+        List<IOPort> ports = ((CompositeEntity) getContainer()).portList();
         for (IOPort port : ports) {
-                if (port instanceof ParameterPort) {
-                        if (!port.isKnown()) {
-                                result = false;
-                                break;
-                        }
+            if (port instanceof ParameterPort) {
+                if (!port.isKnown()) {
+                    result = false;
+                    break;
                 }
+            }
         }
         // The following synchronizes to environment time, making
         // any necessary adjustments for drift or offset of the local clock.
@@ -572,6 +583,7 @@ public class FixedPointDirector extends StaticSchedulingDirector implements
      *  @see #getIndex()
      *  @see ptolemy.actor.SuperdenseTimeDirector
      */
+    @Override
     public void setIndex(int index) throws IllegalActionException {
         if (_debugging) {
             _debug("Setting superdense time index to " + index);
@@ -586,6 +598,7 @@ public class FixedPointDirector extends StaticSchedulingDirector implements
      *  @return An array of suggested directors to be used with ModalModel.
      *  @see ptolemy.actor.Director#suggestedModalModelDirectors()
      */
+    @Override
     public String[] suggestedModalModelDirectors() {
         String[] defaultSuggestions = new String[2];
         defaultSuggestions[1] = "ptolemy.domains.modal.kernel.NonStrictFSMDirector";
@@ -605,6 +618,7 @@ public class FixedPointDirector extends StaticSchedulingDirector implements
      *  @exception IllegalActionException If the port is not an opaque
      *  input port.
      */
+    @Override
     public boolean transferInputs(IOPort port) throws IllegalActionException {
         boolean result = false;
         int insideWidth = port.getWidthInside();
@@ -641,6 +655,7 @@ public class FixedPointDirector extends StaticSchedulingDirector implements
      *  @exception IllegalActionException If the port is not an opaque
      *  input port, or if there are not enough input tokens available.
      */
+    @Override
     public boolean transferOutputs(IOPort port) throws IllegalActionException {
         boolean result = false;
         int outsideWidth = port.getWidth();
@@ -656,14 +671,14 @@ public class FixedPointDirector extends StaticSchedulingDirector implements
                     }
                 }
             } else if (i < outsideWidth) {
-                    // Output is not known. To ensure that this fact propagate
-                    // outside, find the remote receivers and reset them.
-                    // This was causing a monotonicity failure in certain
-                    // modal models.
-                    Receiver[][] remoteReceivers = port.getRemoteReceivers();
-                    for (Receiver remoteReceiver : remoteReceivers[i]) {
-                            remoteReceiver.reset();
-                    }
+                // Output is not known. To ensure that this fact propagate
+                // outside, find the remote receivers and reset them.
+                // This was causing a monotonicity failure in certain
+                // modal models.
+                Receiver[][] remoteReceivers = port.getRemoteReceivers();
+                for (Receiver remoteReceiver : remoteReceivers[i]) {
+                    remoteReceiver.reset();
+                }
             }
         }
         // If the outside is wider than the inside, send clear on the outside.
@@ -675,7 +690,7 @@ public class FixedPointDirector extends StaticSchedulingDirector implements
         for (int i = port.getWidthInside(); i < outsideWidth; i++) {
             port.send(i, null);
         }
-        */
+         */
         return result;
     }
 
@@ -771,15 +786,14 @@ public class FixedPointDirector extends StaticSchedulingDirector implements
             }
         }
     }
-    
+
     /** Return true if this iteration has converged.  The iteration has
      *  converged if both the number of known receivers
      *  has not changed since the previous invocation of this method.
      *  @return true if this iteration has converged.
      *  @exception IllegalActionException Not thrown in this base class.
      */
-    protected boolean _hasIterationConverged()
-                    throws IllegalActionException {
+    protected boolean _hasIterationConverged() throws IllegalActionException {
         if (_debugging) {
             _debug(this.getFullName()
                     + ":\n Number of receivers known previously is "
@@ -803,7 +817,7 @@ public class FixedPointDirector extends StaticSchedulingDirector implements
         // _actorsFinishedFiring.size() == container.deepEntityList().size());
         return converged;
     }
-    
+
     /** Return true if the specified actor is ready to fire.  An actor is
      *  ready to fire if it has not previously finished firing in this iteration
      *  and either it is strict and all inputs are known or it is nonstrict.
@@ -819,7 +833,6 @@ public class FixedPointDirector extends StaticSchedulingDirector implements
         return !_actorsFinishedFiring.contains(actor)
                 && (!actor.isStrict() || _areAllInputsKnown(actor));
     }
-
 
     /** React to the change in receiver status by incrementing the count of
      *  known receivers.
@@ -986,7 +999,7 @@ public class FixedPointDirector extends StaticSchedulingDirector implements
      *  values and types.
      */
     private void _init() throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         _zeroTime = new Time(this, 0.0);
 
         iterations = new Parameter(this, "iterations", new IntToken(0));

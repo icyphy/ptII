@@ -202,6 +202,7 @@ public class Processor extends CSPActor {
      * @exception IllegalActionException If an error occurs
      *  during communication through one of the ports.
      */
+    @Override
     public void fire() throws IllegalActionException {
         super.fire();
         while (true) {
@@ -234,6 +235,7 @@ public class Processor extends CSPActor {
      * @exception IllegalActionException If the super class
      *  throws it.
      */
+    @Override
     public void wrapup() throws IllegalActionException {
         super.wrapup();
         _debug(new ExecEvent(this, ExecEvent.WAITING));

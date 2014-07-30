@@ -45,6 +45,7 @@ public class TestDoubleBinaryOperation implements DoubleBinaryOperation {
     /** Operate on the operands, returning a value of the same
      *  type. Note that the operation need not be commutative.
      */
+    @Override
     public double operate(double leftOperand, double rightOperand) {
         return leftOperand - rightOperand;
     }

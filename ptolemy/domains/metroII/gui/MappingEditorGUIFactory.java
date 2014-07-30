@@ -44,7 +44,7 @@ import ptolemy.kernel.util.NamedObj;
 
 /**
  This is an attribute that creates an editor for configuring mapping
-  for MetroIIDirector. This UI will be invoked when you double click 
+  for MetroIIDirector. This UI will be invoked when you double click
   on the code generator.
 
  @author Liangpeng Guo
@@ -75,10 +75,11 @@ public class MappingEditorGUIFactory extends EditorFactory {
      *  @param object The object to configure.
      *  @param parent The parent window, or null if there is none.
      */
+    @Override
     public void createEditor(NamedObj object, Frame parent) {
         // This is always used to configure the container, so
         // we just use that.
-        NamedObj editor = (NamedObj) getContainer();
+        NamedObj editor = getContainer();
 
         if (!(parent instanceof TableauFrame)) {
             throw new InternalErrorException(

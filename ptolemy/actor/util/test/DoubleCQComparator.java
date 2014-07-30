@@ -65,6 +65,7 @@ public class DoubleCQComparator implements CQComparator {
      *  @exception ClassCastException If either argument is not an instance
      *   of Double.
      */
+    @Override
     public int compare(Object object1, Object object2) {
         Double a = (Double) object1;
         Double b = (Double) object2;
@@ -93,6 +94,7 @@ public class DoubleCQComparator implements CQComparator {
      *  @exception ClassCastException If the arguments are not instances of
      *   Double.
      */
+    @Override
     public long getVirtualBinNumber(Object entry) {
         return (long) ((((Double) entry).doubleValue() - _zeroReference
                 .doubleValue()) / _binWidth.doubleValue());
@@ -108,6 +110,7 @@ public class DoubleCQComparator implements CQComparator {
      *  @exception ClassCastException If one of the array elements is not
      *   an instance of Double.
      */
+    @Override
     public void setBinWidth(Object[] entryArray) {
         if (entryArray == null) {
             // Reset to default.
@@ -152,6 +155,7 @@ public class DoubleCQComparator implements CQComparator {
      *  @exception ClassCastException If the argument is not an instance
      *   of Double.
      */
+    @Override
     public void setZeroReference(Object zeroReference) {
         _zeroReference = (Double) zeroReference;
     }

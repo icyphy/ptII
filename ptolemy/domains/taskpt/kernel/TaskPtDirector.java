@@ -105,6 +105,7 @@ public abstract class TaskPtDirector extends VisualSequenceDirector {
      *  one of the associated actors throws it, or if there is no
      *  scheduler.
      */
+    @Override
     public void initialize() throws IllegalActionException {
         super.initialize();
         _setInitialValues();
@@ -113,6 +114,7 @@ public abstract class TaskPtDirector extends VisualSequenceDirector {
     /** Use a QueueReceiver model for this director.
      * @return A new QueueReceiver.
      */
+    @Override
     public Receiver newReceiver() {
         return new QueueReceiver();
     }
@@ -126,6 +128,7 @@ public abstract class TaskPtDirector extends VisualSequenceDirector {
      *  @exception IllegalActionException Thrown if the iterations parameter
      *  does not contain a legal value.
      */
+    @Override
     public boolean postfire() throws IllegalActionException {
         boolean result = super.postfire();
         if (!result) {
@@ -146,8 +149,9 @@ public abstract class TaskPtDirector extends VisualSequenceDirector {
      *  @exception NameDuplicationException Thrown if there is a problem instantiating
      *   the director's parameters.
      */
+    @Override
     protected void _init() throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         super._init();
         if (_memory == null) {
             _memory = new Memory();
@@ -167,6 +171,7 @@ public abstract class TaskPtDirector extends VisualSequenceDirector {
      *   input port.
      *  @see IOPort#transferInputs
      */
+    @Override
     protected boolean _transferInputs(IOPort port)
             throws IllegalActionException {
         // FIXME: Currently also PtrTokens are directly transferred. This
@@ -190,6 +195,7 @@ public abstract class TaskPtDirector extends VisualSequenceDirector {
      *  @exception IllegalActionException Thrown, if the port is not an opaque
      *   output port.
      */
+    @Override
     protected boolean _transferOutputs(IOPort port)
             throws IllegalActionException {
         // FIXME: Currently also PtrTokens are directly transferred. This

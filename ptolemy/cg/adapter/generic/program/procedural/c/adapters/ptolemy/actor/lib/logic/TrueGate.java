@@ -51,6 +51,7 @@ public class TrueGate extends NamedProgramCodeGeneratorAdapter {
     /** Return the name of the port that is the time source.
      *  @return The string "input".
      */
+    @Override
     public String getTimeSourcePortName() {
         return "input";
     }

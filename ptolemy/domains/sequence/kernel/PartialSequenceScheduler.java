@@ -40,15 +40,15 @@ import ptolemy.kernel.util.NameDuplicationException;
 //// PartialSequenceScheduler
 
 /**
-* A sequential scheduler that enables guessing the schedule.
-* @see SequenceScheduler for scheduling behavior.
-*
-* @author Bastian Ristau
-* @version $Id$
-* @since Ptolemy II 10.0
-* @Pt.ProposedRating Red (ristau)
-* @Pt.AcceptedRating Red (ristau)
-*/
+ * A sequential scheduler that enables guessing the schedule.
+ * @see SequenceScheduler for scheduling behavior.
+ *
+ * @author Bastian Ristau
+ * @version $Id$
+ * @since Ptolemy II 10.0
+ * @Pt.ProposedRating Red (ristau)
+ * @Pt.AcceptedRating Red (ristau)
+ */
 public class PartialSequenceScheduler extends SequenceScheduler {
 
     /** Construct a scheduler in the given container with the given name.
@@ -84,7 +84,7 @@ public class PartialSequenceScheduler extends SequenceScheduler {
      */
     public Vector<Actor> estimateSequencedSchedule(
             List<SequenceAttribute> independentList)
-            throws NotSchedulableException {
+                    throws NotSchedulableException {
         // FIXME: It may occur that the _actorGraph is null.
         // If this is the case and the graph is not acyclic, this
         // method will hang in an infinite while loop.

@@ -81,6 +81,7 @@ public class ASTPtUnaryNode extends ASTPtRootNode {
      *  renaming from identifiers in this node to identifiers in the
      *  given node.
      */
+    @Override
     public boolean isCongruent(ASTPtRootNode node, Map renaming) {
         if (!super.isCongruent(node, renaming)) {
             return false;
@@ -109,6 +110,7 @@ public class ASTPtUnaryNode extends ASTPtRootNode {
 
     /** Traverse this node with the given visitor.
      */
+    @Override
     public void visit(ParseTreeVisitor visitor) throws IllegalActionException {
         visitor.visitUnaryNode(this);
     }

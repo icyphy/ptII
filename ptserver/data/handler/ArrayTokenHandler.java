@@ -57,6 +57,7 @@ public class ArrayTokenHandler implements TokenHandler<ArrayToken> {
      *  @exception IllegalActionException Not thrown in this class.
      *  @see ptserver.data.handler.TokenHandler#convertToBytes(ptolemy.data.Token, java.io.DataOutputStream)
      */
+    @Override
     public void convertToBytes(ArrayToken token, DataOutputStream outputStream)
             throws IOException, IllegalActionException {
 
@@ -66,7 +67,7 @@ public class ArrayTokenHandler implements TokenHandler<ArrayToken> {
         for (int index = 0; index < size; index++) {
             Token elementToken = token.getElement(index);
             TokenParser.getInstance()
-                    .convertToBytes(elementToken, outputStream);
+            .convertToBytes(elementToken, outputStream);
         }
     }
 
@@ -78,6 +79,7 @@ public class ArrayTokenHandler implements TokenHandler<ArrayToken> {
      *  @exception IllegalActionException Not thrown in this class.
      *  @see ptserver.data.handler.TokenHandler#convertToToken(java.io.DataInputStream, Class)
      */
+    @Override
     public ArrayToken convertToToken(DataInputStream inputStream,
             Class<? extends ArrayToken> tokenType) throws IOException,
             IllegalActionException {

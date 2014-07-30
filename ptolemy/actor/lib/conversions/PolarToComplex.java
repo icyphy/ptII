@@ -108,6 +108,7 @@ public class PolarToComplex extends TypedAtomicActor {
      *  input has no token, then do nothing.
      *  @exception IllegalActionException If there is no director.
      */
+    @Override
     public void fire() throws IllegalActionException {
         super.fire();
         double magnitudeValue = ((DoubleToken) magnitude.get(0)).doubleValue();
@@ -123,6 +124,7 @@ public class PolarToComplex extends TypedAtomicActor {
      *  return what the superclass returns (presumably true).
      *  @exception IllegalActionException If there is no director.
      */
+    @Override
     public boolean prefire() throws IllegalActionException {
         if (!magnitude.hasToken(0) || !angle.hasToken(0)) {
             return false;

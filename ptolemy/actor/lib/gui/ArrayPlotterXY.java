@@ -131,6 +131,7 @@ public class ArrayPlotterXY extends Plotter implements SequenceActor {
      *  <i>iterationsPerUpdate</i> parameter works.
      *  @exception IllegalActionException If the parent class throws it.
      */
+    @Override
     public void initialize() throws IllegalActionException {
         super.initialize();
         _iteration = 0;
@@ -146,6 +147,7 @@ public class ArrayPlotterXY extends Plotter implements SequenceActor {
      *   or if the base class throws it.
      *  @return True if it is OK to continue.
      */
+    @Override
     public boolean postfire() throws IllegalActionException {
         int xwidth = x.getWidth();
         int ywidth = y.getWidth();
@@ -205,6 +207,7 @@ public class ArrayPlotterXY extends Plotter implements SequenceActor {
      *  plot so that all the data is visible.
      *  @exception IllegalActionException If the superclass throws it.
      */
+    @Override
     public void wrapup() throws IllegalActionException {
         if (_xtokens != null) {
             for (int i = _xtokens.length - 1; i >= 0; i--) {

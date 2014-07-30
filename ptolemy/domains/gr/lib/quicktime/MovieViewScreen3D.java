@@ -86,7 +86,7 @@ import com.sun.j3d.utils.universe.SimpleUniverse;
  */
 @SuppressWarnings("deprecation")
 public class MovieViewScreen3D extends ViewScreen3D implements StdQTConstants,
-        Errors {
+Errors {
     /** Construct a ViewScreen2D in the given container with the given name.
      *  If the container argument is null, a NullPointerException will
      *  be thrown. If the name argument is null, then the name is set
@@ -132,6 +132,7 @@ public class MovieViewScreen3D extends ViewScreen3D implements StdQTConstants,
 
     /** Fire this actor.
      */
+    @Override
     public void fire() throws IllegalActionException {
         super.fire();
 
@@ -164,6 +165,7 @@ public class MovieViewScreen3D extends ViewScreen3D implements StdQTConstants,
      *  it hasn't been set using the place() method.
      *  @exception IllegalActionException If the base class throws it.
      */
+    @Override
     public void initialize() throws IllegalActionException {
         super.initialize();
         _frameNumber = 0;
@@ -188,7 +190,7 @@ public class MovieViewScreen3D extends ViewScreen3D implements StdQTConstants,
             _file = new QTFile(fileName.asFile());
             _movie = Movie.createMovieFile(_file, kMoviePlayer,
                     createMovieFileDeleteCurFile
-                            | createMovieFileDontCreateResFile);
+                    | createMovieFileDontCreateResFile);
 
             //
             // add content
@@ -236,6 +238,7 @@ public class MovieViewScreen3D extends ViewScreen3D implements StdQTConstants,
     /** Wrapup an execution.  This method completes capture of the
      * video sequence and writes it to the output file.
      */
+    @Override
     public void wrapup() throws IllegalActionException {
         super.wrapup();
 
@@ -266,6 +269,7 @@ public class MovieViewScreen3D extends ViewScreen3D implements StdQTConstants,
      *  @exception IllegalActionException If there is a problem reading
      *  a parameter.
      */
+    @Override
     protected void _createViewScreen() throws IllegalActionException {
         super._createViewScreen();
 
@@ -288,10 +292,12 @@ public class MovieViewScreen3D extends ViewScreen3D implements StdQTConstants,
     private class Painter implements Paintable {
         private Rectangle[] ret = new Rectangle[1];
 
+        @Override
         public void newSizeNotified(QTImageDrawer drawer, Dimension d) {
             ret[0] = new Rectangle(_frameWidth, _frameHeight);
         }
 
+        @Override
         public Rectangle[] paint(Graphics g) {
             Point location = _canvas.getLocationOnScreen();
             _offScreenCanvas.setOffScreenLocation(location);

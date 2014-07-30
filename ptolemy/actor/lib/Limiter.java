@@ -99,6 +99,7 @@ public class Limiter extends Transformer {
      *   if one of the attributes cannot be cloned.
      *  @return A new instance of Sleep.
      */
+    @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         Limiter newObject = (Limiter) super.clone(workspace);
         newObject.input.setTypeAtMost(BaseType.SCALAR);
@@ -112,6 +113,7 @@ public class Limiter extends Transformer {
      *  no input, then produce no output.
      *  @exception IllegalActionException If there is no director.
      */
+    @Override
     public void fire() throws IllegalActionException {
         super.fire();
         if (input.hasToken(0)) {

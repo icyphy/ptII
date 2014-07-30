@@ -136,7 +136,7 @@ Michael Connor (mlconnor&#064;yahoo.com).
 @since Ptolemy II 8.0
 @Pt.ProposedRating Yellow (eal)
 @Pt.AcceptedRating Red (cxh)
-*/
+ */
 @SuppressWarnings("serial")
 public class PtolemyFormEditor extends JPanel {
 
@@ -194,9 +194,9 @@ public class PtolemyFormEditor extends JPanel {
         rowSpanLabel.setDisplayedMnemonic(KeyEvent.VK_R);
 
         _columnInsertAfterButton
-                .setToolTipText("Insert a column after this column");
+        .setToolTipText("Insert a column after this column");
         _columnInsertBeforeButton
-                .setToolTipText("Insert a column before this column");
+        .setToolTipText("Insert a column before this column");
         _columnDeleteButton.setToolTipText("Delete this column");
         _rowInsertBeforeButton.setToolTipText("Insert a row before this row");
         _rowInsertAfterButton.setToolTipText("Insert a row after this row");
@@ -218,8 +218,11 @@ public class PtolemyFormEditor extends JPanel {
         setFormComponent(null);
 
         LayoutConstraintsManager layoutConstraintsManager = LayoutConstraintsManager
-            .getLayoutConstraintsManager(this.getClass().getClassLoader()
-                    .getResourceAsStream("/ptolemy/actor/gui/run/editableLayoutConstraints.xml"));
+                .getLayoutConstraintsManager(this
+                        .getClass()
+                        .getClassLoader()
+                        .getResourceAsStream(
+                                "/ptolemy/actor/gui/run/editableLayoutConstraints.xml"));
 
         JPanel insetsPanel = new JPanel();
         JPanel contentPanel = new JPanel();
@@ -391,7 +394,7 @@ public class PtolemyFormEditor extends JPanel {
 
         updateLayout(newcomponent);
         _updateList();
-        */
+         */
         _updateLayouts();
         repaint();
         return true;
@@ -602,7 +605,7 @@ public class PtolemyFormEditor extends JPanel {
         // we don't want to update the selection interval if nothing changed...
         _table.getSelectionModel().setSelectionInterval(rowIndex, rowIndex);
         _table.getColumnModel().getSelectionModel()
-                .setSelectionInterval(columnIndex, columnIndex);
+        .setSelectionInterval(columnIndex, columnIndex);
 
         if (forceVisible) {
             // let's make sure the cell is in the visible range...
@@ -617,6 +620,7 @@ public class PtolemyFormEditor extends JPanel {
     /** Set up the listeners. */
     private void _setupListeners() {
         _verticalAlignmentCombo.addActionListener(new ActionListener() {
+            @Override
             public void actionPerformed(ActionEvent e) {
                 Component component = _table.getSelectedControl();
                 if (component != null) {
@@ -629,6 +633,7 @@ public class PtolemyFormEditor extends JPanel {
             }
         });
         _horizontalAlignmentCombo.addActionListener(new ActionListener() {
+            @Override
             public void actionPerformed(ActionEvent e) {
                 Component component = _table.getSelectedControl();
                 if (component != null) {
@@ -641,6 +646,7 @@ public class PtolemyFormEditor extends JPanel {
             }
         });
         _topInsetSpinnerModel.addChangeListener(new ChangeListener() {
+            @Override
             public void stateChanged(ChangeEvent e) {
                 if (!_suspendConstraintControlUpdates) {
                     Component component = _table.getSelectedControl();
@@ -654,6 +660,7 @@ public class PtolemyFormEditor extends JPanel {
             }
         });
         _leftInsetSpinnerModel.addChangeListener(new ChangeListener() {
+            @Override
             public void stateChanged(ChangeEvent e) {
                 if (!_suspendConstraintControlUpdates) {
                     Component component = _table.getSelectedControl();
@@ -667,6 +674,7 @@ public class PtolemyFormEditor extends JPanel {
             }
         });
         _rightInsetSpinnerModel.addChangeListener(new ChangeListener() {
+            @Override
             public void stateChanged(ChangeEvent e) {
                 if (!_suspendConstraintControlUpdates) {
                     Component component = _table.getSelectedControl();
@@ -680,13 +688,14 @@ public class PtolemyFormEditor extends JPanel {
             }
         });
         _bottomInsetSpinnerModel.addChangeListener(new ChangeListener() {
+            @Override
             public void stateChanged(ChangeEvent e) {
                 if (!_suspendConstraintControlUpdates) {
                     Component component = _table.getSelectedControl();
                     CellConstraints constraints = _getComponentConstraints(component);
                     Insets insets = new Insets(constraints.insets.top,
                             constraints.insets.left, _bottomInsetSpinnerModel
-                                    .getNumber().intValue(),
+                            .getNumber().intValue(),
                             constraints.insets.right);
                     constraints.insets = insets;
                     updateLayout(component);
@@ -694,6 +703,7 @@ public class PtolemyFormEditor extends JPanel {
             }
         });
         _table.addMouseListener(new MouseAdapter() {
+            @Override
             public void mouseClicked(MouseEvent e) {
                 if (e.getClickCount() == 2) {
                     //Point p = e.getPoint();
@@ -748,26 +758,29 @@ public class PtolemyFormEditor extends JPanel {
             }
         }
 
+        @Override
         public Object getNextValue() {
             if (constraints == null) {
                 return null;
             }
             Integer next = constraints.gridX + constraints.gridWidth - 1 < _containerLayout
                     .getColumnCount() ? Integer
-                    .valueOf(constraints.gridWidth + 1) : null;
-            return next;
+                            .valueOf(constraints.gridWidth + 1) : null;
+                            return next;
         }
 
+        @Override
         public Object getPreviousValue() {
             if (constraints == null) {
                 return null;
             } else {
                 Integer previous = constraints.gridWidth > 1 ? Integer
                         .valueOf(constraints.gridWidth - 1) : null;
-                return previous;
+                        return previous;
             }
         }
 
+        @Override
         public Object getValue() {
             if (constraints == null) {
                 return "";
@@ -776,6 +789,7 @@ public class PtolemyFormEditor extends JPanel {
             }
         }
 
+        @Override
         public void setValue(Object value) {
             if (constraints == null || value == null) {
                 return;
@@ -832,10 +846,12 @@ public class PtolemyFormEditor extends JPanel {
             components.add("Configure:Entity");
         }
 
+        @Override
         public int getSize() {
             return components.size();
         }
 
+        @Override
         public Object getElementAt(int index) {
             return components.get(index);
         }
@@ -843,7 +859,7 @@ public class PtolemyFormEditor extends JPanel {
 
     /** Renderer for the palette items. */
     private static class ComponentPaletteListRenderer extends JLabel implements
-            ListCellRenderer {
+    ListCellRenderer {
         // FindBugs suggests making this class static so as to decrease
         // the size of instances and avoid dangling references.
 
@@ -851,6 +867,7 @@ public class PtolemyFormEditor extends JPanel {
             setOpaque(true);
         }
 
+        @Override
         public Component getListCellRendererComponent(JList list, Object value,
                 int index, boolean isSelected, boolean cellHasFocus) {
             setText(value.toString());
@@ -867,6 +884,7 @@ public class PtolemyFormEditor extends JPanel {
 
     /** Renderer for table cells. */
     private class ConstraintTableCellRenderer extends DefaultTableCellRenderer {
+        @Override
         public Component getTableCellRendererComponent(JTable table,
                 Object value, boolean isSelected, boolean hasFocus, int row,
                 int column) {
@@ -896,6 +914,7 @@ public class PtolemyFormEditor extends JPanel {
             putValue(Action.MNEMONIC_KEY, Integer.valueOf(KeyEvent.VK_C));
         }
 
+        @Override
         public void actionPerformed(ActionEvent e) {
             int columnIndex = _table.getSelectedColumn();
             for (int index = 0; index < _container.getComponentCount(); index++) {
@@ -933,6 +952,7 @@ public class PtolemyFormEditor extends JPanel {
             putValue(Action.MNEMONIC_KEY, Integer.valueOf(KeyEvent.VK_D));
         }
 
+        @Override
         public void actionPerformed(ActionEvent e) {
             int rowIndex = _table.getSelectedRow();
 
@@ -966,24 +986,29 @@ public class PtolemyFormEditor extends JPanel {
 
     /** The data model for the table. */
     private class GridTableModel extends javax.swing.table.AbstractTableModel {
+        @Override
         public int getColumnCount() {
             return _containerLayout != null ? _containerLayout.getColumnCount() + 1
                     : 1;
         }
 
+        @Override
         public int getRowCount() {
             return _containerLayout != null ? _containerLayout.getRowCount() + 1
                     : 1;
         }
 
+        @Override
         public boolean isCellEditable(int row, int col) {
             return (row == 0 || col == 0) && !(row == 0 && col == 0);
         }
 
+        @Override
         public String getColumnName(int col) {
             return col == 0 ? "*" : "" + col;
         }
 
+        @Override
         public void setValueAt(Object aValue, int row, int col) {
             String value = (String) aValue;
             if (row == 0) {
@@ -1008,6 +1033,7 @@ public class PtolemyFormEditor extends JPanel {
             }
         }
 
+        @Override
         public Object getValueAt(int rowIndex, int columnIndex) {
             if (rowIndex == 0 && columnIndex == 0) {
                 return null;
@@ -1035,10 +1061,10 @@ public class PtolemyFormEditor extends JPanel {
                     }
                     if (columnIndex >= constraints.gridX
                             && columnIndex < constraints.gridX
-                                    + constraints.gridWidth
+                            + constraints.gridWidth
                             && rowIndex >= constraints.gridY
                             && rowIndex < constraints.gridY
-                                    + constraints.gridHeight) {
+                            + constraints.gridHeight) {
                         component = thisComponent;
                         if (component == topComponent) {
                             break;
@@ -1062,6 +1088,7 @@ public class PtolemyFormEditor extends JPanel {
             putValue(Action.MNEMONIC_KEY, Integer.valueOf(KeyEvent.VK_L));
         }
 
+        @Override
         public void actionPerformed(ActionEvent e) {
             int column = _table.getSelectedColumn();
             _insertColumn(column);
@@ -1081,6 +1108,7 @@ public class PtolemyFormEditor extends JPanel {
             putValue(Action.MNEMONIC_KEY, Integer.valueOf(KeyEvent.VK_K));
         }
 
+        @Override
         public void actionPerformed(ActionEvent e) {
             int column = _table.getSelectedColumn();
             _insertColumn(column - 1);
@@ -1100,6 +1128,7 @@ public class PtolemyFormEditor extends JPanel {
             putValue(Action.MNEMONIC_KEY, Integer.valueOf(KeyEvent.VK_O));
         }
 
+        @Override
         public void actionPerformed(ActionEvent e) {
             int row = _table.getSelectedRow();
             _insertRow(row);
@@ -1119,6 +1148,7 @@ public class PtolemyFormEditor extends JPanel {
             putValue(Action.MNEMONIC_KEY, Integer.valueOf(KeyEvent.VK_I));
         }
 
+        @Override
         public void actionPerformed(ActionEvent e) {
             int row = _table.getSelectedRow();
             _insertRow(row - 1);
@@ -1138,6 +1168,7 @@ public class PtolemyFormEditor extends JPanel {
             putValue(Action.MNEMONIC_KEY, Integer.valueOf(KeyEvent.VK_P));
         }
 
+        @Override
         public void actionPerformed(ActionEvent e) {
             _container.validate();
             _container.doLayout();
@@ -1168,6 +1199,7 @@ public class PtolemyFormEditor extends JPanel {
             putValue(Action.MNEMONIC_KEY, Integer.valueOf(KeyEvent.VK_D));
         }
 
+        @Override
         public void actionPerformed(ActionEvent e) {
             Component selectedControl = _table.getSelectedControl();
             String controlName = _getComponentName(selectedControl);
@@ -1204,27 +1236,30 @@ public class PtolemyFormEditor extends JPanel {
             }
         }
 
+        @Override
         public Object getNextValue() {
             if (constraints == null) {
                 return null;
             } else {
                 Integer next = constraints.gridY + constraints.gridHeight - 1 < _containerLayout
                         .getRowCount() ? Integer
-                        .valueOf(constraints.gridHeight + 1) : null;
-                return next;
+                                .valueOf(constraints.gridHeight + 1) : null;
+                                return next;
             }
         }
 
+        @Override
         public Object getPreviousValue() {
             if (constraints == null) {
                 return null;
             } else {
                 Integer previous = constraints.gridHeight > 1 ? Integer
                         .valueOf(constraints.gridHeight - 1) : null;
-                return previous;
+                        return previous;
             }
         }
 
+        @Override
         public Object getValue() {
             if (constraints == null) {
                 return "";
@@ -1233,6 +1268,7 @@ public class PtolemyFormEditor extends JPanel {
             }
         }
 
+        @Override
         public void setValue(Object value) {
             if (constraints == null || value == null) {
                 return;

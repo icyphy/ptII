@@ -25,7 +25,7 @@ ENHANCEMENTS, OR MODIFICATIONS.
                                                 COPYRIGHTENDKEY
 
 
-*/
+ */
 package ptdb.common.dto;
 
 import java.util.ArrayList;
@@ -133,6 +133,7 @@ public class XMLDBModel implements Comparable {
      * is returned, it means these two models are equal.
      */
 
+    @Override
     public int compareTo(Object otherModel) {
 
         return _modelName.compareToIgnoreCase(((XMLDBModel) otherModel)
@@ -144,6 +145,7 @@ public class XMLDBModel implements Comparable {
      *  @param xmldbModel The XMLDBModel object to be compared.
      *  @return True if the two XMLDBModels have the same name.
      */
+    @Override
     public boolean equals(Object xmldbModel) {
         // See http://www.technofundo.com/tech/java/equalhash.html
 
@@ -183,6 +185,7 @@ public class XMLDBModel implements Comparable {
     /** Return the hash code for the XMLDBModel object.
      *  @return The hash code for this XMLDBModel object.
      */
+    @Override
     public int hashCode() {
         // See http://www.technofundo.com/tech/java/equalhash.html
         int hashCode = 31;
@@ -355,9 +358,10 @@ public class XMLDBModel implements Comparable {
     /**
      * Get the String representation of this model.
      *
-    * @return The String representation of this model.
-    */
+     * @return The String representation of this model.
+     */
 
+    @Override
     public String toString() {
 
         return super.toString() + "@ModelName:" + _modelName;

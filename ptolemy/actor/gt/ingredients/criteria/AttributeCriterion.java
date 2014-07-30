@@ -105,6 +105,7 @@ public class AttributeCriterion extends Criterion {
      *
      *  @return The array of elements.
      */
+    @Override
     public GTIngredientElement[] getElements() {
         return _ELEMENTS;
     }
@@ -115,6 +116,7 @@ public class AttributeCriterion extends Criterion {
      *  @return The value.
      *  @see #setValue(int, Object)
      */
+    @Override
     public Object getValue(int index) {
         switch (index) {
         case 0:
@@ -133,6 +135,7 @@ public class AttributeCriterion extends Criterion {
      *  @return A string that describes the values of all the elements.
      *  @see #setValues(String)
      */
+    @Override
     public String getValues() {
         StringBuffer buffer = new StringBuffer();
         _encodeStringField(buffer, 0, _attributeName.get());
@@ -171,6 +174,7 @@ public class AttributeCriterion extends Criterion {
      *  @param object The object.
      *  @return true if the object matches.
      */
+    @Override
     public boolean match(NamedObj object) {
         for (Object attributeObject : object.attributeList()) {
             Attribute attribute = (Attribute) attributeObject;
@@ -190,9 +194,9 @@ public class AttributeCriterion extends Criterion {
                     VariableScope scope = new VariableScope(object);
                     try {
                         ASTPtRootNode tree = new PtParser()
-                                .generateParseTree(expression);
+                        .generateParseTree(expression);
                         Token token = new ParseTreeEvaluator()
-                                .evaluateParseTree(tree, scope);
+                        .evaluateParseTree(tree, scope);
 
                         if (isAttributeTypeEnabled()) {
                             Type ruleType = _attributeType.getToken().getType();
@@ -228,6 +232,7 @@ public class AttributeCriterion extends Criterion {
      *  @param value The value.
      *  @see #getValue(int)
      */
+    @Override
     public void setValue(int index, Object value) {
         switch (index) {
         case 0:
@@ -248,6 +253,7 @@ public class AttributeCriterion extends Criterion {
      *   elements.
      *  @see #getValues()
      */
+    @Override
     public void setValues(String values) {
         FieldIterator fieldIterator = new FieldIterator(values);
         _attributeName.set(_decodeStringField(0, fieldIterator));
@@ -259,6 +265,7 @@ public class AttributeCriterion extends Criterion {
      *
      *  @exception ValidationException If some elements are invalid.
      */
+    @Override
     public void validate() throws ValidationException {
         if (isAttributeNameEnabled()) {
             if (_attributeName.get().equals("")) {
@@ -300,9 +307,9 @@ public class AttributeCriterion extends Criterion {
     /** The elements.
      */
     private static final CriterionElement[] _ELEMENTS = {
-            new StringCriterionElement("name", false, false, false),
-            new ChoiceCriterionElement("type", true, false, true, true),
-            new StringCriterionElement("value", true, false, true) };
+        new StringCriterionElement("name", false, false, false),
+        new ChoiceCriterionElement("type", true, false, true, true),
+        new StringCriterionElement("value", true, false, true) };
 
     /** Value of the attributeName element.
      */

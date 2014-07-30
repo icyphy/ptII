@@ -80,6 +80,7 @@ public class SideEffectFreeInvocationRemover extends SceneTransformer {
         return "";
     }
 
+    @Override
     protected void internalTransform(String phaseName, Map options) {
         System.out.println("SideEffectFreeInvocationRemover.internalTransform("
                 + phaseName + ", " + options + ")");
@@ -241,11 +242,12 @@ public class SideEffectFreeInvocationRemover extends SceneTransformer {
 
             SootMethod classMethod = null;
             try {
-                classMethod = theClass.getMethod(method
-                        .getSubSignature());
+                classMethod = theClass.getMethod(method.getSubSignature());
                 forcedReachableMethodSet.add(classMethod);
             } catch (Exception ex) {
-                System.err.println("SideEffectFreeInvocationRemover: could not add " + classMethod + " to the reachable method set.");
+                System.err
+                        .println("SideEffectFreeInvocationRemover: could not add "
+                                + classMethod + " to the reachable method set.");
             }
         }
 

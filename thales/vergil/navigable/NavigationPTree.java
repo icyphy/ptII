@@ -84,6 +84,7 @@ public class NavigationPTree extends PTree {
             _jTree = sptree;
         }
 
+        @Override
         public void valueChanged(TreeSelectionEvent e) {
             NamedObj obj = (NamedObj) e.getPath().getLastPathComponent();
 
@@ -91,9 +92,9 @@ public class NavigationPTree extends PTree {
                 if (obj instanceof CompositeEntity) {
                     try {
                         SingleWindowApplication._mainFrame.getConfiguration()
-                                .openModel(obj);
+                        .openModel(obj);
                         ((NavigationTreeModel) _jTree.getModel())
-                                .setSelectedItem(_jTree.getSelectionPath());
+                        .setSelectedItem(_jTree.getSelectionPath());
                     } catch (IllegalActionException e1) {
                         e1.printStackTrace();
                     } catch (NameDuplicationException e1) {
@@ -123,6 +124,7 @@ public class NavigationPTree extends PTree {
         /* (non-Javadoc)
          * @see javax.swing.event.TreeExpansionListener#treeCollapsed(javax.swing.event.TreeExpansionEvent)
          */
+        @Override
         public void treeCollapsed(TreeExpansionEvent event) {
             TreePath aPath = event.getPath();
 
@@ -135,6 +137,7 @@ public class NavigationPTree extends PTree {
         /* (non-Javadoc)
          * @see javax.swing.event.TreeExpansionListener#treeExpanded(javax.swing.event.TreeExpansionEvent)
          */
+        @Override
         public void treeExpanded(TreeExpansionEvent event) {
             TreePath aPath = event.getPath();
 

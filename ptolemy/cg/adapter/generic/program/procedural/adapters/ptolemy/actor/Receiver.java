@@ -113,6 +113,7 @@ public abstract class Receiver extends ProgramCodeGeneratorAdapter {
     /** Get the corresponding component.
      *  @return the component that corresponds with this receiver.
      */
+    @Override
     public ptolemy.actor.Receiver getComponent() {
         return (ptolemy.actor.Receiver) _component;
     }
@@ -120,6 +121,7 @@ public abstract class Receiver extends ProgramCodeGeneratorAdapter {
     /** Return the name of this receiver.
      *  @return the name of this receiver.
      */
+    @Override
     public String getName() {
         if (_name == null) {
             IOPort port = getComponent().getContainer();
@@ -152,7 +154,7 @@ public abstract class Receiver extends ProgramCodeGeneratorAdapter {
      */
     abstract protected String _generateTypeConvertStatement(
             ProgramCodeGeneratorAdapter.Channel source)
-            throws IllegalActionException;
+                    throws IllegalActionException;
 
     /** Given a String that is an assignment operation, return the
      *  right hand side (the source).

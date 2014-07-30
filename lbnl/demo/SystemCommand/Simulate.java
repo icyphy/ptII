@@ -1,7 +1,7 @@
 // Actor that calls a system command.
 
 /*
-********************************************************************
+ ********************************************************************
 Copyright Notice
 ----------------
 
@@ -73,8 +73,8 @@ to install, use, modify, prepare derivative works, incorporate into
 other computer software, distribute, and sublicense such enhancements or
 derivative works thereof, in binary and source code form.
 
-********************************************************************
-*/
+ ********************************************************************
+ */
 
 package lbnl.demo.SystemCommand;
 
@@ -85,22 +85,22 @@ import java.io.PrintStream;
 import ptolemy.util.StringUtilities;
 
 /** Class that will be called by the SystemCommand actor using
-  * a system call to the java virtual machine.
-  *
-  * This class is used by the Ptolemy example file to demonstrate
-  * how to call a system command using the SystemCommand actor.
-  * The class expects three arguments: The first argument is time,
-  * and the second and third argument are x1 and x2.
-  * All three arguments are written to the standard output
-  * stream. In addition, x1 and x2 are written to the files
-  * outputX1.txt and outputX2.txt
-  *
-  * @author Michael Wetter
-  * @version $Id$
-  * @since Ptolemy II 8.0
-  * @Pt.ProposedRating Red (cxh)
-  * @Pt.AcceptedRating Red (cxh)
-  */
+ * a system call to the java virtual machine.
+ *
+ * This class is used by the Ptolemy example file to demonstrate
+ * how to call a system command using the SystemCommand actor.
+ * The class expects three arguments: The first argument is time,
+ * and the second and third argument are x1 and x2.
+ * All three arguments are written to the standard output
+ * stream. In addition, x1 and x2 are written to the files
+ * outputX1.txt and outputX2.txt
+ *
+ * @author Michael Wetter
+ * @version $Id$
+ * @since Ptolemy II 8.0
+ * @Pt.ProposedRating Red (cxh)
+ * @Pt.AcceptedRating Red (cxh)
+ */
 class Simulate {
     public static void main(String args[]) {
         // Make sure that we have three arguments

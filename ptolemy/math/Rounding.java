@@ -179,6 +179,7 @@ public abstract class Rounding implements Cloneable {
     /** Return this, that is, return the reference to this object.
      *  @return This Rounding.
      */
+    @Override
     public Object clone() {
         return this;
     }
@@ -189,6 +190,7 @@ public abstract class Rounding implements Cloneable {
      *  @return True if the argument represents the same Rounding as
      *   this object; false otherwise.
      */
+    @Override
     public boolean equals(Object object) {
         // since Rounding is a type safe enumeration, can use == to
         // test equality.
@@ -224,6 +226,7 @@ public abstract class Rounding implements Cloneable {
     }
 
     /** Return a hash code value for this object.    */
+    @Override
     public int hashCode() {
         return _name.hashCode();
     }
@@ -397,6 +400,7 @@ public abstract class Rounding implements Cloneable {
     /** Return the string representation of this rounding.
      *  @return A String.
      */
+    @Override
     public String toString() {
         return _name;
     }
@@ -466,6 +470,7 @@ public abstract class Rounding implements Cloneable {
             super("ceiling");
         }
 
+        @Override
         public BigInteger round(BigDecimal dec) {
             return roundCeiling(dec).toBigInteger();
         }
@@ -477,6 +482,7 @@ public abstract class Rounding implements Cloneable {
             super("down");
         }
 
+        @Override
         public BigInteger round(BigDecimal dec) {
             return roundDown(dec).toBigInteger();
         }
@@ -489,6 +495,7 @@ public abstract class Rounding implements Cloneable {
             _addRounding(this, "truncate");
         }
 
+        @Override
         public BigInteger round(BigDecimal dec) {
             return roundFloor(dec).toBigInteger();
         }
@@ -502,6 +509,7 @@ public abstract class Rounding implements Cloneable {
             _addRounding(this, "round"); // For compatibility
         }
 
+        @Override
         public BigInteger round(BigDecimal dec) {
             return roundHalfCeiling(dec).toBigInteger();
         }
@@ -513,6 +521,7 @@ public abstract class Rounding implements Cloneable {
             super("half_down");
         }
 
+        @Override
         public BigInteger round(BigDecimal dec) {
             return roundHalfDown(dec).toBigInteger();
         }
@@ -525,6 +534,7 @@ public abstract class Rounding implements Cloneable {
             _addRounding(this, "convergent");
         }
 
+        @Override
         public BigInteger round(BigDecimal dec) {
             return roundHalfEven(dec).toBigInteger();
         }
@@ -536,6 +546,7 @@ public abstract class Rounding implements Cloneable {
             super("half_floor");
         }
 
+        @Override
         public BigInteger round(BigDecimal dec) {
             return roundHalfFloor(dec).toBigInteger();
         }
@@ -548,6 +559,7 @@ public abstract class Rounding implements Cloneable {
             _addRounding(this, "unnecessary");
         }
 
+        @Override
         public BigInteger round(BigDecimal dec) {
             return roundHalfUp(dec).toBigInteger();
         }
@@ -561,6 +573,7 @@ public abstract class Rounding implements Cloneable {
             _addRounding(this, "unknown");
         }
 
+        @Override
         public BigInteger round(BigDecimal dec) {
             return roundUp(dec).toBigInteger();
         }

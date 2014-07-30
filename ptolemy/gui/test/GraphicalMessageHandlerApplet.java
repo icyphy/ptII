@@ -55,18 +55,20 @@ public class GraphicalMessageHandlerApplet extends BasicJApplet {
      *  by the browser or appletviewer to inform this applet that
      *  it should clean up.
      */
+    @Override
     public void destroy() {
         super.destroy();
         // Note: we used to call manager.terminate() here to get rid
         // of a lingering browser problem
         System.out
-                .println("FIXME: Need to destroy GraphicalMessageHandlerApplet");
+        .println("FIXME: Need to destroy GraphicalMessageHandlerApplet");
         stop();
     }
 
     /** Return a string describing this applet.
      *  @return A string describing the applet.
      */
+    @Override
     public String getAppletInfo() {
         return "Ptolemy applet that brings up an error message "
                 + VersionAttribute.CURRENT_VERSION
@@ -81,6 +83,7 @@ public class GraphicalMessageHandlerApplet extends BasicJApplet {
      *  the first time that the start() method is called.
      *  In this class, this invokes {@link VergilApplication#main(String[])}
      */
+    @Override
     public void init() {
         super.init();
         try {
@@ -115,6 +118,7 @@ public class GraphicalMessageHandlerApplet extends BasicJApplet {
      *  In this base class, this method calls the stop() method
      *  of the manager. If there is no manager, do nothing.
      */
+    @Override
     public void stop() {
         super.stop();
         System.out.println("FIXME: Need to stop GraphicalMessageHandlerApplet");

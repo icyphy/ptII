@@ -63,6 +63,6 @@ public interface InstanceOpener {
      *   should not be thrown).
      */
     public void openAnInstance(NamedObj entity) throws IllegalActionException,
-            NameDuplicationException;
+    NameDuplicationException;
 
 }

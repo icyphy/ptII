@@ -55,7 +55,7 @@ See {@link ptolemy.domains.sdf.optimize.OptimizingSDFDirector} for more informat
 @since Ptolemy II 10.0
 @Pt.ProposedRating Red (mgeilen)
 @Pt.AcceptedRating Red ()
-*/
+ */
 public interface BufferingProfile {
     /****
      * returns the number of buffers required upon calling shared fire in excess of

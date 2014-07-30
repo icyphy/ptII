@@ -109,6 +109,7 @@ public class PullSupplier extends Sink {
      *  @exception IllegalActionException If any of the above actions
      *  failted.
      */
+    @Override
     public void initialize() throws IllegalActionException {
         super.initialize();
 
@@ -138,6 +139,7 @@ public class PullSupplier extends Sink {
      *  action fails due to network problems, transaction errors,
      *  or any remote exceptions.
      */
+    @Override
     public void fire() throws IllegalActionException {
         super.fire();
         if (input.hasToken(0)) {
@@ -154,6 +156,7 @@ public class PullSupplier extends Sink {
      *  port has token, otherwise return false.
      *  @exception IllegalActionException should never be throwed
      */
+    @Override
     public boolean prefire() throws IllegalActionException {
         boolean returnValue = super.prefire();
         if (!_pullIsWaiting) {
@@ -197,6 +200,7 @@ public class PullSupplier extends Sink {
     /** Request that execution of the current iteration stop as soon
      *  as possible. Wake up the waiting if there is any.
      */
+    @Override
     public void stop() {
         if (_prefireIsWaiting) {
             synchronized (_lock) {
@@ -284,7 +288,7 @@ public class PullSupplier extends Sink {
     ///////////////////////////////////////////////////////////////////
     ////                         inner class                       ////
     @SuppressWarnings("serial")
-        private class pullSupplier extends _pullSupplierImplBase {
+    private class pullSupplier extends _pullSupplierImplBase {
         /**
          * Construct a pullSupplier.
          */
@@ -299,6 +303,7 @@ public class PullSupplier extends Sink {
          * thread will wait until there is data returned.
          *
          */
+        @Override
         public org.omg.CORBA.Any pull() throws CorbaIllegalActionException {
             try {
                 if (_lastReadToken == null) {

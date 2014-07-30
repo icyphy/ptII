@@ -62,6 +62,7 @@ import ptolemy.kernel.util.NameDuplicationException;
  @Pt.AcceptedRating Yellow (yuhong)
  @deprecated Use Clock instead.
  */
+@Deprecated
 public class VariableClock extends Clock {
     /** Construct an actor with the specified container and name.
      *  @param container The container.
@@ -100,6 +101,7 @@ public class VariableClock extends Clock {
      *  @exception IllegalActionException If the input is not positive,
      *   or if the base class throws it.
      */
+    @Override
     public void fire() throws IllegalActionException {
         // FIXME
         //double time = getDirector().getModelTime().getDoubleValue();

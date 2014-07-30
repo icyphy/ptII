@@ -109,6 +109,7 @@ public class TokenEffigy extends Effigy {
      *  @exception IllegalActionException If the URL cannot be read or
      *   if the data is malformed.
      */
+    @Override
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         // The superclass does some handling of the url attribute.
@@ -233,6 +234,7 @@ public class TokenEffigy extends Effigy {
      *  @param file The file to write to, or null to write to standard out.
      *  @exception IOException If the write fails.
      */
+    @Override
     public void writeFile(File file) throws IOException {
         Writer writer = null;
 
@@ -290,6 +292,7 @@ public class TokenEffigy extends Effigy {
          *  capable of creating an effigy without a URL being specified.
          *  @return False.
          */
+        @Override
         public boolean canCreateBlankEffigy() {
             return false;
         }
@@ -306,6 +309,7 @@ public class TokenEffigy extends Effigy {
          *   does not have a recognized extension.
          *  @exception Exception If the URL cannot be read.
          */
+        @Override
         public Effigy createEffigy(CompositeEntity container, URL base,
                 URL input) throws Exception {
             if (input != null) {

@@ -48,6 +48,7 @@ import javax.swing.ImageIcon;
  * @author John Reekie
  * @version $Id$
  */
+@Deprecated
 public class ApplicationResources extends ResourceBundle {
     /** The class that is to be used to look up URL resources
      * from this bundle.
@@ -135,6 +136,7 @@ public class ApplicationResources extends ResourceBundle {
 
     /** Get an object from a ResourceBundle.
      */
+    @Override
     protected Object handleGetObject(String key)
             throws MissingResourceException {
         return _delegate.getObject(key);
@@ -142,6 +144,7 @@ public class ApplicationResources extends ResourceBundle {
 
     /** Get an enumeration over the keys
      */
+    @Override
     public Enumeration getKeys() {
         return _delegate.getKeys();
     }

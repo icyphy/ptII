@@ -86,6 +86,7 @@ public class ActiveActorManager extends PtolemyThread {
     /** Iterate the actor until its postfire() returns false, or the
      *  director is requested to stop.
      */
+    @Override
     public void run() {
         boolean iterate = true;
 
@@ -171,7 +172,9 @@ public class ActiveActorManager extends PtolemyThread {
             try {
                 _period = ((IntToken) p.getToken()).intValue();
             } catch (Exception ex) {
-                System.err.println("ActiveActorManager, failed to parse the period parameter: " + ex);
+                System.err
+                        .println("ActiveActorManager, failed to parse the period parameter: "
+                                + ex);
             }
         } else {
             _period = (int) _director._interval;

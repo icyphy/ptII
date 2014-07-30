@@ -25,7 +25,7 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 Ptolemy II includes the work of others, to see those copyrights, follow
 the copyright link on the splash page or see copyright.htm.
-*/
+ */
 /* Demonstration of an attribute that uses Dijkstra's algorith to find
  * the shorted path between two actors in a model.
  */
@@ -195,6 +195,7 @@ public class ShortestPathFinder extends Attribute {
             super(container, name);
         }
 
+        @Override
         public void createEditor(NamedObj object, Frame parent) {
             // Get the entities of the model.
             List<Entity> entitiesList = ((CompositeEntity) ShortestPathFinder.this

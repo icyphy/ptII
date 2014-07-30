@@ -154,6 +154,7 @@ public class TaskReceiver extends Source {
      *  @param attribute The attribute that changed.
      *  @exception IllegalActionException Not thrown in this base class.
      */
+    @Override
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         if (attribute == blocking) {
@@ -171,6 +172,7 @@ public class TaskReceiver extends Source {
      *  @exception IllegalActionException If any of the above actions
      *  failted.
      */
+    @Override
     public void initialize() throws IllegalActionException {
         super.initialize();
 
@@ -203,6 +205,7 @@ public class TaskReceiver extends Source {
      *  action fails due to network problems, transaction errors,
      *  or any remote exceptions.
      */
+    @Override
     public void fire() throws IllegalActionException {
         super.fire();
         for (int i = 0; i < trigger.getWidth(); i++) {
@@ -247,6 +250,7 @@ public class TaskReceiver extends Source {
      *  as possible. Wake up the waiting if there is any and unregister
      *  the Client object from the coordinator.
      */
+    @Override
     public void stop() {
         if (_coordinator != null) {
             try {
@@ -311,8 +315,8 @@ public class TaskReceiver extends Source {
 
             if (_coordinator != null) {
                 _coordinator
-                        .register(((StringToken) thisClientName.getToken())
-                                .stringValue(), _client);
+                .register(((StringToken) thisClientName.getToken())
+                        .stringValue(), _client);
             }
 
             //registe the consumer with the given name
@@ -358,7 +362,7 @@ public class TaskReceiver extends Source {
      * Coordinator.idl.
      */
     @SuppressWarnings("serial")
-        private class Client extends _ClientImplBase {
+    private class Client extends _ClientImplBase {
         /**
          * Construct a pushConsumer.
          */
@@ -373,6 +377,7 @@ public class TaskReceiver extends Source {
          * for new data, then wake up fire(), otherwise call fireAt.
          * //FIXME: need to deal with overwrite if the old data is not consumed.
          */
+        @Override
         public void push(org.omg.CORBA.Any data)
                 throws CorbaIllegalActionException {
             if (_debugging) {
@@ -416,6 +421,7 @@ public class TaskReceiver extends Source {
         /* (non-Javadoc)
          * @see ptolemy.actor.corba.CoordinatorUtil.ClientOperations#start()
          */
+        @Override
         public void start() {
             // TODO Auto-generated method stub
         }
@@ -423,6 +429,7 @@ public class TaskReceiver extends Source {
         /* (non-Javadoc)
          * @see ptolemy.actor.corba.CoordinatorUtil.ClientOperations#stop()
          */
+        @Override
         public void stop() {
         }
     }

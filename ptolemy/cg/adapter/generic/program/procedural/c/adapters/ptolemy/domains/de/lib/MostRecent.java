@@ -69,6 +69,7 @@ public class MostRecent extends NamedProgramCodeGeneratorAdapter {
      * @return A string representing the Initialize C code for this actor
      * @exception IllegalActionException If illegal macro names are found.
      */
+    @Override
     public String generateInitializeCode() throws IllegalActionException {
         CodeStream codeStream = _templateParser.getCodeStream();
         codeStream.clear();
@@ -115,6 +116,7 @@ public class MostRecent extends NamedProgramCodeGeneratorAdapter {
      * @return A string representing the preFire C code for this actor
      * @exception IllegalActionException If illegal macro names are found.
      */
+    @Override
     public String generatePrefireCode() throws IllegalActionException {
         CodeStream codeStream = _templateParser.getCodeStream();
         codeStream.clear();
@@ -143,6 +145,7 @@ public class MostRecent extends NamedProgramCodeGeneratorAdapter {
      * @return A string representing the wrapup C code for this actor
      * @exception IllegalActionException If illegal macro names are found.
      */
+    @Override
     public String generateWrapupCode() throws IllegalActionException {
         CodeStream codeStream = _templateParser.getCodeStream();
         codeStream.clear();

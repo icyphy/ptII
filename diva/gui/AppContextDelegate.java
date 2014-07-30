@@ -58,6 +58,7 @@ public class AppContextDelegate implements AppContext {
     /**
      * Returns the contentPane of the delegate.
      */
+    @Override
     public Container getContentPane() {
         return _delegate.getContentPane();
     }
@@ -72,6 +73,7 @@ public class AppContextDelegate implements AppContext {
     /**
      * Returns the glassPane of the delegate.
      */
+    @Override
     public Component getGlassPane() {
         return _delegate.getGlassPane();
     }
@@ -79,6 +81,7 @@ public class AppContextDelegate implements AppContext {
     /**
      * Returns the layeredPane of the delegate.
      */
+    @Override
     public JLayeredPane getLayeredPane() {
         return _delegate.getLayeredPane();
     }
@@ -86,6 +89,7 @@ public class AppContextDelegate implements AppContext {
     /**
      * Returns the rootPane of the delegate.
      */
+    @Override
     public JRootPane getRootPane() {
         return _delegate.getRootPane();
     }
@@ -93,6 +97,7 @@ public class AppContextDelegate implements AppContext {
     /**
      * Return the title of the context.
      */
+    @Override
     public String getTitle() {
         return _delegate.getTitle();
     }
@@ -101,6 +106,7 @@ public class AppContextDelegate implements AppContext {
      * Set the content pane of the delegate.  The "contentPane" is the
      * primary container for application specific components.
      */
+    @Override
     public void setContentPane(Container contentPane) {
         _delegate.setContentPane(contentPane);
     }
@@ -110,6 +116,7 @@ public class AppContextDelegate implements AppContext {
      * first child of the rootPane and the rootPanes layout manager
      * ensures that it's always as big as the rootPane.
      */
+    @Override
     public void setGlassPane(Component glassPane) {
         _delegate.setGlassPane(glassPane);
     }
@@ -118,6 +125,7 @@ public class AppContextDelegate implements AppContext {
      * Set the layered pane of the delegate.  A Container that manages
      * the contentPane and in some cases a menu bar
      */
+    @Override
     public void setLayeredPane(JLayeredPane layeredPane) {
         _delegate.setLayeredPane(layeredPane);
     }
@@ -125,6 +133,7 @@ public class AppContextDelegate implements AppContext {
     /**
      * Set the exit action of the delegate.
      */
+    @Override
     public void setExitAction(Action action) {
         _delegate.setExitAction(action);
     }
@@ -132,6 +141,7 @@ public class AppContextDelegate implements AppContext {
     /**
      * Return the exit action of the delegate.
      */
+    @Override
     public Action getExitAction() {
         return _delegate.getExitAction();
     }
@@ -139,6 +149,7 @@ public class AppContextDelegate implements AppContext {
     /**
      * Set the image icon of the delegate.
      */
+    @Override
     public void setIconImage(Image image) {
         _delegate.setIconImage(image);
     }
@@ -146,6 +157,7 @@ public class AppContextDelegate implements AppContext {
     /**
      * Return the image icon of the delegate.
      */
+    @Override
     public Image getIconImage() {
         return _delegate.getIconImage();
     }
@@ -153,6 +165,7 @@ public class AppContextDelegate implements AppContext {
     /**
      * Return the menu bar of the delegate.
      */
+    @Override
     public JMenuBar getJMenuBar() {
         return _delegate.getJMenuBar();
     }
@@ -160,6 +173,7 @@ public class AppContextDelegate implements AppContext {
     /**
      * Set the menu bar of the delegate.
      */
+    @Override
     public void setJMenuBar(JMenuBar menu) {
         _delegate.setJMenuBar(menu);
     }
@@ -167,6 +181,7 @@ public class AppContextDelegate implements AppContext {
     /**
      * Show the status in the delegate.
      */
+    @Override
     public void showStatus(String status) {
         _delegate.showStatus(status);
     }
@@ -174,6 +189,7 @@ public class AppContextDelegate implements AppContext {
     /**
      * Set the size in the delegate.
      */
+    @Override
     public void setSize(int w, int h) {
         _delegate.setSize(w, h);
     }
@@ -182,6 +198,7 @@ public class AppContextDelegate implements AppContext {
      * Set the title of the context.  This has no significance in an
      * applet context.
      */
+    @Override
     public void setTitle(String title) {
         _delegate.setTitle(title);
     }
@@ -189,6 +206,7 @@ public class AppContextDelegate implements AppContext {
     /**
      * Invoke the delegate's setvisible().
      */
+    @Override
     public void setVisible(boolean visible) {
         _delegate.setVisible(visible);
     }
@@ -196,6 +214,7 @@ public class AppContextDelegate implements AppContext {
     /**
      * Invoke the delegate's isvisible().
      */
+    @Override
     public boolean isVisible() {
         return _delegate.isVisible();
     }
@@ -203,6 +222,7 @@ public class AppContextDelegate implements AppContext {
     /**
      * Call makeComponent() on the delegate.
      */
+    @Override
     public Component makeComponent() {
         return _delegate.makeComponent();
     }

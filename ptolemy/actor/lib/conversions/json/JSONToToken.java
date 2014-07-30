@@ -84,7 +84,7 @@ the least upper bound of the entire collection.</p>
 @since Ptolemy II 10.0
 @Pt.ProposedRating Yellow (marten)
 @Pt.AcceptedRating Red (chx)
-*/
+ */
 public class JSONToToken extends Converter {
 
     /** Construct a JSONToToken actor with the given container and name.
@@ -109,6 +109,7 @@ public class JSONToToken extends Converter {
      *  @exception IllegalActionException If the input string does not
      *  contain properly formatted JSON.
      */
+    @Override
     public void fire() throws IllegalActionException {
         super.fire();
         output.send(0, _parseJSON(((StringToken) input.get(0)).stringValue()));
@@ -118,6 +119,7 @@ public class JSONToToken extends Converter {
      *  what the superclass returns (presumably true).
      *  @exception IllegalActionException If there is no director.
      */
+    @Override
     public boolean prefire() throws IllegalActionException {
         if (!input.hasToken(0)) {
             return false;
@@ -169,7 +171,7 @@ public class JSONToToken extends Converter {
      *  Token.
      */
     private Token _mapValueToToken(Object value) throws IllegalActionException,
-            JSONException {
+    JSONException {
 
         // The value can be any of these types:
         // Boolean, Number, String, or the JSONObject.NULL
@@ -215,7 +217,7 @@ public class JSONToToken extends Converter {
      *  ArrayToken.
      */
     private ArrayToken _scanJSONArray(JSONArray array) throws JSONException,
-            IllegalActionException {
+    IllegalActionException {
         ArrayList<Token> values = new ArrayList<Token>();
 
         Object value;

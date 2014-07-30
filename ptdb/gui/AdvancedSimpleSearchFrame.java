@@ -25,7 +25,7 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 Ptolemy II includes the work of others, to see those copyrights, follow
 the copyright link on the splash page or see copyright.htm.
-*/
+ */
 /*
  *
  */
@@ -89,34 +89,41 @@ public class AdvancedSimpleSearchFrame extends JFrame {
 
         addWindowListener(new WindowListener() {
 
+            @Override
             public void windowOpened(WindowEvent e) {
                 // Do nothing.
 
             }
 
+            @Override
             public void windowIconified(WindowEvent e) {
                 // Do nothing.
             }
 
+            @Override
             public void windowDeiconified(WindowEvent e) {
                 // Do nothing.
             }
 
+            @Override
             public void windowDeactivated(WindowEvent e) {
                 // Do nothing.
             }
 
+            @Override
             public void windowClosing(WindowEvent e) {
                 AdvancedSimpleSearchFrame.this.setVisible(false);
                 _parentFrame.setEnabled(true);
 
             }
 
+            @Override
             public void windowClosed(WindowEvent e) {
                 AdvancedSimpleSearchFrame.this.setVisible(false);
                 _parentFrame.setEnabled(true);
             }
 
+            @Override
             public void windowActivated(WindowEvent e) {
                 // Do nothing.
             }
@@ -151,6 +158,7 @@ public class AdvancedSimpleSearchFrame extends JFrame {
         doneButtone.setHorizontalTextPosition(SwingConstants.CENTER);
 
         doneButtone.addActionListener(new ActionListener() {
+            @Override
             public void actionPerformed(ActionEvent event) {
 
                 try {
@@ -231,7 +239,7 @@ public class AdvancedSimpleSearchFrame extends JFrame {
      * @exception IllegalActionException Thrown if the intend action is illegal.
      */
     private boolean _isValid() throws NameDuplicationException,
-            IllegalActionException {
+    IllegalActionException {
 
         if (_attributesListPanel.getAttributeCount() == 0
                 && _attributesListPanel.getModelName().trim().isEmpty()) {
@@ -249,7 +257,7 @@ public class AdvancedSimpleSearchFrame extends JFrame {
                 JOptionPane.showMessageDialog(this,
                         "The model name should only "
                                 + "contain letters and numbers.",
-                        "Search Error", JOptionPane.INFORMATION_MESSAGE, null);
+                                "Search Error", JOptionPane.INFORMATION_MESSAGE, null);
 
                 return false;
             }
@@ -261,7 +269,7 @@ public class AdvancedSimpleSearchFrame extends JFrame {
             JOptionPane.showMessageDialog(this,
                     "The search criteria cannot contain more"
                             + " than one instance " + "of the same attribute.",
-                    "Search Error", JOptionPane.INFORMATION_MESSAGE, null);
+                            "Search Error", JOptionPane.INFORMATION_MESSAGE, null);
 
             return false;
 

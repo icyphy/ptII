@@ -117,6 +117,7 @@ public class Slicer extends Transformer {
      *  @exception CloneNotSupportedException If a derived class contains
      *   an attribute that cannot be cloned.
      */
+    @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         Slicer newObject = (Slicer) super.clone(workspace);
 
@@ -128,6 +129,7 @@ public class Slicer extends Transformer {
     /** Consume the inputs and produce the corresponding symbol.
      *  @exception IllegalActionException If a runtime type error occurs.
      */
+    @Override
     public void fire() throws IllegalActionException {
         super.fire();
 
@@ -160,6 +162,7 @@ public class Slicer extends Transformer {
      *  @exception IllegalActionException If the length of the table is not
      *   a power of two.
      */
+    @Override
     public void preinitialize() throws IllegalActionException {
         super.preinitialize();
 

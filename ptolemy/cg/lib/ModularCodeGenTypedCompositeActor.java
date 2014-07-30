@@ -27,8 +27,8 @@
  */
 package ptolemy.cg.lib;
 
-import java.lang.reflect.Method;
 import java.io.IOException;
+import java.lang.reflect.Method;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.util.HashMap;
@@ -72,7 +72,8 @@ A TypedCompositeActor with Lazy evaluation for Modular code generation.
  @Pt.ProposedRating Red (rodiers)
  @Pt.AcceptedRating Red (rodiers)
  */
-public class ModularCodeGenTypedCompositeActor extends ModularCodeGenLazyTypedCompositeActor {
+public class ModularCodeGenTypedCompositeActor extends
+        ModularCodeGenLazyTypedCompositeActor {
 
     /** Construct a library in the default workspace with no container
      *  and an empty string as its name. Add the library to the
@@ -83,8 +84,8 @@ public class ModularCodeGenTypedCompositeActor extends ModularCodeGenLazyTypedCo
      *  @exception NameDuplicationException If the container already has an
      *   actor with this name.
      */
-    public ModularCodeGenTypedCompositeActor()
-            throws IllegalActionException, NameDuplicationException {
+    public ModularCodeGenTypedCompositeActor() throws IllegalActionException,
+            NameDuplicationException {
         super();
         _init();
     }
@@ -133,6 +134,7 @@ public class ModularCodeGenTypedCompositeActor extends ModularCodeGenLazyTypedCo
      *  @exception IllegalActionException If the change is not acceptable
      *   to this container.
      */
+    @Override
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         super.attributeChanged(attribute);
@@ -146,7 +148,7 @@ public class ModularCodeGenTypedCompositeActor extends ModularCodeGenLazyTypedCo
                 List<?> entities = entityList(ModularCodeGenTypedCompositeActor.class);
                 for (Object entity : entities) {
                     ((ModularCodeGenTypedCompositeActor) entity).recompileHierarchy
-                            .setToken(new BooleanToken(true));
+                    .setToken(new BooleanToken(true));
                 }
             }
             //        } else if (attribute == recompileThisLevel) {
@@ -168,6 +170,7 @@ public class ModularCodeGenTypedCompositeActor extends ModularCodeGenLazyTypedCo
      *  This method is read-synchronized on the workspace.
      *  @return An unmodifiable list of Port objects.
      */
+    @Override
     public List portList() {
         Profile profile = _getProfile();
         if (_USE_PROFILE && profile != null) {
@@ -226,13 +229,14 @@ public class ModularCodeGenTypedCompositeActor extends ModularCodeGenLazyTypedCo
      *   the director's fire() method throws it, or if the actor is not
      *   opaque.
      */
+    @Override
     public void fire() throws IllegalActionException {
         if (_fireMethod == null) {
             if (_debugging) {
                 _debug("ModularCodeGenerator: No generated code. Calling simulation fire method.");
             }
             System.out
-                    .println("ModularCodeGenerator: No generated code. Calling simulation fire method.");
+            .println("ModularCodeGenerator: No generated code. Calling simulation fire method.");
             super.fire();
             return;
         }
@@ -269,6 +273,7 @@ public class ModularCodeGenTypedCompositeActor extends ModularCodeGenLazyTypedCo
      *   if the director's preinitialize() method throws it, or if
      *   this actor is not opaque.
      */
+    @Override
     public void initialize() throws IllegalActionException {
         super.initialize(); // TODO only do when not generating code
         try {
@@ -342,7 +347,7 @@ public class ModularCodeGenTypedCompositeActor extends ModularCodeGenLazyTypedCo
                 if (initializeMethod == null) {
                     throw new IllegalActionException(this,
                             "Cannot find initialize "
-                            + "method in the wrapper class.");
+                                    + "method in the wrapper class.");
                 }
 
                 //initialize the generated object
@@ -357,8 +362,8 @@ public class ModularCodeGenTypedCompositeActor extends ModularCodeGenLazyTypedCo
                         classLoader.close();
                     } catch (IOException ex) {
                         throw new IllegalActionException(this, ex,
-                                "Failed to close \"" + (url == null ? "null": url)
-                                + "\".");
+                                "Failed to close \""
+                                        + (url == null ? "null" : url) + "\".");
                     }
                 }
             }
@@ -389,6 +394,7 @@ public class ModularCodeGenTypedCompositeActor extends ModularCodeGenLazyTypedCo
      *   the director's preinitialize() method throws it, or if this actor
      *   is not opaque.
      */
+    @Override
     public void preinitialize() throws IllegalActionException {
         Profile profile = _getProfile();
         if (!_USE_PROFILE || profile == null || _modelChanged()) {
@@ -409,15 +415,15 @@ public class ModularCodeGenTypedCompositeActor extends ModularCodeGenLazyTypedCo
                                 if (port.name().equals(
                                         ((NamedObj) actorPort).getName())) {
                                     DFUtilities
-                                            .setRateVariable(
-                                                    (IOPort) actorPort,
-                                                    port.input() ? "tokenConsumptionRate"
-                                                            : "tokenProductionRate",
+                                    .setRateVariable(
+                                            (IOPort) actorPort,
+                                            port.input() ? "tokenConsumptionRate"
+                                                    : "tokenProductionRate",
                                                     port.rate());
                                     ((TypedIOPort) actorPort)
-                                            .setTypeEquals(JavaCodeGenerator
-                                                    .codeGenTypeToPtType(port
-                                                            .type()));
+                                    .setTypeEquals(JavaCodeGenerator
+                                            .codeGenTypeToPtType(port
+                                                    .type()));
                                     break;
                                 }
                             }
@@ -432,13 +438,13 @@ public class ModularCodeGenTypedCompositeActor extends ModularCodeGenLazyTypedCo
                                 newPort.setOutput(port.output());
                                 DFUtilities.setRateVariable(newPort, port
                                         .input() ? "tokenConsumptionRate"
-                                        : "tokenProductionRate", port.rate());
+                                                : "tokenProductionRate", port.rate());
                                 NamedObj container = getContainer();
                                 if (container instanceof CompositeActor) {
                                     ((CompositeActor) container)
-                                            .linkToPublishedPort(
-                                                    port.getPubSubChannelName(),
-                                                    newPort);
+                                    .linkToPublishedPort(
+                                            port.getPubSubChannelName(),
+                                            newPort);
                                 }
                             }
                         }
@@ -475,6 +481,7 @@ public class ModularCodeGenTypedCompositeActor extends ModularCodeGenLazyTypedCo
      *  @exception IllegalActionException If the published port can't
      *          be added.
      */
+    @Override
     public void registerPublisherPort(String name, IOPort port)
             throws NameDuplicationException, IllegalActionException {
         try {
@@ -546,6 +553,7 @@ public class ModularCodeGenTypedCompositeActor extends ModularCodeGenLazyTypedCo
      *  @exception IllegalActionException If the wrapup() method of
      *   one of the associated actors throws it.
      */
+    @Override
     public void wrapup() throws IllegalActionException {
         if (_compiled) {
             // Do this last so that we _modelChanged() can
@@ -563,7 +571,7 @@ public class ModularCodeGenTypedCompositeActor extends ModularCodeGenLazyTypedCo
     ////                         private methods                   ////
 
     private void _createCodeGenerator() throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         if (_codeGenerator == null) {
             _codeGenerator = new ModularCodeGenerator(this,
                     "ModularCodeGenerator");
@@ -579,7 +587,7 @@ public class ModularCodeGenTypedCompositeActor extends ModularCodeGenLazyTypedCo
      *   parameter with this name.
      */
     private void _init() throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         // By default, when exporting MoML, the class name is whatever
         // the Java class is, which in this case is ModularCodeGenTypedCompositeActor.
         // However, a parent class, TypedCompositeActor sets the classname
@@ -594,6 +602,7 @@ public class ModularCodeGenTypedCompositeActor extends ModularCodeGenLazyTypedCo
      *  @param port The port to look up.
      *  @return Return true if the port is a is connected to a publisher.
      */
+    @Override
     protected boolean _isPublishedPort(IOPort port) {
         // FIXME: this method might be slow.
         boolean isPublishPort = false;
@@ -663,8 +672,9 @@ public class ModularCodeGenTypedCompositeActor extends ModularCodeGenLazyTypedCo
                             classLoader.close();
                         } catch (IOException ex) {
                             throw new IllegalActionException(this, ex,
-                                    "Failed to close \"" + (url == null ? "null": url)
-                                    + "\".");
+                                    "Failed to close \""
+                                            + (url == null ? "null" : url)
+                                            + "\".");
                         }
                     }
                 }
@@ -691,7 +701,7 @@ public class ModularCodeGenTypedCompositeActor extends ModularCodeGenLazyTypedCo
     private boolean _modelChanged() throws IllegalActionException {
         if (((BooleanToken) recompileThisLevel.getToken()).booleanValue()
                 || ((BooleanToken) recompileHierarchy.getToken())
-                        .booleanValue()) {
+                .booleanValue()) {
             return true;
         }
 
@@ -716,6 +726,7 @@ public class ModularCodeGenTypedCompositeActor extends ModularCodeGenLazyTypedCo
      *  be returned.
      *  @return the name of the channel.
      */
+    @Override
     protected String _pubSubChannelName(IOPort port, boolean publisher,
             boolean subscriber) {
         // FIXME: this method might be slow
@@ -738,10 +749,8 @@ public class ModularCodeGenTypedCompositeActor extends ModularCodeGenLazyTypedCo
         return "";
     }
 
-
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
 
     /** True if initialized() compiled this actor. */
     private boolean _compiled;

@@ -101,6 +101,7 @@ public class ShellTextArea extends JPanel {
      *  We need to do this here because we can't write to
      *  the TextArea until the peer has been created.
      */
+    @Override
     public void addNotify() {
         super.addNotify();
         initialize(_initialMessage);
@@ -114,6 +115,7 @@ public class ShellTextArea extends JPanel {
      */
     public void appendJTextArea(final String text) {
         Runnable doAppendJTextArea = new Runnable() {
+            @Override
             public void run() {
                 _jTextArea.append(text);
 
@@ -136,6 +138,7 @@ public class ShellTextArea extends JPanel {
      */
     public void clearJTextArea() {
         Runnable doClearJTextArea = new Runnable() {
+            @Override
             public void run() {
                 _jTextArea.setText("");
                 _jTextArea.setCaretPosition(0);
@@ -165,6 +168,7 @@ public class ShellTextArea extends JPanel {
         } else {
             _initialMessage = null;
             Runnable doInitialize = new Runnable() {
+                @Override
                 public void run() {
                     clearJTextArea();
 
@@ -189,10 +193,12 @@ public class ShellTextArea extends JPanel {
         try {
             // Run this in the Swing Event Thread.
             Runnable doActions = new Runnable() {
+                @Override
                 public void run() {
                     try {
                         JFrame jFrame = new JFrame("ShellTextArea Example");
                         WindowListener windowListener = new WindowAdapter() {
+                            @Override
                             public void windowClosing(WindowEvent e) {
                                 StringUtilities.exit(0);
                             }
@@ -225,6 +231,7 @@ public class ShellTextArea extends JPanel {
     public void replaceRangeJTextArea(final String text, final int start,
             final int end) {
         Runnable doReplaceRangeJTextArea = new Runnable() {
+            @Override
             public void run() {
                 _jTextArea.replaceRange(text, start, end);
             }
@@ -242,6 +249,7 @@ public class ShellTextArea extends JPanel {
     public void returnResult(final String result) {
         // Make the text area editable again.
         Runnable doMakeEditable = new Runnable() {
+            @Override
             public void run() {
                 setEditable(true);
 
@@ -425,6 +433,7 @@ public class ShellTextArea extends JPanel {
     ////                         inner classes                     ////
     // The key listener
     private class ShellKeyListener extends KeyAdapter {
+        @Override
         public void keyTyped(KeyEvent keyEvent) {
             switch (keyEvent.getKeyCode()) {
             case KeyEvent.VK_UNDEFINED:
@@ -449,6 +458,7 @@ public class ShellTextArea extends JPanel {
             }
         }
 
+        @Override
         public void keyReleased(KeyEvent keyEvent) {
             switch (keyEvent.getKeyCode()) {
             case KeyEvent.VK_BACK_SPACE:
@@ -463,6 +473,7 @@ public class ShellTextArea extends JPanel {
             }
         }
 
+        @Override
         public void keyPressed(KeyEvent keyEvent) {
             if (!_jTextArea.isEditable()) {
                 // NOTE: This doesn't seem to always work.

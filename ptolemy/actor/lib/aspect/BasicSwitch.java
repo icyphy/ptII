@@ -164,6 +164,7 @@ public class BasicSwitch extends AtomicCommunicationAspect {
      *  @param attribute The attribute that changed.
      *  @exception IllegalActionException If the buffer delays are negative.
      */
+    @Override
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         if (attribute == inputBufferDelay) {
@@ -214,6 +215,7 @@ public class BasicSwitch extends AtomicCommunicationAspect {
      *   if one of the attributes cannot be cloned.
      *  @return A new Bus.
      */
+    @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         BasicSwitch newObject = (BasicSwitch) super.clone(workspace);
         newObject._ioPortToSwitchInPort = new HashMap<Port, Integer>();
@@ -231,6 +233,7 @@ public class BasicSwitch extends AtomicCommunicationAspect {
      *  @return The decorated attributes for the target NamedObj, or
      *   null if the specified target is not an Actor.
      */
+    @Override
     public DecoratorAttributes createDecoratorAttributes(NamedObj target) {
         if (target instanceof IOPort && ((IOPort) target).isInput()) {
             try {
@@ -251,6 +254,7 @@ public class BasicSwitch extends AtomicCommunicationAspect {
      *  @exception IllegalActionException If the receiver is an
      *  ouptut port.
      */
+    @Override
     public IntermediateReceiver createIntermediateReceiver(Receiver receiver)
             throws IllegalActionException {
         if (receiver.getContainer().isOutput()) {
@@ -280,6 +284,7 @@ public class BasicSwitch extends AtomicCommunicationAspect {
      *  @exception IllegalActionException If the superclass throws it or
      *  the switch table could not be parsed from the actor parameters.
      */
+    @Override
     public void initialize() throws IllegalActionException {
         super.initialize();
         _nextFireTime = null;
@@ -302,6 +307,7 @@ public class BasicSwitch extends AtomicCommunicationAspect {
      *  @exception IllegalActionException If the token cannot be sent to
      *  target receiver.
      */
+    @Override
     public void fire() throws IllegalActionException {
         super.fire();
         Time currentTime = getDirector().getModelTime();
@@ -380,6 +386,7 @@ public class BasicSwitch extends AtomicCommunicationAspect {
      *  @exception IllegalActionException If the refiring cannot be scheduled or
      *  by super class.
      */
+    @Override
     public boolean postfire() throws IllegalActionException {
         _scheduleRefire();
         return super.postfire();
@@ -393,6 +400,7 @@ public class BasicSwitch extends AtomicCommunicationAspect {
      *  @param token The token to send.
      *  @exception IllegalActionException If the refiring request fails.
      */
+    @Override
     public void sendToken(Receiver source, Receiver receiver, Token token)
             throws IllegalActionException {
 
@@ -433,6 +441,7 @@ public class BasicSwitch extends AtomicCommunicationAspect {
      *  director of this actor is not a DEDirector.
      *  @exception NameDuplicationException If thrown by the super class.
      */
+    @Override
     public void setContainer(CompositeEntity container)
             throws IllegalActionException, NameDuplicationException {
         super.setContainer(container);
@@ -479,6 +488,7 @@ public class BasicSwitch extends AtomicCommunicationAspect {
 
     /** Reset the communication aspect and clear the tokens.
      */
+    @Override
     public void reset() {
         _inputTokens.clear();
         _outputTokens.clear();
@@ -589,7 +599,7 @@ public class BasicSwitch extends AtomicCommunicationAspect {
      *  @author Patricia Derler
      */
     public static class BasicSwitchAttributes extends
-            CommunicationAspectAttributes {
+    CommunicationAspectAttributes {
 
         /** Constructor to use when editing a model.
          *  @param container The object being decorated.
@@ -636,6 +646,7 @@ public class BasicSwitch extends AtomicCommunicationAspect {
          *  @exception IllegalActionException If the parameter set is not valid.
          *  Not thrown in this class.
          */
+        @Override
         public void attributeChanged(Attribute attribute)
                 throws IllegalActionException {
             IOPort port = (IOPort) getContainer();

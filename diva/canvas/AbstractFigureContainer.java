@@ -41,10 +41,11 @@ import diva.util.Filter;
  * @Pt.AcceptedRating Yellow
  */
 public abstract class AbstractFigureContainer extends AbstractFigure implements
-        FigureContainer {
+FigureContainer {
     /** Decorate a child figure, replacing the reference to the
      * child figure with the decorator.
      */
+    @Override
     public void decorate(Figure child, FigureDecorator decorator) {
         if (child.getParent() != this) {
             throw new IllegalArgumentException("The object " + child
@@ -60,32 +61,38 @@ public abstract class AbstractFigureContainer extends AbstractFigure implements
 
     /** Test if the given figure is a child of this composite.
      */
+    @Override
     public abstract boolean contains(Figure f);
 
     /** Return an iteration of the children, in an undefined order.
      */
+    @Override
     public abstract Iterator figures();
 
     /** Return an iteration of the children, from
      * back to front. This is the order
      * in which the children are painted.
      */
+    @Override
     public abstract Iterator figuresFromBack();
 
     /** Return an iteration of the children, from
      * front to back. This is the order in which
      * events are intercepted.
      */
+    @Override
     public abstract Iterator figuresFromFront();
 
     /** Return the number of child figures in this container.
      */
+    @Override
     public abstract int getFigureCount();
 
     /** Paint this composite figure onto a 2D graphics object. If the layer
      * is not visible, return immediately. Otherwise paint all children
      * from back to front.
      */
+    @Override
     public void paint(Graphics2D g) {
         if (!isVisible()) {
             return;
@@ -103,6 +110,7 @@ public abstract class AbstractFigureContainer extends AbstractFigure implements
     /** Given a rectangle, return the top-most descendent figure
      * that it hits. If none does, return null.
      */
+    @Override
     public Figure pick(Rectangle2D region) {
         return CanvasUtilities.pick(figuresFromFront(), region);
     }
@@ -111,6 +119,7 @@ public abstract class AbstractFigureContainer extends AbstractFigure implements
      * that it hits that is accepted by the given filter.
      * If none does, return null.
      */
+    @Override
     public Figure pick(Rectangle2D region, Filter filter) {
         return CanvasUtilities.pick(figuresFromFront(), region, filter);
     }
@@ -119,6 +128,7 @@ public abstract class AbstractFigureContainer extends AbstractFigure implements
      * in the hierarchy below this container. This default implementation
      * simply forwards the notification to its parent.
      */
+    @Override
     public void repaint(DamageRegion d) {
         if (getParent() != null) {
             getParent().repaint(d);
@@ -137,6 +147,7 @@ public abstract class AbstractFigureContainer extends AbstractFigure implements
      * This default implementation simply forwards the transform
      * call to each child.
      */
+    @Override
     public void transform(AffineTransform at) {
         repaint();
 
@@ -154,6 +165,7 @@ public abstract class AbstractFigureContainer extends AbstractFigure implements
      * This default implementation simply forwards the translate
      * call to each child.
      */
+    @Override
     public void translate(double x, double y) {
         repaint();
 
@@ -170,6 +182,7 @@ public abstract class AbstractFigureContainer extends AbstractFigure implements
     /** Remove a figure from the given decorator and add
      * it back into this container.
      */
+    @Override
     public void undecorate(FigureDecorator decorator) {
         if (decorator.getParent() != this) {
             throw new IllegalArgumentException("The object " + decorator

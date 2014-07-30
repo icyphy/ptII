@@ -84,6 +84,7 @@ public class VisibleTreeModel extends FullTreeModel {
      *  @param object The object.
      *  @return True if the node has no children.
      */
+    @Override
     public boolean isLeaf(Object object) {
         // NOTE: handle EntityLibrary specially to prevent evaluation
         // of the library prematurely.
@@ -115,6 +116,7 @@ public class VisibleTreeModel extends FullTreeModel {
      *  @param path The path of the node that has changed.
      *  @param newValue The new value of the node.
      */
+    @Override
     public void valueForPathChanged(TreePath path, Object newValue) {
         // Do nothing.
     }
@@ -128,6 +130,7 @@ public class VisibleTreeModel extends FullTreeModel {
      *  @param object The object.
      *  @return A list of attributes.
      */
+    @Override
     protected List _attributes(Object object) {
         if (!(object instanceof NamedObj)) {
             return Collections.EMPTY_LIST;
@@ -186,6 +189,7 @@ public class VisibleTreeModel extends FullTreeModel {
      *  @param object The object.
      *  @return A list of ports.
      */
+    @Override
     protected List _ports(Object object) {
         if (!(object instanceof Entity)) {
             return Collections.EMPTY_LIST;
@@ -225,6 +229,7 @@ public class VisibleTreeModel extends FullTreeModel {
      *  @param object The object.
      *  @return A list of relations.
      */
+    @Override
     protected List _relations(Object object) {
         if (!(object instanceof CompositeEntity)) {
             return Collections.EMPTY_LIST;

@@ -101,6 +101,7 @@ public class HDFFSMDirector extends MultirateFSMDirector {
      *  report that modal models using HDFFSMDirector only make state
      *  transitions between toplevel iterations.
      */
+    @Override
     public Entity getContext() {
         try {
             _getEnclosingDomainActor();
@@ -116,6 +117,7 @@ public class HDFFSMDirector extends MultirateFSMDirector {
      *  Set the controller flag to indicate a new iteration begins.
      *  @exception IllegalActionException If the base class throws it.
      */
+    @Override
     public void initialize() throws IllegalActionException {
         FSMActor controller = getController();
         _sendRequest = true;
@@ -129,6 +131,7 @@ public class HDFFSMDirector extends MultirateFSMDirector {
      *  @exception IllegalActionException If a refinement throws it,
      *   if there is no controller.
      */
+    @Override
     public boolean postfire() throws IllegalActionException {
         CompositeActor container = (CompositeActor) getContainer();
 
@@ -136,6 +139,7 @@ public class HDFFSMDirector extends MultirateFSMDirector {
             _sendRequest = false;
 
             ChangeRequest request = new ChangeRequest(this, "make a transition") {
+                @Override
                 protected void _execute() throws KernelException {
                     _sendRequest = true;
 
@@ -167,6 +171,7 @@ public class HDFFSMDirector extends MultirateFSMDirector {
     /** Preinitialize the modal model. Set the _sendRequest flag to be true
      *  to indicate the modal model can send a change request to the manager.
      */
+    @Override
     public void preinitialize() throws IllegalActionException {
         _sendRequest = true;
         super.preinitialize();

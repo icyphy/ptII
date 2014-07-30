@@ -108,6 +108,7 @@ public class LabVIEWSimulator extends Simulator {
      *  @exception IllegalActionException If the simulation time
      *  between Ptolemy and the client program is not synchronized.
      */
+    @Override
     public void fire() throws IllegalActionException {
 
         // tokTim is the current time of in the Ptolemy world. This time
@@ -164,6 +165,7 @@ public class LabVIEWSimulator extends Simulator {
      *  @return Always return true, indicating that this actor is ready for firing.
      *  @exception IllegalActionException Not thrown in this base class.
      */
+    @Override
     public boolean prefire() throws IllegalActionException {
         // This actor extends Simulator, which extends SDFTransformer.
         // SDFTransformer.prefire() checks the input ports for the
@@ -177,11 +179,12 @@ public class LabVIEWSimulator extends Simulator {
     }
 
     /** Get a double array from the Token.
-    *
-    * @param t the token which must be a type that can be converted to an ArrayToken
-    * @return the double[] array with the elements of the Token
-    * @exception IllegalActionException If the base class throws it.
-    */
+     *
+     * @param t the token which must be a type that can be converted to an ArrayToken
+     * @return the double[] array with the elements of the Token
+     * @exception IllegalActionException If the base class throws it.
+     */
+    @Override
     protected double[] _getDoubleArray(ptolemy.data.Token t)
             throws IllegalActionException {
 
@@ -206,12 +209,14 @@ public class LabVIEWSimulator extends Simulator {
      *  @exception IllegalActionException If the simulation process arguments
      *                           are invalid.
      */
+    @Override
     protected void _startSimulation() throws IllegalActionException {
     }
 
     /** During initialize, we output one token to startup the co-simulation
      *  between Ptolemy and LabVIEW program.
      */
+    @Override
     protected void _outputInitToken() throws IllegalActionException {
         Token token = new DoubleToken(0.0);
         output.send(0, token);
@@ -223,6 +228,7 @@ public class LabVIEWSimulator extends Simulator {
      * @exception IllegalActionException If there was an error when
      * writing to the server.
      */
+    @Override
     protected void _writeToServer() throws IllegalActionException {
         //////////////////////////////////////////////////////
         // Write data to server

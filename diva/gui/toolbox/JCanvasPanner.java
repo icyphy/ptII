@@ -222,6 +222,7 @@ public class JCanvasPanner extends JPanel {
         return _target;
     }
 
+    @Override
     public void paintComponent(Graphics g) {
         if (_target != null) {
             JCanvas canvas = _target;
@@ -290,7 +291,8 @@ public class JCanvasPanner extends JPanel {
     // This listener is attached to this panner and is responsible for
     // panning the target in response to a mouse click on the panner.
     private class PanMouseListener extends MouseAdapter implements
-            MouseMotionListener {
+    MouseMotionListener {
+        @Override
         public void mousePressed(MouseEvent evt) {
             if (_target != null
                     && (evt.getModifiers() & InputEvent.BUTTON1_MASK) != 0) {
@@ -298,9 +300,11 @@ public class JCanvasPanner extends JPanel {
             }
         }
 
+        @Override
         public void mouseMoved(MouseEvent evt) {
         }
 
+        @Override
         public void mouseDragged(MouseEvent evt) {
             if (_target != null
                     && (evt.getModifiers() & InputEvent.BUTTON1_MASK) != 0) {
@@ -398,6 +402,7 @@ public class JCanvasPanner extends JPanel {
         try {
             // Run this in the Swing Event Thread.
             Runnable doActions = new Runnable() {
+                @Override
                 public void run() {
                     try {
                         JFrame f = new JFrame();

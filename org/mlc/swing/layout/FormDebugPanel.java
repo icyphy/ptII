@@ -23,7 +23,7 @@ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
 PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 ENHANCEMENTS, OR MODIFICATIONS.
-*/
+ */
 /*
  * FormDebugPanel.java
  *
@@ -177,6 +177,7 @@ public class FormDebugPanel extends JPanel {
      *
      * @param g   the Graphics object to paint on
      */
+    @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
         if (paintInBackground) {
@@ -190,6 +191,7 @@ public class FormDebugPanel extends JPanel {
      *
      * @param g   the Graphics object to paint on
      */
+    @Override
     public void paint(Graphics g) {
         super.paint(g);
         if (!paintInBackground) {

@@ -107,6 +107,7 @@ public class InvalidStateException extends KernelRuntimeException {
      *  @param objects The enumeration of Nameable objects
      *  @param detail The message.
      */
+    @Deprecated
     public InvalidStateException(Enumeration objects, String detail) {
         this(_list(objects), null, detail);
     }

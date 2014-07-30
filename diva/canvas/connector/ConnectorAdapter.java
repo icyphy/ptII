@@ -38,12 +38,14 @@ public class ConnectorAdapter implements ConnectorListener {
     /**
      * Do nothing when a connector end is dragged.
      */
+    @Override
     public void connectorDragged(ConnectorEvent e) {
     }
 
     /**
      * Do nothing when a connector end is dropped.
      */
+    @Override
     public void connectorDropped(ConnectorEvent e) {
     }
 
@@ -51,6 +53,7 @@ public class ConnectorAdapter implements ConnectorListener {
      * Do nothing when a connector end is snapped to
      * a possible target.
      */
+    @Override
     public void connectorSnapped(ConnectorEvent e) {
     }
 
@@ -59,6 +62,7 @@ public class ConnectorAdapter implements ConnectorListener {
      * the site that it was originally attached to,
      * or a possible target.
      */
+    @Override
     public void connectorUnsnapped(ConnectorEvent e) {
     }
 }

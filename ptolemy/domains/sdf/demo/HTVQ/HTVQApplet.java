@@ -56,6 +56,7 @@ public class HTVQApplet extends MoMLApplet {
 
     /** Place the placeable objects in a customized panel.
      */
+    @Override
     public void _createView() {
         super._createView();
 

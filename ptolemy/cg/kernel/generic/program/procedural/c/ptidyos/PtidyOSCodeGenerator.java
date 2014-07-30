@@ -76,6 +76,7 @@ public class PtidyOSCodeGenerator extends CCodeGenerator {
      *  @exception KernelException If a type conflict occurs or the model
      *  is running.
      */
+    @Override
     public int generateCode(StringBuffer code) throws KernelException {
         fileExtension = ".c";
         int result = super.generateCode(code);
@@ -145,6 +146,7 @@ public class PtidyOSCodeGenerator extends CCodeGenerator {
      * @exception IllegalActionException If there is problem resolving
      *  the string value of the generatorPackage parameter.
      */
+    @Override
     protected String _getOutputFilename() throws IllegalActionException {
         String extension = fileExtension;
 
@@ -162,6 +164,7 @@ public class PtidyOSCodeGenerator extends CCodeGenerator {
      *  @return true if the containing actor is in the top level.
      *  @exception IllegalActionException
      */
+    @Override
     protected boolean _isTopLevel() throws IllegalActionException {
         Director director = ((Actor) getContainer()).getDirector();
         if (!(director instanceof ptolemy.domains.ptides.kernel.PtidesDirector)) {

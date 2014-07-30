@@ -130,6 +130,7 @@ public abstract class FilledShapeAttribute extends ShapeAttribute {
      *  @exception IllegalActionException If the change is not acceptable
      *   to this container (should not be thrown).
      */
+    @Override
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         if ((attribute == width || attribute == height) && !_inAttributeChanged) {
@@ -183,6 +184,7 @@ public abstract class FilledShapeAttribute extends ShapeAttribute {
      *  @exception CloneNotSupportedException Not thrown in this base class
      *  @return The new Attribute.
      */
+    @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         FilledShapeAttribute newObject = (FilledShapeAttribute) super
                 .clone(workspace);

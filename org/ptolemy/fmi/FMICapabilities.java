@@ -24,7 +24,7 @@
    PT_COPYRIGHT_VERSION_2
    COPYRIGHTENDKEY
 
-*/
+ */
 package org.ptolemy.fmi;
 
 import java.lang.reflect.Field;
@@ -103,7 +103,7 @@ public class FMICapabilities {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Get the value of a boolean field. 
+    /** Get the value of a boolean field.
      *  @param fieldName The name of the boolean field.
      *  @return True if the value of the field was true.
      *  @exception IllegalArgumentException If the field is not found
@@ -123,6 +123,7 @@ public class FMICapabilities {
      *  non-zero.
      *  @return The true or non-zero fields
      */
+    @Override
     public String toString() {
         // We use reflection here so that if Capabilities attributes change,
         // and new fields are added, we don't have to update this method.

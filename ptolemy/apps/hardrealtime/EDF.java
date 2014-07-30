@@ -115,6 +115,7 @@ public class EDF extends Director {
      *  @throws IllegalActionException If the fire of one of the tasks contained by the platform
      *  throws it.
      */
+    @Override
     public void fire() throws IllegalActionException {
         if (_debugging) {
             _debug("EDF: Called fire().");
@@ -227,10 +228,10 @@ public class EDF extends Director {
             } else if (_currentJob != minimumDeadlineJob) {
                 if (_taskPlotEditorFactory.getTaskPlot() != null) {
                     _taskPlotEditorFactory.getTaskPlot()
-                            .addExecution(
-                                    _timeCurrentJobStarted.getDoubleValue(),
-                                    currentTime.getDoubleValue(),
-                                    _currentJob.getTask());
+                    .addExecution(
+                            _timeCurrentJobStarted.getDoubleValue(),
+                            currentTime.getDoubleValue(),
+                            _currentJob.getTask());
                 }
                 _currentJob = minimumDeadlineJob;
                 _timeCurrentJobStarted = currentTime;
@@ -242,7 +243,7 @@ public class EDF extends Director {
         if (_currentJob != null) {
             minNextTime = new Time(this, Math.min(minNextTime.getDoubleValue(),
                     currentTime.getDoubleValue()
-                            + _currentJob.getRemainingTime().getDoubleValue()));
+                    + _currentJob.getRemainingTime().getDoubleValue()));
         }
 
         if (currentTime.getDoubleValue() > _simulationEndTime) {

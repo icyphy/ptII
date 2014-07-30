@@ -130,6 +130,7 @@ public class PaintedString implements PaintedObject {
     /**
      * Get the bounds of this string
      */
+    @Override
     public Rectangle2D getBounds() {
         if (_bounds == null) {
             _update();
@@ -199,6 +200,7 @@ public class PaintedString implements PaintedObject {
     /**
      * Paint the label.
      */
+    @Override
     public void paint(Graphics2D g) {
         if (_bounds == null) {
             _update();

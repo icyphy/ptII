@@ -81,6 +81,7 @@ public class LocationParameter extends Parameter implements Locatable {
      *  is the same as the name returned by getName().
      *  @return A name to present to the user.
      */
+    @Override
     public String getDisplayName() {
         return getName();
     }
@@ -90,6 +91,7 @@ public class LocationParameter extends Parameter implements Locatable {
      *  @return The location.
      *  @see #setLocation(double [])
      */
+    @Override
     public double[] getLocation() {
         try {
             DoubleMatrixToken token = (DoubleMatrixToken) getToken();
@@ -108,6 +110,7 @@ public class LocationParameter extends Parameter implements Locatable {
      *  @exception IllegalActionException If the location is rejected.
      *  @see #getLocation()
      */
+    @Override
     public void setLocation(double[] location) throws IllegalActionException {
         double[][] value = new double[1][2];
         value[0][0] = location[0];

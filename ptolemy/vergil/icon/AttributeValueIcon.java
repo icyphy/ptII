@@ -128,6 +128,7 @@ public class AttributeValueIcon extends XMLIcon {
      *  value of the specified attribute of the container.
      *  @return A new CompositeFigure consisting of the label.
      */
+    @Override
     public Figure createFigure() {
         CompositeFigure result = (CompositeFigure) super.createFigure();
         String truncated = _displayString();

@@ -40,8 +40,8 @@ package ptolemy.cg.adapter.generic.program.procedural.java.adapters.ptolemy.acto
  @Pt.AcceptedRating Red (cxh)
  */
 public class Accumulator
-        extends
-        ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.actor.lib.Accumulator {
+extends
+ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.actor.lib.Accumulator {
     /**
      *  Construct a Accumulator adapter.
      *  @param actor The given ptolemy.actor.lib.Accumulator actor.

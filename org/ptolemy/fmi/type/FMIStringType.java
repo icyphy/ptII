@@ -67,6 +67,7 @@ public class FMIStringType extends FMIType {
     /** Return the string value of the base element.
      *  @return The string value.
      */
+    @Override
     public String toString() {
         return start;
     }

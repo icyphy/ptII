@@ -21,7 +21,7 @@ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
 PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 ENHANCEMENTS, OR MODIFICATIONS.
-*/
+ */
 package ptolemy.verification.lib;
 
 import ptolemy.actor.parameters.PortParameter;
@@ -41,7 +41,7 @@ import ptolemy.kernel.util.NameDuplicationException;
    @since Ptolemy II 8.0
    @Pt.ProposedRating Red (cxh)
    @Pt.AcceptedRating Red (cxh)
-*/
+ */
 public class BoundedBufferNondeterministicDelay extends BoundedBufferTimedDelay {
 
     /** Construct an actor with the specified container and name.
@@ -73,6 +73,7 @@ public class BoundedBufferNondeterministicDelay extends BoundedBufferTimedDelay 
      *  is used for code generation only.
      *  @exception IllegalActionException No simulation
      */
+    @Override
     public void preinitialize() throws IllegalActionException {
         throw new IllegalActionException(this, getName() + " can not run in "
                 + "simulation mode.");
@@ -84,8 +85,9 @@ public class BoundedBufferNondeterministicDelay extends BoundedBufferTimedDelay 
     /** Override the method of the super class to initialize the
      *  parameter values.
      */
+    @Override
     protected void _init() throws NameDuplicationException,
-            IllegalActionException {
+    IllegalActionException {
         //delay = new PortParameter(this, "delay");
         //delay.setExpression("1.0");
         //delay.setTypeEquals(BaseType.DOUBLE);

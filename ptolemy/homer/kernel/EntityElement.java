@@ -23,7 +23,7 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
-*/
+ */
 
 package ptolemy.homer.kernel;
 
@@ -36,13 +36,13 @@ import ptolemy.kernel.util.IllegalActionException;
 //// EntityElement
 
 /** The definition of entities.
-*
-*  @author Peter Foldes
-*  @version $Id$
-*  @since Ptolemy II 10.0
-*  @Pt.ProposedRating Red (pdf)
-*  @Pt.AcceptedRating Red (pdf)
-*/
+ *
+ *  @author Peter Foldes
+ *  @version $Id$
+ *  @since Ptolemy II 10.0
+ *  @Pt.ProposedRating Red (pdf)
+ *  @Pt.AcceptedRating Red (pdf)
+ */
 public class EntityElement extends PositionableElement {
 
     ///////////////////////////////////////////////////////////////////

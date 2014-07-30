@@ -46,7 +46,6 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
-
 /**
   Construct date token by parsing all date elements (year, day, month, ...).
 
@@ -57,7 +56,7 @@ import ptolemy.kernel.util.NameDuplicationException;
  @Pt.AcceptedRating Red (pd)
  */
 public class DateConstructor extends TypedAtomicActor {
-    
+
     /** Construct an actor with the given container and name.
      *  @param container The container.
      *  @param name The name of this actor.
@@ -72,51 +71,56 @@ public class DateConstructor extends TypedAtomicActor {
 
         output = new TypedIOPort(this, "input", false, true);
         output.setTypeEquals(BaseType.DATE);
-        
+
         year = new TypedIOPort(this, "year", true, false);
         year.setTypeEquals(BaseType.INT);
         new SingletonParameter(year, "_showName").setToken(BooleanToken.TRUE);
-        
+
         month = new TypedIOPort(this, "month", true, false);
         month.setTypeEquals(BaseType.INT);
         new SingletonParameter(year, "_showName").setToken(BooleanToken.TRUE);
-        
+
         day = new TypedIOPort(this, "day", true, false);
         day.setTypeEquals(BaseType.INT);
         new SingletonParameter(day, "_showName").setToken(BooleanToken.TRUE);
-        
+
         hour = new TypedIOPort(this, "hour", true, false);
         hour.setTypeEquals(BaseType.INT);
         new SingletonParameter(hour, "_showName").setToken(BooleanToken.TRUE);
-        
+
         minute = new TypedIOPort(this, "minute", true, false);
         minute.setTypeEquals(BaseType.INT);
         new SingletonParameter(minute, "_showName").setToken(BooleanToken.TRUE);
-        
+
         second = new TypedIOPort(this, "second", true, false);
         second.setTypeEquals(BaseType.INT);
         new SingletonParameter(minute, "_showName").setToken(BooleanToken.TRUE);
-        
+
         millisecond = new TypedIOPort(this, "millisecond", true, false);
         millisecond.setTypeEquals(BaseType.INT);
-        new SingletonParameter(millisecond, "_showName").setToken(BooleanToken.TRUE);
-        
+        new SingletonParameter(millisecond, "_showName")
+                .setToken(BooleanToken.TRUE);
+
         microsecond = new TypedIOPort(this, "microsecond", true, false);
         microsecond.setTypeEquals(BaseType.INT);
-        new SingletonParameter(microsecond, "_showName").setToken(BooleanToken.TRUE);
-        
+        new SingletonParameter(microsecond, "_showName")
+                .setToken(BooleanToken.TRUE);
+
         nanosecond = new TypedIOPort(this, "nanosecond", true, false);
         nanosecond.setTypeEquals(BaseType.INT);
-        new SingletonParameter(microsecond, "_showName").setToken(BooleanToken.TRUE);
-        
+        new SingletonParameter(microsecond, "_showName")
+                .setToken(BooleanToken.TRUE);
+
         timeZone = new TypedIOPort(this, "timeZone", true, false);
         timeZone.setTypeEquals(BaseType.STRING);
-        new SingletonParameter(timeZone, "_showName").setToken(BooleanToken.TRUE);
-        
+        new SingletonParameter(timeZone, "_showName")
+                .setToken(BooleanToken.TRUE);
+
         timeAsLong = new TypedIOPort(this, "timeAsLong", true, false);
         timeAsLong.setTypeEquals(BaseType.LONG);
-        new SingletonParameter(timeAsLong, "_showName").setToken(BooleanToken.TRUE);
-        
+        new SingletonParameter(timeAsLong, "_showName")
+                .setToken(BooleanToken.TRUE);
+
         precision = new StringParameter(this, "precision");
         precision.addChoice("second");
         precision.addChoice("millisecond");
@@ -124,57 +128,57 @@ public class DateConstructor extends TypedAtomicActor {
         precision.addChoice("nanosecond");
         precision.setExpression("millisecond");
     }
-    
+
     /** The output for the constructed date.
      */
     public TypedIOPort output;
-    
+
     /** The year.
      */
     public TypedIOPort year;
-    
+
     /** The month.
      */
     public TypedIOPort month;
-    
+
     /** The day of the month.
      */
     public TypedIOPort day;
-    
+
     /** The hour of the day.
      */
     public TypedIOPort hour;
-    
+
     /** The minutes.
      */
     public TypedIOPort minute;
-    
+
     /** The seconds.
      */
     public TypedIOPort second;
-    
+
     /** The milliseconds.
      */
     public TypedIOPort millisecond;
-    
+
     /** The microseconds.
      */
     public TypedIOPort microsecond;
-    
+
     /** The nanoseconds.
      */
     public TypedIOPort nanosecond;
-    
+
     /** The time zone.
      */
     public TypedIOPort timeZone;
-    
-    /** The time as a long value representing the milliseconds since 
+
+    /** The time as a long value representing the milliseconds since
      *  January 1, 1970.
      */
     public TypedIOPort timeAsLong;
-    
-    /** The precision of the date. The precision defaults to 
+
+    /** The precision of the date. The precision defaults to
      *  milliseconds.
      */
     public Parameter precision;
@@ -184,95 +188,106 @@ public class DateConstructor extends TypedAtomicActor {
 
     /** Construct a date token with all tokens present. If a token
      *  for the long value is present, use this token and time zone
-     *  as well as precision. Otherwise use tokens on other inputs to 
+     *  as well as precision. Otherwise use tokens on other inputs to
      *  create ports.
      *  @exception IllegalActionException If there is no director.
      */
+    @Override
     public void fire() throws IllegalActionException {
         super.fire();
         DateToken dateToken = null;
         int datePrecision = DateToken.PRECISION_MILLISECOND;
-        
+
         if (timeAsLong.connectedPortList().size() > 0 && timeAsLong.hasToken(0)) {
             long timeAsLongValue = 1l;
-            timeAsLongValue = ((LongToken)timeAsLong.get(0)).longValue();
+            timeAsLongValue = ((LongToken) timeAsLong.get(0)).longValue();
             String precisionValue = "second";
-            precisionValue = ((StringToken)precision.getToken()).stringValue();
+            precisionValue = ((StringToken) precision.getToken()).stringValue();
             if (precisionValue.equals("second")) {
-                datePrecision = DateToken.PRECISION_SECOND; 
-            } if (precisionValue.equals("millisecond")) {
+                datePrecision = DateToken.PRECISION_SECOND;
+            }
+            if (precisionValue.equals("millisecond")) {
                 datePrecision = DateToken.PRECISION_MILLISECOND;
-            } if (precisionValue.equals("microsecond")) {
+            }
+            if (precisionValue.equals("microsecond")) {
                 datePrecision = DateToken.PRECISION_MICROSECOND;
-            } if (precisionValue.equals("nanosecond")) {
+            }
+            if (precisionValue.equals("nanosecond")) {
                 datePrecision = DateToken.PRECISION_NANOSECOND;
             } else {
-                datePrecision = DateToken.PRECISION_MILLISECOND;     
+                datePrecision = DateToken.PRECISION_MILLISECOND;
             }
             String timeZoneValue = TimeZone.getDefault().getID();
-            if ((timeZone.connectedPortList().size() > 0) && timeZone.hasToken(0)) {
-                timeZoneValue = ((StringToken)timeZone.get(0)).stringValue();
+            if ((timeZone.connectedPortList().size() > 0)
+                    && timeZone.hasToken(0)) {
+                timeZoneValue = ((StringToken) timeZone.get(0)).stringValue();
             }
-            dateToken = new DateToken(timeAsLongValue, datePrecision, TimeZone.getTimeZone(timeZoneValue));
+            dateToken = new DateToken(timeAsLongValue, datePrecision,
+                    TimeZone.getTimeZone(timeZoneValue));
         } else {
             int yearValue = 1970;
             if (year.connectedPortList().size() > 0 && year.hasToken(0)) {
-                yearValue = ((IntToken)year.get(0)).intValue();
+                yearValue = ((IntToken) year.get(0)).intValue();
             }
             int monthValue = 1;
             if (month.connectedPortList().size() > 0 && month.hasToken(0)) {
-                monthValue = ((IntToken)month.get(0)).intValue();
+                monthValue = ((IntToken) month.get(0)).intValue();
             }
             int dayValue = 1;
             if (day.connectedPortList().size() > 0 && day.hasToken(0)) {
-                dayValue = ((IntToken)day.get(0)).intValue();
+                dayValue = ((IntToken) day.get(0)).intValue();
             }
             int hourValue = 0;
             if (hour.connectedPortList().size() > 0 && hour.hasToken(0)) {
-                hourValue = ((IntToken)hour.get(0)).intValue();
+                hourValue = ((IntToken) hour.get(0)).intValue();
             }
             int minuteValue = 0;
             if (minute.connectedPortList().size() > 0 && minute.hasToken(0)) {
-                minuteValue = ((IntToken)minute.get(0)).intValue();
+                minuteValue = ((IntToken) minute.get(0)).intValue();
             }
             int secondValue = 0;
             if (second.connectedPortList().size() > 0 && second.hasToken(0)) {
-                secondValue = ((IntToken)second.get(0)).intValue();
+                secondValue = ((IntToken) second.get(0)).intValue();
                 datePrecision = DateToken.PRECISION_SECOND;
             }
             int millisecondValue = 0;
-            if (millisecond.connectedPortList().size() > 0 && millisecond.hasToken(0)) {
-                millisecondValue = ((IntToken)millisecond.get(0)).intValue();
+            if (millisecond.connectedPortList().size() > 0
+                    && millisecond.hasToken(0)) {
+                millisecondValue = ((IntToken) millisecond.get(0)).intValue();
                 datePrecision = DateToken.PRECISION_MILLISECOND;
             }
             int microsecondValue = 0;
-            if (microsecond.connectedPortList().size() > 0 && microsecond.hasToken(0)) {
-                microsecondValue = ((IntToken)microsecond.get(0)).intValue();
+            if (microsecond.connectedPortList().size() > 0
+                    && microsecond.hasToken(0)) {
+                microsecondValue = ((IntToken) microsecond.get(0)).intValue();
                 datePrecision = DateToken.PRECISION_MICROSECOND;
             }
             int nanosecondValue = 0;
-            if (nanosecond.connectedPortList().size() > 0 && nanosecond.hasToken(0)) {
-                nanosecondValue = ((IntToken)nanosecond.get(0)).intValue();
+            if (nanosecond.connectedPortList().size() > 0
+                    && nanosecond.hasToken(0)) {
+                nanosecondValue = ((IntToken) nanosecond.get(0)).intValue();
                 datePrecision = DateToken.PRECISION_NANOSECOND;
             }
             String timeZoneValue = TimeZone.getDefault().getID();
             if (timeZone.connectedPortList().size() > 0 && timeZone.hasToken(0)) {
-                timeZoneValue = ((StringToken)timeZone.get(0)).stringValue();
+                timeZoneValue = ((StringToken) timeZone.get(0)).stringValue();
             }
             dateToken = new DateToken();
-            dateToken.getCalendarInstance().setTimeZone(TimeZone.getTimeZone(timeZoneValue));
+            dateToken.getCalendarInstance().setTimeZone(
+                    TimeZone.getTimeZone(timeZoneValue));
             dateToken.getCalendarInstance().set(Calendar.YEAR, yearValue);
             dateToken.getCalendarInstance().set(Calendar.MONTH, monthValue);
-            dateToken.getCalendarInstance().set(Calendar.DAY_OF_MONTH, dayValue);
+            dateToken.getCalendarInstance()
+                    .set(Calendar.DAY_OF_MONTH, dayValue);
             dateToken.getCalendarInstance().set(Calendar.HOUR, hourValue);
             dateToken.getCalendarInstance().set(Calendar.MINUTE, minuteValue);
             dateToken.getCalendarInstance().set(Calendar.SECOND, secondValue);
-            dateToken.getCalendarInstance().set(Calendar.MILLISECOND, millisecondValue);
+            dateToken.getCalendarInstance().set(Calendar.MILLISECOND,
+                    millisecondValue);
             dateToken.addMicroseconds(microsecondValue);
             dateToken.addNanoseconds(nanosecondValue);
         }
-        
-        
+
         output.send(0, dateToken);
     }
 }

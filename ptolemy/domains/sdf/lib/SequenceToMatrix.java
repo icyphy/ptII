@@ -110,6 +110,7 @@ public class SequenceToMatrix extends SDFTransformer {
      *  @param attribute The attribute that has changed.
      *  @exception IllegalActionException If the parameters are out of range.
      */
+    @Override
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         if (attribute == rows) {
@@ -142,6 +143,7 @@ public class SequenceToMatrix extends SDFTransformer {
      *  @exception CloneNotSupportedException If a derived class has
      *   an attribute that cannot be cloned.
      */
+    @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         SequenceToMatrix newObject = (SequenceToMatrix) super.clone(workspace);
         newObject.output.setTypeAtLeast(new FunctionTerm(newObject.input));
@@ -151,6 +153,7 @@ public class SequenceToMatrix extends SDFTransformer {
     /** Consume the inputs and produce the output matrix.
      *  @exception IllegalActionException If not enough tokens are available.
      */
+    @Override
     public void fire() throws IllegalActionException {
         super.fire();
 
@@ -173,6 +176,7 @@ public class SequenceToMatrix extends SDFTransformer {
      *   input port throws it.
      *  @see ptolemy.actor.IOPort#hasToken(int, int)
      */
+    @Override
     public boolean prefire() throws IllegalActionException {
         int rowsValue = ((IntToken) rows.getToken()).intValue();
         int columnsValue = ((IntToken) columns.getToken()).intValue();
@@ -217,6 +221,7 @@ public class SequenceToMatrix extends SDFTransformer {
         /** Return the function result.
          *  @return A Type.
          */
+        @Override
         public Object getValue() {
             Type inputType = _port.getType();
 
@@ -233,6 +238,7 @@ public class SequenceToMatrix extends SDFTransformer {
          *  length.
          *  @return An array of InequalityTerm.
          */
+        @Override
         public InequalityTerm[] getVariables() {
             if (_port.getTypeTerm().isSettable()) {
                 InequalityTerm[] variable = new InequalityTerm[1];

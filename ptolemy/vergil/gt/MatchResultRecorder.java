@@ -49,6 +49,7 @@ import ptolemy.actor.gt.data.MatchResult;
  */
 public class MatchResultRecorder implements MatchCallback {
 
+    @Override
     public boolean foundMatch(GraphMatcher matcher) {
         _results.add((MatchResult) matcher.getMatchResult().clone());
         return false;

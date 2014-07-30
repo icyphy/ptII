@@ -34,7 +34,6 @@ import java.util.Map;
 import java.util.Set;
 
 import ptolemy.data.type.TypeConstant;
-import ptolemy.kernel.util.IllegalActionException;
 
 //////////////////////////////////////////////////////////////////////////
 //// NamedConstantsScope
@@ -64,6 +63,7 @@ public class NamedConstantsScope implements ParserScope {
      *  @param name The name of the variable to be looked up.
      *  @return The token associated with the given name in the scope.
      */
+    @Override
     public ptolemy.data.Token get(String name) {
         ptolemy.data.Token result = (ptolemy.data.Token) _map.get(name);
         return result;
@@ -75,6 +75,7 @@ public class NamedConstantsScope implements ParserScope {
      *  @param name The name of the variable to be looked up.
      *  @return The token associated with the given name in the scope.
      */
+    @Override
     public ptolemy.data.type.Type getType(String name) {
         ptolemy.data.Token value = (ptolemy.data.Token) _map.get(name);
 
@@ -92,6 +93,7 @@ public class NamedConstantsScope implements ParserScope {
      *  @return The InequalityTerm associated with the given name in
      *  the scope.
      */
+    @Override
     public ptolemy.graph.InequalityTerm getTypeTerm(String name) {
         ptolemy.data.Token value = (ptolemy.data.Token) _map.get(name);
 
@@ -105,6 +107,7 @@ public class NamedConstantsScope implements ParserScope {
     /** Return the set of identifiers defined in this scope.
      *  @return A set containing the key defined in the map.
      */
+    @Override
     public Set identifierSet() {
         Set set = new HashSet();
         set.addAll(_map.keySet());

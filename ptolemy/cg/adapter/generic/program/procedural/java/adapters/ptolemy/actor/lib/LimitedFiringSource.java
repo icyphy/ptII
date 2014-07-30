@@ -40,8 +40,8 @@ package ptolemy.cg.adapter.generic.program.procedural.java.adapters.ptolemy.acto
  @Pt.AcceptedRating Red (cxh)
  */
 public class LimitedFiringSource
-        extends
-        ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.actor.lib.LimitedFiringSource {
+extends
+ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.actor.lib.LimitedFiringSource {
     /**
      *  Construct a LimitedFiringSource adapter.
      *  @param actor The given ptolemy.actor.lib.LimitedFiringSource actor.

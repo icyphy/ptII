@@ -171,6 +171,7 @@ public class Derivative extends TypedAtomicActor {
     /** Produce outputs as specified in the class comment.
      *  @exception IllegalActionException If the superclass throws it.
      */
+    @Override
     public void fire() throws IllegalActionException {
         super.fire();
 
@@ -252,6 +253,7 @@ public class Derivative extends TypedAtomicActor {
      *  as a first firing.
      *  @exception IllegalActionException If the superclass throws it.
      */
+    @Override
     public void initialize() throws IllegalActionException {
         super.initialize();
         _previousTime = null;
@@ -263,6 +265,7 @@ public class Derivative extends TypedAtomicActor {
      *  @exception IllegalActionException If the superclass throws it.
      *  @return Whatever the superclass returns (true).
      */
+    @Override
     public boolean postfire() throws IllegalActionException {
         boolean result = super.postfire();
 

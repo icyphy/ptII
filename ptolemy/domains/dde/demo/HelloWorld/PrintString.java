@@ -75,6 +75,7 @@ public class PrintString extends DDEActor {
      * @exception IllegalActionException If there is an error
      *  in executing getNextToken().
      */
+    @Override
     public void fire() throws IllegalActionException {
         super.fire();
         StringToken token = null;
@@ -98,6 +99,7 @@ public class PrintString extends DDEActor {
      * @exception IllegalActionException If there is an error
      *  in the superclass method.
      */
+    @Override
     public void wrapup() throws IllegalActionException {
         System.out.println("\nIt is finished.\n");
         super.wrapup();

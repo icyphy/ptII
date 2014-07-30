@@ -40,15 +40,15 @@ An SCR model actor used for requirements specification. For more information
 about SCR see
 <a href="http://www.nrl.navy.mil/itd/chacs/node/126">http://www.nrl.navy.mil/itd/chacs/node/126</a>.
 <p>
-An SCR model is a modal model with a different way of configuring transitions, 
+An SCR model is a modal model with a different way of configuring transitions,
 set and output actions. To view an SCR model as an FSM actor, set the parameter
-<i>openAsSCRActor</i> to false. 
+<i>openAsSCRActor</i> to false.
 @author Patricia Derler
 @version $Id$
 @since Ptolemy II 10.0
 @Pt.ProposedRating Red (pd)
 @Pt.AcceptedRating Red (pd)
-*/
+ */
 public class SCRModel extends ModalModel {
 
     /** Construct an SCR model in the specified workspace with
@@ -62,7 +62,7 @@ public class SCRModel extends ModalModel {
      *   an entity with the specified name.
      */
     public SCRModel(Workspace workspace) throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         super(workspace);
         _init();
     }
@@ -82,15 +82,16 @@ public class SCRModel extends ModalModel {
         super(container, name);
         _init();
     }
-    
+
     /** Initialize private variables.
      * @exception IllegalActionException
      * @exception NameDuplicationException
      */
-    private void _init() throws IllegalActionException, NameDuplicationException {
-            Parameter parameter = new Parameter(this, "openAsSCRActor");
-            parameter.setTypeEquals(BaseType.BOOLEAN);
-            parameter.setToken("true");
+    private void _init() throws IllegalActionException,
+            NameDuplicationException {
+        Parameter parameter = new Parameter(this, "openAsSCRActor");
+        parameter.setTypeEquals(BaseType.BOOLEAN);
+        parameter.setToken("true");
     }
-    
+
 }

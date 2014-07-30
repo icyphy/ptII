@@ -217,6 +217,7 @@ public class ArrayOfRecordsPane extends JPanel {
         /** Get the column count of the Matrix.
          *  @return the column count.
          */
+        @Override
         public int getColumnCount() {
             return _columns.size();
         }
@@ -226,6 +227,7 @@ public class ArrayOfRecordsPane extends JPanel {
          *  @param columnIndex The index of the column.
          *  @return The column index as a string.
          */
+        @Override
         public String getColumnName(int columnIndex) {
             if (columnIndex > _columns.size()) {
                 return "";
@@ -236,6 +238,7 @@ public class ArrayOfRecordsPane extends JPanel {
         /** Get the row count of the Matrix.
          *  @return the row count.
          */
+        @Override
         public int getRowCount() {
             return _array.length();
         }
@@ -246,6 +249,7 @@ public class ArrayOfRecordsPane extends JPanel {
          *  @return An instance of Token representing the matrix value
          *   at the specified row and column.
          */
+        @Override
         public Object getValueAt(int row, int column) {
             // There is a bug in JTable, where it happily tries to access
             // rows and columns that are outside of range.
@@ -309,6 +313,7 @@ public class ArrayOfRecordsPane extends JPanel {
         /** Get the column count of the Matrix.
          *  @return Zero.
          */
+        @Override
         public int getColumnCount() {
             return 0;
         }
@@ -316,6 +321,7 @@ public class ArrayOfRecordsPane extends JPanel {
         /** Get the row count of the Matrix.
          *  @return Zero.
          */
+        @Override
         public int getRowCount() {
             return 0;
         }
@@ -325,6 +331,7 @@ public class ArrayOfRecordsPane extends JPanel {
          *  @param column The column number.
          *  @return An empty String.
          */
+        @Override
         public Object getValueAt(int row, int column) {
             return "";
         }

@@ -86,6 +86,7 @@ public class DocViewerFactory extends EditorFactory {
      *  @param parent The parent window, which is required to be an
      *   instance of TableauFrame.
      */
+    @Override
     public void createEditor(NamedObj object, Frame parent) {
         NamedObj container = object.getContainer();
         if (container != null) {
@@ -93,8 +94,8 @@ public class DocViewerFactory extends EditorFactory {
             // DocAttribute is singleton, so there should be at most one.
             if (docAttributes.size() < 1) {
                 MessageHandler
-                        .message("To create documentation, right click on the background "
-                                + "and select 'Documentation->Customize Documentation'");
+                .message("To create documentation, right click on the background "
+                        + "and select 'Documentation->Customize Documentation'");
                 return;
             }
             DocAttribute doc = (DocAttribute) docAttributes.get(0);
@@ -105,7 +106,7 @@ public class DocViewerFactory extends EditorFactory {
                 try {
                     DocEffigy newEffigy = new DocEffigy(
                             (CompositeEntity) effigy.getContainer(), effigy
-                                    .getContainer().uniqueName("parentClass"));
+                            .getContainer().uniqueName("parentClass"));
                     newEffigy.setDocAttribute(doc);
                     DocTableau tableau = new DocTableau(newEffigy, "docTableau");
                     tableau.show();

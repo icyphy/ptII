@@ -255,7 +255,7 @@ public class SideEffectAnalysis {
                 if (value instanceof FieldRef) {
                     if (_debug) {
                         System.out
-                                .println("SideEffectAnalysis: assigns to field");
+                        .println("SideEffectAnalysis: assigns to field");
                     }
 
                     out.addSideEffect(((FieldRef) value).getField());
@@ -264,7 +264,7 @@ public class SideEffectAnalysis {
                 if (value instanceof ArrayRef) {
                     if (_debug) {
                         System.out
-                                .println("SideEffectAnalysis: assigns to array.");
+                        .println("SideEffectAnalysis: assigns to array.");
                     }
 
                     // Escape analysis might help in this case.
@@ -340,6 +340,7 @@ public class SideEffectAnalysis {
             _effectSet = null;
         }
 
+        @Override
         public boolean equals(Object o) {
             if (o == this) {
                 return true;
@@ -372,6 +373,7 @@ public class SideEffectAnalysis {
          *  have the same hashcode.
          *  @return The hash code for this EffectFlow object.
          */
+        @Override
         public int hashCode() {
             // See http://www.technofundo.com/tech/java/equalhash.html
             int hashCode = 31;

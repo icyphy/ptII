@@ -24,7 +24,7 @@
  PT_COPYRIGHT_VERSION_2
  COPYRIGHTENDKEY
 
-*/
+ */
 package ptolemy.actor.gt.controller;
 
 import ptolemy.data.ActorToken;
@@ -83,6 +83,7 @@ public class OutputModel extends GTEvent {
      *  @exception IllegalActionException If the port cannot be sent to, or if
      *   thrown by the superclass.
      */
+    @Override
     public RefiringData fire(Token arguments) throws IllegalActionException {
         RefiringData data = super.fire(arguments);
 

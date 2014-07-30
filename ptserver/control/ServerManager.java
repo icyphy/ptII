@@ -57,6 +57,7 @@ public class ServerManager extends HessianServlet implements IServerManager {
      *  @exception IllegalActionException If the server was unable to
      *  destroy the simulation thread.
      */
+    @Override
     public void close(Ticket ticket) throws IllegalActionException {
         PtolemyServer.getInstance().close(ticket);
     }
@@ -66,6 +67,7 @@ public class ServerManager extends HessianServlet implements IServerManager {
      *  @return Byte array containing the model data.
      *  @exception IllegalActionException If the server encountered an error opening the model file.
      */
+    @Override
     public byte[] downloadModel(String url) throws IllegalActionException {
         return PtolemyServer.getInstance().downloadModel(url);
     }
@@ -75,6 +77,7 @@ public class ServerManager extends HessianServlet implements IServerManager {
      *  @return An array of URLs for the models available on the server.
      *  @exception IllegalActionException If there was a problem discovering available models.
      */
+    @Override
     public String[] getModelListing() throws IllegalActionException {
         return PtolemyServer.getInstance().getModelListing();
     }
@@ -85,6 +88,7 @@ public class ServerManager extends HessianServlet implements IServerManager {
      *  @return An array of URLs for the layouts available for the model on the server.
      *  @exception IllegalActionException If there was a problem discovering available layouts.
      */
+    @Override
     public String[] getLayoutListing(String url) throws IllegalActionException {
         return PtolemyServer.getInstance().getLayoutListing(url);
     }
@@ -94,6 +98,7 @@ public class ServerManager extends HessianServlet implements IServerManager {
      *  @return The token handler map from the server.
      *  @exception IllegalActionException If the server was unable to get the handler map.
      */
+    @Override
     public LinkedHashMap<String, String> getTokenHandlerMap()
             throws IllegalActionException {
         return PtolemyServer.getInstance().getTokenHandlerMap();
@@ -108,6 +113,7 @@ public class ServerManager extends HessianServlet implements IServerManager {
      *  @exception IllegalActionException If the model fails to load
      *  from the provided URL.
      */
+    @Override
     public ProxyModelResponse open(String modelUrl, String layoutUrl)
             throws IllegalActionException {
         return PtolemyServer.getInstance().open(modelUrl, layoutUrl);
@@ -118,6 +124,7 @@ public class ServerManager extends HessianServlet implements IServerManager {
      *  @exception IllegalActionException If the server was unable to
      *  pause the running simulation.
      */
+    @Override
     public void pause(Ticket ticket) throws IllegalActionException {
         PtolemyServer.getInstance().pause(ticket);
     }
@@ -127,6 +134,7 @@ public class ServerManager extends HessianServlet implements IServerManager {
      *  @exception IllegalActionException If the server was unable to
      *  resume the execution of the simulation.
      */
+    @Override
     public void resume(Ticket ticket) throws IllegalActionException {
         PtolemyServer.getInstance().resume(ticket);
     }
@@ -136,6 +144,7 @@ public class ServerManager extends HessianServlet implements IServerManager {
      *  @exception IllegalActionException If the server was unable to
      *  start the simulation.
      */
+    @Override
     public void start(Ticket ticket) throws IllegalActionException {
         PtolemyServer.getInstance().start(ticket);
     }
@@ -145,6 +154,7 @@ public class ServerManager extends HessianServlet implements IServerManager {
      *  @exception IllegalActionException If the server was unable to
      *  stop the simulation.
      */
+    @Override
     public void stop(Ticket ticket) throws IllegalActionException {
         PtolemyServer.getInstance().stop(ticket);
     }

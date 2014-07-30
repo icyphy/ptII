@@ -56,6 +56,7 @@ import ptolemy.kernel.util.StringAttribute;
  @Pt.ProposedRating Yellow (hyzheng)
  @Pt.AcceptedRating Red (pwhitake)
  */
+@Deprecated
 public class Undefined extends Source {
     /** Construct an actor in the specified container with the specified
      *  name.
@@ -89,6 +90,7 @@ public class Undefined extends Source {
      *  @param attribute The attribute that changed.
      *  @exception IllegalActionException If the type is not recognized.
      */
+    @Override
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         if (attribute == outputType) {
@@ -110,6 +112,7 @@ public class Undefined extends Source {
     /** Do nothing.
      *  @exception IllegalActionException not thrown in this class.
      */
+    @Override
     public void fire() throws IllegalActionException {
         // Do nothing.
         // We could have just used the fire() method of the super class,
@@ -125,6 +128,7 @@ public class Undefined extends Source {
      *  @return False.
      *  @exception IllegalActionException Not thrown in this base class.
      */
+    @Override
     public boolean prefire() throws IllegalActionException {
         // We do not call super.prefire() because we do not
         // want to consume any trigger inputs.

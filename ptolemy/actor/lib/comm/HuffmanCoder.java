@@ -84,6 +84,7 @@ public class HuffmanCoder extends HuffmanBasic {
      *  @exception CloneNotSupportedException If a derived class contains
      *   an attribute that cannot be cloned.
      */
+    @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         HuffmanCoder newObject = (HuffmanCoder) super.clone(workspace);
         try {
@@ -99,6 +100,7 @@ public class HuffmanCoder extends HuffmanBasic {
     /** Generate the Huffman codebook for the given <i>pmf</i>, and
      *  encode the input into booleans and send them to the output port.
      */
+    @Override
     public void fire() throws IllegalActionException {
         super.fire();
 

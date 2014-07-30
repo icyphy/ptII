@@ -121,6 +121,7 @@ public class UnionDisassembler extends TypedAtomicActor {
      *  @exception CloneNotSupportedException If a derived class contains
      *   an attribute that cannot be cloned.
      */
+    @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         UnionDisassembler newObject = (UnionDisassembler) super
                 .clone(workspace);
@@ -133,6 +134,7 @@ public class UnionDisassembler extends TypedAtomicActor {
      *  If the input does not have a token, suspend firing and return.
      *  @exception IllegalActionException If there is no director.
      */
+    @Override
     public void fire() throws IllegalActionException {
         super.fire();
         Director director = getDirector();

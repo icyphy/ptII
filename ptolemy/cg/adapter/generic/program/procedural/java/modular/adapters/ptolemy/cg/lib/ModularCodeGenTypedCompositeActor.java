@@ -41,11 +41,11 @@ Code generator adapter for typed composite actor.
 @since Ptolemy II 10.0
 @Pt.ProposedRating Red (rodiers)
 @Pt.AcceptedRating Red (daib)
-*/
+ */
 
 public class ModularCodeGenTypedCompositeActor
-        extends
-        ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.actor.TypedCompositeActor {
+extends
+ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.actor.TypedCompositeActor {
 
     /** Construct the code generator adapter associated
      *  with the given TypedCompositeActor.
@@ -66,6 +66,7 @@ public class ModularCodeGenTypedCompositeActor
      * @return The generated code.
      * @exception IllegalActionException Not thrown in this base class.
      */
+    @Override
     public String generateTypeConvertFireCode() throws IllegalActionException {
         return "";
     }

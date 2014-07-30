@@ -68,7 +68,7 @@ import ptolemy.kernel.util.Workspace;
  @see ptolemy.actor.IOPort
  */
 public class AtomicActor<T extends IOPort> extends ComponentEntity<T> implements
-        Actor, FiringsRecordable {
+Actor, FiringsRecordable {
     /** Construct an actor in the default workspace with an empty string
      *  as its name. Increment the version number of the workspace.
      *  The object is added to the workspace directory.
@@ -116,6 +116,7 @@ public class AtomicActor<T extends IOPort> extends ComponentEntity<T> implements
      *  @see #removeInitializable(Initializable)
      *  @see ptolemy.actor.CompositeActor#addPiggyback(Executable)
      */
+    @Override
     public void addInitializable(Initializable initializable) {
         if (_initializables == null) {
             _initializables = new LinkedHashSet<Initializable>();
@@ -130,6 +131,7 @@ public class AtomicActor<T extends IOPort> extends ComponentEntity<T> implements
      *  @param listener The listener to which to send actor firing messages.
      *  @see #removeActorFiringListener(ActorFiringListener)
      */
+    @Override
     public void addActorFiringListener(ActorFiringListener listener) {
         // NOTE: This method needs to be synchronized to prevent two
         // threads from each creating a new _actorFiringListeners list.
@@ -165,9 +167,10 @@ public class AtomicActor<T extends IOPort> extends ComponentEntity<T> implements
      *   if one of the attributes cannot be cloned.
      *  @return A new ComponentEntity.
      */
+    @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         @SuppressWarnings("unchecked")
-                AtomicActor<T> newObject = (AtomicActor<T>) super.clone(workspace);
+        AtomicActor<T> newObject = (AtomicActor<T>) super.clone(workspace);
 
         // Reset to force reinitialization of cache.
         newObject._initializables = null;
@@ -185,6 +188,7 @@ public class AtomicActor<T extends IOPort> extends ComponentEntity<T> implements
      *  an input port and there is a director.
      *  @param port The port that has connection changes.
      */
+    @Override
     public void connectionsChanged(Port port) {
         if (_debugging) {
             _debug("Connections changed on port: " + port.getName());
@@ -217,6 +221,7 @@ public class AtomicActor<T extends IOPort> extends ComponentEntity<T> implements
     /** Create receivers for each input port.
      *  @exception IllegalActionException If any port throws it.
      */
+    @Override
     public void createReceivers() throws IllegalActionException {
         if (workspace().getVersion() != _receiversVersion) {
             // NOTE:  Receivers are also getting created
@@ -266,6 +271,7 @@ public class AtomicActor<T extends IOPort> extends ComponentEntity<T> implements
      *
      *  @exception IllegalActionException Not thrown in this base class.
      */
+    @Override
     public void fire() throws IllegalActionException {
         if (_debugging) {
             _debug("Called fire()");
@@ -288,6 +294,7 @@ public class AtomicActor<T extends IOPort> extends ComponentEntity<T> implements
      * @exception IllegalActionException Thrown in subclasses if causality
      * interface cannot be computed.
      */
+    @Override
     public CausalityInterface getCausalityInterface()
             throws IllegalActionException {
         Director director = getDirector();
@@ -311,6 +318,7 @@ public class AtomicActor<T extends IOPort> extends ComponentEntity<T> implements
      *  director.
      *  @return The director that invokes this actor.
      */
+    @Override
     public Director getDirector() {
         Nameable container = getContainer();
 
@@ -324,6 +332,7 @@ public class AtomicActor<T extends IOPort> extends ComponentEntity<T> implements
     /** Return the executive director (same as getDirector()).
      *  @return The executive director.
      */
+    @Override
     public Director getExecutiveDirector() {
         return getDirector();
     }
@@ -332,6 +341,7 @@ public class AtomicActor<T extends IOPort> extends ComponentEntity<T> implements
      *  if there is one. Otherwise, return null.
      *  @return The manager.
      */
+    @Override
     public Manager getManager() {
         try {
             _workspace.getReadAccess();
@@ -355,6 +365,7 @@ public class AtomicActor<T extends IOPort> extends ComponentEntity<T> implements
      *
      *  @exception IllegalActionException If a derived class throws it.
      */
+    @Override
     public void initialize() throws IllegalActionException {
         if (_debugging) {
             _debug("Called initialize()");
@@ -371,6 +382,7 @@ public class AtomicActor<T extends IOPort> extends ComponentEntity<T> implements
      *  This method is read-synchronized on the workspace.
      *  @return A list of input IOPort objects.
      */
+    @Override
     public List<T> inputPortList() {
         if (_inputPortsVersion != _workspace.getVersion()) {
             try {
@@ -408,6 +420,7 @@ public class AtomicActor<T extends IOPort> extends ComponentEntity<T> implements
      *
      *  @return True.
      */
+    @Override
     public boolean isFireFunctional() {
         return true;
     }
@@ -424,15 +437,16 @@ public class AtomicActor<T extends IOPort> extends ComponentEntity<T> implements
      *  @exception IllegalActionException If the defaultValue expression
      *   cannot be evaluated for an input port.
      */
+    @Override
     public boolean isStrict() throws IllegalActionException {
-            for (IOPort port : inputPortList()) {
-                    if (port.defaultValue.getToken() == null) {
-                            // Found an input port with no default value.
-                            return true;
-                    }
+        for (IOPort port : inputPortList()) {
+            if (port.defaultValue.getToken() == null) {
+                // Found an input port with no default value.
+                return true;
             }
-            // NOTE: If the actor has no input ports at all, this
-            // returns false, indicating the actor is non-strict.
+        }
+        // NOTE: If the actor has no input ports at all, this
+        // returns false, indicating the actor is non-strict.
         return false;
     }
 
@@ -456,6 +470,7 @@ public class AtomicActor<T extends IOPort> extends ComponentEntity<T> implements
      *  @exception IllegalActionException If iterating is not
      *   permitted, or if prefire(), fire(), or postfire() throw it.
      */
+    @Override
     public int iterate(int count) throws IllegalActionException {
         if (_debugging) {
             _debug("Called iterate(" + count + ")");
@@ -536,6 +551,7 @@ public class AtomicActor<T extends IOPort> extends ComponentEntity<T> implements
      *   with the specified name.
      *  @see ptolemy.kernel.util.Workspace#getWriteAccess()
      */
+    @Override
     public Port newPort(String name) throws NameDuplicationException {
         try {
             _workspace.getWriteAccess();
@@ -558,6 +574,7 @@ public class AtomicActor<T extends IOPort> extends ComponentEntity<T> implements
      *  @exception IllegalActionException If there is no director.
      *  @return A new object implementing the Receiver interface.
      */
+    @Override
     public Receiver newReceiver() throws IllegalActionException {
         Director director = getDirector();
 
@@ -573,6 +590,7 @@ public class AtomicActor<T extends IOPort> extends ComponentEntity<T> implements
      *  This method is read-synchronized on the workspace.
      *  @return A list of output IOPort objects.
      */
+    @Override
     public List<T> outputPortList() {
         if (_outputPortsVersion != _workspace.getVersion()) {
             try {
@@ -614,6 +632,7 @@ public class AtomicActor<T extends IOPort> extends ComponentEntity<T> implements
      *  @return True if execution can continue into the next iteration.
      *  @exception IllegalActionException Not thrown in this base class.
      */
+    @Override
     public boolean postfire() throws IllegalActionException {
         if (_debugging) {
             _debug("Called postfire()");
@@ -631,6 +650,7 @@ public class AtomicActor<T extends IOPort> extends ComponentEntity<T> implements
      *  @return True if this actor is ready for firing, false otherwise.
      *  @exception IllegalActionException Not thrown in this base class.
      */
+    @Override
     public boolean prefire() throws IllegalActionException {
         if (_debugging) {
             _debug("Called prefire()");
@@ -650,6 +670,7 @@ public class AtomicActor<T extends IOPort> extends ComponentEntity<T> implements
      *  so it can change scheduling information.
      *  @exception IllegalActionException Not thrown in this base class.
      */
+    @Override
     public void preinitialize() throws IllegalActionException {
         if (_debugging) {
             _debug("Called preinitialize()");
@@ -691,12 +712,14 @@ public class AtomicActor<T extends IOPort> extends ComponentEntity<T> implements
      *  @deprecated There is no need to override this method anymore.
      *   Just call removeDependency() in preinitialize().
      */
+    @Deprecated
     public void pruneDependencies() throws IllegalActionException {
     }
 
     /** Record a firing event.
      *  @param type The firing event to be recorded.
      */
+    @Override
     public void recordFiring(FiringEvent.FiringEventType type) {
         _actorFiring(new FiringEvent(null, this, type));
     }
@@ -708,6 +731,7 @@ public class AtomicActor<T extends IOPort> extends ComponentEntity<T> implements
      *   to which actor firing messages are sent.
      *  @see #addActorFiringListener(ActorFiringListener)
      */
+    @Override
     public void removeActorFiringListener(ActorFiringListener listener) {
         if (_actorFiringListeners == null) {
             return;
@@ -757,6 +781,7 @@ public class AtomicActor<T extends IOPort> extends ComponentEntity<T> implements
      *  @see #addInitializable(Initializable)
      *  @see ptolemy.actor.CompositeActor#removePiggyback(Executable)
      */
+    @Override
     public void removeInitializable(Initializable initializable) {
         if (_initializables != null) {
             _initializables.remove(initializable);
@@ -775,6 +800,7 @@ public class AtomicActor<T extends IOPort> extends ComponentEntity<T> implements
      *  @exception NameDuplicationException If the container already has
      *   an entity with the name of this entity.
      */
+    @Override
     public void setContainer(CompositeEntity container)
             throws IllegalActionException, NameDuplicationException {
         // Invalidate the schedule and type resolution of the old director.
@@ -805,6 +831,7 @@ public class AtomicActor<T extends IOPort> extends ComponentEntity<T> implements
      *  and returning from the fire() method at the next convenient
      *  point.
      */
+    @Override
     public void stop() {
         _stopRequested = true;
 
@@ -820,6 +847,7 @@ public class AtomicActor<T extends IOPort> extends ComponentEntity<T> implements
      *  return from the fire() method at the next convenient point.
      *  In this base class, do nothing.
      */
+    @Override
     public void stopFire() {
         if (_debugging) {
             _debug("Called stopFire()");
@@ -830,6 +858,7 @@ public class AtomicActor<T extends IOPort> extends ComponentEntity<T> implements
      *  Derived classes may wish to do something more aggressive, such
      *  as terminating any threads they have started.
      */
+    @Override
     public void terminate() {
         if (_debugging) {
             _debug("Called terminate()");
@@ -847,6 +876,7 @@ public class AtomicActor<T extends IOPort> extends ComponentEntity<T> implements
      *
      *  @exception IllegalActionException Not thrown in this base class.
      */
+    @Override
     public void wrapup() throws IllegalActionException {
         if (_debugging) {
             _debug("Called wrapup()");

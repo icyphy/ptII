@@ -40,24 +40,28 @@ import diva.canvas.Figure;
 public class NullSite extends AbstractSite {
     /** Return null
      */
+    @Override
     public Figure getFigure() {
         return null;
     }
 
     /** Return 0
      */
+    @Override
     public int getID() {
         return 0;
     }
 
     /** Return 0.0.
      */
+    @Override
     public double getX() {
         return 0.0;
     }
 
     /** Return 0.0.
      */
+    @Override
     public double getY() {
         return 0.0;
     }

@@ -25,7 +25,7 @@ ENHANCEMENTS, OR MODIFICATIONS.
                                                 COPYRIGHTENDKEY
 
 
-*/
+ */
 package ptolemy.vergil.actor;
 
 import ptolemy.kernel.util.IllegalActionException;

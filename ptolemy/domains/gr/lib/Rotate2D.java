@@ -142,6 +142,7 @@ public class Rotate2D extends GRTransform2D {
      *  @exception IllegalActionException If the getToken() method
      *  throws such an exception.
      */
+    @Override
     protected void _applyInitialTransform(Figure figure)
             throws IllegalActionException {
         _oldAngle = ((DoubleToken) initialTheta.getToken()).doubleValue();
@@ -161,6 +162,7 @@ public class Rotate2D extends GRTransform2D {
      *  @exception IllegalActionException If the getToken() method throws
      *  such an exception.
      */
+    @Override
     protected void _applyTransform(final Figure figure)
             throws IllegalActionException {
         double angle = _oldAngle;

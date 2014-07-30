@@ -155,6 +155,7 @@ public class GlassPaneWidget extends NamedObjectWidget {
         addChild(_componentWidget);
         addDependency(new Dependency() {
 
+            @Override
             public void revalidateDependency() {
                 if (!isPreferredBoundsSet() || getPreferredBounds() == null
                         || getClientArea() == null) {

@@ -58,32 +58,33 @@ public class FMUImport extends NamedProgramCodeGeneratorAdapter {
      * @exception IllegalActionException If the code stream encounters an
      *  error in processing the specified code block(s).
      */
+    @Override
     protected String _generateFireCode() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
         code.append(super._generateFireCode());
 
-        ptolemy.actor.lib.fmi.FMUImport actor = (ptolemy.actor.lib.fmi.FMUImport) getComponent();
+        getComponent();
 
-//         String type = getCodeGenerator().codeGenType(actor.input.getType());
-//         if (!getCodeGenerator().isPrimitive(type)) {
-//             type = "Token";
-//         }
+        //         String type = getCodeGenerator().codeGenType(actor.input.getType());
+        //         if (!getCodeGenerator().isPrimitive(type)) {
+        //             type = "Token";
+        //         }
 
-//         ArrayList args = new ArrayList();
+        //         ArrayList args = new ArrayList();
 
-//         String title = actor.title.getExpression();
-//         if (title.trim().length() > 0) {
-//             args.add(title);
-//         } else {
-//             args.add(NamedProgramCodeGeneratorAdapter.generateSimpleName(actor));
-//         }
+        //         String title = actor.title.getExpression();
+        //         if (title.trim().length() > 0) {
+        //             args.add(title);
+        //         } else {
+        //             args.add(NamedProgramCodeGeneratorAdapter.generateSimpleName(actor));
+        //         }
 
-//         args.add(Integer.valueOf(0));
-//         for (int i = 0; i < actor.input.getWidth(); i++) {
-//             args.set(1, Integer.toString(i));
-//             code.append(_templateParser.generateBlockCode(type + "PrintBlock",
-//                     args));
-//         }
+        //         args.add(Integer.valueOf(0));
+        //         for (int i = 0; i < actor.input.getWidth(); i++) {
+        //             args.set(1, Integer.toString(i));
+        //             code.append(_templateParser.generateBlockCode(type + "PrintBlock",
+        //                     args));
+        //         }
 
         return code.toString();
     }

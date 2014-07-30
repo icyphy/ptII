@@ -45,6 +45,7 @@ import ptolemy.kernel.util.NamedObj;
  */
 @SuppressWarnings("serial")
 public class PtolemyListCellRenderer extends DefaultListCellRenderer {
+    @Override
     public Component getListCellRendererComponent(JList list, Object value,
             int index, boolean isSelected, boolean cellHasFocus) {
         DefaultListCellRenderer component = (DefaultListCellRenderer) super

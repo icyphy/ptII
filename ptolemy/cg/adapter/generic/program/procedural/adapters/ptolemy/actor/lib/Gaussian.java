@@ -56,6 +56,7 @@ public class Gaussian extends RandomSource {
     /** Generate code for producing a new random number.
      *  @exception IllegalActionException Not thrown in this base class.
      */
+    @Override
     protected String _generateRandomNumber() throws IllegalActionException {
         ArrayList<String> args = new ArrayList<String>();
         return getTemplateParser().generateBlockCode("randomBlock", args);

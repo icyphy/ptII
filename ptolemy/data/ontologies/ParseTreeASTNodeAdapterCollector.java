@@ -82,6 +82,7 @@ public class ParseTreeASTNodeAdapterCollector extends AbstractParseTreeVisitor {
      *  @exception IllegalActionException If an exception is thrown while
      *  visiting child nodes
      */
+    @Override
     protected void _visitAllChildren(ASTPtRootNode node)
             throws IllegalActionException {
         int numChildren = node.jjtGetNumChildren();
@@ -101,6 +102,7 @@ public class ParseTreeASTNodeAdapterCollector extends AbstractParseTreeVisitor {
      *  @exception IllegalActionException If an exception is thrown while
      *  visiting the child node
      */
+    @Override
     protected void _visitChild(ASTPtRootNode node, int i)
             throws IllegalActionException {
         ASTPtRootNode child = (ASTPtRootNode) node.jjtGetChild(i);

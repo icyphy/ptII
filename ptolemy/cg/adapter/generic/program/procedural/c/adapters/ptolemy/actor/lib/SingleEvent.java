@@ -57,6 +57,7 @@ public class SingleEvent extends NamedProgramCodeGeneratorAdapter {
         super(actor);
     }
 
+    @Override
     public String generateInitializeCode() throws IllegalActionException {
         CodeStream codeStream = _templateParser.getCodeStream();
         codeStream.clear();

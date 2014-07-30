@@ -94,6 +94,7 @@ public class SaltAndPepper extends Transformer {
      *  @param attribute The attribute whose type changed.
      *  @exception IllegalActionException Not thrown in this base class.
      */
+    @Override
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         if (attribute == probability) {
@@ -109,6 +110,7 @@ public class SaltAndPepper extends Transformer {
      *  @exception IllegalActionException If there is a problem reading
      *  or writing a token.
      */
+    @Override
     public void fire() throws IllegalActionException {
         super.fire();
 

@@ -145,6 +145,7 @@ public class GiottoScheduler extends Scheduler {
      *  @exception NotSchedulableException If the model is not
      *   schedulable.
      */
+    @Override
     protected Schedule _getSchedule() throws NotSchedulableException {
         StaticSchedulingDirector director = (StaticSchedulingDirector) getContainer();
         CompositeActor compositeActor = (CompositeActor) director

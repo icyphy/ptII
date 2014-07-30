@@ -49,6 +49,7 @@ import ptolemy.kernel.util.NamedObj;
  @deprecated The 'import' MoML element is deprecated, use the 'source'
  attribute instead.
  */
+@Deprecated
 public class ImportAttribute extends Attribute {
     /** Construct an attribute with the specified container and name.
      *  @param container The container.
@@ -69,6 +70,7 @@ public class ImportAttribute extends Attribute {
     /** Set the name of the external file being referenced.
      *  @param source The name of the external file.
      */
+    @Override
     public void setSource(String source) {
         _source = source;
     }
@@ -82,6 +84,7 @@ public class ImportAttribute extends Attribute {
      *  @param depth The depth in the hierarchy, to determine indenting.
      *  @exception IOException If there is a problem writing the MoML.
      */
+    @Override
     public void exportMoML(Writer output, int depth, String name)
             throws IOException {
         if (_isMoMLSuppressed(depth)) {

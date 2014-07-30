@@ -30,7 +30,6 @@ package ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.actor.lib
 
 import ptolemy.cg.kernel.generic.program.NamedProgramCodeGeneratorAdapter;
 
-
 /**
  * A helper class for ptolemy.actor.lib.conversions.BooleanToAnything.
  *
@@ -45,7 +44,8 @@ public class BooleanToAnything extends NamedProgramCodeGeneratorAdapter {
      * Constructor the BooleanToAnything helper.
      * @param actor the associated actor.
      */
-    public BooleanToAnything(ptolemy.actor.lib.conversions.BooleanToAnything actor) {
+    public BooleanToAnything(
+            ptolemy.actor.lib.conversions.BooleanToAnything actor) {
         super(actor);
     }
 }

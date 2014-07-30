@@ -66,7 +66,7 @@ public class IfNodeFunction extends MonotonicityConceptFunction {
      */
     public IfNodeFunction(ptolemy.data.expr.ASTPtFunctionalIfNode ifNode,
             Ontology monotonicityOntology, List<Ontology> domainOntologies)
-            throws IllegalActionException {
+                    throws IllegalActionException {
         super("defaultASTPtFunctionalIfNodeFunction", 3, monotonicityOntology,
                 domainOntologies);
         _ifNode = ifNode;
@@ -83,6 +83,7 @@ public class IfNodeFunction extends MonotonicityConceptFunction {
      *  @exception IllegalActionException If there is an error evaluating the function.
      *  @see ptolemy.data.ontologies.ConceptFunction#_evaluateFunction(java.util.List)
      */
+    @Override
     protected Concept _evaluateFunction(List<Concept> inputConceptValues)
             throws IllegalActionException {
         Concept c1 = inputConceptValues.get(0);
@@ -91,8 +92,8 @@ public class IfNodeFunction extends MonotonicityConceptFunction {
         if (c1.equals(_monotonicityAnalysisOntology.getConceptGraph().bottom())
                 || c2.equals(_monotonicityAnalysisOntology.getConceptGraph()
                         .bottom())
-                || c3.equals(_monotonicityAnalysisOntology.getConceptGraph()
-                        .bottom())) {
+                        || c3.equals(_monotonicityAnalysisOntology.getConceptGraph()
+                                .bottom())) {
             return _monotonicityAnalysisOntology.getConceptGraph().bottom();
         } else if (c1 instanceof MonotonicityConcept
                 && c2 instanceof MonotonicityConcept
@@ -204,7 +205,7 @@ public class IfNodeFunction extends MonotonicityConceptFunction {
      */
     private Concept _extractConstant(
             ptolemy.data.expr.ASTPtRelationalNode condition)
-            throws IllegalActionException {
+                    throws IllegalActionException {
         ptolemy.data.expr.ASTPtRootNode rhs = (ptolemy.data.expr.ASTPtRootNode) condition
                 .jjtGetChild(1);
         ParseTreeEvaluator evaluator = new ExpressionConceptFunctionParseTreeEvaluator(

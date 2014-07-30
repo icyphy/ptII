@@ -71,7 +71,7 @@ public class ExportImageJUnitTest {
      */
     public static void main(String args[]) {
         org.junit.runner.JUnitCore
-                .main("ptolemy.vergil.basic.test.junit.ExportImageJUnitTest");
+        .main("ptolemy.vergil.basic.test.junit.ExportImageJUnitTest");
     }
 
     /**
@@ -118,6 +118,7 @@ public class ExportImageJUnitTest {
         // Open the model.
         // FIXME: Refactor this and KielerLayoutJUnitTest to a common class.
         Runnable openModelAction = new Runnable() {
+            @Override
             public void run() {
                 try {
                     model[0] = ConfigurationApplication
@@ -142,6 +143,7 @@ public class ExportImageJUnitTest {
 
         // FIXME: Refactor this and KielerLayoutJUnitTest to a common class.
         Runnable openImageDisplayModelAction = new Runnable() {
+            @Override
             public void run() {
                 try {
                     imageDisplayModel[0] = ConfigurationApplication
@@ -160,6 +162,7 @@ public class ExportImageJUnitTest {
         String[] formatNames = new String[] { "GIF", "PNG" };
         for (final String formatName : formatNames) {
             Runnable exportImageAction = new Runnable() {
+                @Override
                 public void run() {
                     try {
                         System.out.print(" " + formatName + " ");
@@ -184,28 +187,36 @@ public class ExportImageJUnitTest {
                         }
 
                         // Run a model that displays the image.
-                        ImageReader imageReader = (ImageReader) ((CompositeEntity) imageDisplayModel[0])
+                        ImageReader imageReader = (ImageReader) imageDisplayModel[0]
                                 .getEntity("ImageReader");
 
                         imageReader.fileOrURL.setExpression(imageFile.toURI()
                                 .toURL().toString());
                         if (!(model[0] instanceof TypedCompositeActor)) {
-                                throw new RuntimeException(model[0].getFullName() + "is not a TypedCompositeActor? " + model[0].getClass());
+                            throw new RuntimeException(model[0].getFullName()
+                                    + "is not a TypedCompositeActor? "
+                                    + model[0].getClass());
                         } else {
-                                Manager manager = ((TypedCompositeActor)model[0]).getManager();
-                                if (manager == null) {
-                                        manager = new Manager(
-                                                        imageDisplayModel[0].workspace(),
-                                                        "MyManager");
-                                        
-                                }
-                                if (!(imageDisplayModel[0] instanceof TypedCompositeActor)) {
-                                     throw new RuntimeException(imageDisplayModel[0].getFullName() + "is not a TypedCompositeActor? " + imageDisplayModel[0].getClass());
+                            Manager manager = ((TypedCompositeActor) model[0])
+                                    .getManager();
+                            if (manager == null) {
+                                manager = new Manager(
+                                        imageDisplayModel[0].workspace(),
+                                        "MyManager");
+
+                            }
+                            if (!(imageDisplayModel[0] instanceof TypedCompositeActor)) {
+                                throw new RuntimeException(
+                                        imageDisplayModel[0].getFullName()
+                                                + "is not a TypedCompositeActor? "
+                                                + imageDisplayModel[0]
+                                                        .getClass());
                             } else {
-                                     ((TypedCompositeActor)imageDisplayModel[0]).setManager(manager);
-                                     ((TypedCompositeActor)imageDisplayModel[0])
-                                                .setModelErrorHandler(new BasicModelErrorHandler());
-                                     manager.execute();
+                                ((TypedCompositeActor) imageDisplayModel[0])
+                                        .setManager(manager);
+                                ((TypedCompositeActor) imageDisplayModel[0])
+                                        .setModelErrorHandler(new BasicModelErrorHandler());
+                                manager.execute();
                             }
                         }
 
@@ -222,10 +233,11 @@ public class ExportImageJUnitTest {
         /////
         // Close the model.
         Runnable closeAction = new Runnable() {
+            @Override
             public void run() {
                 try {
                     ConfigurationApplication
-                            .closeModelWithoutSavingOrExiting(model[0]);
+                    .closeModelWithoutSavingOrExiting(model[0]);
                 } catch (Exception ex) {
                     throw new RuntimeException(ex);
                 }

@@ -1,4 +1,3 @@
-
 /* Parameter Estimation for Explicit-Duration Hidden Markov Models.
 
 Copyright (c) 1998-2014 The Regents of the University of California.
@@ -55,7 +54,7 @@ import ptolemy.kernel.util.Workspace;
 <p> This actor implements the Expectation-Maximization(EM) algorithm for
 parameter estimation in a family of graphical stochastic models, known as
 the Hidden Semi-Markov Model family.
-<p> In addition to estimating the parameters of a hidden markov model, 
+<p> In addition to estimating the parameters of a hidden markov model,
 
 
  <p>
@@ -89,7 +88,8 @@ public abstract class HSMMParameterEstimator extends ParameterEstimator {
     public HSMMParameterEstimator(CompositeEntity container, String name)
             throws NameDuplicationException, IllegalActionException {
         super(container, name);
-        clusterAssignments = new TypedIOPort(this, "clusterAssignments", false, true);
+        clusterAssignments = new TypedIOPort(this, "clusterAssignments", false,
+                true);
         clusterAssignments.setTypeEquals(new ArrayType(BaseType.DOUBLE));
 
         maxStateDuration = new Parameter(this, "maxStateDuration");
@@ -97,18 +97,20 @@ public abstract class HSMMParameterEstimator extends ParameterEstimator {
         maxStateDuration.setExpression("100");
         _maxDuration = 100;
 
-
-        priorDurationDistribution = new Parameter(this, "priorDurationDistribution");
+        priorDurationDistribution = new Parameter(this,
+                "priorDurationDistribution");
         priorDurationDistribution.setExpression("");
         priorDurationDistribution.setTypeEquals(new ArrayType(BaseType.DOUBLE));
 
         durationProbabilities = new Parameter(this, "durationProbabilities");
-        durationProbabilities.setTypeEquals(BaseType.DOUBLE_MATRIX); 
+        durationProbabilities.setTypeEquals(BaseType.DOUBLE_MATRIX);
 
-        durationEstimates = new TypedIOPort(this, "durationEstimates", false, true);
+        durationEstimates = new TypedIOPort(this, "durationEstimates", false,
+                true);
         durationEstimates.setTypeEquals(BaseType.DOUBLE_MATRIX);
 
-        durationPriorEstimates = new TypedIOPort(this, "durationPriorEstimates", false, true);
+        durationPriorEstimates = new TypedIOPort(this,
+                "durationPriorEstimates", false, true);
         durationPriorEstimates.setTypeEquals(new ArrayType(BaseType.DOUBLE));
 
         modelLikelihood = new TypedIOPort(this, "modelLikelihood", false, true);
@@ -117,15 +119,15 @@ public abstract class HSMMParameterEstimator extends ParameterEstimator {
 
     }
 
+    @Override
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
-        if (attribute == maxStateDuration)
-        {
-            _maxDuration = ((IntToken)maxStateDuration.getToken()).intValue();
+        if (attribute == maxStateDuration) {
+            _maxDuration = ((IntToken) maxStateDuration.getToken()).intValue();
         } else if (attribute == durationProbabilities) {
             int nDurations = ((MatrixToken) durationProbabilities.getToken())
                     .getColumnCount();
-            _nStates = ((IntToken)nStates.getToken()).intValue();
+            _nStates = ((IntToken) nStates.getToken()).intValue();
             _D0 = new double[_nStates][nDurations];
             for (int i = 0; i < _nStates; i++) {
                 for (int j = 0; j < nDurations; j++) {
@@ -134,15 +136,16 @@ public abstract class HSMMParameterEstimator extends ParameterEstimator {
                 }
             }
         } else if (attribute == priorDurationDistribution) {
-            int nDurations = ((ArrayToken)priorDurationDistribution.getToken()).length();
-            _durationPriors = new double[nDurations];  
-            _dPriors0 = new double[nDurations];          
+            int nDurations = ((ArrayToken) priorDurationDistribution.getToken())
+                    .length();
+            _durationPriors = new double[nDurations];
+            _dPriors0 = new double[nDurations];
             for (int j = 0; j < nDurations; j++) {
-                _durationPriors[j] = ((DoubleToken)((ArrayToken)priorDurationDistribution.
-                        getToken()).getElement(j)).doubleValue();
-                _dPriors0[j] =_durationPriors[j];
+                _durationPriors[j] = ((DoubleToken) ((ArrayToken) priorDurationDistribution
+                        .getToken()).getElement(j)).doubleValue();
+                _dPriors0[j] = _durationPriors[j];
             }
-        }  else {
+        } else {
             super.attributeChanged(attribute);
         }
     }
@@ -150,17 +153,16 @@ public abstract class HSMMParameterEstimator extends ParameterEstimator {
     ///////////////////////////////////////////////////////////////////
     ////                         public variables                  ////
 
-
     /* The user-provided initial guess on the prior probability distribution*/
     public Parameter priorDurationDistribution;
 
     /* The user-provided initial guess on the prior probability distribution*/
-    public Parameter durationProbabilities; 
+    public Parameter durationProbabilities;
 
     /* DurationEstimates */
     public TypedIOPort durationEstimates;
 
-    /* Duration Prior estimates 
+    /* Duration Prior estimates
      */
     public TypedIOPort durationPriorEstimates;
     /* Hidden-State Assignments */
@@ -171,35 +173,40 @@ public abstract class HSMMParameterEstimator extends ParameterEstimator {
 
     /* Likelihood */
     public TypedIOPort modelLikelihood;
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
+    @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         HSMMParameterEstimator newObject = (HSMMParameterEstimator) super
-                .clone(workspace); 
+                .clone(workspace);
         newObject._D0 = new double[_nStates][_maxDuration];
         newObject._durationPriors = new double[_maxDuration];
         newObject._priors = new double[_nStates];
         return newObject;
     }
 
-    public void preinitialize() throws IllegalActionException{
+    @Override
+    public void preinitialize() throws IllegalActionException {
         super.preinitialize();
 
         for (int i = 0; i < _maxDuration; i++) {
             ArrayToken dT = (ArrayToken) priorDurationDistribution.getToken();
-            _durationPriors[i] = ((DoubleToken) (dT)
-                    .getElement(i)).doubleValue();
+            _durationPriors[i] = ((DoubleToken) (dT).getElement(i))
+                    .doubleValue();
         }
 
         _D0 = new double[_nStates][_maxDuration];
     }
+
+    @Override
     public void fire() throws IllegalActionException {
 
-        super.fire(); 
-        _durationPriors = new double[_maxDuration];   
+        super.fire();
+        _durationPriors = new double[_maxDuration];
         for (int i = 0; i < _maxDuration; i++) {
-            _durationPriors[i] = ((DoubleToken) ((ArrayToken) priorDurationDistribution.getToken())
-                    .getElement(i)).doubleValue();
+            _durationPriors[i] = ((DoubleToken) ((ArrayToken) priorDurationDistribution
+                    .getToken()).getElement(i)).doubleValue();
         }
 
         _D0 = new double[_nStates][_maxDuration];
@@ -212,10 +219,11 @@ public abstract class HSMMParameterEstimator extends ParameterEstimator {
         }
     }
 
+    @Override
     protected boolean _EMParameterEstimation() {
 
         boolean success = false;
-        _likelihood = -Double.MAX_VALUE/10.0;
+        _likelihood = -Double.MAX_VALUE / 10.0;
         _initializeEMParameters();
 
         for (int iterations = 0; iterations < _nIterations; iterations++) {
@@ -230,18 +238,18 @@ public abstract class HSMMParameterEstimator extends ParameterEstimator {
             //record likelihood
             if (likelihood != likelihood) {
                 break;
-            }else {
+            } else {
                 _likelihoodHistory.add(likelihood);
-                if (Math.abs(_likelihood-likelihood) < _likelihoodThreshold) {
+                if (Math.abs(_likelihood - likelihood) < _likelihoodThreshold) {
                     break;
                 }
             }
             // check for non-increasing likelihood or NaN
-//            if (iterations > 5) {
-//                if ((likelihood - _likelihood) < _likelihoodThreshold || likelihood!=likelihood) {
-//                    break;
-//                }  
-//            }
+            //            if (iterations > 5) {
+            //                if ((likelihood - _likelihood) < _likelihoodThreshold || likelihood!=likelihood) {
+            //                    break;
+            //                }  
+            //            }
 
             _likelihood = likelihood;
         }
@@ -249,15 +257,17 @@ public abstract class HSMMParameterEstimator extends ParameterEstimator {
         return success;
     }
 
+    @Override
     protected abstract double emissionProbability(double y, int hiddenState);
 
     protected abstract double durationProbability(int y, int hiddenState);
 
+    @Override
     protected void _initializeArrays() throws IllegalActionException {
 
         //_observations = new double[_observationLength];
         // infer the number of states from the mean array
-        _likelihood = -Double.MAX_VALUE/10.0;
+        _likelihood = -Double.MAX_VALUE / 10.0;
         _nStates = ((IntToken) nStates.getToken()).intValue();
         _transitionMatrix = new double[_nStates][_nStates];
         _A0 = new double[_nStates][_nStates];
@@ -265,28 +275,31 @@ public abstract class HSMMParameterEstimator extends ParameterEstimator {
         _likelihoodHistory = new LinkedList<Double>();
     }
 
+    @Override
     protected abstract void _initializeEMParameters();
 
+    @Override
     protected abstract void _iterateEM();
 
+    @Override
     protected abstract boolean _checkForConvergence(int i);
 
+    @Override
     protected abstract void _updateEstimates();
 
     /* Java implementation of the Baum-Welch algorithm (Alpha-Beta Recursion) for parameter estimation
      * and cluster assignment. This method uses normalized alpha values for computing the conditional
      * probabilities of input sequences, to ensure numerical stability. SEt nCategories to zero for
-     * continuous distribution types */ 
+     * continuous distribution types */
     protected HashMap HSMMAlphaBetaRecursion(double[] y, double[][] A,
-            double[] prior, int nCategories) 
-    {
+            double[] prior, int nCategories) {
 
         int nStates = _nStates;
         int nObservations = y.length;
 
         double[][][] alphas = new double[nObservations][nStates][_maxDuration];
         double[][][] betas = new double[nObservations][nStates][_maxDuration];
-        double[][] gamma = new double[nObservations][nStates]; 
+        double[][] gamma = new double[nObservations][nStates];
         double[][][] smoothedAlpha = new double[nObservations][nStates][_maxDuration];
 
         double[][] A_hat = new double[nStates][nStates];
@@ -300,199 +313,200 @@ public abstract class HSMMParameterEstimator extends ParameterEstimator {
         double[][] S = new double[nObservations][nStates];
 
         double[][] epsilonStar = new double[nObservations][nStates];
-        double[][] sStar = new double[nObservations][nStates]; 
+        double[][] sStar = new double[nObservations][nStates];
 
-        double[][] smoothedGamma = new double[nObservations][nStates]; 
+        double[][] smoothedGamma = new double[nObservations][nStates];
         double[][] D_hat = new double[nStates][_maxDuration];
 
         double r = 0;
-        double logLikelihood = 0.0; 
+        double logLikelihood = 0.0;
 
         double[] alphaNormalizers = new double[nObservations];
-        // INITIALIZATION 
+        // INITIALIZATION
         // initialize alphas
-        for (int m = 0; m < nStates; m++) { 
-            for (int d=0; d<_maxDuration; d++) {
-                alphas[0][m][d] = prior[m]*durationProbability(d,m); 
+        for (int m = 0; m < nStates; m++) {
+            for (int d = 0; d < _maxDuration; d++) {
+                alphas[0][m][d] = prior[m] * durationProbability(d, m);
                 alphaNormalizers[0] += alphas[0][m][d];
             }
-        } 
-        for (int m = 0; m < nStates; m++) { 
-            for (int d=0; d<_maxDuration; d++) {
+        }
+        for (int m = 0; m < nStates; m++) {
+            for (int d = 0; d < _maxDuration; d++) {
                 alphas[0][m][d] /= alphaNormalizers[0];
             }
         }
 
-        for (int m = 0; m < nStates; m++) {  
-            for (int d=0;d<_maxDuration; d++) {
-                gamma[0][m]+= alphas[0][m][d];
+        for (int m = 0; m < nStates; m++) {
+            for (int d = 0; d < _maxDuration; d++) {
+                gamma[0][m] += alphas[0][m][d];
             }
-        } 
-        // initialize r 
+        }
+        // initialize r
         for (int ii = 0; ii < nStates; ii++) {
-            r += gamma[0][ii]*emissionProbability(y[0],ii);
+            r += gamma[0][ii] * emissionProbability(y[0], ii);
         }
         //initialize bStar
-        for (int m = 0; m < nStates; m++) { 
-            bStar[0][m] = emissionProbability(y[0],m)/r;
+        for (int m = 0; m < nStates; m++) {
+            bStar[0][m] = emissionProbability(y[0], m) / r;
         }
         //initialize E
-        for (int m = 0; m < nStates; m++) { 
-            epsilon[0][m] = alphas[0][m][0]*bStar[0][m];
+        for (int m = 0; m < nStates; m++) {
+            epsilon[0][m] = alphas[0][m][0] * bStar[0][m];
         }
         // initialize S
-        for (int m = 0; m < nStates; m++) { 
+        for (int m = 0; m < nStates; m++) {
             for (int n = 0; n < nStates; n++) {
-                S[0][m] += epsilon[0][n]*A[n][m];
+                S[0][m] += epsilon[0][n] * A[n][m];
             }
         }
         // initialize likelihood
         logLikelihood = Math.log(r);
 
-
         // FORWARD RECURSION
-        for (int t = 1; t < y.length; t++) { 
-            for (int m = 0; m < nStates; m++) { 
-                for (int d=0;d<_maxDuration-1; d++) {
+        for (int t = 1; t < y.length; t++) {
+            for (int m = 0; m < nStates; m++) {
+                for (int d = 0; d < _maxDuration - 1; d++) {
                     // compute S, bStar
-                    alphas[t][m][d] = S[t-1][m]*durationProbability(d,m) +
-                            bStar[t-1][m]*alphas[t-1][m][d+1]; 
+                    alphas[t][m][d] = S[t - 1][m] * durationProbability(d, m)
+                            + bStar[t - 1][m] * alphas[t - 1][m][d + 1];
                     alphaNormalizers[t] += alphas[t][m][d];
                 }
             }
-            for (int m = 0; m < nStates; m++) { 
-                for (int d=0;d<_maxDuration-1; d++) {
-                    alphas[t][m][d]/= alphaNormalizers[t];
+            for (int m = 0; m < nStates; m++) {
+                for (int d = 0; d < _maxDuration - 1; d++) {
+                    alphas[t][m][d] /= alphaNormalizers[t];
                 }
             }
-            for (int m = 0; m < nStates; m++) { 
+            for (int m = 0; m < nStates; m++) {
                 //compute gammas
                 gamma[t][m] = 0;
-                for (int d=0;d<_maxDuration; d++) {
-                    gamma[t][m]+= alphas[t][m][d];
+                for (int d = 0; d < _maxDuration; d++) {
+                    gamma[t][m] += alphas[t][m][d];
                 }
-            } 
+            }
             r = 0;
             for (int ii = 0; ii < nStates; ii++) {
-                r += gamma[t][ii]*emissionProbability(y[t],ii);
+                r += gamma[t][ii] * emissionProbability(y[t], ii);
             }
-            for (int m = 0; m < nStates; m++) { 
-                bStar[t][m] = emissionProbability(y[t],m)/r;
+            for (int m = 0; m < nStates; m++) {
+                bStar[t][m] = emissionProbability(y[t], m) / r;
             }
             //Compute epsilon
-            for (int m = 0; m < nStates; m++) { 
-                epsilon[t][m] = alphas[t][m][0]*bStar[t][m];
+            for (int m = 0; m < nStates; m++) {
+                epsilon[t][m] = alphas[t][m][0] * bStar[t][m];
             }
-            for (int m = 0; m < nStates; m++) { 
+            for (int m = 0; m < nStates; m++) {
                 S[t][m] = 0;
                 for (int n = 0; n < nStates; n++) {
-                    S[t][m] += epsilon[t][n]*A[n][m];
+                    S[t][m] += epsilon[t][n] * A[n][m];
                 }
             }
             logLikelihood += Math.log(r);
-        }  
- 
+        }
+
         // Backward INITIALIZATION
         // initialize beta
-        int endIndex = y.length-1;
+        int endIndex = y.length - 1;
         for (int m = 0; m < nStates; m++) {
-            for (int d=0; d< _maxDuration; d++) {
-                betas[endIndex][m][d] = bStar[endIndex][m]; 
+            for (int d = 0; d < _maxDuration; d++) {
+                betas[endIndex][m][d] = bStar[endIndex][m];
             }
-        } 
+        }
         //        for (int m = 0; m < nStates; m++) {
         //            for (int d=0; d< _maxDuration; d++) {
         //                betas[endIndex][m][d] /= betaNormalizers[endIndex];
         //            }
         //        }
-        for (int m = 0; m < nStates; m++) { 
-            for (int d=0; d< _maxDuration; d++) {
-                epsilonStar[endIndex][m] += durationProbability(d,m) * betas[endIndex][m][d];
+        for (int m = 0; m < nStates; m++) {
+            for (int d = 0; d < _maxDuration; d++) {
+                epsilonStar[endIndex][m] += durationProbability(d, m)
+                        * betas[endIndex][m][d];
             }
         }
-        for (int m = 0; m < nStates; m++) { 
-            for (int n=0; n < nStates; n++) {
-                sStar[endIndex][m] += A[m][n]*epsilonStar[endIndex][n];
-            }
-        }  
-
-
-        for (int m = 0; m < nStates; m++) { 
-            for (int d=0; d< _maxDuration; d++) {
-                smoothedAlpha[endIndex][m][d] = alphas[endIndex][m][d]*betas[endIndex][m][d];
-                smoothedGamma[endIndex][m]   += smoothedAlpha[endIndex][m][d]; 
-            } 
-            smoothedGamma[endIndex][m] *= bStar[endIndex][m];
-        }
-
- 
-        // BACKWARD RECURSION
-        for (int t = y.length - 2; t >= 0; t--) {
-            for (int m = 0; m < nStates; m++) {
-                for (int d=0; d< _maxDuration; d++){ 
-                    if (d==0) {
-                        betas[t][m][d] = sStar[t+1][m]*bStar[t][m];
-                    }else {
-                        betas[t][m][d] = betas[t+1][m][d-1]*bStar[t][m];
-                    }  
-                }
-            }
-
-            for (int m = 0; m < nStates; m++) { 
-                for (int d=0; d< _maxDuration; d++) {
-                    epsilonStar[t][m] += durationProbability(d,m) * betas[t][m][d];
-                }
-            }
-            for (int m = 0; m < nStates; m++) { 
-                for (int n=0; n < nStates; n++) {
-                    sStar[t][m] += A[m][n]*epsilonStar[t][n];
-                }
-            }
-            for (int m = 0; m < nStates; m++) {  
-                smoothedGamma[t][m] +=  smoothedGamma[t+1][m] + epsilon[t][m]*sStar[t+1][m] - S[t][m]*epsilonStar[t+1][m];
-                // numerical correction
-                if (smoothedGamma[t][m] < 0) {
-                    smoothedGamma[t][m] = 0;
-                }
-            } 
-
-            // transition probability matrix estimate
-            if (t > 0) {
-                for (int m = 0; m < nStates; m++) {
-                    for (int n=0; n < nStates; n++) {
-                        A_hat[m][n] += epsilon[t-1][m]*epsilonStar[t][n];
-                    }
-                    for (int d=0; d< _maxDuration; d++){ 
-                        D_hat[m][d] +=  S[t-1][m]*betas[t][m][d];
-                    }
-                } 
+        for (int m = 0; m < nStates; m++) {
+            for (int n = 0; n < nStates; n++) {
+                sStar[endIndex][m] += A[m][n] * epsilonStar[endIndex][n];
             }
         }
 
         for (int m = 0; m < nStates; m++) {
-            for (int n=0; n < nStates; n++) {
-                A_hat[m][n]*=A[m][n];
+            for (int d = 0; d < _maxDuration; d++) {
+                smoothedAlpha[endIndex][m][d] = alphas[endIndex][m][d]
+                        * betas[endIndex][m][d];
+                smoothedGamma[endIndex][m] += smoothedAlpha[endIndex][m][d];
             }
-            for (int d=0; d< _maxDuration; d++){ 
-                D_hat[m][d] *= durationProbability(d,m);
+            smoothedGamma[endIndex][m] *= bStar[endIndex][m];
+        }
+
+        // BACKWARD RECURSION
+        for (int t = y.length - 2; t >= 0; t--) {
+            for (int m = 0; m < nStates; m++) {
+                for (int d = 0; d < _maxDuration; d++) {
+                    if (d == 0) {
+                        betas[t][m][d] = sStar[t + 1][m] * bStar[t][m];
+                    } else {
+                        betas[t][m][d] = betas[t + 1][m][d - 1] * bStar[t][m];
+                    }
+                }
             }
-        } 
+
+            for (int m = 0; m < nStates; m++) {
+                for (int d = 0; d < _maxDuration; d++) {
+                    epsilonStar[t][m] += durationProbability(d, m)
+                            * betas[t][m][d];
+                }
+            }
+            for (int m = 0; m < nStates; m++) {
+                for (int n = 0; n < nStates; n++) {
+                    sStar[t][m] += A[m][n] * epsilonStar[t][n];
+                }
+            }
+            for (int m = 0; m < nStates; m++) {
+                smoothedGamma[t][m] += smoothedGamma[t + 1][m] + epsilon[t][m]
+                        * sStar[t + 1][m] - S[t][m] * epsilonStar[t + 1][m];
+                // numerical correction
+                if (smoothedGamma[t][m] < 0) {
+                    smoothedGamma[t][m] = 0;
+                }
+            }
+
+            // transition probability matrix estimate
+            if (t > 0) {
+                for (int m = 0; m < nStates; m++) {
+                    for (int n = 0; n < nStates; n++) {
+                        A_hat[m][n] += epsilon[t - 1][m] * epsilonStar[t][n];
+                    }
+                    for (int d = 0; d < _maxDuration; d++) {
+                        D_hat[m][d] += S[t - 1][m] * betas[t][m][d];
+                    }
+                }
+            }
+        }
+
+        for (int m = 0; m < nStates; m++) {
+            for (int n = 0; n < nStates; n++) {
+                A_hat[m][n] *= A[m][n];
+            }
+            for (int d = 0; d < _maxDuration; d++) {
+                D_hat[m][d] *= durationProbability(d, m);
+            }
+        }
 
         // normalize A
         double[] rowsum = new double[nStates];
         double[] obsSums = new double[nStates];
         for (int m = 0; m < nStates; m++) {
-            rowsum[m] =0;
-            for (int n=0; n < nStates; n++) {
-                rowsum[m]+=A_hat[m][n];
+            rowsum[m] = 0;
+            for (int n = 0; n < nStates; n++) {
+                rowsum[m] += A_hat[m][n];
             }
-            for (int j=0; j < nStates; j++) {
+            for (int j = 0; j < nStates; j++) {
                 A_hat[m][j] /= rowsum[m];
             }
-            for (int d=0; d<_maxDuration; d++){ 
+            for (int d = 0; d < _maxDuration; d++) {
                 obsSums[m] += D_hat[m][d];
             }
-            for (int d=0; d<_maxDuration; d++){ 
+            for (int d = 0; d < _maxDuration; d++) {
                 D_hat[m][d] /= obsSums[m];
             }
         }
@@ -506,24 +520,25 @@ public abstract class HSMMParameterEstimator extends ParameterEstimator {
             piSum += pi_hat[m];
         }
         for (int m = 0; m < nStates; m++) {
-            pi_hat[m]/=piSum;
+            pi_hat[m] /= piSum;
         }
 
         for (int j = 0; j < nStates; j++) {
             gammasum[j] = 0.0;
             for (int t = 0; t < y.length; t++) {
-                mu_hat[j] += smoothedGamma[t][j]* y[t];
+                mu_hat[j] += smoothedGamma[t][j] * y[t];
                 gammasum[j] += smoothedGamma[t][j];
             }
 
             mu_hat[j] = mu_hat[j] / gammasum[j];
 
             for (int t = 0; t < y.length; t++) {
-                s_hat[j] += (smoothedGamma[t][j] * Math.pow((y[t] - mu_hat[j]), 2));
+                s_hat[j] += (smoothedGamma[t][j] * Math.pow((y[t] - mu_hat[j]),
+                        2));
             }
-            if (gammasum[j]!=0.0) {
+            if (gammasum[j] != 0.0) {
                 s_hat[j] = Math.sqrt(s_hat[j] / gammasum[j]);
-            }else {
+            } else {
                 s_hat[j] = Math.sqrt(s_hat[j]);
             }
         }
@@ -540,13 +555,13 @@ public abstract class HSMMParameterEstimator extends ParameterEstimator {
                 }
             }
             clusterAssignments[t] = maxState;
-        } 
+        }
         // the duration priors will be computed by \pi * D_hat
         double[] durationPriorEstimates = new double[_maxDuration];
         double normalizer = 0;
         for (int i = 0; i < _maxDuration; i++) {
-            for (int j = 0 ; j < _nStates; j++) {
-                durationPriorEstimates[i] += pi_hat[j]*D_hat[j][i];
+            for (int j = 0; j < _nStates; j++) {
+                durationPriorEstimates[i] += pi_hat[j] * D_hat[j][i];
             }
             normalizer += durationPriorEstimates[i];
         }
@@ -562,14 +577,14 @@ public abstract class HSMMParameterEstimator extends ParameterEstimator {
         estimates.put("A_hat", A_hat);
         estimates.put("pi_hat", pi_hat);
         estimates.put("likelihood", logLikelihood);
-        estimates.put("D_hat",D_hat);
+        estimates.put("D_hat", D_hat);
         estimates.put("pi_d_hat", durationPriorEstimates);
         estimates.put("clusterAssignments", clusterAssignments);
         return estimates;
-    } 
+    }
 
     /* Duration priors - nStates x nDurations*/
-    protected double[] _durationPriors; 
+    protected double[] _durationPriors;
 
     /* new duration distribution */
     protected double[][] D_new = null;
@@ -580,7 +595,7 @@ public abstract class HSMMParameterEstimator extends ParameterEstimator {
 
     protected double[] _dPriors0 = null;
     /* maximum duration ( in time steps)c  */
-    protected int _maxDuration; 
+    protected int _maxDuration;
 
     protected List<Double> _likelihoodHistory;
 }

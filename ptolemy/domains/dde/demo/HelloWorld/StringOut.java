@@ -92,6 +92,7 @@ public abstract class StringOut extends TypedAtomicActor {
      * @exception IllegalActionException If there is an error
      *  in the superclass.
      */
+    @Override
     public void initialize() throws IllegalActionException {
         _contents = setUpStrings();
         super.initialize();
@@ -102,6 +103,7 @@ public abstract class StringOut extends TypedAtomicActor {
      * @exception IllegalActionException If there is an error
      *  when checking token availability in the input port.
      */
+    @Override
     public void fire() throws IllegalActionException {
         super.fire();
         if (input.hasToken(0)) {

@@ -82,23 +82,28 @@ public class TesterDirector extends Director {
     ////                         public methods                    ////
 
     /** Do nothing. */
+    @Override
     public void addInitializable(Initializable initializable) {
     }
 
     /** Do nothing. */
+    @Override
     public void fire() {
     }
 
     /** Do nothing. */
+    @Override
     public void initialize() {
     }
 
     /** Return false, indicating that we are done. */
+    @Override
     public boolean postfire() {
         return false;
     }
 
     /** Return true. */
+    @Override
     public boolean prefire() {
         return true;
     }
@@ -108,6 +113,7 @@ public class TesterDirector extends Director {
      *  Testable attributes.
      *  @exception IllegalActionException If the superclass throws it.
      */
+    @Override
     public void preinitialize() throws IllegalActionException {
         super.preinitialize();
 
@@ -124,16 +130,19 @@ public class TesterDirector extends Director {
     }
 
     /** Do nothing. */
+    @Override
     public boolean transferInputs(IOPort port) {
         return false;
     }
 
     /** Do nothing. */
+    @Override
     public boolean transferOutputs(IOPort port) {
         return false;
     }
 
     /** Do nothing. */
+    @Override
     public void wrapup() {
     }
 }

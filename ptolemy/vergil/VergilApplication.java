@@ -213,10 +213,10 @@ public class VergilApplication extends MoMLApplication {
                 if (!_printedSecurityExceptionMessage) {
                     _printedSecurityExceptionMessage = true;
                     System.out
-                            .println("Warning: Mac OS X: Failed to set the \""
-                                    + aboutNameProperty
-                                    + "\" property. "
-                                    + "(applets and -sandbox always causes this)");
+                    .println("Warning: Mac OS X: Failed to set the \""
+                            + aboutNameProperty
+                            + "\" property. "
+                            + "(applets and -sandbox always causes this)");
                 }
             }
             // Uncomment the next line to use the screen menu bar instead of a per-window
@@ -234,6 +234,7 @@ public class VergilApplication extends MoMLApplication {
             // getting read access the workspace is much more efficient
             // in PtolemyThread.
             SwingUtilities.invokeLater(new Runnable() {
+                @Override
                 public void run() {
                     try {
                         new VergilApplication(args);
@@ -278,6 +279,7 @@ public class VergilApplication extends MoMLApplication {
      *  opening the MoML file, or opening the MoML file as a new library.
      *  @deprecated Use {@link ptolemy.actor.gui.UserActorLibrary#openLibrary(Configuration, File)}
      */
+    @Deprecated
     public static void openLibrary(Configuration configuration, File file)
             throws Exception {
         MoMLParser.setErrorHandler(new VergilErrorHandler());
@@ -300,6 +302,7 @@ public class VergilApplication extends MoMLApplication {
      *  @return A default configuration.
      *  @exception Exception If the configuration cannot be opened.
      */
+    @Override
     protected Configuration _createDefaultConfiguration() throws Exception {
         try {
             if (_configurationURL == null) {
@@ -363,6 +366,7 @@ public class VergilApplication extends MoMLApplication {
      *  @return A configuration for when there no command-line arguments.
      *  @exception Exception If the configuration cannot be opened.
      */
+    @Override
     protected Configuration _createEmptyConfiguration() throws Exception {
         Configuration configuration = _createDefaultConfiguration();
         URL welcomeURL = null;
@@ -375,7 +379,7 @@ public class VergilApplication extends MoMLApplication {
                         Parameter.class);
         if (applicationBlankPtolemyEffigyAtStartup != null
                 && applicationBlankPtolemyEffigyAtStartup.getExpression()
-                        .equals("true")) {
+                .equals("true")) {
 
             EffigyFactory factory = null;
 
@@ -467,6 +471,7 @@ public class VergilApplication extends MoMLApplication {
      *  @exception Exception If an argument is not understood or triggers
      *   an error.
      */
+    @Override
     protected void _parseArgs(final String[] args) throws Exception {
         _commandTemplate = "vergil [ options ] [file ...]";
 
@@ -500,6 +505,7 @@ public class VergilApplication extends MoMLApplication {
     /** Return a string summarizing the command-line arguments.
      *  @return A usage string.
      */
+    @Override
     protected String _usage() {
         return _configurationUsage(_commandTemplate, _commandOptions,
                 new String[] {});
@@ -513,7 +519,7 @@ public class VergilApplication extends MoMLApplication {
 
     /** The command-line options that take arguments. */
     protected static String[][] _commandOptions = { { "-configuration",
-            "<configuration URL, defaults to ptolemy/configs/full/configuration.xml>" }, };
+    "<configuration URL, defaults to ptolemy/configs/full/configuration.xml>" }, };
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////

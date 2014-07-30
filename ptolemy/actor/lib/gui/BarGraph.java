@@ -98,6 +98,7 @@ public class BarGraph extends ArrayPlotter {
      *  <i>iterationsPerUpdate</i> parameter works.
      *  @exception IllegalActionException If the parent class throws it.
      */
+    @Override
     public void initialize() throws IllegalActionException {
         super.initialize();
 

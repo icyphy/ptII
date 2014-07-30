@@ -133,6 +133,7 @@ public final class ArrayFIFOQueue implements Cloneable {
      *  objects in the queue themselves are not cloned.
      *  @return A clone of this queue
      */
+    @Override
     public Object clone() {
         return new ArrayFIFOQueue(this);
     }
@@ -364,7 +365,7 @@ public final class ArrayFIFOQueue implements Cloneable {
                         _queueArray.length - _queueFront);
                 System.arraycopy(element, _queueArray.length - _queueFront,
                         _queueArray, 0, count
-                                - (_queueArray.length - _queueFront));
+                        - (_queueArray.length - _queueFront));
                 _queueFront += count;
 
                 if (_queueFront >= _queueArray.length) {

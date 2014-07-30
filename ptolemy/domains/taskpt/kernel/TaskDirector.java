@@ -100,6 +100,7 @@ public class TaskDirector extends TaskPtDirector {
      * the input is not of type PtrToken, no memory is found where to write the data,
      * it is not an output port or the port is not opaque.
      */
+    @Override
     protected boolean _transferInputs(IOPort port)
             throws IllegalActionException {
 
@@ -190,6 +191,7 @@ public class TaskDirector extends TaskPtDirector {
      * no memory is found where to write the data, it is not an output port or
      * the port is not opaque.
      */
+    @Override
     protected boolean _transferOutputs(IOPort port)
             throws IllegalActionException {
         boolean result = false;

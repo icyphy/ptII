@@ -73,6 +73,7 @@ public class Load extends LoadStore {
      *
      * @exception IllegalActionException Thrown if no memory is found.
      */
+    @Override
     public void fire() throws IllegalActionException {
         super.fire();
         Memory mem = getMemory();

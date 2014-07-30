@@ -180,7 +180,7 @@ public class DistributedSDFScheduler extends SDFScheduler {
      */
     @SuppressWarnings("unused")
     protected Schedule _getParallelSchedule() throws NotSchedulableException,
-            IllegalActionException {
+    IllegalActionException {
         SDFDirector director = (SDFDirector) getContainer();
         CompositeActor model = (CompositeActor) director.getContainer();
 
@@ -337,8 +337,9 @@ public class DistributedSDFScheduler extends SDFScheduler {
      *  of the model are not correct, or the computed rates for
      *  external ports are not correct.
      */
+    @Override
     protected Schedule _getSchedule() throws NotSchedulableException,
-            IllegalActionException {
+    IllegalActionException {
         boolean parallelSchedule = false;
         Schedule schedule = null;
 
@@ -385,7 +386,7 @@ public class DistributedSDFScheduler extends SDFScheduler {
     protected Schedule _scheduleInParallelConnectedActors(
             Map minimumBufferSize, Map externalRates, LinkedList actorList,
             CompositeActor container, LinkedList allActorList)
-            throws NotSchedulableException {
+                    throws NotSchedulableException {
         // A linked list containing all the actors that have no inputs.
         LinkedList readyToScheduleActorList = new LinkedList();
 

@@ -46,6 +46,7 @@ public class FilteredIterator extends IteratorAdapter {
         _filter = f;
     }
 
+    @Override
     public boolean hasNext() {
         if (_nextObject != null) {
             return true;
@@ -60,6 +61,7 @@ public class FilteredIterator extends IteratorAdapter {
         return false;
     }
 
+    @Override
     public Object next() {
         if (_nextObject == null) {
             getNext();

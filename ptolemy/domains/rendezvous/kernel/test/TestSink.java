@@ -71,6 +71,7 @@ public class TestSink extends AtomicActor {
 
     /** Writes successive integers to the output
      */
+    @Override
     public void fire() throws IllegalActionException {
         Token data;
 

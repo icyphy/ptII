@@ -147,6 +147,7 @@ public class BooleanSwitch extends TypedAtomicActor {
      *   if one of the attributes cannot be cloned.
      *  @return A new ComponentEntity.
      */
+    @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         BooleanSwitch newObject = (BooleanSwitch) super.clone(workspace);
         newObject.trueOutput.setTypeAtLeast(newObject.input);
@@ -164,6 +165,7 @@ public class BooleanSwitch extends TypedAtomicActor {
      *
      *  @exception IllegalActionException If there is no director.
      */
+    @Override
     public void fire() throws IllegalActionException {
         super.fire();
         if (control.hasToken(0)) {
@@ -191,6 +193,7 @@ public class BooleanSwitch extends TypedAtomicActor {
      *  to until a token arrives on the <i>control</i> input.
      *  @exception IllegalActionException If the parent class throws it.
      */
+    @Override
     public void initialize() throws IllegalActionException {
         super.initialize();
         _control = false;

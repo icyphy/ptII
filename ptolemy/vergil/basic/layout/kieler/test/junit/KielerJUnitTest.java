@@ -91,7 +91,7 @@ public class KielerJUnitTest {
      */
     public static void main(String args[]) {
         org.junit.runner.JUnitCore
-                .main("ptolemy.vergil.basic.layout.kieler.test.junit.KielerJUnitTest");
+        .main("ptolemy.vergil.basic.layout.kieler.test.junit.KielerJUnitTest");
     }
 
     /**
@@ -169,6 +169,7 @@ public class KielerJUnitTest {
         /////
         // Open the model.
         Runnable openModelAction = new Runnable() {
+            @Override
             public void run() {
                 try {
                     System.out.print(" " + modelFileName + " ");
@@ -194,6 +195,7 @@ public class KielerJUnitTest {
         // Layout the model using either the Kieler layout mechanism
         // or the krufty Ptolemy Layout mechanism.
         Runnable layoutModelAction = new Runnable() {
+            @Override
             public void run() {
                 try {
                     if (compareAgainstOriginal) {
@@ -227,6 +229,7 @@ public class KielerJUnitTest {
             // the Ptoelmy mechanism.
             baseMoML = model[0].exportMoML();
             Runnable kielerLayoutModelAction = new Runnable() {
+                @Override
                 public void run() {
                     try {
                         // Invoke the Kieler layout mechanism.
@@ -250,6 +253,7 @@ public class KielerJUnitTest {
         String laidOutMoML = model[0].exportMoML();
         for (int i = 1; i <= 2; i++) {
             Runnable undoAction = new Runnable() {
+                @Override
                 public void run() {
                     try {
                         _undo(model[0]);
@@ -269,14 +273,15 @@ public class KielerJUnitTest {
             String undoMoML = model[0].exportMoML();
             if (_debug || !baseMoML.equals(undoMoML)) {
                 System.out
-                        .println("Difference between original MoML"
-                                + " and the exported MoML after Kieler Layout and then undo:");
+                .println("Difference between original MoML"
+                        + " and the exported MoML after Kieler Layout and then undo:");
                 System.out.println(Diff.diff(baseMoML, undoMoML));
             }
 
             assertArrayEquals(baseMoML.getBytes(), undoMoML.getBytes());
 
             Runnable redoAction = new Runnable() {
+                @Override
                 public void run() {
                     try {
                         _redo(model[0]);
@@ -290,8 +295,8 @@ public class KielerJUnitTest {
             String redoMoML = model[0].exportMoML();
             if (_debug || !laidOutMoML.equals(redoMoML)) {
                 System.out
-                        .println("Difference between laid out MoML"
-                                + " and the exported MoML after Kieler Layout and then undo, then redo:");
+                .println("Difference between laid out MoML"
+                        + " and the exported MoML after Kieler Layout and then undo, then redo:");
                 System.out.println(Diff.diff(laidOutMoML, redoMoML));
             }
 
@@ -307,10 +312,11 @@ public class KielerJUnitTest {
         /////
         // Close the model.
         Runnable closeAction = new Runnable() {
+            @Override
             public void run() {
                 try {
                     ConfigurationApplication
-                            .closeModelWithoutSavingOrExiting(model[0]);
+                    .closeModelWithoutSavingOrExiting(model[0]);
                 } catch (Throwable throwableCause) {
                     throwable[0] = throwableCause;
                     throw new RuntimeException(throwableCause);

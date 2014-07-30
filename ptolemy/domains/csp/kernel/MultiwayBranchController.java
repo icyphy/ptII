@@ -269,6 +269,7 @@ public class MultiwayBranchController extends AbstractBranchController {
      *  @param branchNumber The ID assigned to the calling branch
      *   upon creation.
      */
+    @Override
     protected void _branchFailed(int branchNumber) {
         _failed = true;
         super._branchFailed(branchNumber);
@@ -278,6 +279,7 @@ public class MultiwayBranchController extends AbstractBranchController {
      *  This method does nothing.
      *  @param branchNumber The ID assigned to the branch upon creation.
      */
+    @Override
     protected void _branchNotReady(int branchNumber) {
     }
 
@@ -286,6 +288,7 @@ public class MultiwayBranchController extends AbstractBranchController {
      *  lock so that any threads blocked on it can continue.
      *  @param branchID The ID assigned to the calling branch upon creation.
      */
+    @Override
     protected void _branchSucceeded(int branchID) {
         CSPDirector director = _getDirector();
         synchronized (director) {
@@ -323,6 +326,7 @@ public class MultiwayBranchController extends AbstractBranchController {
      *  @return True if the calling branch is ready
      *   to rendezvous, otherwise false.
      */
+    @Override
     protected boolean _isBranchReady(int branchNumber) {
         CSPDirector director = _getDirector();
         synchronized (director) {

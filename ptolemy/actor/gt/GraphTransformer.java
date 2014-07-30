@@ -209,7 +209,7 @@ public class GraphTransformer extends ChangeRequest {
      */
     public static void transform(TransformationRule transformationRule,
             List<MatchResult> matchResults, TransformationListener listener)
-            throws TransformationException {
+                    throws TransformationException {
         if (matchResults.isEmpty()) {
             return;
         }
@@ -253,7 +253,7 @@ public class GraphTransformer extends ChangeRequest {
      */
     public static void transform(TransformationRule transformationRule,
             MatchResult matchResult, TransformationListener listener)
-            throws TransformationException {
+                    throws TransformationException {
         GraphTransformer transformer = new GraphTransformer(transformationRule,
                 matchResult);
         if (listener != null) {
@@ -347,7 +347,7 @@ public class GraphTransformer extends ChangeRequest {
                         // automatically. There should be a more general solution for this.
                         if (!(hostContainer instanceof MirrorComposite)
                                 && !hostComponentPort.insideRelationList()
-                                        .contains(hostRelation)) {
+                                .contains(hostRelation)) {
                             // There is no link between hostPort and
                             // hostRelation, so create a new link.
                             String moml = _getLinkMoML(host, hostRelation);
@@ -377,6 +377,7 @@ public class GraphTransformer extends ChangeRequest {
      *
      *  @exception TransformationException If transformation is unsuccessful.
      */
+    @Override
     protected void _execute() throws TransformationException {
         for (MatchResult matchResult : _matchResults) {
             _matchResult = (MatchResult) matchResult.clone();
@@ -1310,7 +1311,7 @@ public class GraphTransformer extends ChangeRequest {
             String name;
             if (hostObject instanceof Port
                     && hostRelation.getContainer() != ((Port) hostObject)
-                            .getContainer()) {
+                    .getContainer()) {
                 Port port = (Port) hostObject;
                 name = port.getContainer().getName() + "." + port.getName();
             } else {
@@ -1782,6 +1783,7 @@ public class GraphTransformer extends ChangeRequest {
          *
          *  @param parser The parser to execute this change request.
          */
+        @Override
         protected void _postParse(MoMLParser parser) {
             super._postParse(parser);
 
@@ -1795,6 +1797,7 @@ public class GraphTransformer extends ChangeRequest {
          *
          *  @param parser The parser to execute this change request.
          */
+        @Override
         protected void _preParse(MoMLParser parser) {
             super._preParse(parser);
             parser.clearTopObjectsList();

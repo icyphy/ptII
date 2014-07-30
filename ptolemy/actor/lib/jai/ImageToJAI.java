@@ -77,6 +77,7 @@ public class ImageToJAI extends Transformer {
      *  @exception IllegalActionException If a contained method throws it,
      *   or if a token is received that contains a null image.
      */
+    @Override
     public void fire() throws IllegalActionException {
         super.fire();
 

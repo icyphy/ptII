@@ -108,23 +108,25 @@ public class ArrayRemoveElement extends TypedAtomicActor {
      *   if one of the attributes cannot be cloned.
      *  @return A new ComponentEntity.
      */
+    @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         ArrayRemoveElement newObject = (ArrayRemoveElement) super
                 .clone(workspace);
         try {
             newObject.array
-                    .setTypeAtLeast(ArrayType.arrayOf(newObject.element));
+            .setTypeAtLeast(ArrayType.arrayOf(newObject.element));
             newObject.output.setTypeAtLeast(newObject.array);
         } catch (IllegalActionException e) {
             throw new CloneNotSupportedException("Clone failed: " + e);
         }
         return newObject;
     }
-    
+
     /** If there is an <i>array</i> input, consume it and create a new
      *  array that contains all elements of the input that are not equal
      *  to the value given by the <i>element</i> port-parameter.
      */
+    @Override
     public void fire() throws IllegalActionException {
         super.fire();
         // NOTE: This has be outside the if because we need to ensure
@@ -153,11 +155,11 @@ public class ArrayRemoveElement extends TypedAtomicActor {
         }
     }
 
-    /** Clear port parameter value. 
+    /** Clear port parameter value.
      */
-        @Override
-        public void wrapup() throws IllegalActionException {
-                super.wrapup();
-                element.setExpression("");
-        }
+    @Override
+    public void wrapup() throws IllegalActionException {
+        super.wrapup();
+        element.setExpression("");
+    }
 }

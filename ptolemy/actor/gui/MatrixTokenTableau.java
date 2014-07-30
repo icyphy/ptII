@@ -88,6 +88,7 @@ public class MatrixTokenTableau extends TokenTableau {
      *  a MatrixToken, do nothing.
      *  @param token The token to append.
      */
+    @Override
     public void append(Token token) {
         if (_pane != null && token instanceof MatrixToken) {
             _pane.display((MatrixToken) token);
@@ -98,6 +99,7 @@ public class MatrixTokenTableau extends TokenTableau {
      *  If the display is not a MatrixPane, or the tokens are not
      *  instances of MatrixToken, do nothing.
      */
+    @Override
     public void append(List list) {
         if (_pane != null) {
             Iterator tokens = list.iterator();
@@ -126,6 +128,7 @@ public class MatrixTokenTableau extends TokenTableau {
 
     /** Clear the display.
      */
+    @Override
     public void clear() {
         if (_pane != null) {
             _pane.clear();
@@ -138,6 +141,7 @@ public class MatrixTokenTableau extends TokenTableau {
      *  @see MatrixPane
      *  @exception IllegalActionException If the frame cannot be created.
      */
+    @Override
     public void createFrame(TableauFrame frame) throws IllegalActionException {
         TokenEffigy effigy = (TokenEffigy) getContainer();
 
@@ -204,6 +208,7 @@ public class MatrixTokenTableau extends TokenTableau {
          *  @exception Exception If the factory should be able to create a
          *   tableau for the effigy, but something goes wrong.
          */
+        @Override
         public Tableau createTableau(Effigy effigy) throws Exception {
             if (effigy instanceof TokenEffigy) {
                 // Indicate to the effigy that this factory contains effigies

@@ -72,6 +72,7 @@ public class RealDependency implements Dependency {
      *  @exception ClassCastException If the argument is not an instance
      *   of RealDependency.
      */
+    @Override
     public int compareTo(Dependency dependency) {
         if (equals(dependency)) {
             return Dependency.EQUALS;
@@ -88,6 +89,7 @@ public class RealDependency implements Dependency {
      *  @param object The object to compare against.
      *  @return true if this object is the same as the object argument.
      */
+    @Override
     public boolean equals(Object object) {
         if (object instanceof RealDependency) {
             return _value == ((RealDependency) object)._value;
@@ -98,6 +100,7 @@ public class RealDependency implements Dependency {
     /** Return the same hashCode that that Java Double object would
      *  return had it the same value.
      */
+    @Override
     public int hashCode() {
         long v = Double.doubleToLongBits(_value);
         return (int) (v ^ v >>> 32);
@@ -110,6 +113,7 @@ public class RealDependency implements Dependency {
      *   values.
      *  @exception ClassCastException if d is not a RealDependency.
      */
+    @Override
     public Dependency oPlus(Dependency d) {
         // FIXME: Findbugs reports this as an Unchecked/unconfirmed cast
         if (((RealDependency) d)._value < _value) {
@@ -122,6 +126,7 @@ public class RealDependency implements Dependency {
      *  dependency using oPlus() yields the other dependency.
      *  @return The additive identity.
      */
+    @Override
     public Dependency oPlusIdentity() {
         return OPLUS_IDENTITY;
     }
@@ -133,6 +138,7 @@ public class RealDependency implements Dependency {
      *   this one and the specified one.
      *  @exception ClassCastException if d is not a RealDependency.
      */
+    @Override
     public Dependency oTimes(Dependency d) {
         // FIXME: Findbugs reports this as an Unchecked/unconfirmed cast
         return new RealDependency(_value + ((RealDependency) d)._value);
@@ -142,6 +148,7 @@ public class RealDependency implements Dependency {
      *  dependency using oTimes() yields the other dependency.
      *  @return The multiplicative identity.
      */
+    @Override
     public Dependency oTimesIdentity() {
         return OTIMES_IDENTITY;
     }
@@ -150,6 +157,7 @@ public class RealDependency implements Dependency {
      *  "RealDependency(value)".
      *  @return A string representation.
      */
+    @Override
     public String toString() {
         return "RealDependency(_value)";
     }

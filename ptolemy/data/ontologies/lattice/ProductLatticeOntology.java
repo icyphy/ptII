@@ -102,6 +102,7 @@ public class ProductLatticeOntology extends Ontology {
      *  @exception IllegalActionException If the product lattice concepts
      *   cannot be generated.
      */
+    @Override
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         if (attribute == latticeOntologies) {
@@ -260,6 +261,7 @@ public class ProductLatticeOntology extends Ontology {
      *  ontology this is a {@link ProductLatticeCPO}.
      *  @return The concept graph as a ProductLatticeCPO.
      */
+    @Override
     protected ConceptGraph _buildConceptGraph() {
         if (workspace().getVersion() != _graphVersion) {
             _graph = new ProductLatticeCPO(this);

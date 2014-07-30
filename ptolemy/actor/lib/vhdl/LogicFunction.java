@@ -113,6 +113,7 @@ public class LogicFunction extends SynchronousFixTransformer {
      *  If there is no inputs, then produce null.
      *  @exception IllegalActionException If there is no director.
      */
+    @Override
     public void fire() throws IllegalActionException {
         super.fire();
 
@@ -120,7 +121,7 @@ public class LogicFunction extends SynchronousFixTransformer {
             BigInteger intResult = null;
             Precision precision = new Precision(
                     ((Parameter) getAttribute("outputPrecision"))
-                            .getExpression());
+                    .getExpression());
             if (A.hasToken(0) && B.hasToken(0)) {
                 FixPoint valueA = ((FixToken) A.get(0)).fixValue();
                 FixPoint valueB = ((FixToken) B.get(0)).fixValue();
@@ -173,6 +174,7 @@ public class LogicFunction extends SynchronousFixTransformer {
     /** Override the base class to declare that the <i>A</i> and
      *  <i>B</i> ports do not depend on the <i>output</i> in a firing.
      */
+    @Override
     public void preinitialize() throws IllegalActionException {
         super.preinitialize();
         removeDependency(A, output);

@@ -117,6 +117,7 @@ public class Quantizer extends Transformer {
      *  @exception CloneNotSupportedException If a derived class contains
      *   an attribute that cannot be cloned.
      */
+    @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         Quantizer newObject = (Quantizer) super.clone(workspace);
 
@@ -134,6 +135,7 @@ public class Quantizer extends Transformer {
      *  @exception IllegalActionException If the levels array is not
      *   increasing.
      */
+    @Override
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         if (attribute == levels) {
@@ -169,6 +171,7 @@ public class Quantizer extends Transformer {
      *  If there is no input, then produce no output.
      *  @exception IllegalActionException If there is no director.
      */
+    @Override
     public void fire() throws IllegalActionException {
         super.fire();
         if (input.hasToken(0)) {

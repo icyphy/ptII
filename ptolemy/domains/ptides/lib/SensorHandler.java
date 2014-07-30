@@ -25,7 +25,7 @@ ENHANCEMENTS, OR MODIFICATIONS.
                                                 PT_COPYRIGHT_VERSION_2
                                                 COPYRIGHTENDKEY
 
-*/
+ */
 
 package ptolemy.domains.ptides.lib;
 
@@ -97,6 +97,7 @@ public class SensorHandler extends InputDevice {
      *  @exception IllegalActionException If there is no director, or the
      *  input can not be read, or the output can not be sent.
      */
+    @Override
     public void fire() throws IllegalActionException {
         super.fire();
 
@@ -121,6 +122,7 @@ public class SensorHandler extends InputDevice {
      *  ports, or if any of the outside source ports is a network
      *  port.
      */
+    @Override
     public void preinitialize() throws IllegalActionException {
 
         super.preinitialize();

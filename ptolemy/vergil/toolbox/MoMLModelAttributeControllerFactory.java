@@ -33,13 +33,13 @@ import ptolemy.vergil.basic.NodeControllerFactory;
 import diva.graph.GraphController;
 
 /**
-  * A factory attribute that creates MoMLModelAttributeControllers.
-  * @author Dai Bui.  Based on code by Man-Kit Leung
-  * @version $Id$
-  * @since Ptolemy II 8.0
-  * @Pt.ProposedRating Red (cxh)
-  * @Pt.AcceptedRating Red (cxh)
-  */
+ * A factory attribute that creates MoMLModelAttributeControllers.
+ * @author Dai Bui.  Based on code by Man-Kit Leung
+ * @version $Id$
+ * @since Ptolemy II 8.0
+ * @Pt.ProposedRating Red (cxh)
+ * @Pt.AcceptedRating Red (cxh)
+ */
 public class MoMLModelAttributeControllerFactory extends NodeControllerFactory {
 
     /**
@@ -62,6 +62,7 @@ public class MoMLModelAttributeControllerFactory extends NodeControllerFactory {
      * @param controller The specified graph controller.
      * @return A new ModelAttributeController.
      */
+    @Override
     public NamedObjController create(GraphController controller) {
         return new MoMLModelAttributeController(controller);
     }

@@ -23,7 +23,7 @@
 
    PT_COPYRIGHT_VERSION_2
    COPYRIGHTENDKEY
-*/
+ */
 package ptolemy.actor.gui;
 
 import java.io.File;
@@ -60,7 +60,7 @@ import ptolemy.util.FileUtilities;
    @since Ptolemy II 2.0
    @Pt.ProposedRating Red (cxh)
    @Pt.AcceptedRating Red (cxh)
-*/
+ */
 public class GenerateCopyrights {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -102,7 +102,7 @@ public class GenerateCopyrights {
         // A Map of copyrights, where the key is a URL naming
         // the copyright and the value is a List of entities
         // that use that as a copyright.
-        HashMap<String, Set<String>> copyrightsMap = new HashMap<String,Set<String>>();
+        HashMap<String, Set<String>> copyrightsMap = new HashMap<String, Set<String>>();
 
         // Add the classnames and copyrights.
         // Alphabetical by className.
@@ -133,8 +133,7 @@ public class GenerateCopyrights {
         _addIfPresent(copyrightsMap, "interfaces.util.ChicUI",
                 "lib/chic-license.htm");
 
-        _addIfPresent(copyrightsMap, "io.socket.SocketIO",
-                "lib/socketio.htm");
+        _addIfPresent(copyrightsMap, "io.socket.SocketIO", "lib/socketio.htm");
 
         _addIfPresent(copyrightsMap, "javax.servlet.http.HttpServlet",
                 "lib/javax.servlet-api-license.htm");
@@ -308,11 +307,11 @@ public class GenerateCopyrights {
         // Check for the _applicationCopyrights parameter
         try {
             Parameter applicationCopyrights = (Parameter) configuration
-                .getAttribute("_applicationCopyrights", Parameter.class);
+                    .getAttribute("_applicationCopyrights", Parameter.class);
 
             if (applicationCopyrights != null) {
                 ArrayToken copyrightTokens = (ArrayToken) applicationCopyrights
-                    .getToken();
+                        .getToken();
 
                 for (int i = 0; i < copyrightTokens.length(); i++) {
                     StringToken actorToken = (StringToken) ((RecordToken) copyrightTokens
@@ -327,7 +326,6 @@ public class GenerateCopyrights {
             // This application has no _applicationCopyrights
         }
 
-
         // We also create a file that contains all the copyrights.
         StringBuffer masterCopyrightBuffer = new StringBuffer();
 
@@ -335,49 +333,52 @@ public class GenerateCopyrights {
 
         // Read in the header
         String copyrightStartFileName = "$CLASSPATH/ptolemy/actor/gui/masterCopyrightStart.htm.in";
-        try { 
+        try {
             // Probably wrong to read it as bytes and convert to a
             // string, but we have a convenient method, so we use it.
-            masterCopyrightBuffer.append(new String(FileUtilities.binaryReadURLToByteArray(FileUtilities.nameToURL(copyrightStartFileName, null, null))));
+            masterCopyrightBuffer.append(new String(FileUtilities
+                    .binaryReadURLToByteArray(FileUtilities.nameToURL(
+                            copyrightStartFileName, null, null))));
         } catch (IOException ex) {
             // Print only a message, we want to print the copyrights
-            System.err.println("Could not read " + copyrightStartFileName + ": " + ex);
+            System.err.println("Could not read " + copyrightStartFileName
+                    + ": " + ex);
         }
 
         StringBuffer htmlBuffer = new StringBuffer(
                 generatePrimaryCopyrightHTML(configuration));
 
         // Sort by the copyright file name, which should start with the package name.
-        FileNameComparator fileNameComparator =  new FileNameComparator();
-        TreeMap<String, Set<String>> sortedCopyrightsMap = new TreeMap<String, Set<String>>(fileNameComparator);
+        FileNameComparator fileNameComparator = new FileNameComparator();
+        TreeMap<String, Set<String>> sortedCopyrightsMap = new TreeMap<String, Set<String>>(
+                fileNameComparator);
 
         sortedCopyrightsMap.putAll(copyrightsMap);
 
         if (copyrightsMap.size() != sortedCopyrightsMap.size()) {
             // Print only a message, we want to print the copyrights.
-            System.err.println("GenerateCopyrights: the size of the unsorted copyright table "
-                    + "and the sorted copyright table are not the same?  Perhaps there are two "
-                    + "or more copyrights with the same file name? (foo/copyright.htm and "
-                    + "bar/copyright.htm will not work.)");
-
+            System.err
+                    .println("GenerateCopyrights: the size of the unsorted copyright table "
+                            + "and the sorted copyright table are not the same?  Perhaps there are two "
+                            + "or more copyrights with the same file name? (foo/copyright.htm and "
+                            + "bar/copyright.htm will not work.)");
 
         }
         Iterator copyrights = sortedCopyrightsMap.entrySet().iterator();
         if (copyrights.hasNext()) {
             // DSP configuration might not include other actors.
             htmlBuffer
-                .append("<p>Below we list features and the "
-                        + "corresponding copyright "
-                        + " of the package that is used.  If a feature is not "
-                        + "listed below, then the "
-                        + _getApplicationName(configuration)
-                        + " copyright is the "
-                        + "only copyright."
-                        + "<table>\n"
-                        + "  <tr>\n"
-                        + "      <th>Copyright of package used by the feature</th>\n"
-                        + "      <th>Feature</th>\n"
-                        + "  </tr>\n");
+                    .append("<p>Below we list features and the "
+                            + "corresponding copyright "
+                            + " of the package that is used.  If a feature is not "
+                            + "listed below, then the "
+                            + _getApplicationName(configuration)
+                            + " copyright is the "
+                            + "only copyright."
+                            + "<table>\n"
+                            + "  <tr>\n"
+                            + "      <th>Copyright of package used by the feature</th>\n"
+                            + "      <th>Feature</th>\n" + "  </tr>\n");
 
             while (copyrights.hasNext()) {
                 Map.Entry entry = (Map.Entry) copyrights.next();
@@ -407,14 +408,15 @@ public class GenerateCopyrights {
                 //System.out.println("GenerateCopyrights: url: " + copyrightURL);
                 String foundCopyright = _findURL(copyrightURL);
 
-                htmlBuffer.append("<tr>\n"
-                        + "  <td> <a href=\"" + foundCopyright
-                        + "\"><code>" + _canonicalizeURLToPTII(foundCopyright)
-                        + "</code></a></td>\n"
-                        + "  <td>" + entityBuffer + "</td>\n"
-                        + "</tr>\n");
-                try { 
-                    String copyright = new String(FileUtilities.binaryReadURLToByteArray(new URL(foundCopyright)));
+                htmlBuffer.append("<tr>\n" + "  <td> <a href=\""
+                        + foundCopyright + "\"><code>"
+                        + _canonicalizeURLToPTII(foundCopyright)
+                        + "</code></a></td>\n" + "  <td>" + entityBuffer
+                        + "</td>\n" + "</tr>\n");
+                try {
+                    String copyright = new String(
+                            FileUtilities.binaryReadURLToByteArray(new URL(
+                                    foundCopyright)));
 
                     // Append the text between the body tags.
 
@@ -425,8 +427,10 @@ public class GenerateCopyrights {
                             startIndex += "</head>".length();
                         } else {
                             // Print only a message, we want to print the copyrights.
-                            System.out.println("Could not find body or head in " + foundCopyright
-                                    + " " + copyright.substring(0,200));
+                            System.out
+                                    .println("Could not find body or head in "
+                                            + foundCopyright + " "
+                                            + copyright.substring(0, 200));
                             startIndex = 0;
                         }
                     } else {
@@ -441,27 +445,27 @@ public class GenerateCopyrights {
                         }
                     }
 
-                    
                     // Get read of the html head and close body.
                     copyright = copyright.substring(startIndex, endIndex);
 
                     // If there is a <h1> tag, make sure that it has <a name=...
                     int hIndex = 0;
-                    if ( (hIndex = copyright.indexOf("<h1>")) == -1) {
-                        if ( (hIndex = copyright.indexOf("<h2>")) == -1) {
+                    if ((hIndex = copyright.indexOf("<h1>")) == -1) {
+                        if ((hIndex = copyright.indexOf("<h2>")) == -1) {
                             // Print only a message, we want to print the copyrights.
-                            System.out.println("Warning, no h1 or h2 in " + foundCopyright);
+                            System.out.println("Warning, no h1 or h2 in "
+                                    + foundCopyright);
                         } else {
                         }
                     }
                     if (hIndex != -1) {
                         int hEndIndex = copyright.indexOf("</h");
                         if (hEndIndex < hIndex) {
-                            throw new RuntimeException("Generating copyrights: "
-                                    + "hEndIndex " + hEndIndex + " < " + hIndex
-                                    + " " + foundCopyright
-                                    + " copyright:\n"
-                                    + copyright);
+                            throw new RuntimeException(
+                                    "Generating copyrights: " + "hEndIndex "
+                                            + hEndIndex + " < " + hIndex + " "
+                                            + foundCopyright + " copyright:\n"
+                                            + copyright);
                         }
                         String header = copyright.substring(hIndex, hEndIndex);
                         String newHeader = header;
@@ -476,32 +480,39 @@ public class GenerateCopyrights {
                             String copyrightFileName = copyrightFile.getName();
                             int hyphenIndex = 0;
                             if ((hyphenIndex = copyrightFileName.indexOf("-")) > 0) {
-                                packageName = copyrightFileName.substring(0, hyphenIndex);
+                                packageName = copyrightFileName.substring(0,
+                                        hyphenIndex);
                             } else {
                                 packageName = copyrightFile.getParent();
                             }
-                            newHeader = "<a name=\"" + packageName + "\">" + header;
+                            newHeader = "<a name=\"" + packageName + "\">"
+                                    + header;
                             copyright = copyright.replace(header, newHeader);
                         }
 
                         int nameIndex = 0;
                         if ((nameIndex = newHeader.indexOf("<a name=\"")) != -1) {
-                            int labelIndex =  0;
+                            int labelIndex = 0;
                             if ((labelIndex = newHeader.indexOf("\">")) != -1) {
-                                String target = newHeader.substring(nameIndex + "<a name=\"".length(), labelIndex);
+                                String target = newHeader.substring(nameIndex
+                                        + "<a name=\"".length(), labelIndex);
                                 // Skip the <h1> or <h2>
-                                String label = newHeader.substring(labelIndex + 6);
-                                
+                                String label = newHeader
+                                        .substring(labelIndex + 6);
+
                                 //_guessCopyright(label, copyright);
 
-                                masterCopyrightTable.append(_generateLicenseTableRow(target, label));
+                                masterCopyrightTable
+                                        .append(_generateLicenseTableRow(
+                                                target, label));
                             }
                         }
                     }
                     masterCopyrightBuffer.append(copyright);
                 } catch (IOException ex) {
                     // Ignore this, we want to print the copyrights no matter what.
-                    System.out.println("Could not read " + foundCopyright + ": " + ex);
+                    System.out.println("Could not read " + foundCopyright
+                            + ": " + ex);
                 }
             }
 
@@ -511,20 +522,27 @@ public class GenerateCopyrights {
         String tableTarget = "<!-- Table Contents Goes Here -->";
         int tableTargetIndex = -1;
         if ((tableTargetIndex = masterCopyrightBuffer.indexOf(tableTarget)) == -1) {
-            System.err.println("GenerateCopyrights: Could not find \"" + tableTarget
-                    + "\" in the generated copyright text, "
-                    + "maybe ptolemy/actor/gui/masterCopyrightStart.htm.in does not have it?");
+            System.err
+                    .println("GenerateCopyrights: Could not find \""
+                            + tableTarget
+                            + "\" in the generated copyright text, "
+                            + "maybe ptolemy/actor/gui/masterCopyrightStart.htm.in does not have it?");
         } else {
-            masterCopyrightBuffer.insert(tableTargetIndex, masterCopyrightTable);
+            masterCopyrightBuffer
+                    .insert(tableTargetIndex, masterCopyrightTable);
         }
-        try { 
-            URL masterCopyrightURL = HTMLAbout._temporaryHTMLFile("mastercopyright", ".htm",
-                    masterCopyrightBuffer.toString());
+        try {
+            URL masterCopyrightURL = HTMLAbout
+                    ._temporaryHTMLFile("mastercopyright", ".htm",
+                            masterCopyrightBuffer.toString());
             htmlBuffer.append("<p>For the complete copyrights in one file\n"
-                    + "See the <a href=\"" + masterCopyrightURL + "\">master copyright</a>.</p>\n");
+                    + "See the <a href=\"" + masterCopyrightURL
+                    + "\">master copyright</a>.</p>\n");
         } catch (IOException ex) {
             // Ignore this, we want to print the copyrights.
-            System.err.println("Could not write a temporary file with the complete copyrights: " + ex);
+            System.err
+                    .println("Could not write a temporary file with the complete copyrights: "
+                            + ex);
         }
 
         htmlBuffer.append("<p>Other information <a href=\"about:\">about</a>\n"
@@ -548,12 +566,12 @@ public class GenerateCopyrights {
 
         try {
             StringAttribute applicationCopyrightAttribute = (StringAttribute) configuration
-                .getAttribute("_applicationCopyright",
-                        StringAttribute.class);
+                    .getAttribute("_applicationCopyright",
+                            StringAttribute.class);
 
             if (applicationCopyrightAttribute != null) {
                 applicationCopyright = applicationCopyrightAttribute
-                    .getExpression();
+                        .getExpression();
             }
         } catch (Exception ex) {
             // Ignore and use the default applicationCopyright
@@ -592,24 +610,24 @@ public class GenerateCopyrights {
         }
 
         htmlBuffer
-            .append("<p>"
-                    + applicationName
-                    + " uses AElfred as an XML Parser.\n"
-                    + "AElfred is covered by the copyright in\n "
-                    + "<a href=\""
-                    + aelfredCopyright
-                    + "\"><code>."
-                    + _canonicalizeURLToPTII(aelfredCopyright)
-                    + "</code></a>\n</p>"
-                    + "<p>"
-                    + applicationName
-                    + " uses the ptolemy.graph package for scheduling and analysis of Ptolemy II models."
-                    + "Significant portions of the ptolemy.graph package were developed by "
-                    + "<a href=\"http://www.ece.umd.edu/~ssb/#in_browser\">Professor Shuvra S. Bhattacharyya</a> "
-                    + "and his group. and are covered by a BSD License in\n "
-                    + "<a href=\"" + graphCopyright + "\"><code>"
-                    + _canonicalizeURLToPTII(graphCopyright)
-                    + "</code></a>\n</p>");
+                .append("<p>"
+                        + applicationName
+                        + " uses AElfred as an XML Parser.\n"
+                        + "AElfred is covered by the copyright in\n "
+                        + "<a href=\""
+                        + aelfredCopyright
+                        + "\"><code>."
+                        + _canonicalizeURLToPTII(aelfredCopyright)
+                        + "</code></a>\n</p>"
+                        + "<p>"
+                        + applicationName
+                        + " uses the ptolemy.graph package for scheduling and analysis of Ptolemy II models."
+                        + "Significant portions of the ptolemy.graph package were developed by "
+                        + "<a href=\"http://www.ece.umd.edu/~ssb/#in_browser\">Professor Shuvra S. Bhattacharyya</a> "
+                        + "and his group. and are covered by a BSD License in\n "
+                        + "<a href=\"" + graphCopyright + "\"><code>"
+                        + _canonicalizeURLToPTII(graphCopyright)
+                        + "</code></a>\n</p>");
 
         return htmlBuffer.toString();
     }
@@ -704,7 +722,7 @@ public class GenerateCopyrights {
     private static String _findURL(String localURL) {
         try {
             URL url = Thread.currentThread().getContextClassLoader()
-                .getResource(localURL);
+                    .getResource(localURL);
             return url.toString();
         } catch (Exception ex) {
             // Ignore it and use the copyright from the website
@@ -726,7 +744,7 @@ public class GenerateCopyrights {
 
             String majorVersion = majorVersionBuffer.toString();
             return "http://ptolemy.eecs.berkeley.edu/ptolemyII/" + "ptII"
-                + majorVersion + "/ptII" + majorVersion + "/" + localURL;
+                    + majorVersion + "/ptII" + majorVersion + "/" + localURL;
         }
     }
 
@@ -736,13 +754,10 @@ public class GenerateCopyrights {
      *  @return HTML for the row that represents the table.
      */
     private static String _generateLicenseTableRow(String target, String label) {
-        StringBuffer results = new StringBuffer(
-                " <tr>\n"
-                + "  <td>\n"
-                + "     <a href=\"#" + target + "\">"
-                + label.replace("License for", "").replace("Copyright for", "")
-                + "</a>\n"
-                + "  </td>\n");
+        StringBuffer results = new StringBuffer(" <tr>\n" + "  <td>\n"
+                        + "     <a href=\"#" + target + "\">"
+                        + label.replace("License for", "").replace("Copyright for", "")
+                        + "</a>\n" + "  </td>\n");
         int rowIndex = -1;
         for (int i = 0; i < _licenses.length; i++) {
             if (_licenses[i][0].equals(target)) {
@@ -751,13 +766,14 @@ public class GenerateCopyrights {
             }
         }
         if (rowIndex == -1) {
-            results.append("  <td>?</td> <td>?</td> <td>?</td> <td>Update ptolemy/actor/gui/GenerateCopyrights.java for \"" + target + "\".</td>");
+            results.append("  <td>?</td> <td>?</td> <td>?</td> <td>Update ptolemy/actor/gui/GenerateCopyrights.java for \""
+                    + target + "\".</td>");
         } else {
             results.append("  <td>" + _licenses[rowIndex][1] + "</td>\n"
-                    + "  <td>" + _licenses[rowIndex][2] + "</td>\n"
-                    + "  <td>" + _licenses[rowIndex][3] + "</td>\n"
-                    + "  <td>" + _licenses[rowIndex][4] + "</td>\n"
-                    + "  <td>" + _licenses[rowIndex][5] + "</td>\n");
+                    + "  <td>" + _licenses[rowIndex][2] + "</td>\n" + "  <td>"
+                    + _licenses[rowIndex][3] + "</td>\n" + "  <td>"
+                    + _licenses[rowIndex][4] + "</td>\n" + "  <td>"
+                    + _licenses[rowIndex][5] + "</td>\n");
         }
         results.append("</tr>\n");
         return results.toString();
@@ -773,7 +789,7 @@ public class GenerateCopyrights {
 
         try {
             StringAttribute applicationNameAttribute = (StringAttribute) configuration
-                .getAttribute("_applicationName", StringAttribute.class);
+                    .getAttribute("_applicationName", StringAttribute.class);
 
             if (applicationNameAttribute != null) {
                 applicationName = applicationNameAttribute.getExpression();
@@ -784,32 +800,32 @@ public class GenerateCopyrights {
         return applicationName;
     }
 
-//     /** Guess the type of copyright, used for priming the table. */
-//     protected void _guessCopyright(String label, String copyright) {
-//         StringBuffer type = new StringBuffer();
-//         String [] types = {"Apache License", "CDDL", "Eclipse", "GNU Lesser General Public", "Oracle", "Research in Motion", "Sun" };
-//         for (int i = 0; i < types.length; i++) {
-//             if (copyright.indexOf(types[i]) != -1) {
-//                 if (type.length() > 0) {
-//                     type.append(" + ");
-//                 }
-//                 type.append(types[i]);
-//             }
-//         }
-//         System.out.println("{\"" + target + "\", \" \", \" \", \"Y\", \""
-//                 + type + "\"},");
-//     }
-
+    //     /** Guess the type of copyright, used for priming the table. */
+    //     protected void _guessCopyright(String label, String copyright) {
+    //         StringBuffer type = new StringBuffer();
+    //         String [] types = {"Apache License", "CDDL", "Eclipse", "GNU Lesser General Public", "Oracle", "Research in Motion", "Sun" };
+    //         for (int i = 0; i < types.length; i++) {
+    //             if (copyright.indexOf(types[i]) != -1) {
+    //                 if (type.length() > 0) {
+    //                     type.append(" + ");
+    //                 }
+    //                 type.append(types[i]);
+    //             }
+    //         }
+    //         System.out.println("{\"" + target + "\", \" \", \" \", \"Y\", \""
+    //                 + type + "\"},");
+    //     }
 
     /** Compare two filenames.
-     */   
+     */
     static class FileNameComparator implements Comparator<String> {
 
-        /** Compare to Strings that should represent files by the name of the file. 
+        /** Compare to Strings that should represent files by the name of the file.
          *  @param a The first file name.
          *  @param b The second file name.
          *  @return -1, 0 or 1
          */
+        @Override
         public int compare(String a, String b) {
             File fileA = new File(a);
             File fileB = new File(b);
@@ -823,60 +839,68 @@ public class GenerateCopyrights {
      * We use a simple table here for ease of maintenance.
      */
     private static String[][] _licenses = {
-        {"aelfred", "Y", " ", "Y", "Y", "Include Microstar's copyrigh"},
-        {"Audio", "Y", " ", "Y", "Y ", "Include credit text"},
-        {"BrowserLauncher", "Y", " ", "Y", "Y", "Include the BrowserLauncher copyright"},
-        {"ExtensionFileFilter", "Y", " ", "Y", "Y", "Include Sun's copyright"},
-        {"ExtensionFilenameFilter", "Y", " ", "Y", "Y", "Sun"},
-        {"JUnitParams", " ", " ", "Y", "Y", "Apache License"},
-        {"JavaMail", " ", " ", "Y", " ", "CDDL + Oracle"},
-        {"PDFRenderer", " ", " ", "Y", "Y", "GNU Lesser General Public"},
-        {"ResizableImageWidget", " ", " ", "Y", " ", "CDDL + Oracle + Sun"},
-        {"chic", " ", " ", "Y", "Y", "BSD"},
-        {"colt", "Y", " ", "Y", "Y", "BSD and others"},
-        {"cup", " ", " ", "Y", " ", "Similar to BSD"},
-        {"db", " ", " ", "Y", " ", "Similar to <font color=\"red\">like GPL</font>"}, // GPL!!
-        {"fmipp", " ", " ", "Y", " ", "FMUSDK: Similar to BSD"},
-        {"fmusdk", " ", " ", "Y", " ", ""},
-        {"g4ltl", " ", " ", "Y", "Y", "Apache License"},
-        {"gcj", " ", " ", "Y", " ", "GPL with libgcc Exception"}, // Backtracking.
-        {"guava", " ", " ", "Y", "Y", "Apache License"},
-        {"itextpdf", " ", " ", "Y", " ", "Affero General Public License <font color=\"red\">like GPL</font>"},
-        {"jai", " ", "Y", " ", " ", "Sun"},
-        {"java3d", " ", "Y", "", " ", "Sun"},
-        {"javascript", " ", " ", "Y", "Y", "JQuery and Fancybox: MIT"},
-        {"javax.servlet", " ", " ", "Y", "Y", "Apache License"},
-        {"jcerti", " ", " ", "Y", "Y", "GNU Lesser General Public"},
-        {"jcobyla", " ", " ", "Y", "", "MIT"},
-        {"jdom", " ", " ", "Y", "", "Similar to BSD.  No use of sponsor name in advertising"},
-        {"jetty", " ", " ", "Y", "Y", "Apache License + Eclipse"},
-        {"jgoodies", " ", " ", "Y", "Y", "3 Clause BSD"},
-        {"jimblacklerUtils", " ", " ", "Y", "Y", "Public Domain"},
-        {"jmf", " ", "Y", " ", " ", "Sun"},
-        {"jna", " ", " ", "Y", "Y", "Apache License + GNU Lesser General Public"},
-        {"joystick", " ", " ", "Y", " ", "Artistic License"},
-        {"js", " ", " ", "Y", " ", "Mozilla + Sun"},
-        {"json", " ", " ", "Y", "Y", "BSD-like"},
-        {"jsoup", " ", " ", "Y", "Y", "MIT"},
-        {"junit", " ", " ", "Y", "Y", "Common Public License - v 1.0"},
-        {"jxl", " ", " ", "Y", " ", "GNU Lesser General Public"},
-        {"jython", "Y", " ", "Y", "Y", "Apache License + Python V2 + other licenses"},
-        {"kieler", "Y", " ", "Y", "Y", "Eclipse"},
-        {"mapss", " ", " ", "Y", "Y", "BSD"},
-        {"matlab", "Y", " ", "Y", "Y", "Research in Motion BSD"},
-        {"mlc", " ", " ", "Y", "Y", "GNU Lesser General Public + Sun"},
-        {"mysql", " ", " ", "Y", " ", "GPL + exceptions or Commercial"},
-        {"netbeans", " ", " ", "Y", "Y", "CDDL + Oracle"},
-        {"opencv", " ", " ", "Y", " ", ""},
-        {"protobuf", " ", " ", "Y", "Y", "BSD 3-Clause"},
-        {"ptalon", "Y", " ", "Y", " ", "Antler: Public Domain"},
-        {"ptjacl", " ", " ", "Y", "Y", "Apache License + BSD + Sun"},
-        {"quicktime", " ", " ", " ", " ", "Apple"}, // License prohibits distribution
-        {"rxtx", " ", "Y", " ", " ", "GNU Lesser General Public 2.1 + Sun"},
-        {"saxon", " ", " ", "Y", " ", "Mozilla Public License"},
-        {"smack", " ", " ", "Y", "Y", "Apache License"},
-        {"soot", " ", " ", "Y", "Y", "BSD + LGPL 2"},
-        {"thalesSingleWindow", " ", " ", "Y", " ", "BSD"},
-        {"udunits", " ", " ", "Y", " ", "Similar to BSD.  No use of sponsor name in advertising"}};
+            { "aelfred", "Y", " ", "Y", "Y", "Include Microstar's copyrigh" },
+            { "Audio", "Y", " ", "Y", "Y ", "Include credit text" },
+            { "BrowserLauncher", "Y", " ", "Y", "Y",
+                    "Include the BrowserLauncher copyright" },
+            { "ExtensionFileFilter", "Y", " ", "Y", "Y",
+                    "Include Sun's copyright" },
+            { "ExtensionFilenameFilter", "Y", " ", "Y", "Y", "Sun" },
+            { "JUnitParams", " ", " ", "Y", "Y", "Apache License" },
+            { "JavaMail", " ", " ", "Y", " ", "CDDL + Oracle" },
+            { "PDFRenderer", " ", " ", "Y", "Y", "GNU Lesser General Public" },
+            { "ResizableImageWidget", " ", " ", "Y", " ", "CDDL + Oracle + Sun" },
+            { "chic", " ", " ", "Y", "Y", "BSD" },
+            { "colt", "Y", " ", "Y", "Y", "BSD and others" },
+            { "cup", " ", " ", "Y", " ", "Similar to BSD" },
+            { "db", " ", " ", "Y", " ",
+                    "Similar to <font color=\"red\">like GPL</font>" }, // GPL!!
+            { "fmipp", " ", " ", "Y", " ", "FMUSDK: Similar to BSD" },
+            { "fmusdk", " ", " ", "Y", " ", "" },
+            { "g4ltl", " ", " ", "Y", "Y", "Apache License" },
+            { "gcj", " ", " ", "Y", " ", "GPL with libgcc Exception" }, // Backtracking.
+            { "guava", " ", " ", "Y", "Y", "Apache License" },
+            { "itextpdf", " ", " ", "Y", " ",
+                    "Affero General Public License <font color=\"red\">like GPL</font>" },
+            { "jai", " ", "Y", " ", " ", "Sun" },
+            { "java3d", " ", "Y", "", " ", "Sun" },
+            { "javascript", " ", " ", "Y", "Y", "JQuery and Fancybox: MIT" },
+            { "javax.servlet", " ", " ", "Y", "Y", "Apache License" },
+            { "jcerti", " ", " ", "Y", "Y", "GNU Lesser General Public" },
+            { "jcobyla", " ", " ", "Y", "", "MIT" },
+            { "jdom", " ", " ", "Y", "",
+                    "Similar to BSD.  No use of sponsor name in advertising" },
+            { "jetty", " ", " ", "Y", "Y", "Apache License + Eclipse" },
+            { "jgoodies", " ", " ", "Y", "Y", "3 Clause BSD" },
+            { "jimblacklerUtils", " ", " ", "Y", "Y", "Public Domain" },
+            { "jmf", " ", "Y", " ", " ", "Sun" },
+            { "jna", " ", " ", "Y", "Y",
+                    "Apache License + GNU Lesser General Public" },
+            { "joystick", " ", " ", "Y", " ", "Artistic License" },
+            { "js", " ", " ", "Y", " ", "Mozilla + Sun" },
+            { "json", " ", " ", "Y", "Y", "BSD-like" },
+            { "jsoup", " ", " ", "Y", "Y", "MIT" },
+            { "junit", " ", " ", "Y", "Y", "Common Public License - v 1.0" },
+            { "jxl", " ", " ", "Y", " ", "GNU Lesser General Public" },
+            { "jython", "Y", " ", "Y", "Y",
+                    "Apache License + Python V2 + other licenses" },
+            { "kieler", "Y", " ", "Y", "Y", "Eclipse" },
+            { "mapss", " ", " ", "Y", "Y", "BSD" },
+            { "matlab", "Y", " ", "Y", "Y", "Research in Motion BSD" },
+            { "mlc", " ", " ", "Y", "Y", "GNU Lesser General Public + Sun" },
+            { "mysql", " ", " ", "Y", " ", "GPL + exceptions or Commercial" },
+            { "netbeans", " ", " ", "Y", "Y", "CDDL + Oracle" },
+            { "opencv", " ", " ", "Y", " ", "" },
+            { "protobuf", " ", " ", "Y", "Y", "BSD 3-Clause" },
+            { "ptalon", "Y", " ", "Y", " ", "Antler: Public Domain" },
+            { "ptjacl", " ", " ", "Y", "Y", "Apache License + BSD + Sun" },
+            { "quicktime", " ", " ", " ", " ", "Apple" }, // License prohibits distribution
+            { "rxtx", " ", "Y", " ", " ", "GNU Lesser General Public 2.1 + Sun" },
+            { "saxon", " ", " ", "Y", " ", "Mozilla Public License" },
+            { "smack", " ", " ", "Y", "Y", "Apache License" },
+            { "soot", " ", " ", "Y", "Y", "BSD + LGPL 2" },
+            { "thalesSingleWindow", " ", " ", "Y", " ", "BSD" },
+            { "udunits", " ", " ", "Y", " ",
+                    "Similar to BSD.  No use of sponsor name in advertising" } };
 
 }

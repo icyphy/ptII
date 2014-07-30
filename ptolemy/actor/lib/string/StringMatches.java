@@ -83,13 +83,13 @@ public class StringMatches extends TypedAtomicActor {
         pattern.setStringMode(true);
         pattern.setExpression("");
         new SingletonParameter(pattern.getPort(), "_showName")
-                .setToken(BooleanToken.TRUE);
+        .setToken(BooleanToken.TRUE);
 
         matchString = new PortParameter(this, "matchString");
         matchString.setStringMode(true);
         matchString.setExpression("");
         new SingletonParameter(matchString.getPort(), "_showName")
-                .setToken(BooleanToken.TRUE);
+        .setToken(BooleanToken.TRUE);
 
         output = new TypedIOPort(this, "output", false, true);
         output.setTypeEquals(BaseType.BOOLEAN);
@@ -122,6 +122,7 @@ public class StringMatches extends TypedAtomicActor {
      *  @exception IllegalActionException If the pattern cannot be compiled
      *  into a regular expression.
      */
+    @Override
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         if (attribute == pattern) {
@@ -148,6 +149,7 @@ public class StringMatches extends TypedAtomicActor {
      *  @exception CloneNotSupportedException If a derived class has
      *   an attribute that cannot be cloned.
      */
+    @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         StringMatches newObject = (StringMatches) super.clone(workspace);
         String patternValue = null;
@@ -158,7 +160,7 @@ public class StringMatches extends TypedAtomicActor {
         } catch (Exception ex) {
             throw new InternalErrorException(this, ex,
                     "Failed to compile regular expression \"" + patternValue
-                            + "\"");
+                    + "\"");
         }
         return newObject;
     }
@@ -168,6 +170,7 @@ public class StringMatches extends TypedAtomicActor {
      *  otherwise.
      *  @exception IllegalActionException If there is no director.
      */
+    @Override
     public void fire() throws IllegalActionException {
         super.fire();
         pattern.update();

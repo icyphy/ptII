@@ -25,7 +25,7 @@ ENHANCEMENTS, OR MODIFICATIONS.
                                                 COPYRIGHTENDKEY
 
 
-*/
+ */
 
 package ptdb.kernel.bl.search;
 
@@ -78,6 +78,7 @@ public abstract class AbstractSearcher implements ResultHandler {
      * results.
      */
 
+    @Override
     public void handleIntermediateResults(List<XMLDBModel> intermediateResults,
             ResultHandler resultHandler) {
 
@@ -102,6 +103,7 @@ public abstract class AbstractSearcher implements ResultHandler {
      *          of DB tasks, and is thrown by the concrete searcher if they
      *          are performing the actual searching in the database.
      */
+    @Override
     public void handleResults(ArrayList<XMLDBModel> modelResults)
             throws DBConnectionException, DBExecutionException {
 
@@ -216,6 +218,7 @@ public abstract class AbstractSearcher implements ResultHandler {
      * @return true - The search has been canceled by the user.<br>
      *         false - The search hasn't been canceled.
      */
+    @Override
     public boolean isSearchCancelled() {
 
         if (_nextResultHandler != null) {
@@ -256,6 +259,7 @@ public abstract class AbstractSearcher implements ResultHandler {
      * @param errorModels The error models.
      */
 
+    @Override
     public void passErrorModels(List<XMLDBModel> errorModels) {
         if (_nextResultHandler != null) {
             _nextResultHandler.passErrorModels(errorModels);
@@ -268,6 +272,7 @@ public abstract class AbstractSearcher implements ResultHandler {
      *
      * @param connection The DBConnection instance to be set in this searcher.
      */
+    @Override
     public void setConnection(DBConnection connection) {
         _dbConnection = connection;
 
@@ -320,6 +325,7 @@ public abstract class AbstractSearcher implements ResultHandler {
      * @exception DBConnectionException Thrown from the database layer if the
      *  database connection cannot be obtained.
      */
+    @Override
     public void wholeSearchDone() throws DBConnectionException {
 
         // tell the next result handler that the searching is done
@@ -419,7 +425,7 @@ public abstract class AbstractSearcher implements ResultHandler {
      *          indicates that the DBConnection cannot be obtained.
      */
     protected abstract void _search() throws DBExecutionException,
-            DBConnectionException;
+    DBConnectionException;
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////

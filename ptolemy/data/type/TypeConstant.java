@@ -63,6 +63,7 @@ public class TypeConstant implements InequalityTerm {
      *  @param object The object to compare against.
      *  @return true if the argument is equal to this argument.
      */
+    @Override
     public boolean equals(Object object) {
         if (object instanceof TypeConstant) {
             if (_type == null) {
@@ -76,6 +77,7 @@ public class TypeConstant implements InequalityTerm {
     /** Return null.
      *  @return null.
      */
+    @Override
     public Object getAssociatedObject() {
         return null;
     }
@@ -84,6 +86,7 @@ public class TypeConstant implements InequalityTerm {
      *  @return A Type.
      *  @see #setValue(Object)
      */
+    @Override
     public Object getValue() {
         return _type;
     }
@@ -91,6 +94,7 @@ public class TypeConstant implements InequalityTerm {
     /** Return an array of size zero.
      * @return An array of InequalityTerm of size 0.
      */
+    @Override
     public InequalityTerm[] getVariables() {
         return new InequalityTerm[0];
     }
@@ -99,6 +103,7 @@ public class TypeConstant implements InequalityTerm {
      *  returns true then the two objects return the same hashCode.
      *  @return The hashCode of this object.
      */
+    @Override
     public int hashCode() {
         if (_type != null) {
             return _type.hashCode();
@@ -109,6 +114,7 @@ public class TypeConstant implements InequalityTerm {
     /** Throw an Exception since type constant cannot be initialized.
      *  @exception IllegalActionException Always thrown.
      */
+    @Override
     public void initialize(Object e) throws IllegalActionException {
         throw new IllegalActionException("TypeConstant.initialize: "
                 + "Type constant cannot be initialized.");
@@ -117,6 +123,7 @@ public class TypeConstant implements InequalityTerm {
     /** Return false since this term represent a constant.
      *  @return false.
      */
+    @Override
     public boolean isSettable() {
         return false;
     }
@@ -126,6 +133,7 @@ public class TypeConstant implements InequalityTerm {
      *  if it represents an instantiable object.
      *  @return True if the current type is acceptable.
      */
+    @Override
     public boolean isValueAcceptable() {
         if (_type.isInstantiable()) {
             return true;
@@ -139,6 +147,7 @@ public class TypeConstant implements InequalityTerm {
      *  @exception IllegalActionException Always thrown.
      *  @see #getValue()
      */
+    @Override
     public void setValue(Object e) throws IllegalActionException {
         throw new IllegalActionException("TypeConstant.setValue: Cannot set "
                 + "the value of a type constant.");
@@ -147,6 +156,7 @@ public class TypeConstant implements InequalityTerm {
     /** Return a string representation of this term.
      *  @return A String.
      */
+    @Override
     public String toString() {
         return "(TypeConstant, " + getValue() + ")";
     }

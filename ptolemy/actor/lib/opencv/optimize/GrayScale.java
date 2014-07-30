@@ -23,7 +23,7 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
-*/
+ */
 
 package ptolemy.actor.lib.opencv.optimize;
 
@@ -41,13 +41,13 @@ import ptolemy.kernel.util.NameDuplicationException;
 ////GrayScale
 
 /**
-* Produce a grayscaled version of an image.
-* @author Marc Geilen, based on code by Edward A. Lee, Jan Reineke, Christopher Brooks
-* @version $Id$
-* @since Ptolemy II 7.1
-* @Pt.ProposedRating Red (cxh)
-* @Pt.AcceptedRating Red (cxh)
-*/
+ * Produce a grayscaled version of an image.
+ * @author Marc Geilen, based on code by Edward A. Lee, Jan Reineke, Christopher Brooks
+ * @version $Id$
+ * @since Ptolemy II 7.1
+ * @Pt.ProposedRating Red (cxh)
+ * @Pt.AcceptedRating Red (cxh)
+ */
 public class GrayScale extends SharedBufferTransformer {
 
     /** Construct an actor with the given container and name.
@@ -75,6 +75,7 @@ public class GrayScale extends SharedBufferTransformer {
     /** Output an OpenCV Object.
      *  @exception IllegalActionException If thrown while writing to the port.
      */
+    @Override
     protected void _fireCopying() throws IllegalActionException {
         if (input.hasToken(0)) {
             ObjectToken inputToken = (ObjectToken) input.get(0);
@@ -100,6 +101,7 @@ public class GrayScale extends SharedBufferTransformer {
         }
     }
 
+    @Override
     protected void _fireExclusive() throws IllegalActionException {
         if (input.hasToken(0)) {
             ObjectToken inputToken = (ObjectToken) input.get(0);

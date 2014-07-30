@@ -71,6 +71,7 @@ public class TestVariable implements InequalityTerm {
     /** Return the string value.
      *  @return A String
      */
+    @Override
     public Object getAssociatedObject() {
         return _value;
     }
@@ -87,6 +88,7 @@ public class TestVariable implements InequalityTerm {
      *  @return a String
      *  @see #setValue(Object)
      */
+    @Override
     public Object getValue() {
         return _value;
     }
@@ -95,6 +97,7 @@ public class TestVariable implements InequalityTerm {
      *  the this reference.
      *  @return an array of InequalityTerms
      */
+    @Override
     public InequalityTerm[] getVariables() {
         if (isSettable()) {
             InequalityTerm[] variable = new InequalityTerm[1];
@@ -109,6 +112,7 @@ public class TestVariable implements InequalityTerm {
      *  @param e a String
      *  @exception GraphActionException not thrown
      */
+    @Override
     public void initialize(Object e) throws GraphActionException {
         if (isSettable()) {
             _value = (String) e;
@@ -121,6 +125,7 @@ public class TestVariable implements InequalityTerm {
     /** Return true.
      *  @return true
      */
+    @Override
     public boolean isSettable() {
         return !_valueFixed;
     }
@@ -130,6 +135,7 @@ public class TestVariable implements InequalityTerm {
      *  acceptable.
      *  @return True.
      */
+    @Override
     public boolean isValueAcceptable() {
         return true;
     }
@@ -151,6 +157,7 @@ public class TestVariable implements InequalityTerm {
      *  @exception GraphActionException not thrown
      *  @see #getValue()
      */
+    @Override
     public void setValue(Object e) throws GraphActionException {
         if (isSettable()) {
             _value = (String) e;
@@ -163,6 +170,7 @@ public class TestVariable implements InequalityTerm {
     /** Override the base class to describe the variable.
      *  @return A string describing the variable.
      */
+    @Override
     public String toString() {
         return getClass().getName() + getInfo();
     }

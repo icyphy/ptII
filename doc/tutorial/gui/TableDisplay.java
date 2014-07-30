@@ -23,7 +23,7 @@ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
 PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 ENHANCEMENTS, OR MODIFICATIONS.
-*/
+ */
 package doc.tutorial.gui;
 
 import java.awt.Container;
@@ -51,6 +51,7 @@ public class TableDisplay extends AbstractPlaceableActor {
         super(container, name);
     }
 
+    @Override
     public void initialize() throws IllegalActionException {
         super.initialize();
         if (_table == null) {
@@ -73,6 +74,7 @@ public class TableDisplay extends AbstractPlaceableActor {
         }
     }
 
+    @Override
     public void place(Container container) {
         if (container == null) {
             if (_frame != null) {
@@ -90,15 +92,18 @@ public class TableDisplay extends AbstractPlaceableActor {
             _tableau = null;
         } else {
             @SuppressWarnings("serial")
-                        TableModel dataModel = new AbstractTableModel() {
+            TableModel dataModel = new AbstractTableModel() {
+                @Override
                 public int getColumnCount() {
                     return 10;
                 }
 
+                @Override
                 public int getRowCount() {
                     return 10;
                 }
 
+                @Override
                 public Object getValueAt(int row, int col) {
                     return Integer.valueOf(row * col);
                 }

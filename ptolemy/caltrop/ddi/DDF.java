@@ -82,6 +82,7 @@ public class DDF extends DataflowWithRates {
      * action.
      * @exception IllegalActionException
      */
+    @Override
     public void initialize() throws IllegalActionException {
         super.initialize();
 
@@ -114,6 +115,7 @@ public class DDF extends DataflowWithRates {
      * @return True if the actor associated with this <tt>DDI</tt> is
      * a legal DDF actor.
      */
+    @Override
     public boolean isLegalActor() {
         try {
             if (_hasInputDependentGuard()) {
@@ -130,6 +132,7 @@ public class DDF extends DataflowWithRates {
      * Get the name of this DDI.
      * @return "DDF".
      */
+    @Override
     public String getName() {
         return "DDF";
     }
@@ -137,6 +140,7 @@ public class DDF extends DataflowWithRates {
     /**
      * Postfire this actor.
      */
+    @Override
     public boolean postfire() throws IllegalActionException {
         super.postfire();
 
@@ -169,6 +173,7 @@ public class DDF extends DataflowWithRates {
      * action selection.
      *
      */
+    @Override
     public boolean prefire() throws IllegalActionException {
         _lastFiredAction = null;
 
@@ -219,6 +224,7 @@ public class DDF extends DataflowWithRates {
      * consumption/production rates to the input and output ports of
      * the actor associated with this <tt>DDI</tt>.
      */
+    @Override
     public void setupActor() {
         _selectInitializer();
     }

@@ -56,6 +56,7 @@ import ptolemy.kernel.util.Workspace;
  @Pt.ProposedRating Yellow (eal)
  @Pt.AcceptedRating Red (liuj)
  */
+@Deprecated
 public class ExpressionReader extends LineReader {
     /** Construct an actor with the given container and name.
      *  @param container The container.
@@ -81,6 +82,7 @@ public class ExpressionReader extends LineReader {
      *  @exception CloneNotSupportedException If a derived class contains
      *   an attribute that cannot be cloned.
      */
+    @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         ExpressionReader newObject = (ExpressionReader) super.clone(workspace);
 
@@ -94,6 +96,7 @@ public class ExpressionReader extends LineReader {
      *  @exception IllegalActionException If there's no director, or
      *   if the expression read from the file cannot be parsed.
      */
+    @Override
     public void fire() throws IllegalActionException {
         // NOTE: Since we don't call super.fire(), we have to do what
         // is done in the Source base class.
@@ -125,6 +128,7 @@ public class ExpressionReader extends LineReader {
      *  @exception IllegalActionException If the file or URL cannot be
      *   opened, or if the first line cannot be read.
      */
+    @Override
     public void preinitialize() throws IllegalActionException {
         super.preinitialize();
 
@@ -141,6 +145,7 @@ public class ExpressionReader extends LineReader {
     /** Override the base class to clear memory of any
      *  possibly erroneous expression.
      */
+    @Override
     public void wrapup() throws IllegalActionException {
         super.wrapup();
         // This is necessary because if there is an

@@ -116,6 +116,7 @@ public class RecordUpdater extends TypedAtomicActor {
      *  @exception CloneNotSupportedException If a derived class has
      *   an attribute that cannot be cloned.
      */
+    @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         RecordUpdater newObject = (RecordUpdater) super.clone(workspace);
         return newObject;
@@ -126,6 +127,7 @@ public class RecordUpdater extends TypedAtomicActor {
      *  and each of the update ports.
      *  @exception IllegalActionException If there is no director.
      */
+    @Override
     public void fire() throws IllegalActionException {
         super.fire();
         Director director = getDirector();
@@ -183,6 +185,7 @@ public class RecordUpdater extends TypedAtomicActor {
      *   input port throws it.
      *  @see ptolemy.actor.IOPort#hasToken(int)
      */
+    @Override
     public boolean prefire() throws IllegalActionException {
         if (!super.prefire()) {
             return false;
@@ -239,6 +242,7 @@ public class RecordUpdater extends TypedAtomicActor {
         /** Return the function result.
          *  @return A Type.
          */
+        @Override
         public Object getValue() throws IllegalActionException {
 
             String label;
@@ -286,6 +290,7 @@ public class RecordUpdater extends TypedAtomicActor {
         /** Return all the InequalityTerms for all input ports in an array.
          *  @return An array of InequalityTerm.
          */
+        @Override
         public InequalityTerm[] getVariables() {
             Iterator<TypedIOPort> inputPorts = inputPortList().iterator();
             LinkedList<InequalityTerm> result = new LinkedList<InequalityTerm>();

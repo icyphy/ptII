@@ -21,7 +21,7 @@
  CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
  ENHANCEMENTS, OR MODIFICATIONS.
 
-***************************************************************
+ ***************************************************************
 
  PetriNet Director Modifications
 
@@ -131,6 +131,7 @@ public class Place extends Transformer implements Comparator {
      * @exception ClassCastException If either object cannot be casted
      *   in to a Place.
      */
+    @Override
     public int compare(Object o1, Object o2) throws ClassCastException {
         Place p1 = (Place) o1;
         Place p2 = (Place) o2;
@@ -190,6 +191,7 @@ public class Place extends Transformer implements Comparator {
      *  @exception IllegalActionException If the initialMarking parameter
      *   throws it.
      */
+    @Override
     public void initialize() throws IllegalActionException {
         _currentMarking = ((IntToken) initialMarking.getToken()).intValue();
         _temporaryMarking = _currentMarking;

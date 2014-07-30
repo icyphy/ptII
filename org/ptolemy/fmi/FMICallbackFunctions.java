@@ -141,7 +141,7 @@ public class FMICallbackFunctions extends Structure {
      *  <a href="http://twall.github.com/jna/3.4.0/javadoc/overview-summary.html#callbacks">http://twall.github.com/jna/3.4.0/javadoc/overview-summary.html#callbacks</a>.</p>
      */
     public static class ByValue extends FMICallbackFunctions implements
-            Structure.ByValue {
+    Structure.ByValue {
         /**  Access the structure by reference.
          *
          *  <p>See
@@ -182,6 +182,7 @@ public class FMICallbackFunctions extends Structure {
      *  <p>This is new in jna-3.5.0.
      *  @return a list of strings that name the fields in order.
      */
+    @Override
     protected List getFieldOrder() {
         return Arrays.asList(new String[] { "logger", "allocateMemory",
                 "freeMemory", "stepFinished" });
@@ -191,11 +192,12 @@ public class FMICallbackFunctions extends Structure {
      * matches the order of the C structure.
      * @deprecated As of jna-3.5.0, use getFieldOrder() instead.
      */
+    @Deprecated
     protected void initFieldOrder() {
         // Note that the name of this method does not have a leading
         // underscore because the name of the protected method in the
         // parent class does not have an underscore.
         setFieldOrder(new String[] { "logger", "allocateMemory", "freeMemory",
-                "stepFinished" });
+        "stepFinished" });
     }
 }

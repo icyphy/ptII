@@ -85,6 +85,7 @@ public class HomerApplication extends MoMLApplication {
     public static void main(final String[] args) {
         try {
             SwingUtilities.invokeLater(new Runnable() {
+                @Override
                 public void run() {
                     try {
                         new HomerApplication(args);
@@ -120,6 +121,7 @@ public class HomerApplication extends MoMLApplication {
      *  @return The default application configuration.
      *  @exception Exception If the configuration cannot be opened.
      */
+    @Override
     protected Configuration _createDefaultConfiguration() throws Exception {
         URL configurationURL = null;
         try {
@@ -143,6 +145,7 @@ public class HomerApplication extends MoMLApplication {
      *  @return The default application configuration.
      *  @exception Exception If the configuration cannot be opened.
      */
+    @Override
     protected Configuration _createEmptyConfiguration() throws Exception {
         return _createDefaultConfiguration();
     }

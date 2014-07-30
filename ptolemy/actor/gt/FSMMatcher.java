@@ -59,7 +59,7 @@ import ptolemy.vergil.gt.GTIngredientsEditor;
  @Pt.AcceptedRating Red (tfeng)
  */
 public class FSMMatcher extends FSMActor implements GTCompositeActor, GTEntity,
-        ValueListener {
+ValueListener {
 
     /** Create an FSMMatcher in the specified container with the specified
      *  name. The name must be unique within the container or an exception
@@ -97,6 +97,7 @@ public class FSMMatcher extends FSMActor implements GTCompositeActor, GTEntity,
      *
      *  @return The attribute that stores all the criteria.
      */
+    @Override
     public GTIngredientsAttribute getCriteriaAttribute() {
         return criteria;
     }
@@ -108,6 +109,7 @@ public class FSMMatcher extends FSMActor implements GTCompositeActor, GTEntity,
      *
      *  @return The icon description.
      */
+    @Override
     public String getDefaultIconDescription() {
         return null;
     }
@@ -116,6 +118,7 @@ public class FSMMatcher extends FSMActor implements GTCompositeActor, GTEntity,
      *
      *  @return The attribute that stores all the operations.
      */
+    @Override
     public GTIngredientsAttribute getOperationsAttribute() {
         return operations;
     }
@@ -127,6 +130,7 @@ public class FSMMatcher extends FSMActor implements GTCompositeActor, GTEntity,
      *  @return The attribute that stores the name of the corresponding entity.
      *  @see #labelSet()
      */
+    @Override
     public PatternObjectAttribute getPatternObjectAttribute() {
         return patternObject;
     }
@@ -136,6 +140,7 @@ public class FSMMatcher extends FSMActor implements GTCompositeActor, GTEntity,
      *
      *  @return The set of names.
      */
+    @Override
     public Set<String> labelSet() {
         long version = workspace().getVersion();
         if (_labelSet == null || version > _version) {
@@ -164,10 +169,11 @@ public class FSMMatcher extends FSMActor implements GTCompositeActor, GTEntity,
      *  @param object The NamedObj.
      *  @return Whether this GTEntity can match the given object.
      */
+    @Override
     public boolean match(NamedObj object) {
         return object instanceof FSMActor
                 || object.getClass().getName()
-                        .equals("ptolemy.domains.modal.kernel.FSMActor");
+                .equals("ptolemy.domains.modal.kernel.FSMActor");
     }
 
     /** Create a new instance of Transition with the specified name in
@@ -179,6 +185,7 @@ public class FSMMatcher extends FSMActor implements GTCompositeActor, GTEntity,
      *  @exception NameDuplicationException If name collides with that
      *   of a transition already in this actor.
      */
+    @Override
     public ComponentRelation newRelation(String name)
             throws IllegalActionException, NameDuplicationException {
         try {
@@ -194,6 +201,7 @@ public class FSMMatcher extends FSMActor implements GTCompositeActor, GTEntity,
      *  @param attribute The attribute containing ingredients of this entity.
      *  @see GTEntityUtils#updateAppearance(GTEntity, GTIngredientsAttribute)
      */
+    @Override
     public void updateAppearance(GTIngredientsAttribute attribute) {
         // GTEntityUtils.updateAppearance(this, attribute);
     }
@@ -203,6 +211,7 @@ public class FSMMatcher extends FSMActor implements GTCompositeActor, GTEntity,
      *  @param settable The object that has changed value.
      *  @see GTEntityUtils#valueChanged(GTEntity, Settable)
      */
+    @Override
     public void valueChanged(Settable settable) {
         GTEntityUtils.valueChanged(this, settable);
     }

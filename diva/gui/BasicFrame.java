@@ -78,6 +78,7 @@ public class BasicFrame extends ApplicationContext {
 
         // NOT a default action.
         Action action = new AbstractAction("Exit") {
+            @Override
             public void actionPerformed(ActionEvent e) {
                 BasicFrame.exit(0);
             }
@@ -118,6 +119,7 @@ public class BasicFrame extends ApplicationContext {
 
         // NOT a default action.
         Action action = new AbstractAction("Exit") {
+            @Override
             public void actionPerformed(ActionEvent e) {
                 BasicFrame.exit(0);
             }

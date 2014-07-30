@@ -154,6 +154,7 @@ public class ActorConstraintsDefinitionAttribute extends Attribute {
      *  @param attribute The attribute that has been changed.
      *  @exception IllegalActionException If there is a problem changing the attribute.
      */
+    @Override
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         if (attribute == actorClassName) {
@@ -167,7 +168,7 @@ public class ActorConstraintsDefinitionAttribute extends Attribute {
                 if (isActorElementAnAttribute((StringParameter) constraintParameter)
                         || isActorElementAPort((StringParameter) constraintParameter)) {
                     _constraintTermExpressions
-                            .add((StringParameter) constraintParameter);
+                    .add((StringParameter) constraintParameter);
                 }
             }
 
@@ -197,7 +198,7 @@ public class ActorConstraintsDefinitionAttribute extends Attribute {
                 } catch (ClassNotFoundException classEx) {
                     throw new IllegalActionException(this, classEx,
                             "Actor class " + actorClassNameString
-                                    + " not found.");
+                            + " not found.");
                 } catch (NameDuplicationException nameDupEx) {
                     throw new IllegalActionException(
                             this,
@@ -243,7 +244,7 @@ public class ActorConstraintsDefinitionAttribute extends Attribute {
                         // If the attribute is not visible, skip it.
                         if (!(attribute instanceof Settable)
                                 || !((Settable) attribute).getVisibility()
-                                        .equals(Settable.FULL)) {
+                                .equals(Settable.FULL)) {
                             continue;
                         }
                         // Also skip the attribute if the name starts with an underscore.
@@ -262,7 +263,7 @@ public class ActorConstraintsDefinitionAttribute extends Attribute {
                             constraintExpression.addChoice(EQ);
 
                             _constraintTermExpressions
-                                    .add(constraintExpression);
+                            .add(constraintExpression);
                         }
                     }
                     tempActorInstance.setContainer(null);
@@ -303,7 +304,7 @@ public class ActorConstraintsDefinitionAttribute extends Attribute {
      */
     public ActorConstraintsDefinitionAdapter createAdapter(
             ComponentEntity component, LatticeOntologySolver solver)
-            throws IllegalActionException {
+                    throws IllegalActionException {
         if (!_validateComponentClass(component)) {
             throw new IllegalActionException(this, "The component " + component
                     + " passed in for the adapter is not of class "
@@ -410,7 +411,7 @@ public class ActorConstraintsDefinitionAttribute extends Attribute {
      */
     public static boolean isActorElementAnAttribute(
             StringParameter actorElementConstraintExpression)
-            throws IllegalActionException {
+                    throws IllegalActionException {
         if (actorElementConstraintExpression == null) {
             throw new IllegalActionException(
                     "The constraint expression for the actor"
@@ -428,7 +429,7 @@ public class ActorConstraintsDefinitionAttribute extends Attribute {
      */
     public static boolean isActorElementAPort(
             StringParameter actorElementConstraintExpression)
-            throws IllegalActionException {
+                    throws IllegalActionException {
         if (actorElementConstraintExpression == null) {
             throw new IllegalActionException(
                     "The constraint expression for the actor"
@@ -447,7 +448,7 @@ public class ActorConstraintsDefinitionAttribute extends Attribute {
      */
     public static boolean isActorElementIgnored(
             StringParameter actorElementConstraintExpression)
-            throws IllegalActionException {
+                    throws IllegalActionException {
         if (actorElementConstraintExpression == null) {
             throw new IllegalActionException(
                     "The constraint expression for the actor"
@@ -467,7 +468,7 @@ public class ActorConstraintsDefinitionAttribute extends Attribute {
      */
     public static boolean isActorElementUnconstrained(
             StringParameter actorElementConstraintExpression)
-            throws IllegalActionException {
+                    throws IllegalActionException {
         if (actorElementConstraintExpression == null) {
             throw new IllegalActionException(
                     "The constraint expression for the actor"

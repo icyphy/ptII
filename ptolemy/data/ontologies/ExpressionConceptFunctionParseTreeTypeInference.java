@@ -43,7 +43,7 @@ import ptolemy.kernel.util.IllegalActionException;
  @see ptolemy.data.expr.ASTPtRootNode
  */
 public class ExpressionConceptFunctionParseTreeTypeInference extends
-        ParseTreeTypeInference {
+ParseTreeTypeInference {
 
     /** Set the type of the given node to be the return type of the
      *  function determined for the given node.  Since all functions in a
@@ -53,6 +53,7 @@ public class ExpressionConceptFunctionParseTreeTypeInference extends
      *  @exception IllegalActionException Not thrown in this overridden
      *   method.
      */
+    @Override
     public void visitFunctionApplicationNode(ASTPtFunctionApplicationNode node)
             throws IllegalActionException {
         _setType(node, new ConceptType());
@@ -65,6 +66,7 @@ public class ExpressionConceptFunctionParseTreeTypeInference extends
      *  @exception IllegalActionException Not thrown in this overridden
      *   method.
      */
+    @Override
     public void visitLeafNode(ASTPtLeafNode node) throws IllegalActionException {
 
         // If the leaf node's parent is a method call node, then

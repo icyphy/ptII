@@ -120,6 +120,7 @@ public class SignatureVerifier extends SignatureActor {
      *  if there is a problem with the cryptographic configuration or
      *  if the signature does not properly verify.
      */
+    @Override
     public void fire() throws IllegalActionException {
         // super.fire() should be called before accessing _signature
         // so that we handle any updates of _signature made necessary

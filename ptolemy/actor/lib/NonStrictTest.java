@@ -193,6 +193,7 @@ public class NonStrictTest extends Sink {
      *  @exception CloneNotSupportedException If a derived class contains
      *   an attribute that cannot be cloned.
      */
+    @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         NonStrictTest newObject = (NonStrictTest) super.clone(workspace);
         newObject.correctValues.setTypeAtLeast(ArrayType.ARRAY_BOTTOM);
@@ -205,6 +206,7 @@ public class NonStrictTest extends Sink {
      *  @exception IllegalActionException If the indexes vector is not
      *  increasing and nonnegative, or the indexes is not a row vector.
      */
+    @Override
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         if (attribute == tolerance) {
@@ -220,6 +222,7 @@ public class NonStrictTest extends Sink {
      *  @see #_firedOnce
      *  @exception IllegalActionException If thrown by the baseclass.
      */
+    @Override
     public void fire() throws IllegalActionException {
         super.fire();
         _firedOnce = true;
@@ -231,6 +234,7 @@ public class NonStrictTest extends Sink {
      *  parameter is set to true.
      *  @see ptolemy.util.MessageHandler#isRunningNightlyBuild()
      */
+    @Override
     public void initialize() throws IllegalActionException {
         super.initialize();
         _numberOfInputTokensSeen = 0;
@@ -260,6 +264,7 @@ public class NonStrictTest extends Sink {
      *  @exception IllegalActionException If an input does not match
      *   the required value or if the width of the input is not 1.
      */
+    @Override
     public boolean postfire() throws IllegalActionException {
         if (!super.postfire()) {
             return false;
@@ -311,8 +316,8 @@ public class NonStrictTest extends Sink {
                     && !referenceToken.isNil()
                     && !_isCloseToIfNilArrayElement(token, referenceToken,
                             _tolerance)
-                    && !_isCloseToIfNilRecordElement(token, referenceToken,
-                            _tolerance)) {
+                            && !_isCloseToIfNilRecordElement(token, referenceToken,
+                                    _tolerance)) {
                 throw new IllegalActionException(this,
                         "Test fails in iteration " + _iteration + ".\n"
                                 + "Value was: " + token
@@ -331,6 +336,7 @@ public class NonStrictTest extends Sink {
      *  is not greater than or equal to the number of elements in the
      *  <i>correctValues</i> array.
      */
+    @Override
     public void wrapup() throws IllegalActionException {
         super.wrapup();
 
@@ -488,15 +494,15 @@ public class NonStrictTest extends Sink {
                     tolerance.setPersistent(true);
                     attributeChanged(tolerance);
                     System.out
-                            .println("NonStrictTest: "
-                                    + getFullName()
-                                    + ": exponent of "
-                                    + newValue
-                                    + " is "
-                                    + log
-                                    + ", which cannot be compared with the previous tolerance."
-                                    + " The new tolerance is "
-                                    + tolerance.getExpression() + ".");
+                    .println("NonStrictTest: "
+                            + getFullName()
+                            + ": exponent of "
+                            + newValue
+                            + " is "
+                            + log
+                            + ", which cannot be compared with the previous tolerance."
+                            + " The new tolerance is "
+                            + tolerance.getExpression() + ".");
                 }
             }
         }

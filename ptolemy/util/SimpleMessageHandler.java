@@ -48,6 +48,7 @@ public class SimpleMessageHandler extends MessageHandler {
     /** Throw a RunetimException.
      *  @param info The message.
      */
+    @Override
     protected void _error(String info) {
         throw new RuntimeException(info);
     }
@@ -60,6 +61,7 @@ public class SimpleMessageHandler extends MessageHandler {
      *  @param throwable The throwable.
      *  @see CancelException
      */
+    @Override
     protected void _error(String info, Throwable throwable) {
         if (throwable instanceof CancelException) {
             return;
@@ -72,6 +74,7 @@ public class SimpleMessageHandler extends MessageHandler {
      *  the default handler merely prints the warning to stderr.
      *  @param info The message.
      */
+    @Override
     protected void _message(String info) {
         System.err.println(info);
     }
@@ -87,6 +90,7 @@ public class SimpleMessageHandler extends MessageHandler {
      *  @param info The message.
      *  @exception CancelException If the user clicks on the "Cancel" button.
      */
+    @Override
     protected void _warning(String info) throws CancelException {
         _error(info);
     }
@@ -98,6 +102,7 @@ public class SimpleMessageHandler extends MessageHandler {
      *  @param throwable The Throwable.
      *  @exception CancelException If the user clicks on the "Cancel" button.
      */
+    @Override
     protected void _warning(String info, Throwable throwable)
             throws CancelException {
         _error(info, throwable);
@@ -109,6 +114,7 @@ public class SimpleMessageHandler extends MessageHandler {
      *  @param question The yes/no question to be asked.
      *  @return True if the answer is yes.
      */
+    @Override
     protected boolean _yesNoQuestion(String question) {
         System.out.print(question);
         System.out.print(" (yes or no) ");
@@ -126,9 +132,10 @@ public class SimpleMessageHandler extends MessageHandler {
      *  @return Always return false.
      *  @exception ptolemy.util.CancelException If the user selects the third option.
      */
+    @Override
     protected boolean _yesNoCancelQuestion(String question, String trueOption,
             String falseOption, String exceptionOption)
-            throws ptolemy.util.CancelException {
+                    throws ptolemy.util.CancelException {
         System.out.print(question + " (" + trueOption + " or " + falseOption
                 + " or " + exceptionOption + ") ");
         return false;

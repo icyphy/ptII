@@ -62,7 +62,7 @@ public class EditIconTableau extends Tableau {
      *   an attribute already in the container.
      */
     public EditIconTableau(Workspace workspace) throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         super(workspace);
     }
 
@@ -122,6 +122,7 @@ public class EditIconTableau extends Tableau {
      *  @return The string "Icon editor for name", where name is the
      *   name of the object whose icon this is editing.
      */
+    @Override
     public String getTitle() {
         NamedObj container = getContainer();
 
@@ -179,6 +180,7 @@ public class EditIconTableau extends Tableau {
          *  @exception Exception If an exception occurs when creating the
          *  tableau.
          */
+        @Override
         public Tableau createTableau(Effigy effigy) throws Exception {
             if (effigy instanceof PtolemyEffigy) {
                 // First see whether the effigy already contains a graphTableau.

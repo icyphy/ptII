@@ -42,7 +42,7 @@ import ptolemy.kernel.util.IllegalActionException;
  @since Ptolemy II 6.1
  @Pt.ProposedRating Red (cxh)
  @Pt.AcceptedRating Red (cxh)
-*/
+ */
 public abstract class MapReduceAlgorithm extends Thread {
 
     /** Return true if the reduce is finished.
@@ -84,6 +84,7 @@ public abstract class MapReduceAlgorithm extends Thread {
     /**
      * This is used to call the reduce algorithm.
      */
+    @Override
     public void run() {
         _threadDone = false;
         _threadError = false;

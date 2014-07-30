@@ -144,6 +144,7 @@ public class BooleanMultiplexor extends TypedAtomicActor {
      *  remain unknown.
      *  @exception IllegalActionException If there is no director.
      */
+    @Override
     public void fire() throws IllegalActionException {
         super.fire();
         // Be sure to not use _selectValue if the select input
@@ -196,6 +197,7 @@ public class BooleanMultiplexor extends TypedAtomicActor {
      *  input has been read.
      *  @exception IllegalActionException If the superclass throws it.
      */
+    @Override
     public void initialize() throws IllegalActionException {
         super.initialize();
         _selectValue = null;
@@ -204,6 +206,7 @@ public class BooleanMultiplexor extends TypedAtomicActor {
     /** Return false.
      *  @return False.
      */
+    @Override
     public boolean isStrict() {
         return false;
     }

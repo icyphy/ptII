@@ -70,6 +70,7 @@ public class NamedObjClassesSeen extends MoMLFilterSimple {
      *  @param xmlFile The file currently being parsed.
      *  @return the value of the attributeValue argument.
      */
+    @Override
     public String filterAttributeValue(NamedObj container, String element,
             String attributeName, String attributeValue, String xmlFile) {
         // This method gets called many times by the MoMLParser,
@@ -134,6 +135,7 @@ public class NamedObjClassesSeen extends MoMLFilterSimple {
      *  @param xmlFile The file currently being parsed.
      *  @exception Exception Not thrown in this base class.
      */
+    @Override
     public void filterEndElement(NamedObj container, String elementName,
             StringBuffer currentCharData, String xmlFile) throws Exception {
     }
@@ -156,6 +158,7 @@ public class NamedObjClassesSeen extends MoMLFilterSimple {
     /** Return a string that describes what the filter does.
      *  @return the description of the filter that ends with a newline.
      */
+    @Override
     public String toString() {
         return getClass().getName()
                 + ": Create a Set of classes that have been parsed thus far. "

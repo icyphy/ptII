@@ -121,6 +121,7 @@ public class JAIJPEGWriter extends JAIWriter {
      *  of if the image in unable to be encoded.
      *  @return True if the execution can continue.
      */
+    @Override
     public boolean postfire() throws IllegalActionException {
         _imageEncoderName = "JPEG";
 

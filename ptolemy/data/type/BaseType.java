@@ -76,6 +76,7 @@ public abstract class BaseType implements Type {
      *  @return A new type, or BaseType.GENERAL, if the operation does
      *  not make sense for the given types.
      */
+    @Override
     public Type add(Type rightArgumentType) {
         return TypeLattice.leastUpperBound(this, rightArgumentType);
     }
@@ -83,6 +84,7 @@ public abstract class BaseType implements Type {
     /** Return this, that is, return the reference to this object.
      *  @return A BaseType.
      */
+    @Override
     public Object clone() {
         return this;
     }
@@ -94,6 +96,7 @@ public abstract class BaseType implements Type {
      *  @exception IllegalActionException If lossless conversion cannot
      *   be done.
      */
+    @Override
     public abstract Token convert(Token t) throws IllegalActionException;
 
     /** Return a new type which represents the type that results from
@@ -103,6 +106,7 @@ public abstract class BaseType implements Type {
      *  @return A new type, or BaseType.GENERAL, if the operation does
      *  not make sense for the given types.
      */
+    @Override
     public Type divide(Type rightArgumentType) {
         return TypeLattice.leastUpperBound(this, rightArgumentType);
     }
@@ -113,6 +117,7 @@ public abstract class BaseType implements Type {
      *  @return True if the argument represents the same BaseType as
      *   this object; false otherwise.
      */
+    @Override
     public boolean equals(Object object) {
         // since BaseType is a type safe enumeration, can use == to
         // test equality.
@@ -140,6 +145,7 @@ public abstract class BaseType implements Type {
     /** Return the class for tokens that this basetype represents.
      *  @return The class for tokens that this type represents.
      */
+    @Override
     public Class getTokenClass() {
         return _tokenClass;
     }
@@ -155,12 +161,14 @@ public abstract class BaseType implements Type {
      *  instances.  This base class returns HASH_INVALID.
      *  @return A number between 0 and HASH_MAX, or HASH_INVALID.
      */
+    @Override
     public int getTypeHash() {
         return Type.HASH_INVALID;
     }
 
     /** Return a hash code value for this object.
      */
+    @Override
     public int hashCode() {
         return super.hashCode();
     }
@@ -172,6 +180,7 @@ public abstract class BaseType implements Type {
      *  @return A new type, or BaseType.GENERAL, if the operation does
      *  not make sense for the given types.
      */
+    @Override
     public Type modulo(Type rightArgumentType) {
         return TypeLattice.leastUpperBound(this, rightArgumentType);
     }
@@ -183,6 +192,7 @@ public abstract class BaseType implements Type {
      *  @return A new type, or BaseType.GENERAL, if the operation does
      *  not make sense for the given types.
      */
+    @Override
     public Type multiply(Type rightArgumentType) {
         return TypeLattice.leastUpperBound(this, rightArgumentType);
     }
@@ -191,6 +201,7 @@ public abstract class BaseType implements Type {
      *  class.  This occurs if the type is not instantiable, or it
      *  represents either an abstract base class or an interface.
      */
+    @Override
     public boolean isAbstract() {
         if (!isInstantiable()) {
             return true;
@@ -216,6 +227,7 @@ public abstract class BaseType implements Type {
      *  @param type An instance of Type.
      *  @return True if the argument is compatible with this type.
      */
+    @Override
     public boolean isCompatible(Type type) {
         if (this == UNKNOWN) {
             return true;
@@ -228,6 +240,7 @@ public abstract class BaseType implements Type {
     /** Test if this Type is UNKNOWN.
      *  @return True if this Type is not UNKNOWN; false otherwise.
      */
+    @Override
     public boolean isConstant() {
         return this != UNKNOWN;
     }
@@ -237,6 +250,7 @@ public abstract class BaseType implements Type {
      *  to an abstract token class, or an interface, or UNKNOWN.
      *  @return True if this type is instantiable.
      */
+    @Override
     public boolean isInstantiable() {
         if (this == UNKNOWN) {
             return false;
@@ -249,6 +263,7 @@ public abstract class BaseType implements Type {
      *  @param type A Type.
      *  @return True if this type is UNKNOWN; false otherwise.
      */
+    @Override
     public boolean isSubstitutionInstance(Type type) {
         return this == UNKNOWN || this == type;
     }
@@ -258,6 +273,7 @@ public abstract class BaseType implements Type {
      *  @return A new type, or BaseType.GENERAL, if the operation does
      *  not make sense for the given types.
      */
+    @Override
     public Type one() {
         return this;
     }
@@ -269,6 +285,7 @@ public abstract class BaseType implements Type {
      *  @return A new type, or BaseType.GENERAL, if the operation does
      *  not make sense for the given types.
      */
+    @Override
     public Type subtract(Type rightArgumentType) {
         return TypeLattice.leastUpperBound(this, rightArgumentType);
     }
@@ -276,6 +293,7 @@ public abstract class BaseType implements Type {
     /** Return the string representation of this type.
      *  @return A String.
      */
+    @Override
     public String toString() {
         return _name;
     }
@@ -285,6 +303,7 @@ public abstract class BaseType implements Type {
      *  @return A new type, or BaseType.GENERAL, if the operation does
      *  not make sense for the given types.
      */
+    @Override
     public Type zero() {
         return this;
     }
@@ -305,12 +324,14 @@ public abstract class BaseType implements Type {
             super(Void.TYPE, "unknown");
         }
 
+        @Override
         public Token convert(Token t) throws IllegalActionException {
             // Since any type is a substitution instance of UNKNOWN, just
             // return the argument.
             return t;
         }
 
+        @Override
         public int getTypeHash() {
             return 0;
         }
@@ -325,6 +346,7 @@ public abstract class BaseType implements Type {
             super(Void.TYPE, "arrayBottom");
         }
 
+        @Override
         public Token convert(Token t) throws IllegalActionException {
             // Since any type is a substitution instance of UNKNOWN, just
             // return the argument.
@@ -341,10 +363,12 @@ public abstract class BaseType implements Type {
             super(BooleanToken.class, "boolean");
         }
 
+        @Override
         public Token convert(Token t) throws IllegalActionException {
             return BooleanToken.convert(t);
         }
 
+        @Override
         public int getTypeHash() {
             return 1;
         }
@@ -362,10 +386,12 @@ public abstract class BaseType implements Type {
             super(UnsignedByteToken.class, "unsignedByte");
         }
 
+        @Override
         public Token convert(Token t) throws IllegalActionException {
             return UnsignedByteToken.convert(t);
         }
 
+        @Override
         public int getTypeHash() {
             return 2;
         }
@@ -380,10 +406,12 @@ public abstract class BaseType implements Type {
             super(ComplexToken.class, "complex");
         }
 
+        @Override
         public Token convert(Token t) throws IllegalActionException {
             return ComplexToken.convert(t);
         }
 
+        @Override
         public int getTypeHash() {
             return 3;
         }
@@ -401,10 +429,12 @@ public abstract class BaseType implements Type {
             super(FloatToken.class, "float");
         }
 
+        @Override
         public Token convert(Token t) throws IllegalActionException {
             return FloatToken.convert(t);
         }
 
+        @Override
         public int getTypeHash() {
             return 16;
         }
@@ -419,10 +449,12 @@ public abstract class BaseType implements Type {
             super(DoubleToken.class, "double");
         }
 
+        @Override
         public Token convert(Token t) throws IllegalActionException {
             return DoubleToken.convert(t);
         }
 
+        @Override
         public int getTypeHash() {
             return 4;
         }
@@ -440,6 +472,7 @@ public abstract class BaseType implements Type {
             super(FixToken.class, "fixedpoint");
         }
 
+        @Override
         public Token convert(Token t) throws IllegalActionException {
             if (t instanceof FixToken) {
                 return t;
@@ -470,10 +503,12 @@ public abstract class BaseType implements Type {
             super(ShortToken.class, "short");
         }
 
+        @Override
         public Token convert(Token t) throws IllegalActionException {
             return ShortToken.convert(t);
         }
 
+        @Override
         public int getTypeHash() {
             return 15;
         }
@@ -488,10 +523,12 @@ public abstract class BaseType implements Type {
             super(IntToken.class, "int");
         }
 
+        @Override
         public Token convert(Token t) throws IllegalActionException {
             return IntToken.convert(t);
         }
 
+        @Override
         public int getTypeHash() {
             return 5;
         }
@@ -509,10 +546,12 @@ public abstract class BaseType implements Type {
             super(LongToken.class, "long");
         }
 
+        @Override
         public Token convert(Token t) throws IllegalActionException {
             return LongToken.convert(t);
         }
 
+        @Override
         public int getTypeHash() {
             return 6;
         }
@@ -563,10 +602,12 @@ public abstract class BaseType implements Type {
             super(XMLToken.class, "xmltoken");
         }
 
+        @Override
         public Token convert(Token t) throws IllegalActionException {
             return XMLToken.convert(t);
         }
 
+        @Override
         public int getTypeHash() {
             return 8;
         }
@@ -581,6 +622,7 @@ public abstract class BaseType implements Type {
             super(ScalarToken.class, "scalar");
         }
 
+        @Override
         public Token convert(Token t) throws IllegalActionException {
             if (t instanceof ScalarToken) {
                 return t;
@@ -589,6 +631,7 @@ public abstract class BaseType implements Type {
                     Token.notSupportedIncomparableConversionMessage(t, "scalar"));
         }
 
+        @Override
         public int getTypeHash() {
             return 9;
         }
@@ -597,8 +640,6 @@ public abstract class BaseType implements Type {
         //             return true;
         //         }
     }
-    
-    
 
     /** The scalar data type: The least upper bound of all the scalar types. */
     public static final ScalarType SCALAR = new ScalarType();
@@ -613,10 +654,12 @@ public abstract class BaseType implements Type {
             super(StringToken.class, "string");
         }
 
+        @Override
         public Token convert(Token t) throws IllegalActionException {
             return StringToken.convert(t);
         }
 
+        @Override
         public int getTypeHash() {
             return 10;
         }
@@ -631,10 +674,12 @@ public abstract class BaseType implements Type {
             super(Token.class, "general");
         }
 
+        @Override
         public Token convert(Token t) throws IllegalActionException {
             return t;
         }
 
+        @Override
         public int getTypeHash() {
             return 11;
         }
@@ -649,10 +694,12 @@ public abstract class BaseType implements Type {
             super(EventToken.class, "event");
         }
 
+        @Override
         public Token convert(Token t) throws IllegalActionException {
             return t;
         }
 
+        @Override
         public int getTypeHash() {
             return 12;
         }
@@ -667,10 +714,12 @@ public abstract class BaseType implements Type {
             super(PetiteToken.class, "petite");
         }
 
+        @Override
         public Token convert(Token t) throws IllegalActionException {
             return PetiteToken.convert(t);
         }
 
+        @Override
         public int getTypeHash() {
             return 13;
         }
@@ -685,10 +734,12 @@ public abstract class BaseType implements Type {
             super(Token.class, "niltype");
         }
 
+        @Override
         public Token convert(Token t) throws IllegalActionException {
             return t;
         }
 
+        @Override
         public int getTypeHash() {
             return 14;
         }
@@ -696,7 +747,6 @@ public abstract class BaseType implements Type {
 
     /** The nil data type. */
     public static final NilType NIL = new NilType();
-    
 
     /** The date data type. */
     public static class DateType extends BaseType {
@@ -704,15 +754,17 @@ public abstract class BaseType implements Type {
             super(DateToken.class, "date");
         }
 
+        @Override
         public Token convert(Token t) throws IllegalActionException {
             return DateToken.convert(t);
         }
 
+        @Override
         public int getTypeHash() {
             return 15;
         }
     }
-    
+
     /** The DateToken data type. */
     public static final DateType DATE = new DateType();
 

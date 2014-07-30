@@ -182,6 +182,7 @@ public class AudioWriter extends Sink {
      *  @exception IllegalActionException If the change is not
      *   allowed.
      */
+    @Override
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         if (attribute == channels) {
@@ -223,6 +224,7 @@ public class AudioWriter extends Sink {
      *  @exception CloneNotSupportedException If a derived class contains
      *   an attribute that cannot be cloned.
      */
+    @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         AudioWriter newObject = (AudioWriter) super.clone(workspace);
 
@@ -237,6 +239,7 @@ public class AudioWriter extends Sink {
      *  @exception IllegalActionException If the file cannot be opened,
      *   or if the parent class throws it.
      */
+    @Override
     public void initialize() throws IllegalActionException {
         super.initialize();
 
@@ -266,6 +269,7 @@ public class AudioWriter extends Sink {
      *  @exception IllegalActionException If there is a problem
      *   writing the audio sample(s) to the specified file.
      */
+    @Override
     public int iterate(int count) throws IllegalActionException {
         for (int j = 0; j < _channels; j++) {
             if (input.hasToken(j, count)) {
@@ -318,6 +322,7 @@ public class AudioWriter extends Sink {
      *  @exception IllegalActionException If there is a problem
      *   writing the audio sample(s) to the specified file.
      */
+    @Override
     public boolean postfire() throws IllegalActionException {
         if (!super.postfire()) {
             return false;
@@ -341,6 +346,7 @@ public class AudioWriter extends Sink {
      *  for use in the postfire() method.
      *  @exception IllegalActionException If the parent class throws it.
      */
+    @Override
     public void preinitialize() throws IllegalActionException {
         super.preinitialize();
         _channels = ((IntToken) channels.getToken()).intValue();
@@ -350,6 +356,7 @@ public class AudioWriter extends Sink {
      *  @exception IllegalActionException If there is a problem
      *   closing the file.
      */
+    @Override
     public void wrapup() throws IllegalActionException {
         super.wrapup();
 

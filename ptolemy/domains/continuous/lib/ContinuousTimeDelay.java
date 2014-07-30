@@ -160,6 +160,7 @@ public class ContinuousTimeDelay extends Transformer {
      *  @param attribute The attribute that changed.
      *  @exception IllegalActionException If the delay is negative.
      */
+    @Override
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         if (attribute == delay) {
@@ -183,6 +184,7 @@ public class ContinuousTimeDelay extends Transformer {
      *  @exception CloneNotSupportedException If a derived class has
      *   has an attribute that cannot be cloned.
      */
+    @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         ContinuousTimeDelay newObject = (ContinuousTimeDelay) super
                 .clone(workspace);
@@ -196,6 +198,7 @@ public class ContinuousTimeDelay extends Transformer {
      *  cannot be computed.
      *  @see #getCausalityInterface()
      */
+    @Override
     public void declareDelayDependency() throws IllegalActionException {
         _declareDelayDependency(input, output, _delay);
     }
@@ -231,6 +234,7 @@ public class ContinuousTimeDelay extends Transformer {
      *
      * @exception IllegalActionException
      */
+    @Override
     public void fire() throws IllegalActionException {
         super.fire();
 
@@ -343,6 +347,7 @@ public class ContinuousTimeDelay extends Transformer {
      *  token on the input buffer.
      *  @exception IllegalActionException If a derived class throws it.
      */
+    @Override
     public void initialize() throws IllegalActionException {
         Token initialToken = initialOutput.getToken();
         super.initialize();
@@ -361,6 +366,7 @@ public class ContinuousTimeDelay extends Transformer {
     /** Schedule the next output event.
      *  @exception IllegalActionException
      */
+    @Override
     public boolean postfire() throws IllegalActionException {
         // Schedule the next output event. This event may fire at the same
         // physical time in the case of zero delay or simultaneous events.
@@ -385,6 +391,7 @@ public class ContinuousTimeDelay extends Transformer {
     /** Override the base class to declare that the actor is nonstrict
      *  if it has an initial value token.
      */
+    @Override
     public boolean isStrict() {
         //        //FIXME: Does strictness depend on presence of an initial value?
         //      return false;

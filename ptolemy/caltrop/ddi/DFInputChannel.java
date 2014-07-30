@@ -59,6 +59,7 @@ class DFInputChannel implements InputChannel {
      * consume tokens from the associated Ptolemy input port to make
      * the given token available.
      */
+    @Override
     public Object get(int n) {
         int m = n - buffer.size() + 1;
 
@@ -88,6 +89,7 @@ class DFInputChannel implements InputChannel {
      * invocation of the rollback method are lost and no longer
      * available for reading.
      */
+    @Override
     public void commit() {
         assert tokensRead <= buffer.size();
 
@@ -105,6 +107,7 @@ class DFInputChannel implements InputChannel {
     /** Rollback any reads from this channel, allowing the tokens to
      * be read again.
      */
+    @Override
     public void rollback() {
         tokensRead = 0;
     }
@@ -112,6 +115,7 @@ class DFInputChannel implements InputChannel {
     /** Return true if the given number of tokens are available to be
      * immediately read from the channel.
      */
+    @Override
     public boolean hasAvailable(int n) {
         int m = n - buffer.size();
 
@@ -131,6 +135,7 @@ class DFInputChannel implements InputChannel {
         }
     }
 
+    @Override
     public String toString() {
         return "(DFInputChannel " + channel + " at " + port.toString() + ")";
     }

@@ -46,7 +46,7 @@ import ptolemy.graph.mapping.ToDoubleMapping;
  @version $Id$
  */
 public class FloydWarshallNegativeLengthCycleStrategy extends CachedStrategy
-        implements NegativeLengthCycleAnalyzer {
+implements NegativeLengthCycleAnalyzer {
     /** Constructs negative cycle detection analyzer for a given graph and
      *  given edge values.
      *
@@ -68,6 +68,7 @@ public class FloydWarshallNegativeLengthCycleStrategy extends CachedStrategy
      *
      *  @return True if the graph has a negative cycle.
      */
+    @Override
     public boolean hasNegativeLengthCycle() {
         return ((Boolean) _result()).booleanValue();
     }
@@ -76,6 +77,7 @@ public class FloydWarshallNegativeLengthCycleStrategy extends CachedStrategy
      *
      *  @return Return a description of the analyzer..
      */
+    @Override
     public String toString() {
         return "Negative Length analyzer"
                 + " based on the Floyd-Warshall algorithm.";
@@ -87,6 +89,7 @@ public class FloydWarshallNegativeLengthCycleStrategy extends CachedStrategy
      *
      *  @return True if the graph is a directed and cyclic graph.
      */
+    @Override
     public boolean valid() {
         return graph() instanceof DirectedGraph;
     }
@@ -99,6 +102,7 @@ public class FloydWarshallNegativeLengthCycleStrategy extends CachedStrategy
      *  @return Return a true {@link Boolean} {@link Object} if the graph has
      *  a negative cycle.
      */
+    @Override
     protected Object _compute() {
         double[][] allPairShortestPath = _strategy.shortestPathMatrix();
         boolean negativeCycle = false;

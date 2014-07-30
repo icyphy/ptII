@@ -88,7 +88,7 @@ public class JVMTableau extends Tableau {
     /** The frame that is created by an instance of JVMTableau.
      */
     @SuppressWarnings("serial")
-        public class JVMFrame extends PtolemyFrame {
+    public class JVMFrame extends PtolemyFrame {
         /** Construct a frame to display JVM properties.
          *  After constructing this, it is necessary
          *  to call setVisible(true) to make the frame appear.
@@ -116,6 +116,7 @@ public class JVMTableau extends Tableau {
             // Button to request GC.
             JButton GCButton = new JButton("Request Garbage Collection");
             GCButton.addActionListener(new ActionListener() {
+                @Override
                 public void actionPerformed(ActionEvent event) {
                     // FindBugs warns about System.gc, but it is ok
                     System.gc();
@@ -208,6 +209,7 @@ public class JVMTableau extends Tableau {
          *  @exception Exception If the factory should be able to create a
          *   tableau for the effigy, but something goes wrong.
          */
+        @Override
         public Tableau createTableau(Effigy effigy) throws Exception {
             if (effigy instanceof PtolemyEffigy) {
                 // First see whether the effigy already contains a tableau

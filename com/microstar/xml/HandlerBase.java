@@ -39,6 +39,7 @@ public class HandlerBase implements XmlHandler {
      * @see com.microstar.xml.XmlHandler#startDocument
      * @exception java.lang.Exception Derived methods may throw exceptions.
      */
+    @Override
     public void startDocument() throws java.lang.Exception {
     }
 
@@ -48,6 +49,7 @@ public class HandlerBase implements XmlHandler {
      * @see com.microstar.xml.XmlHandler#endDocument
      * @exception java.lang.Exception Derived methods may throw exceptions.
      */
+    @Override
     public void endDocument() throws java.lang.Exception {
     }
 
@@ -58,6 +60,7 @@ public class HandlerBase implements XmlHandler {
      * @see com.microstar.xml.XmlHandler#resolveEntity
      * @exception java.lang.Exception Derived methods may throw exceptions.
      */
+    @Override
     public Object resolveEntity(String publicId, String systemId)
             throws java.lang.Exception {
         return null;
@@ -69,6 +72,7 @@ public class HandlerBase implements XmlHandler {
      * @see com.microstar.xml.XmlHandler#startExternalEntity
      * @exception java.lang.Exception Derived methods may throw exceptions.
      */
+    @Override
     public void startExternalEntity(String systemId) throws java.lang.Exception {
     }
 
@@ -78,6 +82,7 @@ public class HandlerBase implements XmlHandler {
      * @see com.microstar.xml.XmlHandler#endExternalEntity
      * @exception java.lang.Exception Derived methods may throw exceptions.
      */
+    @Override
     public void endExternalEntity(String systemId) throws java.lang.Exception {
     }
 
@@ -87,6 +92,7 @@ public class HandlerBase implements XmlHandler {
      * @see com.microstar.xml.XmlHandler#doctypeDecl
      * @exception java.lang.Exception Derived methods may throw exceptions.
      */
+    @Override
     public void doctypeDecl(String name, String publicId, String systemId)
             throws java.lang.Exception {
     }
@@ -97,6 +103,7 @@ public class HandlerBase implements XmlHandler {
      * @see com.microstar.xml.XmlHandler#attribute
      * @exception java.lang.Exception Derived methods may throw exceptions.
      */
+    @Override
     public void attribute(String aname, String value, boolean isSpecified)
             throws java.lang.Exception {
     }
@@ -107,6 +114,7 @@ public class HandlerBase implements XmlHandler {
      * @see com.microstar.xml.XmlHandler#startElement
      * @exception java.lang.Exception Derived methods may throw exceptions.
      */
+    @Override
     public void startElement(String elname) throws java.lang.Exception {
     }
 
@@ -116,6 +124,7 @@ public class HandlerBase implements XmlHandler {
      * @see com.microstar.xml.XmlHandler#endElement
      * @exception java.lang.Exception Derived methods may throw exceptions.
      */
+    @Override
     public void endElement(String elname) throws java.lang.Exception {
     }
 
@@ -125,6 +134,7 @@ public class HandlerBase implements XmlHandler {
      * @see com.microstar.xml.XmlHandler#charData
      * @exception java.lang.Exception Derived methods may throw exceptions.
      */
+    @Override
     public void charData(char[] ch, int start, int length)
             throws java.lang.Exception {
     }
@@ -135,6 +145,7 @@ public class HandlerBase implements XmlHandler {
      * @see com.microstar.xml.XmlHandler#ignorableWhitespace
      * @exception java.lang.Exception Derived methods may throw exceptions.
      */
+    @Override
     public void ignorableWhitespace(char[] ch, int start, int length)
             throws java.lang.Exception {
     }
@@ -145,6 +156,7 @@ public class HandlerBase implements XmlHandler {
      * @see com.microstar.xml.XmlHandler#processingInstruction
      * @exception java.lang.Exception Derived methods may throw exceptions.
      */
+    @Override
     public void processingInstruction(String target, String data)
             throws java.lang.Exception {
     }
@@ -156,6 +168,7 @@ public class HandlerBase implements XmlHandler {
      * @exception com.microstar.xml.XmlException A specific parsing error.
      * @exception java.lang.Exception Derived methods may throw exceptions.
      */
+    @Override
     public void error(String message, String systemId, int line, int column)
             throws XmlException, java.lang.Exception {
         throw new XmlException(message, systemId, line, column);

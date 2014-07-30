@@ -108,6 +108,7 @@ public class Average extends Transformer {
      *  @exception IllegalActionException If addition or division by an
      *   integer are not supported by the supplied tokens.
      */
+    @Override
     public void fire() throws IllegalActionException {
         super.fire();
         _latestSum = _sum;
@@ -144,6 +145,7 @@ public class Average extends Transformer {
     /** Reset the count of inputs.
      *  @exception IllegalActionException If the parent class throws it.
      */
+    @Override
     public void initialize() throws IllegalActionException {
         super.initialize();
         _count = 0;
@@ -154,6 +156,7 @@ public class Average extends Transformer {
      *  Do nothing if there is no input.
      *  @exception IllegalActionException If the base class throws it.
      */
+    @Override
     public boolean postfire() throws IllegalActionException {
         _sum = _latestSum;
         _count = _latestCount;

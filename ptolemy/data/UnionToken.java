@@ -102,6 +102,7 @@ public class UnionToken extends AbstractNotConvertibleToken {
      *  @return True if the argument is equal to this token.
      *  @see #hashCode()
      */
+    @Override
     public boolean equals(Object object) {
         if (object == null) {
             return false;
@@ -122,6 +123,7 @@ public class UnionToken extends AbstractNotConvertibleToken {
      *   of that field is the label of this token, and the type of that
      *   field is the type of the value of this token.
      */
+    @Override
     public Type getType() {
         String[] labels = new String[1];
         labels[0] = _label;
@@ -135,6 +137,7 @@ public class UnionToken extends AbstractNotConvertibleToken {
      *  hash codes of the value token.
      *  @return A hash code value for this token.
      */
+    @Override
     public int hashCode() {
         return _value.hashCode();
     }
@@ -153,6 +156,7 @@ public class UnionToken extends AbstractNotConvertibleToken {
      *  @exception IllegalActionException If multiplicative identity is not
      *   supported by any value token.
      */
+    @Override
     public Token one() throws IllegalActionException {
         return new UnionToken(_label, _value.one());
     }
@@ -162,6 +166,7 @@ public class UnionToken extends AbstractNotConvertibleToken {
      *  @return A String beginning with "{|" that contains a label and value
      *  pair, ending with "|}".
      */
+    @Override
     public String toString() {
         return "{|" + _label + " = " + _value.toString() + "|}";
     }
@@ -180,6 +185,7 @@ public class UnionToken extends AbstractNotConvertibleToken {
      *  @exception IllegalActionException If additive identity is not
      *   supported by any value token.
      */
+    @Override
     public Token zero() throws IllegalActionException {
         return new UnionToken(_label, _value.zero());
     }
@@ -196,6 +202,7 @@ public class UnionToken extends AbstractNotConvertibleToken {
      *   and this token are different, or calling the add method on
      *   the value token throws it.
      */
+    @Override
     protected Token _add(Token rightArgument) throws IllegalActionException {
         UnionToken unionToken = (UnionToken) rightArgument;
 
@@ -218,6 +225,7 @@ public class UnionToken extends AbstractNotConvertibleToken {
      *   and this token are different, or calling the divide method on
      *   the value token throws it.
      */
+    @Override
     protected Token _divide(Token rightArgument) throws IllegalActionException {
         UnionToken unionToken = (UnionToken) rightArgument;
 
@@ -247,6 +255,7 @@ public class UnionToken extends AbstractNotConvertibleToken {
      *  @exception IllegalActionException If thrown by calling isCloseTo()
      *  on the value of this Token.
      */
+    @Override
     protected BooleanToken _isCloseTo(Token rightArgument, double epsilon)
             throws IllegalActionException {
         UnionToken unionToken = (UnionToken) rightArgument;
@@ -269,6 +278,7 @@ public class UnionToken extends AbstractNotConvertibleToken {
      *  supported by the derived class.
      *  @return True if the argument is equal to this.
      */
+    @Override
     protected BooleanToken _isEqualTo(Token rightArgument)
             throws IllegalActionException {
         UnionToken unionToken = (UnionToken) rightArgument;
@@ -289,6 +299,7 @@ public class UnionToken extends AbstractNotConvertibleToken {
      *   and this token are different, or calling the modulo method on
      *   the value token throws it.
      */
+    @Override
     protected Token _modulo(Token rightArgument) throws IllegalActionException {
         UnionToken unionToken = (UnionToken) rightArgument;
 
@@ -311,6 +322,7 @@ public class UnionToken extends AbstractNotConvertibleToken {
      *   and this token are different, or calling the multiply method on
      *   the value token throws it.
      */
+    @Override
     protected Token _multiply(Token rightArgument)
             throws IllegalActionException {
         UnionToken unionToken = (UnionToken) rightArgument;
@@ -334,6 +346,7 @@ public class UnionToken extends AbstractNotConvertibleToken {
      *   and this token are different, or calling the subtract method on
      *   the value token throws it.
      */
+    @Override
     protected Token _subtract(Token rightArgument)
             throws IllegalActionException {
         UnionToken unionToken = (UnionToken) rightArgument;

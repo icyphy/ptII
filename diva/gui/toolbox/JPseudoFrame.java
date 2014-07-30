@@ -131,6 +131,7 @@ public abstract class JPseudoFrame extends JComponent {
         _iconifyButton.setBounds(0, 2, 16, 14);
         _iconifyButton.setRequestFocusEnabled(false);
         _iconifyButton.addActionListener(new ActionListener() {
+            @Override
             public void actionPerformed(ActionEvent e) {
                 try {
                     setIcon(true);
@@ -147,6 +148,7 @@ public abstract class JPseudoFrame extends JComponent {
         _minimizeButton.setBounds(16, 2, 16, 14);
         _minimizeButton.setRequestFocusEnabled(false);
         _minimizeButton.addActionListener(new ActionListener() {
+            @Override
             public void actionPerformed(ActionEvent e) {
                 try {
                     setMaximum(false);
@@ -162,6 +164,7 @@ public abstract class JPseudoFrame extends JComponent {
         _closeButton.setBounds(34, 2, 16, 14);
         _closeButton.setRequestFocusEnabled(false);
         _closeButton.addActionListener(new ActionListener() {
+            @Override
             public void actionPerformed(ActionEvent e) {
                 try {
                     setClosed(true);
@@ -196,18 +199,21 @@ public abstract class JPseudoFrame extends JComponent {
 
     /** Return a fixed size
      */
+    @Override
     public Dimension getMinimumSize() {
         return _dim;
     }
 
     /** Return a fixed size
      */
+    @Override
     public Dimension getPreferredSize() {
         return _dim;
     }
 
     /** Return a fixed size
      */
+    @Override
     public Dimension getMaximumSize() {
         return _dim;
     }

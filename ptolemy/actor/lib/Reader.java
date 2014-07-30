@@ -84,6 +84,7 @@ import ptolemy.kernel.util.NameDuplicationException;
  @Pt.ProposedRating Red (liuj)
  @Pt.AcceptedRating Red (liuj)
  */
+@Deprecated
 public class Reader extends Source {
     /** Construct an actor with the given container and name.
      *  @param container The container.
@@ -137,6 +138,7 @@ public class Reader extends Source {
      *  @exception IllegalActionException If the specified attribute
      *   is <i>URL</i> and the file cannot be opened.
      */
+    @Override
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         if (attribute == sourceURL) {
@@ -170,6 +172,7 @@ public class Reader extends Source {
     /** Output the data read in the prefire.
      *  @exception IllegalActionException If there's no director.
      */
+    @Override
     public void fire() throws IllegalActionException {
         super.fire();
 
@@ -181,6 +184,7 @@ public class Reader extends Source {
     /** Open the file at the URL, and set the width of the output.
      *  @exception IllegalActionException Not thrown in this base class
      */
+    @Override
     public void initialize() throws IllegalActionException {
         super.initialize();
         System.out.println("actor.lib.Reader is obsolete, "
@@ -193,6 +197,7 @@ public class Reader extends Source {
     /** Read one row from the input and prepare for output them.
      *  @exception IllegalActionException If an IO error occurs.
      */
+    @Override
     public boolean prefire() throws IllegalActionException {
         try {
             _dataSize = output.getWidth();
@@ -250,6 +255,7 @@ public class Reader extends Source {
     /** Close the reader if there is one.
      *  @exception IllegalActionException If an IO error occurs.
      */
+    @Override
     public void wrapup() throws IllegalActionException {
         try {
             if (_reader != null && _reader != _stdIn) {

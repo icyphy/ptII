@@ -103,6 +103,7 @@ public class LabeledList implements List {
      *  @exception IllegalArgumentException If the specified element is null,
      *  or if it already exists in the list.
      */
+    @Override
     public boolean add(Object element) {
         if (element == null) {
             throw new IllegalArgumentException("Attempt to insert a null "
@@ -122,6 +123,7 @@ public class LabeledList implements List {
      *  @param element Unused.
      *  @exception UnsupportedOperationException Always thrown.
      */
+    @Override
     public void add(int index, Object element) {
         throw new UnsupportedOperationException();
     }
@@ -131,6 +133,7 @@ public class LabeledList implements List {
      *  @exception UnsupportedOperationException Always thrown.
      *  @return never returns.
      */
+    @Override
     public boolean addAll(Collection collection) {
         throw new UnsupportedOperationException();
     }
@@ -141,12 +144,14 @@ public class LabeledList implements List {
      *  @exception UnsupportedOperationException Always thrown.
      *  @return never returns.
      */
+    @Override
     public boolean addAll(int index, Collection collection) {
         throw new UnsupportedOperationException();
     }
 
     /** Clear all of the elements in this list.
      */
+    @Override
     public void clear() {
         _elements.clear();
         _labels.clear();
@@ -157,6 +162,7 @@ public class LabeledList implements List {
      *  @return True if the specified object is an element of this list;
      *  false if the object is null or is not in the list.
      */
+    @Override
     public boolean contains(Object object) {
         if (object == null) {
             return false;
@@ -171,6 +177,7 @@ public class LabeledList implements List {
      *  @return True if this list contains all of the elements of the
      *  specified collection.
      */
+    @Override
     public boolean containsAll(Collection collection) {
         Iterator elements = collection.iterator();
 
@@ -187,6 +194,7 @@ public class LabeledList implements List {
      *  @param object The object.
      *  @return True if the specified object is equal to this list.
      */
+    @Override
     public boolean equals(Object object) {
         return _elements.equals(object);
     }
@@ -197,6 +205,7 @@ public class LabeledList implements List {
      *  @exception IndexOutOfBoundsException If there is no element that
      *  has the specified label.
      */
+    @Override
     public Object get(int label) {
         if (label < 0 || label >= _elements.size()) {
             throw new IndexOutOfBoundsException("Invalid label: " + label);
@@ -208,6 +217,7 @@ public class LabeledList implements List {
     /** Return the hash code value for this list.
      *  @return The hash code value.
      */
+    @Override
     public int hashCode() {
         return _elements.hashCode();
     }
@@ -219,6 +229,7 @@ public class LabeledList implements List {
      *  @return The label of the element.
      *  @see #label(Object)
      */
+    @Override
     public int indexOf(Object element) {
         if (element == null) {
             return -1;
@@ -236,6 +247,7 @@ public class LabeledList implements List {
     /** Returns true if this list contains no elements.
      *  @return True if this list contains no elements.
      */
+    @Override
     public boolean isEmpty() {
         return size() == 0;
     }
@@ -245,6 +257,7 @@ public class LabeledList implements List {
      *  FIXME: what happens when you try to modify the list.
      *  @return An iterator over the elements in the list;
      */
+    @Override
     public Iterator iterator() {
         return Collections.unmodifiableList(_elements).iterator();
     }
@@ -280,6 +293,7 @@ public class LabeledList implements List {
      *  as {@link #indexOf(Object)}, and is maintained only for conformance
      *  with the list interface.
      */
+    @Override
     public int lastIndexOf(Object element) {
         return _elements.indexOf(element);
     }
@@ -288,6 +302,7 @@ public class LabeledList implements List {
      *  returned is safe in that it cannot be used to modify the list.
      *  @return A list iterator over the elements in the list;
      */
+    @Override
     public ListIterator listIterator() {
         return Collections.unmodifiableList(_elements).listIterator();
     }
@@ -298,6 +313,7 @@ public class LabeledList implements List {
      *  @param index The specified starting position.
      *  @return A list iterator over the elements in the list;
      */
+    @Override
     public ListIterator listIterator(int index) {
         return Collections.unmodifiableList(_elements).listIterator(index);
     }
@@ -312,6 +328,7 @@ public class LabeledList implements List {
      * @param element The element.
      * @return True If this list contained the element.
      */
+    @Override
     public boolean remove(Object element) {
         int label;
 
@@ -337,6 +354,7 @@ public class LabeledList implements List {
      * @exception IndexOutOfBoundsException If there is no element with
      * the specified label.
      */
+    @Override
     public Object remove(int label) {
         Object element = get(label);
         _labels.remove(element);
@@ -351,6 +369,7 @@ public class LabeledList implements List {
      *  @return never returns.
      *  @exception UnsupportedOperationException Always thrown.
      */
+    @Override
     public boolean removeAll(Collection collection) {
         throw new UnsupportedOperationException();
     }
@@ -360,6 +379,7 @@ public class LabeledList implements List {
      *  @return never returns.
      *  @exception UnsupportedOperationException Always thrown.
      */
+    @Override
     public boolean retainAll(Collection collection) {
         throw new UnsupportedOperationException();
     }
@@ -370,6 +390,7 @@ public class LabeledList implements List {
      *  @return never returns.
      *  @exception UnsupportedOperationException Always thrown.
      */
+    @Override
     public Object set(int index, Object element) {
         throw new UnsupportedOperationException();
     }
@@ -377,6 +398,7 @@ public class LabeledList implements List {
     /** Return the number of elements in this list.
      *  @return The number of elements.
      */
+    @Override
     public int size() {
         return _elements.size();
     }
@@ -387,6 +409,7 @@ public class LabeledList implements List {
      *  @return never returns.
      *  @exception UnsupportedOperationException Always thrown.
      */
+    @Override
     public List subList(int fromIndex, int toIndex) {
         throw new UnsupportedOperationException();
     }
@@ -395,6 +418,7 @@ public class LabeledList implements List {
      *  proper sequence.
      *  @return An array containing all of the elements in this list.
      */
+    @Override
     public Object[] toArray() {
         return _elements.toArray();
     }
@@ -405,6 +429,7 @@ public class LabeledList implements List {
      *  @param array The specified array.
      *  @return An array containing all of the elements in this list.
      */
+    @Override
     public Object[] toArray(Object[] array) {
         return _elements.toArray(array);
     }
@@ -448,6 +473,7 @@ public class LabeledList implements List {
      *  in the string representation.
      *  @return A string representation of this list.
      */
+    @Override
     public String toString() {
         return toString("\n", false);
     }

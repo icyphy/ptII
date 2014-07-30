@@ -84,6 +84,7 @@ public class DDEGetToken extends DDEGet {
 
     /**
      */
+    @Override
     public void fire() throws IllegalActionException {
         //        int aCntr = 0;
         //        Receiver[][] theReceivers = input.getReceivers();

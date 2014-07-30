@@ -141,6 +141,7 @@ public class PteraDirector extends Director implements ValueListener {
      *  @exception IllegalActionException If thrown by the superclass
      *  attributeChanged() method.
      */
+    @Override
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         super.attributeChanged(attribute);
@@ -192,6 +193,7 @@ public class PteraDirector extends Director implements ValueListener {
      *  @exception CloneNotSupportedException If a derived class contains
      *  an attribute that cannot be cloned.
      */
+    @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         PteraDirector newObject = (PteraDirector) super.clone(workspace);
         newObject._controller = null;
@@ -230,7 +232,7 @@ public class PteraDirector extends Director implements ValueListener {
                     // FindBugs: GC: Suspicious calls to generic collection methods
                     && timedEvent instanceof TypedActor
                     && (timedEvent.contents == event || refinementSet
-                            .contains(timedEvent.contents))) {
+                    .contains(timedEvent.contents))) {
                 return timedEvent;
             }
         }
@@ -253,6 +255,7 @@ public class PteraDirector extends Director implements ValueListener {
      *  this exception is raised when firing a refinement or processing an
      *  event.
      */
+    @Override
     public void fire() throws IllegalActionException {
         _debug(new PteraDebugEvent(this, "Fire at " + getModelTime() + "."));
 
@@ -366,6 +369,7 @@ public class PteraDirector extends Director implements ValueListener {
      *   does not support fireAt() precisely (it does not agree to refire
      *   this Ptera model at the requested time).
      */
+    @Override
     public Time fireAt(Actor actor, Time time, int microstep)
             throws IllegalActionException {
         if (getContainer() instanceof ModalModel
@@ -402,7 +406,7 @@ public class PteraDirector extends Director implements ValueListener {
      */
     public void fireAt(Event event, Time time, Token arguments,
             List<NamedObj> triggers, boolean reset)
-            throws IllegalActionException {
+                    throws IllegalActionException {
         fireAt(new TimedEvent(event, time, arguments, null, reset), triggers);
     }
 
@@ -529,6 +533,7 @@ public class PteraDirector extends Director implements ValueListener {
      *  @return The current time.
      *  @see #setModelTime(Time)
      */
+    @Override
     public Time getModelTime() {
         if (_delegateFireAt && isEmbedded()) {
             NamedObj container = getContainer();
@@ -555,6 +560,7 @@ public class PteraDirector extends Director implements ValueListener {
      *  @exception IllegalActionException If the initialize() method of
      *   the superclass throws it.
      */
+    @Override
     public void initialize() throws IllegalActionException {
         super.initialize();
 
@@ -585,6 +591,7 @@ public class PteraDirector extends Director implements ValueListener {
      *  @exception IllegalActionException If the actor is not
      *  acceptable to the domain.  Not thrown in this base class.
      */
+    @Override
     public void initialize(Actor actor) throws IllegalActionException {
         if (!(actor instanceof RefinementActor)) {
             super.initialize(actor);
@@ -603,6 +610,7 @@ public class PteraDirector extends Director implements ValueListener {
      *   not support fireAt() precisely (that is, it does not agree to
      *   refire this Ptera model at the requested time).
      */
+    @Override
     public boolean postfire() throws IllegalActionException {
         boolean result = super.postfire();
 
@@ -650,6 +658,7 @@ public class PteraDirector extends Director implements ValueListener {
      *  @exception IllegalActionException If the superclass throws it, or if the
      *  tokens at the input ports cannot be checked.
      */
+    @Override
     public boolean prefire() throws IllegalActionException {
         boolean result = super.prefire();
 
@@ -695,6 +704,7 @@ public class PteraDirector extends Director implements ValueListener {
      *  @exception IllegalActionException If the preinitialize() method of
      *   one of the associated actors throws it.
      */
+    @Override
     public void preinitialize() throws IllegalActionException {
         super.preinitialize();
 
@@ -704,6 +714,7 @@ public class PteraDirector extends Director implements ValueListener {
 
     /** Request that the director cease execution altogether.
      */
+    @Override
     public void stop() {
         if (_eventQueue != null) {
             synchronized (_eventQueue) {
@@ -732,6 +743,7 @@ public class PteraDirector extends Director implements ValueListener {
      *  and calls stopFire() for all actors
      *  that are deeply contained by the container of this director.
      */
+    @Override
     public void stopFire() {
         if (_eventQueue != null) {
             synchronized (_eventQueue) {
@@ -749,6 +761,7 @@ public class PteraDirector extends Director implements ValueListener {
      *
      *  @param settable The variable that has been changed.
      */
+    @Override
     public void valueChanged(Settable settable) {
         Variable variable = (Variable) settable;
         Set<TimedEvent> eventList = _eventsListeningToVariables
@@ -780,6 +793,7 @@ public class PteraDirector extends Director implements ValueListener {
      *  @exception IllegalActionException If the wrapup() method of
      *   the superclass throws it.
      */
+    @Override
     public void wrapup() throws IllegalActionException {
         super.wrapup();
         _clearState();
@@ -838,6 +852,7 @@ public class PteraDirector extends Director implements ValueListener {
          *
          *  @return A string that describes this timed event.
          */
+        @Override
         public String toString() {
             StringBuffer result = new StringBuffer(contents + ".");
             if (data == null) {
@@ -899,6 +914,7 @@ public class PteraDirector extends Director implements ValueListener {
             final boolean lifo = ((BooleanToken) LIFO.getToken())
                     .booleanValue();
             Collections.sort(initialEvents, new Comparator<Event>() {
+                @Override
                 public int compare(Event event1, Event event2) {
                     int eventCompare = event1.getName().compareTo(
                             event2.getName());
@@ -974,6 +990,7 @@ public class PteraDirector extends Director implements ValueListener {
      *
      *  @return True if this director is top-level.
      */
+    @Override
     protected boolean _isTopLevel() {
         return super._isTopLevel() && !_isInController();
     }

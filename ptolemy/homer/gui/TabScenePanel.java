@@ -113,7 +113,7 @@ public class TabScenePanel implements ContentPrototype {
     /** The popup menu added to each widget loaded on the scene.
      */
     @SuppressWarnings("serial")
-        private class NamedObjectPopupMenu extends JPopupMenu {
+    private class NamedObjectPopupMenu extends JPopupMenu {
 
         /** Create a new context menu for the widget.
          *  @param element The triggering widget.
@@ -122,6 +122,7 @@ public class TabScenePanel implements ContentPrototype {
             JMenuItem edit = new JMenuItem("Edit");
             edit.addActionListener(new ActionListener() {
 
+                @Override
                 public void actionPerformed(ActionEvent e) {
                     _showWidgetProperties(element);
                 }
@@ -130,6 +131,7 @@ public class TabScenePanel implements ContentPrototype {
             JMenuItem delete = new JMenuItem("Delete");
             delete.addActionListener(new ActionListener() {
 
+                @Override
                 public void actionPerformed(ActionEvent e) {
                     _mainFrame.removeVisualNamedObject(element);
                 }
@@ -166,6 +168,7 @@ public class TabScenePanel implements ContentPrototype {
                 _interactionLayer, MOVE_ALIGN_DECORATOR, false);
 
         _moveAction = ActionFactory.createMoveAction(new MoveStrategy() {
+            @Override
             public Point locationSuggested(Widget widget,
                     Point originalLocation, Point suggestedLocation) {
                 _adjustLocation(widget, suggestedLocation);
@@ -182,6 +185,7 @@ public class TabScenePanel implements ContentPrototype {
 
         _resizeAction = ActionFactory.createResizeAction(new ResizeStrategy() {
 
+            @Override
             public Rectangle boundsSuggested(Widget widget,
                     Rectangle originalBounds, Rectangle suggestedBounds,
                     ControlPoint controlPoint) {
@@ -202,6 +206,7 @@ public class TabScenePanel implements ContentPrototype {
              *  this listener.
              *  @param dropEvent The drop event.
              */
+            @Override
             public void dragEnter(DropTargetDragEvent dropEvent) {
                 try {
                     // Reject is data flavor is not supported.
@@ -259,6 +264,7 @@ public class TabScenePanel implements ContentPrototype {
             /** Perform the drop of the item onto the scene and
              *  load the appropriate graphical widget.
              */
+            @Override
             public void drop(DropTargetDropEvent dropEvent) {
                 if (dropEvent
                         .isDataFlavorSupported(PtolemyTransferable.namedObjFlavor)) {
@@ -339,6 +345,7 @@ public class TabScenePanel implements ContentPrototype {
      *  @exception IllegalActionException If the appropriate element's representation
      *  cannot be loaded.
      */
+    @Override
     public void add(final PositionableElement element)
             throws IllegalActionException {
         if (!(element instanceof HomerWidgetElement)) {
@@ -377,6 +384,7 @@ public class TabScenePanel implements ContentPrototype {
         // Add widget double-click editing.
         widget.getActions().addAction(
                 ActionFactory.createEditAction(new EditProvider() {
+                    @Override
                     public void edit(Widget widget) {
                         _showWidgetProperties(element);
                     }
@@ -385,6 +393,7 @@ public class TabScenePanel implements ContentPrototype {
         // Add widget context menu.
         widget.getActions().addAction(
                 ActionFactory.createPopupMenuAction(new PopupMenuProvider() {
+                    @Override
                     public JPopupMenu getPopupMenu(Widget widget,
                             Point localLocation) {
                         return new NamedObjectPopupMenu(element);
@@ -400,6 +409,7 @@ public class TabScenePanel implements ContentPrototype {
     /** Get a reference to the current scene.
      *  @return The current scene.
      */
+    @Override
     public ObjectScene getContent() {
         return _scene;
     }
@@ -415,6 +425,7 @@ public class TabScenePanel implements ContentPrototype {
     /** Get a new tab scene panel instance.
      *  @return A new TabScenePanel object.
      */
+    @Override
     public ContentPrototype getNewInstance() {
         return new TabScenePanel(_mainFrame);
     }
@@ -437,6 +448,7 @@ public class TabScenePanel implements ContentPrototype {
     /** Remove the widget from the scene.
      *  @param element The widget to be removed.
      */
+    @Override
     public void remove(PositionableElement element) {
         _mainLayer.removeChild(((HomerWidgetElement) element).getWidget());
         _mainFrame.repaint();
@@ -594,6 +606,7 @@ public class TabScenePanel implements ContentPrototype {
     /** The default decorator for move alignment actions.
      */
     private static final AlignWithMoveDecorator MOVE_ALIGN_DECORATOR = new AlignWithMoveDecorator() {
+        @Override
         public ConnectionWidget createLineWidget(Scene scene) {
             ConnectionWidget widget = new ConnectionWidget(scene);
             widget.setStroke(STROKE);
@@ -611,18 +624,20 @@ public class TabScenePanel implements ContentPrototype {
      */
     private static final BasicStroke STROKE = new BasicStroke(1.0f,
             BasicStroke.JOIN_BEVEL, BasicStroke.CAP_BUTT, 5.0f, new float[] {
-                    6.0f, 3.0f }, 0.0f);
+            6.0f, 3.0f }, 0.0f);
 
     /** Hover action added to new widgets.
      */
     private final WidgetAction _hoverAction = ActionFactory
             .createHoverAction(new TwoStateHoverProvider() {
+                @Override
                 public void setHovering(Widget widget) {
                     if (!widget.getState().isSelected()) {
                         widget.setBorder(RESIZE_BORDER);
                     }
                 }
 
+                @Override
                 public void unsetHovering(Widget widget) {
                     if (!widget.getState().isSelected()) {
                         widget.setBorder(DEFAULT_BORDER);

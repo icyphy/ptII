@@ -23,7 +23,7 @@ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
 PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 ENHANCEMENTS, OR MODIFICATIONS.
-*/
+ */
 package doc.tutorial.gui;
 
 import java.awt.Component;
@@ -51,18 +51,22 @@ public class TableDisplayWithConfigure extends TableDisplay {
             super(container, name);
         }
 
+        @Override
         public Component createEditorPane() {
             if (_table == null) {
                 @SuppressWarnings("serial")
-                                TableModel dataModel = new AbstractTableModel() {
+                TableModel dataModel = new AbstractTableModel() {
+                    @Override
                     public int getColumnCount() {
                         return 10;
                     }
 
+                    @Override
                     public int getRowCount() {
                         return 10;
                     }
 
+                    @Override
                     public Object getValueAt(int row, int col) {
                         return Integer.valueOf(row * col);
                     }

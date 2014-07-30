@@ -106,6 +106,7 @@ public class Register extends MostRecent {
      *  cannot be computed.
      *  @see #getCausalityInterface()
      */
+    @Override
     public void declareDelayDependency() throws IllegalActionException {
         // Declare that output does not immediately depend on the input.
         _declareDelayDependency(input, output, 0.0);
@@ -123,6 +124,7 @@ public class Register extends MostRecent {
      *  Otherwise, emit nothing.
      *  @exception IllegalActionException If there is no director.
      */
+    @Override
     public void fire() throws IllegalActionException {
         // Don't call "super.fire();", this actor extends another actor.
         int inputWidth = input.getWidth();
@@ -137,19 +139,21 @@ public class Register extends MostRecent {
 
         sendOutputIfTriggered(commonWidth);
     }
-    
+
     /** Indicate that this actor can fire even if the inputs are not
      *  known. This enables the actor to be used in SR and Continuous.
      *  @return False.
      */
+    @Override
     public boolean isStrict() {
-            return false;
+        return false;
     }
-    
+
     /** Read and record the inputs.
      *  @return What the superclass returns.
      *  @exception IllegalActionException If the superclass throws it.
      */
+    @Override
     public boolean postfire() throws IllegalActionException {
         int inputWidth = input.getWidth();
         int outputWidth = output.getWidth();
@@ -157,22 +161,23 @@ public class Register extends MostRecent {
         readInputs(commonWidth, inputWidth);
         return super.postfire();
     }
-    
+
     /** Return true if there is any token in the input or the trigger
      *  port. This ensures that if an input is provided without a
      *  trigger, it will get recorded.
      *  @exception IllegalActionException If the base class throws it.
      */
+    @Override
     public boolean prefire() throws IllegalActionException {
         boolean inputPresent = false;
 
         if (input.isOutsideConnected()) {
-                for (int i = 0; i < input.getWidth(); i++) {
-                        if (input.hasToken(0)) {
-                                inputPresent = true;
-                                break;
-                        }
+            for (int i = 0; i < input.getWidth(); i++) {
+                if (input.hasToken(0)) {
+                    inputPresent = true;
+                    break;
                 }
+            }
         }
         return inputPresent || super.prefire();
     }

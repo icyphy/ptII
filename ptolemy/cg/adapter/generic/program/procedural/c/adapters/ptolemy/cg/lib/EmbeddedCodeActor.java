@@ -60,6 +60,7 @@ public class EmbeddedCodeActor extends CompiledCompositeActor {
      * @return The generated code.
      * @exception IllegalActionException Not thrown in this base class.
      */
+    @Override
     public String generateTypeConvertFireCode(boolean forComposite)
             throws IllegalActionException {
         return "";
@@ -89,6 +90,7 @@ public class EmbeddedCodeActor extends CompiledCompositeActor {
          *  @exception IllegalActionException If an error occurrs while
          *   initializing an adapter.
          */
+        @Override
         public void setupAdapter() throws IllegalActionException {
             // To test this, run:
             // $PTII/bin/vergil $PTII/ptolemy/cg/lib/test/auto/Scale_c.xml

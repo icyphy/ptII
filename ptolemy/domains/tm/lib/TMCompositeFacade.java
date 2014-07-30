@@ -96,6 +96,7 @@ public class TMCompositeFacade extends TypedCompositeActor implements TMActor {
 
     /** update local cache of executionTime.
      */
+    @Override
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         if (attribute == executionTime) {
@@ -117,11 +118,13 @@ public class TMCompositeFacade extends TypedCompositeActor implements TMActor {
 
     /** Create the execution thread.
      */
+    @Override
     public void preinitialize() throws IllegalActionException {
         super.preinitialize();
         _directorThread = new PtolemyThread(new RunnableDirector());
     }
 
+    @Override
     public boolean prefire() throws IllegalActionException {
         if (!_idle) {
             return false;
@@ -141,6 +144,7 @@ public class TMCompositeFacade extends TypedCompositeActor implements TMActor {
         }
     }
 
+    @Override
     public void fire() throws IllegalActionException {
         super.fire();
         if (_idle) {
@@ -153,6 +157,7 @@ public class TMCompositeFacade extends TypedCompositeActor implements TMActor {
         }
     }
 
+    @Override
     public boolean postfire() throws IllegalActionException {
         if (_idle) {
             return super.postfire();
@@ -196,6 +201,7 @@ public class TMCompositeFacade extends TypedCompositeActor implements TMActor {
         }
     }
 
+    @Override
     public double getExecutionTime() {
         return _executionTime;
     }
@@ -214,6 +220,7 @@ public class TMCompositeFacade extends TypedCompositeActor implements TMActor {
     ///////////////////////////////////////////////////////////////////
     ////                         inner class                       ////
     private class RunnableDirector implements Runnable {
+        @Override
         public void run() {
             _idle = false;
 

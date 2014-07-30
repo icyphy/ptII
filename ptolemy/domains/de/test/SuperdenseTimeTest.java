@@ -116,10 +116,12 @@ public class SuperdenseTimeTest extends TypedAtomicActor {
      *  @return A representation of the dependencies between input ports
      *   and output ports.
      */
+    @Override
     public CausalityInterface getCausalityInterface() {
         if (_causalityInterface == null) {
             _causalityInterface = new BreakCausalityInterface(this,
                     getDirector().defaultDependency()) {
+                @Override
                 public Collection<IOPort> equivalentPorts(IOPort input) {
                     return _inputPorts;
                 }
@@ -137,6 +139,7 @@ public class SuperdenseTimeTest extends TypedAtomicActor {
      *  @exception IllegalActionException If sending the
      *   outputs fails.
      */
+    @Override
     public synchronized void fire() throws IllegalActionException {
         // The methods of the servlet are invoked in another
         // thread, so we synchronize on this actor for mutual exclusion.
@@ -150,6 +153,7 @@ public class SuperdenseTimeTest extends TypedAtomicActor {
     /** Set the output value to 0.0.
      *  @exception IllegalActionException If the superclass throws it.
      */
+    @Override
     public void initialize() throws IllegalActionException {
         super.initialize();
         _value = null;
@@ -159,6 +163,7 @@ public class SuperdenseTimeTest extends TypedAtomicActor {
     /** Read the inputs and sum them.
      *  @return True if a stop has not been requested.
      */
+    @Override
     public synchronized boolean postfire() throws IllegalActionException {
         if (_debugging) {
             _debug("Starting postfire.");

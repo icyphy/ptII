@@ -100,7 +100,7 @@ import ptolemy.util.MessageHandler;
  */
 @SuppressWarnings("serial")
 public class HTMLViewer extends TableauFrame implements Printable,
-        HyperlinkListener {
+HyperlinkListener {
     /** Construct a blank viewer.
      */
     public HTMLViewer() {
@@ -136,6 +136,7 @@ public class HTMLViewer extends TableauFrame implements Printable,
      *  It is assumed this is called in the AWT event thread.
      *  @param event The hyperlink event.
      */
+    @Override
     public void hyperlinkUpdate(HyperlinkEvent event) {
         if (event.getEventType() == HyperlinkEvent.EventType.ENTERED) {
             if (event.getURL() != null) {
@@ -159,7 +160,7 @@ public class HTMLViewer extends TableauFrame implements Printable,
                 } catch (Throwable throwable) {
                     MessageHandler.error(
                             "Problem processing '" + event.getDescription()
-                                    + "'.", throwable);
+                            + "'.", throwable);
                 }
             }
 
@@ -197,7 +198,7 @@ public class HTMLViewer extends TableauFrame implements Printable,
                 } catch (Throwable throwable) {
                     MessageHandler.error(
                             "Problem processing '" + event.getDescription()
-                                    + "'.", throwable);
+                            + "'.", throwable);
                 }
             }
             // NOTE: It would be nice to use target="_browser" or some
@@ -342,10 +343,10 @@ public class HTMLViewer extends TableauFrame implements Printable,
                                         } catch (Throwable throwable2) {
                                             IOException exception = new IOException(
                                                     "Failed to find " + newURL
-                                                            + ", also tried\n "
-                                                            + eventURL
-                                                            + " and\n"
-                                                            + eventURL2);
+                                                    + ", also tried\n "
+                                                    + eventURL
+                                                    + " and\n"
+                                                    + eventURL2);
                                             exception.initCause(ex);
                                             throw exception;
                                         }
@@ -377,6 +378,7 @@ public class HTMLViewer extends TableauFrame implements Printable,
      *   NO_SUCH_PAGE if pageIndex specifies a non-existent page.
      *  @exception PrinterException If the print job is terminated.
      */
+    @Override
     public int print(Graphics graphics, PageFormat format, int index)
             throws PrinterException {
         Dimension dimension = pane.getSize();
@@ -437,8 +439,10 @@ public class HTMLViewer extends TableauFrame implements Printable,
      *  @param width The width of the scroll pane.
      *  @param height The height of the scroll pane.
      */
+    @Override
     public void setSize(final int width, final int height) {
         Runnable doSet = new Runnable() {
+            @Override
             public void run() {
                 _setScrollerSize(width, height);
                 HTMLViewer.super.setSize(width, height);
@@ -486,6 +490,7 @@ public class HTMLViewer extends TableauFrame implements Printable,
      *  @param file The file to write to.
      *  @exception IOException If the write fails.
      */
+    @Override
     protected void _writeFile(File file) throws IOException {
         java.io.FileWriter fileWriter = null;
 

@@ -126,7 +126,7 @@ public class ParameterSet extends ScopeExtendingAttribute implements Executable 
         StringParameter initialDefaultContents = new StringParameter(this,
                 "initialDefaultContents");
         initialDefaultContents
-                .setExpression("# This file defines parameters in the current container.\n# Each non-comment line in the file is interpreted as a separate assignment.\n# The lines are of the form:\n# attributeName = value\n# where variableName is the name of the attribute\n# in a format suitable for ptolemy.kernel.util.NamedObj.setName()\n# (i.e., does not contain periods) and value is\n# the expression in the Ptolemy expression language.\n# Comments are lines that begin with the # character.\n# FIXME: After saving, you need to update the fileOrURLParameter by hand.\n# Sample line (remove the leading #):\n# foo = \"bar\"\n");
+        .setExpression("# This file defines parameters in the current container.\n# Each non-comment line in the file is interpreted as a separate assignment.\n# The lines are of the form:\n# attributeName = value\n# where variableName is the name of the attribute\n# in a format suitable for ptolemy.kernel.util.NamedObj.setName()\n# (i.e., does not contain periods) and value is\n# the expression in the Ptolemy expression language.\n# Comments are lines that begin with the # character.\n# FIXME: After saving, you need to update the fileOrURLParameter by hand.\n# Sample line (remove the leading #):\n# foo = \"bar\"\n");
         initialDefaultContents.setPersistent(false);
         initialDefaultContents.setVisibility(Settable.EXPERT);
     }
@@ -163,6 +163,7 @@ public class ParameterSet extends ScopeExtendingAttribute implements Executable 
      *  @see #removeInitializable(Initializable)
      *  @see ptolemy.actor.CompositeActor#addPiggyback(Executable)
      */
+    @Override
     public void addInitializable(Initializable initializable) {
         if (_initializables == null) {
             _initializables = new LinkedList<Initializable>();
@@ -177,6 +178,7 @@ public class ParameterSet extends ScopeExtendingAttribute implements Executable 
      *   if the file cannot be read, or if the file parameters cannot
      *   be evaluated.
      */
+    @Override
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         if (attribute == fileOrURL) {
@@ -202,13 +204,15 @@ public class ParameterSet extends ScopeExtendingAttribute implements Executable 
      *  @exception IllegalActionException If any required attribute cannot be
      *   created.
      */
+    @Override
     public void expand() throws IllegalActionException {
-            _reReadIfNeeded();
-            // Do not call validate.
+        _reReadIfNeeded();
+        // Do not call validate.
     }
 
     /** Do nothing.
      */
+    @Override
     public void fire() throws IllegalActionException {
     }
 
@@ -217,6 +221,7 @@ public class ParameterSet extends ScopeExtendingAttribute implements Executable 
      *  @exception IllegalActionException If one of the added objects
      *   throws it.
      */
+    @Override
     public void initialize() throws IllegalActionException {
         // Invoke initializable methods.
         if (_initializables != null) {
@@ -229,6 +234,7 @@ public class ParameterSet extends ScopeExtendingAttribute implements Executable 
     /** Return true.
      *  @return True.
      */
+    @Override
     public boolean isFireFunctional() {
         return true;
     }
@@ -236,6 +242,7 @@ public class ParameterSet extends ScopeExtendingAttribute implements Executable 
     /** Return false.
      *  @return False.
      */
+    @Override
     public boolean isStrict() {
         return false;
     }
@@ -247,10 +254,11 @@ public class ParameterSet extends ScopeExtendingAttribute implements Executable 
      *  @exception IllegalActionException If re-reading the file fails.
      *  @return Executable.COMPLETED.
      */
+    @Override
     public int iterate(int count) throws IllegalActionException {
         if (((BooleanToken) checkForFileUpdates.getToken()).booleanValue()) {
             if (_reReadIfNeeded()) {
-                    validate();
+                validate();
             }
         }
         return Executable.COMPLETED;
@@ -259,6 +267,7 @@ public class ParameterSet extends ScopeExtendingAttribute implements Executable 
     /** Do nothing.
      *  @return True.
      */
+    @Override
     public boolean postfire() {
         return true;
     }
@@ -268,10 +277,11 @@ public class ParameterSet extends ScopeExtendingAttribute implements Executable 
      *  @return True.
      *  @exception IllegalActionException If re-reading the file fails.
      */
+    @Override
     public boolean prefire() throws IllegalActionException {
         if (((BooleanToken) checkForFileUpdates.getToken()).booleanValue()) {
             if (_reReadIfNeeded()) {
-                    validate();
+                validate();
             }
         }
         return true;
@@ -283,6 +293,7 @@ public class ParameterSet extends ScopeExtendingAttribute implements Executable 
      *  @exception IllegalActionException If one of the added objects
      *   throws it, or if re-reading the file fails.
      */
+    @Override
     public void preinitialize() throws IllegalActionException {
         // Invoke initializable methods.
         if (_initializables != null) {
@@ -291,7 +302,7 @@ public class ParameterSet extends ScopeExtendingAttribute implements Executable 
             }
         }
         if (_reReadIfNeeded()) {
-                validate();
+            validate();
         }
     }
 
@@ -304,7 +315,7 @@ public class ParameterSet extends ScopeExtendingAttribute implements Executable 
      *  a previous attribute or creating a new variable.
      */
     public void read() throws IllegalActionException, NameDuplicationException,
-            IOException {
+    IOException {
 
         _fileName = fileOrURL.getExpression();
 
@@ -388,6 +399,7 @@ public class ParameterSet extends ScopeExtendingAttribute implements Executable 
      *  @see #addInitializable(Initializable)
      *  @see ptolemy.actor.CompositeActor#removePiggyback(Executable)
      */
+    @Override
     public void removeInitializable(Initializable initializable) {
         if (_initializables != null) {
             _initializables.remove(initializable);
@@ -406,8 +418,9 @@ public class ParameterSet extends ScopeExtendingAttribute implements Executable 
      *  @exception NameDuplicationException If the container already has
      *   an entity with the name of this entity.
      */
+    @Override
     public void setContainer(NamedObj container) throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         if (container != getContainer()) {
             // May need to unregister as a piggyback with the previous container.
             NamedObj previousContainer = getContainer();
@@ -423,16 +436,19 @@ public class ParameterSet extends ScopeExtendingAttribute implements Executable 
 
     /** Do nothing.
      */
+    @Override
     public void stop() {
     }
 
     /** Do nothing.
      */
+    @Override
     public void stopFire() {
     }
 
     /** Do nothing.
      */
+    @Override
     public void terminate() {
     }
 
@@ -442,6 +458,7 @@ public class ParameterSet extends ScopeExtendingAttribute implements Executable 
      *  @exception IllegalActionException If one of the added objects
      *   throws it, or if re-reading the file fails.
      */
+    @Override
     public void wrapup() throws IllegalActionException {
         // Invoke initializable methods.
         if (_initializables != null) {
@@ -450,7 +467,7 @@ public class ParameterSet extends ScopeExtendingAttribute implements Executable 
             }
         }
         if (_reReadIfNeeded()) {
-                validate();
+            validate();
         }
     }
 

@@ -101,6 +101,7 @@ public class SelectionInteractor extends CompositeInteractor {
      * Accept an event if it will be accepted by the selection
      * filters.
      */
+    @Override
     public boolean accept(LayerEvent e) {
         return _selectionFilter.accept(e) || _toggleFilter.accept(e)
                 || super.accept(e);
@@ -156,6 +157,7 @@ public class SelectionInteractor extends CompositeInteractor {
      * item to or from the selection. If it's still in the selection,
      * pass the event to the superclass to handle.
      */
+    @Override
     public void mousePressed(LayerEvent event) {
         if (!isEnabled()) {
             return;
@@ -227,6 +229,7 @@ public class SelectionInteractor extends CompositeInteractor {
      * two behaviors seemed more likely to be useful. (Also, that behaviour
      * is harder to implement because of interaction with the superclass.)
      */
+    @Override
     public void setConsuming(boolean flag) {
         // This method is only here for documentation purposes
         super.setConsuming(flag);
@@ -273,6 +276,7 @@ public class SelectionInteractor extends CompositeInteractor {
      *
      * @deprecated Use setPrototypeDecorator instead
      */
+    @Deprecated
     public void setSelectionManipulator(Manipulator manipulator) {
         _renderer = new BasicSelectionRenderer(manipulator);
     }

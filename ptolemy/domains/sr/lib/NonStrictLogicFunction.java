@@ -74,6 +74,7 @@ import ptolemy.kernel.util.NameDuplicationException;
  @Pt.ProposedRating Red (pwhitake)
  @Pt.AcceptedRating Red (pwhitake)
  */
+@Deprecated
 public class NonStrictLogicFunction extends LogicFunction {
     /** Construct an actor with the given container and name.  Set the
      *  logic function to the default ("and").  Set the types of the ports
@@ -98,6 +99,7 @@ public class NonStrictLogicFunction extends LogicFunction {
      *  If there is no input on any channel, then produce no output.
      *  @exception IllegalActionException If there is no director.
      */
+    @Override
     public void fire() throws IllegalActionException {
         // Don't call "super.fire();" here, the parent class is an actor.
         BooleanToken value = null;
@@ -142,6 +144,7 @@ public class NonStrictLogicFunction extends LogicFunction {
      *
      *  @return False.
      */
+    @Override
     public boolean isStrict() {
         return false;
     }
@@ -150,6 +153,7 @@ public class NonStrictLogicFunction extends LogicFunction {
      *  does not depend on the <i>input</i> in a firing.
      *  @exception IllegalActionException If the superclass throws it.
      */
+    @Override
     public void preinitialize() throws IllegalActionException {
         super.preinitialize();
         removeDependency(input, output);

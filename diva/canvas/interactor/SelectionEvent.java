@@ -89,10 +89,12 @@ public class SelectionEvent extends java.util.EventObject {
             return new IteratorAdapter() {
                 int i = 0;
 
+                @Override
                 public boolean hasNext() {
                     return i < _added.length;
                 }
 
+                @Override
                 public Object next() throws NoSuchElementException {
                     if (i > _added.length) {
                         throw new NoSuchElementException();
@@ -114,10 +116,12 @@ public class SelectionEvent extends java.util.EventObject {
             return new IteratorAdapter() {
                 int i = 0;
 
+                @Override
                 public boolean hasNext() {
                     return i < _removed.length;
                 }
 
+                @Override
                 public Object next() throws NoSuchElementException {
                     if (i > _removed.length) {
                         throw new NoSuchElementException();

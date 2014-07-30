@@ -25,7 +25,7 @@ ENHANCEMENTS, OR MODIFICATIONS.
                                                 COPYRIGHTENDKEY
 
 
-*/
+ */
 package ptdb.kernel.bl.migration;
 
 import java.io.BufferedReader;
@@ -76,7 +76,7 @@ public class MigrateModelsManager {
      */
     public String migrateModels(String directoryPath,
             boolean migrateFilesInSubDirectories, boolean checkContent)
-            throws IOException {
+                    throws IOException {
 
         //check if the path provided exists.
         File directoryFile = new File(directoryPath);
@@ -107,8 +107,8 @@ public class MigrateModelsManager {
 
         //write the header for the csv file.
         _csvFileWriter
-                .write("Model Name,File Path,Migration Status,Error Messages"
-                        + System.getProperty("line.separator"));
+        .write("Model Name,File Path,Migration Status,Error Messages"
+                + System.getProperty("line.separator"));
 
         try {
 
@@ -144,7 +144,7 @@ public class MigrateModelsManager {
      */
     private void _readFiles(File directory, File parentDirectory,
             boolean readSubDirectories, boolean checkContent)
-            throws IOException {
+                    throws IOException {
 
         // If the path sent is a file, try to create a model in the database out of it.
         if (directory.isFile()) {
@@ -161,7 +161,7 @@ public class MigrateModelsManager {
                 String fileContent = _getContent(directory);
 
                 if (checkContent == false
-                        || (/*checkContent &&*/ _checkFileContent(fileContent))) {
+                        || (/*checkContent &&*/_checkFileContent(fileContent))) {
 
                     _createDBModel(modelName, fileContent,
                             directory.getAbsolutePath());

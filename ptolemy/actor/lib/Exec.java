@@ -141,7 +141,7 @@ public class Exec extends LimitedFiringSource {
 
         // An array of records {{name = "", value = ""}}
         environment
-                .setTypeEquals(new ArrayType(new RecordType(labels, values)));
+        .setTypeEquals(new ArrayType(new RecordType(labels, values)));
 
         // Array with an empty name and value means
         // default environment of the calling process.
@@ -325,6 +325,7 @@ public class Exec extends LimitedFiringSource {
      *  if the subprocess gets interrupted, or if the return value
      *  of the process is non-zero.
      */
+    @Override
     public void fire() throws IllegalActionException {
         // NOTE: This used to be synchronized, but this causes a
         // deadlock with the UI when parameters are edited while
@@ -393,7 +394,7 @@ public class Exec extends LimitedFiringSource {
                                 this,
                                 "Executing command \""
                                         + ((StringToken) command.getToken())
-                                                .stringValue()
+                                        .stringValue()
                                         + "\" returned a non-zero return value of "
                                         + processReturnCode
                                         + ".\nThe last input was: " + line
@@ -441,6 +442,7 @@ public class Exec extends LimitedFiringSource {
 
     /** Override the base class and terminate the process.
      */
+    @Override
     public void stop() {
         // NOTE: This method used to be synchronized, as
         // was the fire() method, but this caused deadlocks.  EAL
@@ -451,6 +453,7 @@ public class Exec extends LimitedFiringSource {
 
     /** Override the base class to stop waiting for input data.
      */
+    @Override
     public void stopFire() {
         // NOTE: This method used to be synchronized, as
         // was the fire() method, but this caused deadlocks.  EAL
@@ -465,6 +468,7 @@ public class Exec extends LimitedFiringSource {
      *  be invoked after it.
      *  @exception IllegalActionException Not thrown in this base class.
      */
+    @Override
     public void wrapup() throws IllegalActionException {
         _terminateProcess();
     }
@@ -585,7 +589,7 @@ public class Exec extends LimitedFiringSource {
         } catch (IOException ex) {
             throw new IllegalActionException(this, ex,
                     "Problem executing the command '" + command.getExpression()
-                            + "'\n" + "in the directory: " + directoryAsFile);
+                    + "'\n" + "in the directory: " + directoryAsFile);
         }
     }
 
@@ -678,6 +682,7 @@ public class Exec extends LimitedFiringSource {
         /** Read lines from the inputStream and append them to the
          *  stringBuffer.
          */
+        @Override
         public synchronized void run() {
             if (!_inputStreamReaderClosed) {
                 _read();
@@ -724,9 +729,9 @@ public class Exec extends LimitedFiringSource {
                             _actor,
                             ex,
                             getName()
-                                    + ": Could not get the value of the ignoreIOExceptionReadErrors "
-                                    + "parameter while trying to throw "
-                                    + throwable);
+                            + ": Could not get the value of the ignoreIOExceptionReadErrors "
+                            + "parameter while trying to throw "
+                            + throwable);
                 }
                 if (ignoreIOExceptionReadErrorsValue
                         && throwable instanceof IOException) {
@@ -736,16 +741,16 @@ public class Exec extends LimitedFiringSource {
                                     + " had an exception, but "
                                     + "ignoreIOExceptionReadErrors was true and the exception was an "
                                     + "IOException, so it is being skipped.",
-                            throwable).printStackTrace();
+                                    throwable).printStackTrace();
                 } else {
                     throw new InternalErrorException(
                             _actor,
                             throwable,
                             getName()
-                                    + ": Failed while reading from "
-                                    + _inputStream
-                                    + ". To avoid this, try setting the ignoreIOExceptionReadErrors parameter to true."
-                                    + throwable.getCause());
+                            + ": Failed while reading from "
+                            + _inputStream
+                            + ". To avoid this, try setting the ignoreIOExceptionReadErrors parameter to true."
+                            + throwable.getCause());
                 }
             }
         }

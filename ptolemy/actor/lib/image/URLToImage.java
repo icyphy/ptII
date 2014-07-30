@@ -92,6 +92,7 @@ public class URLToImage extends Transformer {
      *  that contains a java.awt.Image object to the output port.
      *  @exception IllegalActionException If there's no director.
      */
+    @Override
     public void fire() throws IllegalActionException {
         super.fire();
         StringToken urlToken = (StringToken) input.get(0);
@@ -110,6 +111,7 @@ public class URLToImage extends Transformer {
      *  what the superclass returns (presumably true).
      *  @exception IllegalActionException If there is no director.
      */
+    @Override
     public boolean prefire() throws IllegalActionException {
         if (!input.hasToken(0)) {
             return false;

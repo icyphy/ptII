@@ -76,13 +76,13 @@ public class ColtNormal extends ColtRandomSource {
         mean = new PortParameter(this, "mean", new DoubleToken(1.0));
         mean.setTypeEquals(BaseType.DOUBLE);
         new SingletonParameter(mean.getPort(), "_showName")
-                .setToken(BooleanToken.TRUE);
+        .setToken(BooleanToken.TRUE);
 
         standardDeviation = new PortParameter(this, "standardDeviation",
                 new DoubleToken(1.0));
         standardDeviation.setTypeEquals(BaseType.DOUBLE);
         new SingletonParameter(standardDeviation.getPort(), "_showName")
-                .setToken(BooleanToken.TRUE);
+        .setToken(BooleanToken.TRUE);
 
         standardDeviation.moveToFirst();
         mean.moveToFirst();
@@ -109,6 +109,7 @@ public class ColtNormal extends ColtRandomSource {
      *  remain constant throughout an iteration.
      *  @exception IllegalActionException If there is no director.
      */
+    @Override
     public void fire() throws IllegalActionException {
         super.fire();
         output.send(0, new DoubleToken(_current));
@@ -119,6 +120,7 @@ public class ColtNormal extends ColtRandomSource {
 
     /** Method that is called after _randomNumberGenerator is changed.
      */
+    @Override
     protected void _createdNewRandomNumberGenerator() {
         _generator = new Normal(1.0, 1.0, _randomNumberGenerator);
     }
@@ -126,6 +128,7 @@ public class ColtNormal extends ColtRandomSource {
     /** Generate a new random number.
      *  @exception IllegalActionException If parameter values are incorrect.
      */
+    @Override
     protected void _generateRandomNumber() throws IllegalActionException {
         double meanValue = ((DoubleToken) mean.getToken()).doubleValue();
         double standardDeviationValue = ((DoubleToken) standardDeviation

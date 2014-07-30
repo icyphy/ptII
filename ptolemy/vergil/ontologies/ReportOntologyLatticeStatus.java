@@ -25,7 +25,7 @@
  PT_COPYRIGHT_VERSION_2
  COPYRIGHTENDKEY
 
-*/
+ */
 package ptolemy.vergil.ontologies;
 
 ///////////////////////////////////////////////////////////////////
@@ -51,7 +51,7 @@ concepts in an ontology model based on whether the ontology is a lattice.
 @since Ptolemy II 10.0
 @Pt.ProposedRating Red (cshelton)
 @Pt.AcceptedRating Red (cshelton)
-*/
+ */
 public class ReportOntologyLatticeStatus {
 
     /** Show a status message depending on whether the given ontology model
@@ -78,25 +78,25 @@ public class ReportOntologyLatticeStatus {
 
             StringBuffer errorMessageBuffer = new StringBuffer();
             errorMessageBuffer
-                    .append("The ontology model graph is not a valid lattice.\n");
+            .append("The ontology model graph is not a valid lattice.\n");
 
             switch (exampleType) {
             case LEASTUPPER:
                 errorMessageBuffer
-                        .append("These concepts have no least upper bound: ");
+                .append("These concepts have no least upper bound: ");
                 break;
             case GREATESTLOWER:
                 errorMessageBuffer
-                        .append("These concepts have no greatest lower bound: ");
+                .append("These concepts have no greatest lower bound: ");
                 break;
             case GRAPHCYCLE:
                 errorMessageBuffer
-                        .append("There is a cycle involving the concept: ");
+                .append("There is a cycle involving the concept: ");
                 break;
             default:
                 errorMessageBuffer
-                        .append("unknown lattice counterexample type: "
-                                + exampleType + ": ");
+                .append("unknown lattice counterexample type: "
+                        + exampleType + ": ");
             }
 
             _highlightErrors(modelGraphController, errorMessageBuffer, concepts);
@@ -106,7 +106,7 @@ public class ReportOntologyLatticeStatus {
                             + "top of the lattice:\n"), invalidUnacceptables);
         } else {
             MessageHandler
-                    .message("The ontology model graph is a valid lattice.");
+            .message("The ontology model graph is a valid lattice.");
         }
     }
 

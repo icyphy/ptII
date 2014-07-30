@@ -75,6 +75,7 @@ abstract public class GRActor2D extends GRActor {
      *  @exception RuntimeException If the given actor is not a
      *  ViewScreen2D.
      */
+    @Override
     protected void _setViewScreen(GRActor actor) {
         if (actor instanceof ViewScreen2D) {
             _viewScreen = (ViewScreen2D) actor;

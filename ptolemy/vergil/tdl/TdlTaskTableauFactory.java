@@ -21,7 +21,7 @@ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
 PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 ENHANCEMENTS, OR MODIFICATIONS.
-*/
+ */
 package ptolemy.vergil.tdl;
 
 import ptolemy.actor.gui.Configuration;
@@ -69,6 +69,7 @@ public class TdlTaskTableauFactory extends TableauFactory {
      *  @exception Exception If the factory should be able to create a
      *   Tableau for the effigy, but something goes wrong.
      */
+    @Override
     public Tableau createTableau(Effigy effigy) throws Exception {
         Configuration configuration = (Configuration) effigy.toplevel();
 

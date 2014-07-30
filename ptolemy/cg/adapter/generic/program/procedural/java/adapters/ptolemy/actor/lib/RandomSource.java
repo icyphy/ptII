@@ -43,7 +43,9 @@ import ptolemy.kernel.util.IllegalActionException;
  @Pt.ProposedRating Red (cxh)
  @Pt.AcceptedRating Red (cxh)
  */
-public abstract class RandomSource extends ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.actor.lib.RandomSource {
+public abstract class RandomSource
+        extends
+        ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.actor.lib.RandomSource {
     /**
      *  Construct the RandomSource helper.
      *  @param actor the associated actor.
@@ -57,6 +59,7 @@ public abstract class RandomSource extends ptolemy.cg.adapter.generic.program.pr
      *  needed by the code generated for the RandomSource actor.
      *  @exception IllegalActionException Not Thrown in this subclass.
      */
+    @Override
     public Set getHeaderFiles() throws IllegalActionException {
         Set files = super.getHeaderFiles();
         files.add("java.util.Random;");

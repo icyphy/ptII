@@ -97,6 +97,7 @@ public class BasicCanvasPane extends CanvasPane {
     /** Return an iteration of the layers, in event-processing order (that is,
      * from front to back).
      */
+    @Override
     public Iterator layersFromFront() {
         return _layers.iterator();
     }
@@ -104,14 +105,17 @@ public class BasicCanvasPane extends CanvasPane {
     /** Return an iteration of the layers, in redraw order (that is,
      * from back to front).
      */
+    @Override
     public Iterator layersFromBack() {
         return new Iterator() {
             int cursor = _layers.size();
 
+            @Override
             public boolean hasNext() {
                 return cursor > 0;
             }
 
+            @Override
             public Object next() throws NoSuchElementException {
                 if (!hasNext()) {
                     throw new NoSuchElementException("Can't get " + cursor
@@ -122,6 +126,7 @@ public class BasicCanvasPane extends CanvasPane {
                 return _layers.get(cursor);
             }
 
+            @Override
             public void remove() {
                 throw new UnsupportedOperationException(
                         "Cannot delete layer from canvas pane");

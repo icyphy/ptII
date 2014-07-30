@@ -261,6 +261,7 @@ public class Display extends TypedAtomicActor implements PortablePlaceable {
      *  @param container The container in which to place the object, or
      *   null to specify that there is no current container.
      */
+    @Override
     public void place(PortableContainer container) {
         _getImplementation().place(container);
     }
@@ -312,6 +313,7 @@ public class Display extends TypedAtomicActor implements PortablePlaceable {
      *  @exception IllegalActionException If the base class throws it.
      *  @exception NameDuplicationException If the base class throws it.
      */
+    @Override
     public void setContainer(CompositeEntity container)
             throws IllegalActionException, NameDuplicationException {
         Nameable previousContainer = getContainer();
@@ -329,6 +331,7 @@ public class Display extends TypedAtomicActor implements PortablePlaceable {
      *  @param name A name to present to the user.
      *  @see #getDisplayName()
      */
+    @Override
     public void setDisplayName(String name) {
         super.setDisplayName(name);
         // See http://bugzilla.ecoinformatics.org/show_bug.cgi?id=4302
@@ -353,8 +356,9 @@ public class Display extends TypedAtomicActor implements PortablePlaceable {
      *  @see #getName(NamedObj)
      *  @see #title
      */
+    @Override
     public void setName(String name) throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         super.setName(name);
         // See http://bugzilla.ecoinformatics.org/show_bug.cgi?id=4302
         _setTitle(name);

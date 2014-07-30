@@ -87,7 +87,7 @@ public class ClipPlayer extends TypedAtomicActor implements LineListener {
         // Use $CLASSPATH instead of $PTII so that this actor can find its
         // audio file under Web Start.
         fileOrURL
-                .setExpression("$CLASSPATH/ptolemy/actor/lib/javasound/voice.wav");
+        .setExpression("$CLASSPATH/ptolemy/actor/lib/javasound/voice.wav");
 
         overlay = new Parameter(this, "overlay");
         overlay.setTypeEquals(BaseType.BOOLEAN);
@@ -144,6 +144,7 @@ public class ClipPlayer extends TypedAtomicActor implements LineListener {
      *  @exception CloneNotSupportedException If a derived class contains
      *   an attribute that cannot be cloned.
      */
+    @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         ClipPlayer newObject = (ClipPlayer) super.clone(workspace);
 
@@ -156,6 +157,7 @@ public class ClipPlayer extends TypedAtomicActor implements LineListener {
     /** Produce outputs indicating that the clip has started or stopped.
      *  @exception IllegalActionException Not thrown in this class.
      */
+    @Override
     public void fire() throws IllegalActionException {
         for (int i = 0; i < trigger.getWidth(); i++) {
             if (trigger.hasToken(i)) {
@@ -249,6 +251,7 @@ public class ClipPlayer extends TypedAtomicActor implements LineListener {
      *  @param event The event, with one of type OPEN, CLOSE,
      *   START, STOP of class LineEvent.Type.
      */
+    @Override
     public void update(LineEvent event) {
         if (event.getType().equals(LineEvent.Type.STOP)) {
             synchronized (_outputEvents) {
@@ -273,6 +276,7 @@ public class ClipPlayer extends TypedAtomicActor implements LineListener {
      *  @exception IllegalActionException If there is a problem
      *   stopping audio playback.
      */
+    @Override
     public void wrapup() throws IllegalActionException {
         super.wrapup();
 

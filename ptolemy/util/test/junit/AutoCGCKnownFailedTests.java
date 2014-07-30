@@ -24,7 +24,7 @@
    PT_COPYRIGHT_VERSION_2
    COPYRIGHTENDKEY
 
-*/
+ */
 
 package ptolemy.util.test.junit;
 
@@ -71,6 +71,7 @@ public class AutoCGCKnownFailedTests extends AutoCGKnownFailedTests {
      * @exception Throwable
      *                If the class or constructor cannot be found.
      */
+    @Override
     @Before
     public void setUp() throws Throwable {
         super.setUp();
@@ -89,8 +90,8 @@ public class AutoCGCKnownFailedTests extends AutoCGKnownFailedTests {
     @Parameters(method = "modelValues")
     public void runModelInline(String fullPath) throws Throwable {
         runModel(fullPath, "c", false /* generateInSubdirectory */,
-                true /* inline */, 2500 /* maximumLinesPerBlock */, false /*variablesAsArrays*/,
-                "" /*generatorPackageList*/);
+                true /* inline */, 2500 /* maximumLinesPerBlock */,
+                false /*variablesAsArrays*/, "" /*generatorPackageList*/);
     }
 
     /**
@@ -106,7 +107,7 @@ public class AutoCGCKnownFailedTests extends AutoCGKnownFailedTests {
     @Parameters(method = "modelValues")
     public void runModelNoInline(String fullPath) throws Throwable {
         runModel(fullPath, "c", false /* generateInSubdirectory */,
-                false /* inline */, 2500 /* maximumLinesPerBlock */, false /*variablesAsArrays*/,
-                "" /*generatorPackageList*/);
+                false /* inline */, 2500 /* maximumLinesPerBlock */,
+                false /*variablesAsArrays*/, "" /*generatorPackageList*/);
     }
 }

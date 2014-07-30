@@ -93,6 +93,7 @@ public class BusAssembler extends TypedAtomicActor {
     ////                         public methods                    ////
 
     /** React to a change in an input port width. */
+    @Override
     public void connectionsChanged(Port p) {
         super.connectionsChanged(p);
 
@@ -112,6 +113,7 @@ public class BusAssembler extends TypedAtomicActor {
      *  @exception IllegalActionException If calling send() or super.fire()
      *  throws it.
      */
+    @Override
     public void fire() throws IllegalActionException {
         super.fire();
         Iterator inputPorts = inputPortList().iterator();
@@ -143,6 +145,7 @@ public class BusAssembler extends TypedAtomicActor {
 
     /** Makes sure that there is only one relation connected to the
      output port and recalculates its width. */
+    @Override
     public void preinitialize() throws IllegalActionException {
         if (outputPortList().size() > 1) {
             throw new IllegalActionException(this,

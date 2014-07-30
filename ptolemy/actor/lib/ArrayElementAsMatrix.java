@@ -86,14 +86,14 @@ public class ArrayElementAsMatrix extends Transformer {
         xOffset.setExpression("1");
         new Parameter(xOffset.getPort(), "_showName", BooleanToken.TRUE);
         new StringAttribute(xOffset.getPort(), "_cardinal")
-                .setExpression("SOUTH");
+        .setExpression("SOUTH");
 
         yOffset = new PortParameter(this, "yOffset");
         yOffset.setTypeEquals(BaseType.INT);
         yOffset.setExpression("1");
         new Parameter(yOffset.getPort(), "_showName", BooleanToken.TRUE);
         new StringAttribute(yOffset.getPort(), "_cardinal")
-                .setExpression("SOUTH");
+        .setExpression("SOUTH");
 
         x = new PortParameter(this, "x");
         x.setTypeEquals(BaseType.INT);
@@ -144,6 +144,7 @@ public class ArrayElementAsMatrix extends Transformer {
      *  @exception CloneNotSupportedException If a derived class contains
      *   an attribute that cannot be cloned.
      */
+    @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         ArrayElementAsMatrix newObject = (ArrayElementAsMatrix) super
                 .clone(workspace);
@@ -163,6 +164,7 @@ public class ArrayElementAsMatrix extends Transformer {
      *  @exception IllegalActionException If the <i>index</i> parameter
      *   (or port value) is out of range.
      */
+    @Override
     public void fire() throws IllegalActionException {
         super.fire();
         // NOTE: This has be outside the if because we need to ensure
@@ -186,7 +188,7 @@ public class ArrayElementAsMatrix extends Transformer {
                     || xValue < 0
                     || yValue < 0
                     || xValue * xOffsetValue + yValue * yOffsetValue >= token
-                            .length()) {
+                    .length()) {
                 throw new IllegalActionException(this, "xValue (" + xValue
                         + ") * xOffsetValue *(" + xOffsetValue
                         + " ) + yValue (" + yValue + ") * yOffsetValue ("

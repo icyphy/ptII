@@ -123,6 +123,7 @@ public class Break extends ControlActor {
      *
      *  @exception IllegalActionException Not thrown here
      */
+    @Override
     public void preinitialize() throws IllegalActionException {
         super.preinitialize();
 

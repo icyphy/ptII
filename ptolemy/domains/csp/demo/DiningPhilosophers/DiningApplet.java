@@ -71,12 +71,13 @@ import ptolemy.kernel.util.InternalErrorException;
  */
 @SuppressWarnings("serial")
 public class DiningApplet extends Applet implements Runnable,
-        PhilosopherListener {
+PhilosopherListener {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
     /** Initialize the applet.
      */
+    @Override
     public void init() {
         // Process the background parameter.
         Color background = Color.white;
@@ -184,6 +185,7 @@ public class DiningApplet extends Applet implements Runnable,
         _thinkingRateBox.addActionListener(new ThinkingRateListener());
     }
 
+    @Override
     public synchronized void philosopherChanged() {
         if (simulationThread != null && simulationThread.isAlive()) {
             // repaint the table for the current state
@@ -197,6 +199,7 @@ public class DiningApplet extends Applet implements Runnable,
         }
     }
 
+    @Override
     public void run() {
         System.out.println("DiningApplet.run()");
 
@@ -220,6 +223,7 @@ public class DiningApplet extends Applet implements Runnable,
      *  the applet page is displayed. Execution begins once
      *  the "Go" button is depressed.
      */
+    @Override
     public void start() {
         _table._initialize(_philosophers);
     }
@@ -261,6 +265,7 @@ public class DiningApplet extends Applet implements Runnable,
     public class CurrentTimeThread extends Thread {
         NumberFormat nf = NumberFormat.getNumberInstance();
 
+        @Override
         public void run() {
             while (true) {
                 if (simulationThread == null) {
@@ -286,6 +291,7 @@ public class DiningApplet extends Applet implements Runnable,
     }
 
     public class GoButtonListener implements ActionListener {
+        @Override
         public void actionPerformed(ActionEvent evt) {
             try {
                 if (simulationThread == null) {
@@ -307,6 +313,7 @@ public class DiningApplet extends Applet implements Runnable,
     }
 
     public class StopButtonListener implements ActionListener {
+        @Override
         public void actionPerformed(ActionEvent evt) {
             try {
                 _manager.finish();
@@ -322,6 +329,7 @@ public class DiningApplet extends Applet implements Runnable,
     }
 
     public class EatingRateListener implements ActionListener {
+        @Override
         public void actionPerformed(ActionEvent evt) {
             Parameter p = (Parameter) univ.getAttribute("eatingRate");
 
@@ -347,6 +355,7 @@ public class DiningApplet extends Applet implements Runnable,
     }
 
     public class ThinkingRateListener implements ActionListener {
+        @Override
         public void actionPerformed(ActionEvent evt) {
             Parameter p = (Parameter) univ.getAttribute("thinkingRate");
 

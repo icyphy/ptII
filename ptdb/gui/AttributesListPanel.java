@@ -25,7 +25,7 @@ ENHANCEMENTS, OR MODIFICATIONS.
                                                 COPYRIGHTENDKEY
 
 
-*/
+ */
 package ptdb.gui;
 
 import java.awt.Component;
@@ -175,6 +175,7 @@ public class AttributesListPanel extends JPanel {
 
         add_Button.addActionListener(new ActionListener() {
 
+            @Override
             public void actionPerformed(ActionEvent event) {
 
                 addAttribute(null);
@@ -185,11 +186,13 @@ public class AttributesListPanel extends JPanel {
 
         _nameText.addFocusListener(new FocusListener() {
 
+            @Override
             public void focusGained(FocusEvent arg0) {
                 // Do nothing.
 
             }
 
+            @Override
             public void focusLost(FocusEvent arg0) {
 
                 if (!_nameText.getText().equals(_currentText)) {
@@ -252,6 +255,7 @@ public class AttributesListPanel extends JPanel {
         _attListPanel.setMaximumSize(getMinimumSize());
 
         deleteButton.addActionListener(new ActionListener() {
+            @Override
             public void actionPerformed(ActionEvent event) {
 
                 _attListPanel.remove((JPanel) _AttDelete.get(event.getSource()));
@@ -303,15 +307,15 @@ public class AttributesListPanel extends JPanel {
                         try {
                             stringParameter = new StringParameter(_model,
                                     ((ModelAttributePanel) element2)
-                                            .getAttributeName());
+                                    .getAttributeName());
                         } catch (NameDuplicationException e) {
                             stringParameter = (StringParameter) _model
                                     .getAttribute(((ModelAttributePanel) element2)
                                             .getAttributeName());
                         }
                         stringParameter
-                                .setExpression(((ModelAttributePanel) element2)
-                                        .getValue());
+                        .setExpression(((ModelAttributePanel) element2)
+                                .getValue());
                         returnList.add(stringParameter);
 
                     }
@@ -548,7 +552,7 @@ public class AttributesListPanel extends JPanel {
 
                         if (panelsModified
                                 || ((ModelAttributePanel) element2)
-                                        .isModified()) {
+                                .isModified()) {
                             panelsModified = true;
                         }
 
@@ -600,7 +604,7 @@ public class AttributesListPanel extends JPanel {
                     } else if (element2 instanceof GenericAttributePanel) {
 
                         orderedListGeneric
-                                .add((GenericAttributePanel) element2);
+                        .add((GenericAttributePanel) element2);
 
                     }
 
@@ -645,7 +649,7 @@ public class AttributesListPanel extends JPanel {
                         .getAttributeName()
                         .compareToIgnoreCase(
                                 orderedListGeneric.get(i + 1)
-                                        .getAttributeName()) > 0) {
+                                .getAttributeName()) > 0) {
 
                     changeRequiredGeneric = true;
                     GenericAttributePanel temp = orderedListGeneric.get(i);
@@ -688,6 +692,7 @@ public class AttributesListPanel extends JPanel {
                 _attListPanel.setMaximumSize(getMinimumSize());
 
                 deleteButton.addActionListener(new ActionListener() {
+                    @Override
                     public void actionPerformed(ActionEvent event) {
 
                         _attListPanel.remove((JPanel) _AttDelete.get(event
@@ -731,6 +736,7 @@ public class AttributesListPanel extends JPanel {
                 _attListPanel.setMaximumSize(getMinimumSize());
 
                 deleteButton.addActionListener(new ActionListener() {
+                    @Override
                     public void actionPerformed(ActionEvent event) {
 
                         _attListPanel.remove((JPanel) _AttDelete.get(event

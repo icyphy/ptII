@@ -81,6 +81,7 @@ public class EventIcon extends StateIcon {
     /** Create a Figure.
      *  @return The figure.
      */
+    @Override
     public Figure createFigure() {
         CompositeFigure figure = (CompositeFigure) super.createFigure();
 
@@ -117,6 +118,7 @@ public class EventIcon extends StateIcon {
     /** Create an icon.
      *  @return The icon.
      */
+    @Override
     public Icon createIcon() {
         if (_iconCache != null) {
             return _iconCache;
@@ -132,6 +134,7 @@ public class EventIcon extends StateIcon {
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
+    @Override
     protected Point2D _getBackgroundSize() {
         Point2D size = super._getBackgroundSize();
         if (size.getY() < _MIN_HEIGHT) {
@@ -140,6 +143,7 @@ public class EventIcon extends StateIcon {
         return size;
     }
 
+    @Override
     protected Paint _getFill() {
         Event event = (Event) getContainer();
         try {
@@ -164,6 +168,7 @@ public class EventIcon extends StateIcon {
      *  and its <i>isInitialState</i> parameter is set to true.
      *  @return The line width to use in rendering the box.
      */
+    @Override
     protected float _getLineWidth() {
         NamedObj container = getContainer();
         if (container instanceof Event) {
@@ -205,14 +210,14 @@ public class EventIcon extends StateIcon {
                     - _spacingValue, -_spacingValue, width + 2.0
                     * _spacingValue, height, null, _getLineWidth(),
                     _roundingValue + _spacingValue, _roundingValue
-                            + _spacingValue));
+                    + _spacingValue));
             ((CompositeFigure) background).add(border);
         }
         figure.setBackgroundFigure(background);
 
         label.translateTo(background.getBounds().getCenterX(),
                 backBounds.getMaxY() + stringBounds.getHeight() / 2.0 - 1.0
-                        - _spacingValue);
+                - _spacingValue);
         figure.add(label);
     }
 

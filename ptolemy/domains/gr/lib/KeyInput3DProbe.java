@@ -62,6 +62,7 @@ public class KeyInput3DProbe extends KeyInput3D {
      *  @exception IllegalActionException If thrown while sending the
      *  data to the output port.
      */
+    @Override
     public void fire() throws IllegalActionException {
         super.fire();
 

@@ -179,9 +179,9 @@ public class CustomizableRunPane extends JPanel implements CloseListener {
                     // a subpanel is deleted, then the subsubpanel layout is not deleted.
                     try {
                         MessageHandler
-                                .warning("A layout is given for a subpanel named '"
-                                        + subpanelName
-                                        + "', but there is no instance of this subpanel.");
+                        .warning("A layout is given for a subpanel named '"
+                                + subpanelName
+                                + "', but there is no instance of this subpanel.");
                     } catch (CancelException e) {
                         throw new IllegalActionException(_model, "Canceled");
                     }
@@ -265,6 +265,7 @@ public class CustomizableRunPane extends JPanel implements CloseListener {
      *  @param window The window that closed.
      *  @param button The name of the button that was used to close the window.
      */
+    @Override
     public void windowClosed(Window window, String button) {
         // FIXME: This is not getting invoked. Need to override
         // TableauFrame above with an override to _close().
@@ -327,6 +328,7 @@ public class CustomizableRunPane extends JPanel implements CloseListener {
             JButton goButton = new JButton("Go");
             goButton.setToolTipText("Execute the model");
             goButton.addActionListener(new ActionListener() {
+                @Override
                 public void actionPerformed(ActionEvent event) {
                     startRun();
                 }
@@ -340,6 +342,7 @@ public class CustomizableRunPane extends JPanel implements CloseListener {
             JButton pauseButton = new JButton("Pause");
             pauseButton.setToolTipText("Pause the model");
             pauseButton.addActionListener(new ActionListener() {
+                @Override
                 public void actionPerformed(ActionEvent event) {
                     pauseRun();
                 }
@@ -353,6 +356,7 @@ public class CustomizableRunPane extends JPanel implements CloseListener {
             JButton button = new JButton("Resume");
             button.setToolTipText("Resume the model");
             button.addActionListener(new ActionListener() {
+                @Override
                 public void actionPerformed(ActionEvent event) {
                     resumeRun();
                 }
@@ -366,6 +370,7 @@ public class CustomizableRunPane extends JPanel implements CloseListener {
             JButton button = new JButton("Stop");
             button.setToolTipText("Stop the model");
             button.addActionListener(new ActionListener() {
+                @Override
                 public void actionPerformed(ActionEvent event) {
                     stopRun();
                 }
@@ -413,8 +418,8 @@ public class CustomizableRunPane extends JPanel implements CloseListener {
             // the drag.  Why?
             try {
                 MessageHandler
-                        .warning("Unrecognized entry in control panel layout: "
-                                + name);
+                .warning("Unrecognized entry in control panel layout: "
+                        + name);
             } catch (CancelException e) {
                 throw new IllegalActionException(_model, "Canceled");
             }
@@ -561,9 +566,9 @@ public class CustomizableRunPane extends JPanel implements CloseListener {
                     constraints.append("\" gridX=\"3\" gridY=\"");
                     constraints.append(row);
                     constraints
-                            .append("\" gridWidth=\"1\" gridHeight=\"1\" horizontalAlignment=\"default\" "
-                                    + "verticalAlignment=\"default\" topInset=\"0\" bottomInset=\"0\" "
-                                    + "rightInset=\"0\" leftInset=\"0\"/>\n");
+                    .append("\" gridWidth=\"1\" gridHeight=\"1\" horizontalAlignment=\"default\" "
+                            + "verticalAlignment=\"default\" topInset=\"0\" bottomInset=\"0\" "
+                            + "rightInset=\"0\" leftInset=\"0\"/>\n");
                     row = row + 2;
                 }
             }

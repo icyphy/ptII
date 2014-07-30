@@ -121,6 +121,7 @@ public class SignatureSigner extends SignatureActor {
      *  @exception IllegalActionException If calling send(), super.fire()
      *  throws it, or if there is a problem cryptographic configuration.
      */
+    @Override
     public void fire() throws IllegalActionException {
         // super.fire() should be called before accessing _signature
         // so that we handle any updates of _signature made necessary

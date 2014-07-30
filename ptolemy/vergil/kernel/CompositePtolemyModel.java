@@ -80,6 +80,7 @@ public class CompositePtolemyModel implements CompositeModel {
      *  @return The number of nodes in the graph representing the
      *   specified composite entity.
      */
+    @Override
     public int getNodeCount(Object composite) {
         if (!(composite instanceof NamedObj)) {
             return 0;
@@ -103,6 +104,7 @@ public class CompositePtolemyModel implements CompositeModel {
      *  @return An iterator over nodes in the graph representing the
      *   specified composite entity.
      */
+    @Override
     public Iterator nodes(Object composite) {
         if (!(composite instanceof NamedObj)) {
             return new LinkedList().iterator();
@@ -126,6 +128,7 @@ public class CompositePtolemyModel implements CompositeModel {
      *  @return An iterator over the nodes to be rendered
      *   prior to the edges.
      */
+    @Override
     public Iterator nodesBeforeEdges(Object composite) {
         if (!(composite instanceof NamedObj)) {
             return new LinkedList().iterator();
@@ -150,6 +153,7 @@ public class CompositePtolemyModel implements CompositeModel {
      *  @return An iterator over the nodes to be rendered
      *   after to the edges.
      */
+    @Override
     public Iterator nodesAfterEdges(Object composite) {
         if (!(composite instanceof NamedObj)) {
             return new LinkedList().iterator();

@@ -24,7 +24,7 @@ ENHANCEMENTS, OR MODIFICATIONS.
                                                 PT_COPYRIGHT_VERSION_2
                                                 COPYRIGHTENDKEY
 
-*/
+ */
 
 package ptolemy.domains.ptides.lib.luminary;
 
@@ -47,7 +47,7 @@ import ptolemy.kernel.util.NameDuplicationException;
  *
  */
 public class SpeakerOutputDevice extends ActuatorSetup implements
-        ActuationDevice {
+ActuationDevice {
 
     /**
      * Constructs a SpeakerOutputDevice  object.

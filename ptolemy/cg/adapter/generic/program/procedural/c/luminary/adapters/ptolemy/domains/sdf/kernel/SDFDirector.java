@@ -24,7 +24,7 @@
     PT_COPYRIGHT_VERSION_2
     COPYRIGHTENDKEY
 
-*/
+ */
 package ptolemy.cg.adapter.generic.program.procedural.c.luminary.adapters.ptolemy.domains.sdf.kernel;
 
 import ptolemy.actor.CompositeActor;
@@ -45,10 +45,10 @@ import ptolemy.kernel.util.InternalErrorException;
    @since Ptolemy II 10.0
    @Pt.ProposedRating Red (tfeng)
    @Pt.AcceptedRating Red (tfeng)
-*/
+ */
 public class SDFDirector
-    extends
-        ptolemy.cg.adapter.generic.program.procedural.c.adapters.ptolemy.domains.sdf.kernel.SDFDirector {
+        extends
+ptolemy.cg.adapter.generic.program.procedural.c.adapters.ptolemy.domains.sdf.kernel.SDFDirector {
 
     /** Construct the code generator adapter associated with the given
      *  SDFDirector.
@@ -65,14 +65,15 @@ public class SDFDirector
      *  @param code The string buffer that the generated code is appended to.
      *  @exception IllegalActionException If thrown while transferring tokens.
      */
+    @Override
     public void generateTransferInputsCode(IOPort inputPort, StringBuffer code)
             throws IllegalActionException {
         code.append(CodeStream.indent(getCodeGenerator().comment(
-                                "SDFDirector: " + "Transfer tokens to the inside.")));
+                "SDFDirector: " + "Transfer tokens to the inside.")));
         int rate = DFUtilities.getTokenConsumptionRate(inputPort);
 
         CompositeActor container = (CompositeActor) getComponent()
-            .getContainer();
+                .getContainer();
         TypedCompositeActor compositeActorAdapter = (TypedCompositeActor) getCodeGenerator()
                 .getAdapter(container);
 
@@ -93,8 +94,8 @@ public class SDFDirector
             //     input = Event_Head->data;
             // }
             code.append("if (");
-            code.append(portAdapter.generateHasTokenCode(
-                            Integer.toString(i), offset));
+            code.append(portAdapter.generateHasTokenCode(Integer.toString(i),
+                    offset));
             code.append(") {" + _eol);
 
             // the input port to transfer the data to was declared earlier, and is of this name:
@@ -107,24 +108,23 @@ public class SDFDirector
                 if (bufferSize > 1 || dynamicReferencesAllowed) {
                     throw new InternalErrorException(
                             "Generation of input transfer code"
-                            + "requires the knowledge of offset in the buffer, this"
-                            + "is not yet supported.");
+                                    + "requires the knowledge of offset in the buffer, this"
+                                    + "is not yet supported.");
                     //                        inputCode.append("[" + bufferSize + "]");
                 }
             } else {
                 if (bufferSize > 1) {
                     throw new InternalErrorException(
                             "Generation of input transfer code"
-                            + "requires the knowledge of offset in the buffer, this"
-                            + "is not yet supported.");
+                                    + "requires the knowledge of offset in the buffer, this"
+                                    + "is not yet supported.");
                     //                        inputCode.append("[" + bufferSize + "]");
                 }
             }
 
             code.append(inputCode);
             code.append(" = ");
-            code.append(portAdapter.generateGetCode(Integer.toString(i),
-                            offset));
+            code.append(portAdapter.generateGetCode(Integer.toString(i), offset));
             code.append(";" + _eol);
             code.append("}" + _eol);
         }
@@ -142,10 +142,11 @@ public class SDFDirector
      *  @param code The string buffer that the generated code is appended to.
      *  @exception IllegalActionException If thrown while transferring tokens.
      */
+    @Override
     public void generateTransferOutputsCode(IOPort outputPort, StringBuffer code)
             throws IllegalActionException {
         code.append(CodeStream.indent(getCodeGenerator().comment(
-                                "SDFDirector: " + "Transfer tokens to the outside.")));
+                "SDFDirector: " + "Transfer tokens to the outside.")));
 
         int rate = DFUtilities.getTokenProductionRate(outputPort);
 
@@ -162,8 +163,7 @@ public class SDFDirector
         for (int i = 0; i < outputPort.getWidth(); i++) {
 
             StringBuffer outputCode = new StringBuffer();
-            outputCode
-                .append(CodeGeneratorAdapter.generateName(outputPort));
+            outputCode.append(CodeGeneratorAdapter.generateName(outputPort));
 
             if (outputPort.isMultiport()) {
                 outputCode.append("[" + Integer.toString(i) + "]");
@@ -174,13 +174,13 @@ public class SDFDirector
             if (bufferSize > 1) {
                 throw new InternalErrorException(
                         "Generation of input transfer code"
-                        + "requires the knowledge of offset in the buffer, this"
-                        + "is not yet supported.");
+                                + "requires the knowledge of offset in the buffer, this"
+                                + "is not yet supported.");
                 //                    outputCode.append("[" + bufferSize + "]");
             }
 
             code.append(portAdapter.generatePutCode(Integer.toString(i),
-                            offset, outputCode.toString()));
+                    offset, outputCode.toString()));
         }
 
         // The offset of the ports connected to the output port is

@@ -64,6 +64,7 @@ public class NodeDragInteractor extends DragInteractor {
 
     /** Drag all selected nodes and move any attached edges
      */
+    @Override
     public void translate(LayerEvent e, double x, double y) {
         GraphModel model = _controller.getGraphModel();
         Iterator i = targets();

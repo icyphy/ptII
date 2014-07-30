@@ -136,6 +136,7 @@ public class HammingCoder extends Transformer {
      *  @exception IllegalActionException If <i>codedRate</i>
      *  or <i>uncodedRate</i> is not positive.
      */
+    @Override
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         if (attribute == codedRate) {
@@ -175,6 +176,7 @@ public class HammingCoder extends Transformer {
      *  @exception CloneNotSupportedException If a derived class contains
      *   an attribute that cannot be cloned.
      */
+    @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         HammingCoder newObject = (HammingCoder) super.clone(workspace);
 
@@ -191,6 +193,7 @@ public class HammingCoder extends Transformer {
      *  and compute the parities. Send the parities in sequence to the
      *  output port.
      */
+    @Override
     public void fire() throws IllegalActionException {
         super.fire();
         if (_parameterInvalid) {

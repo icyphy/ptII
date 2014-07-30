@@ -53,6 +53,7 @@ public class TestLibraryBuilder extends LibraryBuilder {
      * @return ComponentEntity
      * @exception Exception
      */
+    @Override
     public CompositeEntity buildLibrary(Workspace workspace) throws Exception {
         return new CompositeEntity(workspace);
     }

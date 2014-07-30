@@ -126,6 +126,7 @@ public class MatrixViewer extends AbstractPlaceableActor {
      *  @exception IllegalActionException If the expression of the
      *   attribute cannot be parsed or cannot be evaluated.
      */
+    @Override
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         if (attribute == width) {
@@ -145,6 +146,7 @@ public class MatrixViewer extends AbstractPlaceableActor {
      *  @exception CloneNotSupportedException If a derived class contains
      *   an attribute that cannot be cloned.
      */
+    @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         MatrixViewer newObject = (MatrixViewer) super.clone(workspace);
 
@@ -163,6 +165,7 @@ public class MatrixViewer extends AbstractPlaceableActor {
      *  @exception IllegalActionException If the parent class
      *   throws it.
      */
+    @Override
     public void initialize() throws IllegalActionException {
         super.initialize();
 
@@ -227,6 +230,7 @@ public class MatrixViewer extends AbstractPlaceableActor {
      *
      *  @param container The container into which to place the table.
      */
+    @Override
     public void place(Container container) {
         // If there was a previous container that doesn't match this one,
         // remove the pane from it.
@@ -281,6 +285,7 @@ public class MatrixViewer extends AbstractPlaceableActor {
      *  @exception IllegalActionException If there is no director, or
      *   if the base class throws it.
      */
+    @Override
     public boolean postfire() throws IllegalActionException {
         if (input.hasToken(0)) {
             Token in = input.get(0);
@@ -303,6 +308,7 @@ public class MatrixViewer extends AbstractPlaceableActor {
      *  @exception IllegalActionException If the base class throws it.
      *  @exception NameDuplicationException If the base class throws it.
      */
+    @Override
     public void setContainer(CompositeEntity container)
             throws IllegalActionException, NameDuplicationException {
         super.setContainer(container);
@@ -318,6 +324,7 @@ public class MatrixViewer extends AbstractPlaceableActor {
      *  @param name A name to present to the user.
      *  @see #getDisplayName()
      */
+    @Override
     public void setDisplayName(String name) {
         super.setDisplayName(name);
         // See http://bugzilla.ecoinformatics.org/show_bug.cgi?id=4302
@@ -365,8 +372,9 @@ public class MatrixViewer extends AbstractPlaceableActor {
      *  @see #getName()
      *  @see #getName(NamedObj)
      */
+    @Override
     public void setName(String name) throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         super.setName(name);
         // See http://bugzilla.ecoinformatics.org/show_bug.cgi?id=4302
         if (_tableau != null) {
@@ -381,6 +389,7 @@ public class MatrixViewer extends AbstractPlaceableActor {
      */
     private void _remove() {
         SwingUtilities.invokeLater(new Runnable() {
+            @Override
             public void run() {
                 if (_container != null && _pane != null) {
                     _container.remove(_pane);

@@ -25,7 +25,7 @@ ENHANCEMENTS, OR MODIFICATIONS.
                                                 COPYRIGHTENDKEY
 
 
-*/
+ */
 package ptdb.kernel.bl.save;
 
 import java.util.List;
@@ -152,7 +152,7 @@ public class AttributesManager {
      *
      */
     public List<XMLDBAttribute> getDBAttributes() throws DBExecutionException,
-            DBConnectionException {
+    DBConnectionException {
 
         List<XMLDBAttribute> attributesList = null;
 

@@ -109,7 +109,7 @@ public class Analysis {
             if (analyzer instanceof CachedStrategy) {
                 if (graph() == analyzer().graph()) {
                     ((CachedStrategy) analyzer)
-                            .setCachedResult((CachedStrategy) _analyzer);
+                    .setCachedResult((CachedStrategy) _analyzer);
                 }
             }
 
@@ -135,6 +135,7 @@ public class Analysis {
      *
      *  @return A description of the analysis and the associated analyzer.
      */
+    @Override
     public String toString() {
         return "Analysis using the following analyzer:\n"
                 + _analyzer.toString();

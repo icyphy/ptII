@@ -276,6 +276,7 @@ public class DocManager extends HandlerBase {
      *   the XML file.
      *  @exception XmlException If the name or value is null.
      */
+    @Override
     public void attribute(String name, String value, boolean specified)
             throws XmlException {
         if (name == null) {
@@ -388,24 +389,24 @@ public class DocManager extends HandlerBase {
                     "doc/codeDoc"
                             + (applicationName.equals("") ? "/"
                                     : applicationName + "/doc/codeDoc/")
-                            + className.replace('.', '/') + ".xml",
+                                    + className.replace('.', '/') + ".xml",
 
-                    "doc/codeDoc/" + className.replace('.', '/') + ".xml",
+                                    "doc/codeDoc/" + className.replace('.', '/') + ".xml",
 
-                    "doc/codeDoc"
-                            + (applicationName.equals("") ? "/"
-                                    : applicationName + "/doc/codeDoc/")
-                            + className.replace('.', '/') + ".html",
+                                    "doc/codeDoc"
+                                            + (applicationName.equals("") ? "/"
+                                                    : applicationName + "/doc/codeDoc/")
+                                                    + className.replace('.', '/') + ".html",
 
-                    "doc/codeDoc/" + className.replace('.', '/') + ".html",
+                                                    "doc/codeDoc/" + className.replace('.', '/') + ".html",
 
-                    className.replace('.', '/') + ".java",
+                                                    className.replace('.', '/') + ".java",
 
-                    "doc/codeDoc"
-                            + (applicationName.equals("") ? "/"
-                                    : applicationName + "/doc/codeDoc/")
+                                                    "doc/codeDoc"
+                                                            + (applicationName.equals("") ? "/"
+                                                                    : applicationName + "/doc/codeDoc/")
 
-                            + className.replace('.', '/') + "Idx.htm" };
+                                                                    + className.replace('.', '/') + "Idx.htm" };
 
             // List of docNames we use if we don't find anything locally.
             List docNameList = new LinkedList();
@@ -519,6 +520,7 @@ public class DocManager extends HandlerBase {
      *  @param offset The starting position in the array.
      *  @param length The number of characters available.
      */
+    @Override
     public void charData(char[] chars, int offset, int length) {
         _currentCharData.append(chars, offset, length);
     }
@@ -528,6 +530,7 @@ public class DocManager extends HandlerBase {
      *  finished parsing the XML document.
      *  It is guaranteed that this will be the last method called.
      */
+    @Override
     public void endDocument() throws Exception {
     }
 
@@ -537,6 +540,7 @@ public class DocManager extends HandlerBase {
      *  @param elementName The element type name.
      *  @exception Exception Not thrown in this base class.
      */
+    @Override
     public void endElement(String elementName) throws Exception {
         if (elementName.equals("author")) {
             _author = _currentCharData.toString();
@@ -566,6 +570,7 @@ public class DocManager extends HandlerBase {
      *  @param column The approximate column number of the error.
      *  @exception XmlException If called.
      */
+    @Override
     public void error(String message, String systemID, int line, int column)
             throws XmlException {
         throw new XmlException(message, _currentExternalEntity(), line, column);
@@ -796,7 +801,7 @@ public class DocManager extends HandlerBase {
             if (_target instanceof Instantiable
                     && ((Instantiable) _target).getParent() != null
                     && ((NamedObj) ((Instantiable) _target).getParent())
-                            .attributeList(DocAttribute.class).size() > 0) {
+                    .attributeList(DocAttribute.class).size() > 0) {
                 result.append("<li><a href=\"#parentClass\">Class documentation</a></li>");
             }
             // Get either the PtDoc, javadoc, or source.
@@ -830,13 +835,13 @@ public class DocManager extends HandlerBase {
                 if (toRead != null) {
                     docURL = toRead;
                     result.append("<li><a href=\"" + toRead.toExternalForm()
-                    // Sadly, Javadoc from Java 1.7 cannot be
-                    // displayed using a JEditorPane, so we open
-                    // javadoc in an external browser.  To test this
-                    // out, see
-                    // http://docs.oracle.com/javase/tutorial/uiswing/components/editorpane.html#editorpane
-                    // and modify the example so that it tries to view
-                    // the Javadoc for Object.
+                            // Sadly, Javadoc from Java 1.7 cannot be
+                            // displayed using a JEditorPane, so we open
+                            // javadoc in an external browser.  To test this
+                            // out, see
+                            // http://docs.oracle.com/javase/tutorial/uiswing/components/editorpane.html#editorpane
+                            // and modify the example so that it tries to view
+                            // the Javadoc for Object.
                             + "#in_browser\">Javadoc Documentation</a></li>");
                 } else {
                     // FIXME: Make this a hyperlink to a doc on how
@@ -899,10 +904,10 @@ public class DocManager extends HandlerBase {
                                         + "may be out of date when compared to source.</font> "
                                         + "<br/>The source was last modified on <br/>"
                                         + new Date(sourceFile.lastModified())
-                                        + ",<br/> documentation was last modified on <br/>"
-                                        + new Date(docFile.lastModified())
-                                        + ".<br/> To rebuild the documentation use the "
-                                        + "Build menu choice.";
+                                + ",<br/> documentation was last modified on <br/>"
+                                + new Date(docFile.lastModified())
+                                + ".<br/> To rebuild the documentation use the "
+                                + "Build menu choice.";
                             }
                         }
                     } catch (Exception ex) {
@@ -1081,6 +1086,7 @@ public class DocManager extends HandlerBase {
      *  @param systemID The system identifier.
      *  @return Null, indicating to use the default system identifier.
      */
+    @Override
     public Object resolveEntity(String publicID, String systemID) {
         if (publicID != null
                 && publicID.equals("-//UC Berkeley//DTD DocML 1//EN")) {
@@ -1105,6 +1111,7 @@ public class DocManager extends HandlerBase {
      *  attempts to read the first entity (the root of the document).
      *  It is guaranteed that this will be the first method called.
      */
+    @Override
     public void startDocument() {
         _attributes = new HashMap();
     }
@@ -1118,6 +1125,7 @@ public class DocManager extends HandlerBase {
      *  @exception XmlException If the element produces an error
      *   in constructing the model.
      */
+    @Override
     public void startElement(String elementName) throws XmlException {
         try {
             // NOTE: The elements are alphabetical below...
@@ -1166,6 +1174,7 @@ public class DocManager extends HandlerBase {
      *  causes the error.
      *  @param systemID The URI for the external entity.
      */
+    @Override
     public void startExternalEntity(String systemID) {
         _externalEntities.push(systemID);
     }

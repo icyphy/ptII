@@ -40,8 +40,8 @@ package ptolemy.cg.adapter.generic.program.procedural.java.adapters.ptolemy.acto
  *
  */
 public class Publisher
-        extends
-        ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.actor.lib.Publisher {
+extends
+ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.actor.lib.Publisher {
     /**
      * Constructor method for the Publisher adapter.
      * @param actor the associated actor

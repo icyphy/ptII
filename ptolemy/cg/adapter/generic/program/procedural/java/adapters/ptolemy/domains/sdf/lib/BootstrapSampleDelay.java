@@ -40,8 +40,8 @@ package ptolemy.cg.adapter.generic.program.procedural.java.adapters.ptolemy.doma
  @Pt.AcceptedRating Red (cxh)
  */
 public class BootstrapSampleDelay
-        extends
-        ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.domains.sdf.lib.BootstrapSampleDelay {
+extends
+ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.domains.sdf.lib.BootstrapSampleDelay {
     /**
      *  Construct a BootstrapSampleDelay adapter.
      *  @param actor The given ptolemy.domains.sdf.lib.BootstrapSampleDelay actor.

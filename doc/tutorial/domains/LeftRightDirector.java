@@ -23,7 +23,7 @@ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
 PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 ENHANCEMENTS, OR MODIFICATIONS.
-*/
+ */
 package doc.tutorial.domains;
 
 import java.util.Comparator;
@@ -86,12 +86,14 @@ public class LeftRightDirector extends StaticSchedulingDirector {
     public Parameter iterations;
 
     /** Override to initialize the iteration count. */
+    @Override
     public void initialize() throws IllegalActionException {
         super.initialize();
         _iterationCount = 0;
     }
 
     /** Override to check the number of iterations. */
+    @Override
     public boolean postfire() throws IllegalActionException {
         boolean result = super.postfire();
         _iterationCount++;
@@ -124,8 +126,9 @@ public class LeftRightDirector extends StaticSchedulingDirector {
         }
 
         /** Return a left-to-right schedule. */
+        @Override
         protected Schedule _getSchedule() throws IllegalActionException,
-                NotSchedulableException {
+        NotSchedulableException {
             // Get the director.
             NamedObj director = getContainer();
             // Get the container of the director.
@@ -163,6 +166,7 @@ public class LeftRightDirector extends StaticSchedulingDirector {
              *  location of th o1 object is greater than the x value
              *  of the o2 object.
              */
+            @Override
             public int compare(Object o1, Object o2) {
                 // In case there is no location for an actor,
                 // provide a default.

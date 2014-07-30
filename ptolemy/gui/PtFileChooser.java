@@ -229,9 +229,9 @@ public class PtFileChooser extends Container {
                     if (!_printedDirectoryWarning) {
                         _printedDirectoryWarning = true;
                         System.out
-                                .println("Warning: The PtFileChooser was instantiated with "
-                                        + "a mode other than 0, but setFileSelectionMode(DIRECTORIES_ONLY) "
-                                        + "was called.  This is likely to not work.");
+                        .println("Warning: The PtFileChooser was instantiated with "
+                                + "a mode other than 0, but setFileSelectionMode(DIRECTORIES_ONLY) "
+                                + "was called.  This is likely to not work.");
                     }
                 }
                 // Mac Specific: allow the user to select a directory.

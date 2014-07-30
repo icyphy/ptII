@@ -51,17 +51,18 @@ directors that implement SuperdenseTimeDirector.
 @deprecated Use actor.lib.GetCurrentMicrostep instead.
 @Pt.ProposedRating Yellow (jiazou)
 @Pt.AcceptedRating Red
-*/
+ */
+@Deprecated
 public class GetCurrentMicrostep extends TimedSource {
     /** Construct an actor with the given container and name.
-    *
-    *  @param container The container.
-    *  @param name The name of this actor.
-    *  @exception IllegalActionException If the actor cannot be contained
-    *   by the proposed container.
-    *  @exception NameDuplicationException If the container already has an
-    *   actor with this name.
-    */
+     *
+     *  @param container The container.
+     *  @param name The name of this actor.
+     *  @exception IllegalActionException If the actor cannot be contained
+     *   by the proposed container.
+     *  @exception NameDuplicationException If the container already has an
+     *   actor with this name.
+     */
     public GetCurrentMicrostep(CompositeEntity container, String name)
             throws NameDuplicationException, IllegalActionException {
         super(container, name);
@@ -77,6 +78,7 @@ public class GetCurrentMicrostep extends TimedSource {
      *  currentTime of the enclosing DE director.
      *  @exception IllegalActionException If send() throws it.
      */
+    @Override
     public void fire() throws IllegalActionException {
         if (!(getDirector() instanceof DEDirector)) {
             throw new IllegalActionException(this,

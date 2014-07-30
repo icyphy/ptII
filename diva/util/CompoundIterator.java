@@ -49,6 +49,7 @@ public class CompoundIterator implements Iterator {
         this._second = second;
     }
 
+    @Override
     public boolean hasNext() {
         if (_onFirst) {
             if (_first.hasNext()) {
@@ -62,6 +63,7 @@ public class CompoundIterator implements Iterator {
         }
     }
 
+    @Override
     public Object next() {
         if (_onFirst) {
             if (_first.hasNext()) {
@@ -75,6 +77,7 @@ public class CompoundIterator implements Iterator {
         }
     }
 
+    @Override
     public void remove() {
         if (_onFirst) {
             _first.remove();

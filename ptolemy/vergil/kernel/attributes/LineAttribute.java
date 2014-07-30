@@ -110,6 +110,7 @@ public class LineAttribute extends ShapeAttribute {
      *  @exception IllegalActionException If the change is not acceptable
      *   to this container (should not be thrown).
      */
+    @Override
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         if (attribute == x || attribute == y) {
@@ -129,6 +130,7 @@ public class LineAttribute extends ShapeAttribute {
      *  @exception CloneNotSupportedException Not thrown in this base class
      *  @return The new Attribute.
      */
+    @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         LineAttribute newObject = (LineAttribute) super.clone(workspace);
 
@@ -149,6 +151,7 @@ public class LineAttribute extends ShapeAttribute {
     /** Return a line.
      *  @return A line.
      */
+    @Override
     protected Shape _getDefaultShape() {
         return new Line2D.Double(0.0, 0.0, 20.0, 20.0);
     }

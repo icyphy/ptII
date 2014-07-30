@@ -75,6 +75,7 @@ public class Expression extends NamedProgramCodeGeneratorAdapter {
      * @exception IllegalActionException If the code stream encounters an
      *  error in processing the specified code block(s).
      */
+    @Override
     protected String _generateFireCode() throws IllegalActionException {
         CParseTreeCodeGenerator parseTreeCG = _cParseTreeCodeGenerator;
 
@@ -95,6 +96,7 @@ public class Expression extends NamedProgramCodeGeneratorAdapter {
      *  error in processing the specified code block(s).
      * @return The processed code string.
      */
+    @Override
     public String generateInitializeCode() throws IllegalActionException {
         CParseTreeCodeGenerator parseTreeCG = _cParseTreeCodeGenerator;
 
@@ -112,6 +114,7 @@ public class Expression extends NamedProgramCodeGeneratorAdapter {
      *  error in processing the specified code block(s).
      * @return The processed code string.
      */
+    @Override
     public String generatePreinitializeCode() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
         code.append(super.generatePreinitializeCode());
@@ -154,6 +157,7 @@ public class Expression extends NamedProgramCodeGeneratorAdapter {
      * @exception IllegalActionException If the code stream encounters an
      *  error in processing the specified code block(s).
      */
+    @Override
     public Set getSharedCode() throws IllegalActionException {
 
         //CParseTreeCodeGenerator parseTreeCG = _cParseTreeCodeGenerator;
@@ -173,6 +177,7 @@ public class Expression extends NamedProgramCodeGeneratorAdapter {
      * @exception IllegalActionException If the code stream encounters an
      *  error in processing the specified code block(s).
      */
+    @Override
     public String generateWrapupCode() throws IllegalActionException {
         CParseTreeCodeGenerator parseTreeCG = _cParseTreeCodeGenerator;
 
@@ -193,6 +198,7 @@ public class Expression extends NamedProgramCodeGeneratorAdapter {
      *  needed by the code generated for the Expression actor.
      * @exception IllegalActionException Not Thrown in this subclass.
      */
+    @Override
     public Set getHeaderFiles() throws IllegalActionException {
         Set files = super.getHeaderFiles();
         files.add("<math.h>");
@@ -221,6 +227,7 @@ public class Expression extends NamedProgramCodeGeneratorAdapter {
          *  @param name The name to look up.
          *  @return The attribute with the specified name in the scope.
          */
+        @Override
         public Token get(String name) {
             try {
                 if (name.equals("time")) {
@@ -288,6 +295,7 @@ public class Expression extends NamedProgramCodeGeneratorAdapter {
          *  @exception IllegalActionException If thrown whil getting
          *  the port or scoped value.
          */
+        @Override
         public Type getType(String name) throws IllegalActionException {
             if (name.equals("time")) {
                 return BaseType.DOUBLE;
@@ -320,6 +328,7 @@ public class Expression extends NamedProgramCodeGeneratorAdapter {
          *  @exception IllegalActionException If a value in the scope
          *  exists with the given name, but cannot be evaluated.
          */
+        @Override
         public ptolemy.graph.InequalityTerm getTypeTerm(String name)
                 throws IllegalActionException {
             if (name.equals("time")) {
@@ -347,6 +356,7 @@ public class Expression extends NamedProgramCodeGeneratorAdapter {
         /** Return the list of identifiers within the scope.
          *  @return The list of identifiers within the scope.
          */
+        @Override
         public Set identifierSet() {
             return getAllScopedVariableNames(null, _actor);
         }

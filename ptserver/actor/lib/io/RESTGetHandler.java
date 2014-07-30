@@ -70,7 +70,7 @@ if the operation is not supported (for example, delete).
 @Pt.ProposedRating Red (ltrnc)
 @Pt.AcceptedRating Red (ltrnc)
 @see ptolemy.vergil.basic.export.ExportModel
-*/
+ */
 public class RESTGetHandler extends TypedAtomicActor {
 
     /** Create a new actor in the specified container with the specified
@@ -164,6 +164,7 @@ public class RESTGetHandler extends TypedAtomicActor {
      *  @exception IllegalActionException If there is a problem finding the
      *  resource or writing to the file.
      */
+    @Override
     public void fire() throws IllegalActionException {
         super.fire();
 
@@ -188,6 +189,7 @@ public class RESTGetHandler extends TypedAtomicActor {
      *  output file is given but can't be opened.
      */
 
+    @Override
     public void initialize() throws IllegalActionException {
         super.initialize();
 
@@ -210,7 +212,7 @@ public class RESTGetHandler extends TypedAtomicActor {
             if (_destinationFile.exists()) {
                 _readyToFire = true;
             }
-            */
+             */
             throw new IllegalActionException(this, "File export is not yet "
                     + "implemented for RESTGetHandler.  Please uncheck the"
                     + "outputToFile parmater, and read the output from the "

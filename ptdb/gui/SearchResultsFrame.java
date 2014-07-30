@@ -25,7 +25,7 @@ ENHANCEMENTS, OR MODIFICATIONS.
                                                 COPYRIGHTENDKEY
 
 
-*/
+ */
 package ptdb.gui;
 
 import java.awt.BorderLayout;
@@ -80,7 +80,7 @@ import ptolemy.util.MessageHandler;
 
 @SuppressWarnings("serial")
 public class SearchResultsFrame extends JFrame implements Observer,
-        PTDBBasicFrame {
+PTDBBasicFrame {
 
     /**
      * Construct a panel associated with a search result.
@@ -150,6 +150,7 @@ public class SearchResultsFrame extends JFrame implements Observer,
 
         _loadByRefButton.addActionListener(new ActionListener() {
 
+            @Override
             public void actionPerformed(ActionEvent event) {
 
                 _importByReference();
@@ -160,6 +161,7 @@ public class SearchResultsFrame extends JFrame implements Observer,
 
         _loadByValButton.addActionListener(new ActionListener() {
 
+            @Override
             public void actionPerformed(ActionEvent event) {
 
                 _importByValue();
@@ -170,6 +172,7 @@ public class SearchResultsFrame extends JFrame implements Observer,
 
         _cancelButton.addActionListener(new ActionListener() {
 
+            @Override
             public void actionPerformed(ActionEvent event) {
 
                 _cancelObservable.notifyObservers();
@@ -221,6 +224,7 @@ public class SearchResultsFrame extends JFrame implements Observer,
      * Close this frame.
      */
 
+    @Override
     public void closeFrame() {
         dispose();
     }
@@ -263,6 +267,7 @@ public class SearchResultsFrame extends JFrame implements Observer,
      * @param arg
      *        Option argument.  This is unused, but included by Java conventions.
      */
+    @Override
     public void update(Observable buffer, Object arg) {
 
         if (buffer instanceof SearchResultBuffer) {

@@ -73,6 +73,7 @@ public class TestSource extends TypedAtomicActor {
     public TypedIOPort output;
 
     // NOTE: No clone() method, so don't clone this.
+    @Override
     public void fire() throws IllegalActionException {
         super.fire();
         double increment = 0.0;
@@ -97,6 +98,7 @@ public class TestSource extends TypedAtomicActor {
         }
     }
 
+    @Override
     public void initialize() throws IllegalActionException {
         value = 0.0;
         count = 0;

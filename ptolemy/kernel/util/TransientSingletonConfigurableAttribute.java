@@ -45,8 +45,9 @@ package ptolemy.kernel.util;
  @Pt.ProposedRating Green (eal)
  @Pt.AcceptedRating Green (bilung)
  */
+@Deprecated
 public class TransientSingletonConfigurableAttribute extends
-        ConfigurableAttribute implements Singleton {
+ConfigurableAttribute implements Singleton {
     // NOTE: This class does not extend SingletonConfigurableAttribute
     // even though the setContainer() method is identical.  The reason
     // is subtle.  The base classes in the Ptolemy kernel all create
@@ -135,8 +136,9 @@ public class TransientSingletonConfigurableAttribute extends
      *   an attribute with the name of this attribute that is of class
      *   SingletonConfigurableAttribute.
      */
+    @Override
     public void setContainer(NamedObj container) throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         Attribute previous = null;
 
         if (container != null) {

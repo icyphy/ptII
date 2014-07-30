@@ -108,6 +108,7 @@ public class MailboxBoundaryReceiver extends Mailbox implements ProcessReceiver 
      *
      *  @return The token contained by this receiver.
      */
+    @Override
     public Token get() {
         Workspace workspace = getContainer().workspace();
         Token result = null;
@@ -184,6 +185,7 @@ public class MailboxBoundaryReceiver extends Mailbox implements ProcessReceiver 
      *   return false otherwise.
      * @exception IllegalActionException
      */
+    @Override
     public boolean isConnectedToBoundary() throws IllegalActionException {
         return _boundaryDetector.isConnectedToBoundary();
     }
@@ -198,8 +200,9 @@ public class MailboxBoundaryReceiver extends Mailbox implements ProcessReceiver 
      * @exception IllegalActionException
      * @exception InvalidStateException
      */
+    @Override
     public boolean isConnectedToBoundaryInside() throws InvalidStateException,
-            IllegalActionException {
+    IllegalActionException {
         return _boundaryDetector.isConnectedToBoundaryInside();
     }
 
@@ -213,6 +216,7 @@ public class MailboxBoundaryReceiver extends Mailbox implements ProcessReceiver 
      *   boundary port; return false otherwise.
      * @exception IllegalActionException
      */
+    @Override
     public boolean isConnectedToBoundaryOutside() throws IllegalActionException {
         return _boundaryDetector.isConnectedToBoundaryOutside();
     }
@@ -224,6 +228,7 @@ public class MailboxBoundaryReceiver extends Mailbox implements ProcessReceiver 
      *  @return True if this is a consumer receiver; return false otherwise.
      * @exception IllegalActionException
      */
+    @Override
     public boolean isConsumerReceiver() throws IllegalActionException {
         if (isConnectedToBoundary()) {
             return true;
@@ -242,6 +247,7 @@ public class MailboxBoundaryReceiver extends Mailbox implements ProcessReceiver 
      *  @return True if this receiver is contained on the inside of
      *   a boundary port; return false otherwise.
      */
+    @Override
     public boolean isInsideBoundary() {
         return _boundaryDetector.isInsideBoundary();
     }
@@ -256,6 +262,7 @@ public class MailboxBoundaryReceiver extends Mailbox implements ProcessReceiver 
      *  @return True if this receiver is contained on the outside of a
      *   boundary port; return false otherwise.
      */
+    @Override
     public boolean isOutsideBoundary() {
         return _boundaryDetector.isOutsideBoundary();
     }
@@ -266,6 +273,7 @@ public class MailboxBoundaryReceiver extends Mailbox implements ProcessReceiver 
      *
      *  @return True if this is a producer receiver; return false otherwise.
      */
+    @Override
     public boolean isProducerReceiver() {
         if (isOutsideBoundary() || isInsideBoundary()) {
             return true;
@@ -279,6 +287,7 @@ public class MailboxBoundaryReceiver extends Mailbox implements ProcessReceiver 
      *  @return a boolean indicating whether a read is blocked on this
      *  receiver or not.
      */
+    @Override
     public boolean isReadBlocked() {
         // NOTE: This method used to be synchronized on this
         // receiver, but since it is called by synchronized methods in
@@ -293,6 +302,7 @@ public class MailboxBoundaryReceiver extends Mailbox implements ProcessReceiver 
      *  @return A boolean indicating whether a write is blocked  on this
      *  receiver or not.
      */
+    @Override
     public boolean isWriteBlocked() {
         // NOTE: This method used to be synchronized on this
         // receiver, but since it is called by synchronized methods in
@@ -312,6 +322,7 @@ public class MailboxBoundaryReceiver extends Mailbox implements ProcessReceiver 
      *  @param token The token being placed in this receiver, or null
      *   to do nothing.
      */
+    @Override
     public void put(Token token) {
         if (token == null) {
             return;
@@ -381,6 +392,7 @@ public class MailboxBoundaryReceiver extends Mailbox implements ProcessReceiver 
     /** Set a local flag requesting that execution of the actor
      *  containing this receiver discontinue.
      */
+    @Override
     public synchronized void requestFinish() {
         _terminate = true;
         notifyAll();
@@ -389,6 +401,7 @@ public class MailboxBoundaryReceiver extends Mailbox implements ProcessReceiver 
     /** Reset the local flags of this receiver. Use this method when
      *  restarting execution.
      */
+    @Override
     public void reset() {
         if (_readPending != null) {
             _director.threadUnblocked(_readPending, this);
@@ -409,6 +422,7 @@ public class MailboxBoundaryReceiver extends Mailbox implements ProcessReceiver 
      *   an appropriate subclass of IOPort, or if the container's director
      *   is not an instance of ProcessDirector.
      */
+    @Override
     public void setContainer(IOPort port) throws IllegalActionException {
         super.setContainer(port);
 

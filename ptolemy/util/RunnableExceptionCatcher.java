@@ -24,7 +24,7 @@
  PT_COPYRIGHT_VERSION_2
  COPYRIGHTENDKEY
 
-*/
+ */
 
 package ptolemy.util;
 
@@ -41,7 +41,7 @@ Ptolemy Message Handler.
 @since Ptolemy II 8.0
 @Pt.ProposedRating Green (rodiers)
 @Pt.AcceptedRating Green (rodiers)
-*/
+ */
 
 public class RunnableExceptionCatcher implements Runnable {
     ///////////////////////////////////////////////////////////////////
@@ -58,6 +58,7 @@ public class RunnableExceptionCatcher implements Runnable {
 
     /** Execute the runnable.
      */
+    @Override
     public void run() {
         try {
             _runnable.run();

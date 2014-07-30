@@ -95,6 +95,7 @@ public class StateIcon extends NameIcon {
      *  ColorAttribute named "fill", then that color is returned.
      *  @return The paint to use to fill the icon.
      */
+    @Override
     protected Paint _getFill() {
         Parameter colorParameter;
         try {
@@ -104,13 +105,13 @@ public class StateIcon extends NameIcon {
                 if (array.length() == 4) {
                     Color color = new Color(
                             (float) ((ScalarToken) array.getElement(0))
-                                    .doubleValue(),
+                            .doubleValue(),
                             (float) ((ScalarToken) array.getElement(1))
-                                    .doubleValue(),
+                            .doubleValue(),
                             (float) ((ScalarToken) array.getElement(2))
-                                    .doubleValue(),
+                            .doubleValue(),
                             (float) ((ScalarToken) array.getElement(3))
-                                    .doubleValue());
+                            .doubleValue());
                     return color;
                 }
             }
@@ -148,6 +149,7 @@ public class StateIcon extends NameIcon {
      *  and its <i>isInitialState</i> parameter is set to true.
      *  @return The line width to use in rendering the box.
      */
+    @Override
     protected float _getLineWidth() {
         NamedObj container = getContainer();
         if (container instanceof State) {

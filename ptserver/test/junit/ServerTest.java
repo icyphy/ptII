@@ -71,14 +71,14 @@ public class ServerTest {
 
     @Test
     public void testServerGeneration() throws MalformedURLException,
-            URISyntaxException, Exception {
+    URISyntaxException, Exception {
         MoMLParser parser = new MoMLParser();
         MoMLParser.setMoMLFilters(BackwardCompatibility.allFilters());
         CompositeActor model = (CompositeActor) parser.parse(null,
                 ServerTest.class.getResource("junitmodel.xml").toURI().toURL());
         CompositeActor layout = (CompositeActor) parser.parse(null,
                 ServerTest.class.getResource("junitmodel_test.layout.xml")
-                        .toURI().toURL());
+                .toURI().toURL());
         HashSet<String> remoteAttributes = new HashSet<String>();
         remoteAttributes.add(ServerUtility.REMOTE_OBJECT_TAG);
         ServerUtility.mergeModelWithLayout(model, layout,

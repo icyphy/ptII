@@ -115,6 +115,7 @@ public class DotProduct extends TypedAtomicActor {
      *  @exception CloneNotSupportedException If a derived class has
      *   an attribute that cannot be cloned.
      */
+    @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         DotProduct newObject = (DotProduct) super.clone(workspace);
         PortFunction function = new PortFunction(newObject.input1,
@@ -129,6 +130,7 @@ public class DotProduct extends TypedAtomicActor {
      *  the input arrays have unequal widths, or if the input arrays
      *  have no elements, or if the input types.
      */
+    @Override
     public void fire() throws IllegalActionException {
         super.fire();
 
@@ -161,6 +163,7 @@ public class DotProduct extends TypedAtomicActor {
      *  false.
      *  @exception IllegalActionException If there is no director.
      */
+    @Override
     public boolean prefire() throws IllegalActionException {
         if (!input1.hasToken(0) || !input2.hasToken(0)) {
             if (_debugging) {
@@ -275,6 +278,7 @@ public class DotProduct extends TypedAtomicActor {
         /** Return the function result.
          *  @return A Type.
          */
+        @Override
         public Object getValue() {
             Type type1 = _port1.getType();
             Type type2 = _port2.getType();
@@ -306,6 +310,7 @@ public class DotProduct extends TypedAtomicActor {
          *  InequalityTerm array.
          *  @return An array of InequalityTerm.
          */
+        @Override
         public InequalityTerm[] getVariables() {
             InequalityTerm term1 = _port1.getTypeTerm();
             InequalityTerm term2 = _port2.getTypeTerm();

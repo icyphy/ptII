@@ -86,6 +86,7 @@ public class LogicalNot extends SynchronousFixTransformer {
      *  If there is no inputs, then produce null.
      *  @exception IllegalActionException If there is no director.
      */
+    @Override
     public void fire() throws IllegalActionException {
         super.fire();
         BigInteger intResult = null;
@@ -109,6 +110,7 @@ public class LogicalNot extends SynchronousFixTransformer {
      *
      *  @return False.
      */
+    @Override
     public boolean isStrict() {
         return false;
     }
@@ -116,6 +118,7 @@ public class LogicalNot extends SynchronousFixTransformer {
     /** Override the base class to declare that the <i>A</i> and
      *  port does not depend on the <i>output</i> in a firing.
      */
+    @Override
     public void preinitialize() throws IllegalActionException {
         super.preinitialize();
         removeDependency(A, output);

@@ -97,7 +97,7 @@ import diva.gui.toolbox.MenuCreator;
  @Pt.AcceptedRating Red (johnr)
  */
 public abstract class BasicGraphController extends AbstractGraphController
-        implements DebugListener, ValueListener {
+implements DebugListener, ValueListener {
     /** Create a new basic controller.
      */
     public BasicGraphController() {
@@ -120,6 +120,7 @@ public abstract class BasicGraphController extends AbstractGraphController
     public void highlightError(final Nameable culprit) {
         if (culprit instanceof NamedObj) {
             ChangeRequest request = new ChangeRequest(this, "Error Highlighter") {
+                @Override
                 protected void _execute() throws Exception {
                     _addErrorHighlightIfNeeded(culprit);
                     NamedObj container = culprit.getContainer();
@@ -155,6 +156,7 @@ public abstract class BasicGraphController extends AbstractGraphController
     /** React to an event.  This base class does nothing.
      *  @param event The debug event.
      */
+    @Override
     public void event(DebugEvent event) {
     }
 
@@ -203,6 +205,7 @@ public abstract class BasicGraphController extends AbstractGraphController
      *  @param object The object to get a controller for.
      *  @return A custom node controller if there is one, and null otherwise.
      */
+    @Override
     public NodeController getNodeController(Object object) {
         if (object instanceof Locatable) {
             Object semanticObject = getGraphModel().getSemanticObject(object);
@@ -236,6 +239,7 @@ public abstract class BasicGraphController extends AbstractGraphController
     /** React to a debug message.  This base class does nothing.
      *  @param message The message.
      */
+    @Override
     public void message(String message) {
     }
 
@@ -309,6 +313,7 @@ public abstract class BasicGraphController extends AbstractGraphController
      *  @param semanticObject The semantic object (normally a Locatable).
      *  @param figure The figure.
      */
+    @Override
     public void setFigure(Object semanticObject, Figure figure) {
         super.setFigure(semanticObject, figure);
 
@@ -333,11 +338,13 @@ public abstract class BasicGraphController extends AbstractGraphController
      *  event thread, but otherwise is deferred to the event thread.
      *  @param settable The object that has changed value.
      */
+    @Override
     public void valueChanged(final Settable settable) {
         if (settable instanceof Locatable && !_inValueChanged) {
             // Have to defer this to the event thread, or repaint
             // doesn't work properly.
             Runnable action = new Runnable() {
+                @Override
                 public void run() {
                     Locatable location = (Locatable) settable;
                     Figure figure = getFigure(location);
@@ -458,6 +465,7 @@ public abstract class BasicGraphController extends AbstractGraphController
     protected ChangeRequest _getClearAllErrorHighlightsChangeRequest() {
         ChangeRequest request = new ChangeRequest(this,
                 "Error Highlight Clearer", true) {
+            @Override
             protected void _execute() throws Exception {
                 for (Attribute highlight : _errorHighlights) {
                     highlight.setContainer(null);
@@ -493,6 +501,7 @@ public abstract class BasicGraphController extends AbstractGraphController
      *  with the GraphPane, so you can't do any initialization that
      *  involves the canvas.
      */
+    @Override
     protected void initializeInteraction() {
         // Remove the existing menu if it has already been created by an earlier
         // call of this method, because we may invoke this method multiple times
@@ -623,7 +632,7 @@ public abstract class BasicGraphController extends AbstractGraphController
             highlightColor = new ColorAttribute((NamedObj) culprit,
                     "_highlightColor");
             ((ColorAttribute) highlightColor)
-                    .setExpression("{1.0, 0.0, 0.0, 1.0}");
+            .setExpression("{1.0, 0.0, 0.0, 1.0}");
             highlightColor.setPersistent(false);
             ((ColorAttribute) highlightColor).setVisibility(Settable.EXPERT);
             _errorHighlights.add(highlightColor);
@@ -667,7 +676,7 @@ public abstract class BasicGraphController extends AbstractGraphController
      *  of an instance.
      */
     @SuppressWarnings("serial")
-        public class OpenBaseClassAction extends FigureAction {
+    public class OpenBaseClassAction extends FigureAction {
         /** Construct a new action.
          */
         public OpenBaseClassAction() {
@@ -680,10 +689,11 @@ public abstract class BasicGraphController extends AbstractGraphController
         /** Open the base class of a subclass or the class of an instance.
          *  @param e The event.
          */
+        @Override
         public void actionPerformed(ActionEvent e) {
             if (_configuration == null) {
                 MessageHandler
-                        .error("Cannot open base class without a configuration.");
+                .error("Cannot open base class without a configuration.");
                 return;
             }
 
@@ -739,7 +749,7 @@ public abstract class BasicGraphController extends AbstractGraphController
     /** An action that will create a UnitSolverDialog.
      */
     @SuppressWarnings("serial")
-        public class UnitSolverDialogAction extends AbstractAction {
+    public class UnitSolverDialogAction extends AbstractAction {
         /** Construct an action that will create a UnitSolverDialog.
          */
         public UnitSolverDialogAction() {
@@ -749,6 +759,7 @@ public abstract class BasicGraphController extends AbstractGraphController
         /** Construct a UnitSolverDialog.
          *  @param e The action event, ignored by this method.
          */
+        @Override
         public void actionPerformed(ActionEvent e) {
             // Only makes sense if this is an ActorGraphFrame.
             if (_frame instanceof ActorGraphFrame) {
@@ -780,6 +791,7 @@ public abstract class BasicGraphController extends AbstractGraphController
             addMenuItemFactory(_configureMenuFactory);
         }
 
+        @Override
         protected NamedObj _getObjectFromFigure(Figure source) {
             // NOTE: Between Ptolemy 3.0 and 5.0, this would ignore
             // the source argument, even if it was non-null.  Why?

@@ -274,6 +274,7 @@ public abstract class Top extends JFrame {
      *  dispose() method of the superclass,
      *  {@link javax.swing.JFrame}.
      */
+    @Override
     public void dispose() {
         if (_debugClosing) {
             System.out.println("Top.dispose() : " + this.getName());
@@ -348,10 +349,10 @@ public abstract class Top extends JFrame {
                                 if (!_printedSecurityExceptionMessage) {
                                     _printedSecurityExceptionMessage = true;
                                     System.out
-                                            .println("Warning: Failed set "
-                                                    + field
-                                                    + " accessible while disposing. "
-                                                    + "(applets and -sandbox always causes this)");
+                                    .println("Warning: Failed set "
+                                            + field
+                                            + " accessible while disposing. "
+                                            + "(applets and -sandbox always causes this)");
                                 }
                             }
                             break;
@@ -459,6 +460,7 @@ public abstract class Top extends JFrame {
      *  outside the AWT event thread, then its execution is deferred and
      *  performed in that thread.
      */
+    @Override
     public void pack() {
         Runnable doPack = new DoPackRunnable();
 
@@ -510,6 +512,7 @@ public abstract class Top extends JFrame {
      *  performed in that thread.
      *  @param background The background color.
      */
+    @Override
     public void setBackground(final Color background) {
         _statusBarBackground = background;
         Runnable doSet = new SetBackgroundRunnable();
@@ -554,6 +557,7 @@ public abstract class Top extends JFrame {
      *  outside the AWT event thread, then its execution is deferred and
      *  performed in that thread.
      */
+    @Override
     public void show() {
         Runnable doShow = new ShowWindowRunnable();
 
@@ -935,11 +939,11 @@ public abstract class Top extends JFrame {
             // On the Mac, calling job.setJobName() will set the file name,
             // but not the directory.
             System.out
-                    .println("Top._printPDF(): Print Job information, much of which is ignored?\n"
-                            + "JobName: "
-                            + job.getJobName()
-                            + "\nUserName: "
-                            + job.getUserName());
+            .println("Top._printPDF(): Print Job information, much of which is ignored?\n"
+                    + "JobName: "
+                    + job.getJobName()
+                    + "\nUserName: "
+                    + job.getUserName());
             javax.print.attribute.Attribute[] attributes = aset.toArray();
             for (Attribute attribute : attributes) {
                 System.out.println(attribute.getName() + " "
@@ -948,9 +952,9 @@ public abstract class Top extends JFrame {
 
             job.print(aset);
             System.out
-                    .println("Window printed from command line. "
-                            + "Under MacOSX, look for "
-                            + "~/Desktop/Java Printing.pdf");
+            .println("Window printed from command line. "
+                    + "Under MacOSX, look for "
+                    + "~/Desktop/Java Printing.pdf");
         }
     }
 
@@ -1070,6 +1074,7 @@ public abstract class Top extends JFrame {
      *  @return A file dialog for save as.
      *  @deprecated Use {@link #_saveAsJFileChooserComponent()}
      */
+    @Deprecated
     protected JFileChooser _saveAsFileDialog() {
         // Too bad this method was incorrectly named.  This method
         // returns a JFileChooser, why on earth would its name
@@ -1309,6 +1314,7 @@ public abstract class Top extends JFrame {
 
     /** Listener for file menu commands. */
     class FileMenuListener implements ActionListener {
+        @Override
         public void actionPerformed(ActionEvent e) {
             // Make this the default context for modal messages.
             UndeferredGraphicalMessageHandler.setContext(Top.this);
@@ -1355,6 +1361,7 @@ public abstract class Top extends JFrame {
 
     /** Listener for help menu commands. */
     class HelpMenuListener implements ActionListener {
+        @Override
         public void actionPerformed(ActionEvent e) {
             // Make this the default context for modal messages.
             UndeferredGraphicalMessageHandler.setContext(Top.this);
@@ -1608,10 +1615,10 @@ public abstract class Top extends JFrame {
         if (PtGUIUtilities.macOSLookAndFeel()
                 && System.getProperty("java.version").startsWith("1.5")) {
             System.out
-                    .println("Warning, under Mac OS X with Java 1.5, printing might "
-                            + "not work.  Try recompiling with Java 1.6 or setting a property:\n"
-                            + "export JAVAFLAGS=-Dptolemy.ptII.print.platform=CrossPlatform\n"
-                            + "and restarting vergil: $PTII/bin/vergil");
+            .println("Warning, under Mac OS X with Java 1.5, printing might "
+                    + "not work.  Try recompiling with Java 1.6 or setting a property:\n"
+                    + "export JAVAFLAGS=-Dptolemy.ptII.print.platform=CrossPlatform\n"
+                    + "and restarting vergil: $PTII/bin/vergil");
         }
     }
 
@@ -1780,6 +1787,7 @@ public abstract class Top extends JFrame {
 
     /** A runnable for showing the window. */
     class ShowWindowRunnable implements Runnable {
+        @Override
         public void run() {
             // NOTE: We used to call pack() here, but this would
             // override any manual changes in sizing that had been
@@ -1801,6 +1809,7 @@ public abstract class Top extends JFrame {
             _throwable = throwable;
         }
 
+        @Override
         public void run() {
             if (_statusBar != null) {
                 _statusBar.setMessage(MessageHandler
@@ -1820,6 +1829,7 @@ public abstract class Top extends JFrame {
             _message = message;
         }
 
+        @Override
         public void run() {
             if (_statusBar != null) {
                 _statusBar.setMessage(_message);
@@ -1831,6 +1841,7 @@ public abstract class Top extends JFrame {
 
     /** A runnable for packing the Window. */
     class DoPackRunnable implements Runnable {
+        @Override
         public void run() {
             // NOTE: This always runs in the swing thread,
             // so there is no need to synchronize.
@@ -1908,6 +1919,7 @@ public abstract class Top extends JFrame {
 
     /** A runnable for executing deferred actions. */
     static class DeferredActionsRunnable implements Runnable {
+        @Override
         public void run() {
             _executeDeferredActions();
         }
@@ -1915,6 +1927,7 @@ public abstract class Top extends JFrame {
 
     /** A runnable for closing the window. */
     class CloseWindowRunnable implements Runnable {
+        @Override
         public void run() {
             _close();
         }
@@ -1922,6 +1935,7 @@ public abstract class Top extends JFrame {
 
     /** A runnable for centering the window on the screen. */
     class CenterOnScreenRunnable implements Runnable {
+        @Override
         public void run() {
             Toolkit tk = Toolkit.getDefaultToolkit();
             setLocation((tk.getScreenSize().width - getSize().width) / 2,
@@ -1934,6 +1948,7 @@ public abstract class Top extends JFrame {
 
     /** A runnable for setting the background color of the status bar. */
     class SetBackgroundRunnable implements Runnable {
+        @Override
         public void run() {
             Top.super.setBackground(_statusBarBackground);
 
@@ -1948,6 +1963,7 @@ public abstract class Top extends JFrame {
 
     /** Listener for windowClosing action. */
     class CloseWindowAdapter extends WindowAdapter {
+        @Override
         public void windowClosing(WindowEvent e) {
             if (_debugClosing) {
                 System.out.println("Top$CloseWindowAdapter.windowClosing() : "
@@ -1966,6 +1982,7 @@ public abstract class Top extends JFrame {
 
     /** Listener for history menu commands. */
     class HistoryMenuListener implements ActionListener {
+        @Override
         public void actionPerformed(ActionEvent event) {
             // Make this the default context for modal messages.
             UndeferredGraphicalMessageHandler.setContext(Top.this);

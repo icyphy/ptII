@@ -52,6 +52,7 @@ public class SiteDecorator implements Site {
      * will return a valid Figure, but clients must be aware that
      * certain types of site may return null.
      */
+    @Override
     public Figure getFigure() {
         return _site.getFigure();
     }
@@ -59,6 +60,7 @@ public class SiteDecorator implements Site {
     /** Get the ID of this site. Within each figure, the IDs of
      * the sites must be unique.
      */
+    @Override
     public int getID() {
         return _site.getID();
     }
@@ -67,6 +69,7 @@ public class SiteDecorator implements Site {
      * between zero and 2pi. The direction is "out" of the site.
      * The result is meaningful only if hasNormal() returns true.
      */
+    @Override
     public double getNormal() {
         return _site.getNormal();
     }
@@ -74,6 +77,7 @@ public class SiteDecorator implements Site {
     /** Get the point location of the site, in the enclosing
      * transform context with default normal.
      */
+    @Override
     public Point2D getPoint() {
         return _site.getPoint();
     }
@@ -83,6 +87,7 @@ public class SiteDecorator implements Site {
      * The given context must be an enclosing
      * context of the site.
      */
+    @Override
     public Point2D getPoint(TransformContext tc) {
         return _site.getPoint(tc);
     }
@@ -90,6 +95,7 @@ public class SiteDecorator implements Site {
     /** Get the point location of the site, in the enclosing
      * transform context with the given normal.
      */
+    @Override
     public Point2D getPoint(double normal) {
         return _site.getPoint(normal);
     }
@@ -99,12 +105,14 @@ public class SiteDecorator implements Site {
      * The given context must be an enclosing
      * context of the site.
      */
+    @Override
     public Point2D getPoint(TransformContext tc, double normal) {
         return _site.getPoint(tc, normal);
     }
 
     /** Get the enclosing transform context of this site.
      */
+    @Override
     public TransformContext getTransformContext() {
         return _site.getTransformContext();
     }
@@ -112,6 +120,7 @@ public class SiteDecorator implements Site {
     /** Get the x-coordinate of the site, in the enclosing
      * transform context.
      */
+    @Override
     public double getX() {
         return _site.getX();
     }
@@ -119,6 +128,7 @@ public class SiteDecorator implements Site {
     /** Get the y-coordinate of the site, in the enclosing
      * transform context.
      */
+    @Override
     public double getY() {
         return _site.getY();
     }
@@ -129,6 +139,7 @@ public class SiteDecorator implements Site {
      * a shape will return true to this method, and sites
      * in the center of an object will return false.
      */
+    @Override
     public boolean hasNormal() {
         return _site.hasNormal();
     }
@@ -138,6 +149,7 @@ public class SiteDecorator implements Site {
      * NORTH, SOUTH, EAST, or WEST, defined in
      * <b>javax.swing.SwingConstants</b>
      */
+    @Override
     public boolean isNormal(int direction) {
         return _site.isNormal(direction);
     }
@@ -149,6 +161,7 @@ public class SiteDecorator implements Site {
      * its position. For example, a site on the perimeter of a
      * figure may move to a different position.
      */
+    @Override
     public void setNormal(double normal) {
         _site.setNormal(normal);
     }
@@ -161,6 +174,7 @@ public class SiteDecorator implements Site {
      * it part of the distance. Clients are expected to check the
      * new location of the site.
      */
+    @Override
     public void translate(double x, double y) {
         _site.translate(x, y);
     }

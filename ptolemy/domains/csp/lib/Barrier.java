@@ -112,6 +112,7 @@ public class Barrier extends TypedAtomicActor implements BranchActor {
      *  @exception TerminateProcessException If the process termination
      *   is requested by the director.
      */
+    @Override
     public void fire() throws IllegalActionException {
         super.fire();
         if (_debugging && _VERBOSE_DEBUGGING) {
@@ -202,6 +203,7 @@ public class Barrier extends TypedAtomicActor implements BranchActor {
 
     /** Return the conditional branch control of this actor.
      */
+    @Override
     public AbstractBranchController getBranchController() {
         return _branchController;
     }
@@ -209,6 +211,7 @@ public class Barrier extends TypedAtomicActor implements BranchActor {
     /** Initialize this actor.
      *  @exception IllegalActionException If a derived class throws it.
      */
+    @Override
     public void initialize() throws IllegalActionException {
         super.initialize();
         _terminate = false;
@@ -218,6 +221,7 @@ public class Barrier extends TypedAtomicActor implements BranchActor {
      *  during the execution of the fire() method.
      *  @return True if another iteration can occur.
      */
+    @Override
     public boolean postfire() {
         if (_debugging) {
             _debug("Invoking postfire, which returns " + !_terminate);

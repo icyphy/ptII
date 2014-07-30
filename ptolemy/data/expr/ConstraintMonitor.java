@@ -150,6 +150,7 @@ public class ConstraintMonitor extends Parameter implements Decorator {
      *  @exception IllegalActionException If the change is not acceptable
      *   to this container (not thrown in this base class).
      */
+    @Override
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         if (attribute == includeOpaqueContents
@@ -167,6 +168,7 @@ public class ConstraintMonitor extends Parameter implements Decorator {
      *  @exception CloneNotSupportedException Not thrown in this base class
      *  @return The new object.
      */
+    @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         ConstraintMonitor newObject = (ConstraintMonitor) super
                 .clone(workspace);
@@ -187,6 +189,7 @@ public class ConstraintMonitor extends Parameter implements Decorator {
      *  @exception IllegalActionException If some object cannot be determined to
      *   be decorated or not (e.g., a parameter cannot be evaluated).
      */
+    @Override
     public DecoratorAttributes createDecoratorAttributes(NamedObj target)
             throws IllegalActionException {
         boolean transparents = ((BooleanToken) includeTransparents.getToken())
@@ -203,8 +206,8 @@ public class ConstraintMonitor extends Parameter implements Decorator {
                 && !((Entity) target).isClassDefinition()
                 && (transparents || !(target instanceof CompositeEntity) || ((CompositeEntity) target)
                         .isOpaque())
-                && _deepContains((CompositeEntity) container, (Entity) target,
-                        opaques)) {
+                        && _deepContains((CompositeEntity) container, (Entity) target,
+                                opaques)) {
             try {
                 return new ConstraintMonitorAttributes(target, this);
             } catch (NameDuplicationException e) {
@@ -224,6 +227,7 @@ public class ConstraintMonitor extends Parameter implements Decorator {
      *  @exception IllegalActionException If some object cannot be determined to
      *   be decorated or not (e.g., a parameter cannot be evaluated).
      */
+    @Override
     public List<NamedObj> decoratedObjects() throws IllegalActionException {
         if (workspace().getVersion() == _decoratedObjectsVersion) {
             return _decoratedObjects;
@@ -254,6 +258,7 @@ public class ConstraintMonitor extends Parameter implements Decorator {
      *  decorate objects across opaque hierarchy boundaries.
      *  @exception IllegalActionException
      */
+    @Override
     public boolean isGlobalDecorator() throws IllegalActionException {
         boolean opaques = ((BooleanToken) includeOpaqueContents.getToken())
                 .booleanValue();
@@ -269,6 +274,7 @@ public class ConstraintMonitor extends Parameter implements Decorator {
      *   violates type constraints, or if the result of evaluation is null
      *   and there are variables that depend on this one.
      */
+    @Override
     public Token getToken() throws IllegalActionException {
         Token result = super.getToken();
         // Check to see whether we need to report errors.
@@ -288,7 +294,7 @@ public class ConstraintMonitor extends Parameter implements Decorator {
                             + aggregateValue
                             + ((aggregateValue == thresholdValue) ? " hits "
                                     : " exceeds ") + "threshold of "
-                            + threshold + ".";
+                                    + threshold + ".";
                     MessageHandler.message(message);
                 } else {
                     // No warning.
@@ -305,6 +311,7 @@ public class ConstraintMonitor extends Parameter implements Decorator {
     /** Override the base class to mark this as needing evaluation even though
      *  there is no expression.
      */
+    @Override
     public synchronized void invalidate() {
         super.invalidate();
         _needsEvaluation = true;
@@ -319,6 +326,7 @@ public class ConstraintMonitor extends Parameter implements Decorator {
      *   not lazy) and the model error handler throws an exception.
      *   Also thrown if the change is not acceptable to the container.
      */
+    @Override
     public Collection validate() throws IllegalActionException {
         List<NamedObj> decoratedObjects = decoratedObjects();
         for (NamedObj decoratedObject : decoratedObjects) {
@@ -335,6 +343,7 @@ public class ConstraintMonitor extends Parameter implements Decorator {
      *  of the current expression.
      *  @param settable The object that has changed value.
      */
+    @Override
     public void valueChanged(Settable settable) {
         if (!_needsEvaluation) {
             _needsEvaluation = true;
@@ -418,6 +427,7 @@ public class ConstraintMonitor extends Parameter implements Decorator {
      *  @exception IllegalActionException If the expression cannot
      *   be parsed or cannot be evaluated, or if a dependency loop is found.
      */
+    @Override
     protected void _evaluate() throws IllegalActionException {
         double result = 0.0;
         List<NamedObj> decoratedObjects = decoratedObjects();
@@ -449,7 +459,7 @@ public class ConstraintMonitor extends Parameter implements Decorator {
      *  In this case, there is exactly one decorator attribute called <i>value</i>.
      */
     static public class ConstraintMonitorAttributes extends DecoratorAttributes
-            implements HierarchyListener {
+    implements HierarchyListener {
 
         public ConstraintMonitorAttributes(NamedObj container,
                 ConstraintMonitor decorator) throws IllegalActionException,
@@ -474,6 +484,7 @@ public class ConstraintMonitor extends Parameter implements Decorator {
          *  @exception IllegalActionException If the change is not acceptable
          *   to this container (not thrown in this base class).
          */
+        @Override
         public void attributeChanged(Attribute attribute)
                 throws IllegalActionException {
             // The following will establish a link to my decorator if it exists.
@@ -489,6 +500,7 @@ public class ConstraintMonitor extends Parameter implements Decorator {
          *  @exception IllegalActionException If the change is not
          *   acceptable.
          */
+        @Override
         public void hierarchyChanged() throws IllegalActionException {
             ConstraintMonitor decorator = (ConstraintMonitor) getDecorator();
             if (_previousDecorator != null && decorator != _previousDecorator) {
@@ -501,6 +513,7 @@ public class ConstraintMonitor extends Parameter implements Decorator {
         /** Record the current decorator.
          *  @exception IllegalActionException If the change is not acceptable.
          */
+        @Override
         public void hierarchyWillChange() throws IllegalActionException {
             _previousDecorator = (ConstraintMonitor) getDecorator();
         }
@@ -508,7 +521,7 @@ public class ConstraintMonitor extends Parameter implements Decorator {
         private ConstraintMonitor _previousDecorator = null;
 
         private void _init() throws IllegalActionException,
-                NameDuplicationException {
+        NameDuplicationException {
             value = new Parameter(this, "value");
             value.setTypeEquals(BaseType.DOUBLE);
             value.setExpression("0.0");

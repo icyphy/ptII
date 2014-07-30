@@ -83,6 +83,7 @@ public class RotateOrFlipPorts extends FigureAction {
     /** Process the rotate command.
      *  @param event The event.
      */
+    @Override
     public void actionPerformed(ActionEvent event) {
         // Determine which entity was selected for the action.
         super.actionPerformed(event);

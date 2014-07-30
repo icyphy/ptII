@@ -52,6 +52,7 @@ import ptolemy.kernel.util.NameDuplicationException;
  @Pt.ProposedRating Yellow (eal)
  @Pt.AcceptedRating Yellow (ssachs)
  */
+@Deprecated
 public class MaxIndex extends Transformer {
     /** Construct an actor in the specified container with the specified
      *  name.
@@ -79,6 +80,7 @@ public class MaxIndex extends Transformer {
      *
      *  @exception IllegalActionException If there is no director.
      */
+    @Override
     public void fire() throws IllegalActionException {
         super.fire();
         double maxValue = Double.NEGATIVE_INFINITY;

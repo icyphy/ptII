@@ -113,6 +113,7 @@ public class PtolemyApplication extends MoMLApplication {
      *  @return A default configuration.
      *  @exception Exception If the configuration cannot be opened.
      */
+    @Override
     protected Configuration _createDefaultConfiguration() throws Exception {
         URL specificationURL = specToURL("ptolemy/configs/runPanelConfiguration.xml");
 
@@ -134,6 +135,7 @@ public class PtolemyApplication extends MoMLApplication {
      *  @return A configuration for when there no command-line arguments.
      *  @exception Exception If the configuration cannot be opened.
      */
+    @Override
     protected Configuration _createEmptyConfiguration() throws Exception {
         Configuration configuration = _createDefaultConfiguration();
         URL inURL = specToURL("ptolemy/configs/runWelcomeWindow.xml");
@@ -152,6 +154,7 @@ public class PtolemyApplication extends MoMLApplication {
      *  @exception Exception If an argument is not understood or triggers
      *   an error.
      */
+    @Override
     protected void _parseArgs(String[] args) throws Exception {
         _commandTemplate = "ptolemy [ options ] [file ...]";
         super._parseArgs(args);

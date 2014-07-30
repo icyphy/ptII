@@ -116,6 +116,7 @@ public abstract class Quantization implements Cloneable {
     /** Return this, that is, return the reference to this object.
      *  @return This Quantization.
      */
+    @Override
     public Object clone() {
         return this;
     }
@@ -127,6 +128,7 @@ public abstract class Quantization implements Cloneable {
      *  checking.
      *  @return True if the quantizations are equal.
      */
+    @Override
     public boolean equals(Object object) {
         if (object instanceof Quantization) {
             Quantization other = (Quantization) object;
@@ -244,6 +246,7 @@ public abstract class Quantization implements Cloneable {
      *  @return The modulo value.
      *  @deprecated  ?
      */
+    @Deprecated
     public BigInteger getModuloUnscaledValue() {
         int numBits = getNumberOfBits();
         return BigInteger.ZERO.setBit(numBits);
@@ -295,6 +298,7 @@ public abstract class Quantization implements Cloneable {
      *  the rounding.
      *  @return A hash code value for this Quantization.
      */
+    @Override
     public int hashCode() {
         return _overflow.hashCode() & _rounding.hashCode();
     }
@@ -302,6 +306,7 @@ public abstract class Quantization implements Cloneable {
     /** Return a string representing this quantization.
      *  @return A string representing this quantization.
      */
+    @Override
     public abstract String toString();
 
     ///////////////////////////////////////////////////////////////////

@@ -40,17 +40,17 @@ import ptolemy.kernel.util.IllegalActionException;
 ////PtidesDirector
 
 /**
-* Code generator adapter associated with the PtidesDirector class.
-* This adapter is highly experimental and extends the DE Director
-* adapter.
-* This class is also associated with a code generator.
-*
-*  @author William Lucas based on PtidesDirector.java by Patricia Derler, Edward A. Lee, Slobodan Matic, Mike Zimmer, Jia Zou
-*  @version $Id$
-*  @since Ptolemy II 10.0
-*  @Pt.ProposedRating red (wlc)
-*  @Pt.AcceptedRating red (wlc)
-*/
+ * Code generator adapter associated with the PtidesDirector class.
+ * This adapter is highly experimental and extends the DE Director
+ * adapter.
+ * This class is also associated with a code generator.
+ *
+ *  @author William Lucas based on PtidesDirector.java by Patricia Derler, Edward A. Lee, Slobodan Matic, Mike Zimmer, Jia Zou
+ *  @version $Id$
+ *  @since Ptolemy II 10.0
+ *  @Pt.ProposedRating red (wlc)
+ *  @Pt.AcceptedRating red (wlc)
+ */
 
 public class PtidesDirector extends DEDirector {
 
@@ -84,7 +84,8 @@ public class PtidesDirector extends DEDirector {
         code.append(_eol + _sanitizedDirectorName
                 + "->_superdenseDependencyPair = pblMapNewHashMap();");
         code.append(_eol + "PblMap* tempMap;");
-        code.append(_eol + "struct SuperdenseDependency* tempEntry = calloc(1, sizeof(struct SuperdenseDependency));");
+        code.append(_eol
+                + "struct SuperdenseDependency* tempEntry = calloc(1, sizeof(struct SuperdenseDependency));");
         ptolemy.domains.ptides.kernel.PtidesDirector director = (ptolemy.domains.ptides.kernel.PtidesDirector) getComponent();
         Map<TypedIOPort, Map<TypedIOPort, SuperdenseDependency>> superdenseDependencyPair = director
                 .getSuperdenseDependencyPair();
@@ -95,8 +96,8 @@ public class PtidesDirector extends DEDirector {
             for (TypedIOPort port2 : value.keySet()) {
                 SuperdenseDependency dependency = value.get(port2);
 
-                code.append(_eol + "tempEntry->time = " + dependency.timeValue()
-                        + ";");
+                code.append(_eol + "tempEntry->time = "
+                        + dependency.timeValue() + ";");
                 code.append(_eol + "tempEntry->microstep = "
                         + dependency.indexValue() + ";");
                 String port2Name;

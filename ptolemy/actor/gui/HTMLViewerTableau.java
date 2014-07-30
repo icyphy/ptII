@@ -106,6 +106,7 @@ public class HTMLViewerTableau extends Tableau {
      *  @exception IllegalActionException If the URL cannot be opened,
      *   or if the base class throws it.
      */
+    @Override
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         if (attribute == url) {
@@ -164,6 +165,7 @@ public class HTMLViewerTableau extends Tableau {
          *  @exception Exception If the factory should be able to create a
          *   tableau for the effigy, but something goes wrong.
          */
+        @Override
         public Tableau createTableau(Effigy effigy) throws Exception {
             if (effigy instanceof HTMLEffigy) {
                 // Indicate to the effigy that this factory contains effigies

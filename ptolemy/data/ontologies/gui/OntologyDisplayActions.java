@@ -80,6 +80,7 @@ public class OntologyDisplayActions extends NodeControllerFactory {
      *  @param controller The associated graph controller.
      *  @return A new node controller.
      */
+    @Override
     public NamedObjController create(GraphController controller) {
         super.create(controller);
         //return new ConfigureHighlightController(controller);
@@ -93,7 +94,7 @@ public class OntologyDisplayActions extends NodeControllerFactory {
     /** The controller that adds commands to the context menu.
      */
     protected static class HighlighterController extends
-            MoMLModelAttributeController {
+    MoMLModelAttributeController {
 
         /** Create a HighlighterController that is associated with a controller.
          *  @param displayActions The OntologyDisplayActions object reference.
@@ -121,7 +122,7 @@ public class OntologyDisplayActions extends NodeControllerFactory {
      *  and also clears the display.
      */
     @SuppressWarnings("serial")
-        private class ClearResolution extends FigureAction {
+    private class ClearResolution extends FigureAction {
 
         /** Create a new ClearResolution object to be added to the
          *  OntologySolver's context menu.
@@ -137,6 +138,7 @@ public class OntologyDisplayActions extends NodeControllerFactory {
          *  @param e The action event that is passed in when the action
          *   is triggered.
          */
+        @Override
         public void actionPerformed(ActionEvent e) {
             super.actionPerformed(e);
 
@@ -157,7 +159,7 @@ public class OntologyDisplayActions extends NodeControllerFactory {
      *  to the context menu.
      */
     @SuppressWarnings("serial")
-        private class ResolveConcepts extends FigureAction {
+    private class ResolveConcepts extends FigureAction {
 
         /** Create a new ResolveConcepts object to be added to the
          *  OntologySolver's context menu.
@@ -173,6 +175,7 @@ public class OntologyDisplayActions extends NodeControllerFactory {
          *  @param e The action event that is passed in when the action
          *   is triggered.
          */
+        @Override
         public void actionPerformed(ActionEvent e) {
             super.actionPerformed(e);
 

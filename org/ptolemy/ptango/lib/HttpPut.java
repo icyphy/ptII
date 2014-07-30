@@ -50,9 +50,9 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.StringAttribute;
 import ptolemy.kernel.util.Workspace;
 
-/** Take the input string, wrap it into a HTTP message, and send it 
+/** Take the input string, wrap it into a HTTP message, and send it
  *  to the server associated with the given URL.
- * 
+ *
  *  @see HttpRequest
  *  @author  Edward A. Lee and Marten Lohstroh
  *  @version $Id$
@@ -78,14 +78,14 @@ public class HttpPut extends TypedAtomicActor {
         contentType.setExpression("application/x-www-form-urlencoded");
 
         new SingletonParameter(contentType.getPort(), "_showName")
-                .setToken(BooleanToken.TRUE);
+        .setToken(BooleanToken.TRUE);
         (new StringAttribute(contentType.getPort(), "_cardinal"))
-                .setExpression("SOUTH");
+        .setExpression("SOUTH");
 
         url = new PortParameter(this, "url");
         url.setStringMode(true);
         url.setExpression("http://localhost");
-        
+
         timeout = new Parameter(this, "timeout");
         timeout.setTypeEquals(BaseType.INT);
         timeout.setExpression("30000");
@@ -94,9 +94,9 @@ public class HttpPut extends TypedAtomicActor {
         timeoutResponse = new StringParameter(this, "timeoutResponse");
 
         new SingletonParameter(url.getPort(), "_showName")
-                .setToken(BooleanToken.TRUE);
+        .setToken(BooleanToken.TRUE);
         (new StringAttribute(url.getPort(), "_cardinal"))
-                .setExpression("SOUTH");
+        .setExpression("SOUTH");
 
         input = new TypedIOPort(this, "input", true, false);
         input.setTypeEquals(BaseType.STRING);
@@ -106,10 +106,10 @@ public class HttpPut extends TypedAtomicActor {
         output = new TypedIOPort(this, "output", false, true);
         output.setTypeEquals(BaseType.STRING);
         new SingletonParameter(output, "_showName").setToken(BooleanToken.TRUE);
-        
+
         status = new TypedIOPort(this, "status", false, true);
         status.setTypeEquals(HttpResponse.getStatusType());
-        new SingletonParameter(status, "_showName").setToken(BooleanToken.TRUE);  
+        new SingletonParameter(status, "_showName").setToken(BooleanToken.TRUE);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -120,18 +120,18 @@ public class HttpPut extends TypedAtomicActor {
      */
     public PortParameter contentType;
 
-    /** The input port, which accepts a string that must be formatted and 
+    /** The input port, which accepts a string that must be formatted and
      *  encoded in accordance with the given content-type.
      */
     public TypedIOPort input;
-    
-    /** An output port for transmitting a token containing the status of the 
-     * request.  This is a RecordToken comprised of the response code, 
+
+    /** An output port for transmitting a token containing the status of the
+     * request.  This is a RecordToken comprised of the response code,
      * response message, a boolean indicating if the request was successful,
      * and a boolean indicating if further action is expected.
      */
     public TypedIOPort status;
-    
+
     /** The timeout in milliseconds for establishing a connection or reading a value.
      *  Set to NONE to specify no timeout.
      *  This is an integer that defaults to 30000, giving a timeout of 30 seconds.
@@ -139,7 +139,7 @@ public class HttpPut extends TypedAtomicActor {
     public Parameter timeout;
 
     /** The response to send upon timeout.
-     *  If this is empty, then this actor will throw an exception rather than 
+     *  If this is empty, then this actor will throw an exception rather than
      *  send a response.  This is a string that defaults to empty.
      */
     public StringParameter timeoutResponse;
@@ -163,6 +163,7 @@ public class HttpPut extends TypedAtomicActor {
      *  @exception CloneNotSupportedException If a derived class contains
      *   an attribute that cannot be cloned.
      */
+    @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         HttpPut newObject = (HttpPut) super.clone(workspace);
         newObject.input.setTypeEquals(BaseType.STRING); // FIXME: need this?
@@ -174,6 +175,7 @@ public class HttpPut extends TypedAtomicActor {
      *  the response on the output port.
      *  @exception IllegalActionException If an IO error occurs.
      */
+    @Override
     public void fire() throws IllegalActionException {
         super.fire();
         url.update();
@@ -187,7 +189,7 @@ public class HttpPut extends TypedAtomicActor {
         if (urlValue == null || urlValue.isEmpty()) {
             throw new IllegalActionException("No URL provided.");
         }
-        
+
         try {
             _request.setUrl(new URL(urlValue));
 
@@ -196,7 +198,7 @@ public class HttpPut extends TypedAtomicActor {
                     new String[] { "Content-Type" }, new Token[] { contentType
                             .getToken() }));
             _request.setBody(((StringToken) input.get(0)).stringValue());
-            
+
             // If a timeout has been specified, set it.
             int timeoutValue = ((IntToken) timeout.getToken()).intValue();
             if (timeoutValue >= 0) {
@@ -204,32 +206,32 @@ public class HttpPut extends TypedAtomicActor {
             }
 
             HttpResponse response = _request.execute();
-            
+
             // If a timeout occurs, check if an exception should be thrown
-            if (response.timedOut()) { 
+            if (response.timedOut()) {
                 if (_debugging) {
                     _debug("*** Timeout occurred.");
                 }
                 String timeout = timeoutResponse.stringValue();
                 if (timeout.trim().equals("")) {
-                    throw new IllegalActionException(this,
-                            "HTTP " + _request.getMethod() 
-                            + " " + response.getResponseMessage());
+                    throw new IllegalActionException(this, "HTTP "
+                            + _request.getMethod() + " "
+                            + response.getResponseMessage());
                 }
             }
 
-            // FIXME: default response upon failure or empty string? 
-            output.send(0, new StringToken(response.getBody()));           
+            // FIXME: default response upon failure or empty string?
+            output.send(0, new StringToken(response.getBody()));
             status.send(0, response.getStatus());
 
-       } catch (IOException e) {
+        } catch (IOException e) {
             throw new IllegalActionException(this, e, "HTTP request failed");
-       }
+        }
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-    
+
     /** The Http request **/
     HttpRequest _request;
 }

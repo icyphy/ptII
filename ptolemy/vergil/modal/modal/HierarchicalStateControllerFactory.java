@@ -73,6 +73,7 @@ public class HierarchicalStateControllerFactory extends NodeControllerFactory {
      *  @param controller The associated graph controller.
      *  @return A new node controller.
      */
+    @Override
     public NamedObjController create(GraphController controller) {
         return new HierarchicalStateController(controller);
     }

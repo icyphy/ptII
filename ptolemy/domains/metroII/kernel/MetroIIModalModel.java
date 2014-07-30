@@ -104,12 +104,14 @@ public class MetroIIModalModel extends ModalModel implements GetFirable {
      *
      * @return iterator the iterator for the caller function of getfire().
      */
+    @Override
     public YieldAdapterIterable<Iterable<Event.Builder>> adapter() {
         return new ThreadedYieldAdapter<Iterable<Event.Builder>>()
                 .adapt(new Collector<Iterable<Event.Builder>>() {
+                    @Override
                     public void collect(
                             ResultHandler<Iterable<Event.Builder>> resultHandler)
-                            throws CollectionAbortedException {
+                                    throws CollectionAbortedException {
                         getfire(resultHandler);
                     }
                 });
@@ -130,6 +132,7 @@ public class MetroIIModalModel extends ModalModel implements GetFirable {
      * method.
      *
      */
+    @Override
     public void getfire(ResultHandler<Iterable<Event.Builder>> resultHandler)
             throws CollectionAbortedException {
         try {
@@ -214,9 +217,9 @@ public class MetroIIModalModel extends ModalModel implements GetFirable {
      * Updates the expression with 'MetroIIFSMDirector' instead of 'FSMDirector'
      */
     private void _init() throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         directorClass
-                .setExpression("ptolemy.domains.metroII.kernel.MetroIIFSMDirector");
+        .setExpression("ptolemy.domains.metroII.kernel.MetroIIFSMDirector");
     }
 
 }

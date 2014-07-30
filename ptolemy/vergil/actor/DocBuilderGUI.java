@@ -122,6 +122,7 @@ public class DocBuilderGUI extends PtolemyFrame {
 
         JButton moreInfoButton = new JButton("More Info");
         moreInfoButton.addActionListener(new ActionListener() {
+            @Override
             public void actionPerformed(ActionEvent evt) {
                 String infoFile = "ptolemy/vergil/actor/docViewerHelp.htm";
                 try {
@@ -195,18 +196,21 @@ public class DocBuilderGUI extends PtolemyFrame {
         getContentPane().add(splitPane, BorderLayout.CENTER);
 
         stopButton.addActionListener(new ActionListener() {
+            @Override
             public void actionPerformed(ActionEvent evt) {
                 exec.cancel();
             }
         });
 
         clearButton.addActionListener(new ActionListener() {
+            @Override
             public void actionPerformed(ActionEvent evt) {
                 exec.clear();
             }
         });
 
         goButton.addActionListener(new ActionListener() {
+            @Override
             public void actionPerformed(ActionEvent evt) {
                 try {
                     exec.updateStatusBar("// Starting Doc Building"

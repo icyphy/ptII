@@ -85,7 +85,7 @@ public class PtidesPreemptiveEDFDirector extends Director {
      *  @exception IllegalActionException Not thrown in this base class.
      */
     public Map<String, String> generateAdditionalCodeFiles()
-        throws IllegalActionException {
+            throws IllegalActionException {
         Map<String, String> list = new HashMap();
         return list;
     }
@@ -95,6 +95,7 @@ public class PtidesPreemptiveEDFDirector extends Director {
      *  @exception IllegalActionException If the adapter associated with
      *   an actor throws it while generating initialize code for the actor.
      */
+    @Override
     public String generateInitializeCode() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
 
@@ -119,6 +120,7 @@ public class PtidesPreemptiveEDFDirector extends Director {
      *  @return Whatever generateFireCode() returns.
      *  @exception IllegalActionException Not thrown in this base class.
      */
+    @Override
     public String generateMainLoop() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
 
@@ -137,6 +139,7 @@ public class PtidesPreemptiveEDFDirector extends Director {
      *   NOTE: fire code for each function, as well as the scheduler, should all go here
      *   Take care of platform independent code.
      */
+    @Override
     public String generatePreinitializeCode() throws IllegalActionException {
         StringBuffer code = new StringBuffer(super.generatePreinitializeCode());
 
@@ -186,6 +189,7 @@ public class PtidesPreemptiveEDFDirector extends Director {
      *  @param code The string buffer that the generated code is appended to.
      *  @exception IllegalActionException If thrown while transferring tokens.
      */
+    @Override
     public void generateTransferInputsCode(IOPort inputPort, StringBuffer code)
             throws IllegalActionException {
         code.append(CodeStream.indent(getCodeGenerator().comment(
@@ -228,6 +232,7 @@ public class PtidesPreemptiveEDFDirector extends Director {
      *  @param code The string buffer that the generated code is appended to.
      *  @exception IllegalActionException If thrown while transferring tokens.
      */
+    @Override
     public void generateTransferOutputsCode(IOPort outputPort, StringBuffer code)
             throws IllegalActionException {
         code.append(getCodeGenerator()
@@ -240,6 +245,7 @@ public class PtidesPreemptiveEDFDirector extends Director {
      * @return The generated code.
      * @exception IllegalActionException Not thrown in this base class.
      */
+    @Override
     public String generateTypeConvertFireCode() throws IllegalActionException {
         return "";
     }
@@ -258,6 +264,7 @@ public class PtidesPreemptiveEDFDirector extends Director {
      *  @exception IllegalActionException If the adapter class for the model
      *   director cannot be found.
      */
+    @Override
     public String generateVariableDeclaration() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
 
@@ -280,6 +287,7 @@ public class PtidesPreemptiveEDFDirector extends Director {
      * @return An empty set in this base class.
      * @exception IllegalActionException Not thrown in this base class.
      */
+    @Override
     public Set getSharedCode() throws IllegalActionException {
 
         Set sharedCode = new HashSet(super.getSharedCode());
@@ -367,12 +375,12 @@ public class PtidesPreemptiveEDFDirector extends Director {
         StringBuffer code = new StringBuffer();
 
         //for (Actor actor : (List<Actor>) ((CompositeActor) _director
-                //.getContainer()).deepEntityList()) {
-            //            if (actor instanceof OutputDevice) {
-            //                code.append("void Actuation_"
-            //                        + CodeGeneratorAdapter.generateName((NamedObj) actor)
-            //                        + "(void);" + _eol);
-            //            }
+        //.getContainer()).deepEntityList()) {
+        //            if (actor instanceof OutputDevice) {
+        //                code.append("void Actuation_"
+        //                        + CodeGeneratorAdapter.generateName((NamedObj) actor)
+        //                        + "(void);" + _eol);
+        //            }
         //}
 
         return code.toString();
@@ -426,10 +434,11 @@ public class PtidesPreemptiveEDFDirector extends Director {
      * @exception IllegalActionException If there is a problem getting the
      * adapters for the ports or if the conversion cannot be handled.
      */
+    @Override
     protected String _generateTypeConvertStatement(
             ProgramCodeGeneratorAdapter.Channel source,
             ProgramCodeGeneratorAdapter.Channel sink, int offset)
-            throws IllegalActionException {
+                    throws IllegalActionException {
 
         Type sourceType = ((TypedIOPort) source.port).getType();
         Type sinkType = ((TypedIOPort) sink.port).getType();
@@ -452,7 +461,7 @@ public class PtidesPreemptiveEDFDirector extends Director {
                 + offset;
         String sourceRef = ((NamedProgramCodeGeneratorAdapter) getCodeGenerator()
                 .getAdapter(source.port.getContainer())).getReference(
-                sourcePortChannel, false);
+                        sourcePortChannel, false);
 
         String sinkPortChannel = CodeGeneratorAdapter.generateName(sink.port)
                 + "#" + sink.channelNumber + ", " + offset;
@@ -466,7 +475,7 @@ public class PtidesPreemptiveEDFDirector extends Director {
         }
         String sinkRef = ((NamedProgramCodeGeneratorAdapter) getCodeGenerator()
                 .getAdapter(sink.port.getContainer())).getReference(
-                sinkPortChannel, true);
+                        sinkPortChannel, true);
 
         // When the sink port is contained by a modal controller, it is
         // possible that the port is both input and output port. we need
@@ -499,17 +508,17 @@ public class PtidesPreemptiveEDFDirector extends Director {
     protected void _modelStaticAnalysis() throws IllegalActionException {
 
         //for (Actor actor : (List<Actor>) ((CompositeActor) _director
-              //  .getContainer()).deepEntityList()) {
-            // FIXME: should I be using Interrupt/ActuationDevice or just Input/OutputDevice?
-            //            if (actor instanceof ActuatorSetup) {
-            //                actuators.put(actor, Integer.valueOf(actuatorIndex));
-            //                actuatorIndex++;
-            //            }
-            //
-            //            if (actor instanceof SensorHandler) {
-            //                sensors.put(actor, Integer.valueOf(sensorIndex));
-            //                sensorIndex++;
-            //            }
+        //  .getContainer()).deepEntityList()) {
+        // FIXME: should I be using Interrupt/ActuationDevice or just Input/OutputDevice?
+        //            if (actor instanceof ActuatorSetup) {
+        //                actuators.put(actor, Integer.valueOf(actuatorIndex));
+        //                actuatorIndex++;
+        //            }
+        //
+        //            if (actor instanceof SensorHandler) {
+        //                sensors.put(actor, Integer.valueOf(sensorIndex));
+        //                sensorIndex++;
+        //            }
         //}
     }
 

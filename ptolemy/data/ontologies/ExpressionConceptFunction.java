@@ -143,6 +143,7 @@ public class ExpressionConceptFunction extends ConceptFunction {
      *  @exception IllegalActionException If there is an error
      *  evaluating the function.
      */
+    @Override
     protected Concept _evaluateFunction(List<Concept> inputConceptValues)
             throws IllegalActionException {
         // Get the shared parser.

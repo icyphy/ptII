@@ -65,6 +65,7 @@ import ptolemy.plot.PlotBox;
 public class PxgraphApplet extends PlotApplet {
     /** Return a string describing this applet.
      */
+    @Override
     public String getAppletInfo() {
         return "PxgraphApplet " + PlotBox.PTPLOT_RELEASE
                 + ": A data plotter.\n" + "By: Edward A. Lee and\n "
@@ -74,6 +75,7 @@ public class PxgraphApplet extends PlotApplet {
 
     /** Return information about parameters.
      */
+    @Override
     public String[][] getParameterInfo() {
         String[][] pinfo = {
                 { "background", "hexcolor value", "background color" },
@@ -85,6 +87,7 @@ public class PxgraphApplet extends PlotApplet {
 
     /** Initialize the applet.  Read the applet parameters.
      */
+    @Override
     public void init() {
         if (plot() == null) {
             // This is a bit of a hack to make sure that we actually
@@ -129,6 +132,7 @@ public class PxgraphApplet extends PlotApplet {
      *  @param in The input stream.
      *  @exception IOException If the stream cannot be read.
      */
+    @Override
     protected void _read(InputStream in) throws IOException {
         _parser.read(in);
     }

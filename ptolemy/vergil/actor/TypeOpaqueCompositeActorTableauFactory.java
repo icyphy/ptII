@@ -51,7 +51,7 @@ import ptolemy.kernel.util.NamedObj;
  * @see ptolemy.vergil.actor.ActorGraphTableau.Factory
  */
 public class TypeOpaqueCompositeActorTableauFactory extends
-        ActorGraphTableau.Factory {
+ActorGraphTableau.Factory {
     /** Create an factory with the given name and container.
      *  @param container The container.
      *  @param name The name.
@@ -80,6 +80,7 @@ public class TypeOpaqueCompositeActorTableauFactory extends
      *  @exception Exception If an exception occurs when creating the
      *  tableau.
      */
+    @Override
     public Tableau createTableau(Effigy effigy) throws Exception {
         if (effigy instanceof PtolemyEffigy) {
             if (((PtolemyEffigy) effigy).getModel() instanceof TypeOpaqueCompositeActor) {

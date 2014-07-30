@@ -45,6 +45,7 @@ public class TestFloatBinaryOperation implements FloatBinaryOperation {
     /** Operate on the operands, returning a value of the same
      *  type. Note that the operation need not be commutative.
      */
+    @Override
     public float operate(float leftOperand, float rightOperand) {
         return leftOperand - rightOperand;
     }

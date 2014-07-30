@@ -161,6 +161,7 @@ public class LayoutHint extends SingletonAttribute implements Settable {
      * @param listener The listener to add.
      * @see #removeValueListener(ValueListener)
      */
+    @Override
     public void addValueListener(ValueListener listener) {
         if (_valueListeners == null) {
             _valueListeners = new LinkedList();
@@ -190,6 +191,7 @@ public class LayoutHint extends SingletonAttribute implements Settable {
      * @exception IOException If an I/O error occurs.
      * @see #isPersistent()
      */
+    @Override
     public void exportMoML(Writer output, int depth, String name)
             throws IOException {
         // If the object is not persistent, and we are not at level 0, do nothing.
@@ -217,6 +219,7 @@ public class LayoutHint extends SingletonAttribute implements Settable {
      * A LayoutHint has no default expression.
      * @return always null
      */
+    @Override
     public String getDefaultExpression() {
         return null;
     }
@@ -246,6 +249,7 @@ public class LayoutHint extends SingletonAttribute implements Settable {
      * @see Location#getExpression()
      * @see #setExpression(String)
      */
+    @Override
     public String getExpression() {
         if (_expressionSet) {
             // FIXME: If setExpression() was called with a string that does
@@ -305,6 +309,7 @@ public class LayoutHint extends SingletonAttribute implements Settable {
      * @return The value.
      * @see Settable#getValueAsString()
      */
+    @Override
     public String getValueAsString() {
         return getExpression();
     }
@@ -317,6 +322,7 @@ public class LayoutHint extends SingletonAttribute implements Settable {
      * @see #setVisibility(ptolemy.kernel.util.Settable.Visibility)
      * @see ptolemy.kernel.util.Settable#getVisibility()
      */
+    @Override
     public Visibility getVisibility() {
         return _visibility;
     }
@@ -333,6 +339,7 @@ public class LayoutHint extends SingletonAttribute implements Settable {
         if (container != null) {
             container.requestChange(new ChangeRequest(container,
                     "Remove Layout Hint") {
+                @Override
                 protected void _execute() throws Exception {
                     _layoutHintItems.remove(itemToRemove);
                     if (_layoutHintItems.isEmpty()) {
@@ -351,6 +358,7 @@ public class LayoutHint extends SingletonAttribute implements Settable {
      * @see Location#removeValueListener(ValueListener)
      * @see #addValueListener(ValueListener)
      */
+    @Override
     public void removeValueListener(ValueListener listener) {
         if (_valueListeners != null) {
             _valueListeners.remove(listener);
@@ -366,6 +374,7 @@ public class LayoutHint extends SingletonAttribute implements Settable {
      * @param expression The value of the attribute.
      * @see #getExpression()
      */
+    @Override
     public void setExpression(String expression) {
         _expression = expression;
         _expressionSet = true;
@@ -418,6 +427,7 @@ public class LayoutHint extends SingletonAttribute implements Settable {
      * @param visibility The visibility of this attribute.
      * @see #getVisibility()
      */
+    @Override
     public void setVisibility(Settable.Visibility visibility) {
         _visibility = visibility;
     }
@@ -433,6 +443,7 @@ public class LayoutHint extends SingletonAttribute implements Settable {
      *         validated.
      * @exception IllegalActionException If the expression is invalid.
      */
+    @Override
     public Collection validate() throws IllegalActionException {
         _layoutHintItems = new ArrayList<LayoutHintItem>();
         if (_expression == null) {
@@ -472,6 +483,7 @@ public class LayoutHint extends SingletonAttribute implements Settable {
      * @exception IllegalActionException If the value cannot be propagated.
      * @see Location#_propagateValue(NamedObj)
      */
+    @Override
     protected void _propagateValue(NamedObj destination)
             throws IllegalActionException {
         ((LayoutHint) destination).setExpression(getExpression());
@@ -543,7 +555,7 @@ public class LayoutHint extends SingletonAttribute implements Settable {
                             headLocation, tailLocation, headMultiportWidth,
                             tailMultiportWidth);
                     double[] primitiveBendPoints = new double[bendPoints
-                            .length()];
+                                                              .length()];
                     for (int ii = 0; ii < bendPoints.length(); ii++) {
                         primitiveBendPoints[ii] = ((ScalarToken) bendPoints
                                 .getElement(ii)).doubleValue();
@@ -557,11 +569,11 @@ public class LayoutHint extends SingletonAttribute implements Settable {
                     this,
                     e,
                     e.getMessage()
-                            + "\nExpression is expected to be an Array of layout hint Records. "
-                            + "The following expression is of wrong format: \n"
-                            + _expression
-                            + "\nAn example for a layoutHint expression is\n"
-                            + EXAMPLE_EXPRESSION);
+                    + "\nExpression is expected to be an Array of layout hint Records. "
+                    + "The following expression is of wrong format: \n"
+                    + _expression
+                    + "\nAn example for a layoutHint expression is\n"
+                    + EXAMPLE_EXPRESSION);
         }
     }
 
@@ -747,7 +759,7 @@ public class LayoutHint extends SingletonAttribute implements Settable {
          */
         public List<Point2D> getBendPointList() {
             int size = _bendPoints.length / 2; // integer arithmetics will cut
-                                               // off in odd cases
+            // off in odd cases
             ArrayList<Point2D> list = new ArrayList<Point2D>(size);
             for (int i = 0; i < size; i++) {
                 Point2D point = new Point2D.Double(_bendPoints[2 * i],
@@ -883,6 +895,7 @@ public class LayoutHint extends SingletonAttribute implements Settable {
          * @see #getExpression()
          * @return String representation of this LayoutHint
          */
+        @Override
         public String toString() {
             return getExpression();
         }

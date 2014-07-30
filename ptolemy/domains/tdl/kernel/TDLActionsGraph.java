@@ -109,7 +109,7 @@ public class TDLActionsGraph {
         if (startNode == null) {
             startNode = getNode(new TDLAction(
                     ((TDLModuleDirector) _module.getDirector())
-                            .getModePeriod(startmode),
+                    .getModePeriod(startmode),
                     TDLAction.AFTERMODESWITCH, startmode));
         }
     }
@@ -199,7 +199,7 @@ public class TDLActionsGraph {
             TDLAction gnode = (TDLAction) node.getWeight();
             if (gnode.time.equals(invocationTime)
                     && (gnode.object != null && gnode.object.equals(actor) || gnode.object == null
-                            && actor == null)) {
+                    && actor == null)) {
                 return node;
             }
         }
@@ -275,7 +275,7 @@ public class TDLActionsGraph {
                     for (Time invocationTime : invocationTimes) {
                         if (invocationTime.compareTo(readTime) < 0
                                 && modeSwitchTimeBeforeRead
-                                        .compareTo(invocationTime) < 0) {
+                                .compareTo(invocationTime) < 0) {
                             modeSwitchTimeBeforeRead = invocationTime;
                         }
                     }
@@ -488,7 +488,7 @@ public class TDLActionsGraph {
         if (previous != null) {
             Edge edge = new Edge(previous, node,
                     ((TDLAction) node.getWeight()).time
-                            .subtract(((TDLAction) previous.getWeight()).time));
+                    .subtract(((TDLAction) previous.getWeight()).time));
             _graph.addEdge(edge);
         }
         return node;
@@ -947,7 +947,7 @@ public class TDLActionsGraph {
                 Node prev = null;
                 Time modeSwitchEndTime = new Time(_module.getDirector(),
                         invocationTime.getLongValue()
-                                % modePeriod.getLongValue());
+                        % modePeriod.getLongValue());
                 Node endNode = new Node(new TDLAction(modeSwitchEndTime,
                         TDLAction.AFTERMODESWITCH, mode));
                 _tmpModeSwitchEnds.put(invocationTime, endNode);

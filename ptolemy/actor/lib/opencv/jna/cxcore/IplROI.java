@@ -25,7 +25,7 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 Ptolemy II includes the work of others, to see those copyrights, follow
 the copyright link on the splash page or see copyright.htm.
-*/
+ */
 package ptolemy.actor.lib.opencv.jna.cxcore;
 
 import java.util.Arrays;
@@ -45,13 +45,14 @@ public class IplROI extends Structure {
     }
 
     public static class ByReference extends IplROI implements
-            Structure.ByReference {
+    Structure.ByReference {
     }
 
     /** Return the field names in the proper order.
      *  <p>This is new in jna-3.5.0.
      *  @return a list of strings that name the fields in order.
      */
+    @Override
     protected List getFieldOrder() {
         return Arrays.asList(new String[] { "coi", "xOffset", "yOffset",
                 "width", "height" });

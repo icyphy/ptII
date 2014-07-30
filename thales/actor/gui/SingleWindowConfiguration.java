@@ -88,6 +88,7 @@ public class SingleWindowConfiguration extends Configuration {
      *  user interface.
      *  @param effigy The effigy for which to create a tableau.
      */
+    @Override
     public Tableau createPrimaryTableau(final Effigy effigy) {
         // NOTE: It used to be that the body of this method was
         // actually executed later, in the event thread, so that it can
@@ -214,8 +215,9 @@ public class SingleWindowConfiguration extends Configuration {
      *  @exception NameDuplicationException If a name conflict occurs (this
      *   should not be thrown).
      */
+    @Override
     public Tableau openModel(NamedObj entity) throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         // If the entity defers its MoML definition to another,
         // then open that other.
         InstantiableNamedObj deferredTo = null;
@@ -348,6 +350,7 @@ public class SingleWindowConfiguration extends Configuration {
     /* (non-Javadoc)
      * @see ptolemy.actor.gui.Configuration#openModel(java.net.URL, java.net.URL, java.lang.String, ptolemy.actor.gui.EffigyFactory)
      */
+    @Override
     public Tableau openModel(URL base, URL in, String identifier,
             EffigyFactory factory) throws Exception {
         //ModelValidator validator = new ModelValidator();

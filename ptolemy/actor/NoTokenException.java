@@ -53,6 +53,7 @@ public class NoTokenException extends KernelRuntimeException {
      *  @deprecated Use NoTokenException(Nameable, String) so
      *  that the UI can indicate which actor caused the error.
      */
+    @Deprecated
     public NoTokenException(String message) {
         super(message);
     }

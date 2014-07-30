@@ -25,7 +25,7 @@
 
                                         PT_COPYRIGHT_VERSION_3
                                         COPYRIGHTENDKEY
-*/
+ */
 
 package ptolemy.moml.unit;
 
@@ -123,6 +123,7 @@ public class Token implements java.io.Serializable {
     /**
      * Returns the image.
      */
+    @Override
     public String toString() {
         return image;
     }

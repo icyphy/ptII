@@ -300,9 +300,9 @@ public class FormEditor extends JPanel {
         rowSpanLabel.setDisplayedMnemonic(KeyEvent.VK_R);
 
         columnInsertAfterButton
-                .setToolTipText("Insert a column after this column");
+        .setToolTipText("Insert a column after this column");
         columnInsertBeforeButton
-                .setToolTipText("Insert a column before this column");
+        .setToolTipText("Insert a column before this column");
         columnDeleteButton.setToolTipText("Delete this column");
         rowInsertBeforeButton.setToolTipText("Insert a row before this row");
         rowInsertAfterButton.setToolTipText("Insert a row after this row");
@@ -370,6 +370,7 @@ public class FormEditor extends JPanel {
     private void setupListeners() {
 
         verticalAlignmentCombo.addActionListener(new ActionListener() {
+            @Override
             public void actionPerformed(ActionEvent e) {
                 Component component = table.getSelectedControl();
                 if (component != null) {
@@ -383,6 +384,7 @@ public class FormEditor extends JPanel {
         });
 
         horizontalAlignmentCombo.addActionListener(new ActionListener() {
+            @Override
             public void actionPerformed(ActionEvent e) {
                 Component component = table.getSelectedControl();
                 if (component != null) {
@@ -396,6 +398,7 @@ public class FormEditor extends JPanel {
         });
 
         topInsetSpinnerModel.addChangeListener(new ChangeListener() {
+            @Override
             public void stateChanged(ChangeEvent e) {
                 if (!suspendConstraintControlUpdates) {
                     Component component = table.getSelectedControl();
@@ -410,6 +413,7 @@ public class FormEditor extends JPanel {
         });
 
         leftInsetSpinnerModel.addChangeListener(new ChangeListener() {
+            @Override
             public void stateChanged(ChangeEvent e) {
                 if (!suspendConstraintControlUpdates) {
                     Component component = table.getSelectedControl();
@@ -424,6 +428,7 @@ public class FormEditor extends JPanel {
         });
 
         rightInsetSpinnerModel.addChangeListener(new ChangeListener() {
+            @Override
             public void stateChanged(ChangeEvent e) {
                 if (!suspendConstraintControlUpdates) {
                     Component component = table.getSelectedControl();
@@ -438,13 +443,14 @@ public class FormEditor extends JPanel {
         });
 
         bottomInsetSpinnerModel.addChangeListener(new ChangeListener() {
+            @Override
             public void stateChanged(ChangeEvent e) {
                 if (!suspendConstraintControlUpdates) {
                     Component component = table.getSelectedControl();
                     CellConstraints constraints = getComponentConstraints(component);
                     Insets insets = new Insets(constraints.insets.top,
                             constraints.insets.left, bottomInsetSpinnerModel
-                                    .getNumber().intValue(),
+                            .getNumber().intValue(),
                             constraints.insets.right);
                     constraints.insets = insets;
                     updateLayout(component);
@@ -453,6 +459,7 @@ public class FormEditor extends JPanel {
         });
 
         table.addMouseListener(new MouseAdapter() {
+            @Override
             public void mouseClicked(MouseEvent e) {
                 if (e.getClickCount() == 2) {
                     Point p = e.getPoint();
@@ -476,6 +483,7 @@ public class FormEditor extends JPanel {
             }
         });
         componentList.addListSelectionListener(new ListSelectionListener() {
+            @Override
             public void valueChanged(ListSelectionEvent e) {
                 if (!e.getValueIsAdjusting()) {
                     /* set selected component as selected, which causes a
@@ -500,6 +508,7 @@ public class FormEditor extends JPanel {
         });
 
         componentList.addMouseListener(new MouseAdapter() {
+            @Override
             public void mouseClicked(MouseEvent e) {
                 if (e.getClickCount() == 2) {
                     int index = componentList.locationToIndex(e.getPoint());
@@ -565,7 +574,7 @@ public class FormEditor extends JPanel {
         // we don't want to update the selection interval if nothing changed...
         table.getSelectionModel().setSelectionInterval(rowIndex, rowIndex);
         table.getColumnModel().getSelectionModel()
-                .setSelectionInterval(columnIndex, columnIndex);
+        .setSelectionInterval(columnIndex, columnIndex);
 
         if (forceVisible) {
             // let's make sure the cell is in the visible range...
@@ -578,7 +587,7 @@ public class FormEditor extends JPanel {
     }
 
     private class ComponentSelectionListModel extends
-            javax.swing.AbstractListModel {
+    javax.swing.AbstractListModel {
         //    private String selectedName = null;
 
         List<Component> sortedComponents = new ArrayList<Component>();
@@ -594,11 +603,13 @@ public class FormEditor extends JPanel {
         // 4) drags a new 2nd control into place
         // we get an array out of bounds exception in getElementAt. The
         // delete probably failed to update our list.
+        @Override
         public Object getElementAt(int index) {
             Component component = sortedComponents.get(index);
             return component;
         }
 
+        @Override
         public int getSize() {
             sortedComponents = new ArrayList<Component>();
 
@@ -652,6 +663,7 @@ public class FormEditor extends JPanel {
             setOpaque(true);
         }
 
+        @Override
         public Component getListCellRendererComponent(JList list, Object value,
                 int index, boolean isSelected, boolean cellHasFocus) {
             Component component = (Component) value;
@@ -830,26 +842,29 @@ public class FormEditor extends JPanel {
             }
         }
 
+        @Override
         public Object getNextValue() {
             if (constraints == null) {
                 return null;
             }
             Integer next = constraints.gridX + constraints.gridWidth - 1 < containerLayout
                     .getColumnCount() ? Integer
-                    .valueOf(constraints.gridWidth + 1) : null;
-            return next;
+                            .valueOf(constraints.gridWidth + 1) : null;
+                            return next;
         }
 
+        @Override
         public Object getPreviousValue() {
             if (constraints == null) {
                 return null;
             } else {
                 Integer previous = constraints.gridWidth > 1 ? Integer
                         .valueOf(constraints.gridWidth - 1) : null;
-                return previous;
+                        return previous;
             }
         }
 
+        @Override
         public Object getValue() {
             if (constraints == null) {
                 return "";
@@ -858,6 +873,7 @@ public class FormEditor extends JPanel {
             }
         }
 
+        @Override
         public void setValue(Object value) {
             if (constraints == null || value == null) {
                 return;
@@ -895,27 +911,30 @@ public class FormEditor extends JPanel {
             }
         }
 
+        @Override
         public Object getNextValue() {
             if (constraints == null) {
                 return null;
             } else {
                 Integer next = constraints.gridY + constraints.gridHeight - 1 < containerLayout
                         .getRowCount() ? Integer
-                        .valueOf(constraints.gridHeight + 1) : null;
-                return next;
+                                .valueOf(constraints.gridHeight + 1) : null;
+                                return next;
             }
         }
 
+        @Override
         public Object getPreviousValue() {
             if (constraints == null) {
                 return null;
             } else {
                 Integer previous = constraints.gridHeight > 1 ? Integer
                         .valueOf(constraints.gridHeight - 1) : null;
-                return previous;
+                        return previous;
             }
         }
 
+        @Override
         public Object getValue() {
             if (constraints == null) {
                 return "";
@@ -924,6 +943,7 @@ public class FormEditor extends JPanel {
             }
         }
 
+        @Override
         public void setValue(Object value) {
             if (constraints == null || value == null) {
                 return;
@@ -1037,6 +1057,7 @@ public class FormEditor extends JPanel {
             typeCombo.addItem(new ButtonBarComponentBuilder());
 
             typeCombo.addActionListener(new ActionListener() {
+                @Override
                 public void actionPerformed(ActionEvent e) {
                     controlProperties = new HashMap<String, Object>();
                     propertyTableModel.fireTableDataChanged();
@@ -1044,6 +1065,7 @@ public class FormEditor extends JPanel {
             });
 
             okButton.addActionListener(new ActionListener() {
+                @Override
                 public void actionPerformed(ActionEvent e) {
 
                     try {
@@ -1073,6 +1095,7 @@ public class FormEditor extends JPanel {
             });
 
             cancelButton.addActionListener(new ActionListener() {
+                @Override
                 public void actionPerformed(ActionEvent e) {
                     wasSuccessful = false;
                     dispose();
@@ -1113,25 +1136,30 @@ public class FormEditor extends JPanel {
         }
 
         private class PropertyTableModel extends
-                javax.swing.table.AbstractTableModel {
+        javax.swing.table.AbstractTableModel {
+            @Override
             public int getColumnCount() {
                 return 2;
             }
 
+            @Override
             public int getRowCount() {
                 ComponentBuilder builder = (ComponentBuilder) typeCombo
                         .getSelectedItem();
                 return builder != null ? builder.getProperties().size() : 0;
             }
 
+            @Override
             public boolean isCellEditable(int row, int col) {
                 return col == 1;
             }
 
+            @Override
             public String getColumnName(int col) {
                 return col == 0 ? "Property" : "Value";
             }
 
+            @Override
             public void setValueAt(Object aValue, int row, int col) {
                 ComponentBuilder builder = (ComponentBuilder) typeCombo
                         .getSelectedItem();
@@ -1140,6 +1168,7 @@ public class FormEditor extends JPanel {
                 controlProperties.put(property.getName(), aValue);
             }
 
+            @Override
             public Object getValueAt(int rowIndex, int columnIndex) {
                 ComponentBuilder builder = (ComponentBuilder) typeCombo
                         .getSelectedItem();
@@ -1160,6 +1189,7 @@ public class FormEditor extends JPanel {
     }
 
     private class ConstraintTableCellRenderer extends DefaultTableCellRenderer {
+        @Override
         public Component getTableCellRendererComponent(JTable table,
                 Object value, boolean isSelected, boolean hasFocus, int row,
                 int column) {
@@ -1181,24 +1211,29 @@ public class FormEditor extends JPanel {
 
     private class GridTableModel extends javax.swing.table.AbstractTableModel {
 
+        @Override
         public int getColumnCount() {
             return containerLayout != null ? containerLayout.getColumnCount() + 1
                     : 1;
         }
 
+        @Override
         public int getRowCount() {
             return containerLayout != null ? containerLayout.getRowCount() + 1
                     : 1;
         }
 
+        @Override
         public boolean isCellEditable(int row, int col) {
             return (row == 0 || col == 0) && !(row == 0 && col == 0);
         }
 
+        @Override
         public String getColumnName(int col) {
             return col == 0 ? "*" : "" + col;
         }
 
+        @Override
         public void setValueAt(Object aValue, int row, int col) {
             String value = (String) aValue;
             if (row == 0) // a column was changed
@@ -1223,6 +1258,7 @@ public class FormEditor extends JPanel {
             }
         }
 
+        @Override
         public Object getValueAt(int rowIndex, int columnIndex) {
             if (rowIndex == 0 && columnIndex == 0) {
                 return null;
@@ -1252,10 +1288,10 @@ public class FormEditor extends JPanel {
                     }
                     if (columnIndex >= constraints.gridX
                             && columnIndex < constraints.gridX
-                                    + constraints.gridWidth
+                            + constraints.gridWidth
                             && rowIndex >= constraints.gridY
                             && rowIndex < constraints.gridY
-                                    + constraints.gridHeight) {
+                            + constraints.gridHeight) {
                         component = thisComponent;
                         if (component == topComponent) {
                             break;
@@ -1279,6 +1315,7 @@ public class FormEditor extends JPanel {
                     KeyStroke.getKeyStroke(KeyEvent.VK_D, InputEvent.CTRL_MASK));
         }
 
+        @Override
         public void actionPerformed(ActionEvent e) {
             Component selectedControl = table.getSelectedControl();
             String controlName = getComponentName(selectedControl);
@@ -1308,6 +1345,7 @@ public class FormEditor extends JPanel {
             putValue(Action.MNEMONIC_KEY, Integer.valueOf(KeyEvent.VK_N));
         }
 
+        @Override
         public void actionPerformed(ActionEvent e) {
             Frame frame = (Frame) SwingUtilities.getAncestorOfClass(
                     Frame.class, FormEditor.this);
@@ -1331,7 +1369,7 @@ public class FormEditor extends JPanel {
                 if (containerLayout.getCellConstraints(controlName) != null) {
                     JOptionPane.showMessageDialog(FormEditor.this,
                             "A component named '" + controlName
-                                    + "' already exists", "Error",
+                            + "' already exists", "Error",
                             JOptionPane.ERROR_MESSAGE);
                 } else {
                     // the best way to add this control is to setup the constraints
@@ -1390,6 +1428,7 @@ public class FormEditor extends JPanel {
             putValue(Action.MNEMONIC_KEY, Integer.valueOf(KeyEvent.VK_I));
         }
 
+        @Override
         public void actionPerformed(ActionEvent e) {
             int row = table.getSelectedRow();
             insertRow(row - 1);
@@ -1411,6 +1450,7 @@ public class FormEditor extends JPanel {
             putValue(Action.MNEMONIC_KEY, Integer.valueOf(KeyEvent.VK_O));
         }
 
+        @Override
         public void actionPerformed(ActionEvent e) {
             int row = table.getSelectedRow();
             insertRow(row);
@@ -1432,6 +1472,7 @@ public class FormEditor extends JPanel {
             putValue(Action.MNEMONIC_KEY, Integer.valueOf(KeyEvent.VK_K));
         }
 
+        @Override
         public void actionPerformed(ActionEvent e) {
             int column = table.getSelectedColumn();
             insertColumn(column - 1);
@@ -1453,6 +1494,7 @@ public class FormEditor extends JPanel {
             putValue(Action.MNEMONIC_KEY, Integer.valueOf(KeyEvent.VK_L));
         }
 
+        @Override
         public void actionPerformed(ActionEvent e) {
             int column = table.getSelectedColumn();
             insertColumn(column);
@@ -1472,6 +1514,7 @@ public class FormEditor extends JPanel {
             putValue(Action.MNEMONIC_KEY, Integer.valueOf(KeyEvent.VK_D));
         }
 
+        @Override
         public void actionPerformed(ActionEvent e) {
             int rowIndex = table.getSelectedRow();
 
@@ -1517,6 +1560,7 @@ public class FormEditor extends JPanel {
             putValue(Action.MNEMONIC_KEY, Integer.valueOf(KeyEvent.VK_C));
         }
 
+        @Override
         public void actionPerformed(ActionEvent e) {
             int columnIndex = table.getSelectedColumn();
 
@@ -1550,17 +1594,19 @@ public class FormEditor extends JPanel {
     class ComponentPaletteListModel extends AbstractListModel {
         List<ComponentDef> componentDefs = ComponentDef.createComponentDefs();
 
+        @Override
         public int getSize() {
             return componentDefs.size();
         }
 
+        @Override
         public Object getElementAt(int index) {
             return componentDefs.get(index);
         }
     }
 
     class ComponentPaletteListRenderer extends JLabel implements
-            ListCellRenderer {
+    ListCellRenderer {
         public ComponentPaletteListRenderer() {
             setOpaque(true);
         }
@@ -1569,6 +1615,7 @@ public class FormEditor extends JPanel {
          * This method finds the image and text corresponding to the selected value
          * and returns the label, set up to display the text and image.
          */
+        @Override
         public Component getListCellRendererComponent(JList list, Object value,
                 int index, boolean isSelected, boolean cellHasFocus) {
             ComponentDef componentDef = (ComponentDef) value;

@@ -86,6 +86,7 @@ public class DocBuilderEffigy extends PtolemyEffigy {
          *  capable of creating an effigy without a URL being specified.
          *  @return False.
          */
+        @Override
         public boolean canCreateBlankEffigy() {
             return false;
         }
@@ -99,6 +100,7 @@ public class DocBuilderEffigy extends PtolemyEffigy {
          *  @return A new instance of DocBuilderEffigy.
          *  @exception Exception If the URL cannot be read.
          */
+        @Override
         public Effigy createEffigy(CompositeEntity container, URL base,
                 URL input) throws Exception {
             if (input != null) {

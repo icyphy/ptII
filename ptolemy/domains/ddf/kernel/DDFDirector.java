@@ -158,7 +158,7 @@ public class DDFDirector extends Director {
      *   an entity with the specified name.
      */
     public DDFDirector() throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         super();
         _init();
     }
@@ -173,7 +173,7 @@ public class DDFDirector extends Director {
      *   an entity with the specified name.
      */
     public DDFDirector(Workspace workspace) throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         super(workspace);
         _init();
     }
@@ -235,6 +235,7 @@ public class DDFDirector extends Director {
      *   level and <i>runUntilDeadlockInOneIteration</i> is set to be true,
      *   or getToken() throws IllegalActionException.
      */
+    @Override
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         if (attribute == runUntilDeadlockInOneIteration) {
@@ -266,6 +267,7 @@ public class DDFDirector extends Director {
      *  @exception CloneNotSupportedException If a derived class contains
      *  an attribute that cannot be cloned.
      */
+    @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         DDFDirector newObject = (DDFDirector) super.clone(workspace);
         newObject._actorsInfo = new HashMap();
@@ -302,6 +304,7 @@ public class DDFDirector extends Director {
      *  @exception IllegalActionException If any actor executed by this
      *   actor returns false in prefire().
      */
+    @Override
     public void fire() throws IllegalActionException {
         boolean repeatBasicIteration = false;
         if (_debugging) {
@@ -422,6 +425,7 @@ public class DDFDirector extends Director {
      *  @exception IllegalActionException If the initialize() method of
      *   one of the associated actors throws it.
      */
+    @Override
     public void initialize() throws IllegalActionException {
         _iterationCount = 0;
         _runUntilDeadlock = ((BooleanToken) runUntilDeadlockInOneIteration
@@ -468,6 +472,7 @@ public class DDFDirector extends Director {
      *   <i>requiredFiringsPerIteration</i> parameter does not contain
      *   an IntToken.
      */
+    @Override
     public void initialize(Actor actor) throws IllegalActionException {
         super.initialize(actor);
 
@@ -511,6 +516,7 @@ public class DDFDirector extends Director {
      *  has already been checked, therefore there is no need to invalidate
      *  resolved types.
      */
+    @Override
     public void invalidateResolvedTypes() {
         if (!_isTypeResolutionDisabled) {
             super.invalidateResolvedTypes();
@@ -528,7 +534,7 @@ public class DDFDirector extends Director {
     public void merge(DDFDirector insideDirector) {
         _disabledActors.addAll(insideDirector._disabledActors);
         _actorsToCheckNumberOfFirings
-                .addAll(insideDirector._actorsToCheckNumberOfFirings);
+        .addAll(insideDirector._actorsToCheckNumberOfFirings);
         _actorsInfo.putAll(insideDirector._actorsInfo);
     }
 
@@ -537,6 +543,7 @@ public class DDFDirector extends Director {
      *  <i>maximumReceiverCapacity</i> if that value is greater than 0.
      *  @return A new QueueReceiver.
      */
+    @Override
     public Receiver newReceiver() {
         QueueReceiver receiver = new QueueReceiver();
 
@@ -561,6 +568,7 @@ public class DDFDirector extends Director {
      *  @exception IllegalActionException If the <i>iterations</i> parameter
      *   does not contain a legal value.
      */
+    @Override
     public boolean postfire() throws IllegalActionException {
         int iterationsValue = ((IntToken) iterations.getToken()).intValue();
         _iterationCount++;
@@ -624,6 +632,7 @@ public class DDFDirector extends Director {
      *  @exception IllegalActionException If any called method throws
      *   IllegalActionException.
      */
+    @Override
     public boolean prefire() throws IllegalActionException {
         if (_debugging) {
             _debug("DDFDirector.prefire()\niterationCount " + _iterationCount);
@@ -651,7 +660,7 @@ public class DDFDirector extends Director {
                         _debug("Channel " + i + " of port "
                                 + inputPort.getFullName()
                                 + " does not have enough tokens: " + rate[i]
-                                + ". Prefire returns false.");
+                                        + ". Prefire returns false.");
                     }
                     if (_debugging) {
                         _debug("DDFDirector.prefire() returns false.");
@@ -681,12 +690,13 @@ public class DDFDirector extends Director {
      *  @return An array of suggested directors to be used with ModalModel.
      *  @see ptolemy.actor.Director#suggestedModalModelDirectors()
      */
+    @Override
     public String[] suggestedModalModelDirectors() {
         String[] defaultSuggestions = {
                 "ptolemy.domains.modal.kernel.MultirateFSMDirector",
                 "ptolemy.domains.hdf.kernel.HDFFSMDirector",
                 "ptolemy.domains.modal.kernel.FSMDirector",
-                "ptolemy.domains.modal.kernel.NonStrictFSMDirector" };
+        "ptolemy.domains.modal.kernel.NonStrictFSMDirector" };
         return defaultSuggestions;
     }
 
@@ -695,6 +705,7 @@ public class DDFDirector extends Director {
      *  @return True indicating a ModalModel under control of this director
      *  supports multirate firing.
      */
+    @Override
     public boolean supportMultirateFiring() {
         return true;
     }
@@ -710,6 +721,7 @@ public class DDFDirector extends Director {
      *  @exception IllegalActionException If the port is not an opaque
      *  input port, or if there are not enough input tokens available.
      */
+    @Override
     public boolean transferInputs(IOPort port) throws IllegalActionException {
         if (_debugging) {
             _debug("Calling transferInputs on port: " + port.getFullName());
@@ -738,8 +750,8 @@ public class DDFDirector extends Director {
                             if (_debugging) {
                                 _debug(getName(),
                                         "transferring input from channel " + i
-                                                + " of input port "
-                                                + port.getName());
+                                        + " of input port "
+                                        + port.getName());
                             }
 
                             port.sendInside(i, t);
@@ -752,10 +764,10 @@ public class DDFDirector extends Director {
                                             + i
                                             + "should consume "
                                             + rate[i]
-                                            + " tokens, but there were only "
-                                            + k
-                                            + " tokens available. Maybe the rate"
-                                            + " is set wrong?");
+                                                    + " tokens, but there were only "
+                                                    + k
+                                                    + " tokens available. Maybe the rate"
+                                                    + " is set wrong?");
                         }
                     }
 
@@ -771,7 +783,7 @@ public class DDFDirector extends Director {
                         if (_debugging) {
                             _debug(getName(),
                                     "transferring input from channel " + i
-                                            + " of port " + port.getName());
+                                    + " of port " + port.getName());
                         }
 
                         port.sendInside(i, token);
@@ -819,6 +831,7 @@ public class DDFDirector extends Director {
      *  @exception IllegalActionException If the port is not an opaque
      *  output port, or if there are not enough output tokens available.
      */
+    @Override
     public boolean transferOutputs(IOPort port) throws IllegalActionException {
         if (_debugging) {
             _debug("Calling transferOutputs on port: " + port.getFullName());
@@ -847,7 +860,7 @@ public class DDFDirector extends Director {
                             if (_debugging) {
                                 _debug(getName(),
                                         "transferring output from channel " + i
-                                                + " of port " + port.getName());
+                                        + " of port " + port.getName());
                             }
 
                             port.send(i, token);
@@ -860,10 +873,10 @@ public class DDFDirector extends Director {
                                             + i
                                             + " should produce "
                                             + rate[i]
-                                            + " tokens, but there were only "
-                                            + k
-                                            + " tokens available. Maybe the rate"
-                                            + " is set wrong?");
+                                                    + " tokens, but there were only "
+                                                    + k
+                                                    + " tokens available. Maybe the rate"
+                                                    + " is set wrong?");
                         }
                     }
 
@@ -877,7 +890,7 @@ public class DDFDirector extends Director {
                         if (_debugging) {
                             _debug(getName(),
                                     "transferring output from channel " + i
-                                            + " of port " + port.getName());
+                                    + " of port " + port.getName());
                         }
 
                         port.send(i, token);
@@ -1332,7 +1345,7 @@ public class DDFDirector extends Director {
      *  value false.
      */
     private void _init() throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         iterations = new Parameter(this, "iterations");
         iterations.setTypeEquals(BaseType.INT);
         iterations.setToken(new IntToken(0));

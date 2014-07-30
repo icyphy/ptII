@@ -24,7 +24,7 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
-*/
+ */
 
 package ptolemy.cg.lib.syntactic;
 
@@ -252,7 +252,7 @@ public class SyntacticNode extends ComponentEntity implements SyntacticTerm {
      *  @exception NameDuplicationException
      */
     public int addPorts(Port port, boolean isin) throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         String prefix = isin ? "in_" : "out_";
         List<SyntacticPort> portset = isin ? _inputs : _outputs;
         String cardinality = isin ? "WEST" : "EAST";
@@ -287,7 +287,7 @@ public class SyntacticNode extends ComponentEntity implements SyntacticTerm {
      *  @exception NameDuplicationException
      */
     public void representExteriorPort(Port port) throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
 
         if (port instanceof IOPort) {
             IOPort ioport = (IOPort) port;
@@ -371,7 +371,7 @@ public class SyntacticNode extends ComponentEntity implements SyntacticTerm {
      *  @exception NameDuplicationException
      */
     public void setIdentity() throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         setSyntactic(1, 1);
         _nodeType = NodeType.IDENTITY;
         _attachText("_iconDescription", _identityIcon);
@@ -383,7 +383,7 @@ public class SyntacticNode extends ComponentEntity implements SyntacticTerm {
      *  @exception NameDuplicationException
      */
     public void setFeedback(boolean direction) throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         if (direction) {
             setSyntactic(1, 0);
             _attachText("_iconDescription", _sendIcon);
@@ -426,7 +426,7 @@ public class SyntacticNode extends ComponentEntity implements SyntacticTerm {
      *  @exception NameDuplicationException
      */
     public void setCap(boolean direction) throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         if (direction) {
             setSyntactic(1, 0);
         } else {
@@ -537,7 +537,7 @@ public class SyntacticNode extends ComponentEntity implements SyntacticTerm {
      *  @exception NameDuplicationException
      */
     public void setLocation(double x, double y) throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         Location location = (Location) getAttribute("_location");
         if (location == null) {
             location = new Location(this, "_location");
@@ -638,6 +638,7 @@ public class SyntacticNode extends ComponentEntity implements SyntacticTerm {
      *  @param port The Port represented in the node.
      *  @return base index object or null if not found.
      */
+    @Override
     public Integer outputIndex(SyntacticPort port) {
         int index = _outputs.indexOf(port);
         return index < 0 ? null : index;
@@ -647,6 +648,7 @@ public class SyntacticNode extends ComponentEntity implements SyntacticTerm {
      *  @param port The Port represented in the node.
      *  @return base index object or null if not found.
      */
+    @Override
     public Integer inputIndex(SyntacticPort port) {
         int index = _inputs.indexOf(port);
         return index < 0 ? null : index;
@@ -655,6 +657,7 @@ public class SyntacticNode extends ComponentEntity implements SyntacticTerm {
     /** Get the list of ordered inputs.
      *  @return The list of inputs.
      */
+    @Override
     public List<SyntacticPort> getInputs() {
         return _inputs;
     }
@@ -662,6 +665,7 @@ public class SyntacticNode extends ComponentEntity implements SyntacticTerm {
     /** Get the list of ordered outputs.
      *  @return The list of outputs.
      */
+    @Override
     public List<SyntacticPort> getOutputs() {
         return _outputs;
     }
@@ -671,6 +675,7 @@ public class SyntacticNode extends ComponentEntity implements SyntacticTerm {
      *  represents to the downstream node.
      *  @return number of inputs.
      */
+    @Override
     public int sizeInputs() {
         if (_nodeType.isIncoming()) {
             return 1;
@@ -684,6 +689,7 @@ public class SyntacticNode extends ComponentEntity implements SyntacticTerm {
      *  represents to the upstream node.
      *  @return number of outputs.
      */
+    @Override
     public int sizeOutputs() {
         if (_nodeType.isOutgoing()) {
             return 1;
@@ -695,6 +701,7 @@ public class SyntacticNode extends ComponentEntity implements SyntacticTerm {
     /** Get the Syntactic rank of the node.
      *  @return rank of the node.
      */
+    @Override
     public SyntacticRank rank() {
         return new SyntacticRank(sizeOutputs(), 0, sizeInputs(), 0);
     }
@@ -731,6 +738,7 @@ public class SyntacticNode extends ComponentEntity implements SyntacticTerm {
      *  ... which order?
      *  @return the order of the node.
      */
+    @Override
     public int getOrder() {
         return _nodeType.getOrder();
     }
@@ -817,6 +825,7 @@ public class SyntacticNode extends ComponentEntity implements SyntacticTerm {
      *  for identity nodes.
      *  @return whether code should be generated.
      */
+    @Override
     public boolean hasCode() {
         return !isIdentity();
     }
@@ -863,6 +872,7 @@ public class SyntacticNode extends ComponentEntity implements SyntacticTerm {
     /** Generate code for node.
      *  @return code representation of node.
      */
+    @Override
     public String generateCode() {
         return getIdentifier();
     };

@@ -73,24 +73,26 @@ public class Director extends FMIMACodeGeneratorAdapter {
      *  @exception IllegalActionException If the adapter associated with
      *   an actor throws it while generating fire code for the actor.
      */
+    @Override
     public String generateFMIMA() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
         // Extending ProceduralCodeGenerator start.
         //NamedProgramCodeGeneratorAdapter adapter = (NamedProgramCodeGeneratorAdapter) getAdapter(getContainer());
         NamedProgramCodeGeneratorAdapter adapter = (NamedProgramCodeGeneratorAdapter) getAdapter(getComponent());
-        Iterator<?> actors = ((CompositeActor) adapter.getComponent().getContainer()).deepEntityList().iterator();
-        code.append(getCodeGenerator().comment("ptolemy/cg/adapter/generic/program/procedural/fmima/adapters/ptolemy/actor/Director.java start" + _eol
-                        + "   " + adapter.getComponent().getName()));
+        Iterator<?> actors = ((CompositeActor) adapter.getComponent()
+                .getContainer()).deepEntityList().iterator();
+        code.append(getCodeGenerator()
+                .comment(
+                        "ptolemy/cg/adapter/generic/program/procedural/fmima/adapters/ptolemy/actor/Director.java start"
+                                + _eol
+                                + "   "
+                                + adapter.getComponent().getName()));
         // Extending ProceduralCodeGenerator end.
-
 
         // Extending GenericCodeGenerator start.
         // Iterator<?> actors = ((CompositeActor) getComponent().getContainer()).deepEntityList().iterator();
         // code.append("<li>" + /*adapter.*/getComponent().getName() + "</li>" + _eol);
         // Extending GenericCodeGenerator start.
-
-
-
 
         while (actors.hasNext()) {
             Actor actor = (Actor) actors.next();
@@ -100,7 +102,7 @@ public class Director extends FMIMACodeGeneratorAdapter {
                 codeGeneratorAdapter = (FMIMACodeGeneratorAdapter) object;
             } catch (ClassCastException ex) {
                 throw new IllegalActionException(
-                        // Extending ProceduralCodeGenerator start.
+                // Extending ProceduralCodeGenerator start.
                         adapter.
                         // Extending ProceduralCodeGenerator end.
 
@@ -108,16 +110,18 @@ public class Director extends FMIMACodeGeneratorAdapter {
                         /* adapter.*/
                         // Extending GenericCodeGenerator end.
 
-                        getComponent(), ex,
-                        "Failed to cast " + object + " of class "
-                                + object.getClass().getName() + " to "
+                        getComponent(), ex, "Failed to cast " + object
+                                + " of class " + object.getClass().getName()
+                                + " to "
                                 + FMIMACodeGeneratorAdapter.class.getName()
                                 + ".");
 
             }
             code.append(codeGeneratorAdapter.generateFMIMA());
         }
-        code.append(getCodeGenerator().comment("ptolemy/cg/adapter/generic/program/procedural/fmima/adapters/ptolemy/actor/Director.java end"));
+        code.append(getCodeGenerator()
+                .comment(
+                        "ptolemy/cg/adapter/generic/program/procedural/fmima/adapters/ptolemy/actor/Director.java end"));
         return code.toString();
     }
 }

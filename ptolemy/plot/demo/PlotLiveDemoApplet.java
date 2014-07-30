@@ -49,6 +49,7 @@ public class PlotLiveDemoApplet extends PlotLiveApplet {
     /** Return a string describing this applet.
      *  @return A description of the applet.
      */
+    @Override
     public String getAppletInfo() {
         return "PlotLiveDemoApplet "
                 + PlotBox.PTPLOT_RELEASE
@@ -60,6 +61,7 @@ public class PlotLiveDemoApplet extends PlotLiveApplet {
 
     /** Create a new Plot object to operate on.
      */
+    @Override
     public PlotBox newPlot() {
         return new PlotLiveDemo();
     }

@@ -54,7 +54,7 @@ import ptolemy.kernel.util.StringAttribute;
  *  performing the get, and the timeoutResponse parameter has been
  *  set, then send the specified response. If no timeoutResponse
  *  has been set, then throw an exception on timeout.
- *  
+ *
  *  @see HttpPost
  *  @author  Edward A. Lee
  *  @version $Id$
@@ -79,7 +79,7 @@ public class HttpGet extends LimitedFiringSource {
         url.setStringMode(true);
         url.setExpression("http://localhost");
         new SingletonParameter(url.getPort(), "_showName")
-                .setToken(BooleanToken.TRUE);
+        .setToken(BooleanToken.TRUE);
         StringAttribute cardinal = new StringAttribute(url.getPort(),
                 "_cardinal");
         cardinal.setExpression("SOUTH");
@@ -94,12 +94,12 @@ public class HttpGet extends LimitedFiringSource {
         newline = new Parameter(this, "newline");
         newline.setExpression("property(\"line.separator\")");
 
-        output.setTypeEquals(BaseType.STRING);  
+        output.setTypeEquals(BaseType.STRING);
         new SingletonParameter(output, "_showName").setToken(BooleanToken.TRUE);
-        
+
         status = new TypedIOPort(this, "status", false, true);
         status.setTypeEquals(HttpResponse.getStatusType());
-        new SingletonParameter(status, "_showName").setToken(BooleanToken.TRUE); 
+        new SingletonParameter(status, "_showName").setToken(BooleanToken.TRUE);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -109,9 +109,9 @@ public class HttpGet extends LimitedFiringSource {
      *  of the line.separator property
      */
     public Parameter newline;
-    
-    /** An output port for transmitting a token containing the status of the 
-     * request.  This is a RecordToken comprised of the response code, 
+
+    /** An output port for transmitting a token containing the status of the
+     * request.  This is a RecordToken comprised of the response code,
      * response message, a boolean indicating if the request was successful,
      * and a boolean indicating if further action is expected.
      */
@@ -124,7 +124,7 @@ public class HttpGet extends LimitedFiringSource {
     public Parameter timeout;
 
     /** The response to send upon timeout.
-     *  If this is empty, then this actor will throw an exception rather than 
+     *  If this is empty, then this actor will throw an exception rather than
      *  send a response.  This is a string that defaults to empty.
      */
     public StringParameter timeoutResponse;
@@ -137,30 +137,31 @@ public class HttpGet extends LimitedFiringSource {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-    
+
     /** If there is an input, then post to the specified URL the
      *  data on the input record, wait for a response, and output
      *  the response on the output port.
      *  @exception IllegalActionException If an IO error occurs.
      */
+    @Override
     public void fire() throws IllegalActionException {
         super.fire();
         url.update();
-        
+
         if (_request == null) {
             _request = new HttpRequest();
         }
-        
+
         String urlValue = ((StringToken) url.getToken()).stringValue();
         if (urlValue == null || urlValue.isEmpty()) {
             throw new IllegalActionException("No URL provided.");
         }
-        
+
         try {
             _request.setUrl(new URL(urlValue));
 
             _request.setMethod(Method.GET);
-            
+
             // If a timeout has been specified, set it.
             int timeoutValue = ((IntToken) timeout.getToken()).intValue();
             if (timeoutValue >= 0) {
@@ -168,22 +169,22 @@ public class HttpGet extends LimitedFiringSource {
             }
 
             HttpResponse response = _request.execute();
-            
+
             // If a timeout occurs, check if an exception should be thrown
-            if (response.timedOut()) { 
+            if (response.timedOut()) {
                 if (_debugging) {
                     _debug("*** Timeout occurred.");
                 }
                 String timeout = timeoutResponse.stringValue();
                 if (timeout.trim().equals("")) {
-                    throw new IllegalActionException(this,
-                            "HTTP " + _request.getMethod() 
-                            + " " + response.getResponseMessage());
+                    throw new IllegalActionException(this, "HTTP "
+                            + _request.getMethod() + " "
+                            + response.getResponseMessage());
                 }
             }
-            
-            // FIXME: default response upon failure or empty string? 
-            output.send(0, new StringToken(response.getBody()));         
+
+            // FIXME: default response upon failure or empty string?
+            output.send(0, new StringToken(response.getBody()));
             status.send(0, response.getStatus());
         } catch (IOException e) {
             throw new IllegalActionException(this, e, "HTTP request failed");
@@ -192,7 +193,7 @@ public class HttpGet extends LimitedFiringSource {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-    
+
     /** The Http request **/
     HttpRequest _request;
 }

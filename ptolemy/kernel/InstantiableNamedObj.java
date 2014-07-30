@@ -135,6 +135,7 @@ public class InstantiableNamedObj extends NamedObj implements Instantiable {
      *   cannot be cloned.
      *  @return A new instance of InstantiableNamedObj.
      */
+    @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         try {
             workspace().getReadAccess();
@@ -211,6 +212,7 @@ public class InstantiableNamedObj extends NamedObj implements Instantiable {
      *  @exception IOException If an I/O error occurs.
      *  @see ptolemy.kernel.util.MoMLExportable
      */
+    @Override
     public void exportMoML(Writer output, int depth, String name)
             throws IOException {
 
@@ -273,6 +275,7 @@ public class InstantiableNamedObj extends NamedObj implements Instantiable {
      *  @see Instantiable
      *  @see java.lang.ref.WeakReference
      */
+    @Override
     public List getChildren() {
         if (_children == null) {
             return null;
@@ -286,6 +289,7 @@ public class InstantiableNamedObj extends NamedObj implements Instantiable {
      *  @return The MoML element name for this object.
      *  @see ptolemy.kernel.util.MoMLExportable
      */
+    @Override
     public String getElementName() {
         if (isClassDefinition()) {
             return "class";
@@ -299,6 +303,7 @@ public class InstantiableNamedObj extends NamedObj implements Instantiable {
      *  @see #_setParent(Instantiable)
      *  @see Instantiable
      */
+    @Override
     public Instantiable getParent() {
         return _parent;
     }
@@ -319,6 +324,7 @@ public class InstantiableNamedObj extends NamedObj implements Instantiable {
      *   name but the wrong class is found.
      *  @see ptolemy.kernel.util.Derivable
      */
+    @Override
     public List getPrototypeList() throws IllegalActionException {
         List result = super.getPrototypeList();
 
@@ -376,6 +382,7 @@ public class InstantiableNamedObj extends NamedObj implements Instantiable {
      *  @see #setClassDefinition(boolean)
      *  @see Instantiable
      */
+    @Override
     public Instantiable instantiate(NamedObj container, String name)
             throws CloneNotSupportedException, IllegalActionException,
             NameDuplicationException {
@@ -421,6 +428,7 @@ public class InstantiableNamedObj extends NamedObj implements Instantiable {
      *  @see #setClassDefinition(boolean)
      *  @see Instantiable
      */
+    @Override
     public final boolean isClassDefinition() {
         return _isClassDefinition;
     }

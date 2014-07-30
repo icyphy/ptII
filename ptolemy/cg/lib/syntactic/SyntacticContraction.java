@@ -24,7 +24,7 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
-*/
+ */
 
 package ptolemy.cg.lib.syntactic;
 
@@ -53,7 +53,7 @@ import java.util.List;
  @since Ptolemy II 10.0
  @Pt.ProposedRating Red (shaver)
  @Pt.AcceptedRating Red
-*/
+ */
 public class SyntacticContraction implements SyntacticTerm {
 
     /** Makes a new contraction operator with a given constant degree.
@@ -73,6 +73,7 @@ public class SyntacticContraction implements SyntacticTerm {
      *
      *  @return list of input ports.
      */
+    @Override
     public List<SyntacticPort> getInputs() {
         if (_kernel == null) {
             return null;
@@ -86,6 +87,7 @@ public class SyntacticContraction implements SyntacticTerm {
      *
      *  @return list of output ports.
      */
+    @Override
     public List<SyntacticPort> getOutputs() {
         if (_kernel == null) {
             return null;
@@ -98,6 +100,7 @@ public class SyntacticContraction implements SyntacticTerm {
      *
      *  @return number of inputs or zero if no kernel.
      */
+    @Override
     public int sizeInputs() {
         return _kernel == null ? 0 : _kernel.sizeInputs() - _degree;
     }
@@ -106,6 +109,7 @@ public class SyntacticContraction implements SyntacticTerm {
      *
      *  @return number of outputs or zero if no kernel.
      */
+    @Override
     public int sizeOutputs() {
         return _kernel == null ? 0 : _kernel.sizeOutputs() - _degree;
     }
@@ -114,6 +118,7 @@ public class SyntacticContraction implements SyntacticTerm {
      *
      *  @return rank of term.
      */
+    @Override
     public SyntacticRank rank() {
         return _rank;
     }
@@ -125,6 +130,7 @@ public class SyntacticContraction implements SyntacticTerm {
      *  @param port Port to find the index of.
      *  @return the index of the port or null if none.
      */
+    @Override
     public Integer inputIndex(SyntacticPort port) {
         if (_kernel == null) {
             return null;
@@ -141,6 +147,7 @@ public class SyntacticContraction implements SyntacticTerm {
      *  @param port Port to find the index of.
      *  @return the index of the port or null if none.
      */
+    @Override
     public Integer outputIndex(SyntacticPort port) {
         return null;
     }
@@ -181,6 +188,7 @@ public class SyntacticContraction implements SyntacticTerm {
      *
      *  @return lexical representation of term.
      */
+    @Override
     public String generateCode() {
         if (_kernel == null) {
             return "{}";
@@ -192,6 +200,7 @@ public class SyntacticContraction implements SyntacticTerm {
     /** Get the sort order of the term.
      *  @return sort order of the term.
      */
+    @Override
     public int getOrder() {
         return 0;
     }
@@ -199,6 +208,7 @@ public class SyntacticContraction implements SyntacticTerm {
     /** Decide whether code can be generated from this term.
      *  @return whether code can be generated.
      */
+    @Override
     public boolean hasCode() {
         return true;
     }

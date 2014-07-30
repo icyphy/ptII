@@ -26,7 +26,7 @@
                                         COPYRIGHTENDKEY
 
 Created : May 1998
-*/
+ */
 
 package ptolemy.data.expr;
 
@@ -121,7 +121,7 @@ public class ParseException extends Exception {
             }
             for (int j = 0; j < expectedTokenSequences[i].length; j++) {
                 expected.append(tokenImage[expectedTokenSequences[i][j]])
-                        .append(' ');
+                .append(' ');
             }
             if (expectedTokenSequences[i][expectedTokenSequences[i].length - 1] != 0) {
                 expected.append("...");

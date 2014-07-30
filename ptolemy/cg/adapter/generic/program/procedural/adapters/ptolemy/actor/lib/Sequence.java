@@ -61,6 +61,7 @@ public class Sequence extends NamedProgramCodeGeneratorAdapter {
      * @exception IllegalActionException If the code stream encounters an
      *  error in processing the specified code block(s).
      */
+    @Override
     protected String _generateFireCode() throws IllegalActionException {
         super._generateFireCode();
         ptolemy.actor.lib.Sequence actor = (ptolemy.actor.lib.Sequence) getComponent();

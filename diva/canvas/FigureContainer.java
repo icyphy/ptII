@@ -53,6 +53,7 @@ public interface FigureContainer extends FigureSet, VisibleComponent {
      * of making this same test is to check if the parent of the figure
      * is the same object as this container.
      */
+    @Override
     public boolean contains(Figure f);
 
     /** Decorate a child figure, replacing the

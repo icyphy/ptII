@@ -55,6 +55,7 @@ public class TestInstantiableNamedObj extends NamedObj implements Instantiable {
         super(workspace, name);
     }
 
+    @Override
     public List getChildren() {
         List results = new LinkedList();
         Iterator attributes = attributeList().iterator();
@@ -65,16 +66,19 @@ public class TestInstantiableNamedObj extends NamedObj implements Instantiable {
         return results;
     }
 
+    @Override
     public Instantiable getParent() {
         return null;
     }
 
+    @Override
     public Instantiable instantiate(NamedObj container, String name)
             throws CloneNotSupportedException, IllegalActionException,
             NameDuplicationException {
         return null;
     }
 
+    @Override
     public boolean isClassDefinition() {
         return false;
     }

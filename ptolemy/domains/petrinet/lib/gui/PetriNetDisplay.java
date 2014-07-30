@@ -54,7 +54,7 @@ import ptolemy.kernel.util.NameDuplicationException;
    @since Ptolemy II 10.0
    @Pt.ProposedRating Red (yukewang)
    @Pt.AcceptedRating Red (reviewmoderator)
-*/
+ */
 public class PetriNetDisplay extends Display implements PetriNetDisplayer {
 
     /**
@@ -87,6 +87,7 @@ public class PetriNetDisplay extends Display implements PetriNetDisplayer {
      * @exception IllegalActionException If _openWindow() in the base
      * class throws it.
      */
+    @Override
     public void openDisplay() throws IllegalActionException {
         if (!_initialized) {
             _initialized = true;
@@ -98,14 +99,16 @@ public class PetriNetDisplay extends Display implements PetriNetDisplayer {
         }
         // Set the text area in the Swing Event Thread or risk getting a NPE.
         Runnable doIt = new Runnable() {
+            @Override
             public void run() {
-                JTextArea textArea = (JTextArea) _getImplementation().getTextArea();
+                JTextArea textArea = (JTextArea) _getImplementation()
+                        .getTextArea();
                 textArea.setText(text);
                 if (_debugging) {
                     _debug("Called setText(" + text + ")");
                 }
             }
-            };
+        };
         Top.deferIfNecessary(doIt);
     }
 
@@ -115,6 +118,7 @@ public class PetriNetDisplay extends Display implements PetriNetDisplayer {
      * @param text
      *          The text to be shown in the display.
      */
+    @Override
     public void setText(String text) {
         if (_debugging) {
             _debug("text: " + text);

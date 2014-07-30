@@ -110,6 +110,7 @@ public class DynamicEditorIcon extends EditorIcon {
      *  @exception CloneNotSupportedException Not thrown in this base class
      *  @return The new Attribute.
      */
+    @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         DynamicEditorIcon newObject = (DynamicEditorIcon) super
                 .clone(workspace);
@@ -142,6 +143,7 @@ public class DynamicEditorIcon extends EditorIcon {
     protected Iterator _liveFigureIterator() {
         final Iterator iterator = _figures.listIterator();
         return new Iterator() {
+            @Override
             public boolean hasNext() {
                 // Pull the next valid element out of the list of
                 // WeakReferences.
@@ -156,6 +158,7 @@ public class DynamicEditorIcon extends EditorIcon {
                 return _object != null;
             }
 
+            @Override
             public Object next() throws NoSuchElementException {
                 // Just to make sure that someone wasn't stupid
                 // and didn't call hasNext();
@@ -176,6 +179,7 @@ public class DynamicEditorIcon extends EditorIcon {
                 }
             }
 
+            @Override
             public void remove() throws UnsupportedOperationException {
                 throw new UnsupportedOperationException(
                         "The remove() operation is unsupported.");

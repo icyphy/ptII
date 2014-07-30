@@ -58,6 +58,7 @@ import caltrop.interpreter.environment.Environment;
 public class DataMapEnvironment implements Environment {
     // FIXME: assumes repeat expressions can be evaluated in the
     // environment passed in to the constructor.
+    @Override
     public Object get(Object variable) {
         String varName = (String) variable;
         PortVarInfo pvi = (PortVarInfo) _varNameToVarInfo.get(varName);
@@ -109,42 +110,51 @@ public class DataMapEnvironment implements Environment {
         throw new InterpreterException("Indices not yet implemented.");
     }
 
+    @Override
     public void set(Object variable, Object value) {
         throw new InterpreterException("Cannot set() in DataMapEnvironment.");
     }
 
+    @Override
     public void set(Object variable, Object[] location, Object value) {
         throw new InterpreterException("Cannot set() in DataMapEnvironment.");
     }
 
+    @Override
     public void bind(Object variable, Object value) {
         throw new InterpreterException("Cannot bind() in DataMapEnvironment.");
     }
 
+    @Override
     public Set localVars() {
         // FIXME
         throw new InterpreterException("localVars() not yet implemented.");
     }
 
+    @Override
     public Map localBindings() {
         throw new InterpreterException("localBindings() not yet implemented.");
     }
 
+    @Override
     public boolean isLocalVar(Object variable) {
         // FIXME
         throw new InterpreterException("isLocalVar() not yet implemented.");
     }
 
+    @Override
     public Environment newFrame() {
         throw new InterpreterException("Cannot make a new frame in "
                 + "DataMapEnvironment.");
     }
 
+    @Override
     public Environment newFrame(Environment parent) {
         throw new InterpreterException("Cannot make a new frame in "
                 + "DataMapEnvironment.");
     }
 
+    @Override
     public void freezeLocal() {
         throw new InterpreterException("Cannot freezeLocal() in "
                 + "DataMapEnvironment.");
@@ -209,7 +219,7 @@ public class DataMapEnvironment implements Environment {
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
     @SuppressWarnings("serial")
-        public static class UnboundPortVarException extends InterpreterException {
+    public static class UnboundPortVarException extends InterpreterException {
         public UnboundPortVarException(String msg) {
             super(msg);
         }

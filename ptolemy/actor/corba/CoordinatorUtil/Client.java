@@ -10,5 +10,5 @@ package ptolemy.actor.corba.CoordinatorUtil;
 /* A CORBA compatible interface for a consumer.
  */
 public interface Client extends ClientOperations, org.omg.CORBA.Object,
-        org.omg.CORBA.portable.IDLEntity {
+org.omg.CORBA.portable.IDLEntity {
 } // interface Client

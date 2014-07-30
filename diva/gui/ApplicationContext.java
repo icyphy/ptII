@@ -75,6 +75,7 @@ public class ApplicationContext extends JFrame implements AppContext {
 
         // hook the exit action into the window closing.
         addWindowListener(new WindowAdapter() {
+            @Override
             public void windowClosing(WindowEvent e) {
                 if (_exitAction != null) {
                     _exitAction.actionPerformed(null);
@@ -87,6 +88,7 @@ public class ApplicationContext extends JFrame implements AppContext {
      * Return the action that is called back when the user
      * exits the app.
      */
+    @Override
     public Action getExitAction() {
         return _exitAction;
     }
@@ -94,6 +96,7 @@ public class ApplicationContext extends JFrame implements AppContext {
     /**
      * Get the image that represents this frame.
      */
+    @Override
     public Image getIconImage() {
         return super.getIconImage();
     }
@@ -101,6 +104,7 @@ public class ApplicationContext extends JFrame implements AppContext {
     /**
      * Return the title of the context.
      */
+    @Override
     public String getTitle() {
         return super.getTitle();
     }
@@ -108,6 +112,7 @@ public class ApplicationContext extends JFrame implements AppContext {
     /**
      * Return the menu bar that the container uses.
      */
+    @Override
     public JMenuBar getJMenuBar() {
         return super.getJMenuBar();
     }
@@ -115,6 +120,7 @@ public class ApplicationContext extends JFrame implements AppContext {
     /**
      * Return whether or not the frame is visible.
      */
+    @Override
     public boolean isVisible() {
         return super.isVisible();
     }
@@ -122,6 +128,7 @@ public class ApplicationContext extends JFrame implements AppContext {
     /**
      * Return "this" as a component.
      */
+    @Override
     public Component makeComponent() {
         return this;
     }
@@ -130,12 +137,14 @@ public class ApplicationContext extends JFrame implements AppContext {
      * Show the given status string at the bottom of
      * the context.  This base class does nothing.
      */
+    @Override
     public void showStatus(String status) {
     }
 
     /**
      * Set the frame's visibility.
      */
+    @Override
     public void setVisible(boolean visible) {
         super.setVisible(visible);
     }
@@ -144,6 +153,7 @@ public class ApplicationContext extends JFrame implements AppContext {
      * Set the action that is called back when the user
      * exits the app.
      */
+    @Override
     public void setExitAction(Action exitAction) {
         _exitAction = exitAction;
     }
@@ -151,6 +161,7 @@ public class ApplicationContext extends JFrame implements AppContext {
     /**
      * Set the title of the context.
      */
+    @Override
     public void setTitle(String title) {
         super.setTitle(title);
     }
@@ -158,6 +169,7 @@ public class ApplicationContext extends JFrame implements AppContext {
     /**
      * Set the icon that represents this frame.
      */
+    @Override
     public void setIconImage(Image image) {
         super.setIconImage(image);
     }
@@ -165,6 +177,7 @@ public class ApplicationContext extends JFrame implements AppContext {
     /**
      * Set the menu bar that the container uses.
      */
+    @Override
     public void setJMenuBar(JMenuBar menu) {
         super.setJMenuBar(menu);
     }

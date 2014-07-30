@@ -116,6 +116,7 @@ public class OverlayLayer extends CanvasLayer implements VisibleComponent {
      *  does not indicate whether the layer is actually visible on
      *  the screen, as its pane or one if its ancestors may not be visible.
      */
+    @Override
     public boolean isVisible() {
         return _visible;
     }
@@ -124,6 +125,7 @@ public class OverlayLayer extends CanvasLayer implements VisibleComponent {
      * is not visible, return immediately. Otherwise draw all shapes
      * with the current stroke and paint.
      */
+    @Override
     public void paint(Graphics2D g) {
         if (!isVisible()) {
             return;
@@ -145,6 +147,7 @@ public class OverlayLayer extends CanvasLayer implements VisibleComponent {
      * region.  If the layer is not visible, return immediately.
      * Otherwise draw all figures that overlap the given region.
      */
+    @Override
     public void paint(Graphics2D g, Rectangle2D region) {
         if (!isVisible()) {
             return;
@@ -234,6 +237,7 @@ public class OverlayLayer extends CanvasLayer implements VisibleComponent {
     /** Set the visibility flag of this layer. If the flag is false,
      * then the layer will not be drawn on the screen.
      */
+    @Override
     public void setVisible(boolean flag) {
         _visible = flag;
         repaint();

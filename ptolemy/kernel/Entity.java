@@ -152,6 +152,7 @@ public class Entity<T extends Port> extends InstantiableNamedObj {
      *   if one of the attributes cannot be cloned.
      *  @return The new Entity.
      */
+    @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         try {
             workspace().getReadAccess();
@@ -194,7 +195,7 @@ public class Entity<T extends Port> extends InstantiableNamedObj {
                         if (port == null) {
                             throw new IllegalActionException(this,
                                     "Could not find a port named '" + portName
-                                            + "';");
+                                    + "';");
                         }
 
                         field.set(newEntity, port);
@@ -264,6 +265,7 @@ public class Entity<T extends Port> extends InstantiableNamedObj {
      *  @deprecated Use connectedPortList() instead.
      *  @return An enumeration of Port objects.
      */
+    @Deprecated
     public Enumeration connectedPorts() {
         return Collections.enumeration(connectedPortList());
     }
@@ -289,6 +291,7 @@ public class Entity<T extends Port> extends InstantiableNamedObj {
      *  @return An iterator over instances of NamedObj contained by this
      *   object.
      */
+    @Override
     public Iterator containedObjectsIterator() {
         return new ContainedObjectsIterator();
     }
@@ -300,6 +303,7 @@ public class Entity<T extends Port> extends InstantiableNamedObj {
      *  @param name The name of the desired attribute.
      *  @return The requested attribute if it is found, null otherwise.
      */
+    @Override
     public Attribute getAttribute(String name) {
         try {
             _workspace.getReadAccess();
@@ -346,6 +350,7 @@ public class Entity<T extends Port> extends InstantiableNamedObj {
      *  @deprecated Use portList() instead.
      *  @return An enumeration of Port objects.
      */
+    @Deprecated
     public Enumeration getPorts() {
         return Collections.enumeration(portList());
     }
@@ -387,6 +392,7 @@ public class Entity<T extends Port> extends InstantiableNamedObj {
      *  @deprecated Use linkedRelationList() instead.
      *  @return An enumeration of Relation objects.
      */
+    @Deprecated
     public Enumeration linkedRelations() {
         return Collections.enumeration(linkedRelationList());
     }
@@ -406,7 +412,7 @@ public class Entity<T extends Port> extends InstantiableNamedObj {
      *   with the specified name.
      */
     public Port newPort(String name) throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         try {
             _workspace.getWriteAccess();
 
@@ -470,6 +476,7 @@ public class Entity<T extends Port> extends InstantiableNamedObj {
      *  @exception IllegalActionException If the argument is true and
      *   this entity contains ports with links.
      */
+    @Override
     public/*final*/void setClassDefinition(boolean isClass)
             throws IllegalActionException {
         if (isClass && !isClassDefinition()) {
@@ -502,6 +509,7 @@ public class Entity<T extends Port> extends InstantiableNamedObj {
      *  @param prefix A prefix for the name.
      *  @return A unique name.
      */
+    @Override
     public String uniqueName(String prefix) {
         if (prefix == null) {
             prefix = "null";
@@ -539,7 +547,7 @@ public class Entity<T extends Port> extends InstantiableNamedObj {
      *   name already in the entity.
      */
     protected void _addPort(T port) throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         _portList.append(port);
     }
 
@@ -560,6 +568,7 @@ public class Entity<T extends Port> extends InstantiableNamedObj {
      *  @exception IllegalActionException If there is a problem
      *  accessing subcomponents of this object.
      */
+    @Override
     protected String _description(int detail, int indent, int bracket)
             throws IllegalActionException {
         try {
@@ -609,6 +618,7 @@ public class Entity<T extends Port> extends InstantiableNamedObj {
      *  @param depth The depth in the hierarchy, to determine indenting.
      *  @exception IOException If an I/O error occurs.
      */
+    @Override
     protected void _exportMoMLContents(Writer output, int depth)
             throws IOException {
         super._exportMoMLContents(output, depth);
@@ -647,6 +657,7 @@ public class Entity<T extends Port> extends InstantiableNamedObj {
      *  @exception IllegalActionException If the superclass throws it
      *  or if handleModelError() throws it.
      */
+    @Override
     protected void _validateSettables(Collection attributesValidated)
             throws IllegalActionException {
 
@@ -704,7 +715,7 @@ public class Entity<T extends Port> extends InstantiableNamedObj {
      *  ConcurrentModificationException.
      */
     protected class ContainedObjectsIterator extends
-            NamedObj.ContainedObjectsIterator {
+    NamedObj.ContainedObjectsIterator {
         /** Create an iterator over all the contained objects, which
          *  for Entities are attributes and then ports.
          */
@@ -718,6 +729,7 @@ public class Entity<T extends Port> extends InstantiableNamedObj {
          *  attributes or ports.
          *  @return True if there are more attributes or ports.
          */
+        @Override
         public boolean hasNext() {
             if (super.hasNext()) {
                 return true;
@@ -729,6 +741,7 @@ public class Entity<T extends Port> extends InstantiableNamedObj {
          *  In this base class, this is the next attribute or port.
          *  @return The next attribute or port.
          */
+        @Override
         public Object next() {
             if (super.hasNext()) {
                 return super.next();
@@ -739,6 +752,7 @@ public class Entity<T extends Port> extends InstantiableNamedObj {
         /** The remove() method is not supported because is is not
          *  supported in NamedObj.ContainedObjectsIterator.remove().
          */
+        @Override
         public void remove() {
             // Findbugs complains about Call to unsupported method.
             throw new UnsupportedOperationException("remove() not supported "

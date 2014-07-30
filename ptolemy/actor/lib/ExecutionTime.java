@@ -127,6 +127,7 @@ public class ExecutionTime extends LimitedFiringSource {
      *  output the actual execution time used.
      *  @exception IllegalActionException If send() throws it.
      */
+    @Override
     public void fire() throws IllegalActionException {
         long start = System.currentTimeMillis();
         super.fire();

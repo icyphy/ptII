@@ -74,6 +74,7 @@ public class ProgramCodeGeneratorAdapter extends CodeGeneratorAdapter {
      *  @return The code generator associated with this adapter class.
      *  @see #setCodeGenerator(GenericCodeGenerator)
      */
+    @Override
     public ProgramCodeGenerator getCodeGenerator() {
         return _codeGenerator;
     }
@@ -113,6 +114,7 @@ public class ProgramCodeGeneratorAdapter extends CodeGeneratorAdapter {
      *   adapter class.
      *  @see #getCodeGenerator()
      */
+    @Override
     public void setCodeGenerator(GenericCodeGenerator codeGenerator) {
         // FIXME: FindBugs warns that this is an unconfirmed cast.
         _codeGenerator = (ProgramCodeGenerator) codeGenerator;
@@ -126,6 +128,7 @@ public class ProgramCodeGeneratorAdapter extends CodeGeneratorAdapter {
         return _templateParser;
     }
 
+    @Override
     public String toString() {
         return getComponent().toString() + "'s Adapter";
     }
@@ -163,10 +166,10 @@ public class ProgramCodeGeneratorAdapter extends CodeGeneratorAdapter {
                 codeStream.insert(
                         0,
                         _eol
-                                + getCodeGenerator().comment(
-                                        shortBlockName
-                                                + ((Nameable) getComponent())
-                                                        .getName()));
+                        + getCodeGenerator().comment(
+                                shortBlockName
+                                + ((Nameable) getComponent())
+                                .getName()));
             }
         }
         return processCode(codeStream.toString());
@@ -184,7 +187,7 @@ public class ProgramCodeGeneratorAdapter extends CodeGeneratorAdapter {
      * with the code block name (String) as key.
      */
     protected static final String[] _defaultBlocks = { "preinitBlock",
-            "initBlock", "fireBlock", "postfireBlock", "wrapupBlock" };
+        "initBlock", "fireBlock", "postfireBlock", "wrapupBlock" };
 
     /** End of line character.  Under Unix: "\n", under Windows: "\n\r".
      *  We use a end of line character so that the files we generate
@@ -231,6 +234,7 @@ public class ProgramCodeGeneratorAdapter extends CodeGeneratorAdapter {
          * @return True if this channel is the same reference as the given
          *  object, otherwise false;
          */
+        @Override
         public boolean equals(Object object) {
             return object instanceof Channel
                     && port.equals(((Channel) object).port)
@@ -242,6 +246,7 @@ public class ProgramCodeGeneratorAdapter extends CodeGeneratorAdapter {
          * is required for comparing the equality of channels.
          * @return Hash code for this channel.
          */
+        @Override
         public int hashCode() {
             return port.hashCode() + channelNumber;
         }
@@ -250,6 +255,7 @@ public class ProgramCodeGeneratorAdapter extends CodeGeneratorAdapter {
          * Return the string representation of this channel.
          * @return The string representation of this channel.
          */
+        @Override
         public String toString() {
             return port.getName() + "_" + channelNumber;
         }

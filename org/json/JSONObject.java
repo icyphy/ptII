@@ -22,7 +22,7 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
-*/
+ */
 import java.io.IOException;
 import java.io.Writer;
 import java.lang.reflect.Field;
@@ -101,6 +101,7 @@ public class JSONObject {
          * so the clone method returns itself.
          * @return     NULL.
          */
+        @Override
         protected final Object clone() {
             return this;
         }
@@ -111,6 +112,7 @@ public class JSONObject {
          * @return true if the object parameter is the JSONObject.NULL object
          *  or null.
          */
+        @Override
         public boolean equals(Object object) {
             return object == null || object == this;
         }
@@ -119,6 +121,7 @@ public class JSONObject {
          * Get the "null" string value.
          * @return The string "null".
          */
+        @Override
         public String toString() {
             return "null";
         }
@@ -1081,7 +1084,7 @@ public class JSONObject {
                 break;
             default:
                 if (c < ' ' || c >= '\u0080' && c < '\u00a0' || c >= '\u2000'
-                        && c < '\u2100') {
+                && c < '\u2100') {
                     t = "000" + Integer.toHexString(c);
                     sb.append("\\u" + t.substring(t.length() - 4));
                 } else {
@@ -1221,6 +1224,7 @@ public class JSONObject {
      *  with <code>{</code>&nbsp;<small>(left brace)</small> and ending
      *  with <code>}</code>&nbsp;<small>(right brace)</small>.
      */
+    @Override
     public String toString() {
         try {
             Iterator keys = keys();
@@ -1461,12 +1465,12 @@ public class JSONObject {
             Package objectPackage = object.getClass().getPackage();
             String objectPackageName = objectPackage != null ? objectPackage
                     .getName() : "";
-            if (objectPackageName.startsWith("java.")
-                    || objectPackageName.startsWith("javax.")
-                    || object.getClass().getClassLoader() == null) {
-                return object.toString();
-            }
-            return new JSONObject(object);
+                    if (objectPackageName.startsWith("java.")
+                            || objectPackageName.startsWith("javax.")
+                            || object.getClass().getClassLoader() == null) {
+                        return object.toString();
+                    }
+                    return new JSONObject(object);
         } catch (Exception exception) {
             return null;
         }

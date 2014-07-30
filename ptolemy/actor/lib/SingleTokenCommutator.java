@@ -80,6 +80,7 @@ public class SingleTokenCommutator extends Transformer implements SequenceActor 
      *  input channel, do nothing.
      *  @exception IllegalActionException If there is no director.
      */
+    @Override
     public void fire() throws IllegalActionException {
         super.fire();
         if (input.hasToken(_currentInputPosition)) {
@@ -90,6 +91,7 @@ public class SingleTokenCommutator extends Transformer implements SequenceActor 
     /** Begin execution by setting the current input channel to zero.
      *  @exception IllegalActionException If there is no director.
      */
+    @Override
     public void initialize() throws IllegalActionException {
         super.initialize();
         _currentInputPosition = 0;
@@ -101,6 +103,7 @@ public class SingleTokenCommutator extends Transformer implements SequenceActor 
      *  will be read.
      *  @exception IllegalActionException If there is no director.
      */
+    @Override
     public boolean postfire() throws IllegalActionException {
         _currentInputPosition++;
 

@@ -67,6 +67,7 @@ public class Merge extends NamedProgramCodeGeneratorAdapter {
      * @return A string representing the Initialize C code for this actor
      * @exception IllegalActionException If illegal macro names are found.
      */
+    @Override
     public String generateInitializeCode() throws IllegalActionException {
         CodeStream codeStream = _templateParser.getCodeStream();
         codeStream.clear();
@@ -90,6 +91,7 @@ public class Merge extends NamedProgramCodeGeneratorAdapter {
      * @exception IllegalActionException If the code stream encounters an
      *  error in processing the specified code block(s).
      */
+    @Override
     protected String _generateFireCode() throws IllegalActionException {
         StringBuffer code = new StringBuffer(super._generateFireCode());
         LinkedList args = new LinkedList();
@@ -115,6 +117,7 @@ public class Merge extends NamedProgramCodeGeneratorAdapter {
      *  @exception IllegalActionException If there is a problme
      *  getting the width of the input.
      */
+    @Override
     public String getSourceTimeString(String timeVariable)
             throws IllegalActionException {
         String name = CodeGeneratorAdapter.generateName((NamedObj) _component);

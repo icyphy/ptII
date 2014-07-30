@@ -63,6 +63,7 @@ public class Bernoulli extends RandomSource {
      * @exception IllegalActionException If the code stream encounters an
      *  error in processing the specified code block(s).
      */
+    @Override
     public Set getSharedCode() throws IllegalActionException {
         // LinkedHashSet gives order to the insertion. The order of code block
         // is important here because gaussianBlock uses code from the other
@@ -72,7 +73,8 @@ public class Bernoulli extends RandomSource {
 
         // gaussianBlock is from the RandomSource parent class.
         ArrayList<String> args = new ArrayList<String>();
-        sharedCode.add(getTemplateParser().generateBlockCode("gaussianBlock", args));
+        sharedCode.add(getTemplateParser().generateBlockCode("gaussianBlock",
+                args));
         return sharedCode;
     }
 
@@ -83,6 +85,7 @@ public class Bernoulli extends RandomSource {
      *  needed by the code generated for the Bernoulli actor.
      * @exception IllegalActionException Not Thrown in this subclass.
      */
+    @Override
     public Set getHeaderFiles() throws IllegalActionException {
         Set files = super.getHeaderFiles();
         files.add("<math.h>");
@@ -95,6 +98,7 @@ public class Bernoulli extends RandomSource {
     /** Generate code for producing a new random number.
      *  @exception IllegalActionException Not thrown in this base class.
      */
+    @Override
     protected String _generateRandomNumber() throws IllegalActionException {
         ArrayList<String> args = new ArrayList<String>();
         return getTemplateParser().generateBlockCode("randomBlock", args);

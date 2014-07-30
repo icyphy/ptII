@@ -57,6 +57,7 @@ public class UnionTokenHandler implements TokenHandler<UnionToken> {
      *  @exception IllegalActionException If there is a problem loading the mapping from TokenHandlers.properties file.
      *  @see ptserver.data.handler.TokenHandler#convertToBytes(ptolemy.data.Token, java.io.DataOutputStream)
      */
+    @Override
     public void convertToBytes(UnionToken token, DataOutputStream outputStream)
             throws IOException, IllegalActionException {
 
@@ -72,6 +73,7 @@ public class UnionTokenHandler implements TokenHandler<UnionToken> {
      *  @exception IllegalActionException If there is a problem loading the mapping from TokenHandlers.properties file.
      *  @see ptserver.data.handler.TokenHandler#convertToToken(java.io.DataInputStream, Class)
      */
+    @Override
     public UnionToken convertToToken(DataInputStream inputStream,
             Class<? extends UnionToken> tokenType) throws IOException,
             IllegalActionException {

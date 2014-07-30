@@ -73,7 +73,7 @@ public class XmlDemo {
 
         // Now print it
         System.out
-                .println("\nHaving parsed the document, we will print it out.");
+        .println("\nHaving parsed the document, we will print it out.");
         System.out.println("Here is the DTD:\n");
 
         writer = new XmlWriter();

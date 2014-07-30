@@ -136,6 +136,7 @@ public class GraphicalLocator extends Locator {
      *  @exception CloneNotSupportedException Not thrown in this base class
      *  @return The new Attribute.
      */
+    @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         GraphicalLocator newObject = (GraphicalLocator) super.clone(workspace);
         newObject._circle = (EllipseAttribute) getAttribute("_circle");
@@ -147,6 +148,7 @@ public class GraphicalLocator extends Locator {
      *  port.  Also, change the color of the icon to red and schedule
      *  another firing after 1.0 time unit to change it back to blue.
      */
+    @Override
     public void fire() throws IllegalActionException {
         if (input.hasToken(0)) {
             // Change the color of the icon to red.
@@ -167,6 +169,7 @@ public class GraphicalLocator extends Locator {
     /** Initialize the sensor node by setting its icon color to blue.
      *  @exception IllegalActionException If thrown by the base class.
      */
+    @Override
     public void initialize() throws IllegalActionException {
         super.initialize();
 

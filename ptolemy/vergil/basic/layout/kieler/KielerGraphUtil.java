@@ -26,7 +26,7 @@ ENHANCEMENTS, OR MODIFICATIONS.
                                                 COPYRIGHTENDKEY
 
 
-*/
+ */
 package ptolemy.vergil.basic.layout.kieler;
 
 import java.awt.geom.Point2D;
@@ -162,8 +162,12 @@ public final class KielerGraphUtil {
     protected static String _toString(KEdge edge) {
         StringBuffer string = new StringBuffer();
         string.append("[E:");
-        string.append("Source:" + (edge.getSource() == null ? "null" : edge.getSource().hashCode()));
-        string.append(" Target:" +(edge.getSource() == null ? "null" : edge.getTarget().hashCode()) + " Bends:");
+        string.append("Source:"
+                + (edge.getSource() == null ? "null" : edge.getSource()
+                        .hashCode()));
+        string.append(" Target:"
+                + (edge.getSource() == null ? "null" : edge.getTarget()
+                        .hashCode()) + " Bends:");
         KEdgeLayout layout = edge.getData(KEdgeLayout.class);
         for (KPoint point : layout.getBendPoints()) {
             string.append(point.getX() + "," + point.getY() + " ");
@@ -230,10 +234,10 @@ public final class KielerGraphUtil {
 
         // Register the default resource factory -- only needed for stand-alone!
         resourceSet
-                .getResourceFactoryRegistry()
-                .getExtensionToFactoryMap()
-                .put(Resource.Factory.Registry.DEFAULT_EXTENSION,
-                        new XMIResourceFactoryImpl());
+        .getResourceFactoryRegistry()
+        .getExtensionToFactoryMap()
+        .put(Resource.Factory.Registry.DEFAULT_EXTENSION,
+                new XMIResourceFactoryImpl());
 
         try {
             // Get the URI of the model file.
@@ -244,8 +248,8 @@ public final class KielerGraphUtil {
             Resource resource = resourceSet.createResource(fileURI);
 
             if (resource == null) {
-                throw new NullPointerException("Could not create a resource for \""
-                        + fileURI + "\"");
+                throw new NullPointerException(
+                        "Could not create a resource for \"" + fileURI + "\"");
             } else {
                 resource.getContents().add(kgraph);
 

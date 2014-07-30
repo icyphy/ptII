@@ -105,6 +105,7 @@ public interface Settable extends Nameable {
     /** Return a name to present to the user.
      *  @return A name to present to the user.
      */
+    @Override
     public String getDisplayName();
 
     /** Get the expression of the attribute that has been set by setExpression(),

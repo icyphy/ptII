@@ -64,6 +64,7 @@ public class TransformerAdapter extends SceneTransformer {
         _transformers = transformers;
     }
 
+    @Override
     protected void internalTransform(String phaseName, Map options) {
         System.out.println("TransformerAdapter.internalTransform(" + phaseName
                 + ", " + options + ")");

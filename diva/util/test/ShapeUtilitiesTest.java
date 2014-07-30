@@ -57,6 +57,7 @@ public class ShapeUtilitiesTest extends TestSuite {
     /**
      * runSuite()
      */
+    @Override
     public void runSuite() {
         testTransformBounds();
         testTransformModify();
@@ -95,6 +96,7 @@ public class ShapeUtilitiesTest extends TestSuite {
 
             Shape fs2;
 
+            @Override
             public void init() throws Exception {
                 at1 = new AffineTransform(); // This one is orthogonal
                 at1.translate(40, -20);
@@ -103,6 +105,7 @@ public class ShapeUtilitiesTest extends TestSuite {
                 at2.rotate(-1.0);
             }
 
+            @Override
             public void run() throws Exception {
                 ds1 = at1.createTransformedShape(dr1);
                 ds2 = at2.createTransformedShape(dr2).getBounds2D();
@@ -114,6 +117,7 @@ public class ShapeUtilitiesTest extends TestSuite {
                 fr2 = ShapeUtilities.transformBounds(fr2, at2);
             }
 
+            @Override
             public void check() throws TestFailedException {
                 assertExpr(TestUtilities.shapeEquals(ds1, dr1, 0.01),
                         "Bounds not transformed: " + ds1 + " != " + dr1);
@@ -141,6 +145,7 @@ public class ShapeUtilitiesTest extends TestSuite {
 
             AffineTransform at;
 
+            @Override
             public void init() throws Exception {
                 shapes[0] = new Rectangle2D.Double(10, 20, 30, 40);
                 shapes[1] = new Ellipse2D.Double(10, 20, 30, 40);
@@ -165,6 +170,7 @@ public class ShapeUtilitiesTest extends TestSuite {
                 at.rotate(1.0); // make this a general transform
             }
 
+            @Override
             public void run() throws Exception {
                 for (int i = 0; i < n; i++) {
                     xforms[i] = at.createTransformedShape(shapes[i]);
@@ -172,11 +178,12 @@ public class ShapeUtilitiesTest extends TestSuite {
                 }
             }
 
+            @Override
             public void check() throws TestFailedException {
                 for (int i = 0; i < n; i++) {
                     assertExpr(TestUtilities.shapeEquals(modified[i],
                             xforms[i], 0.01), "Shape not transformed: "
-                            + modified[i] + " != " + xforms[i]);
+                                    + modified[i] + " != " + xforms[i]);
 
                     if (i < 3) {
                         assertExpr(shapes[i] != modified[i],
@@ -210,12 +217,14 @@ public class ShapeUtilitiesTest extends TestSuite {
 
             Shape es;
 
+            @Override
             public void init() throws Exception {
                 at = new AffineTransform();
                 at.translate(40, -20);
                 at.scale(2.0, 0.5);
             }
 
+            @Override
             public void run() throws Exception {
                 ds = at.createTransformedShape(dr);
                 fs = at.createTransformedShape(fr);
@@ -225,6 +234,7 @@ public class ShapeUtilitiesTest extends TestSuite {
                 ShapeUtilities.transformModifyRect(er, at);
             }
 
+            @Override
             public void check() throws TestFailedException {
                 assertExpr(TestUtilities.shapeEquals(ds, dr, 0.01),
                         "Rectangle not transformed: " + dr + " != " + ds);
@@ -254,6 +264,7 @@ public class ShapeUtilitiesTest extends TestSuite {
 
             AffineTransform at = AffineTransform.getTranslateInstance(x, y);
 
+            @Override
             public void init() throws Exception {
                 shapes[0] = new Area(ShapeUtilities.createSwatchShape());
                 shapes[1] = new Rectangle2D.Double(10, 20, 30, 40);
@@ -273,6 +284,7 @@ public class ShapeUtilitiesTest extends TestSuite {
                 shapes[5] = new GeneralPath(ShapeUtilities.createSwatchShape());
             }
 
+            @Override
             public void run() throws Exception {
                 for (int i = 0; i < n; i++) {
                     xforms[i] = at.createTransformedShape(shapes[i]);
@@ -281,11 +293,12 @@ public class ShapeUtilitiesTest extends TestSuite {
                 }
             }
 
+            @Override
             public void check() throws TestFailedException {
                 for (int i = 0; i < n; i++) {
                     assertExpr(TestUtilities.shapeEquals(modified[i],
                             xforms[i], 0.01), "Shape not translated: "
-                            + modified[i] + " != " + xforms[i]);
+                                    + modified[i] + " != " + xforms[i]);
 
                     if (i < 1) {
                         assertExpr(shapes[i] != modified[i],

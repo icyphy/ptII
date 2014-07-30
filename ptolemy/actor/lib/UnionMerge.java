@@ -92,7 +92,7 @@ To use this actor, instantiate it, and then add input ports
 @since Ptolemy II 10.0
 @Pt.ProposedRating Red (yuhongx)
 @Pt.AcceptedRating Red (yuhongx)
-*/
+ */
 public class UnionMerge extends TypedAtomicActor {
 
     /** Construct an actor in the specified container with the specified
@@ -132,6 +132,7 @@ public class UnionMerge extends TypedAtomicActor {
      *  @exception CloneNotSupportedException If a derived class contains
      *   an attribute that cannot be cloned.
      */
+    @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         UnionMerge newObject = (UnionMerge) super.clone(workspace);
         newObject._portMap = new HashMap<String, TypedIOPort>();
@@ -145,6 +146,7 @@ public class UnionMerge extends TypedAtomicActor {
      *  @exception IllegalActionException If there is no director, or
      *  the input can not be read, or the output can not be sent.
      */
+    @Override
     public void fire() throws IllegalActionException {
         super.fire();
 
@@ -220,6 +222,7 @@ public class UnionMerge extends TypedAtomicActor {
     /** Do not establish the usual default type constraints.
      *  @return null
      */
+    @Override
     protected Set<Inequality> _defaultTypeConstraints() {
         return null;
     }

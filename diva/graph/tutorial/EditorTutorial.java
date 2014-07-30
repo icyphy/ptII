@@ -81,6 +81,7 @@ public class EditorTutorial {
         context.setSize(800, 600);
 
         SwingUtilities.invokeLater(new Runnable() {
+            @Override
             public void run() {
                 new EditorTutorial(context);
                 context.setVisible(true);
@@ -106,6 +107,7 @@ public class EditorTutorial {
      * An inner class for layout.
      */
     public class LayoutActionListener implements java.awt.event.ActionListener {
+        @Override
         public void actionPerformed(ActionEvent e) {
             _layout.layout(_model.getRoot());
         }
@@ -115,7 +117,7 @@ public class EditorTutorial {
      * A widget for configuring layouts.
      */
     @SuppressWarnings("serial")
-        public class LayoutWidget extends JPanel {
+    public class LayoutWidget extends JPanel {
         /**
          * The graph that will be layed out.
          */
@@ -192,14 +194,16 @@ public class EditorTutorial {
         }
 
         private class SelectionListener implements
-                java.awt.event.ActionListener {
+        java.awt.event.ActionListener {
+            @Override
             public void actionPerformed(ActionEvent e) {
                 /* String name = (String) */_layoutList.getSelectedItem();
             }
         }
 
         private class LayoutActionListener implements
-                java.awt.event.ActionListener {
+        java.awt.event.ActionListener {
+            @Override
             public void actionPerformed(ActionEvent e) {
                 String name = (String) _layoutList.getSelectedItem();
                 GlobalLayout l = (GlobalLayout) _nameMap.get(name);

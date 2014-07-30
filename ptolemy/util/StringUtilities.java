@@ -88,7 +88,7 @@ public class StringUtilities {
         }
 
         return longName.substring(0, 37) + ". . ."
-                + longName.substring(longName.length() - 38);
+        + longName.substring(longName.length() - 38);
     }
 
     /** Return a string with a maximum line length of <i>length</i>
@@ -434,7 +434,7 @@ public class StringUtilities {
                         String abnormalHome = namedObjFileName.substring(
                                 0,
                                 namedObjFileName.length()
-                                        - stringUtilitiesPath.length());
+                                - stringUtilitiesPath.length());
 
                         // abnormalHome will have values like: "/C:/ptII/"
                         // which cause no end of trouble, so we construct a File
@@ -459,14 +459,14 @@ public class StringUtilities {
                             _ptolemyPtIIDir = _ptolemyPtIIDir.substring(
                                     0,
                                     _ptolemyPtIIDir.length()
-                                            - ptsupportJarName.length());
+                                    - ptsupportJarName.length());
                         } else {
                             ptsupportJarName = "/DMptolemy/XMptsupport.jar";
 
                             if (_ptolemyPtIIDir.lastIndexOf(ptsupportJarName) != -1) {
                                 _ptolemyPtIIDir = _ptolemyPtIIDir.substring(0,
                                         _ptolemyPtIIDir
-                                                .lastIndexOf(ptsupportJarName));
+                                        .lastIndexOf(ptsupportJarName));
                             } else {
                                 // Ptolemy II 6.0.1 under Windows: remove
                                 // "\ptolemy\ptsupport.jar!"
@@ -484,7 +484,7 @@ public class StringUtilities {
                                             .substring(
                                                     0,
                                                     _ptolemyPtIIDir
-                                                            .lastIndexOf(ptsupportJarName));
+                                                    .lastIndexOf(ptsupportJarName));
                                 }
                             }
                         }
@@ -905,10 +905,10 @@ public class StringUtilities {
         } else {
             try {
                 String prefixCanonicalPath = new File(prefix)
-                        .getCanonicalPath();
+                .getCanonicalPath();
 
                 String stringCanonicalPath = new File(string)
-                        .getCanonicalPath();
+                .getCanonicalPath();
 
                 if (stringCanonicalPath.startsWith(prefixCanonicalPath)) {
                     return replacement

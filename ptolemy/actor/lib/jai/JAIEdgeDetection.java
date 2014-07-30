@@ -150,6 +150,7 @@ public class JAIEdgeDetection extends Transformer {
      *  @exception IllegalActionException If the function is not recognized,
      *  or if a contained method throws it.
      */
+    @Override
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         if (attribute == firstMask) {
@@ -175,6 +176,7 @@ public class JAIEdgeDetection extends Transformer {
      *  @exception CloneNotSupportedException If a derived class contains
      *  an attribute that cannot be cloned.
      */
+    @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         JAIEdgeDetection newObject = (JAIEdgeDetection) super.clone(workspace);
         newObject._firstMaskData = null;
@@ -187,6 +189,7 @@ public class JAIEdgeDetection extends Transformer {
      *  @exception IllegalActionException If a contained method throws
      *  it.
      */
+    @Override
     public void fire() throws IllegalActionException {
         super.fire();
 
@@ -338,40 +341,40 @@ public class JAIEdgeDetection extends Transformer {
 
     /** Prespecified masks that the user may use */
     private static final float[] _sobelHorizontalFilter = { 1.0F, 0.0F, -1.0F,
-            2.0F, 0.0F, -2.0F, 1.0F, 0.0F, -1.0F };
+        2.0F, 0.0F, -2.0F, 1.0F, 0.0F, -1.0F };
 
     private static final float[] _sobelVerticalFilter = { -1.0F, -2.0F, -1.0F,
-            0.0F, 0.0F, 0.0F, 1.0F, 2.0F, 1.0F };
+        0.0F, 0.0F, 0.0F, 1.0F, 2.0F, 1.0F };
 
     private static final float[] _robertsHorizontalFilter = { 0.0F, 0.0F,
-            -1.0F, 0.0F, 1.0F, 0.0F, 0.0F, 0.0F, 0.0F };
+        -1.0F, 0.0F, 1.0F, 0.0F, 0.0F, 0.0F, 0.0F };
 
     private static final float[] _robertsVerticalFilter = { -1.0F, 0.0F, 0.0F,
-            0.0F, 1.0F, 0.0F, 0.0F, 0.0F, 0.0F };
+        0.0F, 1.0F, 0.0F, 0.0F, 0.0F, 0.0F };
 
     private static final float[] _prewittHorizontalFilter = { 1.0F, 0.0F,
-            -1.0F, 1.0F, 0.0F, -1.0F, 1.0F, 0.0F, -1.0F };
+        -1.0F, 1.0F, 0.0F, -1.0F, 1.0F, 0.0F, -1.0F };
 
     private static final float[] _prewittVerticalFilter = { -1.0F, -1.0F,
-            -1.0F, 0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F };
+        -1.0F, 0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F };
 
     private static final float[] _freiAndChenHorizontalFilter = { 1.0F, 0.0F,
-            -1.0F, 1.414F, 0.0F, -1.414F, 1.0F, 0.0F, -1.0F };
+        -1.0F, 1.414F, 0.0F, -1.414F, 1.0F, 0.0F, -1.0F };
 
     private static final float[] _freiAndChenVerticalFilter = { -1.0F, -1.414F,
-            -1.0F, 0.0F, 0.0F, 0.0F, 1.0F, 1.414F, 1.0F };
+        -1.0F, 0.0F, 0.0F, 0.0F, 1.0F, 1.414F, 1.0F };
 
     private static final float[] _transparentFilter = { 0.0F, 0.0F, 0.0F, 0.0F,
-            0.707F, 0.0F, 0.0F, 0.0F, 0.0F };
+        0.707F, 0.0F, 0.0F, 0.0F, 0.0F };
 
     private static final float[] _zeroFilter = { 0.0F, 0.0F, 0.0F, 0.0F, 0.0F,
-            0.0F, 0.0F, 0.0F, 0.0F };
+        0.0F, 0.0F, 0.0F, 0.0F };
 
     private static final float[] _diagonalFilter = { 1.0F, 1.0F, 0.0F, 1.0F,
-            0.0F, -1.0F, 0.0F, -1.0F, -1.0F };
+        0.0F, -1.0F, 0.0F, -1.0F, -1.0F };
 
     private static final float[] _backDiagonalFilter = { 0.0F, 1.0F, 1.0F,
-            -1.0F, 0.0F, 1.0F, -1.0F, -1.0F, 0.0F };
+        -1.0F, 0.0F, 1.0F, -1.0F, -1.0F, 0.0F };
 
     //Constants used for more efficient execution
     private static final int _BACKDIAGONAL = 0;

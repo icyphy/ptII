@@ -72,15 +72,18 @@ public class MakefileWriter extends SceneTransformer implements HasPhaseOptions 
         return new MakefileWriter(model);
     }
 
+    @Override
     public String getPhaseName() {
         return "";
     }
 
+    @Override
     public String getDefaultOptions() {
         return "templateDirectory:" + TEMPLATE_DIRECTORY_DEFAULT
                 + " overwrite:true";
     }
 
+    @Override
     public String getDeclaredOptions() {
         return "_generatorAttributeFileName outputDirectory overwrite targetPackage targetPath templateDirectory";
     }
@@ -203,6 +206,7 @@ public class MakefileWriter extends SceneTransformer implements HasPhaseOptions 
      *
      *  </dl>
      */
+    @Override
     protected void internalTransform(String phaseName, Map options) {
         System.out.println("MakefileWriter.internalTransform(" + phaseName
                 + ", " + options + ")");

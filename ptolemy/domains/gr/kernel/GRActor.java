@@ -75,6 +75,7 @@ abstract public class GRActor extends TypedAtomicActor {
      *  @exception IllegalActionException If an error occurs
      *    during the scene graph initialization.
      */
+    @Override
     public void fire() throws IllegalActionException {
         super.fire();
         if (!_isSceneGraphInitialized) {
@@ -89,6 +90,7 @@ abstract public class GRActor extends TypedAtomicActor {
      *  @exception IllegalActionException If the current director
      *    is not a GRDirector.
      */
+    @Override
     public void initialize() throws IllegalActionException {
         super.initialize();
         _isSceneGraphInitialized = false;
@@ -104,6 +106,7 @@ abstract public class GRActor extends TypedAtomicActor {
      *
      *  @exception IllegalActionException If the base class throws it.
      */
+    @Override
     public void wrapup() throws IllegalActionException {
         super.wrapup();
         _isSceneGraphInitialized = false;

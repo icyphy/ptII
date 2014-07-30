@@ -76,6 +76,7 @@ public class OntologySolverGraphModel extends AbstractBasicGraphModel {
      *   e.g. the view that made this call.
      *  @param edge The edge to be disconnected.
      */
+    @Override
     public void disconnectEdge(Object eventSource, Object edge) {
     }
 
@@ -93,6 +94,7 @@ public class OntologySolverGraphModel extends AbstractBasicGraphModel {
      *  @param edge The edge.
      *  @return The empty string.
      */
+    @Override
     public String getDeleteEdgeMoML(Object edge) {
         return "";
     }
@@ -102,6 +104,7 @@ public class OntologySolverGraphModel extends AbstractBasicGraphModel {
      *  @param node The node.
      *  @return A valid MoML string.
      */
+    @Override
     public String getDeleteNodeMoML(Object node) {
         if (!(getNodeModel(node) instanceof NamedObjNodeModel)) {
             return "";
@@ -118,6 +121,7 @@ public class OntologySolverGraphModel extends AbstractBasicGraphModel {
      *   edges exist in the ontology solver model.
      *  @return null.
      */
+    @Override
     public EdgeModel getEdgeModel(Object edge) {
         return null;
     }
@@ -130,6 +134,7 @@ public class OntologySolverGraphModel extends AbstractBasicGraphModel {
      *  @return The node model for the specified node, or null if there
      *   is none.
      */
+    @Override
     public NodeModel getNodeModel(Object node) {
         if (node instanceof Locatable) {
             Object container = ((Locatable) node).getContainer();
@@ -148,6 +153,7 @@ public class OntologySolverGraphModel extends AbstractBasicGraphModel {
      *   e.g. the view that made this call.
      *  @param node The node to be removed.
      */
+    @Override
     public void removeNode(Object eventSource, Object node) {
         if (!(getNodeModel(node) instanceof NamedObjNodeModel)) {
             return;
@@ -180,6 +186,7 @@ public class OntologySolverGraphModel extends AbstractBasicGraphModel {
          *  @param node The node to be deleted.
          *  @return A valid MoML string.
          */
+        @Override
         public String getDeleteNodeMoML(Object node) {
             NamedObj deleteObj = ((Locatable) node).getContainer();
             NamedObj container = deleteObj.getContainer();
@@ -192,6 +199,7 @@ public class OntologySolverGraphModel extends AbstractBasicGraphModel {
          *  @return The container of the icon's container, which should
          *   be the root of this graph model.
          */
+        @Override
         public Object getParent(Object node) {
             return ((Locatable) node).getContainer().getContainer();
         }
@@ -203,6 +211,7 @@ public class OntologySolverGraphModel extends AbstractBasicGraphModel {
          *   of an ontology in the ontology solver model.
          *  @return An iterator over an empty list.
          */
+        @Override
         public Iterator inEdges(Object node) {
             return new NullIterator();
         }
@@ -214,6 +223,7 @@ public class OntologySolverGraphModel extends AbstractBasicGraphModel {
          *   of an ontology in the ontology solver model.
          *  @return An iterator over an empty list.
          */
+        @Override
         public Iterator outEdges(Object node) {
             return new NullIterator();
         }
@@ -224,6 +234,7 @@ public class OntologySolverGraphModel extends AbstractBasicGraphModel {
          *   the node.
          *  @param node The node to be removed.
          */
+        @Override
         public void removeNode(final Object eventSource, Object node) {
             NamedObj deleteObj = ((Locatable) node).getContainer();
 
@@ -246,6 +257,7 @@ public class OntologySolverGraphModel extends AbstractBasicGraphModel {
             MoMLChangeRequest request = new MoMLChangeRequest(
                     OntologySolverGraphModel.this, container, moml);
             request.addChangeListener(new ChangeListener() {
+                @Override
                 public void changeFailed(ChangeRequest change,
                         Exception exception) {
                     // If we fail, then issue structureChanged.
@@ -253,6 +265,7 @@ public class OntologySolverGraphModel extends AbstractBasicGraphModel {
                             GraphEvent.STRUCTURE_CHANGED, getRoot()));
                 }
 
+                @Override
                 public void changeExecuted(ChangeRequest change) {
                     // If we succeed, then issue structureChanged, since
                     // this is likely connected to something.

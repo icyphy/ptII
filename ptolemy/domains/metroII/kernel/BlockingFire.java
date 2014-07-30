@@ -41,7 +41,7 @@ import ptolemy.kernel.util.IllegalActionException;
  * interfaces so that the actor can be seen as a FSM from outside. In
  * particular, startOrResume(event_list) is the function that reacts to the
  * MetroII events that trigger the FSM.
- * 
+ *
  * <p>
  * The FireMachine has the following states. Each represents a state of the
  * wrapped actor:
@@ -62,29 +62,29 @@ import ptolemy.kernel.util.IllegalActionException;
  * full actor name is 'Test.Ramp'. The MetroII state event associated with the
  * state BEGIN of the actor is 'Ramp.FIRE_BEGIN'.
  * </p>Ptolemy
- * 
+ *
  * <p>
  * Neither START nor FINAL is associated with any state event.
  * </p>
- * 
+ *
  * <p>
  * To understand the transition table of the FSM, @see
  * #startOrResume(LinkedList)
  * </p>
- * 
- * 
+ *
+ *
  * @author Liangpeng Guo
  * @version $Id$
  * @since Ptolemy II 10.0
  * @Pt.ProposedRating Red (glp)
  * @Pt.AcceptedRating Red (glp)
- * 
+ *
  */
 public class BlockingFire extends FireMachine {
 
     /**
      * Construct a basic wrapper and wrap the input actor.
-     * 
+     *
      * @param actor
      *            the actor to be wrapped.
      */
@@ -96,7 +96,7 @@ public class BlockingFire extends FireMachine {
     ////                         public methods                    ////
 
     /**
-     * 
+     *
      * When startOrResume(eventList) is called, the wrapper checks if the MetroII
      * event associated with the current state is changed to NOTIFIED. If the
      * event is notified, call related function of the wrapped actor, transition
@@ -104,22 +104,22 @@ public class BlockingFire extends FireMachine {
      * with the state to eventList (referred to as propose events). If the state
      * is associated with no state event, eventList is an empty list. The 'next'
      * state is defined as follows: STAR -> BEGIN -> END -> FINAL. For example,
-     * 
+     *
      * <pre>
      *       action: propose FIRE_BEGIN
      * START ---------------------------------------> BEGIN
-     * 
+     *
      *       guard: FIRE_BEGIN is notified
      *       action: call fire(), propose FIRE_END
      * BEGIN ---------------------------------------> FIRE_END
-     * 
+     *
      *       guard: FIRE_BEGIN is not notified
      *       action: propose FIRE_BEGIN
      * BEGIN ---------------------------------------> BEGIN
      * </pre>
-     * 
-     * 
-     * 
+     *
+     *
+     *
      * @param metroIIEventList
      *            a list of MetroII events that are proposed. It is set by
      *            startOrResume() not the caller.

@@ -265,7 +265,7 @@ import ptolemy.kernel.util.Workspace;
  @see FSMDirector
  */
 public class FSMActor extends CompositeEntity implements TypedActor,
-        ExplicitChangeContext {
+ExplicitChangeContext {
     /** Construct an FSMActor in the default workspace with an empty string
      *  as its name. Add the actor to the workspace directory.
      *  Increment the version number of the workspace.
@@ -339,7 +339,7 @@ public class FSMActor extends CompositeEntity implements TypedActor,
     /** Parameter that is a function which evaluates to true
      * when the randomly generated token value is within the probability
      * range expressed by a transition.
-    */
+     */
     public Parameter probability;
 
     /** Boolean parameter to determine whether seeds are reset on each run.
@@ -393,6 +393,7 @@ public class FSMActor extends CompositeEntity implements TypedActor,
      *  @see #removeInitializable(Initializable)
      *  @see ptolemy.actor.CompositeActor#addPiggyback(Executable)
      */
+    @Override
     public void addInitializable(Initializable initializable) {
         if (_initializables == null) {
             _initializables = new LinkedList<Initializable>();
@@ -406,6 +407,7 @@ public class FSMActor extends CompositeEntity implements TypedActor,
      *  @exception IllegalActionException If the change is not acceptable
      *   to this container (not thrown in this base class).
      */
+    @Override
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         if (attribute == seed) {
@@ -425,6 +427,7 @@ public class FSMActor extends CompositeEntity implements TypedActor,
      *  for this actor.
      *  @return false
      */
+    @Override
     public boolean isBackwardTypeInferenceEnabled() {
         return false;
     }
@@ -437,6 +440,7 @@ public class FSMActor extends CompositeEntity implements TypedActor,
      *  @exception CloneNotSupportedException If a derived class contains
      *   an attribute that cannot be cloned.
      */
+    @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
 
         // Thomas Feng writes: "Set the _instantiables in
@@ -484,7 +488,7 @@ public class FSMActor extends CompositeEntity implements TypedActor,
 
         try {
             newObject.probability
-                    .setToken(newObject.new ProbabilityFunctionToken());
+            .setToken(newObject.new ProbabilityFunctionToken());
             newObject.timeout.setToken(newObject.new TimeoutFunctionToken());
         } catch (IllegalActionException e) {
             // Should not occur, because it didn't occur in the object being cloned.
@@ -501,6 +505,7 @@ public class FSMActor extends CompositeEntity implements TypedActor,
      *  don't need to be created they are reset
      *  @exception IllegalActionException If any port throws it.
      */
+    @Override
     public void createReceivers() throws IllegalActionException {
         if (_receiversVersion != workspace().getVersion()) {
             _createReceivers();
@@ -639,7 +644,7 @@ public class FSMActor extends CompositeEntity implements TypedActor,
             for (State state : stateList) {
                 try {
                     state.saveRefinementsInConfigurer
-                            .setToken(BooleanToken.FALSE);
+                    .setToken(BooleanToken.FALSE);
                 } catch (IllegalActionException e) {
                     // Ignore.
                 }
@@ -655,12 +660,13 @@ public class FSMActor extends CompositeEntity implements TypedActor,
      *  @exception IllegalActionException If there is more than one
      *   transition enabled.
      */
+    @Override
     public void fire() throws IllegalActionException {
         if (_debugging) {
             _debug("************ Firing FSM. Current state: "
                     + _currentState.getName());
         }
-        if (_firstFire) { 
+        if (_firstFire) {
             _schedule(_currentState, getDirector().getModelTime());
             _firstFire = false;
         }
@@ -761,7 +767,7 @@ public class FSMActor extends CompositeEntity implements TypedActor,
                         for (int i = 0; i < stateRefinements.length; ++i) {
                             if (_stopRequested
                                     || _disabledRefinements
-                                            .contains(stateRefinements[i])) {
+                                    .contains(stateRefinements[i])) {
                                 continue;
                             }
                             _setTimeForRefinement(stateRefinements[i]);
@@ -779,7 +785,7 @@ public class FSMActor extends CompositeEntity implements TypedActor,
                                     stateRefinements[i].fire();
                                     if (_modelErrorHandled == null) {
                                         _stateRefinementsToPostfire
-                                                .add(stateRefinements[i]);
+                                        .add(stateRefinements[i]);
                                     }
                                 }
                             }
@@ -922,6 +928,7 @@ public class FSMActor extends CompositeEntity implements TypedActor,
      *  @return A representation of the dependencies between input ports
      *   and output ports.
      */
+    @Override
     public CausalityInterface getCausalityInterface() {
         Director director = getDirector();
         Dependency defaultDependency = BooleanDependency.OTIMES_IDENTITY;
@@ -981,6 +988,7 @@ public class FSMActor extends CompositeEntity implements TypedActor,
      * this.
      * @return The change context being made explicit
      */
+    @Override
     public Entity getContext() {
         return this;
     }
@@ -991,6 +999,7 @@ public class FSMActor extends CompositeEntity implements TypedActor,
      *  director.
      *  @return The director that invokes this actor.
      */
+    @Override
     public Director getDirector() {
         CompositeEntity container = (CompositeEntity) getContainer();
 
@@ -1004,6 +1013,7 @@ public class FSMActor extends CompositeEntity implements TypedActor,
     /** Return the executive director (same as getDirector()).
      *  @return The executive director.
      */
+    @Override
     public Director getExecutiveDirector() {
         return getDirector();
     }
@@ -1052,6 +1062,7 @@ public class FSMActor extends CompositeEntity implements TypedActor,
      *  @deprecated Use {@link #getLastChosenTransitions()} instead.
      *  @see #setLastChosenTransition(Transition)
      */
+    @Deprecated
     public Transition getLastChosenTransition() {
         return _lastChosenTransitions.get(currentState());
     }
@@ -1076,6 +1087,7 @@ public class FSMActor extends CompositeEntity implements TypedActor,
      *  if there is one. Otherwise, return null.
      *  @return The manager.
      */
+    @Override
     public Manager getManager() {
         try {
             _workspace.getReadAccess();
@@ -1105,6 +1117,7 @@ public class FSMActor extends CompositeEntity implements TypedActor,
      * be found.
      * @see FSMDirector#getModifiedVariables()
      */
+    @Override
     public List getModifiedVariables() throws IllegalActionException {
         List list = new LinkedList();
 
@@ -1172,6 +1185,7 @@ public class FSMActor extends CompositeEntity implements TypedActor,
      *  @exception IllegalActionException If the handler handles the
      *   error by throwing an exception.
      */
+    @Override
     public boolean handleModelError(NamedObj context,
             IllegalActionException exception) throws IllegalActionException {
         _chooseErrorTransition(exception);
@@ -1219,6 +1233,7 @@ public class FSMActor extends CompositeEntity implements TypedActor,
      *  initial state.
      *  @exception IllegalActionException If a derived class throws it.
      */
+    @Override
     public void initialize() throws IllegalActionException {
 
         if (_debugging) {
@@ -1322,6 +1337,7 @@ public class FSMActor extends CompositeEntity implements TypedActor,
      *  This method is read-synchronized on the workspace.
      *  @return A list of input IOPort objects.
      */
+    @Override
     public List inputPortList() {
         if (_inputPortsVersion != _workspace.getVersion()) {
             try {
@@ -1355,6 +1371,7 @@ public class FSMActor extends CompositeEntity implements TypedActor,
      *
      *  @return False.
      */
+    @Override
     public boolean isFireFunctional() {
         return false;
     }
@@ -1362,6 +1379,7 @@ public class FSMActor extends CompositeEntity implements TypedActor,
     /** Return true.
      *  @return True.
      */
+    @Override
     public boolean isOpaque() {
         return true;
     }
@@ -1372,6 +1390,7 @@ public class FSMActor extends CompositeEntity implements TypedActor,
      *  @return False.
      *  @exception IllegalActionException Not thrown in this base class.
      */
+    @Override
     public boolean isStrict() throws IllegalActionException {
         return false;
         /* NOTE: This used to return a value as follows based
@@ -1415,6 +1434,7 @@ public class FSMActor extends CompositeEntity implements TypedActor,
      *  @exception IllegalActionException If iterating is not
      *   permitted, or if prefire(), fire(), or postfire() throw it.
      */
+    @Override
     public int iterate(int count) throws IllegalActionException {
         int n = 0;
 
@@ -1446,6 +1466,7 @@ public class FSMActor extends CompositeEntity implements TypedActor,
      *  @exception NameDuplicationException If the actor already has a port
      *   with the specified name.
      */
+    @Override
     public Port newPort(String name) throws NameDuplicationException {
         try {
             _workspace.getWriteAccess();
@@ -1466,6 +1487,7 @@ public class FSMActor extends CompositeEntity implements TypedActor,
      *  @exception IllegalActionException If there is no director.
      *  @return A new object implementing the Receiver interface.
      */
+    @Override
     public Receiver newReceiver() throws IllegalActionException {
         Director director = getDirector();
 
@@ -1486,6 +1508,7 @@ public class FSMActor extends CompositeEntity implements TypedActor,
      *  @exception NameDuplicationException If name collides with that
      *   of a transition already in this actor.
      */
+    @Override
     public ComponentRelation newRelation(String name)
             throws IllegalActionException, NameDuplicationException {
         try {
@@ -1503,6 +1526,7 @@ public class FSMActor extends CompositeEntity implements TypedActor,
      *  This method is read-synchronized on the workspace.
      *  @return A list of output IOPort objects.
      */
+    @Override
     public List outputPortList() {
         if (_outputPortsVersion != _workspace.getVersion()) {
             try {
@@ -1533,6 +1557,7 @@ public class FSMActor extends CompositeEntity implements TypedActor,
      *  @return True, unless stop() has been called, in which case, false.
      *  @exception IllegalActionException If any action throws it.
      */
+    @Override
     public boolean postfire() throws IllegalActionException {
         if (_debugging) {
             _debug("************ Postfiring FSM.");
@@ -1653,7 +1678,8 @@ public class FSMActor extends CompositeEntity implements TypedActor,
         _randomValue = _randomToken.nextDouble();
 
         if (_debugging) {
-            _debug("** Finished postfire. New random number is :" + _randomValue);
+            _debug("** Finished postfire. New random number is :"
+                    + _randomValue);
         }
 
         return !_reachedFinalState && !_stopRequested;
@@ -1663,6 +1689,7 @@ public class FSMActor extends CompositeEntity implements TypedActor,
      *  @return True.
      *  @exception IllegalActionException Not thrown in this base class.
      */
+    @Override
     public boolean prefire() throws IllegalActionException {
         return true;
     }
@@ -1674,6 +1701,7 @@ public class FSMActor extends CompositeEntity implements TypedActor,
      *  @exception IllegalActionException If this actor does not contain an
      *   initial state.
      */
+    @Override
     public void preinitialize() throws IllegalActionException {
         // First invoke initializable methods.
         if (_initializables != null) {
@@ -1779,6 +1807,7 @@ public class FSMActor extends CompositeEntity implements TypedActor,
      *  @see #addInitializable(Initializable)
      *  @see ptolemy.actor.CompositeActor#removePiggyback(Executable)
      */
+    @Override
     public void removeInitializable(Initializable initializable) {
         if (_initializables != null) {
             _initializables.remove(initializable);
@@ -1830,6 +1859,7 @@ public class FSMActor extends CompositeEntity implements TypedActor,
      *  @deprecated Use addChosenTransition(State, Transition)
      *  @see #getLastChosenTransition()
      */
+    @Deprecated
     public void setLastChosenTransition(Transition transition) {
         _lastChosenTransitions.clear();
         _lastChosenTransition = null;
@@ -1862,17 +1892,20 @@ public class FSMActor extends CompositeEntity implements TypedActor,
      *  this request has been made (the protected variable _stopRequested).
      *  This will result in postfire() returning false.
      */
+    @Override
     public void stop() {
         _stopRequested = true;
     }
 
     /** Do nothing.
      */
+    @Override
     public void stopFire() {
     }
 
     /** Call stop().
      */
+    @Override
     public void terminate() {
         stop();
     }
@@ -1891,6 +1924,7 @@ public class FSMActor extends CompositeEntity implements TypedActor,
      *  @return A list of inequalities.
      *  @see ptolemy.graph.Inequality
      */
+    @Override
     public Set<Inequality> typeConstraints() {
         try {
             _workspace.getReadAccess();
@@ -1955,6 +1989,7 @@ public class FSMActor extends CompositeEntity implements TypedActor,
      *
      *  @exception IllegalActionException Not thrown in this base class.
      */
+    @Override
     public void wrapup() throws IllegalActionException {
         // First invoke initializable methods.
         if (_initializables != null) {
@@ -2008,6 +2043,7 @@ public class FSMActor extends CompositeEntity implements TypedActor,
      *  @exception NameDuplicationException If the name collides with a name
      *   already on the state list.
      */
+    @Override
     protected void _addEntity(ComponentEntity entity)
             throws IllegalActionException, NameDuplicationException {
         if (!(entity instanceof State)) {
@@ -2031,6 +2067,7 @@ public class FSMActor extends CompositeEntity implements TypedActor,
      *  @exception NameDuplicationException If the name collides with a name
      *   already on the contained transitions list.
      */
+    @Override
     protected void _addRelation(ComponentRelation relation)
             throws IllegalActionException, NameDuplicationException {
         if (!(relation instanceof Transition)) {
@@ -2390,7 +2427,7 @@ public class FSMActor extends CompositeEntity implements TypedActor,
      */
     protected boolean _isSafeToClear(IOPort port, int channel, State state,
             boolean immediateOnly, HashSet<State> visitedStates)
-            throws IllegalActionException {
+                    throws IllegalActionException {
         if (_debugging) {
             _debug("Calling _isSafeToClear() on port: " + port.getFullName());
         }
@@ -2664,7 +2701,7 @@ public class FSMActor extends CompositeEntity implements TypedActor,
                     return;
                 }
             }
-            */
+             */
             director.setModelTime(environmentTime);
         }
     }
@@ -2820,9 +2857,9 @@ public class FSMActor extends CompositeEntity implements TypedActor,
                                 if (refinementPorts[i] != null
                                         && channel < refinementPorts[i]
                                                 .getWidthInside()
-                                        && (!refinementPorts[i]
-                                                .isKnownInside(channel) || refinementPorts[i]
-                                                .hasTokenInside(channel))) {
+                                                && (!refinementPorts[i]
+                                                        .isKnownInside(channel) || refinementPorts[i]
+                                                                .hasTokenInside(channel))) {
                                     // A refinement has either unknown or non-absent
                                     // output. Give up on this channel. It cannot be
                                     // asserted absent.
@@ -3060,7 +3097,7 @@ public class FSMActor extends CompositeEntity implements TypedActor,
     private Transition _chooseTransition(State currentState,
             List transitionList, boolean preemptive, boolean immediateOnly,
             boolean inInitialize, boolean inPreinitialize)
-            throws IllegalActionException {
+                    throws IllegalActionException {
 
         // Get the transitions enabled from the current state.
         List<Transition> enabledTransitions = enabledTransitions(
@@ -3235,7 +3272,7 @@ public class FSMActor extends CompositeEntity implements TypedActor,
                 for (int i = 0; i < transitionRefinements.length; ++i) {
                     if (_stopRequested
                             || _disabledRefinements
-                                    .contains(transitionRefinements[i])) {
+                            .contains(transitionRefinements[i])) {
                         break;
                     }
                     if (_debugging) {
@@ -3251,7 +3288,7 @@ public class FSMActor extends CompositeEntity implements TypedActor,
                     if (transitionRefinements[i].prefire()) {
                         transitionRefinements[i].fire();
                         _transitionRefinementsToPostfire
-                                .add(transitionRefinements[i]);
+                        .add(transitionRefinements[i]);
                     }
                 }
             }
@@ -3289,8 +3326,7 @@ public class FSMActor extends CompositeEntity implements TypedActor,
         }
         return chosenTransition;
     }
-    
-    
+
     /** Schedule an actor for execution on a ExecutionAspect. If the actor can
      *  execute this method returns true. If resources are not available this
      *  method returns false.
@@ -3312,12 +3348,13 @@ public class FSMActor extends CompositeEntity implements TypedActor,
             Time environmentTime = ((CompositeActor) aspect.getContainer())
                     .getDirector().getEnvironmentTime();
             time = ExecutionAspectHelper.schedule(aspect, actor,
-                    environmentTime, getDirector().getDeadline(actor, timestamp));
-//            if (_nextScheduleTime == null) {
-//                _nextScheduleTime = new HashMap<ActorExecutionAspect, Time>();
-//            }
-//            _nextScheduleTime.put(aspect, time);
-//            finished = _actorFinished(actor);
+                    environmentTime, getDirector()
+                            .getDeadline(actor, timestamp));
+            //            if (_nextScheduleTime == null) {
+            //                _nextScheduleTime = new HashMap<ActorExecutionAspect, Time>();
+            //            }
+            //            _nextScheduleTime.put(aspect, time);
+            //            finished = _actorFinished(actor);
             if (time != null && time.getDoubleValue() > 0.0) {
                 CompositeActor container = (CompositeActor) aspect
                         .getContainer();
@@ -3329,18 +3366,18 @@ public class FSMActor extends CompositeEntity implements TypedActor,
             }
         }
         boolean schedule = time == null || finished;
-//        if (!schedule) {
-//            ActorExecutionAspect scheduler = getExecutionAspect(actor);
-//            if (scheduler != null) {
-//                ((CompositeActor) scheduler.getContainer()).getDirector().fireAt(
-//                        (Actor) scheduler,
-//                        getModelTime().add(_nextScheduleTime.get(scheduler)));
-//            } else {
-//                throw new InternalErrorException(this, null,
-//                        "_getExecutionAspect(" + actor.getFullName()
-//                        + ") returned null?");
-//            }
-//        }
+        //        if (!schedule) {
+        //            ActorExecutionAspect scheduler = getExecutionAspect(actor);
+        //            if (scheduler != null) {
+        //                ((CompositeActor) scheduler.getContainer()).getDirector().fireAt(
+        //                        (Actor) scheduler,
+        //                        getModelTime().add(_nextScheduleTime.get(scheduler)));
+        //            } else {
+        //                throw new InternalErrorException(this, null,
+        //                        "_getExecutionAspect(" + actor.getFullName()
+        //                        + ") returned null?");
+        //            }
+        //        }
         return schedule;
     }
 
@@ -3470,6 +3507,7 @@ public class FSMActor extends CompositeEntity implements TypedActor,
             // on closing the model.
             ChangeRequest request = new ChangeRequest(this,
                     "Invalidate schedule", false) {
+                @Override
                 protected void _execute() {
                     // Indicate to the director that the current schedule is invalid.
                     getDirector().invalidateSchedule();
@@ -3839,7 +3877,7 @@ public class FSMActor extends CompositeEntity implements TypedActor,
         }
         return true;
     }
-    */
+     */
 
     /** Given a transition, find any input ports
      *  referenced in the guard expressions of the
@@ -3964,7 +4002,7 @@ public class FSMActor extends CompositeEntity implements TypedActor,
             for (int i = 0; i < inPort.getWidth(); i++) {
                 _identifierToPort.put(portName + "_" + i, inPort);
                 _identifierToPort
-                        .put(portName + "_" + i + "_isPresent", inPort);
+                .put(portName + "_" + i + "_isPresent", inPort);
                 _identifierToPort.put(portName + "_" + i + "Array", inPort);
             }
         }
@@ -4110,7 +4148,7 @@ public class FSMActor extends CompositeEntity implements TypedActor,
      *  current state.
      */
     private Map _currentConnectionMap = null;
-    
+
     /** True before the first fire, then false. Used to communicate
      *  with resource schedulers.
      */
@@ -4225,6 +4263,7 @@ public class FSMActor extends CompositeEntity implements TypedActor,
          *  @exception IllegalActionException If a value in the scope
          *  exists with the given name, but cannot be evaluated.
          */
+        @Override
         public ptolemy.data.Token get(String name)
                 throws IllegalActionException {
             // Check to see if it is something we refer to.
@@ -4272,6 +4311,7 @@ public class FSMActor extends CompositeEntity implements TypedActor,
          *  @exception IllegalActionException If a value in the scope
          *  exists with the given name, but cannot be evaluated.
          */
+        @Override
         public Type getType(String name) throws IllegalActionException {
             // Check to see if this is something we refer to.
             Port port = _getPortForIdentifier(name);
@@ -4324,6 +4364,7 @@ public class FSMActor extends CompositeEntity implements TypedActor,
          *  @exception IllegalActionException If a value in the scope
          *  exists with the given name, but cannot be evaluated.
          */
+        @Override
         public InequalityTerm getTypeTerm(String name)
                 throws IllegalActionException {
             // Check to see if this is something we refer to.
@@ -4347,6 +4388,7 @@ public class FSMActor extends CompositeEntity implements TypedActor,
          *  @exception IllegalActionException If getting the width of
          *   some port fails.
          */
+        @Override
         public Set identifierSet() throws IllegalActionException {
             Set set = getAllScopedVariableNames(null, FSMActor.this);
 
@@ -4426,6 +4468,8 @@ public class FSMActor extends CompositeEntity implements TypedActor,
             // TODO Auto-generated method stub
             return function instanceof ProbabilityFunction;
         }
+
+        @Override
         public String toString() {
             return "function(p:double):boolean";
         }
@@ -4444,6 +4488,7 @@ public class FSMActor extends CompositeEntity implements TypedActor,
 
     /** The implementation of the timeout function as a function. */
     private class TimeoutFunction implements Function {
+        @Override
         public ptolemy.data.Token apply(ptolemy.data.Token[] arguments)
                 throws IllegalActionException {
             if (!(arguments[0] instanceof DoubleToken)) {
@@ -4473,14 +4518,17 @@ public class FSMActor extends CompositeEntity implements TypedActor,
             return BooleanToken.FALSE;
         }
 
+        @Override
         public int getNumberOfArguments() {
             return 1;
         }
 
+        @Override
         public boolean isCongruent(Function function) {
             return function instanceof TimeoutFunction;
         }
 
+        @Override
         public String toString() {
             return "function(t:double):boolean";
         }

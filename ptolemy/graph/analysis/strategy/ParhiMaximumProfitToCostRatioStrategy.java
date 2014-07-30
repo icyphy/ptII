@@ -62,7 +62,7 @@ import ptolemy.graph.mapping.ToIntMapping;
  @version $Id$
  */
 public class ParhiMaximumProfitToCostRatioStrategy extends CachedStrategy
-        implements MaximumProfitToCostRatioAnalyzer {
+implements MaximumProfitToCostRatioAnalyzer {
     /** Construct an instance of this class.
      *
      * @param graph The given graph.
@@ -84,6 +84,7 @@ public class ParhiMaximumProfitToCostRatioStrategy extends CachedStrategy
      *
      *  @return The nodes on the cycle as an ordered list.
      */
+    @Override
     public List cycle() {
         _result();
         return _maximumProfitToCostRatioCycle;
@@ -93,6 +94,7 @@ public class ParhiMaximumProfitToCostRatioStrategy extends CachedStrategy
      *
      *  @return Return the maximum profit to cost ratio of the given graph.
      */
+    @Override
     public double maximumRatio() {
         return ((Double) _result()).doubleValue();
     }
@@ -101,6 +103,7 @@ public class ParhiMaximumProfitToCostRatioStrategy extends CachedStrategy
      *
      *  @return Return a description of the analyzer..
      */
+    @Override
     public String toString() {
         return "All pair shortest path analyzer"
                 + " based on Parhi's algorithm.";
@@ -113,6 +116,7 @@ public class ParhiMaximumProfitToCostRatioStrategy extends CachedStrategy
      *
      *  @return True if the graph is a directed and cyclic graph.
      */
+    @Override
     public boolean valid() {
         boolean result = false;
 
@@ -138,6 +142,7 @@ public class ParhiMaximumProfitToCostRatioStrategy extends CachedStrategy
      *
      *  @return Return the maximum profit to cost ratio of the given graph.
      */
+    @Override
     protected Object _compute() {
         _delayNodeList = new ArrayList();
         _maximumProfitToCostRatioCycle = new ArrayList();
@@ -327,7 +332,7 @@ public class ParhiMaximumProfitToCostRatioStrategy extends CachedStrategy
     private double[][] _makeFirstOrderLongestPathMatrix(HashMap D,
             DirectedGraph graph, HashMap predecessorMap) {
         _firstOrderLongestPathMatrix = new double[_delayNodeList.size()][_delayNodeList
-                .size()];
+                                                                         .size()];
 
         for (int i = 0; i < _delayNodeList.size(); i++) {
             for (int j = 0; j < _delayNodeList.size(); j++) {

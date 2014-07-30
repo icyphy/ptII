@@ -89,7 +89,7 @@ public abstract class FormSpec implements Serializable {
      * deserialized default alignments.
      */
     private static final DefaultAlignment[] VALUES = { LEFT_ALIGN, RIGHT_ALIGN,
-            TOP_ALIGN, BOTTOM_ALIGN, CENTER_ALIGN, FILL_ALIGN };
+        TOP_ALIGN, BOTTOM_ALIGN, CENTER_ALIGN, FILL_ALIGN };
 
     // Resizing Weights *****************************************************
 
@@ -353,6 +353,7 @@ public abstract class FormSpec implements Serializable {
      *
      * @return        a string representation of the form specification.
      */
+    @Override
     public final String toString() {
         StringBuffer buffer = new StringBuffer();
         buffer.append(defaultAlignment);
@@ -443,7 +444,7 @@ public abstract class FormSpec implements Serializable {
      * An ordinal-based serializable typesafe enumeration for the
      * column and row default alignment types.
      */
-        public static final class DefaultAlignment implements Serializable {
+    public static final class DefaultAlignment implements Serializable {
 
         private final transient String name;
 
@@ -488,6 +489,7 @@ public abstract class FormSpec implements Serializable {
          *
          * @return this alignment's name.
          */
+        @Override
         public String toString() {
             return name;
         }

@@ -167,6 +167,7 @@ public class Philosopher extends CSPActor {
      *  @exception IllegalActionException If an error occurs during
      *   executing the process.
      */
+    @Override
     public void fire() throws IllegalActionException {
         super.fire();
         Token t = new IntToken(0);
@@ -228,6 +229,7 @@ public class Philosopher extends CSPActor {
      *  iterations; return false otherwise.
      *  @return True if continued execution is enabled; false otherwise.
      */
+    @Override
     public boolean postfire() {
         return false;
     }
@@ -235,6 +237,7 @@ public class Philosopher extends CSPActor {
     /** Set this actor to its initial state, i.e. not having nor waiting
      *  for any chopsticks.
      */
+    @Override
     public void preinitialize() throws IllegalActionException {
         super.preinitialize();
         gotLeft = false;

@@ -75,6 +75,7 @@ public class ClassChanges extends MoMLFilterSimple {
      *  @param xmlFile The file currently being parsed.
      *  @return the value of the attributeValue argument.
      */
+    @Override
     public String filterAttributeValue(NamedObj container, String element,
             String attributeName, String attributeValue, String xmlFile) {
         // This method gets called many times by the MoMLParser,
@@ -117,6 +118,7 @@ public class ClassChanges extends MoMLFilterSimple {
      *  @param xmlFile The file currently being parsed.
      *  @exception Exception Not thrown in this base class.
      */
+    @Override
     public void filterEndElement(NamedObj container, String elementName,
             StringBuffer currentCharData, String xmlFile) throws Exception {
     }
@@ -154,6 +156,7 @@ public class ClassChanges extends MoMLFilterSimple {
     /** Return a string that describes what the filter does.
      *  @return the description of the filter that ends with a newline.
      */
+    @Override
     public String toString() {
         StringBuffer results = new StringBuffer(getClass().getName()
                 + ": change any class names that have been "
@@ -264,8 +267,8 @@ public class ClassChanges extends MoMLFilterSimple {
                 "ptolemy.domains.modal.modal.ModalModel");
 
         _classChanges
-                .put("ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory",
-                        "ptolemy.vergil.modal.modal.HierarchicalStateControllerFactory");
+        .put("ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory",
+                "ptolemy.vergil.modal.modal.HierarchicalStateControllerFactory");
 
         // Moved InterfaceAutomatonTransition
         _classChanges.put(

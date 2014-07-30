@@ -60,6 +60,7 @@ public class CSPHasToken extends CSPGet {
 
     /**
      */
+    @Override
     public void fire() throws IllegalActionException {
         Receiver[][] rcvrs = inputPort.getReceivers();
         CSPReceiver rcvr = null;

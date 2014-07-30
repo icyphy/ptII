@@ -181,15 +181,15 @@ public class ActorIndex {
                 // Determine the relative path to $PTII from this
                 // file.  We need this so that we can link to the models.
                 String canonicalOutputFileName = new File(outputFileName)
-                        .getCanonicalPath().replace('\\', '/');
+                .getCanonicalPath().replace('\\', '/');
 
                 // Get PTII as C:/cxh/ptII
                 String ptII = null;
                 try {
                     ptII = new URI(
                             StringUtilities
-                                    .getProperty("ptolemy.ptII.dirAsURL"))
-                            .normalize().getPath();
+                            .getProperty("ptolemy.ptII.dirAsURL"))
+                    .normalize().getPath();
                     // Under Windows, convert /C:/foo/bar to C:/foo/bar
                     ptII = new File(ptII).getCanonicalPath().replace('\\', '/');
                 } catch (URISyntaxException ex) {

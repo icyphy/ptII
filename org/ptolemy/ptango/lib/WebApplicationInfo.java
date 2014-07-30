@@ -161,14 +161,14 @@ public class WebApplicationInfo {
                     + " . Please check servlet paths for matches.");
         }
 
-        for (FileResource resource: resourceLocations) {
+        for (FileResource resource : resourceLocations) {
             if (!resource.exists()) {
-                throw new Exception("Resource " + resource.getName() + 
-                        " does not exist. Please check the path and " +
-                        "read permission.");
+                throw new Exception("Resource " + resource.getName()
+                        + " does not exist. Please check the path and "
+                        + "read permission.");
             }
         }
-        
+
         if (_resourceInfo.containsKey(resourcePath)) {
             _resourceInfo.get(resourcePath).addAll(resourceLocations);
         } else {

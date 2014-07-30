@@ -96,6 +96,7 @@ public class TextEditorForStringAttributes extends TextEditor {
     /** Override to query whether to apply the changes, if any.
      *  @return False if the user cancels on a apply query.
      */
+    @Override
     protected boolean _close() {
         // NOTE: The superclass doesn't do the right thing here,
         // since it requires an associated Tableau.
@@ -144,6 +145,7 @@ public class TextEditorForStringAttributes extends TextEditor {
     /** Override the base class to apply the change to the attribute.
      *  @return True if the save succeeded.
      */
+    @Override
     protected boolean _save() {
         // Issue a change request to ensure the change is
         // applied at a safe time and that the model is marked

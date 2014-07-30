@@ -75,6 +75,7 @@ public class PolylineIterator implements PathIterator {
 
     /** Get the current segment
      */
+    @Override
     public int currentSegment(double[] coords) {
         coords[0] = this._coords[_index];
         coords[1] = this._coords[_index + 1];
@@ -83,6 +84,7 @@ public class PolylineIterator implements PathIterator {
 
     /** Get the current segment
      */
+    @Override
     public int currentSegment(float[] coords) {
         coords[0] = (float) this._coords[_index];
         coords[1] = (float) this._coords[_index + 1];
@@ -91,18 +93,21 @@ public class PolylineIterator implements PathIterator {
 
     /** Return the winding rule. This is WIND_NON_ZERO.
      */
+    @Override
     public int getWindingRule() {
         return PathIterator.WIND_NON_ZERO;
     }
 
     /** Test if the iterator is done.
      */
+    @Override
     public boolean isDone() {
         return _index >= _coords.length;
     }
 
     /** Move the iterator along by one point.
      */
+    @Override
     public void next() {
         _index += 2;
     }

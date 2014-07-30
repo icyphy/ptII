@@ -85,6 +85,7 @@ public class EditorDropTargetListener implements DropTargetListener {
      *  this listener.
      *  @param dropEvent The drop event.
      */
+    @Override
     public void dragEnter(DropTargetDragEvent dropEvent) {
         // Notify additionalListeners.
         for (int i = 0; i < _dropTarget.getAdditionalListeners().size(); i++) {
@@ -106,6 +107,7 @@ public class EditorDropTargetListener implements DropTargetListener {
      *  DropTarget registered with this listener.
      *  @param dropEvent The drop event.
      */
+    @Override
     public void dragExit(DropTargetEvent dropEvent) {
         // Notify additionalListeners.
         for (int i = 0; i < _dropTarget.getAdditionalListeners().size(); i++) {
@@ -128,6 +130,7 @@ public class EditorDropTargetListener implements DropTargetListener {
      *  with this listener.
      *  @param dropEvent The drop event.
      */
+    @Override
     public void dragOver(DropTargetDragEvent dropEvent) {
         // Notify additionalListeners.
         for (int i = 0; i < _dropTarget.getAdditionalListeners().size(); i++) {
@@ -174,6 +177,7 @@ public class EditorDropTargetListener implements DropTargetListener {
      *  registered with this listener.
      *  @param dropEvent The drop event.
      */
+    @Override
     public void drop(DropTargetDropEvent dropEvent) {
         // Notify additionalListeners.
         for (int i = 0; i < _dropTarget.getAdditionalListeners().size(); i++) {
@@ -209,7 +213,7 @@ public class EditorDropTargetListener implements DropTargetListener {
         // Account for the scaling in the pane.
         Point2D transformedPoint = new Point2D.Double();
         pane.getTransformContext().getInverseTransform()
-                .transform(originalPoint, transformedPoint);
+        .transform(originalPoint, transformedPoint);
 
         // Get an iterator over objects to drop.
         Iterator iterator = null;
@@ -410,6 +414,7 @@ public class EditorDropTargetListener implements DropTargetListener {
      *  This is called if the user has modified the current drop gesture.
      *  @param dropEvent The drop event.
      */
+    @Override
     public void dropActionChanged(DropTargetDragEvent dropEvent) {
         // Notify additionalListeners.
         for (int i = 0; i < _dropTarget.getAdditionalListeners().size(); i++) {
@@ -443,7 +448,7 @@ public class EditorDropTargetListener implements DropTargetListener {
         // Account for the scaling in the pane.
         Point2D transformedPoint = new Point2D.Double();
         pane.getTransformContext().getInverseTransform()
-                .transform(point, transformedPoint);
+        .transform(point, transformedPoint);
 
         return BasicGraphFrame.getFigureUnder(pane, transformedPoint,
                 new Object[] {});

@@ -175,10 +175,11 @@ public class TimeDelay extends Transformer {
      *  @param attribute The attribute that changed.
      *  @exception IllegalActionException If the delay is negative.
      */
+    @Override
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         // NOTE: We used to check whether minimumDelay < delay here.
-            // This causes a circular dependency. If the value
+        // This causes a circular dependency. If the value
         // of minimumDelay is "delay", then when minimumDelay is
         // evaluated, this could cause delay to be evaluated (if
         // it needs evaluation), which will cause this attributeChanged()
@@ -206,6 +207,7 @@ public class TimeDelay extends Transformer {
      *  @exception CloneNotSupportedException If a derived class has
      *   has an attribute that cannot be cloned.
      */
+    @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         TimeDelay newObject = (TimeDelay) super.clone(workspace);
         newObject.output.setTypeSameAs(newObject.input);
@@ -218,6 +220,7 @@ public class TimeDelay extends Transformer {
      *  cannot be computed.
      *  @see #getCausalityInterface()
      */
+    @Override
     public void declareDelayDependency() throws IllegalActionException {
         _declareDelayDependency(delay.getPort(), output, _minimumDelay);
         _declareDelayDependency(input, output, _minimumDelay);
@@ -228,6 +231,7 @@ public class TimeDelay extends Transformer {
      *  @exception IllegalActionException If there is no director, or the
      *  input can not be read, or the output can not be sent.
      */
+    @Override
     public void fire() throws IllegalActionException {
         super.fire();
         if (_isTime()) {
@@ -251,6 +255,7 @@ public class TimeDelay extends Transformer {
     /** Initialize the states of this actor.
      *  @exception IllegalActionException If a derived class throws it.
      */
+    @Override
     public void initialize() throws IllegalActionException {
         super.initialize();
         if (_pendingOutputs != null) {
@@ -264,6 +269,7 @@ public class TimeDelay extends Transformer {
      *  the inputs are unknown.
      *  @return False.
      */
+    @Override
     public boolean isStrict() {
         return false;
     }
@@ -272,6 +278,7 @@ public class TimeDelay extends Transformer {
      *  @exception IllegalActionException If scheduling to refire cannot
      *  be performed or the superclass throws it.
      */
+    @Override
     public boolean postfire() throws IllegalActionException {
         delay.update();
         if (_minimumDelay > _delay) {

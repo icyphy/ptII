@@ -77,6 +77,7 @@ public class Current extends Transformer {
      *  on the input port, output the most recent token received, if any.
      *  @exception IllegalActionException If there is no director.
      */
+    @Override
     public void fire() throws IllegalActionException {
         super.fire();
         if (input.hasToken(0)) {
@@ -91,6 +92,7 @@ public class Current extends Transformer {
     /** Initialize the buffer variable.
      *  @exception IllegalActionException If there is no director.
      */
+    @Override
     public void initialize() throws IllegalActionException {
         _lastInput = null;
         super.initialize();

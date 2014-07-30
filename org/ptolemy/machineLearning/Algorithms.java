@@ -25,7 +25,7 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 Ptolemy II includes the work of others, to see those copyrights, follow
 the copyright link on the splash page or see copyright.htm.
-*/
+ */
 package org.ptolemy.machineLearning;
 
 /**
@@ -42,6 +42,7 @@ public class Algorithms {
     private Algorithms() {
         // TODO Auto-generated constructor stub
     }
+
     /**
      * Do a binary interval search for the key in array A. The bin index in which
      * key is found is returned.
@@ -50,9 +51,11 @@ public class Algorithms {
      * @return the found key.
      */
     public static int _binaryIntervalSearch(double[] A, double key) {
-        return _binaryIntervalSearch(A, key, 0, A.length-1);
+        return _binaryIntervalSearch(A, key, 0, A.length - 1);
     }
-    public static int _binaryIntervalSearch(double[] A, double key, int imin, int imax) {
+
+    public static int _binaryIntervalSearch(double[] A, double key, int imin,
+            int imax) {
         if (imax < imin) {
             return -1;
         } else {

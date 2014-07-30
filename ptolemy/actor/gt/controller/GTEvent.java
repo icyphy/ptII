@@ -24,7 +24,7 @@
  PT_COPYRIGHT_VERSION_2
  COPYRIGHTENDKEY
 
-*/
+ */
 package ptolemy.actor.gt.controller;
 
 import ptolemy.data.BooleanToken;
@@ -76,7 +76,7 @@ public class GTEvent extends Event {
         refinementExtender = new RefinementExtender(this,
                 uniqueName("refinementExtender"));
         refinementExtender.description
-                .setExpression("Embedded Transformation Controller");
+        .setExpression("Embedded Transformation Controller");
         refinementExtender.setPersistent(false);
         refinementExtender.moveToFirst();
         _setRefinementExtender();
@@ -151,6 +151,7 @@ public class GTEvent extends Event {
      *   collides with a name already in the container.
      *  @see #getContainer()
      */
+    @Override
     public void setContainer(CompositeEntity container)
             throws IllegalActionException, NameDuplicationException {
         super.setContainer(container);

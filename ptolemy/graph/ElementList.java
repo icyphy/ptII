@@ -173,6 +173,7 @@ public class ElementList extends LabeledList {
 
     /** Clear all of the elements in this list.
      */
+    @Override
     public void clear() {
         super.clear();
         _weightMap.clear();

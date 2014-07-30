@@ -102,6 +102,7 @@ public class TDLActor extends FSMActor {
      * Create a new Relation. This relation should not be a Transition but a TDL
      * transition.
      */
+    @Override
     public ComponentRelation newRelation(String name)
             throws IllegalActionException, NameDuplicationException {
         try {

@@ -153,12 +153,14 @@ public class BoundsGeometry implements Geometry {
     /** Get the figure to which this geometry object is attached.
      * Returns null if there isn't one.
      */
+    @Override
     public Figure getFigure() {
         return _parentFigure;
     }
 
     /** Get the current shape that defines this geometry
      */
+    @Override
     public Shape getShape() {
         return _rect;
     }
@@ -180,6 +182,7 @@ public class BoundsGeometry implements Geometry {
      * The shape must be a Rectangle2D, or an exception
      * will be thrown.
      */
+    @Override
     public void setShape(Shape shape) {
         if (!(shape instanceof Rectangle2D)) {
             throw new IllegalArgumentException("Argument must be a Rectangle2D");
@@ -205,10 +208,12 @@ public class BoundsGeometry implements Geometry {
             // Note: SwingConstants start at 1!
             int cursor = 1;
 
+            @Override
             public boolean hasNext() {
                 return cursor < _siteCount;
             }
 
+            @Override
             public Object next() throws NoSuchElementException {
                 if (!hasNext()) {
                     throw new NoSuchElementException("Can't get " + cursor
@@ -224,6 +229,7 @@ public class BoundsGeometry implements Geometry {
                 return result;
             }
 
+            @Override
             public void remove() {
                 throw new UnsupportedOperationException(
                         "Sites cannot be removed");
@@ -233,6 +239,7 @@ public class BoundsGeometry implements Geometry {
 
     /** Translate the geometry object
      */
+    @Override
     public void translate(double x, double y) {
         _rect.setFrame(_rect.getX() + x, _rect.getY() + y, _rect.getWidth(),
                 _rect.getHeight());
@@ -259,6 +266,7 @@ public class BoundsGeometry implements Geometry {
 
         /** Get the ID of this site.
          */
+        @Override
         public int getID() {
             return _id;
         }
@@ -266,6 +274,7 @@ public class BoundsGeometry implements Geometry {
         /** Get the figure to which this site is attached, or null
          * if it is not attached to a figure.
          */
+        @Override
         public Figure getFigure() {
             return _parentFigure;
         }
@@ -273,6 +282,7 @@ public class BoundsGeometry implements Geometry {
         /** Get the angle of the normal to this site, in radians
          * between zero and 2pi.
          */
+        @Override
         public double getNormal() {
             switch (_id) {
             case SwingConstants.NORTH_EAST:
@@ -304,6 +314,7 @@ public class BoundsGeometry implements Geometry {
 
         /** Get the point location of the site.
          */
+        @Override
         public Point2D getPoint() {
             return new Point2D.Double(getX(), getY());
         }
@@ -311,6 +322,7 @@ public class BoundsGeometry implements Geometry {
         /** Get the x-coordinate of the site, in the local
          * coordinates of the containing pane.
          */
+        @Override
         public double getX() {
             switch (_id) {
             case SwingConstants.NORTH_WEST:
@@ -334,6 +346,7 @@ public class BoundsGeometry implements Geometry {
         /** Get the y-coordinate of the site, in the local
          * coordinates of the containing pane.
          */
+        @Override
         public double getY() {
             switch (_id) {
             case SwingConstants.NORTH_WEST:
@@ -357,12 +370,14 @@ public class BoundsGeometry implements Geometry {
         /** Test if this site has a "normal" to it. Returns
          * true.
          */
+        @Override
         public boolean hasNormal() {
             return true;
         }
 
         /** Test if this site has a normal in the given direction.
          */
+        @Override
         public boolean isNormal(int direction) {
             return direction == _id;
         }
@@ -371,6 +386,7 @@ public class BoundsGeometry implements Geometry {
          * where distances are in the local coordinates of the
          * containing pane.
          */
+        @Override
         public void translate(double x, double y) {
             // Adjust the coordinates
             double x1 = _rect.getX();

@@ -63,6 +63,7 @@ public class RenameDialog extends ComponentDialog {
 
     /** If the window is closed with anything but Cancel, apply the changes.
      */
+    @Override
     protected void _handleClosing() {
         super._handleClosing();
 

@@ -122,6 +122,7 @@ public class InterfaceAutomatonTransition extends Transition {
      *   attributeChanged() method, or the changed attribute is
      *   <i>label</i> and it does not ends with "?" or "!" or ";".
      */
+    @Override
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         super.attributeChanged(attribute);
@@ -172,6 +173,7 @@ public class InterfaceAutomatonTransition extends Transition {
      *  return an empty string.
      *  @return The label of this transition.
      */
+    @Override
     public String getLabel() {
         String labelStr = label.getExpression();
 
@@ -215,6 +217,7 @@ public class InterfaceAutomatonTransition extends Transition {
      *  @exception NameDuplicationException If the container already has
      *   an relation with the name of this transition.
      */
+    @Override
     public void setContainer(CompositeEntity container)
             throws IllegalActionException, NameDuplicationException {
         if (!(container instanceof InterfaceAutomaton) && container != null) {

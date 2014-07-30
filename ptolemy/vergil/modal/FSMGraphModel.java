@@ -92,6 +92,7 @@ public class FSMGraphModel extends AbstractBasicGraphModel {
      *   e.g. the view that made this call.
      *  @param edge The edge.
      */
+    @Override
     public void disconnectEdge(Object eventSource, Object edge) {
         if (!(getEdgeModel(edge) instanceof ArcModel)) {
             return;
@@ -120,6 +121,7 @@ public class FSMGraphModel extends AbstractBasicGraphModel {
      *  @param edge The edge.
      *  @return A valid MoML string.
      */
+    @Override
     public String getDeleteEdgeMoML(Object edge) {
         // Note: the abstraction here is rather broken.  Ideally this
         // should look like getDeleteNodeMoML()
@@ -136,6 +138,7 @@ public class FSMGraphModel extends AbstractBasicGraphModel {
      *  @param node The node.
      *  @return A valid MoML string.
      */
+    @Override
     public String getDeleteNodeMoML(Object node) {
         if (!(getNodeModel(node) instanceof NamedObjNodeModel)) {
             return "";
@@ -151,6 +154,7 @@ public class FSMGraphModel extends AbstractBasicGraphModel {
      *  @return An instance of ArcModel if the object is an Arc.
      *   Otherwise return null.
      */
+    @Override
     public EdgeModel getEdgeModel(Object edge) {
         if (edge instanceof Link) {
             return _arcModel;
@@ -165,6 +169,7 @@ public class FSMGraphModel extends AbstractBasicGraphModel {
      *  @return The node model for the specified node, or null if there
      *   is none.
      */
+    @Override
     public NodeModel getNodeModel(Object node) {
         if (node instanceof Locatable) {
             Object container = ((Locatable) node).getContainer();
@@ -188,6 +193,7 @@ public class FSMGraphModel extends AbstractBasicGraphModel {
      *  @return The semantic object associated with this element, or null
      *  if the object is not recognized.
      */
+    @Override
     public Object getSemanticObject(Object element) {
         if (element instanceof Link) {
             return ((Link) element).getRelation();
@@ -202,6 +208,7 @@ public class FSMGraphModel extends AbstractBasicGraphModel {
      *   e.g. the view that made this call.
      *  @param node The node to be removed.
      */
+    @Override
     public void removeNode(Object eventSource, Object node) {
         if (!(getNodeModel(node) instanceof NamedObjNodeModel)) {
             return;
@@ -248,6 +255,7 @@ public class FSMGraphModel extends AbstractBasicGraphModel {
      *  executed.  In this class the internal set of link objects is
      *  verified to be correct.
      */
+    @Override
     protected boolean _update() {
         // Go through all the links that currently exist, and remove
         // any that don't have both ends in the model.
@@ -403,6 +411,7 @@ public class FSMGraphModel extends AbstractBasicGraphModel {
          *  @param node The node to attach to.
          *  @return True if the node is an icon.
          */
+        @Override
         public boolean acceptHead(Object edge, Object node) {
             if (node instanceof Locatable) {
                 return true;
@@ -417,6 +426,7 @@ public class FSMGraphModel extends AbstractBasicGraphModel {
          *  @param node The node to attach to.
          *  @return True if the node is an icon.
          */
+        @Override
         public boolean acceptTail(Object edge, Object node) {
             if (node instanceof Locatable) {
                 return true;
@@ -431,6 +441,7 @@ public class FSMGraphModel extends AbstractBasicGraphModel {
          *  @see #getTail(Object)
          *  @see #setHead(Object, Object)
          */
+        @Override
         public Object getHead(Object edge) {
             return ((Link) edge).getHead();
         }
@@ -541,7 +552,7 @@ public class FSMGraphModel extends AbstractBasicGraphModel {
                         if (removeIt) {
                             moml.append("<deleteEntity name=\""
                                     + ((NamedObj) refinement)
-                                            .getName(container) + "\"/>\n");
+                                    .getName(container) + "\"/>\n");
                         }
                     }
                 }
@@ -556,6 +567,7 @@ public class FSMGraphModel extends AbstractBasicGraphModel {
          *  @see #getHead(Object)
          *  @see #setTail(Object, Object)
          */
+        @Override
         public Object getTail(Object edge) {
             return ((Link) edge).getTail();
         }
@@ -565,6 +577,7 @@ public class FSMGraphModel extends AbstractBasicGraphModel {
          *  @param edge The edge, which is assumed to be an arc.
          *  @return True.
          */
+        @Override
         public boolean isDirected(Object edge) {
             return true;
         }
@@ -587,6 +600,7 @@ public class FSMGraphModel extends AbstractBasicGraphModel {
 
             MoMLChangeRequest request = new MoMLChangeRequest(
                     FSMGraphModel.this, container, moml.toString()) {
+                @Override
                 protected void _execute() throws Exception {
                     super._execute();
                     link.setHead(null);
@@ -597,11 +611,13 @@ public class FSMGraphModel extends AbstractBasicGraphModel {
 
             // Handle what happens if the mutation fails.
             request.addChangeListener(new ChangeListener() {
+                @Override
                 public void changeFailed(ChangeRequest change,
                         Exception exception) {
                     // Ignore... nothing we can do about it anyway.
                 }
 
+                @Override
                 public void changeExecuted(ChangeRequest change) {
                     _linkSet.remove(edge);
                 }
@@ -621,6 +637,7 @@ public class FSMGraphModel extends AbstractBasicGraphModel {
          *  @see #setTail(Object, Object)
          *  @see #getHead(Object)
          */
+        @Override
         public void setHead(final Object edge, final Object newLinkHead) {
             final Link link = (Link) edge;
             NamedObj linkHead = (NamedObj) link.getHead();
@@ -665,6 +682,7 @@ public class FSMGraphModel extends AbstractBasicGraphModel {
             final String relationNameToAdd = relationName;
             MoMLChangeRequest request = new MoMLChangeRequest(
                     FSMGraphModel.this, container, moml.toString()) {
+                @Override
                 protected void _execute() throws Exception {
                     super._execute();
                     link.setHead(newLinkHead);
@@ -679,6 +697,7 @@ public class FSMGraphModel extends AbstractBasicGraphModel {
 
             // Handle what happens if the mutation fails.
             request.addChangeListener(new ChangeListener() {
+                @Override
                 public void changeFailed(ChangeRequest change,
                         Exception exception) {
                     // If we fail here, then we remove the link entirely.
@@ -697,6 +716,7 @@ public class FSMGraphModel extends AbstractBasicGraphModel {
                     container.requestChange(requestChange);
                 }
 
+                @Override
                 public void changeExecuted(ChangeRequest change) {
                     if (GraphUtilities.isPartiallyContainedEdge(edge,
                             getRoot(), FSMGraphModel.this)) {
@@ -721,6 +741,7 @@ public class FSMGraphModel extends AbstractBasicGraphModel {
          *  @see #setHead(Object, Object)
          *  @see #getTail(Object)
          */
+        @Override
         public void setTail(final Object edge, final Object newLinkTail) {
             final Link link = (Link) edge;
             NamedObj linkHead = (NamedObj) link.getHead();
@@ -766,6 +787,7 @@ public class FSMGraphModel extends AbstractBasicGraphModel {
 
             MoMLChangeRequest request = new MoMLChangeRequest(
                     FSMGraphModel.this, container, moml.toString()) {
+                @Override
                 protected void _execute() throws Exception {
                     super._execute();
                     link.setTail(newLinkTail);
@@ -779,6 +801,7 @@ public class FSMGraphModel extends AbstractBasicGraphModel {
 
             // Handle what happens if the mutation fails.
             request.addChangeListener(new ChangeListener() {
+                @Override
                 public void changeFailed(ChangeRequest change,
                         Exception exception) {
                     // If we fail here, then we remove the link entirely.
@@ -797,6 +820,7 @@ public class FSMGraphModel extends AbstractBasicGraphModel {
                     container.requestChange(requestChange);
                 }
 
+                @Override
                 public void changeExecuted(ChangeRequest change) {
                     if (GraphUtilities.isPartiallyContainedEdge(edge,
                             getRoot(), FSMGraphModel.this)) {
@@ -1077,6 +1101,7 @@ public class FSMGraphModel extends AbstractBasicGraphModel {
          *  @param node The node to be deleted.
          *  @return A valid MoML string.
          */
+        @Override
         public String getDeleteNodeMoML(Object node) {
             NamedObj deleteObj = ((Locatable) node).getContainer();
             String moml = "<deletePort name=\"" + deleteObj.getName()
@@ -1090,6 +1115,7 @@ public class FSMGraphModel extends AbstractBasicGraphModel {
          *  @return The container of the icon's container, which should
          *   be the root of this graph model.
          */
+        @Override
         public Object getParent(Object node) {
             return ((Locatable) node).getContainer().getContainer();
         }
@@ -1104,6 +1130,7 @@ public class FSMGraphModel extends AbstractBasicGraphModel {
          *  @return An iterator of Arc objects, all of which have
          *   the given node as their head.
          */
+        @Override
         public Iterator inEdges(Object node) {
             return new NullIterator();
         }
@@ -1117,6 +1144,7 @@ public class FSMGraphModel extends AbstractBasicGraphModel {
          *  @return An iterator of Arc objects, all of which have
          *   the given node as their tail.
          */
+        @Override
         public Iterator outEdges(Object node) {
             return new NullIterator();
         }
@@ -1124,6 +1152,7 @@ public class FSMGraphModel extends AbstractBasicGraphModel {
         /** Remove the given node from the model.  The node is assumed
          *  to be an icon.
          */
+        @Override
         public void removeNode(final Object eventSource, Object node) {
             NamedObj deleteObj = ((Locatable) node).getContainer();
             String elementName = null;
@@ -1146,6 +1175,7 @@ public class FSMGraphModel extends AbstractBasicGraphModel {
                     FSMGraphModel.this, container, moml);
             request.setUndoable(true);
             request.addChangeListener(new ChangeListener() {
+                @Override
                 public void changeFailed(ChangeRequest change,
                         Exception exception) {
                     // If we fail, then issue structureChanged.
@@ -1153,6 +1183,7 @@ public class FSMGraphModel extends AbstractBasicGraphModel {
                             GraphEvent.STRUCTURE_CHANGED, getRoot()));
                 }
 
+                @Override
                 public void changeExecuted(ChangeRequest change) {
                     // If we succeed, then issue structureChanged, since
                     // this is likely connected to something.
@@ -1174,6 +1205,7 @@ public class FSMGraphModel extends AbstractBasicGraphModel {
          *  @param node The node to be deleted.
          *  @return A valid MoML string.
          */
+        @Override
         public String getDeleteNodeMoML(Object node) {
             NamedObj deleteObj = ((Locatable) node).getContainer();
             NamedObj container = deleteObj.getContainer();
@@ -1268,7 +1300,7 @@ public class FSMGraphModel extends AbstractBasicGraphModel {
                         if (removeIt) {
                             moml.append("<deleteEntity name=\""
                                     + ((NamedObj) refinement)
-                                            .getName(container) + "\"/>\n");
+                                    .getName(container) + "\"/>\n");
                         }
                     }
                 }
@@ -1283,6 +1315,7 @@ public class FSMGraphModel extends AbstractBasicGraphModel {
          *  @return The container of the icon's container, which should
          *   be the root of this graph model.
          */
+        @Override
         public Object getParent(Object node) {
             return ((Locatable) node).getContainer().getContainer();
         }
@@ -1295,6 +1328,7 @@ public class FSMGraphModel extends AbstractBasicGraphModel {
          *  @return An iterator of link objects, all of which have
          *   the given node as their head.
          */
+        @Override
         public Iterator inEdges(Object node) {
             Locatable icon = (Locatable) node;
 
@@ -1323,6 +1357,7 @@ public class FSMGraphModel extends AbstractBasicGraphModel {
          *  @return An iterator of Link objects, all of which have
          *   the given node as their tail.
          */
+        @Override
         public Iterator outEdges(Object node) {
             Locatable icon = (Locatable) node;
 
@@ -1346,6 +1381,7 @@ public class FSMGraphModel extends AbstractBasicGraphModel {
         /** Remove the given node from the model.  The node is assumed
          *  to be a Locatable belonging to an entity.
          */
+        @Override
         public void removeNode(final Object eventSource, Object node) {
             NamedObj deleteObj = ((Locatable) node).getContainer();
 
@@ -1386,6 +1422,7 @@ public class FSMGraphModel extends AbstractBasicGraphModel {
             MoMLChangeRequest request = new MoMLChangeRequest(
                     FSMGraphModel.this, container, moml);
             request.addChangeListener(new ChangeListener() {
+                @Override
                 public void changeFailed(ChangeRequest change,
                         Exception exception) {
                     // If we fail, then issue structureChanged.
@@ -1393,6 +1430,7 @@ public class FSMGraphModel extends AbstractBasicGraphModel {
                             GraphEvent.STRUCTURE_CHANGED, getRoot()));
                 }
 
+                @Override
                 public void changeExecuted(ChangeRequest change) {
                     // If we succeed, then issue structureChanged, since
                     // this is likely connected to something.

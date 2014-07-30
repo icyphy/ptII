@@ -118,19 +118,18 @@ public class WebServer extends AbstractInitializableAttribute {
         // will look for a WebServer in the model to determine the directory
         // to write to
         resourceLocation = new FileParameter(this, "resourceLocation");
-        
+
         // Want resourceLocation to correspond to a directory
         // Add parameters to specify that only directories are allowed
-        Parameter allowDirectories 
-            = new Parameter(resourceLocation, "allowDirectories");
+        Parameter allowDirectories = new Parameter(resourceLocation,
+                "allowDirectories");
         allowDirectories.setToken("true");
         allowDirectories.setVisibility(Settable.NONE);
-        
-        Parameter allowFiles 
-            = new Parameter(resourceLocation, "allowFiles");
+
+        Parameter allowFiles = new Parameter(resourceLocation, "allowFiles");
         allowFiles.setToken("false");
         allowFiles.setVisibility(Settable.NONE);
-        
+
         URI modelURI = URIAttribute.getModelURI(this);
         // Get the directory excluding the model's name
         // This may be null for newly created models that have not been saved
@@ -157,36 +156,36 @@ public class WebServer extends AbstractInitializableAttribute {
     ///////////////////////////////////////////////////////////////////
     ////                         parameters                        ////
 
-    /** The URL prefix to map this model to.  A model can be thought of as a 
-     *  single application.  
-     * 
-     *  This defaults to "/", meaning, accept requests for all URLs. 
-     *  For example, if the WebServer is handling requests on {@link #port} 8078 
+    /** The URL prefix to map this model to.  A model can be thought of as a
+     *  single application.
+     *
+     *  This defaults to "/", meaning, accept requests for all URLs.
+     *  For example, if the WebServer is handling requests on {@link #port} 8078
      *  of localhost, the model will handle all requests that begin with
      *  <pre>
      *  http://localhost:8078/
      *  </pre>
-     *  
+     *
      *  If multiple applications are running on the same server, it's typical
-     *  to assign a unique application prefix for each.  For example, two 
+     *  to assign a unique application prefix for each.  For example, two
      *  applications with application paths of "/calendar" and "/music" would
      *  receive requests directed to
      *  <pre>
      *  http://localhost:8078/calendar
      *  http://localhost:8078/music
-     *  </pre> 
-     *  respectively.  
-     *  
-     *  Applications may contain multiple servlets (provided by e.g. 
+     *  </pre>
+     *  respectively.
+     *
+     *  Applications may contain multiple servlets (provided by e.g.
      *  {@link HttpActor}s).
-     *  Each servlet typically defines a servlet path which is appended to 
+     *  Each servlet typically defines a servlet path which is appended to
      *  the application path for request routing.  For example, two servlets
-     *  with servlet paths "/play" and "/upload" in the music application 
+     *  with servlet paths "/play" and "/upload" in the music application
      *  would receive requests directed to:
      *  <pre>
      *  http://localhost:8078/music/play
      *  http://localhost:8078/music/upload
-     *  </pre> 
+     *  </pre>
      *  respectively.
      */
     public StringParameter applicationPath;
@@ -197,61 +196,61 @@ public class WebServer extends AbstractInitializableAttribute {
     public Parameter port;
 
     /** The URL prefix used to request resources (files) from this web service.
-     *  
+     *
      *  This defaults to "/", meaning, clients should issue requests for files
-     *  to the base URL.  For example, if the WebServer is handling requests on 
+     *  to the base URL.  For example, if the WebServer is handling requests on
      *  {@link #port} 8078 of localhost, the client can request file "image.png"
      *  using:
      *  <pre>
      *  http://localhost:8078/image.png
      *  </pre>
-     *  
+     *
      *  The resourcePath is added as a prefix before the file's name in the URL.
-     *  For example, given the resourcePath "/files", the client can request 
+     *  For example, given the resourcePath "/files", the client can request
      *  file "image.png" using:
      *  <pre>
      *  http://localhost:8078/files/image.png
      *  </pre>
-     *  
+     *
      *  Relative URLs are permissible for files requested by pages served by
-     *  this WebServer (common for e.g. custom Javascript libraries).  
-     *  For example, given the resourcePath "/files", a file named "custom.js" 
-     *  may be retrieved at the relative URL: 
+     *  this WebServer (common for e.g. custom Javascript libraries).
+     *  For example, given the resourcePath "/files", a file named "custom.js"
+     *  may be retrieved at the relative URL:
      *  <pre>
      *  /files/custom.js
-     *  </pre> 
-     *  
+     *  </pre>
+     *
      *  Note that the name of the directory containing resources does NOT have
-     *  to match the URL used to access these resources.  See 
+     *  to match the URL used to access these resources.  See
      *  {@link #resourceLocation} regarding the resource directory.
-     *  
-     *  Subdirectory search is supported (here, for subdirectories to the 
-     *  directory specified by {@link #resourceLocation}). Add the subdirectory 
-     *  path to the URL.  For example, given the resourcePath "/files", 
-     *  a file in subdirectory /user/photos named "selfie.png" may be 
+     *
+     *  Subdirectory search is supported (here, for subdirectories to the
+     *  directory specified by {@link #resourceLocation}). Add the subdirectory
+     *  path to the URL.  For example, given the resourcePath "/files",
+     *  a file in subdirectory /user/photos named "selfie.png" may be
      *  retrieved at URL:
-     *  
+     *
      *  <pre>
      *  http://localhost:8078/files/user/photos/selfie.png
      *  </pre>
      */
-    
+
     public StringParameter resourcePath;
 
     /** A directory or URL where the web server will look for resources
      *  (like image files and the like).
      *  This defaults to the current model's directory.
-     *  
+     *
      *  You can add additional resource locations by adding additional
      *  parameters of type ptolemy.data.expr.FileParameter to
      *  this WebServer (select Configure in the context menu).
-     *  
+     *
      *  If multiple resourceLocations are given, they will be searched in the
-     *  order that the parameters were instantiated.  The first file located 
+     *  order that the parameters were instantiated.  The first file located
      *  will be returned.
-     *  
+     *
      *  Note that the name of the directory containing resources does NOT have
-     *  to match the URL used to access these resources.  See 
+     *  to match the URL used to access these resources.  See
      *  {@link #resourcePath} regarding the URL.
      */
     public FileParameter resourceLocation;
@@ -280,6 +279,7 @@ public class WebServer extends AbstractInitializableAttribute {
      *   to this container (not thrown in this base class).
      */
 
+    @Override
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
 
@@ -303,6 +303,7 @@ public class WebServer extends AbstractInitializableAttribute {
      *  @see java.lang.Object#clone()
      *  @return The cloned attribute.
      */
+    @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         WebServer newObject = (WebServer) super.clone(workspace);
         // _appInfo is set in initialize()
@@ -333,10 +334,11 @@ public class WebServer extends AbstractInitializableAttribute {
      *  </ul>
      *  @exception IllegalActionException Not thrown in this base class.
      */
+    @Override
     public void initialize() throws IllegalActionException {
 
         super.initialize();
-        
+
         if (_debugging) {
             _debug("Initializing web server.");
         }
@@ -351,7 +353,7 @@ public class WebServer extends AbstractInitializableAttribute {
 
         String applicationPathString = "/";
         if (applicationPath != null) {
-            
+
             // Application path must begin with an "/"; add one if missing
             if (applicationPath.getExpression().startsWith("/")) {
                 applicationPathString = applicationPath.getExpression();
@@ -395,7 +397,7 @@ public class WebServer extends AbstractInitializableAttribute {
 
                 // Add this path to the list of servlet paths
                 URI path = service.getRelativePath();
-                
+
                 try {
                     _appInfo.addServletInfo(path, service.getServlet());
                 } catch (Exception e) {
@@ -502,6 +504,7 @@ public class WebServer extends AbstractInitializableAttribute {
      *
      * @exception IllegalActionException if there is a problem unregistering
      * the application */
+    @Override
     public void wrapup() throws IllegalActionException {
         super.wrapup();
         if (_debugging) {
@@ -512,9 +515,10 @@ public class WebServer extends AbstractInitializableAttribute {
 
         // If we are exporting to JNLP, then initialized might not
         // have been called.
-        if (_serverManager != null 
+        if (_serverManager != null
                 && _appInfo != null
-                && _serverManager.isRegistered(_appInfo.getModelName(), _portNumber)) {
+                && _serverManager.isRegistered(_appInfo.getModelName(),
+                        _portNumber)) {
             try {
                 _serverManager.unregister(_appInfo, _portNumber);
             } catch (Exception e) {

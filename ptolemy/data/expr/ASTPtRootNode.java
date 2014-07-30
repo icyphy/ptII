@@ -87,6 +87,7 @@ public class ASTPtRootNode implements Node, Cloneable {
      *  @exception CloneNotSupportedException If the superclass clone()
      *   method throws it.
      */
+    @Override
     public Object clone() throws CloneNotSupportedException {
         ASTPtRootNode node = (ASTPtRootNode) super.clone();
 
@@ -135,6 +136,7 @@ public class ASTPtRootNode implements Node, Cloneable {
      *  @return The token contained by the root node for the parse tree.
      *  @deprecated Use a ParseTreeEvaluator instead.
      */
+    @Deprecated
     public ptolemy.data.Token evaluateParseTree() throws IllegalActionException {
         ParseTreeEvaluator evaluator = new ParseTreeEvaluator();
         return evaluator.evaluateParseTree(this);
@@ -217,6 +219,7 @@ public class ASTPtRootNode implements Node, Cloneable {
         return _ptToken != null;
     }
 
+    @Override
     public void jjtAddChild(Node n, int i) {
         if (_children == null) {
             _children = new ArrayList();
@@ -231,6 +234,7 @@ public class ASTPtRootNode implements Node, Cloneable {
         _children.set(i, n);
     }
 
+    @Override
     public void jjtClose() {
         if (_children != null) {
             // Trim the list of children, to reduce memory usage.
@@ -251,21 +255,26 @@ public class ASTPtRootNode implements Node, Cloneable {
         }
     }
 
+    @Override
     public Node jjtGetChild(int i) {
         return (Node) _children.get(i);
     }
 
+    @Override
     public int jjtGetNumChildren() {
         return _children == null ? 0 : _children.size();
     }
 
+    @Override
     public Node jjtGetParent() {
         return _parent;
     }
 
+    @Override
     public void jjtOpen() {
     }
 
+    @Override
     public void jjtSetParent(Node n) {
         _parent = n;
     }
@@ -303,6 +312,7 @@ public class ASTPtRootNode implements Node, Cloneable {
      * toString(String), otherwise overriding toString() is probably
      * all you need to do.
      */
+    @Override
     public String toString() {
         return PtParserTreeConstants.jjtNodeName[_id] + ":" + _isConstant + ":"
                 + _ptType + ":" + _ptToken;

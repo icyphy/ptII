@@ -95,6 +95,7 @@ public class BooleanToAnything extends Converter {
      *  @exception CloneNotSupportedException If a derived class contains
      *   an attribute that cannot be cloned.
      */
+    @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         BooleanToAnything newObject = (BooleanToAnything) super
                 .clone(workspace);
@@ -110,6 +111,7 @@ public class BooleanToAnything extends Converter {
      *  parameter.
      *  @exception IllegalActionException If there is no director.
      */
+    @Override
     public void fire() throws IllegalActionException {
         super.fire();
         BooleanToken inputToken = (BooleanToken) input.get(0);
@@ -125,6 +127,7 @@ public class BooleanToAnything extends Converter {
      *  what the superclass returns (presumably true).
      *  @exception IllegalActionException If there is no director.
      */
+    @Override
     public boolean prefire() throws IllegalActionException {
         if (!input.hasToken(0)) {
             return false;

@@ -64,6 +64,7 @@ public class EmbeddedCodeActor extends CompiledCompositeActor {
      * @return The generated code.
      * @exception IllegalActionException Not thrown in this base class.
      */
+    @Override
     public String generateTypeConvertFireCode(boolean forComposite)
             throws IllegalActionException {
         return "";
@@ -89,6 +90,7 @@ public class EmbeddedCodeActor extends CompiledCompositeActor {
          *  @exception IllegalActionException If there is problem
          *  reading the embeddedCode parameter.
          */
+        @Override
         public void setupAdapter() throws IllegalActionException {
             // FIXME: One can do optimization here so that reset
             // happens only when the embedded Java code is modified.

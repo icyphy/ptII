@@ -96,7 +96,7 @@ public class VisualSequenceDirector extends SequenceDirector {
 
         scheduleText = new Parameter(this, "scheduleText");
         scheduleText
-                .setExpression("{{actor=\"(double-click to\n edit schedule)\",sequenceNumber=\"\"}}");
+        .setExpression("{{actor=\"(double-click to\n edit schedule)\",sequenceNumber=\"\"}}");
 
         // The following attribute provides a custom icon that
         // displays the current schedule information.
@@ -138,6 +138,7 @@ public class VisualSequenceDirector extends SequenceDirector {
          *  @param parent The parent window, which is required to be an
          *   instance of TableauFrame.
          */
+        @Override
         public void createEditor(NamedObj object, Frame parent) {
             Schedule schedule = null;
             SequentialScheduleEditorPane pane = null;

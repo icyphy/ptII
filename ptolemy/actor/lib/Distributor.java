@@ -143,12 +143,13 @@ public class Distributor extends Transformer implements SequenceActor {
      *  @exception CloneNotSupportedException If a derived class contains
      *   attributes that cannot be cloned.
      */
+    @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         Distributor newObject = (Distributor) super.clone(workspace);
         newObject.input_tokenConsumptionRate = (Parameter) newObject.input
                 .getAttribute("tokenConsumptionRate");
         ((WidthDependentParameter) newObject.input_tokenConsumptionRate)
-                .setPort(newObject.output);
+        .setPort(newObject.output);
         return newObject;
     }
 
@@ -159,6 +160,7 @@ public class Distributor extends Transformer implements SequenceActor {
      *  which means that the next consumed input token will be produced
      *  on channel zero of the output.
      */
+    @Override
     public void connectionsChanged(Port port) {
         super.connectionsChanged(port);
 
@@ -178,6 +180,7 @@ public class Distributor extends Transformer implements SequenceActor {
      *  On the next iteration, the actor will pick up where it left off.
      *  @exception IllegalActionException If there is no director.
      */
+    @Override
     public void fire() throws IllegalActionException {
         super.fire();
         _tentativeOutputPosition = _currentOutputPosition;
@@ -201,6 +204,7 @@ public class Distributor extends Transformer implements SequenceActor {
     /** Begin execution by setting the current output channel to zero.
      *  @exception IllegalActionException If there is no director.
      */
+    @Override
     public void initialize() throws IllegalActionException {
         super.initialize();
         _currentOutputPosition = 0;
@@ -212,6 +216,7 @@ public class Distributor extends Transformer implements SequenceActor {
      *  will be sent.
      *  @exception IllegalActionException If there is no director.
      */
+    @Override
     public boolean postfire() throws IllegalActionException {
         _currentOutputPosition = _tentativeOutputPosition;
         return super.postfire();
@@ -238,6 +243,7 @@ public class Distributor extends Transformer implements SequenceActor {
             setPersistent(false);
         }
 
+        @Override
         public ptolemy.data.Token getToken() throws IllegalActionException {
             IntToken blockSizeValue = (IntToken) blockSize.getToken();
             setToken(new IntToken(_port.getWidth() * blockSizeValue.intValue()));

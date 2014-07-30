@@ -101,6 +101,7 @@ public class Plotter extends PlotterBase {
      *   is <i>startingDataset</i> and its value is negative, or if the
      *   superclass throws it.
      */
+    @Override
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         // NOTE: Do not react to changes in _windowProperties.
@@ -124,6 +125,7 @@ public class Plotter extends PlotterBase {
      *  input port.
      *  @exception IllegalActionException If the parent class throws it.
      */
+    @Override
     public void initialize() throws IllegalActionException {
         super.initialize();
 

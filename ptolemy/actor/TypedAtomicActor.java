@@ -80,7 +80,7 @@ import ptolemy.kernel.util.Workspace;
  @see ptolemy.actor.TypedIOPort
  */
 public class TypedAtomicActor extends AtomicActor<TypedIOPort> implements
-        TypedActor {
+TypedActor {
     // All the constructors are wrappers of the super class constructors.
 
     /** Construct an actor in the default workspace with an empty string
@@ -137,6 +137,7 @@ public class TypedAtomicActor extends AtomicActor<TypedIOPort> implements
      *  @exception IllegalActionException Not thrown in this base class.
      *   Derived classes can throw this exception if type change is not allowed.
      */
+    @Override
     public void attributeTypeChanged(Attribute attribute)
             throws IllegalActionException {
         Director director = getDirector();
@@ -154,6 +155,7 @@ public class TypedAtomicActor extends AtomicActor<TypedIOPort> implements
      *  call super.clone(workspace).
      *  @exception CloneNotSupportedException Always thrown.
      */
+    @Override
     public Object clone() throws CloneNotSupportedException {
         throw new CloneNotSupportedException("clone() is not supported "
                 + "in actors, call clone(Workspace workspace) instead. "
@@ -168,6 +170,7 @@ public class TypedAtomicActor extends AtomicActor<TypedIOPort> implements
      *  @exception CloneNotSupportedException If a derived class contains
      *   an attribute that cannot be cloned.
      */
+    @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         TypedAtomicActor newObject = (TypedAtomicActor) super.clone(workspace);
 
@@ -184,6 +187,7 @@ public class TypedAtomicActor extends AtomicActor<TypedIOPort> implements
      *  composite actor up the hierarchy, or false otherwise.
      * @return true If backward type inference is enabled, or false otherwise.
      */
+    @Override
     public boolean isBackwardTypeInferenceEnabled() {
         NamedObj container = getContainer();
         if (container != null && container instanceof TypedActor) {
@@ -201,6 +205,7 @@ public class TypedAtomicActor extends AtomicActor<TypedIOPort> implements
      *  @exception NameDuplicationException If the actor already has a port
      *   with the specified name.
      */
+    @Override
     public Port newPort(String name) throws NameDuplicationException {
         try {
             _workspace.getWriteAccess();
@@ -237,6 +242,7 @@ public class TypedAtomicActor extends AtomicActor<TypedIOPort> implements
      *  @return A list of instances of Inequality.
      *  @see ptolemy.graph.Inequality
      */
+    @Override
     public final Set<Inequality> typeConstraints() {
         // TODO: Rather disable type resolution completely if there where not topology or type changes
         // do not update if the cached constraints are still valid
@@ -269,7 +275,7 @@ public class TypedAtomicActor extends AtomicActor<TypedIOPort> implements
             // validate cached type constraints
             _typeConstraintsVersion = _workspace.getVersion();
             _typesValid = true;
-                       
+
             return _cachedTypeConstraints;
         } finally {
             _workspace.doneReading();
@@ -285,6 +291,7 @@ public class TypedAtomicActor extends AtomicActor<TypedIOPort> implements
      *  @see ptolemy.graph.Inequality
      *  @deprecated Use typeConstraints().
      */
+    @Deprecated
     public List<Inequality> typeConstraintList() {
         LinkedList<Inequality> result = new LinkedList<Inequality>();
         result.addAll(typeConstraints());
@@ -336,10 +343,10 @@ public class TypedAtomicActor extends AtomicActor<TypedIOPort> implements
                 Set<Inequality> outPortConstraints = output.typeConstraints();
 
                 // 1) no default constraint if input port is output port, or
-                //    if one of both ports have a declared type, or the port 
+                //    if one of both ports have a declared type, or the port
                 //    is a ParameterPort
                 if (input == output || !input.getTypeTerm().isSettable()
-                        || !output.getTypeTerm().isSettable() 
+                        || !output.getTypeTerm().isSettable()
                         || input instanceof ParameterPort) {
                     continue;
                 }
@@ -432,6 +439,6 @@ public class TypedAtomicActor extends AtomicActor<TypedIOPort> implements
 
     /** Version number when the cache was last updated. */
     @SuppressWarnings("unused")
-        private long _typeConstraintsVersion;
+    private long _typeConstraintsVersion;
 
 }

@@ -76,6 +76,7 @@ public abstract class AbstractReceiver implements Receiver {
      *  class does not support this method.
      *  @exception IllegalActionException Always thrown.
      */
+    @Override
     public void clear() throws IllegalActionException {
         throw new IllegalActionException(getContainer(), "Receiver class "
                 + getClass().getName() + " does not support clear().");
@@ -86,6 +87,7 @@ public abstract class AbstractReceiver implements Receiver {
      *  @return A list of instances of Token.
      *  @exception IllegalActionException Always thrown in this base class.
      */
+    @Override
     public List<Token> elementList() throws IllegalActionException {
         throw new IllegalActionException(_container,
                 "Receiver does not implement elementList()");
@@ -94,6 +96,7 @@ public abstract class AbstractReceiver implements Receiver {
     /** Get a token from this receiver.
      *  @exception NoTokenException If there is no token.
      */
+    @Override
     public abstract Token get() throws NoTokenException;
 
     /** Get an array of tokens from this receiver.
@@ -132,6 +135,7 @@ public abstract class AbstractReceiver implements Receiver {
      *   Thus, it is highly advisable to call hasToken(int) before
      *   calling this method.
      */
+    @Override
     public Token[] getArray(int numberOfTokens) throws NoTokenException {
         // Check whether we need to reallocate the cached
         // token array.
@@ -154,7 +158,7 @@ public abstract class AbstractReceiver implements Receiver {
                 }
                 throw new NoTokenException(getContainer(), ex,
                         "Failed to get the " + (i + 1) + cardinality
-                                + " token of " + numberOfTokens);
+                        + " token of " + numberOfTokens);
 
             }
         }
@@ -166,6 +170,7 @@ public abstract class AbstractReceiver implements Receiver {
      *  @return The port containing this receiver.
      *  @see #setContainer(IOPort)
      */
+    @Override
     public IOPort getContainer() {
         return _container;
     }
@@ -178,6 +183,7 @@ public abstract class AbstractReceiver implements Receiver {
      *   @deprecated As of Ptolemy II 4.1, replaced by
      *   {@link #getModelTime()}
      */
+    @Deprecated
     public double getCurrentTime() {
         return getModelTime().getDoubleValue();
     }
@@ -202,6 +208,7 @@ public abstract class AbstractReceiver implements Receiver {
      *  @return True if the next call to put() will not result in a
      *   NoRoomException.
      */
+    @Override
     public abstract boolean hasRoom();
 
     /** Return true if the receiver has room to put the specified number of
@@ -213,6 +220,7 @@ public abstract class AbstractReceiver implements Receiver {
      *  @return True if the next <i>numberOfTokens</i> calls to put()
      *   will not result in a NoRoomException.
      */
+    @Override
     public abstract boolean hasRoom(int numberOfTokens);
 
     /** Return true if the receiver contains a token that can be obtained
@@ -222,6 +230,7 @@ public abstract class AbstractReceiver implements Receiver {
      *  @return True if the next call to get() will not result in a
      *   NoTokenException.
      */
+    @Override
     public abstract boolean hasToken();
 
     /** Return true if the receiver contains the specified number of tokens.
@@ -232,6 +241,7 @@ public abstract class AbstractReceiver implements Receiver {
      *  @return True if the next <i>numberOfTokens</i> calls to get()
      *   will not result in a NoTokenException.
      */
+    @Override
     public abstract boolean hasToken(int numberOfTokens);
 
     /** Return <i>true</i>.  Most domains have no notion of the state of
@@ -240,6 +250,7 @@ public abstract class AbstractReceiver implements Receiver {
      *  however, such as SR, will need to override this method.
      *  @return True.
      */
+    @Override
     public boolean isKnown() {
         return true;
     }
@@ -255,8 +266,9 @@ public abstract class AbstractReceiver implements Receiver {
      *  @exception IllegalActionException If the put fails
      *   (e.g. because of incompatible types).
      */
+    @Override
     public abstract void put(Token token) throws NoRoomException,
-            IllegalActionException;
+    IllegalActionException;
 
     /** Put a portion of the specified token array into this receiver.
      *  The first <i>numberOfTokens</i> elements of the token array are put
@@ -284,6 +296,7 @@ public abstract class AbstractReceiver implements Receiver {
      *  @exception IllegalActionException If the token is not acceptable
      *   to one of the ports (e.g., wrong type).
      */
+    @Override
     public void putArray(Token[] tokenArray, int numberOfTokens)
             throws NoRoomException, IllegalActionException {
         IOPort container = getContainer();
@@ -323,6 +336,7 @@ public abstract class AbstractReceiver implements Receiver {
      *   to one of the ports (e.g., wrong type), or if the tokens array
      *   does not have at least the specified number of tokens.
      */
+    @Override
     public void putArrayToAll(Token[] tokens, int numberOfTokens,
             Receiver[] receivers) throws NoRoomException,
             IllegalActionException {
@@ -374,6 +388,7 @@ public abstract class AbstractReceiver implements Receiver {
      *  @exception IllegalActionException If the token is not acceptable
      *   to one of the ports (e.g., wrong type).
      */
+    @Override
     public void putToAll(Token token, Receiver[] receivers)
             throws NoRoomException, IllegalActionException {
         for (Receiver receiver : receivers) {
@@ -406,6 +421,7 @@ public abstract class AbstractReceiver implements Receiver {
      *  @exception IllegalActionException If reset() is not supported by
      *   the domain.
      */
+    @Override
     public void reset() throws IllegalActionException {
         clear();
     }
@@ -417,6 +433,7 @@ public abstract class AbstractReceiver implements Receiver {
      *   but may be thrown in derived classes.
      *  @see #getContainer()
      */
+    @Override
     public void setContainer(IOPort port) throws IllegalActionException {
         _container = port;
     }
@@ -424,11 +441,12 @@ public abstract class AbstractReceiver implements Receiver {
     /** Return the class name and the full name of the object,
      *  with syntax "className {fullName}".
      *  @return The class name and the full name. */
+    @Override
     public String toString() {
         IOPort container = getContainer();
         return getClass().getName() + " {"
-                + (container != null ? container.getFullName() : "")
-                + ".receiver }";
+        + (container != null ? container.getFullName() : "")
+        + ".receiver }";
     }
 
     ///////////////////////////////////////////////////////////////////

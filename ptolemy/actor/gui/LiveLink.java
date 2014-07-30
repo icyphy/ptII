@@ -103,6 +103,7 @@ public class LiveLink extends FileParameter implements Editable {
     /** Create an editor.
      *  This editor will have no parent window.
      */
+    @Override
     public void createEditor() {
         throw new InternalErrorException(this, null,
                 "createEditor() should not be called.");
@@ -112,6 +113,7 @@ public class LiveLink extends FileParameter implements Editable {
      *  This editor will have no parent window.
      *  @param object The object to configure.
      */
+    @Override
     public void createEditor(NamedObj object) {
         createEditor(object, null);
     }
@@ -123,6 +125,7 @@ public class LiveLink extends FileParameter implements Editable {
      *  @param parent The parent window, which is required to be an
      *   instance of TableauFrame.
      */
+    @Override
     public void createEditor(NamedObj object, Frame parent) {
         Configuration configuration = (Configuration) Configuration.findEffigy(
                 object.getContainer()).toplevel();

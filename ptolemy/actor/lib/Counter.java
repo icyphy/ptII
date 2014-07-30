@@ -130,6 +130,7 @@ public class Counter extends TypedAtomicActor {
      *
      *  @exception IllegalActionException If there is no director.
      */
+    @Override
     public void fire() throws IllegalActionException {
         super.fire();
         _latestCount = _count;
@@ -172,6 +173,7 @@ public class Counter extends TypedAtomicActor {
     /** Reset the count of inputs to zero.
      *  @exception IllegalActionException If the parent class throws it.
      */
+    @Override
     public void initialize() throws IllegalActionException {
         super.initialize();
         _count = 0;
@@ -180,6 +182,7 @@ public class Counter extends TypedAtomicActor {
     /** Record the most recent output count as the actual count.
      *  @exception IllegalActionException If the base class throws it.
      */
+    @Override
     public boolean postfire() throws IllegalActionException {
         _count = _latestCount;
         return super.postfire();

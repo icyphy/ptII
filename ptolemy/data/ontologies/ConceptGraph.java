@@ -62,6 +62,7 @@ public abstract class ConceptGraph implements CPO<Concept> {
     /** Return the least element of this concept graph.
      *  @return The least element of this graph.
      */
+    @Override
     public abstract Concept bottom();
 
     /** Compare two concepts in the ontology. The arguments must be instances
@@ -77,6 +78,7 @@ public abstract class ConceptGraph implements CPO<Concept> {
      *  @exception IllegalArgumentException If one or both arguments are not
      *   instances of {@link Concept}.
      */
+    @Override
     public abstract int compare(Object e1, Object e2);
 
     /** Compute the down-set of an element in this concept graph.
@@ -87,6 +89,7 @@ public abstract class ConceptGraph implements CPO<Concept> {
      *  @return An array of Concepts of the down-set of the specified element.
      *  @exception IllegalArgumentException Always thrown in this base class.
      */
+    @Override
     public Concept[] downSet(Object e) {
         throw new IllegalArgumentException(_notImplementedMessage());
     }
@@ -100,6 +103,7 @@ public abstract class ConceptGraph implements CPO<Concept> {
      *  @exception IllegalArgumentException If at least one Object in the
      *   specified array is not an element of this concept graph.
      */
+    @Override
     public Concept greatestElement(Set<Concept> subset) {
         return _superlativeElement(subset, CPO.HIGHER);
     }
@@ -114,6 +118,7 @@ public abstract class ConceptGraph implements CPO<Concept> {
      *   elements, or <code>null</code> if the GLB does not exist.
      *  @exception IllegalArgumentException Always thrown in this base class.
      */
+    @Override
     public Concept greatestLowerBound(Object e1, Object e2) {
         throw new IllegalArgumentException(_notImplementedMessage());
     }
@@ -127,6 +132,7 @@ public abstract class ConceptGraph implements CPO<Concept> {
      *    an element of this concept graph, or greatestLowerBound is not
      *    implemented.
      */
+    @Override
     public Concept greatestLowerBound(Set<Concept> subset) {
         return _getBoundForConceptSubset(subset, BoundType.GREATESTLOWER);
     }
@@ -139,6 +145,7 @@ public abstract class ConceptGraph implements CPO<Concept> {
      *  @return True, if the concept graph is a lattice.
      *  @exception IllegalArgumentException Always thrown in this base class.
      */
+    @Override
     public boolean isLattice() {
         return nonLatticeReason() == null;
     }
@@ -154,6 +161,7 @@ public abstract class ConceptGraph implements CPO<Concept> {
      *  @exception IllegalArgumentException If at least one Object in the
      *   specified array is not an element of this concept graph.
      */
+    @Override
     public Concept leastElement(Set<Concept> subset) {
         return _superlativeElement(subset, CPO.LOWER);
     }
@@ -171,6 +179,7 @@ public abstract class ConceptGraph implements CPO<Concept> {
      *  @exception IllegalArgumentException If at least one of the
      *   specified Objects is not an element of this concept graph.
      */
+    @Override
     public abstract Concept leastUpperBound(Object e1, Object e2);
 
     /** Compute the least upper bound (LUB) of a subset.
@@ -184,6 +193,7 @@ public abstract class ConceptGraph implements CPO<Concept> {
      *  @exception IllegalArgumentException If at least one Object in the
      *   specified array is not an element of this concept graph.
      */
+    @Override
     public Concept leastUpperBound(Set<Concept> subset) {
         return _getBoundForConceptSubset(subset, BoundType.LEASTUPPER);
     }
@@ -198,6 +208,7 @@ public abstract class ConceptGraph implements CPO<Concept> {
     /** Return the greatest element in this concept graph.
      *  @return The greatest element in this concept graph.
      */
+    @Override
     public abstract Concept top();
 
     /** Compute the up-set of an element in this concept graph.
@@ -208,6 +219,7 @@ public abstract class ConceptGraph implements CPO<Concept> {
      *   specified element.
      *  @exception IllegalArgumentException Always thrown in this base class.
      */
+    @Override
     public Concept[] upSet(Object e) {
         throw new IllegalArgumentException(_notImplementedMessage());
     }
@@ -243,8 +255,8 @@ public abstract class ConceptGraph implements CPO<Concept> {
                 default:
                     throw new IllegalArgumentException(
                             "Unrecognized bound type: " + boundType
-                                    + ". Expected either GREATESTLOWER or "
-                                    + "LEASTUPPER");
+                            + ". Expected either GREATESTLOWER or "
+                            + "LEASTUPPER");
                 }
             }
             return bound;

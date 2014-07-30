@@ -135,7 +135,7 @@ import ptolemy.vergil.toolbox.VisibleParameterEditorFactory;
 @since Ptolemy II 6.1
 @Pt.ProposedRating Red (tfeng)
 @Pt.AcceptedRating Red (tfeng)
-*/
+ */
 @SuppressWarnings("serial")
 public class GTIngredientsEditor extends PtolemyDialog {
 
@@ -184,6 +184,7 @@ public class GTIngredientsEditor extends PtolemyDialog {
         _createComponents();
     }
 
+    @Override
     public void actionPerformed(ActionEvent e) {
         String command = e.getActionCommand();
         if ("add".equals(command)) {
@@ -279,6 +280,7 @@ public class GTIngredientsEditor extends PtolemyDialog {
         }
     }
 
+    @Override
     public Dimension getPreferredSize() {
         if (isPreferredSizeSet()) {
             return super.getPreferredSize();
@@ -356,7 +358,7 @@ public class GTIngredientsEditor extends PtolemyDialog {
                             if (!Modifier.isAbstract(cls.getModifiers())
                                     && GTIngredient.class.isAssignableFrom(cls)) {
                                 ingredientClasses
-                                        .add((Class<? extends GTIngredient>) cls);
+                                .add((Class<? extends GTIngredient>) cls);
                             }
                         } catch (ClassNotFoundException e) {
                         } catch (NoClassDefFoundError e) {
@@ -369,6 +371,7 @@ public class GTIngredientsEditor extends PtolemyDialog {
         return ingredientClasses;
     }
 
+    @Override
     public void setVisible(boolean visible) {
         if (visible && _attribute != null) {
             try {
@@ -399,6 +402,7 @@ public class GTIngredientsEditor extends PtolemyDialog {
             attributeName = new StringAttribute(this, "attributeName");
         }
 
+        @Override
         public void createEditor(NamedObj object, Frame parent) {
             Configuration configuration = ((TableauFrame) parent)
                     .getConfiguration();
@@ -430,12 +434,13 @@ public class GTIngredientsEditor extends PtolemyDialog {
 
     }
 
-        protected void _createComponents() {
+    protected void _createComponents() {
         // Clear all the buttons and panels created by superclasses.
         getContentPane().removeAll();
 
         _tableModel = new DefaultTableModel(new Object[] { "", "Class",
-                "Elements" }, 0) {
+        "Elements" }, 0) {
+            @Override
             public boolean isCellEditable(int row, int column) {
                 if (column == 0) {
                     return false;
@@ -450,6 +455,7 @@ public class GTIngredientsEditor extends PtolemyDialog {
         _table.setSelectionBackground(_SELECTED_COLOR);
         _table.setSelectionForeground(Color.BLACK);
         _table.addKeyListener(new KeyListener() {
+            @Override
             public void keyPressed(KeyEvent e) {
                 if (e.getKeyCode() == KeyEvent.VK_ENTER) {
                     commit();
@@ -458,9 +464,11 @@ public class GTIngredientsEditor extends PtolemyDialog {
                 }
             }
 
+            @Override
             public void keyReleased(KeyEvent e) {
             }
 
+            @Override
             public void keyTyped(KeyEvent e) {
             }
         });
@@ -549,6 +557,7 @@ public class GTIngredientsEditor extends PtolemyDialog {
         column0.setPreferredWidth(15);
         column0.setMaxWidth(30);
         DefaultTableCellRenderer indexRenderer = new DefaultTableCellRenderer() {
+            @Override
             public Component getTableCellRendererComponent(JTable table,
                     Object value, boolean isSelected, boolean hasFocus,
                     int row, int column) {
@@ -564,6 +573,7 @@ public class GTIngredientsEditor extends PtolemyDialog {
 
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         addWindowListener(new WindowAdapter() {
+            @Override
             public void windowClosing(WindowEvent e) {
                 cancel();
             }
@@ -572,6 +582,7 @@ public class GTIngredientsEditor extends PtolemyDialog {
         setPreferredSize(_PREFERRED_SIZE);
     }
 
+    @Override
     protected void _createExtendedButtons(JPanel _buttons) {
     }
 
@@ -613,6 +624,7 @@ public class GTIngredientsEditor extends PtolemyDialog {
         return ingredient;
     }
 
+    @Override
     protected URL _getHelpURL() {
         URL helpURL = getClass().getClassLoader().getResource(
                 REGULAR_EXPRESSION_HELP_FILE);
@@ -621,9 +633,9 @@ public class GTIngredientsEditor extends PtolemyDialog {
 
     private GTIngredient _createTemporaryIngredient(
             Class<? extends GTIngredient> ingredientClass)
-            throws SecurityException, NoSuchMethodException,
-            IllegalArgumentException, InstantiationException,
-            IllegalAccessException, InvocationTargetException {
+                    throws SecurityException, NoSuchMethodException,
+                    IllegalArgumentException, InstantiationException,
+                    IllegalAccessException, InvocationTargetException {
         Constructor<? extends GTIngredient> constructor = ingredientClass
                 .getConstructor(GTIngredientList.class);
         return constructor
@@ -655,7 +667,7 @@ public class GTIngredientsEditor extends PtolemyDialog {
     private static final Color _SELECTED_COLOR = new Color(230, 230, 255);
 
     private static final Border _TEXT_FIELD_BORDER = new JTextField()
-            .getBorder();
+    .getBorder();
 
     private static final Color _UNSELECTED_COLOR = Color.WHITE;
 
@@ -687,6 +699,7 @@ public class GTIngredientsEditor extends PtolemyDialog {
             return _background;
         }
 
+        @Override
         public void setBackground(Color color) {
             super.setBackground(color);
             ComboBoxEditor editor = getEditor();
@@ -695,6 +708,7 @@ public class GTIngredientsEditor extends PtolemyDialog {
             }
         }
 
+        @Override
         public void setEditable(boolean editable) {
             ((JTextField) _editor.getEditorComponent()).setEditable(editable);
         }
@@ -711,8 +725,9 @@ public class GTIngredientsEditor extends PtolemyDialog {
         private Editor _editor = new Editor();
 
         private class Editor extends MouseAdapter implements ActionListener,
-                ComboBoxEditor, FocusListener {
+        ComboBoxEditor, FocusListener {
 
+            @Override
             public void actionPerformed(ActionEvent e) {
                 if (_textField.isEditable()) {
                     setSelectedItem(_textField.getText());
@@ -720,9 +735,11 @@ public class GTIngredientsEditor extends PtolemyDialog {
                 setPopupVisible(!isPopupVisible());
             }
 
+            @Override
             public void addActionListener(ActionListener l) {
             }
 
+            @Override
             public void focusGained(FocusEvent e) {
                 if (_textField.isEditable()) {
                     _textField.getCaret().setVisible(true);
@@ -732,6 +749,7 @@ public class GTIngredientsEditor extends PtolemyDialog {
                 }
             }
 
+            @Override
             public void focusLost(FocusEvent e) {
                 hidePopup();
                 if (_textField.isEditable()) {
@@ -740,27 +758,33 @@ public class GTIngredientsEditor extends PtolemyDialog {
                 }
             }
 
+            @Override
             public Component getEditorComponent() {
                 return _textField;
             }
 
+            @Override
             public Object getItem() {
                 return _textField.isEditable() ? _textField.getText() : _value;
             }
 
+            @Override
             public void mousePressed(MouseEvent e) {
                 if (_textField.hasFocus() && _textField.isEnabled()) {
                     setPopupVisible(!isPopupVisible());
                 }
             }
 
+            @Override
             public void removeActionListener(ActionListener l) {
             }
 
+            @Override
             public void selectAll() {
                 _textField.selectAll();
             }
 
+            @Override
             public void setItem(Object value) {
                 _value = value;
                 if (value == null) {
@@ -813,6 +837,7 @@ public class GTIngredientsEditor extends PtolemyDialog {
             return _ingredientClass;
         }
 
+        @Override
         public String toString() {
             return _ingredientClass.getSimpleName();
         }
@@ -824,6 +849,7 @@ public class GTIngredientsEditor extends PtolemyDialog {
 
     private static class HelpLabel extends JLabel implements MouseListener {
 
+        @Override
         public void mouseClicked(MouseEvent event) {
             if (_help != null) {
                 String host = _help.getHost();
@@ -844,7 +870,7 @@ public class GTIngredientsEditor extends PtolemyDialog {
                 try {
                     Configuration configuration = _owner.getConfiguration();
                     configuration
-                            .openModel(null, _help, _help.toExternalForm());
+                    .openModel(null, _help, _help.toExternalForm());
                 } catch (Exception e1) {
                     HTMLViewer viewer = new HTMLViewer();
                     try {
@@ -859,21 +885,25 @@ public class GTIngredientsEditor extends PtolemyDialog {
             }
         }
 
+        @Override
         public void mouseEntered(MouseEvent e) {
             Color color = new Color(Math.min(
                     (int) (_background.getRed() * 1.1), 255), Math.min(
-                    (int) (_background.getGreen() * 1.1), 255), Math.min(
-                    (int) (_background.getBlue() * 1.1), 255));
+                            (int) (_background.getGreen() * 1.1), 255), Math.min(
+                                    (int) (_background.getBlue() * 1.1), 255));
             setBackground(color);
         }
 
+        @Override
         public void mouseExited(MouseEvent e) {
             setBackground(_background);
         }
 
+        @Override
         public void mousePressed(MouseEvent e) {
         }
 
+        @Override
         public void mouseReleased(MouseEvent e) {
         }
 
@@ -912,12 +942,14 @@ public class GTIngredientsEditor extends PtolemyDialog {
     }
 
     private static class IngredientContentEditor extends AbstractCellEditor
-            implements TableCellEditor, TableCellRenderer {
+    implements TableCellEditor, TableCellRenderer {
 
+        @Override
         public Object getCellEditorValue() {
             return _currentRow;
         }
 
+        @Override
         public Component getTableCellEditorComponent(JTable table,
                 Object value, boolean isSelected, int row, int column) {
             _currentRow = (Row) value;
@@ -927,6 +959,7 @@ public class GTIngredientsEditor extends PtolemyDialog {
                     .getRightPanel();
         }
 
+        @Override
         public Component getTableCellRendererComponent(JTable table,
                 Object value, boolean isSelected, boolean hasFocus, int row,
                 int column) {
@@ -1008,6 +1041,7 @@ public class GTIngredientsEditor extends PtolemyDialog {
             return _rightPanel;
         }
 
+        @Override
         public void itemStateChanged(ItemEvent e) {
             _initRightPanel();
             if (e.getStateChange() == ItemEvent.SELECTED) {
@@ -1232,6 +1266,7 @@ public class GTIngredientsEditor extends PtolemyDialog {
 
         private class CheckBoxActionListener implements ActionListener {
 
+            @Override
             public void actionPerformed(ActionEvent e) {
                 boolean selected = ((JCheckBox) e.getSource()).isSelected();
                 _setEnablement(_components[_index], selected);

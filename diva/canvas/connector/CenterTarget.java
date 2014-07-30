@@ -47,6 +47,7 @@ public class CenterTarget extends AbstractConnectorTarget {
     /** Return a center site located on the figure, if the figure is not a
      * connector.
      */
+    @Override
     public Site getHeadSite(Figure f, double x, double y) {
         if (!(f instanceof Connector)) {
             if (_siteMap.containsKey(f)) {

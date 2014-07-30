@@ -46,6 +46,7 @@ import ptolemy.math.LongUnaryOperation;
  */
 public class TestLongUnaryOperation implements LongUnaryOperation {
     /** Operate on the operand, returning a value of the same type. */
+    @Override
     public long operate(long operand) {
         return -operand;
     }

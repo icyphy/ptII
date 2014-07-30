@@ -24,7 +24,7 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
-*/
+ */
 
 package ptolemy.cg.kernel.generic.program.procedural;
 
@@ -49,7 +49,7 @@ perspective.
 @since Ptolemy II 10.0
 @Pt.ProposedRating Red (rodiers)
 @Pt.AcceptedRating Red (rodiers)
-*/
+ */
 
 public class ProceduralTemplateParser extends TemplateParser {
 
@@ -66,6 +66,7 @@ public class ProceduralTemplateParser extends TemplateParser {
      *  @param component The associated component.
      *  @param adapter The associated adapter.
      */
+    @Override
     public void init(Object component, ProgramCodeGeneratorAdapter adapter) {
         super.init(component, adapter);
         _parseTreeCodeGenerator = getParseTreeCodeGenerator();
@@ -77,6 +78,7 @@ public class ProceduralTemplateParser extends TemplateParser {
      *  generated from this adapter class.
      *  @exception IllegalActionException Not Thrown in this base class.
      */
+    @Override
     public Set<String> getHeaderFiles() throws IllegalActionException {
         Set<String> files = super.getHeaderFiles();
         files.addAll(_includeFiles);
@@ -99,6 +101,7 @@ public class ProceduralTemplateParser extends TemplateParser {
     /** Return a new parse tree code generator to use with expressions.
      *  @return the parse tree code generator to use with expressions.
      */
+    @Override
     public ParseTreeCodeGenerator getParseTreeCodeGenerator() {
         // FIXME: We need to create new ParseTreeCodeGenerator each time
         // here or else we get lots of test failures.  It would be better

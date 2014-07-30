@@ -24,7 +24,7 @@
    PT_COPYRIGHT_VERSION_2
    COPYRIGHTENDKEY
 
-*/
+ */
 
 package ptolemy.util.test.junit;
 
@@ -112,7 +112,7 @@ public class TclTests {
                 Integer completionCode = (Integer) _getCompletionCodeMethod
                         .invoke(throwable.getCause(), new Object[] {});
                 if (completionCode.intValue() == 1 /** TCL.ERROR */
-                ) {
+                        ) {
                     // The completion code was 1, which means that the
                     // command could not be completed successfully.
 
@@ -120,7 +120,7 @@ public class TclTests {
                     // about what went wrong.
                     Object errorInfoTclObject = _getVarMethod.invoke(_interp,
                             new Object[] { "errorInfo", null, 1 /*TCL.GLOBAL_ONLY*/
-                            });
+                    });
                     throw new Exception(
                             "Evaluating the Tcl method \"doneTests\" "
                                     + "resulted in a TclException being thrown.\nThe Tcl "
@@ -151,6 +151,7 @@ public class TclTests {
              *            The name of the file.
              * @return true if the file name ends with .xml or .moml
              */
+            @Override
             public boolean accept(File directory, String name) {
                 String fileName = name.toLowerCase(Locale.getDefault());
                 if (fileName.endsWith(".tcl")) {
@@ -199,7 +200,7 @@ public class TclTests {
     }
 
     /**
-     * Run a tclFile.  
+     * Run a tclFile.
 
      * <p>Timeout after 480000 ms.  The
      * ptolemy/cg/kernel/generic/program/procedural/java/test/AutoAdapter.tcl
@@ -235,7 +236,7 @@ public class TclTests {
                 Integer completionCode = (Integer) _getCompletionCodeMethod
                         .invoke(throwable.getCause(), new Object[] {});
                 if (completionCode.intValue() == 1 /** TCL.ERROR */
-                ) {
+                        ) {
                     // The completion code was 1, which means that the
                     // command could not be completed successfully.
 
@@ -245,7 +246,7 @@ public class TclTests {
                     try {
                         errorInfoTclObject = _getVarMethod.invoke(_interp,
                                 new Object[] { "errorInfo", null, 1 /*TCL.GLOBAL_ONLY*/
-                                });
+                        });
                         throw new Exception(
                                 "Evaluating the Tcl file \""
                                         + tclFile
@@ -269,7 +270,7 @@ public class TclTests {
         // We check for non-zero results for *each* .tcl file.
         Object newFailedCountTclObject = _getVarMethod.invoke(_interp,
                 new Object[] { "FAILED", null, 1 /*TCL.GLOBAL_ONLY*/
-                });
+        });
         int newFailed = Integer.parseInt(newFailedCountTclObject.toString());
         int lastFailed = Integer.parseInt(_failedTestCount.toString());
 
@@ -277,7 +278,7 @@ public class TclTests {
         // this prevents us from reporting cascading errors if the
         // first .tcl file has a failure.
         TclTests._setFailedTestCount(_newInstanceTclIntegerMethod.invoke(null,
-                        new Object[] { Integer.valueOf(newFailed) }));
+                new Object[] { Integer.valueOf(newFailed) }));
 
         // If the Tcl FAILED global variable is not equal to the
         // previous number of failures, then add a failure.
@@ -291,7 +292,7 @@ public class TclTests {
     /** Increment the count of the number of tcl files visited.
      * Keep track of the number of Tcl files evaluated
      * If 1 or more files were evaluated, then we call doneTests.
-     */   
+     */
     protected static void _incrementTclFileCount() {
         // To avoid FindBugs: Write to static field from instance method
         _tclFileCount++;
@@ -299,7 +300,7 @@ public class TclTests {
 
     /** Set the cached vaue of the count of the number of failed tests.
      *  @param count The object representing the number of failed tests.
-     */   
+     */
     protected static void _setFailedTestCount(Object count) {
         // To avoid FindBugs: Write to static field from instance method
         _failedTestCount = count;

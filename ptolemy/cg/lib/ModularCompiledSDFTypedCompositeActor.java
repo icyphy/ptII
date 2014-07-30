@@ -29,7 +29,6 @@ package ptolemy.cg.lib;
 
 import java.io.IOException;
 import java.lang.reflect.Method;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.util.HashMap;
@@ -159,7 +158,7 @@ will simply result in the expression failing to evaluate.
  */
 
 public class ModularCompiledSDFTypedCompositeActor extends
-        ModularCodeGenLazyTypedCompositeActor {
+ModularCodeGenLazyTypedCompositeActor {
 
     /** Construct a library in the default workspace with no
      *  container and an empty string as its name. Add the library to the
@@ -219,6 +218,7 @@ public class ModularCompiledSDFTypedCompositeActor extends
      *  @exception IllegalActionException If the change is not acceptable
      *   to this container.
      */
+    @Override
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         super.attributeChanged(attribute);
@@ -230,7 +230,7 @@ public class ModularCompiledSDFTypedCompositeActor extends
                 List<?> entities = entityList(ModularCompiledSDFTypedCompositeActor.class);
                 for (Object entity : entities) {
                     ((ModularCompiledSDFTypedCompositeActor) entity).recompileHierarchy
-                            .setToken(new BooleanToken(true));
+                    .setToken(new BooleanToken(true));
                 }
             }
         } else if (attribute != recompileThisLevel) {
@@ -251,6 +251,7 @@ public class ModularCompiledSDFTypedCompositeActor extends
      *  will be lost.
      *  @exception IllegalActionException If any port throws it.
      */
+    @Override
     public void createReceivers() throws IllegalActionException {
         if (_modelChanged()) {
             super.createReceivers();
@@ -281,6 +282,7 @@ public class ModularCompiledSDFTypedCompositeActor extends
      *  This method is read-synchronized on the workspace.
      *  @return An unmodifiable list of Port objects.
      */
+    @Override
     public List portList() {
         Profile profile = getProfile();
         if (_USE_PROFILE && profile != null) {
@@ -302,9 +304,9 @@ public class ModularCompiledSDFTypedCompositeActor extends
                             NamedObj container = getContainer();
                             if (container instanceof CompositeActor) {
                                 ((CompositeActor) container)
-                                        .registerPublisherPort(
-                                                port.getPubSubChannelName(),
-                                                newPort);
+                                .registerPublisherPort(
+                                        port.getPubSubChannelName(),
+                                        newPort);
                             }
                         }
                     }
@@ -345,13 +347,14 @@ public class ModularCompiledSDFTypedCompositeActor extends
      *   the director's fire() method throws it, or if the actor is not
      *   opaque.
      */
+    @Override
     public void fire() throws IllegalActionException {
         if (_fireMethod == null) {
             if (_debugging) {
                 _debug("ModularCodeGenerator: No generated code. Calling simulation fire method.");
             }
             System.out
-                    .println("ModularCodeGenerator: No generated code. Calling simulation fire method.");
+            .println("ModularCodeGenerator: No generated code. Calling simulation fire method.");
             super.fire();
             return;
         }
@@ -388,6 +391,7 @@ public class ModularCompiledSDFTypedCompositeActor extends
      *   the director's preinitialize() method throws it, or if this actor
      *   is not opaque.
      */
+    @Override
     public void initialize() throws IllegalActionException {
         //        super.initialize(); // TODO only do when not generating code
         try {
@@ -418,8 +422,8 @@ public class ModularCompiledSDFTypedCompositeActor extends
                         classLoader.close();
                     } catch (IOException ex) {
                         throw new IllegalActionException(this, ex,
-                                "Failed to close \"" + (url == null ? "null": url)
-                                + "\".");
+                                "Failed to close \""
+                                        + (url == null ? "null" : url) + "\".");
                     }
                 }
             }
@@ -481,6 +485,7 @@ public class ModularCompiledSDFTypedCompositeActor extends
      *          as a result of the added relations or ports.
      *  @exception IllegalActionException If the published port cannot be found.
      */
+    @Override
     public IOPort linkToPublishedPort(String name, IOPort subscriberPort)
             throws IllegalActionException, NameDuplicationException {
         try {
@@ -576,6 +581,7 @@ public class ModularCompiledSDFTypedCompositeActor extends
      *   the director's preinitialize() method throws it, or if this actor
      *   is not opaque.
      */
+    @Override
     public void preinitialize() throws IllegalActionException {
         Profile profile = getProfile();
         if (!_USE_PROFILE || profile == null || _modelChanged()) {
@@ -630,15 +636,15 @@ public class ModularCompiledSDFTypedCompositeActor extends
                                 if (port.name().equals(
                                         ((NamedObj) actorPort).getName())) {
                                     DFUtilities
-                                            .setRateVariable(
-                                                    (IOPort) actorPort,
-                                                    port.input() ? "tokenConsumptionRate"
-                                                            : "tokenProductionRate",
+                                    .setRateVariable(
+                                            (IOPort) actorPort,
+                                            port.input() ? "tokenConsumptionRate"
+                                                    : "tokenProductionRate",
                                                     port.rate());
                                     ((TypedIOPort) actorPort)
-                                            .setTypeEquals(JavaCodeGenerator
-                                                    .codeGenTypeToPtType(port
-                                                            .type()));
+                                    .setTypeEquals(JavaCodeGenerator
+                                            .codeGenTypeToPtType(port
+                                                    .type()));
                                     ((IOPort) actorPort).setDefaultWidth(port
                                             .width());
                                     break;
@@ -655,13 +661,13 @@ public class ModularCompiledSDFTypedCompositeActor extends
                                 newPort.setOutput(port.output());
                                 DFUtilities.setRateVariable(newPort, port
                                         .input() ? "tokenConsumptionRate"
-                                        : "tokenProductionRate", port.rate());
+                                                : "tokenProductionRate", port.rate());
                                 NamedObj container = getContainer();
                                 if (container instanceof CompositeActor) {
                                     ((CompositeActor) container)
-                                            .linkToPublishedPort(
-                                                    port.getPubSubChannelName(),
-                                                    newPort);
+                                    .linkToPublishedPort(
+                                            port.getPubSubChannelName(),
+                                            newPort);
                                 }
                             }
                         }
@@ -693,6 +699,7 @@ public class ModularCompiledSDFTypedCompositeActor extends
      *  @exception IllegalActionException If the published port can't
      *          be added.
      */
+    @Override
     public void registerPublisherPort(String name, IOPort port)
             throws NameDuplicationException, IllegalActionException {
         try {
@@ -754,6 +761,7 @@ public class ModularCompiledSDFTypedCompositeActor extends
     /** Request that execution of the current iteration complete.
      *  do nothing in this case
      */
+    @Override
     public void stopFire() {
         if (_debugging) {
             _debug("Called stopFire()");
@@ -773,6 +781,7 @@ public class ModularCompiledSDFTypedCompositeActor extends
      *  @param subscriberPort The subscribed port.
      *  @exception IllegalActionException If the published port cannot be found.
      */
+    @Override
     public void unlinkToPublishedPort(String name, IOPort subscriberPort)
             throws IllegalActionException {
         try {
@@ -837,6 +846,7 @@ public class ModularCompiledSDFTypedCompositeActor extends
      *  @exception IllegalActionException If thrown by the parent method.
      *  @exception NameDuplicationException If thrown by the parent method.
      */
+    @Override
     public void unregisterPublisherPort(String name, IOPort publisherPort)
             throws IllegalActionException, NameDuplicationException {
         try {
@@ -878,12 +888,12 @@ public class ModularCompiledSDFTypedCompositeActor extends
      *  @exception IllegalActionException If the wrapup() method of
      *   one of the associated actors throws it.
      */
+    @Override
     public void wrapup() throws IllegalActionException {
         if (_fireMethod == null) {
             super.wrapup();
         }
     }
-
 
     /** Return the profile for the composite actor.
      * @return The profile.
@@ -893,7 +903,7 @@ public class ModularCompiledSDFTypedCompositeActor extends
             String className = CodeGeneratorAdapter.generateName(this)
                     + "_profile";
             Class<?> classInstance = null;
- 
+
             NamedObj toplevel = toplevel();
             FileParameter path;
             URL url = null;
@@ -911,15 +921,16 @@ public class ModularCompiledSDFTypedCompositeActor extends
                 _profile = (Profile) classInstance.newInstance();
 
             } catch (Throwable throwable) {
-                throw new InternalErrorException(this, throwable, "Failed to get the profile.");
+                throw new InternalErrorException(this, throwable,
+                        "Failed to get the profile.");
             } finally {
                 if (classLoader != null) {
                     try {
                         classLoader.close();
                     } catch (IOException ex) {
                         throw new InternalErrorException(this, ex,
-                                "Failed to close \"" + (url == null ? "null": url)
-                                + "\".");
+                                "Failed to close \""
+                                        + (url == null ? "null" : url) + "\".");
                     }
                 }
             }
@@ -932,7 +943,7 @@ public class ModularCompiledSDFTypedCompositeActor extends
     ////                         private methods                   ////
 
     private void _createCodeGenerator() throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         if (_codeGenerator == null) {
             _codeGenerator = new ModularSDFCodeGenerator(this,
                     "ModularSDFCodeGenerator");
@@ -958,6 +969,7 @@ public class ModularCompiledSDFTypedCompositeActor extends
      *  @param port The port to look up.
      *  @return Return true if the port is a is connected to a publisher.
      */
+    @Override
     protected boolean _isPublishedPort(IOPort port) {
         // FIXME: this method might be slow
 
@@ -988,45 +1000,45 @@ public class ModularCompiledSDFTypedCompositeActor extends
 
     }
 
-//     private Profile _getProfile() {
-//         try {
-//             if (_profile != null || _modelChanged()) {
-//                 // if _modelChanged => _profile == null
-//                 return _profile;
-//             } else {
-//                 String className = CodeGeneratorAdapter.generateName(this)
-//                         + "_profile";
-//                 Class<?> classInstance = null;
+    //     private Profile _getProfile() {
+    //         try {
+    //             if (_profile != null || _modelChanged()) {
+    //                 // if _modelChanged => _profile == null
+    //                 return _profile;
+    //             } else {
+    //                 String className = CodeGeneratorAdapter.generateName(this)
+    //                         + "_profile";
+    //                 Class<?> classInstance = null;
 
-//                 NamedObj toplevel = toplevel();
-//                 FileParameter path = new FileParameter(toplevel,
-//                         toplevel.uniqueName("dummyParam"));
-//                 path.setExpression("$HOME/cg/");
-//                 URL url = path.asFile().toURI().toURL();
-//                 path.setContainer(null); //Remove the parameter again.
-//                 URL[] urls = new URL[] { url };
+    //                 NamedObj toplevel = toplevel();
+    //                 FileParameter path = new FileParameter(toplevel,
+    //                         toplevel.uniqueName("dummyParam"));
+    //                 path.setExpression("$HOME/cg/");
+    //                 URL url = path.asFile().toURI().toURL();
+    //                 path.setContainer(null); //Remove the parameter again.
+    //                 URL[] urls = new URL[] { url };
 
-//                 ClassLoader classLoader = new URLClassLoader(urls);
-//                 classInstance = classLoader.loadClass(className);
-//                 _profile = (Profile) classInstance.newInstance();
-//             }
-//         } catch (Throwable throwable) {
-//             try {
-//                 if (_USE_PROFILE) {
-//                     _setRecompileFlag();
-//                 }
-//                 _profile = null;
-//             } catch (IllegalActionException e1) {
-//                 throw new IllegalStateException(e1);
-//             }
-//         }
-//         return _profile;
-//     }
+    //                 ClassLoader classLoader = new URLClassLoader(urls);
+    //                 classInstance = classLoader.loadClass(className);
+    //                 _profile = (Profile) classInstance.newInstance();
+    //             }
+    //         } catch (Throwable throwable) {
+    //             try {
+    //                 if (_USE_PROFILE) {
+    //                     _setRecompileFlag();
+    //                 }
+    //                 _profile = null;
+    //             } catch (IllegalActionException e1) {
+    //                 throw new IllegalStateException(e1);
+    //             }
+    //         }
+    //         return _profile;
+    //     }
 
     private boolean _modelChanged() throws IllegalActionException {
         return ((BooleanToken) recompileThisLevel.getToken()).booleanValue()
                 || ((BooleanToken) recompileHierarchy.getToken())
-                        .booleanValue();
+                .booleanValue();
     }
 
     /** Return the name of a Publisher or Subscriber channel name.
@@ -1037,6 +1049,7 @@ public class ModularCompiledSDFTypedCompositeActor extends
      *  be returned.
      *  @return the name of the channel.
      */
+    @Override
     protected String _pubSubChannelName(IOPort port, boolean publisher,
             boolean subscriber) {
         // FIXME: this method might be slow

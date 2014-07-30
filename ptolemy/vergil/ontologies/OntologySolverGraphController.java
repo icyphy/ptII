@@ -65,6 +65,7 @@ public class OntologySolverGraphController extends WithIconGraphController {
      *   edges exist in the ontology solver model.
      *  @return null.
      */
+    @Override
     public EdgeController getEdgeController(Object object) {
         return null;
     }
@@ -78,6 +79,7 @@ public class OntologySolverGraphController extends WithIconGraphController {
      *  @return Either a ConceptController object or an AttributeController
      *   object.
      */
+    @Override
     public NodeController getNodeController(Object object) {
 
         // Defer to the superclass if it can provide a controller.
@@ -106,6 +108,7 @@ public class OntologySolverGraphController extends WithIconGraphController {
      *  when opening files or URLs.
      *  @param configuration The configuration.
      */
+    @Override
     public void setConfiguration(Configuration configuration) {
         super.setConfiguration(configuration);
         _attributeController.setConfiguration(configuration);
@@ -120,6 +123,7 @@ public class OntologySolverGraphController extends WithIconGraphController {
      *  and attribute controller.
      *  @param jgraph The JGraph to which hot keys are to be added.
      */
+    @Override
     protected void _addHotKeys(JGraph jgraph) {
         super._addHotKeys(jgraph);
 
@@ -134,6 +138,7 @@ public class OntologySolverGraphController extends WithIconGraphController {
      *  controller, so we must initialize it here even though the ontology
      *  model editor has no visible ports.
      */
+    @Override
     protected void _createControllers() {
         _attributeController = new AttributeInOntologyController(this);
         _ontologyController = new OntologyEntityController(this);
@@ -150,6 +155,7 @@ public class OntologySolverGraphController extends WithIconGraphController {
      *  constructor because the controller does not yet have a reference to
      *  its pane at that time.
      */
+    @Override
     protected void initializeInteraction() {
         // NOTE: This method name does not have a leading underscore
         // because it is a diva method.

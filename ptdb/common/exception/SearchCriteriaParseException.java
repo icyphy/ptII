@@ -25,7 +25,7 @@ ENHANCEMENTS, OR MODIFICATIONS.
                                                 COPYRIGHTENDKEY
 
 
-*/
+ */
 package ptdb.common.exception;
 
 ///////////////////////////////////////////////////////////////////
@@ -71,6 +71,7 @@ public class SearchCriteriaParseException extends Exception {
     /**
      * Return the underlying cause for the exception.
      */
+    @Override
     public Throwable getCause() {
         return _cause;
     }

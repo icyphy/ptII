@@ -26,7 +26,7 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 Ptolemy II includes the work of others, to see those copyrights, follow
 the copyright link on the splash page or see copyright.htm.
-*/
+ */
 
 package ptolemy.domains.metroII.kernel;
 
@@ -65,7 +65,7 @@ import ptolemy.kernel.util.Workspace;
  * semantics. This MoC is mainly used to design the functional model, in which
  * some actors can be mapped to an architectural models. This allows users to
  * explore choices about how the model can be implemented.
- * 
+ *
  * <p>
  * In DE director, events are totally ordered and executed. In
  * MetroIIDEDirector, these events are called Ptolemy events that are still
@@ -86,7 +86,7 @@ import ptolemy.kernel.util.Workspace;
  * which includes MetroIICompositeActor. To understand MetroII event and its
  * states (e.g. PROPOSED, WAITING, NOTIFIED), please @see MetroIIDirector.
  * </p>
- * 
+ *
  * <p>
  * By using a MetroII actor under the MetroIIDEDirector, the user understands
  * the firing of the MetroII actor might be delayed because the scheduling is
@@ -96,20 +96,20 @@ import ptolemy.kernel.util.Workspace;
  * these non-determinisms are desirable and can be used to optimize the
  * architectures.
  * </p>
- * 
+ *
  * <p>
  * It's highly recommend not to place MetroIIDEDirector in a
  * MetroIICompositeActor under another MetroIIDEDirector because there would be
  * a semantic conflict if the enclosed MetroIIDEDirector directs a normal
  * Ptolemy actor.
  * </p>
- * 
+ *
  * @author Liangpeng Guo
  * @version $Id$
  * @since Ptolemy II 10.0
  * @Pt.ProposedRating Red (glp)
  * @Pt.AcceptedRating Red (glp)
- * 
+ *
  */
 public class MetroIIDEDirector extends DEDirector implements GetFirable {
 
@@ -118,7 +118,7 @@ public class MetroIIDEDirector extends DEDirector implements GetFirable {
      * container argument must not be null, or a NullPointerException will be
      * thrown. If the name argument is null, then the name is set to the empty
      * string. Increment the version number of the workspace.
-     * 
+     *
      * @param container
      *            Container of the director.
      * @param name
@@ -145,13 +145,14 @@ public class MetroIIDEDirector extends DEDirector implements GetFirable {
      * Clones the object into the specified workspace. The new object is
      * <i>not</i> added to the directory of that workspace (you must do this
      * yourself if you want it there).
-     * 
+     *
      * @param workspace
      *            The workspace for the cloned object.
      * @exception CloneNotSupportedException
      *                Not thrown in this base class
      * @return The new Attribute.
      */
+    @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         MetroIIDEDirector newObject = (MetroIIDEDirector) super
                 .clone(workspace);
@@ -173,14 +174,14 @@ public class MetroIIDEDirector extends DEDirector implements GetFirable {
      * Initializes the model controlled by this director. Call the initialize()
      * of super class and then wrap each actor that is controlled by this
      * director.
-     * 
+     *
      * This method should typically be invoked once per execution, after the
      * preinitialization phase, but before any iteration. It may be invoked in
      * the middle of an execution, if reinitialization is desired.
-     * 
+     *
      * This method is <i>not</i> synchronized on the workspace, so the caller
      * should be.
-     * 
+     *
      * @exception IllegalActionException
      *                If the initialize() method of one of the associated actors
      *                throws it.
@@ -221,7 +222,7 @@ public class MetroIIDEDirector extends DEDirector implements GetFirable {
      * Requests the execution of the current iteration to stop. This is similar
      * to stopFire(), except that the current iteration is not allowed to
      * complete.
-     * 
+     *
      */
     @Override
     public void stop() {
@@ -241,7 +242,7 @@ public class MetroIIDEDirector extends DEDirector implements GetFirable {
 
     /**
      * Returns the actor that is about to fire and its state.
-     * 
+     *
      * @return 0 if firing can be executed, and the next event in event queue
      *         should be checked for processing; -1 if there's no actor to fire,
      *         and we should not keep firing; 1 if there's no actor to fire, but
@@ -476,7 +477,7 @@ public class MetroIIDEDirector extends DEDirector implements GetFirable {
     /**
      * Enforces a firing of a DE director only handles events with the same tag.
      * Checks what is the model time of the earliest event in the event queue.
-     * 
+     *
      * @return true if the earliest event in the event queue is at the same
      *         model time as the event that was just processed. Else if that
      *         event's timestamp is in the future, return false.
@@ -503,10 +504,10 @@ public class MetroIIDEDirector extends DEDirector implements GetFirable {
                         || next.microstep() < _microstep) {
                     throw new IllegalActionException(
                             "The tag of the next event (" + next.timeStamp()
-                                    + "." + next.microstep()
-                                    + ") can not be less than"
-                                    + " the current tag (" + getModelTime()
-                                    + "." + _microstep + ") !");
+                            + "." + next.microstep()
+                            + ") can not be less than"
+                            + " the current tag (" + getModelTime()
+                            + "." + _microstep + ") !");
                 } else {
                     // The next event has the same tag as the current tag,
                     // indicating that at least one actor is going to be
@@ -521,7 +522,7 @@ public class MetroIIDEDirector extends DEDirector implements GetFirable {
     /**
      * Processes the mappable actors. The assumption is that a mappable actor has
      * a delay strictly greater than zero.
-     * 
+     *
      * @exception IllegalActionException
      * @exception CollectionAbortedException
      */
@@ -596,14 +597,15 @@ public class MetroIIDEDirector extends DEDirector implements GetFirable {
      * which could be either the next event in the event queue of
      * MetroIIDEDirector or the event in architectural model which this model is
      * mapped to.
-     * 
+     *
      * The time advancing is via proposing a MetroII event with time tag as its
      * quantity (@see TimeScheduler).
-     * 
+     *
      * @exception IllegalActionException
      *                If we couldn't process an event or if an event of smaller
      *                timestamp is found within the event queue.
      */
+    @Override
     public void getfire(ResultHandler<Iterable<Event.Builder>> resultHandler)
             throws CollectionAbortedException, IllegalActionException {
         //        try {
@@ -790,7 +792,7 @@ public class MetroIIDEDirector extends DEDirector implements GetFirable {
                 break;
                 // return;
             } // else if 0, keep executing
-              //if (!actorList.contains(actorAndState.first)) {
+            //if (!actorList.contains(actorAndState.first)) {
             if (actorAndState.getFirst() != null) {
                 // System.out.println(_eventQueue);
                 Actor actor = actorAndState.getFirst();
@@ -874,7 +876,7 @@ public class MetroIIDEDirector extends DEDirector implements GetFirable {
      * MetroIICompositeActor, the adapter() in MetroIICompositeActor is
      * responsible for creating the iterator of getfire(), this adapter() should
      * never be called.
-     * 
+     *
      * @return iterator
      */
     @Override
@@ -888,12 +890,12 @@ public class MetroIIDEDirector extends DEDirector implements GetFirable {
 
     /**
      * Initializes parameters. This is called by the constructor.
-     * 
+     *
      * @exception IllegalActionException
      * @exception NameDuplicationException
      */
     private void _initializeParameters() throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         printTrace = new Parameter(this, "printTrace");
         printTrace.setTypeEquals(BaseType.BOOLEAN);
         printTrace.setExpression("false");

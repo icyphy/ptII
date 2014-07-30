@@ -89,6 +89,7 @@ public class Equals extends Transformer {
      *  no input tokens available, then no output is produced.
      *  @exception IllegalActionException If there is no director.
      */
+    @Override
     public void fire() throws IllegalActionException {
         super.fire();
         BooleanToken result = BooleanToken.TRUE;

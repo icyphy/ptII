@@ -99,6 +99,7 @@ public class NameParameter extends StringParameter {
      *   Also thrown if there is a NameDuplicationException when setting
      *   the name of the container.
      */
+    @Override
     public Collection validate() throws IllegalActionException {
         Collection result = null;
         result = super.validate();

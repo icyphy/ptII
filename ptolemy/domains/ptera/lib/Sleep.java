@@ -24,7 +24,7 @@
  PT_COPYRIGHT_VERSION_2
  COPYRIGHTENDKEY
 
-*/
+ */
 package ptolemy.domains.ptera.lib;
 
 import ptolemy.data.LongToken;
@@ -84,6 +84,7 @@ public class Sleep extends Event {
      *   null if refire() need not be called.
      *  @exception IllegalActionException If thrown by the superclass.
      */
+    @Override
     public RefiringData fire(Token arguments) throws IllegalActionException {
         RefiringData data = super.fire(arguments);
 

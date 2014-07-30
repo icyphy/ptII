@@ -84,7 +84,7 @@ import com.sun.j3d.utils.universe.SimpleUniverse;
  @Pt.AcceptedRating Green (acataldo)
  */
 public class ViewScreen3D extends GRActor3D implements Placeable,
-        ViewScreenInterface {
+ViewScreenInterface {
     // FIXME: Need a reset button to reset the viewpoint to the original.
 
     /** Construct a ViewScreen in the given container with the given name.
@@ -219,6 +219,7 @@ public class ViewScreen3D extends GRActor3D implements Placeable,
      *  @exception CloneNotSupportedException If a derived class contains
      *   an attribute that cannot be cloned.
      */
+    @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         ViewScreen3D newObject = (ViewScreen3D) super.clone(workspace);
         newObject._lastTransform = new Transform3D();
@@ -226,6 +227,7 @@ public class ViewScreen3D extends GRActor3D implements Placeable,
     }
 
     /** Fire this actor.*/
+    @Override
     public void fire() throws IllegalActionException {
         super.fire();
         boolean _hasToken = sceneGraphIn.hasToken(0);
@@ -271,6 +273,7 @@ public class ViewScreen3D extends GRActor3D implements Placeable,
      *  it hasn't been set using the place() method.
      *  @exception IllegalActionException If the base class throws it.
      */
+    @Override
     public void initialize() throws IllegalActionException {
         super.initialize();
 
@@ -409,6 +412,7 @@ public class ViewScreen3D extends GRActor3D implements Placeable,
      * place is not called, then the actor will create its own frame
      * for display.
      */
+    @Override
     public void place(Container container) {
         _container = container;
 
@@ -436,6 +440,7 @@ public class ViewScreen3D extends GRActor3D implements Placeable,
         }
     }
 
+    @Override
     public boolean postfire() throws IllegalActionException {
         //boolean _hasToken = sceneGraphIn.hasToken(0);
         if (_debugging) {
@@ -447,6 +452,7 @@ public class ViewScreen3D extends GRActor3D implements Placeable,
 
     /** Wrapup an execution.
      */
+    @Override
     public void wrapup() throws IllegalActionException {
         super.wrapup();
 
@@ -474,6 +480,7 @@ public class ViewScreen3D extends GRActor3D implements Placeable,
     /** Add the node argument as a child to the encapsulated Java3D node
      *  in this actor.
      */
+    @Override
     protected void _addChild(Node node) {
         if (_debugging) {
             _debug("Called _addChild(Node node)");
@@ -502,8 +509,7 @@ public class ViewScreen3D extends GRActor3D implements Placeable,
             verticalDimension = _getVerticalPixels();
         } catch (Exception ex) {
             throw new IllegalActionException(this, ex,
-                    "Failed to get horizontal "
-                    + "or vertical pixels");
+                    "Failed to get horizontal " + "or vertical pixels");
         }
 
         // Create a frame, if placeable was not called.
@@ -567,6 +573,7 @@ public class ViewScreen3D extends GRActor3D implements Placeable,
      *
      *  @return null
      */
+    @Override
     protected Node _getNodeObject() {
         return null;
     }
@@ -612,6 +619,7 @@ public class ViewScreen3D extends GRActor3D implements Placeable,
 
     /** Setup the scene graph connections of this actor.
      */
+    @Override
     protected void _makeSceneGraphConnection() throws IllegalActionException {
         if (_debugging) {
             _debug("Called _makeSceneGraphConnection()");
@@ -686,6 +694,7 @@ public class ViewScreen3D extends GRActor3D implements Placeable,
             _viewContainer = viewContainer;
         }
 
+        @Override
         public void processStimulus(java.util.Enumeration criteria) {
             if (stopped != true) {
                 _viewContainer._startRenderer();

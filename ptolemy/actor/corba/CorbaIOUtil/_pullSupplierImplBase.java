@@ -11,9 +11,9 @@ package ptolemy.actor.corba.CorbaIOUtil;
  */
 @SuppressWarnings("serial")
 public abstract class _pullSupplierImplBase extends
-        org.omg.CORBA.portable.ObjectImpl implements
-        ptolemy.actor.corba.CorbaIOUtil.pullSupplier,
-        org.omg.CORBA.portable.InvokeHandler {
+org.omg.CORBA.portable.ObjectImpl implements
+ptolemy.actor.corba.CorbaIOUtil.pullSupplier,
+org.omg.CORBA.portable.InvokeHandler {
     // Constructors
     public _pullSupplierImplBase() {
     }
@@ -24,6 +24,7 @@ public abstract class _pullSupplierImplBase extends
         _methods.put("pull", new java.lang.Integer(0));
     }
 
+    @Override
     public org.omg.CORBA.portable.OutputStream _invoke(String $method,
             org.omg.CORBA.portable.InputStream in,
             org.omg.CORBA.portable.ResponseHandler $rh) {
@@ -49,7 +50,7 @@ public abstract class _pullSupplierImplBase extends
             } catch (ptolemy.actor.corba.CorbaIOUtil.CorbaIllegalActionException $ex) {
                 out = $rh.createExceptionReply();
                 ptolemy.actor.corba.CorbaIOUtil.CorbaIllegalActionExceptionHelper
-                        .write(out, $ex);
+                .write(out, $ex);
             }
 
             break;
@@ -66,6 +67,7 @@ public abstract class _pullSupplierImplBase extends
     // Type-specific CORBA::Object operations
     private static String[] __ids = { "IDL:CorbaIOUtil/pullSupplier:1.0" };
 
+    @Override
     public String[] _ids() {
         return __ids.clone();
     }

@@ -72,6 +72,7 @@ public class TestWorkspace2 extends Thread {
      *  and return after relinquishing the read accesses on the workspace.
      *  This method is synchronized both on this class and the inner class
      */
+    @Override
     public synchronized void run() {
         _notif.start();
 
@@ -148,6 +149,7 @@ public class TestWorkspace2 extends Thread {
             _name = name;
         }
 
+        @Override
         public void run() {
             while (!done) {
                 try {

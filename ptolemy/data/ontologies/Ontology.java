@@ -171,6 +171,7 @@ public class Ontology extends CompositeEntity {
      *  @exception NameDuplicationException If name collides with a name
      *   already in the container.
      */
+    @Override
     public ComponentRelation newRelation(String name)
             throws IllegalActionException, NameDuplicationException {
         try {
@@ -202,17 +203,17 @@ public class Ontology extends CompositeEntity {
             for (FiniteConcept concept : concepts) {
                 @SuppressWarnings("unchecked")
                 List<ConceptRelation> relationLinks = concept.abovePort
-                        .linkedRelationList();
+                .linkedRelationList();
                 for (ConceptRelation link : relationLinks) {
                     @SuppressWarnings("unchecked")
                     List<ComponentPort> remotePorts = link
-                            .linkedPortList(concept.abovePort);
+                    .linkedPortList(concept.abovePort);
                     assert remotePorts.size() == 1 : "ConceptRelations can only connect two concepts";
                     for (ComponentPort remotePort : remotePorts) {
                         ((DAGConceptGraph) _graph)
-                                .addRelation(concept,
-                                        (FiniteConcept) remotePort
-                                                .getContainer(), link);
+                        .addRelation(concept,
+                                (FiniteConcept) remotePort
+                                .getContainer(), link);
                     }
                 }
             }

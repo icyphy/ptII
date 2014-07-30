@@ -430,6 +430,7 @@ public class GridAnnealingLayout extends AbstractGlobalLayout {
      * Perform the annealing layout algorithm on the given graph
      * in the context of the given layout target.
      */
+    @Override
     public void layout(Object composite) {
         LayoutTarget target = getLayoutTarget();
         _graph = composite;

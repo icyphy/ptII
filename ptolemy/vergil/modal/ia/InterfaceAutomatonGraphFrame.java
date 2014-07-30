@@ -96,6 +96,7 @@ public class InterfaceAutomatonGraphFrame extends FSMGraphFrame {
      *   be an instance of CompositeEntity).
      *  @return The pane that is created.
      */
+    @Override
     protected GraphPane _createGraphPane(NamedObj entity) {
         _controller = new InterfaceAutomatonGraphController(_directory);
         _controller.setConfiguration(getConfiguration());

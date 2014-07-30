@@ -88,6 +88,7 @@ public class PythonShellTableau extends Tableau implements ShellInterpreter {
      *  @return The return value of the command, or null if there is none.
      *  @exception Exception If something goes wrong processing the command.
      */
+    @Override
     public String evaluateCommand(String command) throws Exception {
         try {
             PyObject results = _interpreter.eval(command);
@@ -102,6 +103,7 @@ public class PythonShellTableau extends Tableau implements ShellInterpreter {
      *  @param command The command.
      *  @return True.
      */
+    @Override
     public boolean isCommandComplete(String command) {
         return true;
     }
@@ -118,7 +120,7 @@ public class PythonShellTableau extends Tableau implements ShellInterpreter {
     /** The frame that is created by an instance of PythonShellTableau.
      */
     @SuppressWarnings("serial")
-        public static class PythonShellFrame extends TableauFrame {
+    public static class PythonShellFrame extends TableauFrame {
         // FindBugs suggested refactoring this into a static class.
 
         /** Construct a frame to display the PythonShell window.
@@ -147,6 +149,7 @@ public class PythonShellTableau extends Tableau implements ShellInterpreter {
 
         ///////////////////////////////////////////////////////////////////
         ////                         protected methods                 ////
+        @Override
         protected void _help() {
             try {
                 URL doc = getClass().getClassLoader().getResource(
@@ -187,6 +190,7 @@ public class PythonShellTableau extends Tableau implements ShellInterpreter {
          *  @exception Exception If the factory should be able to create a
          *   tableau for the effigy, but something goes wrong.
          */
+        @Override
         public Tableau createTableau(Effigy effigy) throws Exception {
             // NOTE: Can create any number of tableaux within the same
             // effigy.  Is this what we want?

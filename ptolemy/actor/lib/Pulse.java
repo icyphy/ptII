@@ -155,6 +155,7 @@ public class Pulse extends SequenceSource {
      *  @exception IllegalActionException If the indexes vector is not
      *   increasing and nonnegative, or the indexes is not a row vector.
      */
+    @Override
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         if (attribute == indexes) {
@@ -203,6 +204,7 @@ public class Pulse extends SequenceSource {
      *  @exception CloneNotSupportedException If a derived class contains
      *   an attribute that cannot be cloned.
      */
+    @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         Pulse newObject = (Pulse) super.clone(workspace);
         try {
@@ -232,6 +234,7 @@ public class Pulse extends SequenceSource {
      *  @exception IllegalActionException If the values and indexes parameters
      *   do not have the same length, or if there is no director.
      */
+    @Override
     public void fire() throws IllegalActionException {
         super.fire();
 
@@ -279,6 +282,7 @@ public class Pulse extends SequenceSource {
     /** Set the iteration count to zero.
      *  @exception IllegalActionException If the parent class throws it.
      */
+    @Override
     public void initialize() throws IllegalActionException {
         super.initialize();
         _iterationCount = 0;
@@ -290,6 +294,7 @@ public class Pulse extends SequenceSource {
      *  @exception IllegalActionException If the expression of indexes
      *   is not valid.
      */
+    @Override
     public boolean postfire() throws IllegalActionException {
         // We stop incrementing after reaching the top of the indexes
         // vector to avoid possibility of overflow.
@@ -307,6 +312,7 @@ public class Pulse extends SequenceSource {
     /** Start an iteration.
      *  @exception IllegalActionException If the base class throws it.
      */
+    @Override
     public boolean prefire() throws IllegalActionException {
         _match = false;
         return super.prefire();

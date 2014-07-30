@@ -99,6 +99,7 @@ public class Firing extends ScheduleElement {
      *   underlying schedule structure is modified while the iterator
      *   is active.
      */
+    @Override
     public Iterator actorIterator() {
         return new ActorIterator(getIterationCount());
     }
@@ -118,6 +119,7 @@ public class Firing extends ScheduleElement {
      *   underlying schedule structure is modified while the iterator
      *   is active.
      */
+    @Override
     public Iterator firingIterator() {
         // FIXME: a ConcurrentModificationException will not necessarily
         // be thrown, see the failing tests.
@@ -155,6 +157,7 @@ public class Firing extends ScheduleElement {
     /**
      * Output a string representation of this Firing.
      */
+    @Override
     public String toString() {
         String result = "Fire Actor " + _actor;
         int iterationCount = getIterationCount();
@@ -192,6 +195,7 @@ public class Firing extends ScheduleElement {
          *   was created.
          *  @return true if the iterator has more elements.
          */
+        @Override
         public boolean hasNext() {
             if (_startingVersion != _getVersion()) {
                 throw new ConcurrentModificationException(
@@ -208,6 +212,7 @@ public class Firing extends ScheduleElement {
          *   was created.
          *  @return the next object in the iteration.
          */
+        @Override
         public Object next() throws NoSuchElementException {
             if (!hasNext()) {
                 throw new NoSuchElementException("No element to return.");
@@ -221,6 +226,7 @@ public class Firing extends ScheduleElement {
          *  doesn't make sense to remove an actor from an actor invocation
          *  sequence anyway.
          */
+        @Override
         public void remove() {
             throw new UnsupportedOperationException();
         }

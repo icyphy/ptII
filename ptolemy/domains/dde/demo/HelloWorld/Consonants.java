@@ -70,6 +70,7 @@ public class Consonants extends StringOut {
 
     /** Set up the string values that this actor will output.
      */
+    @Override
     public LinkedList setUpStrings() {
         _consonants.addLast("H");
 

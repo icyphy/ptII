@@ -126,6 +126,7 @@ public class JNLPUtilities {
      *  @see ptolemy.util.ClassUtilities#jarURLEntryResource(String)
      *  @see java.net.JarURLConnection
      */
+    @Deprecated
     public static URL jarURLEntryResource(String spec) throws IOException {
         return ClassUtilities.jarURLEntryResource(spec);
     }
@@ -225,7 +226,7 @@ public class JNLPUtilities {
             String jarURLTop = jarURLParentFileName.substring(
                     9,
                     jarURLParentFileName.length()
-                            - parentEntryFileName.length());
+                    - parentEntryFileName.length());
 
             File temporaryFile = new File(jarURLTop, entryFileName);
 

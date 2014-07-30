@@ -90,6 +90,7 @@ public class ASTPtUnionConstructNode extends ASTPtRootNode {
      *  renaming from identifiers in this node to identifiers in the
      *  given node.
      */
+    @Override
     public boolean isCongruent(ASTPtRootNode node, Map renaming) {
         // Note: we don't call super.isCongruent(), which checks for ordered
         // congruence of the children.
@@ -147,6 +148,7 @@ public class ASTPtUnionConstructNode extends ASTPtRootNode {
 
     /** Traverse this node with the given visitor.
      */
+    @Override
     public void visit(ParseTreeVisitor visitor) throws IllegalActionException {
         visitor.visitUnionConstructNode(this);
     }

@@ -81,6 +81,7 @@ public class UnitTerm implements UnitPresentation {
      * Create a String that is understandable by a human.
      * @see ptolemy.moml.unit.UnitPresentation#descriptiveForm()
      */
+    @Override
     public String descriptiveForm() {
         String retv = null;
 
@@ -227,6 +228,7 @@ public class UnitTerm implements UnitPresentation {
      *
      * @see java.lang.Object#toString()
      */
+    @Override
     public String toString() {
         String retv = null;
 

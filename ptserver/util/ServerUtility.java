@@ -130,9 +130,10 @@ public class ServerUtility {
             Attribute isRemoteAttribute = attribute
                     .getAttribute(ServerUtility.REMOTE_OBJECT_TAG);
             if (isRemoteAttribute instanceof Parameter) {
-                System.out.println("isRemoteAttribute(): " + attribute + " " + isRemoteAttribute);
+                System.out.println("isRemoteAttribute(): " + attribute + " "
+                        + isRemoteAttribute);
                 if (((Parameter) isRemoteAttribute).getExpression().equals(
-                                ServerUtility.REMOTE_ATTRIBUTE)) {
+                        ServerUtility.REMOTE_ATTRIBUTE)) {
                     return true;
                 }
             }
@@ -149,8 +150,10 @@ public class ServerUtility {
     public static boolean isTargetProxySink(Attribute targetEntityAttribute) {
         if (targetEntityAttribute instanceof Settable) {
             Settable parameter = (Settable) targetEntityAttribute;
-            System.out.print("isTargetProxySource(): " + targetEntityAttribute + " " + parameter
-                    + " expression: " + parameter.getExpression() + " ==? " + ServerUtility.PROXY_SOURCE_ATTRIBUTE);
+            System.out.print("isTargetProxySource(): " + targetEntityAttribute
+                    + " " + parameter + " expression: "
+                    + parameter.getExpression() + " ==? "
+                    + ServerUtility.PROXY_SOURCE_ATTRIBUTE);
 
             if (parameter.getExpression().equals(
                     ServerUtility.PROXY_SINK_ATTRIBUTE)) {
@@ -160,7 +163,8 @@ public class ServerUtility {
                 System.out.println(" FALSE");
             }
         }
-        System.out.println("isTargetProxySink(): " + targetEntityAttribute +  " FALSE");
+        System.out.println("isTargetProxySink(): " + targetEntityAttribute
+                + " FALSE");
         return false;
     }
 
@@ -172,8 +176,10 @@ public class ServerUtility {
     public static boolean isTargetProxySource(Attribute targetEntityAttribute) {
         if (targetEntityAttribute instanceof Settable) {
             Settable parameter = (Settable) targetEntityAttribute;
-            System.out.print("isTargetProxySource(): " + targetEntityAttribute + " " + parameter
-                    + " expression: " + parameter.getExpression() + " ==? " + ServerUtility.PROXY_SOURCE_ATTRIBUTE);
+            System.out.print("isTargetProxySource(): " + targetEntityAttribute
+                    + " " + parameter + " expression: "
+                    + parameter.getExpression() + " ==? "
+                    + ServerUtility.PROXY_SOURCE_ATTRIBUTE);
 
             if (parameter.getExpression().equals(
                     ServerUtility.PROXY_SOURCE_ATTRIBUTE)) {
@@ -183,7 +189,8 @@ public class ServerUtility {
                 System.out.println(" TRUE");
             }
         }
-        System.out.println("isTargetProxySource(): " + targetEntityAttribute +  "FALSE");
+        System.out.println("isTargetProxySource(): " + targetEntityAttribute
+                + "FALSE");
         return false;
     }
 
@@ -477,11 +484,18 @@ public class ServerUtility {
         // not present in the target model.
         List<Attribute> attributeList = ServerUtility.deepAttributeList(source);
         for (Attribute attribute : attributeList) {
-            System.out.println("_mergeElements() looping " + attribute.getClass() + " " + attribute.getName()
-                    + " "
-                    + (classesToMerge == null ? "null" : classesToMerge.contains(attribute.getClass())) 
-                    + " "
-                    + (namedObjectsToMerge == null ? "null" : namedObjectsToMerge.contains(attribute.getName())));
+            System.out
+                    .println("_mergeElements() looping "
+                            + attribute.getClass()
+                            + " "
+                            + attribute.getName()
+                            + " "
+                            + (classesToMerge == null ? "null" : classesToMerge
+                                    .contains(attribute.getClass()))
+                            + " "
+                            + (namedObjectsToMerge == null ? "null"
+                                    : namedObjectsToMerge.contains(attribute
+                                            .getName())));
             if (classesToMerge == null
                     || classesToMerge.contains(attribute.getClass())
                     || namedObjectsToMerge == null
@@ -521,7 +535,7 @@ public class ServerUtility {
                     clonedAttribute.setPersistent(true);
                     if (clonedAttribute instanceof Settable) {
                         ((Settable) clonedAttribute)
-                                .setVisibility(Settable.NONE);
+                        .setVisibility(Settable.NONE);
                     }
                 } catch (NameDuplicationException e) {
                     // The attribute already exists. Since deepAttributeList returns all deeply

@@ -71,14 +71,17 @@ public class WatchDogTimer extends SceneTransformer implements HasPhaseOptions {
         }
     }
 
+    @Override
     public String getPhaseName() {
         return "";
     }
 
+    @Override
     public String getDefaultOptions() {
         return "cancel:false";
     }
 
+    @Override
     public String getDeclaredOptions() {
         return "enabled debug time cancel";
     }
@@ -96,6 +99,7 @@ public class WatchDogTimer extends SceneTransformer implements HasPhaseOptions {
      *  <code>time</code> option to specify the number of milliseconds
      *  until System.exit() should be called.
      */
+    @Override
     protected void internalTransform(String phaseName, Map options) {
         System.out.println("WatchDogTimer.internalTransform(" + phaseName
                 + ", " + options + ")");
@@ -126,6 +130,7 @@ public class WatchDogTimer extends SceneTransformer implements HasPhaseOptions {
         final long startTime = new Date().getTime();
 
         TimerTask doTimeToDie = new TimerTask() {
+            @Override
             public void run() {
                 try {
                     System.err.println("WatchDogTimer went off after "

@@ -96,6 +96,7 @@ public class Wire extends TypedAtomicActor {
      * @exception IllegalActionException If there are errors in obtaining
      *  the receivers of this actor.
      */
+    @Override
     public void fire() throws IllegalActionException {
         super.fire();
         Token token = null;
@@ -138,6 +139,7 @@ public class Wire extends TypedAtomicActor {
      * continued execution is enabled; false otherwise.
      * @exception IllegalActionException If thrown by the parent class.
      */
+    @Override
     public boolean postfire() throws IllegalActionException {
         // This is similar to DDESink, DoubleFork.
         if (!super.postfire()) {

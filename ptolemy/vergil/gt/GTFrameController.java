@@ -147,6 +147,7 @@ public class GTFrameController implements ChangeListener, KeyListener {
         return hasTabs() && getActiveTabIndex() == 2;
     }
 
+    @Override
     public void keyPressed(KeyEvent e) {
         if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {
             e.consume();
@@ -154,15 +155,18 @@ public class GTFrameController implements ChangeListener, KeyListener {
         }
     }
 
+    @Override
     public void keyReleased(KeyEvent e) {
     }
 
+    @Override
     public void keyTyped(KeyEvent e) {
     }
 
     /** React to a change in the state of the tabbed pane.
      *  @param event The event.
      */
+    @Override
     public void stateChanged(ChangeEvent event) {
         if (event.getSource() == _tabbedPane) {
             _activeTabIndex = _tabbedPane.getSelectedIndex();
@@ -177,20 +181,23 @@ public class GTFrameController implements ChangeListener, KeyListener {
     }
 
     public static class GTActorGraphModel extends ActorGraphModel implements
-            UpdateController {
+    UpdateController {
 
         public GTActorGraphModel(NamedObj composite) {
             super(composite);
         }
 
+        @Override
         public synchronized void startUpdate() {
             _updateStopped = false;
         }
 
+        @Override
         public synchronized void stopUpdate() {
             _updateStopped = true;
         }
 
+        @Override
         protected synchronized boolean _update() {
             if (!_updateStopped) {
                 return super._update();
@@ -203,20 +210,23 @@ public class GTFrameController implements ChangeListener, KeyListener {
     }
 
     public static class GTFSMGraphModel extends FSMGraphModel implements
-            UpdateController {
+    UpdateController {
 
         public GTFSMGraphModel(CompositeEntity composite) {
             super(composite);
         }
 
+        @Override
         public synchronized void startUpdate() {
             _updateStopped = false;
         }
 
+        @Override
         public synchronized void stopUpdate() {
             _updateStopped = true;
         }
 
+        @Override
         protected synchronized boolean _update() {
             if (!_updateStopped) {
                 return super._update();
@@ -259,7 +269,7 @@ public class GTFrameController implements ChangeListener, KeyListener {
     }
 
     @SuppressWarnings("serial")
-        protected JComponent _createRightComponent(NamedObj entity) {
+    protected JComponent _createRightComponent(NamedObj entity) {
         // entity must be SingleRuleTransformer or CompositeActorMatcher.
 
         if (_isFSM(entity)) {
@@ -278,8 +288,8 @@ public class GTFrameController implements ChangeListener, KeyListener {
         _graphPanes = new LinkedList<GraphPane>();
         _graphs = new LinkedList<JGraph>();
 
-        
         _tabbedPane = new JTabbedPane() {
+            @Override
             public void setMinimumSize(Dimension minimumSize) {
                 Iterator<JGraph> graphsIterator = _graphs.iterator();
                 while (graphsIterator.hasNext()) {
@@ -287,6 +297,7 @@ public class GTFrameController implements ChangeListener, KeyListener {
                 }
             }
 
+            @Override
             public void setPreferredSize(Dimension preferredSize) {
                 Iterator<JGraph> graphsIterator = _graphs.iterator();
                 while (graphsIterator.hasNext()) {
@@ -294,6 +305,7 @@ public class GTFrameController implements ChangeListener, KeyListener {
                 }
             }
 
+            @Override
             public void setSize(int width, int height) {
                 Iterator<JGraph> graphsIterator = _graphs.iterator();
                 while (graphsIterator.hasNext()) {
@@ -357,6 +369,7 @@ public class GTFrameController implements ChangeListener, KeyListener {
             /** Invoked when the mouse is pressed on a layer
              * or figure.
              */
+            @Override
             public void mousePressed(LayerEvent event) {
                 Component component = event.getComponent();
 

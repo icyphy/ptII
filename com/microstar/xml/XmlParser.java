@@ -134,7 +134,7 @@ public class XmlParser {
 
     private synchronized void doParse(String systemId, String publicId,
             Reader reader, InputStream stream, String encoding)
-            throws java.lang.Exception {
+                    throws java.lang.Exception {
         basePublicId = publicId;
         baseURI = systemId;
         baseReader = reader;
@@ -687,7 +687,7 @@ public class XmlParser {
 
             break;
 
-        // 16-bit encodings
+            // 16-bit encodings
         case ENCODING_UCS_2_12:
         case ENCODING_UCS_2_21:
 
@@ -699,7 +699,7 @@ public class XmlParser {
 
             break;
 
-        // 32-bit encodings
+            // 32-bit encodings
         case ENCODING_UCS_4_1234:
         case ENCODING_UCS_4_4321:
         case ENCODING_UCS_4_2143:
@@ -956,7 +956,7 @@ public class XmlParser {
         // Read the attribute name.
         aname = readNmtoken(true).intern();
 
-        // Fix by Zoltan Kemenczy for: 
+        // Fix by Zoltan Kemenczy for:
         // "attribute value normalization according to Section 3.3.3
         // Attribute-Value Normalization of XML 1.0
         // http://www.w3.org/TR/2000/REC-xml-20001006#AVNormalize). It
@@ -1593,7 +1593,7 @@ public class XmlParser {
         }
 
         // Check for surrogates: 00000000 0000xxxx yyyyyyyy zzzzzzzz
-        //  (1101|10xx|xxyy|yyyy + 1101|11yy|zzzz|zzzz: 
+        //  (1101|10xx|xxyy|yyyy + 1101|11yy|zzzz|zzzz:
         if (value <= 0x0000ffff) {
             // no surrogates needed
             dataBufferAppend((char) value);
@@ -1925,7 +1925,7 @@ public class XmlParser {
                 case '%':
 
                     if (context == CONTEXT_DTD
-                            || context == CONTEXT_ENTITYVALUE) {
+                    || context == CONTEXT_ENTITYVALUE) {
                         break loop;
                     } // else fall through...
 
@@ -1969,7 +1969,7 @@ public class XmlParser {
                 case '%':
 
                     if (context == CONTEXT_DTD
-                            || context == CONTEXT_ENTITYVALUE) {
+                    || context == CONTEXT_ENTITYVALUE) {
                         break loop;
                     } // else fall through...
 
@@ -2085,7 +2085,7 @@ public class XmlParser {
                     c = ' ';
                     break;
 
-                // References may be allowed
+                    // References may be allowed
                 case '&':
 
                     if ((flags & LIT_CHAR_REF) > 0) {
@@ -2794,7 +2794,7 @@ public class XmlParser {
      *  @return The current Element.
      */
     public String getCurrentElement() {
-        // Ptolemy localization for MoMLParser so that we 
+        // Ptolemy localization for MoMLParser so that we
         // can get the currentElement from within MoMLParser.attribute()
         return currentElement;
     }
@@ -3718,7 +3718,7 @@ public class XmlParser {
     // Modified November 14, 1998 by Steve Neuendorffer
     // There was a bug because this was not skipping things that looked
     // like parameter entities properly.
-    // Copied the appropriate code from readCh, excluding the lines referring to 
+    // Copied the appropriate code from readCh, excluding the lines referring to
     // '%'.
 
     /**
@@ -3977,7 +3977,7 @@ public class XmlParser {
                 // 3-byte sequence: zzzzyyyyyyxxxxxx = 1110zzzz 10yyyyyy 10xxxxxx
                 readBuffer[j++] = (char) ((b1 & 0x0f) << 12
                         | getNextUtf8Byte(i++, count) << 6 | getNextUtf8Byte(
-                        i++, count));
+                                i++, count));
             } else if ((b1 & 0xf8) == 0xf0) {
                 // 4-byte sequence: 11101110wwwwzzzzyy + 110111yyyyxxxxxx
                 //     = 11110uuu 10uuzzzz 10yyyyyy 10xxxxxx

@@ -76,6 +76,7 @@ import diva.gui.GUIUtilities;
  * @Pt.ProposedRating Red (patrickj)
  * @Pt.AcceptedRating Red ()
  */
+@Deprecated
 @SuppressWarnings("serial")
 public class FmvAutomatonGraphFrame extends FSMGraphFrame {
 
@@ -132,6 +133,7 @@ public class FmvAutomatonGraphFrame extends FSMGraphFrame {
      *                instance of CompositeEntity).
      * @return The pane that is created.
      */
+    @Override
     protected GraphPane _createGraphPane(NamedObj entity) {
         _controller = new FmvAutomatonGraphController(_directory);
         _controller.setConfiguration(getConfiguration());
@@ -149,6 +151,7 @@ public class FmvAutomatonGraphFrame extends FSMGraphFrame {
      * Create the menus that are used by this frame. It is essential that
      * _createGraphPane() be called before this.
      */
+    @Override
     protected void _addMenus() {
         super._addMenus();
 
@@ -191,13 +194,13 @@ public class FmvAutomatonGraphFrame extends FSMGraphFrame {
 
             GUIUtilities.addIcons(this, new String[][] {
                     { "/ptolemy/vergil/modal/fmv/img/nusmv.gif",
-                            GUIUtilities.LARGE_ICON },
-                    { "/ptolemy/vergil/modal/fmv/img/nusmv.gif",
+                        GUIUtilities.LARGE_ICON },
+                        { "/ptolemy/vergil/modal/fmv/img/nusmv.gif",
                             GUIUtilities.ROLLOVER_ICON },
-                    { "/ptolemy/vergil/modal/fmv/img/nusmv.gif",
-                            GUIUtilities.ROLLOVER_SELECTED_ICON },
-                    { "/ptolemy/vergil/modal/fmv/img/nusmv.gif",
-                            GUIUtilities.SELECTED_ICON } });
+                            { "/ptolemy/vergil/modal/fmv/img/nusmv.gif",
+                                GUIUtilities.ROLLOVER_SELECTED_ICON },
+                                { "/ptolemy/vergil/modal/fmv/img/nusmv.gif",
+                                    GUIUtilities.SELECTED_ICON } });
 
             putValue("tooltip", "Translate into .SMV file");
             putValue(diva.gui.GUIUtilities.MNEMONIC_KEY,
@@ -210,6 +213,7 @@ public class FmvAutomatonGraphFrame extends FSMGraphFrame {
          * model and the composition result are shown in two new Fmv automaton
          * graph frames.
          */
+        @Override
         public void actionPerformed(ActionEvent e) {
 
             Query query = new Query();
@@ -256,7 +260,7 @@ public class FmvAutomatonGraphFrame extends FSMGraphFrame {
                         // fileSaveDialog.setFileFilter(filter);
                         fileSaveDialog.setDialogType(JFileChooser.SAVE_DIALOG);
                         fileSaveDialog
-                                .setDialogTitle("Convert Ptolemy model into .smv file");
+                        .setDialogTitle("Convert Ptolemy model into .smv file");
                         if (_directory != null) {
                             fileSaveDialog.setCurrentDirectory(_directory);
                         } else {
@@ -272,7 +276,7 @@ public class FmvAutomatonGraphFrame extends FSMGraphFrame {
 
                             if (cwd != null) {
                                 fileSaveDialog
-                                        .setCurrentDirectory(new File(cwd));
+                                .setCurrentDirectory(new File(cwd));
                             }
                         }
 
@@ -314,8 +318,8 @@ public class FmvAutomatonGraphFrame extends FSMGraphFrame {
                     MessageHandler.error("IO exception:\n" + ex.getMessage());
                 } catch (IllegalActionException ex) {
                     MessageHandler
-                            .error("Failed to perform the conversion process:\n"
-                                    + ex.getMessage());
+                    .error("Failed to perform the conversion process:\n"
+                            + ex.getMessage());
                 }
 
                 try {
@@ -324,8 +328,8 @@ public class FmvAutomatonGraphFrame extends FSMGraphFrame {
                     }
                 } catch (Exception ex) {
                     MessageHandler
-                            .error("Failed to perform the file closing process:\n"
-                                    + ex.getMessage());
+                    .error("Failed to perform the file closing process:\n"
+                            + ex.getMessage());
                 }
 
             }
@@ -345,13 +349,13 @@ public class FmvAutomatonGraphFrame extends FSMGraphFrame {
 
             GUIUtilities.addIcons(this, new String[][] {
                     { "/ptolemy/vergil/modal/fmv/img/nusmv.gif",
-                            GUIUtilities.LARGE_ICON },
-                    { "/ptolemy/vergil/modal/fmv/img/nusmv.gif",
+                        GUIUtilities.LARGE_ICON },
+                        { "/ptolemy/vergil/modal/fmv/img/nusmv.gif",
                             GUIUtilities.ROLLOVER_ICON },
-                    { "/ptolemy/vergil/modal/fmv/img/nusmv.gif",
-                            GUIUtilities.ROLLOVER_SELECTED_ICON },
-                    { "/ptolemy/vergil/modal/fmv/img/nusmv.gif",
-                            GUIUtilities.SELECTED_ICON } });
+                            { "/ptolemy/vergil/modal/fmv/img/nusmv.gif",
+                                GUIUtilities.ROLLOVER_SELECTED_ICON },
+                                { "/ptolemy/vergil/modal/fmv/img/nusmv.gif",
+                                    GUIUtilities.SELECTED_ICON } });
 
             putValue("tooltip", "Invoke NuSMV");
             putValue(diva.gui.GUIUtilities.MNEMONIC_KEY,
@@ -363,11 +367,12 @@ public class FmvAutomatonGraphFrame extends FSMGraphFrame {
          * verification. Redirect the consol and show the result in a popout
          * window.
          */
+        @Override
         public void actionPerformed(ActionEvent e) {
 
             JFileChooser fileDialog = new JFileChooser();
             fileDialog
-                    .setDialogTitle("Select one .smv file to perform verification");
+            .setDialogTitle("Select one .smv file to perform verification");
             if (_directory != null) {
                 fileDialog.setCurrentDirectory(_directory);
             } else {
@@ -414,7 +419,7 @@ public class FmvAutomatonGraphFrame extends FSMGraphFrame {
                         }
                     } catch (IOException ex) {
                         MessageHandler
-                                .error("Failed to create debug listener: " + ex);
+                        .error("Failed to create debug listener: " + ex);
                     }
                 }
 
@@ -441,7 +446,7 @@ public class FmvAutomatonGraphFrame extends FSMGraphFrame {
     // // SMVFileFilter
     /** A file filter that accepts files that end with ".smv". */
     protected static class SMVFileFilter extends
-            javax.swing.filechooser.FileFilter {
+    javax.swing.filechooser.FileFilter {
 
         /**
          * Return true if the file name ends with ".smv".
@@ -451,10 +456,11 @@ public class FmvAutomatonGraphFrame extends FSMGraphFrame {
          * @return true if the file is a directory or the file name, when
          *         converted to lower case, ends with ".smv".
          */
+        @Override
         public boolean accept(File file) {
             return file.isDirectory()
                     || file.getName().toLowerCase(Locale.getDefault())
-                            .endsWith(".smv");
+                    .endsWith(".smv");
         }
 
         /**
@@ -462,6 +468,7 @@ public class FmvAutomatonGraphFrame extends FSMGraphFrame {
          *
          * @return The description of this file filter.
          */
+        @Override
         public String getDescription() {
             return "Software Model Verification (.smv) files";
         }

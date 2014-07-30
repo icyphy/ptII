@@ -126,6 +126,7 @@ public class TimedSource extends Source implements TimedActor {
      *  @param attribute The attribute that changed.
      *  @exception IllegalActionException If the superclass throws it.
      */
+    @Override
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         if (attribute == stopTime) {
@@ -176,6 +177,7 @@ public class TimedSource extends Source implements TimedActor {
      *  @deprecated As of Ptolemy II 4.1, replaced by
      *  {@link #getModelStopTime}
      */
+    @Deprecated
     public double getStopTime() {
         return getModelStopTime().getDoubleValue();
     }
@@ -191,6 +193,7 @@ public class TimedSource extends Source implements TimedActor {
      *  stop time given by the <i>stopTime</i> parameter.
      *  @exception IllegalActionException If there is no director.
      */
+    @Override
     public void initialize() throws IllegalActionException {
         super.initialize();
 
@@ -230,6 +233,7 @@ public class TimedSource extends Source implements TimedActor {
      *  value.
      *  @exception IllegalActionException Not thrown in this base class.
      */
+    @Override
     public boolean postfire() throws IllegalActionException {
         if (!super.postfire()) {
             // Presumably, stopRequested is true.
@@ -256,6 +260,7 @@ public class TimedSource extends Source implements TimedActor {
      *  Otherwise, return what the superclass returns.
      *  @exception IllegalActionException Not thrown in this base class.
      */
+    @Override
     public boolean prefire() throws IllegalActionException {
         Boolean result = super.prefire();
         Time currentTime;
@@ -278,6 +283,7 @@ public class TimedSource extends Source implements TimedActor {
      *  be invoked after it.
      *  @exception IllegalActionException Not thrown in this base class.
      */
+    @Override
     public void wrapup() throws IllegalActionException {
         super.wrapup();
         _executing = false;

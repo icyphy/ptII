@@ -100,7 +100,7 @@ import ptolemy.moml.MoMLParser;
  @Pt.AcceptedRating Red (ellen_zh)
  */
 public class ApplyFilterOverArray extends TypedAtomicActor implements
-        ExecutionListener {
+ExecutionListener {
     /** Construct a ApplyFilterOverArray with a name and a container.
      *  The container argument must not be null, or a
      *  NullPointerException will be thrown.
@@ -158,6 +158,7 @@ public class ApplyFilterOverArray extends TypedAtomicActor implements
      *  @exception IllegalActionException If the change is not acceptable
      *   to this container (not thrown in this base class).
      */
+    @Override
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         if (attribute == modelFileOrURL) {
@@ -220,6 +221,7 @@ public class ApplyFilterOverArray extends TypedAtomicActor implements
      *  @exception CloneNotSupportedException If a derived class contains
      *   an attribute that cannot be cloned.
      */
+    @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         ApplyFilterOverArray newActor = (ApplyFilterOverArray) super
                 .clone(workspace);
@@ -243,6 +245,7 @@ public class ApplyFilterOverArray extends TypedAtomicActor implements
      *  @param manager The manager controlling the execution.
      *  @param throwable The throwable to report.
      */
+    @Override
     public synchronized void executionError(Manager manager, Throwable throwable) {
         _throwable = throwable;
 
@@ -263,6 +266,7 @@ public class ApplyFilterOverArray extends TypedAtomicActor implements
      *  on the manager.
      *  @param manager The manager controlling the execution.
      */
+    @Override
     public synchronized void executionFinished(Manager manager) {
         //_executing = false;
         // NOTE: Can't remove these now!  The list is being
@@ -284,6 +288,7 @@ public class ApplyFilterOverArray extends TypedAtomicActor implements
      *  @exception IllegalActionException If there is no director, or if
      *   the director's action methods throw it.
      */
+    @Override
     public void fire() throws IllegalActionException {
         super.fire();
 
@@ -358,6 +363,7 @@ public class ApplyFilterOverArray extends TypedAtomicActor implements
      *  @param manager The manager controlling the execution.
      *  @see Manager#getState()
      */
+    @Override
     public void managerStateChanged(Manager manager) {
         if (_debugging) {
             _debug("Referenced model manager state: " + manager.getState());
@@ -370,6 +376,7 @@ public class ApplyFilterOverArray extends TypedAtomicActor implements
      *  throws it, or if thrown by the superclass.
      *   is not valid.
      */
+    @Override
     public boolean postfire() throws IllegalActionException {
         // Test auto/ApplyFilterOverArray2.xml seems to end up here with
         // _manager == null
@@ -385,6 +392,7 @@ public class ApplyFilterOverArray extends TypedAtomicActor implements
 
     /** Override the base class to call stop() on the referenced model.
      */
+    @Override
     public void stop() {
         if (_model instanceof Executable) {
             ((Executable) _model).stop();
@@ -395,6 +403,7 @@ public class ApplyFilterOverArray extends TypedAtomicActor implements
 
     /** Override the base class to call stopFire() on the referenced model.
      */
+    @Override
     public void stopFire() {
         if (_model instanceof Executable) {
             ((Executable) _model).stopFire();
@@ -405,6 +414,7 @@ public class ApplyFilterOverArray extends TypedAtomicActor implements
 
     /** Override the base class to call terminate() on the referenced model.
      */
+    @Override
     public void terminate() {
         if (_model instanceof Executable) {
             ((Executable) _model).terminate();
@@ -417,6 +427,7 @@ public class ApplyFilterOverArray extends TypedAtomicActor implements
      *  @exception IllegalActionException If there is no director, or if
      *   a background run threw an exception.
      */
+    @Override
     public void wrapup() throws IllegalActionException {
         super.wrapup();
 

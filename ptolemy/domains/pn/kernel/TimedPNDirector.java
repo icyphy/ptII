@@ -116,7 +116,7 @@ public class TimedPNDirector extends PNDirector {
      *   an entity with the specified name.
      */
     public TimedPNDirector() throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         super();
     }
 
@@ -133,7 +133,7 @@ public class TimedPNDirector extends PNDirector {
      *   an entity with the specified name.
      */
     public TimedPNDirector(Workspace workspace) throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         super(workspace);
     }
 
@@ -172,6 +172,7 @@ public class TimedPNDirector extends PNDirector {
      *   cannot be cloned.
      *  @return The new TimedPNDirector.
      */
+    @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         TimedPNDirector newObject = (TimedPNDirector) super.clone(workspace);
 
@@ -201,6 +202,7 @@ public class TimedPNDirector extends PNDirector {
      *  @exception IllegalActionException If the operation is not
      *  permissible (e.g. the given time is in the past).
      */
+    @Override
     public synchronized Time fireAt(Actor actor, Time newFiringTime,
             int microstep) throws IllegalActionException {
         if (newFiringTime.compareTo(getModelTime()) < 0) {
@@ -227,6 +229,7 @@ public class TimedPNDirector extends PNDirector {
      *  @exception IllegalActionException If an attempt is made to change the
      *  time to less than the current time.
      */
+    @Override
     public void setModelTime(Time newTime) throws IllegalActionException {
         if (newTime.compareTo(getModelTime()) < 0) {
             throw new IllegalActionException(this, "Attempt to set the "
@@ -243,6 +246,7 @@ public class TimedPNDirector extends PNDirector {
      * Reset private variables.
      * added 7/15/08 Patricia Derler
      */
+    @Override
     public void wrapup() throws IllegalActionException {
         _delayBlockCount = 0;
         _eventQueue.clear();
@@ -253,6 +257,7 @@ public class TimedPNDirector extends PNDirector {
      *  read-blocked, write-blocked or delay-blocked.
      *  @return true if a deadlock is detected.
      */
+    @Override
     protected synchronized boolean _areThreadsDeadlocked() {
         if (_readBlockedQueues.size() + _writeBlockedQueues.size()
                 + _delayBlockCount >= _getActiveThreadsCount()) {
@@ -289,6 +294,7 @@ public class TimedPNDirector extends PNDirector {
      *  @exception IllegalActionException Not thrown in this base class.
      *  This might be thrown by derived classes.
      */
+    @Override
     protected boolean _resolveDeadlock() throws IllegalActionException {
         if (_writeBlockedQueues.size() != 0) {
             // Artificial deadlock based on write blocks.

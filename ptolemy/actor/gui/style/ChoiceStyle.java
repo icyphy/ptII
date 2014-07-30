@@ -104,6 +104,7 @@ public class ChoiceStyle extends ParameterEditorStyle {
      *  @return True if the style contains some attributes representing the
      *   choices.
      */
+    @Override
     public boolean acceptable(Settable param) {
         return !attributeList(Settable.class).isEmpty();
     }
@@ -117,6 +118,7 @@ public class ChoiceStyle extends ParameterEditorStyle {
      *  @exception IllegalActionException If the containing attribute
      *   has a value that cannot be edited using this style.
      */
+    @Override
     public void addEntry(PtolemyQuery query) throws IllegalActionException {
         Settable container = (Settable) getContainer();
         String name = container.getName();

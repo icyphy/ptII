@@ -123,6 +123,7 @@ public class SymmetricDecryption extends CipherActor {
      *  @exception IllegalActionException If retrieving parameters fails,
      *  the algorithm does not exist or if the provider does not exist.
      */
+    @Override
     public void fire() throws IllegalActionException {
         try {
             if (key.hasToken(0)) {
@@ -155,6 +156,7 @@ public class SymmetricDecryption extends CipherActor {
      *  ByteArrayOutputStream, a key is invalid, padding is bad,
      *  or if the block size is illegal.
      */
+    @Override
     protected byte[] _process(byte[] dataBytes) throws IllegalActionException {
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
 

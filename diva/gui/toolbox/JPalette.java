@@ -87,9 +87,11 @@ public class JPalette extends JPanel {
     public void makeDraggable(JComponent c, String data) {
         final String dataHandle = data;
         final DragSourceListener dsl = new DragSourceListener() {
+            @Override
             public void dragDropEnd(DragSourceDropEvent dsde) {
             }
 
+            @Override
             public void dragEnter(DragSourceDragEvent dsde) {
                 DragSourceContext context = dsde.getDragSourceContext();
 
@@ -104,17 +106,21 @@ public class JPalette extends JPanel {
                 }
             }
 
+            @Override
             public void dragExit(DragSourceEvent dse) {
             }
 
+            @Override
             public void dragOver(DragSourceDragEvent dsde) {
             }
 
+            @Override
             public void dropActionChanged(DragSourceDragEvent dsde) {
             }
         };
 
         final DragGestureListener dgl = new DragGestureListener() {
+            @Override
             public void dragGestureRecognized(DragGestureEvent e) {
                 try {
                     // check to see if action is OK ...

@@ -25,7 +25,7 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 Ptolemy II includes the work of others, to see those copyrights, follow
 the copyright link on the splash page or see copyright.htm.
-*/
+ */
 package ptolemy.cg.adapter.generic.program.procedural.c.adapters.ptolemy.domains.de.lib;
 
 import ptolemy.cg.kernel.generic.program.NamedProgramCodeGeneratorAdapter;
@@ -38,7 +38,8 @@ A adapter class for ptolemy.domains.de.lib.VariableDelay.
 @author Patricia Derler
 @version $Id$
 @since Ptolemy II 10.0
-*/
+ */
+@Deprecated
 public class VariableDelay extends NamedProgramCodeGeneratorAdapter {
     /**
      * Constructor method for the TimedDelay adapter.
@@ -58,6 +59,7 @@ public class VariableDelay extends NamedProgramCodeGeneratorAdapter {
     /** Return the name of the port that is the time source.
      *  @return The string "input".
      */
+    @Override
     public String getTimeSourcePortName() {
         return "input";
     }

@@ -227,6 +227,7 @@ public class IDAttribute extends SingletonAttribute {
      *  @exception IllegalActionException If the change is not acceptable
      *   to this container (not thrown in this base class).
      */
+    @Override
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         if (attribute == name) {
@@ -245,6 +246,7 @@ public class IDAttribute extends SingletonAttribute {
 
     /** Update the modification date of this attribute.
      */
+    @Override
     public void updateContent() throws InternalErrorException {
         super.updateContent();
         _updateDate();

@@ -383,7 +383,7 @@ public abstract class GraphAnalyzer {
      @Pt.AcceptedRating Red (tfeng)
      */
     @SuppressWarnings("serial")
-        public static class IndexedList extends Pair<List<?>, Integer> {
+    public static class IndexedList extends Pair<List<?>, Integer> {
 
         /** Test the equivalence between two IndexedLists. They are equal if the
          *  elements in the lists that their indices point to are equal (by
@@ -393,6 +393,7 @@ public abstract class GraphAnalyzer {
          *  @return true if the object is an IndexedList and it is equal to this
          *   IndexedList; false otherwise.
          */
+        @Override
         public boolean equals(Object object) {
             if (object instanceof IndexedList) {
                 IndexedList list = (IndexedList) object;
@@ -408,6 +409,7 @@ public abstract class GraphAnalyzer {
          *
          *  @return The hash code.
          */
+        @Override
         public int hashCode() {
             return getFirst().get(getSecond()).hashCode();
         }
@@ -459,6 +461,7 @@ public abstract class GraphAnalyzer {
          *
          *  @return A new path.
          */
+        @Override
         public Object clone() {
             // Do not call super.clone() because super.clone() is simply the
             // Object.clone() and it copies the references of the fields.
@@ -479,6 +482,7 @@ public abstract class GraphAnalyzer {
          *  @return true if the object is a path and it is equivalent to this
          *   path; false otherwise.
          */
+        @Override
         public boolean equals(Object object) {
             if (object instanceof Path) {
                 return super.equals(object)
@@ -510,6 +514,7 @@ public abstract class GraphAnalyzer {
          *
          *  @return The hash code.
          */
+        @Override
         public int hashCode() {
             return Arrays.hashCode(new int[] { _startPort.hashCode(),
                     super.hashCode() });
@@ -519,6 +524,7 @@ public abstract class GraphAnalyzer {
          *
          *  @return A string that describes this path.
          */
+        @Override
         public String toString() {
             StringBuffer buffer = new StringBuffer();
             buffer.append(_startPort.getFullName());

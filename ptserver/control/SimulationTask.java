@@ -82,10 +82,11 @@ public class SimulationTask implements Runnable {
 
     /** Start the execution of the simulation by kicking off the thread.
      */
+    @Override
     public void run() {
         try {
             getProxyModelInfrastructure().getTopLevelActor().getManager()
-                    .execute();
+            .execute();
         } catch (Throwable e) {
             getProxyModelInfrastructure().fireModelException(
                     "Problem starting model execution", e);

@@ -112,6 +112,7 @@ public class XMLParser {
          *  @return The input source that contains the content of the DTD, or
          *   null if it cannot be loaded either locally or from the Internet.
          */
+        @Override
         public InputSource resolveEntity(String publicId, String systemId) {
             if (publicId == null) {
                 return null;

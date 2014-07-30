@@ -43,12 +43,14 @@ package util.testsuite;
  @Pt.ProposedRating Red (cxh)
  @Pt.AcceptedRating Red (cxh)
  */
+@Deprecated
 public class WatchDog extends ptolemy.util.test.WatchDog {
     /** Create a timer that will go off after timeToDie milliseconds.
      *  @param timeToDie The time in millesconds when the timer will
      *  go off.
      *  @deprecated Use ptolemy.util.test.WatchDog instead.
      */
+    @Deprecated
     public WatchDog(final long timeToDie) {
         super(timeToDie);
     }
@@ -56,6 +58,8 @@ public class WatchDog extends ptolemy.util.test.WatchDog {
     /** Cancel the currently pending watchdog.
      *  @deprecated Use ptolemy.util.test.WatchDog instead.
      */
+    @Deprecated
+    @Override
     public void cancel() {
         super.cancel();
     }
@@ -66,6 +70,8 @@ public class WatchDog extends ptolemy.util.test.WatchDog {
      *  the time interval has passed.
      *  @deprecated Use ptolemy.util.test.WatchDog instead.
      */
+    @Deprecated
+    @Override
     public void setExitOnTimeOut(boolean exitOnTimeOut) {
         super.setExitOnTimeOut(exitOnTimeOut);
     }

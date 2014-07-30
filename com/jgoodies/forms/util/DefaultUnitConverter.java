@@ -222,6 +222,7 @@ public final class DefaultUnitConverter extends AbstractUnitConverter {
      * @param component     a Component that provides the font and graphics
      * @return the horizontal dialog base units
      */
+    @Override
     protected double getDialogBaseUnitsX(Component component) {
         return getDialogBaseUnits(component).x;
     }
@@ -233,6 +234,7 @@ public final class DefaultUnitConverter extends AbstractUnitConverter {
      * @param component     a Component that provides the font and graphics
      * @return the vertical dialog base units
      */
+    @Override
     protected double getDialogBaseUnitsY(Component component) {
         return getDialogBaseUnits(component).y;
     }
@@ -454,6 +456,7 @@ public final class DefaultUnitConverter extends AbstractUnitConverter {
             this.y = dialogBaseUnitsY;
         }
 
+        @Override
         public String toString() {
             return "DBU(x=" + x + "; y=" + y + ")";
         }
@@ -463,7 +466,8 @@ public final class DefaultUnitConverter extends AbstractUnitConverter {
      * Listens to changes of the Look and Feel and invalidates the cache.
      */
     private final class LookAndFeelChangeHandler implements
-            PropertyChangeListener {
+    PropertyChangeListener {
+        @Override
         public void propertyChange(PropertyChangeEvent evt) {
             invalidateCaches();
         }

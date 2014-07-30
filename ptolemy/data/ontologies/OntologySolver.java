@@ -46,7 +46,7 @@ import ptolemy.util.StringUtilities;
  *  @Pt.AcceptedRating Red (mankit)
  */
 public abstract class OntologySolver extends OntologySolverBase implements
-        Testable {
+Testable {
 
     /**
      * Construct an OntologySolver with the specified container and name. If this
@@ -110,6 +110,7 @@ public abstract class OntologySolver extends OntologySolverBase implements
      *  @exception CloneNotSupportedException If any of the attributes
      *   cannot be cloned.
      */
+    @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         OntologySolver newObject = (OntologySolver) super.clone(workspace);
         newObject._momlHandler = null;
@@ -124,6 +125,7 @@ public abstract class OntologySolver extends OntologySolverBase implements
      *  @param text The MoML description.
      *  @exception Exception If the parsing fails.
      */
+    @Override
     public void configure(URL base, String source, String text)
             throws Exception {
         OntologySolverBase.cleanConstants();
@@ -215,6 +217,7 @@ public abstract class OntologySolver extends OntologySolverBase implements
      * previously recorded properties, statistics, etc.).  It also removes
      * this solver from the list of ran solvers.
      */
+    @Override
     public void reset() {
         super.reset();
     }

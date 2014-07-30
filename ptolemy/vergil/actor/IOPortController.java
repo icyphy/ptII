@@ -286,6 +286,7 @@ public class IOPortController extends AttributeController {
      *  @return One of {-270, -180, -90, 0, 90, 180, 270}.
      *  @see ptolemy.vergil.actor.IOPortController#getCardinality(Port)
      */
+    @Deprecated
     protected static int _getCardinality(Port port) {
         return getCardinality(port);
     }
@@ -294,6 +295,7 @@ public class IOPortController extends AttributeController {
      * Get the class label of the component.
      * @return the class label of the component.
      */
+    @Override
     protected String _getComponentType() {
         return "Port";
     }
@@ -306,18 +308,21 @@ public class IOPortController extends AttributeController {
      *  SwingUtilities.SOUTH, or SwingUtilities.WEST.
      *  @see ptolemy.vergil.actor.IOPortController#getDirection(int)
      */
+    @Deprecated
     protected static int _getDirection(int portRotation) {
         return getDirection(portRotation);
     }
 
     /** The text used in the MoveAction.TO_FIRST action menu choice.
      */
+    @Override
     protected String _moveToFirstDescription() {
         return "Move to First";
     }
 
     /** The text used in the MoveAction.TO_LAST action menu choice.
      */
+    @Override
     protected String _moveToLastDescription() {
         return "Move to Last";
     }
@@ -348,6 +353,7 @@ public class IOPortController extends AttributeController {
          * set then use it to set the tooltip.
          * @see diva.graph.NodeRenderer#render(java.lang.Object)
          */
+        @Override
         public Figure render(Object n) {
             final Port port = (Port) n;
 
@@ -501,7 +507,7 @@ public class IOPortController extends AttributeController {
                                 infoString = infoString.replace(aspectInfo, "");
                                 infoString = infoString.trim();
                                 ((StringAttribute) info)
-                                        .setExpression(infoString);
+                                .setExpression(infoString);
                             }
                         }
                     }
@@ -555,6 +561,7 @@ public class IOPortController extends AttributeController {
                 // It doesn't work to set it once because the type
                 // has not been resolved, and anyway, it may
                 // change. NOTE: This is copied below.
+                @Override
                 public String getToolTipText() {
                     String tipText = port.getName();
                     String displayName = port.getDisplayName();
@@ -604,6 +611,7 @@ public class IOPortController extends AttributeController {
                             // It doesn't work to set it once because the type
                             // has not been resolved, and anyway, it may
                             // change. NOTE: This is copied from above.
+                            @Override
                             public String getToolTipText() {
                                 String tipText = port.getName();
                                 String displayName = port.getDisplayName();

@@ -62,7 +62,7 @@ import ptolemy.kernel.util.ValueListener;
  @Pt.AcceptedRating Red (cxh)
  */
 public class AttributeValueAttribute extends AbstractTextAttribute implements
-        ValueListener, Settable {
+ValueListener, Settable {
     // NOTE: This attribute only implements settable as a workaround
     // to ensure that it gets notified of the start of execution.
     // Unfortunately, most of the code in the Variable class is
@@ -121,6 +121,7 @@ public class AttributeValueAttribute extends AbstractTextAttribute implements
      *  @exception IllegalActionException If the change is not acceptable
      *   to this container (should not be thrown).
      */
+    @Override
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         if (attribute == attributeName) {
@@ -135,6 +136,7 @@ public class AttributeValueAttribute extends AbstractTextAttribute implements
 
     /** React to a change in the value of the associated attribute.
      */
+    @Override
     public void valueChanged(Settable settable) {
         _setAttributeName(attributeName.getExpression());
     }
@@ -145,6 +147,7 @@ public class AttributeValueAttribute extends AbstractTextAttribute implements
      *  @param listener The listener to add.
      *  @see #removeValueListener(ValueListener)
      */
+    @Override
     public void addValueListener(ValueListener listener) {
     }
 
@@ -153,6 +156,7 @@ public class AttributeValueAttribute extends AbstractTextAttribute implements
      *  @return The default value of this attribute, or null
      *   if there is none.
      */
+    @Override
     public String getDefaultExpression() {
         return "";
     }
@@ -161,6 +165,7 @@ public class AttributeValueAttribute extends AbstractTextAttribute implements
      *  is the same as the name returned by getName().
      *  @return A name to present to the user.
      */
+    @Override
     public String getDisplayName() {
         return getName();
     }
@@ -171,6 +176,7 @@ public class AttributeValueAttribute extends AbstractTextAttribute implements
      *  the empty string "".
      *  @see #setExpression(String)
      */
+    @Override
     public String getExpression() {
         return "";
     }
@@ -179,6 +185,7 @@ public class AttributeValueAttribute extends AbstractTextAttribute implements
      *  @return The same as getExpression().
      *  @see #getExpression()
      */
+    @Override
     public String getValueAsString() {
         return getExpression();
     }
@@ -191,6 +198,7 @@ public class AttributeValueAttribute extends AbstractTextAttribute implements
      *  @return The visibility of this Settable.
      *  @see #setVisibility(Settable.Visibility)
      */
+    @Override
     public Settable.Visibility getVisibility() {
         return Settable.NONE;
     }
@@ -201,6 +209,7 @@ public class AttributeValueAttribute extends AbstractTextAttribute implements
      *  @param listener The listener to remove.
      *  @see #addValueListener(ValueListener)
      */
+    @Override
     public void removeValueListener(ValueListener listener) {
     }
 
@@ -210,6 +219,7 @@ public class AttributeValueAttribute extends AbstractTextAttribute implements
      *  @exception IllegalActionException If the expression is invalid.
      *  @see #getExpression()
      */
+    @Override
     public void setExpression(String expression) throws IllegalActionException {
     }
 
@@ -217,6 +227,7 @@ public class AttributeValueAttribute extends AbstractTextAttribute implements
      *  @param visibility The visibility of this Settable.
      *  @see #getVisibility()
      */
+    @Override
     public void setVisibility(Settable.Visibility visibility) {
     }
 
@@ -226,6 +237,7 @@ public class AttributeValueAttribute extends AbstractTextAttribute implements
      *  @exception IllegalActionException If the expression is not valid, or
      *   its value is not acceptable to the container or the listeners.
      */
+    @Override
     public Collection validate() throws IllegalActionException {
         _setAttributeName(attributeName.getExpression());
         return null;
@@ -252,6 +264,7 @@ public class AttributeValueAttribute extends AbstractTextAttribute implements
                 if (!_deferred) {
                     ChangeRequest request = new ChangeRequest(this,
                             "AttributeValueAttribute") {
+                        @Override
                         protected void _execute() {
                             _setAttributeName(attributeName);
                             _deferred = false;

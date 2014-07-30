@@ -71,7 +71,7 @@ selects the optimization criterion.
 @since Ptolemy II 10.0
 @Pt.ProposedRating Red (mgeilen)
 @Pt.AcceptedRating Red ()
-*/
+ */
 
 public class OptimizingSDFDirector extends SDFDirector {
 
@@ -141,6 +141,7 @@ public class OptimizingSDFDirector extends SDFDirector {
      *  @exception InvalidStateException If this director does not have a
      *   container.
      */
+    @Override
     public void fire() throws IllegalActionException {
         // Don't call "super.fire();" here because if you do then
         // everything happens twice.
@@ -203,6 +204,7 @@ public class OptimizingSDFDirector extends SDFDirector {
      *  @param attribute The changed parameter.
      *  @exception IllegalActionException If the parameter set is not valid.
      */
+    @Override
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         // NOTE: Invalidate the schedules only if the values of these
@@ -221,7 +223,7 @@ public class OptimizingSDFDirector extends SDFDirector {
      *  parameter and a vectorizationFactor parameter.
      */
     private void _init() throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
 
         // set the schedule to an instance of OptimizingSDFScheduler
         OptimizingSDFScheduler scheduler = new OptimizingSDFScheduler(this,

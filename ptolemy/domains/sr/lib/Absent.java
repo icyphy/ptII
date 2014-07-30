@@ -72,6 +72,7 @@ public class Absent extends Undefined {
      *
      *  @return False.
      */
+    @Override
     public boolean isStrict() {
         return false;
     }
@@ -80,6 +81,7 @@ public class Absent extends Undefined {
      *  output port.
      *  @exception IllegalActionException If there is no director.
      */
+    @Override
     public void fire() throws IllegalActionException {
         output.send(0, null);
     }
@@ -89,6 +91,7 @@ public class Absent extends Undefined {
      *  @return True.
      *  @exception IllegalActionException Not thrown in this base class.
      */
+    @Override
     public boolean prefire() throws IllegalActionException {
         return true;
     }
@@ -97,6 +100,7 @@ public class Absent extends Undefined {
      *  port does not depend on the <i>trigger</i> port in a firing.
      *  @exception IllegalActionException If the superclass throws it.
      */
+    @Override
     public void preinitialize() throws IllegalActionException {
         super.preinitialize();
         removeDependency(trigger, output);

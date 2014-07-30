@@ -187,6 +187,7 @@ public class SplitReader extends Source {
      *   opened file cannot be closed; or if the attribute is
      *   <i>numberOfLinesToSkip</i> and its value is negative.
      */
+    @Override
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         if (attribute == fileOrURL) {
@@ -244,6 +245,7 @@ public class SplitReader extends Source {
      *  @exception CloneNotSupportedException If a derived class contains
      *   an attribute that cannot be cloned.
      */
+    @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         SplitReader newObject = (SplitReader) super.clone(workspace);
         newObject._currentLines = null;
@@ -256,6 +258,7 @@ public class SplitReader extends Source {
      *  invocation of postfire(), if there is any.
      *  @exception IllegalActionException If there's no director.
      */
+    @Override
     public void fire() throws IllegalActionException {
         super.fire();
 
@@ -280,6 +283,7 @@ public class SplitReader extends Source {
      *   opened, or if the lines to be skipped and the first line to be
      *   sent out in the fire() method cannot be read.
      */
+    @Override
     public void initialize() throws IllegalActionException {
         super.initialize();
 
@@ -299,6 +303,7 @@ public class SplitReader extends Source {
      *  @exception IllegalActionException If there is a problem reading
      *   the file.
      */
+    @Override
     public boolean postfire() throws IllegalActionException {
         if (_reader == null) {
             return false;
@@ -334,6 +339,7 @@ public class SplitReader extends Source {
      *  Otherwise, return whatever the superclass returns.
      *  @exception IllegalActionException If the superclass throws it.
      */
+    @Override
     public boolean prefire() throws IllegalActionException {
         _firedSinceWrapup = true;
 
@@ -354,6 +360,7 @@ public class SplitReader extends Source {
      *   opened, or if the lines to be skipped and the first line to be
      *   sent out in the fire() method cannot be read.
      */
+    @Override
     public void preinitialize() throws IllegalActionException {
         super.preinitialize();
         _openAndReadFirstLine();
@@ -362,6 +369,7 @@ public class SplitReader extends Source {
     /** Close the reader if there is one.
      *  @exception IllegalActionException If an IO error occurs.
      */
+    @Override
     public void wrapup() throws IllegalActionException {
         fileOrURL.close();
         _reader = null;

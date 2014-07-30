@@ -47,6 +47,7 @@ public class ArcInteractor extends ConnectorInteractor {
 
     /** Fire a connector event to all connector listeners.
      */
+    @Override
     protected void fireConnectorEvent(int id) {
         // NOTE: The following cast is safe because the method that
         // creates grab handles in ArcManipulator ensures that the
@@ -73,6 +74,7 @@ public class ArcInteractor extends ConnectorInteractor {
      *  grab-handle, and adjust the connector accordingly,
      *  snapping it to a suitable target if possible.
      */
+    @Override
     public void translate(LayerEvent e, double dx, double dy) {
         // NOTE: The following cast is safe because the method that
         // creates grab handles in ArcManipulator ensures that the

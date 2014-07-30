@@ -143,6 +143,7 @@ public class NameIcon extends EditorIcon {
      *  @exception IllegalActionException If the change is not acceptable
      *   to this container (should not be thrown).
      */
+    @Override
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         if (attribute == rounding) {
@@ -181,6 +182,7 @@ public class NameIcon extends EditorIcon {
      *  box depends on the value.
      *  @return A new figure.
      */
+    @Override
     public Figure createBackgroundFigure() {
         Point2D size = _getBackgroundSize();
         double width = size.getX();
@@ -203,13 +205,13 @@ public class NameIcon extends EditorIcon {
             if (_roundingValue == 0.0) {
                 result = new CompositeFigure(new BasicRectangle(-_spacingValue,
                         -_spacingValue, width + 2 * _spacingValue, height + 2
-                                * _spacingValue, null, _getLineWidth()));
+                        * _spacingValue, null, _getLineWidth()));
                 result.add(new BasicRectangle(0, 0, width, height, _getFill(),
                         _getLineWidth()));
             } else {
                 result = new CompositeFigure(new RoundedRectangle(
                         -_spacingValue, -_spacingValue, width + 2
-                                * _spacingValue, height + 2 * _spacingValue,
+                        * _spacingValue, height + 2 * _spacingValue,
                         null, _getLineWidth(), _roundingValue + _spacingValue,
                         _roundingValue + _spacingValue));
                 result.add(new RoundedRectangle(0, 0, width, height,
@@ -225,6 +227,7 @@ public class NameIcon extends EditorIcon {
      *  name of the container.
      *  @return A new CompositeFigure consisting of the label.
      */
+    @Override
     public Figure createFigure() {
         CompositeFigure result = (CompositeFigure) super.createFigure();
 
@@ -242,6 +245,7 @@ public class NameIcon extends EditorIcon {
      *
      *  @return The icon.
      */
+    @Override
     public Icon createIcon() {
         if (_iconCache != null) {
             return _iconCache;
@@ -262,8 +266,9 @@ public class NameIcon extends EditorIcon {
      *  @exception NameDuplicationException If the container already has
      *   an attribute with the name of this attribute.
      */
+    @Override
     public void setContainer(NamedObj container) throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         NamedObj previousContainer = getContainer();
         if (previousContainer != container && previousContainer != null) {
             SingletonParameter hide = (SingletonParameter) previousContainer

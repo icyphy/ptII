@@ -59,9 +59,9 @@ import ptolemy.kernel.util.NameDuplicationException;
 @since Ptolemy II 10.0
 @Pt.ProposedRating Red (cshelton)
 @Pt.AcceptedRating Red (cshelton)
-*/
+ */
 public abstract class DimensionRepresentativeConcept extends
-        FlatTokenRepresentativeConcept {
+FlatTokenRepresentativeConcept {
 
     /** Create a new DimensionRepresentativeConcept with the specified name and
      *  ontology.
@@ -96,6 +96,7 @@ public abstract class DimensionRepresentativeConcept extends
      *  @exception IllegalActionException Thrown if there is a problem getting the
      *   token from the unitInfoRecords parameter.
      */
+    @Override
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         if (attribute.equals(unitInfoRecords)) {
@@ -161,6 +162,7 @@ public abstract class DimensionRepresentativeConcept extends
      *  @exception IllegalActionException Thrown if there is a problem creating
      *   the unit concept.
      */
+    @Override
     protected abstract UnitConcept _createInfiniteConceptInstance(
             String infiniteConceptString) throws IllegalActionException;
 

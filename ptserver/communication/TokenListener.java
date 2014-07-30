@@ -72,6 +72,7 @@ public class TokenListener implements MqttSimpleCallback {
      *  @exception Exception If the connection was lost.
      *  @see com.ibm.mqtt.MqttSimpleCallback#connectionLost()
      */
+    @Override
     public void connectionLost() throws Exception {
         //TODO: handle connection lost case
         _LOGGER.info("Connection was lost");
@@ -85,6 +86,7 @@ public class TokenListener implements MqttSimpleCallback {
      *  @see com.ibm.mqtt.MqttSimpleCallback#publishArrived(java.lang.String, byte[], int, boolean)
      *  @exception Exception if there is a problem reading next token or setting attribute value
      */
+    @Override
     public void publishArrived(String topicName, byte[] payload, int qos,
             boolean retained) throws Exception {
         Tokenizer tokenizer = new Tokenizer(payload);
@@ -141,7 +143,7 @@ public class TokenListener implements MqttSimpleCallback {
                 _LOGGER.info("Received pong token");
             } else if (token instanceof RemoteEventToken) {
                 _proxyModelInfrastructure
-                        .fireServerEvent((RemoteEventToken) token);
+                .fireServerEvent((RemoteEventToken) token);
             }
         }
     }
@@ -185,6 +187,7 @@ public class TokenListener implements MqttSimpleCallback {
         /** Send the token back via the model's publisher.
          *  @see java.lang.Runnable#run()
          */
+        @Override
         public void run() {
             try {
                 _proxyModelInfrastructure.getTokenPublisher().sendToken(_token,

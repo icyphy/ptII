@@ -38,13 +38,13 @@ import ptolemy.kernel.util.NameDuplicationException;
 
 /** This actor implements an output port in a composite communication aspect
  *  (@link CompositeCommunicationAspect).
-*
-*  @author Patricia Derler
-*  @version $Id$
-*  @since Ptolemy II 10.0
-*  @Pt.ProposedRating Yellow (derler)
-*  @Pt.AcceptedRating Red (derler)
-*/
+ *
+ *  @author Patricia Derler
+ *  @version $Id$
+ *  @since Ptolemy II 10.0
+ *  @Pt.ProposedRating Yellow (derler)
+ *  @Pt.AcceptedRating Red (derler)
+ */
 public class CommunicationResponsePort extends TypedAtomicActor {
 
     /** Construct a ResourceMappingOutputPort. The contained entities (SetVariable,

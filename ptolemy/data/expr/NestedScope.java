@@ -66,6 +66,7 @@ public class NestedScope implements ParserScope {
      *  @exception IllegalActionException If a value in the scope
      *  exists with the given name, but cannot be evaluated.
      */
+    @Override
     public ptolemy.data.Token get(String name) throws IllegalActionException {
         Iterator scopes = _scopeList.iterator();
 
@@ -88,6 +89,7 @@ public class NestedScope implements ParserScope {
      *  @exception IllegalActionException If a value in the scope
      *  exists with the given name, but cannot be evaluated.
      */
+    @Override
     public ptolemy.data.type.Type getType(String name)
             throws IllegalActionException {
         Iterator scopes = _scopeList.iterator();
@@ -112,6 +114,7 @@ public class NestedScope implements ParserScope {
      *  @exception IllegalActionException If a value in the scope
      *  exists with the given name, but cannot be evaluated.
      */
+    @Override
     public ptolemy.graph.InequalityTerm getTypeTerm(String name)
             throws IllegalActionException {
         Iterator scopes = _scopeList.iterator();
@@ -133,6 +136,7 @@ public class NestedScope implements ParserScope {
      *  @exception IllegalActionException If the identifierSet()
      *  method of a contained scope throws it.
      */
+    @Override
     public Set identifierSet() throws IllegalActionException {
         Set set = new HashSet();
 

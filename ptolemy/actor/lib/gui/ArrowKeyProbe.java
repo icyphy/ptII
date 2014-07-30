@@ -88,6 +88,7 @@ public class ArrowKeyProbe extends ArrowKeySensor {
     /** Broadcast the integer value 1 for each key pressed and 0 for
      *  each released.
      */
+    @Override
     public synchronized void fire() throws IllegalActionException {
         //super.fire();
         // Broadcast key presses.

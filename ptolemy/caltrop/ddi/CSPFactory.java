@@ -45,6 +45,7 @@ import caltrop.interpreter.environment.Environment;
  @Pt.AcceptedRating Red (cxh)
  */
 public class CSPFactory implements DDIFactory {
+    @Override
     public DDI create(TypedAtomicActor ptActor, Actor actor, Context context,
             Environment env) {
         return new CSP(ptActor, actor, context, env);

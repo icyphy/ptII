@@ -82,6 +82,7 @@ public class ASTPtFunctionApplicationNode extends ASTPtRootNode {
         }
     }
 
+    @Override
     public void jjtClose() {
         super.jjtClose();
 
@@ -92,6 +93,7 @@ public class ASTPtFunctionApplicationNode extends ASTPtRootNode {
 
     /** Traverse this node with the given visitor.
      */
+    @Override
     public void visit(ParseTreeVisitor visitor) throws IllegalActionException {
         visitor.visitFunctionApplicationNode(this);
     }

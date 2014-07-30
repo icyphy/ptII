@@ -131,7 +131,7 @@ public abstract class BaseSDFScheduler extends Scheduler {
     @SuppressWarnings("unused")
     protected void _declareDependency(ConstVariableModelAnalysis analysis,
             Port port, String name, List dependents)
-            throws IllegalActionException {
+                    throws IllegalActionException {
         if (_debugging && VERBOSE) {
             _debug("declaring dependency for rate variable " + name
                     + " in port " + port.getFullName());
@@ -171,6 +171,7 @@ public abstract class BaseSDFScheduler extends Scheduler {
         // FIXME: These buffer sizes should be properties of input ports,
         // not properties of relations.
         ChangeRequest request = new ChangeRequest(this, "Record buffer sizes") {
+            @Override
             protected void _execute() throws KernelException {
                 Iterator relations = container.relationList().iterator();
 
@@ -345,6 +346,7 @@ public abstract class BaseSDFScheduler extends Scheduler {
 
         ChangeRequest request = new ChangeRequest(this,
                 "Record firings per iteration") {
+            @Override
             protected void _execute() throws KernelException {
                 Iterator entities = entityToFiringsPerIteration.keySet()
                         .iterator();

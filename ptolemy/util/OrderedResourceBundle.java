@@ -67,7 +67,7 @@ public class OrderedResourceBundle {
      *             if the InputStream is null
      */
     public OrderedResourceBundle(InputStream stream) throws IOException,
-            NullPointerException {
+    NullPointerException {
 
         if (stream == null) {
             throw new NullPointerException(
@@ -241,7 +241,7 @@ public class OrderedResourceBundle {
                     String nextKey = readLine.substring(keyStart, sepIdx);
                     String nextVal = sepIdx < lineLen ? readLine.substring(
                             valueIndex, lineLen) : "";
-                    orderedMap.put(unescape(nextKey), unescape(nextVal));
+                            orderedMap.put(unescape(nextKey), unescape(nextVal));
                 }
             }
         } finally {

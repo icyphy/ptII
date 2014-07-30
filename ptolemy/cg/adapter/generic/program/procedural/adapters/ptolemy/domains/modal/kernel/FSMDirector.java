@@ -48,7 +48,7 @@ is also associated with a code generator.
 @since Ptolemy II 10.0
 @Pt.ProposedRating Red (sssf)
 @Pt.AcceptedRating Red (sssf)
-*/
+ */
 public class FSMDirector extends Director {
 
     /** Construct the code generator helper associated
@@ -69,6 +69,7 @@ public class FSMDirector extends Director {
      *  @exception IllegalActionException If the adapter associated with
      *   an actor throws it while generating fire code for the actor.
      */
+    @Override
     public String generateFireCode() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
         code.append(getCodeGenerator().comment("The firing of the director."));
@@ -93,6 +94,7 @@ public class FSMDirector extends Director {
      *  @param code The string buffer that the generated code is appended to.
      *  @exception IllegalActionException If thrown while transferring tokens.
      */
+    @Override
     public void generateTransferInputsCode(IOPort inputPort, StringBuffer code)
             throws IllegalActionException {
 
@@ -104,6 +106,7 @@ public class FSMDirector extends Director {
      *  @param code The string buffer that the generated code is appended to.
      *  @exception IllegalActionException If thrown while transferring tokens.
      */
+    @Override
     public void generateTransferOutputsCode(IOPort outputPort, StringBuffer code)
             throws IllegalActionException {
         // Needed for:
@@ -126,9 +129,10 @@ public class FSMDirector extends Director {
      *  @exception IllegalActionException If the parameter or port does not
      *   exist or does not have a value.
      */
+    @Override
     public String getReference(String name, boolean isWrite,
             NamedProgramCodeGeneratorAdapter target)
-            throws IllegalActionException {
+                    throws IllegalActionException {
         // FIXME: need documentation on the input string format.
         return target.getFullName() + "_" + name;
     }

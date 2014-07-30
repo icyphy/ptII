@@ -128,6 +128,7 @@ public class Ramp extends SequenceSource {
      *   or cannot be converted to the output type, or if the superclass
      *   throws it.
      */
+    @Override
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         if (attribute == init) {
@@ -154,6 +155,7 @@ public class Ramp extends SequenceSource {
      *  @exception CloneNotSupportedException If a derived class contains
      *   an attribute that cannot be cloned.
      */
+    @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         Ramp newObject = (Ramp) super.clone(workspace);
 
@@ -168,6 +170,7 @@ public class Ramp extends SequenceSource {
      *  @exception IllegalActionException If calling send() or super.fire()
      *  throws it.
      */
+    @Override
     public void fire() throws IllegalActionException {
         init.update();
         super.fire();
@@ -179,6 +182,7 @@ public class Ramp extends SequenceSource {
      *  parameter on each iteration (in the postfire() method).
      *  @exception IllegalActionException If the parent class throws it.
      */
+    @Override
     public void initialize() throws IllegalActionException {
         super.initialize();
         _stateToken = output.getType().convert(init.getToken());
@@ -203,6 +207,7 @@ public class Ramp extends SequenceSource {
      *  @exception IllegalActionException If iterating cannot be
      *  performed.
      */
+    @Override
     public int iterate(int count) throws IllegalActionException {
         // Check whether we need to reallocate the output token array.
         if (count > _resultArray.length) {
@@ -257,6 +262,7 @@ public class Ramp extends SequenceSource {
      *  @exception IllegalActionException If the firingCountLimit parameter
      *   has an invalid expression.
      */
+    @Override
     public boolean postfire() throws IllegalActionException {
         step.update();
         _stateToken = _stateToken.add(step.getToken());

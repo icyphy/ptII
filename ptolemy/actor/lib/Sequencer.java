@@ -103,6 +103,7 @@ public class Sequencer extends Transformer implements SequenceActor {
      *  @exception CloneNotSupportedException If a derived class contains
      *   an attribute that cannot be cloned.
      */
+    @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         Sequencer newObject = (Sequencer) super.clone(workspace);
 
@@ -117,6 +118,7 @@ public class Sequencer extends Transformer implements SequenceActor {
      *  <i>sequenceNumber</i> or <i>input</i> does not have a token.
      *  @exception IllegalActionException If there is no director.
      */
+    @Override
     public void fire() throws IllegalActionException {
         super.fire();
         _sequenceNumberOfInput = ((IntToken) sequenceNumber.get(0)).intValue();
@@ -133,6 +135,7 @@ public class Sequencer extends Transformer implements SequenceActor {
      *  @exception IllegalActionException If accessing the
      *   <i>startingSequenceNumber</i> parameter causes an exception.
      */
+    @Override
     public void initialize() throws IllegalActionException {
         super.initialize();
         _fireProducedOutput = false;
@@ -145,6 +148,7 @@ public class Sequencer extends Transformer implements SequenceActor {
      *  whether any pending tokens have subsequent sequence numbers.
      *  @exception IllegalActionException If there is no director.
      */
+    @Override
     public boolean postfire() throws IllegalActionException {
         if (_fireProducedOutput) {
             _nextSequenceNumber++;
@@ -182,6 +186,7 @@ public class Sequencer extends Transformer implements SequenceActor {
      *  @return False if there are not enough tokens to fire.
      *  @exception IllegalActionException If there is no director.
      */
+    @Override
     public boolean prefire() throws IllegalActionException {
         _fireProducedOutput = false;
 

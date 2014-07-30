@@ -23,7 +23,7 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
-*/
+ */
 package ptserver.communication;
 
 import ptolemy.kernel.util.IllegalActionException;
@@ -60,6 +60,7 @@ public class ProxyValueListener implements ValueListener {
      *  @param settable The settable whose value changed.
      *  @see ptolemy.kernel.util.ValueListener#valueChanged(ptolemy.kernel.util.Settable)
      */
+    @Override
     public synchronized void valueChanged(Settable settable) {
         if (isEnabled()) {
             AttributeChangeToken token = new AttributeChangeToken();

@@ -55,6 +55,7 @@ public class ActuatorSetup extends OutputDevice {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
+    @Override
     public String generateActuatorActuationFuncCode()
             throws IllegalActionException {
         List args = new LinkedList();
@@ -76,6 +77,7 @@ public class ActuatorSetup extends OutputDevice {
      * @return The generated code.
      * @exception IllegalActionException Not thrown in this base class.
      */
+    @Override
     public String generateFireCode() throws IllegalActionException {
         List args = new LinkedList();
         CodeStream _codeStream = _templateParser.getCodeStream();
@@ -92,6 +94,7 @@ public class ActuatorSetup extends OutputDevice {
         return processCode(_codeStream.toString());
     }
 
+    @Override
     public String generateHardwareInitializationCode()
             throws IllegalActionException {
         StringBuffer code = new StringBuffer();

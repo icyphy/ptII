@@ -89,6 +89,7 @@ public class GPOutputSetup extends ActuatorSetup {
      * @exception IllegalActionException If thrown while appending the code
      * block or processing the code stream.
      */
+    @Override
     public String generateActuatorActuationFuncCode()
             throws IllegalActionException {
         List args = new LinkedList();
@@ -110,6 +111,7 @@ public class GPOutputSetup extends ActuatorSetup {
      * @exception IllegalActionException If thrown while appending the code
      * block or processing the code stream.
      */
+    @Override
     public String generateHardwareInitializationCode()
             throws IllegalActionException {
         StringBuffer code = new StringBuffer();

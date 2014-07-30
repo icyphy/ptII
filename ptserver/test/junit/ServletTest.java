@@ -282,6 +282,7 @@ public class ServletTest {
                 .getTopLevelActor().getEntity("Display2");
         actor2.setDelegator(new TokenDelegator() {
 
+            @Override
             public void getToken(Token token) {
             }
         });

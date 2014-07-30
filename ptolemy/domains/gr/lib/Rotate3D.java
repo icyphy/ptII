@@ -123,6 +123,7 @@ public class Rotate3D extends GRTransform {
      *
      *  @param node The child Java3D node.
      */
+    @Override
     protected void _addChild(Node node) {
         _bottomTranslate.addChild(node);
     }
@@ -133,6 +134,7 @@ public class Rotate3D extends GRTransform {
      *  @exception IllegalActionException If the value of some parameters
      *  can't be obtained.
      */
+    @Override
     public void fire() throws IllegalActionException {
         super.fire();
 
@@ -186,6 +188,7 @@ public class Rotate3D extends GRTransform {
      *
      *  @return the Java3D TransformGroup
      */
+    @Override
     protected Node _getNodeObject() {
         return _topTranslate;
     }
@@ -194,6 +197,7 @@ public class Rotate3D extends GRTransform {
      *  @exception IllegalActionException If the value of some parameters can't
      *   be obtained
      */
+    @Override
     public void initialize() throws IllegalActionException {
         DoubleMatrixToken axis = (DoubleMatrixToken) axisDirection.getToken();
 

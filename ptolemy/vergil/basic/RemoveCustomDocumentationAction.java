@@ -62,6 +62,7 @@ public class RemoveCustomDocumentationAction extends FigureAction {
      *  if any.
      *  @param e The action event.
      */
+    @Override
     public void actionPerformed(ActionEvent e) {
         super.actionPerformed(e);
 

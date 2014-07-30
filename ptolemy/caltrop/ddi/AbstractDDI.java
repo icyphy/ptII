@@ -48,6 +48,7 @@ public abstract class AbstractDDI implements DDI {
      *  @param initializable The object whose methods should be invoked.
      *  @see #removeInitializable(Initializable)
      */
+    @Override
     public void addInitializable(Initializable initializable) {
     }
 
@@ -59,6 +60,7 @@ public abstract class AbstractDDI implements DDI {
      *
      *  @return True.
      */
+    @Override
     public boolean isFireFunctional() {
         return true;
     }
@@ -70,10 +72,12 @@ public abstract class AbstractDDI implements DDI {
      *
      *  @return True always in this base class.
      */
+    @Override
     public boolean isStrict() {
         return true;
     }
 
+    @Override
     public int iterate(int i) throws IllegalActionException {
         return 0;
     }
@@ -82,18 +86,23 @@ public abstract class AbstractDDI implements DDI {
      *  @param initializable The object whose methods should be invoked.
      *  @see #addInitializable(Initializable)
      */
+    @Override
     public void removeInitializable(Initializable initializable) {
     }
 
+    @Override
     public void stop() {
     }
 
+    @Override
     public void stopFire() {
     }
 
+    @Override
     public void terminate() {
     }
 
+    @Override
     public void wrapup() throws IllegalActionException {
     }
 }

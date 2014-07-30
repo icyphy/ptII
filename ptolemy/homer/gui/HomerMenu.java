@@ -119,6 +119,7 @@ public class HomerMenu {
         // File menu items
         JMenuItem newMenuItem = new JMenuItem("New", KeyEvent.VK_N);
         newMenuItem.addActionListener(new ActionListener() {
+            @Override
             public void actionPerformed(ActionEvent e) {
                 _newMenuActionPerformed(e);
             }
@@ -126,6 +127,7 @@ public class HomerMenu {
 
         JMenuItem openMenuItem = new JMenuItem("Open", KeyEvent.VK_O);
         openMenuItem.addActionListener(new ActionListener() {
+            @Override
             public void actionPerformed(ActionEvent e) {
                 _openMenuActionPerformed(e);
             }
@@ -133,6 +135,7 @@ public class HomerMenu {
 
         JMenuItem saveMenuItem = new JMenuItem("Save", KeyEvent.VK_S);
         saveMenuItem.addActionListener(new ActionListener() {
+            @Override
             public void actionPerformed(ActionEvent e) {
                 _saveMenuActionPerformed(e);
             }
@@ -140,6 +143,7 @@ public class HomerMenu {
 
         JMenuItem saveAsMenuItem = new JMenuItem("Save as", KeyEvent.VK_A);
         saveAsMenuItem.addActionListener(new ActionListener() {
+            @Override
             public void actionPerformed(ActionEvent e) {
                 _saveAsMenuActionPerformed(e);
             }
@@ -147,6 +151,7 @@ public class HomerMenu {
 
         JMenuItem exitMenuItem = new JMenuItem("Exit", KeyEvent.VK_X);
         exitMenuItem.addActionListener(new ActionListener() {
+            @Override
             public void actionPerformed(ActionEvent e) {
                 _mainFrame.dispose();
             }
@@ -156,6 +161,7 @@ public class HomerMenu {
         _portraitItem = new JCheckBoxMenuItem("Portrait", false);
         _portraitItem.setMnemonic(KeyEvent.VK_P);
         _portraitItem.addActionListener(new ActionListener() {
+            @Override
             public void actionPerformed(ActionEvent e) {
                 _mainFrame.setOrientation(ScreenOrientation.PORTRAIT);
             }
@@ -164,6 +170,7 @@ public class HomerMenu {
         _landscapeItem = new JCheckBoxMenuItem("Landscape", true);
         _landscapeItem.setMnemonic(KeyEvent.VK_L);
         _landscapeItem.addActionListener(new ActionListener() {
+            @Override
             public void actionPerformed(ActionEvent e) {
                 _mainFrame.setOrientation(ScreenOrientation.LANDSCAPE);
             }
@@ -293,6 +300,7 @@ public class HomerMenu {
                             + width
                             + "x" + height + ")");
                     deviceItem.addActionListener(new ActionListener() {
+                        @Override
                         public void actionPerformed(ActionEvent e) {
                             _mainFrame.setScreenSize(new Dimension(width,
                                     height));
@@ -310,6 +318,7 @@ public class HomerMenu {
 
         JMenuItem customSizeItem = new JMenuItem("Custom Size");
         customSizeItem.addActionListener(new ActionListener() {
+            @Override
             public void actionPerformed(ActionEvent e) {
                 TabbedLayoutScene scene = _mainFrame.getTabbedLayoutScene();
                 if (scene != null) {

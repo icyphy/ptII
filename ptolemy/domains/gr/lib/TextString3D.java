@@ -160,6 +160,7 @@ public class TextString3D extends GRShadedShape {
      *  @param attribute The attribute.
      *  @exception IllegalActionException If thrown by the parent class.
      */
+    @Override
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         if (attribute == text && _textGeometry != null) {
@@ -212,6 +213,7 @@ public class TextString3D extends GRShadedShape {
      *   initialized.
      *  @exception IllegalActionException If thrown by the parent class.
      */
+    @Override
     public boolean prefire() throws IllegalActionException {
         // NOTE: It won't do to do this in fire() because
         // prefire in the base class usually returns false.
@@ -226,6 +228,7 @@ public class TextString3D extends GRShadedShape {
      *  @exception IllegalActionException If the value of some parameters
      *   can't be obtained.
      */
+    @Override
     protected void _createModel() throws IllegalActionException {
         super._createModel();
 
@@ -280,6 +283,7 @@ public class TextString3D extends GRShadedShape {
      *
      *  @return the Java3D Text3D
      */
+    @Override
     protected Node _getNodeObject() {
         return _containedNode;
     }

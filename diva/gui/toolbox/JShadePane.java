@@ -217,6 +217,7 @@ public class JShadePane extends JPanel {
         JButton button = new JButton(title, icon);
         final String titleHandle = title;
         button.addActionListener(new ActionListener() {
+            @Override
             public void actionPerformed(ActionEvent e) {
                 int i = indexOfShade(titleHandle);
                 setSelectedIndex(i);
@@ -283,6 +284,7 @@ public class JShadePane extends JPanel {
     /**
      * Remove all of the shades.
      */
+    @Override
     public void removeAll() {
         _shades.clear();
         setSelectedIndex(-1); //calls refresh
@@ -378,7 +380,7 @@ public class JShadePane extends JPanel {
      * Borrowed from JTabbedPane.  Holds all the info about each shade.
      */
     private static class Shade extends AccessibleContext implements
-            Serializable, Accessible, AccessibleComponent {
+    Serializable, Accessible, AccessibleComponent {
 
         // FindBugs suggests making this class static so as to decrease
         // the size of instances and avoid dangling references.
@@ -408,22 +410,27 @@ public class JShadePane extends JPanel {
         ///////////////////////////////////////////////////////
         // Accessibility support
         ///////////////////////////////////////////////////////
+        @Override
         public AccessibleContext getAccessibleContext() {
             return this;
         }
 
+        @Override
         public String getAccessibleName() {
             return _button.getText();
         }
 
+        @Override
         public String getAccessibleDescription() {
             return _button.getToolTipText();
         }
 
+        @Override
         public AccessibleRole getAccessibleRole() {
             return AccessibleRole.PAGE_TAB;
         }
 
+        @Override
         public AccessibleStateSet getAccessibleStateSet() {
             AccessibleStateSet states;
             states = _parent.getAccessibleContext().getAccessibleStateSet();
@@ -438,92 +445,114 @@ public class JShadePane extends JPanel {
             return states;
         }
 
+        @Override
         public int getAccessibleIndexInParent() {
             return _parent.indexOfShade(_button.getText());
         }
 
+        @Override
         public int getAccessibleChildrenCount() {
             return _component instanceof Accessible ? 1 : 0;
         }
 
+        @Override
         public Accessible getAccessibleChild(int i) {
             return _component instanceof Accessible ? (Accessible) _component
                     : null;
         }
 
+        @Override
         public Locale getLocale() {
             return _parent.getLocale();
         }
 
+        @Override
         public AccessibleComponent getAccessibleComponent() {
             return this;
         }
 
+        @Override
         public void addFocusListener(FocusListener l) {
             throw new UnsupportedOperationException("FIXME");
         }
 
+        @Override
         public Color getBackground() {
             return _button.getBackground();
         }
 
+        @Override
         public void setBackground(Color c) {
             _button.setBackground(c);
         }
 
+        @Override
         public Color getForeground() {
             return _button.getForeground();
         }
 
+        @Override
         public void setForeground(Color c) {
             _button.setForeground(c);
         }
 
+        @Override
         public Cursor getCursor() {
             return _parent.getCursor();
         }
 
+        @Override
         public void setCursor(Cursor c) {
             _parent.setCursor(c);
         }
 
+        @Override
         public Font getFont() {
             return _parent.getFont();
         }
 
+        @Override
         public void setFont(Font f) {
             _parent.setFont(f);
         }
 
+        @Override
         public FontMetrics getFontMetrics(Font f) {
             return _parent.getFontMetrics(f);
         }
 
+        @Override
         public boolean isEnabled() {
             return _button.isEnabled();
         }
 
+        @Override
         public void setEnabled(boolean b) {
             _button.setEnabled(b);
         }
 
+        @Override
         public boolean isVisible() {
             return _parent.isVisible();
         }
 
+        @Override
         public void setVisible(boolean b) {
             _parent.setVisible(b);
         }
 
+        @Override
         public boolean isShowing() {
             return _parent.isShowing();
         }
 
+        @Override
         public boolean contains(Point p) {
             Rectangle r = getBounds();
             return r.contains(p);
         }
 
+        @Override
         public Point getLocationOnScreen() {
             Point parentLocation = _parent.getLocationOnScreen();
             Point componentLocation = getLocation();
@@ -531,45 +560,55 @@ public class JShadePane extends JPanel {
             return componentLocation;
         }
 
+        @Override
         public Point getLocation() {
             Rectangle r = getBounds();
             return new Point(r.x, r.y);
         }
 
+        @Override
         public void setLocation(Point p) {
             throw new UnsupportedOperationException("FIXME");
         }
 
+        @Override
         public Rectangle getBounds() {
             return _button.getBounds();
         }
 
+        @Override
         public void setBounds(Rectangle r) {
             throw new UnsupportedOperationException("FIXME");
         }
 
+        @Override
         public Dimension getSize() {
             Rectangle r = getBounds();
             return new Dimension(r.width, r.height);
         }
 
+        @Override
         public void setSize(Dimension d) {
             throw new UnsupportedOperationException("FIXME");
         }
 
+        @Override
         public Accessible getAccessibleAt(Point p) {
             return _component instanceof Accessible ? (Accessible) _component
                     : null;
         }
 
+        @Override
         public boolean isFocusTraversable() {
             return false;
         }
 
+        @Override
         public void requestFocus() {
             throw new UnsupportedOperationException("FIXME");
         }
 
+        @Override
         public void removeFocusListener(FocusListener l) {
             throw new UnsupportedOperationException("FIXME");
         }
@@ -579,6 +618,7 @@ public class JShadePane extends JPanel {
         try {
             // Run this in the Swing Event Thread.
             Runnable doActions = new Runnable() {
+                @Override
                 public void run() {
                     try {
                         final JShadePane sp = new JShadePane();
@@ -595,6 +635,7 @@ public class JShadePane extends JPanel {
 
                         JButton b1 = new JButton("rm sel");
                         b1.addActionListener(new ActionListener() {
+                            @Override
                             public void actionPerformed(ActionEvent e) {
                                 int i = sp.getSelectedIndex();
 
@@ -607,6 +648,7 @@ public class JShadePane extends JPanel {
 
                         JButton b2 = new JButton("rm sel-1");
                         b2.addActionListener(new ActionListener() {
+                            @Override
                             public void actionPerformed(ActionEvent e) {
                                 int i = sp.getSelectedIndex() - 1;
 
@@ -619,6 +661,7 @@ public class JShadePane extends JPanel {
 
                         JButton b3 = new JButton("rm sel+1");
                         b3.addActionListener(new ActionListener() {
+                            @Override
                             public void actionPerformed(ActionEvent e) {
                                 int i = sp.getSelectedIndex() + 1;
 
@@ -631,6 +674,7 @@ public class JShadePane extends JPanel {
 
                         JButton b4 = new JButton("rm all");
                         b4.addActionListener(new ActionListener() {
+                            @Override
                             public void actionPerformed(ActionEvent e) {
                                 sp.removeAll();
                             }
@@ -639,6 +683,7 @@ public class JShadePane extends JPanel {
 
                         JButton b5 = new JButton("toggle sel");
                         b5.addActionListener(new ActionListener() {
+                            @Override
                             public void actionPerformed(ActionEvent e) {
                                 int i = sp.getSelectedIndex();
 
@@ -652,6 +697,7 @@ public class JShadePane extends JPanel {
 
                         JButton b6 = new JButton("toggle sel-1");
                         b6.addActionListener(new ActionListener() {
+                            @Override
                             public void actionPerformed(ActionEvent e) {
                                 int i = sp.getSelectedIndex() - 1;
 

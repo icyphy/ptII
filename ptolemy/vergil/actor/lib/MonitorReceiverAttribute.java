@@ -62,9 +62,9 @@ import ptolemy.vergil.kernel.attributes.TextAttribute;
  @Pt.ProposedRating Yellow (eal)
  @Pt.AcceptedRating Red (cxh)
  @see MonitorReceiverContents
-*/
+ */
 public class MonitorReceiverAttribute extends SingletonAttribute implements
-        Settable {
+Settable {
 
     /** Construct an actor with the specified container and name.
      *  @param container The container.
@@ -104,6 +104,7 @@ public class MonitorReceiverAttribute extends SingletonAttribute implements
      *  @param listener The listener to add.
      *  @see #removeValueListener(ValueListener)
      */
+    @Override
     public void addValueListener(ValueListener listener) {
         // FIXME: Ignore for now
     }
@@ -113,6 +114,7 @@ public class MonitorReceiverAttribute extends SingletonAttribute implements
      *  @return The default value of this attribute, or null
      *   if there is none.
      */
+    @Override
     public String getDefaultExpression() {
         return "Queue monitor";
     }
@@ -120,6 +122,7 @@ public class MonitorReceiverAttribute extends SingletonAttribute implements
     /** Return a name to present to the user.
      *  @return A name to present to the user.
      */
+    @Override
     public String getDisplayName() {
         return "MonitorReceiverAttribute";
     }
@@ -131,6 +134,7 @@ public class MonitorReceiverAttribute extends SingletonAttribute implements
      *  @return The expression used by this variable.
      *  @see #setExpression(String)
      */
+    @Override
     public String getExpression() {
         try {
             NamedObj container = getContainer();
@@ -181,6 +185,7 @@ public class MonitorReceiverAttribute extends SingletonAttribute implements
      *  @return The value.
      *  @see #getExpression()
      */
+    @Override
     public String getValueAsString() {
         return getExpression();
     }
@@ -193,6 +198,7 @@ public class MonitorReceiverAttribute extends SingletonAttribute implements
      *  @return The visibility of this Settable.
      *  @see #setVisibility(Settable.Visibility)
      */
+    @Override
     public Settable.Visibility getVisibility() {
         return Settable.NOT_EDITABLE;
     }
@@ -203,6 +209,7 @@ public class MonitorReceiverAttribute extends SingletonAttribute implements
      *  @param listener The listener to remove.
      *  @see #addValueListener(ValueListener)
      */
+    @Override
     public void removeValueListener(ValueListener listener) {
         // FIXME: Ignore for now.
     }
@@ -215,6 +222,7 @@ public class MonitorReceiverAttribute extends SingletonAttribute implements
      *  @exception IllegalActionException If the expression is invalid.
      *  @see #getExpression()
      */
+    @Override
     public void setExpression(String expression) throws IllegalActionException {
         // Ignore.
         // Do not throw an exception here, as it prevents undo from working.
@@ -229,6 +237,7 @@ public class MonitorReceiverAttribute extends SingletonAttribute implements
      *  @param visibility The visibility of this Settable.
      *  @see #getVisibility()
      */
+    @Override
     public void setVisibility(Settable.Visibility visibility) {
         // Ignore.
     }
@@ -247,6 +256,7 @@ public class MonitorReceiverAttribute extends SingletonAttribute implements
      *  @exception IllegalActionException If the expression is not valid, or
      *   its value is not acceptable to the container or the listeners.
      */
+    @Override
     public Collection validate() throws IllegalActionException {
         // Ignore.
         return null;

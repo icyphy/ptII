@@ -126,6 +126,7 @@ public class Maximum extends TypedAtomicActor {
      *  @exception CloneNotSupportedException If a derived class has
      *   an attribute that cannot be cloned.
      */
+    @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         Maximum newObject = (Maximum) super.clone(workspace);
         newObject.input.setTypeAtMost(BaseType.SCALAR);
@@ -140,6 +141,7 @@ public class Maximum extends TypedAtomicActor {
      *  output.  If there is no input, then produce no output.
      *  @exception IllegalActionException If there is no director.
      */
+    @Override
     public void fire() throws IllegalActionException {
         super.fire();
         ScalarToken result = null;

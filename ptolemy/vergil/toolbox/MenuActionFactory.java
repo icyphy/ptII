@@ -148,6 +148,7 @@ public class MenuActionFactory implements MenuItemFactory {
      *  @param object The object that the menu item command will operate on.
      *  @return A menu item, or null to decline to provide a menu item.
      */
+    @Override
     public JMenuItem create(JContextMenu menu, NamedObj object) {
         JMenuItem menuItem;
         if (_action != null) {

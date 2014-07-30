@@ -120,15 +120,15 @@ public class FixTransformer extends TypedAtomicActor {
         if (port.getType() == BaseType.FIX && token instanceof FixToken) {
             Precision precision = new Precision(
                     ((Parameter) getAttribute(port.getName() + "Precision"))
-                            .getExpression());
+                    .getExpression());
 
             Overflow overflow = Overflow.getName(((Parameter) getAttribute(port
                     .getName() + "Overflow")).getExpression().toLowerCase(
-                    Locale.getDefault()));
+                            Locale.getDefault()));
 
             Rounding rounding = Rounding.getName(((Parameter) getAttribute(port
                     .getName() + "Rounding")).getExpression().toLowerCase(
-                    Locale.getDefault()));
+                            Locale.getDefault()));
 
             Quantization quantization = new FixPointQuantization(precision,
                     overflow, rounding);
@@ -261,15 +261,15 @@ public class FixTransformer extends TypedAtomicActor {
         //throws IllegalActionException {
         if (precisionString != null) {
             ((Parameter) getAttribute("outputPrecision"))
-                    .setExpression(precisionString);
+            .setExpression(precisionString);
         }
         if (overflowString != null) {
             ((Parameter) getAttribute("outputOverflow"))
-                    .setExpression(overflowString);
+            .setExpression(overflowString);
         }
         if (roundingString != null) {
             ((Parameter) getAttribute("outputRounding"))
-                    .setExpression(roundingString);
+            .setExpression(roundingString);
         }
     }
 

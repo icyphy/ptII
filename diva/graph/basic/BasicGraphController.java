@@ -93,6 +93,7 @@ public class BasicGraphController extends SimpleGraphController {
      * the controller does not yet have a reference to its pane
      * at that time.
      */
+    @Override
     protected void initializeInteraction() {
         GraphPane pane = getGraphPane();
 
@@ -107,6 +108,7 @@ public class BasicGraphController extends SimpleGraphController {
 
         // Create the interactor that drags new edges.
         _edgeCreator = new EdgeCreator(this) {
+            @Override
             public Object createEdge() {
                 Object semanticObject = Integer.valueOf(_globalCount++);
                 BasicGraphModel bgm = (BasicGraphModel) getGraphModel();
@@ -115,7 +117,7 @@ public class BasicGraphController extends SimpleGraphController {
         };
         _edgeCreator.setMouseFilter(_controlFilter);
         ((NodeInteractor) getNodeController().getNodeInteractor())
-                .addInteractor(_edgeCreator);
+        .addInteractor(_edgeCreator);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -126,6 +128,7 @@ public class BasicGraphController extends SimpleGraphController {
      * needs to be made more customizable.
      */
     protected class NodeCreator extends AbstractInteractor {
+        @Override
         public void mousePressed(LayerEvent e) {
             Object semanticObject = Integer.valueOf(_globalCount++);
             BasicGraphModel bgm = (BasicGraphModel) getGraphModel();

@@ -171,7 +171,8 @@ public class MemoryCleaner {
                     listenersRemoved++;
                 } else {
                     if (_isDebugging) {
-                        System.out.println((c == null ? "null" : c.getClass().getName()));
+                        System.out.println((c == null ? "null" : c.getClass()
+                                .getName()));
                     }
                 }
             }

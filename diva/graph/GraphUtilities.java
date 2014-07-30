@@ -226,6 +226,7 @@ public final class GraphUtilities {
     public static final Iterator inNodes(Object node, GraphModel model) {
         final GraphModel m = model;
         return new diva.util.ProxyIterator(model.inEdges(node)) {
+            @Override
             public Object next() {
                 Object edge = super.next();
                 return m.getTail(edge);
@@ -263,6 +264,7 @@ public final class GraphUtilities {
     public static final Iterator outNodes(Object node, GraphModel model) {
         final GraphModel m = model;
         return new diva.util.ProxyIterator(model.outEdges(node)) {
+            @Override
             public Object next() {
                 Object edge = super.next();
                 return m.getHead(edge);
@@ -320,6 +322,7 @@ public final class GraphUtilities {
      * graph, or a subgraph)
      * @deprecated use totallyContainedEdges instead.
      */
+    @Deprecated
     public static final Iterator localEdges(Object composite, GraphModel model) {
         return totallyContainedEdges(composite, model);
     }
@@ -336,6 +339,7 @@ public final class GraphUtilities {
             _composite = composite;
         }
 
+        @Override
         public boolean accept(Object o) {
             return isPartiallyContainedEdge(o, _composite, _model);
         }
@@ -353,6 +357,7 @@ public final class GraphUtilities {
             _composite = composite;
         }
 
+        @Override
         public boolean accept(Object o) {
             return isTotallyContainedEdge(o, _composite, _model);
         }

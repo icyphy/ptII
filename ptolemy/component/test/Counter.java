@@ -60,6 +60,7 @@ public class Counter extends AtomicComponent {
             throws NameDuplicationException, IllegalActionException {
         super(container, name);
         increment = new MethodCallPort(this, "increment", true) {
+            @Override
             public synchronized TupleToken call(TupleToken args) {
                 System.out.println("---call method Counter.increment");
 
@@ -106,6 +107,7 @@ public class Counter extends AtomicComponent {
     /** Reset the count of inputs to zero.
      *  @exception IllegalActionException If the parent class throws it.
      */
+    @Override
     public void initialize() throws IllegalActionException {
         _count = 0;
     }

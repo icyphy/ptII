@@ -97,6 +97,7 @@ public class InUnitsOf extends Transformer {
      *  parameter.  If there is no input, then produce no output.
      *  @exception IllegalActionException If there is no director.
      */
+    @Override
     public void fire() throws IllegalActionException {
         super.fire();
         if (input.hasToken(0)) {
@@ -111,6 +112,7 @@ public class InUnitsOf extends Transformer {
      *  return what the superclass returns (presumably true).
      *  @exception IllegalActionException If there is no director.
      */
+    @Override
     public boolean prefire() throws IllegalActionException {
         if (!input.hasToken(0)) {
             return false;

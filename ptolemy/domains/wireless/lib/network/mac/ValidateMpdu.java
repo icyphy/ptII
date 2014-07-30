@@ -106,6 +106,7 @@ public class ValidateMpdu extends MACActorBase {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
+    @Override
     public void fire() throws IllegalActionException {
         super.fire();
 
@@ -214,6 +215,7 @@ public class ValidateMpdu extends MACActorBase {
     /** Initialize the private variables.
      *  @exception IllegalActionException If thrown by the base class.
      */
+    @Override
     public void initialize() throws IllegalActionException {
         super.initialize();
         _D1 = _aRxRfDelay + _aRxPlcpDelay;

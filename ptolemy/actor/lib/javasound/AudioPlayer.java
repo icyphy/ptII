@@ -144,6 +144,7 @@ public class AudioPlayer extends LiveSoundActor {
      *  @exception IllegalActionException If there is a problem
      *   beginning audio playback.
      */
+    @Override
     public void initialize() throws IllegalActionException {
         super.initialize();
         try {
@@ -171,6 +172,7 @@ public class AudioPlayer extends LiveSoundActor {
 
     /** Return true if the actor has enough data to fire.
      */
+    @Override
     public boolean prefire() throws IllegalActionException {
         if (!super.prefire()) {
             return false;
@@ -192,6 +194,7 @@ public class AudioPlayer extends LiveSoundActor {
      *  @exception IllegalActionException If there is a problem
      *   playing audio.
      */
+    @Override
     public boolean postfire() throws IllegalActionException {
         for (int j = 0; j < _channels; j++) {
             // NOTE: inArray[j].length may be > count, in which case
@@ -221,6 +224,7 @@ public class AudioPlayer extends LiveSoundActor {
      *  @exception IllegalActionException If there is a problem
      *   stopping audio playback.
      */
+    @Override
     public void wrapup() throws IllegalActionException {
         super.wrapup();
 

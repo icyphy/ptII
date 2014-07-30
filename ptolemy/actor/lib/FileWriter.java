@@ -89,7 +89,7 @@ public class FileWriter extends Sink {
         filename.setExpression("");
         filename.setTypeEquals(BaseType.STRING);
         new SingletonParameter(filename.getPort(), "_showName")
-                .setToken(BooleanToken.TRUE);
+        .setToken(BooleanToken.TRUE);
 
         new SingletonParameter(input, "_showName").setToken(BooleanToken.TRUE);
 
@@ -119,6 +119,7 @@ public class FileWriter extends Sink {
     /** Clone the actor.
      *  @exception CloneNotSupportedException If the superclass throws it.
      */
+    @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         FileWriter newObject = (FileWriter) super.clone(workspace);
         newObject._previousFilename = null;
@@ -136,6 +137,7 @@ public class FileWriter extends Sink {
      *  characters are written.
      *  @exception IllegalActionException If an IO error occurs.
      */
+    @Override
     public boolean postfire() throws IllegalActionException {
         filename.update();
         try {
@@ -195,6 +197,7 @@ public class FileWriter extends Sink {
     /** Close the file, if there is one.
      *  @exception IllegalActionException If an IO error occurs.
      */
+    @Override
     public void wrapup() throws IllegalActionException {
         super.wrapup();
 

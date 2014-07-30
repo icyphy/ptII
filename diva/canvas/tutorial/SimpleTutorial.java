@@ -170,6 +170,7 @@ public class SimpleTutorial {
     public static void main(String[] argv) {
         // Always invoke graphics code in the event thread
         SwingUtilities.invokeLater(new Runnable() {
+            @Override
             public void run() {
                 SimpleTutorial ex = new SimpleTutorial();
                 ex.createBasicRectangle();

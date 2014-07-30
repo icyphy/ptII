@@ -71,6 +71,7 @@ public abstract class AbstractConnectorTarget implements ConnectorTarget {
      * connection.  This method is primarily useful for manually
      * creating new figures.
      */
+    @Override
     public abstract Site getHeadSite(Figure f, double x, double y);
 
     /** Return a suitable site to connect a connector's tail to, based
@@ -83,6 +84,8 @@ public abstract class AbstractConnectorTarget implements ConnectorTarget {
      * getHeadSite method with the same arguments.
      * @deprecated Use getTailSite that takes a connector.
      */
+    @Deprecated
+    @Override
     public Site getTailSite(Figure f, double x, double y) {
         return getHeadSite(f, x, y);
     }
@@ -97,6 +100,8 @@ public abstract class AbstractConnectorTarget implements ConnectorTarget {
      * return the same site.
      * @deprecated Use getHeadSite that takes a connector.
      */
+    @Deprecated
+    @Override
     public Site getHeadSite(Site s, double x, double y) {
         return s;
     }
@@ -106,6 +111,8 @@ public abstract class AbstractConnectorTarget implements ConnectorTarget {
      * return the same site.
      * @deprecated Use getTailSite that takes a connector.
      */
+    @Deprecated
+    @Override
     public Site getTailSite(Site s, double x, double y) {
         return s;
     }
@@ -116,6 +123,7 @@ public abstract class AbstractConnectorTarget implements ConnectorTarget {
      * method called with the connector and the figure returns false.
      * Otherwise call the method that just takes a figure.
      */
+    @Override
     public Site getHeadSite(Connector c, Figure f, double x, double y) {
         if (acceptHead(c, f) == false) {
             return null;
@@ -130,6 +138,7 @@ public abstract class AbstractConnectorTarget implements ConnectorTarget {
      * method called with the connector and the figure returns false.
      * Otherwise call the method that just takes a figure.
      */
+    @Override
     public Site getTailSite(Connector c, Figure f, double x, double y) {
         if (acceptTail(c, f) == false) {
             return null;
@@ -147,6 +156,7 @@ public abstract class AbstractConnectorTarget implements ConnectorTarget {
      * passed site is the best one available.
      * In this base class, just return the site.
      */
+    @Override
     public Site getHeadSite(Connector c, Site s, double x, double y) {
         return s;
     }
@@ -155,6 +165,7 @@ public abstract class AbstractConnectorTarget implements ConnectorTarget {
      * See the description for getheadSite().
      * In this base class, just return the site.
      */
+    @Override
     public Site getTailSite(Connector c, Site s, double x, double y) {
         return s;
     }

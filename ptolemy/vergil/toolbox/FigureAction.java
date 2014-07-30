@@ -97,6 +97,7 @@ public class FigureAction extends AbstractAction {
      *  this data.
      *  @param e The event.
      */
+    @Override
     public void actionPerformed(ActionEvent e) {
         Object source = e.getSource();
         Component parent = null;

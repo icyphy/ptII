@@ -104,6 +104,7 @@ public class LinkVisualizer extends TypedAtomicActor implements ChannelListener 
      *
      *  @exception IllegalActionException If the super class throws it.
      */
+    @Override
     public void initialize() throws IllegalActionException {
         super.initialize();
 
@@ -130,6 +131,7 @@ public class LinkVisualizer extends TypedAtomicActor implements ChannelListener 
      *  @param sender The sending port.
      *  @param destination The receiving port.
      */
+    @Override
     public void channelNotify(RecordToken properties, Token token,
             WirelessIOPort sender, WirelessIOPort destination) {
         // Create a name for the line to be visualized.
@@ -149,6 +151,7 @@ public class LinkVisualizer extends TypedAtomicActor implements ChannelListener 
      *  @exception NameDuplicationException If the container already has
      *   an entity with the name of this entity.
      */
+    @Override
     public void setContainer(CompositeEntity container)
             throws IllegalActionException, NameDuplicationException {
         super.setContainer(container);
@@ -186,6 +189,7 @@ public class LinkVisualizer extends TypedAtomicActor implements ChannelListener 
                 + "</property>";
         ChangeRequest request = new MoMLChangeRequest(this, getContainer(),
                 moml) {
+            @Override
             protected void _execute() throws Exception {
                 try {
                     super._execute();
@@ -209,6 +213,7 @@ public class LinkVisualizer extends TypedAtomicActor implements ChannelListener 
         String moml = "<deleteProperty name=\"" + lineName + "\"/>";
         ChangeRequest request = new MoMLChangeRequest(this, getContainer(),
                 moml) {
+            @Override
             protected void _execute() throws Exception {
                 try {
                     super._execute();
@@ -244,6 +249,7 @@ public class LinkVisualizer extends TypedAtomicActor implements ChannelListener 
         /** Draw a line, sleep for specified amount of time,
          *  and then remove the line.
          */
+        @Override
         public void run() {
             _drawLine(_sender, _destination, _lineName);
             try {

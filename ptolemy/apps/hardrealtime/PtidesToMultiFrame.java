@@ -97,6 +97,7 @@ public class PtidesToMultiFrame extends Attribute implements Decorator {
      *  @return The decorated attributes for the target NamedObj, or
      *   null if the specified target is not an Actor.
      */
+    @Override
     public DecoratorAttributes createDecoratorAttributes(NamedObj target) {
         if (target instanceof IOPort && ((IOPort) target).isInput()) {
             try {
@@ -114,6 +115,7 @@ public class PtidesToMultiFrame extends Attribute implements Decorator {
      *  of this resource scheduler.
      *  @return A list of the objects decorated by this decorator.
      */
+    @Override
     public List<NamedObj> decoratedObjects() {
         CompositeEntity container = (CompositeEntity) getContainer();
         List<NamedObj> toDecorate = new ArrayList<NamedObj>();
@@ -137,7 +139,7 @@ public class PtidesToMultiFrame extends Attribute implements Decorator {
      */
     public TypedCompositeActor generateMultiFrameSystem(
             Class<? extends Director> directorClass)
-            throws IllegalActionException, NameDuplicationException {
+                    throws IllegalActionException, NameDuplicationException {
         _multiFrameSystem = new TypedCompositeActor();
         // Call preinitialize of the Ptides platform to calculate
         // delay offsets and relative deadlines of ports.
@@ -148,7 +150,7 @@ public class PtidesToMultiFrame extends Attribute implements Decorator {
                     .getDeclaredConstructor(CompositeEntity.class, String.class)
                     .newInstance(_multiFrameSystem, "EDF");
             multiFrameScheduler.stopTime
-                    .setExpression(_MULTIFRAME_TASK_SYSTEM_STOP_TIME + "");
+            .setExpression(_MULTIFRAME_TASK_SYSTEM_STOP_TIME + "");
         } catch (Throwable ex) {
             throw new InternalErrorException(
                     "Could not create a director of type " + directorClass);
@@ -220,6 +222,7 @@ public class PtidesToMultiFrame extends Attribute implements Decorator {
      *  decorate objects across opaque hierarchy boundaries.
      *  @return False.
      */
+    @Override
     public boolean isGlobalDecorator() {
         return false;
     }
@@ -254,7 +257,7 @@ public class PtidesToMultiFrame extends Attribute implements Decorator {
      */
     private void _addTaskFrame(Actor actor, double separation,
             double executionTime, double relativeDeadline)
-            throws IllegalActionException {
+                    throws IllegalActionException {
         String taskFrameName = actor.getName();
         if (_multiFrameTaskActorNames.containsKey(actor.getName())) {
             int index = _multiFrameTaskActorNames.get(actor.getName());

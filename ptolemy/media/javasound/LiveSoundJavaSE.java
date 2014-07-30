@@ -63,7 +63,7 @@ import javax.sound.sampled.TargetDataLine;
  @Pt.AcceptedRating Red (ishwinde)
  */
 public class LiveSoundJavaSE extends LiveSoundCommon implements
-        LiveSoundInterface {
+LiveSoundInterface {
 
     /** Flush queued data from the capture buffer.  The flushed data is
      *  discarded.  It is only legal to flush the capture buffer after
@@ -85,8 +85,9 @@ public class LiveSoundJavaSE extends LiveSoundCommon implements
      *  @exception IOException If the calling program does not have permission
      *  to access the audio capture resources.
      */
+    @Override
     public void flushCaptureBuffer(Object consumer) throws IOException,
-            IllegalStateException {
+    IllegalStateException {
         if (!isCaptureActive()) {
             throw new IllegalStateException("Object: " + consumer.toString()
                     + " attempted to call LiveSound.flushCaptureBuffer(), but "
@@ -124,8 +125,9 @@ public class LiveSoundJavaSE extends LiveSoundCommon implements
      *  @exception IOException If the calling program does not have permission
      *  to access the audio playback resources.
      */
+    @Override
     public void flushPlaybackBuffer(Object producer) throws IOException,
-            IllegalStateException {
+    IllegalStateException {
         _flushPlaybackBuffer();
     }
 
@@ -144,6 +146,7 @@ public class LiveSoundJavaSE extends LiveSoundCommon implements
      *
      *  @exception IllegalStateException If audio capture is inactive.
      */
+    @Override
     public int getBufferSizeCapture() throws IllegalStateException {
         if (_targetLine != null) {
             return _targetLine.getBufferSize() / (_bytesPerSample * _channels);
@@ -161,6 +164,7 @@ public class LiveSoundJavaSE extends LiveSoundCommon implements
      *  @return The internal buffer size in samples per channel.
      *  @exception IllegalStateException If audio playback is inactive.
      */
+    @Override
     public int getBufferSizePlayback() {
         if (_sourceLine != null) {
             return _sourceLine.getBufferSize() / (_bytesPerSample * _channels);
@@ -209,8 +213,9 @@ public class LiveSoundJavaSE extends LiveSoundCommon implements
      *  @exception IOException If the calling program does not have permission
      *   to access the audio capture resources.
      */
+    @Override
     public double[][] getSamples(Object consumer) throws IOException,
-            IllegalStateException {
+    IllegalStateException {
         if (!isCaptureActive()) {
             throw new IllegalStateException("Object: " + consumer.toString()
                     + " attempted to call LiveSound.getSamples(), but "
@@ -288,6 +293,7 @@ public class LiveSoundJavaSE extends LiveSoundCommon implements
      *  inactive. That is, If startPlayback() has not yet been called
      *  or if stopPlayback() has already been called.
      */
+    @Override
     public void putSamples(Object producer, double[][] samplesArray)
             throws IOException, IllegalStateException {
         if (!isPlaybackActive()) {
@@ -315,6 +321,7 @@ public class LiveSoundJavaSE extends LiveSoundCommon implements
      *  is by calling the stopCapture() method.
      *
      */
+    @Override
     public void resetCapture() {
         if (_targetLine != null) {
             if (_targetLine.isOpen() == true) {
@@ -335,6 +342,7 @@ public class LiveSoundJavaSE extends LiveSoundCommon implements
      *  is by calling the stopPlayback() method.
      *
      */
+    @Override
     public void resetPlayback() {
         _stopPlayback();
         _playbackIsActive = false;
@@ -350,6 +358,7 @@ public class LiveSoundJavaSE extends LiveSoundCommon implements
      *   not supported by the audio hardware or by Java.
      *  @see #getBitsPerSample()
      */
+    @Override
     public void setBitsPerSample(int bitsPerSample) throws IOException {
         _bitsPerSample = bitsPerSample;
         // FIXME: The following is wrong. Probably should just set bytes per sample.
@@ -409,6 +418,7 @@ public class LiveSoundJavaSE extends LiveSoundCommon implements
      *   not supported by the audio hardware or by Java.
      *  @see #getBufferSize()
      */
+    @Override
     public void setBufferSize(int bufferSize) throws IOException {
         _bufferSize = bufferSize;
         if (_captureIsActive && _playbackIsActive) {
@@ -445,6 +455,7 @@ public class LiveSoundJavaSE extends LiveSoundCommon implements
      *   not supported by the audio hardware or by Java.
      *  @see #getChannels()
      */
+    @Override
     public void setChannels(int channels) throws IOException {
         _channels = channels;
         if (_captureIsActive && _playbackIsActive) {
@@ -478,6 +489,7 @@ public class LiveSoundJavaSE extends LiveSoundCommon implements
      *   not supported by the audio hardware or by Java.
      *  @see #getSampleRate()
      */
+    @Override
     public void setSampleRate(int sampleRate) throws IOException {
         _sampleRate = sampleRate;
         if (_captureIsActive && _playbackIsActive) {
@@ -520,8 +532,9 @@ public class LiveSoundJavaSE extends LiveSoundCommon implements
      *  @exception IllegalStateException If this method is called
      *   while audio capture is already active.
      */
+    @Override
     public void startCapture(Object consumer) throws IOException,
-            IllegalStateException {
+    IllegalStateException {
         // FIXME: consider allowing several object to
         // share the captured audio resources.
         if (_soundConsumers.size() > 0) {
@@ -574,8 +587,9 @@ public class LiveSoundJavaSE extends LiveSoundCommon implements
      *  @exception IllegalStateException If this method is called
      *   while audio playback is already active.
      */
+    @Override
     public void startPlayback(Object producer) throws IOException,
-            IllegalStateException {
+    IllegalStateException {
         if (!_playbackIsActive) {
             _startPlayback();
             _playbackIsActive = true;
@@ -598,8 +612,9 @@ public class LiveSoundJavaSE extends LiveSoundCommon implements
      *   object did not hold an exclusive lock on the
      *   captured audio resources when this method was invoked.
      */
+    @Override
     public void stopCapture(Object consumer) throws IOException,
-            IllegalStateException {
+    IllegalStateException {
         if (_soundConsumers.contains(consumer)) {
             _soundConsumers.remove(consumer);
         } else {
@@ -630,8 +645,9 @@ public class LiveSoundJavaSE extends LiveSoundCommon implements
      *   playback audio resources when this method was invoked.
      *
      */
+    @Override
     public void stopPlayback(Object producer) throws IOException,
-            IllegalStateException {
+    IllegalStateException {
         if (_playbackIsActive) {
             _stopPlayback();
         }
@@ -691,7 +707,7 @@ public class LiveSoundJavaSE extends LiveSoundCommon implements
         } catch (IllegalArgumentException ex) {
             IOException exception = new IOException(
                     "Incorrect argument, possible encodings for\n" + format
-                            + "\n are:\n" + _encodings(format));
+                    + "\n are:\n" + _encodings(format));
             exception.initCause(ex);
             throw exception;
         } catch (LineUnavailableException ex2) {
@@ -733,7 +749,7 @@ public class LiveSoundJavaSE extends LiveSoundCommon implements
         } catch (IllegalArgumentException ex) {
             IOException exception = new IOException(
                     "Incorrect argument, possible encodings for\n" + format
-                            + "\n are:\n" + _encodings(format));
+                    + "\n are:\n" + _encodings(format));
             exception.initCause(ex);
             throw exception;
         } catch (LineUnavailableException ex) {

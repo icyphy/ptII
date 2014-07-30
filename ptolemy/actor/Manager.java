@@ -493,7 +493,7 @@ public class Manager extends NamedObj implements Runnable {
         /*
         System.out.println("Manager.execute() finished: "
                 + timeAndMemory(startTime));
-        */
+         */
     }
 
     /** Cause the system to exit after wrapup().
@@ -569,6 +569,7 @@ public class Manager extends NamedObj implements Runnable {
      *  controls execution.
      *  @return The composite actor that this manager is responsible for.
      */
+    @Override
     public NamedObj getContainer() {
         return _container;
     }
@@ -652,7 +653,7 @@ public class Manager extends NamedObj implements Runnable {
      *   if there is no container.
      */
     public synchronized void initialize() throws KernelException,
-            IllegalActionException {
+    IllegalActionException {
         try {
             _workspace.getReadAccess();
 
@@ -761,8 +762,8 @@ public class Manager extends NamedObj implements Runnable {
             if (System.currentTimeMillis() - startTime > minimumStatisticsTime) {
                 setStatusMessage(timeAndMemory(startTime));
                 System.out
-                        .println("Manager.iterate(): preinitialize() finished: "
-                                + getStatusMessage());
+                .println("Manager.iterate(): preinitialize() finished: "
+                        + getStatusMessage());
             }
 
             if (!_typesResolved) {
@@ -879,9 +880,9 @@ public class Manager extends NamedObj implements Runnable {
                         // Set the new state to show that execution is paused
                         // on a breakpoint.
                         PAUSED_ON_BREAKPOINT
-                                .setDescription("pausing on breakpoint: "
-                                        + breakpointMessage
-                                        + ".  Click Resume to continue.");
+                        .setDescription("pausing on breakpoint: "
+                                + breakpointMessage
+                                + ".  Click Resume to continue.");
                         _setState(PAUSED_ON_BREAKPOINT);
 
                         _resumeNotifyWaiting = true;
@@ -1200,6 +1201,7 @@ public class Manager extends NamedObj implements Runnable {
      *  exception handling, this method has exactly the same behavior
      *  as execute().
      */
+    @Override
     public void run() {
         try {
             execute();
@@ -1241,6 +1243,7 @@ public class Manager extends NamedObj implements Runnable {
      *  "Throwable".
      *  @deprecated Instead ptolemy.util.MessageHandler.shortDescription()
      */
+    @Deprecated
     public static String shortDescription(Throwable throwable) {
         return MessageHandler.shortDescription(throwable);
     }
@@ -1313,6 +1316,7 @@ public class Manager extends NamedObj implements Runnable {
      *  execute as soon as possible.
      *  @deprecated
      */
+    @Deprecated
     public void terminate() {
         // If the execution was started in a separate thread, kill that thread.
         // NOTE: This uses the stop() method, which is now deprecated in Java.
@@ -1476,7 +1480,7 @@ public class Manager extends NamedObj implements Runnable {
      *  @see ptolemy.kernel.CompositeEntity#statistics(String)
      */
     public static int minimumStatisticsTime = 10000;
-    
+
     /** The amount of time to allow for the model to terminate
      *  gracefully before shutting it down when the JVM is shut down
      *  due to control-C, user logging out, etc.
@@ -1509,6 +1513,7 @@ public class Manager extends NamedObj implements Runnable {
      *  @deprecated Incomplete name, use
      *  {@link #_notifyListenersOfSuccessfulCompletion()}
      */
+    @Deprecated
     protected synchronized void _notifyListenersOfCompletion() {
         _notifyListenersOfSuccessfulCompletion();
     }
@@ -1561,7 +1566,7 @@ public class Manager extends NamedObj implements Runnable {
             }
         }
     }
-    
+
     /** Register a shutdown hook to gracefully stop the execution of a model
      *  if the JVM is shut down (by control-C, the user logging out, etc.).
      */
@@ -1570,18 +1575,18 @@ public class Manager extends NamedObj implements Runnable {
             @Override
             public void run() {
                 if (_state != IDLE) {
-                        System.out.println("********** Waiting for model to stop.");
+                    System.out.println("********** Waiting for model to stop.");
                 }
                 finish();
                 if (_thread != null && _thread.isAlive()) {
-                        try {
-                                // This seems dangerous. Could prevent the process
-                                // from dying. We use a timeout here of 30 seconds.
-                                                _thread.join(SHUTDOWN_TIME);
-                                        } catch (InterruptedException e) {
-                                                // Failed to stop the thread.
-                                                e.printStackTrace();
-                                        }
+                    try {
+                        // This seems dangerous. Could prevent the process
+                        // from dying. We use a timeout here of 30 seconds.
+                        _thread.join(SHUTDOWN_TIME);
+                    } catch (InterruptedException e) {
+                        // Failed to stop the thread.
+                        e.printStackTrace();
+                    }
                 }
             }
         });
@@ -1706,6 +1711,7 @@ public class Manager extends NamedObj implements Runnable {
 
         /** Print out the current state.
          */
+        @Override
         public String toString() {
             return "The model is " + getDescription();
         }
@@ -1729,6 +1735,7 @@ public class Manager extends NamedObj implements Runnable {
 
         /** Run the thread.
          */
+        @Override
         public void run() {
             synchronized (Manager.this) {
                 // We use Throwables instead of Exceptions so that
@@ -1746,8 +1753,8 @@ public class Manager extends NamedObj implements Runnable {
 
                 if (_executionListeners == null) {
                     System.err
-                            .println("No executionListeners? Error message was: "
-                                    + errorMessage);
+                    .println("No executionListeners? Error message was: "
+                            + errorMessage);
                     _throwable.printStackTrace();
                 } else {
 
@@ -1788,6 +1795,7 @@ public class Manager extends NamedObj implements Runnable {
             super(target, name);
         }
 
+        @Override
         public void run() {
             // The run() method will set _thread to null
             // upon completion of the run.
@@ -1799,6 +1807,7 @@ public class Manager extends NamedObj implements Runnable {
         // This thread is a named inner class so that we can find it
         // by name when looking for memory leaks.
 
+        @Override
         public void run() {
             // NOTE: The execute() method used to be synchronized,
             // which would cause deadlock with this.

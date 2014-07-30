@@ -113,7 +113,7 @@ public class LookInsideAction extends FigureAction {
             // Avoid Control_O, which is open file.
             putValue(GUIUtilities.ACCELERATOR_KEY, KeyStroke.getKeyStroke(
                     KeyEvent.VK_L, Toolkit.getDefaultToolkit()
-                            .getMenuShortcutKeyMask()));
+                    .getMenuShortcutKeyMask()));
         }
     }
 
@@ -124,6 +124,7 @@ public class LookInsideAction extends FigureAction {
      *  the user interface.
      *  @param event The event received to execute the look inside action.
      */
+    @Override
     public void actionPerformed(ActionEvent event) {
         if (_configuration == null) {
             MessageHandler.error("Cannot open a model element "
@@ -182,7 +183,8 @@ public class LookInsideAction extends FigureAction {
 
                 if (containerEffigy == null) {
                     throw new InternalErrorException(momlModelAttribute, null,
-                            "Could not get the effigy for " + momlModelAttribute);
+                            "Could not get the effigy for "
+                                    + momlModelAttribute);
                 } else {
                     // Second, the effigy returned above returns the wrong value in its
                     // masterEffigy() method. That method returns the effigy associated
@@ -191,12 +193,14 @@ public class LookInsideAction extends FigureAction {
                     // We accomplish this by substituting a new effigy.
                     // This technique is borrowed from what is done in
                     // PtolemyFrame.getEffigy().
-                    PtolemyEffigy newEffigy = new PtolemyEffigy(containerEffigy,
-                            containerEffigy.uniqueName(model.getName())) {
-                            public Effigy masterEffigy() {
-                                return containerEffigy.masterEffigy();
-                            }
-                        };
+                    PtolemyEffigy newEffigy = new PtolemyEffigy(
+                            containerEffigy, containerEffigy.uniqueName(model
+                                    .getName())) {
+                        @Override
+                        public Effigy masterEffigy() {
+                            return containerEffigy.masterEffigy();
+                        }
+                    };
 
                     // Third, the uri attribute and file properties
                     // of the effigy are not set to

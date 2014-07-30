@@ -24,7 +24,7 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
-*/
+ */
 package ptolemy.domains.sequence.kernel;
 
 import java.util.List;

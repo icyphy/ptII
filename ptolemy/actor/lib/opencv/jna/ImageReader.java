@@ -23,7 +23,7 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
-*/
+ */
 
 package ptolemy.actor.lib.opencv.jna;
 
@@ -50,7 +50,7 @@ import com.sun.jna.ptr.PointerByReference;
  * @since Ptolemy II 8.1
  * @Pt.ProposedRating Red (cxh)
  * @Pt.AcceptedRating Red (cxh)
-*/
+ */
 public class ImageReader extends Source {
     /** Construct an actor with the given container and name.
      *  @param container The container.
@@ -82,6 +82,7 @@ public class ImageReader extends Source {
     /** Output a frame.
      *  @exception IllegalActionException If thrown while writing to the port.
      */
+    @Override
     public void fire() throws IllegalActionException {
         output.send(0, new ObjectToken(_image));
     }
@@ -89,6 +90,7 @@ public class ImageReader extends Source {
     /** Load image from file
      *  @exception IllegalActionException If thrown by the super class.
      */
+    @Override
     public void initialize() throws IllegalActionException {
         super.initialize();
         String pathNameString = pathName.getExpression();
@@ -105,6 +107,7 @@ public class ImageReader extends Source {
     /** Stop the capture.
      *  @exception IllegalActionException If thrown by the super class.
      */
+    @Override
     public void wrapup() throws IllegalActionException {
         super.wrapup();
         cvReleaseImage(new PointerByReference(_image));

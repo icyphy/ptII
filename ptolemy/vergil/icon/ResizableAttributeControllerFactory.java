@@ -83,6 +83,7 @@ public class ResizableAttributeControllerFactory extends NodeControllerFactory {
      *  @param controller The associated graph controller.
      *  @return A new node controller.
      */
+    @Override
     public NamedObjController create(GraphController controller) {
         return new ResizeAttributeController(controller);
     }
@@ -118,6 +119,7 @@ public class ResizableAttributeControllerFactory extends NodeControllerFactory {
          *  bounds manipulator as well as the drag interactor.
          *  @param resolution The snap resolution.
          */
+        @Override
         public void setSnapResolution(double resolution) {
             super.setSnapResolution(resolution);
             _manipulator.setSnapResolution(resolution);

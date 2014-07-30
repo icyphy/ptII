@@ -83,7 +83,7 @@ public interface IOMCCommand {
      */
     public boolean isError(String retval);
 
-    /** load the Modelica file(s) and library.  
+    /** load the Modelica file(s) and library.
      *  @param fileName File which the model should be loaded from.
      *  @param modelName Name of the model which should be built.
      *  @exception ConnectException If commands couldn't

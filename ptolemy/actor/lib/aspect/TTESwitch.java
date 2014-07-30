@@ -119,6 +119,7 @@ public class TTESwitch extends AtomicCommunicationAspect {
      *  @return A new intermediate receiver.
      *  @exception IllegalActionException If parameter
      */
+    @Override
     public IntermediateReceiver createIntermediateReceiver(Receiver receiver)
             throws IllegalActionException {
         IntermediateReceiver intermediateReceiver = _receivers.get(receiver);
@@ -174,6 +175,7 @@ public class TTESwitch extends AtomicCommunicationAspect {
      *   if one of the attributes cannot be cloned.
      *  @return A new TTESwitch.
      */
+    @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         TTESwitch newObject = (TTESwitch) super.clone(workspace);
         newObject._etTokens = new FIFOQueue();
@@ -190,6 +192,7 @@ public class TTESwitch extends AtomicCommunicationAspect {
      *  @param attribute The attribute that changed.
      *  @exception IllegalActionException If the service time is negative.
      */
+    @Override
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         if (attribute == serviceTime) {
@@ -205,6 +208,7 @@ public class TTESwitch extends AtomicCommunicationAspect {
     /** If there is a time-triggered token scheduled to be sent then deliver this
      *  token, otherwise send first token in the queue of event-triggered tokens.
      */
+    @Override
     public void fire() throws IllegalActionException {
         super.fire();
         Time currentTime = getDirector().getModelTime();
@@ -223,12 +227,13 @@ public class TTESwitch extends AtomicCommunicationAspect {
 
     /** If a token has been sent in the fire method then schedule the next firing.
      */
+    @Override
     public boolean postfire() throws IllegalActionException {
         Time currentTime = getDirector().getModelTime();
         if (_nextTimeFree != null
                 && currentTime.compareTo(_nextTimeFree) == 0
                 && (_ttTokens.size() == 1 || _ttTokens.size() == 0
-                        && _etTokens.size() > 0)) {
+                && _etTokens.size() > 0)) {
             _nextTimeFree = currentTime.add(_serviceTimeValue);
             _fireAt(_nextTimeFree);
         }
@@ -237,6 +242,7 @@ public class TTESwitch extends AtomicCommunicationAspect {
 
     /** Receive a token and store it in the queue. Schedule a refiring.
      */
+    @Override
     public void sendToken(Receiver source, Receiver receiver, Token token)
             throws IllegalActionException {
         if (_receiverType.get(receiver)) { // time-triggered
@@ -249,7 +255,7 @@ public class TTESwitch extends AtomicCommunicationAspect {
                     "Schedule violation: A time-triggered message is "
                             + "being sent at port "
                             + ((Receiver) ((Object[]) _ttTokens.get(0))[0])
-                                    .getContainer()
+                            .getContainer()
                             + " while a new time-triggered message is received at port "
                             + receiver.getContainer() + " at time "
                             + getDirector().getModelTime());
@@ -263,6 +269,7 @@ public class TTESwitch extends AtomicCommunicationAspect {
 
     /** Reset the communication aspect and clear the tokens.
      */
+    @Override
     public void reset() {
         _etTokens.clear();
         _ttTokens.clear();

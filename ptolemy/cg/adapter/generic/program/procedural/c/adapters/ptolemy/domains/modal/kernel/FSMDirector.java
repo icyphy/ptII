@@ -54,10 +54,10 @@ is also associated with a code generator.
 @since Ptolemy II 10.0
 @Pt.ProposedRating Red (sssf)
 @Pt.AcceptedRating Red (sssf)
-*/
+ */
 public class FSMDirector
-        extends
-        ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.domains.modal.kernel.FSMDirector {
+extends
+ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.domains.modal.kernel.FSMDirector {
 
     /** Construct the code generator helper associated
      *  with the given modal controller.
@@ -77,6 +77,7 @@ public class FSMDirector
      * @return The generated constructor code
      * @exception IllegalActionException Not thrown in this base class.
      */
+    @Override
     public String generateConstructorCode() throws IllegalActionException {
         StringBuffer result = new StringBuffer();
         CompositeActor container = (CompositeActor) _director.getContainer();
@@ -264,10 +265,10 @@ public class FSMDirector
     }
 
     /** Generate The functions' declaration code for this director.
-    *
-    *  @return The functions' declaration function code.
-    *  @exception IllegalActionException If thrown while generating code.
-    */
+     *
+     *  @return The functions' declaration function code.
+     *  @exception IllegalActionException If thrown while generating code.
+     */
     public String generateFunctionsDeclaration() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
         _sanitizedDirectorName = CodeGeneratorAdapter.generateName(_director);
@@ -313,7 +314,7 @@ public class FSMDirector
                         + _sanitizedDirectorName
                         + ".currentMicrostep = "
                         + ((SuperdenseTimeDirector) executiveDirector)
-                                .getIndex() + ";");
+                        .getIndex() + ";");
             }
         }
 
@@ -337,7 +338,7 @@ public class FSMDirector
         code.append(_eol + _sanitizedDirectorName + ".isInitializing = false;");
         code.append(_eol
                 + codeGenerator
-                        .comment("End of the Initialization of the director"));
+                .comment("End of the Initialization of the director"));
 
         return code.toString();
     }
@@ -348,6 +349,7 @@ public class FSMDirector
      *  @return Code for the main loop of an execution.
      *  @exception IllegalActionException If something goes wrong.
      */
+    @Override
     public String generateMainLoop() throws IllegalActionException {
         // Need a leading _eol here or else the execute decl. gets stripped out.
         StringBuffer code = new StringBuffer();
@@ -391,6 +393,7 @@ public class FSMDirector
      *  @exception IllegalActionException If the adapter associated with
      *   an actor throws it while generating fire code for the actor.
      */
+    @Override
     public String generateFireFunctionCode() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
         code.append(getCodeGenerator().comment("The firing of the director."));
@@ -410,18 +413,18 @@ public class FSMDirector
     }
 
     /** Generate the postfire code of the associated composite actor.
-    *
-    *  @return The postfire code of the associated composite actor.
-    *  @exception IllegalActionException If the adapter associated with
-    *   an actor throws it while generating postfire code for the actor
-    */
+     *
+     *  @return The postfire code of the associated composite actor.
+     *  @exception IllegalActionException If the adapter associated with
+     *   an actor throws it while generating postfire code for the actor
+     */
     @Override
     public String generatePostfireCode() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
 
         code.append(_eol
                 + getCodeGenerator()
-                        .comment(0, "The postfire of the director."));
+                .comment(0, "The postfire of the director."));
 
         Iterator<?> actors = ((CompositeActor) _director.getContainer())
                 .deepEntityList().iterator();
@@ -439,10 +442,10 @@ public class FSMDirector
     }
 
     /** Generate the prefire code of the associated composite actor.
-    *
-    *  @return The prefire code of the associated composite actor.
-    *  @exception IllegalActionException It should never happen
-    */
+     *
+     *  @return The prefire code of the associated composite actor.
+     *  @exception IllegalActionException It should never happen
+     */
     @Override
     public String generatePrefireCode() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
@@ -460,6 +463,7 @@ public class FSMDirector
      *   or if generating the preinitialize code for a adapter fails,
      *   or if there is a problem getting the buffer size of a port.
      */
+    @Override
     public String generatePreinitializeCode() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
         //code.append(super.generatePreinitializeCode());
@@ -500,6 +504,7 @@ public class FSMDirector
      *   or if generating the preinitialize code for a adapter fails,
      *   or if there is a problem getting the buffer size of a port.
      */
+    @Override
     public String generatePreinitializeMethodBodyCode()
             throws IllegalActionException {
         StringBuffer code = new StringBuffer();

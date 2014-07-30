@@ -87,6 +87,7 @@ public class PaintedPath extends AbstractPaintedGraphic {
     /** Get the line width. If the stroke is not a BasicStroke
      * then 1.0 will always be returned.
      */
+    @Override
     public float getLineWidth() {
         if (stroke instanceof BasicStroke) {
             return ((BasicStroke) stroke).getLineWidth();
@@ -101,6 +102,7 @@ public class PaintedPath extends AbstractPaintedGraphic {
      * geometry testing with GeneralPath in the first version of
      * JDK1.2.
      */
+    @Override
     public boolean hit(Rectangle2D r) {
         return intersects(r);
     }
@@ -111,6 +113,7 @@ public class PaintedPath extends AbstractPaintedGraphic {
      * geometry testing with GeneralPath in the first version of
      * JDK1.2.
      */
+    @Override
     public boolean intersects(Rectangle2D r) {
         // Hit testing on strokes doesn't appear to work too
         // well in JDK1.2, so we will cheat and ignore the width
@@ -121,6 +124,7 @@ public class PaintedPath extends AbstractPaintedGraphic {
     /** Paint the shape. The shape is redrawn with the current
      *  shape, paint, and stroke.
      */
+    @Override
     public void paint(Graphics2D g) {
         g.setStroke(stroke);
         g.setPaint(strokePaint);
@@ -145,6 +149,7 @@ public class PaintedPath extends AbstractPaintedGraphic {
     /** Set the line width. The existing stroke will
      * be removed, but the dash array will be preserved if possible.
      */
+    @Override
     public void setLineWidth(float lineWidth) {
         if (stroke instanceof BasicStroke) {
             stroke = new BasicStroke(lineWidth,

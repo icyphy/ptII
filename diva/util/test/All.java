@@ -44,6 +44,7 @@ public class All extends TestSuite {
     /**
      * runSuite()
      */
+    @Override
     public void runSuite() {
         // Test Shape utilities
         new ShapeUtilitiesTest(getTestHarness()).run();

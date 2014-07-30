@@ -202,6 +202,7 @@ public final class Workspace implements Nameable {
      *  @return A description of the workspace.
      * @exception IllegalActionException
      */
+    @Override
     public synchronized String description() throws IllegalActionException {
         // NOTE: It is not strictly needed for this method to be
         // synchronized, since _description is.  However, by making it
@@ -233,6 +234,7 @@ public final class Workspace implements Nameable {
      *  @deprecated Use directoryList() instead.
      *  @return An enumeration of NamedObj objects.
      */
+    @Deprecated
     public synchronized Enumeration directory() {
         return Collections.enumeration(_directory);
     }
@@ -327,6 +329,7 @@ public final class Workspace implements Nameable {
      *  has no container.
      *  @return null.
      */
+    @Override
     public NamedObj getContainer() {
         return null;
     }
@@ -336,6 +339,7 @@ public final class Workspace implements Nameable {
      *  @return The name.
      *  @see #getName()
      */
+    @Override
     public String getDisplayName() {
         return getName();
     }
@@ -343,6 +347,7 @@ public final class Workspace implements Nameable {
     /** Get the full name.
      *  @return The name of the workspace.
      */
+    @Override
     public String getFullName() {
         return _name;
     }
@@ -351,6 +356,7 @@ public final class Workspace implements Nameable {
      *  @return The name of the workspace.
      *  @see #setName(String)
      */
+    @Override
     public String getName() {
         return _name;
     }
@@ -361,6 +367,7 @@ public final class Workspace implements Nameable {
      *  @return The name of the workspace.
      *  @see #setName(String)
      */
+    @Override
     public String getName(NamedObj relativeTo) {
         return _name;
     }
@@ -661,6 +668,7 @@ public final class Workspace implements Nameable {
      *  @param name The new name.
      *  @see #getName()
      */
+    @Override
     public synchronized void setName(String name) {
         if (name == null) {
             name = "";
@@ -673,6 +681,7 @@ public final class Workspace implements Nameable {
     /** Return a concise description of the object.
      *  @return The class name and name.
      */
+    @Override
     public String toString() {
         return getClass().getName() + " {" + getFullName() + "}";
     }

@@ -76,6 +76,7 @@ public class TaskPlotEditorFactory extends EditorFactory {
      * @param object The object to configure.
      * @param parent The parent window.
      */
+    @Override
     public void createEditor(NamedObj object, Frame parent) {
         try {
             // If there is no plot tableau or if it has been closed

@@ -10,10 +10,11 @@ package ptolemy.actor.corba.CoordinatorUtil;
 /* A CORBA compatible interface for a consumer.
  */
 public class _ClientStub extends org.omg.CORBA.portable.ObjectImpl implements
-        ptolemy.actor.corba.CoordinatorUtil.Client {
+ptolemy.actor.corba.CoordinatorUtil.Client {
     /* this method is intended to be called remotely to
      * send data to it.
      */
+    @Override
     public void push(org.omg.CORBA.Any data)
             throws ptolemy.actor.corba.CoordinatorUtil.CorbaIllegalActionException {
         org.omg.CORBA.portable.InputStream $in = null;
@@ -30,7 +31,7 @@ public class _ClientStub extends org.omg.CORBA.portable.ObjectImpl implements
 
             if (_id.equals("IDL:CoordinatorUtil/CorbaIllegalActionException:1.0")) {
                 throw ptolemy.actor.corba.CoordinatorUtil.CorbaIllegalActionExceptionHelper
-                        .read($in);
+                .read($in);
             } else {
                 throw new org.omg.CORBA.MARSHAL(_id);
             }
@@ -44,6 +45,7 @@ public class _ClientStub extends org.omg.CORBA.portable.ObjectImpl implements
     /* this method is intended to be called remotely to start the application
      * for the consumer.
      */
+    @Override
     public void start() {
         org.omg.CORBA.portable.InputStream $in = null;
 
@@ -66,6 +68,7 @@ public class _ClientStub extends org.omg.CORBA.portable.ObjectImpl implements
     /* this method is intended to be called remotely to stop the application
      * for the consumer.
      */
+    @Override
     public void stop() {
         org.omg.CORBA.portable.InputStream $in = null;
 
@@ -88,6 +91,7 @@ public class _ClientStub extends org.omg.CORBA.portable.ObjectImpl implements
     // Type-specific CORBA::Object operations
     private static String[] __ids = { "IDL:CoordinatorUtil/Client:1.0" };
 
+    @Override
     public String[] _ids() {
         return __ids.clone();
     }

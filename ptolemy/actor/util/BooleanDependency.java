@@ -67,6 +67,7 @@ public class BooleanDependency implements Dependency {
      *  @param dependency The dependency to compare against.
      *  @return The result of comparison.
      */
+    @Override
     public int compareTo(Dependency dependency) {
         if (equals(dependency)) {
             return Dependency.EQUALS;
@@ -83,6 +84,7 @@ public class BooleanDependency implements Dependency {
      *  @param object The object to compare against.
      *  @return true if the values are equal
      */
+    @Override
     public boolean equals(Object object) {
         // See http://www.technofundo.com/tech/java/equalhash.html
         if (object == this) {
@@ -101,6 +103,7 @@ public class BooleanDependency implements Dependency {
      *  and the integer 1237 if this object represents false.
      *  @return A hash code for this object.
      */
+    @Override
     public int hashCode() {
         if (_value) {
             return 1231;
@@ -117,6 +120,7 @@ public class BooleanDependency implements Dependency {
      *   values.
      *  @exception ClassCastException if d is not a BooleanDependency.
      */
+    @Override
     public Dependency oPlus(Dependency d) {
         // FIXME: Findbugs reports this as an Unchecked/unconfirmed cast
         if (((BooleanDependency) d)._value || _value) {
@@ -129,6 +133,7 @@ public class BooleanDependency implements Dependency {
      *  dependency using oPlus() yields the other dependency.
      *  @return The additive identity.
      */
+    @Override
     public Dependency oPlusIdentity() {
         return OPLUS_IDENTITY;
     }
@@ -142,6 +147,7 @@ public class BooleanDependency implements Dependency {
      *   this one and the specified one.
      *  @exception ClassCastException if d is not a BooleanDependency.
      */
+    @Override
     public Dependency oTimes(Dependency d) {
         // FIXME: Findbugs reports this as an Unchecked/unconfirmed cast
         if (_value && ((BooleanDependency) d)._value) {
@@ -154,6 +160,7 @@ public class BooleanDependency implements Dependency {
      *  dependency using oTimes() yields the other dependency.
      *  @return The multiplicative identity.
      */
+    @Override
     public Dependency oTimesIdentity() {
         return OTIMES_IDENTITY;
     }
@@ -163,6 +170,7 @@ public class BooleanDependency implements Dependency {
      *  or "false".
      *  @return A string representation.
      */
+    @Override
     public String toString() {
         if (_value) {
             return "BooleanDependency(true)";

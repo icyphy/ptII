@@ -37,13 +37,13 @@ import ptolemy.domains.metroII.kernel.util.ProtoBuf.metroIIcomm.Event.Time;
 
 /**
  * EventTimeComparator compares time tags of MetroII events.
- * 
+ *
  * @author Liangpeng Guo
  * @version $Id$
  * @since Ptolemy II 10.0
  * @Pt.ProposedRating Red (glp)
  * @Pt.AcceptedRating Red (glp)
- * 
+ *
  */
 public class EventTimeComparator {
 
@@ -60,7 +60,7 @@ public class EventTimeComparator {
     /**
      * Convert a time value from one resolution to another resolution. Note that
      * this method may result in a loss of precision.
-     * 
+     *
      * @param timeValue
      *            input time value in type 'long'
      * @param fromResolution
@@ -93,7 +93,7 @@ public class EventTimeComparator {
 
     /**
      * Compare two timetags.
-     * 
+     *
      * @param time1
      *            the first timetag to be compared
      * @param time2
@@ -104,6 +104,7 @@ public class EventTimeComparator {
     static public int compare(Time time1, Time time2) {
         if (comparator == null) {
             comparator = new Comparator<Event.Time>() {
+                @Override
                 public int compare(Time time1, Time time2) {
                     long greater = time1.getValue()
                             - convert(time2.getValue(), time2.getResolution(),

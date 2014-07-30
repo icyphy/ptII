@@ -24,7 +24,7 @@
 
                                         PT_COPYRIGHT_VERSION_3
                                         COPYRIGHTENDKEY
-*/
+ */
 
 package ptolemy.moml.unit;
 
@@ -44,7 +44,7 @@ JavaCC parser generator.
 @since Ptolemy II 4.0
 @Pt.ProposedRating Red (rowland)
 @Pt.AcceptedRating Red (rowland)
-*/
+ */
 @SuppressWarnings("unused")
 public class UParser implements UParserConstants {
 
@@ -163,7 +163,7 @@ public class UParser implements UParserConstants {
                         if (true) {
                             throw new ParseException(
                                     unitLabel
-                                            + " is a not variable and is not grounded in the Units Library");
+                                    + " is a not variable and is not grounded in the Units Library");
                         }
                     }
                 }
@@ -194,7 +194,7 @@ public class UParser implements UParserConstants {
                             if (true) {
                                 throw new ParseException(
                                         unitLabel
-                                                + " is a not variable and is not grounded in the Units Library");
+                                        + " is a not variable and is not grounded in the Units Library");
                             }
                         }
                     }
@@ -749,7 +749,7 @@ public class UParser implements UParserConstants {
     }
 
     @SuppressWarnings("serial")
-        static private final class LookaheadSuccess extends java.lang.Error {
+    static private final class LookaheadSuccess extends java.lang.Error {
     }
 
     final private LookaheadSuccess jj_ls = new LookaheadSuccess();

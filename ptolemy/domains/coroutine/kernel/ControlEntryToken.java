@@ -25,7 +25,7 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 Ptolemy II includes the work of others, to see those copyrights, follow
 the copyright link on the splash page or see copyright.htm.
-*/
+ */
 /**
  *
  */
@@ -107,6 +107,7 @@ public class ControlEntryToken extends ControlToken {
             this.name = name;
         }
 
+        @Override
         public String toString() {
             return name;
         }
@@ -153,6 +154,7 @@ public class ControlEntryToken extends ControlToken {
 
     ////
 
+    @Override
     public String toString() {
         String str = "Non";
         /**/if (_type == ControlType.Init) {

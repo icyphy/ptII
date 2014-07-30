@@ -75,7 +75,7 @@ import com.jgoodies.forms.layout.CellConstraints;
  */
 @SuppressWarnings("serial")
 class LayoutTable extends JTable implements DragSourceListener,
-        DragGestureListener, DropTargetListener, Autoscroll {
+DragGestureListener, DropTargetListener, Autoscroll {
     protected DragSource fDragSource = null;
     protected DropTarget fDropTarget = null;
     protected Component dragComponent = null;
@@ -101,6 +101,7 @@ class LayoutTable extends JTable implements DragSourceListener,
      * handling code gets the event the selection has moved into a cell that
      * does have a component in it and the drag fails.
      */
+    @Override
     public void changeSelection(int rowIndex, int columnIndex, boolean toggle,
             boolean extend) {
         super.changeSelection(rowIndex, columnIndex, toggle, extend);
@@ -112,6 +113,7 @@ class LayoutTable extends JTable implements DragSourceListener,
     /**
      * Implements autoscrolling.
      */
+    @Override
     public Insets getAutoscrollInsets() {
         Rectangle visible = getVisibleRect();
         Dimension size = getSize();
@@ -136,6 +138,7 @@ class LayoutTable extends JTable implements DragSourceListener,
     /**
      * Implements autoscrolling.
      */
+    @Override
     public void autoscroll(Point cursorLocn) {
         Rectangle visible = getVisibleRect();
         int x = 0, y = 0, width = 0, height = 0;
@@ -165,9 +168,11 @@ class LayoutTable extends JTable implements DragSourceListener,
                 width, height));
     }
 
+    @Override
     public void dragEnter(DragSourceDragEvent event) {
     }
 
+    @Override
     public void dragOver(DragSourceDragEvent event) {
         DragSourceContext context = event.getDragSourceContext();
         java.awt.Point location = event.getLocation();
@@ -185,21 +190,27 @@ class LayoutTable extends JTable implements DragSourceListener,
         }
     }
 
+    @Override
     public void dropActionChanged(DragSourceDragEvent event) {
     }
 
+    @Override
     public void dragExit(DragSourceEvent event) {
     }
 
+    @Override
     public void dragDropEnd(DragSourceDropEvent event) {
     }
 
+    @Override
     public void dropActionChanged(DropTargetDragEvent event) {
     }
 
+    @Override
     public void dragExit(DropTargetEvent event) {
     }
 
+    @Override
     public void dragGestureRecognized(DragGestureEvent event) {
         Point p = event.getDragOrigin();
         int row = rowAtPoint(p);
@@ -211,6 +222,7 @@ class LayoutTable extends JTable implements DragSourceListener,
         }
     }
 
+    @Override
     public void dragEnter(DropTargetDragEvent dropTargetDragEvent) {
         try {
             if (dropTargetDragEvent.isDataFlavorSupported(new DataFlavor(
@@ -224,6 +236,7 @@ class LayoutTable extends JTable implements DragSourceListener,
         }
     }
 
+    @Override
     public void dragOver(java.awt.dnd.DropTargetDragEvent dropTargetDragEvent) {
         //DropTargetContext context = dropTargetDragEvent.getDropTargetContext();
 
@@ -243,6 +256,7 @@ class LayoutTable extends JTable implements DragSourceListener,
         }
     }
 
+    @Override
     public void drop(java.awt.dnd.DropTargetDropEvent e) {
         try {
             java.awt.Point location = e.getLocation();

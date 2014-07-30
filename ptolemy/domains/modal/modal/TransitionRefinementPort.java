@@ -107,6 +107,7 @@ public class TransitionRefinementPort extends RefinementPort {
      *   the hierarchy, or the port has no container, or the relation
      *   is not an instance of IORelation.
      */
+    @Override
     public void link(Relation relation) throws IllegalActionException {
         if (isInput() && _hasSibling && isLinked(relation)) {
             return;
@@ -126,8 +127,9 @@ public class TransitionRefinementPort extends RefinementPort {
      *  @exception NameDuplicationException If the container already has
      *   a port with the name of this port.
      */
+    @Override
     public void setContainer(Entity container) throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         NamedObj oldContainer = getContainer();
 
         if (container == oldContainer) {
@@ -203,6 +205,7 @@ public class TransitionRefinementPort extends RefinementPort {
      *  @exception IllegalActionException If changing the port status is
      *   not permitted.
      */
+    @Override
     public void setInput(boolean isInput) throws IllegalActionException {
         boolean disableStatus = _mirrorDisable;
 
@@ -254,6 +257,7 @@ public class TransitionRefinementPort extends RefinementPort {
      *  @exception IllegalActionException If changing the port status is
      *   not permitted.
      */
+    @Override
     public void setMultiport(boolean isMultiport) throws IllegalActionException {
         boolean disableStatus = _mirrorDisable;
 
@@ -312,8 +316,9 @@ public class TransitionRefinementPort extends RefinementPort {
      *  @exception NameDuplicationException If there is already a port
      *   with the same name in the container.
      */
+    @Override
     public void setName(String name) throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         boolean disableStatus = _mirrorDisable;
 
         try {
@@ -378,6 +383,7 @@ public class TransitionRefinementPort extends RefinementPort {
      *  @exception IllegalActionException If changing the port status is
      *   not permitted.
      */
+    @Override
     public void setOutput(boolean isOutput) throws IllegalActionException {
         boolean disableStatus = _mirrorDisable;
 

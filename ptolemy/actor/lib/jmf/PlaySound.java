@@ -127,6 +127,7 @@ public class PlaySound extends TypedAtomicActor implements ControllerListener {
      *  @exception IllegalActionException If the file cannot be opened
      *   or if the base class throws it.
      */
+    @Override
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         if (attribute == fileNameOrURL) {
@@ -167,6 +168,7 @@ public class PlaySound extends TypedAtomicActor implements ControllerListener {
     /** React to notification of a change in controller status.
      *  event The event.
      */
+    @Override
     public synchronized void controllerUpdate(ControllerEvent event) {
         notifyAll();
     }
@@ -174,6 +176,7 @@ public class PlaySound extends TypedAtomicActor implements ControllerListener {
     /** Play the audio file.
      *  @exception IllegalActionException If there's no director.
      */
+    @Override
     public void fire() throws IllegalActionException {
         super.fire();
 
@@ -225,6 +228,7 @@ public class PlaySound extends TypedAtomicActor implements ControllerListener {
 
     /** Override the base class to stop the currently playing audio.
      */
+    @Override
     public void stopFire() {
         super.stopFire();
 
@@ -236,6 +240,7 @@ public class PlaySound extends TypedAtomicActor implements ControllerListener {
 
     /** Close the media processor.
      */
+    @Override
     public void wrapup() {
         if (_player != null) {
             _player.stop();

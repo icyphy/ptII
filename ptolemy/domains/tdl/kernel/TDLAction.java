@@ -133,6 +133,7 @@ public class TDLAction {
     /** Return a hash code value for this action.
      *  @return A hash code value for this token.
      */
+    @Override
     public int hashCode() {
         // See http://www.geocities.com/technofundo/tech/java/equalhash.html
         // for suggestions on hashCode
@@ -170,6 +171,7 @@ public class TDLAction {
          * @param event2 Second event.
          * @return The result of the comparison of the two TDL events.
          */
+        @Override
         public int compare(Object event1, Object event2) {
             TDLAction tdlEvent1 = (TDLAction) event1;
             TDLAction tdlEvent2 = (TDLAction) event2;

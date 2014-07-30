@@ -53,7 +53,7 @@ import diva.util.java2d.ShapeUtilities;
  * @author  Michael Shilman
  */
 public abstract class AbstractConnector extends AbstractFigure implements
-        Connector {
+Connector {
     /** The head end
      */
     private ConnectorEnd _headEnd = null;
@@ -98,6 +98,7 @@ public abstract class AbstractConnector extends AbstractFigure implements
 
     /** Get the bounding box of this connector.
      */
+    @Override
     public Rectangle2D getBounds() {
         Rectangle2D bounds = ShapeUtilities.computeStrokedBounds(_shape,
                 _stroke);
@@ -137,6 +138,7 @@ public abstract class AbstractConnector extends AbstractFigure implements
 
     /** Get the site that marks the "head" of the connector.
      */
+    @Override
     public Site getHeadSite() {
         return _headSite;
     }
@@ -168,6 +170,7 @@ public abstract class AbstractConnector extends AbstractFigure implements
 
     /** Get the outline shape of this connector.
      */
+    @Override
     public Shape getShape() {
         return _shape;
     }
@@ -186,6 +189,7 @@ public abstract class AbstractConnector extends AbstractFigure implements
 
     /** Get the site that marks the "tail" of the connector.
      */
+    @Override
     public Site getTailSite() {
         return _tailSite;
     }
@@ -193,6 +197,7 @@ public abstract class AbstractConnector extends AbstractFigure implements
     /** Inform the connector that the head site has moved.
      * This default implementation simply calls reroute().
      */
+    @Override
     public void headMoved() {
         repaint();
         reroute();
@@ -204,6 +209,7 @@ public abstract class AbstractConnector extends AbstractFigure implements
      * check to see if the rectangle intersects the path of the connector,
      * either of its ends, or the label.
      */
+    @Override
     public boolean hit(Rectangle2D r) {
         if (!isVisible()) {
             return false;
@@ -231,6 +237,7 @@ public abstract class AbstractConnector extends AbstractFigure implements
      *  implementation checks to see if the rectangle intersects with the
      *  path of the connector, the label, or either of the connector ends.
      */
+    @Override
     public boolean intersects(Rectangle2D r) {
         boolean hit = ShapeUtilities.intersectsOutline(r, _shape);
 
@@ -252,6 +259,7 @@ public abstract class AbstractConnector extends AbstractFigure implements
 
     /** Paint the connector.
      */
+    @Override
     public void paint(Graphics2D g) {
         g.setStroke(_stroke);
         g.setPaint(_paint);
@@ -281,6 +289,7 @@ public abstract class AbstractConnector extends AbstractFigure implements
      * simply calls route(). In general, this method should be overridden
      * to perform this more efficiently.
      */
+    @Override
     public void reroute() {
         route();
     }
@@ -288,6 +297,7 @@ public abstract class AbstractConnector extends AbstractFigure implements
     /** Tell the connector to route itself completely,
      * using all available information.
      */
+    @Override
     public abstract void route();
 
     /** Set the dash array of the stroke. The existing stroke will
@@ -324,6 +334,7 @@ public abstract class AbstractConnector extends AbstractFigure implements
     /** Set the site that marks the "head" of the connector,
      * and call headMoved();
      */
+    @Override
     public void setHeadSite(Site s) {
         _headSite = s;
         headMoved();
@@ -393,6 +404,7 @@ public abstract class AbstractConnector extends AbstractFigure implements
 
     /** Set the site that marks the "tail" of the connector.
      */
+    @Override
     public void setTailSite(Site s) {
         _tailSite = s;
         tailMoved();
@@ -401,6 +413,7 @@ public abstract class AbstractConnector extends AbstractFigure implements
     /** Inform the connector that the tail site has moved.
      * This default implementation simply calls reroute().
      */
+    @Override
     public void tailMoved() {
         repaint();
         reroute();
@@ -410,6 +423,7 @@ public abstract class AbstractConnector extends AbstractFigure implements
     /** Transform the connector. This method is ignored, since
      * connectors are defined by the head and tail sites.
      */
+    @Override
     public void transform(AffineTransform at) {
         // do nothing
     }
@@ -418,5 +432,6 @@ public abstract class AbstractConnector extends AbstractFigure implements
      * controllers may wish to translate connectors when the
      * sites at both ends are moved the same distance.
      */
+    @Override
     public abstract void translate(double x, double y);
 }

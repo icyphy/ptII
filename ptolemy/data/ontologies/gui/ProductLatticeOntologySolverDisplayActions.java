@@ -56,7 +56,7 @@ import diva.graph.GraphController;
  *  @Pt.AcceptedRating Red (cshelton)
  */
 public class ProductLatticeOntologySolverDisplayActions extends
-        OntologyDisplayActions {
+OntologyDisplayActions {
 
     /** Construct a ProductLatticeOntologyDisplayActions object with the specified container
      *  and name.
@@ -83,6 +83,7 @@ public class ProductLatticeOntologySolverDisplayActions extends
      *  @param controller The associated graph controller.
      *  @return A new node controller.
      */
+    @Override
     public NamedObjController create(GraphController controller) {
         super.create(controller);
         _highlighterController = new ProductLatticeHighlighterController(this,
@@ -113,7 +114,7 @@ public class ProductLatticeOntologySolverDisplayActions extends
      *  lattice ontology to use as a basis for highlighting the resolved concepts.
      */
     protected static class ProductLatticeHighlighterController extends
-            HighlighterController {
+    HighlighterController {
 
         /** Create a HighlighterController that is associated with a controller.
          *  @param displayActions The ProductLatticeOntologySolverDisplayActions object reference.
@@ -201,7 +202,7 @@ public class ProductLatticeOntologySolverDisplayActions extends
      *  ontology that is a component of the product lattice ontology.
      */
     @SuppressWarnings("serial")
-        private class SetHighlightColorsAction extends FigureAction {
+    private class SetHighlightColorsAction extends FigureAction {
 
         /** Create a new SetHighlightColorsAction for the given ontology.
          *  @param highlightOntology The ontology for which this menu action is
@@ -220,6 +221,7 @@ public class ProductLatticeOntologySolverDisplayActions extends
          *  @param e The action event that is passed in when the action
          *   is triggered.
          */
+        @Override
         public void actionPerformed(ActionEvent e) {
             // Determine which entity was selected for the look inside action.
             super.actionPerformed(e);

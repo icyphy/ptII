@@ -24,7 +24,7 @@
  PT_COPYRIGHT_VERSION_2
  COPYRIGHTENDKEY
 
-*/
+ */
 package ptolemy.actor.gt.controller;
 
 import java.net.URL;
@@ -86,6 +86,7 @@ public class ReadModel extends GTEvent {
      *  @exception CloneNotSupportedException If a derived class contains
      *   an attribute that cannot be cloned.
      */
+    @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         ReadModel newObject = (ReadModel) super.clone(workspace);
         newObject._parser = null;
@@ -102,6 +103,7 @@ public class ReadModel extends GTEvent {
      *  @exception IllegalActionException If the file cannot be read, or if
      *   thrown by the superclass.
      */
+    @Override
     public RefiringData fire(Token arguments) throws IllegalActionException {
         RefiringData data = super.fire(arguments);
 

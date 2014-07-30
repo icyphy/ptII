@@ -94,6 +94,7 @@ public class ConfigurationEffigy extends PtolemyEffigy {
      *  @exception NameDuplicationException If the name of this entity
      *   collides with a name already in the container.
      */
+    @Override
     public void setContainer(CompositeEntity container)
             throws IllegalActionException, NameDuplicationException {
         super.setContainer(container);

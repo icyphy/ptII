@@ -68,6 +68,7 @@ import ptolemy.kernel.util.NameDuplicationException;
  @Pt.ProposedRating Green (eal)
  @Pt.AcceptedRating Yellow (cxh)
  */
+@Deprecated
 public class ExpressionWriter extends LineWriter {
     /** Construct an actor with the given container and name.
      *  @param container The container.
@@ -91,6 +92,7 @@ public class ExpressionWriter extends LineWriter {
      *  can be read back in using the expression parser.
      *  @param token The token to write.
      */
+    @Override
     protected void _writeToken(Token token) {
         _writer.println(token.toString());
     }

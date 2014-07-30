@@ -44,11 +44,10 @@ import ptolemy.data.Token;
 import ptolemy.data.type.Type;
 import ptolemy.kernel.util.IllegalActionException;
 
-
 /** An HTTP response, comprised of selected fields from an HttpURLConnection.
- *  Useful for classes that want response data but should not have authority 
+ *  Useful for classes that want response data but should not have authority
  *  to open and close connections.
- *  
+ *
  *  @see org.ptolemy.ptango.lib.HttpGet
  *  @see org.ptolemy.ptango.lib.HttpPost
  *  @see org.ptolemy.ptango.lib.HttpPut
@@ -58,9 +57,9 @@ import ptolemy.kernel.util.IllegalActionException;
  *  @Pt.ProposedRating Red (eal)
  *  @Pt.AcceptedRating Red (eal)
  */
-public class HttpResponse  {
+public class HttpResponse {
 
-    /** Construct a new, blank HttpResponse object. 
+    /** Construct a new, blank HttpResponse object.
      */
     public HttpResponse() {
         _body = "";
@@ -69,7 +68,7 @@ public class HttpResponse  {
         _responseCode = -1;
         _responseMessage = "No response";
     }
-    
+
     /** Construct a new HttpResponse with the given message. Used for creating
      *  responses when errors occur on the Ptolemy side, such as an IOException.
      */
@@ -80,30 +79,29 @@ public class HttpResponse  {
         _responseCode = -1;
         _responseMessage = message;
     }
-    
-    
-    /** Construct a new HttpResponse object from an HttpURLConnection object. 
+
+    /** Construct a new HttpResponse object from an HttpURLConnection object.
      */
     public HttpResponse(HttpURLConnection connection) {
         _contentLength = connection.getContentLengthLong();
         _contentType = connection.getContentType();
-        
+
         try {
             _responseCode = connection.getResponseCode();
             _responseMessage = connection.getResponseMessage();
         } catch (IOException e) {
             _responseCode = -1;
             _responseMessage = "Error connecting to server.";
-        }     
-        
-        // Store the response body.  
+        }
+
+        // Store the response body.
         // Successful requests have data on the connection's input stream.
         // Erroneous requests have data on the connection's error stream.
         BufferedReader reader = null;
         StringBuffer response = new StringBuffer();
         String line = "";
         _body = "";
-        
+
         try {
             reader = new BufferedReader(new InputStreamReader(
                     connection.getInputStream()));
@@ -112,15 +110,15 @@ public class HttpResponse  {
             _responseCode = 408;
             _responseMessage = "Request timed out";
         } catch (IOException e2) {
-            // IOException is thrown by connection.getInputStream() in case of 
+            // IOException is thrown by connection.getInputStream() in case of
             // erroneous requests.  If so, connection.getErrorStream() has body
             // getErrorStream() does not throw exceptions
             if (connection.getErrorStream() != null) {
-                reader = new BufferedReader(new 
-                        InputStreamReader(connection.getErrorStream()));
-            } 
+                reader = new BufferedReader(new InputStreamReader(
+                        connection.getErrorStream()));
+            }
         }
-        
+
         // Read response.
         if (reader != null) {
             try {
@@ -130,7 +128,7 @@ public class HttpResponse  {
                         response.append(_lineBreak);
                     }
                 }
-                
+
                 _body = response.toString();
                 reader.close();
             } catch (IOException e) {
@@ -138,41 +136,41 @@ public class HttpResponse  {
                 _responseCode = -1;
                 _responseMessage = "Error reading response body.";
             }
-        }   
+        }
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-    
+
     /** Return the response body.
-     * 
+     *
      * @return The response body.
      */
     public String getBody() {
         return _body;
     }
-    
-    /** Return the length of the response body, in bytes, or -1 if length is 
+
+    /** Return the length of the response body, in bytes, or -1 if length is
      * unknown.
-     * 
-     * @return  The length of the response body, in bytes, or -1 if length is 
+     *
+     * @return  The length of the response body, in bytes, or -1 if length is
      * unknown.
      */
     public long getContentLength() {
         return _contentLength;
     }
 
-    /** Return the Internet media (MIME) type of the response. 
-     * 
+    /** Return the Internet media (MIME) type of the response.
+     *
      * @return The Internet media (MIME) type of the response.
      */
     public String getContentType() {
         return _contentType;
     }
-    
-    /** Return the source of the error, ErrorSource.CLIENT or 
-     *  ErrorSource.SERVER, or ErrorSource.NONE if no error  
-     * 
+
+    /** Return the source of the error, ErrorSource.CLIENT or
+     *  ErrorSource.SERVER, or ErrorSource.NONE if no error
+     *
      * @return ErrorSource.CLIENT, ErrorSource.SERVER or Error.NONE.
      */
     public ErrorSource getErrorSource() {
@@ -186,7 +184,7 @@ public class HttpResponse  {
     }
 
     /** Return a code indicating the status of the response.
-     * 
+     *
      * @return A code indicating the status of the response.
      */
     public int getResponseCode() {
@@ -194,71 +192,69 @@ public class HttpResponse  {
     }
 
     /** A message describing the status of the response.
-     * 
+     *
      * @return A message describing the status of the response.
      */
     public String getResponseMessage() {
         return _responseMessage;
-    } 
-    
+    }
+
     /** Return all status items as a RecordToken
-     * 
+     *
      * @return All status items as a RecordToken
      */
     public RecordToken getStatus() {
-        ArrayList<Token> values = new ArrayList(Arrays.asList(
-                new IntToken(_responseCode), 
-                new StringToken(_responseMessage),
-                new BooleanToken(isSuccessful()), 
-                new BooleanToken(isFurtherActionExpected())));
-        
+        ArrayList<Token> values = new ArrayList(Arrays.asList(new IntToken(
+                _responseCode), new StringToken(_responseMessage),
+                new BooleanToken(isSuccessful()), new BooleanToken(
+                        isFurtherActionExpected())));
+
         try {
-        return new RecordToken(_labels, 
-                values.toArray(new Token[values.size()]));
+            return new RecordToken(_labels, values.toArray(new Token[values
+                    .size()]));
         } catch (IllegalActionException e) {
             return new RecordToken();
         }
     }
-    
+
     /** Return the Type of the token of getStatus().  Used for setting type
      *  constraints before the response content is available.
-     *  
+     *
      * @return The Type of the token of getStatus()
      */
     public static Type getStatusType() {
-        // Define default values here so that a record token can be instantiated 
+        // Define default values here so that a record token can be instantiated
         // in order to return the Type of that token
-        ArrayList<Token> values = new ArrayList(Arrays.asList(new IntToken(200), 
-                new StringToken("OK"),
-                new BooleanToken(true), 
-                new BooleanToken(false)));
-        
+        ArrayList<Token> values = new ArrayList(Arrays.asList(
+                new IntToken(200), new StringToken("OK"),
+                new BooleanToken(true), new BooleanToken(false)));
+
         try {
-            return new RecordToken(_labels, 
-                    values.toArray(new Token[values.size()])).getType();
-            } catch (IllegalActionException e) {
-                return new RecordToken().getType();
+            return new RecordToken(_labels, values.toArray(new Token[values
+                    .size()])).getType();
+        } catch (IllegalActionException e) {
+            return new RecordToken().getType();
         }
     }
 
-    /** Return true if further action is expected of the client, e.g., issuing 
+    /** Return true if further action is expected of the client, e.g., issuing
      *  a second request; false otherwise.  Status codes 1xx and 3xx.
-     *  
-     * @return True if further action is expected of the client, e.g., issuing 
+     *
+     * @return True if further action is expected of the client, e.g., issuing
      *  a second request; false otherwise.  Status codes 1xx and 3xx.
      */
     public boolean isFurtherActionExpected() {
-        if ( (_responseCode >= 100 && _responseCode < 200) || 
-             (_responseCode >= 300 && _responseCode < 400)) {
+        if ((_responseCode >= 100 && _responseCode < 200)
+                || (_responseCode >= 300 && _responseCode < 400)) {
             return true;
         } else {
             return false;
         }
     }
-    
-    /** Return true if no errors were encountered; false otherwise.  
+
+    /** Return true if no errors were encountered; false otherwise.
      *  Status codes 1xx, 2xx, 3xx.
-     *  
+     *
      * @return True if no errors were encountered.  Status codes 1xx, 2xx, 3xx
      */
     public boolean isSuccessful() {
@@ -268,17 +264,17 @@ public class HttpResponse  {
             return false;
         }
     }
-   
+
     /** Create a timed-out response.  Used for creating a response in the event
-     * of a send time out. 
+     * of a send time out.
      */
     public void setTimedOut() {
         _responseCode = 408;
         _responseMessage = "Request timed out";
     }
-    
+
     /** Return true if the request timed out; false otherwise.  Status code 408.
-     * 
+     *
      * @return True if the request timed out; false otherwise.  Status code 408.
      */
     public boolean timedOut() {
@@ -288,9 +284,10 @@ public class HttpResponse  {
             return false;
         }
     }
+
     ///////////////////////////////////////////////////////////////////
     ////                         public  variables                 ////
-    
+
     /** Enumeration of possible sources of response errors, or none if none.
      *  CLIENT:  Status codes 4xx
      *  SERVER:  Status codes 5xx and -1
@@ -299,47 +296,47 @@ public class HttpResponse  {
     public enum ErrorSource {
         NONE, CLIENT, SERVER
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-    
+
     /** The body of the response.  */
     private String _body;
-    
+
     /** Length of the response body, in bytes.  -1 if length it unknown. */
     private long _contentLength;
-    
-    /** The Internet media (MIME) type of the response.  
+
+    /** The Internet media (MIME) type of the response.
      *  For categories and a list, see:
      *  http://en.wikipedia.org/wiki/MIME_type
-     *  For mappings to common file extensions, see:  
+     *  For mappings to common file extensions, see:
      *  http://www.sitepoint.com/web-foundations/mime-types-complete-list/
      */
     private String _contentType;
-    
+
     /** Labels for returning the status as a RecordToken */
-    static final String[] _labels = {"responseCode", "responseMessage", 
-                "successful", "furtherActionExpected"};
-    
+    static final String[] _labels = { "responseCode", "responseMessage",
+            "successful", "furtherActionExpected" };
+
     /** The locally used line break character sequence. */
     private String _lineBreak = System.getProperty("line.separator");
-    
-    /** A code indicating the status of the response.  
+
+    /** A code indicating the status of the response.
      *  See http://en.wikipedia.org/wiki/List_of_HTTP_status_codes
      *  -1  If the response is not valid Http
      *  1xx Informational:  Request received; intermediate response.  Client
      *          typically takes further action.  For example, client obtains
-     *          permission to upload a large file.  
+     *          permission to upload a large file.
      *  2xx Success
-     *  3xx Redirection.  Client typically takes additional action to complete 
+     *  3xx Redirection.  Client typically takes additional action to complete
      *          the request.
      *  4xx Client Error
      *  5xx Server Error
-     *  
+     *
      */
     private int _responseCode;
-    
+
     /** A description of the response status.  For example, "OK" for code 200.
      */
-    private String _responseMessage; 
+    private String _responseMessage;
 }

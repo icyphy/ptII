@@ -73,6 +73,7 @@ public class FigureTest extends TestSuite {
     /**
      * runSuite()
      */
+    @Override
     public void runSuite() {
         testHit();
         testIntersects();
@@ -93,15 +94,18 @@ public class FigureTest extends TestSuite {
 
             Interactor r = new DragInteractor();
 
+            @Override
             public void init() throws Exception {
                 figure = factory.createFigure();
             }
 
+            @Override
             public void run() throws Exception {
                 figure.setInteractor(r);
                 figure.setVisible(false);
             }
 
+            @Override
             public void check() throws TestFailedException {
                 assertExpr(!figure.isVisible(), "Property visible");
                 assertExpr(figure.getInteractor() == r,
@@ -115,6 +119,7 @@ public class FigureTest extends TestSuite {
      */
     public void testHit() {
         runTestCase(new RegionTestCase("Figure hit") {
+            @Override
             public void run() throws Exception {
                 /*result =*/figure.hit(region);
             }
@@ -126,6 +131,7 @@ public class FigureTest extends TestSuite {
      */
     public void testIntersects() {
         runTestCase(new RegionTestCase("Figure intersects") {
+            @Override
             public void run() throws Exception {
                 /*result = */figure.intersects(region);
             }
@@ -156,6 +162,7 @@ public class FigureTest extends TestSuite {
 
             Rectangle2D region = new Rectangle2D.Double(10, 20, 30, 40);
 
+            @Override
             public void init() throws Exception {
                 figure = factory.createFigure();
 
@@ -165,6 +172,7 @@ public class FigureTest extends TestSuite {
                 figure.transform(at);
             }
 
+            @Override
             public void run() throws Exception {
                 at1 = new AffineTransform(g.getTransform());
                 figure.paint(g);
@@ -173,17 +181,19 @@ public class FigureTest extends TestSuite {
                 at3 = new AffineTransform(g.getTransform());
             }
 
+            @Override
             public void check() throws TestFailedException {
                 assertExpr(at1.equals(at2),
                         "Graphics2D transform changed from:\n    " + at1
-                                + " \nto:\n    " + at2);
+                        + " \nto:\n    " + at2);
                 assertExpr(at2.equals(at3),
                         "Graphics2D transform changed from:\n    " + at2
-                                + " \nto:\n    " + at3);
+                        + " \nto:\n    " + at3);
             }
         });
 
         runTestCase(new RegionTestCase("Figure paint region test") {
+            @Override
             public void run() throws Exception {
                 figure.paint(g, region);
             }
@@ -202,6 +212,7 @@ public class FigureTest extends TestSuite {
 
             Rectangle2D bounds = null;
 
+            @Override
             public void init() throws Exception {
                 figure = factory.createFigure();
                 at = new AffineTransform();
@@ -209,6 +220,7 @@ public class FigureTest extends TestSuite {
                 at.scale(2.0, 0.5);
             }
 
+            @Override
             public void run() throws Exception {
                 shape = figure.getShape();
                 shape = ShapeUtilities.transformModify(shape, at);
@@ -219,10 +231,11 @@ public class FigureTest extends TestSuite {
                 figure.transform(at);
             }
 
+            @Override
             public void check() throws TestFailedException {
                 assertExpr(TestUtilities.shapeEquals(shape, figure.getShape(),
                         0.01), "Shape not transformed: " + shape + " != "
-                        + figure.getShape());
+                                + figure.getShape());
 
                 // For the bounds, we need to allow a large error,
                 // because bounds don't necessarily transform correctly!
@@ -230,7 +243,7 @@ public class FigureTest extends TestSuite {
                 // gross errors
                 assertExpr(TestUtilities.shapeEquals(bounds,
                         figure.getBounds(), 2.0), "Bounds not transformed: "
-                        + bounds + " != " + figure.getBounds());
+                                + bounds + " != " + figure.getBounds());
             }
         });
     }
@@ -245,10 +258,12 @@ public class FigureTest extends TestSuite {
 
             Rectangle2D bounds = null;
 
+            @Override
             public void init() throws Exception {
                 figure = factory.createFigure();
             }
 
+            @Override
             public void run() throws Exception {
                 shape = figure.getShape();
                 shape = new GeneralPath(shape);
@@ -261,14 +276,15 @@ public class FigureTest extends TestSuite {
                 figure.translate(10.0, -20.0);
             }
 
+            @Override
             public void check() throws TestFailedException {
                 assertExpr(TestUtilities.shapeEquals(shape, figure.getShape(),
                         0.01), "Shape not translated: " + shape + " != "
-                        + figure.getShape());
+                                + figure.getShape());
 
                 assertExpr(TestUtilities.shapeEquals(bounds,
                         figure.getBounds(), 0.01), "Bounds not translated: "
-                        + bounds + " != " + figure.getBounds());
+                                + bounds + " != " + figure.getBounds());
             }
         });
     }
@@ -293,6 +309,7 @@ public class FigureTest extends TestSuite {
             super(str);
         }
 
+        @Override
         public void init() throws Exception {
             figure = factory.createFigure();
 
@@ -308,10 +325,11 @@ public class FigureTest extends TestSuite {
         // public void run () throws Exception {
         //     result = figure.intersects(region);
         //}
+        @Override
         public void check() throws TestFailedException {
             assertExpr(TestUtilities.shapeEquals(region, copy, 0.01),
                     "The region was changed from:\n    " + copy
-                            + " \nto:\n    " + region);
+                    + " \nto:\n    " + region);
         }
     }
 }

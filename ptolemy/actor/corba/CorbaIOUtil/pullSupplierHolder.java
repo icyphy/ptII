@@ -10,7 +10,7 @@ package ptolemy.actor.corba.CorbaIOUtil;
 /* A CORBA compatible interface for a pull supplier.
  */
 public final class pullSupplierHolder implements
-        org.omg.CORBA.portable.Streamable {
+org.omg.CORBA.portable.Streamable {
     public ptolemy.actor.corba.CorbaIOUtil.pullSupplier value = null;
 
     public pullSupplierHolder() {
@@ -21,14 +21,17 @@ public final class pullSupplierHolder implements
         value = initialValue;
     }
 
+    @Override
     public void _read(org.omg.CORBA.portable.InputStream i) {
         value = ptolemy.actor.corba.CorbaIOUtil.pullSupplierHelper.read(i);
     }
 
+    @Override
     public void _write(org.omg.CORBA.portable.OutputStream o) {
         ptolemy.actor.corba.CorbaIOUtil.pullSupplierHelper.write(o, value);
     }
 
+    @Override
     public org.omg.CORBA.TypeCode _type() {
         return ptolemy.actor.corba.CorbaIOUtil.pullSupplierHelper.type();
     }

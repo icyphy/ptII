@@ -61,7 +61,8 @@ public class FIFOQueueTest extends FIFOQueue {
     /** Return a clone of this object.
      *  @exception CloneNotSupportedException If thrown by
      *  a parent class.
-     */   
+     */
+    @Override
     public Object clone() throws CloneNotSupportedException {
         return super.clone();
     }

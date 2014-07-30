@@ -83,6 +83,7 @@ public class TypeEvent implements DebugEvent {
     /** Return the Typeable whose type is changed.
      *  @return The Typeable whose type is changed.
      */
+    @Override
     public NamedObj getSource() {
         return (NamedObj) _typeable;
     }
@@ -94,6 +95,7 @@ public class TypeEvent implements DebugEvent {
      *  are the string representation of the types.
      *  @return A string description for this type change.
      */
+    @Override
     public String toString() {
         return "The type on " + getSource().getFullName() + " has changed "
                 + "from " + _oldType.toString() + " to " + _newType.toString();

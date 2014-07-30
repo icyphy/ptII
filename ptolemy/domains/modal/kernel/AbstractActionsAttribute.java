@@ -99,7 +99,7 @@ import ptolemy.kernel.util.Workspace;
  @see FSMActor
  */
 public abstract class AbstractActionsAttribute extends Action implements
-        HasTypeConstraints {
+HasTypeConstraints {
     /** Construct an action with the given name contained
      *  by the specified container (which should be a Transition when used in
      *  the FSM domain, and an Event in the Ptera domain). The <i>container</i>
@@ -143,6 +143,7 @@ public abstract class AbstractActionsAttribute extends Action implements
      *  @exception CloneNotSupportedException If a derived class contains
      *   an attribute that cannot be cloned.
      */
+    @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         AbstractActionsAttribute newObject = (AbstractActionsAttribute) super
                 .clone(workspace);
@@ -174,6 +175,7 @@ public abstract class AbstractActionsAttribute extends Action implements
      *  appropriate.
      *  @exception IllegalActionException If a destination is not found.
      */
+    @Override
     public void execute() throws IllegalActionException {
         if (_destinationsListVersion != workspace().getVersion()) {
             _updateDestinations();
@@ -228,6 +230,7 @@ public abstract class AbstractActionsAttribute extends Action implements
      *  @exception IllegalActionException If the destination list cannot be
      *   constructed.
      */
+    @Override
     public List getDestinations() throws IllegalActionException {
         if (_destinationsListVersion != workspace().getVersion()) {
             _updateDestinations();
@@ -301,6 +304,7 @@ public abstract class AbstractActionsAttribute extends Action implements
      *  to the container, or if the action is syntactically incorrect.
      *  @see #getExpression
      */
+    @Override
     public void setExpression(String expression) throws IllegalActionException {
         super.setExpression(expression);
 
@@ -370,6 +374,7 @@ public abstract class AbstractActionsAttribute extends Action implements
     /** Give a descriptive string.
      *  @return The expression.
      */
+    @Override
     public String toString() {
         return getExpression();
     }
@@ -379,6 +384,7 @@ public abstract class AbstractActionsAttribute extends Action implements
      *  @return a list of instances of Inequality.
      *  @see ptolemy.graph.Inequality
      */
+    @Override
     public Set<Inequality> typeConstraints() {
         Set<Inequality> list = new HashSet<Inequality>();
 
@@ -501,6 +507,7 @@ public abstract class AbstractActionsAttribute extends Action implements
          *  @exception IllegalActionException If inferring types for the
          *  expression fails.
          */
+        @Override
         public Object getValue() throws IllegalActionException {
             try {
                 // Deal with the singularity at UNKNOWN..  Assume that if
@@ -538,11 +545,11 @@ public abstract class AbstractActionsAttribute extends Action implements
                         && ((Entity) container).getPort(_name) == null) {
                     // Not a port, then it must be a variable.
                     if (_numbers.get(index) != null &&
-                    // If the destination is not a variable, it should
-                    // be a port, and port(i) refers to the i-th channel
-                    // of the port, which has the same type as the port
-                    // itself.
-                    // -- tfeng (11/26/2008)
+                            // If the destination is not a variable, it should
+                            // be a port, and port(i) refers to the i-th channel
+                            // of the port, which has the same type as the port
+                            // itself.
+                            // -- tfeng (11/26/2008)
                             getDestination(_name) instanceof Variable) {
                         // Has a number in parentheses following the name.
                         ArrayType arrayType = new ArrayType(type);
@@ -564,6 +571,7 @@ public abstract class AbstractActionsAttribute extends Action implements
          *  otherwise, return an empty array.
          *  @return An array of InequalityTerm.
          */
+        @Override
         public InequalityTerm[] getVariables() {
             // Return an array that contains type terms for all of the
             // inputs and all of the parameters that are free variables for
@@ -595,6 +603,7 @@ public abstract class AbstractActionsAttribute extends Action implements
         /** Override the base class to give a description of this term.
          *  @return A description of this term.
          */
+        @Override
         public String getVerboseString() {
             return getExpression(_name);
         }

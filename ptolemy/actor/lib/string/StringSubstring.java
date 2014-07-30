@@ -76,13 +76,13 @@ public class StringSubstring extends Transformer {
         start.setExpression("0");
         start.setTypeEquals(BaseType.INT);
         new SingletonParameter(start.getPort(), "_showName")
-                .setToken(BooleanToken.TRUE);
+        .setToken(BooleanToken.TRUE);
 
         stop = new PortParameter(this, "stop");
         stop.setExpression("0");
         stop.setTypeEquals(BaseType.INT);
         new SingletonParameter(stop.getPort(), "_showName")
-                .setToken(BooleanToken.TRUE);
+        .setToken(BooleanToken.TRUE);
 
         input.setTypeEquals(BaseType.STRING);
         new SingletonParameter(input, "_showName").setToken(BooleanToken.TRUE);
@@ -117,6 +117,7 @@ public class StringSubstring extends Transformer {
      *  @exception IllegalActionException If the superclass throws it, or
      *   if it is thrown reading the input port or writing to the output port.
      */
+    @Override
     public void fire() throws IllegalActionException {
         super.fire();
         start.update();

@@ -70,11 +70,11 @@ public class WiredToWireless extends TypedAtomicActor {
 
         payload = new TypedIOPort(this, "payload", true, false);
         new SingletonParameter(payload, "_showName")
-                .setToken(BooleanToken.TRUE);
+        .setToken(BooleanToken.TRUE);
 
         properties = new TypedIOPort(this, "properties", true, false);
         new SingletonParameter(properties, "_showName")
-                .setToken(BooleanToken.TRUE);
+        .setToken(BooleanToken.TRUE);
 
         // FIXME: This should be constrained to be a record token.
         // How to do that?
@@ -125,6 +125,7 @@ public class WiredToWireless extends TypedAtomicActor {
      *  @exception CloneNotSupportedException If a derived class contains
      *   an attribute that cannot be cloned.
      */
+    @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         WiredToWireless newObject = (WiredToWireless) super.clone(workspace);
 
@@ -138,6 +139,7 @@ public class WiredToWireless extends TypedAtomicActor {
      *  specified properties.  If there are no properties, then send with
      *  no properties.
      */
+    @Override
     public void fire() throws IllegalActionException {
         super.fire();
 

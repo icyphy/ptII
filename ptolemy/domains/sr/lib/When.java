@@ -108,6 +108,7 @@ public class When extends Transformer {
      *  @exception CloneNotSupportedException If a derived class contains
      *   an attribute that cannot be cloned.
      */
+    @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         When newObject = (When) super.clone(workspace);
         newObject.output.setTypeAtLeast(newObject.input);
@@ -118,6 +119,7 @@ public class When extends Transformer {
      *  the input to the output.
      *  @exception IllegalActionException If there is no director.
      */
+    @Override
     public void fire() throws IllegalActionException {
         super.fire();
         if (control.hasToken(0)

@@ -74,6 +74,7 @@ public class TimeGap extends DETransformer {
      *  consumes at most one token from the input each time it is fired.
      *  @exception IllegalActionException If get() or send() throws it.
      */
+    @Override
     public void fire() throws IllegalActionException {
         super.fire();
         // Consume an input.
@@ -92,6 +93,7 @@ public class TimeGap extends DETransformer {
 
     /** Set the previous event time to negative infinity.
      */
+    @Override
     public void initialize() throws IllegalActionException {
         _previousTime = Time.NEGATIVE_INFINITY;
         super.initialize();
@@ -102,6 +104,7 @@ public class TimeGap extends DETransformer {
      *  @exception IllegalActionException If there is no director or thrown
      *  in the super class.
      */
+    @Override
     public boolean postfire() throws IllegalActionException {
         _previousTime = getDirector().getModelTime();
         return super.postfire();

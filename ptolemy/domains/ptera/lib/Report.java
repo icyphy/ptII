@@ -24,7 +24,7 @@
  PT_COPYRIGHT_VERSION_2
  COPYRIGHTENDKEY
 
-*/
+ */
 package ptolemy.domains.ptera.lib;
 
 import javax.swing.JFrame;
@@ -132,6 +132,7 @@ public class Report extends Event {
      *  @exception IllegalActionException If the tableau cannot be used, or if
      *   thrown by the superclass.
      */
+    @Override
     public RefiringData fire(Token arguments) throws IllegalActionException {
         RefiringData data = super.fire(arguments);
 
@@ -170,7 +171,7 @@ public class Report extends Event {
                     this.tableau);
             if (tableau != null && !(tableau.getFrame() instanceof TextEditor)) {
                 EventUtils
-                        .setTableau(this, referredTableau, this.tableau, null);
+                .setTableau(this, referredTableau, this.tableau, null);
                 EventUtils.closeTableau(tableau);
                 tableau = null;
             }
@@ -314,6 +315,7 @@ public class Report extends Event {
         /** Show in an error dialog.
          */
         ERROR {
+            @Override
             public String toString() {
                 return "error";
             }
@@ -321,6 +323,7 @@ public class Report extends Event {
         /** Show in an exception dialog.
          */
         EXCEPTION {
+            @Override
             public String toString() {
                 return "runtime exception";
             }
@@ -328,6 +331,7 @@ public class Report extends Event {
         /** Show in a message dialog.
          */
         MESSAGE {
+            @Override
             public String toString() {
                 return "message";
             }
@@ -335,6 +339,7 @@ public class Report extends Event {
         /** Show in a tableau.
          */
         TABLEAU {
+            @Override
             public String toString() {
                 return "tableau";
             }
@@ -342,6 +347,7 @@ public class Report extends Event {
         /** Show in a warning dialog.
          */
         WARNING {
+            @Override
             public String toString() {
                 return "warning";
             }
@@ -349,6 +355,7 @@ public class Report extends Event {
         /** Show in a query.
          */
         YES_OR_NO {
+            @Override
             public String toString() {
                 return "yes or no";
             }

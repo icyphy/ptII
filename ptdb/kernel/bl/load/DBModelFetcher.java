@@ -25,7 +25,7 @@ ENHANCEMENTS, OR MODIFICATIONS.
                                                 COPYRIGHTENDKEY
 
 
-*/
+ */
 package ptdb.kernel.bl.load;
 
 import java.util.ArrayList;
@@ -95,7 +95,7 @@ public class DBModelFetcher {
      *
      */
     public static XMLDBModel load(String name) throws DBConnectionException,
-            DBExecutionException {
+    DBExecutionException {
 
         GetModelTask getModelTask = new GetModelTask(name);
         return load(getModelTask);

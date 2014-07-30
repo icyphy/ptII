@@ -74,7 +74,7 @@ public class CSPMultiSource extends CSPActor {
      *   name coincides with a port already in this actor.
      */
     public CSPMultiSource() throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         super();
         tokenLimit = new Parameter(this, "tokenLimit", new IntToken(-1));
     }
@@ -128,6 +128,7 @@ public class CSPMultiSource extends CSPActor {
      *  N output tokens for N = tokenCount.
      *  @exception IllegalActionException If thrown by the superclass.
      */
+    @Override
     public void fire() throws IllegalActionException {
         super.fire();
         try {
@@ -197,12 +198,14 @@ public class CSPMultiSource extends CSPActor {
      * @return false Indicating that iteration of this actor should
      *  should not continue.
      */
+    @Override
     public boolean postfire() {
         return false;
     }
 
     /** Discontinue the execution of this actor.
      */
+    @Override
     public void wrapup() {
         System.out.println("Invoking wrapup of CSPMultiSource...\n");
 
@@ -210,7 +213,7 @@ public class CSPMultiSource extends CSPActor {
             for (int i = 0; i < output.getWidth(); i++) {
                 System.out.println("MultiSource: Branch " + i
                         + " successfully  rendezvoused " + _branchCount[i]
-                        + " times.");
+                                + " times.");
             }
         } catch (IllegalActionException ex) {
             throw new InternalErrorException(this, ex,

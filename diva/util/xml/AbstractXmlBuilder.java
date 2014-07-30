@@ -44,6 +44,7 @@ public abstract class AbstractXmlBuilder implements XmlBuilder {
      *   public Graph build (XmlElement elt, String type);
      * </pre>
      */
+    @Override
     public abstract Object build(XmlElement elt, String type) throws Exception;
 
     /** Delegate builders can be used to build/generate for objects
@@ -52,6 +53,7 @@ public abstract class AbstractXmlBuilder implements XmlBuilder {
      *
      * @see diva.util.xml.CompositeBuilder
      */
+    @Override
     public void setDelegate(XmlBuilder delegate) {
         _delegate = delegate;
     }
@@ -66,6 +68,7 @@ public abstract class AbstractXmlBuilder implements XmlBuilder {
      * Unable to generate XML by default.
      * @exception UnsupportedOperationException Unable to generate XML by default
      */
+    @Override
     public XmlElement generate(Object in) throws Exception {
         String err = getClass().getName() + ": unable to generate XML";
         throw new UnsupportedOperationException(err);

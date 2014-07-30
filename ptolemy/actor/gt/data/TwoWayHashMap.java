@@ -81,10 +81,10 @@ public class TwoWayHashMap<K, V> extends HashMap<K, V> {
 
     /** Construct an empty two-way hash map with an initial capacity and a load
      *  factor.
-    *
-    *   @param initialCapacity The initial capacity.
-    *   @param loadFactor The load factor.
-    */
+     *
+     *   @param initialCapacity The initial capacity.
+     *   @param loadFactor The load factor.
+     */
     public TwoWayHashMap(int initialCapacity, float loadFactor) {
         super(initialCapacity, loadFactor);
         _reverseMap = new HashMap<V, K>(initialCapacity, loadFactor);
@@ -92,6 +92,7 @@ public class TwoWayHashMap<K, V> extends HashMap<K, V> {
 
     /** Clear this two-way hash map.
      */
+    @Override
     public void clear() {
         super.clear();
         _reverseMap.clear();
@@ -101,6 +102,7 @@ public class TwoWayHashMap<K, V> extends HashMap<K, V> {
      *
      *  @return The clone.
      */
+    @Override
     public Object clone() {
         TwoWayHashMap map = (TwoWayHashMap) super.clone();
         map._reverseMap = new HashMap<V, K>(_reverseMap);
@@ -112,6 +114,7 @@ public class TwoWayHashMap<K, V> extends HashMap<K, V> {
      *  @param value The value.
      *  @return true if the value is contained.
      */
+    @Override
     public boolean containsValue(Object value) {
         return _reverseMap.containsKey(value);
     }
@@ -132,6 +135,7 @@ public class TwoWayHashMap<K, V> extends HashMap<K, V> {
      *  @return The value previously associated with the key in this two-way
      *   hash map.
      */
+    @Override
     public V put(K key, V value) {
         if (value == null) {
             return remove(key);
@@ -150,6 +154,7 @@ public class TwoWayHashMap<K, V> extends HashMap<K, V> {
      *  @param key The key.
      *  @return The removed value, or null if not found.
      */
+    @Override
     public V remove(Object key) {
         V oldValue = super.remove(key);
         if (oldValue != null) {
@@ -162,6 +167,7 @@ public class TwoWayHashMap<K, V> extends HashMap<K, V> {
      *
      *  @return The set.
      */
+    @Override
     public Set<V> values() {
         return Collections.unmodifiableSet(_reverseMap.keySet());
     }

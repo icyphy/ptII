@@ -763,7 +763,7 @@ public final class FormLayout implements LayoutManager2, Serializable {
                 if (colIndex < 1 || colIndex > maxColumn) {
                     throw new IndexOutOfBoundsException(
                             "Invalid column group index " + colIndex
-                                    + " in group " + (group + 1));
+                            + " in group " + (group + 1));
                 }
                 if (usedIndices[colIndex]) {
                     throw new IllegalArgumentException("Column index "
@@ -834,7 +834,7 @@ public final class FormLayout implements LayoutManager2, Serializable {
                 if (rowIndex < 1 || rowIndex > rowCount) {
                     throw new IndexOutOfBoundsException(
                             "Invalid row group index " + rowIndex
-                                    + " in group " + (i + 1));
+                            + " in group " + (i + 1));
                 }
                 if (usedIndices[rowIndex]) {
                     throw new IllegalArgumentException("Row index " + rowIndex
@@ -879,6 +879,7 @@ public final class FormLayout implements LayoutManager2, Serializable {
      * @param component    component to add
      * @exception UnsupportedOperationException always
      */
+    @Override
     public void addLayoutComponent(String name, Component component) {
         throw new UnsupportedOperationException(
                 "Use #addLayoutComponent(Component, Object) instead.");
@@ -896,6 +897,7 @@ public final class FormLayout implements LayoutManager2, Serializable {
      * <code>CellConstraints</code> or a String that cannot be used to construct
      * a <code>CellConstraints</code>
      */
+    @Override
     public void addLayoutComponent(Component comp, Object constraints) {
         if (constraints instanceof String) {
             setConstraints(comp, new CellConstraints((String) constraints));
@@ -918,6 +920,7 @@ public final class FormLayout implements LayoutManager2, Serializable {
      * @see Container#remove(java.awt.Component)
      * @see Container#removeAll()
      */
+    @Override
     public void removeLayoutComponent(Component comp) {
         removeConstraints(comp);
     }
@@ -935,6 +938,7 @@ public final class FormLayout implements LayoutManager2, Serializable {
      *
      * @see Container#doLayout()
      */
+    @Override
     public Dimension minimumLayoutSize(Container parent) {
         return computeLayoutSize(parent, minimumWidthMeasure,
                 minimumHeightMeasure);
@@ -951,6 +955,7 @@ public final class FormLayout implements LayoutManager2, Serializable {
      *
      * @see Container#getPreferredSize()
      */
+    @Override
     public Dimension preferredLayoutSize(Container parent) {
         return computeLayoutSize(parent, preferredWidthMeasure,
                 preferredHeightMeasure);
@@ -966,6 +971,7 @@ public final class FormLayout implements LayoutManager2, Serializable {
      * @see #preferredLayoutSize(Container)
      * @return the maximum dimensions for this layout
      */
+    @Override
     public Dimension maximumLayoutSize(Container target) {
         return new Dimension(Integer.MAX_VALUE, Integer.MAX_VALUE);
     }
@@ -980,6 +986,7 @@ public final class FormLayout implements LayoutManager2, Serializable {
      * @param parent   the parent container
      * @return the value <code>0.5f</code> to indicate center alignment
      */
+    @Override
     public float getLayoutAlignmentX(Container parent) {
         return 0.5f;
     }
@@ -994,6 +1001,7 @@ public final class FormLayout implements LayoutManager2, Serializable {
      * @param parent  the parent container
      * @return the value <code>0.5f</code> to indicate center alignment
      */
+    @Override
     public float getLayoutAlignmentY(Container parent) {
         return 0.5f;
     }
@@ -1004,6 +1012,7 @@ public final class FormLayout implements LayoutManager2, Serializable {
      *
      * @param target   the container that holds the layout to be invalidated
      */
+    @Override
     public void invalidateLayout(Container target) {
         invalidateCaches();
     }
@@ -1031,6 +1040,7 @@ public final class FormLayout implements LayoutManager2, Serializable {
      * @see Container
      * @see Container#doLayout()
      */
+    @Override
     public void layoutContainer(Container parent) {
         synchronized (parent.getTreeLock()) {
             initializeColAndRowComponentLists();
@@ -1524,7 +1534,7 @@ public final class FormLayout implements LayoutManager2, Serializable {
      * that caches component sizes.
      */
     private abstract static class CachingMeasure implements Measure,
-            Serializable {
+    Serializable {
 
         /**
          * Holds previously requested component sizes.
@@ -1546,6 +1556,7 @@ public final class FormLayout implements LayoutManager2, Serializable {
             super(cache);
         }
 
+        @Override
         public int sizeOf(Component c) {
             return cache.getMinimumSize(c).width;
         }
@@ -1559,6 +1570,7 @@ public final class FormLayout implements LayoutManager2, Serializable {
             super(cache);
         }
 
+        @Override
         public int sizeOf(Component c) {
             return cache.getMinimumSize(c).height;
         }
@@ -1572,6 +1584,7 @@ public final class FormLayout implements LayoutManager2, Serializable {
             super(cache);
         }
 
+        @Override
         public int sizeOf(Component c) {
             return cache.getPreferredSize(c).width;
         }
@@ -1585,6 +1598,7 @@ public final class FormLayout implements LayoutManager2, Serializable {
             super(cache);
         }
 
+        @Override
         public int sizeOf(Component c) {
             return cache.getPreferredSize(c).height;
         }
@@ -1817,6 +1831,6 @@ public final class FormLayout implements LayoutManager2, Serializable {
         System.out.println();
     }
 
-    */
+     */
 
 }

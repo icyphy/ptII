@@ -121,6 +121,7 @@ public class TimedPlotter extends Plotter implements TimedActor {
      *  @exception CloneNotSupportedException If a derived class has an
      *   attribute that cannot be cloned.
      */
+    @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         TimedPlotter newObject = (TimedPlotter) super.clone(workspace);
         newObject._connected = new ArrayList<Boolean>();
@@ -134,6 +135,7 @@ public class TimedPlotter extends Plotter implements TimedActor {
      *
      *  @exception IllegalActionException If a derived class throws it.
      */
+    @Override
     public void initialize() throws IllegalActionException {
         super.initialize();
         int width = input.getWidth();
@@ -151,6 +153,7 @@ public class TimedPlotter extends Plotter implements TimedActor {
      *   if the base class throws it.
      *  @return True if it is OK to continue.
      */
+    @Override
     public boolean postfire() throws IllegalActionException {
         double currentTimeValue;
         int width = input.getWidth();

@@ -85,6 +85,7 @@ public class ParametersAttribute extends StringParameter {
      *  @exception CloneNotSupportedException Not thrown in this base class
      *  @return The new Attribute.
      */
+    @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         ParametersAttribute attribute = (ParametersAttribute) super
                 .clone(workspace);
@@ -129,6 +130,7 @@ public class ParametersAttribute extends StringParameter {
      *  @exception IllegalActionException If the expression cannot
      *   be parsed or cannot be evaluated, or if a dependency loop is found.
      */
+    @Override
     protected void _evaluate() throws IllegalActionException {
         super._evaluate();
         _parse();
@@ -151,7 +153,7 @@ public class ParametersAttribute extends StringParameter {
             try {
                 String function = "function" + getExpression() + " 1";
                 _parseTree = (ASTPtFunctionDefinitionNode) new PtParser()
-                        .generateParseTree(function);
+                .generateParseTree(function);
                 _parseTreeVersion = _workspace.getVersion();
             } catch (Exception e) {
                 throw new IllegalActionException(this, e, "The parameter "

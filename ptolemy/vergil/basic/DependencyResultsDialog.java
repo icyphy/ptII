@@ -23,7 +23,7 @@
 
    PT_COPYRIGHT_VERSION_2
    COPYRIGHTENDKEY
-*/
+ */
 package ptolemy.vergil.basic;
 
 import java.awt.Frame;
@@ -56,7 +56,7 @@ import ptolemy.util.MessageHandler;
    @since Ptolemy II 10.0
    @Pt.ProposedRating Yellow (cxh)
    @Pt.AcceptedRating Red (cxh)
-*/
+ */
 @SuppressWarnings("serial")
 public class DependencyResultsDialog extends SearchResultsDialog {
 
@@ -81,6 +81,7 @@ public class DependencyResultsDialog extends SearchResultsDialog {
     /** Initialize the query dialog.
      *  Derived classes may change the layout of the query dialog.
      */
+    @Override
     protected void _initializeQuery() {
         _query.setColumns(2);
         _query.addCheckBox("prerequisites", "Prerequisites", true);
@@ -89,6 +90,7 @@ public class DependencyResultsDialog extends SearchResultsDialog {
 
     /** Perform a search and update the results table.
      */
+    @Override
     protected void _search() {
         boolean prerequisites = _query.getBooleanValue("prerequisites");
         boolean dependents = _query.getBooleanValue("dependents");
@@ -131,7 +133,7 @@ public class DependencyResultsDialog extends SearchResultsDialog {
         }
         if (dependents) {
             BasicGraphFrame
-                    .report(_owner, "Generating dependency information.");
+            .report(_owner, "Generating dependency information.");
             result.addAll(ActorDependencies.dependents(actor, clazz));
             BasicGraphFrame.report(_owner, "");
         }
@@ -141,6 +143,7 @@ public class DependencyResultsDialog extends SearchResultsDialog {
     /** Return a URL that points to the help page.
      *  @return A URL that points to the help page
      */
+    @Override
     protected URL _getHelpURL() {
         URL helpURL = getClass().getClassLoader().getResource(
                 "ptolemy/vergil/basic/doc/DependencyResultsDialog.htm");
@@ -152,9 +155,10 @@ public class DependencyResultsDialog extends SearchResultsDialog {
 
     /** Default renderer for results table. */
     private static class DependencyResultsNamedObjRenderer extends
-            DefaultTableCellRenderer {
+    DefaultTableCellRenderer {
         // FindBugs indicates that this should be a static class.
 
+        @Override
         public void setValue(Object value) {
             String fullName = ((NamedObj) value).getFullName();
             String strippedName = fullName.substring(fullName.indexOf(".", 1));

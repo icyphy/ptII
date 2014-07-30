@@ -64,7 +64,7 @@ import ptolemy.kernel.util.Workspace;
  *
  */
 public class MetroIISequentialSDFDirector extends SDFDirector implements
-        GetFirable {
+GetFirable {
 
     /**
      * Constructs a director in the default workspace with an empty string as its
@@ -79,7 +79,7 @@ public class MetroIISequentialSDFDirector extends SDFDirector implements
      *                specified name.
      */
     public MetroIISequentialSDFDirector() throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
     }
 
     /**
@@ -133,6 +133,7 @@ public class MetroIISequentialSDFDirector extends SDFDirector implements
      *                Not thrown in this base class
      * @return The new Attribute.
      */
+    @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         MetroIISequentialSDFDirector newObject = (MetroIISequentialSDFDirector) super
                 .clone(workspace);
@@ -151,6 +152,7 @@ public class MetroIISequentialSDFDirector extends SDFDirector implements
      * Initializes the list of actors. The actors implementing MetroEventHandler
      * are wrapped by ResumableFire, otherwise are wrapped by BlockingFire.
      */
+    @Override
     public void initialize() throws IllegalActionException {
         super.initialize();
         Nameable container = getContainer();
@@ -181,12 +183,14 @@ public class MetroIISequentialSDFDirector extends SDFDirector implements
      *
      * @return iterator the iterator for the caller function of getfire().
      */
+    @Override
     public YieldAdapterIterable<Iterable<Event.Builder>> adapter() {
         return new ThreadedYieldAdapter<Iterable<Event.Builder>>()
                 .adapt(new Collector<Iterable<Event.Builder>>() {
+                    @Override
                     public void collect(
                             ResultHandler<Iterable<Event.Builder>> resultHandler)
-                            throws CollectionAbortedException {
+                                    throws CollectionAbortedException {
                         getfire(resultHandler);
                     }
                 });
@@ -196,6 +200,7 @@ public class MetroIISequentialSDFDirector extends SDFDirector implements
      * The order of actor firing should be static and identical to fire(). Each
      * actor is fired only if the associated Metro event is notified.
      */
+    @Override
     public void getfire(ResultHandler<Iterable<Event.Builder>> resultHandler)
             throws CollectionAbortedException {
 

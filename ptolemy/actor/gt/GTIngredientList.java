@@ -151,6 +151,7 @@ public class GTIngredientList extends LinkedList<GTIngredient> {
      *
      *  @return The string that describes all the ingredients within this list.
      */
+    @Override
     public String toString() {
         StringBuffer buffer = new StringBuffer();
         for (GTIngredient rule : this) {

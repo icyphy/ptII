@@ -36,7 +36,7 @@ import java.util.EventListener;
  * @author         John Reekie
  */
 public class LayerEventMulticaster extends AWTEventMulticaster implements
-        LayerListener, LayerMotionListener {
+LayerListener, LayerMotionListener {
     /**
      * Create an event multicaster from two listeners.
      */
@@ -47,6 +47,7 @@ public class LayerEventMulticaster extends AWTEventMulticaster implements
     /** Invoked when the mouse moves while the button is still held
      * down.
      */
+    @Override
     public void mouseDragged(LayerEvent e) {
         ((LayerListener) a).mouseDragged(e);
         ((LayerListener) b).mouseDragged(e);
@@ -54,6 +55,7 @@ public class LayerEventMulticaster extends AWTEventMulticaster implements
 
     /** Invoked when the mouse enters a layer or figure.
      */
+    @Override
     public void mouseEntered(LayerEvent e) {
         ((LayerMotionListener) a).mouseEntered(e);
         ((LayerMotionListener) b).mouseEntered(e);
@@ -61,6 +63,7 @@ public class LayerEventMulticaster extends AWTEventMulticaster implements
 
     /** Invoked when the mouse exits a layer or figure.
      */
+    @Override
     public void mouseExited(LayerEvent e) {
         ((LayerMotionListener) a).mouseExited(e);
         ((LayerMotionListener) b).mouseExited(e);
@@ -68,6 +71,7 @@ public class LayerEventMulticaster extends AWTEventMulticaster implements
 
     /** Invoked when the mouse moves while over a layer or figure.
      */
+    @Override
     public void mouseMoved(LayerEvent e) {
         ((LayerMotionListener) a).mouseExited(e);
         ((LayerMotionListener) b).mouseExited(e);
@@ -75,6 +79,7 @@ public class LayerEventMulticaster extends AWTEventMulticaster implements
 
     /** Invoked when the mouse is pressed on a layer or figure.
      */
+    @Override
     public void mousePressed(LayerEvent e) {
         ((LayerListener) a).mousePressed(e);
         ((LayerListener) b).mousePressed(e);
@@ -82,6 +87,7 @@ public class LayerEventMulticaster extends AWTEventMulticaster implements
 
     /** Invoked when the mouse is released on a layer or figure.
      */
+    @Override
     public void mouseReleased(LayerEvent e) {
         ((LayerListener) a).mouseReleased(e);
         ((LayerListener) b).mouseReleased(e);
@@ -89,6 +95,7 @@ public class LayerEventMulticaster extends AWTEventMulticaster implements
 
     /** Invoked when the mouse is clicked on a layer or figure.
      */
+    @Override
     public void mouseClicked(LayerEvent e) {
         ((LayerListener) a).mouseClicked(e);
         ((LayerListener) b).mouseClicked(e);

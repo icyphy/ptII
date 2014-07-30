@@ -63,6 +63,7 @@ public class TestAbstractReceiver extends AbstractReceiver {
     /** Get a token from this receiver.
      *  @exception NoTokenException If there is no token.
      */
+    @Override
     public Token get() throws NoTokenException {
         return null;
     }
@@ -73,6 +74,7 @@ public class TestAbstractReceiver extends AbstractReceiver {
      *  put() will not result in an exception.
      *  @return True
      */
+    @Override
     public boolean hasRoom() {
         return true;
     }
@@ -85,6 +87,7 @@ public class TestAbstractReceiver extends AbstractReceiver {
      *  @param numberOfTokens The number of tokens to put into this receiver.
      *  @return True
      */
+    @Override
     public boolean hasRoom(int numberOfTokens) {
         return true;
     }
@@ -95,6 +98,7 @@ public class TestAbstractReceiver extends AbstractReceiver {
      *  call to get() will not result in an exception.
      *  @return True
      */
+    @Override
     public boolean hasToken() {
         return true;
     }
@@ -106,6 +110,7 @@ public class TestAbstractReceiver extends AbstractReceiver {
      *  @param numberOfTokens The number of tokens desired.
      *  @return True
      */
+    @Override
     public boolean hasToken(int numberOfTokens) {
         return true;
     }
@@ -116,6 +121,7 @@ public class TestAbstractReceiver extends AbstractReceiver {
      *  however, such as SR, will need to override this method.
      *  @return True.
      */
+    @Override
     public boolean isKnown() {
         return true;
     }
@@ -126,6 +132,7 @@ public class TestAbstractReceiver extends AbstractReceiver {
      *  @exception IllegalActionException If the put fails
      *   (e.g. because of incompatible types).
      */
+    @Override
     public void put(Token token) throws NoRoomException, IllegalActionException {
 
     }

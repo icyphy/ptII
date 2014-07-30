@@ -76,6 +76,7 @@ public class FixToDouble extends Converter {
      *  DoubleToken to the output port.
      * @exception IllegalActionException If there is no director.
      */
+    @Override
     public void fire() throws IllegalActionException {
         super.fire();
         FixToken in = (FixToken) input.get(0);
@@ -87,6 +88,7 @@ public class FixToDouble extends Converter {
      *  what the superclass returns (presumably true).
      *  @exception IllegalActionException If there is no director.
      */
+    @Override
     public boolean prefire() throws IllegalActionException {
         if (!input.hasToken(0)) {
             return false;

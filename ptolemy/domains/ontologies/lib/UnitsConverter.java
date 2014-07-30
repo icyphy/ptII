@@ -153,6 +153,7 @@ public class UnitsConverter extends Transformer {
      *  @exception IllegalActionException Thrown if there is a problem setting
      *   the expression of the conversionLabel attribute.
      */
+    @Override
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         if (attribute.equals(inputUnitConcept)
@@ -169,6 +170,7 @@ public class UnitsConverter extends Transformer {
      *  If there is no input, then produce no output.
      *  @exception IllegalActionException If there is no director.
      */
+    @Override
     public void fire() throws IllegalActionException {
         super.fire();
 
@@ -278,6 +280,7 @@ public class UnitsConverter extends Transformer {
      *  @exception IllegalActionException Thrown if the input or output unit
      *   concepts are incorrectly specified.
      */
+    @Override
     public void preinitialize() throws IllegalActionException {
         super.preinitialize();
 

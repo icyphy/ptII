@@ -79,10 +79,12 @@ public class PlotApplet extends JApplet {
      *  by the browser or appletviewer to inform this applet that
      *  it should clean up.
      */
+    @Override
     public void destroy() {
         try {
             // See http://download.oracle.com/javase/tutorial/uiswing/components/applet.html
             SwingUtilities.invokeAndWait(new Runnable() {
+                @Override
                 public void run() {
                     _plot.destroy();
                     // Needed to get rid of the Mouse, MouseMotion and Key listeners
@@ -101,6 +103,7 @@ public class PlotApplet extends JApplet {
     /** Return a string describing this applet.
      *  @return A string describing the applet.
      */
+    @Override
     public String getAppletInfo() {
         return "PlotApplet " + PlotBox.PTPLOT_RELEASE + ": A data plotter.\n"
                 + "By: Edward A. Lee and\n " + "Christopher Hylands\n"
@@ -111,6 +114,7 @@ public class PlotApplet extends JApplet {
      *  @return A array of arrays giving parameter names, the type,
      *   and the default value or description.
      */
+    @Override
     public String[][] getParameterInfo() {
         String[][] pinfo = {
                 { "background", "hexcolor value", "background color" },
@@ -130,12 +134,14 @@ public class PlotApplet extends JApplet {
      *  For details about SwingUtilities.invokeAndWait(), see
      *  <a href="http://download.oracle.com/javase/tutorial/uiswing/components/applet.html#thread">The Sun Applet Tutorial</a>
      */
+    @Override
     public void init() {
         super.init();
 
         // FIXME: having the mutex causes applets to hang.
         //synchronized (_mutex) {
         Runnable doActions = new Runnable() {
+            @Override
             public void run() {
                 if (_plot == null) {
                     _plot = newPlot();
@@ -208,8 +214,8 @@ public class PlotApplet extends JApplet {
                         System.err.println("PlotApplet: file not found: " + e);
                     } catch (IOException e) {
                         System.err
-                                .println("PlotApplet: error reading input file: "
-                                        + e);
+                        .println("PlotApplet: error reading input file: "
+                                + e);
                     }
                 }
             }

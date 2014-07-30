@@ -96,7 +96,7 @@ public class SizeDialog extends JPanel {
         return new Dimension(((SpinnerNumberModel) _widthSpinner.getModel())
                 .getNumber().intValue(),
                 ((SpinnerNumberModel) _heightSpinner.getModel()).getNumber()
-                        .intValue());
+                .intValue());
     }
 
     ///////////////////////////////////////////////////////////////////

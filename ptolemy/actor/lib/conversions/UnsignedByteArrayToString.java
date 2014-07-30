@@ -84,6 +84,7 @@ public class UnsignedByteArrayToString extends Converter {
      *  or remove this statement.  This statement occurs in other
      *  conversion actor(s) as well.
      */
+    @Override
     public void fire() throws IllegalActionException {
         super.fire();
         ArrayToken dataArrayToken = (ArrayToken) input.get(0);
@@ -104,6 +105,7 @@ public class UnsignedByteArrayToString extends Converter {
      *  what the superclass returns (presumably true).
      *  @exception IllegalActionException If there is no director.
      */
+    @Override
     public boolean prefire() throws IllegalActionException {
         if (!input.hasToken(0)) {
             return false;

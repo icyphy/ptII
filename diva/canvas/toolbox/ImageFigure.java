@@ -98,6 +98,7 @@ public class ImageFigure extends AbstractFigure implements ImageObserver {
      *  shape if the figure is not centered.
      *  @return The origin of the figure.
      */
+    @Override
     public Point2D getOrigin() {
         if (_centered) {
             return super.getOrigin();
@@ -118,6 +119,7 @@ public class ImageFigure extends AbstractFigure implements ImageObserver {
      * return value unless the image has been fully
      * rendered.
      */
+    @Override
     public Shape getShape() {
         if (_image != null) {
             int w = _image.getWidth(this);
@@ -155,6 +157,7 @@ public class ImageFigure extends AbstractFigure implements ImageObserver {
      *  @return False if the infoflags indicate that the image is
      *   completely loaded; true otherwise.
      */
+    @Override
     public boolean imageUpdate(Image image, int infoflags, int x, int y,
             int width, int height) {
 
@@ -233,6 +236,7 @@ public class ImageFigure extends AbstractFigure implements ImageObserver {
     /**
      * Paint the figure's image.
      */
+    @Override
     public void paint(Graphics2D g) {
         if (_image != null) {
             // The image may not be ready to be painted, so we pass this
@@ -275,6 +279,7 @@ public class ImageFigure extends AbstractFigure implements ImageObserver {
      * Perform an affine transform on this
      * image.
      */
+    @Override
     public void transform(AffineTransform t) {
         repaint();
         _xf.preConcatenate(t);

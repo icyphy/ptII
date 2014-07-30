@@ -54,7 +54,7 @@ See {@link ptolemy.domains.sdf.optimize.OptimizingSDFDirector},
 @since Ptolemy II 10.0
 @Pt.ProposedRating Red (mgeilen)
 @Pt.AcceptedRating Red ()
-*/
+ */
 public class BufferingProfileFiring extends Firing {
 
     /**

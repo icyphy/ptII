@@ -75,6 +75,7 @@ public class OpenCVReader extends Source {
     /** Output a frame.
      *  @exception IllegalActionException If thrown while writing to the port.
      */
+    @Override
     public void fire() throws IllegalActionException {
         _openCV.read();
         //_openCV.flip(OpenCV.FLIP_BOTH);
@@ -88,6 +89,7 @@ public class OpenCVReader extends Source {
     /** Open the video capture device.
      *  @exception IllegalActionException If thrown by the super class.
      */
+    @Override
     public void initialize() throws IllegalActionException {
         super.initialize();
         if (_openCV == null) {
@@ -102,6 +104,7 @@ public class OpenCVReader extends Source {
     /** Stop the capture.
      *  @exception IllegalActionException If thrown by the super class.
      */
+    @Override
     public void wrapup() throws IllegalActionException {
         super.wrapup();
         _openCV.stop();

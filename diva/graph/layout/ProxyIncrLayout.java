@@ -52,6 +52,7 @@ public class ProxyIncrLayout implements IncrementalLayout {
 
     /** Called in response to the given edge being given a figure.
      */
+    @Override
     public void edgeDrawn(Object edge) {
         _delegate.edgeDrawn(edge);
     }
@@ -59,12 +60,14 @@ public class ProxyIncrLayout implements IncrementalLayout {
     /** Called in response to the connector representing the given edge being
      *  rereouted.
      */
+    @Override
     public void edgeRouted(Object edge) {
         _delegate.edgeRouted(edge);
     }
 
     /** Called in response to the given node being given a figure.
      */
+    @Override
     public void nodeDrawn(Object node) {
         _delegate.nodeDrawn(node);
     }
@@ -72,18 +75,21 @@ public class ProxyIncrLayout implements IncrementalLayout {
     /** Called in response to the figure representing the
      *  given node being moved.
      */
+    @Override
     public void nodeMoved(Object node) {
         _delegate.nodeMoved(node);
     }
 
     /** Return the layout target.
      */
+    @Override
     public LayoutTarget getLayoutTarget() {
         return _delegate.getLayoutTarget();
     }
 
     /** Set the layout target.
      */
+    @Override
     public void setLayoutTarget(LayoutTarget target) {
         _delegate.setLayoutTarget(target);
     }
@@ -92,6 +98,7 @@ public class ProxyIncrLayout implements IncrementalLayout {
      * Layout the graph model in the viewport
      * specified by the layout target environment.
      */
+    @Override
     public void layout(Object composite) {
         _delegate.layout(composite);
     }

@@ -71,6 +71,7 @@ public abstract class InfiniteConcept extends Concept {
      *  @param concept Object with which to compare.
      *  @return True, if both concepts are the same. False, otherwise.
      */
+    @Override
     public boolean equals(Object concept) {
         if (concept instanceof Concept && getOntology() != null
                 && ((Concept) concept).getOntology() != null) {
@@ -99,6 +100,7 @@ public abstract class InfiniteConcept extends Concept {
      *  @return A valid hash code.
      *  @see java.lang.Object#hashCode()
      */
+    @Override
     public abstract int hashCode();
 
     /** Compute the greatest lower bound (GLB) of this and another concept.
@@ -132,7 +134,7 @@ public abstract class InfiniteConcept extends Concept {
      *  @exception IllegalActionException If the base class throws it.
      */
     protected InfiniteConcept(Ontology ontology) throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         super(ontology, "__InfiniteConcept_"
                 + _incrementAndReturnConceptNumber());
         setName(getName() + " (of " + getClass().getSimpleName() + ")");

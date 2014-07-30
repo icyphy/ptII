@@ -99,6 +99,7 @@ public class ArrayToElements extends Transformer {
      *  @exception CloneNotSupportedException If a derived class
      *   contains an attribute that cannot be cloned.
      */
+    @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         ArrayToElements newObject = (ArrayToElements) super.clone(workspace);
         try {
@@ -118,6 +119,7 @@ public class ArrayToElements extends Transformer {
      *  @exception IllegalActionException If a runtime
      *   type conflict occurs.
      */
+    @Override
     public void fire() throws IllegalActionException {
         super.fire();
         if (input.hasToken(0)) {

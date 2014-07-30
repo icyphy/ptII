@@ -69,14 +69,17 @@ public class ClassWriter extends SceneTransformer implements HasPhaseOptions {
         return instance;
     }
 
+    @Override
     public String getPhaseName() {
         return "";
     }
 
+    @Override
     public String getDefaultOptions() {
         return "";
     }
 
+    @Override
     public String getDeclaredOptions() {
         return "debug outputDirectory";
     }
@@ -100,6 +103,7 @@ public class ClassWriter extends SceneTransformer implements HasPhaseOptions {
      *  <code>outputDirectory</code> option to specify where the .class
      *  file should be written
      */
+    @Override
     protected void internalTransform(String phaseName, Map options) {
         System.out.println("ClassWriter.internalTransform(" + phaseName + ", "
                 + options + ")");
@@ -144,10 +148,10 @@ public class ClassWriter extends SceneTransformer implements HasPhaseOptions {
         try {
             File tempFile = new File(outputDirWithSep
                     + cl.getName()
-                            .replace(
-                                    '.',
-                                    System.getProperty("file.separator")
-                                            .toCharArray()[0]) + ".class");
+                    .replace(
+                            '.',
+                            System.getProperty("file.separator")
+                            .toCharArray()[0]) + ".class");
 
             _create(tempFile.getAbsoluteFile());
 

@@ -147,10 +147,10 @@ public class TransitionController extends BasicEdgeController {
     ////                         public methods                    ////
 
     /** Add hot keys to the actions in the given JGraph.
-    *   It would be better that this method was added higher in the hierarchy. Now
-    *   most controllers
-    *  @param jgraph The JGraph to which hot keys are to be added.
-    */
+     *   It would be better that this method was added higher in the hierarchy. Now
+     *   most controllers
+     *  @param jgraph The JGraph to which hot keys are to be added.
+     */
     public void addHotKeys(JGraph jgraph) {
         GUIUtilities.addHotKey(jgraph, _lookInsideAction);
     }
@@ -172,6 +172,7 @@ public class TransitionController extends BasicEdgeController {
      */
     public static class LinkRenderer implements EdgeRenderer {
         /** Render a visual representation of the given edge. */
+        @Override
         public Connector render(Object edge, Site tailSite, Site headSite) {
             ArcConnector c = new ArcConnector(tailSite, headSite);
             c.setLineWidth((float) 2.0);
@@ -314,6 +315,7 @@ public class TransitionController extends BasicEdgeController {
     /** A Link target.
      */
     public static class LinkTarget extends PerimeterTarget {
+        @Override
         public boolean acceptHead(Connector c, Figure f) {
             Object object = f.getUserObject();
 
@@ -330,6 +332,7 @@ public class TransitionController extends BasicEdgeController {
             return false;
         }
 
+        @Override
         public boolean acceptTail(Connector c, Figure f) {
             return acceptHead(c, f);
         }
@@ -407,6 +410,7 @@ public class TransitionController extends BasicEdgeController {
         /** Called when a connector end is dropped.  Attach or
          *  detach the edge as appropriate.
          */
+        @Override
         public void connectorDropped(ConnectorEvent evt) {
             Connector c = evt.getConnector();
             Figure f = evt.getTarget();
@@ -469,7 +473,7 @@ public class TransitionController extends BasicEdgeController {
      *  will report an error with a fairly cryptic message.
      */
     @SuppressWarnings("serial")
-        private class LookInsideAction extends FigureAction {
+    private class LookInsideAction extends FigureAction {
         public LookInsideAction() {
             super("Look Inside");
 
@@ -481,14 +485,15 @@ public class TransitionController extends BasicEdgeController {
                 // So we use L.
                 putValue(GUIUtilities.ACCELERATOR_KEY, KeyStroke.getKeyStroke(
                         KeyEvent.VK_L, Toolkit.getDefaultToolkit()
-                                .getMenuShortcutKeyMask()));
+                        .getMenuShortcutKeyMask()));
             }
         }
 
+        @Override
         public void actionPerformed(ActionEvent e) {
             if (_configuration == null) {
                 MessageHandler
-                        .error("Cannot look inside without a configuration.");
+                .error("Cannot look inside without a configuration.");
                 return;
             }
 

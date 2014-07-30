@@ -45,41 +45,41 @@ import ptolemy.kernel.util.NamedObj;
 ///////////////////////////////////////////////////////////////////
 //// CertiRtig
 
-/** 
+/**
  * <p>Execute the HLA/CERTI RTIG in a subprocess.
  * </p><p>
- * This object is based on the Exec actor implementation. It invokes the 
- * HLA/CERTI RTIG as a subprocess in a specified <i>directory</i> with a specified  
+ * This object is based on the Exec actor implementation. It invokes the
+ * HLA/CERTI RTIG as a subprocess in a specified <i>directory</i> with a specified
  * <i>environment</i>. A default platform-dependent shell command is preprended
  * so the RTIG is executed within the shell. If another RTIG process is running
- * the current subprocess is destroyed. 
+ * the current subprocess is destroyed.
  * </p><p>
  * This object is used by the {@link HlaManager} and need to be performed before
  * the initialization of a HLA/CERTI Federate. That's why we execute this mechanism
  * in the {@link HlaManager} preinitialize() method.
  * </p><p>
- * The specified <i>directory</i> is the current directory of the Ptolemy 
+ * The specified <i>directory</i> is the current directory of the Ptolemy
  * simulation and needs to contain the Federate Object Management file (.fed).
  * This directory is provided by the specification of the .fed file path during
  * the configuration of the {@link HlaManager} attribute.
  * </p><p>
- * For a correct execution, the <i>CERTI_HOME</i> environment variable has to be 
+ * For a correct execution, the <i>CERTI_HOME</i> environment variable has to be
  * set. It could be set in the shell (by running one of the scripts provided by
- * CERTI) where Vergil is executed, or as a parameter of the Ptolemy model or as 
+ * CERTI) where Vergil is executed, or as a parameter of the Ptolemy model or as
  * a parameter of the {@link HlaManager}:
  * </p><pre>
  * CERTI_HOME="/absolute/path/to/certi/"
  * </pre><p>
- * Otherwise, the current implementation is not able to find the CERTI 
+ * Otherwise, the current implementation is not able to find the CERTI
  * environment, the RTIG binary and to perform its execution.
  * </p><b>
  * Current limitation:
- * </b><br> 
+ * </b><br>
  * Federate that has launched the RTIG could shutdown the subprocess at the
  * end of the simulation before the other Federates have left the Federation.
  * Then an exception is throwed.
  * </br>
- * 
+ *
  * @author Gilles Lasnier, based on Exec.java by Christopher Hylands Brooks
  * @version $Id$
  *
@@ -89,7 +89,7 @@ import ptolemy.kernel.util.NamedObj;
  */
 public class CertiRtig extends NamedObj {
 
-    /** Construct an actor with the given {@link HlaManager} reference and 
+    /** Construct an actor with the given {@link HlaManager} reference and
      *  debug mode status.
      *  @param hm A reference to the associated {@link HlaManager}.
      *  @param addDebugListener The debug mode status.
@@ -106,7 +106,7 @@ public class CertiRtig extends NamedObj {
     ////                         public methods                    ////
 
     /** Execute a command, set _process to point to the subprocess
-     *  and set up _errorGobbler and _outputGobbler to read data. 
+     *  and set up _errorGobbler and _outputGobbler to read data.
      *  @exception IllegalActionException If the execution of the Runtime.exec()
      *  failed or if the RTIG subprocess it not running.
      */
@@ -290,6 +290,7 @@ public class CertiRtig extends NamedObj {
         /** Read lines from the inputStream and append them to the
          *  stringBuffer.
          */
+        @Override
         public synchronized void run() {
             if (!_inputStreamReaderClosed) {
                 _read();
@@ -297,7 +298,7 @@ public class CertiRtig extends NamedObj {
         }
 
         /** Read from the stream until we get to the end of the stream
-         *  NOTE: This was initially synchronized so that it is not called 
+         *  NOTE: This was initially synchronized so that it is not called
          *  simultaneously from run() and getAndReset(). As getAndReset()
          *  is not implemented here we could remove it.
          */
@@ -375,7 +376,7 @@ public class CertiRtig extends NamedObj {
     /** The directory where the simulation is launched. */
     private File _directoryAsFile;
 
-    /** A reference to the Runtime class that allows the application to 
+    /** A reference to the Runtime class that allows the application to
      *  interface with the environment in which the application is running.
      */
     private Runtime _runtime;

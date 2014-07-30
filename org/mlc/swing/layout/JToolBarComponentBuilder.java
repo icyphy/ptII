@@ -51,11 +51,13 @@ public class JToolBarComponentBuilder implements ComponentBuilder {
     public JToolBarComponentBuilder() {
     }
 
+    @Override
     public String getDeclaration(String name,
             java.util.Map<String, Object> beanProperties) {
         return "JToolBar " + name + " = new JToolBar();\n";
     }
 
+    @Override
     public java.awt.Component getInstance(
             java.util.Map<String, Object> beanProperties) throws Exception {
         JToolBar toolbar = new JToolBar();
@@ -71,18 +73,22 @@ public class JToolBarComponentBuilder implements ComponentBuilder {
         return toolbar;
     }
 
+    @Override
     public java.util.List<BeanProperty> getProperties() {
         return properties;
     }
 
+    @Override
     public boolean isComponentALayoutContainer() {
         return false;
     }
 
+    @Override
     public String toString() {
         return "javax.swing.JToolBar";
     }
 
+    @Override
     public ComponentDef getComponentDef(String name,
             Map<String, Object> beanProperties) {
         String imp = "";

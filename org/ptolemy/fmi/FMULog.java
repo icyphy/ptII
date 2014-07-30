@@ -24,7 +24,7 @@
    PT_COPYRIGHT_VERSION_2
    COPYRIGHTENDKEY
 
-*/
+ */
 
 package org.ptolemy.fmi;
 
@@ -68,7 +68,7 @@ public class FMULog {
 
         // We need the ffi_cif so we can call the new Native.ffi_closure_va_*
         // functions which allow us to access variadic arguments.
-        long ffi_cif = Pointer.nativeCif (fmiComponent);
+        long ffi_cif = Pointer.nativeCif(fmiComponent);
 
         // FIXME: Need to handle the fmi-specific # format:
         // #<Type><valueReference#, where <Type> is one of
@@ -134,13 +134,13 @@ public class FMULog {
                     case 'u': // Unsigned decimal which must be converted to 'd' since String.format() doesnot handle it.
                         out.append(String.format(
                                 "%" + flags.toString()
-                                        + (msg[i] == 'u' ? 'd' : msg[i]),
+                                + (msg[i] == 'u' ? 'd' : msg[i]),
                                 foundLong ? Native
                                         .ffi_closure_va_uint64(ffi_cif)
                                         : Native.ffi_closure_va_uint32(ffi_cif)));
                         break;
 
-                    // DOU are deprecated.  Does FMI support them?
+                        // DOU are deprecated.  Does FMI support them?
                     case 'e':
                     case 'E':
                     case 'f':
@@ -164,14 +164,15 @@ public class FMULog {
                     case 's': // String
                         // C strings: Read until you hit NUL (utf-8 is NUL safe).
                         String formatValue = "";
-                        Pointer closureVaPointer = Native.ffi_closure_va_pointer(ffi_cif);
+                        Pointer closureVaPointer = Native
+                                .ffi_closure_va_pointer(ffi_cif);
                         if (closureVaPointer == null) {
                             formatValue = "<null>";
                         } else {
                             formatValue = closureVaPointer.getString(0);
                         }
                         out.append(String.format("%" + flags.toString() + "s",
-                                                 formatValue));
+                                formatValue));
                         break;
 
                     case 'p': // Pointer

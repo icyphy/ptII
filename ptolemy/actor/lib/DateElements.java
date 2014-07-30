@@ -68,88 +68,92 @@ public class DateElements extends TypedAtomicActor {
 
         input = new TypedIOPort(this, "input", true, false);
         input.setTypeEquals(BaseType.DATE);
-        
+
         year = new TypedIOPort(this, "year", false, true);
         year.setTypeEquals(BaseType.INT);
         new SingletonParameter(year, "_showName").setToken(BooleanToken.TRUE);
-        
+
         month = new TypedIOPort(this, "month", false, true);
         month.setTypeEquals(BaseType.INT);
         new SingletonParameter(month, "_showName").setToken(BooleanToken.TRUE);
-        
+
         day = new TypedIOPort(this, "day", false, true);
         day.setTypeEquals(BaseType.INT);
         new SingletonParameter(day, "_showName").setToken(BooleanToken.TRUE);
-        
+
         hour = new TypedIOPort(this, "hour", false, true);
         hour.setTypeEquals(BaseType.INT);
         new SingletonParameter(hour, "_showName").setToken(BooleanToken.TRUE);
-        
+
         minute = new TypedIOPort(this, "minute", false, true);
         minute.setTypeEquals(BaseType.INT);
         new SingletonParameter(minute, "_showName").setToken(BooleanToken.TRUE);
-        
+
         second = new TypedIOPort(this, "second", false, true);
         second.setTypeEquals(BaseType.INT);
         new SingletonParameter(second, "_showName").setToken(BooleanToken.TRUE);
-        
+
         millisecond = new TypedIOPort(this, "millisecond", false, true);
         millisecond.setTypeEquals(BaseType.INT);
-        new SingletonParameter(millisecond, "_showName").setToken(BooleanToken.TRUE);
-        
+        new SingletonParameter(millisecond, "_showName")
+                .setToken(BooleanToken.TRUE);
+
         microsecond = new TypedIOPort(this, "microsecond", false, true);
         microsecond.setTypeEquals(BaseType.INT);
-        new SingletonParameter(microsecond, "_showName").setToken(BooleanToken.TRUE);
-        
+        new SingletonParameter(microsecond, "_showName")
+                .setToken(BooleanToken.TRUE);
+
         nanosecond = new TypedIOPort(this, "nanosecond", false, true);
         nanosecond.setTypeEquals(BaseType.INT);
-        new SingletonParameter(nanosecond, "_showName").setToken(BooleanToken.TRUE);
-        
+        new SingletonParameter(nanosecond, "_showName")
+                .setToken(BooleanToken.TRUE);
+
         timezone = new TypedIOPort(this, "timezone", false, true);
         timezone.setTypeEquals(BaseType.STRING);
-        new SingletonParameter(timezone, "_showName").setToken(BooleanToken.TRUE);
+        new SingletonParameter(timezone, "_showName")
+                .setToken(BooleanToken.TRUE);
     }
-    
+
     /** Input for date token.
      */
     public TypedIOPort input;
-    
+
     /** Year of date received on input.
      */
     public TypedIOPort year;
-    
+
     /** Month of date received on input.
      */
     public TypedIOPort month;
-    
+
     /** Day of the month of date received on input.
      */
     public TypedIOPort day;
-    
+
     /** Hour of date received on input.
      */
     public TypedIOPort hour;
-    
+
     /** Minute of date received on input.
      */
     public TypedIOPort minute;
-    
+
     /** Second of date received on input.
      */
     public TypedIOPort second;
-    
+
     /** Millisecond of date received on input.
      */
     public TypedIOPort millisecond;
-    
+
     /** Microsecond of date received on input.
      */
     public TypedIOPort microsecond;
-    
+
     /** Nanosecond of date received on input.
      */
     public TypedIOPort nanosecond;
-    
+
     /** Time zone of date received on input.
      */
     public TypedIOPort timezone;
@@ -160,6 +164,7 @@ public class DateElements extends TypedAtomicActor {
     /** Output all elements of a date if input has a date token.
      *  @exception IllegalActionException If there is no director.
      */
+    @Override
     public void fire() throws IllegalActionException {
         super.fire();
         if (input.hasToken(0)) {

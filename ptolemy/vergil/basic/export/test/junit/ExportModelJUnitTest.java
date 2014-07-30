@@ -24,7 +24,7 @@
    PT_COPYRIGHT_VERSION_2
    COPYRIGHTENDKEY
 
-*/
+ */
 
 package ptolemy.vergil.basic.export.test.junit;
 
@@ -111,8 +111,8 @@ public class ExportModelJUnitTest {
 
         ExportModelJUnitTest._incrementCount();
         Date date = new Date();
-        System.out.println("####### " + ExportModelJUnitTest._getCount() + " " + date
-                + " $PTII/bin/ptinvoke "
+        System.out.println("####### " + ExportModelJUnitTest._getCount() + " "
+                + date + " $PTII/bin/ptinvoke "
                 + "ptolemy.vergil.basic.export.ExportModel -force htm "
                 + (run ? "-run " : " ")
                 + (openComposites ? "-openComposites " : " ") + "-timeOut "
@@ -121,16 +121,16 @@ public class ExportModelJUnitTest {
 
         if (!openComposites) {
             System.out
-                    .println("Warning: not opening composites for "
-                            + modelPath
-                            + ". See ptolemy/vergil/basic/export/test/junit/ExportModelJUnitTest.java");
+            .println("Warning: not opening composites for "
+                    + modelPath
+                    + ". See ptolemy/vergil/basic/export/test/junit/ExportModelJUnitTest.java");
         }
 
         if (!run) {
             System.out
-                    .println("Warning: not running "
-                            + modelPath
-                            + ". See ptolemy/vergil/basic/export/test/junit/ExportModelJUnitTest.java");
+            .println("Warning: not running "
+                    + modelPath
+                    + ". See ptolemy/vergil/basic/export/test/junit/ExportModelJUnitTest.java");
         }
         // ExportModel.exportModel() calls System.exit() unless we set this property.
         System.setProperty("ptolemy.ptII.doNotExit", "true");
@@ -212,7 +212,7 @@ public class ExportModelJUnitTest {
 
     /** Get the number of times RunExportModel has been invoked.
      *  @return the number of times RunExportModel has been invoked.
-     */   
+     */
     protected static int _getCount() {
         // To avoid FindBugs: Write to static field from instance method.
         return _count++;
@@ -261,8 +261,7 @@ public class ExportModelJUnitTest {
      */
     private boolean _runDemo(String modelPath) {
         // Pathnames that should be skipped
-        String[] skip = {
-                "ptalon/gt/demo/Adder/Adder.xml", // gt does not have a run button: "Channel index 0 is out of range, because width is only 0."
+        String[] skip = { "ptalon/gt/demo/Adder/Adder.xml", // gt does not have a run button: "Channel index 0 is out of range, because width is only 0."
                 // CRoom, MatlabRoom, SystemCommand
                 "lbnl/demo/", // FIXME: hangs, probably because the log window is not closed.
                 "g4ltl/demo/", // These demos require wiring.

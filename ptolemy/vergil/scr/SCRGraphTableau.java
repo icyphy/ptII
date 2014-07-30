@@ -121,9 +121,9 @@ public class SCRGraphTableau extends Tableau {
             LibraryAttribute defaultLibrary) {
         //FSMGraphFrame frame = new FSMGraphFrame(model, this, defaultLibrary);
 
-            SCRTableFrame frame = new SCRTableFrame(model, this);
-            
-            try {
+        SCRTableFrame frame = new SCRTableFrame(model, this);
+
+        try {
             setFrame(frame);
         } catch (IllegalActionException ex) {
             throw new InternalErrorException(ex);
@@ -134,7 +134,7 @@ public class SCRGraphTableau extends Tableau {
         frame.centerOnScreen();
         frame.setVisible(true);
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                           public fields                   ////
 
@@ -170,6 +170,7 @@ public class SCRGraphTableau extends Tableau {
          *  @exception Exception If an exception occurs when creating the
          *   tableau.
          */
+        @Override
         public Tableau createTableau(Effigy effigy) throws Exception {
             if (!(effigy instanceof PtolemyEffigy)) {
                 return null;
@@ -180,17 +181,16 @@ public class SCRGraphTableau extends Tableau {
                 return tableau;
             }
 
-            
-            
             NamedObj model = ((PtolemyEffigy) effigy).getModel();
 
             if (model != null
                     && model.getContainer() != null
                     && model.getContainer().getAttribute("openAsSCRActor") != null
-                    && ((BooleanToken)(((Parameter)model.getContainer()
-                                            .getAttribute("openAsSCRActor"))
-                                    .getToken())).booleanValue()) {
-                    tableau = new SCRGraphTableau((PtolemyEffigy) effigy, "scrGraphTableau");
+                    && ((BooleanToken) (((Parameter) model.getContainer()
+                            .getAttribute("openAsSCRActor")).getToken()))
+                            .booleanValue()) {
+                tableau = new SCRGraphTableau((PtolemyEffigy) effigy,
+                        "scrGraphTableau");
                 return tableau;
             } else {
                 return null;

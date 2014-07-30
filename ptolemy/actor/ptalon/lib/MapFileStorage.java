@@ -159,6 +159,7 @@ public class MapFileStorage extends DEActor {
      *  opened file cannot be closed; or if the attribute is
      *  <i>numberOfLinesToSkip</i> and its value is negative.
      */
+    @Override
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         if (attribute == numberOfOutputs) {
@@ -185,6 +186,7 @@ public class MapFileStorage extends DEActor {
      *  @exception CloneNotSupportedException If a derived class has
      *   an attribute that cannot be cloned.
      */
+    @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         MapFileStorage newObject = (MapFileStorage) super.clone(workspace);
         newObject.outputKey.setWidthEquals(newObject.numberOfOutputs);
@@ -196,6 +198,7 @@ public class MapFileStorage extends DEActor {
      *  invocation of postfire(), if there is any.
      *  @exception IllegalActionException If there's no director.
      */
+    @Override
     public void fire() throws IllegalActionException {
         super.fire();
         int outputs = ((IntToken) numberOfOutputs.getToken()).intValue();
@@ -257,6 +260,7 @@ public class MapFileStorage extends DEActor {
      *   opened, or if the lines to be skipped and the first line to be
      *   sent out in the fire() method cannot be read.
      */
+    @Override
     public void initialize() throws IllegalActionException {
         super.initialize();
         int outputs = ((IntToken) numberOfOutputs.getToken()).intValue();
@@ -272,6 +276,7 @@ public class MapFileStorage extends DEActor {
      *  Otherwise, return whatever the superclass returns.
      *  @exception IllegalActionException If the superclass throws it.
      */
+    @Override
     public boolean prefire() throws IllegalActionException {
         if (inputKey.hasToken(0) && inputValue.hasToken(0)) {
             _readMode = true;
@@ -294,6 +299,7 @@ public class MapFileStorage extends DEActor {
      *  @return True if execution can continue into the next iteration.
      *  @exception IllegalActionException Not thrown in this base class.
      */
+    @Override
     public boolean postfire() throws IllegalActionException {
         if (_readMode) {
             _readMode = false;
@@ -305,6 +311,7 @@ public class MapFileStorage extends DEActor {
     /** Close the reader if there is one.
      *  @exception IllegalActionException If an IO error occurs.
      */
+    @Override
     public void wrapup() throws IllegalActionException {
         _keyBuffers = new LinkedList<LinkedList<String>>();
         _valueBuffers = new LinkedList<LinkedList<String>>();

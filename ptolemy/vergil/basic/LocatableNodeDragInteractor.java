@@ -91,6 +91,7 @@ public class LocatableNodeDragInteractor extends NodeDragInteractor {
      *  evaluated for undo purposes.
      *  @param  e  The press event.
      */
+    @Override
     public void mousePressed(LayerEvent e) {
         super.mousePressed(e);
         _dragStart = _getConstrainedPoint(e);
@@ -101,6 +102,7 @@ public class LocatableNodeDragInteractor extends NodeDragInteractor {
      *  If no movement has occurred, then do nothing.
      *  @param e The release event.
      */
+    @Override
     public void mouseReleased(LayerEvent e) {
 
         // We should factor out the common code in this method and in
@@ -150,8 +152,8 @@ public class LocatableNodeDragInteractor extends NodeDragInteractor {
                         // MoML and which may not be undoable.
                         // FIXME: This is no way to handle it...
                         System.out
-                                .println("Object with no semantic object , class: "
-                                        + userObject.getClass().getName());
+                        .println("Object with no semantic object , class: "
+                                + userObject.getClass().getName());
                     }
                 }
             }
@@ -309,6 +311,7 @@ public class LocatableNodeDragInteractor extends NodeDragInteractor {
         // Request the change.
         MoMLChangeRequest request = new MoMLChangeRequest(this, toplevel,
                 moml.toString()) {
+            @Override
             protected void _execute() throws Exception {
                 super._execute();
 
@@ -352,6 +355,7 @@ public class LocatableNodeDragInteractor extends NodeDragInteractor {
      *  @param x The horizontal delta.
      *  @param y The vertical delta.
      */
+    @Override
     public void translate(LayerEvent e, double x, double y) {
         // NOTE: To get snap to grid to work right, we have to do some work.
         // It is not sufficient to quantize the translation.  What we do is

@@ -24,7 +24,7 @@
  PT_COPYRIGHT_VERSION_2
  COPYRIGHTENDKEY
 
-*/
+ */
 package ptolemy.domains.ptera.kernel;
 
 //////////////////////////////////////////////////////////////////////////
@@ -54,6 +54,7 @@ public class PteraErrorEvent extends PteraDebugEvent {
      *
      *  @return The message.
      */
+    @Override
     public String toString() {
         return "!!! " + super.toString() + " !!!";
     }

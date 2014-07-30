@@ -63,24 +63,24 @@ import ptolemy.kernel.util.Workspace;
 ///////////////////////////////////////////////////////////////////
 //// HlaSubcriber
 
-/** 
- * <p>This actor implements a subscriber in a HLA/CERTI federation. This 
- * subscriber is associated to one HLA attribute. Reflected values of the HLA 
- * attribute are received from the HLA/CERTI Federation by the 
+/**
+ * <p>This actor implements a subscriber in a HLA/CERTI federation. This
+ * subscriber is associated to one HLA attribute. Reflected values of the HLA
+ * attribute are received from the HLA/CERTI Federation by the
  * {@link HlaManager} attribute. The {@link HlaManager} invokes the
  * putReflectedAttribute() to put the received value in the subscriber
- * tokens queue and to program its next firing times, using the _fireAt() 
+ * tokens queue and to program its next firing times, using the _fireAt()
  * method.
  * </p><p>
- * The name of this actor is mapped to the name of the HLA attribute in the 
+ * The name of this actor is mapped to the name of the HLA attribute in the
  * federation and need to match the Federate Object Model (FOM) specified for
- * the Federation. The data type of the output port has to be the same type of 
+ * the Federation. The data type of the output port has to be the same type of
  * the HLA attribute. The parameter <i>classObjectHandle</i> needs to match the
- * attribute object class describes in the FOM. The parameter 
+ * attribute object class describes in the FOM. The parameter
  * <i>useHlaPtidesEvent</i> indicates if we need to handle PTIDES events as
  * RecordToken for HLA events.
  * </p>
- *  
+ *
  *  @author Gilles Lasnier, Contributors: Patricia Derler
  *  @version $Id$
  *  @since Ptolemy II 10.0
@@ -116,7 +116,7 @@ public class HlaSubscriber extends TypedAtomicActor {
         useHLAPtidesEvent.setExpression("false");
         useHLAPtidesEvent.setDisplayName("use HLA PTIDES event");
         attributeChanged(useHLAPtidesEvent);
-        
+
         useCertiMessageBuffer = new Parameter(this, "useCertiMessageBuffer");
         useCertiMessageBuffer.setTypeEquals(BaseType.BOOLEAN);
         useCertiMessageBuffer.setExpression("false");
@@ -136,7 +136,7 @@ public class HlaSubscriber extends TypedAtomicActor {
 
     /** Indicate if the event is for a PTIDES platform. */
     public Parameter useHLAPtidesEvent;
-    
+
     /** Indicate if the event is wrapped in a CERTI message buffer. */
     public Parameter useCertiMessageBuffer;
 
@@ -152,6 +152,7 @@ public class HlaSubscriber extends TypedAtomicActor {
      *  @exception IllegalActionException If there is zero or more than one
      *  {@link HlaManager} per Ptolemy model.
      */
+    @Override
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         if (attribute == classObjectHandle) {
@@ -162,8 +163,8 @@ public class HlaSubscriber extends TypedAtomicActor {
                         "Cannot have empty name !");
             }
         } else if (attribute == useCertiMessageBuffer) {
-            _useCertiMessageBuffer = ((BooleanToken) useCertiMessageBuffer.getToken())
-                    .booleanValue();
+            _useCertiMessageBuffer = ((BooleanToken) useCertiMessageBuffer
+                    .getToken()).booleanValue();
         } else if (attribute == useHLAPtidesEvent) {
             _useHLAPtidesEvent = ((BooleanToken) useHLAPtidesEvent.getToken())
                     .booleanValue();
@@ -176,7 +177,7 @@ public class HlaSubscriber extends TypedAtomicActor {
                 output.setTypeEquals(new RecordType(new String[] { "microstep",
                         "payload", "sourceTimestamp", "timestamp" },
                         new Type[] { BaseType.INT, BaseType.DOUBLE,
-                                BaseType.DOUBLE, BaseType.DOUBLE }));
+                        BaseType.DOUBLE, BaseType.DOUBLE }));
             }
         }
         super.attributeChanged(attribute);
@@ -188,6 +189,7 @@ public class HlaSubscriber extends TypedAtomicActor {
      *  @exception CloneNotSupportedException If a derived class contains
      *  an attribute that cannot be cloned.
      */
+    @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         HlaSubscriber newObject = (HlaSubscriber) super.clone(workspace);
         newObject._reflectedAttributeValues = new LinkedList<TimedEvent>();
@@ -195,11 +197,12 @@ public class HlaSubscriber extends TypedAtomicActor {
         return newObject;
     }
 
-    /** Check if there is one and only one {@link HlaManager} deployed in the 
+    /** Check if there is one and only one {@link HlaManager} deployed in the
      *  Ptolemy model.
      *  @exception IllegalActionException If there is zero or more than one
      *  {@link HlaManager} per Ptolemy model.
      */
+    @Override
     public void initialize() throws IllegalActionException {
         super.initialize();
 
@@ -215,10 +218,11 @@ public class HlaSubscriber extends TypedAtomicActor {
         }
     }
 
-    /** Send each update value of the HLA attribute (mapped to this actor) as 
+    /** Send each update value of the HLA attribute (mapped to this actor) as
      *  token when its time.
      *  @exception IllegalActionException Not thrown here.
      */
+    @Override
     public void fire() throws IllegalActionException {
         super.fire();
         Time currentTime = getDirector().getModelTime();
@@ -228,7 +232,7 @@ public class HlaSubscriber extends TypedAtomicActor {
             TimedEvent te = it.next();
             if (te.timeStamp.compareTo(currentTime) == 0) {
                 this.outputPortList().get(0)
-                        .send(0, _buildToken((Object[]) te.contents));
+                .send(0, _buildToken((Object[]) te.contents));
 
                 if (_debugging) {
                     _debug(this.getDisplayName()
@@ -245,7 +249,7 @@ public class HlaSubscriber extends TypedAtomicActor {
      *  the tokens queue. Then, program the next firing time of this actor to
      *  send the token at its expected time. This method is called by the
      *  {@link HlaManager} attribute.
-     *  @param event The event containing the updated value of the HLA attribute 
+     *  @param event The event containing the updated value of the HLA attribute
      *  and its time-stamp.
      *  @exception IllegalActionException Not thrown here.
      */
@@ -257,29 +261,29 @@ public class HlaSubscriber extends TypedAtomicActor {
         // Program the next firing time for the received update value.
         _fireAt(event.timeStamp);
     }
-    
+
     /** Indicate if the HLA subscriber actor uses the CERTI message
      *  buffer API.
      */
     public boolean useCertiMessageBuffer() throws IllegalActionException {
-    	return _useCertiMessageBuffer;
+        return _useCertiMessageBuffer;
     }
-    
+
     /** Indicate if the HLA subscriber actor delivers events to a PTIDES
      *  platform.
      */
     public boolean useHLAPtidesEvent() throws IllegalActionException {
-    	return _useHLAPtidesEvent;
+        return _useHLAPtidesEvent;
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
-    /** Build the corresponding typed token from the contents of a 
-     *  {@link TimedEvent}s stored in the reflectedAttributeValues queue. The 
-     *  structure of the contents is an array object <i>obj</i> where: 
-     *  obj[0] is the expected data type and; obj[1] is the object buffer 
-     *  which contains the typed value. 
+    /** Build the corresponding typed token from the contents of a
+     *  {@link TimedEvent}s stored in the reflectedAttributeValues queue. The
+     *  structure of the contents is an array object <i>obj</i> where:
+     *  obj[0] is the expected data type and; obj[1] is the object buffer
+     *  which contains the typed value.
      * @param obj The array object containing data type indication and buffer.
      * @return value The corresponding typed token.
      * @exception IllegalActionException If the expected data type is not handled
@@ -303,9 +307,9 @@ public class HlaSubscriber extends TypedAtomicActor {
 
         BaseType type = (BaseType) obj[0];
         if (!type.equals(output.getType())) {
-        	throw new IllegalActionException(this,
+            throw new IllegalActionException(this,
                     "The type of the token to build doesn't match the output port type of "
-        			+ this.getDisplayName());
+                            + this.getDisplayName());
         }
 
         if (type.equals(BaseType.BOOLEAN)) {
@@ -342,7 +346,7 @@ public class HlaSubscriber extends TypedAtomicActor {
 
     /** Indicate if the event is for a PTIDES platform. */
     private boolean _useHLAPtidesEvent;
-    
+
     /** Indicate if the event is wrapped in a CERTI message buffer. */
     private boolean _useCertiMessageBuffer;
 }

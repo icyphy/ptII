@@ -24,7 +24,7 @@
    PT_COPYRIGHT_VERSION_2
    COPYRIGHTENDKEY
 
-*/
+ */
 
 package ptolemy.util.test.junit;
 
@@ -75,6 +75,7 @@ public class AutoCGJavaTests extends AutoCGTests {
      *
      * @exception Throwable If the class or constructor cannot be found.
      */
+    @Override
     @Before
     public void setUp() throws Throwable {
         super.setUp();
@@ -93,8 +94,8 @@ public class AutoCGJavaTests extends AutoCGTests {
     @Parameters(method = "modelValues")
     public void runModelInline(String fullPath) throws Throwable {
         runModel(fullPath, "java", false /* generateInSubdirectory */,
-                true /* inline */, 2500 /* maximumLinesPerBlock */, false /*variablesAsArrays*/,
-                "" /*generatorPackageList*/);
+                true /* inline */, 2500 /* maximumLinesPerBlock */,
+                false /*variablesAsArrays*/, "" /*generatorPackageList*/);
     }
 
     /**
@@ -110,8 +111,8 @@ public class AutoCGJavaTests extends AutoCGTests {
     @Parameters(method = "modelValues")
     public void runModelLarge(String fullPath) throws Throwable {
         runModel(fullPath, "java", true /* generateInSubdirectory */,
-                false /* inline */, 1 /* maximumLinesPerBlock */, true /*variablesAsArrays*/,
-                "" /*generatorPackageList*/);
+                false /* inline */, 1 /* maximumLinesPerBlock */,
+                true /*variablesAsArrays*/, "" /*generatorPackageList*/);
     }
 
     /**
@@ -127,7 +128,7 @@ public class AutoCGJavaTests extends AutoCGTests {
     @Parameters(method = "modelValues")
     public void runModelNoInline(String fullPath) throws Throwable {
         runModel(fullPath, "java", false /* generateInSubdirectory */,
-                false /* inline */, 2500 /* maximumLinesPerBlock */, false /*variablesAsArrays*/,
-                "" /*generatorPackageList*/);
+                false /* inline */, 2500 /* maximumLinesPerBlock */,
+                false /*variablesAsArrays*/, "" /*generatorPackageList*/);
     }
 }

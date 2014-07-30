@@ -53,7 +53,7 @@ import ptolemy.kernel.util.Workspace;
  @Pt.AcceptedRating Red (eal)
  */
 public abstract class PubSubPort extends TypedIOPort implements
-        HierarchyListener, Initializable {
+HierarchyListener, Initializable {
 
     /** Construct a subscriber port with a containing actor and a name.
      *  This is always an input port.
@@ -78,6 +78,7 @@ public abstract class PubSubPort extends TypedIOPort implements
             /** Override the base class to to allow the type to be unknown.
              *  @return True if the current type is acceptable.
              */
+            @Override
             public boolean isTypeAcceptable() {
                 return super.isTypeAcceptable()
                         || getType().equals(BaseType.UNKNOWN);
@@ -137,6 +138,7 @@ public abstract class PubSubPort extends TypedIOPort implements
      *  @exception CloneNotSupportedException If a derived class contains
      *   an attribute that cannot be cloned.
      */
+    @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         PubSubPort newObject = (PubSubPort) super.clone(workspace);
 
@@ -157,6 +159,7 @@ public abstract class PubSubPort extends TypedIOPort implements
      *  @exception IllegalActionException If the change is not
      *   acceptable.
      */
+    @Override
     public void hierarchyChanged() throws IllegalActionException {
         // Make sure we are registered as to be initialized
         // with the container.
@@ -171,6 +174,7 @@ public abstract class PubSubPort extends TypedIOPort implements
      *  of initializables of the container.
      *  @exception IllegalActionException If unlinking to a published port fails.
      */
+    @Override
     public void hierarchyWillChange() throws IllegalActionException {
         // Unregister to be initialized with the initializable container.
         // We will be re-registered when hierarchyChanged() is called.
@@ -189,6 +193,7 @@ public abstract class PubSubPort extends TypedIOPort implements
      *  is in the top level and throw an exception that suggests
      *  using a Publisher or Subscriber.
      */
+    @Override
     public void preinitialize() throws IllegalActionException {
     }
 
@@ -211,7 +216,7 @@ public abstract class PubSubPort extends TypedIOPort implements
      */
     @Override
     public void setContainer(Entity container) throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         Initializable previousInitializableContainer = _getInitializableContainer();
         NamedObj previousContainer = getContainer();
         if (previousContainer != container) {
@@ -222,7 +227,7 @@ public abstract class PubSubPort extends TypedIOPort implements
                 if (previousInitializableContainer != newInitializableContainer) {
                     if (previousInitializableContainer != null) {
                         previousInitializableContainer
-                                .removeInitializable(this);
+                        .removeInitializable(this);
                     }
                     if (newInitializableContainer != null) {
                         newInitializableContainer.addInitializable(this);

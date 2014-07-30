@@ -55,6 +55,7 @@ public class DoubleTokenHandler implements TokenHandler<DoubleToken> {
      *  @exception IOException if there is a problem writing to the stream.
      *  @see ptserver.data.handler.TokenHandler#convertToBytes(ptolemy.data.Token, java.io.DataOutputStream)
      */
+    @Override
     public void convertToBytes(DoubleToken token, DataOutputStream outputStream)
             throws IOException {
         outputStream.writeDouble(token.doubleValue());
@@ -67,6 +68,7 @@ public class DoubleTokenHandler implements TokenHandler<DoubleToken> {
      *  @see ptserver.data.handler.TokenHandler#convertToToken(java.io.DataInputStream, Class)
      *  @exception IOException if there is a problem reading f the stream
      */
+    @Override
     public DoubleToken convertToToken(DataInputStream inputStream,
             Class<? extends DoubleToken> tokenType) throws IOException {
         return new DoubleToken(inputStream.readDouble());

@@ -89,6 +89,7 @@ public class DAGConceptGraph extends ConceptGraph {
     /** Return the least element of this concept graph.
      *  @return The least element of this graph.
      */
+    @Override
     public Concept bottom() {
         return (Concept) _dag.bottom();
     }
@@ -130,6 +131,7 @@ public class DAGConceptGraph extends ConceptGraph {
      *  @exception IllegalArgumentException If one or both arguments are not
      *   instances of {@link Concept}.
      */
+    @Override
     public int compare(Object e1, Object e2) {
         Concept concept1 = _getInputObjectAsAConcept(e1);
         Concept concept2 = _getInputObjectAsAConcept(e2);
@@ -167,6 +169,7 @@ public class DAGConceptGraph extends ConceptGraph {
      *  @exception IllegalArgumentException If the specified Object is not
      *   an element in this concept graph, or the resulting set is infinite.
      */
+    @Override
     public Concept[] downSet(Object e) {
         // FIXME: What happens if the downSet should contain some
         // InfiniteConcepts that are lower in the lattice?
@@ -197,6 +200,7 @@ public class DAGConceptGraph extends ConceptGraph {
      *  @exception IllegalArgumentException If at least one of the
      *   specified Objects is not an element of this concept graph.
      */
+    @Override
     public Concept greatestLowerBound(Object e1, Object e2) {
         Concept concept1 = _getInputObjectAsAConcept(e1);
         Concept concept2 = _getInputObjectAsAConcept(e2);
@@ -208,6 +212,7 @@ public class DAGConceptGraph extends ConceptGraph {
      *  Should be null for all existing concept graphs.
      *  @return Null, if the concept graph is a lattice.
      */
+    @Override
     public NonLatticeCounterExample nonLatticeReason() {
         return _dag.nonLatticeReason();
     }
@@ -223,6 +228,7 @@ public class DAGConceptGraph extends ConceptGraph {
      *  @exception IllegalArgumentException If at least one of the
      *   specified Objects is not an element of this concept graph.
      */
+    @Override
     public Concept leastUpperBound(Object e1, Object e2) {
         Concept concept1 = _getInputObjectAsAConcept(e1);
         Concept concept2 = _getInputObjectAsAConcept(e2);
@@ -233,6 +239,7 @@ public class DAGConceptGraph extends ConceptGraph {
     /** Return the greatest element in this concept graph.
      *  @return The greatest element in this concept graph.
      */
+    @Override
     public Concept top() {
         return (Concept) _dag.top();
     }
@@ -246,6 +253,7 @@ public class DAGConceptGraph extends ConceptGraph {
      *   specified element.
      *  @exception IllegalArgumentException Always thrown.
      */
+    @Override
     public Concept[] upSet(Object e) {
         // FIXME: What happens if the upSet should contain some InfiniteConcepts
         // that are higher in the lattice?

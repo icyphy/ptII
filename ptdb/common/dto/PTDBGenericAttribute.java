@@ -25,7 +25,7 @@ ENHANCEMENTS, OR MODIFICATIONS.
                                                 COPYRIGHTENDKEY
 
 
-*/
+ */
 package ptdb.common.dto;
 
 import java.util.ArrayList;
@@ -140,6 +140,7 @@ public class PTDBGenericAttribute {
      * @return The String representation of this attribute.
      */
 
+    @Override
     public String toString() {
 
         return _attributeName + "@" + _className + "@" + _values.toString();
@@ -154,6 +155,7 @@ public class PTDBGenericAttribute {
      *          false - if the given attribute does not equal to this attribute.
      */
 
+    @Override
     public boolean equals(Object attribute) {
 
         if (!(attribute instanceof PTDBGenericAttribute)) {
@@ -166,7 +168,7 @@ public class PTDBGenericAttribute {
             return _className.equals(genericAttribute.getClassName())
                     && _attributeName.equals(genericAttribute
                             .getAttributeName())
-                    && _values.equals(genericAttribute.getValues());
+                            && _values.equals(genericAttribute.getValues());
         }
 
         if (_className == null && _attributeName == null) {
@@ -192,7 +194,7 @@ public class PTDBGenericAttribute {
             return genericAttribute.getClassName() == null
                     && _attributeName.equals(genericAttribute
                             .getAttributeName())
-                    && _values.equals(genericAttribute.getValues());
+                            && _values.equals(genericAttribute.getValues());
         }
 
         if (_attributeName == null) {
@@ -218,6 +220,7 @@ public class PTDBGenericAttribute {
      * @return Return the calculated hash code.
      */
 
+    @Override
     public int hashCode() {
         StringBuffer summaryStringBuffer = new StringBuffer("");
 

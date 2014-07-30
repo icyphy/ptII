@@ -54,6 +54,7 @@ public class ComplexTokenHandler implements TokenHandler<ComplexToken> {
      *  @exception IOException If the stream cannot be written.
      *  @see ptserver.data.handler.TokenHandler#convertToBytes(ptolemy.data.Token, java.io.DataOutputStream)
      */
+    @Override
     public void convertToBytes(ComplexToken token, DataOutputStream outputStream)
             throws IOException {
         outputStream.writeDouble(token.complexValue().real);
@@ -67,6 +68,7 @@ public class ComplexTokenHandler implements TokenHandler<ComplexToken> {
      *  @exception IOException If the stream cannot be read.
      *  @see ptserver.data.handler.TokenHandler#convertToToken(java.io.DataInputStream, Class)
      */
+    @Override
     public ComplexToken convertToToken(DataInputStream inputStream,
             Class<? extends ComplexToken> tokenType) throws IOException {
         return new ComplexToken(new Complex(inputStream.readDouble(),

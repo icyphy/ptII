@@ -68,6 +68,7 @@ public class SwingWrapper extends AbstractFigure {
      * the inherited method to take account of the thickness of
      * the stroke, if there is one.
      */
+    @Override
     public Rectangle2D getBounds() {
         // We really want to return the high-res version of the bounding box
         return _component.getBounds();
@@ -84,6 +85,7 @@ public class SwingWrapper extends AbstractFigure {
     /**
      * Get the shape of this figure.
      */
+    @Override
     public Shape getShape() {
         return getBounds();
     }
@@ -91,6 +93,7 @@ public class SwingWrapper extends AbstractFigure {
     /**
      * Ask the wrapped component to paint itself.
      */
+    @Override
     public void paint(Graphics2D g) {
         if (isVisible()) {
             //Rectangle2D bounds = getBounds();
@@ -147,6 +150,7 @@ public class SwingWrapper extends AbstractFigure {
     /** Set the parent of this figure. This method overrides the
      * inherited method to deal with the Swing component hierarchy.
      */
+    @Override
     public void setParent(CanvasComponent fc) {
         super.setParent(fc);
 
@@ -164,6 +168,7 @@ public class SwingWrapper extends AbstractFigure {
      * that are not shape-preserving, such as shears and
      * rotations.
      */
+    @Override
     public void transform(AffineTransform at) {
         throw new UnsupportedOperationException("FIXME");
     }
@@ -171,6 +176,7 @@ public class SwingWrapper extends AbstractFigure {
     /**
      * Translate the figure by the given distance.
      */
+    @Override
     public void translate(double x, double y) {
         repaint();
 

@@ -201,6 +201,7 @@ public class TransformedFigureTutorial {
     public static void main(String[] argv) {
         // Always invoke graphics code in the event thread
         SwingUtilities.invokeLater(new Runnable() {
+            @Override
             public void run() {
                 TransformedFigureTutorial ex = new TransformedFigureTutorial();
                 ex.createFigures();
@@ -294,6 +295,7 @@ public class TransformedFigureTutorial {
          * we use a previously-cached copy of the transformed bounds
          * if there is one.
          */
+        @Override
         public Rectangle2D getBounds() {
             if (_cachedBounds == null) {
                 _cachedBounds = getShape().getBounds2D();
@@ -308,6 +310,7 @@ public class TransformedFigureTutorial {
          * we use a previously-cached copy of the transformed shape
          * if there is one.
          */
+        @Override
         public Shape getShape() {
             if (_cachedShape == null) {
                 AffineTransform at = _transformContext.getTransform();
@@ -320,6 +323,7 @@ public class TransformedFigureTutorial {
         /** Get the transform context. This method must be overridden
          * since this figure defined its own context.
          */
+        @Override
         public TransformContext getTransformContext() {
             return _transformContext;
         }
@@ -333,6 +337,7 @@ public class TransformedFigureTutorial {
          * inefficient.) Finally, we "pop" the transform context off
          * the stack.
          */
+        @Override
         public void paint(Graphics2D g) {
             // Push the context
             _transformContext.push(g);
@@ -363,6 +368,7 @@ public class TransformedFigureTutorial {
          * We also must be sure to invalidate the cached
          * geometry objects that depend on the transform.
          */
+        @Override
         public void transform(AffineTransform at) {
             repaint();
             _cachedShape = null;

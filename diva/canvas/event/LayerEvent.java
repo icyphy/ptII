@@ -114,6 +114,7 @@ public class LayerEvent extends MouseEvent {
     /** Consume this event. If the event was constructed from
      * a backing mouse event, consume the backing mouse event too.
      */
+    @Override
     public void consume() {
         super.consume();
 
@@ -193,6 +194,7 @@ public class LayerEvent extends MouseEvent {
 
     /** Print the string representation of this event
      */
+    @Override
     public String toString() {
         StringBuffer result = new StringBuffer(this.getClass().getName());
         result.append("[" + idToString(getID()) + ",mods="

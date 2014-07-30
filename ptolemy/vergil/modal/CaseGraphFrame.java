@@ -129,6 +129,7 @@ public class CaseGraphFrame extends ActorGraphFrame implements ChangeListener {
     /** Open the container, if any, of the entity.
      *  If this entity has no container, then do nothing.
      */
+    @Override
     public void openContainer() {
         // Method overridden since the parent will go from the refinement to
         // the case, which is where we were in the first place.
@@ -146,6 +147,7 @@ public class CaseGraphFrame extends ActorGraphFrame implements ChangeListener {
     /** React to a change in the state of the tabbed pane.
      *  @param event The event.
      */
+    @Override
     public void stateChanged(ChangeEvent event) {
         Object source = event.getSource();
         if (source instanceof JTabbedPane) {
@@ -167,6 +169,7 @@ public class CaseGraphFrame extends ActorGraphFrame implements ChangeListener {
     /** Create the menus that are used by this frame.
      *  It is essential that _createGraphPane() be called before this.
      */
+    @Override
     protected void _addMenus() {
         super._addMenus();
         _caseMenu = new JMenu("Case");
@@ -186,6 +189,7 @@ public class CaseGraphFrame extends ActorGraphFrame implements ChangeListener {
      *  @param entity The object to be displayed in the pane.
      *  @return The pane that is created.
      */
+    @Override
     protected GraphPane _createGraphPane(NamedObj entity) {
         _controller = new CaseGraphController();
         _controller.setConfiguration(getConfiguration());
@@ -204,6 +208,7 @@ public class CaseGraphFrame extends ActorGraphFrame implements ChangeListener {
      *  @param entity The entity to display in the component.
      *  @return The component that goes to the right of the library.
      */
+    @Override
     protected JComponent _createRightComponent(NamedObj entity) {
         if (!(entity instanceof Case)) {
             return super._createRightComponent(entity);
@@ -250,6 +255,7 @@ public class CaseGraphFrame extends ActorGraphFrame implements ChangeListener {
             /** Invoked when the mouse is pressed on a layer
              * or figure.
              */
+            @Override
             public void mousePressed(LayerEvent event) {
                 Component component = event.getComponent();
 
@@ -305,6 +311,7 @@ public class CaseGraphFrame extends ActorGraphFrame implements ChangeListener {
         ////                            public methods                             ////
 
         /** Perform the action. */
+        @Override
         public void actionPerformed(ActionEvent e) {
             super.actionPerformed(e);
             // Dialog to ask for a case name.
@@ -324,6 +331,7 @@ public class CaseGraphFrame extends ActorGraphFrame implements ChangeListener {
                 // The following is, regrettably, copied from ModalTransitionController.
                 MoMLChangeRequest change = new MoMLChangeRequest(this, _case,
                         moml) {
+                    @Override
                     protected void _execute() throws Exception {
                         super._execute();
 
@@ -366,6 +374,7 @@ public class CaseGraphFrame extends ActorGraphFrame implements ChangeListener {
         /** Override the base class to select the graph model associated
          *  with the selected pane.
          */
+        @Override
         public GraphModel getGraphModel() {
             if (_tabbedPane != null) {
                 Component tab = _tabbedPane.getSelectedComponent();
@@ -382,6 +391,7 @@ public class CaseGraphFrame extends ActorGraphFrame implements ChangeListener {
          *
          *  @param jgraph The JGraph to which hot keys are to be added.
          */
+        @Override
         protected void _addHotKeys(JGraph jgraph) {
             super._addHotKeys(jgraph);
         }
@@ -400,6 +410,7 @@ public class CaseGraphFrame extends ActorGraphFrame implements ChangeListener {
         ////                            public methods                             ////
 
         /** Perform the action. */
+        @Override
         public void actionPerformed(ActionEvent e) {
             super.actionPerformed(e);
             // Dialog to ask for a case name.
@@ -429,6 +440,7 @@ public class CaseGraphFrame extends ActorGraphFrame implements ChangeListener {
                     // The following is, regrettably, copied from ModalTransitionController.
                     MoMLChangeRequest change = new MoMLChangeRequest(this,
                             _case, moml) {
+                        @Override
                         protected void _execute() throws Exception {
                             super._execute();
                             // Find the tabbed pane that matches the name and remove it.

@@ -111,6 +111,7 @@ public class WaitingTime extends DEActor {
      *  @exception CloneNotSupportedException If a derived class has
      *   has an attribute that cannot be cloned.
      */
+    @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         WaitingTime newObject = (WaitingTime) super.clone(workspace);
         newObject._waiting = new Vector();
@@ -124,6 +125,7 @@ public class WaitingTime extends DEActor {
      *  at <i>waiter</i>, and produce no output.
      *  @exception IllegalActionException If get() or send() throws it.
      */
+    @Override
     public void fire() throws IllegalActionException {
         super.fire();
         Time currentTime = ((DEDirector) getDirector()).getModelTime();
@@ -155,6 +157,7 @@ public class WaitingTime extends DEActor {
     /** Clear the list of waiters.
      *  @exception IllegalActionException If the parent class throws it.
      */
+    @Override
     public void initialize() throws IllegalActionException {
         super.initialize();
         _waiting.removeAllElements();

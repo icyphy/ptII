@@ -170,6 +170,7 @@ public class RecordToken extends AbstractNotConvertibleToken {
      *  @return True if the argument is equal to this token.
      *  @see #hashCode()
      */
+    @Override
     public boolean equals(Object object) {
         if (object == null) {
             return false;
@@ -215,6 +216,7 @@ public class RecordToken extends AbstractNotConvertibleToken {
     /** Return the type of this token.
      *  @return An instance of RecordType.
      */
+    @Override
     public Type getType() {
         Object[] labelsObjects = _fields.keySet().toArray();
         int size = labelsObjects.length;
@@ -233,6 +235,7 @@ public class RecordToken extends AbstractNotConvertibleToken {
      *  of the hash codes of the element tokens.
      *  @return A hash code value for this token.
      */
+    @Override
     public int hashCode() {
         int code = 0;
         Set<String> labelSet = _fields.keySet();
@@ -353,6 +356,7 @@ public class RecordToken extends AbstractNotConvertibleToken {
      *  @exception IllegalActionException If multiplicative identity is not
      *   supported by any element token.
      */
+    @Override
     public Token one() throws IllegalActionException {
         Object[] labelsObjects = _fields.keySet().toArray();
         int size = labelsObjects.length;
@@ -381,6 +385,7 @@ public class RecordToken extends AbstractNotConvertibleToken {
      *  @return A String beginning with "{" that contains label and value
      *  pairs separated by commas, ending with "}".
      */
+    @Override
     public String toString() {
         Object[] labelsObjects = _fields.keySet().toArray();
 
@@ -428,6 +433,7 @@ public class RecordToken extends AbstractNotConvertibleToken {
      *  @exception IllegalActionException If additive identity is not
      *   supported by any element token.
      */
+    @Override
     public Token zero() throws IllegalActionException {
         Object[] labelsObjects = _fields.keySet().toArray();
         int size = labelsObjects.length;
@@ -459,6 +465,7 @@ public class RecordToken extends AbstractNotConvertibleToken {
      *  @exception IllegalActionException If calling the add method on
      *  one of the record fields throws it.
      */
+    @Override
     protected Token _add(Token rightArgument) throws IllegalActionException {
         RecordToken recordToken = (RecordToken) rightArgument;
 
@@ -494,6 +501,7 @@ public class RecordToken extends AbstractNotConvertibleToken {
      *  @exception IllegalActionException If calling the divide method on
      *  one of the record fields throws it.
      */
+    @Override
     protected Token _divide(Token rightArgument) throws IllegalActionException {
         RecordToken recordToken = (RecordToken) rightArgument;
 
@@ -537,6 +545,7 @@ public class RecordToken extends AbstractNotConvertibleToken {
      *  @exception IllegalActionException If throw while checking
      *  the closeness of an element of the record.
      */
+    @Override
     protected BooleanToken _isCloseTo(Token rightArgument, double epsilon)
             throws IllegalActionException {
         RecordToken recordToken = (RecordToken) rightArgument;
@@ -576,6 +585,7 @@ public class RecordToken extends AbstractNotConvertibleToken {
      *  supported by the derived class.
      *  @return True if the argument is equal to this.
      */
+    @Override
     protected BooleanToken _isEqualTo(Token rightArgument)
             throws IllegalActionException {
         RecordToken recordToken = (RecordToken) rightArgument;
@@ -611,6 +621,7 @@ public class RecordToken extends AbstractNotConvertibleToken {
      *  @exception IllegalActionException If calling the modulo method on
      *  one of the record fields throws it.
      */
+    @Override
     protected Token _modulo(Token rightArgument) throws IllegalActionException {
         RecordToken recordToken = (RecordToken) rightArgument;
 
@@ -646,6 +657,7 @@ public class RecordToken extends AbstractNotConvertibleToken {
      *  @exception IllegalActionException If calling the multiply method on
      *  one of the record fields throws it.
      */
+    @Override
     protected Token _multiply(Token rightArgument)
             throws IllegalActionException {
         RecordToken recordToken = (RecordToken) rightArgument;
@@ -682,6 +694,7 @@ public class RecordToken extends AbstractNotConvertibleToken {
      *  @exception IllegalActionException If calling the subtract
      *  method on one of the record fields throws it.
      */
+    @Override
     protected Token _subtract(Token rightArgument)
             throws IllegalActionException {
         RecordToken recordToken = (RecordToken) rightArgument;

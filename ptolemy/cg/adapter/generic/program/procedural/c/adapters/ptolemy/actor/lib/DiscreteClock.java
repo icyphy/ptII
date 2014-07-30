@@ -78,6 +78,7 @@ public class DiscreteClock extends NamedProgramCodeGeneratorAdapter {
      *  the initialization code, while appending the code block or
      *  while converting the codeStream to a string.
      */
+    @Override
     public String generateInitializeCode() throws IllegalActionException {
         CodeStream codeStream = _templateParser.getCodeStream();
         codeStream.clear();

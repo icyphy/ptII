@@ -70,8 +70,8 @@ public class DateToEvent extends Transformer {
         input.setTypeEquals(BaseType.DATE);
         output.setTypeEquals(BaseType.DATE);
     }
-    
-    /** Check weather enclosing director is a DEDirector with 
+
+    /** Check weather enclosing director is a DEDirector with
      *  synchronizeToRealTime is enabled.
      *  @exception IllegalActionException Thrown if the enclosing director is not a
      *  DEDirector or the synchronizeToRealTime property is false.
@@ -81,15 +81,18 @@ public class DateToEvent extends Transformer {
         super.initialize();
         Director director = getDirector();
         if (director instanceof DEDirector) {
-            if (!((BooleanToken)((DEDirector) director).synchronizeToRealTime.getToken()).booleanValue()) {
-                throw new IllegalActionException(this, "This actor can only be used when synchronizeToRealTime "
-                        + "in the director is enabled because a reference to real time is needed to compare "
-                        + "dates.");
+            if (!((BooleanToken) ((DEDirector) director).synchronizeToRealTime
+                    .getToken()).booleanValue()) {
+                throw new IllegalActionException(
+                        this,
+                        "This actor can only be used when synchronizeToRealTime "
+                                + "in the director is enabled because a reference to real time is needed to compare "
+                                + "dates.");
             }
             _director = (DEDirector) director;
         }
     }
-    
+
     @Override
     public void fire() throws IllegalActionException {
         super.fire();
@@ -97,7 +100,7 @@ public class DateToEvent extends Transformer {
         Time time = _director.getModelTime();
         System.out.println("modeltime " + time);
         if (_outputTimes != null && _outputTimes.size() > 0) {
-            Time t = ((Time)Collections.min(_outputTimes));
+            Time t = (Collections.min(_outputTimes));
             if (t.compareTo(time) == 0) {
                 output.send(0, new DateToken(systemTime));
                 _outputTimes.remove(t);
@@ -106,12 +109,14 @@ public class DateToEvent extends Transformer {
         if (input.hasToken(0)) {
             DateToken token = (DateToken) input.get(0);
             if (token.getCalendarInstance().getTimeInMillis() < systemTime) {
-                throw new IllegalActionException(this, "The date on the input port lies in the past.");
+                throw new IllegalActionException(this,
+                        "The date on the input port lies in the past.");
             } else {
-                Time fireTime = new Time(_director, 
-                        (token.getCalendarInstance().getTimeInMillis() - 
-                                _director.getRealStartTimeMillis()) * 
-                                _director.localClock.getTimeResolution());
+                Time fireTime = new Time(
+                        _director,
+                        (token.getCalendarInstance().getTimeInMillis() - _director
+                                .getRealStartTimeMillis())
+                                * _director.localClock.getTimeResolution());
                 _director.fireAt(this, fireTime);
                 if (_outputTimes == null) {
                     _outputTimes = new HashSet<Time>();
@@ -120,9 +125,9 @@ public class DateToEvent extends Transformer {
             }
         }
     }
-    
+
     private HashSet<Time> _outputTimes;
-    
+
     private DEDirector _director;
-    
+
 }

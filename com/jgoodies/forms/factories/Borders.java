@@ -123,9 +123,9 @@ public final class Borders {
      */
     public static final Border TABBED_DIALOG_BORDER = createEmptyBorder(
             LayoutStyle.getCurrent().getTabbedDialogMarginY(), LayoutStyle
-                    .getCurrent().getTabbedDialogMarginX(), LayoutStyle
-                    .getCurrent().getTabbedDialogMarginY(), LayoutStyle
-                    .getCurrent().getTabbedDialogMarginX());
+            .getCurrent().getTabbedDialogMarginX(), LayoutStyle
+            .getCurrent().getTabbedDialogMarginY(), LayoutStyle
+            .getCurrent().getTabbedDialogMarginX());
 
     // Factory Methods ******************************************************
 
@@ -162,7 +162,7 @@ public final class Borders {
         if (tokenCount != 4) {
             throw new IllegalArgumentException(
                     "The border requires 4 sizes, but '" + encodedSizes
-                            + "' has " + tokenCount + ".");
+                    + "' has " + tokenCount + ".");
         }
         ConstantSize top = Sizes.constant(tokenizer.nextToken(), false);
         ConstantSize left = Sizes.constant(tokenizer.nextToken(), true);
@@ -237,6 +237,7 @@ public final class Borders {
          * @param width the width of the painted border
          * @param height the height of the painted border
          */
+        @Override
         public void paintBorder(Component c, Graphics g, int x, int y,
                 int width, int height) {
             // An empty border doesn't paint.
@@ -248,6 +249,7 @@ public final class Borders {
          * @param c the component for which this border insets value applies
          * @return the border's Insets
          */
+        @Override
         public Insets getBorderInsets(Component c) {
             return new Insets(top.getPixelSize(c), left.getPixelSize(c),
                     bottom.getPixelSize(c), right.getPixelSize(c));
@@ -260,6 +262,7 @@ public final class Borders {
          *
          * @return false - because the empty border is not opaque
          */
+        @Override
         public boolean isBorderOpaque() {
             return false;
         }

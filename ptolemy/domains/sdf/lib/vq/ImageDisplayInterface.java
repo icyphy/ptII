@@ -33,16 +33,16 @@ package ptolemy.domains.sdf.lib.vq;
 //////////////////////////////////////////////////////////////////////////
 ////ImageDisplayInterface
 /**
-* Interface encapsulating platform dependent code of the
-* ptolemy.domains.sdf.lib.vq.ImageDisplay from the
-* platform independent parts.
-* @author Jianwu Wang
-* @version $Id$
-* @since Ptolemy II 10.0
-* @Pt.ProposedRating
-* @Pt.AcceptedRating
-*/
+ * Interface encapsulating platform dependent code of the
+ * ptolemy.domains.sdf.lib.vq.ImageDisplay from the
+ * platform independent parts.
+ * @author Jianwu Wang
+ * @version $Id$
+ * @since Ptolemy II 10.0
+ * @Pt.ProposedRating
+ * @Pt.AcceptedRating
+ */
 public interface ImageDisplayInterface extends
-        ptolemy.actor.lib.image.ImageDisplayInterface {
+ptolemy.actor.lib.image.ImageDisplayInterface {
 
 }

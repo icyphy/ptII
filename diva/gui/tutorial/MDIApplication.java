@@ -71,6 +71,7 @@ public abstract class MDIApplication extends AbstractApplication {
         context.addViewListener(new MDIViewListener());
     }
 
+    @Override
     public void addView(View v) {
         super.addView(v);
 
@@ -88,6 +89,7 @@ public abstract class MDIApplication extends AbstractApplication {
      * create, initialize, and then return a View object that
      * wraps a JComponent.
      */
+    @Override
     public abstract View createView(Document d);
 
     /** Get the MDI frame -- type-specific version of
@@ -109,6 +111,7 @@ public abstract class MDIApplication extends AbstractApplication {
      * This method assumes that setCurrentView will be called
      * subsequently on another view.
      */
+    @Override
     public void removeView(View v) {
         super.removeView(v);
 
@@ -124,6 +127,7 @@ public abstract class MDIApplication extends AbstractApplication {
     /** Set the given document to be the current document, and raise
      * the internal window that corresponds to that component.
      */
+    @Override
     public void setCurrentView(View v) {
         super.setCurrentView(v);
 
@@ -133,6 +137,7 @@ public abstract class MDIApplication extends AbstractApplication {
     }
 
     private class MDIViewListener extends ViewAdapter {
+        @Override
         public void viewSelected(ViewEvent e) {
             JComponent jc = e.getView();
             View view = getView(jc);
@@ -149,6 +154,7 @@ public abstract class MDIApplication extends AbstractApplication {
             }
         }
 
+        @Override
         public void viewClosing(ViewEvent e) {
             JComponent jc = e.getView();
             View view = getView(jc);

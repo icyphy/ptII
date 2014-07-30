@@ -25,7 +25,7 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 Ptolemy II includes the work of others, to see those copyrights, follow
 the copyright link on the splash page or see copyright.htm.
-*/
+ */
 package ptolemy.actor.util;
 
 import java.util.ArrayList;
@@ -93,6 +93,7 @@ public class GLBFunction extends MonotonicFunction {
      *  @exception IllegalActionException If thrown while getting the
      *  value of the cached terms.
      */
+    @Override
     public Object getValue() throws IllegalActionException {
         _updateArguments();
 
@@ -123,6 +124,7 @@ public class GLBFunction extends MonotonicFunction {
      *  the type variables for all the destination ports.
      *  @return An array of InequalityTerms.
      */
+    @Override
     public InequalityTerm[] getVariables() {
         _updateArguments();
         return _cachedTerms;

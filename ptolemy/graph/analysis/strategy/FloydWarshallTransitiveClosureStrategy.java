@@ -54,7 +54,7 @@ import ptolemy.graph.analysis.analyzer.TransitiveClosureAnalyzer;
  @version $Id$
  */
 public class FloydWarshallTransitiveClosureStrategy extends
-        FloydWarshallStrategy implements TransitiveClosureAnalyzer {
+FloydWarshallStrategy implements TransitiveClosureAnalyzer {
     /** Construct a transitive closure analysis for a given directed graph.
      *  @param graph The given directed graph.
      */
@@ -72,15 +72,17 @@ public class FloydWarshallTransitiveClosureStrategy extends
      *  @param endNode The ending node.
      *  @return True if such a path exists.
      */
+    @Override
     public boolean pathExistence(Node startNode, Node endNode) {
         return _transitiveClosure[graph().nodeLabel(startNode)][graph()
-                .nodeLabel(endNode)];
+                                                                .nodeLabel(endNode)];
     }
 
     /** Return a description of the analyzer.
      *
      *  @return Return a description of the analyzer..
      */
+    @Override
     public String toString() {
         return "Transitive closure analyzer"
                 + " based on the Floyd-Warshall algorithm.";
@@ -95,6 +97,7 @@ public class FloydWarshallTransitiveClosureStrategy extends
      *
      *  @return The transitive closure in the form of 2D array.
      */
+    @Override
     public boolean[][] transitiveClosureMatrix() {
         return (boolean[][]) _result();
     }
@@ -105,6 +108,7 @@ public class FloydWarshallTransitiveClosureStrategy extends
      *
      *  @return True if the graph is a directed graph.
      */
+    @Override
     public boolean valid() {
         return graph() instanceof DirectedGraph;
     }
@@ -117,6 +121,7 @@ public class FloydWarshallTransitiveClosureStrategy extends
      *  @return Return the transitive closure matrix as an {@link Object}
      *  in order to be stored in the result-cache.
      */
+    @Override
     protected Object _compute() {
         int size = graph().nodeCount();
 
@@ -148,6 +153,7 @@ public class FloydWarshallTransitiveClosureStrategy extends
      *  Floyd-Warshall algorithm, for the purpose of computing the transitive
      *  closure.
      */
+    @Override
     protected void _floydWarshallComputation(int k, int i, int j) {
         _transitiveClosure[i][j] |= _transitiveClosure[i][k]
                 & _transitiveClosure[k][j];

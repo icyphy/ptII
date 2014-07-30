@@ -1,4 +1,3 @@
-
 /* Parameter Estimation for Graphical Models.
 
 Copyright (c) 1998-2014 The Regents of the University of California.
@@ -25,7 +24,7 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
-*/
+ */
 package org.ptolemy.machineLearning.hmm;
 
 import java.util.HashMap;
@@ -159,6 +158,7 @@ public abstract class ParameterEstimator extends TypedAtomicActor {
 
     }
 
+    @Override
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         if (attribute == A0) {
@@ -198,7 +198,7 @@ public abstract class ParameterEstimator extends TypedAtomicActor {
                 sum += tempPriors[i];
             }
             // check if priors is a valid probability vector.
-            if (! SignalProcessing.close(sum, 1.0)) {
+            if (!SignalProcessing.close(sum, 1.0)) {
                 throw new IllegalActionException(this, "Priors sum to " + sum
                         + " . The sum must be equal to 1.0.");
             } else {
@@ -271,6 +271,7 @@ public abstract class ParameterEstimator extends TypedAtomicActor {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
+    @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         ParameterEstimator newObject = (ParameterEstimator) super
                 .clone(workspace);
@@ -281,6 +282,7 @@ public abstract class ParameterEstimator extends TypedAtomicActor {
         return newObject;
     }
 
+    @Override
     public void fire() throws IllegalActionException {
 
         super.fire();
@@ -291,7 +293,7 @@ public abstract class ParameterEstimator extends TypedAtomicActor {
         if (_observationLength <= 0) {
             throw new IllegalActionException(this,
                     "Observation sequence length " + _observationLength
-                            + " but must be greater than zero.");
+                    + " but must be greater than zero.");
         }
         // Get Observation Values as doubles
         //FIXME: should the observations  allowed to be vectors too, for multivariate distributions?
@@ -421,7 +423,7 @@ public abstract class ParameterEstimator extends TypedAtomicActor {
                         xi[t][now][next] = alphas[t][now]
                                 * emissionProbability(y[t + 1], next)
                                 * gamma[t + 1][next] * A[now][next]
-                                / alphas[t + 1][next]; // MJ Eqn (11.45)
+                                        / alphas[t + 1][next]; // MJ Eqn (11.45)
                     }
                     A_hat[now][next] += xi[t][now][next];
                 }
@@ -570,7 +572,7 @@ public abstract class ParameterEstimator extends TypedAtomicActor {
                         xi[t][now][next] = alphas[t][now]
                                 * emissionProbability(y[t + 1], next)
                                 * gamma[t + 1][next] * A[now][next]
-                                / alphas[t + 1][next];
+                                        / alphas[t + 1][next];
                     }
                     A_hat[now][next] += xi[t][now][next];
                 }

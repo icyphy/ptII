@@ -54,7 +54,8 @@ package ptolemy.gui;
  @Pt.AcceptedRating Yellow (janneck)
  @deprecated Use ptolemy.util.MessageHandler.
  */
-public class MessageHandler extends ptolemy.util.MessageHandler{
+@Deprecated
+public class MessageHandler extends ptolemy.util.MessageHandler {
     // The class body is empty so that callers use the static
     // methods in the superclass.
     // This class had duplicate code, which was confusing.

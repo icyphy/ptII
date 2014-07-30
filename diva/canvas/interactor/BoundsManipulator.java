@@ -103,6 +103,7 @@ public class BoundsManipulator extends Manipulator {
      * instance will have the same grab handle, and interactor
      * for grab-handles.
      */
+    @Override
     public FigureDecorator newInstance(Figure f) {
         BoundsManipulator m = new BoundsManipulator();
         m.setGrabHandleFactory(this.getGrabHandleFactory());
@@ -114,6 +115,7 @@ public class BoundsManipulator extends Manipulator {
     /** Refresh the geometry. This adjusts the bounds of the geometry
      * to match the bounds of the child figure.
      */
+    @Override
     public void refresh() {
         if (_geometry != null) {
             _geometry.setBounds(getChild().getBounds());
@@ -124,6 +126,7 @@ public class BoundsManipulator extends Manipulator {
      * Then get a rectangle geometry object and create grab-handles
      * on its sites.
      */
+    @Override
     public void setChild(Figure child) {
         super.setChild(child);
         clearGrabHandles();
@@ -182,6 +185,7 @@ public class BoundsManipulator extends Manipulator {
         /** Override the base class to notify the enclosing BoundsInteractor.
          *  @param e The mouse event.
          */
+        @Override
         public void mouseReleased(LayerEvent e) {
             super.mouseReleased(e);
             BoundsManipulator.this.mouseReleased(e);
@@ -190,6 +194,7 @@ public class BoundsManipulator extends Manipulator {
         /** Override the base class to notify the enclosing BoundsInteractor.
          *  @param e The mouse event.
          */
+        @Override
         public void mousePressed(LayerEvent e) {
             super.mousePressed(e);
             BoundsManipulator.this.mousePressed(e);
@@ -197,6 +202,7 @@ public class BoundsManipulator extends Manipulator {
 
         /** Translate the grab-handle
          */
+        @Override
         public void translate(LayerEvent e, double x, double y) {
             // Translate the grab-handle, resizing the geometry
             GrabHandle g = (GrabHandle) e.getFigureSource();

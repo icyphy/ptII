@@ -78,6 +78,7 @@ public class OpenLayoutDialog implements ActionListener {
      * @param event the event object.
      * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
      */
+    @Override
     public void actionPerformed(ActionEvent event) {
 
         JFileChooser fileChooser = _menu.getFileChooser();

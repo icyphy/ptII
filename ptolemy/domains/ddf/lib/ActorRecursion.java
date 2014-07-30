@@ -135,6 +135,7 @@ public class ActorRecursion extends TypedCompositeActor {
      *  @exception IllegalActionException If any called method throws
      *   IllegalActionException.
      */
+    @Override
     public void fire() throws IllegalActionException {
         // Don't call super.fire() here. It does not follow what a regular
         // composite actor would do.
@@ -157,7 +158,7 @@ public class ActorRecursion extends TypedCompositeActor {
             getDirector().initialize();
             _transferOutputs();
             ((DDFDirector) getExecutiveDirector())
-                    .merge((DDFDirector) getDirector());
+            .merge((DDFDirector) getDirector());
 
             try {
                 // get rid of the local director.
@@ -180,6 +181,7 @@ public class ActorRecursion extends TypedCompositeActor {
      *  @exception IllegalActionException If no actor is found with
      *   the given name or the found actor is not compatible.
      */
+    @Override
     public void initialize() throws IllegalActionException {
         _searchRecursionActor();
 
@@ -194,6 +196,7 @@ public class ActorRecursion extends TypedCompositeActor {
      *  @return false.
      *  @exception IllegalActionException Not thrown in this base class.
      */
+    @Override
     public boolean postfire() throws IllegalActionException {
         return false;
     }
@@ -206,6 +209,7 @@ public class ActorRecursion extends TypedCompositeActor {
      *  @param depth The depth in the hierarchy, to determine indenting.
      *  @exception IOException If an I/O error occurs.
      */
+    @Override
     protected void _exportMoMLContents(Writer output, int depth)
             throws IOException {
         Iterator attributes = attributeList().iterator();
@@ -229,6 +233,7 @@ public class ActorRecursion extends TypedCompositeActor {
      *  The preinitialization and initialization have already been done in
      *  the fire() method.
      */
+    @Override
     protected void _finishedAddEntity(ComponentEntity entity) {
     }
 
@@ -251,7 +256,7 @@ public class ActorRecursion extends TypedCompositeActor {
 
         if (_recursionActor.inputPortList().size() != inputPortList().size()
                 || _recursionActor.outputPortList().size() != outputPortList()
-                        .size()) {
+                .size()) {
             throw new IllegalActionException(this, "The recursionActor "
                     + recursionActor.stringValue()
                     + " must have the same number of input ports and "
@@ -326,7 +331,7 @@ public class ActorRecursion extends TypedCompositeActor {
      *   be cloned.
      */
     private void _cloneRecursionActor() throws IllegalActionException,
-            CloneNotSupportedException {
+    CloneNotSupportedException {
         try {
             // Clone the composite actor.
             CompositeActor clone = (CompositeActor) _recursionActor
@@ -529,7 +534,7 @@ public class ActorRecursion extends TypedCompositeActor {
             }
 
             IntToken[] productionRateToken = new IntToken[outputPort
-                    .getWidthInside()];
+                                                          .getWidthInside()];
 
             for (int i = 0; i < outputPort.getWidthInside(); i++) {
                 productionRateToken[i] = new IntToken(productionRate[i]);

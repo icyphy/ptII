@@ -127,6 +127,7 @@ public class MatrixToSequence extends SDFTransformer {
      *  @param attribute The attribute that has changed.
      *  @exception IllegalActionException If the parameters are out of range.
      */
+    @Override
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         if (attribute == rows) {
@@ -155,6 +156,7 @@ public class MatrixToSequence extends SDFTransformer {
      *  @exception CloneNotSupportedException If a derived class has
      *   an attribute that cannot be cloned.
      */
+    @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         MatrixToSequence newObject = (MatrixToSequence) super.clone(workspace);
 
@@ -167,6 +169,7 @@ public class MatrixToSequence extends SDFTransformer {
      *  is no input token, do nothing.
      *  @exception IllegalActionException If not enough tokens are available.
      */
+    @Override
     public void fire() throws IllegalActionException {
         super.fire();
 
@@ -229,6 +232,7 @@ public class MatrixToSequence extends SDFTransformer {
         /** Return the function result.
          *  @return A Type.
          */
+        @Override
         public Object getValue() {
             Type inputType = _port.getType();
 
@@ -245,6 +249,7 @@ public class MatrixToSequence extends SDFTransformer {
          *  length.
          *  @return An array of InequalityTerm.
          */
+        @Override
         public InequalityTerm[] getVariables() {
             if (_port.getTypeTerm().isSettable()) {
                 InequalityTerm[] variable = new InequalityTerm[1];

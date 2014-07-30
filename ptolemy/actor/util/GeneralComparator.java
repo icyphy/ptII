@@ -56,6 +56,7 @@ public class GeneralComparator implements Comparator {
      *  @param second The second comparable object.
      *  @return The comparison result, -1, 0, or 1.
      */
+    @Override
     public int compare(Object first, Object second) {
         return ((Comparable) first).compareTo(second);
     }

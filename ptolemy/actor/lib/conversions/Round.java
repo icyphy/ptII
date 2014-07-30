@@ -117,6 +117,7 @@ public class Round extends Transformer {
      *  @param attribute The attribute that changed.
      *  @exception IllegalActionException If the function is not recognized.
      */
+    @Override
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         if (attribute == function) {
@@ -145,6 +146,7 @@ public class Round extends Transformer {
      *  @exception CloneNotSupportedException If a derived class contains
      *   an attribute that cannot be cloned.
      */
+    @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         Round newObject = (Round) super.clone(workspace);
 
@@ -162,6 +164,7 @@ public class Round extends Transformer {
      *  @exception IllegalActionException If there is no director,
      *   or if the input is NaN.
      */
+    @Override
     public void fire() throws IllegalActionException {
         super.fire();
         double in = ((DoubleToken) input.get(0)).doubleValue();
@@ -188,6 +191,7 @@ public class Round extends Transformer {
      *   not consume any input tokens.
      *  @exception IllegalActionException Not thrown in this base class.
      */
+    @Override
     public int iterate(int count) throws IllegalActionException {
         // Check whether we need to reallocate the output token array.
         if (count > _resultArray.length) {
@@ -221,6 +225,7 @@ public class Round extends Transformer {
      *  return whatever the superclass returns (presumably true).
      *  @exception IllegalActionException If there is no director.
      */
+    @Override
     public boolean prefire() throws IllegalActionException {
         if (!input.hasToken(0)) {
             return false;

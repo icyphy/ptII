@@ -103,6 +103,7 @@ public class LimitedFiringSource extends Source {
      *  @param attribute The attribute that changed.
      *  @exception IllegalActionException If the function is not recognized.
      */
+    @Override
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         if (attribute == firingCountLimit) {
@@ -118,6 +119,7 @@ public class LimitedFiringSource extends Source {
      *   which could occur if, for example, the director will not accept
      *   sequence actors.
      */
+    @Override
     public void initialize() throws IllegalActionException {
         super.initialize();
         _iterationCount = 0;
@@ -131,6 +133,7 @@ public class LimitedFiringSource extends Source {
      *  @exception IllegalActionException If firingCountLimit has
      *   an invalid expression.
      */
+    @Override
     public boolean postfire() throws IllegalActionException {
         if (_firingCountLimit != 0) {
             _iterationCount++;

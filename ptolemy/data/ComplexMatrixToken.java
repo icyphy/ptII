@@ -183,6 +183,7 @@ public class ComplexMatrixToken extends MatrixToken {
     /** Return the content of this token as a new 2-D Complex matrix.
      *  @return A 2-D Complex matrix
      */
+    @Override
     public Complex[][] complexMatrix() {
         return ComplexMatrixMath.allocCopy(_value);
     }
@@ -245,6 +246,7 @@ public class ComplexMatrixToken extends MatrixToken {
      *  @exception IllegalActionException If the returned matrix is empty or if the specified
      *   parameters result in out of bounds accesses.
      */
+    @Override
     public MatrixToken crop(int rowStart, int colStart, int rowSpan, int colSpan)
             throws IllegalActionException {
         Complex[][] value = this.complexMatrix();
@@ -258,8 +260,8 @@ public class ComplexMatrixToken extends MatrixToken {
         } catch (ArrayIndexOutOfBoundsException ex) {
             throw new IllegalActionException(
                     "Matrix crop indices out of bounds (rowStart = " + rowStart
-                            + ", colStart = " + colStart + ", rowSpan = "
-                            + rowSpan + ", colSpan = " + colSpan + ").");
+                    + ", colStart = " + colStart + ", rowSpan = "
+                    + rowSpan + ", colSpan = " + colSpan + ").");
         }
     }
 
@@ -271,6 +273,7 @@ public class ComplexMatrixToken extends MatrixToken {
      *   of the same dimensions and the corresponding elements of the
      *   matrices are equal.
      */
+    @Override
     public boolean equals(Object object) {
         if (object == null) {
             return false;
@@ -306,6 +309,7 @@ public class ComplexMatrixToken extends MatrixToken {
     /** Return the number of columns in the matrix.
      *  @return The number of columns in the matrix.
      */
+    @Override
     public int getColumnCount() {
         return _columnCount;
     }
@@ -318,6 +322,7 @@ public class ComplexMatrixToken extends MatrixToken {
      *  @exception ArrayIndexOutOfBoundsException If the specified
      *   row or column number is outside the range of the matrix.
      */
+    @Override
     public Token getElementAsToken(final int row, final int column)
             throws ArrayIndexOutOfBoundsException {
         return new ComplexToken(_value[row][column]);
@@ -339,6 +344,7 @@ public class ComplexMatrixToken extends MatrixToken {
      *  This must be a type representing a scalar token.
      *  @return BaseType.COMPLEX.
      */
+    @Override
     public Type getElementType() {
         return BaseType.COMPLEX;
     }
@@ -346,6 +352,7 @@ public class ComplexMatrixToken extends MatrixToken {
     /** Return the number of rows in the matrix.
      *  @return The number of rows in the matrix.
      */
+    @Override
     public int getRowCount() {
         return _rowCount;
     }
@@ -353,6 +360,7 @@ public class ComplexMatrixToken extends MatrixToken {
     /** Return the type of this token.
      *  @return BaseType.COMPLEX_MATRIX
      */
+    @Override
     public Type getType() {
         return BaseType.COMPLEX_MATRIX;
     }
@@ -361,6 +369,7 @@ public class ComplexMatrixToken extends MatrixToken {
      *  integer portion of the magnitude of the sum of the elements.
      *  @return A hash code value for this token.
      */
+    @Override
     public int hashCode() {
         Complex sum = new Complex(0);
 
@@ -395,6 +404,7 @@ public class ComplexMatrixToken extends MatrixToken {
      *   to size incompatibilities, or if the input matrix has no
      *   tokens.
      */
+    @Override
     public MatrixToken join(MatrixToken[][] matrices)
             throws IllegalActionException {
         if (matrices == null || matrices.length == 0 || matrices[0].length == 0) {
@@ -444,6 +454,7 @@ public class ComplexMatrixToken extends MatrixToken {
      *  @param columns The number of columns per submatrix.
      *  @return An array of matrix tokens.
      */
+    @Override
     public MatrixToken[][] split(int[] rows, int[] columns) {
         MatrixToken[][] result = new MatrixToken[rows.length][columns.length];
         Complex[][] source = complexMatrix();
@@ -484,6 +495,7 @@ public class ComplexMatrixToken extends MatrixToken {
      *  @return A new ComplexMatrixToken containing the left multiplicative
      *   identity.
      */
+    @Override
     public Token one() {
         try {
             return new ComplexMatrixToken(
@@ -502,6 +514,7 @@ public class ComplexMatrixToken extends MatrixToken {
      *  @return A new ComplexMatrixToken containing the right
      *   multiplicative identity.
      */
+    @Override
     public Token oneRight() {
         try {
             return new ComplexMatrixToken(
@@ -519,6 +532,7 @@ public class ComplexMatrixToken extends MatrixToken {
      *  matrix contained in this token.
      *  @return A new ComplexMatrixToken containing the additive identity.
      */
+    @Override
     public Token zero() {
         try {
             return new ComplexMatrixToken(ComplexMatrixMath.zero(_rowCount,
@@ -542,6 +556,7 @@ public class ComplexMatrixToken extends MatrixToken {
      *  class.
      *  @return A new ComplexMatrixToken containing the result.
      */
+    @Override
     protected MatrixToken _add(MatrixToken rightArgument)
             throws IllegalActionException {
         ComplexMatrixToken convertedArgument = (ComplexMatrixToken) rightArgument;
@@ -559,6 +574,7 @@ public class ComplexMatrixToken extends MatrixToken {
      *  supported by the derived class.
      *  @return A new ComplexMatrixToken containing the result.
      */
+    @Override
     protected MatrixToken _addElement(Token rightArgument)
             throws IllegalActionException {
         Complex scalar;
@@ -585,6 +601,7 @@ public class ComplexMatrixToken extends MatrixToken {
      *  supported by the derived class.
      *  @return A new Token containing the result.
      */
+    @Override
     protected MatrixToken _divideElement(Token rightArgument)
             throws IllegalActionException {
         Complex scalar;
@@ -621,6 +638,7 @@ public class ComplexMatrixToken extends MatrixToken {
      *  class.
      *  @return A new ComplexMatrixToken containing the result.
      */
+    @Override
     protected MatrixToken _multiply(MatrixToken rightArgument)
             throws IllegalActionException {
         ComplexMatrixToken convertedArgument = (ComplexMatrixToken) rightArgument;
@@ -636,6 +654,7 @@ public class ComplexMatrixToken extends MatrixToken {
      *   supported by the derived class.
      *  @return A new ComplexMatrixToken containing the result.
      */
+    @Override
     protected MatrixToken _multiplyElement(Token rightArgument)
             throws IllegalActionException {
         Complex scalar;
@@ -662,6 +681,7 @@ public class ComplexMatrixToken extends MatrixToken {
      *  class.
      *  @return A new ComplexMatrixToken containing the result.
      */
+    @Override
     protected MatrixToken _subtract(MatrixToken rightArgument)
             throws IllegalActionException {
         ComplexMatrixToken convertedArgument = (ComplexMatrixToken) rightArgument;
@@ -679,6 +699,7 @@ public class ComplexMatrixToken extends MatrixToken {
      *  supported by the derived class.
      *  @return A new Token containing the result.
      */
+    @Override
     protected MatrixToken _subtractElement(Token rightArgument)
             throws IllegalActionException {
         Complex scalar;
@@ -705,6 +726,7 @@ public class ComplexMatrixToken extends MatrixToken {
      *  supported by the derived class.
      *  @return A new Token containing the result.
      */
+    @Override
     protected MatrixToken _subtractElementReverse(Token rightArgument)
             throws IllegalActionException {
         Complex scalar;

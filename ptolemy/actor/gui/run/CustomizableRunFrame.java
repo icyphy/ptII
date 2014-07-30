@@ -82,6 +82,7 @@ public class CustomizableRunFrame extends TableauFrame {
 
     /** Add a Customize menu.
      */
+    @Override
     protected void _addMenus() {
         super._addMenus();
 
@@ -126,6 +127,7 @@ public class CustomizableRunFrame extends TableauFrame {
 
     /** Listener for customize menu commands. */
     public class CustomizeMenuListener implements ActionListener {
+        @Override
         public void actionPerformed(ActionEvent e) {
             JMenuItem target = (JMenuItem) e.getSource();
             String actionCommand = target.getActionCommand();
@@ -139,8 +141,8 @@ public class CustomizableRunFrame extends TableauFrame {
                 } catch (KernelException ex) {
                     try {
                         MessageHandler
-                                .warning("Failed to create layout customization frame: "
-                                        + ex);
+                        .warning("Failed to create layout customization frame: "
+                                + ex);
                     } catch (CancelException exception) {
                     }
                 }
@@ -153,11 +155,13 @@ public class CustomizableRunFrame extends TableauFrame {
                     MoMLChangeRequest request = new MoMLChangeRequest(this,
                             _model,
                             "<deleteProperty name=\"_runLayoutAttribute\"/>") {
+                        @Override
                         protected void _execute() throws Exception {
                             super._execute();
                             // Close this window and open a new one.
                             // This must be done in the swing event thread.
                             Runnable reOpen = new Runnable() {
+                                @Override
                                 public void run() {
                                     // Create a new tableau.  Closing the old frame
                                     // also results in removing the tableau.
@@ -212,8 +216,8 @@ public class CustomizableRunFrame extends TableauFrame {
                 } catch (KernelException ex) {
                     try {
                         MessageHandler
-                                .warning("Failed to create layout customization frame: "
-                                        + ex);
+                        .warning("Failed to create layout customization frame: "
+                                + ex);
                     } catch (CancelException exception) {
                     }
                 }

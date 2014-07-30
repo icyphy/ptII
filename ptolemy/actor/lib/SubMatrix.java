@@ -125,6 +125,7 @@ public class SubMatrix extends Transformer {
      *  @exception IllegalActionException If the submatrix is
      *   empty (e.g., row and column are out of range).
      */
+    @Override
     public void fire() throws IllegalActionException {
         super.fire();
         if (!input.hasToken(0)) {

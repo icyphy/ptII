@@ -25,7 +25,7 @@
                                         COPYRIGHTENDKEY
 
 Created : May 1998
-*/
+ */
 
 package ptolemy.data.expr;
 
@@ -136,10 +136,10 @@ invalid.
 @see ptolemy.data.expr.ASTPtSumNode
 @see ptolemy.data.expr.ASTPtUnaryNode
 @see ptolemy.data.Token
-*/
+ */
 @SuppressWarnings("unused")
 public class PtParser/*@bgen(jjtree)*/implements PtParserTreeConstants,
-        PtParserConstants {/*@bgen(jjtree)*/
+PtParserConstants {/*@bgen(jjtree)*/
     protected JJTPtParserState jjtree = new JJTPtParserState();
     boolean debug = false;
 
@@ -155,6 +155,7 @@ public class PtParser/*@bgen(jjtree)*/implements PtParserTreeConstants,
      *  @deprecated Use a visitor with a ParseTreeFreeVariableCollector
      *  instead.
      */
+    @Deprecated
     public LinkedList getUndefinedList(String stringIn)
             throws IllegalActionException {
         ASTPtRootNode rootNode = generateParseTree(stringIn);
@@ -325,8 +326,8 @@ public class PtParser/*@bgen(jjtree)*/implements PtParserTreeConstants,
                     x += "\u005c\u005c";
                     break;
                 case '\u005c'':
-                    x += "\u005c'";
-                    break;
+                x += "\u005c'";
+                break;
                 case '"':
                     x += "\u005c"";
                     break;
@@ -1787,7 +1788,7 @@ public class PtParser/*@bgen(jjtree)*/implements PtParserTreeConstants,
           ( <OPENPAREN> [ funcIf() ( <COMMA> funcIf() )* ] <CLOSEPAREN> )? ]
       ) #PtMethodCallNode(isMethodCall)
     }
-    */
+     */
 
     /*void element() #void :
     {
@@ -2523,48 +2524,48 @@ public class PtParser/*@bgen(jjtree)*/implements PtParserTreeConstants,
                     ++jjtn000._nColumns;
                     funcIf();
                 }
-                label_18: while (true) {
+            label_18: while (true) {
+                switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk) {
+                case SEPARATOR:
+                    ;
+                    break;
+                default:
+                    jj_la1[37] = jj_gen;
+                    break label_18;
+                }
+                jj_consume_token(SEPARATOR);
+                ++nRows;
+                i = 0;
+                funcIf();
+                ++i;
+                label_19: while (true) {
                     switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk) {
-                    case SEPARATOR:
+                    case COMMA:
                         ;
                         break;
                     default:
-                        jj_la1[37] = jj_gen;
-                        break label_18;
+                        jj_la1[38] = jj_gen;
+                        break label_19;
                     }
-                    jj_consume_token(SEPARATOR);
-                    ++nRows;
-                    i = 0;
+                    jj_consume_token(COMMA);
                     funcIf();
                     ++i;
-                    label_19: while (true) {
-                        switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk) {
-                        case COMMA:
-                            ;
-                            break;
-                        default:
-                            jj_la1[38] = jj_gen;
-                            break label_19;
-                        }
-                        jj_consume_token(COMMA);
-                        funcIf();
-                        ++i;
-                    }
-                    /* Assert that the following rows have the same number of terms as the
+                }
+                /* Assert that the following rows have the same number of terms as the
                      first row. */
-                    if (i != jjtn000._nColumns) {
-                        {
-                            if (true) {
-                                throw new ParseException(
-                                        "PtParser: error parsing matrix "
-                                                + "construction, the row "
-                                                + nRows
-                                                + " does not have the same number of "
-                                                + "terms as the first row.");
-                            }
+                if (i != jjtn000._nColumns) {
+                    {
+                        if (true) {
+                            throw new ParseException(
+                                    "PtParser: error parsing matrix "
+                                            + "construction, the row "
+                                            + nRows
+                                            + " does not have the same number of "
+                                            + "terms as the first row.");
                         }
                     }
                 }
+            }
                 jj_consume_token(CLOSEBRACKET);
                 jjtree.closeNodeScope(jjtn000, true);
                 jjtc000 = false;
@@ -3880,7 +3881,7 @@ public class PtParser/*@bgen(jjtree)*/implements PtParserTreeConstants,
     }
 
     @SuppressWarnings("serial")
-        static private final class LookaheadSuccess extends java.lang.Error {
+    static private final class LookaheadSuccess extends java.lang.Error {
     }
 
     final private LookaheadSuccess jj_ls = new LookaheadSuccess();

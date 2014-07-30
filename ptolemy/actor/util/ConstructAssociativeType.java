@@ -88,6 +88,7 @@ public class ConstructAssociativeType extends MonotonicFunction {
      *  value of the typeTerm of the port or while instantiating a type.
      *
      */
+    @Override
     public Object getValue() throws IllegalActionException {
         Type[] types = new Type[_ports.size()];
         String[] labels = new String[_ports.size()];
@@ -124,6 +125,7 @@ public class ConstructAssociativeType extends MonotonicFunction {
      *  the type variables for all the ports that do not have declared types.
      *  @return An array of InequalityTerm.
      */
+    @Override
     public InequalityTerm[] getVariables() {
         ArrayList<InequalityTerm> portTypeTermList = new ArrayList<InequalityTerm>();
         for (TypedIOPort port : _ports) {
@@ -133,7 +135,7 @@ public class ConstructAssociativeType extends MonotonicFunction {
             }
         }
         return portTypeTermList.toArray(new InequalityTerm[portTypeTermList
-                .size()]);
+                                                           .size()]);
     }
 
     /** The list of ports used to construct the AssociativeType. */

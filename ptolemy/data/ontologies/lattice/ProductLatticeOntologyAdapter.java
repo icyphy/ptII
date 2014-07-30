@@ -76,7 +76,7 @@ public class ProductLatticeOntologyAdapter extends LatticeOntologyAdapter {
      */
     public ProductLatticeOntologyAdapter(ProductLatticeOntologySolver solver,
             Object component, boolean useDefaultConstraints)
-            throws IllegalActionException {
+                    throws IllegalActionException {
         super(solver, component, useDefaultConstraints);
 
         _tupleAdapters = getTupleAdapters(solver, component);
@@ -92,6 +92,7 @@ public class ProductLatticeOntologyAdapter extends LatticeOntologyAdapter {
      *  @exception IllegalActionException Thrown if there is a problem creating
      *   the constraints.
      */
+    @Override
     public List<Inequality> constraintList() throws IllegalActionException {
         for (LatticeOntologyAdapter adapter : _tupleAdapters) {
             if (adapter != null) {
@@ -110,6 +111,7 @@ public class ProductLatticeOntologyAdapter extends LatticeOntologyAdapter {
      *  for each LatticeOntologyAdapter for each component ontology.
      *  @return The list of property-able named object.
      */
+    @Override
     public List<Object> getPropertyables() {
         Set<Object> propertyableSet = new HashSet<Object>();
 
@@ -134,7 +136,7 @@ public class ProductLatticeOntologyAdapter extends LatticeOntologyAdapter {
     public static void addConstraintsFromTupleOntologyAdapter(
             List<Inequality> constraints, Ontology sourceOntology,
             LatticeOntologyAdapter productLatticeOntologyAdapter)
-            throws IllegalActionException {
+                    throws IllegalActionException {
         ProductLatticeOntology productOntology = ((ProductLatticeOntologySolver) productLatticeOntologyAdapter
                 .getSolver()).getOntology();
 
@@ -195,13 +197,13 @@ public class ProductLatticeOntologyAdapter extends LatticeOntologyAdapter {
                         "derivedFunction", productOntology, sourceOntology);
 
                 productLatticeOntologyAdapter
-                        .setAtLeast(
-                                greater,
-                                new ConceptFunctionInequalityTerm(
-                                        derivedFunction,
-                                        new InequalityTerm[] { productLatticeOntologyAdapter
-                                                .getSolver().getConceptTerm(
-                                                        lesser) }));
+                .setAtLeast(
+                        greater,
+                        new ConceptFunctionInequalityTerm(
+                                derivedFunction,
+                                new InequalityTerm[] { productLatticeOntologyAdapter
+                                        .getSolver().getConceptTerm(
+                                                lesser) }));
             }
         }
     }
@@ -224,7 +226,7 @@ public class ProductLatticeOntologyAdapter extends LatticeOntologyAdapter {
      */
     public static Concept getComponentConceptFromProductLatticeConcept(
             Concept productLatticeConcept, Ontology componentOntology)
-            throws IllegalActionException {
+                    throws IllegalActionException {
 
         if (productLatticeConcept instanceof RecordConcept) {
             RecordConcept originalOntologyRecordConcept = RecordConcept
@@ -232,11 +234,11 @@ public class ProductLatticeOntologyAdapter extends LatticeOntologyAdapter {
             for (String field : ((RecordConcept) productLatticeConcept)
                     .keySet()) {
                 originalOntologyRecordConcept
-                        .putConcept(
-                                field,
-                                ((ProductLatticeConcept) ((RecordConcept) productLatticeConcept)
-                                        .getConcept(field))
-                                        .getComponentConceptValue(componentOntology));
+                .putConcept(
+                        field,
+                        ((ProductLatticeConcept) ((RecordConcept) productLatticeConcept)
+                                .getConcept(field))
+                                .getComponentConceptValue(componentOntology));
             }
             return originalOntologyRecordConcept;
         } else if (productLatticeConcept instanceof ProductLatticeConcept) {
@@ -263,7 +265,7 @@ public class ProductLatticeOntologyAdapter extends LatticeOntologyAdapter {
      */
     public static Concept getDerivedConceptForProductLattice(Concept concept,
             ProductLatticeOntology productOntology)
-            throws IllegalActionException {
+                    throws IllegalActionException {
         if (concept instanceof RecordConcept) {
             RecordConcept productLatticeRecordConcept = RecordConcept
                     .createRecordConcept(productOntology);
@@ -327,7 +329,7 @@ public class ProductLatticeOntologyAdapter extends LatticeOntologyAdapter {
      */
     public static List<LatticeOntologyAdapter> getTupleAdapters(
             ProductLatticeOntologySolver solver, Object component)
-            throws IllegalActionException {
+                    throws IllegalActionException {
         List<LatticeOntologyAdapter> tupleAdapters = new ArrayList<LatticeOntologyAdapter>();
         ProductLatticeOntology productOntology = solver.getOntology();
         if (productOntology == null) {

@@ -81,6 +81,7 @@ public class BreakpointConfigurerDialog extends ComponentDialog {
     /** Apply the changes if the window is closed with anything but
      *  Cancel.
      */
+    @Override
     protected void _handleClosing() {
         super._handleClosing();
 

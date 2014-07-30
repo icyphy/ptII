@@ -74,6 +74,7 @@ public abstract class AbstractNotConvertibleToken extends Token {
      *  this token are implemented in different classes, or the
      *  operation does not make sense for the given types.
      */
+    @Override
     public Token add(Token rightArgument) throws IllegalActionException {
         if (getClass() != rightArgument.getClass()) {
             throw new IllegalActionException(
@@ -103,6 +104,7 @@ public abstract class AbstractNotConvertibleToken extends Token {
      *  this token are implemented in different classes, or the
      *  operation does not make sense for the given types.
      */
+    @Override
     public Token addReverse(ptolemy.data.Token leftArgument)
             throws IllegalActionException {
         if (getClass() != leftArgument.getClass()) {
@@ -133,6 +135,7 @@ public abstract class AbstractNotConvertibleToken extends Token {
      *  this token are implemented in different classes, or the
      *  operation does not make sense for the given types.
      */
+    @Override
     public Token divide(Token rightArgument) throws IllegalActionException {
         if (getClass() != rightArgument.getClass()) {
             throw new IllegalActionException(
@@ -163,6 +166,7 @@ public abstract class AbstractNotConvertibleToken extends Token {
      *  this token are implemented in different classes, or the
      *  operation does not make sense for the given types.
      */
+    @Override
     public Token divideReverse(Token leftArgument)
             throws IllegalActionException {
         if (getClass() != leftArgument.getClass()) {
@@ -198,6 +202,7 @@ public abstract class AbstractNotConvertibleToken extends Token {
      *  @exception IllegalActionException If the argument token and
      *   this token are implemented in different classes.
      */
+    @Override
     public BooleanToken isCloseTo(Token token, double epsilon)
             throws IllegalActionException {
         if (getClass() != token.getClass()) {
@@ -229,6 +234,7 @@ public abstract class AbstractNotConvertibleToken extends Token {
      *  @exception IllegalActionException If the argument token and
      *   this token are implemented in different classes.
      */
+    @Override
     public BooleanToken isEqualTo(Token rightArgument)
             throws IllegalActionException {
         if (getClass() != rightArgument.getClass()) {
@@ -251,6 +257,7 @@ public abstract class AbstractNotConvertibleToken extends Token {
      *  this token are implemented in different classes, or the
      *  operation does not make sense for the given types.
      */
+    @Override
     public Token modulo(Token rightArgument) throws IllegalActionException {
         if (getClass() != rightArgument.getClass()) {
             throw new IllegalActionException(
@@ -281,6 +288,7 @@ public abstract class AbstractNotConvertibleToken extends Token {
      *  this token are implemented in different classes, or the
      *  operation does not make sense for the given types.
      */
+    @Override
     public Token moduloReverse(Token leftArgument)
             throws IllegalActionException {
         if (getClass() != leftArgument.getClass()) {
@@ -311,6 +319,7 @@ public abstract class AbstractNotConvertibleToken extends Token {
      *  this token are implemented in different classes, or the
      *  operation does not make sense for the given types.
      */
+    @Override
     public Token multiply(Token rightArgument) throws IllegalActionException {
         if (getClass() != rightArgument.getClass()) {
             throw new IllegalActionException(
@@ -341,6 +350,7 @@ public abstract class AbstractNotConvertibleToken extends Token {
      *  this token are implemented in different classes, or the
      *  operation does not make sense for the given types.
      */
+    @Override
     public Token multiplyReverse(Token leftArgument)
             throws IllegalActionException {
         if (getClass() != leftArgument.getClass()) {
@@ -374,11 +384,11 @@ public abstract class AbstractNotConvertibleToken extends Token {
             Token firstToken, Token secondToken) {
         // We use this method to factor out a very common message
         return operation + " method not supported between "
-                + firstToken.getClass().getName() + " '"
-                + firstToken.toString() + "' and "
-                + secondToken.getClass().getName() + " '"
-                + secondToken.toString()
-                + "' because the tokens have different classes.";
+        + firstToken.getClass().getName() + " '"
+        + firstToken.toString() + "' and "
+        + secondToken.getClass().getName() + " '"
+        + secondToken.toString()
+        + "' because the tokens have different classes.";
     }
 
     /** Return a new token whose value is the value of the argument token
@@ -392,6 +402,7 @@ public abstract class AbstractNotConvertibleToken extends Token {
      *  this token are implemented in different classes, or the
      *  operation does not make sense for the given types.
      */
+    @Override
     public Token subtract(Token rightArgument) throws IllegalActionException {
         if (getClass() != rightArgument.getClass()) {
             throw new IllegalActionException(
@@ -421,6 +432,7 @@ public abstract class AbstractNotConvertibleToken extends Token {
      *  this token are implemented in different classes, or the
      *  operation does not make sense for the given types.
      */
+    @Override
     public Token subtractReverse(Token leftArgument)
             throws IllegalActionException {
         if (getClass() != leftArgument.getClass()) {

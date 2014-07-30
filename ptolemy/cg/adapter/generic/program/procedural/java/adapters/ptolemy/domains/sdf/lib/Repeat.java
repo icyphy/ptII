@@ -36,8 +36,8 @@ package ptolemy.cg.adapter.generic.program.procedural.java.adapters.ptolemy.doma
  @Pt.AcceptedRating Red (cxh)
  */
 public class Repeat
-        extends
-        ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.domains.sdf.lib.Repeat {
+extends
+ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.domains.sdf.lib.Repeat {
 
     /**
      * Construct a Repeat adapter.

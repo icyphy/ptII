@@ -70,6 +70,7 @@ public class ObjectTokenSource extends Source {
      *  @exception IllegalActionException If it is thrown by the
      *   send() method sending out the token.
      */
+    @Override
     public void fire() throws IllegalActionException {
         super.fire();
         output.send(0, new ObjectToken(Double.valueOf(42.0)));

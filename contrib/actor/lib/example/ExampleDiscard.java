@@ -74,6 +74,7 @@ public class ExampleDiscard extends Sink {
      *  nothing with it.
      *  @exception IllegalActionException If there is no director.
      */
+    @Override
     public void fire() throws IllegalActionException {
         super.fire();
         int width = input.getWidth();

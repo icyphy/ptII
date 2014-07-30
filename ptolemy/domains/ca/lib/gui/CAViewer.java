@@ -85,6 +85,7 @@ public class CAViewer extends AbstractPlaceableActor {
      *   @exception IllegalActionException If the superclass throws
      *   the exception.
      */
+    @Override
     public void initialize() throws IllegalActionException {
         super.initialize();
         _initialized = false;
@@ -96,6 +97,7 @@ public class CAViewer extends AbstractPlaceableActor {
      *  @param container The container in which to place the pane that
      *  will contain the CATableau or null to specify no container.
      */
+    @Override
     public void place(Container container) {
 
         _container = container;
@@ -128,6 +130,7 @@ public class CAViewer extends AbstractPlaceableActor {
      * @exception IllegalActionException If the base class throws an
      * exception.
      */
+    @Override
     public boolean postfire() throws IllegalActionException {
         super.postfire();
 

@@ -147,6 +147,7 @@ public class AddSubtract extends TypedAtomicActor {
      *  @exception CloneNotSupportedException If a derived class contains
      *   an attribute that cannot be cloned.
      */
+    @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         AddSubtract newObject = (AddSubtract) super.clone(workspace);
         newObject.output.setTypeAtLeast(newObject.plus);
@@ -170,6 +171,7 @@ public class AddSubtract extends TypedAtomicActor {
      *   or if addition and subtraction are not supported by the
      *   available tokens.
      */
+    @Override
     public void fire() throws IllegalActionException {
         super.fire();
         Token sum = null;

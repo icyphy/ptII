@@ -65,7 +65,7 @@ public class MetroIIFSMDirector extends FSMDirector implements GetFirable {
      * @exception NameDuplicationException
      */
     public MetroIIFSMDirector() throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         super();
     }
 
@@ -96,12 +96,14 @@ public class MetroIIFSMDirector extends FSMDirector implements GetFirable {
      *
      * @return iterator the iterator for the caller function of getfire()
      */
+    @Override
     public YieldAdapterIterable<Iterable<Event.Builder>> adapter() {
         return new ThreadedYieldAdapter<Iterable<Event.Builder>>()
                 .adapt(new Collector<Iterable<Event.Builder>>() {
+                    @Override
                     public void collect(
                             ResultHandler<Iterable<Event.Builder>> resultHandler)
-                            throws CollectionAbortedException {
+                                    throws CollectionAbortedException {
                         getfire(resultHandler);
                     }
                 });
@@ -118,6 +120,7 @@ public class MetroIIFSMDirector extends FSMDirector implements GetFirable {
      *                Not thrown in this base class
      * @return The new Attribute.
      */
+    @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         MetroIIFSMDirector newObject = (MetroIIFSMDirector) super
                 .clone(workspace);
@@ -129,6 +132,7 @@ public class MetroIIFSMDirector extends FSMDirector implements GetFirable {
      * Keeps proposing the event associated with the current state until it's
      * notified. Then call fire()
      */
+    @Override
     public void getfire(ResultHandler<Iterable<Event.Builder>> resultHandler)
             throws CollectionAbortedException {
         FSMActor controller = null;

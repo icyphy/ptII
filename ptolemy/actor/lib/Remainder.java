@@ -105,6 +105,7 @@ public class Remainder extends Transformer {
      *  If there is no input token, then no output is produced.
      *  @exception IllegalActionException If there is no director.
      */
+    @Override
     public void fire() throws IllegalActionException {
         super.fire();
         if (input.hasToken(0)) {

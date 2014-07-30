@@ -25,7 +25,7 @@ ENHANCEMENTS, OR MODIFICATIONS.
                                                 COPYRIGHTENDKEY
 
 
-*/
+ */
 package ptdb.gui;
 
 import java.awt.Color;
@@ -63,7 +63,7 @@ import ptolemy.util.MessageHandler;
  * @Pt.ProposedRating red (lholsing)
  * @Pt.AcceptedRating red (lholsing)
  *
-*/
+ */
 
 @SuppressWarnings("serial")
 public class ParentPanel extends JPanel {
@@ -107,6 +107,7 @@ public class ParentPanel extends JPanel {
 
         _parentModelLink.addActionListener(new ActionListener() {
 
+            @Override
             public void actionPerformed(ActionEvent event) {
 
                 _loadModel();
@@ -201,7 +202,7 @@ public class ParentPanel extends JPanel {
                 JOptionPane.showMessageDialog(this,
                         "The specified model could "
                                 + "not be found in the database.",
-                        "Load Error", JOptionPane.INFORMATION_MESSAGE, null);
+                                "Load Error", JOptionPane.INFORMATION_MESSAGE, null);
 
             }
 

@@ -55,6 +55,7 @@ class DFOutputChannel implements OutputChannel {
     /** Send the given object (which is assumed to be a token in this
      * implementation) from the associated TypedIOPort port.
      */
+    @Override
     public void put(Object a) {
         try {
             port.send(channel, (Token) a);
@@ -67,6 +68,7 @@ class DFOutputChannel implements OutputChannel {
         }
     }
 
+    @Override
     public String toString() {
         return "(DFOutputChannel " + channel + " at " + port.toString() + ")";
     }

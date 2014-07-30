@@ -26,7 +26,7 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 Ptolemy II includes the work of others, to see those copyrights, follow
 the copyright link on the splash page or see copyright.htm.
-*/
+ */
 package ptolemy.domains.metroII.kernel;
 
 import ptolemy.actor.Actor;
@@ -68,6 +68,7 @@ public class MetroIIPNQueueReceiver extends PNQueueReceiver {
      *
      * @return the director in charge.
      */
+    @Override
     public MetroIIPNDirector getDirector() {
         return _localDirector;
     }
@@ -82,6 +83,7 @@ public class MetroIIPNQueueReceiver extends PNQueueReceiver {
      *
      * @return The token contained by this receiver.
      */
+    @Override
     public Token get() {
         Token token = super.get();
         try {
@@ -107,6 +109,7 @@ public class MetroIIPNQueueReceiver extends PNQueueReceiver {
      *                If during initialization, capacity cannot be increased
      *                enough to accommodate initial tokens.
      */
+    @Override
     public void put(Token token) {
         try {
             _localDirector.proposeMetroIIEvent(".put.begin");
@@ -131,6 +134,7 @@ public class MetroIIPNQueueReceiver extends PNQueueReceiver {
      *                IOPort, or if the container's director is not an instance
      *                of PNDirector.
      */
+    @Override
     public void setContainer(IOPort port) throws IllegalActionException {
         super.setContainer(port);
         if (port == null) {

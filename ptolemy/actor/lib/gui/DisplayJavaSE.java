@@ -80,10 +80,10 @@ to use this actor to log large output streams.</p>
 @author Yuhong Xiong, Edward A. Lee Contributors: Ishwinder Singh
 @version $Id$
 @since Ptolemy II 10.0
-*/
+ */
 
 public class DisplayJavaSE extends AbstractPlaceableJavaSE implements
-        DisplayInterface {
+DisplayInterface {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -94,6 +94,7 @@ public class DisplayJavaSE extends AbstractPlaceableJavaSE implements
     @Override
     public void cleanUp() {
         Runnable doIt = new Runnable() {
+            @Override
             public void run() {
                 _tableau = null;
 
@@ -117,8 +118,10 @@ public class DisplayJavaSE extends AbstractPlaceableJavaSE implements
      *  character. This is executed in the Swing event thread.
      *  @param value The string to be displayed
      */
+    @Override
     public void display(final String value) {
         Runnable doIt = new Runnable() {
+            @Override
             public void run() {
                 if (textArea == null) {
                     return;
@@ -153,6 +156,7 @@ public class DisplayJavaSE extends AbstractPlaceableJavaSE implements
     /** Return the object of the containing text area.
      *  @return the text area.
      */
+    @Override
     public Object getTextArea() {
         return textArea;
     }
@@ -164,8 +168,9 @@ public class DisplayJavaSE extends AbstractPlaceableJavaSE implements
      * @exception NameDuplicationException If the container already has an
      * actor with this name.
      */
+    @Override
     public void init(Display displayActor) throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         _display = displayActor;
         super.init(displayActor);
     }
@@ -175,8 +180,10 @@ public class DisplayJavaSE extends AbstractPlaceableJavaSE implements
      *  the effigy and tableau.
      *  This is executed in the Swing event thread.
      */
+    @Override
     public void openWindow() throws IllegalActionException {
         Runnable doIt = new Runnable() {
+            @Override
             public void run() {
                 if (textArea == null) {
                     // No container has been specified for display.
@@ -205,14 +212,15 @@ public class DisplayJavaSE extends AbstractPlaceableJavaSE implements
                         _tableau = new DisplayWindowTableau(_display,
                                 textEffigy, "tableau");
                         _frame = _tableau.frame.get();
-                        
+
                         // Require a vertical scrollbar always so that we don't get a horizontal
                         // scrollbar when it appears.
-                        JScrollPane pane = ((TextEditor) _frame).getScrollPane();
+                        JScrollPane pane = ((TextEditor) _frame)
+                                .getScrollPane();
                         if (pane != null) {
                             pane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
                         }
-                        
+
                         textArea = ((TextEditor) _frame).text;
 
                         int numRows = ((IntToken) _display.rowsDisplayed
@@ -258,8 +266,10 @@ public class DisplayJavaSE extends AbstractPlaceableJavaSE implements
      *   text area, or null to specify that there is no current
      *   container.
      */
+    @Override
     public void place(final PortableContainer portableContainer) {
         Runnable doIt = new Runnable() {
+            @Override
             public void run() {
                 Container container = (Container) (portableContainer != null ? portableContainer
                         .getPlatformContainer() : null);
@@ -292,9 +302,10 @@ public class DisplayJavaSE extends AbstractPlaceableJavaSE implements
                 _scrollPane.setBackground(null);
                 _scrollPane.setBorder(new EmptyBorder(10, 10, 10, 10));
                 _scrollPane.setViewportBorder(new LineBorder(Color.black));
-                
+
                 // Always have a vertical scrollbar so that we don't get a horizontal scrollbar when it appers.
-                _scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+                _scrollPane
+                        .setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
 
                 container.add(_scrollPane);
                 textArea.setBackground(Color.white);
@@ -335,8 +346,10 @@ public class DisplayJavaSE extends AbstractPlaceableJavaSE implements
     /** Remove the display from the current container, if there is one.
      *  This is executed in the Swing thread later.
      */
+    @Override
     public void remove() {
         Runnable doIt = new Runnable() {
+            @Override
             public void run() {
                 if (textArea != null) {
                     if (_awtContainer != null && _scrollPane != null) {
@@ -358,9 +371,11 @@ public class DisplayJavaSE extends AbstractPlaceableJavaSE implements
      *  @exception IllegalActionException If the specified attribute
      *   is <i>rowsDisplayed</i> and its value is not positive.
      */
+    @Override
     public void setColumns(final int numberOfColumns)
             throws IllegalActionException {
         Runnable doIt = new Runnable() {
+            @Override
             public void run() {
                 if (textArea != null) {
                     // Unset any previously set size.
@@ -368,8 +383,8 @@ public class DisplayJavaSE extends AbstractPlaceableJavaSE implements
                         _paneSize.setToken((Token) null);
                     } catch (IllegalActionException e) {
                         MessageHandler
-                                .error("Unexpected error: Unable to unset previous pane size.",
-                                        e);
+                        .error("Unexpected error: Unable to unset previous pane size.",
+                                e);
                     }
                     setFrame(_frame);
 
@@ -391,8 +406,10 @@ public class DisplayJavaSE extends AbstractPlaceableJavaSE implements
      *  @exception IllegalActionException If the specified attribute
      *   is <i>rowsDisplayed</i> and its value is not positive.
      */
+    @Override
     public void setRows(final int numberOfRows) throws IllegalActionException {
         Runnable doIt = new Runnable() {
+            @Override
             public void run() {
                 if (textArea != null) {
                     // Unset any previously set size.
@@ -400,8 +417,8 @@ public class DisplayJavaSE extends AbstractPlaceableJavaSE implements
                         _paneSize.setToken((Token) null);
                     } catch (IllegalActionException e) {
                         MessageHandler
-                                .error("Unexpected error: Unable to unset previous pane size.",
-                                        e);
+                        .error("Unexpected error: Unable to unset previous pane size.",
+                                e);
                     }
                     setFrame(_frame);
 
@@ -426,9 +443,11 @@ public class DisplayJavaSE extends AbstractPlaceableJavaSE implements
      * @param stringValue The title to be set.
      * @exception IllegalActionException If the title cannot be set.
      */
+    @Override
     public void setTitle(final String stringValue)
             throws IllegalActionException {
         Runnable doIt = new Runnable() {
+            @Override
             public void run() {
                 if (_tableau != null) {
                     try {

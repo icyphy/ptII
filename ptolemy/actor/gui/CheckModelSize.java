@@ -180,7 +180,7 @@ public class CheckModelSize {
                                 sizeProblemSet.add(entity);
                                 results.append("<tr>\n  <td>"
                                         + ((TypedCompositeActor) entity)
-                                                .getFullName()
+                                        .getFullName()
                                         + "</td>\n  <td>" + checkSizeOutput
                                         + "</td>\n");
                             }
@@ -200,11 +200,11 @@ public class CheckModelSize {
         }
 
         return "<h1>Check Size</h1>\nBelow are the results from checking the "
-                + "sizes of and centering of models\n<table>\n"
-                + "<b>Note: after running review these results, be"
-                + " sure to exit, as the graphical elements of the "
-                + " models will have been removed</b>\n" + results.toString()
-                + "</table>\n";
+        + "sizes of and centering of models\n<table>\n"
+        + "<b>Note: after running review these results, be"
+        + " sure to exit, as the graphical elements of the "
+        + " models will have been removed</b>\n" + results.toString()
+        + "</table>\n";
     }
 
     /** Check the size, zoom and location of the models named

@@ -63,6 +63,7 @@ public class ActorType implements Type, Cloneable {
      *  @return A new type, or BaseType.GENERAL, if the operation does
      *  not make sense for the given types.
      */
+    @Override
     public Type add(Type rightArgumentType) {
         return this;
     }
@@ -70,6 +71,7 @@ public class ActorType implements Type, Cloneable {
     /** Return this, that is, return the reference to this object.
      *  @return A BaseType.
      */
+    @Override
     public Object clone() {
         return this;
     }
@@ -81,6 +83,7 @@ public class ActorType implements Type, Cloneable {
      *  @exception IllegalActionException If lossless conversion cannot
      *   be done.
      */
+    @Override
     public Token convert(Token token) throws IllegalActionException {
         if (token instanceof ActorToken) {
             return token;
@@ -97,6 +100,7 @@ public class ActorType implements Type, Cloneable {
      *  @return A new type, or BaseType.GENERAL, if the operation does
      *  not make sense for the given types.
      */
+    @Override
     public Type divide(Type rightArgumentType) {
         return this;
     }
@@ -114,6 +118,7 @@ public class ActorType implements Type, Cloneable {
     /** Return the class for tokens that this basetype represents.
      *  @return the class for tokens that this basetype represents.
      */
+    @Override
     public Class getTokenClass() {
         return ActorToken.class;
     }
@@ -121,6 +126,7 @@ public class ActorType implements Type, Cloneable {
     /** Return this type's node index in the (constant) type lattice.
      * @return this type's node index in the (constant) type lattice.
      */
+    @Override
     public int getTypeHash() {
         return Type.HASH_INVALID;
     }
@@ -130,6 +136,7 @@ public class ActorType implements Type, Cloneable {
      *  represents either an abstract base class or an interface.
      *  @return Always return false, this token is instantiable.
      */
+    @Override
     public boolean isAbstract() {
         return false;
     }
@@ -142,6 +149,7 @@ public class ActorType implements Type, Cloneable {
      *  @param type An instance of Type.
      *  @return True if the argument type is compatible with this type.
      */
+    @Override
     public boolean isCompatible(Type type) {
         return type == this;
     }
@@ -149,6 +157,7 @@ public class ActorType implements Type, Cloneable {
     /** Model if this Type is UNKNOWN.
      *  @return True if this Type is not UNKNOWN; false otherwise.
      */
+    @Override
     public boolean isConstant() {
         return true;
     }
@@ -158,6 +167,7 @@ public class ActorType implements Type, Cloneable {
      *  to an abstract token class, or an interface, or UNKNOWN.
      *  @return True if this type is instantiable.
      */
+    @Override
     public boolean isInstantiable() {
         return true;
     }
@@ -167,6 +177,7 @@ public class ActorType implements Type, Cloneable {
      *  @param type A Type.
      *  @return True if this type is UNKNOWN; false otherwise.
      */
+    @Override
     public boolean isSubstitutionInstance(Type type) {
         return this == type;
     }
@@ -178,6 +189,7 @@ public class ActorType implements Type, Cloneable {
      *  @return A new type, or BaseType.GENERAL, if the operation does
      *  not make sense for the given types.
      */
+    @Override
     public Type modulo(Type rightArgumentType) {
         return this;
     }
@@ -189,6 +201,7 @@ public class ActorType implements Type, Cloneable {
      *  @return A new type, or BaseType.GENERAL, if the operation does
      *  not make sense for the given types.
      */
+    @Override
     public Type multiply(Type rightArgumentType) {
         return this;
     }
@@ -198,6 +211,7 @@ public class ActorType implements Type, Cloneable {
      *  @return A new type, or BaseType.GENERAL, if the operation does
      *  not make sense for the given types.
      */
+    @Override
     public Type one() {
         return this;
     }
@@ -209,6 +223,7 @@ public class ActorType implements Type, Cloneable {
      *  @return A new type, or BaseType.GENERAL, if the operation does
      *  not make sense for the given types.
      */
+    @Override
     public Type subtract(Type rightArgumentType) {
         return this;
     }
@@ -216,6 +231,7 @@ public class ActorType implements Type, Cloneable {
     /** Return the string representation of this type.
      *  @return A String.
      */
+    @Override
     public String toString() {
         return "actor";
     }
@@ -225,6 +241,7 @@ public class ActorType implements Type, Cloneable {
      *  @return A new type, or BaseType.GENERAL, if the operation does
      *  not make sense for the given types.
      */
+    @Override
     public Type zero() {
         return this;
     }

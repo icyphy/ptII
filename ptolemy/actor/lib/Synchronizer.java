@@ -84,6 +84,7 @@ public class Synchronizer extends Transformer {
      *   if the number of input channels does not equal the number of
      *   output channels.
      */
+    @Override
     public void fire() throws IllegalActionException {
         super.fire();
         int outWidth = output.getWidth();
@@ -92,7 +93,7 @@ public class Synchronizer extends Transformer {
         if (inWidth != outWidth) {
             throw new IllegalActionException(this,
                     "Unequal synchronizer channels: " + inWidth
-                            + " inputs and " + outWidth + " outputs.");
+                    + " inputs and " + outWidth + " outputs.");
         } else {
             for (int i = 0; i < inWidth; i++) {
                 output.send(i, input.get(i));
@@ -105,6 +106,7 @@ public class Synchronizer extends Transformer {
      *  false.
      *  @exception IllegalActionException If there is no director.
      */
+    @Override
     public boolean prefire() throws IllegalActionException {
         for (int i = 0; i < input.getWidth(); i++) {
             if (!input.hasToken(i)) {

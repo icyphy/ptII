@@ -62,17 +62,17 @@ public class ActorToken extends Token implements Cloneable {
         super();
 
         try {
-                // Be sure to clone into a workspace.
+            // Be sure to clone into a workspace.
             _entity = (Entity) entity.clone(entity.workspace());
         } catch (CloneNotSupportedException ex) {
             throw new IllegalActionException(null, ex,
                     "Failed to create actor token");
         }
     }
-    
+
     /** Construct an empty ActorToken to be used as a reference for the Actor type designator. */
     private ActorToken() {
-            super();
+        super();
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -116,6 +116,7 @@ public class ActorToken extends Token implements Cloneable {
     /** Return the type of this token.
      *  @return the type of this token.
      */
+    @Override
     public Type getType() {
         return TYPE;
     }
@@ -130,6 +131,7 @@ public class ActorToken extends Token implements Cloneable {
      *  @exception IllegalActionException If thrown by
      *  {@link #isEqualTo(Token)}.
      */
+    @Override
     public BooleanToken isCloseTo(Token rightArgument, double epsilon)
             throws IllegalActionException {
         return isEqualTo(rightArgument);
@@ -143,6 +145,7 @@ public class ActorToken extends Token implements Cloneable {
      *   supported by the derived class.
      *  @return A BooleanToken which contains the result of the test.
      */
+    @Override
     public BooleanToken isEqualTo(Token token) throws IllegalActionException {
         if (token instanceof ActorToken) {
             return new BooleanToken(toString().equals(token.toString()));
@@ -161,12 +164,13 @@ public class ActorToken extends Token implements Cloneable {
      *  marks and backslashes escaped.
      *  @return A MoML description of this actor.
      */
+    @Override
     public String toString() {
         return "parseMoML(\""
                 + StringUtilities.escapeString(_entity.exportMoMLPlain())
                 + "\")";
     }
-    
+
     /** Empty Entity instance of this token. */
     public static final ActorToken EMPTY = new ActorToken();
 

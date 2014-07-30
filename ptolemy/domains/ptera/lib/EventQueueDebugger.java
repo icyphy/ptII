@@ -24,7 +24,7 @@
  PT_COPYRIGHT_VERSION_2
  COPYRIGHTENDKEY
 
-*/
+ */
 package ptolemy.domains.ptera.lib;
 
 import ptolemy.actor.Actor;
@@ -56,7 +56,7 @@ import ptolemy.kernel.util.SingletonAttribute;
  @Pt.AcceptedRating Red (tfeng)
  */
 public class EventQueueDebugger extends SingletonAttribute implements
-        EventQueueDebugListener, Initializable {
+EventQueueDebugListener, Initializable {
 
     /** Construct an attribute with the given container and name.
      *  If an attribute already exists with the same name as the one
@@ -86,6 +86,7 @@ public class EventQueueDebugger extends SingletonAttribute implements
      *
      *  @param initializable Not used.
      */
+    @Override
     public void addInitializable(Initializable initializable) {
     }
 
@@ -93,6 +94,7 @@ public class EventQueueDebugger extends SingletonAttribute implements
      *
      *  @exception IllegalActionException Not thrown in this class.
      */
+    @Override
     public void initialize() throws IllegalActionException {
     }
 
@@ -104,6 +106,7 @@ public class EventQueueDebugger extends SingletonAttribute implements
      *  @param arguments Arguments to the actor, which must be either an
      *   ArrayToken or a RecordToken, or null.
      */
+    @Override
     public void insertActor(int position, Time time, Actor actor,
             Token arguments) {
     }
@@ -116,6 +119,7 @@ public class EventQueueDebugger extends SingletonAttribute implements
      *  @param arguments Arguments to the event, which must be either an
      *   ArrayToken or a RecordToken, or null.
      */
+    @Override
     public void insertEvent(int position, Time time, Event event,
             Token arguments) {
         try {
@@ -134,6 +138,7 @@ public class EventQueueDebugger extends SingletonAttribute implements
      *
      *  @exception IllegalActionException Not thrown in this class.
      */
+    @Override
     public void preinitialize() throws IllegalActionException {
         NamedObj container = getContainer();
         if (container instanceof PteraController) {
@@ -148,6 +153,7 @@ public class EventQueueDebugger extends SingletonAttribute implements
      *  @param isCancelled Whether the removal is due to cancellation or
      *   successful processing.
      */
+    @Override
     public void removeEvent(int position, boolean isCancelled) {
         try {
             boolean isActive = ((BooleanToken) active.getToken())
@@ -168,6 +174,7 @@ public class EventQueueDebugger extends SingletonAttribute implements
      *
      *  @param initializable Not used.
      */
+    @Override
     public void removeInitializable(Initializable initializable) {
     }
 
@@ -183,8 +190,9 @@ public class EventQueueDebugger extends SingletonAttribute implements
      *   an attribute with the name of this attribute that is of class
      *   SingletonConfigurableAttribute.
      */
+    @Override
     public void setContainer(NamedObj container) throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         NamedObj oldContainer = getContainer();
         if (oldContainer instanceof Initializable) {
             ((Initializable) oldContainer).removeInitializable(this);
@@ -199,6 +207,7 @@ public class EventQueueDebugger extends SingletonAttribute implements
      *
      *  @exception IllegalActionException Not thrown in this class.
      */
+    @Override
     public void wrapup() throws IllegalActionException {
         NamedObj container = getContainer();
         if (container instanceof PteraController) {

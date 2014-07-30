@@ -47,6 +47,7 @@ import ptolemy.math.ComplexUnaryOperation;
  */
 public class TestComplexUnaryOperation implements ComplexUnaryOperation {
     /** Operate on the operand, returning a value of the same type. */
+    @Override
     public Complex operate(Complex operand) {
         return operand.negate();
     }

@@ -29,12 +29,13 @@ public class ThreadedYieldAdapter<T> implements YieldAdapter<T> {
     private class AbortedMessage extends StopMessage {
 
     }
-    
+
     private class IllegalActionMessage extends StopMessage {
-    
+
         IllegalActionMessage(IllegalActionException e) {
-            this.value = e; 
+            this.value = e;
         }
+
         final IllegalActionException value;
     }
 
@@ -60,9 +61,11 @@ public class ThreadedYieldAdapter<T> implements YieldAdapter<T> {
      * This is implemented using a new thread created for the collection process, and a
      * SynchronousQueue<> object.
      */
+    @Override
     public YieldAdapterIterable<T> adapt(final Collector<T> client) {
 
         return new YieldAdapterIterable<T>() {
+            @Override
             public YieldAdapterIterator<T> iterator() {
 
                 final SynchronousQueue<Message> synchronousQueue = new SynchronousQueue<Message>();
@@ -86,21 +89,22 @@ public class ThreadedYieldAdapter<T> implements YieldAdapter<T> {
                         } catch (InterruptedException e) {
                             // throw new RuntimeException(
                             //        "Error with yield adapter", e);
-                            // System.out.println("djflksjlfds"); 
-                            return; 
+                            // System.out.println("djflksjlfds");
+                            return;
                         }
                         try {
                             try {
                                 client.collect(new ResultHandler<T>() {
+                                    @Override
                                     public void handleResult(T value)
                                             throws CollectionAbortedException {
                                         try {
                                             synchronousQueue
-                                                    .put(new ValueMessage(value));
+                                            .put(new ValueMessage(value));
                                             returnQueue.take(); // wait for permission to continue
                                         } catch (InterruptedException e) {
                                             // this thread has been aborted
-                                             
+
                                             throw new CollectionAbortedException(
                                                     e);
                                         }
@@ -119,7 +123,8 @@ public class ThreadedYieldAdapter<T> implements YieldAdapter<T> {
                                 }
                             } catch (IllegalActionException e) {
                                 // e.printStackTrace();
-                                synchronousQueue.put(new IllegalActionMessage(e));
+                                synchronousQueue
+                                        .put(new IllegalActionMessage(e));
                             }
 
                         } catch (InterruptedException e) {
@@ -131,20 +136,22 @@ public class ThreadedYieldAdapter<T> implements YieldAdapter<T> {
 
                 return new YieldAdapterIterator<T>() {
                     private Message messageWaiting = null;
-                    
+
+                    @Override
                     public boolean hasNext() {
 
                         readNextMessage();
                         if (IllegalActionMessage.class
-                        .isAssignableFrom(messageWaiting.getClass())) {
+                                .isAssignableFrom(messageWaiting.getClass())) {
                             messageIllegalAction = ((IllegalActionMessage) messageWaiting).value;
                         }
-                        
+
                         return !StopMessage.class
                                 .isAssignableFrom(messageWaiting.getClass());
                         // instanceof cannot be used because of generics restriction
                     }
 
+                    @Override
                     public T next() {
                         readNextMessage();
 
@@ -171,6 +178,7 @@ public class ThreadedYieldAdapter<T> implements YieldAdapter<T> {
                         }
                     }
 
+                    @Override
                     public void remove() {
                     }
 
@@ -188,6 +196,7 @@ public class ThreadedYieldAdapter<T> implements YieldAdapter<T> {
                      * This can be manually called by the calling code to force release of
                      * resources at the earliest opportunity.
                      */
+                    @Override
                     public void dispose() {
                         collectThread.interrupt();
                     }

@@ -24,7 +24,7 @@
  PT_COPYRIGHT_VERSION_2
  COPYRIGHTENDKEY
 
-*/
+ */
 package ptolemy.actor.gui.properties;
 
 import java.awt.geom.Point2D;
@@ -230,6 +230,7 @@ public class GUIAction extends Attribute {
                 moml = _momlText;
             }
             MoMLChangeRequest request = new MoMLChangeRequest(this, model, moml) {
+                @Override
                 protected void _postParse(MoMLParser parser) {
                     Iterator topObjects = parser.topObjectsCreated().iterator();
                     while (topObjects.hasNext()) {
@@ -250,6 +251,7 @@ public class GUIAction extends Attribute {
                     parser.clearTopObjectsList();
                 }
 
+                @Override
                 protected void _preParse(MoMLParser parser) {
                     super._preParse(parser);
                     parser.clearTopObjectsList();

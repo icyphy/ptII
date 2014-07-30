@@ -47,15 +47,15 @@ import ptolemy.kernel.util.IllegalActionException;
 //// ListSchedulingSequenceEstimator
 
 /**
-* A class that estimates a sequential schedule. Order given by already present
-* sequence numbers are preserved.
-*
-* @author Bastian Ristau
-* @version $Id$
-* @since Ptolemy II 10.0
-* @Pt.ProposedRating Red (ristau)
-* @Pt.AcceptedRating Red (ristau)
-*/
+ * A class that estimates a sequential schedule. Order given by already present
+ * sequence numbers are preserved.
+ *
+ * @author Bastian Ristau
+ * @version $Id$
+ * @since Ptolemy II 10.0
+ * @Pt.ProposedRating Red (ristau)
+ * @Pt.AcceptedRating Red (ristau)
+ */
 public class ListSchedulingSequenceEstimator extends SequenceEstimator {
 
     /** Construct an estimator for the given director.
@@ -81,9 +81,10 @@ public class ListSchedulingSequenceEstimator extends SequenceEstimator {
      * @exception NotSchedulableException If the underlying graph of the
      * actors is not acyclic.
      */
+    @Override
     public Vector<Actor> estimateSequencedSchedule(
             List<SequenceAttribute> independentList)
-            throws NotSchedulableException {
+                    throws NotSchedulableException {
         Vector<Actor> result = null;
 
         _createGraph(independentList);

@@ -98,6 +98,7 @@ public class RemoveProperties extends MoMLFilterSimple {
      *  @param xmlFile The file currently being parsed.
      *  @return The value of the attributeValue argument.
      */
+    @Override
     public String filterAttributeValue(NamedObj container, String element,
             String attributeName, String attributeValue, String xmlFile) {
         //System.out.println("RemoveProperties.filterAttributeValue: " + container + "\t"
@@ -157,6 +158,7 @@ public class RemoveProperties extends MoMLFilterSimple {
      *  @exception Exception if there is a problem substituting
      *  in the new value.
      */
+    @Override
     public void filterEndElement(NamedObj container, String elementName,
             StringBuffer currentCharData, String xmlFile) throws Exception {
         _foundPropertyToBeRemoved = false;
@@ -166,6 +168,7 @@ public class RemoveProperties extends MoMLFilterSimple {
     /** Return a string that describes what the filter does.
      *  @return the description of the filter that ends with a newline.
      */
+    @Override
     public String toString() {
         StringBuffer results = new StringBuffer(getClass().getName()
                 + ": Remove the properties listed below:");
@@ -242,6 +245,6 @@ public class RemoveProperties extends MoMLFilterSimple {
                 null);
 
         _propertiesToBeRemoved
-                .put("directorClass", removePropertyDirectorClass);
+        .put("directorClass", removePropertyDirectorClass);
     }
 }

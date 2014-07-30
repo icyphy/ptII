@@ -127,6 +127,7 @@ public class SoundPlayer extends SoundActor {
      *  @exception IllegalActionException If there is a problem
      *   beginning audio playback.
      */
+    @Override
     public void initialize() throws IllegalActionException {
         super.initialize();
         if (_sourceDataLine != null) {
@@ -162,7 +163,7 @@ public class SoundPlayer extends SoundActor {
             System.out.println(mixers[i].getDescription());
             System.out.println(mixers[i].getVendor());
         }
-        */
+         */
     }
 
     /** Read an input array and send to the audio hardware.
@@ -171,6 +172,7 @@ public class SoundPlayer extends SoundActor {
      *  @exception IllegalActionException If there is a problem
      *   playing audio.
      */
+    @Override
     public boolean postfire() throws IllegalActionException {
         if (input.hasToken(0)) {
             DoubleMatrixToken token = (DoubleMatrixToken) input.get(0);
@@ -196,6 +198,7 @@ public class SoundPlayer extends SoundActor {
      *  @exception IllegalActionException If there is a problem
      *   stopping audio playback.
      */
+    @Override
     public void wrapup() throws IllegalActionException {
         super.wrapup();
 

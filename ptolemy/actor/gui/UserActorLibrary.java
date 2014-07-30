@@ -374,6 +374,7 @@ public class UserActorLibrary {
             final PtolemyEffigy finalLibraryEffigy) throws Exception {
         ChangeRequest request = new ChangeRequest(configuration, file.toURI()
                 .toURL().toString()) {
+            @Override
             protected void _execute() throws Exception {
                 // The library is a class!
                 library.setClassDefinition(true);

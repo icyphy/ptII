@@ -24,7 +24,7 @@
  PT_COPYRIGHT_VERSION_2
  COPYRIGHTENDKEY
 
-*/
+ */
 package ptolemy.actor.gt.controller;
 
 import java.io.IOException;
@@ -87,6 +87,7 @@ public class WriteModel extends GTEvent {
      *  @exception IllegalActionException If the file cannot be saved, or if
      *   thrown by the superclass.
      */
+    @Override
     public RefiringData fire(Token arguments) throws IllegalActionException {
         RefiringData data = super.fire(arguments);
         if (modelFile == null) {

@@ -25,7 +25,7 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 Ptolemy II includes the work of others, to see those copyrights, follow
 the copyright link on the splash page or see copyright.htm.
-*/
+ */
 package ptolemy.actor.lib.opencv.jna.cxcore;
 
 import java.util.Arrays;
@@ -72,7 +72,7 @@ public class IplImage extends Structure {
     }
 
     public static class ByReference extends IplImage implements
-            Structure.ByReference {
+    Structure.ByReference {
     }
 
     public ByReference getByReference() {
@@ -87,6 +87,7 @@ public class IplImage extends Structure {
      *  <p>This is new in jna-3.5.0.
      *  @return a list of strings that name the fields in order.
      */
+    @Override
     protected List getFieldOrder() {
         return Arrays.asList(new String[] { "nSize", "ID", "nChannels",
                 "alphaChannel", "depth", "colorModel", "channelSeq",
@@ -98,6 +99,6 @@ public class IplImage extends Structure {
                 //public IplImage maskROI
                 "roi", "maskROI", "imageId", "tileInfo", "imageSize",
                 "imageData", "widthStep", "BorderMode", "BorderConst",
-                "ImageDataOrigin" });
+        "ImageDataOrigin" });
     }
 }

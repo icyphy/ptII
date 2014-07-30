@@ -43,7 +43,7 @@ import ptolemy.kernel.util.Workspace;
  * of the controller and refinements of the modal model. It is designed to work
  * closely with RefinementPort, since changes to the ports can be initiated in
  * either class.
- * 
+ *
  * @see RefinementPort
  * @author Edward A. Lee
  * @version $Id$
@@ -54,7 +54,7 @@ import ptolemy.kernel.util.Workspace;
 public class ModalPort extends ModalBasePort {
     /**
      * Construct a port in the given workspace.
-     * 
+     *
      * @param workspace
      *            The workspace.
      * @exception IllegalActionException
@@ -70,7 +70,7 @@ public class ModalPort extends ModalBasePort {
      * Construct a port with a containing actor and a name that is neither an
      * input nor an output. The specified container must implement the
      * TypedActor interface, or an exception will be thrown.
-     * 
+     *
      * @param container
      *            The container actor.
      * @param name
@@ -108,12 +108,13 @@ public class ModalPort extends ModalBasePort {
      * If this object is already last, do nothing. This method overrides the
      * base class to mirror the change in any mirror ports. Increment the
      * version of the workspace.
-     * 
+     *
      * @return The index of the specified object prior to moving it, or -1 if it
      *         is not moved.
      * @exception IllegalActionException
      *                If this object has no container.
      */
+    @Override
     public int moveDown() throws IllegalActionException {
         return _moveDown();
     }
@@ -123,12 +124,13 @@ public class ModalPort extends ModalBasePort {
      * container. If this object is already first, do nothing. Increment the
      * version of the workspace. This method overrides the base class to mirror
      * the change in any mirror ports.
-     * 
+     *
      * @return The index of the specified object prior to moving it, or -1 if it
      *         is not moved.
      * @exception IllegalActionException
      *                If this object has no container.
      */
+    @Override
     public int moveToFirst() throws IllegalActionException {
         return _moveToFirst();
     }
@@ -138,7 +140,7 @@ public class ModalPort extends ModalBasePort {
      * the container. If this object is already at the specified position, do
      * nothing. This method overrides the base class to mirror the change in any
      * mirror ports. Increment the version of the workspace.
-     * 
+     *
      * @param index
      *            The position to move this object to.
      * @return The index of the specified object prior to moving it, or -1 if it
@@ -147,6 +149,7 @@ public class ModalPort extends ModalBasePort {
      *                If this object has no container or if the index is out of
      *                bounds.
      */
+    @Override
     public int moveToIndex(int index) throws IllegalActionException {
         return _moveToIndex(index);
     }
@@ -156,12 +159,13 @@ public class ModalPort extends ModalBasePort {
      * container. If this object is already last, do nothing. This method
      * overrides the base class to mirror the change in any mirror ports.
      * Increment the version of the workspace.
-     * 
+     *
      * @return The index of the specified object prior to moving it, or -1 if it
      *         is not moved.
      * @exception IllegalActionException
      *                If this object has no container.
      */
+    @Override
     public int moveToLast() throws IllegalActionException {
         return _moveToLast();
     }
@@ -171,12 +175,13 @@ public class ModalPort extends ModalBasePort {
      * this object is already first, do nothing. This method overrides the base
      * class to mirror the change in any mirror ports. Increment the version of
      * the workspace.
-     * 
+     *
      * @return The index of the specified object prior to moving it, or -1 if it
      *         is not moved.
      * @exception IllegalActionException
      *                If this object has no container.
      */
+    @Override
     public int moveUp() throws IllegalActionException {
         return _moveUp();
     }
@@ -189,7 +194,7 @@ public class ModalPort extends ModalBasePort {
      * current container, then it is also removed from the controller and from
      * each of the refinements. This method is write-synchronized on the
      * workspace.
-     * 
+     *
      * @param container
      *            The proposed container.
      * @exception IllegalActionException
@@ -200,8 +205,9 @@ public class ModalPort extends ModalBasePort {
      *                If the container already has a port with the name of this
      *                port.
      */
+    @Override
     public void setContainer(Entity container) throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         // See also ModelRefinementPort.setContainer() for a similar method.
         try {
             _workspace.getWriteAccess();
@@ -228,12 +234,13 @@ public class ModalPort extends ModalBasePort {
      * of the director of the container, if there is one. It is
      * write-synchronized on the workspace, and increments the version of the
      * workspace.
-     * 
+     *
      * @param isInput
      *            True to make the port an input.
      * @exception IllegalActionException
      *                If changing the port status is not permitted.
      */
+    @Override
     public void setInput(boolean isInput) throws IllegalActionException {
         _setInput(isInput);
     }
@@ -246,12 +253,13 @@ public class ModalPort extends ModalBasePort {
      * of the director of the container, if there is one. It is
      * write-synchronized on the workspace, and increments the version of the
      * workspace.
-     * 
+     *
      * @param isMultiport
      *            True to make the port a multiport.
      * @exception IllegalActionException
      *                If changing the port status is not permitted.
      */
+    @Override
     public void setMultiport(boolean isMultiport) throws IllegalActionException {
         _setMultiport(isMultiport);
     }
@@ -260,15 +268,16 @@ public class ModalPort extends ModalBasePort {
      * Set the name of the port, and mirror the change in all the mirror ports.
      * This method is write-synchronized on the workspace, and increments the
      * version of the workspace.
-     * 
+     *
      * @exception IllegalActionException
      *                If the name has a period.
      * @exception NameDuplicationException
      *                If there is already a port with the same name in the
      *                container.
      */
+    @Override
     public void setName(String name) throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         _setName(name);
     }
 
@@ -280,12 +289,13 @@ public class ModalPort extends ModalBasePort {
      * of the director of the container, if there is one. It is
      * write-synchronized on the workspace, and increments the version of the
      * workspace.
-     * 
+     *
      * @param isOutput
      *            True to make the port an output.
      * @exception IllegalActionException
      *                If changing the port status is not permitted.
      */
+    @Override
     public void setOutput(boolean isOutput) throws IllegalActionException {
         _setOutput(isOutput);
     }

@@ -24,7 +24,7 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
-*/
+ */
 
 package ptolemy.data.ontologies.lattice;
 
@@ -44,17 +44,17 @@ import ptolemy.kernel.util.NamedObj;
 //// DeltaConstraintSolver
 
 /**
-* An implementation of PropertyConstraintSolver that tries to minimize
-* error cases.  It does this by searching for a set of constraints
-* that produce an error but for whom removing any constraint remove
-* the error.
-*
-* @author Ben Lickly, Dai Bui
-* @version $Id$
-* @since Ptolemy II 10.0
-* @Pt.ProposedRating Red (blickly)
-* @Pt.AcceptedRating Red (blickly)
-*/
+ * An implementation of PropertyConstraintSolver that tries to minimize
+ * error cases.  It does this by searching for a set of constraints
+ * that produce an error but for whom removing any constraint remove
+ * the error.
+ *
+ * @author Ben Lickly, Dai Bui
+ * @version $Id$
+ * @since Ptolemy II 10.0
+ * @Pt.ProposedRating Red (blickly)
+ * @Pt.AcceptedRating Red (blickly)
+ */
 
 public class DeltaConstraintSolver extends LatticeOntologySolver {
 

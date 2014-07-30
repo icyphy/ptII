@@ -68,6 +68,7 @@ public class AppletContext extends JApplet implements AppContext {
      */
     public AppletContext() {
         _exitAction = new AbstractAction() {
+            @Override
             public void actionPerformed(ActionEvent e) {
                 //do nothing?
             }
@@ -85,6 +86,7 @@ public class AppletContext extends JApplet implements AppContext {
      * Override the superclass's destroy method
      * to call the user-specified exit action.
      */
+    @Override
     public void destroy() {
         _exitAction.actionPerformed(null);
         super.destroy();
@@ -94,6 +96,7 @@ public class AppletContext extends JApplet implements AppContext {
      * Return the action that is called back when the user
      * exits the app.
      */
+    @Override
     public Action getExitAction() {
         return _exitAction;
     }
@@ -101,6 +104,7 @@ public class AppletContext extends JApplet implements AppContext {
     /**
      * Get the image that represents this frame.
      */
+    @Override
     public Image getIconImage() {
         return _iconImage;
     }
@@ -108,6 +112,7 @@ public class AppletContext extends JApplet implements AppContext {
     /**
      * Return the title of the context.
      */
+    @Override
     public String getTitle() {
         return _title;
     }
@@ -115,6 +120,7 @@ public class AppletContext extends JApplet implements AppContext {
     /**
      * Return the menu bar that the container uses.
      */
+    @Override
     public JMenuBar getJMenuBar() {
         return super.getJMenuBar();
     }
@@ -122,6 +128,7 @@ public class AppletContext extends JApplet implements AppContext {
     /**
      * Return "this" as a component.
      */
+    @Override
     public Component makeComponent() {
         return this;
     }
@@ -130,6 +137,7 @@ public class AppletContext extends JApplet implements AppContext {
      * Show the given status string at the bottom of
      * the context.  This base class does nothing.
      */
+    @Override
     public void showStatus(String status) {
         super.showStatus(status);
     }
@@ -138,6 +146,7 @@ public class AppletContext extends JApplet implements AppContext {
      * Set the action that is called back when the user
      * exits the app.
      */
+    @Override
     public void setExitAction(Action exitAction) {
         _exitAction = exitAction;
     }
@@ -146,6 +155,7 @@ public class AppletContext extends JApplet implements AppContext {
      * Set the title of the context.  This has no significance in an
      * applet context.
      */
+    @Override
     public void setTitle(String title) {
         _title = title;
     }
@@ -153,6 +163,7 @@ public class AppletContext extends JApplet implements AppContext {
     /**
      * Set the icon that represents this frame.
      */
+    @Override
     public void setIconImage(Image image) {
         _iconImage = image;
     }
@@ -160,6 +171,7 @@ public class AppletContext extends JApplet implements AppContext {
     /**
      * Set the menu bar that the container uses.
      */
+    @Override
     public void setJMenuBar(JMenuBar menu) {
         super.setJMenuBar(menu);
     }
@@ -167,18 +179,21 @@ public class AppletContext extends JApplet implements AppContext {
     /**
      * Do nothing.
      */
+    @Override
     public void setSize(int w, int h) {
     }
 
     /**
      * Do nothing.  Applets are always visible.
      */
+    @Override
     public void setVisible(boolean visible) {
     }
 
     /**
      * Return true.  Applets are always visible.
      */
+    @Override
     public boolean isVisible() {
         return true;
     }

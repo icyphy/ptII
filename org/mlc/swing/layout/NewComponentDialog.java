@@ -138,11 +138,13 @@ public class NewComponentDialog extends JPanel {
         add(previewComponent, "previewComponent");
 
         prevButton.addActionListener(new ActionListener() {
+            @Override
             public void actionPerformed(ActionEvent e) {
                 doPreview();
             }
         });
         okButton.addActionListener(new ActionListener() {
+            @Override
             public void actionPerformed(ActionEvent e) {
                 success = true;
                 componentDef.add = getAdd();
@@ -155,6 +157,7 @@ public class NewComponentDialog extends JPanel {
             }
         });
         cancelButton.addActionListener(new ActionListener() {
+            @Override
             public void actionPerformed(ActionEvent e) {
                 success = false;
                 UserPrefs.getPrefs().saveWinLoc("newcomp", myOwner);
@@ -183,7 +186,7 @@ public class NewComponentDialog extends JPanel {
     @return Component An instance of the component, null if there
     is a problem in the specification. [It is recommended that the
     'Preview' button should be clicked before exiting the dialog.]
-    */
+     */
     public Component getInstance() {
         Component component = null;
         String script;
@@ -304,9 +307,9 @@ public class NewComponentDialog extends JPanel {
     }
 
     /**
-    * Creates and displays a dialog for editing a component's settings. See
-    * {@link #doDialog(JFrame,ComponentDef)} for an example.
-    */
+     * Creates and displays a dialog for editing a component's settings. See
+     * {@link #doDialog(JFrame,ComponentDef)} for an example.
+     */
     public static NewComponentDialog editDialog(JFrame owner,
             ComponentDef componentDef) {
         JDialog dlg = new JDialog(owner, "Edit Component", true);
@@ -322,7 +325,7 @@ public class NewComponentDialog extends JPanel {
     }
 
     /**
-    * Creates and displays a dialog for defining a new component's settings. The
+     * Creates and displays a dialog for defining a new component's settings. The
       dialog should be used as follows:
       <code>
     NewComponentDialog dlg = NewComponentDialog.doDialog(frame, componentDef);
@@ -331,7 +334,7 @@ public class NewComponentDialog extends JPanel {
     [do something with dlg.componentDef]
     }
     <code>
-    */
+     */
     public static NewComponentDialog doDialog(JFrame owner,
             ComponentDef componentDef) {
         JDialog dlg = new JDialog(owner, "New Component", true);
@@ -347,7 +350,7 @@ public class NewComponentDialog extends JPanel {
     }
 
     /** Unit testing.
-    */
+     */
     public static void main(String[] args) {
         JFrame frame = new JFrame();
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

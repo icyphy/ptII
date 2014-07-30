@@ -201,6 +201,7 @@ public class UnitConstraints implements UnitPresentation {
     /**
      * @see ptolemy.moml.unit.UnitPresentation#descriptiveForm()
      */
+    @Override
     public String descriptiveForm() {
         if (_constraints == null) {
             return null;

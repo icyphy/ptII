@@ -87,6 +87,7 @@ public class MonitorImage extends Sink {
      *  @exception CloneNotSupportedException If a derived class contains
      *   an attribute that cannot be cloned.
      */
+    @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         MonitorImage newObject = (MonitorImage) super.clone(workspace);
         newObject._icon = (ImageIcon) newObject.getAttribute("_icon");
@@ -98,6 +99,7 @@ public class MonitorImage extends Sink {
      *   contain an image, or if there is no director.
      *  @return True.
      */
+    @Override
     public boolean postfire() throws IllegalActionException {
         if (input.hasToken(0)) {
             ImageToken token = (ImageToken) input.get(0);

@@ -24,7 +24,7 @@
  PT_COPYRIGHT_VERSION_2
  COPYRIGHTENDKEY
 
-*/
+ */
 package ptolemy.vergil.kernel.attributes;
 
 import java.awt.Shape;
@@ -100,6 +100,7 @@ public class ArrowAttribute extends LineAttribute {
      *  @exception IllegalActionException If the change is not acceptable
      *   to this container (should not be thrown).
      */
+    @Override
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         if (attribute == x || attribute == y || attribute == arrowLength
@@ -127,6 +128,7 @@ public class ArrowAttribute extends LineAttribute {
      *  @exception CloneNotSupportedException Not thrown in this base class
      *  @return The new Attribute.
      */
+    @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         ArrowAttribute newObject = (ArrowAttribute) super.clone(workspace);
 
@@ -147,6 +149,7 @@ public class ArrowAttribute extends LineAttribute {
     /** Return a default arrow.
      *  @return An arrow.
      */
+    @Override
     protected Shape _getDefaultShape() {
         return _createArrow(40.0, 40.0, 16.0, 10.0);
     }

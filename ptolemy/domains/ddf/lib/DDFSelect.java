@@ -139,6 +139,7 @@ public class DDFSelect extends TypedAtomicActor {
      *  @exception CloneNotSupportedException If a derived class has
      *   an attribute that cannot be cloned.
      */
+    @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         DDFSelect newObject = (DDFSelect) super.clone(workspace);
         newObject.output.setTypeAtLeast(newObject.input);
@@ -153,6 +154,7 @@ public class DDFSelect extends TypedAtomicActor {
      *  channel and no token from the rest of the channels.
      *  @param port The port that has connection changes.
      */
+    @Override
     public void connectionsChanged(Port port) {
         super.connectionsChanged(port);
 
@@ -192,6 +194,7 @@ public class DDFSelect extends TypedAtomicActor {
      *   hence no receivers have been created, or the value of the received
      *   control token is out of range.
      */
+    @Override
     public void fire() throws IllegalActionException {
         super.fire();
 
@@ -218,6 +221,7 @@ public class DDFSelect extends TypedAtomicActor {
      *  from the <i>control</i> port in the first iteration.
      *  @exception IllegalActionException If setToken() throws it.
      */
+    @Override
     public void initialize() throws IllegalActionException {
         super.initialize();
 
@@ -231,6 +235,7 @@ public class DDFSelect extends TypedAtomicActor {
      *  @return True if execution can continue into the next iteration.
      *  @exception IllegalActionException If setToken() throws it.
      */
+    @Override
     public boolean postfire() throws IllegalActionException {
         if (_isControlRead) {
             input_tokenConsumptionRate.setToken(_rateArray[_control]);
@@ -250,6 +255,7 @@ public class DDFSelect extends TypedAtomicActor {
      *  @exception IllegalActionException If the receivers do not support
      *   the query, or if there is no director, and hence no receivers.
      */
+    @Override
     public boolean prefire() throws IllegalActionException {
         if (_isControlRead) {
             if (!input.hasToken(_control)) {

@@ -24,7 +24,7 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
-*/
+ */
 
 package ptolemy.cg.lib.syntactic;
 
@@ -52,7 +52,7 @@ import java.util.LinkedList;
 @since Ptolemy II 10.0
 @Pt.ProposedRating Red (shaver)
 @Pt.AcceptedRating Red
-*/
+ */
 @SuppressWarnings("serial")
 public class SyntacticSeries extends SyntacticTermList {
 
@@ -69,6 +69,7 @@ public class SyntacticSeries extends SyntacticTermList {
      *  @param term Term to be added to series.
      *  @return true if added, false if invalid.
      */
+    @Override
     public boolean add(SyntacticTerm term) {
         if (contains(term)) {
             return false;
@@ -103,6 +104,7 @@ public class SyntacticSeries extends SyntacticTermList {
      *
      *  @param term Term to be added to series.
      */
+    @Override
     public void push(SyntacticTerm term) {
         if (contains(term)) {
             return;
@@ -140,6 +142,7 @@ public class SyntacticSeries extends SyntacticTermList {
      *  @param index Index at which to add the term.
      *  @param term Term to add to series.
      */
+    @Override
     public void add(int index, SyntacticTerm term) {
         if (contains(term) || index < 0 || index > size()) {
             return;
@@ -213,6 +216,7 @@ public class SyntacticSeries extends SyntacticTermList {
      *
      *  @return code for term.
      */
+    @Override
     public String generateCode() {
         LinkedList<String> termStrs = new LinkedList();
         for (SyntacticTerm node : this) {

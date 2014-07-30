@@ -134,6 +134,7 @@ public class SDFTestZeroRate2 extends Transformer {
      *  @exception CloneNotSupportedException If a derived class has
      *   an attribute that cannot be cloned.
      */
+    @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         SDFTestZeroRate2 newObject = (SDFTestZeroRate2) super.clone(workspace);
 
@@ -146,6 +147,7 @@ public class SDFTestZeroRate2 extends Transformer {
     /** Discard tokens received. Send the token in the value parameter.
      *  @exception IllegalActionException If there is no director.
      */
+    @Override
     public void fire() throws IllegalActionException {
         for (int i = 0; i < ((IntToken) input_rate.getToken()).intValue(); i++) {
             input.get(0);
@@ -169,6 +171,7 @@ public class SDFTestZeroRate2 extends Transformer {
      *
      *  @exception IllegalActionException If a derived class throws it.
      */
+    @Override
     public void initialize() throws IllegalActionException {
         super.initialize();
 

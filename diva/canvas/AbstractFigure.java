@@ -70,6 +70,7 @@ public abstract class AbstractFigure implements Figure {
      *  This default implementation
      *  tests using the figure's shape.
      */
+    @Override
     public boolean contains(Point2D p) {
         return getShape().contains(p);
     }
@@ -78,6 +79,7 @@ public abstract class AbstractFigure implements Figure {
      * implementation returns the bounding box of the figure's
      * outline shape.
      */
+    @Override
     public Rectangle2D getBounds() {
         return getShape().getBounds2D();
     }
@@ -85,6 +87,7 @@ public abstract class AbstractFigure implements Figure {
     /** Return the interactor of this figure. Return
      *  null if there isn't one.
      */
+    @Override
     public Interactor getInteractor() {
         return _interactor;
     }
@@ -93,6 +96,7 @@ public abstract class AbstractFigure implements Figure {
      * Returns null if this figure is not in a layer, either
      * directly or as one of its ancestors.
      */
+    @Override
     public CanvasLayer getLayer() {
         if (_parent == null) {
             return null;
@@ -111,6 +115,7 @@ public abstract class AbstractFigure implements Figure {
      *  @see #getBounds()
      *  @return The origin of the figure.
      */
+    @Override
     public Point2D getOrigin() {
         Rectangle2D bounds = getBounds();
         return new Point2D.Double(bounds.getCenterX(), bounds.getCenterY());
@@ -121,6 +126,7 @@ public abstract class AbstractFigure implements Figure {
      *  can exist, but it will not be displayed, as it must be in a
      *  layer for the figure canvas to ever call its paint method.)
      */
+    @Override
     public CanvasComponent getParent() {
         return _parent;
     }
@@ -130,6 +136,7 @@ public abstract class AbstractFigure implements Figure {
      * method, provided  here since a number of other concrete
      * methods use it.
      */
+    @Override
     public abstract Shape getShape();
 
     /** Return the transform context of the figure. This default
@@ -137,6 +144,7 @@ public abstract class AbstractFigure implements Figure {
      * a transform context, so just calls the same method on its
      * parent. If it has no parent, return null.
      */
+    @Override
     public TransformContext getTransformContext() {
         if (_parent == null) {
             return null;
@@ -148,6 +156,7 @@ public abstract class AbstractFigure implements Figure {
     /** Return the tooltip string for this figure, or null if the figure
      *  does not have a tooltip.
      */
+    @Override
     public String getToolTipText() {
         return _toolTipText;
     }
@@ -155,6 +164,7 @@ public abstract class AbstractFigure implements Figure {
     /** Get the user object of this figure. Return null if
      *  there is none.
      */
+    @Override
     public Object getUserObject() {
         return _userObject;
     }
@@ -166,6 +176,7 @@ public abstract class AbstractFigure implements Figure {
      *  This default implementation is the same as <b>intersects</b>
      *  if the figure is visible.
      */
+    @Override
     public boolean hit(Rectangle2D r) {
         if (!isVisible()) {
             return false;
@@ -177,6 +188,7 @@ public abstract class AbstractFigure implements Figure {
     /** Test if this figure intersects the given rectangle. This default
      *  implementation uses the figure's outline shape.
      */
+    @Override
     public boolean intersects(Rectangle2D r) {
         return getShape().intersects(r);
     }
@@ -185,6 +197,7 @@ public abstract class AbstractFigure implements Figure {
      *  does not indicate whether the figure is actually visible on
      *  the screen, as one if its ancestors may not be visible.
      */
+    @Override
     public boolean isVisible() {
         return _visibility;
     }
@@ -200,6 +213,7 @@ public abstract class AbstractFigure implements Figure {
      *  the graphics context, such as the stroke and fill, do not need
      *  to be preserved.
      */
+    @Override
     public abstract void paint(Graphics2D g);
 
     /** Repaint the figure in the given rectangle. This default
@@ -207,6 +221,7 @@ public abstract class AbstractFigure implements Figure {
      *  consider overriding this method to optimize redraw. See the
      *  documentation of the one-argument version of this method.
      */
+    @Override
     public void paint(Graphics2D g, Rectangle2D r) {
         paint(g);
     }
@@ -219,6 +234,7 @@ public abstract class AbstractFigure implements Figure {
      * need to override this method if they need to damage a region that
      * is different from the bounding box.
      */
+    @Override
     public void repaint() {
         if (_parent != null) {
             repaint(DamageRegion.createDamageRegion(
@@ -231,6 +247,7 @@ public abstract class AbstractFigure implements Figure {
      * forwards the damage region to this figure's parent. See the
      * nullary version of this method.
      */
+    @Override
     public void repaint(DamageRegion d) {
         if (_parent != null) {
             _parent.repaint(d);
@@ -241,6 +258,7 @@ public abstract class AbstractFigure implements Figure {
      *  interactor given to it, it will respond to events
      *  on the figure canvas.
      */
+    @Override
     public void setInteractor(Interactor interactor) {
         _interactor = interactor;
     }
@@ -252,6 +270,7 @@ public abstract class AbstractFigure implements Figure {
      * reference of the figure if necessary. This method is intended only
      * for use by classes that implement FigureContainer.
      */
+    @Override
     public void setParent(CanvasComponent fc) {
         _parent = fc;
 
@@ -265,6 +284,7 @@ public abstract class AbstractFigure implements Figure {
     /** Set the user object. This object is intended for use as a
      * reference to the semantic model.
      */
+    @Override
     public void setUserObject(Object o) {
         _userObject = o;
     }
@@ -272,6 +292,7 @@ public abstract class AbstractFigure implements Figure {
     /** Set the tooltip string for this figure.  If the string is null, then
      *  the figure will not have a tooltip.
      */
+    @Override
     public void setToolTipText(String s) {
         _toolTipText = s;
     }
@@ -280,6 +301,7 @@ public abstract class AbstractFigure implements Figure {
      *  then the figure will not be drawn on the screen and it will
      *  not respond to user input events.
      */
+    @Override
     public void setVisible(boolean flag) {
         _visibility = flag;
     }
@@ -288,6 +310,7 @@ public abstract class AbstractFigure implements Figure {
      * be used to perform arbitrary translation, scaling, shearing, and
      * rotation operations.
      */
+    @Override
     public abstract void transform(AffineTransform at);
 
     /** Move the figure the indicated distance. The default
@@ -295,6 +318,7 @@ public abstract class AbstractFigure implements Figure {
      *  most subclasses can probably implement this more
      *  efficiently.
      */
+    @Override
     public void translate(double x, double y) {
         transform(AffineTransform.getTranslateInstance(x, y));
     }

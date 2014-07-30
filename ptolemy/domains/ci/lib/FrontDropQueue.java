@@ -99,6 +99,7 @@ public class FrontDropQueue extends CIActor {
 
     /**
      *  @exception IllegalActionException Not thrown in this base class */
+    @Override
     public void fire() throws IllegalActionException {
         super.fire();
         int c = ((IntToken) capacity.getToken()).intValue();
@@ -123,6 +124,7 @@ public class FrontDropQueue extends CIActor {
      *  @exception IllegalActionException If the parent class throws it.
      *  @return Whatever the superclass returns (probably true).
      */
+    @Override
     public boolean prefire() throws IllegalActionException {
         super.prefire();
 
@@ -137,6 +139,7 @@ public class FrontDropQueue extends CIActor {
         return input.hasToken(0) || _queue.size() > 0;
     }
 
+    @Override
     public void preinitialize() throws IllegalActionException {
         super.preinitialize();
         _queue = new LinkedList();

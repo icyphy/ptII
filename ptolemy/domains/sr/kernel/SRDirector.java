@@ -176,7 +176,7 @@ public class SRDirector extends FixedPointDirector implements PeriodicDirector {
      *   an entity with the specified name.
      */
     public SRDirector(Workspace workspace) throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         super(workspace);
         _init();
     }
@@ -228,6 +228,7 @@ public class SRDirector extends FixedPointDirector implements PeriodicDirector {
      *  @exception CloneNotSupportedException Not thrown in this base class
      *  @return The new Attribute.
      */
+    @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         SRDirector newObject = (SRDirector) super.clone(workspace);
         try {
@@ -258,6 +259,7 @@ public class SRDirector extends FixedPointDirector implements PeriodicDirector {
      *  @return Either the requested time or the current time plus the
      *  period.
      */
+    @Override
     public Time fireAt(Actor actor, Time time, int microstep)
             throws IllegalActionException {
         return _periodicDirectorHelper.fireAt(actor, time);
@@ -270,6 +272,7 @@ public class SRDirector extends FixedPointDirector implements PeriodicDirector {
      *  @return The time of the next iteration.
      *  @exception IllegalActionException If time objects cannot be created.
      */
+    @Override
     public Time getModelNextIterationTime() throws IllegalActionException {
         if (!_isTopLevel()) {
             return super.getModelNextIterationTime();
@@ -295,6 +298,7 @@ public class SRDirector extends FixedPointDirector implements PeriodicDirector {
      *  is one.
      *  @exception IllegalActionException If the superclass throws it.
      */
+    @Override
     public void initialize() throws IllegalActionException {
         super.initialize();
         _periodicDirectorHelper.initialize();
@@ -331,6 +335,7 @@ public class SRDirector extends FixedPointDirector implements PeriodicDirector {
      *  @exception IllegalActionException If the period parameter
      *   cannot be evaluated
      */
+    @Override
     public double periodValue() throws IllegalActionException {
         return ((DoubleToken) period.getToken()).doubleValue();
     }
@@ -346,6 +351,7 @@ public class SRDirector extends FixedPointDirector implements PeriodicDirector {
      *   parameter cannot be evaluated.
      *  @return true If current time is appropriate for a firing.
      */
+    @Override
     public boolean prefire() throws IllegalActionException {
         // The first call below sets current time to match the environment
         // time. The second call, _periodicDirectorHelper.prefire(), checks
@@ -403,6 +409,7 @@ public class SRDirector extends FixedPointDirector implements PeriodicDirector {
      *  @exception IllegalActionException If the iterations or
      *   period parameter does not contain a legal value.
      */
+    @Override
     public boolean postfire() throws IllegalActionException {
         // The super.postfire() method increments the superdense time index.
         boolean result = super.postfire();
@@ -418,7 +425,7 @@ public class SRDirector extends FixedPointDirector implements PeriodicDirector {
      *  parameter and a vectorizationFactor parameter.
      */
     private void _init() throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         period = new Parameter(this, "period");
         period.setTypeEquals(BaseType.DOUBLE);
         period.setExpression("0.0");

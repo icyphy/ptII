@@ -103,6 +103,7 @@ public class ModelRepaintController extends Attribute {
      *  @exception CloneNotSupportedException If a derived class contains
      *  an attribute that cannot be cloned.
      */
+    @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         ModelRepaintController newObject = (ModelRepaintController) super
                 .clone(workspace);
@@ -141,58 +142,73 @@ public class ModelRepaintController extends Attribute {
      *   an attribute with the name of this attribute.
      *  @see #getContainer()
      */
+    @Override
     public void setContainer(NamedObj container) throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         if (_executable == null) {
             // The inner class will be piggybacked as an executable for the container to
             // execute change request at the appropriate times. These change request will
             // lead to repaints of the GUI.
             _executable = new Executable() {
+                @Override
                 public void fire() throws IllegalActionException {
                 }
 
+                @Override
                 public boolean isFireFunctional() {
                     return true;
                 }
 
+                @Override
                 public boolean isStrict() throws IllegalActionException {
                     return true;
                 }
 
+                @Override
                 public int iterate(int count) throws IllegalActionException {
                     return Executable.COMPLETED;
                 }
 
+                @Override
                 public boolean postfire() throws IllegalActionException {
                     _scheduleRepaint(_repaintOnPostFire);
                     return true;
                 }
 
+                @Override
                 public boolean prefire() throws IllegalActionException {
                     return true;
                 }
 
+                @Override
                 public void stop() {
                 }
 
+                @Override
                 public void stopFire() {
                 }
 
+                @Override
                 public void terminate() {
                 }
 
+                @Override
                 public void addInitializable(Initializable initializable) {
                 }
 
+                @Override
                 public void initialize() throws IllegalActionException {
                 }
 
+                @Override
                 public void preinitialize() throws IllegalActionException {
                 }
 
+                @Override
                 public void removeInitializable(Initializable initializable) {
                 }
 
+                @Override
                 public void wrapup() throws IllegalActionException {
                     _scheduleRepaint(_repaintOnWrapUp);
                 }
@@ -224,6 +240,7 @@ public class ModelRepaintController extends Attribute {
             // repaints of the model.
             ChangeRequest request = new ChangeRequest(this,
                     "SetVariable change request", true) {
+                @Override
                 protected void _execute() throws IllegalActionException {
                 }
             };

@@ -120,6 +120,7 @@ public class MovableViewScreen3D extends ViewScreen3D {
      *  @exception CloneNotSupportedException If a derived class contains
      *   an attribute that cannot be cloned.
      */
+    @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         MovableViewScreen3D newObject = (MovableViewScreen3D) super
                 .clone(workspace);
@@ -138,6 +139,7 @@ public class MovableViewScreen3D extends ViewScreen3D {
      *  @exception IllegalActionException If the input array has the
      *  wrong size.
      */
+    @Override
     public void fire() throws IllegalActionException {
         super.fire();
         viewerPosition.update();
@@ -192,6 +194,7 @@ public class MovableViewScreen3D extends ViewScreen3D {
      *
      *  @exception IllegalActionException If the input array has the wrong size.
      */
+    @Override
     public void initialize() throws IllegalActionException {
         super.initialize();
 
@@ -236,6 +239,7 @@ public class MovableViewScreen3D extends ViewScreen3D {
      * @return Returns the value from its super class.
      * @exception IllegalActionException Thrown if super class throws it.
      */
+    @Override
     public boolean postfire() throws IllegalActionException {
         _position = (ArrayToken) viewerPosition.getToken();
         _axis = (ArrayToken) viewerRotationAxis.getToken();
@@ -246,6 +250,7 @@ public class MovableViewScreen3D extends ViewScreen3D {
     /**Reset the state to the initial values.
      * @exception IllegalActionException Thrown if super class throws it.
      */
+    @Override
     public void wrapup() throws IllegalActionException {
         super.wrapup();
         _position = _initialPosition;

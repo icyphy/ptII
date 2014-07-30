@@ -97,6 +97,7 @@ public class DebugController extends SingletonConfigurableAttribute {
      *
      *  @param debugEvent The debug event.
      */
+    @Override
     public void event(DebugEvent debugEvent) {
         // FIXME: this method is called every time the director gets a
         // firing event for any actor...is this ok?
@@ -171,6 +172,7 @@ public class DebugController extends SingletonConfigurableAttribute {
      *  listening to by ignoring the message.
      *  @param string Debug message.
      */
+    @Override
     public void message(String string) {
     }
 
@@ -219,6 +221,7 @@ public class DebugController extends SingletonConfigurableAttribute {
         // so we make an anonymous inner class to handle it in a
         // different thread.
         SwingUtilities.invokeLater(new Runnable() {
+            @Override
             public void run() {
                 _debugRenderer.renderSelected(figure);
             }
@@ -232,6 +235,7 @@ public class DebugController extends SingletonConfigurableAttribute {
         if (debugRendered != null) {
             // Unhighlight the actor after resuming execution.
             SwingUtilities.invokeLater(new Runnable() {
+                @Override
                 public void run() {
                     _debugRenderer.renderDeselected(debugRendered);
                 }

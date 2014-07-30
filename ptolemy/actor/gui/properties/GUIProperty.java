@@ -24,7 +24,7 @@
  PT_COPYRIGHT_VERSION_2
  COPYRIGHTENDKEY
 
-*/
+ */
 package ptolemy.actor.gui.properties;
 
 import java.awt.Dimension;
@@ -151,6 +151,7 @@ public abstract class GUIProperty extends Attribute {
      *  @exception IllegalActionException If the change is not acceptable
      *   to this container (not thrown in this base class).
      */
+    @Override
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         if (attribute == preferredSize) {
@@ -168,12 +169,13 @@ public abstract class GUIProperty extends Attribute {
         }
     }
 
-    /** Clone the property into the specified workspace. 
+    /** Clone the property into the specified workspace.
      *  @param workspace The workspace in to which the object is cloned.
      *  @return A new property
      *  @exception CloneNotSupportedException If a derived class contains
      *   an attribute that cannot be cloned.
      */
+    @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         GUIProperty newObject = (GUIProperty) super.clone(workspace);
         newObject._component = null;
@@ -218,8 +220,9 @@ public abstract class GUIProperty extends Attribute {
      *   an attribute with the name of this attribute.
      *  @see #getContainer()
      */
+    @Override
     public void setContainer(NamedObj container) throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         if (getComponent() == null || _add(container)) {
             super.setContainer(container);
         } else {

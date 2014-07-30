@@ -51,7 +51,7 @@ import ptolemy.graph.analysis.analyzer.ClusterNodesTransformer;
  @version $Id$
  */
 public class ClusterNodesTransformerStrategy extends CachedStrategy implements
-        ClusterNodesTransformer {
+ClusterNodesTransformer {
     /** Construct a clusterer for a given graph.
      *  @param graph The given graph.
      *  @param nodeCollection The collection of nodes to be clustered.
@@ -71,6 +71,7 @@ public class ClusterNodesTransformerStrategy extends CachedStrategy implements
      *
      *  @return Return the clustered Graph.
      */
+    @Override
     public Graph clusterNodes() {
         return (Graph) _result();
     }
@@ -81,6 +82,7 @@ public class ClusterNodesTransformerStrategy extends CachedStrategy implements
      *  @return True If the implementation of the transformer supports backward
      *  mapping.
      */
+    @Override
     public boolean hasBackwardMapping() {
         return false;
     }
@@ -91,6 +93,7 @@ public class ClusterNodesTransformerStrategy extends CachedStrategy implements
      *  @return True If the implementation of the transformer supports forward
      *  mapping.
      */
+    @Override
     public boolean hasForwardMapping() {
         return false;
     }
@@ -100,6 +103,7 @@ public class ClusterNodesTransformerStrategy extends CachedStrategy implements
      *  @exception UnsupportedOperationException If this method is called
      *  in any case.
      */
+    @Override
     public Object originalVersionOf(Object dummy) {
         throw new UnsupportedOperationException();
     }
@@ -109,6 +113,7 @@ public class ClusterNodesTransformerStrategy extends CachedStrategy implements
      *  @exception UnsupportedOperationException If this method is called
      *  in any case.
      */
+    @Override
     public Object transformedVersionOf(Object dummy) {
         throw new UnsupportedOperationException();
     }
@@ -117,6 +122,7 @@ public class ClusterNodesTransformerStrategy extends CachedStrategy implements
      *
      *  @return True always.
      */
+    @Override
     public boolean valid() {
         return true;
     }
@@ -128,6 +134,7 @@ public class ClusterNodesTransformerStrategy extends CachedStrategy implements
      *
      *  @return The mirror graph as an {@link Object}.
      */
+    @Override
     protected Object _compute() {
         // When removing nodes and edges, we have to be careful about
         // concurrent modification problems with the associated iterators.

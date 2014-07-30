@@ -55,6 +55,7 @@ public class EventToken extends Token {
      *  @return True if the argument is an instance of Token, but not an
      *   instance of a subclass of Token or any other classes.
      */
+    @Override
     public boolean equals(Object object) {
         if (object == null) {
             return false;
@@ -69,6 +70,7 @@ public class EventToken extends Token {
     /** Return the type of this token.
      *  @return BaseType.GENERAL
      */
+    @Override
     public Type getType() {
         return BaseType.EVENT;
     }
@@ -79,6 +81,7 @@ public class EventToken extends Token {
      *  this method simply returns the value 0.
      *  @return The integer 0.
      */
+    @Override
     public int hashCode() {
         return 0;
     }
@@ -90,6 +93,7 @@ public class EventToken extends Token {
      *  that an event is present.
      *  @return The String "present".
      */
+    @Override
     public String toString() {
         return "present";
     }

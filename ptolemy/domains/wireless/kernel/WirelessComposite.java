@@ -92,6 +92,7 @@ public class WirelessComposite extends TypedCompositeActor {
      *  @exception NameDuplicationException If this actor already has a
      *   port with the specified name.
      */
+    @Override
     public Port newPort(String name) throws NameDuplicationException {
         try {
             workspace().getWriteAccess();

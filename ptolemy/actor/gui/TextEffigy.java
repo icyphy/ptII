@@ -174,7 +174,7 @@ public class TextEffigy extends Effigy {
                     } catch (Exception ex) {
                         IOException exception = new IOException(
                                 "Failed to open '" + in + "\", base: \"" + base
-                                        + "\"");
+                                + "\"");
                         exception.initCause(ex);
                         throw exception;
                     }
@@ -281,6 +281,7 @@ public class TextEffigy extends Effigy {
      *  @param file The file to write to.
      *  @exception IOException If the write fails.
      */
+    @Override
     public void writeFile(File file) throws IOException {
         if (_doc != null) {
             java.io.FileWriter fileWriter = null;
@@ -347,7 +348,7 @@ public class TextEffigy extends Effigy {
 
                 _newTextEffigyURL = effigyClass.getMethod("newTextEffigy",
                         new Class[] { CompositeEntity.class, URL.class,
-                                URL.class });
+                        URL.class });
             } catch (ClassNotFoundException ex) {
                 throw new IllegalActionException(ex.toString());
             } catch (NoSuchMethodException ex) {
@@ -362,6 +363,7 @@ public class TextEffigy extends Effigy {
          *  capable of creating an effigy without a URL being specified.
          *  @return True.
          */
+        @Override
         public boolean canCreateBlankEffigy() {
             return true;
         }
@@ -383,6 +385,7 @@ public class TextEffigy extends Effigy {
          *  @exception Exception If the URL cannot be read, or if the data
          *   is malformed in some way.
          */
+        @Override
         public Effigy createEffigy(CompositeEntity container, URL base, URL in)
                 throws Exception {
             // Create a new effigy.

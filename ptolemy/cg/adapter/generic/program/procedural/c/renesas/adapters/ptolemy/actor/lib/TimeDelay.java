@@ -47,8 +47,8 @@ import ptolemy.kernel.util.NamedObj;
 @since Ptolemy II 10.0
  */
 public class TimeDelay
-        extends
-        ptolemy.cg.adapter.generic.program.procedural.c.adapters.ptolemy.actor.lib.TimeDelay {
+extends
+ptolemy.cg.adapter.generic.program.procedural.c.adapters.ptolemy.actor.lib.TimeDelay {
     /**
      *  Construct a TimeGap adapter.
      *  @param actor The given ptolemy.actor.lib.TimeGap actor.
@@ -57,6 +57,7 @@ public class TimeDelay
         super(actor);
     }
 
+    @Override
     public String generateFireCode() throws IllegalActionException {
         CodeStream codeStream = _templateParser.getCodeStream();
         codeStream.clear();
@@ -74,6 +75,7 @@ public class TimeDelay
      *  @exception IllegalActionException If thrown while reading the
      *  <i>delay</i parameter.
      */
+    @Override
     public String getAddTimeString() throws IllegalActionException {
         return getParameterValue("delay", (NamedObj) _component);
     }

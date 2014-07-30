@@ -86,6 +86,7 @@ public class XmlReader extends LoggableOp {
 
     /** Get the current line number.
      */
+    @Override
     public int getLineNumber() {
         return _parser.getLineNumber();
     }
@@ -192,7 +193,7 @@ public class XmlReader extends LoggableOp {
      */
     private void parse(XmlDocument document, URL systemId, URL publicId,
             Reader reader, InputStream stream, String encoding)
-            throws Exception {
+                    throws Exception {
         String pubString;
         String sysString;
 
@@ -269,6 +270,7 @@ public class XmlReader extends LoggableOp {
          *   the XML file.
          *  @exception Exception If the name or value is null.
          */
+        @Override
         public void attribute(String name, String value, boolean specified)
                 throws Exception {
             if (isVerbose()) {
@@ -286,6 +288,7 @@ public class XmlReader extends LoggableOp {
          * Append the given character bytes to the character data of
          * the current XML element.
          */
+        @Override
         public void charData(char[] c, int offset, int length) throws Exception {
             String s = new String(c, offset, length);
 
@@ -308,6 +311,7 @@ public class XmlReader extends LoggableOp {
          * Handle a document type declaration. This sets the DTD external
          * identifiers in the XmlDocument.
          */
+        @Override
         public void doctypeDecl(String name, String publicId, String systemId)
                 throws java.lang.Exception {
             if (isVerbose()) {
@@ -324,6 +328,7 @@ public class XmlReader extends LoggableOp {
          * End the document. If we've finished the parse and didn't get
          * back to the root of the parse tree, generate an error.
          */
+        @Override
         public void endDocument() throws Exception {
             if (isVerbose()) {
                 unindent();
@@ -339,6 +344,7 @@ public class XmlReader extends LoggableOp {
         /**
          * Move up one level in the parse tree.
          */
+        @Override
         public void endElement(String name) throws Exception {
             if (isVerbose()) {
                 unindent();
@@ -355,6 +361,7 @@ public class XmlReader extends LoggableOp {
          * @exception XmlException If given URI was not the URI that was expected,
          * based on the external entity tree.
          */
+        @Override
         public void endExternalEntity(String URI) throws Exception {
             if (isVerbose()) {
                 logInfo("end ext", URI);
@@ -372,6 +379,7 @@ public class XmlReader extends LoggableOp {
         /**
          * Print an error message to the error stream.
          */
+        @Override
         public void error(String message, String sysid, int line, int column)
                 throws Exception {
             if (sysid != null) {
@@ -387,6 +395,7 @@ public class XmlReader extends LoggableOp {
          * @see com.microstar.xml.XmlHandler#ignorableWhitespace
          * @exception java.lang.Exception Derived methods may throw exceptions.
          */
+        @Override
         public void ignorableWhitespace(char[] ch, int start, int length)
                 throws java.lang.Exception {
         }
@@ -397,6 +406,7 @@ public class XmlReader extends LoggableOp {
          * @see com.microstar.xml.XmlHandler#processingInstruction
          * @exception java.lang.Exception Derived methods may throw exceptions.
          */
+        @Override
         public void processingInstruction(String target, String data)
                 throws java.lang.Exception {
             ; // ?
@@ -410,6 +420,7 @@ public class XmlReader extends LoggableOp {
          * Otherwise, non-null public DTD's are looked up in the
          * default resource bundle, diva/resource/Defaults.properties.
          */
+        @Override
         public Object resolveEntity(String pubID, String sysID)
                 throws Exception {
             if (isVerbose()) {
@@ -458,6 +469,7 @@ public class XmlReader extends LoggableOp {
          * It is guaranteed that this will be the first method called.
          * Initialize the parse tree to contain no elements.
          */
+        @Override
         public void startDocument() {
             if (isVerbose()) {
                 logInfo("start", "");
@@ -484,6 +496,7 @@ public class XmlReader extends LoggableOp {
          *
          * @param name the element type of the element that is beginning.
          */
+        @Override
         public void startElement(String name) {
             if (isVerbose()) {
                 logInfo("start", "<" + name + "> (" + printEntityType(name)
@@ -507,6 +520,7 @@ public class XmlReader extends LoggableOp {
         /**
          * Move down one level in the entity tree.
          */
+        @Override
         public void startExternalEntity(String URI) throws Exception {
             if (isVerbose()) {
                 logInfo("start ext", URI);

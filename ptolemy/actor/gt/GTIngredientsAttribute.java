@@ -102,6 +102,7 @@ public class GTIngredientsAttribute extends StringAttribute {
      *  @exception CloneNotSupportedException Not thrown in this base class
      *  @return The new object.
      */
+    @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         GTIngredientsAttribute newObject = (GTIngredientsAttribute) super
                 .clone(workspace);
@@ -134,6 +135,7 @@ public class GTIngredientsAttribute extends StringAttribute {
      *  @param expression The new expression.
      *  @exception IllegalActionException If thrown by the superclass.
      */
+    @Override
     public void setExpression(String expression) throws IllegalActionException {
         _parsed = false;
         if (!(getContainer() instanceof GTEntity)) {
@@ -148,6 +150,7 @@ public class GTIngredientsAttribute extends StringAttribute {
      *  @exception IllegalActionException If error occurs while parsing the
      *   expression.
      */
+    @Override
     public Collection<?> validate() throws IllegalActionException {
         if (!_parsed) {
             try {

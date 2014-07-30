@@ -94,6 +94,7 @@ public class StaticSchedulingDirector extends PortDirector {
      *   violates type constraints, or if the result of evaluation is null
      *   and there are variables that depend on this one.
      */
+    @Override
     final public Boolean allowDynamicMultiportReference()
             throws IllegalActionException {
         NamedObj component = getComponent();
@@ -122,6 +123,7 @@ public class StaticSchedulingDirector extends PortDirector {
      *  decorator for the corresponding Ptolemy Component.
      *  @return The decorated attributes.
      */
+    @Override
     public DecoratorAttributes createDecoratorAttributes(NamedObj target,
             GenericCodeGenerator genericCodeGenerator) {
         // FIXME: Which types of targets should get decorated?
@@ -140,6 +142,7 @@ public class StaticSchedulingDirector extends PortDirector {
      *   attribute called "iterations" or a valid schedule, or the actor to be
      *   fired cannot find its associated adapter.
      */
+    @Override
     public String generateFireCode() throws IllegalActionException {
 
         StringBuffer code = new StringBuffer();
@@ -212,6 +215,7 @@ public class StaticSchedulingDirector extends PortDirector {
      *  @exception IllegalActionException If the adapter associated with
      *   an actor throws it while generating initialize code for the actor.
      */
+    @Override
     public String generateInitializeCode() throws IllegalActionException {
         StringBuffer code = new StringBuffer(super.generateInitializeCode());
 
@@ -259,6 +263,7 @@ public class StaticSchedulingDirector extends PortDirector {
      *  @return Code for the main loop of an execution.
      *  @exception IllegalActionException If something goes wrong.
      */
+    @Override
     public String generateMainLoop() throws IllegalActionException {
         // Need a leading _eol here or else the execute decl. gets stripped out.
         StringBuffer code = new StringBuffer(_eol
@@ -285,7 +290,7 @@ public class StaticSchedulingDirector extends PortDirector {
 
         String[] splitFireCode = getCodeGenerator()._splitBody(
                 "_" + CodeGeneratorAdapter.generateName(getComponent())
-                        + "_run_", generateFireCode());
+                + "_run_", generateFireCode());
 
         code.append("if (!run()) {" + _eol + "break;" + _eol + "}" + _eol + "}"
                 + _eol + "}" + _eol + _eol + splitFireCode[0] + _eol
@@ -333,6 +338,7 @@ public class StaticSchedulingDirector extends PortDirector {
      * @exception IllegalActionException If the variablesAsArrays parameter
      * cannot be read or if the buffer size of the port cannot be read.
      */
+    @Override
     public String generatePortName(TypedIOPort port)
             throws IllegalActionException {
 
@@ -372,6 +378,7 @@ public class StaticSchedulingDirector extends PortDirector {
      *   or if generating the preinitialize code for a adapter fails,
      *   or if there is a problem getting the buffer size of a port.
      */
+    @Override
     public String generatePreinitializeCode() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
         code.append(super.generatePreinitializeCode());
@@ -394,6 +401,7 @@ public class StaticSchedulingDirector extends PortDirector {
      *  @exception IllegalActionException If the adapter class for the model
      *   director cannot be found.
      */
+    @Override
     public String generateVariableDeclaration() throws IllegalActionException {
         StringBuffer variableDeclarations = new StringBuffer(
                 super.generateVariableDeclaration());
@@ -423,6 +431,7 @@ public class StaticSchedulingDirector extends PortDirector {
      *   violates type constraints, or if the result of evaluation is null
      *   and there are variables that depend on this one.
      */
+    @Override
     final public Boolean padBuffers() throws IllegalActionException {
         DecoratorAttributes decorators = getComponent().getDecoratorAttributes(
                 getCodeGenerator());
@@ -481,9 +490,10 @@ public class StaticSchedulingDirector extends PortDirector {
      * @exception IllegalActionException If the adapter throws it while
      *  generating the label.
      */
+    @Override
     protected String _getParameter(NamedProgramCodeGeneratorAdapter target,
             Attribute attribute, String[] channelAndOffset)
-            throws IllegalActionException {
+                    throws IllegalActionException {
         return "";
     }
 
@@ -531,6 +541,5 @@ public class StaticSchedulingDirector extends PortDirector {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
-
 
 }

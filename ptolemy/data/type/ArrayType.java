@@ -129,6 +129,7 @@ public class ArrayType extends StructuredType implements Cloneable {
      *  itself if it is a constant.
      *  @return An ArrayType.
      */
+    @Override
     public Object clone() {
         ArrayType newObj = new ArrayType(_declaredElementType);
         newObj._length = _length;
@@ -151,6 +152,7 @@ public class ArrayType extends StructuredType implements Cloneable {
      *  @exception IllegalActionException If lossless conversion
      *   cannot be done.
      */
+    @Override
     public Token convert(Token token) throws IllegalActionException {
         Type myElementType = getElementType();
         // Cannot convert to unknown element type.
@@ -220,6 +222,7 @@ public class ArrayType extends StructuredType implements Cloneable {
      *  has depth 3.
      *  @return the depth of a structured type.
      */
+    @Override
     public int depth() {
         int depth = 1;
         if (_elementType instanceof StructuredType) {
@@ -234,6 +237,7 @@ public class ArrayType extends StructuredType implements Cloneable {
      *  @return True if the argument represents the same ArrayType as
      *   this object; false otherwise.
      */
+    @Override
     public boolean equals(Object object) {
         if (!(object instanceof ArrayType)) {
             return false;
@@ -293,12 +297,14 @@ public class ArrayType extends StructuredType implements Cloneable {
     /** Return the class for tokens that this type represents.
      *  @return The class for tokens that this type represents.
      */
+    @Override
     public Class getTokenClass() {
         return ArrayToken.class;
     }
 
     /** Return a hash code value for this object.
      */
+    @Override
     public int hashCode() {
         return _elementType.hashCode() + 2917;
     }
@@ -315,6 +321,7 @@ public class ArrayType extends StructuredType implements Cloneable {
      *  represents either an abstract base class or an interface.
      *  @return true if the element type is abstract.
      */
+    @Override
     public boolean isAbstract() {
         return _elementType.isAbstract() || !hasKnownLength();
     }
@@ -323,6 +330,7 @@ public class ArrayType extends StructuredType implements Cloneable {
      *  type variable) to the specified type.
      *  @param t the type to set the leaf type variable to.
      */
+    @Override
     public void initialize(Type t) {
         try {
             if (!isConstant()) {
@@ -344,6 +352,7 @@ public class ArrayType extends StructuredType implements Cloneable {
      *  @return True if the argument is compatible with this type.
      *  @see ptolemy.data.type.ArrayType#convert
      */
+    @Override
     public boolean isCompatible(Type type) {
         ArrayType arrayType;
 
@@ -373,6 +382,7 @@ public class ArrayType extends StructuredType implements Cloneable {
      *  it does not contain BaseType.UNKNOWN in any level.
      *  @return True if this type is a constant.
      */
+    @Override
     public boolean isConstant() {
         return _declaredElementType.isConstant();
     }
@@ -382,6 +392,7 @@ public class ArrayType extends StructuredType implements Cloneable {
      *  instantiable.
      *  @return True if this type is instantiable.
      */
+    @Override
     public boolean isInstantiable() {
         return _elementType.isInstantiable();
     }
@@ -392,6 +403,7 @@ public class ArrayType extends StructuredType implements Cloneable {
      *  @return True if the argument is a substitution instance of this type.
      *  @see Type#isSubstitutionInstance
      */
+    @Override
     public boolean isSubstitutionInstance(Type type) {
         ArrayType arrayType;
         if (type instanceof ArrayType) {
@@ -444,6 +456,7 @@ public class ArrayType extends StructuredType implements Cloneable {
      *  {<i>type</i>}, where <i>type</i> is the element type.
      *  @return A String.
      */
+    @Override
     public String toString() {
         if (hasKnownLength()) {
             return "arrayType(" + getElementType().toString() + "," + _length
@@ -462,6 +475,7 @@ public class ArrayType extends StructuredType implements Cloneable {
      *  @exception IllegalActionException If the specified type is not an
      *   ArrayType or it does not have the same structure as this one.
      */
+    @Override
     public void updateType(StructuredType newType)
             throws IllegalActionException {
         super.updateType(newType);
@@ -493,7 +507,7 @@ public class ArrayType extends StructuredType implements Cloneable {
             // _declaredElementType is a StructuredType. _elementType
             // must also be.
             ((StructuredType) _elementType)
-                    .updateType((StructuredType) newElemType);
+            .updateType((StructuredType) newElemType);
         }
     }
 
@@ -551,6 +565,7 @@ public class ArrayType extends StructuredType implements Cloneable {
      *  @exception IllegalArgumentException If the specified type is
      *   not an ArrayType.
      */
+    @Override
     protected int _compare(StructuredType type) {
         if (!(type instanceof ArrayType)) {
             throw new IllegalArgumentException("ArrayType.compare: "
@@ -588,6 +603,7 @@ public class ArrayType extends StructuredType implements Cloneable {
     /** Return a static instance of ArrayType.
      *  @return an ArrayType.
      */
+    @Override
     protected StructuredType _getRepresentative() {
         return _representative;
     }
@@ -600,6 +616,7 @@ public class ArrayType extends StructuredType implements Cloneable {
      *  @exception IllegalArgumentException If the specified type is
      *   not an ArrayType.
      */
+    @Override
     protected StructuredType _greatestLowerBound(StructuredType type) {
         if (!(type instanceof ArrayType)) {
             throw new IllegalArgumentException("ArrayType.greatestLowerBound: "
@@ -633,6 +650,7 @@ public class ArrayType extends StructuredType implements Cloneable {
      *  @exception IllegalArgumentException If the specified type is
      *   not an ArrayType.
      */
+    @Override
     protected StructuredType _leastUpperBound(StructuredType type) {
         if (!(type instanceof ArrayType)) {
             throw new IllegalArgumentException("ArrayType.leastUpperBound: "
@@ -687,6 +705,7 @@ public class ArrayType extends StructuredType implements Cloneable {
          *  associated typeable.
          *  @return An ArrayType.
          */
+        @Override
         public Object getAssociatedObject() {
             return _arrayType;
         }
@@ -697,6 +716,7 @@ public class ArrayType extends StructuredType implements Cloneable {
          *  @exception IllegalActionException If the type of the
          *  associated typeable cannot be determined.
          */
+        @Override
         public Object getValue() throws IllegalActionException {
             return _arrayType;
         }
@@ -704,6 +724,7 @@ public class ArrayType extends StructuredType implements Cloneable {
         /** Return an array of size zero.
          *  @return An array of InequalityTerm.
          */
+        @Override
         public InequalityTerm[] getVariables() {
             return new InequalityTerm[0];
         }
@@ -713,6 +734,7 @@ public class ArrayType extends StructuredType implements Cloneable {
          *  @exception IllegalActionException If this type is a constant,
          *   or the argument is not a Type.
          */
+        @Override
         public void initialize(Object e) throws IllegalActionException {
             throw new IllegalActionException(
                     "ArrayType$ArraybottomTypeTerm.setValue: "
@@ -722,6 +744,7 @@ public class ArrayType extends StructuredType implements Cloneable {
         /** Return false.
          *  @return False.
          */
+        @Override
         public boolean isSettable() {
             return false;
         }
@@ -730,6 +753,7 @@ public class ArrayType extends StructuredType implements Cloneable {
          *  type of the associated typeable.
          *  @return True if the element type is acceptable.
          */
+        @Override
         public boolean isValueAcceptable() {
             return true;
         }
@@ -738,6 +762,7 @@ public class ArrayType extends StructuredType implements Cloneable {
          *  @param type a Type.
          *  @exception IllegalActionException Always
          */
+        @Override
         public void setValue(Object type) throws IllegalActionException {
             throw new IllegalActionException(
                     "ArrayType$ArrayBottomTypeTerm.setValue: "
@@ -748,6 +773,7 @@ public class ArrayType extends StructuredType implements Cloneable {
          *  type of the associated typeable.
          *  @return A String.
          */
+        @Override
         public String toString() {
             return _arrayType.toString();
         }
@@ -767,6 +793,7 @@ public class ArrayType extends StructuredType implements Cloneable {
         /** Return this ArrayType.
          *  @return an ArrayType.
          */
+        @Override
         public Object getAssociatedObject() {
             return ArrayType.this;
         }
@@ -774,6 +801,7 @@ public class ArrayType extends StructuredType implements Cloneable {
         /** Return the element type.
          *  @return a Type.
          */
+        @Override
         public Object getValue() {
             return _elementType;
         }
@@ -783,6 +811,7 @@ public class ArrayType extends StructuredType implements Cloneable {
          *  size zero.
          *  @return An array of InequalityTerm.
          */
+        @Override
         public InequalityTerm[] getVariables() {
             if (isSettable()) {
                 InequalityTerm[] variable = new InequalityTerm[1];
@@ -799,6 +828,7 @@ public class ArrayType extends StructuredType implements Cloneable {
          *  @exception IllegalActionException If this type is a constant,
          *   or the argument is not a Type.
          */
+        @Override
         public void initialize(Object e) throws IllegalActionException {
             if (isConstant()) {
                 throw new IllegalActionException(
@@ -823,6 +853,7 @@ public class ArrayType extends StructuredType implements Cloneable {
         /** Test if the element type is a type variable.
          *  @return True if the element type is a type variable.
          */
+        @Override
         public boolean isSettable() {
             return !_declaredElementType.isConstant();
         }
@@ -832,6 +863,7 @@ public class ArrayType extends StructuredType implements Cloneable {
          *  instantiable object.
          *  @return True if the element type is acceptable.
          */
+        @Override
         public boolean isValueAcceptable() {
             return _elementType.isInstantiable();
         }
@@ -841,11 +873,12 @@ public class ArrayType extends StructuredType implements Cloneable {
          *  @exception IllegalActionException If the specified type violates
          *   the declared type of the element.
          */
+        @Override
         public void setValue(Object e) throws IllegalActionException {
             if (!isSettable()) {
                 throw new IllegalActionException(
                         "ArrayType$ElementTypeTerm.setValue: This type " + e
-                                + " is not settable.");
+                        + " is not settable.");
             }
 
             if (!_declaredElementType.isSubstitutionInstance((Type) e)) {
@@ -876,6 +909,7 @@ public class ArrayType extends StructuredType implements Cloneable {
         /** Return a string representation of this term.
          *  @return A String.
          */
+        @Override
         public String toString() {
             return "(ArrayElementType(" + getAssociatedObject() + "), "
                     + getValue() + ")";
@@ -904,6 +938,7 @@ public class ArrayType extends StructuredType implements Cloneable {
         /** Return the associated typeable.
          *  @return A Typeable.
          */
+        @Override
         public Object getAssociatedObject() {
             return _typeable;
         }
@@ -913,6 +948,7 @@ public class ArrayType extends StructuredType implements Cloneable {
          *  @exception IllegalActionException If the type of the associated typeable
          *   cannot be determined.
          */
+        @Override
         public Object getValue() throws IllegalActionException {
             return _getArrayTypeRaw();
         }
@@ -920,6 +956,7 @@ public class ArrayType extends StructuredType implements Cloneable {
         /** Return an array of size zero.
          *  @return An array of InequalityTerm.
          */
+        @Override
         public InequalityTerm[] getVariables() {
             return new InequalityTerm[0];
         }
@@ -929,6 +966,7 @@ public class ArrayType extends StructuredType implements Cloneable {
          *  @exception IllegalActionException If this type is a constant,
          *   or the argument is not a Type.
          */
+        @Override
         public void initialize(Object e) throws IllegalActionException {
             throw new IllegalActionException(
                     "ArrayType$TypeableArrayTypeTerm.initialize: "
@@ -939,6 +977,7 @@ public class ArrayType extends StructuredType implements Cloneable {
         /** Return false.
          *  @return False.
          */
+        @Override
         public boolean isSettable() {
             return false;
         }
@@ -947,6 +986,7 @@ public class ArrayType extends StructuredType implements Cloneable {
          *  type of the associated typeable.
          *  @return True if the element type is acceptable.
          */
+        @Override
         public boolean isValueAcceptable() {
             ArrayType type = _getArrayType();
             return type.getElementTypeTerm().isValueAcceptable();
@@ -956,6 +996,7 @@ public class ArrayType extends StructuredType implements Cloneable {
          *  @param type a Type.
          *  @exception IllegalActionException Always
          */
+        @Override
         public void setValue(Object type) throws IllegalActionException {
             throw new IllegalActionException(
                     "ArrayType$TypeableArrayTypeTerm.setValue: "
@@ -967,6 +1008,7 @@ public class ArrayType extends StructuredType implements Cloneable {
          *  type of the associated typeable.
          *  @return A String.
          */
+        @Override
         public String toString() {
             try {
                 return "(TypeableArrayType(" + getAssociatedObject() + "), "
@@ -1036,6 +1078,7 @@ public class ArrayType extends StructuredType implements Cloneable {
         /** Delegate to the element type term of the associated typeable.
          *  @return an ArrayType.
          */
+        @Override
         public Object getAssociatedObject() {
             return _typeable;
         }
@@ -1044,6 +1087,7 @@ public class ArrayType extends StructuredType implements Cloneable {
          *  @return a Type.
          *  @exception IllegalActionException If the delegate throws it.
          */
+        @Override
         public Object getValue() throws IllegalActionException {
             InequalityTerm term = _getElementTypeTerm();
             if (term == null) {
@@ -1056,6 +1100,7 @@ public class ArrayType extends StructuredType implements Cloneable {
         /** Delegate to the element type term of the associated typeable.
          *  @return An array of InequalityTerm.
          */
+        @Override
         public InequalityTerm[] getVariables() {
             if (isSettable()) {
                 InequalityTerm[] variable = new InequalityTerm[1];
@@ -1070,6 +1115,7 @@ public class ArrayType extends StructuredType implements Cloneable {
          *  @param type A Type.
          *  @exception IllegalActionException If the delegate throws it.
          */
+        @Override
         public void initialize(Object type) throws IllegalActionException {
             InequalityTerm term = _getElementTypeTerm();
             if (term == null) {
@@ -1082,6 +1128,7 @@ public class ArrayType extends StructuredType implements Cloneable {
         /** Delegate to the element type term of the associated typeable.
          *  @return True if the element type is a type variable.
          */
+        @Override
         public boolean isSettable() {
             InequalityTerm term = _getElementTypeTerm();
             if (term == null) {
@@ -1094,6 +1141,7 @@ public class ArrayType extends StructuredType implements Cloneable {
         /** Delegate to the element type term of the associated typeable.
          *  @return True if the element type is acceptable.
          */
+        @Override
         public boolean isValueAcceptable() {
             InequalityTerm term = _getElementTypeTerm();
             if (term == null) {
@@ -1121,6 +1169,7 @@ public class ArrayType extends StructuredType implements Cloneable {
          *  @exception IllegalActionException If the specified type violates
          *   the declared type of the element.
          */
+        @Override
         public void setValue(Object type) throws IllegalActionException {
             InequalityTerm term = _getElementTypeTerm();
             if (term == null) {
@@ -1133,6 +1182,7 @@ public class ArrayType extends StructuredType implements Cloneable {
         /** Delegate to the element type term of the associated typeable.
          *  @return A String.
          */
+        @Override
         public String toString() {
             try {
                 return "(ArrayElementType(" + getAssociatedObject() + "), "
@@ -1194,6 +1244,7 @@ public class ArrayType extends StructuredType implements Cloneable {
         /** Return an array type with element types given by the associated typeable.
          *  @return An ArrayType.
          */
+        @Override
         public Object getAssociatedObject() {
             return _getArrayType();
         }
@@ -1203,6 +1254,7 @@ public class ArrayType extends StructuredType implements Cloneable {
          *  @exception IllegalActionException If the type of the associated typeable
          *   cannot be determined.
          */
+        @Override
         public Object getValue() throws IllegalActionException {
             return _getArrayTypeRaw();
         }
@@ -1210,6 +1262,7 @@ public class ArrayType extends StructuredType implements Cloneable {
         /** Return an array of size zero.
          *  @return An array of InequalityTerm.
          */
+        @Override
         public InequalityTerm[] getVariables() {
             return new InequalityTerm[0];
         }
@@ -1219,6 +1272,7 @@ public class ArrayType extends StructuredType implements Cloneable {
          *  @exception IllegalActionException If this type is a constant,
          *   or the argument is not a Type.
          */
+        @Override
         public void initialize(Object e) throws IllegalActionException {
             throw new IllegalActionException(
                     "ArrayType$TypeableArrayTypeTerm.initialize: "
@@ -1229,6 +1283,7 @@ public class ArrayType extends StructuredType implements Cloneable {
         /** Return false.
          *  @return False.
          */
+        @Override
         public boolean isSettable() {
             return false;
         }
@@ -1237,6 +1292,7 @@ public class ArrayType extends StructuredType implements Cloneable {
          *  type of the associated typeable.
          *  @return True if the element type is acceptable.
          */
+        @Override
         public boolean isValueAcceptable() {
             ArrayType type = _getArrayType();
             return type.getElementTypeTerm().isValueAcceptable();
@@ -1246,6 +1302,7 @@ public class ArrayType extends StructuredType implements Cloneable {
          *  @param type a Type.
          *  @exception IllegalActionException Always
          */
+        @Override
         public void setValue(Object type) throws IllegalActionException {
             throw new IllegalActionException(
                     "ArrayType$TypeableArrayTypeTerm.setValue: "
@@ -1257,6 +1314,7 @@ public class ArrayType extends StructuredType implements Cloneable {
          *  type of the associated typeable.
          *  @return A String.
          */
+        @Override
         public String toString() {
             return _getArrayType().toString();
         }

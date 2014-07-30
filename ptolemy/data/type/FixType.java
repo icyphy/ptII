@@ -79,6 +79,7 @@ public class FixType extends StructuredType implements Cloneable {
      *  @return A new type, or BaseType.GENERAL, if the operation does
      *  not make sense for the given types.
      */
+    @Override
     public Type add(Type rightArgumentType) {
         if (rightArgumentType instanceof FixType) {
             Precision rPrecision = ((FixType) rightArgumentType).getPrecision();
@@ -94,6 +95,7 @@ public class FixType extends StructuredType implements Cloneable {
     /** Return this, that is, return the reference to this object.
      *  @return A FixType.
      */
+    @Override
     public Object clone() {
         // FIXME: Note that we do not call super.clone() here.  Is that right?
         return this;
@@ -106,6 +108,7 @@ public class FixType extends StructuredType implements Cloneable {
      *  @exception IllegalActionException If lossless conversion cannot
      *   be done.
      */
+    @Override
     public Token convert(Token token) throws IllegalActionException {
         if (token.getType() instanceof FixType
                 && (_compare((FixType) token.getType()) == CPO.SAME || _compare((FixType) token
@@ -129,6 +132,7 @@ public class FixType extends StructuredType implements Cloneable {
      *  @return A new type, or BaseType.GENERAL, if the operation does
      *  not make sense for the given types.
      */
+    @Override
     public Type divide(Type rightArgumentType) {
         if (rightArgumentType instanceof FixType) {
             Precision rPrecision = ((FixType) rightArgumentType).getPrecision();
@@ -146,6 +150,7 @@ public class FixType extends StructuredType implements Cloneable {
      *  @param object A Type.
      *  @return Always return true
      */
+    @Override
     public boolean equals(Object object) {
         if (!(object instanceof FixType)) {
             return false;
@@ -168,6 +173,7 @@ public class FixType extends StructuredType implements Cloneable {
     /** Return the class for tokens that this type represents.
      *  @return The class representing ptolemy.data.token.FixToken.
      */
+    @Override
     public Class getTokenClass() {
         return FixToken.class;
     }
@@ -175,6 +181,7 @@ public class FixType extends StructuredType implements Cloneable {
     /** Return a hash code value for this object.
      *  @return The hash code for the token class of this type.
      */
+    @Override
     public int hashCode() {
         return getTokenClass().hashCode();
     }
@@ -183,6 +190,7 @@ public class FixType extends StructuredType implements Cloneable {
      *  specified type.
      *  @param type A Type.
      */
+    @Override
     public void initialize(Type type) {
         // Ignore... This type has no components that are unknown.
     }
@@ -194,6 +202,7 @@ public class FixType extends StructuredType implements Cloneable {
      *  true only for types which are not abstract.
      *  @return true.
      */
+    @Override
     public boolean isAbstract() {
         return !isInstantiable();
     }
@@ -206,6 +215,7 @@ public class FixType extends StructuredType implements Cloneable {
      *  @param type An instance of Type.
      *  @return True if the argument is compatible with this type.
      */
+    @Override
     public boolean isCompatible(Type type) {
         int typeInfo = TypeLattice.compare(this, type);
         return typeInfo == CPO.SAME || typeInfo == CPO.HIGHER;
@@ -215,6 +225,7 @@ public class FixType extends StructuredType implements Cloneable {
      *  does not contain BaseType.UNKNOWN in any level within it.
      *  @return False.
      */
+    @Override
     public boolean isConstant() {
         return true;
     }
@@ -223,6 +234,7 @@ public class FixType extends StructuredType implements Cloneable {
      *  classes.
      *  @return True if the precision of this fix type has any bits.
      */
+    @Override
     public boolean isInstantiable() {
         if (_precision.getNumberOfBits() == 0) {
             return false;
@@ -235,6 +247,7 @@ public class FixType extends StructuredType implements Cloneable {
      *  @param type A Type.
      *  @return False.
      */
+    @Override
     public boolean isSubstitutionInstance(Type type) {
         if (type instanceof StructuredType) {
             return ((StructuredType) type)._getRepresentative() == _getRepresentative();
@@ -250,6 +263,7 @@ public class FixType extends StructuredType implements Cloneable {
      *  @return A new type, or BaseType.GENERAL, if the operation does
      *  not make sense for the given types.
      */
+    @Override
     public Type modulo(Type rightArgumentType) {
         // FIXME...  deal with precisions correctly.
         return TypeLattice.leastUpperBound(this, rightArgumentType);
@@ -268,6 +282,7 @@ public class FixType extends StructuredType implements Cloneable {
      *  @return A new type, or BaseType.GENERAL, if the operation does
      *  not make sense for the given types.
      */
+    @Override
     public Type multiply(Type rightArgumentType) {
         if (rightArgumentType instanceof FixType) {
             Precision rPrecision = ((FixType) rightArgumentType).getPrecision();
@@ -285,6 +300,7 @@ public class FixType extends StructuredType implements Cloneable {
      *  @return A new type, or BaseType.GENERAL, if the operation does
      *  not make sense for the given types.
      */
+    @Override
     public Type one() {
         // FIXME...  deal with precisions correctly.
         return this;
@@ -297,6 +313,7 @@ public class FixType extends StructuredType implements Cloneable {
      *  @return A new type, or BaseType.GENERAL, if the operation does
      *  not make sense for the given types.
      */
+    @Override
     public Type subtract(Type rightArgumentType) {
         if (rightArgumentType instanceof FixType) {
             Precision rPrecision = ((FixType) rightArgumentType).getPrecision();
@@ -312,6 +329,7 @@ public class FixType extends StructuredType implements Cloneable {
     /** Return the string representation of this type.
      *  @return A String.
      */
+    @Override
     public String toString() {
         return "fixedpoint"
                 + _precision.toString(Precision.EXPRESSION_LANGUAGE);
@@ -325,6 +343,7 @@ public class FixType extends StructuredType implements Cloneable {
      *  @exception IllegalActionException If the specified type has a
      *   different structure.
      */
+    @Override
     public void updateType(StructuredType newType)
             throws IllegalActionException {
         super.updateType(newType);
@@ -339,6 +358,7 @@ public class FixType extends StructuredType implements Cloneable {
      *  @return A new type, or BaseType.GENERAL, if the operation does
      *  not make sense for the given types.
      */
+    @Override
     public Type zero() {
         // FIXME...  deal with precisions correctly.
         return this;
@@ -366,6 +386,7 @@ public class FixType extends StructuredType implements Cloneable {
      *  @exception IllegalArgumentException If the specified type is
      *   not the same structured type as this one.
      */
+    @Override
     protected int _compare(StructuredType type) {
         if (!(type instanceof FixType)) {
             throw new IllegalArgumentException("FixType._compare: "
@@ -423,6 +444,7 @@ public class FixType extends StructuredType implements Cloneable {
      *  value is used by TypeLattice to represent this type.
      *  @return a StructuredType.
      */
+    @Override
     protected StructuredType _getRepresentative() {
         return FixType.BOTTOM;
     }
@@ -435,6 +457,7 @@ public class FixType extends StructuredType implements Cloneable {
      *  @exception IllegalArgumentException If the specified type is
      *   not the same structured type as this one.
      */
+    @Override
     protected StructuredType _greatestLowerBound(StructuredType type) {
         if (!(type instanceof FixType)) {
             throw new IllegalArgumentException("FixType._greatestLowerBound: "
@@ -457,6 +480,7 @@ public class FixType extends StructuredType implements Cloneable {
      *  @exception IllegalArgumentException If the specified type is
      *   not the same structured type as this one.
      */
+    @Override
     protected StructuredType _leastUpperBound(StructuredType type) {
         if (!(type instanceof FixType)) {
             throw new IllegalArgumentException("FixType._greatestLowerBound: "

@@ -25,7 +25,7 @@
  PT_COPYRIGHT_VERSION_2
  COPYRIGHTENDKEY
 
-*/
+ */
 package ptolemy.actor.gt.controller;
 
 import java.io.IOException;
@@ -91,6 +91,7 @@ public class ModelParameter extends Parameter implements Initializable {
      *  @param initializable The object whose methods should be invoked.
      *  @see #removeInitializable(Initializable)
      */
+    @Override
     public void addInitializable(Initializable initializable) {
         if (_initializables == null) {
             _initializables = new LinkedList<Initializable>();
@@ -111,6 +112,7 @@ public class ModelParameter extends Parameter implements Initializable {
      *  @see java.lang.Object#clone()
      *  @return The cloned variable.
      */
+    @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         ModelParameter newObject = (ModelParameter) super.clone(workspace);
         newObject._model = null;
@@ -128,6 +130,7 @@ public class ModelParameter extends Parameter implements Initializable {
      *  @param name The name to use instead of the current name.
      *  @exception IOException If an I/O error occurs.
      */
+    @Override
     public void exportMoML(Writer output, int depth, String name)
             throws IOException {
         if (_isMoMLSuppressed(depth)) {
@@ -145,6 +148,7 @@ public class ModelParameter extends Parameter implements Initializable {
      *  @return An empty string.
      *  @see #setExpression(String)
      */
+    @Override
     public String getExpression() {
         return "";
     }
@@ -165,6 +169,7 @@ public class ModelParameter extends Parameter implements Initializable {
      *  @exception IllegalActionException If the ActorToken cannot be created.
      *  @see #setToken(Token)
      */
+    @Override
     public Token getToken() throws IllegalActionException {
         // FIXME: Coverity points out that this method should call
         // super.getToken().  In particular, isStringMode is not handled
@@ -199,6 +204,7 @@ public class ModelParameter extends Parameter implements Initializable {
      *  @exception IllegalActionException If thrown by other initializables
      *   associated to this parameter.
      */
+    @Override
     public void initialize() throws IllegalActionException {
         // Invoke initializable methods.
         if (_initializables != null) {
@@ -219,6 +225,7 @@ public class ModelParameter extends Parameter implements Initializable {
      *  @exception IllegalActionException If thrown by other initializables
      *   associated to this parameter.
      */
+    @Override
     public void preinitialize() throws IllegalActionException {
         setModel(null);
         // Invoke initializable methods.
@@ -237,6 +244,7 @@ public class ModelParameter extends Parameter implements Initializable {
      *  @param initializable The object whose methods should no longer be invoked.
      *  @see #addInitializable(Initializable)
      */
+    @Override
     public void removeInitializable(Initializable initializable) {
         if (_initializables != null) {
             _initializables.remove(initializable);
@@ -256,8 +264,9 @@ public class ModelParameter extends Parameter implements Initializable {
      *  @exception NameDuplicationException If the container already has
      *   an attribute with the name of this variable.
      */
+    @Override
     public void setContainer(NamedObj container) throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         NamedObj oldContainer = getContainer();
         if (oldContainer instanceof Initializable) {
             ((Initializable) oldContainer).removeInitializable(this);
@@ -273,6 +282,7 @@ public class ModelParameter extends Parameter implements Initializable {
      *  @param expression The new expression.
      *  @see #getExpression()
      */
+    @Override
     public void setExpression(String expression) {
     }
 
@@ -302,6 +312,7 @@ public class ModelParameter extends Parameter implements Initializable {
      *  @exception IllegalActionException If the token is not an ActorToken.
      *  @see #getToken()
      */
+    @Override
     public void setToken(Token token) throws IllegalActionException {
         // FIXME: Coverity points out that super.setToken() is not called.
         // In particular, setExpression() and validate() are not called here.
@@ -317,6 +328,7 @@ public class ModelParameter extends Parameter implements Initializable {
      *  @exception IllegalActionException If thrown by other initializables
      *   associated to this parameter.
      */
+    @Override
     public void wrapup() throws IllegalActionException {
         // Invoke initializable methods.
         if (_initializables != null) {

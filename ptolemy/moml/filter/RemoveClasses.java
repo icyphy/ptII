@@ -84,6 +84,7 @@ public class RemoveClasses extends MoMLFilterSimple {
      *  @param xmlFile The file currently being parsed.
      *  @return the filtered attributeValue.
      */
+    @Override
     public String filterAttributeValue(NamedObj container, String element,
             String attributeName, String attributeValue, String xmlFile) {
         // If the nightly build is failing with messages like:
@@ -110,6 +111,7 @@ public class RemoveClasses extends MoMLFilterSimple {
      *  @param xmlFile The file currently being parsed.
      *  @exception Exception Not thrown in this base class.
      */
+    @Override
     public void filterEndElement(NamedObj container, String elementName,
             StringBuffer currentCharData, String xmlFile) throws Exception {
     }
@@ -147,6 +149,7 @@ public class RemoveClasses extends MoMLFilterSimple {
     /** Return a string that describes what the filter does.
      *  @return the description of the filter that ends with a newline.
      */
+    @Override
     public String toString() {
         StringBuffer results = new StringBuffer(getClass().getName()
                 + ": Remove or replace classes.\n"

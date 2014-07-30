@@ -108,6 +108,7 @@ public class PetiteToken extends ScalarToken {
     /** Return the value in the token as a double.
      *  @return The value contained in this token as a double.
      */
+    @Override
     public double doubleValue() {
         return _value;
     }
@@ -125,6 +126,7 @@ public class PetiteToken extends ScalarToken {
      *  @return True if the argument is a PetiteToken with the
      *  same value.
      */
+    @Override
     public boolean equals(Object object) {
         if (object == null) {
             return false;
@@ -144,6 +146,7 @@ public class PetiteToken extends ScalarToken {
     /** Return the type of this token.
      *  @return BaseType.PETITE
      */
+    @Override
     public Type getType() {
         return BaseType.PETITE;
     }
@@ -152,6 +155,7 @@ public class PetiteToken extends ScalarToken {
      *  hash code of the contained double.
      *  @return A hash code value for this token.
      */
+    @Override
     public int hashCode() {
         return Double.valueOf(_value).hashCode();
     }
@@ -159,6 +163,7 @@ public class PetiteToken extends ScalarToken {
     /** Returns a PetiteToken with value nearest 1.0.......
      *  @return A PetiteToken with value nearest 1.0.
      */
+    @Override
     public Token one() {
         return ONE;
     }
@@ -178,6 +183,7 @@ public class PetiteToken extends ScalarToken {
      *   any) of this token.
      *  @see ptolemy.data.ScalarToken#unitsString
      */
+    @Override
     public String toString() {
         String unitString = "";
 
@@ -190,6 +196,7 @@ public class PetiteToken extends ScalarToken {
     /** Returns a PetiteToken with value 0.0.
      *  @return A PetiteToken with value 0.0.
      */
+    @Override
     public Token zero() {
         return ZERO;
     }
@@ -215,6 +222,7 @@ public class PetiteToken extends ScalarToken {
      *  It thus automatically converts -1 to (1 - Double.MIN_VALUE).
      *  @return An PetiteToken.
      */
+    @Override
     protected ScalarToken _absolute() {
         PetiteToken result;
 
@@ -237,6 +245,7 @@ public class PetiteToken extends ScalarToken {
      *  @param rightArgument The token to add to this token.
      *  @return A new PetiteToken containing the result.
      */
+    @Override
     protected ScalarToken _add(ScalarToken rightArgument) {
         double sum = _value + ((PetiteToken) rightArgument).doubleValue();
         return new PetiteToken(sum);
@@ -248,6 +257,7 @@ public class PetiteToken extends ScalarToken {
      *  @return The bitwise AND.
      *  @exception IllegalActionException Always thrown by this base class.
      */
+    @Override
     protected ScalarToken _bitwiseAnd(ScalarToken rightArgument)
             throws IllegalActionException {
         throw new IllegalActionException(notSupportedMessage("bitwiseAnd",
@@ -258,6 +268,7 @@ public class PetiteToken extends ScalarToken {
      *  @return The bitwise NOT of this token.
      *  @exception IllegalActionException Always thrown by this base class.
      */
+    @Override
     protected ScalarToken _bitwiseNot() throws IllegalActionException {
         throw new IllegalActionException(notSupportedMessage("bitwiseNot",
                 this, this));
@@ -269,6 +280,7 @@ public class PetiteToken extends ScalarToken {
      *  @return The bitwise OR.
      *  @exception IllegalActionException Always thrown by this base class.
      */
+    @Override
     protected ScalarToken _bitwiseOr(ScalarToken rightArgument)
             throws IllegalActionException {
         throw new IllegalActionException(notSupportedMessage("bitwiseOr", this,
@@ -281,6 +293,7 @@ public class PetiteToken extends ScalarToken {
      *  @return The bitwise XOR.
      *  @exception IllegalActionException Always thrown by this base class.
      */
+    @Override
     protected ScalarToken _bitwiseXor(ScalarToken rightArgument)
             throws IllegalActionException {
         throw new IllegalActionException(notSupportedMessage("bitwiseXor",
@@ -298,6 +311,7 @@ public class PetiteToken extends ScalarToken {
      *  @param divisor The token to divide this token by.
      *  @return A new PetiteToken containing the result.
      */
+    @Override
     protected ScalarToken _divide(ScalarToken divisor) {
         double quotient = _value / ((PetiteToken) divisor).doubleValue();
         return new PetiteToken(quotient);
@@ -314,6 +328,7 @@ public class PetiteToken extends ScalarToken {
      *  @return A token containing true if the value of this token is close
      *   to that of the argument.
      */
+    @Override
     protected BooleanToken _isCloseTo(ScalarToken rightArgument, double epsilon) {
         // NOTE: This code is duplicated in
         // ptolemy.math.DoubleMatrixMath.within(); if this
@@ -340,6 +355,7 @@ public class PetiteToken extends ScalarToken {
      *  supported by the derived class.
      *  @return A new Token containing the result.
      */
+    @Override
     protected BooleanToken _isLessThan(ScalarToken rightArgument)
             throws IllegalActionException {
         PetiteToken convertedArgument = (PetiteToken) rightArgument;
@@ -357,6 +373,7 @@ public class PetiteToken extends ScalarToken {
      *  @param rightArgument The token to modulo this token by.
      *  @return A new PetiteToken containing the result.
      */
+    @Override
     protected ScalarToken _modulo(ScalarToken rightArgument) {
         double remainder = _value % ((PetiteToken) rightArgument).doubleValue();
         return new PetiteToken(remainder);
@@ -372,6 +389,7 @@ public class PetiteToken extends ScalarToken {
      *  @param rightArgument The token to multiply this token by.
      *  @return A new PetiteToken containing the result.
      */
+    @Override
     protected ScalarToken _multiply(ScalarToken rightArgument) {
         double product = _value * ((PetiteToken) rightArgument).doubleValue();
         return new PetiteToken(product);
@@ -387,6 +405,7 @@ public class PetiteToken extends ScalarToken {
      *  @param rightArgument The token to subtract from this token.
      *  @return A new PetiteToken containing the result.
      */
+    @Override
     protected ScalarToken _subtract(ScalarToken rightArgument) {
         double difference = _value
                 - ((PetiteToken) rightArgument).doubleValue();

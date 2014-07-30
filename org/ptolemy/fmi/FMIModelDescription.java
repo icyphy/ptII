@@ -105,8 +105,8 @@ public class FMIModelDescription {
      *  co-simulation.
      */
     public boolean modelExchange;
-    
-    /** If true, then the FMU is intended for model exchange, 
+
+    /** If true, then the FMU is intended for model exchange,
      * with QSS integrator.
      */
     public boolean qssIntegration;
@@ -126,12 +126,11 @@ public class FMIModelDescription {
     /** The list of ScalarVariable elements. */
     public List<FMIScalarVariable> modelVariables = new LinkedList<FMIScalarVariable>();
 
-
     /** The list of continuous states. */
     public List<String> continuousStates = new LinkedList<String>();
 
-    /*  
-        *//** The list of Derivatives elements. */
+    /*
+     *//** The list of Derivatives elements. */
     /*
     public List<FMIModelDerivative> modelDerivatives = new LinkedList<FMIModelDerivative>();*/
 
@@ -163,26 +162,24 @@ public class FMIModelDescription {
     ////                         public methods                    ////
 
     /** Create the state vector.
-     *  This should only be called on fmis with a fmiVersion greater than 1.5.   
+     *  This should only be called on fmis with a fmiVersion greater than 1.5.
      */
     public void createStateVector() {
-        // Create the state vector. 
+        // Create the state vector.
         int count = 0;
         for (int i = 0; i < modelVariables.size(); i++) {
-            FMIScalarVariable scalar = modelVariables
-                .get(i);
+            FMIScalarVariable scalar = modelVariables.get(i);
             if (scalar.type instanceof FMIRealType
                     && ((FMIRealType) scalar.type).indexState > 0) {
                 _continuousStates.put(count, modelVariables
-                        .get(((FMIRealType)scalar.type).indexState - 1).name);
+                        .get(((FMIRealType) scalar.type).indexState - 1).name);
                 count++;
             }
         }
         // Store the state vector in a list.
         Iterator valueIterator = _continuousStates.values().iterator();
         while (valueIterator.hasNext()) {
-            continuousStates.add((String) valueIterator
-                    .next());
+            continuousStates.add((String) valueIterator.next());
         }
         numberOfContinuousStates = continuousStates.size();
     }
@@ -281,8 +278,8 @@ public class FMIModelDescription {
                     // We sometimes compile this with gcj, which is Java 1.5
                     IOException exception = new IOException(
                             "Failed to build \"" + sharedLibraryFile
-                                    + "\".\nThe build was:\n" + builder.buffer
-                                    + "\n" + message);
+                            + "\".\nThe build was:\n" + builder.buffer
+                            + "\n" + message);
                     exception.initCause(throwable2);
                     throw exception;
 
@@ -381,6 +378,7 @@ public class FMIModelDescription {
     /** Return the value of the FMI modelName element.
      *  @return The model name.
      */
+    @Override
     public String toString() {
         return modelName;
     }

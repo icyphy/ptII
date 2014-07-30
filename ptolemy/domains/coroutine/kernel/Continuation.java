@@ -25,7 +25,7 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 Ptolemy II includes the work of others, to see those copyrights, follow
 the copyright link on the splash page or see copyright.htm.
-*/
+ */
 
 package ptolemy.domains.coroutine.kernel;
 
@@ -53,7 +53,7 @@ public interface Continuation {
 
     public ControlExitToken controlEnterAt(
             ControlEntryToken.EntryLocation location)
-            throws IllegalActionException;
+                    throws IllegalActionException;
 
     /** Returns the set of exposed Entry Locations.
      *  Some internal entry locations may exist that are not exposed

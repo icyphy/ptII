@@ -133,6 +133,7 @@ public class LogicGate extends Transformer {
      *  @param attribute The attribute that changed.
      *  @exception IllegalActionException If the function is not recognized.
      */
+    @Override
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         if (attribute == logic) {
@@ -160,8 +161,8 @@ public class LogicGate extends Transformer {
             } else {
                 throw new IllegalActionException(this,
                         "Unrecognized logic function: " + functionName
-                                + ".  Valid functions are 'and', 'or', 'xor', "
-                                + "'nand', 'nor', and 'xnor'.");
+                        + ".  Valid functions are 'and', 'or', 'xor', "
+                        + "'nand', 'nor', and 'xnor'.");
             }
         } else {
             super.attributeChanged(attribute);
@@ -173,6 +174,7 @@ public class LogicGate extends Transformer {
      *  input on any channel, then produce no output.
      *  @exception IllegalActionException If there is no director.
      */
+    @Override
     public void fire() throws IllegalActionException {
         super.fire();
         BooleanToken value = null;

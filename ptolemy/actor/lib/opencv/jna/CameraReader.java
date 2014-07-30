@@ -23,7 +23,7 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
-*/
+ */
 
 package ptolemy.actor.lib.opencv.jna;
 
@@ -44,14 +44,14 @@ import com.sun.jna.ptr.PointerByReference;
 ////CameraReader
 
 /**
-* A simple actor starts a video capture process using
-* the Open Computer Vision (OpenCV) Library.
-* @author Tatsuaki Iwata, Edward A. Lee, Christopher Brooks
-* @version $Id$
-* @since Ptolemy II 8.1
-* @Pt.ProposedRating
-* @Pt.AcceptedRating
-*/
+ * A simple actor starts a video capture process using
+ * the Open Computer Vision (OpenCV) Library.
+ * @author Tatsuaki Iwata, Edward A. Lee, Christopher Brooks
+ * @version $Id$
+ * @since Ptolemy II 8.1
+ * @Pt.ProposedRating
+ * @Pt.AcceptedRating
+ */
 public class CameraReader extends Source {
     /** Construct an actor with the given container and name.
      *  In addition to invoking the base class constructors, construct
@@ -77,6 +77,7 @@ public class CameraReader extends Source {
     /** Output a frame.
      *  @exception IllegalActionException If thrown while writing to the port.
      */
+    @Override
     public void fire() throws IllegalActionException {
         _frame = cvQueryFrame(_capture);
         output.send(0, new ObjectToken(_frame));
@@ -85,6 +86,7 @@ public class CameraReader extends Source {
     /** Open the video capture device.
      *  @exception IllegalActionException If thrown by the super class.
      */
+    @Override
     public void initialize() throws IllegalActionException {
         super.initialize();
         _capture = cvCreateCameraCapture(0);
@@ -97,6 +99,7 @@ public class CameraReader extends Source {
     /** Stop the capture.
      *  @exception IllegalActionException If thrown by the super class.
      */
+    @Override
     public void wrapup() throws IllegalActionException {
         super.wrapup();
         cvReleaseCapture(new PointerByReference(_capture));

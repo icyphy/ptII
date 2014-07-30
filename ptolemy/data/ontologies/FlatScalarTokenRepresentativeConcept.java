@@ -49,7 +49,7 @@ import ptolemy.kernel.util.Settable;
  *  @Pt.AcceptedRating Red (blickly)
  */
 public class FlatScalarTokenRepresentativeConcept extends
-        FlatTokenRepresentativeConcept {
+FlatTokenRepresentativeConcept {
 
     /** Create a new FlatScalarTokenRepresentativeConcept with the specified
      *  name and ontology.
@@ -106,6 +106,7 @@ public class FlatScalarTokenRepresentativeConcept extends
      *  @exception IllegalActionException Thrown if the interval is invalid (the specified
      *   left endpoint is greater than the right endpoint, or vice versa).
      */
+    @Override
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         if (attribute.equals(leftEndPoint)) {
@@ -193,6 +194,7 @@ public class FlatScalarTokenRepresentativeConcept extends
      *  @exception IllegalActionException Thrown if a valid
      *   FlatScalarTokenInfiniteConcept cannot be created.
      */
+    @Override
     protected FlatScalarTokenInfiniteConcept _createInfiniteConceptInstance(
             String infiniteConceptString) throws IllegalActionException {
         return (FlatScalarTokenInfiniteConcept) super
@@ -208,6 +210,7 @@ public class FlatScalarTokenRepresentativeConcept extends
      *  @exception IllegalActionException Thrown if the FlatTokenInfiniteConcept
      *   cannot be created.
      */
+    @Override
     protected FlatScalarTokenInfiniteConcept _instantiateFlatTokenInfiniteConcept(
             Token tokenValue) throws IllegalActionException {
         if (tokenValue instanceof ScalarToken) {
@@ -238,7 +241,7 @@ public class FlatScalarTokenRepresentativeConcept extends
         if (value.isEqualTo(new DoubleToken(Double.POSITIVE_INFINITY))
                 .booleanValue()
                 || value.isEqualTo(new DoubleToken(Double.NEGATIVE_INFINITY))
-                        .booleanValue()) {
+                .booleanValue()) {
             return true;
         } else {
             return false;

@@ -222,6 +222,7 @@ public class DatagramWriter extends TypedAtomicActor {
      *  @param attribute The attribute that changed.
      *  @exception IllegalActionException If the socket cannot be created.
      */
+    @Override
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         if (attribute == localSocketNumber) {
@@ -276,6 +277,7 @@ public class DatagramWriter extends TypedAtomicActor {
      *  goes.  Any remote address/socket values supplied are saved and
      *  become the defaults for next time.
      */
+    @Override
     public void fire() throws IllegalActionException {
         super.fire();
         String address = null;
@@ -346,6 +348,7 @@ public class DatagramWriter extends TypedAtomicActor {
      *  address from the given address string (i.e. InetAddress.getByName()
      *  fails in the address lookup attempt.
      */
+    @Override
     public void initialize() throws IllegalActionException {
         super.initialize();
         _localSocketNumber = ((IntToken) localSocketNumber.getToken())
@@ -399,6 +402,7 @@ public class DatagramWriter extends TypedAtomicActor {
      *  the actor is deleted while the model is running, wrapup()
      *  would never get called.
      */
+    @Override
     public void setContainer(CompositeEntity container)
             throws IllegalActionException, NameDuplicationException {
         if (container != getContainer()) {
@@ -411,6 +415,7 @@ public class DatagramWriter extends TypedAtomicActor {
     /** Wrap up.  Free the socket, allowing the socket number to be reused.
      *  @exception IllegalActionException If the socket was already null.
      */
+    @Override
     public void wrapup() throws IllegalActionException {
         synchronized (this) {
             if (_socket != null) {
@@ -426,7 +431,7 @@ public class DatagramWriter extends TypedAtomicActor {
     private InetAddress _address;
 
     private int _remoteSocketNumber;
-    
+
     // The socket (& socket number) from which to transmit datagram packets.
     private DatagramSocket _socket;
 

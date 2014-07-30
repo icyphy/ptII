@@ -98,6 +98,7 @@ public class RelationController extends ParameterizedNodeController {
      *  file at any one time.
      *  @param configuration The configuration.
      */
+    @Override
     public void setConfiguration(Configuration configuration) {
         super.setConfiguration(configuration);
         _getDocumentationAction.setConfiguration(configuration);
@@ -125,6 +126,7 @@ public class RelationController extends ParameterizedNodeController {
          * @param node The node to render.
          * @return The persistent object that is drawn on the screen.
          */
+        @Override
         public Figure render(Object node) {
             // Default values.
             double height = 12.0;

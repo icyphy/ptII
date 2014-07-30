@@ -25,7 +25,7 @@ ENHANCEMENTS, OR MODIFICATIONS.
                                                 COPYRIGHTENDKEY
 
 
-*/
+ */
 
 package ptdb.kernel.bl.search;
 
@@ -102,17 +102,18 @@ public abstract class GraphSearcher extends AbstractSearcher {
      *         false - if the search criteria has not been set.
      */
 
+    @Override
     protected boolean _isSearchCriteriaSet() {
 
         if (_dbGraphSearchCriteria != null
                 && (_dbGraphSearchCriteria.getPortsList() != null
-                        && !_dbGraphSearchCriteria.getPortsList().isEmpty()
-                        || _dbGraphSearchCriteria.getComponentEntitiesList() != null
-                        && !_dbGraphSearchCriteria.getComponentEntitiesList()
-                                .isEmpty() || _dbGraphSearchCriteria
-                        .getCompositeEntities() != null
-                        && !_dbGraphSearchCriteria.getCompositeEntities()
-                                .isEmpty())) {
+                && !_dbGraphSearchCriteria.getPortsList().isEmpty()
+                || _dbGraphSearchCriteria.getComponentEntitiesList() != null
+                && !_dbGraphSearchCriteria.getComponentEntitiesList()
+                .isEmpty() || _dbGraphSearchCriteria
+                .getCompositeEntities() != null
+                && !_dbGraphSearchCriteria.getCompositeEntities()
+                .isEmpty())) {
             return true;
         }
 

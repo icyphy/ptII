@@ -83,7 +83,7 @@ public class LatticeOntologyAdapter extends OntologyAdapter {
      */
     public LatticeOntologyAdapter(LatticeOntologySolver solver,
             Object component, boolean useDefaultConstraints)
-            throws IllegalActionException {
+                    throws IllegalActionException {
 
         setComponent(component);
         _useDefaultConstraints = useDefaultConstraints;
@@ -126,6 +126,7 @@ public class LatticeOntologyAdapter extends OntologyAdapter {
      * Return the associated property solver.
      * @return The associated property solver.
      */
+    @Override
     public LatticeOntologySolver getSolver() {
         return (LatticeOntologySolver) _solver;
     }
@@ -150,6 +151,7 @@ public class LatticeOntologyAdapter extends OntologyAdapter {
      *  @exception IllegalActionException Thrown if
      *   {@link #getPropertyables()} throws it.
      */
+    @Override
     public void reinitialize() throws IllegalActionException {
         _ownConstraints = new LinkedList<Inequality>();
         _subAdapterConstraints = new LinkedList<Inequality>();
@@ -262,6 +264,7 @@ public class LatticeOntologyAdapter extends OntologyAdapter {
      *
      * @return a new ParseTreeConstraintAnnotationEvaluator object
      */
+    @Override
     protected ParseTreeAnnotationEvaluator _annotationEvaluator() {
         return new ParseTreeConstraintAnnotationEvaluator();
     }
@@ -410,6 +413,7 @@ public class LatticeOntologyAdapter extends OntologyAdapter {
      * @return The list of sub-adapters.
      * @exception IllegalActionException Not thrown in this base class.
      */
+    @Override
     protected List<OntologyAdapter> _getSubAdapters()
             throws IllegalActionException {
         LatticeOntologySolver solver = getSolver();

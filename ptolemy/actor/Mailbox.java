@@ -68,6 +68,7 @@ public class Mailbox extends AbstractReceiver {
      *  @exception IllegalActionException If a derived class throws it (not
      *   thrown in this base class).
      */
+    @Override
     public void clear() throws IllegalActionException {
         _token = null;
     }
@@ -76,6 +77,7 @@ public class Mailbox extends AbstractReceiver {
      *  an empty list if there is no such token.
      *  @return A list of instances of Token.
      */
+    @Override
     public List<Token> elementList() {
         List<Token> result = new LinkedList<Token>();
         if (_token != null) {
@@ -89,6 +91,7 @@ public class Mailbox extends AbstractReceiver {
      *  @return The token contained by this mailbox.
      *  @exception NoTokenException If this mailbox is empty.
      */
+    @Override
     public Token get() throws NoTokenException {
         if (_token == null) {
             throw new NoTokenException(getContainer(),
@@ -103,6 +106,7 @@ public class Mailbox extends AbstractReceiver {
     /** Return true if this mailbox is empty.
      *  @return True if this mailbox is empty.
      */
+    @Override
     public boolean hasRoom() {
         return _token == null;
     }
@@ -116,6 +120,7 @@ public class Mailbox extends AbstractReceiver {
      *   This is a runtime exception, so it does not need to be declared
      *   explicitly.
      */
+    @Override
     public boolean hasRoom(int numberOfTokens) throws IllegalArgumentException {
         if (numberOfTokens < 1) {
             throw new IllegalArgumentException(
@@ -132,6 +137,7 @@ public class Mailbox extends AbstractReceiver {
     /** Return true if this mailbox is not empty.
      *  @return True if this mailbox is not empty.
      */
+    @Override
     public boolean hasToken() {
         return _token != null;
     }
@@ -144,6 +150,7 @@ public class Mailbox extends AbstractReceiver {
      *   This is a runtime exception, so it does not need to be declared
      *   explicitly.
      */
+    @Override
     public boolean hasToken(int numberOfTokens) throws IllegalArgumentException {
         if (numberOfTokens < 1) {
             throw new IllegalArgumentException(
@@ -162,6 +169,7 @@ public class Mailbox extends AbstractReceiver {
      *  @param token The token to be put into the mailbox.
      *  @exception NoRoomException If this mailbox is not empty.
      */
+    @Override
     public void put(Token token) throws NoRoomException {
         if (_token != null) {
             throw new NoRoomException(getContainer(),

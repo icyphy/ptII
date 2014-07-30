@@ -63,7 +63,7 @@ public class TypedCompositeActor extends NamedProgramCodeGeneratorAdapter {
         NamedProgramCodeGeneratorAdapter directorAdapter = (NamedProgramCodeGeneratorAdapter) getCodeGenerator()
                 .getAdapter(
                         ((ptolemy.actor.CompositeActor) getComponent())
-                                .getDirector());
+                        .getDirector());
 
         code.append(directorAdapter.generateFireCode());
 
@@ -88,7 +88,7 @@ public class TypedCompositeActor extends NamedProgramCodeGeneratorAdapter {
         NamedProgramCodeGeneratorAdapter directorAdapter = (NamedProgramCodeGeneratorAdapter) getCodeGenerator()
                 .getAdapter(
                         ((ptolemy.actor.CompositeActor) getComponent())
-                                .getDirector());
+                        .getDirector());
 
         code.append(directorAdapter.generatePreinitializeCode());
 
@@ -114,7 +114,7 @@ public class TypedCompositeActor extends NamedProgramCodeGeneratorAdapter {
         NamedProgramCodeGeneratorAdapter directorAdapter = (NamedProgramCodeGeneratorAdapter) getCodeGenerator()
                 .getAdapter(
                         ((ptolemy.actor.CompositeActor) getComponent())
-                                .getDirector());
+                        .getDirector());
 
         code.append(directorAdapter.generatePreinitializeMethodBodyCode());
 
@@ -134,7 +134,7 @@ public class TypedCompositeActor extends NamedProgramCodeGeneratorAdapter {
         NamedProgramCodeGeneratorAdapter directorAdapter = (NamedProgramCodeGeneratorAdapter) getCodeGenerator()
                 .getAdapter(
                         ((ptolemy.actor.CompositeActor) getComponent())
-                                .getDirector());
+                        .getDirector());
 
         code.append(directorAdapter.generateInitializeCode());
 
@@ -148,7 +148,7 @@ public class TypedCompositeActor extends NamedProgramCodeGeneratorAdapter {
         NamedProgramCodeGeneratorAdapter directorAdapter = (NamedProgramCodeGeneratorAdapter) getCodeGenerator()
                 .getAdapter(
                         ((ptolemy.actor.CompositeActor) getComponent())
-                                .getDirector());
+                        .getDirector());
 
         code.append(directorAdapter.generateWrapupCode());
 
@@ -176,7 +176,7 @@ public class TypedCompositeActor extends NamedProgramCodeGeneratorAdapter {
         NamedProgramCodeGeneratorAdapter directorAdapter = (NamedProgramCodeGeneratorAdapter) getCodeGenerator()
                 .getAdapter(
                         ((ptolemy.actor.CompositeActor) getComponent())
-                                .getDirector());
+                        .getDirector());
         sharedCode.addAll(directorAdapter.getSharedCode());
 
         return sharedCode;

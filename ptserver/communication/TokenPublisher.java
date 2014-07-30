@@ -76,6 +76,7 @@ public class TokenPublisher {
         _executor = Executors.newSingleThreadScheduledExecutor();
         _publisherFuture = _executor.scheduleAtFixedRate(new Runnable() {
 
+            @Override
             public void run() {
                 try {
                     _sendBatch();
@@ -176,7 +177,7 @@ public class TokenPublisher {
     }
 
     private synchronized void _sendBatch() throws MqttNotConnectedException,
-            MqttPersistenceException, IllegalArgumentException, MqttException {
+    MqttPersistenceException, IllegalArgumentException, MqttException {
         if (_tokenCount > 0) {
             byte[] batch = _outputStream.toByteArray();
             _mqttClient.publish(getTopic(), batch,

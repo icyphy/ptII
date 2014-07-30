@@ -148,7 +148,7 @@ import ptolemy.util.MessageHandler;
 
 // FIXME: Have to do ports and relations.  Only done attributes and entities.
 public class EntityLibrary extends CompositeEntity implements LazyComposite,
-        Librariable {
+Librariable {
     /** Construct a library in the default workspace with no
      *  container and an empty string as its name. Add the library to the
      *  workspace directory.
@@ -221,6 +221,7 @@ public class EntityLibrary extends CompositeEntity implements LazyComposite,
      *  This method is read-synchronized on the workspace.
      *  @return An unmodifiable list of instances of Attribute.
      */
+    @Override
     public List attributeList() {
         populate();
         return super.attributeList();
@@ -235,6 +236,7 @@ public class EntityLibrary extends CompositeEntity implements LazyComposite,
      *  @param filter The class of attribute of interest.
      *  @return A list of instances of specified class.
      */
+    @Override
     public List attributeList(Class filter) {
         populate();
         return super.attributeList(filter);
@@ -250,6 +252,7 @@ public class EntityLibrary extends CompositeEntity implements LazyComposite,
      *   or if one of the attributes cannot be cloned.
      *  @return A new EntityLibrary.
      */
+    @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         // To prevent populating during cloning, we set a flag.
         _cloning = true;
@@ -275,6 +278,7 @@ public class EntityLibrary extends CompositeEntity implements LazyComposite,
      *  @param text Configuration information given as text, or null if
      *   none.
      */
+    @Override
     public void configure(URL base, String source, String text) {
         // NOTE: This may be called more than once, in which case we need
         // to accumulate the changes that are specified.
@@ -298,6 +302,7 @@ public class EntityLibrary extends CompositeEntity implements LazyComposite,
      *  This method is read-synchronized on the workspace.
      *  @return An unmodifiable list of ComponentEntity objects.
      */
+    @Override
     public List classDefinitionList() {
         populate();
         return super.classDefinitionList();
@@ -315,6 +320,7 @@ public class EntityLibrary extends CompositeEntity implements LazyComposite,
      *  @see ptolemy.kernel.CompositeEntity#isAtomic()
      *  @return True if this contains the argument, directly or indirectly.
      */
+    @Override
     public boolean deepContains(NamedObj inside) {
         // If this has not yet been populated, then it can't possibly contain
         // the proposed object because the proposed object would not
@@ -338,6 +344,7 @@ public class EntityLibrary extends CompositeEntity implements LazyComposite,
      *  This method is read-synchronized on the workspace.
      *  @return A list of opaque ComponentEntity objects.
      */
+    @Override
     public List deepEntityList() {
         populate();
         return super.deepEntityList();
@@ -354,6 +361,7 @@ public class EntityLibrary extends CompositeEntity implements LazyComposite,
      *  This method is read-synchronized on the workspace.
      *  @return An unmodifiable list of ComponentEntity objects.
      */
+    @Override
     public List entityList() {
         populate();
         return super.entityList();
@@ -368,6 +376,7 @@ public class EntityLibrary extends CompositeEntity implements LazyComposite,
      *  @param name The name of the desired attribute.
      *  @return The requested attribute if it is found, null otherwise.
      */
+    @Override
     public Attribute getAttribute(String name) {
         populate();
         return super.getAttribute(name);
@@ -384,6 +393,7 @@ public class EntityLibrary extends CompositeEntity implements LazyComposite,
      *  @param name The name of the desired entity.
      *  @return An entity with the specified name, or null if none exists.
      */
+    @Override
     public ComponentEntity getEntity(String name) {
         populate();
         return super.getEntity(name);
@@ -395,6 +405,7 @@ public class EntityLibrary extends CompositeEntity implements LazyComposite,
      *  no source has been used to configure this object, or null if no
      *  external source need be used to configure this object.
      */
+    @Override
     public String getConfigureSource() {
         return _configureSource;
     }
@@ -407,6 +418,7 @@ public class EntityLibrary extends CompositeEntity implements LazyComposite,
      *  has been used to configure this object, or null if no
      *  configuration string need be used to configure this object.
      */
+    @Override
     public String getConfigureText() {
         // This method gets called by MoMLParser upon encountering
         // </configure> as a protection against exceptions.
@@ -452,6 +464,7 @@ public class EntityLibrary extends CompositeEntity implements LazyComposite,
      *  @return An iterator over instances of NamedObj contained by this
      *   object.
      */
+    @Override
     public Iterator lazyContainedObjectsIterator() {
         boolean previous = _populating;
         try {
@@ -469,6 +482,7 @@ public class EntityLibrary extends CompositeEntity implements LazyComposite,
      *  This method is read-synchronized on the workspace.
      *  @return The number of entities.
      */
+    @Override
     public int numberOfEntities() {
         populate();
         return super.numberOfEntities();
@@ -484,6 +498,7 @@ public class EntityLibrary extends CompositeEntity implements LazyComposite,
      *  @exception InvalidStateException If the source cannot be read, or if
      *   an exception is thrown parsing its MoML data.
      */
+    @Override
     public void populate() throws InvalidStateException {
         if (_populating) {
             return;
@@ -569,6 +584,7 @@ public class EntityLibrary extends CompositeEntity implements LazyComposite,
      *  @param name The name of the attribute.
      *  @param text The text with which to configure the attribute.
      */
+    @Override
     protected void _attachText(String name, String text) {
         boolean previous = _populating;
         try {
@@ -588,6 +604,7 @@ public class EntityLibrary extends CompositeEntity implements LazyComposite,
      *  @param depth The depth in the hierarchy, to determine indenting.
      *  @exception IOException If an I/O error occurs.
      */
+    @Override
     protected void _exportMoMLContents(Writer output, int depth)
             throws IOException {
         output.write(_getIndentPrefix(depth) + "<configure>\n");

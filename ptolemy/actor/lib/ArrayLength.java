@@ -77,6 +77,7 @@ public class ArrayLength extends Transformer {
      *  @exception CloneNotSupportedException If a derived class contains
      *   an attribute that cannot be cloned.
      */
+    @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         ArrayLength newObject = (ArrayLength) super.clone(workspace);
 
@@ -91,6 +92,7 @@ public class ArrayLength extends Transformer {
      *  on the input, then no output is produced.
      *  @exception IllegalActionException If there is no director.
      */
+    @Override
     public void fire() throws IllegalActionException {
         super.fire();
         if (input.hasToken(0)) {

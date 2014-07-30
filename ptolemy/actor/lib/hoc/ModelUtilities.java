@@ -83,7 +83,7 @@ public class ModelUtilities {
      */
     public static synchronized RecordToken executeModel(URL url,
             RecordToken args, String[] resultLabels)
-            throws IllegalActionException {
+                    throws IllegalActionException {
         if (url != null) {
             MoMLParser parser = new MoMLParser();
             NamedObj model;
@@ -123,7 +123,7 @@ public class ModelUtilities {
      */
     public static synchronized RecordToken executeModel(CompositeActor model,
             RecordToken args, String[] resultLabels)
-            throws IllegalActionException {
+                    throws IllegalActionException {
         Manager manager = model.getManager();
 
         if (manager == null) {

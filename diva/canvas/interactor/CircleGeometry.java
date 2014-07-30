@@ -108,12 +108,14 @@ public class CircleGeometry implements Geometry {
     /** Get the figure to which this geometry object is attached.
      * Returns null if there isn't one.
      */
+    @Override
     public Figure getFigure() {
         return _parentFigure;
     }
 
     /** Get the current shape that defines this geometry
      */
+    @Override
     public Shape getShape() {
         return _rect;
     }
@@ -135,6 +137,7 @@ public class CircleGeometry implements Geometry {
      * The shape must be a Rectangle2D, or an exception
      * will be thrown.
      */
+    @Override
     public void setShape(Shape shape) {
         if (!(shape instanceof Rectangle2D)) {
             throw new IllegalArgumentException("Argument must be a Rectangle2D");
@@ -160,10 +163,12 @@ public class CircleGeometry implements Geometry {
             // Note: SwingConstants start at 1!
             int cursor = 0;
 
+            @Override
             public boolean hasNext() {
                 return cursor < _siteCount;
             }
 
+            @Override
             public Object next() throws NoSuchElementException {
                 if (!hasNext()) {
                     throw new NoSuchElementException("Can't get " + cursor
@@ -177,6 +182,7 @@ public class CircleGeometry implements Geometry {
                 return _sites[cursor++];
             }
 
+            @Override
             public void remove() {
                 throw new UnsupportedOperationException(
                         "Site cannot be removed");
@@ -186,6 +192,7 @@ public class CircleGeometry implements Geometry {
 
     /** Translate the geometry object
      */
+    @Override
     public void translate(double x, double y) {
         _rect.setFrame(_rect.getX() + x, _rect.getY() + y, _rect.getWidth(),
                 _rect.getHeight());
@@ -218,6 +225,7 @@ public class CircleGeometry implements Geometry {
 
         /** Get the ID of this site.
          */
+        @Override
         public int getID() {
             return _id;
         }
@@ -225,6 +233,7 @@ public class CircleGeometry implements Geometry {
         /** Get the figure to which this site is attached, or null
          * if it is not attached to a figure.
          */
+        @Override
         public Figure getFigure() {
             return _parentFigure;
         }
@@ -232,12 +241,14 @@ public class CircleGeometry implements Geometry {
         /** Get the angle of the normal to this site, in radians
          * between zero and 2pi.
          */
+        @Override
         public double getNormal() {
             return _normal;
         }
 
         /** Get the point location of the site.
          */
+        @Override
         public Point2D getPoint() {
             return new Point2D.Double(getX(), getY());
         }
@@ -245,6 +256,7 @@ public class CircleGeometry implements Geometry {
         /** Get the x-coordinate of the site, in the local
          * coordinates of the containing pane.
          */
+        @Override
         public double getX() {
             return _rect.getCenterX() + _offX;
         }
@@ -252,6 +264,7 @@ public class CircleGeometry implements Geometry {
         /** Get the y-coordinate of the site, in the local
          * coordinates of the containing pane.
          */
+        @Override
         public double getY() {
             return _rect.getCenterY() + _offY;
         }
@@ -259,6 +272,7 @@ public class CircleGeometry implements Geometry {
         /** Test if this site has a "normal" to it. Returns
          * true.
          */
+        @Override
         public boolean hasNormal() {
             return true;
         }
@@ -298,6 +312,7 @@ public class CircleGeometry implements Geometry {
 
         /** Test if this site has a normal in the given direction.
          */
+        @Override
         public boolean isNormal(int direction) {
             double theta1 = getAngle(direction);
             double theta2 = _normal < 0 ? _normal + 2 * Math.PI : _normal;
@@ -309,6 +324,7 @@ public class CircleGeometry implements Geometry {
          * where distances are in the local coordinates of the
          * containing pane.
          */
+        @Override
         public void translate(double dx, double dy) {
             if (Math.abs(_offX + dx) > _minSize) {
                 _offX = _offX + dx;

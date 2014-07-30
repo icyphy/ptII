@@ -142,6 +142,7 @@ public class IconFigure extends AbstractFigure {
      * whoever created the icon is assumed to check that the painted
      * objects are within bounds at creation time.
      */
+    @Override
     public Rectangle2D getBounds() {
         Rectangle2D bounds = (Rectangle2D) _background.getBounds().clone();
         bounds = ShapeUtilities.transformBounds(bounds, _transform);
@@ -170,6 +171,7 @@ public class IconFigure extends AbstractFigure {
     /** Get the shape of this figure. This is the shape of the background
      * figure.
      */
+    @Override
     public Shape getShape() {
         Shape s = ShapeUtilities.cloneShape(_background.getShape());
         return ShapeUtilities.transformModify(s, _transform);
@@ -183,6 +185,7 @@ public class IconFigure extends AbstractFigure {
 
     /** Test if this figure intersects the given rectangle.
      */
+    @Override
     public boolean intersects(Rectangle2D r) {
         boolean result = getShape().intersects(r);
         Iterator i = _terminals.iterator();
@@ -196,6 +199,7 @@ public class IconFigure extends AbstractFigure {
 
     /** Paint the icon.
      */
+    @Override
     public void paint(Graphics2D g) {
         if (!isVisible()) {
             return;
@@ -253,6 +257,7 @@ public class IconFigure extends AbstractFigure {
      * transforms the background figure and the graphic, but not
      * the label or the terminals.
      */
+    @Override
     public void transform(AffineTransform at) {
         repaint();
         _transform.preConcatenate(at);
@@ -266,6 +271,7 @@ public class IconFigure extends AbstractFigure {
 
     /** Translate the figure the given distance.
      */
+    @Override
     public void translate(double x, double y) {
         repaint();
         _transform.translate(x / _transform.getScaleX(),

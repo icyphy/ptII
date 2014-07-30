@@ -115,6 +115,7 @@ public class CompositeBuilder extends AbstractXmlBuilder {
     /** Build an object based on the XML element by looking up the
      * appropriate builder and calling that builder on the element.
      */
+    @Override
     public Object build(XmlElement elt, String type) throws Exception {
         String[] val = (String[]) _builders.get(type);
 
@@ -136,6 +137,7 @@ public class CompositeBuilder extends AbstractXmlBuilder {
      * the appropriate builder based on the object's class name
      * and calling that builder's generate method on the object.
      */
+    @Override
     public XmlElement generate(Object in) throws Exception {
         String[] val = (String[]) _builders.get(in.getClass().getName());
 
@@ -159,7 +161,7 @@ public class CompositeBuilder extends AbstractXmlBuilder {
     public static void main(String[] args) throws Exception {
         if (args.length != 2) {
             System.err
-                    .println("java CompositeBuilder <builderDeclsURI> <fileURI>");
+            .println("java CompositeBuilder <builderDeclsURI> <fileURI>");
             System.exit(1);
         } else {
             XmlDocument doc = new XmlDocument();

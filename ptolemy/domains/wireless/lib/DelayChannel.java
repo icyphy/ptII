@@ -112,6 +112,7 @@ public class DelayChannel extends ErasureChannel {
      *  @exception IllegalActionException If the change is not acceptable
      *   to this container.
      */
+    @Override
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         if (attribute == propagationSpeed) {
@@ -134,6 +135,7 @@ public class DelayChannel extends ErasureChannel {
      *  @exception CloneNotSupportedException Not thrown in this base class
      *  @return The new Attribute.
      */
+    @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         DelayChannel newObject = (DelayChannel) super.clone(workspace);
         newObject._receptions = null;
@@ -148,6 +150,7 @@ public class DelayChannel extends ErasureChannel {
      *  cannot be converted or the token attribute is null and the receiver
      *  attribute of the receptions does not support clear.
      */
+    @Override
     public void fire() throws IllegalActionException {
         super.fire();
 
@@ -199,9 +202,10 @@ public class DelayChannel extends ErasureChannel {
      *   or if the token argument is null and the destination receiver
      *   does not support clear.
      */
+    @Override
     protected void _transmitTo(Token token, WirelessIOPort sender,
             WirelessReceiver receiver, RecordToken properties)
-            throws IllegalActionException {
+                    throws IllegalActionException {
         double speed = ((DoubleToken) propagationSpeed.getToken())
                 .doubleValue();
 

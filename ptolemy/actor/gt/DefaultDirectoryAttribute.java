@@ -57,7 +57,7 @@ import ptolemy.kernel.util.ValueListener;
  @Pt.AcceptedRating Red (tfeng)
  */
 public class DefaultDirectoryAttribute extends StringParameter implements
-        ValueListener {
+ValueListener {
 
     /** Construct an attribute with the given name contained by the specified
      *  entity. The container argument must not be null, or a
@@ -129,8 +129,9 @@ public class DefaultDirectoryAttribute extends StringParameter implements
      *   an attribute with the name of this attribute.
      *  @see #getContainer()
      */
+    @Override
     public void setContainer(NamedObj container) throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         super.setContainer(container);
         if (container != null) {
             GTTools.checkContainerClass(this, container, Pattern.class, false);
@@ -142,6 +143,7 @@ public class DefaultDirectoryAttribute extends StringParameter implements
      *  the displayed string.
      *  @param settable The object that has changed value.
      */
+    @Override
     public void valueChanged(Settable settable) {
         String display = directory.getExpression() + "/";
         String filter = fileFilter.getExpression();

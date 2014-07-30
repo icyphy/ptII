@@ -122,6 +122,7 @@ import ptolemy.util.StringUtilities;
  @Pt.ProposedRating Green (eal)
  @Pt.AcceptedRating Yellow (cxh)
  */
+@Deprecated
 public class FileAttribute extends StringAttribute implements FileOrURLAccessor {
     /** Construct an attribute with the given name contained by the
      *  specified container. The container argument must not be null, or a
@@ -171,6 +172,7 @@ public class FileAttribute extends StringAttribute implements FileOrURLAccessor 
      *  @exception IllegalActionException If a parse error occurs
      *   reading the file name.
      */
+    @Override
     public File asFile() throws IllegalActionException {
         String name = _substituteSpecialStrings(getExpression());
 
@@ -193,6 +195,7 @@ public class FileAttribute extends StringAttribute implements FileOrURLAccessor 
      *  @exception IllegalActionException If the file cannot be read, or
      *   if the file cannot be represented as a URL (e.g. System.in).
      */
+    @Override
     public URL asURL() throws IllegalActionException {
         String name = _substituteSpecialStrings(getExpression());
 
@@ -262,6 +265,7 @@ public class FileAttribute extends StringAttribute implements FileOrURLAccessor 
      *  @exception CloneNotSupportedException If a derived class contains
      *   an attribute that cannot be cloned.
      */
+    @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         FileAttribute newObject = (FileAttribute) super.clone(workspace);
         newObject._baseDirectory = null;
@@ -277,6 +281,7 @@ public class FileAttribute extends StringAttribute implements FileOrURLAccessor 
      *  @exception IllegalActionException If the file or URL cannot be
      *   closed.
      */
+    @Override
     public void close() throws IllegalActionException {
         if (_reader != null) {
             if (_reader != FileUtilities.STD_IN) {
@@ -313,6 +318,7 @@ public class FileAttribute extends StringAttribute implements FileOrURLAccessor 
      *  @see #setBaseDirectory(URI)
      *  @see URIAttribute#getModelURI(NamedObj)
      */
+    @Override
     public URI getBaseDirectory() {
         if (_baseDirectory != null) {
             return _baseDirectory;
@@ -330,6 +336,7 @@ public class FileAttribute extends StringAttribute implements FileOrURLAccessor 
      *  @exception IllegalActionException If the file or URL cannot be
      *   opened.
      */
+    @Override
     public BufferedReader openForReading() throws IllegalActionException {
         try {
             _reader = FileUtilities.openForReading(getExpression(),
@@ -354,6 +361,7 @@ public class FileAttribute extends StringAttribute implements FileOrURLAccessor 
      *  @exception IllegalActionException If the file cannot be opened
      *   or created.
      */
+    @Override
     public Writer openForWriting() throws IllegalActionException {
         return openForWriting(false);
     }
@@ -374,6 +382,7 @@ public class FileAttribute extends StringAttribute implements FileOrURLAccessor 
      *  @exception IllegalActionException If the file cannot be opened
      *   or created.
      */
+    @Override
     public Writer openForWriting(boolean append) throws IllegalActionException {
         try {
             _writer = FileUtilities.openForWriting(getExpression(),
@@ -392,6 +401,7 @@ public class FileAttribute extends StringAttribute implements FileOrURLAccessor 
      *  @see #getBaseDirectory()
      *  @see URIAttribute#getModelURI(NamedObj)
      */
+    @Override
     public void setBaseDirectory(URI directory) {
         _baseDirectory = directory;
     }

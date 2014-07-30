@@ -152,20 +152,21 @@ public abstract class PtolemyFrame extends TableauFrame {
      *  as non-persistent, then a new effigy is not created.
      *  @return The effigy for the model, or null if none exists.
      */
+    @Override
     public Effigy getEffigy() {
         Effigy originalEffigy = super.getEffigy();
         if (originalEffigy instanceof PtolemyEffigy) {
             if (!getTableau().isMaster()
                     && !originalEffigy.masterEffigy().equals(
                             originalEffigy.topEffigy())
-                    // GT View can set the Effigy as non-persistent so
-                    // that the model can be run and the user is not
-                    // prompted to save the optimized version.  To
-                    // replicate, run $PTII/bin/vergil
-                    // ~/ptII/ptolemy/actor/gt/demo/ConstOptimization/ConstOptimization.xml
-                    // and then close the optimized model.  You should
-                    // not be prompted for save.
-                    && originalEffigy.isPersistent()) {
+                            // GT View can set the Effigy as non-persistent so
+                            // that the model can be run and the user is not
+                            // prompted to save the optimized version.  To
+                            // replicate, run $PTII/bin/vergil
+                            // ~/ptII/ptolemy/actor/gt/demo/ConstOptimization/ConstOptimization.xml
+                            // and then close the optimized model.  You should
+                            // not be prompted for save.
+                            && originalEffigy.isPersistent()) {
                 // The tableau is no longer the master, perhaps there
                 // was a deletion.  Hence, the original effigy should
                 // no longer be the associated effigy.
@@ -244,6 +245,7 @@ public abstract class PtolemyFrame extends TableauFrame {
      *  indicates that the user has canceled the action.
      *  @return False if the user cancels the clear.
      */
+    @Override
     protected boolean _clear() {
         if (super._clear()) {
             setModel(new CompositeEntity());
@@ -258,6 +260,7 @@ public abstract class PtolemyFrame extends TableauFrame {
      *  has cancelled the close operation.
      *  @return False if the user cancels on a save query.
      */
+    @Override
     protected boolean _close() {
         if (_debugClosing) {
             System.out.println("PtolemyFrame._close() : " + this.getName());
@@ -293,6 +296,7 @@ public abstract class PtolemyFrame extends TableauFrame {
      *  dispose() method of the superclass,
      *  {@link ptolemy.actor.gui.TableauFrame}.
      */
+    @Override
     public void dispose() {
         if (_debugClosing) {
             System.out.println("PtolemyFrame.dispose() : " + this.getName());
@@ -307,6 +311,7 @@ public abstract class PtolemyFrame extends TableauFrame {
      *  that the file or URL given by that attribute is opened.  Otherwise,
      *  a built-in generic help file is opened.
      */
+    @Override
     protected void _help() {
         try {
             FileParameter helpAttribute = (FileParameter) getModel()
@@ -323,6 +328,7 @@ public abstract class PtolemyFrame extends TableauFrame {
      *  it.  This overrides the base class to queue a change request to do
      *  the printing, because otherwise, printing will cause a deadlock.
      */
+    @Override
     protected void _print() {
         if (_model != null) {
             ChangeRequest request = new PrintChangeRequest(this, "Print");
@@ -344,6 +350,7 @@ public abstract class PtolemyFrame extends TableauFrame {
      *  we return from the parent _saveAs() method.
      *  @return True if the save succeeds.
      */
+    @Override
     protected boolean _saveAs() {
         if (_model != null) {
             // Use the name of the top level by default.
@@ -391,6 +398,7 @@ public abstract class PtolemyFrame extends TableauFrame {
 
      *  @return A file dialog for save as.
      */
+    @Override
     protected JFileChooser _saveAsJFileChooserComponent() {
         JFileChooser fileChooser = super._saveAsJFileChooserComponent();
 
@@ -411,6 +419,7 @@ public abstract class PtolemyFrame extends TableauFrame {
 
      *  @return A file dialog for save as.
      */
+    @Override
     protected FileDialog _saveAsFileDialogComponent() {
         FileDialog fileDialog = super._saveAsFileDialogComponent();
 
@@ -444,6 +453,7 @@ public abstract class PtolemyFrame extends TableauFrame {
      *  @param file The file to write to.
      *  @exception IOException If the write fails.
      */
+    @Override
     protected void _writeFile(File file) throws IOException {
         Tableau tableau = getTableau();
 
@@ -500,6 +510,7 @@ public abstract class PtolemyFrame extends TableauFrame {
             super(source, description);
         }
 
+        @Override
         protected void _execute() throws Exception {
             PtolemyFrame.super._print();
         }

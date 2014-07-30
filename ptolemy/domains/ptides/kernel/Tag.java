@@ -73,6 +73,7 @@ public class Tag implements Comparable {
      *  @return The result of the comparison, which is a lexicographical order
      *  with the timestamp as the first element and microstep as the second.
      */
+    @Override
     public int compareTo(Object other) {
         Tag tag2 = (Tag) other;
         // Call compareTo() only once for performance reasons.
@@ -81,7 +82,7 @@ public class Tag implements Comparable {
         // against -1 or 1.
         if (compareToResult > 0) {
             return 1;
-        } else if (compareToResult  < 0) {
+        } else if (compareToResult < 0) {
             return -1;
         } else {
             if (microstep > tag2.microstep) {
@@ -98,6 +99,7 @@ public class Tag implements Comparable {
      *  @param arg0 The object checking against.
      *  @return true if the tags are equal.
      */
+    @Override
     public boolean equals(Object arg0) {
         if (!(arg0 instanceof Tag)) {
             return false;
@@ -108,6 +110,7 @@ public class Tag implements Comparable {
     /** Hashcode for this class.
      *  @return hashcode for this class.
      */
+    @Override
     public int hashCode() {
         return timestamp.hashCode() >>> microstep;
     }
@@ -115,6 +118,7 @@ public class Tag implements Comparable {
     /** Return a string representation of this class.
      *  @return a string representation of this class.
      */
+    @Override
     public String toString() {
         return "timestamp = " + timestamp.getDoubleValue() + ", microstep = "
                 + microstep;

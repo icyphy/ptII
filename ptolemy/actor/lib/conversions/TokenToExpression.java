@@ -88,6 +88,7 @@ public class TokenToExpression extends Converter {
      *  this actor outputs a string "absent".
      *  @exception IllegalActionException If there's no director.
      */
+    @Override
     public void fire() throws IllegalActionException {
         super.fire();
         if (input.hasToken(0)) {

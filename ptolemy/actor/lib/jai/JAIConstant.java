@@ -114,6 +114,7 @@ public class JAIConstant extends Source {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
+    @Override
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         if (attribute == bandValues) {
@@ -150,12 +151,14 @@ public class JAIConstant extends Source {
      *  @exception CloneNotSupportedException If a derived class contains
      *  an attribute that cannot be cloned.
      */
+    @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         JAIConstant newObject = (JAIConstant) super.clone(workspace);
         newObject._values = null;
         return newObject;
     }
 
+    @Override
     public void fire() throws IllegalActionException {
         super.fire();
 

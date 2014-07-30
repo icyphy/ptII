@@ -48,7 +48,7 @@ but the port must be a PthalesIOPort, because of the ArrayOL parameters.
 @since Ptolemy II 10.0
 @Pt.ProposedRating Red (daib)
 @Pt.AcceptedRating Red (daib)
-*/
+ */
 
 public class PthalesWrapperCompositeActor extends TypedCompositeActor {
 
@@ -110,6 +110,7 @@ public class PthalesWrapperCompositeActor extends TypedCompositeActor {
      *  @exception IllegalActionException If there is no local director.
      *  @return A new object implementing the Receiver interface.
      */
+    @Override
     public Receiver newInsideReceiver() throws IllegalActionException {
         return new SDFReceiver();
     }

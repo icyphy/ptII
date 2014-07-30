@@ -47,7 +47,7 @@ import ptserver.data.TokenParser;
  *  @Pt.AcceptedRating Red (ishwinde)
  */
 public class ComplexMatrixTokenHandler implements
-        TokenHandler<ComplexMatrixToken> {
+TokenHandler<ComplexMatrixToken> {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -59,6 +59,7 @@ public class ComplexMatrixTokenHandler implements
      *  @exception IllegalActionException Not thrown in this class.
      *  @see ptserver.data.handler.TokenHandler#convertToBytes(ptolemy.data.Token, java.io.DataOutputStream)
      */
+    @Override
     public void convertToBytes(ComplexMatrixToken token,
             DataOutputStream outputStream) throws IOException,
             IllegalActionException {
@@ -84,6 +85,7 @@ public class ComplexMatrixTokenHandler implements
      *  @exception IllegalActionException Not thrown in this class.
      *  @see ptserver.data.handler.TokenHandler#convertToToken(java.io.DataInputStream, Class)
      */
+    @Override
     public ComplexMatrixToken convertToToken(DataInputStream inputStream,
             Class<? extends ComplexMatrixToken> tokenType) throws IOException,
             IllegalActionException {

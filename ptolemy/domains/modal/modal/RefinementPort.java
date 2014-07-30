@@ -90,24 +90,25 @@ public class RefinementPort extends ModalBasePort {
      *   a port already in the container.
      */
     public RefinementPort(Workspace workspace) throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         super(workspace);
         _checkWhetherMirrorIsInput();
         _init();
     }
-    
+
     /** React to attribute changes.
      */
     @Override
     public void attributeChanged(Attribute attribute)
-                    throws IllegalActionException {
-            if (attribute == defaultValue) {
-                    IOPort mirrorPort = _getMirrorPort();
-                    if (mirrorPort != null) {
-                            mirrorPort.defaultValue.setExpression(defaultValue.getExpression());
-                    }
-            } 
-            super.attributeChanged(attribute);
+            throws IllegalActionException {
+        if (attribute == defaultValue) {
+            IOPort mirrorPort = _getMirrorPort();
+            if (mirrorPort != null) {
+                mirrorPort.defaultValue.setExpression(defaultValue
+                        .getExpression());
+            }
+        }
+        super.attributeChanged(attribute);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -118,6 +119,7 @@ public class RefinementPort extends ModalBasePort {
      *  @return True if this port does not have any inside links,
      *   or the super class method returns true.
      */
+    @Override
     public boolean isTypeAcceptable() {
         if (numInsideLinks() == 0) {
             return true;
@@ -128,6 +130,7 @@ public class RefinementPort extends ModalBasePort {
 
     /** Set the connected relation to a bus if this port is a multiport.
      */
+    @Override
     public void link(Relation relation) throws IllegalActionException {
         super.link(relation);
 
@@ -146,6 +149,7 @@ public class RefinementPort extends ModalBasePort {
      *  @exception IllegalActionException If this object has
      *   no container.
      */
+    @Override
     public int moveDown() throws IllegalActionException {
         boolean disableStatus = _mirrorDisable;
 
@@ -201,6 +205,7 @@ public class RefinementPort extends ModalBasePort {
      *  @exception IllegalActionException If this object has
      *   no container.
      */
+    @Override
     public int moveToFirst() throws IllegalActionException {
         boolean disableStatus = _mirrorDisable;
 
@@ -258,6 +263,7 @@ public class RefinementPort extends ModalBasePort {
      *  @exception IllegalActionException If this object has
      *   no container or if the index is out of bounds.
      */
+    @Override
     public int moveToIndex(int index) throws IllegalActionException {
         boolean disableStatus = _mirrorDisable;
 
@@ -313,6 +319,7 @@ public class RefinementPort extends ModalBasePort {
      *  @exception IllegalActionException If this object has
      *   no container.
      */
+    @Override
     public int moveToLast() throws IllegalActionException {
         boolean disableStatus = _mirrorDisable;
 
@@ -365,6 +372,7 @@ public class RefinementPort extends ModalBasePort {
      *  @exception IllegalActionException If this object has
      *   no container.
      */
+    @Override
     public int moveUp() throws IllegalActionException {
         boolean disableStatus = _mirrorDisable;
 
@@ -421,8 +429,9 @@ public class RefinementPort extends ModalBasePort {
      *  @exception NameDuplicationException If the container already has
      *   a port with the name of this port.
      */
+    @Override
     public void setContainer(Entity container) throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         NamedObj oldContainer = getContainer();
 
         if (container == oldContainer) {
@@ -485,6 +494,7 @@ public class RefinementPort extends ModalBasePort {
      *  @exception IllegalActionException If changing the port status is
      *   not permitted.
      */
+    @Override
     public void setInput(boolean isInput) throws IllegalActionException {
         boolean disableStatus = _mirrorDisable;
 
@@ -544,6 +554,7 @@ public class RefinementPort extends ModalBasePort {
      *  @exception IllegalActionException If changing the port status is
      *   not permitted.
      */
+    @Override
     public void setMultiport(boolean isMultiport) throws IllegalActionException {
         boolean disableStatus = _mirrorDisable;
 
@@ -590,8 +601,9 @@ public class RefinementPort extends ModalBasePort {
      *  @exception NameDuplicationException If there is already a port
      *   with the same name in the container.
      */
+    @Override
     public void setName(String name) throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         boolean disableStatus = _mirrorDisable;
 
         try {
@@ -645,6 +657,7 @@ public class RefinementPort extends ModalBasePort {
      *  @exception IllegalActionException If changing the port status is
      *   not permitted.
      */
+    @Override
     public void setOutput(boolean isOutput) throws IllegalActionException {
         boolean disableStatus = _mirrorDisable;
 
@@ -688,6 +701,7 @@ public class RefinementPort extends ModalBasePort {
      *  @return A set of inequalities.
      *  @see ptolemy.graph.Inequality
      */
+    @Override
     public Set<Inequality> typeConstraints() {
         Nameable container = getContainer();
         if (container != null) {
@@ -721,6 +735,7 @@ public class RefinementPort extends ModalBasePort {
      *  @exception IllegalActionException If the proposed container is not a
      *   TypedActor, or if the base class throws it.
      */
+    @Override
     protected void _checkContainer(Entity container)
             throws IllegalActionException {
         // This is copied from TypedIOPort because the parent class of
@@ -776,9 +791,9 @@ public class RefinementPort extends ModalBasePort {
             }
         }
     }
-    
+
     private ModalPort _getMirrorPort() {
-            Nameable container = getContainer();
+        Nameable container = getContainer();
 
         if (container != null) {
             Nameable modal = container.getContainer();
@@ -791,9 +806,10 @@ public class RefinementPort extends ModalBasePort {
         }
         return null;
     }
-    
-    private void _init() throws IllegalActionException, NameDuplicationException {
-            // Need to check whether there is a containing ModalModel,
+
+    private void _init() throws IllegalActionException,
+            NameDuplicationException {
+        // Need to check whether there is a containing ModalModel,
         // and whether its mirror port is also an input.
         Nameable container = getContainer();
 
@@ -804,7 +820,8 @@ public class RefinementPort extends ModalBasePort {
                 Port port = ((ModalModel) modal).getPort(getName());
 
                 if (port instanceof ModalPort) {
-                        defaultValue.setExpression(((ModalPort)port).defaultValue.getExpression());
+                    defaultValue.setExpression(((ModalPort) port).defaultValue
+                            .getExpression());
                 }
             }
         }

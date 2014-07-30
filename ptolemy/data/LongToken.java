@@ -137,7 +137,7 @@ public class LongToken extends ScalarToken {
             LongToken result = new LongToken(intToken.longValue());
             if (intToken._unitCategoryExponents != null
                     && !UnitUtilities
-                            .isUnitless(intToken._unitCategoryExponents)) {
+                    .isUnitless(intToken._unitCategoryExponents)) {
                 result._unitCategoryExponents = intToken
                         ._copyOfCategoryExponents();
             }
@@ -155,6 +155,7 @@ public class LongToken extends ScalarToken {
      *  value. If either this object or the argument is a nil Token, return
      *  false.
      */
+    @Override
     public boolean equals(Object object) {
         if (object == null) {
             return false;
@@ -178,6 +179,7 @@ public class LongToken extends ScalarToken {
     /** Return the type of this token.
      *  @return BaseType.LONG_MATRIX
      */
+    @Override
     public Type getType() {
         return BaseType.LONG;
     }
@@ -186,6 +188,7 @@ public class LongToken extends ScalarToken {
      *  value of this token, casted to integer.
      *  @return A hash code value for this token.
      */
+    @Override
     public int hashCode() {
         return (int) _value;
     }
@@ -194,6 +197,7 @@ public class LongToken extends ScalarToken {
      *  Nil or missing tokens occur when a data source is sparsely populated.
      *  @return True if the token is the {@link #NIL} token.
      */
+    @Override
     public boolean isNil() {
         // We use a method here so that we can easily change how
         // we determine if a token is nil without modify lots of classes.
@@ -208,6 +212,7 @@ public class LongToken extends ScalarToken {
      *  @return The left shift.
      *  If this token is nil, then {@link #NIL} is returned.
      */
+    @Override
     public ScalarToken leftShift(int bits) {
         if (isNil()) {
             return IntToken.NIL;
@@ -224,6 +229,7 @@ public class LongToken extends ScalarToken {
      *  @return The logical right shift.
      *  If this token is nil, then {@link #NIL} is returned.
      */
+    @Override
     public ScalarToken logicalRightShift(int bits) {
         if (isNil()) {
             return IntToken.NIL;
@@ -233,6 +239,7 @@ public class LongToken extends ScalarToken {
 
     /** Return the value in the token as a long.
      */
+    @Override
     public long longValue() {
         return _value;
     }
@@ -240,6 +247,7 @@ public class LongToken extends ScalarToken {
     /** Returns a LongToken with value 1.
      *  @return A LongToken with value 1.
      */
+    @Override
     public Token one() {
         return ONE;
     }
@@ -252,6 +260,7 @@ public class LongToken extends ScalarToken {
      *  @return The right shift.
      *  If this token is nil, then {@link #NIL} is returned.
      */
+    @Override
     public ScalarToken rightShift(int bits) {
         if (isNil()) {
             return IntToken.NIL;
@@ -263,6 +272,7 @@ public class LongToken extends ScalarToken {
      *  by the expression language to recover a token with the same value.
      *  @return A String formed using java.lang.Long.toString().
      */
+    @Override
     public String toString() {
         String unitString = "";
 
@@ -299,6 +309,7 @@ public class LongToken extends ScalarToken {
     /** Returns a LongToken with value 0.
      *  @return A LongToken with value 0.
      */
+    @Override
     public Token zero() {
         return ZERO;
     }
@@ -331,6 +342,7 @@ public class LongToken extends ScalarToken {
      *  token, since the units are the same.
      *  @return An LongToken.
      */
+    @Override
     protected ScalarToken _absolute() {
         LongToken result;
 
@@ -349,6 +361,7 @@ public class LongToken extends ScalarToken {
      *  @param rightArgument The token to add to this token.
      *  @return A new LongToken containing the result.
      */
+    @Override
     protected ScalarToken _add(ScalarToken rightArgument) {
         long sum = _value + ((LongToken) rightArgument).longValue();
         return new LongToken(sum);
@@ -360,6 +373,7 @@ public class LongToken extends ScalarToken {
      *  @param rightArgument The LongToken to bitwise AND with this one.
      *  @return The bitwise AND.
      */
+    @Override
     protected ScalarToken _bitwiseAnd(ScalarToken rightArgument) {
         long sum = _value & ((LongToken) rightArgument).longValue();
         return new LongToken(sum);
@@ -369,6 +383,7 @@ public class LongToken extends ScalarToken {
      *  is assumed that the type of the argument is an LongToken.
      *  @return The bitwise NOT of this token.
      */
+    @Override
     protected ScalarToken _bitwiseNot() {
         LongToken result = new LongToken(~_value);
         return result;
@@ -380,6 +395,7 @@ public class LongToken extends ScalarToken {
      *  @param rightArgument The LongToken to bitwise OR with this one.
      *  @return The bitwise OR.
      */
+    @Override
     protected ScalarToken _bitwiseOr(ScalarToken rightArgument) {
         long sum = _value | ((LongToken) rightArgument).longValue();
         return new LongToken(sum);
@@ -391,6 +407,7 @@ public class LongToken extends ScalarToken {
      *  @param rightArgument The LongToken to bitwise XOR with this one.
      *  @return The bitwise XOR.
      */
+    @Override
     protected ScalarToken _bitwiseXor(ScalarToken rightArgument) {
         long sum = _value ^ ((LongToken) rightArgument).longValue();
         return new LongToken(sum);
@@ -402,6 +419,7 @@ public class LongToken extends ScalarToken {
      *  @param rightArgument The token to divide this token by.
      *  @return A new LongToken containing the result.
      */
+    @Override
     protected ScalarToken _divide(ScalarToken rightArgument) {
         long quotient = _value / ((LongToken) rightArgument).longValue();
         return new LongToken(quotient);
@@ -416,6 +434,7 @@ public class LongToken extends ScalarToken {
      *  @return A token containing true if the value of the first
      *   argument is close to the value of this token.
      */
+    @Override
     protected BooleanToken _isCloseTo(ScalarToken rightArgument, double epsilon) {
         // NOTE: This code is duplicated in
         // ptolemy.math.LongMatrixMath.within(); if this
@@ -439,6 +458,7 @@ public class LongToken extends ScalarToken {
      *  supported by the derived class.
      *  @return A new Token containing the result.
      */
+    @Override
     protected BooleanToken _isLessThan(ScalarToken rightArgument)
             throws IllegalActionException {
         LongToken convertedArgument = (LongToken) rightArgument;
@@ -451,6 +471,7 @@ public class LongToken extends ScalarToken {
      *  @param rightArgument The token to modulo this token by.
      *  @return A new LongToken containing the result.
      */
+    @Override
     protected ScalarToken _modulo(ScalarToken rightArgument) {
         long remainder = _value % ((LongToken) rightArgument).longValue();
         return new LongToken(remainder);
@@ -462,6 +483,7 @@ public class LongToken extends ScalarToken {
      *  @param rightArgument The token to multiply this token by.
      *  @return A new LongToken containing the result.
      */
+    @Override
     protected ScalarToken _multiply(ScalarToken rightArgument) {
         long product = _value * ((LongToken) rightArgument).longValue();
         return new LongToken(product);
@@ -473,6 +495,7 @@ public class LongToken extends ScalarToken {
      *  @param rightArgument The token to subtract from this token.
      *  @return A new LongToken containing the result.
      */
+    @Override
     protected ScalarToken _subtract(ScalarToken rightArgument) {
         long difference = _value - ((LongToken) rightArgument).longValue();
         return new LongToken(difference);

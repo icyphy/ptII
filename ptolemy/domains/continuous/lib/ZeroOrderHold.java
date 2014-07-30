@@ -105,6 +105,7 @@ public class ZeroOrderHold extends Transformer {
      *  call.
      *  @exception IllegalActionException If the token cannot be sent.
      */
+    @Override
     public void fire() throws IllegalActionException {
         super.fire();
 
@@ -137,6 +138,7 @@ public class ZeroOrderHold extends Transformer {
      *  a Double Token with the value specified by the defaultValue parameter.
      *  @exception IllegalActionException If thrown by the super class.
      */
+    @Override
     public void initialize() throws IllegalActionException {
         super.initialize();
         _lastToken = defaultValue.getToken();
@@ -148,6 +150,7 @@ public class ZeroOrderHold extends Transformer {
      *  @return True if execution can continue into the next iteration.
      *  @exception IllegalActionException If the base class throws it.
      */
+    @Override
     public boolean postfire() throws IllegalActionException {
         _firstFiring = false;
         return super.postfire();

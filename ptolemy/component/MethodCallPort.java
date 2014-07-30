@@ -120,6 +120,7 @@ public class MethodCallPort extends ComponentPort {
      *   attributes cannot be cloned.
      *  @return A new ComponentPort.
      */
+    @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         MethodCallPort newObject = (MethodCallPort) super.clone(workspace);
         newObject._insideLinks = new CrossRefList(newObject);

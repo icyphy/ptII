@@ -21,7 +21,7 @@ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
 PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 ENHANCEMENTS, OR MODIFICATIONS.
-*/
+ */
 package ptolemy.verification.lib;
 
 import ptolemy.actor.lib.TimeDelay;
@@ -45,7 +45,7 @@ import ptolemy.kernel.util.NameDuplicationException;
    @since Ptolemy II 8.0
    @Pt.ProposedRating Red (cxh)
    @Pt.AcceptedRating Red (cxh)
-*/
+ */
 public class BoundedBufferTimedDelay extends TimeDelay {
 
     /** Construct an actor with the specified container and name.
@@ -71,6 +71,7 @@ public class BoundedBufferTimedDelay extends TimeDelay {
      */
     public Parameter bufferSize;
 
+    @Override
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         if (attribute == bufferSize) {
@@ -91,6 +92,7 @@ public class BoundedBufferTimedDelay extends TimeDelay {
      *  is used for code generation only.
      *  @exception IllegalActionException No simulation
      */
+    @Override
     public void preinitialize() throws IllegalActionException {
         throw new IllegalActionException(this, getName() + " can not run in "
                 + "simulation mode.");
@@ -107,7 +109,7 @@ public class BoundedBufferTimedDelay extends TimeDelay {
      *   PortParameter named "delay" or "bufferSize".
      */
     protected void _init() throws NameDuplicationException,
-            IllegalActionException {
+    IllegalActionException {
         delay = new PortParameter(this, "delay");
         delay.setExpression("1.0");
         delay.setTypeEquals(BaseType.DOUBLE);

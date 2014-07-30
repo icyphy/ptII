@@ -122,6 +122,7 @@ public class ProcessThread extends PtolemyThread {
      *  until it terminates. At the end of the termination, calls wrapup
      *  on the actor.
      */
+    @Override
     public void run() {
         if (_debugging) {
             _debug("-- Starting thread.");

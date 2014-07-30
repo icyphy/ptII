@@ -57,6 +57,7 @@ public abstract class IteratorIterator extends IteratorAdapter {
     /* Test if there are more elements. This will return false if
      * the top-level iterator has no more elements.
      */
+    @Override
     public boolean hasNext() {
         while (_subiterator != null && !_subiterator.hasNext()) {
             _subiterator = iterator(_iterator.next());
@@ -71,6 +72,7 @@ public abstract class IteratorIterator extends IteratorAdapter {
 
     /* Return the next object.
      */
+    @Override
     public Object next() throws NoSuchElementException {
         if (_subiterator == null) {
             throw new NoSuchElementException("Ack! No more elements");

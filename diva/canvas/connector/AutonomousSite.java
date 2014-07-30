@@ -85,12 +85,14 @@ public class AutonomousSite extends AbstractSite {
 
     /** Return null. Autonomous sites are not attached to a figure.
      */
+    @Override
     public Figure getFigure() {
         return null;
     }
 
     /** Return zero. Autonomous sites don't have a meaningful ID.
      */
+    @Override
     public int getID() {
         return 0;
     }
@@ -99,6 +101,7 @@ public class AutonomousSite extends AbstractSite {
      * is the context given to the constructor or set in the
      * setLocation() method.
      */
+    @Override
     public TransformContext getTransformContext() {
         return _context;
     }
@@ -106,6 +109,7 @@ public class AutonomousSite extends AbstractSite {
     /** Get the x-coordinate of the site, in the enclosing
      * transform context.
      */
+    @Override
     public double getX() {
         return _x;
     }
@@ -113,6 +117,7 @@ public class AutonomousSite extends AbstractSite {
     /** Get the y-coordinate of the site, in the enclosing
      * transform context.
      */
+    @Override
     public double getY() {
         return _y;
     }
@@ -129,6 +134,7 @@ public class AutonomousSite extends AbstractSite {
 
     /** Translate the site by the indicated distance.
      */
+    @Override
     public void translate(double x, double y) {
         _x += x;
         _y += y;

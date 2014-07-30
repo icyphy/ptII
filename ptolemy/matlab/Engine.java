@@ -779,7 +779,7 @@ public class Engine {
                     if (fma == 0) {
                         throw new IllegalActionException(
                                 "couldn't create array for index " + n
-                                        + " in cell array " + name);
+                                + " in cell array " + name);
                     }
 
                     ptmatlabSetCell(name, ma, 0, n, fma);
@@ -809,7 +809,7 @@ public class Engine {
                 if (fma == 0) {
                     throw new IllegalActionException(
                             "couldn't create array for field " + fieldName
-                                    + " in struct " + name);
+                            + " in struct " + name);
                 }
 
                 ptmatlabSetStructField(name, ma, (String) fieldName, 0, 0, fma);

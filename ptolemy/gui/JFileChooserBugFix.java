@@ -65,12 +65,12 @@ import javax.swing.text.html.StyleSheet;
  implementation of the file chooser that uses java.awt.FileDialog
  instead of javax.swing.JFileChooser.  Thus, under Mac OS X,
  this class is typically <b>not</b> invoked.  Under Mac OS X,
- to invoke this class, either 
+ to invoke this class, either
  {@link ptolemy.gui.PtGUIUtilities#useFileDialog()} or
  {@link ptolemy.gui.PtGUIUtilities#macOSLookAndFeel()} should
  return false.  To do this, set either the
- ptolemy.ptII.useFileDialog property to false or 
- set the ptolemy.ptII.MacOS property to false. See 
+ ptolemy.ptII.useFileDialog property to false or
+ set the ptolemy.ptII.MacOS property to false. See
  {@link ptolemy.gui.PtGUIUtilities} for how to set these properties.
  </p>
 
@@ -133,8 +133,8 @@ public class JFileChooserBugFix {
             // Get the background color of the HTML widget.
             Style style = styleSheet.getStyle("body");
             if (style != null) {
-                AttributeSet bodyAttribute = (AttributeSet) style.getAttribute(
-                javax.swing.text.StyleConstants.ResolveAttribute);
+                AttributeSet bodyAttribute = (AttributeSet) style
+                        .getAttribute(javax.swing.text.StyleConstants.ResolveAttribute);
                 if (bodyAttribute != null) {
                     background = styleSheet.getBackground(bodyAttribute);
                 }
@@ -143,9 +143,9 @@ public class JFileChooserBugFix {
             if (!_printedMessage) {
                 _printedMessage = true;
                 System.out
-                        .println("Failed to set the background of the file dialog:"
-                                + ex);
-                
+                .println("Failed to set the background of the file dialog:"
+                        + ex);
+
             }
         }
 

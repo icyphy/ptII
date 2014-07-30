@@ -66,6 +66,7 @@ public class TimedEvent implements Comparable<TimedEvent> {
     ////                         public methods                    ////
 
     /** Display timeStamp and contents. */
+    @Override
     public String toString() {
         return "timeStamp: " + timeStamp + ", contents: " + contents;
     }
@@ -77,6 +78,7 @@ public class TimedEvent implements Comparable<TimedEvent> {
      *  @return True if the two TimedEvent objects have the same time
      *  stamp and event object.
      */
+    @Override
     public boolean equals(Object timedEvent) {
         // See http://www.technofundo.com/tech/java/equalhash.html
 
@@ -121,6 +123,7 @@ public class TimedEvent implements Comparable<TimedEvent> {
      *  @return The integer -1, 0, or 1 if this is less than, equal to, or
      *   greater than the argument.
      */
+    @Override
     public int compareTo(TimedEvent timedEvent) {
         return timeStamp.compareTo(timedEvent.timeStamp);
     }
@@ -130,6 +133,7 @@ public class TimedEvent implements Comparable<TimedEvent> {
      *  and event object, then they will have the same hashCode.
      *  @return The hash code for this TimedEvent object.
      */
+    @Override
     public int hashCode() {
         int hashCode = 21;
         if (timeStamp != null) {
@@ -177,6 +181,7 @@ public class TimedEvent implements Comparable<TimedEvent> {
          *  @exception ClassCastException If either argument is not an instance
          *   of TimedEvent.
          */
+        @Override
         public int compare(Object object1, Object object2) {
             TimedEvent a = (TimedEvent) object1;
             TimedEvent b = (TimedEvent) object2;
@@ -204,6 +209,7 @@ public class TimedEvent implements Comparable<TimedEvent> {
          *  @exception ClassCastException If the arguments are not instances of
          *   TimedEvent.
          */
+        @Override
         public long getVirtualBinNumber(Object entry) {
             // Note: The longValue() method will only
             // returns the low-order 64 bits of the result.
@@ -231,6 +237,7 @@ public class TimedEvent implements Comparable<TimedEvent> {
          *  @exception ClassCastException If one of the array elements is not
          *   an instance of TimedEvent.
          */
+        @Override
         public void setBinWidth(Object[] entryArray) {
             if (entryArray == null) {
                 // Reset to default.
@@ -281,6 +288,7 @@ public class TimedEvent implements Comparable<TimedEvent> {
          *  @exception ClassCastException If the argument is not an instance
          *   of TimedEvent.
          */
+        @Override
         public void setZeroReference(Object zeroReference) {
             _zeroReference = ((TimedEvent) zeroReference).timeStamp
                     .getDoubleValue();

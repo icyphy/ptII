@@ -160,6 +160,7 @@ public class ComputeHistogram extends TypedAtomicActor {
      *  @param attribute The attribute that changed.
      *  @exception IllegalActionException If the bin width is not positive.
      */
+    @Override
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         if (attribute == minimumValue || attribute == maximumValue
@@ -190,6 +191,7 @@ public class ComputeHistogram extends TypedAtomicActor {
      *  @exception CloneNotSupportedException If a derived class contains
      *   an attribute that cannot be cloned.
      */
+    @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         ComputeHistogram newObject = (ComputeHistogram) super.clone(workspace);
 
@@ -204,6 +206,7 @@ public class ComputeHistogram extends TypedAtomicActor {
      *  and update the histogram.
      *  @exception IllegalActionException If there is no director.
      */
+    @Override
     public void fire() throws IllegalActionException {
         super.fire();
         _bins = new int[_numberOfBins];
@@ -236,6 +239,7 @@ public class ComputeHistogram extends TypedAtomicActor {
      *   <i>blockSize</i> parameter.
      *  @exception IllegalActionException If the superclass throws it.
      */
+    @Override
     public boolean prefire() throws IllegalActionException {
         int count = ((IntToken) inputCount.getToken()).intValue();
         return input.hasToken(0, count) && super.prefire();

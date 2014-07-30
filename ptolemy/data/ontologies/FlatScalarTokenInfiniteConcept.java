@@ -93,6 +93,7 @@ public class FlatScalarTokenInfiniteConcept extends FlatTokenInfiniteConcept {
      *  ontology lattice.
      *  @return The representative concept.
      */
+    @Override
     public FlatScalarTokenRepresentativeConcept getRepresentative() {
         return (FlatScalarTokenRepresentativeConcept) _representative;
     }
@@ -100,6 +101,7 @@ public class FlatScalarTokenInfiniteConcept extends FlatTokenInfiniteConcept {
     /** Get the token value contained by this concept.
      *  @return The token value contained by this concept.
      */
+    @Override
     public ScalarToken getTokenValue() {
         return (ScalarToken) _tokenValue;
     }

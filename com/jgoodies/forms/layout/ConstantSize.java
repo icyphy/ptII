@@ -98,7 +98,7 @@ public final class ConstantSize implements Size, Serializable {
      * deserialized units.
      */
     private static final Unit[] VALUES = { PIXEL, POINT, DIALOG_UNITS_X,
-            DIALOG_UNITS_Y, MILLIMETER, CENTIMETER, INCH };
+        DIALOG_UNITS_Y, MILLIMETER, CENTIMETER, INCH };
 
     // Fields ***************************************************************
 
@@ -222,6 +222,7 @@ public final class ConstantSize implements Size, Serializable {
      * @param defaultMeasure  the measure that determines the default sizes
      * @return the computed maximum size in pixel
      */
+    @Override
     public int maximumSize(Container container, List components,
             FormLayout.Measure minMeasure, FormLayout.Measure prefMeasure,
             FormLayout.Measure defaultMeasure) {
@@ -239,6 +240,7 @@ public final class ConstantSize implements Size, Serializable {
      * @see     java.lang.Object#hashCode()
      * @see     java.util.Hashtable
      */
+    @Override
     public boolean equals(Object o) {
         if (this == o) {
             return true;
@@ -259,6 +261,7 @@ public final class ConstantSize implements Size, Serializable {
      * @see     java.lang.Object#equals(java.lang.Object)
      * @see     java.util.Hashtable
      */
+    @Override
     public int hashCode() {
         return Double.valueOf(value).hashCode() + 37 * unit.hashCode();
     }
@@ -272,6 +275,7 @@ public final class ConstantSize implements Size, Serializable {
      *
      * @return  a string representation of the constant size
      */
+    @Override
     public String toString() {
         return value == intValue() ? Integer.toString(intValue())
                 + unit.abbreviation() : Double.toString(value)
@@ -352,6 +356,7 @@ public final class ConstantSize implements Size, Serializable {
             }
         }
 
+        @Override
         public String toString() {
             return name;
         }

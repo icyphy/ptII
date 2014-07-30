@@ -69,6 +69,7 @@ public class AttributeExpressionAttribute extends AttributeValueAttribute {
      *  referred to attribute.
      *  @return A new shape.
      */
+    @Override
     protected String _getText() {
         if (_attribute != null) {
             String value = _attribute.getExpression();

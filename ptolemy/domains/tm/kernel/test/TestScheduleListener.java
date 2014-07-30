@@ -60,6 +60,7 @@ public class TestScheduleListener implements ScheduleListener {
 
     /** React to the given scheduling event.
      */
+    @Override
     public void event(String actorName, double time, int scheduleEvent) {
         _events.append(actorName + "\t" + time + "\t" + scheduleEvent + "\n");
     }

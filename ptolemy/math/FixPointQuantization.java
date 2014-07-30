@@ -144,6 +144,7 @@ public class FixPointQuantization extends Quantization {
      *  checking.
      *  @return True if the quantizations are equal.
      */
+    @Override
     public boolean equals(Object object) {
         if (super.equals(object) && object instanceof FixPointQuantization) {
             FixPointQuantization other = (FixPointQuantization) object;
@@ -159,6 +160,7 @@ public class FixPointQuantization extends Quantization {
     /** Return the precision of the mantissa of the value.
      *  @return The precision.
      */
+    @Override
     public Precision getMantissaPrecision() {
         return _precision;
     }
@@ -169,6 +171,7 @@ public class FixPointQuantization extends Quantization {
      * @see #setPrecision(Precision)
      * @return Precision object.
      */
+    @Override
     public Precision getPrecision() {
         return _precision;
     }
@@ -178,6 +181,7 @@ public class FixPointQuantization extends Quantization {
      *  superclass (Quantization) and the hashcode of the precision.
      *  @return A hash code value for this Quantization.
      */
+    @Override
     public int hashCode() {
         return super.hashCode() >>> _precision.hashCode();
     }
@@ -216,12 +220,13 @@ public class FixPointQuantization extends Quantization {
      *  the rounding strategy.
      *  @return A string representing this quantization.
      */
+    @Override
     public String toString() {
         // TODO: check for null precision
         return "(" + _precision.getIntegerBitLength() + "."
-                + _precision.getFractionBitLength() + ","
-                + getOverflow().toString() + "," + getRounding().toString()
-                + ")";
+        + _precision.getFractionBitLength() + ","
+        + getOverflow().toString() + "," + getRounding().toString()
+        + ")";
     }
 
     ///////////////////////////////////////////////////////////////////

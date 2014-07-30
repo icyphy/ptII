@@ -104,7 +104,7 @@ public class GRDirector extends StaticSchedulingDirector {
      *  @exception IllegalActionException If construction of Time objects fails.
      */
     public GRDirector(Workspace workspace) throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         super(workspace);
         _init();
     }
@@ -162,6 +162,7 @@ public class GRDirector extends StaticSchedulingDirector {
      *  @exception CloneNotSupportedException If one of the attributes
      *   cannot be cloned.
      */
+    @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         _reset();
 
@@ -173,6 +174,7 @@ public class GRDirector extends StaticSchedulingDirector {
      *  everything is postponed to the postfire() method. This assures
      *  that inputs are stable.
      */
+    @Override
     public void fire() throws IllegalActionException {
         // do nothing.
         // Everything is postponed to the postfire() method.
@@ -194,6 +196,7 @@ public class GRDirector extends StaticSchedulingDirector {
      *   or the specified time if there isn't one.
      *  @exception IllegalActionException If by the executive director.
      */
+    @Override
     public Time fireAt(Actor actor, Time time, int microstep)
             throws IllegalActionException {
         // Note that the actor parameter is ignored, because it does not
@@ -222,6 +225,8 @@ public class GRDirector extends StaticSchedulingDirector {
      *  @deprecated As of Ptolemy II 4.1, replaced by
      *  {@link #getModelTime()}
      */
+    @Deprecated
+    @Override
     public double getCurrentTime() {
         return getModelTime().getDoubleValue();
     }
@@ -234,6 +239,7 @@ public class GRDirector extends StaticSchedulingDirector {
      *
      *  @return The current "time"
      */
+    @Override
     public Time getModelTime() {
         // FIXME: This is bogus... It violates the time semantics
         // of Ptolemy II, where time coherence is guaranteed by the
@@ -255,6 +261,7 @@ public class GRDirector extends StaticSchedulingDirector {
      *
      *  @return The maximum value for type double.
      */
+    @Override
     public Time getModelNextIterationTime() {
         // FIXME: This is bogus... It violates the time semantics
         // of Ptolemy II, where time coherence is guaranteed by the
@@ -277,6 +284,7 @@ public class GRDirector extends StaticSchedulingDirector {
      *  @exception IllegalActionException If the initialize() method of
      *  one of the associated actors throws it.
      */
+    @Override
     public void initialize() throws IllegalActionException {
         super.initialize();
         _disabledActors = new HashSet<Actor>();
@@ -323,6 +331,7 @@ public class GRDirector extends StaticSchedulingDirector {
      *  @see ptolemy.kernel.util.NamedObj#attributeChanged
      *  @see ptolemy.kernel.util.NamedObj#attributeTypeChanged
      */
+    @Override
     public void invalidateSchedule() {
         // This method is called when an entity is instantiated under
         // this director. This method is also called when a link is
@@ -335,6 +344,7 @@ public class GRDirector extends StaticSchedulingDirector {
      *
      *  @return A new GRReceiver.
      */
+    @Override
     public Receiver newReceiver() {
         return new GRReceiver();
     }
@@ -351,6 +361,7 @@ public class GRDirector extends StaticSchedulingDirector {
      *  @exception IllegalActionException If unable to get the parameter
      *  <i>iterations</i>.
      */
+    @Override
     public boolean postfire() throws IllegalActionException {
         // Iterate all actors under control of this director and fire them.
         // This is done in postfire() to ensure that all inputs are stable.
@@ -392,6 +403,7 @@ public class GRDirector extends StaticSchedulingDirector {
      *  @return Always returns True.
      *  @exception IllegalActionException Not thrown in this base class
      */
+    @Override
     public boolean prefire() throws IllegalActionException {
         // Note: Actors return false on prefire if they don't want to be
         // fired and postfired in the current iteration.
@@ -405,6 +417,7 @@ public class GRDirector extends StaticSchedulingDirector {
      *  @exception IllegalActionException If the preinitialize() method of
      *  one of the associated actors throws it.
      */
+    @Override
     public void preinitialize() throws IllegalActionException {
         super.preinitialize();
 
@@ -434,6 +447,7 @@ public class GRDirector extends StaticSchedulingDirector {
      *  @exception IllegalActionException If the parent class
      *  throws it
      */
+    @Override
     public void wrapup() throws IllegalActionException {
         super.wrapup();
         _reset();

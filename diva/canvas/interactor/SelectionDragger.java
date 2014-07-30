@@ -235,6 +235,7 @@ public class SelectionDragger extends DragInteractor {
      * the drag region are added to or removed from the appropriate
      * selection.
      */
+    @Override
     public void mouseDragged(LayerEvent event) {
         if (!isEnabled()) {
             return;
@@ -379,6 +380,7 @@ public class SelectionDragger extends DragInteractor {
 
     /** Clear the selection, and create the rubber-band
      */
+    @Override
     public void mousePressed(LayerEvent event) {
         if (!isEnabled()) {
             return;
@@ -418,6 +420,7 @@ public class SelectionDragger extends DragInteractor {
 
     /** Delete the rubber-band
      */
+    @Override
     public void mouseReleased(LayerEvent event) {
         if (!isEnabled()) {
             return;

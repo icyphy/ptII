@@ -144,6 +144,7 @@ public class ResourcePool extends CSPActor {
      *  @exception IllegalActionException If the change is not acceptable
      *   to this container (not thrown in this base class).
      */
+    @Override
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         if (attribute == initialPool) {
@@ -166,6 +167,7 @@ public class ResourcePool extends CSPActor {
      *   if one of the attributes cannot be cloned.
      *  @return A new ResourcePool actor.
      */
+    @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         ResourcePool newObject = (ResourcePool) super.clone(workspace);
         // set type constraints.
@@ -192,6 +194,7 @@ public class ResourcePool extends CSPActor {
      *  @exception TerminateProcessException If the process termination
      *   is requested by the director.
      */
+    @Override
     public void fire() throws IllegalActionException {
         super.fire();
         if (_debugging) {
@@ -253,6 +256,7 @@ public class ResourcePool extends CSPActor {
      *  @return True if another iteration can occur.
      *  @exception IllegalActionException If thrown by the base class.
      */
+    @Override
     public boolean postfire() throws IllegalActionException {
         // FIXME: We deliberately ignore the return value of super.postfire()
         // here because CSPActor.postfire() returns false.

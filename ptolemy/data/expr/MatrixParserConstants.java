@@ -24,7 +24,7 @@
 
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
-*/
+ */
 package ptolemy.data.expr;
 
 public interface MatrixParserConstants {

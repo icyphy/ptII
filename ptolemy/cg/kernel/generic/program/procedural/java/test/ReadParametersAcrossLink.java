@@ -102,6 +102,7 @@ public class ReadParametersAcrossLink extends TypedAtomicActor {
      *  @exception IllegalActionException If it is thrown by the
      *   send() method sending out the token.
      */
+    @Override
     public void fire() throws IllegalActionException {
         super.fire();
         double sum = 0.0;
@@ -127,6 +128,7 @@ public class ReadParametersAcrossLink extends TypedAtomicActor {
      *  "remoteParameter" cannot be read from the container of the
      *  remote port.
      */
+    @Override
     public void preinitialize() throws IllegalActionException {
         List<Relation> linkedRelationList = input.linkedRelationList();
 

@@ -24,7 +24,7 @@
    PT_COPYRIGHT_VERSION_2
    COPYRIGHTENDKEY
    2
-*/
+ */
 package org.ptolemy.machineLearning.particleFilter;
 
 import java.util.LinkedList;
@@ -44,7 +44,7 @@ import java.util.List;
 public class Particle {
     /** Construct a Particle.
      *  @param size The size of the particle
-     */   
+     */
     public Particle(int size) {
         _particleValue = new LinkedList<Double>();
         _ssSize = size;
@@ -52,17 +52,17 @@ public class Particle {
 
     /** Construct a Particle.
      *  @param p The particle
-     */   
+     */
     public Particle(Particle p) {
         _weight = p._weight;
         _ssSize = p._ssSize;
         _particleValue = new LinkedList<Double>();
         List<Double> temp = p.getValue();
-        for (int i = 0; i < temp.size(); i++ ) {
-            _particleValue.add((Double)temp.get(i));
+        for (int i = 0; i < temp.size(); i++) {
+            _particleValue.add(temp.get(i));
         }
     }
-    
+
     /** Adjust the weight.
      *  If w is greater than 0.0, then
      *  the weight is set to weight/w.
@@ -71,7 +71,7 @@ public class Particle {
     public boolean adjustWeight(double w) {
         // normalize weight
         if (w > 0.0) {
-            _weight = _weight/w;
+            _weight = _weight / w;
         } else {
             return false;
         }
@@ -79,7 +79,7 @@ public class Particle {
     }
 
     /** Return the size of the partile.
-     *  @return The size.   
+     *  @return The size.
      */
     public int getSize() {
         return _ssSize;
@@ -103,12 +103,12 @@ public class Particle {
      */
     public double getWeight() {
         return _weight;
-    }       
+    }
 
     /** Set the value.
      *  @param l The value
      *  @see #getValue()
-     */   
+     */
     public void setValue(LinkedList<Double> l) {
         _particleValue = new LinkedList<Double>();
 
@@ -123,7 +123,7 @@ public class Particle {
      */
     public void setWeight(double weight) {
         _weight = weight;
-    }         
+    }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////

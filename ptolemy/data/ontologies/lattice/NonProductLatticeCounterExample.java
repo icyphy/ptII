@@ -44,7 +44,7 @@ because at least one of its component ontologies is not a lattice.
 @since Ptolemy II 10.0
 @Pt.ProposedRating Red (cshelton)
 @Pt.AcceptedRating Red (cshelton)
-*/
+ */
 public class NonProductLatticeCounterExample extends NonLatticeCounterExample {
 
     /** Construct a NonProductLatticeCounterExample object that indicates that

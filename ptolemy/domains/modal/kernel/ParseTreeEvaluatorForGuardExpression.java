@@ -122,6 +122,7 @@ public class ParseTreeEvaluatorForGuardExpression extends ParseTreeEvaluator {
      *  @exception IllegalActionException If an error occurs during
      *   evaluation.
      */
+    @Override
     public Token evaluateParseTree(ASTPtRootNode node, ParserScope scope)
             throws IllegalActionException {
         _relationIndex = 0;
@@ -159,6 +160,7 @@ public class ParseTreeEvaluatorForGuardExpression extends ParseTreeEvaluator {
      *  @exception IllegalActionException If the super class method
      *  visitLeafNode throws the IllegalActionException.
      */
+    @Override
     public void visitLeafNode(ASTPtLeafNode node) throws IllegalActionException {
 
         // Note: based on the *_isPresent variable, we figure out
@@ -251,6 +253,7 @@ public class ParseTreeEvaluatorForGuardExpression extends ParseTreeEvaluator {
      *  @exception IllegalActionException If the super class method
      *  visitLogicalNode throws the IllegalActionException.
      */
+    @Override
     public void visitLogicalNode(ASTPtLogicalNode node)
             throws IllegalActionException {
 
@@ -304,6 +307,7 @@ public class ParseTreeEvaluatorForGuardExpression extends ParseTreeEvaluator {
      *  @exception IllegalActionException If the super class method
      *  visitRelationNode throws the IllegalActionException.
      */
+    @Override
     public void visitRelationalNode(ASTPtRelationalNode node)
             throws IllegalActionException {
 

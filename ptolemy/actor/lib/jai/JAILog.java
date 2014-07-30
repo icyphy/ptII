@@ -92,6 +92,7 @@ public class JAILog extends Transformer {
      *  or if there is an invalid scaling type, or an invalid data nature
      *  set.
      */
+    @Override
     public void fire() throws IllegalActionException {
         super.fire();
 

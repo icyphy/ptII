@@ -160,6 +160,7 @@ public class JTextAreaExec extends JPanel implements ExecuteCommands {
      */
     public void appendJTextArea(final String text) {
         Runnable doAppendJTextArea = new Runnable() {
+            @Override
             public void run() {
                 // Oddly, we can just use '\n' here,
                 // we do not need to call
@@ -178,6 +179,7 @@ public class JTextAreaExec extends JPanel implements ExecuteCommands {
      *  in the path, then it is not appended.
      *  @param directoryName The name of the directory to append to the path.
      */
+    @Override
     public void appendToPath(String directoryName) {
         if (_debug) {
             stdout("JTextArea.appendToPath(): " + directoryName + "\n");
@@ -208,7 +210,7 @@ public class JTextAreaExec extends JPanel implements ExecuteCommands {
             }
             _envp = StreamExec.updateEnvironment(keyPath,
                     File.pathSeparatorChar + directoryName
-                            + File.pathSeparatorChar);
+                    + File.pathSeparatorChar);
 
             if (_debug) {
                 // For debugging
@@ -220,11 +222,13 @@ public class JTextAreaExec extends JPanel implements ExecuteCommands {
     }
 
     /** Cancel any running commands. */
+    @Override
     public void cancel() {
         _cancelButton.doClick();
     }
 
     /** Clear the text area, status bar and progress bar. */
+    @Override
     public void clear() {
         _clearButton.doClick();
         updateStatusBar("");
@@ -240,6 +244,7 @@ public class JTextAreaExec extends JPanel implements ExecuteCommands {
      *  because appendToPath() was called.  Note that that key is searche
      *  for in a case-insensitive mode.
      */
+    @Override
     public String getenv(String key) {
         // FIXME: Code Duplication from StreamExec.java
         if (_envp == null) {
@@ -282,6 +287,7 @@ public class JTextAreaExec extends JPanel implements ExecuteCommands {
     /** Return the return code of the last subprocess that was executed.
      *  @return the return code of the last subprocess that was executed.
      */
+    @Override
     public int getLastSubprocessReturnCode() {
         return _subprocessReturnCode;
     }
@@ -306,10 +312,12 @@ public class JTextAreaExec extends JPanel implements ExecuteCommands {
         try {
             // Run this in the Swing Event Thread.
             Runnable doActions = new Runnable() {
+                @Override
                 public void run() {
                     try {
                         JFrame jFrame = new JFrame("JTextAreaExec Example");
                         WindowListener windowListener = new WindowAdapter() {
+                            @Override
                             public void windowClosing(WindowEvent e) {
                                 StringUtilities.exit(0);
                             }
@@ -348,6 +356,7 @@ public class JTextAreaExec extends JPanel implements ExecuteCommands {
     /** Set the list of commands.
      *  @param commands a List of Strings, where each element is a command.
      */
+    @Override
     public void setCommands(List commands) {
         _commands = commands;
         _enableStartButton();
@@ -358,11 +367,13 @@ public class JTextAreaExec extends JPanel implements ExecuteCommands {
      *  subprocess.  If this argument is null, then the subprocess is
      *  executed in the working directory of the current process.
      */
+    @Override
     public void setWorkingDirectory(File workingDirectory) {
         _workingDirectory = workingDirectory;
     }
 
     /** Start running the commands. */
+    @Override
     public void start() {
         _startButton.doClick();
     }
@@ -371,6 +382,7 @@ public class JTextAreaExec extends JPanel implements ExecuteCommands {
      *  The output automatically gets a trailing newline appended.
      *  @param text The text to append to standard error.
      */
+    @Override
     public void stderr(final String text) {
         appendJTextArea(text);
     }
@@ -379,6 +391,7 @@ public class JTextAreaExec extends JPanel implements ExecuteCommands {
      *  The output automatically gets a trailing newline appended.
      *  @param text The text to append to standard out.
      */
+    @Override
     public void stdout(final String text) {
         appendJTextArea(text);
     }
@@ -386,8 +399,10 @@ public class JTextAreaExec extends JPanel implements ExecuteCommands {
     /** Update the status area with the text message.
      *  @param text The text with which the status area is updated.
      */
+    @Override
     public void updateStatusBar(final String text) {
         Runnable doUpdateStatusBar = new Runnable() {
+            @Override
             public void run() {
                 _statusBar.setText(text);
                 _jTextArea.append(text + '\n');
@@ -467,7 +482,7 @@ public class JTextAreaExec extends JPanel implements ExecuteCommands {
                     }
 
                     _statusBar
-                            .setText("Executing: " + statusCommand.toString());
+                    .setText("Executing: " + statusCommand.toString());
 
                     // If _envp is null, then no environment changes.
                     _process = runtime.exec(commandTokens, _envp,
@@ -527,8 +542,10 @@ public class JTextAreaExec extends JPanel implements ExecuteCommands {
     // This action listener, called by the Clear button, clears
     // the text area
     private ActionListener _clearListener = new ActionListener() {
+        @Override
         public void actionPerformed(ActionEvent event) {
             Runnable doAppendJTextArea = new Runnable() {
+                @Override
                 public void run() {
                     _jTextArea.setText(null);
                 }
@@ -543,6 +560,7 @@ public class JTextAreaExec extends JPanel implements ExecuteCommands {
     // Note that the _executeCommands() method handles
     // InterruptedExceptions cleanly.
     private ActionListener _interruptListener = new ActionListener() {
+        @Override
         public void actionPerformed(ActionEvent event) {
             _cancelButton.setEnabled(false);
             appendJTextArea("Cancel button was pressed");
@@ -555,16 +573,19 @@ public class JTextAreaExec extends JPanel implements ExecuteCommands {
     // This action listener, called by the Start button, effectively
     // forks the thread that does the work.
     private ActionListener _startListener = new ActionListener() {
+        @Override
         public void actionPerformed(ActionEvent event) {
             _startButton.setEnabled(false);
             _cancelButton.setEnabled(true);
             _statusBar.setText("Working...");
 
             _worker = new SwingWorker<Object, Void>() {
+                @Override
                 public Object doInBackground() {
                     return _executeCommands();
                 }
 
+                @Override
                 public void done() {
                     _enableStartButton();
                     _cancelButton.setEnabled(false);
@@ -575,14 +596,14 @@ public class JTextAreaExec extends JPanel implements ExecuteCommands {
                         _statusBar.setText("Cancelled.");
                     } catch (ExecutionException ex1) {
                         _statusBar
-                                .setText("The computation threw an exception: "
-                                        + ex1.getCause());
+                        .setText("The computation threw an exception: "
+                                + ex1.getCause());
                     } catch (InterruptedException ex2) {
                         _statusBar
-                                .setText("The worker thread was interrupted while waiting, which is probably not a problem.");
+                        .setText("The worker thread was interrupted while waiting, which is probably not a problem.");
                     } catch (TimeoutException ex3) {
                         _statusBar
-                                .setText("The wait to get the execution result timed out, which is unusual, but probably not a problem.");
+                        .setText("The wait to get the execution result timed out, which is unusual, but probably not a problem.");
                     }
                 }
             };
@@ -596,6 +617,7 @@ public class JTextAreaExec extends JPanel implements ExecuteCommands {
     // the value of the progress bar.
     private void _updateProgressBar(final int i) {
         Runnable doSetProgressBarValue = new Runnable() {
+            @Override
             public void run() {
                 //_jTextArea.append(Integer.valueOf(i).toString());
                 _progressBar.setValue(i);
@@ -617,6 +639,7 @@ public class JTextAreaExec extends JPanel implements ExecuteCommands {
 
         // Read lines from the _inputStream and output them to the
         // JTextArea.
+        @Override
         public void run() {
             try {
                 InputStreamReader inputStreamReader = new InputStreamReader(

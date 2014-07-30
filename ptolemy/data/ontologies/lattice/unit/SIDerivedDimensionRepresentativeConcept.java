@@ -61,9 +61,9 @@ import ptolemy.kernel.util.StringAttribute;
 @since Ptolemy II 10.0
 @Pt.ProposedRating Red (cshelton)
 @Pt.AcceptedRating Red (cshelton)
-*/
+ */
 public class SIDerivedDimensionRepresentativeConcept extends
-        DerivedDimensionRepresentativeConcept {
+DerivedDimensionRepresentativeConcept {
 
     /** Create a new SIDerivedUnitRepresentativeConcept with the specified name and
      *  ontology.
@@ -119,6 +119,7 @@ public class SIDerivedDimensionRepresentativeConcept extends
      *  @exception IllegalActionException Thrown if there is a problem creating
      *   the SIPrefixUnitConversionInfo parameters.
      */
+    @Override
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         boolean useUnitAbbreviation = ((BooleanToken) useAbbreviation
@@ -129,7 +130,7 @@ public class SIDerivedDimensionRepresentativeConcept extends
         // unitFullName parameter.
         if ((attribute.equals(useAbbreviation)
                 || attribute.equals(unitFullName) || attribute
-                    .equals(baseUnitRecord))
+                .equals(baseUnitRecord))
                 && !useUnitAbbreviation
                 && baseUnitRecordToken != null) {
 
@@ -141,7 +142,7 @@ public class SIDerivedDimensionRepresentativeConcept extends
             // unitAbbreviation parameter.
         } else if ((attribute.equals(useAbbreviation)
                 || attribute.equals(unitAbbreviation) || attribute
-                    .equals(baseUnitRecord))
+                .equals(baseUnitRecord))
                 && useUnitAbbreviation
                 && baseUnitRecordToken != null) {
 

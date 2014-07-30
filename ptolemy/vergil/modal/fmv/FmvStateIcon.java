@@ -44,7 +44,7 @@ An icon specialized for states of a state machine with reachability and risk ana
 @since Ptolemy II 8.0
 @Pt.ProposedRating Red (patrickj)
 @Pt.AcceptedRating Red (patrickj)
-*/
+ */
 public class FmvStateIcon extends StateIcon {
 
     /** Create a new icon with the given name in the given container.
@@ -67,6 +67,7 @@ public class FmvStateIcon extends StateIcon {
      *  is not empty, in which case it returns a light green.
      *  @return The paint to use to fill the icon.
      */
+    @Override
     protected Paint _getFill() {
         NamedObj container = getContainer();
         if (container instanceof FmvState) {

@@ -74,6 +74,7 @@ public class ParameterMirrorPort extends ParameterPort {
      *   cannot be cloned.
      *  @see #exportMoML(java.io.Writer, int, String)
      */
+    @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         ParameterMirrorPort result = (ParameterMirrorPort) super
                 .clone(workspace);
@@ -119,8 +120,9 @@ public class ParameterMirrorPort extends ParameterPort {
      *  @exception NameDuplicationException If the container already has
      *   a port with the name of this port.
      */
+    @Override
     public void setContainer(Entity container) throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         super.setContainer(container);
 
         if (container == null && _associatedPort != null
@@ -143,6 +145,7 @@ public class ParameterMirrorPort extends ParameterPort {
      *  @exception IllegalActionException If changing the port status is
      *   not permitted.
      */
+    @Override
     public void setInput(boolean isInput) throws IllegalActionException {
         super.setInput(isInput);
 
@@ -166,8 +169,9 @@ public class ParameterMirrorPort extends ParameterPort {
      *  @exception IllegalActionException If name cannot be set.
      *  @exception NameDuplicationException If port with the name already exists.
      */
+    @Override
     public void setName(String name) throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         super.setName(name);
 
         if (_associatedPort != null && !_associatedPort.getName().equals(name)) {

@@ -115,6 +115,7 @@ public class ActionsAttribute extends AbstractActionsAttribute {
      *  @exception IllegalActionException If a destination is not found or if
      *  thrown while evaluating the expressions.
      */
+    @Override
     public void execute() throws IllegalActionException {
         super.execute();
 
@@ -201,6 +202,7 @@ public class ActionsAttribute extends AbstractActionsAttribute {
      *  @exception IllegalActionException If the associated FSMActor
      *   does not have a destination with the specified name.
      */
+    @Override
     protected NamedObj _getDestination(String name)
             throws IllegalActionException {
         Event event = (Event) getContainer();
@@ -264,6 +266,7 @@ public class ActionsAttribute extends AbstractActionsAttribute {
      *
      *  @return The parser scope.
      */
+    @Override
     protected ParserScope _getParserScope() {
         return ((Event) getContainer())._getParserScope();
     }

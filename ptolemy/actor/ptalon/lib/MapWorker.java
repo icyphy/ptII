@@ -162,6 +162,7 @@ public class MapWorker extends TypedAtomicActor {
      *   does not exist, or if the class exists but does not contain a map
      *   method with an appropriate signature, this exception will be thrown.
      */
+    @Override
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         if (attribute == classNameForMap) {
@@ -178,6 +179,7 @@ public class MapWorker extends TypedAtomicActor {
      *  @exception IllegalActionException If there is any trouble calling
      *  the map method.
      */
+    @Override
     public void fire() throws IllegalActionException {
         super.fire();
         if (_algorithm == null) {
@@ -204,6 +206,7 @@ public class MapWorker extends TypedAtomicActor {
      *  @return True if this actor is ready for firing, false otherwise.
      *  @exception IllegalActionException Not thrown in this class.
      */
+    @Override
     public boolean prefire() throws IllegalActionException {
         boolean returnValue = super.prefire();
         if (inputKey.hasToken(0) && inputValue.hasToken(0)) {
@@ -217,6 +220,7 @@ public class MapWorker extends TypedAtomicActor {
      *  @exception IllegalActionException If unable to extract an appropriate
      *  map method.
      */
+    @Override
     public void initialize() throws IllegalActionException {
         super.initialize();
         _setMapMethod();

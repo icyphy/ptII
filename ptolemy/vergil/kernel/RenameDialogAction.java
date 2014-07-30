@@ -103,6 +103,7 @@ public class RenameDialogAction extends FigureAction {
     /** Open a dialog to rename the target.
      *  @param event The action event.
      */
+    @Override
     public void actionPerformed(ActionEvent event) {
         try {
             // Determine which entity was selected for the look inside action.

@@ -37,8 +37,8 @@ package ptolemy.cg.adapter.generic.program.procedural.java.adapters.ptolemy.acto
  * @Pt.AcceptedRating Red (rodiers)
  */
 public class Display
-        extends
-        ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.actor.lib.gui.Display {
+extends
+ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.actor.lib.gui.Display {
     /**
      * Construct a Display adapter.
      * @param actor The associated actor.

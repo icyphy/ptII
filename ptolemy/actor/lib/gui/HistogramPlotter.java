@@ -143,6 +143,7 @@ public class HistogramPlotter extends PlotterBase {
      *  @param attribute The attribute that changed.
      *  @exception IllegalActionException If the bin width is not positive.
      */
+    @Override
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         // NOTE: Do not react to changes in _windowProperties.
@@ -181,6 +182,7 @@ public class HistogramPlotter extends PlotterBase {
      *  @exception Exception If the configuration source cannot be read
      *   or if the configuration information is incorrect.
      */
+    @Override
     public void configure(URL base, String source, String text)
             throws Exception {
         if (plot instanceof Histogram) {
@@ -227,6 +229,7 @@ public class HistogramPlotter extends PlotterBase {
      *  method was called.
      *  @return The string representation of the input URL.
      */
+    @Override
     public String getSource() {
         return null;
     }
@@ -237,6 +240,7 @@ public class HistogramPlotter extends PlotterBase {
      *  been processed, process them.
      *  @exception IllegalActionException If the parent class throws it.
      */
+    @Override
     public void initialize() throws IllegalActionException {
         super.initialize();
 
@@ -279,6 +283,7 @@ public class HistogramPlotter extends PlotterBase {
      *  This is done in postfire to ensure that data has settled.
      *  @exception IllegalActionException If there is no director.
      */
+    @Override
     public boolean postfire() throws IllegalActionException {
         int width = input.getWidth();
 
@@ -301,6 +306,7 @@ public class HistogramPlotter extends PlotterBase {
     /** If configurations have been deferred, implement them now.
      *  Also, configure the histogram parameters, if appropriate.
      */
+    @Override
     protected void _implementDeferredConfigurations() {
         super._implementDeferredConfigurations();
 
@@ -318,6 +324,7 @@ public class HistogramPlotter extends PlotterBase {
     /** Create a new Histogram plot.
      *  @return A new plot object.
      */
+    @Override
     protected PlotBox _newPlot() {
         return new Histogram();
     }

@@ -86,6 +86,7 @@ public class RealTimePlotter extends Plotter {
     /** Record the start time.
      *  @exception IllegalActionException If the base class throws it.
      */
+    @Override
     public void initialize() throws IllegalActionException {
         super.initialize();
         _startTime = System.currentTimeMillis();
@@ -98,6 +99,7 @@ public class RealTimePlotter extends Plotter {
      *   if the base class throws it.
      *  @return True if it is OK to continue.
      */
+    @Override
     public boolean postfire() throws IllegalActionException {
         long elapsedTime = System.currentTimeMillis() - _startTime;
         double currentTime = elapsedTime / 1000.0;

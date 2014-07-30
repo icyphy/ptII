@@ -109,7 +109,7 @@ public class MatrixSplit extends SDFTransformer {
         columnSplit.setExpression("{1}");
 
         output_tokenProductionRate
-                .setExpression("rowSplit.length() * columnSplit.length()");
+        .setExpression("rowSplit.length() * columnSplit.length()");
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -132,6 +132,7 @@ public class MatrixSplit extends SDFTransformer {
      *  @exception IllegalActionException If there is an error reading the inputs
      *   or parameters.
      */
+    @Override
     public void fire() throws IllegalActionException {
         super.fire();
         if (!input.hasToken(0)) {

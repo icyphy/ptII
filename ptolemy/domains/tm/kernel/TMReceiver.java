@@ -91,6 +91,7 @@ public class TMReceiver extends AbstractReceiver {
 
     /** Clear this receiver of any contained tokens.
      */
+    @Override
     public void clear() {
         _tokens.clear();
     }
@@ -99,6 +100,7 @@ public class TMReceiver extends AbstractReceiver {
      *  an empty list if there are no such tokens.
      *  @return A list of instances of Token.
      */
+    @Override
     public List<Token> elementList() {
         return _tokens;
     }
@@ -118,6 +120,7 @@ public class TMReceiver extends AbstractReceiver {
      *  @return A token.
      *  @exception NoTokenException Not thrown in this base class.
      */
+    @Override
     public synchronized Token get() throws NoTokenException {
         if (_tokens.isEmpty()) {
             throw new NoTokenException(getContainer(),
@@ -187,6 +190,7 @@ public class TMReceiver extends AbstractReceiver {
     /** Return true, indicating that there is always room.
      *  @return True.
      */
+    @Override
     public final boolean hasRoom() {
         return true;
     }
@@ -196,6 +200,7 @@ public class TMReceiver extends AbstractReceiver {
      *  @param tokens The number of tokens, currently ignored.
      *  @return True.
      */
+    @Override
     public final boolean hasRoom(int tokens) {
         return true;
     }
@@ -204,6 +209,7 @@ public class TMReceiver extends AbstractReceiver {
      *  get() method.
      *  @return True if there are more tokens.
      */
+    @Override
     public final boolean hasToken() {
         return !_tokens.isEmpty();
     }
@@ -213,6 +219,7 @@ public class TMReceiver extends AbstractReceiver {
      *  @param numberOfTokens The number of tokens, currently ignored.
      *  @return True if there are <i>numberOfTokens</i> tokens available.
      */
+    @Override
     public final boolean hasToken(int numberOfTokens) {
         return _tokens.size() >= numberOfTokens;
     }
@@ -231,6 +238,7 @@ public class TMReceiver extends AbstractReceiver {
      *  execute in the same thread as the director.
      *  @param token The token to be put, or null to put no token.
      */
+    @Override
     public synchronized void put(Token token) {
         if (token == null) {
             return;
@@ -266,8 +274,8 @@ public class TMReceiver extends AbstractReceiver {
                 } catch (ClassCastException ex) {
                     throw new InternalErrorException(null, ex,
                             "priorityValue '" + priority.getToken()
-                                    + "' must be an integer in "
-                                    + getContainer());
+                            + "' must be an integer in "
+                            + getContainer());
                 }
             }
 

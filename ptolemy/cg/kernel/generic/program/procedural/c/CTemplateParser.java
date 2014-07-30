@@ -24,7 +24,7 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
-*/
+ */
 
 package ptolemy.cg.kernel.generic.program.procedural.c;
 
@@ -56,7 +56,7 @@ perspective.
 @since Ptolemy II 10.0
 @Pt.ProposedRating Red (rodiers)
 @Pt.AcceptedRating Red (rodiers)
-*/
+ */
 
 public class CTemplateParser extends ProceduralTemplateParser {
 
@@ -85,6 +85,7 @@ public class CTemplateParser extends ProceduralTemplateParser {
      * @exception IllegalActionException If there is a problem getting the
      * adapters for the ports or if the conversion cannot be handled.
      */
+    @Override
     public String generateTypeConvertStatement(
             ProgramCodeGeneratorAdapter.Channel source,
             ProgramCodeGeneratorAdapter.Channel sink, int offset,
@@ -112,7 +113,7 @@ public class CTemplateParser extends ProceduralTemplateParser {
         if (alternativeSourceRef == null) {
             sourceRef = ((NamedProgramCodeGeneratorAdapter) codeGenerator
                     .getAdapter(source.port.getContainer())).getReference(
-                    sourcePortChannel, false);
+                            sourcePortChannel, false);
         } else {
             sourceRef = alternativeSourceRef;
         }
@@ -129,7 +130,7 @@ public class CTemplateParser extends ProceduralTemplateParser {
         }
         String sinkRef = ((NamedProgramCodeGeneratorAdapter) codeGenerator
                 .getAdapter(sink.port.getContainer())).getReference(
-                sinkPortChannel, true);
+                        sinkPortChannel, true);
 
         // When the sink port is contained by a modal controller, it is
         // possible that the port is both input and output port. we need
@@ -153,7 +154,7 @@ public class CTemplateParser extends ProceduralTemplateParser {
                     + "(" + result + ")";
         }
         return sinkRef + " = " + result + ";"
-                + StringUtilities.getProperty("line.separator");
+        + StringUtilities.getProperty("line.separator");
     }
 
     /** Return the translated token instance function invocation string.
@@ -163,14 +164,17 @@ public class CTemplateParser extends ProceduralTemplateParser {
      *  @exception IllegalActionException The given function string is
      *   not well-formed.
      */
+    @Override
     public String getFunctionInvocation(String functionString, boolean isStatic)
             throws IllegalActionException {
-        return super.getFunctionInvocation(functionString, isStatic).replace(".type", "->type");
-    }        
+        return super.getFunctionInvocation(functionString, isStatic).replace(
+                ".type", "->type");
+    }
 
     /** Return a new parse tree code generator to use with expressions.
      *  @return the parse tree code generator to use with expressions.
      */
+    @Override
     public ParseTreeCodeGenerator getParseTreeCodeGenerator() {
         // FIXME: We need to create new ParseTreeCodeGenerator each time
         // here or else we get lots of test failures.  It would be better
@@ -186,6 +190,7 @@ public class CTemplateParser extends ProceduralTemplateParser {
     /** Get the code generator associated with this adapter class.
      *  @return The code generator associated with this adapter class.
      */
+    @Override
     protected CCodeGenerator _getCodeGenerator() {
         return (CCodeGenerator) super._getCodeGenerator();
     }
@@ -199,6 +204,7 @@ public class CTemplateParser extends ProceduralTemplateParser {
      * @exception IllegalActionException Thrown if the given macro or
      *  parameter is not valid.
      */
+    @Override
     protected String _replaceMacro(String macro, String parameter)
             throws IllegalActionException {
         String result = super._replaceMacro(macro, parameter);
@@ -216,7 +222,7 @@ public class CTemplateParser extends ProceduralTemplateParser {
             if (port == null) {
                 throw new IllegalActionException(
                         parameter
-                                + " is not a port. $refinePrimitiveType macro takes in a port.");
+                        + " is not a port. $refinePrimitiveType macro takes in a port.");
             }
             if (_getCodeGenerator().isPrimitive(port.getType())) {
                 return ".payload."

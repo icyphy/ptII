@@ -101,6 +101,7 @@ public class NonStrictDelay extends Transformer {
      *  cannot be computed.
      *  @see #getCausalityInterface()
      */
+    @Override
     public void declareDelayDependency() throws IllegalActionException {
         if (getDirector() instanceof SRDirector) {
             _declareDelayDependency(input, output,
@@ -116,6 +117,7 @@ public class NonStrictDelay extends Transformer {
      *  assert that the output is empty.
      *  @exception IllegalActionException If there is no director.
      */
+    @Override
     public void fire() throws IllegalActionException {
         super.fire();
         if (_previousToken != null) {
@@ -141,6 +143,7 @@ public class NonStrictDelay extends Transformer {
     /** Initialize the state of the actor.
      *  @exception IllegalActionException If there is no director.
      */
+    @Override
     public void initialize() throws IllegalActionException {
         // Note that this will default to null if there is no initialValue set.
         _previousToken = initialValue.getToken();
@@ -151,6 +154,7 @@ public class NonStrictDelay extends Transformer {
      *  receiver has status unknown.
      *  @return False.
      */
+    @Override
     public boolean isStrict() {
         return false;
     }
@@ -160,6 +164,7 @@ public class NonStrictDelay extends Transformer {
      *  @exception IllegalActionException If the input is not
      *   known, or if there is no director.
      */
+    @Override
     public boolean postfire() throws IllegalActionException {
         if (input.isKnown(0)) {
             if (input.hasToken(0)) {

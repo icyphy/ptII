@@ -48,6 +48,7 @@ import java.util.Comparator;
  @Pt.ProposedRating Yellow (liuj)
  @Pt.AcceptedRating Yellow (hyzheng)
  */
+@Deprecated
 public class FuzzyDoubleComparator implements Comparator {
     /** Construct a FuzzyDoubleComparator. The compare threshold is
      *  1e-10
@@ -77,6 +78,7 @@ public class FuzzyDoubleComparator implements Comparator {
      *  @param second The second Double object.
      *  @return The comparison result, -1, 0, or 1.
      */
+    @Override
     public int compare(Object first, Object second) {
         double firstValue = ((Double) first).doubleValue();
         double secondValue = ((Double) second).doubleValue();

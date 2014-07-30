@@ -108,6 +108,7 @@ public final class DefaultComponentFactory implements ComponentFactory {
      *     may contain an ampersand (<tt>&amp;</tt>) to mark a mnemonic
      * @return an label with optional mnemonic
      */
+    @Override
     public JLabel createLabel(String textWithMnemonic) {
         JLabel label = new JLabel();
         setTextAndMnemonic(label, textWithMnemonic);
@@ -129,6 +130,7 @@ public final class DefaultComponentFactory implements ComponentFactory {
      *     may contain an ampersand (<tt>&amp;</tt>) to mark a mnemonic
      * @return an emphasized title label
      */
+    @Override
     public JLabel createTitle(String textWithMnemonic) {
         JLabel label = new TitleLabel();
         setTextAndMnemonic(label, textWithMnemonic);
@@ -175,6 +177,7 @@ public final class DefaultComponentFactory implements ComponentFactory {
      *     <code>SwingConstants.CENTER</code>, <code>SwingConstants.RIGHT</code>
      * @return a separator with title label
      */
+    @Override
     public JComponent createSeparator(String textWithMnemonic, int alignment) {
         if (textWithMnemonic == null || textWithMnemonic.length() == 0) {
             return new JSeparator();
@@ -280,7 +283,7 @@ public final class DefaultComponentFactory implements ComponentFactory {
      * A label that uses the TitleBorder font and color.
      */
     @SuppressWarnings("serial")
-        private static final class TitleLabel extends JLabel {
+    private static final class TitleLabel extends JLabel {
 
         private TitleLabel() {
             // Just invoke the super constructor.
@@ -291,6 +294,7 @@ public final class DefaultComponentFactory implements ComponentFactory {
          * a <code>TitledBorder</code> instance for its font and color using
          * <code>#getTitleFont</code> and <code>#getTitleColor</code> resp.
          */
+        @Override
         public void updateUI() {
             super.updateUI();
             Color foreground = getTitleColor();
@@ -348,6 +352,7 @@ public final class DefaultComponentFactory implements ComponentFactory {
          * @param name the string to be associated with the component
          * @param comp the component to be added
          */
+        @Override
         public void addLayoutComponent(String name, Component comp) {
             // Does nothing.
         }
@@ -359,6 +364,7 @@ public final class DefaultComponentFactory implements ComponentFactory {
          *
          * @param comp the component to be removed
          */
+        @Override
         public void removeLayoutComponent(Component comp) {
             // Does nothing.
         }
@@ -372,6 +378,7 @@ public final class DefaultComponentFactory implements ComponentFactory {
          * @return the container's minimum size.
          * @see #preferredLayoutSize(Container)
          */
+        @Override
         public Dimension minimumLayoutSize(Container parent) {
             return preferredLayoutSize(parent);
         }
@@ -385,6 +392,7 @@ public final class DefaultComponentFactory implements ComponentFactory {
          * @return the container's preferred size.
          * @see #minimumLayoutSize(Container)
          */
+        @Override
         public Dimension preferredLayoutSize(Container parent) {
             Component label = getLabel(parent);
             Dimension labelSize = label.getPreferredSize();
@@ -399,6 +407,7 @@ public final class DefaultComponentFactory implements ComponentFactory {
          *
          * @param parent the container to be laid out
          */
+        @Override
         public void layoutContainer(Container parent) {
             synchronized (parent.getTreeLock()) {
                 // Look up the parent size and insets

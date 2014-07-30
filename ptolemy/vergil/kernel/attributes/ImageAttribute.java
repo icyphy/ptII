@@ -120,6 +120,7 @@ public class ImageAttribute extends VisibleAttribute {
      *  @exception IllegalActionException If the change is not acceptable
      *   to this container (should not be thrown).
      */
+    @Override
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         if (attribute == source) {
@@ -143,6 +144,7 @@ public class ImageAttribute extends VisibleAttribute {
      *  @exception CloneNotSupportedException Not thrown in this base class
      *  @return The new Attribute.
      */
+    @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         ImageAttribute newObject = (ImageAttribute) super.clone(workspace);
         newObject._icon = (ImageIcon) newObject.getAttribute("_icon");

@@ -73,6 +73,7 @@ public class ChicControllerFactory extends NodeControllerFactory {
      *  @param controller The associated graph controller.
      *  @return A new node controller.
      */
+    @Override
     public NamedObjController create(GraphController controller) {
         return new ChicController(controller);
     }

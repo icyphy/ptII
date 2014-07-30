@@ -125,6 +125,7 @@ public class ImageSequence extends Source {
      *  @exception IllegalActionException If any of the input files could not
      *  be read.
      */
+    @Override
     public void initialize() throws IllegalActionException {
         super.initialize();
 
@@ -222,6 +223,7 @@ public class ImageSequence extends Source {
      *  Output the next image in the sequence.  If the sequence has no more
      *  images, then loop back to the first image in the sequence.
      */
+    @Override
     public void fire() throws IllegalActionException {
         super.fire();
 

@@ -91,6 +91,7 @@ import ptolemy.kernel.util.Workspace;
  @Pt.AcceptedRating Red (yuhong)
  @deprecated Use Clock instead.
  */
+@Deprecated
 public class SequentialClock extends TypedAtomicActor implements SequenceActor {
     // NOTE: This cannot extend Source, because it doesn't have a trigger
     // input.  This is too bad, since it results in a lot of duplicated
@@ -172,6 +173,7 @@ public class SequentialClock extends TypedAtomicActor implements SequenceActor {
      *  @exception IllegalActionException If the offsets array is not
      *   nondecreasing and nonnegative, or it is not a row vector.
      */
+    @Override
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         if (attribute == offsets) {
@@ -215,6 +217,7 @@ public class SequentialClock extends TypedAtomicActor implements SequenceActor {
      *  @exception CloneNotSupportedException If a derived class contains
      *   an attribute that cannot be cloned.
      */
+    @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         SequentialClock newObject = (SequentialClock) super.clone(workspace);
         try {
@@ -232,6 +235,7 @@ public class SequentialClock extends TypedAtomicActor implements SequenceActor {
      *   the value in the offsets parameter is encountered that is greater
      *   than the period, or if there is no director.
      */
+    @Override
     public void fire() throws IllegalActionException {
         super.fire();
         output.send(0, _currentValue);
@@ -243,6 +247,7 @@ public class SequentialClock extends TypedAtomicActor implements SequenceActor {
      *   fireAt() method of the director throws it, or if the director does not
      *   agree to fire the actor at the specified time.
      */
+    @Override
     public synchronized void initialize() throws IllegalActionException {
         super.initialize();
 
@@ -268,6 +273,7 @@ public class SequentialClock extends TypedAtomicActor implements SequenceActor {
      *   scheduling the next firing, or if the length of the values and
      *   offsets parameters don't match.
      */
+    @Override
     public boolean postfire() throws IllegalActionException {
         if (!super.postfire()) {
             return false;
@@ -292,8 +298,8 @@ public class SequentialClock extends TypedAtomicActor implements SequenceActor {
         if (_offsets[_phase] >= periodValue) {
             throw new IllegalActionException(this, "Offset number " + _phase
                     + " with value " + _offsets[_phase]
-                    + " must be less than the " + "period, which is "
-                    + periodValue);
+                            + " must be less than the " + "period, which is "
+                            + periodValue);
         }
 
         Time nextIterationTime = _cycleStartTime.add(_offsets[_phase]);
@@ -306,6 +312,7 @@ public class SequentialClock extends TypedAtomicActor implements SequenceActor {
      *  @return True.
      *  @exception IllegalActionException If there is no director.
      */
+    @Override
     public boolean prefire() throws IllegalActionException {
         if (!super.prefire()) {
             return false;

@@ -94,6 +94,7 @@ public class RefinementPort extends TypedIOPort {
      *  @return True if this port does not have any inside links,
      *   or the super class method returns true.
      */
+    @Override
     public boolean isTypeAcceptable() {
         if (numInsideLinks() == 0) {
             return true;
@@ -104,6 +105,7 @@ public class RefinementPort extends TypedIOPort {
 
     /** Set the connected relation to a bus if this port is a multiport.
      */
+    @Override
     public void link(Relation relation) throws IllegalActionException {
         super.link(relation);
 
@@ -122,6 +124,7 @@ public class RefinementPort extends TypedIOPort {
      *  @exception IllegalActionException If this object has
      *   no container.
      */
+    @Override
     public int moveDown() throws IllegalActionException {
         boolean disableStatus = _mirrorDisable;
 
@@ -178,6 +181,7 @@ public class RefinementPort extends TypedIOPort {
      *  @exception IllegalActionException If this object has
      *   no container.
      */
+    @Override
     public int moveToFirst() throws IllegalActionException {
         boolean disableStatus = _mirrorDisable;
 
@@ -236,6 +240,7 @@ public class RefinementPort extends TypedIOPort {
      *  @exception IllegalActionException If this object has
      *   no container or if the index is out of bounds.
      */
+    @Override
     public int moveToIndex(int index) throws IllegalActionException {
         boolean disableStatus = _mirrorDisable;
 
@@ -292,6 +297,7 @@ public class RefinementPort extends TypedIOPort {
      *  @exception IllegalActionException If this object has
      *   no container.
      */
+    @Override
     public int moveToLast() throws IllegalActionException {
         boolean disableStatus = _mirrorDisable;
 
@@ -345,6 +351,7 @@ public class RefinementPort extends TypedIOPort {
      *  @exception IllegalActionException If this object has
      *   no container.
      */
+    @Override
     public int moveUp() throws IllegalActionException {
         boolean disableStatus = _mirrorDisable;
 
@@ -402,8 +409,9 @@ public class RefinementPort extends TypedIOPort {
      *  @exception NameDuplicationException If the container already has
      *   a port with the name of this port.
      */
+    @Override
     public void setContainer(Entity container) throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         NamedObj oldContainer = getContainer();
 
         if (container == oldContainer) {
@@ -461,6 +469,7 @@ public class RefinementPort extends TypedIOPort {
      *  @exception IllegalActionException If changing the port status is
      *   not permitted.
      */
+    @Override
     public void setInput(boolean isInput) throws IllegalActionException {
         boolean disableStatus = _mirrorDisable;
 
@@ -521,6 +530,7 @@ public class RefinementPort extends TypedIOPort {
      *  @exception IllegalActionException If changing the port status is
      *   not permitted.
      */
+    @Override
     public void setMultiport(boolean isMultiport) throws IllegalActionException {
         boolean disableStatus = _mirrorDisable;
 
@@ -568,8 +578,9 @@ public class RefinementPort extends TypedIOPort {
      *  @exception NameDuplicationException If there is already a port
      *   with the same name in the container.
      */
+    @Override
     public void setName(String name) throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         boolean disableStatus = _mirrorDisable;
 
         try {
@@ -624,6 +635,7 @@ public class RefinementPort extends TypedIOPort {
      *  @exception IllegalActionException If changing the port status is
      *   not permitted.
      */
+    @Override
     public void setOutput(boolean isOutput) throws IllegalActionException {
         boolean disableStatus = _mirrorDisable;
 

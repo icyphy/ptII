@@ -23,7 +23,7 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
-*/
+ */
 
 package ptolemy.actor.lib.opencv.optimize;
 
@@ -71,6 +71,7 @@ public class Invert extends SharedBufferTransformer {
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
+    @Override
     protected void _fireExclusive() throws IllegalActionException {
         if (input.hasToken(0)) {
             ObjectToken inputToken = (ObjectToken) input.get(0);
@@ -95,6 +96,7 @@ public class Invert extends SharedBufferTransformer {
     /** Output an OpenCV Object.
      *  @exception IllegalActionException If thrown while writing to the port.
      */
+    @Override
     protected void _fireCopying() throws IllegalActionException {
         if (input.hasToken(0)) {
             ObjectToken inputToken = (ObjectToken) input.get(0);

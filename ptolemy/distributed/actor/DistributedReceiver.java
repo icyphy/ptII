@@ -60,30 +60,35 @@ public class DistributedReceiver extends AbstractReceiver {
 
     /** Empty implementation of the inherited abstract method.
      */
+    @Override
     public Token get() throws NoTokenException {
         return null;
     }
 
     /** Empty implementation of the inherited abstract method.
      */
+    @Override
     public boolean hasRoom() {
         return false;
     }
 
     /** Empty implementation of the inherited abstract method.
      */
+    @Override
     public boolean hasRoom(int numberOfTokens) {
         return false;
     }
 
     /** Empty implementation of the inherited abstract method.
      */
+    @Override
     public boolean hasToken() {
         return false;
     }
 
     /** Empty implementation of the inherited abstract method.
      */
+    @Override
     public boolean hasToken(int numberOfTokens) {
         return false;
     }
@@ -95,6 +100,7 @@ public class DistributedReceiver extends AbstractReceiver {
      *  @exception IllegalActionException If the put fails
      *   (e.g. because of incompatible types).
      */
+    @Override
     public void put(Token token) throws IllegalActionException {
         if (token == null) {
             return;

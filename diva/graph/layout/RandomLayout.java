@@ -62,6 +62,7 @@ public class RandomLayout extends AbstractGlobalLayout {
      * about the layout except that it will fall into the required
      * viewport.
      */
+    @Override
     public void layout(Object composite) {
         LayoutTarget target = getLayoutTarget();
         GraphModel model = target.getGraphModel();

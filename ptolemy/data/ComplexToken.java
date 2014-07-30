@@ -93,6 +93,7 @@ public class ComplexToken extends ScalarToken {
     /** Return the value of this token as a Complex.
      *  @return The value of this token as a Complex
      */
+    @Override
     public Complex complexValue() {
         // Complex is immutable, so we can just return the value.
         return _value;
@@ -136,7 +137,7 @@ public class ComplexToken extends ScalarToken {
             ComplexToken result = new ComplexToken(doubleToken.complexValue());
             if (doubleToken._unitCategoryExponents != null
                     && !UnitUtilities
-                            .isUnitless(doubleToken._unitCategoryExponents)) {
+                    .isUnitless(doubleToken._unitCategoryExponents)) {
                 result._unitCategoryExponents = doubleToken
                         ._copyOfCategoryExponents();
             }
@@ -155,6 +156,7 @@ public class ComplexToken extends ScalarToken {
      *  @return True if the argument is a ComplexToken with the
      *  same value.
      */
+    @Override
     public boolean equals(Object object) {
         if (object == null) {
             return false;
@@ -175,6 +177,7 @@ public class ComplexToken extends ScalarToken {
      *  Nil or missing tokens occur when a data source is sparsely populated.
      *  @return True if the token is the {@link #NIL} token.
      */
+    @Override
     public boolean isNil() {
         // We use a method here so that we can easily change how
         // we determine if a token is nil without modify lots of classes.
@@ -185,6 +188,7 @@ public class ComplexToken extends ScalarToken {
     /** Return the type of this token.
      *  @return BaseType.COMPLEX
      */
+    @Override
     public Type getType() {
         return BaseType.COMPLEX;
     }
@@ -193,6 +197,7 @@ public class ComplexToken extends ScalarToken {
      *  integer portion of the magnitude of the contained complex number.
      *  @return A hash code value for this token.
      */
+    @Override
     public int hashCode() {
         return (int) _value.magnitude();
     }
@@ -200,6 +205,7 @@ public class ComplexToken extends ScalarToken {
     /** Returns a new ComplexToken with value 1.0.
      *  @return A new ComplexToken with value 1.0.
      */
+    @Override
     public Token one() {
         return new ComplexToken(new Complex(1.0));
     }
@@ -208,6 +214,7 @@ public class ComplexToken extends ScalarToken {
      *  by the expression language to recover a token with the same value.
      *  @return A String formed using java.lang.Complex.toString().
      */
+    @Override
     public String toString() {
         String unitString = "";
 
@@ -226,6 +233,7 @@ public class ComplexToken extends ScalarToken {
     /** Returns a new ComplexToken with value Complex.ZERO.
      *  @return A new ComplexToken with value Complex.ZERO.
      */
+    @Override
     public Token zero() {
         return new ComplexToken(Complex.ZERO);
     }
@@ -252,6 +260,7 @@ public class ComplexToken extends ScalarToken {
      *  token, since the units are the same.
      *  @return A DoubleToken.
      */
+    @Override
     protected ScalarToken _absolute() {
         DoubleToken result = new DoubleToken(_value.magnitude());
         return result;
@@ -263,6 +272,7 @@ public class ComplexToken extends ScalarToken {
      *  @param rightArgument The token to add to this token.
      *  @return A new ComplexToken containing the result.
      */
+    @Override
     protected ScalarToken _add(ScalarToken rightArgument) {
         Complex result = _value.add(((ComplexToken) rightArgument)
                 .complexValue());
@@ -274,6 +284,7 @@ public class ComplexToken extends ScalarToken {
      *  @exception IllegalActionException Always thrown.
      *  @return An exception.
      */
+    @Override
     protected ScalarToken _bitwiseAnd(ScalarToken rightArgument)
             throws IllegalActionException {
         throw new IllegalActionException(notSupportedMessage("bitwiseAnd",
@@ -284,6 +295,7 @@ public class ComplexToken extends ScalarToken {
      *  @exception IllegalActionException Always thrown.
      *  @return An exception.
      */
+    @Override
     protected ScalarToken _bitwiseNot() throws IllegalActionException {
         throw new IllegalActionException(notSupportedMessage("bitwiseNot",
                 this, this));
@@ -294,6 +306,7 @@ public class ComplexToken extends ScalarToken {
      *  @exception IllegalActionException Always thrown.
      *  @return An exception.
      */
+    @Override
     protected ScalarToken _bitwiseOr(ScalarToken rightArgument)
             throws IllegalActionException {
         throw new IllegalActionException(notSupportedMessage("bitwiseOr", this,
@@ -305,6 +318,7 @@ public class ComplexToken extends ScalarToken {
      *  @exception IllegalActionException Always thrown.
      *  @return An exception.
      */
+    @Override
     protected ScalarToken _bitwiseXor(ScalarToken rightArgument)
             throws IllegalActionException {
         throw new IllegalActionException(notSupportedMessage("bitwiseXor",
@@ -318,6 +332,7 @@ public class ComplexToken extends ScalarToken {
      *  @return A new ComplexToken containing the result.
      *  @exception IllegalActionException Not thrown by this base class.
      */
+    @Override
     protected ScalarToken _divide(ScalarToken rightArgument)
             throws IllegalActionException {
         Complex result = _value.divide(((ComplexToken) rightArgument)
@@ -337,6 +352,7 @@ public class ComplexToken extends ScalarToken {
      *  @return A true-valued rightArgument if the first argument is
      *  close in value to this rightArgument.
      */
+    @Override
     protected BooleanToken _isCloseTo(ScalarToken rightArgument, double epsilon) {
         return BooleanToken.getInstance(complexValue().isCloseTo(
                 ((ComplexToken) rightArgument).complexValue(), epsilon));
@@ -347,6 +363,7 @@ public class ComplexToken extends ScalarToken {
      *  @exception IllegalActionException Always thrown.
      *  @return An exception.
      */
+    @Override
     protected BooleanToken _isLessThan(ScalarToken rightArgument)
             throws IllegalActionException {
         throw new IllegalActionException(notSupportedMessage("isLessThan",
@@ -360,6 +377,7 @@ public class ComplexToken extends ScalarToken {
      *  @exception IllegalActionException Always thrown.
      *  @return An exception.
      */
+    @Override
     protected ScalarToken _modulo(ScalarToken rightArgument)
             throws IllegalActionException {
         throw new IllegalActionException(notSupportedMessage("modulo", this,
@@ -372,6 +390,7 @@ public class ComplexToken extends ScalarToken {
      *  @param rightArgument The token to multiply this token by.
      *  @return A new ComplexToken containing the result.
      */
+    @Override
     protected ScalarToken _multiply(ScalarToken rightArgument) {
         Complex result = _value.multiply(((ComplexToken) rightArgument)
                 .complexValue());
@@ -384,6 +403,7 @@ public class ComplexToken extends ScalarToken {
      *  @param rightArgument The token to subtract from this token.
      *  @return A new ComplexToken containing the result.
      */
+    @Override
     protected ScalarToken _subtract(ScalarToken rightArgument) {
         Complex result = _value.subtract(((ComplexToken) rightArgument)
                 .complexValue());

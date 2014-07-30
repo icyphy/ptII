@@ -25,7 +25,7 @@ ENHANCEMENTS, OR MODIFICATIONS.
                                                 PT_COPYRIGHT_VERSION_2
                                                 COPYRIGHTENDKEY
 
-*/
+ */
 
 package ptolemy.domains.metroII.kernel;
 
@@ -93,7 +93,7 @@ public class MetroIIPtidesPort extends MirrorPort {
         isNetworkPort.setExpression("false");
 
         actuateAtEventTimestamp = new Parameter(this, "actuateAtEventTimestamp");
-        actuateAtEventTimestamp.setVisibility(Settable.NOT_EDITABLE); 
+        actuateAtEventTimestamp.setVisibility(Settable.NOT_EDITABLE);
         actuateAtEventTimestamp.setTypeEquals(BaseType.BOOLEAN);
         actuateAtEventTimestamp.setExpression("false");
         _actuateAtEventTimestamp = false;
@@ -181,7 +181,7 @@ public class MetroIIPtidesPort extends MirrorPort {
             /**
              * the option is disabled in MetroIIPtides
              */
-            actuateAtEventTimestamp.setVisibility(Settable.NOT_EDITABLE); 
+            actuateAtEventTimestamp.setVisibility(Settable.NOT_EDITABLE);
             // _actuateAtEventTimestamp = ((BooleanToken) actuateAtEventTimestamp
             //         .getToken()).booleanValue();
         } else {
@@ -329,52 +329,52 @@ public class MetroIIPtidesPort extends MirrorPort {
                 platformDelayBound.setVisibility(Settable.NONE);
                 sourcePlatformDelayBound.setVisibility(Settable.NONE);
                 _iconDescription
-                        .configure(
-                                null,
-                                null,
-                                "<svg>\n"
-                                        + "<polygon points=\"-8, 8, 8, 8, 8, 4, 12, 0, 8, -4, 8, -8, -8, -8\" "
-                                        + "style=\"fill:black\"/>\n"
-                                        + "</svg>\n");
+                .configure(
+                        null,
+                        null,
+                        "<svg>\n"
+                                + "<polygon points=\"-8, 8, 8, 8, 8, 4, 12, 0, 8, -4, 8, -8, -8, -8\" "
+                                + "style=\"fill:black\"/>\n"
+                                + "</svg>\n");
             } else if (isActuatorPort()) {
                 actuateAtEventTimestamp.setVisibility(Settable.FULL);
                 networkDelayBound.setVisibility(Settable.NONE);
                 platformDelayBound.setVisibility(Settable.NONE);
                 sourcePlatformDelayBound.setVisibility(Settable.NONE);
                 _iconDescription
-                        .configure(
-                                null,
-                                null,
-                                "<svg>\n"
-                                        + "<polygon points=\"-8, 8, 8, 8, 8, -8, -8, -8, -8, -4, -12, 0, -8, 4\" "
-                                        + "style=\"fill:black\"/>\n"
-                                        + "</svg>\n");
+                .configure(
+                        null,
+                        null,
+                        "<svg>\n"
+                                + "<polygon points=\"-8, 8, 8, 8, 8, -8, -8, -8, -8, -4, -12, 0, -8, 4\" "
+                                + "style=\"fill:black\"/>\n"
+                                + "</svg>\n");
             } else if (isNetworkReceiverPort()) {
                 actuateAtEventTimestamp.setVisibility(Settable.NONE);
                 networkDelayBound.setVisibility(Settable.FULL);
                 platformDelayBound.setVisibility(Settable.NONE);
                 sourcePlatformDelayBound.setVisibility(Settable.FULL);
                 _iconDescription
-                        .configure(
-                                null,
-                                null,
-                                "<svg>\n"
-                                        + "<polygon points=\"-8, 8, 8, 8, 8, 4, 12, 4, 12, -4, 8, -4, 8, -8, -8, -8\" "
-                                        + "style=\"fill:black\"/>\n"
-                                        + "</svg>\n");
+                .configure(
+                        null,
+                        null,
+                        "<svg>\n"
+                                + "<polygon points=\"-8, 8, 8, 8, 8, 4, 12, 4, 12, -4, 8, -4, 8, -8, -8, -8\" "
+                                + "style=\"fill:black\"/>\n"
+                                + "</svg>\n");
             } else if (isNetworkTransmitterPort()) {
                 actuateAtEventTimestamp.setVisibility(Settable.NONE);
                 networkDelayBound.setVisibility(Settable.NONE);
                 platformDelayBound.setVisibility(Settable.FULL);
                 sourcePlatformDelayBound.setVisibility(Settable.NONE);
                 _iconDescription
-                        .configure(
-                                null,
-                                null,
-                                "<svg>\n"
-                                        + "<polygon points=\"-8, 8, 8, 8, 8, -8, -8, -8, -8, -4, -12, -4, -12, 4, -8, 4\" "
-                                        + "style=\"fill:black\"/>\n"
-                                        + "</svg>\n");
+                .configure(
+                        null,
+                        null,
+                        "<svg>\n"
+                                + "<polygon points=\"-8, 8, 8, 8, 8, -8, -8, -8, -8, -4, -12, -4, -12, 4, -8, 4\" "
+                                + "style=\"fill:black\"/>\n"
+                                + "</svg>\n");
             }
         } catch (Exception e) {
             throw new IllegalActionException(this, e.getMessage());

@@ -105,6 +105,7 @@ public class Scale2D extends GRTransform2D {
      *  @exception IllegalActionException If the getToken() method
      *  throws such an exception.
      */
+    @Override
     protected void _applyInitialTransform(Figure figure)
             throws IllegalActionException {
         _oldScaleFactorX = ((DoubleToken) initialScaleFactorX.getToken())
@@ -121,6 +122,7 @@ public class Scale2D extends GRTransform2D {
      *  @exception IllegalActionException If the getToken() method throws
      *  such an exception.
      */
+    @Override
     protected void _applyTransform(Figure figure) throws IllegalActionException {
         double scaleFactorXValue = 1.0;
         double scaleFactorYValue = 1.0;

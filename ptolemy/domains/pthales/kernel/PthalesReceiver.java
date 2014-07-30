@@ -71,7 +71,7 @@ public class PthalesReceiver extends SDFReceiver {
     public void checkArray(LinkedHashMap<String, Integer[]> baseSpec,
             LinkedHashMap<String, Integer[]> patternSpec,
             LinkedHashMap<String, Integer[]> tilingSpec, List<String> dimensions)
-            throws IllegalActionException {
+                    throws IllegalActionException {
 
         /* FIXME: Checks for validity of array needed here.
          */
@@ -79,6 +79,7 @@ public class PthalesReceiver extends SDFReceiver {
 
     /** Do nothing.
      */
+    @Override
     public void clear() {
         // Ignore
     }
@@ -89,6 +90,7 @@ public class PthalesReceiver extends SDFReceiver {
      *  of this method.
      *  @return A list of instances of Token.
      */
+    @Override
     public List<Token> elementList() {
         // FIXME: implement this.
         return new LinkedList();
@@ -151,6 +153,7 @@ public class PthalesReceiver extends SDFReceiver {
      *  @return A token read from the receiver.
      *  @exception NoTokenException If there is no token.
      */
+    @Override
     public Token get() throws NoTokenException {
         if (_buffer != null) {
             Token result = null;
@@ -185,6 +188,7 @@ public class PthalesReceiver extends SDFReceiver {
      *  @exception NoTokenException If there are not <i>numberOfTokens</i>
      *   tokens.
      */
+    @Override
     public Token[] getArray(int numberOfTokens) throws NoTokenException {
         Token[] result = new Token[numberOfTokens];
 
@@ -198,6 +202,7 @@ public class PthalesReceiver extends SDFReceiver {
     /** Return true if the buffer can contain one more token.
      *  @return true or false.
      */
+    @Override
     public boolean hasRoom() {
         return _getAddress(_positionOut, false) < _buffer.length;
     }
@@ -206,6 +211,7 @@ public class PthalesReceiver extends SDFReceiver {
      *  @param numberOfTokens the number of needed places to put tokens
      *  @return true or false.
      */
+    @Override
     public boolean hasRoom(int numberOfTokens) {
         return _getAddress(_positionOut + numberOfTokens - 1, false) < _buffer.length;
     }
@@ -213,6 +219,7 @@ public class PthalesReceiver extends SDFReceiver {
     /** Return if the buffer contains 1 more token to be read.
      *  @return True.
      */
+    @Override
     public boolean hasToken() {
         return _getAddress(_positionIn, true) < _buffer.length;
     }
@@ -221,6 +228,7 @@ public class PthalesReceiver extends SDFReceiver {
      *  @param numberOfTokens the number of needed tokens
      *  @return True.
      */
+    @Override
     public boolean hasToken(int numberOfTokens) {
         return _getAddress(_positionIn + numberOfTokens - 1, true) < _buffer.length;
     }
@@ -241,6 +249,7 @@ public class PthalesReceiver extends SDFReceiver {
     /** Return true.
      *  @return True.
      */
+    @Override
     public boolean isKnown() {
         return true;
     }
@@ -252,6 +261,7 @@ public class PthalesReceiver extends SDFReceiver {
      *  @param token The token to put into the receiver.
      *  @exception NoRoomException If there is no room in the receiver.
      */
+    @Override
     public void put(Token token) {
         if (_buffer != null) {
             if (!_dynamic) {
@@ -293,7 +303,7 @@ public class PthalesReceiver extends SDFReceiver {
                         }
                         if (_buffer == null || _buffer.length < finalSize) {
                             _buffer = new Token[finalSize
-                                    * ((IntToken) _header.get(1)).intValue()];
+                                                * ((IntToken) _header.get(1)).intValue()];
                         }
 
                         // Address jump for each dimension, determined by output port only
@@ -352,6 +362,7 @@ public class PthalesReceiver extends SDFReceiver {
      *  @exception IllegalActionException If the token is not acceptable
      *   to one of the ports (e.g., wrong type).
      */
+    @Override
     public void putArray(Token[] tokenArray, int numberOfTokens)
             throws NoRoomException, IllegalActionException {
         for (int i = 0; i < numberOfTokens; i++) {
@@ -370,6 +381,7 @@ public class PthalesReceiver extends SDFReceiver {
      *  @exception IllegalActionException If the token is not acceptable
      *   to one of the ports (e.g., wrong type).
      */
+    @Override
     public void putArrayToAll(Token[] tokens, int numberOfTokens,
             Receiver[] receivers) throws NoRoomException,
             IllegalActionException {
@@ -392,6 +404,7 @@ public class PthalesReceiver extends SDFReceiver {
      *  @exception IllegalActionException If the token is not acceptable
      *   to one of the ports (e.g., wrong type).
      */
+    @Override
     public void putToAll(Token token, Receiver[] receivers)
             throws NoRoomException, IllegalActionException {
         for (Receiver receiver : receivers) {
@@ -404,6 +417,7 @@ public class PthalesReceiver extends SDFReceiver {
      *  @exception IllegalActionException If reset() is not supported by
      *   the domain.
      */
+    @Override
     public void reset() throws IllegalActionException {
         _positionIn = 0;
         _positionOut = 0;
@@ -469,7 +483,7 @@ public class PthalesReceiver extends SDFReceiver {
         int finalSize = PthalesIOPort.getArraySize(port);
         if (_buffer == null || _buffer.length < finalSize) {
             _buffer = new Token[finalSize
-                    * PthalesIOPort.getNbTokenPerData(port)];
+                                * PthalesIOPort.getNbTokenPerData(port)];
         }
 
         // Computed for output ports only

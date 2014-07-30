@@ -78,6 +78,7 @@ public class LempelZivDecoder extends Transformer {
      *  @exception IllegalActionException if the input is not a decodable
      *  Lempel-Ziv code.
      */
+    @Override
     public void fire() throws IllegalActionException {
         super.fire();
         Token[] inputToken = input.get(0, 2);
@@ -109,6 +110,7 @@ public class LempelZivDecoder extends Transformer {
      *  contains one empty string "".
      *  @exception IllegalActionException If thrown by a super class.
      */
+    @Override
     public void initialize() throws IllegalActionException {
         super.initialize();
         _decodeBook = new LinkedList();

@@ -85,9 +85,9 @@ customization is to require a PtolemyFormEditor constructor argument.
 @since Ptolemy II 8.0
 @Pt.ProposedRating Yellow (eal)
 @Pt.AcceptedRating Red (cxh)
-*/
+ */
 public class PaletteList extends JList implements DragSourceListener,
-        DragGestureListener {
+DragGestureListener {
 
     /** Construct a PaletteList.
      * @param editor The form editor
@@ -118,24 +118,28 @@ public class PaletteList extends JList implements DragSourceListener,
     /** In this derived class, do nothing.
      *  @param dragSourceDropEvent Ignored.
      */
+    @Override
     public void dragDropEnd(java.awt.dnd.DragSourceDropEvent dragSourceDropEvent) {
     }
 
     /** In this derived class, do nothing.
      *  @param dragSourceDragEvent Ignored.
      */
+    @Override
     public void dragEnter(java.awt.dnd.DragSourceDragEvent dragSourceDragEvent) {
     }
 
     /** In this derived class, do nothing.
      *  @param dragSourceEvent Ignored.
      */
+    @Override
     public void dragExit(java.awt.dnd.DragSourceEvent dragSourceEvent) {
     }
 
     /** Start the drag.
      *  @param event The event that starts the drag if it has an index.
      */
+    @Override
     public void dragGestureRecognized(DragGestureEvent event) {
         int dragIndex = locationToIndex(event.getDragOrigin());
         if (dragIndex >= 0) {
@@ -148,6 +152,7 @@ public class PaletteList extends JList implements DragSourceListener,
     /** In this derived class, do nothing.
      *  @param dragSourceDragEvent Ignored.
      */
+    @Override
     public void dragOver(java.awt.dnd.DragSourceDragEvent dragSourceDragEvent) {
     }
 
@@ -160,6 +165,7 @@ public class PaletteList extends JList implements DragSourceListener,
     /** In this derived class, do nothing.
      *  @param dragSourceDragEvent Ignored.
      */
+    @Override
     public void dropActionChanged(
             java.awt.dnd.DragSourceDragEvent dragSourceDragEvent) {
     }
@@ -168,6 +174,7 @@ public class PaletteList extends JList implements DragSourceListener,
      *  @param evt The event
      *  @return The tool tip text, if any.
      */
+    @Override
     public String getToolTipText(MouseEvent evt) {
         // return a tooltip for the specific entry in the list
         // Get item index

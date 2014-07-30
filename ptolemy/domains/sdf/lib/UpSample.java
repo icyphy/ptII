@@ -114,6 +114,7 @@ public class UpSample extends SDFTransformer {
      *  @param attribute The attribute that has changed.
      *  @exception IllegalActionException If the parameters are out of range.
      */
+    @Override
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         if (attribute == factor) {
@@ -143,6 +144,7 @@ public class UpSample extends SDFTransformer {
      *  exception).
      *  @exception IllegalActionException If a runtime type conflict occurs.
      */
+    @Override
     public void fire() throws IllegalActionException {
         super.fire();
 

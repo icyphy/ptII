@@ -43,7 +43,7 @@ import java.util.Random;
  *  @since Ptolemy II 10.0
  *  @Pt.ProposedRating Red (jkillian)
  *  @Pt.AcceptedRating Red (jkillian)
-*/
+ */
 @SuppressWarnings("serial")
 public class Ticket implements java.io.Serializable {
 

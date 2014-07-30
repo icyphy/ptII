@@ -24,7 +24,7 @@
    PT_COPYRIGHT_VERSION_2
    COPYRIGHTENDKEY
 
-*/
+ */
 
 package ptolemy.util.test.junit;
 
@@ -78,6 +78,7 @@ public class Auto32Tests extends ModelTests {
      * @return The List of model names in auto/
      * @exception IOException If there is a problem accessing the auto/ directory.
      */
+    @Override
     public Object[] modelValues() throws IOException {
         return modelValues("auto32/", THERE_ARE_NO_AUTO_TESTS);
     }
@@ -101,7 +102,7 @@ public class Auto32Tests extends ModelTests {
      * @exception Throwable
      *                If thrown while executing the model.
      */
-    @Test(timeout=140000)
+    @Test(timeout = 140000)
     @Parameters(method = "modelValues")
     public void RunModel(String fullPath) throws Throwable {
         if (fullPath.endsWith(THERE_ARE_NO_AUTO_TESTS)) {
@@ -141,7 +142,7 @@ public class Auto32Tests extends ModelTests {
                 && !StringUtilities.getProperty(
                         "net.sourceforge.cobertura.datafile").equals("")) {
             System.err
-                    .println("ModelTests: Skipping de/test/auto/ThreadedComposite.xml because it interacts badly with Cobertura.");
+            .println("ModelTests: Skipping de/test/auto/ThreadedComposite.xml because it interacts badly with Cobertura.");
             return false;
         }
         return true;

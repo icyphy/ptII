@@ -37,15 +37,15 @@ import ptolemy.kernel.util.NameDuplicationException;
 //// AddSubtractAll
 
 /** Add/subtract the values of all tokens present on the input channels
-* (in contrast to one token per channel in the AddSubtract class). For further
-* documentation see {@link ptolemy.actor.lib.AddSubtract}.
-*
-* @author Bastian Ristau
-* @version $Id$
-* @since Ptolemy II 10.0
-* @Pt.ProposedRating red (ristau)
-* @Pt.AcceptedRating red (ristau)
-*/
+ * (in contrast to one token per channel in the AddSubtract class). For further
+ * documentation see {@link ptolemy.actor.lib.AddSubtract}.
+ *
+ * @author Bastian Ristau
+ * @version $Id$
+ * @since Ptolemy II 10.0
+ * @Pt.ProposedRating red (ristau)
+ * @Pt.AcceptedRating red (ristau)
+ */
 public class AddSubtractAll extends AddSubtract {
 
     /** Construct an actor in the specified container with the specified
@@ -79,6 +79,7 @@ public class AddSubtractAll extends AddSubtract {
      *   or if addition and subtraction are not supported by the
      *   available tokens.
      */
+    @Override
     public void fire() throws IllegalActionException {
         Token sum = null;
 

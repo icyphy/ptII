@@ -126,6 +126,7 @@ public class Line2D extends GRActor2D {
     /* Update the position and location of the line on the screen when
      * the user changes the parameters.
      */
+    @Override
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         if ((attribute == xStart || attribute == yStart || attribute == xEnd || attribute == yEnd)
@@ -148,6 +149,7 @@ public class Line2D extends GRActor2D {
      *  @exception IllegalActionException If the current director
      *  is not a GRDirector.
      */
+    @Override
     public void initialize() throws IllegalActionException {
         super.initialize();
         _figure = _createFigure();
@@ -159,6 +161,7 @@ public class Line2D extends GRActor2D {
      *  @return false if the scene graph is already initialized.
      *  @exception IllegalActionException Not thrown in this base class
      */
+    @Override
     public boolean prefire() throws IllegalActionException {
         if (_isSceneGraphInitialized) {
             return false;
@@ -189,6 +192,7 @@ public class Line2D extends GRActor2D {
      *
      *  @exception IllegalActionException Always thrown for this base class.
      */
+    @Override
     protected void _makeSceneGraphConnection() throws IllegalActionException {
         sceneGraphOut.send(0, new Scene2DToken(_figure));
     }

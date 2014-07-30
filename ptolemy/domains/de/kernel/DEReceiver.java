@@ -80,6 +80,7 @@ public class DEReceiver extends AbstractReceiver {
 
     /** Clear this receiver of any contained tokens.
      */
+    @Override
     public void clear() {
         _tokens.clear();
     }
@@ -88,6 +89,7 @@ public class DEReceiver extends AbstractReceiver {
      *  available for get() or getArray(), beginning with the oldest one.
      *  @return A list of instances of Token.
      */
+    @Override
     public List<Token> elementList() {
         return _tokens;
     }
@@ -101,6 +103,7 @@ public class DEReceiver extends AbstractReceiver {
      *  @exception NoTokenException If there are no more tokens. This is
      *   a runtime exception, so it need not to be declared explicitly.
      */
+    @Override
     public Token get() throws NoTokenException {
         if (_tokens.isEmpty()) {
             throw new NoTokenException(getContainer(),
@@ -113,6 +116,7 @@ public class DEReceiver extends AbstractReceiver {
     /** Return true, indicating that there is always room.
      *  @return True.
      */
+    @Override
     public final boolean hasRoom() {
         return true;
     }
@@ -124,6 +128,7 @@ public class DEReceiver extends AbstractReceiver {
      *  @param tokens An int indicating the number of spaces available.
      *  @return True.
      */
+    @Override
     public boolean hasRoom(int tokens) {
         return true;
     }
@@ -132,6 +137,7 @@ public class DEReceiver extends AbstractReceiver {
      *  get() method.
      *  @return True if there are more tokens.
      */
+    @Override
     public boolean hasToken() {
         return !_tokens.isEmpty();
     }
@@ -141,6 +147,7 @@ public class DEReceiver extends AbstractReceiver {
      *  @param numberOfTokens An int indicating how many tokens are needed.
      *  @return True if there are numberOfTokens tokens available.
      */
+    @Override
     public boolean hasToken(int numberOfTokens) {
         return _tokens.size() >= numberOfTokens;
     }
@@ -154,6 +161,7 @@ public class DEReceiver extends AbstractReceiver {
      *  @exception IllegalActionException If cannot get the director or if
      *   the current microstep is zero.
      */
+    @Override
     public void put(Token token) throws IllegalActionException {
         if (token == null) {
             return;

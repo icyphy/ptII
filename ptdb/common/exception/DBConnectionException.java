@@ -25,7 +25,7 @@ ENHANCEMENTS, OR MODIFICATIONS.
                                                 COPYRIGHTENDKEY
 
 
-*/
+ */
 package ptdb.common.exception;
 
 ///////////////////////////////////////////////////////////////////
@@ -75,6 +75,7 @@ public class DBConnectionException extends Exception {
      *
      * @return The cause of the exception.
      */
+    @Override
     public Throwable getCause() {
         return this._cause;
     }

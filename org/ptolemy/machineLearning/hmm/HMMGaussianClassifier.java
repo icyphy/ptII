@@ -1,4 +1,3 @@
-
 /* A sequence classifier for Gaussian emission HMMs
 
 Copyright (c) 1998-2014 The Regents of the University of California.
@@ -25,7 +24,7 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
-*/
+ */
 package org.ptolemy.machineLearning.hmm;
 
 import ptolemy.actor.parameters.PortParameter;
@@ -107,6 +106,7 @@ public class HMMGaussianClassifier extends ObservationClassifier {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
+    @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         HMMGaussianClassifier newObject = (HMMGaussianClassifier) super
                 .clone(workspace);
@@ -118,6 +118,7 @@ public class HMMGaussianClassifier extends ObservationClassifier {
     /** Consume the inputs and produce the outputs of the FFT filter.
      *  @exception IllegalActionException If a runtime type error occurs.
      */
+    @Override
     public void fire() throws IllegalActionException {
         super.fire();
 
@@ -165,6 +166,7 @@ public class HMMGaussianClassifier extends ObservationClassifier {
         }
     }
 
+    @Override
     protected double emissionProbability(double y, int hiddenState) {
         double s = _sigma[hiddenState];
         double m = _mu[hiddenState];

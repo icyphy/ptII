@@ -57,6 +57,7 @@ public class TypedCompositeActor extends HTMLCodeGeneratorAdapter {
      *  @exception IllegalActionException If there is a problem getting the adapter, getting
      *  the director or generating HTML for the director.
      */
+    @Override
     public String generateHTML() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
         code.append(getComponent().getName() + " contains: ");

@@ -54,6 +54,7 @@ public class ConcreteMatrixToken extends MatrixToken {
     /** Return the number of columns of the contained matrix.
      *  @return Zero.
      */
+    @Override
     public int getColumnCount() {
         return 0;
     }
@@ -64,6 +65,7 @@ public class ConcreteMatrixToken extends MatrixToken {
      *  @return An exception.
      *  @exception ArrayIndexOutOfBoundsException Always thrown.
      */
+    @Override
     public Token getElementAsToken(int row, int column)
             throws ArrayIndexOutOfBoundsException {
         throw new ArrayIndexOutOfBoundsException("Empty matrix.");
@@ -72,6 +74,7 @@ public class ConcreteMatrixToken extends MatrixToken {
     /** Return the Type of the tokens contained in this matrix token.
      *  @return A Type.
      */
+    @Override
     public Type getElementType() {
         throw new ArrayIndexOutOfBoundsException("Empty matrix.");
     }
@@ -79,6 +82,7 @@ public class ConcreteMatrixToken extends MatrixToken {
     /** Return the number of rows of the contained matrix.
      *  @return Zero.
      */
+    @Override
     public int getRowCount() {
         return 0;
     }
@@ -86,6 +90,7 @@ public class ConcreteMatrixToken extends MatrixToken {
     /** Return the type of this token.
      *  @return BaseType.MATRIX.
      */
+    @Override
     public Type getType() {
         return BaseType.MATRIX;
     }

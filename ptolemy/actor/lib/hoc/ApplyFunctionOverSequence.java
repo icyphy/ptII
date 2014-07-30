@@ -82,6 +82,7 @@ import ptolemy.kernel.util.NameDuplicationException;
  @Pt.AcceptedRating Yellow (neuendor)
  @see ptolemy.actor.lib.hoc.ApplyFunction
  */
+@Deprecated
 public class ApplyFunctionOverSequence extends TypedAtomicActor {
     /** Construct an actor with the given container and name.
      *  @param container The container.
@@ -120,6 +121,7 @@ public class ApplyFunctionOverSequence extends TypedAtomicActor {
     /** Consume the inputs, apply the function, and produce the result.
      *  @exception IllegalActionException If a runtime type error occurs.
      */
+    @Override
     public void fire() throws IllegalActionException {
         super.fire();
 
@@ -161,6 +163,7 @@ public class ApplyFunctionOverSequence extends TypedAtomicActor {
     /** Return true if the input ports have enough tokens.
      *  @exception IllegalActionException Not thrown in this base class.
      */
+    @Override
     public boolean prefire() throws IllegalActionException {
         super.prefire();
 
@@ -190,6 +193,7 @@ public class ApplyFunctionOverSequence extends TypedAtomicActor {
     /** Preinitialize the actor.  Set the type of the ports based on
      *  the type of the function parameter.
      */
+    @Override
     public void preinitialize() throws IllegalActionException {
         super.preinitialize();
 

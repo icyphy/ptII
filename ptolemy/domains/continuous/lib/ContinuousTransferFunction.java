@@ -155,6 +155,7 @@ public class ContinuousTransferFunction extends TypedCompositeActor {
      *  @exception IllegalActionException If the numerator and the
      *   denominator matrix is not a row vector.
      */
+    @Override
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         if (attribute == numerator) {
@@ -192,6 +193,7 @@ public class ContinuousTransferFunction extends TypedCompositeActor {
 
     /** Return the executive director, regardless what isOpaque returns.
      */
+    @Override
     public Director getDirector() {
         if (_opaque) {
             return null;
@@ -204,6 +206,7 @@ public class ContinuousTransferFunction extends TypedCompositeActor {
      *  opaque if it has not been preinitialized after creation or
      *  changes of parameters. Otherwise, it is not opaque.
      */
+    @Override
     public boolean isOpaque() {
         return _opaque;
     }
@@ -217,6 +220,7 @@ public class ContinuousTransferFunction extends TypedCompositeActor {
      *  or any contained actors throw it in its preinitialize() method
      *  .
      */
+    @Override
     public void preinitialize() throws IllegalActionException {
         // Construct local double[] and Check dimensions.
         ArrayToken bToken = (ArrayToken) numerator.getToken();
@@ -334,6 +338,7 @@ public class ContinuousTransferFunction extends TypedCompositeActor {
     /** Set the opaqueness to true and wrapup.
      *  @exception IllegalActionException If there is no director.
      */
+    @Override
     public void wrapup() throws IllegalActionException {
         _opaque = true;
         super.wrapup();
@@ -344,7 +349,7 @@ public class ContinuousTransferFunction extends TypedCompositeActor {
 
     /** Initialize the class. */
     private void _init() throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
 
         input = new TypedIOPort(this, "input", true, false);
         output = new TypedIOPort(this, "output", false, true);

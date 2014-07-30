@@ -142,6 +142,7 @@ public final class PtolemyServer implements IServerManager {
      *  @param ticket  Ticket reference to the simulation request.
      *  @exception IllegalActionException If the server was unable to destroy the simulation thread.
      */
+    @Override
     public synchronized void close(Ticket ticket) throws IllegalActionException {
         if (ticket == null || _requests.get(ticket) == null) {
             String message = "Ticket " + ticket + " was not found";
@@ -186,6 +187,7 @@ public final class PtolemyServer implements IServerManager {
      *  @exception IllegalActionException If the server encountered an
      *  error opening the model file.
      */
+    @Override
     public byte[] downloadModel(String url) throws IllegalActionException {
         byte[] modelData = null;
         try {
@@ -228,9 +230,11 @@ public final class PtolemyServer implements IServerManager {
      *  @return An array of URLs for the layouts available for the model on the server.
      *  @exception IllegalActionException If there was a problem discovering available layouts.
      */
+    @Override
     public String[] getLayoutListing(final String url)
             throws IllegalActionException {
         FilenameFilter layoutFilter = new FilenameFilter() {
+            @Override
             public boolean accept(File file, String filename) {
                 String modelName = url.substring(url.lastIndexOf("/") + 1,
                         url.lastIndexOf(".xml"));
@@ -264,9 +268,11 @@ public final class PtolemyServer implements IServerManager {
      *  @return An array of URLs for the models available on the server.
      *  @exception IllegalActionException If there was a problem discovering available models.
      */
+    @Override
     public String[] getModelListing() throws IllegalActionException {
 
         FilenameFilter modelFilter = new FilenameFilter() {
+            @Override
             public boolean accept(File file, String filename) {
                 return filename.endsWith(".xml")
                         && !filename.endsWith(".layout.xml");
@@ -345,6 +351,7 @@ public final class PtolemyServer implements IServerManager {
      *  @return The token handler map from the server.
      *  @exception IllegalActionException If the server was unable to get the handler map.
      */
+    @Override
     public synchronized LinkedHashMap<String, String> getTokenHandlerMap()
             throws IllegalActionException {
         LinkedHashMap<String, String> tokenHandlerMap = null;
@@ -452,6 +459,7 @@ public final class PtolemyServer implements IServerManager {
      *  @exception IllegalActionException  If the model fails to load from the provided URL.
      *  @return The user's reference to the simulation task
      */
+    @Override
     public synchronized ProxyModelResponse open(String modelUrl,
             String layoutUrl) throws IllegalActionException {
         ProxyModelResponse response = null;
@@ -495,6 +503,7 @@ public final class PtolemyServer implements IServerManager {
      *  @param ticket The ticket reference to the simulation request.
      *  @exception IllegalActionException If the server was unable to pause the running simulation.
      */
+    @Override
     public synchronized void pause(Ticket ticket) throws IllegalActionException {
         try {
             _checkTicket(ticket);
@@ -513,6 +522,7 @@ public final class PtolemyServer implements IServerManager {
      *  @exception IllegalActionException  If the server was unable to resume the execution of the
      *  simulation.
      */
+    @Override
     public synchronized void resume(Ticket ticket)
             throws IllegalActionException {
         try {
@@ -535,10 +545,10 @@ public final class PtolemyServer implements IServerManager {
             try {
                 // Notify the client that the server is shutting down.
                 task.getProxyModelInfrastructure()
-                        .getTokenPublisher()
-                        .sendToken(
-                                new RemoteEventToken(EventType.SERVER_SHUTDOWN,
-                                        "The Ptolemy server you are currently connected is shutting down."),
+                .getTokenPublisher()
+                .sendToken(
+                        new RemoteEventToken(EventType.SERVER_SHUTDOWN,
+                                "The Ptolemy server you are currently connected is shutting down."),
                                 null);
 
                 // Shut down the locally running simulation.
@@ -547,7 +557,7 @@ public final class PtolemyServer implements IServerManager {
                 PtolemyServer.LOGGER.log(Level.SEVERE,
                         "Failed to close the simulation"
                                 + task.getProxyModelInfrastructure()
-                                        .getTicket(), error);
+                                .getTicket(), error);
             }
         }
 
@@ -587,6 +597,7 @@ public final class PtolemyServer implements IServerManager {
      *  @param ticket  The ticket reference to the simulation request.
      *  @exception IllegalActionException If the server was unable to start the simulation.
      */
+    @Override
     public synchronized void start(Ticket ticket) throws IllegalActionException {
         try {
             _checkTicket(ticket);
@@ -602,6 +613,7 @@ public final class PtolemyServer implements IServerManager {
      *  @param ticket  The ticket reference to the simulation request.
      *  @exception IllegalActionException If the server was unable to stop the simulation.
      */
+    @Override
     public synchronized void stop(Ticket ticket) throws IllegalActionException {
         try {
             _checkTicket(ticket);
@@ -619,7 +631,8 @@ public final class PtolemyServer implements IServerManager {
 
     /** The ResourceBundle containing configuration parameters.
      */
-    public static final ResourceBundle CONFIG = ResourceBundle.getBundle("ptserver.PtolemyServerConfig");
+    public static final ResourceBundle CONFIG = ResourceBundle
+            .getBundle("ptserver.PtolemyServerConfig");
 
     /** The logger that will record Ptolemy errors to the log file.
      */
@@ -703,81 +716,81 @@ public final class PtolemyServer implements IServerManager {
      */
     private PtolemyServer(int servletPort, String brokerPath,
             String brokerAddress, int brokerPort, String modelDirectory)
-            throws IllegalActionException {
+                    throws IllegalActionException {
         try {
             // If not passed, attempt to pull from configuration.
             brokerPath = brokerPath != null ? brokerPath : CONFIG
                     .getString("BROKER_PATH");
             brokerAddress = brokerAddress != null ? brokerAddress : CONFIG
                     .getString("BROKER_ADDRESS") != null ? CONFIG
-                    .getString("BROKER_ADDRESS") : InetAddress.getLocalHost()
-                    .getHostAddress();
-            brokerPort = brokerPort > 0 ? brokerPort : Integer.parseInt(CONFIG
-                    .getString("BROKER_PORT"));
-            servletPort = servletPort > 0 ? servletPort : Integer
-                    .parseInt(CONFIG.getString("SERVLET_PORT"));
-            modelDirectory = modelDirectory != null ? modelDirectory : CONFIG
-                    .getString("MODELS_DIRECTORY");
+                            .getString("BROKER_ADDRESS") : InetAddress.getLocalHost()
+                            .getHostAddress();
+                            brokerPort = brokerPort > 0 ? brokerPort : Integer.parseInt(CONFIG
+                                    .getString("BROKER_PORT"));
+                            servletPort = servletPort > 0 ? servletPort : Integer
+                                    .parseInt(CONFIG.getString("SERVLET_PORT"));
+                            modelDirectory = modelDirectory != null ? modelDirectory : CONFIG
+                                    .getString("MODELS_DIRECTORY");
 
-            // If path is specified, attempt to launch the broker process.
-            if (_configureBroker(brokerPath, brokerPort)) {
-                brokerAddress = InetAddress.getLocalHost().getHostAddress();
-            }
+                            // If path is specified, attempt to launch the broker process.
+                            if (_configureBroker(brokerPath, brokerPort)) {
+                                brokerAddress = InetAddress.getLocalHost().getHostAddress();
+                            }
 
-            //MoMLParser.setMoMLFilters(BackwardCompatibility.allFilters());
-            //            _configuration = ConfigurationApplication
-            //                    .readConfiguration(ConfigurationApplication
-            //                            .specToURL("ptolemy/configs/full/configuration.xml"));
-            _brokerUrl = String
-                    .format("tcp://%s@%s", brokerAddress, brokerPort);
-            _servletUrl = String
-                    .format("http://%s:%s/%s", InetAddress.getLocalHost()
-                            .getHostAddress(), servletPort, SERVLET_NAME);
-            if (modelDirectory.length() == 0) {
-                modelDirectory = StringUtilities.getProperty("user.dir");
-            }
-            _modelsDirectory = modelDirectory;
-            _servletHost = new Server(servletPort);
-            _servletHost.setHandler(_configureServlet());
-            _servletHost.start();
-            _executor = Executors.newCachedThreadPool();
-            _requests = new ConcurrentHashMap<Ticket, SimulationTask>();
+                            //MoMLParser.setMoMLFilters(BackwardCompatibility.allFilters());
+                            //            _configuration = ConfigurationApplication
+                            //                    .readConfiguration(ConfigurationApplication
+                            //                            .specToURL("ptolemy/configs/full/configuration.xml"));
+                            _brokerUrl = String
+                                    .format("tcp://%s@%s", brokerAddress, brokerPort);
+                            _servletUrl = String
+                                    .format("http://%s:%s/%s", InetAddress.getLocalHost()
+                                            .getHostAddress(), servletPort, SERVLET_NAME);
+                            if (modelDirectory.length() == 0) {
+                                modelDirectory = StringUtilities.getProperty("user.dir");
+                            }
+                            _modelsDirectory = modelDirectory;
+                            _servletHost = new Server(servletPort);
+                            _servletHost.setHandler(_configureServlet());
+                            _servletHost.start();
+                            _executor = Executors.newCachedThreadPool();
+                            _requests = new ConcurrentHashMap<Ticket, SimulationTask>();
 
-            Timer timer = new Timer("PtolemyServer timer");
-            timer.scheduleAtFixedRate(new TimerTask() {
+                            Timer timer = new Timer("PtolemyServer timer");
+                            timer.scheduleAtFixedRate(new TimerTask() {
 
-                @Override
-                public void run() {
-                    for (SimulationTask task : _requests.values()) {
-                        LOGGER.info(task.getProxyModelInfrastructure()
-                                .getTicket()
-                                + " latency "
-                                + task.getProxyModelInfrastructure()
-                                        .getPingPongLatency());
-                    }
-                }
-            }, 1000, 1000);
-            File file = new File(_modelsDirectory);
-            if (!file.isDirectory()) {
-                String ptII = StringUtilities.getProperty("ptolemy.ptII.dir");
-                file = new File(ptII, _modelsDirectory);
-                if (!file.isDirectory()) {
-                    File oldFile = file;
-                    file = new File(ptII, "ptserver" + File.separator + "demo");
-                    if (!file.isDirectory()) {
-                        throw new IllegalArgumentException(
-                                "Models directory \"" + _modelsDirectory
-                                        + "\" is invalid directory/path."
-                                        + " (Also tried \"" + oldFile
-                                        + "\" and \"" + file + "\".");
-                    } else {
-                        _modelsDirectory = file.getCanonicalPath();
-                    }
-                } else {
-                    _modelsDirectory = file.getCanonicalPath();
-                }
-                System.out.println("models directory is " + _modelsDirectory);
-            }
+                                @Override
+                                public void run() {
+                                    for (SimulationTask task : _requests.values()) {
+                                        LOGGER.info(task.getProxyModelInfrastructure()
+                                                .getTicket()
+                                                + " latency "
+                                                + task.getProxyModelInfrastructure()
+                                                .getPingPongLatency());
+                                    }
+                                }
+                            }, 1000, 1000);
+                            File file = new File(_modelsDirectory);
+                            if (!file.isDirectory()) {
+                                String ptII = StringUtilities.getProperty("ptolemy.ptII.dir");
+                                file = new File(ptII, _modelsDirectory);
+                                if (!file.isDirectory()) {
+                                    File oldFile = file;
+                                    file = new File(ptII, "ptserver" + File.separator + "demo");
+                                    if (!file.isDirectory()) {
+                                        throw new IllegalArgumentException(
+                                                "Models directory \"" + _modelsDirectory
+                                                + "\" is invalid directory/path."
+                                                + " (Also tried \"" + oldFile
+                                                + "\" and \"" + file + "\".");
+                                    } else {
+                                        _modelsDirectory = file.getCanonicalPath();
+                                    }
+                                } else {
+                                    _modelsDirectory = file.getCanonicalPath();
+                                }
+                                System.out.println("models directory is " + _modelsDirectory);
+                            }
         } catch (Throwable e) {
             _handleException("Unable to initialize Ptolemy server.", e);
         }
@@ -823,8 +836,8 @@ public final class PtolemyServer implements IServerManager {
             } catch (IOException e) {
                 _handleException(
                         "Unable to spawn MQTT broker process at '" + brokerPath
-                                + "' on port " + String.valueOf(brokerPort)
-                                + ".", e);
+                        + "' on port " + String.valueOf(brokerPort)
+                        + ".", e);
             }
         }
 
@@ -973,6 +986,7 @@ public final class PtolemyServer implements IServerManager {
         /** React to the remote connection expiring.
          *  @param remoteModel The remote model whose connection has expired.
          */
+        @Override
         public void modelConnectionExpired(ProxyModelInfrastructure remoteModel) {
             LOGGER.severe("Removing model " + remoteModel.getTicket());
             LOGGER.severe("Last pong was " + remoteModel.getPingPongLatency()
@@ -988,15 +1002,16 @@ public final class PtolemyServer implements IServerManager {
             }
         }
 
+        @Override
         public void modelException(
                 ProxyModelInfrastructure proxyModelInfrastructure,
                 String message, Throwable exception) {
             PtolemyServer.LOGGER.log(Level.SEVERE,
                     "Unhandled exception in model "
                             + proxyModelInfrastructure.getTicket()
-                                    .getTicketID()
+                            .getTicketID()
                             + " that is being propagated to the client",
-                    exception);
+                            exception);
             try {
                 proxyModelInfrastructure.getTokenPublisher().sendToken(
                         new RemoteEventToken(message, exception), null);
@@ -1006,7 +1021,7 @@ public final class PtolemyServer implements IServerManager {
                 PtolemyServer.LOGGER.log(Level.SEVERE,
                         "Problem sending exception event for "
                                 + proxyModelInfrastructure.getTicket()
-                                        .getTicketID(), exception);
+                                .getTicketID(), exception);
             } finally {
                 try {
                     PtolemyServer.getInstance().close(
@@ -1015,11 +1030,12 @@ public final class PtolemyServer implements IServerManager {
                     PtolemyServer.LOGGER.log(Level.SEVERE,
                             "Problem sending exception event for "
                                     + proxyModelInfrastructure.getTicket()
-                                            .getTicketID(), exception);
+                                    .getTicketID(), exception);
                 }
             }
         }
 
+        @Override
         public void onRemoteEvent(
                 ProxyModelInfrastructure proxyModelInfrastructure,
                 RemoteEventToken event) {

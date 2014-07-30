@@ -60,7 +60,7 @@ import ptolemy.util.StringUtilities;
  */
 @SuppressWarnings("serial")
 public class RenameConfigurer extends Query implements ChangeListener,
-        QueryListener {
+QueryListener {
     /** Construct a rename configurer for the specified entity.
      *  @param object The entity to configure.
      */
@@ -117,7 +117,7 @@ public class RenameConfigurer extends Query implements ChangeListener,
                 // Hitting F2 in an empty model and renaming the canvas can result in a NPE.
                 // See https://chess.eecs.berkeley.edu/bugzilla/show_bug.cgi?id=355
                 MessageHandler
-                        .message("Please save the model before changing the name.");
+                .message("Please save the model before changing the name.");
                 return;
             }
             String oldName = StringUtilities.escapeForXML(_object.getName());
@@ -207,6 +207,7 @@ public class RenameConfigurer extends Query implements ChangeListener,
      *  by doing nothing.
      *  @param change The change that has been executed.
      */
+    @Override
     public void changeExecuted(ChangeRequest change) {
         // Nothing to do.
     }
@@ -215,6 +216,7 @@ public class RenameConfigurer extends Query implements ChangeListener,
      *  @param change The change that was attempted.
      *  @param exception The exception that resulted.
      */
+    @Override
     public void changeFailed(ChangeRequest change, Exception exception) {
         // Ignore if this is not the originator.
         if (change != null && change.getSource() != this) {
@@ -232,6 +234,7 @@ public class RenameConfigurer extends Query implements ChangeListener,
      *  when the apply() method is called.
      *  @param name The name of the entry that changed.
      */
+    @Override
     public void changed(String name) {
         _changed = true;
     }

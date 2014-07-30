@@ -69,6 +69,7 @@ import ptolemy.kernel.util.Workspace;
  @deprecated Use VariableDelay instead, which is essentially identical,
   or ResettableTimer for a more reasonable timer behavior.
  */
+@Deprecated
 public class Timer extends DETransformer {
     /** Construct an actor with the specified container and name.
      *  Declare that the input can only receive double tokens and the output
@@ -107,6 +108,7 @@ public class Timer extends DETransformer {
      *  @exception CloneNotSupportedException If a derived class has
      *   has an attribute that cannot be cloned.
      */
+    @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         Timer newObject = (Timer) super.clone(workspace);
         newObject.output.setTypeSameAs(newObject.value);
@@ -121,6 +123,7 @@ public class Timer extends DETransformer {
      *  cannot be computed.
      *  @see #getCausalityInterface()
      */
+    @Override
     public void declareDelayDependency() throws IllegalActionException {
         _declareDelayDependency(input, output, 0.0);
     }
@@ -131,6 +134,7 @@ public class Timer extends DETransformer {
      *  @exception IllegalActionException If there is no director, or can not
      *  send or get tokens from ports.
      */
+    @Override
     public void fire() throws IllegalActionException {
         super.fire();
         _delay = -1.0;
@@ -169,6 +173,7 @@ public class Timer extends DETransformer {
     /** Initialize the internal states of this actor.
      *  @exception IllegalActionException If a derived class throws it.
      */
+    @Override
     public void initialize() throws IllegalActionException {
         super.initialize();
         _currentInput = null;
@@ -185,6 +190,7 @@ public class Timer extends DETransformer {
      *  @exception IllegalActionException If scheduling to refire cannot
      *  be performed or the superclass throws it.
      */
+    @Override
     public boolean postfire() throws IllegalActionException {
         Time currentTime = getDirector().getModelTime();
         Time delayToTime = currentTime.add(_delay);

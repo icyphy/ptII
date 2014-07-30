@@ -69,6 +69,7 @@ public class CSPCondGet extends CSPGet {
 
     /**
      */
+    @Override
     public void fire() throws IllegalActionException {
         int numReceivers = 0;
         Receiver[][] rcvrs = inputPort.getReceivers();

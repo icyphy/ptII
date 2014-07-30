@@ -146,6 +146,7 @@ public class CompositeFigureTutorial {
     public static void main(String[] argv) {
         // Always invoke graphics code in the event thread
         SwingUtilities.invokeLater(new Runnable() {
+            @Override
             public void run() {
                 CompositeFigureTutorial ex = new CompositeFigureTutorial();
                 ex.createCompositeFigure();

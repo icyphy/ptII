@@ -40,6 +40,7 @@ public class MyPtolemnizer extends TypedAtomicActor {
 
     }
 
+    @Override
     public void fire() throws IllegalActionException {
         StringToken inString = (StringToken) input.get(0);
         String regExp = expression.stringValue();

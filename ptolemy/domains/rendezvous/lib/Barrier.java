@@ -92,6 +92,7 @@ public class Barrier extends TypedAtomicActor {
      *  @exception TerminateProcessException If the process termination
      *   is requested by the director.
      */
+    @Override
     public void fire() throws IllegalActionException {
         super.fire();
         if (!input.isOutsideConnected()) {

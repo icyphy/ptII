@@ -79,6 +79,7 @@ public class RemoveNilTokens extends Transformer {
      *  be used in the SDF domain.
      *  @exception IllegalActionException If there is no director.
      */
+    @Override
     public void fire() throws IllegalActionException {
         super.fire();
         if (input.hasToken(0)) {

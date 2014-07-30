@@ -25,7 +25,7 @@ ENHANCEMENTS, OR MODIFICATIONS.
                                                 COPYRIGHTENDKEY
 
 
-*/
+ */
 
 package ptdb.kernel.bl.search;
 
@@ -47,7 +47,7 @@ import ptdb.common.exception.DBExecutionException;
  *
  */
 public class NameSearcher extends AbstractSearcher implements
-        AbstractDBSearcher {
+AbstractDBSearcher {
 
     /**
      * Construct the NameSearcher object according to the passed search
@@ -70,6 +70,7 @@ public class NameSearcher extends AbstractSearcher implements
      *         false - if the search criteria has not been set.
      */
 
+    @Override
     protected boolean _isSearchCriteriaSet() {
         if (_modelNameCriteria == null || _modelNameCriteria.length() == 0) {
             return false;
@@ -86,6 +87,7 @@ public class NameSearcher extends AbstractSearcher implements
      * unexpected problem happens during the execution of DB query tasks.
      */
 
+    @Override
     protected void _search() throws DBExecutionException {
 
         ModelNameSearchTask modelNameSearchTask = new ModelNameSearchTask(

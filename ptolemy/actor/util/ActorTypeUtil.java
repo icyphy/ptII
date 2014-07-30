@@ -88,7 +88,7 @@ public class ActorTypeUtil {
      *  This term is not variable and cannot be set.
      */
     private static class TypeableSizedArrayVariableTypeTerm extends
-            MonotonicFunction {
+    MonotonicFunction {
 
         /** Construct a term that will defer to the type of the
          *  specified typeable.
@@ -109,6 +109,7 @@ public class ActorTypeUtil {
          *  @exception IllegalActionException If the type of the associated typeable
          *   cannot be determined.
          */
+        @Override
         public Object getValue() throws IllegalActionException {
             ConstVariableModelAnalysis analysis = ConstVariableModelAnalysis
                     .getAnalysis(_lengthVariable);
@@ -123,6 +124,7 @@ public class ActorTypeUtil {
         /** Return an array of size zero.
          *  @return An array of InequalityTerm.
          */
+        @Override
         public InequalityTerm[] getVariables() {
             InequalityTerm[] array = new InequalityTerm[1];
             array[0] = _typeable.getTypeTerm();

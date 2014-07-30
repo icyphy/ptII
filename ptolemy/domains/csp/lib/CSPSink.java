@@ -90,6 +90,7 @@ public class CSPSink extends Sink {
      *  input port.
      *  @exception IllegalActionException If thrown by the superclass.
      */
+    @Override
     public void fire() throws IllegalActionException {
         super.fire();
         int count = 0;
@@ -121,6 +122,7 @@ public class CSPSink extends Sink {
      *  @exception IllegalActionException If thrown by the parent
      *  class.
      */
+    @Override
     public boolean postfire() throws IllegalActionException {
         // We intentially ignore the return value of super.postfire()
         // here.

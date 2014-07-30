@@ -93,11 +93,12 @@ public class ModalTransitionController extends TransitionController {
     /** An action to add a new refinement.
      */
     @SuppressWarnings("serial")
-        private class AddRefinementAction extends FigureAction {
+    private class AddRefinementAction extends FigureAction {
         public AddRefinementAction() {
             super("Add Refinement");
         }
 
+        @Override
         public void actionPerformed(ActionEvent e) {
             super.actionPerformed(e);
 
@@ -105,7 +106,7 @@ public class ModalTransitionController extends TransitionController {
 
             if (!(target instanceof Transition)) {
                 MessageHandler
-                        .error("Can only add refinements to transitions.");
+                .error("Can only add refinements to transitions.");
                 return;
             }
 
@@ -218,6 +219,7 @@ public class ModalTransitionController extends TransitionController {
 
             MoMLChangeRequest change = new MoMLChangeRequest(this, container,
                     moml) {
+                @Override
                 protected void _execute() throws Exception {
                     super._execute();
 
@@ -248,21 +250,21 @@ public class ModalTransitionController extends TransitionController {
                                     && port instanceof IOPort) {
                                 try {
                                     ((RefinementPort) newPort)
-                                            .setMirrorDisable(true);
+                                    .setMirrorDisable(true);
 
                                     if (((IOPort) port).isInput()) {
                                         ((RefinementPort) newPort)
-                                                .setInput(true);
+                                        .setInput(true);
                                     }
 
                                     if (((IOPort) port).isOutput()) {
                                         ((RefinementPort) newPort)
-                                                .setOutput(true);
+                                        .setOutput(true);
                                     }
 
                                     if (((IOPort) port).isMultiport()) {
                                         ((RefinementPort) newPort)
-                                                .setMultiport(true);
+                                        .setMultiport(true);
                                     }
 
                                     /* No longer needed since Yuhong modified
@@ -275,7 +277,7 @@ public class ModalTransitionController extends TransitionController {
                                      */
                                 } finally {
                                     ((RefinementPort) newPort)
-                                            .setMirrorDisable(false);
+                                    .setMirrorDisable(false);
                                 }
                             }
                         } finally {
@@ -298,7 +300,7 @@ public class ModalTransitionController extends TransitionController {
 
     /** Action to remove refinements. */
     @SuppressWarnings("serial")
-        private static class RemoveRefinementAction extends FigureAction {
+    private static class RemoveRefinementAction extends FigureAction {
         // FindBugs suggests making this class static so as to decrease
         // the size of instances and avoid dangling references.
 
@@ -306,6 +308,7 @@ public class ModalTransitionController extends TransitionController {
             super("Remove Refinement");
         }
 
+        @Override
         public void actionPerformed(ActionEvent e) {
             super.actionPerformed(e);
 
@@ -313,7 +316,7 @@ public class ModalTransitionController extends TransitionController {
 
             if (!(target instanceof Transition)) {
                 MessageHandler
-                        .error("Can only remove refinements from transitions.");
+                .error("Can only remove refinements from transitions.");
                 return;
             }
 

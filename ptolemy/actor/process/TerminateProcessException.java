@@ -116,6 +116,7 @@ public class TerminateProcessException extends RuntimeException {
     ////                         public methods                    ////
 
     /** Get the detail message. */
+    @Override
     public String getMessage() {
         return _message;
     }

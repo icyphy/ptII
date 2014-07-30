@@ -76,6 +76,7 @@ public class ExpressionFunction implements Function {
      *  @exception IllegalActionException If thrown during evaluating
      *   the function.
      */
+    @Override
     public ptolemy.data.Token apply(ptolemy.data.Token[] arguments)
             throws IllegalActionException {
         ParseTreeEvaluator parseTreeEvaluator = new ParseTreeEvaluator();
@@ -103,6 +104,7 @@ public class ExpressionFunction implements Function {
     /** Return the number of arguments of the function.
      *  @return The number of arguments of the function.
      */
+    @Override
     public int getNumberOfArguments() {
         return _argumentNames.size();
     }
@@ -116,6 +118,7 @@ public class ExpressionFunction implements Function {
      *  @param function The function to check congruency against.
      *  @return True if this function is congruent.
      */
+    @Override
     public boolean isCongruent(Function function) {
         return toString().compareTo(function.toString()) == 0;
 
@@ -150,6 +153,7 @@ public class ExpressionFunction implements Function {
 
     /** Return a string representation of this function.
      */
+    @Override
     public String toString() {
         StringBuffer buffer = new StringBuffer("(function(");
         int n = _argumentNames.size();

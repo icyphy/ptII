@@ -95,6 +95,7 @@ import ptolemy.kernel.util.Workspace;
  @Pt.ProposedRating Green (hyzheng)
  @Pt.AcceptedRating Yellow (hyzheng)
  */
+@Deprecated
 public class TimedDelay extends DETransformer {
     /** Construct an actor with the specified container and name.
      *  Constrain that the output type to be the same as the input type.
@@ -137,6 +138,7 @@ public class TimedDelay extends DETransformer {
      *  @param attribute The attribute that changed.
      *  @exception IllegalActionException If the delay is negative.
      */
+    @Override
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         if (attribute == delay) {
@@ -160,6 +162,7 @@ public class TimedDelay extends DETransformer {
      *  @exception CloneNotSupportedException If a derived class has
      *   has an attribute that cannot be cloned.
      */
+    @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         TimedDelay newObject = (TimedDelay) super.clone(workspace);
         newObject.output.setTypeSameAs(newObject.input);
@@ -172,6 +175,7 @@ public class TimedDelay extends DETransformer {
      *  cannot be computed.
      *  @see #getCausalityInterface()
      */
+    @Override
     public void declareDelayDependency() throws IllegalActionException {
         _declareDelayDependency(input, output, _delay);
     }
@@ -181,6 +185,7 @@ public class TimedDelay extends DETransformer {
      *  @exception IllegalActionException If there is no director, or the
      *  input can not be read, or the output can not be sent.
      */
+    @Override
     public void fire() throws IllegalActionException {
         super.fire();
 
@@ -214,6 +219,7 @@ public class TimedDelay extends DETransformer {
     /** Initialize the states of this actor.
      *  @exception IllegalActionException If a derived class throws it.
      */
+    @Override
     public void initialize() throws IllegalActionException {
         super.initialize();
         _currentInput = null;
@@ -227,6 +233,7 @@ public class TimedDelay extends DETransformer {
      *  @exception IllegalActionException If scheduling to refire cannot
      *  be performed or the superclass throws it.
      */
+    @Override
     public boolean postfire() throws IllegalActionException {
         Time currentTime = getDirector().getModelTime();
         Time delayToTime = currentTime.add(_delay);
@@ -252,7 +259,7 @@ public class TimedDelay extends DETransformer {
         // Process the current input.
         if (_currentInput != null) {
             _delayedOutputTokens
-                    .put(new TimedEvent(delayToTime, _currentInput));
+            .put(new TimedEvent(delayToTime, _currentInput));
             _fireAt(delayToTime);
         }
 
@@ -268,7 +275,7 @@ public class TimedDelay extends DETransformer {
      *  named "delay".
      */
     protected void _init() throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         delay = new Parameter(this, "delay", new DoubleToken(1.0));
         delay.setTypeEquals(BaseType.DOUBLE);
         _delay = ((DoubleToken) delay.getToken()).doubleValue();
@@ -306,6 +313,7 @@ public class TimedDelay extends DETransformer {
      *   agree to fire the actor at the specified time, or if there
      *   is no director.
      */
+    @Override
     protected void _fireAt(Time time) throws IllegalActionException {
         Director director = getDirector();
         if (director == null) {

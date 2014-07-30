@@ -55,7 +55,7 @@ import ptolemy.kernel.util.KernelRuntimeException;
   @see ptolemy.vergil.actor.ActorGraphFrame
   @Pt.ProposedRating Yellow (tfeng)
   @Pt.AcceptedRating Red (tfeng)
-*/
+ */
 public class CombinedCollection<E> implements Collection<E> {
 
     /** Construct a combined collection with no collection as its component.
@@ -82,6 +82,7 @@ public class CombinedCollection<E> implements Collection<E> {
      *  @param element The new element.
      *  @return Always true.
      */
+    @Override
     public boolean add(E element) {
         Collection collection;
         if (_isLastListModifiable) {
@@ -102,6 +103,7 @@ public class CombinedCollection<E> implements Collection<E> {
      *  @param collection The collection to be added.
      *  @return Always true.
      */
+    @Override
     public boolean addAll(Collection<? extends E> collection) {
         _collectionList.add(collection);
         _isLastListModifiable = false;
@@ -110,6 +112,7 @@ public class CombinedCollection<E> implements Collection<E> {
 
     /** Clear this collection by removing all its components.
      */
+    @Override
     public void clear() {
         _collectionList.clear();
     }
@@ -119,6 +122,7 @@ public class CombinedCollection<E> implements Collection<E> {
      *  @param element The element.
      *  @return true if the element is contained in this collection.
      */
+    @Override
     public boolean contains(Object element) {
         for (Collection<? extends E> collection : _collectionList) {
             if (collection.contains(element)) {
@@ -134,6 +138,7 @@ public class CombinedCollection<E> implements Collection<E> {
      *  @param collection The collection.
      *  @return true if all the elements are contained in this collection.
      */
+    @Override
     public boolean containsAll(Collection<?> collection) {
         for (Object object : collection) {
             if (!contains(object)) {
@@ -147,6 +152,7 @@ public class CombinedCollection<E> implements Collection<E> {
      *
      *  @return true if it is empty.
      */
+    @Override
     public boolean isEmpty() {
         for (Collection<? extends E> collection : _collectionList) {
             if (!collection.isEmpty()) {
@@ -160,6 +166,7 @@ public class CombinedCollection<E> implements Collection<E> {
      *
      *  @return The iterator.
      */
+    @Override
     public java.util.Iterator<E> iterator() {
         return new Iterator();
     }
@@ -169,6 +176,7 @@ public class CombinedCollection<E> implements Collection<E> {
      *  @param element The element to be removed.
      *  @return None.
      */
+    @Override
     public boolean remove(Object element) {
         throw new KernelRuntimeException("Not implemented.");
     }
@@ -178,6 +186,7 @@ public class CombinedCollection<E> implements Collection<E> {
      *  @param collection The collection whose elements are to be removed.
      *  @return None.
      */
+    @Override
     public boolean removeAll(Collection<?> collection) {
         throw new KernelRuntimeException("Not implemented.");
     }
@@ -187,6 +196,7 @@ public class CombinedCollection<E> implements Collection<E> {
      *  @param collection The collection whose elements are to be retained.
      *  @return None.
      */
+    @Override
     public boolean retainAll(Collection<?> collection) {
         throw new KernelRuntimeException("Not implemented.");
     }
@@ -195,6 +205,7 @@ public class CombinedCollection<E> implements Collection<E> {
      *
      *  @return The size.
      */
+    @Override
     public int size() {
         int size = 0;
         for (Collection<? extends E> collection : _collectionList) {
@@ -207,6 +218,7 @@ public class CombinedCollection<E> implements Collection<E> {
      *
      *  @return The array.
      */
+    @Override
     public Object[] toArray() {
         return toArray(new Object[size()]);
     }
@@ -220,6 +232,7 @@ public class CombinedCollection<E> implements Collection<E> {
      *  @return The given array, or a new array if the given array is not big
      *   enough.
      */
+    @Override
     public <T> T[] toArray(T[] array) {
         int size = size();
         if (array.length < size) {
@@ -278,6 +291,7 @@ public class CombinedCollection<E> implements Collection<E> {
          *
          *  @return true if there is a next element.
          */
+        @Override
         public boolean hasNext() {
             return _elementIterator != null;
         }
@@ -288,6 +302,7 @@ public class CombinedCollection<E> implements Collection<E> {
          *
          *  @return The next element.
          */
+        @Override
         public E next() {
             E next = _elementIterator.next();
             _ensureNext();
@@ -296,6 +311,7 @@ public class CombinedCollection<E> implements Collection<E> {
 
         /** Throw a runtime exception because removal is not supported.
          */
+        @Override
         public void remove() {
             throw new KernelRuntimeException("Not implemented.");
         }

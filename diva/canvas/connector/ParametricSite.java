@@ -81,6 +81,7 @@ public class ParametricSite extends AbstractSite {
     /**
      * Get the figure to which this site is attached.
      */
+    @Override
     public Figure getFigure() {
         return _parentFigure;
     }
@@ -88,6 +89,7 @@ public class ParametricSite extends AbstractSite {
     /**
      * Get the ID of this site.
      */
+    @Override
     public int getID() {
         return _id;
     }
@@ -97,6 +99,7 @@ public class ParametricSite extends AbstractSite {
      * is located at some percentage of the parent
      * figure's bounding width.
      */
+    @Override
     public double getX() {
         Rectangle2D bounds = _parentFigure.getBounds();
         double x = bounds.getX() + _xt * bounds.getWidth();
@@ -108,6 +111,7 @@ public class ParametricSite extends AbstractSite {
      * is located at some percentage of the parent
      * figure's bounding height.
      */
+    @Override
     public double getY() {
         Rectangle2D bounds = _parentFigure.getBounds();
         double y = bounds.getY() + _yt * bounds.getHeight();

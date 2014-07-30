@@ -43,13 +43,13 @@ import ptolemy.kernel.util.NameDuplicationException;
 //// ChangePtr
 
 /** An actor that changes address and size of a PtrToken.
-*
-* @author Bastian Ristau
-* @version $Id$
-* @since Ptolemy II 10.0
-* @Pt.ProposedRating red (ristau)
-* @Pt.AcceptedRating red (ristau)
-*/
+ *
+ * @author Bastian Ristau
+ * @version $Id$
+ * @since Ptolemy II 10.0
+ * @Pt.ProposedRating red (ristau)
+ * @Pt.AcceptedRating red (ristau)
+ */
 public class ChangePtr extends TypedAtomicActor {
 
     /** Construct an actor with the given container and name.
@@ -114,7 +114,8 @@ public class ChangePtr extends TypedAtomicActor {
      * @exception IllegalActionException Thrown if there is no director, and hence
      * no receivers have been created, if the port is not an input port, or
      * if the channel index is out of range.
-      */
+     */
+    @Override
     public void fire() throws NoTokenException, IllegalActionException {
         super.fire();
         Token token = input.get(0);

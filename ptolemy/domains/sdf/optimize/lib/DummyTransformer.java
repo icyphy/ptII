@@ -56,7 +56,7 @@ See {@link ptolemy.domains.sdf.optimize.OptimizingSDFDirector},
 @since Ptolemy II 10.0
 @Pt.ProposedRating Red (mgeilen)
 @Pt.AcceptedRating Red ()
-*/
+ */
 
 public class DummyTransformer extends SharedBufferTransformer {
 
@@ -86,6 +86,7 @@ public class DummyTransformer extends SharedBufferTransformer {
      * It makes a copy of the frame buffer referred to by the reference token.
      * @exception IllegalActionException
      */
+    @Override
     protected void _fireCopying() throws IllegalActionException {
         if (input.hasToken(0)) {
             Token t = input.get(0);
@@ -107,6 +108,7 @@ public class DummyTransformer extends SharedBufferTransformer {
      * It directly modifies the frame buffer referred to by the reference token.
      * @exception IllegalActionException
      */
+    @Override
     protected void _fireExclusive() throws IllegalActionException {
         if (input.hasToken(0)) {
             Token t = input.get(0);

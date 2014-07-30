@@ -1,7 +1,7 @@
 // Actor that calls a system command.
 
 /*
-********************************************************************
+ ********************************************************************
 Copyright Notice
 ----------------
 
@@ -73,8 +73,8 @@ to install, use, modify, prepare derivative works, incorporate into
 other computer software, distribute, and sublicense such enhancements or
 derivative works thereof, in binary and source code form.
 
-********************************************************************
-*/
+ ********************************************************************
+ */
 
 package lbnl.actor.lib;
 
@@ -222,6 +222,7 @@ public class SystemCommand extends TypedAtomicActor {
      *  @exception CloneNotSupportedException If a derived class contains
      *   an attribute that cannot be cloned.
      */
+    @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         SystemCommand newObject = (SystemCommand) super.clone(workspace);
 
@@ -249,6 +250,7 @@ public class SystemCommand extends TypedAtomicActor {
      *
      *@exception IllegalActionException Not thrown in this base class.
      */
+    @Override
     public void fire() throws IllegalActionException {
         super.fire();
 
@@ -286,6 +288,7 @@ public class SystemCommand extends TypedAtomicActor {
      * @exception IllegalActionException If the parameters of the
      *     actor are invalid.
      */
+    @Override
     public void preinitialize() throws IllegalActionException {
         super.preinitialize();
 
@@ -350,7 +353,7 @@ public class SystemCommand extends TypedAtomicActor {
           while (st.hasMoreTokens()) {
             commandList.add(st.nextToken());
         }
-        */
+         */
         commandList.add(comArg);
         StringTokenizer st = new StringTokenizer(argLin);
         while (st.hasMoreTokens()) {
@@ -457,6 +460,7 @@ public class SystemCommand extends TypedAtomicActor {
      *
      *  @exception IllegalActionException If the parent class throws it.
      */
+    @Override
     public void initialize() throws IllegalActionException {
         super.initialize();
         if (getPort("time") != null) {
@@ -481,6 +485,7 @@ public class SystemCommand extends TypedAtomicActor {
     /** Increment the iteration count.
      *  @exception IllegalActionException If the superclass throws it.
      */
+    @Override
     public boolean postfire() throws IllegalActionException {
         _iterationCount++;
 
@@ -492,6 +497,7 @@ public class SystemCommand extends TypedAtomicActor {
      *  data, otherwise return true.
      *  @exception IllegalActionException If the superclass throws it.
      */
+    @Override
     public boolean prefire() throws IllegalActionException {
         Iterator inputPorts = inputPortList().iterator();
 
@@ -512,6 +518,7 @@ public class SystemCommand extends TypedAtomicActor {
      *
      *  @exception IllegalActionException if the base class throws it.
      */
+    @Override
     public void wrapup() throws IllegalActionException {
         super.wrapup();
         // Reset position of window that shows console output so that for the next

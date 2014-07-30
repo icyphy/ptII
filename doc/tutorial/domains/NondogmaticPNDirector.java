@@ -23,7 +23,7 @@ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
 PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 ENHANCEMENTS, OR MODIFICATIONS.
-*/
+ */
 package doc.tutorial.domains;
 
 import ptolemy.actor.IOPort;
@@ -62,6 +62,7 @@ public class NondogmaticPNDirector extends PNDirector {
     /** Return a new instance of the specialized receiver used by
      *  this director.
      */
+    @Override
     public Receiver newReceiver() {
         return new FlexibleReceiver();
     }
@@ -75,6 +76,7 @@ public class NondogmaticPNDirector extends PNDirector {
         /** Override the base class to return true only if the
          *  receiver actually has a token.
          */
+        @Override
         public boolean hasToken() {
             IOPort port = getContainer();
             Attribute attribute = port.getAttribute("tellTheTruth");

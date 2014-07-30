@@ -176,6 +176,7 @@ public class ManipulatorTutorial {
     public static void main(String[] argv) {
         // Always invoke graphics code in the event thread
         SwingUtilities.invokeLater(new Runnable() {
+            @Override
             public void run() {
                 ManipulatorTutorial ex = new ManipulatorTutorial();
                 ex.createFigures();

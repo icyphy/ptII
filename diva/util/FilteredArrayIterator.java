@@ -56,6 +56,7 @@ public abstract class FilteredArrayIterator extends NullArrayIterator {
     /** Advance the next index to the next non-null element. Set it
      * to -1 if there are no more elements.
      */
+    @Override
     protected void advance() {
         _nextindex++;
 

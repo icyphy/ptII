@@ -85,7 +85,7 @@ public interface DEEventQueue extends Debuggable {
      *  @exception IllegalActionException If the event cannot be enqueued.
      */
     public void put(DEEvent event) throws IllegalActionException;
-    
+
     /** Remove an event from the event queue and return true if
      *  it was removed, and false if it was not in the queue.
      *  This should only be used for pure events (consequences of

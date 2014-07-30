@@ -72,6 +72,7 @@ public class WelcomeWindowTableau extends HTMLViewerTableau {
      *  @exception IllegalActionException Thrown by the parent class
      *  if the URL cannot be opened, or if the base class throws it.
      */
+    @Override
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         if (attribute == url) {

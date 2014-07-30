@@ -23,7 +23,7 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
-*/
+ */
 package ptserver.data.handler;
 
 import java.io.DataInputStream;
@@ -44,7 +44,7 @@ import ptserver.data.AttributeChangeToken;
  *  @Pt.AcceptedRating Red (pdf)
  */
 public class AttributeChangeTokenHandler implements
-        TokenHandler<AttributeChangeToken> {
+TokenHandler<AttributeChangeToken> {
 
     /** Write the AttributeChangeToken to a byte array.
      *  @param token Token to be converted to bytes.
@@ -53,6 +53,7 @@ public class AttributeChangeTokenHandler implements
      *  @exception IllegalActionException Not thrown in this class.
      *  @see ptserver.data.handler.TokenHandler#convertToBytes(ptolemy.data.Token, java.io.DataOutputStream)
      */
+    @Override
     public void convertToBytes(AttributeChangeToken token,
             DataOutputStream outputStream) throws IOException,
             IllegalActionException {
@@ -68,9 +69,10 @@ public class AttributeChangeTokenHandler implements
      *  @exception IllegalActionException Not thrown in this class.
      *  @see ptserver.data.handler.TokenHandler#convertToToken(java.io.DataInputStream, Class)
      */
+    @Override
     public AttributeChangeToken convertToToken(DataInputStream inputStream,
             Class<? extends AttributeChangeToken> tokenType)
-            throws IOException, IllegalActionException {
+                    throws IOException, IllegalActionException {
         AttributeChangeToken token = new AttributeChangeToken();
         token.setTargetSettableName(inputStream.readUTF());
         token.setExpression(inputStream.readUTF());

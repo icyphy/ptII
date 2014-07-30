@@ -25,7 +25,7 @@
  PT_COPYRIGHT_VERSION_2
  COPYRIGHTENDKEY
 
-*/
+ */
 package ptolemy.domains.modal.kernel;
 
 import ptolemy.actor.CompositeActor;
@@ -84,6 +84,7 @@ public class Configurer extends CompositeActor {
      *   or if one of the attributes cannot be cloned.
      *  @return A new CompositeActor.
      */
+    @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         Configurer newObject = (Configurer) super.clone(workspace);
         newObject._configured = null;
@@ -122,7 +123,7 @@ public class Configurer extends CompositeActor {
      @Pt.AcceptedRating Red (tfeng)
      */
     public static class ContainmentExtender extends Attribute implements
-            ptolemy.data.expr.ContainmentExtender {
+    ptolemy.data.expr.ContainmentExtender {
 
         /** Construct a containment extender.
          *
@@ -146,6 +147,7 @@ public class Configurer extends CompositeActor {
          *  @exception IllegalActionException If exception occurs when trying to get
          *   the contained object.
          */
+        @Override
         public NamedObj getContainedObject(String name)
                 throws IllegalActionException {
             return ((Configurer) getContainer()).getEntity(name);
@@ -157,6 +159,7 @@ public class Configurer extends CompositeActor {
          *  @exception IllegalActionException If exception occurs when trying to get
          *   the container.
          */
+        @Override
         public NamedObj getExtendedContainer() throws IllegalActionException {
             return ((Configurer) getContainer()).getConfiguredObject();
         }

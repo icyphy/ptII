@@ -76,12 +76,12 @@ public class ColtGamma extends ColtRandomSource {
         alpha = new PortParameter(this, "alpha", new DoubleToken(1.0));
         alpha.setTypeEquals(BaseType.DOUBLE);
         new SingletonParameter(alpha.getPort(), "_showName")
-                .setToken(BooleanToken.TRUE);
+        .setToken(BooleanToken.TRUE);
 
         lambda = new PortParameter(this, "lambda", new DoubleToken(1.0));
         lambda.setTypeEquals(BaseType.DOUBLE);
         new SingletonParameter(lambda.getPort(), "_showName")
-                .setToken(BooleanToken.TRUE);
+        .setToken(BooleanToken.TRUE);
 
         lambda.moveToFirst();
         alpha.moveToFirst();
@@ -108,6 +108,7 @@ public class ColtGamma extends ColtRandomSource {
      *  remain constant throughout an iteration.
      *  @exception IllegalActionException If there is no director.
      */
+    @Override
     public void fire() throws IllegalActionException {
         alpha.update();
         lambda.update();
@@ -120,6 +121,7 @@ public class ColtGamma extends ColtRandomSource {
 
     /** Method that is called after _randomNumberGenerator is changed.
      */
+    @Override
     protected void _createdNewRandomNumberGenerator() {
         _generator = new Gamma(1.0, 1.0, _randomNumberGenerator);
     }
@@ -127,6 +129,7 @@ public class ColtGamma extends ColtRandomSource {
     /** Generate a new random number.
      *  @exception IllegalActionException If parameter values are incorrect.
      */
+    @Override
     protected void _generateRandomNumber() throws IllegalActionException {
         double alphaValue = ((DoubleToken) alpha.getToken()).doubleValue();
         double lambdaValue = ((DoubleToken) lambda.getToken()).doubleValue();

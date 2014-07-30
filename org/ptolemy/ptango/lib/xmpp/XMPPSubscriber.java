@@ -56,7 +56,7 @@ public interface XMPPSubscriber extends ItemEventListener<Item> {
     public String getNodeId();
 
     /** Get the subscriber ID.
-     *  @return The subscriber ID.    
+     *  @return The subscriber ID.
      *  @see #setSubId(String)
      */
     public String getSubId();

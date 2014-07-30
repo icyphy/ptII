@@ -100,7 +100,7 @@ import ptolemy.util.MessageHandler;
  @Pt.AcceptedRating Red (cxh)
  */
 public class InteractiveShell extends TypedAtomicActor implements Placeable,
-        ShellInterpreter, UsesInvokeAndWait {
+ShellInterpreter, UsesInvokeAndWait {
     /** Construct an actor with the given container and name.
      *  @param container The container.
      *  @param name The name of this actor.
@@ -123,7 +123,7 @@ public class InteractiveShell extends TypedAtomicActor implements Placeable,
         prompt = new PortParameter(this, "prompt");
         // Parameter to get Vergil to label the fileOrURL port.
         new SingletonParameter(prompt.getPort(), "_showName")
-                .setToken(BooleanToken.TRUE);
+        .setToken(BooleanToken.TRUE);
 
         // Make command be a StringParameter (no surrounding double quotes).
         prompt.setTypeEquals(BaseType.STRING);
@@ -184,6 +184,7 @@ public class InteractiveShell extends TypedAtomicActor implements Placeable,
      *  @exception CloneNotSupportedException If a derived class has an
      *   attribute that cannot be cloned.
      */
+    @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         InteractiveShell newObject = (InteractiveShell) super.clone(workspace);
         newObject.shell = null;
@@ -219,6 +220,7 @@ public class InteractiveShell extends TypedAtomicActor implements Placeable,
      *  @return The return value of the command, or null if there is none.
      *  @exception Exception If something goes wrong processing the command.
      */
+    @Override
     public String evaluateCommand(String command) throws Exception {
         // NOTE: This method is typically called in the swing event thread.
         // Be careful to avoid locking up the UI.
@@ -238,6 +240,7 @@ public class InteractiveShell extends TypedAtomicActor implements Placeable,
      *  @exception IllegalActionException If producing the output
      *   causes an exception.
      */
+    @Override
     public void fire() throws IllegalActionException {
         super.fire();
         // If window has been dismissed, there is nothing more to do.
@@ -265,6 +268,7 @@ public class InteractiveShell extends TypedAtomicActor implements Placeable,
             shell.returnResult(value);
         }
         Runnable doSetEditable = new Runnable() {
+            @Override
             public void run() {
                 shell.setEditable(true);
             }
@@ -312,10 +316,12 @@ public class InteractiveShell extends TypedAtomicActor implements Placeable,
      *  Then wait for user input and produce it on the output.
      *  @exception IllegalActionException If the parent class throws it.
      */
+    @Override
     public void initialize() throws IllegalActionException {
         super.initialize();
 
         Runnable doInitialize = new Runnable() {
+            @Override
             public void run() {
 
                 if (shell == null) {
@@ -327,8 +333,8 @@ public class InteractiveShell extends TypedAtomicActor implements Placeable,
 
                     if (containerEffigy == null) {
                         MessageHandler
-                                .error("Cannot find effigy for top level: "
-                                        + toplevel().getFullName());
+                        .error("Cannot find effigy for top level: "
+                                + toplevel().getFullName());
                         return;
                     }
 
@@ -353,7 +359,7 @@ public class InteractiveShell extends TypedAtomicActor implements Placeable,
                         MessageHandler.error(
                                 "Error creating effigy and tableau "
                                         + InteractiveShell.this.getFullName(),
-                                ex);
+                                        ex);
                         return;
                     }
 
@@ -394,6 +400,7 @@ public class InteractiveShell extends TypedAtomicActor implements Placeable,
      *  @param command The command.
      *  @return True.
      */
+    @Override
     public boolean isCommandComplete(String command) {
         return true;
     }
@@ -406,6 +413,7 @@ public class InteractiveShell extends TypedAtomicActor implements Placeable,
      *  @param container The container into which to place the shell, or
      *   null to specify that a new shell should be created.
      */
+    @Override
     public void place(Container container) {
         _container = container;
 
@@ -439,6 +447,7 @@ public class InteractiveShell extends TypedAtomicActor implements Placeable,
      *  @return False if the user has typed "quit" or "exit".
      *  @exception IllegalActionException If the superclass throws it.
      */
+    @Override
     public boolean postfire() throws IllegalActionException {
         if (_returnFalseInPostfire) {
             return false;
@@ -453,6 +462,7 @@ public class InteractiveShell extends TypedAtomicActor implements Placeable,
      *  @exception IllegalActionException If the base class throws it.
      *  @exception NameDuplicationException If the base class throws it.
      */
+    @Override
     public void setContainer(CompositeEntity container)
             throws IllegalActionException, NameDuplicationException {
         Nameable previousContainer = getContainer();
@@ -469,6 +479,7 @@ public class InteractiveShell extends TypedAtomicActor implements Placeable,
      *  @param name A name to present to the user.
      *  @see #getDisplayName()
      */
+    @Override
     public void setDisplayName(String name) {
         super.setDisplayName(name);
         // See http://bugzilla.ecoinformatics.org/show_bug.cgi?id=4302
@@ -493,8 +504,9 @@ public class InteractiveShell extends TypedAtomicActor implements Placeable,
      *  @see #getName()
      *  @see #getName(NamedObj)
      */
+    @Override
     public void setName(String name) throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         super.setName(name);
         // See http://bugzilla.ecoinformatics.org/show_bug.cgi?id=4302
         if (_tableau != null) {
@@ -516,6 +528,7 @@ public class InteractiveShell extends TypedAtomicActor implements Placeable,
     /** Override the base class to call notifyAll() to get out of
      *  any waiting.
      */
+    @Override
     public void stop() {
         synchronized (this) {
             super.stop();
@@ -526,6 +539,7 @@ public class InteractiveShell extends TypedAtomicActor implements Placeable,
     /** Override the base class to make the shell uneditable.
      *  @exception IllegalActionException If the parent class throws it.
      */
+    @Override
     public void wrapup() throws IllegalActionException {
         super.wrapup();
 
@@ -565,6 +579,7 @@ public class InteractiveShell extends TypedAtomicActor implements Placeable,
      *  @param depth The depth in the hierarchy, to determine indenting.
      *  @exception IOException If an I/O error occurs.
      */
+    @Override
     protected void _exportMoMLContents(Writer output, int depth)
             throws IOException {
         // Make sure that the current position of the frame, if any,
@@ -607,6 +622,7 @@ public class InteractiveShell extends TypedAtomicActor implements Placeable,
      */
     private void _remove() {
         SwingUtilities.invokeLater(new Runnable() {
+            @Override
             public void run() {
                 if (shell != null) {
                     if (_container != null) {
@@ -649,7 +665,7 @@ public class InteractiveShell extends TypedAtomicActor implements Placeable,
     /** The frame that is created by an instance of ShellTableau.
      */
     @SuppressWarnings("serial")
-        public class ShellFrame extends ExpressionShellFrame {
+    public class ShellFrame extends ExpressionShellFrame {
         /** Construct a frame to display the ExpressionShell window.
          *  Override the base class to handle window closing.
          *  After constructing this, it is necessary
@@ -670,6 +686,7 @@ public class InteractiveShell extends TypedAtomicActor implements Placeable,
          *  the size and location of the frame.
          *  @return False if the user cancels on a save query.
          */
+        @Override
         protected boolean _close() {
             if (_frame != null) {
                 _windowProperties.setProperties(_frame);

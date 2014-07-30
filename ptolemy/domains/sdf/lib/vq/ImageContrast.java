@@ -76,6 +76,7 @@ public class ImageContrast extends Transformer {
      *  @exception CloneNotSupportedException If a derived class contains
      *   an attribute that cannot be cloned.
      */
+    @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         ImageContrast newObject = (ImageContrast) super.clone(workspace);
         newObject.colorHistogram = new int[256];
@@ -98,6 +99,7 @@ public class ImageContrast extends Transformer {
      *
      *  Send the new image out the output port.
      */
+    @Override
     public void fire() throws IllegalActionException {
         super.fire();
         int i;

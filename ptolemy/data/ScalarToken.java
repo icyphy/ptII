@@ -72,7 +72,7 @@ import ptolemy.math.FixPoint;
  @Pt.AcceptedRating Green (yuhong)
  */
 public abstract class ScalarToken extends Token implements
-        BitwiseOperationToken, PartiallyOrderedToken {
+BitwiseOperationToken, PartiallyOrderedToken {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -115,6 +115,7 @@ public abstract class ScalarToken extends Token implements
      *  this token are of incomparable types, or have different units,
      *  or the operation does not make sense for the given types.
      */
+    @Override
     public final Token add(Token rightArgument) throws IllegalActionException {
         int typeInfo = TypeLattice.compare(getType(), rightArgument);
 
@@ -177,6 +178,7 @@ public abstract class ScalarToken extends Token implements
      *  this token are of incomparable types, or have different units,
      *  or the operation does not make sense for the given types.
      */
+    @Override
     public final Token addReverse(ptolemy.data.Token leftArgument)
             throws IllegalActionException {
         int typeInfo = TypeLattice.compare(leftArgument, getType());
@@ -214,6 +216,7 @@ public abstract class ScalarToken extends Token implements
      *  compatible for this operation, or the operation does not make
      *  sense for this type.
      */
+    @Override
     public BitwiseOperationToken bitwiseAnd(Token rightArgument)
             throws IllegalActionException {
         int typeInfo = TypeLattice.compare(getType(), rightArgument);
@@ -255,6 +258,7 @@ public abstract class ScalarToken extends Token implements
      *  compatible for this operation, or the operation does not make
      *  sense for this type.
      */
+    @Override
     public BitwiseOperationToken bitwiseNot() throws IllegalActionException {
         ScalarToken result = _bitwiseNot();
         if (_unitCategoryExponents != null && !_isUnitless()) {
@@ -271,6 +275,7 @@ public abstract class ScalarToken extends Token implements
      *  compatible for this operation, or the operation does not make
      *  sense for this type.
      */
+    @Override
     public BitwiseOperationToken bitwiseOr(Token rightArgument)
             throws IllegalActionException {
         int typeInfo = TypeLattice.compare(getType(), rightArgument);
@@ -314,6 +319,7 @@ public abstract class ScalarToken extends Token implements
      *  compatible for this operation, or the operation does not make
      *  sense for this type.
      */
+    @Override
     public BitwiseOperationToken bitwiseXor(Token rightArgument)
             throws IllegalActionException {
         int typeInfo = TypeLattice.compare(getType(), rightArgument);
@@ -400,6 +406,7 @@ public abstract class ScalarToken extends Token implements
      *  this token are of incomparable types, or the operation does
      *  not make sense for the given types.
      */
+    @Override
     public final Token divide(Token rightArgument)
             throws IllegalActionException {
         int typeInfo = TypeLattice.compare(getType(), rightArgument);
@@ -465,6 +472,7 @@ public abstract class ScalarToken extends Token implements
      *  this token are of incomparable types, or the operation does
      *  not make sense for the given types.
      */
+    @Override
     public final Token divideReverse(Token leftArgument)
             throws IllegalActionException {
         int typeInfo = TypeLattice.compare(leftArgument, getType());
@@ -528,6 +536,7 @@ public abstract class ScalarToken extends Token implements
      *  to return the correct type.
      *  @return BaseType.SCALAR
      */
+    @Override
     public abstract Type getType();
 
     /** Return a scalar token that contains the value of this token in the
@@ -576,6 +585,7 @@ public abstract class ScalarToken extends Token implements
      *   of a type that can be compared with this token, or the units
      *   are not the same.
      */
+    @Override
     public final BooleanToken isCloseTo(Token rightArgument, double epsilon)
             throws IllegalActionException {
         // Note that if we had absolute(), subtraction() and islessThan()
@@ -625,6 +635,7 @@ public abstract class ScalarToken extends Token implements
      *  @return A boolean token that contains the value true if the
      *  values and units of this token and the argument token are the same.
      */
+    @Override
     public final BooleanToken isEqualTo(Token rightArgument)
             throws IllegalActionException {
         int typeInfo = TypeLattice.compare(getType(), rightArgument);
@@ -706,6 +717,7 @@ public abstract class ScalarToken extends Token implements
      *  this token are of incomparable types, or have different units,
      *  or the operation does not make sense for the given types.
      */
+    @Override
     public final BooleanToken isLessThan(PartiallyOrderedToken rightArgument)
             throws IllegalActionException {
         if (!(rightArgument instanceof ScalarToken)) {
@@ -818,6 +830,7 @@ public abstract class ScalarToken extends Token implements
      *  this token are of incomparable types, or have different units,
      *  or the operation does not make sense for the given types.
      */
+    @Override
     public final Token modulo(Token rightArgument)
             throws IllegalActionException {
         int typeInfo = TypeLattice.compare(getType(), rightArgument);
@@ -882,6 +895,7 @@ public abstract class ScalarToken extends Token implements
      *  this token are of incomparable types, or have different units,
      *  or the operation does not make sense for the given types.
      */
+    @Override
     public final Token moduloReverse(Token leftArgument)
             throws IllegalActionException {
         int typeInfo = TypeLattice.compare(leftArgument, getType());
@@ -926,6 +940,7 @@ public abstract class ScalarToken extends Token implements
      *  this token are of incomparable types, or the operation does
      *  not make sense for the given types.
      */
+    @Override
     public final Token multiply(Token rightArgument)
             throws IllegalActionException {
         int typeInfo = TypeLattice.compare(getType(), rightArgument);
@@ -994,6 +1009,7 @@ public abstract class ScalarToken extends Token implements
      *  this token are of incomparable types, or the operation does
      *  not make sense for the given types.
      */
+    @Override
     public final Token multiplyReverse(Token leftArgument)
             throws IllegalActionException {
         int typeInfo = TypeLattice.compare(leftArgument, getType());
@@ -1069,6 +1085,7 @@ public abstract class ScalarToken extends Token implements
      *  for base units, since this method violates the immutability of
      *  tokens.
      */
+    @Deprecated
     public void setUnitCategory(int index) {
         // FIXME: shouldn't this be protected???  it violates the
         // immutability of tokens.
@@ -1100,6 +1117,7 @@ public abstract class ScalarToken extends Token implements
      *  this token are of incomparable types, or have different units,
      *  or the operation does not make sense for the given types.
      */
+    @Override
     public final Token subtract(Token rightArgument)
             throws IllegalActionException {
         int typeInfo = TypeLattice.compare(getType(), rightArgument);
@@ -1164,6 +1182,7 @@ public abstract class ScalarToken extends Token implements
      *  this token are of incomparable types, or have different units,
      *  or the operation does not make sense for the given types.
      */
+    @Override
     public final Token subtractReverse(Token leftArgument)
             throws IllegalActionException {
         int typeInfo = TypeLattice.compare(leftArgument, getType());

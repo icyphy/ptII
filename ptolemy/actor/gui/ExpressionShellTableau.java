@@ -88,6 +88,7 @@ public class ExpressionShellTableau extends Tableau implements ShellInterpreter 
      *  @return The return value of the command, or null if there is none.
      *  @exception Exception If something goes wrong processing the command.
      */
+    @Override
     public String evaluateCommand(String command) throws Exception {
         if (command.trim().equals("")) {
             return "";
@@ -108,6 +109,7 @@ public class ExpressionShellTableau extends Tableau implements ShellInterpreter 
         final NamedObj model = ((ExpressionShellEffigy) getContainer())
                 .getModel();
         ParserScope scope = new ModelScope() {
+            @Override
             public ptolemy.data.Token get(String name)
                     throws IllegalActionException {
                 Variable result = getScopedVariable(null, model, name);
@@ -119,6 +121,7 @@ public class ExpressionShellTableau extends Tableau implements ShellInterpreter 
                 }
             }
 
+            @Override
             public ptolemy.data.type.Type getType(String name)
                     throws IllegalActionException {
                 Variable result = getScopedVariable(null, model, name);
@@ -130,6 +133,7 @@ public class ExpressionShellTableau extends Tableau implements ShellInterpreter 
                 }
             }
 
+            @Override
             public InequalityTerm getTypeTerm(String name)
                     throws IllegalActionException {
                 Variable result = getScopedVariable(null, model, name);
@@ -141,6 +145,7 @@ public class ExpressionShellTableau extends Tableau implements ShellInterpreter 
                 }
             }
 
+            @Override
             public Set identifierSet() {
                 return getAllScopedVariableNames(null, model);
             }
@@ -176,6 +181,7 @@ public class ExpressionShellTableau extends Tableau implements ShellInterpreter 
      *  @param command The command.
      *  @return True.
      */
+    @Override
     public boolean isCommandComplete(String command) {
         return true;
     }
@@ -226,6 +232,7 @@ public class ExpressionShellTableau extends Tableau implements ShellInterpreter 
          *  @exception Exception If the factory should be able to create a
          *   tableau for the effigy, but something goes wrong.
          */
+        @Override
         public Tableau createTableau(Effigy effigy) throws Exception {
             // NOTE: Can create any number of tableaux within the same
             // effigy.  Is this what we want?

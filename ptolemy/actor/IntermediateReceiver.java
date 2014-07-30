@@ -93,6 +93,7 @@ public class IntermediateReceiver extends AbstractReceiver {
 
     /** Reset the communication aspect and the receiver that we delegate to.
      */
+    @Override
     public void clear() throws IllegalActionException {
         communicationAspect.reset();
         //_receiver.reset();
@@ -102,6 +103,7 @@ public class IntermediateReceiver extends AbstractReceiver {
      *  @return A list of instances of Token.
      *  @exception IllegalActionException Always thrown in this base class.
      */
+    @Override
     public List<Token> elementList() throws IllegalActionException {
         return _receiver.elementList();
     }
@@ -109,6 +111,7 @@ public class IntermediateReceiver extends AbstractReceiver {
     /** Delegate to the internal receiver and return whatever it returns.
      *  @exception NoTokenException If the delegated receiver throws it.
      */
+    @Override
     public Token get() throws NoTokenException {
         return _receiver.get();
     }
@@ -117,36 +120,42 @@ public class IntermediateReceiver extends AbstractReceiver {
      *  @return The port containing the internal receiver.
      *  @see #setContainer(IOPort)
      */
+    @Override
     public IOPort getContainer() {
         return _receiver.getContainer();
     }
 
     /** Delegate to the internal receiver and return whatever it returns.
      */
+    @Override
     public boolean hasRoom() {
         return _receiver.hasRoom();
     }
 
     /** Delegate to the internal receiver and return whatever it returns.
      */
+    @Override
     public boolean hasRoom(int numberOfTokens) {
         return _receiver.hasRoom(numberOfTokens);
     }
 
     /** Delegate to the internal receiver and return whatever it returns.
      */
+    @Override
     public boolean hasToken() {
         return _receiver.hasToken();
     }
 
     /** Delegate to the internal receiver and return whatever it returns.
      */
+    @Override
     public boolean hasToken(int numberOfTokens) {
         return _receiver.hasToken(numberOfTokens);
     }
 
     /** Delegate to the internal receiver and return whatever it returns.
      */
+    @Override
     public boolean isKnown() {
         return _receiver.isKnown();
     }
@@ -154,9 +163,11 @@ public class IntermediateReceiver extends AbstractReceiver {
     /** Forward the specified token to communication aspect specified in
      *  the constructor.
      */
+    @Override
     public void put(Token token) throws NoRoomException, IllegalActionException {
         communicationAspect.sendToken(this, _receiver, token);
-        ((Actor)_receiver.getContainer().getContainer()).getDirector().notifyTokenSentToCommunicationAspect();
+        ((Actor) _receiver.getContainer().getContainer()).getDirector()
+                .notifyTokenSentToCommunicationAspect();
     }
 
     /** Set the container of the internal receiver.
@@ -166,6 +177,7 @@ public class IntermediateReceiver extends AbstractReceiver {
      *   but may be thrown in derived classes.
      *  @see #getContainer()
      */
+    @Override
     public void setContainer(IOPort port) throws IllegalActionException {
         _receiver.setContainer(port);
     }

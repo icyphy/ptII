@@ -73,6 +73,7 @@ public class CIReceiver extends AbstractReceiver {
 
     /** Clear this receiver.
      */
+    @Override
     public void clear() {
         _tokens.clear();
     }
@@ -81,6 +82,7 @@ public class CIReceiver extends AbstractReceiver {
      *  @return A token from this receiver.
      *  @exception ptolemy.actor.NoTokenException If there is no token.
      */
+    @Override
     public synchronized Token get() throws NoTokenException {
         if (_tokens.size() == 0) {
             throw new NoTokenException(getContainer(),
@@ -94,6 +96,7 @@ public class CIReceiver extends AbstractReceiver {
      *  @return True if the next call to put() will not result in a
      *   NoRoomException.
      */
+    @Override
     public boolean hasRoom() {
         return true;
     }
@@ -107,6 +110,7 @@ public class CIReceiver extends AbstractReceiver {
      *  @return True if the next <i>numberOfTokens</i> calls to put()
      *   will not result in a NoRoomException.
      */
+    @Override
     public boolean hasRoom(int numberOfTokens) {
         return true;
     }
@@ -116,6 +120,7 @@ public class CIReceiver extends AbstractReceiver {
      *  @return True if the next call to get() will not result in a
      *   NoTokenException.
      */
+    @Override
     public synchronized boolean hasToken() {
         return _tokens.size() > 0;
     }
@@ -128,6 +133,7 @@ public class CIReceiver extends AbstractReceiver {
      *  @return True if the next <i>numberOfTokens</i> calls to get()
      *   will not result in a NoTokenException.
      */
+    @Override
     public synchronized boolean hasToken(int numberOfTokens) {
         return _tokens.size() >= numberOfTokens;
     }
@@ -136,6 +142,7 @@ public class CIReceiver extends AbstractReceiver {
      *  @param token The token to put into the receiver, or null to put no token.
      *  @exception NoRoomException If there is no room in the receiver.
      */
+    @Override
     public synchronized void put(Token token) throws NoRoomException {
         if (token == null) {
             return;
@@ -153,6 +160,7 @@ public class CIReceiver extends AbstractReceiver {
      *   array to put into this receiver.
      *  @exception NoRoomException If the token array cannot be put.
      */
+    @Override
     public synchronized void putArray(Token[] tokenArray, int numberOfTokens)
             throws NoRoomException {
         for (int i = 0; i < numberOfTokens; i++) {

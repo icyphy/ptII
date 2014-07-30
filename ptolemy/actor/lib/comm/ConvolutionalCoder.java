@@ -235,6 +235,7 @@ public class ConvolutionalCoder extends Transformer {
      *  @exception IllegalActionException If <i>uncodedRate</i> is
      *  non-positive or any element of <i>polynomialArray</i> is non-positive.
      */
+    @Override
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         if (attribute == uncodedRate) {
@@ -286,6 +287,7 @@ public class ConvolutionalCoder extends Transformer {
      *  @exception CloneNotSupportedException If a derived class contains
      *   an attribute that cannot be cloned.
      */
+    @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         ConvolutionalCoder newObject = (ConvolutionalCoder) super
                 .clone(workspace);
@@ -305,6 +307,7 @@ public class ConvolutionalCoder extends Transformer {
      *  in sequence to the output. The i-th bit in the output
      *  corresponds to the parity computed using the i-th polynomial.
      */
+    @Override
     public void fire() throws IllegalActionException {
         super.fire();
         if (_inputNumberInvalid) {
@@ -358,6 +361,7 @@ public class ConvolutionalCoder extends Transformer {
      *  equal to the value of <i>initialState</i>.
      *  @exception IllegalActionException If the parent class throws it.
      */
+    @Override
     public void initialize() throws IllegalActionException {
         super.initialize();
         _latestShiftReg = _shiftReg = ((IntToken) initialState.getToken())
@@ -368,6 +372,7 @@ public class ConvolutionalCoder extends Transformer {
      *  state for the next iteration.
      *  @exception IllegalActionException If the base class throws it
      */
+    @Override
     public boolean postfire() throws IllegalActionException {
         _shiftReg = _latestShiftReg;
         return super.postfire();

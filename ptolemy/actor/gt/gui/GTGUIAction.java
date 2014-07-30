@@ -25,7 +25,7 @@
  PT_COPYRIGHT_VERSION_2
  COPYRIGHTENDKEY
 
-*/
+ */
 package ptolemy.actor.gt.gui;
 
 import java.net.URL;
@@ -107,6 +107,7 @@ public class GTGUIAction extends GUIAction {
      *  @param parse Whether the configure text should be parsed before applying
      *   to the current model.
      */
+    @Override
     public void perform(boolean parse) {
         if (_momlText != null) {
             NamedObj originalModel = null;

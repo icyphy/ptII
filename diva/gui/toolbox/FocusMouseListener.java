@@ -38,12 +38,15 @@ import java.awt.event.MouseListener;
  * @version $Id$
  */
 public class FocusMouseListener implements MouseListener {
+    @Override
     public void mouseReleased(MouseEvent event) {
     }
 
+    @Override
     public void mouseEntered(MouseEvent event) {
     }
 
+    @Override
     public void mouseExited(MouseEvent event) {
     }
 
@@ -51,6 +54,7 @@ public class FocusMouseListener implements MouseListener {
      * Grab the keyboard focus when the component that this listener is
      * attached to is clicked on.
      */
+    @Override
     public void mousePressed(MouseEvent event) {
         Component component = event.getComponent();
 
@@ -59,6 +63,7 @@ public class FocusMouseListener implements MouseListener {
         }
     }
 
+    @Override
     public void mouseClicked(MouseEvent event) {
     }
 }

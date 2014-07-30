@@ -50,6 +50,7 @@ package ptolemy.actor;
  @Pt.AcceptedRating
  @see IOPort
  */
+@Deprecated
 public interface TokenGotListener {
 
     /** Report an that a token was received with get().  This method

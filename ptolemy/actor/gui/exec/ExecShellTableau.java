@@ -93,6 +93,7 @@ public class ExecShellTableau extends Tableau implements ShellInterpreter {
      *  @return The return value of the command, or null if there is none.
      *  @exception Exception If something goes wrong processing the command.
      */
+    @Override
     public String evaluateCommand(String command) throws Exception {
         _executeCommand(command);
 
@@ -105,6 +106,7 @@ public class ExecShellTableau extends Tableau implements ShellInterpreter {
      *  @param command The command.
      *  @return True
      */
+    @Override
     public boolean isCommandComplete(String command) {
         return true;
     }
@@ -143,7 +145,7 @@ public class ExecShellTableau extends Tableau implements ShellInterpreter {
     /** The frame that is created by an instance of ExecShellTableau.
      */
     @SuppressWarnings("serial")
-        public static class ExecShellFrame extends TableauFrame {
+    public static class ExecShellFrame extends TableauFrame {
         // FindBugs suggested refactoring this into a static class.
 
         /** Construct a frame to display the ExecShell window.
@@ -178,6 +180,7 @@ public class ExecShellTableau extends Tableau implements ShellInterpreter {
 
         ///////////////////////////////////////////////////////////////////
         ////                         protected methods                 ////
+        @Override
         protected void _help() {
             try {
                 URL doc = getClass().getClassLoader().getResource(
@@ -218,6 +221,7 @@ public class ExecShellTableau extends Tableau implements ShellInterpreter {
          *  @exception Exception If the factory should be able to create a
          *   tableau for the effigy, but something goes wrong.
          */
+        @Override
         public Tableau createTableau(Effigy effigy) throws Exception {
             // NOTE: Can create any number of tableaux within the same
             // effigy.  Is this what we want?
@@ -303,7 +307,7 @@ public class ExecShellTableau extends Tableau implements ShellInterpreter {
             } catch (final IOException io) {
                 stderr("IOException: "
                         + ptolemy.kernel.util.KernelException
-                                .stackTraceToString(io));
+                        .stackTraceToString(io));
             }
         } catch (InterruptedException e) {
             //_interpreter.destroy();
@@ -328,6 +332,7 @@ public class ExecShellTableau extends Tableau implements ShellInterpreter {
         }
 
         // Read lines from the _inputStream and output them.
+        @Override
         public void run() {
             try {
                 InputStreamReader inputStreamReader = new InputStreamReader(
@@ -338,7 +343,7 @@ public class ExecShellTableau extends Tableau implements ShellInterpreter {
 
                 while ((line = bufferedReader.readLine()) != null) {
                     _execShellTableau.stdout( /*_streamType + ">" +*/
-                    line);
+                            line);
                 }
             } catch (IOException ioe) {
                 _execShellTableau.stderr("IOException: " + ioe);

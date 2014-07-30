@@ -72,6 +72,7 @@ public class MetroIIPtidesListEventQueue implements DEEventQueue {
     /**
      * Clears the event queue.
      */
+    @Override
     public void clear() {
         _listQueue.clear();
     }
@@ -83,6 +84,7 @@ public class MetroIIPtidesListEventQueue implements DEEventQueue {
      * @exception InvalidStateException
      *                if the getFirst() method of the queue throws it.
      */
+    @Override
     public PtidesEvent get() throws InvalidStateException {
         PtidesEvent result = (PtidesEvent) _listQueue.getFirst();
         if (_debugging) {
@@ -111,6 +113,7 @@ public class MetroIIPtidesListEventQueue implements DEEventQueue {
     /**
      * Checks if the event queue is empty.
      */
+    @Override
     public boolean isEmpty() {
         return _listQueue.isEmpty();
     }
@@ -124,6 +127,7 @@ public class MetroIIPtidesListEventQueue implements DEEventQueue {
      * @exception IllegalActionException
      *                if the addFirst() method of the queue throws it.
      */
+    @Override
     public void put(DEEvent event) throws IllegalActionException {
         if (_debugging) {
             _debug("+++ putting in queue: " + event);
@@ -137,13 +141,16 @@ public class MetroIIPtidesListEventQueue implements DEEventQueue {
      *  @return In this class, this method never returns.
      *  @exception IllegalActionException Always thrown.
      */
+    @Override
     public boolean remove(DEEvent event) throws IllegalActionException {
-            throw new IllegalActionException("remove() is not implemented by PtidesListEventQueue.");
+        throw new IllegalActionException(
+                "remove() is not implemented by PtidesListEventQueue.");
     }
 
     /**
      * Returns the size of this event queue.
      */
+    @Override
     public int size() {
         return _listQueue.size();
     }
@@ -161,12 +168,13 @@ public class MetroIIPtidesListEventQueue implements DEEventQueue {
      * @return The event associated with this index in the event queue.
      * @exception InvalidStateException
      */
+    @Override
     public PtidesEvent take() throws InvalidStateException {
         PtidesEvent ptidesEvent = (PtidesEvent) _listQueue.remove();
         // put the token of this event into the destined receiver.
         if (ptidesEvent.receiver() != null) {
             ((MetroIIPtidesReceiver) ptidesEvent.receiver())
-                    .putToReceiver(ptidesEvent.token());
+            .putToReceiver(ptidesEvent.token());
         }
         if (_debugging) {
             _debug("--- taking from queue: " + ptidesEvent);
@@ -197,7 +205,7 @@ public class MetroIIPtidesListEventQueue implements DEEventQueue {
         if (ptidesEvent.receiver() != null) {
             if (ptidesEvent.receiver() instanceof MetroIIPtidesReceiver) {
                 ((MetroIIPtidesReceiver) ptidesEvent.receiver())
-                        .putToReceiver(ptidesEvent.token());
+                .putToReceiver(ptidesEvent.token());
             }
         }
         if (_debugging) {
@@ -212,6 +220,7 @@ public class MetroIIPtidesListEventQueue implements DEEventQueue {
      *
      * @return an array of Objects in the list.
      */
+    @Override
     public Object[] toArray() {
         return _listQueue.toArray();
     }
@@ -221,6 +230,7 @@ public class MetroIIPtidesListEventQueue implements DEEventQueue {
      *
      * @see #removeDebugListener
      */
+    @Override
     public void addDebugListener(DebugListener listener) {
         if (_debugListeners == null) {
             _debugListeners = new LinkedList();
@@ -239,6 +249,7 @@ public class MetroIIPtidesListEventQueue implements DEEventQueue {
      *
      * @see #addDebugListener
      */
+    @Override
     public void removeDebugListener(DebugListener listener) {
         if (_debugListeners == null) {
             return;

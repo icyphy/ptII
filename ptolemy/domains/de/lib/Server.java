@@ -143,6 +143,7 @@ public class Server extends DETransformer {
      *  @param attribute The attribute that changed.
      *  @exception IllegalActionException If the service time is negative.
      */
+    @Override
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         if (attribute == serviceTime) {
@@ -178,6 +179,7 @@ public class Server extends DETransformer {
      *  @exception CloneNotSupportedException If a derived class has
      *   has an attribute that cannot be cloned.
      */
+    @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         Server newObject = (Server) super.clone(workspace);
         newObject.output.setTypeSameAs(newObject.input);
@@ -191,6 +193,7 @@ public class Server extends DETransformer {
      *  cannot be computed.
      *  @see #getCausalityInterface()
      */
+    @Override
     public void declareDelayDependency() throws IllegalActionException {
         // Declare that output does not immediately depend on the input,
         // though there is no lower bound on the time delay.
@@ -205,6 +208,7 @@ public class Server extends DETransformer {
      *  @exception IllegalActionException If the serviceTime is invalid,
      *   or if an error occurs sending the output token.
      */
+    @Override
     public void fire() throws IllegalActionException {
         super.fire();
         Time currentTime = getDirector().getModelTime();
@@ -246,6 +250,7 @@ public class Server extends DETransformer {
      *  to serve.
      *  @exception IllegalActionException If the base class throws it.
      */
+    @Override
     public void initialize() throws IllegalActionException {
         super.initialize();
         _nextTimeFree = Time.NEGATIVE_INFINITY;
@@ -257,6 +262,7 @@ public class Server extends DETransformer {
      *  @exception IllegalActionException If there is no director.
      *  @return Whatever the superclass returns.
      */
+    @Override
     public boolean postfire() throws IllegalActionException {
         Time currentTime = getDirector().getModelTime();
 

@@ -156,8 +156,9 @@ public class ConstantPublisherPort extends PublisherPort {
      *  @exception NoRoomException If a send to one of the channels throws
      *     it.
      */
+    @Override
     public void broadcast(Token token) throws IllegalActionException,
-            NoRoomException {
+    NoRoomException {
         if (token == null) {
             super.broadcast(null);
         } else {
@@ -180,6 +181,7 @@ public class ConstantPublisherPort extends PublisherPort {
      *  @exception NoRoomException If there is no room in the receiver.
      *  @exception IllegalActionException Not thrown in this base class.
      */
+    @Override
     public void broadcast(Token[] tokenArray, int vectorLength)
             throws IllegalActionException, NoRoomException {
         Token[] replacement = new Token[tokenArray.length];
@@ -212,6 +214,7 @@ public class ConstantPublisherPort extends PublisherPort {
      *  @exception NoRoomException If there is no room in the receiver.
      *  @exception IllegalActionException Not thrown in this base class.
      */
+    @Override
     public void send(int channelIndex, Token token)
             throws IllegalActionException, NoRoomException {
         if (token == null) {
@@ -237,6 +240,7 @@ public class ConstantPublisherPort extends PublisherPort {
      *  @exception NoRoomException If there is no room in the receiver.
      *  @exception IllegalActionException Not thrown in this base class.
      */
+    @Override
     public void send(int channelIndex, Token[] tokenArray, int vectorLength)
             throws IllegalActionException, NoRoomException {
         Token[] replacement = new Token[tokenArray.length];

@@ -88,6 +88,7 @@ public class JopWatchDog extends Sink {
      *  @exception CloneNotSupportedException If a derived class contains
      *   an attribute that cannot be cloned.
      */
+    @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         JopWatchDog newObject = (JopWatchDog) super.clone(workspace);
         newObject.input.setTypeEquals(BaseType.BOOLEAN);
@@ -101,6 +102,7 @@ public class JopWatchDog extends Sink {
      *
      *  @exception IllegalActionException If there is no director.
      */
+    @Override
     public void fire() throws IllegalActionException {
         super.fire();
         _last_val = _val;
@@ -117,6 +119,7 @@ public class JopWatchDog extends Sink {
     /** Record the most recent input for the watch dog value.
      *  @exception IllegalActionException If the base class throws it.
      */
+    @Override
     public boolean postfire() throws IllegalActionException {
         _val = _last_val;
         System.out.print(_val ? '*' : 'o');

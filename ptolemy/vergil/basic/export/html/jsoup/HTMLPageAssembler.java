@@ -93,7 +93,7 @@ For more information, please refer to "Manual for Creating Web Pages" in Ptolemy
 @since Ptolemy II 10.0
 @Pt.ProposedRating Yellow (bwang)
 @Pt.AcceptedRating Yellow (bwang)
-*/
+ */
 
 public class HTMLPageAssembler extends TypedAtomicActor {
 
@@ -132,7 +132,7 @@ public class HTMLPageAssembler extends TypedAtomicActor {
 
         output = new TypedIOPort(this, "output", false, true);
         output.setTypeEquals(BaseType.STRING);
-        
+
         newline = new Parameter(this, "newline");
         newline.setExpression("property(\"line.separator\")");
         newline.setVisibility(Settable.NONE);
@@ -173,30 +173,32 @@ public class HTMLPageAssembler extends TypedAtomicActor {
      *  @exception CloneNotSupportedException If a derived class contains
      *   an attribute that cannot be cloned.
      */
+    @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
-        HTMLPageAssembler newObject = (HTMLPageAssembler) super.clone(workspace);
+        HTMLPageAssembler newObject = (HTMLPageAssembler) super
+                .clone(workspace);
         // Not sure why this is necessary, but it stops
         // (cd $PTII/ptolemy/configs/test; $PTII/bin/ptjacl allConfigs.tcl) from failing.
-        newObject.newline = (Parameter)newObject.getAttribute("newline");
+        newObject.newline = (Parameter) newObject.getAttribute("newline");
         return newObject;
     }
 
+    @Override
     public void fire() throws IllegalActionException {
         super.fire();
-        
+
         StringBuffer content = new StringBuffer("");
-        
+
         try {
             // Parse HTML.  Throw an exception if syntax is invalid
             // Create a parser instead of using static method Jsoup.parse,
             // since static method does not save error list
             Parser htmlParser = Parser.htmlParser();
-            
+
             // Max of 1 error, since this actor currently only reports error/OK
-            htmlParser.setTrackErrors(1); 
-            
-            
-            // htmlParser does not offer a method to read from a file, 
+            htmlParser.setTrackErrors(1);
+
+            // htmlParser does not offer a method to read from a file,
             // so store file data in a string.  Copied from fileReader
             BufferedReader reader = null;
             StringBuffer lineBuffer = new StringBuffer();
@@ -223,22 +225,22 @@ public class HTMLPageAssembler extends TypedAtomicActor {
                     template.close();
                 }
             }
-            
+
             _document = htmlParser.parseInput(lineBuffer.toString(), "");
-            
-            if (htmlParser.getErrors() != null &&
-                    !htmlParser.getErrors().isEmpty()) {
-                throw new IllegalActionException(this, "Template file '" +
-                    template.getValueAsString() + 
-                    "' contains HTML syntax errors.");
+
+            if (htmlParser.getErrors() != null
+                    && !htmlParser.getErrors().isEmpty()) {
+                throw new IllegalActionException(this, "Template file '"
+                        + template.getValueAsString()
+                        + "' contains HTML syntax errors.");
             }
-                    
+
             // Set the page title
-            _document.title(htmlTitle.stringValue().trim());         
+            _document.title(htmlTitle.stringValue().trim());
 
             /*
              * Insert the content from each port to its corresponding element.
-             * Throw an exception if an element cannot be found whose id 
+             * Throw an exception if an element cannot be found whose id
              * attribute matches the port name.
              */
 
@@ -246,15 +248,15 @@ public class HTMLPageAssembler extends TypedAtomicActor {
             for (TypedIOPort port : portList) {
                 String id = port.getName();
 
-                Elements elements = _document.select("#"+ id);
-                              
+                Elements elements = _document.select("#" + id);
+
                 // Throw exception if an element with this id is not found
                 if (elements == null || elements.isEmpty()) {
                     throw new IllegalActionException(this,
                             "Cannot find an element with id = '" + id
-                                    + "' in the template file.");
+                            + "' in the template file.");
                 }
-                
+
                 // Throw exception if multiple elements with this id are found
                 // (for valid HTML5, each id must be unique within the document)
                 // http://dev.w3.org/html5/markup/global-attributes.html
@@ -262,12 +264,12 @@ public class HTMLPageAssembler extends TypedAtomicActor {
                 // Note this only checks elements we are inserting content into
                 // TODO:  Check all elements?
                 if (elements.size() > 1) {
-                    throw new IllegalActionException(this,
-                            "Id = \"" + id + "\" is not unique in the " +
-                                    "template file.  Please make sure each" +
-                                    " element has a unique id (or none).");
+                    throw new IllegalActionException(this, "Id = \"" + id
+                            + "\" is not unique in the "
+                            + "template file.  Please make sure each"
+                            + " element has a unique id (or none).");
                 }
-                
+
                 for (int i = port.getWidth() - 1; i >= 0; i--) {
                     Token token = port.get(i);
                     StringBuffer htmlText = new StringBuffer();
@@ -282,54 +284,53 @@ public class HTMLPageAssembler extends TypedAtomicActor {
                         htmlText.append(((StringToken) token).stringValue()
                                 + "\n");
                     }
-                    
+
                     // Check that each fragment is valid html
                     // Wrap fragment in minimal document and try to parse
-                    String testFragment = "<!DOCTYPE html><html><head><body>" + 
-                            htmlText.toString() + " </body></html>"; 
+                    String testFragment = "<!DOCTYPE html><html><head><body>"
+                            + htmlText.toString() + " </body></html>";
                     htmlParser.parseInput(testFragment, "");
-                    
-                    if (htmlParser.getErrors() != null &&
-                            !htmlParser.getErrors().isEmpty()) {
-                        throw new IllegalActionException(this, "Input '" +
-                            htmlText.toString() + 
-                            "' contains HTML syntax errors.");
+
+                    if (htmlParser.getErrors() != null
+                            && !htmlParser.getErrors().isEmpty()) {
+                        throw new IllegalActionException(this, "Input '"
+                                + htmlText.toString()
+                                + "' contains HTML syntax errors.");
                     }
-                    
+
                     // We previously checked that there is exactly one element
                     for (Element element : elements) {
                         element.html(htmlText.toString());
-                    }                                 
+                    }
                 }
             }
-            
+
             // Correct <meta> tags, which parser handles improperly
             // HTML5 requires an unclosed meta tag, e.g. <meta >
             // XHTML requires a closed meta tag, e.g. <meta />
-            // For HTML5 documents, the parser correctly throws 
-            // an exception for closed <meta /> tags in input document; 
-            // however, the parser incorrectly adds a closing /> to the 
+            // For HTML5 documents, the parser correctly throws
+            // an exception for closed <meta /> tags in input document;
+            // however, the parser incorrectly adds a closing /> to the
             // result document
-           
+
             // TODO:  Check on other self-closing tags like <br>
             content = new StringBuffer(_document.html());
-            
+
             if (content != null && content.length() > 0) {
                 int startTagIndex = content.indexOf("<meta", 0);
                 int closeTagIndex = 0;
-                
+
                 while (startTagIndex != -1) {
-                   closeTagIndex = content.indexOf("/>", startTagIndex);
-                   content.deleteCharAt(closeTagIndex);
-                   startTagIndex = 
-                            content.indexOf("<meta", startTagIndex + 1);
-                } 
+                    closeTagIndex = content.indexOf("/>", startTagIndex);
+                    content.deleteCharAt(closeTagIndex);
+                    startTagIndex = content.indexOf("<meta", startTagIndex + 1);
+                }
             }
-            
+
             // TODO:  Check that result file does not contain illegal
             // duplicate items (like ids, body tags, ...)  Parser does not
             // seem to flag all of these situations?
-            
+
             output.broadcast(new StringToken(content.toString()));
 
             if (((BooleanToken) saveToFile.getToken()).booleanValue()) {
@@ -350,7 +351,7 @@ public class HTMLPageAssembler extends TypedAtomicActor {
     /** The parsed HTML document
      */
     private Document _document;
-    
+
     /** The end of line character(s).  The default value is the value
      *  of the line.separator property
      */

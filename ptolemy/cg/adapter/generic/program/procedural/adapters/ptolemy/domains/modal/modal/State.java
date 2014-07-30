@@ -43,7 +43,7 @@ Code generator helper for modal controller.
 @since Ptolemy II 10.0
 @Pt.ProposedRating red (sssf)
 @Pt.AcceptedRating red (sssf)
-*/
+ */
 public class State extends NamedProgramCodeGeneratorAdapter {
 
     /** Construct the code generator adapter associated with the given
@@ -90,13 +90,13 @@ public class State extends NamedProgramCodeGeneratorAdapter {
     }
 
     /** Update the read offsets of the buffer associated with the given port.
-    *
-    *  @param port The port whose read offset is to be updated.
-    *  @param code The string buffer that the generated code is appended to.
-    *  @param rate The rate, which must be greater than or equal to 0.
-    *  @exception IllegalActionException If thrown while reading or writing
-    *   offsets, or getting the buffer size, or if the rate is less than 0.
-    */
+     *
+     *  @param port The port whose read offset is to be updated.
+     *  @param code The string buffer that the generated code is appended to.
+     *  @param rate The rate, which must be greater than or equal to 0.
+     *  @exception IllegalActionException If thrown while reading or writing
+     *   offsets, or getting the buffer size, or if the rate is less than 0.
+     */
     protected void _updatePortOffset(IOPort port, StringBuffer code, int rate)
             throws IllegalActionException {
         if (rate == 0) {

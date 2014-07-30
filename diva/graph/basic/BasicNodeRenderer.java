@@ -152,6 +152,7 @@ public class BasicNodeRenderer implements NodeRenderer {
     /**
      * Return the rendered visual representation of this node.
      */
+    @Override
     public Figure render(Object node) {
         GraphModel model = _controller.getGraphModel();
         Shape shape = model.isComposite(node) ? _compositeShape : _nodeShape;

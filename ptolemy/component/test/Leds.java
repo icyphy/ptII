@@ -60,6 +60,7 @@ public class Leds extends AtomicComponent {
             throws NameDuplicationException, IllegalActionException {
         super(container, name);
         display = new MethodCallPort(this, "display", true) {
+            @Override
             public synchronized TupleToken call(TupleToken args) {
                 System.out.println("---call method Leds.displays.");
 

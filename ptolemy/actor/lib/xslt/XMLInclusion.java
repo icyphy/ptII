@@ -24,7 +24,7 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 PT_COPYRIGHT_VERSION 2
 COPYRIGHTENDKEY
-*/
+ */
 package ptolemy.actor.lib.xslt;
 
 import ptolemy.actor.lib.Transformer;
@@ -77,7 +77,7 @@ import ptolemy.kernel.util.NameDuplicationException;
    @since Ptolemy II 6.1
    @Pt.ProposedRating Red (cavaness)
    @Pt.AcceptedRating Red (cavaness)
-*/
+ */
 
 public class XMLInclusion extends Transformer {
 
@@ -104,7 +104,7 @@ public class XMLInclusion extends Transformer {
 
         headerParameter = new StringParameter(this, "headerParameter");
         headerParameter
-                .setExpression("<?xml version=\"1.0\" standalone=\"no\"?>");
+        .setExpression("<?xml version=\"1.0\" standalone=\"no\"?>");
 
         // Set the type of the output port.
         output.setTypeEquals(BaseType.XMLTOKEN);
@@ -137,6 +137,7 @@ public class XMLInclusion extends Transformer {
      *  @exception IllegalActionException If thrown by the parent class,
      *  while reading a parameter or while reading the input.
      */
+    @Override
     public void fire() throws IllegalActionException {
         super.fire();
         template.update();

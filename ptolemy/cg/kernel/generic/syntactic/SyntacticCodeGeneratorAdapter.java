@@ -37,30 +37,30 @@ import ptolemy.util.StringUtilities;
 ////HTMLCodeGeneratorAdapter
 
 /**
-* Base class for a syntactic representation generator adapter.
-*
-* <p>Subclasses should override generateSyntax().
-*
-* <p>Subclasses should be sure to properly indent the code by
-* either using the code block functionality in methods like
-* _generateBlockCode(String) or by calling
-* {@link ptolemy.cg.kernel.generic.program.CodeStream#indent(String)},
-* for example:
-* <pre>
-*     StringBuffer code = new StringBuffer();
-*     code.append(super.generateWrapupCode());
-*     code.append("// Local wrapup code");
-*     return processCode(CodeStream.indent(code.toString()));
-* </pre>
-*
-* @author Bert Rodiers, Chris Shaver
-* @version $Id$
-* @since Ptolemy II 10.0
-* @Pt.ProposedRating Red (shaver)
-* @Pt.AcceptedRating Red
-*/
+ * Base class for a syntactic representation generator adapter.
+ *
+ * <p>Subclasses should override generateSyntax().
+ *
+ * <p>Subclasses should be sure to properly indent the code by
+ * either using the code block functionality in methods like
+ * _generateBlockCode(String) or by calling
+ * {@link ptolemy.cg.kernel.generic.program.CodeStream#indent(String)},
+ * for example:
+ * <pre>
+ *     StringBuffer code = new StringBuffer();
+ *     code.append(super.generateWrapupCode());
+ *     code.append("// Local wrapup code");
+ *     return processCode(CodeStream.indent(code.toString()));
+ * </pre>
+ *
+ * @author Bert Rodiers, Chris Shaver
+ * @version $Id$
+ * @since Ptolemy II 10.0
+ * @Pt.ProposedRating Red (shaver)
+ * @Pt.AcceptedRating Red
+ */
 public abstract class SyntacticCodeGeneratorAdapter extends
-        CodeGeneratorAdapter {
+CodeGeneratorAdapter {
 
     /** Construct the code generator adapter associated
      *  with the given component.
@@ -81,6 +81,7 @@ public abstract class SyntacticCodeGeneratorAdapter extends
      *  @return The code generator associated with this adapter class.
      *  @see #setCodeGenerator(GenericCodeGenerator)
      */
+    @Override
     public GenericCodeGenerator getCodeGenerator() {
         return _codeGenerator;
     }
@@ -97,6 +98,7 @@ public abstract class SyntacticCodeGeneratorAdapter extends
      *   adapter class.
      *  @see #getCodeGenerator()
      */
+    @Override
     public void setCodeGenerator(GenericCodeGenerator codeGenerator) {
         _codeGenerator = codeGenerator;
     }

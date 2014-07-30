@@ -197,6 +197,7 @@ public class LatticeOntologySolver extends OntologySolver {
      *  @exception CloneNotSupportedException Not thrown in this base class
      *  @return The new object.
      */
+    @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         LatticeOntologySolver newObject = (LatticeOntologySolver) super
                 .clone(workspace);
@@ -220,7 +221,7 @@ public class LatticeOntologySolver extends OntologySolver {
      */
     public List<ptolemy.graph.InequalityTerm> getAffectedTerms(
             ptolemy.graph.InequalityTerm updateTerm)
-            throws IllegalActionException {
+                    throws IllegalActionException {
         return _conceptTermManager.getAffectedTerms(updateTerm);
     }
 
@@ -322,6 +323,7 @@ public class LatticeOntologySolver extends OntologySolver {
      * @exception IllegalActionException If an exception is thrown in the private
      * _getAdapter method
      */
+    @Override
     public OntologyAdapter getAdapter(Object object)
             throws IllegalActionException {
 
@@ -341,7 +343,7 @@ public class LatticeOntologySolver extends OntologySolver {
             return null;
         }
     }
-    */
+     */
 
     /**
      * Return the concept term from the given object.
@@ -386,6 +388,7 @@ public class LatticeOntologySolver extends OntologySolver {
      *  @exception IllegalActionException If an exception occurs when
      *  collecting the constraints.
      */
+    @Override
     public void initialize() throws IllegalActionException {
         super.initialize();
 
@@ -443,6 +446,7 @@ public class LatticeOntologySolver extends OntologySolver {
      * etc.). Also resets the {@linkplain ConceptTermManager} to null
      * and clears the trained constraints.
      */
+    @Override
     public void reset() {
         super.reset();
         _clearLists();
@@ -454,6 +458,7 @@ public class LatticeOntologySolver extends OntologySolver {
      *  @exception IllegalActionException If there is an exception thrown during the OntologySolver
      *   resolution.
      */
+    @Override
     public void resolveConcepts() throws IllegalActionException {
         NamedObj toplevel = _toplevel();
 
@@ -469,6 +474,7 @@ public class LatticeOntologySolver extends OntologySolver {
      *  @exception IllegalActionException If inference fails or the test
      *   resolves to the wrong values.
      */
+    @Override
     public void test() throws IllegalActionException {
         try {
             workspace().getWriteAccess();
@@ -510,17 +516,17 @@ public class LatticeOntologySolver extends OntologySolver {
                             && !trainedConceptString.equals("")) {
                         throw new IllegalActionException(conceptable,
                                 "Testing failure at " + conceptable.toString()
-                                        + '\n' + "Expected '"
-                                        + trainedConceptString
-                                        + "' but did not infer anything.");
+                                + '\n' + "Expected '"
+                                + trainedConceptString
+                                + "' but did not infer anything.");
                     }
                 } else if (!inferredConcept.toString().equals(
                         trainedConceptString)) {
                     throw new IllegalActionException(conceptable,
                             "Testing failure at " + conceptable.toString()
-                                    + '\n' + "Expected '"
-                                    + trainedConceptString + "' but got '"
-                                    + inferredConcept.toString() + "' instead.");
+                            + '\n' + "Expected '"
+                            + trainedConceptString + "' but got '"
+                            + inferredConcept.toString() + "' instead.");
                 }
             }
 
@@ -541,6 +547,7 @@ public class LatticeOntologySolver extends OntologySolver {
      *
      *  @exception IllegalActionException If inference fails..
      */
+    @Override
     public void train() throws IllegalActionException {
         try {
             workspace().getWriteAccess();
@@ -565,7 +572,7 @@ public class LatticeOntologySolver extends OntologySolver {
                 trainedConcepts[index++] = conceptRecord;
             }
             _trainedConceptRecordArray
-                    .setToken(new ArrayToken(trainedConcepts));
+            .setToken(new ArrayToken(trainedConcepts));
         } finally {
             workspace().doneWriting();
         }
@@ -711,7 +718,7 @@ public class LatticeOntologySolver extends OntologySolver {
             for (ActorConstraintsDefinitionAttribute adapterDefinitionAttribute : modelDefinedAdapters) {
                 if (((StringToken) adapterDefinitionAttribute.actorClassName
                         .getToken()).stringValue().equals(
-                        component.getClass().getName())) {
+                                component.getClass().getName())) {
                     adapter = adapterDefinitionAttribute.createAdapter(
                             (ComponentEntity) component, this);
                     break;
@@ -856,7 +863,7 @@ public class LatticeOntologySolver extends OntologySolver {
                                 + toplevel.getFullName()
                                 + " due to the following inequalities:");
             }
-            */
+             */
 
         } catch (IllegalActionException ex) {
             // This should not happen. The exception means that
@@ -1012,5 +1019,5 @@ public class LatticeOntologySolver extends OntologySolver {
 
     /** The array of labels for the trained concept records. */
     private static final String[] _trainedConceptRecordLabels = new String[] {
-            _namedObjLabel, _conceptLabel };
+        _namedObjLabel, _conceptLabel };
 }

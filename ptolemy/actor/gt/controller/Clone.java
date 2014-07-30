@@ -25,7 +25,7 @@
  PT_COPYRIGHT_VERSION_2
  COPYRIGHTENDKEY
 
-*/
+ */
 package ptolemy.actor.gt.controller;
 
 import ptolemy.data.BooleanToken;
@@ -91,6 +91,7 @@ public class Clone extends GTEvent {
      *  @exception IllegalActionException If the model cannot be cloned, or if
      *   thrown by the superclass.
      */
+    @Override
     public RefiringData fire(Token arguments) throws IllegalActionException {
         RefiringData data = super.fire(arguments);
 

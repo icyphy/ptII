@@ -68,18 +68,21 @@ public class BoundsSite extends AbstractSite {
 
     /** Get the figure to which this site is attached.
      */
+    @Override
     public Figure getFigure() {
         return _parentFigure;
     }
 
     /** Get the ID of this site.
      */
+    @Override
     public int getID() {
         return _id;
     }
 
     /** Get the normal of the site.
      */
+    @Override
     public double getNormal() {
         switch (_side) {
         case SwingConstants.NORTH:
@@ -110,6 +113,7 @@ public class BoundsSite extends AbstractSite {
 
     /** Get the x-coordinate of the site.
      */
+    @Override
     public double getX() {
         Rectangle2D bounds = _parentFigure.getShape().getBounds();
         double x = 0.0;
@@ -134,6 +138,7 @@ public class BoundsSite extends AbstractSite {
 
     /** Get the y-coordinate of the site.
      */
+    @Override
     public double getY() {
         Rectangle2D bounds = _parentFigure.getShape().getBounds();
         double y = 0.0;
@@ -156,6 +161,7 @@ public class BoundsSite extends AbstractSite {
         return y;
     }
 
+    @Override
     public String toString() {
         return "BoundsSite[" + getX() + "," + getY() + "," + getNormal() + "]";
     }

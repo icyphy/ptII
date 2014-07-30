@@ -186,6 +186,7 @@ public class JPanner extends JPanel {
         return _target;
     }
 
+    @Override
     public void paintComponent(Graphics g) {
         if (_target != null) {
             JCanvas canvas = null;
@@ -249,13 +250,15 @@ public class JPanner extends JPanel {
 
     //paint???
     private class ScrollListener implements ChangeListener {
+        @Override
         public void stateChanged(ChangeEvent e) {
             repaint();
         }
     }
 
     private class PanMouseListener extends MouseAdapter implements
-            MouseMotionListener {
+    MouseMotionListener {
+        @Override
         public void mousePressed(MouseEvent evt) {
             if (_target != null
                     && (evt.getModifiers() & InputEvent.BUTTON1_MASK) != 0) {
@@ -263,9 +266,11 @@ public class JPanner extends JPanel {
             }
         }
 
+        @Override
         public void mouseMoved(MouseEvent evt) {
         }
 
+        @Override
         public void mouseDragged(MouseEvent evt) {
             if (_target != null
                     && (evt.getModifiers() & InputEvent.BUTTON1_MASK) != 0) {
@@ -275,7 +280,7 @@ public class JPanner extends JPanel {
     }
 
     private class ScaleMouseListener extends MouseAdapter implements
-            MouseMotionListener {
+    MouseMotionListener {
         public Point2D origin = null;
 
         public Point2D scaled = null;
@@ -316,6 +321,7 @@ public class JPanner extends JPanel {
             canvas.getCanvasPane().setTransform(current);
         }
 
+        @Override
         public void mousePressed(MouseEvent evt) {
             if (_target != null
                     && (evt.getModifiers() & InputEvent.BUTTON3_MASK) != 0) {
@@ -357,9 +363,11 @@ public class JPanner extends JPanel {
             }
         }
 
+        @Override
         public void mouseMoved(MouseEvent evt) {
         }
 
+        @Override
         public void mouseDragged(MouseEvent evt) {
             if (_target != null
                     && (evt.getModifiers() & InputEvent.BUTTON3_MASK) != 0) {
@@ -372,6 +380,7 @@ public class JPanner extends JPanel {
         try {
             // Run this in the Swing Event Thread.
             Runnable doActions = new Runnable() {
+                @Override
                 public void run() {
                     try {
                         JFrame f = new JFrame();
@@ -379,7 +388,7 @@ public class JPanner extends JPanel {
                                 "oneeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
                                 "twoooooooooooooooooooooooooooooooooooooooo",
                                 "threeeeeeeeeeeeeeeee",
-                                "fourrrrrrrrrrrrrrrrrrrrrrrrr" };
+                        "fourrrrrrrrrrrrrrrrrrrrrrrrr" };
                         JList dataList = new JList(data);
                         JScrollPane p = new JScrollPane(dataList);
                         p.setSize(200, 200);

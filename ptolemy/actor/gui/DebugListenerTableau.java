@@ -76,6 +76,7 @@ public class DebugListenerTableau extends Tableau {
 
         // Listen for window closing events to unregister.
         frame.addWindowListener(new WindowAdapter() {
+            @Override
             public void windowClosing(WindowEvent e) {
                 setDebuggable(null);
             }
@@ -135,8 +136,8 @@ public class DebugListenerTableau extends Tableau {
      *  output from an instance of Debuggable.
      */
     @SuppressWarnings("serial")
-        public static class DebugListenerFrame extends TextEditor implements
-            DebugListener {
+    public static class DebugListenerFrame extends TextEditor implements
+    DebugListener {
         /** Create a debug listener that displays messages in a top-level
          *  window.
          */
@@ -153,6 +154,7 @@ public class DebugListenerTableau extends Tableau {
 
         /** Display a string representation of the specified event.
          */
+        @Override
         public void event(DebugEvent event) {
             text.append(event.toString() + "\n");
             scrollToEnd();
@@ -160,6 +162,7 @@ public class DebugListenerTableau extends Tableau {
 
         /** Display the specified message.
          */
+        @Override
         public void message(String message) {
             text.append(message + "\n");
             scrollToEnd();

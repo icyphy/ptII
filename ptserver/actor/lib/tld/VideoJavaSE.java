@@ -47,6 +47,7 @@ public class VideoJavaSE implements VideoInterface {
     /** Empty implementation.
      * @param container The container to hold the actor.
      */
+    @Override
     public void place(PortableContainer container) {
     }
 
@@ -54,6 +55,7 @@ public class VideoJavaSE implements VideoInterface {
      * Initialize the interface - empty implementation.
      * @param video the video whose interface is initialized.
      */
+    @Override
     public void init(Video video) {
 
     }
@@ -62,6 +64,7 @@ public class VideoJavaSE implements VideoInterface {
      * Callback for video.initialize() - empty implementation.
      * @exception IllegalActionException if there is problem initializing.
      */
+    @Override
     public void initialize() throws IllegalActionException {
 
     }
@@ -69,6 +72,7 @@ public class VideoJavaSE implements VideoInterface {
     /**
      * Callback for video.stop() - empty implementation.
      */
+    @Override
     public void stop() {
 
     }
@@ -77,6 +81,7 @@ public class VideoJavaSE implements VideoInterface {
      * Callback for video.fire() - empty implementation.
      * @exception IllegalActionException if there is problem initializing.
      */
+    @Override
     public void fire() throws IllegalActionException {
 
     }
@@ -88,6 +93,7 @@ public class VideoJavaSE implements VideoInterface {
      * @param x2 bottom right x
      * @param y2 bottom right y
      */
+    @Override
     public void updateBoundingBox(float x1, float y1, float x2, float y2) {
 
     }

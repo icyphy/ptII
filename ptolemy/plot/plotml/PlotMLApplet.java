@@ -60,6 +60,7 @@ import com.microstar.xml.XmlException;
 public class PlotMLApplet extends PlotApplet {
     /** Return a string describing this applet.
      */
+    @Override
     public String getAppletInfo() {
         return "PlotMLApplet 2.0: A data plotter.\n"
                 + "By: Edward A. Lee and\n " + "Christopher Hylands\n"
@@ -75,6 +76,7 @@ public class PlotMLApplet extends PlotApplet {
      *  @param in The input stream.
      *  @exception IOException If the stream cannot be read.
      */
+    @Override
     protected void _read(InputStream in) throws IOException {
         // Create a buffered input stream so that mark and reset
         // are supported.

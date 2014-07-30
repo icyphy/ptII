@@ -40,8 +40,8 @@ package ptolemy.cg.adapter.generic.program.procedural.java.adapters.ptolemy.acto
  @Pt.AcceptedRating Green (cxh)
  */
 public class Limiter
-        extends
-        ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.actor.lib.Limiter {
+extends
+ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.actor.lib.Limiter {
     /**
      * Construct an adapter for ptlemy.actor.lib.Limiter.
      * @param actor the associated actor.

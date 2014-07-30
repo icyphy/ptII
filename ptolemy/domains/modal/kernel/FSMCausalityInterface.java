@@ -79,7 +79,7 @@ current refinement.
 @since Ptolemy II 8.0
 @Pt.ProposedRating Yellow (eal)
 @Pt.AcceptedRating Red (eal)
-*/
+ */
 public class FSMCausalityInterface extends CausalityInterfaceForComposites {
 
     /** Construct a causality interface for the specified actor.
@@ -119,6 +119,7 @@ public class FSMCausalityInterface extends CausalityInterfaceForComposites {
      *   is port specified.
      *  @exception IllegalActionException If a guard expression cannot be parsed.
      */
+    @Override
     public Dependency getDependency(IOPort input, IOPort output)
             throws IllegalActionException {
         // Cast is safe because this is checked in the constructor
@@ -209,7 +210,7 @@ public class FSMCausalityInterface extends CausalityInterfaceForComposites {
                     } catch (IllegalActionException ex) {
                         throw new IllegalActionException(actor, ex,
                                 "Failed to parse guard expression \"" + guard
-                                        + "\"");
+                                + "\"");
                     }
                     if (inputs.isEmpty()) {
                         continue;

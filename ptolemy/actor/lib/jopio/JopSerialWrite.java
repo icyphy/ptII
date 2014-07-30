@@ -80,6 +80,7 @@ public class JopSerialWrite extends Sink {
      *  @exception CloneNotSupportedException If a derived class contains
      *   an attribute that cannot be cloned.
      */
+    @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         JopSerialWrite newObject = (JopSerialWrite) super.clone(workspace);
         newObject.input.setTypeEquals(BaseType.INT);
@@ -93,6 +94,7 @@ public class JopSerialWrite extends Sink {
      *
      *  @exception IllegalActionException If there is no director.
      */
+    @Override
     public void fire() throws IllegalActionException {
         super.fire();
         _last_val = _val;
@@ -105,6 +107,7 @@ public class JopSerialWrite extends Sink {
     /** Record the most recent token for the serial output.
      *  @exception IllegalActionException If the base class throws it.
      */
+    @Override
     public boolean postfire() throws IllegalActionException {
         _val = _last_val;
         System.out.print((char) _val);

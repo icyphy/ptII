@@ -132,7 +132,7 @@ public class CompositeProcessDirector extends ProcessDirector {
      *  @exception IllegalActionException If construction of Time objects fails.
      */
     public CompositeProcessDirector() throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         super();
     }
 
@@ -179,6 +179,7 @@ public class CompositeProcessDirector extends ProcessDirector {
      *   cannot be cloned.
      *  @return The new ProcessDirector.
      */
+    @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         CompositeProcessDirector newObj = (CompositeProcessDirector) super
                 .clone(workspace);
@@ -254,6 +255,7 @@ public class CompositeProcessDirector extends ProcessDirector {
      *  @exception IllegalActionException If the initialize() method
      *   of one of the deeply contained actors throws it.
      */
+    @Override
     public void initialize() throws IllegalActionException {
         CompositeActor container = (CompositeActor) getContainer();
 
@@ -302,6 +304,7 @@ public class CompositeProcessDirector extends ProcessDirector {
      *
      *  @return A new MailboxBoundaryReceiver.
      */
+    @Override
     public Receiver newReceiver() {
         return new MailboxBoundaryReceiver();
     }
@@ -311,6 +314,7 @@ public class CompositeProcessDirector extends ProcessDirector {
      *  @return True.
      *  @exception IllegalActionException If a derived class throws it.
      */
+    @Override
     public boolean prefire() throws IllegalActionException {
         super.prefire();
 
@@ -402,6 +406,7 @@ public class CompositeProcessDirector extends ProcessDirector {
      *   or null if it is not a specific receiver.
      *  @see #addThread(Thread)
      */
+    @Override
     public synchronized void threadBlocked(Thread thread,
             ProcessReceiver receiver) {
         // In case the receiver is on the boundary, add this to the
@@ -424,6 +429,7 @@ public class CompositeProcessDirector extends ProcessDirector {
      *   or null if it is not a specific receiver.
      *  @see #threadBlocked(Thread, ProcessReceiver)     *
      */
+    @Override
     public synchronized void threadUnblocked(Thread thread,
             ProcessReceiver receiver) {
         // In case the receiver is on the boundary, add this to the
@@ -449,6 +455,7 @@ public class CompositeProcessDirector extends ProcessDirector {
      *   accessing the receivers of all actors under the control of
      *   this director.
      */
+    @Override
     public void wrapup() throws IllegalActionException {
         // Kill all branch controllers.
         stopInputBranchController();
@@ -505,6 +512,7 @@ public class CompositeProcessDirector extends ProcessDirector {
      *  @return false If the number of blocked processes is less than
      *   the number of active actors; return true otherwise.
      */
+    @Override
     protected synchronized boolean _areThreadsDeadlocked() {
         if (_debugging) {
             _debug("Checking for deadlock:");
@@ -611,6 +619,7 @@ public class CompositeProcessDirector extends ProcessDirector {
      *   iterations are not allowed; return true otherwise.
      *  @exception IllegalActionException Not thrown in this base class.
      */
+    @Override
     protected boolean _resolveDeadlock() throws IllegalActionException {
         if (_debugging) {
             _debug("Resolving Deadlock");
@@ -657,8 +666,8 @@ public class CompositeProcessDirector extends ProcessDirector {
                             } else if (execDir instanceof CompositeProcessDirector) {
                                 // This is contained by a process-oriented MoC
                                 ((CompositeProcessDirector) execDir)
-                                        .threadBlocked(Thread.currentThread(),
-                                                null);
+                                .threadBlocked(Thread.currentThread(),
+                                        null);
                                 return true;
                             } else {
                                 // This is contained by a schedule-oriented MoC
@@ -678,8 +687,8 @@ public class CompositeProcessDirector extends ProcessDirector {
                             } else if (execDir instanceof CompositeProcessDirector) {
                                 // This is contained by a process-oriented MoC
                                 ((CompositeProcessDirector) execDir)
-                                        .threadBlocked(Thread.currentThread(),
-                                                null);
+                                .threadBlocked(Thread.currentThread(),
+                                        null);
                                 return true;
                             } else {
                                 // This is contained by a schedule-oriented MoC

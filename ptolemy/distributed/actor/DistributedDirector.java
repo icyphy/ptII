@@ -61,7 +61,7 @@ public class DistributedDirector extends Director {
      *  @exception IllegalActionException If construction of Time objects fails.
      */
     public DistributedDirector() throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         super();
     }
 
@@ -112,6 +112,7 @@ public class DistributedDirector extends Director {
      *  @return A DistributedSDFReceiver with the next available ID in the
      *  listOfIds.
      */
+    @Override
     public Receiver newReceiver() {
         Integer ID;
         DistributedSDFReceiver receiver;

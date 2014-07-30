@@ -93,6 +93,7 @@ public class CanBusPriority extends Transformer {
      *  @param attribute The attribute that changed.
      *  @exception IllegalActionException If the service time is negative.
      */
+    @Override
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         if (attribute == value) {
@@ -112,6 +113,7 @@ public class CanBusPriority extends Transformer {
      *  @exception CloneNotSupportedException If a derived class has
      *   an attribute that cannot be cloned.
      */
+    @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         CanBusPriority newObject = (CanBusPriority) super.clone(workspace);
         return newObject;
@@ -121,6 +123,7 @@ public class CanBusPriority extends Transformer {
      * Take the input (if there is such one) and put it in the output.
      *  @exception IllegalActionException If there is no director.
      */
+    @Override
     public void fire() throws IllegalActionException {
         super.fire();
         if (input.hasToken(0)) {

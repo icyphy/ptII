@@ -66,7 +66,7 @@ import ptolemy.kernel.util.Workspace;
  @Pt.AcceptedRating Red (johnr)
  */
 public class WindowPropertiesAttribute extends Parameter implements
-        ComponentListener {
+ComponentListener {
     /** Construct an attribute with the given name contained by the specified
      *  entity. The container argument must not be null, or a
      *  NullPointerException will be thrown.  This attribute will use the
@@ -107,6 +107,7 @@ public class WindowPropertiesAttribute extends Parameter implements
      *  @exception CloneNotSupportedException If a derived class contains
      *  an attribute that cannot be cloned.
      */
+    @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         WindowPropertiesAttribute newObject = (WindowPropertiesAttribute) super
                 .clone(workspace);
@@ -118,6 +119,7 @@ public class WindowPropertiesAttribute extends Parameter implements
      *  invoked when the component has been made invisible.
      *  @param event The component event.
      */
+    @Override
     public void componentHidden(ComponentEvent event) {
     }
 
@@ -125,6 +127,7 @@ public class WindowPropertiesAttribute extends Parameter implements
      *  invoked when the component's position changes.
      *  @param event The component event.
      */
+    @Override
     public void componentMoved(ComponentEvent event) {
         recordProperties(_listeningTo.get());
     }
@@ -133,6 +136,7 @@ public class WindowPropertiesAttribute extends Parameter implements
      *  invoked when the component's size changes.
      *  @param event The component event.
      */
+    @Override
     public void componentResized(ComponentEvent event) {
         recordProperties(_listeningTo.get());
     }
@@ -141,6 +145,7 @@ public class WindowPropertiesAttribute extends Parameter implements
      *  invoked when the component has been made visible.
      *  @param event The component event.
      */
+    @Override
     public void componentShown(ComponentEvent event) {
     }
 

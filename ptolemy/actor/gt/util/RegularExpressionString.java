@@ -97,6 +97,7 @@ public class RegularExpressionString {
      *
      *  @return The regular expression.
      */
+    @Override
     public String toString() {
         return get();
     }

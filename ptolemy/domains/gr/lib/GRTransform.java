@@ -100,6 +100,7 @@ abstract public class GRTransform extends GRActor3D {
 
     /** Setup the transform object.
      */
+    @Override
     public void initialize() throws IllegalActionException {
         super.initialize();
     }
@@ -116,6 +117,7 @@ abstract public class GRTransform extends GRActor3D {
         return ((BooleanToken) accumulate.getToken()).booleanValue();
     }
 
+    @Override
     protected void _makeSceneGraphConnection() throws IllegalActionException {
         int width = sceneGraphIn.getWidth();
 

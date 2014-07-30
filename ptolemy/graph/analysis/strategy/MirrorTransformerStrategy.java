@@ -52,7 +52,7 @@ import ptolemy.graph.analysis.analyzer.MirrorTransformer;
  @version $Id$
  */
 public class MirrorTransformerStrategy extends CachedStrategy implements
-        MirrorTransformer {
+MirrorTransformer {
     /** Construct a transformer for a given graph.
      *  @param graph The given graph.
      */
@@ -69,6 +69,7 @@ public class MirrorTransformerStrategy extends CachedStrategy implements
      *
      *  @param status If true, the weights will also be cloned.
      */
+    @Override
     public void cloneWeight(boolean status) {
         _cloneWeights = status;
     }
@@ -79,6 +80,7 @@ public class MirrorTransformerStrategy extends CachedStrategy implements
      *  @return True If the implementation of the transformer supports backward
      *  mapping.
      */
+    @Override
     public boolean hasBackwardMapping() {
         return true;
     }
@@ -89,6 +91,7 @@ public class MirrorTransformerStrategy extends CachedStrategy implements
      *  @return True If the implementation of the transformer supports forward
      *  mapping.
      */
+    @Override
     public boolean hasForwardMapping() {
         return true;
     }
@@ -98,6 +101,7 @@ public class MirrorTransformerStrategy extends CachedStrategy implements
      *
      *  @return The mirror graph.
      */
+    @Override
     public Graph mirror() {
         return mirror(graph(), _cloneWeights);
     }
@@ -121,6 +125,7 @@ public class MirrorTransformerStrategy extends CachedStrategy implements
      *  @param cloneWeights If true, the weights will also be cloned.
      *  @return The mirror graph.
      */
+    @Override
     public Graph mirror(Graph graph, boolean cloneWeights) {
         if (graph.getClass() != graph().getClass()
                 || cloneWeights != _cloneWeights) {
@@ -142,6 +147,7 @@ public class MirrorTransformerStrategy extends CachedStrategy implements
      *  @param transformedObject The given object in the transformed graph.
      *  @return Return the original version the given object.
      */
+    @Override
     public Object originalVersionOf(Object transformedObject) {
         return _originalVersion.get(transformedObject);
     }
@@ -151,6 +157,7 @@ public class MirrorTransformerStrategy extends CachedStrategy implements
      *  @param originalObject The given object in the original graph.
      *  @return Return the transformed version the given object.
      */
+    @Override
     public Object transformedVersionOf(Object originalObject) {
         return _transformedVersion.get(originalObject);
     }
@@ -159,6 +166,7 @@ public class MirrorTransformerStrategy extends CachedStrategy implements
      *
      *  @return True always.
      */
+    @Override
     public boolean valid() {
         return true;
     }
@@ -170,6 +178,7 @@ public class MirrorTransformerStrategy extends CachedStrategy implements
      *
      *  @return The mirror graph as an {@link Object}.
      */
+    @Override
     protected Object _compute() {
         String nameClone = "clone";
         Graph mirrorGraph = null;

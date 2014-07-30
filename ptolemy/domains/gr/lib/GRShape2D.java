@@ -118,6 +118,7 @@ abstract public class GRShape2D extends GRActor2D {
      *  @exception IllegalActionException If thrown while setting the
      *  appearance of the figure or if thrown by the parent class.
      */
+    @Override
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         if ((attribute == rgbFillColor || attribute == rgbOutlineColor || attribute == outlineWidth)
@@ -140,6 +141,7 @@ abstract public class GRShape2D extends GRActor2D {
      *  @exception IllegalActionException If the current director
      *  is not a GRDirector.
      */
+    @Override
     public void initialize() throws IllegalActionException {
         super.initialize();
         _figure = _createFigure();
@@ -151,6 +153,7 @@ abstract public class GRShape2D extends GRActor2D {
      *  @return false if the scene graph is already initialized.
      *  @exception IllegalActionException Not thrown in this base class
      */
+    @Override
     public boolean prefire() throws IllegalActionException {
         if (!super.prefire()) {
             return false;
@@ -177,6 +180,7 @@ abstract public class GRShape2D extends GRActor2D {
      *
      *  @exception IllegalActionException Always thrown for this base class.
      */
+    @Override
     protected void _makeSceneGraphConnection() throws IllegalActionException {
         sceneGraphOut.send(0, new Scene2DToken(_figure));
     }

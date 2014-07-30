@@ -117,6 +117,7 @@ public class ImageTableau extends TokenTableau {
      *  @param token The token to display.
      *  @exception IllegalActionException If the token is not an ImageToken.
      */
+    @Override
     public void append(Token token) throws IllegalActionException {
         if (token instanceof ImageToken) {
             display((ImageToken) token);
@@ -129,6 +130,7 @@ public class ImageTableau extends TokenTableau {
      *  @exception IllegalActionException If the tokens are not
      *  instances of ImageToken.
      */
+    @Override
     public void append(List list) throws IllegalActionException {
         Iterator tokens = list.iterator();
 
@@ -155,6 +157,7 @@ public class ImageTableau extends TokenTableau {
 
     /** Clear the display.
      */
+    @Override
     public void clear() {
         if (_picture != null) {
             // FIXME: How to do this?
@@ -167,6 +170,7 @@ public class ImageTableau extends TokenTableau {
      *  @param frame The frame to use, or null if none is specified.
      *  @exception IllegalActionException If the frame cannot be created.
      */
+    @Override
     public void createFrame(TableauFrame frame) throws IllegalActionException {
         TokenEffigy effigy = (TokenEffigy) getContainer();
 
@@ -297,6 +301,7 @@ public class ImageTableau extends TokenTableau {
          *  @exception Exception If the factory should be able to create a
          *   tableau for the effigy, but something goes wrong.
          */
+        @Override
         public Tableau createTableau(Effigy effigy) throws Exception {
             if (effigy instanceof TokenEffigy) {
                 // First see whether the effigy already contains an

@@ -47,7 +47,9 @@ import ptolemy.kernel.util.IllegalActionException;
  * @Pt.ProposedRating Red (cxh)
  * @Pt.AcceptedRating Green (cxh)
  */
-public abstract class RandomSource extends ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.actor.lib.RandomSource {
+public abstract class RandomSource
+        extends
+        ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.actor.lib.RandomSource {
     /**
      * Construct a RandomSource helper.
      * @param actor the associated actor
@@ -61,6 +63,7 @@ public abstract class RandomSource extends ptolemy.cg.adapter.generic.program.pr
      *  needed by the code generated for the RandomSource actor.
      *  @exception IllegalActionException Not Thrown in this subclass.
      */
+    @Override
     public Set getHeaderFiles() throws IllegalActionException {
         Set files = super.getHeaderFiles();
         files.add("<stdlib.h>");
@@ -74,6 +77,7 @@ public abstract class RandomSource extends ptolemy.cg.adapter.generic.program.pr
      *  the initialization code, while appending the code block or
      *  while converting the codeStream to a string.
      */
+    @Override
     public String generateInitializeCode() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
         code.append(super.generateInitializeCode());
@@ -107,6 +111,7 @@ public abstract class RandomSource extends ptolemy.cg.adapter.generic.program.pr
      * @exception IllegalActionException If the code stream encounters an
      *  error in processing the specified code block(s).
      */
+    @Override
     public Set getSharedCode() throws IllegalActionException {
         Set codeBlocks = super.getSharedCode();
         return codeBlocks;

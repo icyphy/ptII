@@ -118,7 +118,7 @@ public class DDEDirector extends CompositeProcessDirector {
      * stopTime parameter.
      */
     public DDEDirector() throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         super();
 
         double value = PrioritizedTimedQueue.ETERNITY;
@@ -136,7 +136,7 @@ public class DDEDirector extends CompositeProcessDirector {
      * stopTime parameter.
      */
     public DDEDirector(Workspace workspace) throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         super(workspace);
 
         double value = PrioritizedTimedQueue.ETERNITY;
@@ -178,6 +178,7 @@ public class DDEDirector extends CompositeProcessDirector {
      *  @exception CloneNotSupportedException Not thrown in this base class
      *  @return The new object.
      */
+    @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         DDEDirector newObject = (DDEDirector) super.clone(workspace);
         newObject._writeBlockedQueues = new HashMap();
@@ -204,6 +205,7 @@ public class DDEDirector extends CompositeProcessDirector {
      * the past or if the thread calling this method is a DDEThread
      * but the specified actor is not contained by the DDEThread.
      */
+    @Override
     public Time fireAt(Actor actor, Time time, int microstep)
             throws IllegalActionException {
         double ETERNITY = PrioritizedTimedQueue.ETERNITY;
@@ -261,6 +263,8 @@ public class DDEDirector extends CompositeProcessDirector {
      *  @deprecated As of Ptolemy II 4.1, replaced by
      *  {@link #getModelTime()}
      */
+    @Deprecated
+    @Override
     public double getCurrentTime() {
         return getModelTime().getDoubleValue();
     }
@@ -272,6 +276,7 @@ public class DDEDirector extends CompositeProcessDirector {
      *
      * @return The current time of the DDEThread that calls this method.
      */
+    @Override
     public Time getModelTime() {
         Thread thread = Thread.currentThread();
 
@@ -291,6 +296,7 @@ public class DDEDirector extends CompositeProcessDirector {
      * @exception IllegalActionException If there is an error during
      * the creation of the threads or initialization of the actors.
      */
+    @Override
     public void initialize() throws IllegalActionException {
         _completionTime = new Time(this, PrioritizedTimedQueue.ETERNITY);
         _writeBlockedQueues = new HashMap();
@@ -306,6 +312,7 @@ public class DDEDirector extends CompositeProcessDirector {
      *
      * @return A new DDEReceiver.
      */
+    @Override
     public Receiver newReceiver() {
         DDEReceiver receiver = new DDEReceiver();
         double timeValue;
@@ -334,6 +341,7 @@ public class DDEDirector extends CompositeProcessDirector {
      * @exception IllegalActionException Not thrown in this base class.
      * May be thrown in derived classes.
      */
+    @Override
     public boolean postfire() throws IllegalActionException {
         Thread thread = Thread.currentThread();
 
@@ -464,6 +472,7 @@ public class DDEDirector extends CompositeProcessDirector {
      * @exception IllegalActionException If an error occurs while
      * instantiating the new ProcessThread.
      */
+    @Override
     protected ProcessThread _newProcessThread(Actor actor,
             ProcessDirector director) throws IllegalActionException {
         return new DDEThread(actor, director);
@@ -481,6 +490,7 @@ public class DDEDirector extends CompositeProcessDirector {
      * @exception IllegalActionException If thrown while incrementing the
      * lowest capacity port.
      */
+    @Override
     protected synchronized boolean _resolveInternalDeadlock()
             throws IllegalActionException {
         System.out.println("_writeBlockedQueues.size() = "

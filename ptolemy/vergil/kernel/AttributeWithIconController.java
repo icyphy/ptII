@@ -89,7 +89,7 @@ public class AttributeWithIconController extends AttributeController {
     /** Customize the icon of the attribute.
      */
     @SuppressWarnings("serial")
-        private class EditIconAction extends FigureAction {
+    private class EditIconAction extends FigureAction {
 
         /** Create an action to edit an icon. */
         public EditIconAction() {
@@ -102,6 +102,7 @@ public class AttributeWithIconController extends AttributeController {
         /** Process the edit icon command.
          *  @param e The event.
          */
+        @Override
         public void actionPerformed(ActionEvent e) {
             if (_configuration == null) {
                 MessageHandler.error("Cannot edit icon without a "
@@ -116,6 +117,7 @@ public class AttributeWithIconController extends AttributeController {
 
             // Do this as a change request since it may add a new icon.
             ChangeRequest request = new ChangeRequest(this, "Edit Custom Icon") {
+                @Override
                 protected void _execute() throws Exception {
                     EditorIcon icon = null;
                     List<EditorIcon> iconList = object
@@ -145,9 +147,9 @@ public class AttributeWithIconController extends AttributeController {
     }
 
     /** Action to remove a custom icon.
-    */
+     */
     @SuppressWarnings("serial")
-        private static class RemoveIconAction extends FigureAction {
+    private static class RemoveIconAction extends FigureAction {
 
         /** Create an action to remove the custom icon. */
         public RemoveIconAction() {
@@ -160,6 +162,7 @@ public class AttributeWithIconController extends AttributeController {
         /** Process the remove icon command.
          *  @param e The event.
          */
+        @Override
         public void actionPerformed(ActionEvent e) {
             super.actionPerformed(e);
 

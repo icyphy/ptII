@@ -126,6 +126,7 @@ public class Default extends TypedAtomicActor {
      *  the <i>alternate</i> input port.
      *  @exception IllegalActionException If there is no director.
      */
+    @Override
     public void fire() throws IllegalActionException {
         super.fire();
         if (preferred.isKnown(0)) {
@@ -150,6 +151,7 @@ public class Default extends TypedAtomicActor {
      *  an output even if alternate input is unknown.
      *  @return False.
      */
+    @Override
     public boolean isStrict() {
         return false;
     }
@@ -158,6 +160,7 @@ public class Default extends TypedAtomicActor {
      *  does not depend on the <i>alternate</i> in a firing.
      *  @exception IllegalActionException If the superclass throws it.
      */
+    @Override
     public void preinitialize() throws IllegalActionException {
         super.preinitialize();
         removeDependency(alternate, output);

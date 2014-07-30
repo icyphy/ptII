@@ -52,13 +52,14 @@ public class SpeakerOutputDevice extends OutputDevice {
      */
     public SpeakerOutputDevice(
             ptolemy.domains.ptides.lib.luminary.SpeakerOutputDevice actor)
-            throws IllegalActionException, NameDuplicationException {
+                    throws IllegalActionException, NameDuplicationException {
         super(actor);
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
+    @Override
     public String generateActuatorActuationFuncCode()
             throws IllegalActionException {
         List args = new LinkedList();
@@ -80,6 +81,7 @@ public class SpeakerOutputDevice extends OutputDevice {
      * @return The generated code.
      * @exception IllegalActionException Not thrown in this base class.
      */
+    @Override
     public String generateFireCode() throws IllegalActionException {
         List args = new LinkedList();
         CodeStream _codeStream = _templateParser.getCodeStream();
@@ -96,6 +98,7 @@ public class SpeakerOutputDevice extends OutputDevice {
         return processCode(_codeStream.toString());
     }
 
+    @Override
     public String generateHardwareInitializationCode()
             throws IllegalActionException {
         StringBuffer code = new StringBuffer();

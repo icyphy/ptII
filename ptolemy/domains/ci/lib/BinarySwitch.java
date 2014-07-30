@@ -133,6 +133,7 @@ public class BinarySwitch extends TypedAtomicActor {
      *  that of the input port, the tokens in the extra channels
      *  are lost.
      *  @exception IllegalActionException Not thrown in this base class */
+    @Override
     public void fire() throws IllegalActionException {
         super.fire();
         if (q1_len.hasToken(0)) {
@@ -158,10 +159,12 @@ public class BinarySwitch extends TypedAtomicActor {
      *  @exception IllegalActionException If the parent class throws it.
      *  @return Whatever the superclass returns (probably true).
      */
+    @Override
     public boolean prefire() throws IllegalActionException {
         return super.prefire();
     }
 
+    @Override
     public void preinitialize() throws IllegalActionException {
         super.preinitialize();
         _q1len = 0;

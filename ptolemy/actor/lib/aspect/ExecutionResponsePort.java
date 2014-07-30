@@ -35,18 +35,18 @@ import ptolemy.kernel.util.NameDuplicationException;
 
 /** This actor implements an output port in a CompositeExecutionAspect
  *  (@link CompositeExecutionAspect).
-*   This actor simply stores the token from the input and provides methods
-*   to access the token. A token in this port is a RecordToken containing
-*   an actor object and the execution time of this actor. The meaning is that
-*   the actor can resume execution.
-*   The CompositeExecutionAspect calls these methods.
-*
-*  @author Patricia Derler
-*  @version $Id$
-*  @since Ptolemy II 10.0
-*  @Pt.ProposedRating Yellow (derler)
-*  @Pt.AcceptedRating Red (derler)
-*/
+ *   This actor simply stores the token from the input and provides methods
+ *   to access the token. A token in this port is a RecordToken containing
+ *   an actor object and the execution time of this actor. The meaning is that
+ *   the actor can resume execution.
+ *   The CompositeExecutionAspect calls these methods.
+ *
+ *  @author Patricia Derler
+ *  @version $Id$
+ *  @since Ptolemy II 10.0
+ *  @Pt.ProposedRating Yellow (derler)
+ *  @Pt.AcceptedRating Red (derler)
+ */
 public class ExecutionResponsePort extends CommunicationResponsePort {
 
     /** Construct a ResourceMappingOutputPort. The contained entities (SetVariable,

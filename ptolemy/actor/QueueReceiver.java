@@ -78,6 +78,7 @@ public class QueueReceiver extends AbstractReceiver {
 
     /** Clear this receiver of any contained tokens.
      */
+    @Override
     public void clear() {
         _queue.clear();
     }
@@ -85,6 +86,7 @@ public class QueueReceiver extends AbstractReceiver {
     /** List the tokens in the receiver, beginning with the oldest.
      *  @return An enumeration of tokens.
      */
+    @Override
     public List<Token> elementList() {
         return _queue.elementList();
     }
@@ -93,6 +95,7 @@ public class QueueReceiver extends AbstractReceiver {
      *  @deprecated Used elementList() instead.
      *  @return An enumeration of tokens.
      */
+    @Deprecated
     public Enumeration elements() {
         return Collections.enumeration(elementList());
     }
@@ -103,6 +106,7 @@ public class QueueReceiver extends AbstractReceiver {
      *  @return The oldest token in the receiver.
      *  @exception NoTokenException If there is no token in the receiver.
      */
+    @Override
     public Token get() {
         Token t = null;
 
@@ -168,6 +172,7 @@ public class QueueReceiver extends AbstractReceiver {
      *  a NoRoomException.
      *  @return True if the queue has room for one more token.
      */
+    @Override
     public boolean hasRoom() {
         return !_queue.isFull();
     }
@@ -180,6 +185,7 @@ public class QueueReceiver extends AbstractReceiver {
      *   than one.  This is a runtime exception, and hence does not need to
      *   be explicitly declared by the caller.
      */
+    @Override
     public boolean hasRoom(int numberOfTokens) throws IllegalArgumentException {
         if (numberOfTokens < 1) {
             throw new IllegalArgumentException(
@@ -193,6 +199,7 @@ public class QueueReceiver extends AbstractReceiver {
      *  a NoTokenException.
      *  @return True if the queue has at least one token in it.
      */
+    @Override
     public boolean hasToken() {
         return _queue.size() > 0;
     }
@@ -205,6 +212,7 @@ public class QueueReceiver extends AbstractReceiver {
      *   than one.  This is a runtime exception, and hence does not need to
      *   be explicitly declared by the caller.
      */
+    @Override
     public boolean hasToken(int numberOfTokens) throws IllegalArgumentException {
         if (numberOfTokens < 1) {
             throw new IllegalArgumentException(
@@ -223,6 +231,7 @@ public class QueueReceiver extends AbstractReceiver {
      *  @return An enumeration of tokens.
      *  @deprecated Used historyElementList() instead.
      */
+    @Deprecated
     public List historyElementList() {
         return _queue.historyElementList();
     }
@@ -236,6 +245,7 @@ public class QueueReceiver extends AbstractReceiver {
      *  @return An enumeration of tokens.
      *  @deprecated Used historyElementList() instead.
      */
+    @Deprecated
     public Enumeration historyElements() {
         return Collections.enumeration(historyElementList());
     }
@@ -252,6 +262,7 @@ public class QueueReceiver extends AbstractReceiver {
      *  @param token The token to be put to the receiver.
      *  @exception NoRoomException If the receiver is full.
      */
+    @Override
     public void put(Token token) {
         if (token == null) {
             return;

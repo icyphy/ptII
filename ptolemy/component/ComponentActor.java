@@ -116,6 +116,7 @@ public class ComponentActor extends TypedCompositeActor implements Component {
      *   or if one of the attributes cannot be cloned.
      *  @return A new CompositeActor.
      */
+    @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         ComponentActor newObject = (ComponentActor) super.clone(workspace);
         //newObject._inputPortsVersion = -1;
@@ -135,6 +136,7 @@ public class ComponentActor extends TypedCompositeActor implements Component {
     // it checked whether the container is compositeActor to avoid
     // infinite loop. But here it should be componentActor. We should change
     // the check to refer to a super interface of this two...
+    @Override
     public void connectionsChanged(Port port) {
         if (_debugging) {
             _debug("Connections changed on port: " + port.getName());
@@ -229,6 +231,7 @@ public class ComponentActor extends TypedCompositeActor implements Component {
      *   the director's fire() method throws it, or if the actor is not
      *   opaque.
      */
+    @Override
     public void fire() throws IllegalActionException {
         super.fire();
         if (_debugging) {
@@ -256,6 +259,7 @@ public class ComponentActor extends TypedCompositeActor implements Component {
 
     /** Load the generated class and search for its fire method.
      */
+    @Override
     public void preinitialize() throws IllegalActionException {
         super.preinitialize();
     }
@@ -267,12 +271,14 @@ public class ComponentActor extends TypedCompositeActor implements Component {
      *  @exception IllegalActionException If the run cannot be completed
      *   (not thrown in this base class).
      */
+    @Override
     public void run() throws IllegalActionException {
     }
 
     /* (non-Javadoc)
      * @see ptolemy.kernel.Component#initialize()
      */
+    @Override
     public void initialize() throws IllegalActionException {
         super.initialize();
     }
@@ -280,6 +286,7 @@ public class ComponentActor extends TypedCompositeActor implements Component {
     /* (non-Javadoc)
      * @see ptolemy.kernel.Component#wrapup()
      */
+    @Override
     public void wrapup() throws IllegalActionException {
         // TODO Auto-generated method stub
         super.wrapup();
@@ -328,6 +335,7 @@ public class ComponentActor extends TypedCompositeActor implements Component {
     //            onePort.createReceivers();
     //        }
     //    }
+    @Override
     protected void _addRelation(ComponentRelation relation)
             throws IllegalActionException, NameDuplicationException {
     }
@@ -385,7 +393,7 @@ public class ComponentActor extends TypedCompositeActor implements Component {
          */
         public IOMethodPort(ComponentEntity container, String name,
                 boolean isInput, boolean isOutput)
-                throws IllegalActionException, NameDuplicationException {
+                        throws IllegalActionException, NameDuplicationException {
             this(container, name);
             setInput(isInput);
             setOutput(isOutput);
@@ -439,6 +447,7 @@ public class ComponentActor extends TypedCompositeActor implements Component {
          *  @exception IllegalActionException If the transaction fails (e.g.
          *   the data type is incompatible).
          */
+        @Override
         public synchronized TupleToken call(TupleToken token)
                 throws IllegalActionException {
             if (isInput()) {
@@ -483,6 +492,7 @@ public class ComponentActor extends TypedCompositeActor implements Component {
          *  @exception IllegalActionException If this port is not
          *   an opaque input port or if there is no director.
          */
+        @Override
         public void createReceivers() throws IllegalActionException {
             boolean output = isOutput();
 
@@ -500,10 +510,12 @@ public class ComponentActor extends TypedCompositeActor implements Component {
          *  @return The local inside receivers, or an empty array if there are
          *   none.
          */
+        @Override
         public Receiver[][] getInsideReceivers() {
             return _insideReceivers;
         }
 
+        @Override
         public Receiver[][] getReceivers() {
             return _insideReceivers;
         }
@@ -517,6 +529,7 @@ public class ComponentActor extends TypedCompositeActor implements Component {
          *  @exception IllegalActionException If the relation is not linked
          *   from the outside.
          */
+        @Override
         public Receiver[][] getReceivers(IORelation relation, int occurrence)
                 throws IllegalActionException {
             return _insideReceivers;
@@ -538,6 +551,7 @@ public class ComponentActor extends TypedCompositeActor implements Component {
          *   relation is incompatible with this port, or the port is not
          *   in the same workspace as the relation.
          */
+        @Override
         protected void _checkLiberalLink(Relation relation)
                 throws IllegalActionException {
         }
@@ -556,6 +570,7 @@ public class ComponentActor extends TypedCompositeActor implements Component {
          *   not exactly one and the port is not a multiport, or the port is
          *   not in the same workspace as the relation.
          */
+        @Override
         protected void _checkLink(Relation relation)
                 throws IllegalActionException {
         }

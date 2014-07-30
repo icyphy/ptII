@@ -166,6 +166,7 @@ public class FSMGraphTableau extends Tableau {
          *  @exception Exception If an exception occurs when creating the
          *   tableau.
          */
+        @Override
         public Tableau createTableau(Effigy effigy) throws Exception {
             if (!(effigy instanceof PtolemyEffigy)) {
                 return null;

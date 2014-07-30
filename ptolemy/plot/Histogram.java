@@ -137,6 +137,7 @@ public class Histogram extends PlotBox {
      *  @param dataset The dataset index.
      *  @param legend The label for the dataset.
      */
+    @Override
     public void addLegend(int dataset, String legend) {
         _checkDatasetIndex(dataset);
         super.addLegend(dataset, legend);
@@ -162,6 +163,7 @@ public class Histogram extends PlotBox {
      */
     public synchronized void addPoint(final int dataset, final double value) {
         Runnable doAddPoint = new Runnable() {
+            @Override
             public void run() {
                 _addPoint(dataset, value);
             }
@@ -199,8 +201,10 @@ public class Histogram extends PlotBox {
      *
      *  @param format If true, clear the format controls as well.
      */
+    @Override
     public synchronized void clear(final boolean format) {
         Runnable doClear = new Runnable() {
+            @Override
             public void run() {
                 _clear(format);
             }
@@ -276,8 +280,10 @@ public class Histogram extends PlotBox {
      *  coordinate so that they are executed in the order that you
      *  called them.
      */
+    @Override
     public synchronized void fillPlot() {
         Runnable doFill = new Runnable() {
+            @Override
             public void run() {
                 _fillPlot();
             }
@@ -288,6 +294,7 @@ public class Histogram extends PlotBox {
 
     /** Create a sample plot.
      */
+    @Override
     public synchronized void samplePlot() {
         // Create a sample plot.
         clear(true);
@@ -368,6 +375,7 @@ public class Histogram extends PlotBox {
      *  @param dtd The reference (URL) for the DTD, or null to use the
      *   PUBLIC DTD.
      */
+    @Override
     public synchronized void write(Writer out, String dtd) {
         // Auto-flush is disabled.
         PrintWriter output = new PrintWriter(new BufferedWriter(out), false);
@@ -377,6 +385,7 @@ public class Histogram extends PlotBox {
     /** Write plot data information to the specified output stream in PlotML.
      *  @param output A buffered print writer.
      */
+    @Override
     public synchronized void writeData(PrintWriter output) {
         super.writeData(output);
 
@@ -405,6 +414,7 @@ public class Histogram extends PlotBox {
     /** Write plot format information to the specified output stream.
      *  @param output A buffered print writer.
      */
+    @Override
     public synchronized void writeFormat(PrintWriter output) {
         super.writeFormat(output);
 
@@ -524,6 +534,7 @@ public class Histogram extends PlotBox {
      *  @param clearfirst If true, clear the plot before proceeding.
      *  @param drawRect A specification of the size.
      */
+    @Override
     protected synchronized void _drawPlot(Graphics graphics,
             boolean clearfirst, Rectangle drawRect) {
         // This method called when images are exported.
@@ -555,6 +566,7 @@ public class Histogram extends PlotBox {
      *  It is not synchronized, so its caller should be.
      *  @return True if the line is recognized.
      */
+    @Override
     protected boolean _parseLine(String line) {
         // parse only if the super class does not recognize the line.
         if (super._parseLine(line)) {
@@ -685,8 +697,10 @@ public class Histogram extends PlotBox {
 
     /** Reset a scheduled redraw tasks.
      */
+    @Override
     protected void _resetScheduledTasks() {
         Runnable redraw = new RunnableExceptionCatcher(new Runnable() {
+            @Override
             public void run() {
                 _scheduledBinsToAdd.clear();
             }
@@ -698,9 +712,11 @@ public class Histogram extends PlotBox {
 
     /** Perform a scheduled redraw.
      */
+    @Override
     protected void _scheduledRedraw() {
         if (_needPlotRefill || _needBinRedraw) {
             Runnable redraw = new RunnableExceptionCatcher(new Runnable() {
+                @Override
                 public void run() {
                     ArrayList<HashSet<Integer>> scheduledBinsToAdd = new ArrayList<HashSet<Integer>>();
                     for (int i = 0; i < _scheduledBinsToAdd.size(); ++i) {

@@ -83,6 +83,7 @@ import ptolemy.kernel.util.NameDuplicationException;
  @Pt.AcceptedRating Red (liuj)
  @deprecated Use DirectoryListing instead.
  */
+@Deprecated
 public class URLDirectoryReader extends URLReader {
     /** Construct an actor with the given container and name.
      *  @param container The container.
@@ -133,6 +134,7 @@ public class URLDirectoryReader extends URLReader {
      *  @exception IllegalActionException If the specified attribute
      *   is <i>URL</i> and the file cannot be opened.
      */
+    @Override
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         if (attribute == repeat) {
@@ -153,6 +155,7 @@ public class URLDirectoryReader extends URLReader {
     /** Output the data read in the prefire.
      *  @exception IllegalActionException If there's no director.
      */
+    @Override
     public void fire() throws IllegalActionException {
         super.fire();
         output.broadcast(new StringToken(_data[_iterationCount]));
@@ -161,6 +164,7 @@ public class URLDirectoryReader extends URLReader {
     /** Open the file at the URL, and set the width of the output.
      *  @exception IllegalActionException Not thrown in this base class
      */
+    @Override
     public void initialize() throws IllegalActionException {
         super.initialize();
         _iterationCount = 0;
@@ -175,6 +179,7 @@ public class URLDirectoryReader extends URLReader {
      *
      *  @exception IllegalActionException If the sourceURL is not valid.
      */
+    @Override
     public boolean postfire() throws IllegalActionException {
         _iterationCount++;
 
@@ -196,6 +201,7 @@ public class URLDirectoryReader extends URLReader {
     /** Read one row from the input and prepare for output them.
      *  @exception IllegalActionException If the <i>sourceURL</i> is invalid.
      */
+    @Override
     public boolean prefire() throws IllegalActionException {
         try {
             _data = _list(_source, _endsWithValue);
@@ -396,9 +402,9 @@ public class URLDirectoryReader extends URLReader {
                                             if (endsWith == null
                                                     || endsWith.length() == 0
                                                     || target
-                                                            .endsWith(endsWith)) {
+                                                    .endsWith(endsWith)) {
                                                 resultsList
-                                                        .add(source + target);
+                                                .add(source + target);
                                             }
 
                                             sawHREF = false;

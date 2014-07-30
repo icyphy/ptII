@@ -76,6 +76,7 @@ import ptolemy.verification.kernel.MathematicalModelConverter.OutputType;
  @Pt.ProposedRating Red (patrickj)
  @Pt.AcceptedRating Red (eal)
  */
+@Deprecated
 @SuppressWarnings("serial")
 public class MathematicalModelConverterGUI extends PtolemyFrame {
 
@@ -92,9 +93,10 @@ public class MathematicalModelConverterGUI extends PtolemyFrame {
      *  @exception NameDuplicationException If a name collision occurs.
      * @deprecated ptolemy.de.lib.TimedDelay is deprecated, use ptolemy.actor.lib.TimeDelay.
      */
+    @Deprecated
     public MathematicalModelConverterGUI(
             final MathematicalModelConverter modelConverter, Tableau tableau)
-            throws IllegalActionException, NameDuplicationException {
+                    throws IllegalActionException, NameDuplicationException {
         super(modelConverter, tableau);
 
         setTitle(modelConverter.getName());
@@ -133,6 +135,7 @@ public class MathematicalModelConverterGUI extends PtolemyFrame {
 
         JButton moreInfoButton = new JButton("More Info");
         moreInfoButton.addActionListener(new ActionListener() {
+            @Override
             public void actionPerformed(ActionEvent evt) {
                 try {
                     Configuration configuration = getConfiguration();
@@ -172,8 +175,8 @@ public class MathematicalModelConverterGUI extends PtolemyFrame {
         // FIXME: We use a JTextArea because eventually we should pass
         // this to the modelConverter.generateFile() method.
 
-        final JTextAreaExec exec = new JTextAreaExec("Terminal (Verification Results)",
-                false);
+        final JTextAreaExec exec = new JTextAreaExec(
+                "Terminal (Verification Results)", false);
 
         exec.setPreferredSize(new Dimension(500, 300));
 
@@ -189,12 +192,14 @@ public class MathematicalModelConverterGUI extends PtolemyFrame {
         getContentPane().add(splitPane, BorderLayout.CENTER);
 
         clearButton.addActionListener(new ActionListener() {
+            @Override
             public void actionPerformed(ActionEvent evt) {
                 exec.clear();
             }
         });
 
         goButton.addActionListener(new ActionListener() {
+            @Override
             public void actionPerformed(ActionEvent evt) {
                 try {
                     ModelType modelType = (ModelType) modelConverter.modelType

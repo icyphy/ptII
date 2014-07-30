@@ -148,7 +148,7 @@ public final class CellConstraints implements Cloneable, Serializable {
      * deserialized alignments.
      */
     private static final Alignment[] VALUES = { DEFAULT, FILL, LEFT, RIGHT,
-            CENTER, TOP, BOTTOM };
+        CENTER, TOP, BOTTOM };
 
     /**
      * A reusable <code>Insets</code> object to reduce object instantiation.
@@ -902,6 +902,7 @@ public final class CellConstraints implements Cloneable, Serializable {
      *
      * @return                a copy of this cell constraints object
      */
+    @Override
     public Object clone() {
         try {
             CellConstraints c = (CellConstraints) super.clone();
@@ -918,6 +919,7 @@ public final class CellConstraints implements Cloneable, Serializable {
      *
      * @return        string representation of this constraints object
      */
+    @Override
     public String toString() {
         StringBuffer buffer = new StringBuffer("CellConstraints");
         buffer.append("[x=");
@@ -1044,6 +1046,7 @@ public final class CellConstraints implements Cloneable, Serializable {
          *
          * @return this alignment's name.
          */
+        @Override
         public String toString() {
             return name;
         }

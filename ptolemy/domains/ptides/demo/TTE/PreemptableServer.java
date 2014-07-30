@@ -70,6 +70,7 @@ public class PreemptableServer extends Server {
      *                associated with servicetime or in the fireAt()
      *                method.
      */
+    @Override
     public boolean postfire() throws IllegalActionException {
         serviceTime.update();
         double serviceTimeValue = ((DoubleToken) serviceTime.getToken())

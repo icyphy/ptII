@@ -96,6 +96,7 @@ public class CompositeFigure extends AbstractFigureContainer {
 
     /** Add a child figure to this composite.
      */
+    @Override
     public void add(Figure f) {
         _children.add(f);
         f.setParent(this);
@@ -117,6 +118,7 @@ public class CompositeFigure extends AbstractFigureContainer {
      * be used for performance reasons -- instead, test if the parent
      * of the child is the same as this composite.
      */
+    @Override
     public boolean contains(Figure f) {
         return _children.contains(f);
     }
@@ -125,6 +127,7 @@ public class CompositeFigure extends AbstractFigureContainer {
      * This does not include the background figure, even if there is
      * one.
      */
+    @Override
     public Iterator figures() {
         return _children.figures();
     }
@@ -133,6 +136,7 @@ public class CompositeFigure extends AbstractFigureContainer {
      * is the order in which the children are painted.  This does not
      * include the background figure, even if there is one.
      */
+    @Override
     public Iterator figuresFromBack() {
         return _children.figuresFromBack();
     }
@@ -141,6 +145,7 @@ public class CompositeFigure extends AbstractFigureContainer {
      * is the order in which events are intercepted.  This does not
      * include the background figure, even if there is one.
      */
+    @Override
     public Iterator figuresFromFront() {
         return _children.figuresFromFront();
     }
@@ -170,6 +175,7 @@ public class CompositeFigure extends AbstractFigureContainer {
      * been called here or by any descendents, a cached copy of the
      * bounding box will be returned, otherwise a new one will be generated.
      */
+    @Override
     public Rectangle2D getBounds() {
         if (_cachedBounds == null) {
             // This could be made faster by optimizing for orthogonal
@@ -206,6 +212,7 @@ public class CompositeFigure extends AbstractFigureContainer {
 
     /** Return the number of elements in this container.
      */
+    @Override
     public int getFigureCount() {
         return _children.getFigureCount();
     }
@@ -214,6 +221,7 @@ public class CompositeFigure extends AbstractFigureContainer {
      *  transform context.
      *  @return The origin of the background figure.
      */
+    @Override
     public Point2D getOrigin() {
         if (_background != null) {
             AffineTransform at = _transformContext.getTransform();
@@ -227,6 +235,7 @@ public class CompositeFigure extends AbstractFigureContainer {
     /** Get the shape of this figure. This will be the shape of
      * the background if there is one, otherwise the bounding box.
      */
+    @Override
     public Shape getShape() {
         if (_background != null) {
             AffineTransform at = _transformContext.getTransform();
@@ -238,6 +247,7 @@ public class CompositeFigure extends AbstractFigureContainer {
 
     /** Return the transform context of this figure.
      */
+    @Override
     public TransformContext getTransformContext() {
         return _transformContext;
     }
@@ -251,6 +261,7 @@ public class CompositeFigure extends AbstractFigureContainer {
 
     /** Test if this figure intersects the given rectangle.
      */
+    @Override
     public boolean intersects(Rectangle2D region) {
         // Transform the region to test
         AffineTransform t = _transformContext.getInverseTransform();
@@ -282,6 +293,7 @@ public class CompositeFigure extends AbstractFigureContainer {
      * This implementation pushes the transform context onto the
      * transform stack, and then paints all children.
      */
+    @Override
     public void paint(Graphics2D g) {
         if (!isVisible()) {
             return;
@@ -311,6 +323,7 @@ public class CompositeFigure extends AbstractFigureContainer {
      * immediately. Otherwise paint all figures that overlap the given
      * region, from back to front.
      */
+    @Override
     public void paint(Graphics2D g, Rectangle2D region) {
         if (!isVisible()) {
             return;
@@ -345,6 +358,7 @@ public class CompositeFigure extends AbstractFigureContainer {
      * figure is hit. If still no figure is hit, return null. Note that
      * the region should not have zero size, or no figure will be hit.
      */
+    @Override
     public Figure pick(Rectangle2D region) {
         // Transform the region and then do the pick
         AffineTransform at = _transformContext.getInverseTransform();
@@ -365,6 +379,7 @@ public class CompositeFigure extends AbstractFigureContainer {
      * that it hits that is accepted by the given filter.
      * If none does, return null.
      */
+    @Override
     public Figure pick(Rectangle2D region, Filter filter) {
         // Transform the region and then do the pick
         AffineTransform at = _transformContext.getInverseTransform();
@@ -382,6 +397,7 @@ public class CompositeFigure extends AbstractFigureContainer {
 
     /** Remove the given child from this composite.
      */
+    @Override
     public void remove(Figure f) {
         f.repaint();
         f.setParent(null);
@@ -403,6 +419,7 @@ public class CompositeFigure extends AbstractFigureContainer {
      * the inherited method to clear the cached bounding box, and
      * then forwards the notification to the parent.
      */
+    @Override
     public void repaint(DamageRegion d) {
         d.checkCacheValid(_transformContext);
 
@@ -450,6 +467,7 @@ public class CompositeFigure extends AbstractFigureContainer {
     /** Replace the first figure, which must be a child, with the
      * second, which must not be a child.
      */
+    @Override
     protected void replaceChild(Figure child, Figure replacement) {
         repaint();
         _children.set(_children.indexOf(child), replacement);
@@ -459,6 +477,7 @@ public class CompositeFigure extends AbstractFigureContainer {
 
     /** Return a string description of this figure
      */
+    @Override
     public String toString() {
         StringBuffer s = new StringBuffer(getClass().getName());
         s.append(":Background=" + getBackgroundFigure() + ":others={");
@@ -477,6 +496,7 @@ public class CompositeFigure extends AbstractFigureContainer {
     /** Transform this figure with the supplied transform.
      * This method modifies the transform context with the transform.
      */
+    @Override
     public void transform(AffineTransform at) {
         repaint();
         ShapeUtilities.transformModify(_cachedBounds, at);
@@ -487,6 +507,7 @@ public class CompositeFigure extends AbstractFigureContainer {
     /** Translate this figure the given distance.
      * This method modifies the transform context with the transform.
      */
+    @Override
     public void translate(double x, double y) {
         repaint();
         ShapeUtilities.translateModify(_cachedBounds, x, y);

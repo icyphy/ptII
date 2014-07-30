@@ -97,6 +97,7 @@ public class VectorDisassembler extends Transformer {
      *  @exception IllegalActionException If there is no director, or
      *  the input token has more than one columns and rows.
      */
+    @Override
     public void fire() throws IllegalActionException {
         super.fire();
         if (input.hasToken(0)) {

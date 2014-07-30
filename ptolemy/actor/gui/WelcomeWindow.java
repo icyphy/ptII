@@ -119,6 +119,7 @@ public class WelcomeWindow extends HTMLViewer {
 
         _closeButton = new JButton("Close");
         _closeButton.addActionListener(new ActionListener() {
+            @Override
             public void actionPerformed(ActionEvent evt) {
                 setVisible(false);
                 close();
@@ -137,6 +138,7 @@ public class WelcomeWindow extends HTMLViewer {
     /** Make this window displayable.  The menubar is hidden and
      *  close panel is added.
      */
+    @Override
     public void pack() {
         hideMenuBar();
         getContentPane().add(_closePanel, BorderLayout.SOUTH);
@@ -148,6 +150,7 @@ public class WelcomeWindow extends HTMLViewer {
      *  @param title The title, which is ignored.  The title is always
      *  the value returned by {@link #_getName()}.
      */
+    @Override
     public void setTitle(String title) {
         super.setTitle(_getName());
     }
@@ -155,6 +158,7 @@ public class WelcomeWindow extends HTMLViewer {
     /** Show the window if the _showWelcomeWindowAtStartup parameter
      *  is not set or is true.
      */
+    @Override
     public void show() {
 
         Configuration configuration = getConfiguration();
@@ -182,13 +186,14 @@ public class WelcomeWindow extends HTMLViewer {
      *  preferences if necessary and then call the super class and close
      *  this window.  This method is called by {@link ptolemy.gui.Top#close()}.
      */
+    @Override
     protected boolean _close() {
         Configuration configuration = getConfiguration();
         if (_showWelcomeWindowAtStartup == null
                 && !_startupCheck.isSelected()
                 || _showWelcomeWindowAtStartup != null
                 && _showWelcomeWindowAtStartup.booleanValue() != _startupCheck
-                        .isSelected()) {
+                .isSelected()) {
             // Update the preferences if there is no preference and
             // the user unchecked the "Show this dialog on startup"
             // or if the value of the preference and the checkbox differ.
@@ -215,6 +220,7 @@ public class WelcomeWindow extends HTMLViewer {
      *  string "Welcome".
      *  @return The string "Welcome";
      */
+    @Override
     protected String _getName() {
         return "Welcome";
     }

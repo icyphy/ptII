@@ -130,6 +130,7 @@ public class Cone3D extends GRShadedShape {
 
     /** If the dimensions change, then update the cone.
      */
+    @Override
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         // Check that a box has been previously created.
@@ -160,6 +161,7 @@ public class Cone3D extends GRShadedShape {
      *  @exception IllegalActionException If the value of some
      *   parameters can't be obtained.
      */
+    @Override
     protected void _createModel() throws IllegalActionException {
         super._createModel();
 
@@ -208,6 +210,7 @@ public class Cone3D extends GRShadedShape {
     /** Return the cone.
      *  @return The Java3D cone.
      */
+    @Override
     protected Node _getNodeObject() {
         return _containedNode;
     }

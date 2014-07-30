@@ -71,6 +71,7 @@ public class Display extends LatticeOntologyAdapter {
      *  by default they should not be evaluated by the ontology solver.
      *  @return The list of property-able Attributes.
      */
+    @Override
     protected List<Attribute> _getPropertyableAttributes() {
         List<Attribute> result = super._getPropertyableAttributes();
         ptolemy.actor.lib.gui.Display displayActor = (ptolemy.actor.lib.gui.Display) getComponent();

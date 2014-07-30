@@ -89,50 +89,62 @@ public class EPSGraphics extends Graphics {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
+    @Override
     public void clearRect(int x, int y, int width, int height) {
     }
 
+    @Override
     public void clipRect(int x, int y, int width, int height) {
     }
 
+    @Override
     public void copyArea(int x, int y, int width, int height, int dx, int dy) {
     }
 
+    @Override
     public Graphics create() {
         return new EPSGraphics(_out, _width, _height);
     }
 
+    @Override
     public void dispose() {
     }
 
+    @Override
     public void drawArc(int x, int y, int width, int height, int startAngle,
             int arcAngle) {
     }
 
+    @Override
     public boolean drawImage(Image img, int x, int y, ImageObserver observer) {
         return true;
     }
 
+    @Override
     public boolean drawImage(Image img, int x, int y, int width, int height,
             ImageObserver observer) {
         return true;
     }
 
+    @Override
     public boolean drawImage(Image img, int x, int y, Color bgcolor,
             ImageObserver observer) {
         return true;
     }
 
+    @Override
     public boolean drawImage(Image img, int x, int y, int width, int height,
             Color bgcolor, ImageObserver observer) {
         return true;
     }
 
+    @Override
     public boolean drawImage(Image img, int dx1, int dy1, int dx2, int dy2,
             int sx1, int sy1, int sx2, int sy2, ImageObserver observer) {
         return true;
     }
 
+    @Override
     public boolean drawImage(Image img, int dx1, int dy1, int dx2, int dy2,
             int sx1, int sy1, int sx2, int sy2, Color bgcolor,
             ImageObserver observer) {
@@ -146,6 +158,7 @@ public class EPSGraphics extends Graphics {
      *  @param x2 the x coordinate of the second point.
      *  @param y2 the y coordinate of the second point.
      */
+    @Override
     public void drawLine(int x1, int y1, int x2, int y2) {
         Point start = _convert(x1, y1);
         Point end = _convert(x2, y2);
@@ -154,6 +167,7 @@ public class EPSGraphics extends Graphics {
         _buffer.append("stroke\n");
     }
 
+    @Override
     public void drawPolyline(int[] xPoints, int[] yPoints, int nPoints) {
     }
 
@@ -166,6 +180,7 @@ public class EPSGraphics extends Graphics {
      *  @param yPoints An array of y coordinates.
      *  @param nPoints The total number of vertices.
      */
+    @Override
     public void drawPolygon(int[] xPoints, int[] yPoints, int nPoints) {
         if (!_polygon(xPoints, yPoints, nPoints)) {
             return;
@@ -183,6 +198,7 @@ public class EPSGraphics extends Graphics {
 
     // FIXME: Currently, this ignores the fourth argument and draws a circle
     // with diameter given by the third argument.
+    @Override
     public void drawOval(int x, int y, int width, int height) {
         int radius = width / 2;
         Point center = _convert(x + radius, y + radius);
@@ -190,6 +206,7 @@ public class EPSGraphics extends Graphics {
                 + " 0 360 arc closepath stroke\n");
     }
 
+    @Override
     public void drawRect(int x, int y, int width, int height) {
         Point start = _convert(x, y);
         _buffer.append("newpath " + start.x + " " + start.y + " moveto\n");
@@ -200,10 +217,12 @@ public class EPSGraphics extends Graphics {
         _buffer.append("closepath stroke\n");
     }
 
+    @Override
     public void drawRoundRect(int x, int y, int width, int height,
             int arcWidth, int arcHeight) {
     }
 
+    @Override
     public void drawString(java.text.AttributedCharacterIterator iterator,
             int x, int y) {
         // FIXME: This method is present in the graphics class in JDK1.2,
@@ -219,6 +238,7 @@ public class EPSGraphics extends Graphics {
      *  @param x  The x location of the string.
      *  @param y  The y location of the string.
      */
+    @Override
     public void drawString(String str, int x, int y) {
         Point start = _convert(x, y);
         _buffer.append("" + start.x + " " + start.y + " moveto\n");
@@ -234,6 +254,7 @@ public class EPSGraphics extends Graphics {
         _buffer.append("(" + str + ") show\n");
     }
 
+    @Override
     public void fillArc(int x, int y, int width, int height, int startAngle,
             int arcAngle) {
     }
@@ -247,6 +268,7 @@ public class EPSGraphics extends Graphics {
      *  @param yPoints An array of y coordinates.
      *  @param nPoints The total number of vertices.
      */
+    @Override
     public void fillPolygon(int[] xPoints, int[] yPoints, int nPoints) {
         if (!_polygon(xPoints, yPoints, nPoints)) {
             return;
@@ -264,6 +286,7 @@ public class EPSGraphics extends Graphics {
 
     // FIXME: Currently, this ignores the fourth argument and draws a circle
     // with diameter given by the third argument.
+    @Override
     public void fillOval(int x, int y, int width, int height) {
         int radius = width / 2;
         Point center = _convert(x + radius, y + radius);
@@ -282,6 +305,7 @@ public class EPSGraphics extends Graphics {
      *  @param width The width of the rectangle.
      *  @param height The height of the rectangle.
      */
+    @Override
     public void fillRect(int x, int y, int width, int height) {
         Point start = _convert(x, y);
         _fillPattern();
@@ -297,14 +321,17 @@ public class EPSGraphics extends Graphics {
         _buffer.append("1 setlinewidth\n");
     }
 
+    @Override
     public void fillRoundRect(int x, int y, int width, int height,
             int arcWidth, int arcHeight) {
     }
 
+    @Override
     public Shape getClip() {
         return null;
     }
 
+    @Override
     public Rectangle getClipBounds() {
         return null;
     }
@@ -313,18 +340,22 @@ public class EPSGraphics extends Graphics {
      *  @return The current color.
      *  @see #setColor(Color)
      */
+    @Override
     public Color getColor() {
         return _currentColor;
     }
 
+    @Override
     public Font getFont() {
         return _currentFont;
     }
 
+    @Override
     public FontMetrics getFontMetrics(Font f) {
         return null;
     }
 
+    @Override
     public void setFont(Font font) {
         if (font == null) {
             return;
@@ -343,9 +374,11 @@ public class EPSGraphics extends Graphics {
         _currentFont = font;
     }
 
+    @Override
     public void setClip(Shape clip) {
     }
 
+    @Override
     public void setClip(int x, int y, int width, int height) {
     }
 
@@ -354,6 +387,7 @@ public class EPSGraphics extends Graphics {
      *  @param c The desired current color.
      *  @see #getColor()
      */
+    @Override
     public void setColor(Color c) {
         if (c == Color.black) {
             _buffer.append("0 setgray\n");
@@ -389,9 +423,11 @@ public class EPSGraphics extends Graphics {
         _currentColor = c;
     }
 
+    @Override
     public void setPaintMode() {
     }
 
+    @Override
     public void setXORMode(Color c1) {
     }
 
@@ -419,6 +455,7 @@ public class EPSGraphics extends Graphics {
         }
     }
 
+    @Override
     public void translate(int x, int y) {
     }
 
@@ -494,8 +531,8 @@ public class EPSGraphics extends Graphics {
     // Default line patterns.
     // FIXME: Need at least 11 of these.
     static private String[] _patterns = { "[]", "[1 1]", "[4 4]", "[4 4 1 4]",
-            "[2 2]", "[4 2 1 2 1 2]", "[5 3 2 3]", "[3 3]", "[4 2 1 2 2 2]",
-            "[1 2 5 2 1 2 1 2]", "[4 1 2 1]", };
+        "[2 2]", "[4 2 1 2 1 2]", "[5 3 2 3]", "[3 3]", "[4 2 1 2 2 2]",
+        "[1 2 5 2 1 2 1 2]", "[4 1 2 1]", };
 
     private int _patternIndex = 0;
 }

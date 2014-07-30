@@ -75,6 +75,7 @@ public class FSMReceiver extends AbstractReceiver {
     /** Clear this receiver of any contained token and set the known
      *  status to true.
      */
+    @Override
     public void clear() {
         _token = null;
         _isKnown = true;
@@ -85,6 +86,7 @@ public class FSMReceiver extends AbstractReceiver {
      *  @return A list of instances of Token.
      *  @exception IllegalActionException If the status is unknown.
      */
+    @Override
     public List<Token> elementList() throws IllegalActionException {
         if (!_isKnown) {
             throw new IllegalActionException(getContainer(),
@@ -102,6 +104,7 @@ public class FSMReceiver extends AbstractReceiver {
      *  @return The token contained by this receiver.
      *  @exception NoTokenException If this receiver is empty or unknown
      */
+    @Override
     public Token get() throws NoTokenException {
         if (_token == null) {
             throw new NoTokenException(getContainer(),
@@ -120,6 +123,7 @@ public class FSMReceiver extends AbstractReceiver {
      *  @exception NoTokenException If the status is unknown, if there is
      *   no token, or if the argument is not 1.
      */
+    @Override
     public Token[] getArray(int numberOfTokens) throws NoTokenException {
         if (!_isKnown) {
             throw new NoTokenException(getContainer(),
@@ -148,6 +152,7 @@ public class FSMReceiver extends AbstractReceiver {
     /** Return true.
      *  @return True.
      */
+    @Override
     public boolean hasRoom() {
         return true;
     }
@@ -159,6 +164,7 @@ public class FSMReceiver extends AbstractReceiver {
      *   This is a runtime exception, so it does not need to be declared
      *   explicitly.
      */
+    @Override
     public boolean hasRoom(int numberOfTokens) throws IllegalArgumentException {
         if (numberOfTokens < 1) {
             throw new IllegalArgumentException(
@@ -174,6 +180,7 @@ public class FSMReceiver extends AbstractReceiver {
      *  @return True if this mailbox is not empty.
      *  @exception InternalErrorException If the status is not known.
      */
+    @Override
     public boolean hasToken() {
         if (!_isKnown) {
             throw new InternalErrorException(getContainer(), null,
@@ -191,6 +198,7 @@ public class FSMReceiver extends AbstractReceiver {
      *   This is a runtime exception, so it does not need to be declared
      *   explicitly.
      */
+    @Override
     public boolean hasToken(int numberOfTokens) throws IllegalArgumentException {
         if (!_isKnown) {
             throw new InternalErrorException(getContainer(), null,
@@ -213,6 +221,7 @@ public class FSMReceiver extends AbstractReceiver {
      *  @see #clear()
      *  @see #put(Token)
      */
+    @Override
     public boolean isKnown() {
         return _isKnown;
     }
@@ -225,6 +234,7 @@ public class FSMReceiver extends AbstractReceiver {
      *  @param token The token to be put into the mailbox.
      *  @exception NoRoomException If this mailbox is not empty.
      */
+    @Override
     public void put(Token token) throws NoRoomException {
         _token = token;
         _isKnown = true;
@@ -233,6 +243,7 @@ public class FSMReceiver extends AbstractReceiver {
     /** If the argument has one token, then put that token in
      *  the receiver. Otherwise, throw an exception.
      */
+    @Override
     public void putArray(Token[] tokenArray, int numberOfTokens)
             throws NoRoomException, IllegalActionException {
         if (numberOfTokens != 1 || tokenArray.length < 1) {
@@ -243,6 +254,7 @@ public class FSMReceiver extends AbstractReceiver {
     }
 
     /** Set the receiver to unknown. */
+    @Override
     public void reset() throws IllegalActionException {
         _isKnown = false;
         _token = null;

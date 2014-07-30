@@ -99,7 +99,7 @@ public class PrintThreads {
         results.append(rootGroup.toString());
 
         ThreadGroup[] threadGroups = new ThreadGroup[rootGroup
-                .activeGroupCount()];
+                                                     .activeGroupCount()];
         rootGroup.enumerate(threadGroups);
 
         for (ThreadGroup threadGroup : threadGroups) {
@@ -134,7 +134,7 @@ public class PrintThreads {
             results.append("Current Thread (*) "
                     + (SwingUtilities.isEventDispatchThread() ? "_is_"
                             : "_is not_")
-                    + " the Swing Event Dispatch Thread\n");
+                            + " the Swing Event Dispatch Thread\n");
         }
 
         results.append(_getHeader());
@@ -183,10 +183,10 @@ public class PrintThreads {
                     + " "
                     + _stringFormat(Boolean.valueOf(thread.isDaemon())
                             .toString(), 6)
-                    + " "
-                    + _stringFormat(Boolean.valueOf(thread.isAlive())
-                            .toString(), 5)
-                    + (Thread.currentThread().equals(thread) ? " *" : "  ");
+                            + " "
+                            + _stringFormat(Boolean.valueOf(thread.isAlive())
+                                    .toString(), 5)
+                                    + (Thread.currentThread().equals(thread) ? " *" : "  ");
         } catch (Exception e) {
             return _stringFormat(name, 35) + " " + _stringFormat(group, 20)
                     + " " + "PrintThread.toThreadDescription(): Bad State!: "

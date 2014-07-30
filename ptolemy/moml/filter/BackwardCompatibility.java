@@ -89,6 +89,7 @@ public class BackwardCompatibility {
      *  @return the String that describes all the filters and that ends with a
      *  newline.
      */
+    @Override
     public String toString() {
         // This is a little strange because when we call
         // BackwardCompatibility.allFilters(), we add the individual filters

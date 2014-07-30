@@ -99,6 +99,7 @@ public class CheckBoxStyle extends ParameterEditorStyle {
      *  @return True if the argument is a parameter that contains a
      *  boolean token.
      */
+    @Override
     public boolean acceptable(Settable param) {
         if (!(param instanceof Parameter)) {
             return false;
@@ -125,6 +126,7 @@ public class CheckBoxStyle extends ParameterEditorStyle {
      *  @exception IllegalActionException If the containing parameter
      *  does not contain a boolean token.
      */
+    @Override
     public void addEntry(PtolemyQuery query) throws IllegalActionException {
         String name = getContainer().getName();
 
@@ -158,8 +160,9 @@ public class CheckBoxStyle extends ParameterEditorStyle {
      *  @exception NameDuplicationException If the container already has
      *   an attribute with the name of this attribute.
      */
+    @Override
     public void setContainer(NamedObj container) throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         if (container != null && !(container instanceof Parameter)) {
             throw new IllegalActionException(this, container,
                     "CheckBoxStyle can only be contained by a Parameter.");

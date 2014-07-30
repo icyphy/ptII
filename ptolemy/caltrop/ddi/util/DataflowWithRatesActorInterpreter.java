@@ -94,6 +94,7 @@ public class DataflowWithRatesActorInterpreter extends DataflowActorInterpreter 
      * @exception caltrop.interpreter.InterpreterException If the
      * evaluation of the guards could not be successfully completed.
      */
+    @Override
     public boolean actionEvaluatePrecondition() {
         if (envAction == null) {
             throw new InterpreterException(
@@ -125,6 +126,7 @@ public class DataflowWithRatesActorInterpreter extends DataflowActorInterpreter 
      * @exception caltrop.interpreter.InterpreterException If the
      * action body could not be executed successfully.
      */
+    @Override
     public void actionStep() {
         if (envAction == null) {
             throw new InterpreterException(

@@ -40,8 +40,8 @@ package ptolemy.cg.adapter.generic.program.procedural.java.adapters.ptolemy.acto
  @Pt.AcceptedRating Red (cxh)
  */
 public class Commutator
-        extends
-        ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.actor.lib.Commutator {
+extends
+ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.actor.lib.Commutator {
     /**
      *  Construct a Commutator adapter.
      *  @param actor The given ptolemy.actor.lib.Commutator actor.

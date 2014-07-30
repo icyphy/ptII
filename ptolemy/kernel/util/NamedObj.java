@@ -136,10 +136,10 @@ import ptolemy.util.StringUtilities;
  @see Workspace
  */
 public class NamedObj implements Changeable, Cloneable, Debuggable,
-        DebugListener, Derivable, MoMLExportable, ModelErrorHandler, Moveable {
+DebugListener, Derivable, MoMLExportable, ModelErrorHandler, Moveable {
     // This class used to implement Serializable, but the implementation was never
     // complete and thus cause many warnings.
-        
+
     // Note that Nameable extends ModelErrorHandler, so this class
     // need not declare that it directly implements ModelErrorHandler.
 
@@ -275,6 +275,7 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
      *  @see #requestChange(ChangeRequest)
      *  @see Changeable
      */
+    @Override
     public void addChangeListener(ChangeListener listener) {
         NamedObj container = getContainer();
 
@@ -299,6 +300,7 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
      *  @param listener The listener to which to send debug messages.
      *  @see #removeDebugListener(DebugListener)
      */
+    @Override
     public void addDebugListener(DebugListener listener) {
         // NOTE: This method needs to be synchronized to prevent two
         // threads from each creating a new _debugListeners list.
@@ -440,6 +442,7 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
      *  @exception CloneNotSupportedException If any of the attributes
      *   cannot be cloned.
      */
+    @Override
     public Object clone() throws CloneNotSupportedException {
         // FindBugs warns that "clone method does not call super.clone()",
         // but that can be ignored because clone(Workspace) calls
@@ -672,6 +675,7 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
      *  accessing subcomponents of this object.
      *  @see #exportMoML(Writer, int, String)
      */
+    @Override
     public String description() throws IllegalActionException {
         return description(COMPLETE);
     }
@@ -697,6 +701,7 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
      *  @param event The event.
      *  @since Ptolemy II 2.3
      */
+    @Override
     public void event(DebugEvent event) {
         if (_debugging) {
             _debug(event);
@@ -713,6 +718,7 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
      *  @see #isDeferringChangeRequests()
      *  @see Changeable
      */
+    @Override
     public void executeChangeRequests() {
         NamedObj container = getContainer();
 
@@ -745,6 +751,7 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
      *  @see #isPersistent()
      *  @see #getDerivedLevel()
      */
+    @Override
     public final String exportMoML() {
         try {
             StringWriter buffer = new StringWriter();
@@ -770,6 +777,7 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
      *  @see #isPersistent()
      *  @see #getDerivedLevel()
      */
+    @Override
     public final String exportMoML(String name) {
         try {
             StringWriter buffer = new StringWriter();
@@ -799,6 +807,7 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
      *  @see #isPersistent()
      *  @see #getDerivedLevel()
      */
+    @Override
     public final void exportMoML(Writer output) throws IOException {
         exportMoML(output, 0);
     }
@@ -819,6 +828,7 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
      *  @see #isPersistent()
      *  @see #getDerivedLevel()
      */
+    @Override
     public final void exportMoML(Writer output, int depth) throws IOException {
         exportMoML(output, depth, getName());
     }
@@ -867,6 +877,7 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
      *  @see #isPersistent()
      *  @see #getDerivedLevel()
      */
+    @Override
     public void exportMoML(Writer output, int depth, String name)
             throws IOException {
 
@@ -1043,6 +1054,7 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
      *  @deprecated Use attributeList() instead.
      *  @return An enumeration of instances of Attribute.
      */
+    @Deprecated
     public Enumeration getAttributes() {
         return Collections.enumeration(attributeList());
     }
@@ -1065,6 +1077,7 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
      *  @see MoMLExportable
      *  @see #setClassName(String)
      */
+    @Override
     public String getClassName() {
         if (_className == null) {
             _className = getClass().getName();
@@ -1078,6 +1091,7 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
      *  that there is no container.
      *  @return null.
      */
+    @Override
     public NamedObj getContainer() {
         return null;
     }
@@ -1142,6 +1156,7 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
      *  @see Derivable
      *  @see #setDerivedLevel(int)
      */
+    @Override
     public int getDerivedLevel() {
         return _derivedLevel;
     }
@@ -1157,6 +1172,7 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
      *   which this is called, or an empty list if there are none.
      *  @see Derivable
      */
+    @Override
     public List getDerivedList() {
         try {
             return _getDerivedList(null, false, false, this, 0, null, null);
@@ -1171,6 +1187,7 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
      *  @return A name to present to the user.
      *  @see #setDisplayName(String)
      */
+    @Override
     public String getDisplayName() {
         if (_displayName != null) {
             return _displayName;
@@ -1183,6 +1200,7 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
      *  @return The MoML element name for this object.
      *  @see MoMLExportable
      */
+    @Override
     public String getElementName() {
         return _elementName;
     }
@@ -1201,6 +1219,7 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
      *  This method is read-synchronized on the workspace.
      *  @return The full name of the object.
      */
+    @Override
     public String getFullName() {
         try {
             _workspace.getReadAccess();
@@ -1255,6 +1274,7 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
      *  @return The name of the object.
      *  @see #setName(String)
      */
+    @Override
     public String getName() {
         return _name;
     }
@@ -1286,6 +1306,7 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
      *   be declared explicitly.
      *  @see #setName(String)
      */
+    @Override
     public String getName(NamedObj parent) throws InvalidStateException {
         if (parent == null) {
             return getFullName();
@@ -1345,6 +1366,7 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
      *   name but the wrong class is found.
      *  @see Derivable
      */
+    @Override
     public List getPrototypeList() throws IllegalActionException {
         List<NamedObj> result = new LinkedList<NamedObj>();
         NamedObj container = getContainer();
@@ -1380,6 +1402,7 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
      *  @see #setSource(String)
      *  @see MoMLExportable
      */
+    @Override
     public String getSource() {
         return _source;
     }
@@ -1410,6 +1433,7 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
      *   error by throwing an exception.
      *  @see #setModelErrorHandler(ModelErrorHandler handler)
      */
+    @Override
     public boolean handleModelError(NamedObj context,
             IllegalActionException exception) throws IllegalActionException {
         // FIXME: This code fails horribly when one forgets to add a
@@ -1439,6 +1463,7 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
      *  @see #setDeferringChangeRequests(boolean)
      *  @see Changeable
      */
+    @Override
     public boolean isDeferringChangeRequests() {
         NamedObj container = getContainer();
 
@@ -1482,6 +1507,7 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
      *  @see #setPersistent(boolean)
      *  @see MoMLExportable
      */
+    @Override
     public boolean isPersistent() {
         return _isPersistent == null || _isPersistent.booleanValue();
     }
@@ -1505,6 +1531,7 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
      *  @param message The debug message.
      *  @since Ptolemy II 2.3
      */
+    @Override
     public void message(String message) {
         if (_debugging) {
             _debug(message);
@@ -1523,6 +1550,7 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
      *   or -1 if it is not moved.
      *  @exception IllegalActionException Always thrown in this base class.
      */
+    @Override
     public int moveDown() throws IllegalActionException {
         // NOTE: This method could be made abstract, but NamedObj
         // is not abstract to allow for more complete testing.
@@ -1541,6 +1569,7 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
      *   or -1 if it is not moved.
      *  @exception IllegalActionException Always thrown in this base class.
      */
+    @Override
     public int moveToFirst() throws IllegalActionException {
         // NOTE: This method could be made abstract, but NamedObj
         // is not abstract to allow for more complete testing.
@@ -1561,6 +1590,7 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
      *   or -1 if it is not moved.
      *  @exception IllegalActionException Always thrown in this base class.
      */
+    @Override
     public int moveToIndex(int index) throws IllegalActionException {
         // NOTE: This method could be made abstract, but NamedObj
         // is not abstract to allow for more complete testing.
@@ -1579,6 +1609,7 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
      *   or -1 if it is not moved.
      *  @exception IllegalActionException Always thrown in this base class.
      */
+    @Override
     public int moveToLast() throws IllegalActionException {
         // NOTE: This method could be made abstract, but NamedObj
         // is not abstract to allow for more complete testing.
@@ -1597,6 +1628,7 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
      *   or -1 if it is not moved.
      *  @exception IllegalActionException Always thrown in this base class.
      */
+    @Override
     public int moveUp() throws IllegalActionException {
         // NOTE: This method could be made abstract, but NamedObj
         // is not abstract to allow for more complete testing.
@@ -1625,6 +1657,7 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
      *  @see Derivable
      *  @see #setDerivedLevel(int)
      */
+    @Override
     public List propagateExistence() throws IllegalActionException {
         return _getDerivedList(null, false, true, this, 0, null, null);
     }
@@ -1640,6 +1673,7 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
      *  @see Derivable
      *  @see #isOverridden()
      */
+    @Override
     public List propagateValue() throws IllegalActionException {
         // Mark this object as having been modified directly.
         _override = new LinkedList<Integer>();
@@ -1681,6 +1715,7 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
      *  @see #addChangeListener(ChangeListener)
      *  @see Changeable
      */
+    @Override
     public synchronized void removeChangeListener(ChangeListener listener) {
         NamedObj container = getContainer();
 
@@ -1713,6 +1748,7 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
      *   to which debug messages are sent.
      *  @see #addDebugListener(DebugListener)
      */
+    @Override
     public void removeDebugListener(DebugListener listener) {
         if (_debugListeners == null) {
             return;
@@ -1767,6 +1803,7 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
      *  @see #setDeferringChangeRequests(boolean)
      *  @see Changeable
      */
+    @Override
     public void requestChange(ChangeRequest change) {
         NamedObj container = getContainer();
 
@@ -1817,6 +1854,7 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
      *  @see #requestChange(ChangeRequest)
      *  @see Changeable
      */
+    @Override
     public void setDeferringChangeRequests(boolean isDeferring) {
         NamedObj container = getContainer();
 
@@ -1933,8 +1971,9 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
      *  @see #getName()
      *  @see #getName(NamedObj)
      */
+    @Override
     public void setName(String name) throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         String oldName = "";
 
         if (_debugging) {
@@ -1995,6 +2034,7 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
      *  @see #isPersistent()
      *  @see MoMLExportable
      */
+    @Override
     public void setPersistent(boolean persistent) {
         if (persistent) {
             _isPersistent = Boolean.TRUE;
@@ -2012,6 +2052,7 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
      *  @see #getSource()
      *  @see MoMLExportable
      */
+    @Override
     public void setSource(String source) {
         _source = source;
     }
@@ -2046,6 +2087,7 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
     /** Return the class name and the full name of the object,
      *  with syntax "className {fullName}".
      *  @return The class name and the full name. */
+    @Override
     public String toString() {
         return getClass().getName() + " {" + getFullName() + "}";
     }
@@ -2252,7 +2294,7 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
         } catch (Exception ex) {
             throw new InternalErrorException(this, ex,
                     "Error creating singleton attribute named " + name
-                            + " for " + getFullName());
+                    + " for " + getFullName());
         }
     }
 
@@ -2289,9 +2331,9 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
                 // initCause() and then throw.
                 CloneNotSupportedException cloneException = new CloneNotSupportedException(
                         "The field associated with " + fields[i].getName()
-                                + " could not be automatically cloned because "
-                                + ex.getMessage() + ".  This can be caused if "
-                                + "the field is not defined in a public class.");
+                        + " could not be automatically cloned because "
+                        + ex.getMessage() + ".  This can be caused if "
+                        + "the field is not defined in a public class.");
 
                 cloneException.initCause(ex);
                 throw cloneException;
@@ -2345,9 +2387,9 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
 
             if (_debugListeners == null) {
                 System.err
-                        .println("Warning, _debugListeners was null, "
-                                + "which means that _debugging was set to true, but no "
-                                + "listeners were added?");
+                .println("Warning, _debugListeners was null, "
+                        + "which means that _debugging was set to true, but no "
+                        + "listeners were added?");
                 System.err.println(event);
             } else {
                 // NOTE: This used to synchronize on this, which caused
@@ -2378,9 +2420,9 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
 
             if (_debugListeners == null) {
                 System.err
-                        .println("Warning, _debugListeners was null, "
-                                + "which means that _debugging was set to true, but no "
-                                + "listeners were added?");
+                .println("Warning, _debugListeners was null, "
+                        + "which means that _debugging was set to true, but no "
+                        + "listeners were added?");
                 System.err.println(message);
             } else {
                 // NOTE: This used to synchronize on this, which caused
@@ -3081,7 +3123,7 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
     private List<NamedObj> _getDerivedList(Collection<NamedObj> visited,
             boolean propagate, boolean force, NamedObj context, int depth,
             List<Integer> override, String relativeName)
-            throws IllegalActionException {
+                    throws IllegalActionException {
         try {
             workspace().getReadAccess();
 
@@ -3496,6 +3538,7 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
          *  attributes.
          *  @return True if there are more attributes.
          */
+        @Override
         public boolean hasNext() {
             return _attributeListIterator.hasNext();
         }
@@ -3504,6 +3547,7 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
          *  In this base class, this is the next attribute.
          *  @return The next attribute.
          */
+        @Override
         public Object next() {
             return _attributeListIterator.next();
         }
@@ -3513,6 +3557,7 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
          *  attributeList().iterator(), which returns a NamedList that
          *  is unmodifiable.
          */
+        @Override
         public void remove() {
             // Iterator requires a remove().
             throw new UnsupportedOperationException("remove() not supported "
@@ -3526,8 +3571,8 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
 
     /** Serializable version of the Java Object class. */
     @SuppressWarnings("serial")
-        private static class SerializableObject extends Object implements
-            Serializable {
+    private static class SerializableObject extends Object implements
+    Serializable {
         // FindBugs suggested making this class a static inner class:
         //
         // "This class is an inner class, but does not use its embedded

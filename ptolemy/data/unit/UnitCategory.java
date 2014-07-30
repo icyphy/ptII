@@ -111,8 +111,9 @@ public class UnitCategory extends Attribute {
      *  @exception NameDuplicationException If Attribute.setContainer()
      *  throws it.
      */
+    @Override
     public void setContainer(NamedObj container) throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         super.setContainer(container);
         UnitUtilities.registerUnitCategory(((BaseUnit) this.getContainer())
                 .getName());

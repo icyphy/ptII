@@ -148,6 +148,7 @@ public class ParseTreeEvaluator extends AbstractParseTreeVisitor {
      *  @param node The specified node.
      *  @exception IllegalActionException If an evaluation error occurs.
      */
+    @Override
     public void visitArrayConstructNode(ASTPtArrayConstructNode node)
             throws IllegalActionException {
         if (node.isConstant() && node.isEvaluated()) {
@@ -193,6 +194,7 @@ public class ParseTreeEvaluator extends AbstractParseTreeVisitor {
      *  @param node The specified node.
      *  @exception IllegalActionException If an evaluation error occurs.
      */
+    @Override
     public void visitBitwiseNode(ASTPtBitwiseNode node)
             throws IllegalActionException {
         if (node.isConstant() && node.isEvaluated()) {
@@ -281,6 +283,7 @@ public class ParseTreeEvaluator extends AbstractParseTreeVisitor {
      *  @param node The specified node.
      *  @exception IllegalActionException If an evaluation error occurs.
      */
+    @Override
     public void visitFunctionApplicationNode(ASTPtFunctionApplicationNode node)
             throws IllegalActionException {
         // First check to see if the name references a valid variable.
@@ -586,6 +589,7 @@ public class ParseTreeEvaluator extends AbstractParseTreeVisitor {
      *  @param node The specified node.
      *  @exception IllegalActionException If an evaluation error occurs.
      */
+    @Override
     public void visitFunctionDefinitionNode(ASTPtFunctionDefinitionNode node)
             throws IllegalActionException {
         ASTPtRootNode cloneTree;
@@ -615,6 +619,7 @@ public class ParseTreeEvaluator extends AbstractParseTreeVisitor {
      *  @param node The specified node.
      *  @exception IllegalActionException If an evaluation error occurs.
      */
+    @Override
     public void visitFunctionalIfNode(ASTPtFunctionalIfNode node)
             throws IllegalActionException {
         if (node.isConstant() && node.isEvaluated()) {
@@ -685,6 +690,7 @@ public class ParseTreeEvaluator extends AbstractParseTreeVisitor {
      *  @param node The specified node.
      *  @exception IllegalActionException If an evaluation error occurs.
      */
+    @Override
     public void visitLeafNode(ASTPtLeafNode node) throws IllegalActionException {
         if (node.isConstant() && node.isEvaluated()) {
             _evaluatedChildToken = node.getToken();
@@ -727,6 +733,7 @@ public class ParseTreeEvaluator extends AbstractParseTreeVisitor {
      *  @param node The specified node.
      *  @exception IllegalActionException If an evaluation error occurs.
      */
+    @Override
     public void visitLogicalNode(ASTPtLogicalNode node)
             throws IllegalActionException {
         if (node.isConstant() && node.isEvaluated()) {
@@ -796,6 +803,7 @@ public class ParseTreeEvaluator extends AbstractParseTreeVisitor {
      *  @param node The specified node.
      *  @exception IllegalActionException If an evaluation error occurs.
      */
+    @Override
     public void visitMatrixConstructNode(ASTPtMatrixConstructNode node)
             throws IllegalActionException {
         if (node.isConstant() && node.isEvaluated()) {
@@ -831,7 +839,7 @@ public class ParseTreeEvaluator extends AbstractParseTreeVisitor {
                 }
 
                 ptolemy.data.Token[] matrixTokens = new ptolemy.data.Token[node
-                        .getRowCount() * columnCount];
+                                                                           .getRowCount() * columnCount];
 
                 for (int i = 0; i < node.getRowCount(); i++) {
                     ptolemy.data.Token[] newTokens = MatrixToken
@@ -865,6 +873,7 @@ public class ParseTreeEvaluator extends AbstractParseTreeVisitor {
      *  @param node The specified node.
      *  @exception IllegalActionException If an evaluation error occurs.
      */
+    @Override
     public void visitMethodCallNode(ASTPtMethodCallNode node)
             throws IllegalActionException {
         // Method calls are generally not cached...  They are repeated
@@ -904,6 +913,7 @@ public class ParseTreeEvaluator extends AbstractParseTreeVisitor {
      *  @param node The specified node.
      *  @exception IllegalActionException If an evaluation error occurs.
      */
+    @Override
     public void visitPowerNode(ASTPtPowerNode node)
             throws IllegalActionException {
         if (node.isConstant() && node.isEvaluated()) {
@@ -962,6 +972,7 @@ public class ParseTreeEvaluator extends AbstractParseTreeVisitor {
      *  @param node The specified node.
      *  @exception IllegalActionException If an evaluation error occurs.
      */
+    @Override
     public void visitProductNode(ASTPtProductNode node)
             throws IllegalActionException {
         if (node.isConstant() && node.isEvaluated()) {
@@ -1007,6 +1018,7 @@ public class ParseTreeEvaluator extends AbstractParseTreeVisitor {
      *  @param node The record constructor node.
      *  @exception IllegalActionException If an evaluation error occurs.
      */
+    @Override
     public void visitRecordConstructNode(ASTPtRecordConstructNode node)
             throws IllegalActionException {
         if (node.isConstant() && node.isEvaluated()) {
@@ -1036,6 +1048,7 @@ public class ParseTreeEvaluator extends AbstractParseTreeVisitor {
         }
     }
 
+    @Override
     public void visitRelationalNode(ASTPtRelationalNode node)
             throws IllegalActionException {
         if (node.isConstant() && node.isEvaluated()) {
@@ -1095,6 +1108,7 @@ public class ParseTreeEvaluator extends AbstractParseTreeVisitor {
      *  @param node The specified node.
      *  @exception IllegalActionException If an evaluation error occurs.
      */
+    @Override
     public void visitShiftNode(ASTPtShiftNode node)
             throws IllegalActionException {
         if (node.isConstant() && node.isEvaluated()) {
@@ -1157,6 +1171,7 @@ public class ParseTreeEvaluator extends AbstractParseTreeVisitor {
      *  @param node The specified node.
      *  @exception IllegalActionException If an evaluation error occurs.
      */
+    @Override
     public void visitSumNode(ASTPtSumNode node) throws IllegalActionException {
         if (node.isConstant() && node.isEvaluated()) {
             _evaluatedChildToken = node.getToken();
@@ -1197,6 +1212,7 @@ public class ParseTreeEvaluator extends AbstractParseTreeVisitor {
     /** Apply a unary operator to the single child of the specified node.
      *  @param node The specified node.
      */
+    @Override
     public void visitUnaryNode(ASTPtUnaryNode node)
             throws IllegalActionException {
         if (node.isConstant() && node.isEvaluated()) {
@@ -1245,6 +1261,7 @@ public class ParseTreeEvaluator extends AbstractParseTreeVisitor {
      *  @param node The union constructor node.
      *  @exception IllegalActionException If an evaluation error occurs.
      */
+    @Override
     public void visitUnionConstructNode(ASTPtUnionConstructNode node)
             throws IllegalActionException {
         if (node.isConstant() && node.isEvaluated()) {
@@ -1327,11 +1344,11 @@ public class ParseTreeEvaluator extends AbstractParseTreeVisitor {
      */
     protected ptolemy.data.Token _evaluateArrayIndex(ASTPtRootNode node,
             ptolemy.data.Token value, ptolemy.data.Token index)
-            throws IllegalActionException {
+                    throws IllegalActionException {
         if (!(value instanceof ArrayToken)) {
             throw new IllegalActionException(
                     "Array indexing cannot be applied to '" + value.toString()
-                            + "' because its value is not an array.");
+                    + "' because its value is not an array.");
         }
 
         if (!(index instanceof IntToken)) {
@@ -1377,7 +1394,7 @@ public class ParseTreeEvaluator extends AbstractParseTreeVisitor {
         if (!(value instanceof MatrixToken)) {
             throw new IllegalActionException(
                     "Matrix indexing cannot be applied to '" + value.toString()
-                            + "' because its value is not a matrix.");
+                    + "' because its value is not a matrix.");
         }
 
         if (!(rowIndex instanceof IntToken)) {
@@ -1589,7 +1606,7 @@ public class ParseTreeEvaluator extends AbstractParseTreeVisitor {
      */
     private ptolemy.data.Token _invokeMethod(Class<?> clazz, Object object,
             String methodName, Type[] argTypes, Object[] argValues)
-            throws IllegalActionException {
+                    throws IllegalActionException {
         Object result = null;
 
         if (object != null && argTypes.length == 1) {

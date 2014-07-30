@@ -107,6 +107,7 @@ public class Register extends SynchronousFixTransformer {
      *  Otherwise, emit nothing.
      *  @exception IllegalActionException If there is no director.
      */
+    @Override
     public void fire() throws IllegalActionException {
         super.fire();
         if (input.hasToken(0)) {
@@ -117,6 +118,7 @@ public class Register extends SynchronousFixTransformer {
     /** Override the base class to declare that the <i>input</i> and
      *  port does not depend on the <i>output</i> in a firing.
      */
+    @Override
     public void preinitialize() throws IllegalActionException {
         super.preinitialize();
         removeDependency(input, output);

@@ -118,6 +118,7 @@ public class DocBuilderTableau extends Tableau {
          *  @exception Exception If the factory should be able to create a
          *   tableau for the effigy, but something goes wrong.
          */
+        @Override
         public Tableau createTableau(Effigy effigy) throws Exception {
             // Indicate to the effigy that this factory contains effigies
             // offering multiple views of the effigy data.

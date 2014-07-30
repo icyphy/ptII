@@ -170,6 +170,7 @@ public class TwoPlotExample extends JFrame {
         // We execute everything in the Swing Event Thread, see
         // the comment
         Runnable doAction = new Runnable() {
+            @Override
             public void run() {
                 new TwoPlotExample();
             }

@@ -24,7 +24,7 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
-*/
+ */
 
 package ptolemy.cg.kernel.generic.syntactic;
 
@@ -51,7 +51,7 @@ import ptolemy.kernel.util.NamedObj;
  *  @since Ptolemy II 10.0
  *  @Pt.ProposedRating red (shaver)
  *  @Pt.AcceptedRating red
-*/
+ */
 public class SyntacticCodeGenerator extends GenericCodeGenerator {
 
     /** Create a new instance of the SyntacticCodeGenerator.
@@ -86,6 +86,7 @@ public class SyntacticCodeGenerator extends GenericCodeGenerator {
      *  @param comment The string to format as a comment.
      *  @return A formatted comment.
      */
+    @Override
     public String comment(String comment) {
         return "{--- " + _eol + comment + _eol + " ---}" + _eol;
     }
@@ -110,6 +111,7 @@ public class SyntacticCodeGenerator extends GenericCodeGenerator {
      *  @exception KernelException If the target file cannot be overwritten
      *   or write-to-file throw any exception.
      */
+    @Override
     protected int _generateCode(StringBuffer code) throws KernelException {
         code.append("{--- Syntactic Representation of graph ---}" + _eol);
 
@@ -131,6 +133,7 @@ public class SyntacticCodeGenerator extends GenericCodeGenerator {
      *  adapters have to extend this class.
      *  @return The base class for the adapters.
      */
+    @Override
     protected Class<?> _getAdapterClassFilter() {
         return SyntacticCodeGeneratorAdapter.class;
     }

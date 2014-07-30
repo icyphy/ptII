@@ -84,6 +84,7 @@ public class EventFilter extends DETransformer {
      *  are ever output.
      *  @exception IllegalActionException If there is no director.
      */
+    @Override
     public void fire() throws IllegalActionException {
         super.fire();
         int outputWidth = output.getWidth();

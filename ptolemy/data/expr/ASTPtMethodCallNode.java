@@ -85,6 +85,7 @@ public class ASTPtMethodCallNode extends ASTPtRootNode {
         return _methodName;
     }
 
+    @Override
     public void jjtClose() {
         super.jjtClose();
 
@@ -94,6 +95,7 @@ public class ASTPtMethodCallNode extends ASTPtRootNode {
 
     /** Traverse this node with the given visitor.
      */
+    @Override
     public void visit(ParseTreeVisitor visitor) throws IllegalActionException {
         visitor.visitMethodCallNode(this);
     }

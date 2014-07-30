@@ -67,6 +67,7 @@ public class PlotLiveDemo extends PlotLive {
     /** Add points to the plot.  This is called by the base class
      *  run() method when the plot is live.
      */
+    @Override
     public synchronized void addPoints() {
         // You could plot multiple points at a time here
         // for faster response, but in our case, we really need
@@ -102,12 +103,14 @@ public class PlotLiveDemo extends PlotLive {
     public static void main(String[] args) {
         // Run this in the Swing Event Thread.
         Runnable doActions = new Runnable() {
+            @Override
             public void run() {
                 try {
                     final PlotLiveDemo plotLiveDemo = new PlotLiveDemo();
 
                     JFrame frame = new JFrame("PlotLiveDemo");
                     frame.addWindowListener(new WindowAdapter() {
+                        @Override
                         public void windowClosing(WindowEvent event) {
                             plotLiveDemo.stop();
                             StringUtilities.exit(0);

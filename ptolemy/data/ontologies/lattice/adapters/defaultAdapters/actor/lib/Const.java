@@ -70,6 +70,7 @@ public class Const extends LatticeOntologyAdapter {
      *  @exception IllegalActionException If there is an error creating
      *   the constraint list.
      */
+    @Override
     public List<Inequality> constraintList() throws IllegalActionException {
         setAtLeast(_constActor.output, _constActor.value);
         return super.constraintList();
@@ -81,6 +82,7 @@ public class Const extends LatticeOntologyAdapter {
      *  evaluated by the ontology solver.
      *  @return The list of property-able named object.
      */
+    @Override
     public List<Object> getPropertyables() {
         List<Object> result = super.getPropertyables();
         result.remove(_constActor.trigger);
@@ -97,6 +99,7 @@ public class Const extends LatticeOntologyAdapter {
      *  the ontology solver.
      *  @return The list of property-able Attributes.
      */
+    @Override
     protected List<Attribute> _getPropertyableAttributes() {
         List<Attribute> result = super._getPropertyableAttributes();
         result.remove(_constActor.firingCountLimit);

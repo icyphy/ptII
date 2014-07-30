@@ -108,6 +108,7 @@ public class DB extends Transformer {
      *  @exception CloneNotSupportedException If a derived class contains
      *   an attribute that cannot be cloned.
      */
+    @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         DB newObject = (DB) super.clone(workspace);
 
@@ -122,6 +123,7 @@ public class DB extends Transformer {
      *  do nothing.
      *  @exception IllegalActionException If there is no director.
      */
+    @Override
     public void fire() throws IllegalActionException {
         super.fire();
         if (input.hasToken(0)) {
@@ -148,6 +150,7 @@ public class DB extends Transformer {
      *  @exception IllegalActionException If iterating cannot be
      *  performed.
      */
+    @Override
     public int iterate(int count) throws IllegalActionException {
         // Check whether we need to reallocate the output token array.
         if (count > _resultArray.length) {

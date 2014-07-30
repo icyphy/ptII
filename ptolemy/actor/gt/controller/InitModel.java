@@ -24,7 +24,7 @@
  PT_COPYRIGHT_VERSION_2
  COPYRIGHTENDKEY
 
-*/
+ */
 package ptolemy.actor.gt.controller;
 
 import ptolemy.actor.TypedCompositeActor;
@@ -86,6 +86,7 @@ public class InitModel extends GTEvent {
      *  @exception IllegalActionException If thrown by the superclass
      *   attributeChanged() method, or the new model cannot be created.
      */
+    @Override
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         if (attribute == modelName) {
@@ -111,6 +112,7 @@ public class InitModel extends GTEvent {
      *  @exception IllegalActionException If thrown by the superclass, or if the
      *   model parameter cannot be found.
      */
+    @Override
     public RefiringData fire(Token arguments) throws IllegalActionException {
         RefiringData data = super.fire(arguments);
 

@@ -23,7 +23,7 @@
 
  PT_COPYRIGHT_VERSION_2
  COPYRIGHTENDKEY
-*/
+ */
 package ptolemy.domains.sequence.kernel;
 
 import java.util.ArrayList;
@@ -56,7 +56,7 @@ FIXME:  Should this be a class, or an interface?  Has a new variable
   @since Ptolemy II 10.0
   @Pt.ProposedRating Red (beth)
   @Pt.AcceptedRating Red (beth)
-*/
+ */
 public class ControlActor extends TypedAtomicActor {
     // All the constructors are wrappers of the super class constructors.
 

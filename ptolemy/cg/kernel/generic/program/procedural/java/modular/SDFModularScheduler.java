@@ -22,7 +22,7 @@ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
 PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 ENHANCEMENTS, OR MODIFICATIONS.
-*/
+ */
 package ptolemy.cg.kernel.generic.program.procedural.java.modular;
 
 import java.util.HashMap;
@@ -49,12 +49,12 @@ import ptolemy.math.Fraction;
 
 /** An SDF scheduler for modular code generation.
 
-*  @author Dai Bui
-*  @version $Id$
-*  @since Ptolemy II 10.0
-*  @Pt.ProposedRating Red (jiazou)
-*  @Pt.AcceptedRating Red (jiazou)
-*/
+ *  @author Dai Bui
+ *  @version $Id$
+ *  @since Ptolemy II 10.0
+ *  @Pt.ProposedRating Red (jiazou)
+ *  @Pt.AcceptedRating Red (jiazou)
+ */
 public class SDFModularScheduler extends SDFScheduler {
 
     // FIXME: This class has lots of duplicate code from SDFScheduler.
@@ -140,6 +140,7 @@ public class SDFModularScheduler extends SDFScheduler {
      *  under the synchronous dataflow model, or if the graph is not connected.
      *  @exception IllegalActionException If any called method throws it.
      */
+    @Override
     protected Map _solveBalanceEquations(CompositeActor container,
             List actorList, Map externalRates) throws NotSchedulableException,
             IllegalActionException {
@@ -310,8 +311,8 @@ public class SDFModularScheduler extends SDFScheduler {
                         if (!portParametersFound.contains(portParameter)) {
                             portParametersFound.add(portParameter);
                             portParameterMessageBuffer
-                                    .append(((PortParameter) portParameter)
-                                            .getFullName() + " ");
+                            .append(((PortParameter) portParameter)
+                                    .getFullName() + " ");
                             if (count > 100) {
                                 break;
                             }
@@ -321,14 +322,14 @@ public class SDFModularScheduler extends SDFScheduler {
             }
             if (portParameterMessageBuffer.length() > 0) {
                 messageBuffer
-                        .append("Note that some of the unreached actors are in "
-                                + "transparent composite actors that have PortParameters.  "
-                                + "A transparent composite actor is composite actor that has "
-                                + "no local director.  Transparent composite actors and "
-                                + "PortParameters are not compatible, the workaround is to "
-                                + "insert a director or remove the PortParameter.  "
-                                + "\nThe PortParameters:\n"
-                                + portParameterMessageBuffer.toString());
+                .append("Note that some of the unreached actors are in "
+                        + "transparent composite actors that have PortParameters.  "
+                        + "A transparent composite actor is composite actor that has "
+                        + "no local director.  Transparent composite actors and "
+                        + "PortParameters are not compatible, the workaround is to "
+                        + "insert a director or remove the PortParameter.  "
+                        + "\nThe PortParameters:\n"
+                        + portParameterMessageBuffer.toString());
                 if (count >= 99) {
                     messageBuffer.append("...");
                 }
@@ -523,7 +524,7 @@ public class SDFModularScheduler extends SDFScheduler {
             Map entityToFiringsPerIteration, Map externalRates,
             LinkedList remainingActors, LinkedList pendingActors,
             Set clusteredActors, Set clusteredExternalPorts)
-            throws NotSchedulableException, IllegalActionException {
+                    throws NotSchedulableException, IllegalActionException {
         ComponentEntity currentActor = (ComponentEntity) currentPort
                 .getContainer();
 

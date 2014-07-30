@@ -70,6 +70,7 @@ public class SuppressSimultaneousEvents extends DETransformer {
      *  @exception CloneNotSupportedException If a derived class has
      *   has an attribute that cannot be cloned.
      */
+    @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         SuppressSimultaneousEvents newObject = (SuppressSimultaneousEvents) super
                 .clone(workspace);
@@ -88,6 +89,7 @@ public class SuppressSimultaneousEvents extends DETransformer {
      *  token seen at this point in physical time.
      * @exception IllegalActionException
      */
+    @Override
     public void fire() throws IllegalActionException {
         super.fire();
         if (input.hasToken(0)) {
@@ -103,6 +105,7 @@ public class SuppressSimultaneousEvents extends DETransformer {
     /** Reset to indicate that no input has yet been seen.
      *  @exception IllegalActionException If the parent class throws it.
      */
+    @Override
     public void initialize() throws IllegalActionException {
         super.initialize();
         _lastEventTime = null;

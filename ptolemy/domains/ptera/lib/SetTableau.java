@@ -24,7 +24,7 @@
  PT_COPYRIGHT_VERSION_2
  COPYRIGHTENDKEY
 
-*/
+ */
 package ptolemy.domains.ptera.lib;
 
 import java.awt.Dimension;
@@ -126,6 +126,7 @@ public class SetTableau extends Event {
      *  @exception IllegalActionException If state of the tableau cannot be set,
      *   or if thrown by the superclass.
      */
+    @Override
     public RefiringData fire(Token arguments) throws IllegalActionException {
         RefiringData data = super.fire(arguments);
 
@@ -266,6 +267,7 @@ public class SetTableau extends Event {
         /** Iconified.
          */
         ICONIFIED {
+            @Override
             public String toString() {
                 return "iconified";
             }
@@ -273,6 +275,7 @@ public class SetTableau extends Event {
         /** Maximized.
          */
         MAXIMIZED {
+            @Override
             public String toString() {
                 return "mazimized";
             }
@@ -280,6 +283,7 @@ public class SetTableau extends Event {
         /** Normal.
          */
         NORMAL {
+            @Override
             public String toString() {
                 return "normal";
             }

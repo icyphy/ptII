@@ -52,6 +52,7 @@ public class PtFilenameFilter extends FileFilter implements FilenameFilter {
      *  @param file The file to be checked.
      *  @return true if the file is acceptable
      */
+    @Override
     public boolean accept(File file) {
         // For FileFilter
         return true;
@@ -62,6 +63,7 @@ public class PtFilenameFilter extends FileFilter implements FilenameFilter {
      *  @param name The name of the file.
      *  @return true if the file is acceptable.
      */
+    @Override
     public boolean accept(File directory, String name) {
         // For FilenameFilter
         return true;
@@ -70,6 +72,7 @@ public class PtFilenameFilter extends FileFilter implements FilenameFilter {
     /** A description of this FilenameFilter.
      *  @return In this base class, return the string "All Files".
      */
+    @Override
     public String getDescription() {
         // For FileFilter
         return "All Files";

@@ -26,6 +26,7 @@
 
  */
 package org.ptolemy.machineLearning.particleFilter;
+
 import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.parameters.PortParameter;
 import ptolemy.data.ArrayToken;
@@ -37,6 +38,7 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.Workspace;
+
 /**
 A Particle Filter Implementation for Range-only measurement models.
 
@@ -52,7 +54,7 @@ vector, and t is the model time. To use this actor :
 <ul>
 <li> For each input in <i>U</i>, create an input port with an arbitrary name.
 This actor will automatically create a parameter with the same name as the
-input port. That parameter will have its value set during execution to match 
+input port. That parameter will have its value set during execution to match
 the value of the input.
 
 <li> Fill in the <i>stateVariableNames</i> parameter, which is
@@ -94,7 +96,7 @@ actor by Jie Liu.
 @Pt.ProposedRating Red (ilgea)
 @Pt.AcceptedRating Red (ilgea)
 @see org.ptolemy.machineLearning.particleFilter.ParticleFilter
-*/
+ */
 public class ParticleFilterRange extends ParticleFilter {
 
     public ParticleFilterRange(CompositeEntity container, String name)
@@ -109,44 +111,46 @@ public class ParticleFilterRange extends ParticleFilter {
         super(workspace);
         // TODO Auto-generated constructor stub
     }
+
     public TypedIOPort z_m;
     public Parameter z;
     public Parameter x_update;
     public Parameter y_update;
     public PortParameter observerPosition;
-    
+
     /** Initialize the class. */
     private void _init() throws IllegalActionException,
-    NameDuplicationException {
-        
+            NameDuplicationException {
+
         StringToken[] stateNames = new StringToken[2];
         stateNames[0] = new StringToken("x");
-        stateNames[1] = new StringToken("y");  
-        stateVariableNames.setToken(new ArrayToken(BaseType.STRING, stateNames));
+        stateNames[1] = new StringToken("y");
+        stateVariableNames
+                .setToken(new ArrayToken(BaseType.STRING, stateNames));
         stateVariableNames.setVisibility(Settable.EXPERT);
-        
+
         observerPosition = new PortParameter(this, "observerPosition");
         observerPosition.setExpression("{0.0,0.0}");
 
         // The input port for range measurements.
-        z_m = new TypedIOPort(this,"z_m", true, false );
+        z_m = new TypedIOPort(this, "z_m", true, false);
         z_m.setTypeEquals(BaseType.DOUBLE);
-        
+
         // The parameter that contains the measurement expression.
-        z = new Parameter(this,"z");
+        z = new Parameter(this, "z");
         z.setExpression("sqrt((x-observerPosition(0))^2 + (y-observerPosition(1))^2)");
-        z.setVisibility(Settable.EXPERT); 
-        
-        x_update = new Parameter(this,"x_update");
+        z.setVisibility(Settable.EXPERT);
+
+        x_update = new Parameter(this, "x_update");
         x_update.setExpression("x");
-        
-        y_update = new Parameter(this,"y_update");
+
+        y_update = new Parameter(this, "y_update");
         y_update.setExpression("y");
-        
+
         measurementCovariance.setExpression("[5.0]");
         prior.setExpression("{random()*20-10,random()*20-10}");
-        
-        bootstrap.setVisibility(Settable.EXPERT); 
+
+        bootstrap.setVisibility(Settable.EXPERT);
         lowVarianceSampler.setVisibility(Settable.EXPERT);
     }
 }

@@ -57,6 +57,7 @@ public class IncrManhattanRouter implements ManhattanRouter {
     /**
      * Reroute the given Shape, given that the head site moved.
      */
+    @Override
     public void rerouteHead(Connector c, Shape s) {
         Polyline2D line = (Polyline2D) s;
 
@@ -67,6 +68,7 @@ public class IncrManhattanRouter implements ManhattanRouter {
     /**
      * Reroute the given Shape, given that the tail site moved.
      */
+    @Override
     public void rerouteTail(Connector c, Shape s) {
         Polyline2D line = (Polyline2D) s;
         line.setX(0, c.getHeadSite().getX());
@@ -77,6 +79,7 @@ public class IncrManhattanRouter implements ManhattanRouter {
      * Reroute the given shape, given that both the head the tail
      * sites moved. The shape is modified by the router.
      */
+    @Override
     public void reroute(Connector c, Shape s) {
         rerouteHead(c, s);
         rerouteTail(c, s);
@@ -85,6 +88,7 @@ public class IncrManhattanRouter implements ManhattanRouter {
     /**
      * Delegate the static routing to the static router.
      */
+    @Override
     public Shape route(Connector c) {
         return _staticRouter.routeManhattan((ManhattanConnector) c);
     }
@@ -92,6 +96,7 @@ public class IncrManhattanRouter implements ManhattanRouter {
     /**
      * Delegate the static routing to the static router.
      */
+    @Override
     public Polyline2D routeManhattan(ManhattanConnector c) {
         return _staticRouter.routeManhattan(c);
     }

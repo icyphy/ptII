@@ -163,6 +163,7 @@ public class GraphEvent extends java.util.EventObject {
     /**
      * Return a string representation of this event.
      */
+    @Override
     public String toString() {
         return "GraphEvent[" + idToString() + ", " + getTarget() + ", "
                 + getOldValue() + "]";

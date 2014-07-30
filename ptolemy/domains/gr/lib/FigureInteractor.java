@@ -82,6 +82,7 @@ public class FigureInteractor extends AbstractInteractor implements KeyListener 
      *  the number pad.
      *  @param e The KeyEvent received.
      */
+    @Override
     public void keyPressed(KeyEvent e) {
         switch (e.getKeyCode()) {
         case KeyEvent.VK_UP:
@@ -100,14 +101,14 @@ public class FigureInteractor extends AbstractInteractor implements KeyListener 
             _figure.translate(1, 0);
             break;
 
-        /*
-         * case KeyEvent.VK_A: _figureActions.aPressed();
+            /*
+             * case KeyEvent.VK_A: _figureActions.aPressed();
          break;
-         * case KeyEvent.VK_B: _figureActions.bPressed();
+             * case KeyEvent.VK_B: _figureActions.bPressed();
          break;
-         * case KeyEvent.VK_C: _figureActions.cPressed();
+             * case KeyEvent.VK_C: _figureActions.cPressed();
          break;
-         */
+             */
         }
     }
 
@@ -115,6 +116,7 @@ public class FigureInteractor extends AbstractInteractor implements KeyListener 
      *  This method does nothing in its current implementation.
      *  @param e The KeyEvent received.
      */
+    @Override
     public void keyReleased(KeyEvent e) {
     }
 
@@ -122,6 +124,7 @@ public class FigureInteractor extends AbstractInteractor implements KeyListener 
      *  This method does nothing in its current implementation.
      *  @param e The KeyEvent received.
      */
+    @Override
     public void keyTyped(KeyEvent e) {
     }
 
@@ -130,12 +133,14 @@ public class FigureInteractor extends AbstractInteractor implements KeyListener 
      *  implementation.
      *  @param layerEvent The LayerEvent received.
      */
+    @Override
     public void mouseClicked(LayerEvent layerEvent) {
     }
 
     /** Translate the figure to wherever the mouse is dragged.
      *  @param layerEvent The LayerEvent received.
      */
+    @Override
     public void mouseDragged(LayerEvent layerEvent) {
         _figure.translate(layerEvent.getLayerX() - dragPointX,
                 layerEvent.getLayerY() - dragPointY);
@@ -148,6 +153,7 @@ public class FigureInteractor extends AbstractInteractor implements KeyListener 
      *  implementation.
      * @param layerEvent The LayerEvent received.
      */
+    @Override
     public void mouseEntered(LayerEvent layerEvent) {
     }
 
@@ -156,6 +162,7 @@ public class FigureInteractor extends AbstractInteractor implements KeyListener 
      *  implementation.
      *  @param layerEvent The LayerEvent received.
      */
+    @Override
     public void mouseExited(LayerEvent layerEvent) {
     }
 
@@ -164,6 +171,7 @@ public class FigureInteractor extends AbstractInteractor implements KeyListener 
      *  implementation.
      *  @param layerEvent The LayerEvent received.
      */
+    @Override
     public void mouseMoved(LayerEvent layerEvent) {
     }
 
@@ -172,6 +180,7 @@ public class FigureInteractor extends AbstractInteractor implements KeyListener 
      *  cursor to show that the figure can now be dragged.
      *  @param layerEvent The LayerEvent received.
      */
+    @Override
     public void mousePressed(LayerEvent layerEvent) {
         setSelected(true);
         dragPointX = layerEvent.getLayerX();
@@ -186,6 +195,7 @@ public class FigureInteractor extends AbstractInteractor implements KeyListener 
      *  implementation.
      *  @param layerEvent The LayerEvent received.
      */
+    @Override
     public void mouseReleased(LayerEvent layerEvent) {
     }
 

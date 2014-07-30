@@ -67,6 +67,7 @@ public class TestTypeListener implements TypeListener {
     /** Notify that the type of a port is changed.
      *  @param event The type change event.
      */
+    @Override
     public void typeChanged(TypeEvent event) {
         _message = event.getSource().getFullName() + "/";
 

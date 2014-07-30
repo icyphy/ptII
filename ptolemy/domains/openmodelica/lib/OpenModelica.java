@@ -137,14 +137,14 @@ public class OpenModelica extends TypedAtomicActor {
 
         parameter = new StringParameter(this, "parameter");
         parameter
-        .setDisplayName("Initialized model parameter(s), seperate by '#'");
+                .setDisplayName("Initialized model parameter(s), seperate by '#'");
 
         initialValue = new StringParameter(this, "initialValue");
         initialValue.setDisplayName("Initial value(s), seperate by ','");
 
         variableFilter = new StringParameter(this, "variableFilter");
         variableFilter
-        .setDisplayName("Filter for displaying simulation result, seperate by '#'");
+                .setDisplayName("Filter for displaying simulation result, seperate by '#'");
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -160,7 +160,7 @@ public class OpenModelica extends TypedAtomicActor {
      */
     public FileParameter dependencies;
 
-    /** The file that the (sub-)model should be loaded from.  
+    /** The file that the (sub-)model should be loaded from.
      *  The default value is "dcmotor.mo".
      */
     public FileParameter fileName;
@@ -227,6 +227,7 @@ public class OpenModelica extends TypedAtomicActor {
      *  @exception CloneNotSupportedException Not thrown in this base class
      *  @return The new Attribute.
      */
+    @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         OpenModelica newObject = (OpenModelica) super.clone(workspace);
         try {
@@ -250,6 +251,7 @@ public class OpenModelica extends TypedAtomicActor {
      *  triggers it, or the evaluation yields a null result, or the evaluation
      *  yields an incompatible type, or if there is no director.
      */
+    @Override
     public void fire() throws IllegalActionException {
         super.fire();
 
@@ -261,9 +263,10 @@ public class OpenModelica extends TypedAtomicActor {
             // that base model should be loaded in advance to the derived model.
             // Otherwise, the derived one could not be built.
             if (!(dependencies.getExpression().isEmpty() && baseModel
-                    .getExpression().isEmpty()))
+                    .getExpression().isEmpty())) {
                 _omcCommand.loadModelicaFile(dependencies.getExpression(),
                         baseModel.getExpression());
+            }
         } catch (ConnectException e) {
             throw new IllegalActionException(
                     "Unable to load Modelica file/library!" + e.getMessage());
@@ -288,7 +291,7 @@ public class OpenModelica extends TypedAtomicActor {
                     }
                 } else {
                     _omcLogger
-                    .getInfo("There is no component to modify prior to running the model!");
+                            .getInfo("There is no component to modify prior to running the model!");
                 }
             } catch (ConnectException e) {
                 throw new IllegalActionException(
@@ -319,7 +322,7 @@ public class OpenModelica extends TypedAtomicActor {
                 }
             } else {
                 _omcLogger
-                .getInfo("There is no components to modify prior to running the model!");
+                        .getInfo("There is no components to modify prior to running the model!");
             }
         }
 
@@ -365,8 +368,8 @@ public class OpenModelica extends TypedAtomicActor {
             if (processingMode.getExpression().equalsIgnoreCase("interactive")) {
                 _omiThread = new OMIThread(variableFilter.getExpression(),
                         simulationStopTime.getExpression(), output);
-                // FIXME: This method explicitly invokes run() on an object.  In general, classes implement the Runnable 
-                // interface because they are going to have their 
+                // FIXME: This method explicitly invokes run() on an object.  In general, classes implement the Runnable
+                // interface because they are going to have their
                 // run() method invoked in a new thread, in which case Thread.start() is the right method to call.
                 _omiThread.run();
             }
@@ -388,6 +391,7 @@ public class OpenModelica extends TypedAtomicActor {
      *  as a server listening on the CORBA interface by setting +d=interactiveCorba flag.
      *  @exception IllegalActionException If OMC server is unable to start.
      */
+    @Override
     public void initialize() throws IllegalActionException {
         super.initialize();
         try {
@@ -408,6 +412,7 @@ public class OpenModelica extends TypedAtomicActor {
     /** Invoke the wrapup() of the super class. Then, quit OpenModelica environment.
      *  @exception IllegalActionException If OMC server is unable to stop.
      */
+    @Override
     public void wrapup() throws IllegalActionException {
         super.wrapup();
         try {

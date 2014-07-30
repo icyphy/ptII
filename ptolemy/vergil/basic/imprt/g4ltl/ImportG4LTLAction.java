@@ -23,7 +23,7 @@
 
    PT_COPYRIGHT_VERSION_2
    COPYRIGHTENDKEY 2
-*/
+ */
 
 package ptolemy.vergil.basic.imprt.g4ltl;
 
@@ -83,7 +83,7 @@ import diva.gui.GUIUtilities;
    @since Ptolemy II 10.0
    @Pt.ProposedRating Red (cxh)
    @Pt.AcceptedRating Red (cxh)
-*/
+ */
 @SuppressWarnings("serial")
 public class ImportG4LTLAction extends AbstractAction {
     // This package is called "imprt" because "import" is a Java keyword.
@@ -104,6 +104,7 @@ public class ImportG4LTLAction extends AbstractAction {
      * See {@link ptolemy.actor.gui.UserActorLibrary#openLibrary(ptolemy.actor.gui.Configuration, File)}
      * for information on the file format.
      */
+    @Override
     public void actionPerformed(ActionEvent e) {
         _importFromLTLSynthesis();
     }
@@ -192,9 +193,9 @@ public class ImportG4LTLAction extends AbstractAction {
                         int option = JOptionPane.showOptionDialog(null,
                                 "G4LTL unable to find strategy.\n"
                                         + "Perform counter-strategy finding?",
-                                "G4LTL@Ptolemy II", JOptionPane.YES_NO_OPTION,
-                                JOptionPane.PLAIN_MESSAGE, icon, options,
-                                options[0]);
+                                        "G4LTL@Ptolemy II", JOptionPane.YES_NO_OPTION,
+                                        JOptionPane.PLAIN_MESSAGE, icon, options,
+                                        options[0]);
 
                         if (option == 0) {
                             result = G4LTL.synthesizeFromFile(solver, file,

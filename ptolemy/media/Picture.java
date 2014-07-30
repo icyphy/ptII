@@ -65,6 +65,7 @@ public class Picture extends JPanel {
     /** Return the preferred size.
      *  @return The size of the image.
      */
+    @Override
     public Dimension getPreferredSize() {
         return new Dimension(_width, _height);
     }
@@ -72,6 +73,7 @@ public class Picture extends JPanel {
     /** Return the minimum size.
      *  @return The size of the image.
      */
+    @Override
     public Dimension getMinimumSize() {
         return new Dimension(_width, _height);
     }
@@ -79,6 +81,7 @@ public class Picture extends JPanel {
     /** Return the maximum size.
      *  @return The size of the image.
      */
+    @Override
     public Dimension getMaximumSize() {
         return new Dimension(_width, _height);
     }
@@ -102,6 +105,7 @@ public class Picture extends JPanel {
     /** Paint this component.  If no pixels have been set, do nothing.
      *  @param graphics The graphics context.
      */
+    @Override
     public synchronized void paint(Graphics graphics) {
         if (_image != null) {
             graphics.drawImage(_image, 0, 0, this);
@@ -219,6 +223,7 @@ public class Picture extends JPanel {
      *  of the display.
      *  @param graphics The graphics context.
      */
+    @Override
     public void update(Graphics graphics) {
         paint(graphics);
     }

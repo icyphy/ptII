@@ -123,6 +123,7 @@ public class FSMGraphFrame extends ExtendedGraphFrame implements ActionListener 
      *
      *  @param e The action event.
      */
+    @Override
     public void actionPerformed(ActionEvent e) {
         JMenuItem target = (JMenuItem) e.getSource();
         String actionCommand = target.getActionCommand();
@@ -136,13 +137,14 @@ public class FSMGraphFrame extends ExtendedGraphFrame implements ActionListener 
     /** Get the currently selected objects from this document, if any,
      *  and place them on the clipboard in MoML format.
      */
+    @Override
     public void copy() {
         HashSet<NamedObj> namedObjSet = _getSelectionSet();
         try {
             for (NamedObj namedObj : namedObjSet) {
                 if (namedObj instanceof State) {
                     ((State) namedObj).saveRefinementsInConfigurer
-                            .setToken(BooleanToken.TRUE);
+                    .setToken(BooleanToken.TRUE);
                 }
             }
             super.copy();
@@ -154,7 +156,7 @@ public class FSMGraphFrame extends ExtendedGraphFrame implements ActionListener 
                 if (namedObj instanceof State) {
                     try {
                         ((State) namedObj).saveRefinementsInConfigurer
-                                .setToken(BooleanToken.FALSE);
+                        .setToken(BooleanToken.FALSE);
                     } catch (IllegalActionException e) {
                         // Ignore.
                     }
@@ -169,6 +171,7 @@ public class FSMGraphFrame extends ExtendedGraphFrame implements ActionListener 
     /** Create the menus that are used by this frame.
      *  It is essential that _createGraphPane() be called before this.
      */
+    @Override
     protected void _addMenus() {
         super._addMenus();
 
@@ -224,6 +227,7 @@ public class FSMGraphFrame extends ExtendedGraphFrame implements ActionListener 
      *  listener, if there is one.
      *  @return False if the user cancels on a save query.
      */
+    @Override
     protected boolean _close() {
         // Running with a headless display (Xvfb) could result in the model being null.
         if (getModel() != null) {
@@ -237,6 +241,7 @@ public class FSMGraphFrame extends ExtendedGraphFrame implements ActionListener 
      *
      *  @return The items in the File menu.
      */
+    @Override
     protected JMenuItem[] _createFileMenuItems() {
         JMenuItem[] fileMenuItems = super._createFileMenuItems();
         int i = 0;
@@ -269,6 +274,7 @@ public class FSMGraphFrame extends ExtendedGraphFrame implements ActionListener 
      *   an instance of CompositeEntity).
      *  @return The pane that is created.
      */
+    @Override
     protected GraphPane _createGraphPane(NamedObj entity) {
         _controller = new FSMGraphController();
         _controller.setConfiguration(getConfiguration());
@@ -292,6 +298,7 @@ public class FSMGraphFrame extends ExtendedGraphFrame implements ActionListener 
      *  @param name The name of the exported model.
      *  @exception IOException If an I/O error occurs.
      */
+    @Override
     protected void _exportDesignPattern(Writer writer, NamedObj model,
             String name) throws IOException {
         if (_query != null && _query.hasEntry("selected")
@@ -304,7 +311,7 @@ public class FSMGraphFrame extends ExtendedGraphFrame implements ActionListener 
                         State state = (State) object;
                         modifiedStates.add(state);
                         state.saveRefinementsInConfigurer
-                                .setToken(BooleanToken.TRUE);
+                        .setToken(BooleanToken.TRUE);
                     }
                 }
                 super._exportDesignPattern(writer, model, name);
@@ -315,7 +322,7 @@ public class FSMGraphFrame extends ExtendedGraphFrame implements ActionListener 
                 for (State state : modifiedStates) {
                     try {
                         state.saveRefinementsInConfigurer
-                                .setToken(BooleanToken.FALSE);
+                        .setToken(BooleanToken.FALSE);
                     } catch (IllegalActionException e) {
                         // Ignore.
                     }
@@ -328,6 +335,7 @@ public class FSMGraphFrame extends ExtendedGraphFrame implements ActionListener 
 
     /** Finish exporting a design pattern.
      */
+    @Override
     protected void _finishExportDesignPattern() {
         super._finishExportDesignPattern();
 
@@ -354,6 +362,7 @@ public class FSMGraphFrame extends ExtendedGraphFrame implements ActionListener 
      *  @exception InternalErrorException Thrown if attributes of the ports to
      *   be exported cannot be set.
      */
+    @Override
     protected void _prepareExportDesignPattern() {
         super._prepareExportDesignPattern();
 
@@ -410,6 +419,7 @@ public class FSMGraphFrame extends ExtendedGraphFrame implements ActionListener 
     /** Listener for debug menu commands. */
     public class DebugMenuListener implements ActionListener {
         /** React to a menu command. */
+        @Override
         public void actionPerformed(ActionEvent e) {
             JMenuItem target = (JMenuItem) e.getSource();
             String actionCommand = target.getActionCommand();
@@ -453,7 +463,7 @@ public class FSMGraphFrame extends ExtendedGraphFrame implements ActionListener 
                             if (model != null && _listeningTo != model) {
                                 if (_listeningTo != null) {
                                     _listeningTo
-                                            .removeDebugListener(_controller);
+                                    .removeDebugListener(_controller);
                                 }
 
                                 _listeningTo = model;

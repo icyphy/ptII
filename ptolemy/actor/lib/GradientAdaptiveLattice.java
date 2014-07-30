@@ -111,6 +111,7 @@ public class GradientAdaptiveLattice extends Lattice {
      *  @exception IllegalActionException If this method is invoked
      *   with an unrecognized parameter.
      */
+    @Override
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         if (attribute == timeConstant) {
@@ -134,6 +135,7 @@ public class GradientAdaptiveLattice extends Lattice {
      *  @exception CloneNotSupportedException If a derived class has
      *   an attribute that cannot be cloned.
      */
+    @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         GradientAdaptiveLattice newObject = (GradientAdaptiveLattice) super
                 .clone(workspace);
@@ -155,6 +157,7 @@ public class GradientAdaptiveLattice extends Lattice {
 
     /** Initialize the state of the filter.
      */
+    @Override
     public void initialize() throws IllegalActionException {
         super.initialize();
 
@@ -178,6 +181,7 @@ public class GradientAdaptiveLattice extends Lattice {
      *
      *  @exception IllegalActionException If the base class throws it.
      */
+    @Override
     public boolean postfire() throws IllegalActionException {
         System.arraycopy(_estimatedErrorPowerCache, 0, _estimatedErrorPower, 0,
                 _order + 1);
@@ -190,6 +194,7 @@ public class GradientAdaptiveLattice extends Lattice {
     ////                         protected methods                 ////
     // Compute the filter, updating the caches, based on the current
     // values.  Extend the base class to adapt the reflection coefficients
+    @Override
     protected void _doFilter() throws IllegalActionException {
         double k;
 
@@ -242,6 +247,7 @@ public class GradientAdaptiveLattice extends Lattice {
 
     // Reallocate the internal arrays. Extend the base class to
     // reallocate the power estimation array.
+    @Override
     protected void _reallocate() {
         super._reallocate();
         _estimatedErrorPower = new double[_order + 1];

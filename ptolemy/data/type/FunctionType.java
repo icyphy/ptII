@@ -75,6 +75,7 @@ public class FunctionType extends StructuredType implements Cloneable {
      *  itself if it is a constant.
      *  @return A FunctionType.
      */
+    @Override
     public Object clone() {
         if (isConstant()) {
             return this;
@@ -107,6 +108,7 @@ public class FunctionType extends StructuredType implements Cloneable {
      *  @exception IllegalActionException If lossless conversion
      *   cannot be done.
      */
+    @Override
     public Token convert(Token token) throws IllegalActionException {
         if (!isCompatible(token.getType())) {
             throw new IllegalArgumentException(
@@ -159,6 +161,7 @@ public class FunctionType extends StructuredType implements Cloneable {
      *  @return True if the argument represents the same FunctionType as
      *  this object.
      */
+    @Override
     public boolean equals(Object object) {
         // See http://www.technofundo.com/tech/java/equalhash.html
         if (object == this) {
@@ -225,6 +228,7 @@ public class FunctionType extends StructuredType implements Cloneable {
     /** Return the class for tokens that this type represents.
      *  @return The class for tokens that this type represents.
      */
+    @Override
     public Class getTokenClass() {
         return FunctionToken.class;
     }
@@ -242,6 +246,7 @@ public class FunctionType extends StructuredType implements Cloneable {
     /** Return a hash code value for this object.
      *  @return The hash code value for this object.
      */
+    @Override
     public int hashCode() {
         // See http://www.technofundo.com/tech/java/equalhash.html
         int hashCode = 7;
@@ -258,6 +263,7 @@ public class FunctionType extends StructuredType implements Cloneable {
      *  type variable) to the specified type.
      *  @param type the type to set the leaf type variable to.
      */
+    @Override
     public void initialize(Type type) {
         try {
             for (int i = 0; i < getArgCount(); i++) {
@@ -278,6 +284,7 @@ public class FunctionType extends StructuredType implements Cloneable {
      *  class. A FunctionType is abstract only if it is not instantiable.
      *  @return True if this type is abstract.
      */
+    @Override
     public boolean isAbstract() {
         return !isInstantiable();
     }
@@ -288,6 +295,7 @@ public class FunctionType extends StructuredType implements Cloneable {
      *  @param type An instance of Type.
      *  @return True if the argument is compatible with this type.
      */
+    @Override
     public boolean isCompatible(Type type) {
         if (type.equals(BaseType.UNKNOWN)) {
             return true;
@@ -327,6 +335,7 @@ public class FunctionType extends StructuredType implements Cloneable {
      *  constant.
      *  @return True if this type is a constant.
      */
+    @Override
     public boolean isConstant() {
         // Loop through all of the fields of this type...
         for (int i = 0; i < getArgCount(); i++) {
@@ -347,6 +356,7 @@ public class FunctionType extends StructuredType implements Cloneable {
      *  instantiable.
      *  @return True if this type is instantiable.
      */
+    @Override
     public boolean isInstantiable() {
         // Loop through all of the fields of this type...
         for (int i = 0; i < getArgCount(); i++) {
@@ -369,6 +379,7 @@ public class FunctionType extends StructuredType implements Cloneable {
      *  @return True if the argument is a substitution instance of this type.
      *  @see Type#isSubstitutionInstance
      */
+    @Override
     public boolean isSubstitutionInstance(Type type) {
         if (!(type instanceof FunctionType)) {
             return false;
@@ -408,6 +419,7 @@ public class FunctionType extends StructuredType implements Cloneable {
      *  not semantically significant.
      *  @return A String.
      */
+    @Override
     public String toString() {
         // construct the string representation of this token.
         StringBuffer results = new StringBuffer("(function(");
@@ -432,6 +444,7 @@ public class FunctionType extends StructuredType implements Cloneable {
      *  @exception IllegalActionException If the specified type is not a
      *   FunctionType or it does not have the same structure as this one.
      */
+    @Override
     public void updateType(StructuredType newType)
             throws IllegalActionException {
         if (this.isConstant()) {
@@ -482,6 +495,7 @@ public class FunctionType extends StructuredType implements Cloneable {
      *  @exception IllegalArgumentException If the specified type is
      *   not a FunctionType.
      */
+    @Override
     protected int _compare(StructuredType type) {
         if (!(type instanceof FunctionType)) {
             throw new IllegalArgumentException("FunctionType.compare: "
@@ -506,6 +520,7 @@ public class FunctionType extends StructuredType implements Cloneable {
     /** Return a static instance of FunctionType.
      *  @return a FunctionType.
      */
+    @Override
     protected StructuredType _getRepresentative() {
         return _representative;
     }
@@ -518,6 +533,7 @@ public class FunctionType extends StructuredType implements Cloneable {
      *  @exception IllegalArgumentException If the specified type is
      *   not a FunctionType.
      */
+    @Override
     protected StructuredType _greatestLowerBound(StructuredType type) {
         if (!(type instanceof FunctionType)) {
             throw new IllegalArgumentException(
@@ -566,6 +582,7 @@ public class FunctionType extends StructuredType implements Cloneable {
      *  @exception IllegalArgumentException If the specified type is
      *   not a FunctionType.
      */
+    @Override
     protected StructuredType _leastUpperBound(StructuredType type) {
         if (!(type instanceof FunctionType)) {
             throw new IllegalArgumentException("FunctionType.leastUpperBound: "
@@ -667,6 +684,7 @@ public class FunctionType extends StructuredType implements Cloneable {
          *  @return True if the argument represents the same FieldTypeTerm as
          *  this object.
          */
+        @Override
         public boolean equals(Object object) {
             // See http://www.technofundo.com/tech/java/equalhash.html
             if (object == this) {
@@ -686,6 +704,7 @@ public class FunctionType extends StructuredType implements Cloneable {
         /** Return this FunctionType.
          *  @return a FunctionType.
          */
+        @Override
         public Object getAssociatedObject() {
             return FunctionType.this;
         }
@@ -693,6 +712,7 @@ public class FunctionType extends StructuredType implements Cloneable {
         /** Return the resolved type.
          *  @return a Type.
          */
+        @Override
         public Object getValue() {
             return _resolvedType;
         }
@@ -701,6 +721,7 @@ public class FunctionType extends StructuredType implements Cloneable {
          *  variable. Otherwise, return an array of size zero.
          *  @return An array of InequalityTerm.
          */
+        @Override
         public InequalityTerm[] getVariables() {
             if (isSettable()) {
                 InequalityTerm[] variable = new InequalityTerm[1];
@@ -714,6 +735,7 @@ public class FunctionType extends StructuredType implements Cloneable {
         /** Return a hash code value for this object.
          *  @return The hash code value for this object.
          */
+        @Override
         public int hashCode() {
             // See http://www.technofundo.com/tech/java/equalhash.html
             // This class needed equals() and hashCode() to solve a memory
@@ -732,6 +754,7 @@ public class FunctionType extends StructuredType implements Cloneable {
          *  @exception IllegalActionException If this type is not settable,
          *   or the argument is not a Type.
          */
+        @Override
         public void initialize(Object e) throws IllegalActionException {
             if (!isSettable()) {
                 throw new IllegalActionException("FunctionType$FieldTypeTerm."
@@ -754,6 +777,7 @@ public class FunctionType extends StructuredType implements Cloneable {
         /** Test if this field type is a type variable.
          *  @return True if this field type is a type variable.
          */
+        @Override
         public boolean isSettable() {
             return !_declaredType.isConstant();
         }
@@ -763,6 +787,7 @@ public class FunctionType extends StructuredType implements Cloneable {
          *  instantiable object.
          *  @return True if the element type is acceptable.
          */
+        @Override
         public boolean isValueAcceptable() {
             return _resolvedType.isInstantiable();
         }
@@ -772,6 +797,7 @@ public class FunctionType extends StructuredType implements Cloneable {
          *  @exception IllegalActionException If the specified type violates
          *   the declared field type.
          */
+        @Override
         public void setValue(Object e) throws IllegalActionException {
             if (!isSettable()) {
                 throw new IllegalActionException(
@@ -803,6 +829,7 @@ public class FunctionType extends StructuredType implements Cloneable {
         /** Return a string representation of this term.
          *  @return A String.
          */
+        @Override
         public String toString() {
             return "(FunctionFieldTypeTerm, " + getValue() + ")";
         }

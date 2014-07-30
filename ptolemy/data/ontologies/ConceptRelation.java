@@ -91,7 +91,7 @@ public class ConceptRelation extends ComponentRelation {
      *   any relation already in the container.
      */
     public ConceptRelation(Workspace workspace) throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         super(workspace);
         _init();
     }
@@ -152,6 +152,7 @@ public class ConceptRelation extends ComponentRelation {
      *  @exception NameDuplicationException If the container already has
      *   a relation with the name of this relation.
      */
+    @Override
     public void setContainer(CompositeEntity container)
             throws IllegalActionException, NameDuplicationException {
         if (container != null && !(container instanceof Ontology)) {
@@ -173,6 +174,7 @@ public class ConceptRelation extends ComponentRelation {
      *  @exception IllegalActionException If the port's container
      *   is not a {@link FiniteConcept}.
      */
+    @Override
     protected void _checkPort(Port port) throws IllegalActionException {
         super._checkPort(port);
 
@@ -198,7 +200,7 @@ public class ConceptRelation extends ComponentRelation {
      *   relation.
      */
     private void _init() throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         annotation = new StringParameter(this, "annotation");
         annotation.setExpression("");
         // Add a hint to indicate to the PtolemyQuery class to open with a text style.

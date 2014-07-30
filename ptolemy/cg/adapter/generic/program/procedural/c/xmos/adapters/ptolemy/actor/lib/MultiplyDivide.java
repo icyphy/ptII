@@ -46,8 +46,8 @@ import ptolemy.kernel.util.NamedObj;
 @since Ptolemy II 10.0
  */
 public class MultiplyDivide
-        extends
-        ptolemy.cg.adapter.generic.program.procedural.c.adapters.ptolemy.actor.lib.MultiplyDivide {
+extends
+ptolemy.cg.adapter.generic.program.procedural.c.adapters.ptolemy.actor.lib.MultiplyDivide {
     /**
      *  Construct a TimeGap adapter.
      *  @param actor The given ptolemy.actor.lib.TimeGap actor.
@@ -56,6 +56,7 @@ public class MultiplyDivide
         super(actor);
     }
 
+    @Override
     protected String _generateFireCode() throws IllegalActionException {
         CodeStream codeStream = _templateParser.getCodeStream();
         codeStream.clear();
@@ -85,6 +86,7 @@ public class MultiplyDivide
      *  @exception IllegalActionException If there is a problem getting the width of the divide
      *  or multiply ports.
      */
+    @Override
     public String getSourceTimeString(String timeVariable)
             throws IllegalActionException {
         String name = CodeGeneratorAdapter.generateName((NamedObj) _component);

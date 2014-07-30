@@ -108,11 +108,12 @@ public class ArrayContains extends TypedAtomicActor {
      *   if one of the attributes cannot be cloned.
      *  @return A new ComponentEntity.
      */
+    @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         ArrayContains newObject = (ArrayContains) super.clone(workspace);
         try {
             newObject.array
-                    .setTypeAtLeast(ArrayType.arrayOf(newObject.element));
+            .setTypeAtLeast(ArrayType.arrayOf(newObject.element));
         } catch (IllegalActionException e) {
             throw new CloneNotSupportedException("Clone failed: " + e);
         }
@@ -123,6 +124,7 @@ public class ArrayContains extends TypedAtomicActor {
      *  contains the element given by the <i>element</i> port-parameter,
      *  and output true or false accordingly.
      */
+    @Override
     public void fire() throws IllegalActionException {
         super.fire();
         // NOTE: This has be outside the if because we need to ensure

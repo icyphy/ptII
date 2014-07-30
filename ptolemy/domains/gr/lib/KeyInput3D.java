@@ -87,6 +87,7 @@ public class KeyInput3D extends GRActor3D {
      *  @exception IllegalActionException If thrown while sending the
      *  data to the output port.
      */
+    @Override
     public void fire() throws IllegalActionException {
         super.fire();
 
@@ -104,6 +105,7 @@ public class KeyInput3D extends GRActor3D {
     /** Set up this actor to listen to key presses.
      *  @exception IllegalActionException If thrown by the parent class.
      */
+    @Override
     public void initialize() throws IllegalActionException {
         super.initialize();
         _userInputNode = new BranchGroup();
@@ -119,6 +121,7 @@ public class KeyInput3D extends GRActor3D {
     /** Get the user input BranchGroup node.
      *  @return The user input BranchGroup node for this actor.
      */
+    @Override
     protected Node _getNodeObject() {
         return _userInputNode;
     }
@@ -127,6 +130,7 @@ public class KeyInput3D extends GRActor3D {
      *  @exception IllegalActionException If throw while adding this
      *  node to the viewscreen.
      */
+    @Override
     protected void _makeSceneGraphConnection() throws IllegalActionException {
         if (_viewScreen == null) {
             throw new IllegalActionException("GR error: no ViewScreen actor");
@@ -145,10 +149,12 @@ public class KeyInput3D extends GRActor3D {
     ////                         inner classes                     ////
 
     private class React extends Behavior {
+        @Override
         public void initialize() {
             this.wakeupOn(new WakeupOnAWTEvent(KeyEvent.KEY_PRESSED));
         }
 
+        @Override
         public void processStimulus(Enumeration criteria) {
             WakeupCriterion wakeup;
             int eventId;

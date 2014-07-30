@@ -162,6 +162,7 @@ public class PoissonClock extends RandomSource implements TimedActor {
      *  @exception IllegalActionException If the meanTime value is
      *   not positive.
      */
+    @Override
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         if (attribute == meanTime) {
@@ -213,6 +214,7 @@ public class PoissonClock extends RandomSource implements TimedActor {
      *  @exception CloneNotSupportedException If a derived class contains
      *   an attribute that cannot be cloned.
      */
+    @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         PoissonClock newObject = (PoissonClock) super.clone(workspace);
         try {
@@ -227,6 +229,7 @@ public class PoissonClock extends RandomSource implements TimedActor {
     /** Output the current value.
      *  @exception IllegalActionException If there is no director.
      */
+    @Override
     public void fire() throws IllegalActionException {
         // If there is a trigger input, then it is time for an output.
         boolean triggerInputPresent = false;
@@ -267,6 +270,7 @@ public class PoissonClock extends RandomSource implements TimedActor {
      *  @deprecated As of Ptolemy II 4.1, replaced by
      *  {@link #getModelStopTime}
      */
+    @Deprecated
     public double getStopTime() {
         return getModelStopTime().getDoubleValue();
     }
@@ -284,6 +288,7 @@ public class PoissonClock extends RandomSource implements TimedActor {
      *   director throws it, or if the director does not
      *   agree to fire the actor at the specified time.
      */
+    @Override
     public void initialize() throws IllegalActionException {
         // The superclass will ensure that the next call to fire() generates
         // a new random number. That random number will be first used
@@ -330,6 +335,7 @@ public class PoissonClock extends RandomSource implements TimedActor {
      *   scheduling the next firing, or if the director does not
      *   agree to fire the actor at the specified time.
      */
+    @Override
     public boolean postfire() throws IllegalActionException {
         boolean result = super.postfire();
         Time currentTime = getDirector().getModelTime();
@@ -364,6 +370,7 @@ public class PoissonClock extends RandomSource implements TimedActor {
      *  Otherwise, return false.
      *  @exception IllegalActionException If there is no director.
      */
+    @Override
     public boolean prefire() throws IllegalActionException {
         // Do not call super.prefire() because that returns false if
         // there are no trigger inputs.
@@ -402,6 +409,7 @@ public class PoissonClock extends RandomSource implements TimedActor {
      *  be invoked after it.
      *  @exception IllegalActionException Not thrown in this base class.
      */
+    @Override
     public void wrapup() throws IllegalActionException {
         super.wrapup();
         _executing = false;
@@ -413,6 +421,7 @@ public class PoissonClock extends RandomSource implements TimedActor {
     /** Generate a new random number.
      *  @exception IllegalActionException If parameter values are incorrect.
      */
+    @Override
     protected void _generateRandomNumber() throws IllegalActionException {
         double meanTimeValue = ((DoubleToken) meanTime.getToken())
                 .doubleValue();

@@ -191,6 +191,7 @@ public class Configurer extends JPanel implements CloseListener {
         // invoked before that notification occurs if the
         // "X" is used to close the window.  Swing bug?
         SwingUtilities.invokeLater(new Runnable() {
+            @Override
             public void run() {
                 // First check for changes.
 
@@ -244,6 +245,7 @@ public class Configurer extends JPanel implements CloseListener {
         // That notification occurs some time after the
         // window is destroyed.
         SwingUtilities.invokeLater(new Runnable() {
+            @Override
             public void run() {
                 // FIXME Currently it is not possible to restore decorated attributes
                 //      since they don't show up in moml yet.
@@ -277,6 +279,7 @@ public class Configurer extends JPanel implements CloseListener {
                             _object, // context
                             buffer.toString(), // MoML code
                             null) { // base
+                        @Override
                         protected void _execute() throws Exception {
                             super._execute();
 
@@ -297,7 +300,7 @@ public class Configurer extends JPanel implements CloseListener {
                                     // this object overrides some
                                     // inherited value.
                                     ((NamedObj) parameter)
-                                            .setDerivedLevel(derivedLevel);
+                                    .setDerivedLevel(derivedLevel);
                                 }
                             }
                         }
@@ -316,6 +319,7 @@ public class Configurer extends JPanel implements CloseListener {
      *  @param window The window that closed.
      *  @param button The name of the button that was used to close the window.
      */
+    @Override
     public void windowClosed(Window window, String button) {
         Iterator<Component> listeners = _closeListeners.iterator();
 

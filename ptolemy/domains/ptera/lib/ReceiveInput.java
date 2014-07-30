@@ -24,7 +24,7 @@
  PT_COPYRIGHT_VERSION_2
  COPYRIGHTENDKEY
 
-*/
+ */
 package ptolemy.domains.ptera.lib;
 
 import java.awt.Component;
@@ -144,6 +144,7 @@ public class ReceiveInput extends Event implements TimeAdvanceEvent {
      *  @exception CloneNotSupportedException If a derived class contains
      *   an attribute that cannot be cloned.
      */
+    @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         ReceiveInput newObject = (ReceiveInput) super.clone(workspace);
 
@@ -172,6 +173,7 @@ public class ReceiveInput extends Event implements TimeAdvanceEvent {
      *   evaluated.
      *  @see #refire(Token, RefiringData)
      */
+    @Override
     public RefiringData fire(Token arguments) throws IllegalActionException {
         super.fire(arguments);
 
@@ -221,6 +223,7 @@ public class ReceiveInput extends Event implements TimeAdvanceEvent {
      *
      *  @return The string.
      */
+    @Override
     public String getTimeAdvanceText() {
         return timeAdvance.getExpression();
     }
@@ -244,6 +247,7 @@ public class ReceiveInput extends Event implements TimeAdvanceEvent {
      *   evaluated.
      *  @see #fire(Token)
      */
+    @Override
     public RefiringData refire(Token arguments, RefiringData data)
             throws IllegalActionException {
         InputListener listener = (InputListener) data;
@@ -279,6 +283,7 @@ public class ReceiveInput extends Event implements TimeAdvanceEvent {
 
     /** Request that the event cease execution altogether.
      */
+    @Override
     public void stop() {
         synchronized (this) {
             if (_inputListeners != null) {
@@ -392,16 +397,17 @@ public class ReceiveInput extends Event implements TimeAdvanceEvent {
      @Pt.AcceptedRating Red (tfeng)
      */
     private class InputListener extends RefiringData implements KeyListener,
-            MouseListener, WindowListener {
+    MouseListener, WindowListener {
 
         /** React to a key press event.
          *
          *  @param e The key press event.
          */
+        @Override
         public void keyPressed(KeyEvent e) {
             if (_receiveKeyPress
                     && (_acceptableComponentType == null || _acceptableComponentType
-                            .isInstance(e.getComponent()))) {
+                    .isInstance(e.getComponent()))) {
                 String text = KeyEvent.getKeyText(e.getKeyCode());
                 if (_keyPattern == null || _keyPattern.matcher(text).matches()) {
                     e.consume();
@@ -416,6 +422,7 @@ public class ReceiveInput extends Event implements TimeAdvanceEvent {
          *
          *  @param e The key release event.
          */
+        @Override
         public void keyReleased(KeyEvent e) {
         }
 
@@ -423,6 +430,7 @@ public class ReceiveInput extends Event implements TimeAdvanceEvent {
          *
          *  @param e The key type event.
          */
+        @Override
         public void keyTyped(KeyEvent e) {
         }
 
@@ -430,6 +438,7 @@ public class ReceiveInput extends Event implements TimeAdvanceEvent {
          *
          *  @param e The mouse click event.
          */
+        @Override
         public void mouseClicked(MouseEvent e) {
         }
 
@@ -437,6 +446,7 @@ public class ReceiveInput extends Event implements TimeAdvanceEvent {
          *
          *  @param e The mouse enter event.
          */
+        @Override
         public void mouseEntered(MouseEvent e) {
         }
 
@@ -444,6 +454,7 @@ public class ReceiveInput extends Event implements TimeAdvanceEvent {
          *
          *  @param e The mouse exit event.
          */
+        @Override
         public void mouseExited(MouseEvent e) {
         }
 
@@ -451,10 +462,11 @@ public class ReceiveInput extends Event implements TimeAdvanceEvent {
          *
          *  @param e The mouse press event.
          */
+        @Override
         public void mousePressed(MouseEvent e) {
             if (_receiveMousePress
                     && (_acceptableComponentType == null || _acceptableComponentType
-                            .isInstance(e.getComponent()))) {
+                    .isInstance(e.getComponent()))) {
                 e.consume();
                 _componentType = e.getComponent().getClass();
                 _mousePressLocation = new Point(e.getX(), e.getY());
@@ -466,6 +478,7 @@ public class ReceiveInput extends Event implements TimeAdvanceEvent {
          *
          *  @param e The mouse release event.
          */
+        @Override
         public void mouseReleased(MouseEvent e) {
         }
 
@@ -473,6 +486,7 @@ public class ReceiveInput extends Event implements TimeAdvanceEvent {
          *
          *  @param e The window activation event.
          */
+        @Override
         public void windowActivated(WindowEvent e) {
         }
 
@@ -480,6 +494,7 @@ public class ReceiveInput extends Event implements TimeAdvanceEvent {
          *
          *  @param e The window close event.
          */
+        @Override
         public void windowClosed(WindowEvent e) {
         }
 
@@ -487,6 +502,7 @@ public class ReceiveInput extends Event implements TimeAdvanceEvent {
          *
          *  @param e The window closing event.
          */
+        @Override
         public void windowClosing(WindowEvent e) {
             _finish();
         }
@@ -495,6 +511,7 @@ public class ReceiveInput extends Event implements TimeAdvanceEvent {
          *
          *  @param e The window deactivation event.
          */
+        @Override
         public void windowDeactivated(WindowEvent e) {
         }
 
@@ -502,6 +519,7 @@ public class ReceiveInput extends Event implements TimeAdvanceEvent {
          *
          *  @param e The window deiconification event.
          */
+        @Override
         public void windowDeiconified(WindowEvent e) {
         }
 
@@ -509,6 +527,7 @@ public class ReceiveInput extends Event implements TimeAdvanceEvent {
          *
          *  @param e The window iconification event.
          */
+        @Override
         public void windowIconified(WindowEvent e) {
         }
 
@@ -516,6 +535,7 @@ public class ReceiveInput extends Event implements TimeAdvanceEvent {
          *
          *  @param e The window open event.
          */
+        @Override
         public void windowOpened(WindowEvent e) {
         }
 

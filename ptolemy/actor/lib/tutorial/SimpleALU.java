@@ -107,6 +107,7 @@ public class SimpleALU extends TypedAtomicActor {
      *  @exception CloneNotSupportedException If a derived class contains
      *   an attribute that cannot be cloned.
      */
+    @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         SimpleALU newObject = (SimpleALU) super.clone(workspace);
         newObject.A.setTypeEquals(BaseType.INT);
@@ -128,6 +129,7 @@ public class SimpleALU extends TypedAtomicActor {
      *  @exception IllegalActionException If the input operation code
      *  is not supported.
      */
+    @Override
     public void fire() throws IllegalActionException {
         super.fire();
         Token result = null;

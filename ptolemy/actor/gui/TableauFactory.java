@@ -144,6 +144,7 @@ public class TableauFactory extends Attribute implements Configurable {
      *   none.
      *  @exception Exception If something goes wrong. No thrown in this class.
      */
+    @Override
     public void configure(URL base, String source, String text)
             throws Exception {
         _configureSource = source;
@@ -156,6 +157,7 @@ public class TableauFactory extends Attribute implements Configurable {
      *  no source has been used to configure this object, or null if no
      *  external source need be used to configure this object.
      */
+    @Override
     public String getConfigureSource() {
         return _configureSource;
     }
@@ -168,6 +170,7 @@ public class TableauFactory extends Attribute implements Configurable {
      *  has been used to configure this object, or null if no
      *  configuration string need be used to configure this object.
      */
+    @Override
     public String getConfigureText() {
         return _configureText;
     }
@@ -180,6 +183,7 @@ public class TableauFactory extends Attribute implements Configurable {
     protected void _configureTableau(final Tableau tableau) {
         if (_configureText != null) {
             SwingUtilities.invokeLater(new Runnable() {
+                @Override
                 public void run() {
                     MoMLChangeRequest request = new MoMLChangeRequest(this,
                             tableau, _configureText);

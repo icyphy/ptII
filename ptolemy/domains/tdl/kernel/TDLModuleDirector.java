@@ -122,6 +122,7 @@ public class TDLModuleDirector extends ModalDirector {
      * executing an action, schedule actions that are executed next according to the schedule. If an
      * action with a WCET > 0 was started, schedule a refiring and return.
      */
+    @Override
     public void fire() throws IllegalActionException {
         boolean iterate = true;
         Time modePeriod = getModePeriod(getController().currentState());
@@ -216,12 +217,12 @@ public class TDLModuleDirector extends ModalDirector {
                                 }
                                 for (TDLAction actionToRemove : actionsToRemove) {
                                     _nodesDependentOnPreviousActions.get(n)
-                                            .remove(actionToRemove);
+                                    .remove(actionToRemove);
                                 }
                             }
                             if (_nodesDependentOnPreviousActions.get(n) == null
                                     || _nodesDependentOnPreviousActions.get(n)
-                                            .size() == 0) {
+                                    .size() == 0) {
                                 if (!_nextEventsTimeStamps.keySet().contains(n)) {
                                     _fireAt(n, getModelTime());
                                 }
@@ -277,6 +278,7 @@ public class TDLModuleDirector extends ModalDirector {
      * director.
      * @return the model time of the executive directory
      */
+    @Override
     public Time getModelTime() {
         // We don't call super.getModelTime() because we want to get
         // the model time of the exective director.
@@ -331,6 +333,7 @@ public class TDLModuleDirector extends ModalDirector {
     /**
      * Initialize the director, calculate schedule and schedule first firing.
      */
+    @Override
     public void initialize() throws IllegalActionException {
         super.initialize();
         _resetReceivers();
@@ -381,6 +384,7 @@ public class TDLModuleDirector extends ModalDirector {
      *  @return A representation of the dependencies between input ports
      *   and output ports of the container.
      */
+    @Override
     public CausalityInterface getCausalityInterface() {
         return new TDLCausalityInterface((Actor) getContainer(),
                 defaultDependency());
@@ -439,6 +443,7 @@ public class TDLModuleDirector extends ModalDirector {
      *
      * @return A new TDL receiver.
      */
+    @Override
     public Receiver newReceiver() {
         Receiver receiver = new TDLReceiver();
         _receivers.add(receiver);
@@ -453,6 +458,7 @@ public class TDLModuleDirector extends ModalDirector {
      *             Thrown if execution was missed, input ports could not be
      *             transferred or by parent class.
      */
+    @Override
     public boolean prefire() throws IllegalActionException {
         // read inputs although they are not used to avoid piling up tokens
         //
@@ -553,6 +559,7 @@ public class TDLModuleDirector extends ModalDirector {
      *            output port.
      * @return True.
      */
+    @Override
     public boolean transferOutputs(IOPort port) {
         return true;
     }
@@ -567,6 +574,7 @@ public class TDLModuleDirector extends ModalDirector {
      *             Thrown if inputs are about to be transferred for a non opaque
      *             input port.
      */
+    @Override
     public boolean transferInputs(IOPort port) throws IllegalActionException {
         return true;
     }
@@ -574,6 +582,7 @@ public class TDLModuleDirector extends ModalDirector {
     /**
      * Clear private variables and lists.
      */
+    @Override
     public void wrapup() throws IllegalActionException {
         super.wrapup();
         if (_nextEventsTimeStamps != null) {

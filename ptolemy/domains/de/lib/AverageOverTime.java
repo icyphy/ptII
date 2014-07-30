@@ -84,6 +84,7 @@ public class AverageOverTime extends DETransformer {
      *   if one of the attributes cannot be cloned.
      *  @return A new AverageOverTime actor.
      */
+    @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         AverageOverTime newObject = (AverageOverTime) super.clone(workspace);
         newObject._sum = null;
@@ -102,6 +103,7 @@ public class AverageOverTime extends DETransformer {
      *  @exception IllegalActionException If thrown when trying to read the
      *  input token or to write the output token.
      */
+    @Override
     public void fire() throws IllegalActionException {
         super.fire();
 
@@ -130,6 +132,7 @@ public class AverageOverTime extends DETransformer {
      *
      *  @exception IllegalActionException If the superclass throws it.
      */
+    @Override
     public void initialize() throws IllegalActionException {
         super.initialize();
 
@@ -138,6 +141,7 @@ public class AverageOverTime extends DETransformer {
         _lastTime = getDirector().getModelTime();
     }
 
+    @Override
     public boolean postfire() throws IllegalActionException {
         boolean result = super.postfire();
         _lastTime = getDirector().getModelTime();
@@ -150,6 +154,7 @@ public class AverageOverTime extends DETransformer {
      *
      *  @exception IllegalActionException If the superclass throws it.
      */
+    @Override
     public boolean prefire() throws IllegalActionException {
         boolean result = super.prefire();
         if (!result) {

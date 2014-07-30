@@ -163,6 +163,7 @@ public class Interpolator extends SequenceSource {
      *   negative; or the argument is the <i>order</i> parameter and the order
      *   is not supported by the Interpolation class.
      */
+    @Override
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         if (attribute == values) {
@@ -215,6 +216,7 @@ public class Interpolator extends SequenceSource {
      *  @exception CloneNotSupportedException If a derived class contains
      *   an attribute that cannot be cloned.
      */
+    @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         Interpolator newObject = (Interpolator) super.clone(workspace);
 
@@ -239,6 +241,7 @@ public class Interpolator extends SequenceSource {
      *   <i>indexes</i> parameters do not contain arrays of the same length,
      *   or the period is not 0 and not greater than the largest index.
      */
+    @Override
     public void fire() throws IllegalActionException {
         super.fire();
 
@@ -249,6 +252,7 @@ public class Interpolator extends SequenceSource {
     /** Set the iteration count to zero.
      *  @exception IllegalActionException If the super class throws it.
      */
+    @Override
     public void initialize() throws IllegalActionException {
         super.initialize();
         _iterationCount = 0;
@@ -258,6 +262,7 @@ public class Interpolator extends SequenceSource {
      *  @return A boolean returned by the super class method.
      *  @exception IllegalActionException If the super class throws it.
      */
+    @Override
     public boolean postfire() throws IllegalActionException {
         ++_iterationCount;
         return super.postfire();

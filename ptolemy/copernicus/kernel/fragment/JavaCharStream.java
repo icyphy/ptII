@@ -347,6 +347,7 @@ public class JavaCharStream {
      * @deprecated
      * @see #getEndColumn
      */
+    @Deprecated
     public int getColumn() {
         return bufcolumn[bufpos];
     }
@@ -355,6 +356,7 @@ public class JavaCharStream {
      * @deprecated
      * @see #getEndLine
      */
+    @Deprecated
     public int getLine() {
         return bufline[bufpos];
     }
@@ -466,7 +468,7 @@ public class JavaCharStream {
             return new String(buffer, tokenBegin, bufpos - tokenBegin + 1);
         } else {
             return new String(buffer, tokenBegin, bufsize - tokenBegin)
-                    + new String(buffer, 0, bufpos + 1);
+            + new String(buffer, 0, bufpos + 1);
         }
     }
 
@@ -512,7 +514,7 @@ public class JavaCharStream {
 
         while (i < len
                 && bufline[j = start % bufsize] == bufline[k = ++start
-                        % bufsize]) {
+                % bufsize]) {
             bufline[j] = newLine;
             nextColDiff = columnDiff + bufcolumn[k] - bufcolumn[j];
             bufcolumn[j] = newCol + columnDiff;

@@ -76,6 +76,7 @@ public class CircleManipulator extends Manipulator {
      * instance will have the same grab handle, and interactor
      * for grab-handles, as this one.
      */
+    @Override
     public FigureDecorator newInstance(Figure f) {
         CircleManipulator m = new CircleManipulator();
         m.setGrabHandleFactory(this.getGrabHandleFactory());
@@ -87,6 +88,7 @@ public class CircleManipulator extends Manipulator {
     /** Refresh the geometry. This adjusts the bounds of the geometry
      * to match the bounds of the child figure.
      */
+    @Override
     public void refresh() {
         if (_geometry != null) {
             _geometry.setBounds(getChild().getBounds());
@@ -97,6 +99,7 @@ public class CircleManipulator extends Manipulator {
      * Then get a rectangle geometry object and create a grab-handle
      * on one of its sites.
      */
+    @Override
     public void setChild(Figure child) {
         super.setChild(child);
         clearGrabHandles();
@@ -154,6 +157,7 @@ public class CircleManipulator extends Manipulator {
     private static class Resizer extends DragInteractor {
         /** Translate the grab-handle
          */
+        @Override
         public void translate(LayerEvent e, double x, double y) {
             // Translate the grab-handle, resizing the geometry
             GrabHandle g = (GrabHandle) e.getFigureSource();

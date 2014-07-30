@@ -101,6 +101,7 @@ public class ImageReader extends Source {
      *  @exception IllegalActionException If the specified attribute
      *   is <i>URL</i> and the file cannot be opened.
      */
+    @Override
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         if (attribute == fileOrURL) {
@@ -115,6 +116,7 @@ public class ImageReader extends Source {
     /** Output the data read in the prefire.
      *  @exception IllegalActionException If there's no director.
      */
+    @Override
     public void fire() throws IllegalActionException {
         super.fire();
         output.broadcast(new AWTImageToken(_image));
@@ -122,6 +124,7 @@ public class ImageReader extends Source {
 
     /** Open the file at the URL, and set the width of the output.
      */
+    @Override
     public void initialize() throws IllegalActionException {
         super.initialize();
         attributeChanged(fileOrURL);
@@ -130,6 +133,7 @@ public class ImageReader extends Source {
     /** Read in an image.
      *  @exception IllegalActionException If an IO error occurs.
      */
+    @Override
     public boolean prefire() throws IllegalActionException {
         if (!super.prefire()) {
             return false;

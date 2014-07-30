@@ -121,6 +121,7 @@ public class Slice extends FixTransformer {
      *  If there is no input, then produce no output.
      *  @exception IllegalActionException If there is no director.
      */
+    @Override
     public void fire() throws IllegalActionException {
         super.fire();
         if (input.hasToken(0)) {
@@ -144,7 +145,7 @@ public class Slice extends FixTransformer {
                     .shiftRight(shiftBits));
             Precision precision = new Precision(
                     ((Parameter) getAttribute("outputPrecision"))
-                            .getExpression());
+                    .getExpression());
             if (newEndValue - newStartValue != precision.getNumberOfBits()) {
                 throw new IllegalActionException(this, "Bit width of "
                         + (newEndValue - newStartValue)

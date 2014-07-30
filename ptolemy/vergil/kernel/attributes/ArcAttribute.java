@@ -113,6 +113,7 @@ public class ArcAttribute extends FilledShapeAttribute {
      *  @exception IllegalActionException If thrown while getting the
      *  value of an attribute.
      */
+    @Override
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         if (attribute == type) {
@@ -153,6 +154,7 @@ public class ArcAttribute extends FilledShapeAttribute {
      *  @exception CloneNotSupportedException Not thrown in this base class
      *  @return The new Attribute.
      */
+    @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         ArcAttribute newObject = (ArcAttribute) super.clone(workspace);
 
@@ -171,6 +173,7 @@ public class ArcAttribute extends FilledShapeAttribute {
     /** Return a circle.
      *  @return A Circle.
      */
+    @Override
     protected Shape _getDefaultShape() {
         Rectangle2D bounds = new Rectangle2D.Double(0, 0, _widthValue,
                 _heightValue);
@@ -180,6 +183,7 @@ public class ArcAttribute extends FilledShapeAttribute {
     /** Return the a new ellipse given a new width and height.
      *  @return A new shape.
      */
+    @Override
     protected Shape _newShape() {
         if (_centeredValue) {
             double halfWidth = _widthValue * 0.5;

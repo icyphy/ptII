@@ -153,8 +153,8 @@ public class XMLIcon extends DynamicEditorIcon implements ValueListener {
             return xmlIcon;
         } catch (Exception ex) {
             System.out
-                    .println("Warning: could not instantiate alternate XMLIcon class. "
-                            + "Using default XMLIcon.  : " + ex.getMessage());
+            .println("Warning: could not instantiate alternate XMLIcon class. "
+                    + "Using default XMLIcon.  : " + ex.getMessage());
             ex.printStackTrace();
             return new XMLIcon(container, name);
         }
@@ -192,8 +192,8 @@ public class XMLIcon extends DynamicEditorIcon implements ValueListener {
             return xmlIcon;
         } catch (Exception ex) {
             System.out
-                    .println("Warning: could not instantiate alternate XMLIcon class. "
-                            + "Using default XMLIcon.  : " + ex.getMessage());
+            .println("Warning: could not instantiate alternate XMLIcon class. "
+                    + "Using default XMLIcon.  : " + ex.getMessage());
             ex.printStackTrace();
             return new XMLIcon(workspace, name);
         }
@@ -210,6 +210,7 @@ public class XMLIcon extends DynamicEditorIcon implements ValueListener {
      *  @exception CloneNotSupportedException Not thrown in this base class
      *  @return The new Attribute.
      */
+    @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         XMLIcon newObject = (XMLIcon) super.clone(workspace);
         newObject._paintedList = null;
@@ -222,6 +223,7 @@ public class XMLIcon extends DynamicEditorIcon implements ValueListener {
      *  will be painted with each graphic element that this icon contains.
      *  @return A figure for this icon.
      */
+    @Override
     public Figure createBackgroundFigure() {
         // Get the description.
         NamedObj container = (NamedObj) getContainerOrContainerToBe();
@@ -266,6 +268,7 @@ public class XMLIcon extends DynamicEditorIcon implements ValueListener {
      *  createBackgroundFigure().
      *  @return A new Swing Icon.
      */
+    @Override
     public javax.swing.Icon createIcon() {
         // In this class, we cache the rendered icon, since creating icons from
         // figures is expensive.
@@ -343,6 +346,7 @@ public class XMLIcon extends DynamicEditorIcon implements ValueListener {
 
     /** Return a string representing this Icon.
      */
+    @Override
     public String toString() {
         String str = super.toString() + "(";
 
@@ -355,6 +359,7 @@ public class XMLIcon extends DynamicEditorIcon implements ValueListener {
      *  value by redrawing the figure.
      *  @param settable The object that has changed value.
      */
+    @Override
     public void valueChanged(Settable settable) {
         String name = ((Nameable) settable).getName();
 
@@ -381,6 +386,7 @@ public class XMLIcon extends DynamicEditorIcon implements ValueListener {
      *  @return A description of the object.
      * @exception IllegalActionException
      */
+    @Override
     protected String _description(int detail, int indent, int bracket)
             throws IllegalActionException {
         String result = "";
@@ -405,6 +411,7 @@ public class XMLIcon extends DynamicEditorIcon implements ValueListener {
     /** Recreate the figure.  Call to cause createIcon() to call
      *  createBackgroundFigure() to obtain a new figure.
      */
+    @Override
     protected void _recreateFigure() {
         super._recreateFigure();
         _paintedList = null;

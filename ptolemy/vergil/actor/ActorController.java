@@ -133,7 +133,7 @@ public abstract class ActorController extends AttributeController {
         // get the "Look Inside" menu to work for composite actors in
         // Kepler, we create these menu items now.
         _menuFactory
-                .addMenuItemFactory(new MenuActionFactory(_lookInsideAction));
+        .addMenuItemFactory(new MenuActionFactory(_lookInsideAction));
         _menuFactory.addMenuItemFactory(new MenuActionFactory(
                 _openInstanceAction));
 
@@ -202,6 +202,7 @@ public abstract class ActorController extends AttributeController {
      * @param jgraph
      *            The JGraph to which hot keys are to be added.
      */
+    @Override
     public void addHotKeys(JGraph jgraph) {
         super.addHotKeys(jgraph);
         GUIUtilities.addHotKey(jgraph, _lookInsideAction);
@@ -214,6 +215,7 @@ public abstract class ActorController extends AttributeController {
      * @param configuration
      *            The configuration.
      */
+    @Override
     public void setConfiguration(Configuration configuration) {
         super.setConfiguration(configuration);
 
@@ -242,6 +244,7 @@ public abstract class ActorController extends AttributeController {
      *
      * @return the class label of the component.
      */
+    @Override
     protected String _getComponentType() {
         return "Actor";
     }
@@ -323,7 +326,7 @@ public abstract class ActorController extends AttributeController {
      * that other classes can use it.
      */
     @SuppressWarnings("serial")
-        public static class ListenToActorAction extends FigureAction {
+    public static class ListenToActorAction extends FigureAction {
         // Kepler uses this action.
 
         /** Create an action to listen to debug messages.
@@ -359,10 +362,11 @@ public abstract class ActorController extends AttributeController {
         /** Perform the action.
          *  @param event The action event
          */
+        @Override
         public void actionPerformed(ActionEvent event) {
             if (_configuration == null && _tableauFrame == null) {
                 MessageHandler
-                        .error("Cannot listen to actor without a configuration.");
+                .error("Cannot listen to actor without a configuration.");
                 return;
             }
 
@@ -428,13 +432,14 @@ public abstract class ActorController extends AttributeController {
      * instance.
      */
     @SuppressWarnings("serial")
-        private class OpenInstanceAction extends FigureAction {
+    private class OpenInstanceAction extends FigureAction {
         public OpenInstanceAction() {
             super("Open Instance");
             putValue(GUIUtilities.ACCELERATOR_KEY, KeyStroke.getKeyStroke(
                     KeyEvent.VK_L, java.awt.Event.ALT_MASK));
         }
 
+        @Override
         public void actionPerformed(ActionEvent event) {
             if (_configuration == null) {
                 MessageHandler.error("Cannot open an instance "
@@ -539,7 +544,7 @@ public abstract class ActorController extends AttributeController {
      * An action to save this actor in the library.
      */
     @SuppressWarnings("serial")
-        private class SaveInLibraryAction extends FigureAction {
+    private class SaveInLibraryAction extends FigureAction {
         /**
          * Create a new action to save an actor in a library.
          */
@@ -556,6 +561,7 @@ public abstract class ActorController extends AttributeController {
          * @param event
          *            The action event.
          */
+        @Override
         public void actionPerformed(ActionEvent event) {
             // Find the target.
             super.actionPerformed(event);

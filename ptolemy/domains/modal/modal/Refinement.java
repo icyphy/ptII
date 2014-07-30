@@ -106,9 +106,10 @@ public class Refinement extends TypedCompositeActor implements RefinementActor {
      *  @exception IllegalActionException If error occurs while creating the
      *   refinement.
      */
+    @Override
     public void addRefinement(State state, String name, Entity template,
             String className, InstanceOpener instanceOpener)
-            throws IllegalActionException {
+                    throws IllegalActionException {
         throw new IllegalActionException(this, "Unable to create a "
                 + "refinement within a CompositeActor.");
     }
@@ -121,6 +122,7 @@ public class Refinement extends TypedCompositeActor implements RefinementActor {
      *  @exception IllegalActionException If the specified refinement cannot be
      *   found in a state, or if a comma-separated list is malformed.
      */
+    @Override
     public State getRefinedState() throws IllegalActionException {
         NamedObj container = getContainer();
         if (container instanceof ModalModel) {
@@ -154,6 +156,7 @@ public class Refinement extends TypedCompositeActor implements RefinementActor {
      *  @exception NameDuplicationException If the entity already has a port
      *   with the specified name.
      */
+    @Override
     public Port newPort(String name) throws NameDuplicationException {
         try {
             _workspace.getWriteAccess();
@@ -208,6 +211,7 @@ public class Refinement extends TypedCompositeActor implements RefinementActor {
      *   if mirroring should not occur downwards in the hierarchy,
      *   1 if mirroring should not occur upwards in the hierarchy.
      */
+    @Override
     public void setMirrorDisable(int disable) {
         _mirrorDisable = disable != 0;
     }
@@ -227,8 +231,9 @@ public class Refinement extends TypedCompositeActor implements RefinementActor {
      *  @exception NameDuplicationException If the port name collides with a
      *   name already in the entity.
      */
+    @Override
     protected void _addPort(Port port) throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         // If mirroring is disabled, then the port is being added by the
         // container, which is surely OK.
         if (!_mirrorDisable) {

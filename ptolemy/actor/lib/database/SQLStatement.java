@@ -95,6 +95,7 @@ public class SQLStatement extends Source {
      *  on the output port.
      *  @exception IllegalActionException If the database query fails.
      */
+    @Override
     public void fire() throws IllegalActionException {
         super.fire();
         query.update();

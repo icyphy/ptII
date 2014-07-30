@@ -48,12 +48,14 @@ public class BasicManhattanRouter implements ManhattanRouter {
 
     /** Reroute the given Shape, given that the head site moved.
      */
+    @Override
     public void rerouteHead(Connector c, Shape s) {
         reroute(c, s);
     }
 
     /** Reroute the given Shape, given that the tail site moved.
      */
+    @Override
     public void rerouteTail(Connector c, Shape s) {
         reroute(c, s);
     }
@@ -61,6 +63,7 @@ public class BasicManhattanRouter implements ManhattanRouter {
     /** Reroute the given shape, given that both the head the tail
      * sites moved. The shape is modified by the router.
      */
+    @Override
     public void reroute(Connector c, Shape s) {
         // We're stupid...  don't route incrementally.
         route(c);
@@ -68,6 +71,7 @@ public class BasicManhattanRouter implements ManhattanRouter {
 
     /** Route the given connector, returning a Shape.
      */
+    @Override
     public Shape route(Connector c) {
         return routeManhattan((ManhattanConnector) c);
     }
@@ -76,6 +80,7 @@ public class BasicManhattanRouter implements ManhattanRouter {
      * method is the same as route(), except that the return
      * type is tighter.
      */
+    @Override
     public Polyline2D routeManhattan(ManhattanConnector c) {
         TransformContext currentContext = c.getTransformContext();
 

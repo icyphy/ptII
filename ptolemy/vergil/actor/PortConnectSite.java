@@ -78,6 +78,7 @@ public class PortConnectSite extends AbstractSite {
     /** Return the parent figure specified in the constructor.
      *  @return The parent figure.
      */
+    @Override
     public Figure getFigure() {
         return _parentFigure;
     }
@@ -90,6 +91,7 @@ public class PortConnectSite extends AbstractSite {
      *  port.
      *  @return The ID of the site.
      */
+    @Override
     public int getID() {
         return _id;
     }
@@ -98,6 +100,7 @@ public class PortConnectSite extends AbstractSite {
      *  @param normal The normal.
      *  @return The position of this site.
      */
+    @Override
     public Point2D getPoint(double normal) {
         Rectangle2D bounds = _parentFigure.getShape().getBounds2D();
 
@@ -172,6 +175,7 @@ public class PortConnectSite extends AbstractSite {
      *  the normal that was set up by the constructor.
      *  @return The horizontal position of this site.
      */
+    @Override
     public double getX() {
         return getPoint().getX();
     }
@@ -180,6 +184,7 @@ public class PortConnectSite extends AbstractSite {
      *  the normal that was set up by the constructor.
      *  @return The vertical position of this site.
      */
+    @Override
     public double getY() {
         return getPoint().getY();
     }
@@ -187,6 +192,7 @@ public class PortConnectSite extends AbstractSite {
     /** Do nothing. The normal is fixed at the time this is constructed.
      *  @param normal The normal.
      */
+    @Override
     public void setNormal(double normal) {
         // Do nothing.
     }
@@ -194,6 +200,7 @@ public class PortConnectSite extends AbstractSite {
     /** Return a string representation of this connect site.
      *  @return The name of the port and the ID.
      */
+    @Override
     public String toString() {
         return "PortConnectSite for connection number " + _id + " of port "
                 + _terminal.getPort().getFullName();

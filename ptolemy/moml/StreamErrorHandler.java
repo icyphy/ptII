@@ -70,6 +70,7 @@ public class StreamErrorHandler implements ErrorHandler {
     /** Enable or disable skipping of errors.  This method does nothing.
      *  @param enable True to enable skipping, false to disable.
      */
+    @Override
     public void enableErrorSkipping(boolean enable) {
     }
 
@@ -80,6 +81,7 @@ public class StreamErrorHandler implements ErrorHandler {
      *  @param exception The exception that was thrown.
      *  @return CONTINUE to request skipping this element.
      */
+    @Override
     public int handleError(String element, NamedObj context, Throwable exception) {
         _output.println("Error encountered in:\n" + element + "\n"
                 + KernelException.stackTraceToString(exception));

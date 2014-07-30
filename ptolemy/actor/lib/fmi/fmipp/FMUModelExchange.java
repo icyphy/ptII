@@ -94,7 +94,7 @@ public class FMUModelExchange extends Transformer {
             new Parameter(workingDirectory, "allowFiles", BooleanToken.FALSE);
             new Parameter(workingDirectory, "allowDirectories", BooleanToken.TRUE);
             workingDirectory.setExpression(".");
-        */
+         */
 
         inputNames = new Parameter(this, "inputNames");
         inputNames.setTypeEquals(BaseType.STRING);
@@ -163,6 +163,7 @@ public class FMUModelExchange extends Transformer {
      *   or cannot be converted to the output type, or if the superclass
      *   throws it.
      */
+    @Override
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         if (attribute == fmuFile) {
@@ -198,10 +199,10 @@ public class FMUModelExchange extends Transformer {
                                 + (_fmiModelDescription.files.size() <= 0 ? "No files were unzipped from the FMU file "
                                         + fmuFileName + "."
                                         : "The first file in the fmuFile "
-                                                + fmuFileName
-                                                + " was "
-                                                + _fmiModelDescription.files
-                                                        .get(0) + "."));
+                                        + fmuFileName
+                                        + " was "
+                                        + _fmiModelDescription.files
+                                        .get(0) + "."));
             }
 
             //             try { // make the error handling better, because if the file is not valid, its not possible to cancel the error message, one has to use ok instead ;)
@@ -325,12 +326,13 @@ public class FMUModelExchange extends Transformer {
             }
 
             //            _fmu.setOutputs(foo, _outputVariables.length);
-            */
+             */
         } else {
             super.attributeChanged(attribute);
         }
     }
 
+    @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         FMUModelExchange newObject = (FMUModelExchange) super.clone(workspace);
 
@@ -358,11 +360,12 @@ public class FMUModelExchange extends Transformer {
         /*
             newObject.workingDirectory = (FileParameter) newObject
                     .getAttribute("workingDirectory");
-        */
+         */
 
         return newObject;
     }
 
+    @Override
     public void fire() throws IllegalActionException {
         super.fire();
         getDirector();
@@ -377,7 +380,7 @@ public class FMUModelExchange extends Transformer {
             queue.remove(nextevent);
             nextevent = null;
         }
-        */
+         */
         //        System.out.format("-FMUModelExchange::fire: check for inputs: ");
         // if thereis the possibility of inputs -> check if a token is ready
         if (input.getWidth() != 0 && input.hasToken(0)) {
@@ -426,7 +429,7 @@ public class FMUModelExchange extends Transformer {
         /*
         CausalityInterfaceForComposites cifc = (CausalityInterfaceForComposites)getDirector().getCausalityInterface();
         nextevent = new DEEvent((Actor) this, new Time(getDirector(), _eventTime), 1, cifc.getDepthOfActor(this));
-        */
+         */
 
         foo = _fmu.getCurrentOutputs();
 
@@ -440,6 +443,7 @@ public class FMUModelExchange extends Transformer {
                 _outputVariables.length, 1));
     }
 
+    @Override
     public void initialize() throws IllegalActionException {
         super.initialize();
 
@@ -559,6 +563,7 @@ public class FMUModelExchange extends Transformer {
                 .getModelStopTime().getDoubleValue()));
     }
 
+    @Override
     public boolean prefire() throws IllegalActionException {
         boolean superReturnValue = super.prefire();
 
@@ -574,11 +579,13 @@ public class FMUModelExchange extends Transformer {
         return true && superReturnValue;
     }
 
+    @Override
     public void preinitialize() throws IllegalActionException {
         super.preinitialize();
         _fmu = null;
     }
 
+    @Override
     public void wrapup() throws IllegalActionException {
         super.wrapup();
         if (_fmu != null) {
@@ -586,12 +593,12 @@ public class FMUModelExchange extends Transformer {
             _fmu = null;
         } else {
             System.out
-                    .println("FMUModelExchange: not calling _fmu.delete because fmu is null");
+            .println("FMUModelExchange: not calling _fmu.delete because fmu is null");
 
         }
         System.out
-                .format("-FMUModelExchange::wrapup: %d times fired with and %d times without input%n",
-                        _some, _none);
+        .format("-FMUModelExchange::wrapup: %d times fired with and %d times without input%n",
+                _some, _none);
     }
 
     ///////////////////////////////////////////////////////////////////

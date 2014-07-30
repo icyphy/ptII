@@ -98,6 +98,7 @@ public class MultiCompositePort extends TypedIOPort {
      *  @exception IllegalActionException If this object has
      *   no container.
      */
+    @Override
     public int moveDown() throws IllegalActionException {
         try {
             _workspace.getWriteAccess();
@@ -143,6 +144,7 @@ public class MultiCompositePort extends TypedIOPort {
      *  @exception IllegalActionException If this object has
      *   no container.
      */
+    @Override
     public int moveToFirst() throws IllegalActionException {
         try {
             _workspace.getWriteAccess();
@@ -190,6 +192,7 @@ public class MultiCompositePort extends TypedIOPort {
      *  @exception IllegalActionException If this object has
      *   no container or if the index is out of bounds.
      */
+    @Override
     public int moveToIndex(int index) throws IllegalActionException {
         try {
             _workspace.getWriteAccess();
@@ -235,6 +238,7 @@ public class MultiCompositePort extends TypedIOPort {
      *  @exception IllegalActionException If this object has
      *   no container.
      */
+    @Override
     public int moveToLast() throws IllegalActionException {
         try {
             _workspace.getWriteAccess();
@@ -281,6 +285,7 @@ public class MultiCompositePort extends TypedIOPort {
      *  @exception IllegalActionException If this object has
      *   no container.
      */
+    @Override
     public int moveUp() throws IllegalActionException {
         try {
             _workspace.getWriteAccess();
@@ -328,8 +333,9 @@ public class MultiCompositePort extends TypedIOPort {
      *  @exception NameDuplicationException If the container already has
      *   a port with the name of this port.
      */
+    @Override
     public void setContainer(Entity container) throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         try {
             _workspace.getWriteAccess();
 
@@ -384,6 +390,7 @@ public class MultiCompositePort extends TypedIOPort {
      *  @exception IllegalActionException If changing the port status is
      *   not permitted.
      */
+    @Override
     public void setInput(boolean isInput) throws IllegalActionException {
         try {
             _workspace.getWriteAccess();
@@ -427,6 +434,7 @@ public class MultiCompositePort extends TypedIOPort {
      *  @exception IllegalActionException If changing the port status is
      *   not permitted.
      */
+    @Override
     public void setMultiport(boolean isMultiport) throws IllegalActionException {
         try {
             _workspace.getWriteAccess();
@@ -466,8 +474,9 @@ public class MultiCompositePort extends TypedIOPort {
      *  @exception NameDuplicationException If there is already a port
      *   with the same name in the container.
      */
+    @Override
     public void setName(String name) throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         try {
             _workspace.getWriteAccess();
 
@@ -523,6 +532,7 @@ public class MultiCompositePort extends TypedIOPort {
      *  @exception IllegalActionException If changing the port status is
      *   not permitted.
      */
+    @Override
     public void setOutput(boolean isOutput) throws IllegalActionException {
         try {
             _workspace.getWriteAccess();
@@ -584,6 +594,7 @@ public class MultiCompositePort extends TypedIOPort {
      *  @exception IllegalActionException If the proposed container is not a
      *   TypedActor, or if the base class throws it.
      */
+    @Override
     protected void _checkContainer(Entity container)
             throws IllegalActionException {
         if (!(container instanceof MultiCompositeActor) && container != null) {

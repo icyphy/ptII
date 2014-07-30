@@ -47,7 +47,7 @@ the graph has a cycle.
 @since Ptolemy II 10.0
 @Pt.ProposedRating Red (cshelton)
 @Pt.AcceptedRating Red (cshelton)
-*/
+ */
 public class NonLatticeCounterExample {
 
     /** Construct a NonLatticeCounterExample object with the given example

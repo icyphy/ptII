@@ -256,8 +256,8 @@ public class ConditionalBranchController extends AbstractBranchController {
                 // Conditional construct was ended prematurely
                 throw new TerminateProcessException(
                         ((Nameable) getParent()).getName()
-                                + ": exiting conditional"
-                                + " branching due to TerminateProcessException.");
+                        + ": exiting conditional"
+                        + " branching due to TerminateProcessException.");
             }
 
             _threadList = null;
@@ -271,7 +271,7 @@ public class ConditionalBranchController extends AbstractBranchController {
         } catch (InterruptedException ex) {
             throw new TerminateProcessException(
                     ((Nameable) getParent()).getName()
-                            + ".chooseBranch interrupted.");
+                    + ".chooseBranch interrupted.");
         } finally {
             _branches = null;
             _successfulBranch = -1;
@@ -289,6 +289,7 @@ public class ConditionalBranchController extends AbstractBranchController {
      *  @param branchNumber The ID assigned to the calling branch
      *   upon creation.
      */
+    @Override
     protected void _branchFailed(int branchNumber) {
         if (_successfulBranch == branchNumber) {
             // the execution of the model must have finished.
@@ -307,6 +308,7 @@ public class ConditionalBranchController extends AbstractBranchController {
      *  to be released to allow other branches the possibility of succeeding.
      *  @param branchNumber The ID assigned to the branch upon creation.
      */
+    @Override
     protected void _branchNotReady(int branchNumber) {
         Object director = _getDirector();
         synchronized (director) {
@@ -337,17 +339,18 @@ public class ConditionalBranchController extends AbstractBranchController {
      *  the first branch that succeeds with a rendezvous.
      *  @param branchID The ID assigned to the calling branch upon creation.
      */
+    @Override
     protected void _branchSucceeded(int branchID) {
         CSPDirector director = _getDirector();
         synchronized (director) {
             if (_branchTrying != branchID) {
                 throw new InvalidStateException(
                         ((Nameable) getParent()).getName()
-                                + ": branchSucceeded called with a branch id "
-                                + branchID
-                                + ", which is not "
-                                + "equal to the id of the branch registered as trying,"
-                                + _branchTrying);
+                        + ": branchSucceeded called with a branch id "
+                        + branchID
+                        + ", which is not "
+                        + "equal to the id of the branch registered as trying,"
+                        + _branchTrying);
             }
             _successfulBranch = _branchTrying;
             // Have to mark the controller thread unblocked in this thread
@@ -370,6 +373,7 @@ public class ConditionalBranchController extends AbstractBranchController {
      *  @return True if the calling branch is the first branch to try
      *   to rendezvous, otherwise false.
      */
+    @Override
     protected boolean _isBranchReady(int branchNumber) {
         Object director = _getDirector();
         synchronized (director) {

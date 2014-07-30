@@ -22,7 +22,7 @@ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
 PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 ENHANCEMENTS, OR MODIFICATIONS.
-*/
+ */
 package ptolemy.domains.pthales.lib;
 
 import ptolemy.actor.TypedAtomicActor;
@@ -62,7 +62,7 @@ public class PthalesAtomicActor extends TypedAtomicActor {
      *   actor with this name.
      */
     public PthalesAtomicActor() throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         super();
         _initialize();
     }
@@ -189,6 +189,7 @@ public class PthalesAtomicActor extends TypedAtomicActor {
      *  @exception NameDuplicationException If the actor already has a port
      *   with the specified name.
      */
+    @Override
     public Port newPort(String name) throws NameDuplicationException {
         try {
             _workspace.getWriteAccess();
@@ -284,11 +285,11 @@ public class PthalesAtomicActor extends TypedAtomicActor {
      * @exception NameDuplicationException
      */
     protected void _initialize() throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
 
         if (getAttribute("_iconDescription") != null) {
             ((SingletonConfigurableAttribute) getAttribute("_iconDescription"))
-                    .setExpression("<svg width=\"60\" height=\"40\"><polygon points=\"2.54167,37.2083 13.9198,20.0125 2.54167,2.45833 46.675,2.45833 57.7083,20.0125 47.0198,37.2083\"style=\"fill:#c0c0ff;stroke:#000080;stroke-width:1\"/></svg>");
+            .setExpression("<svg width=\"60\" height=\"40\"><polygon points=\"2.54167,37.2083 13.9198,20.0125 2.54167,2.45833 46.675,2.45833 57.7083,20.0125 47.0198,37.2083\"style=\"fill:#c0c0ff;stroke:#000080;stroke-width:1\"/></svg>");
         }
         if (getAttribute("repetitions") == null) {
             Parameter repetitions = new Parameter(this, "repetitions");

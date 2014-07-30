@@ -76,7 +76,7 @@ import ptolemy.kernel.util.Workspace;
  @Pt.AcceptedRating Red (hyzheng)
  */
 public class LevelCrossingDetector extends TypedAtomicActor implements
-        ContinuousStepSizeController {
+ContinuousStepSizeController {
     /** Construct an actor in the specified container with the specified
      *  name.  The name must be unique within the container or an exception
      *  is thrown. The container argument must not be null, or a
@@ -171,6 +171,7 @@ public class LevelCrossingDetector extends TypedAtomicActor implements
      *  @param attribute The attribute that has changed.
      *  @exception IllegalActionException If the attribute change failed.
      */
+    @Override
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         if (attribute == errorTolerance) {
@@ -212,6 +213,7 @@ public class LevelCrossingDetector extends TypedAtomicActor implements
      *  @exception CloneNotSupportedException If a derived class contains
      *  an attribute that cannot be cloned.
      */
+    @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         LevelCrossingDetector newObject = (LevelCrossingDetector) super
                 .clone(workspace);
@@ -226,6 +228,7 @@ public class LevelCrossingDetector extends TypedAtomicActor implements
      *  cannot be computed.
      *  @see #getCausalityInterface()
      */
+    @Override
     public void declareDelayDependency() throws IllegalActionException {
         _declareDelayDependency(trigger, output, 0.0);
     }
@@ -240,6 +243,7 @@ public class LevelCrossingDetector extends TypedAtomicActor implements
      *  @exception IllegalActionException If it cannot get a token from the trigger
      *   port or cannot send a token through the output port.
      */
+    @Override
     public void fire() throws IllegalActionException {
         ContinuousDirector dir = (ContinuousDirector) getDirector();
         double currentStepSize = dir.getCurrentStepSize();
@@ -325,6 +329,7 @@ public class LevelCrossingDetector extends TypedAtomicActor implements
     /** Initialize the execution.
      *  @exception IllegalActionException If thrown by the super class.
      */
+    @Override
     public void initialize() throws IllegalActionException {
         super.initialize();
         _eventMissed = false;
@@ -338,6 +343,7 @@ public class LevelCrossingDetector extends TypedAtomicActor implements
     /** Return false if with the current step size we miss a level crossing.
      *  @return False if the step size needs to be refined.
      */
+    @Override
     public boolean isStepSizeAccurate() {
         if (_debugging) {
             _debug("Step size is accurate: " + !_eventMissed);
@@ -350,6 +356,7 @@ public class LevelCrossingDetector extends TypedAtomicActor implements
      *  loops.
      *  @return False.
      */
+    @Override
     public boolean isStrict() {
         return false;
     }
@@ -359,6 +366,7 @@ public class LevelCrossingDetector extends TypedAtomicActor implements
      *  @return True always.
      *  @exception IllegalActionException If thrown by the super class.
      */
+    @Override
     public boolean postfire() throws IllegalActionException {
         if (_debugging) {
             _debug("Called postfire().");
@@ -390,6 +398,7 @@ public class LevelCrossingDetector extends TypedAtomicActor implements
      *  @exception IllegalActionException If the director is not
      *  a ContinuousDirector or the parent class throws it.
      */
+    @Override
     public void preinitialize() throws IllegalActionException {
         if (!(getDirector() instanceof ContinuousDirector)) {
             throw new IllegalActionException("LevelCrossingDetector can only"
@@ -402,6 +411,7 @@ public class LevelCrossingDetector extends TypedAtomicActor implements
      *  otherwise return the current step size.
      *  @return The refined step size.
      */
+    @Override
     public double refinedStepSize() {
         ContinuousDirector dir = (ContinuousDirector) getDirector();
         double refinedStep = dir.getCurrentStepSize();
@@ -430,6 +440,7 @@ public class LevelCrossingDetector extends TypedAtomicActor implements
      *  or constrain the step size for the next iteration.
      *  @return java.Double.MAX_VALUE.
      */
+    @Override
     public double suggestedStepSize() {
         return java.lang.Double.MAX_VALUE;
     }

@@ -98,6 +98,7 @@ public abstract class VisibleAttribute extends Attribute {
      *  @exception IllegalActionException If this object has
      *   no container.
      */
+    @Override
     public int moveToFirst() throws IllegalActionException {
         try {
             new SingletonAttribute(this, "_renderFirst");
@@ -127,6 +128,7 @@ public abstract class VisibleAttribute extends Attribute {
      *  @exception IllegalActionException If this object has
      *   no container.
      */
+    @Override
     public int moveToLast() throws IllegalActionException {
         try {
             new SingletonAttribute(this, "_renderLast");

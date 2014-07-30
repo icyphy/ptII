@@ -126,6 +126,7 @@ public class Buffer extends TypedAtomicActor {
      *  @exception CloneNotSupportedException If a derived class contains
      *   an attribute that cannot be cloned.
      */
+    @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         Buffer newObject = (Buffer) super.clone(workspace);
         newObject._buffer = new LinkedList();
@@ -142,6 +143,7 @@ public class Buffer extends TypedAtomicActor {
      *  @exception TerminateProcessException If the process termination
      *   is requested by the director.
      */
+    @Override
     public void fire() throws IllegalActionException {
         super.fire();
         final Thread writeThread = Thread.currentThread();
@@ -156,6 +158,7 @@ public class Buffer extends TypedAtomicActor {
         _postfireReturns = true;
         if (_readThread == null) {
             _readThread = new Thread(getFullName() + "_readThread") {
+                @Override
                 public void run() {
                     try {
                         if (_debugging) {
@@ -179,7 +182,7 @@ public class Buffer extends TypedAtomicActor {
                                         director.threadBlocked(_readThread,
                                                 null);
                                         RendezvousReceiver
-                                                .waitForChange(director);
+                                        .waitForChange(director);
                                     } finally {
                                         director.threadUnblocked(_readThread,
                                                 null);
@@ -279,6 +282,7 @@ public class Buffer extends TypedAtomicActor {
     /** Clear the buffer.
      *  @exception IllegalActionException If the base class throws it.
      */
+    @Override
     public void initialize() throws IllegalActionException {
         super.initialize();
         _buffer.clear();
@@ -292,6 +296,7 @@ public class Buffer extends TypedAtomicActor {
      *  I/O or if the superclass returns false.
      *  @exception IllegalActionException Not thrown in this base class.
      */
+    @Override
     public boolean postfire() throws IllegalActionException {
         if (!super.postfire()) {
             return false;

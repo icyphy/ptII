@@ -62,6 +62,7 @@ public class UnaryMathFunction extends NamedProgramCodeGeneratorAdapter {
      * @exception IllegalActionException If the code stream encounters an
      *  error in processing the specified code block(s).
      */
+    @Override
     protected String _generateFireCode() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
         code.append(super._generateFireCode());
@@ -70,8 +71,8 @@ public class UnaryMathFunction extends NamedProgramCodeGeneratorAdapter {
         String function = actor.function.getExpression();
         String codeBlockName = function.equals("exp") ? "expBlock" : function
                 .equals("log") ? "logBlock"
-                : function.equals("sign") ? "signBlock" : function
-                        .equals("square") ? "squareBlock" : "sqrtBlock";
+                        : function.equals("sign") ? "signBlock" : function
+                                .equals("square") ? "squareBlock" : "sqrtBlock";
         code.append(_generateBlockByName(codeBlockName));
 
         return code.toString();
@@ -84,6 +85,7 @@ public class UnaryMathFunction extends NamedProgramCodeGeneratorAdapter {
      *  needed by the code generated for the UnaryMathFunction actor.
      * @exception IllegalActionException Not Thrown in this subclass.
      */
+    @Override
     public Set getHeaderFiles() throws IllegalActionException {
         Set files = super.getHeaderFiles();
         files.add("<math.h>");

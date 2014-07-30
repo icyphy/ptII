@@ -24,7 +24,7 @@
    PT_COPYRIGHT_VERSION_2
    COPYRIGHTENDKEY
 
-*/
+ */
 
 package ptolemy.util.test.junit;
 
@@ -82,7 +82,7 @@ public class AutoKnownFailedTests extends ModelKnownFailedTests {
      * @exception Throwable
      *                If thrown while executing the model.
      */
-    @Test(timeout=150000)
+    @Test(timeout = 150000)
     @Parameters(method = "modelValues")
     public void RunModel(String fullPath) throws Throwable {
         if (fullPath.endsWith(THERE_ARE_NO_KNOWN_FAILED_TESTS)) {

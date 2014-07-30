@@ -24,7 +24,7 @@
  PT_COPYRIGHT_VERSION_2
  COPYRIGHTENDKEY
 
-*/
+ */
 package ptolemy.actor.gt.gui;
 
 import ptolemy.actor.gui.properties.ComboBox;
@@ -79,8 +79,9 @@ public class ComboItem extends Item {
      *  @exception NameDuplicationException If the name coincides with
      *   an attribute already in the container.
      */
+    @Override
     protected GUIAction _createAction() throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         return new GTGUIAction(this, "_actionHandler");
     }
 }

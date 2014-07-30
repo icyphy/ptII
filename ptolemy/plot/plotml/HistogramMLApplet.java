@@ -51,6 +51,7 @@ public class HistogramMLApplet extends PlotMLApplet {
 
     /** Return a string describing this applet.
      */
+    @Override
     public String getAppletInfo() {
         return "HistogramMLApplet "
                 + PlotBox.PTPLOT_RELEASE
@@ -62,6 +63,7 @@ public class HistogramMLApplet extends PlotMLApplet {
     /** Create a new Plot object for the applet.  Derived classes can
      *  redefine this method to return a different type of plot object.
      */
+    @Override
     public PlotBox newPlot() {
         return new Histogram();
     }
@@ -71,6 +73,7 @@ public class HistogramMLApplet extends PlotMLApplet {
 
     /** Create a new parser object for the applet.
      */
+    @Override
     protected PlotMLParser _newParser() {
         return new HistogramMLParser((Histogram) plot());
     }

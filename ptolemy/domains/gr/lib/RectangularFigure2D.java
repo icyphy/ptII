@@ -86,6 +86,7 @@ public abstract class RectangularFigure2D extends GRShape2D {
      *  @exception IllegalActionException If thrown while updating the
      *  figure or by the superclass.
      */
+    @Override
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         if ((attribute == xPosition || attribute == yPosition
@@ -130,6 +131,7 @@ public abstract class RectangularFigure2D extends GRShape2D {
      *  @return A new Figure.
      *  @exception IllegalActionException If a parameter is not valid.
      */
+    @Override
     protected abstract BasicFigure _createFigure()
             throws IllegalActionException;
 
@@ -167,7 +169,7 @@ public abstract class RectangularFigure2D extends GRShape2D {
         return new Point.Double(center.getX()
                 + ((DoubleToken) width.getToken()).doubleValue() / 2.0,
                 center.getY() + ((DoubleToken) height.getToken()).doubleValue()
-                        / 2.0);
+                / 2.0);
     }
 
     /** Update the figure's position and size when the user changes

@@ -381,6 +381,7 @@ public class Graph implements Cloneable {
      *
      *  @return The clone graph.
      */
+    @Override
     public Object clone() {
         return cloneAs(this);
     }
@@ -700,6 +701,7 @@ public class Graph implements Cloneable {
      *  @return True if the graph is equal to this one.
      *  @see #hashCode()
      */
+    @Override
     public boolean equals(Object graph) {
         if (graph == null) {
             return false;
@@ -745,6 +747,7 @@ public class Graph implements Cloneable {
      *  @return The hash code for this graph.
      *  @see #equals(Object)
      */
+    @Override
     public int hashCode() {
         int code = getClass().getName().hashCode();
         Iterator nodes = nodes().iterator();
@@ -1266,6 +1269,7 @@ public class Graph implements Cloneable {
      *  labels, source nodes, sink nodes, and weights.
      *  @return A string representation of this graph.
      */
+    @Override
     public String toString() {
         StringBuffer result = new StringBuffer("{" + this.getClass().getName()
                 + "\n");
@@ -1525,7 +1529,8 @@ public class Graph implements Cloneable {
                 throw new GraphElementException("Illegal graph element "
                         + "(neither a Node nor an Edge) specified.\n"
                         + "The element's type is: "
-                        + (element == null ? "null" : element.getClass().getName()) + ".\n");
+                        + (element == null ? "null" : element.getClass()
+                                .getName()) + ".\n");
             }
 
             return result;

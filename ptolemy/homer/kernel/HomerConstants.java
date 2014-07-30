@@ -34,13 +34,13 @@ package ptolemy.homer.kernel;
 //// HomerConstants
 
 /** Constants used in the layout file.
-*
-*  @author Peter Foldes
-*  @version $Id$
-*  @since Ptolemy II 10.0
-*  @Pt.ProposedRating Red (pdf)
-*  @Pt.AcceptedRating Red (pdf)
-*/
+ *
+ *  @author Peter Foldes
+ *  @version $Id$
+ *  @since Ptolemy II 10.0
+ *  @Pt.ProposedRating Red (pdf)
+ *  @Pt.AcceptedRating Red (pdf)
+ */
 public final class HomerConstants {
 
     /** Hide the constructor of the utility class.

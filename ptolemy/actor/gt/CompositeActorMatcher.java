@@ -66,9 +66,9 @@ import ptolemy.vergil.gt.GTIngredientsEditor;
  @see AtomicActorMatcher
  @Pt.ProposedRating Yellow (tfeng)
  @Pt.AcceptedRating Red (tfeng)
-*/
+ */
 public class CompositeActorMatcher extends TypedCompositeActor implements
-        GTCompositeActor, GTEntity, ValueListener {
+GTCompositeActor, GTEntity, ValueListener {
 
     /** Construct an atomic actor matcher to be either contained in the pattern
      *  of a {@link TransformationRule} or in the replacement.
@@ -110,6 +110,7 @@ public class CompositeActorMatcher extends TypedCompositeActor implements
      *
      *  @return The attribute that stores all the criteria.
      */
+    @Override
     public GTIngredientsAttribute getCriteriaAttribute() {
         return criteria;
     }
@@ -121,6 +122,7 @@ public class CompositeActorMatcher extends TypedCompositeActor implements
      *
      *  @return The icon description.
      */
+    @Override
     public String getDefaultIconDescription() {
         return _ICON_DESCRIPTION;
     }
@@ -129,6 +131,7 @@ public class CompositeActorMatcher extends TypedCompositeActor implements
      *
      *  @return The attribute that stores all the operations.
      */
+    @Override
     public GTIngredientsAttribute getOperationsAttribute() {
         return operations;
     }
@@ -140,6 +143,7 @@ public class CompositeActorMatcher extends TypedCompositeActor implements
      *  @return The attribute that stores the name of the corresponding entity.
      *  @see #labelSet()
      */
+    @Override
     public PatternObjectAttribute getPatternObjectAttribute() {
         return patternObject;
     }
@@ -149,6 +153,7 @@ public class CompositeActorMatcher extends TypedCompositeActor implements
      *
      *  @return The set of names.
      */
+    @Override
     public Set<String> labelSet() {
         return null;
     }
@@ -162,6 +167,7 @@ public class CompositeActorMatcher extends TypedCompositeActor implements
      *  @param object The NamedObj.
      *  @return Whether this CompositeActorMatcher can match the given object.
      */
+    @Override
     public boolean match(NamedObj object) {
         return object instanceof CompositeEntity;
     }
@@ -171,6 +177,7 @@ public class CompositeActorMatcher extends TypedCompositeActor implements
      *  @param attribute The attribute containing ingredients of this entity.
      *  @see GTEntityUtils#updateAppearance(GTEntity, GTIngredientsAttribute)
      */
+    @Override
     public void updateAppearance(GTIngredientsAttribute attribute) {
         NamedObj container = getContainer();
         if (container instanceof TransformationRule) {
@@ -191,6 +198,7 @@ public class CompositeActorMatcher extends TypedCompositeActor implements
      *  @param settable The object that has changed value.
      *  @see GTEntityUtils#valueChanged(GTEntity, Settable)
      */
+    @Override
     public void valueChanged(Settable settable) {
         GTEntityUtils.valueChanged(this, settable);
     }
@@ -225,6 +233,7 @@ public class CompositeActorMatcher extends TypedCompositeActor implements
      *  @param depth The depth in the hierarchy, to determine indenting.
      *  @exception IOException If an I/O error occurs.
      */
+    @Override
     protected void _exportMoMLContents(Writer output, int depth)
             throws IOException {
         super._exportMoMLContents(output, depth);

@@ -92,6 +92,7 @@ public class StatusBar extends JPanel {
     /** Set the background color.
      *  @param color The background color.
      */
+    @Override
     public void setBackground(Color color) {
         super.setBackground(color);
 

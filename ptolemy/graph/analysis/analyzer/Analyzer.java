@@ -42,6 +42,7 @@ public interface Analyzer {
      *
      *  @return Return a description of the analyzer.
      */
+    @Override
     public String toString();
 
     /** Return the validity state of the analyzer.

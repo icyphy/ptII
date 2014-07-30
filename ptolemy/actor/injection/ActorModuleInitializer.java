@@ -105,6 +105,7 @@ public class ActorModuleInitializer {
      * it.  The default initializer would initialize Java SE specific classes.
      */
     protected static Initializer _defaultInitializer = new Initializer() {
+        @Override
         public void initialize() {
             PtolemyInjector.createInjector(_PTOLEMY_MODULES);
         }

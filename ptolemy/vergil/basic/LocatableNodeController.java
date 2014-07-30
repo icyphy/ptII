@@ -87,6 +87,7 @@ public class LocatableNodeController extends BasicNodeController {
     /** Add a node to this graph editor and render it
      * at the given location.
      */
+    @Override
     public void addNode(Object node, double x, double y) {
         throw new UnsupportedOperationException("Cannot add node.");
     }
@@ -94,6 +95,7 @@ public class LocatableNodeController extends BasicNodeController {
     /** Draw the node at its location. This overrides the base class
      *  to assign a location to the object.
      */
+    @Override
     public Figure drawNode(Object node) {
         Figure nf = super.drawNode(node);
         locateFigure(node);
@@ -214,6 +216,7 @@ public class LocatableNodeController extends BasicNodeController {
      *  contains a parameter named "_hide" with value true.
      *  @param node The node with children to render.
      */
+    @Override
     protected void _drawChildren(java.lang.Object node) {
         if (!_hide(node)) {
             super._drawChildren(node);
@@ -317,6 +320,7 @@ public class LocatableNodeController extends BasicNodeController {
      *  @param node The node to render.
      *  @return the newly created figure.
      */
+    @Override
     protected Figure _renderNode(java.lang.Object node) {
         if (node == null || _hide(node)) {
             // Return an empty figure.
@@ -338,9 +342,9 @@ public class LocatableNodeController extends BasicNodeController {
                     && cf != null) {
                 // float[] dash = { 2.0f, 5.0f };
                 Stroke stroke = new BasicStroke(2f, /* width */
-                BasicStroke.CAP_SQUARE, /* cap   */
-                BasicStroke.JOIN_MITER, /* join  */
-                10.0f); /* mitre limit */
+                        BasicStroke.CAP_SQUARE, /* cap   */
+                        BasicStroke.JOIN_MITER, /* join  */
+                        10.0f); /* mitre limit */
                 // To get a dashed line, add the following two arguments above:
                 // dash, /* dash  */
                 // 0.0f); /* dash_phase  */
@@ -350,7 +354,7 @@ public class LocatableNodeController extends BasicNodeController {
                 double padding = 3.0;
                 bounds = new Rectangle2D.Double(bounds.getX() - padding,
                         bounds.getY() - padding, bounds.getWidth() + padding
-                                * 2.0, bounds.getHeight() + padding * 2.0);
+                        * 2.0, bounds.getHeight() + padding * 2.0);
                 BasicFigure bf = new BasicFigure(bounds);
                 bf.setStroke(stroke);
                 bf.setStrokePaint(CLASS_ELEMENT_HIGHLIGHT_COLOR);

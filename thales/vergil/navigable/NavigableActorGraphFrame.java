@@ -180,6 +180,7 @@ public class NavigableActorGraphFrame extends ActorGraphFrame {
                     Integer.valueOf(KeyEvent.VK_M));
         }
 
+        @Override
         public void actionPerformed(ActionEvent e) {
             NamedObj toOpen = getModel().getContainer();
 

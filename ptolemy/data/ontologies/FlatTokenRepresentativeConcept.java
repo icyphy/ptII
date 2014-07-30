@@ -43,7 +43,7 @@ import ptolemy.kernel.util.NameDuplicationException;
  *  @Pt.AcceptedRating Red (blickly)
  */
 public class FlatTokenRepresentativeConcept extends
-        InfiniteConceptRepresentative {
+InfiniteConceptRepresentative {
 
     /** Create a new FlatTokenRepresentativeConcept with the specified name and
      *  ontology.
@@ -69,6 +69,7 @@ public class FlatTokenRepresentativeConcept extends
      *  @return true if the string can represent an infinite concept for this
      *   representative, false otherwise.
      */
+    @Override
     public boolean containsThisInfiniteConceptString(
             String infiniteConceptString) {
         if (infiniteConceptString.startsWith(getName() + "_")) {
@@ -107,6 +108,7 @@ public class FlatTokenRepresentativeConcept extends
      *  @exception IllegalActionException Thrown if a valid
      *   FlatTokenInfiniteConcept cannot be created.
      */
+    @Override
     protected FlatTokenInfiniteConcept _createInfiniteConceptInstance(
             String infiniteConceptString) throws IllegalActionException {
         if (containsThisInfiniteConceptString(infiniteConceptString)) {

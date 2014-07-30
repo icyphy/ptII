@@ -76,7 +76,7 @@ public class Tableau extends CompositeEntity {
      *   created an attribute with name "size" (should not occur).
      */
     public Tableau(Workspace workspace) throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         super(workspace);
 
         size = new SizeAttribute(this, "size");
@@ -115,6 +115,7 @@ public class Tableau extends CompositeEntity {
      *   specification is not correctly formatted, or if the base
      *   class throws it.
      */
+    @Override
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         if (attribute == size && _frame != null) {
@@ -132,6 +133,7 @@ public class Tableau extends CompositeEntity {
      *  @exception CloneNotSupportedException If a derived class contains
      *   an attribute that cannot be cloned.
      */
+    @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         Tableau newObject = (Tableau) super.clone(workspace);
         newObject._frame = null;
@@ -236,6 +238,7 @@ public class Tableau extends CompositeEntity {
      *  @exception NameDuplicationException If the container already has
      *   an attribute with the name of this attribute.
      */
+    @Override
     public void setContainer(CompositeEntity container)
             throws IllegalActionException, NameDuplicationException {
         if (container == null) {
@@ -385,6 +388,7 @@ public class Tableau extends CompositeEntity {
     class WindowClosedAdapter extends WindowAdapter {
         // This is invoked if the window
         // is disposed by the _close() method of Top.
+        @Override
         public void windowClosed(WindowEvent e) {
             if (_debugClosing) {
                 System.out.println("Tableau$WindowClosedAdapter.windowClosed("

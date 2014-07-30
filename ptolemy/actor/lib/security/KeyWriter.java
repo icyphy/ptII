@@ -96,6 +96,7 @@ public class KeyWriter extends KeyStoreActor {
      *  @exception IllegalActionException If there's no director,
      *  if there are problems setting the key.
      */
+    @Override
     public boolean postfire() throws IllegalActionException {
         // See io.LineWriter for an example of an actor that writes to a file.
         if (input.hasToken(0)) {
@@ -116,7 +117,7 @@ public class KeyWriter extends KeyStoreActor {
             } catch (Exception ex) {
                 throw new IllegalActionException(this, ex,
                         "Failed to set key '" + key + "' to alias '" + alias
-                                + "'");
+                        + "'");
             }
 
             try {

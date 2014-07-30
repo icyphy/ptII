@@ -60,8 +60,8 @@ import ptolemy.kernel.util.NamedObj;
  @Pt.AcceptedRating red (derler)
  */
 public class PtidesPreemptiveEDFDirector
-        extends
-        ptolemy.cg.adapter.generic.program.procedural.c.adapters.ptolemy.domains.ptides.kernel.PtidesPreemptiveEDFDirector {
+extends
+ptolemy.cg.adapter.generic.program.procedural.c.adapters.ptolemy.domains.ptides.kernel.PtidesPreemptiveEDFDirector {
 
     /** Construct the code generator adapter associated with the given
      *  PtidesBasicDirector.
@@ -80,6 +80,7 @@ public class PtidesPreemptiveEDFDirector
      *  @return The generated assembly file code.
      *  @exception IllegalActionException
      */
+    @Override
     public Map<String, String> generateAdditionalCodeFiles()
             throws IllegalActionException {
         Map<String, String> list = new HashMap();
@@ -95,6 +96,7 @@ public class PtidesPreemptiveEDFDirector
      * @return The generated fire code.
      * @exception IllegalActionException Not thrown in this class.
      */
+    @Override
     public String generateFireCode() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
 
@@ -218,6 +220,7 @@ public class PtidesPreemptiveEDFDirector
      * @exception IllegalActionException If there is an exception in
      *  generating the task function code.
      */
+    @Override
     public String generateFireFunctionCode() throws IllegalActionException {
         return "";
     }
@@ -230,6 +233,7 @@ public class PtidesPreemptiveEDFDirector
      * @exception IllegalActionException If the adapter associated with
      *  an actor throws it while generating initialize code for the actor.
      */
+    @Override
     public String generateInitializeCode() throws IllegalActionException {
         StringBuffer code = new StringBuffer(super.generateInitializeCode());
 
@@ -261,6 +265,7 @@ public class PtidesPreemptiveEDFDirector
      *   an actor throws it while generating preinitialize code for the actor.
      *   FIXME: Take care of platform dependent code.
      */
+    @Override
     public String generatePreinitializeCode() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
 
@@ -337,6 +342,7 @@ public class PtidesPreemptiveEDFDirector
      * @return code The empty string.
      * @exception IllegalActionException Not thrown in this class.
      */
+    @Override
     public String generateVariableInitialization()
             throws IllegalActionException {
         return "";
@@ -347,6 +353,7 @@ public class PtidesPreemptiveEDFDirector
     /** Get sensors and actuators.
      *  @exception IllegalActionException Thrown if parameters of sensors or actuators cannot be read.
      */
+    @Override
     protected void _modelStaticAnalysis() throws IllegalActionException {
         _interruptHandlerNames = new HashMap();
         for (int key : RenesasUtilities.interruptHandlerLetters.keySet()) {
@@ -364,11 +371,11 @@ public class PtidesPreemptiveEDFDirector
                 if (_interruptHandlerNames.get(id) == null) {
                     throw new IllegalActionException(actor,
                             "The interrupt handler" + " with id " + id
-                                    + " cannot be used.");
+                            + " cannot be used.");
                 }
                 _interruptHandlerNames.put(id,
                         CodeGeneratorAdapter.generateName((NamedObj) actor)
-                                + "_Handler");
+                        + "_Handler");
             }
 
             if (actor instanceof SensorHandler) {
@@ -379,7 +386,7 @@ public class PtidesPreemptiveEDFDirector
                 if (_interruptHandlerNames.get(id) == null) {
                     throw new IllegalActionException(actor,
                             "The interrupt handler" + " with id " + id
-                                    + " cannot be used.");
+                            + " cannot be used.");
                 }
                 _interruptHandlerNames.put(id,
                         CodeGeneratorAdapter.generateName((NamedObj) actor));
@@ -395,6 +402,7 @@ public class PtidesPreemptiveEDFDirector
      * @return An empty set in this base class.
      * @exception IllegalActionException Not thrown in this base class.
      */
+    @Override
     public Set getSharedCode() throws IllegalActionException {
         Set sharedCode = new HashSet();
 
@@ -447,7 +455,7 @@ public class PtidesPreemptiveEDFDirector
         args.add(interruptPragmas.toString());
         _templateParser.getCodeStream().append(
                 _templateParser.getCodeStream()
-                        .getCodeBlock("globalVars", args));
+                .getCodeBlock("globalVars", args));
 
         _templateParser.getCodeStream().append(_generateActorFuncProtoCode());
 

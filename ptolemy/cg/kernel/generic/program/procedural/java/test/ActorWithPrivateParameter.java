@@ -85,6 +85,7 @@ public class ActorWithPrivateParameter extends Source {
      *  @exception IllegalActionException If it is thrown by the
      *   send() method sending out the token.
      */
+    @Override
     public void fire() throws IllegalActionException {
         super.fire();
         double a = ((DoubleToken) _myPrivateParameter.getToken()).doubleValue();

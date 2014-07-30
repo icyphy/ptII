@@ -12,7 +12,7 @@ package ptolemy.actor.corba.util;
  */
 @SuppressWarnings("serial")
 public class _CorbaActorStub extends org.omg.CORBA.portable.ObjectImpl
-        implements ptolemy.actor.corba.util.CorbaActor {
+implements ptolemy.actor.corba.util.CorbaActor {
     // Constructors
     // NOTE:  If the default constructor is used, the
     //        object is useless until _set_delegate (...)
@@ -31,6 +31,7 @@ public class _CorbaActorStub extends org.omg.CORBA.portable.ObjectImpl
      * @exception CorbaIllegalActionException If the
      *   method is an illegal action of the actor.
      */
+    @Override
     public void fire()
             throws ptolemy.actor.corba.util.CorbaIllegalActionException {
         // Don't call "super.fire();" here, there is no parent class
@@ -46,7 +47,7 @@ public class _CorbaActorStub extends org.omg.CORBA.portable.ObjectImpl
 
             if (_id.equals("IDL:util/CorbaIllegalActionException:1.0")) {
                 throw ptolemy.actor.corba.util.CorbaIllegalActionExceptionHelper
-                        .read(_in);
+                .read(_in);
             } else {
                 throw new org.omg.CORBA.MARSHAL(_id);
             }
@@ -64,6 +65,7 @@ public class _CorbaActorStub extends org.omg.CORBA.portable.ObjectImpl
      * @exception CorbaUnknowParamException If the parameter
      *  name is not known by the actor.
      */
+    @Override
     public String getParameter(String paramName)
             throws ptolemy.actor.corba.util.CorbaIllegalActionException,
             ptolemy.actor.corba.util.CorbaUnknownParamException {
@@ -84,10 +86,10 @@ public class _CorbaActorStub extends org.omg.CORBA.portable.ObjectImpl
 
             if (_id.equals("IDL:util/CorbaIllegalActionException:1.0")) {
                 throw ptolemy.actor.corba.util.CorbaIllegalActionExceptionHelper
-                        .read(_in);
+                .read(_in);
             } else if (_id.equals("IDL:util/CorbaUnknownParamException:1.0")) {
                 throw ptolemy.actor.corba.util.CorbaUnknownParamExceptionHelper
-                        .read(_in);
+                .read(_in);
             } else {
                 throw new org.omg.CORBA.MARSHAL(_id);
             }
@@ -103,6 +105,7 @@ public class _CorbaActorStub extends org.omg.CORBA.portable.ObjectImpl
      * @exception CorbaIllegalActionException If the
      *   method is an illegal action of the actor.
      */
+    @Override
     public void initialize()
             throws ptolemy.actor.corba.util.CorbaIllegalActionException {
         org.omg.CORBA.portable.InputStream _in = null;
@@ -118,7 +121,7 @@ public class _CorbaActorStub extends org.omg.CORBA.portable.ObjectImpl
 
             if (_id.equals("IDL:util/CorbaIllegalActionException:1.0")) {
                 throw ptolemy.actor.corba.util.CorbaIllegalActionExceptionHelper
-                        .read(_in);
+                .read(_in);
             } else {
                 throw new org.omg.CORBA.MARSHAL(_id);
             }
@@ -138,6 +141,7 @@ public class _CorbaActorStub extends org.omg.CORBA.portable.ObjectImpl
      * @exception CorbaIndexOutofBoundException If the
      *   channel index is out of the width of the port.
      */
+    @Override
     public boolean hasData(String portName, short portIndex)
             throws ptolemy.actor.corba.util.CorbaIllegalActionException,
             ptolemy.actor.corba.util.CorbaIndexOutofBoundException,
@@ -159,13 +163,13 @@ public class _CorbaActorStub extends org.omg.CORBA.portable.ObjectImpl
 
             if (_id.equals("IDL:util/CorbaIllegalActionException:1.0")) {
                 throw ptolemy.actor.corba.util.CorbaIllegalActionExceptionHelper
-                        .read(_in);
+                .read(_in);
             } else if (_id.equals("IDL:util/CorbaIndexOutofBoundException:1.0")) {
                 throw ptolemy.actor.corba.util.CorbaIndexOutofBoundExceptionHelper
-                        .read(_in);
+                .read(_in);
             } else if (_id.equals("IDL:util/CorbaUnknownPortException:1.0")) {
                 throw ptolemy.actor.corba.util.CorbaUnknownPortExceptionHelper
-                        .read(_in);
+                .read(_in);
             } else {
                 throw new org.omg.CORBA.MARSHAL(_id);
             }
@@ -179,6 +183,7 @@ public class _CorbaActorStub extends org.omg.CORBA.portable.ObjectImpl
     /* Return true if there is a parameter of the specified
      * name defined in the actor.
      */
+    @Override
     public boolean hasParameter(String paramName) {
         org.omg.CORBA.portable.InputStream _in = null;
 
@@ -209,6 +214,7 @@ public class _CorbaActorStub extends org.omg.CORBA.portable.ObjectImpl
      * @param isOutput True if the port is an output port.
      * @param isMultiport True if the port is a multiport.
      */
+    @Override
     public boolean hasPort(String portName, boolean isInput, boolean isOutput,
             boolean isMultiport) {
         org.omg.CORBA.portable.InputStream _in = null;
@@ -245,6 +251,7 @@ public class _CorbaActorStub extends org.omg.CORBA.portable.ObjectImpl
      * @exception CorbaUnknownPortException If the port is \
      *  not known by the actor.
      */
+    @Override
     public void setPortWidth(String portName, short width)
             throws ptolemy.actor.corba.util.CorbaIllegalActionException,
             ptolemy.actor.corba.util.CorbaUnknownPortException {
@@ -263,10 +270,10 @@ public class _CorbaActorStub extends org.omg.CORBA.portable.ObjectImpl
 
             if (_id.equals("IDL:util/CorbaIllegalActionException:1.0")) {
                 throw ptolemy.actor.corba.util.CorbaIllegalActionExceptionHelper
-                        .read(_in);
+                .read(_in);
             } else if (_id.equals("IDL:util/CorbaUnknownPortException:1.0")) {
                 throw ptolemy.actor.corba.util.CorbaUnknownPortExceptionHelper
-                        .read(_in);
+                .read(_in);
             } else {
                 throw new org.omg.CORBA.MARSHAL(_id);
             }
@@ -282,6 +289,7 @@ public class _CorbaActorStub extends org.omg.CORBA.portable.ObjectImpl
      * @exception CorbaIllegalActionException If the
      *   method is an illegal action of the actor.
      */
+    @Override
     public boolean postfire()
             throws ptolemy.actor.corba.util.CorbaIllegalActionException {
         org.omg.CORBA.portable.InputStream _in = null;
@@ -300,7 +308,7 @@ public class _CorbaActorStub extends org.omg.CORBA.portable.ObjectImpl
 
             if (_id.equals("IDL:util/CorbaIllegalActionException:1.0")) {
                 throw ptolemy.actor.corba.util.CorbaIllegalActionExceptionHelper
-                        .read(_in);
+                .read(_in);
             } else {
                 throw new org.omg.CORBA.MARSHAL(_id);
             }
@@ -316,6 +324,7 @@ public class _CorbaActorStub extends org.omg.CORBA.portable.ObjectImpl
      * @exception CorbaIllegalActionException If the
      *   method is an illegal action of the actor.
      */
+    @Override
     public boolean prefire()
             throws ptolemy.actor.corba.util.CorbaIllegalActionException {
         org.omg.CORBA.portable.InputStream _in = null;
@@ -333,7 +342,7 @@ public class _CorbaActorStub extends org.omg.CORBA.portable.ObjectImpl
 
             if (_id.equals("IDL:util/CorbaIllegalActionException:1.0")) {
                 throw ptolemy.actor.corba.util.CorbaIllegalActionExceptionHelper
-                        .read(_in);
+                .read(_in);
             } else {
                 throw new org.omg.CORBA.MARSHAL(_id);
             }
@@ -349,6 +358,7 @@ public class _CorbaActorStub extends org.omg.CORBA.portable.ObjectImpl
      * @exception CorbaIllegalActionException If the
      *   method is an illegal action of the actor.
      */
+    @Override
     public boolean preinitialize()
             throws ptolemy.actor.corba.util.CorbaIllegalActionException {
         org.omg.CORBA.portable.InputStream _in = null;
@@ -367,7 +377,7 @@ public class _CorbaActorStub extends org.omg.CORBA.portable.ObjectImpl
 
             if (_id.equals("IDL:util/CorbaIllegalActionException:1.0")) {
                 throw ptolemy.actor.corba.util.CorbaIllegalActionExceptionHelper
-                        .read(_in);
+                .read(_in);
             } else {
                 throw new org.omg.CORBA.MARSHAL(_id);
             }
@@ -388,6 +398,7 @@ public class _CorbaActorStub extends org.omg.CORBA.portable.ObjectImpl
      * @exception CorbaIllegalValueException If the value
      *  is invalid for this parameter.
      */
+    @Override
     public void setParameter(String paramName, String paramValue)
             throws ptolemy.actor.corba.util.CorbaIllegalActionException,
             ptolemy.actor.corba.util.CorbaUnknownParamException,
@@ -407,13 +418,13 @@ public class _CorbaActorStub extends org.omg.CORBA.portable.ObjectImpl
 
             if (_id.equals("IDL:util/CorbaIllegalActionException:1.0")) {
                 throw ptolemy.actor.corba.util.CorbaIllegalActionExceptionHelper
-                        .read(_in);
+                .read(_in);
             } else if (_id.equals("IDL:util/CorbaUnknownParamException:1.0")) {
                 throw ptolemy.actor.corba.util.CorbaUnknownParamExceptionHelper
-                        .read(_in);
+                .read(_in);
             } else if (_id.equals("IDL:util/CorbaIllegalValueException:1.0")) {
                 throw ptolemy.actor.corba.util.CorbaIllegalValueExceptionHelper
-                        .read(_in);
+                .read(_in);
             } else {
                 throw new org.omg.CORBA.MARSHAL(_id);
             }
@@ -429,6 +440,7 @@ public class _CorbaActorStub extends org.omg.CORBA.portable.ObjectImpl
      * @exception CorbaIllegalActionException If the
      *   method is an illegal action of the actor.
      */
+    @Override
     public void stopFire()
             throws ptolemy.actor.corba.util.CorbaIllegalActionException {
         org.omg.CORBA.portable.InputStream _in = null;
@@ -444,7 +456,7 @@ public class _CorbaActorStub extends org.omg.CORBA.portable.ObjectImpl
 
             if (_id.equals("IDL:util/CorbaIllegalActionException:1.0")) {
                 throw ptolemy.actor.corba.util.CorbaIllegalActionExceptionHelper
-                        .read(_in);
+                .read(_in);
             } else {
                 throw new org.omg.CORBA.MARSHAL(_id);
             }
@@ -460,6 +472,7 @@ public class _CorbaActorStub extends org.omg.CORBA.portable.ObjectImpl
      * @exception CorbaIllegalActionException If the
      *   method is an illegal action of the actor.
      */
+    @Override
     public void terminate()
             throws ptolemy.actor.corba.util.CorbaIllegalActionException {
         org.omg.CORBA.portable.InputStream _in = null;
@@ -475,7 +488,7 @@ public class _CorbaActorStub extends org.omg.CORBA.portable.ObjectImpl
 
             if (_id.equals("IDL:util/CorbaIllegalActionException:1.0")) {
                 throw ptolemy.actor.corba.util.CorbaIllegalActionExceptionHelper
-                        .read(_in);
+                .read(_in);
             } else {
                 throw new org.omg.CORBA.MARSHAL(_id);
             }
@@ -499,12 +512,13 @@ public class _CorbaActorStub extends org.omg.CORBA.portable.ObjectImpl
      * @exception CorbaIllegalValueException If the value is not
      *  valid, e.g. the string cannot be converted to a value.
      */
+    @Override
     public void transferInput(String portName, short portIndex,
             String tokenValue)
-            throws ptolemy.actor.corba.util.CorbaIllegalActionException,
-            ptolemy.actor.corba.util.CorbaUnknownPortException,
-            ptolemy.actor.corba.util.CorbaIndexOutofBoundException,
-            ptolemy.actor.corba.util.CorbaIllegalValueException {
+                    throws ptolemy.actor.corba.util.CorbaIllegalActionException,
+                    ptolemy.actor.corba.util.CorbaUnknownPortException,
+                    ptolemy.actor.corba.util.CorbaIndexOutofBoundException,
+                    ptolemy.actor.corba.util.CorbaIllegalValueException {
         org.omg.CORBA.portable.InputStream _in = null;
 
         try {
@@ -521,16 +535,16 @@ public class _CorbaActorStub extends org.omg.CORBA.portable.ObjectImpl
 
             if (_id.equals("IDL:util/CorbaIllegalActionException:1.0")) {
                 throw ptolemy.actor.corba.util.CorbaIllegalActionExceptionHelper
-                        .read(_in);
+                .read(_in);
             } else if (_id.equals("IDL:util/CorbaUnknownPortException:1.0")) {
                 throw ptolemy.actor.corba.util.CorbaUnknownPortExceptionHelper
-                        .read(_in);
+                .read(_in);
             } else if (_id.equals("IDL:util/CorbaIndexOutofBoundException:1.0")) {
                 throw ptolemy.actor.corba.util.CorbaIndexOutofBoundExceptionHelper
-                        .read(_in);
+                .read(_in);
             } else if (_id.equals("IDL:util/CorbaIllegalValueException:1.0")) {
                 throw ptolemy.actor.corba.util.CorbaIllegalValueExceptionHelper
-                        .read(_in);
+                .read(_in);
             } else {
                 throw new org.omg.CORBA.MARSHAL(_id);
             }
@@ -551,6 +565,7 @@ public class _CorbaActorStub extends org.omg.CORBA.portable.ObjectImpl
      * @exception CorbaIndexOutofBoundException If the index
      *  number is out of the width of the port.
      */
+    @Override
     public String transferOutput(String portName, short portIndex)
             throws ptolemy.actor.corba.util.CorbaIllegalActionException,
             ptolemy.actor.corba.util.CorbaUnknownPortException,
@@ -573,13 +588,13 @@ public class _CorbaActorStub extends org.omg.CORBA.portable.ObjectImpl
 
             if (_id.equals("IDL:util/CorbaIllegalActionException:1.0")) {
                 throw ptolemy.actor.corba.util.CorbaIllegalActionExceptionHelper
-                        .read(_in);
+                .read(_in);
             } else if (_id.equals("IDL:util/CorbaUnknownPortException:1.0")) {
                 throw ptolemy.actor.corba.util.CorbaUnknownPortExceptionHelper
-                        .read(_in);
+                .read(_in);
             } else if (_id.equals("IDL:util/CorbaIndexOutofBoundException:1.0")) {
                 throw ptolemy.actor.corba.util.CorbaIndexOutofBoundExceptionHelper
-                        .read(_in);
+                .read(_in);
             } else {
                 throw new org.omg.CORBA.MARSHAL(_id);
             }
@@ -595,6 +610,7 @@ public class _CorbaActorStub extends org.omg.CORBA.portable.ObjectImpl
      * @exception CorbaIllegalActionException If the
      *   method is an illegal action of the actor.
      */
+    @Override
     public void wrapup()
             throws ptolemy.actor.corba.util.CorbaIllegalActionException {
         org.omg.CORBA.portable.InputStream _in = null;
@@ -609,7 +625,7 @@ public class _CorbaActorStub extends org.omg.CORBA.portable.ObjectImpl
 
             if (_id.equals("IDL:util/CorbaIllegalActionException:1.0")) {
                 throw ptolemy.actor.corba.util.CorbaIllegalActionExceptionHelper
-                        .read(_in);
+                .read(_in);
             } else {
                 throw new org.omg.CORBA.MARSHAL(_id);
             }
@@ -623,6 +639,7 @@ public class _CorbaActorStub extends org.omg.CORBA.portable.ObjectImpl
     // Type-specific CORBA::Object operations
     private static String[] __ids = { "IDL:util/CorbaActor:1.0" };
 
+    @Override
     public String[] _ids() {
         return __ids.clone();
     }

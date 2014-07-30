@@ -25,7 +25,7 @@ ENHANCEMENTS, OR MODIFICATIONS.
                                                 COPYRIGHTENDKEY
 
 
-*/
+ */
 package ptdb.gui;
 
 import java.util.Observable;
@@ -50,6 +50,7 @@ public class CancelObservable extends Observable {
      * Send notification to registered observers.
      * Currently, only calls super method.
      */
+    @Override
     public void notifyObservers() {
 
         setChanged();

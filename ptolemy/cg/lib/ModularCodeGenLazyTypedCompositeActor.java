@@ -148,7 +148,7 @@ will simply result in the expression failing to evaluate.
  */
 
 public abstract class ModularCodeGenLazyTypedCompositeActor extends
-        LazyTypedCompositeActor {
+LazyTypedCompositeActor {
 
     /** Construct a library in the default workspace with no
      *  container and an empty string as its name. Add the library to the
@@ -159,7 +159,7 @@ public abstract class ModularCodeGenLazyTypedCompositeActor extends
      *  @exception NameDuplicationException If the container already has an
      *   actor with this name.
      */
-    public ModularCodeGenLazyTypedCompositeActor() 
+    public ModularCodeGenLazyTypedCompositeActor()
             throws IllegalActionException, NameDuplicationException {
         super();
         _init();
@@ -231,10 +231,9 @@ public abstract class ModularCodeGenLazyTypedCompositeActor extends
         boolean subscriber = _isSubscribedPort(port);
         return new Profile.Port(port.getName(), publisher, subscriber,
                 port.getWidth(), DFUtilities.getTokenConsumptionRate(port),
-                JavaCodeGenerator.ptTypeToCodegenType((port)
-                        .getType()), port.isInput(), port.isOutput(),
-                port.isMultiport(), _pubSubChannelName(port, publisher,
-                        subscriber));
+                JavaCodeGenerator.ptTypeToCodegenType((port).getType()),
+                port.isInput(), port.isOutput(), port.isMultiport(),
+                _pubSubChannelName(port, publisher, subscriber));
     }
 
     /** Create a new relation with the specified name, add it to the
@@ -251,6 +250,7 @@ public abstract class ModularCodeGenLazyTypedCompositeActor extends
      *  @exception NameDuplicationException If name collides with a name
      *   already in the container.
      */
+    @Override
     public ComponentRelation newRelation(String name)
             throws NameDuplicationException {
         try {
@@ -260,7 +260,6 @@ public abstract class ModularCodeGenLazyTypedCompositeActor extends
         }
         return super.newRelation(name);
     }
-
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
@@ -284,6 +283,7 @@ public abstract class ModularCodeGenLazyTypedCompositeActor extends
      *  @exception NameDuplicationException If the name collides with a name
      *  already in the entity.
      */
+    @Override
     protected void _addEntity(ComponentEntity entity)
             throws IllegalActionException, NameDuplicationException {
         _setRecompileFlag();
@@ -304,6 +304,7 @@ public abstract class ModularCodeGenLazyTypedCompositeActor extends
      *  @exception NameDuplicationException If the name collides with a name
      *   already on the contained relations list.
      */
+    @Override
     protected void _addRelation(ComponentRelation relation)
             throws IllegalActionException, NameDuplicationException {
         _setRecompileFlag();
@@ -317,124 +318,120 @@ public abstract class ModularCodeGenLazyTypedCompositeActor extends
      */
     protected void _fire(List<Object> argList) throws Throwable {
         // This method exists so as to avoid code duplication.
-        
-            Iterator<?> inputPorts = inputPortList().iterator();
-            while (inputPorts.hasNext()) {
-                TypedIOPort port = (TypedIOPort) inputPorts.next();
-                int rate = DFUtilities.getTokenConsumptionRate(port);
-                Type type = port.getType();
-                Object tokenHolder = null;
 
-                int numberOfChannels = port.getWidth() < port.getWidthInside() ? port
-                        .getWidth() : port.getWidthInside();
+        Iterator<?> inputPorts = inputPortList().iterator();
+        while (inputPorts.hasNext()) {
+            TypedIOPort port = (TypedIOPort) inputPorts.next();
+            int rate = DFUtilities.getTokenConsumptionRate(port);
+            Type type = port.getType();
+            Object tokenHolder = null;
 
-                if (type == BaseType.INT) {
-                    tokenHolder = new int[numberOfChannels][];
-                } else if (type == BaseType.DOUBLE) {
-                    tokenHolder = new double[numberOfChannels][];
-                    /*} else if (type == PointerToken.POINTER) {
-                        tokenHolder = new int[numberOfChannels][];*/
-                } else if (type == BaseType.BOOLEAN) {
-                    tokenHolder = new boolean[numberOfChannels][];
-                } else {
-                    // FIXME: need to deal with other types
-                }
+            int numberOfChannels = port.getWidth() < port.getWidthInside() ? port
+                    .getWidth() : port.getWidthInside();
 
-                for (int i = 0; i < port.getWidth(); i++) {
-                    try {
-                        if (i < port.getWidthInside()) {
+            if (type == BaseType.INT) {
+                tokenHolder = new int[numberOfChannels][];
+            } else if (type == BaseType.DOUBLE) {
+                tokenHolder = new double[numberOfChannels][];
+                /*} else if (type == PointerToken.POINTER) {
+                    tokenHolder = new int[numberOfChannels][];*/
+            } else if (type == BaseType.BOOLEAN) {
+                tokenHolder = new boolean[numberOfChannels][];
+            } else {
+                // FIXME: need to deal with other types
+            }
 
-                            if (port.hasToken(i, rate)) {
-                                Token[] tokens = port.get(i, rate);
+            for (int i = 0; i < port.getWidth(); i++) {
+                try {
+                    if (i < port.getWidthInside()) {
 
-                                if (_debugging) {
-                                    _debug(getName(),
-                                            "transferring input from "
-                                                    + port.getName());
-                                }
+                        if (port.hasToken(i, rate)) {
+                            Token[] tokens = port.get(i, rate);
 
-                                if (type == BaseType.INT) {
-                                    if (rate > 1) {
-                                        int[] intTokens = new int[rate];
-                                        for (int k = 0; k < rate; k++) {
-                                            intTokens[k] = ((IntToken) tokens[k])
-                                                    .intValue();
-                                        }
-                                        tokenHolder = intTokens;
-                                    } else {
-                                        tokenHolder = ((IntToken) tokens[0])
-                                                .intValue();
-                                    }
-                                } else if (type == BaseType.DOUBLE) {
-                                    if (rate > 1) {
-                                        for (int k = 0; k < rate; k++) {
-                                            double[] doubleTokens = new double[rate];
-                                            doubleTokens[k] = ((DoubleToken) tokens[k])
-                                                    .doubleValue();
-                                            tokenHolder = doubleTokens;
-                                        }
-                                    } else {
-                                        tokenHolder = ((DoubleToken) tokens[0])
-                                                .doubleValue();
-                                    }
-                                } else if (type == BaseType.BOOLEAN) {
-                                    if (rate > 1) {
-                                        boolean[] booleanTokens = new boolean[rate];
-                                        for (int k = 0; k < rate; k++) {
-                                            booleanTokens[k] = ((BooleanToken) tokens[k])
-                                                    .booleanValue();
-                                        }
-                                        tokenHolder = booleanTokens;
-                                    } else {
-                                        tokenHolder = ((BooleanToken) tokens[0])
-                                                .booleanValue();
-                                    }
-
-                                } else {
-                                    // FIXME: need to deal with other types
-                                }
-                                argList.add(tokenHolder);
-                            } else {
-                                throw new IllegalActionException(
-                                        this,
-                                        port,
-                                        "Port should consume "
-                                                + rate
-                                                + " tokens, but there were not "
-                                                + " enough tokens available.");
-                            }
-
-                        } else {
-                            // No inside connection to transfer tokens to.
-                            // In this case, consume one input token if there is one.
                             if (_debugging) {
-                                _debug(getName(), "Dropping single input from "
+                                _debug(getName(), "transferring input from "
                                         + port.getName());
                             }
 
-                            if (port.hasToken(i)) {
-                                port.get(i);
+                            if (type == BaseType.INT) {
+                                if (rate > 1) {
+                                    int[] intTokens = new int[rate];
+                                    for (int k = 0; k < rate; k++) {
+                                        intTokens[k] = ((IntToken) tokens[k])
+                                                .intValue();
+                                    }
+                                    tokenHolder = intTokens;
+                                } else {
+                                    tokenHolder = ((IntToken) tokens[0])
+                                            .intValue();
+                                }
+                            } else if (type == BaseType.DOUBLE) {
+                                if (rate > 1) {
+                                    for (int k = 0; k < rate; k++) {
+                                        double[] doubleTokens = new double[rate];
+                                        doubleTokens[k] = ((DoubleToken) tokens[k])
+                                                .doubleValue();
+                                        tokenHolder = doubleTokens;
+                                    }
+                                } else {
+                                    tokenHolder = ((DoubleToken) tokens[0])
+                                            .doubleValue();
+                                }
+                            } else if (type == BaseType.BOOLEAN) {
+                                if (rate > 1) {
+                                    boolean[] booleanTokens = new boolean[rate];
+                                    for (int k = 0; k < rate; k++) {
+                                        booleanTokens[k] = ((BooleanToken) tokens[k])
+                                                .booleanValue();
+                                    }
+                                    tokenHolder = booleanTokens;
+                                } else {
+                                    tokenHolder = ((BooleanToken) tokens[0])
+                                            .booleanValue();
+                                }
+
+                            } else {
+                                // FIXME: need to deal with other types
                             }
+                            argList.add(tokenHolder);
+                        } else {
+                            throw new IllegalActionException(this, port,
+                                    "Port should consume " + rate
+                                            + " tokens, but there were not "
+                                            + " enough tokens available.");
                         }
-                    } catch (NoTokenException ex) {
-                        // this shouldn't happen.
-                        throw new InternalErrorException(this, ex, null);
+
+                    } else {
+                        // No inside connection to transfer tokens to.
+                        // In this case, consume one input token if there is one.
+                        if (_debugging) {
+                            _debug(getName(), "Dropping single input from "
+                                    + port.getName());
+                        }
+
+                        if (port.hasToken(i)) {
+                            port.get(i);
+                        }
                     }
-
+                } catch (NoTokenException ex) {
+                    // this shouldn't happen.
+                    throw new InternalErrorException(this, ex, null);
                 }
-            }
 
-            Object[] tokensToAllOutputPorts;
-            tokensToAllOutputPorts = (Object[]) _fireMethod.invoke(
-                    _objectWrapper, argList.toArray());
-
-            int portNumber = 0;
-            for (Object port : outputPortList()) {
-                IOPort iOPort = (IOPort) port;
-                ModularCodeGenLazyTypedCompositeActor._transferOutputs(this, iOPort, tokensToAllOutputPorts[portNumber++]);
             }
+        }
+
+        Object[] tokensToAllOutputPorts;
+        tokensToAllOutputPorts = (Object[]) _fireMethod.invoke(_objectWrapper,
+                argList.toArray());
+
+        int portNumber = 0;
+        for (Object port : outputPortList()) {
+            IOPort iOPort = (IOPort) port;
+            ModularCodeGenLazyTypedCompositeActor._transferOutputs(this,
+                    iOPort, tokensToAllOutputPorts[portNumber++]);
+        }
     }
-
 
     /** Return true if the port is a is connected to a publisher.
      *  @param port The port to look up.
@@ -451,7 +448,6 @@ public abstract class ModularCodeGenLazyTypedCompositeActor extends
         return _subscriberPorts != null && _subscriberPorts.containsValue(port);
     }
 
-
     /** Return the name of a Publisher or Subscriber channel name.
      *  @param port The port.
      *  @param publisher True if the corresponding Publisher should
@@ -460,8 +456,8 @@ public abstract class ModularCodeGenLazyTypedCompositeActor extends
      *  be returned.
      *  @return the name of the channel.
      */
-    abstract protected String _pubSubChannelName(IOPort port, boolean publisher,
-            boolean subscriber);
+    abstract protected String _pubSubChannelName(IOPort port,
+            boolean publisher, boolean subscriber);
 
     /** Remove the specified entity. This method should not be used
      *  directly.  Call the setContainer() method of the entity instead with
@@ -474,6 +470,7 @@ public abstract class ModularCodeGenLazyTypedCompositeActor extends
      *  This ensures that the entity being removed now actually exists.
      *  @param entity The entity to remove.
      */
+    @Override
     protected void _removeEntity(ComponentEntity entity) {
         try {
             _setRecompileFlag();
@@ -494,6 +491,7 @@ public abstract class ModularCodeGenLazyTypedCompositeActor extends
      *  This ensures that the relation being removed now actually exists.
      *  @param relation The relation to remove.
      */
+    @Override
     protected void _removeRelation(ComponentRelation relation) {
         try {
             _setRecompileFlag();
@@ -525,8 +523,7 @@ public abstract class ModularCodeGenLazyTypedCompositeActor extends
      *  getting the class or otherwise transferring the tokens.
      */
     protected static void _transferOutputs(TypedCompositeActor compositeActor,
-            IOPort port, Object outputTokens)
-            throws IllegalActionException {
+            IOPort port, Object outputTokens) throws IllegalActionException {
 
         int rate = DFUtilities.getTokenProductionRate(port);
         Type type = ((TypedIOPort) port).getType();
@@ -559,7 +556,7 @@ public abstract class ModularCodeGenLazyTypedCompositeActor extends
                         port.send(i, token);
                     }
                 }
-            */
+             */
         } else if (type == BaseType.BOOLEAN) {
 
             boolean[][] tokens = (boolean[][]) outputTokens;
@@ -618,8 +615,8 @@ public abstract class ModularCodeGenLazyTypedCompositeActor extends
                         port.send(i, token);
 
                     } catch (Throwable throwable) {
-                        throw new IllegalActionException(compositeActor, throwable,
-                                "Can't generate transfer code.");
+                        throw new IllegalActionException(compositeActor,
+                                throwable, "Can't generate transfer code.");
                     }
                 }
             }
@@ -652,12 +649,12 @@ public abstract class ModularCodeGenLazyTypedCompositeActor extends
     /** Map of Subscriber ports. This is different thatn _subscribedPorts in CompositeActor.*/
     protected Map<String, IOPort> _subscriberPorts;
 
-
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
     /** Intialize the parameters. */
-    private void _init() throws IllegalActionException, NameDuplicationException {
+    private void _init() throws IllegalActionException,
+            NameDuplicationException {
         recompileHierarchy = new Parameter(this, "recompileHierarchy");
         recompileHierarchy.setExpression("true");
         recompileHierarchy.setTypeEquals(BaseType.BOOLEAN);

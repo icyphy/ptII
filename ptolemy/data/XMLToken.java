@@ -104,6 +104,7 @@ public class XMLToken extends Token {
      *  value. If either this object or the argument is nil, return
      *  false.
      */
+    @Override
     public boolean equals(Object object) {
         // See http://www.technofundo.com/tech/java/equalhash.html
         if (object == this) {
@@ -133,6 +134,7 @@ public class XMLToken extends Token {
      *  hashcode.
      *  @return The hash code for this XMLToken object.
      */
+    @Override
     public int hashCode() {
         // See http://www.technofundo.com/tech/java/equalhash.html
         int hashCode = 27;
@@ -164,6 +166,7 @@ public class XMLToken extends Token {
      *   this token are of incomparable types, or the operation does
      *   not make sense for the given types.
      */
+    @Override
     public final BooleanToken isCloseTo(Token token, double epsilon)
             throws IllegalActionException {
         // FIXME: This is copied from AbstractConvertibleToken.
@@ -199,6 +202,7 @@ public class XMLToken extends Token {
     /** Return the type of this token.
      *  @return BaseType.XMLTOKEN.
      */
+    @Override
     public Type getType() {
         return BaseType.XMLTOKEN;
     }
@@ -206,6 +210,7 @@ public class XMLToken extends Token {
     /** Return the value of this Token as a string.
      *  @return A String.
      */
+    @Override
     public String toString() {
         return _toString;
     }

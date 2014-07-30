@@ -91,6 +91,7 @@ public class JAIConvolve extends Transformer {
      *  @param attribute The attribute that changed.
      *  @exception IllegalActionException If a contained method throws it.
      */
+    @Override
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         if (attribute == filter) {
@@ -120,6 +121,7 @@ public class JAIConvolve extends Transformer {
      *  @exception CloneNotSupportedException If a derived class contains
      *  an attribute that cannot be cloned.
      */
+    @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         JAIConvolve newObject = (JAIConvolve) super.clone(workspace);
         newObject._filter = null;
@@ -131,6 +133,7 @@ public class JAIConvolve extends Transformer {
      *  @exception IllegalActionException If a contained method throws
      *  it.
      */
+    @Override
     public void fire() throws IllegalActionException {
         super.fire();
 

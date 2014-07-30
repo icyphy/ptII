@@ -280,9 +280,10 @@ public class PlotBox extends JPanel implements Printable, PlotBoxInterface {
     ////                         public methods                    ////
 
     /** Add a line to the caption (displayed at below graph) .
-      * @param captionLine The string to be added.
-      * @see #getCaptions()
-      */
+     * @param captionLine The string to be added.
+     * @see #getCaptions()
+     */
+    @Override
     public synchronized void addCaptionLine(String captionLine) {
         // Caption code contributed by Tom Peachey.
         // Changing legend means we need to repaint the offscreen buffer.
@@ -298,6 +299,7 @@ public class PlotBox extends JPanel implements Printable, PlotBoxInterface {
      *  @param legend The label for the dataset.
      *  @see #renameLegend(int, String)
      */
+    @Override
     public synchronized void addLegend(int dataset, String legend) {
         // Changing legend means we need to repaint the offscreen buffer.
         _plotImage = null;
@@ -322,6 +324,7 @@ public class PlotBox extends JPanel implements Printable, PlotBoxInterface {
      *  @param label The label for the tick mark.
      *  @param position The position on the X axis.
      */
+    @Override
     public synchronized void addXTick(String label, double position) {
         // Changing legend means we need to repaint the offscreen buffer.
         _plotImage = null;
@@ -347,6 +350,7 @@ public class PlotBox extends JPanel implements Printable, PlotBoxInterface {
      *  @param label The label for the tick mark.
      *  @param position The position on the Y axis.
      */
+    @Override
     public synchronized void addYTick(String label, double position) {
         // Changing legend means we need to repaint the offscreen buffer.
         _plotImage = null;
@@ -366,6 +370,7 @@ public class PlotBox extends JPanel implements Printable, PlotBoxInterface {
      *  is false, do nothing.
      *  @param axes If true, clear the axes parameters.
      */
+    @Override
     public synchronized void clear(boolean axes) {
         // We need to repaint the offscreen buffer.
         _plotImage = null;
@@ -410,6 +415,7 @@ public class PlotBox extends JPanel implements Printable, PlotBoxInterface {
      *  For the change to take effect, call repaint().
      *  @see #setCaptions(Vector)
      */
+    @Override
     public synchronized void clearCaptions() {
         // Changing caption means we need to repaint the offscreen buffer.
         _plotImage = null;
@@ -418,6 +424,7 @@ public class PlotBox extends JPanel implements Printable, PlotBoxInterface {
 
     /** Clear all legends.  This will show up on the next redraw.
      */
+    @Override
     public synchronized void clearLegends() {
         // Changing legend means we need to repaint the offscreen buffer.
         _plotImage = null;
@@ -441,6 +448,7 @@ public class PlotBox extends JPanel implements Printable, PlotBoxInterface {
      * This method is not synchronized, so the caller should be.
      * @param action The Runnable object to execute.
      */
+    @Override
     public void deferIfNecessary(Runnable action) {
         // In swing, updates to showing graphics must be done in the
         // event thread.  If we are in the event thread, then proceed.
@@ -456,6 +464,7 @@ public class PlotBox extends JPanel implements Printable, PlotBoxInterface {
             // be performed in the event dispatch thread.
             if (!_actionsDeferred) {
                 Runnable doActions = new Runnable() {
+                    @Override
                     public void run() {
                         _executeDeferredActions();
                     }
@@ -480,6 +489,7 @@ public class PlotBox extends JPanel implements Printable, PlotBoxInterface {
      *  called by PlotApplet.destroy().  It does
      *  various cleanups to reduce memory usage.
      */
+    @Override
     public void destroy() {
         clear(true);
         // Avoid leaking _timerTask;
@@ -669,7 +679,7 @@ public class PlotBox extends JPanel implements Printable, PlotBoxInterface {
             out.println("\\usepackage{pstricks}");
             // Not currently using anything from pst-sigsys.
             // out.println("\\usepackage{pst-sigsys}");
-out.println("\\begin{document}");
+            out.println("\\begin{document}");
             out.println("\\thispagestyle{empty}");
             // FIXME: The following fixes the width at 6 in
             // and the height at 4in. Should instead get these
@@ -754,6 +764,7 @@ out.println("\\begin{document}");
      *  This method calls repaint(), which eventually causes the display
      *  to be updated.
      */
+    @Override
     public synchronized void fillPlot() {
         // NOTE: These used to be _setXRange() and _setYRange() to avoid
         // confusing this with user-specified ranges.  But we want to treat
@@ -773,6 +784,7 @@ out.println("\\begin{document}");
      *  @see #addCaptionLine(String)
      *  @see #setCaptions(Vector)
      */
+    @Override
     public Vector getCaptions() {
         return _captionStrings;
     }
@@ -781,6 +793,7 @@ out.println("\\begin{document}");
      *  @return True if the plot uses color.
      *  @see #setColor(boolean)
      */
+    @Override
     public boolean getColor() {
         return _usecolor;
     }
@@ -789,6 +802,7 @@ out.println("\\begin{document}");
      *  @return Array of colors
      *  @see #setColors(Color[])
      */
+    @Override
     public Color[] getColors() {
         return _colors;
     }
@@ -835,6 +849,8 @@ out.println("\\begin{document}");
      *  @see #setDataurl(String)
      *  @deprecated Use read() instead.
      */
+    @Deprecated
+    @Override
     public String getDataurl() {
         return _filespec;
     }
@@ -844,6 +860,8 @@ out.println("\\begin{document}");
      *  @see #setDocumentBase(URL)
      *  @deprecated Use read() instead.
      */
+    @Deprecated
+    @Override
     public URL getDocumentBase() {
         return _documentBase;
     }
@@ -852,6 +870,7 @@ out.println("\\begin{document}");
      *  @return True if a grid is drawn.
      *  @see #setGrid(boolean)
      */
+    @Override
     public boolean getGrid() {
         return _grid;
     }
@@ -861,6 +880,7 @@ out.println("\\begin{document}");
      *  @param dataset The dataset index.
      *  @return The legend label, or null if there is none.
      */
+    @Override
     public synchronized String getLegend(int dataset) {
         int idx = _legendDatasets.indexOf(Integer.valueOf(dataset), 0);
 
@@ -878,6 +898,7 @@ out.println("\\begin{document}");
      *  @return The legend dataset, or -1 if not found.
      *  @since Ptplot 5.2p1
      */
+    @Override
     public synchronized int getLegendDataset(String legend) {
         int index = _legendStrings.indexOf(legend);
 
@@ -926,6 +947,7 @@ out.println("\\begin{document}");
      *  @return Rectangle
      *  @see #setPlotRectangle(Rectangle)
      */
+    @Override
     public Rectangle getPlotRectangle() {
         return new Rectangle(_ulx, _uly, _lrx - _ulx, _lry - _uly);
     }
@@ -936,6 +958,7 @@ out.println("\\begin{document}");
      *  otherwise (500 by 300).
      *  @return The preferred size.
      */
+    @Override
     public synchronized Dimension getPreferredSize() {
         return new Dimension(_preferredWidth, _preferredHeight);
     }
@@ -944,6 +967,7 @@ out.println("\\begin{document}");
      *  @return The title.
      *  @see #setTitle(String)
      */
+    @Override
     public synchronized String getTitle() {
         if (_title == null) {
             return "";
@@ -959,6 +983,7 @@ out.println("\\begin{document}");
      *  minimum and the second element is the maximum.
      *  @see #getXRange()
      */
+    @Override
     public synchronized double[] getXAutoRange() {
         double[] result = new double[2];
         result[0] = _xBottom;
@@ -971,6 +996,7 @@ out.println("\\begin{document}");
      *  @return The X label.
      *  @see #setXLabel(String)
      */
+    @Override
     public synchronized String getXLabel() {
         return _xlabel;
     }
@@ -979,6 +1005,7 @@ out.println("\\begin{document}");
      *  @return True if the X axis is logarithmic.
      *  @see #setXLog(boolean)
      */
+    @Override
     public boolean getXLog() {
         return _xlog;
     }
@@ -994,6 +1021,7 @@ out.println("\\begin{document}");
      *  @see #getXAutoRange()
      *  @see #setXRange(double, double)
      */
+    @Override
     public synchronized double[] getXRange() {
         double[] result = new double[2];
 
@@ -1016,6 +1044,7 @@ out.println("\\begin{document}");
      *  and the second of which specifies the corresponding labels.
      *  @return The X ticks.
      */
+    @Override
     public synchronized Vector[] getXTicks() {
         if (_xticks == null) {
             return null;
@@ -1034,6 +1063,7 @@ out.println("\\begin{document}");
      *  minimum and the second element is the maximum.
      *  @see #getYRange()
      */
+    @Override
     public synchronized double[] getYAutoRange() {
         double[] result = new double[2];
         result[0] = _yBottom;
@@ -1046,6 +1076,7 @@ out.println("\\begin{document}");
      *  @return The Y label.
      *  @see #setYLabel(String)
      */
+    @Override
     public String getYLabel() {
         return _ylabel;
     }
@@ -1054,6 +1085,7 @@ out.println("\\begin{document}");
      *  @return True if the Y axis is logarithmic.
      *  @see #setYLog(boolean)
      */
+    @Override
     public boolean getYLog() {
         return _ylog;
     }
@@ -1069,6 +1101,7 @@ out.println("\\begin{document}");
      *  @see #getYAutoRange()
      *  @see #setYRange(double, double)
      */
+    @Override
     public synchronized double[] getYRange() {
         double[] result = new double[2];
 
@@ -1091,6 +1124,7 @@ out.println("\\begin{document}");
      *  and the second of which specifies the corresponding labels.
      *  @return The Y ticks.
      */
+    @Override
     public synchronized Vector[] getYTicks() {
         if (_yticks == null) {
             return null;
@@ -1107,6 +1141,8 @@ out.println("\\begin{document}");
      *  Call setButtons() and read() instead.
      *  @deprecated
      */
+    @Deprecated
+    @Override
     public void init() {
         setButtons(true);
 
@@ -1119,6 +1155,7 @@ out.println("\\begin{document}");
      *  only the axes.
      *  @param graphics The graphics context.
      */
+    @Override
     public synchronized void paintComponent(Graphics graphics) {
         //  super.paintComponent(graphics);
         //         _drawPlot(graphics, true);
@@ -1149,6 +1186,8 @@ out.println("\\begin{document}");
      *  format, or use one of the classes in the plotml package to
      *  read the XML-based file format.
      */
+    @Deprecated
+    @Override
     public void parseFile(String filespec) {
         parseFile(filespec, (URL) null);
     }
@@ -1158,6 +1197,8 @@ out.println("\\begin{document}");
      *  @param documentBase The base of the URL
      *  @deprecated Use read() instead.
      */
+    @Deprecated
+    @Override
     public synchronized void parseFile(String filespec, URL documentBase) {
         DataInputStream in = null;
 
@@ -1245,6 +1286,7 @@ out.println("\\begin{document}");
      *   NO_SUCH_PAGE if pageIndex specifies a non-existent page.
      *  @exception PrinterException If the print job is terminated.
      */
+    @Override
     public synchronized int print(Graphics graphics, PageFormat format,
             int index) throws PrinterException {
 
@@ -1301,6 +1343,7 @@ out.println("\\begin{document}");
      *  @param in The input stream.
      *  @exception IOException If the stream cannot be read.
      */
+    @Override
     public synchronized void read(InputStream in) throws IOException {
         try {
             // NOTE: I tried to use exclusively the jdk 1.1 Reader classes,
@@ -1331,6 +1374,7 @@ out.println("\\begin{document}");
      *  The commands can be any of those in the ASCII file format.
      *  @param command A command.
      */
+    @Override
     public synchronized void read(String command) {
         _parseLine(command);
     }
@@ -1340,6 +1384,7 @@ out.println("\\begin{document}");
      *  The PlotBox must be repainted in order for this to take effect.
      *  @param dataset The dataset index.
      */
+    @Override
     public synchronized void removeLegend(int dataset) {
         final int len = _legendDatasets.size();
         int foundIndex = -1;
@@ -1364,6 +1409,7 @@ out.println("\\begin{document}");
      *  @param newName  The new name of legend.
      *  @see #addLegend(int, String)
      */
+    @Override
     public synchronized void renameLegend(int dataset, String newName) {
         int index = _legendDatasets.indexOf(Integer.valueOf(dataset), 0);
 
@@ -1381,6 +1427,7 @@ out.println("\\begin{document}");
      *  This method calls repaint(), which eventually causes the display
      *  to be updated.
      */
+    @Override
     public synchronized void resetAxes() {
         setXRange(_originalXlow, _originalXhigh);
         setYRange(_originalYlow, _originalYhigh);
@@ -1390,6 +1437,7 @@ out.println("\\begin{document}");
     /** Do nothing in this base class. Derived classes might want to override
      *  this class to give an example of their use.
      */
+    @Override
     public void samplePlot() {
         // Empty default implementation.
     }
@@ -1401,6 +1449,7 @@ out.println("\\begin{document}");
      * @param automaticRescale The boolean that specifies whether
      * plots should be automatic rescaled.
      */
+    @Override
     public void setAutomaticRescale(boolean automaticRescale) {
         _automaticRescale = automaticRescale;
         if (automaticRescale) {
@@ -1420,6 +1469,7 @@ out.println("\\begin{document}");
     /** Set the background color.
      *  @param background The background color.
      */
+    @Override
     public synchronized void setBackground(Color background) {
         // Changing legend means we need to repaint the offscreen buffer.
         _plotImage = null;
@@ -1434,6 +1484,7 @@ out.println("\\begin{document}");
      *  Implements the {@link PlotBoxInterface}.
      *  @param background The background Color.
      */
+    @Override
     public void setBackground(Object background) {
         setBackground((Color) background);
     }
@@ -1447,6 +1498,7 @@ out.println("\\begin{document}");
      *  @param width The new width of this component.
      *  @param height The new height of this component.
      */
+    @Override
     public synchronized void setBounds(int x, int y, int width, int height) {
         _width = width;
         _height = height;
@@ -1469,6 +1521,7 @@ out.println("\\begin{document}");
      *  @param visible If true, make the fill button appear.
      *  @see #destroy()
      */
+    @Override
     public synchronized void setButtons(boolean visible) {
         // Changing legend means we need to repaint the offscreen buffer.
         _plotImage = null;
@@ -1534,7 +1587,7 @@ out.println("\\begin{document}");
             // Is not likely to fit into a 20x20 button.
             _resetButton.setPreferredSize(new Dimension(20, 20));
             _resetButton
-                    .setToolTipText("Reset X and Y ranges to their original values");
+            .setToolTipText("Reset X and Y ranges to their original values");
             _resetButton.addActionListener(new ButtonListener());
             add(_resetButton);
         }
@@ -1616,6 +1669,7 @@ out.println("\\begin{document}");
      *  @see #getCaptions()
      *  @see #clearCaptions()
      */
+    @Override
     public void setCaptions(Vector captionStrings) {
         // Changing caption means we need to repaint the offscreen buffer.
         _plotImage = null;
@@ -1627,6 +1681,7 @@ out.println("\\begin{document}");
      *  @param useColor False to draw in back and white.
      *  @see #getColor()
      */
+    @Override
     public synchronized void setColor(boolean useColor) {
         // Changing legend means we need to repaint the offscreen buffer.
         _plotImage = null;
@@ -1652,6 +1707,7 @@ out.println("\\begin{document}");
      *  @param colors The array of Colors.
      *  @see #getColors()
      */
+    @Override
     public void setColors(Object[] colors) {
         setColors((Color[]) colors);
     }
@@ -1661,6 +1717,8 @@ out.println("\\begin{document}");
      *  @see #getDataurl()
      *  @deprecated Use read() instead.
      */
+    @Deprecated
+    @Override
     public void setDataurl(String filespec) {
         _filespec = filespec;
     }
@@ -1670,6 +1728,8 @@ out.println("\\begin{document}");
      *  @see #getDocumentBase()
      *  @deprecated   Use read() instead.
      */
+    @Deprecated
+    @Override
     public void setDocumentBase(URL documentBase) {
         _documentBase = documentBase;
     }
@@ -1677,6 +1737,7 @@ out.println("\\begin{document}");
     /** Set the foreground color.
      *  @param foreground The foreground color.
      */
+    @Override
     public synchronized void setForeground(Color foreground) {
         // Changing legend means we need to repaint the offscreen buffer.
         _plotImage = null;
@@ -1689,6 +1750,7 @@ out.println("\\begin{document}");
      *  Implements the {@link PlotBoxInterface}.
      *  @param foreground The foreground Color.
      */
+    @Override
     public void setForeground(Object foreground) {
         setForeground((Color) foreground);
     }
@@ -1697,6 +1759,7 @@ out.println("\\begin{document}");
      *  @param grid If true, a grid is drawn.
      *  @see #getGrid()
      */
+    @Override
     public synchronized void setGrid(boolean grid) {
         // Changing legend means we need to repaint the offscreen buffer.
         _plotImage = null;
@@ -1709,6 +1772,7 @@ out.println("\\begin{document}");
      *  java.awt.Font.decode().
      *  @param name A font name.
      */
+    @Override
     public synchronized void setLabelFont(String name) {
         // Changing legend means we need to repaint the offscreen buffer.
         _plotImage = null;
@@ -1734,6 +1798,7 @@ out.println("\\begin{document}");
      *  @param rectangle The Rectangle.
      *  @see #getPlotRectangle()
      */
+    @Override
     public void setPlotRectangle(Object rectangle) {
         setPlotRectangle((Rectangle) rectangle);
     }
@@ -1749,6 +1814,7 @@ out.println("\\begin{document}");
      *  @param width The width, in pixels.
      *  @param height The height, in pixels.
      */
+    @Override
     public synchronized void setSize(int width, int height) {
         // Changing legend means we need to repaint the offscreen buffer.
         _plotImage = null;
@@ -1769,6 +1835,7 @@ out.println("\\begin{document}");
      * @param timedRepaint The boolean that specifies whether
      * repainting should happen with a certain fixed refresh rate.
      */
+    @Override
     public void setTimedRepaint(boolean timedRepaint) {
         _timedRepaint = timedRepaint;
         if (timedRepaint) {
@@ -1789,6 +1856,7 @@ out.println("\\begin{document}");
      *  @param title The title.
      *  @see #getTitle()
      */
+    @Override
     public synchronized void setTitle(String title) {
         // Changing legend means we need to repaint the offscreen buffer.
         _plotImage = null;
@@ -1801,6 +1869,7 @@ out.println("\\begin{document}");
      *  java.awt.Font.decode().
      *  @param name A font name.
      */
+    @Override
     public synchronized void setTitleFont(String name) {
         // Changing legend means we need to repaint the offscreen buffer.
         _plotImage = null;
@@ -1817,6 +1886,7 @@ out.println("\\begin{document}");
      *  or if data has been plotted, then the current fill range.
      *  @param wrap If true, wrapping of the X axis is enabled.
      */
+    @Override
     public synchronized void setWrap(boolean wrap) {
         // Changing legend means we need to repaint the offscreen buffer.
         _plotImage = null;
@@ -1840,6 +1910,7 @@ out.println("\\begin{document}");
      *  @param label The label.
      *  @see #getXLabel()
      */
+    @Override
     public synchronized void setXLabel(String label) {
         // Changing legend means we need to repaint the offscreen buffer.
         _plotImage = null;
@@ -1854,6 +1925,7 @@ out.println("\\begin{document}");
      *  @param xlog If true, logarithmic axis is used.
      *  @see #getXLog()
      */
+    @Override
     public synchronized void setXLog(boolean xlog) {
         // Changing legend means we need to repaint the offscreen buffer.
         _plotImage = null;
@@ -1871,6 +1943,7 @@ out.println("\\begin{document}");
      *  @param max The right extent of the range.
      *  @see #getXRange()
      */
+    @Override
     public synchronized void setXRange(double min, double max) {
         // Changing legend means we need to repaint the offscreen buffer.
         _plotImage = null;
@@ -1885,6 +1958,7 @@ out.println("\\begin{document}");
      *  @param label The label.
      *  @see #getYLabel()
      */
+    @Override
     public synchronized void setYLabel(String label) {
         // Changing legend means we need to repaint the offscreen buffer.
         _plotImage = null;
@@ -1899,6 +1973,7 @@ out.println("\\begin{document}");
      *  @param ylog If true, logarithmic axis is used.
      *  @see #getYLog()
      */
+    @Override
     public synchronized void setYLog(boolean ylog) {
         // Changing legend means we need to repaint the offscreen buffer.
         _plotImage = null;
@@ -1916,6 +1991,7 @@ out.println("\\begin{document}");
      *  @param max The top extent of the range.
      *  @see #getYRange()
      */
+    @Override
     public synchronized void setYRange(double min, double max) {
         // Changing legend means we need to repaint the offscreen buffer.
         _plotImage = null;
@@ -1935,6 +2011,7 @@ out.println("\\begin{document}");
      *  rather than this method.
      *  @param out An output stream.
      */
+    @Override
     public void write(OutputStream out) {
         write(out, null);
     }
@@ -1953,6 +2030,7 @@ out.println("\\begin{document}");
      *  @param dtd The reference (URL) for the DTD, or null to use the
      *   PUBLIC DTD.
      */
+    @Override
     public synchronized void write(OutputStream out, String dtd) {
         write(new OutputStreamWriter(out), dtd);
     }
@@ -1969,6 +2047,7 @@ out.println("\\begin{document}");
      *  @param dtd The reference (URL) for the DTD, or null to use the
      *   PUBLIC DTD.
      */
+    @Override
     public synchronized void write(Writer out, String dtd) {
         // Auto-flush is disabled.
         PrintWriter output = new PrintWriter(new BufferedWriter(out), false);
@@ -2002,6 +2081,7 @@ out.println("\\begin{document}");
      *  returns without doing anything.
      *  @param output A buffered print writer.
      */
+    @Override
     public synchronized void writeData(PrintWriter output) {
     }
 
@@ -2011,6 +2091,7 @@ out.println("\\begin{document}");
      *  information they wish to add to the stream.
      *  @param output A buffered print writer.
      */
+    @Override
     public synchronized void writeFormat(PrintWriter output) {
         // NOTE: If you modify this, you should change the _DTD variable
         // accordingly.
@@ -2101,6 +2182,8 @@ out.println("\\begin{document}");
      *  @param out An output stream.
      *  @deprecated
      */
+    @Deprecated
+    @Override
     public synchronized void writeOldSyntax(OutputStream out) {
         // Auto-flush is disabled.
         PrintWriter output = new PrintWriter(new BufferedOutputStream(out),
@@ -2121,6 +2204,7 @@ out.println("\\begin{document}");
      *  @param highx The high end of the new X range.
      *  @param highy The high end of the new Y range.
      */
+    @Override
     public synchronized void zoom(double lowx, double lowy, double highx,
             double highy) {
         setXRange(lowx, highx);
@@ -2257,9 +2341,9 @@ out.println("\\begin{document}");
         if (_specifiedPlotRectangle != null) {
             workingPlotRectangle = new Rectangle(Math.max(0,
                     _specifiedPlotRectangle.x), Math.max(0,
-                    _specifiedPlotRectangle.y), Math.min(drawRect.width,
-                    _specifiedPlotRectangle.width), Math.min(drawRect.height,
-                    _specifiedPlotRectangle.height));
+                            _specifiedPlotRectangle.y), Math.min(drawRect.width,
+                                    _specifiedPlotRectangle.width), Math.min(drawRect.height,
+                                            _specifiedPlotRectangle.height));
         }
 
         // Vertical space for title, if appropriate.
@@ -2552,7 +2636,7 @@ out.println("\\begin{document}");
 
                     for (double ypos = _gridStep(unlabeledgrid, yStart,
                             tmpStep, _ylog); ypos <= _ytickMax; ypos = _gridStep(
-                            unlabeledgrid, ypos, tmpStep, _ylog)) {
+                                    unlabeledgrid, ypos, tmpStep, _ylog)) {
                         int yCoord1 = _lry
                                 - (int) ((ypos - _ytickMin) * _ytickscale);
 
@@ -2579,7 +2663,7 @@ out.println("\\begin{document}");
                 graphics.setFont(_superscriptFont);
                 graphics.drawString(Integer.toString(_yExp),
                         _labelFontMetrics.stringWidth("x10") + 2, titley
-                                - halflabelheight);
+                        - halflabelheight);
                 graphics.setFont(_labelFont);
             }
         } else {
@@ -2739,7 +2823,7 @@ out.println("\\begin{document}");
                 if (unlabeledgrid.size() > 0) {
                     for (double xpos = _gridStep(unlabeledgrid, xTmpStart,
                             tmpStep, _xlog); xpos <= _xtickMax; xpos = _gridStep(
-                            unlabeledgrid, xpos, tmpStep, _xlog)) {
+                                    unlabeledgrid, xpos, tmpStep, _xlog)) {
                         xCoord1 = _ulx
                                 + (int) ((xpos - _xtickMin) * _xtickscale);
 
@@ -2909,11 +2993,11 @@ out.println("\\begin{document}");
         boolean pointinside = ypos <= _lry && ypos >= _uly && xpos <= _lrx
                 && xpos >= _ulx;
 
-        if (!pointinside && clip) {
-            return;
-        }
+                if (!pointinside && clip) {
+                    return;
+                }
 
-        graphics.fillRect((int) xpos - 6, (int) ypos - 6, 6, 6);
+                graphics.fillRect((int) xpos - 6, (int) ypos - 6, 6, 6);
     }
 
     /** Return Latex plot data. This base class returns nothing.
@@ -3083,6 +3167,7 @@ out.println("\\begin{document}");
      *  @param visibility True if the fill button is to be visible.
      *  @deprecated Use #setButtons(boolean) instead.
      */
+    @Deprecated
     protected void _setButtonsVisibility(boolean visibility) {
         // Changing legend means we need to repaint the offscreen buffer.
         _plotImage = null;
@@ -3124,6 +3209,7 @@ out.println("\\begin{document}");
      *  @param output A buffered print writer.
      *  @deprecated
      */
+    @Deprecated
     protected void _writeOldSyntax(PrintWriter output) {
         output.println("# Ptolemy plot, version 2.0");
 
@@ -3373,16 +3459,16 @@ out.println("\\begin{document}");
      *  distinct data sets.
      */
     static protected Color[] _colors = { new Color(0xff0000), // red
-            new Color(0x0000ff), // blue
-            new Color(0x00aaaa), // cyan-ish
-            new Color(0x000000), // black
-            new Color(0xffa500), // orange
-            new Color(0x53868b), // cadetblue4
-            new Color(0xff7f50), // coral
-            new Color(0x45ab1f), // dark green-ish
-            new Color(0x90422d), // sienna-ish
-            new Color(0xa0a0a0), // grey-ish
-            new Color(0x14ff14), // green-ish
+        new Color(0x0000ff), // blue
+        new Color(0x00aaaa), // cyan-ish
+        new Color(0x000000), // black
+        new Color(0xffa500), // orange
+        new Color(0x53868b), // cadetblue4
+        new Color(0xff7f50), // coral
+        new Color(0x45ab1f), // dark green-ish
+        new Color(0x90422d), // sienna-ish
+        new Color(0xa0a0a0), // grey-ish
+        new Color(0x14ff14), // green-ish
     };
 
     /** Width and height of component in pixels. */
@@ -3718,7 +3804,7 @@ out.println("\\begin{document}");
         // or equal to x.  This sets us up to process the first point.
         for (_gridCurJuke = -1; _gridCurJuke + 1 < grid.size()
                 && x >= ((Double) grid.elementAt(_gridCurJuke + 1))
-                        .doubleValue(); _gridCurJuke++) {
+                .doubleValue(); _gridCurJuke++) {
         }
 
         return grid;
@@ -4557,6 +4643,7 @@ out.println("\\begin{document}");
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
     class ButtonListener implements ActionListener {
+        @Override
         public void actionPerformed(ActionEvent event) {
             if (event.getSource() == _fillButton) {
                 fillPlot();
@@ -4580,7 +4667,7 @@ out.println("\\begin{document}");
                 }
                 if (printPlatformProperty.equals("CrossPlatform")
                         || UIManager.getLookAndFeel().getName()
-                                .startsWith("Mac OS")) {
+                        .startsWith("Mac OS")) {
                     _printCrossPlatform();
                 } else {
                     _printNative();
@@ -4649,6 +4736,7 @@ out.println("\\begin{document}");
         /** Request the focus.
          *  @param event The event, ignored by this method.
          */
+        @Override
         public void mouseClicked(MouseEvent event) {
             requestFocus();
         }
@@ -4656,18 +4744,21 @@ out.println("\\begin{document}");
         /** Ignored.
          *  @param event The event, ignored by this method.
          */
+        @Override
         public void mouseEntered(MouseEvent event) {
         }
 
         /** Ignored.
          *  @param event The event, ignored by this method.
          */
+        @Override
         public void mouseExited(MouseEvent event) {
         }
 
         /** Handle mouse button 1 events.  See the class comment for details.
          *  @param event The event.
          */
+        @Override
         public void mousePressed(MouseEvent event) {
             // http://bugs.sun.com/bugdatabase/view_bug.do?bug_id=4072703
             // BUTTON1_MASK still not set for MOUSE_PRESSED events
@@ -4702,6 +4793,7 @@ out.println("\\begin{document}");
         /** Handle mouse button 1 events.  See the class comment for details.
          *  @param event The event.
          */
+        @Override
         public void mouseReleased(MouseEvent event) {
             if ((event.getModifiers() & InputEvent.BUTTON1_MASK) != 0
                     && (event.getModifiers() & InputEvent.BUTTON3_MASK) == 0
@@ -4717,6 +4809,7 @@ out.println("\\begin{document}");
         /** Handle mouse drag events.  See the class comment for details.
          *  @param event The event.
          */
+        @Override
         public void mouseDragged(MouseEvent event) {
             // NOTE: Due to a bug in JDK 1.1.7B, the BUTTON1_MASK does
             // not work on mouse drags.  It does work on MouseListener
@@ -4731,6 +4824,7 @@ out.println("\\begin{document}");
         /** Ignored.
          *  @param event The event, ignored by this method.
          */
+        @Override
         public void mouseMoved(MouseEvent event) {
         }
     }
@@ -4741,6 +4835,7 @@ out.println("\\begin{document}");
         /** Handle key pressed events.  See the class comment for details.
          *  @param e The event.
          */
+        @Override
         public void keyPressed(KeyEvent e) {
             int keycode = e.getKeyCode();
 
@@ -4842,6 +4937,7 @@ out.println("\\begin{document}");
         /** Handle key released events.  See the class comment for details.
          *  @param e The event.
          */
+        @Override
         public void keyReleased(KeyEvent e) {
             int keycode = e.getKeyCode();
 
@@ -4865,6 +4961,7 @@ out.println("\\begin{document}");
          *  It always gets "unknown key code".
          * @param e Ignored by this method.
          */
+        @Override
         public void keyTyped(KeyEvent e) {
         }
 
@@ -4884,6 +4981,7 @@ out.println("\\begin{document}");
             _listeners.add(plotBox);
             if (_listeners.size() == 1) {
                 scheduleAtFixedRate(new TimerTask() {
+                    @Override
                     public void run() {
                         synchronized (this) {
                             // synchronized (this) to avoid changes to

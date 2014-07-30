@@ -67,6 +67,7 @@ public class PublisherTest extends NamedProgramCodeGeneratorAdapter {
      * @exception IllegalActionException If the code stream encounters an
      *  error in processing the specified code block(s).
      */
+    @Override
     protected String _generateFireCode() throws IllegalActionException {
         super._generateFireCode();
 
@@ -115,6 +116,7 @@ public class PublisherTest extends NamedProgramCodeGeneratorAdapter {
      *  @return The initialize code.
      *  @exception IllegalActionException
      */
+    @Override
     public String generateInitializeCode() throws IllegalActionException {
         super.generateInitializeCode();
 
@@ -138,6 +140,7 @@ public class PublisherTest extends NamedProgramCodeGeneratorAdapter {
      * @exception IllegalActionException If the code stream encounters an
      *  error in processing the specified code block(s).
      */
+    @Override
     public String generatePreinitializeCode() throws IllegalActionException {
         // Automatically append the "preinitBlock" by default.
         super.generatePreinitializeCode();

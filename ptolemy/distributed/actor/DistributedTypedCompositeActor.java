@@ -103,6 +103,7 @@ public class DistributedTypedCompositeActor extends TypedCompositeActor {
      *  @exception NameDuplicationException If name collides with a name
      *   already on the container's contents list.
      */
+    @Override
     public ComponentRelation newRelation(String name)
             throws NameDuplicationException {
         try {

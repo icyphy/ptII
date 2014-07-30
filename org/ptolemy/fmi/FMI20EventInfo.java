@@ -85,11 +85,9 @@ public class FMI20EventInfo extends Structure {
      * @param nextEventTime C type: fmiReal
      */
     public FMI20EventInfo(byte newDiscreteStatesNeeded,
-                        byte terminateSimulation,
-                        byte nominalsOfContinuousStatesChanged,
-                        byte valuesOfContinuousStatesChanged,
-                        byte nextEventTimeDefined,
-                        double nextEventTime) {
+            byte terminateSimulation, byte nominalsOfContinuousStatesChanged,
+            byte valuesOfContinuousStatesChanged, byte nextEventTimeDefined,
+            double nextEventTime) {
         super();
         this.newDiscreteStatesNeeded = newDiscreteStatesNeeded;
         this.terminateSimulation = terminateSimulation;
@@ -105,11 +103,12 @@ public class FMI20EventInfo extends Structure {
     /** Access the structure by reference.
      */
     public static class ByReference extends FMI20EventInfo implements
-            Structure.ByReference {
+    Structure.ByReference {
         /**  Allocate a new FMI20EventInfo.ByReference struct on the heap.
-        */
+         */
 
-        public ByReference() {}
+        public ByReference() {
+        }
 
         /** Create an instance that shares its memory with another
          *  FMU20EventInfo instance public ByReference(FMI20EventInfo.
@@ -119,14 +118,12 @@ public class FMI20EventInfo extends Structure {
             super(struct.getPointer(), 0);
         }
 
-
-
     };
 
     /** Access the structure by value.
      */
     public static class ByValue extends FMI20EventInfo implements
-            Structure.ByValue {
+    Structure.ByValue {
     };
 
     // The fields below are in the order in which they are expected to be in the
@@ -154,13 +151,11 @@ public class FMI20EventInfo extends Structure {
      *  <p>This is new in jna-3.5.0.
      *  @return a list of strings that name the fields in order.
      */
+    @Override
     protected List getFieldOrder() {
-        return Arrays.asList(new String[] { 
-                "newDiscreteStatesNeeded",
-                "terminateSimulation",
-                "nominalsOfContinuousStatesChanged",
-                "valuesOfContinuousStatesChanged",
-                "nextEventTimeDefined",
-                "nextEventTime"});
+        return Arrays.asList(new String[] { "newDiscreteStatesNeeded",
+                "terminateSimulation", "nominalsOfContinuousStatesChanged",
+                "valuesOfContinuousStatesChanged", "nextEventTimeDefined",
+        "nextEventTime" });
     }
 }

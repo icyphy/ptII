@@ -22,7 +22,7 @@
  ENHANCEMENTS, OR MODIFICATIONS.
 
 
-***************************************************************
+ ***************************************************************
 
  PetriNet Director Modifications
 
@@ -372,6 +372,7 @@ public class PetriNetDirector extends Director {
      *  @exception IllegalActionException If the change is not acceptable
      *   to this container (not thrown in this base class).
      */
+    @Override
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         // Copied from actor.lib.RandomSource
@@ -393,6 +394,7 @@ public class PetriNetDirector extends Director {
      *  @exception CloneNotSupportedException If a derived class contains
      *   an attribute that cannot be cloned.
      */
+    @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         // Based on ptolemy.actor.lib.RandomSource.
         // We need a clone(Workspace) method so that Actor Oriented Classes
@@ -458,6 +460,7 @@ public class PetriNetDirector extends Director {
      * happen if the method isTransitionReady() or fireTransition()
      * throws exceptions.
      */
+    @Override
     public void fire() throws IllegalActionException {
         Nameable container = getContainer();
         if (container instanceof TypedCompositeActor) {
@@ -772,7 +775,8 @@ public class PetriNetDirector extends Director {
      *
      * @exception IllegalActionException
      *              Exception is thrown if superclass throws it.
-    */
+     */
+    @Override
     public void preinitialize() throws IllegalActionException {
         if (_random == null
                 || ((BooleanToken) resetOnEachRun.getToken()).booleanValue()) {
@@ -814,6 +818,7 @@ public class PetriNetDirector extends Director {
      * @exception IllegalActionException
      *                Not thrown in this base class.
      */
+    @Override
     public boolean postfire() throws IllegalActionException {
         return false;
     }
@@ -1098,7 +1103,7 @@ public class PetriNetDirector extends Director {
      *              If the parameter name for iterations already exists.
      */
     private void _initParameters() throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         iterations = new Parameter(this, "iterations");
         iterations.setExpression("0");
         iterations.setTypeEquals(BaseType.INT);

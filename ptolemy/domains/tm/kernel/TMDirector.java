@@ -154,7 +154,7 @@ public class TMDirector extends Director {
      *  @exception IllegalActionException If construction of Time objects fails.
      */
     public TMDirector(Workspace workspace) throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         super(workspace);
         _initParameters();
     }
@@ -231,6 +231,7 @@ public class TMDirector extends Director {
      *  @param attribute The changed parameter.
      *  @exception IllegalActionException If the parameter set is not valid.
      */
+    @Override
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         if (_debugging) {
@@ -267,6 +268,7 @@ public class TMDirector extends Director {
      *  @exception IllegalActionException If an interrupt is in the past,
      *   or one of the execution methods of an actor throws it.
      */
+    @Override
     public void fire() throws IllegalActionException {
         if (_debugging) {
             _debug("Fire: ");
@@ -324,7 +326,7 @@ public class TMDirector extends Director {
                 if (_debugging) {
                     _debug(getName(), "put trigger event ", event.toString(),
                             " into " + ((NamedObj) event.actor()).getName()
-                                    + " and processing");
+                            + " and processing");
                 }
 
                 event.receiver()._triggerEvent(event.token());
@@ -465,6 +467,7 @@ public class TMDirector extends Director {
      *  @exception IllegalActionException If requested time is in
      *  the past.
      */
+    @Override
     public Time fireAt(Actor actor, Time time, int microstep)
             throws IllegalActionException {
         // ignore requests that are later than the stop time.
@@ -494,6 +497,7 @@ public class TMDirector extends Director {
      *  @exception IllegalActionException If the initialize() method of
      *   one of the associated actors throws it.
      */
+    @Override
     public void initialize() throws IllegalActionException {
         if (isEmbedded()) {
             _outsideTime = ((CompositeActor) getContainer())
@@ -517,6 +521,7 @@ public class TMDirector extends Director {
     /** Return a new TMReceiver.
      *  @return a new TMReceiver.
      */
+    @Override
     public Receiver newReceiver() {
         if (_debugging) {
             _debug("Creating new TM receiver.");
@@ -537,6 +542,7 @@ public class TMDirector extends Director {
      *  @exception IllegalActionException If the execution method
      *  of one of the actors throws it.
      */
+    @Override
     public boolean prefire() throws IllegalActionException {
         if (isEmbedded()) {
             _outsideTime = ((CompositeActor) getContainer())
@@ -596,7 +602,7 @@ public class TMDirector extends Director {
                 if (_debugging) {
                     _debug("deduct "
                             + getModelTime().subtract(cachedCurrentTime)
-                                    .getDoubleValue(),
+                            .getDoubleValue(),
                             " from processing time of event", event.toString());
                 }
 
@@ -682,6 +688,7 @@ public class TMDirector extends Director {
      *  class, create the interrupt event queue and the TM event queue.
      *  @exception IllegalActionException If thrown by the super class.
      */
+    @Override
     public void preinitialize() throws IllegalActionException {
         _eventQueue = new CalendarQueue(new TMEventComparator(), 16, 2);
         _interruptQueue = new DECQEventQueue(2, 2, true);
@@ -708,6 +715,7 @@ public class TMDirector extends Director {
      *  @exception IllegalActionException Not thrown in this baseclass.
      *  @return Whether the execution should continue.
      */
+    @Override
     public boolean postfire() throws IllegalActionException {
         if (_debugging) {
             _debug("Finish one iteration at time:" + getModelTime(),

@@ -63,6 +63,7 @@ public class KeyToken extends Token {
      *  @return {@link #KEY}, the least upper bound of all the cryptographic
      *  key types.
      */
+    @Override
     public Type getType() {
         return KEY;
     }
@@ -87,6 +88,7 @@ public class KeyToken extends Token {
      *  @return A boolean token that contains the value true if the
      *  algorithms, formats and encodings are the same.
      */
+    @Override
     public final BooleanToken isEqualTo(Token rightArgument)
             throws IllegalActionException {
         java.security.Key rightKey = ((KeyToken) rightArgument).getValue();
@@ -124,6 +126,7 @@ public class KeyToken extends Token {
      *  @return A String representation of the KeyToken that includes
      *  the value of the algorithm, format and encoding.
      */
+    @Override
     public String toString() {
         // FIXME: we print this token in a format similar to RecordToken.
         // Perhaps this token should be a RecordToken?
@@ -146,7 +149,7 @@ public class KeyToken extends Token {
     /** The cryptographic key type.
      */
     @SuppressWarnings("serial")
-        public static final class KeyType implements Cloneable, Type, Serializable {
+    public static final class KeyType implements Cloneable, Type, Serializable {
         // This class is final so as to fix a warning by FindBugs:
         // "clone method does not call super.clone()"
 
@@ -169,6 +172,7 @@ public class KeyToken extends Token {
          *  @return A new type, or BaseType.GENERAL, if the operation does
          *  not make sense for the given types.
          */
+        @Override
         public Type add(Type rightArgumentType) {
             return this;
         }
@@ -176,6 +180,7 @@ public class KeyToken extends Token {
         /** Return this, that is, return the reference to this object.
          *  @return A KeyType
          */
+        @Override
         public Object clone() {
             // FIXME: Note that we do not call super.clone() here.  Is that right?
             return this;
@@ -188,6 +193,7 @@ public class KeyToken extends Token {
          *  @exception IllegalActionException If lossless conversion cannot
          *   be done.
          */
+        @Override
         public Token convert(Token token) throws IllegalActionException {
             if (token instanceof KeyToken) {
                 return token;
@@ -204,6 +210,7 @@ public class KeyToken extends Token {
          *  @return A new type, or BaseType.GENERAL, if the operation does
          *  not make sense for the given types.
          */
+        @Override
         public Type divide(Type rightArgumentType) {
             return this;
         }
@@ -211,6 +218,7 @@ public class KeyToken extends Token {
         /** Return the class for tokens that this basetype represents.
          *  @return the class for tokens that this basetype represents.
          */
+        @Override
         public Class getTokenClass() {
             return KeyToken.class;
         }
@@ -220,6 +228,7 @@ public class KeyToken extends Token {
          *  represents either an abstract base class or an interface.
          *  @return Always return false, this token is instantiable.
          */
+        @Override
         public boolean isAbstract() {
             return false;
         }
@@ -232,6 +241,7 @@ public class KeyToken extends Token {
          *  @param type An instance of Type.
          *  @return True if the argument type is compatible with this type.
          */
+        @Override
         public boolean isCompatible(Type type) {
             return type == this;
         }
@@ -239,6 +249,7 @@ public class KeyToken extends Token {
         /** Test if this Type is UNKNOWN.
          *  @return True if this Type is not UNKNOWN; false otherwise.
          */
+        @Override
         public boolean isConstant() {
             return true;
         }
@@ -246,6 +257,7 @@ public class KeyToken extends Token {
         /** Return this type's node index in the (constant) type lattice.
          * @return this type's node index in the (constant) type lattice.
          */
+        @Override
         public int getTypeHash() {
             return Type.HASH_INVALID;
         }
@@ -255,6 +267,7 @@ public class KeyToken extends Token {
          *  to an abstract token class, or an interface, or UNKNOWN.
          *  @return True if this type is instantiable.
          */
+        @Override
         public boolean isInstantiable() {
             return true;
         }
@@ -264,6 +277,7 @@ public class KeyToken extends Token {
          *  @param type A Type.
          *  @return True if this type is UNKNOWN; false otherwise.
          */
+        @Override
         public boolean isSubstitutionInstance(Type type) {
             return this == type;
         }
@@ -275,6 +289,7 @@ public class KeyToken extends Token {
          *  @return A new type, or BaseType.GENERAL, if the operation does
          *  not make sense for the given types.
          */
+        @Override
         public Type modulo(Type rightArgumentType) {
             return this;
         }
@@ -286,6 +301,7 @@ public class KeyToken extends Token {
          *  @return A new type, or BaseType.GENERAL, if the operation does
          *  not make sense for the given types.
          */
+        @Override
         public Type multiply(Type rightArgumentType) {
             return this;
         }
@@ -295,6 +311,7 @@ public class KeyToken extends Token {
          *  @return A new type, or BaseType.GENERAL, if the operation does
          *  not make sense for the given types.
          */
+        @Override
         public Type one() {
             return this;
         }
@@ -306,6 +323,7 @@ public class KeyToken extends Token {
          *  @return A new type, or BaseType.GENERAL, if the operation does
          *  not make sense for the given types.
          */
+        @Override
         public Type subtract(Type rightArgumentType) {
             return this;
         }
@@ -313,6 +331,7 @@ public class KeyToken extends Token {
         /** Return the string representation of this type.
          *  @return A String.
          */
+        @Override
         public String toString() {
             return "Key";
         }
@@ -322,6 +341,7 @@ public class KeyToken extends Token {
          *  @return A new type, or BaseType.GENERAL, if the operation does
          *  not make sense for the given types.
          */
+        @Override
         public Type zero() {
             return this;
         }

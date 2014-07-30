@@ -161,6 +161,7 @@ public class DragTutorial {
     public static void main(String[] argv) {
         // Always invoke graphics code in the event thread
         SwingUtilities.invokeLater(new Runnable() {
+            @Override
             public void run() {
                 DragTutorial ex = new DragTutorial();
                 ex.createDraggableFigures();

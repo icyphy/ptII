@@ -163,6 +163,7 @@ public class DragInteractor extends AbstractInteractor {
      * Nothing happens if the interactor is not enabled, or if it
      * is "selective enabled" but not in the selection.
      */
+    @Override
     public void mouseDragged(LayerEvent e) {
         if (!isEnabled() || _selectiveEnabled
                 && !SelectionInteractor.isSelected(e)) {
@@ -202,6 +203,7 @@ public class DragInteractor extends AbstractInteractor {
      * Nothing happens if the interactor is not enabled, or if it
      * is "selective enabled" but not in the selection.
      */
+    @Override
     public void mousePressed(LayerEvent e) {
         if (!isEnabled() || _selectiveEnabled
                 && !SelectionInteractor.isSelected(e)) {
@@ -240,6 +242,7 @@ public class DragInteractor extends AbstractInteractor {
      * Nothing happens if the interactor is not enabled, if if it
      * is "selective enabled" but not in the selection.
      */
+    @Override
     public void mouseReleased(LayerEvent e) {
         if (!isEnabled() || _selectiveEnabled
                 && !SelectionInteractor.isSelected(e)) {

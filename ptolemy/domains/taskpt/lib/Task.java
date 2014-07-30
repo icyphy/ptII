@@ -95,7 +95,7 @@ public class Task extends TypedCompositeActor {
     ////                         private methods                   ////
 
     private void _init() throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         new TaskDirector(this, "TaskDirector");
     }
 

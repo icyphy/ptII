@@ -193,7 +193,7 @@ public class DirectoryListing extends SequenceSource implements FilenameFilter {
      *  This is a boolean that defaults to false.
      */
     public Parameter recursive;
-    
+
     /** If true, then produce an array with file names relative to the
      *  specified directory. This is a boolean that defaults to false,
      *  which causes the absolute (complete) path to be produced.
@@ -210,6 +210,7 @@ public class DirectoryListing extends SequenceSource implements FilenameFilter {
      *  @param name The name of the file or directory.
      *  @return True if the specified name matches.
      */
+    @Override
     public boolean accept(File directory, String name) {
         // The accept() method is here primarily for backward
         // compatibility as the DirectoryList class implements
@@ -227,6 +228,7 @@ public class DirectoryListing extends SequenceSource implements FilenameFilter {
      *  @exception IllegalActionException If the specified attribute
      *   is <i>URL</i> and the file cannot be opened.
      */
+    @Override
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         // Parameter values are cached to avoid code duplication.
@@ -249,6 +251,7 @@ public class DirectoryListing extends SequenceSource implements FilenameFilter {
      *  @exception IllegalActionException If there's no director or
      *   if the directory or URL is invalid.
      */
+    @Override
     public void fire() throws IllegalActionException {
         super.fire();
 
@@ -286,14 +289,14 @@ public class DirectoryListing extends SequenceSource implements FilenameFilter {
                 for (File file : listedFiles) {
 
                     String path = file.getAbsolutePath();
-                    if (((BooleanToken)relative.getToken()).booleanValue()) {
-                            // Strip off the directory name and trailing slash.
-                            int slash = 1;
-                            String directoryName = sourceFile.getAbsolutePath();
-                            if (directoryName.endsWith("/")) {
-                                    slash = 0;
-                            }
-                            path = path.substring(directoryName.length() + slash);
+                    if (((BooleanToken) relative.getToken()).booleanValue()) {
+                        // Strip off the directory name and trailing slash.
+                        int slash = 1;
+                        String directoryName = sourceFile.getAbsolutePath();
+                        if (directoryName.endsWith("/")) {
+                            slash = 0;
+                        }
+                        path = path.substring(directoryName.length() + slash);
                     }
 
                     if (_debugging) {
@@ -313,7 +316,7 @@ public class DirectoryListing extends SequenceSource implements FilenameFilter {
                 StringToken[] resultArray = new StringToken[result.size()];
 
                 for (int i = 0; i < resultArray.length; i++) {
-                    resultArray[i] = (StringToken) result.get(i);
+                    resultArray[i] = result.get(i);
                 }
 
                 output.broadcast(new ArrayToken(BaseType.STRING, resultArray));
@@ -348,7 +351,7 @@ public class DirectoryListing extends SequenceSource implements FilenameFilter {
      *  @param sourceURL The source URL.
      */
     private void _readURL(URL sourceURL) throws IOException,
-            IllegalActionException {
+    IllegalActionException {
         // Handle urls here.
         if (_debugging) {
             _debug("Reading URL: " + sourceURL);
@@ -439,7 +442,8 @@ public class DirectoryListing extends SequenceSource implements FilenameFilter {
 
                                         if (!token.startsWith(reference)) {
                                             if (_debugging) {
-                                                _debug("token \"" + token
+                                                _debug("token \""
+                                                        + token
                                                         + "\" does not start with href.");
                                             }
                                             sawHREF = false;
@@ -449,7 +453,8 @@ public class DirectoryListing extends SequenceSource implements FilenameFilter {
                                             // directory by checking for a trailing /.
                                             if (accept(null, target)) {
                                                 if (_debugging) {
-                                                    _debug("target \"" + token
+                                                    _debug("target \""
+                                                            + token
                                                             + "\" was accepted.");
                                                 }
 
@@ -464,11 +469,12 @@ public class DirectoryListing extends SequenceSource implements FilenameFilter {
                                                 // FIXME: Is there any way to tell whether
                                                 // the result is a directory or file?
                                                 resultsList
-                                                        .add(new StringToken(
-                                                                base + target));
+                                                .add(new StringToken(
+                                                        base + target));
                                             } else {
                                                 if (_debugging) {
-                                                    _debug("target \"" + token
+                                                    _debug("target \""
+                                                            + token
                                                             + "\" was not accepted.");
                                                 }
                                             }

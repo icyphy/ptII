@@ -57,7 +57,7 @@ import ptolemy.kernel.util.NamedObj;
  @Pt.AcceptedRating Red (tfeng)
  */
 public class ContainmentExtender extends Attribute implements
-        ptolemy.data.expr.ContainmentExtender {
+ptolemy.data.expr.ContainmentExtender {
 
     /** Construct a ContainmentExtender attribute with the given name contained
      *  by the specified Refinement. The container argument must not be null,
@@ -104,6 +104,7 @@ public class ContainmentExtender extends Attribute implements
      *  @exception IllegalActionException If the refinement of the containing
      *   state cannot be found, or if a comma-separated list is malformed.
      */
+    @Override
     public NamedObj getContainedObject(String name)
             throws IllegalActionException {
         NamedObj container = getContainer();
@@ -120,6 +121,7 @@ public class ContainmentExtender extends Attribute implements
      *  @exception IllegalActionException If the specified refinement cannot be
      *   found in a state, or if a comma-separated list is malformed.
      */
+    @Override
     public NamedObj getExtendedContainer() throws IllegalActionException {
         NamedObj container = getContainer();
         if (container instanceof RefinementActor) {

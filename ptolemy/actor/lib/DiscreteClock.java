@@ -164,7 +164,7 @@ public class DiscreteClock extends TimedSource {
         period.setExpression("1.0");
         period.setTypeEquals(BaseType.DOUBLE);
         new SingletonParameter(period.getPort(), "_showName")
-                .setToken(BooleanToken.TRUE);
+        .setToken(BooleanToken.TRUE);
 
         offsets = new Parameter(this, "offsets");
         offsets.setExpression("{0.0}");
@@ -244,6 +244,7 @@ public class DiscreteClock extends TimedSource {
      *  @exception IllegalActionException If the offsets array is not
      *   nondecreasing and nonnegative.
      */
+    @Override
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         if (attribute == offsets) {
@@ -284,6 +285,7 @@ public class DiscreteClock extends TimedSource {
      *  @exception CloneNotSupportedException If a derived class contains
      *   an attribute that cannot be cloned.
      */
+    @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         DiscreteClock newObject = (DiscreteClock) super.clone(workspace);
         try {
@@ -312,6 +314,7 @@ public class DiscreteClock extends TimedSource {
      *   the value in the offsets parameter is encountered that is greater
      *   than the period, or if there is no director.
      */
+    @Override
     public void fire() throws IllegalActionException {
         super.fire();
         // Check the start input, to see whether everything needs to
@@ -435,6 +438,7 @@ public class DiscreteClock extends TimedSource {
      *   fireAt() method of the director throws it, or if the director does not
      *   agree to fire the actor at the specified time.
      */
+    @Override
     public synchronized void initialize() throws IllegalActionException {
         super.initialize();
 
@@ -472,6 +476,7 @@ public class DiscreteClock extends TimedSource {
      *  @exception IllegalActionException If the director throws it when
      *   scheduling the next firing, or if an offset value exceeds the period.
      */
+    @Override
     public boolean postfire() throws IllegalActionException {
         boolean result = super.postfire();
         if (_outputProduced) {
@@ -503,6 +508,7 @@ public class DiscreteClock extends TimedSource {
      *  @exception IllegalActionException If the <i>values</i> and
      *   <i>offsets</i> parameters do not have the same length.
      */
+    @Override
     public boolean prefire() throws IllegalActionException {
         // FIXME: This comment is not correct:
         // Cannot call super.prefire() because it consumes trigger

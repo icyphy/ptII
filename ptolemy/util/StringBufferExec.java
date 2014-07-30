@@ -94,6 +94,7 @@ public class StringBufferExec extends StreamExec {
      *  Optionally, the text also appears on stderr
      *  @param text The text to append.
      */
+    @Override
     public void stderr(final String text) {
         if (_appendToStderrAndStdout) {
             super.stderr(text);
@@ -106,6 +107,7 @@ public class StringBufferExec extends StreamExec {
      *  Optionally, the text also appears on stdout.
      *  @param text The text to append.
      */
+    @Override
     public void stdout(final String text) {
         if (_appendToStderrAndStdout) {
             super.stdout(text);

@@ -74,6 +74,7 @@ public class ThreadDirector extends TaskPtDirector {
      *  @exception IllegalActionException Thrown if any actor executed by this
      *  actor return false in prefire().
      */
+    @Override
     public void fire() throws IllegalActionException {
         //FIXME: Currently all actors are fired in sequence as defined in
         //the sequenced schedule. In the future, this should defer tasks

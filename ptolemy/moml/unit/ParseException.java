@@ -25,7 +25,7 @@
 
                                         PT_COPYRIGHT_VERSION_3
                                         COPYRIGHTENDKEY
-*/
+ */
 
 package ptolemy.moml.unit;
 

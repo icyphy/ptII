@@ -70,6 +70,7 @@ public class Differential extends Transformer {
      *  @exception IllegalActionException If subtraction is not
      *   supported by the supplied tokens.
      */
+    @Override
     public void fire() throws IllegalActionException {
         super.fire();
         if (input.hasToken(0)) {
@@ -86,6 +87,7 @@ public class Differential extends Transformer {
     /** Reset to indicate that no input has yet been seen.
      *  @exception IllegalActionException If the parent class throws it.
      */
+    @Override
     public void initialize() throws IllegalActionException {
         super.initialize();
         _lastInput = null;
@@ -94,6 +96,7 @@ public class Differential extends Transformer {
     /** Record the most recent input as the latest input.
      *  @exception IllegalActionException If the base class throws it.
      */
+    @Override
     public boolean postfire() throws IllegalActionException {
         _lastInput = _currentInput;
         return super.postfire();

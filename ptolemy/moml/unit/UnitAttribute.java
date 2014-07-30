@@ -63,7 +63,7 @@ public class UnitAttribute extends AbstractSettableAttribute {
      *  an attribute already in the container.
      */
     public UnitAttribute() throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         super();
     }
 
@@ -87,6 +87,7 @@ public class UnitAttribute extends AbstractSettableAttribute {
      *  If the listener is already on the list of listeners, then do nothing.
      *  @param listener The listener to add.
      */
+    @Override
     public void addValueListener(ValueListener listener) {
         if (_valueListeners == null) {
             _valueListeners = new LinkedList();
@@ -105,6 +106,7 @@ public class UnitAttribute extends AbstractSettableAttribute {
      *  @exception IOException If an I/O error occurs.
      *  @see ptolemy.kernel.util.NamedObj#exportMoML(Writer, int, String)
      */
+    @Override
     public void exportMoML(Writer output, int depth, String name)
             throws IOException {
         String value = getExpression();
@@ -126,6 +128,7 @@ public class UnitAttribute extends AbstractSettableAttribute {
      * @return a String that represents the descriptive form.
      * @see ptolemy.kernel.util.Settable#getExpression()
      */
+    @Override
     public String getExpression() {
         switch (_type) {
         case _EXPRESSION: {
@@ -167,6 +170,7 @@ public class UnitAttribute extends AbstractSettableAttribute {
      * @return The visibility of this attribute.
      * @see ptolemy.kernel.util.Settable#getVisibility()
      */
+    @Override
     public Visibility getVisibility() {
         return _visibility;
     }
@@ -176,6 +180,7 @@ public class UnitAttribute extends AbstractSettableAttribute {
      *  exists, do nothing.
      *  @param listener The listener to remove.
      */
+    @Override
     public void removeValueListener(ValueListener listener) {
         if (_valueListeners != null) {
             _valueListeners.remove(listener);
@@ -189,6 +194,7 @@ public class UnitAttribute extends AbstractSettableAttribute {
      * or a UnitEquation.
      * @see ptolemy.kernel.util.Settable#setExpression(java.lang.String)
      */
+    @Override
     public void setExpression(String expression) throws IllegalActionException {
         super.setExpression(expression);
 
@@ -240,6 +246,7 @@ public class UnitAttribute extends AbstractSettableAttribute {
      *  @param visibility The visibility of this attribute.
      *  @see ptolemy.kernel.util.Settable#setVisibility(Settable.Visibility)
      */
+    @Override
     public void setVisibility(Visibility visibility) {
         _visibility = visibility;
     }
@@ -250,6 +257,7 @@ public class UnitAttribute extends AbstractSettableAttribute {
      *   validated.
      * @see ptolemy.kernel.util.Settable#validate()
      */
+    @Override
     public Collection validate() throws IllegalActionException {
         return null;
     }
@@ -266,6 +274,7 @@ public class UnitAttribute extends AbstractSettableAttribute {
      *  @exception IllegalActionException If the value cannot
      *   be propagated.
      */
+    @Override
     protected void _propagateValue(NamedObj destination)
             throws IllegalActionException {
         ((Settable) destination).setExpression(getExpression());

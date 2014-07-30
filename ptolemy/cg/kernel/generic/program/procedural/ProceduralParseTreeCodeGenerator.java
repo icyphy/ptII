@@ -116,7 +116,7 @@ import ptolemy.util.StringUtilities;
  @see ptolemy.data.expr.ASTPtRootNode
  */
 public class ProceduralParseTreeCodeGenerator extends AbstractParseTreeVisitor
-        implements ParseTreeCodeGenerator {
+implements ParseTreeCodeGenerator {
 
     /**
      * Create a ProceduralParseTreeCodeGenerator that is used by
@@ -148,6 +148,7 @@ public class ProceduralParseTreeCodeGenerator extends AbstractParseTreeVisitor
      *  @exception IllegalActionException If an error occurs during
      *   evaluation.
      */
+    @Override
     public ptolemy.data.Token evaluateParseTree(ASTPtRootNode node,
             ParserScope scope) throws IllegalActionException {
 
@@ -174,6 +175,7 @@ public class ProceduralParseTreeCodeGenerator extends AbstractParseTreeVisitor
      *  @exception IllegalActionException If an error occurs during
      *   evaluation.
      */
+    @Override
     public String traceParseTreeEvaluation(ASTPtRootNode node, ParserScope scope)
             throws IllegalActionException {
         _scope = scope;
@@ -202,6 +204,7 @@ public class ProceduralParseTreeCodeGenerator extends AbstractParseTreeVisitor
     /** Generate code that corresponds with the fire() method.
      *  @return The generated code.
      */
+    @Override
     public String generateFireCode() {
         return _childCode;
     }
@@ -251,6 +254,7 @@ public class ProceduralParseTreeCodeGenerator extends AbstractParseTreeVisitor
      *  @return A new string with special characters replaced.
      *  @see ptolemy.util.StringUtilities#escapeForXML(String)
      */
+    @Override
     public/*static*/String escapeForTargetLanguage(String string) {
         string = StringUtilities.substitute(string, "\\", "\\\\");
         //string = StringUtilities.substitute(string, "\\{", "\\\\{");
@@ -264,12 +268,12 @@ public class ProceduralParseTreeCodeGenerator extends AbstractParseTreeVisitor
         return string;
     }
 
-
     /** Construct an ArrayToken that contains the tokens from the
      *  children of the specified node.
      *  @param node The specified node.
      *  @exception IllegalActionException If an parse error occurs.
      */
+    @Override
     public void visitArrayConstructNode(ASTPtArrayConstructNode node)
             throws IllegalActionException {
         if (node.isConstant() && node.isEvaluated()) {
@@ -357,6 +361,7 @@ public class ProceduralParseTreeCodeGenerator extends AbstractParseTreeVisitor
      *  @param node The specified node.
      *  @exception IllegalActionException If an parse error occurs.
      */
+    @Override
     public void visitBitwiseNode(ASTPtBitwiseNode node)
             throws IllegalActionException {
         if (node.isConstant() && node.isEvaluated()) {
@@ -468,6 +473,7 @@ public class ProceduralParseTreeCodeGenerator extends AbstractParseTreeVisitor
      *  @param node The specified node.
      *  @exception IllegalActionException If an parse error occurs.
      */
+    @Override
     public void visitFunctionApplicationNode(ASTPtFunctionApplicationNode node)
             throws IllegalActionException {
 
@@ -508,7 +514,7 @@ public class ProceduralParseTreeCodeGenerator extends AbstractParseTreeVisitor
             }
 
             // Translate function to c functions.
-            String cFunction = (String) _functionMap.get(functionName);
+            String cFunction = _functionMap.get(functionName);
             if (cFunction != null) {
                 functionName = cFunction;
             }
@@ -595,6 +601,7 @@ public class ProceduralParseTreeCodeGenerator extends AbstractParseTreeVisitor
      *  @param node The specified node.
      *  @exception IllegalActionException If an parse error occurs.
      */
+    @Override
     public void visitFunctionDefinitionNode(ASTPtFunctionDefinitionNode node)
             throws IllegalActionException {
         ASTPtRootNode cloneTree;
@@ -674,6 +681,7 @@ public class ProceduralParseTreeCodeGenerator extends AbstractParseTreeVisitor
      *  @param node The specified node.
      *  @exception IllegalActionException If an parse error occurs.
      */
+    @Override
     public void visitFunctionalIfNode(ASTPtFunctionalIfNode node)
             throws IllegalActionException {
         if (node.isConstant() && node.isEvaluated()) {
@@ -759,6 +767,7 @@ public class ProceduralParseTreeCodeGenerator extends AbstractParseTreeVisitor
      *  @param node The specified node.
      *  @exception IllegalActionException If an parse error occurs.
      */
+    @Override
     public void visitLeafNode(ASTPtLeafNode node) throws IllegalActionException {
         if (node.isConstant() && node.isEvaluated()) {
             _evaluatedChildToken = node.getToken();
@@ -842,6 +851,7 @@ public class ProceduralParseTreeCodeGenerator extends AbstractParseTreeVisitor
      *  @param node The specified node.
      *  @exception IllegalActionException If an parse error occurs.
      */
+    @Override
     public void visitLogicalNode(ASTPtLogicalNode node)
             throws IllegalActionException {
         if (node.isConstant() && node.isEvaluated()) {
@@ -927,6 +937,7 @@ public class ProceduralParseTreeCodeGenerator extends AbstractParseTreeVisitor
      *  @param node The specified node.
      *  @exception IllegalActionException If an parse error occurs.
      */
+    @Override
     public void visitMatrixConstructNode(ASTPtMatrixConstructNode node)
             throws IllegalActionException {
         if (node.isConstant() && node.isEvaluated()) {
@@ -1013,7 +1024,7 @@ public class ProceduralParseTreeCodeGenerator extends AbstractParseTreeVisitor
                 }
 
                 ptolemy.data.Token[] matrixTokens = new ptolemy.data.Token[node
-                        .getRowCount() * columnCount];
+                                                                           .getRowCount() * columnCount];
 
                 for (int i = 0; i < node.getRowCount(); i++) {
                     ptolemy.data.Token[] newTokens = MatrixToken
@@ -1047,6 +1058,7 @@ public class ProceduralParseTreeCodeGenerator extends AbstractParseTreeVisitor
      *  @param node The specified node.
      *  @exception IllegalActionException If an parse error occurs.
      */
+    @Override
     public void visitMethodCallNode(ASTPtMethodCallNode node)
             throws IllegalActionException {
         //_fireCode.append(node.getMethodName() + "(");
@@ -1096,6 +1108,7 @@ public class ProceduralParseTreeCodeGenerator extends AbstractParseTreeVisitor
      *  @param node The specified node.
      *  @exception IllegalActionException If an parse error occurs.
      */
+    @Override
     public void visitPowerNode(ASTPtPowerNode node)
             throws IllegalActionException {
         if (node.isConstant() && node.isEvaluated()) {
@@ -1156,7 +1169,7 @@ public class ProceduralParseTreeCodeGenerator extends AbstractParseTreeVisitor
                         + "unsigned byte meet this criterion.\n"
                         + "Use pow(10, 3.5) for non-integer exponents");
             }
-            */
+             */
             //childToken = childToken.pow(times);
             //_fireCode.append(")");
             //result.append(")");
@@ -1176,6 +1189,7 @@ public class ProceduralParseTreeCodeGenerator extends AbstractParseTreeVisitor
      *  @param node The specified node.
      *  @exception IllegalActionException If an parse error occurs.
      */
+    @Override
     public void visitProductNode(ASTPtProductNode node)
             throws IllegalActionException {
         if (node.isConstant() && node.isEvaluated()) {
@@ -1273,6 +1287,7 @@ public class ProceduralParseTreeCodeGenerator extends AbstractParseTreeVisitor
      *  @param node The record constructor node.
      *  @exception IllegalActionException If an parse error occurs.
      */
+    @Override
     public void visitRecordConstructNode(ASTPtRecordConstructNode node)
             throws IllegalActionException {
         if (node.isConstant() && node.isEvaluated()) {
@@ -1310,6 +1325,7 @@ public class ProceduralParseTreeCodeGenerator extends AbstractParseTreeVisitor
         _childCode = result.toString();
     }
 
+    @Override
     public void visitRelationalNode(ASTPtRelationalNode node)
             throws IllegalActionException {
         if (node.isConstant() && node.isEvaluated()) {
@@ -1368,7 +1384,7 @@ public class ProceduralParseTreeCodeGenerator extends AbstractParseTreeVisitor
 
                               ScalarToken leftScalar = (ScalarToken) leftToken;
                               ScalarToken rightScalar = (ScalarToken) rightToken;
-                 */
+         */
 
             if (operator.kind == PtParserConstants.GTE) {
                 //result = leftScalar.isLessThan(rightScalar).not();
@@ -1399,6 +1415,7 @@ public class ProceduralParseTreeCodeGenerator extends AbstractParseTreeVisitor
      *  @param node The specified node.
      *  @exception IllegalActionException If an parse error occurs.
      */
+    @Override
     public void visitShiftNode(ASTPtShiftNode node)
             throws IllegalActionException {
         if (node.isConstant() && node.isEvaluated()) {
@@ -1488,6 +1505,7 @@ public class ProceduralParseTreeCodeGenerator extends AbstractParseTreeVisitor
      *  @param node The specified node.
      *  @exception IllegalActionException If an parse error occurs.
      */
+    @Override
     public void visitSumNode(ASTPtSumNode node) throws IllegalActionException {
         if (node.isConstant() && node.isEvaluated()) {
             _evaluatedChildToken = node.getToken();
@@ -1556,6 +1574,7 @@ public class ProceduralParseTreeCodeGenerator extends AbstractParseTreeVisitor
      *  @param node The specified node.
      *  @exception IllegalActionException If an parse error occurs.
      */
+    @Override
     public void visitUnaryNode(ASTPtUnaryNode node)
             throws IllegalActionException {
         if (node.isConstant() && node.isEvaluated()) {
@@ -1636,7 +1655,6 @@ public class ProceduralParseTreeCodeGenerator extends AbstractParseTreeVisitor
             throw new InternalErrorException(message + ": " + node.toString());
         }
     }
-
 
     /**
      * Get the corresponding type in code generation from the given Ptolemy
@@ -1804,13 +1822,13 @@ public class ProceduralParseTreeCodeGenerator extends AbstractParseTreeVisitor
     }
 
     /** Specialize an argument of a function.
-     *  The function "$arrayRepeat" is handled specially here.   
+     *  The function "$arrayRepeat" is handled specially here.
      *  @param function The function
      *  @param argumentIndex The index of the argument to be specialized
      *  @param argumentType The type of the the argument.
      *  @param argumentCode The code for the argument.
      *  @return the specialized return value.
-     */   
+     */
     protected String _specializeArgument(String function, int argumentIndex,
             Type argumentType, String argumentCode) {
 
@@ -1824,15 +1842,15 @@ public class ProceduralParseTreeCodeGenerator extends AbstractParseTreeVisitor
     }
 
     /** Specialize the return value of a function.
-     *  The function "$arraySum" is handled specially here.   
+     *  The function "$arraySum" is handled specially here.
      *  @param function The function
      *  @param returnType The return type of the function
      *  @param returnCode If the function is "$arraySum", and the return
      *  type is primitive, then the value of the returnCode parameter
-     *  is returned with the payload and codeGen type returned.  
+     *  is returned with the payload and codeGen type returned.
      *  Otherwise, just the returnCode is returned.
      *  @return the specialized return value.
-     */   
+     */
     protected String _specializeReturnValue(String function, Type returnType,
             String returnCode) {
         if (function.equals("$arraySum") && _isPrimitive(returnType)) {
@@ -1931,7 +1949,7 @@ public class ProceduralParseTreeCodeGenerator extends AbstractParseTreeVisitor
     protected int _depth = 0;
 
     /** The map of functions. */
-    protected static Map<String,String> _functionMap = new HashMap();
+    protected static Map<String, String> _functionMap = new HashMap();
     static {
         //_functionMap.put("matrixToArray", "$matrixToArray");
     }

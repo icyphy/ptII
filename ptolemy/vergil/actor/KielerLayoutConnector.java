@@ -83,6 +83,7 @@ public class KielerLayoutConnector extends LinkManhattanConnector {
      * these instead. Delete bend point information if modification detected
      * (i.e., movement of one or the other end of a link).
      */
+    @Override
     public void route() {
         // Parse the bend points if existing.
         List<Point2D> bendPointList = null;

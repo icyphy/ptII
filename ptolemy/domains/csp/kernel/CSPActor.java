@@ -178,6 +178,7 @@ public class CSPActor extends TypedAtomicActor implements BranchActor {
      *   if one of the attributes cannot be cloned.
      *  @return A new CSPActor.
      */
+    @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         CSPActor newObject = (CSPActor) super.clone(workspace);
         newObject._delayed = false;
@@ -229,6 +230,7 @@ public class CSPActor extends TypedAtomicActor implements BranchActor {
 
     /** Return the conditional branch control of this actor.
      */
+    @Override
     public AbstractBranchController getBranchController() {
         return _conditionalBranchController;
     }
@@ -237,6 +239,7 @@ public class CSPActor extends TypedAtomicActor implements BranchActor {
      *  @exception IllegalActionException Not thrown in this base class,
      *  but might be in a derived class.
      */
+    @Override
     public void initialize() throws IllegalActionException {
         super.initialize();
         _delayed = false;
@@ -252,6 +255,7 @@ public class CSPActor extends TypedAtomicActor implements BranchActor {
      *  @exception IllegalActionException If thrown by the parent
      *  class.
      */
+    @Override
     public boolean postfire() throws IllegalActionException {
         // We intentially ignore the return value of super.postfire()
         // here.
@@ -262,6 +266,7 @@ public class CSPActor extends TypedAtomicActor implements BranchActor {
     /** Terminate abruptly any threads created by this actor. Note that
      *  this method does not allow the threads to terminate gracefully.
      */
+    @Override
     public void terminate() {
         synchronized (getDirector()) {
             _conditionalBranchController.terminate();

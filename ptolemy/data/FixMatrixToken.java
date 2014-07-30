@@ -231,6 +231,7 @@ public class FixMatrixToken extends MatrixToken {
      *  empty or if the specified parameters result in out of bounds
      *  accesses.
      */
+    @Override
     public MatrixToken crop(int rowStart, int colStart, int rowSpan, int colSpan)
             throws IllegalActionException {
         FixPoint[][] value = this.fixMatrix();
@@ -244,8 +245,8 @@ public class FixMatrixToken extends MatrixToken {
         } catch (ArrayIndexOutOfBoundsException ex) {
             throw new IllegalActionException(
                     "Matrix crop indices out of bounds (rowStart = " + rowStart
-                            + ", colStart = " + colStart + ", rowSpan = "
-                            + rowSpan + ", colSpan = " + colSpan + ").");
+                    + ", colStart = " + colStart + ", rowSpan = "
+                    + rowSpan + ", colSpan = " + colSpan + ").");
         }
     }
 
@@ -257,6 +258,7 @@ public class FixMatrixToken extends MatrixToken {
      *   of the same dimensions and the corresponding elements of the
      *   matrices are equal.
      */
+    @Override
     public boolean equals(Object object) {
         if (object == null) {
             return false;
@@ -292,6 +294,7 @@ public class FixMatrixToken extends MatrixToken {
     /** Return the content of this token as a new 2-D FixPoint matrix.
      *  @return A 2-D FixPoint matrix
      */
+    @Override
     public FixPoint[][] fixMatrix() {
         FixPoint[][] matrix = new FixPoint[_rowCount][_columnCount];
 
@@ -308,6 +311,7 @@ public class FixMatrixToken extends MatrixToken {
     /** Return the number of columns in the matrix.
      *  @return The number of columns in the matrix.
      */
+    @Override
     public int getColumnCount() {
         return _columnCount;
     }
@@ -320,6 +324,7 @@ public class FixMatrixToken extends MatrixToken {
      *  @exception ArrayIndexOutOfBoundsException If the specified
      *   row or column number is outside the range of the matrix.
      */
+    @Override
     public Token getElementAsToken(int row, int column)
             throws ArrayIndexOutOfBoundsException {
         return new FixToken(_value[row][column]);
@@ -341,6 +346,7 @@ public class FixMatrixToken extends MatrixToken {
      *  This must be a type representing a scalar token.
      *  @return BaseType.UNSIZED_FIX.
      */
+    @Override
     public Type getElementType() {
         return BaseType.UNSIZED_FIX;
     }
@@ -348,6 +354,7 @@ public class FixMatrixToken extends MatrixToken {
     /** Return the number of rows in the matrix.
      *  @return The number of rows in the matrix.
      */
+    @Override
     public int getRowCount() {
         return _rowCount;
     }
@@ -355,6 +362,7 @@ public class FixMatrixToken extends MatrixToken {
     /** Return the type of this token.
      *  @return BaseType.FIX_MATRIX
      */
+    @Override
     public Type getType() {
         return BaseType.FIX_MATRIX;
     }
@@ -363,6 +371,7 @@ public class FixMatrixToken extends MatrixToken {
      *  integer portion of the sum of the elements.
      *  @return A hash code value for this token.
      */
+    @Override
     public int hashCode() {
         double code = 0.0;
 
@@ -397,6 +406,7 @@ public class FixMatrixToken extends MatrixToken {
      *   to size incompatibilities, or if the input matrix has no
      *   tokens.
      */
+    @Override
     public MatrixToken join(MatrixToken[][] matrices)
             throws IllegalActionException {
         if (matrices == null || matrices.length == 0 || matrices[0].length == 0) {
@@ -450,6 +460,7 @@ public class FixMatrixToken extends MatrixToken {
      *  @param columns The number of columns per submatrix.
      *  @return An array of matrix tokens.
      */
+    @Override
     public MatrixToken[][] split(int[] rows, int[] columns) {
         MatrixToken[][] result = new MatrixToken[rows.length][columns.length];
         FixPoint[][] source = fixMatrix();
@@ -497,6 +508,7 @@ public class FixMatrixToken extends MatrixToken {
      *  @return A new FixMatrixToken containing the left multiplicative
      *   identity.
      */
+    @Override
     public Token one() {
         FixPoint[][] result = new FixPoint[_rowCount][_rowCount];
 
@@ -524,6 +536,7 @@ public class FixMatrixToken extends MatrixToken {
      *  @return A new FixMatrixToken containing the right multiplicative
      *   identity.
      */
+    @Override
     public Token oneRight() {
         FixPoint[][] result = new FixPoint[_columnCount][_columnCount];
 
@@ -550,6 +563,7 @@ public class FixMatrixToken extends MatrixToken {
      *  token.
      *  @return A new FixMatrixToken containing the additive identity.
      */
+    @Override
     public Token zero() {
         FixPoint[][] result = new FixPoint[_rowCount][_columnCount];
         FixPoint zero = Quantizer.round(0.0, _precision);
@@ -580,6 +594,7 @@ public class FixMatrixToken extends MatrixToken {
      *  class.
      *  @return A new FixMatrixToken containing the result.
      */
+    @Override
     protected MatrixToken _add(MatrixToken rightArgument)
             throws IllegalActionException {
         FixMatrixToken convertedArgument = (FixMatrixToken) rightArgument;
@@ -603,6 +618,7 @@ public class FixMatrixToken extends MatrixToken {
      *  supported by the derived class.
      *  @return A new Token containing the result.
      */
+    @Override
     protected MatrixToken _addElement(Token rightArgument)
             throws IllegalActionException {
         FixPoint scalar;
@@ -635,6 +651,7 @@ public class FixMatrixToken extends MatrixToken {
      *  @exception IllegalActionException If the units are not
      *   compatible, or if the matrix dimensions are incompatible.
      */
+    @Override
     protected MatrixToken _multiply(MatrixToken rightArgument)
             throws IllegalActionException {
         FixMatrixToken convertedArgument = (FixMatrixToken) rightArgument;
@@ -672,6 +689,7 @@ public class FixMatrixToken extends MatrixToken {
      *  supported by the derived class.
      *  @return A new Token containing the result.
      */
+    @Override
     protected MatrixToken _multiplyElement(Token rightArgument)
             throws IllegalActionException {
         FixPoint scalar;
@@ -712,6 +730,7 @@ public class FixMatrixToken extends MatrixToken {
      *  class.
      *  @return A new FixMatrixToken containing the result.
      */
+    @Override
     protected MatrixToken _subtract(MatrixToken rightArgument)
             throws IllegalActionException {
         FixMatrixToken convertedArgument = (FixMatrixToken) rightArgument;
@@ -735,6 +754,7 @@ public class FixMatrixToken extends MatrixToken {
      *  supported by the derived class.
      *  @return A new Token containing the result.
      */
+    @Override
     protected MatrixToken _subtractElement(Token rightArgument)
             throws IllegalActionException {
         FixPoint scalar;
@@ -768,6 +788,7 @@ public class FixMatrixToken extends MatrixToken {
      *  supported by the derived class.
      *  @return A new Token containing the result.
      */
+    @Override
     protected MatrixToken _subtractElementReverse(Token rightArgument)
             throws IllegalActionException {
         FixPoint scalar;

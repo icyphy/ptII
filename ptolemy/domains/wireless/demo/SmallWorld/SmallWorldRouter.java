@@ -283,6 +283,7 @@ public class SmallWorldRouter extends TypedAtomicActor {
      *  @exception IllegalActionException If the causality interface
      *  cannot be computed.
      */
+    @Override
     public void declareDelayDependency() throws IllegalActionException {
         // Declare that output does not immediately depend on the input,
         // though there is no lower bound on the time delay.
@@ -300,6 +301,7 @@ public class SmallWorldRouter extends TypedAtomicActor {
      *  another firing after some delay time to output the message and
      *  change its icon back to white.
      */
+    @Override
     public void fire() throws IllegalActionException {
         super.fire();
         if (input.hasToken(0)) {
@@ -458,6 +460,7 @@ public class SmallWorldRouter extends TypedAtomicActor {
      *  Decide all the nodes that are connected to it.
      *  @exception IllegalActionException If the parent class throws it.
      */
+    @Override
     public void initialize() throws IllegalActionException {
         super.initialize();
 

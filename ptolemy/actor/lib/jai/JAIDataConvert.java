@@ -99,6 +99,7 @@ public class JAIDataConvert extends Transformer {
      *  @param attribute The attribute that changed.
      *  @exception IllegalActionException If the function is not recognized.
      */
+    @Override
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         if (attribute == dataFormat) {
@@ -128,6 +129,7 @@ public class JAIDataConvert extends Transformer {
     /** Output the JAIImageToken containing the new converted data.
      *  @exception IllegalActionException If there is no director.
      */
+    @Override
     public void fire() throws IllegalActionException {
         super.fire();
 

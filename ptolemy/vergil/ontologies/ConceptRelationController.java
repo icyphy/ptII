@@ -173,6 +173,7 @@ public class ConceptRelationController extends BasicEdgeController {
          *  @param evt The connector event received when a connect end is
          *   dropped.
          */
+        @Override
         public void connectorDropped(ConnectorEvent evt) {
             Connector c = evt.getConnector();
             Figure f = evt.getTarget();
@@ -241,6 +242,7 @@ public class ConceptRelationController extends BasicEdgeController {
          *   model graph.
          *  @return The connector object to be drawn in the model graph.
          */
+        @Override
         public Connector render(Object edge, Site tailSite, Site headSite) {
             ArcConnector c = new ArcConnector(tailSite, headSite);
             // For some reason, setting the angle to 0.0 doesn't work.
@@ -309,7 +311,7 @@ public class ConceptRelationController extends BasicEdgeController {
                         Stroke dashed = new BasicStroke(3.0f,
                                 BasicStroke.CAP_BUTT, BasicStroke.JOIN_BEVEL,
                                 0, dashvalues, 0);
-                        */
+                         */
                         Stroke dashed = new BasicStroke(2.0f,
                                 BasicStroke.CAP_BUTT, BasicStroke.JOIN_BEVEL,
                                 0, dashvalues, 0);
@@ -346,6 +348,7 @@ public class ConceptRelationController extends BasicEdgeController {
          *  @param f The graphical figure object in the model graph.
          *  @return true if the connector head can be attached, false otherwise.
          */
+        @Override
         public boolean acceptHead(Connector c, Figure f) {
             return _acceptConnection(c, f, true);
         }
@@ -356,6 +359,7 @@ public class ConceptRelationController extends BasicEdgeController {
          *  @param f The graphical figure object in the model graph.
          *  @return true if the connector tail can be attached, false otherwise.
          */
+        @Override
         public boolean acceptTail(Connector c, Figure f) {
             return _acceptConnection(c, f, false);
         }

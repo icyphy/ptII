@@ -85,7 +85,7 @@ highest priority, then they will be executed in FIFO order.
 @since Ptolemy II 10.0
 @Pt.ProposedRating Yellow (eal)
 @Pt.AcceptedRating Red (derler)
-*/
+ */
 public class FixedPriorityScheduler extends AtomicExecutionAspect {
 
     /** Create a new actor in the specified container with the specified
@@ -125,6 +125,7 @@ public class FixedPriorityScheduler extends AtomicExecutionAspect {
      *  @exception IllegalActionException If the change is not acceptable
      *   to this container (not thrown in this base class).
      */
+    @Override
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         if (attribute == preemptive) {
@@ -138,6 +139,7 @@ public class FixedPriorityScheduler extends AtomicExecutionAspect {
      *  @exception CloneNotSupportedException If a derived class contains
      *   an attribute that cannot be cloned.
      */
+    @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         FixedPriorityScheduler newObject = (FixedPriorityScheduler) super
                 .clone(workspace);
@@ -153,6 +155,7 @@ public class FixedPriorityScheduler extends AtomicExecutionAspect {
      *  @return The decorated attributes for the target NamedObj, or
      *   null if the specified target is not an Actor.
      */
+    @Override
     public DecoratorAttributes createDecoratorAttributes(NamedObj target) {
         if (target instanceof Actor) {
             try {
@@ -190,7 +193,7 @@ public class FixedPriorityScheduler extends AtomicExecutionAspect {
             time = schedule(actor, environmentTime, null, null);
             if (_lastActorThatFinished == actor && lastActorFinished()) {
                 if (actor instanceof Actor) {
-                    ((Actor)actor).getDirector().resumeActor(actor);
+                    ((Actor) actor).getDirector().resumeActor(actor);
                 }
             }
         }
@@ -209,8 +212,8 @@ public class FixedPriorityScheduler extends AtomicExecutionAspect {
      *    as execution time or priority cannot be read.
      */
     @Override
-    public Time schedule(NamedObj actor, Time currentPlatformTime, Time deadline,
-            Time executionTime) throws IllegalActionException {
+    public Time schedule(NamedObj actor, Time currentPlatformTime,
+            Time deadline, Time executionTime) throws IllegalActionException {
         super.schedule(actor, currentPlatformTime, deadline, executionTime);
         _lastActorFinished = false;
         Time remainingTime = null;
@@ -230,11 +233,11 @@ public class FixedPriorityScheduler extends AtomicExecutionAspect {
                     if (newActorPriority < executingPriority) {
                         if (remainingTime.getDoubleValue() == 0.0) {
                             notifyExecutionListeners(
-                                    (NamedObj) _currentlyExecuting.peek(),
+                                    _currentlyExecuting.peek(),
                                     currentPlatformTime.getDoubleValue(),
                                     ExecutionEventType.STOP);
                         } else {
-                            notifyExecutionListeners((NamedObj) executing,
+                            notifyExecutionListeners(executing,
                                     currentPlatformTime.getDoubleValue(),
                                     ExecutionEventType.PREEMPTED);
                         }
@@ -262,16 +265,15 @@ public class FixedPriorityScheduler extends AtomicExecutionAspect {
 
         if (remainingTime.getDoubleValue() == 0.0
                 && _currentlyExecuting.peek() == actor) {
-            notifyExecutionListeners((NamedObj) _currentlyExecuting.peek(),
+            notifyExecutionListeners(_currentlyExecuting.peek(),
                     currentPlatformTime.getDoubleValue(),
                     ExecutionEventType.STOP);
-            _remainingTimes.put((NamedObj) _currentlyExecuting.peek(), null);
+            _remainingTimes.put(_currentlyExecuting.peek(), null);
             _currentlyExecuting.pop();
             if (_currentlyExecuting.size() > 0) {
                 remainingTime = _remainingTimes.get(_currentlyExecuting.peek());
                 if (remainingTime.getDoubleValue() > 0.0) {
-                    notifyExecutionListeners(
-                            (NamedObj) _currentlyExecuting.peek(),
+                    notifyExecutionListeners(_currentlyExecuting.peek(),
                             currentPlatformTime.getDoubleValue(),
                             ExecutionEventType.START);
                 }
@@ -295,14 +297,15 @@ public class FixedPriorityScheduler extends AtomicExecutionAspect {
     protected double _getPriority(NamedObj actor) throws IllegalActionException {
         Attribute attributes = actor.getDecoratorAttribute(this, "priority");
         if (attributes == null || !(attributes instanceof Parameter)) {
-            throw new IllegalActionException(this, "Cannot get priority attribute of actor " 
-                    + actor.getName());
+            throw new IllegalActionException(this,
+                    "Cannot get priority attribute of actor " + actor.getName());
         }
         Token token = ((Parameter) attributes).getToken();
         if (token == null) {
             throw new IllegalActionException(this, "Priority token is null.");
         } else if (!(token instanceof IntToken)) {
-            throw new IllegalActionException(this, "Priority token has to be an IntToken.");
+            throw new IllegalActionException(this,
+                    "Priority token has to be an IntToken.");
         }
         return ((IntToken) token).intValue();
     }
@@ -343,8 +346,8 @@ public class FixedPriorityScheduler extends AtomicExecutionAspect {
     private void scheduleNewActor(NamedObj actor, Time currentPlatformTime,
             Time executionTime) {
         _currentlyExecuting.push(actor);
-        notifyExecutionListeners((NamedObj) actor,
-                currentPlatformTime.getDoubleValue(), ExecutionEventType.START);
+        notifyExecutionListeners(actor, currentPlatformTime.getDoubleValue(),
+                ExecutionEventType.START);
         _remainingTimes.put(actor, executionTime);
         _lastTimeScheduled.put(actor, currentPlatformTime);
     }

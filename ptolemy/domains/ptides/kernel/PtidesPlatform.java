@@ -26,7 +26,7 @@ ENHANCEMENTS, OR MODIFICATIONS.
                                             COPYRIGHTENDKEY
 
 
-*/
+ */
 
 package ptolemy.domains.ptides.kernel;
 
@@ -133,7 +133,7 @@ public class PtidesPlatform extends MirrorComposite {
      *   an actor already in the container.
      */
     public PtidesPlatform(Workspace workspace) throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         super(workspace);
         _init();
     }
@@ -149,6 +149,7 @@ public class PtidesPlatform extends MirrorComposite {
      *   cannot be cloned.
      *  @see #exportMoML(Writer, int, String)
      */
+    @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         PtidesPlatform result = (PtidesPlatform) super.clone(workspace);
         try {
@@ -187,6 +188,7 @@ public class PtidesPlatform extends MirrorComposite {
      *  @exception NameDuplicationException If the container already has a port
      *  with this name.
      */
+    @Override
     public Port newPort(String name) throws NameDuplicationException {
         try {
             PtidesMirrorPort result = new PtidesMirrorPort(this, name);
@@ -204,7 +206,7 @@ public class PtidesPlatform extends MirrorComposite {
 
     @Override
     protected void _addPort(Port port) throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         // TODO Auto-generated method stub
         super._addPort(port);
     }
@@ -214,6 +216,7 @@ public class PtidesPlatform extends MirrorComposite {
      *  @exception IllegalActionException If reading from parameter associated
      *  with port fails.
      */
+    @Override
     protected void _transferPortParameterInputs() throws IllegalActionException {
         // Need to read from port parameters
         // first because in some domains (e.g. SDF)
@@ -230,8 +233,7 @@ public class PtidesPlatform extends MirrorComposite {
                         .getParameter();
 
                 // Coverity says that port cannot be null here.
-                if (port.isOutsideConnected()
-                        && port.hasToken(0)) {
+                if (port.isOutsideConnected() && port.hasToken(0)) {
                     Token token = port.get(0);
                     associatedParameter.setCurrentValue(token);
                     // Have to validate so that containers of dependent
@@ -257,6 +259,7 @@ public class PtidesPlatform extends MirrorComposite {
      *  @return A list of instances of Inequality indicating the
      *   type constraints that are not satisfied.
      */
+    @Override
     protected List _checkTypesFromTo(TypedIOPort sourcePort,
             List destinationPortList) {
         List result = new LinkedList();
@@ -333,6 +336,7 @@ public class PtidesPlatform extends MirrorComposite {
      *  @param sourcePort The source port.
      *  @return A list of instances of Inequality.
      */
+    @Override
     protected List _destinationTypeConstraints(TypedIOPort sourcePort) {
         Iterator<IOPort> destinationPorts;
         List<Inequality> result = new LinkedList<Inequality>();
@@ -377,7 +381,7 @@ public class PtidesPlatform extends MirrorComposite {
                         result.add(ineq);
                     } else if (destinationPort instanceof PtidesPort
                             && ((PtidesPort) destinationPort)
-                                    .isNetworkReceiverPort()) {
+                            .isNetworkReceiverPort()) {
 
                         sourcePort.setTypeEquals(new PtidesNetworkType());
                         RecordType sourcePortType = (RecordType) sourcePort
@@ -398,7 +402,7 @@ public class PtidesPlatform extends MirrorComposite {
                                 destinationPort.getTypeTerm());
                     } else if (sourcePort instanceof PtidesPort
                             && ((PtidesPort) sourcePort)
-                                    .isNetworkTransmitterPort()) {
+                            .isNetworkTransmitterPort()) {
 
                         destinationPort.setTypeEquals(new PtidesNetworkType());
                         RecordType outputType = (RecordType) destinationPort
@@ -420,7 +424,7 @@ public class PtidesPlatform extends MirrorComposite {
 
     /** Initialize the class. */
     private void _init() throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         setClassName("ptolemy.domains.ptides.kernel.PtidesPlatform");
 
         // Create the PtidesPlatformDirector in the proper workspace.
@@ -464,11 +468,11 @@ public class PtidesPlatform extends MirrorComposite {
 
         /** The types of the RecordType fields. */
         public static Type[] TYPES = { BaseType.DOUBLE, BaseType.INT,
-                BaseType.UNKNOWN };
+            BaseType.UNKNOWN };
 
         /** The labels of the RecordType fields. */
         public static String[] LABELS = new String[] { "timestamp",
-                "microstep", "payload" };
+            "microstep", "payload" };
 
         /** Label of the timestamp that is transmitted within the RecordToken.
          */
@@ -494,7 +498,7 @@ public class PtidesPlatform extends MirrorComposite {
      *  connections being made.
      */
     public static class PtidesPlatformContents extends
-            MirrorComposite.MirrorCompositeContents {
+    MirrorComposite.MirrorCompositeContents {
         // NOTE: This has to be a static class so that MoML can
         // instantiate it.
 
@@ -517,6 +521,7 @@ public class PtidesPlatform extends MirrorComposite {
          *  @exception NameDuplicationException If the container already has
          *  a port with this name.
          */
+        @Override
         public Port newPort(String name) throws NameDuplicationException {
             try {
                 return new PtidesPort(this, name);
@@ -579,6 +584,7 @@ public class PtidesPlatform extends MirrorComposite {
          *  @exception IllegalActionException Thrown by embedded
          *  PtidesDirector.
          */
+        @Override
         public void fire() throws IllegalActionException {
             _getEmbeddedPtidesDirector().fire();
         }
@@ -588,6 +594,7 @@ public class PtidesPlatform extends MirrorComposite {
          *  @exception IllegalActionException Thrown if fireContainerAt
          *  of the enclosing director cannot be invoked.
          */
+        @Override
         public Time fireContainerAt(Time time) throws IllegalActionException {
             if (getContainer() instanceof Actor) {
                 Actor container = (Actor) getContainer();
@@ -644,6 +651,7 @@ public class PtidesPlatform extends MirrorComposite {
          *  @return A new instance of QueueReceiver.
          *  @see QueueReceiver
          */
+        @Override
         public Receiver newReceiver() {
             return new QueueReceiver();
         }
@@ -653,6 +661,7 @@ public class PtidesPlatform extends MirrorComposite {
          *  @exception IllegalActionException Thrown by embedded
          *  PtidesDirector.
          */
+        @Override
         public boolean prefire() throws IllegalActionException {
             super.prefire();
             return _getEmbeddedPtidesDirector().prefire();
@@ -662,6 +671,7 @@ public class PtidesPlatform extends MirrorComposite {
          *  @exception IllegalActionException Thrown by embedded
          *  PtidesDirector.
          */
+        @Override
         public boolean postfire() throws IllegalActionException {
             return _getEmbeddedPtidesDirector().postfire();
         }
@@ -674,6 +684,7 @@ public class PtidesPlatform extends MirrorComposite {
          *  @return True if at least one data token is transferred.
          *  @exception IllegalActionException Not thrown in this base class.
          */
+        @Override
         public boolean transferInputs(IOPort port)
                 throws IllegalActionException {
             boolean result = false;
@@ -741,7 +752,7 @@ public class PtidesPlatform extends MirrorComposite {
                                                         record.get(PtidesNetworkType.payload),
                                                         farReceivers[channelIndex][i],
                                                         sourceTimestamp),
-                                                PtidesDirector
+                                                        PtidesDirector
                                                         ._getDoubleParameterValue(
                                                                 associatedPort,
                                                                 "deviceDelay"));
@@ -763,7 +774,7 @@ public class PtidesPlatform extends MirrorComposite {
                                                         t,
                                                         farReceivers[channelIndex][i],
                                                         director.getModelTime()),
-                                                PtidesDirector
+                                                        PtidesDirector
                                                         ._getDoubleParameterValue(
                                                                 associatedPort,
                                                                 "deviceDelay"));
@@ -771,7 +782,7 @@ public class PtidesPlatform extends MirrorComposite {
                                 }
                             } else {
                                 ((MirrorPort) port).getAssociatedPort()
-                                        .sendInside(channelIndex, t);
+                                .sendInside(channelIndex, t);
                             }
 
                             result = true;
@@ -794,6 +805,7 @@ public class PtidesPlatform extends MirrorComposite {
          *  @exception IllegalActionException Not thrown in this base class.
          *  @see IOPort#transferOutputs
          */
+        @Override
         public boolean transferOutputs(IOPort port)
                 throws IllegalActionException {
             boolean result = false;
@@ -890,7 +902,8 @@ public class PtidesPlatform extends MirrorComposite {
          *  @param workspace The workspace that will list the port.
          * @exception IllegalActionException If port parameters cannot be initialized.
          */
-        public PtidesMirrorPort(Workspace workspace) throws IllegalActionException {
+        public PtidesMirrorPort(Workspace workspace)
+                throws IllegalActionException {
             // This constructor is needed for Shallow codgen.
             super(workspace);
         }
@@ -928,11 +941,12 @@ public class PtidesPlatform extends MirrorComposite {
          *  @exception IllegalActionException If the conversion is
          *   invalid.
          */
+        @Override
         public Token convert(Token token) throws IllegalActionException {
             if (!(getContainer() instanceof PtidesPlatform)
                     || !isOutput()
                     || !((PtidesPort) this.insidePortList().get(0))
-                            .isNetworkTransmitterPort()) {
+                    .isNetworkTransmitterPort()) {
                 return super.convert(token);
             }
             if (getType().equals(BaseType.GENERAL)) {

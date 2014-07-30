@@ -60,6 +60,7 @@ public class VergilApplet extends BasicJApplet {
      *  by the browser or appletviewer to inform this applet that
      *  it should clean up.
      */
+    @Override
     public void destroy() {
         super.destroy();
         // Note: we used to call manager.terminate() here to get rid
@@ -70,6 +71,7 @@ public class VergilApplet extends BasicJApplet {
     /** Return a string describing this applet.
      *  @return A string describing the applet.
      */
+    @Override
     public String getAppletInfo() {
         return "Ptolemy applet that displays Ptolemy II models using Vergil "
                 + VersionAttribute.CURRENT_VERSION
@@ -81,9 +83,10 @@ public class VergilApplet extends BasicJApplet {
     /** Describe the applet parameters.
      *  @return An array describing the applet parameters.
      */
+    @Override
     public String[][] getParameterInfo() {
         String[][] newinfo = { { "commandLineArguments", "",
-                "Command Line Arguments suitable for VergilApplication" }, };
+        "Command Line Arguments suitable for VergilApplication" }, };
         return _concatStringArrays(super.getParameterInfo(), newinfo);
     }
 
@@ -93,6 +96,7 @@ public class VergilApplet extends BasicJApplet {
      *  the first time that the start() method is called.
      *  In this class, this invokes {@link VergilApplication#main(String[])}
      */
+    @Override
     public void init() {
         super.init();
         String commandLineArguments = getParameter("commandLineArguments");
@@ -152,6 +156,7 @@ public class VergilApplet extends BasicJApplet {
      *  In this base class, this method calls the stop() method
      *  of the manager. If there is no manager, do nothing.
      */
+    @Override
     public void stop() {
         super.stop();
         try {

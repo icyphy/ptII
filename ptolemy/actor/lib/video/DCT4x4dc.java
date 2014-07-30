@@ -23,7 +23,7 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
-*/
+ */
 package ptolemy.actor.lib.video;
 
 import ptolemy.actor.TypedAtomicActor;
@@ -49,7 +49,7 @@ import ptolemy.kernel.util.Workspace;
    @since Ptolemy II 8.0
    @Pt.ProposedRating Red
    @Pt.AcceptedRating Red
-*/
+ */
 public class DCT4x4dc extends TypedAtomicActor {
     /** Construct an actor in the specified container with the specified
      *  name.
@@ -94,6 +94,7 @@ public class DCT4x4dc extends TypedAtomicActor {
      *  @exception CloneNotSupportedException If a derived class contains
      *   an attribute that cannot be cloned.
      */
+    @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         DCT4x4dc newObject = (DCT4x4dc) super.clone(workspace);
         newObject.input.setTypeAtLeast(newObject.input);
@@ -102,6 +103,7 @@ public class DCT4x4dc extends TypedAtomicActor {
         return newObject;
     }
 
+    @Override
     public void initialize() throws IllegalActionException {
         super.initialize();
         _output = new IntMatrixToken[1];
@@ -113,6 +115,7 @@ public class DCT4x4dc extends TypedAtomicActor {
      *   or if addition and subtraction are not supported by the
      *   available tokens.
      */
+    @Override
     public void fire() throws IllegalActionException {
         super.fire();
 
@@ -148,9 +151,9 @@ public class DCT4x4dc extends TypedAtomicActor {
             d23 = temp[i][2] - temp[i][3];
 
             sum[i][0] = s01 + s23 + 1 >> 1;
-            sum[i][1] = s01 - s23 + 1 >> 1;
-            sum[i][2] = d01 - d23 + 1 >> 1;
-            sum[i][3] = d01 + d23 + 1 >> 1;
+        sum[i][1] = s01 - s23 + 1 >> 1;
+        sum[i][2] = d01 - d23 + 1 >> 1;
+        sum[i][3] = d01 + d23 + 1 >> 1;
         }
 
         _output[0] = new IntMatrixToken(sum);

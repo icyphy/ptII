@@ -59,6 +59,7 @@ import diva.gui.toolbox.JContextMenu;
  @Pt.ProposedRating Red (eal)
  @Pt.AcceptedRating Red (johnr)
  */
+@Deprecated
 public class PortDialogFactory implements MenuItemFactory {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -72,6 +73,7 @@ public class PortDialogFactory implements MenuItemFactory {
      * @return The JMenuItem or null if the object argument is not an
      * Entity.
      */
+    @Override
     public JMenuItem create(final JContextMenu menu, NamedObj object) {
         JMenuItem retv = null;
 
@@ -92,7 +94,8 @@ public class PortDialogFactory implements MenuItemFactory {
         // when put in the background.
         // Note, this uses the "new" way of doing dialogs.
         @SuppressWarnings("serial")
-                Action configPortsAction = new AbstractAction(_configPorts) {
+        Action configPortsAction = new AbstractAction(_configPorts) {
+            @Override
             public void actionPerformed(ActionEvent e) {
                 Component parent = menu.getInvoker();
 
@@ -116,7 +119,8 @@ public class PortDialogFactory implements MenuItemFactory {
         retv = menu.add(configPortsAction, _configPorts);
 
         @SuppressWarnings("serial")
-                Action configUnitsAction = new AbstractAction(_configUnits) {
+        Action configUnitsAction = new AbstractAction(_configUnits) {
+            @Override
             public void actionPerformed(ActionEvent e) {
                 Component parent = menu.getInvoker();
 

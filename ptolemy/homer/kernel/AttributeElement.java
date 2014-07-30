@@ -127,7 +127,7 @@ public class AttributeElement extends PositionableElement {
      */
     public void removeListener(ValueListener listener) {
         ((AbstractSettableAttribute) getElement())
-                .removeValueListener(listener);
+        .removeValueListener(listener);
     }
 
     ///////////////////////////////////////////////////////////////////

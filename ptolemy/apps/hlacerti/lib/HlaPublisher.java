@@ -49,22 +49,22 @@ import ptolemy.kernel.util.Workspace;
 ///////////////////////////////////////////////////////////////////
 //// HlaPublisher
 
-/** 
- * <p>This actor implements a publisher in a HLA/CERTI federation. This 
- * publisher is associated to one HLA attribute. Ptolemy's tokens, received in 
+/**
+ * <p>This actor implements a publisher in a HLA/CERTI federation. This
+ * publisher is associated to one HLA attribute. Ptolemy's tokens, received in
  * the input port of this actor, are interpreted as an updated value of the
- * HLA attribute. The updated value is published to the whole HLA Federation 
+ * HLA attribute. The updated value is published to the whole HLA Federation
  * by the {@link HlaManager} attribute, deployed in a Ptolemy model.
- * </p><p> 
- * The name of this actor is mapped to the name of the HLA attribute in the 
+ * </p><p>
+ * The name of this actor is mapped to the name of the HLA attribute in the
  * federation and need to match the Federate Object Model (FOM) specified for
- * the Federation. The data type of the input port has to be the same type of 
+ * the Federation. The data type of the input port has to be the same type of
  * the HLA attribute. The parameter <i>classObjectHandle</i> needs to match the
- * attribute object class describes in the FOM. The parameter 
+ * attribute object class describes in the FOM. The parameter
  * <i>useHlaPtidesEvent</i> indicates if we need to handle PTIDES events as
  * RecordToken for HLA events.
  * </p>
- *   
+ *
  *  @author Gilles Lasnier, Contributors: Patricia Derler
  *  @version $Id$
  *  @since Ptolemy II 10.0
@@ -100,13 +100,13 @@ public class HlaPublisher extends TypedAtomicActor {
         useHLAPtidesEvent.setExpression("false");
         useHLAPtidesEvent.setDisplayName("use HLA PTIDES event");
         attributeChanged(useHLAPtidesEvent);
-        
+
         useCertiMessageBuffer = new Parameter(this, "useCertiMessageBuffer");
         useCertiMessageBuffer.setTypeEquals(BaseType.BOOLEAN);
         useCertiMessageBuffer.setExpression("false");
         useCertiMessageBuffer.setDisplayName("use CERTI message buffer");
         attributeChanged(useCertiMessageBuffer);
-        
+
         _hlaManager = null;
         _useHLAPtidesEvent = false;
         _useCertiMessageBuffer = false;
@@ -120,7 +120,7 @@ public class HlaPublisher extends TypedAtomicActor {
 
     /** Indicate if the event is for a PTIDES platform. */
     public Parameter useHLAPtidesEvent;
-    
+
     /** Indicate if the event is wrapped in a CERTI message buffer. */
     public Parameter useCertiMessageBuffer;
 
@@ -136,6 +136,7 @@ public class HlaPublisher extends TypedAtomicActor {
      *  @exception IllegalActionException If the object class parameter is
      *  empty.
      */
+    @Override
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         if (attribute == classObjectHandle) {
@@ -146,12 +147,12 @@ public class HlaPublisher extends TypedAtomicActor {
                         "Cannot have empty name !");
             }
         } else if (attribute == useCertiMessageBuffer) {
-            _useCertiMessageBuffer = ((BooleanToken) useCertiMessageBuffer.getToken())
-                    .booleanValue();
+            _useCertiMessageBuffer = ((BooleanToken) useCertiMessageBuffer
+                    .getToken()).booleanValue();
         } else if (attribute == useHLAPtidesEvent) {
             _useHLAPtidesEvent = ((BooleanToken) useHLAPtidesEvent.getToken())
                     .booleanValue();
-        } 
+        }
         super.attributeChanged(attribute);
     }
 
@@ -161,6 +162,7 @@ public class HlaPublisher extends TypedAtomicActor {
      *  @exception CloneNotSupportedException If a derived class contains
      *  an attribute that cannot be cloned.
      */
+    @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         HlaPublisher newObject = (HlaPublisher) super.clone(workspace);
         newObject._hlaManager = _hlaManager;
@@ -168,13 +170,14 @@ public class HlaPublisher extends TypedAtomicActor {
         return newObject;
     }
 
-    /** Retrieve and check if there is one and only one {@link HlaManager} 
+    /** Retrieve and check if there is one and only one {@link HlaManager}
      *  deployed in the Ptolemy model. The {@link HlaManager} provides the
      *  method to publish an updated value of a HLA attribute to the HLA/CERTI
      *  Federation.
      *  @exception IllegalActionException If there is zero or more than one
      *  {@link HlaManager} per Ptolemy model.
      */
+    @Override
     public void initialize() throws IllegalActionException {
         super.initialize();
 
@@ -194,9 +197,10 @@ public class HlaPublisher extends TypedAtomicActor {
         _hlaManager = hlaManagers.get(0);
     }
 
-    /** Each tokens, received in the input port, are transmitted to the 
+    /** Each tokens, received in the input port, are transmitted to the
      *  {@link HlaManager} for a publication to the HLA/CERTI Federation.
      */
+    @Override
     public void fire() throws IllegalActionException {
         if (inputPortList().get(0).hasToken(0)) {
             Token in = inputPortList().get(0).get(0);
@@ -216,14 +220,14 @@ public class HlaPublisher extends TypedAtomicActor {
      *  buffer API.
      */
     public boolean useCertiMessageBuffer() throws IllegalActionException {
-    	return _useCertiMessageBuffer;
+        return _useCertiMessageBuffer;
     }
-    
+
     /** Indicate if the HLA publisher actor sends events to a PTIDES
      *  platform.
      */
     public boolean useHLAPtidesEvent() throws IllegalActionException {
-    	return _useHLAPtidesEvent;
+        return _useHLAPtidesEvent;
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -234,7 +238,7 @@ public class HlaPublisher extends TypedAtomicActor {
 
     /** Indicate if the event is for a PTIDES platform. */
     private boolean _useHLAPtidesEvent;
-    
+
     /** Indicate if the event is wrapped in a CERTI message buffer. */
     private boolean _useCertiMessageBuffer;
 }

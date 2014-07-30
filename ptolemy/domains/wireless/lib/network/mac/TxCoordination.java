@@ -158,6 +158,7 @@ public class TxCoordination extends MACActorBase {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
+    @Override
     public void fire() throws IllegalActionException {
         super.fire();
 
@@ -262,7 +263,7 @@ public class TxCoordination extends MACActorBase {
 
                     Time endRx = new Time(getDirector(),
                             ((DoubleToken) GotCtsMsg.get("endRx"))
-                                    .doubleValue());
+                            .doubleValue());
                     _ssrc = 0;
 
                     setTimer(SifsTimeout, endRx.add(_dSifsDly * 1e-6));
@@ -386,6 +387,7 @@ public class TxCoordination extends MACActorBase {
     /** Initialize the private variables.
      *  @exception IllegalActionException If thrown by the base class.
      */
+    @Override
     public void initialize() throws IllegalActionException {
         super.initialize();
         _txQueue = new LinkedList();
@@ -445,14 +447,14 @@ public class TxCoordination extends MACActorBase {
                 new IntToken(123),
                 new IntToken(_aSifsTime + _aPreambleLength + _aPlcpHeaderLength
                         + _sAckCtsLng / _mBrate),
-                new IntToken(dest_addr),
-                new IntToken(getID()),
-                new IntToken(0),
-                new IntToken(_seqNum - _seqNum / 4096 * 4096),
-                new IntToken(0),
-                new IntToken(0),
-                msg,
-                new IntToken(34 * 8 + ((IntToken) msg.get("Length")).intValue()) };
+                        new IntToken(dest_addr),
+                        new IntToken(getID()),
+                        new IntToken(0),
+                        new IntToken(_seqNum - _seqNum / 4096 * 4096),
+                        new IntToken(0),
+                        new IntToken(0),
+                        msg,
+                        new IntToken(34 * 8 + ((IntToken) msg.get("Length")).intValue()) };
         _seqNum++;
 
         RecordToken pkt = new RecordToken(DataPacket, DataPacketValues);
@@ -613,7 +615,7 @@ public class TxCoordination extends MACActorBase {
     private Timer _Trsp;
 
     //This list saves the time when each pdu request is generated. It is used
-    //to calculate the overheah for statistic perpose. Yang 
+    //to calculate the overheah for statistic perpose. Yang
     private LinkedList _pduTime;
 
     private Time _time;

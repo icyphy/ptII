@@ -188,7 +188,7 @@ import diva.gui.toolbox.JContextMenu;
  */
 @SuppressWarnings("serial")
 public class TransformationEditor extends GTFrame implements ActionListener,
-        MenuItemListener, TableModelListener, ValueListener {
+MenuItemListener, TableModelListener, ValueListener {
 
     ///////////////////////////////////////////////////////////////////
     ////                          constructors                     ////
@@ -231,6 +231,7 @@ public class TransformationEditor extends GTFrame implements ActionListener,
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
+    @Override
     public void actionPerformed(ActionEvent e) {
         String command = e.getActionCommand();
         if (command.equals("add")) {
@@ -250,6 +251,7 @@ public class TransformationEditor extends GTFrame implements ActionListener,
                 _createCellPanel(""), _createCellPanel("") });
     }
 
+    @Override
     public void cancelFullScreen() {
         if (_screen == null) {
             return;
@@ -270,7 +272,7 @@ public class TransformationEditor extends GTFrame implements ActionListener,
             _splitPane.setRightComponent(_getRightComponent());
             JTabbedPane tabbedPane = getFrameController().getTabbedPane();
             tabbedPane
-                    .add(_fullScreenComponent, _selectedIndexBeforeFullScreen);
+            .add(_fullScreenComponent, _selectedIndexBeforeFullScreen);
             tabbedPane.setSelectedIndex(_selectedIndexBeforeFullScreen);
 
             // Restore association with the graph panner.
@@ -295,11 +297,13 @@ public class TransformationEditor extends GTFrame implements ActionListener,
         _getRightComponent().requestFocus();
     }
 
+    @Override
     public void changeExecuted(ChangeRequest change) {
         super.changeExecuted(change);
         _refreshTable();
     }
 
+    @Override
     public void copy() {
         if (!getFrameController().isTableActive()) {
             CompositeEntity model = getFrameController().getActiveModel();
@@ -347,12 +351,14 @@ public class TransformationEditor extends GTFrame implements ActionListener,
         }
     }
 
+    @Override
     public void delete() {
         if (!getFrameController().isTableActive()) {
             super.delete();
         }
     }
 
+    @Override
     public void fullScreen() {
         if (!getFrameController().hasTabs()) {
             super.fullScreen();
@@ -414,6 +420,7 @@ public class TransformationEditor extends GTFrame implements ActionListener,
         UndeferredGraphicalMessageHandler.setContext(_previousDefaultContext);
     }
 
+    @Override
     public void menuItemCreated(JContextMenu menu, NamedObj object,
             JMenuItem menuItem) {
         if (menuItem instanceof JMenu) {
@@ -446,6 +453,7 @@ public class TransformationEditor extends GTFrame implements ActionListener,
         }
     }
 
+    @Override
     public void paste() {
         if (!getFrameController().isTableActive()) {
             Clipboard clipboard = java.awt.Toolkit.getDefaultToolkit()
@@ -471,6 +479,7 @@ public class TransformationEditor extends GTFrame implements ActionListener,
         }
     }
 
+    @Override
     public void redo() {
         if (getFrameController().isTableActive() && _cellEditor != null) {
             _cellEditor.stopCellEditing();
@@ -505,6 +514,7 @@ public class TransformationEditor extends GTFrame implements ActionListener,
         }
     }
 
+    @Override
     public void tableChanged(TableModelEvent event) {
         if (event.getType() != TableModelEvent.UPDATE) {
             return;
@@ -620,6 +630,7 @@ public class TransformationEditor extends GTFrame implements ActionListener,
         }
     }
 
+    @Override
     public void undo() {
         if (getFrameController().isTableActive() && _cellEditor != null) {
             _cellEditor.stopCellEditing();
@@ -627,24 +638,28 @@ public class TransformationEditor extends GTFrame implements ActionListener,
         super.undo();
     }
 
+    @Override
     public void valueChanged(Settable settable) {
         if (_cellEditor != null) {
             _cellEditor.stopCellEditing();
         }
     }
 
+    @Override
     public void zoom(double factor) {
         if (!getFrameController().isTableActive()) {
             super.zoom(factor);
         }
     }
 
+    @Override
     public void zoomFit() {
         if (!getFrameController().isTableActive()) {
             super.zoomFit();
         }
     }
 
+    @Override
     public void zoomReset() {
         if (!getFrameController().isTableActive()) {
             super.zoomReset();
@@ -656,6 +671,7 @@ public class TransformationEditor extends GTFrame implements ActionListener,
     /** Create the menus that are used by this frame.
      *  It is essential that _createGraphPane() be called before this.
      */
+    @Override
     protected void _addMenus() {
         super._addMenus();
 
@@ -684,10 +700,12 @@ public class TransformationEditor extends GTFrame implements ActionListener,
         GUIUtilities.addToolBarButton(_toolbar, batchMatchAction);
     }
 
+    @Override
     protected RunnableGraphController _createActorGraphController() {
         return new TransformationActorGraphController();
     }
 
+    @Override
     protected RunnableGraphController _createFSMGraphController() {
         return new TransformationFSMGraphController();
     }
@@ -695,6 +713,7 @@ public class TransformationEditor extends GTFrame implements ActionListener,
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
+    @Override
     protected JComponent _createRightComponent(NamedObj entity) {
         JComponent component = super._createRightComponent(entity);
         if (component instanceof JTabbedPane) {
@@ -740,6 +759,7 @@ public class TransformationEditor extends GTFrame implements ActionListener,
          *  @param object The object that the menu item command will operate on.
          *  @return A menu item, or null to decline to provide a menu item.
          */
+        @Override
         public JMenuItem create(JContextMenu menu, NamedObj object) {
             int location = 0;
             for (int i = 0; i < menu.getComponentCount(); i++) {
@@ -900,6 +920,7 @@ public class TransformationEditor extends GTFrame implements ActionListener,
 
     protected class TransformationActorController extends ActorController {
 
+        @Override
         protected Figure _renderNode(Object node) {
             Figure nf = super._renderNode(node);
 
@@ -917,32 +938,33 @@ public class TransformationEditor extends GTFrame implements ActionListener,
             super(controller);
 
             _menuFactory
-                    .addMenuItemFactory(new MatchingAttributeActionsFactory());
+            .addMenuItemFactory(new MatchingAttributeActionsFactory());
 
             Action oldConfigureAction = _configureAction;
             _configureAction = new GTEntityConfigureAction("Configure");
             _configureMenuFactory.substitute(oldConfigureAction,
                     _configureAction);
             _configureMenuFactory
-                    .addMenuItemListener(TransformationEditor.this);
+            .addMenuItemListener(TransformationEditor.this);
         }
     }
 
     protected class TransformationActorGraphController extends
-            ActorEditorGraphController {
+    ActorEditorGraphController {
 
         protected TransformationActorGraphController() {
             _newRelationAction = new NewRelationAction(new String[][] {
                     { "/ptolemy/vergil/actor/img/relation.gif",
-                            GUIUtilities.LARGE_ICON },
-                    { "/ptolemy/vergil/actor/img/relation_o.gif",
+                        GUIUtilities.LARGE_ICON },
+                        { "/ptolemy/vergil/actor/img/relation_o.gif",
                             GUIUtilities.ROLLOVER_ICON },
-                    { "/ptolemy/vergil/actor/img/relation_ov.gif",
-                            GUIUtilities.ROLLOVER_SELECTED_ICON },
-                    { "/ptolemy/vergil/actor/img/relation_on.gif",
-                            GUIUtilities.SELECTED_ICON } });
+                            { "/ptolemy/vergil/actor/img/relation_ov.gif",
+                                GUIUtilities.ROLLOVER_SELECTED_ICON },
+                                { "/ptolemy/vergil/actor/img/relation_on.gif",
+                                    GUIUtilities.SELECTED_ICON } });
         }
 
+        @Override
         protected void _addHotKeys(JGraph jgraph) {
             List<JGraph> jgraphs = getFrameController().getJGraphs();
             if (jgraphs == null) {
@@ -954,6 +976,7 @@ public class TransformationEditor extends GTFrame implements ActionListener,
             }
         }
 
+        @Override
         protected void _createControllers() {
             super._createControllers();
 
@@ -964,6 +987,7 @@ public class TransformationEditor extends GTFrame implements ActionListener,
             _relationController = new TransformationRelationController(this);
         }
 
+        @Override
         protected void initializeInteraction() {
             super.initializeInteraction();
             Action oldConfigureAction = _configureAction;
@@ -971,12 +995,13 @@ public class TransformationEditor extends GTFrame implements ActionListener,
             _configureMenuFactory.substitute(oldConfigureAction,
                     _configureAction);
             _configureMenuFactory
-                    .addMenuItemListener(TransformationEditor.this);
+            .addMenuItemListener(TransformationEditor.this);
         }
 
         private class NewRelationAction extends
-                ActorEditorGraphController.NewRelationAction {
+        ActorEditorGraphController.NewRelationAction {
 
+            @Override
             public void actionPerformed(ActionEvent e) {
                 if (getFrameController().isTableActive()) {
                     return;
@@ -992,13 +1017,13 @@ public class TransformationEditor extends GTFrame implements ActionListener,
     }
 
     protected class TransformationExternalPortController extends
-            ExternalIOPortController {
+    ExternalIOPortController {
 
         TransformationExternalPortController(GraphController controller) {
             super(controller);
 
             _menuFactory
-                    .addMenuItemFactory(new MatchingAttributeActionsFactory());
+            .addMenuItemFactory(new MatchingAttributeActionsFactory());
 
             Action oldConfigureAction = _configureAction;
             _configureAction = new GTEntityConfigureAction("Configure");
@@ -1013,6 +1038,7 @@ public class TransformationEditor extends GTFrame implements ActionListener,
 
         private class Renderer extends PortRenderer {
 
+            @Override
             public Figure render(Object node) {
                 if (node != null && !_hide(node)) {
                     Figure nf = super.render(node);
@@ -1035,6 +1061,7 @@ public class TransformationEditor extends GTFrame implements ActionListener,
 
     protected class TransformationFSMGraphController extends FSMGraphController {
 
+        @Override
         protected void _addHotKeys(JGraph jgraph) {
             List<JGraph> jgraphs = getFrameController().getJGraphs();
             if (jgraphs == null) {
@@ -1046,6 +1073,7 @@ public class TransformationEditor extends GTFrame implements ActionListener,
             }
         }
 
+        @Override
         protected void _createControllers() {
             super._createControllers();
 
@@ -1056,6 +1084,7 @@ public class TransformationEditor extends GTFrame implements ActionListener,
 
     protected class TransformationLinkController extends LinkController {
 
+        @Override
         public Connector render(Object edge, FigureLayer layer, Site tailSite,
                 Site headSite) {
             Connector connector = super.render(edge, layer, tailSite, headSite);
@@ -1071,7 +1100,7 @@ public class TransformationEditor extends GTFrame implements ActionListener,
             super(controller);
 
             _menuFactory
-                    .addMenuItemFactory(new MatchingAttributeActionsFactory());
+            .addMenuItemFactory(new MatchingAttributeActionsFactory());
 
             Action oldConfigureAction = _configureAction;
             _configureAction = new GTEntityConfigureAction("Configure");
@@ -1086,7 +1115,7 @@ public class TransformationEditor extends GTFrame implements ActionListener,
             super(controller);
 
             _menuFactory
-                    .addMenuItemFactory(new MatchingAttributeActionsFactory());
+            .addMenuItemFactory(new MatchingAttributeActionsFactory());
 
             Action oldConfigureAction = _configureAction;
             _configureAction = new GTEntityConfigureAction("Configure");
@@ -1098,6 +1127,7 @@ public class TransformationEditor extends GTFrame implements ActionListener,
 
         private class Renderer extends EntityPortRenderer {
 
+            @Override
             protected Figure _decoratePortFigure(Object node, Figure figure) {
                 GraphModel graphModel = getController().getGraphModel();
                 Object object = graphModel.getSemanticObject(node);
@@ -1116,6 +1146,7 @@ public class TransformationEditor extends GTFrame implements ActionListener,
 
     protected class TransformationRelationController extends RelationController {
 
+        @Override
         protected Figure _renderNode(Object node) {
             if (node != null && !_hide(node)) {
                 Figure nf = super._renderNode(node);
@@ -1133,7 +1164,7 @@ public class TransformationEditor extends GTFrame implements ActionListener,
             super(controller);
 
             _menuFactory
-                    .addMenuItemFactory(new MatchingAttributeActionsFactory());
+            .addMenuItemFactory(new MatchingAttributeActionsFactory());
 
             Action oldConfigureAction = _configureAction;
             _configureAction = new GTEntityConfigureAction("Configure");
@@ -1150,7 +1181,7 @@ public class TransformationEditor extends GTFrame implements ActionListener,
             setNodeRenderer(new Renderer(controller.getGraphModel()));
 
             _menuFactory
-                    .addMenuItemFactory(new MatchingAttributeActionsFactory());
+            .addMenuItemFactory(new MatchingAttributeActionsFactory());
 
             Action oldConfigureAction = _configureAction;
             _configureAction = new GTEntityConfigureAction("Configure");
@@ -1164,6 +1195,7 @@ public class TransformationEditor extends GTFrame implements ActionListener,
                 super(model);
             }
 
+            @Override
             public Figure render(Object node) {
                 Figure nf = super.render(node);
 
@@ -1181,13 +1213,13 @@ public class TransformationEditor extends GTFrame implements ActionListener,
     }
 
     protected class TransformationTransitionController extends
-            TransitionController {
+    TransitionController {
 
         public TransformationTransitionController(GraphController controller) {
             super(controller);
 
             _menuFactory
-                    .addMenuItemFactory(new MatchingAttributeActionsFactory());
+            .addMenuItemFactory(new MatchingAttributeActionsFactory());
 
             Action oldConfigureAction = _configureAction;
             _configureAction = new GTEntityConfigureAction("Configure");
@@ -1195,6 +1227,7 @@ public class TransformationEditor extends GTFrame implements ActionListener,
                     _configureAction);
         }
 
+        @Override
         public Connector render(Object edge, FigureLayer layer, Site tailSite,
                 Site headSite) {
             Connector connector = super.render(edge, layer, tailSite, headSite);
@@ -1223,6 +1256,7 @@ public class TransformationEditor extends GTFrame implements ActionListener,
 
         _tableModel = new DefaultTableModel(new Object[] { "",
                 "Pattern Entity", "Replacement Entity" }, 0) {
+            @Override
             public boolean isCellEditable(int row, int column) {
                 if (column == 0) {
                     return false;
@@ -1381,7 +1415,7 @@ public class TransformationEditor extends GTFrame implements ActionListener,
                             for (Object entity : entities) {
                                 if (entity instanceof EntityLibrary
                                         || ((NamedObj) entity).getName()
-                                                .compareTo(name) > 0) {
+                                        .compareTo(name) > 0) {
                                     break;
                                 }
                                 i++;
@@ -1390,7 +1424,7 @@ public class TransformationEditor extends GTFrame implements ActionListener,
                         } else {
                             throw new InternalErrorException(tableau, null,
                                     "Could not instantiate class \"" + clazz
-                                    + "\"");
+                                            + "\"");
                         }
 
                         String iconFile = optionalActorClass.replace('.', '/')
@@ -1419,10 +1453,13 @@ public class TransformationEditor extends GTFrame implements ActionListener,
                                     .clone(library.workspace());
                             entity.setContainer(library);
                         } catch (Exception ex) {
-                            System.err.println("TransformationEditor: Ignoring clone of "
-                                    + (entity != null ? entity.getFullName() : "null")
-                                    + " beause we don't known "
-                                    + "how to import it. Exception was: " + ex);
+                            System.err
+                                    .println("TransformationEditor: Ignoring clone of "
+                                            + (entity != null ? entity
+                                                    .getFullName() : "null")
+                                            + " beause we don't known "
+                                            + "how to import it. Exception was: "
+                                            + ex);
                         }
                     }
                 } finally {
@@ -1590,7 +1627,7 @@ public class TransformationEditor extends GTFrame implements ActionListener,
                         : _HIGHLIGHT_THICKNESS;
                 BasicRectangle bf = new BasicRectangle(bounds.getX() - padding,
                         bounds.getY() - padding, bounds.getWidth() + padding
-                                * 2.0, bounds.getHeight() + padding * 2.0,
+                        * 2.0, bounds.getHeight() + padding * 2.0,
                         thickness);
                 bf.setStrokePaint(color);
 
@@ -1664,7 +1701,7 @@ public class TransformationEditor extends GTFrame implements ActionListener,
                 }
                 String name = _getNameWithinContainer(object,
                         getFrameController().getTransformationRule()
-                                .getPattern());
+                        .getPattern());
                 patternObject.setPersistent(true);
                 patternObject.setExpression(name);
             } else if (patternObject != null) {
@@ -1727,10 +1764,11 @@ public class TransformationEditor extends GTFrame implements ActionListener,
                 JOptionPane.ERROR_MESSAGE, null, options, options[1]);
         if (selected == 0) {
             SwingUtilities.invokeLater(new Runnable() {
+                @Override
                 public void run() {
                     if (_table.isEditing()
                             && (_table.getEditingRow() != row || _table
-                                    .getEditingColumn() != column)) {
+                            .getEditingColumn() != column)) {
                         _cellEditor.cancelCellEditing();
                     }
                     _table.editCellAt(row, column);
@@ -1791,20 +1829,21 @@ public class TransformationEditor extends GTFrame implements ActionListener,
 
             GUIUtilities.addIcons(this, new String[][] {
                     { "/ptolemy/vergil/gt/img/batchmatch.gif",
-                            GUIUtilities.LARGE_ICON },
-                    { "/ptolemy/vergil/gt/img/batchmatch_o.gif",
+                        GUIUtilities.LARGE_ICON },
+                        { "/ptolemy/vergil/gt/img/batchmatch_o.gif",
                             GUIUtilities.ROLLOVER_ICON },
-                    { "/ptolemy/vergil/gt/img/batchmatch_ov.gif",
-                            GUIUtilities.ROLLOVER_SELECTED_ICON },
-                    { "/ptolemy/vergil/gt/img/batchmatch_on.gif",
-                            GUIUtilities.SELECTED_ICON } });
+                            { "/ptolemy/vergil/gt/img/batchmatch_ov.gif",
+                                GUIUtilities.ROLLOVER_SELECTED_ICON },
+                                { "/ptolemy/vergil/gt/img/batchmatch_on.gif",
+                                    GUIUtilities.SELECTED_ICON } });
 
             putValue("tooltip", "Match Ptolemy models in a directory (Ctrl+2)");
             putValue(GUIUtilities.ACCELERATOR_KEY, KeyStroke.getKeyStroke(
                     KeyEvent.VK_2, Toolkit.getDefaultToolkit()
-                            .getMenuShortcutKeyMask()));
+                    .getMenuShortcutKeyMask()));
         }
 
+        @Override
         public void actionPerformed(ActionEvent e) {
             super.actionPerformed(e);
 
@@ -1873,11 +1912,11 @@ public class TransformationEditor extends GTFrame implements ActionListener,
 
             if (directoryFile != null && !directoryFile.exists()) {
                 MessageHandler
-                        .error("Directory \""
-                                + directoryFile.getPath()
-                                + "\" does not exist, "
-                                + "the value of the DefaultDirectoryAttribute parameter was \""
-                                + attribute.directory.getExpression() + "\"");
+                .error("Directory \""
+                        + directoryFile.getPath()
+                        + "\" does not exist, "
+                        + "the value of the DefaultDirectoryAttribute parameter was \""
+                        + attribute.directory.getExpression() + "\"");
                 return null;
             }
 
@@ -1892,6 +1931,7 @@ public class TransformationEditor extends GTFrame implements ActionListener,
 
         private class MultipleViewController extends ViewController {
 
+            @Override
             public void windowDeactivated(WindowEvent e) {
                 Window window = e.getWindow();
                 if (!(window instanceof MatchResultViewer)) {
@@ -1920,6 +1960,7 @@ public class TransformationEditor extends GTFrame implements ActionListener,
                 }
             }
 
+            @Override
             protected void _close() {
                 super._close();
                 if (_viewers != null) {
@@ -1960,7 +2001,7 @@ public class TransformationEditor extends GTFrame implements ActionListener,
             }
 
             private int _findNextMatch(int index) throws MalformedURLException,
-                    Exception {
+            Exception {
                 for (int i = index + 1; i < _files.length; i++) {
                     List<MatchResult> currentResult = _allResults[i];
                     if (currentResult == null) {
@@ -2033,6 +2074,7 @@ public class TransformationEditor extends GTFrame implements ActionListener,
 
     private static class CellEditor extends CellPanelEditor {
 
+        @Override
         public Component getTableCellEditorComponent(JTable table,
                 Object value, boolean isSelected, int row, int column) {
             JPanel panel = (JPanel) super.getTableCellEditorComponent(table,
@@ -2059,6 +2101,7 @@ public class TransformationEditor extends GTFrame implements ActionListener,
             super(name, group);
         }
 
+        @Override
         public Class<? extends MatchingAttribute> getAttributeClass() {
             return CreationAttribute.class;
         }
@@ -2070,6 +2113,7 @@ public class TransformationEditor extends GTFrame implements ActionListener,
             super(description);
         }
 
+        @Override
         protected void _openDialog(Frame parent, NamedObj target,
                 ActionEvent event) {
             EditorFactory factory = null;
@@ -2100,6 +2144,7 @@ public class TransformationEditor extends GTFrame implements ActionListener,
             super(name, group);
         }
 
+        @Override
         public Class<? extends MatchingAttribute> getAttributeClass() {
             return IgnoringAttribute.class;
         }
@@ -2142,7 +2187,7 @@ public class TransformationEditor extends GTFrame implements ActionListener,
 
         protected MatchResultViewer _showViewer(CompositeEntity model,
                 List<MatchResult> results, String sourceFileName)
-                throws IllegalActionException, NameDuplicationException {
+                        throws IllegalActionException, NameDuplicationException {
             MatchResultViewer._setTableauFactory(this, model);
             Configuration configuration = getFrameController()
                     .getConfiguration();
@@ -2180,6 +2225,7 @@ public class TransformationEditor extends GTFrame implements ActionListener,
             _group = group;
         }
 
+        @Override
         public void actionPerformed(ActionEvent e) {
             super.actionPerformed(e);
 
@@ -2276,6 +2322,7 @@ public class TransformationEditor extends GTFrame implements ActionListener,
             super(name, group);
         }
 
+        @Override
         public Class<? extends MatchingAttribute> getAttributeClass() {
             return NegationAttribute.class;
         }
@@ -2288,10 +2335,12 @@ public class TransformationEditor extends GTFrame implements ActionListener,
             super(name, group);
         }
 
+        @Override
         public Class<? extends MatchingAttribute> getAttributeClass() {
             return OptionAttribute.class;
         }
 
+        @Override
         protected void _addAttribute(
                 Class<? extends MatchingAttribute> attributeClass,
                 List<MoMLChangeRequest> changeRequests) {
@@ -2323,6 +2372,7 @@ public class TransformationEditor extends GTFrame implements ActionListener,
             _isToReplacement = GTTools.isInReplacement(model);
         }
 
+        @Override
         protected void _postParse(MoMLParser parser) {
             Iterator<?> topObjects = parser.topObjectsCreated().iterator();
             while (topObjects.hasNext()) {
@@ -2361,6 +2411,7 @@ public class TransformationEditor extends GTFrame implements ActionListener,
             super(name, group);
         }
 
+        @Override
         public Class<? extends MatchingAttribute> getAttributeClass() {
             return PreservationAttribute.class;
         }
@@ -2373,21 +2424,22 @@ public class TransformationEditor extends GTFrame implements ActionListener,
 
             GUIUtilities.addIcons(this, new String[][] {
                     { "/ptolemy/vergil/gt/img/match.gif",
-                            GUIUtilities.LARGE_ICON },
-                    { "/ptolemy/vergil/gt/img/match_o.gif",
+                        GUIUtilities.LARGE_ICON },
+                        { "/ptolemy/vergil/gt/img/match_o.gif",
                             GUIUtilities.ROLLOVER_ICON },
-                    { "/ptolemy/vergil/gt/img/match_ov.gif",
-                            GUIUtilities.ROLLOVER_SELECTED_ICON },
-                    { "/ptolemy/vergil/gt/img/match_on.gif",
-                            GUIUtilities.SELECTED_ICON } });
+                            { "/ptolemy/vergil/gt/img/match_ov.gif",
+                                GUIUtilities.ROLLOVER_SELECTED_ICON },
+                                { "/ptolemy/vergil/gt/img/match_on.gif",
+                                    GUIUtilities.SELECTED_ICON } });
 
             putValue("tooltip", "Match a Ptolemy model in an external file "
                     + "(Ctrl+1)");
             putValue(GUIUtilities.ACCELERATOR_KEY, KeyStroke.getKeyStroke(
                     KeyEvent.VK_1, Toolkit.getDefaultToolkit()
-                            .getMenuShortcutKeyMask()));
+                    .getMenuShortcutKeyMask()));
         }
 
+        @Override
         public void actionPerformed(ActionEvent e) {
             super.actionPerformed(e);
 
@@ -2451,6 +2503,7 @@ public class TransformationEditor extends GTFrame implements ActionListener,
 
         private class SingleViewController extends ViewController {
 
+            @Override
             public void windowDeactivated(WindowEvent e) {
                 Window window = e.getWindow();
                 if (!(window instanceof MatchResultViewer)) {
@@ -2465,6 +2518,7 @@ public class TransformationEditor extends GTFrame implements ActionListener,
                 _close();
             }
 
+            @Override
             protected void _close() {
                 super._close();
                 if (_viewer != null) {
@@ -2508,12 +2562,15 @@ public class TransformationEditor extends GTFrame implements ActionListener,
 
     private class ViewController implements WindowListener {
 
+        @Override
         public void windowActivated(WindowEvent e) {
         }
 
+        @Override
         public void windowClosed(WindowEvent e) {
         }
 
+        @Override
         public void windowClosing(WindowEvent e) {
             Window window = e.getWindow();
             if (window == TransformationEditor.this) {
@@ -2521,15 +2578,19 @@ public class TransformationEditor extends GTFrame implements ActionListener,
             }
         }
 
+        @Override
         public void windowDeactivated(WindowEvent e) {
         }
 
+        @Override
         public void windowDeiconified(WindowEvent e) {
         }
 
+        @Override
         public void windowIconified(WindowEvent e) {
         }
 
+        @Override
         public void windowOpened(WindowEvent e) {
         }
 

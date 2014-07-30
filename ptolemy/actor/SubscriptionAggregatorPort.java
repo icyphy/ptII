@@ -124,6 +124,7 @@ public class SubscriptionAggregatorPort extends SubscriberPort {
      *  @exception IllegalActionException Thrown if the new color attribute cannot
      *      be created.
      */
+    @Override
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         if (attribute == operation) {
@@ -196,7 +197,7 @@ public class SubscriptionAggregatorPort extends SubscriberPort {
      */
     @Override
     public Token get(int channelIndex) throws NoTokenException,
-            IllegalActionException {
+    IllegalActionException {
         if (channelIndex != 0) {
             throw new IllegalActionException(
                     this,
@@ -281,6 +282,7 @@ public class SubscriptionAggregatorPort extends SubscriberPort {
      *  always 1.
      *  @return The width of the inside of the port.
      */
+    @Override
     public int getWidthInside() {
         return 1;
     }
@@ -300,7 +302,7 @@ public class SubscriptionAggregatorPort extends SubscriberPort {
                     "Although it is a multiport, you can only read"
                             + " from channel 0 of a SubscriptionAggregatorPort.");
         }
-        */
+         */
         for (int i = 0; i < getWidth(); i++) {
             if (super.hasToken(i)) {
                 return true;
@@ -326,7 +328,7 @@ public class SubscriptionAggregatorPort extends SubscriberPort {
                     "Although it is a multiport, you can only read"
                             + " from channel 0 of a SubscriptionAggregatorPort.");
         }
-        */
+         */
         boolean foundOne = false;
         for (int i = 0; i < getWidth(); i++) {
             if (super.hasToken(i)) {
@@ -344,6 +346,7 @@ public class SubscriptionAggregatorPort extends SubscriberPort {
      *  @exception IllegalActionException If the port is in
      *  the top level.
      */
+    @Override
     public void preinitialize() throws IllegalActionException {
         NamedObj actor = getContainer();
         if (actor != null && actor.getContainer() == null) {
@@ -362,6 +365,7 @@ public class SubscriptionAggregatorPort extends SubscriberPort {
      *  @return The sums of the width of the relations linked on the inside,
      *  except for the specified port.
      */
+    @Override
     protected int _getInsideWidth(IORelation except) {
         return 1;
     }
@@ -370,6 +374,7 @@ public class SubscriptionAggregatorPort extends SubscriberPort {
      *  @exception IllegalActionException If creating the link
      *   triggers an exception.
      */
+    @Override
     protected void _updateLinks() throws IllegalActionException {
         // This overrides the base class to Pattern version
         // rather than the String version of linkToPublishedPort().

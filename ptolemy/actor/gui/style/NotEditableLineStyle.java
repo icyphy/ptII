@@ -94,6 +94,7 @@ public class NotEditableLineStyle extends ParameterEditorStyle {
      *  @param param The attribute that this annotates.
      *  @return True.
      */
+    @Override
     public boolean acceptable(Settable param) {
         return true;
     }
@@ -105,6 +106,7 @@ public class NotEditableLineStyle extends ParameterEditorStyle {
      *
      *  @param query The query into which to add the entry.
      */
+    @Override
     public void addEntry(PtolemyQuery query) {
         Settable container = (Settable) getContainer();
         String name = container.getName();

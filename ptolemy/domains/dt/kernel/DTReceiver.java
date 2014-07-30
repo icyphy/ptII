@@ -240,6 +240,7 @@ public class DTReceiver extends SDFReceiver {
      *
      *  @return The oldest token in the receiver.
      */
+    @Override
     public Token get() {
         // -get-
         Actor actor = (Actor) super.getContainer().getContainer();
@@ -263,6 +264,8 @@ public class DTReceiver extends SDFReceiver {
      *   @deprecated As of Ptolemy II 4.1, replaced by
      *   {@link #getModelTime()}
      */
+    @Deprecated
+    @Override
     public double getCurrentTime() {
         return getModelTime().getDoubleValue();
     }
@@ -283,6 +286,7 @@ public class DTReceiver extends SDFReceiver {
      *
      *   @return The local time associated with this receiver.
      */
+    @Override
     public Time getModelTime() {
         return _localTime;
     }
@@ -315,6 +319,7 @@ public class DTReceiver extends SDFReceiver {
      *  @return A boolean indicating whether there is a token in this
      *  receiver.
      */
+    @Override
     public boolean hasToken() {
         if (overrideHasToken == true) {
             return false;
@@ -329,6 +334,7 @@ public class DTReceiver extends SDFReceiver {
      *  @param token The token to be put to the receiver, or null to put no token.
      *  @exception InternalErrorException If the source port is null.
      */
+    @Override
     public void put(Token token) {
         if (token == null) {
             return;
@@ -345,6 +351,7 @@ public class DTReceiver extends SDFReceiver {
      *  calling clear() and resetting the current time to 0.0.
      *  @exception IllegalActionException If there is no director.
      */
+    @Override
     public void reset() throws IllegalActionException {
         super.reset();
         IOPort containerPort = getContainer();

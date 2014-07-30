@@ -63,7 +63,7 @@ java -classpath $PTII ptolemy.actor.gui.CompositeActorApplication -class ptolemy
  */
 public class Butterfly extends TypedCompositeActor {
     public Butterfly(Workspace workspace) throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         super(workspace);
         setName("Butterfly");
 

@@ -96,7 +96,7 @@ public class LineWriter extends Sink {
         fileName = new FilePortParameter(this, "fileName");
         fileName.setExpression("System.out");
         new SingletonParameter(fileName.getPort(), "_showName")
-                .setToken(BooleanToken.TRUE);
+        .setToken(BooleanToken.TRUE);
 
         append = new Parameter(this, "append");
         append.setTypeEquals(BaseType.BOOLEAN);
@@ -170,6 +170,7 @@ public class LineWriter extends Sink {
      *   is <i>fileName</i> and the previously
      *   opened file cannot be closed.
      */
+    @Override
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         if (attribute == fileName) {
@@ -194,6 +195,7 @@ public class LineWriter extends Sink {
      *  @exception CloneNotSupportedException If a derived class contains
      *   an attribute that cannot be cloned.
      */
+    @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         LineWriter newObject = (LineWriter) super.clone(workspace);
         newObject._writer = null;
@@ -210,6 +212,7 @@ public class LineWriter extends Sink {
      *  @exception IllegalActionException If the file cannot be opened
      *   or created, or if the user refuses to overwrite an existing file.
      */
+    @Override
     public boolean postfire() throws IllegalActionException {
         fileName.update();
         for (int i = 0; i < input.getWidth(); i++) {
@@ -264,6 +267,7 @@ public class LineWriter extends Sink {
      *  @exception IllegalActionException If there is an error reading the
      *  alwaysFlush parameter.
      */
+    @Override
     public void preinitialize() throws IllegalActionException {
         super.preinitialize();
         _flushValue = ((BooleanToken) alwaysFlush.getToken()).booleanValue();
@@ -272,6 +276,7 @@ public class LineWriter extends Sink {
     /** Close the writer if there is one.
      *  @exception IllegalActionException If an IO error occurs.
      */
+    @Override
     public void wrapup() throws IllegalActionException {
         fileName.close();
         _writer = null;

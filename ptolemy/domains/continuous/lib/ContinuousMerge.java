@@ -88,7 +88,7 @@ public class ContinuousMerge extends Transformer {
         _attachText("_iconDescription", "<svg>\n"
                 + "<polygon points=\"-10,20 10,10 10,-10, -10,-20\" "
                 + "style=\"fill:green\"/>\n" + "</svg>\n");
-        
+
         discard = new Parameter(this, "discard");
         discard.setExpression("true");
         discard.setTypeEquals(BaseType.BOOLEAN);
@@ -101,7 +101,7 @@ public class ContinuousMerge extends Transformer {
      *  higher than the first one. This is a boolean that defaults to true.
      */
     public Parameter discard;
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -112,54 +112,58 @@ public class ContinuousMerge extends Transformer {
      *  @exception IllegalActionException If there is no director, or
      *   the input can not be read, or the output can not be sent.
      */
+    @Override
     public void fire() throws IllegalActionException {
         super.fire();
-        boolean discardValue = ((BooleanToken)discard.getToken()).booleanValue();
+        boolean discardValue = ((BooleanToken) discard.getToken())
+                .booleanValue();
         boolean outputProduced = false;
         if (_pending != null && _pending.size() > 0) {
-                output.send(0, _pending.remove(0));
-                outputProduced = true;
+            output.send(0, _pending.remove(0));
+            outputProduced = true;
         }
         for (int i = 0; i < input.getWidth(); i++) {
             if (input.hasToken(i)) {
-                    if (!outputProduced) {
-                            output.send(0, input.get(i));
-                            outputProduced = true;
-                    }
+                if (!outputProduced) {
+                    output.send(0, input.get(i));
+                    outputProduced = true;
+                }
                 if (discardValue) {
-                        return;
+                    return;
                 } else {
-                        if (_pending == null) {
-                                _pending = new LinkedList<Token>();
-                        }
-                        _pending.add(input.get(i));
+                    if (_pending == null) {
+                        _pending = new LinkedList<Token>();
+                    }
+                    _pending.add(input.get(i));
                 }
             }
         }
     }
-    
+
     /** Initialize this actor by clearing memory of any pending outputs.
      *  @exception IllegalActionException If a derived class throws it.
      */
+    @Override
     public void initialize() throws IllegalActionException {
-            super.initialize();
-            if (_pending != null) {
-                    _pending.clear();
-            }
+        super.initialize();
+        if (_pending != null) {
+            _pending.clear();
+        }
     }
-    
+
     /** If there are any pending outputs, then request a refiring at the
      *  current time.
      *  @return True if execution can continue into the next iteration.
      *  @exception IllegalActionException Not thrown in this base class.
      */
+    @Override
     public boolean postfire() throws IllegalActionException {
         if (_pending != null && _pending.size() > 0) {
-                getDirector().fireAtCurrentTime(this);
+            getDirector().fireAtCurrentTime(this);
         }
         return super.postfire();
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 

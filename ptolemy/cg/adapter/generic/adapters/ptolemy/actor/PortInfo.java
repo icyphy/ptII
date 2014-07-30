@@ -24,7 +24,7 @@
    PT_COPYRIGHT_VERSION_2
    COPYRIGHTENDKEY
 
-*/
+ */
 package ptolemy.cg.adapter.generic.adapters.ptolemy.actor;
 
 import java.util.HashMap;
@@ -34,6 +34,7 @@ import ptolemy.actor.IOPort;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.util.DFUtilities;
 import ptolemy.cg.kernel.generic.GenericCodeGenerator;
+import ptolemy.cg.kernel.generic.program.NamedProgramCodeGeneratorAdapter;
 import ptolemy.cg.kernel.generic.program.ProgramCodeGeneratorAdapter;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NamedObj;
@@ -58,7 +59,8 @@ public class PortInfo {
      *  extra bookkeeping to generate code.
      *  @param director The director associated with the ports.
      */
-    public PortInfo(IOPort port, Ports ports, NamedObj component, PortDirector director) {
+    public PortInfo(IOPort port, Ports ports, NamedObj component,
+            PortDirector director) {
         _port = port;
         _ports = ports;
         //_component = component;
@@ -79,8 +81,7 @@ public class PortInfo {
      *  @exception IllegalActionException If thrown while getting
      *  the channel or rate.
      */
-    public int getBufferSize(int channelNumber)
-            throws IllegalActionException {
+    public int getBufferSize(int channelNumber) throws IllegalActionException {
         ProgramCodeGeneratorAdapter.Channel channel = _getChannel(channelNumber);
         if (_bufferSizes.get(channel) == null) {
             // This should be a special case for doing
@@ -169,9 +170,9 @@ public class PortInfo {
         if (_writeOffsets.get(channel) == null) {
             throw new IllegalActionException(_port,
                     "Could not write offset for channel " + channelNumber
-                    + " in port " + _port.getFullName()
-                    + ", there were " + _writeOffsets.size()
-                    + " writeOffsets for this port.");
+                            + " in port " + _port.getFullName()
+                            + ", there were " + _writeOffsets.size()
+                            + " writeOffsets for this port.");
         }
         return _writeOffsets.get(channel);
 
@@ -187,7 +188,7 @@ public class PortInfo {
            if (_isPthread()) {
            return "";
            }
-        */
+         */
 
         StringBuffer code = new StringBuffer();
 
@@ -251,10 +252,10 @@ public class PortInfo {
         boolean padBuffers = _director.padBuffers();
 
         StringBuffer code = new StringBuffer();
-        code.append(getCodeGenerator()
-                .comment(
-                        "Begin updateConnectedPortsOffset "
-                        + /*NamedProgramCodeGeneratorAdapter.*/_director.generatePortName((TypedIOPort) _port)));
+        code.append(getCodeGenerator().comment(
+                "Begin updateConnectedPortsOffset "
+                                + /*NamedProgramCodeGeneratorAdapter.*/_director
+                                .generatePortName((TypedIOPort) _port)));
 
         if (rate == 0) {
             return "";
@@ -271,12 +272,12 @@ public class PortInfo {
         }
 
         for (int j = 0; j < length; j++) {
-            List<ProgramCodeGeneratorAdapter.Channel> sinkChannels = PortDirector.getSinkChannels(
-                    _port, j);
+            List<ProgramCodeGeneratorAdapter.Channel> sinkChannels = NamedProgramCodeGeneratorAdapter
+                    .getSinkChannels(_port, j);
 
             for (int k = 0; k < sinkChannels.size(); k++) {
                 ProgramCodeGeneratorAdapter.Channel channel = sinkChannels
-                    .get(k);
+                        .get(k);
                 ptolemy.actor.IOPort sinkPort = channel.port;
                 int sinkChannelNumber = channel.channelNumber;
 
@@ -299,9 +300,8 @@ public class PortInfo {
                     if (padBuffers) {
                         int modulo = _ports.getBufferSize(sinkPort,
                                 sinkChannelNumber) - 1;
-                        code.append(offsetVariable + " = ("
-                                + offsetVariable + " + " + rate + ")&"
-                                + modulo + ";" + _eol);
+                        code.append(offsetVariable + " = (" + offsetVariable
+                                + " + " + rate + ")&" + modulo + ";" + _eol);
                     } else {
                         code.append(offsetVariable
                                 + " = ("
@@ -316,10 +316,10 @@ public class PortInfo {
                 }
             }
         }
-        code.append(getCodeGenerator()
-                .comment(
-                        "End updateConnectedPortsOffset "
-                        + /*NamedProgramCodeGeneratorAdapter.*/_director.generatePortName((TypedIOPort) _port)));
+        code.append(getCodeGenerator().comment(
+                "End updateConnectedPortsOffset "
+                                + /*NamedProgramCodeGeneratorAdapter.*/_director
+                                .generatePortName((TypedIOPort) _port)));
         return code.toString();
     }
 
@@ -339,24 +339,23 @@ public class PortInfo {
         if (getCodeGenerator() == null) {
             throw new NullPointerException("getCodeGenerator() returned null?");
         }
-        StringBuffer code = new StringBuffer(
-                getCodeGenerator()
-                .comment(
-                        "Begin updateOffset "
-                        + /*NamedProgramCodeGeneratorAdapter.*/_director.generatePortName((TypedIOPort) _port)));
+        StringBuffer code = new StringBuffer(getCodeGenerator().comment(
+                "Begin updateOffset "
+                                + /*NamedProgramCodeGeneratorAdapter.*/_director
+                                .generatePortName((TypedIOPort) _port)));
 
         for (int i = 0; i < _port.getWidth(); i++) {
             code.append(_updateOffset(i, rate)
                     + _eol
                     + getCodeGenerator()
-                    .comment(
-                            "End updateOffset "
-                            + /*NamedProgramCodeGeneratorAdapter.*/_director.generatePortName((TypedIOPort) _port)));
+                            .comment(
+                                    "End updateOffset "
+                                            + /*NamedProgramCodeGeneratorAdapter.*/_director
+                                                    .generatePortName((TypedIOPort) _port)));
         }
         return code.toString();
     }
 
-    
     ///////////////////////////////////////////////////////////////////
     ////                         protected members                 ////
     /** The value of the line.separator property. */
@@ -369,8 +368,7 @@ public class PortInfo {
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
-    private ProgramCodeGeneratorAdapter.Channel _getChannel(
-            int channelNumber) {
+    private ProgramCodeGeneratorAdapter.Channel _getChannel(int channelNumber) {
         return new ProgramCodeGeneratorAdapter.Channel(_port, channelNumber);
     }
 
@@ -386,7 +384,8 @@ public class PortInfo {
      */
     private String _generateOffset(String offsetString, int channel,
             boolean isWrite) throws IllegalActionException {
-        boolean dynamicReferencesAllowed = _director.allowDynamicMultiportReference();
+        boolean dynamicReferencesAllowed = _director
+                .allowDynamicMultiportReference();
         boolean padBuffers = _director.padBuffers();
 
         //if (MpiPNDirector.isLocalBuffer(port, channel)) {
@@ -422,7 +421,7 @@ public class PortInfo {
             if (offsetObject instanceof Integer && _isInteger(offsetString)) {
 
                 int offset = ((Integer) offsetObject).intValue()
-                    + Integer.parseInt(offsetString);
+                        + Integer.parseInt(offsetString);
 
                 offset %= getBufferSize(channel);
                 temp = Integer.toString(offset);
@@ -433,7 +432,7 @@ public class PortInfo {
                   + getWriteOffset(sinkPort,
                   sinkChannelNumber) + " + "
                   + channelAndOffset[1] + ")%" + divisor;
-                */
+                 */
                 result = "[" + temp + "]";
             } else {
                 // FIXME: We haven't check if modulo is 0. But this
@@ -449,22 +448,22 @@ public class PortInfo {
                 //              } else
                 if (offsetObject == null) {
                     result = getCodeGenerator()
-                        .comment(
-                                _port.getFullName()
-                                + " Getting offset for channel "
-                                + channel
-                                + " returned null?"
-                                + "This can happen if there are problems with Profile.firing().");
+                            .comment(
+                                    _port.getFullName()
+                                            + " Getting offset for channel "
+                                            + channel
+                                            + " returned null?"
+                                            + "This can happen if there are problems with Profile.firing().");
 
                 } else {
                     if (padBuffers) {
                         int modulo = getBufferSize(channel) - 1;
                         temp = "(" + offsetObject.toString() + " + "
-                            + offsetString + ")&" + modulo;
+                                + offsetString + ")&" + modulo;
                     } else {
                         int modulo = getBufferSize(channel);
                         temp = "(" + offsetObject.toString() + " + "
-                            + offsetString + ")%" + modulo;
+                                + offsetString + ")%" + modulo;
                     }
                     result = "[" + temp + "]";
                 }
@@ -491,8 +490,8 @@ public class PortInfo {
                     int modulo = getBufferSize(channel) - 1;
                     result = "[" + offsetObject + "&" + modulo + "]";
                 } else {
-                    result = "[" + offsetObject + "%"
-                        + getBufferSize(channel) + "]";
+                    result = "[" + offsetObject + "%" + getBufferSize(channel)
+                            + "]";
                 }
             }
         }
@@ -538,12 +537,11 @@ public class PortInfo {
             String offsetVariable = (String) getReadOffset(channel);
             if (padBuffers) {
                 int modulo = getBufferSize(channel) - 1;
-                code.append(offsetVariable + " = (" + offsetVariable
-                        + " + " + rate + ")&" + modulo + ";" + _eol);
+                code.append(offsetVariable + " = (" + offsetVariable + " + "
+                        + rate + ")&" + modulo + ";" + _eol);
             } else {
-                code.append(offsetVariable + " = (" + offsetVariable
-                        + " + " + rate + ") % " + getBufferSize(channel)
-                        + ";" + _eol);
+                code.append(offsetVariable + " = (" + offsetVariable + " + "
+                        + rate + ") % " + getBufferSize(channel) + ";" + _eol);
             }
         }
         return code.toString();
@@ -579,4 +577,3 @@ public class PortInfo {
 
     private PortDirector _director;
 }
-

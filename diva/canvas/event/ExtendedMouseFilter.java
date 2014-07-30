@@ -139,6 +139,7 @@ public class ExtendedMouseFilter extends MouseFilter {
     /**
      * Test whether the given MouseEvent passes the filter.
      */
+    @Override
     public boolean accept(MouseEvent event) {
         if (_pressNumber != -1 && event.getClickCount() != _pressNumber) {
             return false;
@@ -156,6 +157,7 @@ public class ExtendedMouseFilter extends MouseFilter {
 
     /** Print a useful description of the mouse filter.
      */
+    @Override
     public String toString() {
         StringBuffer result = new StringBuffer();
         result.append(getClass().toString() + "; Button " + _button

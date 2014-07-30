@@ -81,6 +81,7 @@ public class Discard extends Sink implements Configurable {
      *  @param text Ignored.
      *  @exception Exception Not thrown in this base class.
      */
+    @Override
     public void configure(URL base, String source, String text)
             throws Exception {
     }
@@ -90,6 +91,7 @@ public class Discard extends Sink implements Configurable {
      *  nothing with it.
      *  @exception IllegalActionException If there is no director.
      */
+    @Override
     public void fire() throws IllegalActionException {
         super.fire();
         int width = input.getWidth();
@@ -104,6 +106,7 @@ public class Discard extends Sink implements Configurable {
     /** Return null because this actor is not actually configurable.
      *  @return Always return null.
      */
+    @Override
     public String getConfigureSource() {
         return null;
     }
@@ -111,6 +114,7 @@ public class Discard extends Sink implements Configurable {
     /** Return null because this actor is not actually configurable.
      *  @return Always return null.
      */
+    @Override
     public String getConfigureText() {
         return null;
     }

@@ -77,6 +77,7 @@ public abstract class AbstractBranchController implements Debuggable {
      *  @param listener The listener to which to send debug messages.
      *  @see #removeDebugListener(DebugListener)
      */
+    @Override
     public void addDebugListener(DebugListener listener) {
         if (_debugListeners == null) {
             _debugListeners = new LinkedList();
@@ -103,6 +104,7 @@ public abstract class AbstractBranchController implements Debuggable {
      *   to which debug messages are sent.
      *  @see #addDebugListener(DebugListener)
      */
+    @Override
     public void removeDebugListener(DebugListener listener) {
         if (_debugListeners == null) {
             return;

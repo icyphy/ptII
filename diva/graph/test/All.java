@@ -44,6 +44,7 @@ public class All extends TestSuite {
     /**
      * Run all the tests.
      */
+    @Override
     public void runSuite() {
         // Test basic graph model graph
         // THIS HANGS!!!

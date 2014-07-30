@@ -72,6 +72,7 @@ public class Invert extends Transformer {
     /** Output an OpenCV Object
      *  @exception IllegalActionException If thrown while writing to the port.
      */
+    @Override
     public void fire() throws IllegalActionException {
         if (input.hasToken(0)) {
             ObjectToken inputToken = (ObjectToken) input.get(0);

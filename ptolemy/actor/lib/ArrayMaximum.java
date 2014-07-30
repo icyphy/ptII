@@ -95,6 +95,7 @@ public class ArrayMaximum extends Transformer {
      *  @exception CloneNotSupportedException If a derived class contains
      *   an attribute that cannot be cloned.
      */
+    @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         ArrayMaximum newObject = (ArrayMaximum) super.clone(workspace);
         try {
@@ -113,6 +114,7 @@ public class ArrayMaximum extends Transformer {
      *  on the input, then no output is produced.
      *  @exception IllegalActionException If there is no director.
      */
+    @Override
     public void fire() throws IllegalActionException {
         super.fire();
         int indexValue = 0;

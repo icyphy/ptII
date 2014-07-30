@@ -158,6 +158,7 @@ public class SequencedIntegrator extends BaseMultipleMethodsActor {
      *  current fire method is set.
      *  @exception IllegalActionException If the fire method name is invalid.
      */
+    @Override
     public void fire() throws IllegalActionException {
         Variable stateVar = getVariable();
 
@@ -184,6 +185,7 @@ public class SequencedIntegrator extends BaseMultipleMethodsActor {
      *
      *  @exception IllegalActionException If the SequencedIntegrator actor's state variable is not a scalar type.
      */
+    @Override
     public void preinitialize() throws IllegalActionException {
         super.preinitialize();
 
@@ -209,6 +211,7 @@ public class SequencedIntegrator extends BaseMultipleMethodsActor {
      *  @exception IllegalActionException  Subclasses should throw an exception if
      *   an explicit initial value is required.
      */
+    @Override
     protected Token _getDefaultValue() throws IllegalActionException {
         return new DoubleToken(0.0);
     }

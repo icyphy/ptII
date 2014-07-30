@@ -64,12 +64,14 @@ public class UndoActionsList implements UndoAction {
     }
 
     /** Execute the action. */
+    @Override
     public void execute() throws Exception {
         for (UndoAction action : _actionList) {
             action.execute();
         }
     }
 
+    @Override
     public String toString() {
         StringBuffer result = new StringBuffer("Action List:\n");
         for (UndoAction action : _actionList) {

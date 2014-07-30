@@ -117,12 +117,14 @@ public class MDIApplicationTutorial extends MDIApplication {
 
     /** Create a view on the given document.
      */
+    @Override
     public View createView(Document d) {
         return new TextView((TextDocument) d);
     }
 
     /** Get the title of this application
      */
+    @Override
     public String getTitle() {
         return "MDI Application Tutorial";
     }
@@ -136,11 +138,13 @@ public class MDIApplicationTutorial extends MDIApplication {
             setStoragePolicy(storage);
 
             FileFilter ff = new FileFilter() {
+                @Override
                 public boolean accept(File file) {
                     return GUIUtilities.getFileExtension(file)
                             .toLowerCase(Locale.getDefault()).equals("txt");
                 }
 
+                @Override
                 public String getDescription() {
                     return "Text files";
                 }
@@ -179,7 +183,7 @@ public class MDIApplicationTutorial extends MDIApplication {
         action = DefaultActions.openAction(this);
         addAction(action);
         GUIUtilities
-                .addMenuItem(menuFile, action, 'O', "Open a graph document");
+        .addMenuItem(menuFile, action, 'O', "Open a graph document");
 
         action = DefaultActions.closeAction(this);
         addAction(action);

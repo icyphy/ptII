@@ -103,6 +103,7 @@ public class Room extends DatabaseSelect {
      *  port.
      *  @exception IllegalActionException If the database query fails.
      */
+    @Override
     public void fire() throws IllegalActionException {
         pattern.setExpression("trim(bldg)='" + building.stringValue()
                 + "' and trim(room)='" + room.stringValue() + "'");

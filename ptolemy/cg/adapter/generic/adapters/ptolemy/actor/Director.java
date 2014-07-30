@@ -108,6 +108,7 @@ public class Director extends NamedProgramCodeGeneratorAdapter {
      *  @exception IllegalActionException If the adapter associated with
      *   an actor throws it while generating fire code for the actor.
      */
+    @Override
     public String generateFireCode() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
         code.append(getCodeGenerator().comment("The firing of the director."));
@@ -131,6 +132,7 @@ public class Director extends NamedProgramCodeGeneratorAdapter {
      *  @return The fire function code.
      *  @exception IllegalActionException If thrown while generating fire code.
      */
+    @Override
     public String generateFireFunctionCode() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
         Iterator<?> actors = ((CompositeActor) _director.getContainer())
@@ -336,6 +338,7 @@ public class Director extends NamedProgramCodeGeneratorAdapter {
      *  @return The generated initialize code.
      *  @exception IllegalActionException If illegal macro names are found.
      */
+    @Override
     public String generateInitializeCode() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
         code.append(getCodeGenerator().comment(1,
@@ -360,6 +363,7 @@ public class Director extends NamedProgramCodeGeneratorAdapter {
      *   an actor throws it while generating postfire code for the actor
      *   or while creating buffer size and offset map.
      */
+    @Override
     public String generatePostfireCode() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
 
@@ -387,6 +391,7 @@ public class Director extends NamedProgramCodeGeneratorAdapter {
      *   or if generating the preinitialize code for a adapter fails,
      *   or if there is a problem getting the buffer size of a port.
      */
+    @Override
     public String generatePreinitializeCode() throws IllegalActionException {
         StringBuffer code = new StringBuffer(super.generatePreinitializeCode());
 
@@ -406,7 +411,7 @@ public class Director extends NamedProgramCodeGeneratorAdapter {
 
             if (!addedDirectorComment
                     && ProgramCodeGenerator
-                            .containsCode(adapterObjectPreinitializationCode)) {
+                    .containsCode(adapterObjectPreinitializationCode)) {
                 addedDirectorComment = true;
                 code.append(getCodeGenerator().comment(0,
                         "The preinitialization of the director."));
@@ -428,6 +433,7 @@ public class Director extends NamedProgramCodeGeneratorAdapter {
      *  this base class, return the empty string.
      *  @exception IllegalActionException Not thrown in this base class.
      */
+    @Override
     public String generatePreinitializeMethodBodyCode()
             throws IllegalActionException {
         StringBuffer code = new StringBuffer();
@@ -448,7 +454,7 @@ public class Director extends NamedProgramCodeGeneratorAdapter {
 
             if (!addedDirectorComment
                     && ProgramCodeGenerator
-                            .containsCode(adapterObjectPreinitializationCode)) {
+                    .containsCode(adapterObjectPreinitializationCode)) {
                 addedDirectorComment = true;
                 code.append(getCodeGenerator().comment(0,
                         "The preinitialization method of the director."));
@@ -468,6 +474,7 @@ public class Director extends NamedProgramCodeGeneratorAdapter {
      *  @exception IllegalActionException If an actor adapter throws it
      *   while generating mode transition code.
      */
+    @Override
     public void generateModeTransitionCode(StringBuffer code)
             throws IllegalActionException {
         Iterator<?> actors = ((CompositeActor) _director.getContainer())
@@ -624,7 +631,7 @@ public class Director extends NamedProgramCodeGeneratorAdapter {
      */
     public String generateVariableDeclaration(
             NamedProgramCodeGeneratorAdapter adapter)
-            throws IllegalActionException {
+                    throws IllegalActionException {
         return _generateVariableDeclaration(adapter);
     }
 
@@ -668,7 +675,7 @@ public class Director extends NamedProgramCodeGeneratorAdapter {
      */
     public String generateVariableInitialization(
             NamedProgramCodeGeneratorAdapter adapter)
-            throws IllegalActionException {
+                    throws IllegalActionException {
         return _generateVariableInitialization(adapter);
     }
 
@@ -680,6 +687,7 @@ public class Director extends NamedProgramCodeGeneratorAdapter {
      *   cannot be found, or if an error occurs while the adapter generate the
      *   wrapup code.
      */
+    @Override
     public String generateWrapupCode() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
 
@@ -716,7 +724,7 @@ public class Director extends NamedProgramCodeGeneratorAdapter {
      */
     public String getReference(String name, boolean isWrite,
             NamedProgramCodeGeneratorAdapter target)
-            throws IllegalActionException {
+                    throws IllegalActionException {
         // FIXME: need documentation on the input string format.
         return "";
     }
@@ -724,6 +732,7 @@ public class Director extends NamedProgramCodeGeneratorAdapter {
     /** Return the director associated with this class.
      *  @return The director associated with this class.
      */
+    @Override
     public NamedObj getComponent() {
         return _director;
     }
@@ -732,6 +741,7 @@ public class Director extends NamedProgramCodeGeneratorAdapter {
      *  @return An empty HashSet.
      *  @exception IllegalActionException Not thrown in this method.
      */
+    @Override
     public Set<String> getIncludeDirectories() throws IllegalActionException {
         return new HashSet<String>();
     }
@@ -740,6 +750,7 @@ public class Director extends NamedProgramCodeGeneratorAdapter {
      *  @return An empty HashSet.
      *  @exception IllegalActionException Not thrown in this method.
      */
+    @Override
     public Set<String> getLibraries() throws IllegalActionException {
         return new HashSet<String>();
     }
@@ -748,6 +759,7 @@ public class Director extends NamedProgramCodeGeneratorAdapter {
      *  @return An empty HashSet.
      *  @exception IllegalActionException Not thrown in this method.
      */
+    @Override
     public Set<String> getLibraryDirectories() throws IllegalActionException {
         return new HashSet<String>();
     }
@@ -760,6 +772,7 @@ public class Director extends NamedProgramCodeGeneratorAdapter {
      *  @exception IllegalActionException If the adapter associated with an actor
      *   or director throws it while getting modified variables.
      */
+    @Override
     public Set<Parameter> getModifiedVariables() throws IllegalActionException {
         Set<Parameter> set = new HashSet<Parameter>();
 
@@ -791,7 +804,7 @@ public class Director extends NamedProgramCodeGeneratorAdapter {
      */
     public String getParameter(NamedProgramCodeGeneratorAdapter target,
             Attribute attribute, String[] channelAndOffset)
-            throws IllegalActionException {
+                    throws IllegalActionException {
         return _getParameter(target, attribute, channelAndOffset);
     }
 
@@ -830,7 +843,7 @@ public class Director extends NamedProgramCodeGeneratorAdapter {
      */
     protected String _generateVariableDeclaration(
             NamedProgramCodeGeneratorAdapter target)
-            throws IllegalActionException {
+                    throws IllegalActionException {
         return "";
     }
 
@@ -843,7 +856,7 @@ public class Director extends NamedProgramCodeGeneratorAdapter {
      */
     protected String _generateVariableInitialization(
             NamedProgramCodeGeneratorAdapter target)
-            throws IllegalActionException {
+                    throws IllegalActionException {
         return "";
     }
 
@@ -860,7 +873,7 @@ public class Director extends NamedProgramCodeGeneratorAdapter {
      */
     protected String _getParameter(NamedProgramCodeGeneratorAdapter target,
             Attribute attribute, String[] channelAndOffset)
-            throws IllegalActionException {
+                    throws IllegalActionException {
         return "";
     }
 

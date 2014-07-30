@@ -158,6 +158,7 @@ public class Expression extends TypedAtomicActor {
      *  @param attribute The attribute whose type changed.
      *  @exception IllegalActionException Not thrown in this base class.
      */
+    @Override
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         if (attribute == expression) {
@@ -172,6 +173,7 @@ public class Expression extends TypedAtomicActor {
      *  @exception CloneNotSupportedException If a derived class contains
      *   an attribute that cannot be cloned.
      */
+    @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         Expression newObject = (Expression) super.clone(workspace);
         newObject._iterationCount = 1;
@@ -189,6 +191,7 @@ public class Expression extends TypedAtomicActor {
      *   yields an incompatible type, or if there is no director, or if a
      *   connected input has no tokens.
      */
+    @Override
     public void fire() throws IllegalActionException {
         super.fire();
         Iterator inputPorts = inputPortList().iterator();
@@ -249,6 +252,7 @@ public class Expression extends TypedAtomicActor {
     /** Initialize the iteration count to 1.
      *  @exception IllegalActionException If the parent class throws it.
      */
+    @Override
     public void initialize() throws IllegalActionException {
         super.initialize();
         if (getPort("time") != null) {
@@ -273,6 +277,7 @@ public class Expression extends TypedAtomicActor {
     /** Increment the iteration count.
      *  @exception IllegalActionException If the superclass throws it.
      */
+    @Override
     public boolean postfire() throws IllegalActionException {
         _iterationCount++;
 
@@ -285,6 +290,7 @@ public class Expression extends TypedAtomicActor {
      *  data, otherwise return true.
      *  @exception IllegalActionException If the superclass throws it.
      */
+    @Override
     public boolean prefire() throws IllegalActionException {
         Iterator inputPorts = inputPortList().iterator();
 
@@ -304,6 +310,7 @@ public class Expression extends TypedAtomicActor {
 
     /** Preinitialize this actor.
      */
+    @Override
     public void preinitialize() throws IllegalActionException {
         super.preinitialize();
         _tokenMap = new HashMap<String, Token>();
@@ -336,6 +343,7 @@ public class Expression extends TypedAtomicActor {
          *  scope. Return null if such an attribute does not exist.
          *  @return The attribute with the specified name in the scope.
          */
+        @Override
         public Token get(String name) throws IllegalActionException {
             if (name.equals("time")) {
                 return new DoubleToken(getDirector().getModelTime()
@@ -364,6 +372,7 @@ public class Expression extends TypedAtomicActor {
          *  attribute does not exist.
          *  @return The attribute with the specified name in the scope.
          */
+        @Override
         public Type getType(String name) throws IllegalActionException {
             if (name.equals("time")) {
                 return BaseType.DOUBLE;
@@ -395,6 +404,7 @@ public class Expression extends TypedAtomicActor {
          *  @exception IllegalActionException If a value in the scope
          *  exists with the given name, but cannot be evaluated.
          */
+        @Override
         public ptolemy.graph.InequalityTerm getTypeTerm(String name)
                 throws IllegalActionException {
             if (name.equals("time")) {
@@ -422,6 +432,7 @@ public class Expression extends TypedAtomicActor {
         /** Return the list of identifiers within the scope.
          *  @return The list of identifiers within the scope.
          */
+        @Override
         public Set identifierSet() {
             return getAllScopedVariableNames(null, Expression.this);
         }
@@ -440,6 +451,7 @@ public class Expression extends TypedAtomicActor {
          *  @exception IllegalActionException If inferring types for the
          *  expression fails.
          */
+        @Override
         public Object getValue() throws IllegalActionException {
             try {
                 // Deal with the singularity at UNKNOWN..  Assume that if
@@ -486,6 +498,7 @@ public class Expression extends TypedAtomicActor {
          *  otherwise, return an empty array.
          *  @return An array of InequalityTerm.
          */
+        @Override
         public InequalityTerm[] getVariables() {
             // Return an array that contains type terms for all of the
             // inputs and all of the parameters that are free variables for
@@ -524,6 +537,7 @@ public class Expression extends TypedAtomicActor {
         /** Override the base class to give a description of this term.
          *  @return A description of this term.
          */
+        @Override
         public String getVerboseString() {
             return expression.getExpression();
         }

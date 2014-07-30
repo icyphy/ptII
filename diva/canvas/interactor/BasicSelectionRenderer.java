@@ -75,6 +75,7 @@ public class BasicSelectionRenderer implements SelectionRenderer {
 
     /** Test if the given figure is currently rendered selected.
      */
+    @Override
     public boolean isRenderedSelected(Figure figure) {
         return _decorators.containsKey(figure);
     }
@@ -84,6 +85,7 @@ public class BasicSelectionRenderer implements SelectionRenderer {
      * its parent figure container, if there is one. If the figure is
      * not rendered selected, do nothing.
      */
+    @Override
     public void renderDeselected(Figure figure) {
         if (!_decorators.containsKey(figure)) {
             return;
@@ -108,6 +110,7 @@ public class BasicSelectionRenderer implements SelectionRenderer {
      * BasicHighlighter, and wrap the figure in the decorator,
      * inserting the decorator into the figure's parent.
      */
+    @Override
     public void renderSelected(Figure figure) {
         if (_decorators.containsKey(figure)) {
             ((Figure) _decorators.get(figure)).repaint();

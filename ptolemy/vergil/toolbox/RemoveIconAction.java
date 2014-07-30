@@ -58,6 +58,7 @@ public class RemoveIconAction extends FigureAction {
     /** Process the remove icon command.
      *  @param e The event.
      */
+    @Override
     public void actionPerformed(ActionEvent e) {
         // Determine which entity was selected for the look inside action.
         super.actionPerformed(e);
@@ -78,9 +79,9 @@ public class RemoveIconAction extends FigureAction {
                 // An XMLIcon is not a custom icon, so don't remove it.
                 if (!(icon instanceof XMLIcon)) {
                     String moml = "<deleteProperty name=\"" + icon.getName()
-                        + "\"/>";
-                    MoMLChangeRequest request = new MoMLChangeRequest(this, object,
-                            moml);
+                            + "\"/>";
+                    MoMLChangeRequest request = new MoMLChangeRequest(this,
+                            object, moml);
                     object.requestChange(request);
                 }
             }

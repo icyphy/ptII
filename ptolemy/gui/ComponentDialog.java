@@ -232,6 +232,7 @@ public class ComponentDialog extends JDialog {
         }
     }
 
+    @Override
     public void dispose() {
         _optionPane.removePropertyChangeListener(_propChangeListener);
         _propChangeListener = null;
@@ -265,12 +266,14 @@ public class ComponentDialog extends JDialog {
 
     /** Listener for windowClosing action. */
     class WindowClosingAdapter extends WindowAdapter {
+        @Override
         public void windowClosing(WindowEvent e) {
             _handleClosing();
         }
     }
 
     class PropChangeListener implements PropertyChangeListener {
+        @Override
         public void propertyChange(PropertyChangeEvent e) {
             String prop = e.getPropertyName();
 

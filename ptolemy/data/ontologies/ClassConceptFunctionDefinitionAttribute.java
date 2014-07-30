@@ -62,7 +62,7 @@ import ptolemy.kernel.util.StringAttribute;
  *  @Pt.AcceptedRating Red (cshelton)
  */
 public class ClassConceptFunctionDefinitionAttribute extends
-        ConceptFunctionDefinitionAttribute {
+ConceptFunctionDefinitionAttribute {
 
     /** Construct the ClassConceptFunctionDefinitionAttribute attribute
      *  with the given container and name.
@@ -109,6 +109,7 @@ public class ClassConceptFunctionDefinitionAttribute extends
      *  @exception IllegalActionException If there is an error
      *   creating the conceptFunction.
      */
+    @Override
     public ConceptFunction createConceptFunction()
             throws IllegalActionException {
         if (!(workspace().getVersion() == _conceptFunctionVersion)) {
@@ -126,7 +127,7 @@ public class ClassConceptFunctionDefinitionAttribute extends
                 // specifies an existing actor class.
                 conceptFunctionClass = Class.forName(
                         conceptFunctionClassNameString).asSubclass(
-                        ConceptFunction.class);
+                                ConceptFunction.class);
             } catch (ClassNotFoundException classEx) {
                 throw new IllegalActionException(this, classEx,
                         "ConceptFunction class "
@@ -173,7 +174,7 @@ public class ClassConceptFunctionDefinitionAttribute extends
      */
     private ConceptFunction _createConceptFunctionInstance(
             Class<? extends ConceptFunction> conceptFunctionClass)
-            throws IllegalActionException {
+                    throws IllegalActionException {
 
         _setConstructorArgsArrays();
 

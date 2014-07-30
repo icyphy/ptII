@@ -63,7 +63,7 @@ import ptolemy.plot.Plot;
  *  @Pt.AcceptedRating Red (derler)
  */
 public class CommunicationAspectMonitor extends TypedAtomicActor implements
-        CommunicationAspectListener {
+CommunicationAspectListener {
 
     /** Construct a factory with the specified container and name.
      *  @param container The container.
@@ -113,6 +113,7 @@ public class CommunicationAspectMonitor extends TypedAtomicActor implements
      *  @param time The time when the event happened.
      *  @param event The type of the event. e.g. message received, message sent, ...
      */
+    @Override
     public void event(final CommunicationAspect qm, Actor source,
             int messageId, int messageCnt, double time, EventType event) {
 
@@ -140,6 +141,7 @@ public class CommunicationAspectMonitor extends TypedAtomicActor implements
      *  in this model.
      *  @exception IllegalActionException If thrown by the parent class.
      */
+    @Override
     public void initialize() throws IllegalActionException {
         super.initialize();
         _communicationAspects = new ArrayList<CommunicationAspect>();
@@ -215,6 +217,7 @@ public class CommunicationAspectMonitor extends TypedAtomicActor implements
          * @param parent
          *                The parent window, or null if there is none.
          */
+        @Override
         public void createEditor(NamedObj object, Frame parent) {
             try {
                 Configuration configuration = ((TableauFrame) parent)
