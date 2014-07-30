@@ -13,12 +13,12 @@
     <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{340.0, 252.0}">
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="If the initial guess in this case is zero, Newton-Raphson fails because it makes very small steps.&#10;The FixedPointIteration, in contrast, converges to a solution (x=1) immediately.&#10;Another solution is x = -1.">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This problem solves 0 = g(x)-x, where g(x) = 1+x-x^2.&#10;It has a solution at x=-1 and x=+1.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[20.0, 265.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[15.0, 185.0]">
         </property>
     </property>
-    <property name="errorTolerance" class="ptolemy.data.expr.Parameter" value="0.1">
+    <property name="errorTolerance" class="ptolemy.data.expr.Parameter" value="0.0001">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -97,7 +97,7 @@
                 <property name="displayHeight" class="ptolemy.data.expr.Parameter" value="10">
                 </property>
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[300.0, 350.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[300.0, 345.0]">
             </property>
             <port name="x" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
