@@ -33,35 +33,37 @@ package ptolemy.actor.lib;
 
 /**
  * An ExceptionSubscriber is an entity that is informed of exceptions and the
- * handling policy for exceptions caught by {@link #CatchExceptionAttribute}.
+ * handling policy for exceptions caught by
+ * {@link ptolemy.actor.lib.CatchExceptionAttribute}.
  * The ExceptionSubscriber can then take some action, if desired.
  * For example, actors that communicate with outside clients may want to pass
  * along information about the error that has occurred, instead of returning
  * a generic message or a timeout error response.
  *
  * This follows the Command design pattern, where the invoker is
- * {@link #CatchExceptionAttribute}, the client is the Ptolemy developer
- * (defines commands by dragging and dropping attributes into the model), and
- * the receiver is a Ptolemy entity (such as an attribute that writes to a file,
- * or an actor such as {@link #HttpActor} which sends a retry message upon
- * exception with restart policy.
+ * {@link ptolemy.actor.lib.CatchExceptionAttribute}, the client is
+ * the Ptolemy developer (defines commands by dragging and dropping
+ * attributes into the model), and the receiver is a Ptolemy entity
+ * (such as an attribute that writes to a file, or an actor such as
+ * {@link org.ptolemy.ptango.lib.HttpActor} which sends a retry
+ * message upon exception with restart policy.
  *
  * @author Elizabeth Latronico
  * @version $Id: ExceptionSubscriber.java 69467 2014-06-29 14:35:19Z beth@berkeley.edu$
  * @since Ptolemy II 10.0
  * @Pt.ProposedRating Red (beth)
  * @Pt.AcceptedRating Red (beth)
- * @see CatchExceptionAttribute
+ * @see ptolemy.actor.lib.CatchExceptionAttribute
  */
 
 public interface ExceptionSubscriber {
-    /** Invoked by an exception handler (e.g. {@link ExceptionManager}) when an
+    /** Invoked by an exception handler (e.g. {@link ptolemy.actor.lib.ExceptionManager}) when an
      *  exception occurs.  Some subscribers may need to set up access to
      *  resources (such as opening a file) prior to being notified of an
      *  exception. These could extend AbstractInitalizableAttribute to do so.
      *
      * @param policy  The exception handling policy (for example, restart) of
-     * the exception handler; see {@link #CatchExceptionAttribute}
+     * the exception handler; see {@link ptolemy.actor.lib.CatchExceptionAttribute}
      */
 
     /** Action to execute upon the occurrence of an exception.
@@ -70,7 +72,7 @@ public interface ExceptionSubscriber {
      *  AbstractInitalizableAttribute to do so.
      *
      * @param policy The handling policy of the exception manager (for example,
-     *  restart); see {@link #CatchExceptionAttribute}
+     *  restart); see {@link ptolemy.actor.lib.CatchExceptionAttribute}
      * @return True if the subscriber successfully processed the information;
      *  false otherwise (for example, an ExceptionEmailer that fails to send
      *  an email)
@@ -81,7 +83,7 @@ public interface ExceptionSubscriber {
     // TODO:  Rename CatchExceptionAttribute to ExceptionManager?
     public boolean exceptionOccurred(String policy);
 
-    /** Invoked by an exception handler (e.g. {@link ExceptionManager}) after
+    /** Invoked by an exception handler (e.g. {@link ptolemy.actor.lib.ExceptionManager}) after
      *  an exception has been handled.
      *
      * @param succesful True if the exception was successfully handled; false

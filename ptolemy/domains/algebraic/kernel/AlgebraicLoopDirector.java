@@ -1438,7 +1438,7 @@ public class AlgebraicLoopDirector extends StaticSchedulingDirector {
 
         /** Return the L2 norm.
          *
-         * @param y Argument for which norm is returned.
+         * @param x Argument for which norm is returned.
          * @return the L2 norm.
          */
         protected double _l2norm(double[] x) {
