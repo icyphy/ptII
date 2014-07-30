@@ -57,11 +57,11 @@
 	to expand all the model, .html files and .pdf files on 
 	the various demonstration pages.  This allows us to
 	verify that all the resources are present in the tree.
-	<br>Following the links on 
+	<br/>Following the links on 
 	<a href="about:copyright"><code>about:copyright</code></a>
 	is an essential part of testing each release.
 
-	<br>For details, see
+	<br/>For details, see
 	<a href="../codeDoc/ptolemy/actor/gui/GenerateCopyrights.html">actor.gui.GenerateCopyrights</a>
 	and
 	<a href="../codeDoc/ptolemy/actor/gui/HTMLViewer.html">actor.gui.HTMLViewer</a>
@@ -72,12 +72,12 @@
 	resources that are necessary for that package.  These resources
 	include files like images and pdfs.  Parent directories contain
 	the jar files in children directories.  
-	<br>When building a release, it is usually best to build
+	<br/>When building a release, it is usually best to build
 	the Web Start release first because it is easier to change
 	one jar file and retry something in
 	<a href="../webStartHelp.htm">Web Start</a> than it is to 
 	rebuild an entire Windows installer.
-	<br>Use
+	<br/>Use
 	<a href="about:copyright"><code>about:copyright</code></a>
 	to test the Web Start release.
       </li>
@@ -107,9 +107,9 @@
 
       </li>
       <li> Run <a href="../../util/testsuite/chkjava"><CODE>$PTII/util/testsuite/chkjava</CODE></a> on the java files and fix problems
-	<br>Shortcut: Run it only the most recent files added
+	<br/>Shortcut: Run it only the most recent files added
 
-	<br>Create a list of java files by
+	<br/>Create a list of java files by
 	either running 
 	<pre>
 
@@ -293,16 +293,18 @@
 
       <li>Run
 	<CODE>$PTII/adm/copyright/chkcopyright</CODE> on all the nightly buildfiles.
-	<br>First, edit <code>$PTII/adm/copyright/chkcopyright</code> and update the year.
-	<br>Then, do:
+	<br/>Do:
 	<pre>
 	  cat /tmp/f | grep -v .class | grep -v codeDoc | grep -v xml | grep -v \
 	  alljtests.tcl | grep -v .htm | grep -v qcf | grep -v .dtd | grep -v \
-	  gif | grep -v .svn | grep -v jimblackler | xargs sh $PTII/adm/copyright/chkcopyright &gt;&amp  /tmp/copycheck 
+	  gif | grep -v .svn | grep -v jimblackler | grep -v openmodelica/lib/omc/corba \
+	  grep -v metroIIcomm.java | grep -v swig | grep -v shallow/test/*2java | xargs sh $PTII/adm/copyright/chkcopyright &gt;&amp  /tmp/copycheck 
 	  grep "does not contain a Copyright" /tmp/copycheck | awk '$1 ~ /.java$/ {print $1}' | grep -v /actor/corba >/tmp/jc
 	</pre>
 
-	Then, edit <code>$PTII/adm/copyright/copyright.txt</code>
+	<br/>Review /tmp/jc and remove files written by others that should not get the UCB copyright.  Add these files to the commands above.
+
+	<br/>Then, edit <code>$PTII/adm/copyright/copyright.txt</code>
 	and <code>$PTII/adm/copyright/insertcopyright</code> and run
 	<pre>
 	  adm/copyright/insertcopyright -p `cat /tmp/jc`
@@ -324,7 +326,7 @@
       </li>
 
       <li> Run the nightly build, build a release:
-	<br>For each release, we copy the most recent
+	<br/>For each release, we copy the most recent
 	<code>$PTII/adm/gen-<i>X.Y</i></code>, update the version number
 	and run make.  See the top of the file for the appropriate make command.
 
@@ -404,8 +406,8 @@
       <li> Use Eclipse Cleanup to clean the code
 	<ol>
 	  <li>Set up cleanup by going to the preferences window in Eclipse:
-	    <br> (<i>Windows</i>: <code>Window</code> | <code>Preferences</code>)
-	    <br> (<i>Mac OS X</i>: <code>Eclipse</code> | <code>Preferences</code>)
+	    <br/> (<i>Windows</i>: <code>Window</code> | <code>Preferences</code>)
+	    <br/> (<i>Mac OS X</i>: <code>Eclipse</code> | <code>Preferences</code>)
 	  </li>
 	  <li><code>Java</code> | <code>Code Style</code> | <code>Clean Up</code>
 	  </li>
@@ -414,13 +416,13 @@
 	  <li>In the "Profile 'Ptolemy II'" window:
 	    <ul>
 	      <li>Code Organizing: select "Format source code",
-		<br> select "Remove trailing whitespace",
-		<br> select "Correct indentation",
-		<br> select "Organize Imports".
+		<br/> select "Remove trailing whitespace",
+		<br/> select "Correct indentation",
+		<br/> select "Organize Imports".
 	      <li>Code Style: select "Use blocks in if/while/for/do statements" 
 	      <li>Missing code: <b>unselect</b> "Add missing Annotations"
 	      <li>Unnecessary Code: select "Remove unused private members"
-		<br>select "Remove unused local variables"
+		<br/>select "Remove unused local variables"
 	    </ul>
 	  </li>
 	  <li>Save the cleanup settings by closing the Cleanup preferences window
