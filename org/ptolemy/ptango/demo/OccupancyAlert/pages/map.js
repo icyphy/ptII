@@ -63,7 +63,7 @@ var lineFunction = d3.svg.line()
 // Add image to svg element
 function addImage(svg) {
 	image = svg.append("image")
-		.attr("xlink:href", "Swarm Lab floorplan.svg")
+		.attr("xlink:href", "SwarmLabFloorPlan.svg")
 		.attr("width", 1046)
 		.attr("height", 470)
 		.attr("transform", "translate(" + startX + "," + startY + ")");
