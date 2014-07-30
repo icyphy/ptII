@@ -314,7 +314,7 @@ public class OntologySolverGraphFrame extends ExtendedGraphFrame implements
     //// InsertOntologyAction
 
     /** An action to insert an ontology into the ontology solver model. */
-	private class InsertOntologyAction extends AbstractAction {
+        private class InsertOntologyAction extends AbstractAction {
 
         /** Create a new action to instantiate an entity. */
         public InsertOntologyAction() {

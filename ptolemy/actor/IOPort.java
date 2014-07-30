@@ -155,11 +155,11 @@ public class IOPort extends ComponentPort {
     public IOPort() {
         super();
         try {
-			_init();
-		} catch (IllegalActionException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+                        _init();
+                } catch (IllegalActionException e) {
+                        // TODO Auto-generated catch block
+                        e.printStackTrace();
+                }
     }
 
     /** Construct a port in the specified workspace with an empty
@@ -926,14 +926,14 @@ public class IOPort extends ComponentPort {
         Token token = null;
 
         for (int j = 0; j < localReceivers[channelIndex].length; j++) {
-        	Token localToken = null;
-        	try {
-            	localToken = localReceivers[channelIndex][j].get();
-        	} catch (NoTokenException ex) {
-        		if (defaultValue.getToken() == null) {
-        			throw ex;
-        		}
-        	}
+                Token localToken = null;
+                try {
+                    localToken = localReceivers[channelIndex][j].get();
+                } catch (NoTokenException ex) {
+                        if (defaultValue.getToken() == null) {
+                                throw ex;
+                        }
+                }
 
             if (token == null) {
                 token = localToken;
@@ -945,11 +945,11 @@ public class IOPort extends ComponentPort {
         }
 
         if (token == null) {
-        	if (_persistentToken != null) {
-        		token = (Token) _persistentToken;
-        	} else {
-        		throw new NoTokenException(this, "No token to return.");
-        	}
+                if (_persistentToken != null) {
+                        token = (Token) _persistentToken;
+                } else {
+                        throw new NoTokenException(this, "No token to return.");
+                }
         }
 
         if (_debugging) {
@@ -1024,18 +1024,18 @@ public class IOPort extends ComponentPort {
         // if there are not enough tokens
         Token[] retArray = new Token[vectorLength];
         if (_persistentToken != null && !hasToken(channelIndex, vectorLength)) {
-        	int i = 0;
-        	while (localReceivers[channelIndex][0].hasToken()) {
-        		retArray[i++] = localReceivers[channelIndex][0].get();
-        		_persistentToken = retArray[i++];
-        	}
-        	// If there are not enough tokens, fill up the vector with 
-        	// the persistent token.
-        	while (i < vectorLength) {
-        		retArray[i++] = _persistentToken;
-        	}
+                int i = 0;
+                while (localReceivers[channelIndex][0].hasToken()) {
+                        retArray[i++] = localReceivers[channelIndex][0].get();
+                        _persistentToken = retArray[i++];
+                }
+                // If there are not enough tokens, fill up the vector with 
+                // the persistent token.
+                while (i < vectorLength) {
+                        retArray[i++] = _persistentToken;
+                }
         } else {
-        	retArray = localReceivers[channelIndex][0]
+                retArray = localReceivers[channelIndex][0]
                 .getArray(vectorLength);
         }
 
@@ -1206,14 +1206,14 @@ public class IOPort extends ComponentPort {
         Token token = null;
 
         for (int j = 0; j < localReceivers[channelIndex].length; j++) {
-        	Token localToken = null;
-        	try {
-        		localToken = localReceivers[channelIndex][j].get();
-        	} catch (NoTokenException ex) {
-        		if (defaultValue.getToken() == null) {
-        			throw ex;
-        		}
-        	}
+                Token localToken = null;
+                try {
+                        localToken = localReceivers[channelIndex][j].get();
+                } catch (NoTokenException ex) {
+                        if (defaultValue.getToken() == null) {
+                                throw ex;
+                        }
+                }
 
             if (token == null) {
                 token = localToken;
@@ -1225,13 +1225,13 @@ public class IOPort extends ComponentPort {
         }
 
         if (token == null) {
-        	if (_persistentToken != null) {
-        		token = (Token) _persistentToken;
-        	} else if (defaultValue.getToken() != null) {
-        		token = defaultValue.getToken();
-        	} else {
-        		throw new NoTokenException(this, "No token to return.");
-        	}
+                if (_persistentToken != null) {
+                        token = (Token) _persistentToken;
+                } else if (defaultValue.getToken() != null) {
+                        token = defaultValue.getToken();
+                } else {
+                        throw new NoTokenException(this, "No token to return.");
+                }
         }
 
         if (_debugging) {
@@ -2053,10 +2053,10 @@ public class IOPort extends ComponentPort {
      *   of range.
      */
     public boolean hasToken(int channelIndex) throws IllegalActionException {
-    	if (defaultValue.getToken() != null) {
-    		return true;
-    	} 
-    	
+            if (defaultValue.getToken() != null) {
+                    return true;
+            } 
+            
         // The getReceivers() method throws an IllegalActionException if
         // there's no director.
         Receiver[][] receivers = getReceivers();
@@ -2108,10 +2108,10 @@ public class IOPort extends ComponentPort {
      */
     public boolean hasToken(int channelIndex, int tokens)
             throws IllegalActionException {
-    	if (defaultValue.getToken() != null) {
-    		return true;
-    	}
-    	
+            if (defaultValue.getToken() != null) {
+                    return true;
+            }
+            
         boolean result = false;
 
         try {
@@ -2156,10 +2156,10 @@ public class IOPort extends ComponentPort {
      */
     public boolean hasTokenInside(int channelIndex)
             throws IllegalActionException {
-    	if (defaultValue.getToken() != null) {
-    		return true;
-    	}
-    	
+            if (defaultValue.getToken() != null) {
+                    return true;
+            }
+            
         // The getInsideReceivers() method throws an
         // IllegalActionException if there's no director.
         Receiver[][] receivers = getInsideReceivers();
@@ -2808,10 +2808,10 @@ public class IOPort extends ComponentPort {
      * @throws IllegalActionException If defaultValue cannot be retrieved.
      */
     public void reset() throws IllegalActionException {
-    	_persistentToken = null;
-    	if (defaultValue.getToken() != null) {
-    		_persistentToken = defaultValue.getToken();
-    	}
+            _persistentToken = null;
+            if (defaultValue.getToken() != null) {
+                    _persistentToken = defaultValue.getToken();
+            }
     }
 
     /** Send the specified token to all receivers connected to the
@@ -3728,15 +3728,15 @@ public class IOPort extends ComponentPort {
         }
     }
     
-	///////////////////////////////////////////////////////////////////
-	////                         public parameters                 ////
+        ///////////////////////////////////////////////////////////////////
+        ////                         public parameters                 ////
     
     /** The default value of the port. By default, this parameter is
-     * 	empty. If this value is not empty, the port is persistent.
-	 */
-	public Parameter defaultValue;
-	
-	private Token _persistentToken;
+     *         empty. If this value is not empty, the port is persistent.
+         */
+        public Parameter defaultValue;
+        
+        private Token _persistentToken;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public variables                  ////
@@ -4835,11 +4835,11 @@ public class IOPort extends ComponentPort {
     }
     
     private void _init() throws IllegalActionException {
-    	try {
-			defaultValue = new Parameter(this, "defaultValue");
-		} catch (NameDuplicationException e) {
-			throw new IllegalActionException(this, e.getCause(), e.getMessage());
-		}
+            try {
+                        defaultValue = new Parameter(this, "defaultValue");
+                } catch (NameDuplicationException e) {
+                        throw new IllegalActionException(this, e.getCause(), e.getMessage());
+                }
     }
 
     // Invalidate schedule and type resolution and width inference of the director

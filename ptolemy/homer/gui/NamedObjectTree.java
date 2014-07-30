@@ -85,7 +85,7 @@ public class NamedObjectTree extends JPanel {
 
     /** Create a new NamedObj tree for dragging and dropping into the scene.
      */
-	public NamedObjectTree() {
+        public NamedObjectTree() {
         setBorder(new TitledBorder(null, "Named Objects", TitledBorder.LEADING,
                 TitledBorder.TOP, null, null));
         setLayout(new BorderLayout());

@@ -167,7 +167,7 @@ public class AtomicActor<T extends IOPort> extends ComponentEntity<T> implements
      */
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         @SuppressWarnings("unchecked")
-		AtomicActor<T> newObject = (AtomicActor<T>) super.clone(workspace);
+                AtomicActor<T> newObject = (AtomicActor<T>) super.clone(workspace);
 
         // Reset to force reinitialization of cache.
         newObject._initializables = null;
@@ -425,14 +425,14 @@ public class AtomicActor<T extends IOPort> extends ComponentEntity<T> implements
      *   cannot be evaluated for an input port.
      */
     public boolean isStrict() throws IllegalActionException {
-    	for (IOPort port : inputPortList()) {
-    		if (port.defaultValue.getToken() == null) {
-    			// Found an input port with no default value.
-    			return true;
-    		}
-    	}
-    	// NOTE: If the actor has no input ports at all, this
-    	// returns false, indicating the actor is non-strict.
+            for (IOPort port : inputPortList()) {
+                    if (port.defaultValue.getToken() == null) {
+                            // Found an input port with no default value.
+                            return true;
+                    }
+            }
+            // NOTE: If the actor has no input ports at all, this
+            // returns false, indicating the actor is non-strict.
         return false;
     }
 

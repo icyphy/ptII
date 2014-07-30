@@ -110,28 +110,28 @@ public class ModalController extends FSMActor implements DropTargetHandler,
     }
 
     /** Create a refinement for the given state.
-	 *
-	 *  @param state The state that will contain the new refinement.
-	 *  @param name The name of the composite entity that stores the refinement.
-	 *  @param template The template used to create the refinement, or null if
-	 *   template is not used.
-	 *  @param className The class name for the refinement, which is used when
-	 *   template is null.
-	 *  @param instanceOpener The instanceOpener, typically a
-	 *   Configuration, that is used to open the refinement (as a
-	 *   look-inside action) after it is created, or null if it is not
-	 *   needed to open the refinement.
-	 *  @exception IllegalActionException If error occurs while creating the
-	 *   refinement.
-	 */
-	public void addRefinement(State state, final String name, Entity template,
-	        String className, final InstanceOpener instanceOpener)
-	        throws IllegalActionException {
-	    ModalRefinement.addRefinement(state, name, template, className,
-	            instanceOpener, (CompositeEntity)getContainer());
-	}
+         *
+         *  @param state The state that will contain the new refinement.
+         *  @param name The name of the composite entity that stores the refinement.
+         *  @param template The template used to create the refinement, or null if
+         *   template is not used.
+         *  @param className The class name for the refinement, which is used when
+         *   template is null.
+         *  @param instanceOpener The instanceOpener, typically a
+         *   Configuration, that is used to open the refinement (as a
+         *   look-inside action) after it is created, or null if it is not
+         *   needed to open the refinement.
+         *  @exception IllegalActionException If error occurs while creating the
+         *   refinement.
+         */
+        public void addRefinement(State state, final String name, Entity template,
+                String className, final InstanceOpener instanceOpener)
+                throws IllegalActionException {
+            ModalRefinement.addRefinement(state, name, template, className,
+                    instanceOpener, (CompositeEntity)getContainer());
+        }
 
-	/** React to a list of objects being dropped onto a target.
+        /** React to a list of objects being dropped onto a target.
      *
      *  @param target The target on which the objects are dropped.
      *  @param dropObjects The list of objects dropped onto the target.

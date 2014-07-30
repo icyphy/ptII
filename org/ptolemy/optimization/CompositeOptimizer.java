@@ -501,11 +501,11 @@ public class CompositeOptimizer extends ReflectComposite {
                     break;
                 case MaxIterationsReached:
                     //throw new IllegalActionException(CompositeOptimizer.this, "Optimizer terminated prematurely " +
-                    //		"because maximum number of iterations limit has been reached. Perhaps increase maxEvaluations?"); 
+                    //                "because maximum number of iterations limit has been reached. Perhaps increase maxEvaluations?"); 
                     break;
                 case DivergingRoundingErrors:
                     //throw new IllegalActionException(CompositeOptimizer.this, "Optimizer terminated prematurely because " +
-                    //		"rounding errors are becoming damaging");  
+                    //                "rounding errors are becoming damaging");  
                     break;
                 case TerminateRequested:
                     //throw new IllegalActionException(CompositeOptimizer.this, "Optimizer terminated upon " +

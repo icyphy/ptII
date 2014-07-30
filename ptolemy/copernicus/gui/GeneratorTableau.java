@@ -118,7 +118,7 @@ public class GeneratorTableau extends Tableau {
     /** The frame that is created by an instance of GeneratorTableau.
      */
     @SuppressWarnings("serial")
-	public class GeneratorFrame extends PtolemyFrame {
+        public class GeneratorFrame extends PtolemyFrame {
         /** Construct a frame to control code generation for
          *  the specified Ptolemy II model.
          *  After constructing this, it is necessary

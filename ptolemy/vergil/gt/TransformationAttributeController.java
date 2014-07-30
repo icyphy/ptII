@@ -184,7 +184,7 @@ public class TransformationAttributeController extends AttributeController {
     }
 
     @SuppressWarnings("serial")
-	private static class LookInsideAction extends FigureAction {
+        private static class LookInsideAction extends FigureAction {
 
         public LookInsideAction() {
             super("Open Transformation Controller");

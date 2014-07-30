@@ -598,17 +598,17 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
             // _fmiSetContinuousStates(states);
 
             if (currentTimeValue > _lastCommitTime.getDoubleValue()) {
-		// Set states only if the FMU has states
-		if (states.length > 0){
-		    if (_fmiVersion < 2.0) {
-		        double step = currentTimeValue
-		                - _lastCommitTime.getDoubleValue();
-		        for (int i = 0; i < states.length; i++) {
-		            _newStates[i] = states[i] + derivatives[i] * step;
-		            } 
-		        }
-		    _fmiSetContinuousStates(_newStates); 
-		}
+                // Set states only if the FMU has states
+                if (states.length > 0){
+                    if (_fmiVersion < 2.0) {
+                        double step = currentTimeValue
+                                - _lastCommitTime.getDoubleValue();
+                        for (int i = 0; i < states.length; i++) {
+                            _newStates[i] = states[i] + derivatives[i] * step;
+                            } 
+                        }
+                    _fmiSetContinuousStates(_newStates); 
+                }
 
                 // Check event indicators.
                 boolean stateEventOccurred = _checkEventIndicators();
@@ -1740,7 +1740,7 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
     public void wrapup() throws IllegalActionException {
         _checkFmiCommon();
 
-	_fmiTerminate();
+        _fmiTerminate();
         _fmiFreeInstance();
         _freeFMUState();
 
@@ -2144,7 +2144,7 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
             _derivatives = new double[numberOfStates];
         }
         // Call _fmiGetDerivativesFunction only if numberOfStates > 0.
-	if (numberOfStates > 0){
+        if (numberOfStates > 0){
             int fmiFlag = ((Integer) _fmiGetDerivativesFunction.invoke(
                     Integer.class, new Object[] { _fmiComponent, _derivatives,
                             new NativeSizeT(numberOfStates) })).intValue();
@@ -2238,8 +2238,8 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
                             "Failed to exit the initialization mode of the FMU: "
                             + _fmiStatusDescription(fmiFlag));
                 }
-		if (_fmiModelDescription.numberOfEventIndicators > 0) {
-		    new Exception("Warning: FIXME: Need to get the eventInfo etc.").printStackTrace();
+                if (_fmiModelDescription.numberOfEventIndicators > 0) {
+                    new Exception("Warning: FIXME: Need to get the eventInfo etc.").printStackTrace();
                 }
             }
         } else {
@@ -2326,7 +2326,7 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
         if (_debugging) {
             _debugToStdOut("Initialized FMU.");
         }
-	_modelInitialized = true;
+        _modelInitialized = true;
     }
 
     /** For model exchange, set the continuous states of the FMU to the specified array.
@@ -2403,14 +2403,14 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
      *  @exception IllegalActionException If the FMU does not return fmiOK.
      */
     protected void _fmiTerminate() throws IllegalActionException {
-	// Generating WebStart calls wrapup() after preinitialize(),
-	// so the model might not have been initialized.
-	if (!_modelInitialized) {
-	    if (_debugging) {
-		_debugToStdOut("The model was *not* initialized, so fmiTerminate does nothing.");
-	    }
-	    return;
-	}
+        // Generating WebStart calls wrapup() after preinitialize(),
+        // so the model might not have been initialized.
+        if (!_modelInitialized) {
+            if (_debugging) {
+                _debugToStdOut("The model was *not* initialized, so fmiTerminate does nothing.");
+            }
+            return;
+        }
 
         if (_debugging) {
             _debugToStdOut("Terminating the FMU.");
@@ -2548,11 +2548,11 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
                 if (stepSizeValue instanceof DoubleToken) {
                     stepSize = ((DoubleToken) stepSizeValue).doubleValue();
                 }
-		// If the parameter maximumStepSize is set to an integer, then
-		// we parse its value to a double.
-		else if (stepSizeValue instanceof IntToken) {
+                // If the parameter maximumStepSize is set to an integer, then
+                // we parse its value to a double.
+                else if (stepSizeValue instanceof IntToken) {
                     stepSize = (double)((IntToken) stepSizeValue).intValue();
-		}
+                }
             }
             director.fireAt(this, currentTime.add(stepSize));
         } else {

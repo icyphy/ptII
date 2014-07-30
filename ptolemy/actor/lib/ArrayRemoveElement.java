@@ -155,9 +155,9 @@ public class ArrayRemoveElement extends TypedAtomicActor {
 
     /** Clear port parameter value. 
      */
-	@Override
-	public void wrapup() throws IllegalActionException {
-		super.wrapup();
-		element.setExpression("");
-	}
+        @Override
+        public void wrapup() throws IllegalActionException {
+                super.wrapup();
+                element.setExpression("");
+        }
 }

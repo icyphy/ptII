@@ -1492,10 +1492,10 @@ public class SDFScheduler extends BaseSDFScheduler implements ValueListener {
                     if (receivers != null) {
                         for (int m = 0; m < receivers.length; m++) {
                             for (int n = 0; n < receivers[m].length; n++) {
-                            	Receiver r =  receivers[m][n];
-                            	while (r instanceof IntermediateReceiver) {
-                            		r = ((IntermediateReceiver)r)._receiver;
-                            	}
+                                    Receiver r =  receivers[m][n];
+                                    while (r instanceof IntermediateReceiver) {
+                                            r = ((IntermediateReceiver)r)._receiver;
+                                    }
                                 ((SDFReceiver) r)._waitingTokens = 0;
                             }
                         }
@@ -1510,10 +1510,10 @@ public class SDFScheduler extends BaseSDFScheduler implements ValueListener {
                 if (receivers != null) {
                     for (int m = 0; m < receivers.length; m++) {
                         for (int n = 0; n < receivers[m].length; n++) {
-                        	Receiver r =  receivers[m][n];
-                        	while (r instanceof IntermediateReceiver) {
-                        		r = ((IntermediateReceiver)r)._receiver;
-                        	}
+                                Receiver r =  receivers[m][n];
+                                while (r instanceof IntermediateReceiver) {
+                                        r = ((IntermediateReceiver)r)._receiver;
+                                }
                             ((SDFReceiver) r)._waitingTokens = 0;
                         }
                     }

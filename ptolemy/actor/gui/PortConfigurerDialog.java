@@ -1285,7 +1285,7 @@ public class PortConfigurerDialog extends PtolemyDialog implements
         /** Construct a validating JTextField JTable Cell editor.
          *  @param jFormattedTextField The JTextField that provides choices.
          */
-		public ValidatingJTextFieldCellEditor(
+                public ValidatingJTextFieldCellEditor(
                 final JFormattedTextField jFormattedTextField) {
             super(jFormattedTextField);
 
@@ -1477,7 +1477,7 @@ public class PortConfigurerDialog extends PtolemyDialog implements
         /** Construct a validating combo box JTable Cell editor.
          *  @param comboBox The combo box that provides choices.
          */
-		public ValidatingComboBoxCellEditor(final JComboBox comboBox) {
+                public ValidatingComboBoxCellEditor(final JComboBox comboBox) {
             super(comboBox);
             _comboBox = (JComboBox) getComponent();
 

@@ -222,11 +222,11 @@ public class ParameterDisplayIconScript extends DefaultIconScript {
                 "tooltipsterScriptWebElement", "tooltipster");
         webElement.setParent(WebElement.HEAD);
         webElement.setExpression("<script type=\"text/javascript\">\n"
-        	+ "$(document).ready(function() {\n"
+                + "$(document).ready(function() {\n"
             + "  $('.tooltip').tooltipster({\n"
             + "    contentAsHTML: true\n"
             + "  });\n"
-        	+ "});\n"
+                + "});\n"
             + "</script>");
         exporter.defineElement(webElement, true);
 

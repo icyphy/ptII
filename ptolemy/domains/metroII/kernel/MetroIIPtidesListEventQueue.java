@@ -138,7 +138,7 @@ public class MetroIIPtidesListEventQueue implements DEEventQueue {
      *  @exception IllegalActionException Always thrown.
      */
     public boolean remove(DEEvent event) throws IllegalActionException {
-    	throw new IllegalActionException("remove() is not implemented by PtidesListEventQueue.");
+            throw new IllegalActionException("remove() is not implemented by PtidesListEventQueue.");
     }
 
     /**

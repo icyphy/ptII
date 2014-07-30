@@ -88,9 +88,9 @@ public class SCRModel extends ModalModel {
      * @throws NameDuplicationException
      */
     private void _init() throws IllegalActionException, NameDuplicationException {
-    	Parameter parameter = new Parameter(this, "openAsSCRActor");
-    	parameter.setTypeEquals(BaseType.BOOLEAN);
-    	parameter.setToken("true");
+            Parameter parameter = new Parameter(this, "openAsSCRActor");
+            parameter.setTypeEquals(BaseType.BOOLEAN);
+            parameter.setToken("true");
     }
     
 }

@@ -344,9 +344,9 @@ public class ProceduralCodeGenerator extends ProgramCodeGenerator {
      */
     protected void _writeMakefile(CompositeEntity container,
             String currentDirectory) throws IllegalActionException {
-	_substituteMap
-	    .put("@PTCGIncludes@", _concatenateElements(_includes));
-	super._writeMakefile(container, currentDirectory);
+        _substituteMap
+            .put("@PTCGIncludes@", _concatenateElements(_includes));
+        super._writeMakefile(container, currentDirectory);
     }
 
     ///////////////////////////////////////////////////////////////////

@@ -78,7 +78,7 @@ static fmiComponent initializeFMU(FMU *fmu, fmiBoolean visible, fmiBoolean loggi
 
     Element *defaultExp = getDefaultExperiment(fmu->modelDescription);
     if (defaultExp) {
-    	tolerance = getAttributeDouble(defaultExp, att_tolerance, &vs);
+            tolerance = getAttributeDouble(defaultExp, att_tolerance, &vs);
     }
     if (vs == valueDefined) {
         toleranceDefined = fmiTrue;
@@ -117,19 +117,19 @@ static fmiComponent initializeFMU(FMU *fmu, fmiBoolean visible, fmiBoolean loggi
 }
 
 static fmiStatus rollbackFMUs(FMU *fmus, int numberOfFMUs) {
-	int i;
-	fmiStatus fmiFlag;
+        int i;
+        fmiStatus fmiFlag;
 
-	printf("Rolling back FMUs!\n");
+        printf("Rolling back FMUs!\n");
 
-	for (i = 0; i < numberOfFMUs; i++) {
-		fmiFlag = fmus[i].setFMUstate(fmus[i].component, fmus[i].lastFMUstate);
-		if (fmiFlag > fmiWarning) {
-			printf("Rolling back FMU %d failed!\n", i+1);
-			return fmiFlag;
-		}
-	}
-	return fmiOK;
+        for (i = 0; i < numberOfFMUs; i++) {
+                fmiFlag = fmus[i].setFMUstate(fmus[i].component, fmus[i].lastFMUstate);
+                if (fmiFlag > fmiWarning) {
+                        printf("Rolling back FMU %d failed!\n", i+1);
+                        return fmiFlag;
+                }
+        }
+        return fmiOK;
 }
 
 static fmiStatus setValue(portConnection* connection)
@@ -176,7 +176,7 @@ static int simulate(FMU *fmus, portConnection* connections, double h, fmiBoolean
     double stepSize = h;
     double newStepSize = h;
 
-	// temporary variables
+        // temporary variables
     fmiStatus fmiFlag = fmiOK;   // return code of the fmu functions
     fmiStatus simulationFlag = fmiOK; // status of the whole simulation
     int i = 0;
@@ -219,7 +219,7 @@ static int simulate(FMU *fmus, portConnection* connections, double h, fmiBoolean
         }
 
         // Try doStep() for all FMUs and find acceptable stepSize
-    	for (i = 0 ; i < NUMBER_OF_FMUS; i++) {
+            for (i = 0 ; i < NUMBER_OF_FMUS; i++) {
             // Try doStep() and check if FMU accepts the step size
             fmiFlag = fmus[i].doStep(fmus[i].component, time, stepSize, fmiFalse);
 
@@ -243,22 +243,22 @@ static int simulate(FMU *fmus, portConnection* connections, double h, fmiBoolean
         // Set new step size
         stepSize = newStepSize;
 
-    	if (simulationFlag == fmiDiscard) {
-    	    // TODO: There is currently no way to determine, which FMU supports rollback and which does not!
-    	    // There has to be a flag in the FMU struct so that we can go over all FMUs. The implementation below is a hack!
-    	    fmiFlag = rollbackFMUs(fmus, NUMBER_OF_FMUS );
+            if (simulationFlag == fmiDiscard) {
+                // TODO: There is currently no way to determine, which FMU supports rollback and which does not!
+                // There has to be a flag in the FMU struct so that we can go over all FMUs. The implementation below is a hack!
+                fmiFlag = rollbackFMUs(fmus, NUMBER_OF_FMUS );
             if (fmiFlag > fmiWarning) {
                 printf("Rolling back of FMUs failed. Terminating simulation.");
                 goto endSimulation;
             }
 
-    	}
+            }
 
-    	if (simulationFlag != fmiDiscard) {
-    	    time += stepSize;
-    	}
+            if (simulationFlag != fmiDiscard) {
+                time += stepSize;
+            }
 
-    	// TODO: Should be done by FMU
+            // TODO: Should be done by FMU
         outputRow(&fmus[NUMBER_OF_FMUS-2], fmus[NUMBER_OF_FMUS-1].component, time, file, separator, FALSE); // output values for this step
 
         nSteps++;
@@ -267,15 +267,15 @@ static int simulate(FMU *fmus, portConnection* connections, double h, fmiBoolean
  endSimulation:
     // end simulation
     for (i = 0 ; i < NUMBER_OF_FMUS; i++)
-	{
-	    fmus[i].terminate(fmus[i].component);
+        {
+            fmus[i].terminate(fmus[i].component);
             if (fmus[i].lastFMUstate != NULL) {
                 //FIXME: we are ignoring the return value of this call.
                 fmus[i].freeFMUstate(fmus[i].component, &fmus[i].lastFMUstate);
             }
 
-	    fmus[i].freeInstance(fmus[i].component);
-	}
+            fmus[i].freeInstance(fmus[i].component);
+        }
 
     // print simulation summary
     if (returnValue == 1) {
@@ -346,7 +346,7 @@ int main(int argc, char *argv[]) {
             fmuFileNames[0], tEnd, h, loggingOn, csv_separator); // TODO: Should mention all FMUs
     printf("log categories={ ");
     for (i = 0; i < nCategories; i++) {
-    	printf("%s ", categories[i]);
+            printf("%s ", categories[i]);
     }
     printf("}\n");
 
@@ -357,7 +357,7 @@ int main(int argc, char *argv[]) {
     // release FMUs
 #ifdef _MSC_VER
     for (i = 0; i < NUMBER_OF_FMUS; i++) {
-    	FreeLibrary(fmus[i]->dllHandle);
+            FreeLibrary(fmus[i]->dllHandle);
     }
 #else
     for (i = 0; i < NUMBER_OF_FMUS; i++) {
@@ -370,7 +370,7 @@ int main(int argc, char *argv[]) {
     }
 
     if (categories) {
-    	free(categories);
+            free(categories);
     }
 
     free(fmus);

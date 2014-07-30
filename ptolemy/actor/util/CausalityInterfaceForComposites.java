@@ -736,11 +736,11 @@ public class CausalityInterfaceForComposites extends DefaultCausalityInterface {
         Actor actor = (Actor) outputPort.getContainer();
         CausalityInterface causality = actor.getCausalityInterface();
         for (IOPort inputPort : causality.dependentPorts(outputPort)) {
-        	// if outputPort is an IO port then inputPort can be an output 
-        	// port as well. Check here and ignore if inputPort is actually
-        	// an output port.
-        	if (inputPort.isInput()) {
-        	
+                // if outputPort is an IO port then inputPort can be an output 
+                // port as well. Check here and ignore if inputPort is actually
+                // an output port.
+                if (inputPort.isInput()) {
+                
             // The output port depends directly on this input port.
             // Find the depth of the input port.
             Integer inputPortDepth = _portToDepth.get(inputPort);
@@ -769,7 +769,7 @@ public class CausalityInterfaceForComposites extends DefaultCausalityInterface {
             if (depth < newDepth) {
                 depth = newDepth;
             }
-        	}
+                }
         }
         _portToDepth.put(outputPort, Integer.valueOf(depth));
     }

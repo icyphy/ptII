@@ -649,7 +649,7 @@ public class InteractiveShell extends TypedAtomicActor implements Placeable,
     /** The frame that is created by an instance of ShellTableau.
      */
     @SuppressWarnings("serial")
-	public class ShellFrame extends ExpressionShellFrame {
+        public class ShellFrame extends ExpressionShellFrame {
         /** Construct a frame to display the ExpressionShell window.
          *  Override the base class to handle window closing.
          *  After constructing this, it is necessary

@@ -534,7 +534,7 @@ public class OptimalScheduleFinder {
      * A list of channels, based on LinkedList.
      */
     @SuppressWarnings("serial")
-	protected static class _ListOfChannels extends LinkedList {
+        protected static class _ListOfChannels extends LinkedList {
 
         /**
          * Count the overall memory taken by channels in the list in state 'state'.
@@ -647,7 +647,7 @@ public class OptimalScheduleFinder {
      * A list of ports, based on LinkeList.
      */
     @SuppressWarnings("serial")
-	protected static class _ListOfPorts extends LinkedList {
+        protected static class _ListOfPorts extends LinkedList {
     }
 
     /**
@@ -840,7 +840,7 @@ public class OptimalScheduleFinder {
      * A list of actors, derived from LinkedList.
      */
     @SuppressWarnings("serial")
-	protected static class _ListOfActors extends LinkedList {
+        protected static class _ListOfActors extends LinkedList {
     }
 
     /**
@@ -951,7 +951,7 @@ public class OptimalScheduleFinder {
      * A set of states, based on HashSet.
      */
     @SuppressWarnings("serial")
-	protected static class _SetOfStates extends HashSet {
+        protected static class _SetOfStates extends HashSet {
     }
 
     /**
@@ -959,7 +959,7 @@ public class OptimalScheduleFinder {
      * list of states.
      */
     @SuppressWarnings("serial")
-	protected static abstract class _StateComparator implements Comparator,
+        protected static abstract class _StateComparator implements Comparator,
             Serializable {
     }
 
@@ -967,7 +967,7 @@ public class OptimalScheduleFinder {
      * A Comparator to maintain a sorted list of states, sorted on their value.
      */
     @SuppressWarnings("serial")
-	protected static class _StateComparatorLowestValue extends _StateComparator {
+        protected static class _StateComparatorLowestValue extends _StateComparator {
 
         /**
          * compare two states on their value. If values tie, then sort
@@ -1007,7 +1007,7 @@ public class OptimalScheduleFinder {
      * progress to the final state.
      */
     @SuppressWarnings("serial")
-	protected static class _StateComparatorMaximumProgress extends
+        protected static class _StateComparatorMaximumProgress extends
             _StateComparator {
 
         /**

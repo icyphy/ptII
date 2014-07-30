@@ -67,7 +67,7 @@ public class FMUJUnitTest {
      *  or if the results is not the same as the known good results.
      */
     public void cosimulate(String fmuFileName, double endTime, double stepSize,
-			   String knownGoodFileName)
+                           String knownGoodFileName)
             throws Exception {
         String resultsFileName = File.createTempFile("FMUJUnitTest", "csv")
                 .getCanonicalPath();
@@ -75,7 +75,7 @@ public class FMUJUnitTest {
                 + "java -classpath \"" + topDirectory + "/lib/jna.jar:"
                 + topDirectory + "\" org.ptolemy.fmi.driver.FMUCoSimulation "
                 + fmuFileName + " " + endTime + " " + stepSize
-    	        + " false c " + knownGoodFileName);
+                    + " false c " + knownGoodFileName);
         new FMUCoSimulation().simulate(fmuFileName, endTime, stepSize,
                 true /*logging*/, ',', resultsFileName);
 
@@ -97,10 +97,10 @@ public class FMUJUnitTest {
      *  or if the results is not the same as the known good results.
      */
     public void cosimulate(String testName, double endTime, double stepSize)
-	throws Exception {
+        throws Exception {
         cosimulate(topDirectory + "/org/ptolemy/fmi/fmu/cs/" + testName
-		   + ".fmu", endTime, stepSize,
-		   topDirectory + "/org/ptolemy/fmi/driver/test/junit/"
+                   + ".fmu", endTime, stepSize,
+                   topDirectory + "/org/ptolemy/fmi/driver/test/junit/"
                 + testName + ".csv");
     }
 
@@ -109,7 +109,7 @@ public class FMUJUnitTest {
      */
     @org.junit.Test
     public void cosimulateBouncingBall() throws Exception {
-	// The end time and step size come from run_all.bat in FMUSDK2.0.1.
+        // The end time and step size come from run_all.bat in FMUSDK2.0.1.
         cosimulate("bouncingBall", 4, 0.01);
     }
 
@@ -118,7 +118,7 @@ public class FMUJUnitTest {
      */
     @org.junit.Test
     public void cosimulateBouncingBall20RC1() throws Exception {
-	// The end time and step size come from run_all.bat in FMUSDK2.0.1.
+        // The end time and step size come from run_all.bat in FMUSDK2.0.1.
         cosimulate("bouncingBall20RC1", 4, 0.01);
     }
 
@@ -127,7 +127,7 @@ public class FMUJUnitTest {
      */
     @org.junit.Test
     public void cosimulateDq() throws Exception {
-	// The end time and step size come from run_all.bat in FMUSDK2.0.1.
+        // The end time and step size come from run_all.bat in FMUSDK2.0.1.
         cosimulate("dq", 1, 0.1);
     }
 
@@ -136,9 +136,9 @@ public class FMUJUnitTest {
      */
     @org.junit.Test
     public void cosimulateInc() throws Exception {
-	// The end time and step size come from run_all.bat in FMUSDK2.0.1.
-	// run_all.bat has a end time of 15, which will cause the
-	// fmu to terminate and doStep() to return fmiError, so we go with 11.
+        // The end time and step size come from run_all.bat in FMUSDK2.0.1.
+        // run_all.bat has a end time of 15, which will cause the
+        // fmu to terminate and doStep() to return fmiError, so we go with 11.
         cosimulate("inc", 11, 0.4);
     }
 
@@ -147,9 +147,9 @@ public class FMUJUnitTest {
      */
     @org.junit.Test
     public void cosimulateInc20RC1() throws Exception {
-	// The end time and step size come from run_all.bat in FMUSDK2.0.1.
-	// run_all.bat has a end time of 15, which will cause the
-	// fmu to terminate and doStep() to return fmiError, so we go with 11.
+        // The end time and step size come from run_all.bat in FMUSDK2.0.1.
+        // run_all.bat has a end time of 15, which will cause the
+        // fmu to terminate and doStep() to return fmiError, so we go with 11.
         cosimulate("inc20RC1", 11, 0.4);
     }
 
@@ -158,7 +158,7 @@ public class FMUJUnitTest {
      */
     @org.junit.Test
     public void cosimulateValues() throws Exception {
-	// The end time and step size come from run_all.bat in FMUSDK2.0.1.
+        // The end time and step size come from run_all.bat in FMUSDK2.0.1.
         cosimulate("values", 12, 0.3);
     }
 
@@ -167,7 +167,7 @@ public class FMUJUnitTest {
      */
     @org.junit.Test
     public void cosimulateVanDerPol() throws Exception {
-	// The end time and step size come from run_all.bat in FMUSDK2.0.1.
+        // The end time and step size come from run_all.bat in FMUSDK2.0.1.
         cosimulate("vanDerPol", 5, 0.1);
     }
 

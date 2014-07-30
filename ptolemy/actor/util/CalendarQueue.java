@@ -350,7 +350,7 @@ public class CalendarQueue implements Debuggable {
 
         CQLinkedList bucket = _bucket[_getBinIndex(entry)];
         if (bucket == null) {
-        	return false;
+                return false;
         }
         boolean result = bucket.remove(entry);
 
@@ -959,12 +959,12 @@ public class CalendarQueue implements Debuggable {
             CQCell previousCell = head;
             CQCell currentCell = previousCell.next;
             if (currentCell == null) {
-            	return false;
+                    return false;
             }
 
             do {
                 if (currentCell.contents != null
-                		&& currentCell.contents.equals(object)) {
+                                && currentCell.contents.equals(object)) {
                     // Found a match.
                     if (tail == currentCell) {
                         // Removing the tail. Need to update.

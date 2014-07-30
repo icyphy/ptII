@@ -74,27 +74,27 @@ void PtidesPort_Send(struct PtidesPort* port, int channelIndex, Token* token) {
                 port->_transmittedTokenTimestamps = pblMapNewHashMap();
                 port->_transmittedTokenCnt = pblMapNewHashMap();
         }
-	//Token* tokenPtr = calloc(1, sizeof(Token));
-	//*tokenPtr = token;
+        //Token* tokenPtr = calloc(1, sizeof(Token));
+        //*tokenPtr = token;
 
         if (pblMapGet(port->_transmittedTokenTimestamps, token, sizeof(Token), NULL) == NULL) {
                 // FIXME: Leak?
-    	        int* xPtr = calloc(1, sizeof(int));
-		*xPtr = 0;
+                    int* xPtr = calloc(1, sizeof(int));
+                *xPtr = 0;
                 pblMapAdd(port->_transmittedTokenCnt, token, sizeof(Token), xPtr, sizeof(int));
         }
         //Time toPut[2] = {timestamp, sourceTimestamp};
-	// FIXME: when to free this
-	Time * toPut = calloc(2, sizeof(Time));
-	toPut[0] = timestamp;
-	toPut[1] = sourceTimestamp;
+        // FIXME: when to free this
+        Time * toPut = calloc(2, sizeof(Time));
+        toPut[0] = timestamp;
+        toPut[1] = sourceTimestamp;
         pblMapAdd(port->_transmittedTokenTimestamps, token, sizeof(Token), toPut, sizeof(Time[2]));
 
         int cpt = *((int*)pblMapGet(port->_transmittedTokenCnt, token, sizeof(Token), NULL));
         cpt++;
 
-	int *cptPtr = calloc(1, sizeof(int));
-	*cptPtr = cpt;
+        int *cptPtr = calloc(1, sizeof(int));
+        *cptPtr = cpt;
 
         pblMapAdd(port->_transmittedTokenCnt, token, sizeof(Token), cptPtr, sizeof(int));
         IOPort_Send((struct IOPort*)port, channelIndex, token);

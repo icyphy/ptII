@@ -148,7 +148,7 @@ static char* getFmuPath(const char* fmuFileName){
   return strdup(fmuFileName);
 }
 static char* getTmpPath() {
-	// TODO: replace with strdupa()
+        // TODO: replace with strdupa()
   char template[13];  // Lenght of "fmuTmpXXXXXX" + null
   sprintf(template, "%s", "fmuTmpXXXXXX");
   //char *tmp = mkdtemp(strdup("fmuTmpXXXXXX"));

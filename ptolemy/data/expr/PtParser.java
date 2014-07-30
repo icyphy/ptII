@@ -3880,7 +3880,7 @@ public class PtParser/*@bgen(jjtree)*/implements PtParserTreeConstants,
     }
 
     @SuppressWarnings("serial")
-	static private final class LookaheadSuccess extends java.lang.Error {
+        static private final class LookaheadSuccess extends java.lang.Error {
     }
 
     final private LookaheadSuccess jj_ls = new LookaheadSuccess();

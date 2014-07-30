@@ -150,13 +150,13 @@ public class FMULogUtilities {
                         try {
                             int variableReference = Integer.parseInt(integerString);
                             boolean foundIt = false;
-			    for (FMIScalarVariable scalarVariable : modelDescription.modelVariables) {
-				if (scalarVariable.valueReference == variableReference
-				        && scalarVariable.type.getClass()
-				                .isAssignableFrom(fmiTypeClass)) {
-				    foundIt = true;
-				    results.append(scalarVariable.name);
-				    break;
+                            for (FMIScalarVariable scalarVariable : modelDescription.modelVariables) {
+                                if (scalarVariable.valueReference == variableReference
+                                        && scalarVariable.type.getClass()
+                                                .isAssignableFrom(fmiTypeClass)) {
+                                    foundIt = true;
+                                    results.append(scalarVariable.name);
+                                    break;
                                 }
                             }
                             if (!foundIt) {

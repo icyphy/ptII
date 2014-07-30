@@ -395,10 +395,10 @@ public class PNQueueReceiver extends QueueReceiver implements ProcessReceiver {
         while (!_terminate) {
             int depth = 0;
             try {
-            	// NOTE: Avoid acquiring read access on the workspace
-            	// while holding the lock on the director because if
-            	// some other process is trying to acquire write access,
-            	// the request for read access will be deferred.
+                    // NOTE: Avoid acquiring read access on the workspace
+                    // while holding the lock on the director because if
+                    // some other process is trying to acquire write access,
+                    // the request for read access will be deferred.
                 Nameable container = getContainer().getContainer();
                 Manager manager = ((Actor) container).getManager();
                 // NOTE: This used to synchronize on this, but since it calls

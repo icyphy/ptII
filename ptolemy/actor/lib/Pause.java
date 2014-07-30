@@ -50,7 +50,7 @@ import ptolemy.kernel.util.Settable;
  @Pt.AcceptedRating Red (pd)
  */
 public class Pause extends Sink {
-	
+        
     /** Construct an actor in the specified container with the specified
      *  name.
      *  @param container The container.

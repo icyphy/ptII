@@ -77,11 +77,11 @@ public class ConditionsTableModel extends AbstractTableModel {
         this.fireTableStructureChanged();
         this.fireTableDataChanged();
     }
-	
+        
     public void checkDisjointness() throws IllegalActionException {
         SCRTableHelper.checkDisjointness(_tableContent, getRowCount(), getColumnCount(), _model);
     }
-	
+        
     public void deleteColumn(int index) {
         if (index > 0 && index < getColumnCount()) {
             for (int i = getRowCount() - 1; i >= 0 ; i--) {
@@ -156,7 +156,7 @@ public class ConditionsTableModel extends AbstractTableModel {
                 expression = expression.append(")");
             }
             // System.out.println("Save model - expression: " + expression);
-			
+                        
             try {
                 if (state.getRefinement() == null) {
                     ((RefinementActor) state.getContainer()).addRefinement(
@@ -198,7 +198,7 @@ public class ConditionsTableModel extends AbstractTableModel {
         }
     }
 
-	
+        
 
     private void _initializeTableContent() {
         if (_tableContent == null) {
@@ -207,23 +207,23 @@ public class ConditionsTableModel extends AbstractTableModel {
                 _tableContent.add("");
             }
             for (int rowIndex = 0; rowIndex < getRowCount() - 1; rowIndex++) {
-				
+                                
                 State state = (State) _model.getEntity((String) getValueAt(
                                 rowIndex, 0));
                 try {
                     if (state.getRefinement() != null) {
                         CompositeEntity composite = (CompositeEntity) state
                             .getRefinement()[0];
-                        //						if parsing existing ModalModels use following code as a start. For now, do not attempt that as there 
-                        //						might be too many ways of interpreting existing ModalModels.
-                        //						for (Object insidePortObject : ((IOPort)((CompositeActor) state.getRefinement()[0]).getPort(_port.getName())).insidePortList()) {
-                        //							IOPort insidePort = (IOPort) insidePortObject;
-                        //							Actor actor = (Actor) insidePort.getContainer();
-                        //							if (actor instanceof Const) {
-                        //								String value = ((Const)actor).value.getToken().toString();
-                        //							}
-                        //						}
-						
+                        //                                                if parsing existing ModalModels use following code as a start. For now, do not attempt that as there 
+                        //                                                might be too many ways of interpreting existing ModalModels.
+                        //                                                for (Object insidePortObject : ((IOPort)((CompositeActor) state.getRefinement()[0]).getPort(_port.getName())).insidePortList()) {
+                        //                                                        IOPort insidePort = (IOPort) insidePortObject;
+                        //                                                        Actor actor = (Actor) insidePort.getContainer();
+                        //                                                        if (actor instanceof Const) {
+                        //                                                                String value = ((Const)actor).value.getToken().toString();
+                        //                                                        }
+                        //                                                }
+                                                
                         Expression expressionActor = (Expression) composite
                             .getEntity(((IOPort) _port).getName()
                                     + "_out");
@@ -260,34 +260,34 @@ public class ConditionsTableModel extends AbstractTableModel {
                 // (condition ? value : (...
                 expression = expression.substring(expression.indexOf("(") + 1).trim();
                 // condition ? value : (...
-					
+                                        
                 int endOfCondition = expression.indexOf("?");
                 if (expression.contains("(") && (expression.indexOf("(") < expression.indexOf("?"))) {
                     endOfCondition = SCRTableHelper.indexOfMatchingCloseBracket(expression, expression.indexOf("("));
                 }
                 condition = expression.substring(0, endOfCondition).trim();
-					
+                                        
                 expression = expression.substring(endOfCondition).trim();
                 // ? value : (...
-					
+                                        
                 expression = expression.substring(expression.indexOf("?") + 1).trim();
                 // value : (...
-					
+                                        
                 int endOfValue = expression.indexOf(":");
                 if (expression.contains("(") && (expression.indexOf("(") < expression.indexOf(":"))) {
                     endOfValue = SCRTableHelper.indexOfMatchingCloseBracket(expression, expression.indexOf("("));
                 }
                 value = expression.substring(0, endOfValue).trim();
-					
+                                        
                 expression = expression.substring(expression.indexOf(":") + 1).trim();
                 // (...
-					
+                                        
                 expression = expression.substring(expression.indexOf("(") + 1).trim();
                 // ...
-					
+                                        
                 int valueIndex = SCRTableHelper.getContentIndex(getRowCount() - 1, i, getColumnCount());
                 int contentIndex = SCRTableHelper.getContentIndex(rowIndex, i, getColumnCount());
-					
+                                        
                 _tableContent.add(valueIndex, value);
                 _tableContent.remove(valueIndex + 1);
                 _tableContent.add(contentIndex, condition);

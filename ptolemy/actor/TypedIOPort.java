@@ -206,9 +206,9 @@ public class TypedIOPort extends IOPort implements Typeable {
                 }
             }
         } else if (attribute == defaultValue) {
-        	if (defaultValue.getToken() != null) {
-        		setTypeEquals(defaultValue.getType());
-        	}
+                if (defaultValue.getToken() != null) {
+                        setTypeEquals(defaultValue.getType());
+                }
         } else {
             super.attributeChanged(attribute);
         }
@@ -848,11 +848,11 @@ public class TypedIOPort extends IOPort implements Typeable {
         }
         
         if (defaultValue.getToken() != null) {
-	        compare = TypeLattice.compare(defaultValue.getToken().getType(), _resolvedType);
-	
-	        if (compare == CPO.HIGHER || compare == CPO.INCOMPARABLE) {
-	            throw new RunTimeTypeCheckException(this, defaultValue.getToken());
-	        }
+                compare = TypeLattice.compare(defaultValue.getToken().getType(), _resolvedType);
+        
+                if (compare == CPO.HIGHER || compare == CPO.INCOMPARABLE) {
+                    throw new RunTimeTypeCheckException(this, defaultValue.getToken());
+                }
         }
     }
 
@@ -969,32 +969,32 @@ public class TypedIOPort extends IOPort implements Typeable {
          *  @param port The port where the error occurred.
          *  @param token The token that caused the error.
          */
-    	public RunTimeTypeCheckException(TypedIOPort port, Token token) {
-    		super(port, "Run-time type checking failed. Token " + token
-    				+ " with type " + token.getType()
-    				+ " is incompatible with port type: "
-    				+ port.getType().toString());
-    		_port = port;
-    		_token = token;
-    	}
+            public RunTimeTypeCheckException(TypedIOPort port, Token token) {
+                    super(port, "Run-time type checking failed. Token " + token
+                                    + " with type " + token.getType()
+                                    + " is incompatible with port type: "
+                                    + port.getType().toString());
+                    _port = port;
+                    _token = token;
+            }
 
         /** Return the port where the exception occurred.
          *  @return The port.
          */
-    	public TypedIOPort getPort() {
-    		return _port;
-    	}
+            public TypedIOPort getPort() {
+                    return _port;
+            }
 
         /** Return the token that caused the exception.
          *  @return the exception.
          */
-    	public Token getToken() {
-    		return _token;
-    	}
+            public Token getToken() {
+                    return _token;
+            }
 
 
-    	private TypedIOPort _port;
-    	private Token _token;
+            private TypedIOPort _port;
+            private Token _token;
     }
     
     private class TypeTerm implements InequalityTerm {

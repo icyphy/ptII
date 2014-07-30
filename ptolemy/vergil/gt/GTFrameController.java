@@ -259,7 +259,7 @@ public class GTFrameController implements ChangeListener, KeyListener {
     }
 
     @SuppressWarnings("serial")
-	protected JComponent _createRightComponent(NamedObj entity) {
+        protected JComponent _createRightComponent(NamedObj entity) {
         // entity must be SingleRuleTransformer or CompositeActorMatcher.
 
         if (_isFSM(entity)) {

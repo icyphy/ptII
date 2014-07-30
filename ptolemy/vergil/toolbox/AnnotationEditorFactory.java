@@ -240,7 +240,7 @@ public class AnnotationEditorFactory extends EditorFactory {
      *  visible attributes).
      */
     @SuppressWarnings("serial")
-	public class AnnotationTextEditor extends JPanel {
+        public class AnnotationTextEditor extends JPanel {
         /** Create an annotation text editor.
          *  @param textArea The text area.
          */

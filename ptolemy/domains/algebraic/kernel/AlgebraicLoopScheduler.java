@@ -97,7 +97,7 @@ public class AlgebraicLoopScheduler extends Scheduler {
             throw new NotSchedulableException(this, "No container.");
         }
         CausalityInterfaceForComposites causality
-        		= (CausalityInterfaceForComposites) compositeActor.getCausalityInterface();
+                        = (CausalityInterfaceForComposites) compositeActor.getCausalityInterface();
         List<Actor> sortedActors = causality.topologicalSort();
         Schedule schedule = new Schedule();
         if (_debugging) {

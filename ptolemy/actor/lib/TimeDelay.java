@@ -178,7 +178,7 @@ public class TimeDelay extends Transformer {
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         // NOTE: We used to check whether minimumDelay < delay here.
-    	// This causes a circular dependency. If the value
+            // This causes a circular dependency. If the value
         // of minimumDelay is "delay", then when minimumDelay is
         // evaluated, this could cause delay to be evaluated (if
         // it needs evaluation), which will cause this attributeChanged()

@@ -131,10 +131,10 @@ public class ScopeExtendingAttribute extends Attribute implements ScopeExtender 
      *   created.
      */
     public void validate() throws IllegalActionException {
-    	List<Settable> settables = attributeList(Settable.class);
-    	for (Settable settable : settables) {
-    		settable.validate();
-    	}
+            List<Settable> settables = attributeList(Settable.class);
+            for (Settable settable : settables) {
+                    settable.validate();
+            }
     }
 
     ///////////////////////////////////////////////////////////////////

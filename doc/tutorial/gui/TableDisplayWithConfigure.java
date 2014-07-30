@@ -54,7 +54,7 @@ public class TableDisplayWithConfigure extends TableDisplay {
         public Component createEditorPane() {
             if (_table == null) {
                 @SuppressWarnings("serial")
-				TableModel dataModel = new AbstractTableModel() {
+                                TableModel dataModel = new AbstractTableModel() {
                     public int getColumnCount() {
                         return 10;
                     }

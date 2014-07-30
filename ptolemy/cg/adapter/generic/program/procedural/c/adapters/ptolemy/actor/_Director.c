@@ -83,8 +83,8 @@ Time Director_FireContainerAt(struct Director* director, Time time, int microste
 }
 Time Director_GetEnvironmentTime(struct Director* director) {
         if (director == NULL) {
-	  return -666.0;
-	}
+          return -666.0;
+        }
 
         struct Actor* container = (struct Actor*) director->container;
         struct LocalClock* localClock = director->localClock;

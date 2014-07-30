@@ -469,7 +469,7 @@ public class TransitionController extends BasicEdgeController {
      *  will report an error with a fairly cryptic message.
      */
     @SuppressWarnings("serial")
-	private class LookInsideAction extends FigureAction {
+        private class LookInsideAction extends FigureAction {
         public LookInsideAction() {
             super("Look Inside");
 

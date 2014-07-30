@@ -667,7 +667,7 @@ public abstract class BasicGraphController extends AbstractGraphController
      *  of an instance.
      */
     @SuppressWarnings("serial")
-	public class OpenBaseClassAction extends FigureAction {
+        public class OpenBaseClassAction extends FigureAction {
         /** Construct a new action.
          */
         public OpenBaseClassAction() {
@@ -739,7 +739,7 @@ public abstract class BasicGraphController extends AbstractGraphController
     /** An action that will create a UnitSolverDialog.
      */
     @SuppressWarnings("serial")
-	public class UnitSolverDialogAction extends AbstractAction {
+        public class UnitSolverDialogAction extends AbstractAction {
         /** Construct an action that will create a UnitSolverDialog.
          */
         public UnitSolverDialogAction() {

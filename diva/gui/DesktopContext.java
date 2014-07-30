@@ -464,7 +464,7 @@ public class DesktopContext extends AppContextDelegate implements MDIContext {
      * jdk1.2. This should go away when we switch to 1.3 completely.
      */
     @SuppressWarnings("serial")
-	private static class DesktopInternalFrame extends JInternalFrame {
+        private static class DesktopInternalFrame extends JInternalFrame {
 
         // FindBugs suggests making this class static so as to decrease
         // the size of instances and avoid dangling references.
@@ -495,7 +495,7 @@ public class DesktopContext extends AppContextDelegate implements MDIContext {
     }
 
     @SuppressWarnings("serial")
-	private class DesktopPseudoFrame extends JPseudoFrame {
+        private class DesktopPseudoFrame extends JPseudoFrame {
         public DesktopPseudoFrame(JDesktopPane desktopPane, JMenuBar menuBar) {
             super(desktopPane, menuBar);
         }

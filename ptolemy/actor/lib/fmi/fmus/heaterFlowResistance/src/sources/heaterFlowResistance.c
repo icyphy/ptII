@@ -131,11 +131,11 @@ FMI_Export fmiStatus fmiGetReal(fmiComponent c, const fmiValueReference vr[], si
       // Check if the output must be computed.
       // This could be made more efficient using an alias as mOut_flow=mIn_flow and TOut=TIn.
       if (component->mustComputeOutputs){
-	component->r[mOut_flow] = component->r[mIn_flow];
-	component->r[pOut] = component->r[pIn] - component->r[k] * 
-	  fabs(component->r[mIn_flow]) * component->r[mIn_flow];
-	component->r[TOut] = component->r[TSet];
-	component->mustComputeOutputs = fmiFalse;
+        component->r[mOut_flow] = component->r[mIn_flow];
+        component->r[pOut] = component->r[pIn] - component->r[k] * 
+          fabs(component->r[mIn_flow]) * component->r[mIn_flow];
+        component->r[TOut] = component->r[TSet];
+        component->mustComputeOutputs = fmiFalse;
       }
       // Assign outputs
       for(i=0; i < nvr; i++){
@@ -207,7 +207,7 @@ FMI_Export fmiStatus fmiSetReal(fmiComponent c, const fmiValueReference vr[], si
     // Set values.
     for (i = 0; i < nvr; i++) {
         component->r[vr[i]] = value[i];
-	printf("heaterFlowResistance.c: Setting r[%d] = %4.2f\n", vr[i], value[i]);
+        printf("heaterFlowResistance.c: Setting r[%d] = %4.2f\n", vr[i], value[i]);
 
     }
     // Set a flag that indicates that the outputs must be re-computed.

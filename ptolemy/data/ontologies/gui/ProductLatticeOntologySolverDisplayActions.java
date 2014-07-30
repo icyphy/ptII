@@ -201,7 +201,7 @@ public class ProductLatticeOntologySolverDisplayActions extends
      *  ontology that is a component of the product lattice ontology.
      */
     @SuppressWarnings("serial")
-	private class SetHighlightColorsAction extends FigureAction {
+        private class SetHighlightColorsAction extends FigureAction {
 
         /** Create a new SetHighlightColorsAction for the given ontology.
          *  @param highlightOntology The ontology for which this menu action is

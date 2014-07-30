@@ -96,7 +96,7 @@ public class ActorInstanceController extends ActorController {
     //// ConvertToClassAction
     // An action to convert an instance to a class.
     @SuppressWarnings("serial")
-	private class ConvertToClassAction extends FigureAction {
+        private class ConvertToClassAction extends FigureAction {
         public ConvertToClassAction(String commandName) {
             super(commandName);
         }

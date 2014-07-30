@@ -169,15 +169,15 @@ public class NondeterministicMerge extends TypedCompositeActor {
              *          that width inference might happen multiple times (and definitely
              *          will for certain type of models).
              */
-        	// If the model is running, create new internal actors if needed.
+                // If the model is running, create new internal actors if needed.
             Manager manager = getManager();
             if (manager != null) {
-            	Manager.State managerState = manager.getState();
-            	if (managerState == Manager.ITERATING
-            			|| managerState == Manager.PAUSED
-            			|| managerState == Manager.PAUSED_ON_BREAKPOINT) {
-                    _reinitializeInnerActors();            		
-            	}
+                    Manager.State managerState = manager.getState();
+                    if (managerState == Manager.ITERATING
+                                    || managerState == Manager.PAUSED
+                                    || managerState == Manager.PAUSED_ON_BREAKPOINT) {
+                    _reinitializeInnerActors();                            
+                    }
             }
         }
     }

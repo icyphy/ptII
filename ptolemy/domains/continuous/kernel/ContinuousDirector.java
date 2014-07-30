@@ -485,7 +485,7 @@ public class ContinuousDirector extends FixedPointDirector implements
                     // but they should not be consumed yet.
                     // FIXME: Shouldn't this be done only if enclosingContinousDirector is null?
                     if (enclosingContinuousDirector == null) {
-                    	_assertAbsentInside();
+                            _assertAbsentInside();
                     }
 
                     super.fire();
@@ -558,12 +558,12 @@ public class ContinuousDirector extends FixedPointDirector implements
                     // There is some step size control actor that is
                     // unsatisfied with the current step size, refine the
                     // step size to a smaller one.
-                	double refinedStep = refinedStepSize();
-                	// Make sure the result is actually a change.
+                        double refinedStep = refinedStepSize();
+                        // Make sure the result is actually a change.
                     if (refinedStep >= _currentStepSize) {
-                    	// Actors suggestion is not useful.
-                    	// Choose instead half the current step size.
-                    	refinedStep = _currentStepSize*0.5;
+                            // Actors suggestion is not useful.
+                            // Choose instead half the current step size.
+                            refinedStep = _currentStepSize*0.5;
                         if (_debugging) {
                             _debug("-- Adjusting step size to: " + refinedStep);
                         }

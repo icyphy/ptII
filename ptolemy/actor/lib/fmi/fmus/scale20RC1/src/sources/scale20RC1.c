@@ -35,8 +35,8 @@
 // Set values for all variables that define a start value
 // Settings used unless changed by fmiSetX before fmiEnterInitializationMode
 void setStartValues(ModelInstance *comp) {
-	  fprintf(stderr, "scale20RC1.c: setStartValues()\n");
-	  fflush(stderr);
+          fprintf(stderr, "scale20RC1.c: setStartValues()\n");
+          fflush(stderr);
     r(output_) = 44;
     r(input_) = 0;
 }
@@ -44,9 +44,9 @@ void setStartValues(ModelInstance *comp) {
 // called by fmiExitInitializationMode() after setting eventInfo to defaults
 // Used to set the first time event, if any.
 void initialize(ModelInstance* comp, fmiEventInfo* eventInfo) {
-	  fprintf(stderr, "scale20RC1.c: initialize()\n");
-	  fflush(stderr);
-	// Calcualation is not event based, so no event time will be defined
+          fprintf(stderr, "scale20RC1.c: initialize()\n");
+          fflush(stderr);
+        // Calcualation is not event based, so no event time will be defined
     eventInfo->nextEventTimeDefined   = fmiFalse;
 }
 
@@ -58,15 +58,15 @@ void eventUpdate(ModelInstance* comp, fmiEventInfo* eventInfo) {
 fmiReal getReal(ModelInstance* comp, fmiValueReference vr){
     switch (vr)
     {
-		case input_:
-			// return the input value
-			return r(input_);
-    	case output_:
-    		// Calculate output when output is requested
-    		r(output_) = 2*r(input_);
-    		// Log call to facilitate debugging
-    	    // comp->functions->logger(comp->componentEnvironment, comp->instanceName, fmiOK, "logFmiCall", "input: %F, output: %F", r(input_), r(output_));
-    		return r(output_);
+                case input_:
+                        // return the input value
+                        return r(input_);
+            case output_:
+                    // Calculate output when output is requested
+                    r(output_) = 2*r(input_);
+                    // Log call to facilitate debugging
+                // comp->functions->logger(comp->componentEnvironment, comp->instanceName, fmiOK, "logFmiCall", "input: %F, output: %F", r(input_), r(output_));
+                    return r(output_);
         default: return 0;
     }
 }

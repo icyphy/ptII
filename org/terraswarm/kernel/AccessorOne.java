@@ -60,7 +60,7 @@ import ptolemy.kernel.util.StringAttribute;
  @Pt.AcceptedRating Red (bilung)
  */
 public class AccessorOne extends JavaScript {
-	
+        
     /** Construct a library with the given container and name.
      *  @param container The container.
      *  @param name The name of this library.
@@ -79,9 +79,9 @@ public class AccessorOne extends JavaScript {
         SingletonParameter hide = new SingletonParameter(scriptIn, "_hide");
         hide.setExpression("true");
         
-    	// The base class, by default, exposes the instance of this actor in the
-    	// JavaScript variable "actor", which gives an accessor full access
-    	// to the model, and hence a way to invoke Java code. Prevent this
+            // The base class, by default, exposes the instance of this actor in the
+            // JavaScript variable "actor", which gives an accessor full access
+            // to the model, and hence a way to invoke Java code. Prevent this
         // by putting the actor in "restricted" mode.
         _restricted = true;
     }
@@ -104,8 +104,8 @@ public class AccessorOne extends JavaScript {
      */
     @Override
     protected void _addPort(TypedIOPort port) throws IllegalActionException, NameDuplicationException {
-    	super._addPort(port);
-    	SingletonParameter showName = new SingletonParameter(port, "_showName");
-    	showName.setExpression("true");
+            super._addPort(port);
+            SingletonParameter showName = new SingletonParameter(port, "_showName");
+            showName.setExpression("true");
     }
 }

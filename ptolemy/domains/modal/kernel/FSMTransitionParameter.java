@@ -60,7 +60,7 @@ import ptolemy.kernel.util.Workspace;
  *  @Pt.AcceptedRating Red (derler)
  */
 public class FSMTransitionParameter extends AbstractSettableAttribute {
-	
+        
     /** Construct an attribute with the given name contained by the specified
      *  entity. The container argument must not be null, or a
      *  NullPointerException will be thrown.  This attribute will use the
@@ -105,10 +105,10 @@ public class FSMTransitionParameter extends AbstractSettableAttribute {
      *  @return The name.
      */
     public String getExpression() {
-    	if (_transition != null) {
+            if (_transition != null) {
             return _transition.getFullLabel();
-    	} 
-    	return "";
+            } 
+            return "";
     }
     
     /** Set the transition that corresponds to the parameters.
@@ -116,7 +116,7 @@ public class FSMTransitionParameter extends AbstractSettableAttribute {
      *  @see #setTransition(Transition)
      */
     public Transition getTransition() {
-    	return _transition;
+            return _transition;
     }
     
     /** Get visibility. Nothing to do.
@@ -133,7 +133,7 @@ public class FSMTransitionParameter extends AbstractSettableAttribute {
      * @throws IllegalActionException
      */
     public void hide(boolean hide) throws IllegalActionException {
-    	Parameter _hide = (Parameter) getAttribute("_hide");
+            Parameter _hide = (Parameter) getAttribute("_hide");
         if (_hide == null) {
             try {
                 _hide = new Parameter(this, "_hide");
@@ -153,7 +153,7 @@ public class FSMTransitionParameter extends AbstractSettableAttribute {
             // FindBugs: "Redundant nullcheck of value known to be
             // null" location is known to be null here.
             if (!hide /*&& (location == null || (location.getLocation()[0] == 0 && location.getLocation()[1] == 0))*/) {
-        	if (_transition != null && _transition.sourceState() != null) {
+                if (_transition != null && _transition.sourceState() != null) {
                     Location sourceStateLocation = (Location)_transition.sourceState().getAttribute("_location");
                     Location destinationStateLocation = (Location)_transition.destinationState().getAttribute("_location");
                     try {
@@ -165,7 +165,7 @@ public class FSMTransitionParameter extends AbstractSettableAttribute {
                     } catch (NameDuplicationException ex) {
                         throw new IllegalActionException(_transition, ex, "Could not add _location?");
                     }
-        	}
+                }
             }
         }
     }
@@ -176,11 +176,11 @@ public class FSMTransitionParameter extends AbstractSettableAttribute {
     @Override
     public void setName(String name) throws IllegalActionException,
             NameDuplicationException {
-    	super.setName(name);
-    	if (_transition != null) {
+            super.setName(name);
+            if (_transition != null) {
             _transition.fsmTransitionParameterName.setExpression(name);
             _transition.fsmTransitionParameterName.setPersistent(true);
-    	}
+            }
     }
     
     /** Remove value listener. Nothing to do.
@@ -190,8 +190,8 @@ public class FSMTransitionParameter extends AbstractSettableAttribute {
     public void removeValueListener(ValueListener listener) {
         // Nothing to do.
     }
-	
-	
+        
+        
     @Override
     public void setContainer(NamedObj container) throws IllegalActionException,
             NameDuplicationException {
@@ -209,8 +209,8 @@ public class FSMTransitionParameter extends AbstractSettableAttribute {
      * @see #getTransition()
      */
     public void setTransition(Transition transition) throws IllegalActionException, NameDuplicationException {
-    	_transition = transition;
-    	_init();
+            _transition = transition;
+            _init();
     }
 
     /** Set visibility. Nothing to do.
@@ -240,10 +240,10 @@ public class FSMTransitionParameter extends AbstractSettableAttribute {
             hide.setToken(BooleanToken.TRUE);
             hide.setVisibility(Settable.EXPERT);
         }
-		
+                
         hide(false);
         setPersistent(true);
-	    
+            
         List<Transition> transitions = ((ModalController)getContainer()).relationList();
         for (Transition transition : transitions) {
             if (((StringToken)transition.fsmTransitionParameterName.getToken()).stringValue().equals(this.getName())) {
@@ -255,5 +255,5 @@ public class FSMTransitionParameter extends AbstractSettableAttribute {
     }
 
     private Transition _transition;
-	
+        
 }

@@ -232,9 +232,9 @@ public class ManhattanConnector extends AbstractConnector {
         // Ignore if the shape doesn't have a translate method.
         // This is better than a class cast exception.
         if (shape instanceof Polyline2D) {
-        	Polyline2D line = (Polyline2D) getShape();
-        	line.translate(x, y);
-        	repaint();
+                Polyline2D line = (Polyline2D) getShape();
+                line.translate(x, y);
+                repaint();
         }
     }
 }

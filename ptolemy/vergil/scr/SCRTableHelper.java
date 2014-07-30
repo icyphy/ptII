@@ -52,143 +52,143 @@ Helper functions for SCR Tables.
 */
 public class SCRTableHelper {
 
-	/** Search towards the left of the string.
-	 * @param expression The expression to be searched.
-	 * @param openingBracket the index of the open bracket.
-	 * @return The index of the matching open bracket.
-	 */
-	public static int indexOfMatchingOpenBracket(String expression, int openingBracket) {
-		int openBrackets = 1;
-		int i = openingBracket - 1;
-		while (openBrackets != 0) {
-			char c = expression.charAt(i);
-			if (c == '(') {
-				openBrackets = openBrackets + 1;
-			} else if (c == ')') {
-				openBrackets = openBrackets - 1;
-			}
-			i = i - 1;
-		}
-		return i;
-	}
-	
-	/** Search towards the right of the string.
-	 * @param expression The expression to be searched.
-	 * @param openingBracket the index of the open bracket.
-	 * @return The index of the matching close bracket.
-	 */
-	public static int indexOfMatchingCloseBracket(String expression, int openingBracket) {
-		int openBrackets = 1;
-		int i = openingBracket + 1;
-		while (openBrackets != 0) {
-			char c = expression.charAt(i);
-			if (c == '(') {
-				openBrackets = openBrackets + 1;
-			} else if (c == ')') {
-				openBrackets = openBrackets - 1;
-			}
-			i = i + 1;
-		}
-		return i;
-	}
-	
-	/** Returns a self transition on a given state, if there is one, null otherwise.
-	 * @param state The given state.
-	 * @return The self transition or null.
-	 */
-	public static Transition getSelfTransition(State state) {
-		List relationList = state.outgoingPort.linkedRelationList();
-		for (Object object : relationList) {
-			Transition t = (Transition) object;
-			// found a self transition
-			if (t.destinationState() == state) {
-				return t;
-			}
-		}
-		return null;
-	}
-	
-	public static int getContentIndex(int rowIndex, int columnIndex, int columnCount) {
-		return (columnIndex - 1) + (columnCount - 1) * rowIndex;
-	}
-	
-	/** Check that all modes are unique. -- by definition
-	 * Check that all values are unique.
-	 * Check that pairwise OR of events in a row is always false.
-	 * --- check coverage: AND of all events in a row is true
-	 */
-	public static void checkDisjointness(List<String> _tableContent, 
-			int rowCount, int columnCount, FSMActor model) throws IllegalActionException {
-		//Check that all values are unique.
-		List<String> subList = _tableContent.subList(
-				getContentIndex(rowCount - 1, 1, columnCount), 
-				getContentIndex(rowCount - 1, columnCount, columnCount));
-		
-		Set<String> set = new HashSet<String>(subList);
+        /** Search towards the left of the string.
+         * @param expression The expression to be searched.
+         * @param openingBracket the index of the open bracket.
+         * @return The index of the matching open bracket.
+         */
+        public static int indexOfMatchingOpenBracket(String expression, int openingBracket) {
+                int openBrackets = 1;
+                int i = openingBracket - 1;
+                while (openBrackets != 0) {
+                        char c = expression.charAt(i);
+                        if (c == '(') {
+                                openBrackets = openBrackets + 1;
+                        } else if (c == ')') {
+                                openBrackets = openBrackets - 1;
+                        }
+                        i = i - 1;
+                }
+                return i;
+        }
+        
+        /** Search towards the right of the string.
+         * @param expression The expression to be searched.
+         * @param openingBracket the index of the open bracket.
+         * @return The index of the matching close bracket.
+         */
+        public static int indexOfMatchingCloseBracket(String expression, int openingBracket) {
+                int openBrackets = 1;
+                int i = openingBracket + 1;
+                while (openBrackets != 0) {
+                        char c = expression.charAt(i);
+                        if (c == '(') {
+                                openBrackets = openBrackets + 1;
+                        } else if (c == ')') {
+                                openBrackets = openBrackets - 1;
+                        }
+                        i = i + 1;
+                }
+                return i;
+        }
+        
+        /** Returns a self transition on a given state, if there is one, null otherwise.
+         * @param state The given state.
+         * @return The self transition or null.
+         */
+        public static Transition getSelfTransition(State state) {
+                List relationList = state.outgoingPort.linkedRelationList();
+                for (Object object : relationList) {
+                        Transition t = (Transition) object;
+                        // found a self transition
+                        if (t.destinationState() == state) {
+                                return t;
+                        }
+                }
+                return null;
+        }
+        
+        public static int getContentIndex(int rowIndex, int columnIndex, int columnCount) {
+                return (columnIndex - 1) + (columnCount - 1) * rowIndex;
+        }
+        
+        /** Check that all modes are unique. -- by definition
+         * Check that all values are unique.
+         * Check that pairwise OR of events in a row is always false.
+         * --- check coverage: AND of all events in a row is true
+         */
+        public static void checkDisjointness(List<String> _tableContent, 
+                        int rowCount, int columnCount, FSMActor model) throws IllegalActionException {
+                //Check that all values are unique.
+                List<String> subList = _tableContent.subList(
+                                getContentIndex(rowCount - 1, 1, columnCount), 
+                                getContentIndex(rowCount - 1, columnCount, columnCount));
+                
+                Set<String> set = new HashSet<String>(subList);
 
-		if(set.size() < subList.size()){
-		    throw new IllegalActionException("There are value duplicates!");
-		} 
-		
-		ASTPtRootNode _parseTree = null;
-	    ParseTreeEvaluator _parseTreeEvaluator = null;
-	    VariableScope _scope = null;
-		
-		//Check that pairwise OR of events in a row is always false.
-		for (int i = 0; i < rowCount - 1; i++) { // for every mode
-			for (int j = 1; j < columnCount; j++) {
-				String event = (String) _tableContent.get(getContentIndex(i, j, columnCount));
-				for (int k = j + 1; k < columnCount; k++) {
-					String event2 = (String) _tableContent.get(getContentIndex(i, k, columnCount));
-					
-					String condition = event + " & " + event2;
-					condition = condition.replace("@T(Inmode)", "true"); 
-					
-					 
-					if (_parseTree == null) {
-		                PtParser parser = new PtParser();
-		                _parseTree = parser.generateParseTree(condition);
-		            }
+                if(set.size() < subList.size()){
+                    throw new IllegalActionException("There are value duplicates!");
+                } 
+                
+                ASTPtRootNode _parseTree = null;
+            ParseTreeEvaluator _parseTreeEvaluator = null;
+            VariableScope _scope = null;
+                
+                //Check that pairwise OR of events in a row is always false.
+                for (int i = 0; i < rowCount - 1; i++) { // for every mode
+                        for (int j = 1; j < columnCount; j++) {
+                                String event = (String) _tableContent.get(getContentIndex(i, j, columnCount));
+                                for (int k = j + 1; k < columnCount; k++) {
+                                        String event2 = (String) _tableContent.get(getContentIndex(i, k, columnCount));
+                                        
+                                        String condition = event + " & " + event2;
+                                        condition = condition.replace("@T(Inmode)", "true"); 
+                                        
+                                         
+                                        if (_parseTree == null) {
+                                PtParser parser = new PtParser();
+                                _parseTree = parser.generateParseTree(condition);
+                            }
 
-		            if (_parseTreeEvaluator == null) {
-		                _parseTreeEvaluator = new ParseTreeEvaluator();
-		            }
+                            if (_parseTreeEvaluator == null) {
+                                _parseTreeEvaluator = new ParseTreeEvaluator();
+                            }
 
-		            if (_scope == null) {
-		                _scope = new VariableScope(model);
-		            }
+                            if (_scope == null) {
+                                _scope = new VariableScope(model);
+                            }
 
-		            Token result = _parseTreeEvaluator.evaluateParseTree(_parseTree, _scope);
-		            BooleanToken booleanResult = (BooleanToken) result;
-		            if (booleanResult.booleanValue()) {
-		            	throw new IllegalActionException("Disjointness Criteria missed");
-		            }
-				}
-			}
-		}
-	}
-	
-	public static Transition getSelfTransition(State state, Parameter parameter) {
-		for (Object relation : state.incomingPort.linkedRelationList()) {
-			if (state.outgoingPort.linkedRelationList().contains(relation)) {
-				Transition transition =  (Transition) relation;
-				if (parameter != null) {
-					try {
-						if (transition.setActions.getDestinations().contains(parameter)) {
-							return transition;
-						}
-					} catch (IllegalActionException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-				} else {
-					return transition;
-				}
-			}
-		}
-		return null;
-	}
-	
-	
-	
+                            Token result = _parseTreeEvaluator.evaluateParseTree(_parseTree, _scope);
+                            BooleanToken booleanResult = (BooleanToken) result;
+                            if (booleanResult.booleanValue()) {
+                                    throw new IllegalActionException("Disjointness Criteria missed");
+                            }
+                                }
+                        }
+                }
+        }
+        
+        public static Transition getSelfTransition(State state, Parameter parameter) {
+                for (Object relation : state.incomingPort.linkedRelationList()) {
+                        if (state.outgoingPort.linkedRelationList().contains(relation)) {
+                                Transition transition =  (Transition) relation;
+                                if (parameter != null) {
+                                        try {
+                                                if (transition.setActions.getDestinations().contains(parameter)) {
+                                                        return transition;
+                                                }
+                                        } catch (IllegalActionException e) {
+                                                // TODO Auto-generated catch block
+                                                e.printStackTrace();
+                                        }
+                                } else {
+                                        return transition;
+                                }
+                        }
+                }
+                return null;
+        }
+        
+        
+        
 }

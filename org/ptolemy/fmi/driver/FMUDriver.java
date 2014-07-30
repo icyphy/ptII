@@ -117,7 +117,7 @@ public abstract class FMUDriver {
                 .intValue();
         if (fmiFlag > FMILibrary.FMIStatus.fmiWarning) {
             throw new RuntimeException(message
-				       + FMIModelDescription.fmiStatusDescription(fmiFlag));
+                                       + FMIModelDescription.fmiStatusDescription(fmiFlag));
         }
     }
 

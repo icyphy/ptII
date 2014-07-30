@@ -1625,7 +1625,7 @@ public class GraphMatcher extends GraphAnalyzer {
      *
      */
     @SuppressWarnings("serial")
-	private static class LookbackEntry extends Tuple<Object> {
+        private static class LookbackEntry extends Tuple<Object> {
 
         /** Get the list containing objects in the host model.
          *

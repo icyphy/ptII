@@ -95,29 +95,29 @@ public class Dictionary extends TypedAtomicActor {
         readKey = new TypedIOPort(this, "readKey", true, false);
         readKey.setTypeEquals(BaseType.STRING);
         new SingletonParameter(readKey, "_showName").setExpression("true");
-		
+                
         readKeyArray = new TypedIOPort(this, "readKeyArray", true, false);
         new SingletonParameter(readKeyArray, "_showName").setExpression("true");
 
         result = new TypedIOPort(this, "result", false, true);
         new SingletonParameter(result, "_showName").setExpression("true");
-		
+                
         resultArray = new TypedIOPort(this, "resultArray", false, true);
         new SingletonParameter(resultArray, "_showName").setExpression("true");
         // FIXME: The length of the output array should match the length of the readKeyArray.
         // How to do that?
-		
+                
         triggerKeys = new TypedIOPort(this, "triggerKeys", true, false);
         new SingletonParameter(triggerKeys, "_showName").setExpression("true");
         new StringAttribute(triggerKeys, "_cardinal").setExpression("SOUTH");
 
         value = new TypedIOPort(this, "value", true, false);
         new SingletonParameter(value, "_showName").setExpression("true");
-		
+                
         writeKey = new TypedIOPort(this, "writeKey", true, false);
         writeKey.setTypeEquals(BaseType.STRING);
         new SingletonParameter(writeKey, "_showName").setExpression("true");
-		
+                
         // Set the type constraints.
         keys.setTypeAtLeast(ArrayType.arrayOf(writeKey));
         readKeyArray.setTypeAtLeast(ArrayType.arrayOf(readKey));
@@ -133,7 +133,7 @@ public class Dictionary extends TypedAtomicActor {
         
         loggingDirectory = new FileParameter(this, "loggingDirectory");
     }
-	
+        
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
         
@@ -196,7 +196,7 @@ public class Dictionary extends TypedAtomicActor {
      *  token. This has type string.
      */
     public TypedIOPort readKey;
-	
+        
     /** An input that provides an array of keys to be read
      *  simultaneously from the dictionary. The output will be an
      *  array with the same length as this input where each entry in
@@ -207,7 +207,7 @@ public class Dictionary extends TypedAtomicActor {
      *  The type is array of string.
      */
     public TypedIOPort readKeyArray;
-	
+        
     /** An output providing the result of a single reading of the
      *  dictionary via the readKey input port.
      */
@@ -217,7 +217,7 @@ public class Dictionary extends TypedAtomicActor {
      *  dictionary via the readKeyArray input port.
      */
     public TypedIOPort resultArray;
-	
+        
     /** Upon receiving any token at this port, this actor will produce
      *  on the keys output an array containing all the keys of entries
      *  in the dictionary. The order is arbitrary.
@@ -229,13 +229,13 @@ public class Dictionary extends TypedAtomicActor {
      *  will be stored in the file.  This defaults to false.
      */
     public Parameter updateFile;
-	
+        
     /** Input port for providing a value to store in the dictionary.
      *  The value will be stored only if a writeKey input arrives at
      *  the same time. Otherwise, it will be discarded.
      */
     public TypedIOPort value;
-	
+        
     /** An input that provides a key for a key-value pair to be stored
      *  in the dictionary. If a key arrives on this port, but there is
      *  no value on the value port or the value is nil, then the
@@ -259,7 +259,7 @@ public class Dictionary extends TypedAtomicActor {
 
         try {
             // Set the type constraints.
-	    newObject.readKeyArray.setTypeAtLeast(ArrayType.arrayOf(newObject.readKey));
+            newObject.readKeyArray.setTypeAtLeast(ArrayType.arrayOf(newObject.readKey));
             newObject.keys.setTypeAtLeast(ArrayType.arrayOf(newObject.writeKey));
             newObject.result.setTypeSameAs(newObject.value);
             newObject.resultArray.setTypeAtLeast(ArrayType.arrayOf(newObject.value));
@@ -296,22 +296,22 @@ public class Dictionary extends TypedAtomicActor {
             // Get a value if there is one.
             Token theValue = null;
             if (value.getWidth() > 0 && value.hasToken(0)) {
-            	theValue = value.get(0);
+                    theValue = value.get(0);
             }
             if (theValue == null || theValue.isNil()) {
                 // Remove the entry.
                 Token removed = _store.remove(theKey.stringValue());
                 if (_debugging) {
-                	if (removed == null) {
-                		_debug("Attempted to remove non-existent key: " + theKey);
-                	} else {
-                		_debug("Removed key: " + theKey);
-                	}
+                        if (removed == null) {
+                                _debug("Attempted to remove non-existent key: " + theKey);
+                        } else {
+                                _debug("Removed key: " + theKey);
+                        }
                 }
             } else {
                 _store.put(theKey.stringValue(), theValue);
                 if (_debugging) {
-                	_debug("Storing key, value: " + theKey + ", " + theValue);
+                        _debug("Storing key, value: " + theKey + ", " + theValue);
                 }
             }
         } else if (value.getWidth() > 0 && value.hasToken(0)) {
@@ -325,12 +325,12 @@ public class Dictionary extends TypedAtomicActor {
             if (theResult != null) {
                 result.send(0, theResult);
                 if (_debugging) {
-                	_debug("Retrieved key, value: " + theKey + ", " + theResult);
+                        _debug("Retrieved key, value: " + theKey + ", " + theResult);
                 }
             } else {
                 result.send(0, Token.NIL);
                 if (_debugging) {
-                	_debug("Requested key with no value: " + theKey);
+                        _debug("Requested key with no value: " + theKey);
                 }
             }
         }
@@ -359,7 +359,7 @@ public class Dictionary extends TypedAtomicActor {
             keys.send(0,  new ArrayToken(result));
         }
     }
-	
+        
     /** Clear the dictionary. If a <i>file</i> is specified,
      *  attempt to read it to initialize the dictionary.
      *  If <i>enableLogging</i> is true, then start logging.
@@ -370,76 +370,76 @@ public class Dictionary extends TypedAtomicActor {
         
         File directory = loggingDirectory.asFile();
         if (directory != null) {
-        	// Start logging.
-        	// Leave off the leading period on the file so it doen't get hidden.
-        	_logger = new LoggerListener(getFullName().substring(1), directory);
-        	addDebugListener(_logger);
-        	try {
-				MessageHandler.message("Log file being written to " + directory.getCanonicalPath());
-			} catch (IOException e) {
-				// Ignore.
-			}
+                // Start logging.
+                // Leave off the leading period on the file so it doen't get hidden.
+                _logger = new LoggerListener(getFullName().substring(1), directory);
+                addDebugListener(_logger);
+                try {
+                                MessageHandler.message("Log file being written to " + directory.getCanonicalPath());
+                        } catch (IOException e) {
+                                // Ignore.
+                        }
         } else {
-        	if (_logger != null) {
-        		removeDebugListener(_logger);
-        		_logger = null;
-        	}
+                if (_logger != null) {
+                        removeDebugListener(_logger);
+                        _logger = null;
+                }
         }
 
         _store.clear();
         
         File theFile = file.asFile();
         if (theFile != null && theFile.canRead()) {
-        	BufferedReader reader = file.openForReading();
-        	StringBuffer dictionary = new StringBuffer();
-        	String line;
-			try {
-				line = reader.readLine();
-				while (line != null) {
-					dictionary.append(line);
-					line = reader.readLine();
-				}
-				// FIXME: May want to support JSON formatted input.
-				if (_parser == null) {
-					_parser = new PtParser();
-				}
-				ASTPtRootNode parseTree = _parser.generateParseTree(dictionary.toString());
+                BufferedReader reader = file.openForReading();
+                StringBuffer dictionary = new StringBuffer();
+                String line;
+                        try {
+                                line = reader.readLine();
+                                while (line != null) {
+                                        dictionary.append(line);
+                                        line = reader.readLine();
+                                }
+                                // FIXME: May want to support JSON formatted input.
+                                if (_parser == null) {
+                                        _parser = new PtParser();
+                                }
+                                ASTPtRootNode parseTree = _parser.generateParseTree(dictionary.toString());
 
-				if (_parseTreeEvaluator == null) {
-					_parseTreeEvaluator = new ParseTreeEvaluator();
-				}
+                                if (_parseTreeEvaluator == null) {
+                                        _parseTreeEvaluator = new ParseTreeEvaluator();
+                                }
 
-				if (_scope == null) {
-					_scope = new EmptyScope();
-				}
+                                if (_scope == null) {
+                                        _scope = new EmptyScope();
+                                }
 
-				Token parsed = _parseTreeEvaluator.evaluateParseTree(parseTree, _scope);
-				
-				if (!(parsed instanceof RecordToken)) {
-					_errorMessage("Initialization file does not evaluate to a Ptolemy II record: " + file.getExpression());
-				}
-				
-				for(String key : ((RecordToken)parsed).labelSet()) {
-					Token value = ((RecordToken)parsed).get(key);
-					_store.put(key, value);
-				}
-				if(_debugging) {
-					_debug("Initialized store from file: " + theFile.getPath());
-				}
-			} catch (Exception e) {
-				// Warning only. Continue without the file.
-				_errorMessage("Failed to initialize store from file: " + theFile.getPath() + " Exception: " + e.toString());
-			} finally {
-				try {
-					reader.close();
-				} catch (IOException e) {
-					_errorMessage("Failed to close initialization file: " + theFile.getPath() + " Exception: " + e.toString());
-				}
-			}
+                                Token parsed = _parseTreeEvaluator.evaluateParseTree(parseTree, _scope);
+                                
+                                if (!(parsed instanceof RecordToken)) {
+                                        _errorMessage("Initialization file does not evaluate to a Ptolemy II record: " + file.getExpression());
+                                }
+                                
+                                for(String key : ((RecordToken)parsed).labelSet()) {
+                                        Token value = ((RecordToken)parsed).get(key);
+                                        _store.put(key, value);
+                                }
+                                if(_debugging) {
+                                        _debug("Initialized store from file: " + theFile.getPath());
+                                }
+                        } catch (Exception e) {
+                                // Warning only. Continue without the file.
+                                _errorMessage("Failed to initialize store from file: " + theFile.getPath() + " Exception: " + e.toString());
+                        } finally {
+                                try {
+                                        reader.close();
+                                } catch (IOException e) {
+                                        _errorMessage("Failed to close initialization file: " + theFile.getPath() + " Exception: " + e.toString());
+                                }
+                        }
         } else {
-			if(_debugging) {
-				_debug("Initialization file does not exist or cannot be read.");
-			}
+                        if(_debugging) {
+                                _debug("Initialization file does not exist or cannot be read.");
+                        }
         }
     }
     
@@ -454,29 +454,29 @@ public class Dictionary extends TypedAtomicActor {
         
         File theFile = file.asFile();
         if (theFile != null && ((BooleanToken)updateFile.getToken()).booleanValue()) {
-        	
-        	// Assemble a record from the current state of the store.
-        	RecordToken record = new RecordToken(_store);
-			try {
-	        	java.io.Writer writer = file.openForWriting();
-	        	writer.write(record.toString());
-				if(_debugging) {
-					_debug("Key-value store written to file: " + theFile.getPath());
-				}
-			} catch (Exception e) {
-				_errorMessage("Failed to update file: " + theFile.getPath() + " Exception: " + e.toString());
-				// Write contents to standard out so it can hopefully be retrieved.
-				System.out.println(record.toString());
-			} finally {
-				file.close();
-			}
+                
+                // Assemble a record from the current state of the store.
+                RecordToken record = new RecordToken(_store);
+                        try {
+                        java.io.Writer writer = file.openForWriting();
+                        writer.write(record.toString());
+                                if(_debugging) {
+                                        _debug("Key-value store written to file: " + theFile.getPath());
+                                }
+                        } catch (Exception e) {
+                                _errorMessage("Failed to update file: " + theFile.getPath() + " Exception: " + e.toString());
+                                // Write contents to standard out so it can hopefully be retrieved.
+                                System.out.println(record.toString());
+                        } finally {
+                                file.close();
+                        }
         } else {
-			if(_debugging) {
-				_debug("Dictionary data discarded.");
-			}
+                        if(_debugging) {
+                                _debug("Dictionary data discarded.");
+                        }
         }
         if (_logger != null) {
-        	_logger.close();
+                _logger.close();
         }
     }
     
@@ -488,16 +488,16 @@ public class Dictionary extends TypedAtomicActor {
      *  @param message The message.
      */
     private void _errorMessage(String message) {
-		if (_logger != null) {
-			_logger.log(Level.SEVERE, message);
-		} else {
-			MessageHandler.error(message);
-			if(_debugging) {
-				_debug(message);
-			}
-		}
+                if (_logger != null) {
+                        _logger.log(Level.SEVERE, message);
+                } else {
+                        MessageHandler.error(message);
+                        if(_debugging) {
+                                _debug(message);
+                        }
+                }
     }
-	
+        
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 

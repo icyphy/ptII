@@ -92,7 +92,7 @@ public class HierarchicalModeController extends StateController {
     /** An action to add a new refinement.
      */
     @SuppressWarnings("serial")
-	private class AddRefinementAction extends FigureAction {
+        private class AddRefinementAction extends FigureAction {
         public AddRefinementAction() {
             super("Add Refinement");
         }

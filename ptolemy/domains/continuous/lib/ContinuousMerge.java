@@ -117,22 +117,22 @@ public class ContinuousMerge extends Transformer {
         boolean discardValue = ((BooleanToken)discard.getToken()).booleanValue();
         boolean outputProduced = false;
         if (_pending != null && _pending.size() > 0) {
-        	output.send(0, _pending.remove(0));
-        	outputProduced = true;
+                output.send(0, _pending.remove(0));
+                outputProduced = true;
         }
         for (int i = 0; i < input.getWidth(); i++) {
             if (input.hasToken(i)) {
-            	if (!outputProduced) {
-            		output.send(0, input.get(i));
-            		outputProduced = true;
-            	}
+                    if (!outputProduced) {
+                            output.send(0, input.get(i));
+                            outputProduced = true;
+                    }
                 if (discardValue) {
-                	return;
+                        return;
                 } else {
-                	if (_pending == null) {
-                		_pending = new LinkedList<Token>();
-                	}
-                	_pending.add(input.get(i));
+                        if (_pending == null) {
+                                _pending = new LinkedList<Token>();
+                        }
+                        _pending.add(input.get(i));
                 }
             }
         }
@@ -142,10 +142,10 @@ public class ContinuousMerge extends Transformer {
      *  @exception IllegalActionException If a derived class throws it.
      */
     public void initialize() throws IllegalActionException {
-    	super.initialize();
-    	if (_pending != null) {
-    		_pending.clear();
-    	}
+            super.initialize();
+            if (_pending != null) {
+                    _pending.clear();
+            }
     }
     
     /** If there are any pending outputs, then request a refiring at the
@@ -155,7 +155,7 @@ public class ContinuousMerge extends Transformer {
      */
     public boolean postfire() throws IllegalActionException {
         if (_pending != null && _pending.size() > 0) {
-        	getDirector().fireAtCurrentTime(this);
+                getDirector().fireAtCurrentTime(this);
         }
         return super.postfire();
     }

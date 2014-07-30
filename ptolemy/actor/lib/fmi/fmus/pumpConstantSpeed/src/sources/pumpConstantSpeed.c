@@ -132,14 +132,14 @@ FMI_Export fmiStatus fmiGetReal(fmiComponent c, const fmiValueReference vr[], si
       // Check if the output must be computed.
       // This could be made more efficient using an alias as mOut_flow=mIn_flow and TOut=TIn.
       if (component->mustComputeOutputs){
-	component->r[mOut_flow] = component->r[mIn_flow];
-	component->r[TOut] = component->r[TIn];
-	component->r[pOut] = component->r[pIn] + component->r[dp0] * 
-	  (1.0 - component->r[mIn_flow]/component->r[m0_flow]);
-	component->mustComputeOutputs = fmiFalse;
-	printf("pumpConstantSpeed.c: pOut = %4.2f\n", component->r[pOut]);
-	printf("pumpConstantSpeed.c: dp0 = %4.2f\n", component->r[dp0]);
-	printf("pumpConstantSpeed.c: mIn = %4.2f\n", component->r[mIn_flow]);
+        component->r[mOut_flow] = component->r[mIn_flow];
+        component->r[TOut] = component->r[TIn];
+        component->r[pOut] = component->r[pIn] + component->r[dp0] * 
+          (1.0 - component->r[mIn_flow]/component->r[m0_flow]);
+        component->mustComputeOutputs = fmiFalse;
+        printf("pumpConstantSpeed.c: pOut = %4.2f\n", component->r[pOut]);
+        printf("pumpConstantSpeed.c: dp0 = %4.2f\n", component->r[dp0]);
+        printf("pumpConstantSpeed.c: mIn = %4.2f\n", component->r[mIn_flow]);
       }
       // Assign outputs
       for(i=0; i < nvr; i++){
@@ -214,9 +214,9 @@ FMI_Export fmiStatus fmiSetReal(fmiComponent c,
     // Set values.
     for (i = 0; i < nvr; i++) {
         component->r[vr[i]] = value[i];
-	printf("pumpConstantSpeed.c: Setting r[%d] = %4.2f\n", vr[i], value[i]);
-	if (vr[i] == dp0)
-	  printf("pumpConstantSpeed.c: Setting dp0 = %4.2f\n", value[i]);
+        printf("pumpConstantSpeed.c: Setting r[%d] = %4.2f\n", vr[i], value[i]);
+        if (vr[i] == dp0)
+          printf("pumpConstantSpeed.c: Setting dp0 = %4.2f\n", value[i]);
     }
     // Set a flag that indicates that the outputs must be re-computed.
     component->mustComputeOutputs = fmiTrue;

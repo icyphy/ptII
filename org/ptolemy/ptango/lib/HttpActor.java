@@ -498,11 +498,11 @@ public class HttpActor extends TypedAtomicActor implements HttpService,
                 getRequestURI.send(0, new StringToken(_request.requestURI));
                 // Send parameters, but handle type errors locally.
                 try {
-                	getParameters.send(0, _request.parameters);
+                        getParameters.send(0, _request.parameters);
                 } catch (TypedIOPort.RunTimeTypeCheckException ex) {
-                	// Parameters provided do not match the required type.
-                	// Construct an appropriate response.
-                	_respondWithBadRequestMessage(_request.parameters, getParameters.getType(), "parameters");
+                        // Parameters provided do not match the required type.
+                        // Construct an appropriate response.
+                        _respondWithBadRequestMessage(_request.parameters, getParameters.getType(), "parameters");
                 }
                 if (_request.cookies != null && _request.cookies.length() > 0) {
                     if (_debugging) {
@@ -510,11 +510,11 @@ public class HttpActor extends TypedAtomicActor implements HttpService,
                                 + _request.cookies);
                     }
                     try {
-                    	getCookies.send(0, _request.cookies);
+                            getCookies.send(0, _request.cookies);
                     } catch (TypedIOPort.RunTimeTypeCheckException ex) {
-                    	// Parameters provided do not match the required type.
-                    	// Construct an appropriate response.
-                    	_respondWithBadRequestMessage(_request.parameters, getParameters.getType(), "cookies");
+                            // Parameters provided do not match the required type.
+                            // Construct an appropriate response.
+                            _respondWithBadRequestMessage(_request.parameters, getParameters.getType(), "cookies");
                     }
                 }
             } else {
@@ -525,20 +525,20 @@ public class HttpActor extends TypedAtomicActor implements HttpService,
                 }
                 postRequestURI.send(0, new StringToken(_request.requestURI));
                 try {
-                	postParameters.send(0, _request.parameters);
+                        postParameters.send(0, _request.parameters);
                 } catch (TypedIOPort.RunTimeTypeCheckException ex) {
-                	// Parameters provided do not match the required type.
-                	// Construct an appropriate response.
-                	_respondWithBadRequestMessage(_request.parameters, getParameters.getType(), "parameters");
+                        // Parameters provided do not match the required type.
+                        // Construct an appropriate response.
+                        _respondWithBadRequestMessage(_request.parameters, getParameters.getType(), "parameters");
                 }
                 if (_request.cookies != null && _request.cookies.length() > 0) {
-                	try {
-                		postCookies.send(0, _request.cookies);
-                	} catch (TypedIOPort.RunTimeTypeCheckException ex) {
-                		// Parameters provided do not match the required type.
-                		// Construct an appropriate response.
-                		_respondWithBadRequestMessage(_request.parameters, getParameters.getType(), "cookies");
-                	}
+                        try {
+                                postCookies.send(0, _request.cookies);
+                        } catch (TypedIOPort.RunTimeTypeCheckException ex) {
+                                // Parameters provided do not match the required type.
+                                // Construct an appropriate response.
+                                _respondWithBadRequestMessage(_request.parameters, getParameters.getType(), "cookies");
+                        }
                     if (_debugging) {
                         _debug("Sending cookies to postCookies port: "
                                 + _request.cookies);
@@ -592,25 +592,25 @@ public class HttpActor extends TypedAtomicActor implements HttpService,
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
-	/** Given a record token type, construct the URL string that would result
-	 *  in that record, and record that string in the specified message buffer.
-	 *  @param expected The record type.
-	 *  @param message The message buffer.
-	 */
-	private void _recordToURLString(RecordType expected, StringBuffer message) {
-		boolean first = true;
-		for (String label : expected.labelSet()) {
-			if (first) {
-				message.append("?");
-			} else {
-				message.append("&");
-			}
-			first = false;
-			message.append(label);
-			message.append("=");
-			message.append(expected.get(label).toString());
-		}
-	}
+        /** Given a record token type, construct the URL string that would result
+         *  in that record, and record that string in the specified message buffer.
+         *  @param expected The record type.
+         *  @param message The message buffer.
+         */
+        private void _recordToURLString(RecordType expected, StringBuffer message) {
+                boolean first = true;
+                for (String label : expected.labelSet()) {
+                        if (first) {
+                                message.append("?");
+                        } else {
+                                message.append("&");
+                        }
+                        first = false;
+                        message.append(label);
+                        message.append("=");
+                        message.append(expected.get(label).toString());
+                }
+        }
 
     /** Issue a response to the current request indicating malformed syntax.
      *  According to: www.w3.org/Protocols/rfc2616/rfc2616-sec10.html,
@@ -623,25 +623,25 @@ public class HttpActor extends TypedAtomicActor implements HttpService,
      *  @param what What triggered the error ("parameters" or "cookies").
      */
     private void _respondWithBadRequestMessage(RecordToken record, Type expectedType, String what) {
-    	_response = new HttpResponseItems();
-    	_response.statusCode = HttpServletResponse.SC_BAD_REQUEST;
-    	StringBuffer message = new StringBuffer();
-    	message.append("<html><body><h1> Bad Request (code " + HttpServletResponse.SC_BAD_REQUEST + ")</h1>\n");
-    	message.append("<p>Expected ");
-    	message.append(what);
-    	message.append(" of the form: ");
-    	if (expectedType instanceof RecordType) {
-    		_recordToURLString((RecordType)expectedType, message);
-    	} else {
-    		message.append(expectedType.toString());
-    	}
-    	message.append("</p><p>Got: ");
-    	_recordToURLString((RecordType)record.getType(), message);
-    	message.append("</p></body></html>");
-    	
-    	_response.response = message.toString();
-    	
-    	notifyAll();
+            _response = new HttpResponseItems();
+            _response.statusCode = HttpServletResponse.SC_BAD_REQUEST;
+            StringBuffer message = new StringBuffer();
+            message.append("<html><body><h1> Bad Request (code " + HttpServletResponse.SC_BAD_REQUEST + ")</h1>\n");
+            message.append("<p>Expected ");
+            message.append(what);
+            message.append(" of the form: ");
+            if (expectedType instanceof RecordType) {
+                    _recordToURLString((RecordType)expectedType, message);
+            } else {
+                    message.append(expectedType.toString());
+            }
+            message.append("</p><p>Got: ");
+            _recordToURLString((RecordType)record.getType(), message);
+            message.append("</p></body></html>");
+            
+            _response.response = message.toString();
+            
+            notifyAll();
     }
     
     /** Issue a response indicating a server error and the intent to retry.  
@@ -674,11 +674,11 @@ public class HttpActor extends TypedAtomicActor implements HttpService,
         String ajax = "";
         if (_request.requestType == 0) {
             ajax = "jQuery.get(\"" + _request.requestURI + "\")\n" +
-            	".done(function(data) { \n " +   
+                    ".done(function(data) { \n " +   
                  // Wrap result page with <div> </div> since an HTML page is not 
-            	 // valid xml due to unclosed <!DOCTYPE HTML> tag
+                     // valid xml due to unclosed <!DOCTYPE HTML> tag
                  // jQuery has problems parsing otherwise
-            	 // http://www.sitepoint.com/secrets-selecting-elements-returned-jquery-ajax-response-strings/
+                     // http://www.sitepoint.com/secrets-selecting-elements-returned-jquery-ajax-response-strings/
                 "result = \"<div>\" + data + \"</div>\";" +
                 "jQuery(\"#contents\").html(jQuery(result).find(\"#contents\").html());" + 
                  "\n });";  
@@ -697,7 +697,7 @@ public class HttpActor extends TypedAtomicActor implements HttpService,
                     parameters.deleteCharAt(parameters.length() - 1);
                     parameters.append('}');
                     ajax = "jQuery.post(\"" + _request.requestURI + "\", " +
-                    		parameters.toString() + ")\n" +
+                                    parameters.toString() + ")\n" +
                       ".done(function(data) { \n " +
                       "result = \"<div>\" + data + \"</div>\";" +
                       "jQuery(\"#contents\").html(jQuery(result).find(\"#contents\").html());" + 
@@ -715,7 +715,7 @@ public class HttpActor extends TypedAtomicActor implements HttpService,
         StringBuffer message = new StringBuffer();
         
         message.append("<!DOCTYPE html>\n<html>\n<head> " +
-        		"<meta charset=\"UTF-8\">\n");
+                        "<meta charset=\"UTF-8\">\n");
         message.append("<script src=\"http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js\"></script>\n");
         message.append("<script>\n var count=" + timeoutValue + ";\n");
         message.append("var interval=setInterval(timer,1000);\nvar result;\n");
@@ -726,10 +726,10 @@ public class HttpActor extends TypedAtomicActor implements HttpService,
                          "clearInterval(interval);\n" + 
                          ajax.toString() + "\n}\n}\n");
         message.append("jQuery(document).ready(function() {\n" +
-        		"timer();\n});");
+                        "timer();\n});");
         message.append("</script></head>\n");
         message.append("<body><div id=\"contents\"> \n" +
-        		"<h1> Internal Server Error (code " 
+                        "<h1> Internal Server Error (code " 
                 + HttpServletResponse.SC_INTERNAL_SERVER_ERROR + ")</h1>\n");
         message.append("<div> Retrying in <div id=\"countdown\">" + 
                     timeoutValue + "</div></div></div>\n");
@@ -806,7 +806,7 @@ public class HttpActor extends TypedAtomicActor implements HttpService,
      *  See <a href"http://wiki.eclipse.org/Jetty/Tutorial/Embedding_Jetty">http://wiki.eclipse.org/Jetty/Tutorial/Embedding_Jetty</a>
      */
     @SuppressWarnings("serial")
-	protected class ActorServlet extends HttpServlet {
+        protected class ActorServlet extends HttpServlet {
 
         /** Handle an HTTP get request by creating a web page as the HTTP
          *  response.

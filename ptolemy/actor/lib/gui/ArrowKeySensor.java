@@ -252,7 +252,7 @@ public class ArrowKeySensor extends TypedAtomicActor {
     ///////////////////////////////////////////////////////////////////
     ////                     private inner classes                 ////
     @SuppressWarnings("serial")
-	private class MyFrame extends JFrame {
+        private class MyFrame extends JFrame {
         /** Construct a frame.  After constructing this, it is
          *  necessary to call setVisible(true) to make the frame
          *  appear.  This is done by calling show() at the end of this

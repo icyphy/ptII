@@ -129,7 +129,7 @@ public class FmvAutomatonGraphController extends FSMGraphController {
 
     /** An action to create a new state. */
     @SuppressWarnings("serial")
-	public class NewFmvStateAction extends FigureAction {
+        public class NewFmvStateAction extends FigureAction {
         /** Construct a new state. */
         public NewFmvStateAction() {
             super("New FmvState");

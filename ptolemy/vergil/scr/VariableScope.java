@@ -23,13 +23,13 @@ import ptolemy.kernel.util.IllegalActionException;
  * @Pt.AcceptedRating Red (cxh)
  */
 public class VariableScope extends ModelScope {
-	
-	private FSMActor _model;
-	
-	public VariableScope(FSMActor model) {
-		_model = model;
-	}
-	
+        
+        private FSMActor _model;
+        
+        public VariableScope(FSMActor model) {
+                _model = model;
+        }
+        
     /** Look up and return the attribute with the specified name in the
      *  scope. Return null if such an attribute does not exist.
      *  @return The attribute with the specified name in the scope.

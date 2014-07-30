@@ -100,14 +100,14 @@ public class RefinementPort extends ModalBasePort {
      */
     @Override
     public void attributeChanged(Attribute attribute)
-    		throws IllegalActionException {
-    	if (attribute == defaultValue) {
-    		IOPort mirrorPort = _getMirrorPort();
-    		if (mirrorPort != null) {
-    			mirrorPort.defaultValue.setExpression(defaultValue.getExpression());
-    		}
-    	} 
-    	super.attributeChanged(attribute);
+                    throws IllegalActionException {
+            if (attribute == defaultValue) {
+                    IOPort mirrorPort = _getMirrorPort();
+                    if (mirrorPort != null) {
+                            mirrorPort.defaultValue.setExpression(defaultValue.getExpression());
+                    }
+            } 
+            super.attributeChanged(attribute);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -778,7 +778,7 @@ public class RefinementPort extends ModalBasePort {
     }
     
     private ModalPort _getMirrorPort() {
-    	Nameable container = getContainer();
+            Nameable container = getContainer();
 
         if (container != null) {
             Nameable modal = container.getContainer();
@@ -793,7 +793,7 @@ public class RefinementPort extends ModalBasePort {
     }
     
     private void _init() throws IllegalActionException, NameDuplicationException {
-    	// Need to check whether there is a containing ModalModel,
+            // Need to check whether there is a containing ModalModel,
         // and whether its mirror port is also an input.
         Nameable container = getContainer();
 
@@ -804,7 +804,7 @@ public class RefinementPort extends ModalBasePort {
                 Port port = ((ModalModel) modal).getPort(getName());
 
                 if (port instanceof ModalPort) {
-                	defaultValue.setExpression(((ModalPort)port).defaultValue.getExpression());
+                        defaultValue.setExpression(((ModalPort)port).defaultValue.getExpression());
                 }
             }
         }

@@ -358,7 +358,7 @@ public class TaskReceiver extends Source {
      * Coordinator.idl.
      */
     @SuppressWarnings("serial")
-	private class Client extends _ClientImplBase {
+        private class Client extends _ClientImplBase {
         /**
          * Construct a pushConsumer.
          */

@@ -385,7 +385,7 @@ public class EditorIcon extends Attribute {
                     // Skip parameters whose names begin with underscore.
                     // These are intended to be hidden.
                     if (settable.getName().startsWith("_")) {
-                    	continue;
+                            continue;
                     }
 
                     String name = settable.getName();

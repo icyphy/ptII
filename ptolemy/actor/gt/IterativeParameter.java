@@ -248,7 +248,7 @@ public class IterativeParameter extends Parameter implements MatchCallback,
      @Pt.AcceptedRating Red (tfeng)
      */
     @SuppressWarnings("serial")
-	public class ConstraintViolationException extends IllegalActionException {
+        public class ConstraintViolationException extends IllegalActionException {
 
         /** Construct an exception.
          */

@@ -391,7 +391,7 @@ public class ModelsListFrame extends javax.swing.JFrame {
     /**
      * Set the table data to the models list for the selected page.
      */
-	private void _setTableData() {
+        private void _setTableData() {
         try {
             _modelsList = _loadManager
                     .getAllModelsFromDatabase(_currentPageNumber);

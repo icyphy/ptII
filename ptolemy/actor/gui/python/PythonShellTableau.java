@@ -118,7 +118,7 @@ public class PythonShellTableau extends Tableau implements ShellInterpreter {
     /** The frame that is created by an instance of PythonShellTableau.
      */
     @SuppressWarnings("serial")
-	public static class PythonShellFrame extends TableauFrame {
+        public static class PythonShellFrame extends TableauFrame {
         // FindBugs suggested refactoring this into a static class.
 
         /** Construct a frame to display the PythonShell window.

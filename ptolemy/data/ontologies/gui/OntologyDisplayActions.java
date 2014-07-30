@@ -121,7 +121,7 @@ public class OntologyDisplayActions extends NodeControllerFactory {
      *  and also clears the display.
      */
     @SuppressWarnings("serial")
-	private class ClearResolution extends FigureAction {
+        private class ClearResolution extends FigureAction {
 
         /** Create a new ClearResolution object to be added to the
          *  OntologySolver's context menu.
@@ -157,7 +157,7 @@ public class OntologyDisplayActions extends NodeControllerFactory {
      *  to the context menu.
      */
     @SuppressWarnings("serial")
-	private class ResolveConcepts extends FigureAction {
+        private class ResolveConcepts extends FigureAction {
 
         /** Create a new ResolveConcepts object to be added to the
          *  OntologySolver's context menu.

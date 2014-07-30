@@ -214,7 +214,7 @@ public class StaticSchedulingDirector extends Director {
             if (returnValue == STOP_ITERATING) {
                 _postfireReturns = false;
                 if (_debugging) {
-                	_debug("Actor requests no more firings: " + actor.getFullName());
+                        _debug("Actor requests no more firings: " + actor.getFullName());
                 }
             } else if (returnValue == NOT_READY) {
                 // See de/test/auto/knownFailedTests/DESDFClockTest.xml
@@ -351,13 +351,13 @@ public class StaticSchedulingDirector extends Director {
                 Actor actor = firing.getActor();
 
                 if (!_actorFinished) {
-                	if (_tokenSentToCommunicationAspect) {
-                    	_tokenSentToCommunicationAspect = false;
-                    	if (((CompositeActor)getContainer()).getContainer() != null) {
-                    		((CompositeActor)getContainer()).getExecutiveDirector()
-                    				.fireAtCurrentTime((CompositeActor)getContainer());
-                    	}
-                    	_prefire = false;
+                        if (_tokenSentToCommunicationAspect) {
+                            _tokenSentToCommunicationAspect = false;
+                            if (((CompositeActor)getContainer()).getContainer() != null) {
+                                    ((CompositeActor)getContainer()).getExecutiveDirector()
+                                                    .fireAtCurrentTime((CompositeActor)getContainer());
+                            }
+                            _prefire = false;
                         return false;
                     }
                     boolean finished =  _schedule((NamedObj) actor, getModelTime());

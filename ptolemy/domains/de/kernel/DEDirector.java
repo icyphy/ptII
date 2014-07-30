@@ -411,7 +411,7 @@ public class DEDirector extends Director implements SuperdenseTimeDirector {
      */
     public void cancelFireAt(Actor actor, Time time)
             throws IllegalActionException {
-    	cancelFireAt(actor, time, 1);
+            cancelFireAt(actor, time, 1);
     }
 
     /** Cancel a requested firing of the given actor at the given model
@@ -787,7 +787,7 @@ public class DEDirector extends Director implements SuperdenseTimeDirector {
         return aFutureTime;
     }
 
-	/** Return the timestamp of the next event in the queue. This is
+        /** Return the timestamp of the next event in the queue. This is
      *  different from getModelNextIterationTime as it just considers
      *  the local event queue and not that of directors higher up in
      *  the model hierarchy.
@@ -1940,7 +1940,7 @@ public class DEDirector extends Director implements SuperdenseTimeDirector {
                             // jump out of the for loop.
                             break;
                         } else if (_aspectsPresent) {
-                        	if (_actorsInExecution == null) {
+                                if (_actorsInExecution == null) {
                                 _actorsInExecution = new HashMap();
                             }
                             List<DEEvent> events = _actorsInExecution.get(actorToFire);
@@ -2617,7 +2617,7 @@ public class DEDirector extends Director implements SuperdenseTimeDirector {
         fireContainerAt(nextEvent.timeStamp(), nextEvent.microstep());
     }
 
-	///////////////////////////////////////////////////////////////////
+        ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
     /** Indicator that calls to fireAt() should be delegated

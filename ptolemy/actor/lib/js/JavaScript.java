@@ -395,18 +395,18 @@ public class JavaScript extends TypedAtomicActor {
             if (scriptIn.getWidth() > 0 && scriptIn.hasToken(0)) {
                 // A script is provided as input.
                 String scriptValue = ((StringToken)scriptIn.get(0)).stringValue();
-        		
+                        
                 // FIXME: Need to delete any side effects from previously read scripts,
                 // such as function definitions and bindings. Timeouts?
                 // See the initialize() method.
-        		
+                        
                 // Compile the script.
                 _compiledScript = _context.compileString(scriptValue, getName(), 1, null);
                 
                 // Execute the script (Note that the script defines functions and variables;
                 // the functions are not invoked here. Just defined.)
                 _compiledScript.exec(Context.getCurrentContext(), _scope);
-        		
+                        
                 // Execute the initialize() function, if it exists.
                 Object initializeFunction = _scope.get("initialize", _scope);
                 if (initializeFunction instanceof Function) {
@@ -422,7 +422,7 @@ public class JavaScript extends TypedAtomicActor {
                     + original.getMessage());
         }
         
-	// Send out buffered outputs, if there are any.
+        // Send out buffered outputs, if there are any.
         // This has to be synchronized in case a callback calls send() at the
         // same time.
         synchronized(this) {
@@ -470,21 +470,21 @@ public class JavaScript extends TypedAtomicActor {
         }
                 
         try {
-    	    // Mark that we are in the fire() method, enabling outputs to be
-    	    // sent immediately.
-    	    // Synchronize to ensure that this function invocation is atomic
-    	    // w.r.t. to any callbacks.
+                // Mark that we are in the fire() method, enabling outputs to be
+                // sent immediately.
+                // Synchronize to ensure that this function invocation is atomic
+                // w.r.t. to any callbacks.
             synchronized(JavaScript.this) {
                 _inFire = true;
                 try {
                     // If there is a fire() function, invoke it.
                     Object fireFunction = _scope.get("fire", _scope);
-                    if (fireFunction instanceof Function) {        	    
+                    if (fireFunction instanceof Function) {                    
                         ((Function)fireFunction).call(Context.getCurrentContext(), _scope, _global, _EMPTY_ARGS);
                     }
-					
+                                        
                     // FIXME: If setInputHandler() has been called, invoke the appropriate methods.
-					
+                                        
                     // Handle timeout requests that match the current time.
                     if (_pendingTimeoutIDs != null) {
                         // If current time matches pending timeout requests, invoke them.
@@ -558,7 +558,7 @@ public class JavaScript extends TypedAtomicActor {
         // Execute the script (Note that the script defines functions and variables;
         // the functions are not invoked here. Just defined.)
         _compiledScript.exec(Context.getCurrentContext(), _scope);
-		
+                
         // Execute the initialize() function, if it exists.
         // Synchronize to ensure that this is atomic w.r.t. any callbacks.
         // Note that the callbacks might be invoked after a model has terminated
@@ -568,7 +568,7 @@ public class JavaScript extends TypedAtomicActor {
             if (_outputTokens != null) {
                 _outputTokens.clear();
             }
-			
+                        
             Object initializeFunction = _scope.get("initialize", _scope);
             if (initializeFunction instanceof Function) {
                 ((Function)initializeFunction).call(Context.getCurrentContext(), _scope, _global, _EMPTY_ARGS);
@@ -581,7 +581,7 @@ public class JavaScript extends TypedAtomicActor {
      *  @return True if it is a valid identifier name.
      */
     public static boolean isValidIdentifierName(String identifier) {
-    	// Pathetically, neither JavaScript nor Rhino provide this method.
+            // Pathetically, neither JavaScript nor Rhino provide this method.
         int length = identifier.length();
         if (length == 0) {
             return false;
@@ -643,23 +643,23 @@ public class JavaScript extends TypedAtomicActor {
                 "valueOf"
             };
             Class[][] args = {
-                {String.class}, 						// alert
-                {Integer.class},						// clearTimeout
-                {String.class},							// error
-                {NativeJavaObject.class, Double.class},	// get
+                {String.class},                                                 // alert
+                {Integer.class},                                                // clearTimeout
+                {String.class},                                                        // error
+                {NativeJavaObject.class, Double.class},        // get
                 {String.class, String.class, NativeObject.class, String.class, Integer.class}, // httpRequest
-                {},										// localHostAddress
-                {String.class},							// openBrowser
-                {String.class},							// print
-                {String.class, String.class},			// readProtectedURL
-                {String.class},							// readURL
+                {},                                                                                // localHostAddress
+                {String.class},                                                        // openBrowser
+                {String.class},                                                        // print
+                {String.class, String.class},                        // readProtectedURL
+                {String.class},                                                        // readURL
                 {String.class, String.class, String.class, String.class, String.class}, // requestAccess
                 {String.class, String.class, String.class, Boolean.class}, // requestAuth
                 {Object.class, NativeJavaObject.class, Double.class}, // send
-                {Function.class, Integer.class},		// setTimeout
-                {String.class, NativeObject.class, NativeJavaObject.class},	// socketX
-                {NativeJavaObject.class},				// valueOf
-					
+                {Function.class, Integer.class},                // setTimeout
+                {String.class, NativeObject.class, NativeJavaObject.class},        // socketX
+                {NativeJavaObject.class},                                // valueOf
+                                        
             };
             int count = 0;
             for (String methodName : methodNames) {
@@ -670,7 +670,7 @@ public class JavaScript extends TypedAtomicActor {
                 _scope.put(methodName, _scope, scriptableFunction);
                 count++;
             }
-	        
+                
             // This actor is exposed as an object named "actor", unless the actor is restricted.
             if (!_restricted) {
                 Object jsObject = Context.javaToJS(this, _scope);
@@ -686,7 +686,7 @@ public class JavaScript extends TypedAtomicActor {
      */
     @Override
     public void wrapup() throws IllegalActionException {
-    	try {
+            try {
             // If there are open sockets, disconnect.
             if (_openSockets != null && _openSockets.size() > 0) {
                 for (SocketIO socket : _openSockets) {
@@ -705,10 +705,10 @@ public class JavaScript extends TypedAtomicActor {
             // This is static because the context depends on the current thread.
             // So this exits the context associated with the current thread.
             Context.exit();
-    	} finally {
+            } finally {
             _executing = false;
-    	}
-    	super.wrapup();
+            }
+            super.wrapup();
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -801,19 +801,19 @@ public class JavaScript extends TypedAtomicActor {
         /** Construct a parameter proxy.
          *  @param parameter The parameter to be proxied.
          */
-    	protected ParameterProxy(Parameter parameter) {
+            protected ParameterProxy(Parameter parameter) {
             _parameter = parameter;
-    	}
+            }
 
         /** Return the name of the proxied parameter.
          *  @return The name of the proxied parameter.
          */
-    	public String toString() {
+            public String toString() {
             return _parameter.getName();
-    	}
+            }
 
         /** The parameter that is proxied. */
-    	protected Parameter _parameter;
+            protected Parameter _parameter;
     }
 
     /** Proxy for a port. This is used to wrap ports for security
@@ -827,19 +827,19 @@ public class JavaScript extends TypedAtomicActor {
         /** Construct a port proxy.
          *  @param port The port to be proxied.
          */
-    	protected PortProxy(TypedIOPort port) {
+            protected PortProxy(TypedIOPort port) {
             _port = port;
-    	}
+            }
         
         /** Return the name of the proxied port.
          *  @return The name of the proxied port.
          */
-    	public String toString() {
+            public String toString() {
             return _port.getName();
-    	}
+            }
 
         /** The port that is proxied. */
-    	protected TypedIOPort _port;
+            protected TypedIOPort _port;
     }
 
     /** Container class for built-in methods.
@@ -847,38 +847,38 @@ public class JavaScript extends TypedAtomicActor {
     @SuppressWarnings("serial")
     public class PtolemyJavaScript extends ScriptableObject {
 
-    	/** Alert the user with a message.
+            /** Alert the user with a message.
          *  @param message The message   
          */
-    	public void alert(String message) {
+            public void alert(String message) {
             MessageHandler.message(message);
-    	}
+            }
 
-    	/** Clear the timeout with the specified handle, if it has not already executed.
-    	 *  @param handle The timeout handle.
-    	 *  @see #setTimeout(Function, Integer)
-    	 */
-    	public void clearTimeout(Integer handle) {
+            /** Clear the timeout with the specified handle, if it has not already executed.
+             *  @param handle The timeout handle.
+             *  @see #setTimeout(Function, Integer)
+             */
+            public void clearTimeout(Integer handle) {
             // NOTE: The handle for this timeout remains in the
             // _pendingTimeoutIDs map, but it is more efficient to remove
             // it from that map when the firing occurs.
             _pendingTimeoutFunctions.remove(handle);
-    	}
+            }
 
-    	/** Throw an IllegalActionException with the specified message.
+            /** Throw an IllegalActionException with the specified message.
          *  @param message The specified message.
          *  @exception IllegalActionException Always thrown.
          */
-    	public void error(String message) throws IllegalActionException {
+            public void error(String message) throws IllegalActionException {
             throw new IllegalActionException(JavaScript.this, message);
-    	}
-    	
-    	/** Get buffered inputs for a given input port.
-    	 *  @param portWrapper A JavaScript wrapper for a Port.
-    	 *  @param channel A channel number, or NaN to use the default (0).
+            }
+            
+            /** Get buffered inputs for a given input port.
+             *  @param portWrapper A JavaScript wrapper for a Port.
+             *  @param channel A channel number, or NaN to use the default (0).
          *  @return The buffered inputs.
-    	 */
-    	public Object get(NativeJavaObject portWrapper, Double channel) {    		
+             */
+            public Object get(NativeJavaObject portWrapper, Double channel) {                    
             // In JavaScript, all numbers are doubles. So we have to convert
             // to an integer.
             int channelNumber = 0;
@@ -938,13 +938,13 @@ public class JavaScript extends TypedAtomicActor {
                 throw new InternalErrorException(JavaScript.this, null,
                         "First argument of get() is required to be an input port. It is " + unwrapped.toString() + ".");
             }
-    	}
+            }
 
         @Override
         public String getClassName() {
             return getClass().getName();
         }
-		
+                
         /** Make the specified HTTP request. For example, to perform the equivalent of
          *  readURL, you can do:
          *  <pre>
@@ -1032,7 +1032,7 @@ public class JavaScript extends TypedAtomicActor {
             // Return response.
             return response.toString();
         }
-		
+                
         /** Return the local host IP address as a string.
          *  @return A string representation of the local host address.
          *  @throws UnknownHostException If the local host is not known.
@@ -1044,7 +1044,7 @@ public class JavaScript extends TypedAtomicActor {
             }
             return InetAddress.getLocalHost().getHostAddress();
         }
-		
+                
         /** Open a WebSocket connection.
          * 
          *  This method uses Enno Boland's Java implementation of a Socket.IO client,
@@ -1065,46 +1065,46 @@ public class JavaScript extends TypedAtomicActor {
             }
             _openSockets.add(socket);
             socket.connect(new IOCallback() {
-	            @Override
-	            public void onMessage(JSONObject json, IOAcknowledge ack) {
-	                try {
-	                    System.out.println("Server said:" + json.toString(2));
-	                } catch (JSONException e) {
-	                    e.printStackTrace();
-	                }
-	            }
+                    @Override
+                    public void onMessage(JSONObject json, IOAcknowledge ack) {
+                        try {
+                            System.out.println("Server said:" + json.toString(2));
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
 
-	            @Override
-	            public void onMessage(String data, IOAcknowledge ack) {
-	                System.out.println("Server said: " + data);
-	            }
+                    @Override
+                    public void onMessage(String data, IOAcknowledge ack) {
+                        System.out.println("Server said: " + data);
+                    }
 
-	            @Override
-	            public void onError(SocketIOException socketIOException) {
-	                System.out.println("an Error occured");
-	                socketIOException.printStackTrace();
-	            }
+                    @Override
+                    public void onError(SocketIOException socketIOException) {
+                        System.out.println("an Error occured");
+                        socketIOException.printStackTrace();
+                    }
 
-	            @Override
-	            public void onDisconnect() {
-	                System.out.println("Connection terminated.");
-	            }
+                    @Override
+                    public void onDisconnect() {
+                        System.out.println("Connection terminated.");
+                    }
 
-	            @Override
-	            public void onConnect() {
-	            	// FIXME: GATD-specific.
-	            	socket.emit("query", query);
-	                System.out.println("Connection established");
-	            }
+                    @Override
+                    public void onConnect() {
+                            // FIXME: GATD-specific.
+                            socket.emit("query", query);
+                        System.out.println("Connection established");
+                    }
 
-	            @Override
-	            public void on(String event, IOAcknowledge ack, Object... args) {
-	                System.out.println("Server triggered event '" + event + "'");
-	                IOPort port = (IOPort) getPort(event);
-	                if (port == null) {
+                    @Override
+                    public void on(String event, IOAcknowledge ack, Object... args) {
+                        System.out.println("Server triggered event '" + event + "'");
+                        IOPort port = (IOPort) getPort(event);
+                        if (port == null) {
                             return;
-	                }
-	                try {
+                        }
+                        try {
                             for (Object arg : args) {
                                 Token token = _createToken(arg);
                                 if (_inFire) {
@@ -1148,28 +1148,28 @@ public class JavaScript extends TypedAtomicActor {
                                     getDirector().fireAtCurrentTime(JavaScript.this);
                                 }
                             }
-	                }
-	                catch (IllegalActionException e) {
+                        }
+                        catch (IllegalActionException e) {
                             // TODO Auto-generated catch block
                             e.printStackTrace();
-	                }
+                        }
                     }
-	        });
+                });
         }
 
-    	/** Print a message to standard out.
+            /** Print a message to standard out.
          *  @param message The message to be printed   
          */
-    	public void print(String message) {
+            public void print(String message) {
             System.out.println(message);
-    	}
-    	
-    	/** Read the specified URL and return its contents.
-    	 *  @param url The URL to read.
+            }
+            
+            /** Read the specified URL and return its contents.
+             *  @param url The URL to read.
          *  @return The content of the URL.
-    	 *  @throws IOException If the specified URL can't be read.
-    	 */
-    	public String readURL(String url) throws IOException {
+             *  @throws IOException If the specified URL can't be read.
+             */
+            public String readURL(String url) throws IOException {
             // FIXME: We should have a version that takes a callback function
             // to return the reply, and a version that supports a streaming reply.
             URL theURL = new URL(url);
@@ -1179,7 +1179,7 @@ public class JavaScript extends TypedAtomicActor {
             if (_restricted && !theURL.getProtocol().equalsIgnoreCase("http")) {
                 throw new SecurityException("Actor is restricted. Only HTTP requests will be honored by readURL().");
             }
-	            		
+                                    
             // Create a new HttpRequest.  Default method is GET.
             HttpRequest request = new HttpRequest();
             request.setUrl(new URL(url));
@@ -1187,18 +1187,18 @@ public class JavaScript extends TypedAtomicActor {
             // TODO: Any action in case of error?
             HttpResponse response = request.execute();
             return response.getBody();
-    	}
+            }
 
-    	/** Send outputs via an output port. If this is called outside the
-    	 *  invocation of a fire() method, then this method records the
-    	 *  outputs to be produced and calls fireAtCurrentTime() on the
-    	 *  director.
-    	 *  @param data The data to send via the port.
-    	 *  @param portWrapper A JavaScript wrapper for a Port.
-    	 *  @param channel A channel number, or NaN to use the default (0).
-    	 */
-    	public void send(Object data, NativeJavaObject portWrapper, Double channel) {
-    		    		
+            /** Send outputs via an output port. If this is called outside the
+             *  invocation of a fire() method, then this method records the
+             *  outputs to be produced and calls fireAtCurrentTime() on the
+             *  director.
+             *  @param data The data to send via the port.
+             *  @param portWrapper A JavaScript wrapper for a Port.
+             *  @param channel A channel number, or NaN to use the default (0).
+             */
+            public void send(Object data, NativeJavaObject portWrapper, Double channel) {
+                                        
             // In JavaScript, all numbers are doubles. So we have convert
             // to an integer.
             int channelNumber = 0;
@@ -1272,7 +1272,7 @@ public class JavaScript extends TypedAtomicActor {
                                 _debug("Queueing " + token + " to be sent on " + port.getName() + " and requesting a firing.");
                             }
                         }
-        		        
+                                
                         // Request a firing at the current time.
                         getDirector().fireAtCurrentTime(JavaScript.this);
                     }
@@ -1284,34 +1284,34 @@ public class JavaScript extends TypedAtomicActor {
                 throw new InternalErrorException(JavaScript.this, null,
                         "Second argument of send() is required to an output port. It is " + unwrappedPort.toString() + ".");
             }
-    	}
-    	
-    	/** After the specified amount of time (in milliseconds), invoke the specified function.
-    	 *  The function is invoked during a firing of this JavaScript actor, so the function
-    	 *  can read inputs, produce outputs, and do anything else that might be done in the
-    	 *  JavaScript fire() method.  The specified function will be invoked after the fire()
-    	 *  JavaScript method, if one is defined in the script, and also after any input
-    	 *  handlers created by setInputHandler().
-    	 *  <p>
-    	 *  If the model stops executing before the timeout period elapses, then the
-    	 *  specified function will not be invoked.</p>
-    	 *  @param function The function to invoke.
-    	 *  @param time The time in milliseconds.
-    	 *  @throws IllegalActionException If the director cannot respect the time request.
-    	 *  @return A handle to the delayed function, to be used by clearTimeout()
-    	 *   to cancel the function invocation if it hasn't occurred yet.
-    	 */
-    	public Integer setTimeout(final Function function, final Integer time) throws IllegalActionException {
+            }
+            
+            /** After the specified amount of time (in milliseconds), invoke the specified function.
+             *  The function is invoked during a firing of this JavaScript actor, so the function
+             *  can read inputs, produce outputs, and do anything else that might be done in the
+             *  JavaScript fire() method.  The specified function will be invoked after the fire()
+             *  JavaScript method, if one is defined in the script, and also after any input
+             *  handlers created by setInputHandler().
+             *  <p>
+             *  If the model stops executing before the timeout period elapses, then the
+             *  specified function will not be invoked.</p>
+             *  @param function The function to invoke.
+             *  @param time The time in milliseconds.
+             *  @throws IllegalActionException If the director cannot respect the time request.
+             *  @return A handle to the delayed function, to be used by clearTimeout()
+             *   to cancel the function invocation if it hasn't occurred yet.
+             */
+            public Integer setTimeout(final Function function, final Integer time) throws IllegalActionException {
             // FIXME: setTimeout() needs an optional third argument, arguments to the function
             // to be passed when it is invoked. Presumably those arguments should be evaluated
             // in the context of the invocation of the function, not in the context of
             // this setTimeout() call.
-    		
+                    
             // NOTE: The API of this method is intended to match that of Node.js.
             final Integer id = new Integer(_timeoutCount++);
             Time currentTime = getDirector().getModelTime();
             final Time callbackTime = currentTime.add(time * 0.001);
-    		
+                    
             // FIXME: Check that synchronizeToRealTime is present and set to true
             // in the director.
 
@@ -1324,13 +1324,13 @@ public class JavaScript extends TypedAtomicActor {
                         + responseTime
                         + ".");
             }
-    		
+                    
             // Record the callback function indexed by ID.
             if (_pendingTimeoutFunctions == null) {
                 _pendingTimeoutFunctions = new HashMap<Integer,Function>();
             }
             _pendingTimeoutFunctions.put(id, function);
-    		
+                    
             // Record the ID of the timeout indexed by time.
             if (_pendingTimeoutIDs == null) {
                 _pendingTimeoutIDs = new HashMap<Time,List<Integer>>();
@@ -1341,15 +1341,15 @@ public class JavaScript extends TypedAtomicActor {
                 _pendingTimeoutIDs.put(callbackTime, ids);
             }
             ids.add(id);
-    		
+                    
             return id;
-    	}
-		
-    	/** Get parameter values.
-    	 *  @param paramWrapper A JavaScript wrapper for a Variable.
+            }
+                
+            /** Get parameter values.
+             *  @param paramWrapper A JavaScript wrapper for a Variable.
          *  @return A wrapped token that contains the parameter.
-    	 */
-    	public Object valueOf(NativeJavaObject paramWrapper) {
+             */
+            public Object valueOf(NativeJavaObject paramWrapper) {
             Object unwrappedParam = paramWrapper.unwrap();
             if (unwrappedParam instanceof ParameterProxy) {
                 unwrappedParam = ((ParameterProxy)unwrappedParam)._parameter;
@@ -1366,22 +1366,22 @@ public class JavaScript extends TypedAtomicActor {
                 throw new InternalErrorException(JavaScript.this, null,
                         "Argument of valueOf() is required to be parameter. It is " + unwrappedParam.toString() + ".");
             }
-    	}
-    	
-    	/**
-    	 * Request an OAuth 2.0 authorization token. This method requires interaction with an Authorization server 
-    	 * which is usually implemented as a web service.
-    	 * @param providerName References an internally stored end point URL for popular OAuth providers like Google, 
-    	 *         Twitter, Facebook, etc. 
-    	 * @param clientId This identifies the application that accesses a resource. Usually, client ids are issued 
-    	 *         after registering an application via a developer console at a resource provider.
-    	 * @param redirectUrl After completion of the authorization request this URL is used to redirect the browser.
-    	 * @param openBrowser Indicates, if the method should invoke the system's default browser to enable the user 
-    	 *         to login to the server in order to grant access, or if the script handles this on its own.
-    	 * @return returns The authorization code, if the authentication at the Authorization Server was successful. 
-    	 * @throws IllegalActionException 
-    	 */
-    	public String requestAuth(String providerName, String clientId, String redirectUrl, Boolean openBrowser) throws IllegalActionException {
+            }
+            
+            /**
+             * Request an OAuth 2.0 authorization token. This method requires interaction with an Authorization server 
+             * which is usually implemented as a web service.
+             * @param providerName References an internally stored end point URL for popular OAuth providers like Google, 
+             *         Twitter, Facebook, etc. 
+             * @param clientId This identifies the application that accesses a resource. Usually, client ids are issued 
+             *         after registering an application via a developer console at a resource provider.
+             * @param redirectUrl After completion of the authorization request this URL is used to redirect the browser.
+             * @param openBrowser Indicates, if the method should invoke the system's default browser to enable the user 
+             *         to login to the server in order to grant access, or if the script handles this on its own.
+             * @return returns The authorization code, if the authentication at the Authorization Server was successful. 
+             * @throws IllegalActionException 
+             */
+            public String requestAuth(String providerName, String clientId, String redirectUrl, Boolean openBrowser) throws IllegalActionException {
             OAuthProviderType oauthProvider;
             if("google".equals(providerName.toLowerCase()))  {
                 oauthProvider = OAuthProviderType.GOOGLE;
@@ -1389,7 +1389,7 @@ public class JavaScript extends TypedAtomicActor {
             else  {
                 throw new IllegalActionException("Provider '"+providerName+"' not known. Please consult documentation for built-in provider names.");
             }
-    	    
+                
             OAuthClientRequest request;
             try {
                 request = OAuthClientRequest
@@ -1408,19 +1408,19 @@ public class JavaScript extends TypedAtomicActor {
             }
 
             return request.getLocationUri();
-    	}
-    	
-    	/**
-    	 * Uses an Authorization code to retrieve an Access code.
-    	 * @param providerName
-    	 * @param clientId
-    	 * @param clientSecret
-    	 * @param redirectUrl
-    	 * @param authCode The authorization code issued by the Authorization server.
-    	 * @return The Access code token. This can be used to access the Resource server.
-    	 * @throws IllegalActionException
-    	 */
-    	public String requestAccess(String providerName, String clientId, String clientSecret, String redirectUrl, String authCode) throws IllegalActionException {
+            }
+            
+            /**
+             * Uses an Authorization code to retrieve an Access code.
+             * @param providerName
+             * @param clientId
+             * @param clientSecret
+             * @param redirectUrl
+             * @param authCode The authorization code issued by the Authorization server.
+             * @return The Access code token. This can be used to access the Resource server.
+             * @throws IllegalActionException
+             */
+            public String requestAccess(String providerName, String clientId, String clientSecret, String redirectUrl, String authCode) throws IllegalActionException {
             OAuthProviderType oauthProvider;
             if("google".equals(providerName.toLowerCase()))  {
                 oauthProvider = OAuthProviderType.GOOGLE;
@@ -1450,14 +1450,14 @@ public class JavaScript extends TypedAtomicActor {
             }
             return response.getAccessToken();
         }
-    	
-    	/**
-    	 * Open a URL of web service that is protected by OAuth 2.0.
-    	 * @param url The protected URL on a Resource server. Usually this is some kind of RESTful API.
-    	 * @param accessToken The code used to prove access authorization to the Resource server.
-    	 * @return The OAuth Client resource response.
-    	 * @throws IllegalActionException 
-    	 */
+            
+            /**
+             * Open a URL of web service that is protected by OAuth 2.0.
+             * @param url The protected URL on a Resource server. Usually this is some kind of RESTful API.
+             * @param accessToken The code used to prove access authorization to the Resource server.
+             * @return The OAuth Client resource response.
+             * @throws IllegalActionException 
+             */
         public String readProtectedURL(String url, String accessToken) throws IllegalActionException  { 
             OAuthResourceResponse resourceResponse = null;
             try {
@@ -1484,7 +1484,7 @@ public class JavaScript extends TypedAtomicActor {
                 throw new IllegalActionException("Could not execute resource access request.");
             }
         }
-    	
+            
         /**
          * Open a new tab in the default system browser. 
          * See also <a href="http://www.mkyong.com/java/open-browser-in-java-windows-or-linux/">http://www.mkyong.com/java/open-browser-in-java-windows-or-linux/></a>.
@@ -1527,7 +1527,7 @@ public class JavaScript extends TypedAtomicActor {
 //             }
             return ""; //FIXME Return empty string to suppress 'null' output. Is this the right thing to do?
         }
-    	
+            
 
         /** Create a Ptolemy Token from and object sent by JavaScript. 
          *  @throws IllegalActionException If constructing a Ptolemy Token fails.
@@ -1594,7 +1594,7 @@ public class JavaScript extends TypedAtomicActor {
                 return new ObjectToken(data);
             }
         }
-		
+                
         /** Convert a Ptolemy II into a JavaScript object, or into a Java
          *  object that will be automatically converted into a corresponding
          *  JavaScript object.
@@ -1603,7 +1603,7 @@ public class JavaScript extends TypedAtomicActor {
          *   (such as Integer or Double) that can be automatically converted
          *   to a JavaScript object, or null if the argument is null.
          */
-    	private Object _wrapToken(Token token) {
+            private Object _wrapToken(Token token) {
             //**********************************************************************
             // This the key place to support additional input and parameter data types.
             // Given a Ptolemy II token, if there is a corresponding native
@@ -1644,7 +1644,7 @@ public class JavaScript extends TypedAtomicActor {
                 return result;
             }
             return Context.toObject(token, _scope);
-    	}
+            }
     }
     
     /** Specialized FunctionObject that provides the parent scope when evaluating the function.

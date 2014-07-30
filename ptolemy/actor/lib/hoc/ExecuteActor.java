@@ -144,7 +144,7 @@ public class ExecuteActor extends RunCompositeActor {
     /** Make this actor opaque. */
     @Override
     public boolean isOpaque() {
-    	return true;
+            return true;
     }
     
     /** Override the base class to not set type constraints between the
@@ -156,21 +156,21 @@ public class ExecuteActor extends RunCompositeActor {
      *   is not opaque.
      */
     public void preinitialize() throws IllegalActionException {
-    	// Do not call super.preinitialize().
+            // Do not call super.preinitialize().
         _stopRequested = false;
         
         Effigy parentEffigy = EventUtils.findToplevelEffigy(this);
         if (parentEffigy != null) {
-        	try {
-        		parentEffigy.workspace().getWriteAccess();
-        		_wrapperEffigy = new PtolemyEffigy(parentEffigy,
-        				parentEffigy.uniqueName("_wrapperEffigy"));
-        	} catch (NameDuplicationException e) {
-        		throw new IllegalActionException(this, e, "Unable to create an "
-        				+ "effigy for the model.");
-        	} finally {
-        		parentEffigy.workspace().doneWriting();
-        	}
+                try {
+                        parentEffigy.workspace().getWriteAccess();
+                        _wrapperEffigy = new PtolemyEffigy(parentEffigy,
+                                        parentEffigy.uniqueName("_wrapperEffigy"));
+                } catch (NameDuplicationException e) {
+                        throw new IllegalActionException(this, e, "Unable to create an "
+                                        + "effigy for the model.");
+                } finally {
+                        parentEffigy.workspace().doneWriting();
+                }
         }
 
         if (_debugging) {
@@ -187,26 +187,26 @@ public class ExecuteActor extends RunCompositeActor {
      */
     protected int _executeInsideModel() throws IllegalActionException {
         if (actor.hasToken(0)) {
-        	Entity entity = ((ActorToken)actor.get(0)).getEntity();
-        	if (!(entity instanceof TypedCompositeActor)) {
-        		throw new IllegalActionException(this, "actor input has to specify a TypedCompositeActor.");
-        	}
-        	_model = (TypedCompositeActor)entity;
-        	
-        	// In case we are running headless.
-        	if (_wrapperEffigy != null) {
-        		_wrapperEffigy.setModel(_model);
-        	}
+                Entity entity = ((ActorToken)actor.get(0)).getEntity();
+                if (!(entity instanceof TypedCompositeActor)) {
+                        throw new IllegalActionException(this, "actor input has to specify a TypedCompositeActor.");
+                }
+                _model = (TypedCompositeActor)entity;
+                
+                // In case we are running headless.
+                if (_wrapperEffigy != null) {
+                        _wrapperEffigy.setModel(_model);
+                }
 
             Manager manager = new Manager("_manager");
             _model.setManager(manager);
             
             _readInputs();
             try {
-				manager.execute();
-			} catch (KernelException e) {
-				throw new IllegalActionException(this, e, "Execution failed.");
-			}
+                                manager.execute();
+                        } catch (KernelException e) {
+                                throw new IllegalActionException(this, e, "Execution failed.");
+                        }
             _writeOutputs();
 
             if (_debugging) {
@@ -221,7 +221,7 @@ public class ExecuteActor extends RunCompositeActor {
      *  @return This.
      */
     protected TypedCompositeActor _getManagedActor() {
-    	return _model;
+            return _model;
     }
 
     ///////////////////////////////////////////////////////////////////

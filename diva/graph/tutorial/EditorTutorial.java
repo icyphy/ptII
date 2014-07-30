@@ -115,7 +115,7 @@ public class EditorTutorial {
      * A widget for configuring layouts.
      */
     @SuppressWarnings("serial")
-	public class LayoutWidget extends JPanel {
+        public class LayoutWidget extends JPanel {
         /**
          * The graph that will be layed out.
          */

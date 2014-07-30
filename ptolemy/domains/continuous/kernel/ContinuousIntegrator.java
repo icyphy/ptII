@@ -197,7 +197,7 @@ public class ContinuousIntegrator extends TypedAtomicActor implements
                     .doubleValue();
             _state = _tentativeState;
             if (_debugging) {
-            	_debug("initialState changed. Updating state to " + _state);
+                    _debug("initialState changed. Updating state to " + _state);
             }
         } else {
             super.attributeChanged(attribute);

@@ -61,38 +61,38 @@ public class LoggerListener implements DebugListener {
         _logger = Logger.getLogger(name);
         _logger.setLevel(level);
         if (directory != null) {
-        	if(!directory.isDirectory()) {
-            	throw new IllegalActionException("Directory for log file does not exist: " + directory.getPath());
-        	}
-        	if(!directory.canWrite()) {
-            	throw new IllegalActionException("Directory for log file is not writable: " + directory.getPath());
-        	}
+                if(!directory.isDirectory()) {
+                    throw new IllegalActionException("Directory for log file does not exist: " + directory.getPath());
+                }
+                if(!directory.canWrite()) {
+                    throw new IllegalActionException("Directory for log file is not writable: " + directory.getPath());
+                }
         }
         try {
             // Use rotating file names, file limit of 1Mbyte, limit of 10 files, append mode.
-        	String directoryName = "%t/";
-        	if (directory != null) {
-        		directoryName = directory.getCanonicalPath();
-        		if (!directoryName.endsWith("/")) {
-        			directoryName += "/";
-        		}
-        	}
-        	String filename = directoryName + name + "%g.log";
+                String directoryName = "%t/";
+                if (directory != null) {
+                        directoryName = directory.getCanonicalPath();
+                        if (!directoryName.endsWith("/")) {
+                                directoryName += "/";
+                        }
+                }
+                String filename = directoryName + name + "%g.log";
 
-        	// To prevent logs from going to the console.
-        	_logger.setUseParentHandlers(false);
-			_handler = new FileHandler(filename, 1000000, 10, false);
+                // To prevent logs from going to the console.
+                _logger.setUseParentHandlers(false);
+                        _handler = new FileHandler(filename, 1000000, 10, false);
 
-			// Lamely, creating a FileHandler is useless without a formatter.
-			SimpleFormatter formatter = new SimpleFormatter();  
-			_handler.setFormatter(formatter);
-	        
-			_logger.addHandler(_handler);
+                        // Lamely, creating a FileHandler is useless without a formatter.
+                        SimpleFormatter formatter = new SimpleFormatter();  
+                        _handler.setFormatter(formatter);
+                
+                        _logger.addHandler(_handler);
 
-			_logger.log(Level.INFO, "******* Starting new log for " + name);
-		} catch (Exception e) {
-			throw new IllegalActionException(null, e, "Failed to open log file: " + name);
-		}
+                        _logger.log(Level.INFO, "******* Starting new log for " + name);
+                } catch (Exception e) {
+                        throw new IllegalActionException(null, e, "Failed to open log file: " + name);
+                }
     }
 
     /** Create a logger.

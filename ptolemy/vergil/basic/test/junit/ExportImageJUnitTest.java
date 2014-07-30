@@ -190,22 +190,22 @@ public class ExportImageJUnitTest {
                         imageReader.fileOrURL.setExpression(imageFile.toURI()
                                 .toURL().toString());
                         if (!(model[0] instanceof TypedCompositeActor)) {
-                        	throw new RuntimeException(model[0].getFullName() + "is not a TypedCompositeActor? " + model[0].getClass());
+                                throw new RuntimeException(model[0].getFullName() + "is not a TypedCompositeActor? " + model[0].getClass());
                         } else {
-                        	Manager manager = ((TypedCompositeActor)model[0]).getManager();
-                        	if (manager == null) {
-                        		manager = new Manager(
-                        				imageDisplayModel[0].workspace(),
-                        				"MyManager");
-                        		
-                        	}
-                        	if (!(imageDisplayModel[0] instanceof TypedCompositeActor)) {
-                             	throw new RuntimeException(imageDisplayModel[0].getFullName() + "is not a TypedCompositeActor? " + imageDisplayModel[0].getClass());
+                                Manager manager = ((TypedCompositeActor)model[0]).getManager();
+                                if (manager == null) {
+                                        manager = new Manager(
+                                                        imageDisplayModel[0].workspace(),
+                                                        "MyManager");
+                                        
+                                }
+                                if (!(imageDisplayModel[0] instanceof TypedCompositeActor)) {
+                                     throw new RuntimeException(imageDisplayModel[0].getFullName() + "is not a TypedCompositeActor? " + imageDisplayModel[0].getClass());
                             } else {
-                            	 ((TypedCompositeActor)imageDisplayModel[0]).setManager(manager);
-                            	 ((TypedCompositeActor)imageDisplayModel[0])
-                        			.setModelErrorHandler(new BasicModelErrorHandler());
-                            	 manager.execute();
+                                     ((TypedCompositeActor)imageDisplayModel[0]).setManager(manager);
+                                     ((TypedCompositeActor)imageDisplayModel[0])
+                                                .setModelErrorHandler(new BasicModelErrorHandler());
+                                     manager.execute();
                             }
                         }
 

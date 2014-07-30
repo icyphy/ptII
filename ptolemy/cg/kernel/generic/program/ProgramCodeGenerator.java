@@ -135,7 +135,7 @@ public class ProgramCodeGenerator extends GenericCodeGenerator {
         useMake.setTypeEquals(BaseType.BOOLEAN);
         useMake.setExpression("true");
 
-	_substituteMap = CodeGeneratorUtilities.newMap(this);
+        _substituteMap = CodeGeneratorUtilities.newMap(this);
 
         variablesAsArrays = new Parameter(this, "variablesAsArrays");
         variablesAsArrays.setTypeEquals(BaseType.BOOLEAN);
@@ -272,11 +272,11 @@ public class ProgramCodeGenerator extends GenericCodeGenerator {
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         ProgramCodeGenerator newObject = (ProgramCodeGenerator) super.clone(workspace);
 
-	try {
-	    newObject._substituteMap = CodeGeneratorUtilities.newMap(this);
-	} catch (IllegalActionException ex) { 
-	    throw new CloneNotSupportedException(ex.getMessage());
-	}
+        try {
+            newObject._substituteMap = CodeGeneratorUtilities.newMap(this);
+        } catch (IllegalActionException ex) { 
+            throw new CloneNotSupportedException(ex.getMessage());
+        }
         return newObject;
     }
 
@@ -2053,7 +2053,7 @@ public class ProgramCodeGenerator extends GenericCodeGenerator {
                             + "\"," + _eol + "    writing \""
                             + makefileOutputName + "\"");
                     CodeGeneratorUtilities.substitute(makefileTemplateReader,
-						      _substituteMap, makefileOutputName);
+                                                      _substituteMap, makefileOutputName);
                     success = true;
                     break;
                 }

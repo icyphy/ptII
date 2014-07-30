@@ -432,6 +432,6 @@ public class TypedAtomicActor extends AtomicActor<TypedIOPort> implements
 
     /** Version number when the cache was last updated. */
     @SuppressWarnings("unused")
-	private long _typeConstraintsVersion;
+        private long _typeConstraintsVersion;
 
 }

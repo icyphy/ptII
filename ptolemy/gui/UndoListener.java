@@ -120,7 +120,7 @@ public class UndoListener implements UndoableEditListener {
      * Perform the undo action.
      */
     @SuppressWarnings("serial")
-	protected class UndoAction extends AbstractAction {
+        protected class UndoAction extends AbstractAction {
         public UndoAction() {
             super("Undo");
             setEnabled(false);
@@ -152,7 +152,7 @@ public class UndoListener implements UndoableEditListener {
      * Perform the redo action.
      */
     @SuppressWarnings("serial")
-	protected class RedoAction extends AbstractAction {
+        protected class RedoAction extends AbstractAction {
         public RedoAction() {
             super("Redo");
             setEnabled(false);

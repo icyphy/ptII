@@ -120,7 +120,7 @@ fmiStatus values20RC1_fmiSetString (fmiComponent c, const fmiValueReference vr[]
         char *string = (char *)comp->s[vr[i]];
         if (vrOutOfRange(comp, "fmiSetString", vr[i], NUMBER_OF_STRINGS))
             return fmiError;
-	//fprintf(stdout, "values20RC1 fmuTemplate.c setString %d <%s>\n", vr[i], value[i]);
+        //fprintf(stdout, "values20RC1 fmuTemplate.c setString %d <%s>\n", vr[i], value[i]);
         FILTERED_LOG(comp, fmiOK, LOG_FMI_CALL, "fmiSetString: #s%d# = '%s'", vr[i], value[i])
 
         if (nullPointer(comp, "fmiSetString", "value[i]", value[i]))

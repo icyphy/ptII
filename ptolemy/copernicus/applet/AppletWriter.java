@@ -780,13 +780,13 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
         // Get the attributes of the composites.  We need to traverse
         // each opaque composite because it might have inner opaque composites.
         // ptolemy/domains/sr/demo/TrafficLight/TrafficLight.xml needed this.
-	System.out.println("allAttributeJars1.4: " + compositeEntity);
+        System.out.println("allAttributeJars1.4: " + compositeEntity);
         Iterator composites = compositeEntity.deepEntityList().iterator();
         while (composites.hasNext()) {
             Object object = composites.next();
-	    if (_debug) {
-		System.out.println("allAttributeJars1.5: " + object);
-	    }
+            if (_debug) {
+                System.out.println("allAttributeJars1.5: " + object);
+            }
             if (object instanceof CompositeEntity) {
                 // FIXME: should we get the attributes inside atomic actors?
                 if (_debug) {
@@ -810,9 +810,9 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
         composites = compositeEntity.entityList(ptolemy.actor.TypedCompositeActor.class).iterator();
         while (composites.hasNext()) {
             Object object = composites.next();
-	    if (_debug) {
-		System.out.println("allAttributeJars2.5: " + object);
-	    }
+            if (_debug) {
+                System.out.println("allAttributeJars2.5: " + object);
+            }
             if (object instanceof CompositeEntity) {
                 // FIXME: should we get the attributes inside atomic actors?
                 if (_debug) {
@@ -821,7 +821,7 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
                 results.putAll(_allAttributeJars((CompositeEntity) object));
 
             }
-	}
+        }
         //         composites = _model.deepEntityList().iterator();
         //         while (composites.hasNext()) {
         //             Object object = composites.next();
@@ -1002,23 +1002,23 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
                             + ((CompositeActor) componentEntity).getDirector()
                                     .getClass());
                 }
-		if (componentEntity.getClass().getName()
+                if (componentEntity.getClass().getName()
                     .contains("ptolemy.domains.scr")) {
-		    // This hack includes codegen.jar so that we can generate JNLP the domains.scr 
-		    results.put(((CompositeActor) componentEntity).getClass()
+                    // This hack includes codegen.jar so that we can generate JNLP the domains.scr 
+                    results.put(((CompositeActor) componentEntity).getClass()
                         .getName(), "ptolemy/domains/scr/scr.jar");
-		} else {
-		    results.put(((CompositeActor) componentEntity).getDirector()
-				.getClass().getName(),
-				_getDomainJar(((CompositeActor) componentEntity)
-					      .getDirector().getClass().getPackage()
-					      .getName()));
+                } else {
+                    results.put(((CompositeActor) componentEntity).getDirector()
+                                .getClass().getName(),
+                                _getDomainJar(((CompositeActor) componentEntity)
+                                              .getDirector().getClass().getPackage()
+                                              .getName()));
 
-		}
-		if (componentEntity.getClass().getName().contains("ptolemy.domains.pthales.lib.PthalesCompositeActor")) {
-		    results.put("ptolemy.domains.pthales.lib.PthalesCompositeActor",
-				"ptolemy/domains/pthales/pthales.jar");
-		}
+                }
+                if (componentEntity.getClass().getName().contains("ptolemy.domains.pthales.lib.PthalesCompositeActor")) {
+                    results.put("ptolemy.domains.pthales.lib.PthalesCompositeActor",
+                                "ptolemy/domains/pthales/pthales.jar");
+                }
             }
         }
         return results;
@@ -1535,7 +1535,7 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
                 databaseJar);
 
         auxiliaryJarMap.put("ptolemy.domains.scr.SCRModel",
-			    "ptolemy/domains/scr/scr.jar");
+                            "ptolemy/domains/scr/scr.jar");
 
         // classes from domains/space
         // domains/space requires multiple jars
@@ -1550,7 +1550,7 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
                 "ptolemy/vergil/vergilApplet.jar");
         auxiliaryJarMap.put("ptolemy.vergil.actor.lib.MonitorReceiverAttribute",
                 "ptolemy/vergil/vergilApplet.jar");
-	// PN Stack needs MonitorReceiverContents.
+        // PN Stack needs MonitorReceiverContents.
         auxiliaryJarMap.put("ptolemy.vergil.actor.lib.MonitorReceiverContents",
                 "ptolemy/vergil/vergilApplet.jar");
         auxiliaryJarMap.put("ptolemy.vergil.actor.lib.ShowTypes",
@@ -1571,7 +1571,7 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
         // PDFAttribute needs PDFRenderer.jar.
         String pdfRendererLibJar = "lib/PDFRenderer.jar";
         auxiliaryJarMap.put("ptolemy.vergil.pdfrenderer.PDFAttribute",
-			    pdfRendererLibJar);
+                            pdfRendererLibJar);
 
         // If classMap has any keys that match keys in auxiliaryJarMap,
         // then add the corresponding key and value;
@@ -1682,7 +1682,7 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
                     "ptolemy/vergil/gt/gt.jar");
 
             auxiliaryClassMap.put("PDFAttribute needs PDFRenderer.jar",
-				  pdfRendererLibJar);
+                                  pdfRendererLibJar);
 
             auxiliaryClassMap.put("ptera jar needs vergil ptera jar",
                     "ptolemy/vergil/ptera/ptera.jar");
@@ -1789,7 +1789,7 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
         if (jarFilesThatHaveBeenRequired
                 .contains("ptolemy/domains/scr/scr.jar")) {
             auxiliaryClassMap.put("scr depends on vergil",
-				  "ptolemy/vergil/scr/scr.jar");
+                                  "ptolemy/vergil/scr/scr.jar");
         }
 
         if (jarFilesThatHaveBeenRequired
@@ -1801,7 +1801,7 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
         if (jarFilesThatHaveBeenRequired.contains(pdfRendererLibJar)) {
             auxiliaryClassMap.put("fullViewer and PDFAttribute need PDFAttribute",
                     "ptolemy/vergil/pdfrenderer/pdfrenderer.jar");
-	}
+        }
         if (jarFilesThatHaveBeenRequired.contains("ptolemy/domains/tm/tm.jar")) {
             auxiliaryClassMap.put("TMDirectory needs de jar",
                     "ptolemy/domains/de/de.jar");
@@ -1981,13 +1981,13 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
         JarOutputStream jarOutputStream = null;
         String outputJarFileName = jarFile.getCanonicalPath();
 
-	// In 2014, signed jar files need a manifest that has a
-	// Permissions attribute.  See
-	// http://docs.oracle.com/javase/tutorial/deployment/jar/secman.html
-	// http://docs.oracle.com/javase/7/docs/technotes/guides/jweb/security/manifest.html#permissions
-	// http://docs.oracle.com/javase/tutorial/deployment/jar/modman.html
-	Manifest manifest = new Manifest();
-	Attributes jarAttributes = manifest.getMainAttributes();
+        // In 2014, signed jar files need a manifest that has a
+        // Permissions attribute.  See
+        // http://docs.oracle.com/javase/tutorial/deployment/jar/secman.html
+        // http://docs.oracle.com/javase/7/docs/technotes/guides/jweb/security/manifest.html#permissions
+        // http://docs.oracle.com/javase/tutorial/deployment/jar/modman.html
+        Manifest manifest = new Manifest();
+        Attributes jarAttributes = manifest.getMainAttributes();
         jarAttributes.put(Attributes.Name.MANIFEST_VERSION, "1.0.0");
         jarAttributes.put(new Attributes.Name("Application-Name"), "Ptolemy II");
         jarAttributes.put(new Attributes.Name("Permissions"), "all-permissions");
@@ -1996,7 +1996,7 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
             if (!jarFile.exists() && !optionalJarFile.exists()) {
                 outputStream = new FileOutputStream(jarFile);
                 jarOutputStream = new JarOutputStream(outputStream,
-						      manifest);
+                                                      manifest);
             } else {
                 // One of the input jar files exist, so we read in the entries and write them
                 // to a temporary file.
@@ -2009,7 +2009,7 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
                 outputJarFileName = temporaryJarFileName.getCanonicalPath();
                 outputStream = new FileOutputStream(temporaryJarFileName);
                 jarOutputStream = new JarOutputStream(outputStream,
-						      manifest);
+                                                      manifest);
             }
 
             // Add the files first so that JNLP-INF/APPLICATION.JNLP is early in the file.

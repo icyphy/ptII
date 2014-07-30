@@ -142,7 +142,7 @@ public class ChicController extends AttributeController {
     /** An action to invoke CHIC: Asynchronous I/O
      */
     @SuppressWarnings("serial")
-	private static class AsynchronousIOAction extends FigureAction {
+        private static class AsynchronousIOAction extends FigureAction {
         public AsynchronousIOAction() {
             super("CHIC: Asynchronous I/O");
         }
@@ -195,7 +195,7 @@ public class ChicController extends AttributeController {
     /** An action to look inside the Chic visible attribute.
      */
     @SuppressWarnings("serial")
-	private class LookInsideAction extends FigureAction {
+        private class LookInsideAction extends FigureAction {
         public LookInsideAction() {
             super("Look Inside (Ctrl+L)");
 
@@ -292,7 +292,7 @@ public class ChicController extends AttributeController {
     /** An action to invoke CHIC: Synchronous A/G
      */
     @SuppressWarnings("serial")
-	private static class SynchronousAGAction extends FigureAction {
+        private static class SynchronousAGAction extends FigureAction {
         // FindBugs suggests making this class static so as to decrease
         // the size of instances and avoid dangling references.
 

@@ -144,7 +144,7 @@ public class TreeTableau extends Tableau {
      *  entity.
      */
     @SuppressWarnings("serial")
-	public static class TreeFrame extends PtolemyFrame {
+        public static class TreeFrame extends PtolemyFrame {
         /** Construct a TreeFrame containing a tree view of the specified
          *  composite entity.
          *  @param entity The composite entity to view as a tree.

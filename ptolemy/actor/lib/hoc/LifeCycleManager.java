@@ -376,7 +376,7 @@ public class LifeCycleManager extends TypedCompositeActor {
      *  @return This.
      */
     protected TypedCompositeActor _getManagedActor() {
-    	return this;
+            return this;
     }
 
     /** Iterate over input ports and read any available values into
@@ -402,29 +402,29 @@ public class LifeCycleManager extends TypedCompositeActor {
                 parameter.update();
                 
                 if (_getManagedActor() == this) {
-                	// If the managed actor is this, then the parameter value
-                	// will already be visible within the actor.
-                	// Have to make sure we set the persistent value
-                	// of the parameter, not just the current value, otherwise
-                	// it will be reset when the model is initialized.
-                	parameter.setExpression(parameter.getToken().toString());
+                        // If the managed actor is this, then the parameter value
+                        // will already be visible within the actor.
+                        // Have to make sure we set the persistent value
+                        // of the parameter, not just the current value, otherwise
+                        // it will be reset when the model is initialized.
+                        parameter.setExpression(parameter.getToken().toString());
 
-                	if (_debugging) {
-                		_debug("** Updated PortParameter: " + port.getName()
-                				+ " to value " + parameter.getToken());
-                	}
+                        if (_debugging) {
+                                _debug("** Updated PortParameter: " + port.getName()
+                                                + " to value " + parameter.getToken());
+                        }
 
-                	continue;
+                        continue;
                 } else {
-                	// If the managed actor is not this, then we need to set
-                	// a matching parameter, if it exists, in the managed actor.
-        		    _setInsideParameter(port.getName(), parameter.getToken());
+                        // If the managed actor is not this, then we need to set
+                        // a matching parameter, if it exists, in the managed actor.
+                            _setInsideParameter(port.getName(), parameter.getToken());
                 }
             }
-    		if (port.isOutsideConnected() && port.hasToken(0)) {
-    		    Token token = port.get(0);
-    		    _setInsideParameter(port.getName(), token);
-    		}
+                    if (port.isOutsideConnected() && port.hasToken(0)) {
+                        Token token = port.get(0);
+                        _setInsideParameter(port.getName(), token);
+                    }
         }
     }
 
@@ -478,32 +478,32 @@ public class LifeCycleManager extends TypedCompositeActor {
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
-	/** If the managed actor (this by default) has a parameter with the
-	 *  specified name, then set the value of that parameter to the
-	 *  specified token.
-	 *  @param name The name.
-	 *  @param token The value.
-	 *  @throws IllegalActionException If setting fails.
-	 */
-	private void _setInsideParameter(String name, Token token)
-			throws IllegalActionException {
-		Attribute attribute = _getManagedActor().getAttribute(name);
+        /** If the managed actor (this by default) has a parameter with the
+         *  specified name, then set the value of that parameter to the
+         *  specified token.
+         *  @param name The name.
+         *  @param token The value.
+         *  @throws IllegalActionException If setting fails.
+         */
+        private void _setInsideParameter(String name, Token token)
+                        throws IllegalActionException {
+                Attribute attribute = _getManagedActor().getAttribute(name);
 
-		// Use the token directly rather than a string if possible.
-		if (attribute instanceof Variable) {
-		    if (_debugging) {
-		        _debug("** Transferring input to parameter: "
-		                + name);
-		    }
+                // Use the token directly rather than a string if possible.
+                if (attribute instanceof Variable) {
+                    if (_debugging) {
+                        _debug("** Transferring input to parameter: "
+                                + name);
+                    }
 
-		    ((Variable) attribute).setToken(token);
-		} else if (attribute instanceof Settable) {
-		    if (_debugging) {
-		        _debug("** Transferring input as string to parameter: "
-		                + name);
-		    }
+                    ((Variable) attribute).setToken(token);
+                } else if (attribute instanceof Settable) {
+                    if (_debugging) {
+                        _debug("** Transferring input as string to parameter: "
+                                + name);
+                    }
 
-		    ((Settable) attribute).setExpression(token.toString());
-		}
-	}
+                    ((Settable) attribute).setExpression(token.toString());
+                }
+        }
 }

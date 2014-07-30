@@ -136,7 +136,7 @@ public class DECQEventQueue implements DEEventQueue {
      *  @return True If a match is found and the entry is removed.
      */
     public synchronized final boolean remove(DEEvent event) {
-    	return _cQueue.remove(event);
+            return _cQueue.remove(event);
     }
 
     /** Unregister a debug listener.  If the specified listener has not

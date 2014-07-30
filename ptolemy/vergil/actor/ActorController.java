@@ -323,7 +323,7 @@ public abstract class ActorController extends AttributeController {
      * that other classes can use it.
      */
     @SuppressWarnings("serial")
-	public static class ListenToActorAction extends FigureAction {
+        public static class ListenToActorAction extends FigureAction {
         // Kepler uses this action.
 
         /** Create an action to listen to debug messages.
@@ -428,7 +428,7 @@ public abstract class ActorController extends AttributeController {
      * instance.
      */
     @SuppressWarnings("serial")
-	private class OpenInstanceAction extends FigureAction {
+        private class OpenInstanceAction extends FigureAction {
         public OpenInstanceAction() {
             super("Open Instance");
             putValue(GUIUtilities.ACCELERATOR_KEY, KeyStroke.getKeyStroke(
@@ -539,7 +539,7 @@ public abstract class ActorController extends AttributeController {
      * An action to save this actor in the library.
      */
     @SuppressWarnings("serial")
-	private class SaveInLibraryAction extends FigureAction {
+        private class SaveInLibraryAction extends FigureAction {
         /**
          * Create a new action to save an actor in a library.
          */

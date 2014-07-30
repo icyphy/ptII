@@ -1015,21 +1015,21 @@ public class CompositeActor extends CompositeEntity implements Actor,
      *   evaluated on an input port.
      */
     public boolean isStrict() throws IllegalActionException {
-    	List<IOPort> ports = inputPortList();
-    	boolean foundAnInputPort = false;
-    	for (IOPort port : ports) {
-    		foundAnInputPort = true;
-    		if (port.defaultValue.getToken() == null) {
-    			// Found an input port with no default value.
-    	        if (isOpaque()) {
-    	            return getDirector().isStrict();
-    	        } else {
-    	            return true;
-    	        }
-    		}
-    	}
-    	// Get to here if either all input ports have a default value
-    	// or there are no input ports.
+            List<IOPort> ports = inputPortList();
+            boolean foundAnInputPort = false;
+            for (IOPort port : ports) {
+                    foundAnInputPort = true;
+                    if (port.defaultValue.getToken() == null) {
+                            // Found an input port with no default value.
+                    if (isOpaque()) {
+                        return getDirector().isStrict();
+                    } else {
+                        return true;
+                    }
+                    }
+            }
+            // Get to here if either all input ports have a default value
+            // or there are no input ports.
         if (isOpaque() && foundAnInputPort) {
             return getDirector().isStrict();
         } else {

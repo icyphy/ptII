@@ -127,7 +127,7 @@ public class RunTableau extends Tableau {
     /** The frame that is created by an instance of RunTableau.
      */
     @SuppressWarnings("serial")
-	public class RunFrame extends ModelFrame implements Printable {
+        public class RunFrame extends ModelFrame implements Printable {
         /** Construct a frame to control the specified Ptolemy II model.
          *  After constructing this, it is necessary
          *  to call setVisible(true) to make the frame appear.

@@ -117,7 +117,7 @@ public class StateController extends AttributeWithIconController {
      *  will report an error with a fairly cryptic message.
      */
     @SuppressWarnings("serial")
-	protected class LookInsideAction extends FigureAction {
+        protected class LookInsideAction extends FigureAction {
         public LookInsideAction() {
             super("Look Inside");
 

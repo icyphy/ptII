@@ -214,7 +214,7 @@ public class CatchExceptionAttribute extends AbstractInitializableAttribute
                     manager.startRun();
                 } catch(IllegalActionException e){
                   _writeMessage("Cannot restart model.  " +
-                  		"Manager.startRun() failed.");  
+                                  "Manager.startRun() failed.");  
                 }
                 
                 _writeMessage("Model restarted at " + dateFormat.format(date));
@@ -305,7 +305,7 @@ public class CatchExceptionAttribute extends AbstractInitializableAttribute
                  // Return false if an exception is thrown, since this attribute 
                  // did not resolve the exception.
                  _writeMessage("Cannot restart: Error before or during " +
-                 		"intialize()");
+                                 "intialize()");
                  return false;
              }
              
@@ -338,7 +338,7 @@ public class CatchExceptionAttribute extends AbstractInitializableAttribute
                 
              } else {
                  _writeMessage("Cannot restart model since there is no model " +
-                 		"Manager.  Perhaps the model has no actors?");
+                                 "Manager.  Perhaps the model has no actors?");
                  return false;               
              }
  
@@ -470,7 +470,7 @@ public class CatchExceptionAttribute extends AbstractInitializableAttribute
             manager.addExecutionListener(this);
         } else {
             throw new IllegalActionException(this, "Manager cannot be found. " +
-            		"Perhaps the model has no actors?");
+                            "Perhaps the model has no actors?");
         }
     }
     

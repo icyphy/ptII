@@ -78,7 +78,7 @@ public class RenameDialogFactory implements MenuItemFactory {
         }
 
         @SuppressWarnings("serial")
-		Action action = new AbstractAction(name) {
+                Action action = new AbstractAction(name) {
             public void actionPerformed(ActionEvent e) {
                 // Create a dialog for configuring the object.
                 // First, identify the top parent frame.

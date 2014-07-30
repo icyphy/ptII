@@ -117,7 +117,7 @@ public class ConceptController extends AttributeInOntologyController {
      *   report an error with a fairly cryptic message.
      */
     @SuppressWarnings("serial")
-	private class ToggleAcceptabilityAction extends FigureAction {
+        private class ToggleAcceptabilityAction extends FigureAction {
 
         /** Create a new ToggleAcceptabilityAction object.
          */

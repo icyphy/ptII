@@ -89,7 +89,7 @@ public class AttributeWithIconController extends AttributeController {
     /** Customize the icon of the attribute.
      */
     @SuppressWarnings("serial")
-	private class EditIconAction extends FigureAction {
+        private class EditIconAction extends FigureAction {
 
         /** Create an action to edit an icon. */
         public EditIconAction() {
@@ -147,7 +147,7 @@ public class AttributeWithIconController extends AttributeController {
     /** Action to remove a custom icon.
     */
     @SuppressWarnings("serial")
-	private static class RemoveIconAction extends FigureAction {
+        private static class RemoveIconAction extends FigureAction {
 
         /** Create an action to remove the custom icon. */
         public RemoveIconAction() {

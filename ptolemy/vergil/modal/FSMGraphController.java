@@ -415,7 +415,7 @@ public class FSMGraphController extends FSMViewerGraphController {
 
     /** An action to create a new state. */
     @SuppressWarnings("serial")
-	public class NewStateAction extends FigureAction {
+        public class NewStateAction extends FigureAction {
         /** Construct a new state. */
         public NewStateAction() {
             super("New State");

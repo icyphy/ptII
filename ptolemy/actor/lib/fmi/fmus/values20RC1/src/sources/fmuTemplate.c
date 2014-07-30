@@ -375,7 +375,7 @@ fmiStatus fmiGetString (fmiComponent c, const fmiValueReference vr[], size_t nvr
         if (vrOutOfRange(comp, "fmiGetString", vr[i], NUMBER_OF_STRINGS))
             return fmiError;
         value[i] = comp->s[vr[i]];
-	fprintf(stdout, "values20RC1 fmuTemplate.c getString %d <%s>\n", vr[i], value[i]);
+        fprintf(stdout, "values20RC1 fmuTemplate.c getString %d <%s>\n", vr[i], value[i]);
         FILTERED_LOG(comp, fmiOK, LOG_FMI_CALL, "fmiGetString: #s%u# = '%s'", vr[i], value[i])
     }
     return fmiOK;
@@ -458,7 +458,7 @@ fmiStatus fmiSetString (fmiComponent c, const fmiValueReference vr[], size_t nvr
         char *string = (char *)comp->s[vr[i]];
         if (vrOutOfRange(comp, "fmiSetString", vr[i], NUMBER_OF_STRINGS))
             return fmiError;
-	fprintf(stdout, "values20RC1 fmuTemplate.c setString %d <%s>\n", vr[i], value[i]);
+        fprintf(stdout, "values20RC1 fmuTemplate.c setString %d <%s>\n", vr[i], value[i]);
         FILTERED_LOG(comp, fmiOK, LOG_FMI_CALL, "fmiSetString: #s%d# = '%s'", vr[i], value[i])
 
         if (nullPointer(comp, "fmiSetString", "value[i]", value[i]))

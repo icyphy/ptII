@@ -554,12 +554,12 @@ public class FixedPointDirector extends StaticSchedulingDirector implements
         boolean result = true;
         List<IOPort> ports = ((CompositeEntity)getContainer()).portList();
         for (IOPort port : ports) {
-        	if (port instanceof ParameterPort) {
-        		if (!port.isKnown()) {
-        			result = false;
-        			break;
-        		}
-        	}
+                if (port instanceof ParameterPort) {
+                        if (!port.isKnown()) {
+                                result = false;
+                                break;
+                        }
+                }
         }
         // The following synchronizes to environment time, making
         // any necessary adjustments for drift or offset of the local clock.
@@ -656,14 +656,14 @@ public class FixedPointDirector extends StaticSchedulingDirector implements
                     }
                 }
             } else if (i < outsideWidth){
-            	// Output is not known. To ensure that this fact propagate
-            	// outside, find the remote receivers and reset them.
-            	// This was causing a monotonicity failure in certain
-            	// modal models.
-            	Receiver[][] remoteReceivers = port.getRemoteReceivers();
-            	for (Receiver remoteReceiver : remoteReceivers[i]) {
-            		remoteReceiver.reset();
-            	}
+                    // Output is not known. To ensure that this fact propagate
+                    // outside, find the remote receivers and reset them.
+                    // This was causing a monotonicity failure in certain
+                    // modal models.
+                    Receiver[][] remoteReceivers = port.getRemoteReceivers();
+                    for (Receiver remoteReceiver : remoteReceivers[i]) {
+                            remoteReceiver.reset();
+                    }
             }
         }
         // If the outside is wider than the inside, send clear on the outside.
@@ -779,7 +779,7 @@ public class FixedPointDirector extends StaticSchedulingDirector implements
      *  @throws IllegalActionException Not thrown in this base class.
      */
     protected boolean _hasIterationConverged()
-    		throws IllegalActionException {
+                    throws IllegalActionException {
         if (_debugging) {
             _debug(this.getFullName()
                     + ":\n Number of receivers known previously is "

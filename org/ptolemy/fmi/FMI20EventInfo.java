@@ -69,9 +69,9 @@ public class FMI20EventInfo extends Structure {
      *  @param offset the offset, in bytes.
      */
     public FMI20EventInfo(com.sun.jna.Pointer pointer, int offset) {
-	super();
-	useMemory(pointer, offset);
-	read();
+        super();
+        useMemory(pointer, offset);
+        read();
     }
 
     /** Instantiate a Java structure that that represents the C
@@ -85,17 +85,17 @@ public class FMI20EventInfo extends Structure {
      * @param nextEventTime C type: fmiReal
      */
     public FMI20EventInfo(byte newDiscreteStatesNeeded,
-			byte terminateSimulation,
-			byte nominalsOfContinuousStatesChanged,
-			byte valuesOfContinuousStatesChanged,
-			byte nextEventTimeDefined,
-			double nextEventTime) {
+                        byte terminateSimulation,
+                        byte nominalsOfContinuousStatesChanged,
+                        byte valuesOfContinuousStatesChanged,
+                        byte nextEventTimeDefined,
+                        double nextEventTime) {
         super();
-	this.newDiscreteStatesNeeded = newDiscreteStatesNeeded;
-	this.terminateSimulation = terminateSimulation;
-	this.nominalsOfContinuousStatesChanged = nominalsOfContinuousStatesChanged;
-	this.valuesOfContinuousStatesChanged = valuesOfContinuousStatesChanged;
-	this.nextEventTimeDefined = nextEventTimeDefined;
+        this.newDiscreteStatesNeeded = newDiscreteStatesNeeded;
+        this.terminateSimulation = terminateSimulation;
+        this.nominalsOfContinuousStatesChanged = nominalsOfContinuousStatesChanged;
+        this.valuesOfContinuousStatesChanged = valuesOfContinuousStatesChanged;
+        this.nextEventTimeDefined = nextEventTimeDefined;
         this.nextEventTime = nextEventTime;
 
         // Don't call initFieldOrder with JNA later than jna-3.5.0
@@ -106,18 +106,18 @@ public class FMI20EventInfo extends Structure {
      */
     public static class ByReference extends FMI20EventInfo implements
             Structure.ByReference {
-	/**  Allocate a new FMI20EventInfo.ByReference struct on the heap.
-	*/
+        /**  Allocate a new FMI20EventInfo.ByReference struct on the heap.
+        */
 
-	public ByReference() {}
+        public ByReference() {}
 
-	/** Create an instance that shares its memory with another
-	 *  FMU20EventInfo instance public ByReference(FMI20EventInfo.
-	 *  @param struct The FMI20EventInfo to be shared.
-	 */
-	public ByReference(FMI20EventInfo struct) {
-	    super(struct.getPointer(), 0);
-	}
+        /** Create an instance that shares its memory with another
+         *  FMU20EventInfo instance public ByReference(FMI20EventInfo.
+         *  @param struct The FMI20EventInfo to be shared.
+         */
+        public ByReference(FMI20EventInfo struct) {
+            super(struct.getPointer(), 0);
+        }
 
 
 
@@ -156,11 +156,11 @@ public class FMI20EventInfo extends Structure {
      */
     protected List getFieldOrder() {
         return Arrays.asList(new String[] { 
-		"newDiscreteStatesNeeded",
-		"terminateSimulation",
-		"nominalsOfContinuousStatesChanged",
-		"valuesOfContinuousStatesChanged",
-		"nextEventTimeDefined",
-		"nextEventTime"});
+                "newDiscreteStatesNeeded",
+                "terminateSimulation",
+                "nominalsOfContinuousStatesChanged",
+                "valuesOfContinuousStatesChanged",
+                "nextEventTimeDefined",
+                "nextEventTime"});
     }
 }

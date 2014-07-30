@@ -121,9 +121,9 @@ public class SCRGraphTableau extends Tableau {
             LibraryAttribute defaultLibrary) {
         //FSMGraphFrame frame = new FSMGraphFrame(model, this, defaultLibrary);
 
-    	SCRTableFrame frame = new SCRTableFrame(model, this);
-    	
-    	try {
+            SCRTableFrame frame = new SCRTableFrame(model, this);
+            
+            try {
             setFrame(frame);
         } catch (IllegalActionException ex) {
             throw new InternalErrorException(ex);
@@ -190,7 +190,7 @@ public class SCRGraphTableau extends Tableau {
                     && ((BooleanToken)(((Parameter)model.getContainer()
                                             .getAttribute("openAsSCRActor"))
                                     .getToken())).booleanValue()) {
-            	tableau = new SCRGraphTableau((PtolemyEffigy) effigy, "scrGraphTableau");
+                    tableau = new SCRGraphTableau((PtolemyEffigy) effigy, "scrGraphTableau");
                 return tableau;
             } else {
                 return null;

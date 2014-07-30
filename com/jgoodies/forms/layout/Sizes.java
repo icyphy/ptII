@@ -293,7 +293,7 @@ public final class Sizes {
      * <em>min, pref, default</em>.
      */
     @SuppressWarnings("serial")
-	static final class ComponentSize implements Size, Serializable {
+        static final class ComponentSize implements Size, Serializable {
 
         private final transient String name;
 

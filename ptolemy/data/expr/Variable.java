@@ -299,12 +299,12 @@ public class Variable extends AbstractSettableAttribute implements Typeable,
      */
     public synchronized void addValueListener(ValueListener listener) {
         if (_valueListeners == null) {
-        	// Use CopyOnWriteArrayList because this has a thread-safe iterator.
-        	// When asking for an iterator, you get an iterator over a frozen
-        	// version of the list. When a modification is made to the underlying
-        	// list (additions or deletions), this makes a copy of the list.
-        	// This is efficient if we assume that modifications to the list are
-        	// much more rare than iterations over the list.
+                // Use CopyOnWriteArrayList because this has a thread-safe iterator.
+                // When asking for an iterator, you get an iterator over a frozen
+                // version of the list. When a modification is made to the underlying
+                // list (additions or deletions), this makes a copy of the list.
+                // This is efficient if we assume that modifications to the list are
+                // much more rare than iterations over the list.
             _valueListeners = new CopyOnWriteArrayList<ValueListener>();
         }
 
@@ -685,32 +685,32 @@ public class Variable extends AbstractSettableAttribute implements Typeable,
     public void invalidate() {
         // Synchronize to prevent concurrent modification
         // of the _variablesDependentOn collection, and to
-    	// prevent setting _needsEvaluation in the middle of
-    	// another evaluation.
-    	synchronized(this) {
-    		if (_currentExpression != null) {
-    			_needsEvaluation = true;
-    			_parseTreeValid = false;
-    		}
+            // prevent setting _needsEvaluation in the middle of
+            // another evaluation.
+            synchronized(this) {
+                    if (_currentExpression != null) {
+                            _needsEvaluation = true;
+                            _parseTreeValid = false;
+                    }
 
-    		if (_variablesDependentOn != null) {
-    			Iterator entries = _variablesDependentOn.entrySet().iterator();
+                    if (_variablesDependentOn != null) {
+                            Iterator entries = _variablesDependentOn.entrySet().iterator();
 
-    			while (entries.hasNext()) {
-    				Map.Entry entry = (Map.Entry) entries.next();
-    				Variable variable = (Variable) entry.getValue();
-    				variable.removeValueListener(this);
-    			}
+                            while (entries.hasNext()) {
+                                    Map.Entry entry = (Map.Entry) entries.next();
+                                    Variable variable = (Variable) entry.getValue();
+                                    variable.removeValueListener(this);
+                            }
 
-    			_variablesDependentOn.clear();
-    		}
-    	}
-    	// Do not hold a synchronization lock while notifying
-    	// value listeners, because that calls arbitrary code, and
-    	// a deadlock could result.
+                            _variablesDependentOn.clear();
+                    }
+            }
+            // Do not hold a synchronization lock while notifying
+            // value listeners, because that calls arbitrary code, and
+            // a deadlock could result.
         // Note that this could result in listeners being notified
         // in the opposite order in which the updates occur! See
-    	// Lee, The Problem with Threads, IEEE Computer, 2006.
+            // Lee, The Problem with Threads, IEEE Computer, 2006.
         _notifyValueListeners();
     }
 
@@ -775,8 +775,8 @@ public class Variable extends AbstractSettableAttribute implements Typeable,
      *  @see #addValueListener(ValueListener)
      */
     public synchronized void removeValueListener(ValueListener listener) {
-    	// This does not need to be synchronized because the listener
-    	// list is a CopyOnWriteArrayList.
+            // This does not need to be synchronized because the listener
+            // list is a CopyOnWriteArrayList.
         if (_valueListeners != null) {
             _valueListeners.remove(listener);
         }
@@ -1006,13 +1006,13 @@ public class Variable extends AbstractSettableAttribute implements Typeable,
         if (previousName != null && !previousName.equals(name)) {
             try {
                 if (_valueListeners != null) {
-                	// Note that the listener list is a CopyOnWriteArrayList,
-                	// so it need not be cloned here.
-                	// Note that this could result in listeners being notified
+                        // Note that the listener list is a CopyOnWriteArrayList,
+                        // so it need not be cloned here.
+                        // Note that this could result in listeners being notified
                     // of renaming of this variable in the opposite order in which
                     // the updates occur! See Lee, The Problem with Threads,
                     // IEEE Computer, 2006. Here, we assume that only one thread
-                	// ever does the renaming.
+                        // ever does the renaming.
                     Iterator listeners = _valueListeners.iterator();
                     while (listeners.hasNext()) {
                         ValueListener listener = (ValueListener) listeners.next();
@@ -1535,14 +1535,14 @@ public class Variable extends AbstractSettableAttribute implements Typeable,
         // EAL 9/14/06.
         Collection<Variable> result = null;
         if (_valueListeners != null) {
-        	result = new HashSet<Variable>();
-        	Iterator listeners = _valueListeners.iterator();
-        	while (listeners.hasNext()) {
-        		Object listener = listeners.next();
-        		if (listener instanceof Variable) {
-        			result.add((Variable)listener);
-        		}
-        	}
+                result = new HashSet<Variable>();
+                Iterator listeners = _valueListeners.iterator();
+                while (listeners.hasNext()) {
+                        Object listener = listeners.next();
+                        if (listener instanceof Variable) {
+                                result.add((Variable)listener);
+                        }
+                }
         }
         return result;
     }
@@ -1670,69 +1670,69 @@ public class Variable extends AbstractSettableAttribute implements Typeable,
      *   be parsed or cannot be evaluated, or if a dependency loop is found.
      */
     protected void _evaluate() throws IllegalActionException {
-    	
-    	// NOTE: This method is vulnerable to the horrific threading
-    	// problems of the listener pattern as documented in Lee (2006),
-    	// The Problem with Threads. Previous implementations were
-    	// vulnerable in that if multiple threads were evaluating
-    	// variables simultaneously, where one dependended on the other,
-    	// an exception would be reported about a dependency loop,
-    	// even though none exists. It will not work to acquire
-    	// synchronization locks, because the evaluation of variables
-    	// triggers notification of the container and any other
-    	// "value dependents," which are arbitrary code that could
-    	// be evaluating other variables or acquiring locks.
-    	// Hence, a deadlock could occur.
-    	
-    	// The solution here is to allow only one thread at a time
-    	// to proceed with the evaluation by explicitly waiting
-    	// for the thread to complete, releasing the lock on this
-    	// variable while waiting.
-    	
-    	// NOTE: It is absolutely imperative that the lock on this
-    	// object not be held while evaluating and notifying.
-    	// That could (and will!) result in deadlock.
-    	synchronized(this) {
-    		// If this thread is already evaluating the token, and the value of the token has not yet
-    		// been set (_needsEvaluation is true), then this call to evaluate() must
-    		// have been triggered by evaluating the expression of this variable,
-    		// which means that the expression directly or indirectly refers
-    		// to itself.
-    		if (_needsEvaluation && _threadEvaluating == Thread.currentThread()) {
-    			_threadEvaluating = null;
-    			throw new CircularDependencyError(this, "There is a dependency loop"
-    					+ " where " + getFullName() + " directly or indirectly"
-    					+ " refers to itself in its expression: "
-    					+ _currentExpression);
-    		}
-    		
-    		// If another thread is currently evaluating this variable, then
-    		// we need to wait until finishes.  We put a timeout here so as to
-    		// not lock up the system. Currently, we won't wait more than
-    		// 30 seconds.
-    		int count = 0;
-    		while (_threadEvaluating != null) {
-    			if (count > 30) {
-    				throw new IllegalActionException(this, "Timeout waiting to evaluate variable.");
-    			}
-    			try {
-					wait(1000L);
-				} catch (InterruptedException e) {
-    				throw new IllegalActionException(this, "Thread interrupted while evaluating variable.");
-				}
-    		}
-        	// If the other thread has successfully evaluated this variable, we are done.
-        	if (!_needsEvaluation) {
-        		return;
-        	}
+            
+            // NOTE: This method is vulnerable to the horrific threading
+            // problems of the listener pattern as documented in Lee (2006),
+            // The Problem with Threads. Previous implementations were
+            // vulnerable in that if multiple threads were evaluating
+            // variables simultaneously, where one dependended on the other,
+            // an exception would be reported about a dependency loop,
+            // even though none exists. It will not work to acquire
+            // synchronization locks, because the evaluation of variables
+            // triggers notification of the container and any other
+            // "value dependents," which are arbitrary code that could
+            // be evaluating other variables or acquiring locks.
+            // Hence, a deadlock could occur.
+            
+            // The solution here is to allow only one thread at a time
+            // to proceed with the evaluation by explicitly waiting
+            // for the thread to complete, releasing the lock on this
+            // variable while waiting.
+            
+            // NOTE: It is absolutely imperative that the lock on this
+            // object not be held while evaluating and notifying.
+            // That could (and will!) result in deadlock.
+            synchronized(this) {
+                    // If this thread is already evaluating the token, and the value of the token has not yet
+                    // been set (_needsEvaluation is true), then this call to evaluate() must
+                    // have been triggered by evaluating the expression of this variable,
+                    // which means that the expression directly or indirectly refers
+                    // to itself.
+                    if (_needsEvaluation && _threadEvaluating == Thread.currentThread()) {
+                            _threadEvaluating = null;
+                            throw new CircularDependencyError(this, "There is a dependency loop"
+                                            + " where " + getFullName() + " directly or indirectly"
+                                            + " refers to itself in its expression: "
+                                            + _currentExpression);
+                    }
+                    
+                    // If another thread is currently evaluating this variable, then
+                    // we need to wait until finishes.  We put a timeout here so as to
+                    // not lock up the system. Currently, we won't wait more than
+                    // 30 seconds.
+                    int count = 0;
+                    while (_threadEvaluating != null) {
+                            if (count > 30) {
+                                    throw new IllegalActionException(this, "Timeout waiting to evaluate variable.");
+                            }
+                            try {
+                                        wait(1000L);
+                                } catch (InterruptedException e) {
+                                    throw new IllegalActionException(this, "Thread interrupted while evaluating variable.");
+                                }
+                    }
+                // If the other thread has successfully evaluated this variable, we are done.
+                if (!_needsEvaluation) {
+                        return;
+                }
             _threadEvaluating = Thread.currentThread();
-    	}
+            }
 
         try {
             workspace().getReadAccess();
             
-        	// Simple case: no expression. Just set the token to null,
-        	// notify value dependents, and return.
+                // Simple case: no expression. Just set the token to null,
+                // notify value dependents, and return.
             if (_currentExpression == null
                     || (isStringMode() ? _currentExpression.equals("")
                             : _currentExpression.trim().equals(""))) {
@@ -1754,9 +1754,9 @@ public class Variable extends AbstractSettableAttribute implements Typeable,
                     _parserScope);
             _setTokenAndNotify(result);
         } catch (IllegalActionException ex) {
-        	synchronized(this) {
-        		_needsEvaluation = true;
-        	}
+                synchronized(this) {
+                        _needsEvaluation = true;
+                }
             // Ignore the error if we are inside a class definition
             // and the error is an undefined identifier.
             // This is because one may want to define a class that
@@ -1774,8 +1774,8 @@ public class Variable extends AbstractSettableAttribute implements Typeable,
         } finally {
             workspace().doneReading();
             synchronized(this) {
-            	_threadEvaluating = null;
-            	notifyAll();
+                    _threadEvaluating = null;
+                    notifyAll();
             }
         }
     }
@@ -1786,12 +1786,12 @@ public class Variable extends AbstractSettableAttribute implements Typeable,
     protected void _notifyValueListeners() {
         if (_valueListeners != null) {
             // Note that the listener list is a CopyOnWriteArrayList,
-        	// so this iterates over a snapshot of the list.
+                // so this iterates over a snapshot of the list.
             Iterator listeners = _valueListeners.iterator();
 
             // Note that this could result in listeners being notified
             // in the opposite order in which the updates occur! See
-        	// Lee, The Problem with Threads, IEEE Computer, 2006.
+                // Lee, The Problem with Threads, IEEE Computer, 2006.
             while (listeners.hasNext()) {
                 ValueListener listener = (ValueListener) listeners.next();
                 listener.valueChanged(this);
@@ -1843,30 +1843,30 @@ public class Variable extends AbstractSettableAttribute implements Typeable,
             // Force evaluation.
             if (_needsEvaluation && !_isLazy) {
                 try {
-                	// The following will not evaluate if _needsEvaluation has become false
-                	// in some other thread.
+                        // The following will not evaluate if _needsEvaluation has become false
+                        // in some other thread.
                     _evaluate();
                 } catch (IllegalActionException ex) {
                     // This is very confusing code.
                     // Don't mess with it if it works.
                     try {
-                    	// Report the error.
+                            // Report the error.
                         // NOTE: When first opening a model, no ModelErrorHandler
                         // has yet been registered with the model, so the following
                         // method will simply return false. This is probably reasonable
                         // since it allows opening models even if they have error
                         // conditions.
                         if (!handleModelError(this, ex)) {
-                        	
-                        	// FIXME: The following should throw the exception.
-                        	// This requires retraining many tests in the MoML test directory,
-                        	// or modifying them to have a change listener for the change requests.
-                        	throw ex;
+                                
+                                // FIXME: The following should throw the exception.
+                                // This requires retraining many tests in the MoML test directory,
+                                // or modifying them to have a change listener for the change requests.
+                                throw ex;
                             // Warn about errors opening models.
                             // There are a bunch of things that need to be fixed, but there are also
                             // legitimate models such as ptolemy/actor/parameters/test/auto/ParameterSetTest.xml
                             // that refer to a parameter not present when the model is parsed.
-                        	/*
+                                /*
                             System.out
                                     .println("The message below is a Warning, and can be ignored.");
                             System.out
@@ -1880,8 +1880,8 @@ public class Variable extends AbstractSettableAttribute implements Typeable,
                             */
                         }
                     } catch (IllegalActionException ex2) {
-                    	// The handler handled the error by throwing an exception.
-                    	// Return the exception in a list.
+                            // The handler handled the error by throwing an exception.
+                            // Return the exception in a list.
                         result = new LinkedList<IllegalActionException>();
                         result.add(ex2);
                     }
@@ -1915,7 +1915,7 @@ public class Variable extends AbstractSettableAttribute implements Typeable,
 
         if (_valueListeners != null) {
             // Note that the listener list is a CopyOnWriteArrayList,
-        	// so this iterates over a snapshot of the list.
+                // so this iterates over a snapshot of the list.
             Iterator listeners = _valueListeners.iterator();
             while (listeners.hasNext()) {
                 ValueListener listener = (ValueListener) listeners.next();
@@ -1925,21 +1925,21 @@ public class Variable extends AbstractSettableAttribute implements Typeable,
                 // if it is no longer in scope.
                 if (listener instanceof Variable) {
                     try {
-                    	// Check that listener is still referencing this variable.
+                            // Check that listener is still referencing this variable.
                         if (((Variable)listener).getVariable(getName()) != this) {
                             // This variable is no longer in the scope of the listener.
                             // Note that the listener list is a CopyOnWriteArrayList,
-                        	// so this does not cause a concurrent modification exception.
-                        	_valueListeners.remove(listener);
+                                // so this does not cause a concurrent modification exception.
+                                _valueListeners.remove(listener);
                             continue;
                         }
                     } catch (IllegalActionException e) {
                         // The listener has a reference to something with the name
-                    	// of this variable, but that something cannot be evaluated.
-                    	// It must not be this variable.
+                            // of this variable, but that something cannot be evaluated.
+                            // It must not be this variable.
                         // Note that the listener list is a CopyOnWriteArrayList,
-                    	// so this does not cause a concurrent modification exception.
-                    	_valueListeners.remove(listener);
+                            // so this does not cause a concurrent modification exception.
+                            _valueListeners.remove(listener);
                         continue;
                     }
                     // Call propagate on the value listener. By checking _needsEvaluation,
@@ -2290,30 +2290,30 @@ public class Variable extends AbstractSettableAttribute implements Typeable,
          */
         public Variable getVariable(String name)
                 throws IllegalActionException {
-        	workspace().getReadAccess();
-        	try {
-        		NamedObj reference = _reference;
-        		if (_reference == null) {
-        			reference = Variable.this.getContainer();
-        		}
-        		Variable result = getScopedVariable(Variable.this, reference, name);
+                workspace().getReadAccess();
+                try {
+                        NamedObj reference = _reference;
+                        if (_reference == null) {
+                                reference = Variable.this.getContainer();
+                        }
+                        Variable result = getScopedVariable(Variable.this, reference, name);
 
-        		if (result != null) {
-        			// NOTE: The following acquires a lock on result.
-        			result.addValueListener(Variable.this);
-        			// Add the result to the list of variables that we depend on so that
-        			// the dependence can later be broken by invalidate.
-        			synchronized(Variable.this) {
-                		if (_variablesDependentOn == null) {
-                			_variablesDependentOn = new HashMap<String,Variable>();
-                		}
-        				_variablesDependentOn.put(name, result);
-        			}
-        		}
-        		return result;
-        	} finally {
-        		workspace().doneReading();
-        	}
+                        if (result != null) {
+                                // NOTE: The following acquires a lock on result.
+                                result.addValueListener(Variable.this);
+                                // Add the result to the list of variables that we depend on so that
+                                // the dependence can later be broken by invalidate.
+                                synchronized(Variable.this) {
+                                if (_variablesDependentOn == null) {
+                                        _variablesDependentOn = new HashMap<String,Variable>();
+                                }
+                                        _variablesDependentOn.put(name, result);
+                                }
+                        }
+                        return result;
+                } finally {
+                        workspace().doneReading();
+                }
         }
 
         /** Return the set of identifiers within the scope.
@@ -2483,7 +2483,7 @@ public class Variable extends AbstractSettableAttribute implements Typeable,
      *  circular dependency errors.
      */
     @SuppressWarnings("serial")
-	public static class CircularDependencyError extends IllegalActionException {
+        public static class CircularDependencyError extends IllegalActionException {
         public CircularDependencyError(Nameable object, String detail) {
             super(object, detail);
         }

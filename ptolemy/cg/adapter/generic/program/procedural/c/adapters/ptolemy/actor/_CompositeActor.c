@@ -58,14 +58,14 @@ struct Director* CompositeActor_GetDirector(struct CompositeActor* actor) {
 }
 struct Director* CompositeActor_GetExecutiveDirector(struct CompositeActor* actor) {
         if (actor == NULL) {
-	    return NULL;
+            return NULL;
         }
         struct CompositeActor* container = actor->container;
         if (actor->container == NULL) {
-	    return NULL;
-	} else {
-	    return (*(container->getDirector))(container);
-	}
+            return NULL;
+        } else {
+            return (*(container->getDirector))(container);
+        }
 }
 PblList* CompositeActor_InputPortList(struct CompositeActor* actor) {
         return actor->_inputPorts;
@@ -97,16 +97,16 @@ void CompositeActor_Fire(struct CompositeActor* actor) {
 
                 // FIXME : if (!(p instanceof ParameterPort)) {
                 if (!(*(actor->_director->transferInputs))(actor->_director, p)) {
-		  if (_didNotTransferCount++ < 10) {
+                  if (_didNotTransferCount++ < 10) {
                     fprintf(stderr, "%s:%d: CompositeActorFire():(%d) director did not transfer inputs?.\n", __FILE__, __LINE__, _didNotTransferCount);
-		  } else {
-		    if (_didNotTransferCount++ == 10) {
-		      fprintf(stderr, "%s:%d: CompositeActorFire(): printed \"director did not transfer inputs?\" 10 times, no longer printing.\n", __FILE__, __LINE__);
-		    }
-		  }
-		  // Don't return here or else this will fail:                                                               // $PTII/bin/ptcg -generatorPackage ptolemy.cg.kernel.generic.program.procedural.c $PTII/ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/domains/ptides/lib/test/auto/Network.xml
-		  //return;   
-		  //exit(-1);
+                  } else {
+                    if (_didNotTransferCount++ == 10) {
+                      fprintf(stderr, "%s:%d: CompositeActorFire(): printed \"director did not transfer inputs?\" 10 times, no longer printing.\n", __FILE__, __LINE__);
+                    }
+                  }
+                  // Don't return here or else this will fail:                                                               // $PTII/bin/ptcg -generatorPackage ptolemy.cg.kernel.generic.program.procedural.c $PTII/ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/domains/ptides/lib/test/auto/Network.xml
+                  //return;   
+                  //exit(-1);
                 }
                 //}
         }

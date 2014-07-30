@@ -376,8 +376,8 @@ public class Transition extends ComponentRelation {
      *  @return The full label   
      */   
     public String getFullLabel() {
-    	StringBuffer buffer = new StringBuffer("");
-    	boolean hasAnnotation = false;
+            StringBuffer buffer = new StringBuffer("");
+            boolean hasAnnotation = false;
         String text;
         try {
             text = annotation.stringValue();
@@ -1085,7 +1085,7 @@ public class Transition extends ComponentRelation {
     // Initialize the variables of this transition.
     private void _init() throws IllegalActionException,
             NameDuplicationException {
-    	fsmTransitionParameterName = new StringParameter(this, "fsmTransitionParameterName");
+            fsmTransitionParameterName = new StringParameter(this, "fsmTransitionParameterName");
         fsmTransitionParameterName.setExpression(this.getName() + "Parameter");
         fsmTransitionParameterName.setVisibility(Settable.FULL);
         

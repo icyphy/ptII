@@ -160,14 +160,14 @@ FMI_Export fmiStatus fmiGetReal(fmiComponent c,
       // a method indirectly that dereferences ModelInstance, then there could be a crash
       // See http://chess.eecs.berkeley.edu/ptexternal/wiki/Main/FMU#ComplicationsWithLinuxSymbols
       if (component->mustComputeOutputs){
-	component->r[pOut] = component->r[pAtm]; // this is constant
-	dp = component->r[pIn] - component->r[pOut];
-	component->r[mOut_flow] = (dp>0) ? sqrt(dp/component->r[k]) : -sqrt(-dp/component->r[k]);
-	component->r[TOut] = component->r[T];
-	component->r[pOut] = component->r[pAtm];
+        component->r[pOut] = component->r[pAtm]; // this is constant
+        dp = component->r[pIn] - component->r[pOut];
+        component->r[mOut_flow] = (dp>0) ? sqrt(dp/component->r[k]) : -sqrt(-dp/component->r[k]);
+        component->r[TOut] = component->r[T];
+        component->r[pOut] = component->r[pAtm];
         component->r[der_T] = component->r[mIn_flow] / component->r[m]*
-	  ( component->r[TIn] - component->r[T] );
-	component->mustComputeOutputs = fmiFalse;
+          ( component->r[TIn] - component->r[T] );
+        component->mustComputeOutputs = fmiFalse;
       }
       // Assign outputs
       for(i=0; i < nvr; i++){
@@ -424,7 +424,7 @@ FMI_Export fmiStatus fmiGetDerivatives(fmiComponent c, fmiReal derivatives[],
       // as this is all that is needed in this call.
       if (component->mustComputeOutputs)
         derivatives[0] = component->r[mIn_flow] / component->r[m]*
-	  ( component->r[TIn] - component->r[T] );
+          ( component->r[TIn] - component->r[T] );
       else
         derivatives[0] = component->r[der_T];
     }
@@ -456,7 +456,7 @@ FMI_Export fmiStatus fmiSetContinuousStates(fmiComponent c, const fmiReal x[],
     ModelInstance* component = (ModelInstance *) c;
     if (nx == 1){
         component->r[T] = x[0];
-	// The standard says we need to re-initialize caching of variables
+        // The standard says we need to re-initialize caching of variables
         // that depend on the states.
         component->r[TOut] = component->r[T];
     }

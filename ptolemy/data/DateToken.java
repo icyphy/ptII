@@ -66,7 +66,7 @@ public class DateToken extends AbstractConvertibleToken
         _timeZone = TimeZone.getDefault();
         _value = Calendar.getInstance().getTimeInMillis();
     }
-	
+        
     /** Construct a DateToken that represents the time since January 1, 1970.
      *  The time zone defaults to the local time zone.
      *  @param value The time since January 1, 1970 in the default precision
@@ -114,7 +114,7 @@ public class DateToken extends AbstractConvertibleToken
         _timeZone = timeZone;
         _value = value;
     }
-	
+        
     /** Construct a DateToken that represents the time specified as a
      *  string. The string is first parsed by the default
      *  java.text.DateFormat parser. Because we have up to nanosecond 

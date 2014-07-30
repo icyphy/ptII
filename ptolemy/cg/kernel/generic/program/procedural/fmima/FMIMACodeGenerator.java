@@ -166,9 +166,9 @@ public class FMIMACodeGenerator extends ProceduralCodeGenerator /*GenericCodeGen
                 _includes.add("-I " + directoryFmiIncludes);
             }
         }
-	_copyCFilesTosrc("ptolemy/actor/lib/fmi/ma/includes/",
-			 directoryFmiIncludes,
-			 new String [] {"fmi.h", "fmiFunctionTypes.h", "fmiFunctions.h", "fmiTypesPlatform.h"});
+        _copyCFilesTosrc("ptolemy/actor/lib/fmi/ma/includes/",
+                         directoryFmiIncludes,
+                         new String [] {"fmi.h", "fmiFunctionTypes.h", "fmiFunctions.h", "fmiTypesPlatform.h"});
 
         String directoryFmiParser = directoryFmi + "parser/";
         if (new File(directoryFmiParser).mkdirs()) {
@@ -176,11 +176,11 @@ public class FMIMACodeGenerator extends ProceduralCodeGenerator /*GenericCodeGen
                 _includes.add("-I " + directoryFmiParser);
             }
         }
-	_copyCFilesTosrc("ptolemy/actor/lib/fmi/ma/parser/",
-			 directoryFmiParser,
-			 new String [] {"XmlElement.cpp", "XmlElement.h", "XmlParserCApi.cpp",
-					"XmlParserCApi.h", "XmlParser.cpp", "XmlParserException.h",
-					"XmlParser.h"});
+        _copyCFilesTosrc("ptolemy/actor/lib/fmi/ma/parser/",
+                         directoryFmiParser,
+                         new String [] {"XmlElement.cpp", "XmlElement.h", "XmlParserCApi.cpp",
+                                        "XmlParserCApi.h", "XmlParser.cpp", "XmlParserException.h",
+                                        "XmlParser.h"});
 
         String directoryFmiParserLibxml = directoryFmi + "parser/libxml/";
         if (new File(directoryFmiParserLibxml).mkdirs()) {
@@ -188,9 +188,9 @@ public class FMIMACodeGenerator extends ProceduralCodeGenerator /*GenericCodeGen
                 _includes.add("-I " + directoryFmiParserLibxml);
             }
         }
-	_copyCFilesTosrc("ptolemy/actor/lib/fmi/ma/parser/libxml/",
-			 directoryFmiParserLibxml,
-			 new String [] {"dict.h", "encoding.h", "entities.h", "globals.h", "hash.h", "list.h", "parser.h", "relaxng.h", "SAX2.h", "SAX.h", "threads.h", "tree.h", "valid.h", "xlink.h", "xmlautomata.h", "xmlerror.h", "xmlexports.h", "xmlIO.h", "xmlmemory.h", "xmlreader.h", "xmlregexp.h", "xmlschemas.h", "xmlstring.h", "xmlversion.h"});
+        _copyCFilesTosrc("ptolemy/actor/lib/fmi/ma/parser/libxml/",
+                         directoryFmiParserLibxml,
+                         new String [] {"dict.h", "encoding.h", "entities.h", "globals.h", "hash.h", "list.h", "parser.h", "relaxng.h", "SAX2.h", "SAX.h", "threads.h", "tree.h", "valid.h", "xlink.h", "xmlautomata.h", "xmlerror.h", "xmlexports.h", "xmlIO.h", "xmlmemory.h", "xmlreader.h", "xmlregexp.h", "xmlschemas.h", "xmlstring.h", "xmlversion.h"});
          if (_executeCommands == null) {
             _executeCommands = new StreamExec();
         }
@@ -233,12 +233,12 @@ public class FMIMACodeGenerator extends ProceduralCodeGenerator /*GenericCodeGen
      */
     protected void _writeMakefile(CompositeEntity container,
             String currentDirectory) throws IllegalActionException {
-	_substituteMap.put("@PTCGPPCompiler@", "g++");
-	_substituteMap.put("@PTCGCompiler@", "gcc");
+        _substituteMap.put("@PTCGPPCompiler@", "g++");
+        _substituteMap.put("@PTCGCompiler@", "gcc");
 
-	_substituteMap.put("@PTCGLibraries@",
-			   _concatenateElements(_libraries));
+        _substituteMap.put("@PTCGLibraries@",
+                           _concatenateElements(_libraries));
 
-	super._writeMakefile(container, currentDirectory);
+        super._writeMakefile(container, currentDirectory);
     }
 }

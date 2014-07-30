@@ -264,8 +264,8 @@ public class HTMLPageAssembler extends TypedAtomicActor {
                 if (elements.size() > 1) {
                     throw new IllegalActionException(this,
                             "Id = \"" + id + "\" is not unique in the " +
-                            	"template file.  Please make sure each" +
-                            	" element has a unique id (or none).");
+                                    "template file.  Please make sure each" +
+                                    " element has a unique id (or none).");
                 }
                 
                 for (int i = port.getWidth() - 1; i >= 0; i--) {

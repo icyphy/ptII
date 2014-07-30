@@ -382,13 +382,13 @@ public class AtomicExecutionAspect extends TypedAtomicActor implements
     @Override
     public void wrapup() throws IllegalActionException {
         super.wrapup();
-	// Generating WebStart calls wrapup() after preinitialize(),
-	// so the model might not have been initialized.
+        // Generating WebStart calls wrapup() after preinitialize(),
+        // so the model might not have been initialized.
         if (_actors != null) {
-	    for (NamedObj actor : _actors) {
-		notifyExecutionListeners(actor, ((CompositeActor) getContainer())
-				 .getDirector().getEnvironmentTime().getDoubleValue(), null);
-	    }
+            for (NamedObj actor : _actors) {
+                notifyExecutionListeners(actor, ((CompositeActor) getContainer())
+                                 .getDirector().getEnvironmentTime().getDoubleValue(), null);
+            }
         }
     }
 

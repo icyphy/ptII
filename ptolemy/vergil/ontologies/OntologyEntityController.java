@@ -133,7 +133,7 @@ public class OntologyEntityController extends AttributeInOntologyController {
      *  instance.
      */
     @SuppressWarnings("serial")
-	private class OpenInstanceAction extends FigureAction {
+        private class OpenInstanceAction extends FigureAction {
 
         /** Create a new OpenInstanceAction object. */
         public OpenInstanceAction() {

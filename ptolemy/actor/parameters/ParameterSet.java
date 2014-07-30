@@ -203,8 +203,8 @@ public class ParameterSet extends ScopeExtendingAttribute implements Executable 
      *   created.
      */
     public void expand() throws IllegalActionException {
-    	_reReadIfNeeded();
-    	// Do not call validate.
+            _reReadIfNeeded();
+            // Do not call validate.
     }
 
     /** Do nothing.
@@ -250,7 +250,7 @@ public class ParameterSet extends ScopeExtendingAttribute implements Executable 
     public int iterate(int count) throws IllegalActionException {
         if (((BooleanToken) checkForFileUpdates.getToken()).booleanValue()) {
             if (_reReadIfNeeded()) {
-            	validate();
+                    validate();
             }
         }
         return Executable.COMPLETED;
@@ -271,7 +271,7 @@ public class ParameterSet extends ScopeExtendingAttribute implements Executable 
     public boolean prefire() throws IllegalActionException {
         if (((BooleanToken) checkForFileUpdates.getToken()).booleanValue()) {
             if (_reReadIfNeeded()) {
-            	validate();
+                    validate();
             }
         }
         return true;
@@ -291,7 +291,7 @@ public class ParameterSet extends ScopeExtendingAttribute implements Executable 
             }
         }
         if (_reReadIfNeeded()) {
-        	validate();
+                validate();
         }
     }
 
@@ -450,7 +450,7 @@ public class ParameterSet extends ScopeExtendingAttribute implements Executable 
             }
         }
         if (_reReadIfNeeded()) {
-        	validate();
+                validate();
         }
     }
 

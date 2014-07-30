@@ -470,9 +470,9 @@ DllExport fmiStatus fmiSetDebugLogging(fmiComponent c, fmiBoolean loggingOn) {
 }
 
 DllExport fmiStatus fmiDoStep(fmiComponent c,
-			      fmiReal      currentCommunicationPoint,
-			      fmiReal      communicationStepSize,
-			      fmiBoolean   newStep) {
+                              fmiReal      currentCommunicationPoint,
+                              fmiReal      communicationStepSize,
+                              fmiBoolean   newStep) {
   return fmi1_cs_do_step(c, currentCommunicationPoint, communicationStepSize, newStep);
 }
 

@@ -53,7 +53,7 @@ import ptolemy.kernel.util.NamedObj;
  @Pt.AcceptedRating Red (pd)
  */
 public class SCRTableauFactory extends TableauFactory {
-	
+        
     /** Create a factory with the given name and container.
      *  @param container The container.
      *  @param name The name.
@@ -83,12 +83,12 @@ public class SCRTableauFactory extends TableauFactory {
         Configuration configuration = (Configuration) effigy.toplevel();
         SCRModel model = null;
         if (effigy instanceof PtolemyEffigy) {
-        	PtolemyEffigy ptolemyEffigy = (PtolemyEffigy) effigy;
-        	if (ptolemyEffigy.getModel() instanceof SCRModel) {
-        		model = (SCRModel) ptolemyEffigy.getModel();
-        	} else {
-        		throw new IllegalActionException("SCRTableau cannot be created for models other than SCRModels");
-        	}
+                PtolemyEffigy ptolemyEffigy = (PtolemyEffigy) effigy;
+                if (ptolemyEffigy.getModel() instanceof SCRModel) {
+                        model = (SCRModel) ptolemyEffigy.getModel();
+                } else {
+                        throw new IllegalActionException("SCRTableau cannot be created for models other than SCRModels");
+                }
         }
         if (model == null) {
             throw new InternalErrorException(effigy, null,  "The effigy " + effigy

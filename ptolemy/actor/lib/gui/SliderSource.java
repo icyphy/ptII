@@ -322,7 +322,7 @@ public class SliderSource extends Source implements ChangeListener, Placeable {
 
     /** The frame for the slider. */
     @SuppressWarnings("serial")
-	public static class SliderFrame extends JFrame {
+        public static class SliderFrame extends JFrame {
 
         /**  Create a frame for the slider.
          * @param minimum the minimum value.

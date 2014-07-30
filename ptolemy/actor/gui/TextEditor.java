@@ -179,7 +179,7 @@ public class TextEditor extends TableauFrame implements DocumentListener,
      *  @return The scroll pane.
      */
     public JScrollPane getScrollPane() {
-    	return _scrollPane;
+            return _scrollPane;
     }
 
     // CONTRIBUTED CODE.  The exportImage() methods are from PlotBox,
@@ -540,7 +540,7 @@ public class TextEditor extends TableauFrame implements DocumentListener,
     //// ExportImageAction
 
     /** Export an image. */
-	public class ExportImageAction extends AbstractAction {
+        public class ExportImageAction extends AbstractAction {
         // FIXME: this is very similar to PlotTableaFrame.ExportImageAction.
 
         /** Create a new action to export an image.

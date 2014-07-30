@@ -872,7 +872,7 @@ public class Director extends Attribute implements Executable {
 
         localClock.resetLocalTime(getModelStartTime());
         localClock.start();
-        	
+                
         if (_nextScheduleTime != null) {
             _nextScheduleTime.clear();
         }
@@ -1079,7 +1079,7 @@ public class Director extends Attribute implements Executable {
      *  base class just sets a boolean flag.
      */
     public void notifyTokenSentToCommunicationAspect() {
-    	_tokenSentToCommunicationAspect = true;
+            _tokenSentToCommunicationAspect = true;
     }
 
     /** Return true if the director wishes to be scheduled for another
@@ -1980,22 +1980,22 @@ public class Director extends Attribute implements Executable {
     protected Set _actorsFinishedExecution;
 
     /** Contains a map of actors and the ExecutionAspect that is specified for the actor. */
-	protected HashMap<NamedObj, ActorExecutionAspect> _aspectForActor;
+        protected HashMap<NamedObj, ActorExecutionAspect> _aspectForActor;
 
-	/** True if any of the directed actors specifies a ExecutionAspect
-	 *  in the parameters and this ExecutionAspect exists on this or
-	 *  a hierarchy level above (i.e. has not been deleted).
-	 */
-	protected boolean _aspectsPresent;
+        /** True if any of the directed actors specifies a ExecutionAspect
+         *  in the parameters and this ExecutionAspect exists on this or
+         *  a hierarchy level above (i.e. has not been deleted).
+         */
+        protected boolean _aspectsPresent;
 
-	/** The director's default microstep. */
-	protected int _defaultMicrostep;
+        /** The director's default microstep. */
+        protected int _defaultMicrostep;
 
-	/** ExecutionAspects in the container of this director.
-	 */
-	protected List<ActorExecutionAspect> _executionAspects;
+        /** ExecutionAspects in the container of this director.
+         */
+        protected List<ActorExecutionAspect> _executionAspects;
 
-	/** Indicator that finish() has been called. */
+        /** Indicator that finish() has been called. */
     protected boolean _finishRequested;
 
     /** Set of objects whose (pre)initialize() and wrapup() methods

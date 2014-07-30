@@ -287,13 +287,13 @@ public class DirectoryListing extends SequenceSource implements FilenameFilter {
 
                     String path = file.getAbsolutePath();
                     if (((BooleanToken)relative.getToken()).booleanValue()) {
-                    	// Strip off the directory name and trailing slash.
-                    	int slash = 1;
-                    	String directoryName = sourceFile.getAbsolutePath();
-                    	if (directoryName.endsWith("/")) {
-                    		slash = 0;
-                    	}
-                    	path = path.substring(directoryName.length() + slash);
+                            // Strip off the directory name and trailing slash.
+                            int slash = 1;
+                            String directoryName = sourceFile.getAbsolutePath();
+                            if (directoryName.endsWith("/")) {
+                                    slash = 0;
+                            }
+                            path = path.substring(directoryName.length() + slash);
                     }
 
                     if (_debugging) {

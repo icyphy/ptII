@@ -143,7 +143,7 @@ public class Register extends MostRecent {
      *  @return False.
      */
     public boolean isStrict() {
-    	return false;
+            return false;
     }
     
     /** Read and record the inputs.
@@ -167,12 +167,12 @@ public class Register extends MostRecent {
         boolean inputPresent = false;
 
         if (input.isOutsideConnected()) {
-        	for (int i = 0; i < input.getWidth(); i++) {
-        		if (input.hasToken(0)) {
-        			inputPresent = true;
-        			break;
-        		}
-        	}
+                for (int i = 0; i < input.getWidth(); i++) {
+                        if (input.hasToken(0)) {
+                                inputPresent = true;
+                                break;
+                        }
+                }
         }
         return inputPresent || super.prefire();
     }

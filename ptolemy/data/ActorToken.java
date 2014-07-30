@@ -62,7 +62,7 @@ public class ActorToken extends Token implements Cloneable {
         super();
 
         try {
-        	// Be sure to clone into a workspace.
+                // Be sure to clone into a workspace.
             _entity = (Entity) entity.clone(entity.workspace());
         } catch (CloneNotSupportedException ex) {
             throw new IllegalActionException(null, ex,
@@ -72,7 +72,7 @@ public class ActorToken extends Token implements Cloneable {
     
     /** Construct an empty ActorToken to be used as a reference for the Actor type designator. */
     private ActorToken() {
-    	super();
+            super();
     }
 
     ///////////////////////////////////////////////////////////////////

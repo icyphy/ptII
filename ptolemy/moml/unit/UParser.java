@@ -749,7 +749,7 @@ public class UParser implements UParserConstants {
     }
 
     @SuppressWarnings("serial")
-	static private final class LookaheadSuccess extends java.lang.Error {
+        static private final class LookaheadSuccess extends java.lang.Error {
     }
 
     final private LookaheadSuccess jj_ls = new LookaheadSuccess();

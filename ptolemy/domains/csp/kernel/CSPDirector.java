@@ -248,10 +248,10 @@ public class CSPDirector extends CompositeProcessDirector {
         try {
             _inWrapup = true;
 
-	    // Generating WebStart calls wrapup() after preinitialize(),
-	    // so the model might not have been initialized.
+            // Generating WebStart calls wrapup() after preinitialize(),
+            // so the model might not have been initialized.
             while (_delayedActorList != null 
-		   && _delayedActorList.size() > 0) {
+                   && _delayedActorList.size() > 0) {
                 DelayListLink value = (DelayListLink) _delayedActorList.get(0);
                 value._actor._cancelDelay();
                 _delayedActorList.remove(0);

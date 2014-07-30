@@ -510,7 +510,7 @@ fmiStatus fmiGetFMUstate (fmiComponent c, fmiFMUstate* FMUstate) {
     if (NUMBER_OF_INTEGERS > 0) {
         for (i = 0; i < NUMBER_OF_INTEGERS; i++) {
                 dest->i[i] = source->i[i];
-		}
+                }
     }
 
     if (NUMBER_OF_BOOLEANS > 0) {
@@ -553,7 +553,7 @@ fmiStatus fmiSetFMUstate (fmiComponent c, fmiFMUstate FMUstate) {
     if (NUMBER_OF_INTEGERS > 0) {
         for (i = 0; i < NUMBER_OF_INTEGERS; i++) {
                 dest->i[i] = source->i[i];
-		}
+                }
     }
     if (NUMBER_OF_BOOLEANS > 0) {
         for (i = 0; i < NUMBER_OF_BOOLEANS; i++) {

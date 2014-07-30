@@ -1921,7 +1921,7 @@ FMI_Export fmiStatus fmiGetDirectionalDerivative(fmiComponent c,
                 const fmiValueReference vUnknown_ref[], size_t nUnknown,
                 const fmiValueReference vKnown_ref[],   size_t nKnown,
                 const fmiReal dvKnown[], fmiReal dvUnknown[]) {
-	return fmi2_get_directional_derivative(c, vUnknown_ref, nUnknown,
+        return fmi2_get_directional_derivative(c, vUnknown_ref, nUnknown,
                                            vKnown_ref, nKnown, dvKnown, dvUnknown);
 }
 
@@ -1930,54 +1930,54 @@ FMI_Export fmiStatus fmiGetDirectionalDerivative(fmiComponent c,
 /* FMI 2.0 functions specific for ME.*/
 
 FMI_Export fmiStatus fmiEnterEventMode(fmiComponent c) {
-	return fmi2_enter_event_mode(c);
+        return fmi2_enter_event_mode(c);
 }
 
 FMI_Export fmiStatus fmiNewDiscreteStates(fmiComponent  c,
                                           fmiEventInfo* fmiEventInfo) {
-	return fmi2_new_discrete_state(c, fmiEventInfo);
+        return fmi2_new_discrete_state(c, fmiEventInfo);
 }
 
 FMI_Export fmiStatus fmiEnterContinuousTimeMode(fmiComponent c) {
-	return fmi2_enter_continuous_time_mode(c);
+        return fmi2_enter_continuous_time_mode(c);
 }
 
 FMI_Export fmiStatus fmiCompletedIntegratorStep(fmiComponent c,
                                                 fmiBoolean   noSetFMUStatePriorToCurrentPoint, 
                                                 fmiBoolean*  enterEventMode, 
                                                 fmiBoolean*   terminateSimulation) {
-	return fmi2_completed_integrator_step(c, noSetFMUStatePriorToCurrentPoint,
+        return fmi2_completed_integrator_step(c, noSetFMUStatePriorToCurrentPoint,
                                           enterEventMode, terminateSimulation);
 }
 
 FMI_Export fmiStatus fmiSetTime(fmiComponent c, fmiReal time) {
-	return fmi2_set_time(c, time);
+        return fmi2_set_time(c, time);
 }
 
 FMI_Export fmiStatus fmiSetContinuousStates(fmiComponent c, const fmiReal x[],
                                             size_t nx) {
-	return fmi2_set_continuous_states(c, x, nx);
+        return fmi2_set_continuous_states(c, x, nx);
 }
 
 FMI_Export fmiStatus fmiGetDerivatives(fmiComponent c, fmiReal derivatives[],
                                        size_t nx) {
-	return fmi2_get_derivatives(c, derivatives, nx);
+        return fmi2_get_derivatives(c, derivatives, nx);
 }
 
 FMI_Export fmiStatus fmiGetEventIndicators(fmiComponent c, 
                                            fmiReal eventIndicators[], size_t ni) {
-	return fmi2_get_event_indicators(c, eventIndicators, ni);
+        return fmi2_get_event_indicators(c, eventIndicators, ni);
 }
 
 FMI_Export fmiStatus fmiGetContinuousStates(fmiComponent c, fmiReal x[],
                                             size_t nx) {
-	return fmi2_get_continuous_states(c, x, nx);
+        return fmi2_get_continuous_states(c, x, nx);
 }
 
 FMI_Export fmiStatus fmiGetNominalsOfContinuousStates(fmiComponent c, 
                                                       fmiReal x_nominal[], 
                                                       size_t nx) {
-	return fmi2_get_nominals_of_continuous_states(c, x_nominal, nx);
+        return fmi2_get_nominals_of_continuous_states(c, x_nominal, nx);
 }
 
 #endif
@@ -1989,51 +1989,51 @@ FMI_Export fmiStatus fmiSetRealInputDerivatives(fmiComponent c,
                                                 const fmiValueReference vr[],
                                                 size_t nvr, const fmiInteger order[],
                                                 const fmiReal value[]) {
-	return fmi2_set_real_input_derivatives(c, vr, nvr, order, value);
+        return fmi2_set_real_input_derivatives(c, vr, nvr, order, value);
 }
 
 FMI_Export fmiStatus fmiGetRealOutputDerivatives(fmiComponent c,
                                                  const fmiValueReference vr[],
                                                  size_t nvr, const fmiInteger order[],
                                                  fmiReal value[]) {
-	return fmi2_get_real_output_derivatives(c, vr, nvr, order, value);
+        return fmi2_get_real_output_derivatives(c, vr, nvr, order, value);
 }
 
 FMI_Export fmiStatus fmiDoStep(fmiComponent c, fmiReal currentCommunicationPoint,
                                fmiReal    communicationStepSize,
                                fmiBoolean noSetFMUStatePriorToCurrentPoint) {
-	return fmi2_do_step(c, currentCommunicationPoint, communicationStepSize,
+        return fmi2_do_step(c, currentCommunicationPoint, communicationStepSize,
                         noSetFMUStatePriorToCurrentPoint);
 }
 
 FMI_Export fmiStatus fmiCancelStep(fmiComponent c) {
-	return fmi2_cancel_step(c);
+        return fmi2_cancel_step(c);
 }
 
 FMI_Export fmiStatus fmiGetStatus(fmiComponent c, const fmiStatusKind s,
                                   fmiStatus* value) {
-	return fmi2_get_status(c, s, value);
+        return fmi2_get_status(c, s, value);
 }
 
 FMI_Export fmiStatus fmiGetRealStatus(fmiComponent c, const fmiStatusKind s,
                                       fmiReal* value) {
-	return fmi2_get_real_status(c, s, value);
+        return fmi2_get_real_status(c, s, value);
 }
 
 FMI_Export fmiStatus fmiGetIntegerStatus(fmiComponent c, const fmiStatusKind s,
                                          fmiInteger* values) {
-	return fmi2_get_integer_status(c, s, values);
+        return fmi2_get_integer_status(c, s, values);
 }
 
 FMI_Export fmiStatus fmiGetBooleanStatus(fmiComponent c, const fmiStatusKind s,
                                          fmiBoolean* value) {
-	return fmi2_get_boolean_status(c, s, value);
+        return fmi2_get_boolean_status(c, s, value);
 }
 
 FMI_Export fmiStatus fmiGetStringStatus(fmiComponent c, const fmiStatusKind s,
                                         fmiString* value) {
-	return fmi2_get_string_status(c, s, value);
-	
+        return fmi2_get_string_status(c, s, value);
+        
 }
 
 #endif

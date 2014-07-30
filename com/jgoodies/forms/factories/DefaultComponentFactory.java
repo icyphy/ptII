@@ -280,7 +280,7 @@ public final class DefaultComponentFactory implements ComponentFactory {
      * A label that uses the TitleBorder font and color.
      */
     @SuppressWarnings("serial")
-	private static final class TitleLabel extends JLabel {
+        private static final class TitleLabel extends JLabel {
 
         private TitleLabel() {
             // Just invoke the super constructor.

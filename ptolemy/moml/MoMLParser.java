@@ -515,7 +515,7 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
                             || _current.getAttribute(oldValue) == null) {
                         // Needed to find Parameters that are up scope.
                         // FIXME: does this check ScopeExtendingAttributes?
-                    	// Should this use ModelScope.getScopedVariable()?
+                            // Should this use ModelScope.getScopedVariable()?
                         Attribute masterAttribute = null;
                         NamedObj searchContainer = _current;
                         while (searchContainer != null
@@ -1609,7 +1609,7 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
 
             _paramsToParse.clear();
             if (_scopeExtenders != null) {
-            	_scopeExtenders.clear();
+                    _scopeExtenders.clear();
             }
             reset();
             if (base != null) {
@@ -2146,7 +2146,7 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
     public void startDocument() {
         _paramsToParse.clear();
         if (_scopeExtenders != null) {
-        	_scopeExtenders.clear();
+                _scopeExtenders.clear();
         }
         _unrecognized = null;
 
@@ -4512,10 +4512,10 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
                 
                 // If the entity implements ScopeExtender, then add it to the list.
                 if (newEntity instanceof ScopeExtender) {
-                	if (_scopeExtenders == null) {
-                		_scopeExtenders = new LinkedList<ScopeExtender>();
-                	}
-                	_scopeExtenders.add((ScopeExtender)newEntity);
+                        if (_scopeExtenders == null) {
+                                _scopeExtenders = new LinkedList<ScopeExtender>();
+                        }
+                        _scopeExtenders.add((ScopeExtender)newEntity);
                 }
 
                 return newEntity;
@@ -5017,20 +5017,20 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
      *  Then, after expanding them all, validate them all.
      */
     private void _expandScopeExtenders() throws IllegalActionException {
-    	if (_scopeExtenders != null) {
-    		for (ScopeExtender extender : _scopeExtenders) {
-    			extender.expand();
-    		}
-    		// The above will create the parameters of the scope extender, but
-    		// not evaluate their expressions.
-    		// The following evaluates their expressions.
-    		// This has to be done as a separate pass because a scope extender
-    		// may have parameters whose values depend on parameters in another
-    		// scope extender.
-    		for (ScopeExtender extender : _scopeExtenders) {
-    			extender.validate();
-    		}
-    	}
+            if (_scopeExtenders != null) {
+                    for (ScopeExtender extender : _scopeExtenders) {
+                            extender.expand();
+                    }
+                    // The above will create the parameters of the scope extender, but
+                    // not evaluate their expressions.
+                    // The following evaluates their expressions.
+                    // This has to be done as a separate pass because a scope extender
+                    // may have parameters whose values depend on parameters in another
+                    // scope extender.
+                    for (ScopeExtender extender : _scopeExtenders) {
+                            extender.validate();
+                    }
+            }
     }
 
     /** Use the specified parser to parse the file or URL,

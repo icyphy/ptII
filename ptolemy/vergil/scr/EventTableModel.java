@@ -62,13 +62,13 @@ public class EventTableModel extends AbstractTableModel {
         _model = model;
         _parameter = parameter;
         _columnCount = 3;// FIXME should be configurable
-	
+        
     }
 
     public void checkDisjointness() throws IllegalActionException {
         SCRTableHelper.checkDisjointness(_tableContent, getRowCount(), getColumnCount(), _model);
     }
-	
+        
 
     @Override
     public Object getValueAt(int rowIndex, int columnIndex) {
@@ -115,7 +115,7 @@ public class EventTableModel extends AbstractTableModel {
         this.fireTableStructureChanged();
         this.fireTableDataChanged();
     }
-	
+        
     public void deleteColumn(int index) {
         if (index > 0 && index < getColumnCount()) {
             for (int i = getRowCount() - 1; i >= 0 ; i--) {
@@ -131,7 +131,7 @@ public class EventTableModel extends AbstractTableModel {
     public int getColumnCount() {
         return _columnCount;
     }
-	
+        
     public void saveModel() throws IllegalActionException, NameDuplicationException {
         for (int i = 0; i < getRowCount() - 1; i++) {
             StringBuffer insideModeExpression = new StringBuffer();
@@ -158,7 +158,7 @@ public class EventTableModel extends AbstractTableModel {
                     guard = guard + " || ";
                 }
                 guard = guard + condition;
-				
+                                
                 if (enterModeCondition.equals("")) {
                     enterModeCondition = "false";
                 }
@@ -168,20 +168,20 @@ public class EventTableModel extends AbstractTableModel {
             // if no condition was true use 
             // - nil ?
             // - last value again ?
-            //			insideModeExpression = insideModeExpression.append(" " + _parameter.getName());
-            //			enterModeExpression = enterModeExpression.append(" " + _parameter.getName());
-			
+            //                        insideModeExpression = insideModeExpression.append(" " + _parameter.getName());
+            //                        enterModeExpression = enterModeExpression.append(" " + _parameter.getName());
+                        
             insideModeExpression = insideModeExpression.append(" nil");
             enterModeExpression = enterModeExpression.append(" nil");
-			
+                        
             // close brackets
             for (int j = 0; j < getColumnCount() - 1; j++) {
                 insideModeExpression = insideModeExpression.append(")");
                 enterModeExpression = enterModeExpression.append(")"); 
             }
-			
+                        
             // ?? self transitions can become problematic when several self transitions are enabled.
-			
+                        
             // if contains _isPresent then there really is an event. 
             if (guard.contains("_isPresent")) {
                 Transition transition = SCRTableHelper.getSelfTransition(state, _parameter);
@@ -201,76 +201,76 @@ public class EventTableModel extends AbstractTableModel {
                 transition.setActions.setExpression(_parameter.getName() + " = " + insideModeExpression);
                 transition.guardExpression.setExpression(guard);
             }
-			
-			
+                        
+                        
 
-            //			if (state.getRefinement() == null) {
-            //				((RefinementActor) state.getContainer()).addRefinement(
-            //						state,
-            //						((CompositeEntity) _model).uniqueName(state
-            //								.getName() + "_refinement"), null,
-            //						Refinement.class.getName(), null);
-            //			}
-            //			CompositeEntity entity = (CompositeEntity) state
-            //					.getRefinement()[0];
-            //			if (entity.attributeList(Director.class).size() == 0) {
-            //				ContinuousDirector director = new ContinuousDirector(
-            //						entity, "Continuous Director");
-            //			}
-            //			
-            //			Object setVariableActor = entity.getEntity("set_" + _parameter.getName());
-            //			if (setVariableActor == null) {
-            //				setVariableActor = new SetVariable(entity,
-            //						"set_" + _parameter.getName());
-            //			}
-            //			SetVariable setVariable = (SetVariable) setVariableActor;
-            //			setVariable.delayed.setExpression("true");
-            //			setVariable.variableName.setExpression(_parameter.getName());
+            //                        if (state.getRefinement() == null) {
+            //                                ((RefinementActor) state.getContainer()).addRefinement(
+            //                                                state,
+            //                                                ((CompositeEntity) _model).uniqueName(state
+            //                                                                .getName() + "_refinement"), null,
+            //                                                Refinement.class.getName(), null);
+            //                        }
+            //                        CompositeEntity entity = (CompositeEntity) state
+            //                                        .getRefinement()[0];
+            //                        if (entity.attributeList(Director.class).size() == 0) {
+            //                                ContinuousDirector director = new ContinuousDirector(
+            //                                                entity, "Continuous Director");
+            //                        }
+            //                        
+            //                        Object setVariableActor = entity.getEntity("set_" + _parameter.getName());
+            //                        if (setVariableActor == null) {
+            //                                setVariableActor = new SetVariable(entity,
+            //                                                "set_" + _parameter.getName());
+            //                        }
+            //                        SetVariable setVariable = (SetVariable) setVariableActor;
+            //                        setVariable.delayed.setExpression("true");
+            //                        setVariable.variableName.setExpression(_parameter.getName());
             //
-            //			Object expressionActorObject = entity.getEntity("set_" + _parameter.getName() + "_expression");
-            //			TypedIORelation relation = null;
-            //			TypedIORelation relationExpressionRemoveNil = null;
-            //			RemoveNilTokens removeNilTokens = null;
-            //			if (expressionActorObject == null) {
-            //				expressionActorObject = new Expression(entity,
-            //						"set_" + _parameter.getName() + "_expression");
-            //				relation = new TypedIORelation(entity,
-            //						entity.uniqueName("relation"));
-            //				removeNilTokens = new RemoveNilTokens(entity, entity.uniqueName("RemoveNilTokens"));
-            //				relationExpressionRemoveNil = new TypedIORelation(entity,
-            //						entity.uniqueName("relation"));
-            //			}
-            //			
-            //			Expression expressionActor = (Expression) expressionActorObject;
-            //			expressionActor.expression.setExpression(insideModeExpression.toString());
-            //			
-            //			for (Object portObject : ((CompositeActor) entity).inputPortList()) {
-            //				IOPort modePort = (IOPort) portObject;
-            //				TypedIOPort expressionPort = (TypedIOPort) expressionActor.getPort(modePort.getName());
-            //				if (expressionPort == null) { 
-            //					expressionPort = new TypedIOPort((ComponentEntity) expressionActorObject, modePort.getName(), true, false);
-            //				}
-            //				TypedIORelation inputRelation = null;
-            //				if (modePort.insideRelationList().size() == 0) {
-            //					inputRelation = new TypedIORelation(entity,
-            //							entity.uniqueName("relation"));
-            //				} else {
-            //					if (modePort.insideSinkPortList().contains(expressionPort)) {
-            //						continue;
-            //					}
-            //					inputRelation = (TypedIORelation) modePort.insideRelationList().get(0);
-            //				}
-            //				modePort.link(inputRelation);
-            //				expressionPort.link(inputRelation);
-            //			}
-            //			
-            //			if (relation != null) {
-            //				expressionActor.output.link(relationExpressionRemoveNil);
-            //				removeNilTokens.input.link(relationExpressionRemoveNil);
-            //				removeNilTokens.output.link(relation);
-            //				setVariable.input.link(relation);
-            //			}
-			
+            //                        Object expressionActorObject = entity.getEntity("set_" + _parameter.getName() + "_expression");
+            //                        TypedIORelation relation = null;
+            //                        TypedIORelation relationExpressionRemoveNil = null;
+            //                        RemoveNilTokens removeNilTokens = null;
+            //                        if (expressionActorObject == null) {
+            //                                expressionActorObject = new Expression(entity,
+            //                                                "set_" + _parameter.getName() + "_expression");
+            //                                relation = new TypedIORelation(entity,
+            //                                                entity.uniqueName("relation"));
+            //                                removeNilTokens = new RemoveNilTokens(entity, entity.uniqueName("RemoveNilTokens"));
+            //                                relationExpressionRemoveNil = new TypedIORelation(entity,
+            //                                                entity.uniqueName("relation"));
+            //                        }
+            //                        
+            //                        Expression expressionActor = (Expression) expressionActorObject;
+            //                        expressionActor.expression.setExpression(insideModeExpression.toString());
+            //                        
+            //                        for (Object portObject : ((CompositeActor) entity).inputPortList()) {
+            //                                IOPort modePort = (IOPort) portObject;
+            //                                TypedIOPort expressionPort = (TypedIOPort) expressionActor.getPort(modePort.getName());
+            //                                if (expressionPort == null) { 
+            //                                        expressionPort = new TypedIOPort((ComponentEntity) expressionActorObject, modePort.getName(), true, false);
+            //                                }
+            //                                TypedIORelation inputRelation = null;
+            //                                if (modePort.insideRelationList().size() == 0) {
+            //                                        inputRelation = new TypedIORelation(entity,
+            //                                                        entity.uniqueName("relation"));
+            //                                } else {
+            //                                        if (modePort.insideSinkPortList().contains(expressionPort)) {
+            //                                                continue;
+            //                                        }
+            //                                        inputRelation = (TypedIORelation) modePort.insideRelationList().get(0);
+            //                                }
+            //                                modePort.link(inputRelation);
+            //                                expressionPort.link(inputRelation);
+            //                        }
+            //                        
+            //                        if (relation != null) {
+            //                                expressionActor.output.link(relationExpressionRemoveNil);
+            //                                removeNilTokens.input.link(relationExpressionRemoveNil);
+            //                                removeNilTokens.output.link(relation);
+            //                                setVariable.input.link(relation);
+            //                        }
+                        
             Transition transition = null;
             boolean noSetActionSet = true;
             // set inmodeExpression/enter mode expression
@@ -311,7 +311,7 @@ public class EventTableModel extends AbstractTableModel {
 
         }
     }
-	
+        
     /** Map from input port name to input value.
      *  The fire() method populates this map.
      *  This is protected so that if a subclass overrides fire(), it
@@ -332,7 +332,7 @@ public class EventTableModel extends AbstractTableModel {
      * @param inmode True if "@T(Inmode)" should be the condition.
      */
     private void _parseExpression(String expression, int rowIndex, boolean inmode) { 
-		
+                
         if (expression != "") {
             String condition = "";
             String value = "";
@@ -340,39 +340,39 @@ public class EventTableModel extends AbstractTableModel {
                 // (condition ? value : (...
                 expression = expression.substring(expression.indexOf("(") + 1).trim();
                 // condition ? value : (...
-				
+                                
                 int endOfCondition = expression.indexOf("?");
                 if (expression.contains("(") && (expression.indexOf("(") < expression.indexOf("?"))) {
                     endOfCondition = SCRTableHelper.indexOfMatchingCloseBracket(expression, expression.indexOf("("));
                 }
                 condition = expression.substring(0, endOfCondition).trim();
-				
-				
+                                
+                                
                 expression = expression.substring(endOfCondition).trim();
                 // ? value : (...
-				
+                                
                 expression = expression.substring(expression.indexOf("?") + 1).trim();
                 // value : (...
-				
+                                
                 int endOfValue = expression.indexOf(":");
                 if (expression.contains("(") && (expression.indexOf("(") < expression.indexOf(":"))) {
                     endOfValue = SCRTableHelper.indexOfMatchingCloseBracket(expression, expression.indexOf("("));
                 }
                 value = expression.substring(0, endOfValue).trim();
-				
+                                
                 expression = expression.substring(expression.indexOf(":") + 1).trim();
                 // (...
-				
+                                
                 // expression = expression.substring(expression.indexOf("(") + 1).trim();
                 // ...
-				
+                                
                 int valueIndex = _getContentIndex(getRowCount() - 1, i);
                 int contentIndex = _getContentIndex(rowIndex, i);
-				
+                                
                 if (inmode && condition.equals("true")) {
                     condition = "@T(Inmode)";
                 }
-				
+                                
                 // do not put "| false"
                 String content = (String) _tableContent.get(contentIndex);
                 if (!content.equals("")) {
@@ -386,10 +386,10 @@ public class EventTableModel extends AbstractTableModel {
                 } else {
                     content = condition;
                 }
-				
+                                
                 _tableContent.add(valueIndex, value);
                 _tableContent.remove(valueIndex + 1);
-				
+                                
                 _tableContent.add(contentIndex, content);
                 _tableContent.remove(contentIndex + 1);
             }
@@ -403,7 +403,7 @@ public class EventTableModel extends AbstractTableModel {
                 _tableContent.add("false");
             }
             for (int rowIndex = 0; rowIndex < getRowCount() - 1; rowIndex++) {
-				
+                                
                 State state = (State) _model.getEntity((String) getValueAt(
                                 rowIndex, 0));
                 boolean parsedInmode = false;
@@ -433,28 +433,28 @@ public class EventTableModel extends AbstractTableModel {
                         }
                     }
                 }
-				
-                //				try {
-                //					if (state.getRefinement() != null) {
-                //						CompositeEntity composite = (CompositeEntity) state
-                //								.getRefinement()[0];
-                //						Expression expressionActor = (Expression) composite
-                //								.getEntity("set_" + _parameter.getName() + "_expression");
-                //						String expression = null;
-                //						if (expressionActor != null) {
-                //							expression = expressionActor.expression
-                //									.getExpression();
-                //						} else {
-                //							expression = "";
-                //						}
-                //						_parseExpression(expression, rowIndex, false);
-                //						
-                //						//if (_port.c)
-                //					}
-                //				} catch (IllegalActionException e) {
-                //					// TODO Auto-generated catch block
-                //					e.printStackTrace();
-                //				}	
+                                
+                //                                try {
+                //                                        if (state.getRefinement() != null) {
+                //                                                CompositeEntity composite = (CompositeEntity) state
+                //                                                                .getRefinement()[0];
+                //                                                Expression expressionActor = (Expression) composite
+                //                                                                .getEntity("set_" + _parameter.getName() + "_expression");
+                //                                                String expression = null;
+                //                                                if (expressionActor != null) {
+                //                                                        expression = expressionActor.expression
+                //                                                                        .getExpression();
+                //                                                } else {
+                //                                                        expression = "";
+                //                                                }
+                //                                                _parseExpression(expression, rowIndex, false);
+                //                                                
+                //                                                //if (_port.c)
+                //                                        }
+                //                                } catch (IllegalActionException e) {
+                //                                        // TODO Auto-generated catch block
+                //                                        e.printStackTrace();
+                //                                }        
             }
         }
     }
@@ -479,7 +479,7 @@ public class EventTableModel extends AbstractTableModel {
                     before = before.substring(0, index - 1).trim();
                 }
             }
-			
+                        
             while (after.startsWith("||")) {
                 after = after.substring(2).trim();
                 if (after.startsWith("(")) {
@@ -497,9 +497,9 @@ public class EventTableModel extends AbstractTableModel {
                 // if inmodeExpression then value
                 inmodeExpression = inmodeExpression.append(" ? " + value);
             }
-			
+                        
             expression = before + after; 
-			
+                        
         }
         return new String[]{expression, inmodeExpression.toString()};
     }

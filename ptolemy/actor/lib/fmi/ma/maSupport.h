@@ -11,26 +11,26 @@
 #include "fmi.h"
 
 typedef struct {
-	FMU *fmu;
-	fmiComponent *component;
-	fmiCallbackFunctions *callbacks;
+        FMU *fmu;
+        fmiComponent *component;
+        fmiCallbackFunctions *callbacks;
 
 } fmuInstance;
 
 typedef struct {
-	double tStart;
-	double tEnd;
-	double stepSize;
-	int loggingOn;
-	char csvSeparator;
-	char **categories;
-	int nCategories;
+        double tStart;
+        double tEnd;
+        double stepSize;
+        int loggingOn;
+        char csvSeparator;
+        char **categories;
+        int nCategories;
 } simulationSettings;
 
 typedef struct {
-	FMU **fmuInstances;
-	fmiFMUstate **FMUstates;
-	fmiValueReference **valueReference;
+        FMU **fmuInstances;
+        fmiFMUstate **FMUstates;
+        fmiValueReference **valueReference;
 } fmiModel;
 
 

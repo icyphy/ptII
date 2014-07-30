@@ -113,7 +113,7 @@ public class HttpRequest  {
             _connection.setRequestMethod(_method.toString());
         } catch(IOException e){
             HttpResponse response = new HttpResponse("Error setting request " +
-            		"method for URL " + _url.toString());
+                            "method for URL " + _url.toString());
             return response;
         }
         
@@ -153,7 +153,7 @@ public class HttpRequest  {
             }
         } catch (IOException e){
             HttpResponse response = new HttpResponse("Error closing writer for" +
-            		" URL " + _url.toString());
+                            " URL " + _url.toString());
             return response;
         }
         

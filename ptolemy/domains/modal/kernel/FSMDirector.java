@@ -946,12 +946,12 @@ public class FSMDirector extends Director implements ExplicitChangeContext,
         // and we can safely send a clear to the inside.
         int numberOfSources = port.numberOfSources();
         if (numberOfSources < insideReceivers.length) {
-        	// At least one inside channel has no viable sources.
-        	for (int i = numberOfSources; i < insideReceivers.length; i++) {
-        		for (Receiver receiver : insideReceivers[i]) {
-        			receiver.clear();
-        		}
-        	}
+                // At least one inside channel has no viable sources.
+                for (int i = numberOfSources; i < insideReceivers.length; i++) {
+                        for (Receiver receiver : insideReceivers[i]) {
+                                receiver.clear();
+                        }
+                }
         }
 
         for (int i = 0; i < port.getWidth(); i++) {
