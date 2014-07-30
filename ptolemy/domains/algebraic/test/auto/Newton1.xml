@@ -51,7 +51,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[-75.0, -150.0]">
         </property>
     </property>
-    <property name="errorTolerance" class="ptolemy.data.expr.Parameter" value="0.1">
+    <property name="errorTolerance" class="ptolemy.data.expr.Parameter" value="0.0001">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -126,7 +126,7 @@
         <link port="UnaryMathFunction.output" relation="relation2"/>
     </entity>
     <entity name="Test" class="ptolemy.actor.lib.Test">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0.0}">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{1.0}">
         </property>
         <property name="tolerance" class="ptolemy.data.expr.Parameter" value="errorTolerance">
         </property>
