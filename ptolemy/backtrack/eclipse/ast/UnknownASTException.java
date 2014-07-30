@@ -40,7 +40,7 @@ package ptolemy.backtrack.eclipse.ast;
  @Pt.AcceptedRating Red (tfeng)
  */
 public class UnknownASTException extends ASTRuntimeException {
-    /** Constrcut an unknown exception caused by the AST analyzer.
+    /** Construct an unknown exception caused by the AST analyzer.
      */
     public UnknownASTException() {
         super("Unknown AST exception.");

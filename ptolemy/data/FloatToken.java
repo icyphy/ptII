@@ -173,7 +173,7 @@ public class FloatToken extends ScalarToken {
         return false;
     }
 
-    /** Return the value in the token as a flaot.
+    /** Return the value in the token as a float.
      *  @return The value contained in this token as a float.
      */
     @Override

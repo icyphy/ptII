@@ -93,7 +93,7 @@ public class PtidyOSCodeGenerator extends CCodeGenerator {
     ////                         protected methods                 ////
 
     /** Generate code for the assembly file.
-     *  @exception IllegalActionException If getAdaptor() throws it, or if the
+     *  @exception IllegalActionException If getAdapter() throws it, or if the
      *  PtidyOSCodeGenerator is not used in a Ptides environment.
      *
      */

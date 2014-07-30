@@ -651,7 +651,7 @@ public class ArrayToken extends AbstractNotConvertibleToken {
      *  to include in the subarray.  An example of the first form is
      *  {"red","green","blue"}.extract({true,false,true}), which evaluates
      *  to {"red", "blue"}.  An example of the second form is
-     *  {"red","green","blue"}.extract({2,0,1,1}), which evalues to
+     *  {"red","green","blue"}.extract({2,0,1,1}), which evaluates to
      *  {"blue", "red", "green", "green"}.
      *  @param selection An ArrayToken describing the selection of elements
      *   with which to form the subarray: either an array of integer

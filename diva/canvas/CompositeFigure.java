@@ -66,7 +66,7 @@ public class CompositeFigure extends AbstractFigureContainer {
      */
     private ZList _children;
 
-    /** The transform context
+    /** The transform context.
      */
     private TransformContext _transformContext = new TransformContext(this);
 

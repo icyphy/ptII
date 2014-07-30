@@ -41,7 +41,7 @@ import ptolemy.kernel.util.IllegalActionException;
 /**
  An adapter class for ptolemy.actor.lib.Pulse.
 
- @author Christopher Brooks, based on codege Pulse by Gang Zhou
+ @author Christopher Brooks, based on codegen Pulse by Gang Zhou
  @version $Id$
  @since Ptolemy II 10.0
  @Pt.ProposedRating Red (cxh)

@@ -324,7 +324,7 @@ public class ModalBasePort extends TypedIOPort {
     }
 
     /** Remove a port from the current container.
-     *  @param oldContainer The contaner of the port
+     *  @param oldContainer The container of the port
      *  @exception IllegalActionException If the container or the
      *  container of the relation cannot be set to null.
      *  @exception NameDuplicationException If the thrown will setting

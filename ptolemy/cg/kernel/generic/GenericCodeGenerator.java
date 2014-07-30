@@ -307,7 +307,7 @@ public abstract class GenericCodeGenerator extends Attribute implements
     /** Return the decorated attributes for the target NamedObj.
      *  @param target The NamedObj that will be decorated.
      *  @return A list of decorated attributes for the target NamedObj,
-     *   or null if there is no adaptor for this object.
+     *   or null if there is no adapter for this object.
      */
     @Override
     public DecoratorAttributes createDecoratorAttributes(NamedObj target) {

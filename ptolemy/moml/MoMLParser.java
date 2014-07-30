@@ -7459,7 +7459,7 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
     // A set of settable parameters specified in property tags.
     private Set<Settable> _paramsToParse = new HashSet<Settable>();
 
-    /** A list of scope extenders encoutered while parsing. */
+    /** A list of scope extenders encountered while parsing. */
     private List<ScopeExtender> _scopeExtenders;
 
     /** The XmlParser. */

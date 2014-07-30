@@ -364,7 +364,7 @@ public class PtIndexer {
      * _compressedDefinitions table.  Thus, if the value is 5, the
      * binary representation is 1001, which means that the key
      * is found in the 3rd and 1st elements in _compressedDefinitions.
-     * Note that 0th element of _compressedDefintions is not
+     * Note that 0th element of _compressedDefinitions is not
      * used, as there is no way to specify the 0th element in
      * the Integer.
      */

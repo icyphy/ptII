@@ -39,7 +39,7 @@ import ptolemy.kernel.util.IllegalActionException;
 /**
  An adapter class for ptolemy.actor.lib.LimitedFiringSource.
 
- @author Christopher Brooks, based on codege LimitedFiringSource by Gang Zhou
+ @author Christopher Brooks, based on codegen LimitedFiringSource by Gang Zhou
  @version $Id$
  @since Ptolemy II 10.0
  @Pt.ProposedRating Red (cxh)

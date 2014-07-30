@@ -78,7 +78,7 @@ import ptolemy.kernel.util.Workspace;
  *  ActuatorPort, NetworkReceiverPort, NetworkTransmitterPort.
  *  A Ptides platform must contain a PtidesDirector.
  *  <p>
- *  Network ports receive and transmit RecordTokens that encapsuate
+ *  Network ports receive and transmit RecordTokens that encapsulate
  *  Ptides events (timestamp and value).
  *  A NetworkReceiverPort extracts the timestamp of the
  *  Ptides event in the RecordToken and creates a new event on the
@@ -636,7 +636,7 @@ public class PtidesPlatform extends MirrorComposite {
         }
 
         /** Return the environment time.
-         *  @return The current enviroment time.
+         *  @return The current environment time.
          *  @see #getEnvironmentTime()
          */
         @Override

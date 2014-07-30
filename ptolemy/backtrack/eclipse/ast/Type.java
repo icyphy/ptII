@@ -112,7 +112,7 @@ public class Type {
      *
      *  @param formalType The formal type to be evaluated.
      *  @param loader The {@link ClassLoader} object to be used when the
-     *   classes of types are resolved. This functioon uses this loader to
+     *   classes of types are resolved. This function uses this loader to
      *   resolve both types if they are classes, and also their superclasses
      *   and the interfaces that they implement, if necessary.
      *  @return The compatibility rating as an integer larger than or equal to

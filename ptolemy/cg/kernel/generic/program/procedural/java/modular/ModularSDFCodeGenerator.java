@@ -2037,7 +2037,7 @@ public class ModularSDFCodeGenerator extends JavaCodeGenerator {
         }
 
         /** Return the number of initial tokens in a junction.
-         * @return The number of intial tokens.
+         * @return The number of initial tokens.
          */
         public int getNumInitialTokens() {
             return _numInitialTokens;

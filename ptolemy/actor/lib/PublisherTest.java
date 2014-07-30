@@ -48,7 +48,7 @@ import ptolemy.kernel.util.NameDuplicationException;
  and the {@link ptolemy.actor.lib.Test} actor.  Thus, it has quite
  a bit of duplicated code from the Test actor.
 
- @author Christopher Brooks, based on Test, which has Edward A. Lee and Jim Armbstrong as authors
+ @author Christopher Brooks, based on Test, which has Edward A. Lee and Jim Armstrong as authors
  @version $Id$
  @since Ptolemy II 6.1
  @Pt.ProposedRating Red (cxh)

@@ -652,7 +652,7 @@ public abstract class ModularCodeGenLazyTypedCompositeActor extends
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
-    /** Intialize the parameters. */
+    /** Initialize the parameters. */
     private void _init() throws IllegalActionException,
     NameDuplicationException {
         recompileHierarchy = new Parameter(this, "recompileHierarchy");

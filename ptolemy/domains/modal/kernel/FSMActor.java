@@ -3582,7 +3582,7 @@ public class FSMActor extends CompositeEntity implements TypedActor,
      *  of ModalModels.
      *  @param port The port.
      *  @param channel The channel.
-     *  @exception IllegalActionException If geting remove receivers or
+     *  @exception IllegalActionException If getting remove receivers or
      *   resetting them fails.
      */
     private void _forceUnknownOutput(IOPort port, int channel)

@@ -60,7 +60,7 @@ import ptolemy.util.StringUtilities;
  whereas in this class it is a regular non-multiport.  To use a multiport
  input, use {@link ptolemy.actor.lib.PublisherTest}
 
- @author Christopher Brooks, based on Test, which has Edward A. Lee and Jim Armbstrong as authors
+ @author Christopher Brooks, based on Test, which has Edward A. Lee and Jim Armstrong as authors
  @version $Id$
  @since Ptolemy II 6.1
  @Pt.ProposedRating Red (cxh)

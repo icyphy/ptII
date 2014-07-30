@@ -2947,13 +2947,13 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
         }
     }
 
-    /** Return true if the modelExchangeCapbilities has a
+    /** Return true if the modelExchangeCapabilities has a
      *  completedIntegratorStepNotNeeded flag that is set to true.
      *  @return The value of the completedIntegratorStepNotNeeded
      *  field.  If the modelDescription.xml file does not contain a
      *  ModelExchange attribute, then false is returned.
      *  @exception IllegalActionException If the
-     *  modelExchangeCapbilities does not have a
+     *  modelExchangeCapabilities does not have a
      *  completedIntegratorStepNotNeeded field.
      */
     private boolean _completedIntegratorStepNotNeeded()

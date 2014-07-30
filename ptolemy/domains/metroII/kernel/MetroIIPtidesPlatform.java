@@ -81,7 +81,7 @@ import ptolemy.kernel.util.Workspace;
  * must contain a PtidesDirector.
  *
  * <p>
- * Network ports receive and transmit RecordTokens that encapsuate Ptides events
+ * Network ports receive and transmit RecordTokens that encapsulate Ptides events
  * (timestamp and value). A NetworkReceiverPort extracts the timestamp of the
  * Ptides event in the RecordToken and creates a new event on the event queue on
  * the PtidesDirector with this timestamp.

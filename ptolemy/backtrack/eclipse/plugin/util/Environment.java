@@ -122,7 +122,7 @@ public class Environment {
     /** Given a path, return its container representation in Eclipse.
      *
      *  @param path The path.
-     *  @return The contailer, or null if the path is invalid.
+     *  @return The container, or null if the path is invalid.
      */
     public static IContainer getContainer(IPath path) {
         IWorkspaceRoot root = ResourcesPlugin.getWorkspace().getRoot();

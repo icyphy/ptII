@@ -53,7 +53,7 @@ import ptolemy.homer.kernel.PositionableElement;
 
 /** Glasspane covers underlying awt component and blocks any events from propagating to them.
  *  Instead, it forward all events it receives to the scene's view.  This is done to ensure
- *  that all widget actions work as intended.  This class is not intented to be used as is
+ *  that all widget actions work as intended.  This class is not intended to be used as is
  *  but rather needs to be extended for widgets where glasspane is required.
  *  @author Anar Huseynov
  *  @version $Id$

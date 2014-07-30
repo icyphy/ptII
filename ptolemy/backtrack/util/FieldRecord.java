@@ -840,7 +840,7 @@ public class FieldRecord {
     //// CombinedIterator
 
     /**
-     Combinated iterator of all the dimensions. It returns records in their
+     Combined iterator of all the dimensions. It returns records in their
      reversed timestamp order.
 
      @author Thomas Feng

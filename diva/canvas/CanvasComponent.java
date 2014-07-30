@@ -45,7 +45,7 @@ public interface CanvasComponent {
     /** Return the transform context of the component. If the component
      *  has its own transform context, this method should return it,
      *  otherwise it should return the transform context of its parent.
-     *  @return  The transform contect of this component.
+     *  @return  The transform context of this component.
      */
     public TransformContext getTransformContext();
 

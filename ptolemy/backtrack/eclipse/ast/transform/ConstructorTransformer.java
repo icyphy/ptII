@@ -252,7 +252,7 @@ public class ConstructorTransformer extends AbstractTransformer implements
     /** Mapping from names of special types to the names of types used to
      *  substitute them. During type analysis, when an object is seen to be
      *  declared as an instance of a special type (such as
-     *  <tt>java.util.Random</tt>), its declaraing class is substituted to be
+     *  <tt>java.util.Random</tt>), its declaring class is substituted to be
      *  the corresponding backtracking-enabled type (such as
      *  <tt>ptolemy.backtrack.util.java.util.Random</tt>).
      */

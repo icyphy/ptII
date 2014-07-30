@@ -46,7 +46,7 @@ import diva.canvas.interactor.SelectionInteractor;
  * has been created, the wrapped pane cannot be changed.
  *
  * <p> In order to pass events down into the contained pane,
- * the PaneWrapper implements EventAccepter. It forwards events to the
+ * the PaneWrapper implements EventAcceptor. It forwards events to the
  * internal pane.
  *
  * @version        $Id$

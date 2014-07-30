@@ -1597,7 +1597,7 @@ public class TemplateParser {
      */
     protected ProgramCodeGenerator _codeGenerator;
 
-    /** The compoent, set by calling
+    /** The component, set by calling
      *        {@link #init(Object, ProgramCodeGeneratorAdapter)}.
      */
     protected Object _component;

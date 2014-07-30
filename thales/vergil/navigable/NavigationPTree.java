@@ -68,7 +68,7 @@ public class NavigationPTree extends PTree {
     }
 
     /**
-     * This listener intends to get the selection from the user, open the correst model but
+     * This listener intends to get the selection from the user, open the correct model but
      * also to inform all the other referenced Navigation tree of this event
      *
      * @author masson
