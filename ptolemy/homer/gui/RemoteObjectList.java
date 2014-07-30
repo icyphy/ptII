@@ -76,7 +76,7 @@ import ptolemy.vergil.toolbox.PtolemyTransferable;
  *
  *  @author Justin Killian
  *  @version $Id$
- *  @since Ptolemy II 8.1
+ *  @since Ptolemy II 10.0
  *  @Pt.ProposedRating Red (jkillian)
  *  @Pt.AcceptedRating Red (jkillian)
  */

@@ -52,7 +52,7 @@ import ptserver.util.ServerUtility;
  *
  *  @author Justin Killian
  *  @version $Id$
- *  @since Ptolemy II 8.0
+ *  @since Ptolemy II 10.0
  *  @Pt.ProposedRating Red (jkillian)
  *  @Pt.AcceptedRating Red (jkillian)
  */

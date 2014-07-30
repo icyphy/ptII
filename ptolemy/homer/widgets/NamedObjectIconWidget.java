@@ -46,7 +46,7 @@ import diva.gui.toolbox.FigureIcon;
 /** This widget visualizes a named object by displaying its icon.
  *  @author Anar Huseynov
  *  @version $Id$
- *  @since Ptolemy II 8.1
+ *  @since Ptolemy II 10.0
  *  @Pt.ProposedRating Red (ahuseyno)
  *  @Pt.AcceptedRating Red (ahuseyno)
  */

@@ -42,7 +42,7 @@ An editor for a transition. This editor is used by FSMTransitionParameters.
 
  @author Patricia Derler
  @version $Id$
- @since Ptolemy II 4.0
+ @since Ptolemy II 10.0
  @Pt.ProposedRating Red (derler)
  @Pt.AcceptedRating Red (derler)
  */

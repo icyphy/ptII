@@ -49,7 +49,7 @@ import ptolemy.kernel.util.IllegalActionException;
  *  This implementation should be upgraded when  
  * @author Patricia Derler, Christopher  based on DateToken in Kepler by Daniel Crawl and Christopher Brooks
  * @version $Id$
- * @since Ptolemy II 10.
+ * @since Ptolemy II 10.0
  * @Pt.ProposedRating Red (cxh)
  * @Pt.AcceptedRating Red (cxh)
  */

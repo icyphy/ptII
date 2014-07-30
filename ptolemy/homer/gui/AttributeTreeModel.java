@@ -52,7 +52,7 @@ number of attributes.
 
 @author Steve Neuendorffer and Edward A. Lee Contributors: Ishwinder Singh
 @version $Id$
-@since Ptolemy II 1.0
+@since Ptolemy II 10.0
 @Pt.ProposedRating Red (ishwinde)
 @Pt.AcceptedRating Red (ishwinde)
 */

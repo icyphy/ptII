@@ -28,6 +28,15 @@ the copyright link on the splash page or see copyright.htm.
 */
 package org.ptolemy.machineLearning;
 
+/**
+ * Algorithms class.
+ *
+ * @author ilgea
+ * @version $Id$
+ * @since Ptolemy II 10.0
+ * @Pt.ProposedRating Red (cxh)
+ * @Pt.AcceptedRating Red (cxh)
+ */
 public class Algorithms {
 
     private Algorithms() {

@@ -50,7 +50,7 @@ The class for calculation of constraints of Swarm-Robots.
 
 @author Shuhei Emoto
 @version $Id$
-@since Ptolemy II 10.1
+@since Ptolemy II 10.0
 @Pt.ProposedRating Red (shuhei)
 @Pt.AcceptedRating Red (shuhei)
 

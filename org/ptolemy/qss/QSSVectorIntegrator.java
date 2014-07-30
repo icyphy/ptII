@@ -52,7 +52,7 @@ A quantized-state vector integrator.
 
 @author David Broman, Edward A. Lee, Thierry Nouidui, Michael Wetter
 @version $Id$
-@since Ptolemy II 10.1
+@since Ptolemy II 10.0
 @Pt.ProposedRating Yellow (eal)
 @Pt.AcceptedRating Red (cxh)
 */

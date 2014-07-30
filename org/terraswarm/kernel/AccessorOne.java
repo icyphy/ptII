@@ -55,7 +55,7 @@ import ptolemy.kernel.util.StringAttribute;
  
  @author Edward A. Lee
  @version $Id$
- @since Ptolemy II 1.0
+ @since Ptolemy II 10.0
  @Pt.ProposedRating Red (eal)
  @Pt.AcceptedRating Red (bilung)
  */

@@ -334,13 +334,13 @@
 	First, untar the previous source release in ptII/adm/dists.  
 	<pre>
 	  cd $PTII/adm/dists
-	  wget http://ptolemy.eecs.berkeley.edu/ptolemyII/ptIIlatest/ptII10.0.1.src.tar.gz
-	  tar -zxf ptII10.0.1.src.tar.gz
+	  wget http://ptolemy.eecs.berkeley.edu/ptolemyII/ptIIlatest/ptII8.0.1.src.tar.gz
+	  tar -zxf ptII8.0.1.src.tar.gz
 	</pre>
 	Then check for files that don't have this year's copyright
 	<pre>
 	  cd $PTII/adm/dists
-	  diff -r ptII10.0.1 ptII10.0.devel > /tmp/pt.diffs
+	  diff -r ptII8.0.1 ptII10.0.devel > /tmp/pt.diffs
 	  cd $PTII
 	  grep Copyright `egrep "^Only in ptII10.0.devel" /tmp/pt.diffs | \
 	  grep .java | sed 's@ptII10.0.devel/@@' | awk '{print substr($3,1,length($3)-1) "/" $4}'` | grep -v `date +%Y` > /tmp/c2
@@ -365,6 +365,7 @@
 	<pre>
 	  #cp $tmpfile $file
 	</pre>
+        Then edit fixsince and comment out the cp line and then commit the changes.
 
       <li> Run <CODE>cd $PTII/doc; make chkpackagehtml</CODE> (not shipped with
 	the release) and create any missing <code>package.html</code>
