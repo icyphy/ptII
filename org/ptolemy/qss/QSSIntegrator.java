@@ -28,8 +28,8 @@ public class QSSIntegrator extends TypedAtomicActor {
         /** Construct a new instance of this integrator.
          *  @param container The container.
          *  @param name The name.
-         *  @throws IllegalActionException If setting up ports and parameters fails.
-         *  @throws NameDuplicationException If the container already contains an object with this name.
+         *  @exception IllegalActionException If setting up ports and parameters fails.
+         *  @exception NameDuplicationException If the container already contains an object with this name.
          */
         public QSSIntegrator(CompositeEntity container, String name)
                         throws IllegalActionException, NameDuplicationException {
@@ -59,8 +59,8 @@ public class QSSIntegrator extends TypedAtomicActor {
 
         public Parameter xInit, quantum;
         
-    /////////////////////////////////////////////////////////////////////
-    ////                       public methods                        ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
 
     /** Declare that the output does not depend on the input in a firing.
      *  @exception IllegalActionException If the causality interface
@@ -73,7 +73,7 @@ public class QSSIntegrator extends TypedAtomicActor {
 
     /** If it is time to produce a quantized output, produce it.
      *  Otherwise, indicate that the output is absent.
-     *  @throws IllegalActionException If sending an output fails.
+     *  @exception IllegalActionException If sending an output fails.
      */
         public void fire() throws IllegalActionException {
                 super.fire();
@@ -122,7 +122,7 @@ public class QSSIntegrator extends TypedAtomicActor {
          *  a refiring at that time.
          *  If there is a new input, read it and update the slope.
          *  @return True if the base class returns true.
-         *  @throws IllegalActionException If reading inputs or parameters fails.
+         *  @exception IllegalActionException If reading inputs or parameters fails.
          */
         public boolean postfire() throws IllegalActionException {
                 Time currentTime = getDirector().getModelTime();
@@ -139,7 +139,7 @@ public class QSSIntegrator extends TypedAtomicActor {
                         }
                         if (!newInput.equals(previousInput)) {
                             // Initialize the previousInput
-                            if (_firstFiring){
+                            if (_firstFiring) {
                                 previousInput = newInput;
                                 _firstFiring = false;
                             }
@@ -192,7 +192,7 @@ public class QSSIntegrator extends TypedAtomicActor {
                 previousStateUpdateTime = currentTime;
 
                 // Request a refiring, unless the slope is small.
-                if (nextOutputTime!=Time.POSITIVE_INFINITY){
+                if (nextOutputTime!=Time.POSITIVE_INFINITY) {
                     getDirector().fireAt(this, nextOutputTime);
                         if (_debugging) {
                                 _debug("Requesting a refiring at: " + nextOutputTime);
@@ -201,8 +201,8 @@ public class QSSIntegrator extends TypedAtomicActor {
                 return super.postfire();
         }
         
-    /////////////////////////////////////////////////////////////////////
-    ////                    protected methods                        ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected methods                 ////
         
         /** Return the derivative (slope) at the current time with the given
          *  input value. In this base class, the input is assumed to be the
@@ -274,7 +274,7 @@ public class QSSIntegrator extends TypedAtomicActor {
          *  the {@link #quantum} parameter.
          *  @param x The value to quantize.
          *  @return A quantized value.
-         *  @throws IllegalActionException If the quantum parameter cannot
+         *  @exception IllegalActionException If the quantum parameter cannot
          *   be evaluated.
          */
         protected double _quantize(double x) throws IllegalActionException {

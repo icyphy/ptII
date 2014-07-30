@@ -76,7 +76,7 @@ public class ConstraintsCalculator  extends TypedAtomicActor {
         String stateName;
         _labels = new String[names.length()];
         _types = new Type[names.length()];
-        for(int i = 0; i < names.length(); i++){
+        for (int i = 0; i < names.length(); i++){
             stateName = ((StringToken)names.getElement(i)).stringValue();
             _labels[i] = stateName;
             _types[i]  = BaseType.DOUBLE; // preset to be double
@@ -100,15 +100,15 @@ public void fire() throws IllegalActionException{
     super.fire();
     
     /// parsing of input
-    if(xValue.hasToken(0)){
+    if (xValue.hasToken(0)){
         ArrayToken xArray = ((ArrayToken)xValue.get(0));
         _xValue = new double[xArray.length()];
-        for(int i = 0; i < xArray.length(); i++){
+        for (int i = 0; i < xArray.length(); i++){
             _xValue[i] = (double)((DoubleToken)xArray.getElement(i)).doubleValue();
         }
     }
 
-    if(targetLocation.hasToken(0)){
+    if (targetLocation.hasToken(0)){
         RecordToken incoming = (RecordToken)(targetLocation.get(0));
         _targetX = new double[1];
         _targetY = new double[1];
@@ -116,11 +116,11 @@ public void fire() throws IllegalActionException{
         _targetY[0] = ((DoubleToken)incoming.get(_labels[1])).doubleValue();
     }
     
-    if(locations.hasToken(0)){
+    if (locations.hasToken(0)){
         ArrayToken robotLocations = (ArrayToken)locations.get(0);
         _robotX = new double[robotLocations.length()];
         _robotY = new double[robotLocations.length()];
-        for(int i = 0; i < robotLocations.length(); i++){
+        for (int i = 0; i < robotLocations.length(); i++){
             RecordToken robotLocation = (RecordToken)robotLocations.getElement(i);
             _robotX[i] = ((DoubleToken)robotLocation.get(_labels[0])).doubleValue() + _xValue[i*2]*0.1;
             _robotY[i] = ((DoubleToken)robotLocation.get(_labels[1])).doubleValue() + _xValue[i*2+1]*0.1;
@@ -156,14 +156,14 @@ private void funcConstraints(){
     _minimum_distances = new DoubleToken[_robotX.length];
     _dist_to_target = new DoubleToken[_robotX.length];
     _speed = new DoubleToken[_robotX.length];
-    for(int n = 0; n<_minimum_distances.length; n++) {
+    for (int n = 0; n<_minimum_distances.length; n++) {
         double minimum_distance = -1;
-        for(int m=0; m<_robotX.length; m++) {
-            if(n==m) continue;
+        for (int m=0; m<_robotX.length; m++) {
+            if (n==m) continue;
             double dx = _robotX[m] - _robotX[n];
             double dy = _robotY[m] - _robotY[n];
             double distance = Math.sqrt(dx*dx + dy*dy);
-            if(minimum_distance<0 || minimum_distance>distance) {
+            if (minimum_distance<0 || minimum_distance>distance) {
                 minimum_distance = distance;
             }
         }
@@ -172,7 +172,7 @@ private void funcConstraints(){
             double dy = _targetY[0] - _robotY[n];
             double distance = Math.sqrt(dx*dx + dy*dy);
             _dist_to_target[n] = new DoubleToken(distance);
-            if(minimum_distance<0 || minimum_distance>distance) {
+            if (minimum_distance<0 || minimum_distance>distance) {
                 minimum_distance = distance;
             }
         }

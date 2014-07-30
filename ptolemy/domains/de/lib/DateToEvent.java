@@ -71,7 +71,7 @@ public class DateToEvent extends Transformer {
     
     /** Check weather enclosing director is a DEDirector with 
      *  synchronizeToRealTime is enabled.
-     *  @throws IllegalActionException Thrown if the enclosing director is not a
+     *  @exception IllegalActionException Thrown if the enclosing director is not a
      *  DEDirector or the synchronizeToRealTime property is false.
      */
     @Override

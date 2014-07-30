@@ -159,34 +159,34 @@ public class CompositeOptimizer extends ReflectComposite {
 
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
-        if( attribute == rhoBeg){
+        if (attribute == rhoBeg) {
             double rho = ((DoubleToken)rhoBeg.getToken()).doubleValue();
             _rhobeg = rho; 
-        }else if( attribute == rhoEnd){
+        }else if (attribute == rhoEnd) {
             double rho = ((DoubleToken)rhoEnd.getToken()).doubleValue();
             _rhoend = rho; 
-        }else if (attribute == timeHorizon){
+        }else if (attribute == timeHorizon) {
             int th = ((IntToken)timeHorizon.getToken()).intValue();
-            if(th > 0){
+            if (th > 0) {
                 _timeHorizon = th;
-            }else{
+            }else {
                 throw new IllegalActionException(this,"Time horizon must be a positive integer");
             }
-        }else if(attribute == dimensionOfOptimizationSpace){
+        }else if (attribute == dimensionOfOptimizationSpace) {
             _dimension = ((IntToken)dimensionOfOptimizationSpace.getToken()).intValue();
-        }else if(attribute == mode)
+        }else if (attribute == mode)
         {
             String modeStr = ((StringParameter)mode).stringValue();
-            if(modeStr.equalsIgnoreCase("MAX")){
+            if (modeStr.equalsIgnoreCase("MAX")) {
                 _mode = MAXIMIZE;
-            }else if(modeStr.equalsIgnoreCase("MIN")){
+            }else if (modeStr.equalsIgnoreCase("MIN")) {
                 _mode = MINIMIZE;
             }
-        }else if( attribute == maxEvaluations){
+        }else if (attribute == maxEvaluations) {
             _maxEvaluations = ((IntToken) maxEvaluations.getToken()).intValue();
-        }else if( attribute == numberOfConstraints){
+        }else if (attribute == numberOfConstraints) {
             _numConstraints = ((IntToken) numberOfConstraints.getToken()).intValue();
-        }else{
+        }else {
             super.attributeChanged(attribute);
         }
     }
@@ -238,10 +238,10 @@ public class CompositeOptimizer extends ReflectComposite {
         trigger = new TypedIOPort(this, "trigger", true, false); 
         trigger.setMultiport(true); 
         SingletonParameter showName = (SingletonParameter)trigger.getAttribute("_showName");
-        if(showName == null){
+        if (showName == null) {
             showName = new SingletonParameter(trigger,"_showName");
             showName.setToken("true");
-        }else{
+        }else {
             showName.setToken("true");
         }
 
@@ -339,32 +339,32 @@ public class CompositeOptimizer extends ReflectComposite {
             // hide the mirror ports in top level composite
             
             IOPort p = (IOPort) (((CompositeActor)getContainer()).getPort(INTERMEDIATE_VALUE_PORT_NAME));
-            if(p!=null){
+            if (p!=null) {
                 SingletonParameter hidden = (SingletonParameter)p.getAttribute("_hide");
-                if(hidden == null){
+                if (hidden == null) {
                     hidden = new SingletonParameter(p,"_hide");
                     hidden.setToken("true");
-                }else{
+                }else {
                     hidden.setToken("true");
                 }
             } 
             p = (IOPort)(((CompositeEntity)getContainer()).getPort(CONSTRAINTS_PORT_NAME));
-            if(p!=null){
+            if (p!=null) {
                 SingletonParameter hidden = (SingletonParameter)p.getAttribute("_hide");
-                if(hidden == null){
+                if (hidden == null) {
                     hidden = new SingletonParameter(p,"_hide");
                     hidden.setToken("true");
-                }else{
+                }else {
                     hidden.setToken("true");
                 }
             }
             p = (IOPort)(((CompositeEntity)getContainer()).getPort(OPTIMIZATION_VARIABLE_NAME));
-            if(p!=null){
+            if (p!=null) {
                 SingletonParameter hidden = (SingletonParameter)p.getAttribute("_hide");
-                if(hidden == null){
+                if (hidden == null) {
                     hidden = new SingletonParameter(p,"_hide");
                     hidden.setToken("true");
-                }else{
+                }else {
                     hidden.setToken("true");
                 }
             } 
@@ -396,7 +396,7 @@ public class CompositeOptimizer extends ReflectComposite {
                 public double Compute(int n, int m, double[] x, double[] con, boolean[] terminate) throws IllegalActionException {
                     double evalX = 0;
                     DoubleToken[] xTokens = new DoubleToken[x.length];
-                    for(int i = 0; i < xTokens.length; i++){
+                    for (int i = 0; i < xTokens.length; i++) {
                         xTokens[i] = new DoubleToken(x[i]);
                     }  
                     // convert x into an array token
@@ -404,7 +404,7 @@ public class CompositeOptimizer extends ReflectComposite {
                     
                     // get the optimization variable port
                     MirrorPort xPort = (MirrorPort) (((CompositeActor)getContainer()).getPort(OPTIMIZATION_VARIABLE_NAME));
-                    if(xPort == null){
+                    if (xPort == null) {
                         throw new IllegalActionException(getContainer(), OPTIMIZATION_VARIABLE_NAME + " port could not be found.");
                     }
                     // send x value to the inside port for the new execution
@@ -412,14 +412,14 @@ public class CompositeOptimizer extends ReflectComposite {
 
                     // before firing the inside composite, make sure transferInputs are called
                     CompositeActor container = (CompositeActor) getContainer();
-                    if(_firstIteration){
+                    if (_firstIteration) {
                         _firstIteration = false;
-                    }else{
+                    }else {
                         // transferInputs has already been called
                         Iterator<IOPort> inports = container.inputPortList().iterator(); 
-                        while( inports.hasNext()){
+                        while ( inports.hasNext()) {
                             IOPort p = inports.next();
-                            if(!(p instanceof ParameterPort)){
+                            if (!(p instanceof ParameterPort)) {
                                 _retransferInputs(p);
                             }
                         }
@@ -428,40 +428,40 @@ public class CompositeOptimizer extends ReflectComposite {
                     // fire the inside composite.
                     OptimizerDirector.super.fire(); 
                     // if stop has been requested, the inside might not have produced tokens. so do not proceed
-                    if(_stopRequested){
+                    if (_stopRequested) {
                         terminate[0] = _stopRequested;
                         // set one constraint value to negative, so that this iteration is not considered by FindMinimum()
                         con[0] = -1;
                         return evalX;
-                    }else{ 
+                    }else { 
                         Iterator<IOPort> outports = container.outputPortList().iterator(); 
     
-                        while(outports.hasNext()){
+                        while (outports.hasNext()) {
                             IOPort p = outports.next();
                             // these we don't need. will find a way to do this cleanly. perhaps don't even link the ports. which should already be the case really.
     
-                            if(p.getName().equals(INTERMEDIATE_VALUE_PORT_NAME)){
+                            if (p.getName().equals(INTERMEDIATE_VALUE_PORT_NAME)) {
                                 if (p.hasTokenInside(0)) {
                                     Token t = p.getInside(0); 
                                     evalX = ((DoubleToken)t).doubleValue();
-                                }else{
+                                }else {
                                     throw new IllegalActionException(getContainer(), "Cannot read token from " + INTERMEDIATE_VALUE_PORT_NAME + 
                                             ". Make sure a token is produced at each output of the inside model in CompositeOptimizer.");
                                 }
-                            }else if(p.getName().equals(CONSTRAINTS_PORT_NAME)){
+                            }else if (p.getName().equals(CONSTRAINTS_PORT_NAME)) {
                                 if (p.hasTokenInside(0)) {
                                     Token t = p.getInside(0);
                                     Token[] constraintArray = ((ArrayToken)t).arrayValue();
-                                    for(int i = 0 ; i < constraintArray.length; i++){
+                                    for (int i = 0 ; i < constraintArray.length; i++) {
                                         con[i] = ((DoubleToken)constraintArray[i]).doubleValue();
                                     }
-                                }else{
+                                }else {
                                     throw new IllegalActionException(getContainer(), "Cannot read token from " + CONSTRAINTS_PORT_NAME + 
                                             ". Make sure a token is produced at each output of the inside model in CompositeOptimizer.");
                                 }
                             } 
                         }  
-                        if(_mode == MAXIMIZE){
+                        if (_mode == MAXIMIZE) {
                             evalX = -1.0*evalX; // minimize -f(x) = maximize f(x)
                         } 
                         
@@ -488,7 +488,7 @@ public class CompositeOptimizer extends ReflectComposite {
          // TODO: if status!= normal, throw exception
             DoubleToken[] outTokens = new DoubleToken[_dimension];
 
-            for(int i = 0; i < outTokens.length; i++){
+            for (int i = 0; i < outTokens.length; i++) {
                 outTokens[i] = new DoubleToken(_optInput[i]);
             }
             ArrayToken outputArrayToken = new ArrayToken(outTokens);
@@ -567,7 +567,7 @@ public class CompositeOptimizer extends ReflectComposite {
                 throws IllegalActionException {
             boolean result = false;
 
-            if(_tokenMap.get(port)!=null){
+            if (_tokenMap.get(port)!=null) {
                 port.sendInside(0, _tokenMap.get(port));
                 result = true;
             }

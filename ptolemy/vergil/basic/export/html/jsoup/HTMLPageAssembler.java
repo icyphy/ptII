@@ -249,7 +249,7 @@ public class HTMLPageAssembler extends TypedAtomicActor {
                 Elements elements = _document.select("#"+ id);
                               
                 // Throw exception if an element with this id is not found
-                if (elements == null || elements.isEmpty()){
+                if (elements == null || elements.isEmpty()) {
                     throw new IllegalActionException(this,
                             "Cannot find an element with id = '" + id
                                     + "' in the template file.");

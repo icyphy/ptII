@@ -131,7 +131,7 @@ public class MirrorComposite extends ReflectComposite{
         super._addPort(port); 
     }
 
-    private void _init(){
+    private void _init() {
         setClassName("ptolemy.actor.lib.hoc.MirrorComposite");
     }
   

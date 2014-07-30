@@ -386,7 +386,7 @@ public class Expression extends TypedAtomicActor {
             
             // Read the input ports before acquiring the engine lock since
             // get() may block depending on the director, e.g., PN.
-            for(TypedIOPort port : inputPortList()) {
+            for (TypedIOPort port : inputPortList()) {
                 _inputTokens.put(port.getName(), port.get(0));
             }
 
@@ -419,7 +419,7 @@ public class Expression extends TypedAtomicActor {
                                     + "engine to " + _iteration.getToken());
                 }
                 
-                for(Map.Entry<String,Token> entry : _inputTokens.entrySet()) {
+                for (Map.Entry<String,Token> entry : _inputTokens.entrySet()) {
                     matlabEngine.put(engine, entry.getKey(), entry.getValue());
                 }
     

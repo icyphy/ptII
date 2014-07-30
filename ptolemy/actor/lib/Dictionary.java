@@ -419,11 +419,11 @@ public class Dictionary extends TypedAtomicActor {
                                         _errorMessage("Initialization file does not evaluate to a Ptolemy II record: " + file.getExpression());
                                 }
                                 
-                                for(String key : ((RecordToken)parsed).labelSet()) {
+                                for (String key : ((RecordToken)parsed).labelSet()) {
                                         Token value = ((RecordToken)parsed).get(key);
                                         _store.put(key, value);
                                 }
-                                if(_debugging) {
+                                if (_debugging) {
                                         _debug("Initialized store from file: " + theFile.getPath());
                                 }
                         } catch (Exception e) {
@@ -437,7 +437,7 @@ public class Dictionary extends TypedAtomicActor {
                                 }
                         }
         } else {
-                        if(_debugging) {
+                        if (_debugging) {
                                 _debug("Initialization file does not exist or cannot be read.");
                         }
         }
@@ -460,7 +460,7 @@ public class Dictionary extends TypedAtomicActor {
                         try {
                         java.io.Writer writer = file.openForWriting();
                         writer.write(record.toString());
-                                if(_debugging) {
+                                if (_debugging) {
                                         _debug("Key-value store written to file: " + theFile.getPath());
                                 }
                         } catch (Exception e) {
@@ -471,7 +471,7 @@ public class Dictionary extends TypedAtomicActor {
                                 file.close();
                         }
         } else {
-                        if(_debugging) {
+                        if (_debugging) {
                                 _debug("Dictionary data discarded.");
                         }
         }
@@ -492,7 +492,7 @@ public class Dictionary extends TypedAtomicActor {
                         _logger.log(Level.SEVERE, message);
                 } else {
                         MessageHandler.error(message);
-                        if(_debugging) {
+                        if (_debugging) {
                                 _debug(message);
                         }
                 }

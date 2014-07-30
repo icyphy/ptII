@@ -95,7 +95,7 @@ public class MetroIIPtidesReceiver extends DEReceiver {
      *
      * @param token
      *            The token to be put, or null to not put a token.
-     * @throws IllegalActionException 
+     * @exception IllegalActionException 
      */
     public void put(Token token) throws IllegalActionException {
         if (token == null) {

@@ -108,7 +108,7 @@ public class ExceptionManagerModel extends CompositeEntity {
      *  @param exceptionManager The exception manager that should contain this 
      *  model.
      */
-    public void setExceptionManagerContainer(ExceptionManager exceptionManager){
+    public void setExceptionManagerContainer(ExceptionManager exceptionManager) {
         _exceptionManagerContainer = exceptionManager;
     }
   

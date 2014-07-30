@@ -181,7 +181,7 @@ public class ExceptionManager extends MoMLModelAttribute implements
             // Start a new execution in a new thread
             try {
                 manager.startRun();
-            } catch(IllegalActionException e){
+            } catch (IllegalActionException e) {
                 statusMessage.setExpression("Cannot restart model.  " +
                                 "Manager.startRun() failed.");  
             }
@@ -286,7 +286,7 @@ public class ExceptionManager extends MoMLModelAttribute implements
              _initialized = false;
          }
          
-          if (policyValue.equals(CatchExceptionAttribute.RESTART)){
+          if (policyValue.equals(CatchExceptionAttribute.RESTART)) {
              // Restarts the model in a new thread
              
              // Check if the model made it through initialize().  If not, return
@@ -385,7 +385,7 @@ public class ExceptionManager extends MoMLModelAttribute implements
     
     public void managerStateChanged(Manager manager) {
 
-        if(manager.getState().equals(Manager.INITIALIZING)) {
+        if (manager.getState().equals(Manager.INITIALIZING)) {
             // Enable restart once all objects have been initialized
             //_initialized is set back to false at the end of _handleException()
             if (_resetMessages) {
@@ -428,7 +428,7 @@ public class ExceptionManager extends MoMLModelAttribute implements
      *  The constructor for this attribute might be called before the 
      *  constructor for the director.
      *  
-     *  @throws IllegalActionException If the parent class throws it
+     *  @exception IllegalActionException If the parent class throws it
      */
     public void preinitialize() throws IllegalActionException {
         

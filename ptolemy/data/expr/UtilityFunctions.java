@@ -1211,31 +1211,31 @@ public class UtilityFunctions {
         // Check dimensions.
         int N = mean.length(); // size of array
         double[][] S = covariance.doubleMatrix();
-        if((covariance.getColumnCount() != N) || (covariance.getRowCount() != covariance.getColumnCount())){
+        if ((covariance.getColumnCount() != N) || (covariance.getRowCount() != covariance.getColumnCount())) {
             throw new IllegalActionException("Covariance must be a square matrix and its dimension must " +
                         "match the mean array length");
-        }else if(!BaseType.DOUBLE.isCompatible(mean.getElementType())){
+        }else if (!BaseType.DOUBLE.isCompatible(mean.getElementType())) {
             throw new IllegalActionException("Mean vector must consist of scalar type elements");
         }
         // Check if the covariance matrix is symmetric.
-        for(int i = 0; i < N; i++){
-            for(int j = 0; j < i; j ++){
-                if(S[i][j] != S[j][i]){
+        for (int i = 0; i < N; i++) {
+            for (int j = 0; j < i; j ++) {
+                if (S[i][j] != S[j][i]) {
                     throw new IllegalActionException("Covariance must be a symmetric matrix.");
                 }
             }
         }
         //S should also be positive semi-definite. The function does not currently check for this.
         double[][] L = new double[N][N]; // the lower triangular cholesky factor s.t. L*L^T = covariance
-        for(int i = 0; i < N; i++){
-            for(int j=0; j <= i ; j++){
+        for (int i = 0; i < N; i++) {
+            for (int j=0; j <= i ; j++) {
                 double lowerSum = 0;
-                for(int k=0; k<j; k++){
+                for (int k=0; k<j; k++) {
                     lowerSum += L[i][k]*L[j][k];
                 }
-                if( i!=j){
+                if (i!=j) {
                     L[i][j] = 1.0 / L[j][j] * (S[i][j] - lowerSum);
-                }else{
+                }else {
                     L[i][j] = Math.pow(S[i][i] - lowerSum, 0.5);
                 }
             }
@@ -1246,8 +1246,8 @@ public class UtilityFunctions {
         Token[] correlatedTokens = new Token[N];
         double[] correlatedSamples = new double[N];
         Token[] meanArray = mean.arrayValue();
-        for(int i=0; i < N; i++){
-            for(int j=0; j < N; j++){
+        for (int i=0; i < N; i++) {
+            for (int j=0; j < N; j++) {
                 double uncorr = ((DoubleToken)uncorrelatedTokens[j]).doubleValue();
                 correlatedSamples[i] += L[i][j]*uncorr;
             }

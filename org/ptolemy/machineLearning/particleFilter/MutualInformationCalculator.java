@@ -96,10 +96,10 @@ public class MutualInformationCalculator extends TypedAtomicActor {
         String stateName;
         _labels = new String[names.length() + 1];
         _types = new Type[names.length() + 1];
-        try{
-            for(int i = 0; i < names.length(); i++){
+        try {
+            for (int i = 0; i < names.length(); i++) {
                 stateName = ((StringToken)names.getElement(i)).stringValue();
-                if(this.getAttribute(stateName) == null && stateName.length()!= 0){
+                if (this.getAttribute(stateName) == null && stateName.length()!= 0) {
                     Parameter y = new Parameter(this, stateName);
                     y.setExpression("0.0");
                     y.setVisibility(Settable.EXPERT);
@@ -110,7 +110,7 @@ public class MutualInformationCalculator extends TypedAtomicActor {
             _labels[names.length()] = "weight";
             _types[names.length()] = BaseType.DOUBLE;
             particles.setTypeEquals(new ArrayType(new RecordType(_labels,_types)));
-        }catch(NameDuplicationException e){
+        } catch (NameDuplicationException e) {
             // should not happen
             System.err.println("Duplicate field in " + this.getName());
         }
@@ -135,17 +135,17 @@ public class MutualInformationCalculator extends TypedAtomicActor {
     }
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException { 
-        if (attribute == timeHorizon){
+        if (attribute == timeHorizon) {
             int th = ((IntToken)timeHorizon.getToken()).intValue();
-            if(th > 0){
+            if (th > 0) {
                 _timeHorizon = th;
-            }else{
+            }else {
                 throw new IllegalActionException(this,"Time horizon must be a positive integer");
             }
-        }else if( attribute == optIndex)
+        }else if (attribute == optIndex)
         {
             _optIndex = ((IntToken)optIndex.getToken()).intValue();
-        }else{
+        }else {
             super.attributeChanged(attribute);
         }
     }
@@ -155,28 +155,28 @@ public class MutualInformationCalculator extends TypedAtomicActor {
         
         
         
-        if(particles.hasToken(0)){
+        if (particles.hasToken(0)) {
             ArrayToken incoming = (ArrayToken)particles.get(0);
             N = incoming.length();
 //*            LinkedList<Double> particleValue = new LinkedList<Double>();
             // copy the input particles to a local array ( this is expected to be subsampled)
 //*            _particles = new Particle[incoming.length()]; // initialize particle array
             
-            if(_px.length==0) {
+            if (_px.length==0) {
                 _px = new double [N];
                 _py = new double [N];
                 _weights   = new double[incoming.length()];
             }
             
-            for( int i = 0 ; i < incoming.length(); i++){
+            for ( int i = 0 ; i < incoming.length(); i++) {
                 RecordToken token = (RecordToken)incoming.getElement(i);
 //                Particle p1 = new Particle(2);
                 
-                for(int k = 0; k < _labels.length; k++){
-                    if(_labels[k].equals("weight")){
+                for (int k = 0; k < _labels.length; k++) {
+                    if (_labels[k].equals("weight")) {
  //                       p1.setWeight(((DoubleToken)token.get(_labels[k])).doubleValue());
                         _weights[i] = ((DoubleToken)token.get(_labels[k])).doubleValue(); //p1.getWeight();
-                    }else{
+                    }else {
 //                        particleValue.add(((DoubleToken)token.get(_labels[k])).doubleValue());
                     }
                 }
@@ -188,27 +188,27 @@ public class MutualInformationCalculator extends TypedAtomicActor {
             }
             
             double wsum = 0;
-            for(int i = 0; i < N; i++){
+            for (int i = 0; i < N; i++) {
                 wsum += _weights[i];
             }
-            for(int i = 0; i < N; i++){
+            for (int i = 0; i < N; i++) {
                 _weights[i]/=wsum;
             }
         }
         
-        if(locations.hasToken(0)){
+        if (locations.hasToken(0)) {
             ArrayToken robotLocations = (ArrayToken)locations.get(0);
             _nRobots = robotLocations.length();
             _robotLocations.clear();
-            for(int i = 0; i < _nRobots; i++){
+            for (int i = 0; i < _nRobots; i++) {
                 RecordToken robotLocation = (RecordToken)robotLocations.getElement(i);
                 _robotLocations.add(robotLocation);
             } 
         }
-        if(xValue.hasToken(0)){
+        if (xValue.hasToken(0)) {
             ArrayToken xArray = ((ArrayToken)xValue.get(0));
             _xValue = new double[xArray.length()];
-            for(int i = 0; i < xArray.length(); i++){
+            for (int i = 0; i < xArray.length(); i++) {
                 _xValue[i] = (double)((DoubleToken)xArray.getElement(i)).doubleValue();
             }
         }
@@ -238,23 +238,23 @@ public class MutualInformationCalculator extends TypedAtomicActor {
     
     public TypedIOPort xValue;
     // code for computing the mutual information between particle sets and measurements
-    private double Hz(double[] x){
+    private double Hz(double[] x) {
         // zeroth order approximation of the measurement entropy 
         double[][] Sigma = DoubleMatrixMath.identity(_nRobots);
-        for(int i = 0; i < Sigma.length; i++){
-            for(int j = 0; j < Sigma[0].length; j++){
+        for (int i = 0; i < Sigma.length; i++) {
+            for (int j = 0; j < Sigma[0].length; j++) {
                 Sigma[i][j]*= _covariance;
             }
         }
 
        double[] robotX = new double[_nRobots];
        double[] robotY = new double[_nRobots];
-       for(int j = 0; j<_nRobots; j++){
+       for (int j = 0; j<_nRobots; j++) {
            RecordToken robotJ = _robotLocations.get(j);
-           if(_optIndex<0) {
+           if (_optIndex<0) {
                robotX[j] = ((DoubleToken)robotJ.get("x")).doubleValue() + x[2*j];
                robotY[j] = ((DoubleToken)robotJ.get("y")).doubleValue() + x[2*j+1];
-           } else if(j == _optIndex) {
+           } else if (j == _optIndex) {
                robotX[j] = ((DoubleToken)robotJ.get("x")).doubleValue() + x[0];
                robotY[j] = ((DoubleToken)robotJ.get("y")).doubleValue() + x[1];
            } else {
@@ -264,7 +264,7 @@ public class MutualInformationCalculator extends TypedAtomicActor {
        }
        double[][] gaussianMeans = new double[N][_nRobots];
        
-        for(int i = 0; i < N; i++){
+        for (int i = 0; i < N; i++) {
             // var: process noise
 //            double[][] var = new double[2][2];
 //            var[0][0] = 1.0;
@@ -273,20 +273,20 @@ public class MutualInformationCalculator extends TypedAtomicActor {
 //            mu[0] = new DoubleToken(0.0);
 //            mu[1] = new DoubleToken(0.0);
 
-            if( _optIndex < 0 ){
-                for(int j = 0; j<_nRobots; j++){
+            if (_optIndex < 0 ) {
+                for (int j = 0; j<_nRobots; j++) {
 //                    RecordToken robotJ = _robotLocations.get(j);
  //                   robotX = ((DoubleToken)robotJ.get("x")).doubleValue() + x[2*j];
  //                   robotY = ((DoubleToken)robotJ.get("y")).doubleValue() + x[2*j+1];
                     gaussianMeans[i][j] = Math.sqrt(Math.pow(_px[i]-robotX[j],2)+Math.pow(_py[i]-robotY[j],2));
                 }
-            }else{
+            }else {
                 // optimize over single robot
-                for(int j = 0; j<_nRobots; j++){
+                for (int j = 0; j<_nRobots; j++) {
 //                    RecordToken robotJ = _robotLocations.get(j);
 //                    robotX = ((DoubleToken)robotJ.get("x")).doubleValue();
 //                    robotY = ((DoubleToken)robotJ.get("y")).doubleValue();
-//                    if( j == _optIndex){
+//                    if (j == _optIndex) {
 //                        robotX += x[0];
 //                        robotY += x[1];
 //                    }
@@ -302,15 +302,15 @@ public class MutualInformationCalculator extends TypedAtomicActor {
         double detSigma = DoubleMatrixMath.determinant(Sigma);
         detSigma = Math.sqrt(1.0/(Math.pow(Math.PI*2, gaussianMeans[0].length)*detSigma));
         double[] logSums = new double[N];
-        for(int k = 0 ; k < N; k++){
+        for (int k = 0 ; k < N; k++) {
             logSums[k] = 0;
         }
-        for(int k = 0 ; k < N; k++){
+        for (int k = 0 ; k < N; k++) {
 //            logSum = 0;
-            for( int j = k; j < N; j++){
+            for ( int j = k; j < N; j++) {
                 double log_kj = _mvnpdf(gaussianMeans[k],gaussianMeans[j],Sigma,invSigma,detSigma);
                 logSums[k] += _weights[j]*log_kj;
-                if(j!=k) logSums[j] += _weights[k]*log_kj;
+                if (j!=k) logSums[j] += _weights[k]*log_kj;
 //                logSum += _weights[j] * _mvnpdf(gaussianMeans[k],gaussianMeans[j],Sigma,invSigma,detSigma);
             }
             Hz += _weights[k]*Math.log(logSums[k]);
@@ -320,19 +320,19 @@ public class MutualInformationCalculator extends TypedAtomicActor {
     }
 
     // compute the multivariate PDF value at x.
-    //private double mvnpdf(double[] x, double[] mu, double[][] Sigma){
+    //private double mvnpdf(double[] x, double[] mu, double[][] Sigma) {
     //    return mvnpdf(x, mu, Sigma,  DoubleMatrixMath.inverse(Sigma), DoubleMatrixMath.determinant(Sigma));
     //}
 
     // compute the multivariate PDF value at x, using Inverse and
     // Determinant of Sigma in arguments.  If you already have
     // invSigma and detSigma, you can choose this function.
-    private double _mvnpdf(double[] x, double[] mu, double[][] Sigma, double[][] invSigma, double detSigma){
+    private double _mvnpdf(double[] x, double[] mu, double[][] Sigma, double[][] invSigma, double detSigma) {
         // int k = x.length;
         // double multiplier = Math.sqrt(1.0/(Math.pow(Math.PI*2, k)*detSigma));
         double multiplier = detSigma;
         double[] x_mu = new double[x.length];
-        for(int i = 0; i < x.length; i++){
+        for (int i = 0; i < x.length; i++) {
             x_mu[i] = x[i] - mu[i];
         }
         double exponent = DoubleArrayMath.dotProduct(

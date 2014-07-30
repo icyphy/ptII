@@ -108,7 +108,7 @@ public class MappingConstraintReaderWriter {
      * 
      * @param file The mapping file to be written.
      * @param content the content to save to the mapping file.
-     * @throws IOException If a failed or interrupted I/O operations
+     * @exception IOException If a failed or interrupted I/O operations
      * has occurred.
      */
     public static void writeMappingFile(File file, String content)

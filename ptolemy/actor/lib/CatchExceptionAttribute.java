@@ -212,13 +212,13 @@ public class CatchExceptionAttribute extends AbstractInitializableAttribute
                 // Start a new execution in a new thread
                 try {
                     manager.startRun();
-                } catch(IllegalActionException e){
+                } catch (IllegalActionException e) {
                   _writeMessage("Cannot restart model.  " +
                                   "Manager.startRun() failed.");  
                 }
                 
                 _writeMessage("Model restarted at " + dateFormat.format(date));
-            } catch(IOException e) {
+            } catch (IOException e) {
                 statusMessage.setExpression("Error:  Cannot write to file.");
             }
             // Do NOT reset messages in the event of a restart
@@ -295,7 +295,7 @@ public class CatchExceptionAttribute extends AbstractInitializableAttribute
              // did not resolve the exception.
              return false;
              
-         } else if (policyValue.equals(RESTART)){
+         } else if (policyValue.equals(RESTART)) {
              // Restarts the model in a new thread
              
              // Check if the model made it through initialize().  If not, return
@@ -373,7 +373,7 @@ public class CatchExceptionAttribute extends AbstractInitializableAttribute
          }
          
         return true;
-        } catch(IOException ioe) {
+        } catch (IOException ioe) {
             statusMessage.setExpression("Error:  Cannot write to file.");
             return false;
         }
@@ -410,14 +410,14 @@ public class CatchExceptionAttribute extends AbstractInitializableAttribute
     public void managerStateChanged(Manager manager) {
         if (manager.getState().equals(Manager.EXITING)) {
             // Close file writer, if any
-            if (_writer != null){
+            if (_writer != null) {
                 try { 
                     _writer.close();
-                } catch(IOException e){
+                } catch (IOException e) {
                     // Can't really do anything about an exception here?
                 }
             }
-        } else if(manager.getState().equals(Manager.INITIALIZING)) {
+        } else if (manager.getState().equals(Manager.INITIALIZING)) {
             // Enable restart once all objects have been initialized
             //_initialized is set back to false at the end of _handleException()
             if (_resetMessages) {
@@ -431,7 +431,7 @@ public class CatchExceptionAttribute extends AbstractInitializableAttribute
                 } catch (IllegalActionException e) {
                     try {
                         _writeMessage("Error initializing status message.");
-                    } catch(IOException ioe){
+                    } catch (IOException ioe) {
                         statusMessage.setExpression("Error writing to file");
                     }
                 }
@@ -447,7 +447,7 @@ public class CatchExceptionAttribute extends AbstractInitializableAttribute
      *  The constructor for this attribute might be called before the 
      *  constructor for the director.
      *  
-     *  @throws IllegalActionException If the parent class throws it
+     *  @exception IllegalActionException If the parent class throws it
      */
     public void preinitialize() throws IllegalActionException {
         super.preinitialize();
@@ -481,7 +481,7 @@ public class CatchExceptionAttribute extends AbstractInitializableAttribute
     /** Write the given message to the statusMessage parameter and to the log
      * file, if open.
      * @param message The message to write
-     * @throws IOException If there is a problem writing to the file
+     * @exception IOException If there is a problem writing to the file
      */
     protected void _writeMessage(String message) throws IOException{
         statusMessage.setExpression(message);

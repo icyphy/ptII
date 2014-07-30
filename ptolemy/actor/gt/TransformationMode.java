@@ -380,7 +380,7 @@ public class TransformationMode extends ChoiceParameter implements
 
         /** Expand the scope of the container by creating any required attributes.
          *  This method does nothing.
-         *  @throws IllegalActionException If any required attribute cannot be
+         *  @exception IllegalActionException If any required attribute cannot be
          *   created.
          */
         public void expand() throws IllegalActionException {
@@ -398,7 +398,7 @@ public class TransformationMode extends ChoiceParameter implements
         }
         
         /** Validate contained settables.
-         *  @throws IllegalActionException If any required attribute cannot be
+         *  @exception IllegalActionException If any required attribute cannot be
          *   created.
          */
         public void validate() throws IllegalActionException {

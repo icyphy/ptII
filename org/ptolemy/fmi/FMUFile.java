@@ -469,7 +469,7 @@ public class FMUFile {
                if (structure.getLength() == 1) {
                    NodeList listOffDerivatives = document.getElementsByTagName("Derivatives");
                    Node current = null;
-                   if (listOffDerivatives.getLength() == 1){
+                   if (listOffDerivatives.getLength() == 1) {
                        NodeList unknowVariables = listOffDerivatives.item(0).getChildNodes();
                        for (int i = 0; i < unknowVariables.getLength(); i++) {
                            current = unknowVariables.item(i);

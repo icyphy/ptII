@@ -598,7 +598,7 @@ public class EntityLibrary extends CompositeEntity implements LazyComposite,
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                      protected variables                  ////
+    ////                         protected variables               ////
 
     /** The base specified by the configure() method. */
     protected URL _base;

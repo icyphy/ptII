@@ -181,7 +181,7 @@ public class MetroIISystemCDirector extends Director implements GetFirable {
      * 
      * @param events
      *            the events to be added into the pipe.
-     * @throws IllegalActionException
+     * @exception IllegalActionException
      */
     public void pushEvents(Iterable<Event.Builder> events)
             throws IllegalActionException {
@@ -470,8 +470,8 @@ public class MetroIISystemCDirector extends Director implements GetFirable {
     /**
      * Initializes parameters.
      * 
-     * @throws IllegalActionException
-     * @throws NameDuplicationException
+     * @exception IllegalActionException
+     * @exception NameDuplicationException
      */
     private void _initializeParameters() throws IllegalActionException,
             NameDuplicationException {

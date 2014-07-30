@@ -13,7 +13,7 @@ public interface Collector<T> {
      *
      * @param handler The processor object to return results to.
      * @exception CollectionAbortedException The collection operation was aborted part way through.
-     * @throws IllegalActionException 
+     * @exception IllegalActionException 
      */
     void collect(ResultHandler<T> handler) throws CollectionAbortedException, IllegalActionException;
 }

@@ -483,7 +483,7 @@ public class LifeCycleManager extends TypedCompositeActor {
          *  specified token.
          *  @param name The name.
          *  @param token The value.
-         *  @throws IllegalActionException If setting fails.
+         *  @exception IllegalActionException If setting fails.
          */
         private void _setInsideParameter(String name, Token token)
                         throws IllegalActionException {

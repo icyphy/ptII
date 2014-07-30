@@ -439,7 +439,7 @@ public class MetroIIDirector extends Director {
     /**
      * Initialize mapping from the mapping file.
      * 
-     * @throws IllegalActionException
+     * @exception IllegalActionException
      *             If error occurs when reading the mapping file.
      */
     private void _initializeMapping() throws IllegalActionException {

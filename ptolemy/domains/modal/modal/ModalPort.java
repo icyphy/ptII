@@ -181,8 +181,8 @@ public class ModalPort extends ModalBasePort {
         return _moveUp();
     }
 
-    // /////////////////////////////////////////////////////////////////
-    // // public methods ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
 
     /**
      * Override the base class so that if the port is being removed from the

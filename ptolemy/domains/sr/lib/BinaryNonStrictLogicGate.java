@@ -95,11 +95,11 @@ public class BinaryNonStrictLogicGate extends NonStrictLogicGate {
     public TypedIOPort input2;
 
     ///////////////////////////////////////////////////////////////////
-    ////                       protected methods                   ////
+    ////                         protected methods                 ////
 
     /** Return true if all inputs are known.
      *  @return True if all inputs are known.
-     *  @throws IllegalActionException If it fails.
+     *  @exception IllegalActionException If it fails.
      */
     protected boolean _allInputsKnown() throws IllegalActionException {
             return input.isKnown() && input2.isKnown();
@@ -108,7 +108,7 @@ public class BinaryNonStrictLogicGate extends NonStrictLogicGate {
         /** Read the inputs, and return the logic function applied to
          *  all the are known and present.
          *  @return The logic function applied to all available inputs.
-         *  @throws IllegalActionException If reading inputs fails.
+         *  @exception IllegalActionException If reading inputs fails.
          */
         protected BooleanToken _readInputs()
                         throws IllegalActionException {

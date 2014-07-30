@@ -446,9 +446,9 @@ HandlesInternalLinks {
                                 
                                 Iterator connectedPortsIterator = connectedPorts.iterator();
                                 boolean alreadyConnected = false;
-                                while(connectedPortsIterator.hasNext()){
+                                while (connectedPortsIterator.hasNext()) {
                                     Port cp = (Port) connectedPortsIterator.next();
-                                    if( cp.getName().equals(portName)){
+                                    if (cp.getName().equals(portName)) {
                                         // do not connect
                                         alreadyConnected = true;
                                     }

@@ -173,8 +173,8 @@ public class EnabledComposite extends TypedCompositeActor {
     ////                         private methods                   ////
 
         /** Create the enable port and inside director.
-         *  @throws IllegalActionException If creating these things throws it.
-         *  @throws NameDuplicationException If creating these things throws it.
+         *  @exception IllegalActionException If creating these things throws it.
+         *  @exception NameDuplicationException If creating these things throws it.
          */
         private void _init() throws IllegalActionException,
                         NameDuplicationException {

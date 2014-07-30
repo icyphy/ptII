@@ -55,16 +55,16 @@ public class LoggerListener implements DebugListener {
      *   classname or full name of the object being listened to.
      *  @param directory The directory in which to store the log file, or null to use the system temporary directory.
      *  @param level The logger level.
-     *  @throws IllegalActionException If the log file cannot be opened.
+     *  @exception IllegalActionException If the log file cannot be opened.
      */
     public LoggerListener(String name, File directory, Level level) throws IllegalActionException {
         _logger = Logger.getLogger(name);
         _logger.setLevel(level);
         if (directory != null) {
-                if(!directory.isDirectory()) {
+                if (!directory.isDirectory()) {
                     throw new IllegalActionException("Directory for log file does not exist: " + directory.getPath());
                 }
-                if(!directory.canWrite()) {
+                if (!directory.canWrite()) {
                     throw new IllegalActionException("Directory for log file is not writable: " + directory.getPath());
                 }
         }
@@ -101,7 +101,7 @@ public class LoggerListener implements DebugListener {
      *  @param name The name for this logger. This should normally be a fully qualified
      *   classname or full name of the object being listened to.
      *  @param directory The directory in which to store the log file, or null to use the system temporary directory.
-     *  @throws IllegalActionException If the log file cannot be opened.
+     *  @exception IllegalActionException If the log file cannot be opened.
      */
     public LoggerListener(String name, File directory) throws IllegalActionException {
         this(name, directory, Level.ALL);
@@ -112,7 +112,7 @@ public class LoggerListener implements DebugListener {
      *  and stores the log in system temporary directory (whereever that is).
      *  @param name The name for this logger. This should normally be a fully qualified
      *   classname or full name of the object being listened to.
-     *  @throws IllegalActionException If the log file cannot be opened.
+     *  @exception IllegalActionException If the log file cannot be opened.
      */
     public LoggerListener(String name) throws IllegalActionException {
         this(name, null, Level.ALL);

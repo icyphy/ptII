@@ -176,7 +176,7 @@ import ptolemy.util.MessageHandler;
    error("Input must be greater than or equal to 0.");
    } else {
    var total = 1;
-   while(value > 1) {
+   while (value > 1) {
    total *= value;
    value--;
    }
@@ -959,7 +959,7 @@ public class JavaScript extends TypedAtomicActor {
          *  @param body The body of the request, or null if none.
          *  @param timeout The timeout for a connection or a read, in milliseconds, or 0 to have no timeout.
          *  @return The response to the request.
-         *  @throws IOException If the request fails.
+         *  @exception IOException If the request fails.
          */
         public String httpRequest(String url, String method, NativeObject properties, String body, Integer timeout)
                 throws IOException {
@@ -1035,8 +1035,8 @@ public class JavaScript extends TypedAtomicActor {
                 
         /** Return the local host IP address as a string.
          *  @return A string representation of the local host address.
-         *  @throws UnknownHostException If the local host is not known.
-         *  @throws SecurityException If this actor is in restricted mode.
+         *  @exception UnknownHostException If the local host is not known.
+         *  @exception SecurityException If this actor is in restricted mode.
          */
         public String localHostAddress() throws UnknownHostException, SecurityException {
             if (_restricted) {
@@ -1055,7 +1055,7 @@ public class JavaScript extends TypedAtomicActor {
          * @param url The URL of the WebSocket connection
          * @param query The query
          * @param portWrapper The port wrapper
-         * @throws MalformedURLException If the URL is malformed.
+         * @exception MalformedURLException If the URL is malformed.
          */
         public void socketX(String url, final NativeObject query, NativeJavaObject portWrapper)
                 throws MalformedURLException {
@@ -1167,7 +1167,7 @@ public class JavaScript extends TypedAtomicActor {
             /** Read the specified URL and return its contents.
              *  @param url The URL to read.
          *  @return The content of the URL.
-             *  @throws IOException If the specified URL can't be read.
+             *  @exception IOException If the specified URL can't be read.
              */
             public String readURL(String url) throws IOException {
             // FIXME: We should have a version that takes a callback function
@@ -1297,7 +1297,7 @@ public class JavaScript extends TypedAtomicActor {
              *  specified function will not be invoked.</p>
              *  @param function The function to invoke.
              *  @param time The time in milliseconds.
-             *  @throws IllegalActionException If the director cannot respect the time request.
+             *  @exception IllegalActionException If the director cannot respect the time request.
              *  @return A handle to the delayed function, to be used by clearTimeout()
              *   to cancel the function invocation if it hasn't occurred yet.
              */
@@ -1379,11 +1379,11 @@ public class JavaScript extends TypedAtomicActor {
              * @param openBrowser Indicates, if the method should invoke the system's default browser to enable the user 
              *         to login to the server in order to grant access, or if the script handles this on its own.
              * @return returns The authorization code, if the authentication at the Authorization Server was successful. 
-             * @throws IllegalActionException 
+             * @exception IllegalActionException 
              */
             public String requestAuth(String providerName, String clientId, String redirectUrl, Boolean openBrowser) throws IllegalActionException {
             OAuthProviderType oauthProvider;
-            if("google".equals(providerName.toLowerCase()))  {
+            if ("google".equals(providerName.toLowerCase()))  {
                 oauthProvider = OAuthProviderType.GOOGLE;
             }
             else  {
@@ -1403,7 +1403,7 @@ public class JavaScript extends TypedAtomicActor {
                 throw new IllegalActionException(null, ex, "Could not build OAuth request message.");
             }
                 
-            if(openBrowser)  {
+            if (openBrowser)  {
                 openBrowser(request.getLocationUri());
             }
 
@@ -1418,11 +1418,11 @@ public class JavaScript extends TypedAtomicActor {
              * @param redirectUrl
              * @param authCode The authorization code issued by the Authorization server.
              * @return The Access code token. This can be used to access the Resource server.
-             * @throws IllegalActionException
+             * @exception IllegalActionException
              */
             public String requestAccess(String providerName, String clientId, String clientSecret, String redirectUrl, String authCode) throws IllegalActionException {
             OAuthProviderType oauthProvider;
-            if("google".equals(providerName.toLowerCase()))  {
+            if ("google".equals(providerName.toLowerCase()))  {
                 oauthProvider = OAuthProviderType.GOOGLE;
             }
             else  {
@@ -1456,7 +1456,7 @@ public class JavaScript extends TypedAtomicActor {
              * @param url The protected URL on a Resource server. Usually this is some kind of RESTful API.
              * @param accessToken The code used to prove access authorization to the Resource server.
              * @return The OAuth Client resource response.
-             * @throws IllegalActionException 
+             * @exception IllegalActionException 
              */
         public String readProtectedURL(String url, String accessToken) throws IllegalActionException  { 
             OAuthResourceResponse resourceResponse = null;
@@ -1472,8 +1472,8 @@ public class JavaScript extends TypedAtomicActor {
             } catch (OAuthProblemException ex2) {
                 throw new IllegalActionException(null, ex2, "Could not connect to resource server: " + ex2.getMessage());
             }
-            if(resourceResponse!=null)  {  
-                if(resourceResponse.getResponseCode()==200)  {                   
+            if (resourceResponse!=null)  {  
+                if (resourceResponse.getResponseCode()==200)  {                   
                     return resourceResponse.getBody();
                 }  else  { 
                     return "Could not access resource: " + 
@@ -1491,7 +1491,7 @@ public class JavaScript extends TypedAtomicActor {
          *
          * @param url The URL that the browser shall retrieve.
          * @return The empty string.
-         * @throws IllegalActionException If the browser is not found
+         * @exception IllegalActionException If the browser is not found
          */
         public String openBrowser(String url) throws IllegalActionException  {
             try {
@@ -1530,7 +1530,7 @@ public class JavaScript extends TypedAtomicActor {
             
 
         /** Create a Ptolemy Token from and object sent by JavaScript. 
-         *  @throws IllegalActionException If constructing a Ptolemy Token fails.
+         *  @exception IllegalActionException If constructing a Ptolemy Token fails.
          */
         private Token _createToken(Object data) throws IllegalActionException {
             //**********************************************************************

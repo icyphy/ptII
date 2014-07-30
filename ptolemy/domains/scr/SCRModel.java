@@ -84,8 +84,8 @@ public class SCRModel extends ModalModel {
     }
     
     /** Initialize private variables.
-     * @throws IllegalActionException
-     * @throws NameDuplicationException
+     * @exception IllegalActionException
+     * @exception NameDuplicationException
      */
     private void _init() throws IllegalActionException, NameDuplicationException {
             Parameter parameter = new Parameter(this, "openAsSCRActor");

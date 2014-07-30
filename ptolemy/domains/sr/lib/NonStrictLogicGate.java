@@ -143,11 +143,11 @@ public class NonStrictLogicGate extends LogicGate {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                       protected methods                   ////
+    ////                         protected methods                 ////
 
     /** Return true if all inputs are known.
      *  @return True if all inputs are known.
-     *  @throws IllegalActionException If it fails.
+     *  @exception IllegalActionException If it fails.
      */
     protected boolean _allInputsKnown() throws IllegalActionException {
             return input.isKnown();
@@ -156,7 +156,7 @@ public class NonStrictLogicGate extends LogicGate {
         /** Read the inputs, and return the logic function applied to
          *  all the are known and present.
          *  @return The logic function applied to all available inputs.
-         *  @throws IllegalActionException If reading inputs fails.
+         *  @exception IllegalActionException If reading inputs fails.
          */
         protected BooleanToken _readInputs()
                         throws IllegalActionException {

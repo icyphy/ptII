@@ -535,7 +535,7 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
                     _setFMUScalarVariable(input.scalarVariable, token);
                     // If the input is a continuous state, update the newStates vector.
                     if ((_fmiVersion>=2.0) && _fmiModelDescription.modelExchange 
-                            && _fmiModelDescription.continuousStates.contains(input.port.getName())){
+                            && _fmiModelDescription.continuousStates.contains(input.port.getName())) {
                         _index = _fmiModelDescription.continuousStates.indexOf(input.port.getName());
                         _newStates[_index] = ((DoubleToken) token).doubleValue();
                     }
@@ -599,7 +599,7 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
 
             if (currentTimeValue > _lastCommitTime.getDoubleValue()) {
                 // Set states only if the FMU has states
-                if (states.length > 0){
+                if (states.length > 0) {
                     if (_fmiVersion < 2.0) {
                         double step = currentTimeValue
                                 - _lastCommitTime.getDoubleValue();
@@ -2144,7 +2144,7 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
             _derivatives = new double[numberOfStates];
         }
         // Call _fmiGetDerivativesFunction only if numberOfStates > 0.
-        if (numberOfStates > 0){
+        if (numberOfStates > 0) {
             int fmiFlag = ((Integer) _fmiGetDerivativesFunction.invoke(
                     Integer.class, new Object[] { _fmiComponent, _derivatives,
                             new NativeSizeT(numberOfStates) })).intValue();
@@ -2193,7 +2193,7 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
                     getDirector().fireAt(this, eventInfo.nextEventTime);
                 }
 
-            } else if (_fmiVersion >= 1.5 && _fmiVersion < 2.0){
+            } else if (_fmiVersion >= 1.5 && _fmiVersion < 2.0) {
                 // We don't have any FMI-1.5 Model Exchange
                 // models, so there is no need to implement this.
                 throw new IllegalActionException(this,
@@ -2833,7 +2833,7 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
                 missingFunctions.append("_fmiInstantiateModel()");
             } 
         }
-        else if (_fmiVersion >= 1.5 && _fmiVersion < 2.0){
+        else if (_fmiVersion >= 1.5 && _fmiVersion < 2.0) {
             
             // We don't have any FMI-1.5 Model Exchange
             // models, so there is no need to implement this.

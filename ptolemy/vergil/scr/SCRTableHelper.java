@@ -126,7 +126,7 @@ public class SCRTableHelper {
                 
                 Set<String> set = new HashSet<String>(subList);
 
-                if(set.size() < subList.size()){
+                if (set.size() < subList.size()) {
                     throw new IllegalActionException("There are value duplicates!");
                 } 
                 

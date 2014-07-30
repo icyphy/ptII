@@ -132,7 +132,7 @@ public class MetroIICompositeActor extends TypedCompositeActor implements
      * output data created by calling the local director's transferOutputs
      * method.
      * </p>
-     * @throws IllegalActionException 
+     * @exception IllegalActionException 
      */
     public void getfire(ResultHandler<Iterable<Event.Builder>> resultHandler)
             throws CollectionAbortedException, IllegalActionException {

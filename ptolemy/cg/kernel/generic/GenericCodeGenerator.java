@@ -895,7 +895,7 @@ public abstract class GenericCodeGenerator extends Attribute implements
      */
     protected void _copyCFilesTosrc(String path, String directoryToCopy,
             String [] codeFileNames) throws IllegalActionException {
-        for(int i = 0; i < codeFileNames.length; i++) {
+        for (int i = 0; i < codeFileNames.length; i++) {
             _copyCFileTosrc(path, directoryToCopy,
                             codeFileNames[i]);
         }

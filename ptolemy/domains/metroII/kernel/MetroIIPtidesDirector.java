@@ -576,11 +576,11 @@ public class MetroIIPtidesDirector extends MetroIIDEDirectorForPtides {
      * ready are transferred. After super.getfire() is called, transfer all
      * output events that are ready are transferred.
      * 
-     * @throws IllegalActionException
+     * @exception IllegalActionException
      *             If any called method of one of the associated actors throws
      *             it.
      * 
-     * @throws CollectionAbortedException
+     * @exception CollectionAbortedException
      *             If any called method of one of the associated actors throws
      *             it.
      */

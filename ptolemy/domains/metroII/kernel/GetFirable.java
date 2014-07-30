@@ -75,7 +75,7 @@ public interface GetFirable {
      * @param resultHandler
      *            iterable of events 'yield returned'.
      * @exception CollectionAbortedException
-     * @throws IllegalActionException
+     * @exception IllegalActionException
      */
     public void getfire(ResultHandler<Iterable<Event.Builder>> resultHandler)
             throws CollectionAbortedException, IllegalActionException;

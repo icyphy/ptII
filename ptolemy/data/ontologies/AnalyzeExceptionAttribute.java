@@ -182,7 +182,7 @@ public class AnalyzeExceptionAttribute extends CatchExceptionAttribute {
                 if (nameable1 != null) {
                     // Return false from this method if _annoateActor encounters
                     // a problem
-                    if (!_annotateActor(nameable1)){
+                    if (!_annotateActor(nameable1)) {
                         return false;
                     }
                 }
@@ -190,7 +190,7 @@ public class AnalyzeExceptionAttribute extends CatchExceptionAttribute {
                 if (nameable2 != null) {
                     // Return false from this method if _annoateActor encounters
                     // a problem
-                    if (!_annotateActor(nameable2)){
+                    if (!_annotateActor(nameable2)) {
                         return false;
                     }
                  }
@@ -200,7 +200,7 @@ public class AnalyzeExceptionAttribute extends CatchExceptionAttribute {
                        
                  _writeMessage("Model successfully analyzed");
           
-        } catch(IOException e){
+        } catch (IOException e) {
             statusMessage.setExpression("Error:  Cannot write to file.");
             return false;
         }
@@ -271,7 +271,7 @@ public class AnalyzeExceptionAttribute extends CatchExceptionAttribute {
                         attribute.setExpression(constraintText + "." + 
                                port.getName() + ">= Error");
                         _annotations.add(attribute); 
-                    } catch(NameDuplicationException e) {
+                    } catch (NameDuplicationException e) {
                         // If one exists already, assume the previous one
                         // can be overwritten.  This can occur if the model
                         // is saved after an exception is caught.
@@ -300,7 +300,7 @@ public class AnalyzeExceptionAttribute extends CatchExceptionAttribute {
                             
                             return false;
                         }
-                    } catch(IllegalActionException e3) {
+                    } catch (IllegalActionException e3) {
                         _writeMessage("Cannot analyze: " +
                                 "Cannot annotate port " + 
                                 port.getContainer().getFullName() + "." + 
@@ -309,7 +309,7 @@ public class AnalyzeExceptionAttribute extends CatchExceptionAttribute {
                     }  
                 }
             }
-        } catch(IOException ioe) {
+        } catch (IOException ioe) {
             statusMessage.setExpression("Error:  Cannot write to file.");
             return false;
         }

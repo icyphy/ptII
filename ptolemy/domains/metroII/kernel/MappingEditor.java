@@ -123,7 +123,7 @@ public class MappingEditor extends Attribute {
      * Reads mapping constraints.
      * 
      * @return The mapping constraints.
-     * @throws IllegalActionException If the mapping file cannot be read.
+     * @exception IllegalActionException If the mapping file cannot be read.
      */
     public String readMapping() throws IllegalActionException {
         String buffer = null;
@@ -149,7 +149,7 @@ public class MappingEditor extends Attribute {
      * 
      * @param content
      *            the content to save to the mapping file.
-     * @throws IllegalActionException
+     * @exception IllegalActionException
      *             a failed or interrupted I/O operations has occurred.
      */
     public void saveMapping(String content) throws IllegalActionException {
@@ -173,7 +173,7 @@ public class MappingEditor extends Attribute {
      * Returns actors names on all hierarchies.
      * 
      * @return actors names on all hierarchies.
-     * @throws IllegalActionException
+     * @exception IllegalActionException
      */
     public String actorNames() throws IllegalActionException {
         Nameable container = getContainer();

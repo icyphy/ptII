@@ -82,7 +82,7 @@ public class ScopeExtendingAttribute extends Attribute implements ScopeExtender 
     /** Expand the scope of the container by creating any required attributes.
      *  This method does nothing, assuming that the derived classes will
      *  create the attributes in their constructor.
-     *  @throws IllegalActionException If any required attribute cannot be
+     *  @exception IllegalActionException If any required attribute cannot be
      *   created.
      */
     public void expand() throws IllegalActionException {
@@ -127,7 +127,7 @@ public class ScopeExtendingAttribute extends Attribute implements ScopeExtender 
     }
 
     /** Validate contained settables.
-     *  @throws IllegalActionException If any required attribute cannot be
+     *  @exception IllegalActionException If any required attribute cannot be
      *   created.
      */
     public void validate() throws IllegalActionException {

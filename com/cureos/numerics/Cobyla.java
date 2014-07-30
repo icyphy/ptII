@@ -59,7 +59,7 @@ public class Cobyla
      * 3 provides full output to the console.
      * @param maxfun Maximum number of function evaluations before terminating.
      * @return Exit status of the COBYLA2 optimization.
-     * @throws IllegalActionException 
+     * @exception IllegalActionException 
      */
     public static CobylaExitStatus FindMinimum(final Calcfc calcfc, int n, int m, double[] x, double rhobeg, double rhoend, int iprint, int maxfun, boolean[] terminate) throws IllegalActionException
     {
@@ -219,7 +219,7 @@ public class Cobyla
         L_40:
         do
         {
-            if( terminate[0]){
+            if (terminate[0]){
                 status = CobylaExitStatus.TerminateRequested;
                 break L_40;
             }
@@ -672,7 +672,7 @@ public class Cobyla
                     System.out.format("%nReturn from subroutine COBYLA because rounding errors are becoming damaging.%n");
                 break;
             case TerminateRequested:
-                if(iprint >= 1)
+                if (iprint >= 1)
                     System.out.format("%nReturn from subroutine COBYLA because termination requested by user.%n");
             
         }

@@ -108,7 +108,7 @@ public class ModalController
         code.append("if (" + modalName + "__transitionFlag == 0) {" + _eol);
 
         // Generate code for refinements.
-        if(_generateRefinementCode(code)) {
+        if (_generateRefinementCode(code)) {
             // Transfer the outputs from the refinement to modal model
             code.append(_eol + "director->directorTransferModalOutputs(director);" + _eol);
         } else {

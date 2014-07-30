@@ -99,8 +99,8 @@ public class AccessorOne extends JavaScript {
     ////                         protected methods                 ////
 
     /** Override the base class so that the name of any port added is shown.
-     *  @throws IllegalActionException If the superclass throws it.
-     *  @throws NameDuplicationException If the superclass throws it.
+     *  @exception IllegalActionException If the superclass throws it.
+     *  @exception NameDuplicationException If the superclass throws it.
      */
     @Override
     protected void _addPort(TypedIOPort port) throws IllegalActionException, NameDuplicationException {

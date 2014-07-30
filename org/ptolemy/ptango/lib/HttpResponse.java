@@ -62,7 +62,7 @@ public class HttpResponse  {
 
     /** Construct a new, blank HttpResponse object. 
      */
-    public HttpResponse(){
+    public HttpResponse() {
         _body = "";
         _contentLength = 0;
         _contentType = "text/plain";
@@ -73,7 +73,7 @@ public class HttpResponse  {
     /** Construct a new HttpResponse with the given message. Used for creating
      *  responses when errors occur on the Ptolemy side, such as an IOException.
      */
-    public HttpResponse(String message){
+    public HttpResponse(String message) {
         _body = "";
         _contentLength = 0;
         _contentType = "text/plain";
@@ -111,7 +111,7 @@ public class HttpResponse  {
             _body = "";
             _responseCode = 408;
             _responseMessage = "Request timed out";
-        } catch(IOException e2){
+        } catch (IOException e2) {
             // IOException is thrown by connection.getInputStream() in case of 
             // erroneous requests.  If so, connection.getErrorStream() has body
             // getErrorStream() does not throw exceptions
@@ -133,7 +133,7 @@ public class HttpResponse  {
                 
                 _body = response.toString();
                 reader.close();
-            } catch(IOException e) {
+            } catch (IOException e) {
                 _body = "";
                 _responseCode = -1;
                 _responseMessage = "Error reading response body.";
@@ -215,7 +215,7 @@ public class HttpResponse  {
         try {
         return new RecordToken(_labels, 
                 values.toArray(new Token[values.size()]));
-        } catch(IllegalActionException e){
+        } catch (IllegalActionException e) {
             return new RecordToken();
         }
     }
@@ -236,7 +236,7 @@ public class HttpResponse  {
         try {
             return new RecordToken(_labels, 
                     values.toArray(new Token[values.size()])).getType();
-            } catch(IllegalActionException e){
+            } catch (IllegalActionException e) {
                 return new RecordToken().getType();
         }
     }
@@ -247,7 +247,7 @@ public class HttpResponse  {
      * @return True if further action is expected of the client, e.g., issuing 
      *  a second request; false otherwise.  Status codes 1xx and 3xx.
      */
-    public boolean isFurtherActionExpected(){
+    public boolean isFurtherActionExpected() {
         if ( (_responseCode >= 100 && _responseCode < 200) || 
              (_responseCode >= 300 && _responseCode < 400)) {
             return true;

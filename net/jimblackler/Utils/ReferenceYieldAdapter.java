@@ -19,7 +19,7 @@ public class ReferenceYieldAdapter<T> implements YieldAdapter<T> {
     /**
      * Convert a method that implements the Collector<> class with a standard Iterable<>, by
      * collecting the results in a list, and returning an iterator to that list.
-     * @throws IllegalActionException 
+     * @exception IllegalActionException 
      */
     public YieldAdapterIterable<T> adapt(Collector<T> client) throws IllegalActionException {
 

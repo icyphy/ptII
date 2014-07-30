@@ -130,7 +130,7 @@ public class FSMTransitionParameter extends AbstractSettableAttribute {
      * to the transition.
      * FIXME this should probably be done in setVisibility.
      * @param hide True if the parameter should be hidden.
-     * @throws IllegalActionException
+     * @exception IllegalActionException
      */
     public void hide(boolean hide) throws IllegalActionException {
             Parameter _hide = (Parameter) getAttribute("_hide");
@@ -204,8 +204,8 @@ public class FSMTransitionParameter extends AbstractSettableAttribute {
 
     /** Set the transition that corresponds to the parameters.
      * @param transition The transition.
-     * @throws IllegalActionException Can happen during initialization.
-     * @throws NameDuplicationException Can happen during initialization.
+     * @exception IllegalActionException Can happen during initialization.
+     * @exception NameDuplicationException Can happen during initialization.
      * @see #getTransition()
      */
     public void setTransition(Transition transition) throws IllegalActionException, NameDuplicationException {

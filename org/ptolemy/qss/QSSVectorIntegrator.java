@@ -47,7 +47,7 @@ public class QSSVectorIntegrator extends TypedAtomicActor {
 
     /** If it is time to produce a quantized output, produce it.
      *  Otherwise, indicate that the output is absent.
-     *  @throws IllegalActionException If sending an output fails.
+     *  @exception IllegalActionException If sending an output fails.
      */
     public void fire() throws IllegalActionException {
         super.fire();
@@ -153,7 +153,7 @@ public class QSSVectorIntegrator extends TypedAtomicActor {
      *  a refiring at that time.
      *  If there is a new input, read it and update the slope.
      *  @return True if the base class returns true.
-     *  @throws IllegalActionException If reading inputs or parameters fails.
+     *  @exception IllegalActionException If reading inputs or parameters fails.
      */
     public boolean postfire() throws IllegalActionException {
         Time currentTime = getDirector().getModelTime();
@@ -165,7 +165,7 @@ public class QSSVectorIntegrator extends TypedAtomicActor {
                 u[i] = dx.get(i).get(0);
                 if (!u[i].equals(previousInput[i])) {
                     // Initialize previousInput
-                    if (_firstFiring[i]){
+                    if (_firstFiring[i]) {
                         previousInput[i] = u[i];
                         _firstFiring[i] = false;
                     }                
@@ -230,8 +230,8 @@ public class QSSVectorIntegrator extends TypedAtomicActor {
         return super.postfire();
     }
 
-    /////////////////////////////////////////////////////////////////////
-    ////                    protected methods                        ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected methods                 ////
 
     /** Return the next time at which a line with the given slope
      *  will rise or fall from the specified starting point to the
@@ -293,7 +293,7 @@ public class QSSVectorIntegrator extends TypedAtomicActor {
      *  @param x The value to quantize.
      *  @param dq The quantum.
      *  @return A quantized value.
-     *  @throws IllegalActionException If the quantum parameter cannot
+     *  @exception IllegalActionException If the quantum parameter cannot
      *   be evaluated.
      */
     protected double _quantize(double x, double dq)
@@ -357,16 +357,16 @@ public class QSSVectorIntegrator extends TypedAtomicActor {
         return ret;
     }
 
-    /////////////////////////////////////////////////////////////////////
-    ////                  protected variables                        ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected variables               ////
 
     // FIXME: Is "SMALL" adequate to check whether slope is zero?
     /** A small number, below which the slope is considered to be zero. */
     protected static final double _SMALL = 10E-9;
     /** System dependent line separator. */
     protected final static String LS = System.getProperty("line.separator");
-    /////////////////////////////////////////////////////////////////////
-    ////                    private variables                        ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
 
     /** Inputs (derivative). */
     private List<TypedIOPort> dx;

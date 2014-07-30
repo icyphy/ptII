@@ -125,7 +125,7 @@ public class TypedIOPort extends IOPort implements Typeable {
      *  The object is added to the workspace directory.
      *  Increment the version number of the workspace.
      *  @param workspace The workspace that will list the port.
-     * @throws IllegalActionException 
+     * @exception IllegalActionException 
      */
     public TypedIOPort(Workspace workspace) throws IllegalActionException {
         super(workspace);

@@ -68,7 +68,7 @@ public class FMULog {
 
         // We need the ffi_cif so we can call the new Native.ffi_closure_va_*
         // functions which allow us to access variadic arguments.
-        long ffi_cif = Pointer.nativeCif(fmiComponent);
+        long ffi_cif = Pointer.nativeCif (fmiComponent);
 
         // FIXME: Need to handle the fmi-specific # format:
         // #<Type><valueReference#, where <Type> is one of

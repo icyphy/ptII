@@ -85,7 +85,7 @@ public class AlgebraicLoopScheduler extends Scheduler {
      *  method (which is defined in the superclass) will call it when the
      *  schedule is invalid.  This method is not synchronized on the workspace.
      *  @return A schedule.
-     *  @throws IllegalActionException If a causality loop is found.
+     *  @exception IllegalActionException If a causality loop is found.
      */
     protected Schedule _getSchedule() throws IllegalActionException {
         StaticSchedulingDirector director = (StaticSchedulingDirector) getContainer();

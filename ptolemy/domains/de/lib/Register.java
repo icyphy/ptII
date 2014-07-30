@@ -148,7 +148,7 @@ public class Register extends MostRecent {
     
     /** Read and record the inputs.
      *  @return What the superclass returns.
-     *  @throws IllegalActionException If the superclass throws it.
+     *  @exception IllegalActionException If the superclass throws it.
      */
     public boolean postfire() throws IllegalActionException {
         int inputWidth = input.getWidth();

@@ -996,7 +996,7 @@ public class MetroIIPtidesPlatform extends MetroIIMirrorComposite {
          *
          * @param workspace
          *            The workspace that will list the port.
-         * @throws IllegalActionException If port parameters cannot be initialized.
+         * @exception IllegalActionException If port parameters cannot be initialized.
          */
         public PtidesMirrorPort(Workspace workspace) throws IllegalActionException {
             // This constructor is needed for Shallow codgen.

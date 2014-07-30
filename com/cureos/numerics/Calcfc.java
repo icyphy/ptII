@@ -40,7 +40,7 @@ public interface Calcfc {
      * @param con Calculated function values of the constraints.
      * @param terminate A boolean array that provides the terminate state. Only the first element of the array is read
      * @return Calculated objective function value.
-     * @throws IllegalActionException 
+     * @exception IllegalActionException 
      */
     double Compute(int n, int m, double[] x, double[] con, boolean[] terminate) throws IllegalActionException;
     

@@ -549,7 +549,7 @@ public class FMUModelExchange extends FMUDriver {
                                 System.out.println("continuous state values changed at t=" + time);
                             }
 
-                            if ((eventInfo20.nominalsOfContinuousStatesChanged == (byte) 1) && enableLogging){
+                            if ((eventInfo20.nominalsOfContinuousStatesChanged == (byte) 1) && enableLogging) {
                                 System.out.println("nominals of continuous state changed  at t=" + time);
                             }
                         }

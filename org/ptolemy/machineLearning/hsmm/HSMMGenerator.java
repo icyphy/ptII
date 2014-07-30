@@ -169,77 +169,77 @@ public class HSMMGenerator extends TypedAtomicActor {
     }
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
-        if( attribute == durationPriors){
+        if (attribute == durationPriors) {
             ArrayToken durationPriorsToken = ((ArrayToken)durationPriors.getToken());
             int maxDuration = durationPriorsToken.length();
             _durationPriors = new double[maxDuration];
             double checksum = 0.0;
-            for(int i = 0; i < maxDuration; i++){
+            for (int i = 0; i < maxDuration; i++) {
                 _durationPriors[i] = ((DoubleToken)durationPriorsToken.getElement(i)).doubleValue();
                 checksum +=  _durationPriors[i];
             } 
-            if(!SignalProcessing.close(checksum, 1.0)){
+            if (!SignalProcessing.close(checksum, 1.0)) {
                 throw new IllegalActionException(this, "Duration Priors must sum to one. Currently:" + checksum);
             } 
-        }else if( attribute == durationProbabilities){
+        }else if (attribute == durationProbabilities) {
             DoubleMatrixToken durationsToken = ((DoubleMatrixToken)durationProbabilities.getToken());
             int maxDuration = durationsToken.getColumnCount();
             int nStates = durationsToken.getRowCount();
             _D = new double[nStates][maxDuration];
             double[] checkSums = new double[nStates];
-            for(int i = 0; i < maxDuration; i++){
-                for(int j = 0 ; j < nStates; j++){
+            for (int i = 0; i < maxDuration; i++) {
+                for (int j = 0 ; j < nStates; j++) {
                     _D[j][i] = durationsToken.getElementAt(j,i);
                     checkSums[j] += _D[j][i];
                 }
             } 
-            for(int i = 0; i < nStates; i++){
-                if(!SignalProcessing.close(checkSums[i], 1.0)){
+            for (int i = 0; i < nStates; i++) {
+                if (!SignalProcessing.close(checkSums[i], 1.0)) {
                     throw new IllegalActionException(this, "Duration density of a state ( i.e., each row" +
                             "of " + durationProbabilities.getName() +" must sum to one.");
                 }
             }
-        }else if( attribute == transitionMatrix){
+        }else if (attribute == transitionMatrix) {
             DoubleMatrixToken transitionMatrixToken =  ((DoubleMatrixToken)transitionMatrix.getToken());
             int m = transitionMatrixToken.getRowCount();
             int n = transitionMatrixToken.getColumnCount();
             _A = new double[m][n];
             double[] checkSums = new double[m];
-            for(int i = 0; i < m; i++){
-                for( int j = 0; j < n; j++){
+            for (int i = 0; i < m; i++) {
+                for ( int j = 0; j < n; j++) {
                     _A[i][j] = transitionMatrixToken.getElementAt(i, j);
                     checkSums[i] += _A[i][j];
                 }
             }
-            for(int i = 0; i < m; i++){
-                if(!SignalProcessing.close(checkSums[i], 1.0)){
+            for (int i = 0; i < m; i++) {
+                if (!SignalProcessing.close(checkSums[i], 1.0)) {
                     throw new IllegalActionException(this, "Transition Probabilities originating from each state ( i.e., each row" +
                             "of " + transitionMatrix.getName() +" must sum to one.");
                 }
             } 
-        }else if( attribute == mean){
+        }else if (attribute == mean) {
             ArrayToken meanToken      = ((ArrayToken)mean.getToken());
             int nStates = meanToken.length();
             _mean = new double[nStates];
             
-            for( int i = 0 ; i < nStates; i++){
+            for ( int i = 0 ; i < nStates; i++) {
                 _mean[i] = ((DoubleToken)meanToken.getElement(i)).doubleValue();
             }
-        }else if( attribute == sigma){
+        }else if (attribute == sigma) {
             ArrayToken sigmaToken     = ((ArrayToken)sigma.getToken()); 
             int nStates = sigmaToken.length();
             _sigma = new double[nStates];
-            for( int i = 0 ; i < nStates; i++){
+            for ( int i = 0 ; i < nStates; i++) {
                 _sigma[i] = ((DoubleToken)sigmaToken.getElement(i)).doubleValue();
             } 
-        }else if( attribute == statePriors){
+        }else if (attribute == statePriors) {
             ArrayToken statePriorsToken    = ((ArrayToken)statePriors.getToken());
             int nStates = statePriorsToken.length(); 
             _x0 = new double[nStates];
-            for( int i = 0 ; i < nStates; i++){
+            for ( int i = 0 ; i < nStates; i++) {
                 _x0[i] = ((DoubleToken)statePriorsToken.getElement(i)).doubleValue();
             } 
-        }else{
+        }else {
             super.attributeChanged(attribute);
         }
 
@@ -255,7 +255,7 @@ public class HSMMGenerator extends TypedAtomicActor {
         mean.update();
         sigma.update();
         statePriors.update();
-        if(trigger.hasToken(0)){
+        if (trigger.hasToken(0)) {
             trigger.get(0);
             int nStates = ((ArrayToken)statePriors.getToken()).length();
             ArrayToken meanToken      = ((ArrayToken)mean.getToken());
@@ -266,15 +266,15 @@ public class HSMMGenerator extends TypedAtomicActor {
             DoubleMatrixToken durationsToken = ((DoubleMatrixToken)durationProbabilities.getToken());
             int maxDuration = durationPriorsToken.length();
 
-            if( nStates != meanToken.length() ||
+            if (nStates != meanToken.length() ||
                     nStates != sigmaToken.length() ||
                     nStates != statePriorsToken.length() ||
                     nStates != transitionMatrixToken.getRowCount()||
-                    nStates != transitionMatrixToken.getColumnCount()){
+                    nStates != transitionMatrixToken.getColumnCount()) {
                 throw new IllegalActionException(this, "Parameters must have consistent dimension");
             }
             _nStates = nStates;
-            if( maxDuration != durationsToken.getColumnCount()){
+            if (maxDuration != durationsToken.getColumnCount()) {
                 throw new IllegalActionException(this, "Duration distribution and duration priors " +
                         "must be defined over the same time extent.");
             }
@@ -282,17 +282,17 @@ public class HSMMGenerator extends TypedAtomicActor {
             // start generating values
 
 
-            if( _firstIteration){
+            if (_firstIteration) {
                 // sample hidden state from prior
                 _xt    = _sampleHiddenStateFromPrior();
                 _dt = _sampleDurationFromPrior();
                 _firstIteration = false;
             }
-            if( _dt <= 1){
+            if (_dt <= 1) {
                 // if the remaining time at the current state is 1 or less, there needs to be a stata transition.
                 _xt = _propagateState();
                 _dt = _sampleDurationForState();
-            }else{
+            }else {
                 // _xt doesn't change, decrement _dt.
                 _dt --;
             }
@@ -314,7 +314,7 @@ public class HSMMGenerator extends TypedAtomicActor {
     }
     private int _sampleDurationForState() {
         double [] cumSums = new double[_maxDuration+1];  
-        for ( int i = 0; i < _maxDuration; i ++){
+        for ( int i = 0; i < _maxDuration; i ++) {
             cumSums[i+1] = cumSums[i] + _D[_xt][i]; 
         }
         // generate a random value ( in theory, within 0 and 1, 
@@ -326,7 +326,7 @@ public class HSMMGenerator extends TypedAtomicActor {
     }
     private int _propagateState() {
         double [] cumSums = new double[_nStates+1]; 
-        for ( int i = 0; i < _nStates; i ++){
+        for ( int i = 0; i < _nStates; i ++) {
             cumSums[i+1] = cumSums[i] + _A[_xt][i]; 
         }
         // generate a random value ( in theory, within 0 and 1, 
@@ -346,7 +346,7 @@ public class HSMMGenerator extends TypedAtomicActor {
     private int _sampleHiddenStateFromPrior() {
         // calculate cumulative sums and sample from the CDF
         double [] cumSums = new double[_nStates+1];
-        for ( int i = 0; i < _nStates; i ++){
+        for ( int i = 0; i < _nStates; i ++) {
             cumSums[i+1] = cumSums[i] + _x0[i];
         }
         // generate a random value ( in theory, within 0 and 1, 
@@ -358,7 +358,7 @@ public class HSMMGenerator extends TypedAtomicActor {
     }
     private int _sampleDurationFromPrior() {
         double [] cumSums = new double[_maxDuration+1]; 
-        for ( int i = 0; i < _maxDuration; i ++){
+        for ( int i = 0; i < _maxDuration; i ++) {
             cumSums[i+1] = cumSums[i] + _durationPriors[i];
         }
         // generate a random value ( in theory, within 0 and 1, 

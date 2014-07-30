@@ -170,9 +170,9 @@ public class HMMGaussianEstimator extends ParameterEstimator {
         Iterator a = (_observedTokens.keySet()).iterator();
         String rec = (String)a.next();
         List tokenS = (List<Double>)_observedTokens.get(rec);
-        if(tokenS.size() >= _batchSize){
+        if (tokenS.size() >= _batchSize) {
             _observations = new double[tokenS.size()];
-            for ( int i = 0; i < _observations.length ; i++){
+            for ( int i = 0; i < _observations.length ; i++) {
                 _observations[i] = (Double)tokenS.get(i);
             }
             _observedTokens.put(rec.toString(),new LinkedList<Double>()); // clear list

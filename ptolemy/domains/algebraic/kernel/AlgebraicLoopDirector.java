@@ -248,7 +248,7 @@ public class AlgebraicLoopDirector extends StaticSchedulingDirector {
         for (AlgebraicLoopReceiver receiver : _breakVariables) {
             // Get the updated value from the previous iteration.
             Token t = receiver._getUpdatedValue();
-            if (t instanceof DoubleToken){
+            if (t instanceof DoubleToken) {
                 _x_n[i] = ((DoubleToken)t).doubleValue();
                 i++;
             } else {
@@ -324,9 +324,9 @@ public class AlgebraicLoopDirector extends StaticSchedulingDirector {
         for (AlgebraicLoopReceiver receiver : _breakVariables) {
             // Store g(x_n)
             Token t = receiver._getUpdatedValue();
-            if (t instanceof DoubleToken){
+            if (t instanceof DoubleToken) {
                 g[i] = ((DoubleToken)(t)).doubleValue();
-                if (_debugging){
+                if (_debugging) {
                     IOPort port = receiver.getContainer();
                     _debug("Output of loop function at '" + port.getName(getContainer()) + "' = " + g[i]);
                 }
@@ -361,7 +361,7 @@ public class AlgebraicLoopDirector extends StaticSchedulingDirector {
             for (IOPort port : inputPorts) {
                 // If the port has a default value, then all its receivers are break variables.
                 Token initialValue = port.defaultValue.getToken();
-                if (initialValue != null){
+                if (initialValue != null) {
                     // Break any causality relation between this input and all outputs.
                     CausalityInterface causality = actor.getCausalityInterface();
                     @SuppressWarnings("unchecked")
@@ -405,16 +405,16 @@ public class AlgebraicLoopDirector extends StaticSchedulingDirector {
         }
 
         // Instantiate the solver.
-        if (method.stringValue().equals("Homotopy")){
+        if (method.stringValue().equals("Homotopy")) {
             _solver = new Homotopy(variableNames, _tolerance, maxIterationsValue);
         }
-        else if(method.stringValue().equals("NewtonRaphson")){
+        else if (method.stringValue().equals("NewtonRaphson")) {
             _solver = new NewtonRaphson(variableNames, _tolerance, maxIterationsValue);
         }
-        else if(method.stringValue().equals("SuccessiveSubstitution")){
+        else if (method.stringValue().equals("SuccessiveSubstitution")) {
             _solver = new SuccessiveSubstitution(variableNames, _tolerance, maxIterationsValue);            
         }
-        else{
+        else {
             throw new IllegalActionException("Solver '" + method.stringValue() + "' is not a valid keyword.");
         }
         
@@ -433,7 +433,7 @@ public class AlgebraicLoopDirector extends StaticSchedulingDirector {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                       protected methods                   ////
+    ////                         protected methods                 ////
 
     /** Call the send(index, null) method of each output port of the specified actor.
      *  @param actor The actor.
@@ -491,7 +491,7 @@ public class AlgebraicLoopDirector extends StaticSchedulingDirector {
     /** Return the error tolerance of the specified port.
      *  @param port The port.
      *  @return The port's error tolerance.
-     *  @throws IllegalActionException If the errorTolerance parameter of the port
+     *  @exception IllegalActionException If the errorTolerance parameter of the port
      *   cannot be evaluated.
      */
     private double _getErrorTolerance(IOPort port)
@@ -524,7 +524,7 @@ public class AlgebraicLoopDirector extends StaticSchedulingDirector {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                   protected variables                     ////
+    ////                         protected variables               ////
         
     /** The list of receivers for all break variables. */
     protected List<AlgebraicLoopReceiver> _breakVariables;
@@ -637,7 +637,7 @@ public class AlgebraicLoopDirector extends StaticSchedulingDirector {
         /** Return the number of iterations done in the last call to the method solve(double[]).
          *  @return The number of iterations
          */
-        public int getIterationCount(){
+        public int getIterationCount() {
             return _iterationCount;
         }
 
@@ -682,7 +682,7 @@ public class AlgebraicLoopDirector extends StaticSchedulingDirector {
 
             // Initialize step size for Jacobian calculation
             _deltaX = new double[tolerance.length];            
-            for (int i = 0; i < tolerance.length; i++){
+            for (int i = 0; i < tolerance.length; i++) {
                 // FIXME: _deltaX should take into account the scaling of the variable.
                 //        It should also be adaptive.
                 _deltaX[i] = 1E-5;
@@ -715,7 +715,7 @@ public class AlgebraicLoopDirector extends StaticSchedulingDirector {
             do {
                 // Evaluate the loop function to compute x_{n+1} = g(x_n).
                 // This calls the loop function of the outer class.
-                if (_iterationCount == 0){
+                if (_iterationCount == 0) {
                     _residual(xIni, _f);
                 }
                 final double[] xNew = _newtonStep(xIni, _f);
@@ -727,9 +727,9 @@ public class AlgebraicLoopDirector extends StaticSchedulingDirector {
                 // For the NewtonRaphson, we do not compare x and xNew, but rather xNew and g(xNew).
                 // Otherwise, the test may indicate convergence if the Newton step is small.
                 _residual(xNew, _f);
-                for(int i = 0; i < xIni.length; i++){
+                for (int i = 0; i < xIni.length; i++) {
                     final double diff = Math.abs(_f[i]);
-                    if (diff > Math.max(_tolerance[i], diff*_tolerance[i])){
+                    if (diff > Math.max(_tolerance[i], diff*_tolerance[i])) {
                         _converged = false;
                         break;
                     }
@@ -745,7 +745,7 @@ public class AlgebraicLoopDirector extends StaticSchedulingDirector {
                 }
             } while (!_converged && !_stopRequested);
             
-            if (_debugging && _converged){
+            if (_debugging && _converged) {
                 _debug("Iteration converged after " + _iterationCount + " iterations.");
             }
         }
@@ -771,11 +771,11 @@ public class AlgebraicLoopDirector extends StaticSchedulingDirector {
             // The loop function is g(x), and we attempt to solve f(x) = g(x)-x.
             // Hence, the Jacobian can be approximated by 
             // J[i][k] = (f_new[k] - f[k])/dX[i]
-            for (int i = 0; i < n; i++){
+            for (int i = 0; i < n; i++) {
                 final double xOri = xNew[i];
                 xNew[i] += _deltaX[i];
                 _residual(xNew, fNew);
-                for(int k = 0; k < n; k++){
+                for (int k = 0; k < n; k++) {
                     J[i][k] = (fNew[k]-f[k])/_deltaX[i];
                 }
                 // Reset the coordinate to its old value
@@ -786,11 +786,11 @@ public class AlgebraicLoopDirector extends StaticSchedulingDirector {
             //        for example by switching the solver, trying a different start value, increasing the 
             //        precision of the Jacobian approximation, adding relaxation, and/or some other means.
             final double det = DoubleMatrixMath.determinant(J);
-            if (Math.abs(det) < 1E-5){
+            if (Math.abs(det) < 1E-5) {
                 StringBuffer message = new StringBuffer();
                 message.append("Singular Jacobian in Newton step. Reformulate equation or try different start values.\n");
                 message.append("Break variables:\n");
-                for(String name : _variableNames){
+                for (String name : _variableNames) {
                     message.append("    ");
                     message.append(name);
                     message.append("\n");
@@ -805,11 +805,11 @@ public class AlgebraicLoopDirector extends StaticSchedulingDirector {
             
             // Solve J * d = -f(x_n) for d = x_{n+1}-x{n} 
             // to get the Newton step.
-            if (n == 1){
+            if (n == 1) {
                 final double d = -f[0]/J[0][0];
                 xNew[0] = x[0] + d;
             }
-            else{
+            else {
                 final double[] d = _gaussElimination(J, f);
                 for (int i = 0; i < n; i++)
                     xNew[i] = x[i] - d[i];
@@ -850,9 +850,9 @@ public class AlgebraicLoopDirector extends StaticSchedulingDirector {
                 jMax = 0;
                 for (i = 0; i < dim; i++)
                 {
-                    for(j = dim-1; j >= 0; j--)
+                    for (j = dim-1; j >= 0; j--)
                     {
-                        if(Math.abs(B[i][j]) > aMax)
+                        if (Math.abs(B[i][j]) > aMax)
                         {
                             aMax = Math.abs(B[i][j]);
                             iMax = i;
@@ -879,12 +879,12 @@ public class AlgebraicLoopDirector extends StaticSchedulingDirector {
                     B[piv][j] = B[piv][j]/pivotElement;
 
                 // elimination
-                for(k = 0; k < dim; k++)
+                for (k = 0; k < dim; k++)
                 {
-                    if(piv!=k)
+                    if (piv!=k)
                     {
                         a = B[k][piv];
-                        for(j = 0 ; j < dimP1; j++) // set new row
+                        for (j = 0 ; j < dimP1; j++) // set new row
                         {
                             B[k][j] =  B[k][j] - a * B[piv][j];
                         }
@@ -916,7 +916,7 @@ public class AlgebraicLoopDirector extends StaticSchedulingDirector {
                 throws IllegalActionException{
             double[] g = new double[_nVars];
             _evaluateLoopFunction(x, g);
-            for(int i = 0; i < _nVars; i++){
+            for (int i = 0; i < _nVars; i++) {
                 f[i] = g[i] - x[i];
             }
         }
@@ -956,7 +956,7 @@ public class AlgebraicLoopDirector extends StaticSchedulingDirector {
             
             // Initialize step size for Jacobian calculation.            
             _deltaX = new double[tolerance.length];
-            for (int i = 0; i < tolerance.length; i++){
+            for (int i = 0; i < tolerance.length; i++) {
                 // FIXME: _deltaX should take into account the scaling of the variable.
                 //        It should also be adaptive.
                 _deltaX[i] = 1E-5;
@@ -1036,39 +1036,39 @@ public class AlgebraicLoopDirector extends StaticSchedulingDirector {
             // Compute _b and _q, the orthogonal decompositions of _b.
             double cond = _decomp();
             // Check condition number of initial point.
-            if (cond > cdmax){
+            if (cond > cdmax) {
                 throw new IllegalActionException("Bad condition number '" + cond + 
                         "' of initial point. Select different initial point.");
             }
             // Save the tangent vector
-            for(int k = 0; k < n1; k++){
+            for (int k = 0; k < n1; k++) {
                 _t[k] = _q[_nVars][k];
             }
             // Set orientation for search.
             double or = _getOrientation();
 
             // Main iteration loop
-            while(!_stopRequested){ 
+            while (!_stopRequested){ 
                 
                 double[] w = new double[_nVars];
                 
-                while(!_stopRequested && !switchToNewton){
-                    if (Math.abs(_h) < hmin){
+                while (!_stopRequested && !switchToNewton) {
+                    if (Math.abs(_h) < hmin) {
                         StringBuffer message = new StringBuffer();
                         message.append("Failure at minimum step size after " + mapct + " function evaluations.\n");
                         message.append("Last solution vector was " + DoubleArrayMath.toString(w) + "\n");
                         message.append("with homotopy factor lambda at " + x1[_nVars]);
                         throw new IllegalActionException(message.toString());
                     }
-                    if (mapct > _maxIterations){
+                    if (mapct > _maxIterations) {
                         throw new IllegalActionException("Maximum number of function evaluations exceeded.");
                     }
                     // Save tangent vector.
-                    for(int k = 0; k < n1; k++){
+                    for (int k = 0; k < n1; k++) {
                         _t[k] = _q[_nVars][k];
                     }
                     // Do a predictor step.
-                    for(int k = 0; k < n1; k++){
+                    for (int k = 0; k < n1; k++) {
                         u[k] = x1[k] + _h * or * _t[k];
                     }
                     // Evaluate the function for the value of the predictor step.
@@ -1078,46 +1078,46 @@ public class AlgebraicLoopDirector extends StaticSchedulingDirector {
                     // This sets _test=true if a call to Newton should be done. 
                     _updateQB(w, angmax);
 
-                    if (_test){
+                    if (_test) {
                         // Newton corrector and update.
                         // If the step is a success, this call
                         // assigns _test = true and updates _r
                         _newton(u, v, w);
                         mapct++;
-                        if (_test){
+                        if (_test) {
                             // Residual and contraction test are positive.
                             // Get out of the predictor corrector loop.
                             switchToNewton = true;
                         }
-                        else{
+                        else {
                             // Residual or contraction test is negative.
                             // Try a smaller step.
                             _h = _h / acfac;
                         }
                     }
-                    else{
+                    else {
                         // PC step not accepted.
                         // Try a smaller step.
                         _h = _h / acfac;
                     }
                 }
-                if (!_stopRequested){
+                if (!_stopRequested) {
                     // Reset flag of the main iteration loop.
                     switchToNewton = false;
                     
                     boolean succ = false;
                     // Switch to Newton step length.
-                    if (v[_nVars] >= 1){
+                    if (v[_nVars] >= 1) {
                         _doNewtonStep = true;
                     }
-                    if(_doNewtonStep){
+                    if (_doNewtonStep) {
                         _h = -(v[_nVars] - 1.0) / _q[_nVars][_nVars];
-                        if (Math.abs(_h) < hmn){
+                        if (Math.abs(_h) < hmn) {
                             // Obtained minimum step length.
                             succ = true;
                         }
                     }
-                    else{
+                    else {
                         _h = Math.min(Math.abs(_h) * acfac, hmax);
                     }
                     // Assign new point on curve.
@@ -1126,7 +1126,7 @@ public class AlgebraicLoopDirector extends StaticSchedulingDirector {
                     // Assign y = H(x)
                     System.arraycopy(_r, 0, _y, 0, _nVars);
 
-                    if (succ){
+                    if (succ) {
                         // Copy the solution vector to the function argument.
                         System.arraycopy(x1, 0, xIni, 0, _nVars);
                         // Stop the curve tracing.
@@ -1151,19 +1151,19 @@ public class AlgebraicLoopDirector extends StaticSchedulingDirector {
             throws IllegalActionException{
             final int n1 = _nVars + 1;
             double[][] b = new double[n1][_nVars];
-            for(int i = 0; i < n1; i++){
+            for (int i = 0; i < n1; i++) {
                 x[i] = x[i] + h;
                 // Here, we use _y as a temporary storage, as it will be reset below.
                 _y = _map(x);
                 x[i] = x[i] - h;
-                for(int k = 0; k < _nVars; k++){
+                for (int k = 0; k < _nVars; k++) {
                     b[i][k] = _y[k];
                 }
             }
             // Store the current function value in _y.
             _y = _map(x);
-            for(int i = 0; i < n1; i++){
-                for(int k = 0; k < _nVars; k++){
+            for (int i = 0; i < n1; i++) {
+                for (int k = 0; k < _nVars; k++) {
                     b[i][k] = (b[i][k]-_y[k])/h;
                 }
             }
@@ -1186,7 +1186,7 @@ public class AlgebraicLoopDirector extends StaticSchedulingDirector {
             double[] g = new double[_nVars];
             System.arraycopy(x, 0, y, 0, _nVars);
             _evaluateLoopFunction(y, g);
-            for(int i = 0; i < _nVars; i++){
+            for (int i = 0; i < _nVars; i++) {
                 // In this test case, F(_x) = Math.exp(....), and we seek
                 // _x that satisfies _x-F(_x) = 0.
                 y[i] -= x[_nVars] * g[i];
@@ -1198,7 +1198,7 @@ public class AlgebraicLoopDirector extends StaticSchedulingDirector {
          * 
          * @return Direction in which the curve will be traversed.
          */
-        protected double _getOrientation(){
+        protected double _getOrientation() {
             return (_t[_nVars] > 0) ? 1.0 : -1.0;
         }
 
@@ -1216,25 +1216,25 @@ public class AlgebraicLoopDirector extends StaticSchedulingDirector {
          */
         void _givens(int l1, 
                     int l2, 
-                    int l3){
+                    int l3) {
             if (Math.abs(_c1)+Math.abs(_c2) == 0.0)
                 return;
             double sn;
-            if (Math.abs(_c2) >= Math.abs(_c1)){
+            if (Math.abs(_c2) >= Math.abs(_c1)) {
                 sn = Math.sqrt(1. + Math.pow(_c1/_c2, 2.0)) * Math.abs(_c2);
             }
-            else{
+            else {
                 sn = Math.sqrt(1. + Math.pow(_c2/_c1,2.0)) * Math.abs(_c1);
             }
             double s1 = _c1/sn;
             double s2 = _c2/sn;
-            for(int k = 0; k < _nVars+1; k++){
+            for (int k = 0; k < _nVars+1; k++) {
                 final double sv1 = _q[l1][k];
                 final double sv2 = _q[l2][k];
                 _q[l1][k] =  s1 * sv1 + s2 * sv2;
                 _q[l2][k] = -s2 * sv1 + s1 * sv2;
             }
-            for(int k = l3; k < _nVars; k++){
+            for (int k = l3; k < _nVars; k++) {
                 final double sv1 = _b[l1][k];
                 final double sv2 = _b[l2][k];
                 _b[l1][k] =  s1 * sv1 + s2 * sv2;
@@ -1254,19 +1254,19 @@ public class AlgebraicLoopDirector extends StaticSchedulingDirector {
          *  
          *  @return A very coarse condition estimate.
          */
-        double _decomp(){
+        double _decomp() {
             final int n = _nVars;
             final int n1 = n+1;
             
-            for(int k = 0; k < n1; k++){
-                for(int m = 0; m < n1; m++){
+            for (int k = 0; k < n1; k++) {
+                for (int m = 0; m < n1; m++) {
                     _q[k][m] = 0.0;
                 }
                 _q[k][k] = 1.0;
             }
             // Successive Givens transformation.
-            for(int m = 0; m < n; m++){
-                for(int k = m+1; k < n1; k++){
+            for (int m = 0; m < n; m++) {
+                for (int k = m+1; k < n1; k++) {
                     // Here we set _c1 and _c2, as these are class members.
                     // The original code uses these as input arguments to
                     // _givens(...), but we use them as class members
@@ -1281,8 +1281,8 @@ public class AlgebraicLoopDirector extends StaticSchedulingDirector {
             
             // Compute a very coarse condition estimate.
             double cond = 0.0;
-            for(int i = 1; i < n; i++){
-                for(int k = 0; k < i; k++){
+            for (int i = 1; i < n; i++) {
+                for (int k = 0; k < i; k++) {
                     cond = Math.max(cond, Math.abs(_b[k][i]/_b[i][i]));
                 }
             }
@@ -1313,7 +1313,7 @@ public class AlgebraicLoopDirector extends StaticSchedulingDirector {
             
             _test = true;
             // Perturb w
-            for(int k = 0; k < n; k++){
+            for (int k = 0; k < n; k++) {
                 if (Math.abs(w[k]) > _deltaX[k])
                     pv[k] = 0.0;
                 else if (w[k] > 0.0)
@@ -1324,20 +1324,20 @@ public class AlgebraicLoopDirector extends StaticSchedulingDirector {
                 w[k] = w[k] - pv[k];
             }
             final double d1 = _l2norm(w);
-            if(d1 > dmax){
+            if (d1 > dmax) {
                 _test = false;
                 return;
             }
-            for(int k = 0; k < n; k++){
-                for(int m = 0; m < k; m++){
+            for (int k = 0; k < n; k++) {
+                for (int m = 0; m < k; m++) {
                     w[k] = w[k] - _b[m][k] * w[m];
                 }
                 w[k] = w[k]/_b[k][k];
             }
             final double d2 = _l2norm(w);
-            for(int k = 0; k < n1; k++){
+            for (int k = 0; k < n1; k++) {
                 double s = 0.0;
-                for(int m = 0; m < n; m++){
+                for (int m = 0; m < n; m++) {
                     s += _q[m][k] * w[m];
                 }
                 v[k] = u[k] - s;
@@ -1345,17 +1345,17 @@ public class AlgebraicLoopDirector extends StaticSchedulingDirector {
 
             _r = _map(v);
 
-            for(int k = 0; k < n; k++){
+            for (int k = 0; k < n; k++) {
                 p[k] = _r[k] - pv[k];
             }
             final double d3 = _l2norm(p);
 
             // Compute contraction
             final double contr = d3/(d1+dmin);
-            if ( contr > ctmax ){
+            if ( contr > ctmax ) {
                 _test = false;
             }
-            for(int k = n-2; k >= 0; k--){
+            for (int k = n-2; k >= 0; k--) {
                 _c1 = w[k];
                 _c2 = w[k+1];
                 _givens(k, k+1, k);
@@ -1363,10 +1363,10 @@ public class AlgebraicLoopDirector extends StaticSchedulingDirector {
                 w[k+1] = _c2;
                 
             }
-            for(int k = 0; k < n; k++){
+            for (int k = 0; k < n; k++) {
                 _b[0][k] -= p[k]/d2;
             }
-            for(int k = 0; k < n-1; k++){
+            for (int k = 0; k < n-1; k++) {
                 _c1 = _b[k][k];
                 _c2 = _b[k+1][k];
                 _givens(k, k+1, k);
@@ -1374,28 +1374,28 @@ public class AlgebraicLoopDirector extends StaticSchedulingDirector {
                 _b[k+1][k] = _c2;
                 
             }
-            if(_b[n-1][n-1] < 0.0){
+            if (_b[n-1][n-1] < 0.0) {
                 _test = false;
                 _b[n-1][n-1] = -_b[n-1][n-1];
-                for(int k = 0; k < n1; k++){
+                for (int k = 0; k < n1; k++) {
                     _q[n-1][k] = -_q[n-1][k];
                     _q[n][k]   = -_q[n][k];
                 }
             }
             // Perturb upper triangular matrix
-            for(int i=1; i < n; i++){
-                for(int k = 0; k < i; k++){
-                    if (Math.abs(_b[k][i]) > cdmax*Math.abs(_b[i][i])){
-                        if (_b[i][i] > 0){
+            for (int i=1; i < n; i++) {
+                for (int k = 0; k < i; k++) {
+                    if (Math.abs(_b[k][i]) > cdmax*Math.abs(_b[i][i])) {
+                        if (_b[i][i] > 0) {
                             _b[i][i] = Math.abs(_b[k][i]) / cdmax;
                         }
-                        else{
+                        else {
                             _b[i][i] = -Math.abs(_b[k][i]) / cdmax;
                         }
                     }
                 }
             }
-            for(int k = 0; k < n-1; k++){
+            for (int k = 0; k < n-1; k++) {
                 _b[k+1][k] = 0.0;
             }
             return;
@@ -1408,15 +1408,15 @@ public class AlgebraicLoopDirector extends StaticSchedulingDirector {
          */
         protected void _updateQB(
                 final double[] w,
-                double angmax){
+                double angmax) {
             final int n = _nVars;
             final int n1 = n+1;
             _test = true;
             // Update q and b.            
-            for(int k=0; k < n; k++){
+            for (int k=0; k < n; k++) {
                 _b[n][k] = (w[k]-_y[k])/_h;
             }
-            for(int k=0; k < n; k++){
+            for (int k=0; k < n; k++) {
                 _c1 = _b[k][k];
                 _c2 = _b[n][k];
                 _givens(k, n, k);
@@ -1426,7 +1426,7 @@ public class AlgebraicLoopDirector extends StaticSchedulingDirector {
             }
             // Compute angle.
             double ang = 0.0;
-            for(int k = 0; k < n1; k++){
+            for (int k = 0; k < n1; k++) {
                 ang += _t[k] * _q[n][k];
             }
             if (ang > 1.0)
@@ -1434,7 +1434,7 @@ public class AlgebraicLoopDirector extends StaticSchedulingDirector {
             if (ang < -1.0)
                 ang = -1.0;
             ang = Math.acos(ang);
-            if (ang > angmax){
+            if (ang > angmax) {
                 _test = false;
             }
             return;
@@ -1446,9 +1446,9 @@ public class AlgebraicLoopDirector extends StaticSchedulingDirector {
          * @param y Argument for which norm is returned.
          * @return the L2 norm.
          */
-        protected double _l2norm(double[] x){
+        protected double _l2norm(double[] x) {
             double r = 0;
-            for(double ele : x){
+            for (double ele : x) {
                 r += ele*ele;
                 }
             return Math.sqrt(r);
@@ -1565,9 +1565,9 @@ public class AlgebraicLoopDirector extends StaticSchedulingDirector {
                 // Check for convergence
                 _converged = true;
 
-                for(int i = 0; i < xIni.length; i++){
+                for (int i = 0; i < xIni.length; i++) {
                     final double diff = Math.abs(xIni[i] - xNew[i]);
-                    if (diff > Math.max(_tolerance[i], diff*_tolerance[i])){
+                    if (diff > Math.max(_tolerance[i], diff*_tolerance[i])) {
                         _converged = false;
                         break;
                     }
@@ -1583,7 +1583,7 @@ public class AlgebraicLoopDirector extends StaticSchedulingDirector {
                 }
             } while (!_converged && !_stopRequested);
             
-            if (_debugging && _converged){
+            if (_debugging && _converged) {
                 _debug("Iteration converged after " + _iterationCount + " iterations.");
             }
         }

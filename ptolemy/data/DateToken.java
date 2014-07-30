@@ -594,7 +594,7 @@ public class DateToken extends AbstractConvertibleToken
 
 
     ///////////////////////////////////////////////////////////////////
-    ////               protected methods                           ////
+    ////                         protected methods                 ////
 
     /** Subtract is not supported for Dates.
      *  @param rightArgument The token to subtract from this token.
@@ -727,7 +727,7 @@ public class DateToken extends AbstractConvertibleToken
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////               protected variables                         ////
+    ////                         protected variables               ////
 
     // This is protected so that the DateToken(String) javadoc can refer
     // to it.
@@ -739,7 +739,7 @@ public class DateToken extends AbstractConvertibleToken
 
 
     ///////////////////////////////////////////////////////////////////
-    ////               private variables                           ////
+    ////                         private variables                 ////
 
     /** Test for ordering of the values of this Token and the argument
      *  Token.  It is guaranteed by the caller that the type and

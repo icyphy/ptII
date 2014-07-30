@@ -629,7 +629,7 @@ public abstract class ModularCodeGenLazyTypedCompositeActor extends
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         protected variables                 ////
+    ////                         protected variables               ////
 
     /** True if subscribers were added from the profile. */
     protected boolean _addedSubscribersFromProfile = false;

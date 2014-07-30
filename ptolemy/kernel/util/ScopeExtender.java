@@ -57,7 +57,7 @@ public interface ScopeExtender {
     /** Expand the scope of the container by creating any required parameters.
      *  This should set the expressions of the parameters, but not evaluate
      *  them (not call validate().
-     *  @throws IllegalActionException If any required attribute cannot be
+     *  @exception IllegalActionException If any required attribute cannot be
      *   created.
      */
     public void expand() throws IllegalActionException;
@@ -71,7 +71,7 @@ public interface ScopeExtender {
     public Attribute getAttribute(String name);
     
     /** Evaluate the expressions of all the parameters of the scope extender.
-     *  @throws IllegalActionException If any required attribute cannot be
+     *  @exception IllegalActionException If any required attribute cannot be
      *   created.
      */
     public void validate() throws IllegalActionException;

@@ -180,15 +180,15 @@ public class HSMMGaussianEstimator extends HSMMParameterEstimator {
             sTokens[i] = new DoubleToken(s_new[i]);
             pTokens[i] = new DoubleToken(prior_new[i]);
         }
-        for( int i = 0 ; i < _maxDuration; i++){
+        for ( int i = 0 ; i < _maxDuration; i++) {
             dTokens[i] = new DoubleToken(dPrior_new[i]);
         }
     
-        for(int i = 0; i < _nObservations; i++){
+        for (int i = 0; i < _nObservations; i++) {
             cTokens[i] = new IntToken(clusters[i]);
         }
         
-        for(int i=0; i < lTokens.length; i++){
+        for (int i=0; i < lTokens.length; i++) {
             lTokens[i] = new DoubleToken(_likelihoodHistory.get(i));
         }
         _likelihoodHistory.clear();
@@ -217,7 +217,7 @@ public class HSMMGaussianEstimator extends HSMMParameterEstimator {
     protected boolean _checkForConvergence(int iterations) {
 
         boolean nanDetected = false;
-        for( int i = 0; i < m_new.length; i++){
+        for ( int i = 0; i < m_new.length; i++) {
             if ((m_new[i] != m_new[i]) || (s_new[i] != s_new[i])
                     || (A_new[i][i] != A_new[i][i]) || (prior_new[i] != prior_new[i]) ||(D_new[i]!=D_new[i])) {
                 nanDetected = true;
@@ -264,7 +264,7 @@ public class HSMMGaussianEstimator extends HSMMParameterEstimator {
                 // sort arrays
                 Arrays.sort(m_new);
                 prior_new = _priors;
-            }else{
+            }else {
                 System.out
                 .println("At least one parameter value is unstable!");
                 return false;
@@ -329,9 +329,9 @@ public class HSMMGaussianEstimator extends HSMMParameterEstimator {
     @Override
     protected double durationProbability(int y, int hiddenState) {
         // TODO Auto-generated method stub
-        if( y >= _maxDuration){
+        if (y >= _maxDuration) {
             return 0.0;
-        }else{
+        }else {
             return _D[hiddenState][(int) y];
         }
     }

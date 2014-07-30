@@ -655,7 +655,7 @@ public class FixedPointDirector extends StaticSchedulingDirector implements
                         port.send(i, null);
                     }
                 }
-            } else if (i < outsideWidth){
+            } else if (i < outsideWidth) {
                     // Output is not known. To ensure that this fact propagate
                     // outside, find the remote receivers and reset them.
                     // This was causing a monotonicity failure in certain
@@ -776,7 +776,7 @@ public class FixedPointDirector extends StaticSchedulingDirector implements
      *  converged if both the number of known receivers
      *  has not changed since the previous invocation of this method.
      *  @return true if this iteration has converged.
-     *  @throws IllegalActionException Not thrown in this base class.
+     *  @exception IllegalActionException Not thrown in this base class.
      */
     protected boolean _hasIterationConverged()
                     throws IllegalActionException {

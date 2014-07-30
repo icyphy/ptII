@@ -182,7 +182,7 @@ public class ParticleFilter extends TypedCompositeActor {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                          public variables                        ////
+    ////                         public variables                  ////
 
     /** A boolean parameter that when set to true, implements the so-called
      * bootstrap particle filter, where particles are resampled at each time step
@@ -201,7 +201,7 @@ public class ParticleFilter extends TypedCompositeActor {
 
     /**
      * The expression that specifies the PDF for the measurementNoise. use N(m,s) for
-     * a Gaussian distribution with mean m and standard deviation s. unif(x,y) evaluates
+     * a Gaussian distribution with mean m and standard deviation s. unif (x,y) evaluates
      * to a uniform distribution in range [x,y] 
      */
     public Parameter particleCount;
@@ -322,10 +322,10 @@ public class ParticleFilter extends TypedCompositeActor {
         } else if (attribute == lowVarianceSampler) {
             _lowVarianceSampler = ((BooleanToken) lowVarianceSampler.getToken())
                     .booleanValue();
-        }else if( attribute == resetOnEachRun)
+        }else if (attribute == resetOnEachRun)
         {
             _resetOnEachRun = ((BooleanToken)resetOnEachRun.getToken()).booleanValue();
-        }else if (attribute == seed){
+        }else if (attribute == seed) {
             long seedVal = ((LongToken)seed.getToken()).longValue();
             _seed = seedVal;
             _createRandomGenerator();
@@ -413,7 +413,7 @@ public class ParticleFilter extends TypedCompositeActor {
         // Check parameters.
         _checkParameters();
         
-        if(_resetOnEachRun || _random == null){
+        if (_resetOnEachRun || _random == null) {
             _createRandomGenerator();
         }
 

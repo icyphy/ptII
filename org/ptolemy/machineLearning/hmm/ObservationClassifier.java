@@ -257,7 +257,7 @@ public abstract class ObservationClassifier extends TypedAtomicActor {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         protected variables                 ////
+    ////                         protected variables               ////
     protected abstract double emissionProbability(double y, int hiddenState);
 
     /* length of the observation array to be classified */

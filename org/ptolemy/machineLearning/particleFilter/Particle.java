@@ -58,7 +58,7 @@ public class Particle {
         _ssSize = p._ssSize;
         _particleValue = new LinkedList<Double>();
         List<Double> temp = p.getValue();
-        for (int i = 0; i < temp.size(); i++ ){
+        for (int i = 0; i < temp.size(); i++ ) {
             _particleValue.add((Double)temp.get(i));
         }
     }
@@ -68,9 +68,9 @@ public class Particle {
      *  the weight is set to weight/w.
      *  @param w The weight.
      */
-    public boolean adjustWeight(double w){
+    public boolean adjustWeight(double w) {
         // normalize weight
-        if (w > 0.0){
+        if (w > 0.0) {
             _weight = _weight/w;
         } else {
             return false;
@@ -81,7 +81,7 @@ public class Particle {
     /** Return the size of the partile.
      *  @return The size.   
      */
-    public int getSize(){
+    public int getSize() {
         return _ssSize;
     }
 
@@ -89,9 +89,9 @@ public class Particle {
      *  @return The value.
      *  @see #setValue(LinkedList)
      */
-    public List<Double> getValue(){
+    public List<Double> getValue() {
         List<Double> values = new LinkedList<Double>();
-        for(int i = 0; i < _particleValue.size(); i++){
+        for (int i = 0; i < _particleValue.size(); i++) {
             values.add(_particleValue.get(i));
         }
         return values;
@@ -109,10 +109,10 @@ public class Particle {
      *  @param l The value
      *  @see #getValue()
      */   
-    public void setValue(LinkedList<Double> l){
+    public void setValue(LinkedList<Double> l) {
         _particleValue = new LinkedList<Double>();
 
-        for(int i = 0; i < l.size(); i++){
+        for (int i = 0; i < l.size(); i++) {
             _particleValue.add(l.get(i));
         }
     }
@@ -121,7 +121,7 @@ public class Particle {
      *  @param weight the weight.
      *  @see #getWeight()
      */
-    public void setWeight(double weight){
+    public void setWeight(double weight) {
         _weight = weight;
     }         
 

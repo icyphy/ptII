@@ -2414,7 +2414,7 @@ public class DEDirector extends Director implements SuperdenseTimeDirector {
     /** In DE, a warning is issued when execution aspects are used because
      *  these might change the DE semantics of the execution. In Ptides, 
      *  this is not the case. 
-     * @throws IllegalActionException 
+     * @exception IllegalActionException 
      */
     protected void _issueExecutionAspectWarning() throws IllegalActionException {
         if (_executionAspects.size() > 0) {

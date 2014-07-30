@@ -199,7 +199,7 @@ public class ParameterSet extends ScopeExtendingAttribute implements Executable 
     /** Expand the scope of the container by creating any required attributes.
      *  This method reads the specified file if it has not already been read
      *  or if has changed since it was last read.
-     *  @throws IllegalActionException If any required attribute cannot be
+     *  @exception IllegalActionException If any required attribute cannot be
      *   created.
      */
     public void expand() throws IllegalActionException {

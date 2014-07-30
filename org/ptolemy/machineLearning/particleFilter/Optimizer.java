@@ -97,10 +97,10 @@ public class Optimizer extends TypedAtomicActor {
         String stateName;
         _labels = new String[names.length() + 1];
         _types = new Type[names.length() + 1];
-        try{
-            for(int i = 0; i < names.length(); i++){
+        try {
+            for (int i = 0; i < names.length(); i++) {
                 stateName = ((StringToken)names.getElement(i)).stringValue();
-                if(this.getAttribute(stateName) == null && stateName.length()!= 0){
+                if (this.getAttribute(stateName) == null && stateName.length()!= 0) {
                     Parameter y = new Parameter(this, stateName);
                     y.setExpression("0.0");
                     y.setVisibility(Settable.EXPERT);
@@ -111,7 +111,7 @@ public class Optimizer extends TypedAtomicActor {
             _labels[names.length()] = "weight";
             _types[names.length()] = BaseType.DOUBLE;
             particles.setTypeEquals(new ArrayType(new RecordType(_labels,_types)));
-        }catch(NameDuplicationException e){
+        } catch (NameDuplicationException e) {
             // should not happen
             System.err.println("Duplicate field in " + this.getName());
         }
@@ -142,15 +142,15 @@ public class Optimizer extends TypedAtomicActor {
             throws IllegalActionException {
         if (attribute == speedLimit) {
             double speed = ((DoubleToken)speedLimit.getToken()).doubleValue();
-            if(speed >0.0){
+            if (speed >0.0) {
                 u_limit = speed;
-            }else{
+            }else {
                 throw new IllegalActionException(this,"Robot speed can not be negative!");
             }
-        } else if( attribute == rhoBeg){
+        } else if (attribute == rhoBeg) {
             double rho = ((DoubleToken)rhoBeg.getToken()).doubleValue();
             _rhobeg = rho; 
-        }else if( attribute == rhoEnd){
+        }else if (attribute == rhoEnd) {
             double rho = ((DoubleToken)rhoEnd.getToken()).doubleValue();
             _rhoend = rho; 
         }else {
@@ -165,7 +165,7 @@ public class Optimizer extends TypedAtomicActor {
         locations.update();
         ArrayToken robotLocations = (ArrayToken)locations.getToken();
         _nRobots = robotLocations.length();
-        for(int i = 0; i < _nRobots; i++){
+        for (int i = 0; i < _nRobots; i++) {
             RecordToken robotLocation = (RecordToken)robotLocations.getElement(i);
             _robotLocations.add(robotLocation);
         } 
@@ -180,15 +180,15 @@ public class Optimizer extends TypedAtomicActor {
         _px = new double [N];
         _py = new double [N];
         
-        for( int i = 0 ; i < incoming.length(); i++){
+        for ( int i = 0 ; i < incoming.length(); i++) {
             RecordToken token = (RecordToken)incoming.getElement(i);
             Particle p1 = new Particle(2);
             
-            for(int k = 0; k < _labels.length; k++){
-                if(_labels[k].equals("weight")){
+            for (int k = 0; k < _labels.length; k++) {
+                if (_labels[k].equals("weight")) {
                     p1.setWeight(((DoubleToken)token.get(_labels[k])).doubleValue());
                     _weights[i] = p1.getWeight();
-                }else{
+                }else {
                     particleValue.add(((DoubleToken)token.get(_labels[k])).doubleValue());
                 }
             }
@@ -200,10 +200,10 @@ public class Optimizer extends TypedAtomicActor {
         }
         
         double wsum = 0;
-        for(int i = 0; i < N; i++){
+        for (int i = 0; i < N; i++) {
             wsum += _weights[i];
         }
-        for(int i = 0; i < N; i++){
+        for (int i = 0; i < N; i++) {
             _weights[i]/=wsum;
         }
         //assign particles
@@ -216,7 +216,7 @@ public class Optimizer extends TypedAtomicActor {
             @Override
             public double Compute(int n, int m, double[] x, double[] con, boolean[] terminate) {
                 // constraints on u
-                for(int i = 0; i < m; i++){
+                for (int i = 0; i < m; i++) {
                     // u_i < K
                     con[i]   =  u_limit - Math.sqrt(x[i*2]*x[i*2]+x[i*2+1]*x[i*2+1]);
                 } 
@@ -231,11 +231,11 @@ public class Optimizer extends TypedAtomicActor {
              * @param x double array containing robot positions
              * @return
              */
-            private double Hz(double[] x){
+            private double Hz(double[] x) {
                 // zeroth order approximation of the measurement entropy 
                 double[][] Sigma = DoubleMatrixMath.identity(_nRobots);
-                for(int i = 0; i < Sigma.length; i++){
-                    for(int j = 0; j < Sigma[0].length; j++){
+                for (int i = 0; i < Sigma.length; i++) {
+                    for (int j = 0; j < Sigma[0].length; j++) {
                         Sigma[i][j]*= _covariance;
                     }
                 }
@@ -244,7 +244,7 @@ public class Optimizer extends TypedAtomicActor {
                 double robotY = 0;
                 
                 
-                for(int i = 0; i < N; i++){
+                for (int i = 0; i < N; i++) {
                     // var: process noise
                     double[][] var = new double[2][2];
                     var[0][0] = 1.0;
@@ -253,7 +253,7 @@ public class Optimizer extends TypedAtomicActor {
                     mu[0] = new DoubleToken(0.0);
                     mu[1] = new DoubleToken(0.0);
 
-                    for(int j = 0; j<_nRobots; j++){
+                    for (int j = 0; j<_nRobots; j++) {
                         RecordToken robotJ = _robotLocations.get(j);
                         robotX = ((DoubleToken)robotJ.get("x")).doubleValue() + x[2*j];
                         robotY = ((DoubleToken)robotJ.get("y")).doubleValue() + x[2*j+1];
@@ -262,9 +262,9 @@ public class Optimizer extends TypedAtomicActor {
                 } 
                 double Hz = 0;
                 double logSum = 0;
-                for(int k = 0 ; k < N; k++){
+                for (int k = 0 ; k < N; k++) {
                     logSum = 0;
-                    for( int j = 0; j < N; j++){
+                    for ( int j = 0; j < N; j++) {
                         logSum += _weights[j]*mvnpdf(gaussianMeans[k],gaussianMeans[j],Sigma);
                     }
                     Hz += _weights[k]*Math.log(logSum);
@@ -273,11 +273,11 @@ public class Optimizer extends TypedAtomicActor {
                 return -Hz;
             }
             // compute the multivariate PDF value at x.
-            private double mvnpdf(double[] x, double[] mu, double[][] Sigma){
+            private double mvnpdf(double[] x, double[] mu, double[][] Sigma) {
                 int k = x.length;
                 double multiplier = Math.sqrt(1.0/(Math.pow(Math.PI*2, k)*DoubleMatrixMath.determinant(Sigma)));
                 double[] x_mu = new double[x.length];
-                for(int i = 0; i < x.length; i++){
+                for (int i = 0; i < x.length; i++) {
                     x_mu[i] = x[i] - mu[i];
                 }
                 double exponent = DoubleArrayMath.dotProduct(
@@ -298,7 +298,7 @@ public class Optimizer extends TypedAtomicActor {
         RecordToken[] outputRecords = new RecordToken[_nRobots];
         String[] labels = {"x","y"};
         Token[] values = new Token[2];
-        for(int i = 0 ; i < _nRobots; i++){
+        for (int i = 0 ; i < _nRobots; i++) {
             values[0] = new DoubleToken(u_tp1[i*2]);
             values[1] = new DoubleToken(u_tp1[i*2 + 1]);
             outputRecords[i] = new RecordToken (labels, values);

@@ -169,7 +169,7 @@ public class IOPort extends ComponentPort {
      *  The object is added to the workspace directory.
      *  Increment the version number of the workspace.
      *  @param workspace The workspace that will list the port.
-     * @throws IllegalActionException 
+     * @exception IllegalActionException 
      */
     public IOPort(Workspace workspace) throws IllegalActionException {
         super(workspace);
@@ -2805,7 +2805,7 @@ public class IOPort extends ComponentPort {
     }
     
     /** If port has default value reset the saved persistent value.
-     * @throws IllegalActionException If defaultValue cannot be retrieved.
+     * @exception IllegalActionException If defaultValue cannot be retrieved.
      */
     public void reset() throws IllegalActionException {
             _persistentToken = null;

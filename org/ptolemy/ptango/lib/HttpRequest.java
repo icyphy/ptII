@@ -96,7 +96,7 @@ public class HttpRequest  {
 
         try {
             _connection = (HttpURLConnection) _url.openConnection();
-        } catch(IOException e){
+        } catch (IOException e) {
             HttpResponse response = new HttpResponse("Error connecting to URL "
                     + _url.toString());
             return response;
@@ -111,7 +111,7 @@ public class HttpRequest  {
         // Specify request method (GET, POST, PUT...)
         try {
             _connection.setRequestMethod(_method.toString());
-        } catch(IOException e){
+        } catch (IOException e) {
             HttpResponse response = new HttpResponse("Error setting request " +
                             "method for URL " + _url.toString());
             return response;
@@ -151,7 +151,7 @@ public class HttpRequest  {
             if (writer != null) {
                 writer.close();
             }
-        } catch (IOException e){
+        } catch (IOException e) {
             HttpResponse response = new HttpResponse("Error closing writer for" +
                             " URL " + _url.toString());
             return response;

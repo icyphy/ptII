@@ -261,9 +261,9 @@ public abstract class ParameterEstimator extends AtomicCommunicationAspect {
                 }
                 _A0 = _transitionMatrix;
             }
-        } else if(attribute == batchSize){
+        } else if (attribute == batchSize) {
             int tb = ((IntToken)batchSize.getToken()).intValue();
-            if(tb <= 0){
+            if (tb <= 0) {
                 throw new IllegalActionException(this,
                         "Batch Size must be a positive integer.");
             }
@@ -408,13 +408,13 @@ public abstract class ParameterEstimator extends AtomicCommunicationAspect {
             Receiver receiver = (Receiver) output[0];
             Token token = (Token) output[1];
             
-            if((_observedTokens.keySet()).contains(receiver.toString())){
+            if ((_observedTokens.keySet()).contains(receiver.toString())) {
                 List tokensForReceiver = (List<Double>)_observedTokens.get(receiver.toString());
                 tokensForReceiver.add(((DoubleToken)token).doubleValue());
                 List newTokens = new LinkedList<Double>();
                 newTokens.addAll(tokensForReceiver);
                 _observedTokens.put(receiver.toString(), newTokens);
-            }else{
+            }else {
                 List tokensForReceiver = new LinkedList<Double>();
                 tokensForReceiver.add(((DoubleToken)token).doubleValue());
                 _observedTokens.put(receiver.toString(),tokensForReceiver);                
