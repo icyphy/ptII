@@ -17,8 +17,7 @@
 #    PtII: cd ptII; export PTII=`pwd`; ./configure; make cleanDerivedJavaFiles clean_shipping
 #
 #    Remove files with copyrights by others
-#    rm -rf thales com/jgoodies ptolemy/graph/analysis/analyzer/SingleSourceLongestPathAnalyzer.java org/mlc org/json doc/books/systems/export/WebServerDE.xml ./org/ptolemy/ptango/test/TestRunner.xml ./org/ptolemy/ptango/test/auto/WebServerDEInterleaved.xml ./org/ptolemy/ptango/test/auto/WebServerDE.xml
-
+#    rm -rf thales com/jgoodies ptolemy/graph/analysis/analyzer/SingleSourceLongestPathAnalyzer.java org/mlc org/json doc/books/systems/export/WebServerDE.xml ./org/ptolemy/ptango/test/TestRunner.xml ./org/ptolemy/ptango/test/auto/WebServerDEInterleaved.xml ./org/ptolemy/ptango/test/auto/WebServerDE.xml copyright.htm configure ./ptolemy/configs/doc/copyright.htm ./ptdb/lib/db-dbxml-license.htm ./ptolemy/actor/gui/masterCopyrightStart.htm.in com
 
 #
 # 3. Generate a list of text files
@@ -29,7 +28,7 @@
 #    NOTE: this requires that ~/.subversion/config has
 #    use-commit-times = yes
 #
-#    find . -name .svn -prune -o -name adm -prune -o -type f -a -mtime -`date +%j` | grep -v "\.svn" | egrep -v "\.xml$" | sort > /tmp/new
+#    find . -name .svn -prune -o -name adm -prune -o -type f -a -mtime -`date +%j` | grep -v "\.svn" | egrep -v "\.xml$" | egrep -v copyright | egrep -v license | sort > /tmp/new
 #    
 #    Note that if you wanted files since the start of last year, use run
 #    "date +%j" and add that number to the number of days in the last year.
@@ -47,17 +46,20 @@
 #    PtII:  cat /tmp/f.new | xargs $PTII/adm/copyright/fixcopyright -n >& /tmp/fc.txt
 #    Metro: cat /tmp/f.new | xargs $METRO/adm/bin/fixcopyright -n >& /tmp/fc.txt
 #
-# 6. Check the output in /tmp/fc.txt
+# 7. Check the output in /tmp/fc.txt.  
+#    Look for files that are copyrighted by others, but are being updated:
+#       grep Copyright /tmp/fc.txt | grep -v California
+#    Update step 2 if necessary with files that should be removed.
 #
-# 7. Run it for real:
+# 8. Run it for real:
 #    PtII:  cat /tmp/f.new | xargs $PTII/adm/copyright/fixcopyright >& /tmp/fc2.txt
 #    Metro: cat /tmp/f.new | xargs $METRO/adm/bin/fixcopyright >& /tmp/fc2.txt
 #
-# 8. Do a clean checkout somewhere and rebuild and test
+# 9. Do a clean checkout somewhere and rebuild and test
 #    PtII: mkdir ~/tmp2; cd ~/tmp_2; svn co https://repo.eecs.berkeley.edu/svn/projects/eal/ptII/trunk ptII
 #    PtII: cd ptII; export PTII=`pwd`; ./configure; ant
 #
-# 9. Go back and check the changes in
+# 10. Go back and check the changes in
 #    PtII: cd ~/tmp/ptII; svn commit -m "Updated copyrights"
 
 printonly=no
@@ -130,7 +132,7 @@ search $@
 # EVERY_YEAR: update the regex to get last-year's changes
 
 doit() {
-    sed 's/Copyright (c) \(199[0-9]\)-20[01][0-9]/Copyright (c) \1-2013/' \
+    sed 's/Copyright (c) \(199[0-9]\)-20[01][0-9]/Copyright (c) \1-2014/' \
 	    $file > /tmp/fixcopyright.tmp	
     diff $file /tmp/fixcopyright.tmp	
 }
@@ -138,14 +140,14 @@ doit() {
 # EVERY_YEAR: update the regex to get last-year's changes
 
 EGREPMATCH='Copyright \(c\) 199[0-9]-20[01][0-9]'
-LOGMESSAGE="Changed copyright to 2013"
+LOGMESSAGE="Changed copyright to 2014"
 
 search $@
 
 # EVERY_YEAR: update the regex to get last-year's changes
 
 doit() {
-    sed 's/Copyright (c) \(20[01][0-9]\)-20[01][0-9] /Copyright (c) \1-2013 /' \
+    sed 's/Copyright (c) \(20[01][0-9]\)-20[01][0-9] /Copyright (c) \1-2014 /' \
 	    $file > /tmp/fixcopyright.tmp	
     diff $file /tmp/fixcopyright.tmp	
 }
@@ -153,24 +155,24 @@ doit() {
 # EVERY_YEAR: update the regex to get last-year's changes
 
 EGREPMATCH='Copyright \(c\) 20[01][0-9]-20[01][0-9]'
-LOGMESSAGE="Changed copyright to 2013"
+LOGMESSAGE="Changed copyright to 2014"
 
 search $@
 
 doit() {
-    sed 's/Copyright (c) \(199[0-9]\) /Copyright (c) \1-2013 /' \
+    sed 's/Copyright (c) \(199[0-9]\) /Copyright (c) \1-2014 /' \
 	    $file > /tmp/fixcopyright.tmp	
     diff $file /tmp/fixcopyright.tmp	
 }
 EGREPMATCH="Copyright \(c\) 199[0-9] "
-LOGMESSAGE="Changed copyright to 2013"
+LOGMESSAGE="Changed copyright to 2014"
 
 search $@
 
 # EVERY_YEAR: update the regex to get last-year's changes
 
 doit() {
-    sed 's/Copyright (c) \(200[0-9]\) /Copyright (c) \1-2013 /' \
+    sed 's/Copyright (c) \(200[0-9]\) /Copyright (c) \1-2014 /' \
 	    $file > /tmp/fixcopyright.tmp	
     diff $file /tmp/fixcopyright.tmp	
 }
@@ -178,22 +180,22 @@ doit() {
 # EVERY_YEAR: update the regex to get last-year's changes
 
 EGREPMATCH="Copyright \(c\) 200[0-9] "
-LOGMESSAGE="Changed copyright to 2013"
+LOGMESSAGE="Changed copyright to 2014"
 
 search $@
 
 # EVERY_YEAR: update the regex to get last-year's changes
 
 doit() {
-    sed 's/Copyright (c) \(201[012]\) /Copyright (c) \1-2013 /' \
+    sed 's/Copyright (c) \(201[0123]\) /Copyright (c) \1-2014 /' \
 	    $file > /tmp/fixcopyright.tmp	
     diff $file /tmp/fixcopyright.tmp	
 }
 
 # EVERY_YEAR: update the regex to get last-year's changes
 
-EGREPMATCH="Copyright \(c\) 201[012] "
-LOGMESSAGE="Changed copyright to 2013"
+EGREPMATCH="Copyright \(c\) 201[0123] "
+LOGMESSAGE="Changed copyright to 2014"
 
 search $@
 

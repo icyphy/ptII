@@ -1,6 +1,6 @@
 /* An Exception related to the scope of variables in the Ptalon interpreter.
 
- Copyright (c) 2006-2007 The Regents of the University of California.
+ Copyright (c) 2006-2014 The Regents of the University of California.
  All rights reserved.
 
  Permission is hereby granted, without written agreement and without
